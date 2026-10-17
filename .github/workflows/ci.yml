@@ -1,0 +1,81 @@
+# Spec: foo-plan §2 (CI), §4 (test strategy), §5 M0. windows-latest is the source of truth; ubuntu-latest is the fast lane.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fast:
+    name: Fast lane (ubuntu-latest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm spec:verify
+      - run: pnpm check:copy
+      - run: pnpm lint
+      - run: pnpm format:check
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+
+  windows:
+    name: Full suite (windows-latest)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      # better-sqlite3 always compiles on install. pnpm's bundled node-gyp 11 cannot find Visual Studio 2026 (v18)
+      # on the runner, so install without scripts and compile with the pinned node-gyp 12.4, which knows VS 2026.
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Download the Electron binary
+        run: node node_modules/electron/install.js
+      - name: Build better-sqlite3 for Node (unit tests)
+        run: pnpm rebuild:node
+      - run: pnpm typecheck
+      - name: Unit, article and fidelity tests
+        run: pnpm test
+      - run: pnpm build
+      - name: Rebuild native modules for Electron
+        run: pnpm rebuild:electron
+      - name: E2E (Playwright for Electron)
+        run: pnpm test:e2e
+      - name: Package (unpacked)
+        run: pnpm package:dir
+      - name: No test hooks in the production build (08-3 §22.1)
+        shell: bash
+        run: |
+          if grep -a -q "__fooTest" dist/win-unpacked/resources/app.asar; then echo "__fooTest found in app.asar"; exit 1; fi
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m0-evidence-windows
+          path: |
+            qa-evidence/
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+      # A ready-to-run copy for manual testing on Vikas's PC: unzip, open foo.exe (unsigned for testers).
+      - name: Upload the app for manual testing
+        uses: actions/upload-artifact@v4
+        with:
+          name: foo-windows-app
+          path: dist/win-unpacked/
+          retention-days: 14

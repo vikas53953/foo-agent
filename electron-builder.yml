@@ -1,0 +1,23 @@
+# Spec: 09-windows §9.2 (identity), §9.3 (NSIS per-user assisted, no admin). Installer screens and signing arrive in M14.
+appId: com.foo.desktop
+productName: foo
+executableName: foo
+directories:
+  output: dist
+files:
+  - out/**
+  - resources/**
+  - package.json
+asarUnpack:
+  - node_modules/better-sqlite3/**
+win:
+  target: nsis
+  icon: resources/icons/foo.ico
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: false
+protocols:
+  - name: foo
+    schemes:
+      - foo

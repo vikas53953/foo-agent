@@ -1,0 +1,30 @@
+/* Spec: 02 F1 (base type), F8 (focus), 02-3 §F28.1 (theme switch), 03-shell-1 §3.1.3.4 (window never scrolls). */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+body {
+  background: var(--bg-app);
+  color: var(--fg-1);
+  font: var(--t-body);
+  font-synthesis: none;
+  cursor: default;
+}
+#root {
+  height: 100%;
+}
+.theme-switching * {
+  transition: none !important;
+}
+:focus-visible {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+  box-shadow: 0 0 0 var(--focus-inner-w) var(--focus-inner);
+}
