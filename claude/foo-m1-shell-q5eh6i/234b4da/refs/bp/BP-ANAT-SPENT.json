@@ -1,0 +1,49 @@
+{
+  "id": "BP-ANAT-SPENT",
+  "family": "bp",
+  "selector": "#win .right .rsec:nth-child(5)",
+  "box": {
+    "x": 1050.5,
+    "y": 1810.0625,
+    "width": 339,
+    "height": 146
+  },
+  "files": {
+    "light": {
+      "png": "BP-ANAT-SPENT.light.png",
+      "sha256": "a2e53e9bc589ac0275c2eb95d1c59a65a4751602d9af66e5da740b9ec83d55f4"
+    },
+    "dark": {
+      "png": "BP-ANAT-SPENT.dark.png",
+      "sha256": "dd4466f9955edf0d6dc0ba40545a050ba424347d0feb34f722d4cceb98010eea"
+    }
+  },
+  "texts": [
+    "Spent this month",
+    "AI",
+    "â‚¹212 of â‚¹1,000",
+    "Purchases",
+    "â‚¹15,779 of â‚¹25,000",
+    "Change caps"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-ANAT-SPENT": {
+      "x": 0,
+      "y": 0,
+      "width": 339,
+      "height": 146
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M1",
+  "spec": "03-shell-2 §3.7",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}

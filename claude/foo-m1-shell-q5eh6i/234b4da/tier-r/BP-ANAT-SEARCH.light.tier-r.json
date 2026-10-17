@@ -1,0 +1,77 @@
+{
+  "id": "BP-ANAT-SEARCH",
+  "theme": "light",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0002",
+    "checks": [
+      "r1"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "âŒ•",
+        "Search",
+        "chats"
+      ],
+      "extra": []
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-ANAT-SEARCH",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 307,
+          "height": 36
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 307,
+          "height": 36
+        },
+        "dPos": 0,
+        "dSize": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-ANAT-SEARCH",
+        "ref": "#F0F0F4",
+        "app": "#F0F0F4",
+        "deltaE": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.02985884907709012,
+    "diffPixels": 330,
+    "total": 11052,
+    "sizeMismatch": null,
+    "heatmap": "BP-ANAT-SEARCH.light.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-ANAT-SEARCH.light.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-ANAT-SEARCH.light.png"
+}

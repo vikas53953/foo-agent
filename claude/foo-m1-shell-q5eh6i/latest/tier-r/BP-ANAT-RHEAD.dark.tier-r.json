@@ -1,7 +1,13 @@
 {
   "id": "BP-ANAT-RHEAD",
   "theme": "dark",
-  "verdict": "fail",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0002",
+    "checks": [
+      "r1"
+    ]
+  },
   "r1": {
     "verdict": "fail",
     "frame": {

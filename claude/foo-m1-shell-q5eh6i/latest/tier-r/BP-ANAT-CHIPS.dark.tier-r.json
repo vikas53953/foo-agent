@@ -2,6 +2,7 @@
   "id": "BP-ANAT-CHIPS",
   "theme": "dark",
   "verdict": "review",
+  "disputed": null,
   "r1": {
     "verdict": "pass",
     "frame": {

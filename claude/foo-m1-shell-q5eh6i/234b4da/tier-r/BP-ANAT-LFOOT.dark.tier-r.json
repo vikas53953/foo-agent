@@ -1,0 +1,82 @@
+{
+  "id": "BP-ANAT-LFOOT",
+  "theme": "dark",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0002",
+    "checks": [
+      "r1"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "Â·",
+        "â‚¹212",
+        "â‚¹1,000",
+        "âš™"
+      ],
+      "extra": [
+        "·",
+        "₹212",
+        "₹1,000"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-ANAT-LFOOT",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 339,
+          "height": 64
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 339,
+          "height": 64
+        },
+        "dPos": 0,
+        "dSize": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-ANAT-LFOOT",
+        "ref": "#131318",
+        "app": "#131318",
+        "deltaE": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.06637168141592921,
+    "diffPixels": 1440,
+    "total": 21696,
+    "sizeMismatch": null,
+    "heatmap": "BP-ANAT-LFOOT.dark.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-ANAT-LFOOT.dark.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-ANAT-LFOOT.dark.png"
+}

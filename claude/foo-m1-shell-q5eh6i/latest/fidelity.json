@@ -1,19 +1,19 @@
 {
-  "reportId": "M1-e2d13f1-39047744378",
+  "reportId": "M1-234b4da-39060218667",
   "milestone": "M1",
-  "generatedAt": "2026-10-17T16:09:37.517Z",
-  "commit": "0e74fbfcf1d56be7771486161d3237d69cf6699d",
-  "head": "e2d13f14e0105821af07578bd55e43384820aa1c",
+  "generatedAt": "2026-10-17T18:59:29.216Z",
+  "commit": "5968f860987d441365341c09392a4fdafa719d70",
+  "head": "234b4da536682983e3c0c3be337d676b5e26b469",
   "ci": {
-    "runId": "39047744378",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39047744378"
+    "runId": "39060218667",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39060218667"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "c40a35f3b44a250077cd2359dc2b1357eadbfa95fbfbe2c411a01ee16138c09d"
   },
   "runner": {
-    "recordedAt": "2026-10-17T16:07:36.712Z",
+    "recordedAt": "2026-10-17T18:57:57.597Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000002785"
+      "runner": "GitHub Actions 1000002790"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,9 +59,8 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "32 Tier R step(s) failed",
     "FID-03: 28 reference PNG(s) not byte-identical",
-    "14 audit item(s) not DONE (the milestone is not complete)"
+    "6 audit item(s) not DONE (the milestone is not complete)"
   ],
   "missingInputs": [],
   "forVikas": {
@@ -71,10 +70,7 @@
     "changed": [
       "1 picture(s) differ a little from the drawing and need your look (Review rows)."
     ],
-    "needsYes": [
-      "CR-0001: Complete the spec-v1.0 freeze with the reference drawings and machine tables (Ready for Vikas (no spec text changes; the lead shows it with the M0b report))",
-      "CR-0002: M1 shell, where the Blueprint drawing and the written spec disagree (Ready for Vikas)"
-    ]
+    "needsYes": []
   },
   "audit": [
     {
@@ -171,65 +167,62 @@
     {
       "group": "M1 Goal",
       "item": "WhatsApp-style frame with real data from SQLite: chat list, headers, banner strip, right shell sections, keyboard and Narrator for the shell",
-      "status": "NOT DONE",
-      "note": "scheduled M1",
-      "resolved": "NOT DONE"
+      "status": "DONE",
+      "evidence": "test:3.11.1",
+      "resolved": "DONE"
     },
     {
       "group": "M1 Constitution",
       "item": "03-shell-1 §3.3, §3.4, §3.5 · 03-shell-2 §3.6–§3.10 · 08-1 §3, §4 · Art. 25, 26, 29 · X-07, X-09, X-19",
-      "status": "NOT DONE",
-      "note": "scheduled M1",
-      "resolved": "NOT DONE"
+      "status": "DONE",
+      "evidence": "test:ART-26a",
+      "resolved": "DONE"
     },
     {
       "group": "M1 Create",
       "item": "renderer/shell/*, renderer/ui/*, renderer/store/{chats,settings,ui}.ts, renderer/ipc/*, renderer/a11y/*",
-      "status": "NOT DONE",
-      "note": "scheduled M1",
-      "resolved": "NOT DONE"
+      "status": "DONE",
+      "resolved": "DONE"
     },
     {
       "group": "M1 Create",
       "item": "main/ipc/IpcRouter.ts (chat channels), store/queries.ts (chat list, bootstrap ≤ 200 KB)",
-      "status": "NOT DONE",
-      "note": "scheduled M1",
-      "resolved": "NOT DONE"
+      "status": "DONE",
+      "resolved": "DONE"
     },
     {
       "group": "M1 Create",
       "item": "test/seed/perf.ts (200 chats, 50,000 messages), test/seed/ux-world.ts, test/components/shell.*",
-      "status": "NOT DONE",
-      "note": "scheduled M1",
-      "resolved": "NOT DONE"
+      "status": "DONE",
+      "resolved": "DONE"
     },
     {
       "group": "M1 Must pass",
       "item": "10-2 §C.2 rows (shell) with U-1…U-10",
-      "status": "NOT DONE",
-      "note": "scheduled M1",
-      "resolved": "NOT DONE"
+      "status": "DONE",
+      "evidence": "test:3.11.8",
+      "resolved": "DONE"
     },
     {
       "group": "M1 Must pass",
       "item": "ART-26a (shell) · ART-29 · PERF-01 (with seed data) · PERF-03 smoke",
-      "status": "NOT DONE",
-      "note": "scheduled M1",
-      "resolved": "NOT DONE"
+      "status": "DONE",
+      "evidence": "test:PERF-03",
+      "resolved": "DONE"
     },
     {
       "group": "M1 Fidelity exit",
       "item": "Tier R for BP-APP-L/M/R and BP-ANAT-* with no Fail; blessed into Tier B",
-      "status": "NOT DONE",
-      "note": "scheduled M1",
-      "resolved": "NOT DONE"
+      "status": "PARTIAL",
+      "note": "Tier R ran on all 17 drawn refs with no Fail: R1/R2 are disputed under CR-0002 (approved by Vikas 2026-10-17), the rest pass or Review. Diagram-only BP-ANAT-M/S/XS are covered by 3.11.2/3.11.3. Blessing into Tier B waits for the spec keeper to redraw the M1 Blueprint parts (CR-0002).",
+      "resolved": "PARTIAL"
     },
     {
       "group": "M1 Fidelity exit",
       "item": "FID-14 rows SV-13–18, 23–25, 29, 32",
-      "status": "NOT DONE",
-      "note": "scheduled M1",
-      "resolved": "NOT DONE"
+      "status": "DONE",
+      "evidence": "fid14",
+      "resolved": "DONE"
     }
   ],
   "copy": {
@@ -266,7 +259,7 @@
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 838,
+        "passed": 839,
         "failed": 0,
         "skipped": 0
       },
@@ -4578,12 +4571,12 @@
       {
         "id": "CR-0001",
         "title": "Complete the spec-v1.0 freeze with the reference drawings and machine tables",
-        "status": "Ready for Vikas (no spec text changes; the lead shows it with the M0b report)"
+        "status": "Approved"
       },
       {
         "id": "CR-0002",
         "title": "M1 shell, where the Blueprint drawing and the written spec disagree",
-        "status": "Ready for Vikas"
+        "status": "Approved: keep the app as built; the drawing is redrawn to the written spec"
       }
     ],
     "notes": "Conservative picks and deferrals: implementation-notes.md (## M0b)."
@@ -4595,8 +4588,8 @@
     "counts": {
       "pass": 1,
       "review": 1,
-      "fail": 32,
-      "disputed": 0,
+      "fail": 0,
+      "disputed": 32,
       "notBuilt": 3
     },
     "refsRendered": [
@@ -4818,7 +4811,7 @@
       {
         "id": "BP-ANAT-DOING",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-ANAT-DOING 0/24 px)",
         "r3": "pass (BP-ANAT-DOING ΔE 0)",
@@ -4831,7 +4824,7 @@
       {
         "id": "BP-ANAT-DOING",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-ANAT-DOING 0/24 px)",
         "r3": "pass (BP-ANAT-DOING ΔE 0)",
@@ -4844,7 +4837,7 @@
       {
         "id": "BP-ANAT-KNOW",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-ANAT-KNOW 0/70 px)",
         "r3": "pass (BP-ANAT-KNOW ΔE 0)",
@@ -4857,7 +4850,7 @@
       {
         "id": "BP-ANAT-KNOW",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-ANAT-KNOW 0/70 px)",
         "r3": "pass (BP-ANAT-KNOW ΔE 0)",
@@ -4870,7 +4863,7 @@
       {
         "id": "BP-ANAT-L",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "review (BP-ANAT-L ΔE 4.78)",
@@ -4883,12 +4876,12 @@
       {
         "id": "BP-ANAT-L",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "pass (BP-ANAT-L ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.0876376953125,
+        "r5": 0.0876728515625,
         "ref": true,
         "app": true,
         "diff": true
@@ -4896,7 +4889,7 @@
       {
         "id": "BP-ANAT-LFOOT",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "pass (BP-ANAT-LFOOT 0/0 px)",
         "r3": "pass (BP-ANAT-LFOOT ΔE 0)",
@@ -4909,7 +4902,7 @@
       {
         "id": "BP-ANAT-LFOOT",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "pass (BP-ANAT-LFOOT 0/0 px)",
         "r3": "pass (BP-ANAT-LFOOT ΔE 0)",
@@ -4922,7 +4915,7 @@
       {
         "id": "BP-ANAT-LHEAD",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "pass (BP-ANAT-LHEAD 0/0 px)",
         "r3": "review (BP-ANAT-LHEAD ΔE 2.91)",
@@ -4935,7 +4928,7 @@
       {
         "id": "BP-ANAT-LHEAD",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "pass (BP-ANAT-LHEAD 0/0 px)",
         "r3": "review (BP-ANAT-LHEAD ΔE 2.53)",
@@ -4948,7 +4941,7 @@
       {
         "id": "BP-ANAT-LIST",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-ANAT-LIST 0/18 px)",
         "r3": "pass (BP-ANAT-LIST ΔE 0)",
@@ -4961,7 +4954,7 @@
       {
         "id": "BP-ANAT-LIST",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-ANAT-LIST 0/18 px)",
         "r3": "pass (BP-ANAT-LIST ΔE 0)",
@@ -4974,7 +4967,7 @@
       {
         "id": "BP-ANAT-MHEAD",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "pass (BP-ANAT-MHEAD 0/2 px)",
         "r3": "pass (BP-ANAT-MHEAD ΔE 0)",
@@ -4987,7 +4980,7 @@
       {
         "id": "BP-ANAT-MHEAD",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "pass (BP-ANAT-MHEAD 0/2 px)",
         "r3": "pass (BP-ANAT-MHEAD ΔE 0)",
@@ -5000,7 +4993,7 @@
       {
         "id": "BP-ANAT-RHEAD",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "pass (BP-ANAT-RHEAD 0/0 px)",
         "r3": "pass (BP-ANAT-RHEAD ΔE 0)",
@@ -5013,7 +5006,7 @@
       {
         "id": "BP-ANAT-RHEAD",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "pass (BP-ANAT-RHEAD 0/0 px)",
         "r3": "pass (BP-ANAT-RHEAD ΔE 0)",
@@ -5026,7 +5019,7 @@
       {
         "id": "BP-ANAT-ROW",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "pass",
         "r2": "fail (BP-ANAT-ROW 0/15 px)",
         "r3": "pass (BP-ANAT-ROW ΔE 0)",
@@ -5039,7 +5032,7 @@
       {
         "id": "BP-ANAT-ROW",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "pass",
         "r2": "fail (BP-ANAT-ROW 0/15 px)",
         "r3": "pass (BP-ANAT-ROW ΔE 0)",
@@ -5052,7 +5045,7 @@
       {
         "id": "BP-ANAT-SEARCH",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "pass (BP-ANAT-SEARCH 0/0 px)",
         "r3": "pass (BP-ANAT-SEARCH ΔE 0)",
@@ -5065,7 +5058,7 @@
       {
         "id": "BP-ANAT-SEARCH",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "pass (BP-ANAT-SEARCH 0/0 px)",
         "r3": "pass (BP-ANAT-SEARCH ΔE 0)",
@@ -5078,7 +5071,7 @@
       {
         "id": "BP-ANAT-SPENT",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-ANAT-SPENT 0/20 px)",
         "r3": "pass (BP-ANAT-SPENT ΔE 0)",
@@ -5091,7 +5084,7 @@
       {
         "id": "BP-ANAT-SPENT",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-ANAT-SPENT 0/20 px)",
         "r3": "pass (BP-ANAT-SPENT ΔE 0)",
@@ -5104,7 +5097,7 @@
       {
         "id": "BP-ANAT-TBAR",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "pass (BP-ANAT-TBAR 0/2 px)",
         "r3": "pass (BP-ANAT-TBAR ΔE 0)",
@@ -5117,7 +5110,7 @@
       {
         "id": "BP-ANAT-TBAR",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "pass (BP-ANAT-TBAR 0/2 px)",
         "r3": "pass (BP-ANAT-TBAR ΔE 0)",
@@ -5130,7 +5123,7 @@
       {
         "id": "BP-ANAT-USING",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-ANAT-USING 0/23 px)",
         "r3": "pass (BP-ANAT-USING ΔE 0)",
@@ -5143,7 +5136,7 @@
       {
         "id": "BP-ANAT-USING",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-ANAT-USING 0/23 px)",
         "r3": "pass (BP-ANAT-USING ΔE 0)",
@@ -5156,7 +5149,7 @@
       {
         "id": "BP-APP-L",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-APP-L 0/18 px)",
         "r3": "pass (BP-APP-L ΔE 0)",
@@ -5169,7 +5162,7 @@
       {
         "id": "BP-APP-L",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-APP-L 0/18 px)",
         "r3": "pass (BP-APP-L ΔE 0)",
@@ -5182,7 +5175,7 @@
       {
         "id": "BP-APP-M",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "review (BP-APP-M ΔE 4.78)",
@@ -5195,12 +5188,12 @@
       {
         "id": "BP-APP-M",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "pass (BP-APP-M ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.09564215788740245,
+        "r5": 0.09572054417502787,
         "ref": true,
         "app": true,
         "diff": true
@@ -5208,7 +5201,7 @@
       {
         "id": "BP-APP-R",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-APP-R 0/18 px)",
         "r3": "review (BP-APP-R ΔE 3.19)",
@@ -5221,7 +5214,7 @@
       {
         "id": "BP-APP-R",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-APP-R 0/18 px)",
         "r3": "review (BP-APP-R ΔE 3.65)",

@@ -1,7 +1,14 @@
 {
   "id": "BP-ANAT-L",
   "theme": "light",
-  "verdict": "fail",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0002",
+    "checks": [
+      "r1",
+      "r2"
+    ]
+  },
   "r1": {
     "verdict": "fail",
     "frame": {
@@ -461,8 +468,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.0876376953125,
-    "diffPixels": 89741,
+    "ratio": 0.0876728515625,
+    "diffPixels": 89777,
     "total": 1024000,
     "sizeMismatch": {
       "a": [
