@@ -1,0 +1,555 @@
+{
+  "version": "spec-v1.0",
+  "source": "11-fidelity §11.4.4 (starting table); tolerance: exact for computed CSS, ±0.5 px for boxes",
+  "notes": "expect = the machine form of expected (computed-style serialisation). null = prose only; the row is measured by hand-written code in test/fidelity/spec-values.ts when its milestone builds it. Unlisted pending milestones (SV-28) default to M14 (11 §11.12 item 8: all rows).",
+  "rows": [
+    {
+      "id": "SV-01",
+      "component": "user bubble",
+      "testid": "bubble-me",
+      "property": "border-radius, non-tail corners",
+      "expected": "18px",
+      "source": "02 F4 `--r-bubble`; 04 §1.4",
+      "pending": "M2",
+      "expect": null
+    },
+    {
+      "id": "SV-02",
+      "component": "user bubble, last of a run",
+      "testid": "bubble-me",
+      "property": "border-bottom-right-radius (tail)",
+      "expected": "6px",
+      "source": "04 §1.4",
+      "pending": "M2",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "border-bottom-right-radius": "6px"
+        }
+      }
+    },
+    {
+      "id": "SV-03",
+      "component": "foo bubble, last of a run",
+      "testid": null,
+      "property": "border-bottom-left-radius (tail)",
+      "expected": "6px",
+      "source": "04 §1.4",
+      "pending": "M2",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "border-bottom-left-radius": "6px"
+        }
+      }
+    },
+    {
+      "id": "SV-04",
+      "component": "user bubble",
+      "testid": "bubble-me",
+      "property": "background (light / dark)",
+      "expected": "#0B0B10 / #F1F1F5",
+      "source": "02 F2 `--bubble-me`",
+      "pending": "M2",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "background-color": {
+            "light": "rgb(11, 11, 16)",
+            "dark": "rgb(241, 241, 245)"
+          }
+        },
+        "themed": true
+      }
+    },
+    {
+      "id": "SV-05",
+      "component": "foo bubble",
+      "testid": null,
+      "property": "background (light / dark)",
+      "expected": "#F0F0F4 / #202028",
+      "source": "02 F2 `--bubble-foo`",
+      "pending": "M2",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "background-color": {
+            "light": "rgb(240, 240, 244)",
+            "dark": "rgb(32, 32, 40)"
+          }
+        },
+        "themed": true
+      }
+    },
+    {
+      "id": "SV-06",
+      "component": "message text",
+      "testid": null,
+      "property": "font-size / line-height / weight",
+      "expected": "15px / 22px / 400",
+      "source": "02 F1 `--t-body`",
+      "pending": "M2",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "font-size": "15px",
+          "line-height": "22px",
+          "font-weight": "400"
+        }
+      }
+    },
+    {
+      "id": "SV-07",
+      "component": "message text tagged lang=\"hi\" or \"pa\"",
+      "testid": null,
+      "property": "line-height",
+      "expected": "24px",
+      "source": "02 F1 `--t-body-indic`; 04-2 §26",
+      "pending": "M2",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "line-height": "24px"
+        }
+      }
+    },
+    {
+      "id": "SV-08",
+      "component": "bubble",
+      "testid": null,
+      "property": "max-width",
+      "expected": "72 % of column, ≤ 620px (rich ≤ 680px)",
+      "source": "02 F5 `--bubble-max`",
+      "pending": "M2",
+      "expect": null
+    },
+    {
+      "id": "SV-09",
+      "component": "message column",
+      "testid": null,
+      "property": "max-width",
+      "expected": "760px",
+      "source": "02 F5 `--column-max`",
+      "pending": "M2",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "max-width": "760px"
+        }
+      }
+    },
+    {
+      "id": "SV-10",
+      "component": "composer pill",
+      "testid": "composer-field",
+      "property": "min-height (one line)",
+      "expected": "46px",
+      "source": "04-2 §20 (12 + 22 + 12)",
+      "pending": "M2",
+      "expect": {
+        "kind": "box",
+        "height": 46
+      }
+    },
+    {
+      "id": "SV-11",
+      "component": "composer pill",
+      "testid": "composer-field",
+      "property": "border-radius",
+      "expected": "24px",
+      "source": "02 F4 `--r-composer`",
+      "pending": "M2",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "border-top-left-radius": "24px",
+          "border-top-right-radius": "24px",
+          "border-bottom-left-radius": "24px",
+          "border-bottom-right-radius": "24px"
+        }
+      }
+    },
+    {
+      "id": "SV-12",
+      "component": "composer round buttons",
+      "testid": null,
+      "property": "width × height",
+      "expected": "36 × 36px",
+      "source": "02 F5 `--btn-h`",
+      "pending": "M2",
+      "expect": {
+        "kind": "box",
+        "width": 36,
+        "height": 36
+      }
+    },
+    {
+      "id": "SV-13",
+      "component": "chat row",
+      "testid": "chatlist-row",
+      "property": "height",
+      "expected": "72px",
+      "source": "02 F5 `--row-chat`",
+      "pending": "M1",
+      "expect": {
+        "kind": "box",
+        "height": 72
+      }
+    },
+    {
+      "id": "SV-14",
+      "component": "chat row avatar",
+      "testid": null,
+      "property": "width × height",
+      "expected": "48 × 48px",
+      "source": "02 F5 `--avatar-list`",
+      "pending": "M1",
+      "expect": {
+        "kind": "box",
+        "width": 48,
+        "height": 48
+      }
+    },
+    {
+      "id": "SV-15",
+      "component": "left header and chat header",
+      "testid": null,
+      "property": "height; top and bottom y equal",
+      "expected": "60px; aligned",
+      "source": "02 F5 `--header-h`",
+      "pending": "M1",
+      "expect": null
+    },
+    {
+      "id": "SV-16",
+      "component": "title bar",
+      "testid": "titlebar-strip",
+      "property": "height",
+      "expected": "32px",
+      "source": "02 F5 `--titlebar-h`",
+      "expect": {
+        "kind": "box",
+        "height": 32
+      }
+    },
+    {
+      "id": "SV-17",
+      "component": "left shell",
+      "testid": null,
+      "property": "default width",
+      "expected": "340px (resizable 300–460)",
+      "source": "02 F5 `--sidebar-w`; 08-0 §A.1 `window.sidebarWidth` default 340 (300–460), resolved by X-91",
+      "pending": "M1",
+      "expect": {
+        "kind": "box",
+        "width": 340
+      }
+    },
+    {
+      "id": "SV-18",
+      "component": "right shell",
+      "testid": null,
+      "property": "width",
+      "expected": "340px",
+      "source": "02 F5 `--panel-w`",
+      "pending": "M1",
+      "expect": {
+        "kind": "box",
+        "width": 340
+      }
+    },
+    {
+      "id": "SV-19",
+      "component": "card (standard / wide)",
+      "testid": null,
+      "property": "width",
+      "expected": "440px / 600px",
+      "source": "02 F5 `--card-w`, `--card-w-wide`",
+      "pending": "M4",
+      "expect": null
+    },
+    {
+      "id": "SV-20",
+      "component": "card",
+      "testid": null,
+      "property": "border-radius",
+      "expected": "16px",
+      "source": "02 F4 `--r-lg`",
+      "pending": "M4",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "border-top-left-radius": "16px",
+          "border-top-right-radius": "16px",
+          "border-bottom-left-radius": "16px",
+          "border-bottom-right-radius": "16px"
+        }
+      }
+    },
+    {
+      "id": "SV-21",
+      "component": "every text button",
+      "testid": null,
+      "property": "border-radius",
+      "expected": "999px",
+      "source": "X-01 `--r-full`",
+      "pending": "M5",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "border-top-left-radius": "999px"
+        }
+      }
+    },
+    {
+      "id": "SV-22",
+      "component": "primary button in cards and dialogs",
+      "testid": null,
+      "property": "height",
+      "expected": "40px",
+      "source": "02 F5 `--btn-h`",
+      "pending": "M5",
+      "expect": {
+        "kind": "box",
+        "height": 40
+      }
+    },
+    {
+      "id": "SV-23",
+      "component": "menu item",
+      "testid": null,
+      "property": "min-height",
+      "expected": "40px",
+      "source": "X-26",
+      "pending": "M1",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "min-height": "40px"
+        }
+      }
+    },
+    {
+      "id": "SV-24",
+      "component": "search / find field",
+      "testid": null,
+      "property": "height",
+      "expected": "36px",
+      "source": "02 F5 `--field-h`",
+      "pending": "M1",
+      "expect": {
+        "kind": "box",
+        "height": 36
+      }
+    },
+    {
+      "id": "SV-25",
+      "component": "every clickable thing",
+      "testid": null,
+      "property": "hit area",
+      "expected": "≥ 40 × 40px",
+      "source": "02 F5; U-5",
+      "pending": "M1",
+      "expect": {
+        "kind": "min-box",
+        "width": 40,
+        "height": 40
+      }
+    },
+    {
+      "id": "SV-26",
+      "component": "timestamp, placeholder",
+      "testid": null,
+      "property": "colour (light / dark)",
+      "expected": "#696975 / #8E8E9A",
+      "source": "X-24 `--fg-3`",
+      "pending": "M2",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "color": {
+            "light": "rgb(105, 105, 117)",
+            "dark": "rgb(142, 142, 154)"
+          }
+        },
+        "themed": true
+      }
+    },
+    {
+      "id": "SV-27",
+      "component": "text field, checkbox, toggle-off edge",
+      "testid": null,
+      "property": "border colour (light / dark)",
+      "expected": "#85858F / #70707C",
+      "source": "X-25 `--line-input`",
+      "pending": "M5",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "border-top-color": {
+            "light": "rgb(133, 133, 143)",
+            "dark": "rgb(112, 112, 124)"
+          }
+        },
+        "themed": true
+      }
+    },
+    {
+      "id": "SV-28",
+      "component": "primary button",
+      "testid": null,
+      "property": "background (light / dark)",
+      "expected": "#2B3FD6 / #8C9BFF",
+      "source": "02 F2 `--accent`",
+      "pending": "M14",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "background-color": {
+            "light": "rgb(43, 63, 214)",
+            "dark": "rgb(140, 155, 255)"
+          }
+        },
+        "themed": true
+      }
+    },
+    {
+      "id": "SV-29",
+      "component": "main shell",
+      "testid": null,
+      "property": "background (light / dark)",
+      "expected": "#FFFFFF / #0D0D11",
+      "source": "02 F2 `--bg-app`",
+      "pending": "M1",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "background-color": {
+            "light": "rgb(255, 255, 255)",
+            "dark": "rgb(13, 13, 17)"
+          }
+        },
+        "themed": true
+      }
+    },
+    {
+      "id": "SV-30",
+      "component": "hover colour change",
+      "testid": null,
+      "property": "transition-duration",
+      "expected": "83ms",
+      "source": "02 F7 `--m-fast`",
+      "pending": "M2",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "transition-duration": "0.083s"
+        }
+      }
+    },
+    {
+      "id": "SV-31",
+      "component": "card state change",
+      "testid": null,
+      "property": "transition-duration",
+      "expected": "167ms",
+      "source": "02 F7 `--m-card`",
+      "pending": "M4",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "transition-duration": "0.167s"
+        }
+      }
+    },
+    {
+      "id": "SV-32",
+      "component": "focus ring",
+      "testid": null,
+      "property": "outline",
+      "expected": "2px `--focus-outer` + 1px `--focus-inner`",
+      "source": "02 F8; U-2",
+      "pending": "M1",
+      "expect": null
+    },
+    {
+      "id": "SV-33",
+      "component": "toggle track",
+      "testid": null,
+      "property": "width × height",
+      "expected": "40 × 20px",
+      "source": "02 F5 `--toggle-w/-h`",
+      "pending": "M7",
+      "expect": {
+        "kind": "box",
+        "width": 40,
+        "height": 20
+      }
+    },
+    {
+      "id": "SV-34",
+      "component": "undo bar",
+      "testid": null,
+      "property": "height",
+      "expected": "48px",
+      "source": "§F21.3 `--undo-h`; X-32",
+      "pending": "M4",
+      "expect": {
+        "kind": "box",
+        "height": 48
+      }
+    },
+    {
+      "id": "SV-35",
+      "component": "dialog small / medium / large",
+      "testid": null,
+      "property": "width",
+      "expected": "400 / 520 / 720px",
+      "source": "02 F5 `--dialog-*`",
+      "pending": "M10",
+      "expect": null
+    },
+    {
+      "id": "SV-36",
+      "component": "Search overlay (Ctrl+K)",
+      "testid": null,
+      "property": "width",
+      "expected": "640px",
+      "source": "02 F5 `--palette-w`",
+      "pending": "M13",
+      "expect": {
+        "kind": "box",
+        "width": 640
+      }
+    },
+    {
+      "id": "SV-37",
+      "component": "window first open",
+      "testid": null,
+      "property": "content size",
+      "expected": "1280 × 800 (clamped to 90 % of work area)",
+      "source": "X-14; AT-001",
+      "expect": {
+        "kind": "window-content",
+        "width": 1280,
+        "height": 800,
+        "smallAreaShare": 0.9,
+        "fitsMargin": 1.05
+      }
+    },
+    {
+      "id": "SV-38",
+      "component": "base styles",
+      "testid": null,
+      "property": "`font-synthesis`",
+      "expected": "none",
+      "source": "X-31",
+      "expect": {
+        "kind": "css",
+        "props": {
+          "font-synthesis": "none"
+        }
+      }
+    }
+  ]
+}
