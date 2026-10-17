@@ -1,6 +1,6 @@
 /* Spec: 03-shell-2 §3.6.4 (column --column-max centred; side padding --s5 when the main shell is ≥ 900 wide, else --s3;
    top/bottom --s3 are the virtualiser's padding), 02-2 §F13.3 (overscroll contain), §3.6.3 match highlight (--warn-soft,
-   current match 2px --accent outline, --r-xs). The placeholder row stands in for 04's bubbles until M2. */
+   current match --focus-outer-w --accent outline, --r-xs). The placeholder row stands in for 04's bubbles until M2. */
 .area {
   position: relative;
   min-height: 0;
@@ -60,4 +60,15 @@
 }
 .match[data-current] {
   outline: var(--focus-outer-w) solid var(--accent);
+}
+/* §3.7.3.1: the revealed checklist card flashes --accent-soft for 2 s (the timer is JS; reduced motion: static, no fade). */
+.row[data-flash] {
+  background: var(--accent-soft);
+  border-radius: var(--r-sm);
+  transition: background var(--m-slow) var(--ease-out);
+}
+@media (prefers-reduced-motion: reduce) {
+  .row[data-flash] {
+    transition: none;
+  }
 }

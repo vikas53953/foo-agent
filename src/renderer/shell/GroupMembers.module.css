@@ -1,0 +1,21 @@
+/* Spec: 03-shell-2 §3.7.4 (member rows: 26 avatar + name; rows share the Doing-now rhythm, --s1 gap, --t-small --fg-1). */
+.list {
+  display: grid;
+  gap: var(--s0);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--s7);
+}
+.name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font: var(--t-small);
+  color: var(--fg-1);
+}

@@ -1,0 +1,35 @@
+/* Spec: 03-shell-2 §3.7.3.3 (fact tile: 1px --line, radius --r-md, padding --s1 --s2, gap 2px --s-1; text --t-small --fg-1;
+   meta --t-caption --fg-3 with an "Edit" text link --accent). */
+.list {
+  display: grid;
+  gap: var(--s1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.fact {
+  display: grid;
+  gap: var(--s-1);
+  padding: var(--s1) var(--s2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+.text {
+  font: var(--t-small);
+  color: var(--fg-1);
+  overflow-wrap: anywhere;
+}
+.meta {
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+.edit {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--accent);
+}
+.edit:hover {
+  text-decoration: underline;
+}

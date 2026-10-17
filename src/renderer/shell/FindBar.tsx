@@ -27,11 +27,14 @@ export function FindProvider({ chatId, open, children }: { chatId: string; open:
   const messages = useMemo<MessageRow[]>(() => (chat ? chat.ids.map((id) => chat.byId[id]!) : []), [chat]);
   const matches = useMemo(() => (open ? findMatches(messages, query) : []), [messages, query, open]);
 
-  useEffect(() => setIndex(matches.length ? matches.length - 1 : -1), [matches.length, query]);
-  useEffect(() => {
-    if (!open) setQuery('');
-  }, [open]);
-  useEffect(() => setQuery(''), [chatId]);
+  // Derived during render (no effect): closing clears the query; a new query or match count puts the cursor on the newest
+  // match. MainShell keys the provider by chat, so a chat switch starts fresh.
+  const [seen, setSeen] = useState({ open, query, n: matches.length });
+  if (seen.open !== open || seen.query !== query || seen.n !== matches.length) {
+    setSeen({ open, query, n: matches.length });
+    if (!open && query) setQuery('');
+    setIndex(matches.length ? matches.length - 1 : -1);
+  }
 
   const value = useMemo<FindState>(
     () => ({ open, query, matches, index, setQuery, step: (dir) => setIndex((i) => stepMatch(i, matches.length, dir)) }),

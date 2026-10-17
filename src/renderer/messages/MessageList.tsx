@@ -30,6 +30,7 @@ import { DateSeparator, StickyDate } from './DateSeparator';
 import { JumpToLatest } from './JumpToLatest';
 import { LoadOlder, StartOfChat } from './LoadOlder';
 import styles from './MessageList.module.css';
+import { REVEAL_EVENT, takeReveal } from './reveal';
 import { buildRows, estimateRow, firstUnreadId, type VRow } from './rows';
 import { nearTop, showJump, unreadOpenTop } from './stickToBottom';
 import { UnreadDivider } from './UnreadDivider';
@@ -221,6 +222,31 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     if (i >= 0) v.scrollToIndex(i, { align: 'center' });
   }, [current, rows, v]);
 
+  // Doing-now row click (§3.7.3.1): scroll to the job's checklist card and flash it for 2 s.
+  const [flashId, setFlashId] = useState<string | null>(null);
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const reveal = () => {
+      const jobId = takeReveal(chat.id);
+      if (!jobId) return;
+      const isCard = (r: VRow) => r.kind === 'message' && r.message.jobId === jobId && r.message.kind === 'card';
+      const checklist = rows.findIndex((r) => isCard(r) && r.kind === 'message' && cards[r.message.cardId ?? '']?.type === 'checklist');
+      const i = checklist >= 0 ? checklist : rows.findIndex(isCard);
+      const r = rows[i];
+      if (!r || r.kind !== 'message') return;
+      v.scrollToIndex(i, { align: 'center' });
+      setFlashId(r.message.id);
+      clearTimeout(timer);
+      timer = setTimeout(() => setFlashId(null), motion['dur-confirm']);
+    };
+    reveal();
+    window.addEventListener(REVEAL_EVENT, reveal);
+    return () => {
+      window.removeEventListener(REVEAL_EVENT, reveal);
+      clearTimeout(timer);
+    };
+  }, [chat.id, rows, cards, v]);
+
   const jump = () => {
     stick.resetCount();
     const el = scrollRef.current;
@@ -258,6 +284,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
                 style={{ transform: `translateY(${item.start}px)` }}
                 role={r.kind === 'message' ? 'listitem' : 'none'}
                 {...(r.kind === 'message' ? { 'data-message-id': r.message.id, tabIndex: -1 } : {})}
+                data-flash={(r.kind === 'message' && r.message.id === flashId) || undefined}
               >
                 <Row row={r} index={item.index} cards={cards} />
               </div>

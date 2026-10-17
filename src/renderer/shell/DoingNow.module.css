@@ -1,0 +1,80 @@
+/* Spec: 03-shell-2 §3.7.3.1 (row min-height 48 --s8, radius --r-sm, padding --s1, hover --bg-hover; glyph 16 · gap --s1 ·
+   two lines · optional actions shown on hover or row focus; line 1 --t-small --fg-1 with ellipsis, the "{chat} · " prefix
+   --fg-2; line 2 --t-caption --fg-2, NEEDS YOU --warn; glyph tones per state). */
+.list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--s8);
+  padding: var(--s1);
+  border-radius: var(--r-sm);
+  cursor: default;
+}
+.row:hover {
+  background: var(--bg-hover);
+}
+.glyph {
+  flex: none;
+  display: inline-flex;
+  align-self: flex-start;
+  margin-top: var(--s-1);
+}
+.glyph[data-tone='accent'] {
+  color: var(--accent);
+}
+.glyph[data-tone='fg3'] {
+  color: var(--fg-3);
+}
+.glyph[data-tone='fg2'] {
+  color: var(--fg-2);
+}
+.glyph[data-tone='warn'] {
+  color: var(--warn);
+}
+.glyph[data-tone='ok'] {
+  color: var(--ok);
+}
+.glyph[data-tone='bad'] {
+  color: var(--bad);
+}
+.lines {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+}
+.line1 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font: var(--t-small);
+  color: var(--fg-1);
+}
+.prefix {
+  color: var(--fg-2);
+}
+.line2 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
+.line2[data-tone='warn'] {
+  color: var(--warn);
+}
+/* Watch live / Stop: in the layout always (keyboard reachable), visible on hover or focus within the row. */
+.action {
+  flex: none;
+  opacity: 0;
+}
+.row:hover .action,
+.row:focus-within .action,
+.action[data-always] {
+  opacity: 1;
+}

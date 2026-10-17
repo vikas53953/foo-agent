@@ -32,6 +32,7 @@ import {
   type ChatRow,
   type JobRow,
   type MenuItem,
+  type View,
 } from '../_m1b-stubs';
 import styles from './ChatHeader.module.css';
 import { hasLiveBrowser } from './doingNow';
@@ -42,7 +43,7 @@ import { useRightShell } from './useRightShell';
 /** Below this header width the Watch live button keeps only its icon (03-shell-2 §3.10.4). */
 const COMPACT_HEADER_W = 440;
 
-export function profileView(chat: ChatRow) {
+export function profileView(chat: ChatRow): View {
   if (chat.kind === 'group') return { kind: 'screen' as const, id: 'group-profile', params: { chatId: chat.id } };
   if (chat.kind === 'helper' && chat.helperId) return { kind: 'screen' as const, id: 'helper-profile', params: { helperId: chat.helperId } };
   return { kind: 'screen' as const, id: 'foo-profile' };

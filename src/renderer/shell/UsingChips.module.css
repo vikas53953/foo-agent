@@ -1,0 +1,39 @@
+/* Spec: 03-shell-2 §3.7.3.2 (chip height 24 --s5, padding 0 --s1, radius --r-full, fill --bg-sunken, 1px --line, name
+   --t-caption --fg-1, gap --s0; chips wrap with --s0 gaps; in-use dot --s1 --accent; empty line --t-caption --fg-3). */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s0);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s0);
+  min-height: var(--s5);
+  padding: 0 var(--s1);
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  background: var(--bg-sunken);
+  font: var(--t-caption);
+  color: var(--fg-1);
+}
+.chip:hover {
+  background: var(--bg-hover);
+}
+.dot {
+  width: var(--s1);
+  height: var(--s1);
+  border-radius: var(--r-full);
+  background: var(--accent);
+}
+.name {
+  white-space: nowrap;
+}
+.empty {
+  margin: 0;
+  font: var(--t-caption);
+  color: var(--fg-3);
+}

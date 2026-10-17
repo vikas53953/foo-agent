@@ -15,6 +15,7 @@ import {
   type Ref,
 } from 'react';
 import { bp } from '../shared/tokens';
+import './_m1b-stubs.css';
 
 // ───────────────────────── 08-0 §B types → src/shared/types.ts ─────────────────────────
 
@@ -408,6 +409,14 @@ export function putCards(rows: CardRow[]): void {
     return { ...s, cards: { byId } };
   });
 }
+/** Builder A's test ids that F6 and the Esc ladder look for; at merge these become `TID.bannerStrip` etc. */
+export const A_TID = {
+  bannerStrip: 'banner-strip',
+  bannerAction: 'banner-action',
+  sidebar: 'sidebar',
+  chatlistRow: 'chatlist-row',
+  composerField: 'composer-field',
+} as const;
 /** Left-shell search field (03-shell-1 §3.4.3) for the Esc ladder rung "clear the search field". */
 export const chatSearch = { hasText: () => false, clear: () => undefined as void };
 
@@ -524,25 +533,22 @@ export function useNow(everyMs = 60_000): number {
 
 // ───────────────────────── a11y/useRovingTabIndex.ts (02-3 §F25.3) ─────────────────────────
 
-/** One item tabIndex 0, the rest −1; ↑/↓ move; Home/End jump. Items carry `data-roving-index`. */
+/** One item tabIndex 0, the rest −1; ↑/↓ move; Home/End jump. Items carry `data-roving-index`; the container takes onKeyDown. */
 export function useRovingTabIndex(count: number) {
-  const ref = useRef<HTMLElement | null>(null);
   const [current, setCurrent] = useState(0);
   const active = Math.min(current, Math.max(0, count - 1));
-  const focus = (i: number) => {
-    setCurrent(i);
-    requestAnimationFrame(() => ref.current?.querySelector<HTMLElement>(`[data-roving-index="${i}"]`)?.focus());
-  };
-  const onKeyDown = (e: { key: string; preventDefault(): void; target: EventTarget | null }) => {
+  const onKeyDown = (e: { key: string; preventDefault(): void; target: EventTarget | null; currentTarget: EventTarget | null }) => {
     if (!(e.target as HTMLElement | null)?.hasAttribute?.('data-roving-index')) return;
     const next =
       e.key === 'ArrowDown' ? active + 1 : e.key === 'ArrowUp' ? active - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? count - 1 : null;
     if (next === null) return;
     e.preventDefault();
-    focus(Math.max(0, Math.min(count - 1, next)));
+    const i = Math.max(0, Math.min(count - 1, next));
+    setCurrent(i);
+    (e.currentTarget as HTMLElement | null)?.querySelector<HTMLElement>(`[data-roving-index="${i}"]`)?.focus();
   };
   const itemProps = (i: number) => ({ 'data-roving-index': i, tabIndex: i === active ? 0 : -1, onFocus: () => setCurrent(i) });
-  return { ref, active, onKeyDown, itemProps, focus };
+  return { active, onKeyDown, itemProps };
 }
 
 // ───────────────────────── breakpoints → A's shell grid (03-shell-1 §3.1.3) ─────────────────────────
@@ -746,10 +752,8 @@ export interface MenuItem {
   submenu?: MenuItem[];
 }
 export function Menu(props: { open: boolean; label: string; items: MenuItem[]; onClose: () => void; anchorRight?: boolean }): ReactNode {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (props.open) ref.current?.querySelector<HTMLElement>('[role="menuitem"]')?.focus();
-  }, [props.open]);
+  // A stable callback ref: focuses the first item once, when the menu mounts.
+  const ref = useCallback((el: HTMLDivElement | null) => el?.querySelector<HTMLElement>('[role="menuitem"]')?.focus(), []);
   if (!props.open) return null;
   const flat = props.items.flatMap((i) => (i.submenu ? [i, ...i.submenu.map((s) => ({ ...s, key: `${i.key}.${s.key}`, sub: true }))] : [i]));
   return createElement(
@@ -759,8 +763,8 @@ export function Menu(props: { open: boolean; label: string; items: MenuItem[]; o
       role: 'menu',
       'aria-label': props.label,
       className: 'm1b-menu',
-      onKeyDown: (e: KeyboardEvent & { stopPropagation(): void; preventDefault(): void; key: string }) => {
-        const items = Array.from(ref.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') ?? []);
+      onKeyDown: (e: KeyboardEvent & { stopPropagation(): void; preventDefault(): void; key: string; currentTarget: EventTarget }) => {
+        const items = Array.from((e.currentTarget as unknown as HTMLElement).querySelectorAll<HTMLElement>('[role="menuitem"]'));
         const i = items.indexOf(document.activeElement as HTMLElement);
         if (e.key === 'Escape') {
           e.stopPropagation();

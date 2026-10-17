@@ -1,0 +1,33 @@
+/* Spec: 03-shell-2 §3.7.3.4 (label --t-small --fg-2 left; amount --t-small --fg-1 tabular-nums right; meter under it; 80–99 %
+   amount --warn; ≥ 100 % "Cap reached" --bad; plan usage line --t-caption --fg-2). */
+.row {
+  display: grid;
+  gap: var(--s0);
+  padding-bottom: var(--s1);
+}
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s1);
+}
+.label {
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.amount {
+  font: var(--t-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-1);
+  text-align: right;
+}
+.amount[data-tone='warn'] {
+  color: var(--warn);
+}
+.amount[data-tone='bad'] {
+  color: var(--bad);
+}
+.sub {
+  font: var(--t-caption);
+  color: var(--fg-2);
+}

@@ -14,12 +14,9 @@ export function useChatOpen(chatId: string): { state: OpenState; retry: () => vo
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
-    if (cached()) {
-      setState('ready');
-      return;
-    }
+    // MainShell keys ChatView by chat id, so a cached chat was 'ready' from the first render.
+    if (cached() && attempt === 0) return;
     let live = true;
-    setState('waiting');
     const slow = setTimeout(() => live && setState((s) => (s === 'waiting' ? 'skeleton' : s)), motion['delay-skeleton-chat']);
     invoke('chat:open', { chatId })
       .then((r) => {
@@ -39,6 +36,9 @@ export function useChatOpen(chatId: string): { state: OpenState; retry: () => vo
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatId, attempt]);
 
-  const retry = useCallback(() => setAttempt((a) => a + 1), []);
+  const retry = useCallback(() => {
+    setState('waiting');
+    setAttempt((a) => a + 1);
+  }, []);
   return { state, retry };
 }
