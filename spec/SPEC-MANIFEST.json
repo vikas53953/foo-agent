@@ -47,10 +47,14 @@
     "constitution/research/living-face.md": "395a6e28c2c14711728b75d8ea7fa99e80ee01d35503f6998a62a9196c422255",
     "constitution/research/web-tools-sources.md": "ca9921904775e0a7714af5d0a1e7969eab845a7438438da88637a145093b0a7e",
     "constitution/research/web-tools.md": "97f0fc82cc594e3c0154320c7ee2f6b10d82abd8608f1257bbb01b91ab2fc676",
+    "refs/bp/foo-blueprint-v2.html": "1290013f8b16ed0ed9f4654bd2f37af500e0d707e0a7b815a1a2f0258b89d6ea",
     "refs/look-book/assets/L-1-memory.svg": "698bcf66f7c4fa78bd6e1aa8919236e9f8c99eb34a09a174461ad2a8e8571363",
     "refs/look-book/assets/L-2-routines.svg": "4f376e9a1ce099aa987c1e0ad87bb6236e4306beaf9a64ca7162adf452cc97d1",
     "refs/look-book/assets/L-3-activity.svg": "66c7ccc417818dc6387c02e475633a077e670ae8ec730b2302036f326fc40de9",
     "refs/look-book/assets/logo-face.svg": "67296b64ddbc603bc1f1c71744daae691cbb7edaa88fcc92860e6ae3fbcf0ff6",
-    "refs/look-book/foo-look-book.html": "300db914e4fc4213968af755e940774ce12acebab32853189e1480cafc7d8bfa"
+    "refs/look-book/foo-look-book.html": "300db914e4fc4213968af755e940774ce12acebab32853189e1480cafc7d8bfa",
+    "refs/ux/foo-ux-walkthrough.html": "d5eb3d4a42bce526548be701afaf4585a843e3098af2200d8f0a2c7535778f87",
+    "spec-values.json": "738c6e33080182cb2763b892411fb74959135bf23655819ef7f2b9c17d44a234",
+    "trace.csv": "0c3b8be9d167f04e42c1db77ca1540e44c5b417484a49b41c0f3c116ab6751fd"
   }
 }

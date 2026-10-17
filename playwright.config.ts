@@ -1,8 +1,22 @@
+// Spec: foo-plan §4 (E2E with Playwright for Electron); 11-fidelity §11.2.4 (Tier B settings, no retries for pictures),
+// FID-06 (snapshots are never updated outside scripts/golden-bless.ts).
 import { defineConfig } from '@playwright/test';
+
+const blessing = process.env.FOO_GOLDEN_BLESS === '1';
+const updating = process.argv.some((a) => a === '-u' || a.startsWith('--update-snapshots'));
+if (updating && !blessing) {
+  throw new Error('FID-06: --update-snapshots is blocked. Baselines change only through scripts/golden-bless.ts with a CR id.');
+}
 
 export default defineConfig({
   testDir: 'test/e2e',
   timeout: 60_000,
   workers: 1,
-  reporter: [['list'], ['html', { open: 'never' }]],
+  retries: 0,
+  reporter: [['list'], ['html', { open: 'never' }], ['json', { outputFile: 'test-results/e2e.json' }]],
+  snapshotPathTemplate: 'golden/app/{arg}{ext}',
+  updateSnapshots: blessing ? 'all' : 'none',
+  expect: {
+    toHaveScreenshot: { threshold: 0.1, maxDiffPixelRatio: 0.001, animations: 'disabled', caret: 'hide', scale: 'css' },
+  },
 });

@@ -34,3 +34,46 @@
 ### Spec snapshot
 
 `spec/` is a frozen copy of the constitution and Look Book assets taken 2026-10-17 (spec-v1.0, `SPEC-MANIFEST.json`). Later edits in the project files (for example the acceptance tests being finished in parallel) reach the repo through a CR (`docs/cr/`) that refreshes the copy and the manifest.
+
+## M0b (2026-10-17) · fidelity harness
+
+### Built
+
+- **Freeze completion (CR-0001):** `spec/refs/bp/foo-blueprint-v2.html` (the v2.1 file, published at the v2 link) and `spec/refs/ux/foo-ux-walkthrough.html` byte-for-byte; `spec/spec-values.json` (SV-01…SV-38); `spec/trace.csv` skeleton; manifest regenerated with `spec-verify --write`. No spec text changed.
+- **Golden manifest:** `scripts/golden-manifest.ts` reads `window.__CH` / `window.__STEPS` from the frozen walkthrough in a browser: **245 steps in 25 chapters, verified** (per-chapter counts equal the §11.2.1 table). The Blueprint's own UX link card says "241 screens"; the walkthrough file is the source (UX-30), so 245 stands. 20 BP ids for M1.
+- **Reference rendering:** `scripts/golden-render.ts` (Electron's Chromium on the golden lane; Playwright Chromium only for local smoke), `--ids/--milestone/--family`, `--determinism` (FID-03), `golden/runner.json` (FID-04). Smoked locally on BP-APP-L, BP-ANAT-TBAR, BP-ANAT-M, all 20 M1 ids, UX-08-01 and UX-13-07: 1280×800 frames, two renders byte-identical (Linux fonts, so the pixels are not the golden ones).
+- **Test hooks (08-3 §22):** `src/shared/clock.ts`, `src/main/deps.ts`, `src/main/ipc/guard.ts`, `src/main/test/testHooks.ts`, `src/preload/preloadTest.ts`.
+- **Tier R** (`scripts/tier-r.ts`, `scripts/golden/pixels.ts`), **Tier B** (`test/fidelity/tier-b.ts`, `playwright.config.ts`), **bless** (`scripts/golden-bless.ts`, `.github/workflows/golden-bless.yml`), **guards** (`scripts/fid-guard.ts`, `scripts/trace-check.ts`, `test/fidelity/spec-values.ts`), **report** (`scripts/fidelity-report.ts`), **golden lane** in `ci.yml` with `scripts/push-evidence.sh`.
+
+### Picks where the spec is silent (most conservative option)
+
+1. **BP ids for M1.** The Blueprint draws the shell once, `#win` at the default size (L). BP-APP-L/M/R = `#win .left/.mid/.right`; BP-ANAT-L = `#win`; the parts the plan names (shell frame, chat list, headers, right shell) are BP-ANAT-TBAR/LHEAD/SEARCH/CHIPS/LIST/ROW/LFOOT/MHEAD/RHEAD/DOING/USING/KNOW/SPENT. **The Blueprint draws no window at M, S or XS** (only the F11 breakpoint diagram): BP-ANAT-M/S/XS point at those diagram cells with `drawn: false`, so Tier R checks them by R1/R2 against the 03-shell-2 §3.10 wireframes and never by pixels.
+2. **Drawing vs written spec:** the Blueprint's `.win` is 1280 × **820** (32 title bar + content + border); 03-shell-1 §3.1 and SV-37 say 1280 × 800. The written spec wins (§11.2.7); BP-ANAT-L's manifest size is 1280×800, so R2 on that box will show the 20px difference until a CR fixes the drawing. Logged here, not in GAPS.md (owned by the Look Book thread).
+3. **Render engine:** Electron's own Chromium (via `_electron`, one window, `setViewportSize(1440×900)`, `--force-device-scale-factor=1`, GPU off, throwaway profile). **Network blocked** in both engines, so the Blueprint's Google-hosted Geist page font never loads and a render depends only on the frozen file and the runner.
+4. **Whole-pixel capture:** the UX `#frame` is pinned to the viewport origin (`position: fixed; left/top 0`) after `__go(i)`, so it captures exactly 1280×800 (the page centres it at a fractional y); Blueprint mocks are captured with a rounded clip of their box.
+5. **Masks:** only the §11.2.5 caption-buttons mask is pre-set (top-right 144×32, 03-shell-1 §3.2 fallback width) on every UX frame and on BP-ANAT-L/TBAR. Every other mask is added per step with the reviewer.
+6. **R3 colour** samples the fill: the most frequent colour of the 5×5 block at each anchor's centre (text-colour sampling arrives when the first step needs it). R2 verdict uses the worse of position and size: pass ±4/±2, review ≤ 8, fail beyond or missing.
+7. **`capture` kind** (`window`/`native`/`mixed`) is left `null` for UX steps in the manifest: it is set when the chapter's test is written.
+8. **UX milestones:** each chapter takes the milestone that completes it (11 §11.12 item 8); UX-23 (errors) is split over M4 and M11 with no milestone taking "all", so its steps have `milestone: null`.
+9. **SV rows:** `expect` holds the machine form (computed-style serialisation, e.g. 83ms → `0.083s`); prose-only rows (SV-01, 08, 15, 19, 32, 35) keep `expect: null` and are measured by hand-written code when built. SV-28 is pending **M14** (§11.12 item 8 lists it under no earlier milestone). Testids not given by the §11.4.4 table are not invented: the FID-14 runner locates those rows through its own `SELECTORS` map, filled by the milestone that builds the component.
+10. **trace.csv** has the §11.5.3 columns plus `Status` (`live`/`pending`) so M1 rows can be listed before their test files exist.
+11. **FID-02 / FID-06** (`scripts/fid-guard.ts`): a CR is cited as `CR-nnnn` anywhere in a PR commit message or the PR body and must exist as `docs/cr/CR-nnnn*.md` (CR-0000, the template, never counts). The spec also asks that the CR say "Approved by Vikas" with a DECISIONS row: **not enforced yet**, because CR-0001 itself is still pending Vikas and would block this PR; the guard prints the CR and the report lists its status under "What needs your yes". FID-06 flags added lines with `.skip/.only/.fixme/.todo`, `--update-snapshots`/`updateSnapshots`, `mask(s):` and threshold names. FID-19 checks every changed path matches an OWNERS.yml pattern (one owner today, so per-agent ownership is not distinguished).
+12. **Test hooks:** `test:seed` accepts `demo`, `perf`, `ux-world` (the generator name of `demo`, 08-3 §22.9) and replies `{ loaded: false, note }` until M1's generators exist. `test:theme` takes `light | dark | system` (`system` returns to the settings value). `window.__fooTest` lives in a separate test preload, because a sandboxed preload cannot require local files; production loads `preload.js`. Both test files are excluded from the package and the asar check now also greps for `test:clock`/`test:seed`. In FOO_TEST runs the main process clock is the fake clock at X-10.
+13. **Fidelity report:** milestone verdict is `FAIL` while any audit row is not DONE, any input is missing (reported as UNVERIFIABLE) or any check failed; this run's M1 report therefore says FAIL with "the milestone is not complete", which is the honest state. Reviewer signature is always `false` from the script; the reviewer signs it.
+14. **Golden lane milestone:** `FIDELITY_MILESTONE: M1` in `ci.yml` (this branch builds M1); bump it per milestone. Steps run with `continue-on-error` so the report and the evidence push always happen; a final step fails the job if any of them failed.
+15. **Evidence branch:** orphan `evidence`, `<branch>/<short-sha>/` + `<branch>/latest/` (report html/json, runner.json, determinism.json, the milestone's reference PNG+JSON, Tier R output, FID-14 results), pushed with `GITHUB_TOKEN` (`contents: write` on the golden job only), skipped for fork PRs, 5 retries on a push race.
+
+### Not verified here (no Windows, no Electron binary in this container)
+
+- The Electron render engine (`_electron` + `electron-host.mjs` + `setViewportSize`), the golden job, `push-evidence.sh` against GitHub (tested against a local bare repo), the test-hooks E2E, the FID-14 E2E (the runner itself was smoked in local Chromium), and `golden-bless.yml`. All run only on windows-latest.
+- Whether windows-latest has Segoe UI Variable is recorded by `golden/runner.json` on the first golden run; the pinned image id (FID-04) stays `null` until that is decided (§11.2.6).
+
+### Still deferred (reason · where it lands)
+
+- `copy.json` extraction, `copy-keys.map`, FID-07/09/10 runtime copy check · M1 runtime copy check.
+- `state-machines.json`, FID-16 table test, FID-17 random walks (`fast-check`) · M4.
+- Full `trace.csv` (every R1–R31, every AT, every UX step) and the per-R coverage rule · grows per milestone.
+- UX goldens: references are rendered and Tier R/Tier B wired per chapter as each chapter is built; UX-08-01 wiring sample needs the chat UI · M2.
+- `spec-v1.0` git tag: tag push returned 403 from this environment · owed by the spec keeper.
+- Stylelint half of FID-13; `spec/headings.json` heading index (FID-18 "every UX step names a § that exists", FID-20 "unknown §") · with the next CR that adds derived files.
+- Reference PNG hashes in `SPEC-MANIFEST.json` (§11.2.2 step 6): only once the golden runner is pinned and the references are blessed.

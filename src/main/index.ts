@@ -1,6 +1,11 @@
-// Spec: 08-1 §2.2 steps 1–5 (startup order); 09-windows §9.2 (identity), §9.5 (single instance); 02-3 §F28.1.
+// Spec: 08-1 §2.2 steps 1–5 (startup order); 09-windows §9.2 (identity), §9.5 (single instance); 02-3 §F28.1;
+// 08-3 §22.1–§22.2 (test runs: fake clock and test channels, loaded only when the build has them).
 import { app, BrowserWindow, nativeTheme } from 'electron';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { resolvePaths } from './data/paths';
+import { installTestDeps } from './deps';
+import { testHooksEnabled } from './ipc/guard';
 import { registerIpc } from './ipc/IpcRouter';
 import { SettingsStore } from './settings/Settings';
 import { openDb, type Db } from './store/db';
@@ -16,6 +21,17 @@ let mainWindow: BrowserWindow | null = null;
 let db: Db | null = null;
 
 const hidden = process.argv.includes('--hidden');
+
+/** FOO_TEST runs: fake clock at X-10 and the test:* channels. A packaged build has no test folder and runs without them. */
+async function loadTestHooks(settings: SettingsStore): Promise<void> {
+  const clock = installTestDeps();
+  if (!existsSync(join(__dirname, 'test', 'testHooks.js'))) {
+    console.warn('FOO_TEST=1 but this build has no test hooks');
+    return;
+  }
+  const hooks = await import('./test/testHooks');
+  hooks.registerTestHooks(settings, clock);
+}
 
 function onDeepLink(url: string): void {
   // The 08-0 §G.9 route table arrives with M11; until then every URL is logged and ignored.
@@ -34,7 +50,8 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
   const settings = new SettingsStore(paths.settings);
   if (!settings.get().app.hardwareAcceleration) app.disableHardwareAcceleration();
 
-  app.whenReady().then(() => {
+  app.whenReady().then(async () => {
+    if (testHooksEnabled()) await loadTestHooks(settings);
     // Step 3: SQLite.
     db = openDb(paths.db);
     // Step 4: theme before any window, then the window.

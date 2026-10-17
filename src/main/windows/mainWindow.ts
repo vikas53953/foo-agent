@@ -1,8 +1,10 @@
 // Spec: 03-shell-1 §3.1 (size, restore), §3.2 (title bar); 09-windows §9.6, §9.12, §9.15; 02-3 §F28.1, §F28.4.
 import { app, BrowserWindow, nativeTheme, screen, systemPreferences, type Rectangle } from 'electron';
+import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { tokens } from '../../shared/tokens';
 import { t } from '../../shared/copy/t';
+import { testHooksEnabled } from '../ipc/guard';
 import type { SettingsStore } from '../settings/Settings';
 import { isTrustedUrl, startUrl } from './protocol';
 
@@ -43,6 +45,13 @@ export function restoredBounds(saved: Rectangle | undefined, areas: Rectangle[],
   return defaultBounds(primary);
 }
 
+/** 08-3 §22.1: test runs load the test preload when this build has it (it is left out of the packaged app). */
+export function preloadPath(): string {
+  const dir = join(__dirname, '..', '..', 'preload');
+  const test = join(dir, 'preloadTest.js');
+  return testHooksEnabled() && existsSync(test) ? test : join(dir, 'preload.js');
+}
+
 export function createMainWindow(settings: SettingsStore, opts: { hidden: boolean }): BrowserWindow {
   const s = settings.get();
   const bounds = restoredBounds(
@@ -63,7 +72,7 @@ export function createMainWindow(settings: SettingsStore, opts: { hidden: boolea
     titleBarStyle: 'hidden',
     titleBarOverlay: { ...overlayColours(), height: tokens.size['titlebar-h'] },
     webPreferences: {
-      preload: join(__dirname, '..', '..', 'preload', 'preload.js'),
+      preload: preloadPath(),
       contextIsolation: true,
       sandbox: true,
       nodeIntegration: false,

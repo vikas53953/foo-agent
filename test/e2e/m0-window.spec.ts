@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import electronPath from 'electron';
 import { settingsDefaults } from '../../src/shared/settingsDefaults';
 import { tokens } from '../../src/shared/tokens';
+import { checkSpecValues } from '../fidelity/spec-values';
 import { launch, testDirs } from './launch';
 
 const EVIDENCE = join('qa-evidence', 'M0', 'screens');
@@ -26,6 +27,18 @@ test('cold start shows the empty window with foo title bar (PERF-01 smoke)', asy
 
   const size = await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0]!.getBounds());
   expect(size.width).toBeLessThanOrEqual(1280);
+  await app.close();
+});
+
+test('FID-14 spec values: live rows SV-16, SV-37, SV-38', async () => {
+  const app = await launch();
+  const page = await app.firstWindow();
+  await page.getByTestId('titlebar-strip').waitFor();
+  const results = await checkSpecValues(page, { theme: 'light', app });
+  mkdirSync('test-results', { recursive: true });
+  writeFileSync(join('test-results', 'fid-14.json'), JSON.stringify(results, null, 2) + '\n');
+  expect(results.map((r) => r.id)).toEqual(['SV-16', 'SV-37', 'SV-38']);
+  expect(results.filter((r) => !r.ok)).toEqual([]);
   await app.close();
 });
 

@@ -11,12 +11,17 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   fast:
     name: Fast lane (ubuntu-latest)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # fid-guard reads the PR's commits and diff
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -24,6 +29,11 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm spec:verify
+      - name: FID-02 / FID-06 / FID-19 guard (pull requests)
+        if: github.event_name == 'pull_request'
+        run: pnpm fid:guard
+      - name: FID-18 trace matrix
+        run: pnpm trace:check
       - run: pnpm check:copy
       - run: pnpm lint
       - run: pnpm format:check
@@ -61,7 +71,9 @@ jobs:
       - name: No test hooks in the production build (08-3 §22.1)
         shell: bash
         run: |
-          if grep -a -q "__fooTest" dist/win-unpacked/resources/app.asar; then echo "__fooTest found in app.asar"; exit 1; fi
+          for needle in "__fooTest" "test:clock" "test:seed"; do
+            if grep -a -q "$needle" dist/win-unpacked/resources/app.asar; then echo "$needle found in app.asar"; exit 1; fi
+          done
       - name: Upload evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -79,3 +91,95 @@ jobs:
           name: foo-windows-app
           path: dist/win-unpacked/
           retention-days: 14
+
+  # 11-fidelity §11.2 golden lane: renders the current milestone's references in Electron's Chromium, runs Tier R/Tier B
+  # for built steps, writes the fidelity report and pushes the evidence to the `evidence` branch (agents cannot read CI
+  # artifacts). FIDELITY_MILESTONE names the milestone this branch builds; bump it when the next milestone starts.
+  golden:
+    name: Golden lane (windows-latest)
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    env:
+      FIDELITY_MILESTONE: M1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      # Same native-module gotchas as the windows job.
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Download the Electron binary
+        run: node node_modules/electron/install.js
+      - name: Build better-sqlite3 for Node (unit tests)
+        run: pnpm rebuild:node
+      - name: Unit, article and fidelity tests (JSON for the report)
+        id: unit
+        continue-on-error: true
+        run: pnpm exec vitest run --reporter=default --reporter=json --outputFile.json=golden/out/results/vitest.json
+      - name: Lint (JSON for the report)
+        id: lint
+        continue-on-error: true
+        run: pnpm exec eslint . -f json -o golden/out/results/eslint.json
+      - run: pnpm build
+      - name: Rebuild native modules for Electron
+        run: pnpm rebuild:electron
+      - name: Render the milestone's references twice (FID-03) and record the runner (FID-04)
+        id: render
+        continue-on-error: true
+        shell: bash
+        run: pnpm golden:render --milestone "$FIDELITY_MILESTONE" --determinism
+      - name: E2E with FID-14 and Tier B (JSON for the report)
+        id: e2e
+        continue-on-error: true
+        run: pnpm test:e2e
+      - name: Tier R for the steps built so far
+        id: tierr
+        continue-on-error: true
+        shell: bash
+        run: |
+          shopt -s nullglob
+          captures=(golden/out/app/*.json)
+          if [ ${#captures[@]} -eq 0 ]; then echo "No app captures yet: no $FIDELITY_MILESTONE step is built, Tier R has nothing to compare"; exit 0; fi
+          status=0
+          for app in "${captures[@]}"; do
+            name="$(basename "$app" .json)"; id="${name%.*}"; theme="${name##*.}"
+            case "$id" in UX-*) fam=ux ;; *) fam=bp ;; esac
+            pnpm -s tier-r --ref "golden/ref/$fam/$id.json" --app "$app" --theme "$theme" || status=1
+          done
+          exit $status
+      - name: Fidelity report
+        if: always()
+        shell: bash
+        env:
+          FOO_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: pnpm tsx scripts/fidelity-report.ts --milestone "$FIDELITY_MILESTONE"
+      - name: Push evidence to the evidence branch
+        if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_BRANCH: ${{ github.head_ref || github.ref_name }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          MILESTONE: ${{ env.FIDELITY_MILESTONE }}
+        run: bash scripts/push-evidence.sh
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-evidence
+          path: |
+            qa-evidence/
+            golden/ref/
+            golden/out/
+            golden/runner.json
+            test-results/
+          if-no-files-found: ignore
+      - name: Fail when a check failed
+        if: steps.unit.outcome == 'failure' || steps.lint.outcome == 'failure' || steps.render.outcome == 'failure' || steps.e2e.outcome == 'failure' || steps.tierr.outcome == 'failure'
+        shell: bash
+        run: |
+          echo "unit=${{ steps.unit.outcome }} lint=${{ steps.lint.outcome }} render=${{ steps.render.outcome }} e2e=${{ steps.e2e.outcome }} tierR=${{ steps.tierr.outcome }}"
+          exit 1
