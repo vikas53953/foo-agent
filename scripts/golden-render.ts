@@ -156,13 +156,15 @@ async function renderBp(page: Page, e: BpEntry, out: string, browser: RefBrowser
   if (!e.drawn) return json; // diagram only: no pixels (manifest note)
   for (const theme of THEMES) {
     await setTheme(page, theme);
-    await el.scrollIntoViewIfNeeded();
     await settle(page);
-    // Whole-pixel clip of the element's box, so a mock at a half-pixel offset still captures at its drawn size.
-    const b = await el.boundingBox();
-    if (!b) throw new Error(`${e.id}: ${e.selector} has no box`);
+    // Whole-pixel clip of the element's box in document coordinates, captured from the full page, so a mock wider than its
+    // horizontally scrolling container (the 1280px window in `.scroll`) or under the sticky top nav is captured whole.
+    const b = await el.evaluate((node) => {
+      const r = node.getBoundingClientRect();
+      return { x: r.left + window.scrollX, y: r.top + window.scrollY, width: r.width, height: r.height };
+    });
     const clip = { x: Math.round(b.x), y: Math.round(b.y), width: Math.round(b.width), height: Math.round(b.height) };
-    const png = await page.screenshot({ ...SHOT, clip });
+    const png = await page.screenshot({ ...SHOT, fullPage: true, clip });
     const name = `${e.id}.${theme}.png`;
     writeFileSync(join(out, name), png);
     json.files[theme] = { png: name, sha256: sha(png) };
@@ -194,6 +196,8 @@ export async function render(opts: {
       const dir = join(opts.out, 'bp');
       mkdirSync(dir, { recursive: true });
       const page = await browser.open(BP_FILE);
+      // Unclip the drawings: mocks sit in `.scroll` (overflow-x: auto) and under a sticky nav; neither is part of a mock.
+      await page.addStyleTag({ content: '.topnav{position:static!important}.scroll{overflow:visible!important}' });
       for (const e of bp) rendered.push(await renderBp(page, e, dir, browser));
     }
   } finally {
