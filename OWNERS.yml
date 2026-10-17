@@ -1,0 +1,4 @@
+# FID-19: one owner per path. Spec changes go through docs/cr/ and Vikas.
+spec/: vikas53953
+design/tokens.json: vikas53953
+'*': vikas53953

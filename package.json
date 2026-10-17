@@ -1,0 +1,68 @@
+{
+  "name": "foo",
+  "productName": "foo",
+  "version": "0.0.1",
+  "private": true,
+  "description": "foo, a personal agent for Windows",
+  "main": "out/main/main/index.js",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "build:tokens": "tsx scripts/build-tokens.ts",
+    "build:main": "tsc -p tsconfig.main.json",
+    "build:renderer": "vite build",
+    "build": "pnpm build:tokens && pnpm build:main && pnpm build:renderer && tsx scripts/copy-migrations.ts",
+    "start": "electron .",
+    "typecheck": "tsc -p tsconfig.main.json --noEmit && tsc -p tsconfig.renderer.json --noEmit && tsc -p tsconfig.node.json --noEmit",
+    "lint": "eslint .",
+    "format:check": "prettier --check .",
+    "check:copy": "tsx scripts/check-copy.ts",
+    "spec:verify": "tsx scripts/spec-verify.ts",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "rebuild:electron": "electron-rebuild -f -w better-sqlite3",
+    "rebuild:node": "pnpm rebuild better-sqlite3",
+    "package:dir": "electron-builder --win --dir"
+  },
+  "dependencies": {
+    "better-sqlite3": "13.0.3",
+    "intl-messageformat": "12.1.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "uuid": "14.0.3",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "4.2.1",
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.64.1",
+    "@types/better-sqlite3": "9.6.0",
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "electron": "44.9.0",
+    "electron-builder": "26.15.3",
+    "eslint": "10.13.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "17.13.0",
+    "prettier": "3.9.10",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.71.2",
+    "vite": "8.3.4",
+    "vitest": "5.0.5"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "electron",
+      "esbuild"
+    ],
+    "ignoredBuiltDependencies": [
+      "electron-winstaller"
+    ]
+  }
+}

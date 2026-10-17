@@ -1,0 +1,12 @@
+out/
+dist/
+spec/
+node_modules/
+pnpm-lock.yaml
+design/tokens.paper.json
+src/renderer/styles/tokens.css
+src/shared/tokens.ts
+src/main/store/migrations/
+qa-evidence/
+test-results/
+playwright-report/
