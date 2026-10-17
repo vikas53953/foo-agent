@@ -475,11 +475,11 @@
         },
         "app": {
           "x": 356,
-          "y": 584,
+          "y": 586,
           "width": 397.265625,
           "height": 64
         },
-        "dPos": 77,
+        "dPos": 75,
         "dSize": 6,
         "verdict": "fail"
       }
@@ -505,8 +505,8 @@
     "total": 23026
   },
   "r5": {
-    "ratio": 0.142830078125,
-    "diffPixels": 146258,
+    "ratio": 0.1427109375,
+    "diffPixels": 146136,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-08-05.light.diff.png"

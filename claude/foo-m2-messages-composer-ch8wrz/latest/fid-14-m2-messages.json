@@ -1,0 +1,97 @@
+[
+  {
+    "id": "SV-03",
+    "ok": true,
+    "expected": "border-bottom-left-radius: 6px",
+    "measured": "all equal"
+  },
+  {
+    "id": "SV-04",
+    "ok": true,
+    "expected": "background-color: rgb(11, 11, 16)",
+    "measured": "all equal"
+  },
+  {
+    "id": "SV-05",
+    "ok": true,
+    "expected": "background-color: rgb(240, 240, 244)",
+    "measured": "all equal"
+  },
+  {
+    "id": "SV-06",
+    "ok": true,
+    "expected": "font-size: 15px; line-height: 22px; font-weight: 400",
+    "measured": "all equal"
+  },
+  {
+    "id": "SV-07",
+    "ok": true,
+    "expected": "line-height: 24px",
+    "measured": "all equal"
+  },
+  {
+    "id": "SV-09",
+    "ok": true,
+    "expected": "max-width: 760px",
+    "measured": "all equal"
+  },
+  {
+    "id": "SV-26",
+    "ok": true,
+    "expected": "color: rgb(105, 105, 117)",
+    "measured": "all equal"
+  },
+  {
+    "id": "SV-01",
+    "ok": true,
+    "expected": "18px non-tail corners (tail corners 6px)",
+    "measured": "13 bubbles, all equal"
+  },
+  {
+    "id": "SV-08",
+    "ok": true,
+    "expected": "≤ 72 % of the column and ≤ 620px (rich ≤ 680px)",
+    "measured": "13 bubbles within"
+  },
+  {
+    "id": "SV-04",
+    "ok": false,
+    "expected": "background-color: rgb(241, 241, 245)",
+    "measured": "#0 background-color: rgb(43, 63, 214) ≠ rgb(241, 241, 245); #1 background-color: rgb(43, 63, 214) ≠ rgb(241, 241, 245); #2 background-color: rgb(43, 63, 214) ≠ rgb(241, 241, 245); #3 background-color: rgb(43, 63, 214) ≠ rgb(241, 241, 245); #4 background-color: rgb(43, 63, 214) ≠ rgb(241, 241, 245); #5 background-color: rgb(43, 63, 214) ≠ rgb(241, 241, 245); #6 background-color: rgb(43, 63, 214) ≠ rgb(241, 241, 245)",
+    "note": "dark"
+  },
+  {
+    "id": "SV-05",
+    "ok": true,
+    "expected": "background-color: rgb(32, 32, 40)",
+    "measured": "all equal",
+    "note": "dark"
+  },
+  {
+    "id": "SV-26",
+    "ok": true,
+    "expected": "color: rgb(142, 142, 154)",
+    "measured": "all equal",
+    "note": "dark"
+  },
+  {
+    "id": "SV-02",
+    "ok": true,
+    "expected": "border-bottom-right-radius: 6px",
+    "measured": "all equal"
+  },
+  {
+    "id": "SV-01",
+    "ok": true,
+    "expected": "18px non-tail corners (tail corners 6px)",
+    "measured": "15 bubbles, all equal",
+    "note": "Trips"
+  },
+  {
+    "id": "SV-08",
+    "ok": true,
+    "expected": "≤ 72 % of the column and ≤ 620px (rich ≤ 680px)",
+    "measured": "15 bubbles within",
+    "note": "Trips"
+  }
+]

@@ -22,9 +22,6 @@
         "16",
         "Oct",
         "☀",
-        "Good",
-        "morning,",
-        "Vikas",
         "Morning",
         "brief",
         "Mom's",
@@ -78,8 +75,6 @@
         "within",
         "5",
         "min",
-        "Waiting",
-        "for",
         "you",
         "to",
         "approve",
@@ -89,8 +84,8 @@
         "and",
         "add",
         "to",
-        "your",
         "calendar",
+        "Pay",
         "Expires",
         "9:51",
         "AM",
@@ -127,10 +122,22 @@
         "🎙"
       ],
       "extra": [
+        "Cake",
+        "from",
+        "Theobroma",
+        "booked",
+        "for",
+        "Oct,",
+        "11:00",
+        "AM",
+        ".",
+        "8:05",
+        "AM",
         "thanks!",
         "8:06",
         "AM",
         "👍",
+        "is",
         "Mon",
         "2",
         "Nov",
@@ -157,6 +164,7 @@
         "holiday",
         "is",
         "Diwali,",
+        "Sun",
         "8",
         "Nov",
         ".",
@@ -173,7 +181,6 @@
         "hua?",
         "8:12",
         "AM",
-        "Cake",
         "Theobroma",
         "se",
         "order",
@@ -181,6 +188,7 @@
         "gaya",
         "hai.",
         "Sun",
+        "18",
         "Oct,",
         "11:00",
         "AM",
@@ -213,6 +221,7 @@
         "8:13",
         "AM",
         "foo",
+        "Cake",
         "Theobroma",
         "is",
         "booked",
@@ -266,7 +275,17 @@
         "(3)",
         "›",
         "8:20",
-        "AM"
+        "AM",
+        "Pay",
+        "Taj",
+        "Holiday",
+        "Village",
+        "OK:",
+        "₹14,600",
+        "to",
+        "9:59",
+        "left",
+        "Show"
       ]
     },
     "hl": {
@@ -298,14 +317,14 @@
     ]
   },
   "r3": {
-    "verdict": "review",
+    "verdict": "pass",
     "anchors": [
       {
         "name": "BP-APP-M",
         "ref": "#FFFFFF",
-        "app": "#F0F0F4",
-        "deltaE": 3.65,
-        "verdict": "review"
+        "app": "#FFFFFF",
+        "deltaE": 0,
+        "verdict": "pass"
       }
     ]
   },
@@ -317,8 +336,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.1823809399386845,
-    "diffPixels": 83761,
+    "ratio": 0.16358129528985507,
+    "diffPixels": 75127,
     "total": 459264,
     "sizeMismatch": {
       "a": [

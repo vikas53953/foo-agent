@@ -277,7 +277,9 @@
         "it",
         "open",
         "on",
-        "Sunday?",
+        "Sun",
+        "18",
+        "Oct?",
         "7:30",
         "AM",
         "✅",
@@ -553,11 +555,11 @@
         },
         "app": {
           "x": 761.21875,
-          "y": 610,
+          "y": 612,
           "width": 147.78125,
           "height": 38
         },
-        "dPos": 71,
+        "dPos": 69,
         "dSize": 0.90625,
         "verdict": "fail"
       }
@@ -583,8 +585,8 @@
     "total": 5586
   },
   "r5": {
-    "ratio": 0.087171875,
-    "diffPixels": 89264,
+    "ratio": 0.0877939453125,
+    "diffPixels": 89901,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-08-01.dark.diff.png"
