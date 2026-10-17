@@ -13,7 +13,7 @@ import {
   type Rgb,
 } from '../../scripts/golden/pixels';
 import { authorise, crFile } from '../../scripts/golden-bless';
-import { boxVerdict, colourVerdict, ratioVerdict, tierR, wordDiff, words, type Side } from '../../scripts/tier-r';
+import { boxVerdict, colourVerdict, ratioVerdict, tierR, wordDiff, words, type Side, disputedChecks } from '../../scripts/tier-r';
 
 function solid(w: number, h: number, rgb: Rgb): Image {
   const img = blank(w, h);
@@ -154,6 +154,17 @@ describe('tierR end to end on a synthetic frame', () => {
     const r = tierR('UX-13-03', 'light', side(frame), side(app), 'X-04');
     expect(r.r4.skipped).toMatch(/superseded/);
     expect(r.r3.verdict).toBe('fail');
+  });
+  it('a CR dispute turns only its own failing checks into expected fails (§11.2.7)', () => {
+    const app = { ...side(frame), texts: ['Pay now'] };
+    const d = disputedChecks([{ cr: 'CR-0002', ids: ['BP-X'], checks: ['r1', 'r2'] }], 'BP-X');
+    const r = tierR('BP-X', 'light', side(frame), app, null, d);
+    expect([r.verdict, r.r1.verdict, r.disputed]).toEqual(['disputed', 'fail', { cr: 'CR-0002', checks: ['r1'] }]);
+    // An undisputed failing check still fails the ref, and other refs are not covered.
+    const moved = paint(solid(40, 30, WHITE), 15, 15, 20, 10, [200, 30, 30]);
+    expect(tierR('BP-X', 'light', side(frame), side(moved, { x: 15, y: 15, width: 20, height: 10 }), null, d).verdict).toBe('fail');
+    expect(disputedChecks([{ cr: 'CR-0002', ids: ['BP-X'], checks: ['r1'] }], 'BP-Y')).toBeNull();
+    expect(tierR('BP-X', 'light', side(frame), side(frame), null, d)).toMatchObject({ verdict: 'pass', disputed: null });
   });
 });
 

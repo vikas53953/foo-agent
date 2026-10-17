@@ -21,10 +21,12 @@
   | 9   | Money unread as a wide pill; Family group as a letter             | 20px round badge; 3-face group avatar                                   | §3.4.5                        |
   | 10  | Memory date "Sat 3 Oct"; straight apostrophes                     | "3 Oct" (`{d Mon}`); typographic ’ from copy.json                       | §3.7.3.3, 08-0 §D             |
 
-  Not part of this CR (reported in the M1 fidelity report instead): data differences between the drawing and the `ux-world`
+  Also reported in the M1 fidelity report (R1 on the same refs, so covered by the dispute until the redraw): data differences between the drawing and the `ux-world`
   seed (two WhatsApp group rows, a third memory fact, no Gmail or Calendar chips yet), the message column and composer (M2),
   and native caption buttons (drawn by Windows, masked).
 
-- **Status:** Ready for Vikas
-- **Approved by Vikas:** pending
+- **Status:** Approved: keep the app as built; the drawing is redrawn to the written spec
+- **Approved by Vikas:** 2026-10-17 18:52Z, in the M1 build thread of the foo project ("CR-0002: accept the app as built")
+- **Disputed checks:** `docs/fidelity/disputes.json` sets R1 (copy) and R2 (boxes) of the 17 drawn M1 BP refs to expected fail
+  under this CR; R3 and R4 still count. Removed when the redrawn refs are rendered and Tier R re-runs.
 - **Manifest:** no `spec/` change in this CR; the redraw and re-render come with the spec keeper's follow-up.

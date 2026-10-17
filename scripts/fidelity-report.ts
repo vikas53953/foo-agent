@@ -85,7 +85,8 @@ interface AuditRow {
 interface TierRJson {
   id: string;
   theme: string;
-  verdict: 'pass' | 'review' | 'fail';
+  verdict: 'pass' | 'review' | 'fail' | 'disputed';
+  disputed?: { cr: string; checks: string[] } | null;
   r1: { verdict: string };
   r2: { verdict: string; anchors: { name: string; dPos: number | null; dSize: number | null }[] };
   r3: { verdict: string; anchors: { name: string; deltaE: number | null }[] };
@@ -250,7 +251,7 @@ export function build(opts: {
     pass: tierR.filter((t) => t.verdict === 'pass').length,
     review: tierR.filter((t) => t.verdict === 'review').length,
     fail: tierR.filter((t) => t.verdict === 'fail').length,
-    disputed: 0,
+    disputed: tierR.filter((t) => t.verdict === 'disputed').length,
     notBuilt: notBuilt.length,
   };
 
@@ -422,7 +423,7 @@ main{max-width:1180px;margin:0 auto;padding:24px 16px 64px}h1{font-size:26px;mar
 th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}th{font-size:12px;color:var(--fg2)}
 img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}td img{max-width:300px;max-height:420px;width:auto}.none{color:var(--fg2);font-style:italic}
 .b{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid currentColor;white-space:nowrap}
-.b-done,.b-pass{color:var(--ok)}.b-not-done,.b-fail,.b-failed{color:var(--bad)}.b-partial,.b-review,.b-unverifiable,.b-changed,.b-not-run,.b-not-built{color:var(--warn)}
+.b-done,.b-pass{color:var(--ok)}.b-not-done,.b-fail,.b-failed{color:var(--bad)}.b-partial,.b-review,.b-disputed,.b-unverifiable,.b-changed,.b-not-run,.b-not-built{color:var(--warn)}
 .verdict{font-size:20px}button{font:inherit;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:4px 14px;cursor:pointer;float:right}
 code{font-family:Consolas,ui-monospace,monospace;font-size:13px;word-break:break-all}
 </style>

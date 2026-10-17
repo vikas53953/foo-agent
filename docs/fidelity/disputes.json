@@ -1,0 +1,28 @@
+{
+  "note": "11-fidelity §11.2.7 step 3: checks an approved CR sets to 'expected fail' until the spec keeper redraws the reference and Tier R re-runs. Only the listed checks; every other check still counts.",
+  "disputes": [
+    {
+      "cr": "CR-0002",
+      "ids": [
+        "BP-APP-L",
+        "BP-APP-M",
+        "BP-APP-R",
+        "BP-ANAT-L",
+        "BP-ANAT-TBAR",
+        "BP-ANAT-LHEAD",
+        "BP-ANAT-SEARCH",
+        "BP-ANAT-CHIPS",
+        "BP-ANAT-LIST",
+        "BP-ANAT-ROW",
+        "BP-ANAT-LFOOT",
+        "BP-ANAT-MHEAD",
+        "BP-ANAT-RHEAD",
+        "BP-ANAT-DOING",
+        "BP-ANAT-USING",
+        "BP-ANAT-KNOW",
+        "BP-ANAT-SPENT"
+      ],
+      "checks": ["r1", "r2"]
+    }
+  ]
+}
