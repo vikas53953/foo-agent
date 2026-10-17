@@ -7,7 +7,7 @@ import { TID } from '../../shared/testids';
 import type { ChatRow } from '../../shared/types';
 import { navigate, useStore } from '../store/index';
 import { selectAi, selectNow } from '../store/live';
-import { jobsInScope } from './doingNow';
+import { jobsInScope } from './doingNowRows';
 import { USING_MAX, usingChips, type UsingChip } from './panelData';
 import section from './PanelSection.module.css';
 import styles from './UsingChips.module.css';

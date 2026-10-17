@@ -19,7 +19,7 @@ import { IconButton } from '../ui/IconButton';
 import { Menu, type MenuEntry } from '../ui/Menu';
 import { openChat } from './actions';
 import styles from './ChatHeader.module.css';
-import { hasLiveBrowser } from './doingNow';
+import { hasLiveBrowser } from './doingNowRows';
 import { SelectionBar } from './SelectionBar';
 import { quietUntil, statusLine } from './statusLine';
 import { useLayout } from './layout';

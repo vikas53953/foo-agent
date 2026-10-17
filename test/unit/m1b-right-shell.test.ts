@@ -1,8 +1,8 @@
 // 03-shell-2 §3.7.3.1 Doing now (order, 5-row max, ≤ 2 finished, X-148 tabs, §3.7.4 scope), §3.7.3.2 Using,
 // §3.7.3.3 What I know (top 3), §3.7.3.4 meter thresholds.
 import { describe, expect, it } from 'vitest';
-import { doingRows, doneRows, jobsInScope, scheduledRows, doingLine } from '../../src/renderer/shell/doingNow';
-import { meterState } from '../../src/renderer/shell/spentMeters';
+import { doingRows, doneRows, jobsInScope, scheduledRows, doingLine } from '../../src/renderer/shell/doingNowRows';
+import { meterState } from '../../src/renderer/shell/spentMeterState';
 import { knowFacts, usingChips } from '../../src/renderer/shell/panelData';
 import type { ChatRow, JobRow, MemoryFactView, RoutineRow } from '../../src/shared/types';
 

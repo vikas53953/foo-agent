@@ -21,7 +21,7 @@ import { Spinner } from '../ui/Spinner';
 import { openChat } from './actions';
 import { requestReveal } from '../messages/reveal';
 import styles from './DoingNow.module.css';
-import { canStop, doingGlyph, doingLine, doingRows, doneRows, hasLiveBrowser, jobsInScope, scheduledRows } from './doingNow';
+import { canStop, doingGlyph, doingLine, doingRows, doneRows, hasLiveBrowser, jobsInScope, scheduledRows } from './doingNowRows';
 import section from './PanelSection.module.css';
 
 type Tab = 'progress' | 'scheduled' | 'done';

@@ -11,7 +11,7 @@ import { selectSpend } from '../store/spend';
 import { Meter } from '../ui/Meter';
 import section from './PanelSection.module.css';
 import styles from './SpentMeters.module.css';
-import { meterState } from './spentMeters';
+import { meterState } from './spentMeterState';
 
 export function SpentMeters() {
   const spend = useStore(selectSpend);
