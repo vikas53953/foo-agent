@@ -59,12 +59,10 @@ export function statusLine(s: StatusInput): StatusResult {
     return { row: 2, text: t('chat_header.status.needs_you', { title: card?.title ?? needs[0]!.title }), tone: 'warn' };
   }
   if (needs.length > 1) return { row: 2, text: t('chat_header.status.needs_you_many', { count: needs.length }), tone: 'warn' };
-  if (jobs.some((j) => s.takenOverJobIds.includes(j.id)))
-    return { row: 3, text: t('chat_header.status.in_control'), tone: 'warn' };
+  if (jobs.some((j) => s.takenOverJobIds.includes(j.id))) return { row: 3, text: t('chat_header.status.in_control'), tone: 'warn' };
 
   const reasons = new Set(jobs.filter((j) => j.state === 'waiting').map((j) => j.waitingReason));
-  if (reasons.has('net_offline') || reasons.has('ai_offline'))
-    return { row: 4, text: t('chat_header.status.paused_offline'), tone: 'fg2' };
+  if (reasons.has('net_offline') || reasons.has('ai_offline')) return { row: 4, text: t('chat_header.status.paused_offline'), tone: 'fg2' };
   if (reasons.has('ai_down')) return { row: 5, text: t('chat_header.status.paused_ai_down', { ai }), tone: 'fg2' };
   if (reasons.has('ai_signed_out')) return { row: 5, text: t('chat_header.status.paused_signed_out', { ai }), tone: 'fg2' };
   if (reasons.has('ai_limit')) {
@@ -93,7 +91,10 @@ export function statusLine(s: StatusInput): StatusResult {
       ? { row: 11, text: t('chat_header.status.quiet', { time }), tone: 'fg2' }
       : {
           row: 11,
-          text: t('chat_header.status.quiet_other_day', { date: formatDate(s.quiet.until, 'date', { timeZone: s.timeZone, now: s.now }), time }),
+          text: t('chat_header.status.quiet_other_day', {
+            date: formatDate(s.quiet.until, 'date', { timeZone: s.timeZone, now: s.now }),
+            time,
+          }),
           tone: 'fg2',
         };
   }

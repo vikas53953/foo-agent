@@ -53,11 +53,21 @@ export function DoingNow({ chat }: { chat: ChatRow }) {
 
   const seeAll = () => {
     if (tab === 'scheduled') navigate({ kind: 'screen', id: 'routines' });
-    else navigate(chat.kind === 'foo' && !chat.private ? { kind: 'screen', id: 'activity' } : { kind: 'screen', id: 'activity', params: { chatId: chat.id } });
+    else
+      navigate(
+        chat.kind === 'foo' && !chat.private
+          ? { kind: 'screen', id: 'activity' }
+          : { kind: 'screen', id: 'activity', params: { chatId: chat.id } },
+      );
   };
 
   return (
-    <section className={section.section} data-testid={TID.appPanelDoing} data-empty={empty || undefined} aria-labelledby="app-panel-doing-title">
+    <section
+      className={section.section}
+      data-testid={TID.appPanelDoing}
+      data-empty={empty || undefined}
+      aria-labelledby="app-panel-doing-title"
+    >
       <h2 className={section.label} id="app-panel-doing-title">
         <span>{t('app.panel.doing.title')}</span>
         {openTarget && (
@@ -83,7 +93,11 @@ export function DoingNow({ chat }: { chat: ChatRow }) {
       />
       {empty ? (
         <p className={section.empty}>
-          {tab === 'progress' ? t('app.panel.doing.empty') : tab === 'done' ? t('app.panel.doing.empty_done') : t('app.panel.doing.empty_scheduled')}
+          {tab === 'progress'
+            ? t('app.panel.doing.empty')
+            : tab === 'done'
+              ? t('app.panel.doing.empty_done')
+              : t('app.panel.doing.empty_scheduled')}
         </p>
       ) : tab === 'scheduled' ? (
         <RoutineList rows={scheduled.rows} now={now} timeZone={timeZone} />
@@ -93,6 +107,7 @@ export function DoingNow({ chat }: { chat: ChatRow }) {
           chat={chat}
           chats={chats}
           line={(j) => doingLine(j, { now, timeZone, ai: ai.displayName, cards })}
+          signIn={(j) => j.state === 'needs_you' && cards[j.needsYouCardId ?? '']?.type === 'signin'}
         />
       )}
       {shown.total > shown.rows.length && (
@@ -130,11 +145,13 @@ function JobList({
   chat,
   chats,
   line,
+  signIn,
 }: {
   rows: JobRow[];
   chat: ChatRow;
   chats: Record<string, ChatRow>;
   line: (j: JobRow) => string;
+  signIn: (j: JobRow) => boolean;
 }) {
   const roving = useRovingTabIndex(rows.length);
   const prefixOthers = chat.kind === 'foo' && !chat.private;
@@ -181,7 +198,7 @@ function JobList({
                 icon="Window"
                 iconSize={16}
                 className={styles.action}
-                data-always={j.state === 'needs_you' || undefined}
+                data-always={signIn(j) || undefined}
                 label={t('app.panel.doing.watch_live.label', { title: j.title })}
                 tooltip={t('app.panel.doing.watch_live.tooltip')}
                 data-testid={TID.appPanelDoingWatchLive}

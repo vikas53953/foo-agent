@@ -25,7 +25,12 @@ export function UsingChips({ chat }: { chat: ChatRow }) {
   const aiLabel = t('app.panel.using.ai', { ai: ai.displayName });
 
   return (
-    <section className={section.section} data-testid={TID.appPanelUsing} data-empty={!chips.length || undefined} aria-labelledby="app-panel-using-title">
+    <section
+      className={section.section}
+      data-testid={TID.appPanelUsing}
+      data-empty={!chips.length || undefined}
+      aria-labelledby="app-panel-using-title"
+    >
       <h2 className={section.label} id="app-panel-using-title">
         {t('app.panel.using.title')}
       </h2>

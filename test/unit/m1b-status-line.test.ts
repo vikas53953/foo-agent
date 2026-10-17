@@ -113,7 +113,10 @@ describe('status line precedence (first matching row wins)', () => {
     expect(paused('spend_cap')).toMatchObject({ row: 7, text: 'Paused · AI cap reached' });
     // offline beats AI down when both jobs wait
     const both = base({
-      jobs: [job({ id: 'a', state: 'waiting', waitingReason: 'ai_down' }), job({ id: 'b', state: 'waiting', waitingReason: 'net_offline' })],
+      jobs: [
+        job({ id: 'a', state: 'waiting', waitingReason: 'ai_down' }),
+        job({ id: 'b', state: 'waiting', waitingReason: 'net_offline' }),
+      ],
     });
     expect(statusLine(both).row).toBe(4);
   });

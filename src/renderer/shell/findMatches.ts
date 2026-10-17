@@ -13,7 +13,8 @@ export function findMatches(messages: MessageRow[], query: string): FindMatch[] 
   if (!q) return [];
   const out: FindMatch[] = [];
   for (const m of messages) {
-    if (m.kind === 'marker') continue;
+    // Text and voice transcripts only: cards draw their own content (M2), so their matches could not be highlighted here.
+    if (m.kind === 'marker' || m.kind === 'card') continue;
     const text = m.text.toLocaleLowerCase('en-IN');
     for (let i = text.indexOf(q); i >= 0; i = text.indexOf(q, i + q.length)) out.push({ messageId: m.id, start: i, end: i + q.length });
   }

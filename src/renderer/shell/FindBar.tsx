@@ -17,7 +17,14 @@ export interface FindState {
   step: (dir: 1 | -1) => void;
 }
 
-const FindContext = createContext<FindState>({ open: false, query: '', matches: [], index: -1, setQuery: () => undefined, step: () => undefined });
+const FindContext = createContext<FindState>({
+  open: false,
+  query: '',
+  matches: [],
+  index: -1,
+  setQuery: () => undefined,
+  step: () => undefined,
+});
 export const useFind = () => useContext(FindContext);
 
 export function FindProvider({ chatId, open, children }: { chatId: string; open: boolean; children: ReactNode }) {
@@ -71,27 +78,39 @@ export function FindBar() {
         className={styles.field}
         type="search"
         data-find-field
-          data-testid={TID.threadFindField}
-          placeholder={t('thread.find.placeholder')}
-          aria-label={t('thread.find.placeholder')}
-          value={f.query}
-          onChange={(e) => f.setQuery(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              f.step(e.shiftKey ? -1 : 1);
-            } else if (e.key === 'Escape') {
-              e.preventDefault();
-              e.stopPropagation();
-              closeFind();
-            }
-          }}
+        data-testid={TID.threadFindField}
+        placeholder={t('thread.find.placeholder')}
+        aria-label={t('thread.find.placeholder')}
+        value={f.query}
+        onChange={(e) => f.setQuery(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            f.step(e.shiftKey ? -1 : 1);
+          } else if (e.key === 'Escape') {
+            e.preventDefault();
+            e.stopPropagation();
+            closeFind();
+          }
+        }}
       />
       <span className={styles.count} data-testid={TID.threadFindCount} hidden={!count} aria-live="off">
         {count}
       </span>
-      <IconButton icon="ChevronUp" label={t('thread.find.prev')} data-testid={TID.threadFindPrev} disabled={!f.matches.length} onClick={() => f.step(-1)} />
-      <IconButton icon="ChevronDown" label={t('thread.find.next')} data-testid={TID.threadFindNext} disabled={!f.matches.length} onClick={() => f.step(1)} />
+      <IconButton
+        icon="ChevronUp"
+        label={t('thread.find.prev')}
+        data-testid={TID.threadFindPrev}
+        disabled={!f.matches.length}
+        onClick={() => f.step(-1)}
+      />
+      <IconButton
+        icon="ChevronDown"
+        label={t('thread.find.next')}
+        data-testid={TID.threadFindNext}
+        disabled={!f.matches.length}
+        onClick={() => f.step(1)}
+      />
       <IconButton icon="Dismiss" label={t('thread.find.close')} data-testid={TID.threadFindClose} onClick={closeFind} />
     </div>
   );

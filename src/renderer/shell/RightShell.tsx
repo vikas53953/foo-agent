@@ -60,7 +60,12 @@ export function RightShell({ chat }: { chat: ChatRow }) {
           {t('app.panel.title')}
         </h2>
         {panel.mode !== 'page' && (
-          <IconButton icon="Dismiss" label={t('app.panel.close')} data-testid={TID.appPanelClose} onClick={(e) => panel.close(e.detail === 0)} />
+          <IconButton
+            icon="Dismiss"
+            label={t('app.panel.close')}
+            data-testid={TID.appPanelClose}
+            onClick={(e) => panel.close(e.detail === 0)}
+          />
         )}
       </header>
       <div className={styles.body}>

@@ -205,7 +205,8 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     const at = current ? Number(current.dataset.index) : -1;
     const pos = messageIndexes.indexOf(at);
     let next: number | undefined;
-    if (e.key === 'ArrowDown') next = pos < 0 ? messageIndexes[messageIndexes.length - 1] : messageIndexes[Math.min(pos + 1, messageIndexes.length - 1)];
+    if (e.key === 'ArrowDown')
+      next = pos < 0 ? messageIndexes[messageIndexes.length - 1] : messageIndexes[Math.min(pos + 1, messageIndexes.length - 1)];
     else if (e.key === 'ArrowUp') next = pos < 0 ? messageIndexes[messageIndexes.length - 1] : messageIndexes[Math.max(pos - 1, 0)];
     else if (e.key === 'Home' && e.ctrlKey) next = messageIndexes[0];
     else if (e.key === 'End' && e.ctrlKey) next = messageIndexes[messageIndexes.length - 1];
@@ -313,14 +314,24 @@ function Row({ row, index, cards }: { row: VRow; index: number; cards: Record<st
       const cur = find.index >= 0 ? find.matches[find.index] : undefined;
       return (
         <div className={styles.placeholder} data-author={m.authorKind} data-kind={m.kind}>
-          <span className={styles.text}>{ranges.length ? <Marked text={text} ranges={ranges} current={cur?.messageId === m.id ? cur : undefined} /> : text}</span>
+          <span className={styles.text}>
+            {ranges.length ? <Marked text={text} ranges={ranges} current={cur?.messageId === m.id ? cur : undefined} /> : text}
+          </span>
         </div>
       );
     }
   }
 }
 
-function Marked({ text, ranges, current }: { text: string; ranges: { start: number; end: number }[]; current?: { messageId: string; start: number } }) {
+function Marked({
+  text,
+  ranges,
+  current,
+}: {
+  text: string;
+  ranges: { start: number; end: number }[];
+  current?: { messageId: string; start: number };
+}) {
   const parts: ReactNode[] = [];
   let at = 0;
   ranges.forEach((r, i) => {
@@ -335,4 +346,3 @@ function Marked({ text, ranges, current }: { text: string; ranges: { start: numb
   parts.push(text.slice(at));
   return <>{parts}</>;
 }
-

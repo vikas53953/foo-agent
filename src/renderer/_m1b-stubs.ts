@@ -22,13 +22,7 @@ import './_m1b-stubs.css';
 export type ChatKind = 'foo' | 'helper' | 'group' | 'wa_mirror';
 export type FaceRef = string;
 export type BannerType =
-  | 'offline'
-  | 'ai_not_answering'
-  | 'ai_signed_out'
-  | 'ai_cap'
-  | 'plan_limit'
-  | 'notifications_blocked'
-  | 'update_ready';
+  'offline' | 'ai_not_answering' | 'ai_signed_out' | 'ai_cap' | 'plan_limit' | 'notifications_blocked' | 'update_ready';
 export type SettingsPage =
   | 'account'
   | 'appearance'
@@ -59,15 +53,7 @@ export type WaitingReason =
   | 'windows_shutdown'
   | 'opens_at';
 export type JobState = 'queued' | 'working' | 'needs_you' | 'waiting' | 'done' | 'done_unverified' | 'failed' | 'cancelled';
-export type ProviderId =
-  | 'claude-cli'
-  | 'codex-cli'
-  | 'gemini-cli'
-  | 'openai-key'
-  | 'anthropic-key'
-  | 'google-key'
-  | 'ollama'
-  | 'fake';
+export type ProviderId = 'claude-cli' | 'codex-cli' | 'gemini-cli' | 'openai-key' | 'anthropic-key' | 'google-key' | 'ollama' | 'fake';
 
 /** 08-1 §4.3 `chats` camelCased + 08-0 §B.1 derived fields. */
 export interface ChatRow {
@@ -237,7 +223,10 @@ export interface StoreState {
   };
   chats: { byId: Record<string, ChatRow>; order: string[]; selectedId: string | null };
   messages: {
-    byChat: Record<string, { ids: string[]; byId: Record<string, MessageRow>; oldestSeq: number | null; hasMore: boolean; lastSeq: number }>;
+    byChat: Record<
+      string,
+      { ids: string[]; byId: Record<string, MessageRow>; oldestSeq: number | null; hasMore: boolean; lastSeq: number }
+    >;
   };
   cards: { byId: Record<string, CardRow> };
   jobs: { byId: Record<string, JobRow>; byChat: Record<string, string[]> };
@@ -356,8 +345,7 @@ export const setDialog = (id: DialogId | null) => setState((s) => ({ ...s, ui: {
 export const clearSelection = () => setState((s) => ({ ...s, ui: { ...s.ui, selection: new Set() } }));
 export const saveScroll = (chatId: string, top: number) =>
   setState((s) => ({ ...s, ui: { ...s.ui, scroll: { ...s.ui.scroll, [chatId]: top } } }));
-export const setRightShellOpenOverlay = (on: boolean) =>
-  setState((s) => ({ ...s, ui: { ...s.ui, rightShellOpenOverlay: on } }));
+export const setRightShellOpenOverlay = (on: boolean) => setState((s) => ({ ...s, ui: { ...s.ui, rightShellOpenOverlay: on } }));
 /** L only: persists `settings.window.rightShellOpen` (08-0 §A) through `settings:set`. */
 export function setRightShellOpenPersisted(on: boolean): void {
   setState((s) => ({
@@ -713,7 +701,14 @@ export function Segmented<V extends string>(props: {
   );
   return createElement(
     'div',
-    { role: 'radiogroup', 'aria-label': props.label, className: 'm1b-segmented', 'data-testid': props['data-testid'], 'data-state': props.value, onKeyDown: onKey },
+    {
+      role: 'radiogroup',
+      'aria-label': props.label,
+      className: 'm1b-segmented',
+      'data-testid': props['data-testid'],
+      'data-state': props.value,
+      onKeyDown: onKey,
+    },
     props.options.map((o) =>
       createElement(
         'button',
@@ -755,7 +750,9 @@ export function Menu(props: { open: boolean; label: string; items: MenuItem[]; o
   // A stable callback ref: focuses the first item once, when the menu mounts.
   const ref = useCallback((el: HTMLDivElement | null) => el?.querySelector<HTMLElement>('[role="menuitem"]')?.focus(), []);
   if (!props.open) return null;
-  const flat = props.items.flatMap((i) => (i.submenu ? [i, ...i.submenu.map((s) => ({ ...s, key: `${i.key}.${s.key}`, sub: true }))] : [i]));
+  const flat = props.items.flatMap((i) =>
+    i.submenu ? [i, ...i.submenu.map((s) => ({ ...s, key: `${i.key}.${s.key}`, sub: true }))] : [i],
+  );
   return createElement(
     'div',
     {

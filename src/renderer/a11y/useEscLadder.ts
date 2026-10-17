@@ -4,16 +4,7 @@
 // wherever focus is, in the ladder's order.
 import { useEffect } from 'react';
 import { TID } from '../../shared/testids';
-import {
-  A_TID,
-  back,
-  breakpointFor,
-  chatSearch,
-  clearSelection,
-  getState,
-  setDialog,
-  setXsPane,
-} from '../_m1b-stubs';
+import { A_TID, back, breakpointFor, chatSearch, clearSelection, getState, setDialog, setXsPane } from '../_m1b-stubs';
 import { closeFind } from '../shell/FindBar';
 import { modeFor, rightShellOpenNow, setRightShell } from '../shell/useRightShell';
 import { escRung, type EscRung, type EscState } from './escLadder';

@@ -21,7 +21,11 @@ export function GroupMembers({ chat }: { chat: ChatRow }) {
       </h2>
       <ul className={styles.list}>
         <li className={styles.row} data-row-id="you">
-          <Avatar faceRef={`letter:${(settings.user.firstName ?? you)[0]?.toUpperCase() ?? ''}`} name={settings.user.firstName ?? you} size={26} />
+          <Avatar
+            faceRef={`letter:${(settings.user.firstName ?? you)[0]?.toUpperCase() ?? ''}`}
+            name={settings.user.firstName ?? you}
+            size={26}
+          />
           <span className={styles.name}>{you}</span>
         </li>
         {members.map((h) => (

@@ -21,7 +21,10 @@ export function ShellKeys(): null {
       const key = e.key.toLowerCase();
       if (key === 'f' && !e.shiftKey) {
         e.preventDefault();
-        if (s.ui.findOpen) document.querySelector<HTMLElement>(`[data-testid="${TID.threadFindField}"] input, input[data-testid="${TID.threadFindField}"]`)?.focus();
+        if (s.ui.findOpen)
+          document
+            .querySelector<HTMLElement>(`[data-testid="${TID.threadFindField}"] input, input[data-testid="${TID.threadFindField}"]`)
+            ?.focus();
         else setFindOpen(true);
       } else if (key === 'd' && e.shiftKey) {
         e.preventDefault();

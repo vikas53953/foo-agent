@@ -37,7 +37,12 @@ export function KnowList({ chat }: { chat: ChatRow }) {
   const timeZone = settings.locale.timeZone;
 
   return (
-    <section className={section.section} data-testid={TID.appPanelKnow} data-empty={!total || undefined} aria-labelledby="app-panel-know-title">
+    <section
+      className={section.section}
+      data-testid={TID.appPanelKnow}
+      data-empty={!total || undefined}
+      aria-labelledby="app-panel-know-title"
+    >
       <h2 className={section.label} id="app-panel-know-title">
         {title}
       </h2>
@@ -67,7 +72,12 @@ export function KnowList({ chat }: { chat: ChatRow }) {
         </ul>
       )}
       {total > rows.length && (
-        <button type="button" className={section.link} data-testid={TID.appPanelKnowSeeAll} onClick={() => navigate({ kind: 'screen', id: 'memory' })}>
+        <button
+          type="button"
+          className={section.link}
+          data-testid={TID.appPanelKnowSeeAll}
+          onClick={() => navigate({ kind: 'screen', id: 'memory' })}
+        >
           {t('app.panel.know.see_all', { count: total })}
         </button>
       )}

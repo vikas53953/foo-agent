@@ -32,7 +32,16 @@ describe('Esc ladder (§3.9.4)', () => {
       xsChatView: true,
       focusInComposer: false,
     };
-    const order: (keyof EscState)[] = ['menuOpen', 'dialogOpen', 'selecting', 'findOpen', 'rightShellOpen', 'searchHasText', 'viewKind', 'xsChatView'];
+    const order: (keyof EscState)[] = [
+      'menuOpen',
+      'dialogOpen',
+      'selecting',
+      'findOpen',
+      'rightShellOpen',
+      'searchHasText',
+      'viewKind',
+      'xsChatView',
+    ];
     const seen: string[] = [];
     let s: EscState = all;
     for (let i = 0; i < order.length; i++) {

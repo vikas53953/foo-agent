@@ -34,7 +34,9 @@ export function focusPane(p: Pane): void {
       q(byTid(TID.threadLog))?.dispatchEvent(new CustomEvent(FOCUS_MESSAGES_EVENT));
       return;
     case 'composer':
-      return (q(`${byTid(A_TID.composerField)} textarea, ${byTid(A_TID.composerField)} [contenteditable="true"]`) ?? q(byTid(A_TID.composerField)))?.focus();
+      return (
+        q(`${byTid(A_TID.composerField)} textarea, ${byTid(A_TID.composerField)} [contenteditable="true"]`) ?? q(byTid(A_TID.composerField))
+      )?.focus();
     case 'right':
       return q(`${byTid(TID.appPanel)} [data-panel-title]`)?.focus();
   }

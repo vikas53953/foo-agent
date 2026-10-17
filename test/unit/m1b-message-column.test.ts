@@ -79,19 +79,54 @@ const msg = (over: Partial<MessageRow>): MessageRow => ({
 
 describe('virtual rows (§3.6.5, §3.6.7)', () => {
   it('one separator before the first message of each day; unread divider before the first unread', () => {
-    const ms = [msg({ id: 'a', createdAt: NOW - DAY }), msg({ id: 'b', createdAt: NOW - DAY + 60_000 }), msg({ id: 'c' }), msg({ id: 'd' })];
-    const rows = buildRows(ms, { now: NOW, timeZone: TZ, hasMore: true, unreadFromId: 'c', unreadCount: 2, chatTitle: 'Trips', chatCreatedAt: NOW, isFoo: false, agentName: 'foo' });
+    const ms = [
+      msg({ id: 'a', createdAt: NOW - DAY }),
+      msg({ id: 'b', createdAt: NOW - DAY + 60_000 }),
+      msg({ id: 'c' }),
+      msg({ id: 'd' }),
+    ];
+    const rows = buildRows(ms, {
+      now: NOW,
+      timeZone: TZ,
+      hasMore: true,
+      unreadFromId: 'c',
+      unreadCount: 2,
+      chatTitle: 'Trips',
+      chatCreatedAt: NOW,
+      isFoo: false,
+      agentName: 'foo',
+    });
     expect(rows.map((r) => (r.kind === 'message' ? r.message.id : r.kind))).toEqual(['date', 'a', 'b', 'date', 'unread', 'c', 'd']);
     expect(rows.find((r) => r.kind === 'unread')).toMatchObject({ label: '2 new messages' });
   });
   it('start of history: the start_of_chat marker comes first, before the first date separator', () => {
     const marker = msg({ id: 's', kind: 'marker', markerKind: 'start_of_chat', authorKind: 'system', text: '' });
-    const rows = buildRows([marker, msg({ id: 'x' })], { now: NOW, timeZone: TZ, hasMore: false, unreadFromId: null, unreadCount: 0, chatTitle: 'Trips', chatCreatedAt: NOW, isFoo: false, agentName: 'foo' });
+    const rows = buildRows([marker, msg({ id: 'x' })], {
+      now: NOW,
+      timeZone: TZ,
+      hasMore: false,
+      unreadFromId: null,
+      unreadCount: 0,
+      chatTitle: 'Trips',
+      chatCreatedAt: NOW,
+      isFoo: false,
+      agentName: 'foo',
+    });
     expect(rows.map((r) => r.kind)).toEqual(['start', 'date', 'message']);
     expect(rows[0]).toMatchObject({ label: 'Start of your chat with Trips · made Fri 16 Oct 2026' });
   });
   it("start of history without a stored marker still shows the line; foo's chat wording", () => {
-    const rows = buildRows([msg({ id: 'y' })], { now: NOW, timeZone: TZ, hasMore: false, unreadFromId: null, unreadCount: 0, chatTitle: 'foo', chatCreatedAt: NOW, isFoo: true, agentName: 'foo' });
+    const rows = buildRows([msg({ id: 'y' })], {
+      now: NOW,
+      timeZone: TZ,
+      hasMore: false,
+      unreadFromId: null,
+      unreadCount: 0,
+      chatTitle: 'foo',
+      chatCreatedAt: NOW,
+      isFoo: true,
+      agentName: 'foo',
+    });
     expect(rows[0]).toMatchObject({ kind: 'start', label: 'Start of your chat with foo' });
   });
   it('first unread: the earliest of the last n messages not from the user', () => {
@@ -106,6 +141,10 @@ describe('find in this chat (§3.6.3, local)', () => {
   it('case-insensitive matches in message order; empty query → none', () => {
     expect(findMatches(ms, 'goa').map((m) => m.messageId)).toEqual(['a', 'b']);
     expect(findMatches(ms, '  ')).toEqual([]);
+  });
+  it('searches message text only: cards and markers are skipped until 04/05 give them searchable text', () => {
+    const more = [...ms, msg({ id: 'k', kind: 'card', text: 'Goa card' }), msg({ id: 'x', kind: 'marker', text: 'goa marker' })];
+    expect(findMatches(more, 'goa').map((m) => m.messageId)).toEqual(['a', 'b']);
   });
   it('Enter = next, Shift+Enter = previous, wrapping', () => {
     expect(stepMatch(0, 2, 1)).toBe(1);

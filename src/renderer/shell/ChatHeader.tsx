@@ -45,7 +45,8 @@ const COMPACT_HEADER_W = 440;
 
 export function profileView(chat: ChatRow): View {
   if (chat.kind === 'group') return { kind: 'screen' as const, id: 'group-profile', params: { chatId: chat.id } };
-  if (chat.kind === 'helper' && chat.helperId) return { kind: 'screen' as const, id: 'helper-profile', params: { helperId: chat.helperId } };
+  if (chat.kind === 'helper' && chat.helperId)
+    return { kind: 'screen' as const, id: 'helper-profile', params: { helperId: chat.helperId } };
   return { kind: 'screen' as const, id: 'foo-profile' };
 }
 
@@ -94,9 +95,7 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
   const helper = chat.helperId ? helpers[chat.helperId] : undefined;
   const memberNames = useMemo(
     () =>
-      (chat.memberIds ?? [])
-        .map((id) => (id === 'foo' ? settings.identity.agentName : helpers[id]?.name))
-        .filter((n): n is string => !!n),
+      (chat.memberIds ?? []).map((id) => (id === 'foo' ? settings.identity.agentName : helpers[id]?.name)).filter((n): n is string => !!n),
     [chat.memberIds, helpers, settings.identity.agentName],
   );
   const quiet = quietUntil(settings.notifications.quiet, now, tz);
@@ -163,7 +162,12 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
       onSelect: () => void invoke('chat:pin', { chatId: chat.id, on: !chat.pinned }).catch(() => undefined),
     });
   if (liveJobsHere.length)
-    items.push({ key: 'stop', label: t('chat_header.menu.stop_all'), testid: TID.chatHeaderMenuStopAll, onSelect: () => setDialog('c-13b') });
+    items.push({
+      key: 'stop',
+      label: t('chat_header.menu.stop_all'),
+      testid: TID.chatHeaderMenuStopAll,
+      onSelect: () => setDialog('c-13b'),
+    });
   if (chat.kind === 'wa_mirror')
     items.push({
       key: 'catch',
@@ -176,8 +180,19 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
     });
   const destructive: MenuItem[] = [];
   if (chat.private)
-    destructive.push({ key: 'end', label: t('chat_header.menu.end_private'), testid: TID.chatHeaderMenuEndPrivate, onSelect: () => setDialog('c-23') });
-  else destructive.push({ key: 'clear', label: t('chat_header.menu.clear'), testid: TID.chatHeaderMenuClear, onSelect: () => setDialog('c-01') });
+    destructive.push({
+      key: 'end',
+      label: t('chat_header.menu.end_private'),
+      testid: TID.chatHeaderMenuEndPrivate,
+      onSelect: () => setDialog('c-23'),
+    });
+  else
+    destructive.push({
+      key: 'clear',
+      label: t('chat_header.menu.clear'),
+      testid: TID.chatHeaderMenuClear,
+      onSelect: () => setDialog('c-01'),
+    });
   if (chat.kind === 'helper' || chat.kind === 'group')
     destructive.push({
       key: 'delete',

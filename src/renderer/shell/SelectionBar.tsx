@@ -45,7 +45,13 @@ export function SelectionBar({ chatId, count }: { chatId: string; count: number 
         <Button variant="secondary" size="sm" disabled={count === 0} data-testid={TID.chatHeaderSelectionCopy} onClick={copy}>
           {copied ? t('chat_header.selection.copied') : t('chat_header.selection.copy')}
         </Button>
-        <Button variant="destructive" size="sm" disabled={count === 0} data-testid={TID.chatHeaderSelectionDelete} onClick={() => setDialog('c-25')}>
+        <Button
+          variant="destructive"
+          size="sm"
+          disabled={count === 0}
+          data-testid={TID.chatHeaderSelectionDelete}
+          onClick={() => setDialog('c-25')}
+        >
           {t('chat_header.selection.delete')}
         </Button>
         <IconButton

@@ -57,7 +57,8 @@ export function startLabel(o: Pick<BuildOpts, 'chatTitle' | 'chatCreatedAt' | 'i
 export function buildRows(messages: MessageRow[], o: BuildOpts): VRow[] {
   const rows: VRow[] = [];
   const startMarker = messages.find((m) => m.kind === 'marker' && m.markerKind === 'start_of_chat');
-  if (!o.hasMore) rows.push({ kind: 'start', key: startMarker ? startMarker.id : 'start', label: startLabel(o), messageId: startMarker?.id });
+  if (!o.hasMore)
+    rows.push({ kind: 'start', key: startMarker ? startMarker.id : 'start', label: startLabel(o), messageId: startMarker?.id });
   let lastDay = '';
   for (const m of messages) {
     if (m === startMarker) continue;
@@ -66,7 +67,8 @@ export function buildRows(messages: MessageRow[], o: BuildOpts): VRow[] {
       rows.push({ kind: 'date', key: `date-${k}`, label: dateLabel(m.createdAt, o), dayKey: k });
       lastDay = k;
     }
-    if (m.id === o.unreadFromId) rows.push({ kind: 'unread', key: 'unread', label: t('thread.unread_divider.text', { count: o.unreadCount }) });
+    if (m.id === o.unreadFromId)
+      rows.push({ kind: 'unread', key: 'unread', label: t('thread.unread_divider.text', { count: o.unreadCount }) });
     rows.push({ kind: 'message', key: m.id, message: m });
   }
   return rows;

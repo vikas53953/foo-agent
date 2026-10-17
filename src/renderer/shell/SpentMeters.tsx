@@ -61,7 +61,13 @@ export function SpentMeters() {
   );
 }
 
-function MeterRow(props: { tid: 'appPanelSpentAi' | 'appPanelSpentBuy'; label: string; spent: number; cap: number; name: (spent: string, cap: string) => string }) {
+function MeterRow(props: {
+  tid: 'appPanelSpentAi' | 'appPanelSpentBuy';
+  label: string;
+  spent: number;
+  cap: number;
+  name: (spent: string, cap: string) => string;
+}) {
   const m = meterState(props.spent, props.cap);
   const spent = formatInr(props.spent);
   const cap = formatInr(props.cap);
