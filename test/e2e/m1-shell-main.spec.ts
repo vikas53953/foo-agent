@@ -64,10 +64,8 @@ test('3.11.1 + FID-14 SV-15/SV-18/SV-29: 1440 wide shows 340 / 760 / 340 with th
   // SV-15: chat header 60 tall, aligned with the left header (same top and bottom y).
   const head = await box(page, byTid(TID.chatHeader));
   const left = await page.evaluate(() => {
-    const el =
-      document.querySelector('[data-testid="sidebar"] header') ??
-      document.querySelector('[data-testid="sidebar-new-helper"]')?.closest('header, [data-sidebar-header]') ??
-      null;
+    // The left header is the sidebar's first row (03-shell-1 §3.4.1: header 60 · search · chips · list · footer).
+    const el = document.querySelector('[data-testid="sidebar"] > div');
     const r = el?.getBoundingClientRect();
     return r ? { y: r.y, height: r.height } : null;
   });

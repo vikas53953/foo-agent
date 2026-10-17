@@ -2,6 +2,7 @@
 // 03-shell-2 §3.9), ART-29 (offline is one line with one fix button and nothing is lost; Art. 29, 03-shell-1 §3.3), §E PERF-03
 // (chat switch). spec/trace.csv routes these three ids to this file (FID-18); the other M1 specs name behaviours, not ids.
 // Runs on the demo and perf seeds (08-3 §22.9) in Electron.
+// Legacy mode: axe's default run opens a blank page for frame results, which Electron does not support (Target.createTarget).
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type ElectronApplication, type Page } from '@playwright/test';
 import type {} from '../../src/shared/ipc';
@@ -71,7 +72,7 @@ test('ART-26a: every M1 surface passes axe in light and dark (list, banner, chat
     // As m0-window.spec.ts: Linux CI has no desktop theme bridge, so the media query is emulated there.
     if (process.platform !== 'win32') await page.emulateMedia({ colorScheme: theme });
     await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
-    let axe = new AxeBuilder({ page });
+    let axe = new AxeBuilder({ page }).setLegacyMode(true);
     for (const s of scopes) axe = axe.include(s);
     const r = await axe.analyze();
     expect(r.violations.map((v) => `${theme} ${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`)).toEqual([]);
@@ -82,7 +83,7 @@ test('ART-26a: every M1 surface passes axe in light and dark (list, banner, chat
   await page.evaluate(() => window.__fooTest!.setOnline(false));
   await page.evaluate(() => window.__fooTest!.clock.advance(10_000));
   await expect(page.getByTestId(TID.bannerStrip)).toBeVisible();
-  const banner = await new AxeBuilder({ page }).include(byTid(TID.bannerStrip)).analyze();
+  const banner = await new AxeBuilder({ page }).setLegacyMode(true).include(byTid(TID.bannerStrip)).analyze();
   expect(banner.violations.map((v) => v.id)).toEqual([]);
   await app.close();
 });

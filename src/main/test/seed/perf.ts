@@ -48,6 +48,9 @@ export function seedPerf(db: Db, now: number): SeedResult {
   w.wipe();
   const refs: Record<string, string> = {};
   const start = now - 365 * DAY;
+  // messages.card_id has no index in the 08-1 §4.3 DDL, so with foreign keys on every card insert scans all messages for its
+  // deferred child row (O(n²) at 50,000 messages). The seed writes with the checks off and runs foreign_key_check after.
+  db.pragma('foreign_keys = OFF');
   db.transaction(() => {
     const colors = [
       '--h-terracotta',
@@ -177,6 +180,9 @@ export function seedPerf(db: Db, now: number): SeedResult {
       });
     }
   })();
+  db.pragma('foreign_keys = ON');
+  const broken = db.pragma('foreign_key_check') as unknown[];
+  if (broken.length) throw new Error(`perf seed broke ${broken.length} foreign keys`);
   const counts = w.finish(now);
   w.check();
   return { ...counts, refs };

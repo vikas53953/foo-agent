@@ -112,11 +112,27 @@ export class SeedWriter {
   private readonly seq = new Map<string, number>();
   private readonly last = new Map<string, { id: string; at: number }>();
 
-  constructor(
-    readonly db: Db,
-    seed = 1,
-  ) {
+  /** `db` with prepared statements cached by SQL text (the perf seed writes 50,000 rows through a handful of statements). */
+  readonly db: Db;
+  /** The uncached handle, for code outside the writer (it may toggle `pluck()` on its own statements). */
+  private readonly raw: Db;
+
+  constructor(db: Db, seed = 1) {
     this.rand = prng(seed);
+    this.raw = db;
+    const cache = new Map<string, ReturnType<Db['prepare']>>();
+    this.db = new Proxy(db, {
+      get(target, key) {
+        if (key === 'prepare')
+          return (sql: string) => {
+            let st = cache.get(sql);
+            if (!st) cache.set(sql, (st = target.prepare(sql)));
+            return st;
+          };
+        const v = Reflect.get(target, key, target) as unknown;
+        return typeof v === 'function' ? (v as (...a: unknown[]) => unknown).bind(target) : v;
+      },
+    });
   }
 
   /** IdGen(seed): UUIDv7 on the row's own time with PRNG randomness. */
@@ -422,16 +438,18 @@ export class SeedWriter {
   finish(now: number): { chats: number; messages: number } {
     // Seeds write side stories out of time order; a real chat's seq follows time, so renumber by created_at (two passes for
     // UNIQUE (chat_id, seq)).
-    const ids = this.db.prepare('SELECT id FROM messages WHERE chat_id = ? ORDER BY created_at, seq').pluck();
+    // Only rows whose seq is out of time order are touched (an UPDATE also rewrites the FTS row), so a seed written in time
+    // order, like `perf`, costs one read.
+    const rows = this.db.prepare('SELECT id, seq FROM messages WHERE chat_id = ? ORDER BY created_at, seq');
     const renum = this.db.prepare('UPDATE messages SET seq = ? WHERE id = ?');
     for (const chatId of this.seq.keys()) {
-      const list = ids.all(chatId) as string[];
-      list.forEach((id, i) => renum.run(1_000_000 + i + 1, id));
-      list.forEach((id, i) => renum.run(i + 1, id));
+      const moved = (rows.all(chatId) as { id: string; seq: number }[]).map((r, i) => ({ ...r, to: i + 1 })).filter((r) => r.seq !== r.to);
+      moved.forEach((r) => renum.run(1_000_000 + r.to, r.id));
+      moved.forEach((r) => renum.run(r.to, r.id));
     }
     const upd = this.db.prepare('UPDATE chats SET last_message_id = ?, next_seq = ? WHERE id = ?');
     for (const [chatId, m] of this.last) upd.run(m.id, (this.seq.get(chatId) ?? 0) + 1, chatId);
-    for (const id of this.db.prepare('SELECT id FROM chats').pluck().all() as string[]) recomputePill(this.db, id, now);
+    for (const id of this.db.prepare('SELECT id FROM chats').pluck().all() as string[]) recomputePill(this.raw, id, now);
     return { ...this.counts };
   }
 }
