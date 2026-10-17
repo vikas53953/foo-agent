@@ -1,7 +1,9 @@
 // Spec: 08-1 §3 (IPC contract: sender check + zod validation, `Result<T>` replies), §3.1 (platform info), §3.2 (the
 // invoke rows M1 builds), §3.3 (events are patches; every *Row carries its rev), 08-0 §B.5; 08-3 §22.8 (test:* refused
 // outside test runs, through ChannelGuard). M2 builder A: message:get/react/pin, files:open/showInFolder, job:details,
-// routine:pause and the gap channels message:edit/delete/retry, link:open, app:showEmojiPanel (implementation-notes).
+// routine:pause and the gap channels message:edit/delete/retry, link:open, app:showEmojiPanel (implementation-notes). M2
+// builder B: message:send (idempotent, AT-225; R1 secret re-check, 08-2 §11.4), composer:checkSecret, composer:saveDraft,
+// files:stage, voice:submit (04-2 §22.1), helper:pause (04-2 §23.2 "Turn on").
 import { app, BrowserWindow, ipcMain, net, shell, systemPreferences, type IpcMainEvent } from 'electron';
 import { z } from 'zod';
 import { t } from '../../shared/copy/t';
@@ -41,6 +43,12 @@ import {
   type ListContext,
   type MessageWriteResult,
 } from '../store/queries';
+import { newId } from '../../shared/ids';
+import { askedForCode, checkSecret } from '../../shared/redactor';
+import { Inbox } from '../data/inbox';
+import { draftAttachments, pauseHelper, saveDraft, sendMessage, submitVoice } from '../store/composerQueries';
+import { helperRow } from '../db/rows';
+import type { DbRow } from '../db/rows';
 import { ChannelGuard } from './guard';
 import { insideDir } from '../windows/protocol';
 import { isTrustedUrl } from '../windows/protocol';
@@ -120,6 +128,36 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'message:get': z.object({ messageId }).strict(),
   'message:react': z.object({ messageId, emoji, on: z.boolean() }).strict(),
   'message:pin': z.object({ messageId, on: z.boolean() }).strict(),
+  'message:send': z
+    .object({
+      chatId,
+      clientId: z.string().min(1).max(80),
+      text: z.string().max(40_000),
+      replyToId: messageId.optional(),
+      attachmentIds: z.array(z.string().min(1).max(80)).max(6).optional(),
+      secretOverride: z.boolean().optional(),
+    })
+    .strict(),
+  'composer:checkSecret': z.object({ text: z.string().max(200_000) }).strict(),
+  'composer:saveDraft': z
+    .object({
+      chatId,
+      text: z.string().max(40_000),
+      attachmentIds: z.array(z.string().min(1).max(80)).max(6),
+      replyToId: messageId.optional(),
+      linkPreviewRemoved: z.boolean(),
+    })
+    .strict(),
+  'files:stage': z
+    .object({
+      name: z.string().min(1).max(255),
+      bytes: z.custom<ArrayBuffer>((v) => v instanceof ArrayBuffer || ArrayBuffer.isView(v)),
+    })
+    .strict(),
+  'voice:submit': z
+    .object({ chatId, attachmentId: z.string().min(1).max(80), durationMs: z.number().int().min(0).max(3_600_000) })
+    .strict(),
+  'helper:pause': z.object({ helperId: z.string().min(1).max(80), on: z.boolean().optional() }).strict(),
   'message:edit': z.object({ messageId, text: z.string().min(1).max(20_000) }).strict(),
   'message:delete': z.object({ messageIds: z.array(messageId).min(1).max(500), confirm: z.literal(true) }).strict(),
   'message:retry': z.object({ messageId }).strict(),
@@ -272,6 +310,78 @@ export function registerIpc(ctx: AppContext): void {
     return ok(undefined);
   });
   handle('message:retry', ({ messageId: id }) => written(retryMessage(db, id)));
+
+  // ---------------------------------------------------------------- the composer (M2 builder B)
+  const inbox = new Inbox(ctx.dataDir);
+  /**
+   * 04 §3.3 / 04-2 §23.1: saved, but foo cannot hand it on (offline, AI down, signed out, at its limit, spend cap, or the
+   * chat's helper is paused).
+   */
+  const waiting = (chatId?: string) => {
+    if (chatId) {
+      const paused = db.prepare('SELECT h.paused FROM chats c JOIN helpers h ON h.id = c.helper_id WHERE c.id = ?').get(chatId) as
+        DbRow | undefined;
+      if (paused?.paused === 1) return true;
+    }
+    const ai = aiStatus(settings.get(), ctx.net.offline);
+    if (ai.state === 'offline' || ai.state === 'down' || ai.state === 'signed_out' || ai.state === 'limit') return true;
+    const spend = spendSummary(db, settings.get(), now());
+    return spend.aiBilling === 'key' && spend.aiSpentPaise !== null && spend.aiSpentPaise >= spend.aiCapPaise;
+  };
+  const recent = (id: string) => messageList(db, id, 20);
+  handle('message:send', (req) => {
+    const fromDraft = draftAttachments(db, req.chatId);
+    const r = sendMessage(db, req, {
+      now: now(),
+      newId: () => newId('m', now()),
+      waiting: waiting(req.chatId),
+      attachment: (id) => inbox.get(id) ?? fromDraft.find((a) => a.id === id),
+      askedForCode: askedForCode(recent(req.chatId), now()),
+    });
+    if (!r.ok) {
+      if (r.reason === 'secret') return { ok: false, error: { kind: 'SECRET_SUSPECTED', ...(r.paste ? { paste: r.paste } : {}) } };
+      return fail(r.reason === 'not_found' || r.reason === 'attachment_missing' ? 'NOT_FOUND' : 'VALIDATION', r.reason);
+    }
+    if (r.created) {
+      emit('message:upsert', r.row);
+      emitChat(req.chatId);
+    }
+    return ok({ messageId: r.messageId, queued: r.queued });
+  });
+  handle('composer:checkSecret', ({ text }) => ok(checkSecret(text)));
+  handle('composer:saveDraft', (req) => {
+    const r = saveDraft(db, req, {
+      now: now(),
+      newId: () => newId('dr', now()),
+      attachment: (id) => inbox.get(id) ?? draftAttachments(db, req.chatId).find((a) => a.id === id),
+    });
+    if (!r) return fail('NOT_FOUND');
+    if (r.changed) emitChat(req.chatId);
+    return ok(undefined);
+  });
+  handle('files:stage', ({ name, bytes }) => {
+    const view = bytes as unknown as ArrayBufferView;
+    const data = bytes instanceof ArrayBuffer ? new Uint8Array(bytes) : new Uint8Array(view.buffer, view.byteOffset, view.byteLength);
+    const id = newId('att', now());
+    const r = inbox.stage(id, name, data);
+    if (!r.ok) return fail(r.reason === 'too_big' ? 'FILE_TOO_BIG' : 'FILE_TYPE');
+    return ok({ attachmentId: id });
+  });
+  handle('voice:submit', ({ chatId: id, attachmentId, durationMs }) => {
+    if (durationMs < 500) return fail('VOICE_TOO_SHORT');
+    const messageId = newId('m', now());
+    const voicePath = inbox.moveToVoice(attachmentId, messageId);
+    if (!voicePath) return fail('NOT_FOUND');
+    const r = submitVoice(db, { chatId: id, messageId, voicePath, durationMs }, { now: now(), waiting: waiting(id) });
+    if (!r.ok) return fail(r.reason === 'too_short' ? 'VOICE_TOO_SHORT' : 'NOT_FOUND');
+    emit('message:upsert', r.row);
+    emitChat(id);
+    return ok({ messageId });
+  });
+  handle('helper:pause', ({ helperId, on }) => {
+    if (!pauseHelper(db, helperId, on ?? true)) return fail('NOT_FOUND');
+    return ok(helperRow(db.prepare('SELECT * FROM helpers WHERE id = ?').get(helperId) as DbRow));
+  });
   handle('files:open', async ({ path }) => {
     const file = insideDir(ctx.dataDir, path);
     if (!file) return fail('PATH_NOT_ALLOWED');

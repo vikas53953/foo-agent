@@ -5,7 +5,7 @@
 // 04 §6 (reply, edit, delete), §7 (Not sent → Try again), §8 (one reaction per person per bubble; picking another replaces
 // it), §9.1 (keep a voice note), §10.5 / §13.1 / §13.2 / §15 (expanding is permanent for that message), §17 (👍/👎 state).
 // The composer (builder B) calls insertOptimistic / confirmSent / failSend and reads `composer[chatId]` requests.
-import type { BadgeValue, MessageRow, WaMessageRow } from '../../shared/types';
+import type { BadgeValue, DraftRow, MessageRow, WaMessageRow } from '../../shared/types';
 import { invoke } from '../ipc/client';
 import { acceptRev } from './chats';
 import { update, useStore, type RootState } from './index';
@@ -48,6 +48,8 @@ export interface MessagesState {
   pendingLink: { url: string; shown: string; domain: string } | null;
   /** C-24 / C-25: the message ids the open delete confirm is about. */
   pendingDelete: string[];
+  /** 04-2 §23.5 (builder B): chat:open `draft`, for the composer to restore once. */
+  drafts: Record<string, DraftRow | null>;
 }
 
 export const initialMessages = (): MessagesState => ({
@@ -60,6 +62,7 @@ export const initialMessages = (): MessagesState => ({
   wa: {},
   pendingLink: null,
   pendingDelete: [],
+  drafts: {},
 });
 
 const emptyChat = (): ChatMessages => ({ ids: [], byId: {}, oldestSeq: null, hasMore: false, lastSeq: 0 });

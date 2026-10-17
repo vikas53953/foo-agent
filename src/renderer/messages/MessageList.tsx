@@ -421,8 +421,18 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | undefined;
     const reveal = () => {
-      const jobId = takeReveal(chat.id);
-      if (!jobId) return;
+      const target = takeReveal(chat.id);
+      if (!target) return;
+      if (target.kind === 'card') {
+        // 04-2 §23.4 (builder B): the pending strip's Show centres the card and focuses its row (the card group).
+        const at = rows.findIndex((r) => r.kind === 'message' && r.message.cardId === target.cardId);
+        if (at < 0) return;
+        v.scrollToIndex(at, { align: 'center' });
+        const row = () => scrollRef.current?.querySelector<HTMLElement>(`[data-index="${at}"][data-message-id]`);
+        timer = setTimeout(() => row()?.focus(), motion.slow);
+        return;
+      }
+      const { jobId } = target;
       const isCard = (r: VRow) => r.kind === 'message' && r.message.jobId === jobId && r.message.kind === 'card';
       const checklist = rows.findIndex((r) => isCard(r) && r.kind === 'message' && cards[r.message.cardId ?? '']?.type === 'checklist');
       const i = checklist >= 0 ? checklist : rows.findIndex(isCard);

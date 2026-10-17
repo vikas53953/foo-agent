@@ -51,10 +51,11 @@ import {
 import { backupNames, badgeSlot, bubbleName, canEdit, slotTooltip, tickLabel, tickState } from './bubbleState';
 import { Blocks, Inlines, SourcesRow } from './Markdown';
 import { HandoffMarker, SystemLine } from './Markers';
-import { allSources, inlineText, isRich, parseBlocks, parseWhatsApp, plainText, streamSafe } from './markdown';
+import { allSources, inlineText, isRich, parseBlocks, parseWhatsApp, plainText, streamSafe } from './markdownParse';
 import { menuEntries, type MenuAction, type MenuFacts } from './messageMenu';
 import { ReactionPicker } from './ReactionPicker';
 import { requestReveal } from './reveal';
+import { retryOutgoing } from '../composer/send';
 import { voiceTextState } from './voiceRules';
 import { tailCorners, type RowLayout } from './runs';
 import { emojiOnly, scriptLang } from './textRules';
@@ -243,7 +244,7 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
       case 'edit':
         return requestComposer(m.chatId, { kind: 'edit', messageId: m.id, at: clockNow() });
       case 'tryAgain':
-        return void retryMessage(m.id);
+        return void (m.pending && m.clientId ? retryOutgoing(m.clientId) : retryMessage(m.id));
       case 'good':
         return setFeedback(m.id, 'good');
       case 'bad':
@@ -383,7 +384,7 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
             )}
           </div>
         </div>
-        {notSent && <NotSentLine onRetry={() => void (m.pending ? undefined : retryMessage(m.id))} />}
+        {notSent && <NotSentLine onRetry={() => void (m.pending && m.clientId ? retryOutgoing(m.clientId) : retryMessage(m.id))} />}
         {layout.latestAnswer && !deleted && m.kind === 'text' && (
           <ActionRow messageId={m.id} text={text} canTryAgain={canTryAgain} onTryAgain={() => void retryMessage(m.id)} />
         )}

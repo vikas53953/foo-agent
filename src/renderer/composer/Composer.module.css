@@ -1,0 +1,756 @@
+/* Spec: 04-2 §20.2 (bar: --bg-app, 1px --line top, 12 top/bottom, the message column's width and side padding, row flex
+ * end with 8 gaps, stack above the row 8 apart; round buttons in 46px slots), §20.3 (pill: 46 min, 12/16 padding, --t-body,
+ * caret --accent, --r-composer, --bg-raised + 1px --line + --shadow-4, hover/focus --line-strong, ring on keyboard focus,
+ * grows to 6 lines then scrolls), §20.5 (inner stacks 8 apart, top padding 8), §21.1 ("+" 36, 1px --line, open fill
+ * --bg-pressed), §21.2 (morph fills, hover/pressed, --m-fast fill and --m-normal icon), §21.4 (chips: 72 image tiles, 56×240
+ * file chips, 24 remove circles at −6/−6, preparing scrim, failed --bad edge, 24px edge fade), §21.5 (preview row), §21.6
+ * (reply strip 52 with the 4px bar; edit strip 36), §22.1 (recording bar: dot 8, timer tabular, level bars 2/2 4–24, hint
+ * --t-small --fg-3), §22.4 (catch panel: --bg-raised, 1px --warn, --r-lg, 12/14, --shadow-16; the mask in --fg-2), §22.6
+ * (drop overlay: inset 16, 1.5px dashed --accent, --r-lg, --accent-soft; Bad style), §22.7 (notice 24 tall), §22.8 (mention
+ * popover 280, rows 40, 26 avatar), §23.2 (banner --banner-h, 0 12), §23.3 (disabled look), §23.4 (pending strip 40, 1.5px
+ * --accent, --r-md, --shadow-4), §23.6 (counter --t-caption tabular). 05-2 §5.9.3 motion (fade + rise 8 --m-slow). */
+.bar {
+  container-type: inline-size;
+  background: var(--bg-app);
+  border-top: 1px solid var(--line);
+  padding: var(--s2) 0;
+  --slot-h: calc(var(--t-body-lh) + 2 * var(--s2));
+}
+.column {
+  position: relative;
+  max-width: var(--column-max);
+  margin: 0 auto;
+  padding: 0 var(--s3);
+}
+@container (min-width: 900px) /* local: 03-shell-2 §3.6.4 breakpoint of the message column (no token) */ {
+  .column {
+    padding: 0 var(--s5);
+  }
+}
+.stack {
+  display: grid;
+  gap: var(--s1);
+  margin-bottom: var(--s1);
+}
+.row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--s1);
+}
+.slot {
+  flex: none;
+  display: flex;
+  align-items: center;
+  height: var(--slot-h);
+}
+
+/* ---- round buttons ("+", cancel, morph) ---- */
+.round {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--btn-round);
+  height: var(--btn-round);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-full);
+  background: transparent;
+  color: var(--fg-2);
+  cursor: default;
+  -webkit-app-region: no-drag;
+  transition:
+    background-color var(--m-fast) var(--ease-standard),
+    transform var(--m-fast) var(--ease-standard);
+}
+/* 02 F5: the 36 visual sits in a 40 hit area. */
+.round::after {
+  content: '';
+  position: absolute;
+  inset: calc((var(--btn-round) - var(--s7)) / 2);
+  border-radius: var(--r-full);
+}
+.round:active {
+  transform: scale(calc(1 - 0.03 * var(--motion-move, 1)));
+}
+.plus {
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.plus:hover {
+  background: var(--bg-hover);
+  color: var(--fg-1);
+}
+.plus:active,
+.plus[aria-expanded='true'] {
+  background: var(--bg-pressed);
+  color: var(--fg-1);
+}
+.cancelRec {
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--bad);
+}
+.cancelRec:hover {
+  background: var(--bg-hover);
+}
+.morph {
+  background: var(--fg-1);
+  color: var(--bg-app);
+}
+.morph:hover {
+  background: var(--fg-2);
+}
+.morph:active {
+  background: var(--fg-2);
+}
+.morph[data-state='send'],
+.morph[data-state='save_edit'],
+.morph[data-state='send_voice'] {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.morph[data-state='send']:hover,
+.morph[data-state='save_edit']:hover,
+.morph[data-state='send_voice']:hover {
+  background: var(--accent-hover);
+}
+.morph[data-state='send']:active,
+.morph[data-state='save_edit']:active,
+.morph[data-state='send_voice']:active {
+  background: var(--accent-pressed);
+}
+.morph[data-state='recording'] {
+  background: var(--bad);
+  color: var(--on-bad);
+}
+.round[aria-disabled='true'],
+.morph[data-state='disabled'] {
+  background: var(--bg-sunken);
+  color: var(--fg-disabled);
+  box-shadow: none;
+  transform: none;
+}
+.icon {
+  display: inline-flex;
+  animation: iconIn var(--m-normal) var(--ease-standard);
+}
+@keyframes iconIn {
+  from {
+    opacity: 0;
+  }
+}
+.hint {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + var(--s1));
+  z-index: var(--z-menu);
+  max-width: var(--tooltip-max);
+  padding: var(--s0) var(--s1);
+  border-radius: var(--r-sm);
+  background: var(--fg-1);
+  color: var(--bg-app);
+  font: var(--t-caption);
+  white-space: nowrap;
+}
+.morphWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+/* ---- the pill ---- */
+.pill {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  min-height: var(--slot-h);
+  padding: var(--s2) var(--s3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-composer);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-4);
+}
+:global([data-theme='dark']) .pill {
+  box-shadow: none;
+}
+.pill:hover,
+.pill:focus-within {
+  border-color: var(--line-strong);
+}
+.pill:has(.field:focus-visible) {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+.pill[data-stacked] {
+  padding-top: var(--s1);
+}
+.pill[data-disabled] {
+  background: var(--bg-sunken);
+  border-color: var(--line);
+  box-shadow: none;
+}
+.fieldWrap {
+  position: relative;
+  min-width: 0;
+}
+.field {
+  min-height: var(--t-body-lh);
+  max-height: calc(6 * var(--t-body-lh));
+  overflow-y: auto;
+  scrollbar-width: thin;
+  outline: none;
+  font: var(--t-body);
+  color: var(--fg-1);
+  caret-color: var(--accent);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  cursor: text;
+}
+.field:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.field[lang='hi'],
+.field[lang='pa'] {
+  font: var(--t-body-indic);
+}
+.placeholder {
+  position: absolute;
+  inset: 0 0 auto 0;
+  overflow: hidden;
+  font: var(--t-body);
+  color: var(--fg-3);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+.pill[data-disabled] .placeholder {
+  color: var(--fg-disabled);
+}
+.mask {
+  color: var(--fg-2);
+  user-select: all;
+}
+.mention {
+  font: var(--t-body-strong);
+  color: var(--mention-color, var(--fg-1));
+}
+:global([data-theme='dark']) .mention {
+  color: var(--fg-1);
+}
+
+/* ---- strips inside the pill ---- */
+.reply {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  height: calc(var(--s8) + var(--s0));
+  padding: var(--s1) var(--s2) var(--s1) var(--s3);
+  border-radius: var(--r-sm);
+  background: var(--bg-sunken);
+  overflow: hidden;
+}
+.replyBar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--s0);
+}
+.replyText {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+}
+.replySender {
+  font: var(--t-caption-strong);
+  text-transform: none;
+}
+:global([data-theme='dark']) .replySender[data-helper] {
+  color: var(--fg-1) !important;
+}
+.replyLine {
+  font: var(--t-small);
+  color: var(--fg-2);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.thumb {
+  flex: none;
+  width: var(--s7);
+  height: var(--s7);
+  border-radius: var(--r-xs);
+  object-fit: cover;
+}
+.edit {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  height: calc(var(--s7) - var(--s0));
+  padding: 0 var(--s0);
+  color: var(--fg-2);
+}
+.editLabel {
+  flex: 1;
+  font: var(--t-caption-strong);
+  text-transform: none;
+}
+/* 24 visual, 40 hit (U-5). */
+.close {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--s5);
+  height: var(--s5);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-full);
+  background: transparent;
+  color: var(--fg-2);
+  cursor: default;
+}
+.close::after {
+  content: '';
+  position: absolute;
+  inset: calc((var(--s5) - var(--s7)) / 2);
+}
+.close:hover {
+  background: var(--bg-hover);
+}
+
+/* ---- attachment chips ---- */
+.chips {
+  position: relative;
+  display: flex;
+  gap: var(--s1);
+  padding: var(--s1) var(--s1) 0 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  mask-image: linear-gradient(to right, black calc(100% - var(--s5)), transparent);
+}
+.chips:focus-visible {
+  border-radius: var(--r-md);
+}
+.chip {
+  position: relative;
+  flex: none;
+  border-radius: var(--r-md);
+}
+.chip[data-focused] {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+.imageChip {
+  display: block;
+  width: calc(var(--s9) + var(--s1));
+  height: calc(var(--s9) + var(--s1));
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  object-fit: cover;
+  background: var(--bg-sunken);
+}
+.fileChip {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  width: calc(6 * var(--s7));
+  height: calc(var(--s8) + var(--s1));
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r-md);
+  background: var(--bg-sunken);
+}
+.chip[data-failed] .fileChip,
+.chip[data-failed] .imageChip {
+  box-shadow: inset 0 0 0 1px var(--bad);
+}
+.fileIcon {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--s7);
+  height: var(--s7);
+  border-radius: var(--r-sm);
+  background: var(--bg-raised);
+  color: var(--fg-2);
+}
+.fileText {
+  min-width: 0;
+  display: grid;
+}
+.fileName {
+  font: var(--t-body-strong);
+  color: var(--fg-1);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.fileMeta {
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
+.preparing {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: inherit;
+  background: var(--scrim);
+}
+.failedIcon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--bad);
+}
+.chipRemove {
+  position: absolute;
+  top: calc(-1 * var(--s0) - var(--s-1));
+  right: calc(-1 * var(--s0) - var(--s-1));
+  display: grid;
+  place-items: center;
+  width: var(--s5);
+  height: var(--s5);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-full);
+  background: var(--fg-1);
+  color: var(--bg-app);
+  cursor: default;
+}
+.chipRemove::after {
+  content: '';
+  position: absolute;
+  inset: calc((var(--s5) - var(--s7)) / 2);
+}
+
+/* ---- link preview row ---- */
+.preview {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  height: calc(var(--s8) + var(--s1));
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r-md);
+  background: var(--bg-sunken);
+}
+.previewImg {
+  flex: none;
+  width: var(--s7);
+  height: var(--s7);
+  border-radius: var(--r-sm);
+  object-fit: cover;
+}
+.previewTitle {
+  font: var(--t-caption-strong);
+  text-transform: none;
+  color: var(--fg-1);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.previewDomain {
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+
+/* ---- recording bar ---- */
+.recPill {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--s2);
+}
+.dot {
+  flex: none;
+  width: var(--s1);
+  height: var(--s1);
+  border-radius: var(--r-full);
+  background: var(--bad);
+}
+.dot[data-cancel] {
+  background: var(--fg-3);
+}
+.timer {
+  flex: none;
+  font: var(--t-body);
+  color: var(--fg-1);
+  font-variant-numeric: tabular-nums;
+}
+.timer[data-warn] {
+  color: var(--warn);
+}
+.levels {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--s-1);
+  height: var(--s5);
+  overflow: hidden;
+}
+.level {
+  flex: none;
+  width: var(--s-1);
+  border-radius: var(--r-full);
+  background: var(--fg-2);
+}
+.recHint {
+  flex: none;
+  font: var(--t-small);
+  color: var(--fg-3);
+  white-space: nowrap;
+}
+.recHint[data-cancel] {
+  color: var(--bad);
+}
+
+/* ---- strip slot: catch panel, notice, banner, pending strip ---- */
+.catch {
+  display: grid;
+  gap: var(--s1);
+  padding: var(--s2) calc(var(--s3) - var(--s-1));
+  border: 1px solid var(--warn);
+  border-radius: var(--r-lg);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-16);
+  animation: rise var(--m-slow) var(--ease-in);
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--s1) * var(--motion-move, 1)));
+  }
+}
+.catchTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  font: var(--t-body-strong);
+  color: var(--fg-1);
+}
+.warnIcon {
+  display: inline-flex;
+  color: var(--warn);
+}
+.catchBody {
+  margin: 0;
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.catchButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+  margin-top: var(--s0);
+}
+.noticeRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--s5);
+}
+.notice {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  font: var(--t-small);
+  color: var(--fg-1);
+}
+.notice [data-icon] {
+  flex: none;
+}
+.noticeBad {
+  display: inline-flex;
+  color: var(--bad);
+}
+.noticeInfo {
+  display: inline-flex;
+  color: var(--accent);
+}
+.counter {
+  margin-left: auto;
+  font: var(--t-caption);
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+}
+.counter[data-over] {
+  color: var(--bad);
+}
+.banner {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  height: var(--banner-h);
+  padding: 0 var(--s2);
+  border-radius: var(--r-md);
+  font: var(--t-small);
+  color: var(--fg-1);
+}
+.banner[data-tone='warn'] {
+  background: var(--warn-soft);
+}
+.banner[data-tone='info'] {
+  background: var(--accent-soft);
+}
+.bannerIcon {
+  display: inline-flex;
+  flex: none;
+}
+.banner[data-tone='warn'] .bannerIcon {
+  color: var(--warn);
+}
+.banner[data-tone='info'] .bannerIcon {
+  color: var(--accent);
+}
+.bannerText {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.pending {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  height: var(--banner-h);
+  padding: 0 var(--s2);
+  border: 1.5px solid var(--accent);
+  border-radius: var(--r-md);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-4);
+  font: var(--t-small);
+  color: var(--fg-1);
+  cursor: default;
+}
+.pendingIcon {
+  display: inline-flex;
+  flex: none;
+  color: var(--warn);
+}
+.pendingIcon[data-gated] {
+  color: var(--accent);
+}
+.pendingText {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.timeLeft {
+  flex: none;
+  font: var(--t-caption);
+  color: var(--warn);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- mention popover ---- */
+.mentionMenu {
+  position: fixed;
+  z-index: var(--z-menu);
+  width: calc(7 * var(--s7));
+  max-height: calc(6 * var(--s7) + 2 * var(--s0));
+  overflow-y: auto;
+  padding: var(--s0);
+  border-radius: var(--r-md);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-16);
+}
+.mentionRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  height: var(--s7);
+  padding: 0 var(--s1);
+  border-radius: var(--r-sm);
+}
+.mentionRow[aria-selected='true'] {
+  background: var(--bg-hover);
+}
+.mentionName {
+  font: var(--t-body-strong);
+  color: var(--fg-1);
+}
+.mentionJob {
+  min-width: 0;
+  font: var(--t-small);
+  color: var(--fg-2);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.mentionEmpty {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--s7);
+  padding: 0 var(--s1);
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+
+/* ---- drop overlay ---- */
+.drop {
+  position: absolute;
+  /* Portalled into the main shell: its grid area is the list and composer rows, below the header (§22.6). */
+  grid-row: 2 / -1;
+  grid-column: 1;
+  inset: var(--s3);
+  z-index: var(--z-dropzone);
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--s0);
+  border: 1.5px dashed var(--accent);
+  border-radius: var(--r-lg);
+  background: var(--accent-soft);
+  text-align: center;
+  pointer-events: none;
+  animation: fade var(--m-normal) var(--ease-standard);
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+.drop[data-bad] {
+  border-color: var(--bad);
+  background: var(--bad-soft);
+}
+.dropIcon {
+  display: inline-flex;
+  margin-bottom: var(--s0);
+  color: var(--accent);
+}
+.dropTitle {
+  font: var(--t-title);
+  color: var(--accent);
+}
+.drop[data-bad] .dropTitle,
+.drop[data-bad] .dropIcon {
+  color: var(--bad);
+}
+.dropSub {
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

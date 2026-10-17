@@ -27,6 +27,17 @@ export type BadgeValue = 'seen' | 'working' | 'waiting' | 'done' | 'done_unverif
 export type BannerType =
   'offline' | 'ai_not_answering' | 'ai_signed_out' | 'ai_cap' | 'plan_limit' | 'notifications_blocked' | 'update_ready';
 export type TickState = 'waiting' | 'sent' | 'delivered' | 'read' | 'not_sent';
+/** 08-0 §B.2 (D-3): the composer's own banners (04-2 §23.2). */
+export type ComposerBannerType = 'mic_blocked' | 'no_mic' | 'mic_busy' | 'helper_paused';
+/** 08-0 §B.2 (D-4): `composer-send` data-state, in the order of the 04-2 §21.2 checks. */
+export type RoundButtonState = 'disabled' | 'save_edit' | 'send_voice' | 'recording' | 'send' | 'stop' | 'mic';
+/** 08-0 §B.3 / 08-5 §3.4 (04-2 §22.4): a caught secret; the mask is always exactly "••••". */
+export interface PasteCatch {
+  start: number;
+  end: number;
+  kind: 'ai_key' | 'web_key' | 'card' | 'otp' | 'password' | 'token';
+  mask: '••••';
+}
 export type Mood =
   | 'resting'
   | 'waking'
@@ -496,6 +507,11 @@ export type ErrorKind =
   | 'LIVE_UNAVAILABLE'
   | 'PATH_NOT_ALLOWED'
   | 'URL_NOT_ALLOWED'
+  // M2 builder B (08-1 §3.2 message:send, files:stage, voice:submit)
+  | 'SECRET_SUSPECTED'
+  | 'FILE_TOO_BIG'
+  | 'FILE_TYPE'
+  | 'VOICE_TOO_SHORT'
   | 'UNKNOWN';
 
 // ---- card payloads (08-5 §4.1) the M2 cards draw ----

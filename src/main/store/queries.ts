@@ -407,7 +407,7 @@ export function chatRows(db: Db, ctx: ListContext, ids: string[] | null = null):
     const row: ChatRow = {
       ...rest,
       pill,
-      lastLine: clip(draft ? `${ctx.draftPrefix} ${plainLine(draft).split('\n')[0]}` : lastText),
+      lastLine: clip(draft ? `${ctx.draftPrefix} ${plainLine(draft.trimStart().split('\n')[0] ?? '')}` : lastText),
       lastTime: base.lastActivityAt,
       hasDraft: draft !== undefined,
       face: base.avatarRef ?? helper?.face ?? (base.kind === 'foo' ? 'living:default' : `letter:${firstGrapheme(base.title)}`),

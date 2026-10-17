@@ -3,7 +3,15 @@
 // §10.9 (emoji-only), §2 / §12.2 (script lang), §10.5 (Read more), §10.3 (voice: waveform, speed, transcript state),
 // 05-3 §5.22 (table card cells and copy), 02-2 §F13.3 (row estimates).
 import { describe, expect, it } from 'vitest';
-import { allSources, isRich, parseBlocks, parseInline, parseWhatsApp, plainText, streamSafe } from '../../src/renderer/messages/markdown';
+import {
+  allSources,
+  isRich,
+  parseBlocks,
+  parseInline,
+  parseWhatsApp,
+  plainText,
+  streamSafe,
+} from '../../src/renderer/messages/markdownParse';
 import {
   READ_MORE_OVER_LINES,
   emojiOnly,

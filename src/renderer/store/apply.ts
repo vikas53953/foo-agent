@@ -125,6 +125,7 @@ export function loadChat(chatId: string, force = false): Promise<void> {
       update((s) => {
         loadMessagesReducer(s.messages, chatId, r.value.messages, FIRST_PAGE);
         if (r.value.waMessages) s.messages.wa[chatId] = r.value.waMessages;
+        s.messages.drafts[chatId] = r.value.draft;
         for (const c of r.value.cards) upsertCardReducer(s.cards, c);
         for (const j of r.value.jobs) upsertJobReducer(s.jobs, j);
       });

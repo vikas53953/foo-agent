@@ -17,6 +17,7 @@ import type {
   MemoryFactView,
   MemoryFilter,
   MessageRow,
+  PasteCatch,
   ProviderId,
   PublicSettings,
   RoutineRow,
@@ -58,6 +59,19 @@ export interface Invokes {
   'message:get': { req: { messageId: string }; res: MessageRow };
   'message:react': { req: { messageId: string; emoji: string; on: boolean }; res: void };
   'message:pin': { req: { messageId: string; on: boolean }; res: void };
+  /** M2 builder B: idempotent on `(chatId, clientId)` (AT-225); `SECRET_SUSPECTED` carries the PasteCatch in `error.paste`. */
+  'message:send': {
+    req: { chatId: string; clientId: string; text: string; replyToId?: string; attachmentIds?: string[]; secretOverride?: boolean };
+    res: { messageId: string; queued: boolean };
+  };
+  'composer:checkSecret': { req: { text: string }; res: PasteCatch | null };
+  'composer:saveDraft': {
+    req: { chatId: string; text: string; attachmentIds: string[]; replyToId?: string; linkPreviewRemoved: boolean };
+    res: void;
+  };
+  'files:stage': { req: { name: string; bytes: ArrayBuffer }; res: { attachmentId: string } };
+  'voice:submit': { req: { chatId: string; attachmentId: string; durationMs: number }; res: { messageId: string } };
+  'helper:pause': { req: { helperId: string; on?: boolean }; res: HelperRow };
   /** Not in 08-1 §3.2 (gap, implementation-notes "M2 (builder A)"): 04 §6.2 edit of the user's last message. */
   'message:edit': { req: { messageId: string; text: string }; res: MessageRow };
   /** Not in 08-1 §3.2 (gap): 04 §6.3 / §1.9 delete after C-24 / C-25 (soft delete; the row stays as the deleted state). */
@@ -129,6 +143,12 @@ export const INVOKE_CHANNELS = [
   'message:get',
   'message:react',
   'message:pin',
+  'message:send',
+  'composer:checkSecret',
+  'composer:saveDraft',
+  'files:stage',
+  'voice:submit',
+  'helper:pause',
   'message:edit',
   'message:delete',
   'message:retry',

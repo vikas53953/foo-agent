@@ -18,7 +18,7 @@ import { expand, selectExpanded } from '../store/messages';
 import { useStore } from '../store/index';
 import { mediaUrl, useBubble } from './bubbleContext';
 import { copyText, mapsUrl, openLink, openUrl, prefillCalendar, prefillWriteEmail } from './linkActions';
-import { domainOf, inlineText, type Block, type Inline, type Source } from './markdown';
+import { domainOf, inlineText, type Block, type Inline, type Source } from './markdownParse';
 import type { AutoKind } from './textRules';
 import styles from './Markdown.module.css';
 

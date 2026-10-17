@@ -1,6 +1,7 @@
 // Spec: 03-shell-1 §3.5 (main shell: --bg-app, no wallpaper; header 60 · optional find bar 52 · message list · composer;
 // <main aria-label="Chat with {name}">; chat switch budget, skeleton, error state), 03-shell-2 §3.6.1 (composer row reserved:
-// a separate grid row whose height 04 sets; the shell assumes none), §3.6.2–§3.6.7. The lead mounts this in A's shell grid.
+// a separate grid row whose height 04 sets; the shell assumes none), §3.6.2–§3.6.7. The lead mounts this in A's shell grid. 04-2 §20.2: the composer (M2 builder B) fills the reserved row;
+// §22.6: the drop overlay is positioned over the list and composer rows (so `main` is the positioning box).
 import { useState } from 'react';
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
@@ -11,6 +12,7 @@ import { selectFindOpen } from '../store/ui';
 import { Button } from '../ui/Button';
 import { Icon } from '../ui/Icon';
 import { Skeleton } from '../ui/Skeleton';
+import { Composer } from '../composer/Composer';
 import { MessageList } from '../messages/MessageList';
 import { ChatHeader } from './ChatHeader';
 import { FindBar, FindProvider } from './FindBar';
@@ -42,7 +44,9 @@ function ChatView({ chat }: { chat: ChatRow }) {
           {open.state === 'skeleton' && <ThreadSkeleton />}
           {open.state === 'error' && <ThreadError onRetry={open.retry} />}
         </div>
-        <div className={styles.composer} data-composer-row />
+        <div className={styles.composer} data-composer-row>
+          <Composer chat={chat} />
+        </div>
       </main>
     </FindProvider>
   );
