@@ -1,19 +1,19 @@
 {
-  "reportId": "M1-bdc197c-39069549312",
-  "milestone": "M1",
-  "generatedAt": "2026-10-17T21:12:48.829Z",
-  "commit": "cb88577c672cdffb488aad75daeeb864ac330fdb",
-  "head": "bdc197c4f5e623911cf95b679c4e0ac16435aec2",
+  "reportId": "M2-7b7c329-39071405346",
+  "milestone": "M2",
+  "generatedAt": "2026-10-17T21:42:35.057Z",
+  "commit": "5467d3ac09cca5031f59adc7eb8d8d91df9be6db",
+  "head": "7b7c32972d7ea325cb839c755330c0af21356c59",
   "ci": {
-    "runId": "39069549312",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39069549312"
+    "runId": "39071405346",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39071405346"
   },
   "spec": {
     "version": "spec-v1.0",
-    "setSha256": "c40a35f3b44a250077cd2359dc2b1357eadbfa95fbfbe2c411a01ee16138c09d"
+    "setSha256": "bdc78d947d21463e6888f8c5e8f4614185d38f6481de1257c328270dfcff0618"
   },
   "runner": {
-    "recordedAt": "2026-10-17T21:09:58.235Z",
+    "recordedAt": "2026-10-17T21:36:45.370Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000002808"
+      "runner": "GitHub Actions 1000002809"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,13 +59,15 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "6 test(s) failed",
-    "7 audit item(s) not DONE (the milestone is not complete)"
+    "11 test(s) failed",
+    "12 Tier R step(s) failed",
+    "FID-14 rows failed: SV-10, SV-30",
+    "10 audit item(s) not DONE (the milestone is not complete)"
   ],
   "missingInputs": [],
   "forVikas": {
     "tryNow": [
-      "M1: 1 of 20 drawings match; open the side-by-side rows below."
+      "M2: 1 of 20 drawings match; open the side-by-side rows below."
     ],
     "changed": [
       "1 picture(s) differ a little from the drawing and need your look (Review rows)."
@@ -74,155 +76,130 @@
   },
   "audit": [
     {
-      "group": "M0b harness",
-      "item": "Reference drawings vendored and hashed (spec/refs/bp, spec/refs/ux; CR-0001)",
-      "status": "DONE",
-      "evidence": "test:FID-01",
-      "resolved": "DONE"
-    },
-    {
-      "group": "M0b harness",
-      "item": "golden/manifest.json: 245 UX steps from window.__STEPS, 20 BP ids for M1",
-      "status": "DONE",
-      "evidence": "test:golden manifest",
-      "resolved": "DONE"
-    },
-    {
-      "group": "M0b harness",
-      "item": "M1 Blueprint references rendered on the golden lane",
+      "group": "M2 Goal",
+      "item": "Both bubble types and every message state rendered from the store, smooth at 5,000 messages",
       "status": "UNVERIFIABLE",
-      "evidence": "refs",
-      "resolved": "DONE"
-    },
-    {
-      "group": "M0b harness",
-      "item": "FID-03 two renders byte-identical",
-      "status": "UNVERIFIABLE",
-      "evidence": "determinism",
-      "resolved": "DONE"
-    },
-    {
-      "group": "M0b harness",
-      "item": "FID-04 runner identity recorded (pinned image not chosen yet)",
-      "status": "UNVERIFIABLE",
-      "evidence": "runner",
-      "resolved": "DONE"
-    },
-    {
-      "group": "M0b harness",
-      "item": "FID-14 live rows SV-16, SV-37, SV-38 in the app",
-      "status": "UNVERIFIABLE",
-      "evidence": "fid14",
-      "resolved": "DONE"
-    },
-    {
-      "group": "M0b harness",
-      "item": "Test hooks window.__fooTest and test:* channels (08-3 §22)",
-      "status": "UNVERIFIABLE",
-      "evidence": "test:test hooks",
+      "evidence": "test:PERF-04",
       "resolved": "NOT DONE"
     },
     {
-      "group": "M0b harness",
-      "item": "FID-18 trace matrix consistent",
+      "group": "M2 Goal",
+      "item": "The paste catcher blocks secrets at the composer",
       "status": "UNVERIFIABLE",
-      "evidence": "test:FID-18",
+      "evidence": "test:AT-007",
       "resolved": "DONE"
     },
     {
-      "group": "M0b harness",
-      "item": "Tier R scoring and FID-05 cluster rule (unit-tested on synthetic images)",
+      "group": "M2 Constitution",
+      "item": "04 §1–§19 · 04-2 §20–§27 · 05 §5.9, §5.22–§5.25 · Art. 8, 16, 23, 26, 28",
       "status": "UNVERIFIABLE",
-      "evidence": "test:Tier R thresholds",
-      "resolved": "DONE"
-    },
-    {
-      "group": "M0b harness",
-      "item": "copy.json extraction, FID-07/09/10 runtime copy check",
-      "status": "NOT DONE",
-      "note": "scheduled M1",
-      "resolved": "NOT DONE"
-    },
-    {
-      "group": "M0b harness",
-      "item": "state-machines.json, FID-16/17",
-      "status": "NOT DONE",
-      "note": "scheduled M4",
-      "resolved": "NOT DONE"
-    },
-    {
-      "group": "M0b harness",
-      "item": "UX-08-01 wiring sample (plan M0)",
-      "status": "NOT DONE",
-      "note": "needs the chat UI; scheduled M2 with UX-08",
-      "resolved": "NOT DONE"
-    },
-    {
-      "group": "M0b harness",
-      "item": "spec-v1.0 git tag",
-      "status": "NOT DONE",
-      "note": "tag push returned 403 from the build environment; owed by the spec keeper",
-      "resolved": "NOT DONE"
-    },
-    {
-      "group": "M1 Goal",
-      "item": "WhatsApp-style frame with real data from SQLite: chat list, headers, banner strip, right shell sections, keyboard and Narrator for the shell",
-      "status": "DONE",
-      "evidence": "test:3.11.1",
-      "resolved": "DONE"
-    },
-    {
-      "group": "M1 Constitution",
-      "item": "03-shell-1 §3.3, §3.4, §3.5 · 03-shell-2 §3.6–§3.10 · 08-1 §3, §4 · Art. 25, 26, 29 · X-07, X-09, X-19",
-      "status": "DONE",
       "evidence": "test:ART-26a",
       "resolved": "NOT DONE"
     },
     {
-      "group": "M1 Create",
-      "item": "renderer/shell/*, renderer/ui/*, renderer/store/{chats,settings,ui}.ts, renderer/ipc/*, renderer/a11y/*",
+      "group": "M2 Create",
+      "item": "renderer/messages/*, renderer/composer/*, renderer/cards/{TableCard,FileCard,LinkPreview,PlaceCard}.tsx, renderer/store/messages.ts, messages.* and composer.* copy keys",
       "status": "DONE",
       "resolved": "DONE"
     },
     {
-      "group": "M1 Create",
-      "item": "main/ipc/IpcRouter.ts (chat channels), store/queries.ts (chat list, bootstrap ≤ 200 KB)",
+      "group": "M2 Create",
+      "item": "Secret patterns shared with the paste catcher (08-0 §E path src/shared/redactor.ts over the plan's engine/redact/patterns.ts)",
       "status": "DONE",
+      "evidence": "test:ART-08b",
       "resolved": "DONE"
     },
     {
-      "group": "M1 Create",
-      "item": "test/seed/perf.ts (200 chats, 50,000 messages), test/seed/ux-world.ts, test/components/shell.*",
+      "group": "M2 Create",
+      "item": "Voice capture to {DATA}\\data\\voice\\*.webm (transcription in M11)",
       "status": "DONE",
+      "note": "WebM Opus as the plan says; 04-2 §22.1 says Ogg Opus: proposal P2 in CR-0003 for the spec keeper.",
       "resolved": "DONE"
     },
     {
-      "group": "M1 Must pass",
-      "item": "10-2 §C.2 rows (shell) with U-1…U-10",
-      "status": "DONE",
-      "evidence": "test:3.11.8",
+      "group": "M2 Must pass",
+      "item": "AT-007",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-007",
       "resolved": "DONE"
     },
     {
-      "group": "M1 Must pass",
-      "item": "ART-26a (shell) · ART-29 · PERF-01 (with seed data) · PERF-03 smoke",
-      "status": "DONE",
-      "evidence": "test:PERF-03",
+      "group": "M2 Must pass",
+      "item": "AT-225 (message:send idempotent on clientId)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-225",
       "resolved": "DONE"
     },
     {
-      "group": "M1 Fidelity exit",
-      "item": "Tier R for BP-APP-L/M/R and BP-ANAT-* with no Fail; blessed into Tier B",
+      "group": "M2 Must pass",
+      "item": "ART-08b (every C8 pattern caught, ≤ 1 false positive in 200)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-08b",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M2 Must pass",
+      "item": "PERF-02 (typing < 16 ms with the 5,000-message chat)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:PERF-02",
+      "resolved": "NOT DONE"
+    },
+    {
+      "group": "M2 Must pass",
+      "item": "PERF-04 (60 fps scroll, bounded DOM)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:PERF-04",
+      "resolved": "NOT DONE"
+    },
+    {
+      "group": "M2 Must pass",
+      "item": "ART-21a (rendered thread; bubble meta exemption)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-21a · the rendered thread",
+      "resolved": "NOT DONE"
+    },
+    {
+      "group": "M2 Must pass",
+      "item": "ART-26a (messages, composer)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-26a · ",
+      "resolved": "NOT DONE"
+    },
+    {
+      "group": "M2 Must pass",
+      "item": "10-2 §C.3 rows (messages, composer)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:Enter sends",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M2 Fidelity exit",
+      "item": "Tier R for UX-08 (all 7) with no Fail; blessed into Tier B",
       "status": "PARTIAL",
-      "note": "Tier R ran on all 17 drawn refs with no Fail: R1/R2 are disputed under CR-0002 (approved by Vikas 2026-10-17), the rest pass or Review. Diagram-only BP-ANAT-M/S/XS are covered by 3.11.2/3.11.3. Blessing into Tier B waits for the spec keeper to redraw the M1 Blueprint parts (CR-0002).",
+      "note": "UX-08-01 and 03–07 are captured from the seeded chapter 8 scene (test/fidelity/ux/UX-08.chat.spec.ts). UX-08-02 (typing face, Stop while foo replies) needs the engine's reply stream: scheduled M3 (CR-0003). R1 is disputed under CR-0003; UX-08-07 also R2.",
       "resolved": "PARTIAL"
     },
     {
-      "group": "M1 Fidelity exit",
-      "item": "FID-14 rows SV-13–18, 23–25, 29, 32",
-      "status": "DONE",
+      "group": "M2 Fidelity exit",
+      "item": "Tier R for the UX-09 steps not needing transcription (UX-09-01, UX-09-08)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:UX-09 · Voice notes",
+      "note": "R1 disputed under CR-0003 (UX-09-08 also R2: the written spec puts the microphone problem in the composer banner).",
+      "resolved": "NOT DONE"
+    },
+    {
+      "group": "M2 Fidelity exit",
+      "item": "Tier R for BP-MSG-* and BP-COMP-* with no Fail",
+      "status": "PARTIAL",
+      "note": "11 of 13 drawn ids are captured (test/fidelity/bp/BP-messages.spec.ts); BP-MSG-02 and BP-COMP-03 need the reply stream: M3. R1/R2 disputed under CR-0003 (350px minis with glyph icons and their own words).",
+      "resolved": "PARTIAL"
+    },
+    {
+      "group": "M2 Fidelity exit",
+      "item": "FID-14 rows SV-01–12, 26, 30",
+      "status": "UNVERIFIABLE",
       "evidence": "fid14",
-      "resolved": "DONE"
+      "resolved": "NOT DONE"
     }
   ],
   "copy": {
@@ -236,6 +213,110 @@
     "fid11": "DONE",
     "fid12": "DONE",
     "fid14": [
+      {
+        "id": "SV-13",
+        "ok": true,
+        "expected": "height 72 (±0.5)",
+        "measured": "323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72"
+      },
+      {
+        "id": "SV-14",
+        "ok": true,
+        "expected": "width 48 × height 48 (±0.5)",
+        "measured": "48×48, 48×48, 48×48, 48×48, 48×48, 48×48, 48×48, 48×48"
+      },
+      {
+        "id": "SV-17",
+        "ok": true,
+        "expected": "width 340 (±0.5)",
+        "measured": "340×868"
+      },
+      {
+        "id": "SV-23",
+        "ok": true,
+        "expected": "min-height: 40px",
+        "measured": "all equal"
+      },
+      {
+        "id": "SV-24",
+        "ok": true,
+        "expected": "height 36 (±0.5)",
+        "measured": "307×36"
+      },
+      {
+        "id": "SV-25",
+        "ok": true,
+        "expected": "≥ width 40 × height 40 (±0.5)",
+        "measured": "122.125×40, 40×40, 40×40, 91.078125×40, 79.140625×40, 52.515625×40, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 271×42, 40×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40"
+      },
+      {
+        "id": "SV-15",
+        "ok": true,
+        "expected": "60px",
+        "measured": "60px"
+      },
+      {
+        "id": "SV-15",
+        "ok": true,
+        "expected": "60px; aligned",
+        "measured": "chat header 32+60; left header 32+60"
+      },
+      {
+        "id": "SV-18",
+        "ok": true,
+        "expected": "width 340 (±0.5)",
+        "measured": "340×868"
+      },
+      {
+        "id": "SV-29",
+        "ok": true,
+        "expected": "background-color: rgb(255, 255, 255)",
+        "measured": "all equal"
+      },
+      {
+        "id": "SV-29",
+        "ok": true,
+        "expected": "background-color: rgb(13, 13, 17)",
+        "measured": "all equal",
+        "note": "dark"
+      },
+      {
+        "id": "SV-10",
+        "ok": false,
+        "expected": "height 46 (±0.5)",
+        "measured": "640×48"
+      },
+      {
+        "id": "SV-11",
+        "ok": true,
+        "expected": "border-top-left-radius: 24px; border-top-right-radius: 24px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px",
+        "measured": "all equal"
+      },
+      {
+        "id": "SV-12",
+        "ok": true,
+        "expected": "width 36 × height 36 (±0.5)",
+        "measured": "36×36, 36×36"
+      },
+      {
+        "id": "SV-26",
+        "ok": true,
+        "expected": "color: rgb(105, 105, 117)",
+        "measured": "all equal"
+      },
+      {
+        "id": "SV-30",
+        "ok": false,
+        "expected": "transition-duration: 0.083s (background-color)",
+        "measured": "background-color, transform 0.2s, 0.2s; background-color, transform 0.2s, 0.2s"
+      },
+      {
+        "id": "SV-26",
+        "ok": true,
+        "expected": "color: rgb(142, 142, 154)",
+        "measured": "all equal",
+        "note": "dark"
+      },
       {
         "id": "SV-16",
         "ok": true,
@@ -259,13 +340,13 @@
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 1496,
+        "passed": 1502,
         "failed": 0,
         "skipped": 0
       },
       "e2e": {
-        "passed": 25,
-        "failed": 6,
+        "passed": 26,
+        "failed": 11,
         "skipped": 0
       }
     },
@@ -2621,6 +2702,221 @@
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
       },
       {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-08b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08b.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
         "id": "ART-21a",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
@@ -8294,77 +8590,204 @@
         "id": "ART-24a",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "AT-225",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/AT-225.test.ts"
+      },
+      {
+        "id": "AT-225",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/AT-225.test.ts"
       },
       {
         "id": "PERF-01",
         "status": "passed",
-        "file": "test/e2e/e2e/m0-window.spec.ts"
+        "file": "test/e2e/m0-window.spec.ts"
       },
       {
         "id": "ART-26a",
         "status": "failed",
-        "file": "test/e2e/e2e/m1-shell.spec.ts"
+        "file": "test/e2e/m1-shell.spec.ts"
       },
       {
         "id": "ART-29",
         "status": "passed",
-        "file": "test/e2e/e2e/m1-shell.spec.ts"
+        "file": "test/e2e/m1-shell.spec.ts"
       },
       {
         "id": "PERF-03",
         "status": "passed",
-        "file": "test/e2e/e2e/m1-shell.spec.ts"
+        "file": "test/e2e/m1-shell.spec.ts"
+      },
+      {
+        "id": "AT-007",
+        "status": "passed",
+        "file": "test/e2e/m2-composer.spec.ts"
+      },
+      {
+        "id": "PERF-02",
+        "status": "failed",
+        "file": "test/e2e/m2-composer.spec.ts"
+      },
+      {
+        "id": "ART-26a",
+        "status": "failed",
+        "file": "test/e2e/m2-composer.spec.ts"
+      },
+      {
+        "id": "PERF-04",
+        "status": "failed",
+        "file": "test/e2e/m2-messages.spec.ts"
+      },
+      {
+        "id": "ART-26a",
+        "status": "failed",
+        "file": "test/e2e/m2-messages.spec.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "failed",
+        "file": "test/e2e/m2-messages.spec.ts"
+      },
+      {
+        "id": "BP-MSG-01",
+        "status": "failed",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-MSG-03",
+        "status": "failed",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-MSG-04",
+        "status": "failed",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-COMP-01",
+        "status": "failed",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-COMP-02",
+        "status": "failed",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-COMP-04",
+        "status": "failed",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-COMP-05",
+        "status": "failed",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-COMP-06",
+        "status": "failed",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-COMP-07",
+        "status": "failed",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-COMP-08",
+        "status": "failed",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-COMP-09",
+        "status": "failed",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-APP-L",
         "status": "passed",
-        "file": "test/e2e/fidelity/bp/BP-shell.spec.ts"
+        "file": "test/fidelity/bp/BP-shell.spec.ts"
       }
     ],
     "failed": [
       {
         "suite": "e2e",
-        "file": "test/e2e/e2e/m1-shell.spec.ts",
+        "file": "test/e2e/m1-shell.spec.ts",
         "title": "ART-26a: every M1 surface passes axe in light and dark (list, banner, chat header, find bar, messages, right shell)",
         "status": "failed"
       },
       {
         "suite": "e2e",
-        "file": "test/e2e/e2e/m2-composer.spec.ts",
-        "title": "typing in the 5,000-message chat paints within a frame (p95)",
+        "file": "test/e2e/m2-composer.spec.ts",
+        "title": "PERF-02 · typing in the 5,000-message chat paints within a frame (p95)",
         "status": "failed"
       },
       {
         "suite": "e2e",
-        "file": "test/e2e/e2e/m2-composer.spec.ts",
-        "title": "the composer passes axe in light and dark: rest, text, reply strip, mention menu and paste catcher",
+        "file": "test/e2e/m2-composer.spec.ts",
+        "title": "ART-26a · the composer passes axe in light and dark: rest, text, reply strip, mention menu and paste catcher",
         "status": "failed"
       },
       {
         "suite": "e2e",
-        "file": "test/e2e/e2e/m2-messages.spec.ts",
-        "title": "fling scroll through the 5,000-message chat holds 60 fps and keeps the DOM bounded",
+        "file": "test/e2e/m2-composer.spec.ts",
+        "title": "FID-14 spec values for the composer: SV-10, SV-11, SV-12, SV-26 (placeholder) and SV-30, light and dark",
         "status": "failed"
       },
       {
         "suite": "e2e",
-        "file": "test/e2e/e2e/m2-messages.spec.ts",
-        "title": "bubbles, cards, the bubble menu and the reaction picker pass axe in light and dark",
+        "file": "test/e2e/m2-messages.spec.ts",
+        "title": "PERF-04 · fling scroll through the 5,000-message chat holds 60 fps and keeps the DOM bounded",
         "status": "failed"
       },
       {
         "suite": "e2e",
-        "file": "test/e2e/e2e/test-hooks.spec.ts",
+        "file": "test/e2e/m2-messages.spec.ts",
+        "title": "ART-26a · bubbles, cards, the bubble menu and the reaction picker pass axe in light and dark",
+        "status": "failed"
+      },
+      {
+        "suite": "e2e",
+        "file": "test/e2e/m2-messages.spec.ts",
+        "title": "ART-21a · the rendered thread shows every clock time with its weekday, day and month; bubble meta is exempt",
+        "status": "failed"
+      },
+      {
+        "suite": "e2e",
+        "file": "test/e2e/m2-messages.spec.ts",
+        "title": "FID-14 spec values for the M2 messages: SV-01 to SV-09 and SV-26 (bubble times), light and dark",
+        "status": "failed"
+      },
+      {
+        "suite": "e2e",
+        "file": "test/e2e/test-hooks.spec.ts",
         "title": "test hooks: clock, seed, online, theme, reset (08-3 §22)",
+        "status": "failed"
+      },
+      {
+        "suite": "e2e",
+        "file": "test/fidelity/bp/BP-messages.spec.ts",
+        "title": "M2 Blueprint captures for Tier R: BP-MSG-01, BP-MSG-03, BP-MSG-04, BP-COMP-01, BP-COMP-02, BP-COMP-04, BP-COMP-05, BP-COMP-06, BP-COMP-07, BP-COMP-08, BP-COMP-09, light and dark",
+        "status": "failed"
+      },
+      {
+        "suite": "e2e",
+        "file": "test/fidelity/ux/UX-09.voice.spec.ts",
+        "title": "UX-09 · Voice notes: the steps that need no speech-to-text (1 and 8), light and dark",
         "status": "failed"
       }
     ],
     "trace": {
-      "live": 5,
-      "pending": 23,
+      "live": 7,
+      "pending": 51,
       "byMilestone": {
         "M0": 5,
-        "M1": 23
+        "M1": 23,
+        "M2": 27,
+        "M3": 3
       }
     }
   },
@@ -8379,9 +8802,14 @@
         "id": "CR-0002",
         "title": "M1 shell, where the Blueprint drawing and the written spec disagree",
         "status": "Approved: keep the app as built; the drawing is redrawn to the written spec"
+      },
+      {
+        "id": "CR-0003",
+        "title": "M2 trace rows, M2 Blueprint ids, and where the drawings and the M2 app disagree",
+        "status": "Approved under overnight instruction (Vikas, 2026-10-17 18:52Z/18:59Z: continue the overnight build, don't wait"
       }
     ],
-    "notes": "Conservative picks and deferrals: implementation-notes.md (## M0b)."
+    "notes": "Conservative picks and deferrals: implementation-notes.md (the ## M2 sections)."
   },
   "deviations": [
     "Not reviewed yet: the independent reviewer adds what no test caught."
@@ -8390,9 +8818,9 @@
     "counts": {
       "pass": 1,
       "review": 1,
-      "fail": 0,
-      "disputed": 32,
-      "notBuilt": 3
+      "fail": 12,
+      "disputed": 34,
+      "notBuilt": 13
     },
     "refsRendered": [
       {
@@ -8545,12 +8973,172 @@
           "light",
           "dark"
         ]
+      },
+      {
+        "id": "BP-COMP-01",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-COMP-02",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-COMP-04",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-COMP-05",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-COMP-06",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-COMP-07",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-COMP-08",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-COMP-09",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-MSG-01",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-MSG-03",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-MSG-04",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "UX-08-01",
+        "family": "ux",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "UX-08-02",
+        "family": "ux",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "UX-08-03",
+        "family": "ux",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "UX-08-04",
+        "family": "ux",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "UX-08-05",
+        "family": "ux",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "UX-08-06",
+        "family": "ux",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "UX-08-07",
+        "family": "ux",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "UX-09-01",
+        "family": "ux",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "UX-09-08",
+        "family": "ux",
+        "themes": [
+          "light",
+          "dark"
+        ]
       }
     ],
     "determinism": {
       "fid": "FID-03",
-      "compared": 34,
-      "identical": 34,
+      "compared": 74,
+      "identical": 74,
       "differing": [],
       "engine": "electron"
     },
@@ -8641,7 +9229,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "pass (BP-ANAT-L ΔE 1.68)",
         "r4": "skipped: no hl element",
-        "r5": 0.1390380859375,
+        "r5": 0.146787109375,
         "ref": true,
         "app": true,
         "diff": true
@@ -8654,7 +9242,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "review (BP-ANAT-L ΔE 3.65)",
         "r4": "skipped: no hl element",
-        "r5": 0.118544921875,
+        "r5": 0.126041015625,
         "ref": true,
         "app": true,
         "diff": true
@@ -8953,7 +9541,7 @@
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "pass (BP-APP-M ΔE 1.68)",
         "r4": "skipped: no hl element",
-        "r5": 0.19623571627647715,
+        "r5": 0.21401416178929766,
         "ref": true,
         "app": true,
         "diff": true
@@ -8966,7 +9554,7 @@
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "review (BP-APP-M ΔE 3.65)",
         "r4": "skipped: no hl element",
-        "r5": 0.16534280936454848,
+        "r5": 0.1823809399386845,
         "ref": true,
         "app": true,
         "diff": true
@@ -8998,7 +9586,189 @@
         "diff": true
       },
       {
-        "id": "BP-ANAT-M",
+        "id": "UX-08-01",
+        "theme": "dark",
+        "verdict": "fail",
+        "r1": "fail",
+        "r2": "fail (hl 71/0.90625 px)",
+        "r3": "fail (hl ΔE 55.97)",
+        "r4": "fail (87.52 %)",
+        "r5": 0.087171875,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "UX-08-01",
+        "theme": "light",
+        "verdict": "fail",
+        "r1": "fail",
+        "r2": "fail (hl 71/0.90625 px)",
+        "r3": "pass (hl ΔE 0)",
+        "r4": "fail (15.65 %)",
+        "r5": 0.0699619140625,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "UX-08-03",
+        "theme": "dark",
+        "verdict": "fail",
+        "r1": "fail",
+        "r2": "fail (hl 93/53.78125 px)",
+        "r3": "pass (hl ΔE 0)",
+        "r4": "pass (2.55 %)",
+        "r5": 0.107548828125,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "UX-08-03",
+        "theme": "light",
+        "verdict": "fail",
+        "r1": "fail",
+        "r2": "fail (hl 93/53.78125 px)",
+        "r3": "pass (hl ΔE 0)",
+        "r4": "pass (2.23 %)",
+        "r5": 0.0882578125,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "UX-08-04",
+        "theme": "dark",
+        "verdict": "fail",
+        "r1": "fail",
+        "r2": "fail (hl 93/22 px)",
+        "r3": "pass (hl ΔE 0)",
+        "r4": "pass (2.05 %)",
+        "r5": 0.1491728515625,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "UX-08-04",
+        "theme": "light",
+        "verdict": "fail",
+        "r1": "fail",
+        "r2": "fail (hl 93/22 px)",
+        "r3": "pass (hl ΔE 0)",
+        "r4": "pass (1.88 %)",
+        "r5": 0.1289716796875,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "UX-08-05",
+        "theme": "dark",
+        "verdict": "fail",
+        "r1": "fail",
+        "r2": "fail (hl 77/6 px)",
+        "r3": "pass (hl ΔE 0)",
+        "r4": "pass (2.51 %)",
+        "r5": 0.1633642578125,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "UX-08-05",
+        "theme": "light",
+        "verdict": "fail",
+        "r1": "fail",
+        "r2": "fail (hl 77/6 px)",
+        "r3": "pass (hl ΔE 0)",
+        "r4": "pass (2.26 %)",
+        "r5": 0.142830078125,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "UX-08-06",
+        "theme": "dark",
+        "verdict": "fail",
+        "r1": "fail",
+        "r2": "fail (hl 97/35.578125 px)",
+        "r3": "fail (hl ΔE 61.41)",
+        "r4": "fail (87.53 %)",
+        "r5": 0.186880859375,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "UX-08-06",
+        "theme": "light",
+        "verdict": "fail",
+        "r1": "fail",
+        "r2": "fail (hl 97/35.578125 px)",
+        "r3": "fail (hl ΔE 7.8)",
+        "r4": "fail (30.68 %)",
+        "r5": 0.15760546875,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "UX-08-07",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (hl 196.75/127 px)",
+        "r3": "pass (hl ΔE 0)",
+        "r4": "review (5.31 %)",
+        "r5": 0.16239453125,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "UX-08-07",
+        "theme": "light",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (hl 196.75/127 px)",
+        "r3": "pass (hl ΔE 0)",
+        "r4": "review (4.24 %)",
+        "r5": 0.1368974609375,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "UX-09-01",
+        "theme": "dark",
+        "verdict": "fail",
+        "r1": "fail",
+        "r2": "review (hl 8/0 px)",
+        "r3": "fail (hl ΔE 20.59)",
+        "r4": "fail (21.84 %)",
+        "r5": 0.111240234375,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "UX-09-01",
+        "theme": "light",
+        "verdict": "fail",
+        "r1": "fail",
+        "r2": "review (hl 8/0 px)",
+        "r3": "fail (hl ΔE 35.2)",
+        "r4": "fail (21.68 %)",
+        "r5": 0.0897099609375,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-MSG-01",
         "theme": "light",
         "verdict": "not built",
         "r1": "–",
@@ -9006,25 +9776,25 @@
         "r3": "–",
         "r4": "–",
         "r5": null,
-        "ref": false,
+        "ref": true,
         "app": false,
         "diff": false
       },
       {
-        "id": "BP-ANAT-S",
-        "theme": "light",
+        "id": "BP-MSG-01",
+        "theme": "dark",
         "verdict": "not built",
         "r1": "–",
         "r2": "–",
         "r3": "–",
         "r4": "–",
         "r5": null,
-        "ref": false,
+        "ref": true,
         "app": false,
         "diff": false
       },
       {
-        "id": "BP-ANAT-XS",
+        "id": "BP-MSG-03",
         "theme": "light",
         "verdict": "not built",
         "r1": "–",
@@ -9032,15 +9802,324 @@
         "r3": "–",
         "r4": "–",
         "r5": null,
-        "ref": false,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-MSG-03",
+        "theme": "dark",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-MSG-04",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-MSG-04",
+        "theme": "dark",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-COMP-01",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-COMP-01",
+        "theme": "dark",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-COMP-02",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-COMP-02",
+        "theme": "dark",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-COMP-04",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-COMP-04",
+        "theme": "dark",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-COMP-05",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-COMP-05",
+        "theme": "dark",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-COMP-06",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-COMP-06",
+        "theme": "dark",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-COMP-07",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-COMP-07",
+        "theme": "dark",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-COMP-08",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-COMP-08",
+        "theme": "dark",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-COMP-09",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-COMP-09",
+        "theme": "dark",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-08-02",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-08-02",
+        "theme": "dark",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-09-08",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-09-08",
+        "theme": "dark",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
         "app": false,
         "diff": false
       }
     ],
     "notBuilt": [
-      "BP-ANAT-M",
-      "BP-ANAT-S",
-      "BP-ANAT-XS"
+      "BP-MSG-01",
+      "BP-MSG-03",
+      "BP-MSG-04",
+      "BP-COMP-01",
+      "BP-COMP-02",
+      "BP-COMP-04",
+      "BP-COMP-05",
+      "BP-COMP-06",
+      "BP-COMP-07",
+      "BP-COMP-08",
+      "BP-COMP-09",
+      "UX-08-02",
+      "UX-09-08"
     ]
   }
 }
