@@ -1,0 +1,22 @@
+/* Spec: 03-shell-2 §3.6.3 (strip = --field-h + --s1 top and bottom, padding 0 --s3, --bg-app, 1px --line bottom; the field
+   is TextField size sm, shape search; count --t-caption --fg-2 tabular-nums). */
+.strip {
+  display: flex;
+  align-items: center;
+  gap: var(--s0);
+  min-height: calc(var(--field-h) + 2 * var(--s1));
+  padding: var(--s1) var(--s3);
+  background: var(--bg-app);
+  border-bottom: 1px solid var(--line);
+}
+.field {
+  flex: 1;
+  min-width: 0;
+}
+.count {
+  flex: none;
+  font: var(--t-caption);
+  color: var(--fg-2);
+  font-variant-numeric: tabular-nums;
+  padding: 0 var(--s1);
+}

@@ -1,0 +1,24 @@
+/* Spec: 06 §0.4 Segmented (32 visual: --btn-h-sm; --bg-sunken track with --s-1 inset; chosen option --bg-raised + --shadow-1). */
+.segmented {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  gap: var(--s-1);
+  padding: var(--s-1);
+  border-radius: var(--r-sm);
+  background: var(--bg-sunken);
+}
+.option {
+  min-height: calc(var(--btn-h-sm) - 2 * var(--s-1));
+  padding: 0 var(--s1);
+  border: 0;
+  border-radius: var(--r-xs);
+  background: transparent;
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.option[aria-checked='true'] {
+  background: var(--bg-raised);
+  color: var(--fg-1);
+  box-shadow: var(--shadow-1);
+}

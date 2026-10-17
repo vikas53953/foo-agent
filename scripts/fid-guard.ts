@@ -25,12 +25,19 @@ export interface GuardInput {
   crExists: (id: string) => boolean;
 }
 
+/** Where picture masks and thresholds live (§11.2.4–§11.2.5); app code and docs may say "threshold" for other things. */
+const PICTURE_CODE = /^(?:test\/|golden\/|playwright\.config\.ts$|scripts\/(?:tier-r|golden[\w-]*)\.ts$|scripts\/golden\/)/;
+
 /** FID-06 patterns over added lines. */
-export const RISKY: { name: string; re: RegExp }[] = [
+export const RISKY: { name: string; re: RegExp; only?: RegExp }[] = [
   { name: 'skip/only/fixme', re: /\b(?:test|it|describe)(?:\.\w+)*\.(?:skip|only|fixme|todo)\s*\(|\bxit\s*\(|\bfdescribe\s*\(/ },
   { name: 'snapshot update', re: /--update-snapshots|updateSnapshots|FOO_GOLDEN_BLESS\s*=\s*['"]?1/ },
-  { name: 'mask', re: /\bmasks?\s*[:=]|"masks?"\s*:/ },
-  { name: 'threshold', re: /\b(?:threshold|maxDiffPixelRatio|maxDiffPixels|PIXEL_THRESHOLD|maxChangedShare|R[2-4]_LIMITS)\b/ },
+  { name: 'mask', re: /\bmasks?\s*[:=]|"masks?"\s*:/, only: PICTURE_CODE },
+  {
+    name: 'threshold',
+    re: /\b(?:threshold|maxDiffPixelRatio|maxDiffPixels|PIXEL_THRESHOLD|maxChangedShare|R[2-4]_LIMITS)\b/,
+    only: PICTURE_CODE,
+  },
 ];
 
 /** Files allowed to spell the patterns (the guard and its tests). */
@@ -85,7 +92,9 @@ export function guard(input: GuardInput): string[] {
 
   const risky = input.added
     .filter((a) => !SELF.has(a.file))
-    .flatMap((a) => RISKY.filter((r) => r.re.test(a.line)).map((r) => `${a.file}: ${r.name}: ${a.line.trim()}`));
+    .flatMap((a) =>
+      RISKY.filter((r) => (!r.only || r.only.test(a.file)) && r.re.test(a.line)).map((r) => `${a.file}: ${r.name}: ${a.line.trim()}`),
+    );
   if (risky.length && !crs.length) problems.push(`FID-06: added without a CR:\n  ${risky.join('\n  ')}`);
 
   for (const f of input.files) if (!input.owners.some((p) => ownedBy(f, p))) problems.push(`FID-19: ${f} has no owner in OWNERS.yml`);

@@ -1,14 +1,19 @@
 // Spec: 08-1 §2.2 steps 1–5 (startup order); 09-windows §9.2 (identity), §9.5 (single instance); 02-3 §F28.1;
-// 08-3 §22.1–§22.2 (test runs: fake clock and test channels, loaded only when the build has them).
+// 08-3 §22.1–§22.2 (test runs: fake clock and test channels, loaded only when the build has them); 03-shell-1 §3.3.2
+// type 1 (network state for the offline banner).
 import { app, BrowserWindow, nativeTheme } from 'electron';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { resolvePaths } from './data/paths';
-import { installTestDeps } from './deps';
+import { deps, installTestDeps } from './deps';
 import { testHooksEnabled } from './ipc/guard';
-import { registerIpc } from './ipc/IpcRouter';
+import { electronProbe, registerIpc, type AppContext } from './ipc/IpcRouter';
+import { NetMonitor } from './net/netMonitor';
+import type { FakeClock } from '../shared/clock';
 import { SettingsStore } from './settings/Settings';
 import { openDb, type Db } from './store/db';
+import { ensureFooChat } from './store/queries';
+import { newId } from '../shared/ids';
 import { createMainWindow } from './windows/mainWindow';
 import { handleAppScheme, registerAppScheme } from './windows/protocol';
 import { claimSingleInstance } from './windows/singleInstance';
@@ -23,14 +28,13 @@ let db: Db | null = null;
 const hidden = process.argv.includes('--hidden');
 
 /** FOO_TEST runs: fake clock at X-10 and the test:* channels. A packaged build has no test folder and runs without them. */
-async function loadTestHooks(settings: SettingsStore): Promise<void> {
-  const clock = installTestDeps();
+async function loadTestHooks(ctx: AppContext, clock: FakeClock): Promise<void> {
   if (!existsSync(join(__dirname, 'test', 'testHooks.js'))) {
     console.warn('FOO_TEST=1 but this build has no test hooks');
     return;
   }
   const hooks = await import('./test/testHooks');
-  hooks.registerTestHooks(settings, clock);
+  hooks.registerTestHooks(ctx, clock);
 }
 
 function onDeepLink(url: string): void {
@@ -51,13 +55,20 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
   if (!settings.get().app.hardwareAcceleration) app.disableHardwareAcceleration();
 
   app.whenReady().then(async () => {
-    if (testHooksEnabled()) await loadTestHooks(settings);
+    const testClock = testHooksEnabled() ? installTestDeps() : null;
     // Step 3: SQLite.
     db = openDb(paths.db);
+    ensureFooChat(db, deps.clock.now(), settings.get().identity.agentName, newId('c', deps.clock.now()));
+    // Network state on the injected clock: the injected Net in test runs, Electron's probe otherwise.
+    const netMonitor = new NetMonitor(deps.clock);
+    const probe = testClock ? () => deps.net.online : electronProbe;
+    const ctx: AppContext = { db, settings, net: netMonitor, probe };
+    if (testClock) await loadTestHooks(ctx, testClock);
+    else netMonitor.poll(probe);
     // Step 4: theme before any window, then the window.
     nativeTheme.themeSource = settings.get().appearance.theme;
     handleAppScheme();
-    registerIpc(settings);
+    registerIpc(ctx);
     mainWindow = createMainWindow(settings, { hidden });
     if (process.platform === 'win32') {
       mainWindow.setAppDetails({

@@ -1,0 +1,41 @@
+/* Spec: 03-shell-1 §3.4.1 resize handle: 8px invisible strip centred on the 1px right edge, full height, col-resize;
+   hover: the edge becomes 2 wide `--line-strong` (`--m-fast`); dragging: 2 wide `--accent`; keyboard focus shows the F8 ring. */
+.handle {
+  position: absolute;
+  z-index: var(--z-raised);
+  top: 0;
+  right: calc(var(--s0) * -1);
+  bottom: 0;
+  width: var(--s1);
+  cursor: col-resize;
+  touch-action: none;
+  -webkit-app-region: no-drag;
+}
+.handle::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 1px);
+  width: var(--s-1);
+  background: transparent;
+  transition: background-color var(--m-fast) var(--ease-standard);
+}
+.handle:hover::after,
+.handle:focus-visible::after {
+  background: var(--line-strong);
+}
+.handle[data-state='dragging']::after {
+  background: var(--accent);
+}
+.handle:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+@media (forced-colors: active) {
+  .handle:hover::after,
+  .handle:focus-visible::after,
+  .handle[data-state='dragging']::after {
+    background: Highlight;
+  }
+}

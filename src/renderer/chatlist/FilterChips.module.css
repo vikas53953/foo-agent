@@ -1,0 +1,79 @@
+/* Spec: 03-shell-1 §3.4.4 chips row (4 top, 16 sides, 8 bottom; gap 8; wraps only under large text), chip 32 high,
+   padding 0 12, `--r-full`, `--t-caption`; unselected `--bg-app` + 1px `--line` + `--fg-2`, hover `--bg-hover`, pressed
+   `--bg-pressed`; selected `--fg-1` fill, `--bg-app` text; the count after the label with `--s0`, tabular; the Checkmark
+   shows in high contrast only. U-5: each chip's box is a 40 hit area around the 32 visual (row 44 = 40 + 4). */
+.row {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  gap: 0 var(--s1);
+  padding: 0 var(--s3) var(--s0);
+}
+.chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s0);
+  min-width: var(--s7);
+  min-height: var(--s7);
+  padding: 0 var(--s2);
+  border: 0;
+  background: transparent;
+  color: var(--chip-fg);
+  font: var(--t-caption);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  isolation: isolate;
+  --chip-fg: var(--fg-2);
+  --chip-fill: var(--bg-app);
+  --chip-edge: var(--line);
+}
+.chip::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: calc((var(--s7) - var(--btn-h-sm)) / 2) 0;
+  border-radius: var(--r-full);
+  background: var(--chip-fill);
+  box-shadow: inset 0 0 0 1px var(--chip-edge);
+  transition: background-color var(--m-fast) var(--ease-standard);
+}
+.chip:hover {
+  --chip-fill: var(--bg-hover);
+}
+.chip:active {
+  --chip-fill: var(--bg-pressed);
+}
+.chip.on,
+.chip.on:hover,
+.chip.on:active {
+  --chip-fg: var(--bg-app);
+  --chip-fill: var(--fg-1);
+  --chip-edge: var(--fg-1);
+}
+.chip:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.chip:focus-visible::before {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+.hcCheck {
+  display: none;
+}
+@media (forced-colors: active) {
+  .chip::before {
+    border: 1px solid CanvasText;
+    box-shadow: none;
+  }
+  .chip.on::before {
+    background: Highlight;
+  }
+  .chip.on {
+    color: HighlightText;
+  }
+  .hcCheck {
+    display: inline-flex;
+  }
+}

@@ -1,0 +1,18 @@
+/* Spec: 03-shell-2 §3.6.5 unread divider. */
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s2) 0;
+}
+.row::before,
+.row::after {
+  content: '';
+  flex: 1;
+  border-top: 1px solid var(--accent);
+}
+.label {
+  font: var(--t-caption-strong);
+  letter-spacing: var(--t-caption-strong-tracking);
+  color: var(--accent);
+}

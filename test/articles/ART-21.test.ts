@@ -36,5 +36,10 @@ describe('ART-21a / ART-21c scans', () => {
     expect(moneyFlags('₹5k')).not.toEqual([]);
     expect(moneyFlags('₹14,600 or ₹1,23,450 or ₹55 lakh')).toEqual([]);
   });
-  it.each(uiStrings())('$key', ({ text }) => expect([...timeFlags(text), ...moneyFlags(text)]).toEqual([]));
+  // A `{date}` slot is always filled by formatDate() (02-2 §F19.3), so it is scanned as the absolute date it becomes
+  // ("Today, {date}" → "Today, Fri 16 Oct", 03-shell-2 §3.6.5).
+  it.each(uiStrings())('$key', ({ text }) => {
+    const filled = text.replace(/\{date\}/g, 'Fri 16 Oct');
+    expect([...timeFlags(filled), ...moneyFlags(filled)]).toEqual([]);
+  });
 });

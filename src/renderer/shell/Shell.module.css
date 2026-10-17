@@ -1,13 +1,46 @@
-/* Spec: 03-shell-1 §3.1.3.4. */
+/* Spec: 03-shell-1 §3.1.3 columns per breakpoint, §3.1.3.4 grid rows (title bar, banner strip, content), §3.5 main
+   background; 03-shell-2 §3.7.1 right shell cell (push column at L; overlay sheet at M/S under the banner strip, full
+   content height, no scrim; full page at XS). The right shell's own fill, edge, shadow and motion belong to it. */
 .shell {
   display: grid;
-  grid-template-rows: env(titlebar-area-height, var(--titlebar-h)) auto 1fr;
+  grid-template-rows: env(titlebar-area-height, var(--titlebar-h)) auto minmax(0, 1fr);
   height: 100%;
-}
-.banner:empty {
-  display: none;
+  background: var(--bg-app);
 }
 .content {
+  /* Row 3 even when the banner strip renders nothing. */
+  grid-row: 3;
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--left-w) minmax(0, 1fr);
+  min-height: 0;
+  overflow: hidden;
+}
+.shell[data-right='push'] .content {
+  grid-template-columns: var(--left-w) minmax(0, 1fr) var(--panel-w);
+}
+.shell[data-bp='XS'] .content {
+  grid-template-columns: minmax(0, 1fr);
+}
+.main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
   min-height: 0;
   background: var(--bg-app);
+}
+.right {
+  min-width: 0;
+  min-height: 0;
+}
+.right[data-state='overlay'] {
+  position: absolute;
+  z-index: var(--z-pane-overlay);
+  inset-block: 0;
+  right: 0;
+  width: var(--panel-w);
+}
+.right[data-state='page'] {
+  grid-column: 1 / -1;
 }

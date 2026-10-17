@@ -5,7 +5,7 @@
 //        [--out golden/out/tier-r]
 // The app capture JSON is written by the step's test: { id, theme, png, texts, hlTexts, hl, anchors, masks? } with boxes in
 // frame pixels and anchors keyed by the same names as the reference JSON.
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
@@ -126,7 +126,8 @@ export function r5(ref: Side, app: Side) {
 export interface TierRResult {
   id: string;
   theme: string;
-  verdict: Verdict;
+  verdict: Verdict | 'disputed';
+  disputed: { cr: string; checks: CheckId[] } | null;
   r1: ReturnType<typeof r1>;
   r2: ReturnType<typeof r2>;
   r3: ReturnType<typeof r3>;
@@ -136,10 +137,35 @@ export interface TierRResult {
   app: string;
 }
 
-export function tierR(id: string, theme: string, ref: Side, app: Side, superseded: string | null = null) {
+export type CheckId = 'r1' | 'r2' | 'r3' | 'r4';
+export interface Dispute {
+  cr: string;
+  ids: string[];
+  checks: CheckId[];
+}
+
+/** §11.2.7 step 3: the checks an approved CR disputes for this ref (only those, only until the drawing is redrawn). */
+export function disputedChecks(disputes: Dispute[], id: string): { cr: string; checks: CheckId[] } | null {
+  const d = disputes.find((x) => x.ids.includes(id));
+  return d ? { cr: d.cr, checks: d.checks } : null;
+}
+
+export function tierR(
+  id: string,
+  theme: string,
+  ref: Side,
+  app: Side,
+  superseded: string | null = null,
+  dispute: { cr: string; checks: CheckId[] } | null = null,
+) {
   const res = { r1: r1(ref, app), r2: r2(ref, app), r3: r3(ref, app), r4: r4(ref, app, superseded), r5: r5(ref, app) };
-  const verdict = worst([res.r1.verdict, res.r2.verdict, res.r3.verdict, res.r4.verdict]);
-  return { id, theme, verdict, ...res };
+  const checks: CheckId[] = ['r1', 'r2', 'r3', 'r4'];
+  // A disputed check that fails is "expected fail (CR)" and leaves the verdict to the other checks; it never passes silently.
+  const expectedFail = checks.filter((c) => dispute?.checks.includes(c) && res[c].verdict === 'fail');
+  const counted = checks.filter((c) => !expectedFail.includes(c)).map((c) => res[c].verdict);
+  const rest = worst(counted);
+  const verdict: Verdict | 'disputed' = expectedFail.length && rest !== 'fail' ? 'disputed' : rest;
+  return { id, theme, verdict, disputed: expectedFail.length ? { cr: dispute!.cr, checks: expectedFail } : null, ...res };
 }
 
 // ---------- CLI ----------
@@ -171,6 +197,7 @@ function main() {
       app: { type: 'string' },
       theme: { type: 'string', default: 'light' },
       out: { type: 'string', default: join('golden', 'out', 'tier-r') },
+      disputes: { type: 'string', default: join('docs', 'fidelity', 'disputes.json') },
     },
   });
   if (!values.ref || !values.app) throw new Error('--ref and --app are required');
@@ -195,7 +222,10 @@ function main() {
     anchors: appJson.anchors,
     masks: refJson.masks ?? [], // masks come from the reference step JSON only (§11.2.5), never from the app side
   };
-  const res = tierR(refJson.id, theme, ref, app, refJson.ux?.superseded ?? null);
+  const disputes = existsSync(values.disputes!)
+    ? (JSON.parse(readFileSync(values.disputes!, 'utf8')) as { disputes: Dispute[] }).disputes
+    : [];
+  const res = tierR(refJson.id, theme, ref, app, refJson.ux?.superseded ?? null, disputedChecks(disputes, refJson.id));
   mkdirSync(values.out!, { recursive: true });
   const heat = `${refJson.id}.${theme}.diff.png`;
   writeFileSync(join(values.out!, heat), encodePng(res.r5.heatmap));
@@ -207,7 +237,7 @@ function main() {
   };
   writeFileSync(join(values.out!, `${refJson.id}.${theme}.tier-r.json`), JSON.stringify(out, null, 2) + '\n');
   console.log(
-    `${refJson.id} ${theme}: ${res.verdict.toUpperCase()} (R1 ${res.r1.verdict}, R2 ${res.r2.verdict}, R3 ${res.r3.verdict}, R4 ${res.r4.verdict}, R5 ${(res.r5.ratio * 100).toFixed(2)} %)`,
+    `${refJson.id} ${theme}: ${res.verdict.toUpperCase()}${res.disputed ? ` (${res.disputed.checks.join(', ').toUpperCase()} expected fail, ${res.disputed.cr})` : ''} (R1 ${res.r1.verdict}, R2 ${res.r2.verdict}, R3 ${res.r3.verdict}, R4 ${res.r4.verdict}, R5 ${(res.r5.ratio * 100).toFixed(2)} %)`,
   );
   if (res.verdict === 'fail') process.exitCode = 1;
 }

@@ -9,7 +9,9 @@ if (updating && !blessing) {
 }
 
 export default defineConfig({
-  testDir: 'test/e2e',
+  testDir: 'test',
+  // E2E specs, and the Blueprint capture specs that trace.csv names under test/fidelity/bp (11-fidelity §11.10).
+  testMatch: ['e2e/**/*.spec.ts', 'fidelity/bp/**/*.spec.ts'],
   timeout: 60_000,
   workers: 1,
   retries: 0,

@@ -1,3 +1,472 @@
-// Spec: 08-0 §B, 08-5. Shared types grow per milestone; M0 has the platform types only.
+// Spec: 08-0 §B (rows, enums, envelope types), §E.7 (FaceRef), §G.10 (View); 08-5 §2, §3.1, §3.2 (PublicSettings, Bootstrap,
+// AiStatus, SpendSummary); 08-1 §3.4 (row derivations); 03-shell-1 §3.4.5–§3.4.8 (the chat-list derivations main adds).
+// Types only, no runtime. Sources: 08-0 §A–§G, 08-5, 08-1 §3–§4. Shapes grow per milestone; M1 holds what the shell reads.
+import type { Settings } from './settings';
+
 export type { PlatformInfo, ThemeName } from './ipc';
 export type { Settings } from './settings';
+
+// ---- 08-0 §B.2 enums (the members M1 uses; closed lists copied exactly) ----
+export type ProviderId = 'claude-cli' | 'codex-cli' | 'gemini-cli' | 'openai-key' | 'anthropic-key' | 'google-key' | 'ollama' | 'fake';
+export type ApprovalState =
+  'PENDING' | 'APPROVED' | 'RUNNING' | 'COMPLETED' | 'HELD' | 'CHECKING' | 'DECLINED' | 'EXPIRED' | 'SUPERSEDED' | 'WITHDRAWN' | 'FAILED';
+export type SettingsPage =
+  | 'account'
+  | 'appearance'
+  | 'notifications'
+  | 'permissions'
+  | 'money'
+  | 'privacy'
+  | 'routines-settings'
+  | 'connections'
+  | 'chat'
+  | 'shortcuts'
+  | 'about';
+export type WindowsSettingsPage = 'notifications' | 'privacy-microphone' | 'startupapps' | 'signin' | 'storagesense' | 'dateandtime';
+export type BadgeValue = 'seen' | 'working' | 'waiting' | 'done' | 'done_unverified' | 'failed' | 'stopped';
+export type BannerType =
+  'offline' | 'ai_not_answering' | 'ai_signed_out' | 'ai_cap' | 'plan_limit' | 'notifications_blocked' | 'update_ready';
+export type TickState = 'waiting' | 'sent' | 'delivered' | 'read' | 'not_sent';
+export type Mood =
+  | 'resting'
+  | 'waking'
+  | 'noticed'
+  | 'listening'
+  | 'thinking'
+  | 'working'
+  | 'stuck'
+  | 'needs_you'
+  | 'waiting'
+  | 'happy'
+  | 'celebrating'
+  | 'thumbs_up'
+  | 'heart'
+  | 'speaking'
+  | 'sorry'
+  | 'stopped'
+  | 'offline'
+  | 'asleep';
+/** The `{slug}` of every 06 `screen-{slug}` page the shell can open, plus 'ideas' (12-1 §12.24.3). */
+export type ScreenId = 'memory' | 'routines' | 'activity' | 'spend' | 'ideas' | 'foo-profile' | 'helper-profile' | 'group-profile';
+export type DialogId =
+  | `c-${string}`
+  | 'new-helper'
+  | 'new-group'
+  | 'privacy'
+  | 'type-amount'
+  | 'whats-new'
+  | 'restart'
+  | 'report'
+  | 'shortcuts'
+  | 'replace-key'
+  | 'add-card'
+  | 'add-upi'
+  | 'dismissed-suggestions'
+  | 'hold-to-talk'
+  | 'licences'
+  | 'helper-limit'
+  | 'link-whatsapp'
+  | 'unreadable-lines'
+  | 'template-replace';
+/** FE-06 (08-0 §B.2, D-8). */
+export type View =
+  | { kind: 'chat'; chatId: string }
+  | { kind: 'settings'; page: SettingsPage; row?: string }
+  | { kind: 'screen'; id: ScreenId; params?: Record<string, string> };
+/** 08-0 §E.7: `living:{style}` | `glyph:{emoji}` | `letter:{grapheme}` | `file:{chatId}`. */
+export type FaceRef = string;
+export type CardType =
+  | 'brief'
+  | 'checklist'
+  | 'choice'
+  | 'tiles'
+  | 'approval'
+  | 'payment'
+  | 'bill'
+  | 'draft'
+  | 'secret'
+  | 'signin'
+  | 'connect'
+  | 'plan'
+  | 'routine'
+  | 'routine_offer'
+  | 'stuck'
+  | 'error'
+  | 'spend_cap'
+  | 'table'
+  | 'file'
+  | 'link_preview'
+  | 'job_link'
+  | 'place'
+  | 'face_explainer'
+  | 'catch_up'
+  | 'setup';
+export type JobState = 'queued' | 'working' | 'needs_you' | 'waiting' | 'done' | 'done_unverified' | 'failed' | 'cancelled';
+export type WaitingReason =
+  | 'ai_offline'
+  | 'ai_down'
+  | 'ai_signed_out'
+  | 'ai_limit'
+  | 'spend_cap'
+  | 'net_offline'
+  | 'asleep'
+  | 'app_quit'
+  | 'windows_shutdown'
+  | 'opens_at';
+export type Route = 'api' | 'browser' | 'screen' | 'email' | 'handback';
+
+// ---- chats (08-1 §4.3.1) ----
+export type ChatKind = 'foo' | 'helper' | 'group' | 'wa_mirror';
+/** `chats.pill`, derived by main from job and card writes (08-1 §4.6 rule 7; 03-shell-1 §3.4.5 precedence). */
+export type ChatPill = 'needs_you' | 'working' | 'done' | 'paused';
+export type ChatFilter = 'all' | 'needs_you' | 'working' | 'done';
+
+/** What the preview line says (03-shell-1 §3.4.6 rules 2–7; rule 1 "typing…" is live state in the renderer). */
+export type PreviewBody =
+  | { kind: 'text'; text: string }
+  | { kind: 'voice'; durationMs: number }
+  | { kind: 'photo' }
+  | { kind: 'file'; name: string }
+  | { kind: 'card'; cardType: CardType; title: string };
+
+export type ChatPreview =
+  | { rule: 'working'; jobTitle: string }
+  | { rule: 'queued'; jobTitle: string }
+  | { rule: 'needs_ok'; title: string }
+  | { rule: 'pick_one'; question: string }
+  | { rule: 'sign_in'; site: string }
+  | { rule: 'stuck'; jobTitle: string }
+  | { rule: 'failed'; text: string }
+  | { rule: 'mine'; tick: TickState; body: PreviewBody }
+  | { rule: 'sender'; sender: string; body: PreviewBody }
+  | { rule: 'own'; body: PreviewBody }
+  | { rule: 'none' };
+
+/** Facts main derives for the list from jobs, cards, messages and drafts (03-shell-1 §3.4.4–§3.4.8; Article 12). */
+export interface ChatListFacts {
+  /** Preview rules 3a–7 (§3.4.6); rule 1 (typing) and rule 2 (draft) are applied by the renderer. */
+  preview: ChatPreview;
+  /** The unsent composer text, one line (§3.4.6 rule 2), or null. */
+  draft: string | null;
+  /** Epoch ms the chat was pinned (block 2 keeps pin order); null when not pinned. */
+  pinnedAt: number | null;
+  /** Block 1 order: soonest card expiry first, then longest waiting first; null when nothing needs the user. */
+  needsYou: { expiresAt: number | null; since: number } | null;
+  /** ≥ 1 job QUEUED, WORKING or WAITING ("Working" chip, §3.4.4). */
+  running: boolean;
+  /** ≥ 1 job QUEUED, WORKING, WAITING or NEEDS YOU, or a card waiting on the user (folded rule, §3.4.7). */
+  active: boolean;
+  /** Finish time of the chat's last finished job when it ended DONE, else null (folded rule). */
+  lastEndedDoneAt: number | null;
+  /** Newest DONE finish of any job ("Done" chip, last 7 days, newest first). */
+  latestDoneAt: number | null;
+  /** Name and last-message text, case- and accent-folded (§3.4.3 search). */
+  searchText: string;
+}
+
+export interface ChatRow {
+  id: string;
+  kind: ChatKind;
+  helperId: string | null;
+  title: string;
+  avatarRef: FaceRef | null;
+  colorToken: string | null;
+  waJid: string | null;
+  pinned: boolean;
+  archived: boolean;
+  unreadCount: number;
+  pill: ChatPill | null;
+  pillUntil: number | null;
+  lastMessageId: string | null;
+  lastActivityAt: number;
+  nextSeq: number;
+  rev: number;
+  createdAt: number;
+  deletedAt: number | null;
+  private: boolean;
+  helperMessagesSinceUser: number;
+  loopPaused: boolean;
+  // 08-0 §B.1 derived
+  lastLine: string;
+  lastTime: number;
+  hasDraft: boolean;
+  face: FaceRef;
+  memberIds?: string[];
+  helper?: { id: string; color: string };
+  // 03-shell-1 §3.4.6–§3.4.8 derived (main computes them from jobs, cards and messages; Article 12)
+  list: ChatListFacts;
+}
+
+// ---- messages (08-1 §4.3.2; textForAi dropped) ----
+export interface Attachment {
+  id: string;
+  name: string;
+  mime: string;
+  bytes: number;
+  path: string;
+}
+export interface MessageRow {
+  id: string;
+  chatId: string;
+  seq: number;
+  authorKind: 'user' | 'foo' | 'helper' | 'system';
+  authorId: string | null;
+  kind: 'text' | 'voice' | 'card' | 'marker';
+  markerKind: 'start_of_chat' | 'handoff' | 'memory_chip' | 'helper_notice' | 'system_line' | null;
+  clientId: string | null;
+  text: string;
+  status: 'queued' | 'sent' | 'streaming' | 'complete' | 'failed';
+  badge: BadgeValue | null;
+  replyToId: string | null;
+  jobId: string | null;
+  cardId: string | null;
+  lang: string | null;
+  voicePath: string | null;
+  voiceMs: number | null;
+  transcript: string | null;
+  transcriptConf: number | null;
+  attachments: Attachment[] | null;
+  prompted: boolean;
+  why: Record<string, unknown> | null;
+  pinned: boolean;
+  providerNote: string | null;
+  rev: number;
+  createdAt: number;
+  editedAt: number | null;
+  deletedAt: number | null;
+  reactions: { emoji: string; by: 'me' | string }[];
+}
+
+// ---- cards (08-1 §4.3.3) ----
+export interface CardRow {
+  id: string;
+  chatId: string;
+  messageId: string;
+  jobId: string | null;
+  type: CardType;
+  state: string;
+  payload: Record<string, unknown>;
+  answer: unknown;
+  nonce: string;
+  expiresAt: number | null;
+  resolvedBy: 'tap' | 'keyboard' | 'toast' | 'typed' | 'reaction' | 'auto' | 'system' | null;
+  resolvedAt: number | null;
+  supersedesId: string | null;
+  rev: number;
+  createdAt: number;
+  updatedAt: number;
+  deletedAt: number | null;
+}
+
+// ---- jobs (08-1 §4.3.4; aiSessionId dropped, doVerbs parsed; stepsDone, nowLine, slow derived) ----
+export interface JobRow {
+  id: string;
+  chatId: string;
+  originChatId: string;
+  ownerKind: 'foo' | 'helper';
+  ownerId: string | null;
+  title: string;
+  origin: 'user' | 'routine' | 'handoff' | 'brief' | 'setup' | 'retry' | 'system';
+  originRef: string | null;
+  userMessageId: string | null;
+  intent: 'read_only' | 'do';
+  doVerbs: string[];
+  state: JobState;
+  waitingReason: WaitingReason | null;
+  wakeAt: number | null;
+  needsYouCardId: string | null;
+  planVersion: number;
+  currentStepIdx: number | null;
+  stepCount: number;
+  route: Route | null;
+  siteDomain: string | null;
+  usesBrowser: boolean;
+  estMinutes: number | null;
+  estTokens: number | null;
+  estCostPaise: number | null;
+  spentTokensIn: number;
+  spentTokensOut: number;
+  spentCostPaise: number;
+  costUnknown: boolean;
+  providerId: string | null;
+  failStreak: number;
+  stuckCount: number;
+  proof: unknown;
+  resultMessageId: string | null;
+  stopReason: string | null;
+  rev: number;
+  createdAt: number;
+  startedAt: number | null;
+  lastProgressAt: number | null;
+  finishedAt: number | null;
+  stepsDone: number;
+  nowLine: string;
+  slow: boolean;
+}
+
+// ---- helpers (08-1 §4.3.8 camelCased; allowedApps parsed) ----
+export interface HelperRow {
+  id: string;
+  name: string;
+  jobText: string;
+  goodResult: string | null;
+  faceRef: FaceRef;
+  colorToken: string;
+  allowedApps: Record<string, boolean>;
+  chatId: string;
+  paused: boolean;
+  template: string | null;
+  rev: number;
+  createdAt: number;
+  deletedAt: number | null;
+}
+
+// ---- routines (08-1 §4.3.7, the columns the shell reads; task_spec, schedule and condition stay in main until J14) ----
+export interface RoutineRow {
+  id: string;
+  ownerChatId: string;
+  ownerHelperId: string | null;
+  title: string;
+  builtin: 'morning_brief' | 'memory_tidy' | 'pnr_watch' | 'recharge_due' | 'bill_watch' | null;
+  whatText: string;
+  tz: string;
+  state: 'on' | 'paused' | 'paused_away' | 'paused_cap' | 'deleted';
+  createdFrom: 'asked' | 'habit' | 'suggested' | 'builtin' | 'idea';
+  nextRunAt: number | null;
+  lastRunAt: number | null;
+  lastFiredAt: number | null;
+  rev: number;
+  createdAt: number;
+  updatedAt: number;
+}
+
+// ---- memory (08-5 §3.6: memory_index camelCased without hash, plus labels) ----
+export type MemoryScope = 'global' | 'chat' | 'helper';
+export interface MemoryFactView {
+  id: string;
+  file: string;
+  lineNo: number;
+  scope: MemoryScope;
+  chatId: string | null;
+  text: string;
+  provenance: 'said' | 'guessed';
+  origin: string;
+  originKind: 'chat' | 'gmail' | 'gcal' | 'whatsapp' | 'manual' | 'setup' | 'job';
+  reason: string | null;
+  category: string | null;
+  kind: 'person' | 'preference' | 'place' | 'fact';
+  sensitive: boolean;
+  private: boolean;
+  learnedAt: number;
+  lastUsedAt: number | null;
+  useCount: number;
+  fileLabel: string;
+  originLabel: string;
+  onlyInChatTitle?: string;
+}
+export interface MemoryFilter {
+  chip: 'all' | 'said' | 'guessed' | 'gmail' | 'whatsapp' | 'chat';
+  helperId?: string;
+  last7?: boolean;
+}
+
+/** 08-5 §3 StopReport (`done` holds ActivityRow rows; the activity log arrives with J21, so M1 sends none). */
+export interface StopReport {
+  jobId: string;
+  done: unknown[];
+  nothingDone: boolean;
+}
+
+export interface DraftRow {
+  id: string;
+  chatId: string;
+  text: string;
+  attachments: Attachment[];
+  replyToId: string | null;
+  linkPreviewRemoved: boolean;
+  updatedAt: number;
+}
+
+// ---- connections (08-1 §4.3.9; vaultName and accountHash dropped) ----
+export interface ConnectionRow {
+  id: string;
+  app: 'gmail' | 'gcal' | 'contacts' | 'whatsapp' | 'outlook' | 'hub';
+  accountLabel: string;
+  granted: { read: boolean; draft: boolean; send: boolean; calendarWrite: boolean; contactsRead: boolean };
+  status: 'connecting' | 'connected' | 'needs_signin' | 'unlinked' | 'error' | 'disconnected';
+  connectedAt: number;
+  lastOkAt: number | null;
+  lastErrorKind: string | null;
+  historyId: string | null;
+  rev: number;
+}
+
+// ---- 08-5 §3.1 / §3.2 ----
+export type SettingsPath = string;
+export type PublicSettings = Omit<Settings, 'flags' | 'window'> & {
+  window: Omit<Settings['window'], 'bounds'>;
+  locked: SettingsPath[];
+};
+export interface SetupState {
+  complete: boolean;
+  step: 0 | 1 | 2 | 3 | 4 | 5;
+  interviewCard?: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H';
+  answers: Partial<Record<0 | 1 | 2 | 3 | 4 | 5, unknown>>;
+}
+export interface AiStatus {
+  primary: ProviderId | null;
+  backup: ProviderId | null;
+  /** 08-0 §B.4 display name. */
+  displayName: string;
+  billing: 'plan' | 'key' | 'local';
+  state: 'ok' | 'offline' | 'down' | 'signed_out' | 'limit' | 'key_invalid' | 'unverified';
+  resetAt?: number;
+  lastVerifiedAt?: number;
+  usingBackup: boolean;
+  planUsedPct?: number | null;
+}
+export interface SpendSummary {
+  month: string;
+  aiSpentPaise: number | null;
+  aiCapPaise: number;
+  aiBilling: 'plan' | 'key' | 'local';
+  planUsedPct?: number;
+  purchasesPaise: number;
+  purchaseCapPaise: number;
+  purchaseCount: number;
+  byChat: { chatId: string | null; title: string; paise: number }[];
+  byRoutine: { routineId: string; title: string; paise: number }[];
+  purchases: { paymentId: string; activityId: string; payee: string; at: number; chatTitle: string; amountPaise: number }[];
+  earliestMonth: string;
+}
+export interface Bootstrap {
+  settings: PublicSettings;
+  chats: ChatRow[];
+  openChatId?: string;
+  firstMessages: MessageRow[];
+  setup: SetupState;
+  ai: AiStatus;
+  spend: SpendSummary;
+  connections: ConnectionRow[];
+  safeMode: boolean;
+}
+
+/** 08-1 §3.2 `chat:open` reply. */
+export interface ChatOpenResult {
+  messages: MessageRow[];
+  cards: CardRow[];
+  jobs: JobRow[];
+  draft: DraftRow | null;
+}
+
+/** 08-3 §21 error kinds. Grows with the milestones; M1 holds the kinds the shell and its channels can return. */
+export type ErrorKind =
+  | 'IPC_REJECTED'
+  | 'VALIDATION'
+  | 'NOT_FOUND'
+  | 'DB_OPEN_FAILED'
+  | 'NET_OFFLINE'
+  | 'SETTING_LOCKED'
+  | 'JOB_GONE'
+  | 'LIVE_UNAVAILABLE'
+  | 'UNKNOWN';

@@ -1,0 +1,70 @@
+/* Spec: 03-shell-1 §3.5 (grid rows: header · find bar · list (flex) · composer (height owned by 04); skeleton bubbles
+   --bg-sunken --r-bubble; error state ErrorCircle 24 --bad, --t-body --fg-2), 03-shell-2 §3.6.1. */
+.main {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  background: var(--bg-app);
+}
+.head {
+  min-width: 0;
+}
+.list {
+  position: relative;
+  min-height: 0;
+}
+.composer:empty {
+  min-height: 0;
+}
+.skeleton {
+  display: grid;
+  gap: var(--s2);
+  max-width: var(--column-max);
+  margin: 0 auto;
+  padding: var(--s3);
+}
+.skelRow {
+  display: flex;
+}
+.skelRow[data-side='me'] {
+  justify-content: flex-end;
+}
+.skel {
+  display: block;
+  height: var(--s7);
+  border-radius: var(--r-bubble);
+  background: var(--bg-sunken);
+}
+.skel40 {
+  width: 40%;
+}
+.skel60 {
+  width: 60%;
+}
+.skel30 {
+  width: 30%;
+}
+.skel50 {
+  width: 50%;
+}
+.error {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  padding: var(--s3);
+  text-align: center;
+}
+.errorIcon {
+  color: var(--bad);
+  display: inline-flex;
+}
+.errorText {
+  margin: 0;
+  font: var(--t-body);
+  color: var(--fg-2);
+}

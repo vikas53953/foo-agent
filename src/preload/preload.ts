@@ -1,7 +1,56 @@
-// Spec: 08-1 §3.1 (window.foo, zod-typed). M0 exposes platform facts only.
-import { contextBridge, ipcRenderer } from 'electron';
+// Spec: 08-1 §3.1 (window.foo: invoke, on, platform; channels allow-listed here, zod-checked in main), 08-1 §3.3 (events).
+// A sandboxed preload cannot require local files, so the allow-lists are written out; test/unit/preload.test.ts checks
+// they equal INVOKE_CHANNELS and EVENT_CHANNELS in src/shared/ipc.ts.
+import { contextBridge, ipcRenderer, type IpcRendererEvent } from 'electron';
 import type { FooBridge, PlatformInfo } from '../shared/ipc';
 
+const INVOKES = new Set([
+  'app:getBootstrap',
+  'app:quit',
+  'app:openWindowsSettings',
+  'chat:list',
+  'chat:open',
+  'chat:markRead',
+  'chat:pin',
+  'chat:mute',
+  'message:list',
+  'job:stop',
+  'job:watch',
+  'memory:list',
+  'routine:list',
+  'helper:list',
+  'settings:get',
+  'settings:set',
+  'ai:verify',
+  'notifications:status',
+]);
+const EVENTS = new Set([
+  'chat:upsert',
+  'chat:removed',
+  'chat:typing',
+  'message:upsert',
+  'card:upsert',
+  'job:upsert',
+  'ai:status',
+  'spend:update',
+  'connection:upsert',
+  'settings:changed',
+  'net:state',
+  'navigate',
+]);
+
 const platform = ipcRenderer.sendSync('app:platform') as PlatformInfo;
-const bridge: FooBridge = { platform };
+const bridge: FooBridge = {
+  platform,
+  invoke: (channel, payload) => {
+    if (!INVOKES.has(channel)) return Promise.resolve({ ok: false, error: { kind: 'IPC_REJECTED' } });
+    return ipcRenderer.invoke(channel, payload);
+  },
+  on: (event, cb) => {
+    if (!EVENTS.has(event)) return () => undefined;
+    const listener = (_e: IpcRendererEvent, payload: unknown) => cb(payload as never);
+    ipcRenderer.on(event, listener);
+    return () => ipcRenderer.removeListener(event, listener);
+  },
+};
 contextBridge.exposeInMainWorld('foo', bridge);

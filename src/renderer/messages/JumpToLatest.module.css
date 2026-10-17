@@ -1,0 +1,43 @@
+/* Spec: 03-shell-2 §3.6.6, X-152 (pill: height 40, padding 0 --s3, --t-body-strong). */
+.button {
+  position: absolute;
+  right: var(--s3);
+  bottom: var(--s3);
+  z-index: var(--z-raised);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s0);
+  min-width: var(--btn-h);
+  min-height: var(--btn-h);
+  padding: 0;
+  border-radius: var(--r-full);
+  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-4);
+  color: var(--fg-2);
+  font: var(--t-body-strong);
+  transition: opacity var(--m-normal) var(--ease-standard);
+}
+.button[data-count] {
+  padding: 0 var(--s3);
+}
+.button:hover {
+  background: var(--bg-hover);
+  color: var(--fg-1);
+}
+.button:active {
+  background: var(--bg-pressed);
+}
+.button[data-state='hidden'] {
+  opacity: 0;
+  pointer-events: none;
+}
+.count {
+  color: var(--fg-1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+}
