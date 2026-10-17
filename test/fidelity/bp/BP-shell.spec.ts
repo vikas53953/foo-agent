@@ -93,6 +93,11 @@ test('M1 Blueprint captures for Tier R (BP-APP-L/M/R, drawn BP-ANAT-*), light an
       (th) => document.documentElement.dataset.theme === th || matchMedia(`(prefers-color-scheme: ${th})`).matches,
       theme,
     );
+    // The Blueprint draws the right shell from its top; a theme switch must not leave it scrolled.
+    await page.evaluate(
+      (panel) => document.querySelectorAll(`[data-testid="${panel}"], [data-testid="${panel}"] *`).forEach((el) => (el.scrollTop = 0)),
+      TID.appPanel,
+    );
     await settle(page);
     for (const id of ids) {
       const sel = BP_TO_APP[id]!;
