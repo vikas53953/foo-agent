@@ -31,6 +31,10 @@ export function ist(y: number, month: number, d: number, h = 0, mi = 0): number 
 
 /** Tables a seed writes, children first, so a wipe never trips a foreign key. */
 const WIPE_ORDER = [
+  'memory_uses',
+  'memory_index',
+  'routine_runs',
+  'routines',
   'reactions',
   'payments',
   'approvals',
@@ -96,6 +100,8 @@ export interface JobSpec {
   lastProgressAt?: number;
   ownerHelperId?: string;
   intent?: 'read_only' | 'do';
+  /** The job drives foo's browser (03-shell-2 §3.6.2.2 Watch live). */
+  usesBrowser?: boolean;
   steps?: { text: string; state: 'pending' | 'running' | 'done' | 'failed' | 'skipped' | 'waiting_user' }[];
 }
 
@@ -246,7 +252,7 @@ export class SeedWriter {
       .prepare(
         `INSERT INTO jobs (id, chat_id, origin_chat_id, owner_kind, owner_id, title, origin, intent, state, step_count, current_step_idx,
            uses_browser, created_at, started_at, last_progress_at, finished_at)
-         VALUES (?, ?, ?, ?, ?, ?, 'user', ?, ?, ?, ?, 0, ?, ?, ?, ?)`,
+         VALUES (?, ?, ?, ?, ?, ?, 'user', ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .run(
         id,
@@ -259,6 +265,7 @@ export class SeedWriter {
         j.state,
         steps.length,
         runningIdx >= 0 ? runningIdx : null,
+        j.usesBrowser ? 1 : 0,
         j.createdAt,
         j.createdAt,
         j.lastProgressAt ?? j.finishedAt ?? j.createdAt,
@@ -269,6 +276,72 @@ export class SeedWriter {
         .prepare(`INSERT INTO steps (id, job_id, idx, phrase_key, slots, state) VALUES (?, ?, ?, 'freeform', ?, ?)`)
         .run(this.id('s', j.createdAt), id, idx, JSON.stringify({ text: s.text }), s.state);
     });
+    return id;
+  }
+
+  /** A memory fact in the index (08-1 §4.3.9); `file` is relative to {DATA} ('memory/about-you.md', 'helpers/{id}/notes.md'). */
+  fact(f: {
+    text: string;
+    provenance: 'said' | 'guessed';
+    learnedAt: number;
+    lastUsedAt?: number;
+    reason?: string;
+    file?: string;
+    scope?: 'global' | 'chat' | 'helper';
+    chatId?: string;
+    originKind?: 'chat' | 'gmail' | 'gcal' | 'whatsapp' | 'manual' | 'setup' | 'job';
+    private?: boolean;
+  }): string {
+    const id = this.id('f', f.learnedAt);
+    const file = f.file ?? 'memory/about-you.md';
+    const lineNo = ((this.db.prepare('SELECT COUNT(*) FROM memory_index WHERE file = ?').pluck().get(file) as number) ?? 0) + 1;
+    const originKind = f.originKind ?? 'chat';
+    this.db
+      .prepare(
+        `INSERT INTO memory_index (id, file, line_no, scope, chat_id, text, provenance, origin, origin_kind, reason, private,
+           learned_at, last_used_at, use_count, hash)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      )
+      .run(
+        id,
+        file,
+        lineNo,
+        f.scope ?? 'global',
+        f.chatId ?? null,
+        f.text,
+        f.provenance,
+        originKind === 'chat' ? `chat:${f.chatId ?? 'seed'}` : originKind,
+        originKind,
+        f.reason ?? null,
+        f.private ? 1 : 0,
+        f.learnedAt,
+        f.lastUsedAt ?? null,
+        f.lastUsedAt ? 1 : 0,
+        `seed:${id}`,
+      );
+    return id;
+  }
+
+  /** A routine row (08-1 §4.3.7) with its next run; schedule and task are placeholders until J14's runner. */
+  routine(r: { ownerChatId: string; title: string; whatText: string; nextRunAt: number; createdAt: number; builtin?: string }): string {
+    const id = this.id('r', r.createdAt);
+    this.db
+      .prepare(
+        `INSERT INTO routines (id, owner_chat_id, title, builtin, what_text, task_spec, schedule, tz, active_from, active_to, state,
+           created_from, next_run_at, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, '{}', '{}', 'Asia/Kolkata', '0600', '2300', 'on', ?, ?, ?, ?)`,
+      )
+      .run(
+        id,
+        r.ownerChatId,
+        r.title,
+        r.builtin ?? null,
+        r.whatText,
+        r.builtin ? 'builtin' : 'asked',
+        r.nextRunAt,
+        r.createdAt,
+        r.createdAt,
+      );
     return id;
   }
 

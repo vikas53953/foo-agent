@@ -1,6 +1,16 @@
 // Spec: 08-0 §0 (a DB row maps to its *Row by camelCasing every column; INTEGER flags → boolean; JSON TEXT → parsed),
 // §B.1 (derived fields and drops), 08-1 §3.4 (derivations), 08-5 §2. This file is the only DB row ↔ *Row converter.
-import type { Attachment, CardRow, ConnectionRow, DraftRow, JobRow, MessageRow } from '../../shared/types';
+import type {
+  Attachment,
+  CardRow,
+  ConnectionRow,
+  DraftRow,
+  HelperRow,
+  JobRow,
+  MemoryFactView,
+  MessageRow,
+  RoutineRow,
+} from '../../shared/types';
 
 export type DbRow = Record<string, unknown>;
 
@@ -190,5 +200,67 @@ export function connectionRow(r: DbRow): ConnectionRow {
     lastErrorKind: str(r.last_error_kind),
     historyId: str(r.history_id),
     rev: Number(r.rev),
+  };
+}
+
+export function helperRow(r: DbRow): HelperRow {
+  return {
+    id: String(r.id),
+    name: String(r.name),
+    jobText: String(r.job_text),
+    goodResult: str(r.good_result),
+    faceRef: String(r.face_ref),
+    colorToken: String(r.color_token),
+    allowedApps: parseJson<Record<string, boolean>>(r.allowed_apps, {}),
+    chatId: String(r.chat_id),
+    paused: flag(r.paused),
+    template: str(r.template),
+    rev: Number(r.rev),
+    createdAt: Number(r.created_at),
+    deletedAt: num(r.deleted_at),
+  };
+}
+
+export function routineRow(r: DbRow): RoutineRow {
+  return {
+    id: String(r.id),
+    ownerChatId: String(r.owner_chat_id),
+    ownerHelperId: str(r.owner_helper_id),
+    title: String(r.title),
+    builtin: (str(r.builtin) as RoutineRow['builtin']) ?? null,
+    whatText: String(r.what_text),
+    tz: String(r.tz),
+    state: r.state as RoutineRow['state'],
+    createdFrom: r.created_from as RoutineRow['createdFrom'],
+    nextRunAt: num(r.next_run_at),
+    lastRunAt: num(r.last_run_at),
+    lastFiredAt: num(r.last_fired_at),
+    rev: Number(r.rev),
+    createdAt: Number(r.created_at),
+    updatedAt: Number(r.updated_at),
+  };
+}
+
+/** 08-5 §3.6: the memory_index row without `hash`, plus the labels the Memory page and the right shell show. */
+export function memoryFactView(r: DbRow, labels: { fileLabel: string; originLabel: string; onlyInChatTitle?: string }): MemoryFactView {
+  return {
+    id: String(r.id),
+    file: String(r.file),
+    lineNo: Number(r.line_no),
+    scope: r.scope as MemoryFactView['scope'],
+    chatId: str(r.chat_id),
+    text: String(r.text),
+    provenance: r.provenance as MemoryFactView['provenance'],
+    origin: String(r.origin),
+    originKind: r.origin_kind as MemoryFactView['originKind'],
+    reason: str(r.reason),
+    category: str(r.category),
+    kind: (r.kind ?? 'fact') as MemoryFactView['kind'],
+    sensitive: flag(r.sensitive),
+    private: flag(r.private),
+    learnedAt: Number(r.learned_at),
+    lastUsedAt: num(r.last_used_at),
+    useCount: Number(r.use_count ?? 0),
+    ...labels,
   };
 }

@@ -17,12 +17,18 @@ import {
   bootstrap,
   chatOpen,
   chatRowById,
+  helperList,
+  jobRows,
   listChats,
   markRead,
+  memoryList,
   messageList,
   pinChat,
   publicSettings,
+  recomputePill,
+  routineList,
   spendSummary,
+  stopJob,
   type ListContext,
 } from '../store/queries';
 import { ChannelGuard } from './guard';
@@ -89,6 +95,22 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'chat:pin': z.object({ chatId, on: z.boolean() }).strict(),
   'chat:mute': z.object({ chatId, until: z.union([z.number().int(), z.literal('forever'), z.null()]) }).strict(),
   'message:list': z.object({ chatId, beforeSeq: z.number().int().optional(), limit: z.number().int().min(1).max(200) }).strict(),
+  'job:stop': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'job:watch': z.object({ jobId: z.string().min(1).max(80), on: z.boolean() }).strict(),
+  'memory:list': z
+    .object({
+      filter: z
+        .object({
+          chip: z.enum(['all', 'said', 'guessed', 'gmail', 'whatsapp', 'chat']),
+          helperId: z.string().max(80).optional(),
+          last7: z.boolean().optional(),
+        })
+        .strict(),
+      q: z.string().max(200).optional(),
+    })
+    .strict(),
+  'routine:list': empty as z.ZodType<Record<string, never>>,
+  'helper:list': empty as z.ZodType<Record<string, never>>,
   'settings:get': empty as z.ZodType<Record<string, never>>,
   'settings:set': z.object({ path: z.enum(WRITABLE_PATHS), value: z.unknown() }).strict() as z.ZodType<{ path: string; value: unknown }>,
   'ai:verify': z.object({ providerId: z.enum(PROVIDER_IDS) }).strict(),
@@ -192,6 +214,21 @@ export function registerIpc(ctx: AppContext): void {
     return ok(undefined);
   });
   handle('message:list', ({ chatId: id, beforeSeq, limit }) => ok(messageList(db, id, limit, beforeSeq)));
+  handle('job:stop', ({ jobId }) => {
+    // M1 has no engine (M3): the job row is cancelled here and the chat pill re-derived; nothing was done for the user yet.
+    const r = stopJob(db, jobId, now());
+    if (!r) return fail('JOB_GONE');
+    const [row] = jobRows(db, 'id = ?', [jobId], now());
+    if (row) emit('job:upsert', row);
+    recomputePill(db, r.chatId, now());
+    emitChat(r.chatId);
+    return ok({ jobId, done: [], nothingDone: true });
+  });
+  // The Live window (09 §9.27) arrives with the browser milestone; until then the shell shows no live view.
+  handle('job:watch', () => fail('LIVE_UNAVAILABLE'));
+  handle('memory:list', ({ filter, q }) => ok(memoryList(db, filter, q, now())));
+  handle('routine:list', () => ok(routineList(db)));
+  handle('helper:list', () => ok(helperList(db)));
   handle('settings:get', () => ok(publicSettings(settings.get())));
   handle('settings:set', ({ path, value }) => {
     const next = setPath(settings.get(), path, value);

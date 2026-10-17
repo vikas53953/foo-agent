@@ -2,7 +2,7 @@
 // deterministic one).
 
 export type IdPrefix =
-  'c' | 'm' | 'k' | 'j' | 's' | 'h' | 't' | 'ap' | 'py' | 'dr' | 'cn' | 'tc' | 'r' | 'rr' | 'act' | 'nt' | 'sg' | 'hi' | 'fl' | 'bf';
+  'c' | 'm' | 'k' | 'j' | 's' | 'h' | 't' | 'ap' | 'py' | 'dr' | 'cn' | 'tc' | 'r' | 'rr' | 'act' | 'nt' | 'sg' | 'hi' | 'fl' | 'bf' | 'f';
 
 /** A new id on the system clock and crypto randomness (works in main, engine and renderer without imports). */
 export function newId(prefix: IdPrefix, now: number = Date.now()): string {

@@ -113,6 +113,7 @@ export function seedUxWorld(db: Db, now = ist(2026, 10, 16, 9, 0)): SeedResult {
       chatId: foo.chatId,
       title: 'Goa stay',
       state: 'needs_you',
+      usesBrowser: true,
       createdAt: d(16, 9, 36),
       lastProgressAt: d(16, 9, 41),
       steps: [
@@ -357,6 +358,75 @@ export function seedUxWorld(db: Db, now = ist(2026, 10, 16, 9, 0)): SeedResult {
       99,
     );
     w.waMessage('120363000000000002@g.us', { fromMe: true, sender: '', text: 'see you all on Sunday', at: d(14, 21, 12) }, 99);
+
+    // What foo knows (03-shell-2 §3.6.2.1 rows 15-17): 24 facts about you, 2 in Trips' notes, and the morning brief.
+    w.fact({
+      text: 'Likes beach stays, hates early flights',
+      provenance: 'said',
+      learnedAt: d(3, 21, 4),
+      lastUsedAt: d(16, 9, 36),
+      chatId: foo.chatId,
+    });
+    w.fact({
+      text: 'Budget trips under ₹40,000',
+      provenance: 'guessed',
+      reason: 'from 2 trips',
+      learnedAt: d(8, 18, 30),
+      chatId: foo.chatId,
+    });
+    const known = [
+      'Lives in Bengaluru, Indiranagar',
+      'Works from home on Fridays',
+      'Vegetarian on Tuesdays',
+      'Prefers window seats',
+      'Uses Airtel for the phone and broadband',
+      'Pays bills from the HDFC account',
+      'Sister Meera lives in Pune',
+      'Mother’s birthday is 2 Feb',
+      'Likes the morning brief at 7 AM',
+      'Orders groceries on Saturdays',
+      'Takes the train to Pune, not the bus',
+      'Allergic to cashews',
+      'Prefers Hindi films on weekends',
+      'Gym on Mon, Wed and Fri mornings',
+      'Car is a white Swift, KA 03',
+      'Society maintenance is due on the 5th',
+      'Kids’ school is Greenwood High',
+      'Likes filter coffee, no sugar',
+      'Reads the news digest at night',
+      'Prefers UPI over cards',
+      'Works at a design studio',
+      'Wakes up around 6:30 AM',
+    ];
+    known.forEach((text, i) =>
+      w.fact({ text, provenance: i % 3 === 0 ? 'guessed' : 'said', learnedAt: d(1, 9, 0) + i * 3 * HOUR, chatId: foo.chatId }),
+    );
+    const tripsNotes = `helpers/${trips.helperId!}/notes.md`;
+    w.fact({
+      text: 'Goa trip Sat 12 to Mon 14 Dec',
+      provenance: 'said',
+      learnedAt: d(15, 20, 14),
+      file: tripsNotes,
+      scope: 'helper',
+      chatId: trips.chatId,
+    });
+    w.fact({
+      text: 'Books flights on IndiGo when it can',
+      provenance: 'guessed',
+      reason: 'from 3 bookings',
+      learnedAt: d(15, 20, 20),
+      file: tripsNotes,
+      scope: 'helper',
+      chatId: trips.chatId,
+    });
+    w.routine({
+      ownerChatId: foo.chatId,
+      title: 'Morning brief',
+      builtin: 'morning_brief',
+      whatText: 'Your day, bills and trips at 7 AM.',
+      nextRunAt: d(17, 7, 0),
+      createdAt: d(1, 9, 0),
+    });
 
     // AI spend this month: ₹212 over 40 turns.
     for (let i = 0; i < 40; i++) w.aiTurn(i % 3 === 0 ? trips.chatId : foo.chatId, d(1, 20, 0) + i * 8 * HOUR, 530);

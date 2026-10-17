@@ -304,6 +304,79 @@ export interface JobRow {
   slow: boolean;
 }
 
+// ---- helpers (08-1 §4.3.8 camelCased; allowedApps parsed) ----
+export interface HelperRow {
+  id: string;
+  name: string;
+  jobText: string;
+  goodResult: string | null;
+  faceRef: FaceRef;
+  colorToken: string;
+  allowedApps: Record<string, boolean>;
+  chatId: string;
+  paused: boolean;
+  template: string | null;
+  rev: number;
+  createdAt: number;
+  deletedAt: number | null;
+}
+
+// ---- routines (08-1 §4.3.7, the columns the shell reads; task_spec, schedule and condition stay in main until J14) ----
+export interface RoutineRow {
+  id: string;
+  ownerChatId: string;
+  ownerHelperId: string | null;
+  title: string;
+  builtin: 'morning_brief' | 'memory_tidy' | 'pnr_watch' | 'recharge_due' | 'bill_watch' | null;
+  whatText: string;
+  tz: string;
+  state: 'on' | 'paused' | 'paused_away' | 'paused_cap' | 'deleted';
+  createdFrom: 'asked' | 'habit' | 'suggested' | 'builtin' | 'idea';
+  nextRunAt: number | null;
+  lastRunAt: number | null;
+  lastFiredAt: number | null;
+  rev: number;
+  createdAt: number;
+  updatedAt: number;
+}
+
+// ---- memory (08-5 §3.6: memory_index camelCased without hash, plus labels) ----
+export type MemoryScope = 'global' | 'chat' | 'helper';
+export interface MemoryFactView {
+  id: string;
+  file: string;
+  lineNo: number;
+  scope: MemoryScope;
+  chatId: string | null;
+  text: string;
+  provenance: 'said' | 'guessed';
+  origin: string;
+  originKind: 'chat' | 'gmail' | 'gcal' | 'whatsapp' | 'manual' | 'setup' | 'job';
+  reason: string | null;
+  category: string | null;
+  kind: 'person' | 'preference' | 'place' | 'fact';
+  sensitive: boolean;
+  private: boolean;
+  learnedAt: number;
+  lastUsedAt: number | null;
+  useCount: number;
+  fileLabel: string;
+  originLabel: string;
+  onlyInChatTitle?: string;
+}
+export interface MemoryFilter {
+  chip: 'all' | 'said' | 'guessed' | 'gmail' | 'whatsapp' | 'chat';
+  helperId?: string;
+  last7?: boolean;
+}
+
+/** 08-5 §3 StopReport (`done` holds ActivityRow rows; the activity log arrives with J21, so M1 sends none). */
+export interface StopReport {
+  jobId: string;
+  done: unknown[];
+  nothingDone: boolean;
+}
+
 export interface DraftRow {
   id: string;
   chatId: string;
@@ -387,4 +460,13 @@ export interface ChatOpenResult {
 }
 
 /** 08-3 §21 error kinds. Grows with the milestones; M1 holds the kinds the shell and its channels can return. */
-export type ErrorKind = 'IPC_REJECTED' | 'VALIDATION' | 'NOT_FOUND' | 'DB_OPEN_FAILED' | 'NET_OFFLINE' | 'SETTING_LOCKED' | 'UNKNOWN';
+export type ErrorKind =
+  | 'IPC_REJECTED'
+  | 'VALIDATION'
+  | 'NOT_FOUND'
+  | 'DB_OPEN_FAILED'
+  | 'NET_OFFLINE'
+  | 'SETTING_LOCKED'
+  | 'JOB_GONE'
+  | 'LIVE_UNAVAILABLE'
+  | 'UNKNOWN';

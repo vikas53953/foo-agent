@@ -10,11 +10,16 @@ import type {
   ChatRow,
   CardRow,
   ConnectionRow,
+  HelperRow,
   JobRow,
+  MemoryFactView,
+  MemoryFilter,
   MessageRow,
   ProviderId,
   PublicSettings,
+  RoutineRow,
   SpendSummary,
+  StopReport,
   View,
   WindowsSettingsPage,
 } from './types';
@@ -48,6 +53,12 @@ export interface Invokes {
   'chat:pin': { req: { chatId: string; on: boolean }; res: ChatRow };
   'chat:mute': { req: { chatId: string; until: number | 'forever' | null }; res: void };
   'message:list': { req: { chatId: string; beforeSeq?: number; limit: number }; res: MessageRow[] };
+  'job:stop': { req: { jobId: string }; res: StopReport };
+  'job:watch': { req: { jobId: string; on: boolean }; res: void };
+  'memory:list': { req: { filter: MemoryFilter; q?: string }; res: MemoryFactView[] };
+  'routine:list': { req: Record<string, never>; res: RoutineRow[] };
+  /** Not in 08-1 §3.2 (gap, see implementation-notes "M1 integration"): the helpers' names and one-line jobs for the shell. */
+  'helper:list': { req: Record<string, never>; res: HelperRow[] };
   'settings:get': { req: Record<string, never>; res: PublicSettings };
   'settings:set': { req: { path: string; value: unknown }; res: { settings: PublicSettings; changeId: string | null } };
   'ai:verify': { req: { providerId: ProviderId }; res: VerifyResult };
@@ -94,6 +105,11 @@ export const INVOKE_CHANNELS = [
   'chat:pin',
   'chat:mute',
   'message:list',
+  'job:stop',
+  'job:watch',
+  'memory:list',
+  'routine:list',
+  'helper:list',
   'settings:get',
   'settings:set',
   'ai:verify',

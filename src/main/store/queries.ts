@@ -4,7 +4,20 @@
 // 08-5 §3.1–§3.2 (Bootstrap ≤ 200 KB, AiStatus, SpendSummary). Article 12: every pill, count and preview comes from the
 // job, card and message rows, never from AI text.
 import type { Db } from './db';
-import { chatBase, cardRow, connectionRow, draftRow, jobRow, messageRow, parseJson, reactionBy, type DbRow } from '../db/rows';
+import {
+  chatBase,
+  cardRow,
+  connectionRow,
+  draftRow,
+  helperRow,
+  jobRow,
+  memoryFactView,
+  messageRow,
+  parseJson,
+  reactionBy,
+  routineRow,
+  type DbRow,
+} from '../db/rows';
 import { monthKey } from '../../shared/format';
 import type { Settings } from '../../shared/settings';
 import type {
@@ -17,12 +30,16 @@ import type {
   ChatPreview,
   ChatRow,
   ConnectionRow,
+  HelperRow,
   JobRow,
   JobState,
+  MemoryFactView,
+  MemoryFilter,
   MessageRow,
   PreviewBody,
   ProviderId,
   PublicSettings,
+  RoutineRow,
   SpendSummary,
   TickState,
 } from '../../shared/types';
@@ -665,4 +682,76 @@ export function bootstrap(db: Db, ctx: BootstrapContext): Bootstrap {
   };
   if (openChatId) out.openChatId = openChatId;
   return out;
+}
+
+// ---------------------------------------------------------------- right shell reads (03-shell-2 §3.7.3; 08-1 §3.2)
+
+/** helper:list (gap: no 08-1 read channel; the shell needs names and one-line jobs, 03-shell-2 §3.6.2.1 row 13). */
+export function helperList(db: Db): HelperRow[] {
+  return (db.prepare('SELECT * FROM helpers WHERE deleted_at IS NULL ORDER BY created_at').all() as DbRow[]).map(helperRow);
+}
+
+/** routine:list: every routine that is not deleted, soonest next run first (J14). */
+export function routineList(db: Db): RoutineRow[] {
+  return (
+    db.prepare("SELECT * FROM routines WHERE state != 'deleted' ORDER BY next_run_at IS NULL, next_run_at, created_at").all() as DbRow[]
+  ).map(routineRow);
+}
+
+/** memory:list (08-1 §3.2, 08-5 §3.6): facts from the index, newest first, filtered by the 06-2 §7.3 chips and `q`. */
+export function memoryList(db: Db, filter: MemoryFilter, q: string | undefined, now: number): MemoryFactView[] {
+  const where: string[] = [];
+  const args: unknown[] = [];
+  if (filter.chip === 'said' || filter.chip === 'guessed') {
+    where.push('m.provenance = ?');
+    args.push(filter.chip);
+  } else if (filter.chip === 'gmail' || filter.chip === 'whatsapp' || filter.chip === 'chat') {
+    where.push('m.origin_kind = ?');
+    args.push(filter.chip);
+  }
+  if (filter.helperId) {
+    where.push('m.file = ?');
+    args.push(`helpers/${filter.helperId}/notes.md`);
+  }
+  if (filter.last7) {
+    where.push('m.learned_at >= ?');
+    args.push(now - 7 * DAY);
+  }
+  if (q && q.trim()) {
+    where.push('m.text LIKE ?');
+    args.push(`%${q.trim()}%`);
+  }
+  const rows = db
+    .prepare(
+      `SELECT m.*, h.name AS helper_name, c.title AS chat_title FROM memory_index m
+         LEFT JOIN helpers h ON m.file = 'helpers/' || h.id || '/notes.md'
+         LEFT JOIN chats c ON c.id = m.chat_id
+       ${where.length ? `WHERE ${where.join(' AND ')}` : ''}
+       ORDER BY m.learned_at DESC`,
+    )
+    .all(...args) as DbRow[];
+  return rows.map((r) =>
+    memoryFactView(r, {
+      fileLabel: r.helper_name ? `${String(r.helper_name)} notes` : String(r.file).replace(/^memory\//, ''),
+      // The 08-3 §12.2 origin label lives in the Markdown line; the index keeps only the origin kind until J17's indexer.
+      originLabel: String(r.origin_kind),
+      ...(r.scope === 'chat' && r.chat_title ? { onlyInChatTitle: String(r.chat_title) } : {}),
+    }),
+  );
+}
+
+const LIVE_STATES: JobState[] = ['queued', 'working', 'needs_you', 'waiting'];
+
+/**
+ * job:stop (J18) for M1, before the engine exists: a live job becomes CANCELLED with stop_reason 'user_button'. Returns the
+ * chat id, or null when the job is gone or already finished (JOB_GONE).
+ */
+export function stopJob(db: Db, jobId: string, now: number): { chatId: string } | null {
+  const r = db.prepare('SELECT chat_id, state FROM jobs WHERE id = ?').get(jobId) as DbRow | undefined;
+  if (!r || !LIVE_STATES.includes(r.state as JobState)) return null;
+  db.prepare("UPDATE jobs SET state = 'cancelled', stop_reason = 'user_button', finished_at = ?, rev = rev + 1 WHERE id = ?").run(
+    now,
+    jobId,
+  );
+  return { chatId: String(r.chat_id) };
 }
