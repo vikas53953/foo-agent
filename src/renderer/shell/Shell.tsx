@@ -11,6 +11,7 @@ import { useStore } from '../store/index';
 import { selectRightShellOpen, selectSidebarWidth } from '../store/settings';
 import { selectRightShellOpenOverlay, selectView, selectXsPane } from '../store/ui';
 import { computeLayout, LayoutContext, useWindowWidth } from './layout';
+import { useShellShortcuts } from './shortcuts';
 import styles from './Shell.module.css';
 import { TitleBar } from './TitleBar';
 
@@ -22,6 +23,7 @@ export interface ShellProps {
 }
 
 export function Shell({ main, right }: ShellProps) {
+  useShellShortcuts();
   const width = useWindowWidth();
   const sidebarWidth = useStore(selectSidebarWidth);
   const rightOpenL = useStore(selectRightShellOpen);

@@ -19,6 +19,8 @@ export interface LiveState {
   ai: AiStatus | null;
   /** Windows lets foo show toasts (notifications:status). */
   notificationsAllowed: boolean;
+  /** An update finished downloading (09 §9.20; nothing sets it before the updater milestone). */
+  updateReady: boolean;
   /** Ticks every 30 s and on focus (row times, the 24 h "Done" fade). */
   now: number;
   /** "Mark as unread" with no count (03-shell-1 §3.4.9; there is no invoke for it in M1, so it lasts for the session). */
@@ -39,6 +41,7 @@ export function initialLive(now: number): LiveState {
     windowFocused: true,
     ai: null,
     notificationsAllowed: true,
+    updateReady: false,
     now,
     markedUnread: {},
     loaded: false,

@@ -1,0 +1,65 @@
+/* Spec: 03-shell-1 §3.3.1 anatomy and §3.3.2 fills; §3.3.2.3 high contrast. */
+.strip {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--banner-h);
+  padding: 0 var(--s3);
+  border-bottom: 1px solid var(--line);
+  background: var(--banner-fill);
+  color: var(--fg-1);
+  overflow: hidden;
+  animation: banner-in var(--m-normal) var(--ease-in);
+  --banner-fill: var(--warn-soft);
+  --banner-ink: var(--warn);
+}
+.strip[data-tone='bad'] {
+  --banner-fill: var(--bad-soft);
+  --banner-ink: var(--bad);
+}
+.strip[data-tone='accent'] {
+  --banner-fill: var(--accent-soft);
+  --banner-ink: var(--accent);
+}
+@keyframes banner-in {
+  from {
+    max-height: 0;
+    min-height: 0;
+  }
+  to {
+    max-height: var(--banner-h);
+  }
+}
+.icon {
+  color: var(--banner-ink);
+}
+.text {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font: var(--t-small);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+:global([data-bp='XS']) .text {
+  white-space: normal;
+}
+@media (prefers-reduced-motion: reduce) {
+  .strip {
+    animation: none;
+  }
+}
+:root[data-motion='off'] .strip {
+  animation: none;
+}
+@media (forced-colors: active) {
+  .strip {
+    background: Canvas;
+    border-bottom-color: CanvasText;
+    color: CanvasText;
+  }
+  .icon {
+    color: CanvasText;
+  }
+}

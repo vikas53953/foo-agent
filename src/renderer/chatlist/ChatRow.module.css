@@ -1,0 +1,218 @@
+/* Spec: 03-shell-1 §3.4.5 row anatomy (72 min-height, 8 inset, 12 padding, `--r-sm`, avatar 48 → 12 → text; line 1 name
+   `--t-body-strong` + time `--t-caption` `--fg-3`; line 2 preview `--t-small` `--fg-2` + right slot with `--s0` gaps;
+   a 2 line gap), §3.4.5.1 WhatsApp mark (16, `--logo` tile, 2 inset, bottom-right of the 48 box), §3.4.7 row states
+   (hover, pressed, selected fill + 3×24 accent bar, inset focus ring, unread time in `--accent`, folded 44 line, disabled,
+   high contrast). */
+.row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: var(--row-chat);
+  margin: 0 var(--s1);
+  padding: 0 var(--s2);
+  border-radius: var(--r-sm);
+  color: var(--fg-1);
+  cursor: default;
+  user-select: none;
+  transition: background-color var(--m-fast) var(--ease-standard);
+}
+.row:hover {
+  background: var(--bg-hover);
+}
+.row:active {
+  background: var(--bg-pressed);
+}
+.row.selected,
+.row.selected:hover {
+  background: var(--bg-selected);
+}
+.row.selected::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: calc(var(--s0) - 1px);
+  height: var(--s5);
+  margin-top: calc(var(--s5) / -2);
+  border-radius: var(--r-full);
+  background: var(--accent);
+}
+.row:focus-visible {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: calc(var(--focus-outer-w) * -1);
+  box-shadow: inset 0 0 0 calc(var(--focus-outer-w) + var(--focus-inner-w)) var(--focus-inner);
+}
+.row.disabled,
+.row.disabled:hover,
+.row.disabled:active {
+  background: transparent;
+}
+.row.disabled .name,
+.row.disabled .preview {
+  color: var(--fg-disabled);
+}
+
+/* avatar box: the 48 face, plus the WhatsApp mark at its bottom-right */
+.avatarBox {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+}
+.source {
+  position: absolute;
+  right: calc(var(--s-1) * -1);
+  bottom: calc(var(--s-1) * -1);
+  display: inline-flex;
+  padding: var(--s-1);
+  border-radius: var(--r-xs);
+  background: var(--logo-bg);
+}
+.waMark {
+  fill: #25d366; /* local: the bundled WhatsApp mark keeps its brand green on the white logo tile (02-2 logo rule) */
+}
+
+.text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--s-1);
+  min-width: 0;
+}
+.line1,
+.line2 {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-width: 0;
+}
+.privateMark {
+  display: inline-flex;
+  flex: none;
+  color: var(--fg-2);
+}
+.name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font: var(--t-body-strong);
+  letter-spacing: var(--t-body-strong-tracking);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.time {
+  flex: none;
+  color: var(--fg-3);
+  font: var(--t-caption);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.unread .time {
+  color: var(--accent);
+}
+.preview {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--s0);
+  min-width: 0;
+  color: var(--fg-2);
+  font: var(--t-small);
+}
+.preview.accent,
+.accent {
+  color: var(--accent);
+}
+.previewIcon {
+  display: inline-flex;
+  flex: none;
+  color: var(--fg-3);
+}
+.previewIcon.bad {
+  color: var(--bad);
+}
+.previewText {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tick {
+  display: inline-flex;
+  flex: none;
+  color: var(--fg-3);
+}
+.tickRead {
+  color: var(--tick-read);
+}
+.slot {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--s0);
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--s4);
+  height: var(--s4);
+  padding: 0 var(--s0);
+  border-radius: var(--r-full);
+  background: var(--accent);
+  color: var(--on-accent);
+  font: var(--t-caption-strong);
+  font-variant-numeric: tabular-nums;
+}
+.badgeMuted {
+  background: var(--bg-pressed);
+  color: var(--fg-2);
+}
+.dot {
+  width: var(--s2);
+  height: var(--s2);
+  border-radius: var(--r-full);
+  background: var(--accent);
+}
+.slotIcon {
+  display: inline-flex;
+  color: var(--fg-3);
+}
+
+/* folded (X-153): one 44px line */
+.row.folded {
+  min-height: calc(var(--s7) + var(--s0));
+}
+.foldedName {
+  min-width: 0;
+  overflow: hidden;
+  font: var(--t-small);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.foldedDone {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--fg-3);
+  font: var(--t-caption);
+  white-space: nowrap;
+}
+
+@media (forced-colors: active) {
+  .row.selected,
+  .row.selected:hover {
+    background: Highlight;
+    color: HighlightText;
+  }
+  .row.selected .time,
+  .row.selected .preview {
+    color: HighlightText;
+  }
+  .badge,
+  .badgeMuted,
+  .dot {
+    background: Highlight;
+    color: HighlightText;
+  }
+}

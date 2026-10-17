@@ -38,6 +38,12 @@ export const BOX_TOLERANCE = 0.5;
 /** Elements for rows whose spec entry has no data-testid (SV-38 "base styles" = the body rule in global.css). */
 export const SELECTORS: Record<string, string> = {
   'SV-38': 'body',
+  // M1 left shell (03-shell-1 §3.4): measured with the list on screen and, for SV-23, a menu open.
+  'SV-14': '[data-testid="chatlist-row"]:not([data-folded="true"]) [data-testid="chatlist-row-avatar"]',
+  'SV-17': '[data-testid="sidebar"]',
+  'SV-23': '[role="menuitem"]',
+  'SV-24': '[data-testid="sidebar-search-field"]',
+  'SV-25': '[data-testid="sidebar"] button, [data-testid="sidebar"] [role="radio"], [data-testid="chatlist-row"], [role="menuitem"]',
 };
 
 export function readRows(file = 'spec/spec-values.json'): SvRow[] {

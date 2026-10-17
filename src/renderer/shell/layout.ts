@@ -81,6 +81,13 @@ export function computeLayout(i: LayoutInput): Layout {
   return { bp, left, right, showLeft: true, showMain: true, resizable: true };
 }
 
+/** §3.4.1: ← / → move the resize handle by 20 (`--s4`); widths stay inside the breakpoint range. */
+export const RESIZE_STEP = 20;
+
+export function clampWidth(px: number, range: { min: number; max: number }): number {
+  return Math.round(Math.min(Math.max(px, range.min), range.max));
+}
+
 // ---------------------------------------------------------------- window width (CSS 100vw)
 
 function subscribe(cb: () => void): () => void {

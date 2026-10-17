@@ -8,6 +8,8 @@
   background: var(--bg-app);
 }
 .content {
+  /* Row 3 even when the banner strip renders nothing. */
+  grid-row: 3;
   position: relative;
   display: grid;
   grid-template-columns: var(--left-w) minmax(0, 1fr);

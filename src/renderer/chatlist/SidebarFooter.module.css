@@ -1,0 +1,95 @@
+/* Spec: 03-shell-1 §3.4.11 footer: `--s9` 64 min-height, 1px `--line` top, `--bg-sidebar`, padding 0 12; the status
+   button (radius `--r-sm`, hover `--bg-hover`); 26 avatar → 8 → two lines (`--t-small` / `--t-caption` `--fg-3`); the 8 wide
+   status dot (`--ok`, `--warn`, `--bad`, `--fg-3`); spend in `--warn` from 80 % and `--bad` at the cap. */
+.footer {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--s9);
+  padding: 0 var(--s2);
+  border-top: 1px solid var(--line);
+  background: var(--bg-sidebar);
+}
+.status {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--s1);
+  min-width: 0;
+  min-height: var(--s7);
+  padding: var(--s0) var(--s1);
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--fg-1);
+  text-align: left;
+  transition: background-color var(--m-fast) var(--ease-standard);
+}
+.status:hover {
+  background: var(--bg-hover);
+}
+.status:active {
+  background: var(--bg-pressed);
+}
+.lines {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.line1 {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  font: var(--t-small);
+  white-space: nowrap;
+}
+.you {
+  overflow: hidden;
+  color: var(--fg-1);
+  text-overflow: ellipsis;
+}
+.sep {
+  color: var(--fg-2);
+  white-space: pre;
+}
+.dot {
+  flex: none;
+  width: var(--s1);
+  height: var(--s1);
+  margin-right: var(--s0);
+  border-radius: var(--r-full);
+  background: var(--fg-3);
+}
+.dot[data-tone='ok'] {
+  background: var(--ok);
+}
+.dot[data-tone='warn'] {
+  background: var(--warn);
+}
+.dot[data-tone='bad'] {
+  background: var(--bad);
+}
+.ai {
+  overflow: hidden;
+  color: var(--fg-2);
+  text-overflow: ellipsis;
+}
+.spend {
+  overflow: hidden;
+  color: var(--fg-3);
+  font: var(--t-caption);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.spend[data-tone='warn'] {
+  color: var(--warn);
+}
+.spend[data-tone='bad'] {
+  color: var(--bad);
+}
+@media (forced-colors: active) {
+  .dot {
+    background: CanvasText;
+  }
+}

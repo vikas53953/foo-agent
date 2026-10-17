@@ -177,7 +177,7 @@ export function seedPerf(db: Db, now: number): SeedResult {
       });
     }
   })();
-  const counts = w.finish();
+  const counts = w.finish(now);
   w.check();
   return { ...counts, refs };
 }

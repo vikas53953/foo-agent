@@ -8,23 +8,10 @@ import { createPortal } from 'react-dom';
 import { TID } from '../../shared/testids';
 import { cx } from './cx';
 import { Icon } from './Icon';
+import type { MenuAnchor, MenuEntry } from './menuTypes';
 import styles from './Menu.module.css';
 
-export type MenuEntry =
-  | {
-      kind: 'item';
-      id: string;
-      label: string;
-      tid?: keyof typeof TID;
-      shortcut?: string;
-      destructive?: boolean;
-      disabled?: boolean;
-      onSelect?: () => void;
-      submenu?: MenuEntry[];
-    }
-  | { kind: 'separator'; id: string };
-
-export type MenuAnchor = { el: HTMLElement; align?: 'start' | 'end' } | { x: number; y: number };
+export type { MenuAnchor, MenuEntry } from './menuTypes';
 
 export interface MenuProps {
   entries: MenuEntry[];

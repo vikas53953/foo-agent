@@ -13,6 +13,8 @@ export interface UiState {
   view: View;
   back: View[];
   dialog: DialogId | null;
+  /** The chat a confirm dialog is about (C-1, C-5, C-6, C-7). */
+  dialogTarget: string | null;
   /** Dialog requests waiting for the open one to close (§3.9.6 "a second dialog request waits"). */
   dialogQueue: DialogId[];
   focusReturn: HTMLElement | null;
@@ -35,6 +37,7 @@ export function initialUi(): UiState {
     view: { kind: 'chat', chatId: '' },
     back: [],
     dialog: null,
+    dialogTarget: null,
     dialogQueue: [],
     focusReturn: null,
     scroll: {},

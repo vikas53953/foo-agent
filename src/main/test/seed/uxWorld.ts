@@ -51,7 +51,8 @@ function filler(
   }
 }
 
-export function seedUxWorld(db: Db): SeedResult {
+/** `now` is the clock the pills are derived at (the E2E clock starts at Fri 16 Oct 2026, 9:00 AM IST). */
+export function seedUxWorld(db: Db, now = ist(2026, 10, 16, 9, 0)): SeedResult {
   const w = new SeedWriter(db, 1);
   w.wipe();
   const refs: Record<string, string> = {};
@@ -360,7 +361,7 @@ export function seedUxWorld(db: Db): SeedResult {
     // AI spend this month: ₹212 over 40 turns.
     for (let i = 0; i < 40; i++) w.aiTurn(i % 3 === 0 ? trips.chatId : foo.chatId, d(1, 20, 0) + i * 8 * HOUR, 530);
   })();
-  const counts = w.finish();
+  const counts = w.finish(now);
   w.check();
   return { ...counts, refs };
 }

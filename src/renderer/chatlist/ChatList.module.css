@@ -1,0 +1,54 @@
+/* Spec: 03-shell-1 §3.4.1 (only the list scrolls; native overlay scrollbars, never restyled), §3.4.5 (no gap between
+   rows), §3.4.7 loading rows (48 circle + 60 % / 85 % bars 12 tall), §3.4.10 / 02-2 §F16.2 Block (32 top, centred, max
+   260, icon 24 `--fg-3` or `--bad` → 12 → body `--t-small` `--fg-2` → 16 → the button). */
+.scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: var(--s1);
+}
+.list:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.skeletonRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: var(--row-chat);
+  margin: 0 var(--s1);
+  padding: 0 var(--s2);
+}
+.skeletonBars {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--s1);
+}
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: calc(var(--s9) * 4 + var(--s0));
+  margin: 0 auto;
+  padding: var(--s6) var(--s3) 0;
+  text-align: center;
+}
+.emptyIcon,
+.emptyIconBad {
+  display: inline-flex;
+  color: var(--fg-3);
+}
+.emptyIconBad {
+  color: var(--bad);
+}
+.emptyBody {
+  margin: var(--s2) 0 var(--s3);
+  color: var(--fg-2);
+  font: var(--t-small);
+}

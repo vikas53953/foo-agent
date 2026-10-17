@@ -1,6 +1,7 @@
 // Spec: 08-3 §22.9 (seed sets generated deterministically from IdGen(seed=1) and a fixed PRNG seeded 1, relative to the
 // pinned clock), 08-1 §4.3 (tables and their insert order), 08-0 §E.7 (ids). Test builds only (this folder never ships).
 import type { Db } from '../../store/db';
+import { recomputePill } from '../../store/queries';
 import { uuid7 } from '../../../shared/ids';
 import type { IdPrefix } from '../../../shared/ids';
 import type { CardType, JobState } from '../../../shared/types';
@@ -344,10 +345,11 @@ export class SeedWriter {
       .run(`wa_${jid}:${n}`, jid, m.fromMe ? 1 : 0, m.sender, m.text, m.at);
   }
 
-  /** Points every chat at its newest message and sets next_seq (call once at the end). */
-  finish(): { chats: number; messages: number } {
+  /** Points every chat at its newest message, sets next_seq and derives chats.pill at `now` (call once at the end). */
+  finish(now: number): { chats: number; messages: number } {
     const upd = this.db.prepare('UPDATE chats SET last_message_id = ?, next_seq = ? WHERE id = ?');
     for (const [chatId, m] of this.last) upd.run(m.id, (this.seq.get(chatId) ?? 0) + 1, chatId);
+    for (const id of this.db.prepare('SELECT id FROM chats').pluck().all() as string[]) recomputePill(this.db, id, now);
     return { ...this.counts };
   }
 }
