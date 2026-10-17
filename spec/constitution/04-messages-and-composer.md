@@ -147,7 +147,7 @@ Test id: `bubble-me` (`data-message-id`, `data-index`); meta `bubble-meta`, tick
 | Item | Value | Evidence |
 |---|---|---|
 | Alignment | Right edge of the column. Row is `justify-content: flex-end` | MSG §5 all three apps |
-| Fill | `--bubble-me` (light `#0B0B10`, dark `#F1F1F5`) | 02 F2; BP1 near-black "me" |
+| Fill | `--bubble-me` (light `#0B0B10`, dark `#2B3FD6` indigo, X-145) | 02 F2; BP1 near-black "me"; X-145 (CR-0004) |
 | Text | `--on-bubble-me`, `--t-body` 15/22 400, `text-wrap: pretty`, `white-space: pre-wrap`, `overflow-wrap: anywhere` | 02 F1; MSG §6 long message |
 | Padding | 8px top, 12px right, 8px bottom, 12px left (`--s1` / `--s2`) | BP1 `.b` padding 8px 12px |
 | Max width | `--bubble-max`: 72% of the column, capped at 620px | 02 F5 |

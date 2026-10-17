@@ -144,10 +144,16 @@ export interface Dispute {
   checks: CheckId[];
 }
 
-/** §11.2.7 step 3: the checks an approved CR disputes for this ref (only those, only until the drawing is redrawn). */
+/**
+ * §11.2.7 step 3: the checks approved CRs dispute for this ref (only those, only until the drawing is redrawn). A later CR
+ * can add checks for a ref an earlier one already names: every entry for the id counts, and the CRs are listed together.
+ */
 export function disputedChecks(disputes: Dispute[], id: string): { cr: string; checks: CheckId[] } | null {
-  const d = disputes.find((x) => x.ids.includes(id));
-  return d ? { cr: d.cr, checks: d.checks } : null;
+  const all = disputes.filter((x) => x.ids.includes(id));
+  if (!all.length) return null;
+  const order: CheckId[] = ['r1', 'r2', 'r3', 'r4'];
+  const checks = order.filter((c) => all.some((d) => d.checks.includes(c)));
+  return { cr: [...new Set(all.map((d) => d.cr))].join(' + '), checks };
 }
 
 export function tierR(
