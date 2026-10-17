@@ -6,6 +6,9 @@ directories:
   output: dist
 files:
   - out/**
+  # 08-3 §22.1: test hooks never ship (CI greps app.asar for them).
+  - '!out/main/main/test/**'
+  - '!out/main/preload/preloadTest.js'
   - resources/**
   - package.json
 asarUnpack:

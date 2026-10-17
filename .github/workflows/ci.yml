@@ -61,7 +61,9 @@ jobs:
       - name: No test hooks in the production build (08-3 §22.1)
         shell: bash
         run: |
-          if grep -a -q "__fooTest" dist/win-unpacked/resources/app.asar; then echo "__fooTest found in app.asar"; exit 1; fi
+          for needle in "__fooTest" "test:clock" "test:seed"; do
+            if grep -a -q "$needle" dist/win-unpacked/resources/app.asar; then echo "$needle found in app.asar"; exit 1; fi
+          done
       - name: Upload evidence
         if: always()
         uses: actions/upload-artifact@v4
