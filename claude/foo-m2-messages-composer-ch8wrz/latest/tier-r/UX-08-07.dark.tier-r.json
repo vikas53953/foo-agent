@@ -66,9 +66,6 @@
         "▯",
         "⋯",
         "☀",
-        "Good",
-        "morning,",
-        "Vikas",
         "Morning",
         "brief",
         "Mom's",
@@ -385,11 +382,11 @@
         },
         "app": {
           "x": 356,
-          "y": 333,
+          "y": 355,
           "width": 553,
-          "height": 277
+          "height": 255
         },
-        "dPos": 194.75,
+        "dPos": 172.75,
         "dSize": 127,
         "verdict": "fail"
       }
@@ -410,13 +407,13 @@
   "r4": {
     "verdict": "review",
     "skipped": null,
-    "ratio": 0.05360332614721281,
-    "diffPixels": 6962,
+    "ratio": 0.05498152140437327,
+    "diffPixels": 7141,
     "total": 129880
   },
   "r5": {
-    "ratio": 0.1640537109375,
-    "diffPixels": 167991,
+    "ratio": 0.1754560546875,
+    "diffPixels": 179667,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-08-07.dark.diff.png"

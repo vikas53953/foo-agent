@@ -16,20 +16,7 @@
         "＋",
         "➤"
       ],
-      "extra": [
-        "Waiting",
-        "for",
-        "your",
-        "OK:",
-        "₹14,600",
-        "to",
-        "Taj",
-        "Holiday",
-        "Village",
-        "9:59",
-        "left",
-        "Show"
-      ]
+      "extra": []
     },
     "hl": {
       "missing": [],
@@ -51,7 +38,7 @@
           "x": 0,
           "y": 0,
           "width": 600,
-          "height": 207
+          "height": 159
         },
         "dPos": 0,
         "dSize": 248.671875,
@@ -79,9 +66,9 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.1441911997467553,
-    "diffPixels": 9110,
-    "total": 63180,
+    "ratio": 0.09846082173126199,
+    "diffPixels": 5495,
+    "total": 55809,
     "sizeMismatch": {
       "a": [
         351,
@@ -89,7 +76,7 @@
       ],
       "b": [
         600,
-        207
+        159
       ]
     },
     "heatmap": "BP-COMP-05.light.diff.png"

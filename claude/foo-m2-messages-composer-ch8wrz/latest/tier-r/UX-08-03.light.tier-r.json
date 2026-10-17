@@ -564,12 +564,12 @@
         },
         "app": {
           "x": 356,
-          "y": 590,
-          "width": 270.171875,
-          "height": 60
+          "y": 612,
+          "width": 321.984375,
+          "height": 38
         },
-        "dPos": 91,
-        "dSize": 53.78125,
+        "dPos": 69,
+        "dSize": 1.96875,
         "verdict": "fail"
       }
     ]
@@ -587,15 +587,15 @@
     ]
   },
   "r4": {
-    "verdict": "pass",
+    "verdict": "review",
     "skipped": null,
-    "ratio": 0.02233593242365172,
-    "diffPixels": 275,
+    "ratio": 0.03200129954515919,
+    "diffPixels": 394,
     "total": 12312
   },
   "r5": {
-    "ratio": 0.0878369140625,
-    "diffPixels": 89945,
+    "ratio": 0.085166015625,
+    "diffPixels": 87210,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-08-03.light.diff.png"

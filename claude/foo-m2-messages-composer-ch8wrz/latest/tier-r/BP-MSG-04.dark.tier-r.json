@@ -69,7 +69,7 @@
           "x": 0,
           "y": 0,
           "width": 553,
-          "height": 110
+          "height": 88
         },
         "dPos": 0,
         "dSize": 203,
@@ -97,9 +97,9 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.044883116883116886,
-    "diffPixels": 1728,
-    "total": 38500,
+    "ratio": 0.04525974025974026,
+    "diffPixels": 1394,
+    "total": 30800,
     "sizeMismatch": {
       "a": [
         350,
@@ -107,7 +107,7 @@
       ],
       "b": [
         553,
-        110
+        88
       ]
     },
     "heatmap": "BP-MSG-04.dark.diff.png"

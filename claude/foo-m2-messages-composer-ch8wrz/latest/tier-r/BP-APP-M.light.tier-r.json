@@ -20,7 +20,6 @@
         "Today,",
         "Fri",
         "16",
-        "Oct",
         "☀",
         "Morning",
         "brief",
@@ -122,6 +121,24 @@
         "🎙"
       ],
       "extra": [
+        "Mom’s",
+        "cake",
+        "is",
+        "ordered",
+        "from",
+        "Theobroma",
+        "for",
+        "Sun",
+        "18",
+        ".",
+        "Worked",
+        "for",
+        "10",
+        "h",
+        "2",
+        "min",
+        "7:12",
+        "AM",
         "Cake",
         "from",
         "Theobroma",
@@ -317,14 +334,14 @@
     ]
   },
   "r3": {
-    "verdict": "pass",
+    "verdict": "review",
     "anchors": [
       {
         "name": "BP-APP-M",
         "ref": "#FFFFFF",
-        "app": "#FFFFFF",
-        "deltaE": 0,
-        "verdict": "pass"
+        "app": "#F0F0F4",
+        "deltaE": 3.65,
+        "verdict": "review"
       }
     ]
   },
@@ -336,8 +353,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.16358129528985507,
-    "diffPixels": 75127,
+    "ratio": 0.15337148132664438,
+    "diffPixels": 70438,
     "total": 459264,
     "sizeMismatch": {
       "a": [
