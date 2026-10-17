@@ -72,6 +72,15 @@ test('ART-26a: every M1 surface passes axe in light and dark (list, banner, chat
     // As m0-window.spec.ts: Linux CI has no desktop theme bridge, so the media query is emulated there.
     if (process.platform !== 'win32') await page.emulateMedia({ colorScheme: theme });
     await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
+    // Row backgrounds fade on a theme switch; axe must read the settled colours, not a mid-fade frame.
+    await page.evaluate(() =>
+      Promise.all(
+        document
+          .getAnimations()
+          .filter((a) => a.effect?.getTiming().iterations !== Infinity)
+          .map((a) => a.finished),
+      ),
+    );
     let axe = new AxeBuilder({ page }).setLegacyMode(true);
     for (const s of scopes) axe = axe.include(s);
     const r = await axe.analyze();
