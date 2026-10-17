@@ -1,0 +1,4 @@
+# Generated files, the spec manifest and the freshness checks compare bytes: keep LF on every OS.
+* text=auto eol=lf
+*.png binary
+*.ico binary
