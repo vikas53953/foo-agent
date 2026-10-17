@@ -88,6 +88,8 @@ async function renderUx(page: Page, e: UxEntry, out: string, browser: RefBrowser
       frame.style.transform = 'none';
       stage.style.width = '1280px';
       stage.style.height = '800px';
+      // Pin the frame to whole pixels at the viewport origin, so the capture is exactly 1280×800 with no sub-pixel offset.
+      Object.assign(frame.style, { position: 'fixed', left: '0px', top: '0px', zIndex: '2147483647' });
       return w.__STEPS[i]!.state;
     }, e.index);
     await settle(page);
@@ -156,7 +158,11 @@ async function renderBp(page: Page, e: BpEntry, out: string, browser: RefBrowser
     await setTheme(page, theme);
     await el.scrollIntoViewIfNeeded();
     await settle(page);
-    const png = await el.screenshot(SHOT);
+    // Whole-pixel clip of the element's box, so a mock at a half-pixel offset still captures at its drawn size.
+    const b = await el.boundingBox();
+    if (!b) throw new Error(`${e.id}: ${e.selector} has no box`);
+    const clip = { x: Math.round(b.x), y: Math.round(b.y), width: Math.round(b.width), height: Math.round(b.height) };
+    const png = await page.screenshot({ ...SHOT, clip });
     const name = `${e.id}.${theme}.png`;
     writeFileSync(join(out, name), png);
     json.files[theme] = { png: name, sha256: sha(png) };

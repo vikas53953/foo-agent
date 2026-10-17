@@ -17,6 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # fid-guard reads the PR's commits and diff
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -24,6 +26,11 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm spec:verify
+      - name: FID-02 / FID-06 / FID-19 guard (pull requests)
+        if: github.event_name == 'pull_request'
+        run: pnpm fid:guard
+      - name: FID-18 trace matrix
+        run: pnpm trace:check
       - run: pnpm check:copy
       - run: pnpm lint
       - run: pnpm format:check
