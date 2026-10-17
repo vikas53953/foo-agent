@@ -72,3 +72,10 @@ jobs:
             playwright-report/
             test-results/
           if-no-files-found: ignore
+      # A ready-to-run copy for manual testing on Vikas's PC: unzip, open foo.exe (unsigned for testers).
+      - name: Upload the app for manual testing
+        uses: actions/upload-artifact@v4
+        with:
+          name: foo-windows-app
+          path: dist/win-unpacked/
+          retention-days: 14
