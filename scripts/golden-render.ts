@@ -10,7 +10,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import type { Page } from '@playwright/test';
-import { boxIn, openRefBrowser, setTheme, settle, textNodes, type Box, type Engine, type RefBrowser } from './golden/browser';
+import { boxIn, openRefBrowser, setTheme, settle, textNodes, VIEWPORT, type Box, type Engine, type RefBrowser } from './golden/browser';
 import { runnerIdentity } from './golden/runner-identity';
 import { BP_FILE, readManifest, UX_FILE, type BpEntry, type GoldenManifest, type UxEntry } from './golden-manifest';
 
@@ -157,14 +157,26 @@ async function renderBp(page: Page, e: BpEntry, out: string, browser: RefBrowser
   for (const theme of THEMES) {
     await setTheme(page, theme);
     await settle(page);
-    // Whole-pixel clip of the element's box in document coordinates, captured from the full page, so a mock wider than its
-    // horizontally scrolling container (the 1280px window in `.scroll`) or under the sticky top nav is captured whole.
-    const b = await el.evaluate((node) => {
+    // The element is scrolled to the top of a viewport grown to hold it whole, settled, then clipped in viewport coordinates,
+    // so a mock wider than its horizontally scrolling container (the 1280px window in `.scroll`) or under the sticky top nav
+    // is captured whole. A fullPage capture re-lays out the page mid-capture and is not byte-stable on Windows (FID-03).
+    const doc = await el.evaluate((node) => {
       const r = node.getBoundingClientRect();
       return { x: r.left + window.scrollX, y: r.top + window.scrollY, width: r.width, height: r.height };
     });
+    await page.setViewportSize({
+      width: Math.max(VIEWPORT.width, Math.ceil(doc.x + doc.width)),
+      height: Math.max(VIEWPORT.height, Math.ceil(doc.height) + 1),
+    });
+    await page.evaluate((y) => window.scrollTo(0, Math.floor(y)), doc.y);
+    await settle(page);
+    const b = await el.evaluate((node) => {
+      const r = node.getBoundingClientRect();
+      return { x: r.left, y: r.top, width: r.width, height: r.height };
+    });
     const clip = { x: Math.round(b.x), y: Math.round(b.y), width: Math.round(b.width), height: Math.round(b.height) };
-    const png = await page.screenshot({ ...SHOT, fullPage: true, clip });
+    const png = await page.screenshot({ ...SHOT, clip });
+    await page.setViewportSize(VIEWPORT);
     const name = `${e.id}.${theme}.png`;
     writeFileSync(join(out, name), png);
     json.files[theme] = { png: name, sha256: sha(png) };

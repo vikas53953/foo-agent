@@ -288,7 +288,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
                 data-index={item.index}
                 className={styles.row}
                 style={{ transform: `translateY(${item.start}px)` }}
-                role={r.kind === 'message' ? 'listitem' : 'none'}
+                role="listitem"
                 {...(r.kind === 'message' ? { 'data-message-id': r.message.id, tabIndex: -1 } : {})}
                 data-flash={(r.kind === 'message' && r.message.id === flashId) || undefined}
               >
