@@ -1,19 +1,19 @@
 {
-  "reportId": "M1-234b4da-39060218667",
+  "reportId": "M1-9123e1a-39060652457",
   "milestone": "M1",
-  "generatedAt": "2026-10-17T18:59:29.216Z",
-  "commit": "5968f860987d441365341c09392a4fdafa719d70",
-  "head": "234b4da536682983e3c0c3be337d676b5e26b469",
+  "generatedAt": "2026-10-17T19:08:51.523Z",
+  "commit": "d6b513edb48d74c2fe3a17790e3c02eb3d416545",
+  "head": "9123e1a5d89ae5775b337800e85abe2a6a4ce4da",
   "ci": {
-    "runId": "39060218667",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39060218667"
+    "runId": "39060652457",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39060652457"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "c40a35f3b44a250077cd2359dc2b1357eadbfa95fbfbe2c411a01ee16138c09d"
   },
   "runner": {
-    "recordedAt": "2026-10-17T18:57:57.597Z",
+    "recordedAt": "2026-10-17T19:06:32.348Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000002790"
+      "runner": "GitHub Actions 1000002792"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -4881,7 +4881,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "pass (BP-ANAT-L ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.0876728515625,
+        "r5": 0.0876376953125,
         "ref": true,
         "app": true,
         "diff": true
@@ -5193,7 +5193,7 @@
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "pass (BP-APP-M ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.09572054417502787,
+        "r5": 0.09564215788740245,
         "ref": true,
         "app": true,
         "diff": true
