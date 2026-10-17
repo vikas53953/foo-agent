@@ -5,3 +5,6 @@ test-results/
 playwright-report/
 qa-evidence/*/screens/
 *.log
+golden/ref/
+golden/runner.json
+golden/out/

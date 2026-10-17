@@ -24,7 +24,9 @@
     "test:e2e": "playwright test",
     "rebuild:electron": "electron-rebuild -f -w better-sqlite3",
     "rebuild:node": "node-gyp rebuild --release --directory=node_modules/better-sqlite3",
-    "package:dir": "electron-builder --win --dir"
+    "package:dir": "electron-builder --win --dir",
+    "golden:manifest": "tsx scripts/golden-manifest.ts",
+    "golden:render": "tsx scripts/golden-render.ts"
   },
   "dependencies": {
     "better-sqlite3": "13.0.3",
@@ -40,6 +42,7 @@
     "@playwright/test": "1.64.1",
     "@types/better-sqlite3": "9.6.0",
     "@types/node": "22.20.5",
+    "@types/pngjs": "6.0.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.1.2",
@@ -49,6 +52,8 @@
     "eslint-plugin-react-hooks": "7.1.1",
     "globals": "17.13.0",
     "node-gyp": "12.4.0",
+    "pixelmatch": "7.2.0",
+    "pngjs": "7.0.0",
     "prettier": "3.9.10",
     "tsx": "4.23.15",
     "typescript": "5.9.3",
