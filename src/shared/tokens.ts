@@ -223,6 +223,30 @@ export const tokens = { colors: {
   "--h-ochre": {
     "light": "#A1600F",
     "dark": "#A1600F"
+  },
+  "--img-edge": {
+    "light": "rgba(11,11,16,.08)",
+    "dark": "rgba(255,255,255,.08)"
+  },
+  "--logo-bg": {
+    "light": "#FFFFFF",
+    "dark": "#FFFFFF"
+  },
+  "--sel-bg": {
+    "light": "#E6E9FF",
+    "dark": "#E6E9FF"
+  },
+  "--sel-fg": {
+    "light": "#0B0B10",
+    "dark": "#0B0B10"
+  },
+  "--sel-bg-on-me": {
+    "light": "#2B3FD6",
+    "dark": "#2B3FD6"
+  },
+  "--sel-fg-on-me": {
+    "light": "#FFFFFF",
+    "dark": "#FFFFFF"
   }
 }, size: {
   "avatar-list": 48,
@@ -257,7 +281,20 @@ export const tokens = { colors: {
   "settings-nav-w": 240,
   "palette-w": 640,
   "focus-outer-w": 2,
-  "focus-inner-w": 1
+  "focus-inner-w": 1,
+  "gutter": 16,
+  "icon-sm": 16,
+  "icon-md": 20,
+  "icon-lg": 24,
+  "icon-xl": 32,
+  "meter-h": 4,
+  "bar-h": 8,
+  "spinner-sm": 16,
+  "spinner-md": 20,
+  "spinner-lg": 24,
+  "tooltip-max": 320,
+  "undo-h": 48,
+  "kbd-h": 24
 } } as const;
 export const motion = {
   "fast": 83,
@@ -266,7 +303,27 @@ export const motion = {
   "basic": 200,
   "card": 167,
   "shimmer": 1500,
+  "face-blink-slow": 8400,
+  "face-look": 250,
+  "face-drift": 2400,
+  "face-orbit": 1600,
+  "face-scan": 4000,
+  "face-once": 400,
+  "face-wake": 600,
+  "face-happy": 2000,
+  "face-party": 1600,
+  "face-react": 900,
+  "face-sorry": 3000,
+  "face-stopped": 1500,
+  "face-cross": 167,
   "delay-sticky-hide": 1500,
+  "delay-loading": 150,
+  "delay-skeleton-chat": 300,
+  "delay-still-loading": 2000,
+  "delay-tooltip": 500,
+  "delay-tooltip-warm": 300,
+  "dur-confirm": 2000,
+  "dur-undo": 5000,
   "ease-in": "cubic-bezier(0, 0, 0, 1)",
   "ease-out": "cubic-bezier(1, 0, 1, 1)",
   "ease-standard": "cubic-bezier(0.33, 1, 0.68, 1)",

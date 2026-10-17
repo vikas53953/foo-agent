@@ -116,7 +116,19 @@ export function createMainWindow(settings: SettingsStore, opts: { hidden: boolea
     win.setBackgroundColor(sidebarBg(currentTheme()));
   };
   nativeTheme.on('updated', onTheme);
-  win.on('closed', () => nativeTheme.off('updated', onTheme));
+
+  // §3.1.2 rule 1: when a display goes away, a window left less than 50 % on screen returns to the default place.
+  const onDisplayRemoved = () => {
+    if (win.isDestroyed() || win.isMaximized()) return;
+    const areas = screen.getAllDisplays().map((d) => d.workArea);
+    const next = restoredBounds(win.getNormalBounds(), areas, screen.getPrimaryDisplay().workArea);
+    if (next !== undefined) win.setBounds(next);
+  };
+  screen.on('display-removed', onDisplayRemoved);
+  win.on('closed', () => {
+    nativeTheme.off('updated', onTheme);
+    screen.off('display-removed', onDisplayRemoved);
+  });
 
   void win.loadURL(startUrl());
   return win;

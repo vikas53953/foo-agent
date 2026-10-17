@@ -17,6 +17,7 @@
 ### Deferred from the M0 "Create" list (reason · where it lands)
 
 - Golden pipeline (golden runner pinned, `golden-render` for the 490 UX + BP refs, `golden/manifest.json`, `golden-bless`, UX-08-01 wiring sample), `copy.json` extraction + FID-09, `spec-values.json` + FID-14 (SV-16/37/38), `state-machines.json` + FID-16, `trace.csv` + FID-18, FID-02 CODEOWNERS guard, Stylelint (FID-13; ART-24a scan covers styles today), fidelity report `scripts/fidelity-report.ts` · need a Windows golden runner with Segoe UI Variable · **M0b fidelity PR, next**.
+- `window.__fooTest` test hooks (08-3 §22), FID-06 and FID-19 enforcement (`OWNERS.yml` exists, not yet checked in CI) · M0b fidelity PR with the rest of the FID harnesses.
 - `src/shared/{handback,face,badges,redactor,schemas,ids,safeName,errors}.ts` · first used in M2–M5 · their milestone.
 - `native/foo-native/` skeleton with JS fallbacks, Windows text size (`TextScaleFactor`, 09 §9.14.2) · M11.
 - `test/fakes/*` · M3 (fake AI, fake CLIs).

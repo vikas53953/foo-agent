@@ -82,7 +82,15 @@ export function buildCss(tree: Record<string, unknown>): string {
   }
   const ind = (l: string[]) => l.map((x) => `  ${x}`).join('\n');
   // F7 + F25.4: reduced motion / "Off": fades ≤ 83ms, no movement, no shimmer.
-  const reduced = ['--m-normal: 83ms;', '--m-slow: 83ms;', '--m-card: 83ms;', '--m-basic: 83ms;', '--m-shimmer: 0ms;', '--motion-move: 0;'];
+  const reduced = [
+    '--m-normal: 83ms;',
+    '--m-slow: 83ms;',
+    '--m-card: 83ms;',
+    '--m-basic: 83ms;',
+    '--m-shimmer: 0ms;',
+    '--m-face-cross: 83ms;',
+    '--motion-move: 0;',
+  ];
   // F7 X-150 "Basic": fades only, 200ms basic curve, no movement.
   const basic = [
     '--m-fast: var(--m-basic);',
@@ -172,6 +180,7 @@ export function buildTs(tree: Record<string, unknown>): string {
   const motion = obj([
     ...pick('m').map((f) => [f.path.slice(1).join('-'), num(f.token.$value)] as [string, unknown]),
     ...pick('delay').map((f) => [`delay-${f.path.slice(1).join('-')}`, num(f.token.$value)] as [string, unknown]),
+    ...pick('dur').map((f) => [`dur-${f.path.slice(1).join('-')}`, num(f.token.$value)] as [string, unknown]),
     ...pick('ease').map((f) => [`ease-${f.path[1]}`, `cubic-bezier(${(f.token.$value as number[]).join(', ')})`] as [string, unknown]),
   ]);
   const bp = obj(pick('bp').map((f) => [f.path[1]!, num(f.token.$value)]));

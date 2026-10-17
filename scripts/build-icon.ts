@@ -50,7 +50,7 @@ export function render(size: number): Buffer {
   const [disc, eyeC, rimC] = [rgb(DISC), rgb(EYES), rgb(RIM)];
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
-      const acc = [0, 0, 0, 0];
+      const acc: [number, number, number, number] = [0, 0, 0, 0];
       for (let sy = 0; sy < SS; sy++) {
         for (let sx = 0; sx < SS; sx++) {
           const fx = x + (sx + 0.5) / SS;
