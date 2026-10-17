@@ -1,7 +1,7 @@
 // Spec: 11-fidelity §11.2.2 (how reference images are produced), §11.2.5 (capture kinds), §11.2.6 (golden runner),
 // FID-03 (re-render is byte-identical), FID-04 (runner identity). Renders references into golden/ref/{ux,bp}/ID.{light,dark}.png
 // + ID.json and writes golden/runner.json.
-// Usage: tsx scripts/golden-render.ts [--milestone M1] [--ids BP-APP-L,UX-08-01] [--family ux|bp]
+// Usage: tsx scripts/golden-render.ts [--milestone M1[,M2]] [--ids BP-APP-L,UX-08-01] [--family ux|bp]
 //        [--engine electron|chromium] [--chromium-path <exe>] [--out golden/ref] [--determinism]
 import { createHash } from 'node:crypto';
 import { copyFileSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -52,11 +52,16 @@ const sha = (b: Buffer) => createHash('sha256').update(b).digest('hex');
 /** 03-shell-1 §3.2: Windows draws min/max/close in the top-right 138px (reserved fallback 144) of the 32px title bar. */
 export const captionMask = (width: number) => ({ x: width - 144, y: 0, width: 144, height: 32, reason: 'caption-buttons' });
 
+/**
+ * `milestone` may list several (`M1,M2`: the golden lane renders every milestone whose app captures still run, so Tier R
+ * finds a reference for each). A UX step is also selected by the milestone that first tests it (`firstTested`, CR-0003).
+ */
 export function select(manifest: GoldenManifest, opts: { ids?: string[]; milestone?: string; family?: string }) {
-  const want = (id: string, milestone: string | null) =>
-    (!opts.ids || opts.ids.includes(id)) && (!opts.milestone || milestone === opts.milestone);
+  const milestones = opts.milestone?.split(',').map((m) => m.trim());
+  const want = (id: string, ...ms: (string | null | undefined)[]) =>
+    (!opts.ids || opts.ids.includes(id)) && (!milestones || ms.some((m) => !!m && milestones.includes(m)));
   const bp = opts.family === 'ux' ? [] : manifest.bp.filter((e) => want(e.id, e.milestone));
-  const ux = opts.family === 'bp' ? [] : manifest.ux.filter((e) => want(e.id, e.milestone));
+  const ux = opts.family === 'bp' ? [] : manifest.ux.filter((e) => want(e.id, e.milestone, e.firstTested));
   return { bp, ux };
 }
 

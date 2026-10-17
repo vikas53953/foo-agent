@@ -5,9 +5,11 @@
 // golden/runner.json, Tier R results, FID-14 results, ESLint JSON, docs/fidelity/M{n}.audit.json, spec/trace.csv.
 // Usage: tsx scripts/fidelity-report.ts [--milestone M1] [--out qa-evidence/M1] [--vitest golden/out/results/vitest.json]
 //        [--e2e test-results/e2e.json] [--refs golden/ref] [--tier-r golden/out/tier-r] [--runner golden/runner.json]
-//        [--fid14 test-results/fid-14.json] [--eslint golden/out/results/eslint.json]
+//        [--fid14 test-results] [--eslint golden/out/results/eslint.json]
+// --fid14 takes one FID-14 JSON file or a folder, whose fid-14*.json files (one per E2E that measures spec values: M0's
+// window rows, M1's shell rows, M2's message and composer rows) are merged in name order.
 // (Vitest and ESLint JSON live outside test-results/, which Playwright empties when the E2E run starts.)
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
@@ -26,6 +28,17 @@ export interface TestCase {
 
 const readJson = <T>(file: string | undefined): T | null =>
   file && existsSync(file) ? (JSON.parse(readFileSync(file, 'utf8')) as T) : null;
+
+type Fid14Row = { id: string; ok: boolean; expected: string; measured: string; note?: string };
+/** FID-14 results from one file, or merged from every fid-14*.json in a folder; null when there are none. */
+export function readFid14(path: string | undefined): Fid14Row[] | null {
+  if (!path || !existsSync(path)) return null;
+  if (!statSync(path).isDirectory()) return readJson<Fid14Row[]>(path);
+  const files = readdirSync(path)
+    .filter((n) => /^fid-14.*\.json$/.test(n))
+    .sort();
+  return files.length ? files.flatMap((n) => readJson<Fid14Row[]>(join(path, n)) ?? []) : null;
+}
 
 // ---------- inputs ----------
 interface VitestJson {
@@ -53,6 +66,9 @@ interface PwSuite {
   specs?: { title: string; file?: string; tests: { status: string }[] }[];
   suites?: PwSuite[];
 }
+/** Playwright names files from its testDir (`test`): `e2e/…`, `fidelity/bp/…`, `fidelity/ux/…`; older runs from `test/e2e`. */
+const e2eFile = (f: string) => (/^(e2e|fidelity)\//.test(f) ? `test/${f}` : `test/e2e/${f}`);
+
 export function playwrightCases(j: { suites: PwSuite[] } | null): TestCase[] {
   if (!j) return [];
   const out: TestCase[] = [];
@@ -60,7 +76,7 @@ export function playwrightCases(j: { suites: PwSuite[] } | null): TestCase[] {
     for (const spec of s.specs ?? [])
       for (const t of spec.tests) {
         const status: TestStatus = t.status === 'skipped' ? 'skipped' : t.status === 'expected' ? 'passed' : 'failed';
-        out.push({ suite: 'e2e', file: `test/e2e/${spec.file ?? file}`, title: spec.title, status });
+        out.push({ suite: 'e2e', file: e2eFile(spec.file ?? file), title: spec.title, status });
       }
     for (const c of s.suites ?? []) walk(c, c.file ?? file);
   };
@@ -209,7 +225,8 @@ export function build(opts: {
     : [];
   const wanted = [
     ...manifest.bp.filter((b) => b.milestone === opts.milestone).map((b) => b.id),
-    ...manifest.ux.filter((u) => u.milestone === opts.milestone).map((u) => u.id),
+    // A UX step counts for its chapter's milestone and for the earlier milestone that first tests it (CR-0003).
+    ...manifest.ux.filter((u) => u.milestone === opts.milestone || u.firstTested === opts.milestone).map((u) => u.id),
   ];
   const built = new Set(tierR.map((t) => t.id));
   const notBuilt = wanted.filter((id) => !built.has(id));
@@ -354,7 +371,7 @@ export function build(opts: {
         byMilestone,
       },
     },
-    gaps: { crs: crs(), notes: 'Conservative picks and deferrals: implementation-notes.md (## M0b).' },
+    gaps: { crs: crs(), notes: `Conservative picks and deferrals: implementation-notes.md (the ## ${opts.milestone} sections).` },
     deviations: ['Not reviewed yet: the independent reviewer adds what no test caught.'],
   };
 }
@@ -553,7 +570,7 @@ function main() {
       refs: { type: 'string', default: join('golden', 'ref') },
       'tier-r': { type: 'string', default: join('golden', 'out', 'tier-r') },
       runner: { type: 'string', default: join('golden', 'runner.json') },
-      fid14: { type: 'string', default: join('test-results', 'fid-14.json') },
+      fid14: { type: 'string', default: 'test-results' },
       eslint: { type: 'string', default: join('golden', 'out', 'results', 'eslint.json') },
     },
   });
@@ -566,7 +583,7 @@ function main() {
     refsDir: values.refs!,
     tierRDir: values['tier-r']!,
     runner: readJson(values.runner),
-    fid14: readJson(values.fid14),
+    fid14: readFid14(values.fid14),
     eslint: readJson(values.eslint),
     audit: readJson(join('docs', 'fidelity', `${milestone}.audit.json`)),
     env: process.env,

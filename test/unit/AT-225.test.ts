@@ -1,7 +1,7 @@
 // Spec: 10-acceptance-1 AT-225 (J7): the composer sends message:send twice with the same clientId (a retry after a timeout)
 // → exactly one message row exists and both calls return the same messageId; 08-1 §3.2 message:send (unique index
 // messages_client), §3.1.0 (only message:send retries, once, with the same clientId).
-// The id is not in a test title: spec/trace.csv has no AT-225 row yet (CR needed, implementation-notes M2 builder B).
+// spec/trace.csv routes AT-225 to this file (CR-0003).
 import Database from 'better-sqlite3';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { migrate, type Db } from '../../src/main/store/db';
@@ -10,7 +10,7 @@ import { SeedWriter, ist } from '../../src/main/test/seed/writer';
 
 const NOW = ist(2026, 10, 16, 9, 0);
 
-describe('message:send is idempotent on (chatId, clientId)', () => {
+describe('AT-225 · message:send is idempotent on (chatId, clientId)', () => {
   let db: Db;
   let chat = '';
   let n = 0;

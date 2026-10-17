@@ -94,14 +94,17 @@ jobs:
 
   # 11-fidelity §11.2 golden lane: renders the current milestone's references in Electron's Chromium, runs Tier R/Tier B
   # for built steps, writes the fidelity report and pushes the evidence to the `evidence` branch (agents cannot read CI
-  # artifacts). FIDELITY_MILESTONE names the milestone this branch builds; bump it when the next milestone starts.
+  # artifacts). FIDELITY_MILESTONE names the milestone this branch builds (the report and the evidence folder); bump it when
+  # the next milestone starts. FIDELITY_REFS lists every milestone whose app captures still run, so Tier R finds a reference
+  # for each capture (M1's Blueprint captures keep running until they are blessed into Tier B).
   golden:
     name: Golden lane (windows-latest)
     runs-on: windows-latest
     permissions:
       contents: write
     env:
-      FIDELITY_MILESTONE: M1
+      FIDELITY_MILESTONE: M2
+      FIDELITY_REFS: M1,M2
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -126,11 +129,12 @@ jobs:
       - run: pnpm build
       - name: Rebuild native modules for Electron
         run: pnpm rebuild:electron
-      - name: Render the milestone's references twice (FID-03) and record the runner (FID-04)
+      - name: Render the milestones' references twice (FID-03) and record the runner (FID-04)
         id: render
         continue-on-error: true
         shell: bash
-        run: pnpm golden:render --milestone "$FIDELITY_MILESTONE" --determinism
+        run: pnpm golden:render --milestone "$FIDELITY_REFS" --determinism
+      # Also runs the Blueprint and walkthrough capture specs (test/fidelity/bp, test/fidelity/ux) that write golden/out/app.
       - name: E2E with FID-14 and Tier B (JSON for the report)
         id: e2e
         continue-on-error: true

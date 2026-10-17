@@ -13,6 +13,29 @@ describe('spec-values.json', () => {
     const m1 = rows.filter((r) => r.pending === 'M1').map((r) => r.id);
     expect(m1).toEqual(['SV-13', 'SV-14', 'SV-15', 'SV-17', 'SV-18', 'SV-23', 'SV-24', 'SV-25', 'SV-29', 'SV-32']);
   });
+  it('the M2 rows with a machine form all have a locator; SELECTORS wins over a test id that names more', () => {
+    const m2 = rows.filter((r) => r.pending === 'M2');
+    expect(m2.map((r) => r.id)).toEqual([
+      'SV-01',
+      'SV-02',
+      'SV-03',
+      'SV-04',
+      'SV-05',
+      'SV-06',
+      'SV-07',
+      'SV-08',
+      'SV-09',
+      'SV-10',
+      'SV-11',
+      'SV-12',
+      'SV-26',
+      'SV-30',
+    ]);
+    for (const r of m2.filter((x) => x.expect && x.id !== 'SV-30')) expect(locator(r), r.id).not.toBeNull();
+    expect(locator(row('SV-04'))).toBe('[data-testid="bubble-me"]');
+    expect(locator(row('SV-02'))).toBe('[data-testid="bubble-me"][data-pos="last"]');
+    expect(locator(row('SV-10'))).toContain(':has(> div > [data-testid="composer-field"])');
+  });
   it('every live row has a machine form and a locator', () => {
     for (const r of liveRows(rows)) {
       expect(r.expect, r.id).not.toBeNull();

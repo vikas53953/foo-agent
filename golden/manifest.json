@@ -9,7 +9,7 @@
     "uxChapters": 25,
     "uxSteps": 245,
     "uxFrames": 490,
-    "bp": 20
+    "bp": 33
   },
   "bp": [
     {
@@ -243,6 +243,162 @@
       },
       "spec": "03-shell-2 §3.7",
       "milestone": "M1"
+    },
+    {
+      "id": "BP-MSG-01",
+      "selector": "#messages .grid2 > .panel:nth-child(1) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "04 §2–§10",
+      "milestone": "M2",
+      "note": "Your message (input): a run of two user bubbles with ticks and the 🛠 badge. App: the seeded user bubble with the working badge (foo chat, UX-08-06)."
+    },
+    {
+      "id": "BP-MSG-02",
+      "selector": "#messages .grid2 > .panel:nth-child(2) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "04 §11–§19",
+      "milestone": "M3",
+      "note": "foo's message (output): the status line \"Checking your calendar…\", two foo bubbles, the action row and typing dots. The status line and typing dots exist only while the engine streams a reply: capturable from M3."
+    },
+    {
+      "id": "BP-MSG-03",
+      "selector": "#messages .grid2 > .panel:nth-child(3) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "04 §12–§13",
+      "milestone": "M2",
+      "note": "Rich answer (tables, code, sources). App: the seeded rich answer \"Goa flights, Sat 12 Dec\" (foo chat, UX-08-07)."
+    },
+    {
+      "id": "BP-MSG-04",
+      "selector": "#messages .grid2 > .panel:nth-child(4) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "04 §15–§19; 05 §5.18, §5.25",
+      "milestone": "M2",
+      "note": "Around the messages: date chip, handoff line, an unprompted foo bubble with \"Why am I getting this?\", a voice note. App: the seeded unprompted answer with its why footer (Trips gallery)."
+    },
+    {
+      "id": "BP-COMP-01",
+      "selector": "#compstates > .panel:nth-child(1) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "04-2 §20–§23",
+      "milestone": "M2",
+      "note": "Composer: Rest. App: the composer bar (`composer`) in that state."
+    },
+    {
+      "id": "BP-COMP-02",
+      "selector": "#compstates > .panel:nth-child(2) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "04-2 §20–§23",
+      "milestone": "M2",
+      "note": "Composer: Typing. App: the composer bar (`composer`) in that state."
+    },
+    {
+      "id": "BP-COMP-03",
+      "selector": "#compstates > .panel:nth-child(3) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "04-2 §20–§23",
+      "milestone": "M3",
+      "note": "Composer: foo is replying (Stop). The round button is Stop only while the engine streams a reply: capturable from M3."
+    },
+    {
+      "id": "BP-COMP-04",
+      "selector": "#compstates > .panel:nth-child(4) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "04-2 §20–§23",
+      "milestone": "M2",
+      "note": "Composer: Recording. App: the composer bar (`composer`) in that state."
+    },
+    {
+      "id": "BP-COMP-05",
+      "selector": "#compstates > .panel:nth-child(5) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "04-2 §20–§23",
+      "milestone": "M2",
+      "note": "Composer: With a photo. App: the composer bar (`composer`) in that state."
+    },
+    {
+      "id": "BP-COMP-06",
+      "selector": "#compstates > .panel:nth-child(6) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "04-2 §20–§23",
+      "milestone": "M2",
+      "note": "Composer: Secret caught (paste catcher). App: the composer bar (`composer`) in that state."
+    },
+    {
+      "id": "BP-COMP-07",
+      "selector": "#compstates > .panel:nth-child(7) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "04-2 §20–§23",
+      "milestone": "M2",
+      "note": "Composer: Card waiting above (pending-card strip). App: the composer bar (`composer`) in that state."
+    },
+    {
+      "id": "BP-COMP-08",
+      "selector": "#compstates > .panel:nth-child(8) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "04-2 §20–§23",
+      "milestone": "M2",
+      "note": "Composer: Offline. App: the composer bar (`composer`) in that state."
+    },
+    {
+      "id": "BP-COMP-09",
+      "selector": "#compstates > .panel:nth-child(9) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "04-2 §20–§23",
+      "milestone": "M2",
+      "note": "Composer: Not set up. App: the composer bar (`composer`) in that state."
     }
   ],
   "ux": [
@@ -1389,7 +1545,8 @@
       "s": "The message box turns into a recording bar: red dot, \"0:07\", \"Release to send · Esc to cancel\".",
       "f": "Records on your PC. Esc throws it away. Five minutes at most.",
       "hl": "mic",
-      "milestone": "M11"
+      "milestone": "M11",
+      "firstTested": "M2"
     },
     {
       "id": "UX-09-02",
@@ -1501,7 +1658,8 @@
       "s": "\"Windows is blocking your microphone. Turn it on for foo and try again.\" · Open microphone settings.",
       "f": "Never asks you to dig through settings yourself.",
       "hl": "micset",
-      "milestone": "M11"
+      "milestone": "M11",
+      "firstTested": "M2"
     },
     {
       "id": "UX-10-01",

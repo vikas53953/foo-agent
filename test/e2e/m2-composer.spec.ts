@@ -1,15 +1,19 @@
-// Spec: 10-acceptance-2 §C.3 row "Composer" and 04-2 §27: the paste catcher (C8, Article 8; 04-2 §22.4: a pasted sk-proj-
-// key, a typed Luhn-valid card number and a labelled one-time code are masked "••••", Enter sends nothing, the panel shows;
-// Esc keeps the mask; Send anyway stores "•••• (hidden)"), sending (§21.3: the bubble shows at once, the field clears, "Sent."),
-// §E PERF-02 (keydown → paint p95 < 16 ms with the perf seed's 5,000-message chat open) and §D ART-26a for the composer
-// (axe on its states, light and dark). spec/trace.csv routes none of these ids to this file yet (implementation-notes: CR
-// needed), so the titles name behaviours. P16 (a bare code right after foo asked for one) needs a foo question within 10
-// minutes, which no seed has; it is covered by test/unit/m2b-composer-main.test.ts and test/articles/ART-08b.test.ts.
-// Runs on the ux-world and perf seeds (08-3 §22.9) in Electron.
+// Spec: 10-acceptance-1 AT-007 (a pasted sk-proj- key, a Luhn-valid card number or a code right after foo asked for one: Enter
+// sends nothing and the paste catcher appears) with 10-acceptance-2 §C.3 row "Composer" and 04-2 §27: the paste catcher (C8,
+// Article 8; 04-2 §22.4: a pasted sk-proj- key, a typed Luhn-valid card number and a labelled one-time code are masked "••••",
+// Enter sends nothing, the panel shows; Esc keeps the mask; Send anyway stores "•••• (hidden)"), sending (§21.3: the bubble
+// shows at once, the field clears, "Sent."), §E PERF-02 (keydown → paint p95 < 16 ms with the perf seed's 5,000-message chat
+// open), §D ART-26a for the composer (axe on its states, light and dark) and 11-fidelity FID-14 (SV-10, SV-11, SV-12, SV-26
+// placeholder, SV-30). spec/trace.csv routes these ids to this file (CR-0003). P16 (a bare code right after foo asked for
+// one) needs a foo question within 10 minutes, which no seed has; it is covered by test/unit/m2b-composer-main.test.ts and
+// test/articles/ART-08b.test.ts. Runs on the ux-world and perf seeds (08-3 §22.9) in Electron.
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import type {} from '../../src/shared/ipc';
 import { TID } from '../../src/shared/testids';
+import { checkSpecValues, readRows, type SvResult } from '../fidelity/spec-values';
 import { launch } from './launch';
 
 const byTid = (id: string) => `[data-testid="${id}"]`;
@@ -57,8 +61,14 @@ async function clearField(page: Page) {
   await expect(field(page)).toHaveText('');
 }
 
-test('a pasted key, a typed card number and a labelled code are caught before anything is sent', async () => {
+test('AT-007 · a pasted key, a typed card number and a labelled code are caught before anything is sent', async () => {
   test.setTimeout(120_000);
+  // FID-15: the acceptance text, verbatim from 10-acceptance-1 §B.
+  test.info().annotations.push({
+    type: 'AT-007',
+    description:
+      '**Given** the user pastes `sk-proj-…` (or a Luhn-valid 16-digit number, or a code right after foo asked for one) into the composer, **when** they press Enter, **then** nothing is sent and the paste catcher appears. *(also covers J7, J13 branches)*',
+  });
   const { app, page } = await start('ux-world');
   await openChat(page, 'foo');
   const before = await mine(page).count();
@@ -132,7 +142,7 @@ test('Enter sends: the bubble shows at once, the field clears and keeps focus, S
   await app.close();
 });
 
-test('typing in the 5,000-message chat paints within a frame (p95)', async () => {
+test('PERF-02 · typing in the 5,000-message chat paints within a frame (p95)', async () => {
   test.setTimeout(180_000);
   const { app, page } = await start('perf');
   await openChat(page, 'foo');
@@ -169,7 +179,7 @@ async function audit(page: Page, label: string) {
   }
 }
 
-test('the composer passes axe in light and dark: rest, text, reply strip, mention menu and paste catcher', async () => {
+test('ART-26a · the composer passes axe in light and dark: rest, text, reply strip, mention menu and paste catcher', async () => {
   test.setTimeout(180_000);
   const { app, page } = await start('ux-world');
   await openChat(page, 'foo');
@@ -195,5 +205,47 @@ test('the composer passes axe in light and dark: rest, text, reply strip, mentio
   await paste(page, ' sk-proj-AbCdEfGhIjKlMnOpQrStUvWx1234');
   await expect(page.getByTestId(TID.composerPaste)).toBeVisible();
   await audit(page, 'catch');
+  await app.close();
+});
+
+/** SV-30 (02 F7 --m-fast): the round buttons' hover fill changes over 83 ms (every listed transition of the button). */
+async function hoverMotion(page: Page): Promise<SvResult> {
+  const m = await page.evaluate(
+    (sel) => {
+      return Array.from(document.querySelectorAll(sel)).map((el) => {
+        const cs = getComputedStyle(el);
+        return { property: cs.transitionProperty, duration: cs.transitionDuration };
+      });
+    },
+    `${byTid(TID.composerAttach)}, ${byTid(TID.composerSend)}`,
+  );
+  const ok = m.length > 0 && m.every((x) => x.property.includes('background-color') && x.duration.split(', ').every((d) => d === '0.083s'));
+  return {
+    id: 'SV-30',
+    ok,
+    expected: 'transition-duration: 0.083s (background-color)',
+    measured: m.length ? m.map((x) => `${x.property} ${x.duration}`).join('; ') : 'element not found',
+  };
+}
+
+test('FID-14 spec values for the composer: SV-10, SV-11, SV-12, SV-26 (placeholder) and SV-30, light and dark', async () => {
+  const { app, page } = await start('ux-world');
+  await openChat(page, 'foo');
+  const rows = readRows();
+  const pick = (...ids: string[]) => rows.filter((r) => ids.includes(r.id));
+  await expect(page.getByTestId(TID.composerSend)).toHaveAttribute('data-state', 'mic');
+  const results: SvResult[] = [
+    ...(await checkSpecValues(page, { theme: 'light', rows: pick('SV-10', 'SV-11', 'SV-12', 'SV-26') })),
+    await hoverMotion(page),
+  ];
+  await page.evaluate(() => window.__fooTest!.theme('dark'));
+  if (process.platform !== 'win32') await page.emulateMedia({ colorScheme: 'dark' });
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished.catch(() => undefined))));
+  const dark = await checkSpecValues(page, { theme: 'dark', rows: pick('SV-26') });
+  results.push(...dark.map((r) => ({ ...r, note: 'dark' })));
+  mkdirSync('test-results', { recursive: true });
+  writeFileSync(join('test-results', 'fid-14-m2-composer.json'), JSON.stringify(results, null, 2) + '\n');
+  expect(results.filter((r) => !r.ok)).toEqual([]);
   await app.close();
 });

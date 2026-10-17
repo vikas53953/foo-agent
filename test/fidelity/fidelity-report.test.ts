@@ -1,7 +1,10 @@
 // 11-fidelity §11.6.2: the fidelity report reads Vitest/Playwright JSON, resolves audit rows against fresh evidence and
 // never reports a missing input as passing.
+import { mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { build, evidenceStatus, html, playwrightCases, vitestCases } from '../../scripts/fidelity-report';
+import { build, evidenceStatus, html, playwrightCases, readFid14, vitestCases } from '../../scripts/fidelity-report';
 
 const vitest = {
   testResults: [
@@ -66,6 +69,34 @@ describe('fidelity report', () => {
     expect(r.golden.counts.notBuilt).toBe(20);
     expect(r.fid04).toBe('UNVERIFIABLE');
     expect(r.behaviour.ids).toContainEqual({ id: 'PERF-01', status: 'passed', file: 'test/e2e/m0-window.spec.ts' });
+  });
+  it('names files from the Playwright test folder and lists the M2 refs, with the UX steps M2 tests first', () => {
+    const run = {
+      suites: [
+        { title: 'e2e/m2-composer.spec.ts', file: 'e2e/m2-composer.spec.ts', specs: [{ title: 'a', tests: [{ status: 'expected' }] }] },
+        {
+          title: 'fidelity/ux/UX-08.chat.spec.ts',
+          file: 'fidelity/ux/UX-08.chat.spec.ts',
+          specs: [{ title: 'b', tests: [{ status: 'expected' }] }],
+        },
+      ],
+    };
+    expect(playwrightCases(run).map((c) => c.file)).toEqual(['test/e2e/m2-composer.spec.ts', 'test/fidelity/ux/UX-08.chat.spec.ts']);
+    const r = build({ ...base, milestone: 'M2', audit: null });
+    // 11 drawn M2 Blueprint refs + UX-08 (7) + the two UX-09 steps M2 tests first (CR-0003).
+    expect(r.golden.counts.notBuilt).toBe(20);
+    expect(r.golden.notBuilt).toEqual(expect.arrayContaining(['BP-COMP-09', 'UX-08-07', 'UX-09-01', 'UX-09-08']));
+    expect(r.golden.notBuilt).not.toContain('BP-COMP-03');
+  });
+  it('merges the spec-value results of every E2E file in a folder', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'fid14-'));
+    writeFileSync(join(dir, 'fid-14.json'), JSON.stringify([{ id: 'SV-16', ok: true, expected: '', measured: '' }]));
+    writeFileSync(join(dir, 'fid-14-m2-composer.json'), JSON.stringify([{ id: 'SV-10', ok: false, expected: '', measured: '' }]));
+    writeFileSync(join(dir, 'other.json'), '[]');
+    expect(readFid14(dir)!.map((x) => x.id)).toEqual(['SV-10', 'SV-16']); // name order
+    expect(readFid14(join(dir, 'fid-14.json'))!.map((x) => x.id)).toEqual(['SV-16']);
+    expect(readFid14(join(dir, 'missing'))).toBeNull();
+    expect(readFid14(mkdtempSync(join(tmpdir(), 'fid14-empty-')))).toBeNull();
   });
   it('missing inputs are evidence gaps, not passes', () => {
     const r = build({ ...base, vitest: null, e2e: null, fid14: null, runner: null });

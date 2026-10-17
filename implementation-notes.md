@@ -269,3 +269,29 @@ Removed at integration: `_m1b-stubs.ts` / `.css` are gone and every import point
 - No Electron binary: `test/e2e/m2-composer.spec.ts` only lists; the catcher flow, the keystroke paint p95 and axe have not run in the app.
 - A Chromium + Vite harness (scratchpad, stub bridge, not committed) mounted the composer: placeholder, Mic → Send, Shift+Enter, Enter → optimistic row confirmed as `sent`, paste catch (masked, button disabled, focus on Move, Esc keeps the mask, Enter reopens, Send anyway sends "•••• (hidden)"), the typed card number caught after 800 ms, Move, @ mention inserted as a chip, drafts debounced with `@{helperId}`, counter over 10,000 disables, chips + the programs notice, reply strip, dark theme. Voice recording, drag-drop and the pending strip were not exercised (no microphone, no drag, no cards).
 - A draft saved before the 800 ms check can hold a partial card number that is not yet Luhn-valid (main's redactor cannot catch it either).
+
+## M2 fidelity wiring (builder C)
+
+### Built
+
+- **CR-0003** (`docs/cr/CR-0003-m2-freeze-rows.md`): 30 M2 trace rows, the 13 BP-MSG / BP-COMP ids, the drawing-vs-app table, the disputes and five spec-keeper proposals (P1 P14 "pin code", P2 WebM vs Ogg, P3 pill testid, P4 per-chapter start states, P5 read tick without a badge).
+- **Manifest** (`scripts/golden-manifest.ts`): `BP_M2` (selectors on each panel's `.mini`, size null, drawn true; BP-MSG-02 and BP-COMP-03 are M3) and `EARLY_STEPS` (UX-09-01, UX-09-08 first tested in M2); `golden/manifest.json` regenerated. `golden-render --milestone M1,M2` takes a list and also renders early steps (local Chromium: the 11 M2 BP + 9 UX refs rendered twice byte-identical, FID-03).
+- **Captures:** `test/fidelity/capture.ts` (open the seeded world, frame a row, capture a BP mini or a UX step in the Tier R JSON shape); `test/fidelity/bp/BP-messages.spec.ts` (11 drawn M2 ids); `test/fidelity/ux/UX-08.chat.spec.ts` (UX-08-01, 03–07, one `test.step` each, quoted strings from the manifest asserted first) and `UX-09.voice.spec.ts` (UX-09-01 hold-to-record with a fake mic, UX-09-08 mic denied → composer banner).
+- **Seed:** `seedChatScene` (`src/main/test/seed/bubbles.ts`) now holds the walkthrough's chapter 8 messages (times 8:05–8:20, Hinglish, Punjabi, reply quote, Goa flights rich answer); m2a tests unchanged and green.
+- **FID-14:** SV-01…12, 26, 30 in `test/fidelity/spec-values.ts` (selectors win over the row testid) and two E2E tests (`m2-messages`, `m2-composer`) writing `test-results/fid-14-m2-*.json`; SV-01 corners, SV-08 widths, SV-30 hover motion are hand checks.
+- **FID-18:** ids in test titles (AT-007, AT-225, ART-08b, ART-21a, ART-26a, PERF-02, PERF-04); ART-21a over the rendered thread (`renderedTimeFlags` in `test/articles/scan.ts`, bubble meta exempt).
+- **Report and CI:** `scripts/fidelity-report.ts` merges every `fid-14*.json`, lists early steps, reads `docs/fidelity/M2.audit.json`; golden lane `FIDELITY_MILESTONE: M2`, `FIDELITY_REFS: M1,M2`; `push-evidence.sh` pushes every fid-14 file.
+
+### Picks and GAPs
+
+1. **Checker fix:** `scripts/trace-check.ts` refused a second row for an id; ART-26a / ART-21a are per milestone and per surface, so it now allows one row per (id, file) and flags duplicates within a file.
+2. GAP · `composer-field` sits on the inner contenteditable; SV-10/SV-11 measure the pill wrapper via `:has()` (CR-0003 P3).
+3. GAP · ✓✓ read needs a badge in the app; the seed sets `seen` where a step shows read (CR-0003 P5).
+4. Walkthrough world differences (static list and right shell, no Goa job in chapter 8/9, brief card, sticky date) are R1 disputes under CR-0003; the app and the seed were not bent.
+5. UX-08-02, BP-MSG-02, BP-COMP-03 need the reply stream: M3.
+6. BP-COMP-05's photo is `resources/icons/foo-256.png` through the file input.
+
+### Not verified here
+
+- No Electron binary: the BP and UX capture specs and the new E2E tests only list (`playwright test --list`); no app capture, Tier R or FID-14 measurement has run on the M2 app.
+- R3/R4 outcomes for the M2 refs are unknown until the golden lane runs on Windows.

@@ -1,14 +1,14 @@
 // 11-fidelity §11.2.1, §11.2.7: golden/manifest.json is generated from the frozen walkthrough and fixes the BP ids.
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { BP, CHAPTER_MILESTONE, SUPERSEDED, readManifest } from '../../scripts/golden-manifest';
+import { BP, BP_M2, CHAPTER_MILESTONE, EARLY_STEPS, SUPERSEDED, readManifest } from '../../scripts/golden-manifest';
 import { compareRenders, select, type RefJson } from '../../scripts/golden-render';
 
 const manifest = readManifest();
 
 describe('golden manifest', () => {
   it('has the 245 walkthrough steps in 25 chapters with well-formed ids', () => {
-    expect(manifest.counts).toEqual({ uxChapters: 25, uxSteps: 245, uxFrames: 490, bp: BP.length });
+    expect(manifest.counts).toEqual({ uxChapters: 25, uxSteps: 245, uxFrames: 490, bp: BP.length + BP_M2.length });
     expect(manifest.ux).toHaveLength(245);
     expect(new Set(manifest.ux.map((e) => e.id)).size).toBe(245);
     for (const [i, e] of manifest.ux.entries()) {
@@ -28,18 +28,43 @@ describe('golden manifest', () => {
     for (const s of manifest.superseded) expect(manifest.ux.find((e) => e.id === s.id)?.superseded?.decision).toBe(s.decision);
   });
   it('fixes the BP ids for M1 with selectors and spec sections', () => {
-    expect(manifest.bp).toEqual(BP);
+    expect(manifest.bp).toEqual([...BP, ...BP_M2]);
     const ids = manifest.bp.map((b) => b.id);
     for (const id of ['BP-APP-L', 'BP-APP-M', 'BP-APP-R', 'BP-ANAT-L', 'BP-ANAT-M', 'BP-ANAT-S', 'BP-ANAT-XS']) expect(ids).toContain(id);
-    for (const b of manifest.bp) {
+    for (const b of BP) {
       expect(b.selector).not.toBe('');
       expect(b.spec).toMatch(/§/);
       expect(b.milestone).toBe('M1');
     }
   });
+  it('CR-0003 adds the four message refs and nine composer refs; the engine-only states wait for M3', () => {
+    expect(BP_M2.map((b) => b.id)).toEqual([
+      ...[1, 2, 3, 4].map((n) => `BP-MSG-0${n}`),
+      ...[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => `BP-COMP-0${n}`),
+    ]);
+    expect(BP_M2.filter((b) => b.milestone === 'M3').map((b) => b.id)).toEqual(['BP-MSG-02', 'BP-COMP-03']);
+    for (const b of BP_M2) {
+      expect(b.drawn).toBe(true);
+      expect(b.spec).toMatch(/§/);
+      expect(b.selector).toMatch(/^#(messages|compstates) .*\.mini$/);
+    }
+    expect(manifest.ux.filter((e) => e.firstTested).map((e) => [e.id, e.milestone, e.firstTested])).toEqual(
+      Object.keys(EARLY_STEPS).map((id) => [id, 'M11', 'M2']),
+    );
+  });
   it('the selectors exist in the frozen Blueprint', () => {
     const html = readFileSync(manifest.sources.bp, 'utf8');
-    for (const cls of ['id="win"', 'class="left"', 'class="mid"', 'class="right"', 'class="tbar"', 'class="lhead"', 'class="rhead"'])
+    for (const cls of [
+      'id="win"',
+      'class="left"',
+      'class="mid"',
+      'class="right"',
+      'class="tbar"',
+      'class="lhead"',
+      'class="rhead"',
+      'id="messages"',
+      'id="compstates"',
+    ])
       expect(html).toContain(cls);
   });
 });
@@ -50,7 +75,15 @@ describe('golden-render helpers', () => {
     expect(select(manifest, { milestone: 'M1' }).ux).toHaveLength(0);
     expect(select(manifest, { ids: ['UX-08-01'] }).ux.map((e) => e.id)).toEqual(['UX-08-01']);
     expect(select(manifest, { milestone: 'M2', family: 'bp' }).ux).toHaveLength(0);
-    expect(select(manifest, { milestone: 'M2' }).ux).toHaveLength(7);
+    // UX-08 (7 steps) plus the two UX-09 steps M2 tests first (CR-0003); 11 drawn M2 BP ids (BP-MSG-02, BP-COMP-03 are M3).
+    expect(select(manifest, { milestone: 'M2' }).ux.map((e) => e.id)).toEqual([
+      ...[1, 2, 3, 4, 5, 6, 7].map((n) => `UX-08-0${n}`),
+      'UX-09-01',
+      'UX-09-08',
+    ]);
+    expect(select(manifest, { milestone: 'M2' }).bp).toHaveLength(11);
+    expect(select(manifest, { milestone: 'M1,M2', family: 'bp' }).bp).toHaveLength(BP.length + 11);
+    expect(select(manifest, { milestone: 'M11' }).ux.map((e) => e.id)).toContain('UX-09-01');
   });
   it('FID-03 compare flags any PNG whose bytes differ', () => {
     const ref = (id: string, light: string): RefJson =>

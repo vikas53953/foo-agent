@@ -1,7 +1,6 @@
 // Spec: 10-acceptance-2 ART-08b (Article 8): the paste catcher triggers on every C8 pattern and not on 200 normal messages
 // (phone numbers, prices, dates): 100 % caught, ≤ 1 false positive. Patterns P1–P17 and the NFKC / zero-width rule: 04-2
-// §22.4; the one module is src/shared/redactor.ts (08-0 §G.6). The id is not in a title: spec/trace.csv has no ART-08b row
-// yet (CR needed, implementation-notes M2 builder B).
+// §22.4; the one module is src/shared/redactor.ts (08-0 §G.6). spec/trace.csv routes ART-08b to this file (CR-0003).
 import { describe, expect, it } from 'vitest';
 import { checkSecret, entropy, findSecrets, isCardNumber, luhn, redactSecrets, suggestedNameSlot } from '../../src/shared/redactor';
 
@@ -97,7 +96,7 @@ function normalMessages(): string[] {
   return out;
 }
 
-describe('paste catcher patterns (04-2 §22.4)', () => {
+describe('ART-08b · paste catcher patterns (04-2 §22.4)', () => {
   it.each(SECRETS)('$id catches "$secret"', ({ text, secret, askedForCode }) => {
     const hits = findSecrets(text, { askedForCode });
     expect(hits).toHaveLength(1);

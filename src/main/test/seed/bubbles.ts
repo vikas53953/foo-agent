@@ -9,47 +9,65 @@ import { ist, type SeedWriter } from './writer';
 const d = (day: number, h: number, mi = 0) => ist(2026, 10, day, h, mi);
 const SEC = 1000;
 
-/** UX-08: the chapter 8 conversation in foo's chat, Fri 16 Oct 8:05–8:20 AM. */
+/**
+ * UX-08: the chapter 8 conversation in foo's chat, Fri 16 Oct 8:05–8:20 AM, as the walkthrough's state objects draw it
+ * (`__STEPS[63…69].state.a.th.foo`): the same words, times and badges (11 §11.2.3 data rule). The walkthrough shows ✓✓ read on
+ * every user bubble; the app derives "read" from a badge (04 §3.3, bubbleState.tickState), so the user bubbles without a drawn
+ * badge are stored as `complete` (✓✓ delivered) with no badge (implementation-notes, M2 builder C).
+ */
 export function seedChatScene(w: SeedWriter, fooChatId: string, refs: Record<string, string>): void {
+  const plain = { status: 'complete' as const };
   const cake = w.message(fooChatId, { author: 'foo', text: 'Cake from Theobroma is booked for Sun 18 Oct, 11:00 AM.', at: d(16, 8, 5) });
-  const thanks = w.message(fooChatId, { author: 'user', text: 'thanks!', at: d(16, 8, 6) });
+  refs.cake = cake;
+  const thanks = w.message(fooChatId, { author: 'user', text: 'thanks!', at: d(16, 8, 6), ...plain });
   w.reaction(thanks, 'foo', '👍', d(16, 8, 6) + 2 * SEC);
   refs.thanks = thanks;
-  refs.holidayAsk = w.message(fooChatId, { author: 'user', text: 'is Mon 2 Nov a holiday?', at: d(16, 8, 9), badge: 'seen' });
-  w.message(fooChatId, { author: 'foo', text: 'No, Mon 2 Nov is a normal working day in Mumbai.', at: d(16, 8, 9) + 6 * SEC });
-  w.message(fooChatId, { author: 'foo', text: 'The next holiday is Diwali, Sun 8 Nov.', at: d(16, 8, 9) + 8 * SEC });
-  w.message(fooChatId, { author: 'user', text: 'parso mummy ka birthday hai, cake ka kya hua?', at: d(16, 8, 12), badge: 'done' });
-  w.message(fooChatId, {
+  refs.holidayAsk = w.message(fooChatId, { author: 'user', text: 'is Mon 2 Nov a holiday?', at: d(16, 8, 10), badge: 'seen' });
+  refs.holidayAnswer = w.message(fooChatId, {
+    author: 'foo',
+    text: 'No, Mon 2 Nov is a normal working day in Mumbai.',
+    at: d(16, 8, 10) + 6 * SEC,
+  });
+  refs.holidayNext = w.message(fooChatId, { author: 'foo', text: 'The next holiday is Diwali, Sun 8 Nov.', at: d(16, 8, 10) + 8 * SEC });
+  refs.hinglish = w.message(fooChatId, {
+    author: 'user',
+    text: 'parso mummy ka birthday hai, cake ka kya hua?',
+    at: d(16, 8, 12),
+    ...plain,
+  });
+  refs.hinglishAnswer = w.message(fooChatId, {
     author: 'foo',
     text: 'Cake Theobroma se order ho gaya hai. Sun 18 Oct, 11:00 AM tak ghar aa jayega 🎂',
     at: d(16, 8, 12) + 5 * SEC,
   });
-  refs.punjabi = w.message(fooChatId, { author: 'user', text: 'ਮੰਮੀ ਨੂੰ ਕੇਕ ਕਦੋਂ ਮਿਲੇਗਾ?', at: d(16, 8, 14), badge: 'done', lang: 'pa' });
-  w.message(fooChatId, { author: 'foo', text: 'ਕੇਕ ਆਰਡਰ ਹੋ ਗਿਆ। Sun 18 Oct, 11:00 AM ਤੱਕ ਪਹੁੰਚ ਜਾਵੇਗਾ।', at: d(16, 8, 14) + 5 * SEC });
+  refs.punjabi = w.message(fooChatId, { author: 'user', text: 'ਮੰਮੀ ਨੂੰ ਕੇਕ ਕਦੋਂ ਮਿਲੇਗਾ?', at: d(16, 8, 13), lang: 'pa', ...plain });
+  refs.punjabiAnswer = w.message(fooChatId, {
+    author: 'foo',
+    text: 'ਕੇਕ ਆਰਡਰ ਹੋ ਗਿਆ। Sun 18 Oct, 11:00 AM ਤੱਕ ਪਹੁੰਚ ਜਾਵੇਗਾ।',
+    at: d(16, 8, 13) + 5 * SEC,
+  });
   refs.replyQuote = w.message(fooChatId, {
     author: 'user',
     text: 'can it say "Happy birthday Mummy"?',
-    at: d(16, 8, 16),
+    at: d(16, 8, 15),
     badge: 'working',
     replyToId: cake,
   });
-  w.message(fooChatId, { author: 'user', text: 'compare Goa flights on Sat 12 Dec', at: d(16, 8, 18), badge: 'done' });
+  refs.flightsAsk = w.message(fooChatId, { author: 'user', text: 'compare Goa flights on Sat 12 Dec', at: d(16, 8, 20), ...plain });
   refs.richAnswer = w.message(fooChatId, {
     author: 'foo',
-    at: d(16, 8, 20),
+    at: d(16, 8, 20) + 30 * SEC,
     text: [
       '### Goa flights, Sat 12 Dec',
       '',
-      'Three morning flights from Mumbai. Akasa Air is the cheapest.',
+      '| Airline | Leaves | Price |',
+      '|---|---|---:|',
+      '| IndiGo | 10:15 AM | ₹5,240 |',
+      '| Air India | 7:10 AM | ₹4,890 |',
+      '| Akasa Air | 1:35 PM | ₹5,610 |',
       '',
-      '| Airline | Leaves | Arrives | Price |',
-      '|---|---|---|---:|',
-      '| IndiGo | 6:10 AM | 7:25 AM | ₹5,240 |',
-      '| Air India | 7:10 AM | 8:30 AM | ₹4,890 |',
-      '| Akasa Air | 8:45 AM | 10:00 AM | ₹4,610 |',
-      '',
-      'Prices are for one adult, one way, checked at 8:19 AM. [MakeMyTrip](cite+https://www.makemytrip.com/flights/) ' +
-        '[IndiGo](cite+https://www.goindigo.in/) [Akasa Air](cite+https://www.akasaair.com/)',
+      'Fares from [MakeMyTrip](cite+https://www.makemytrip.com/flights/) [IndiGo](cite+https://www.goindigo.in/) ' +
+        '[Akasa Air](cite+https://www.akasaair.com/)',
     ].join('\n'),
   });
 }
