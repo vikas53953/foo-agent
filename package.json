@@ -30,7 +30,8 @@
     "golden:bless": "tsx scripts/golden-bless.ts",
     "tier-r": "tsx scripts/tier-r.ts",
     "fid:guard": "tsx scripts/fid-guard.ts",
-    "trace:check": "tsx scripts/trace-check.ts"
+    "trace:check": "tsx scripts/trace-check.ts",
+    "fidelity:report": "tsx scripts/fidelity-report.ts"
   },
   "dependencies": {
     "better-sqlite3": "13.0.3",

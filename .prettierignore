@@ -10,3 +10,4 @@ src/main/store/migrations/
 qa-evidence/
 test-results/
 playwright-report/
+golden/manifest.json

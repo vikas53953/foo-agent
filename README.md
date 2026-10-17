@@ -15,3 +15,5 @@ pnpm rebuild:electron && pnpm test:e2e   # Playwright for Electron (rebuild:node
 ```
 
 `design/tokens.json` is the only hand-edited style source; run `pnpm build:tokens` after changing it.
+
+Fidelity (11-fidelity): `golden/manifest.json` names every reference (UX steps, Blueprint mocks); CI's golden lane renders the milestone's references, writes `qa-evidence/M{n}/fidelity.html` and pushes that run's evidence to the `evidence` branch (`<branch>/<short-sha>/`, `<branch>/latest/`). Baselines in `golden/app/` change only through the Golden bless workflow with a CR id.
