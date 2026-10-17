@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>foo M1 fidelity report</title>
+<style>
+:root{--bg:#FFFFFF;--fg:#0B0B10;--fg2:#55555F;--line:#E4E4EA;--panel:#F6F6F9;--ok:#17804D;--warn:#9A6200;--bad:#C4302B;--acc:#2B3FD6;color-scheme:light}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0D0D11;--fg:#F1F1F5;--fg2:#B0B0BC;--line:#26262E;--panel:#16161C;--ok:#4CC38A;--warn:#F2B84B;--bad:#FF7A72;--acc:#8C9BFF;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0D0D11;--fg:#F1F1F5;--fg2:#B0B0BC;--line:#26262E;--panel:#16161C;--ok:#4CC38A;--warn:#F2B84B;--bad:#FF7A72;--acc:#8C9BFF;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 "Segoe UI Variable","Segoe UI",system-ui,sans-serif}
+main{max-width:1180px;margin:0 auto;padding:24px 16px 64px}h1{font-size:26px;margin:0 0 4px}h2{font-size:19px;margin:36px 0 10px;padding-top:12px;border-top:1px solid var(--line)}
+.sub{color:var(--fg2)}.vikas{background:var(--panel);border:2px solid var(--acc);border-radius:12px;padding:16px 20px;margin:18px 0}.vikas h2{border:0;margin:0 0 8px;padding:0}
+.vikas ul{margin:4px 0 10px;padding-left:20px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 20px}
+.kv b{display:block;font-size:12px;color:var(--fg2);font-weight:600}.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}th{font-size:12px;color:var(--fg2)}
+img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}td img{max-width:300px;max-height:420px;width:auto}.none{color:var(--fg2);font-style:italic}
+.b{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid currentColor;white-space:nowrap}
+.b-done,.b-pass{color:var(--ok)}.b-not-done,.b-fail,.b-failed{color:var(--bad)}.b-partial,.b-review,.b-unverifiable,.b-changed,.b-not-run,.b-not-built{color:var(--warn)}
+.verdict{font-size:20px}button{font:inherit;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:4px 14px;cursor:pointer;float:right}
+code{font-family:Consolas,ui-monospace,monospace;font-size:13px;word-break:break-all}
+</style>
+</head>
+<body>
+<main>
+<button type="button" id="theme">Light / dark</button>
+<h1>foo · M1 fidelity report</h1>
+<p class="sub">Report M1-5441bdc-39046643765 · 2026-10-17T15:50:48.573Z</p>
+
+<section class="vikas" aria-labelledby="v">
+<h2 id="v">For Vikas</h2>
+<p class="verdict">Verdict: <span class="b b-fail">FAIL</span></p>
+<p>Why: missing evidence: unit test results (Vitest JSON); E2E results (Playwright JSON); golden runner identity (golden/runner.json); FID-14 results; 22 audit item(s) not DONE (the milestone is not complete).</p>
+<b>What you can try now</b><ul><li>Nothing new to try yet: none of the 20 M1 drawings is built in the app. This run shows that the checking machinery works.</li></ul>
+<b>What changed from the drawings, and why</b><ul><li>Nothing differs from the drawings so far.</li></ul>
+<b>What needs your yes</b><ul><li>CR-0001: Complete the spec-v1.0 freeze with the reference drawings and machine tables (Ready for Vikas (no spec text changes; the lead shows it with the M0b report))</li></ul>
+</section>
+
+<h2>1 · Header</h2>
+<div class="grid kv">
+<div><b>Milestone</b>M1</div>
+<div><b>Commit</b><code>5441bdc59a373bda8bd032482df4d5482b24f5b0</code><br><small>tested merge <code>e43a83a7cc3b24944f3f0e2e335a6309eb8cb525</code></small></div>
+<div><b>CI run</b><a href="https://github.com/vikas53953/foo-agent/actions/runs/39046643765">39046643765</a></div>
+<div><b>Spec</b>spec-v1.0<br><code>c40a35f3b44a250077cd2359dc2b1357eadbfa95fbfbe2c411a01ee16138c09d</code></div>
+<div><b>Golden runner (FID-04)</b>not recorded<br>not recorded<br>pinned image: <span class="b b-unverifiable">UNVERIFIABLE</span></div>
+<div><b>Builder · reviewer</b>builder agent · not signed yet</div>
+</div>
+
+<h2>2 · Plan vs built audit</h2>
+<div class="tw"><table><thead><tr><th>Group</th><th>Item</th><th>Status</th><th>Evidence / note</th></tr></thead><tbody><tr><td>M0b harness</td><td>Reference drawings vendored and hashed (spec/refs/bp, spec/refs/ux; CR-0001)</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:FID-01</td></tr><tr><td>M0b harness</td><td>golden/manifest.json: 245 UX steps from window.__STEPS, 20 BP ids for M1</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:golden manifest</td></tr><tr><td>M0b harness</td><td>M1 Blueprint references rendered on the golden lane</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>refs</td></tr><tr><td>M0b harness</td><td>FID-03 two renders byte-identical</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>determinism</td></tr><tr><td>M0b harness</td><td>FID-04 runner identity recorded (pinned image not chosen yet)</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>runner</td></tr><tr><td>M0b harness</td><td>FID-14 live rows SV-16, SV-37, SV-38 in the app</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>fid14</td></tr><tr><td>M0b harness</td><td>Test hooks window.__fooTest and test:* channels (08-3 §22)</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:test hooks</td></tr><tr><td>M0b harness</td><td>FID-18 trace matrix consistent</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:FID-18</td></tr><tr><td>M0b harness</td><td>Tier R scoring and FID-05 cluster rule (unit-tested on synthetic images)</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:Tier R thresholds</td></tr><tr><td>M0b harness</td><td>copy.json extraction, FID-07/09/10 runtime copy check</td><td><span class="b b-not-done">NOT DONE</span></td><td>scheduled M1</td></tr><tr><td>M0b harness</td><td>state-machines.json, FID-16/17</td><td><span class="b b-not-done">NOT DONE</span></td><td>scheduled M4</td></tr><tr><td>M0b harness</td><td>UX-08-01 wiring sample (plan M0)</td><td><span class="b b-not-done">NOT DONE</span></td><td>needs the chat UI; scheduled M2 with UX-08</td></tr><tr><td>M0b harness</td><td>spec-v1.0 git tag</td><td><span class="b b-not-done">NOT DONE</span></td><td>tag push returned 403 from the build environment; owed by the spec keeper</td></tr><tr><td>M1 Goal</td><td>WhatsApp-style frame with real data from SQLite: chat list, headers, banner strip, right shell sections, keyboard and Narrator for the shell</td><td><span class="b b-not-done">NOT DONE</span></td><td>scheduled M1</td></tr><tr><td>M1 Constitution</td><td>03-shell-1 §3.3, §3.4, §3.5 · 03-shell-2 §3.6–§3.10 · 08-1 §3, §4 · Art. 25, 26, 29 · X-07, X-09, X-19</td><td><span class="b b-not-done">NOT DONE</span></td><td>scheduled M1</td></tr><tr><td>M1 Create</td><td>renderer/shell/*, renderer/ui/*, renderer/store/{chats,settings,ui}.ts, renderer/ipc/*, renderer/a11y/*</td><td><span class="b b-not-done">NOT DONE</span></td><td>scheduled M1</td></tr><tr><td>M1 Create</td><td>main/ipc/IpcRouter.ts (chat channels), store/queries.ts (chat list, bootstrap ≤ 200 KB)</td><td><span class="b b-not-done">NOT DONE</span></td><td>scheduled M1</td></tr><tr><td>M1 Create</td><td>test/seed/perf.ts (200 chats, 50,000 messages), test/seed/ux-world.ts, test/components/shell.*</td><td><span class="b b-not-done">NOT DONE</span></td><td>scheduled M1</td></tr><tr><td>M1 Must pass</td><td>10-2 §C.2 rows (shell) with U-1…U-10</td><td><span class="b b-not-done">NOT DONE</span></td><td>scheduled M1</td></tr><tr><td>M1 Must pass</td><td>ART-26a (shell) · ART-29 · PERF-01 (with seed data) · PERF-03 smoke</td><td><span class="b b-not-done">NOT DONE</span></td><td>scheduled M1</td></tr><tr><td>M1 Fidelity exit</td><td>Tier R for BP-APP-L/M/R and BP-ANAT-* with no Fail; blessed into Tier B</td><td><span class="b b-not-done">NOT DONE</span></td><td>scheduled M1</td></tr><tr><td>M1 Fidelity exit</td><td>FID-14 rows SV-13–18, 23–25, 29, 32</td><td><span class="b b-not-done">NOT DONE</span></td><td>scheduled M1</td></tr></tbody></table></div>
+
+<h2>3 · Golden summary</h2>
+<p>Tier R: 0 pass · 0 review · 0 fail · 0 disputed · 20 not built yet. References rendered this run: 0. Tier B baselines: 0.</p>
+<div class="tw"><table><thead><tr><th>Step</th><th>Reference</th><th>App</th><th>Diff</th><th>R1–R5</th></tr></thead><tbody><tr><td><b>BP-APP-L</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-APP-M</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-APP-R</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-ANAT-L</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-ANAT-M</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-ANAT-S</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-ANAT-XS</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-ANAT-TBAR</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-ANAT-LHEAD</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-ANAT-SEARCH</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-ANAT-CHIPS</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-ANAT-LIST</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-ANAT-ROW</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-ANAT-LFOOT</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-ANAT-MHEAD</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-ANAT-RHEAD</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-ANAT-DOING</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-ANAT-USING</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-ANAT-KNOW</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-ANAT-SPENT</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr></tbody></table></div>
+
+<h2>4 · Copy</h2>
+<div class="tw"><table><thead><tr><th>Check</th><th>Result</th></tr></thead><tbody><tr><td>FID-09 runtime copy match</td><td><span class="b b-not-done">NOT DONE</span> built with the M1 runtime copy check</td></tr><tr><td>FID-10 copy coverage</td><td><span class="b b-not-done">NOT DONE</span> built with the M1 runtime copy check</td></tr><tr><td>ART-02a banned words</td><td><span class="b b-not-run">NOT RUN</span></td></tr></tbody></table></div>
+
+<h2>5 · Tokens and values</h2>
+<div class="tw"><table><thead><tr><th>Check</th><th>Result</th></tr></thead><tbody><tr><td>ESLint errors (incl. foo/no-raw-design-values)</td><td><span class="b b-not-run">NOT RUN</span></td></tr><tr><td>Stylelint</td><td>not installed yet (FID-13 Stylelint half; ART-24a scans styles today)</td></tr><tr><td>FID-11 tokens.json = spec</td><td><span class="b b-not-run">NOT RUN</span></td></tr><tr><td>FID-12 generated token files fresh</td><td><span class="b b-not-run">NOT RUN</span></td></tr></tbody></table></div>
+<div class="tw"><table><thead><tr><th>FID-14 row</th><th>Expected</th><th>Measured</th><th>Result</th></tr></thead><tbody><tr><td colspan="4">None.</td></tr></tbody></table></div>
+
+<h2>6 · Behaviour</h2>
+<p>Unit/article/fidelity: 0 passed · 0 failed · 0 skipped. E2E: 0 passed · 0 failed · 0 skipped.</p>
+<div class="tw"><table><thead><tr><th>AT / ART / PERF / UX / BP id</th><th>Status</th><th>File</th></tr></thead><tbody><tr><td colspan="3">None.</td></tr></tbody></table></div>
+
+<p>Traceability (spec/trace.csv): 5 live rows · 23 pending · by milestone {&quot;M0&quot;:5,&quot;M1&quot;:23}. State-machine coverage: not built (FID-16/17, M4).</p>
+
+<h2>7 · Gaps and CRs</h2>
+<div class="tw"><table><thead><tr><th>CR</th><th>Title</th><th>Status</th></tr></thead><tbody><tr><td>CR-0001</td><td>Complete the spec-v1.0 freeze with the reference drawings and machine tables</td><td>Ready for Vikas (no spec text changes; the lead shows it with the M0b report)</td></tr></tbody></table></div>
+<p>Conservative picks and deferrals: implementation-notes.md (## M0b).</p>
+
+<h2>8 · Deviations found by reading</h2>
+<ul><li>Not reviewed yet: the independent reviewer adds what no test caught.</li></ul>
+<p class="sub">Missing inputs (reported as UNVERIFIABLE): unit test results (Vitest JSON); E2E results (Playwright JSON); golden runner identity (golden/runner.json); FID-14 results.</p>
+</main>
+<script>
+document.getElementById('theme').addEventListener('click', function () {
+  var root = document.documentElement;
+  var dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme = dark ? 'light' : 'dark';
+});
+</script>
+</body>
+</html>
