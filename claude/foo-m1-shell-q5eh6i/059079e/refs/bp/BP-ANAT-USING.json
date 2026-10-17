@@ -1,0 +1,48 @@
+{
+  "id": "BP-ANAT-USING",
+  "family": "bp",
+  "selector": "#win .right .rsec:nth-child(3)",
+  "box": {
+    "x": 959.5,
+    "y": 1498.0625,
+    "width": 339,
+    "height": 113
+  },
+  "files": {
+    "light": {
+      "png": "BP-ANAT-USING.light.png",
+      "sha256": "ea34061ef3966b2c1fba5fbddb659c86d3057f20e73338e189510045c74053dc"
+    },
+    "dark": {
+      "png": "BP-ANAT-USING.dark.png",
+      "sha256": "85fe94828c74cfdff2d1d9239c0f0bf62e6c1951a391e6bc3d47ad6b42d5bd17"
+    }
+  },
+  "texts": [
+    "Using",
+    "Claude (your AI)",
+    "Gmail",
+    "Calendar",
+    "Browser"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-ANAT-USING": {
+      "x": 0,
+      "y": 0,
+      "width": 339,
+      "height": 113
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M1",
+  "spec": "03-shell-2 §3.7",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}

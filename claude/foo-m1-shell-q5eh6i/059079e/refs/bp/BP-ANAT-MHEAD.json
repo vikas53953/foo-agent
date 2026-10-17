@@ -1,0 +1,50 @@
+{
+  "id": "BP-ANAT-MHEAD",
+  "family": "bp",
+  "selector": "#win .mhead",
+  "box": {
+    "x": 450.5,
+    "y": 1191.0625,
+    "width": 598,
+    "height": 60
+  },
+  "files": {
+    "light": {
+      "png": "BP-ANAT-MHEAD.light.png",
+      "sha256": "2eab925301281222a0a79a989d56723108d3bb3396a3176e885a273413e5d4f8"
+    },
+    "dark": {
+      "png": "BP-ANAT-MHEAD.dark.png",
+      "sha256": "793d436ddf35033eb5d2818cac4412ac48cca159a6b0bfde5b37e145fa517d6e"
+    }
+  },
+  "texts": [
+    "f",
+    "foo",
+    "Needs you: Pay Taj Holiday Village",
+    "▣ Watch live",
+    "⌕",
+    "▯",
+    "⋯"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-ANAT-MHEAD": {
+      "x": 0,
+      "y": 0,
+      "width": 598,
+      "height": 60
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M1",
+  "spec": "03-shell-2 §3.6",
+  "size": {
+    "width": null,
+    "height": 60
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}

@@ -1,0 +1,49 @@
+{
+  "id": "BP-ANAT-CHIPS",
+  "family": "bp",
+  "selector": "#win .chips",
+  "box": {
+    "x": 110.5,
+    "y": 1295.0625,
+    "width": 339,
+    "height": 44
+  },
+  "files": {
+    "light": {
+      "png": "BP-ANAT-CHIPS.light.png",
+      "sha256": "8053a0fcea831e1071dc08fa5bbfaeaac538d554b4d56a737f246529d319024c"
+    },
+    "dark": {
+      "png": "BP-ANAT-CHIPS.dark.png",
+      "sha256": "103162d69c244f16b212ad67b5d80a65017811afe2fd6e9b3febb5490dfcec73"
+    }
+  },
+  "texts": [
+    "All",
+    "Needs you",
+    "1",
+    "Working",
+    "1",
+    "Done"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-ANAT-CHIPS": {
+      "x": 0,
+      "y": 0,
+      "width": 339,
+      "height": 44
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M1",
+  "spec": "03-shell-1 §3.4",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}
