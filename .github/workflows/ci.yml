@@ -41,9 +41,13 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - name: Make sure the Electron binary is present
+      # better-sqlite3 always compiles on install. pnpm's bundled node-gyp 11 cannot find Visual Studio 2026 (v18)
+      # on the runner, so install without scripts and compile with the pinned node-gyp 12.4, which knows VS 2026.
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Download the Electron binary
         run: node node_modules/electron/install.js
+      - name: Build better-sqlite3 for Node (unit tests)
+        run: pnpm rebuild:node
       - run: pnpm typecheck
       - name: Unit, article and fidelity tests
         run: pnpm test

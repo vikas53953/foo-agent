@@ -66,6 +66,9 @@ importers:
       globals:
         specifier: 17.13.0
         version: 17.13.0
+      node-gyp:
+        specifier: 12.4.0
+        version: 12.4.0
       prettier:
         specifier: 3.9.10
         version: 3.9.10
@@ -3489,7 +3492,7 @@ snapshots:
       es6-error: 4.1.1
       matcher: 3.0.0
       roarr: 2.15.4
-      semver: 7.7.4
+      semver: 7.8.5
       serialize-error: 7.0.1
     optional: true
 
