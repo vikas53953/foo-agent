@@ -10,7 +10,7 @@ import { upsertConnectionReducer } from './connections';
 import { loadHelpersReducer } from './helpers';
 import { navigate, update, type RootState } from './index';
 import { upsertJobReducer } from './jobs';
-import { loadMessagesReducer, upsertMessageReducer } from './messages';
+import { applyDeltaReducer, loadMessagesReducer, resyncMessage, setBadgeReducer, upsertMessageReducer } from './messages';
 
 export const FIRST_PAGE = 50;
 export const NOW_TICK_MS = 30_000;
@@ -37,6 +37,11 @@ export const REDUCERS: Reducers = {
     else if (s.live.typingChatId === chatId) delete s.live.typingChatId;
   },
   'message:upsert': (s, row) => upsertMessageReducer(s.messages, row),
+  // 08-5 §5 rule 4 (X-117): a seq gap fetches the whole row with message:get.
+  'message:delta': (s, d) => {
+    if (!applyDeltaReducer(s.messages, d)) queueMicrotask(() => void resyncMessage(d.messageId));
+  },
+  'message:badge': (s, d) => setBadgeReducer(s.messages, d),
   'card:upsert': (s, row) => upsertCardReducer(s.cards, row),
   'job:upsert': (s, row) => upsertJobReducer(s.jobs, row),
   'ai:status': (s, ai) => {
@@ -119,6 +124,7 @@ export function loadChat(chatId: string, force = false): Promise<void> {
       opened.add(chatId);
       update((s) => {
         loadMessagesReducer(s.messages, chatId, r.value.messages, FIRST_PAGE);
+        if (r.value.waMessages) s.messages.wa[chatId] = r.value.waMessages;
         for (const c of r.value.cards) upsertCardReducer(s.cards, c);
         for (const j of r.value.jobs) upsertJobReducer(s.jobs, j);
       });

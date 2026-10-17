@@ -179,3 +179,47 @@ Removed at integration: `_m1b-stubs.ts` / `.css` are gone and every import point
 - The integrated App was rendered in a local Chromium harness (scratchpad Vite build of the real `App` with a fake bridge serving the demo world from main's own seed and queries) at 1440×900 light and dark, 1100, 800 and 400 wide, plus the M overlay (Ctrl+Shift+D), the XS details page, the group chat with the find bar, and the Options menu. The comparison with Blueprint `#win` was by eye.
 - Windows fonts, Tier R/B for the MHEAD/RHEAD/DOING/USING/KNOW/SPENT ids, the live event path (`job:upsert` etc. through the real preload).
 - **GAP (DDL):** 08-1 §4.3 gives `messages.card_id` (deferred FK to `cards`) no index, so with `foreign_keys = ON` every card insert scans all messages for its child row. The perf seed (50,000 messages) took 21 s; it now writes with the checks off, runs `foreign_key_check` after, and caches its prepared statements (3 s). The app's own card inserts (M5) will hit the same scan: proposed CR to add `CREATE INDEX messages_card ON messages(card_id)` (and `jobs(needs_you_card_id)`).
+
+## M2 (builder A) · messages
+
+### Built
+
+- **Bubbles** (`src/renderer/messages/Bubble.tsx`, `BubbleParts.tsx`, `Bubble.module.css`) fill MessageList's rows: runs, tail corners and rhythm (`runs.ts`), new-row motion, the 04 §1.8 accessible name and keys (Enter, ContextMenu / Shift+F10, Ctrl+Shift+R reply, Ctrl+Shift+E react, Ctrl+C), selection checkbox; the user bubble with ticks, badge slot (700 ms debounce), foo's reaction in the slot, reaction chips, hover toolbar, menu (`messageMenu.ts`), reply-quote with jump highlight (1600 ms), edit (15 min), delete (C-24 / C-25), Not sent + Try again; images, file chips, Read more, the deleted state, Hindi / Punjabi `lang`, emoji-only sizes, the user's WhatsApp formatting, the WhatsApp mirror rows (`WaBubble`, retention line); the output bubble plain and rich, group sender label, backup mark.
+- **Markdown** (`markdown.ts` parser, `Markdown.tsx` view): the 04 §13 subset, code block (language label, 15-line clamp, Copy), table (clamp past 20 rows, Copy table), citation pills + Sources row, images; streaming hold-back; auto-links and money (`textRules.ts`, `linkActions.ts`, C-26 for links that name another domain).
+- **Answer extras** (`AnswerExtras.tsx`, `Markers.tsx`, `VoicePlayer.tsx`, `voiceRules.ts`, `ReactionPicker.tsx`, `MessageDialogs.tsx`): action row with the 👎 popover, "Worked for" with its steps, cut-off row, "Why am I getting this?" footer with Stop, voice player (40 bars, seek, speed chip, transcript), status line + Thinking row, system lines, handoff marker, inline error.
+- **Cards** (`src/renderer/cards/TableCard.tsx`, `tableText.ts`, `FileCard.tsx`, `LinkPreview.tsx`, `PlaceCard.tsx`, `CardFrame.tsx`, `renderCard.tsx`): 05-3 §5.22–§5.24; other card types keep their placeholders.
+- **Store** (`store/messages.ts`): the optimistic seam for builder B (`insertOptimistic` / `confirmSent` / `failSend`, re-key on `message:upsert` too), `message:delta` with gap resync, `message:badge`, react / edit / delete / retry / keep over IPC, expanded parts, composer requests.
+- **Main**: `message:get`, `message:react`, `message:pin`, `job:details`, `routine:pause`, `files:open`, `files:showInFolder` (08-1 §3.2) and the gap channels below, with zod schemas, preload allow-lists and IpcRouter; `app://media/?p=` serves files under {DATA} only (`insideDir`).
+- **Primitives**: `ui/Popover`, `ui/Dialog` (06 §0.3), `Button` variants `secondary` and `destructive`.
+- **Seeds**: `seed/bubbles.ts` adds the chapter 8 scene to foo's chat (Fri 8:05–8:20 AM) and a gallery of every bubble state and the four M2 cards to Trips (Thu 10:05–10:40 PM), plus helper lines and a handoff marker in the Family group; `seed/media.ts` writes the SVG images and WAV notes under {DATA} from the test hook; the perf seed's 5,000-message chat gets rich answers, reactions, image bubbles and table / file / link / place cards from a second PRNG (the rest of the set is unchanged).
+- **Tests**: `test/unit/m2a-bubbles.test.ts` (runs, corners, gaps, ticks, badge slot, edit window, Worked for, menu), `m2a-text.test.ts` (markdown subset, rich triggers, streaming, WhatsApp set, auto-links, money, C-26, emoji-only, lang, Read more, voice, table cells, estimates), `m2a-store.test.ts` (optimistic re-key, delta gap, reactions, stick-to-bottom with variable heights and streaming), `m2a-queries.test.ts` (react / pin / edit / retry / delete, `insideDir`, both seeds); `test/e2e/m2-messages.spec.ts` (fling scroll frame budget + DOM bound; axe on bubbles, cards, menu and picker in light and dark).
+
+### Picks and gaps
+
+1. **GAP · channels with no 08-1 entry:** `message:edit`, `message:delete`, `message:retry`, `link:open` (http, https, mailto, tel only) and `app:showEmojiPanel` (the picker's "+") are added and marked as gaps in `src/shared/ipc.ts`.
+2. **GAP · Try again on foo's answer** (`message:retry`) is refused until the engine (M3); a failed user message goes back to `queued` for builder B's send pipeline.
+3. **GAP · 👍 / 👎 feedback** lives in session state only; no table or channel stores it.
+4. **GAP · media URL:** 08-0 names none; the CSP allows `app:` images, so attachments and voice under {DATA} load as `app://media/?p={path}`; anything outside {DATA} is a 404 and `files:open` answers `PATH_NOT_ALLOWED`.
+5. **GAP · citations** have no field: a source is a markdown link whose address starts `cite+`; consecutive ones form one pill ("MakeMyTrip +2").
+6. **GAP · the user's link preview** (§10.6) has no data source in M2; `LinkPreviewBlock` exists but nothing feeds it.
+7. **GAP · Not sent reasons** have no field; every Not sent shows the generic line.
+8. **GAP · "Stopped." caption** for a stopped stream has no state on the row; not shown.
+9. **GAP · Save as…** (file menu) has no channel; left out.
+10. **GAP · image size** is not stored; images sit in a fixed 200px box (cover).
+11. **GAP · waveform loudness** is not stored; the bars come from a hash of the message id (stable, never a claim about the sound).
+12. **GAP · WhatsApp sender colour:** `wa_messages` keeps only the sender's label, so X-138's hash runs on the label, not the jid.
+13. **"Why am I getting this?" Stop** pauses the routine (`routine:pause`) or turns `money.warnAt80` off; suggestions, habit offers and housekeeping have no setting yet, so Stop only closes with the caption.
+14. **Deleted rows** come back from `message:list` / `message:get` blanked (text, attachments, voice, reactions), so "You deleted this message" keeps its place.
+15. **Money** in foo's text is re-written by the renderer (Rs / INR / rupees → ₹ with Indian grouping); inr table cells are paise; money and dates in bubble meta are exempt (`data-meta`, ART-21a).
+16. **The voice "more" link** shows when the transcript is longer than 90 characters (two lines at the bubble width); "Worked for" draws the chevron as an icon and drops the "›" from the copy; the backup mark uses `ArrowSync` 16 (no 12px icon size).
+17. **Pending rows** (the composer's optimistic copy) show the Clock tick until main answers; find matches are marked inside the bubble text.
+18. **Streaming follow** stops before a chunk would push the answer's top within 16px of the view's top, so the first line never goes under the header.
+19. **Phone auto-links** drop a trailing separator the international pattern (verbatim from §16.1) can capture.
+20. **Copy keys** use `bubble.row.*` and similar three-segment names (check-copy rule); dialogs portal to `body`.
+21. **Deferred:** per-word fade-in while streaming (the text appears as it arrives); Choice-card numbered reactions (cards have no React in §9.1, Choice is M5); the user's link preview (gap 6).
+
+### Not verified here
+
+- No Electron binary: `test/e2e/m2-messages.spec.ts` only lists; neither the frame budget nor axe has run. PERF-04 and ART-26a for M2 are not routed to this file in `spec/trace.csv` (CR needed), so its titles carry no ids.
+- Every seeded bubble and card of the demo foo, Trips and Family chats and the perf foo chat was server-rendered once in vitest (`renderToString`) without errors; layout, Read more clamping, hover, focus, motion and dark colours were not seen in a browser.
+- The chapter 8 scene and the status line / Thinking row may change the M1 goldens of foo's chat (rows above the Goa card); not compared.

@@ -1,13 +1,14 @@
 // Spec: 08-1 §3 (IPC contract: sender check + zod validation, `Result<T>` replies), §3.1 (platform info), §3.2 (the
 // invoke rows M1 builds), §3.3 (events are patches; every *Row carries its rev), 08-0 §B.5; 08-3 §22.8 (test:* refused
-// outside test runs, through ChannelGuard).
+// outside test runs, through ChannelGuard). M2 builder A: message:get/react/pin, files:open/showInFolder, job:details,
+// routine:pause and the gap channels message:edit/delete/retry, link:open, app:showEmojiPanel (implementation-notes).
 import { app, BrowserWindow, ipcMain, net, shell, systemPreferences, type IpcMainEvent } from 'electron';
 import { z } from 'zod';
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
 import type { EventChannel, EventPayload, InvokeChannel, InvokeIn, InvokeOut, PlatformInfo } from '../../shared/ipc';
 import { PROVIDER_IDS, settingsSchema, WRITABLE_PATHS, type Settings } from '../../shared/settings';
-import type { WindowsSettingsPage } from '../../shared/types';
+import type { MessageRow, WindowsSettingsPage } from '../../shared/types';
 import { deps } from '../deps';
 import type { NetMonitor } from '../net/netMonitor';
 import type { SettingsStore } from '../settings/Settings';
@@ -17,21 +18,31 @@ import {
   bootstrap,
   chatOpen,
   chatRowById,
+  deleteMessages,
+  editMessage,
   helperList,
+  jobDetails,
   jobRows,
   listChats,
   markRead,
   memoryList,
+  messageGet,
   messageList,
+  pauseRoutine,
   pinChat,
+  pinMessage,
+  reactMessage,
+  retryMessage,
   publicSettings,
   recomputePill,
   routineList,
   spendSummary,
   stopJob,
   type ListContext,
+  type MessageWriteResult,
 } from '../store/queries';
 import { ChannelGuard } from './guard';
+import { insideDir } from '../windows/protocol';
 import { isTrustedUrl } from '../windows/protocol';
 
 const trusted = (e: IpcMainEvent) => !!e.senderFrame && isTrustedUrl(e.senderFrame.url);
@@ -63,6 +74,8 @@ export interface AppContext {
   net: NetMonitor;
   /** The network probe: Electron's net.isOnline() in production, the injected Net in test runs. */
   probe: () => boolean;
+  /** {DATA} (08-0 §E.6): files:open / showInFolder and the app://media host only reach files under it. */
+  dataDir: string;
 }
 
 export function listContext(settings: Settings): ListContext {
@@ -73,6 +86,15 @@ export const electronProbe = () => net.isOnline();
 
 const empty = z.object({}).strict();
 const chatId = z.string().min(1).max(80);
+const messageId = z.string().min(1).max(80);
+/** 04 §9: one emoji grapheme (a ZWJ or flag sequence is several code points). */
+const emoji = z
+  .string()
+  .min(1)
+  .max(32)
+  .regex(/^\p{Extended_Pictographic}|^\p{Regional_Indicator}|^[0-9#*]\uFE0F?\u20E3/u);
+/** link:open (gap): the schemes 04 §10.7 / §16.1 open; anything else is URL_NOT_ALLOWED. */
+const LINK_SCHEMES = ['http:', 'https:', 'mailto:', 'tel:'];
 const SETTINGS_PAGE: Record<WindowsSettingsPage, string> = {
   notifications: 'ms-settings:notifications',
   'privacy-microphone': 'ms-settings:privacy-microphone',
@@ -95,6 +117,18 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'chat:pin': z.object({ chatId, on: z.boolean() }).strict(),
   'chat:mute': z.object({ chatId, until: z.union([z.number().int(), z.literal('forever'), z.null()]) }).strict(),
   'message:list': z.object({ chatId, beforeSeq: z.number().int().optional(), limit: z.number().int().min(1).max(200) }).strict(),
+  'message:get': z.object({ messageId }).strict(),
+  'message:react': z.object({ messageId, emoji, on: z.boolean() }).strict(),
+  'message:pin': z.object({ messageId, on: z.boolean() }).strict(),
+  'message:edit': z.object({ messageId, text: z.string().min(1).max(20_000) }).strict(),
+  'message:delete': z.object({ messageIds: z.array(messageId).min(1).max(500), confirm: z.literal(true) }).strict(),
+  'message:retry': z.object({ messageId }).strict(),
+  'files:open': z.object({ path: z.string().min(1).max(1024) }).strict(),
+  'files:showInFolder': z.object({ path: z.string().min(1).max(1024) }).strict(),
+  'job:details': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'routine:pause': z.object({ routineId: z.string().min(1).max(80), confirm: z.literal(true).optional() }).strict(),
+  'link:open': z.object({ url: z.string().min(1).max(2048) }).strict(),
+  'app:showEmojiPanel': empty as z.ZodType<Record<string, never>>,
   'job:stop': z.object({ jobId: z.string().min(1).max(80) }).strict(),
   'job:watch': z.object({ jobId: z.string().min(1).max(80), on: z.boolean() }).strict(),
   'memory:list': z
@@ -214,6 +248,65 @@ export function registerIpc(ctx: AppContext): void {
     return ok(undefined);
   });
   handle('message:list', ({ chatId: id, beforeSeq, limit }) => ok(messageList(db, id, limit, beforeSeq)));
+  handle('message:get', ({ messageId: id }) => {
+    const row = messageGet(db, id);
+    return row ? ok(row) : fail('NOT_FOUND');
+  });
+  const written = (r: MessageWriteResult): Result<MessageRow> => {
+    if (!r.ok) return fail(r.reason === 'not_found' ? 'NOT_FOUND' : 'VALIDATION');
+    emit('message:upsert', r.row);
+    return ok(r.row);
+  };
+  const asVoid = (r: Result<MessageRow>): Result<void> => (r.ok ? ok(undefined) : r);
+  handle('message:react', ({ messageId: id, emoji: e, on }) => asVoid(written(reactMessage(db, id, e, on, now()))));
+  handle('message:pin', ({ messageId: id, on }) => asVoid(written(pinMessage(db, id, on))));
+  handle('message:edit', ({ messageId: id, text }) => {
+    const r = written(editMessage(db, id, text, now()));
+    if (r.ok) emitChat(r.value.chatId);
+    return r;
+  });
+  handle('message:delete', ({ messageIds }) => {
+    const r = deleteMessages(db, messageIds, now());
+    for (const row of r.rows) emit('message:upsert', row);
+    for (const id of r.chatIds) emitChat(id);
+    return ok(undefined);
+  });
+  handle('message:retry', ({ messageId: id }) => written(retryMessage(db, id)));
+  handle('files:open', async ({ path }) => {
+    const file = insideDir(ctx.dataDir, path);
+    if (!file) return fail('PATH_NOT_ALLOWED');
+    const err = await shell.openPath(file);
+    return err ? fail('NOT_FOUND', err) : ok(undefined);
+  });
+  handle('files:showInFolder', ({ path }) => {
+    const file = insideDir(ctx.dataDir, path);
+    if (!file) return fail('PATH_NOT_ALLOWED');
+    shell.showItemInFolder(file);
+    return ok(undefined);
+  });
+  handle('job:details', ({ jobId }) => {
+    const d = jobDetails(db, jobId, now());
+    return d ? ok(d) : fail('JOB_GONE');
+  });
+  handle('routine:pause', ({ routineId }) => {
+    const row = pauseRoutine(db, routineId, now());
+    return row ? ok(row) : fail('NOT_FOUND');
+  });
+  handle('link:open', async ({ url }) => {
+    let parsed: URL;
+    try {
+      parsed = new URL(url);
+    } catch {
+      return fail('URL_NOT_ALLOWED');
+    }
+    if (!LINK_SCHEMES.includes(parsed.protocol)) return fail('URL_NOT_ALLOWED');
+    await shell.openExternal(parsed.toString());
+    return ok(undefined);
+  });
+  handle('app:showEmojiPanel', () => {
+    if (app.isEmojiPanelSupported()) app.showEmojiPanel();
+    return ok(undefined);
+  });
   handle('job:stop', ({ jobId }) => {
     // M1 has no engine (M3): the job row is cancelled here and the chat pill re-derived; nothing was done for the user yet.
     const r = stopJob(db, jobId, now());

@@ -3,12 +3,16 @@
 // list shows: needs-you, working, unread, done, folded, group sender, WhatsApp mirror). Times are Fri 16 Oct 2026 IST.
 import type { Db } from '../../store/db';
 import type { Settings } from '../../../shared/settings';
+import { seedBubbleGallery, seedChatScene } from './bubbles';
+import type { SeedMedia } from './media';
 import { HOUR, ist, MIN, SeedWriter } from './writer';
 
 export interface SeedResult {
   chats: number;
   messages: number;
   refs: Record<string, string>;
+  /** Files the seeded bubbles point at, relative to {DATA} (written by the test hook with writeSeedMedia). */
+  media: SeedMedia[];
 }
 
 const FILLER_USER = [
@@ -56,6 +60,7 @@ export function seedUxWorld(db: Db, now = ist(2026, 10, 16, 9, 0)): SeedResult {
   const w = new SeedWriter(db, 1);
   w.wipe();
   const refs: Record<string, string> = {};
+  let media: SeedMedia[] = [];
   const d = (day: number, h: number, mi = 0) => ist(2026, 10, day, h, mi);
 
   db.transaction(() => {
@@ -107,6 +112,9 @@ export function seedUxWorld(db: Db, now = ist(2026, 10, 16, 9, 0)): SeedResult {
         ],
       },
     });
+
+    // UX-08 (M2): the chapter 8 conversation, 8:05–8:20 AM.
+    seedChatScene(w, foo.chatId, refs);
 
     // Goa stay: NEEDS YOU on a ₹14,600 payment that expires 9:51 AM.
     const goa = w.job({
@@ -298,6 +306,15 @@ export function seedUxWorld(db: Db, now = ist(2026, 10, 16, 9, 0)): SeedResult {
     filler(w, family.chatId, 40, d(13, 20, 5), d(15, 19, 0), { author: 'foo' });
     w.message(family.chatId, { author: 'foo', text: 'Mom’s cake is ordered 🎂', at: d(15, 19, 30) });
 
+    // M2: every other bubble state (Trips, Thu 10:05–10:40 PM) and the group's helper lines and handoff marker.
+    media = seedBubbleGallery(w, {
+      tripsChatId: trips.chatId,
+      tripsHelperId: trips.helperId!,
+      familyChatId: family.chatId,
+      homeHelperId: home.helperId!,
+      refs,
+    });
+
     // News & X: last job finished Mon, nothing pending: folds to one line (X-153).
     const news = w.chat({
       kind: 'helper',
@@ -438,7 +455,7 @@ export function seedUxWorld(db: Db, now = ist(2026, 10, 16, 9, 0)): SeedResult {
   })();
   const counts = w.finish(now);
   w.check();
-  return { ...counts, refs };
+  return { ...counts, refs, media };
 }
 
 /** The settings the walkthrough world runs with (setup done, Vikas, Claude on a key, the mirrors muted). */

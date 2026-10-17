@@ -55,10 +55,13 @@ export function useStickToBottom(scrollRef: RefObject<HTMLElement | null>, rows:
   }, [rows, scrollRef, target]);
 
   /** A row grew (measurement, streaming): keep following when the list was at the bottom. */
-  const onSizeChange = useCallback(() => {
-    if (wasAtBottom.current) target.scrollToEnd();
-    prev.current.total = target.getTotalSize();
-  }, [target]);
+  const onSizeChange = useCallback(
+    (follow = true) => {
+      if (wasAtBottom.current && follow) target.scrollToEnd();
+      prev.current.total = target.getTotalSize();
+    },
+    [target],
+  );
 
   const resetCount = useCallback(() => setNewCount(0), []);
   return { onScroll, onSizeChange, newCount, resetCount, wasAtBottom };

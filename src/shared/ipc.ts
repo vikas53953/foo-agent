@@ -10,7 +10,9 @@ import type {
   ChatRow,
   CardRow,
   ConnectionRow,
+  BadgeValue,
   HelperRow,
+  JobDetails,
   JobRow,
   MemoryFactView,
   MemoryFilter,
@@ -53,6 +55,23 @@ export interface Invokes {
   'chat:pin': { req: { chatId: string; on: boolean }; res: ChatRow };
   'chat:mute': { req: { chatId: string; until: number | 'forever' | null }; res: void };
   'message:list': { req: { chatId: string; beforeSeq?: number; limit: number }; res: MessageRow[] };
+  'message:get': { req: { messageId: string }; res: MessageRow };
+  'message:react': { req: { messageId: string; emoji: string; on: boolean }; res: void };
+  'message:pin': { req: { messageId: string; on: boolean }; res: void };
+  /** Not in 08-1 §3.2 (gap, implementation-notes "M2 (builder A)"): 04 §6.2 edit of the user's last message. */
+  'message:edit': { req: { messageId: string; text: string }; res: MessageRow };
+  /** Not in 08-1 §3.2 (gap): 04 §6.3 / §1.9 delete after C-24 / C-25 (soft delete; the row stays as the deleted state). */
+  'message:delete': { req: { messageIds: string[]; confirm: true }; res: void };
+  /** Not in 08-1 §3.2 (gap): 04 §7 "Try again" on a Not sent bubble (same text and attachments). */
+  'message:retry': { req: { messageId: string }; res: MessageRow };
+  'files:open': { req: { path: string }; res: void };
+  'files:showInFolder': { req: { path: string }; res: void };
+  'job:details': { req: { jobId: string }; res: JobDetails };
+  'routine:pause': { req: { routineId: string; confirm?: true }; res: RoutineRow };
+  /** Not in 08-1 §3.2 (gap): 04 §10.6, §10.7, §13, §16.1 open a link in the default browser (http, https, mailto, tel). */
+  'link:open': { req: { url: string }; res: void };
+  /** Not in 08-1 §3.2 (gap): 04 §9.3 "+" opens the Windows emoji panel (Electron app.showEmojiPanel). */
+  'app:showEmojiPanel': { req: Record<string, never>; res: void };
   'job:stop': { req: { jobId: string }; res: StopReport };
   'job:watch': { req: { jobId: string; on: boolean }; res: void };
   'memory:list': { req: { filter: MemoryFilter; q?: string }; res: MemoryFactView[] };
@@ -71,6 +90,8 @@ export interface Events {
   'chat:removed': { chatId: string };
   'chat:typing': { chatId: string; on: boolean; who: string };
   'message:upsert': MessageRow;
+  'message:delta': { messageId: string; seq: number; append: string };
+  'message:badge': { messageId: string; badge: BadgeValue | null };
   'card:upsert': CardRow;
   'job:upsert': JobRow;
   'ai:status': AiStatus;
@@ -105,6 +126,18 @@ export const INVOKE_CHANNELS = [
   'chat:pin',
   'chat:mute',
   'message:list',
+  'message:get',
+  'message:react',
+  'message:pin',
+  'message:edit',
+  'message:delete',
+  'message:retry',
+  'files:open',
+  'files:showInFolder',
+  'job:details',
+  'routine:pause',
+  'link:open',
+  'app:showEmojiPanel',
   'job:stop',
   'job:watch',
   'memory:list',
@@ -121,6 +154,8 @@ export const EVENT_CHANNELS = [
   'chat:removed',
   'chat:typing',
   'message:upsert',
+  'message:delta',
+  'message:badge',
   'card:upsert',
   'job:upsert',
   'ai:status',

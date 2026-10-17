@@ -62,12 +62,12 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
     // Network state on the injected clock: the injected Net in test runs, Electron's probe otherwise.
     const netMonitor = new NetMonitor(deps.clock);
     const probe = testClock ? () => deps.net.online : electronProbe;
-    const ctx: AppContext = { db, settings, net: netMonitor, probe };
+    const ctx: AppContext = { db, settings, net: netMonitor, probe, dataDir: paths.data };
     if (testClock) await loadTestHooks(ctx, testClock);
     else netMonitor.poll(probe);
     // Step 4: theme before any window, then the window.
     nativeTheme.themeSource = settings.get().appearance.theme;
-    handleAppScheme();
+    handleAppScheme(paths.data);
     registerIpc(ctx);
     mainWindow = createMainWindow(settings, { hidden });
     if (process.platform === 'win32') {

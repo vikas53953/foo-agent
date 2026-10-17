@@ -203,7 +203,18 @@ export interface Attachment {
   name: string;
   mime: string;
   bytes: number;
+  /** Under {DATA}\\data\\inbox\\ (relative to {DATA}, forward slashes) or absolute inside {DATA}. */
   path: string;
+  /** 08-5 §2 `Attachment.kind`; rows written before it carry none, so readers derive it from `mime` (attachmentKind). */
+  kind?: 'image' | 'pdf' | 'doc' | 'other';
+}
+
+/** 08-0 §G.17 `messages.why` (the "Why am I getting this?" source of an unprompted message). */
+export interface MessageWhy {
+  source: 'routine_asked' | 'routine_suggested' | 'suggestion' | 'habit_offer' | 'housekeeping' | 'cap_warning';
+  routineId?: string;
+  suggestionKey?: string;
+  vars: Record<string, string>;
 }
 export interface MessageRow {
   id: string;
@@ -457,6 +468,20 @@ export interface ChatOpenResult {
   cards: CardRow[];
   jobs: JobRow[];
   draft: DraftRow | null;
+  /** Only for `kind='wa_mirror'` chats: newest 200 (08-1 §3.2, 08-3 §16.4.3). */
+  waMessages?: WaMessageRow[];
+}
+
+/** wa_messages columns camelCased (08-0 §0, 08-1 §4.3). */
+export interface WaMessageRow {
+  id: string;
+  chatJid: string;
+  fromMe: boolean;
+  senderLabel: string | null;
+  text: string;
+  at: number;
+  starred: boolean;
+  mentionsMe: boolean;
 }
 
 /** 08-3 §21 error kinds. Grows with the milestones; M1 holds the kinds the shell and its channels can return. */
@@ -469,4 +494,63 @@ export type ErrorKind =
   | 'SETTING_LOCKED'
   | 'JOB_GONE'
   | 'LIVE_UNAVAILABLE'
+  | 'PATH_NOT_ALLOWED'
+  | 'URL_NOT_ALLOWED'
   | 'UNKNOWN';
+
+// ---- card payloads (08-5 §4.1) the M2 cards draw ----
+export interface TablePayload {
+  title: string;
+  columns: { key: string; label: string; align: 'left' | 'right'; unit?: 'inr' | 'text' | 'date' | 'time' }[];
+  rows: Record<string, string | number | null>[];
+  sourceLine?: string;
+  bestRowIndex?: number;
+}
+export interface FilePayload {
+  fileId: string;
+  name: string;
+  mime: string;
+  bytes: number;
+  path: string;
+  madeBy: 'foo' | string;
+  kind: 'made' | 'received' | 'downloaded';
+}
+export interface LinkPreviewPayload {
+  url: string;
+  domain: string;
+  title: string;
+  description?: string;
+  imageRef?: string;
+  fetchedAt: number;
+}
+export interface PlacePayload {
+  name: string;
+  address: string;
+  phone?: string;
+  hoursLine?: string;
+  mapsUrl: string;
+  rating?: string;
+}
+
+// ---- steps (08-1 §4.3.4) and job:details (08-1 §3.2) ----
+export interface StepRow {
+  id: string;
+  jobId: string;
+  idx: number;
+  phraseKey: string;
+  slots: Record<string, unknown>;
+  state: 'pending' | 'running' | 'done' | 'failed' | 'skipped' | 'waiting_user';
+  attempts: number;
+  route: Route | null;
+  rev: number;
+  startedAt: number | null;
+  finishedAt: number | null;
+}
+/** 08-1 §3.2 `job:details` reply. M2 fills job and steps; frames, proof and costs arrive with their milestones. */
+export interface JobDetails {
+  job: JobRow;
+  steps: StepRow[];
+  frames: { stepId: string; path: string; at: number }[];
+  proof?: unknown;
+  costs: unknown[];
+}

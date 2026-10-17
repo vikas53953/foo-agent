@@ -16,6 +16,8 @@ import {
   parseJson,
   reactionBy,
   routineRow,
+  stepRow,
+  waMessageRow,
   type DbRow,
 } from '../db/rows';
 import { cardTitle } from '../../shared/cards';
@@ -32,6 +34,7 @@ import type {
   ChatRow,
   ConnectionRow,
   HelperRow,
+  JobDetails,
   JobRow,
   JobState,
   MemoryFactView,
@@ -43,6 +46,7 @@ import type {
   RoutineRow,
   SpendSummary,
   TickState,
+  WaMessageRow,
 } from '../../shared/types';
 
 export const DAY = 86_400_000;
@@ -452,20 +456,135 @@ function reactionsFor(db: Db, ids: string[]): Map<string, MessageRow['reactions'
   return out;
 }
 
-/** message:list: newest `limit` (≤ 200) messages before `beforeSeq`, oldest first. */
+/**
+ * A deleted message keeps its row (04 §10.4 "This message was deleted." in the thread) but nothing of what it said:
+ * text, attachments, voice and transcript are blanked before the row leaves main (M2 builder A pick; 08-1 §4.3 soft delete).
+ */
+function visibleRow(r: DbRow, reactions: MessageRow['reactions']): MessageRow {
+  const m = messageRow(r, reactions);
+  if (m.deletedAt === null) return m;
+  return { ...m, text: '', attachments: null, voicePath: null, transcript: null, transcriptConf: null, reactions: [], providerNote: null };
+}
+
+/** message:list: newest `limit` (≤ 200) messages before `beforeSeq`, oldest first. Deleted rows come back blanked. */
 export function messageList(db: Db, chatId: string, limit: number, beforeSeq?: number): MessageRow[] {
   const rows = db
-    .prepare(
-      `SELECT * FROM messages WHERE chat_id = ? AND deleted_at IS NULL ${beforeSeq !== undefined ? 'AND seq < ?' : ''}
-        ORDER BY seq DESC LIMIT ?`,
-    )
+    .prepare(`SELECT * FROM messages WHERE chat_id = ? ${beforeSeq !== undefined ? 'AND seq < ?' : ''} ORDER BY seq DESC LIMIT ?`)
     .all(...(beforeSeq !== undefined ? [chatId, beforeSeq, Math.min(limit, 200)] : [chatId, Math.min(limit, 200)])) as DbRow[];
   rows.reverse();
   const reactions = reactionsFor(
     db,
     rows.map((r) => String(r.id)),
   );
-  return rows.map((r) => messageRow(r, reactions.get(String(r.id)) ?? []));
+  return rows.map((r) => visibleRow(r, reactions.get(String(r.id)) ?? []));
+}
+
+/** message:get (X-124): one row, as message:list would return it. */
+export function messageGet(db: Db, messageId: string): MessageRow | null {
+  const r = db.prepare('SELECT * FROM messages WHERE id = ?').get(messageId) as DbRow | undefined;
+  if (!r) return null;
+  return visibleRow(r, reactionsFor(db, [messageId]).get(messageId) ?? []);
+}
+
+export type MessageWriteResult = { ok: true; row: MessageRow } | { ok: false; reason: 'not_found' | 'not_allowed' };
+
+function touched(db: Db, messageId: string): MessageWriteResult {
+  const row = messageGet(db, messageId);
+  return row ? { ok: true, row } : { ok: false, reason: 'not_found' };
+}
+
+/**
+ * message:react (04 §9): the user's reaction. One reaction per person per bubble (§8 "choosing another replaces it");
+ * `on: false` removes it. The user cannot react to their own bubble (§8.1).
+ */
+export function reactMessage(db: Db, messageId: string, emoji: string, on: boolean, now: number): MessageWriteResult {
+  const r = db.prepare('SELECT author_kind, deleted_at FROM messages WHERE id = ?').get(messageId) as DbRow | undefined;
+  if (!r) return { ok: false, reason: 'not_found' };
+  if (r.author_kind === 'user' || r.deleted_at !== null) return { ok: false, reason: 'not_allowed' };
+  db.transaction(() => {
+    db.prepare("DELETE FROM reactions WHERE message_id = ? AND by = 'user'").run(messageId);
+    if (on) db.prepare("INSERT INTO reactions (message_id, by, emoji, created_at) VALUES (?, 'user', ?, ?)").run(messageId, emoji, now);
+    db.prepare('UPDATE messages SET rev = rev + 1 WHERE id = ?').run(messageId);
+  })();
+  return touched(db, messageId);
+}
+
+/** message:pin (08-1 §3.2): "Keep this voice note"; only voice messages. */
+export function pinMessage(db: Db, messageId: string, on: boolean): MessageWriteResult {
+  const r = db.prepare('SELECT kind FROM messages WHERE id = ? AND deleted_at IS NULL').get(messageId) as DbRow | undefined;
+  if (!r) return { ok: false, reason: 'not_found' };
+  if (r.kind !== 'voice') return { ok: false, reason: 'not_allowed' };
+  db.prepare('UPDATE messages SET pinned = ?, rev = rev + 1 WHERE id = ?').run(on ? 1 : 0, messageId);
+  return touched(db, messageId);
+}
+
+/** 04 §6.2: the edit window. */
+export const EDIT_WINDOW_MS = 15 * 60_000;
+
+/** message:edit (gap channel, 04 §6.2): the user's latest text message, within 15 minutes. */
+export function editMessage(db: Db, messageId: string, text: string, now: number): MessageWriteResult {
+  const r = db.prepare('SELECT * FROM messages WHERE id = ? AND deleted_at IS NULL').get(messageId) as DbRow | undefined;
+  if (!r) return { ok: false, reason: 'not_found' };
+  const latest = db
+    .prepare("SELECT id FROM messages WHERE chat_id = ? AND author_kind = 'user' AND deleted_at IS NULL ORDER BY seq DESC LIMIT 1")
+    .pluck()
+    .get(r.chat_id) as string | undefined;
+  if (r.author_kind !== 'user' || r.kind !== 'text' || r.status === 'failed' || latest !== messageId)
+    return { ok: false, reason: 'not_allowed' };
+  if (now - Number(r.created_at) > EDIT_WINDOW_MS || !text.trim()) return { ok: false, reason: 'not_allowed' };
+  db.prepare('UPDATE messages SET text = ?, text_for_ai = NULL, edited_at = ?, rev = rev + 1 WHERE id = ?').run(text, now, messageId);
+  return touched(db, messageId);
+}
+
+/** message:delete (gap channel, 04 §6.3, §1.9): soft delete on this PC; returns the chats touched. */
+export function deleteMessages(db: Db, ids: string[], now: number): { chatIds: string[]; rows: MessageRow[] } {
+  const chatIds = new Set<string>();
+  const done: string[] = [];
+  db.transaction(() => {
+    for (const id of ids) {
+      const r = db.prepare("SELECT chat_id FROM messages WHERE id = ? AND deleted_at IS NULL AND kind != 'marker'").get(id) as
+        DbRow | undefined;
+      if (!r) continue;
+      db.prepare('UPDATE messages SET deleted_at = ?, rev = rev + 1 WHERE id = ?').run(now, id);
+      chatIds.add(String(r.chat_id));
+      done.push(id);
+    }
+  })();
+  return { chatIds: [...chatIds], rows: done.map((id) => messageGet(db, id)).filter((m): m is MessageRow => !!m) };
+}
+
+/**
+ * message:retry (gap channel, 04 §7 "Try again" on Not sent): the failed user message goes back to `queued`. Sending
+ * it is message:send's pipeline (builder B / M3); a foo answer has no engine to write it again before M3.
+ */
+export function retryMessage(db: Db, messageId: string): MessageWriteResult {
+  const r = db.prepare('SELECT author_kind, status FROM messages WHERE id = ? AND deleted_at IS NULL').get(messageId) as DbRow | undefined;
+  if (!r) return { ok: false, reason: 'not_found' };
+  if (r.author_kind !== 'user' || r.status !== 'failed') return { ok: false, reason: 'not_allowed' };
+  db.prepare("UPDATE messages SET status = 'queued', rev = rev + 1 WHERE id = ?").run(messageId);
+  return touched(db, messageId);
+}
+
+/** job:details (08-1 §3.2) for M2: the job and its steps; frames, proof and costs arrive with M8/M10. */
+export function jobDetails(db: Db, jobId: string, now: number): JobDetails | null {
+  const [job] = jobRows(db, 'id = ?', [jobId], now);
+  if (!job) return null;
+  const steps = (db.prepare('SELECT * FROM steps WHERE job_id = ? ORDER BY idx').all(jobId) as DbRow[]).map(stepRow);
+  return { job, steps, frames: [], costs: [] };
+}
+
+/** routine:pause (08-1 §3.2) from the "Why am I getting this?" Stop (04 §19). */
+export function pauseRoutine(db: Db, routineId: string, now: number): RoutineRow | null {
+  const r = db.prepare("SELECT state FROM routines WHERE id = ? AND state != 'deleted'").get(routineId) as DbRow | undefined;
+  if (!r) return null;
+  if (r.state === 'on') db.prepare("UPDATE routines SET state = 'paused', updated_at = ?, rev = rev + 1 WHERE id = ?").run(now, routineId);
+  return routineRow(db.prepare('SELECT * FROM routines WHERE id = ?').get(routineId) as DbRow);
+}
+
+/** chat:open `waMessages` (04 §10.11, 08-3 §16.4.3): newest 200 of the mirrored group, oldest first. */
+export function waMessages(db: Db, jid: string): WaMessageRow[] {
+  const rows = db.prepare('SELECT * FROM wa_messages WHERE chat_jid = ? ORDER BY at DESC LIMIT 200').all(jid) as DbRow[];
+  return rows.reverse().map(waMessageRow);
 }
 
 export function jobRows(db: Db, where: string, args: unknown[], now: number): JobRow[] {
@@ -492,7 +611,7 @@ export function jobRows(db: Db, where: string, args: unknown[], now: number): Jo
 
 /** chat:open: newest 50 messages, their cards, the chat's jobs (newest 50) and the draft. */
 export function chatOpen(db: Db, chatId: string, now: number): ChatOpenResult | null {
-  const exists = db.prepare('SELECT 1 FROM chats WHERE id = ? AND deleted_at IS NULL').get(chatId);
+  const exists = db.prepare('SELECT kind, wa_jid FROM chats WHERE id = ? AND deleted_at IS NULL').get(chatId) as DbRow | undefined;
   if (!exists) return null;
   const messages = messageList(db, chatId, FIRST_MESSAGES);
   const cardIds = messages.map((m) => m.cardId).filter((v): v is string => !!v);
@@ -501,7 +620,9 @@ export function chatOpen(db: Db, chatId: string, now: number): ChatOpenResult | 
     : [];
   const jobs = jobRows(db, 'chat_id = ? ORDER BY created_at DESC LIMIT 50', [chatId], now);
   const d = db.prepare('SELECT * FROM drafts WHERE chat_id = ?').get(chatId) as DbRow | undefined;
-  return { messages, cards, jobs, draft: d ? draftRow(d) : null };
+  const open: ChatOpenResult = { messages, cards, jobs, draft: d ? draftRow(d) : null };
+  if (exists.kind === 'wa_mirror' && exists.wa_jid) open.waMessages = waMessages(db, String(exists.wa_jid));
+  return open;
 }
 
 export function connections(db: Db): ConnectionRow[] {

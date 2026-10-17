@@ -1,11 +1,20 @@
 // Spec: 08-5 §5 `messages.ts { byChat: { ids; byId; oldestSeq; hasMore; lastSeq } }`, rules 2 (rev), 3 (optimistic send
-// re-keys in place), 5 (pagination: newest 50 from chat:open, then message:list before oldestSeq). The message column
-// that reads this slice is built on top of it.
-import type { MessageRow } from '../../shared/types';
+// re-keys in place: a row the composer inserted under its clientId takes the stored id when main confirms it or when its
+// `message:upsert` arrives), 4 (a `message:delta` gap → `message:get` resync, X-117), 5 (pagination: newest 50 from
+// chat:open, then message:list before oldestSeq); 08-1 §3.2 message:react / message:pin, §3.3 message:delta / message:badge;
+// 04 §6 (reply, edit, delete), §7 (Not sent → Try again), §8 (one reaction per person per bubble; picking another replaces
+// it), §9.1 (keep a voice note), §10.5 / §13.1 / §13.2 / §15 (expanding is permanent for that message), §17 (👍/👎 state).
+// The composer (builder B) calls insertOptimistic / confirmSent / failSend and reads `composer[chatId]` requests.
+import type { BadgeValue, MessageRow, WaMessageRow } from '../../shared/types';
+import { invoke } from '../ipc/client';
 import { acceptRev } from './chats';
-import type { RootState } from './index';
+import { update, useStore, type RootState } from './index';
 
-export type StoredMessage = MessageRow & { pending?: boolean; status?: MessageRow['status'] | 'sending' | 'failed' };
+/**
+ * A row as the list holds it: `pending` while the composer's optimistic copy waits for main. Its status is `queued` then,
+ * so the bubble shows the Clock tick ("Waiting to send", 04 §3.3) until main answers.
+ */
+export type StoredMessage = MessageRow & { pending?: boolean };
 
 export interface ChatMessages {
   ids: string[];
@@ -15,11 +24,43 @@ export interface ChatMessages {
   lastSeq: number;
 }
 
+/** What the message list asks the composer to do (04 §6.1 Reply / Edit, §16.1 "puts … in the composer"). */
+export type ComposerRequest =
+  | { kind: 'reply'; messageId: string; at: number }
+  | { kind: 'edit'; messageId: string; at: number }
+  | { kind: 'prefill'; text: string; at: number };
+
 export interface MessagesState {
   byChat: Record<string, ChatMessages>;
+  /** Parts a user expanded ("Read more", "Show all {n} lines|rows", worked steps, voice transcript): `${messageId}:${part}`. */
+  expanded: Record<string, true>;
+  /** 04 §17.1: 👍 / 👎 on an answer (this session; see implementation-notes GAP). */
+  feedback: Record<string, 'good' | 'bad'>;
+  /** The newest request per chat for the composer; the composer clears it with takeComposerRequest. */
+  composer: Record<string, ComposerRequest | undefined>;
+  /** Last applied `message:delta` seq per streaming message. */
+  deltaSeq: Record<string, number>;
+  /** 04 §6.4 / §26: the row that carries the jump highlight now (a quote click). */
+  highlightId: string | null;
+  /** 04 §10.11: a mirrored WhatsApp group's rows from chat:open `waMessages` (read-only). */
+  wa: Record<string, WaMessageRow[]>;
+  /** 04 §13 C-26: the link waiting for "Open {domain}" (its text named another domain). */
+  pendingLink: { url: string; shown: string; domain: string } | null;
+  /** C-24 / C-25: the message ids the open delete confirm is about. */
+  pendingDelete: string[];
 }
 
-export const initialMessages = (): MessagesState => ({ byChat: {} });
+export const initialMessages = (): MessagesState => ({
+  byChat: {},
+  expanded: {},
+  feedback: {},
+  composer: {},
+  deltaSeq: {},
+  highlightId: null,
+  wa: {},
+  pendingLink: null,
+  pendingDelete: [],
+});
 
 const emptyChat = (): ChatMessages => ({ ids: [], byId: {}, oldestSeq: null, hasMore: false, lastSeq: 0 });
 
@@ -27,13 +68,22 @@ function sortIds(c: ChatMessages): void {
   c.ids.sort((a, b) => (c.byId[a]?.seq ?? 0) - (c.byId[b]?.seq ?? 0));
 }
 
-/** chat:open / bootstrap firstMessages: the newest page; `hasMore` when a full page came back. */
+/** chat:open / bootstrap firstMessages: the newest page; `hasMore` when a full page came back. Optimistic rows stay. */
 export function loadMessagesReducer(s: MessagesState, chatId: string, rows: MessageRow[], pageSize: number): void {
   const c = emptyChat();
   for (const m of rows) {
     c.byId[m.id] = m;
     c.ids.push(m.id);
   }
+  const old = s.byChat[chatId];
+  if (old)
+    for (const id of old.ids) {
+      const m = old.byId[id]!;
+      if (m.pending && !rows.some((r) => r.clientId && r.clientId === m.clientId)) {
+        c.byId[id] = m;
+        c.ids.push(id);
+      }
+    }
   sortIds(c);
   c.oldestSeq = rows.length ? Math.min(...rows.map((m) => m.seq)) : null;
   c.lastSeq = rows.length ? Math.max(...rows.map((m) => m.seq)) : 0;
@@ -54,12 +104,25 @@ export function prependMessagesReducer(s: MessagesState, chatId: string, rows: M
   c.hasMore = rows.length >= pageSize;
 }
 
+function rekey(c: ChatMessages, from: string, to: string): void {
+  if (from === to || !c.byId[from]) return;
+  const m = c.byId[from]!;
+  delete c.byId[from];
+  if (c.byId[to]) c.ids = c.ids.filter((id) => id !== from);
+  else c.ids = c.ids.map((id) => (id === from ? to : id));
+  c.byId[to] ??= { ...m, id: to };
+}
+
+/** The local id of a row the composer inserted before main stored it. */
+export const localId = (clientId: string) => `local:${clientId}`;
+
 export function upsertMessageReducer(s: MessagesState, row: MessageRow): void {
   const c = (s.byChat[row.chatId] ??= emptyChat());
+  if (row.clientId && c.byId[localId(row.clientId)]) rekey(c, localId(row.clientId), row.id);
   const stored = c.byId[row.id];
-  if (!acceptRev('message', row.id, stored, row)) return;
+  if (stored && !stored.pending && !acceptRev('message', row.id, stored, row)) return;
   c.byId[row.id] = row;
-  if (!stored) {
+  if (!c.ids.includes(row.id)) {
     c.ids.push(row.id);
     if (row.seq < (c.byId[c.ids[c.ids.length - 2] ?? '']?.seq ?? -Infinity)) sortIds(c);
   }
@@ -67,7 +130,192 @@ export function upsertMessageReducer(s: MessagesState, row: MessageRow): void {
   if (c.oldestSeq === null) c.oldestSeq = row.seq;
 }
 
+// ---------------------------------------------------------------- the composer's seam (builder B)
+
+/** The composer shows its message at once (04 §1.6 "the user sends: always jumps to the end"); seq sorts it last. */
+export function insertOptimisticReducer(s: MessagesState, row: MessageRow): void {
+  if (!row.clientId) throw new Error('insertOptimistic needs the clientId');
+  const c = (s.byChat[row.chatId] ??= emptyChat());
+  const id = localId(row.clientId);
+  c.byId[id] = { ...row, id, seq: Math.max(row.seq, c.lastSeq + 1), pending: true, status: 'queued' };
+  if (!c.ids.includes(id)) c.ids.push(id);
+}
+
+/** message:send answered `{ messageId }`: the local row takes the stored id (its upsert may already have done this). */
+export function confirmSentReducer(s: MessagesState, chatId: string, clientId: string, messageId: string, queued: boolean): void {
+  const c = s.byChat[chatId];
+  if (!c) return;
+  rekey(c, localId(clientId), messageId);
+  const m = c.byId[messageId];
+  if (m?.pending) {
+    m.pending = false;
+    m.status = queued ? 'queued' : 'sent';
+  }
+}
+
+/** message:send failed before main stored anything: the bubble shows Not sent (04 §7). */
+export function failSendReducer(s: MessagesState, chatId: string, clientId: string): void {
+  const m = s.byChat[chatId]?.byId[localId(clientId)];
+  if (m) m.status = 'failed';
+}
+
+export function insertOptimistic(row: MessageRow): void {
+  update((d) => insertOptimisticReducer(d.messages, row));
+}
+export function confirmSent(chatId: string, clientId: string, messageId: string, queued: boolean): void {
+  update((d) => confirmSentReducer(d.messages, chatId, clientId, messageId, queued));
+}
+export function failSend(chatId: string, clientId: string): void {
+  update((d) => failSendReducer(d.messages, chatId, clientId));
+}
+
+export function requestComposer(chatId: string, req: ComposerRequest): void {
+  update((d) => {
+    d.messages.composer[chatId] = req;
+  });
+}
+/** The composer takes the request once (and clears it). */
+export function takeComposerRequest(chatId: string): ComposerRequest | undefined {
+  const req = useStore.getState().messages.composer[chatId];
+  if (req)
+    update((d) => {
+      delete d.messages.composer[chatId];
+    });
+  return req;
+}
+
+// ---------------------------------------------------------------- events (08-1 §3.3)
+
+function findMessage(s: MessagesState, messageId: string): StoredMessage | undefined {
+  for (const c of Object.values(s.byChat)) if (c.byId[messageId]) return c.byId[messageId];
+  return undefined;
+}
+
+/** message:delta: appends in order; returns false on a gap (the caller resyncs with message:get). */
+export function applyDeltaReducer(s: MessagesState, d: { messageId: string; seq: number; append: string }): boolean {
+  const m = findMessage(s, d.messageId);
+  const last = s.deltaSeq[d.messageId] ?? 0;
+  if (!m || d.seq !== last + 1) return d.seq <= last;
+  m.text += d.append;
+  m.status = 'streaming';
+  s.deltaSeq[d.messageId] = d.seq;
+  return true;
+}
+
+export function setBadgeReducer(s: MessagesState, d: { messageId: string; badge: BadgeValue | null }): void {
+  const m = findMessage(s, d.messageId);
+  if (m) m.badge = d.badge;
+}
+
+/** `message:get` after a delta gap (08-5 §5 rule 4). */
+export async function resyncMessage(messageId: string): Promise<void> {
+  const r = await invoke('message:get', { messageId });
+  if (r.ok)
+    update((d) => {
+      delete d.messages.deltaSeq[messageId];
+      const c = d.messages.byChat[r.value.chatId];
+      if (c?.byId[messageId] && !c.byId[messageId]!.pending) c.byId[messageId] = r.value;
+      else upsertMessageReducer(d.messages, r.value);
+    });
+}
+
+// ---------------------------------------------------------------- actions on bubbles
+
+/** 04 §8: one reaction per person; the same emoji again removes it, another one replaces it. */
+export function reactionChange(current: string | undefined, emoji: string): { remove?: string; add?: string } {
+  if (current === emoji) return { remove: emoji };
+  return current ? { remove: current, add: emoji } : { add: emoji };
+}
+
+export async function react(chatId: string, messageId: string, emoji: string): Promise<void> {
+  const m = useStore.getState().messages.byChat[chatId]?.byId[messageId];
+  if (!m) return;
+  const mine = m.reactions.find((r) => r.by === 'me')?.emoji;
+  const change = reactionChange(mine, emoji);
+  const before = m.reactions;
+  update((d) => {
+    const x = d.messages.byChat[chatId]?.byId[messageId];
+    if (!x) return;
+    x.reactions = x.reactions.filter((r) => r.by !== 'me');
+    if (change.add) x.reactions.push({ emoji: change.add, by: 'me' });
+  });
+  try {
+    if (change.remove) {
+      const r = await invoke('message:react', { messageId, emoji: change.remove, on: false });
+      if (!r.ok) throw new Error(r.error.kind);
+    }
+    if (change.add) {
+      const r = await invoke('message:react', { messageId, emoji: change.add, on: true });
+      if (!r.ok) throw new Error(r.error.kind);
+    }
+  } catch {
+    update((d) => {
+      const x = d.messages.byChat[chatId]?.byId[messageId];
+      if (x) x.reactions = before;
+    });
+  }
+}
+
+/** 04 §6.3 / §1.9 after C-24 / C-25: the rows become the deleted state (main sends the upserts). */
+export async function deleteMessages(messageIds: string[]): Promise<boolean> {
+  if (!messageIds.length) return true;
+  const r = await invoke('message:delete', { messageIds, confirm: true });
+  return r.ok;
+}
+
+/** 04 §6.2 save of an edit (the composer's edit strip calls this). */
+export async function editMessage(messageId: string, text: string): Promise<boolean> {
+  const r = await invoke('message:edit', { messageId, text });
+  if (r.ok) update((d) => upsertMessageReducer(d.messages, r.value));
+  return r.ok;
+}
+
+/** 04 §7 "Try again" on a Not sent bubble; 04 §19.4 "Try again" on a cut-off reply. */
+export async function retryMessage(messageId: string): Promise<boolean> {
+  const r = await invoke('message:retry', { messageId });
+  if (r.ok) update((d) => upsertMessageReducer(d.messages, r.value));
+  return r.ok;
+}
+
+/** 04 §9.1 "Keep this voice note" / "Don't keep". */
+export async function keepVoice(chatId: string, messageId: string, on: boolean): Promise<void> {
+  const r = await invoke('message:pin', { messageId, on });
+  if (r.ok)
+    update((d) => {
+      const m = d.messages.byChat[chatId]?.byId[messageId];
+      if (m) m.pinned = on;
+    });
+}
+
+export function expand(messageId: string, part: string): void {
+  update((d) => {
+    d.messages.expanded[`${messageId}:${part}`] = true;
+  });
+}
+export function toggleExpand(messageId: string, part: string): void {
+  update((d) => {
+    const k = `${messageId}:${part}`;
+    if (d.messages.expanded[k]) delete d.messages.expanded[k];
+    else d.messages.expanded[k] = true;
+  });
+}
+
+export function setFeedback(messageId: string, value: 'good' | 'bad' | null): void {
+  update((d) => {
+    if (value) d.messages.feedback[messageId] = value;
+    else delete d.messages.feedback[messageId];
+  });
+}
+
+export function setHighlight(messageId: string | null): void {
+  update((d) => {
+    d.messages.highlightId = messageId;
+  });
+}
+
 const NO_IDS: string[] = [];
 export const selectMessageIds = (chatId: string) => (s: RootState) => s.messages.byChat[chatId]?.ids ?? NO_IDS;
 export const selectMessage = (chatId: string, id: string) => (s: RootState) => s.messages.byChat[chatId]?.byId[id];
 export const selectChatMessages = (chatId: string) => (s: RootState) => s.messages.byChat[chatId];
+export const selectExpanded = (messageId: string, part: string) => (s: RootState) => !!s.messages.expanded[`${messageId}:${part}`];
+export const selectFeedback = (messageId: string) => (s: RootState) => s.messages.feedback[messageId];

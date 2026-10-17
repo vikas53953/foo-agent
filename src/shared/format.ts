@@ -159,3 +159,12 @@ export function monthKey(epochMs: number, timeZone: string): string {
   const p = partsIn(epochMs, timeZone);
   return `${p.y}-${String(p.mo + 1).padStart(2, '0')}`;
 }
+
+/** F19.5 file size: "640 KB", "2.4 MB" (1 decimal from MB up). */
+export function formatBytes(bytes: number): string {
+  const kb = bytes / 1024;
+  if (kb < 1024) return `${Math.max(1, Math.round(kb))} KB`;
+  const mb = kb / 1024;
+  if (mb < 1024) return `${mb.toFixed(1)} MB`;
+  return `${(mb / 1024).toFixed(1)} GB`;
+}

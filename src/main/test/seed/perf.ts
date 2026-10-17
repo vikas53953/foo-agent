@@ -1,9 +1,12 @@
 // Spec: 08-3 §22.9 `perf` (200 chats: 1 foo, 7 helpers, 4 groups, 8 wa_mirror, 180 archived helper chats; 50,000 messages
 // over the last 365 days, one chat with 5,000; message mix; 2,000 jobs with 4–9 steps; "taj" in exactly 12 messages),
-// 10-acceptance-2 §E.1 (the PERF data set). Generated from PRNG seed 1 relative to the pinned clock.
+// 10-acceptance-2 §E.1 (the PERF data set), PERF-04 (the 5,000-message chat mixes bubbles, cards and images: M2 builder A
+// adds rich answers, reactions, image attachments and the table / file / link preview / place cards to foo's chat from a
+// second PRNG, so the rest of the set is unchanged). Generated from PRNG seed 1 relative to the pinned clock.
 import type { Db } from '../../store/db';
 import type { CardType } from '../../../shared/types';
-import { DAY, MIN, SeedWriter } from './writer';
+import type { SeedMedia } from './media';
+import { DAY, MIN, prng, SeedWriter } from './writer';
 import type { SeedResult } from './uxWorld';
 
 export const PERF_MESSAGES = 50_000;
@@ -30,6 +33,77 @@ const CARD_MIX: [CardType, string, number][] = [
   ['checklist', 'done', 0.15],
 ];
 
+/** PERF-04: the images foo's chat shows (a few files, shared by many bubbles). */
+const PERF_PHOTOS = 6;
+const photoPath = (k: number) => `data/inbox/perf-photo-${k}.svg`;
+
+const RICH = [
+  '### Your week\n\n- Mon: dentist at 10:30 AM\n- Wed: Airtel bill ₹1,179\n- Sat: Riya’s birthday dinner',
+  '| Item | Price |\n|---|---:|\n| Cake | ₹1,450 |\n| Flowers | ₹600 |\n| Card | ₹150 |',
+  'Here’s the plan:\n\n```text\nLeave 7:15 AM\nPick up Riya 7:40 AM\nReach 9:00 AM\n```',
+  '**Done.** The cab comes at *8:15 AM*. [Uber](cite+https://www.uber.com/in/) [Ola](cite+https://www.olacabs.com/)',
+];
+
+/** A card of an M2 type (05-3 §5.22–§5.24) for foo's chat. */
+function m2Card(x: () => number, at: number, n: number): { type: CardType; state: string; payload: Record<string, unknown> } {
+  const r = x();
+  if (r < 0.3)
+    return {
+      type: 'table',
+      state: 'shown',
+      payload: {
+        title: 'Flights compared',
+        columns: [
+          { key: 'a', label: 'Airline', align: 'left', unit: 'text' },
+          { key: 't', label: 'Leaves', align: 'left', unit: 'text' },
+          { key: 'p', label: 'Price', align: 'right', unit: 'inr' },
+        ],
+        rows: Array.from({ length: 3 + (n % 4) }, (_, i) => ({
+          a: ['IndiGo', 'Air India', 'Akasa Air'][i % 3]!,
+          t: `${6 + i}:10 AM`,
+          p: 480_000 + i * 21_000,
+        })),
+        bestRowIndex: 0,
+      },
+    };
+  if (r < 0.55)
+    return {
+      type: 'file',
+      state: 'shown',
+      payload: {
+        fileId: `fl_perf${n}`,
+        name: `Invoice ${n}.pdf`,
+        mime: 'application/pdf',
+        bytes: 40_000 + n,
+        path: `data/out/Invoice ${n}.pdf`,
+        madeBy: 'foo',
+        kind: 'made',
+      },
+    };
+  if (r < 0.8)
+    return {
+      type: 'link_preview',
+      state: 'shown',
+      payload: {
+        url: 'https://www.example.com/article',
+        domain: 'example.com',
+        title: 'An article worth reading',
+        description: 'A short summary of the page.',
+        fetchedAt: at,
+      },
+    };
+  return {
+    type: 'place',
+    state: 'shown',
+    payload: {
+      name: 'Café Mondegar',
+      address: 'Colaba Causeway, Mumbai 400001',
+      hoursLine: 'Open till 11:30 PM',
+      mapsUrl: 'https://maps.google.com/?q=Cafe+Mondegar',
+    },
+  };
+}
+
 /** Log-normal length, median 60 characters, max 1,400. */
 function textOf(w: SeedWriter): string {
   const r = w.rand();
@@ -47,6 +121,13 @@ export function seedPerf(db: Db, now: number): SeedResult {
   const w = new SeedWriter(db, 1);
   w.wipe();
   const refs: Record<string, string> = {};
+  const extra = prng(4); // PERF-04 choices for foo's chat only, so seed 1's sequence (and the rest of the set) is unchanged
+  const media: SeedMedia[] = Array.from({ length: PERF_PHOTOS }, (_, k) => ({
+    path: photoPath(k),
+    kind: 'image' as const,
+    label: `Photo ${k + 1}`,
+    hue: k * 60,
+  }));
   const start = now - 365 * DAY;
   // messages.card_id has no index in the 08-1 §4.3 DDL, so with foreign keys on every card insert scans all messages for its
   // deferred child row (O(n²) at 50,000 messages). The seed writes with the checks off and runs foreign_key_check after.
@@ -141,11 +222,15 @@ export function seedPerf(db: Db, now: number): SeedResult {
             text = `the Taj booking ${text}`.slice(0, 1400);
             taj++;
           }
-          w.message(chat.id, user ? { author: 'user', text, at, badge: 'done' } : { ...reply, text, at });
+          if (chat.kind === 'foo' && !user && !forceTaj && extra() < 0.12) text = RICH[Math.floor(extra() * RICH.length)]!;
+          const id = w.message(chat.id, user ? { author: 'user', text, at, badge: 'done' } : { ...reply, text, at });
+          if (chat.kind === 'foo' && extra() < 0.06) w.reaction(id, user ? 'foo' : 'user', user ? '👍' : '❤️', at + 2_000);
         } else if (r < 0.88) {
           let x = w.rand();
           const [type, state] = CARD_MIX.find(([, , p]) => (x -= p) < 0) ?? CARD_MIX[0]!;
-          w.card(chat.id, { ...reply, type, state, at, payload: { title: `${w.pick(WORDS)} ${type}` } });
+          const title = `${w.pick(WORDS)} ${type}`;
+          if (chat.kind === 'foo' && extra() < 0.6) w.card(chat.id, { ...reply, ...m2Card(extra, at, total), at });
+          else w.card(chat.id, { ...reply, type, state, at, payload: { title } });
         } else if (r < 0.93) {
           w.message(
             chat.id,
@@ -153,7 +238,19 @@ export function seedPerf(db: Db, now: number): SeedResult {
           );
         } else if (r < 0.97) {
           const att = [{ id: `fl_${total}`, name: 'receipt.pdf', mime: 'application/pdf', bytes: 48_213, path: 'files/receipt.pdf' }];
-          w.message(chat.id, { author: 'user', text: 'here you go', attachments: att, at, badge: 'done' });
+          if (chat.kind === 'foo' && extra() < 0.7) {
+            const k = Math.floor(extra() * PERF_PHOTOS);
+            const count = 1 + Math.floor(extra() * 3);
+            const imgs = Array.from({ length: count }, (_, j) => ({
+              id: `fl_${total}_${j}`,
+              name: `photo-${(k + j) % PERF_PHOTOS}.svg`,
+              mime: 'image/svg+xml',
+              bytes: 2_048,
+              path: photoPath((k + j) % PERF_PHOTOS),
+              kind: 'image' as const,
+            }));
+            w.message(chat.id, { author: 'user', text: count > 1 ? '' : 'look at this', attachments: imgs, at, badge: 'done' });
+          } else w.message(chat.id, { author: 'user', text: 'here you go', attachments: att, at, badge: 'done' });
         } else {
           w.message(chat.id, { author: 'system', kind: 'marker', markerKind: 'system_line', text: 'Messages cleared.', at });
         }
@@ -185,5 +282,5 @@ export function seedPerf(db: Db, now: number): SeedResult {
   if (broken.length) throw new Error(`perf seed broke ${broken.length} foreign keys`);
   const counts = w.finish(now);
   w.check();
-  return { ...counts, refs };
+  return { ...counts, refs, media };
 }

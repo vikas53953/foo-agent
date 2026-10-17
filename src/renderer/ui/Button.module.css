@@ -1,4 +1,4 @@
-/* Spec: 06 §0.4 Button; 03-shell-1 §3.3.1 (banner button), §3.4.2 ("+ New helper"); U-5 hit area 40 around a 32 visual. */
+/* Spec: 06 §0.4 Button (Destructive: --bad / --on-bad, brightness .92 / .85; Secondary: 1px --line-strong); 03-shell-1 §3.3.1 (banner button), §3.4.2 ("+ New helper"); U-5 hit area 40 around a 32 visual. */
 .button {
   position: relative;
   display: inline-flex;
@@ -81,6 +81,23 @@
 }
 .primary:active::before {
   background: var(--accent-pressed);
+}
+.destructive {
+  --btn-fill: var(--bad);
+  --btn-edge: var(--bad);
+  --btn-fg: var(--on-bad);
+}
+/* 06 §0.4 Destructive: hover brightness .92, pressed .85. */
+.destructive:hover::before {
+  background: var(--bad);
+  filter: brightness(0.92);
+}
+.destructive:active::before {
+  background: var(--bad);
+  filter: brightness(0.85);
+}
+.outline.strong {
+  --btn-edge: var(--line-strong);
 }
 .link {
   --btn-fill: transparent;

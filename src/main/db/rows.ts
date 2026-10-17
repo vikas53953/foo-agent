@@ -10,6 +10,8 @@ import type {
   MemoryFactView,
   MessageRow,
   RoutineRow,
+  StepRow,
+  WaMessageRow,
 } from '../../shared/types';
 
 export type DbRow = Record<string, unknown>;
@@ -262,5 +264,36 @@ export function memoryFactView(r: DbRow, labels: { fileLabel: string; originLabe
     lastUsedAt: num(r.last_used_at),
     useCount: Number(r.use_count ?? 0),
     ...labels,
+  };
+}
+
+/** 08-1 §4.3.4 steps row. */
+export function stepRow(r: DbRow): StepRow {
+  return {
+    id: String(r.id),
+    jobId: String(r.job_id),
+    idx: Number(r.idx),
+    phraseKey: String(r.phrase_key),
+    slots: parseJson<Record<string, unknown>>(r.slots, {}),
+    state: r.state as StepRow['state'],
+    attempts: Number(r.attempts),
+    route: (str(r.route) as StepRow['route']) ?? null,
+    rev: Number(r.rev),
+    startedAt: num(r.started_at),
+    finishedAt: num(r.finished_at),
+  };
+}
+
+/** wa_messages row (08-1 §4.3, 08-0 §0 camelCase). */
+export function waMessageRow(r: DbRow): WaMessageRow {
+  return {
+    id: String(r.id),
+    chatJid: String(r.chat_jid),
+    fromMe: flag(r.from_me),
+    senderLabel: str(r.sender_label),
+    text: String(r.text ?? ''),
+    at: Number(r.at),
+    starred: flag(r.starred),
+    mentionsMe: flag(r.mentions_me),
   };
 }

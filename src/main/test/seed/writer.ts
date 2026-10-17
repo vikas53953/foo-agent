@@ -77,7 +77,19 @@ export interface MessageSpec {
   badge?: string | null;
   jobId?: string;
   voiceMs?: number;
-  attachments?: { id: string; name: string; mime: string; bytes: number; path: string }[];
+  attachments?: { id: string; name: string; mime: string; bytes: number; path: string; kind?: 'image' | 'pdf' | 'doc' | 'other' }[];
+  /** M2 (04 §6.4, §10.3, §10.4, §12.5, §19.6): reply quote, voice file and transcript, edit / delete times, language,
+   *  unprompted source and the backup-AI note. */
+  replyToId?: string;
+  /** A path under {DATA}, or a function of the new message id (`data/voice/{messageId}.wav`, 08-1 §4.3). */
+  voicePath?: string | ((messageId: string) => string);
+  transcript?: string;
+  editedAt?: number;
+  deletedAt?: number;
+  lang?: string;
+  prompted?: boolean;
+  why?: Record<string, unknown>;
+  providerNote?: string;
 }
 
 export interface CardSpec {
@@ -102,6 +114,8 @@ export interface JobSpec {
   intent?: 'read_only' | 'do';
   /** The job drives foo's browser (03-shell-2 §3.6.2.2 Watch live). */
   usesBrowser?: boolean;
+  /** When the first step started (defaults to createdAt): 04 §15 "Worked for {n}s" is finished − started. */
+  startedAt?: number;
   steps?: { text: string; state: 'pending' | 'running' | 'done' | 'failed' | 'skipped' | 'waiting_user' }[];
 }
 
@@ -216,15 +230,16 @@ export class SeedWriter {
     this.db
       .prepare(
         `INSERT INTO messages (id, chat_id, seq, author_kind, author_id, kind, marker_kind, text, status, badge, job_id, card_id,
-           voice_ms, attachments, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+           voice_ms, attachments, reply_to_id, voice_path, transcript, edited_at, deleted_at, lang, prompted, why, provider_note,
+           created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .run(
         id,
         chatId,
         this.nextSeq(chatId),
         m.author,
-        m.author === 'helper' ? (m.helperId ?? null) : null,
+        m.author === 'helper' || m.kind === 'marker' ? (m.helperId ?? null) : null,
         kind,
         m.markerKind ?? null,
         m.text ?? '',
@@ -234,12 +249,26 @@ export class SeedWriter {
         cardId,
         m.voiceMs ?? null,
         m.attachments ? JSON.stringify(m.attachments) : null,
+        m.replyToId ?? null,
+        typeof m.voicePath === 'function' ? m.voicePath(id) : (m.voicePath ?? null),
+        m.transcript ?? null,
+        m.editedAt ?? null,
+        m.deletedAt ?? null,
+        m.lang ?? null,
+        m.prompted === false ? 0 : 1,
+        m.why ? JSON.stringify(m.why) : null,
+        m.providerNote ?? null,
         m.at,
       );
     const prev = this.last.get(chatId);
     if (!prev || m.at >= prev.at) this.last.set(chatId, { id, at: m.at });
     this.counts.messages++;
     return id;
+  }
+
+  /** A reaction on a message (`by`: 'user', 'foo' or a helper id; 08-1 §4.3.2 reactions). */
+  reaction(messageId: string, by: string, emoji: string, at: number): void {
+    this.db.prepare('INSERT INTO reactions (message_id, by, emoji, created_at) VALUES (?, ?, ?, ?)').run(messageId, by, emoji, at);
   }
 
   /** A card and the message that carries it (08-1 §4.3.3 insert order: message, then card). */
@@ -283,7 +312,7 @@ export class SeedWriter {
         runningIdx >= 0 ? runningIdx : null,
         j.usesBrowser ? 1 : 0,
         j.createdAt,
-        j.createdAt,
+        j.startedAt ?? j.createdAt,
         j.lastProgressAt ?? j.finishedAt ?? j.createdAt,
         j.finishedAt ?? null,
       );

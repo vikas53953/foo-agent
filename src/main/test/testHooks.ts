@@ -10,6 +10,7 @@ import type { JobState } from '../../shared/types';
 import { deps } from '../deps';
 import { channels, emit, listContext, type AppContext } from '../ipc/IpcRouter';
 import { aiStatus, chatRowById, chatRows, fooChatId, jobRows, publicSettings, recomputePill, spendSummary } from '../store/queries';
+import { writeSeedMedia } from './seed/media';
 import { seedPerf } from './seed/perf';
 import { seedUxWorld, uxWorldSettings } from './seed/uxWorld';
 
@@ -41,6 +42,7 @@ const jobStateArg = z.object({ jobId: z.string().min(1), state: z.enum(JOB_STATE
 export function seeds(ctx: AppContext, clock: FakeClock): Record<SeedSet, () => SeedReply> {
   const demo = (set: SeedSet) => (): SeedReply => {
     const r = seedUxWorld(ctx.db, clock.now());
+    writeSeedMedia(ctx.dataDir, r.media);
     ctx.settings.update((s) => uxWorldSettings(s, r.refs, clock.now()));
     return { set, loaded: true, chats: r.chats, messages: r.messages, refs: r.refs };
   };
@@ -49,6 +51,7 @@ export function seeds(ctx: AppContext, clock: FakeClock): Record<SeedSet, () => 
     'ux-world': demo('ux-world'),
     perf: () => {
       const r = seedPerf(ctx.db, clock.now());
+      writeSeedMedia(ctx.dataDir, r.media);
       ctx.settings.update((s) => uxWorldSettings(s, r.refs, clock.now()));
       return { set: 'perf', loaded: true, chats: r.chats, messages: r.messages, refs: r.refs };
     },
