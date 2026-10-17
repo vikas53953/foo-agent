@@ -1,0 +1,7 @@
+/* Spec: 06 §0 Page frame (fills the main and right shells, `--bg-app`). */
+.page {
+  flex: 1;
+  min-height: 0;
+  background: var(--bg-app);
+  outline: none;
+}

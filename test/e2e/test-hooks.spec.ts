@@ -16,7 +16,7 @@ test('test hooks: clock, seed, online, theme, reset (08-3 §22)', async () => {
   expect((await page.evaluate(() => window.__fooTest!.clock.set('2026-10-15T19:00:00+05:30'))).iso).toBe('2026-10-15T13:30:00.000Z');
 
   for (const set of ['demo', 'perf', 'ux-world'] as const) {
-    expect(await page.evaluate((s) => window.__fooTest!.seed(s), set)).toMatchObject({ set, loaded: false });
+    expect(await page.evaluate((s) => window.__fooTest!.seed(s), set)).toMatchObject({ set, loaded: true });
   }
   await expect(page.evaluate(() => window.__fooTest!.seed('nope' as 'demo'))).rejects.toThrow();
 

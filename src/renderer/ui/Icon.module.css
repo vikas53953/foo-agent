@@ -1,0 +1,11 @@
+/* Spec: 02 F6 (icons take the text colour of their control; never shrink in a flex row). */
+.icon {
+  display: block;
+  flex: none;
+  fill: currentColor;
+}
+@media (forced-colors: active) {
+  .icon {
+    forced-color-adjust: auto;
+  }
+}

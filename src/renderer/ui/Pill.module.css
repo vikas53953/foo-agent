@@ -1,0 +1,34 @@
+/* Spec: 03-shell-1 §3.4.5 status pill colours and size. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  padding: var(--s-1) var(--s1);
+  border-radius: var(--r-full);
+  font: var(--t-caption-strong);
+  letter-spacing: var(--t-caption-strong-tracking);
+  white-space: nowrap;
+}
+.needs_you {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+.paused {
+  background: var(--bg-sunken);
+  color: var(--fg-2);
+}
+.working {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.done {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+@media (forced-colors: active) {
+  .pill {
+    border: 1px solid CanvasText;
+    background: Canvas;
+    color: CanvasText;
+  }
+}

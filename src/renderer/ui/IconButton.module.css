@@ -1,0 +1,59 @@
+/* Spec: 02 F5 `--icon-btn` 36 round visual inside a 40 hit box (U-5); the box overlaps its neighbours by 2 each side so
+   layout spacing is measured on the 36 visual. Colour: icon `--fg-2`, hover `--fg-1` + `--bg-hover` (02 F6, F8). */
+.tipAnchor {
+  margin: calc((var(--icon-btn) - var(--s7)) / 2);
+}
+.button {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--s7);
+  height: var(--s7);
+  margin: calc((var(--icon-btn) - var(--s7)) / 2);
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-full);
+  background: transparent;
+  color: var(--fg-2);
+  cursor: default;
+  isolation: isolate;
+  -webkit-app-region: no-drag;
+}
+.tipAnchor .button {
+  margin: 0;
+}
+.button::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: calc((var(--s7) - var(--icon-btn)) / 2);
+  border-radius: var(--r-full);
+  transition: background-color var(--m-fast) var(--ease-standard);
+}
+.button:hover {
+  color: var(--fg-1);
+}
+.button:hover::before {
+  background: var(--bg-hover);
+}
+.button:active::before {
+  background: var(--bg-pressed);
+}
+.button[aria-pressed='true'] {
+  color: var(--accent);
+}
+.button[aria-disabled='true'] {
+  color: var(--fg-disabled);
+}
+.button[aria-disabled='true']::before {
+  background: transparent;
+}
+@media (forced-colors: active) {
+  .button {
+    color: ButtonText;
+  }
+  .button[aria-disabled='true'] {
+    color: GrayText;
+  }
+}

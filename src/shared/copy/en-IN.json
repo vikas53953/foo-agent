@@ -1,3 +1,5 @@
 {
-  "app.window.title": "foo"
+  "app.window.title": "foo",
+  "sidebar.landmark.label": "Chats",
+  "chatlist.row.preview.draft": "Draft:"
 }

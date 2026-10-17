@@ -62,19 +62,26 @@ export function parseInr(input: string): number | null {
 
 type Parts = { y: number; mo: number; d: number; wd: number; h: number; mi: number; s: number };
 
+const formatters = new Map<string, Intl.DateTimeFormat>();
+
 function partsIn(epochMs: number, timeZone: string): Parts {
-  const f = new Intl.DateTimeFormat('en-US', {
-    timeZone,
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
-    hourCycle: 'h23',
-    weekday: 'short',
-  });
-  const get = (t: string) => f.formatToParts(new Date(epochMs)).find((p) => p.type === t)!.value;
+  let f = formatters.get(timeZone);
+  if (!f) {
+    f = new Intl.DateTimeFormat('en-US', {
+      timeZone,
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hourCycle: 'h23',
+      weekday: 'short',
+    });
+    formatters.set(timeZone, f);
+  }
+  const parts = f.formatToParts(new Date(epochMs));
+  const get = (t: string) => parts.find((p) => p.type === t)!.value;
   return {
     y: +get('year'),
     mo: +get('month') - 1,
@@ -113,4 +120,42 @@ export function formatDate(epochMs: number, form: DateForm, opts: TimeOptions & 
   if (form === 'date') return otherYear ? `${day} ${p.y}` : day;
   if (form === 'full_seconds') return `${day} ${p.y}, ${formatTime(epochMs, opts, true)}`;
   return `${otherYear ? `${day} ${p.y}` : day}, ${formatTime(epochMs, opts)}`;
+}
+
+const DAY_MS = 86_400_000;
+
+/** Calendar-day number of an instant in a zone (days since the epoch, local midnight to midnight). */
+function dayNumber(epochMs: number, timeZone: string): number {
+  const p = partsIn(epochMs, timeZone);
+  return Math.round(Date.UTC(p.y, p.mo, p.d) / DAY_MS);
+}
+
+/**
+ * 03-shell-1 §3.4.5 row time: today "9:41 AM"; 1–6 days ago the weekday "Thu"; older this year "12 Dec"; other year
+ * "12 Dec 2025". Never "Yesterday" (Article 21). Narrator gets `formatDate(…, 'full')` instead.
+ */
+export function formatRowTime(epochMs: number, opts: TimeOptions & { now: number }): string {
+  const days = dayNumber(opts.now, opts.timeZone) - dayNumber(epochMs, opts.timeZone);
+  if (days <= 0) return formatTime(epochMs, opts);
+  const p = partsIn(epochMs, opts.timeZone);
+  if (days <= 6) return WEEKDAYS[p.wd]!;
+  const sameYear = partsIn(opts.now, opts.timeZone).y === p.y;
+  return sameYear ? `${p.d} ${MONTHS[p.mo]}` : `${p.d} ${MONTHS[p.mo]} ${p.y}`;
+}
+
+/** Weekday of an instant ("Thu"), for the folded row's "Done {Thu}" (03-shell-1 §3.4.7). */
+export function formatWeekday(epochMs: number, timeZone: string): string {
+  return WEEKDAYS[partsIn(epochMs, timeZone).wd]!;
+}
+
+/** Voice length "m:ss" (03-shell-1 §3.4.6 "Voice message ({m:ss})"). */
+export function formatDuration(ms: number): string {
+  const total = Math.max(0, Math.round(ms / 1000));
+  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
+}
+
+/** "YYYY-MM" of an instant in a zone (08-5 §3.2 `SpendSummary.month`). */
+export function monthKey(epochMs: number, timeZone: string): string {
+  const p = partsIn(epochMs, timeZone);
+  return `${p.y}-${String(p.mo + 1).padStart(2, '0')}`;
 }

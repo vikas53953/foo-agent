@@ -1,0 +1,25 @@
+/* Spec: 02-3 §F27 tooltip: `--bg-raised`, 1px `--line`, `--r-sm`, `--shadow-4`, `--t-caption`, max `--tooltip-max`. */
+.anchor {
+  display: inline-flex;
+  position: relative;
+}
+.tip {
+  position: fixed;
+  z-index: var(--z-tooltip);
+  max-width: var(--tooltip-max);
+  padding: var(--s0) var(--s1);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-4);
+  color: var(--fg-1);
+  font: var(--t-caption);
+  pointer-events: none;
+  white-space: normal;
+}
+@media (forced-colors: active) {
+  .tip {
+    border-color: CanvasText;
+    box-shadow: none;
+  }
+}

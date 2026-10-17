@@ -34,14 +34,18 @@
     "fidelity:report": "tsx scripts/fidelity-report.ts"
   },
   "dependencies": {
+    "@fluentui/react-icons": "2.0.343",
     "better-sqlite3": "13.0.3",
+    "immer": "11.1.21",
     "intl-messageformat": "12.1.3",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "uuid": "14.0.3",
-    "zod": "4.6.7"
+    "zod": "4.6.7",
+    "zustand": "5.0.15"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
     "@electron/rebuild": "4.2.1",
     "@eslint/js": "10.0.1",
     "@playwright/test": "1.64.1",

@@ -1,0 +1,20 @@
+/* Spec: 03-shell-1 §3.4.7 Loading skeleton. */
+.skeleton {
+  display: block;
+  flex: none;
+  background: var(--bg-sunken);
+}
+.circle {
+  width: var(--avatar-list);
+  height: var(--avatar-list);
+  border-radius: var(--r-full);
+}
+.bar {
+  height: var(--s2);
+  border-radius: var(--r-xs);
+}
+@media (forced-colors: active) {
+  .skeleton {
+    border: 1px solid CanvasText;
+  }
+}
