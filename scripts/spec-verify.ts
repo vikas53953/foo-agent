@@ -30,6 +30,15 @@ export function hashSpec(): Record<string, string> {
   );
 }
 
+/** 11 §11.1.2: SHA-256 of the sorted `path:sha256` lines of the manifest (printed in every fidelity report). */
+export function setSha256(): string {
+  const manifest = JSON.parse(readFileSync(MANIFEST, 'utf8')) as { files: Record<string, string> };
+  const lines = Object.entries(manifest.files)
+    .map(([f, h]) => `${f}:${h}`)
+    .sort();
+  return createHash('sha256').update(lines.join('\n')).digest('hex');
+}
+
 export function verify(): string[] {
   const manifest = JSON.parse(readFileSync(MANIFEST, 'utf8')) as { version: string; files: Record<string, string> };
   const now = hashSpec();

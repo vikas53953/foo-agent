@@ -1,0 +1,72 @@
+# Spec: 11-fidelity §11.2.4 (Tier B baselines), §11.2.7 + FID-06 (golden/app changes only through golden:bless with a CR id
+# or a signed fidelity report id). Manual only: renders the app screenshots on windows-latest and commits golden/app/*.
+name: Golden bless
+
+on:
+  workflow_dispatch:
+    inputs:
+      id:
+        description: 'CR-nnnn, or the id of a signed fidelity report'
+        required: true
+      branch:
+        description: 'Branch to render from and commit golden/app/* to'
+        required: true
+      ids:
+        description: 'Comma-separated UX/BP ids to bless (empty: every golden test)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: golden-bless-${{ inputs.branch }}
+  cancel-in-progress: false
+
+jobs:
+  bless:
+    name: Bless golden/app (windows-latest)
+    runs-on: windows-latest
+    env:
+      BLESS_ID: ${{ inputs.id }}
+      BLESS_BRANCH: ${{ inputs.branch }}
+      BLESS_IDS: ${{ inputs.ids }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      # Same native-module gotchas as the windows job in ci.yml.
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Download the Electron binary
+        run: node node_modules/electron/install.js
+      - name: Build better-sqlite3 for Node
+        run: pnpm rebuild:node
+      - run: pnpm build
+      - name: Rebuild native modules for Electron
+        run: pnpm rebuild:electron
+      - name: Bless
+        shell: bash
+        run: |
+          case "$BLESS_ID" in
+            CR-*) flag=--cr ;;
+            *) flag=--report ;;
+          esac
+          if [ -n "$BLESS_IDS" ]; then pnpm golden:bless "$flag" "$BLESS_ID" --ids "$BLESS_IDS"; else pnpm golden:bless "$flag" "$BLESS_ID"; fi
+      - name: Commit golden/app
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add golden/app
+          if git diff --cached --quiet; then echo "Nothing to commit"; exit 0; fi
+          case "$BLESS_ID" in
+            CR-*) trailer="Fidelity-CR: $BLESS_ID" ;;
+            *) trailer="Fidelity-Report: $BLESS_ID" ;;
+          esac
+          git commit -m "Bless golden/app baselines ($BLESS_ID)" -m "$trailer"
+          git push origin "HEAD:refs/heads/$BLESS_BRANCH"

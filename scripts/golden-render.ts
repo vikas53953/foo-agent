@@ -30,6 +30,10 @@ export interface RefJson {
   hlTexts: string[];
   /** hl element box in frame pixels (R2 / R4). */
   hl: { id: string; box: Box | null } | null;
+  /** R2/R3 anchors by name, in the captured image's pixels (the app capture uses the same names). */
+  anchors: Record<string, Box>;
+  /** §11.2.5 masks in the captured image's pixels, applied to both sides before R4/R5. */
+  masks: (Box & { reason: string })[];
   capture: 'window' | 'native' | 'mixed' | null;
   milestone: string | null;
   spec?: string;
@@ -44,6 +48,9 @@ export interface RefJson {
 }
 
 const sha = (b: Buffer) => createHash('sha256').update(b).digest('hex');
+
+/** 03-shell-1 §3.2: Windows draws min/max/close in the top-right 138px (reserved fallback 144) of the 32px title bar. */
+export const captionMask = (width: number) => ({ x: width - 144, y: 0, width: 144, height: 32, reason: 'caption-buttons' });
 
 export function select(manifest: GoldenManifest, opts: { ids?: string[]; milestone?: string; family?: string }) {
   const want = (id: string, milestone: string | null) =>
@@ -63,6 +70,8 @@ async function renderUx(page: Page, e: UxEntry, out: string, browser: RefBrowser
     texts: [],
     hlTexts: [],
     hl: e.hl ? { id: e.hl, box: null } : null,
+    anchors: {},
+    masks: [captionMask(1280)],
     capture: null,
     milestone: e.milestone,
     engine: browser.engine,
@@ -91,6 +100,7 @@ async function renderUx(page: Page, e: UxEntry, out: string, browser: RefBrowser
       json.texts = await textNodes(page, '#frame');
       if (e.hl) {
         json.hl = { id: e.hl, box: await boxIn(page, '#frame', `[data-hl="${e.hl}"]`) };
+        if (json.hl.box) json.anchors.hl = json.hl.box;
         json.hlTexts = await textNodes(page, `#frame .hl`);
       }
       const d = (state as { d?: { time?: string } }).d;
@@ -124,6 +134,8 @@ async function renderBp(page: Page, e: BpEntry, out: string, browser: RefBrowser
     texts: [],
     hlTexts: [],
     hl: null,
+    anchors: {},
+    masks: [],
     capture: 'window',
     milestone: e.milestone,
     spec: e.spec,
@@ -135,6 +147,10 @@ async function renderBp(page: Page, e: BpEntry, out: string, browser: RefBrowser
   if ((await el.count()) === 0) throw new Error(`${e.id}: selector ${e.selector} matches nothing in ${BP_FILE}`);
   json.box = await boxIn(page, 'body', e.selector);
   json.texts = await textNodes(page, e.selector);
+  if (json.box) {
+    json.anchors[e.id] = { x: 0, y: 0, width: json.box.width, height: json.box.height };
+    if (e.masks?.includes('caption-buttons')) json.masks.push(captionMask(Math.round(json.box.width)));
+  }
   if (!e.drawn) return json; // diagram only: no pixels (manifest note)
   for (const theme of THEMES) {
     await setTheme(page, theme);

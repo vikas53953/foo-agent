@@ -56,6 +56,9 @@
       },
       "spec": "03-shell-1 §3.1.3; 03-shell-2 §3.10.1",
       "milestone": "M1",
+      "masks": [
+        "caption-buttons"
+      ],
       "note": "The whole window at the default size (L, three columns)."
     },
     {
@@ -103,7 +106,10 @@
         "height": 32
       },
       "spec": "03-shell-1 §3.2",
-      "milestone": "M1"
+      "milestone": "M1",
+      "masks": [
+        "caption-buttons"
+      ]
     },
     {
       "id": "BP-ANAT-LHEAD",

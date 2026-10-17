@@ -22,6 +22,8 @@ export interface BpEntry {
   size: { width: number | null; height: number | null };
   spec: string;
   milestone: string;
+  /** §11.2.5 masks by name (caption-buttons: the native min/max/close area, 03-shell-1 §3.2 reserved width 144 × 32). */
+  masks?: 'caption-buttons'[];
   note?: string;
 }
 
@@ -64,6 +66,7 @@ export const BP: BpEntry[] = [
     size: { width: 1280, height: 800 },
     spec: '03-shell-1 §3.1.3; 03-shell-2 §3.10.1',
     milestone: 'M1',
+    masks: ['caption-buttons'],
     note: 'The whole window at the default size (L, three columns).',
   },
   {
@@ -93,7 +96,15 @@ export const BP: BpEntry[] = [
     milestone: 'M1',
     note: 'Diagram only (F11 tile): R1/R2 against the §3.10.4 wireframe, no pixel compare.',
   },
-  { id: 'BP-ANAT-TBAR', selector: '#win .tbar', drawn: true, size: { width: null, height: 32 }, spec: '03-shell-1 §3.2', milestone: 'M1' },
+  {
+    id: 'BP-ANAT-TBAR',
+    selector: '#win .tbar',
+    drawn: true,
+    size: { width: null, height: 32 },
+    spec: '03-shell-1 §3.2',
+    milestone: 'M1',
+    masks: ['caption-buttons'],
+  },
   {
     id: 'BP-ANAT-LHEAD',
     selector: '#win .lhead',

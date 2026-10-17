@@ -26,7 +26,9 @@
     "rebuild:node": "node-gyp rebuild --release --directory=node_modules/better-sqlite3",
     "package:dir": "electron-builder --win --dir",
     "golden:manifest": "tsx scripts/golden-manifest.ts",
-    "golden:render": "tsx scripts/golden-render.ts"
+    "golden:render": "tsx scripts/golden-render.ts",
+    "golden:bless": "tsx scripts/golden-bless.ts",
+    "tier-r": "tsx scripts/tier-r.ts"
   },
   "dependencies": {
     "better-sqlite3": "13.0.3",
