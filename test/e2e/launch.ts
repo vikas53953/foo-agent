@@ -12,5 +12,6 @@ export function testDirs() {
 export async function launch(dirs = testDirs(), extraArgs: string[] = []): Promise<ElectronApplication> {
   const args = ['.', ...extraArgs];
   if (process.platform === 'linux') args.push('--no-sandbox');
-  return electron.launch({ args, env: { ...process.env, FOO_TEST: '1', ...dirs } as Record<string, string> });
+  // colorScheme: null stops Playwright's default 'light' emulation, so prefers-color-scheme follows nativeTheme as in the real app.
+  return electron.launch({ args, colorScheme: null, env: { ...process.env, FOO_TEST: '1', ...dirs } as Record<string, string> });
 }
