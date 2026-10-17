@@ -12,16 +12,9 @@
     "verdict": "fail",
     "frame": {
       "missing": [
-        "Â·",
-        "â‚¹212",
-        "â‚¹1,000",
-        "âš™"
+        "⚙"
       ],
-      "extra": [
-        "·",
-        "₹212",
-        "₹1,000"
-      ]
+      "extra": []
     },
     "hl": {
       "missing": [],
@@ -71,8 +64,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.06637168141592921,
-    "diffPixels": 1440,
+    "ratio": 0.074898598820059,
+    "diffPixels": 1625,
     "total": 21696,
     "sizeMismatch": null,
     "heatmap": "BP-ANAT-LFOOT.dark.diff.png"

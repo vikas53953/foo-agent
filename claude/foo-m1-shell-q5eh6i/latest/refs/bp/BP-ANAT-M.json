@@ -3,15 +3,15 @@
   "family": "bp",
   "selector": "#system .bp > div:nth-child(3)",
   "box": {
-    "x": 312.515625,
-    "y": 5669.4375,
-    "width": 73.6875,
+    "x": 314.078125,
+    "y": 5594.84375,
+    "width": 71.40625,
     "height": 81.390625
   },
   "files": {},
   "texts": [
     "M",
-    "1008â€“1280",
+    "1008–1280",
     "right overlays"
   ],
   "hlTexts": [],
@@ -20,7 +20,7 @@
     "BP-ANAT-M": {
       "x": 0,
       "y": 0,
-      "width": 73.6875,
+      "width": 71.40625,
       "height": 81.390625
     }
   },

@@ -11,11 +11,11 @@
   "files": {
     "light": {
       "png": "BP-ANAT-LIST.light.png",
-      "sha256": "f61afada5d2cd772cd18e26561871d3482d7c608b80bfd6a005287a82c8f3b89"
+      "sha256": "b41b7b822954c34b436f46784985d9954430112a04fc1362fa7c4519cab82707"
     },
     "dark": {
       "png": "BP-ANAT-LIST.dark.png",
-      "sha256": "05cb9e87f59a9e4ede459ee565e5856f7216cc39acc70fc99da559546f71f84a"
+      "sha256": "81e056c6fb6069539df101fc3b5fafc447b93bd0c6961be3dde8c01bea498e24"
     }
   },
   "texts": [
@@ -27,12 +27,12 @@
     "T",
     "Trips",
     "9:38 AM",
-    "typingâ€¦",
+    "typing…",
     "Working",
     "M",
     "Money",
     "8:02 AM",
-    "Airtel bill â‚¹1,179 is due Fri 23 Oct",
+    "Airtel bill ₹1,179 is due Fri 23 Oct",
     "2",
     "H",
     "Home",
@@ -42,7 +42,7 @@
     "F",
     "Family group",
     "Thu",
-    "foo: Mom's cake is ordered ðŸŽ‚",
+    "foo: Mom's cake is ordered 🎂",
     "N",
     "News & X",
     "Mon",

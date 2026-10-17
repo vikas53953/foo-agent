@@ -12,7 +12,7 @@
     "verdict": "fail",
     "frame": {
       "missing": [
-        "âŒ•",
+        "⌕",
         "Search",
         "chats"
       ],
@@ -66,8 +66,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.02949692363373145,
-    "diffPixels": 326,
+    "ratio": 0.028682591386174447,
+    "diffPixels": 317,
     "total": 11052,
     "sizeMismatch": null,
     "heatmap": "BP-ANAT-SEARCH.dark.diff.png"

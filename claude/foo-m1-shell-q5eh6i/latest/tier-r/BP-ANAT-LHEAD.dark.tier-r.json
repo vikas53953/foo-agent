@@ -12,8 +12,8 @@
     "verdict": "fail",
     "frame": {
       "missing": [
-        "ï¼‹",
-        "â‹¯"
+        "＋",
+        "⋯"
       ],
       "extra": []
     },
@@ -65,8 +65,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.026007866273352997,
-    "diffPixels": 529,
+    "ratio": 0.023008849557522124,
+    "diffPixels": 468,
     "total": 20340,
     "sizeMismatch": null,
     "heatmap": "BP-ANAT-LHEAD.dark.diff.png"

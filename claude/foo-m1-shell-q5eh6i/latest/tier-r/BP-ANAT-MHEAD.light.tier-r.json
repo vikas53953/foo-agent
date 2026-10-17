@@ -12,10 +12,10 @@
     "verdict": "fail",
     "frame": {
       "missing": [
-        "â–£",
-        "âŒ•",
-        "â–¯",
-        "â‹¯"
+        "▣",
+        "⌕",
+        "▯",
+        "⋯"
       ],
       "extra": []
     },
@@ -67,8 +67,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.03642697881828317,
-    "diffPixels": 1307,
+    "ratio": 0.0346711259754738,
+    "diffPixels": 1244,
     "total": 35880,
     "sizeMismatch": {
       "a": [

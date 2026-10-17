@@ -11,17 +11,17 @@
   "files": {
     "light": {
       "png": "BP-ANAT-TBAR.light.png",
-      "sha256": "1ca13f384d0188459916a6f24b86b0ad648ad68b7e822875f74b9e22de4cfa02"
+      "sha256": "b6c8cb439cdbf1472641e4e4353b75c5a6ec7d49873a02f3fe7eff884b2d3c45"
     },
     "dark": {
       "png": "BP-ANAT-TBAR.dark.png",
-      "sha256": "8577f669eb4de378477766fd62680eccc689bc1e0adf243d62eb05e1b64f71ed"
+      "sha256": "bf68a27ca5adaa593ba2f9f59f86bdd294444c39f6022357c049860f1dd307c7"
     }
   },
   "texts": [
-    "â€”",
-    "â˜",
-    "âœ•"
+    "—",
+    "☐",
+    "✕"
   ],
   "hlTexts": [],
   "hl": null,

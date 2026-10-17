@@ -11,19 +11,19 @@
   "files": {
     "light": {
       "png": "BP-ANAT-KNOW.light.png",
-      "sha256": "ecca5c58883189bc1eed5063c3cbd1d5fd742676c50449d6cd5306f03bbbf06e"
+      "sha256": "e0ed77dc9e85eea3cf9fd28b18434b4f72e38775da79889dfc3c51c4cc1bb1d6"
     },
     "dark": {
       "png": "BP-ANAT-KNOW.dark.png",
-      "sha256": "3b66d1b8b0ac6dd506175cc574d34b34b3606002f3a0dd291b2b7824da15c717"
+      "sha256": "881311defaf923047aaf2e683c54b6d9cf605150c98a1155a122c49bcdec0129"
     }
   },
   "texts": [
     "What I know about you",
     "Likes beach stays, hates early flights",
-    "You said Â· Sat 3 Oct Â· Edit",
-    "Budget trips under â‚¹40,000",
-    "I guessed Â· from 2 trips Â· Edit",
+    "You said · Sat 3 Oct · Edit",
+    "Budget trips under ₹40,000",
+    "I guessed · from 2 trips · Edit",
     "See all (24)"
   ],
   "hlTexts": [],

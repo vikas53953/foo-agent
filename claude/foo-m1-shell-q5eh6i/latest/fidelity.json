@@ -1,19 +1,19 @@
 {
-  "reportId": "M1-9123e1a-39060652457",
+  "reportId": "M1-84cba4f-39061379109",
   "milestone": "M1",
-  "generatedAt": "2026-10-17T19:08:51.523Z",
-  "commit": "d6b513edb48d74c2fe3a17790e3c02eb3d416545",
-  "head": "9123e1a5d89ae5775b337800e85abe2a6a4ce4da",
+  "generatedAt": "2026-10-17T19:16:41.716Z",
+  "commit": "1326eb1706cd60495a9ea1760d001a3783e962f9",
+  "head": "84cba4fb4625505f35323047c370f39a6ef76a6c",
   "ci": {
-    "runId": "39060652457",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39060652457"
+    "runId": "39061379109",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39061379109"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "c40a35f3b44a250077cd2359dc2b1357eadbfa95fbfbe2c411a01ee16138c09d"
   },
   "runner": {
-    "recordedAt": "2026-10-17T19:06:32.348Z",
+    "recordedAt": "2026-10-17T19:14:46.774Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000002792"
+      "runner": "GitHub Actions 1000002796"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,8 +59,7 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "FID-03: 28 reference PNG(s) not byte-identical",
-    "6 audit item(s) not DONE (the milestone is not complete)"
+    "5 audit item(s) not DONE (the milestone is not complete)"
   ],
   "missingInputs": [],
   "forVikas": {
@@ -99,7 +98,7 @@
       "item": "FID-03 two renders byte-identical",
       "status": "UNVERIFIABLE",
       "evidence": "determinism",
-      "resolved": "NOT DONE"
+      "resolved": "DONE"
     },
     {
       "group": "M0b harness",
@@ -4748,37 +4747,8 @@
     "determinism": {
       "fid": "FID-03",
       "compared": 34,
-      "identical": 6,
-      "differing": [
-        "BP-APP-L.light",
-        "BP-APP-L.dark",
-        "BP-APP-M.light",
-        "BP-APP-M.dark",
-        "BP-APP-R.light",
-        "BP-APP-R.dark",
-        "BP-ANAT-L.light",
-        "BP-ANAT-L.dark",
-        "BP-ANAT-TBAR.light",
-        "BP-ANAT-TBAR.dark",
-        "BP-ANAT-LHEAD.light",
-        "BP-ANAT-LHEAD.dark",
-        "BP-ANAT-SEARCH.light",
-        "BP-ANAT-SEARCH.dark",
-        "BP-ANAT-LIST.light",
-        "BP-ANAT-LIST.dark",
-        "BP-ANAT-LFOOT.light",
-        "BP-ANAT-LFOOT.dark",
-        "BP-ANAT-MHEAD.light",
-        "BP-ANAT-MHEAD.dark",
-        "BP-ANAT-RHEAD.light",
-        "BP-ANAT-RHEAD.dark",
-        "BP-ANAT-DOING.light",
-        "BP-ANAT-DOING.dark",
-        "BP-ANAT-KNOW.light",
-        "BP-ANAT-KNOW.dark",
-        "BP-ANAT-SPENT.light",
-        "BP-ANAT-SPENT.dark"
-      ],
+      "identical": 34,
+      "differing": [],
       "engine": "electron"
     },
     "rows": [
@@ -4816,7 +4786,7 @@
         "r2": "fail (BP-ANAT-DOING 0/24 px)",
         "r3": "pass (BP-ANAT-DOING ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.056280301894336984,
+        "r5": 0.05604288499025341,
         "ref": true,
         "app": true,
         "diff": true
@@ -4829,7 +4799,7 @@
         "r2": "fail (BP-ANAT-DOING 0/24 px)",
         "r3": "pass (BP-ANAT-DOING ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05036987054530914,
+        "r5": 0.05013245364122557,
         "ref": true,
         "app": true,
         "diff": true
@@ -4842,7 +4812,7 @@
         "r2": "fail (BP-ANAT-KNOW 0/70 px)",
         "r3": "pass (BP-ANAT-KNOW ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.06728084868788387,
+        "r5": 0.06590049010484521,
         "ref": true,
         "app": true,
         "diff": true
@@ -4855,7 +4825,7 @@
         "r2": "fail (BP-ANAT-KNOW 0/70 px)",
         "r3": "pass (BP-ANAT-KNOW ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05977417953967368,
+        "r5": 0.05831627272163285,
         "ref": true,
         "app": true,
         "diff": true
@@ -4868,7 +4838,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "review (BP-ANAT-L ΔE 4.78)",
         "r4": "skipped: no hl element",
-        "r5": 0.10403515625,
+        "r5": 0.103416015625,
         "ref": true,
         "app": true,
         "diff": true
@@ -4881,7 +4851,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "pass (BP-ANAT-L ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.0876376953125,
+        "r5": 0.087197265625,
         "ref": true,
         "app": true,
         "diff": true
@@ -4894,7 +4864,7 @@
         "r2": "pass (BP-ANAT-LFOOT 0/0 px)",
         "r3": "pass (BP-ANAT-LFOOT ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.06637168141592921,
+        "r5": 0.074898598820059,
         "ref": true,
         "app": true,
         "diff": true
@@ -4907,7 +4877,7 @@
         "r2": "pass (BP-ANAT-LFOOT 0/0 px)",
         "r3": "pass (BP-ANAT-LFOOT ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.06254609144542773,
+        "r5": 0.07194874631268437,
         "ref": true,
         "app": true,
         "diff": true
@@ -4920,7 +4890,7 @@
         "r2": "pass (BP-ANAT-LHEAD 0/0 px)",
         "r3": "review (BP-ANAT-LHEAD ΔE 2.91)",
         "r4": "skipped: no hl element",
-        "r5": 0.026007866273352997,
+        "r5": 0.023008849557522124,
         "ref": true,
         "app": true,
         "diff": true
@@ -4933,7 +4903,7 @@
         "r2": "pass (BP-ANAT-LHEAD 0/0 px)",
         "r3": "review (BP-ANAT-LHEAD ΔE 2.53)",
         "r4": "skipped: no hl element",
-        "r5": 0.024975417895771877,
+        "r5": 0.022910521140609635,
         "ref": true,
         "app": true,
         "diff": true
@@ -4946,7 +4916,7 @@
         "r2": "fail (BP-ANAT-LIST 0/18 px)",
         "r3": "pass (BP-ANAT-LIST ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.10117461586286526,
+        "r5": 0.10063060662581046,
         "ref": true,
         "app": true,
         "diff": true
@@ -4959,7 +4929,7 @@
         "r2": "fail (BP-ANAT-LIST 0/18 px)",
         "r3": "pass (BP-ANAT-LIST ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.09527378097521982,
+        "r5": 0.09472422062350119,
         "ref": true,
         "app": true,
         "diff": true
@@ -4972,7 +4942,7 @@
         "r2": "pass (BP-ANAT-MHEAD 0/2 px)",
         "r3": "pass (BP-ANAT-MHEAD ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.04088628762541806,
+        "r5": 0.038684503901895206,
         "ref": true,
         "app": true,
         "diff": true
@@ -4985,7 +4955,7 @@
         "r2": "pass (BP-ANAT-MHEAD 0/2 px)",
         "r3": "pass (BP-ANAT-MHEAD ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.03642697881828317,
+        "r5": 0.0346711259754738,
         "ref": true,
         "app": true,
         "diff": true
@@ -4998,7 +4968,7 @@
         "r2": "pass (BP-ANAT-RHEAD 0/0 px)",
         "r3": "pass (BP-ANAT-RHEAD ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.00943952802359882,
+        "r5": 0.006243854473942969,
         "ref": true,
         "app": true,
         "diff": true
@@ -5011,7 +4981,7 @@
         "r2": "pass (BP-ANAT-RHEAD 0/0 px)",
         "r3": "pass (BP-ANAT-RHEAD ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.010029498525073746,
+        "r5": 0.0072271386430678465,
         "ref": true,
         "app": true,
         "diff": true
@@ -5050,7 +5020,7 @@
         "r2": "pass (BP-ANAT-SEARCH 0/0 px)",
         "r3": "pass (BP-ANAT-SEARCH ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.02949692363373145,
+        "r5": 0.028682591386174447,
         "ref": true,
         "app": true,
         "diff": true
@@ -5063,7 +5033,7 @@
         "r2": "pass (BP-ANAT-SEARCH 0/0 px)",
         "r3": "pass (BP-ANAT-SEARCH ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.02985884907709012,
+        "r5": 0.029134998190372782,
         "ref": true,
         "app": true,
         "diff": true
@@ -5072,11 +5042,11 @@
         "id": "BP-ANAT-SPENT",
         "theme": "dark",
         "verdict": "disputed",
-        "r1": "fail",
+        "r1": "pass",
         "r2": "fail (BP-ANAT-SPENT 0/20 px)",
         "r3": "pass (BP-ANAT-SPENT ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.08069085066801962,
+        "r5": 0.07997209538305429,
         "ref": true,
         "app": true,
         "diff": true
@@ -5085,11 +5055,11 @@
         "id": "BP-ANAT-SPENT",
         "theme": "light",
         "verdict": "disputed",
-        "r1": "fail",
+        "r1": "pass",
         "r2": "fail (BP-ANAT-SPENT 0/20 px)",
         "r3": "pass (BP-ANAT-SPENT ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.0765051581261627,
+        "r5": 0.076103500761035,
         "ref": true,
         "app": true,
         "diff": true
@@ -5154,7 +5124,7 @@
         "r2": "fail (BP-APP-L 0/18 px)",
         "r3": "pass (BP-APP-L ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.10495174632352941,
+        "r5": 0.1036688112745098,
         "ref": true,
         "app": true,
         "diff": true
@@ -5167,7 +5137,7 @@
         "r2": "fail (BP-APP-L 0/18 px)",
         "r3": "pass (BP-APP-L ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.09986213235294118,
+        "r5": 0.0987438725490196,
         "ref": true,
         "app": true,
         "diff": true
@@ -5180,7 +5150,7 @@
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "review (BP-APP-M ΔE 4.78)",
         "r4": "skipped: no hl element",
-        "r5": 0.11691314799331104,
+        "r5": 0.11659742544593088,
         "ref": true,
         "app": true,
         "diff": true
@@ -5193,7 +5163,7 @@
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "pass (BP-APP-M ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.09564215788740245,
+        "r5": 0.09553111064659978,
         "ref": true,
         "app": true,
         "diff": true
@@ -5206,7 +5176,7 @@
         "r2": "fail (BP-APP-R 0/18 px)",
         "r3": "review (BP-APP-R ΔE 3.19)",
         "r4": "skipped: no hl element",
-        "r5": 0.09103094362745098,
+        "r5": 0.09024969362745099,
         "ref": true,
         "app": true,
         "diff": true
@@ -5219,7 +5189,7 @@
         "r2": "fail (BP-APP-R 0/18 px)",
         "r3": "review (BP-APP-R ΔE 3.65)",
         "r4": "skipped: no hl element",
-        "r5": 0.06662454044117647,
+        "r5": 0.06593137254901961,
         "ref": true,
         "app": true,
         "diff": true

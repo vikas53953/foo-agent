@@ -11,11 +11,11 @@
   "files": {
     "light": {
       "png": "BP-ANAT-DOING.light.png",
-      "sha256": "8b8dd5c4d47de8d2606603f256b91c86bcdcb145a8764edd79dd955e8c07eb3a"
+      "sha256": "bbaaca68fc1bb4326c8c873284f7858e273625ab9e1f161f48c26cb831e2ab2d"
     },
     "dark": {
       "png": "BP-ANAT-DOING.dark.png",
-      "sha256": "b22ceb1179dd78e2188a90fc2bc27fbb4d357c3d01eb0fca3f4aa61060495f92"
+      "sha256": "d1e67d970c440b1fa2cacad60c13234a676c55a8f260d4dc619da114d13a0d95"
     }
   },
   "texts": [
@@ -23,9 +23,9 @@
     "!",
     "Goa stay",
     "Needs you: Pay Taj Holiday Village",
-    "Trips Â· Flights for 12 Dec",
-    "Step 2 of 4 Â· Comparing fares",
-    "âœ“",
+    "Trips · Flights for 12 Dec",
+    "Step 2 of 4 · Comparing fares",
+    "✓",
     "Mom's cake",
     "Done 7:12 AM",
     "See all (6)"

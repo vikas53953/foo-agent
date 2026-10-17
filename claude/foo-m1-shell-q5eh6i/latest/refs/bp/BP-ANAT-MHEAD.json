@@ -11,21 +11,21 @@
   "files": {
     "light": {
       "png": "BP-ANAT-MHEAD.light.png",
-      "sha256": "d3b58ea75fd8e0c2070e5fa463f4917290d427e5bc70a34c95261cbea753a76d"
+      "sha256": "95c3532bb48d731a32e3f65cfca7cf41d5b2c887138f1c9c631c8f326daa14aa"
     },
     "dark": {
       "png": "BP-ANAT-MHEAD.dark.png",
-      "sha256": "074b1a2d98fb8ec58ff1375c0b3b63353b7ff840389f7ab61d08babf69a050a2"
+      "sha256": "6d8320696c5f6cf92a40c19b41ced617057fe4ffafaaa3dd14b4f1450111a698"
     }
   },
   "texts": [
     "f",
     "foo",
     "Needs you: Pay Taj Holiday Village",
-    "â–£ Watch live",
-    "âŒ•",
-    "â–¯",
-    "â‹¯"
+    "▣ Watch live",
+    "⌕",
+    "▯",
+    "⋯"
   ],
   "hlTexts": [],
   "hl": null,

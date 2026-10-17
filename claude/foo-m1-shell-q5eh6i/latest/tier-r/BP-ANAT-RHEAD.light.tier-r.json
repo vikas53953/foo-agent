@@ -12,7 +12,7 @@
     "verdict": "fail",
     "frame": {
       "missing": [
-        "âœ•"
+        "✕"
       ],
       "extra": []
     },
@@ -64,8 +64,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.010029498525073746,
-    "diffPixels": 204,
+    "ratio": 0.0072271386430678465,
+    "diffPixels": 147,
     "total": 20340,
     "sizeMismatch": null,
     "heatmap": "BP-ANAT-RHEAD.light.diff.png"

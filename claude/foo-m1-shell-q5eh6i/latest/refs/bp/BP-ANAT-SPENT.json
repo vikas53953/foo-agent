@@ -11,19 +11,19 @@
   "files": {
     "light": {
       "png": "BP-ANAT-SPENT.light.png",
-      "sha256": "a2e53e9bc589ac0275c2eb95d1c59a65a4751602d9af66e5da740b9ec83d55f4"
+      "sha256": "16b255068afd17b1e5f2ed9ef26b02e02c097406509bd359064c00a5f63bd9a1"
     },
     "dark": {
       "png": "BP-ANAT-SPENT.dark.png",
-      "sha256": "dd4466f9955edf0d6dc0ba40545a050ba424347d0feb34f722d4cceb98010eea"
+      "sha256": "d1c0b87e648075f99d97ab755e0aa96952cf153bb06f88aa7dc64a6210203ddf"
     }
   },
   "texts": [
     "Spent this month",
     "AI",
-    "â‚¹212 of â‚¹1,000",
+    "₹212 of ₹1,000",
     "Purchases",
-    "â‚¹15,779 of â‚¹25,000",
+    "₹15,779 of ₹25,000",
     "Change caps"
   ],
   "hlTexts": [],

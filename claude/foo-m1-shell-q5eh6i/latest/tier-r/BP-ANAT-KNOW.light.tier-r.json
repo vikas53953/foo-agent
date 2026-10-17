@@ -13,19 +13,9 @@
     "verdict": "fail",
     "frame": {
       "missing": [
-        "Â·",
-        "Sat",
-        "Â·",
-        "â‚¹40,000",
-        "Â·",
-        "Â·"
+        "Sat"
       ],
       "extra": [
-        "·",
-        "·",
-        "₹40,000",
-        "·",
-        "·",
         "Wakes",
         "up",
         "around",
@@ -89,8 +79,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.05977417953967368,
-    "diffPixels": 3854,
+    "ratio": 0.05831627272163285,
+    "diffPixels": 3760,
     "total": 64476,
     "sizeMismatch": {
       "a": [

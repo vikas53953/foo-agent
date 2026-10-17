@@ -13,8 +13,7 @@
     "verdict": "fail",
     "frame": {
       "missing": [
-        "typingâ€¦",
-        "â‚¹1,179",
+        "typing…",
         "F",
         "Family",
         "group",
@@ -24,7 +23,7 @@
         "cake",
         "is",
         "ordered",
-        "ðŸŽ‚",
+        "🎂",
         "3",
         "posts",
         "you'd",
@@ -60,7 +59,6 @@
         "17",
         "Oct",
         "4",
-        "₹1,179",
         "f",
         "T",
         "Family",
@@ -136,8 +134,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.09527378097521982,
-    "diffPixels": 17163,
+    "ratio": 0.09472422062350119,
+    "diffPixels": 17064,
     "total": 180144,
     "sizeMismatch": {
       "a": [
