@@ -1,0 +1,48 @@
+{
+  "id": "BP-ANAT-LFOOT",
+  "family": "bp",
+  "selector": "#win .lfoot",
+  "box": {
+    "x": 111.5,
+    "y": 1913.0625,
+    "width": 339,
+    "height": 64
+  },
+  "files": {
+    "light": {
+      "png": "BP-ANAT-LFOOT.light.png",
+      "sha256": "e3a90b3ea377e4a63b75f8db707eef2243ed90df511cc654e71cbb4a93f54877"
+    },
+    "dark": {
+      "png": "BP-ANAT-LFOOT.dark.png",
+      "sha256": "e91c0f10300d25685bc7d1bc16992f5639b1c910e35a85d343e3e7e567ec9c2b"
+    }
+  },
+  "texts": [
+    "V",
+    "Vikas Â·",
+    "Claude ready",
+    "â‚¹212 of â‚¹1,000 AI this month",
+    "âš™"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-ANAT-LFOOT": {
+      "x": 0,
+      "y": 0,
+      "width": 339,
+      "height": 64
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M1",
+  "spec": "03-shell-1 §3.4",
+  "size": {
+    "width": null,
+    "height": 64
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}

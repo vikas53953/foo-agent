@@ -1,0 +1,45 @@
+{
+  "id": "BP-ANAT-SEARCH",
+  "family": "bp",
+  "selector": "#win .search",
+  "box": {
+    "x": 127.5,
+    "y": 1251.0625,
+    "width": 307,
+    "height": 36
+  },
+  "files": {
+    "light": {
+      "png": "BP-ANAT-SEARCH.light.png",
+      "sha256": "48ee06829a4f9f3683126a8b710dd61265ed517c475e90c6aa6909250a2dbbe2"
+    },
+    "dark": {
+      "png": "BP-ANAT-SEARCH.dark.png",
+      "sha256": "f1672ae682828e42814b55b3f38cf074013b50c597a48572c2594080cd54c006"
+    }
+  },
+  "texts": [
+    "âŒ•",
+    "Search chats"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-ANAT-SEARCH": {
+      "x": 0,
+      "y": 0,
+      "width": 307,
+      "height": 36
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M1",
+  "spec": "03-shell-1 §3.4",
+  "size": {
+    "width": null,
+    "height": 36
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}

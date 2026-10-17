@@ -1,0 +1,128 @@
+{
+  "id": "BP-APP-R",
+  "theme": "dark",
+  "verdict": "fail",
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "âœ•",
+        "!",
+        "Â·",
+        "Â·",
+        "âœ“",
+        "Mom's",
+        "See",
+        "all",
+        "(6)",
+        "Gmail",
+        "Calendar",
+        "Â·",
+        "Sat",
+        "Â·",
+        "â‚¹40,000",
+        "Â·",
+        "Â·",
+        "â‚¹212",
+        "â‚¹1,000",
+        "â‚¹15,779",
+        "â‚¹25,000"
+      ],
+      "extra": [
+        "In",
+        "progress",
+        "Scheduled",
+        "Done",
+        "·",
+        "·",
+        "Mom’s",
+        "·",
+        "·",
+        "₹40,000",
+        "·",
+        "·",
+        "Wakes",
+        "up",
+        "around",
+        "6:30",
+        "AM",
+        "I",
+        "guessed",
+        "·",
+        "from",
+        "your",
+        "chats",
+        "·",
+        "Edit",
+        "₹212",
+        "₹1,000",
+        "₹15,779",
+        "₹25,000"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-APP-R",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 340,
+          "height": 786
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 340,
+          "height": 768
+        },
+        "dPos": 0,
+        "dSize": 18,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "review",
+    "anchors": [
+      {
+        "name": "BP-APP-R",
+        "ref": "#0D0D11",
+        "app": "#16161C",
+        "deltaE": 3.19,
+        "verdict": "review"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.09103094362745098,
+    "diffPixels": 23770,
+    "total": 261120,
+    "sizeMismatch": {
+      "a": [
+        340,
+        786
+      ],
+      "b": [
+        340,
+        768
+      ]
+    },
+    "heatmap": "BP-APP-R.dark.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-APP-R.dark.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-APP-R.dark.png"
+}

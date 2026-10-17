@@ -1,0 +1,49 @@
+{
+  "id": "BP-ANAT-KNOW",
+  "family": "bp",
+  "selector": "#win .right .rsec:nth-child(4)",
+  "box": {
+    "x": 1050.5,
+    "y": 1611.0625,
+    "width": 339,
+    "height": 199
+  },
+  "files": {
+    "light": {
+      "png": "BP-ANAT-KNOW.light.png",
+      "sha256": "ecca5c58883189bc1eed5063c3cbd1d5fd742676c50449d6cd5306f03bbbf06e"
+    },
+    "dark": {
+      "png": "BP-ANAT-KNOW.dark.png",
+      "sha256": "3b66d1b8b0ac6dd506175cc574d34b34b3606002f3a0dd291b2b7824da15c717"
+    }
+  },
+  "texts": [
+    "What I know about you",
+    "Likes beach stays, hates early flights",
+    "You said Â· Sat 3 Oct Â· Edit",
+    "Budget trips under â‚¹40,000",
+    "I guessed Â· from 2 trips Â· Edit",
+    "See all (24)"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-ANAT-KNOW": {
+      "x": 0,
+      "y": 0,
+      "width": 339,
+      "height": 199
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M1",
+  "spec": "03-shell-2 §3.7",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}

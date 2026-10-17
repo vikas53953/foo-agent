@@ -1,0 +1,161 @@
+{
+  "id": "BP-APP-L",
+  "theme": "dark",
+  "verdict": "fail",
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "ï¼‹",
+        "â‹¯",
+        "âŒ•",
+        "Search",
+        "chats",
+        "typingâ€¦",
+        "â‚¹1,179",
+        "F",
+        "Family",
+        "group",
+        "Thu",
+        "foo:",
+        "Mom's",
+        "cake",
+        "is",
+        "ordered",
+        "ðŸŽ‚",
+        "3",
+        "posts",
+        "you'd",
+        "want",
+        "to",
+        "see",
+        "Â·",
+        "â‚¹212",
+        "â‚¹1,000",
+        "âš™"
+      ],
+      "extra": [
+        "on",
+        "Flights",
+        "for",
+        "12",
+        "Dec…",
+        "Working",
+        "B",
+        "Building",
+        "society",
+        "8:20",
+        "AM",
+        "Ramesh:",
+        "Water",
+        "supply",
+        "is",
+        "off",
+        "from",
+        "10",
+        "AM",
+        "to",
+        "1",
+        "PM",
+        "on",
+        "Sat",
+        "17",
+        "Oct",
+        "4",
+        "₹1,179",
+        "f",
+        "T",
+        "Family",
+        "group",
+        "Thu",
+        "foo:",
+        "Mom’s",
+        "cake",
+        "is",
+        "ordered",
+        "🎂",
+        "H",
+        "S",
+        "School",
+        "friends",
+        "Wed",
+        "You:",
+        "see",
+        "you",
+        "all",
+        "on",
+        "Sunday",
+        "·",
+        "Done",
+        "Mon",
+        "·",
+        "₹212",
+        "₹1,000"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-APP-L",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 340,
+          "height": 786
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 340,
+          "height": 768
+        },
+        "dPos": 0,
+        "dSize": 18,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-APP-L",
+        "ref": "#131318",
+        "app": "#131318",
+        "deltaE": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.10495174632352941,
+    "diffPixels": 27405,
+    "total": 261120,
+    "sizeMismatch": {
+      "a": [
+        340,
+        786
+      ],
+      "b": [
+        340,
+        768
+      ]
+    },
+    "heatmap": "BP-APP-L.dark.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-APP-L.dark.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-APP-L.dark.png"
+}

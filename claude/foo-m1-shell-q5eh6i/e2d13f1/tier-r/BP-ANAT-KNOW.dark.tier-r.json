@@ -1,0 +1,102 @@
+{
+  "id": "BP-ANAT-KNOW",
+  "theme": "dark",
+  "verdict": "fail",
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "Â·",
+        "Sat",
+        "Â·",
+        "â‚¹40,000",
+        "Â·",
+        "Â·"
+      ],
+      "extra": [
+        "·",
+        "·",
+        "₹40,000",
+        "·",
+        "·",
+        "Wakes",
+        "up",
+        "around",
+        "6:30",
+        "AM",
+        "I",
+        "guessed",
+        "·",
+        "from",
+        "your",
+        "chats",
+        "·",
+        "Edit"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-ANAT-KNOW",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 339,
+          "height": 199
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 324,
+          "height": 269
+        },
+        "dPos": 0,
+        "dSize": 70,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-ANAT-KNOW",
+        "ref": "#0D0D11",
+        "app": "#0D0D11",
+        "deltaE": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.06728084868788387,
+    "diffPixels": 4338,
+    "total": 64476,
+    "sizeMismatch": {
+      "a": [
+        339,
+        199
+      ],
+      "b": [
+        324,
+        269
+      ]
+    },
+    "heatmap": "BP-ANAT-KNOW.dark.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-ANAT-KNOW.dark.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-ANAT-KNOW.dark.png"
+}

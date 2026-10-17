@@ -1,0 +1,86 @@
+{
+  "id": "BP-ANAT-SPENT",
+  "theme": "light",
+  "verdict": "fail",
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "â‚¹212",
+        "â‚¹1,000",
+        "â‚¹15,779",
+        "â‚¹25,000"
+      ],
+      "extra": [
+        "₹212",
+        "₹1,000",
+        "₹15,779",
+        "₹25,000"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-ANAT-SPENT",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 339,
+          "height": 146
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 324,
+          "height": 166
+        },
+        "dPos": 0,
+        "dSize": 20,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-ANAT-SPENT",
+        "ref": "#FFFFFF",
+        "app": "#FFFFFF",
+        "deltaE": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.0765051581261627,
+    "diffPixels": 3619,
+    "total": 47304,
+    "sizeMismatch": {
+      "a": [
+        339,
+        146
+      ],
+      "b": [
+        324,
+        166
+      ]
+    },
+    "heatmap": "BP-ANAT-SPENT.light.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-ANAT-SPENT.light.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-ANAT-SPENT.light.png"
+}

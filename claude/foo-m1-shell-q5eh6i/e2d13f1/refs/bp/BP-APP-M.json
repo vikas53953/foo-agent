@@ -1,0 +1,83 @@
+{
+  "id": "BP-APP-M",
+  "family": "bp",
+  "selector": "#win .mid",
+  "box": {
+    "x": 451.5,
+    "y": 1191.0625,
+    "width": 598,
+    "height": 786
+  },
+  "files": {
+    "light": {
+      "png": "BP-APP-M.light.png",
+      "sha256": "fa73d6ae71f470dfb271dba1fd8a9834f97c31f29b1b794578de9da86c9960e7"
+    },
+    "dark": {
+      "png": "BP-APP-M.dark.png",
+      "sha256": "7e82080e30d248490b3af2653fc098b84496af23e4cd8757b95150c5f19eb38a"
+    }
+  },
+  "texts": [
+    "f",
+    "foo",
+    "Needs you: Pay Taj Holiday Village",
+    "â–£ Watch live",
+    "âŒ•",
+    "â–¯",
+    "â‹¯",
+    "Today, Fri 16 Oct",
+    "â˜€ Good morning, Vikas",
+    "Morning brief",
+    "Mom's birthday is Sun 18 Oct. Cake ordered from Theobroma.",
+    "Airtel bill â‚¹1,179 due Fri 23 Oct. Sent to Money.",
+    "Goa stays for Sat 12 Dec dropped 18%.",
+    "That's all for today Â· ðŸ‘ Â· ðŸ‘Ž",
+    "ok book the Goa hotel then, under â‚¹8,000 a night, near the beach",
+    "9:36 AM âœ“",
+    "âœ“",
+    "â³",
+    "Booking your Goa stay",
+    "Step 3 of 4",
+    "âœ“",
+    "Checked Booking.com, MakeMyTrip and hotel sites",
+    "âœ“",
+    "Kept 3 under â‚¹8,000 a night, beach within 5 min",
+    "Waiting for you to approve the payment",
+    "Book and add to your calendar",
+    "Pay Taj Holiday Village",
+    "Expires 9:51 AM",
+    "Sat 12 Dec â€“ Mon 14 Dec, 2 nights",
+    "â‚¹14,600",
+    "Free cancellation until Thu 10 Dec",
+    "â‚¹0",
+    "Charged once",
+    "â‚¹14,600",
+    "Approve â‚¹14,600",
+    "Not now",
+    "foo never sees your card",
+    "ï¼‹",
+    "Message foo, or hold Ctrl+Space to talk",
+    "ðŸŽ™"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-APP-M": {
+      "x": 0,
+      "y": 0,
+      "width": 598,
+      "height": 786
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M1",
+  "spec": "03-shell-1 §3.5; 03-shell-2 §3.6",
+  "size": {
+    "width": 600,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}

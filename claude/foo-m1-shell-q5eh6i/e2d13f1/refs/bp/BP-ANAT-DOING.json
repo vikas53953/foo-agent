@@ -1,0 +1,53 @@
+{
+  "id": "BP-ANAT-DOING",
+  "family": "bp",
+  "selector": "#win .right .rsec:nth-child(2)",
+  "box": {
+    "x": 1050.5,
+    "y": 1251.0625,
+    "width": 339,
+    "height": 247
+  },
+  "files": {
+    "light": {
+      "png": "BP-ANAT-DOING.light.png",
+      "sha256": "8b8dd5c4d47de8d2606603f256b91c86bcdcb145a8764edd79dd955e8c07eb3a"
+    },
+    "dark": {
+      "png": "BP-ANAT-DOING.dark.png",
+      "sha256": "b22ceb1179dd78e2188a90fc2bc27fbb4d357c3d01eb0fca3f4aa61060495f92"
+    }
+  },
+  "texts": [
+    "Doing now",
+    "!",
+    "Goa stay",
+    "Needs you: Pay Taj Holiday Village",
+    "Trips Â· Flights for 12 Dec",
+    "Step 2 of 4 Â· Comparing fares",
+    "âœ“",
+    "Mom's cake",
+    "Done 7:12 AM",
+    "See all (6)"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-ANAT-DOING": {
+      "x": 0,
+      "y": 0,
+      "width": 339,
+      "height": 247
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M1",
+  "spec": "03-shell-2 §3.7",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}
