@@ -38,6 +38,10 @@ describe('fid-guard', () => {
     expect(guard({ ...base, added, text: 'Fidelity-CR: CR-0001' })).toEqual([]);
     expect(guard({ ...base, added: [{ file: 'scripts/fid-guard.ts', line: 'threshold' }] })).toEqual([]);
     expect(guard({ ...base, added: [{ file: 'src/a.ts', line: 'const skipped = items.skip;' }] })).toEqual([]);
+    // Masks and thresholds count only in picture-comparison code; app code and docs may use the word.
+    expect(guard({ ...base, added: [{ file: 'src/renderer/messages/stickToBottom.ts', line: 'const threshold = 15;' }] })).toEqual([]);
+    expect(guard({ ...base, added: [{ file: 'implementation-notes.md', line: 'threshold 15px' }] })).toEqual([]);
+    expect(guard({ ...base, added: [{ file: 'scripts/tier-r.ts', line: 'threshold: 0.2' }] })).toHaveLength(1);
   });
   it('FID-19: every path needs an owner', () => {
     expect(ownedBy('spec/x/y.md', 'spec/')).toBe(true);
