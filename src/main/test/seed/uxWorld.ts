@@ -18,8 +18,9 @@ export interface SeedResult {
 const FILLER_USER = [
   'can you check this for me',
   'ok thanks',
-  'what time does it open on Sunday?',
-  'remind me about this tomorrow evening',
+  // ART-21a scans every rendered string, the user's own words included: a relative day carries its date (10-2 §D).
+  'what time does it open on Sun 18 Oct?',
+  'remind me about this on Sat 17 Oct, evening',
   'kal subah yaad dila dena',
   'sounds good 👍',
   'any cheaper option?',

@@ -100,7 +100,8 @@ export function seedBubbleGallery(
     author: 'user',
     text: 'this is the beach shack from last time',
     at: at(5),
-    badge: 'done',
+    // No badge: the photo and the grid below are one run (04 §1.3, the earlier bubble carries no badge), so the grid is
+    // the user's "last of a run" that SV-02 measures.
     attachments: [attach('beach-shack.svg', 'image/svg+xml', 2_048, at(5), 'image')],
   });
   w.message(chat, {

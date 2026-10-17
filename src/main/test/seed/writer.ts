@@ -163,6 +163,11 @@ export class SeedWriter {
     this.db.pragma('foreign_keys = OFF');
     try {
       this.db.transaction(() => {
+        // messages_fts is an external-content index: messages_ai skips soft-deleted rows and private chats, but
+        // messages_ad (08-1 §4.3) sends an FTS 'delete' for every row it removes. A 'delete' for a row that was never
+        // indexed (e.g. the gallery's deleted bubble) corrupts the index ("database disk image is malformed" on the next
+        // seed). Rebuilding first indexes every content row, so the hard wipe below removes exactly what is there.
+        this.db.exec("INSERT INTO messages_fts(messages_fts) VALUES('rebuild')");
         for (const table of WIPE_ORDER) this.db.exec(`DELETE FROM ${table}`);
       })();
     } finally {

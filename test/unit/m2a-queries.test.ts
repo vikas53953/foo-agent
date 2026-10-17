@@ -24,6 +24,7 @@ import { writeSeedMedia } from '../../src/main/test/seed/media';
 import { seedPerf, PERF_FOO_MESSAGES, PERF_MESSAGES } from '../../src/main/test/seed/perf';
 import { seedUxWorld } from '../../src/main/test/seed/uxWorld';
 import { MIN, SeedWriter, ist } from '../../src/main/test/seed/writer';
+import { joinsRun, layoutRows } from '../../src/renderer/messages/runs';
 
 const NOW = ist(2026, 10, 16, 9, 0);
 
@@ -174,5 +175,39 @@ describe('the perf seed mixes bubbles, cards and images', () => {
     expect(count('SELECT COUNT(*) FROM reactions r JOIN messages m ON m.id = r.message_id WHERE m.chat_id = ?')).toBeGreaterThan(50);
     expect(db.prepare("SELECT COUNT(*) FROM messages WHERE text LIKE '%taj%'").pluck().get()).toBe(12);
     expect(r.media.every((m) => m.path.startsWith('data/inbox/'))).toBe(true);
+  });
+});
+
+describe('seeds can follow each other on one database (test:seed demo → perf → ux-world)', () => {
+  it('keeps the message search index whole when a seed wipes a soft-deleted bubble', { timeout: 60_000 }, () => {
+    const db = fresh();
+    const integrity = () => db.prepare("INSERT INTO messages_fts(messages_fts) VALUES('integrity-check')").run();
+    seedUxWorld(db, NOW);
+    expect(db.prepare('SELECT COUNT(*) FROM messages WHERE deleted_at IS NOT NULL').pluck().get()).toBeGreaterThan(0);
+    expect(() => seedPerf(db, NOW)).not.toThrow();
+    expect(() => seedUxWorld(db, NOW)).not.toThrow();
+    expect(() => seedUxWorld(db, NOW)).not.toThrow();
+    expect(integrity).not.toThrow();
+    const hits = (q: string) => db.prepare('SELECT COUNT(*) FROM messages_fts WHERE messages_fts MATCH ?').pluck().get(q);
+    expect(hits('"wrong chat sorry"')).toBe(0); // the deleted bubble is not searchable
+    expect(hits('mummy OR bill OR doctor')).toBeGreaterThan(0);
+  });
+});
+
+describe('the bubble gallery has a run of the user’s images (SV-02 measures the last bubble of a run)', () => {
+  it('joins the single photo and the grid of three into one run (04 §1.3: the earlier bubble carries no badge)', () => {
+    const db = fresh();
+    const { refs } = seedUxWorld(db, NOW);
+    const list = messageList(db, refs.trips!, 200);
+    const i = list.findIndex((m) => m.id === refs.galleryImage);
+    expect(i).toBeGreaterThanOrEqual(0);
+    const [photo, grid] = [list[i]!, list[i + 1]!];
+    expect(grid.attachments?.length).toBe(3);
+    expect(joinsRun(photo, grid)).toBe(true);
+    const layout = layoutRows(
+      list.map((m) => ({ kind: 'message' as const, key: m.id, message: m })),
+      { isGroup: false },
+    );
+    expect(layout[i + 1]!.pos).toBe('last');
   });
 });
