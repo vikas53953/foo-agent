@@ -3,28 +3,22 @@
 // chat; click / Enter opens the job's chat and reveals its checklist card; empty lines), §3.7.4 (scope per chat kind),
 // 02-3 §F25.3 (roving tabindex in the list).
 import { useEffect, useMemo, useState, type KeyboardEvent } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { t } from '../../shared/copy/t';
 import { formatDate } from '../../shared/format';
 import { TID } from '../../shared/testids';
-import {
-  Icon,
-  IconButton,
-  Segmented,
-  Spinner,
-  invoke,
-  navigate,
-  selectAiStatus,
-  selectCardsById,
-  selectChatsById,
-  selectJobsById,
-  selectSettings,
-  useNow,
-  useRovingTabIndex,
-  useStore,
-  type ChatRow,
-  type JobRow,
-  type RoutineRow,
-} from '../_m1b-stubs';
+import type { ChatRow, JobRow, RoutineRow } from '../../shared/types';
+import { useRovingTabIndex } from '../a11y/useRovingTabIndex';
+import { invoke } from '../ipc/client';
+import { loadChat } from '../store/apply';
+import { navigate, useStore } from '../store/index';
+import { selectAi, selectNow } from '../store/live';
+import { selectTimeZone } from '../store/settings';
+import { Icon } from '../ui/Icon';
+import { IconButton } from '../ui/IconButton';
+import { Segmented } from '../ui/Segmented';
+import { Spinner } from '../ui/Spinner';
+import { openChat } from './actions';
 import { requestReveal } from '../messages/reveal';
 import styles from './DoingNow.module.css';
 import { canStop, doingGlyph, doingLine, doingRows, doneRows, hasLiveBrowser, jobsInScope, scheduledRows } from './doingNow';
@@ -34,14 +28,14 @@ type Tab = 'progress' | 'scheduled' | 'done';
 
 export function DoingNow({ chat }: { chat: ChatRow }) {
   const [tab, setTab] = useState<Tab>('progress');
-  const jobsById = useStore(selectJobsById);
-  const chats = useStore(selectChatsById);
-  const cards = useStore(selectCardsById);
-  const ai = useStore(selectAiStatus);
-  const settings = useStore(selectSettings);
-  const now = useNow();
-  const timeZone = settings.locale.timeZone;
+  const jobsById = useStore((s) => s.jobs.byId);
+  const chats = useStore((s) => s.chats.byId);
+  const cards = useStore((s) => s.cards.byId);
+  const aiName = useStore(selectAi)?.displayName ?? '';
+  const now = useStore(selectNow);
+  const timeZone = useStore(selectTimeZone);
   const routines = useRoutines(tab === 'scheduled');
+  useJobsOfBusyChats(chat);
 
   const scoped = useMemo(() => jobsInScope(Object.values(jobsById), chat), [jobsById, chat]);
   const progress = useMemo(() => doingRows(scoped, now, timeZone), [scoped, now, timeZone]);
@@ -84,7 +78,7 @@ export function DoingNow({ chat }: { chat: ChatRow }) {
         label={t('app.panel.doing.tabs.label')}
         value={tab}
         onChange={setTab}
-        data-testid={TID.appPanelJobsTab}
+        tid="appPanelJobsTab"
         options={[
           { value: 'progress', label: t('app.panel.doing.tab.progress') },
           { value: 'scheduled', label: t('app.panel.doing.tab.scheduled') },
@@ -106,7 +100,7 @@ export function DoingNow({ chat }: { chat: ChatRow }) {
           rows={shown.rows as JobRow[]}
           chat={chat}
           chats={chats}
-          line={(j) => doingLine(j, { now, timeZone, ai: ai.displayName, cards })}
+          line={(j) => doingLine(j, { now, timeZone, ai: aiName, cards })}
           signIn={(j) => j.state === 'needs_you' && cards[j.needsYouCardId ?? '']?.type === 'signin'}
         />
       )}
@@ -119,6 +113,28 @@ export function DoingNow({ chat }: { chat: ChatRow }) {
   );
 }
 
+/**
+ * foo's chat lists every job (§3.7.4), but the store holds jobs only for chats that were opened (chat:open) or patched since
+ * (job:upsert); 08-1 §3.2 has no job list read. So foo's chat opens, once each, the chats whose pill says a job is live.
+ */
+function useJobsOfBusyChats(chat: ChatRow): void {
+  const busy = useStore(
+    useShallow((s) =>
+      chat.kind === 'foo' && !chat.private
+        ? s.chats.order.filter((id) => {
+            const p = s.chats.byId[id]?.pill;
+            return id !== chat.id && (p === 'working' || p === 'needs_you' || p === 'paused');
+          })
+        : NO_IDS,
+    ),
+  );
+  useEffect(() => {
+    for (const id of busy) loadChat(id).catch((e: unknown) => console.warn('chat:open', id, e));
+  }, [busy]);
+}
+
+const NO_IDS: string[] = [];
+
 /** Routines load only when the Scheduled tab is opened (`routine:list`); a failure reads as "none". */
 function useRoutines(active: boolean): RoutineRow[] | null {
   const [rows, setRows] = useState<RoutineRow[] | null>(null);
@@ -126,7 +142,7 @@ function useRoutines(active: boolean): RoutineRow[] | null {
     if (!active) return;
     let live = true;
     invoke('routine:list', {})
-      .then((r) => live && setRows(r))
+      .then((r) => live && setRows(r.ok ? r.value : []))
       .catch(() => live && setRows([]));
     return () => {
       live = false;
@@ -136,7 +152,7 @@ function useRoutines(active: boolean): RoutineRow[] | null {
 }
 
 function openJob(j: JobRow, current: ChatRow) {
-  if (j.chatId !== current.id) navigate({ kind: 'chat', chatId: j.chatId });
+  if (j.chatId !== current.id) openChat(j.chatId);
   requestReveal(j.chatId, j.id);
 }
 

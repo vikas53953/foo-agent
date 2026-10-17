@@ -2,7 +2,8 @@
 // 03-shell-1 §3.0.2 (from the job runner, never AI text), 12-2 §12.30.4 (private chat idle line), 04 §10.11 (WhatsApp subtitle).
 import { formatDate, formatTime } from '../../shared/format';
 import { t } from '../../shared/copy/t';
-import type { AiStatus, CardRow, ChatRow, HelperRow, JobRow, SetupState } from '../_m1b-stubs';
+import type { AiStatus, CardRow, ChatRow, HelperRow, JobRow } from '../../shared/types';
+import { titleOfCard } from '../cards/registry';
 
 export type StatusTone = 'fg2' | 'warn' | 'accent' | 'ok';
 
@@ -11,7 +12,7 @@ export interface StatusInput {
   /** Every job in the store; the function keeps this chat's live ones. */
   jobs: JobRow[];
   cards: Record<string, CardRow>;
-  setup: SetupState;
+  setup: { complete: boolean; step: number };
   connection: 'online' | 'offline' | 'ai_down';
   ai: Pick<AiStatus, 'displayName' | 'state' | 'resetAt'>;
   takenOverJobIds: string[];
@@ -56,7 +57,7 @@ export function statusLine(s: StatusInput): StatusResult {
   const needs = jobs.filter((j) => j.state === 'needs_you');
   if (needs.length === 1) {
     const card = needs[0]!.needsYouCardId ? s.cards[needs[0]!.needsYouCardId] : undefined;
-    return { row: 2, text: t('chat_header.status.needs_you', { title: card?.title ?? needs[0]!.title }), tone: 'warn' };
+    return { row: 2, text: t('chat_header.status.needs_you', { title: titleOfCard(card) ?? needs[0]!.title }), tone: 'warn' };
   }
   if (needs.length > 1) return { row: 2, text: t('chat_header.status.needs_you_many', { count: needs.length }), tone: 'warn' };
   if (jobs.some((j) => s.takenOverJobIds.includes(j.id))) return { row: 3, text: t('chat_header.status.in_control'), tone: 'warn' };
@@ -121,7 +122,11 @@ function localClock(at: number, timeZone: string): { min: number; wd: number } {
   const wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(get('weekday'));
   return { min: Number(get('hour')) * 60 + Number(get('minute')), wd };
 }
-const hhmm = (v: string) => Number(v.slice(0, 2)) * 60 + Number(v.slice(2, 4));
+/** 08-0 §A HHMM, written "22:00". */
+const hhmm = (v: string) => {
+  const d = v.replace(':', '');
+  return Number(d.slice(0, 2)) * 60 + Number(d.slice(2, 4));
+};
 const MIN = 60_000;
 
 /**

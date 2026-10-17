@@ -3,7 +3,7 @@
 // (start-of-chat line first, 24 above the first separator), 02-2 §F13.3 (per-kind height estimates). Pure.
 import { formatDate } from '../../shared/format';
 import { t } from '../../shared/copy/t';
-import type { MessageRow } from '../_m1b-stubs';
+import type { MessageRow } from '../../shared/types';
 
 export type VRow =
   | { kind: 'start'; key: string; label: string; messageId?: string }

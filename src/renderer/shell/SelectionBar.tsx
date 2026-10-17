@@ -4,7 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import { t } from '../../shared/copy/t';
 import { motion } from '../../shared/tokens';
 import { TID } from '../../shared/testids';
-import { Button, IconButton, announce, clearSelection, getState, setDialog } from '../_m1b-stubs';
+import { announce } from '../a11y/announce';
+import { clearSelection, openDialog, useStore } from '../store/index';
+import { Button } from '../ui/Button';
+import { IconButton } from '../ui/IconButton';
 import styles from './SelectionBar.module.css';
 
 export function SelectionBar({ chatId, count }: { chatId: string; count: number }) {
@@ -17,7 +20,7 @@ export function SelectionBar({ chatId, count }: { chatId: string; count: number 
       first.current = false;
       return;
     }
-    announce(label);
+    announce(label, 'polite');
   }, [label]);
   useEffect(() => {
     if (!copied) return;
@@ -27,7 +30,7 @@ export function SelectionBar({ chatId, count }: { chatId: string; count: number 
 
   const copy = () => {
     // 04 §1.9 owns the copy format; until M2, the selected messages' plain text in thread order (02-3 §F30.4).
-    const s = getState();
+    const s = useStore.getState();
     const chat = s.messages.byChat[chatId];
     const text = (chat?.ids ?? [])
       .filter((id) => s.ui.selection.has(id))
@@ -42,15 +45,16 @@ export function SelectionBar({ chatId, count }: { chatId: string; count: number 
         {label}
       </span>
       <div className={styles.group}>
-        <Button variant="secondary" size="sm" disabled={count === 0} data-testid={TID.chatHeaderSelectionCopy} onClick={copy}>
+        <Button variant="outline" size="sm" disabled={count === 0} data-testid={TID.chatHeaderSelectionCopy} onClick={copy}>
           {copied ? t('chat_header.selection.copied') : t('chat_header.selection.copy')}
         </Button>
         <Button
-          variant="destructive"
+          variant="outline"
+          tone="bad"
           size="sm"
           disabled={count === 0}
           data-testid={TID.chatHeaderSelectionDelete}
-          onClick={() => setDialog('c-25')}
+          onClick={() => openDialog('c-25')}
         >
           {t('chat_header.selection.delete')}
         </Button>
@@ -60,7 +64,7 @@ export function SelectionBar({ chatId, count }: { chatId: string; count: number 
           tooltip={t('chat_header.selection.cancel.tooltip')}
           aria-keyshortcuts="Escape"
           data-testid={TID.chatHeaderSelectionCancel}
-          onClick={clearSelection}
+          onClick={() => clearSelection()}
         />
       </div>
     </div>

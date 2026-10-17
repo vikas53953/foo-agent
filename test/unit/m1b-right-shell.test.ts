@@ -4,58 +4,60 @@ import { describe, expect, it } from 'vitest';
 import { doingRows, doneRows, jobsInScope, scheduledRows, doingLine } from '../../src/renderer/shell/doingNow';
 import { meterState } from '../../src/renderer/shell/spentMeters';
 import { knowFacts, usingChips } from '../../src/renderer/shell/panelData';
-import type { ChatRow, JobRow, MemoryFactView, RoutineRow } from '../../src/renderer/_m1b-stubs';
+import type { ChatRow, JobRow, MemoryFactView, RoutineRow } from '../../src/shared/types';
 
 const NOW = Date.UTC(2026, 9, 16, 3, 30); // Fri 16 Oct 2026, 9:00 AM IST
 const H = 3_600_000;
 const TZ = 'Asia/Kolkata';
 
-const chat = (id: string, kind: ChatRow['kind'], over: Partial<ChatRow> = {}): ChatRow => ({
-  id,
-  kind,
-  helperId: kind === 'helper' ? `h_${id}` : null,
-  title: id,
-  avatarRef: null,
-  colorToken: null,
-  waJid: null,
-  pinned: false,
-  archived: false,
-  unreadCount: 0,
-  pill: null,
-  lastActivityAt: NOW,
-  createdAt: NOW,
-  private: false,
-  rev: 1,
-  lastLine: '',
-  lastTime: NOW,
-  hasDraft: false,
-  face: 'letter:X',
-  ...over,
-});
+const chat = (id: string, kind: ChatRow['kind'], over: Partial<ChatRow> = {}): ChatRow =>
+  ({
+    id,
+    kind,
+    helperId: kind === 'helper' ? `h_${id}` : null,
+    title: id,
+    avatarRef: null,
+    colorToken: null,
+    waJid: null,
+    pinned: false,
+    archived: false,
+    unreadCount: 0,
+    pill: null,
+    lastActivityAt: NOW,
+    createdAt: NOW,
+    private: false,
+    rev: 1,
+    lastLine: '',
+    lastTime: NOW,
+    hasDraft: false,
+    face: 'letter:X',
+    ...over,
+  }) as ChatRow;
 let n = 0;
-const job = (over: Partial<JobRow>): JobRow => ({
-  id: `j${++n}`,
-  chatId: 'foo',
-  originChatId: 'foo',
-  ownerKind: 'foo',
-  ownerId: null,
-  title: `Job ${n}`,
-  state: 'working',
-  waitingReason: null,
-  needsYouCardId: null,
-  currentStepIdx: 1,
-  stepCount: 4,
-  route: null,
-  usesBrowser: false,
-  createdAt: NOW - H,
-  startedAt: NOW - H,
-  finishedAt: null,
-  rev: 1,
-  stepsDone: 1,
-  nowLine: 'Comparing fares',
-  slow: false,
-  ...over,
-});
+const job = (over: Partial<JobRow>): JobRow =>
+  ({
+    id: `j${++n}`,
+    chatId: 'foo',
+    originChatId: 'foo',
+    ownerKind: 'foo',
+    ownerId: null,
+    title: `Job ${n}`,
+    state: 'working',
+    waitingReason: null,
+    needsYouCardId: null,
+    currentStepIdx: 1,
+    stepCount: 4,
+    route: null,
+    usesBrowser: false,
+    createdAt: NOW - H,
+    startedAt: NOW - H,
+    finishedAt: null,
+    rev: 1,
+    stepsDone: 1,
+    nowLine: 'Comparing fares',
+    slow: false,
+    ...over,
+  }) as JobRow;
 
 describe('Doing now: In progress tab', () => {
   it('orders NEEDS YOU, WORKING, QUEUED, WAITING, then finished today', () => {
@@ -100,12 +102,12 @@ describe('Doing now: Done and Scheduled tabs (X-148)', () => {
     expect(r.total).toBe(3);
   });
   it("Scheduled: this chat's routines by next run, deleted ones left out", () => {
-    const routines: RoutineRow[] = [
+    const routines = [
       { id: 'r1', ownerChatId: 'trips', title: 'PNR watch', state: 'on', nextRunAt: NOW + 2 * H, rev: 1 },
       { id: 'r2', ownerChatId: 'trips', title: 'Fare drop', state: 'on', nextRunAt: NOW + H, rev: 1 },
       { id: 'r3', ownerChatId: 'trips', title: 'Gone', state: 'deleted', nextRunAt: NOW, rev: 1 },
       { id: 'r4', ownerChatId: 'money', title: 'Bills', state: 'on', nextRunAt: NOW, rev: 1 },
-    ];
+    ] as RoutineRow[];
     expect(scheduledRows(routines, 'trips').rows.map((r) => r.id)).toEqual(['r2', 'r1']);
   });
 });
@@ -160,19 +162,20 @@ describe('Using chips and What I know', () => {
     expect(usingChips([job({ usesBrowser: true, state: 'done', finishedAt: NOW - 30 * H })], NOW)).toEqual([]);
   });
   it('top 3 facts: most recently used, then newest; private never in a group', () => {
-    const f = (id: string, over: Partial<MemoryFactView>): MemoryFactView => ({
-      id,
-      scope: 'global',
-      chatId: null,
-      text: id,
-      provenance: 'said',
-      reason: null,
-      private: false,
-      learnedAt: NOW - 10 * H,
-      lastUsedAt: null,
-      file: 'memory/about-you.md',
-      ...over,
-    });
+    const f = (id: string, over: Partial<MemoryFactView>): MemoryFactView =>
+      ({
+        id,
+        scope: 'global',
+        chatId: null,
+        text: id,
+        provenance: 'said',
+        reason: null,
+        private: false,
+        learnedAt: NOW - 10 * H,
+        lastUsedAt: null,
+        file: 'memory/about-you.md',
+        ...over,
+      }) as MemoryFactView;
     const facts = [
       f('new', { learnedAt: NOW - H }),
       f('used', { lastUsedAt: NOW - 2 * H }),

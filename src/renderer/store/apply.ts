@@ -7,6 +7,7 @@ import { invoke, onFooEvent, platform } from '../ipc/client';
 import { loadChatsReducer, removeChatReducer, upsertChatReducer } from './chats';
 import { upsertCardReducer } from './cards';
 import { upsertConnectionReducer } from './connections';
+import { loadHelpersReducer } from './helpers';
 import { navigate, update, type RootState } from './index';
 import { upsertJobReducer } from './jobs';
 import { loadMessagesReducer, upsertMessageReducer } from './messages';
@@ -83,12 +84,23 @@ export async function loadBootstrap(): Promise<void> {
     const r = await invoke('app:getBootstrap', {});
     if (!r.ok) throw new Error(r.error.kind);
     applyBootstrap(r.value);
+    void loadHelpers();
   } catch (e) {
     console.error('bootstrap', e);
     update((s) => {
       s.live.loadFailed = true;
       s.live.loaded = true;
     });
+  }
+}
+
+/** helper:list → the helpers slice (names and job lines for the header and right shell). A failure leaves it empty. */
+export async function loadHelpers(): Promise<void> {
+  try {
+    const r = await invoke('helper:list', {});
+    if (r.ok) update((s) => loadHelpersReducer(s.helpers, r.value));
+  } catch (e) {
+    console.warn('helper:list', e);
   }
 }
 

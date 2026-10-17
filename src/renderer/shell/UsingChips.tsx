@@ -4,7 +4,9 @@
 import { useMemo, useState } from 'react';
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
-import { navigate, selectAiStatus, selectJobsById, useNow, useStore, type ChatRow } from '../_m1b-stubs';
+import type { ChatRow } from '../../shared/types';
+import { navigate, useStore } from '../store/index';
+import { selectAi, selectNow } from '../store/live';
 import { jobsInScope } from './doingNow';
 import { USING_MAX, usingChips, type UsingChip } from './panelData';
 import section from './PanelSection.module.css';
@@ -13,16 +15,16 @@ import styles from './UsingChips.module.css';
 const APP_LABEL: Record<UsingChip['app'], () => string> = { browser: () => t('app.panel.using.app.browser') };
 
 export function UsingChips({ chat }: { chat: ChatRow }) {
-  const ai = useStore(selectAiStatus);
-  const jobsById = useStore(selectJobsById);
-  const now = useNow();
+  const aiName = useStore(selectAi)?.displayName ?? '';
+  const jobsById = useStore((s) => s.jobs.byId);
+  const now = useStore(selectNow);
   const [expanded, setExpanded] = useState(false);
   const chips = useMemo(() => usingChips(jobsInScope(Object.values(jobsById), chat), now), [jobsById, chat, now]);
   // The AI chip takes one of the 8 places.
   const room = USING_MAX - 1;
   const shown = expanded || chips.length <= room ? chips : chips.slice(0, room - 1);
   const hidden = chips.length - shown.length;
-  const aiLabel = t('app.panel.using.ai', { ai: ai.displayName });
+  const aiLabel = t('app.panel.using.ai', { ai: aiName });
 
   return (
     <section

@@ -1,6 +1,6 @@
 // Spec: 03-shell-2 §3.7.3.2 (Using: apps a job used in the last 24 h or is using now, most recent first, 8 max),
 // §3.7.3.3 (What I know: up to 3 facts, most recently used then newest; private facts never in a group, Article 14), §3.7.4.
-import type { ChatRow, JobRow, MemoryFactView } from '../_m1b-stubs';
+import type { ChatRow, JobRow, MemoryFactView } from '../../shared/types';
 
 export const USING_MAX = 8;
 export const KNOW_MAX = 3;

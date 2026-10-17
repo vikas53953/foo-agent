@@ -72,28 +72,28 @@ describe('F6 pane cycle (§3.9.2)', () => {
   it('visits list → messages → composer → panel → list with the panel open and no banner (3.11.8)', () => {
     const panes = f6Panes(L);
     const seen = [];
-    let cur = f6Next(panes, 'left', 1);
+    let cur = f6Next(panes, 'chatlist', 1);
     for (let i = 0; i < 4; i++) {
       seen.push(cur);
       cur = f6Next(panes, cur, 1);
     }
-    expect(['left', ...seen]).toEqual(['left', 'messages', 'composer', 'right', 'left']);
+    expect(['chatlist', ...seen]).toEqual(['chatlist', 'messages', 'composer', 'panel', 'chatlist']);
   });
   it('Shift+F6 goes backward and wraps; the banner is first when shown', () => {
     const panes = f6Panes({ ...L, bannerShown: true });
-    expect(panes).toEqual(['banner', 'left', 'messages', 'composer', 'right']);
-    expect(f6Next(panes, 'banner', -1)).toBe('right');
-    expect(f6Next(panes, 'messages', -1)).toBe('left');
+    expect(panes).toEqual(['banner', 'chatlist', 'messages', 'composer', 'panel']);
+    expect(f6Next(panes, 'banner', -1)).toBe('panel');
+    expect(f6Next(panes, 'messages', -1)).toBe('chatlist');
   });
   it('skips panes that are not visible', () => {
-    expect(f6Panes({ ...L, rightOpen: false, composerPresent: false })).toEqual(['left', 'messages']);
+    expect(f6Panes({ ...L, rightOpen: false, composerPresent: false })).toEqual(['chatlist', 'messages']);
   });
   it('XS: list view cycles banner → list; chat view banner → messages → composer', () => {
-    expect(f6Panes({ ...L, xs: true, xsPane: 'list', bannerShown: true })).toEqual(['banner', 'left']);
+    expect(f6Panes({ ...L, xs: true, xsPane: 'list', bannerShown: true })).toEqual(['banner', 'chatlist']);
     expect(f6Panes({ ...L, xs: true, xsPane: 'chat', bannerShown: true, rightOpen: false })).toEqual(['banner', 'messages', 'composer']);
   });
   it('from outside every pane, F6 lands on the first visible pane', () => {
-    expect(f6Next(['left', 'messages'], null, 1)).toBe('left');
-    expect(f6Next(['left', 'messages'], null, -1)).toBe('messages');
+    expect(f6Next(['chatlist', 'messages'], null, 1)).toBe('chatlist');
+    expect(f6Next(['chatlist', 'messages'], null, -1)).toBe('messages');
   });
 });

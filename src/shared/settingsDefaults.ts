@@ -21,6 +21,6 @@ export const settingsDefaults: Settings = {
   window: { maximized: false, sidebarWidth: 340, rightShellOpen: true },
   ai: { primary: null, backup: null, providers: {}, plainChatFallback: true },
   money: { purchaseCapPaise: 2_500_000, aiCapPaise: 100_000, warnAt80: true, bigPaymentPaise: 1_000_000 },
-  notifications: { mutedChats: {} },
+  notifications: { quiet: { on: true, from: '22:00', to: '07:00', days: [0, 1, 2, 3, 4, 5, 6] }, mutedChats: {} },
   flags: { screenHands: false, hub: false, outlook: false, multiAccount: false },
 };

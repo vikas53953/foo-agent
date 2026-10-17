@@ -4,7 +4,13 @@
 import { useState } from 'react';
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
-import { Button, Icon, Skeleton, selectChat, selectFindOpen, useStore, type ChatRow } from '../_m1b-stubs';
+import type { ChatRow } from '../../shared/types';
+import { useStore } from '../store/index';
+import { selectChat } from '../store/chats';
+import { selectFindOpen } from '../store/ui';
+import { Button } from '../ui/Button';
+import { Icon } from '../ui/Icon';
+import { Skeleton } from '../ui/Skeleton';
 import { MessageList } from '../messages/MessageList';
 import { ChatHeader } from './ChatHeader';
 import { FindBar, FindProvider } from './FindBar';
@@ -48,7 +54,7 @@ function ThreadSkeleton() {
     <div className={styles.skeleton} data-testid={TID.threadSkeleton} aria-hidden>
       {[40, 60, 30, 50].map((w, i) => (
         <span key={w} className={styles.skelRow} data-side={i % 2 ? 'me' : 'them'}>
-          <Skeleton className={`${styles.skel} ${styles[`skel${w}`]}`} />
+          <Skeleton shape="bar" className={`${styles.skel} ${styles[`skel${w}`]}`} />
         </span>
       ))}
     </div>
@@ -62,7 +68,7 @@ function ThreadError({ onRetry }: { onRetry: () => void }) {
         <Icon name="ErrorCircle" size={24} />
       </span>
       <p className={styles.errorText}>{t('thread.error.body')}</p>
-      <Button variant="secondary" data-testid={TID.threadErrorRetry} onClick={onRetry}>
+      <Button variant="outline" size="md" data-testid={TID.threadErrorRetry} onClick={onRetry}>
         {t('thread.error.action')}
       </Button>
     </div>

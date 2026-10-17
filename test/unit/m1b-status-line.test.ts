@@ -1,56 +1,58 @@
 // 03-shell-2 §3.6.2.1: status line wording, first matching row wins (14 rows), and foo's-chat job scoping.
 import { describe, expect, it } from 'vitest';
 import { quietUntil, statusLine, type StatusInput } from '../../src/renderer/shell/statusLine';
-import type { ChatRow, JobRow } from '../../src/renderer/_m1b-stubs';
+import type { CardRow, ChatRow, HelperRow, JobRow } from '../../src/shared/types';
 
 const NOW = Date.UTC(2026, 9, 16, 3, 30); // Fri 16 Oct 2026, 9:00 AM IST
 
-const chat = (over: Partial<ChatRow> = {}): ChatRow => ({
-  id: 'c_foo',
-  kind: 'foo',
-  helperId: null,
-  title: 'foo',
-  avatarRef: null,
-  colorToken: null,
-  waJid: null,
-  pinned: true,
-  archived: false,
-  unreadCount: 0,
-  pill: null,
-  lastActivityAt: NOW,
-  createdAt: NOW,
-  private: false,
-  rev: 1,
-  lastLine: '',
-  lastTime: NOW,
-  hasDraft: false,
-  face: 'living:default',
-  ...over,
-});
+const chat = (over: Partial<ChatRow> = {}): ChatRow =>
+  ({
+    id: 'c_foo',
+    kind: 'foo',
+    helperId: null,
+    title: 'foo',
+    avatarRef: null,
+    colorToken: null,
+    waJid: null,
+    pinned: true,
+    archived: false,
+    unreadCount: 0,
+    pill: null,
+    lastActivityAt: NOW,
+    createdAt: NOW,
+    private: false,
+    rev: 1,
+    lastLine: '',
+    lastTime: NOW,
+    hasDraft: false,
+    face: 'living:default',
+    ...over,
+  }) as ChatRow;
 
-const job = (over: Partial<JobRow>): JobRow => ({
-  id: 'j1',
-  chatId: 'c_foo',
-  originChatId: 'c_foo',
-  ownerKind: 'foo',
-  ownerId: null,
-  title: 'Goa stay',
-  state: 'working',
-  waitingReason: null,
-  needsYouCardId: null,
-  currentStepIdx: 2,
-  stepCount: 4,
-  route: null,
-  usesBrowser: false,
-  createdAt: NOW,
-  startedAt: NOW,
-  finishedAt: null,
-  rev: 1,
-  stepsDone: 2,
-  nowLine: 'Comparing prices',
-  slow: false,
-  ...over,
-});
+const job = (over: Partial<JobRow>): JobRow =>
+  ({
+    id: 'j1',
+    chatId: 'c_foo',
+    originChatId: 'c_foo',
+    ownerKind: 'foo',
+    ownerId: null,
+    title: 'Goa stay',
+    state: 'working',
+    waitingReason: null,
+    needsYouCardId: null,
+    currentStepIdx: 2,
+    stepCount: 4,
+    route: null,
+    usesBrowser: false,
+    createdAt: NOW,
+    startedAt: NOW,
+    finishedAt: null,
+    rev: 1,
+    stepsDone: 2,
+    nowLine: 'Comparing prices',
+    slow: false,
+    ...over,
+  }) as JobRow;
 
 const base = (over: Partial<StatusInput> = {}): StatusInput => ({
   chat: chat(),
@@ -77,7 +79,16 @@ const everything = (): Partial<StatusInput> => ({
     job({ id: 'w', state: 'working', usesBrowser: true }),
     job({ id: 'p', state: 'waiting', waitingReason: 'net_offline' }),
   ],
-  cards: { k1: { id: 'k1', chatId: 'c_foo', type: 'payment', state: 'pending', title: 'Pay Taj Holiday Village', rev: 1 } },
+  cards: {
+    k1: {
+      id: 'k1',
+      chatId: 'c_foo',
+      type: 'payment',
+      state: 'pending',
+      payload: { payee: 'Pay Taj Holiday Village' },
+      rev: 1,
+    } as unknown as CardRow,
+  },
   connection: 'offline',
   ai: { displayName: 'Claude', state: 'down' },
   takenOverJobIds: ['w'],
@@ -136,7 +147,13 @@ describe('status line precedence (first matching row wins)', () => {
   });
   it('rows 12–14 idle per chat kind', () => {
     expect(statusLine(base())).toMatchObject({ row: 12, text: 'Awake on your PC', tone: 'ok', dot: true });
-    const helper = { id: 'h1', name: 'Trips', jobText: 'Plans trips and books travel', faceRef: 'letter:T', colorToken: '--h-terracotta' };
+    const helper = {
+      id: 'h1',
+      name: 'Trips',
+      jobText: 'Plans trips and books travel',
+      faceRef: 'letter:T',
+      colorToken: '--h-terracotta',
+    } as HelperRow;
     expect(statusLine(base({ chat: chat({ id: 'c_t', kind: 'helper', helperId: 'h1' }), helper }))).toMatchObject({
       row: 13,
       text: 'Plans trips and books travel',

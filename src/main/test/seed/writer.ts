@@ -420,6 +420,15 @@ export class SeedWriter {
 
   /** Points every chat at its newest message, sets next_seq and derives chats.pill at `now` (call once at the end). */
   finish(now: number): { chats: number; messages: number } {
+    // Seeds write side stories out of time order; a real chat's seq follows time, so renumber by created_at (two passes for
+    // UNIQUE (chat_id, seq)).
+    const ids = this.db.prepare('SELECT id FROM messages WHERE chat_id = ? ORDER BY created_at, seq').pluck();
+    const renum = this.db.prepare('UPDATE messages SET seq = ? WHERE id = ?');
+    for (const chatId of this.seq.keys()) {
+      const list = ids.all(chatId) as string[];
+      list.forEach((id, i) => renum.run(1_000_000 + i + 1, id));
+      list.forEach((id, i) => renum.run(i + 1, id));
+    }
     const upd = this.db.prepare('UPDATE chats SET last_message_id = ?, next_seq = ? WHERE id = ?');
     for (const [chatId, m] of this.last) upd.run(m.id, (this.seq.get(chatId) ?? 0) + 1, chatId);
     for (const id of this.db.prepare('SELECT id FROM chats').pluck().all() as string[]) recomputePill(this.db, id, now);

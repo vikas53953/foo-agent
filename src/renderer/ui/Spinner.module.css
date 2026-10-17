@@ -1,0 +1,34 @@
+/* Spec: 02 F7 ring spinner (16 / 20 / 24; --accent arc), 02-3 §F25.4 (still under reduced motion or animations off). */
+.spinner {
+  display: inline-block;
+  flex: none;
+  border: 1.5px solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: var(--r-full);
+  animation: spin var(--m-shimmer) linear infinite;
+}
+.s16 {
+  width: var(--spinner-sm);
+  height: var(--spinner-sm);
+}
+.s20 {
+  width: var(--spinner-md);
+  height: var(--spinner-md);
+}
+.s24 {
+  width: var(--spinner-lg);
+  height: var(--spinner-lg);
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}
+:global(:root[data-motion='off']) .spinner {
+  animation: none;
+}

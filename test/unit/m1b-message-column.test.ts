@@ -13,7 +13,7 @@ import {
 } from '../../src/renderer/messages/stickToBottom';
 import { buildRows, dateLabel, firstUnreadId } from '../../src/renderer/messages/rows';
 import { findMatches, stepMatch } from '../../src/renderer/shell/findMatches';
-import type { MessageRow } from '../../src/renderer/_m1b-stubs';
+import type { MessageRow } from '../../src/shared/types';
 
 const TZ = 'Asia/Kolkata';
 const NOW = Date.UTC(2026, 9, 16, 3, 30); // Fri 16 Oct 2026, 9:00 AM IST
@@ -59,23 +59,24 @@ describe('date separator copy (§3.6.5, Article 21)', () => {
 });
 
 let seq = 0;
-const msg = (over: Partial<MessageRow>): MessageRow => ({
-  id: `m${++seq}`,
-  chatId: 'c1',
-  seq,
-  authorKind: 'foo',
-  authorId: null,
-  kind: 'text',
-  markerKind: null,
-  text: 'hello',
-  status: 'complete',
-  cardId: null,
-  jobId: null,
-  createdAt: NOW,
-  rev: 1,
-  reactions: [],
-  ...over,
-});
+const msg = (over: Partial<MessageRow>): MessageRow =>
+  ({
+    id: `m${++seq}`,
+    chatId: 'c1',
+    seq,
+    authorKind: 'foo',
+    authorId: null,
+    kind: 'text',
+    markerKind: null,
+    text: 'hello',
+    status: 'complete',
+    cardId: null,
+    jobId: null,
+    createdAt: NOW,
+    rev: 1,
+    reactions: [],
+    ...over,
+  }) as MessageRow;
 
 describe('virtual rows (§3.6.5, §3.6.7)', () => {
   it('one separator before the first message of each day; unread divider before the first unread', () => {

@@ -5,16 +5,21 @@
 import { t } from '../../shared/copy/t';
 import { formatInr } from '../../shared/format';
 import { TID } from '../../shared/testids';
-import { Meter, navigate, selectAiStatus, selectSpend, useStore } from '../_m1b-stubs';
+import { navigate, useStore } from '../store/index';
+import { selectAi } from '../store/live';
+import { selectSpend } from '../store/spend';
+import { Meter } from '../ui/Meter';
 import section from './PanelSection.module.css';
 import styles from './SpentMeters.module.css';
 import { meterState } from './spentMeters';
 
 export function SpentMeters() {
   const spend = useStore(selectSpend);
-  const ai = useStore(selectAiStatus);
+  const ai = useStore(selectAi);
+  if (!spend) return null;
+  const aiName = ai?.displayName ?? '';
   const plan = spend.aiBilling === 'plan';
-  const planPct = spend.planUsedPct ?? ai.planUsedPct ?? null;
+  const planPct = spend.planUsedPct ?? ai?.planUsedPct ?? null;
 
   return (
     <section className={section.section} data-testid={TID.appPanelSpent} aria-labelledby="app-panel-spent-title">
@@ -27,10 +32,10 @@ export function SpentMeters() {
         <div className={styles.row} data-testid={TID.appPanelSpentAi} data-state="plan">
           <span className={styles.head}>
             <span className={styles.label}>{t('app.panel.spent.ai')}</span>
-            <span className={styles.amount}>{t('app.panel.spent.plan', { ai: ai.displayName })}</span>
+            <span className={styles.amount}>{t('app.panel.spent.plan', { ai: aiName })}</span>
           </span>
           {planPct !== null && (
-            <span className={styles.sub}>{t('app.panel.spent.plan_usage', { ai: ai.displayName, pct: Math.round(planPct) })}</span>
+            <span className={styles.sub}>{t('app.panel.spent.plan_usage', { ai: aiName, pct: Math.round(planPct) })}</span>
           )}
         </div>
       ) : (

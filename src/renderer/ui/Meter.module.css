@@ -1,0 +1,20 @@
+/* Spec: 03-shell-2 §3.7.3.4 meter (--meter-h, --r-full, --bg-sunken track; --accent / --warn / --bad fill). */
+.meter {
+  display: block;
+  height: var(--meter-h);
+  overflow: hidden;
+  border-radius: var(--r-full);
+  background: var(--bg-sunken);
+}
+.fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+}
+.meter[data-state='warn'] .fill {
+  background: var(--warn);
+}
+.meter[data-state='bad'] .fill {
+  background: var(--bad);
+}

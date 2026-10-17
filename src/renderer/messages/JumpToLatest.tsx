@@ -3,7 +3,7 @@
 // with ChevronDown 16 + 4 gap, "99+" cap; Narrator "Go to newest message" / ", {n} new").
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
-import { Icon } from '../_m1b-stubs';
+import { Icon } from '../ui/Icon';
 import styles from './JumpToLatest.module.css';
 import { jumpCountLabel } from './stickToBottom';
 

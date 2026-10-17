@@ -1,6 +1,6 @@
 // Spec: 03-shell-2 §3.6.3 (find bar: local search over the loaded messages; Enter next, Shift+Enter previous; "{i} of {n}"),
 // J22 step 5. Pure.
-import type { MessageRow } from '../_m1b-stubs';
+import type { MessageRow } from '../../shared/types';
 
 export interface FindMatch {
   messageId: string;

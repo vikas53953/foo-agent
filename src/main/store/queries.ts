@@ -18,6 +18,7 @@ import {
   routineRow,
   type DbRow,
 } from '../db/rows';
+import { cardTitle } from '../../shared/cards';
 import { monthKey } from '../../shared/format';
 import type { Settings } from '../../shared/settings';
 import type {
@@ -267,9 +268,6 @@ function groupBy<T>(rows: T[], key: (r: T) => string): Map<string, T[]> {
   }
   return out;
 }
-
-const cardTitle = (payload: Record<string, unknown>): string =>
-  String(payload.title ?? payload.question ?? payload.payee ?? payload.site ?? '');
 
 /** Builds ChatRows with every derived field. `ids` limits the read to some chats (patches after a change). */
 export function chatRows(db: Db, ctx: ListContext, ids: string[] | null = null): ChatRow[] {

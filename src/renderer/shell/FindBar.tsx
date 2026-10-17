@@ -4,7 +4,12 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
-import { IconButton, TextField, selectChatMessages, setFindOpen, useStore, type MessageRow } from '../_m1b-stubs';
+import type { MessageRow } from '../../shared/types';
+import { focusPane } from '../a11y/focusTargets';
+import { setFindOpen, useStore } from '../store/index';
+import { selectChatMessages } from '../store/messages';
+import { IconButton } from '../ui/IconButton';
+import { TextField } from '../ui/TextField';
 import styles from './FindBar.module.css';
 import { findMatches, stepMatch, type FindMatch } from './findMatches';
 
@@ -50,8 +55,7 @@ export function FindProvider({ chatId, open, children }: { chatId: string; open:
   return <FindContext.Provider value={value}>{children}</FindContext.Provider>;
 }
 
-export const focusMessageList = () =>
-  requestAnimationFrame(() => document.querySelector<HTMLElement>(`[data-testid="${TID.threadLog}"]`)?.focus());
+export const focusMessageList = () => requestAnimationFrame(() => void focusPane('messages'));
 
 export function closeFind() {
   setFindOpen(false);

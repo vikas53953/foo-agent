@@ -2,13 +2,17 @@
 // first, then the line "Private things stay in your own chats." — Article 14).
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
-import { Avatar, selectHelpers, selectSettings, useStore, type ChatRow } from '../_m1b-stubs';
+import type { ChatRow } from '../../shared/types';
+import { useStore } from '../store/index';
+import { selectHelpers } from '../store/helpers';
+import { selectFirstName } from '../store/settings';
+import { Avatar } from '../ui/Avatar';
 import styles from './GroupMembers.module.css';
 import section from './PanelSection.module.css';
 
 export function GroupMembers({ chat }: { chat: ChatRow }) {
   const helpers = useStore(selectHelpers);
-  const settings = useStore(selectSettings);
+  const firstName = useStore(selectFirstName);
   const you = t('app.panel.members.you');
   const members = (chat.memberIds ?? []).flatMap((id) => {
     const h = helpers[id];
@@ -22,15 +26,16 @@ export function GroupMembers({ chat }: { chat: ChatRow }) {
       <ul className={styles.list}>
         <li className={styles.row} data-row-id="you">
           <Avatar
-            faceRef={`letter:${(settings.user.firstName ?? you)[0]?.toUpperCase() ?? ''}`}
-            name={settings.user.firstName ?? you}
-            size={26}
+            face={`letter:${(firstName ?? you).slice(0, 1).toLocaleUpperCase('en-IN')}`}
+            name={firstName ?? you}
+            kind="user"
+            size="inline"
           />
           <span className={styles.name}>{you}</span>
         </li>
         {members.map((h) => (
           <li key={h.id} className={styles.row} data-row-id={h.id}>
-            <Avatar faceRef={h.faceRef} name={h.name} size={26} color={h.colorToken} />
+            <Avatar face={h.faceRef} name={h.name} kind="helper" size="inline" color={h.colorToken} />
             <span className={styles.name}>{h.name}</span>
           </li>
         ))}

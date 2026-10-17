@@ -75,6 +75,14 @@ export const settingsSchema = z.object({
     bigPaymentPaise: z.number().int().min(0).max(1_000_000),
   }),
   notifications: z.object({
+    quiet: z
+      .object({
+        on: z.boolean(),
+        from: z.string().regex(/^\d{2}:\d{2}$/),
+        to: z.string().regex(/^\d{2}:\d{2}$/),
+        days: z.array(z.number().int().min(0).max(6)).max(7),
+      })
+      .refine((q) => q.from !== q.to),
     mutedChats: z.record(z.string(), z.union([z.number().int(), z.literal('forever')])),
   }),
   flags: z.object({

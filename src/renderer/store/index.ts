@@ -8,6 +8,7 @@ import type { ChatFilter, DialogId, View } from '../../shared/types';
 import { initialCards, type CardsState } from './cards';
 import { initialChats, type ChatsState } from './chats';
 import { initialConnections, type ConnectionsState } from './connections';
+import { initialHelpers, type HelpersState } from './helpers';
 import { initialJobs, type JobsState } from './jobs';
 import { initialLive, type LiveState } from './live';
 import { initialMessages, type MessagesState } from './messages';
@@ -27,6 +28,8 @@ export interface RootState {
   connections: ConnectionsState;
   spend: SpendState;
   settings: SettingsState;
+  /** Helper names, jobs and faces for the chat header and right shell (store/helpers.ts). */
+  helpers: HelpersState;
 }
 
 export function initialState(now = Date.now()): RootState {
@@ -40,6 +43,7 @@ export function initialState(now = Date.now()): RootState {
     connections: initialConnections(),
     spend: initialSpend(),
     settings: initialSettings(),
+    helpers: initialHelpers(),
   };
 }
 
@@ -133,5 +137,19 @@ export function setRightShellOpenOverlay(open: boolean): void {
 export function setFocusReturn(el: HTMLElement | null): void {
   update((s) => {
     s.ui.focusReturn = el;
+  });
+}
+
+/** Clears the message selection (selection bar Cancel, Esc ladder). */
+export function clearSelection(): void {
+  update((s) => {
+    s.ui.selection = new Set();
+  });
+}
+
+/** Remembers a chat's scroll position for this session (03-shell-2 §3.6.4). */
+export function saveScroll(chatId: string, top: number): void {
+  update((s) => {
+    s.ui.scroll[chatId] = top;
   });
 }

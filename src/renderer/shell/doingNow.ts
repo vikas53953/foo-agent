@@ -1,7 +1,9 @@
 // Spec: 03-shell-2 §3.7.3.1 (Doing now: order, 5 rows max with ≤ 2 finished, line 2 copy; X-148 In progress / Scheduled / Done
 // tabs), §3.7.4 (per-chat scope). Pure functions; DoingNow.tsx renders them.
 import { t } from '../../shared/copy/t';
-import type { CardRow, ChatRow, JobRow, RoutineRow } from '../_m1b-stubs';
+import type { CardRow, ChatRow, JobRow, RoutineRow } from '../../shared/types';
+import { titleOfCard } from '../cards/registry';
+import type { IconName } from '../ui/icons/registry';
 import { untilText } from './statusLine';
 
 export const DOING_MAX = 5;
@@ -108,7 +110,7 @@ export function doingLine(j: JobRow, c: LineCtx): string {
     }
     case 'needs_you': {
       const card = j.needsYouCardId ? c.cards[j.needsYouCardId] : undefined;
-      return t('app.panel.doing.line.needs_you', { title: card?.title ?? j.title });
+      return t('app.panel.doing.line.needs_you', { title: titleOfCard(card) ?? j.title });
     }
     case 'done':
     case 'done_unverified':
@@ -120,7 +122,7 @@ export function doingLine(j: JobRow, c: LineCtx): string {
 }
 
 /** Glyph per state (§3.7.3.1). */
-export function doingGlyph(state: JobRow['state']): { icon: string | null; tone: 'accent' | 'fg3' | 'fg2' | 'warn' | 'ok' | 'bad' } {
+export function doingGlyph(state: JobRow['state']): { icon: IconName | null; tone: 'accent' | 'fg3' | 'fg2' | 'warn' | 'ok' | 'bad' } {
   switch (state) {
     case 'working':
       return { icon: null, tone: 'accent' };

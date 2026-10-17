@@ -1,9 +1,6 @@
 // M1 left shell and chat list (03-shell-1 §3.3, §3.4; 03-shell-2 §3.9.3) on the demo seed (08-3 §22.9).
-// Acceptance 3.11.1, 3.11.3, 3.11.4, 3.11.5, 3.11.7; Article 29 (offline: one line, one fix button); Article 26a (axe on
-// the shell, light and dark); PERF-01 (cold start to a usable list) and PERF-03 (chat switch) smoke timings on the perf
-// seed; FID-14 rows SV-13, 14, 15, 17, 23, 24, 25. The trace ids for Article 26a, Article 29 and PERF-03 are routed to
-// test/e2e/m1-shell.spec.ts in spec/trace.csv, so the titles here name the behaviour, not the id (FID-18).
-import AxeBuilder from '@axe-core/playwright';
+// Acceptance 3.11.1, 3.11.3, 3.11.4, 3.11.5, 3.11.7; FID-14 rows SV-13, 14, 15, 17, 23, 24, 25. The audit, offline and chat
+// switch tests whose trace ids spec/trace.csv routes to test/e2e/m1-shell.spec.ts live there (FID-18).
 import { expect, test, type ElectronApplication, type Page } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -103,19 +100,6 @@ test('3.11.7: offline for 10 s shows exactly one offline line with one button', 
   await app.close();
 });
 
-test('offline is one line with one fix button and nothing is lost (Article 29 behaviour)', async () => {
-  const { app, page } = await start();
-  const before = await names(page);
-  await page.evaluate(() => window.__fooTest!.setOnline(false));
-  await page.evaluate(() => window.__fooTest!.clock.advance(5_000));
-  await expect(page.getByTestId('banner-strip')).toHaveCount(0); // a short blip shows nothing
-  await page.evaluate(() => window.__fooTest!.clock.advance(5_000));
-  await expect(page.getByTestId('banner-strip')).toHaveCount(1);
-  expect(await names(page)).toEqual(before);
-  await page.getByTestId('banner-action').click();
-  await app.close();
-});
-
 test('list keys, search, chips and the context menu', async () => {
   const { app, page } = await start();
   await page.getByTestId('chatlist-row').first().focus();
@@ -149,33 +133,6 @@ test('list keys, search, chips and the context menu', async () => {
   await expect(page.getByTestId('chatlist-status')).toHaveText('You can pin up to 3 chats.');
   await page.keyboard.press('Control+2');
   await expect(page.locator('[data-testid="chatlist-row"][aria-selected="true"]')).toHaveCount(1);
-  await app.close();
-});
-
-test('the shell passes axe in light and dark (Article 26a audit)', async () => {
-  const { app, page } = await start();
-  for (const theme of ['light', 'dark'] as const) {
-    await page.evaluate((t) => window.__fooTest!.theme(t), theme);
-    const r = await new AxeBuilder({ page }).include('[data-testid="sidebar"]').analyze();
-    expect(r.violations.map((v) => `${theme} ${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`)).toEqual([]);
-  }
-  await app.close();
-});
-
-test('perf seed: list ready and chat switch smoke timings', async () => {
-  const { app, page, seededMs } = await start('perf');
-  console.log(`perf seed to first row: ${seededMs} ms`);
-  const rows = page.getByTestId('chatlist-row');
-  expect(await rows.count()).toBeGreaterThan(10);
-  const times: number[] = [];
-  for (let i = 1; i <= 5; i++) {
-    const t0 = Date.now();
-    await rows.nth(i).click();
-    await expect(rows.nth(i)).toHaveAttribute('aria-selected', 'true');
-    times.push(Date.now() - t0);
-  }
-  console.log(`chat switch ms: ${times.join(', ')}`);
-  expect(Math.max(...times)).toBeLessThan(2_000); // smoke only; budgets are measured on the reference laptop (10-2 §E)
   await app.close();
 });
 

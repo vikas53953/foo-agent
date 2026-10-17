@@ -3,7 +3,8 @@
 // history: the 04 §19.5 start_of_chat line, --t-caption --fg-3, 24 above the first date separator), 02-2 §F13.4.
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
-import { Button, Spinner } from '../_m1b-stubs';
+import { Button } from '../ui/Button';
+import { Spinner } from '../ui/Spinner';
 import styles from './LoadOlder.module.css';
 
 export function LoadOlder({ state, onRetry }: { state: 'idle' | 'loading' | 'failed'; onRetry: () => void }) {

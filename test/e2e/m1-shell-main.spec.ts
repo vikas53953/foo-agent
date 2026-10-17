@@ -1,7 +1,6 @@
 // Spec: 03-shell-2 §3.11 (acceptance 3.11.1, 3.11.2, 3.11.3 header back button, 3.11.5 header part, 3.11.8, 3.11.10),
-// 10-acceptance-2 ART-26a (accessibility audit on builder B's surfaces), 11-fidelity FID-14 (SV-15, SV-18, SV-29, SV-32).
-// Runs in CI only (Electron + the demo seed: chats foo, Trips, Money, Home, Family group). Builder A's test ids (chatlist-row,
-// sidebar, composer-field, banner-*) are written as strings until the M1 merge puts them in TID.
+// 11-fidelity FID-14 (SV-15, SV-18, SV-29, SV-32). Runs in Electron on the demo seed (chats foo, Trips, Money, Home, Family
+// group). The accessibility audit of these surfaces is in m1-shell.spec.ts with the list's.
 import { expect, test, type ElectronApplication, type Page } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -10,7 +9,8 @@ import { checkSpecValues, readRows, type SvResult } from '../fidelity/spec-value
 import { launch } from './launch';
 
 const byTid = (id: string) => `[data-testid="${id}"]`;
-const ROW = 'chatlist-row';
+const ROW = TID.chatlistRow;
+const COMPOSER = '[data-composer-row] textarea, [data-composer-row] [contenteditable="true"]';
 
 async function start(): Promise<{ app: ElectronApplication; page: Page }> {
   const app = await launch();
@@ -41,9 +41,9 @@ const focusedPane = (page: Page) =>
       const el = document.activeElement;
       if (!el) return null;
       if (el.closest('[data-testid="banner-strip"]')) return 'banner';
-      if (el.closest('[data-testid="sidebar"]')) return 'left';
-      if (el.closest(`[data-testid="${panel}"]`)) return 'right';
-      if (el.closest('[data-testid="composer-field"]') || el.closest('[data-composer-row]')) return 'composer';
+      if (el.closest('[data-testid="sidebar"]')) return 'chatlist';
+      if (el.closest(`[data-testid="${panel}"]`)) return 'panel';
+      if (el.closest('[data-composer-row]')) return 'composer';
       if (el.closest(`[data-testid="${log}"]`)) return 'messages';
       return null;
     },
@@ -117,7 +117,7 @@ test('3.11.2: at 1100 wide Ctrl+Shift+D overlays without moving the chat; Esc cl
   await resize(app, page, 1100, 760);
   await openChat(page, 'foo');
   const panel = page.getByTestId(TID.appPanel);
-  await expect(panel).toHaveAttribute('data-state', 'closed');
+  await expect(panel).toHaveCount(0);
   const before = await box(page, byTid(TID.thread));
   await page.getByTestId(TID.threadLog).focus();
   await page.keyboard.press('Control+Shift+D');
@@ -126,7 +126,7 @@ test('3.11.2: at 1100 wide Ctrl+Shift+D overlays without moving the chat; Esc cl
   expect(await box(page, byTid(TID.thread))).toEqual(before);
   await expect(page.locator(`${byTid(TID.appPanel)} [data-panel-title]`)).toBeFocused();
   await page.keyboard.press('Escape');
-  await expect(panel).toHaveAttribute('data-state', 'closed');
+  await expect(panel).toHaveCount(0);
   await expect(page.getByTestId(TID.chatHeaderPanel)).toBeFocused();
   await app.close();
 });
@@ -168,9 +168,9 @@ test('3.11.8: F6 with the panel open and no banner visits list → messages → 
   await expect(page.getByTestId(TID.appPanel)).toHaveAttribute('data-state', 'open');
   await expect(page.getByTestId('banner-strip')).toHaveCount(0);
   await page.locator(`${byTid(ROW)}[aria-selected="true"]`).focus();
-  expect(await focusedPane(page)).toBe('left');
-  const composer = (await page.getByTestId('composer-field').count()) > 0;
-  const expected = composer ? ['messages', 'composer', 'right', 'left'] : ['messages', 'right', 'left'];
+  expect(await focusedPane(page)).toBe('chatlist');
+  const composer = (await page.locator(COMPOSER).count()) > 0;
+  const expected = composer ? ['messages', 'composer', 'panel', 'chatlist'] : ['messages', 'panel', 'chatlist'];
   const visited: (string | null)[] = [];
   for (let i = 0; i < expected.length; i++) {
     await page.keyboard.press('F6');
@@ -178,7 +178,7 @@ test('3.11.8: F6 with the panel open and no banner visits list → messages → 
   }
   expect(visited).toEqual(expected);
   await page.keyboard.press('Shift+F6');
-  expect(await focusedPane(page)).toBe('right');
+  expect(await focusedPane(page)).toBe('panel');
   await app.close();
 });
 
@@ -193,64 +193,5 @@ test('3.11.10: a group chat shows "In this group" instead of memory and no "Spen
   await expect(members).toContainText('Private things stay in your own chats.');
   await expect(page.getByTestId(TID.appPanelKnow)).toHaveCount(0);
   await expect(page.getByTestId(TID.appPanelSpent)).toHaveCount(0);
-  await app.close();
-});
-
-test('accessibility audit on builder B surfaces (input to the m1-shell.spec.ts audit): chat header, find bar, message list, right shell', async () => {
-  const { app, page } = await start();
-  await resize(app, page, 1440, 900);
-  await openChat(page, 'foo');
-  await page.keyboard.press('Control+F');
-  await expect(page.getByTestId(TID.threadFind)).toBeVisible();
-  const include = [byTid(TID.thread), byTid(TID.appPanel)];
-
-  // axe-core when the project has it; otherwise the hand checks below carry the audit.
-  const axeModule = '@axe-core/playwright';
-  const axe = (await import(/* @vite-ignore */ axeModule).catch(() => null)) as {
-    default: new (o: { page: Page }) => {
-      include(s: string): unknown;
-      analyze(): Promise<{ violations: { id: string; impact: string | null }[] }>;
-    };
-  } | null;
-  if (axe) {
-    const builder = new axe.default({ page });
-    for (const s of include) builder.include(s);
-    const { violations } = await builder.analyze();
-    expect(violations.filter((v) => v.impact === 'serious' || v.impact === 'critical')).toEqual([]);
-  }
-
-  const problems = await page.evaluate((scopes) => {
-    const out: string[] = [];
-    const name = (el: Element) =>
-      (el.getAttribute('aria-label') ?? '') ||
-      (el.getAttribute('aria-labelledby') ?? '')
-        .split(/\s+/)
-        .map((id) => document.getElementById(id)?.textContent ?? '')
-        .join(' ')
-        .trim() ||
-      (el.textContent ?? '').trim();
-    for (const scope of scopes) {
-      for (const el of Array.from(
-        document.querySelectorAll(`${scope} button, ${scope} [role="button"], ${scope} input, ${scope} [role="radio"]`),
-      )) {
-        const own = el.tagName === 'INPUT' ? el.getAttribute('aria-label') || el.getAttribute('placeholder') : name(el);
-        if (!own) out.push(`unnamed ${el.tagName.toLowerCase()} ${el.getAttribute('data-testid') ?? ''}`);
-      }
-      for (const el of Array.from(document.querySelectorAll(`${scope} [role="meter"]`))) {
-        if (!el.getAttribute('aria-valuenow') || !el.getAttribute('aria-valuemax') || !name(el))
-          out.push(`meter ${el.getAttribute('data-testid')}`);
-      }
-    }
-    const labelled = (el: Element) => !!(el.getAttribute('aria-label') || el.getAttribute('aria-labelledby'));
-    const landmarks = Array.from(document.querySelectorAll('main, aside, [role="log"]')).filter(
-      (el) => !labelled(el) && el.getAttribute('aria-hidden') !== 'true',
-    );
-    for (const el of landmarks) out.push(`unnamed landmark ${el.tagName.toLowerCase()}`);
-    const ids = Array.from(document.querySelectorAll('[id]')).map((e) => e.id);
-    for (const id of Array.from(new Set(ids.filter((id, i) => ids.indexOf(id) !== i)))) out.push(`duplicate id ${id}`);
-    if (document.querySelectorAll('h1').length !== 1) out.push(`h1 count ${document.querySelectorAll('h1').length}`);
-    return out;
-  }, include);
-  expect(problems).toEqual([]);
   await app.close();
 });

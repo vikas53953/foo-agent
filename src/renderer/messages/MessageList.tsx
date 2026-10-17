@@ -9,22 +9,15 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, typ
 import { t } from '../../shared/copy/t';
 import { bp, motion } from '../../shared/tokens';
 import { TID } from '../../shared/testids';
-import {
-  CARD_ESTIMATE,
-  getState,
-  invoke,
-  putMessages,
-  saveScroll,
-  selectCardsById,
-  selectChatMessages,
-  selectSettings,
-  useNow,
-  useReducedMotion,
-  useStore,
-  type CardRow,
-  type ChatRow,
-  type MessageRow,
-} from '../_m1b-stubs';
+import type { CardRow, ChatRow, MessageRow } from '../../shared/types';
+import { registerFocusTarget } from '../a11y/focusTargets';
+import { useReducedMotion } from '../a11y/useReducedMotion';
+import { CARD_ESTIMATE, titleOfCard } from '../cards/registry';
+import { invoke } from '../ipc/client';
+import { saveScroll, update, useStore } from '../store/index';
+import { selectNow } from '../store/live';
+import { prependMessagesReducer, selectChatMessages } from '../store/messages';
+import { selectAgentName, selectTimeZone } from '../store/settings';
 import { useFind } from '../shell/FindBar';
 import { DateSeparator, StickyDate } from './DateSeparator';
 import { JumpToLatest } from './JumpToLatest';
@@ -37,8 +30,6 @@ import { UnreadDivider } from './UnreadDivider';
 import { useStickToBottom } from './useStickToBottom';
 
 export const PAGE = 50;
-/** F6 (useF6Ladder) asks the list to focus its last focused message, else the newest. */
-export const FOCUS_MESSAGES_EVENT = 'foo:focus-messages';
 
 const remPx = () => parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
 
@@ -46,9 +37,10 @@ type OlderState = 'idle' | 'pending' | 'loading' | 'failed';
 
 export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: number } }) {
   const slice = useStore(selectChatMessages(chat.id));
-  const cards = useStore(selectCardsById);
-  const settings = useStore(selectSettings);
-  const now = useNow();
+  const cards = useStore((s) => s.cards.byId);
+  const tz = useStore(selectTimeZone);
+  const agentName = useStore(selectAgentName);
+  const now = useStore(selectNow);
   const reduced = useReducedMotion();
   const find = useFind();
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -66,7 +58,11 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     return () => ro.disconnect();
   }, []);
   const stickyTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const tz = settings.locale.timeZone;
+  // The sticky date follows the user's scrolling only (§3.6.5), not the scroll the list makes when it opens or follows.
+  const userInputAt = useRef(-Infinity);
+  const markUserInput = () => {
+    userInputAt.current = performance.now();
+  };
 
   const messages = useMemo<MessageRow[]>(() => (slice ? slice.ids.map((id) => slice.byId[id]!) : []), [slice]);
   // The unread divider is fixed when the chat opens and removed when the user sends a message here (§3.6.5).
@@ -88,10 +84,10 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
       chatTitle: chat.title,
       chatCreatedAt: chat.createdAt,
       isFoo: chat.kind === 'foo' && !chat.private,
-      agentName: settings.identity.agentName,
+      agentName,
     });
     return r;
-  }, [messages, now, tz, slice?.hasMore, unreadFrom, unread.count, chat, settings.identity.agentName]);
+  }, [messages, now, tz, slice?.hasMore, unreadFrom, unread.count, chat, agentName]);
 
   const cardType = useCallback((id: string) => (cards as Record<string, CardRow>)[id]?.type, [cards]);
   const rem = useMemo(remPx, []);
@@ -117,7 +113,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     if (opened.current || !rows.length || !scrollRef.current) return;
     opened.current = true;
     const el = scrollRef.current;
-    const saved = getState().ui.scroll[chat.id];
+    const saved = useStore.getState().ui.scroll[chat.id];
     if (saved !== undefined) {
       el.scrollTop = saved;
       return;
@@ -141,13 +137,14 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   useEffect(() => stick.onSizeChange(), [total]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadOlder = useCallback(async () => {
-    const s = getState().messages.byChat[chat.id];
+    const s = useStore.getState().messages.byChat[chat.id];
     if (!s?.hasMore) return;
     setOlder('pending');
     const slow = setTimeout(() => setOlder((o) => (o === 'pending' ? 'loading' : o)), motion['delay-loading']);
     try {
-      const rowsOlder = await invoke('message:list', { chatId: chat.id, beforeSeq: s.oldestSeq ?? undefined, limit: PAGE });
-      putMessages(chat.id, rowsOlder, { prepend: true, hasMore: rowsOlder.length >= PAGE });
+      const r = await invoke('message:list', { chatId: chat.id, beforeSeq: s.oldestSeq ?? undefined, limit: PAGE });
+      if (!r.ok) throw new Error(r.error.kind);
+      update((d) => prependMessagesReducer(d.messages, chat.id, r.value, PAGE));
       setOlder('idle');
     } catch {
       setOlder('failed');
@@ -169,7 +166,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     if (nearTop(el.scrollTop) && older === 'idle' && slice?.hasMore) void loadOlder();
     const firstVisible = v.getVirtualItems().find((i) => i.end > el.scrollTop + rem);
     const label = firstVisible ? dayLabels[firstVisible.index] : '';
-    if (label && el.scrollTop > 0) {
+    if (label && el.scrollTop > 0 && performance.now() - userInputAt.current < motion['delay-sticky-hide']) {
       setSticky({ label, shown: true });
       clearTimeout(stickyTimer.current);
       stickyTimer.current = setTimeout(() => setSticky((s) => ({ ...s, shown: false })), motion['delay-sticky-hide']);
@@ -187,18 +184,20 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   );
   const messageIndexes = useMemo(() => rows.flatMap((r, i) => (r.kind === 'message' ? [i] : [])), [rows]);
 
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const onF6 = () => {
-      const i = lastFocused.current ? rows.findIndex((r) => r.key === lastFocused.current) : -1;
-      const index = i >= 0 ? i : messageIndexes[messageIndexes.length - 1];
-      if (index === undefined) el.focus();
-      else focusRow(index);
-    };
-    el.addEventListener(FOCUS_MESSAGES_EVENT, onF6);
-    return () => el.removeEventListener(FOCUS_MESSAGES_EVENT, onF6);
-  }, [rows, messageIndexes, focusRow]);
+  // F6 and the find bar's Esc land on the last focused message, else the newest (03-shell-2 §3.9.2).
+  useEffect(
+    () =>
+      registerFocusTarget('messages', () => {
+        const el = scrollRef.current;
+        if (!el || !el.isConnected) return false;
+        const i = lastFocused.current ? rows.findIndex((r) => r.key === lastFocused.current) : -1;
+        const index = i >= 0 ? i : messageIndexes[messageIndexes.length - 1];
+        if (index === undefined) el.focus();
+        else focusRow(index);
+        return true;
+      }),
+    [rows, messageIndexes, focusRow],
+  );
 
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     const current = (document.activeElement as HTMLElement | null)?.closest<HTMLElement>('[data-message-id]');
@@ -266,7 +265,13 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
         tabIndex={0}
         data-testid={TID.threadLog}
         onScroll={onScroll}
-        onKeyDown={onKeyDown}
+        onWheel={markUserInput}
+        onPointerDown={markUserInput}
+        onTouchStart={markUserInput}
+        onKeyDown={(e) => {
+          markUserInput();
+          onKeyDown(e);
+        }}
         onFocus={(e) => {
           const row = (e.target as HTMLElement).closest<HTMLElement>('[data-message-id]');
           if (row?.dataset.messageId) lastFocused.current = row.dataset.messageId;
@@ -309,7 +314,7 @@ function Row({ row, index, cards }: { row: VRow; index: number; cards: Record<st
       return <UnreadDivider label={row.label} />;
     case 'message': {
       const m = row.message;
-      const text = m.kind === 'card' && m.cardId ? (cards[m.cardId]?.title ?? '') : m.text;
+      const text = m.kind === 'card' && m.cardId ? (titleOfCard(cards[m.cardId]) ?? '') : m.text;
       const ranges = m.kind === 'card' ? [] : find.matches.filter((x) => x.messageId === m.id);
       const cur = find.index >= 0 ? find.matches[find.index] : undefined;
       return (

@@ -399,7 +399,12 @@ export function seedUxWorld(db: Db, now = ist(2026, 10, 16, 9, 0)): SeedResult {
       'Wakes up around 6:30 AM',
     ];
     known.forEach((text, i) =>
-      w.fact({ text, provenance: i % 3 === 0 ? 'guessed' : 'said', learnedAt: d(1, 9, 0) + i * 3 * HOUR, chatId: foo.chatId }),
+      w.fact({
+        text,
+        ...(i % 3 === 0 ? { provenance: 'guessed' as const, reason: 'from your chats' } : { provenance: 'said' as const }),
+        learnedAt: d(1, 9, 0) + i * 3 * HOUR,
+        chatId: foo.chatId,
+      }),
     );
     const tripsNotes = `helpers/${trips.helperId!}/notes.md`;
     w.fact({

@@ -5,7 +5,9 @@
 import { useEffect, useRef } from 'react';
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
-import { IconButton, type ChatRow } from '../_m1b-stubs';
+import type { ChatRow } from '../../shared/types';
+import { registerFocusTarget } from '../a11y/focusTargets';
+import { IconButton } from '../ui/IconButton';
 import { DoingNow } from './DoingNow';
 import { GroupMembers } from './GroupMembers';
 import { KnowList } from './KnowList';
@@ -31,7 +33,18 @@ export function RightShell({ chat }: { chat: ChatRow }) {
     return () => document.removeEventListener('pointerdown', onDown);
   }, [overlay, panel]);
 
-  if (panel.mode === 'push' && !panel.open) return null;
+  // F6 lands on the panel title (03-shell-2 §3.9.2).
+  useEffect(
+    () =>
+      registerFocusTarget('panel', () => {
+        const el = ref.current?.querySelector<HTMLElement>('[data-panel-title]');
+        if (!el) return false;
+        el.focus();
+        return true;
+      }),
+    [],
+  );
+
   const name = chat.kind === 'foo' && chat.private ? t('chat_header.private.title') : chat.title;
   const group = chat.kind === 'group';
 
@@ -42,9 +55,7 @@ export function RightShell({ chat }: { chat: ChatRow }) {
       aria-label={t('app.panel.label', { name })}
       data-testid={TID.appPanel}
       data-mode={panel.mode}
-      data-state={panel.open ? 'open' : 'closed'}
-      aria-hidden={!panel.open || undefined}
-      inert={!panel.open || undefined}
+      data-state="open"
       onKeyDown={(e) => {
         if (e.key === 'Escape' && !e.defaultPrevented && !(e.target as Element).closest('[role="menu"]')) {
           e.stopPropagation();

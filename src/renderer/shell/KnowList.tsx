@@ -5,7 +5,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { t } from '../../shared/copy/t';
 import { formatDate } from '../../shared/format';
 import { TID } from '../../shared/testids';
-import { invoke, navigate, selectHelpers, selectSettings, useNow, useStore, type ChatRow, type MemoryFactView } from '../_m1b-stubs';
+import type { ChatRow, MemoryFactView } from '../../shared/types';
+import { invoke } from '../ipc/client';
+import { navigate, useStore } from '../store/index';
+import { selectHelper } from '../store/helpers';
+import { selectNow } from '../store/live';
+import { selectTimeZone } from '../store/settings';
 import styles from './KnowList.module.css';
 import { knowFacts } from './panelData';
 import section from './PanelSection.module.css';
@@ -16,15 +21,15 @@ export function dayMonth(at: number, now: number, timeZone: string): string {
 }
 
 export function KnowList({ chat }: { chat: ChatRow }) {
-  const settings = useStore(selectSettings);
-  const helpers = useStore(selectHelpers);
-  const now = useNow();
+  const timeZone = useStore(selectTimeZone);
+  const helper = useStore(selectHelper(chat.helperId));
+  const now = useStore(selectNow);
   const [facts, setFacts] = useState<MemoryFactView[]>([]);
 
   useEffect(() => {
     let live = true;
     invoke('memory:list', { filter: { chip: 'all' } })
-      .then((r) => live && setFacts(r))
+      .then((r) => live && setFacts(r.ok ? r.value : []))
       .catch(() => live && setFacts([]));
     return () => {
       live = false;
@@ -32,9 +37,8 @@ export function KnowList({ chat }: { chat: ChatRow }) {
   }, [chat.id]);
 
   const { rows, total } = useMemo(() => knowFacts(facts, chat), [facts, chat]);
-  const helperName = chat.helperId ? (helpers[chat.helperId]?.name ?? chat.title) : chat.title;
+  const helperName = helper?.name ?? chat.title;
   const title = chat.kind === 'helper' ? t('app.panel.know.title.helper', { name: helperName }) : t('app.panel.know.title.foo');
-  const timeZone = settings.locale.timeZone;
 
   return (
     <section
