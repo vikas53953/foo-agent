@@ -11,11 +11,11 @@
   "files": {
     "light": {
       "png": "BP-ANAT-CHIPS.light.png",
-      "sha256": "0dfb0ad679627bb16d67f807ee916a3fcdb5d97741ba1c5727d096f21a34c3b9"
+      "sha256": "7dd1427f974a54147c074a88147e0d98ef4dea165b7d23c0fd6d337fa0cac7ba"
     },
     "dark": {
       "png": "BP-ANAT-CHIPS.dark.png",
-      "sha256": "822dee6cdd580e008d9c9af96361b6604228fee2e70a179567f41f54a7e70882"
+      "sha256": "51d7f2b5f8b1af67943696251e4107af664f0fcd6efa22ce11f3802d5bf5a184"
     }
   },
   "texts": [

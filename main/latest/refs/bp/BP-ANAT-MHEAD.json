@@ -11,11 +11,11 @@
   "files": {
     "light": {
       "png": "BP-ANAT-MHEAD.light.png",
-      "sha256": "57f7311ad21b67db368f2b4899f59809a79d33508aded6a3ee50446b9ecebf69"
+      "sha256": "95c3532bb48d731a32e3f65cfca7cf41d5b2c887138f1c9c631c8f326daa14aa"
     },
     "dark": {
       "png": "BP-ANAT-MHEAD.dark.png",
-      "sha256": "28227754fd532f9a24154e00ce91fcc9bf9de05b25b5f6543167981f4c04263f"
+      "sha256": "6d8320696c5f6cf92a40c19b41ced617057fe4ffafaaa3dd14b4f1450111a698"
     }
   },
   "texts": [
