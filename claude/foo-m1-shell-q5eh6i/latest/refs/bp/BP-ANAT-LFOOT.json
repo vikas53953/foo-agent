@@ -11,19 +11,19 @@
   "files": {
     "light": {
       "png": "BP-ANAT-LFOOT.light.png",
-      "sha256": "b62e8851c4e627ed1e2f5270086ddf78495ce30cc4e66096cc05c8d492b156bb"
+      "sha256": "3b86d07584541c974a321a2c1afcca007c5200be2e8c610a30fd5fe651dddff0"
     },
     "dark": {
       "png": "BP-ANAT-LFOOT.dark.png",
-      "sha256": "27f6c27aeabdfb98a764c8f430ed66e05800cfa66d4df44cd1f7de5c4574d8fc"
+      "sha256": "807cbf9ab57c0db798a9f5995b6441cfbbeb0c66f47d1b10333bfe3091799640"
     }
   },
   "texts": [
     "V",
-    "Vikas ·",
+    "Vikas Â·",
     "Claude ready",
-    "₹212 of ₹1,000 AI this month",
-    "⚙"
+    "â‚¹212 of â‚¹1,000 AI this month",
+    "âš™"
   ],
   "hlTexts": [],
   "hl": null,

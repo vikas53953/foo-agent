@@ -1,0 +1,72 @@
+{
+  "id": "BP-APP-R",
+  "family": "bp",
+  "selector": "#win .right",
+  "box": {
+    "x": 1049.5,
+    "y": 1191.0625,
+    "width": 340,
+    "height": 786
+  },
+  "files": {
+    "light": {
+      "png": "BP-APP-R.light.png",
+      "sha256": "0c8292d6987e98ae379585d3e01864e1951d8b2c35584386b8f1b8f5c77dce29"
+    },
+    "dark": {
+      "png": "BP-APP-R.dark.png",
+      "sha256": "88b2410408443fc10558d80e5bbbf733ccd1e2e986deea6cfed1c316c24e880b"
+    }
+  },
+  "texts": [
+    "Details",
+    "âœ•",
+    "Doing now",
+    "!",
+    "Goa stay",
+    "Needs you: Pay Taj Holiday Village",
+    "Trips Â· Flights for 12 Dec",
+    "Step 2 of 4 Â· Comparing fares",
+    "âœ“",
+    "Mom's cake",
+    "Done 7:12 AM",
+    "See all (6)",
+    "Using",
+    "Claude (your AI)",
+    "Gmail",
+    "Calendar",
+    "Browser",
+    "What I know about you",
+    "Likes beach stays, hates early flights",
+    "You said Â· Sat 3 Oct Â· Edit",
+    "Budget trips under â‚¹40,000",
+    "I guessed Â· from 2 trips Â· Edit",
+    "See all (24)",
+    "Spent this month",
+    "AI",
+    "â‚¹212 of â‚¹1,000",
+    "Purchases",
+    "â‚¹15,779 of â‚¹25,000",
+    "Change caps"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-APP-R": {
+      "x": 0,
+      "y": 0,
+      "width": 340,
+      "height": 786
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M1",
+  "spec": "03-shell-2 §3.7",
+  "size": {
+    "width": 340,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}

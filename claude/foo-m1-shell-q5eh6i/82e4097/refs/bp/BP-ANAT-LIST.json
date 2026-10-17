@@ -1,0 +1,71 @@
+{
+  "id": "BP-ANAT-LIST",
+  "family": "bp",
+  "selector": "#win .rows",
+  "box": {
+    "x": 111.5,
+    "y": 1339.0625,
+    "width": 339,
+    "height": 574
+  },
+  "files": {
+    "light": {
+      "png": "BP-ANAT-LIST.light.png",
+      "sha256": "6652203bb454b5d1a9d8ad9a74c801f9ba6768e65e6d1cfee52a8d52a6ba7d0e"
+    },
+    "dark": {
+      "png": "BP-ANAT-LIST.dark.png",
+      "sha256": "d0f003c0dc0b354d8f6e61af8ef48da4ffd5c5b5d96cc8b901707730172947b2"
+    }
+  },
+  "texts": [
+    "f",
+    "foo",
+    "9:41 AM",
+    "Needs your OK: Pay Taj Holiday Village",
+    "Needs you",
+    "T",
+    "Trips",
+    "9:38 AM",
+    "typingâ€¦",
+    "Working",
+    "M",
+    "Money",
+    "8:02 AM",
+    "Airtel bill â‚¹1,179 is due Fri 23 Oct",
+    "2",
+    "H",
+    "Home",
+    "Thu",
+    "Gas cylinder booked for Mon 19 Oct",
+    "Done",
+    "F",
+    "Family group",
+    "Thu",
+    "foo: Mom's cake is ordered ðŸŽ‚",
+    "N",
+    "News & X",
+    "Mon",
+    "3 posts you'd want to see"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-ANAT-LIST": {
+      "x": 0,
+      "y": 0,
+      "width": 339,
+      "height": 574
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M1",
+  "spec": "03-shell-1 §3.4",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}

@@ -11,23 +11,23 @@
   "files": {
     "light": {
       "png": "BP-APP-R.light.png",
-      "sha256": "e28597a1dfb471c41709c6005766d10a9b1fda24f229d1dc9ef61b1d65a3969d"
+      "sha256": "0c8292d6987e98ae379585d3e01864e1951d8b2c35584386b8f1b8f5c77dce29"
     },
     "dark": {
       "png": "BP-APP-R.dark.png",
-      "sha256": "9e7b7510150722deba48c9cec10109e497870a38aa9914a51899f9d982e18d65"
+      "sha256": "88b2410408443fc10558d80e5bbbf733ccd1e2e986deea6cfed1c316c24e880b"
     }
   },
   "texts": [
     "Details",
-    "✕",
+    "âœ•",
     "Doing now",
     "!",
     "Goa stay",
     "Needs you: Pay Taj Holiday Village",
-    "Trips · Flights for 12 Dec",
-    "Step 2 of 4 · Comparing fares",
-    "✓",
+    "Trips Â· Flights for 12 Dec",
+    "Step 2 of 4 Â· Comparing fares",
+    "âœ“",
     "Mom's cake",
     "Done 7:12 AM",
     "See all (6)",
@@ -38,15 +38,15 @@
     "Browser",
     "What I know about you",
     "Likes beach stays, hates early flights",
-    "You said · Sat 3 Oct · Edit",
-    "Budget trips under ₹40,000",
-    "I guessed · from 2 trips · Edit",
+    "You said Â· Sat 3 Oct Â· Edit",
+    "Budget trips under â‚¹40,000",
+    "I guessed Â· from 2 trips Â· Edit",
     "See all (24)",
     "Spent this month",
     "AI",
-    "₹212 of ₹1,000",
+    "â‚¹212 of â‚¹1,000",
     "Purchases",
-    "₹15,779 of ₹25,000",
+    "â‚¹15,779 of â‚¹25,000",
     "Change caps"
   ],
   "hlTexts": [],

@@ -1,19 +1,19 @@
 {
-  "reportId": "M1-9cb2ed2-39044125383",
+  "reportId": "M1-82e4097-39044972749",
   "milestone": "M1",
-  "generatedAt": "2026-10-17T15:21:24.761Z",
-  "commit": "d59b8ea709eaaf1c2fb0ee86069c54699a127044",
-  "head": "9cb2ed2bf8f8ec85eb9dbdfee7864a1950043fc7",
+  "generatedAt": "2026-10-17T15:29:08.376Z",
+  "commit": "0d14f3056c86b2279b9413f7bea34833714b1a4a",
+  "head": "82e409799d10a3dfc7610a7dcc1890c55ac57ae1",
   "ci": {
-    "runId": "39044125383",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39044125383"
+    "runId": "39044972749",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39044972749"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "c40a35f3b44a250077cd2359dc2b1357eadbfa95fbfbe2c411a01ee16138c09d"
   },
   "runner": {
-    "recordedAt": "2026-10-17T15:17:48.285Z",
+    "recordedAt": "2026-10-17T15:28:08.057Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000002764"
+      "runner": "GitHub Actions 1000002767"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,7 +59,8 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "4 test(s) failed",
+    "1 test(s) failed",
+    "FID-03: 28 reference PNG(s) not byte-identical",
     "14 audit item(s) not DONE (the milestone is not complete)"
   ],
   "missingInputs": [],
@@ -101,7 +102,7 @@
       "item": "FID-03 two renders byte-identical",
       "status": "UNVERIFIABLE",
       "evidence": "determinism",
-      "resolved": "DONE"
+      "resolved": "NOT DONE"
     },
     {
       "group": "M0b harness",
@@ -122,7 +123,7 @@
       "item": "Test hooks window.__fooTest and test:* channels (08-3 §22)",
       "status": "UNVERIFIABLE",
       "evidence": "test:test hooks",
-      "resolved": "NOT DONE"
+      "resolved": "DONE"
     },
     {
       "group": "M0b harness",
@@ -269,8 +270,8 @@
         "skipped": 0
       },
       "e2e": {
-        "passed": 20,
-        "failed": 4,
+        "passed": 23,
+        "failed": 1,
         "skipped": 0
       }
     },
@@ -4552,33 +4553,15 @@
       },
       {
         "id": "PERF-03",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/m1-shell.spec.ts"
       }
     ],
     "failed": [
       {
         "suite": "e2e",
-        "file": "test/e2e/m1-shell-main.spec.ts",
-        "title": "3.11.1 + FID-14 SV-15/SV-18/SV-29: 1440 wide shows 340 / 760 / 340 with the right shell open",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
         "file": "test/e2e/m1-shell.spec.ts",
         "title": "ART-26a: every M1 surface passes axe in light and dark (list, banner, chat header, find bar, messages, right shell)",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m1-shell.spec.ts",
-        "title": "PERF-03: chat switch on the perf seed paints the header and messages (smoke timing)",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/test-hooks.spec.ts",
-        "title": "test hooks: clock, seed, online, theme, reset (08-3 §22)",
         "status": "failed"
       }
     ],
@@ -4768,8 +4751,37 @@
     "determinism": {
       "fid": "FID-03",
       "compared": 34,
-      "identical": 34,
-      "differing": [],
+      "identical": 6,
+      "differing": [
+        "BP-APP-L.light",
+        "BP-APP-L.dark",
+        "BP-APP-M.light",
+        "BP-APP-M.dark",
+        "BP-APP-R.light",
+        "BP-APP-R.dark",
+        "BP-ANAT-L.light",
+        "BP-ANAT-L.dark",
+        "BP-ANAT-TBAR.light",
+        "BP-ANAT-TBAR.dark",
+        "BP-ANAT-LHEAD.light",
+        "BP-ANAT-LHEAD.dark",
+        "BP-ANAT-SEARCH.light",
+        "BP-ANAT-SEARCH.dark",
+        "BP-ANAT-LIST.light",
+        "BP-ANAT-LIST.dark",
+        "BP-ANAT-LFOOT.light",
+        "BP-ANAT-LFOOT.dark",
+        "BP-ANAT-MHEAD.light",
+        "BP-ANAT-MHEAD.dark",
+        "BP-ANAT-RHEAD.light",
+        "BP-ANAT-RHEAD.dark",
+        "BP-ANAT-DOING.light",
+        "BP-ANAT-DOING.dark",
+        "BP-ANAT-KNOW.light",
+        "BP-ANAT-KNOW.dark",
+        "BP-ANAT-SPENT.light",
+        "BP-ANAT-SPENT.dark"
+      ],
       "engine": "electron"
     },
     "rows": [

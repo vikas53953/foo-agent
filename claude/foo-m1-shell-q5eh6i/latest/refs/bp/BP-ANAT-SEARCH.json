@@ -11,15 +11,15 @@
   "files": {
     "light": {
       "png": "BP-ANAT-SEARCH.light.png",
-      "sha256": "3f0dce03ac67689635ee89505d811e9e4b8c5437e36cfdccc5ca078940c81ace"
+      "sha256": "62bf325114b5f6088b9e97359096286436e922a08a829c83b8c642e67f1d1068"
     },
     "dark": {
       "png": "BP-ANAT-SEARCH.dark.png",
-      "sha256": "798ad40e197fbddb0dabc35d38128ae9505817830a6e17e0aa56e4ba22b37210"
+      "sha256": "fadeb2e30dcb4787dd9ff4430a6ec845b33e7a79656ac7261f4bbcc6826f7e71"
     }
   },
   "texts": [
-    "⌕",
+    "âŒ•",
     "Search chats"
   ],
   "hlTexts": [],

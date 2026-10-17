@@ -11,18 +11,18 @@
   "files": {
     "light": {
       "png": "BP-APP-L.light.png",
-      "sha256": "5f5f99df58a1af2ca0ca4758ba1b81c4d8040ec3c16504e4b6893edc457615f3"
+      "sha256": "aaba2593b922a92c90f8afd014a9638faec1ceac8cfc5c89bc4a323dff98768c"
     },
     "dark": {
       "png": "BP-APP-L.dark.png",
-      "sha256": "dcc7c22dfd3a10b42a76ee84118e79a53982a108566dc298c035b9b4c555ae0c"
+      "sha256": "58befeb4c7426d0404acff52b1a37ee3bfcfdfdc5e36844c00fb870e80a7922e"
     }
   },
   "texts": [
     "foo",
-    "＋ New helper",
-    "⋯",
-    "⌕",
+    "ï¼‹ New helper",
+    "â‹¯",
+    "âŒ•",
     "Search chats",
     "All",
     "Needs you",
@@ -38,12 +38,12 @@
     "T",
     "Trips",
     "9:38 AM",
-    "typing…",
+    "typingâ€¦",
     "Working",
     "M",
     "Money",
     "8:02 AM",
-    "Airtel bill ₹1,179 is due Fri 23 Oct",
+    "Airtel bill â‚¹1,179 is due Fri 23 Oct",
     "2",
     "H",
     "Home",
@@ -53,16 +53,16 @@
     "F",
     "Family group",
     "Thu",
-    "foo: Mom's cake is ordered 🎂",
+    "foo: Mom's cake is ordered ðŸŽ‚",
     "N",
     "News & X",
     "Mon",
     "3 posts you'd want to see",
     "V",
-    "Vikas ·",
+    "Vikas Â·",
     "Claude ready",
-    "₹212 of ₹1,000 AI this month",
-    "⚙"
+    "â‚¹212 of â‚¹1,000 AI this month",
+    "âš™"
   ],
   "hlTexts": [],
   "hl": null,
