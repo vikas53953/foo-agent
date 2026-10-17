@@ -4,7 +4,7 @@
 // Usage: tsx scripts/golden-render.ts [--milestone M1] [--ids BP-APP-L,UX-08-01] [--family ux|bp]
 //        [--engine electron|chromium] [--chromium-path <exe>] [--out golden/ref] [--determinism]
 import { createHash } from 'node:crypto';
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -266,6 +266,15 @@ async function main() {
     const again = join(tmpdir(), `foo-golden-det-${process.pid}`);
     const second = await render({ ...opts, out: again });
     const diffs = compareRenders(first.rendered, second.rendered);
+    // Keep the second render of each differing PNG beside the first, so the evidence shows what moved.
+    for (const name of diffs) {
+      const [id, theme] = [name.slice(0, name.lastIndexOf('.')), name.slice(name.lastIndexOf('.') + 1)];
+      const r = second.rendered.find((x) => x.id === id);
+      const png = r?.files[theme as 'light' | 'dark']?.png;
+      if (!r || !png) continue;
+      mkdirSync(join(opts.out, 'determinism-second', r.family), { recursive: true });
+      copyFileSync(join(again, r.family, png), join(opts.out, 'determinism-second', r.family, png));
+    }
     rmSync(again, { recursive: true, force: true });
     const result = { fid: 'FID-03', compared: pngs, identical: pngs - diffs.length, differing: diffs, engine: opts.engine };
     writeFileSync(join(opts.out, 'determinism.json'), JSON.stringify(result, null, 2) + '\n');

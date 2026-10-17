@@ -21,6 +21,7 @@ copy "qa-evidence/$MILESTONE/fidelity.html" fidelity.html
 copy "qa-evidence/$MILESTONE/fidelity.json" fidelity.json
 copy golden/runner.json runner.json
 copy golden/ref/determinism.json determinism.json
+copy golden/ref/determinism-second determinism-second
 copy golden/ref/bp refs/bp
 copy golden/ref/ux refs/ux
 copy golden/out/tier-r tier-r
