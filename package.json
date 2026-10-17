@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@fluentui/react-icons": "2.0.343",
+    "@tanstack/react-virtual": "3.14.13",
     "better-sqlite3": "13.0.3",
     "immer": "11.1.21",
     "intl-messageformat": "12.1.3",

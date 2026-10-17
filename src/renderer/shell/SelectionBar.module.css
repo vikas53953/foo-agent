@@ -1,0 +1,23 @@
+/* Spec: 03-shell-2 §3.6.2.3 (height --header-h as min-height, fill --bg-app, 1px --line bottom, padding 0 --s3; count
+   --t-subtitle --fg-1; --s1 between the buttons). */
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--header-h);
+  padding: 0 var(--s3);
+  background: var(--bg-app);
+  border-bottom: 1px solid var(--line);
+}
+.count {
+  flex: 1;
+  min-width: 0;
+  font: var(--t-subtitle);
+  letter-spacing: var(--t-subtitle-tracking);
+  color: var(--fg-1);
+}
+.group {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+}

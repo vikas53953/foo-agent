@@ -141,6 +141,9 @@ export const TID = {
   screenFooProfile: 'screen-foo-profile',
   screenHelperProfile: 'screen-helper-profile',
   screenGroupProfile: 'screen-group-profile',
+  // M1 builder B additions
+  threadMarker: 'thread-marker',
+  appPanelJobsTab: 'app-panel-jobs-tab',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

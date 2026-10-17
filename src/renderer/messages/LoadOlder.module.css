@@ -1,0 +1,32 @@
+/* Spec: 03-shell-2 §3.6.7, 04 §19.5 (system line: centred, max width 480, --t-caption --fg-3). */
+.loading {
+  display: flex;
+  justify-content: center;
+  padding-bottom: var(--s2);
+}
+.circle {
+  display: grid;
+  place-items: center;
+  width: var(--btn-h);
+  height: var(--btn-h);
+  border-radius: var(--r-full);
+  background: var(--bg-raised);
+  color: var(--accent);
+}
+.failed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--s0);
+  padding-bottom: var(--s2);
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+.start {
+  max-width: 30rem; /* local: 04 §19.5 system line max width 480 */
+  margin: 0 auto;
+  padding-bottom: var(--s5);
+  text-align: center;
+  font: var(--t-caption);
+  color: var(--fg-3);
+}

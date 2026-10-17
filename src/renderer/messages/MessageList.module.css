@@ -1,0 +1,63 @@
+/* Spec: 03-shell-2 §3.6.4 (column --column-max centred; side padding --s5 when the main shell is ≥ 900 wide, else --s3;
+   top/bottom --s3 are the virtualiser's padding), 02-2 §F13.3 (overscroll contain), §3.6.3 match highlight (--warn-soft,
+   current match 2px --accent outline, --r-xs). The placeholder row stands in for 04's bubbles until M2. */
+.area {
+  position: relative;
+  min-height: 0;
+  height: 100%;
+  background: var(--bg-app);
+}
+.scroller {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.scroller:focus-visible {
+  outline-offset: calc(-1 * var(--focus-outer-w));
+}
+.column {
+  position: relative;
+  max-width: var(--column-max);
+  margin: 0 auto;
+}
+.row {
+  position: absolute;
+  top: 0;
+  left: var(--s3);
+  right: var(--s3);
+}
+.area[data-wide] .row {
+  left: var(--s5);
+  right: var(--s5);
+}
+.placeholder {
+  display: flex;
+  padding: var(--s0) 0;
+  font: var(--t-body);
+  color: var(--fg-1);
+}
+.placeholder[data-author='user'] {
+  justify-content: flex-end;
+}
+.placeholder[data-kind='marker'] {
+  justify-content: center;
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+.text {
+  max-width: var(--bubble-max);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.row[data-message-id]:focus-visible {
+  outline-offset: calc(-1 * var(--focus-outer-w));
+  border-radius: var(--r-sm);
+}
+.match {
+  background: var(--warn-soft);
+  color: inherit;
+  border-radius: var(--r-xs);
+}
+.match[data-current] {
+  outline: var(--focus-outer-w) solid var(--accent);
+}

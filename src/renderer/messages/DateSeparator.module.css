@@ -1,0 +1,47 @@
+/* Spec: 03-shell-2 §3.6.5 (chip and sticky chip), 02 F7 + 02-3 §F25.4 (fade; reduced motion instant). */
+.row {
+  display: flex;
+  justify-content: center;
+  padding: var(--s3) 0;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--s5);
+  padding: 0 var(--s2);
+  border-radius: var(--r-full);
+  background: var(--bg-sunken);
+  font: var(--t-caption);
+  color: var(--fg-2);
+  white-space: nowrap;
+}
+.sticky {
+  position: absolute;
+  top: var(--s1);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  z-index: var(--z-sticky);
+  transition: opacity var(--m-normal) var(--ease-standard);
+}
+.sticky[data-state='hidden'] {
+  opacity: 0;
+}
+.stickyChip {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-4);
+}
+@media (prefers-reduced-motion: reduce) {
+  .sticky {
+    transition: none;
+  }
+}
+:global(:root[data-motion='off']) .sticky {
+  transition: none;
+}
+:global(:root[data-theme='dark']) .stickyChip {
+  box-shadow: none;
+}

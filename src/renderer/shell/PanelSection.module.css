@@ -1,0 +1,54 @@
+/* Spec: 03-shell-2 §3.7.3 (sections padded --s3 on all sides, 1px --line between; label --t-caption-strong, uppercase,
+   tracking +0.08em, --fg-3, --s1 below; text links --accent --t-small), shared by DoingNow, UsingChips, KnowList,
+   GroupMembers and SpentMeters. */
+.section {
+  display: grid;
+  gap: var(--s1);
+  padding: var(--s3);
+  border-bottom: 1px solid var(--line);
+}
+.section:last-child {
+  border-bottom: 0;
+}
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--s5);
+  margin: 0;
+  font: var(--t-caption-strong);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.labelLink {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+}
+.labelLink:hover {
+  text-decoration: underline;
+}
+.link {
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: var(--t-small);
+  color: var(--accent);
+}
+.link:hover {
+  text-decoration: underline;
+}
+.link:active {
+  color: var(--accent-pressed);
+}
+.empty {
+  margin: 0;
+  font: var(--t-small);
+  color: var(--fg-2);
+}
