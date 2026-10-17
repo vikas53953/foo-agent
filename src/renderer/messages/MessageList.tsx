@@ -177,8 +177,12 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   const focusRow = useCallback(
     (index: number) => {
       if (index < 0 || index >= rows.length) return;
+      const row = () => scrollRef.current?.querySelector<HTMLElement>(`[data-index="${index}"][data-message-id]`);
       v.scrollToIndex(index, { align: 'auto' });
-      requestAnimationFrame(() => scrollRef.current?.querySelector<HTMLElement>(`[data-index="${index}"][data-message-id]`)?.focus());
+      // A row already rendered takes focus now, so the next key (F6, ↑/↓) starts from it; else after the scroll renders it.
+      const now = row();
+      if (now) now.focus();
+      else requestAnimationFrame(() => row()?.focus());
     },
     [rows.length, v],
   );
