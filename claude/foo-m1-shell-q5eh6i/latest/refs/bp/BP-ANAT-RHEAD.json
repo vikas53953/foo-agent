@@ -3,7 +3,7 @@
   "family": "bp",
   "selector": "#win .rhead",
   "box": {
-    "x": 1049.5,
+    "x": 1050.5,
     "y": 1191.0625,
     "width": 339,
     "height": 60
@@ -11,11 +11,11 @@
   "files": {
     "light": {
       "png": "BP-ANAT-RHEAD.light.png",
-      "sha256": "74b2326e4cb0ffa0234b76e7524a6b4e4042afbf7725bcbd0daeb1f2925f0b4a"
+      "sha256": "df89aeeb990ebb5ca11f8b5bc2e4585ca14030246b4b557ff0396fa91a3ff37f"
     },
     "dark": {
       "png": "BP-ANAT-RHEAD.dark.png",
-      "sha256": "16c039622fdf046957b9e136dd1141625840d201dd87413f70911282d700d685"
+      "sha256": "5b1efd4f99cabb91c24de8463f254681cbe27210b7276b6b2b54b8083eab13d3"
     }
   },
   "texts": [

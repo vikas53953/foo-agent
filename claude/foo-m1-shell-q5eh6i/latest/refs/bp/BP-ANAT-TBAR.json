@@ -3,7 +3,7 @@
   "family": "bp",
   "selector": "#win .tbar",
   "box": {
-    "x": 20.5,
+    "x": 111.5,
     "y": 1159.0625,
     "width": 1278,
     "height": 32
@@ -11,11 +11,11 @@
   "files": {
     "light": {
       "png": "BP-ANAT-TBAR.light.png",
-      "sha256": "513ddf8d669085285f7729a1b901b75757ae248318e7b45eef76764ce41cbe85"
+      "sha256": "59aafbe93fbd986700a0d16ebd3b27d7adb050b3a3596a83e45b77b2d80e7762"
     },
     "dark": {
       "png": "BP-ANAT-TBAR.dark.png",
-      "sha256": "933d36518e62523b237e3157127a11e264994115252e753be19656365708a866"
+      "sha256": "85cbb2265e8d8e05b343f647a4411a3461bdc600dbeadc766c6b49037ecb3fe9"
     }
   },
   "texts": [

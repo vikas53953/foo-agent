@@ -3,7 +3,7 @@
   "family": "bp",
   "selector": "#win .chips",
   "box": {
-    "x": 110.5,
+    "x": 111.5,
     "y": 1295.0625,
     "width": 339,
     "height": 44
@@ -11,11 +11,11 @@
   "files": {
     "light": {
       "png": "BP-ANAT-CHIPS.light.png",
-      "sha256": "8053a0fcea831e1071dc08fa5bbfaeaac538d554b4d56a737f246529d319024c"
+      "sha256": "0dfb0ad679627bb16d67f807ee916a3fcdb5d97741ba1c5727d096f21a34c3b9"
     },
     "dark": {
       "png": "BP-ANAT-CHIPS.dark.png",
-      "sha256": "103162d69c244f16b212ad67b5d80a65017811afe2fd6e9b3febb5490dfcec73"
+      "sha256": "822dee6cdd580e008d9c9af96361b6604228fee2e70a179567f41f54a7e70882"
     }
   },
   "texts": [

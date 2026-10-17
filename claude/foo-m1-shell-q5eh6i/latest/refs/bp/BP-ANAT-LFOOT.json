@@ -3,7 +3,7 @@
   "family": "bp",
   "selector": "#win .lfoot",
   "box": {
-    "x": 110.5,
+    "x": 111.5,
     "y": 1913.0625,
     "width": 339,
     "height": 64
@@ -11,11 +11,11 @@
   "files": {
     "light": {
       "png": "BP-ANAT-LFOOT.light.png",
-      "sha256": "24e4fa86e3a398120f06f2dcc01a336edb6dc26082168c0402def8325644faf1"
+      "sha256": "b62e8851c4e627ed1e2f5270086ddf78495ce30cc4e66096cc05c8d492b156bb"
     },
     "dark": {
       "png": "BP-ANAT-LFOOT.dark.png",
-      "sha256": "5c73ce26056f9a6a19933ad0649d1b25ae71fe0d5a6d904840198b4b4e01b85d"
+      "sha256": "27f6c27aeabdfb98a764c8f430ed66e05800cfa66d4df44cd1f7de5c4574d8fc"
     }
   },
   "texts": [

@@ -11,11 +11,11 @@
   "files": {
     "light": {
       "png": "BP-APP-L.light.png",
-      "sha256": "1d148d1bbf849ab3610d483620ccaf4929c14d90f3b264dfeefe07b872a93d81"
+      "sha256": "5f5f99df58a1af2ca0ca4758ba1b81c4d8040ec3c16504e4b6893edc457615f3"
     },
     "dark": {
       "png": "BP-APP-L.dark.png",
-      "sha256": "feb7758550bd595cc1db9413416b160fe77ce5dfce354ce498f45153f5284ef4"
+      "sha256": "dcc7c22dfd3a10b42a76ee84118e79a53982a108566dc298c035b9b4c555ae0c"
     }
   },
   "texts": [

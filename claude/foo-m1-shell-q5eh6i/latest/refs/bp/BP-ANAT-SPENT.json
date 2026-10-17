@@ -3,7 +3,7 @@
   "family": "bp",
   "selector": "#win .right .rsec:nth-child(5)",
   "box": {
-    "x": 959.5,
+    "x": 1050.5,
     "y": 1810.0625,
     "width": 339,
     "height": 146
@@ -11,11 +11,11 @@
   "files": {
     "light": {
       "png": "BP-ANAT-SPENT.light.png",
-      "sha256": "16b255068afd17b1e5f2ed9ef26b02e02c097406509bd359064c00a5f63bd9a1"
+      "sha256": "f5dc99883a880ef227b59271883e890b6d3f24e095d2bb21dad1224062511ffa"
     },
     "dark": {
       "png": "BP-ANAT-SPENT.dark.png",
-      "sha256": "d1c0b87e648075f99d97ab755e0aa96952cf153bb06f88aa7dc64a6210203ddf"
+      "sha256": "f6446f95eab3009c275ee07160ca30f56ee99b973c9c5114dea83b0eabbbba30"
     }
   },
   "texts": [

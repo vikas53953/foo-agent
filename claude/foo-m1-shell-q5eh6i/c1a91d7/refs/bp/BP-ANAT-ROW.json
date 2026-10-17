@@ -1,0 +1,48 @@
+{
+  "id": "BP-ANAT-ROW",
+  "family": "bp",
+  "selector": "#win .rows .row.sel",
+  "box": {
+    "x": 119.5,
+    "y": 1343.0625,
+    "width": 323,
+    "height": 72
+  },
+  "files": {
+    "light": {
+      "png": "BP-ANAT-ROW.light.png",
+      "sha256": "a722d57629a8af83166585140ea60d80c628509cc42bda024d3c8dc16ef37cc2"
+    },
+    "dark": {
+      "png": "BP-ANAT-ROW.dark.png",
+      "sha256": "31e881d96a1afe9772f6bbfac2b3323c11aa506fd65df9c1e2fac8b7100dcaab"
+    }
+  },
+  "texts": [
+    "f",
+    "foo",
+    "9:41 AM",
+    "Needs your OK: Pay Taj Holiday Village",
+    "Needs you"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-ANAT-ROW": {
+      "x": 0,
+      "y": 0,
+      "width": 323,
+      "height": 72
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M1",
+  "spec": "03-shell-1 §3.4",
+  "size": {
+    "width": null,
+    "height": 72
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}
