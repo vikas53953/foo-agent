@@ -1,0 +1,67 @@
+{
+  "id": "BP-ANAT-CHIPS",
+  "theme": "light",
+  "verdict": "pass",
+  "r1": {
+    "verdict": "pass",
+    "frame": {
+      "missing": [],
+      "extra": []
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-ANAT-CHIPS",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 339,
+          "height": 44
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 339,
+          "height": 44
+        },
+        "dPos": 0,
+        "dSize": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-ANAT-CHIPS",
+        "ref": "#FFFFFF",
+        "app": "#FFFFFF",
+        "deltaE": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.07421560740144811,
+    "diffPixels": 1107,
+    "total": 14916,
+    "sizeMismatch": null,
+    "heatmap": "BP-ANAT-CHIPS.light.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-ANAT-CHIPS.light.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-ANAT-CHIPS.light.png"
+}
