@@ -4,7 +4,7 @@
 // - chromium (local smoke only): Playwright's Chromium, executable from `--chromium-path` or FOO_CHROMIUM_PATH.
 // Network is blocked in both, so the Blueprint's web fonts never load and a render depends only on the frozen file and the runner.
 import { _electron, chromium, type Browser, type ElectronApplication, type Page } from '@playwright/test';
-import { mkdtempSync } from 'node:fs';
+import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -20,6 +20,21 @@ export interface RefBrowser {
   electronVersion: string | null;
   open(file: string): Promise<Page>;
   close(): Promise<void>;
+}
+
+/**
+ * The frozen Blueprint source has no `<meta charset>` (the artifact host adds one when it publishes), so a file:// load
+ * leaves the encoding to Chromium's detector, which sometimes picks windows-1252 and draws mojibake for "⌕" (FID-03 failed
+ * that way on the golden runner). Such a reference is opened from a temporary copy that declares UTF-8 right after any
+ * doctype (so the mode does not change); the frozen file is never changed.
+ */
+export function utf8Url(file: string): string {
+  const html = readFileSync(resolve(file), 'utf8');
+  if (/<meta[^>]+charset/i.test(html.slice(0, 1024))) return pathToFileURL(resolve(file)).toString();
+  const doctype = /^\s*<!doctype[^>]*>/i.exec(html)?.[0] ?? '';
+  const copy = join(mkdtempSync(join(tmpdir(), 'foo-ref-')), 'ref.html');
+  writeFileSync(copy, `${doctype}<meta charset="utf-8">${html.slice(doctype.length)}`, 'utf8');
+  return pathToFileURL(copy).toString();
 }
 
 const allowed = (url: string) => /^(file|data|about|blob|devtools):/.test(url);
@@ -39,7 +54,7 @@ export async function openRefBrowser(engine: Engine, chromiumPath?: string): Pro
       electronVersion: null,
       async open(file) {
         const page = await context.newPage();
-        await page.goto(pathToFileURL(resolve(file)).toString(), { waitUntil: 'load' });
+        await page.goto(utf8Url(file), { waitUntil: 'load' });
         return page;
       },
       close: () => browser.close(),
@@ -61,7 +76,7 @@ export async function openRefBrowser(engine: Engine, chromiumPath?: string): Pro
     electronVersion: versions.electron,
     async open(file) {
       await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'reduce' });
-      await page.goto(pathToFileURL(resolve(file)).toString(), { waitUntil: 'load' });
+      await page.goto(utf8Url(file), { waitUntil: 'load' });
       return page;
     },
     close: () => app.close(),
