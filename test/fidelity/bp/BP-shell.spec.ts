@@ -6,8 +6,8 @@
 import { test, type Page } from '@playwright/test';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { TID } from '../../src/shared/testids';
-import { launch } from './launch';
+import { TID } from '../../../src/shared/testids';
+import { launch } from '../../e2e/launch';
 
 const OUT = join('golden', 'out', 'app');
 const byTid = (id: string) => `[data-testid="${id}"]`;
