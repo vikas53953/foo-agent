@@ -1,18 +1,54 @@
 {
-  "reportId": "M1-8c4e2b9-39066673169",
+  "reportId": "M1-bdc197c-39069549312",
   "milestone": "M1",
-  "generatedAt": "2026-10-17T20:28:56.462Z",
-  "commit": "c3cf8f40244a5edd881e7efc8649e2f95efc16cc",
-  "head": "8c4e2b9b183188fc71eff1ebbf32bad02e281b45",
+  "generatedAt": "2026-10-17T21:12:48.829Z",
+  "commit": "cb88577c672cdffb488aad75daeeb864ac330fdb",
+  "head": "bdc197c4f5e623911cf95b679c4e0ac16435aec2",
   "ci": {
-    "runId": "39066673169",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39066673169"
+    "runId": "39069549312",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39069549312"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "c40a35f3b44a250077cd2359dc2b1357eadbfa95fbfbe2c411a01ee16138c09d"
   },
-  "runner": null,
+  "runner": {
+    "recordedAt": "2026-10-17T21:09:58.235Z",
+    "os": {
+      "platform": "win32",
+      "release": "10.0.26100",
+      "version": "Windows Server 2025 Datacenter",
+      "arch": "x64",
+      "windows": {
+        "productName": "Windows Server 2025 Datacenter",
+        "displayVersion": "24H2",
+        "currentBuild": "26100",
+        "ubr": "33438"
+      }
+    },
+    "image": {
+      "os": "win25-vs2026",
+      "version": "20261007.264.1",
+      "runner": "GitHub Actions 1000002808"
+    },
+    "fonts": {
+      "segoeUIVariable": true,
+      "segoeUIEmoji": true,
+      "nirmalaUI": true,
+      "method": "font files in C:\\Windows\\Fonts, C:\\Users\\runneradmin\\AppData\\Local\\Microsoft\\Windows\\Fonts"
+    },
+    "engine": "electron",
+    "chromium": "152.0.7977.167",
+    "electron": "44.9.0",
+    "render": {
+      "viewport": "1440x900",
+      "deviceScaleFactor": 1,
+      "gpu": "disabled",
+      "network": "blocked"
+    },
+    "pinned": null,
+    "matchesPinned": null
+  },
   "fid04": "UNVERIFIABLE",
   "builders": [
     "builder agent"
@@ -23,21 +59,16 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "1 test(s) failed",
-    "missing evidence: E2E results (Playwright JSON); golden runner identity (golden/runner.json); FID-14 results",
-    "13 audit item(s) not DONE (the milestone is not complete)"
+    "6 test(s) failed",
+    "7 audit item(s) not DONE (the milestone is not complete)"
   ],
-  "missingInputs": [
-    "E2E results (Playwright JSON)",
-    "golden runner identity (golden/runner.json)",
-    "FID-14 results"
-  ],
+  "missingInputs": [],
   "forVikas": {
     "tryNow": [
-      "Nothing new to try yet: none of the 20 M1 drawings is built in the app. This run shows that the checking machinery works."
+      "M1: 1 of 20 drawings match; open the side-by-side rows below."
     ],
     "changed": [
-      "Nothing differs from the drawings so far."
+      "1 picture(s) differ a little from the drawing and need your look (Review rows)."
     ],
     "needsYes": []
   },
@@ -61,35 +92,35 @@
       "item": "M1 Blueprint references rendered on the golden lane",
       "status": "UNVERIFIABLE",
       "evidence": "refs",
-      "resolved": "UNVERIFIABLE"
+      "resolved": "DONE"
     },
     {
       "group": "M0b harness",
       "item": "FID-03 two renders byte-identical",
       "status": "UNVERIFIABLE",
       "evidence": "determinism",
-      "resolved": "UNVERIFIABLE"
+      "resolved": "DONE"
     },
     {
       "group": "M0b harness",
       "item": "FID-04 runner identity recorded (pinned image not chosen yet)",
       "status": "UNVERIFIABLE",
       "evidence": "runner",
-      "resolved": "UNVERIFIABLE"
+      "resolved": "DONE"
     },
     {
       "group": "M0b harness",
       "item": "FID-14 live rows SV-16, SV-37, SV-38 in the app",
       "status": "UNVERIFIABLE",
       "evidence": "fid14",
-      "resolved": "UNVERIFIABLE"
+      "resolved": "DONE"
     },
     {
       "group": "M0b harness",
       "item": "Test hooks window.__fooTest and test:* channels (08-3 §22)",
       "status": "UNVERIFIABLE",
       "evidence": "test:test hooks",
-      "resolved": "UNVERIFIABLE"
+      "resolved": "NOT DONE"
     },
     {
       "group": "M0b harness",
@@ -145,7 +176,7 @@
       "item": "03-shell-1 §3.3, §3.4, §3.5 · 03-shell-2 §3.6–§3.10 · 08-1 §3, §4 · Art. 25, 26, 29 · X-07, X-09, X-19",
       "status": "DONE",
       "evidence": "test:ART-26a",
-      "resolved": "UNVERIFIABLE"
+      "resolved": "NOT DONE"
     },
     {
       "group": "M1 Create",
@@ -177,7 +208,7 @@
       "item": "ART-26a (shell) · ART-29 · PERF-01 (with seed data) · PERF-03 smoke",
       "status": "DONE",
       "evidence": "test:PERF-03",
-      "resolved": "UNVERIFIABLE"
+      "resolved": "DONE"
     },
     {
       "group": "M1 Fidelity exit",
@@ -191,7 +222,7 @@
       "item": "FID-14 rows SV-13–18, 23–25, 29, 32",
       "status": "DONE",
       "evidence": "fid14",
-      "resolved": "UNVERIFIABLE"
+      "resolved": "DONE"
     }
   ],
   "copy": {
@@ -204,18 +235,37 @@
     "stylelint": "not installed yet (FID-13 Stylelint half; ART-24a scans styles today)",
     "fid11": "DONE",
     "fid12": "DONE",
-    "fid14": []
+    "fid14": [
+      {
+        "id": "SV-16",
+        "ok": true,
+        "expected": "height 32 (±0.5)",
+        "measured": "922×32"
+      },
+      {
+        "id": "SV-37",
+        "ok": true,
+        "expected": "922×648 (work area 1024×720)",
+        "measured": "922×648"
+      },
+      {
+        "id": "SV-38",
+        "ok": true,
+        "expected": "font-synthesis: none",
+        "measured": "all equal"
+      }
+    ]
   },
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 1219,
-        "failed": 1,
+        "passed": 1496,
+        "failed": 0,
         "skipped": 0
       },
       "e2e": {
-        "passed": 0,
-        "failed": 0,
+        "passed": 25,
+        "failed": 6,
         "skipped": 0
       }
     },
@@ -2146,6 +2196,1281 @@
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
       },
       {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
         "id": "ART-21a",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
@@ -6004,6 +7329,21 @@
         "id": "ART-21c",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
       },
       {
         "id": "ART-24a",
@@ -6839,13 +8179,183 @@
         "id": "ART-24a",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "PERF-01",
+        "status": "passed",
+        "file": "test/e2e/e2e/m0-window.spec.ts"
+      },
+      {
+        "id": "ART-26a",
+        "status": "failed",
+        "file": "test/e2e/e2e/m1-shell.spec.ts"
+      },
+      {
+        "id": "ART-29",
+        "status": "passed",
+        "file": "test/e2e/e2e/m1-shell.spec.ts"
+      },
+      {
+        "id": "PERF-03",
+        "status": "passed",
+        "file": "test/e2e/e2e/m1-shell.spec.ts"
+      },
+      {
+        "id": "BP-APP-L",
+        "status": "passed",
+        "file": "test/e2e/fidelity/bp/BP-shell.spec.ts"
       }
     ],
     "failed": [
       {
-        "suite": "unit",
-        "file": "D:/a/foo-agent/foo-agent/test/unit/case-collisions.test.ts",
-        "title": "module names no two source modules differ only in case or extension",
+        "suite": "e2e",
+        "file": "test/e2e/e2e/m1-shell.spec.ts",
+        "title": "ART-26a: every M1 surface passes axe in light and dark (list, banner, chat header, find bar, messages, right shell)",
+        "status": "failed"
+      },
+      {
+        "suite": "e2e",
+        "file": "test/e2e/e2e/m2-composer.spec.ts",
+        "title": "typing in the 5,000-message chat paints within a frame (p95)",
+        "status": "failed"
+      },
+      {
+        "suite": "e2e",
+        "file": "test/e2e/e2e/m2-composer.spec.ts",
+        "title": "the composer passes axe in light and dark: rest, text, reply strip, mention menu and paste catcher",
+        "status": "failed"
+      },
+      {
+        "suite": "e2e",
+        "file": "test/e2e/e2e/m2-messages.spec.ts",
+        "title": "fling scroll through the 5,000-message chat holds 60 fps and keeps the DOM bounded",
+        "status": "failed"
+      },
+      {
+        "suite": "e2e",
+        "file": "test/e2e/e2e/m2-messages.spec.ts",
+        "title": "bubbles, cards, the bubble menu and the reaction picker pass axe in light and dark",
+        "status": "failed"
+      },
+      {
+        "suite": "e2e",
+        "file": "test/e2e/e2e/test-hooks.spec.ts",
+        "title": "test hooks: clock, seed, online, theme, reset (08-3 §22)",
         "status": "failed"
       }
     ],
@@ -6878,66 +8388,614 @@
   ],
   "golden": {
     "counts": {
-      "pass": 0,
-      "review": 0,
+      "pass": 1,
+      "review": 1,
       "fail": 0,
-      "disputed": 0,
-      "notBuilt": 20
+      "disputed": 32,
+      "notBuilt": 3
     },
-    "refsRendered": [],
-    "determinism": null,
-    "rows": [
+    "refsRendered": [
+      {
+        "id": "BP-ANAT-CHIPS",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-ANAT-DOING",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-ANAT-KNOW",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-ANAT-L",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-ANAT-LFOOT",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-ANAT-LHEAD",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-ANAT-LIST",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-ANAT-M",
+        "family": "bp",
+        "themes": []
+      },
+      {
+        "id": "BP-ANAT-MHEAD",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-ANAT-RHEAD",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-ANAT-ROW",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-ANAT-S",
+        "family": "bp",
+        "themes": []
+      },
+      {
+        "id": "BP-ANAT-SEARCH",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-ANAT-SPENT",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-ANAT-TBAR",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-ANAT-USING",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-ANAT-XS",
+        "family": "bp",
+        "themes": []
+      },
       {
         "id": "BP-APP-L",
-        "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": false,
-        "app": false,
-        "diff": false
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
       },
       {
         "id": "BP-APP-M",
-        "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": false,
-        "app": false,
-        "diff": false
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
       },
       {
         "id": "BP-APP-R",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      }
+    ],
+    "determinism": {
+      "fid": "FID-03",
+      "compared": 34,
+      "identical": 34,
+      "differing": [],
+      "engine": "electron"
+    },
+    "rows": [
+      {
+        "id": "BP-ANAT-CHIPS",
+        "theme": "dark",
+        "verdict": "review",
+        "r1": "pass",
+        "r2": "pass (BP-ANAT-CHIPS 0/0 px)",
+        "r3": "review (BP-ANAT-CHIPS ΔE 4.78)",
+        "r4": "skipped: no hl element",
+        "r5": 0.07488602842585143,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-CHIPS",
         "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": false,
-        "app": false,
-        "diff": false
+        "verdict": "pass",
+        "r1": "pass",
+        "r2": "pass (BP-ANAT-CHIPS 0/0 px)",
+        "r3": "pass (BP-ANAT-CHIPS ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.07421560740144811,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-DOING",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-ANAT-DOING 0/24 px)",
+        "r3": "pass (BP-ANAT-DOING ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.05604288499025341,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-DOING",
+        "theme": "light",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-ANAT-DOING 0/24 px)",
+        "r3": "pass (BP-ANAT-DOING ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.05013245364122557,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-KNOW",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-ANAT-KNOW 0/70 px)",
+        "r3": "pass (BP-ANAT-KNOW ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.06590049010484521,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-KNOW",
+        "theme": "light",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-ANAT-KNOW 0/70 px)",
+        "r3": "pass (BP-ANAT-KNOW ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.05831627272163285,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-L",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-ANAT-L 0/20 px)",
+        "r3": "pass (BP-ANAT-L ΔE 1.68)",
+        "r4": "skipped: no hl element",
+        "r5": 0.1390380859375,
+        "ref": true,
+        "app": true,
+        "diff": true
       },
       {
         "id": "BP-ANAT-L",
         "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": false,
-        "app": false,
-        "diff": false
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-ANAT-L 0/20 px)",
+        "r3": "review (BP-ANAT-L ΔE 3.65)",
+        "r4": "skipped: no hl element",
+        "r5": 0.118544921875,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-LFOOT",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "pass (BP-ANAT-LFOOT 0/0 px)",
+        "r3": "pass (BP-ANAT-LFOOT ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.074898598820059,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-LFOOT",
+        "theme": "light",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "pass (BP-ANAT-LFOOT 0/0 px)",
+        "r3": "pass (BP-ANAT-LFOOT ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.07194874631268437,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-LHEAD",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "pass (BP-ANAT-LHEAD 0/0 px)",
+        "r3": "review (BP-ANAT-LHEAD ΔE 2.91)",
+        "r4": "skipped: no hl element",
+        "r5": 0.023008849557522124,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-LHEAD",
+        "theme": "light",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "pass (BP-ANAT-LHEAD 0/0 px)",
+        "r3": "review (BP-ANAT-LHEAD ΔE 2.53)",
+        "r4": "skipped: no hl element",
+        "r5": 0.022910521140609635,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-LIST",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-ANAT-LIST 0/18 px)",
+        "r3": "pass (BP-ANAT-LIST ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.10063060662581046,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-LIST",
+        "theme": "light",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-ANAT-LIST 0/18 px)",
+        "r3": "pass (BP-ANAT-LIST ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.09472422062350119,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-MHEAD",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "pass (BP-ANAT-MHEAD 0/2 px)",
+        "r3": "pass (BP-ANAT-MHEAD ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.038684503901895206,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-MHEAD",
+        "theme": "light",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "pass (BP-ANAT-MHEAD 0/2 px)",
+        "r3": "pass (BP-ANAT-MHEAD ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.0346711259754738,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-RHEAD",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "pass (BP-ANAT-RHEAD 0/0 px)",
+        "r3": "pass (BP-ANAT-RHEAD ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.006243854473942969,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-RHEAD",
+        "theme": "light",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "pass (BP-ANAT-RHEAD 0/0 px)",
+        "r3": "pass (BP-ANAT-RHEAD ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.0072271386430678465,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-ROW",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "pass",
+        "r2": "fail (BP-ANAT-ROW 0/15 px)",
+        "r3": "pass (BP-ANAT-ROW ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.037698412698412696,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-ROW",
+        "theme": "light",
+        "verdict": "disputed",
+        "r1": "pass",
+        "r2": "fail (BP-ANAT-ROW 0/15 px)",
+        "r3": "pass (BP-ANAT-ROW ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.03648088023088023,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-SEARCH",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "pass (BP-ANAT-SEARCH 0/0 px)",
+        "r3": "pass (BP-ANAT-SEARCH ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.028682591386174447,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-SEARCH",
+        "theme": "light",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "pass (BP-ANAT-SEARCH 0/0 px)",
+        "r3": "pass (BP-ANAT-SEARCH ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.029134998190372782,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-SPENT",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "pass",
+        "r2": "fail (BP-ANAT-SPENT 0/20 px)",
+        "r3": "pass (BP-ANAT-SPENT ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.07997209538305429,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-SPENT",
+        "theme": "light",
+        "verdict": "disputed",
+        "r1": "pass",
+        "r2": "fail (BP-ANAT-SPENT 0/20 px)",
+        "r3": "pass (BP-ANAT-SPENT ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.076103500761035,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-TBAR",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "pass (BP-ANAT-TBAR 0/2 px)",
+        "r3": "pass (BP-ANAT-TBAR ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.00004890453834115806,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-TBAR",
+        "theme": "light",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "pass (BP-ANAT-TBAR 0/2 px)",
+        "r3": "pass (BP-ANAT-TBAR ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.00004890453834115806,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-USING",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-ANAT-USING 0/23 px)",
+        "r3": "pass (BP-ANAT-USING ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.04039780521262003,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-ANAT-USING",
+        "theme": "light",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-ANAT-USING 0/23 px)",
+        "r3": "pass (BP-ANAT-USING ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.036248285322359394,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-APP-L",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-APP-L 0/18 px)",
+        "r3": "pass (BP-APP-L ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.1036688112745098,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-APP-L",
+        "theme": "light",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-APP-L 0/18 px)",
+        "r3": "pass (BP-APP-L ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.0987438725490196,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-APP-M",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-APP-M 0/18 px)",
+        "r3": "pass (BP-APP-M ΔE 1.68)",
+        "r4": "skipped: no hl element",
+        "r5": 0.19623571627647715,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-APP-M",
+        "theme": "light",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-APP-M 0/18 px)",
+        "r3": "review (BP-APP-M ΔE 3.65)",
+        "r4": "skipped: no hl element",
+        "r5": 0.16534280936454848,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-APP-R",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-APP-R 0/18 px)",
+        "r3": "review (BP-APP-R ΔE 3.19)",
+        "r4": "skipped: no hl element",
+        "r5": 0.09024969362745099,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-APP-R",
+        "theme": "light",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-APP-R 0/18 px)",
+        "r3": "review (BP-APP-R ΔE 3.65)",
+        "r4": "skipped: no hl element",
+        "r5": 0.06593137254901961,
+        "ref": true,
+        "app": true,
+        "diff": true
       },
       {
         "id": "BP-ANAT-M",
@@ -6977,198 +9035,12 @@
         "ref": false,
         "app": false,
         "diff": false
-      },
-      {
-        "id": "BP-ANAT-TBAR",
-        "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": false,
-        "app": false,
-        "diff": false
-      },
-      {
-        "id": "BP-ANAT-LHEAD",
-        "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": false,
-        "app": false,
-        "diff": false
-      },
-      {
-        "id": "BP-ANAT-SEARCH",
-        "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": false,
-        "app": false,
-        "diff": false
-      },
-      {
-        "id": "BP-ANAT-CHIPS",
-        "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": false,
-        "app": false,
-        "diff": false
-      },
-      {
-        "id": "BP-ANAT-LIST",
-        "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": false,
-        "app": false,
-        "diff": false
-      },
-      {
-        "id": "BP-ANAT-ROW",
-        "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": false,
-        "app": false,
-        "diff": false
-      },
-      {
-        "id": "BP-ANAT-LFOOT",
-        "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": false,
-        "app": false,
-        "diff": false
-      },
-      {
-        "id": "BP-ANAT-MHEAD",
-        "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": false,
-        "app": false,
-        "diff": false
-      },
-      {
-        "id": "BP-ANAT-RHEAD",
-        "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": false,
-        "app": false,
-        "diff": false
-      },
-      {
-        "id": "BP-ANAT-DOING",
-        "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": false,
-        "app": false,
-        "diff": false
-      },
-      {
-        "id": "BP-ANAT-USING",
-        "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": false,
-        "app": false,
-        "diff": false
-      },
-      {
-        "id": "BP-ANAT-KNOW",
-        "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": false,
-        "app": false,
-        "diff": false
-      },
-      {
-        "id": "BP-ANAT-SPENT",
-        "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": false,
-        "app": false,
-        "diff": false
       }
     ],
     "notBuilt": [
-      "BP-APP-L",
-      "BP-APP-M",
-      "BP-APP-R",
-      "BP-ANAT-L",
       "BP-ANAT-M",
       "BP-ANAT-S",
-      "BP-ANAT-XS",
-      "BP-ANAT-TBAR",
-      "BP-ANAT-LHEAD",
-      "BP-ANAT-SEARCH",
-      "BP-ANAT-CHIPS",
-      "BP-ANAT-LIST",
-      "BP-ANAT-ROW",
-      "BP-ANAT-LFOOT",
-      "BP-ANAT-MHEAD",
-      "BP-ANAT-RHEAD",
-      "BP-ANAT-DOING",
-      "BP-ANAT-USING",
-      "BP-ANAT-KNOW",
-      "BP-ANAT-SPENT"
+      "BP-ANAT-XS"
     ]
   }
 }
