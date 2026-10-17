@@ -368,8 +368,28 @@ export function useReadMore(expanded: boolean): [RefObject<HTMLDivElement | null
       setClamp(false);
       return;
     }
-    const lh = parseFloat(getComputedStyle(el).lineHeight) || 22;
-    setClamp(needsReadMore(el.scrollHeight, lh));
+    // Measured when the shared observer reports the box (after layout), never by reading layout while rows mount: a
+    // synchronous scrollHeight read per mounted bubble forced a layout in every scrolled frame (PERF-04).
+    return observeText(el, (height) => {
+      const lh = parseFloat(getComputedStyle(el).lineHeight) || 22;
+      setClamp(needsReadMore(height, lh));
+    });
   }, [expanded]);
   return [ref, clamp];
+}
+
+const textWatchers = new Map<Element, (height: number) => void>();
+let textObserver: ResizeObserver | null = null;
+
+/** One ResizeObserver for every bubble text (not one per row); the callback runs with layout already done. */
+function observeText(el: HTMLElement, cb: (height: number) => void): () => void {
+  textObserver ??= new ResizeObserver((entries) => {
+    for (const e of entries) textWatchers.get(e.target)?.((e.target as HTMLElement).scrollHeight);
+  });
+  textWatchers.set(el, cb);
+  textObserver.observe(el);
+  return () => {
+    textWatchers.delete(el);
+    textObserver?.unobserve(el);
+  };
 }

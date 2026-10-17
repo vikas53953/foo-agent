@@ -138,6 +138,16 @@ test('ART-26a · bubbles, cards, the bubble menu and the reaction picker pass ax
   await openChat(page, 'Trips');
   for (const tid of [TID.bubbleNotSent, TID.bubbleImage, TID.cardTable, TID.cardPlace]) {
     const el = page.getByTestId(tid).first();
+    // The list is virtual (Article 28): rows above the window are not in the DOM until scrolled near.
+    await logOf(page).evaluate(async (log, id) => {
+      // Up towards the start first, then back down towards the newest row.
+      for (const dir of [-1, 1]) {
+        for (let i = 0; i < 60 && !log.querySelector(`[data-testid="${id}"]`); i++) {
+          log.scrollTop = Math.max(0, log.scrollTop + dir * log.clientHeight * 0.5);
+          await new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
+        }
+      }
+    }, tid);
     await el.scrollIntoViewIfNeeded();
     await expect(el).toBeVisible();
     await audit(page, [thread], `trips ${tid}`);

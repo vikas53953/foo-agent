@@ -3,7 +3,7 @@
 // columns; 10 rows visible then "Show all {n} rows" expands in place; "Copy table" copies tab-separated text and reads
 // "Copied" for 2 s; `role="table"`; Narrator "Table: {title}, {rows} rows, {cols} columns"; ids card-table,
 // card-table-show-all, card-table-copy, card-table-row), 08-5 §4.1 TablePayload (`bestRowIndex` is highlighted).
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { t } from '../../shared/copy/t';
 import { motion } from '../../shared/tokens';
 import { TID } from '../../shared/testids';
@@ -29,20 +29,35 @@ export function TableCard({ card, time }: { card: CardRow; time: CardTime }) {
   const all = p.rows ?? [];
   const rows = expanded ? all : all.slice(0, TABLE_CARD_ROWS);
   const o = { timeZone: time.timeZone, now: time.now };
+  const label = t('cards.table.accessible_name', { title: p.title, rows: all.length, cols: cols.length });
+  // §5.22 "wider than the card → the table scrolls horizontally inside the card": a box that scrolls takes a tab stop so
+  // the keyboard can scroll it too (ART-26a, axe scrollable-region-focusable); one that fits adds no extra stop.
+  const box = useRef<HTMLDivElement>(null);
+  const [scrolls, setScrolls] = useState(false);
+  useEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setScrolls(el.scrollWidth > el.clientWidth + 1));
+    ro.observe(el);
+    const table = el.firstElementChild;
+    if (table) ro.observe(table);
+    return () => ro.disconnect();
+  }, []);
   return (
-    <CardFrame
-      tid="cardTable"
-      wide
-      state={card.state}
-      label={t('cards.table.accessible_name', { title: p.title, rows: all.length, cols: cols.length })}
-    >
+    <CardFrame tid="cardTable" wide state={card.state} label={label}>
       <div className={styles.head}>
         <span className={styles.title} data-copy="ai">
           {p.title}
         </span>
         <span className={styles.right}>{t('cards.table.right_label', { count: all.length })}</span>
       </div>
-      <div className={styles.tableBox}>
+      <div
+        ref={box}
+        className={styles.tableBox}
+        tabIndex={scrolls ? 0 : undefined}
+        role={scrolls ? 'group' : undefined}
+        aria-label={scrolls ? label : undefined}
+      >
         <table className={styles.table}>
           <thead>
             <tr>

@@ -165,7 +165,9 @@
   flex-direction: column;
   gap: var(--s1);
   min-height: var(--slot-h);
-  padding: var(--s2) var(--s3);
+  /* §20.3: 46 = 12 + 22 + 12 measured on the outside, the size of the 46px button slots (SV-10); the 1px border sits inside
+     the 12, so the padding is 11 (local: --s2 − the border). */
+  padding: calc(var(--s2) - 1px) var(--s3);
   border: 1px solid var(--line);
   border-radius: var(--r-composer);
   background: var(--bg-raised);

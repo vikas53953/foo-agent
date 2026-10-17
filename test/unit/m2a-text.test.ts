@@ -5,6 +5,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   allSources,
+  headingRanks,
   isRich,
   parseBlocks,
   parseInline,
@@ -168,5 +169,27 @@ describe('voice, tables, estimates', () => {
     expect(estimateText('a\nb\nc', 0)).toBe(56 + 2 * 22);
     expect(estimateText('x'.repeat(121), 0)).toBe(56 + 2 * 22);
     expect(estimateText('hi', 1)).toBe(56 + 204);
+  });
+});
+
+describe('heading ranks inside a message (axe heading-order under the chat header h1)', () => {
+  const ranks = (md: string) => {
+    const blocks = parseBlocks(md);
+    const r = headingRanks(blocks);
+    const out: number[] = [];
+    const walk = (list: typeof blocks) => {
+      for (const b of list) {
+        if (b.t === 'h') out.push(r.get(b)!);
+        else if (b.t === 'quote') walk(b.c);
+      }
+    };
+    walk(blocks);
+    return out;
+  };
+  it('never steps down by more than one from h1, whatever row comes first', () => {
+    expect(ranks('### Only a small heading\ntext')).toEqual([2]);
+    expect(ranks('## Your Goa options\n### Flights\n#### Fares\n### Hotels')).toEqual([2, 3, 3, 3]);
+    expect(ranks('### small\n# big\n### small again')).toEqual([2, 2, 3]);
+    expect(ranks('> ### quoted\n\n## top')).toEqual([2, 2]);
   });
 });

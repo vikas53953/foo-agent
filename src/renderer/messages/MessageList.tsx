@@ -9,7 +9,7 @@
 // keys Enter / Shift+F10 / Menu, Ctrl+Shift+R, Ctrl+Shift+E, Ctrl+C; new foo rows are announced once (streaming: when done);
 // §6.4 a quote click jumps and highlights 1600 ms; §14.2 / §14.3 status line and Thinking row; §10.11 the WhatsApp mirror.
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import { t } from '../../shared/copy/t';
 import { bp, motion } from '../../shared/tokens';
 import { TID } from '../../shared/testids';
@@ -187,6 +187,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   );
 
   const cardType = useCallback((id: string) => (cards as Record<string, CardRow>)[id]?.type, [cards]);
+  const onVirtualChange = useRef<(total: number) => void>(() => undefined);
   const rem = useMemo(remPx, []);
   const v = useVirtualizer({
     count: rows.length,
@@ -194,6 +195,11 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     estimateSize: (i) => estimateRow(rows[i]!, cardType, CARD_ESTIMATE),
     getItemKey: (i) => rows[i]!.key,
     overscan: 8,
+    // PERF-04: row positions and the column height are written straight to the DOM; React re-renders only when the
+    // visible range changes, not once per measured row. 'position' (top) keeps rows off their own compositor layers.
+    directDomUpdates: true,
+    directDomUpdatesMode: 'position',
+    onChange: (inst) => onVirtualChange.current(inst.getTotalSize()),
     paddingStart: rem,
     paddingEnd: rem,
   });
@@ -230,14 +236,33 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   }, [chat.id]);
 
   // A row grew or was measured: keep following at the bottom, except past the top of a streaming answer (04 §1.6).
-  const total = v.getTotalSize();
-  useEffect(() => {
+  // With direct DOM updates a measured row no longer re-renders the list, so growth is seen here, in the virtualizer's
+  // change callback: every measured row can change the total. The streaming row is found once per rows change, and the
+  // scroller's layout is read only when there is one (a layout read per measurement forced a reflow per frame, PERF-04).
+  const streamingIndex = useMemo(() => rows.findIndex((r) => r.kind === 'message' && r.message.status === 'streaming'), [rows]);
+  const lastTotal = useRef(-1);
+  const sizeQueued = useRef(false);
+  const sizeChanged = () => {
+    sizeQueued.current = false;
     const el = scrollRef.current;
-    const i = rows.findIndex((r) => r.kind === 'message' && r.message.status === 'streaming');
+    const i = streamingIndex;
     const start = i >= 0 ? v.getOffsetForIndex(i, 'start')?.[0] : undefined;
-    const end = el ? el.scrollHeight - el.clientHeight : 0;
-    stick.onSizeChange(start === undefined || followStreaming({ rowStart: start, scrollTop: end }));
-  }, [total]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (start === undefined || !el) {
+      stick.onSizeChange(true);
+      return;
+    }
+    stick.onSizeChange(followStreaming({ rowStart: start, scrollTop: el.scrollHeight - el.clientHeight }));
+  };
+  const sizeChangedRef = useRef(sizeChanged);
+  sizeChangedRef.current = sizeChanged;
+  // Called inside the virtualizer's measuring: the follow runs right after it, before the frame paints.
+  onVirtualChange.current = (total: number) => {
+    if (total === lastTotal.current) return;
+    lastTotal.current = total;
+    if (sizeQueued.current) return;
+    sizeQueued.current = true;
+    queueMicrotask(() => sizeChangedRef.current());
+  };
 
   // §1.5: rows that arrive after the list opened fade and rise; history rows do not.
   const known = useRef<Set<string> | null>(null);
@@ -320,7 +345,8 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     const el = scrollRef.current;
     if (!el) return;
     stick.onScroll();
-    setScrollTick((n) => (n + 1) % 1024);
+    // Only the mark-read check (X-152) reads the tick; with nothing unread a scroll needs no list re-render for it.
+    if (chat.unreadCount > 0) setScrollTick((n) => (n + 1) % 1024);
     setJumpShown(showJump(el));
     if (nearTop(el.scrollTop) && older === 'idle' && slice?.hasMore) void loadOlder();
     const firstVisible = v.getVirtualItems().find((i) => i.end > el.scrollTop + rem);
@@ -482,25 +508,21 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
         }}
       >
         {(older === 'loading' || older === 'failed') && <LoadOlder state={older} onRetry={() => void loadOlder()} />}
-        <div className={styles.column} role="list" style={{ height: v.getTotalSize() }}>
+        <div ref={v.containerRef} className={styles.column} role="list">
           {v.getVirtualItems().map((item) => {
             const r = rows[item.index]!;
             return (
-              <div
+              <RowFrame
                 key={item.key}
-                ref={v.measureElement}
-                data-index={item.index}
-                className={styles.row}
-                style={{ transform: `translateY(${item.start}px)` }}
-                role="listitem"
-                {...(r.kind === 'message'
-                  ? { 'data-message-id': r.message.id, tabIndex: -1, 'aria-label': messageAccessibleName(r.message, ctx) }
-                  : {})}
-                data-new={fresh.current.has(r.key) ? '' : undefined}
-                data-flash={(r.kind === 'message' && r.message.id === flashId) || undefined}
-              >
-                <Row row={r} index={item.index} cards={cards} layout={layouts[item.index]!} ctx={ctx} />
-              </div>
+                measure={v.measureElement}
+                index={item.index}
+                row={r}
+                cards={cards}
+                layout={layouts[item.index]!}
+                ctx={ctx}
+                isNew={fresh.current.has(r.key)}
+                flash={r.kind === 'message' && r.message.id === flashId}
+              />
             );
           })}
         </div>
@@ -510,6 +532,47 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     </div>
   );
 }
+
+/**
+ * One positioned row of the virtual list. Memoised: the list re-renders on every scroll event and virtualizer change
+ * (sticky date, Jump to latest, measured sizes), and a row's content, its markdown and its accessible name only change
+ * when its own props do (PERF-04).
+ */
+const RowFrame = memo(function RowFrame({
+  measure,
+  index,
+  row,
+  cards,
+  layout,
+  ctx,
+  isNew,
+  flash,
+}: {
+  measure: (el: Element | null) => void;
+  index: number;
+  row: VRow;
+  cards: Record<string, CardRow>;
+  layout: RowLayout;
+  ctx: RowCtx;
+  isNew: boolean;
+  flash: boolean;
+}) {
+  const m = row.kind === 'message' ? row.message : null;
+  const name = useMemo(() => (m ? messageAccessibleName(m, ctx) : undefined), [m, ctx]);
+  return (
+    <div
+      ref={measure}
+      data-index={index}
+      className={styles.row}
+      role="listitem"
+      {...(m ? { 'data-message-id': m.id, tabIndex: -1, 'aria-label': name } : {})}
+      data-new={isNew ? '' : undefined}
+      data-flash={flash || undefined}
+    >
+      <Row row={row} index={index} cards={cards} layout={layout} ctx={ctx} />
+    </div>
+  );
+});
 
 function Row({
   row,

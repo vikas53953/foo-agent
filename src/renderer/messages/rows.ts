@@ -24,8 +24,14 @@ export interface DateOpts {
 
 const DAY = 24 * 3_600_000;
 
+const dayFormats = new Map<string, Intl.DateTimeFormat>();
+
+/** "2026-10-16" in `timeZone`. One formatter per zone: building an Intl.DateTimeFormat costs far more than using it, and
+ *  buildRows calls this for every loaded message each time a page of history arrives (PERF-04). */
 export function dayKey(at: number, timeZone: string): string {
-  return new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(at));
+  let f = dayFormats.get(timeZone);
+  if (!f) dayFormats.set(timeZone, (f = new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' })));
+  return f.format(at);
 }
 
 export function dateLabel(at: number, o: DateOpts): string {

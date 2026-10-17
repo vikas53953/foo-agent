@@ -5,7 +5,7 @@
 // first 10 + "Show all {n} rows", focusable box "Table, {rows} rows, {columns} columns", right fade when it scrolls), §13.3
 // images (max-height 360, contain on `--bg-sunken`, alt or "Picture"), §13.4 citation pills (popover on hover 500 ms, focus
 // or click; "Sources ({n}) ›"), §16.1 auto-link menus, §16.2 money spans (tabular), §10.10 the user's WhatsApp set.
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import { motion } from '../../shared/tokens';
 import { TID } from '../../shared/testids';
@@ -18,7 +18,7 @@ import { expand, selectExpanded } from '../store/messages';
 import { useStore } from '../store/index';
 import { mediaUrl, useBubble } from './bubbleContext';
 import { copyText, mapsUrl, openLink, openUrl, prefillCalendar, prefillWriteEmail } from './linkActions';
-import { domainOf, inlineText, type Block, type Inline, type Source } from './markdownParse';
+import { domainOf, headingRanks, inlineText, type Block, type Inline, type Source } from './markdownParse';
 import type { AutoKind } from './textRules';
 import styles from './Markdown.module.css';
 
@@ -271,13 +271,22 @@ export function SourcesRow({ sources }: { sources: Source[] }) {
 
 // ---------------------------------------------------------------- blocks
 
+/** Heading ranks of the message being drawn (set by the outermost Blocks; quotes reuse it). */
+const Ranks = createContext<Map<Block, 2 | 3> | null>(null);
+
 export function Blocks({ blocks }: { blocks: Block[] }) {
+  const outer = useContext(Ranks);
+  const ranks = useMemo(() => outer ?? headingRanks(blocks), [outer, blocks]);
+  const body = blocks.map((b, i) => <BlockNode key={i} b={b} index={i} />);
+  return outer ? <>{body}</> : <Ranks.Provider value={ranks}>{body}</Ranks.Provider>;
+}
+
+function Heading({ b }: { b: Extract<Block, { t: 'h' }> }) {
+  const Tag = useContext(Ranks)?.get(b) === 3 ? 'h3' : 'h2';
   return (
-    <>
-      {blocks.map((b, i) => (
-        <BlockNode key={i} b={b} index={i} />
-      ))}
-    </>
+    <Tag className={b.level <= 2 ? styles.h12 : styles.h3}>
+      <Inlines nodes={b.c} />
+    </Tag>
   );
 }
 
@@ -306,15 +315,7 @@ function BlockNode({ b, index }: { b: Block; index: number }): ReactNode {
         </p>
       );
     case 'h':
-      return b.level <= 2 ? (
-        <h3 className={styles.h12}>
-          <Inlines nodes={b.c} />
-        </h3>
-      ) : (
-        <h4 className={styles.h3}>
-          <Inlines nodes={b.c} />
-        </h4>
-      );
+      return <Heading b={b} />;
     case 'list':
       return <ListBlock b={b} />;
     case 'quote':
@@ -400,7 +401,8 @@ function TableBlock({ b, part }: { b: Extract<Block, { t: 'table' }>; part: stri
     const el = box.current;
     if (!el) return;
     const check = () => setMore(el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
-    check();
+    // No synchronous check on mount (it forced a layout per table row mounted while scrolling, PERF-04): the observer
+    // reports the box once laid out, then on every resize.
     const ro = new ResizeObserver(check);
     ro.observe(el);
     el.addEventListener('scroll', check, { passive: true });

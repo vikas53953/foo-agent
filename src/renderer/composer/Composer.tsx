@@ -365,6 +365,14 @@ export function Composer({ chat }: { chat: ChatRow }) {
         if (focusField()) e.preventDefault();
         return;
       }
+      // §22.1 "Esc cancels" wherever focus is, and with {talkKey}'s Ctrl still held: the field's own key map only sees a
+      // plain Esc while it has focus, and a hold that ends after Esc would otherwise send the note.
+      if (e.key === 'Escape' && recording) {
+        e.preventDefault();
+        e.stopPropagation();
+        voice.cancel();
+        return;
+      }
       if (isTalkChord(e, talkKey) && !e.repeat && !dialogOpen) {
         if (round === 'mic' || recording) voice.talkDown();
         return;
@@ -644,6 +652,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
   }, [chat.kind]);
 
   const matches = useMemo(() => (mention ? filterHelpers(helpers, mention.query) : []), [mention, helpers]);
+  /** The mention listbox is on screen (04-2 §22.8): the field takes the combobox role and owns it. */
+  const listOpen = !!mention && matches.length > 0;
 
   const pickMention = useCallback(
     (h: HelperRow) => {
@@ -998,14 +1008,19 @@ export function Composer({ chat }: { chat: ChatRow }) {
                   contentEditable={!disabled}
                   suppressContentEditableWarning
                   spellCheck
-                  role="textbox"
-                  aria-multiline="true"
+                  // 04-2 §22.8 asks for aria-expanded="true" while the mention list is open, which ARIA 1.2 does not allow
+                  // on role="textbox" (axe aria-allowed-attr). While the listbox shows, the field is therefore an editable
+                  // combobox (the ARIA 1.2 pattern for a field that owns a popup list); at rest it is the §21.1 textbox.
+                  role={listOpen ? 'combobox' : 'textbox'}
+                  aria-multiline={listOpen ? undefined : 'true'}
                   aria-label={t('composer.field.accessible_name', { name: chatName })}
                   aria-description={placeholder}
                   aria-disabled={disabled || undefined}
-                  aria-expanded={mention ? true : undefined}
-                  aria-controls={mention && matches.length ? MENTION_LIST_ID : undefined}
-                  aria-activedescendant={mention && matches.length ? mentionRowId(mention.index) : undefined}
+                  aria-expanded={listOpen || undefined}
+                  aria-haspopup={listOpen ? 'listbox' : undefined}
+                  aria-autocomplete={listOpen ? 'list' : undefined}
+                  aria-controls={listOpen ? MENTION_LIST_ID : undefined}
+                  aria-activedescendant={listOpen && mention ? mentionRowId(mention.index) : undefined}
                   tabIndex={disabled ? -1 : 0}
                   data-testid={TID.composerField}
                   onInput={onInput}
@@ -1039,6 +1054,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
         className={styles.srOnly}
         tabIndex={-1}
         aria-hidden
+        // Hidden from assistive tech, but every input carries a name (ART-26a hand audit): the menu item it serves.
+        aria-label={t('composer.attach_menu.files')}
         onChange={(e) => {
           addFiles(Array.from(e.currentTarget.files ?? []));
           e.currentTarget.value = '';

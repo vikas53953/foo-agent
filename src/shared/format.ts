@@ -64,7 +64,21 @@ type Parts = { y: number; mo: number; d: number; wd: number; h: number; mi: numb
 
 const formatters = new Map<string, Intl.DateTimeFormat>();
 
+/** formatToParts is the slow part of every bubble time and accessible name: remember recent answers (PERF-04). */
+const partsCache = new Map<string, Parts>();
+const PARTS_CACHE_MAX = 4096;
+
 function partsIn(epochMs: number, timeZone: string): Parts {
+  const key = `${timeZone}|${epochMs}`;
+  const hit = partsCache.get(key);
+  if (hit) return hit;
+  const parts = computeParts(epochMs, timeZone);
+  if (partsCache.size >= PARTS_CACHE_MAX) partsCache.clear();
+  partsCache.set(key, parts);
+  return parts;
+}
+
+function computeParts(epochMs: number, timeZone: string): Parts {
   let f = formatters.get(timeZone);
   if (!f) {
     f = new Intl.DateTimeFormat('en-US', {

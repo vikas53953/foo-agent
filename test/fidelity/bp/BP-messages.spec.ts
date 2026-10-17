@@ -93,7 +93,8 @@ test('M2 Blueprint captures for Tier R: BP-MSG-01, BP-MSG-03, BP-MSG-04, BP-COMP
   // BP-COMP-09 "Not set up" (only during first run): a fresh install has no AI yet (08-0 §A ai.primary null).
   await page.getByTestId(TID.titlebarStrip).waitFor();
   await windowSize(app, page, 1280, 800);
-  await page.getByTestId(TID.chatlistRow).first().click();
+  // During first run foo's row is already the open chat and is disabled (03-shell-1 §3.4, ChatRow), so it is not clicked.
+  await expect(page.getByTestId(TID.chatlistRow).first()).toHaveAttribute('aria-selected', 'true');
   await expect(page.getByTestId(TID.composerSend)).toHaveAttribute('data-state', 'disabled');
   await rest(page);
   await both(page, 'BP-COMP-09', COMPOSER);

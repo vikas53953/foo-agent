@@ -456,6 +456,27 @@ export function streamSafe(text: string): string {
 const WA: Record<string, 'strong' | 'em' | 'del' | 'code'> = { '*': 'strong', _: 'em', '~': 'del', '`': 'code' };
 
 /** 04 §10.10: only *bold*, _italic_, ~strike~, `inline` and ```block```; then URLs, emails and phones (§10.7). */
+/**
+ * DOM heading rank for each markdown heading in one message (04 §13 styles by markdown level; the DOM rank is separate).
+ * The chat header is the page's `<h1>` and the virtualised list mounts any window of rows, so a message heading may follow
+ * the `<h1>` or another message's heading. Ranks therefore only ever step down by one: the message's first heading, and
+ * every H1/H2, is `<h2>`; an H3–H6 is `<h3>` only after an H1/H2 in the same message (axe heading-order, ART-26a).
+ */
+export function headingRanks(blocks: Block[]): Map<Block, 2 | 3> {
+  const out = new Map<Block, 2 | 3>();
+  let top = false;
+  const walk = (list: Block[]) => {
+    for (const b of list) {
+      if (b.t === 'h') {
+        if (b.level <= 2) top = true;
+        out.set(b, b.level <= 2 || !top ? 2 : 3);
+      } else if (b.t === 'quote') walk(b.c);
+    }
+  };
+  walk(blocks);
+  return out;
+}
+
 export function parseWhatsApp(text: string): Inline[] {
   const out: Inline[] = [];
   let buf = '';

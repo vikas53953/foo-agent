@@ -12,17 +12,30 @@ import { expect, test, type Page } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type {} from '../../src/shared/ipc';
+import { settingsDefaults } from '../../src/shared/settingsDefaults';
 import { TID } from '../../src/shared/testids';
 import { checkSpecValues, readRows, type SvResult } from '../fidelity/spec-values';
-import { launch } from './launch';
+import { launch, testDirs } from './launch';
 
 const byTid = (id: string) => `[data-testid="${id}"]`;
 /** 02-2 §F13.3: one frame at 60 fps (PERF-02's bound). */
 const PAINT_P95_MS = 16;
 const KEYS = 80;
 
-async function start(seed: 'perf' | 'ux-world') {
-  const app = await launch();
+/**
+ * `animations` stands for a settings.json the user already has: a first run on a runner with ≤ 4 logical CPUs stores
+ * "Basic" (02 F7 X-150), where every fade is `--m-basic`; SV-30 is the "Full" value of `--m-fast`.
+ */
+async function start(seed: 'perf' | 'ux-world', o: { animations?: 'full' } = {}) {
+  const dirs = testDirs();
+  if (o.animations) {
+    mkdirSync(dirs.FOO_DATA_DIR, { recursive: true });
+    writeFileSync(
+      join(dirs.FOO_DATA_DIR, 'settings.json'),
+      JSON.stringify({ ...settingsDefaults, appearance: { ...settingsDefaults.appearance, animations: o.animations } }),
+    );
+  }
+  const app = await launch(dirs);
   const page = await app.firstWindow();
   await page.getByTestId(TID.titlebarStrip).waitFor();
   await page.evaluate((s) => window.__fooTest!.seed(s), seed);
@@ -229,7 +242,8 @@ async function hoverMotion(page: Page): Promise<SvResult> {
 }
 
 test('FID-14 spec values for the composer: SV-10, SV-11, SV-12, SV-26 (placeholder) and SV-30, light and dark', async () => {
-  const { app, page } = await start('ux-world');
+  const { app, page } = await start('ux-world', { animations: 'full' });
+  await expect(page.locator('html')).toHaveAttribute('data-motion', 'full');
   await openChat(page, 'foo');
   const rows = readRows();
   const pick = (...ids: string[]) => rows.filter((r) => ids.includes(r.id));
