@@ -177,6 +177,18 @@ test('PERF-02 · typing in the 5,000-message chat paints within a frame (p95)', 
   const times = await page.evaluate(() => (window as unknown as { __paint: number[] }).__paint.slice().sort((a, b) => a - b));
   const p95 = times[Math.ceil(times.length * 0.95) - 1]!;
   console.log(`keydown → paint p95 ${p95.toFixed(1)} ms over ${times.length} keys`);
+  // Control, logged and not asserted: the same keys and the same probe in the same window, with nothing focused, so the
+  // app does no work for them. Its p95 is the floor the runner sets (frame cadence, timers); the evidence a PERF CR needs.
+  await page.evaluate(() => {
+    (document.activeElement as HTMLElement | null)?.blur();
+    (window as unknown as { __paint: number[] }).__paint = [];
+  });
+  for (let i = 0; i < KEYS; i++) await page.keyboard.press(i % 10 === 9 ? 'Space' : 'KeyA');
+  await page.waitForFunction((n) => (window as unknown as { __paint: number[] }).__paint.length >= n, KEYS);
+  const control = await page.evaluate(() => (window as unknown as { __paint: number[] }).__paint.slice().sort((a, b) => a - b));
+  const at = (q: number) => control[Math.ceil(control.length * q) - 1]!.toFixed(1);
+  const mine50 = times[Math.ceil(times.length * 0.5) - 1]!.toFixed(1);
+  console.log(`PERF-02 control, keys with nothing focused: p50 ${at(0.5)} ms, p95 ${at(0.95)} ms; typing p50 ${mine50} ms`);
   expect(p95).toBeLessThan(PAINT_P95_MS);
   await app.close();
 });
@@ -186,7 +198,15 @@ async function audit(page: Page, label: string) {
     await page.evaluate((t) => window.__fooTest!.theme(t), theme);
     if (process.platform !== 'win32') await page.emulateMedia({ colorScheme: theme });
     await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
-    await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished.catch(() => undefined))));
+    await page.evaluate(() =>
+      Promise.all(
+        document
+          .getAnimations()
+          // A looping animation (a spinner with animations "Full") never finishes: wait for the finite ones only.
+          .filter((a) => a.effect?.getTiming().iterations !== Infinity)
+          .map((a) => a.finished.catch(() => undefined)),
+      ),
+    );
     const r = await new AxeBuilder({ page }).setLegacyMode(true).include(byTid(TID.composer)).analyze();
     expect(r.violations.map((v) => `${label} ${theme} ${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`)).toEqual([]);
   }
@@ -255,7 +275,15 @@ test('FID-14 spec values for the composer: SV-10, SV-11, SV-12, SV-26 (placehold
   await page.evaluate(() => window.__fooTest!.theme('dark'));
   if (process.platform !== 'win32') await page.emulateMedia({ colorScheme: 'dark' });
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-  await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished.catch(() => undefined))));
+  await page.evaluate(() =>
+    Promise.all(
+      document
+        .getAnimations()
+        // A looping animation (a spinner with animations "Full") never finishes: wait for the finite ones only.
+        .filter((a) => a.effect?.getTiming().iterations !== Infinity)
+        .map((a) => a.finished.catch(() => undefined)),
+    ),
+  );
   const dark = await checkSpecValues(page, { theme: 'dark', rows: pick('SV-26') });
   results.push(...dark.map((r) => ({ ...r, note: 'dark' })));
   mkdirSync('test-results', { recursive: true });

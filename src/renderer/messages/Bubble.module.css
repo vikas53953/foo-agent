@@ -286,6 +286,23 @@
 .metaSpacerWide {
   width: calc(var(--s9) * 2);
 }
+.metaSpacerFit {
+  display: inline-block;
+  padding-left: var(--s1);
+  height: 1px;
+  overflow: hidden;
+  font: var(--t-caption);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  vertical-align: baseline;
+  visibility: hidden;
+}
+.metaSpacerFit::before {
+  content: attr(data-reserve);
+}
+.metaSpacerMark {
+  padding-left: calc(var(--s1) + var(--s3) + var(--s0));
+}
 .tickTip {
   display: inline-flex;
 }

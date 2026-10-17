@@ -22,6 +22,7 @@ import {
   requestComposer,
   retryMessage,
   selectExpanded,
+  selectFeedback,
   expand,
   setFeedback,
   type StoredMessage,
@@ -40,6 +41,7 @@ import {
   Meta,
   MetaSpacer,
   NotSentIcon,
+  TimeSpacer,
   NotSentLine,
   Quote,
   ReactionChips,
@@ -49,7 +51,7 @@ import {
   type QuoteInfo,
 } from './BubbleParts';
 import { backupNames, badgeSlot, bubbleName, canEdit, slotTooltip, tickLabel, tickState } from './bubbleState';
-import { Blocks, Inlines, SourcesRow } from './Markdown';
+import { Blocks, endsInParagraph, Inlines, SourcesRow } from './Markdown';
 import { HandoffMarker, SystemLine } from './Markers';
 import { allSources, inlineText, isRich, parseBlocks, parseWhatsApp, plainText, streamSafe } from './markdownParse';
 import { menuEntries, type MenuAction, type MenuFacts } from './messageMenu';
@@ -550,6 +552,8 @@ function BubbleBody({
   const backup = backupNames(m.providerNote);
   const checklist = job ? Object.values(ctx.cards).some((c) => c.jobId === job.id && c.type === 'checklist') : true;
   const worked = !!job && job.stepCount >= 1 && !checklist && job.startedAt !== null && job.finishedAt !== null && m.status === 'complete';
+  // §3.1 / §11 meta row: the trailing spacer sits on the last text line (inside the last paragraph).
+  const spacer = !streaming && !backup ? <AnswerSpacer messageId={m.id} at={m.createdAt} timeZone={ctx.timeZone} /> : null;
   const lead = (
     <>
       <FeedbackMark messageId={m.id} />
@@ -571,8 +575,15 @@ function BubbleBody({
       {...corners}
     >
       <div className={styles.text} data-copy="ai" data-side="foo">
-        {found ? <p className={styles.found}>{found}</p> : <Blocks blocks={bl} />}
-        {!streaming && !backup && <MetaSpacer wide={false} />}
+        {found ? (
+          <p className={styles.found}>
+            {found}
+            {spacer}
+          </p>
+        ) : (
+          <Blocks blocks={bl} tail={spacer} />
+        )}
+        {!found && !endsInParagraph(bl) && spacer}
       </div>
       {sources.length >= 2 && <SourcesRow sources={sources} />}
       {worked && job && <WorkedLine messageId={m.id} jobId={job.id} ms={job.finishedAt! - job.startedAt!} />}
@@ -580,6 +591,12 @@ function BubbleBody({
       {!streaming && meta(backup ? 'row' : 'float', lead)}
     </div>
   );
+}
+
+/** The time-only meta's spacer; it widens while the meta carries the 👍/👎 mark (§17.1). */
+function AnswerSpacer({ messageId, at, timeZone }: { messageId: string; at: number; timeZone: string }) {
+  const mark = useStore(selectFeedback(messageId));
+  return <TimeSpacer at={at} timeZone={timeZone} mark={!!mark} />;
 }
 
 // ---------------------------------------------------------------- the WhatsApp mirror bubble (§10.11)

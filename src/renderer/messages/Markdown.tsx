@@ -274,10 +274,15 @@ export function SourcesRow({ sources }: { sources: Source[] }) {
 /** Heading ranks of the message being drawn (set by the outermost Blocks; quotes reuse it). */
 const Ranks = createContext<Map<Block, 2 | 3> | null>(null);
 
-export function Blocks({ blocks }: { blocks: Block[] }) {
+/**
+ * `tail` (the bubble's meta spacer, 04 §3.1) goes inside the last paragraph, so a short last line keeps the time beside
+ * it; after any other last block it would only make a line of its own, so the caller places it then (`endsInParagraph`).
+ */
+export function Blocks({ blocks, tail }: { blocks: Block[]; tail?: ReactNode }) {
   const outer = useContext(Ranks);
   const ranks = useMemo(() => outer ?? headingRanks(blocks), [outer, blocks]);
-  const body = blocks.map((b, i) => <BlockNode key={i} b={b} index={i} />);
+  const last = blocks.length - 1;
+  const body = blocks.map((b, i) => <BlockNode key={i} b={b} index={i} tail={i === last ? tail : undefined} />);
   return outer ? <>{body}</> : <Ranks.Provider value={ranks}>{body}</Ranks.Provider>;
 }
 
@@ -306,12 +311,16 @@ function ListBlock({ b }: { b: Extract<Block, { t: 'list' }> }) {
   );
 }
 
-function BlockNode({ b, index }: { b: Block; index: number }): ReactNode {
+/** The meta spacer can sit inside the last block (04 §3.1): only a paragraph keeps it on its last line. */
+export const endsInParagraph = (blocks: Block[]): boolean => blocks[blocks.length - 1]?.t === 'p';
+
+function BlockNode({ b, index, tail }: { b: Block; index: number; tail?: ReactNode }): ReactNode {
   switch (b.t) {
     case 'p':
       return (
         <p className={styles.p}>
           <Inlines nodes={b.c} />
+          {tail}
         </p>
       );
     case 'h':

@@ -43,7 +43,9 @@ test('UX-09 · Voice notes: the steps that need no speech-to-text (1 and 8), lig
   });
 
   await test.step('UX-09-08 · Windows blocks the microphone: one button opens the right Windows setting', async () => {
-    const app = await launch();
+    // The PC has a microphone (the hosted runner has none: Chromium then answers NotFoundError, the "no microphone"
+    // banner). Only the fake device, not the fake permission UI: the refusal below must come from the permission handler.
+    const app = await launch(undefined, [FAKE_MIC[0]!]);
     const page = await app.firstWindow();
     // Windows' microphone privacy switch is off for foo: every media request is refused, as Chromium reports it then.
     await app.evaluate(({ session }) => {

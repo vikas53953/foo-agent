@@ -71,6 +71,19 @@ export const MetaSpacer = ({ wide }: { wide: boolean }) => (
   <span className={cx(styles.metaSpacer, wide && styles.metaSpacerWide)} aria-hidden="true" />
 );
 
+/**
+ * §3.1 for a time-only meta (foo's and helpers' bubbles, §11 "same trailing-space rule"): "meta width + 8px", sized by the
+ * meta's own time drawn invisibly as generated content (no text node, so copy and the ART-21a scan never see it), plus
+ * the 16px 👍/👎 mark and its 4px gap when the meta carries one (§17.1).
+ */
+export const TimeSpacer = ({ at, timeZone, mark }: { at: number; timeZone: string; mark: boolean }) => (
+  <span
+    className={cx(styles.metaSpacerFit, mark && styles.metaSpacerMark)}
+    data-reserve={formatTime(at, { timeZone })}
+    aria-hidden="true"
+  />
+);
+
 // ---------------------------------------------------------------- badge slot (§4)
 
 /** §4.2: a value that would last < 700 ms is skipped; the first value shows at once. */

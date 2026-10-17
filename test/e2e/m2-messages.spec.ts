@@ -48,11 +48,8 @@ async function openChat(page: Page, name: string) {
   await expect(page.getByTestId(TID.threadLog)).toBeVisible();
 }
 
-/** Scrolls the log with wheel flings until `done` holds, measuring every frame meanwhile. */
-async function fling(page: Page, dir: -1 | 1): Promise<number[]> {
-  const log = page.getByTestId(TID.threadLog);
-  const box = (await log.boundingBox())!;
-  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+/** Starts recording every frame's duration (rAF to rAF). */
+async function startFrames(page: Page): Promise<void> {
   await page.evaluate(() => {
     const w = window as unknown as { __frames: number[]; __stop: boolean };
     w.__frames = [];
@@ -65,18 +62,58 @@ async function fling(page: Page, dir: -1 | 1): Promise<number[]> {
     };
     requestAnimationFrame(tick);
   });
-  for (let i = 0; i < 400; i++) {
-    await page.mouse.wheel(0, dir * 1200);
-    const edge = await log.evaluate((el, d) => (d < 0 ? el.scrollTop <= 0 : el.scrollHeight - el.scrollTop - el.clientHeight < 2), dir);
-    const loading = await page.getByTestId(TID.threadLoadOlder).count();
-    if (edge && !loading) break;
-  }
+}
+
+/** Stops recording and returns the frame durations. */
+async function stopFrames(page: Page): Promise<number[]> {
   return page.evaluate(() => {
     const w = window as unknown as { __frames: number[]; __stop: boolean };
     w.__stop = true;
     return w.__frames.slice(1);
   });
 }
+
+/** Scrolls the log with wheel flings until it reaches the end, measuring every frame meanwhile. */
+async function fling(page: Page, dir: -1 | 1): Promise<number[]> {
+  const log = page.getByTestId(TID.threadLog);
+  const box = (await log.boundingBox())!;
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await startFrames(page);
+  for (let i = 0; i < 400; i++) {
+    await page.mouse.wheel(0, dir * 1200);
+    const edge = await log.evaluate((el, d) => (d < 0 ? el.scrollTop <= 0 : el.scrollHeight - el.scrollTop - el.clientHeight < 2), dir);
+    const loading = await page.getByTestId(TID.threadLoadOlder).count();
+    if (edge && !loading) break;
+  }
+  return stopFrames(page);
+}
+
+/**
+ * Controls for PERF-04, logged and not asserted: the same frame counter in the same window and run, (a) with no input at
+ * all and (b) with the fling's wheel events and round trips sent to the chat header, which does not scroll. Long frames
+ * there are the machine's (runner, software GPU), not the list's; the evidence a PERF CR would need.
+ */
+async function controlFrames(page: Page, wheels: number): Promise<{ idle: number[]; header: number[] }> {
+  await startFrames(page);
+  await page.waitForTimeout(5_000);
+  const idle = await stopFrames(page);
+  const head = (await page.getByTestId(TID.chatHeader).boundingBox())!;
+  await page.mouse.move(head.x + head.width / 2, head.y + head.height / 2);
+  const log = page.getByTestId(TID.threadLog);
+  await startFrames(page);
+  for (let i = 0; i < wheels; i++) {
+    await page.mouse.wheel(0, -1200);
+    await log.evaluate((el) => el.scrollTop);
+    await page.getByTestId(TID.threadLoadOlder).count();
+  }
+  return { idle, header: await stopFrames(page) };
+}
+
+const share = (frames: number[]) =>
+  `${frames.length} frames, over ${FRAME_MS} ms: ${frames.filter((f) => f > FRAME_MS).length} (${(
+    (100 * frames.filter((f) => f > FRAME_MS).length) /
+    Math.max(1, frames.length)
+  ).toFixed(1)} %), p50 ${[...frames].sort((a, b) => a - b)[Math.floor(frames.length / 2)]?.toFixed(1)} ms`;
 
 const logOf = (page: Page) => page.getByTestId(TID.threadLog);
 const rowsInDom = (page: Page) => page.locator(`${byTid(TID.threadLog)} [data-index]`).count();
@@ -92,6 +129,10 @@ test('PERF-04 · fling scroll through the 5,000-message chat holds 60 fps and ke
   const frames = [...up, ...down];
   const long = frames.filter((f) => f > FRAME_MS).length;
   console.log(`frames ${frames.length}, over ${FRAME_MS} ms: ${long}; rows in DOM ${upRows} / ${downRows}`);
+  const control = await controlFrames(page, 200);
+  console.log(`PERF-04 control, no input: ${share(control.idle)}`);
+  console.log(`PERF-04 control, 200 wheels on the chat header: ${share(control.header)}`);
+  console.log(`PERF-04 fling: ${share(frames)}`);
   expect(frames.length).toBeGreaterThan(60);
   expect(long / frames.length).toBeLessThanOrEqual(LONG_FRAME_SHARE);
   expect(Math.max(upRows, downRows)).toBeLessThanOrEqual(MAX_ROWS_IN_DOM);
