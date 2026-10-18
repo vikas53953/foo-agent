@@ -10,7 +10,7 @@ import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
 import type { Clock } from '../shared/clock';
 import { ok, type Result } from '../shared/errors';
-import { newId } from '../shared/ids';
+import { newId as mintId, type IdPrefix } from '../shared/ids';
 import { settingsSchema, type Settings } from '../shared/settings';
 import { settingsDefaults } from '../shared/settingsDefaults';
 import type { ProviderId } from '../shared/types';
@@ -46,6 +46,8 @@ export interface EngineOptions {
   which?: ReturnType<typeof nodeWhich>;
   /** M4: the tools jobs may use (08-2 §8.2). Tests pass the fake tools; M8 connectors and M9 browser add the real ones. */
   tools?: ToolRegistry;
+  /** Tests only: deterministic ids (a fake AI script can then name a tool call id in a proof). */
+  newId?: (prefix: IdPrefix) => string;
 }
 
 export class Engine {
@@ -63,6 +65,7 @@ export class Engine {
   }
 
   private constructor(private o: EngineOptions) {
+    const newId = (p: IdPrefix, now: number) => (o.newId ? o.newId(p) : mintId(p, now));
     const log = (evt: string, kind?: string) =>
       o.link.send('log', { t: o.clock.now(), lvl: 'info', mod: 'engine', evt, ...(kind ? { kind } : {}) });
     this.redactor = new Redactor({ clock: o.clock, log: (kind) => log('redact', kind) });
@@ -250,7 +253,7 @@ export class Engine {
     const r = await this.ai
       .runTurn(
         pick.providerId,
-        { ...this.ai.turnParams(pick.providerId, 'rewrite'), turnId: newId('t', this.o.clock.now()), purpose: 'rewrite', ...built },
+        { ...this.ai.turnParams(pick.providerId, 'rewrite'), turnId: mintId('t', this.o.clock.now()), purpose: 'rewrite', ...built },
         { onText: () => {}, onSession: () => {} },
         signal,
       )
