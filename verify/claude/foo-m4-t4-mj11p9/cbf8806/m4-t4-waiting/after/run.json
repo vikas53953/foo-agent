@@ -1,0 +1,52 @@
+{
+  "journey": "test/verify/m4-t4-waiting.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "f80e576f130c3b9533af9f3167d17a5f45940c66",
+  "dirty": false,
+  "started": "2026-10-18T18:38:59.407Z",
+  "finished": "2026-10-18T18:39:37.116Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "the AI test failed before the job started → the job is WAITING, Doing now reads \"Paused · Claude isn’t answering\" (was: stuck QUEUED)",
+    "exactly one new error card in the thread for the job (AT-112)",
+    "AI back → the job resumed and finished: \"Two bills are due this week.\"; no new error card, only the checklist and the result were added",
+    "offline 10 s mid-job → banner \"offline\", Doing now \"Paused · you’re offline\", no error card, no composer bar (AT-081)",
+    "back online → the banner is gone and the job finished from the same step: \"Tomorrow is free after 2 PM.\""
+  ],
+  "shots": [
+    {
+      "file": "after/01-verify-failed.light.png",
+      "name": "verify-failed",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-resumed-done.light.png",
+      "name": "resumed-done",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-offline-waiting.light.png",
+      "name": "offline-waiting",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-offline-waiting.dark.png",
+      "name": "offline-waiting",
+      "theme": "dark"
+    },
+    {
+      "file": "after/05-back-online-done.light.png",
+      "name": "back-online-done",
+      "theme": "light"
+    },
+    {
+      "file": "after/06-back-online-done.dark.png",
+      "name": "back-online-done",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": []
+}
