@@ -50,7 +50,8 @@ describe('Article 12: the runner owns progress', () => {
     const same = Array.from({ length: 15 }, () => tool('fake.site', { site: 'stay.example' }, { delayMs: 20_000 }));
     h = jobHarness({ script: [jobIntake(plan), ...same, stuckLine('The page never changes')] });
     h.userSays('Find a stay');
-    await until(h, () => h!.cards('stuck').length === 1, 500);
+    // 100 ms clock steps: the watchdog's check runs on real I/O, and a coarse step lets the clock run ahead of it.
+    await until(h, () => h!.cards('stuck').length === 1, 100, 4_000);
     const frozenFor = Number(h.cards('stuck')[0]!.created_at) - Number(h.job().last_progress_at);
     expect(frozenFor).toBeGreaterThanOrEqual(180_000 - 5_000);
     expect(frozenFor).toBeLessThanOrEqual(180_000 + 5_000);

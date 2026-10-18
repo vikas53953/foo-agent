@@ -1,21 +1,16 @@
 // Shared bits for the M4 T3 runner tests (stop, steer, stuck, caps): waiting on the fake clock, key billing with a seeded
 // month spend (the fake adapter prices nothing, so a spend row stands in for earlier key turns), raw activity rows, and the
 // StuckAct reply of the classify turn. 08-2 §5.5–§5.7, §5.10; 08-4 §25.4.
-import { verified } from './jobHarness';
+import { realPause, verified } from './jobHarness';
 import type { JobHarness } from './jobHarness';
 import type { FakeLineIn } from '../../unit/m3-engine-helpers';
 import { TEST_EPOCH_MS } from '../../../src/shared/clock';
 import type { Settings } from '../../../src/shared/settings';
 
-const realSleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
-/** One macrotask turn. Windows timers fire every ~15.6 ms, so the loops below take one real sleep per round, not three. */
-const tick = () => new Promise<void>((r) => setImmediate(r));
-
 /** Lets the engine work, advancing the fake clock `stepMs` per round, until `cond` holds. */
 export async function until(h: JobHarness, cond: () => boolean, stepMs = 100, rounds = 2_000): Promise<void> {
   for (let i = 0; i < rounds; i++) {
-    await realSleep(1);
-    for (let j = 0; j < 8; j++) await tick();
+    await realPause(3);
     if (cond()) return;
     h.clock.advance(stepMs);
   }
@@ -24,9 +19,7 @@ export async function until(h: JobHarness, cond: () => boolean, stepMs = 100, ro
 
 /** Lets queued engine work run without moving the clock. */
 export async function flush(rounds = 30): Promise<void> {
-  await realSleep(1);
-  for (let i = 0; i < rounds * 4; i++) await tick();
-  await realSleep(1);
+  await realPause(rounds);
 }
 
 /** The chosen AI is an API key (metered) and verified: the "key billing" world of 08-2 §5.10. */
