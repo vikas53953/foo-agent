@@ -167,6 +167,9 @@ test('UX-08 · Just chatting, in your language: steps 1 to 5 live with fake-AI r
       .first();
     await expect(fooRow.getByTestId(TID.chatlistRowPreview)).toContainText(t('chatlist.row.preview.typing'));
     await expect(page.getByTestId(TID.composerSend)).toHaveAttribute('data-state', 'stop');
+    // 👀 on the question (04 §4.2), shown once the badge's 700 ms debounce has passed; the walkthrough draws it.
+    const ask = last(TID.bubbleMe, holiday).locator('xpath=ancestor::*[@data-message-id][1]');
+    await expect(ask.getByTestId(TID.bubbleBadge)).toHaveAttribute('data-state', 'seen');
     await log.evaluate((el) => (el.scrollTop = el.scrollHeight));
     await rest(page);
     for (const theme of THEMES) {
