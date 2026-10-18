@@ -1,0 +1,38 @@
+{
+  "journey": "test/verify/m4-t2-runner.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "4a7d5fc0bd47817a1d6f76d32c6d063d99f53fa4",
+  "dirty": false,
+  "started": "2026-10-18T17:52:58.299Z",
+  "finished": "2026-10-18T17:53:02.295Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "intake decided job → the runner started it: my bubble shows 🛠 (badge data-state=\"working\")",
+    "2 s into the job (past the 1.5 s checklist) the badge is still 🛠",
+    "the AI's result is posted once as a foo bubble: \"Two bills are due this week: electricity ₹1,240 and broadband ₹799.\"",
+    "my bubble ends ✅ with badge data-state=\"done_unverified\" (no proof given, AT-115)",
+    "the fake AI was asked exactly intake, step, step (verify turns aside)",
+    "exactly one new checklist card in the thread (1 → 2); its drawing lands with T5"
+  ],
+  "shots": [
+    {
+      "file": "after/01-job-working.light.png",
+      "name": "job-working",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-job-done.light.png",
+      "name": "job-done",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-job-done.dark.png",
+      "name": "job-done",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": []
+}
