@@ -181,12 +181,17 @@ test('ART-26a · bubbles, cards, the bubble menu and the reaction picker pass ax
     const el = page.getByTestId(tid).first();
     // The list is virtual (Article 28): rows above the window are not in the DOM until scrolled near.
     await logOf(page).evaluate(async (log, id) => {
-      // Up towards the start first, then back down towards the newest row.
-      for (const dir of [-1, 1]) {
-        for (let i = 0; i < 60 && !log.querySelector(`[data-testid="${id}"]`); i++) {
-          log.scrollTop = Math.max(0, log.scrollTop + dir * log.clientHeight * 0.5);
-          await new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
-        }
+      const frames = () => new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
+      const found = () => log.querySelector(`[data-testid="${id}"]`) !== null;
+      // From the top, half a screen at a time down to the newest row. Row heights settle as rows are measured, so the
+      // bottom keeps moving: stop on the find, or after a few frames at the bottom with nothing new.
+      log.scrollTop = 0;
+      await frames();
+      for (let i = 0, still = 0; i < 400 && !found() && still < 6; i++) {
+        const before = log.scrollTop;
+        log.scrollTop = before + log.clientHeight * 0.5;
+        await frames();
+        still = log.scrollTop === before ? still + 1 : 0;
       }
     }, tid);
     await el.scrollIntoViewIfNeeded();
