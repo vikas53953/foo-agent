@@ -5,7 +5,12 @@ import { json, type Handler } from './net';
 export const EXA_RESULTS = {
   requestId: 'req_fake',
   results: [
-    { title: 'Trattoria Uno, Bandra West', url: 'https://example-food.test/trattoria-uno', publishedDate: '2026-09-01T00:00:00.000Z', highlights: ['Wood-fired pizza and fresh pasta on Hill Road.'] },
+    {
+      title: 'Trattoria Uno, Bandra West',
+      url: 'https://example-food.test/trattoria-uno',
+      publishedDate: '2026-09-01T00:00:00.000Z',
+      highlights: ['Wood-fired pizza and fresh pasta on Hill Road.'],
+    },
     { title: 'Pasta Corner', url: 'https://www.example-guide.test/bandra/pasta-corner', publishedDate: null, highlights: [] },
   ],
 };

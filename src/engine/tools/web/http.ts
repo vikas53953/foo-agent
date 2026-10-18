@@ -26,11 +26,7 @@ export function classifyStatus(status: number, bodyText: string): Exclude<CloudE
 }
 
 /** Sends one request with a deadline on the injected clock; never throws. */
-export async function cloudRequest(
-  deps: { fetch: HttpFetch; clock: Clock },
-  req: CloudRequest,
-  timeoutMs: number,
-): Promise<CloudResponse> {
+export async function cloudRequest(deps: { fetch: HttpFetch; clock: Clock }, req: CloudRequest, timeoutMs: number): Promise<CloudResponse> {
   const ctl = new AbortController();
   let timedOut = false;
   const timer = deps.clock.setTimeout(() => {
@@ -48,7 +44,8 @@ export async function cloudRequest(
       redirect: 'error',
     });
     const text = await res.text();
-    if (res.status < 200 || res.status >= 300) return { ok: false, kind: classifyStatus(res.status, text), status: res.status, timeout: false };
+    if (res.status < 200 || res.status >= 300)
+      return { ok: false, kind: classifyStatus(res.status, text), status: res.status, timeout: false };
     try {
       return { ok: true, status: res.status, body: text ? (JSON.parse(text) as unknown) : null };
     } catch {

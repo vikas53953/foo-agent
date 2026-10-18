@@ -31,8 +31,20 @@ describe('provider clients against their fakes (08-4 §27.3)', () => {
       contents: { highlights: { maxCharacters: 400, highlightsPerUrl: 1 } },
     });
     expect(exa.map(r.ok ? r.body : null)).toEqual([
-      { title: 'Trattoria Uno, Bandra West', url: 'https://example-food.test/trattoria-uno', snippet: 'Wood-fired pizza and fresh pasta on Hill Road.', site: 'example-food.test', date: '2026-09-01T00:00:00.000Z' },
-      { title: 'Pasta Corner', url: 'https://www.example-guide.test/bandra/pasta-corner', snippet: '', site: 'www.example-guide.test', date: null },
+      {
+        title: 'Trattoria Uno, Bandra West',
+        url: 'https://example-food.test/trattoria-uno',
+        snippet: 'Wood-fired pizza and fresh pasta on Hill Road.',
+        site: 'example-food.test',
+        date: '2026-09-01T00:00:00.000Z',
+      },
+      {
+        title: 'Pasta Corner',
+        url: 'https://www.example-guide.test/bandra/pasta-corner',
+        snippet: '',
+        site: 'www.example-guide.test',
+        date: null,
+      },
     ]);
   });
 
@@ -40,7 +52,13 @@ describe('provider clients against their fakes (08-4 §27.3)', () => {
     const net = new FakeNet().on('api.tavily.com', fakeTavily());
     const r = await cloudRequest({ fetch: net.fetch, clock }, tavily.search(RESOURCE.tavily.base, 'k_tav', 'cafe', 5), TIMEOUT_MS.tavily);
     expect(net.requests[0]!.headers.authorization).toBe('Bearer k_tav');
-    expect(JSON.parse(net.requests[0]!.body)).toEqual({ query: 'cafe', max_results: 5, search_depth: 'basic', country: 'india', include_answer: false });
+    expect(JSON.parse(net.requests[0]!.body)).toEqual({
+      query: 'cafe',
+      max_results: 5,
+      search_depth: 'basic',
+      country: 'india',
+      include_answer: false,
+    });
     const [hit] = tavily.map(r.ok ? r.body : null);
     expect(hit!.snippet).toHaveLength(400);
     expect(hit!.date).toBe('2026-10-01');
@@ -54,7 +72,12 @@ describe('provider clients against their fakes (08-4 §27.3)', () => {
       TIMEOUT_MS.firecrawl,
     );
     expect(net.requests[0]!.headers.authorization).toBe('Bearer k_fc');
-    expect(JSON.parse(net.requests[0]!.body)).toEqual({ url: 'https://example-food.test/menu', formats: ['markdown'], onlyMainContent: true, timeout: 30000 });
+    expect(JSON.parse(net.requests[0]!.body)).toEqual({
+      url: 'https://example-food.test/menu',
+      formats: ['markdown'],
+      onlyMainContent: true,
+      timeout: 30000,
+    });
     const page = firecrawl.map(r.ok ? r.body : null);
     expect(page!.text.length).toBe(20_000);
     expect(page!.title).toBe('Menu · Trattoria Uno');
@@ -67,7 +90,12 @@ describe('provider clients against their fakes (08-4 §27.3)', () => {
     const req = browseruse.create(RESOURCE.browseruse.base, 'k_bu', 'list italian places', 'https://example-guide.test/bandra');
     expect(req.url).toBe('https://api.browser-use.com/api/v2/tasks');
     expect(req.headers['X-Browser-Use-API-Key']).toBe('k_bu');
-    expect(req.body).toEqual({ task: 'list italian places', startUrl: 'https://example-guide.test/bandra', allowedDomains: ['example-guide.test'], maxSteps: 20 });
+    expect(req.body).toEqual({
+      task: 'list italian places',
+      startUrl: 'https://example-guide.test/bandra',
+      allowedDomains: ['example-guide.test'],
+      maxSteps: 20,
+    });
     expect(browseruse.stop(RESOURCE.browseruse.base, 'k_bu', 'task_1')).toMatchObject({ method: 'PATCH', body: { action: 'stop' } });
   });
 

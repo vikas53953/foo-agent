@@ -23,7 +23,12 @@ export const browseruse = {
     return { method: 'GET', url: `${base}/tasks/${encodeURIComponent(id)}`, headers: { 'X-Browser-Use-API-Key': key } };
   },
   stop(base: string, key: string, id: string): CloudRequest {
-    return { method: 'PATCH', url: `${base}/tasks/${encodeURIComponent(id)}`, headers: { 'X-Browser-Use-API-Key': key }, body: { action: 'stop' } };
+    return {
+      method: 'PATCH',
+      url: `${base}/tasks/${encodeURIComponent(id)}`,
+      headers: { 'X-Browser-Use-API-Key': key },
+      body: { action: 'stop' },
+    };
   },
   me(base: string, key: string): CloudRequest {
     return { method: 'GET', url: `${base}/me`, headers: { 'X-Browser-Use-API-Key': key } };
@@ -43,6 +48,13 @@ export const browseruse = {
   map(body: unknown, startUrl: string): ReadResult {
     const steps = field(body, 'steps');
     const links = Array.isArray(steps) ? [...new Set(steps.map((s: unknown) => str(field(s, 'url'))).filter((u): u is string => !!u))] : [];
-    return { text: (str(field(body, 'output')) ?? '').slice(0, MAX_READ_CHARS), title: null, url: startUrl, site: hostOf(startUrl), date: null, links };
+    return {
+      text: (str(field(body, 'output')) ?? '').slice(0, MAX_READ_CHARS),
+      title: null,
+      url: startUrl,
+      site: hostOf(startUrl),
+      date: null,
+      links,
+    };
   },
 };

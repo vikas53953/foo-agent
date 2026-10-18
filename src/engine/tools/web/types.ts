@@ -14,7 +14,8 @@ export type WebProvider = (typeof WEB_PROVIDERS)[number];
 export type CloudErrorKind = 'CLOUD_AUTH' | 'CLOUD_QUOTA' | 'CLOUD_DOWN' | 'CLOUD_SECRET_BLOCKED';
 
 /** Errors a web tool returns to the step runner (08-2 §8.2, 08-3 §21.2, 08-4 §27.2–§27.3). */
-export type WebToolErrorKind = 'SEARCH_BUSY' | 'NET_OFFLINE' | 'URL_NOT_ALLOWED' | 'SITE_HANDBACK' | 'ROUTE_ORDER' | 'USE_EDGE';
+export type WebToolErrorKind =
+  'needsBrowser' | 'SEARCH_BUSY' | 'NET_OFFLINE' | 'URL_NOT_ALLOWED' | 'SITE_HANDBACK' | 'ROUTE_ORDER' | 'USE_EDGE';
 
 /** 08-4 §27.3 `resources/web-tools.json` (seeded by M9 T1). */
 export interface WebToolsResource {
@@ -129,6 +130,8 @@ export interface WebToolDeps {
   urlAllowed: (url: URL) => boolean;
   /** Biller sites always use foo's Edge (08-2 §8.3.12 d). */
   isBillerSite: (url: URL) => boolean;
+  /** Bing `setlang` (08-2 §8.2): the user's language; default en-IN. */
+  searchLang?: () => 'en-IN' | 'hi';
   /** foo's job window (local search and `needsBrowser`); absent until M9 T3 lands. */
   page?: PageLoader;
   newId: () => string;
@@ -141,5 +144,4 @@ export interface WebToolDeps {
 
 /** What a tool returns to the runner: data for the AI already wrapped untrusted, or an error kind. */
 export type WebToolResult<T> =
-  | { ok: true; data: T; forAi: string; via: WebProvider | 'this_pc' }
-  | { ok: false; errorKind: WebToolErrorKind; detail?: string };
+  { ok: true; data: T; forAi: string; via: WebProvider | 'this_pc' } | { ok: false; errorKind: WebToolErrorKind; detail?: string };

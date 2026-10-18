@@ -4,7 +4,10 @@ import { json, type Handler } from './net';
 
 export const FIRECRAWL_PAGE = {
   success: true,
-  data: { markdown: '# Menu\n\n' + 'Margherita pizza, ₹450. '.repeat(1200), metadata: { title: 'Menu · Trattoria Uno', sourceURL: 'https://example-food.test/menu' } },
+  data: {
+    markdown: '# Menu\n\n' + 'Margherita pizza, ₹450. '.repeat(1200),
+    metadata: { title: 'Menu · Trattoria Uno', sourceURL: 'https://example-food.test/menu' },
+  },
 };
 
 export function fakeFirecrawl(mode: { status?: number; body?: unknown } = {}): Handler {

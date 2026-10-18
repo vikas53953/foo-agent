@@ -1,6 +1,8 @@
 // Spec: 08-3 §22.2 (fakes for every outside service; no real host or key in tests), 08-4 §27.3 (the four wire contracts the
 // fakes answer), AT-137 (network capture), AT-140 (canaries). A fake network: every request the web tools make goes through
 // FakeNet.fetch, is recorded (host, path, headers, body) and answered by the handler registered for its host.
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { FakeClock } from '../../../src/shared/clock';
 import { Redactor } from '../../../src/engine/redact/Redactor';
 import type {
@@ -150,7 +152,15 @@ export function world(over: Partial<WebToolDeps> & { net?: FakeNet } = {}): {
     },
     fetch: net.fetch,
     resource: RESOURCE,
-    pricing: { usdToInr: 88, web: { exa: { perCallUsd: 0.005 }, tavily: { perCallUsd: 0.008 }, firecrawl: { perCallUsd: 0.001 }, browseruse: { perStepUsd: 0.01 } } },
+    pricing: {
+      usdToInr: 88,
+      web: {
+        exa: { perCallUsd: 0.005 },
+        tavily: { perCallUsd: 0.008 },
+        firecrawl: { perCallUsd: 0.001 },
+        browseruse: { perStepUsd: 0.01 },
+      },
+    },
     settings: () => NO_KEYS_SETTINGS,
     keys: keys({}),
     meter: { wouldCross: () => false },
@@ -169,3 +179,10 @@ export function world(over: Partial<WebToolDeps> & { net?: FakeNet } = {}): {
   };
   return { deps, net, clock, turns, logs, quota, refused };
 }
+
+/** A fixture page from test/fakes/web/pages (hand-made, no real site content). */
+export function fixture(name: string): string {
+  return readFileSync(join(__dirname, 'pages', name), 'utf8');
+}
+
+export const EXA_KEY_SETTINGS: WebSettings = { ...NO_KEYS_SETTINGS, search: 'exa' };
