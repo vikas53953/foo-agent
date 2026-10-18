@@ -164,8 +164,9 @@ test('PERF-02 · typing in the 5,000-message chat paints within a frame (p95)', 
   await field(page).focus();
   await page.evaluate((frame) => {
     type Key = { t0: number; mut: number | null; typed: boolean };
-    const w = window as unknown as { __paint: number[]; __wait: number[]; __key: Key | null };
+    const w = window as unknown as { __paint: number[]; __raw: number[]; __wait: number[]; __key: Key | null };
     w.__paint = [];
+    w.__raw = [];
     w.__wait = [];
     w.__key = null;
     new MutationObserver(() => {
@@ -184,6 +185,7 @@ test('PERF-02 · typing in the 5,000-message chat paints within a frame (p95)', 
             // The wait from "ready to paint" to the screen's next refresh is the display's, not the app's: at most one frame.
             const wait = Math.min(Math.max(ft - ready, 0), frame);
             w.__wait.push(wait);
+            w.__raw.push(performance.now() - key.t0);
             w.__paint.push(performance.now() - key.t0 - wait);
           }, 0);
         };
@@ -195,11 +197,12 @@ test('PERF-02 · typing in the 5,000-message chat paints within a frame (p95)', 
   await typeKeys(page);
   const times = await page.evaluate(() => (window as unknown as { __paint: number[] }).__paint.slice().sort((a, b) => a - b));
   const waits = await page.evaluate(() => (window as unknown as { __wait: number[] }).__wait.slice().sort((a, b) => a - b));
+  const raw = await page.evaluate(() => (window as unknown as { __raw: number[] }).__raw.slice().sort((a, b) => a - b));
   const q = (xs: number[], p: number) => xs[Math.ceil(xs.length * p) - 1]!;
   const p95 = q(times, 0.95);
   console.log(
     `keydown → paint p95 ${p95.toFixed(1)} ms (p50 ${q(times, 0.5).toFixed(1)}) over ${times.length} keys, ` +
-      `less the wait for the next refresh (p50 ${q(waits, 0.5).toFixed(1)} ms, at most ${FRAME_MS.toFixed(1)})`,
+      `less the wait for the next refresh (p50 ${q(waits, 0.5).toFixed(1)} ms, at most ${FRAME_MS.toFixed(1)}); with the wait, p95 ${q(raw, 0.95).toFixed(1)} ms`,
   );
   // Control, logged and not asserted: the same keys and the same probe with nothing focused, so the app does no work for
   // them. Its numbers are the floor the machine sets (timers, compositor), for comparing runs.
