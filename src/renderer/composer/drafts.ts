@@ -47,12 +47,21 @@ function send(p: DraftPayload): void {
 
 /** Saves 500 ms after the last change (a newer call replaces the waiting one). */
 export function saveDraftSoon(p: DraftPayload): void {
-  clearTimeout(timers.get(p.chatId));
+  saveDraftLater(p.chatId, () => p);
+}
+
+/**
+ * The same, building the payload only when the 500 ms are up (PERF-02: serialising and secret-checking the whole text on
+ * every keystroke was the typing tail); `build` returns null when nothing may be written then.
+ */
+export function saveDraftLater(chatId: string, build: () => DraftPayload | null): void {
+  clearTimeout(timers.get(chatId));
   timers.set(
-    p.chatId,
+    chatId,
     setTimeout(() => {
-      timers.delete(p.chatId);
-      send(p);
+      timers.delete(chatId);
+      const p = build();
+      if (p) send(p);
     }, DRAFT_DEBOUNCE_MS),
   );
 }

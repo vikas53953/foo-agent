@@ -33,7 +33,7 @@ import { chipAttachment, chipKind, planFiles, type Chip } from './chips';
 import { ComposerBanner } from './ComposerBanner';
 import { ComposerNotice, NOTICE_MS, type Notice } from './ComposerNotice';
 import { composerKeyAction, isPrintable, WRAP } from './composerKeys';
-import { cacheDraft, cachedDraft, cancelDraftSave, saveDraftNow, saveDraftSoon, type DraftPayload } from './drafts';
+import { cacheDraft, cachedDraft, cancelDraftSave, saveDraftLater, saveDraftNow, type DraftPayload } from './drafts';
 import { DropOverlay, type DropLook } from './DropOverlay';
 import { EditStrip } from './EditStrip';
 import { caretOffset, caretX, domToSegments, segmentsToDom, selectionOffsets, setCaret, textBeforeCaret } from './fieldDom';
@@ -239,9 +239,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
 
   useEffect(() => {
     if (!touched.current) return;
-    const p = draftPayload();
-    if (p) saveDraftSoon(p);
-  }, [segs, chips, strip, draftPayload]);
+    saveDraftLater(chatId, () => latestPayload.current());
+  }, [segs, chips, strip, draftPayload, chatId]);
 
   // Chat switch (unmount) and window close save at once.
   useEffect(() => {

@@ -130,7 +130,42 @@
   box-shadow: none;
   transform: none;
 }
+/* §21.2: a state change swaps the fill at once and fades the old one out above it in --m-fast (MorphButton); the
+ * background-color transition stays for hover and pressed only. */
+.morph[data-fading] {
+  transition: transform var(--m-fast) var(--ease-standard);
+}
+.fillFrom {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  animation: fillOut var(--m-fast) var(--ease-standard);
+}
+.fillFrom[data-from='mic'],
+.fillFrom[data-from='stop'] {
+  background: var(--fg-1);
+}
+.fillFrom[data-from='send'],
+.fillFrom[data-from='save_edit'],
+.fillFrom[data-from='send_voice'] {
+  background: var(--accent);
+}
+.fillFrom[data-from='recording'] {
+  background: var(--bad);
+}
+.fillFrom[data-from='disabled'] {
+  background: var(--bg-sunken);
+}
+/* At rest the old fill is invisible, so a page with animations turned off never shows it. */
+@keyframes fillOut {
+  from {
+    opacity: 1;
+  }
+}
 .icon {
+  position: relative;
   display: inline-flex;
   animation: iconIn var(--m-normal) var(--ease-standard);
 }

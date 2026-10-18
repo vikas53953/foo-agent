@@ -26,6 +26,7 @@ import {
   cachedDraft,
   cancelDraftSave,
   resetDrafts,
+  saveDraftLater,
   saveDraftNow,
   saveDraftSoon,
   DRAFT_DEBOUNCE_MS,
@@ -347,6 +348,16 @@ describe('drafts per chat (04-2 §23.5)', () => {
       { channel: 'composer:saveDraft', payload: p('a', 'hi') },
       { channel: 'composer:saveDraft', payload: p('b', 'other') },
     ]);
+  });
+  it('builds the payload once, when the 500 ms are up, from the latest text, not on every keystroke; null writes nothing', () => {
+    const build = vi.fn(() => p('a', 'hello'));
+    for (let i = 0; i < 5; i++) saveDraftLater('a', build);
+    expect(build).not.toHaveBeenCalled();
+    vi.advanceTimersByTime(DRAFT_DEBOUNCE_MS);
+    expect(build).toHaveBeenCalledTimes(1);
+    saveDraftLater('b', () => null);
+    vi.advanceTimersByTime(DRAFT_DEBOUNCE_MS);
+    expect(sent).toEqual([{ channel: 'composer:saveDraft', payload: p('a', 'hello') }]);
   });
   it('saves at once on a chat switch and does not resend the same draft', () => {
     saveDraftSoon(p('a', 'hi'));

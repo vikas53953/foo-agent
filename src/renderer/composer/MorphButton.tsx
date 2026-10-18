@@ -3,7 +3,7 @@
 // and hold ≥ 150 ms on Mic → hold mode, a shorter click → locked mode; Space or Enter on the focused mic → locked mode; "Hold
 // to record" shows for 2 s after a too-short note), §23.3 (disabled: aria-disabled, tooltip still shown), §23.7 (Narrator reads
 // the state's tooltip; a change is announced only while it has focus — the accessible name changes in place).
-import type { PointerEvent as ReactPointerEvent } from 'react';
+import { useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
 import type { RoundButtonState } from '../../shared/types';
@@ -34,6 +34,15 @@ export interface MorphButtonProps {
 
 export function MorphButton({ state, disabledIcon, tooltip, tooShort, onActivate, onMicDown, onMicKey }: MorphButtonProps) {
   const icon = state === 'disabled' ? disabledIcon : ICON[state];
+  // §21.2 "the fill changes in --m-fast": the old fill lies over the new one and fades out (opacity runs on the compositor).
+  // A background-color transition needs a main-thread frame on every tick; on the first keystroke (mic → send) that held
+  // the keystroke's paint back by up to 300 ms on a 4x slower CPU (PERF-02).
+  const [shown, setShown] = useState(state);
+  const [from, setFrom] = useState<RoundButtonState | null>(null);
+  if (shown !== state) {
+    setShown(state);
+    setFrom(shown);
+  }
   return (
     <span className={styles.morphWrap}>
       <Tooltip text={tooltip} side="top">
@@ -42,6 +51,7 @@ export function MorphButton({ state, disabledIcon, tooltip, tooShort, onActivate
           className={`${styles.round} ${styles.morph}`}
           data-testid={TID.composerSend}
           data-state={state}
+          data-fading={from ?? undefined}
           aria-label={tooltip}
           aria-disabled={state === 'disabled' || undefined}
           onPointerDown={(e) => {
@@ -61,6 +71,9 @@ export function MorphButton({ state, disabledIcon, tooltip, tooShort, onActivate
             onActivate();
           }}
         >
+          {from && (
+            <span key={`${from}>${state}`} className={styles.fillFrom} data-from={from} aria-hidden onAnimationEnd={() => setFrom(null)} />
+          )}
           <span key={icon} className={styles.icon}>
             <Icon name={icon} size={20} />
           </span>
