@@ -10,6 +10,7 @@ import { upsertConnectionReducer } from './connections';
 import { loadHelpersReducer } from './helpers';
 import { navigate, update, type RootState } from './index';
 import { upsertJobReducer } from './jobs';
+import { updateSpendReducer } from './spend';
 import { applyDeltaReducer, loadMessagesReducer, resyncMessage, setBadgeReducer, upsertMessageReducer } from './messages';
 
 export const FIRST_PAGE = 50;
@@ -48,9 +49,7 @@ export const REDUCERS: Reducers = {
     s.live.ai = ai;
     s.live.connection = ai.state === 'offline' ? 'offline' : ai.state === 'down' ? 'ai_down' : 'online';
   },
-  'spend:update': (s, summary) => {
-    s.spend.summary = summary;
-  },
+  'spend:update': (s, summary) => updateSpendReducer(s.spend, summary),
   'connection:upsert': (s, row) => upsertConnectionReducer(s.connections, row),
   'settings:changed': (s, value) => {
     s.settings.value = value;
