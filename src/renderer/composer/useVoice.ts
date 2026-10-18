@@ -109,7 +109,8 @@ export function useVoice(o: { chatId: string; enabled: boolean; onBanner: (b: Co
       if (!sent.ok) throw new Error(sent.error.kind);
       announce(t('composer.recording.announce_sent', { length: timerText(durationMs) }));
     } catch (e) {
-      // The §23.2a error notices (X-149) are not built yet (implementation-notes GAP); the note is lost with a console line.
+      // The §23.2a error notices (X-149) are not built yet; the note is lost with a console line.
+      // GAP: GAPS.md 2026-10-17 "23.2a error notices are not built"
       console.warn('voice:submit', e);
     }
   }, [set]);

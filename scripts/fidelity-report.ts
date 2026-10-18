@@ -90,15 +90,57 @@ export function evidenceStatus(cases: TestCase[], needle: string): Status | null
   return hits.every((c) => c.status === 'passed') ? 'DONE' : 'NOT DONE';
 }
 
-interface AuditRow {
+export interface AuditRow {
   group: string;
   item: string;
   status: Status;
-  evidence?: string;
+  /** One needle or several: `test:{title part}`, `refs`, `determinism`, `runner`, `fid14`. Every one must pass. */
+  evidence?: string | string[];
+  /**
+   * §11.6.1: evidence turns a row DONE only when it covers the whole item (`"whole"`). Otherwise (the default) passing
+   * evidence makes it PARTIAL at most, and `manual` names the check that covers the rest (review D7).
+   */
+  covers?: 'whole' | 'part';
+  /** The named manual check for what the evidence does not cover (who, where, what). */
+  manual?: string;
   note?: string;
 }
 
-interface TierRJson {
+/** The checks of a Tier R step that are in the Review band (with their numbers where there is one). */
+export function reviewChecks(t: TierRJson): string[] {
+  const out: string[] = [];
+  if (t.r1.verdict === 'review') out.push('R1 copy');
+  if (t.r2.verdict === 'review') out.push('R2 boxes');
+  if (t.r3.verdict === 'review') out.push(`R3 colour (ΔE ${t.r3.anchors.map((a) => a.deltaE ?? '–').join('/')})`);
+  if (t.r4.verdict === 'review') out.push(`R4 pixels (${((t.r4.ratio ?? 0) * 100).toFixed(2)} %)`);
+  return out;
+}
+
+/**
+ * §11.2.4 "A Review result is not a pass": a step any of whose checks is in the Review band is "review", even when Tier R
+ * JSON from an older run called it "disputed" for other checks (a dispute covers only the failing checks its CR names).
+ */
+export function withReview(t: TierRJson): TierRJson {
+  return t.verdict === 'disputed' && reviewChecks(t).length ? { ...t, verdict: 'review' } : t;
+}
+
+const evidenceList = (row: AuditRow): string[] => (row.evidence === undefined ? [] : [row.evidence].flat());
+
+/**
+ * An audit row against this run's evidence (§11.6.1, §11.6.2). No evidence: the row's own status. Any needle failing:
+ * NOT DONE. Any needle without a result: UNVERIFIABLE. All passing: DONE only when the row says the evidence covers the
+ * whole item; otherwise PARTIAL (the rest is the row's `manual` check). A CHANGED row stays CHANGED (it needs a CR).
+ */
+export function resolveAudit(row: AuditRow, one: (needle: string) => Status | null): Status {
+  const evs = evidenceList(row);
+  if (!evs.length || row.status === 'CHANGED') return row.status;
+  const got = evs.map((e) => one(e) ?? row.status);
+  if (got.includes('NOT DONE')) return 'NOT DONE';
+  if (got.some((s) => s !== 'DONE')) return got.includes('PARTIAL') ? 'PARTIAL' : 'UNVERIFIABLE';
+  return row.covers === 'whole' ? 'DONE' : 'PARTIAL';
+}
+
+export interface TierRJson {
   id: string;
   theme: string;
   verdict: 'pass' | 'review' | 'fail' | 'disputed';
@@ -221,8 +263,9 @@ export function build(opts: {
     ? readdirSync(opts.tierRDir)
         .filter((f) => f.endsWith('.tier-r.json'))
         .sort()
-        .map((f) => JSON.parse(readFileSync(join(opts.tierRDir, f), 'utf8')) as TierRJson)
+        .map((f) => withReview(JSON.parse(readFileSync(join(opts.tierRDir, f), 'utf8')) as TierRJson))
     : [];
+  const reviewRows = tierR.filter((t) => t.verdict === 'review');
   const wanted = [
     ...manifest.bp.filter((b) => b.milestone === opts.milestone).map((b) => b.id),
     // A UX step counts for its chapter's milestone and for the earlier milestone that first tests it (CR-0003).
@@ -273,17 +316,15 @@ export function build(opts: {
   };
 
   // Audit rows, resolved against the evidence of this run.
-  const resolve = (row: AuditRow): Status => {
-    const ev = row.evidence;
-    if (!ev) return row.status;
+  const one = (ev: string): Status | null => {
     if (ev === 'refs') return refsRendered.length ? 'DONE' : 'UNVERIFIABLE';
     if (ev === 'determinism') return determinism ? (determinism.differing.length ? 'NOT DONE' : 'DONE') : 'UNVERIFIABLE';
     if (ev === 'runner') return opts.runner ? 'DONE' : 'UNVERIFIABLE';
     if (ev === 'fid14') return opts.fid14 ? (opts.fid14.every((r) => r.ok) ? 'DONE' : 'NOT DONE') : 'UNVERIFIABLE';
     if (ev.startsWith('test:')) return evidenceStatus(cases, ev.slice(5)) ?? 'UNVERIFIABLE';
-    return row.status;
+    return null;
   };
-  const audit = (opts.audit?.rows ?? []).map((r) => ({ ...r, resolved: resolve(r) }));
+  const audit = (opts.audit?.rows ?? []).map((r) => ({ ...r, resolved: resolveAudit(r, one) }));
   if (!opts.audit) missingInputs.push(`audit list (docs/fidelity/${opts.milestone}.audit.json)`);
 
   const failed = cases.filter((c) => c.status === 'failed');
@@ -344,8 +385,11 @@ export function build(opts: {
             `Nothing new to try yet: none of the ${wanted.length} ${opts.milestone} drawings is built in the app. This run shows that the checking machinery works.`,
           ]
         : [`${opts.milestone}: ${counts.pass} of ${wanted.length} drawings match; open the side-by-side rows below.`],
-      changed: counts.review
-        ? [`${counts.review} picture(s) differ a little from the drawing and need your look (Review rows).`]
+      changed: reviewRows.length
+        ? [
+            `${counts.review} picture(s) differ a little from the drawing and need your look (Review rows), whatever else a CR disputes:`,
+            ...reviewRows.map((t) => `${t.id} (${t.theme}): ${reviewChecks(t).join(', ')} in the Review band; see it side by side below.`),
+          ]
         : ['Nothing differs from the drawings so far.'],
       needsYes: crs()
         .filter((c) => !/^Approved/i.test(c.status))
@@ -473,7 +517,21 @@ ${r.verdictReasons.length ? `<p>Why: ${r.verdictReasons.map(esc).join('; ')}.</p
 <h2>2 · Plan vs built audit</h2>
 ${table(
   ['Group', 'Item', 'Status', 'Evidence / note'],
-  r.audit.map((a) => [esc(a.group), esc(a.item), badge(a.resolved), esc([a.evidence, a.note].filter(Boolean).join(' · '))]),
+  r.audit.map((a) => [
+    esc(a.group),
+    esc(a.item),
+    badge(a.resolved),
+    esc(
+      [
+        evidenceList(a).join(' + '),
+        a.covers === 'whole' ? '' : evidenceList(a).length ? 'covers part of the item' : '',
+        a.resolved !== 'DONE' && a.manual ? `manual check: ${a.manual}` : '',
+        a.note,
+      ]
+        .filter(Boolean)
+        .join(' · '),
+    ),
+  ]),
 )}
 
 <h2>3 · Golden summary</h2>

@@ -573,7 +573,8 @@
   background: var(--bg-sunken);
 }
 .tileOne {
-  height: calc(var(--s9) * 3 + var(--s1)); /* 200: no stored size (implementation-notes GAP) */
+  /* GAP: GAPS.md 2026-10-17 "image width and height are not stored" */
+  height: calc(var(--s9) * 3 + var(--s1)); /* 200 */
 }
 .tileTall {
   height: calc(var(--s9) * 3 + var(--s1));

@@ -20,6 +20,7 @@ export const useBubble = () => useContext(BubbleCtx);
 export const RowHotCtx = createContext(true);
 
 /** A file under {DATA} (relative or absolute) as the URL the CSP allows (img-src app:). Web images are not loaded. */
+// GAP: GAPS.md 2026-10-17 "no media URL for files under {DATA}"
 export function mediaUrl(path: string): string | null {
   if (!path || /^(https?:|data:|blob:|javascript:)/i.test(path)) return null;
   return `app://media/?p=${encodeURIComponent(path)}`;

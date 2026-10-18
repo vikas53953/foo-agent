@@ -54,6 +54,7 @@ const RULES: Rule[] = [
   { id: 'P11', kind: 'password', re: /(?:पासवर्ड|ਪਾਸਵਰਡ)\s*(?:है|:|=|-)?\s*\S{4,}/gu },
   { id: 'P12', kind: 'card', re: /(?<!\d)(?:\d[ -]?){12,18}\d(?!\d)/gu, check: isCardNumber },
   { id: 'P13', kind: 'card', re: /\b(?:cvv2?|cvc2?|security code)\b\D{0,6}\d{3,4}\b/giu },
+  // GAP: GAPS.md 2026-10-17 "P14 catches a postal pin code"
   { id: 'P14', kind: 'password', re: /\b(?:upi\s*pin|mpin|atm\s*pin|pin)\b\D{0,6}\d{4,6}\b/giu },
   { id: 'P15', kind: 'otp', re: /\b(?:otp|one[ -]time (?:password|code)|verification code|login code)\b\D{0,12}\d{4,8}\b/giu },
 ];
@@ -62,7 +63,12 @@ const RULES: Rule[] = [
 const P16 = /^\s*(\d(?: ?\d){3,7})\s*$/u;
 /** P17: a long run of key-like characters. */
 const P17 = /(?<![A-Za-z0-9+/_=.-])[A-Za-z0-9+/_=-]{32,}(?![A-Za-z0-9+/_=-])/gu;
-const ZERO_WIDTH = /[\u200B-\u200D\u2060\uFEFF]/u;
+/**
+ * "Zero-width characters" (04-2 §22.4), read as every invisible character: Unicode default-ignorable code points (soft
+ * hyphen U+00AD, U+200B–U+200F, U+2060–U+206F incl. the invisible operators U+2061–U+2064, U+FEFF, variation selectors,
+ * tag characters …) and all format characters (`Cf`). Review S5: a key split by a soft hyphen was not caught.
+ */
+const ZERO_WIDTH = /[\p{Default_Ignorable_Code_Point}\p{Cf}]/u;
 
 /** Luhn check over a string of digits. */
 export function luhn(digits: string): boolean {
@@ -100,7 +106,7 @@ export function entropy(s: string): number {
 }
 
 /**
- * NFKC with zero-width characters removed, plus a map from each normalised UTF-16 index to the original index (so a catch
+ * NFKC with zero-width (invisible) characters removed, plus a map from each normalised UTF-16 index to the original index (so a catch
  * masks the right span of what the user sees). Normalised one code point at a time.
  */
 export function normalise(text: string): { text: string; map: number[] } {
@@ -200,9 +206,10 @@ export function suggestedNameSlot(hit: Pick<SecretHit, 'pattern'>): SecretNameSl
 export const ASKED_FOR_CODE_MS = 10 * 60_000;
 const ASKS_FOR_CODE = /\b(?:otp|one[ -]time (?:password|code)|verification code|login code|code)\b|ओटीपी|ਓਟੀਪੀ/iu;
 
+// GAP: GAPS.md 2026-10-17 "no structured asked-for-a-code flag"
 /**
  * Whether the newest message that is not the user's asked for a code within the last 10 minutes. There is no field that marks
- * "asked for a code" (implementation-notes GAP), so its text is read for the words of P15 or "code".
+ * "asked for a code" (GAPS.md), so its text is read for the words of P15 or "code".
  */
 export function askedForCode(
   messages: readonly { authorKind: string; text: string; createdAt: number; deletedAt?: number | null }[],

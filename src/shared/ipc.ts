@@ -72,7 +72,9 @@ export interface Invokes {
   'files:stage': { req: { name: string; bytes: ArrayBuffer }; res: { attachmentId: string } };
   'voice:submit': { req: { chatId: string; attachmentId: string; durationMs: number }; res: { messageId: string } };
   'helper:pause': { req: { helperId: string; on?: boolean }; res: HelperRow };
-  /** Not in 08-1 §3.2 (gap, implementation-notes "M2 (builder A)"): 04 §6.2 edit of the user's last message. */
+  // GAP: GAPS.md 2026-10-17 "message channels with no 08-1 entry"
+  /** Not in 08-1 §3.2 (gap, implementation-notes "M2 (builder A)"): 04 §6.2 edit of the user's last message. Re-checked like
+   * message:send (Art. 8): `SECRET_SUSPECTED` carries the PasteCatch in `error.paste`; over 10,000 is `VALIDATION`. */
   'message:edit': { req: { messageId: string; text: string }; res: MessageRow };
   /** Not in 08-1 §3.2 (gap): 04 §6.3 / §1.9 delete after C-24 / C-25 (soft delete; the row stays as the deleted state). */
   'message:delete': { req: { messageIds: string[]; confirm: true }; res: void };

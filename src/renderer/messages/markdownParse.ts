@@ -45,6 +45,7 @@ export interface ParseOptions {
   side: 'foo' | 'me';
 }
 
+// GAP: GAPS.md 2026-10-17 "citations have no field"
 /** 04 §13.4 (gap): a source is a markdown link whose address starts `cite+`, e.g. `[MakeMyTrip](cite+https://…)`. */
 export const CITE_PREFIX = 'cite+';
 

@@ -2,7 +2,8 @@
 // image when there is one, title --t-caption-strong --fg-1 over the domain --t-caption --fg-3; remove 24 (40 hit) keeps the
 // URL text and sends no preview; nothing shows while fetching or when the fetch fails; `composer-preview`,
 // `composer-preview-remove`). The fetch is main's (public hosts only, 3 s, no cookies); 08-1 §3.2 has no channel for it yet,
-// so nothing feeds this row in M2 (implementation-notes GAP, same as 04 §10.6 on the bubble side).
+// so nothing feeds this row in M2 (same as 04 §10.6 on the bubble side).
+// GAP: GAPS.md 2026-10-17 "the composer link preview has no fetch channel"
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
 import { Icon } from '../ui/Icon';

@@ -101,6 +101,7 @@ const emoji = z
   .min(1)
   .max(32)
   .regex(/^\p{Extended_Pictographic}|^\p{Regional_Indicator}|^[0-9#*]\uFE0F?\u20E3/u);
+// GAP: GAPS.md 2026-10-17 "message channels with no 08-1 entry"
 /** link:open (gap): the schemes 04 §10.7 / §16.1 open; anything else is URL_NOT_ALLOWED. */
 const LINK_SCHEMES = ['http:', 'https:', 'mailto:', 'tel:'];
 const SETTINGS_PAGE: Record<WindowsSettingsPage, string> = {
@@ -158,7 +159,7 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
     .object({ chatId, attachmentId: z.string().min(1).max(80), durationMs: z.number().int().min(0).max(3_600_000) })
     .strict(),
   'helper:pause': z.object({ helperId: z.string().min(1).max(80), on: z.boolean().optional() }).strict(),
-  'message:edit': z.object({ messageId, text: z.string().min(1).max(20_000) }).strict(),
+  'message:edit': z.object({ messageId, text: z.string().min(1).max(40_000) }).strict(),
   'message:delete': z.object({ messageIds: z.array(messageId).min(1).max(500), confirm: z.literal(true) }).strict(),
   'message:retry': z.object({ messageId }).strict(),
   'files:open': z.object({ path: z.string().min(1).max(1024) }).strict(),
@@ -299,7 +300,13 @@ export function registerIpc(ctx: AppContext): void {
   handle('message:react', ({ messageId: id, emoji: e, on }) => asVoid(written(reactMessage(db, id, e, on, now()))));
   handle('message:pin', ({ messageId: id, on }) => asVoid(written(pinMessage(db, id, on))));
   handle('message:edit', ({ messageId: id, text }) => {
-    const r = written(editMessage(db, id, text, now()));
+    // Art. 8 / R1: the edit is re-checked like message:send (askedForCode from the chat's recent messages).
+    const chatOf = messageGet(db, id)?.chatId;
+    const asked = chatOf ? askedForCode(messageList(db, chatOf, 20), now()) : false;
+    const e = editMessage(db, id, text, now(), { askedForCode: asked });
+    if (!e.ok && e.reason === 'secret') return { ok: false, error: { kind: 'SECRET_SUSPECTED', paste: e.paste } };
+    if (!e.ok && e.reason === 'too_long') return fail('VALIDATION', 'too_long');
+    const r = written(e);
     if (r.ok) emitChat(r.value.chatId);
     return r;
   });
@@ -369,6 +376,8 @@ export function registerIpc(ctx: AppContext): void {
   });
   handle('voice:submit', ({ chatId: id, attachmentId, durationMs }) => {
     if (durationMs < 500) return fail('VOICE_TOO_SHORT');
+    // Review S4: only a recording the recorder staged (name, WebM/Ogg header, voice mime) becomes a voice note.
+    if (!inbox.isRecording(attachmentId)) return fail(inbox.get(attachmentId) ? 'VALIDATION' : 'NOT_FOUND', 'not_a_recording');
     const messageId = newId('m', now());
     const voicePath = inbox.moveToVoice(attachmentId, messageId);
     if (!voicePath) return fail('NOT_FOUND');

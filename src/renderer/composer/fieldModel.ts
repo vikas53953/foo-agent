@@ -123,6 +123,24 @@ export function serialise(segs: readonly Segment[], mode: SerialiseMode, hidden 
     .join('');
 }
 
+/** What "Save edit" does (04 §6.2 through the same gates as Send, 04-2 §22.4, §23.6; Art. 8). */
+export type EditSubmission = { kind: 'skip' } | { kind: 'catch' } | { kind: 'save'; text: string };
+
+/**
+ * "Save edit" passes the gates Send passes: over the 10,000 limit or blank does nothing; unless the user chose "Send
+ * anyway", `check()` (the paste catcher: masks what it finds, true when anything is caught or still masked) opens the
+ * catch; a saved edit carries each mask as `hidden` ("•••• (hidden)"), never dropping it silently.
+ */
+export function editSubmission(
+  segs: readonly Segment[],
+  opts: { limit: number; override: boolean; check: () => boolean; hidden: string; trim: (s: string) => string },
+): EditSubmission {
+  if (textLength(segs) > opts.limit || !hasText(segs)) return { kind: 'skip' };
+  if (!opts.override && opts.check()) return { kind: 'catch' };
+  const text = opts.trim(serialise(segs, 'send', opts.hidden));
+  return text.trim() ? { kind: 'save', text } : { kind: 'skip' };
+}
+
 /** A stored draft back into segments: `@{helperId}` becomes a mention chip when the helper is known. */
 export function parseDraft(text: string, helperName: (id: string) => string | undefined): Segment[] {
   const out: Segment[] = [];

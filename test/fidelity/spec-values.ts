@@ -40,8 +40,9 @@ export const BOX_TOLERANCE = 0.5;
  * SV-18 right shell = `app-panel`, SV-29 main shell = `thread`, 03-shell-2 §3.9.5), and for rows whose test id names more
  * than the row measures (M2 builder C, CR-0003): SV-02 "last of a run" narrows `bubble-me` to `data-pos="last"`; SV-10 and
  * SV-11 measure the pill box, which in the app wraps `composer-field` (the contenteditable sits inside the pill with the
- * chips and strips, 04-2 §20.3; GAP in implementation-notes). An entry here wins over the row's test id.
+ * chips and strips, 04-2 §20.3; GAPS.md). An entry here wins over the row's test id.
  */
+// GAP: GAPS.md 2026-10-17 "composer-field is on the inner contenteditable"
 export const SELECTORS: Record<string, string> = {
   'SV-38': 'body',
   // M1 left shell (03-shell-1 §3.4): measured with the list on screen and, for SV-23, a menu open.

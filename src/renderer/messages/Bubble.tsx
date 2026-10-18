@@ -667,6 +667,7 @@ const H_COLORS = [
   '--h-ochre',
 ];
 
+// GAP: GAPS.md 2026-10-17 "WhatsApp rows keep no sender jid"
 /** X-138: index = hash(jid) mod 10 into the ten helper colours in F2 order. The row keeps only the sender's label, so it is hashed. */
 export function waColor(key: string): string {
   let h = 0;

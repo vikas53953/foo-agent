@@ -66,6 +66,7 @@ function FeedbackPopover({ anchor, onDone, onClose }: { anchor: HTMLElement; onD
       return n;
     });
   return (
+    // GAP: GAPS.md 2026-10-17 "thumbs feedback has no table or channel"
     <Popover anchor={anchor} label={t('bubble.feedback.title')} tid="bubbleFeedback" autoFocus onClose={onClose}>
       <div className={styles.popTitle}>{t('bubble.feedback.title')}</div>
       <div className={styles.feedbackChips}>
@@ -275,8 +276,9 @@ export function whyReason(why: MessageWhy, o: { timeZone: string; now: number })
   }
 }
 
+// GAP: GAPS.md 2026-10-17 "Stop these has no setting for every reason"
 /**
- * What "Stop these" can do in M2 (implementation-notes GAP): a routine is paused with routine:pause; the cap warning turns
+ * What "Stop these" can do in M2 (GAPS.md): a routine is paused with routine:pause; the cap warning turns
  * `money.warnAt80` off. Suggestion kinds, habit offers and housekeeping messages have no settings keys or channel yet, so
  * their Stop only closes the popover with the caption.
  */
