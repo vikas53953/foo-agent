@@ -1,19 +1,19 @@
 {
-  "reportId": "M3-cfcbb2b-39156647089",
+  "reportId": "M3-78cc495-39157890818",
   "milestone": "M3",
-  "generatedAt": "2026-10-18T19:11:50.691Z",
-  "commit": "80d445d3fa2375dde72a333f694688f627b7220c",
-  "head": "cfcbb2bc9a6b635704dc85082cd1c1b99b11e4c1",
+  "generatedAt": "2026-10-18T19:23:55.175Z",
+  "commit": "7668ce28fe73278a5f123f1ba1f7e907c9fcec08",
+  "head": "78cc495d023a33ad04e0738ce767c8db8adef4c4",
   "ci": {
-    "runId": "39156647089",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39156647089"
+    "runId": "39157890818",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39157890818"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "f808565536284e7d4e3a7dd182cb349ec76d2f2e7287d9c529c31af2bc5da6da"
   },
   "runner": {
-    "recordedAt": "2026-10-18T19:03:16.132Z",
+    "recordedAt": "2026-10-18T19:19:13.993Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000003051"
+      "runner": "GitHub Actions 1000003058"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,8 +59,8 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "19 test(s) failed",
-    "14 audit item(s) not DONE (the milestone is not complete)",
+    "4 test(s) failed",
+    "10 audit item(s) not DONE (the milestone is not complete)",
     "CHANGED items need an approved CR"
   ],
   "missingInputs": [],
@@ -69,23 +69,7 @@
       "Nothing new to try yet: none of the 2 M3 drawings is built in the app. This run shows that the checking machinery works."
     ],
     "changed": [
-      "16 picture(s) differ a little from the drawing and need your look (Review rows), whatever else a CR disputes:",
-      "BP-ANAT-CHIPS (dark): R3 colour (ΔE 4.78) in the Review band; see it side by side below.",
-      "BP-ANAT-L (dark): R3 colour (ΔE 4.78) in the Review band; see it side by side below.",
-      "BP-ANAT-LHEAD (dark): R3 colour (ΔE 2.91) in the Review band; see it side by side below.",
-      "BP-ANAT-LHEAD (light): R3 colour (ΔE 2.53) in the Review band; see it side by side below.",
-      "BP-APP-R (dark): R3 colour (ΔE 3.19) in the Review band; see it side by side below.",
-      "BP-APP-R (light): R3 colour (ΔE 3.65) in the Review band; see it side by side below.",
-      "UX-08-02 (dark): R2 boxes in the Review band; see it side by side below.",
-      "UX-08-02 (light): R2 boxes in the Review band; see it side by side below.",
-      "UX-08-03 (dark): R4 pixels (3.47 %) in the Review band; see it side by side below.",
-      "UX-08-03 (light): R4 pixels (3.20 %) in the Review band; see it side by side below.",
-      "UX-08-05 (dark): R4 pixels (3.97 %) in the Review band; see it side by side below.",
-      "UX-08-05 (light): R4 pixels (3.63 %) in the Review band; see it side by side below.",
-      "UX-08-07 (dark): R4 pixels (5.49 %) in the Review band; see it side by side below.",
-      "UX-08-07 (light): R4 pixels (4.54 %) in the Review band; see it side by side below.",
-      "UX-09-01 (dark): R2 boxes in the Review band; see it side by side below.",
-      "UX-09-01 (light): R2 boxes in the Review band; see it side by side below."
+      "Nothing differs from the drawings so far."
     ],
     "needsYes": []
   },
@@ -115,7 +99,7 @@
       ],
       "covers": "part",
       "manual": "independent reviewer reads 08-2 §6, §7, §11.4 and 08-1 §2.1, §2.4 against the build (the Sonnet checker pass on the PR); Job Object (§6.3) is deferred to M11 (CR-0007 pick 1)",
-      "resolved": "NOT DONE"
+      "resolved": "PARTIAL"
     },
     {
       "group": "M3 Create",
@@ -157,7 +141,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-006",
       "covers": "whole",
-      "resolved": "NOT DONE"
+      "resolved": "DONE"
     },
     {
       "group": "M3 Must pass",
@@ -165,7 +149,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-027",
       "covers": "whole",
-      "resolved": "NOT DONE"
+      "resolved": "DONE"
     },
     {
       "group": "M3 Must pass",
@@ -173,7 +157,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-030",
       "covers": "whole",
-      "resolved": "NOT DONE"
+      "resolved": "DONE"
     },
     {
       "group": "M3 Must pass",
@@ -197,7 +181,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:ART-23a",
       "covers": "whole",
-      "resolved": "NOT DONE"
+      "resolved": "DONE"
     },
     {
       "group": "M3 Must pass",
@@ -267,7 +251,7 @@
       "evidence": "test:M3 Blueprint captures for Tier R",
       "covers": "part",
       "manual": "R1/R2 disputed under CR-0003 like the other 350px Blueprint minis",
-      "resolved": "NOT DONE"
+      "resolved": "PARTIAL"
     },
     {
       "group": "M3 Fidelity exit",
@@ -533,9 +517,9 @@
         "skipped": 2
       },
       "e2e": {
-        "passed": 41,
-        "failed": 15,
-        "skipped": 0
+        "passed": 55,
+        "failed": 0,
+        "skipped": 1
       }
     },
     "ids": [
@@ -13526,7 +13510,7 @@
       },
       {
         "id": "AT-007",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
@@ -13546,7 +13530,7 @@
       },
       {
         "id": "ART-26a",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/m2-messages.spec.ts"
       },
       {
@@ -13556,17 +13540,17 @@
       },
       {
         "id": "AT-027",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "ART-23a",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "AT-030",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
@@ -13576,7 +13560,7 @@
       },
       {
         "id": "AT-006",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
@@ -13656,12 +13640,12 @@
       },
       {
         "id": "BP-MSG-02",
-        "status": "failed",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-03",
-        "status": "failed",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
@@ -13698,96 +13682,6 @@
         "suite": "unit",
         "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/stuck.test.ts",
         "title": "AT-116 · stuck rules, Stop and the 15-minute timeout AT-116: no step for 3 min → stuck card, badge ⏳; Stop on it → CANCELLED stuck_stop, card stopped, badge ⛔",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m2-composer.spec.ts",
-        "title": "AT-007 · a pasted key, a typed card number and a labelled code are caught before anything is sent",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m2-composer.spec.ts",
-        "title": "Enter sends: the bubble shows at once, the field clears and keeps focus, Shift+Enter is a new line",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m2-messages.spec.ts",
-        "title": "ART-26a · bubbles, cards, the bubble menu and the reaction picker pass axe in light and dark",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m3-replies.spec.ts",
-        "title": "AT-027 · \"thanks!\" gets a 👍 and no message",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m3-replies.spec.ts",
-        "title": "ART-23a · ack messages get a reaction only",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m3-replies.spec.ts",
-        "title": "AT-030 · a 7-paragraph answer arrives as at most 3 bubbles",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m3-replies.spec.ts",
-        "title": "AT-006 · a message sent while the AI fails its test waits to send, then goes when it passes",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m3-replies.spec.ts",
-        "title": "a reply: ✓✓, 👀 on the first byte, the Thinking row while it is in flight, then the bubble streams in",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m3-replies.spec.ts",
-        "title": "Stop while foo is thinking ends the reply and posts nothing; Esc does the same",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m3-replies.spec.ts",
-        "title": "Stop keeps the text that already showed, with \"Stopped.\" under it",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m3-replies.spec.ts",
-        "title": "a cut-off reply shows \"Try again\", and Try again answers",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m3-replies.spec.ts",
-        "title": "Hindi and Punjabi replies render in their own script",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m3-replies.spec.ts",
-        "title": "the chat header face thinks while foo replies",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m3-replies.spec.ts",
-        "title": "M4 T8 · foo’s reply carries the test clock set before the engine started",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/fidelity/bp/BP-messages.spec.ts",
-        "title": "M3 Blueprint captures for Tier R: BP-MSG-02, BP-COMP-03, light and dark",
         "status": "failed"
       }
     ],
@@ -13853,10 +13747,10 @@
   ],
   "golden": {
     "counts": {
-      "pass": 1,
-      "review": 16,
+      "pass": 0,
+      "review": 0,
       "fail": 0,
-      "disputed": 57,
+      "disputed": 0,
       "notBuilt": 2
     },
     "refsRendered": [
@@ -14196,968 +14090,6 @@
       "engine": "electron"
     },
     "rows": [
-      {
-        "id": "BP-ANAT-CHIPS",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "pass",
-        "r2": "pass (BP-ANAT-CHIPS 0/0 px)",
-        "r3": "review (BP-ANAT-CHIPS ΔE 4.78)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07488602842585143,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-CHIPS",
-        "theme": "light",
-        "verdict": "pass",
-        "r1": "pass",
-        "r2": "pass (BP-ANAT-CHIPS 0/0 px)",
-        "r3": "pass (BP-ANAT-CHIPS ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07421560740144811,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-DOING",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-DOING 0/24 px)",
-        "r3": "pass (BP-ANAT-DOING ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.0555930424351477,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-DOING",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-DOING 0/24 px)",
-        "r3": "pass (BP-ANAT-DOING ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.04969510671265057,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-KNOW",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-KNOW 0/70 px)",
-        "r3": "pass (BP-ANAT-KNOW ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.06590049010484521,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-KNOW",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-KNOW 0/70 px)",
-        "r3": "pass (BP-ANAT-KNOW ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.05831627272163285,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-L",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-L 0/20 px)",
-        "r3": "review (BP-ANAT-L ΔE 4.78)",
-        "r4": "skipped: no hl element",
-        "r5": 0.1012099609375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-L",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-L 0/20 px)",
-        "r3": "pass (BP-ANAT-L ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.0686513671875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-LFOOT",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-LFOOT 0/0 px)",
-        "r3": "pass (BP-ANAT-LFOOT ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.074898598820059,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-LFOOT",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-LFOOT 0/0 px)",
-        "r3": "pass (BP-ANAT-LFOOT ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07194874631268437,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-LHEAD",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-LHEAD 0/0 px)",
-        "r3": "review (BP-ANAT-LHEAD ΔE 2.91)",
-        "r4": "skipped: no hl element",
-        "r5": 0.023008849557522124,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-LHEAD",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-LHEAD 0/0 px)",
-        "r3": "review (BP-ANAT-LHEAD ΔE 2.53)",
-        "r4": "skipped: no hl element",
-        "r5": 0.022910521140609635,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-LIST",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-LIST 0/18 px)",
-        "r3": "pass (BP-ANAT-LIST ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.10063060662581046,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-LIST",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-LIST 0/18 px)",
-        "r3": "pass (BP-ANAT-LIST ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.09472422062350119,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-MHEAD",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-MHEAD 0/2 px)",
-        "r3": "pass (BP-ANAT-MHEAD ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.038684503901895206,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-MHEAD",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-MHEAD 0/2 px)",
-        "r3": "pass (BP-ANAT-MHEAD ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.0346711259754738,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-RHEAD",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-RHEAD 0/0 px)",
-        "r3": "pass (BP-ANAT-RHEAD ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.006243854473942969,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-RHEAD",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-RHEAD 0/0 px)",
-        "r3": "pass (BP-ANAT-RHEAD ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.0072271386430678465,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-ROW",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "pass",
-        "r2": "fail (BP-ANAT-ROW 0/15 px)",
-        "r3": "pass (BP-ANAT-ROW ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.037698412698412696,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-ROW",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "pass",
-        "r2": "fail (BP-ANAT-ROW 0/15 px)",
-        "r3": "pass (BP-ANAT-ROW ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.03648088023088023,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-SEARCH",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-SEARCH 0/0 px)",
-        "r3": "pass (BP-ANAT-SEARCH ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.028682591386174447,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-SEARCH",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-SEARCH 0/0 px)",
-        "r3": "pass (BP-ANAT-SEARCH ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.029134998190372782,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-SPENT",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "pass",
-        "r2": "fail (BP-ANAT-SPENT 0/20 px)",
-        "r3": "pass (BP-ANAT-SPENT ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07997209538305429,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-SPENT",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "pass",
-        "r2": "fail (BP-ANAT-SPENT 0/20 px)",
-        "r3": "pass (BP-ANAT-SPENT ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.076103500761035,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-TBAR",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-TBAR 0/2 px)",
-        "r3": "pass (BP-ANAT-TBAR ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.00004890453834115806,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-TBAR",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-TBAR 0/2 px)",
-        "r3": "pass (BP-ANAT-TBAR ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.00004890453834115806,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-USING",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-USING 0/23 px)",
-        "r3": "pass (BP-ANAT-USING ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.04039780521262003,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-USING",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-USING 0/23 px)",
-        "r3": "pass (BP-ANAT-USING ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.036248285322359394,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-APP-L",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-APP-L 0/18 px)",
-        "r3": "pass (BP-APP-L ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.1036688112745098,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-APP-L",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-APP-L 0/18 px)",
-        "r3": "pass (BP-APP-L ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.0987438725490196,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-APP-M",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-APP-M 0/18 px)",
-        "r3": "pass (BP-APP-M ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.11214464882943144,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-APP-M",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-APP-M 0/18 px)",
-        "r3": "pass (BP-APP-M ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.054587339743589744,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-APP-R",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (BP-APP-R 0/18 px)",
-        "r3": "review (BP-APP-R ΔE 3.19)",
-        "r4": "skipped: no hl element",
-        "r5": 0.09011182598039216,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-APP-R",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (BP-APP-R 0/18 px)",
-        "r3": "review (BP-APP-R ΔE 3.65)",
-        "r4": "skipped: no hl element",
-        "r5": 0.06579733455882353,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-01",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-01 0/248.671875 px)",
-        "r3": "pass (BP-COMP-01 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07700333052445729,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-01",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-01 0/248.671875 px)",
-        "r3": "pass (BP-COMP-01 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.08234019501625135,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-02",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-02 0/248.671875 px)",
-        "r3": "pass (BP-COMP-02 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07780586653826091,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-02",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-02 0/248.671875 px)",
-        "r3": "pass (BP-COMP-02 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07375305966855263,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-04",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-04 0/248.671875 px)",
-        "r3": "pass (BP-COMP-04 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.05428716387620497,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-04",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-04 0/248.671875 px)",
-        "r3": "pass (BP-COMP-04 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.053584670023026186,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-05",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-05 0/248.671875 px)",
-        "r3": "pass (BP-COMP-05 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.10073781868653664,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-05",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-05 0/248.671875 px)",
-        "r3": "pass (BP-COMP-05 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.1018335890130762,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-06",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-06 0/248.65625 px)",
-        "r3": "pass (BP-COMP-06 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.1584539798825513,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-06",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-06 0/248.65625 px)",
-        "r3": "pass (BP-COMP-06 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.15499447642304784,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-07",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-07 0/248.671875 px)",
-        "r3": "pass (BP-COMP-07 ΔE 0.8)",
-        "r4": "skipped: no hl element",
-        "r5": 0.08137614019966961,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-07",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-07 0/248.671875 px)",
-        "r3": "pass (BP-COMP-07 ΔE 1.4)",
-        "r4": "skipped: no hl element",
-        "r5": 0.08353084823673058,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-08",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-08 0/248.671875 px)",
-        "r3": "pass (BP-COMP-08 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07724409132859837,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-08",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-08 0/248.671875 px)",
-        "r3": "pass (BP-COMP-08 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.0809758837927852,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-09",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-09 0/248.65625 px)",
-        "r3": "pass (BP-COMP-09 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.018257694314032343,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-09",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-09 0/248.65625 px)",
-        "r3": "pass (BP-COMP-09 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.02110669716303519,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-01",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-01 0/203 px)",
-        "r3": "fail (BP-MSG-01 ΔE 61.41)",
-        "r4": "skipped: no hl element",
-        "r5": 0.6141534391534391,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-01",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-01 0/203 px)",
-        "r3": "fail (BP-MSG-01 ΔE 7.8)",
-        "r4": "skipped: no hl element",
-        "r5": 0.49264550264550266,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-03",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-03 0/203 px)",
-        "r3": "pass (BP-MSG-03 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.05692823608316566,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-03",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-03 0/203 px)",
-        "r3": "pass (BP-MSG-03 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.05368209255533199,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-04",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-04 0/203 px)",
-        "r3": "pass (BP-MSG-04 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.04525974025974026,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-04",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-04 0/203 px)",
-        "r3": "pass (BP-MSG-04 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.03957792207792208,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-01",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 54/0.90625 px)",
-        "r3": "fail (hl ΔE 55.97)",
-        "r4": "fail (88.83 %)",
-        "r5": 0.0856640625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-01",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 54/0.90625 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "fail (21.73 %)",
-        "r5": 0.0682314453125,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-02",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "review (hl 8/8 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "fail (18.80 %)",
-        "r5": 0.083609375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-02",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "review (hl 8/8 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "fail (18.70 %)",
-        "r5": 0.0586259765625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-03",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 54/1.96875 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (3.47 %)",
-        "r5": 0.099982421875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-03",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 54/1.96875 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (3.20 %)",
-        "r5": 0.0796591796875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-04",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 54/0.71875 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "pass (2.34 %)",
-        "r5": 0.1408408203125,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-04",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 54/0.71875 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "pass (2.21 %)",
-        "r5": 0.1181259765625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-05",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 60/6 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (3.97 %)",
-        "r5": 0.156083984375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-05",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 60/6 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (3.63 %)",
-        "r5": 0.1351005859375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-06",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 80/35.578125 px)",
-        "r3": "fail (hl ΔE 61.41)",
-        "r4": "fail (87.53 %)",
-        "r5": 0.1944921875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-06",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 80/35.578125 px)",
-        "r3": "fail (hl ΔE 7.8)",
-        "r4": "fail (30.68 %)",
-        "r5": 0.168482421875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-07",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 157.75/127 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (5.49 %)",
-        "r5": 0.1722734375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-07",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 157.75/127 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (4.54 %)",
-        "r5": 0.1510185546875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-09-01",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "review (hl 8/0 px)",
-        "r3": "fail (hl ΔE 20.59)",
-        "r4": "fail (21.84 %)",
-        "r5": 0.08532421875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-09-01",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "review (hl 8/0 px)",
-        "r3": "fail (hl ΔE 35.2)",
-        "r4": "fail (21.68 %)",
-        "r5": 0.0679814453125,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-09-08",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 295.984375/26.125 px)",
-        "r3": "fail (hl ΔE 21.23)",
-        "r4": "fail (24.64 %)",
-        "r5": 0.16173828125,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-09-08",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 295.984375/26.125 px)",
-        "r3": "fail (hl ΔE 15.74)",
-        "r4": "fail (24.92 %)",
-        "r5": 0.1222666015625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
       {
         "id": "BP-MSG-02",
         "theme": "light",
