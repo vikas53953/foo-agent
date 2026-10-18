@@ -1,0 +1,1 @@
+In at most 80 characters and plain words, say what keeps going wrong in these last results, from the user's point of view. Example: "MakeMyTrip keeps sending me back to the search page". Put it in whatsWrong. Leave <say> empty.

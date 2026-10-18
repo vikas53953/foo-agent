@@ -71,7 +71,7 @@ function existing(db: Db, chatId: string, clientId: string): DbRow | undefined {
   return db.prepare('SELECT id, status FROM messages WHERE chat_id = ? AND client_id = ?').get(chatId, clientId) as DbRow | undefined;
 }
 
-function nextSeq(db: Db, chatId: string): number {
+export function nextSeq(db: Db, chatId: string): number {
   const r = db
     .prepare('SELECT next_seq, (SELECT COALESCE(MAX(seq), 0) FROM messages WHERE chat_id = ?) AS top FROM chats WHERE id = ?')
     .get(chatId, chatId) as DbRow;

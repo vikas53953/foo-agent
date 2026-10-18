@@ -10,6 +10,7 @@ import type {
   ChatRow,
   CardRow,
   ConnectionRow,
+  DetectRow,
   BadgeValue,
   HelperRow,
   JobDetails,
@@ -97,6 +98,9 @@ export interface Invokes {
   'settings:get': { req: Record<string, never>; res: PublicSettings };
   'settings:set': { req: { path: string; value: unknown }; res: { settings: PublicSettings; changeId: string | null } };
   'ai:verify': { req: { providerId: ProviderId }; res: VerifyResult };
+  /** M3 (08-1 §3.2): detection ladder; rows also stream on `ai:detectRow`. The J2 screen that shows them is M12. */
+  'ai:detect': { req: Record<string, never>; res: DetectRow[] };
+  'ai:choose': { req: { primary: ProviderId; backup?: ProviderId | null }; res: AiStatus };
   'notifications:status': { req: Record<string, never>; res: { windowsAllowed: boolean; focusAssist: boolean } };
 }
 
@@ -111,6 +115,7 @@ export interface Events {
   'card:upsert': CardRow;
   'job:upsert': JobRow;
   'ai:status': AiStatus;
+  'ai:detectRow': DetectRow;
   'spend:update': SpendSummary;
   'connection:upsert': ConnectionRow;
   'settings:changed': PublicSettings;
@@ -168,6 +173,8 @@ export const INVOKE_CHANNELS = [
   'settings:get',
   'settings:set',
   'ai:verify',
+  'ai:detect',
+  'ai:choose',
   'notifications:status',
 ] as const satisfies readonly InvokeChannel[];
 
@@ -181,6 +188,7 @@ export const EVENT_CHANNELS = [
   'card:upsert',
   'job:upsert',
   'ai:status',
+  'ai:detectRow',
   'spend:update',
   'connection:upsert',
   'settings:changed',

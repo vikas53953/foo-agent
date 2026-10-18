@@ -468,5 +468,6 @@
   "cards.place.open_maps": "Open in Maps",
   "cards.place.copy": "Copy address",
   "cards.place.copied": "Copied",
-  "cards.place.accessible_name": "Place: {name}, {address}"
+  "cards.place.accessible_name": "Place: {name}, {address}",
+  "thread.reply.empty": "I didn’t get that. Say it another way?"
 }

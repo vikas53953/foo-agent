@@ -1,0 +1,202 @@
+// Spec: 08-4 §25.1 (shared act types: PlanStep, ChoiceCardSpec), §25.2 (IntakeAct), §25.2a (GroupIntakeAct, GroupMemberAct),
+// §25.4 (SecondLookAct, RewriteAct, StuckAct), 08-2 §7.3/§7.4 (`<act>` parsed with zod, unknown fields rejected, objects
+// strict), 08-4 §24.4 ({schemaJson} is the JSON Schema of the purpose's zod schema), 08-0 §B.2 (Route, ConnectorApp),
+// 08-3 §13.2 (RoutineDraft), 08-0 §E.9 (`src/shared/schemas.ts`).
+import { z } from 'zod';
+
+/** 08-0 §B.2 `Route` (X-125). */
+export const RouteSchema = z.enum(['api', 'browser', 'screen', 'email', 'handback']);
+/** 08-0 §B.2 `ConnectorApp`. */
+export const ConnectorAppSchema = z.enum(['gmail', 'gcal', 'contacts', 'whatsapp', 'x', 'outlook']);
+
+/**
+ * `PhraseKey` = keyof PHRASES (08-4 §26.1, `src/shared/phrases.ts`, M4). 08-2 §5.3.3: a key missing from the catalogue is
+ * replaced by the runner with `generic_working`, so the wire accepts any non-empty string here (an unknown key is not a
+ * repair). TODO(M4): narrow once phrases.ts exists, keeping the runner's fallback.
+ */
+export const PhraseKeySchema = z.string().min(1).max(40);
+
+/** 08-4 §25.1 `PlanStep`. */
+export const PlanStepSchema = z
+  .object({
+    phraseKey: PhraseKeySchema,
+    slots: z.record(z.string(), z.string()),
+    route: RouteSchema,
+  })
+  .strict();
+
+/** 08-4 §25.1 `ChoiceCardSpec`: what the AI writes; the engine adds ids and decides `reversible` (§26.7). */
+export const ChoiceCardSpecSchema = z
+  .object({
+    question: z.string().min(1).max(90),
+    options: z
+      .array(z.object({ label: z.string().min(1).max(40), detail: z.string().max(60).optional() }).strict())
+      .min(2)
+      .max(4),
+    multi: z.boolean().optional(),
+    reversible: z.boolean().optional(),
+  })
+  .strict();
+
+// 08-3 §13.2 RoutineDraft and its parts. ToolName (08-2 §8.2 / 08-4 §27.1) and BuiltinTask (08-5 §4.3) arrive with M4 / M10:
+// TODO(M10, routines): narrow `tools` to ToolName.
+const ScheduleSchema = z.discriminatedUnion('kind', [
+  z.object({ kind: z.literal('interval'), everyMin: z.number(), anchor: z.number() }).strict(),
+  z
+    .object({
+      kind: z.literal('daily'),
+      at: z.string().regex(/^\d{2}:\d{2}$/),
+      days: z.array(z.union([0, 1, 2, 3, 4, 5, 6].map((n) => z.literal(n)) as [z.ZodLiteral<0>, ...z.ZodLiteral<number>[]])),
+    })
+    .strict(),
+  z
+    .object({ kind: z.literal('monthly'), day: z.number().int(), at: z.string().regex(/^\d{2}:\d{2}$/) })
+    .strict(),
+  z.object({ kind: z.literal('once'), at: z.number() }).strict(),
+  z
+    .object({
+      kind: z.literal('on_email'),
+      connectionId: z.string(),
+      match: z.object({ fromDomain: z.string().optional(), subjectAny: z.array(z.string()).optional() }).strict(),
+    })
+    .strict(),
+]);
+const FastPathSchema = z
+  .object({ kind: z.literal('page_number'), url: z.string(), selectorHint: z.string(), parse: z.enum(['inr', 'number']) })
+  .strict();
+const ConditionSchema = z
+  .object({
+    metric: z.enum(['price_inr', 'number', 'text', 'count', 'status']),
+    op: z.enum(['<', '<=', '>', '>=', '==', 'changed', 'found']),
+    value: z.union([z.number(), z.string()]).optional(),
+    unit: z.string().optional(),
+  })
+  .strict();
+const RoutineTaskSchema = z
+  .object({
+    prompt: z.string(),
+    tools: z.array(z.string()),
+    site: z.string().optional(),
+    fastPath: FastPathSchema.optional(),
+    // `builtin` (08-5 §4.3) is set only on engine-made routines (08-3 §13.7a), never by the AI, so it is not accepted here.
+  })
+  .strict();
+/** 08-3 §13.2 `RoutineDraft` (limits such as everyMin ≥ 15 and title ≤ 40 are the engine's checks, §13.2.1, not zod's). */
+export const RoutineDraftSchema = z
+  .object({
+    title: z.string(),
+    whatText: z.string(),
+    task: RoutineTaskSchema,
+    schedule: ScheduleSchema,
+    tz: z.string(),
+    conditionText: z.string().optional(),
+    condition: ConditionSchema.optional(),
+    urgentText: z.string().optional(),
+    whereChatId: z.string(),
+    deliverToast: z.boolean(),
+  })
+  .strict();
+
+const Emoji = z.enum(['👍', '❤️']);
+
+/** 08-4 §25.2 `IntakeDecision`. */
+export const IntakeDecisionSchema = z.discriminatedUnion('kind', [
+  z.object({ kind: z.literal('reply') }).strict(),
+  z.object({ kind: z.literal('react'), emoji: Emoji }).strict(),
+  z.object({ kind: z.literal('ask'), card: ChoiceCardSpecSchema }).strict(),
+  z.object({ kind: z.literal('handoff'), helperId: z.string().min(1), task: z.string().min(1).max(120) }).strict(),
+  z
+    .object({
+      kind: z.literal('job'),
+      title: z.string().max(60),
+      plan: z.array(PlanStepSchema).min(1).max(12),
+      estimate: z.object({ minutes: z.number().optional(), tokens: z.number().optional() }).strict().optional(),
+      routeHint: z.array(RouteSchema),
+      needsApps: z.array(ConnectorAppSchema),
+    })
+    .strict(),
+  z.object({ kind: z.literal('routine'), draft: RoutineDraftSchema }).strict(),
+  z.object({ kind: z.literal('memory'), op: z.enum(['remember', 'forget']), text: z.string().min(1).max(200) }).strict(),
+  // §25.6: the path and value are checked by the engine against 08-0 §A.3, not by zod.
+  z.object({ kind: z.literal('setting'), path: z.string().min(1), value: z.unknown() }).strict(),
+  z
+    .object({
+      kind: z.literal('catch_up'),
+      source: z.discriminatedUnion('kind', [
+        z.object({ kind: z.literal('wa_group'), chatId: z.string().min(1) }).strict(),
+        z.object({ kind: z.literal('gmail') }).strict(),
+      ]),
+      sinceHint: z.string().optional(),
+    })
+    .strict(),
+]);
+
+/** 08-4 §25.2 `IntakeAct`: the `<act>` of purpose `intake` in 1:1 and helper chats (no `lang` field, §25.7). */
+export const IntakeActSchema = z
+  .object({
+    decision: IntakeDecisionSchema,
+    usedMemoryIds: z.array(z.string()),
+    tags: z.array(z.literal('intent_capabilities')).optional(),
+  })
+  .strict();
+
+/** 08-4 §25.2a `GroupIntakeAct` (intake when chats.kind = 'group'; prompts arrive with M13). */
+export const GroupIntakeActSchema = z
+  .object({
+    decision: z.discriminatedUnion('kind', [
+      z
+        .object({
+          kind: z.literal('group_route'),
+          ownerHelperId: z.string().min(1),
+          parts: z.array(z.object({ helperId: z.string().min(1), task: z.string().min(1) }).strict()),
+        })
+        .strict(),
+      z.object({ kind: z.literal('reply'), helperId: z.string().min(1) }).strict(),
+    ]),
+    usedMemoryIds: z.array(z.string()),
+  })
+  .strict();
+
+/** 08-4 §25.2a `GroupMemberAct`. */
+export const GroupMemberActSchema = z
+  .object({
+    decision: z.discriminatedUnion('kind', [
+      z.object({ kind: z.literal('reply') }).strict(),
+      z.object({ kind: z.literal('react'), emoji: Emoji }).strict(),
+      z.object({ kind: z.literal('handoff_accept'), task: z.string().min(1) }).strict(),
+    ]),
+  })
+  .strict();
+
+const SecondLookField = z.enum(['recipient', 'amount', 'date', 'time', 'item', 'people', 'place']);
+/** 08-4 §25.4 `SecondLookAct`. */
+export const SecondLookActSchema = z.union([
+  z.object({ match: z.literal(true) }).strict(),
+  z
+    .object({ match: z.literal(false), field: SecondLookField, userSaid: z.string().max(60), actionHas: z.string().max(60) })
+    .strict(),
+]);
+
+/** 08-4 §25.4 `RewriteAct`: an empty object; the rewritten text is the `<say>`. */
+export const RewriteActSchema = z.object({}).strict();
+
+/** 08-4 §25.4 `StuckAct` (purpose `classify`). */
+export const StuckActSchema = z.object({ whatsWrong: z.string().min(1).max(80) }).strict();
+
+export type IntakeAct = z.infer<typeof IntakeActSchema>;
+export type IntakeDecision = z.infer<typeof IntakeDecisionSchema>;
+export type ChoiceCardSpecAct = z.infer<typeof ChoiceCardSpecSchema>;
+export type SecondLookAct = z.infer<typeof SecondLookActSchema>;
+export type RewriteAct = z.infer<typeof RewriteActSchema>;
+export type StuckAct = z.infer<typeof StuckActSchema>;
+export type GroupIntakeAct = z.infer<typeof GroupIntakeActSchema>;
+export type GroupMemberAct = z.infer<typeof GroupMemberActSchema>;
+
+/**
+ * 08-4 §24.4 `{schemaJson}`: the JSON Schema of a zod schema. Pick: zod 4's built-in `z.toJSONSchema` (zod-to-json-schema
+ * does not support zod 4) with `target: 'draft-7'` and every reused schema inlined (the spec's `$refStrategy: "none"`),
+ * serialised with `JSON.stringify` (no spaces).
+ */
+export function schemaJson(schema: z.ZodType): string {
+  return JSON.stringify(z.toJSONSchema(schema, { target: 'draft-7', reused: 'inline', unrepresentable: 'any' }));
+}

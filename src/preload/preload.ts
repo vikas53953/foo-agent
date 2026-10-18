@@ -40,6 +40,8 @@ const INVOKES = new Set([
   'settings:get',
   'settings:set',
   'ai:verify',
+  'ai:detect',
+  'ai:choose',
   'notifications:status',
 ]);
 const EVENTS = new Set([
@@ -52,6 +54,7 @@ const EVENTS = new Set([
   'card:upsert',
   'job:upsert',
   'ai:status',
+  'ai:detectRow',
   'spend:update',
   'connection:upsert',
   'settings:changed',

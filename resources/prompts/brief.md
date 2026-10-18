@@ -1,0 +1,1 @@
+Write one headline of at most 70 characters for each candidate, in the user's language, with full dates. Pick the action label only from that candidate's allowed labels. Never add a candidate. Never change an amount or a date.

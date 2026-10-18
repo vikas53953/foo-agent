@@ -1,0 +1,2 @@
+{"model":"llama3.2:3b","message":{"role":"assistant","content":"ready ready"},"done":false}
+{"model":"llama3.2:3b","message":{"role":"assistant","content":""},"done":true,"done_reason":"length","prompt_eval_count":12}

@@ -447,6 +447,28 @@ export interface AiStatus {
   usingBackup: boolean;
   planUsedPct?: number | null;
 }
+/** 08-5 §3 DetectRow (= 06-1 §2.2 row states). */
+export interface DetectRow {
+  providerId: ProviderId;
+  found: boolean;
+  version?: string;
+  signedIn?: boolean;
+  path?: string;
+  state:
+    | 'looking'
+    | 'testing'
+    | 'works'
+    | 'not_found'
+    | 'not_signed_in'
+    | 'signin_unfinished'
+    | 'key_failed'
+    | 'plan_limit'
+    | 'slow'
+    | 'offline'
+    | 'needs_helper'
+    | 'waiting_helper';
+  failKind?: ErrorKind;
+}
 export interface SpendSummary {
   month: string;
   aiSpentPaise: number | null;
@@ -512,6 +534,26 @@ export type ErrorKind =
   | 'FILE_TOO_BIG'
   | 'FILE_TYPE'
   | 'VOICE_TOO_SHORT'
+  // M3 (08-2 §6.7, 08-3 §21.2–§21.4): your-AI adapters and the reply protocol
+  | 'AI_SERVICE_DOWN'
+  | 'AI_SIGNED_OUT'
+  | 'AI_KEY_INVALID'
+  | 'AI_LIMIT'
+  | 'AI_NO_VISION'
+  | 'AI_CLI_INCOMPATIBLE'
+  | 'AI_NOT_VERIFIED'
+  | 'AI_TIMEOUT'
+  | 'AI_PROTOCOL_VIOLATION'
+  | 'PROTOCOL_INVALID'
+  | 'PROTOCOL_STRAY_TEXT'
+  | 'PROTOCOL_SAY_LEAK'
+  | 'PROMPT_PLACEHOLDER_EMPTY'
+  | 'PROMPT_TRIMMED'
+  | 'FAKE_AI_NO_MATCH'
+  | 'REDACTION_LATE_HIT'
+  | 'DB_NOT_WRITABLE'
+  | 'DB_STALE_REV'
+  | 'DB_CONSTRAINT'
   | 'UNKNOWN';
 
 // ---- card payloads (08-5 §4.1) the M2 cards draw ----

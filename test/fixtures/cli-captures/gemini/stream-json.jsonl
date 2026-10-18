@@ -1,0 +1,5 @@
+{"type":"init","timestamp":"2026-10-16T03:30:00.000Z","session_id":"c3a1f2d4-0000-4000-8000-000000000001","model":"gemini-2.5-pro"}
+{"type":"message","timestamp":"2026-10-16T03:30:00.010Z","role":"user","content":"Reply with the word ready"}
+{"type":"message","timestamp":"2026-10-16T03:30:01.000Z","role":"assistant","content":"<say>Hello ","delta":true}
+{"type":"message","timestamp":"2026-10-16T03:30:01.200Z","role":"assistant","content":"Vikas</say>","delta":true}
+{"type":"result","timestamp":"2026-10-16T03:30:01.300Z","status":"success","stats":{"total_tokens":120,"input_tokens":100,"output_tokens":20,"duration_ms":1300,"tool_calls":0}}

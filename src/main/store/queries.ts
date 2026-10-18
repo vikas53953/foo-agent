@@ -728,8 +728,10 @@ export function publicSettings(s: Settings): PublicSettings {
   return { ...rest, window: win, locked: ['permissions.actions.post'] };
 }
 
-/** AiStatus from settings and the confirmed network state (08-5 §3.1). The engine refines `state` from M3. */
-export function aiStatus(s: Settings, offline: boolean): AiStatus {
+/** AiStatus from settings and the confirmed network state (08-5 §3.1). From M3 the engine's own status (limit, down, signed
+ * out, backup in use; 08-2 §6.7) wins while it is about the same primary; a confirmed offline network always shows offline. */
+export function aiStatus(s: Settings, offline: boolean, engine: AiStatus | null = null): AiStatus {
+  if (engine && engine.primary === s.ai.primary) return offline ? { ...engine, state: 'offline' } : engine;
   const primary = s.ai.primary;
   const provider = primary ? s.ai.providers[primary] : undefined;
   const status: AiStatus = {
@@ -800,6 +802,7 @@ export function spendSummary(db: Db, s: Settings, now: number): SpendSummary {
 export interface BootstrapContext extends ListContext {
   settings: Settings;
   offline: boolean;
+  engineAi?: AiStatus | null;
 }
 
 /** app:getBootstrap (08-1 §3.2): soft-deleted rows excluded; open chat = lastChatId if it still exists, else foo's chat. */
@@ -812,7 +815,7 @@ export function bootstrap(db: Db, ctx: BootstrapContext): Bootstrap {
     chats,
     firstMessages: openChatId ? messageList(db, openChatId, FIRST_MESSAGES) : [],
     setup: { complete: ctx.settings.setup.complete, step: ctx.settings.setup.step, answers: {} },
-    ai: aiStatus(ctx.settings, ctx.offline),
+    ai: aiStatus(ctx.settings, ctx.offline, ctx.engineAi ?? null),
     spend: spendSummary(db, ctx.settings, ctx.now),
     connections: connections(db),
     safeMode: false,

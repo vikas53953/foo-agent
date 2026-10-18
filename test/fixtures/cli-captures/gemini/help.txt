@@ -1,0 +1,12 @@
+Usage: gemini [options] [command]
+
+Gemini CLI - Launch an interactive CLI, use -p/--prompt for non-interactive mode
+
+Options:
+  -m, --model                    Model                                                           [string]
+  -p, --prompt                   Prompt. Appended to input on stdin (if any).                    [string]
+  -y, --yolo                     Automatically accept all actions                               [boolean]
+      --approval-mode            Set the approval mode: default, auto_edit, yolo                 [string]
+  -o, --output-format            The format of the CLI output. [string] [choices: "text", "json", "stream-json"]
+  -v, --version                  Show version number                                             [boolean]
+  -h, --help                     Show help                                                       [boolean]
