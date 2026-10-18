@@ -158,7 +158,7 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
     .object({ chatId, attachmentId: z.string().min(1).max(80), durationMs: z.number().int().min(0).max(3_600_000) })
     .strict(),
   'helper:pause': z.object({ helperId: z.string().min(1).max(80), on: z.boolean().optional() }).strict(),
-  'message:edit': z.object({ messageId, text: z.string().min(1).max(20_000) }).strict(),
+  'message:edit': z.object({ messageId, text: z.string().min(1).max(40_000) }).strict(),
   'message:delete': z.object({ messageIds: z.array(messageId).min(1).max(500), confirm: z.literal(true) }).strict(),
   'message:retry': z.object({ messageId }).strict(),
   'files:open': z.object({ path: z.string().min(1).max(1024) }).strict(),
@@ -299,7 +299,13 @@ export function registerIpc(ctx: AppContext): void {
   handle('message:react', ({ messageId: id, emoji: e, on }) => asVoid(written(reactMessage(db, id, e, on, now()))));
   handle('message:pin', ({ messageId: id, on }) => asVoid(written(pinMessage(db, id, on))));
   handle('message:edit', ({ messageId: id, text }) => {
-    const r = written(editMessage(db, id, text, now()));
+    // Art. 8 / R1: the edit is re-checked like message:send (askedForCode from the chat's recent messages).
+    const chatOf = messageGet(db, id)?.chatId;
+    const asked = chatOf ? askedForCode(messageList(db, chatOf, 20), now()) : false;
+    const e = editMessage(db, id, text, now(), { askedForCode: asked });
+    if (!e.ok && e.reason === 'secret') return { ok: false, error: { kind: 'SECRET_SUSPECTED', paste: e.paste } };
+    if (!e.ok && e.reason === 'too_long') return fail('VALIDATION', 'too_long');
+    const r = written(e);
     if (r.ok) emitChat(r.value.chatId);
     return r;
   });

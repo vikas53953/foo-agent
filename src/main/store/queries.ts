@@ -20,7 +20,10 @@ import {
   waMessageRow,
   type DbRow,
 } from '../db/rows';
+import { HIDDEN_FOR_AI, SEND_TEXT_LIMIT } from './composerQueries';
 import { cardTitle } from '../../shared/cards';
+import { t } from '../../shared/copy/t';
+import { checkSecret } from '../../shared/redactor';
 import { monthKey } from '../../shared/format';
 import type { Settings } from '../../shared/settings';
 import type {
@@ -40,6 +43,7 @@ import type {
   MemoryFactView,
   MemoryFilter,
   MessageRow,
+  PasteCatch,
   PreviewBody,
   ProviderId,
   PublicSettings,
@@ -521,8 +525,16 @@ export function pinMessage(db: Db, messageId: string, on: boolean): MessageWrite
 /** 04 §6.2: the edit window. */
 export const EDIT_WINDOW_MS = 15 * 60_000;
 
-/** message:edit (gap channel, 04 §6.2): the user's latest text message, within 15 minutes. */
-export function editMessage(db: Db, messageId: string, text: string, now: number): MessageWriteResult {
+/** message:edit refusals beyond MessageWriteResult: over the 10,000 limit, or a secret main's R1 re-check found. */
+export type EditResult = MessageWriteResult | { ok: false; reason: 'too_long' } | { ok: false; reason: 'secret'; paste: PasteCatch };
+
+/**
+ * message:edit (gap channel, 04 §6.2): the user's latest text message, within 15 minutes. Art. 8 / 08-2 §11.4 R1: an
+ * edit is re-checked like message:send (04-2 §22.4 "on every Send, over the whole text"): a secret is refused with the
+ * PasteCatch (the composer masks it; "Send anyway" arrives with the spans already "•••• (hidden)", and the AI then reads
+ * the hidden note, as on Send); over the 10,000 limit (04-2 §23.6) is refused.
+ */
+export function editMessage(db: Db, messageId: string, text: string, now: number, opts: { askedForCode?: boolean } = {}): EditResult {
   const r = db.prepare('SELECT * FROM messages WHERE id = ? AND deleted_at IS NULL').get(messageId) as DbRow | undefined;
   if (!r) return { ok: false, reason: 'not_found' };
   const latest = db
@@ -532,7 +544,12 @@ export function editMessage(db: Db, messageId: string, text: string, now: number
   if (r.author_kind !== 'user' || r.kind !== 'text' || r.status === 'failed' || latest !== messageId)
     return { ok: false, reason: 'not_allowed' };
   if (now - Number(r.created_at) > EDIT_WINDOW_MS || !text.trim()) return { ok: false, reason: 'not_allowed' };
-  db.prepare('UPDATE messages SET text = ?, text_for_ai = NULL, edited_at = ?, rev = rev + 1 WHERE id = ?').run(text, now, messageId);
+  if ([...text].length > SEND_TEXT_LIMIT) return { ok: false, reason: 'too_long' };
+  const paste = checkSecret(text, { askedForCode: opts.askedForCode });
+  if (paste) return { ok: false, reason: 'secret', paste };
+  const hidden = t('composer.paste.hidden_in_bubble');
+  const forAi = text.includes(hidden) ? text.split(hidden).join(HIDDEN_FOR_AI) : null;
+  db.prepare('UPDATE messages SET text = ?, text_for_ai = ?, edited_at = ?, rev = rev + 1 WHERE id = ?').run(text, forAi, now, messageId);
   return touched(db, messageId);
 }
 

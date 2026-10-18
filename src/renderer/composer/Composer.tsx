@@ -40,6 +40,7 @@ import { caretOffset, caretX, domToSegments, segmentsToDom, selectionOffsets, se
 import {
   checkText,
   dropMasks,
+  editSubmission,
   filterHelpers,
   hasMask,
   hasText,
@@ -558,11 +559,20 @@ export function Composer({ chat }: { chat: ChatRow }) {
     async (override = false) => {
       if (notSetUp || (catchOpen && !override)) return;
       if (strip?.kind === 'edit') {
-        const text = trimBlankLines(serialise(segsRef.current, 'send'));
-        if (!text.trim()) return;
+        // Art. 8: an edit passes the same limit and paste catcher as a Send; main re-checks it (message:edit).
+        const plan = editSubmission(segsRef.current, {
+          limit: TEXT_LIMIT,
+          override,
+          check: runCheck,
+          hidden: t('composer.paste.hidden_in_bubble'),
+          trim: trimBlankLines,
+        });
+        if (plan.kind === 'catch') setCatchOpen(true);
+        if (plan.kind !== 'save') return;
         const id = strip.messageId;
         const saved = strip.saved;
-        if (await editMessage(id, text)) {
+        if (await editMessage(id, plan.text)) {
+          setCatchOpen(false);
           announce(t('bubble.edit.saved'));
           writeField(saved.segs);
           setChips(() => saved.chips);
