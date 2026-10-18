@@ -1,19 +1,19 @@
 {
-  "reportId": "M2-1434188-39084405033",
+  "reportId": "M2-e5e5866-39086071754",
   "milestone": "M2",
-  "generatedAt": "2026-10-18T01:02:22.874Z",
-  "commit": "15942f000b64bed7e0101eb505d98cb32edb3ea0",
-  "head": "143418880690529bed5395c6356b1e52cd0086e3",
+  "generatedAt": "2026-10-18T01:29:18.830Z",
+  "commit": "500ad3cb2f751954be1328c8d660886dab3b0b59",
+  "head": "e5e58663c4746575d55a3c414c6a4c1d4ef624ef",
   "ci": {
-    "runId": "39084405033",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39084405033"
+    "runId": "39086071754",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39086071754"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "a563b9da076143846b99614e34f0d5c4f55396b7725ba7b305f70b2185914da4"
   },
   "runner": {
-    "recordedAt": "2026-10-18T00:56:11.948Z",
+    "recordedAt": "2026-10-18T01:23:17.642Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000002821"
+      "runner": "GitHub Actions 1000002826"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -60,7 +60,7 @@
   "verdict": "FAIL",
   "verdictReasons": [
     "2 test(s) failed",
-    "5 audit item(s) not DONE (the milestone is not complete)"
+    "3 audit item(s) not DONE (the milestone is not complete)"
   ],
   "missingInputs": [],
   "forVikas": {
@@ -78,7 +78,7 @@
       "item": "Both bubble types and every message state rendered from the store, smooth at 5,000 messages",
       "status": "UNVERIFIABLE",
       "evidence": "test:PERF-04",
-      "resolved": "NOT DONE"
+      "resolved": "DONE"
     },
     {
       "group": "M2 Goal",
@@ -147,7 +147,7 @@
       "item": "PERF-04 (60 fps scroll, bounded DOM)",
       "status": "UNVERIFIABLE",
       "evidence": "test:PERF-04",
-      "resolved": "NOT DONE"
+      "resolved": "DONE"
     },
     {
       "group": "M2 Must pass",
@@ -8736,7 +8736,7 @@
       },
       {
         "id": "PERF-04",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/m2-messages.spec.ts"
       },
       {
@@ -8819,8 +8819,8 @@
       },
       {
         "suite": "e2e",
-        "file": "test/e2e/m2-messages.spec.ts",
-        "title": "PERF-04 · fling scroll through the 5,000-message chat holds 60 fps and keeps the DOM bounded",
+        "file": "test/fidelity/ux/UX-08.chat.spec.ts",
+        "title": "UX-08 · Just chatting, in your language: the seeded chapter 8 scene, steps 1 and 3 to 7, light and dark",
         "status": "failed"
       }
     ],
@@ -8873,8 +8873,8 @@
       "pass": 1,
       "review": 1,
       "fail": 0,
-      "disputed": 70,
-      "notBuilt": 1
+      "disputed": 66,
+      "notBuilt": 3
     },
     "refsRendered": [
       {
@@ -9283,7 +9283,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "pass (BP-ANAT-L ΔE 1.68)",
         "r4": "skipped: no hl element",
-        "r5": 0.1549462890625,
+        "r5": 0.15494140625,
         "ref": true,
         "app": true,
         "diff": true
@@ -9296,7 +9296,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "review (BP-ANAT-L ΔE 3.65)",
         "r4": "skipped: no hl element",
-        "r5": 0.134306640625,
+        "r5": 0.1343076171875,
         "ref": true,
         "app": true,
         "diff": true
@@ -9595,7 +9595,7 @@
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "pass (BP-APP-M ΔE 1.68)",
         "r4": "skipped: no hl element",
-        "r5": 0.23172728539576365,
+        "r5": 0.23173817238015607,
         "ref": true,
         "app": true,
         "diff": true
@@ -9699,7 +9699,7 @@
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
         "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05432619131249268,
+        "r5": 0.05436521874878039,
         "ref": true,
         "app": true,
         "diff": true
@@ -9751,7 +9751,7 @@
         "r2": "fail (BP-COMP-06 0/248.65625 px)",
         "r3": "pass (BP-COMP-06 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.15836676550962264,
+        "r5": 0.1584539798825513,
         "ref": true,
         "app": true,
         "diff": true
@@ -10030,58 +10030,6 @@
         "diff": true
       },
       {
-        "id": "UX-08-06",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 80/35.578125 px)",
-        "r3": "fail (hl ΔE 61.41)",
-        "r4": "fail (87.53 %)",
-        "r5": 0.1951103515625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-06",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 80/35.578125 px)",
-        "r3": "fail (hl ΔE 7.8)",
-        "r4": "fail (30.68 %)",
-        "r5": 0.1687822265625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-07",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 157.75/127 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (5.41 %)",
-        "r5": 0.1724638671875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-07",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 157.75/127 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (4.40 %)",
-        "r5": 0.151134765625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
         "id": "UX-09-01",
         "theme": "dark",
         "verdict": "disputed",
@@ -10089,7 +10037,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 20.59)",
         "r4": "fail (21.84 %)",
-        "r5": 0.1200419921875,
+        "r5": 0.120056640625,
         "ref": true,
         "app": true,
         "diff": true
@@ -10102,7 +10050,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 35.2)",
         "r4": "fail (21.68 %)",
-        "r5": 0.0985390625,
+        "r5": 0.0985537109375,
         "ref": true,
         "app": true,
         "diff": true
@@ -10158,10 +10106,64 @@
         "ref": true,
         "app": false,
         "diff": false
+      },
+      {
+        "id": "UX-08-06",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-08-06",
+        "theme": "dark",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-08-07",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-08-07",
+        "theme": "dark",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
       }
     ],
     "notBuilt": [
-      "UX-08-02"
+      "UX-08-02",
+      "UX-08-06",
+      "UX-08-07"
     ]
   }
 }
