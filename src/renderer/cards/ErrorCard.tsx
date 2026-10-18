@@ -57,7 +57,8 @@ export function ErrorCard({ card, time }: { card: CardRow; time: CardTime }) {
   const dispatch = (action: FixAction): Promise<Result<unknown>> | undefined => {
     if (p.variant === 'recovery' && (action.kind === 'resume_job' || action.kind === 'stop'))
       return invoke('recovery:choose', { ...answer, choice: action.kind === 'resume_job' ? 'resume' : 'stop' });
-    if (action.kind === 'retry' && job && (job.state === 'failed' || job.state === 'cancelled')) return invoke('job:retry', { jobId: job.id });
+    if (action.kind === 'retry' && job && (job.state === 'failed' || job.state === 'cancelled'))
+      return invoke('job:retry', { jobId: job.id });
     if (action.kind === 'raise_cap') {
       setCapDialog(true);
       return undefined;

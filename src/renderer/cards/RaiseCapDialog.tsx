@@ -95,7 +95,13 @@ export function RaiseCapDialog({ capPaise, onClose, onRaised }: { capPaise: numb
           <h2 id={titleId} className={dialog.title}>
             {t('dialog.c_21.title')}
           </h2>
-          <IconButton icon="Dismiss" label={t('dialog.common.close')} className={dialog.close} data-testid={TID.dialogClose} onClick={onClose} />
+          <IconButton
+            icon="Dismiss"
+            label={t('dialog.common.close')}
+            className={dialog.close}
+            data-testid={TID.dialogClose}
+            onClick={onClose}
+          />
         </div>
         <label className={styles.capField}>
           <span id={bodyId} className={dialog.body}>

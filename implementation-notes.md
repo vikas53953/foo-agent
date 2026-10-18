@@ -533,3 +533,48 @@ files are real and which stay seeds). What the real output pinned:
 - T6-05 · Voice-note and attachment refusals still use M2's single 8 s `composer-notice`; they join the stack when their
   callers pass an ErrorKind (T7 / the integrator: a call to the stack from `Composer.tsx`).
 - `trace.csv` rows AT-281/282/286/287 still say `pending`: the status column is the integrator's at close-out.
+
+## M4 · cards and job IPC (ticket T5)
+
+### Built
+
+- `src/main/jobs/jobIpc.ts`: `job:stop|stopAll|retry`, `plan:go|change`, `stuck:choose`, `recovery:choose`, `error:fix`
+  (G-M4-09). Each checks the card (exists, type, nonce, still open) or the job (not terminal) and sends exactly one
+  MainToEngine message (X-124); `job:stop` / `job:stopAll` return the stop report built from the activity log (only done
+  `sent`, `paid`, `booked`, `deleted` rows). With no engine, `job:stop` cancels in main as M1 did; card answers fail
+  `UNKNOWN`. Registered in `IpcRouter.ts`, `shared/ipc.ts` and both preload allow-lists.
+- Cards: `Checklist`, `Plan`, `Stuck`, `ErrorCard` (both variants), `SpendCap` (AI variant), `JobLink`, in the
+  `CARD_VIEWS` map of `renderCard.tsx`; `CardFrame` gained `card` (data-card-id/type), `edge`, `busy`, `muted`; shared
+  pure helpers in `cards/jobCards.ts` (unit-tested; they return final words through literal `t()` calls so check:copy sees
+  every key). Under foo's result bubble: `ProofChip`, `NotLiveChip`, `ReceiptFooter` (`messages/`). C-21 is
+  `cards/RaiseCapDialog.tsx`; `money.aiCapPaise` joined `WRITABLE_PATHS`.
+- Card holds take the whole line (`Bubble.module.css`): a card has inline-size containment, so inside a shrink-to-fit hold
+  it collapsed to its padding (30px). Card button icons and spinners now sit on the label's line.
+- Seed set `m4-cards` (`src/main/test/seed/m4Cards.ts`): the ux-world plus one of each M4 card in two new helper chats,
+  steps from the phrase catalogue. Used by `test/fidelity/bp/BP-cards-m4.spec.ts` (BP-CARD-02/12/15/18/19/20, SV-19 by
+  hand, SV-20 and SV-31 through `SELECTORS`) and `test/verify/m4-t5-cards.journey.ts`.
+
+### Picks and gaps (for the lead's independent check)
+
+- T5-01 · Steps: no `steps:upsert` event exists, so the checklist refetches `job:details` on every `job:upsert` for its job.
+- T5-02 · Plan `costLine` is the pre-formatted cost (`{x}`, or `{p}` on plan billing); plan billing with no percentage
+  shows the duration only (`cards.checklist.footer_text.plan` stays pending).
+- T5-03 · Spend cap "Wait until {date}" ends the card through `error:fix` with `dismiss` (G-M4-09); routines paused = 0
+  until M7; the purchase variant keeps the placeholder (G-M4-10).
+- T5-04 · "Check for real" (not-live chip) and "Start again" on a withdrawn plan use `job:retry`, which now also accepts a
+  DONE-unverified job.
+- T5-05 · A 10-digit confirmation code reads as a PNR; `calendar_event` and `emails_read` proofs draw no chip.
+- T5-06 · A Stuck card in `taken_over` / `stopped` stays read-only with no summary words (05-3 §5.19 gives none).
+- T5-07 · C-21 shows "Raise cap" while the field is empty or invalid (06-3 §14 names only "Raise to ₹{x}").
+- T5-08 · CANCELLED checklist: rows the runner left running or waiting read as not started (05-1 §5.2 "stays expanded,
+  buttons removed, last row Stopped by you"); the card row's own `state` moves to `stopped` when the runner writes it (T3).
+- T5-09 · `cards.spend_cap.line2.ai` uses ICU plurals ("1 job", "2 jobs"); `errors.spend_cap.what_is_safe` (T3's) has
+  the same "{jobs} jobs" wording.
+- T5-10 · Old checklist rows (the ux-world Goa card) carry the job only on `cards.job_id`; the card falls back to it. The
+  ux-world seed writes `freeform` steps, which resolve to "Working on it" (08-4 §26.1 closed catalogue); its walkthrough
+  words need phrase keys (seed owner).
+- Not T5's: raising the cap through C-21 does not yet write the `cap_changed` activity row, resume paused jobs or turn the
+  Spend-cap card Raised (06-3 §14 effects: T3 / the integrator). `spec/spec-values.json` still marks SV-19/20/31 pending and
+  SV-19 has no machine form; `trace.csv` BP-CARD rows say `pending` (integrator at close-out). Copy keys still unused, now
+  tagged "M4-T7 close-out": `cards.checklist.footer_text.plan`, `cards.plan.change_placeholder`,
+  `cards.proof_chip.popover.file_missing`, `cards.not_live_chip.still_failed.text`, `cards.error.still_failing`.

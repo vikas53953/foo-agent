@@ -73,7 +73,17 @@ function StepMark({ state }: { state: ChecklistRowState }) {
   return <Icon name={m.icon} size={16} className={m.tone} />;
 }
 
-function StepList({ job, steps, showAll, onShowAll }: { job: JobRow; steps: readonly StepRow[]; showAll: boolean; onShowAll?: () => void }) {
+function StepList({
+  job,
+  steps,
+  showAll,
+  onShowAll,
+}: {
+  job: JobRow;
+  steps: readonly StepRow[];
+  showAll: boolean;
+  onShowAll?: () => void;
+}) {
   const view = checklistView(job, steps, showAll);
   const focusNeed = () => {
     const el = job.needsYouCardId ? document.querySelector<HTMLElement>(`[data-card-id="${job.needsYouCardId}"]`) : null;
@@ -126,10 +136,11 @@ function StepList({ job, steps, showAll, onShowAll }: { job: JobRow; steps: read
 }
 
 export function Checklist({ card, time }: { card: CardRow; time: CardTime }) {
-  const p = card.payload as unknown as ChecklistPayload;
-  const job = useStore(selectJob(p.jobId));
+  // 05-1 §0.1: the payload names the job; rows written before M4 (the ux-world's Goa card) carry it only on `cards.job_id`.
+  const jobId = (card.payload as Partial<ChecklistPayload>).jobId ?? card.jobId;
+  const job = useStore((s) => (jobId ? selectJob(jobId)(s) : undefined));
   const ai = useStore(selectAi);
-  const details = useJobSteps(p.jobId);
+  const details = useJobSteps(jobId);
   const [showAll, setShowAll] = useState(false);
   const [open, setOpen] = useState(false);
   const { busy, run } = useCardAction<'stop' | 'watch'>();

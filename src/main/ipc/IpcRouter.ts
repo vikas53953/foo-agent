@@ -118,7 +118,11 @@ const SETTINGS_PAGE: Record<WindowsSettingsPage, string> = {
   dateandtime: 'ms-settings:dateandtime',
 };
 
-const cardAnswer = z.object({ cardId: z.string().min(1).max(80), nonce: z.string().min(1).max(80), resolvedBy: z.enum(['tap', 'keyboard']) });
+const cardAnswer = z.object({
+  cardId: z.string().min(1).max(80),
+  nonce: z.string().min(1).max(80),
+  resolvedBy: z.enum(['tap', 'keyboard']),
+});
 
 /** One zod schema per invoke channel (08-1 §3.1.1: a payload that fails zod is IPC_REJECTED). */
 export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {

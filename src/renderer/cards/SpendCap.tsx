@@ -23,7 +23,9 @@ import styles from './JobCards.module.css';
 export function SpendCap({ card, time }: { card: CardRow; time: CardTime }) {
   const p = card.payload as unknown as SpendCapPayload;
   const settings = useStore(selectSettings);
-  const pausedJobs = useStore((s) => Object.values(s.jobs.byId).filter((j) => j.state === 'waiting' && j.waitingReason === 'spend_cap').length);
+  const pausedJobs = useStore(
+    (s) => Object.values(s.jobs.byId).filter((j) => j.state === 'waiting' && j.waitingReason === 'spend_cap').length,
+  );
   const [capDialog, setCapDialog] = useState(false);
   const { busy, run } = useCardAction<'wait'>();
   const o = { timeZone: time.timeZone, now: time.now };
@@ -54,7 +56,15 @@ export function SpendCap({ card, time }: { card: CardRow; time: CardTime }) {
 
   const raise = () => setCapDialog(true);
   return (
-    <CardFrame tid="cardSpendCap" card={card} state={card.state} label={label} edge="warn" busy={busy !== null} onKeyDown={ctrlEnter(raise)}>
+    <CardFrame
+      tid="cardSpendCap"
+      card={card}
+      state={card.state}
+      label={label}
+      edge="warn"
+      busy={busy !== null}
+      onKeyDown={ctrlEnter(raise)}
+    >
       <div className={styles.head}>
         <Icon name="Money" size={20} className={styles.warnIcon} />
         <span className={styles.title}>{line1}</span>

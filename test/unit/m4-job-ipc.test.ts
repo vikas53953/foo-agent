@@ -29,7 +29,18 @@ const tx = (ops: DbOp[]) => {
 const job = (id: string, state: string, extra: Record<string, unknown> = {}): DbOp => ({
   op: 'insert',
   table: 'jobs',
-  row: { id, chat_id: 'c_1', origin_chat_id: 'c_1', owner_kind: 'foo', title: 'Goa stay', origin: 'user', intent: 'do', state, created_at: NOW, ...extra },
+  row: {
+    id,
+    chat_id: 'c_1',
+    origin_chat_id: 'c_1',
+    owner_kind: 'foo',
+    title: 'Goa stay',
+    origin: 'user',
+    intent: 'do',
+    state,
+    created_at: NOW,
+    ...extra,
+  },
 });
 const card = (id: string, type: string, state: string, payload: Record<string, unknown>, jobId: string | null = 'j_1'): DbOp[] => [
   {
@@ -37,9 +48,19 @@ const card = (id: string, type: string, state: string, payload: Record<string, u
     table: 'messages',
     row: { id: `m_${id}`, chat_id: 'c_1', author_kind: 'foo', kind: 'card', card_id: id, status: 'complete', created_at: NOW },
   },
-  { op: 'insert', table: 'cards', row: { id, chat_id: 'c_1', message_id: `m_${id}`, job_id: jobId, type, state, payload, nonce: 'n1', created_at: NOW } },
+  {
+    op: 'insert',
+    table: 'cards',
+    row: { id, chat_id: 'c_1', message_id: `m_${id}`, job_id: jobId, type, state, payload, nonce: 'n1', created_at: NOW },
+  },
 ];
-const EVENT: Record<string, string> = { sent: 'sent_email', paid: 'paid', booked: 'booked', deleted: 'deleted_email', changed: 'cap_changed' };
+const EVENT: Record<string, string> = {
+  sent: 'sent_email',
+  paid: 'paid',
+  booked: 'booked',
+  deleted: 'deleted_email',
+  changed: 'cap_changed',
+};
 /** Activity rows are written by the runner's `activity` op; the test writes them directly to know their ids. */
 const activity = (id: string, kind: string, outcome: string) =>
   db
@@ -49,7 +70,12 @@ const activity = (id: string, kind: string, outcome: string) =>
     .run(id, NOW, kind, EVENT[kind], `Did ${id}`, outcome);
 
 const PLAN = { title: 'Goa stay', steps: ['Check Booking.com'], minutes: 6, costLine: '₹4', big: false };
-const STUCK = { whatsWrong: 'MakeMyTrip keeps sending me back', spentLine: 'about ₹6 of your AI · 9 minutes', suggestion: 'try Booking.com instead', allowOtherWay: true };
+const STUCK = {
+  whatsWrong: 'MakeMyTrip keeps sending me back',
+  spentLine: 'about ₹6 of your AI · 9 minutes',
+  suggestion: 'try Booking.com instead',
+  allowOtherWay: true,
+};
 const errorPayload = (variant: 'error' | 'recovery', button: Record<string, unknown>, secondary?: Record<string, unknown>) => ({
   variant,
   kind: variant === 'recovery' ? 'CRASH_RECOVERY' : 'AI_SERVICE_DOWN',

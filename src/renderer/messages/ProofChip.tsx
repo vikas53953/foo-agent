@@ -5,7 +5,7 @@
 // folder opens Gmail Sent; Delivered does nothing; offline: email / Sent links disabled. Test ids `thread-proof-chip`
 // (`data-index`, `data-state` = ProofKind), `thread-proof-copy`, `thread-proof-see-activity`). Art. 11 / 08-2 §5.8: the
 // chip is drawn only from the runner's verified `jobs.proof`, never from the AI's words.
-import { useRef, useState } from 'react';
+import { useState, type MouseEvent } from 'react';
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
 import { invoke } from '../ipc/client';
@@ -25,20 +25,18 @@ const GMAIL_SENT = 'https://mail.google.com/mail/u/0/#sent';
 export function ProofChip({ proof, index = 0 }: { proof: Proof; index?: number }) {
   const chip = proofChip(proof);
   const offline = useStore(selectConnection) === 'offline';
-  const ref = useRef<HTMLButtonElement>(null);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<HTMLButtonElement | null>(null);
   if (!chip) return null;
   const text = chip.text;
   const url = proof.kind === 'email' ? gmailMessage(proof.messageId) : proof.kind === 'sent_folder' ? GMAIL_SENT : null;
   const needsNet = url !== null;
-  const click = () => {
-    if (chip.number) setOpen(true);
+  const click = (e: MouseEvent<HTMLButtonElement>) => {
+    if (chip.number) setOpen(e.currentTarget);
     else if (url && !offline) void invoke('link:open', { url });
   };
   return (
     <>
       <button
-        ref={ref}
         type="button"
         className={styles.proof}
         data-testid={TID.threadProofChip}
@@ -51,8 +49,8 @@ export function ProofChip({ proof, index = 0 }: { proof: Proof; index?: number }
         <Icon name="CheckmarkCircle" size={16} />
         <span className={styles.chipText}>{text}</span>
       </button>
-      {open && ref.current && chip.number && (
-        <Popover anchor={ref.current} label={text} onClose={() => setOpen(false)} size="md" side="above" autoFocus>
+      {open && chip.number && (
+        <Popover anchor={open} label={text} onClose={() => setOpen(null)} size="md" side="above" autoFocus>
           <div className={styles.popover}>
             <span className={styles.number}>{chip.number}</span>
             <div className={styles.popButtons}>
@@ -64,7 +62,7 @@ export function ProofChip({ proof, index = 0 }: { proof: Proof; index?: number }
                 size="sm"
                 data-testid={TID.threadProofSeeActivity}
                 onClick={() => {
-                  setOpen(false);
+                  setOpen(null);
                   navigate({ kind: 'screen', id: 'activity' });
                 }}
               >

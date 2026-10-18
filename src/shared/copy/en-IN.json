@@ -689,7 +689,7 @@
   "cards.error.summary.fixed": "Fixed · {time}",
   "cards.error.label": "Problem: {line1} {line2}",
   "cards.spend_cap.line1.ai": "You’ve reached this month’s AI cap ({cap}).",
-  "cards.spend_cap.line2.ai": "I’ve paused {jobs} jobs and {routines} routines. Nothing was lost.",
+  "cards.spend_cap.line2.ai": "I’ve paused {jobs, plural, one {# job} other {# jobs}} and {routines, plural, one {# routine} other {# routines}}. Nothing was lost.",
   "cards.spend_cap.raise": "Raise cap",
   "cards.spend_cap.wait": "Wait until {date}",
   "cards.spend_cap.summary.raised": "Cap raised to {cap} on {time}. Carrying on.",

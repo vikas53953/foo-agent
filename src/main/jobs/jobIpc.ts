@@ -84,9 +84,7 @@ export function jobIpc(d: JobIpcDeps): JobHandlers {
     db.prepare('SELECT state, uses_browser FROM jobs WHERE id = ?').get(jobId) as { state: JobState; uses_browser: number } | undefined;
 
   const report = (jobId: string): StopReport => {
-    const done = NAMED_QUERIES.activityForJob({ db, now: d.now() }, jobId).filter(
-      (a) => a.outcome === 'done' && REPORTED.includes(a.kind),
-    );
+    const done = NAMED_QUERIES.activityForJob({ db, now: d.now() }, jobId).filter((a) => a.outcome === 'done' && REPORTED.includes(a.kind));
     return { jobId, done, nothingDone: done.length === 0 };
   };
 

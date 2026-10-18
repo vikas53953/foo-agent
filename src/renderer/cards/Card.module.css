@@ -26,6 +26,12 @@
   transition-duration: var(--m-card);
   transition-timing-function: var(--ease-standard);
 }
+/* §0.3 / §0.5: a card button's 16px icon or spinner sits on the label's line, 4px before the words. */
+.button > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s0);
+}
 .edge_warn {
   border-top: 1.5px solid var(--warn);
 }
@@ -88,6 +94,9 @@
   user-select: none;
 }
 .link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s0);
   min-height: var(--s7);
   padding: 0;
   border: 0;

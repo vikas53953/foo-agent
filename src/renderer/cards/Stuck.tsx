@@ -32,7 +32,11 @@ export function Stuck({ card, time }: { card: CardRow; time: CardTime }) {
     return (
       <CardFrame tid="cardStuck" card={card} state={card.state} label={label} muted={card.state === 'timed_out'}>
         <div className={styles.summary}>
-          <Icon name={card.state === 'timed_out' ? 'Clock' : 'CheckmarkCircle'} size={16} className={card.state === 'timed_out' ? styles.dim : styles.ok} />
+          <Icon
+            name={card.state === 'timed_out' ? 'Clock' : 'CheckmarkCircle'}
+            size={16}
+            className={card.state === 'timed_out' ? styles.dim : styles.ok}
+          />
           <span className={styles.summaryText}>
             {card.state === 'other_way'
               ? t('cards.stuck.summary.other_way', { time: formatTime(card.resolvedAt ?? card.updatedAt, { timeZone: time.timeZone }) })
@@ -77,7 +81,13 @@ export function Stuck({ card, time }: { card: CardRow; time: CardTime }) {
               </CardButton>
             )}
             {job?.usesBrowser && (
-              <CardButton tid="cardStuckTakeOver" kind="secondary" busy={busy === 'take_over'} disabled={busy !== null} onClick={choose('take_over')}>
+              <CardButton
+                tid="cardStuckTakeOver"
+                kind="secondary"
+                busy={busy === 'take_over'}
+                disabled={busy !== null}
+                onClick={choose('take_over')}
+              >
                 {t('cards.stuck.take_over')}
               </CardButton>
             )}

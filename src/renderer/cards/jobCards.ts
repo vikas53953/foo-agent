@@ -65,7 +65,13 @@ function phraseLine(step: StepRow, state: ChecklistRowState): ChecklistLine {
 export function checklistView(job: Pick<JobRow, 'state' | 'stopReason'>, steps: readonly StepRow[], showAll = false): ChecklistView {
   if (job.state === 'queued') return { folded: 0, lines: [{ index: 0, state: 'next', text: t('cards.checklist.caption.queued') }] };
   const ordered = [...steps].sort((a, b) => a.idx - b.idx);
-  const lines = ordered.map((s) => phraseLine(s, ROW_OF_STEP[s.state]));
+  // CANCELLED (05-1 §5.2 states): nothing runs any more, so a row the runner left running or waiting reads as not started.
+  const stopped = job.state === 'cancelled';
+  const rowOf = (st: StepRow['state']): ChecklistRowState => {
+    const r = ROW_OF_STEP[st];
+    return stopped && (r === 'current' || r === 'waiting') ? 'next' : r;
+  };
+  const lines = ordered.map((s) => phraseLine(s, rowOf(s.state)));
   if (job.state === 'cancelled' && USER_STOP_REASONS.includes(job.stopReason as StopReason))
     lines.push({ index: ordered.length, state: 'stopped', text: t(phraseCopyKey('stopped', 'done')!) });
   if (showAll || lines.length <= CHECKLIST_MAX_ROWS) return { folded: 0, lines };
@@ -202,7 +208,17 @@ export function proofChip(proof: Proof): { state: ProofKind; text: string; numbe
 
 /** A stored `jobs.proof` value is a Proof only when it carries a known kind. */
 export function asProof(v: unknown): Proof | null {
-  const kinds = ['confirmation', 'email', 'sent_folder', 'wa_delivered', 'calendar_event', 'emails_read', 'read_source', 'screenshot', 'receipt'];
+  const kinds = [
+    'confirmation',
+    'email',
+    'sent_folder',
+    'wa_delivered',
+    'calendar_event',
+    'emails_read',
+    'read_source',
+    'screenshot',
+    'receipt',
+  ];
   return v && typeof v === 'object' && kinds.includes(String((v as { kind?: unknown }).kind)) ? (v as Proof) : null;
 }
 

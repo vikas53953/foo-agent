@@ -22,7 +22,12 @@ import type { StepRow } from '../../src/shared/types';
 
 const IST = 'Asia/Kolkata';
 let n = 0;
-const step = (idx: number, state: StepRow['state'], phraseKey = 'check_site', slots: Record<string, unknown> = { site: 'MakeMyTrip' }): StepRow => ({
+const step = (
+  idx: number,
+  state: StepRow['state'],
+  phraseKey = 'check_site',
+  slots: Record<string, unknown> = { site: 'MakeMyTrip' },
+): StepRow => ({
   id: `s_${++n}`,
   jobId: 'j_1',
   idx,
@@ -76,6 +81,14 @@ describe('Checklist rows (05-1 §5.2.2–§5.2.3)', () => {
     expect(words(checklistView({ state: 'cancelled', stopReason: 'user_button' }, steps)).at(-1)).toEqual(['stopped', 'Stopped by you']);
     expect(words(checklistView({ state: 'cancelled', stopReason: 'stuck_stop' }, steps)).at(-1)).toEqual(['stopped', 'Stopped by you']);
     expect(words(checklistView({ state: 'cancelled', stopReason: 'approval_expired' }, steps)).at(-1)?.[0]).toBe('next');
+    // nothing runs once the job is CANCELLED: the runner's running / waiting rows read as not started
+    const left = [step(0, 'done'), step(1, 'running'), step(2, 'waiting_user')];
+    expect(words(checklistView({ state: 'cancelled', stopReason: 'user_button' }, left)).map((w) => w[0])).toEqual([
+      'done',
+      'next',
+      'next',
+      'stopped',
+    ]);
   });
 
   it('shows at most 6 rows: finished steps fold into one top row "✓ {n} steps done · Show"', () => {
@@ -145,7 +158,10 @@ describe('Proof chip (05-3 §5.15.2)', () => {
     expect(chip({ kind: 'sent_folder', connectionId: 'g', messageId: 'm' })).toEqual(['sent_folder', 'Proof: in your Gmail Sent folder']);
     expect(chip({ kind: 'wa_delivered', waMessageId: 'w' })).toEqual(['wa_delivered', 'Proof: Delivered']);
     expect(chip({ kind: 'screenshot', path: 'p', stepId: 's' })).toEqual(['screenshot', 'Proof: screenshot']);
-    expect(chip({ kind: 'read_source', source: 'Family group', count: 42 })).toEqual(['read_source', 'Proof: Family group · 42 messages read']);
+    expect(chip({ kind: 'read_source', source: 'Family group', count: 42 })).toEqual([
+      'read_source',
+      'Proof: Family group · 42 messages read',
+    ]);
   });
 });
 
@@ -183,7 +199,9 @@ describe('registry and words (05-1 §0.1, §0.4)', () => {
   });
 
   it('the T5 copy keys are no longer pending (check:copy sees them used)', () => {
-    const pending = JSON.parse(readFileSync(join(__dirname, '../../scripts/copy-pending.json'), 'utf8')) as { keys: Record<string, string> };
+    const pending = JSON.parse(readFileSync(join(__dirname, '../../scripts/copy-pending.json'), 'utf8')) as {
+      keys: Record<string, string>;
+    };
     expect(Object.entries(pending.keys).filter(([, who]) => who.includes('T5'))).toEqual([]);
   });
 });

@@ -1,6 +1,6 @@
 // Spec: 08-3 §22.9 seed sets, M4-tickets T5 demo ("seeded card rows, no engine: every M4 card renders in each state").
 // Seed set `m4-cards` = the ux-world, plus two helper chats that hold one of each M4 job card: Errands (checklist live,
-// plan pending, stuck asking, error shown, recovery shown, spend cap shown, a done job with its proof chip and receipt) and
+// plan pending, stuck asking, error asking, recovery asking, spend cap shown, a done job with its proof chip and receipt) and
 // Home help (a job link to an Errands job). Step words come from the closed phrase catalogue (08-4 §26.1), never free text.
 // Public repo: every name and number is made up.
 import type { Db } from '../../store/db';
@@ -40,10 +40,19 @@ export function seedM4Cards(db: Db, now: number): SeedResult {
     refs.errands = errands.chatId;
     refs.homeHelp = home.chatId;
     const h = errands.helperId!;
-    const job = (title: string, state: Parameters<SeedWriter['job']>[0]['state'], minAgo: number, extra: Partial<Parameters<SeedWriter['job']>[0]> = {}) =>
-      w.job({ chatId: errands.chatId, title, state, createdAt: at(minAgo), ownerHelperId: h, ...extra });
-    const card = (type: Parameters<SeedWriter['card']>[1]['type'], state: string, minAgo: number, payload: Record<string, unknown>, jobId?: string) =>
-      w.card(errands.chatId, { type, state, at: at(minAgo), payload, jobId, author: 'helper', helperId: h }).cardId;
+    const job = (
+      title: string,
+      state: Parameters<SeedWriter['job']>[0]['state'],
+      minAgo: number,
+      extra: Partial<Parameters<SeedWriter['job']>[0]> = {},
+    ) => w.job({ chatId: errands.chatId, title, state, createdAt: at(minAgo), ownerHelperId: h, ...extra });
+    const card = (
+      type: Parameters<SeedWriter['card']>[1]['type'],
+      state: string,
+      minAgo: number,
+      payload: Record<string, unknown>,
+      jobId?: string,
+    ) => w.card(errands.chatId, { type, state, at: at(minAgo), payload, jobId, author: 'helper', helperId: h }).cardId;
 
     // Done with proof: a booked table, its result bubble, the proof chip and the receipt line (05-3 §5.15–§5.16).
     const dinner = job('Dinner table', 'done', 60, { finishedAt: at(52) });
@@ -52,7 +61,13 @@ export function seedM4Cards(db: Db, now: number): SeedResult {
       ['book', { what: 'a table for 4' }, 'done'],
       ['find_proof', {}, 'done'],
     ]);
-    const result = w.message(errands.chatId, { author: 'helper', helperId: h, text: 'Your table for 4 is booked for Sat 7:30 PM.', at: at(52), jobId: dinner });
+    const result = w.message(errands.chatId, {
+      author: 'helper',
+      helperId: h,
+      text: 'Your table for 4 is booked for Sat 7:30 PM.',
+      at: at(52),
+      jobId: dinner,
+    });
     w.linkJob(dinner, { resultMessageId: result });
     db.prepare('UPDATE jobs SET proof = ?, spent_cost_paise = 300 WHERE id = ?').run(
       JSON.stringify({ kind: 'confirmation', code: 'TB40217', site: 'example-tables.in', seenInToolCallId: 'seed' }),
@@ -85,7 +100,7 @@ export function seedM4Cards(db: Db, now: number): SeedResult {
     ]);
     refs.errorCard = card(
       'error',
-      'shown',
+      'asking',
       28,
       {
         variant: 'error',
@@ -129,7 +144,7 @@ export function seedM4Cards(db: Db, now: number): SeedResult {
     ]);
     refs.recoveryCard = card(
       'error',
-      'shown',
+      'asking',
       18,
       {
         variant: 'recovery',
@@ -162,7 +177,7 @@ export function seedM4Cards(db: Db, now: number): SeedResult {
     ]);
     db.prepare('UPDATE jobs SET spent_cost_paise = 200 WHERE id = ?').run(gift);
     refs.giftJob = gift;
-    refs.checklistCard = card('checklist', 'live', 8, { title: 'Birthday gift' }, gift);
+    refs.checklistCard = card('checklist', 'live', 8, { jobId: gift }, gift);
 
     // Job link in Home help, pointing at the gift job in Errands (05-3 §5.18.2).
     refs.jobLinkCard = w.card(home.chatId, { type: 'job_link', state: 'live', at: at(7), payload: { jobId: gift } }).cardId;

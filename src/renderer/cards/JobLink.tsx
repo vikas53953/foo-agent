@@ -19,7 +19,7 @@ import { jobLinkStatus, stepOf } from './jobCards';
 import card_ from './Card.module.css';
 import styles from './JobCards.module.css';
 
-export function JobLink({ card, time: _time }: { card: CardRow; time: CardTime }) {
+export function JobLink({ card }: { card: CardRow; time: CardTime }) {
   const p = card.payload as unknown as JobLinkPayload;
   const job = useStore(selectJob(p.jobId));
   const helper = useStore(selectHelper(job?.ownerKind === 'helper' ? job.ownerId : null));

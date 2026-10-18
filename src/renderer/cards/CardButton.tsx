@@ -50,7 +50,15 @@ export function CardButton({
       </button>
     );
   return (
-    <Button variant={kind} size="md" data-testid={TID[tid]} aria-label={label} disabled={disabled} onClick={onClick}>
+    <Button
+      variant={kind}
+      size="md"
+      className={styles.button}
+      data-testid={TID[tid]}
+      aria-label={label}
+      disabled={disabled}
+      onClick={onClick}
+    >
       {body}
     </Button>
   );
