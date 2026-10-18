@@ -677,6 +677,11 @@ export type ErrorKind =
   | 'PROTOCOL_FIX_ACTION'
   | 'IDEMPOTENT_REPEAT'
   | 'CARD_STALE'
+  // M8 (08-3 §16.1, §21.2, §21.3): Google connector kinds
+  | 'CONN_EXPIRED'
+  | 'CONN_REVOKED'
+  | 'CONN_RATE_LIMITED'
+  | 'CONN_SCOPE_MISSING'
   | 'UNKNOWN';
 
 // ---- card payloads (08-5 §4.1) the M2 cards draw ----
