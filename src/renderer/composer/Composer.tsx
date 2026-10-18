@@ -1000,7 +1000,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
               ref={pill}
               className={styles.pill}
               data-disabled={disabled || undefined}
-              data-stacks={!!(strip || chips.length) || undefined}
+              data-stacked={!!(strip || chips.length) || undefined}
             >
               {strip?.kind === 'edit' && <EditStrip onClose={closeStrip} />}
               {strip?.kind === 'reply' && quote && <ReplyStrip quote={quote} onClose={closeStrip} />}
