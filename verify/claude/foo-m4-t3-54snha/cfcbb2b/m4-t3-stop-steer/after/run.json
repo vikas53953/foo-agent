@@ -1,0 +1,50 @@
+{
+  "journey": "test/verify/m4-t3-stop-steer.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "cff5a97d945572a775f48f3164b898c41079a77f",
+  "dirty": true,
+  "started": "2026-10-18T18:56:45.804Z",
+  "finished": "2026-10-18T18:57:04.242Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "\"actually make it cheaper\" mid-job → foo: \"Got it, I’ll fold that in.\"",
+    "the next step turn carried it in part 10: \"New messages from … while you work (answer or fold in each one):\"",
+    "still one checklist card for the job: the steer did not start a new job",
+    "\"stop\" → foo: \"Stopped. Nothing was booked, paid or sent.\", my bubble ⛔ (badge data-state=\"stopped\")",
+    "70 s on the clock after \"stop\": no new AI step turn (still 3)",
+    "three failed site calls → stuck card: \"The stay site will not open for me.\", with Try another way, Take over and Stop; my bubble ⏳",
+    "60 s later: no more step turns while the card waits",
+    "Stop on the stuck card → the job is cancelled, my bubble ⛔"
+  ],
+  "shots": [
+    {
+      "file": "after/01-steer-folded.light.png",
+      "name": "steer-folded",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-stopped.light.png",
+      "name": "stopped",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-stuck-light.light.png",
+      "name": "stuck-light",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-stuck-dark.dark.png",
+      "name": "stuck-dark",
+      "theme": "dark"
+    },
+    {
+      "file": "after/05-stuck-stopped.light.png",
+      "name": "stuck-stopped",
+      "theme": "light"
+    }
+  ],
+  "consoleErrors": []
+}
