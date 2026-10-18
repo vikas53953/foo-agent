@@ -35,6 +35,12 @@ const INVOKES = new Set([
   'app:showEmojiPanel',
   'job:stop',
   'job:watch',
+  'job:openWindow',
+  'job:takeOver',
+  'job:handBack',
+  'signin:done',
+  'signin:skip',
+  'app:openExternal',
   'memory:list',
   'routine:list',
   'helper:list',
@@ -61,6 +67,8 @@ const EVENTS = new Set([
   'settings:changed',
   'net:state',
   'navigate',
+  'live:frame',
+  'live:state',
 ]);
 
 const platform = ipcRenderer.sendSync('app:platform') as PlatformInfo;

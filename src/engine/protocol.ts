@@ -11,6 +11,7 @@ import type { Result } from '../shared/errors';
 import type { EventChannel, EventPayload } from '../shared/ipc';
 import type { ProviderId, AiStatus, ErrorKind, ResolvedBy, StopReason, CardAnswer, ActivityRow } from '../shared/types';
 import type { Settings } from '../shared/settings';
+import { WebProviderSchema } from '../shared/schemas';
 
 export interface Envelope<K extends string = string, P = unknown> {
   id: string;
@@ -100,6 +101,14 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
     kind: z.literal('jobs.pauseAll'),
     payload: z.object({ reason: z.enum(['app_quit', 'windows_shutdown']) }).strict(),
   }),
+  // M9 (08-1 §2.4; X-124, X-135: `job.handBack` has no `mode`): live view, sign-in and take over, saved web keys.
+  z.object({ id: z.string(), kind: z.literal('job.watch'), payload: z.object({ jobId: z.string(), on: z.boolean() }).strict() }),
+  z.object({ id: z.string(), kind: z.literal('job.takeOver'), payload: z.object({ jobId: z.string(), on: z.boolean() }).strict() }),
+  z.object({ id: z.string(), kind: z.literal('job.handBack'), payload: z.object({ jobId: z.string() }).strict() }),
+  z.object({ id: z.string(), kind: z.literal('signin.done'), payload: z.object({ jobId: z.string() }).strict() }),
+  z.object({ id: z.string(), kind: z.literal('signin.skip'), payload: z.object({ jobId: z.string() }).strict() }),
+  /** Reply `{ result: 'ok' | 'refused' | 'unknown' }` (08-4 §27.3 item 1, X-127). */
+  z.object({ id: z.string(), kind: z.literal('webkey.check'), payload: z.object({ provider: WebProviderSchema }).strict() }),
   /** Not in 08-1 §2.4 (gap, implementation-notes "M3"): 04 §19.4 "Try again" on a cut-off foo reply re-runs its turn. */
   z.object({ id: z.string(), kind: z.literal('reply.retry'), payload: z.object({ messageId: z.string() }).strict() }),
   z.object({ id: z.string(), kind: z.literal('reply.stop'), payload: z.object({ chatId: z.string() }).strict() }),

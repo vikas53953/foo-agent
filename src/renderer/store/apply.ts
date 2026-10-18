@@ -61,6 +61,9 @@ export const REDUCERS: Reducers = {
   'ai:detectRow': () => undefined,
   // `navigate` is handled by wireEvents (it is an action, not a row patch).
   navigate: () => undefined,
+  // `live:*` go to the live window only (08-0 §G.8); M9 T5 adds its `live` slice there. The main window ignores them.
+  'live:frame': () => undefined,
+  'live:state': () => undefined,
 };
 
 export function applyEvent<E extends EventChannel>(event: E, payload: EventPayload[E]): void {

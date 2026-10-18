@@ -9,7 +9,7 @@
     "uxChapters": 25,
     "uxSteps": 245,
     "uxFrames": 490,
-    "bp": 39
+    "bp": 43
   },
   "bp": [
     {
@@ -471,6 +471,54 @@
       "spec": "05-3 §5.21",
       "milestone": "M4",
       "note": "Card gallery: Spend cap. App: the spend cap card in the thread, from seeded card rows."
+    },
+    {
+      "id": "BP-CARD-10",
+      "selector": "#cardgal > .panel:nth-child(10) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "05-3 §5.10",
+      "milestone": "M9",
+      "note": "Card gallery: Sign in here. App: the sign in here card in the thread, from seeded card rows."
+    },
+    {
+      "id": "BP-CARD-17",
+      "selector": "#cardgal > .panel:nth-child(17) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "05-3 §5.18",
+      "milestone": "M9",
+      "note": "Card gallery: Handoff. App: the handoff card in the thread, from seeded card rows."
+    },
+    {
+      "id": "BP-SCR-13",
+      "selector": "#scrgal > .scr:nth-child(13) > .body",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "06-3 §11.1–§11.2",
+      "milestone": "M9",
+      "note": "Screen gallery: Watch live. App: the live window (live.html) with masked frames."
+    },
+    {
+      "id": "BP-SCR-14",
+      "selector": "#scrgal > .scr:nth-child(14) > .body",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "06-3 §11.3",
+      "milestone": "M9",
+      "note": "Screen gallery: Sign-in window. App: the docked sign-in banner over Edge (X-66)."
     }
   ],
   "ux": [
@@ -2683,7 +2731,10 @@
       "s": "\"Goa stay · step 3 of 4 · Live\", the page with card fields blurred, a step bar, \"Now: Filling guest details on makemytrip.com\", Take over · Stop.",
       "f": "Blurs password, card and code fields in every frame.",
       "hl": "live",
-      "milestone": "M9"
+      "milestone": "M9",
+      "superseded": {
+        "decision": "X-95 (no in-panel live view; Watch live opens live.html, CR-0013 G-M9-02)"
+      }
     },
     {
       "id": "UX-15-03",
@@ -2811,7 +2862,8 @@
       "s": "Watch live in \"Replay\" mode on the Pizza by the Bay booking, with a step bar.",
       "f": "Sign-in screens are never captured.",
       "hl": "live",
-      "milestone": "M9"
+      "milestone": "M9",
+      "firstTested": "M13"
     },
     {
       "id": "UX-16-01",
@@ -4507,6 +4559,10 @@
     {
       "id": "UX-15-01",
       "decision": "06 §0.11 (ArrowMaximize button)"
+    },
+    {
+      "id": "UX-15-02",
+      "decision": "X-95 (no in-panel live view; Watch live opens live.html, CR-0013 G-M9-02)"
     },
     {
       "id": "UX-16-06",

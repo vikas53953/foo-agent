@@ -677,6 +677,24 @@ export type ErrorKind =
   | 'PROTOCOL_FIX_ACTION'
   | 'IDEMPOTENT_REPEAT'
   | 'CARD_STALE'
+  // M9 (08-3 §21.2 user-facing; 08-2 §8, §11 internal; 08-4 §27.3 cloud, never a card; 08-1 §3.2 renderer)
+  | 'SITE_CHANGED'
+  | 'SITE_TIMEOUT'
+  | 'SITE_CAPTCHA'
+  | 'SITE_HANDBACK'
+  | 'BROWSER_MISSING'
+  | 'SEARCH_BUSY'
+  | 'REQUEST_GONE'
+  | 'ROUTE_ORDER'
+  | 'USE_SUBMIT'
+  | 'SECRET_IN_TYPE'
+  | 'APPROVAL_EVIDENCE'
+  | 'VAULT_PURPOSE_DENIED'
+  | 'CLOUD_AUTH'
+  | 'CLOUD_QUOTA'
+  | 'CLOUD_DOWN'
+  | 'CLOUD_SECRET_BLOCKED'
+  | 'USE_EDGE'
   | 'UNKNOWN';
 
 // ---- card payloads (08-5 §4.1) the M2 cards draw ----
@@ -735,3 +753,14 @@ export interface JobDetails {
   proof?: unknown;
   costs: unknown[];
 }
+
+// ---- M9 (CR-0013): live view and sign-in ----
+/** 08-4 §27.3: providers that take the user's own key (`WebProviderSchema`). */
+export type WebProvider = 'exa' | 'tavily' | 'firecrawl' | 'browseruse';
+/** G-M9-10: the six sign-in lanes of 05-3 §5.10.2 (`SignInReasonSchema`). */
+export type SignInReason = 'sign_in' | 'captcha' | 'passkey' | 'bank_3ds' | 'known_puzzle' | 'saved_login_failed';
+export type SignInMode = 'sign_in_here' | 'take_over';
+/** 08-1 §3.3 `live:state` values (the engine's view). */
+export type LiveState = 'running' | 'paused_signin' | 'taken_over' | 'unavailable';
+/** 08-0 §G.8 / 06-3 §11.2 live window `data-state` (X-121); G-M9-08 maps `LiveState` onto it in the renderer. */
+export type LiveWindowState = 'starting' | 'live' | 'needs_you' | 'in_control' | 'paused' | 'done' | 'cant_show';
