@@ -375,6 +375,8 @@ export function registerIpc(ctx: AppContext): void {
   });
   handle('voice:submit', ({ chatId: id, attachmentId, durationMs }) => {
     if (durationMs < 500) return fail('VOICE_TOO_SHORT');
+    // Review S4: only a recording the recorder staged (name, WebM/Ogg header, voice mime) becomes a voice note.
+    if (!inbox.isRecording(attachmentId)) return fail(inbox.get(attachmentId) ? 'VALIDATION' : 'NOT_FOUND', 'not_a_recording');
     const messageId = newId('m', now());
     const voicePath = inbox.moveToVoice(attachmentId, messageId);
     if (!voicePath) return fail('NOT_FOUND');

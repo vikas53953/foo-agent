@@ -166,7 +166,7 @@ describe('files:stage (main)', () => {
   });
 
   it('moves a recording to data/voice/{messageId}.webm', () => {
-    expect(inbox.stage('att_v', 'voice.webm', new Uint8Array(4)).ok).toBe(true);
+    expect(inbox.stage('att_v', 'voice.webm', new Uint8Array([0x1a, 0x45, 0xdf, 0xa3])).ok).toBe(true);
     const path = inbox.moveToVoice('att_v', 'm_9');
     expect(path).toBe('data/voice/m_9.webm');
     expect(existsSync(join(dir, path!))).toBe(true);
