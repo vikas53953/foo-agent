@@ -29,6 +29,8 @@
 }
 .stack {
   display: grid;
+  /* One column no wider than the bar: a long banner line ellipsises instead of widening the stack over the right shell. */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s1);
   margin-bottom: var(--s1);
 }
