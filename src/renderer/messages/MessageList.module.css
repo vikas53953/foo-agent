@@ -10,8 +10,6 @@
 }
 .scroller {
   height: 100%;
-  /* Never sideways: a wide foo bubble's hover toolbar (04 §9.2, 8px right of the bubble) can reach past the column. */
-  overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -20,6 +18,9 @@
 }
 .column {
   position: relative;
+  /* Never sideways: a wide foo bubble's hover toolbar (04 §9.2, 8px right of the bubble) can reach past the column. Clip,
+   * not hidden, so the scroller keeps its own scrolling as it was (PERF-04). */
+  overflow-x: clip;
   max-width: var(--column-max);
   margin: 0 auto;
 }
