@@ -44,7 +44,7 @@ function args(argv: string[]) {
   const rest: string[] = [];
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i]!;
-    if (a.startsWith('--')) flags[a.slice(2)] = argv[i + 1] && !argv[i + 1]!.startsWith('--') ? argv[++i]! : 'true';
+    if (a.startsWith('--')) flags[a.slice(2)] = argv[i + 1] && !argv[i + 1]!.startsWith('--') ? argv[++i]! : '';
     else rest.push(a);
   }
   return { flags, rest };
@@ -242,8 +242,8 @@ function markdown(out: string, baseUrl: string): number {
 
 async function cli(): Promise<number> {
   const { flags, rest } = args(process.argv.slice(2));
-  if (flags.compare) return compare(flags.compare);
-  if (flags.markdown) return flags['base-url'] ? markdown(flags.markdown, flags['base-url']) : (console.error(usage), 2);
+  if ('compare' in flags) return flags.compare ? compare(flags.compare) : (console.error(usage), 2);
+  if ('markdown' in flags) return flags.markdown && flags['base-url'] ? markdown(flags.markdown, flags['base-url']) : (console.error(usage), 2);
   const journey = rest[0];
   if (!journey || !existsSync(journey)) {
     console.error(usage);

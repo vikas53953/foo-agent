@@ -7,8 +7,9 @@ set -euo pipefail
 src="${1:?usage: push-verify-evidence.sh qa-evidence/verify/<name>}"
 [ -f "$src/after/run.json" ] || { echo "no $src/after/run.json: run foo-verify first" >&2; exit 2; }
 name="$(basename "$src")"
-branch="$(git rev-parse --abbrev-ref HEAD)"
 short="$(git rev-parse --short=7 HEAD)"
+branch="$(git rev-parse --abbrev-ref HEAD)"
+[ "$branch" != "HEAD" ] || branch="detached"
 dest="verify/$branch/$short/$name"
 slug="$(git remote get-url origin | sed -E 's#^.*github\.com[:/]##; s#\.git$##')"
 repo_dir="$(pwd)"

@@ -12,7 +12,7 @@ Assume every builder is an agent that sees only the files it opened, copies the 
 | Rung | What it looks like in foo-agent | Examples already here |
 | --- | --- | --- |
 | 1. Structure | one owner per piece of state, one supported way, the wrong import fails | `TID` registry (`src/shared/testids.ts`), copy keys (`src/shared/copy/en-IN.json` via `t()`), tokens (`design/tokens.json` → generated) |
-| 2. Types | the bad state cannot be written | `src/shared/types.ts` unions (`JobState`, `ChatPill`), `FooTestBridge` |
+| 2. Types | the bad state cannot be written | `src/shared/types.ts` unions (`JobState`, `ChatPill`), `FooTestBridge` in `src/shared/ipc.ts` |
 | 3. Lint or CI check whose error names the fix | `eslint-rules/index.js`, `scripts/*.ts` run by `ci.yml` | `foo/no-literal-copy`, `foo/testid-from-registry`, `foo/no-raw-design-values`, `foo/spec-header`; `fid-guard` (FID-02/06/19), `trace-check` (FID-18), `check-copy`, `spec-verify` |
 | 4. Test of the behaviour | vitest or E2E that fails when the behaviour breaks, not when internals move | `test/unit`, `test/e2e`, `test/articles` |
 | 5. Words (last) | a line in `CLAUDE.md` or `docs/build-method.md`, only for judgement calls | the build method itself |
