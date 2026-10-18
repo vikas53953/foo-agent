@@ -1,7 +1,7 @@
 {
   "id": "BP-COMP-04",
   "theme": "dark",
-  "verdict": "fail",
+  "verdict": "disputed",
   "disputed": {
     "cr": "CR-0003",
     "checks": [
@@ -18,18 +18,6 @@
         "🎙"
       ],
       "extra": [
-        "Waiting",
-        "for",
-        "your",
-        "OK:",
-        "₹14,600",
-        "to",
-        "Taj",
-        "Holiday",
-        "Village",
-        "9:59",
-        "left",
-        "Show",
         "Release",
         "to",
         "send",
@@ -59,7 +47,7 @@
           "x": 0,
           "y": 0,
           "width": 600,
-          "height": 121
+          "height": 73
         },
         "dPos": 0,
         "dSize": 248.671875,
@@ -68,14 +56,14 @@
     ]
   },
   "r3": {
-    "verdict": "fail",
+    "verdict": "pass",
     "anchors": [
       {
         "name": "BP-COMP-04",
         "ref": "#1B1B22",
-        "app": "#0B0B0F",
-        "deltaE": 5.19,
-        "verdict": "fail"
+        "app": "#1B1B22",
+        "deltaE": 0,
+        "verdict": "pass"
       }
     ]
   },
@@ -87,9 +75,9 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.08620059902111184,
-    "diffPixels": 2360,
-    "total": 27378,
+    "ratio": 0.05436521874878039,
+    "diffPixels": 1393,
+    "total": 25623,
     "sizeMismatch": {
       "a": [
         351,
@@ -97,7 +85,7 @@
       ],
       "b": [
         600,
-        121
+        73
       ]
     },
     "heatmap": "BP-COMP-04.dark.diff.png"

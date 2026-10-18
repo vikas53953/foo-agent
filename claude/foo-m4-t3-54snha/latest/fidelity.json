@@ -1,19 +1,19 @@
 {
-  "reportId": "M3-c71a851-39158777483",
+  "reportId": "M3-d61a198-39159754000",
   "milestone": "M3",
-  "generatedAt": "2026-10-18T19:38:14.273Z",
-  "commit": "45cc86d46cf7f0e9706b2f9c5cfa3ce1ecba996c",
-  "head": "c71a8511d1d7fd0cce465d370aa3d5f9eea20bb7",
+  "generatedAt": "2026-10-18T19:50:21.854Z",
+  "commit": "a34d131b0053bfe3ff72dbfbfbaa1997726d3211",
+  "head": "d61a1989664715fa260889cde796fc8ce18aea36",
   "ci": {
-    "runId": "39158777483",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39158777483"
+    "runId": "39159754000",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39159754000"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "f808565536284e7d4e3a7dd182cb349ec76d2f2e7287d9c529c31af2bc5da6da"
   },
   "runner": {
-    "recordedAt": "2026-10-18T19:32:03.754Z",
+    "recordedAt": "2026-10-18T19:43:25.792Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000003068"
+      "runner": "GitHub Actions 1000003074"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -60,7 +60,6 @@
   "verdict": "FAIL",
   "verdictReasons": [
     "2 test(s) failed",
-    "2 Tier R step(s) failed",
     "10 audit item(s) not DONE (the milestone is not complete)",
     "CHANGED items need an approved CR"
   ],
@@ -70,7 +69,7 @@
       "M3: 1 of 2 drawings match; open the side-by-side rows below."
     ],
     "changed": [
-      "16 picture(s) differ a little from the drawing and need your look (Review rows), whatever else a CR disputes:",
+      "18 picture(s) differ a little from the drawing and need your look (Review rows), whatever else a CR disputes:",
       "BP-ANAT-CHIPS (dark): R3 colour (ΔE 4.78) in the Review band; see it side by side below.",
       "BP-ANAT-L (dark): R3 colour (ΔE 4.78) in the Review band; see it side by side below.",
       "BP-ANAT-LHEAD (dark): R3 colour (ΔE 2.91) in the Review band; see it side by side below.",
@@ -79,6 +78,8 @@
       "BP-APP-R (light): R3 colour (ΔE 3.65) in the Review band; see it side by side below.",
       "BP-MSG-02 (dark): R3 colour (ΔE 3.19) in the Review band; see it side by side below.",
       "BP-MSG-02 (light): R3 colour (ΔE 3.65) in the Review band; see it side by side below.",
+      "UX-08-02 (dark): R2 boxes in the Review band; see it side by side below.",
+      "UX-08-02 (light): R2 boxes in the Review band; see it side by side below.",
       "UX-08-03 (dark): R4 pixels (3.47 %) in the Review band; see it side by side below.",
       "UX-08-03 (light): R4 pixels (3.20 %) in the Review band; see it side by side below.",
       "UX-08-05 (dark): R4 pixels (3.97 %) in the Review band; see it side by side below.",
@@ -259,7 +260,7 @@
       "evidence": "test:steps 1 to 5 live with fake-AI replies",
       "covers": "part",
       "manual": "UX-08-02 is captured live on the walkthrough's own frame (seed set ux-world-ch8-live: \"thanks!\" at 8:06, the question at 8:10, the Thinking face and Stop); R1 stays disputed under CR-0003 like the other UX-08 steps. Steps 6 and 7 stay on the seeded scene (job badge M4, source pill from engine entities)",
-      "resolved": "NOT DONE"
+      "resolved": "PARTIAL"
     },
     {
       "group": "M3 Fidelity exit",
@@ -13552,7 +13553,7 @@
       },
       {
         "id": "ART-26a",
-        "status": "passed",
+        "status": "failed",
         "file": "test/e2e/m2-messages.spec.ts"
       },
       {
@@ -13677,7 +13678,7 @@
       },
       {
         "id": "UX-08-02",
-        "status": "failed",
+        "status": "passed",
         "file": "test/fidelity/ux/UX-08.chat.spec.ts"
       }
     ],
@@ -13690,8 +13691,8 @@
       },
       {
         "suite": "e2e",
-        "file": "test/fidelity/ux/UX-08.chat.spec.ts",
-        "title": "UX-08 · Just chatting, in your language: steps 1 to 5 live with fake-AI replies, UX-08-02 captured, light and dark",
+        "file": "test/e2e/m2-messages.spec.ts",
+        "title": "ART-26a · bubbles, cards, the bubble menu and the reaction picker pass axe in light and dark",
         "status": "failed"
       }
     ],
@@ -13758,9 +13759,9 @@
   "golden": {
     "counts": {
       "pass": 1,
-      "review": 16,
-      "fail": 2,
-      "disputed": 57,
+      "review": 18,
+      "fail": 0,
+      "disputed": 59,
       "notBuilt": 0
     },
     "refsRendered": [
@@ -14623,12 +14624,12 @@
       {
         "id": "BP-COMP-04",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
-        "r3": "fail (BP-COMP-04 ΔE 5.19)",
+        "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.08620059902111184,
+        "r5": 0.05436521874878039,
         "ref": true,
         "app": true,
         "diff": true
@@ -14639,9 +14640,9 @@
         "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
-        "r3": "pass (BP-COMP-04 ΔE 1.2)",
+        "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.08338812184966031,
+        "r5": 0.05366272489560161,
         "ref": true,
         "app": true,
         "diff": true
@@ -14654,7 +14655,7 @@
         "r2": "fail (BP-COMP-05 0/248.671875 px)",
         "r3": "pass (BP-COMP-05 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.11103197214308326,
+        "r5": 0.10073781868653664,
         "ref": true,
         "app": true,
         "diff": true
@@ -14667,7 +14668,7 @@
         "r2": "fail (BP-COMP-05 0/248.671875 px)",
         "r3": "pass (BP-COMP-05 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.14207027540360873,
+        "r5": 0.1018335890130762,
         "ref": true,
         "app": true,
         "diff": true
@@ -14727,12 +14728,12 @@
       {
         "id": "BP-COMP-08",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-COMP-08 0/248.671875 px)",
-        "r3": "fail (BP-COMP-08 ΔE 5.52)",
+        "r3": "pass (BP-COMP-08 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.10461538461538461,
+        "r5": 0.07724409132859837,
         "ref": true,
         "app": true,
         "diff": true
@@ -14743,9 +14744,9 @@
         "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-COMP-08 0/248.671875 px)",
-        "r3": "pass (BP-COMP-08 ΔE 1.4)",
+        "r3": "pass (BP-COMP-08 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.1064102564102564,
+        "r5": 0.0809758837927852,
         "ref": true,
         "app": true,
         "diff": true
@@ -14907,6 +14908,32 @@
         "diff": true
       },
       {
+        "id": "UX-08-02",
+        "theme": "dark",
+        "verdict": "review",
+        "r1": "fail",
+        "r2": "review (hl 8/8 px)",
+        "r3": "pass (hl ΔE 0)",
+        "r4": "fail (18.80 %)",
+        "r5": 0.083609375,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "UX-08-02",
+        "theme": "light",
+        "verdict": "review",
+        "r1": "fail",
+        "r2": "review (hl 8/8 px)",
+        "r3": "pass (hl ΔE 0)",
+        "r4": "fail (18.70 %)",
+        "r5": 0.058625,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
         "id": "UX-08-03",
         "theme": "dark",
         "verdict": "review",
@@ -15044,7 +15071,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 20.59)",
         "r4": "fail (21.84 %)",
-        "r5": 0.085328125,
+        "r5": 0.085326171875,
         "ref": true,
         "app": true,
         "diff": true
