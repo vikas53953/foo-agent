@@ -1,0 +1,29 @@
+{
+  "journey": "test/verify/m9-t4-web.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "8cc7eddce74bebee4d994a9425575fb3396ca6e6",
+  "dirty": false,
+  "started": "2026-10-18T18:37:47.115Z",
+  "finished": "2026-10-18T18:37:48.713Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "ran the built engine web module inside foo's Electron 44.9.0 main process",
+    "\"search for Italian places in Bandra\" with a fake Exa key → exactly 1 call to api.exa.ai (x-api-key header), results: Trattoria Uno, Bandra West | Pasta Corner",
+    "the AI sees the results wrapped untrusted: <untrusted source=\"web\" ref=\"tc_demo\">[{\"title\":\"Trattoria U…",
+    "fake Exa answers 429 → the same search ran on Bing in foo's window (https://www.bing.com/search?q=Italian%20places%20in%20Bandra&cc=IN&setlang=en-IN), first result https://example-food.test/trattoria-uno; nothing was posted to the user",
+    "ai_turns web rows: exa ok 44 paise; exa error CLOUD_QUOTA 44 paise",
+    "with no Firecrawl key the news page was read on this PC by Readability inside Electron: \"Cycle lanes for the sea front\"",
+    "hosts contacted: api.exa.ai, news.example.test (no other cloud host)"
+  ],
+  "shots": [
+    {
+      "file": "after/01-app-running.light.png",
+      "name": "app-running",
+      "theme": "light"
+    }
+  ],
+  "consoleErrors": []
+}
