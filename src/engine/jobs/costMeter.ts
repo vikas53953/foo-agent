@@ -48,6 +48,8 @@ export function estimateCallPaise(
 
 export class CostMeter {
   private monthTimer: ReturnType<RunnerCore['d']['clock']['setTimeout']> | null = null;
+  /** The next-call estimate each capped job paused on: it resumes only when that call fits (08-2 §5.10 item 4). */
+  private pausedEstimate = new Map<string, number>();
 
   constructor(private core: RunnerCore) {}
 
@@ -72,6 +74,7 @@ export class CostMeter {
     if (!pick || pick.billing !== 'key') return true;
     const est = estimateCallPaise(promptChars, maxOutputTokens, this.core.d.rateOf(pick.providerId), this.core.d.usdToInr);
     if (await this.allows(est)) return true;
+    this.pausedEstimate.set(job.id, est);
     await this.pause(job);
     return false;
   }
@@ -112,15 +115,17 @@ export class CostMeter {
   async resumeCapped(): Promise<void> {
     const live = (await this.core.query<JobRow[]>('jobsByState', ['working', 'waiting'])) ?? [];
     const capped = live.filter((j) => j.state === 'waiting' && j.waitingReason === 'spend_cap').sort((a, b) => a.createdAt - b.createdAt);
-    if (!capped.length || !(await this.allows(0))) {
-      if (capped.length) this.armMonthTimer();
-      return;
-    }
+    if (!capped.length) return;
     let free = MAX_WORKING - live.filter((j) => j.state === 'working').length;
     const now = this.core.d.clock.now();
     const chats = new Set<string>();
+    let stillCapped = false;
     for (const job of capped) {
       if (free <= 0) break;
+      if (!(await this.allows(this.pausedEstimate.get(job.id) ?? 0))) {
+        stillCapped = true;
+        continue;
+      }
       const r = await this.core.tx([
         {
           op: 'transition',
@@ -134,10 +139,12 @@ export class CostMeter {
         ...(await this.core.editChecklistOps(job)),
       ]);
       if (!r.ok) continue;
+      this.pausedEstimate.delete(job.id);
       free -= 1;
       chats.add(job.chatId);
       this.core.launch(job.id);
     }
+    if (stillCapped) this.armMonthTimer();
     // 05-3 §5.21 "raised": the open Spend-cap cards of the chats that carry on.
     for (const chatId of chats) {
       const open = (await this.core.query<CardRow[]>('cards.openForChat', chatId, 'spend_cap')) ?? [];

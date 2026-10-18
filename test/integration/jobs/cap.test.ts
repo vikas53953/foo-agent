@@ -65,6 +65,17 @@ describe('AT-083 · the AI spend cap', () => {
     await h!.settle();
     expect(stepTurnsSince(h!, from)).toBe(0);
     expect(h!.job().state).toBe('waiting');
+    expect(h!.cards('spend_cap').map((c) => c.state)).toEqual(['shown']);
+  });
+
+  it('AT-083: another setting changing does not resume the capped job or mark its card raised', async () => {
+    const { from } = await cappedJob();
+    const s = h!.settings();
+    h!.send('settings.changed', { paths: [], settings: { ...s, appearance: { ...s.appearance, theme: 'dark' } } });
+    await h!.settle();
+    expect(stepTurnsSince(h!, from)).toBe(0);
+    expect(h!.job().state).toBe('waiting');
+    expect(h!.cards('spend_cap').map((c) => c.state)).toEqual(['shown']);
   });
 
   it('AT-083: the month changes → the spend meter starts again and the job resumes', async () => {

@@ -294,11 +294,13 @@ export class Engine {
         if (parsed.success) {
           const first = this.firstSettings;
           const usableBefore = this.ai.pick() !== null;
+          const capBefore = first ? null : this.settings.money.aiCapPaise;
           this.settings = parsed.data;
           this.firstSettings = false;
           this.ai.settingsChanged();
           // 08-2 §5.10 item 4: a raised AI cap resumes the jobs paused at it.
-          if (!first) void this.jobs.capChanged();
+          // Main sends no paths, so a changed cap is read from the value itself.
+          if (capBefore !== null && capBefore !== parsed.data.money.aiCapPaise) void this.jobs.capChanged();
           // First settings, or a chosen AI that just became usable (J2 choose → ai.state → settings): waiting messages go now.
           if (first || (!usableBefore && this.ai.pick())) void this.drainQueued();
           if (first && !this.o.testRun) this.scheduleHealthCheck();
