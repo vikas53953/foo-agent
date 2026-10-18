@@ -62,7 +62,12 @@ const RULES: Rule[] = [
 const P16 = /^\s*(\d(?: ?\d){3,7})\s*$/u;
 /** P17: a long run of key-like characters. */
 const P17 = /(?<![A-Za-z0-9+/_=.-])[A-Za-z0-9+/_=-]{32,}(?![A-Za-z0-9+/_=-])/gu;
-const ZERO_WIDTH = /[\u200B-\u200D\u2060\uFEFF]/u;
+/**
+ * "Zero-width characters" (04-2 §22.4), read as every invisible character: Unicode default-ignorable code points (soft
+ * hyphen U+00AD, U+200B–U+200F, U+2060–U+206F incl. the invisible operators U+2061–U+2064, U+FEFF, variation selectors,
+ * tag characters …) and all format characters (`Cf`). Review S5: a key split by a soft hyphen was not caught.
+ */
+const ZERO_WIDTH = /[\p{Default_Ignorable_Code_Point}\p{Cf}]/u;
 
 /** Luhn check over a string of digits. */
 export function luhn(digits: string): boolean {
@@ -100,7 +105,7 @@ export function entropy(s: string): number {
 }
 
 /**
- * NFKC with zero-width characters removed, plus a map from each normalised UTF-16 index to the original index (so a catch
+ * NFKC with zero-width (invisible) characters removed, plus a map from each normalised UTF-16 index to the original index (so a catch
  * masks the right span of what the user sees). Normalised one code point at a time.
  */
 export function normalise(text: string): { text: string; map: number[] } {
