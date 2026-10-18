@@ -1,0 +1,36 @@
+{
+  "before": "96c5627a3f6307294529e419ed47e0a1b3c7bb38",
+  "after": "a7808cd2858058c5585e68753221ca4f5aee2b20",
+  "rows": [
+    {
+      "name": "trips-working.light",
+      "before": "before/01-trips-working.light.png",
+      "after": "after/01-trips-working.light.png",
+      "changed": 0.026835648148148147
+    },
+    {
+      "name": "trips-queued.light",
+      "before": null,
+      "after": "after/02-trips-queued.light.png",
+      "changed": null
+    },
+    {
+      "name": "foo-two-notices.light",
+      "before": null,
+      "after": "after/03-foo-two-notices.light.png",
+      "changed": null
+    },
+    {
+      "name": "foo-two-notices.dark",
+      "before": null,
+      "after": "after/04-foo-two-notices.dark.png",
+      "changed": null
+    },
+    {
+      "name": "foo-two-notices-window.dark",
+      "before": null,
+      "after": "after/05-foo-two-notices-window.dark.png",
+      "changed": null
+    }
+  ]
+}

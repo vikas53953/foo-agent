@@ -1,0 +1,21 @@
+{
+  "journey": "test/verify/m4-t6-shell.journey.ts",
+  "label": "before",
+  "appDir": "/home/claude/foo-base",
+  "commit": "96c5627a3f6307294529e419ed47e0a1b3c7bb38",
+  "dirty": false,
+  "started": "2026-10-18T17:35:53.267Z",
+  "finished": "2026-10-18T17:35:58.478Z",
+  "platform": "linux x64",
+  "pass": false,
+  "error": "Error: Trips preview should read \"Waiting to start Flights for 12 Dec…\", reads \"Working on Flights for 12 Dec…\"\n    at Object.journey (/home/claude/foo-agent/test/verify/m4-t6-shell.journey.ts:39:11)\n    at async run (/home/claude/foo-agent/scripts/foo-verify.ts:133:5)",
+  "notes": [],
+  "shots": [
+    {
+      "file": "before/01-trips-working.light.png",
+      "name": "trips-working",
+      "theme": "light"
+    }
+  ],
+  "consoleErrors": []
+}

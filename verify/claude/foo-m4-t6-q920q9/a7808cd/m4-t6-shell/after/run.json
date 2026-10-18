@@ -1,0 +1,46 @@
+{
+  "journey": "test/verify/m4-t6-shell.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "a7808cd2858058c5585e68753221ca4f5aee2b20",
+  "dirty": false,
+  "started": "2026-10-18T17:39:21.857Z",
+  "finished": "2026-10-18T17:39:24.993Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "job QUEUED → Trips row preview reads \"Waiting to start Flights for 12 Dec…\"",
+    "Doing now row followed job:upsert to data-state=\"queued\" without a reload",
+    "two job failures → two composer-error notices, the newest (Goa stay) on top, \"Clear all\" on the top one",
+    "Clear all removed both notices"
+  ],
+  "shots": [
+    {
+      "file": "after/01-trips-working.light.png",
+      "name": "trips-working",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-trips-queued.light.png",
+      "name": "trips-queued",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-foo-two-notices.light.png",
+      "name": "foo-two-notices",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-foo-two-notices.dark.png",
+      "name": "foo-two-notices",
+      "theme": "dark"
+    },
+    {
+      "file": "after/05-foo-two-notices-window.dark.png",
+      "name": "foo-two-notices-window",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": []
+}
