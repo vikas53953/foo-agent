@@ -243,7 +243,8 @@ function markdown(out: string, baseUrl: string): number {
 async function cli(): Promise<number> {
   const { flags, rest } = args(process.argv.slice(2));
   if ('compare' in flags) return flags.compare ? compare(flags.compare) : (console.error(usage), 2);
-  if ('markdown' in flags) return flags.markdown && flags['base-url'] ? markdown(flags.markdown, flags['base-url']) : (console.error(usage), 2);
+  if ('markdown' in flags)
+    return flags.markdown && flags['base-url'] ? markdown(flags.markdown, flags['base-url']) : (console.error(usage), 2);
   const journey = rest[0];
   if (!journey || !existsSync(journey)) {
     console.error(usage);
