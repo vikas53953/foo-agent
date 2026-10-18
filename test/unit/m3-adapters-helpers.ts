@@ -1,5 +1,5 @@
 // Shared test scaffolding for the M3 adapter tests (08-3 §22.3: fake CLIs, captured fixtures, never real providers).
-import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { systemClock, type Clock } from '../../src/shared/clock';
@@ -18,8 +18,16 @@ export const fixture = (p: string): string => readFileSync(path.join(FIX, p), 'u
 export const fixtureLines = (p: string): string[] => fixture(p).split(/\r?\n/);
 export const pricing = loadPricing(JSON.parse(readFileSync(path.join(ROOT, 'resources/pricing.json'), 'utf8')));
 
+const made: string[] = [];
+/** Call from afterAll in each test file. */
+export function cleanupTmp(): void {
+  for (const d of made.splice(0)) rmSync(d, { recursive: true, force: true });
+}
+
 export function tmp(prefix = 'foo-m3-'): string {
-  return mkdtempSync(path.join(os.tmpdir(), prefix));
+  const d = mkdtempSync(path.join(os.tmpdir(), prefix));
+  made.push(d);
+  return d;
 }
 
 export interface TestDeps extends AdapterDeps {

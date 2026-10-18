@@ -21,11 +21,18 @@ import type { AiErrorKind, AiUsage, TurnRequest, TurnResult, TurnSink } from '..
 export interface LaneAi {
   /** The provider a chat turn uses now (primary, or the backup while the primary rests, 08-4 §30.9), or null. */
   pick(): { providerId: ProviderId; billing: 'plan' | 'key' | 'local'; backup: boolean } | null;
-  turnParams(providerId: ProviderId, purpose: 'intake' | 'repair' | 'rewrite'): Omit<TurnRequest, 'turnId' | 'purpose' | 'system' | 'prompt'>;
+  turnParams(
+    providerId: ProviderId,
+    purpose: 'intake' | 'repair' | 'rewrite',
+  ): Omit<TurnRequest, 'turnId' | 'purpose' | 'system' | 'prompt'>;
   runTurn(providerId: ProviderId, req: TurnRequest, sink: TurnSink, signal: AbortSignal): Promise<TurnResult>;
   reportOk(providerId: ProviderId): void;
   reportError(providerId: ProviderId, kind: AiErrorKind, resetAt?: number): void;
-  costPaise(providerId: ProviderId, usage: AiUsage, model?: string): { paise: number | null; source: 'reported' | 'priced' | 'estimated' | 'free' | 'unknown' };
+  costPaise(
+    providerId: ProviderId,
+    usage: AiUsage,
+    model?: string,
+  ): { paise: number | null; source: 'reported' | 'priced' | 'estimated' | 'free' | 'unknown' };
 }
 
 export interface IntakeInput {
@@ -261,7 +268,7 @@ export class ChatLane {
     await gate.end();
     await pending;
 
-    let parsed = this.d.protocol.parse(result.text);
+    const parsed = this.d.protocol.parse(result.text);
     let act = parsed.act;
     if (!act) {
       // 08-2 §7.5: one repair turn (same session); its <say> is ignored after streaming (08-4 §25.5 item 3).
@@ -285,7 +292,6 @@ export class ChatLane {
       if (!act) this.d.log('chat.protocol_invalid', 'PROTOCOL_INVALID', { chatId });
       // A valid <say> with a broken <act> is still posted as a plain reply (08-2 §7.5).
       if (!act && parsed.say.trim()) act = { kind: 'reply' };
-      if (!act) parsed = { ...parsed, say: '' };
     }
     const kind = act?.kind ?? 'reply';
     const released = gate.released();

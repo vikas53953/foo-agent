@@ -124,6 +124,11 @@ describe('m3 validateAct', () => {
   });
 
   it('the schema is strict all the way down', () => {
-    expect(IntakeActSchema.safeParse({ decision: { kind: 'job', title: 't', plan: [{ phraseKey: 'k', slots: {}, route: 'browser', x: 1 }], routeHint: [], needsApps: [] }, usedMemoryIds: [] }).success).toBe(false);
+    expect(
+      IntakeActSchema.safeParse({
+        decision: { kind: 'job', title: 't', plan: [{ phraseKey: 'k', slots: {}, route: 'browser', x: 1 }], routeHint: [], needsApps: [] },
+        usedMemoryIds: [],
+      }).success,
+    ).toBe(false);
   });
 });

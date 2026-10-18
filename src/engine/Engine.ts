@@ -1,0 +1,245 @@
+// Spec: 08-1 §1.2 (the engine box: chat lane, your-AI adapters, prompt assembly, Redactor), §2.4 (MainToEngine kinds the
+// engine answers), 08-2 §6 (adapters; detect, verify, choose), §7 (prompt assembly, FOO/1, output filters), §11.4 (the
+// Redactor on every AI input), 08-4 §24.9 / §25.5 (the rewrite turn for a held sentence: cheap model, `rewrite.md`),
+// §30.8 (on engine start every `sys-*.md` in the scratch folders is deleted), 08-3 §22.3 (FOO_FAKE_AI).
+// Deferred to their milestones: the +20 s health check of 08-1 §2.2 step 7 runs only outside FOO_TEST runs (tests verify
+// explicitly), job lanes (M4), memory parts 5/5b (M6; empty here), the vault for key providers (M5: no key yet, so a
+// key provider reports `AI_KEY_INVALID` on verify).
+import { join } from 'node:path';
+import { readFileSync } from 'node:fs';
+import type { Clock } from '../shared/clock';
+import { ok, type Result } from '../shared/errors';
+import { newId } from '../shared/ids';
+import { settingsSchema, type Settings } from '../shared/settings';
+import { settingsDefaults } from '../shared/settingsDefaults';
+import type { ProviderId } from '../shared/types';
+import type { EngineMessage } from '../main/db/queries';
+import { AiRegistry, CliLimiter, createAdapters, loadPricing, nodeAiFs, nodeWhich, sweepSystemFiles } from './ai';
+import { AiService } from './AiService';
+import { ChatLane, type IntakeDecisionView, type IntakeInput, type LaneProtocol } from './chat/ChatLane';
+import type { MainLink, MainToEngine } from './protocol';
+import { parseEnvelope, validateAct, formatIssues } from './prompt/envelope';
+import { filterSay } from './prompt/filters';
+import { PromptBuilder, type ConversationMessage } from './prompt/PromptBuilder';
+import { ReleaseGate } from './prompt/releaseGate';
+import { Redactor } from './redact/Redactor';
+
+export interface EngineOptions {
+  link: MainLink;
+  clock: Clock;
+  env: Record<string, string | undefined>;
+  dataDir: string;
+  localDir: string;
+  resourcesDir: string;
+  execPath: string;
+  testRun: boolean;
+  /** Tests inject a fetch; production uses the global one. */
+  fetch?: typeof fetch;
+}
+
+export class Engine {
+  private settings: Settings = structuredClone(settingsDefaults);
+  private online = true;
+  readonly ai: AiService;
+  readonly lane: ChatLane;
+  readonly redactor: Redactor;
+  private prompts: PromptBuilder;
+
+  static create(o: EngineOptions): Engine {
+    return new Engine(o);
+  }
+
+  private constructor(private o: EngineOptions) {
+    const log = (evt: string, kind?: string) =>
+      o.link.send('log', { t: o.clock.now(), lvl: 'info', mod: 'engine', evt, ...(kind ? { kind } : {}) });
+    this.redactor = new Redactor({ clock: o.clock, log: (kind) => log('redact', kind) });
+    this.prompts = new PromptBuilder({
+      clock: o.clock,
+      log: (kind) => log('prompt', kind),
+      redactor: this.redactor,
+      promptsDir: join(o.resourcesDir, 'prompts'),
+    });
+    const pricing = loadPricing(JSON.parse(readFileSync(join(o.resourcesDir, 'pricing.json'), 'utf8')));
+    const fake = o.testRun && Boolean(o.env.FOO_FAKE_AI);
+    const adapters = createAdapters({
+      clock: o.clock,
+      fetch: o.fetch ?? fetch,
+      paths: { LOCAL: o.localDir, DATA: o.dataDir },
+      env: o.env,
+      platform: process.platform,
+      getKey: async () => null,
+      which: nodeWhich(),
+      fs: nodeAiFs,
+      pricing,
+      providerSettings: (id) => this.settings.ai.providers[id],
+      execPath: o.execPath,
+      timeZone: this.settings.locale.timeZone,
+      isOnline: () => this.online,
+      cliLimiter: new CliLimiter(),
+    });
+    const registry = new AiRegistry(adapters, { clock: o.clock, fakeEnabled: fake });
+    void sweepSystemFiles({ fs: nodeAiFs, paths: { LOCAL: o.localDir, DATA: o.dataDir } }).catch(() => undefined);
+    this.ai = new AiService({
+      registry,
+      clock: o.clock,
+      pricing,
+      settings: () => this.settings,
+      online: () => this.online,
+      fake,
+      publish: (status) => o.link.send('ui.patch', { event: 'ai:status', payload: status }),
+      persist: (p) => o.link.send('ai.state', p),
+      onUsable: () => void this.drainQueued(),
+      detectRow: (row) => o.link.send('ui.patch', { event: 'ai:detectRow', payload: row }),
+      retestTimers: !o.testRun,
+    });
+    this.lane = new ChatLane({
+      link: o.link,
+      clock: o.clock,
+      newId: (p) => newId(p, o.clock.now()),
+      settings: () => this.settings,
+      ai: this.ai,
+      protocol: this.protocol(),
+      log: (evt, kind) => log(evt, kind),
+    });
+  }
+
+  /** The reply protocol for the chat lane, from the prompt modules. */
+  private protocol(): LaneProtocol {
+    const redactor = this.redactor;
+    const decision = (act: unknown): IntakeDecisionView | null => {
+      const v = validateAct('intake', act);
+      return v.ok ? ((v.act as { decision: IntakeDecisionView }).decision ?? null) : null;
+    };
+    const issuesOf = (act: unknown, error: string | null) => {
+      if (error) return error;
+      const v = validateAct('intake', act);
+      return v.ok ? null : v.issues;
+    };
+    return {
+      buildIntake: (i: IntakeInput) => {
+        const nameOf = (m: EngineMessage) =>
+          m.authorKind === 'user'
+            ? (i.settings.user.firstName ?? 'You')
+            : m.authorKind === 'helper'
+              ? (i.helper?.name ?? 'Helper')
+              : i.settings.identity.agentName;
+        const conversation: ConversationMessage[] = i.conversation.map((m) => ({
+          name: nameOf(m),
+          at: m.createdAt,
+          text: m.kind === 'voice' ? (m.transcript ?? '') : m.text,
+          textForAi: m.textForAi,
+        }));
+        const helper = i.helper ? { name: i.helper.name, jobText: i.helper.jobText, goodResult: i.helper.goodResult ?? '' } : undefined;
+        return this.prompts.buildIntake({
+          chatKind: i.chat.kind === 'helper' ? 'helper' : 'foo',
+          agentName: i.settings.identity.agentName,
+          vibeLine: '',
+          emoji: '',
+          firstName: i.settings.user.firstName ?? null,
+          timeZone: i.settings.locale.timeZone,
+          ...(helper ? { helper } : {}),
+          helpers: [],
+          pinned: [],
+          turnFacts: [],
+          conversation,
+          userMessage: i.message.textForAi ?? i.message.text,
+          local: i.local,
+        });
+      },
+      buildRepair: (issues) => this.prompts.buildRepair(issues).prompt,
+      parse: (text) => {
+        const env = parseEnvelope(text);
+        const act = env.act === undefined ? null : decision(env.act);
+        return { say: env.say, act, issues: act ? null : (issuesOf(env.act, env.actError) ?? formatIssues([])) };
+      },
+      parseAct: (text) => {
+        const env = parseEnvelope(text);
+        const act = env.act === undefined ? null : decision(env.act);
+        return { act, issues: act ? null : issuesOf(env.act, env.actError) };
+      },
+      gate: (onRelease) => {
+        let resolve!: () => void;
+        const closed = new Promise<void>((r) => (resolve = r));
+        const g = new ReleaseGate({
+          clock: this.o.clock,
+          redactor,
+          rewrite: (sentence) => this.rewrite(sentence),
+          onRelease,
+          onSayClosed: () => resolve(),
+        });
+        return {
+          push: (d) => g.feed(d),
+          end: async () => {
+            g.end();
+            await closed;
+          },
+          released: () => g.releasedText,
+        };
+      },
+      filter: (text) => filterSay(text, { redactor }).text,
+    };
+  }
+
+  /** 08-4 §24.9: one rewrite turn on the cheap model for a sentence that still holds a banned word. */
+  private async rewrite(sentence: string): Promise<string | null> {
+    const pick = this.ai.pick();
+    if (!pick) return null;
+    const built = this.prompts.buildRewrite(sentence);
+    const r = await this.ai
+      .runTurn(
+        pick.providerId,
+        { ...this.ai.turnParams(pick.providerId, 'rewrite'), turnId: newId('t', this.o.clock.now()), purpose: 'rewrite', ...built },
+        { onText: () => {}, onSession: () => {} },
+        new AbortController().signal,
+      )
+      .catch(() => null);
+    if (!r || r.stopReason !== 'end') return null;
+    return parseEnvelope(r.text).say;
+  }
+
+  /** 04 §3.3: messages that waited to send go now, oldest first. */
+  async drainQueued(): Promise<void> {
+    const r = await this.o.link.request<EngineMessage[]>('db.query', { q: 'messagesQueued', args: [] });
+    if (r.ok) for (const m of r.value) this.lane.enqueue(m.chatId, m.id);
+  }
+
+  /** One message from main; a defined return value is the reply to a request. */
+  async handle(msg: MainToEngine): Promise<Result<unknown> | undefined> {
+    switch (msg.kind) {
+      case 'settings.changed': {
+        const parsed = settingsSchema.safeParse(msg.payload.settings);
+        if (parsed.success) {
+          const first = this.firstSettings;
+          this.settings = parsed.data;
+          this.firstSettings = false;
+          this.ai.settingsChanged();
+          if (first) void this.drainQueued();
+        }
+        return undefined;
+      }
+      case 'net':
+        this.online = msg.payload.online;
+        this.ai.netChanged(msg.payload.online);
+        return undefined;
+      case 'user.message':
+        this.lane.enqueue(msg.payload.chatId, msg.payload.messageId);
+        return undefined;
+      case 'reply.retry':
+        this.lane.retry(msg.payload.messageId);
+        return undefined;
+      case 'ai.cmd': {
+        const id = msg.payload.providerId as ProviderId | undefined;
+        if (msg.payload.cmd === 'detect') return ok(await this.ai.detect());
+        if (msg.payload.cmd === 'verify' && id) return ok(await this.ai.verify(id));
+        if (msg.payload.cmd === 'choose' && id) return this.ai.choose(id, (msg.payload.backup as ProviderId | null | undefined) ?? null);
+        return { ok: false, error: { kind: 'AI_CLI_INCOMPATIBLE' } };
+      }
+      case 'test.reset':
+        this.lane.cancelAll();
+        return undefined;
+      case 'test.clock':
+        return undefined;
+    }
+  }
+  private firstSettings = true;
+}

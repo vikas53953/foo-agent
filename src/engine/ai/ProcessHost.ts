@@ -52,11 +52,7 @@ export interface Command {
 }
 
 /** `.cmd`/`.bat` → foo's Electron as Node running the shim's target JS; anything else runs as is. */
-export async function resolveCommand(
-  bin: string,
-  args: string[],
-  deps: Pick<AdapterDeps, 'fs' | 'execPath'>,
-): Promise<Command | null> {
+export async function resolveCommand(bin: string, args: string[], deps: Pick<AdapterDeps, 'fs' | 'execPath'>): Promise<Command | null> {
   if (!/\.(cmd|bat)$/i.test(bin)) return { command: bin, args, extraEnv: {} };
   let text: string;
   try {

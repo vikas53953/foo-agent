@@ -57,7 +57,7 @@ export function parseFakeScript(text: string): (FakeLine | null)[] {
     try {
       return fakeLineSchema.parse(JSON.parse(raw));
     } catch (e) {
-      throw new Error(`FOO_FAKE_AI line ${i + 1}: ${(e as Error).message}`);
+      throw new Error(`FOO_FAKE_AI line ${i + 1}: ${(e as Error).message}`, { cause: e });
     }
   });
 }
@@ -177,9 +177,11 @@ export class FakeAdapter implements AiAdapter {
       for (const a of req.attachments) {
         let sha256: string | null = null;
         try {
-          sha256 = createHash('sha256').update(await this.deps.fs.readFile(a.path)).digest('hex');
+          sha256 = createHash('sha256')
+            .update(await this.deps.fs.readFile(a.path))
+            .digest('hex');
         } catch {
-          sha256 = null;
+          /* unreadable: recorded as null */
         }
         atts.push({ bytes: a.bytes, sha256 });
       }

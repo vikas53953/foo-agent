@@ -34,7 +34,11 @@ export interface AiServiceDeps {
   fake: boolean;
   /** ai:status → renderer; ai.state → main (settings.json). */
   publish(status: AiStatus): void;
-  persist(p: { providers: Record<string, { kind: 'plan' | 'key' | 'local'; lastVerifiedAt?: number; lastVerifyOk?: boolean }>; primary?: ProviderId | null; backup?: ProviderId | null }): void;
+  persist(p: {
+    providers: Record<string, { kind: 'plan' | 'key' | 'local'; lastVerifiedAt?: number; lastVerifyOk?: boolean }>;
+    primary?: ProviderId | null;
+    backup?: ProviderId | null;
+  }): void;
   /** The AI is usable again: Waiting-to-send messages go now (04 §3.3). */
   onUsable(): void;
   detectRow(row: DetectRow): void;
@@ -73,7 +77,11 @@ export class AiService implements LaneAi {
 
   netChanged(online: boolean): void {
     if (online) {
-      for (const x of this.health.values()) if (x.state === 'offline') ((x.state = 'ok'), (x.streak = 0));
+      for (const x of this.health.values())
+        if (x.state === 'offline') {
+          x.state = 'ok';
+          x.streak = 0;
+        }
       this.publish();
       if (this.pick()) this.d.onUsable();
     } else this.publish();
@@ -121,7 +129,10 @@ export class AiService implements LaneAi {
     return null;
   }
 
-  turnParams(providerId: ProviderId, purpose: 'intake' | 'repair' | 'rewrite'): Omit<TurnRequest, 'turnId' | 'purpose' | 'system' | 'prompt'> {
+  turnParams(
+    providerId: ProviderId,
+    purpose: 'intake' | 'repair' | 'rewrite',
+  ): Omit<TurnRequest, 'turnId' | 'purpose' | 'system' | 'prompt'> {
     const p = paramsFor(purpose === 'repair' ? 'intake' : purpose);
     const id = this.adapterId(providerId);
     const out: Omit<TurnRequest, 'turnId' | 'purpose' | 'system' | 'prompt'> = {
@@ -175,7 +186,11 @@ export class AiService implements LaneAi {
     if (x.state !== before) this.publish();
   }
 
-  costPaise(providerId: ProviderId, usage: AiUsage, model?: string): { paise: number | null; source: 'reported' | 'priced' | 'estimated' | 'free' | 'unknown' } {
+  costPaise(
+    providerId: ProviderId,
+    usage: AiUsage,
+    model?: string,
+  ): { paise: number | null; source: 'reported' | 'priced' | 'estimated' | 'free' | 'unknown' } {
     const id = this.adapterId(providerId);
     const billing = this.adapter(providerId).billing;
     if (billing === 'local') return { paise: 0, source: 'free' };

@@ -16,7 +16,41 @@ import { FakeClock } from '../../src/shared/clock';
 
 describe('m3 banned words (§7.6 step 1)', () => {
   it('covers every Article 2 form of scripts/check-copy.ts BANNED', () => {
-    const samples = ['api', 'token', 'tokens', 'cli', 'oauth', 'server', 'servers', 'cron', 'webhook', 'webhooks', 'mcp', 'json', 'prompt', 'prompts', 'model', 'models', 'terminal', 'terminals', 'command', 'commands', 'error code', 'error codes', 'stack', 'timeout', 'time out', 'time-out', 'timeouts', 'timed out', 'localhost', 'llm', 'llms', 'agent loop', 'agent loops'];
+    const samples = [
+      'api',
+      'token',
+      'tokens',
+      'cli',
+      'oauth',
+      'server',
+      'servers',
+      'cron',
+      'webhook',
+      'webhooks',
+      'mcp',
+      'json',
+      'prompt',
+      'prompts',
+      'model',
+      'models',
+      'terminal',
+      'terminals',
+      'command',
+      'commands',
+      'error code',
+      'error codes',
+      'stack',
+      'timeout',
+      'time out',
+      'time-out',
+      'timeouts',
+      'timed out',
+      'localhost',
+      'llm',
+      'llms',
+      'agent loop',
+      'agent loops',
+    ];
     for (const s of samples) {
       expect(s.match(new RegExp(BANNED.source, 'gi')), s).not.toBeNull();
       expect(findBanned(`x ${s} y`), s).toHaveLength(1);
@@ -95,7 +129,9 @@ describe('m3 tables (§25.9)', () => {
     );
   });
   it('more columns → header value pairs', () => {
-    expect(tablesToLines('| Train | Fare | Leaves |\n| :-- | --: | --- |\n| Rajdhani | ₹2,450 | 4:00 PM |')).toBe('Rajdhani: Fare ₹2,450, Leaves 4:00 PM');
+    expect(tablesToLines('| Train | Fare | Leaves |\n| :-- | --: | --- |\n| Rajdhani | ₹2,450 | 4:00 PM |')).toBe(
+      'Rajdhani: Fare ₹2,450, Leaves 4:00 PM',
+    );
   });
 });
 

@@ -1,1 +1,7 @@
-{"models":[{"name":"llama3.2:3b","model":"llama3.2:3b","size":2019393189,"details":{"families":["llama"]}},{"name":"qwen2.5:14b","model":"qwen2.5:14b","size":8988124069,"details":{"families":["qwen2"]}},{"name":"llava:7b","model":"llava:7b","size":4733363377,"details":{"families":["llama","clip"]}}]}
+{
+  "models": [
+    { "name": "llama3.2:3b", "model": "llama3.2:3b", "size": 2019393189, "details": { "families": ["llama"] } },
+    { "name": "qwen2.5:14b", "model": "qwen2.5:14b", "size": 8988124069, "details": { "families": ["qwen2"] } },
+    { "name": "llava:7b", "model": "llava:7b", "size": 4733363377, "details": { "families": ["llama", "clip"] } }
+  ]
+}

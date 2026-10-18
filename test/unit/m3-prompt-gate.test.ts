@@ -147,4 +147,19 @@ describe('m3 ReleaseGate', () => {
     await flush();
     expect(out.map((o) => o.text).join('')).toBe('Your code is [hidden]. Bye.');
   });
+
+  it('onSayClosed waits for a held last sentence', async () => {
+    const order: string[] = [];
+    const clock = new FakeClock();
+    const gate = new ReleaseGate({
+      clock,
+      rewrite: async () => 'It is fixed.',
+      onRelease: (t) => order.push(t),
+      onSayClosed: () => order.push('closed'),
+    });
+    clock.advance(1_500);
+    gate.feed('<say>The stack broke?</say>');
+    await gate.done;
+    expect(order).toEqual(['It is fixed.', 'closed']);
+  });
 });

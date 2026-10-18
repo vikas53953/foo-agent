@@ -1,5 +1,5 @@
 // 08-2 §6.4 stream parsing, §6.7 classification, 08-4 §30.1 models, §30.2 pricing, §30.3 SSE, §30.4 probe.
-import { describe, expect, it } from 'vitest';
+import { afterAll, describe, expect, it } from 'vitest';
 import {
   createAnthropicParser,
   createClaudeParser,
@@ -16,7 +16,9 @@ import { classifyError, parseResetAt, parseRetryAfter, resetAtFor } from '../../
 import { loadPricing, paramsFor, resolveModel, temperatureFor } from '../../src/engine/ai/models';
 import { parseCapabilities, parseVersion } from '../../src/engine/ai/probe';
 import { LineReader, parseCmdShim, scrubEnv } from '../../src/engine/ai/ProcessHost';
-import { fixture, fixtureLines, pricing } from './m3-adapters-helpers';
+import { fixture, fixtureLines, pricing, cleanupTmp } from './m3-adapters-helpers';
+
+afterAll(cleanupTmp);
 
 function run(p: StreamParser, lines: string[]): { events: ParserEvent[]; r: ReturnType<StreamParser['result']> } {
   const events = lines.flatMap((l) => p.push(l));
@@ -71,11 +73,7 @@ describe('claude-cli stream-json', () => {
 describe('codex-cli exec --json', () => {
   it('prefix-diffs agent_message, reads turn.completed usage and thread id', () => {
     const { events, r } = run(createCodexParser(), fixtureLines('codex/exec-json.jsonl'));
-    expect(events.filter((e) => e.type === 'text').map((e) => (e as { delta: string }).delta)).toEqual([
-      '<say>Hello',
-      ' Vikas',
-      '</say>',
-    ]);
+    expect(events.filter((e) => e.type === 'text').map((e) => (e as { delta: string }).delta)).toEqual(['<say>Hello', ' Vikas', '</say>']);
     expect(r.text).toBe('<say>Hello Vikas</say>');
     expect(r.sessionId).toBe('0199a213-81c0-7800-8aa1-bbab2a035a53');
     expect(r.usage).toEqual({ tokensIn: 24763, tokensOut: 122, cacheRead: 24448, cacheWrite: null, costUsd: null });
@@ -104,10 +102,10 @@ describe('gemini-cli', () => {
   it('tool_use → violation', () => {
     expect(run(createGeminiJsonParser(), fixtureLines('gemini/tool-use.jsonl')).r.violation).toMatch(/^tool_use/);
   });
-  it('text mode: every line, ANSI stripped, NULL usage', () => {
+  it('text mode: every line, ANSI stripped, CRLF tolerated, NULL usage', () => {
     const lines: string[] = [];
     const lr = new LineReader((l) => lines.push(l));
-    lr.push(Buffer.from(fixture('gemini/text-mode.txt')));
+    lr.push(Buffer.from(fixture('gemini/text-mode.txt').replace(/\r?\n/g, '\r\n'))); // .gitattributes keeps files LF
     lr.end();
     const { r } = run(createPlainTextParser(), lines);
     expect(r.text).toBe('Hello Vikas\nsecond line');
@@ -269,7 +267,14 @@ describe('probe parsing (08-4 §30.4)', () => {
   it('claude: full help', () => {
     const p = parseCapabilities('claude-cli', fixture('claude/help.txt'), parseVersion(fixture('claude/version.txt')));
     expect(p.version).toBe('2.0.14');
-    expect(p.caps).toMatchObject({ systemPromptFile: true, resume: true, disableTools: 'flag', jsonStream: true, modelFlag: true, vision: false });
+    expect(p.caps).toMatchObject({
+      systemPromptFile: true,
+      resume: true,
+      disableTools: 'flag',
+      jsonStream: true,
+      modelFlag: true,
+      vision: false,
+    });
     expect(p.claudeToolsFlag).toBe('--tools');
     expect(p.partialMessages).toBe(true);
     expect(p.usable).toBe(true);

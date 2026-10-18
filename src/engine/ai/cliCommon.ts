@@ -163,7 +163,7 @@ export class CliAdapter implements AiAdapter {
   }
 
   /** Signing in from foo is verified at the M3 spike (08-2 §6.6 `[verify]`); until then J2 sends the user to the app. */
-  async signIn(_signal: AbortSignal): Promise<Result<{ email?: string }>> {
+  async signIn(): Promise<Result<{ email?: string }>> {
     // TODO(M3 spike / M12): spawn `claude auth login` / `codex login` / `gemini` first-run per 08-2 §6.6 once captured.
     return fail('AI_CLI_INCOMPATIBLE', 'signIn not available before the M3 spike');
   }
@@ -243,7 +243,12 @@ export class CliAdapter implements AiAdapter {
         exitCode: out.exitCode,
       };
       if (this.deps.isOnline) raw.online = this.deps.isOnline();
-      if (this.spec.unknownModelRetry && model !== undefined && isCheapPurpose(req.purpose) && RE_UNKNOWN_MODEL.test(`${raw.message}\n${out.stderr}`))
+      if (
+        this.spec.unknownModelRetry &&
+        model !== undefined &&
+        isCheapPurpose(req.purpose) &&
+        RE_UNKNOWN_MODEL.test(`${raw.message}\n${out.stderr}`)
+      )
         return { result: failResult('AI_CLI_INCOMPATIBLE'), retryWithoutModel: true };
       let kind = parsed.errorKind ?? this.classifyError(raw);
       // Exit 0 with no terminal envelope in JSON mode: the stream did not follow the format.

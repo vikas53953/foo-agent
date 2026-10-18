@@ -49,9 +49,7 @@ const ScheduleSchema = z.discriminatedUnion('kind', [
       days: z.array(z.union([0, 1, 2, 3, 4, 5, 6].map((n) => z.literal(n)) as [z.ZodLiteral<0>, ...z.ZodLiteral<number>[]])),
     })
     .strict(),
-  z
-    .object({ kind: z.literal('monthly'), day: z.number().int(), at: z.string().regex(/^\d{2}:\d{2}$/) })
-    .strict(),
+  z.object({ kind: z.literal('monthly'), day: z.number().int(), at: z.string().regex(/^\d{2}:\d{2}$/) }).strict(),
   z.object({ kind: z.literal('once'), at: z.number() }).strict(),
   z
     .object({
@@ -172,9 +170,7 @@ const SecondLookField = z.enum(['recipient', 'amount', 'date', 'time', 'item', '
 /** 08-4 §25.4 `SecondLookAct`. */
 export const SecondLookActSchema = z.union([
   z.object({ match: z.literal(true) }).strict(),
-  z
-    .object({ match: z.literal(false), field: SecondLookField, userSaid: z.string().max(60), actionHas: z.string().max(60) })
-    .strict(),
+  z.object({ match: z.literal(false), field: SecondLookField, userSaid: z.string().max(60), actionHas: z.string().max(60) }).strict(),
 ]);
 
 /** 08-4 §25.4 `RewriteAct`: an empty object; the rewritten text is the `<say>`. */

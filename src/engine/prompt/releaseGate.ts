@@ -121,7 +121,7 @@ export class ReleaseGate {
     return SAY_CLOSE.startsWith(tail) || ACT_OPEN.startsWith(tail) ? lt : this.body.length;
   }
 
-  private queueSentences(limit: number): void {
+  private queueSentences(limit: number, pump = true): void {
     const avail = this.body.slice(0, limit);
     BOUNDARY.lastIndex = this.consumed;
     let m: RegExpExecArray | null;
@@ -130,24 +130,24 @@ export class ReleaseGate {
       this.queue.push({ text: avail.slice(this.consumed, end), mode: 'sentence' });
       this.consumed = end;
     }
-    this.pump();
+    if (pump) this.pump();
   }
 
   private close(): void {
     this.phase = 'after';
-    this.sayClosed = true;
     if (this.timer !== null) {
       this.opts.clock.clearTimeout(this.timer);
       this.timer = null;
     }
     if (this.streaming) {
-      this.queueSentences(this.body.length);
+      this.queueSentences(this.body.length, false);
       const rest = this.body.slice(this.consumed);
       if (rest) this.queue.push({ text: rest, mode: 'sentence' });
       this.consumed = this.body.length;
     } else {
       this.queue.push({ text: this.body, mode: 'whole' });
     }
+    this.sayClosed = true;
     this.pump();
   }
 

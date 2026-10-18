@@ -106,8 +106,7 @@ export function buildRows(messages: MessageRow[], o: BuildOpts): VRow[] {
     // 04 §12.3: a chat-mode reply shows as 1–3 bubbles; the last part keeps the message's key.
     const parts = messageParts(m);
     const shown = Math.min(parts.length, o.shownParts?.(m.id) ?? parts.length);
-    for (let i = 0; i < shown; i++)
-      rows.push({ kind: 'message', key: i === parts.length - 1 ? m.id : `${m.id}~${i}`, message: parts[i]! });
+    for (let i = 0; i < shown; i++) rows.push({ kind: 'message', key: i === parts.length - 1 ? m.id : `${m.id}~${i}`, message: parts[i]! });
   }
   return rows;
 }

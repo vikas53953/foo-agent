@@ -6,7 +6,10 @@ import { paramsFor, resolveModel, temperatureFor } from './models';
 
 export const VERIFY_PROMPT = 'Reply with the word ready';
 
-export function verifyRequest(adapter: Pick<AiAdapter, 'id'>, deps: Pick<AdapterDeps, 'pricing' | 'providerSettings' | 'clock'>): TurnRequest {
+export function verifyRequest(
+  adapter: Pick<AiAdapter, 'id'>,
+  deps: Pick<AdapterDeps, 'pricing' | 'providerSettings' | 'clock'>,
+): TurnRequest {
   const p = paramsFor('verify');
   const req: TurnRequest = {
     turnId: `verify-${adapter.id}-${deps.clock.now()}`,

@@ -17,7 +17,18 @@ export function buildCodexCommand(req: TurnRequest, probe: CliProbe, ctx: { scra
   let args: string[];
   if (req.resumeSessionId && c.resume) {
     // The read-only sandbox is kept on resume too (08-1 §1.3 rule 2 is safety; implementation-notes M3).
-    args = ['exec', 'resume', req.resumeSessionId, ...json, '--skip-git-repo-check', '-c', 'sandbox_mode="read-only"', ...model, ...effort, '-'];
+    args = [
+      'exec',
+      'resume',
+      req.resumeSessionId,
+      ...json,
+      '--skip-git-repo-check',
+      '-c',
+      'sandbox_mode="read-only"',
+      ...model,
+      ...effort,
+      '-',
+    ];
   } else {
     args = ['exec', ...json, '--skip-git-repo-check', '-C', ctx.scratch, '-c', 'sandbox_mode="read-only"', ...model, ...effort, '-'];
   }

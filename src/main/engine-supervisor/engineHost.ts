@@ -11,7 +11,20 @@ import { NAMED_QUERIES } from '../db/queries';
 
 /** Columns the engine may set, per table (anything else → DB_NOT_WRITABLE). */
 const INSERT_COLUMNS: Record<string, readonly string[]> = {
-  messages: ['id', 'chat_id', 'author_kind', 'author_id', 'kind', 'text', 'text_for_ai', 'status', 'badge', 'provider_note', 'created_at', 'lang'],
+  messages: [
+    'id',
+    'chat_id',
+    'author_kind',
+    'author_id',
+    'kind',
+    'text',
+    'text_for_ai',
+    'status',
+    'badge',
+    'provider_note',
+    'created_at',
+    'lang',
+  ],
   ai_turns: [
     'id',
     'chat_id',

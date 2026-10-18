@@ -1,7 +1,7 @@
 // Fake AI CLI core (08-3 §22.3 "Fake CLIs"): echoes a captured fixture line by line and dumps what it was given.
 // env: FAKE_CLI_FIXTURE (stdout lines), FAKE_CLI_DUMP (JSON dump path), FAKE_CLI_HELP / FAKE_CLI_VERSION (text files for
 // --help / --version; FAKE_CLI_EXEC_HELP for `exec --help`), FAKE_CLI_STDERR (file copied to stderr), FAKE_CLI_EXIT (exit code), FAKE_CLI_LINE_DELAY_MS,
-// FAKE_CLI_HANG=1 (never exit after printing), FAKE_CLI_GRANDCHILD=1 (spawn a sleeping grandchild; its pid goes in the dump).
+// FAKE_CLI_FIXTURE_NO_MODEL / FAKE_CLI_EXIT_NO_MODEL (used when argv has no -m/--model), FAKE_CLI_HANG=1 (never exit after printing), FAKE_CLI_GRANDCHILD=1 (spawn a sleeping grandchild; its pid goes in the dump).
 import { spawn } from 'node:child_process';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
@@ -42,12 +42,14 @@ export async function runFakeCli(name) {
 
   if (env.FAKE_CLI_STDERR && existsSync(env.FAKE_CLI_STDERR)) process.stderr.write(readFileSync(env.FAKE_CLI_STDERR, 'utf8'));
   const delay = Number(env.FAKE_CLI_LINE_DELAY_MS ?? 0);
-  const lines = textOf(env.FAKE_CLI_FIXTURE, '').split('\n');
+  const noModel = !argv.includes('-m') && !argv.includes('--model');
+  const fixture = noModel && env.FAKE_CLI_FIXTURE_NO_MODEL ? env.FAKE_CLI_FIXTURE_NO_MODEL : env.FAKE_CLI_FIXTURE;
+  const lines = textOf(fixture, '').split('\n');
   if (lines.length && lines[lines.length - 1] === '') lines.pop();
   for (const l of lines) {
     process.stdout.write(l + '\n');
     if (delay > 0) await new Promise((r) => setTimeout(r, delay));
   }
   if (env.FAKE_CLI_HANG === '1') await new Promise(() => setInterval(() => {}, 1000));
-  return Number(env.FAKE_CLI_EXIT ?? 0);
+  return Number((noModel ? env.FAKE_CLI_EXIT_NO_MODEL : undefined) ?? env.FAKE_CLI_EXIT ?? 0);
 }

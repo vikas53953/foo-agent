@@ -74,11 +74,17 @@ describe('m3 prompt files', () => {
 
   it('MANIFEST.json lists every prompt file with its sha256', () => {
     const manifest = JSON.parse(readFileSync(`${DIR}/MANIFEST.json`, 'utf8')) as Record<string, string>;
-    const files = readdirSync(DIR).filter((n) => n.endsWith('.md')).sort();
+    const files = readdirSync(DIR)
+      .filter((n) => n.endsWith('.md'))
+      .sort();
     expect(Object.keys(manifest).sort()).toEqual(files);
     expect(files).toHaveLength(17);
     for (const f of files) {
-      expect(manifest[f], f).toBe(createHash('sha256').update(readFileSync(`${DIR}/${f}`)).digest('hex'));
+      expect(manifest[f], f).toBe(
+        createHash('sha256')
+          .update(readFileSync(`${DIR}/${f}`))
+          .digest('hex'),
+      );
     }
   });
 });

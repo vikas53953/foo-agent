@@ -58,10 +58,7 @@ export interface PurposeParams {
 }
 
 /** 08-4 §30.1 table. `chat` = plain replies (the intake row). */
-export const PURPOSE_PARAMS: Record<
-  Exclude<AiPurpose, 'repair' | 'voice' | 'web' | 'hub'>,
-  PurposeParams
-> = {
+export const PURPOSE_PARAMS: Record<Exclude<AiPurpose, 'repair' | 'voice' | 'web' | 'hub'>, PurposeParams> = {
   verify: { tier: 'default', temperature: 0, maxOutputTokens: 10, timeoutMs: 20_000, stream: false },
   intake: { tier: 'default', temperature: 0.4, maxOutputTokens: 1200, timeoutMs: 60_000, stream: true },
   chat: { tier: 'default', temperature: 0.4, maxOutputTokens: 1200, timeoutMs: 60_000, stream: true },

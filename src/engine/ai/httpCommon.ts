@@ -70,12 +70,18 @@ export async function runHttpTurn(
   const ctl = new AbortController();
   let timedOut = false;
   let tooBig = false;
-  const onAbort = (): void => ctl.abort();
+  let body: ReadableStreamDefaultReader<Uint8Array> | undefined;
+  // Abort the request and the body read (a body that ignores the signal must not keep the turn alive).
+  const stopAll = (): void => {
+    ctl.abort();
+    body?.cancel().catch(() => undefined);
+  };
+  const onAbort = (): void => stopAll();
   if (signal.aborted) return cancelledResult();
   signal.addEventListener('abort', onAbort, { once: true });
   const timer = deps.clock.setTimeout(() => {
     timedOut = true;
-    ctl.abort();
+    stopAll();
   }, req.timeoutMs);
   const classify = (raw: RawAiError): AiErrorKind => (opts.classify ?? ((r) => classifyError(r, opts.billing)))(raw);
   const stopped = (): boolean => timedOut || signal.aborted || tooBig;
@@ -127,7 +133,9 @@ export async function runHttpTurn(
     try {
       if (res.body) {
         const r = res.body.getReader();
+        body = r;
         for (;;) {
+          if (stopped()) break;
           const { done, value } = await r.read();
           if (done) break;
           bytes += value.byteLength;
@@ -261,7 +269,13 @@ export class HttpAdapter implements AiAdapter {
 }
 
 /** Key-provider price of a turn in paise, rounded up (08-4 §30.2); null when the model has no price row. */
-export function keyCostPaise(deps: Pick<AdapterDeps, 'pricing'>, id: ProviderId, model: string | undefined, tokensIn: number, tokensOutMax: number): number | null {
+export function keyCostPaise(
+  deps: Pick<AdapterDeps, 'pricing'>,
+  id: ProviderId,
+  model: string | undefined,
+  tokensIn: number,
+  tokensOutMax: number,
+): number | null {
   const p = priceOf(deps.pricing, id, model);
   if (!p) return null;
   const usd = (tokensIn * p.inPerMTokUsd + tokensOutMax * p.outPerMTokUsd) / 1_000_000;

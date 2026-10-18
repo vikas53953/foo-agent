@@ -51,7 +51,7 @@ class FifoGate<T> {
   }
 
   pump(): void {
-    for (let i = 0; i < this.queue.length; ) {
+    for (let i = 0; i < this.queue.length;) {
       const w = this.queue[i]!;
       if (!this.canStart(w.key)) {
         i++;

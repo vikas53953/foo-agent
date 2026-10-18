@@ -88,7 +88,12 @@ const ANY_BANNED = new RegExp(
   `${B}(?:${LATIN.map((r) => r.re).join('|')})${E}|(?<![\\p{L}\\p{M}])(?:${SCRIPT.map((r) => r.re).join('|')})(?![\\p{L}\\p{M}])`,
   'iu',
 );
-const UNMAPPED_RE = new RegExp(`${B}(?:${LATIN.filter((r) => !r.to).map((r) => r.re).join('|')})${E}`, 'giu');
+const UNMAPPED_RE = new RegExp(
+  `${B}(?:${LATIN.filter((r) => !r.to)
+    .map((r) => r.re)
+    .join('|')})${E}`,
+  'giu',
+);
 
 /** Every banned word or form left in `text` (mapped or not). */
 export function findBanned(text: string): string[] {
@@ -177,7 +182,12 @@ export function tablesToLines(text: string): string {
         const label = row[0] ?? '';
         const rest = row.slice(1);
         const value =
-          headers.length <= 2 ? (rest[0] ?? '') : rest.map((c, k) => `${headers[k + 1] ?? ''} ${c}`.trim()).filter(Boolean).join(', ');
+          headers.length <= 2
+            ? (rest[0] ?? '')
+            : rest
+                .map((c, k) => `${headers[k + 1] ?? ''} ${c}`.trim())
+                .filter(Boolean)
+                .join(', ');
         out.push(`${label}: ${value}`);
       }
       i = j - 1;

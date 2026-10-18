@@ -85,7 +85,10 @@ export interface BuiltPrompt {
 /** §24.15 item 4: still over budget after every trim. The turn is not sent and fails with `PROTOCOL_INVALID`. */
 export class PromptBudgetError extends Error {
   readonly kind = 'PROTOCOL_INVALID' as const;
-  constructor(readonly size: number, readonly budget: number) {
+  constructor(
+    readonly size: number,
+    readonly budget: number,
+  ) {
     super(`prompt over budget: ${size} > ${budget}`);
   }
 }
@@ -297,10 +300,26 @@ export class PromptBuilder {
     };
     // §24.15 item 4, in order: (1) untrusted content (intake has no latest observation); (2) conversation, oldest first,
     // keeping the last 6; (3) snapshot text (none in intake); (4) turn facts; (5) helper notes; (6) pinned facts to 2,000.
-    trim('9', () => pages.length > 0, () => (pages = pages.slice(0, -1)));
-    trim('7', () => conversation.length > CONVERSATION_KEEP, () => (conversation = conversation.slice(1)));
-    trim('5b', () => turnFacts.length > 0, () => (turnFacts = turnFacts.slice(0, -1)));
-    trim('6', () => notes.length > 0, () => (notes = notes.includes('\n') ? notes.slice(0, notes.lastIndexOf('\n')) : ''));
+    trim(
+      '9',
+      () => pages.length > 0,
+      () => (pages = pages.slice(0, -1)),
+    );
+    trim(
+      '7',
+      () => conversation.length > CONVERSATION_KEEP,
+      () => (conversation = conversation.slice(1)),
+    );
+    trim(
+      '5b',
+      () => turnFacts.length > 0,
+      () => (turnFacts = turnFacts.slice(0, -1)),
+    );
+    trim(
+      '6',
+      () => notes.length > 0,
+      () => (notes = notes.includes('\n') ? notes.slice(0, notes.lastIndexOf('\n')) : ''),
+    );
     trim(
       '5',
       () => pinned.length > 0 && pinned.join('\n').length > PINNED_FLOOR,
