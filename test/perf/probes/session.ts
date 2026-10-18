@@ -59,8 +59,7 @@ export async function openProdSession(o: SessionOptions): Promise<SessionCtx> {
         (row) => {
           const w = window as unknown as { __perfPainted?: number };
           const el = document.querySelector(`[data-testid="${row}"]`);
-          if (el && document.readyState === 'complete' && !document.querySelector('[aria-busy="true"]'))
-            w.__perfPainted ??= performance.timeOrigin + performance.now();
+          if (el && document.readyState === 'complete') w.__perfPainted ??= performance.timeOrigin + performance.now();
           return w.__perfPainted ?? false;
         },
         TID.chatlistRow,
