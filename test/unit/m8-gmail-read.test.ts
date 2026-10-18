@@ -55,9 +55,7 @@ describe('gmail.search', () => {
       { q: 'subject:bill newer_than:7d', maxResults: '10' },
       { q: 'bill', maxResults: '50' },
     ]);
-    expect(g.requests.filter((r) => r.path.startsWith('/gmail/v1/users/me/messages/')).every((r) => r.query.format === 'full')).toBe(
-      true,
-    );
+    expect(g.requests.filter((r) => r.path.startsWith('/gmail/v1/users/me/messages/')).every((r) => r.query.format === 'full')).toBe(true);
   });
 
   it('max over 50 or sinceDays over 365 → VALIDATION, nothing sent', async () => {

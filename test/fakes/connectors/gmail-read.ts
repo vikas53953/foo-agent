@@ -73,12 +73,10 @@ export async function serveFakeGoogle(handlers: FakeHandler[]): Promise<{ url: s
     req.on('end', () => {
       const body = Buffer.concat(chunks).toString('utf8');
       const url = `http://googleapis.example${req.url ?? '/'}`;
-      void g
-        .fetch(url, { method: req.method ?? 'GET', ...(body ? { body } : {}) })
-        .then(async (r) => {
-          res.writeHead(r.status, { 'content-type': 'application/json' });
-          res.end(await r.text());
-        });
+      void g.fetch(url, { method: req.method ?? 'GET', ...(body ? { body } : {}) }).then(async (r) => {
+        res.writeHead(r.status, { 'content-type': 'application/json' });
+        res.end(await r.text());
+      });
     });
   });
   await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
@@ -238,7 +236,12 @@ export function fakeGmailRead(state: FakeGmailState): FakeHandler {
         body: {
           historyId: String(state.historyId),
           ...(page.length
-            ? { history: page.map((m) => ({ id: String(m.historyId), messagesAdded: [{ message: { id: m.id, threadId: m.threadId ?? m.id } }] })) }
+            ? {
+                history: page.map((m) => ({
+                  id: String(m.historyId),
+                  messagesAdded: [{ message: { id: m.id, threadId: m.threadId ?? m.id } }],
+                })),
+              }
             : {}),
           ...(next ? { nextPageToken: next } : {}),
         },
@@ -283,12 +286,7 @@ export function fakeAccess(email: string | null = 'tester@example.com'): FakeAcc
 }
 
 /** Settles a promise that waits on fake-clock timers: lets microtasks run, then moves the clock, until it settles. */
-export async function drive<T>(
-  p: Promise<T>,
-  clock: { advance(ms: number): void },
-  stepMs = 50,
-  maxMs = 30 * 60_000,
-): Promise<T> {
+export async function drive<T>(p: Promise<T>, clock: { advance(ms: number): void }, stepMs = 50, maxMs = 30 * 60_000): Promise<T> {
   let done = false;
   let value: T | undefined;
   let error: unknown;

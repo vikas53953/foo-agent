@@ -87,9 +87,13 @@ function toText(m: RawMessage): MailText {
   const body = (mime: string) => parts.find((p) => p.mimeType === mime && !p.filename && p.body?.data)?.body?.data;
   const plain = body('text/plain');
   const html = body('text/html');
-  const { snippet: _snippet, ...hit } = toHit(m);
+  const hit = toHit(m);
   return {
-    ...hit,
+    id: hit.id,
+    threadId: hit.threadId,
+    from: hit.from,
+    subject: hit.subject,
+    date: hit.date,
     to: header(m, 'To'),
     text: plain ? decode(plain).trim() : html ? htmlToText(decode(html)) : '',
     attachments: parts
@@ -160,7 +164,12 @@ export function gmailTools(gmail: Gmail): ToolDef[] {
       args: `query: string, max?: number ≤ ${SEARCH_MAX}, sinceDays?: number ≤ ${SINCE_DAYS_MAX}`,
       description:
         'Find emails. Returns ids, sender, subject, date and a snippet. Use Gmail search words like from:, subject:, newer_than:7d.',
-      run: (args) => connOutcome((a) => searchArgs.safeParse(a), args, async (a) => ({ kind: 'ok', result: await gmail.search(a) })),
+      run: (args) =>
+        connOutcome(
+          (a) => searchArgs.safeParse(a),
+          args,
+          async (a) => ({ kind: 'ok', result: await gmail.search(a) }),
+        ),
     },
     {
       name: 'gmail.read',
@@ -168,7 +177,11 @@ export function gmailTools(gmail: Gmail): ToolDef[] {
       args: 'messageId: string',
       description: "Read one email's text and attachment names.",
       run: (args) =>
-        connOutcome((a) => readArgs.safeParse(a), args, async (a) => ({ kind: 'ok', result: await gmail.read(a.messageId) })),
+        connOutcome(
+          (a) => readArgs.safeParse(a),
+          args,
+          async (a) => ({ kind: 'ok', result: await gmail.read(a.messageId) }),
+        ),
     },
   ];
 }
@@ -250,7 +263,7 @@ export class GmailPoller {
     const start = await this.d.store.load();
     if (!start) return this.baseline();
     const ids: string[] = [];
-    let newest = start;
+    let newest: string;
     try {
       let page: string | undefined;
       do {

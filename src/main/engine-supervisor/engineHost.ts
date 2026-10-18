@@ -412,6 +412,16 @@ function stageMirror(db: Db, op: Extract<DbOp, { op: 'mirror' }>, dataDir: strin
   return { id: op.id, rev: 0 };
 }
 
+// M8: 08-3 §16.7 rows are replaced wholesale on each sync (the FTS triggers keep contacts_fts in step).
+function replaceContacts(db: Db, op: Extract<DbOp, { op: 'contacts_replace' }>): { id: string; rev: number } {
+  db.prepare('DELETE FROM contacts_index WHERE connection_id = ?').run(op.connectionId);
+  const ins = db.prepare(
+    'INSERT OR REPLACE INTO contacts_index (id, connection_id, display_name, emails, phones, synced_at) VALUES (?, ?, ?, ?, ?, ?)',
+  );
+  for (const r of op.rows) ins.run(r.id, op.connectionId, r.name, JSON.stringify(r.emails), JSON.stringify(r.phones), op.syncedAt);
+  return { id: op.connectionId, rev: 0 };
+}
+
 /** One db.tx. */
 export function applyDbOps(db: Db, ops: DbOp[], opts: TxOptions = {}): { result: Result<DbTxReply>; effects: TxEffects } {
   const now = opts.now ?? Date.now();
@@ -441,6 +451,9 @@ export function applyDbOps(db: Db, ops: DbOp[], opts: TxOptions = {}): { result:
               effects.messageIds.add(String(messageId));
               return { id: String(messageId), rev: 0 };
             }
+            // M8
+            case 'contacts_replace':
+              return replaceContacts(db, op);
           }
         })();
         out.ids.push(r.id);

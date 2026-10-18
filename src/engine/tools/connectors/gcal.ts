@@ -140,14 +140,24 @@ export function gcalTools(cal: Calendar): ToolDef[] {
       actionClass: 'read',
       args: 'from?: string, to?: string',
       description: 'List calendar events between two times.',
-      run: (args) => connOutcome((a) => listArgs.safeParse(a), args, async (a) => ({ kind: 'ok', result: await cal.list(a) })),
+      run: (args) =>
+        connOutcome(
+          (a) => listArgs.safeParse(a),
+          args,
+          async (a) => ({ kind: 'ok', result: await cal.list(a) }),
+        ),
     },
     {
       name: 'gcal.create',
       actionClass: 'calendar_write',
       args: 'title: string, start: string, end: string, location?: string, notes?: string',
       description: 'Add a calendar event.',
-      run: (args) => connOutcome((a) => createArgs.safeParse(a), args, async (a) => ({ kind: 'ok', result: await cal.create(a) })),
+      run: (args) =>
+        connOutcome(
+          (a) => createArgs.safeParse(a),
+          args,
+          async (a) => ({ kind: 'ok', result: await cal.create(a) }),
+        ),
     },
   ];
 }

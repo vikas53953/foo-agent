@@ -135,7 +135,12 @@ describe('08-4 §27.1 · what the AI is told', () => {
     const { tools } = setup();
     expect(Object.values(tools).map((t) => [t.name, t.actionClass, t.args, t.description])).toEqual([
       ['gcal.list', 'read', 'from?: string, to?: string', 'List calendar events between two times.'],
-      ['gcal.create', 'calendar_write', 'title: string, start: string, end: string, location?: string, notes?: string', 'Add a calendar event.'],
+      [
+        'gcal.create',
+        'calendar_write',
+        'title: string, start: string, end: string, location?: string, notes?: string',
+        'Add a calendar event.',
+      ],
     ]);
   });
 });

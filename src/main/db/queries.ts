@@ -5,7 +5,7 @@
 // runner's reads — jobs, steps, tool calls (08-2 §5.9 step 5), activity (stop report, 08-2 §5.7 step 4), open cards,
 // approvals (stub until M5), the month's AI spend (08-2 §5.10), and the round-2 names 'jobs.liveForChat', 'cards.openForChat'.
 import type { Db } from '../store/db';
-import type { ActivityRow, CardRow, CardType, JobRow, StepRow } from '../../shared/types';
+import type { ActivityRow, CardRow, CardType, ContactHit, JobRow, StepRow } from '../../shared/types';
 import { cardRow, parseJson, stepRow, type DbRow } from './rows';
 import { jobRows } from '../store/queries';
 
@@ -275,4 +275,25 @@ export const NAMED_QUERIES = {
     ),
   /** X-124: the chat's open cards of one type. */
   'cards.openForChat': ({ db }: QueryCtx, chatId: unknown, type: unknown): CardRow[] => openCards(db, chatId, type),
+  // M8: contacts_fts prefix match on every word of the query (08-3 §16.7), best first.
+  'contacts.search': ({ db }: QueryCtx, query: unknown, max: unknown): ContactHit[] => {
+    const words = String(query)
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((w) => `"${w.replace(/"/g, '""')}"*`);
+    if (!words.length) return [];
+    const rows = db
+      .prepare(
+        `SELECT ci.id, ci.display_name, ci.emails, ci.phones FROM contacts_fts JOIN contacts_index ci ON ci.rowid = contacts_fts.rowid
+         WHERE contacts_fts MATCH ? ORDER BY rank LIMIT ?`,
+      )
+      .all(words.join(' '), Math.min(Math.max(Number(max) || 20, 1), 20)) as DbRow[];
+    return rows.map((r) => ({
+      id: String(r.id),
+      name: String(r.display_name),
+      emails: JSON.parse(String(r.emails)) as string[],
+      phones: JSON.parse(String(r.phones)) as string[],
+      source: 'google' as const,
+    }));
+  },
 } as const;

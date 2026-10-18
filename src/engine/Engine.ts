@@ -30,6 +30,8 @@ import { stubGate } from './gate/GateLogic';
 import { JobRunner } from './jobs/JobRunner';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
 import type { StepAct } from '../shared/schemas';
+// M8
+import { googleTools, testGoogleAccess, type GoogleConnectors, type GoogleOptions } from './tools/connectors/google-tools';
 
 export interface EngineOptions {
   link: MainLink;
@@ -48,6 +50,9 @@ export interface EngineOptions {
   tools?: ToolRegistry;
   /** Tests only: deterministic ids (a fake AI script can then name a tool call id in a proof). */
   newId?: (prefix: IdPrefix) => string;
+  // M8: Google (T2's GoogleAccess) → the Gmail, Calendar and Contacts tools (08-2 §8.2). FOO_TEST runs may set
+  // FOO_FAKE_GOOGLE={base url} instead (a fake Google on 127.0.0.1, test/fakes/connectors).
+  google?: GoogleOptions;
 }
 
 export class Engine {
@@ -59,6 +64,8 @@ export class Engine {
   readonly tools: ToolLayer;
   readonly jobs: JobRunner;
   private prompts: PromptBuilder;
+  // M8
+  readonly google: GoogleConnectors | null;
 
   static create(o: EngineOptions): Engine {
     return new Engine(o);
@@ -108,11 +115,16 @@ export class Engine {
       detectRow: (row) => o.link.send('ui.patch', { event: 'ai:detectRow', payload: row }),
       retestTimers: !o.testRun,
     });
+    // M8
+    const google = o.google ?? (o.testRun && o.env.FOO_FAKE_GOOGLE ? testGoogleAccess(o.env.FOO_FAKE_GOOGLE) : null);
+    this.google = google
+      ? googleTools({ ...google, link: o.link, clock: o.clock, timeZone: () => this.settings.locale.timeZone, log })
+      : null;
     this.tools = new ToolLayer({
       link: o.link,
       clock: o.clock,
       newId: (p) => newId(p, o.clock.now()),
-      tools: o.tools ?? {},
+      tools: { ...(o.tools ?? {}), ...(this.google?.tools ?? {}) },
       gate: stubGate,
       log: (evt, kind) => log(evt, kind),
     });

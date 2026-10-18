@@ -21,10 +21,26 @@ export interface FakeCalendarState {
 export function calendarState(): FakeCalendarState {
   return {
     events: [
-      { id: 'ev_standup', summary: 'Team standup', start: { dateTime: '2026-10-16T10:00:00+05:30' }, end: { dateTime: '2026-10-16T10:15:00+05:30' } },
-      { id: 'ev_dentist', summary: 'Dentist', start: { dateTime: '2026-10-16T17:30:00+05:30' }, end: { dateTime: '2026-10-16T18:00:00+05:30' }, location: 'Clinic, example road' },
+      {
+        id: 'ev_standup',
+        summary: 'Team standup',
+        start: { dateTime: '2026-10-16T10:00:00+05:30' },
+        end: { dateTime: '2026-10-16T10:15:00+05:30' },
+      },
+      {
+        id: 'ev_dentist',
+        summary: 'Dentist',
+        start: { dateTime: '2026-10-16T17:30:00+05:30' },
+        end: { dateTime: '2026-10-16T18:00:00+05:30' },
+        location: 'Clinic, example road',
+      },
       { id: 'ev_trip', summary: 'Day trip', start: { date: '2026-10-17' }, end: { date: '2026-10-18' } },
-      { id: 'ev_later', summary: 'Later thing', start: { dateTime: '2026-10-21T09:00:00+05:30' }, end: { dateTime: '2026-10-21T10:00:00+05:30' } },
+      {
+        id: 'ev_later',
+        summary: 'Later thing',
+        start: { dateTime: '2026-10-21T09:00:00+05:30' },
+        end: { dateTime: '2026-10-21T10:00:00+05:30' },
+      },
     ],
     inserted: [],
     nextId: 1,
