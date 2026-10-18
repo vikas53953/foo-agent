@@ -10,7 +10,7 @@ import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
 import type { EventChannel, EventPayload, InvokeChannel, InvokeIn, InvokeOut, PlatformInfo, VerifyResult } from '../../shared/ipc';
 import { PROVIDER_IDS, settingsSchema, WRITABLE_PATHS, type Settings } from '../../shared/settings';
-import type { MessageRow, WindowsSettingsPage } from '../../shared/types';
+import type { FixAction, MessageRow, WindowsSettingsPage } from '../../shared/types';
 import { deps } from '../deps';
 import type { NetMonitor } from '../net/netMonitor';
 import type { SettingsStore } from '../settings/Settings';
@@ -51,6 +51,7 @@ import { helperRow } from '../db/rows';
 import type { DbRow } from '../db/rows';
 import { ChannelGuard } from './guard';
 import type { EngineBridge } from '../engine-supervisor/EngineBridge';
+import { FIX_ACTION_KINDS, JOB_CHANNELS, jobIpc } from '../jobs/jobIpc';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
 import { isTrustedUrl } from '../windows/protocol';
@@ -116,6 +117,8 @@ const SETTINGS_PAGE: Record<WindowsSettingsPage, string> = {
   storagesense: 'ms-settings:storagesense',
   dateandtime: 'ms-settings:dateandtime',
 };
+
+const cardAnswer = z.object({ cardId: z.string().min(1).max(80), nonce: z.string().min(1).max(80), resolvedBy: z.enum(['tap', 'keyboard']) });
 
 /** One zod schema per invoke channel (08-1 §3.1.1: a payload that fails zod is IPC_REJECTED). */
 export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
@@ -198,6 +201,16 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
     backup?: (typeof PROVIDER_IDS)[number] | null;
   }>,
   'notifications:status': empty as z.ZodType<Record<string, never>>,
+  // M4 T5 (08-1 §3.2; G-M4-09 error:fix). Main re-checks every card answer against the stored card (src/main/jobs/jobIpc.ts).
+  'job:stopAll': z.object({ confirm: z.literal(true) }).strict(),
+  'job:retry': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'plan:go': cardAnswer.extend({ text: z.string().max(10_000).optional() }).strict(),
+  'plan:change': cardAnswer.extend({ text: z.string().max(10_000).optional() }).strict(),
+  'stuck:choose': cardAnswer.extend({ choice: z.enum(['other_way', 'take_over', 'stop']) }).strict(),
+  'recovery:choose': cardAnswer.extend({ choice: z.enum(['resume', 'stop']) }).strict(),
+  'error:fix': cardAnswer
+    .extend({ action: z.object({ kind: z.enum(FIX_ACTION_KINDS) }).catchall(z.unknown()) as unknown as z.ZodType<FixAction> })
+    .strict(),
 };
 
 type Handler<C extends InvokeChannel> = (req: InvokeIn[C]) => Result<InvokeOut[C]> | Promise<Result<InvokeOut[C]>>;
@@ -462,16 +475,24 @@ export function registerIpc(ctx: AppContext): void {
     if (app.isEmojiPanelSupported()) app.showEmojiPanel();
     return ok(undefined);
   });
-  handle('job:stop', ({ jobId }) => {
-    // M1 has no engine (M3): the job row is cancelled here and the chat pill re-derived; nothing was done for the user yet.
-    const r = stopJob(db, jobId, now());
-    if (!r) return fail('JOB_GONE');
-    const [row] = jobRows(db, 'id = ?', [jobId], now());
-    if (row) emit('job:upsert', row);
-    recomputePill(db, r.chatId, now());
-    emitChat(r.chatId);
-    return ok({ jobId, done: [], nothingDone: true });
+  // M4 T5: the job and job-card channels check and forward one MainToEngine message each (X-124).
+  const jobs = jobIpc({
+    db,
+    engine: ctx.engine,
+    now,
+    newJobId: () => newId('j', now()),
+    stopWithoutEngine: (jobId) => {
+      // No engine connected: the job row is cancelled here and the chat pill re-derived (M1); nothing was done for the user.
+      const r = stopJob(db, jobId, now());
+      if (!r) return fail('JOB_GONE');
+      const [row] = jobRows(db, 'id = ?', [jobId], now());
+      if (row) emit('job:upsert', row);
+      recomputePill(db, r.chatId, now());
+      emitChat(r.chatId);
+      return ok({ jobId, done: [], nothingDone: true });
+    },
   });
+  for (const c of JOB_CHANNELS) handle(c, jobs[c] as Handler<typeof c>);
   // The Live window (09 §9.27) arrives with the browser milestone; until then the shell shows no live view.
   handle('job:watch', () => fail('LIVE_UNAVAILABLE'));
   handle('memory:list', ({ filter, q }) => ok(memoryList(db, filter, q, now())));

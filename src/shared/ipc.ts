@@ -14,6 +14,7 @@ import type {
   BadgeValue,
   HelperRow,
   JobDetails,
+  FixAction,
   JobRow,
   MemoryFactView,
   MemoryFilter,
@@ -104,6 +105,21 @@ export interface Invokes {
   'ai:detect': { req: Record<string, never>; res: DetectRow[] };
   'ai:choose': { req: { primary: ProviderId; backup?: ProviderId | null }; res: AiStatus };
   'notifications:status': { req: Record<string, never>; res: { windowsAllowed: boolean; focusAssist: boolean } };
+  // M4 T5 (08-1 §3.2 job rows; X-124: each sends exactly one MainToEngine message; G-M4-09 error:fix, CR-0008).
+  'job:stopAll': { req: { confirm: true }; res: StopReport[] };
+  'job:retry': { req: { jobId: string }; res: { newJobId: string } };
+  'plan:go': { req: CardAnswerReq & { text?: string }; res: CardRow };
+  'plan:change': { req: CardAnswerReq & { text?: string }; res: CardRow };
+  'stuck:choose': { req: CardAnswerReq & { choice: 'other_way' | 'take_over' | 'stop' }; res: CardRow };
+  'recovery:choose': { req: CardAnswerReq & { choice: 'resume' | 'stop' }; res: CardRow };
+  'error:fix': { req: CardAnswerReq & { action: FixAction }; res: CardRow };
+}
+
+/** 08-1 §3.2: a card answer names the card, carries its nonce (a stale card is refused) and says how it was answered. */
+export interface CardAnswerReq {
+  cardId: string;
+  nonce: string;
+  resolvedBy: 'tap' | 'keyboard';
 }
 
 /** 08-1 §3.3 rows built so far: event → payload. */
@@ -179,6 +195,13 @@ export const INVOKE_CHANNELS = [
   'ai:detect',
   'ai:choose',
   'notifications:status',
+  'job:stopAll',
+  'job:retry',
+  'plan:go',
+  'plan:change',
+  'stuck:choose',
+  'recovery:choose',
+  'error:fix',
 ] as const satisfies readonly InvokeChannel[];
 
 export const EVENT_CHANNELS = [
