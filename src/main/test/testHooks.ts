@@ -12,6 +12,7 @@ import { channels, emit, listContext, type AppContext } from '../ipc/IpcRouter';
 import { aiStatus, chatRowById, chatRows, fooChatId, jobRows, publicSettings, recomputePill, spendSummary } from '../store/queries';
 import { writeSeedMedia } from './seed/media';
 import { seedPerf } from './seed/perf';
+import { seedM4Cards } from './seed/m4Cards';
 import { seedUxWorld, uxWorldSettings } from './seed/uxWorld';
 
 const JOB_STATES = [
@@ -57,6 +58,12 @@ export function seeds(ctx: AppContext, clock: FakeClock): Record<SeedSet, () => 
       writeSeedMedia(ctx.dataDir, r.media);
       ctx.settings.update((s) => uxWorldSettings(s, r.refs, clock.now()));
       return { set: 'perf', loaded: true, chats: r.chats, messages: r.messages, refs: r.refs };
+    },
+    'm4-cards': () => {
+      const r = seedM4Cards(ctx.db, clock.now());
+      writeSeedMedia(ctx.dataDir, r.media);
+      ctx.settings.update((s) => uxWorldSettings(s, r.refs, clock.now()));
+      return { set: 'm4-cards', loaded: true, chats: r.chats, messages: r.messages, refs: r.refs };
     },
   };
 }
