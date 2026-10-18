@@ -104,6 +104,19 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
   z.object({ id: z.string(), kind: z.literal('reply.retry'), payload: z.object({ messageId: z.string() }).strict() }),
   z.object({ id: z.string(), kind: z.literal('reply.stop'), payload: z.object({ chatId: z.string() }).strict() }),
   // FOO_TEST runs only (08-3 §22): the engine's fake clock follows main's, and test:reset cancels every turn.
+  // M8 (08-1 §2.4 `connection.cmd`, INT-17, 08-0 §G.12): one per connection:* / whatsapp:* call; main has written the rows.
+  z.object({
+    id: z.string(),
+    kind: z.literal('connection.cmd'),
+    payload: z
+      .object({
+        target: z.enum(['google', 'outlook', 'whatsapp']),
+        cmd: z.enum(['connect', 'reconnect', 'disconnect', 'linkStart', 'linkCancel', 'unlink']),
+        connectionId: z.string().optional(),
+        scopes: z.array(z.enum(['gmail', 'gcal', 'contacts'])).optional(),
+      })
+      .strict(),
+  }),
   z.object({ id: z.string(), kind: z.literal('test.reset'), payload: z.object({}).strict() }),
   z.object({ id: z.string(), kind: z.literal('test.clock'), payload: z.object({ now: z.number() }).strict() }),
   /** M4: FOO_TEST only. The engine's runner moves a job by the named machine event (test:jobState, 08-3 §22). */

@@ -44,6 +44,11 @@ const INVOKES = new Set([
   'ai:detect',
   'ai:choose',
   'notifications:status',
+  // M8
+  'connection:list',
+  'connection:connect',
+  'connection:disconnect',
+  'connection:googleInfo',
 ]);
 const EVENTS = new Set([
   'chat:upsert',

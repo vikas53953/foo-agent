@@ -54,6 +54,7 @@ import type { EngineBridge } from '../engine-supervisor/EngineBridge';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
 import { isTrustedUrl } from '../windows/protocol';
+import { registerConnectionIpc } from '../connections/connectionIpc';
 
 const trusted = (e: IpcMainEvent) => !!e.senderFrame && isTrustedUrl(e.senderFrame.url);
 
@@ -198,6 +199,20 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
     backup?: (typeof PROVIDER_IDS)[number] | null;
   }>,
   'notifications:status': empty as z.ZodType<Record<string, never>>,
+  // M8 T2 (08-1 §3.2)
+  'connection:list': empty as z.ZodType<Record<string, never>>,
+  'connection:connect': z
+    .object({
+      app: z.literal('google'),
+      scopes: z
+        .array(z.enum(['gmail', 'gcal', 'contacts']))
+        .min(1)
+        .max(3)
+        .optional(),
+    })
+    .strict(),
+  'connection:disconnect': z.object({ connectionId: z.string().min(1).max(80), confirm: z.literal(true) }).strict(),
+  'connection:googleInfo': empty as z.ZodType<Record<string, never>>,
 };
 
 type Handler<C extends InvokeChannel> = (req: InvokeIn[C]) => Result<InvokeOut[C]> | Promise<Result<InvokeOut[C]>>;
@@ -220,9 +235,12 @@ export function handle<C extends InvokeChannel>(channel: C, fn: Handler<C>): voi
 }
 
 function setPath(s: Settings, path: string, value: unknown): Settings {
-  const [head, key] = path.split('.') as [keyof Settings, string];
-  const section = s[head] as Record<string, unknown>;
-  return { ...s, [head]: { ...section, [key]: value } } as Settings;
+  // M8: paths may be three deep (`connections.google.calendarOn`); each level is copied, never mutated.
+  const set = (obj: Record<string, unknown>, keys: string[]): Record<string, unknown> => {
+    const [key, ...rest] = keys as [string, ...string[]];
+    return { ...obj, [key]: rest.length ? set(obj[key] as Record<string, unknown>, rest) : value };
+  };
+  return set(s as unknown as Record<string, unknown>, path.split('.')) as unknown as Settings;
 }
 
 export function registerIpc(ctx: AppContext): void {
@@ -503,4 +521,6 @@ export function registerIpc(ctx: AppContext): void {
     return r;
   });
   handle('notifications:status', () => ok({ windowsAllowed: true, focusAssist: false }));
+  // M8
+  registerConnectionIpc(ctx);
 }

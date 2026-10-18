@@ -753,7 +753,6 @@
   "cards.connect.line.partial": "Connected. I can read and draft, but not send. I’ll ask you to send from Gmail yourself.",
   "cards.connect.line.partial_scope": "Connected. Google didn’t let me see your {what, select, calendar {calendar} other {contacts}}; you can allow it later in Settings → Connections.",
   "cards.connect.line.denied": "{app} isn’t connected. That’s fine, I’ll work without it.",
-  "cards.connect.line.no_refresh": "Google didn’t let me stay connected. Try again.",
   "cards.connect.line.expired": "That sign-in link expired.",
   "cards.connect.line.offline": "You’re offline. I’ll connect this when you’re back.",
   "cards.connect.line.skipped": "Not connected. You can do this later in Settings → Connections.",

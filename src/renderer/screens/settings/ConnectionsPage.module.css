@@ -1,0 +1,76 @@
+/* Spec: 06-2 §6.8 (each connection is a row group: header row with the `--t-body-strong` name, status line and buttons,
+ * then detail rows; "Not allowed yet" and "expired" lines `--warn`; notes `--t-small` `--fg-2`), 06 §0 page frame. The
+ * Settings frame and nav are M13's (CR-0012 G-M8-05); this is the Connections page body. */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  max-width: var(--card-w-wide);
+  padding: var(--s5) var(--gutter);
+  overflow-y: auto;
+  height: 100%;
+}
+.title {
+  margin: 0;
+  font: var(--t-subtitle);
+}
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  padding: var(--s2) 0;
+  border-bottom: 1px solid var(--line);
+}
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+.text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.name {
+  font: var(--t-body-strong);
+}
+.status {
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.warn {
+  font: var(--t-small);
+  color: var(--warn);
+}
+.ok {
+  font: var(--t-small);
+  color: var(--ok);
+}
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+}
+.detail {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.note {
+  margin: 0;
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font: var(--t-small);
+}
+.link:hover {
+  text-decoration: underline;
+}

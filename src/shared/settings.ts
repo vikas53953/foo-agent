@@ -101,5 +101,13 @@ export const settingsSchema = z.object({
 export type Settings = z.infer<typeof settingsSchema>;
 
 /** Paths `settings:set` accepts in M1 (the shell writes only these; 08-0 §A). Later milestones extend the list. */
-export const WRITABLE_PATHS = ['window.sidebarWidth', 'window.rightShellOpen', 'window.lastChatId', 'money.warnAt80'] as const;
+export const WRITABLE_PATHS = [
+  'window.sidebarWidth',
+  'window.rightShellOpen',
+  'window.lastChatId',
+  'money.warnAt80',
+  // M8 (06-2 §6.8 Calendar / Contacts Turn off / on, 08-3 §16.1.2)
+  'connections.google.calendarOn',
+  'connections.google.contactsOn',
+] as const;
 export type WritablePath = (typeof WRITABLE_PATHS)[number];

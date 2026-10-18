@@ -13,6 +13,7 @@ import { aiStatus, chatRowById, chatRows, fooChatId, jobRows, publicSettings, re
 import { writeSeedMedia } from './seed/media';
 import { seedPerf } from './seed/perf';
 import { seedUxWorld, uxWorldSettings } from './seed/uxWorld';
+import { seedM8Connect } from './seed/m8Connect';
 
 const JOB_STATES = [
   'queued',
@@ -52,6 +53,13 @@ export function seeds(ctx: AppContext, clock: FakeClock): Record<SeedSet, () => 
     demo: demo('demo'),
     'ux-world': demo('ux-world'),
     'ux-world-ch8-live': demo('ux-world-ch8-live', { ch8Live: true }),
+    // M8
+    'ux-world-m8-connect': () => {
+      const r = seedM8Connect(ctx.db, clock.now());
+      writeSeedMedia(ctx.dataDir, r.media);
+      ctx.settings.update((s) => uxWorldSettings(s, r.refs, clock.now()));
+      return { set: 'ux-world-m8-connect', loaded: true, chats: r.chats, messages: r.messages, refs: r.refs };
+    },
     perf: () => {
       const r = seedPerf(ctx.db, clock.now());
       writeSeedMedia(ctx.dataDir, r.media);

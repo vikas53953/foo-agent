@@ -104,6 +104,19 @@ export interface Invokes {
   'ai:detect': { req: Record<string, never>; res: DetectRow[] };
   'ai:choose': { req: { primary: ProviderId; backup?: ProviderId | null }; res: AiStatus };
   'notifications:status': { req: Record<string, never>; res: { windowsAllowed: boolean; focusAssist: boolean } };
+  // M8 T2 (08-1 §3.2): Google connections. `outlook` only while flags.outlook (X-41), so v1 accepts 'google' alone.
+  'connection:list': { req: Record<string, never>; res: ConnectionRow[] };
+  'connection:connect': {
+    req: { app: 'google'; scopes?: ('gmail' | 'gcal' | 'contacts')[] };
+    res: { connectionId: string; status: 'connecting' };
+  };
+  'connection:disconnect': { req: { connectionId: string; confirm: true }; res: void };
+  /** Not in 08-1 §3.2 (gap, implementation-notes "M8 T2"): whether this build has the Google client file (08-3 §16.1.1
+   * "Gmail isn't available in this build.") and the routines C-10 names (06-3 §14). */
+  'connection:googleInfo': {
+    req: Record<string, never>;
+    res: { available: boolean; routines: { title: string; app: 'gmail' | 'gcal' | 'contacts' }[] };
+  };
 }
 
 /** 08-1 §3.3 rows built so far: event → payload. */
@@ -179,6 +192,11 @@ export const INVOKE_CHANNELS = [
   'ai:detect',
   'ai:choose',
   'notifications:status',
+  // M8
+  'connection:list',
+  'connection:connect',
+  'connection:disconnect',
+  'connection:googleInfo',
 ] as const satisfies readonly InvokeChannel[];
 
 export const EVENT_CHANNELS = [
@@ -204,7 +222,8 @@ export const EVENT_CHANNELS = [
  * (CR-0007): the same world at 8:05 AM, foo's chat ending at the cake line, so a test sends chapter 8's "thanks!" and
  * question live and the frame matches the walkthrough's UX-08-02.
  */
-export const SEED_SETS = ['demo', 'perf', 'ux-world', 'ux-world-ch8-live'] as const;
+// M8 T2: `ux-world-m8-connect` is the ux-world plus a Google Connect card in foo's chat and no connections.
+export const SEED_SETS = ['demo', 'perf', 'ux-world', 'ux-world-ch8-live', 'ux-world-m8-connect'] as const;
 export type SeedSet = (typeof SEED_SETS)[number];
 
 export interface ClockReply {

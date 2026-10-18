@@ -6,11 +6,16 @@ import { FileCard } from './FileCard';
 import { LinkPreview } from './LinkPreview';
 import { PlaceCard } from './PlaceCard';
 import { TableCard } from './TableCard';
+// M8
+import { ConnectCard } from './Connect';
 
 /** The card types M2 draws; the rest are later milestones' (05). */
 export const M2_CARD_TYPES: readonly CardType[] = ['table', 'file', 'link_preview', 'place'];
 
-export const hasCardView = (type: CardType) => M2_CARD_TYPES.includes(type);
+/** M8 T2: the Connect card (05-3 §5.11). */
+export const M8_CARD_TYPES: readonly CardType[] = ['connect'];
+
+export const hasCardView = (type: CardType) => M2_CARD_TYPES.includes(type) || M8_CARD_TYPES.includes(type);
 
 export function CardView({ card, time }: { card: CardRow; time: CardTime }) {
   switch (card.type) {
@@ -22,6 +27,8 @@ export function CardView({ card, time }: { card: CardRow; time: CardTime }) {
       return <LinkPreview card={card} time={time} />;
     case 'place':
       return <PlaceCard card={card} time={time} />;
+    case 'connect':
+      return <ConnectCard card={card} time={time} />;
     default:
       return null;
   }

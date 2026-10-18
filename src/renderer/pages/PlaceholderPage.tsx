@@ -4,6 +4,8 @@
 import type { ScreenId, View } from '../../shared/types';
 import { TID } from '../../shared/testids';
 import styles from './PlaceholderPage.module.css';
+// M8: Settings → Connections body (06-2 §6.8) inside the settings page root until M13 builds the Settings frame.
+import { ConnectionsPage } from '../screens/settings/ConnectionsPage';
 
 const SCREEN_TID: Record<ScreenId, keyof typeof TID> = {
   memory: 'screenMemory',
@@ -25,6 +27,8 @@ export function PlaceholderPage({ view }: { view: Exclude<View, { kind: 'chat' }
       data-page={view.kind === 'settings' ? view.page : view.id}
       data-params={view.kind === 'screen' && view.params ? JSON.stringify(view.params) : undefined}
       tabIndex={-1}
-    />
+    >
+      {view.kind === 'settings' && view.page === 'connections' && <ConnectionsPage />}
+    </div>
   );
 }

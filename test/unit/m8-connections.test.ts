@@ -178,7 +178,7 @@ describe('M8 T2 · connection:connect (08-1 §3.2, 08-3 §16.1)', () => {
     loopbacks[0]!.close();
   });
 
-  it('AT-014 engine part: the browser returns → three connected rows sharing the vault name, masked address, token stored', async () => {
+  it('sign-in, engine side: the browser returns → three connected rows sharing the vault name, masked address, token stored', async () => {
     await signIn();
     expect(rows()).toEqual(
       ['contacts', 'gcal', 'gmail'].map((app) => ({
@@ -276,7 +276,7 @@ describe('M8 T2 · tokens on the rows (08-3 §16.1 Tokens, §21.2)', () => {
   });
 });
 
-describe('M8 T2 · Disconnect Google (C-10, AT-093)', () => {
+describe('M8 T2 · Disconnect Google (C-10)', () => {
   it('revokes the token, deletes the three rows and contacts_index, emits them gone, logs "Disconnected Google"', async () => {
     await signIn();
     const contacts = db.prepare("SELECT id FROM connections WHERE app = 'contacts'").get() as { id: string };
@@ -293,7 +293,7 @@ describe('M8 T2 · Disconnect Google (C-10, AT-093)', () => {
     expect(emitted.slice(-3).map((e) => e.status)).toEqual(['disconnected', 'disconnected', 'disconnected']);
     expect(activity().at(-1)).toEqual({ kind: 'connected', event: 'disconnected', summary: 'Disconnected Google' });
     expect(cmds.at(-1)).toEqual({ target: 'google', cmd: 'disconnect', connectionId: gmail.id });
-    // AT-093: after Disconnect no Google request is possible (the access seam has no token and asks nobody)
+    // after Disconnect no Google request is possible (the access seam has no token and asks nobody)
     const n = fake.requests.length;
     await expect(svc.access().accessToken()).rejects.toMatchObject({ kind: 'CONN_EXPIRED' });
     expect(fake.requests.length).toBe(n);

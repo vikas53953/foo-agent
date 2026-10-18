@@ -28,7 +28,9 @@ describe('M8 T2 · authorization URL (08-3 §16.1.1)', () => {
   const redirectUri = 'http://127.0.0.1:50123/oauth2/callback';
 
   it('carries every §16.1.1 param, PKCE S256 and prompt=consent on a first connect', () => {
-    const u = new URL(buildAuthUrl({ client, redirectUri, scopes: ['gmail', 'gcal', 'contacts'], challenge: 'CH', state: 'ST', mode: 'consent' }));
+    const u = new URL(
+      buildAuthUrl({ client, redirectUri, scopes: ['gmail', 'gcal', 'contacts'], challenge: 'CH', state: 'ST', mode: 'consent' }),
+    );
     expect(`${u.origin}${u.pathname}`).toBe('https://accounts.google.com/o/oauth2/v2/auth');
     const p = Object.fromEntries(u.searchParams);
     expect(p).toEqual({
@@ -111,7 +113,10 @@ describe('M8 T2 · token exchange on the fake token endpoint', () => {
   it('code → refresh token, scope, and the email from the id_token (never a Gmail call)', async () => {
     const g = new FakeGoogle();
     const r = await exchangeCode(g.fetch, endpoints, { client, code: 'c1', verifier: 'v'.repeat(43), redirectUri: 'http://127.0.0.1:1/x' });
-    expect(r).toEqual({ ok: true, value: expect.objectContaining({ refreshToken: 'fake-refresh-1', scope: ALL_SCOPES, email: FAKE_EMAIL }) });
+    expect(r).toEqual({
+      ok: true,
+      value: expect.objectContaining({ refreshToken: 'fake-refresh-1', scope: ALL_SCOPES, email: FAKE_EMAIL }),
+    });
     expect(g.requests.map((q) => q.host)).toEqual(['oauth2.googleapis.com']);
     const form = new URLSearchParams(g.requests[0]!.body);
     expect(form.get('grant_type')).toBe('authorization_code');

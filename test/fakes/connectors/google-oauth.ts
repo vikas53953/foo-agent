@@ -101,7 +101,9 @@ export class FakeGoogle {
 }
 
 /** A local HTTP server answering like Google's token and revoke endpoints (e2e and foo-verify). */
-export async function startFakeGoogleServer(opts: FakeGoogleOptions = {}): Promise<{ base: string; fake: FakeGoogle; close(): Promise<void> }> {
+export async function startFakeGoogleServer(
+  opts: FakeGoogleOptions = {},
+): Promise<{ base: string; fake: FakeGoogle; close(): Promise<void> }> {
   const fake = new FakeGoogle(opts);
   const server: Server = createServer((req, res) => {
     let body = '';

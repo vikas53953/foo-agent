@@ -257,7 +257,11 @@ export class GoogleConnections {
         .run(label, hash(email), JSON.stringify(granted), now, wasConnected ? 1 : 0, now, row.id);
       this.emitRow(String(row.id));
       if (!wasConnected && granted[APP_FLAG[app]])
-        this.activity('connected', t('activity.summary.connected', { app: appName(app), account: label }), { app, account: label, granted });
+        this.activity('connected', t('activity.summary.connected', { app: appName(app), account: label }), {
+          app,
+          account: label,
+          granted,
+        });
     }
   }
 
@@ -388,7 +392,13 @@ export class GoogleConnections {
     for (const r of rows) {
       const text = `${String(r.task_spec)} ${String(r.schedule)}`;
       const app: GoogleApp | null =
-        r.builtin === 'bill_watch' || /on_email|gmail\./.test(text) ? 'gmail' : /gcal\./.test(text) ? 'gcal' : /contacts\./.test(text) ? 'contacts' : null;
+        r.builtin === 'bill_watch' || /on_email|gmail\./.test(text)
+          ? 'gmail'
+          : /gcal\./.test(text)
+            ? 'gcal'
+            : /contacts\./.test(text)
+              ? 'contacts'
+              : null;
       if (app) out.push({ title: String(r.title), app });
     }
     return out;
