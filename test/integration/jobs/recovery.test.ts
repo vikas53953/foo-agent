@@ -86,7 +86,7 @@ describe('AT-118 · killed mid-job → recovery card on restart', () => {
           ...[1, 2, 3].map(() => tool('gmail.search', { query: 'bill' }, { delayMs: 20_000 })),
         ],
       });
-      for (const w of ['one', 'two', 'three', 'four']) h.userSays(w);
+      for (const w of ['one', 'two', 'three', 'four']) h.userSaysIn(h.chat(w), w);
       await poll();
       h.clock.advance(2_000);
       await poll();

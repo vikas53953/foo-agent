@@ -63,6 +63,8 @@ export interface RecoveryRunner {
   /** fail_streak + 1; at 3 the stuck seam takes over. True when the job's loop must end. */
   countFailure(job: JobRow): Promise<boolean>;
   writeMirrors(jobId: string): Promise<void>;
+  /** Aborts the job's running loop: a turn still in flight returns and its decision is dropped. */
+  halt(jobId: string): void;
 }
 
 export interface RecoveryAi {
@@ -319,6 +321,8 @@ export class JobRecovery {
     ops.push(...(await this.checklistOps(job)));
     const res = await this.tx(ops);
     if (!res.ok) return false;
+    // A WAITING job does nothing: the turn in flight is dropped, and resume starts the loop again (08-2 §5.8).
+    this.r.halt(jobId);
     this.d.log('job.waiting', kind ?? reason, { jobId, chatId: job.chatId });
     await this.r.writeMirrors(jobId);
     return true;

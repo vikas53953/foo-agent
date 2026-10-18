@@ -226,6 +226,8 @@ export const NAMED_QUERY_NAMES = [
   'cards.openForChat',
   // M4 T4: foo's chat for the safe-mode card (08-2 §5.9 step 1).
   'chats.foo',
+  // M4 T3: the watchdog's budget ceiling (08-4 §26.3 item 6, "counts come from the DB").
+  'stepTurnsForJob',
 ] as const;
 export type NamedQuery = (typeof NAMED_QUERY_NAMES)[number];
 

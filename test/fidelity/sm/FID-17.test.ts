@@ -70,7 +70,9 @@ describe('FID-17 · runner random walks', () => {
           const userId = h.userSays('Book the stay');
           await h.settle();
           for (let i = 0; i < 8 && h.job().state === 'needs_you'; i++) {
-            h.answer(String(h.cards('choice').at(-1)!.id), 'o1');
+            // The open card: a choice gets its first option; a stuck card (3 failures, T3) gets Stop.
+            const card = h.cards().find((c) => c.id === h.job().needs_you_card_id)!;
+            h.answer(String(card.id), card.type === 'stuck' ? 'stop' : 'o1');
             await h.settle();
           }
           const job = h.job();

@@ -132,8 +132,9 @@ describe('AT-112 / AT-113 · the AI stops answering, then comes back', () => {
         { ...aiError('AI_SERVICE_DOWN'), once: false },
       ],
     });
-    h.userSays('first');
-    h.userSays('second');
+    // One job per chat: a second text in a chat with a live job steers it (08-2 §5.2).
+    h.userSaysIn(h.chat('first'), 'first');
+    h.userSaysIn(h.chat('second'), 'second');
     await h.settle();
     expect(h.jobs().map((j) => j.state)).toEqual(['waiting', 'waiting']);
     const perJob = h.cards('error').map((c) => payloadOf(c).jobId);
@@ -180,8 +181,11 @@ describe('09 §9.22 sleep and wake', () => {
     expect(h.cards('error')).toHaveLength(0);
     // While asleep nothing starts or resumes. 2 s clock steps: the held 20 s turn would take 80 rounds at the default 250 ms,
     // past the 5 s test limit on Windows' coarse timers.
+    const toolCalls = h.calls.length;
     await h.settle(2_000);
     expect(h.job().state).toBe('waiting');
+    // The held turn's decision is dropped: no tool runs while the job is WAITING (the resumed loop asks again).
+    expect(h.calls.length).toBe(toolCalls);
     h.send('power', { event: 'resume' });
     await h.settle(2_000);
     expect(h.job().state).toBe('done_unverified');

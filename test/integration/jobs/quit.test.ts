@@ -60,7 +60,7 @@ describe('AT-089 · quit with a running job', () => {
         { ...step({ kind: 'done', result: 'Done.', unverified: true }), once: false },
       ],
     });
-    for (const w of ['one', 'two', 'three', 'four']) h.userSays(w);
+    for (const w of ['one', 'two', 'three', 'four']) h.userSaysIn(h.chat(w), w);
     await poll();
     h.clock.advance(2_000);
     await poll();
