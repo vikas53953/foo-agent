@@ -8,6 +8,16 @@ import { z } from 'zod';
 export const RouteSchema = z.enum(['api', 'browser', 'screen', 'email', 'handback']);
 /** 08-0 §B.2 `ConnectorApp`. */
 export const ConnectorAppSchema = z.enum(['gmail', 'gcal', 'contacts', 'whatsapp', 'x', 'outlook']);
+/** 08-0 §E.8 / 08-4 §27.3: the cloud web-tool providers that take the user's own key (X-46; vault `foo/web_key/{p}`, G-M9-13). */
+export const WebProviderSchema = z.enum(['exa', 'tavily', 'firecrawl', 'browseruse']);
+/**
+ * M9 (CR-0013 G-M9-10): the `signin` card's `reason` is a closed enum of the six 05-3 §5.10.2 lanes; `mode` is `take_over`
+ * for captcha / passkey / bank_3ds / known_puzzle and `sign_in_here` for the rest (`signInModeOf`).
+ */
+export const SignInReasonSchema = z.enum(['sign_in', 'captcha', 'passkey', 'bank_3ds', 'known_puzzle', 'saved_login_failed']);
+const TAKE_OVER_LANES: ReadonlySet<z.infer<typeof SignInReasonSchema>> = new Set(['captcha', 'passkey', 'bank_3ds', 'known_puzzle']);
+export const signInModeOf = (reason: z.infer<typeof SignInReasonSchema>): 'sign_in_here' | 'take_over' =>
+  TAKE_OVER_LANES.has(reason) ? 'take_over' : 'sign_in_here';
 
 /**
  * `PhraseKey` = keyof PHRASES (08-4 §26.1, `src/shared/phrases.ts`, M4). 08-2 §5.3.3: a key missing from the catalogue is

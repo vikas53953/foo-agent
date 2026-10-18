@@ -85,6 +85,19 @@ export const settingsSchema = z.object({
       .refine((q) => q.from !== q.to),
     mutedChats: z.record(z.string(), z.union([z.number().int(), z.literal('forever')])),
   }),
+  // M9 (CR-0013, 08-0 §A): the browser milestone's keys only; M6/M8 add their own rows of these objects.
+  privacy: z.object({
+    screenshotDays: z.union([z.literal(0), z.literal(1), z.literal(7), z.literal(30)]),
+    readCodesFromGmail: z.array(z.string().max(253)).max(50),
+  }),
+  connections: z.object({
+    web: z.object({
+      search: z.enum(['exa', 'tavily', 'this_pc']),
+      read: z.enum(['firecrawl', 'this_pc']),
+      cloudBrowser: z.boolean(),
+      refused: z.object({ exa: z.boolean(), tavily: z.boolean(), firecrawl: z.boolean(), browseruse: z.boolean() }),
+    }),
+  }),
   flags: z.object({
     screenHands: z.boolean(),
     hub: z.boolean(),

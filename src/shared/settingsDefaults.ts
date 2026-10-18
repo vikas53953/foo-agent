@@ -22,5 +22,14 @@ export const settingsDefaults: Settings = {
   ai: { primary: null, backup: null, providers: {}, plainChatFallback: true },
   money: { purchaseCapPaise: 2_500_000, aiCapPaise: 100_000, warnAt80: true, bigPaymentPaise: 1_000_000 },
   notifications: { quiet: { on: true, from: '22:00', to: '07:00', days: [0, 1, 2, 3, 4, 5, 6] }, mutedChats: {} },
+  privacy: { screenshotDays: 7, readCodesFromGmail: [] },
+  connections: {
+    web: {
+      search: 'this_pc',
+      read: 'this_pc',
+      cloudBrowser: false,
+      refused: { exa: false, tavily: false, firecrawl: false, browseruse: false },
+    },
+  },
   flags: { screenHands: false, hub: false, outlook: false, multiAccount: false },
 };

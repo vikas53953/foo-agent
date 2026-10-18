@@ -1,0 +1,7 @@
+{
+  "version": "2026.10",
+  "exa": { "base": "https://api.exa.ai" },
+  "tavily": { "base": "https://api.tavily.com" },
+  "firecrawl": { "base": "https://api.firecrawl.dev/v2" },
+  "browseruse": { "base": "https://api.browser-use.com/api/v2" }
+}

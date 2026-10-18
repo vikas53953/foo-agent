@@ -1,14 +1,19 @@
 // 11-fidelity §11.2.1, §11.2.7: golden/manifest.json is generated from the frozen walkthrough and fixes the BP ids.
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { BP, BP_M2, BP_M4, CHAPTER_MILESTONE, EARLY_STEPS, SUPERSEDED, readManifest } from '../../scripts/golden-manifest';
+import { BP, BP_M2, BP_M4, BP_M9, CHAPTER_MILESTONE, EARLY_STEPS, SUPERSEDED, readManifest } from '../../scripts/golden-manifest';
 import { compareRenders, select, type RefJson } from '../../scripts/golden-render';
 
 const manifest = readManifest();
 
 describe('golden manifest', () => {
   it('has the 245 walkthrough steps in 25 chapters with well-formed ids', () => {
-    expect(manifest.counts).toEqual({ uxChapters: 25, uxSteps: 245, uxFrames: 490, bp: BP.length + BP_M2.length + BP_M4.length });
+    expect(manifest.counts).toEqual({
+      uxChapters: 25,
+      uxSteps: 245,
+      uxFrames: 490,
+      bp: BP.length + BP_M2.length + BP_M4.length + BP_M9.length,
+    });
     expect(manifest.ux).toHaveLength(245);
     expect(new Set(manifest.ux.map((e) => e.id)).size).toBe(245);
     for (const [i, e] of manifest.ux.entries()) {
@@ -28,7 +33,7 @@ describe('golden manifest', () => {
     for (const s of manifest.superseded) expect(manifest.ux.find((e) => e.id === s.id)?.superseded?.decision).toBe(s.decision);
   });
   it('fixes the BP ids for M1 with selectors and spec sections', () => {
-    expect(manifest.bp).toEqual([...BP, ...BP_M2, ...BP_M4]);
+    expect(manifest.bp).toEqual([...BP, ...BP_M2, ...BP_M4, ...BP_M9]);
     const ids = manifest.bp.map((b) => b.id);
     for (const id of ['BP-APP-L', 'BP-APP-M', 'BP-APP-R', 'BP-ANAT-L', 'BP-ANAT-M', 'BP-ANAT-S', 'BP-ANAT-XS']) expect(ids).toContain(id);
     for (const b of BP) {
@@ -51,6 +56,17 @@ describe('golden manifest', () => {
     expect(manifest.ux.filter((e) => e.firstTested && e.firstTested === 'M2').map((e) => [e.id, e.milestone, e.firstTested])).toEqual(
       ['UX-09-01', 'UX-09-08'].map((id) => [id, 'M11', 'M2']),
     );
+  });
+  it('CR-0013 adds the four M9 refs, supersedes the in-panel live step and moves the replay step to M13', () => {
+    expect(BP_M9.map((b) => [b.id, b.selector])).toEqual([
+      ['BP-CARD-10', '#cardgal > .panel:nth-child(10) > .mini'],
+      ['BP-CARD-17', '#cardgal > .panel:nth-child(17) > .mini'],
+      ['BP-SCR-13', '#scrgal > .scr:nth-child(13) > .body'],
+      ['BP-SCR-14', '#scrgal > .scr:nth-child(14) > .body'],
+    ]);
+    expect(BP_M9.every((b) => b.milestone === 'M9')).toBe(true);
+    expect(manifest.ux.find((e) => e.id === 'UX-15-02')?.superseded?.decision).toMatch(/^X-95/);
+    expect(manifest.ux.find((e) => e.id === 'UX-15-10')?.firstTested).toBe('M13');
   });
   it('CR-0008 adds the six M4 card refs and the M4 early UX-23 / UX-05 steps', () => {
     expect(BP_M4.map((b) => b.id)).toEqual(['BP-CARD-02', 'BP-CARD-12', 'BP-CARD-15', 'BP-CARD-18', 'BP-CARD-19', 'BP-CARD-20']);

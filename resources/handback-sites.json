@@ -1,0 +1,52 @@
+{
+  "version": "2026.10",
+  "categories": {
+    "netbanking": [
+      "onlinesbi.sbi",
+      "retail.onlinesbi.sbi",
+      "netbanking.hdfcbank.com",
+      "infinity.icicibank.com",
+      "omni.axisbank.co.in",
+      "axisbank.com/netbanking",
+      "netbanking.kotak.com",
+      "pnbibanking.in",
+      "bobibanking.com",
+      "bankofbaroda.in/netbanking",
+      "netbanking.canarabank.in",
+      "unionbankonline.co.in",
+      "online.idbibank.co.in",
+      "yesonline.yesbank.co.in",
+      "indusnet.indusind.com",
+      "federalbank.co.in/netbanking",
+      "idfcfirstbank.com/netbanking",
+      "netbanking.bandhanbank.com"
+    ],
+    "upiWeb": ["web.phonepe.com", "pay.google.com", "paytm.com/upi", "paytm.com/bank", "bhimupi.org.in"],
+    "trading": [
+      "kite.zerodha.com",
+      "console.zerodha.com",
+      "groww.in",
+      "upstox.com",
+      "angelone.in",
+      "icicidirect.com",
+      "hdfcsec.com",
+      "kotaksecurities.com",
+      "dhan.co",
+      "5paisa.com"
+    ],
+    "crypto": ["coindcx.com", "wazirx.com", "coinswitch.co", "zebpay.com", "binance.com", "coinbase.com", "kraken.com"],
+    "passwordManager": [
+      "vault.bitwarden.com",
+      "my.1password.com",
+      "1password.com",
+      "bitwarden.com",
+      "lastpass.com",
+      "dashlane.com",
+      "keepersecurity.com",
+      "nordpass.com",
+      "passwords.google.com",
+      "account.proton.me/pass"
+    ]
+  },
+  "patterns": ["^netbanking\\.", "^ibanking\\.", "\\.npci\\.org\\.in$"]
+}
