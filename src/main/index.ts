@@ -10,6 +10,7 @@ import { testHooksEnabled } from './ipc/guard';
 import { electronProbe, emit, listContext, registerIpc, type AppContext } from './ipc/IpcRouter';
 import { EngineBridge } from './engine-supervisor/EngineBridge';
 import { EngineSupervisor } from './engine-supervisor/EngineSupervisor';
+import { engineHello } from './engine-supervisor/hello';
 import { chatRowById, messageGet } from './store/queries';
 import { NetMonitor } from './net/netMonitor';
 import type { FakeClock } from '../shared/clock';
@@ -83,10 +84,12 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
     });
     const ctx: AppContext = { db, settings, net: netMonitor, probe, dataDir: paths.data, engine };
     supervisor = new EngineSupervisor(engine, { data: paths.data, local: paths.local });
-    supervisor.onStarted = () => {
-      engine.send('settings.changed', { paths: [], settings: settings.get() });
-      engine.send('net', { online: !netMonitor.offline });
-    };
+    supervisor.onStarted = () =>
+      engineHello(engine.send.bind(engine), {
+        settings: () => settings.get(),
+        online: () => !netMonitor.offline,
+        testClock,
+      });
     settings.onChange((s) => engine.send('settings.changed', { paths: [], settings: s }));
     if (testClock) await loadTestHooks(ctx, testClock);
     else netMonitor.poll(probe);
