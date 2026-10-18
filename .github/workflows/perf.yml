@@ -1,0 +1,77 @@
+# Spec: 10-acceptance-2 §E (PERF-01…18, 20 runs, p95, PERF-01…04 again at 225 %), §E.2 (> 10 % worse than the last main run
+# = P1), §G.10 (CSV + traces), 11-fidelity §11.8 (PERF smoke on every PR; a non-blocking report until the RC, then blocking
+# per §11.8.4), G-M14-25 (the packaged build unchanged, perf data in the runner's own {DATA}), M14 pack T5.
+# The full run (60 s idles, PERF-13, Windows 10 and 11, after a reboot) is the reference laptop's, by hand: `pnpm perf --full`.
+name: Perf smoke
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+concurrency:
+  group: perf-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: PERF smoke (windows-latest)
+    runs-on: windows-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write # pushes the CSVs and traces to the evidence branch
+    env:
+      HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      # Same native-module steps as ci.yml's Windows lanes (node-gyp 12 for VS 2026).
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Download the Electron binary
+        run: node node_modules/electron/install.js
+      - run: pnpm build
+      - name: Rebuild native modules for Electron
+        run: pnpm rebuild:electron
+      - name: Package (unpacked), the build PERF measures
+        run: pnpm package:dir
+      - name: Last main run (E.2 baseline)
+        shell: bash
+        run: |
+          mkdir -p test-results/perf
+          if git fetch -q --depth 1 origin evidence && git show FETCH_HEAD:perf/main/latest/summary.json > test-results/perf/baseline.json 2>/dev/null; then
+            echo "baseline: evidence:perf/main/latest/summary.json"
+          else
+            rm -f test-results/perf/baseline.json; echo "no main baseline yet"
+          fi
+      - name: PERF smoke, 20 runs
+        shell: bash
+        run: |
+          build="${HEAD_SHA:0:7}"
+          pnpm perf --smoke --build "$build" --app dist/win-unpacked/foo.exe --baseline test-results/perf/baseline.json 2>&1 | tee test-results/perf/smoke.log
+          { echo '```'; grep -E '^(PERF|P1|E\.2|run )' test-results/perf/smoke.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: Push the perf evidence to the evidence branch
+        if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_BRANCH: ${{ github.head_ref || github.ref_name }}
+        run: BUILD="${HEAD_SHA:0:7}" bash scripts/perf/push-perf-evidence.sh
+      - name: Upload the perf evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-smoke
+          path: |
+            qa-evidence/
+            test-results/perf/
+            !test-results/perf/perf-data/
+          if-no-files-found: ignore

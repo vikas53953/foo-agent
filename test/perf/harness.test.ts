@@ -21,7 +21,7 @@ describe('p95 and budgets (10-2 §E: the 95th percentile of 20 runs must meet th
     expect(p95([7])).toBe(7);
   });
 
-  it('reads "<" as strict, "≤" as inclusive and PERF-08 as a window from 1.5 s to 2 s', () => {
+  it('reads "<" as strict, "≤" as inclusive and the checklist budget as a window from 1.5 s to 2 s', () => {
     const budget = (id: string) => PROBES.find((p) => p.id === id)!.budget;
     expect(meets(budget('PERF-01'), 1_999)).toBe(true);
     expect(meets(budget('PERF-01'), 2_000)).toBe(false); // cold start < 2.0 s
@@ -54,7 +54,7 @@ describe('the PERF table (08-3 §20 = 10-2 §E)', () => {
     expect(b['PERF-18']).toEqual({ kind: 'le', max: 3_000, unit: 'ms' });
   });
 
-  it('smoke runs PERF-01/02/03/04/14/15/16/17; the rest wait for the milestone that makes them measurable (pack §4)', () => {
+  it('smoke runs the eight ids measurable now; the rest wait for the milestone that makes them measurable (pack §4)', () => {
     expect([...SMOKE_IDS]).toEqual(['PERF-01', 'PERF-02', 'PERF-03', 'PERF-04', 'PERF-14', 'PERF-15', 'PERF-16', 'PERF-17']);
     const needs = Object.fromEntries(PROBES.filter((p) => p.kind === 'pending').map((p) => [p.id, p.needs]));
     expect(needs).toEqual({
@@ -132,10 +132,8 @@ describe('runner: 20 runs, p95 table, CSV + traces under qa-evidence/{build}/per
     const root = out();
     const lines: string[] = [];
     const h = harness([fakeProbe('PERF-03', [40, 60, 80]), PROBES.find((p) => p.id === 'PERF-07')!]);
-    const r = await runPerf(
-      { ...parseArgs(['--smoke', '--runs', '3', '--build', 'b1', '--out', root, '--no-text-scale']) },
-      h,
-      (l) => lines.push(l),
+    const r = await runPerf({ ...parseArgs(['--smoke', '--runs', '3', '--build', 'b1', '--out', root, '--no-text-scale']) }, h, (l) =>
+      lines.push(l),
     );
     const dir = join(root, 'b1', 'perf');
     const csv = readFileSync(join(dir, 'PERF-03.csv'), 'utf8').trim().split('\n');
@@ -155,7 +153,7 @@ describe('runner: 20 runs, p95 table, CSV + traces under qa-evidence/{build}/per
     expect(summary.rows).toEqual(r.rows);
   });
 
-  it('runs PERF-01…04 again at 225 % text in their own sessions and files', async () => {
+  it('runs the four text-size ids again at 225 % text in their own sessions and files', async () => {
     const root = out();
     const h = harness([fakeProbe('PERF-03', [50]), fakeProbe('PERF-16', [300])]);
     const r = await runPerf(parseArgs(['--smoke', '--runs', '2', '--build', 'b2', '--out', root]), h, () => {});
@@ -178,7 +176,10 @@ describe('runner: 20 runs, p95 table, CSV + traces under qa-evidence/{build}/per
     const basePath = join(root, 'base.json');
     writeFileSync(
       basePath,
-      JSON.stringify({ build: 'main', rows: [{ id: 'PERF-03', variant: 't100', p95: 40, unit: 'ms', runs: 20, budget: '< 100 ms', verdict: 'pass' }] }),
+      JSON.stringify({
+        build: 'main',
+        rows: [{ id: 'PERF-03', variant: 't100', p95: 40, unit: 'ms', runs: 20, budget: '< 100 ms', verdict: 'pass' }],
+      }),
     );
     const lines: string[] = [];
     const h = harness([fakeProbe('PERF-03', [50])]);
@@ -193,7 +194,10 @@ describe('runner: 20 runs, p95 table, CSV + traces under qa-evidence/{build}/per
   });
 
   it('a probe that throws marks its row "error" with the message, and the run goes on', async () => {
-    const h = harness([fakeProbe('PERF-03', [50], { measure: async () => Promise.reject(new Error('no chat rows')) } as Partial<Probe>), fakeProbe('PERF-16', [300])]);
+    const h = harness([
+      fakeProbe('PERF-03', [50], { measure: async () => Promise.reject(new Error('no chat rows')) } as Partial<Probe>),
+      fakeProbe('PERF-16', [300]),
+    ]);
     const r = await runPerf(parseArgs(['--smoke', '--runs', '2', '--out', out(), '--no-text-scale']), h, () => {});
     expect(r.rows.find((x) => x.id === 'PERF-03')).toMatchObject({ verdict: 'error', note: 'no chat rows' });
     expect(r.rows.find((x) => x.id === 'PERF-16')).toMatchObject({ verdict: 'pass', runs: 2 });

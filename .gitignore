@@ -13,3 +13,4 @@ qa-evidence/*/fidelity.json
 .claude/*
 !.claude/skills/
 qa-evidence/verify/
+qa-evidence/*/perf/
