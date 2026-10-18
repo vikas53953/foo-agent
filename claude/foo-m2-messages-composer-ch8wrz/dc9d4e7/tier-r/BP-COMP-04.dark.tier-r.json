@@ -1,0 +1,107 @@
+{
+  "id": "BP-COMP-04",
+  "theme": "dark",
+  "verdict": "fail",
+  "disputed": {
+    "cr": "CR-0003",
+    "checks": [
+      "r1",
+      "r2"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "✕",
+        "●",
+        "🎙"
+      ],
+      "extra": [
+        "Waiting",
+        "for",
+        "your",
+        "OK:",
+        "₹14,600",
+        "to",
+        "Taj",
+        "Holiday",
+        "Village",
+        "9:59",
+        "left",
+        "Show",
+        "Release",
+        "to",
+        "send",
+        "·",
+        "Esc",
+        "to",
+        "cancel"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-COMP-04",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 351.328125,
+          "height": 78
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 600,
+          "height": 121
+        },
+        "dPos": 0,
+        "dSize": 248.671875,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-COMP-04",
+        "ref": "#1B1B22",
+        "app": "#0B0B0F",
+        "deltaE": 5.19,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.08620059902111184,
+    "diffPixels": 2360,
+    "total": 27378,
+    "sizeMismatch": {
+      "a": [
+        351,
+        78
+      ],
+      "b": [
+        600,
+        121
+      ]
+    },
+    "heatmap": "BP-COMP-04.dark.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-COMP-04.dark.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-COMP-04.dark.png"
+}

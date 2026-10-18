@@ -18,6 +18,18 @@
         "🎙"
       ],
       "extra": [
+        "Waiting",
+        "for",
+        "your",
+        "OK:",
+        "₹14,600",
+        "to",
+        "Taj",
+        "Holiday",
+        "Village",
+        "9:59",
+        "left",
+        "Show",
         "Release",
         "to",
         "send",
@@ -47,7 +59,7 @@
           "x": 0,
           "y": 0,
           "width": 600,
-          "height": 73
+          "height": 121
         },
         "dPos": 0,
         "dSize": 248.671875,
@@ -61,8 +73,8 @@
       {
         "name": "BP-COMP-04",
         "ref": "#FFFFFF",
-        "app": "#FFFFFF",
-        "deltaE": 0,
+        "app": "#F9F9F9",
+        "deltaE": 1.2,
         "verdict": "pass"
       }
     ]
@@ -75,9 +87,9 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.05413105413105413,
-    "diffPixels": 1387,
-    "total": 25623,
+    "ratio": 0.08338812184966031,
+    "diffPixels": 2283,
+    "total": 27378,
     "sizeMismatch": {
       "a": [
         351,
@@ -85,7 +97,7 @@
       ],
       "b": [
         600,
-        73
+        121
       ]
     },
     "heatmap": "BP-COMP-04.light.diff.png"

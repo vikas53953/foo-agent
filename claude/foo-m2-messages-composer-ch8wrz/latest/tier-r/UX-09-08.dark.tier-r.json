@@ -1,12 +1,14 @@
 {
   "id": "UX-09-08",
   "theme": "dark",
-  "verdict": "fail",
+  "verdict": "disputed",
   "disputed": {
-    "cr": "CR-0003",
+    "cr": "CR-0003 + CR-0004",
     "checks": [
       "r1",
-      "r2"
+      "r2",
+      "r3",
+      "r4"
     ]
   },
   "r1": {

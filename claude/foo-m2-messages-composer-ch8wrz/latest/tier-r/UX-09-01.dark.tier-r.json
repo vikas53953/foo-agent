@@ -1,11 +1,13 @@
 {
   "id": "UX-09-01",
   "theme": "dark",
-  "verdict": "fail",
+  "verdict": "disputed",
   "disputed": {
-    "cr": "CR-0003",
+    "cr": "CR-0003 + CR-0004",
     "checks": [
-      "r1"
+      "r1",
+      "r3",
+      "r4"
     ]
   },
   "r1": {
@@ -437,8 +439,8 @@
     "total": 1296
   },
   "r5": {
-    "ratio": 0.1193134765625,
-    "diffPixels": 122177,
+    "ratio": 0.1193154296875,
+    "diffPixels": 122179,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-09-01.dark.diff.png"

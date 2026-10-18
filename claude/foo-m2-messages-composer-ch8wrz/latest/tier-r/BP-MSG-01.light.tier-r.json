@@ -1,12 +1,13 @@
 {
   "id": "BP-MSG-01",
   "theme": "light",
-  "verdict": "fail",
+  "verdict": "disputed",
   "disputed": {
-    "cr": "CR-0003",
+    "cr": "CR-0003 + CR-0004",
     "checks": [
       "r1",
-      "r2"
+      "r2",
+      "r3"
     ]
   },
   "r1": {

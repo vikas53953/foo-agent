@@ -1,19 +1,19 @@
 {
-  "reportId": "M2-651799f-39076959413",
+  "reportId": "M2-dc9d4e7-39081222542",
   "milestone": "M2",
-  "generatedAt": "2026-10-17T23:06:50.004Z",
-  "commit": "ce338dd05ae83d8560fafb8eafac313834615705",
-  "head": "651799fabd2553c67944ff4280b449e2be2f280a",
+  "generatedAt": "2026-10-18T00:13:01.215Z",
+  "commit": "728dc07065edbe0f7fa56913df9a019a4d1c9936",
+  "head": "dc9d4e720046c5e38b4288fb130e1e31abd28af3",
   "ci": {
-    "runId": "39076959413",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39076959413"
+    "runId": "39081222542",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39081222542"
   },
   "spec": {
     "version": "spec-v1.0",
-    "setSha256": "bdc78d947d21463e6888f8c5e8f4614185d38f6481de1257c328270dfcff0618"
+    "setSha256": "a563b9da076143846b99614e34f0d5c4f55396b7725ba7b305f70b2185914da4"
   },
   "runner": {
-    "recordedAt": "2026-10-17T22:59:12.596Z",
+    "recordedAt": "2026-10-18T00:06:44.190Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000002817"
+      "runner": "GitHub Actions 1000002819"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -60,8 +60,7 @@
   "verdict": "FAIL",
   "verdictReasons": [
     "2 test(s) failed",
-    "16 Tier R step(s) failed",
-    "FID-14 rows failed: SV-04",
+    "2 Tier R step(s) failed",
     "5 audit item(s) not DONE (the milestone is not complete)"
   ],
   "missingInputs": [],
@@ -142,7 +141,7 @@
       "item": "PERF-02 (typing < 16 ms with the 5,000-message chat)",
       "status": "UNVERIFIABLE",
       "evidence": "test:PERF-02",
-      "resolved": "DONE"
+      "resolved": "NOT DONE"
     },
     {
       "group": "M2 Must pass",
@@ -199,7 +198,7 @@
       "item": "FID-14 rows SV-01–12, 26, 30",
       "status": "UNVERIFIABLE",
       "evidence": "fid14",
-      "resolved": "NOT DONE"
+      "resolved": "DONE"
     }
   ],
   "copy": {
@@ -373,9 +372,9 @@
       },
       {
         "id": "SV-04",
-        "ok": false,
-        "expected": "background-color: rgb(241, 241, 245)",
-        "measured": "#0 background-color: rgb(43, 63, 214) ≠ rgb(241, 241, 245); #1 background-color: rgb(43, 63, 214) ≠ rgb(241, 241, 245); #2 background-color: rgb(43, 63, 214) ≠ rgb(241, 241, 245); #3 background-color: rgb(43, 63, 214) ≠ rgb(241, 241, 245); #4 background-color: rgb(43, 63, 214) ≠ rgb(241, 241, 245); #5 background-color: rgb(43, 63, 214) ≠ rgb(241, 241, 245); #6 background-color: rgb(43, 63, 214) ≠ rgb(241, 241, 245)",
+        "ok": true,
+        "expected": "background-color: rgb(43, 63, 214)",
+        "measured": "all equal",
         "note": "dark"
       },
       {
@@ -402,14 +401,14 @@
         "id": "SV-01",
         "ok": true,
         "expected": "18px non-tail corners (tail corners 6px)",
-        "measured": "15 bubbles, all equal",
+        "measured": "17 bubbles, all equal",
         "note": "Trips"
       },
       {
         "id": "SV-08",
         "ok": true,
         "expected": "≤ 72 % of the column and ≤ 620px (rich ≤ 680px)",
-        "measured": "15 bubbles within",
+        "measured": "17 bubbles within",
         "note": "Trips"
       },
       {
@@ -435,7 +434,7 @@
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 1505,
+        "passed": 1510,
         "failed": 0,
         "skipped": 0
       },
@@ -8687,6 +8686,11 @@
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
       },
       {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
         "id": "AT-225",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/unit/AT-225.test.ts"
@@ -8723,7 +8727,7 @@
       },
       {
         "id": "PERF-02",
-        "status": "passed",
+        "status": "failed",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
@@ -8810,14 +8814,14 @@
     "failed": [
       {
         "suite": "e2e",
-        "file": "test/e2e/m2-messages.spec.ts",
-        "title": "PERF-04 · fling scroll through the 5,000-message chat holds 60 fps and keeps the DOM bounded",
+        "file": "test/e2e/m2-composer.spec.ts",
+        "title": "PERF-02 · typing in the 5,000-message chat paints within a frame (p95)",
         "status": "failed"
       },
       {
         "suite": "e2e",
         "file": "test/e2e/m2-messages.spec.ts",
-        "title": "FID-14 spec values for the M2 messages: SV-01 to SV-09 and SV-26 (bubble times), light and dark",
+        "title": "PERF-04 · fling scroll through the 5,000-message chat holds 60 fps and keeps the DOM bounded",
         "status": "failed"
       }
     ],
@@ -8848,6 +8852,11 @@
         "id": "CR-0003",
         "title": "M2 trace rows, M2 Blueprint ids, and where the drawings and the M2 app disagree",
         "status": "Approved under overnight instruction (Vikas, 2026-10-17 18:52Z/18:59Z: continue the overnight build, don't wait"
+      },
+      {
+        "id": "CR-0004",
+        "title": "The dark user bubble is indigo (X-145) everywhere, and the M2 golden-lane differences that follow from the spec",
+        "status": "Approved under overnight instruction (Vikas, 2026-10-17 18:52Z/18:59Z: continue the overnight build, don't wait"
       }
     ],
     "notes": "Conservative picks and deferrals: implementation-notes.md (the ## M2 sections)."
@@ -8859,8 +8868,8 @@
     "counts": {
       "pass": 1,
       "review": 1,
-      "fail": 16,
-      "disputed": 54,
+      "fail": 2,
+      "disputed": 68,
       "notBuilt": 1
     },
     "refsRendered": [
@@ -9270,7 +9279,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "pass (BP-ANAT-L ΔE 1.68)",
         "r4": "skipped: no hl element",
-        "r5": 0.143048828125,
+        "r5": 0.1549462890625,
         "ref": true,
         "app": true,
         "diff": true
@@ -9283,7 +9292,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "review (BP-ANAT-L ΔE 3.65)",
         "r4": "skipped: no hl element",
-        "r5": 0.1140166015625,
+        "r5": 0.134306640625,
         "ref": true,
         "app": true,
         "diff": true
@@ -9582,7 +9591,7 @@
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "pass (BP-APP-M ΔE 1.68)",
         "r4": "skipped: no hl element",
-        "r5": 0.20508465719063546,
+        "r5": 0.23173817238015607,
         "ref": true,
         "app": true,
         "diff": true
@@ -9595,7 +9604,7 @@
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "review (BP-APP-M ΔE 3.65)",
         "r4": "skipped: no hl element",
-        "r5": 0.15337148132664438,
+        "r5": 0.20021164297658864,
         "ref": true,
         "app": true,
         "diff": true
@@ -9681,12 +9690,12 @@
       {
         "id": "BP-COMP-04",
         "theme": "dark",
-        "verdict": "disputed",
+        "verdict": "fail",
         "r1": "fail",
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
-        "r3": "pass (BP-COMP-04 ΔE 0)",
+        "r3": "fail (BP-COMP-04 ΔE 5.19)",
         "r4": "skipped: no hl element",
-        "r5": 0.054911602856808336,
+        "r5": 0.08620059902111184,
         "ref": true,
         "app": true,
         "diff": true
@@ -9697,9 +9706,9 @@
         "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
-        "r3": "pass (BP-COMP-04 ΔE 0)",
+        "r3": "pass (BP-COMP-04 ΔE 1.2)",
         "r4": "skipped: no hl element",
-        "r5": 0.05413105413105413,
+        "r5": 0.08338812184966031,
         "ref": true,
         "app": true,
         "diff": true
@@ -9712,7 +9721,7 @@
         "r2": "fail (BP-COMP-05 0/248.671875 px)",
         "r3": "pass (BP-COMP-05 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.09731405328889606,
+        "r5": 0.11114276669832225,
         "ref": true,
         "app": true,
         "diff": true
@@ -9725,7 +9734,7 @@
         "r2": "fail (BP-COMP-05 0/248.671875 px)",
         "r3": "pass (BP-COMP-05 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.09846082173126199,
+        "r5": 0.1441911997467553,
         "ref": true,
         "app": true,
         "diff": true
@@ -9785,12 +9794,12 @@
       {
         "id": "BP-COMP-08",
         "theme": "dark",
-        "verdict": "disputed",
+        "verdict": "fail",
         "r1": "fail",
         "r2": "fail (BP-COMP-08 0/248.671875 px)",
-        "r3": "pass (BP-COMP-08 ΔE 0)",
+        "r3": "fail (BP-COMP-08 ΔE 5.52)",
         "r4": "skipped: no hl element",
-        "r5": 0.07724409132859837,
+        "r5": 0.10461538461538461,
         "ref": true,
         "app": true,
         "diff": true
@@ -9801,9 +9810,9 @@
         "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-COMP-08 0/248.671875 px)",
-        "r3": "pass (BP-COMP-08 ΔE 0)",
+        "r3": "pass (BP-COMP-08 ΔE 1.4)",
         "r4": "skipped: no hl element",
-        "r5": 0.0809758837927852,
+        "r5": 0.1064102564102564,
         "ref": true,
         "app": true,
         "diff": true
@@ -9837,7 +9846,7 @@
       {
         "id": "BP-MSG-01",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-MSG-01 0/203 px)",
         "r3": "fail (BP-MSG-01 ΔE 61.41)",
@@ -9850,7 +9859,7 @@
       {
         "id": "BP-MSG-01",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-MSG-01 0/203 px)",
         "r3": "fail (BP-MSG-01 ΔE 7.8)",
@@ -9915,7 +9924,7 @@
       {
         "id": "UX-08-01",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (hl 69/0.90625 px)",
         "r3": "fail (hl ΔE 55.97)",
@@ -9928,7 +9937,7 @@
       {
         "id": "UX-08-01",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (hl 69/0.90625 px)",
         "r3": "pass (hl ΔE 0)",
@@ -9941,7 +9950,7 @@
       {
         "id": "UX-08-03",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (hl 69/1.96875 px)",
         "r3": "pass (hl ΔE 0)",
@@ -9954,7 +9963,7 @@
       {
         "id": "UX-08-03",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (hl 69/1.96875 px)",
         "r3": "pass (hl ΔE 0)",
@@ -9967,7 +9976,7 @@
       {
         "id": "UX-08-04",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (hl 69/0.71875 px)",
         "r3": "pass (hl ΔE 0)",
@@ -9980,7 +9989,7 @@
       {
         "id": "UX-08-04",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (hl 69/0.71875 px)",
         "r3": "pass (hl ΔE 0)",
@@ -9993,7 +10002,7 @@
       {
         "id": "UX-08-05",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (hl 75/6 px)",
         "r3": "pass (hl ΔE 0)",
@@ -10006,7 +10015,7 @@
       {
         "id": "UX-08-05",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (hl 75/6 px)",
         "r3": "pass (hl ΔE 0)",
@@ -10019,7 +10028,7 @@
       {
         "id": "UX-08-06",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (hl 95/35.578125 px)",
         "r3": "fail (hl ΔE 61.41)",
@@ -10032,7 +10041,7 @@
       {
         "id": "UX-08-06",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (hl 95/35.578125 px)",
         "r3": "fail (hl ΔE 7.8)",
@@ -10071,12 +10080,12 @@
       {
         "id": "UX-09-01",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 20.59)",
         "r4": "fail (21.84 %)",
-        "r5": 0.1193134765625,
+        "r5": 0.1193154296875,
         "ref": true,
         "app": true,
         "diff": true
@@ -10084,7 +10093,7 @@
       {
         "id": "UX-09-01",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 35.2)",
@@ -10097,7 +10106,7 @@
       {
         "id": "UX-09-08",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (hl 373.484375/26.125 px)",
         "r3": "fail (hl ΔE 51.22)",
@@ -10110,12 +10119,12 @@
       {
         "id": "UX-09-08",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (hl 373.484375/26.125 px)",
         "r3": "fail (hl ΔE 29.25)",
         "r4": "fail (23.94 %)",
-        "r5": 0.1277783203125,
+        "r5": 0.12776953125,
         "ref": true,
         "app": true,
         "diff": true
