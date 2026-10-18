@@ -10,6 +10,7 @@ import type { JobState } from '../../shared/types';
 import { deps } from '../deps';
 import { channels, emit, listContext, type AppContext } from '../ipc/IpcRouter';
 import { aiStatus, chatRowById, chatRows, fooChatId, jobRows, publicSettings, recomputePill, spendSummary } from '../store/queries';
+import { registerM11TestHooks } from './m11';
 import { writeSeedMedia } from './seed/media';
 import { seedPerf } from './seed/perf';
 import { seedM4Cards } from './seed/m4Cards';
@@ -136,5 +137,6 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
     nativeTheme.themeSource = ctx.settings.get().appearance.theme;
     return reply();
   });
+  registerM11TestHooks(guard);
   return guard.registered;
 }

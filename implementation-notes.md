@@ -647,3 +647,10 @@ files are real and which stay seeds). What the real output pinned:
   SV-19 has no machine form; `trace.csv` BP-CARD rows say `pending` (integrator at close-out). Copy keys still unused, now
   tagged "M4-T7 close-out": `cards.checklist.footer_text.plan`, `cards.plan.change_placeholder`,
   `cards.proof_chip.popover.file_missing`, `cards.not_live_chip.still_failed.text`, `cards.error.still_failing`.
+
+## M11 · contracts (ticket T1, CR-0015)
+
+- **Job Object row without a trace id.** CR-0007 §(e) / 08-2 §5.4 l.119 (Stop kills the tree ≤ 1 s, engine crash leaves no
+  orphan, main exit → KILL_ON_JOB_CLOSE, addon missing → taskkill fallback) has no AT / ART / PERF / UX / BP id, and FID-18
+  refuses a trace row without one. It is tracked by CR-0015 §(a) and here: T2 owns `test/integration/native/jobobject.test.ts`
+  (windows-latest), and the M11 close-out lists its result.

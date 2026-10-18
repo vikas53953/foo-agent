@@ -25,6 +25,7 @@ import type {
   RoutineRow,
   SpendSummary,
   StopReport,
+  ToastSpec,
   View,
   WindowsSettingsPage,
 } from './types';
@@ -113,6 +114,26 @@ export interface Invokes {
   'stuck:choose': { req: CardAnswerReq & { choice: 'other_way' | 'take_over' | 'stop' }; res: CardRow };
   'recovery:choose': { req: CardAnswerReq & { choice: 'resume' | 'stop' }; res: CardRow };
   'error:fix': { req: CardAnswerReq & { action: FixAction }; res: CardRow };
+  // M11 (CR-0015 G-M11-14, G-M11-15): restart after an update, download on a metered network, the first-close choice.
+  'app:restart': {
+    req: { confirm?: boolean };
+    res: { restarting: boolean; blocked?: 'payment'; runningJobs: number; pendingCards: number };
+  };
+  'app:downloadUpdate': { req: Record<string, never>; res: void };
+  'app:closeChoice': { req: { choice: 'tray' | 'quit'; dontShowAgain: boolean }; res: void };
+}
+
+/** CR-0015 (G-M11-14): 09 §9.20.3's About states plus `waiting_wifi` (09 §9.20.2 metered rule). */
+export type UpdateStatus = 'none' | 'checking' | 'downloading' | 'ready' | 'failed' | 'waiting_wifi';
+
+/**
+ * CR-0015 (G-M11-15): main saw a window close or the tray's Quit and asks the renderer for C-18 (`dialog-c-18`) or the
+ * 09 §9.8.4 quit dialog (`dialog-quit`). The counts fill the quit body; `paymentInFlight` picks its payment variant.
+ */
+export interface CloseAsk {
+  dialog: 'c-18' | 'quit';
+  runningJobs: number;
+  paymentInFlight: { amountPaise: number } | null;
 }
 
 /** 08-1 §3.2: a card answer names the card, carries its nonce (a stale card is refused) and says how it was answered. */
@@ -139,6 +160,9 @@ export interface Events {
   'settings:changed': PublicSettings;
   'net:state': { online: boolean };
   navigate: { view: View; act?: string };
+  // M11 (CR-0015 G-M11-14, G-M11-15)
+  'update:status': { status: UpdateStatus; pct?: number; version?: string };
+  'app:closeAsk': CloseAsk;
 }
 
 export type InvokeChannel = keyof Invokes;
@@ -202,6 +226,9 @@ export const INVOKE_CHANNELS = [
   'stuck:choose',
   'recovery:choose',
   'error:fix',
+  'app:restart',
+  'app:downloadUpdate',
+  'app:closeChoice',
 ] as const satisfies readonly InvokeChannel[];
 
 export const EVENT_CHANNELS = [
@@ -220,6 +247,8 @@ export const EVENT_CHANNELS = [
   'settings:changed',
   'net:state',
   'navigate',
+  'update:status',
+  'app:closeAsk',
 ] as const satisfies readonly EventChannel[];
 
 /**
@@ -261,7 +290,22 @@ export interface FooTestBridge {
   reset(): Promise<ClockReply>;
   /** Moves a job to a state the way the job runner would (writes the row, re-derives the chat pill, sends the patches). */
   jobState(jobId: string, state: JobRow['state']): Promise<{ chatId: string }>;
+  // M11 (08-3 §22.8 pattern; CR-0015). T1 registers them as stubs; the owning ticket fills each one.
+  /** Fires a powerMonitor event the way Windows would (T4; M4's PowerService listens). */
+  power(event: PowerEventName): Promise<{ event: PowerEventName }>;
+  /** The fake Notifier's log: every toast shown, oldest first (T3). */
+  notifier(): Promise<ToastSpec[]>;
+  /** What `toastSetting()` returns until the next call (T3). */
+  toastSetting(value: ToastSettingValue): Promise<{ value: ToastSettingValue }>;
+  /** Windows text size in percent, 100–225 (T4). */
+  textScale(factor: number): Promise<{ factor: number }>;
+  /** Crashes the window's renderer (`render-process-gone`) (T5). */
+  crashRenderer(): Promise<{ crashed: boolean }>;
 }
+
+export type PowerEventName = 'suspend' | 'resume' | 'lock-screen' | 'unlock-screen' | 'shutdown';
+/** 08-5 §6 `toastSetting()` values. */
+export type ToastSettingValue = 'enabled' | 'disabled_app' | 'disabled_user' | 'disabled_policy' | 'disabled_manifest';
 
 declare global {
   interface Window {

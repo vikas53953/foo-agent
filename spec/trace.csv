@@ -127,3 +127,51 @@ R17 · R8 · R14,J5,,UX-05-04,,05-1 §5.2; 05-3 §5.15; 04 §4.2,test/fidelity/u
 ,,,,BP-CARD-18,05-3 §5.19,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
 ,,,,BP-CARD-19,05-3 §5.20,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
 ,,,,BP-CARD-20,05-3 §5.21,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
+,J1,AT-001,,,10-acceptance-1 §B; 09 §9.2; 09 §9.9,test/e2e/m11-toasts.spec.ts,M11,pending
+,J3,AT-011,,,10-acceptance-1 §B; 09 §9.9.2; CR-0015 G-M11-19,test/e2e/m11-toasts.spec.ts,M11,pending
+,J7,AT-028,,,10-acceptance-1 §B; 08-3 §18,test/e2e/m11-voice.spec.ts,M11,pending
+,J7,AT-029,,,10-acceptance-1 §B; 04-2 §23.2; CR-0015 G-M11-12,test/e2e/m11-voice.spec.ts,M11,pending
+,J20,AT-086,,,10-acceptance-1 §B; 09 §9.9.3,test/e2e/m11-toasts.spec.ts,M11,pending
+,J20,AT-087,,,10-acceptance-1 §B; 09 §9.10.1,test/integration/notify/taskbar.test.ts,M11,pending
+,J20,AT-088,,,10-acceptance-1 §B; 09 §9.9.4; 08-3 §15.2,test/integration/notify/quiet.test.ts,M11,pending
+,J20,AT-089,,,10-acceptance-1 §B; 09 §9.8.4; 08-1 §2.3,test/e2e/m11-quit.spec.ts,M11,pending
+,J20,AT-090,,,10-acceptance-1 §B; 09 §9.9.3.4,test/unit/notify/toastXml.test.ts,M11,pending
+,Job,AT-108,,,10-acceptance-1 §B; 09 §9.9.3; 09 §9.10.1,test/integration/notify/needs-you.test.ts,M11,pending
+,Approval,AT-121,,,10-acceptance-1 §B; 09 §9.9.3,test/integration/notify/approval.test.ts,M11,pending
+,Voice,AT-134,,,10-acceptance-1 §B; 08-3 §18.1,test/integration/voice/openai.test.ts,M11,pending
+,Voice,AT-135,,,10-acceptance-1 §B; 08-3 §18.1; 05-3 §5.25,test/e2e/m11-voice.spec.ts,M11,pending
+,Voice,AT-136,,,10-acceptance-1 §B; 08-3 §18.1,test/integration/voice/fallback.test.ts,M11,pending
+,Voice,AT-137,,,10-acceptance-1 §B; 08-3 §18.1; 01-articles Art. 15,test/articles/ART-15b-voice.test.ts,M11,pending
+,J7,AT-206,,,10-acceptance-1 §B; 05-3 §5.25; CR-0015 G-M11-22,test/e2e/m11-voice.spec.ts,M11,pending
+,J20,AT-221,,,10-acceptance-1 §B; 09 §9.9.4; CR-0015 G-M11-27,test/integration/notify/locked.test.ts,M11,pending
+,J20,AT-271,,,10-acceptance-1 §B; 09 §9.8.1; 02-2 §F15.9.6,test/integration/face-raster.test.ts,M11,pending
+,,ART-06a,,,01-articles Art. 6; 10-acceptance-2 §D; 08-3 §18,test/integration/voice/articles.test.ts,M11,pending
+,,ART-18b,,,01-articles Art. 18; 10-acceptance-2 §D; 08-3 §18,test/integration/voice/articles.test.ts,M11,pending
+,,ART-19b,,,01-articles Art. 19; 10-acceptance-2 §D; 09 §9.9.4,test/articles/ART-19b-toast.test.ts,M11,pending
+,,ART-23b,,,01-articles Art. 23; 10-acceptance-2 §D (manual),test/articles/ART-23b.manual.md,M11,pending
+,,ART-27,,,01-articles Art. 27; 10-acceptance-2 §C.6 (manual),test/articles/ART-27.manual.md,M11,pending
+,J20,PERF-09,,,10-acceptance-2 §E; 09 §9.10.1,test/perf/PERF-09.spec.ts,M11,pending
+,J3,PERF-10,,,10-acceptance-2 §E; CR-0015 G-M11-19,test/perf/PERF-10.spec.ts,M11,pending
+R15 · R23,J20,,UX-21-01,,09 §9.8; 09 §9.9; 09 §9.10,test/fidelity/ux/UX-21.notify.spec.ts,M11,pending
+R15 · R23,J20,,UX-21-02,,09 §9.8; 09 §9.9; 09 §9.10,test/fidelity/ux/UX-21.notify.spec.ts,M11,pending
+R15 · R23,J20,,UX-21-03,,09 §9.8; 09 §9.9; 09 §9.10,test/fidelity/ux/UX-21.notify.spec.ts,M11,pending
+R15 · R23,J20,,UX-21-04,,09 §9.8; 09 §9.9; 09 §9.10,test/fidelity/ux/UX-21.notify.spec.ts,M11,pending
+R15 · R23,J20,,UX-21-05,,09 §9.8; 09 §9.9; 09 §9.10,test/fidelity/ux/UX-21.notify.spec.ts,M11,pending
+R15 · R23,J20,,UX-21-06,,09 §9.8; 09 §9.9; 09 §9.10,test/fidelity/ux/UX-21.notify.spec.ts,M11,pending
+R15 · R23,J20,,UX-21-07,,09 §9.8; 09 §9.9; 09 §9.10,test/fidelity/ux/UX-21.notify.spec.ts,M11,pending
+R15 · R23,J20,,UX-21-08,,09 §9.8; 09 §9.9; 09 §9.10,test/fidelity/ux/UX-21.notify.spec.ts,M11,pending
+R15 · R23,J20,,UX-21-09,,09 §9.8; 09 §9.9; 09 §9.10,test/fidelity/ux/UX-21.notify.spec.ts,M11,pending
+R15 · R23,J20,,UX-21-10,,09 §9.8; 09 §9.9; 09 §9.10,test/fidelity/ux/UX-21.notify.spec.ts,M11,pending
+R15 · R23,J20,,UX-21-11,,09 §9.8; 09 §9.9; 09 §9.10,test/fidelity/ux/UX-21.notify.spec.ts,M11,pending
+R16,J7,,UX-09-02,,08-3 §18; 05-3 §5.25,test/fidelity/ux/UX-09.voice.spec.ts,M11,pending
+R16,J7,,UX-09-03,,08-3 §18; 05-3 §5.25,test/fidelity/ux/UX-09.voice.spec.ts,M11,pending
+R16,J7,,UX-09-04,,08-3 §18; 05-3 §5.25,test/fidelity/ux/UX-09.voice.spec.ts,M11,pending
+R16,J7,,UX-09-05,,08-3 §18; 05-3 §5.25,test/fidelity/ux/UX-09.voice.spec.ts,M11,pending
+R16,J7,,UX-09-06,,08-3 §18; 05-3 §5.25,test/fidelity/ux/UX-09.voice.spec.ts,M11,pending
+R16,J7,,UX-09-07,,08-3 §18; 05-3 §5.25,test/fidelity/ux/UX-09.voice.spec.ts,M11,pending
+R20,J19,,UX-23-10,,06-3 §18; 09 §9.21,test/fidelity/ux/UX-23.errors.spec.ts,M11,pending
+R9 · R10,J8,,UX-10-07,,05-1 §5.3; 09 §9.9.3; CR-0015 G-M5-09,test/fidelity/ux/UX-10.choice.spec.ts,M11,pending
+,,,,BP-WIN-01,09 §9.9.3,test/fidelity/bp/BP-win.spec.ts,M11,pending
+,,,,BP-WIN-02,09 §9.9.3,test/fidelity/bp/BP-win.spec.ts,M11,pending
+,,,,BP-WIN-03,09 §9.10.1,test/fidelity/bp/BP-win.spec.ts,M11,pending
+,,,,BP-WIN-04,09 §9.8.4,test/fidelity/bp/BP-win.spec.ts,M11,pending

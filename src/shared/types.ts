@@ -78,7 +78,9 @@ export type DialogId =
   | 'helper-limit'
   | 'link-whatsapp'
   | 'unreadable-lines'
-  | 'template-replace';
+  | 'template-replace'
+  // CR-0015 (G-M11-15): the quit dialog of 09 §9.8.4 → `dialog-quit`
+  | 'quit';
 /** FE-06 (08-0 §B.2, D-8). */
 export type View =
   | { kind: 'chat'; chatId: string }
@@ -677,8 +679,11 @@ export type ErrorKind =
   | 'PROTOCOL_FIX_ACTION'
   | 'IDEMPOTENT_REPEAT'
   | 'CARD_STALE'
-  // M11 (08-5 §6, CR-0015 G-M11-02): `foo-native.synthesize` has no voice or no addon
+  // M11 (08-3 §21.3, 08-5 §6; CR-0015): native, updates, voice
+  | 'UPDATE_FAILED'
   | 'VOICE_UNAVAILABLE'
+  | 'MIC_BLOCKED'
+  | 'MIC_MISSING'
   | 'UNKNOWN';
 
 // ---- card payloads (08-5 §4.1) the M2 cards draw ----
@@ -736,4 +741,51 @@ export interface JobDetails {
   frames: { stepId: string; path: string; at: number }[];
   proof?: unknown;
   costs: unknown[];
+}
+
+// ---- 08-0 §B.2 NotificationKind and 08-3 §15.1 (verbatim): what the engine asks main to toast (M11, CR-0015) ----
+export type NotificationKind =
+  'choice' | 'approval' | 'payment' | 'signin' | 'done' | 'routine' | 'brief' | 'stuck' | 'error' | 'reply' | 'reminder' | 'summary';
+/** Every ToastAction is carried as a foo:// URL (08-0 §G.9) with protocol activation (09 §9.9.1). No "reply" action (X-67). */
+export type ToastAction =
+  | { kind: 'open'; chatId: string; cardId?: string }
+  | { kind: 'review'; cardId: string }
+  | { kind: 'not_now'; cardId: string }
+  | { kind: 'answer_choice'; cardId: string; optionId: string }
+  | { kind: 'read'; chatId: string }
+  | { kind: 'settings'; page: SettingsPage; row?: string };
+export interface NotificationRequest {
+  kind: NotificationKind;
+  chatId: string;
+  title: string;
+  body: string;
+  buttons?: { label: string; action: ToastAction }[];
+  prompted: boolean;
+  urgent?: boolean;
+  /** cardId or messageId = toast tag. */
+  ref?: string;
+}
+/** CR-0015 (G-M11-16): one toast, ready for the Windows toast XML (09 §9.9.1–§9.9.3). */
+export interface ToastSpec {
+  req: NotificationRequest;
+  /** cardId or messageId (`req.ref`); a later toast with the same tag and group replaces this one (Merged). */
+  tag: string;
+  /** The chat id: closing a chat's toasts closes its group (09 §9.9.5). */
+  group: string;
+  /** The chat name; "{group} · {helper}" in groups (09 §9.9.1). */
+  groupTitle: string;
+  /** `{DATA}\avatars\raster\{safeName(faceRef)}-48-{mood}.png`, else the letter disc PNG in resources (AT-271). */
+  logoPng: string;
+  /** The quiet-hours summary toast is silent (08-3 §15.2 step 4). */
+  silent: boolean;
+  /** The PC is locked: title "foo", body the count line (09 §9.9.4 "PC locked"). */
+  locked: boolean;
+}
+
+/** 08-3 §15.4: what NotificationService pushes to main's taskbar module, debounced 500 ms. */
+export interface BadgeState {
+  needsYou: number;
+  doneRecently: boolean;
+  working: { done: number; total: number } | null;
+  paused: boolean;
 }

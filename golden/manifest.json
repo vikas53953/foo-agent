@@ -9,7 +9,7 @@
     "uxChapters": 25,
     "uxSteps": 245,
     "uxFrames": 490,
-    "bp": 39
+    "bp": 43
   },
   "bp": [
     {
@@ -471,6 +471,58 @@
       "spec": "05-3 §5.21",
       "milestone": "M4",
       "note": "Card gallery: Spend cap. App: the spend cap card in the thread, from seeded card rows."
+    },
+    {
+      "id": "BP-WIN-01",
+      "selector": "#windows .panel:nth-child(1) > .toast",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "09 §9.9.3",
+      "milestone": "M11",
+      "capture": "native",
+      "note": "Living in Windows: Payment toast. App: the payload the Notifier fake / menu template / overlay spy records."
+    },
+    {
+      "id": "BP-WIN-02",
+      "selector": "#windows .panel:nth-child(2) > .toast",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "09 §9.9.3",
+      "milestone": "M11",
+      "capture": "native",
+      "note": "Living in Windows: Choice toast. App: the payload the Notifier fake / menu template / overlay spy records."
+    },
+    {
+      "id": "BP-WIN-03",
+      "selector": "#windows .panel:nth-child(3) > .taskbar",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "09 §9.10.1",
+      "milestone": "M11",
+      "capture": "native",
+      "note": "Living in Windows: Taskbar overlay. App: the payload the Notifier fake / menu template / overlay spy records."
+    },
+    {
+      "id": "BP-WIN-04",
+      "selector": "#windows .panel:nth-child(3) > .menu",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "09 §9.8.4",
+      "milestone": "M11",
+      "capture": "native",
+      "note": "Living in Windows: Tray menu. App: the payload the Notifier fake / menu template / overlay spy records."
     }
   ],
   "ux": [
@@ -1849,7 +1901,7 @@
       "s": "\"Trips · Which flight time works for Delhi on Fri 18 Dec?\" with 10:15 AM · Open.",
       "f": "Allowed only for choices. Money, sends and bookings never get an answer button on a notification.",
       "hl": "toast-1",
-      "milestone": "M5"
+      "milestone": "M11"
     },
     {
       "id": "UX-10-08",
@@ -4033,7 +4085,7 @@
       "s": "\"foo had trouble starting. I've paused everything so nothing runs twice.\" Start normally · Send a report.",
       "f": "\"Send a report\" only saves a file on your PC and opens the folder. Nothing is uploaded.",
       "hl": "safe",
-      "milestone": null
+      "milestone": "M11"
     },
     {
       "id": "UX-23-11",

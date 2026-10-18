@@ -1,6 +1,6 @@
 // Spec: 08-0 §C (data-testid scheme, X-58), 02-3 §F32.2 (ids used by 02–04; this file holds the shell areas: titlebar,
 // banner, sidebar, chatlist, chat-header, thread, app), 06 `screen-{slug}` roots for the pages the shell opens; M4 adds the
-// job cards, proof chips, stacked composer notices and dialog C-21 (CR-0008).
+// job cards, proof chips, stacked composer notices and dialog C-21 (CR-0008); M11 the Windows surfaces (CR-0015).
 // Ids are static; components read them from here (lint foo/testid-from-registry).
 export const TID = {
   // titlebar (03-shell-1 §3.2.5)
@@ -320,6 +320,24 @@ export const TID = {
   composerErrorsClear: 'composer-errors-clear',
   dialogC21: 'dialog-c-21',
   dialogConfirmField: 'dialog-confirm-field',
+  // M11 (CR-0015): first close C-18 (09 §9.8.2), quit (09 §9.8.4, G-M11-15 slug `quit`), restart / what's new / report
+  // (06-3 §16–§18), the hiccup line (09 §9.21), the safe-mode card buttons, and the FOO_TEST previews of the native
+  // surfaces (areas `tray-menu`, `toast-preview`, 08-0 §C; element names by CR-0015).
+  dialogC18: 'dialog-c-18',
+  dialogQuit: 'dialog-quit',
+  dialogRestart: 'dialog-restart',
+  dialogWhatsNew: 'dialog-whats-new',
+  dialogReport: 'dialog-report',
+  dialogReportPreview: 'dialog-report-preview',
+  dialogReportNote: 'dialog-report-note',
+  screenHiccup: 'screen-hiccup',
+  cardErrorReport: 'card-error-report',
+  cardErrorStartNormally: 'card-error-start-normally',
+  trayMenuItem: 'tray-menu-item',
+  toastPreviewRoot: 'toast-preview-root',
+  toastPreviewTitle: 'toast-preview-title',
+  toastPreviewBody: 'toast-preview-body',
+  toastPreviewButton: 'toast-preview-button',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

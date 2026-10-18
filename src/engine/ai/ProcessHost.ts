@@ -7,7 +7,7 @@ import { spawn as nodeSpawn, type ChildProcess } from 'node:child_process';
 import path from 'node:path';
 import { StringDecoder } from 'node:string_decoder';
 import type { ProviderId } from '../../shared/types';
-import type { MainLink } from '../protocol';
+import type { MainLink, ProcReply } from '../protocol';
 import type { AdapterDeps } from './deps';
 
 /** Job Object kill: how long ProcessHost waits for main's `proc.kill` reply before the taskkill sweep (pack §4.7). */
@@ -19,12 +19,12 @@ export interface ProcJobs {
   kill(pid: number): Promise<{ native: boolean }>;
 }
 
-/** ProcJobs over the engine port: `proc.track` fire and forget, `proc.kill` as a request (an error reads as native:false). */
+/** ProcJobs over the engine port: `proc.track` not awaited, `proc.kill` awaited (an error reads as native:false). */
 export function linkJobs(link: MainLink): ProcJobs {
   return {
-    track: (pid, purpose) => link.send('proc.track', { pid, purpose }),
+    track: (pid, purpose) => void link.request<ProcReply>('proc.track', { pid, purpose }),
     kill: async (pid) => {
-      const r = await link.request<{ native: boolean }>('proc.kill', { pid });
+      const r = await link.request<ProcReply>('proc.kill', { pid });
       return r.ok ? r.value : { native: false };
     },
   };

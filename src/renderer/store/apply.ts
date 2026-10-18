@@ -61,6 +61,9 @@ export const REDUCERS: Reducers = {
   'ai:detectRow': () => undefined,
   // `navigate` is handled by wireEvents (it is an action, not a row patch).
   navigate: () => undefined,
+  // M11 (CR-0015): the About states and banner type 7 (T5) and the C-18 / quit dialogs (T4) read these; no-op until then.
+  'update:status': () => undefined,
+  'app:closeAsk': () => undefined,
 };
 
 export function applyEvent<E extends EventChannel>(event: E, payload: EventPayload[E]): void {

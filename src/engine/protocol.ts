@@ -288,6 +288,21 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
       })
       .strict(),
   }),
+  // M11 (CR-0015 G-M11-01): ProcessHost lives in the engine, the addon in main. `proc.track` right after spawn, before
+  // stdin is written (not awaited); `proc.kill` awaited ≤ 1 s, then taskkill /T /F as before. `native: false` = no addon.
+  z.object({
+    id: z.string(),
+    kind: z.literal('proc.track'),
+    payload: z.object({ pid: z.number().int().positive(), purpose: z.enum(['ai_cli', 'whisper']) }).strict(),
+  }),
+  z.object({ id: z.string(), kind: z.literal('proc.kill'), payload: z.object({ pid: z.number().int().positive() }).strict() }),
+  // M11 (CR-0015 G-M11-02): the engine picks words, language and skip rules (08-3 §18.2); main only calls `synthesize`.
+  // Reply ok | VOICE_UNAVAILABLE.
+  z.object({
+    id: z.string(),
+    kind: z.literal('voice.synthesize'),
+    payload: z.object({ text: z.string().min(1), lang: z.string().min(2).max(16), outPath: z.string().min(1) }).strict(),
+  }),
   /** The engine's answer to `ai.cmd`: main stores the chosen/verified provider in settings.json (main owns settings). */
   z.object({
     id: z.string(),
@@ -303,28 +318,21 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
       })
       .strict(),
   }),
-  /** M11 (CR-0015, G-M11-01): ProcessHost tracks each child right after spawn, before stdin; main assigns a Job Object. */
-  z.object({
-    id: z.string(),
-    kind: z.literal('proc.track'),
-    payload: z.object({ pid: z.number().int().positive(), purpose: z.enum(['ai_cli', 'whisper']) }).strict(),
-  }),
-  /** M11 (G-M11-01): Stop → main terminates the pid's Job Object; reply `{ native }` (false → the engine runs taskkill). */
-  z.object({ id: z.string(), kind: z.literal('proc.kill'), payload: z.object({ pid: z.number().int().positive() }).strict() }),
-  /** M11 (G-M11-02): the engine decides what to read out; main calls `foo-native.synthesize` → ok | VOICE_UNAVAILABLE. */
-  z.object({
-    id: z.string(),
-    kind: z.literal('voice.synthesize'),
-    payload: z.object({ text: z.string().min(1), lang: z.string().min(1), outPath: z.string().min(1) }).strict(),
-  }),
 ]);
 export type EngineToMain = z.infer<typeof engineToMainSchema>;
 export type DbTxReply = { ids: string[]; revs: number[] };
 
+/** EngineToMain messages main answers with `{ re, result }`. */
+export type MainRequestKind = 'db.tx' | 'db.query' | 'proc.track' | 'proc.kill' | 'voice.synthesize';
+/** CR-0015: the reply to `proc.track` / `proc.kill`. */
+export interface ProcReply {
+  native: boolean;
+}
+
 /** The engine side of the port (in production a MessagePort; in tests a direct call into main's handlers). */
 export interface MainLink {
-  request<T>(kind: 'db.tx' | 'db.query' | 'proc.kill' | 'voice.synthesize', payload: unknown): Promise<Result<T>>;
-  send(kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify' | 'proc.track', payload: unknown): void;
+  request<T>(kind: MainRequestKind, payload: unknown): Promise<Result<T>>;
+  send(kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify', payload: unknown): void;
 }
 
 export interface EngineSettingsView {

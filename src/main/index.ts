@@ -13,7 +13,6 @@ import { EngineSupervisor } from './engine-supervisor/EngineSupervisor';
 import { engineHello } from './engine-supervisor/hello';
 import { chatRowById, messageGet } from './store/queries';
 import { NetMonitor } from './net/netMonitor';
-import { installNative } from './proc/installNative';
 import type { FakeClock } from '../shared/clock';
 import { SettingsStore } from './settings/Settings';
 import { openDb, type Db } from './store/db';
@@ -22,6 +21,15 @@ import { newId } from '../shared/ids';
 import { createMainWindow } from './windows/mainWindow';
 import { handleAppScheme, registerAppScheme } from './windows/protocol';
 import { claimSingleInstance } from './windows/singleInstance';
+import type { InstallDeps } from './installDeps';
+import { fooNative } from './native/fooNative';
+import { installNative } from './native/installNative';
+import { installNotify } from './notify/installNotify';
+import { installTray } from './notify/installTray';
+import { installUpdater } from './updater/installUpdater';
+import { installCrashGuard } from './windows/installCrashGuard';
+import { installDisplay } from './windows/installDisplay';
+import { installLifecycle } from './windows/installLifecycle';
 
 export const AUMID = 'com.foo.desktop';
 
@@ -69,7 +77,6 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
     const netMonitor = new NetMonitor(deps.clock);
     const probe = testClock ? () => deps.net.online : electronProbe;
     const store = db;
-    const native = installNative(); // M11: foo-native + Job Objects (G-M11-01)
     // 08-1 §2.4: main's half of the engine port; the engine forks after first paint (step 6).
     const engine = new EngineBridge({
       db: store,
@@ -85,12 +92,9 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
       },
       dataDir: paths.data,
       now: () => deps.clock.now(),
-      proc: native.jobs,
-      synthesize: native.synthesize,
     });
     const ctx: AppContext = { db, settings, net: netMonitor, probe, dataDir: paths.data, engine };
     supervisor = new EngineSupervisor(engine, { data: paths.data, local: paths.local });
-    supervisor.onExit = () => native.jobs.killAll(); // CR-0007 §(e): no orphaned CLI tree after an engine crash
     supervisor.onStarted = () =>
       engineHello(engine.send.bind(engine), {
         settings: () => settings.get(),
@@ -105,6 +109,10 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
     handleAppScheme(paths.data);
     registerIpc(ctx);
     mainWindow = createMainWindow(settings, { hidden });
+    // M11 (CR-0015): each Windows module installs itself; the ticket that owns a module replaces its install file only.
+    const installDeps: InstallDeps = { ctx, window: () => mainWindow, native: fooNative(), hidden, testRun: !!testClock };
+    for (const install of [installNative, installNotify, installTray, installLifecycle, installDisplay, installUpdater, installCrashGuard])
+      install(installDeps);
     if (process.platform === 'win32') {
       mainWindow.setAppDetails({
         appId: AUMID,
