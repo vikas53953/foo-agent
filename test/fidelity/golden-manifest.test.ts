@@ -1,14 +1,19 @@
 // 11-fidelity §11.2.1, §11.2.7: golden/manifest.json is generated from the frozen walkthrough and fixes the BP ids.
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { BP, BP_M2, BP_M4, CHAPTER_MILESTONE, EARLY_STEPS, SUPERSEDED, readManifest } from '../../scripts/golden-manifest';
+import { BP, BP_M2, BP_M4, BP_M12, CHAPTER_MILESTONE, EARLY_STEPS, SUPERSEDED, readManifest } from '../../scripts/golden-manifest';
 import { compareRenders, select, type RefJson } from '../../scripts/golden-render';
 
 const manifest = readManifest();
 
 describe('golden manifest', () => {
   it('has the 245 walkthrough steps in 25 chapters with well-formed ids', () => {
-    expect(manifest.counts).toEqual({ uxChapters: 25, uxSteps: 245, uxFrames: 490, bp: BP.length + BP_M2.length + BP_M4.length });
+    expect(manifest.counts).toEqual({
+      uxChapters: 25,
+      uxSteps: 245,
+      uxFrames: 490,
+      bp: BP.length + BP_M2.length + BP_M4.length + BP_M12.length,
+    });
     expect(manifest.ux).toHaveLength(245);
     expect(new Set(manifest.ux.map((e) => e.id)).size).toBe(245);
     for (const [i, e] of manifest.ux.entries()) {
@@ -28,7 +33,7 @@ describe('golden manifest', () => {
     for (const s of manifest.superseded) expect(manifest.ux.find((e) => e.id === s.id)?.superseded?.decision).toBe(s.decision);
   });
   it('fixes the BP ids for M1 with selectors and spec sections', () => {
-    expect(manifest.bp).toEqual([...BP, ...BP_M2, ...BP_M4]);
+    expect(manifest.bp).toEqual([...BP, ...BP_M2, ...BP_M4, ...BP_M12]);
     const ids = manifest.bp.map((b) => b.id);
     for (const id of ['BP-APP-L', 'BP-APP-M', 'BP-APP-R', 'BP-ANAT-L', 'BP-ANAT-M', 'BP-ANAT-S', 'BP-ANAT-XS']) expect(ids).toContain(id);
     for (const b of BP) {
@@ -70,6 +75,23 @@ describe('golden manifest', () => {
       'UX-05-04',
       ...['01', '02', '03', '04', '05', '06', '09', '11'].map((s) => `UX-23-${s}`),
     ]);
+  });
+  it('CR-0016 adds the four first-run screen refs and the in-window UX-01 steps M12 tests first', () => {
+    expect(BP_M12.map((b) => b.id)).toEqual(['BP-SCR-01', 'BP-SCR-02', 'BP-SCR-03', 'BP-SCR-04']);
+    for (const b of BP_M12) {
+      expect(b.milestone).toBe('M12');
+      expect(b.selector).toMatch(/^#scrgal > \.scr:nth-child\([1-4]\) > \.body$/);
+    }
+    const html = readFileSync(manifest.sources.bp, 'utf8');
+    expect(html).toContain('id="scrgal"');
+    for (const title of ['Splash', 'First run · find your AI', 'First run · name and face', 'First run · first real job'])
+      expect(html).toContain(`['${title}',`);
+    const early = manifest.ux.filter((e) => e.firstTested === 'M12').map((e) => [e.id, e.milestone]);
+    expect(early).toEqual([
+      ['UX-01-06', 'M14'],
+      ['UX-01-07', 'M14'],
+    ]);
+    expect(select(manifest, { milestone: 'M12' }).ux).toHaveLength(39 + 2);
   });
   it('the selectors exist in the frozen Blueprint', () => {
     const html = readFileSync(manifest.sources.bp, 'utf8');

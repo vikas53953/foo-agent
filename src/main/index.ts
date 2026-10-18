@@ -8,6 +8,7 @@ import { resolvePaths } from './data/paths';
 import { deps, installTestDeps } from './deps';
 import { testHooksEnabled } from './ipc/guard';
 import { electronProbe, emit, listContext, registerIpc, type AppContext } from './ipc/IpcRouter';
+import { SetupFlow } from './setup/SetupFlow';
 import { EngineBridge } from './engine-supervisor/EngineBridge';
 import { EngineSupervisor } from './engine-supervisor/EngineSupervisor';
 import { engineHello } from './engine-supervisor/hello';
@@ -84,7 +85,8 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
       dataDir: paths.data,
       now: () => deps.clock.now(),
     });
-    const ctx: AppContext = { db, settings, net: netMonitor, probe, dataDir: paths.data, engine };
+    const setup = new SetupFlow(settings, () => deps.clock.now());
+    const ctx: AppContext = { db, settings, net: netMonitor, probe, dataDir: paths.data, engine, setup };
     supervisor = new EngineSupervisor(engine, { data: paths.data, local: paths.local });
     supervisor.onStarted = () =>
       engineHello(engine.send.bind(engine), {

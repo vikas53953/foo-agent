@@ -1,8 +1,10 @@
 // Spec: 08-4 §25.1 (shared act types: PlanStep, ChoiceCardSpec), §25.2 (IntakeAct), §25.2a (GroupIntakeAct, GroupMemberAct),
 // §25.4 (SecondLookAct, RewriteAct, StuckAct), 08-2 §7.3/§7.4 (`<act>` parsed with zod, unknown fields rejected, objects
 // strict), 08-4 §24.4 ({schemaJson} is the JSON Schema of the purpose's zod schema), 08-0 §B.2 (Route, ConnectorApp),
-// 08-3 §13.2 (RoutineDraft), 08-0 §E.9 (`src/shared/schemas.ts`).
+// 08-3 §13.2 (RoutineDraft), 08-0 §E.9 (`src/shared/schemas.ts`); M12 (CR-0016): 06-1 §2.0–§2.5 setup answers, 08-5 §4.1
+// SetupCardPayload.
 import { z } from 'zod';
+import { FACE_REF, PROVIDER_IDS } from './settings';
 
 /** 08-0 §B.2 `Route` (X-125). */
 export const RouteSchema = z.enum(['api', 'browser', 'screen', 'email', 'handback']);
@@ -268,6 +270,71 @@ export type RewriteAct = z.infer<typeof RewriteActSchema>;
 export type StuckAct = z.infer<typeof StuckActSchema>;
 export type GroupIntakeAct = z.infer<typeof GroupIntakeActSchema>;
 export type GroupMemberAct = z.infer<typeof GroupMemberActSchema>;
+
+// ---- first run (M12, CR-0016) ----
+
+/** 08-5 §4.1 `SetupCardPayload` (card type `setup`, X-119). */
+export const SetupCardPayloadSchema = z.object({ setupCard: z.enum(['welcome', 'ai_finder', 'name', 'face', 'apps']) }).strict();
+
+/** 06-1 §2.3 Card 2a: max 20 graphemes after trimming. */
+export const NAME_MAX_GRAPHEMES = 20;
+const graphemes = (s: string) => [...new Intl.Segmenter('en', { granularity: 'grapheme' }).segment(s)].length;
+/** 06-1 §2.3 Card 2a: trimmed, 1–20 graphemes, at least one letter or digit (any script). */
+export const AgentNameSchema = z
+  .string()
+  .transform((s) => s.trim())
+  .refine((s) => graphemes(s) >= 1 && graphemes(s) <= NAME_MAX_GRAPHEMES, { message: 'too_long' })
+  .refine((s) => /[\p{L}\p{N}]/u.test(s), { message: 'no_letter' });
+
+export const FaceRefSchema = z.string().regex(FACE_REF);
+export const SetupAppSchema = z.enum(['whatsapp', 'google', 'x', 'instagram']);
+
+/** 08-0 §E.5 `resources/maker-pages.json` (X-42: foo only opens the maker's page, it never installs; G-M12-20). */
+export const MakerPagesSchema = z
+  .object(
+    Object.fromEntries(
+      (['claude-cli', 'codex-cli', 'gemini-cli', 'ollama'] as const).map((id) => [
+        id,
+        z.object({ name: z.string().min(1), maker: z.string().min(1), url: z.url({ protocol: /^https$/ }) }).strict(),
+      ]),
+    ) as Record<
+      'claude-cli' | 'codex-cli' | 'gemini-cli' | 'ollama',
+      z.ZodObject<{ name: z.ZodString; maker: z.ZodString; url: z.ZodURL }>
+    >,
+  )
+  .strict();
+export type MakerPages = z.infer<typeof MakerPagesSchema>;
+
+/** `resources/names.json` (06-1 §2.3 🎲, G-M12-15): 200 unique names, 3–8 letters. */
+export const NamesSchema = z
+  .object({
+    _why: z.string(),
+    names: z
+      .array(z.string().regex(/^\p{L}{3,8}$/u))
+      .length(200)
+      .refine((n) => new Set(n.map((x) => x.toLowerCase())).size === n.length),
+  })
+  .strict();
+
+/** `setup:answer` answers by step (pack M12 §4 table; 08-1 §3.2 `setup:answer` → `VALIDATION` otherwise). */
+export const SETUP_ANSWER_SCHEMAS = {
+  0: z.object({ start: z.literal(true) }).strict(),
+  1: z.object({ use: z.enum(PROVIDER_IDS) }).strict(),
+  2: z.union([
+    z.object({ name: AgentNameSchema }).strict(),
+    z.object({ keep: z.literal(true) }).strict(),
+    z.object({ faceRef: FaceRefSchema }).strict(),
+  ]),
+  3: z.union([
+    z
+      .object({ apps: z.array(SetupAppSchema).min(1).max(4) })
+      .strict()
+      .refine((a) => new Set(a.apps).size === a.apps.length),
+    z.object({ none: z.literal(true) }).strict(),
+  ]),
+  4: z.object({ chipIndex: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(5)]) }).strict(),
+  5: z.never(),
+} as const;
 
 /**
  * 08-4 §24.4 `{schemaJson}`: the JSON Schema of a zod schema. Pick: zod 4's built-in `z.toJSONSchema` (zod-to-json-schema

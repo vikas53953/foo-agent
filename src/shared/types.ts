@@ -542,10 +542,37 @@ export type PublicSettings = Omit<Settings, 'flags' | 'window'> & {
 };
 export interface SetupState {
   complete: boolean;
-  step: 0 | 1 | 2 | 3 | 4 | 5;
-  interviewCard?: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H';
-  answers: Partial<Record<0 | 1 | 2 | 3 | 4 | 5, unknown>>;
+  step: SetupStep;
+  interviewCard?: InterviewCard;
+  answers: Partial<Record<SetupStep, unknown>>;
 }
+
+// ---- first run (M12, CR-0016): 06-1 §2.0–§2.6, 08-5 §3 SetupState, §4.1 SetupCardPayload, X-119, X-139 ----
+/** 06-1 §2.0 rule 8 numbering: 0 welcome, 1 find your AI, 2 name and face, 3 interview, 4 real job, 5 closing. */
+export type SetupStep = 0 | 1 | 2 | 3 | 4 | 5;
+/** 06-1 §2.4 interview cards. */
+export type InterviewCard = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H';
+/** The interview cards drawn as 05 Choice cards (`purpose: 'setup'`, `payload.setupCard`); C is type `setup`, D/E are Connect. */
+export type SetupChoiceCard = 'A' | 'B' | 'F' | 'G' | 'H';
+/** 08-5 §4.1: the card type `setup` has exactly these five values (X-119; 'whatsapp_link' withdrawn by X-139). */
+export type SetupCardId = 'welcome' | 'ai_finder' | 'name' | 'face' | 'apps';
+export interface SetupCardPayload {
+  setupCard: SetupCardId;
+}
+/** The fields an interview Choice card adds to M5's ChoicePayload (08-5 §4.1, 08-0 §G.1). */
+export interface SetupChoiceMark {
+  purpose: 'setup';
+  setupCard: SetupChoiceCard;
+}
+/** 06-1 §2.4 Card C chips (Outlook omitted while flags.outlook is false, X-41). */
+export type SetupApp = 'whatsapp' | 'google' | 'x' | 'instagram';
+/** `setup:answer` answers by step (CR-0016 §b; pack M12 §4). Choice and Connect cards answer through their own channels. */
+export type SetupAnswer =
+  | { step: 0; answer: { start: true } }
+  | { step: 1; answer: { use: ProviderId } }
+  | { step: 2; answer: { name: string } | { keep: true } | { faceRef: FaceRef } }
+  | { step: 3; answer: { apps: SetupApp[] } | { none: true } }
+  | { step: 4; answer: { chipIndex: 1 | 2 | 3 | 4 | 5 } };
 export interface AiStatus {
   primary: ProviderId | null;
   backup: ProviderId | null;
@@ -653,6 +680,8 @@ export type ErrorKind =
   | 'AI_NO_VISION'
   | 'AI_CLI_INCOMPATIBLE'
   | 'AI_NOT_VERIFIED'
+  // M12 (CR-0016; 08-1 §3.2 ai:signIn, 600 s)
+  | 'SIGNIN_TIMEOUT'
   | 'AI_TIMEOUT'
   | 'AI_PROTOCOL_VIOLATION'
   | 'PROTOCOL_INVALID'

@@ -304,6 +304,28 @@ export const BP_M4: BpEntry[] = (
 }));
 
 /**
+ * CR-0016: the M12 first-run screens (06-1 §1, §2.2, §2.3, §2.5–§2.6): the `.body` of the first four screens-gallery panels,
+ * Splash, First run · find your AI, First run · name and face, First run · first real job (selector pattern of CR-0003).
+ * The panels are gallery thumbnails, so their R2 boxes are disputed by construction (CR-0003 §b); no size is fixed here.
+ */
+export const BP_M12: BpEntry[] = (
+  [
+    ['BP-SCR-01', 1, 'Splash', '06-1 §1'],
+    ['BP-SCR-02', 2, 'First run · find your AI', '06-1 §2.2'],
+    ['BP-SCR-03', 3, 'First run · name and face', '06-1 §2.3'],
+    ['BP-SCR-04', 4, 'First run · first real job', '06-1 §2.5–§2.6'],
+  ] as const
+).map(([id, n, name, spec]): BpEntry => ({
+  id,
+  selector: `#scrgal > .scr:nth-child(${n}) > .body`,
+  drawn: true,
+  size: { width: null, height: null },
+  spec,
+  milestone: 'M12',
+  note: `Screens gallery: ${name}. App: the same first-run surface on the fake world.`,
+}));
+
+/**
  * CR-0003: UX steps an earlier milestone runs before the chapter's owner (11 §11.12 M2 "UX-09 steps not needing
  * transcription"). UX-09-01 (the recording bar) and UX-09-08 (Windows blocks the microphone) need no speech-to-text; the
  * other UX-09 steps show transcripts or foo's voice replies (M11).
@@ -316,6 +338,10 @@ export const EARLY_STEPS: Record<string, string> = {
   // checklist within 2 s, the result with its Proof chip) sent as a typed request. UX-23-07/-08 are M10, UX-23-10 is M11.
   ...Object.fromEntries(['01', '02', '03', '04', '05', '06', '09', '11'].map((s) => [`UX-23-${s}`, 'M4'])),
   ...Object.fromEntries(['02', '03', '04'].map((s) => [`UX-05-${s}`, 'M4'])),
+  // CR-0016 (G-M12-04): the in-window UX-01 steps first run shows (UX-01-06 splash, UX-01-07 welcome with the locked
+  // composer); UX-01-08 (tray "foo · setting up") joins after M11. M14 still blesses UX-01 on the installed build.
+  'UX-01-06': 'M12',
+  'UX-01-07': 'M12',
 };
 
 /** Chapter anchor → the milestone that completes the chapter (11 §11.12 item 8: a chapter is owned by the milestone that completes it). */
@@ -457,8 +483,13 @@ async function main() {
     version: 'spec-v1.0',
     generatedBy: 'scripts/golden-manifest.ts',
     sources: { ux: UX_FILE, bp: BP_FILE },
-    counts: { uxChapters: chapters.length, uxSteps: ux.length, uxFrames: ux.length * 2, bp: BP.length + BP_M2.length + BP_M4.length },
-    bp: [...BP, ...BP_M2, ...BP_M4],
+    counts: {
+      uxChapters: chapters.length,
+      uxSteps: ux.length,
+      uxFrames: ux.length * 2,
+      bp: BP.length + BP_M2.length + BP_M4.length + BP_M12.length,
+    },
+    bp: [...BP, ...BP_M2, ...BP_M4, ...BP_M12],
     ux,
     superseded: Object.entries(SUPERSEDED).map(([id, decision]) => ({ id, decision })),
   };
@@ -472,7 +503,9 @@ async function main() {
     return;
   }
   writeFileSync(MANIFEST_PATH, text);
-  console.log(`golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length + BP_M2.length + BP_M4.length} BP ids`);
+  console.log(
+    `golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length + BP_M2.length + BP_M4.length + BP_M12.length} BP ids`,
+  );
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) void main();

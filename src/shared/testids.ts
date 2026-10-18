@@ -1,6 +1,7 @@
 // Spec: 08-0 §C (data-testid scheme, X-58), 02-3 §F32.2 (ids used by 02–04; this file holds the shell areas: titlebar,
 // banner, sidebar, chatlist, chat-header, thread, app), 06 `screen-{slug}` roots for the pages the shell opens; M4 adds the
-// job cards, proof chips, stacked composer notices and dialog C-21 (CR-0008).
+// job cards, proof chips, stacked composer notices and dialog C-21 (CR-0008); M12 adds the splash and first run (06-1 §1–§2,
+// CR-0016). `card-choice` and `card-connect` arrive with M5 and M8.
 // Ids are static; components read them from here (lint foo/testid-from-registry).
 export const TID = {
   // titlebar (03-shell-1 §3.2.5)
@@ -320,6 +321,51 @@ export const TID = {
   composerErrorsClear: 'composer-errors-clear',
   dialogC21: 'dialog-c-21',
   dialogConfirmField: 'dialog-confirm-field',
+
+  // splash (06-1 §1.3, §1.6) and first run (06-1 §2.0–§2.5, 08-0 §C area `setup`; M12, CR-0016)
+  screenSplash: 'screen-splash',
+  screenSplashWordmark: 'screen-splash-wordmark',
+  screenSplashStatus: 'screen-splash-status',
+  screenSplashProgress: 'screen-splash-progress',
+  screenSplashStorage: 'screen-splash-storage',
+  screenSplashRetry: 'screen-splash-retry',
+  setupStepPill: 'setup-step-pill',
+  setupSkipRest: 'setup-skip-rest',
+  cardSetup: 'card-setup',
+  setupWelcomeFace: 'setup-welcome-face',
+  setupWelcomeTitle: 'setup-welcome-title',
+  setupWelcomeBody: 'setup-welcome-body',
+  setupWelcomeStart: 'setup-welcome-start',
+  setupPrivacyDetails: 'setup-privacy-details',
+  dialogPrivacy: 'dialog-privacy',
+  setupAiRow: 'setup-ai-row',
+  setupAiRowAction: 'setup-ai-row-action',
+  setupAiUse: 'setup-ai-use',
+  setupAiPickAnother: 'setup-ai-pick-another',
+  setupAiChangeCap: 'setup-ai-change-cap',
+  setupAiOpenPage: 'setup-ai-open-page',
+  setupAiNotNow: 'setup-ai-not-now',
+  setupAiRowOpenPage: 'setup-ai-row-open-page',
+  setupNameField: 'setup-name-field',
+  setupNameDone: 'setup-name-done',
+  setupNameKeep: 'setup-name-keep',
+  setupNameSurprise: 'setup-name-surprise',
+  setupNameError: 'setup-name-error',
+  setupFaceGrid: 'setup-face-grid',
+  setupFaceTile: 'setup-face-tile',
+  setupFaceUse: 'setup-face-use',
+  setupFaceSurprise: 'setup-face-surprise',
+  setupFaceOwnPicture: 'setup-face-own-picture',
+  cardFaceExplainer: 'card-face-explainer',
+  cardFaceExplainerCell: 'card-face-explainer-cell',
+  setupAppChip: 'setup-app-chip',
+  setupAppsDone: 'setup-apps-done',
+  setupWhatsappLink: 'setup-whatsapp-link',
+  setupWhatsappQr: 'setup-whatsapp-qr',
+  setupWhatsappShow: 'setup-whatsapp-show',
+  setupWhatsappNewCode: 'setup-whatsapp-new-code',
+  setupWhatsappNotNow: 'setup-whatsapp-not-now',
+  setupFirstJobChip: 'setup-first-job-chip',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

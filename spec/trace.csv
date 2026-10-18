@@ -127,3 +127,65 @@ R17 · R8 · R14,J5,,UX-05-04,,05-1 §5.2; 05-3 §5.15; 04 §4.2,test/fidelity/u
 ,,,,BP-CARD-18,05-3 §5.19,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
 ,,,,BP-CARD-19,05-3 §5.20,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
 ,,,,BP-CARD-20,05-3 §5.21,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
+,J1,AT-002,,,10-acceptance-1 §B; 06-1 §2.0; 09 §9.3.2,test/integration/setup/readiness.test.ts,M12,pending
+,J1,AT-003,,,10-acceptance-1 §B; 06-1 §2.0 rule 6; 06-1 §2.1,test/e2e/m12-resume.spec.ts,M12,pending
+,J2,AT-005,,,10-acceptance-1 §B; 06-1 §2.2; 08-2 §6.6,test/integration/setup/ai-finder.test.ts,M12,pending
+,J2,AT-006,,,10-acceptance-1 §B; 06-1 §2.0; 06-1 §2.2,test/e2e/m12-ai-finder.spec.ts,M12,pending
+,J2,AT-009,,,10-acceptance-1 §B; 06-1 §2.2; 05-2 §5.8,test/e2e/m12-ai-finder.spec.ts,M12,pending
+,J2,AT-155,,,10-acceptance-1 §B; 06-1 §2.2; X-42,test/integration/setup/maker-helper.test.ts,M12,pending
+,J2,AT-155a,,,10-acceptance-1 §B; 06-1 §2.2; 08-0 §E.5; X-42,test/unit/setup/maker-pages.test.ts,M12,live
+,J3,AT-010,,,10-acceptance-1 §B; 06-1 §2.3,test/integration/setup/name.test.ts,M12,pending
+,J3,AT-012,,,10-acceptance-1 §B; 06-1 §2.0 rule 4,test/integration/setup/real-task-first.test.ts,M12,pending
+,J3,AT-013,,,10-acceptance-1 §B; 06-1 §2.3,test/e2e/m12-identity.spec.ts,M12,pending
+,J3,AT-201,,,10-acceptance-1 §B; 06-1 §2.3; 08-1 §3.2,test/integration/setup/avatar.test.ts,M12,pending
+,J4,AT-016,,,10-acceptance-1 §B; 06-1 §2.4; 08-4 §26.6,test/e2e/m12-interview.spec.ts,M12,pending
+,J4,AT-017,,,10-acceptance-1 §B; 06-1 §2.4,test/integration/setup/app-peek.test.ts,M12,pending
+,J4,AT-200,,,10-acceptance-1 §B; 06-1 §2.0 rule 8; 06-1 §2.4,test/e2e/m12-resume.spec.ts,M12,pending
+,J4,AT-202,,,10-acceptance-1 §B; 06-1 §2.4; 05-3 §5.11,test/e2e/m12-connect.spec.ts,M12,pending
+,J4,AT-203,,,10-acceptance-1 §B; 06-1 §2.4,test/e2e/m12-connect.spec.ts,M12,pending
+,J4,AT-274,,,10-acceptance-1 §B; 06-1 §2.0; 08-0 §G.1; X-119; X-139,test/integration/setup/card-types.test.ts,M12,pending
+,J5,AT-019,,,10-acceptance-1 §B; 06-1 §2.5; 05-1 §5.2,test/e2e/m12-first-job.spec.ts,M12,pending
+,J5,AT-021,,,10-acceptance-1 §B; 06-1 §2.5,test/unit/setup/firstJobChips.test.ts,M12,pending
+,J5,AT-022,,,10-acceptance-1 §B; 06-1 §2.6; 01-articles Art. 21,test/integration/setup/closing.test.ts,M12,pending
+,J1 · J2 · J3 · J4 · J5,ART-26b,,,10-acceptance-2 §D; 06-1 §2.7,test/e2e/m12-keyboard.spec.ts,M12,pending
+,J1,,UX-01-06,,06-1 §1; 06-1 §2.1,test/fidelity/ux/UX-01.install.spec.ts,M12,pending
+,J1,,UX-01-07,,06-1 §1; 06-1 §2.1,test/fidelity/ux/UX-01.install.spec.ts,M12,pending
+,J2,,UX-02-01,,06-1 §2.2,test/fidelity/ux/UX-02.ai.spec.ts,M12,pending
+,J2,,UX-02-02,,06-1 §2.2,test/fidelity/ux/UX-02.ai.spec.ts,M12,pending
+,J2,,UX-02-03,,06-1 §2.2,test/fidelity/ux/UX-02.ai.spec.ts,M12,pending
+,J2,,UX-02-04,,06-1 §2.2,test/fidelity/ux/UX-02.ai.spec.ts,M12,pending
+,J2,,UX-02-05,,06-1 §2.2,test/fidelity/ux/UX-02.ai.spec.ts,M12,pending
+,J2,,UX-02-06,,06-1 §2.2,test/fidelity/ux/UX-02.ai.spec.ts,M12,pending
+,J2,,UX-02-07,,06-1 §2.2,test/fidelity/ux/UX-02.ai.spec.ts,M12,pending
+,J2,,UX-02-08,,06-1 §2.2,test/fidelity/ux/UX-02.ai.spec.ts,M12,pending
+,J2,,UX-02-09,,06-1 §2.2,test/fidelity/ux/UX-02.ai.spec.ts,M12,pending
+,J3,,UX-03-01,,06-1 §2.3,test/fidelity/ux/UX-03.name.spec.ts,M12,pending
+,J3,,UX-03-02,,06-1 §2.3,test/fidelity/ux/UX-03.name.spec.ts,M12,pending
+,J3,,UX-03-03,,06-1 §2.3,test/fidelity/ux/UX-03.name.spec.ts,M12,pending
+,J3,,UX-03-04,,06-1 §2.3,test/fidelity/ux/UX-03.name.spec.ts,M12,pending
+,J3,,UX-03-05,,06-1 §2.3,test/fidelity/ux/UX-03.name.spec.ts,M12,pending
+,J3,,UX-03-06,,06-1 §2.3,test/fidelity/ux/UX-03.name.spec.ts,M12,pending
+,J3,,UX-03-07,,06-1 §2.3,test/fidelity/ux/UX-03.name.spec.ts,M12,pending
+,J3,,UX-03-08,,06-1 §2.3,test/fidelity/ux/UX-03.name.spec.ts,M12,pending
+,J3,,UX-03-09,,06-1 §2.3,test/fidelity/ux/UX-03.name.spec.ts,M12,pending
+,J3,,UX-03-10,,06-1 §2.3,test/fidelity/ux/UX-03.name.spec.ts,M12,pending
+,J4,,UX-04-01,,06-1 §2.4,test/fidelity/ux/UX-04.interview.spec.ts,M12,pending
+,J4,,UX-04-02,,06-1 §2.4,test/fidelity/ux/UX-04.interview.spec.ts,M12,pending
+,J4,,UX-04-03,,06-1 §2.4,test/fidelity/ux/UX-04.interview.spec.ts,M12,pending
+,J4,,UX-04-04,,06-1 §2.4,test/fidelity/ux/UX-04.interview.spec.ts,M12,pending
+,J4,,UX-04-05,,06-1 §2.4,test/fidelity/ux/UX-04.interview.spec.ts,M12,pending
+,J4,,UX-04-06,,06-1 §2.4,test/fidelity/ux/UX-04.interview.spec.ts,M12,pending
+,J4,,UX-04-07,,06-1 §2.4,test/fidelity/ux/UX-04.interview.spec.ts,M12,pending
+,J4,,UX-04-08,,06-1 §2.4,test/fidelity/ux/UX-04.interview.spec.ts,M12,pending
+,J4,,UX-04-09,,06-1 §2.4,test/fidelity/ux/UX-04.interview.spec.ts,M12,pending
+,J4,,UX-04-10,,06-1 §2.4,test/fidelity/ux/UX-04.interview.spec.ts,M12,pending
+,J4,,UX-04-11,,06-1 §2.4,test/fidelity/ux/UX-04.interview.spec.ts,M12,pending
+,J4,,UX-04-12,,06-1 §2.4,test/fidelity/ux/UX-04.interview.spec.ts,M12,pending
+,J4,,UX-04-13,,06-1 §2.4,test/fidelity/ux/UX-04.interview.spec.ts,M12,pending
+,J5,,UX-05-01,,06-1 §2.5; 06-1 §2.6,test/fidelity/ux/UX-05.first.spec.ts,M12,pending
+,J5,,UX-05-05,,06-1 §2.5; 06-1 §2.6,test/fidelity/ux/UX-05.first.spec.ts,M12,pending
+,J5,,UX-05-07,,06-1 §2.5; 06-1 §2.6,test/fidelity/ux/UX-05.first.spec.ts,M12,pending
+,,,,BP-SCR-01,06-1 §1,test/fidelity/bp/BP-scr-m12-01.spec.ts,M12,pending
+,,,,BP-SCR-02,06-1 §2.2,test/fidelity/bp/BP-scr-m12-02.spec.ts,M12,pending
+,,,,BP-SCR-03,06-1 §2.3,test/fidelity/bp/BP-scr-m12-03.spec.ts,M12,pending
+,,,,BP-SCR-04,06-1 §2.5; 06-1 §2.6,test/fidelity/bp/BP-scr-m12-04.spec.ts,M12,pending

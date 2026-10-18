@@ -4,7 +4,7 @@
 // routine:pause and the gap channels message:edit/delete/retry, link:open, app:showEmojiPanel (implementation-notes). M2
 // builder B: message:send (idempotent, AT-225; R1 secret re-check, 08-2 §11.4), composer:checkSecret, composer:saveDraft,
 // files:stage, voice:submit (04-2 §22.1), helper:pause (04-2 §23.2 "Turn on").
-import { app, BrowserWindow, ipcMain, net, shell, systemPreferences, type IpcMainEvent } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, net, shell, systemPreferences, type IpcMainEvent } from 'electron';
 import { z } from 'zod';
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
@@ -55,6 +55,8 @@ import { FIX_ACTION_KINDS, JOB_CHANNELS, jobIpc } from '../jobs/jobIpc';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
 import { isTrustedUrl } from '../windows/protocol';
+import { SetupFlow } from '../setup/SetupFlow';
+import { setupTestProbes } from '../setup/probes';
 
 const trusted = (e: IpcMainEvent) => !!e.senderFrame && isTrustedUrl(e.senderFrame.url);
 
@@ -89,6 +91,8 @@ export interface AppContext {
   dataDir: string;
   /** M3: main's half of the engine port (08-1 §2.4); absent only in unit tests that build main alone. */
   engine?: EngineBridge;
+  /** M12: the first-run flow (G-M12-12); registerIpc makes one when the caller did not. */
+  setup?: SetupFlow;
 }
 
 export function listContext(settings: Settings): ListContext {
@@ -215,6 +219,17 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'error:fix': cardAnswer
     .extend({ action: z.object({ kind: z.enum(FIX_ACTION_KINDS) }).catchall(z.unknown()) as unknown as z.ZodType<FixAction> })
     .strict(),
+  // M12 (CR-0016): setup answers are validated per step by SetupFlow (SETUP_ANSWER_SCHEMAS), so the envelope stays open here.
+  'setup:getState': empty as z.ZodType<Record<string, never>>,
+  'setup:answer': z
+    .object({
+      step: z.union([0, 1, 2, 3, 4, 5].map((n) => z.literal(n)) as [z.ZodLiteral<0>, ...z.ZodLiteral<number>[]]),
+      answer: z.unknown(),
+    })
+    .strict() as unknown as z.ZodType<{ step: 0 | 1 | 2 | 3 | 4 | 5; answer: unknown }>,
+  'setup:skip': z.object({ all: z.boolean().optional() }).strict(),
+  'ai:signIn': z.object({ providerId: z.enum(PROVIDER_IDS) }).strict(),
+  'files:pickImage': z.object({ purpose: z.literal('avatar') }).strict(),
 };
 
 type Handler<C extends InvokeChannel> = (req: InvokeIn[C]) => Result<InvokeOut[C]> | Promise<Result<InvokeOut[C]>>;
@@ -528,4 +543,27 @@ export function registerIpc(ctx: AppContext): void {
     return r;
   });
   handle('notifications:status', () => ok({ windowsAllowed: true, focusAssist: false }));
+
+  // M12 (CR-0016): first run. Step handlers are registered on ctx.setup by the M12 tickets (src/main/setup/steps/).
+  const setup = (ctx.setup ??= new SetupFlow(settings, now));
+  handle('setup:getState', () => ok(setup.getState()));
+  handle('setup:answer', async ({ step, answer }) => {
+    const r = await setup.answer(step, answer);
+    if (r.ok) emitSettings();
+    return r;
+  });
+  handle('setup:skip', async ({ all }) => {
+    const r = await setup.skip(all === true);
+    if (r.ok) emitSettings();
+    return r;
+  });
+  // 08-2 §6.6 sign-in is not built yet (cliCommon signIn, G-M12-21): T3 replaces this stub.
+  handle('ai:signIn', () => fail('AI_CLI_INCOMPATIBLE'));
+  handle('files:pickImage', async () => {
+    if (setupTestProbes.pickImage !== undefined) return ok(setupTestProbes.pickImage === null ? {} : { path: setupTestProbes.pickImage });
+    const win = BrowserWindow.getFocusedWindow();
+    const opts = { properties: ['openFile' as const], filters: [{ name: 'Pictures', extensions: ['png', 'jpg', 'jpeg'] }] };
+    const r = win ? await dialog.showOpenDialog(win, opts) : await dialog.showOpenDialog(opts);
+    return ok(r.canceled || !r.filePaths[0] ? {} : { path: r.filePaths[0] });
+  });
 }

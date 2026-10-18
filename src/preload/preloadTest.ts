@@ -99,5 +99,11 @@ const testBridge: FooTestBridge = {
   theme: (theme) => call('test:theme', { theme }),
   reset: () => call('test:reset'),
   jobState: (jobId, state) => call('test:jobState', { jobId, state }),
+  setup: {
+    displayName: (value) => call('test:setup', { op: 'displayName', value }),
+    apps: (value) => call('test:setup', { op: 'apps', value }),
+    pickImage: (value) => call('test:setup', { op: 'pickImage', value }),
+    reset: () => call('test:setup', { op: 'reset' }),
+  },
 };
 contextBridge.exposeInMainWorld('__fooTest', testBridge);

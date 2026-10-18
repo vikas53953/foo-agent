@@ -9,7 +9,7 @@
     "uxChapters": 25,
     "uxSteps": 245,
     "uxFrames": 490,
-    "bp": 39
+    "bp": 43
   },
   "bp": [
     {
@@ -471,6 +471,54 @@
       "spec": "05-3 §5.21",
       "milestone": "M4",
       "note": "Card gallery: Spend cap. App: the spend cap card in the thread, from seeded card rows."
+    },
+    {
+      "id": "BP-SCR-01",
+      "selector": "#scrgal > .scr:nth-child(1) > .body",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "06-1 §1",
+      "milestone": "M12",
+      "note": "Screens gallery: Splash. App: the same first-run surface on the fake world."
+    },
+    {
+      "id": "BP-SCR-02",
+      "selector": "#scrgal > .scr:nth-child(2) > .body",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "06-1 §2.2",
+      "milestone": "M12",
+      "note": "Screens gallery: First run · find your AI. App: the same first-run surface on the fake world."
+    },
+    {
+      "id": "BP-SCR-03",
+      "selector": "#scrgal > .scr:nth-child(3) > .body",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "06-1 §2.3",
+      "milestone": "M12",
+      "note": "Screens gallery: First run · name and face. App: the same first-run surface on the fake world."
+    },
+    {
+      "id": "BP-SCR-04",
+      "selector": "#scrgal > .scr:nth-child(4) > .body",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "06-1 §2.5–§2.6",
+      "milestone": "M12",
+      "note": "Screens gallery: First run · first real job. App: the same first-run surface on the fake world."
     }
   ],
   "ux": [
@@ -568,7 +616,8 @@
       "s": "The foo wordmark in the middle of a plain window.",
       "f": "Loads your (empty) chats and settings. Opens in under 2 seconds.",
       "hl": "tb-foo",
-      "milestone": "M14"
+      "milestone": "M14",
+      "firstTested": "M12"
     },
     {
       "id": "UX-01-07",
@@ -584,7 +633,8 @@
       "s": "\"Hi, I'm foo.\" with a single Let's go button. Underneath: \"Nothing leaves this PC unless you say so.\"",
       "f": "Nothing until you tap. The message box is locked until your AI is connected.",
       "hl": "letsgo",
-      "milestone": "M14"
+      "milestone": "M14",
+      "firstTested": "M12"
     },
     {
       "id": "UX-01-08",

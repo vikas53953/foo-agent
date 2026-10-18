@@ -10,6 +10,7 @@ import type { JobState } from '../../shared/types';
 import { deps } from '../deps';
 import { channels, emit, listContext, type AppContext } from '../ipc/IpcRouter';
 import { aiStatus, chatRowById, chatRows, fooChatId, jobRows, publicSettings, recomputePill, spendSummary } from '../store/queries';
+import { resetTestProbes, setTestProbe } from '../setup/probes';
 import { writeSeedMedia } from './seed/media';
 import { seedPerf } from './seed/perf';
 import { seedM4Cards } from './seed/m4Cards';
@@ -38,6 +39,13 @@ const seedArg = z.object({ set: z.enum(SEED_SETS) }).strict();
 const onlineArg = z.object({ online: z.boolean() }).strict();
 const themeArg = z.object({ theme: z.enum(['light', 'dark', 'system']) }).strict();
 const jobStateArg = z.object({ jobId: z.string().min(1), state: z.enum(JOB_STATES) }).strict();
+const SETUP_APPS = ['whatsapp', 'google', 'x', 'instagram'] as const;
+const setupArg = z.discriminatedUnion('op', [
+  z.object({ op: z.literal('displayName'), value: z.string().max(256).nullable() }).strict(),
+  z.object({ op: z.literal('apps'), value: z.array(z.enum(SETUP_APPS)).max(4) }).strict(),
+  z.object({ op: z.literal('pickImage'), value: z.string().max(1024).nullable() }).strict(),
+  z.object({ op: z.literal('reset') }).strict(),
+]);
 
 /** Seed registry (08-3 §22.9). Rows are generated into the open foo.db through the real schema; open windows get them as patches. */
 export function seeds(ctx: AppContext, clock: FakeClock): Record<SeedSet, () => SeedReply> {
@@ -121,6 +129,16 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
     const chat = chatRowById(ctx.db, listContext(ctx.settings.get()), row.chat_id);
     if (chat) emit('chat:upsert', chat);
     return { chatId: row.chat_id };
+  });
+  // M12 (CR-0016): first-run probes (display name, app peek, image picker) and a fresh first run.
+  guard.handle('test:setup', (raw: unknown) => {
+    const arg = setupArg.parse(raw);
+    if (arg.op === 'reset') {
+      ctx.setup?.resetForTest();
+      emit('settings:changed', publicSettings(ctx.settings.get()));
+      return resetTestProbes();
+    }
+    return setTestProbe(arg.op, arg.value);
   });
   guard.handle('test:theme', (raw: unknown) => {
     const { theme } = themeArg.parse(raw);

@@ -826,7 +826,12 @@ export function bootstrap(db: Db, ctx: BootstrapContext): Bootstrap {
     settings: publicSettings(ctx.settings),
     chats,
     firstMessages: openChatId ? messageList(db, openChatId, FIRST_MESSAGES) : [],
-    setup: { complete: ctx.settings.setup.complete, step: ctx.settings.setup.step, answers: {} },
+    setup: {
+      complete: ctx.settings.setup.complete,
+      step: ctx.settings.setup.step,
+      ...(ctx.settings.setup.interviewCard ? { interviewCard: ctx.settings.setup.interviewCard } : {}),
+      answers: {},
+    },
     ai: aiStatus(ctx.settings, ctx.offline, ctx.engineAi ?? null),
     spend: spendSummary(db, ctx.settings, ctx.now),
     connections: connections(db),

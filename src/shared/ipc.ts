@@ -23,6 +23,9 @@ import type {
   ProviderId,
   PublicSettings,
   RoutineRow,
+  SetupApp,
+  SetupState,
+  SetupStep,
   SpendSummary,
   StopReport,
   View,
@@ -113,6 +116,13 @@ export interface Invokes {
   'stuck:choose': { req: CardAnswerReq & { choice: 'other_way' | 'take_over' | 'stop' }; res: CardRow };
   'recovery:choose': { req: CardAnswerReq & { choice: 'resume' | 'stop' }; res: CardRow };
   'error:fix': { req: CardAnswerReq & { action: FixAction }; res: CardRow };
+  // M12 (CR-0016; 08-1 §3.2 rows J1–J5). `app:openExternal` (target maker_page) is M9's channel (CR-0013): M12 adds its
+  // maker_page branch there through the lead once M9 merges (CR-0016 §b pick 31).
+  'setup:getState': { req: Record<string, never>; res: SetupState };
+  'setup:answer': { req: { step: SetupStep; answer: unknown }; res: SetupState };
+  'setup:skip': { req: { all?: boolean }; res: SetupState };
+  'ai:signIn': { req: { providerId: ProviderId }; res: { email?: string } };
+  'files:pickImage': { req: { purpose: 'avatar' }; res: { path?: string } };
 }
 
 /** 08-1 §3.2: a card answer names the card, carries its nonce (a stale card is refused) and says how it was answered. */
@@ -202,6 +212,11 @@ export const INVOKE_CHANNELS = [
   'stuck:choose',
   'recovery:choose',
   'error:fix',
+  'setup:getState',
+  'setup:answer',
+  'setup:skip',
+  'ai:signIn',
+  'files:pickImage',
 ] as const satisfies readonly InvokeChannel[];
 
 export const EVENT_CHANNELS = [
@@ -261,6 +276,21 @@ export interface FooTestBridge {
   reset(): Promise<ClockReply>;
   /** Moves a job to a state the way the job runner would (writes the row, re-derives the chat pill, sends the patches). */
   jobState(jobId: string, state: JobRow['state']): Promise<{ chatId: string }>;
+  /** M12 (CR-0016): first-run probes injected for tests (Windows display name, the Card B app peek, the image picker). */
+  setup: {
+    displayName(name: string | null): Promise<SetupTestProbes>;
+    apps(apps: SetupApp[]): Promise<SetupTestProbes>;
+    pickImage(path: string | null): Promise<SetupTestProbes>;
+    /** Forgets the injected probes and writes `setup` back to its default (fresh first run). */
+    reset(): Promise<SetupTestProbes>;
+  };
+}
+
+/** What the test hooks currently inject; `undefined` = use the real probe. */
+export interface SetupTestProbes {
+  displayName?: string | null;
+  apps?: SetupApp[];
+  pickImage?: string | null;
 }
 
 declare global {
