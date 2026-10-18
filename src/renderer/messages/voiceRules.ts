@@ -5,8 +5,9 @@ import type { MessageRow } from '../../shared/types';
 export const BARS = 40;
 export const SPEEDS = [1, 1.5, 2] as const;
 
+// GAP: GAPS.md 2026-10-17 "voice loudness is not stored"
 /**
- * 40 bar heights (4–24) for the waveform. The loudness is not stored on the message row (implementation-notes GAP), so the
+ * 40 bar heights (4–24) for the waveform. The loudness is not stored on the message row (GAPS.md), so the
  * shape is derived from the message id: stable for a note, never a claim about its sound.
  */
 export function waveform(seed: string, bars = BARS): number[] {

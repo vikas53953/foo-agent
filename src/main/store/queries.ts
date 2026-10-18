@@ -570,6 +570,7 @@ export function deleteMessages(db: Db, ids: string[], now: number): { chatIds: s
   return { chatIds: [...chatIds], rows: done.map((id) => messageGet(db, id)).filter((m): m is MessageRow => !!m) };
 }
 
+// GAP: GAPS.md 2026-10-17 "Try again on foo's answer before the engine"
 /**
  * message:retry (gap channel, 04 §7 "Try again" on Not sent): the failed user message goes back to `queued`. Sending
  * it is message:send's pipeline (builder B / M3); a foo answer has no engine to write it again before M3.

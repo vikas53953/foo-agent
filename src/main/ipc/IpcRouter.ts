@@ -101,6 +101,7 @@ const emoji = z
   .min(1)
   .max(32)
   .regex(/^\p{Extended_Pictographic}|^\p{Regional_Indicator}|^[0-9#*]\uFE0F?\u20E3/u);
+// GAP: GAPS.md 2026-10-17 "message channels with no 08-1 entry"
 /** link:open (gap): the schemes 04 §10.7 / §16.1 open; anything else is URL_NOT_ALLOWED. */
 const LINK_SCHEMES = ['http:', 'https:', 'mailto:', 'tel:'];
 const SETTINGS_PAGE: Record<WindowsSettingsPage, string> = {

@@ -54,6 +54,7 @@ export function roundTooltip(state: RoundButtonState, f: Pick<RoundFacts, 'notSe
 }
 
 /** §20.4 `{talkKey}`: Ctrl+Space, or Ctrl+Shift+Space when a Chinese, Japanese or Korean layout is in use (09-windows). */
+// GAP: GAPS.md 2026-10-17 "keyboard layouts are not visible to the renderer"
 export function talkKeyLabel(languages: readonly string[]): string {
   return languages.some((l) => /^(zh|ja|ko)\b/i.test(l)) ? 'Ctrl+Shift+Space' : 'Ctrl+Space';
 }

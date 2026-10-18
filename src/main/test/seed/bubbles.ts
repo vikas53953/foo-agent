@@ -22,6 +22,7 @@ export function seedChatScene(w: SeedWriter, fooChatId: string, refs: Record<str
   const thanks = w.message(fooChatId, { author: 'user', text: 'thanks!', at: d(16, 8, 6), ...plain });
   w.reaction(thanks, 'foo', '👍', d(16, 8, 6) + 2 * SEC);
   refs.thanks = thanks;
+  // GAP: GAPS.md 2026-10-17 "a read tick needs a badge"
   refs.holidayAsk = w.message(fooChatId, { author: 'user', text: 'is Mon 2 Nov a holiday?', at: d(16, 8, 10), badge: 'seen' });
   refs.holidayAnswer = w.message(fooChatId, {
     author: 'foo',

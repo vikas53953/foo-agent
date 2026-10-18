@@ -34,6 +34,7 @@ export function insideDir(dir: string, path: string): string | null {
  * The CSP allows images only from `app:` (08-0 §E.4), so attachments and voice notes under {DATA} are served as
  * `app://media/?p={path relative to {DATA}}` (M2 builder A gap: 08-0 names no media URL). Only the media folders below.
  */
+// GAP: GAPS.md 2026-10-17 "no media URL for files under {DATA}"
 export const MEDIA_HOST = 'media';
 
 /** 08-1 §4.1: the only folders under {DATA} whose files a page may load (attachments, draft copies, voice notes). */

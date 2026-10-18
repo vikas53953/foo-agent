@@ -197,6 +197,7 @@ export function Quote({ q, onJump }: { q: QuoteInfo; onJump: () => void }) {
 
 // ---------------------------------------------------------------- Not sent (§7)
 
+// GAP: GAPS.md 2026-10-17 "Not sent reasons have no field"
 export function NotSentLine({ onRetry }: { onRetry: () => void }) {
   return (
     <div className={styles.notSent} data-testid={TID.bubbleNotSent}>
@@ -357,6 +358,7 @@ export interface PreviewData {
   image?: string | null;
 }
 
+// GAP: GAPS.md 2026-10-17 "the user's link preview has no data source"
 export function LinkPreviewBlock({ p }: { p: PreviewData }) {
   return (
     <button type="button" className={styles.preview} data-testid={TID.bubbleLinkPreview} onClick={() => openUrl(p.url)}>

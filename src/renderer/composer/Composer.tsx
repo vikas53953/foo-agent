@@ -541,7 +541,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
 
   // ---------------------------------------------------------------- the paste catcher (§22.4)
   const moveToSecretBox = useCallback(() => {
-    // The span is removed from the field; the Secret box card (C7) it would carry the value to arrives in M5 (GAP).
+    // The span is removed from the field; the Secret box card (C7) it would carry the value to arrives in M5.
+    // GAP: GAPS.md 2026-10-17 "no Secret box before M5"
     writeField(dropMasks(segsRef.current));
     setChips((list) => list.map((c) => (c.kind === 'pasted' ? { ...c, text: (c.text ?? '').split(MASK_CHAR).join('') } : c)));
     setCatchOpen(false);
@@ -635,7 +636,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
   const activateRound = useCallback(() => {
     if (round === 'send' || round === 'save_edit') void send();
     else if (round === 'send_voice') voice.finish();
-    // 'stop' stops the streaming reply (§14.4): there is no stop channel before M3 (implementation-notes GAP).
+    // 'stop' stops the streaming reply (§14.4): there is no stop channel before M3.
+    // GAP: GAPS.md 2026-10-17 "no stop channel before the engine"
   }, [round, send, voice]);
 
   // ---------------------------------------------------------------- field events
@@ -661,6 +663,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
   }, [chat.kind]);
 
   const matches = useMemo(() => (mention ? filterHelpers(helpers, mention.query) : []), [mention, helpers]);
+  // GAP: GAPS.md 2026-10-17 "role textbox cannot carry aria-expanded"
   /** The mention listbox is on screen (04-2 §22.8): the field takes the combobox role and owns it. */
   const listOpen = !!mention && matches.length > 0;
 
@@ -808,7 +811,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
           closeStrip();
           break;
         case 'stop_reply':
-          break; // no stop channel before M3 (GAP)
+          break; // GAP: GAPS.md 2026-10-17 "no stop channel before the engine"
         case 'focus_last_chip':
           chipsRef.current?.focusLast();
           break;

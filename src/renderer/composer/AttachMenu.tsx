@@ -31,9 +31,11 @@ export function AttachMenu({ open, disabled, onOpen, onFiles, onEmoji }: AttachM
       onSelect: onFiles,
     },
     // Opening ms-screenclip: and watching the clipboard for 60 s needs a main channel 08-1 does not list; shown, not choosable
-    // until then (implementation-notes GAP).
+    // until then.
+    // GAP: GAPS.md 2026-10-17 "Take a screenshot has no channel"
     { kind: 'item', id: 'screenshot', label: t('composer.attach_menu.screenshot'), tid: 'composerAttachMenuScreenshot', disabled: true },
-    // The Secret box card (C7, 05-2 §5.8) arrives in M5; until then the row is shown and cannot be chosen (implementation-notes).
+    // The Secret box card (C7, 05-2 §5.8) arrives in M5; until then the row is shown and cannot be chosen.
+    // GAP: GAPS.md 2026-10-17 "no Secret box before M5"
     { kind: 'item', id: 'secret', label: t('composer.attach_menu.secret'), tid: 'composerAttachMenuSecret', disabled: true },
     {
       kind: 'item',

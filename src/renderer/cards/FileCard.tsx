@@ -1,9 +1,10 @@
 // Spec: 05-3 §5.23.1 File card (56 high, `--card-w`; 40px tile `--bg-sunken` with Document / Image 24 `--fg-2`; name
 // `--t-body-strong` with a middle ellipsis; "PDF · 240 KB" `--t-caption` `--fg-3`; the whole card is a button: click opens
-// the file in its default app; context menu "Open", "Show in folder" ("Save as…" has no channel in M2: implementation-notes
-// GAP); hover `--shadow-4`; missing: "I can't find this file. It was moved or deleted." + Link "Show folder"; Narrator
+// the file in its default app; context menu "Open", "Show in folder" ("Save as…" has no channel in M2: GAPS.md
+// 2026-10-17); hover `--shadow-4`; missing: "I can't find this file. It was moved or deleted." + Link "Show folder"; Narrator
 // "File: {name}, {type}, {size}"; generating: spinner 16 in the tile + "Making {name}…"; deleted: "File removed" grey; both
 // do nothing on click), 08-5 §4.1 FilePayload, 08-1 §3.2 files:open / files:showInFolder.
+// GAP: GAPS.md 2026-10-17 "Save as on a file has no channel"
 import { useState } from 'react';
 import { t } from '../../shared/copy/t';
 import { formatBytes } from '../../shared/format';

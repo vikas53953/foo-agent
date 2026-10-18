@@ -1,7 +1,8 @@
 // Spec: 04-2 §20.4 (placeholder copy per situation: AI not set up, app-wide states from 03 §3.3 banner types 1–5, attachments
 // with no text, a pill under 360px, then the chat kind: private, WhatsApp mirror, group, helper, foo), §23.1 (offline and the
 // AI states keep the composer usable and change only the placeholder), §23.2 (the composer never adds a bar for them).
-// "Starting {agentName}…" needs the engine's start signal (M3) and is not shown yet (implementation-notes). Pure.
+// "Starting {agentName}…" needs the engine's start signal (M3) and is not shown yet. Pure.
+// GAP: GAPS.md 2026-10-17 "no engine start signal"
 import { t } from '../../shared/copy/t';
 import type { BannerType, ChatKind } from '../../shared/types';
 

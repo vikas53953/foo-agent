@@ -9,6 +9,7 @@ import { clockNow } from '../store/apply';
 import { update } from '../store/index';
 import { confirmSent, failSend, insertOptimistic, localId } from '../store/messages';
 
+// GAP: GAPS.md 2026-10-17 "files:stage has no chunking"
 export const STAGE_TIMEOUT_MS = 60_000;
 
 export interface Outgoing {
