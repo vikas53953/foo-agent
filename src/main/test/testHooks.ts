@@ -13,6 +13,7 @@ import { aiStatus, chatRowById, chatRows, fooChatId, jobRows, publicSettings, re
 import { writeSeedMedia } from './seed/media';
 import { seedPerf } from './seed/perf';
 import { seedUxWorld, uxWorldSettings } from './seed/uxWorld';
+import { bridgeTestSchema } from '../../shared/waBridge';
 
 const JOB_STATES = [
   'queued',
@@ -37,6 +38,8 @@ const seedArg = z.object({ set: z.enum(SEED_SETS) }).strict();
 const onlineArg = z.object({ online: z.boolean() }).strict();
 const themeArg = z.object({ theme: z.enum(['light', 'dark', 'system']) }).strict();
 const jobStateArg = z.object({ jobId: z.string().min(1), state: z.enum(JOB_STATES) }).strict();
+// M8 T3
+const waArg = bridgeTestSchema;
 
 /** Seed registry (08-3 §22.9). Rows are generated into the open foo.db through the real schema; open windows get them as patches. */
 export function seeds(ctx: AppContext, clock: FakeClock): Record<SeedSet, () => SeedReply> {
@@ -86,6 +89,7 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
     if (arg?.set !== undefined) clock.set(typeof arg.set === 'string' ? Date.parse(arg.set) : arg.set);
     if (arg?.advance !== undefined) clock.advance(arg.advance);
     ctx.engine?.send('test.clock', { now: clock.now() });
+    ctx.bridgeTest?.({ kind: 'test.clock', now: clock.now() });
     return reply();
   });
   guard.handle('test:seed', (raw: unknown) => {
@@ -115,6 +119,8 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
     if (chat) emit('chat:upsert', chat);
     return { chatId: row.chat_id };
   });
+  // M8 T3: the fake phone behind the FOO_TEST wa-bridge (scan, a group message, logout).
+  guard.handle('test:wa', (raw: unknown) => ({ delivered: ctx.bridgeTest?.({ kind: 'test.wa', op: waArg.parse(raw) }) ?? false }));
   guard.handle('test:theme', (raw: unknown) => {
     const { theme } = themeArg.parse(raw);
     nativeTheme.themeSource = theme === 'system' ? ctx.settings.get().appearance.theme : theme;
@@ -124,6 +130,7 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
     clock.reset(TEST_EPOCH_MS);
     ctx.engine?.send('test.reset', {});
     ctx.engine?.send('test.clock', { now: clock.now() });
+    ctx.bridgeTest?.({ kind: 'test.clock', now: clock.now() });
     deps.net.online = true;
     ctx.net.report(true);
     nativeTheme.themeSource = ctx.settings.get().appearance.theme;

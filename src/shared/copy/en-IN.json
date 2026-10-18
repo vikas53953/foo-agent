@@ -444,6 +444,8 @@
   "bubble.why.reason.housekeeping": "Housekeeping for your routines.",
   "bubble.why.reason.cap_warning": "You turned on a warning at 80% of your monthly caps.",
   "thread.wa_mirror.retention": "I keep 7 days of WhatsApp messages.",
+  "activity.summary.connected_whatsapp": "Connected WhatsApp ({account})",
+  "activity.summary.disconnected_whatsapp": "Disconnected WhatsApp",
   "dialog.c_24.title": "Delete this message?",
   "dialog.c_24.body_mine": "It’s removed from this chat on your PC. Anything {agentName} already did because of it stays done.",
   "dialog.c_24.body_other": "It’s removed from this chat on your PC.",

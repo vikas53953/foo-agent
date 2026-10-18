@@ -112,12 +112,38 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
     kind: z.literal('test.jobEvent'),
     payload: z.object({ jobId: z.string(), event: z.string() }).strict(),
   }),
+  // M8 (CR-0012, T3): 08-1 §2.4 `bridge.port` (the engine end of the wa-bridge port rides along as a transferred port) and
+  // `connection.cmd` (one row for every connector: T2's Google commands reuse it).
+  z.object({ id: z.string(), kind: z.literal('bridge.port'), payload: z.object({}).strict() }),
+  z.object({
+    id: z.string(),
+    kind: z.literal('connection.cmd'),
+    payload: z
+      .object({
+        target: z.enum(['google', 'outlook', 'whatsapp']),
+        cmd: z.enum(['connect', 'reconnect', 'disconnect', 'linkStart', 'linkCancel', 'unlink']),
+        connectionId: z.string().optional(),
+        scopes: z.array(z.enum(['gmail', 'gcal', 'contacts'])).optional(),
+      })
+      .strict(),
+  }),
 ]);
 export type MainToEngine = z.infer<typeof mainToEngineSchema>;
 
 // ---- engine → main ----
 /** 08-1 §2.4.1 WritableTable (the members built so far). `activity` is written only through op `activity`. */
-export const WRITABLE_TABLES = ['messages', 'ai_turns', 'reactions', 'jobs', 'steps', 'tool_calls', 'cards'] as const;
+export const WRITABLE_TABLES = [
+  'messages',
+  'ai_turns',
+  'reactions',
+  'jobs',
+  'steps',
+  'tool_calls',
+  'cards',
+  // M8 T3: WhatsApp ingest (08-1 §2.4.1 lists both; main writes them INSERT OR IGNORE / upsert, 08-3 §16.4)
+  'wa_messages',
+  'wa_contacts',
+] as const;
 export type WritableTable = (typeof WRITABLE_TABLES)[number];
 /** Tables with a `state` column the `transition` op moves (08-1 §2.4.1 names jobs, routines, steps; CR-0008 adds cards). */
 export const TRANSITION_TABLES = ['jobs', 'steps', 'cards'] as const;
@@ -225,6 +251,20 @@ export interface UiPatch<E extends EventChannel = EventChannel> {
   payload: EventPayload[E];
 }
 
+/** M8 T3 `wa.report` payload (see the row at the end of engineToMainSchema). */
+export const waReportSchema = z.discriminatedUnion('event', [
+  z.object({ event: z.literal('linked'), accountLabel: z.string(), accountHash: z.string().min(1) }).strict(),
+  z
+    .object({
+      event: z.literal('status'),
+      status: z.enum(['connecting', 'unlinked', 'error', 'disconnected']),
+      errorKind: z.enum(['WA_LINK_FAILED', 'WA_UNLINKED']).nullable(),
+    })
+    .strict(),
+  z.object({ event: z.literal('groups'), groups: z.array(z.object({ jid: z.string().min(1), title: z.string() }).strict()) }).strict(),
+]);
+export type WaReport = z.infer<typeof waReportSchema>;
+
 export const engineToMainSchema = z.discriminatedUnion('kind', [
   z.object({ id: z.string(), kind: z.literal('db.tx'), payload: z.object({ ops: z.array(dbOpSchema).min(1) }).strict() }),
   z.object({
@@ -303,14 +343,24 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
       })
       .strict(),
   }),
+  // M8 (T3). 08-1 §2.4 `vault.encrypt` / `vault.decrypt` (the WhatsApp session only; requests). `wa.report` is a gap pick
+  // (implementation-notes "M8 T3"): `connections` and `chats` are main-only (§2.4.1), so the engine reports what the bridge
+  // said and main writes the whatsapp row, the activity line and the group mirrors.
+  z.object({
+    id: z.string(),
+    kind: z.literal('vault.encrypt'),
+    payload: z.object({ blobRef: z.literal('wa-session'), bytes: z.custom<Uint8Array>((v) => v instanceof Uint8Array) }).strict(),
+  }),
+  z.object({ id: z.string(), kind: z.literal('vault.decrypt'), payload: z.object({ blobRef: z.literal('wa-session') }).strict() }),
+  z.object({ id: z.string(), kind: z.literal('wa.report'), payload: waReportSchema }),
 ]);
 export type EngineToMain = z.infer<typeof engineToMainSchema>;
 export type DbTxReply = { ids: string[]; revs: number[] };
 
 /** The engine side of the port (in production a MessagePort; in tests a direct call into main's handlers). */
 export interface MainLink {
-  request<T>(kind: 'db.tx' | 'db.query', payload: unknown): Promise<Result<T>>;
-  send(kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify', payload: unknown): void;
+  request<T>(kind: 'db.tx' | 'db.query' | 'vault.encrypt' | 'vault.decrypt', payload: unknown): Promise<Result<T>>;
+  send(kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify' | 'wa.report', payload: unknown): void;
 }
 
 export interface EngineSettingsView {

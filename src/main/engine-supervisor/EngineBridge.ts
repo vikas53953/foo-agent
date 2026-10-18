@@ -2,8 +2,8 @@
 // (db.tx, db.query), §3.3 (ui.patch forwarded to the renderer as-is), 08-0 §A (main owns settings.json: the engine's
 // your-AI results are written here), 08-5 §3.1 (AiStatus), 08-1 §3.3 (job:upsert / card:upsert for rows a db.tx wrote),
 // 09 §9.22 (power.keepAwake → powerSaveBlocker in main). Electron-free so unit tests drive it with an in-process engine.
-import { engineToMainSchema, type DbOp, type EngineToMain, type MainToEngine, type NamedQuery } from '../../engine/protocol';
-import type { Result } from '../../shared/errors';
+import { engineToMainSchema, type DbOp, type EngineToMain, type MainToEngine, type NamedQuery, type WaReport } from '../../engine/protocol';
+import { fail, type Result } from '../../shared/errors';
 import type { EventChannel, EventPayload } from '../../shared/ipc';
 import type { Settings } from '../../shared/settings';
 import type { AiStatus, ProviderId } from '../../shared/types';
@@ -28,6 +28,11 @@ export interface BridgeContext {
   keepAwake?(on: boolean, jobCount: number): void;
   /** 08-3 §15: a toast request. Stub until M11 (logged only). */
   notify?(req: unknown): void;
+  // M8 (T3): `wa.report` and the WhatsApp session's `vault.encrypt` / `vault.decrypt` (src/main/whatsapp/waMain.ts).
+  whatsapp?: {
+    report(r: WaReport): void;
+    vault(req: { kind: 'vault.encrypt'; bytes: Uint8Array } | { kind: 'vault.decrypt' }): Result<unknown>;
+  };
 }
 
 type AiStatePayload = Extract<EngineToMain, { kind: 'ai.state' }>['payload'];
@@ -139,6 +144,14 @@ export class EngineBridge {
       case 'ai.state':
         this.applyAiState(msg.payload);
         return null;
+      // M8 (T3)
+      case 'wa.report':
+        this.ctx.whatsapp?.report(msg.payload);
+        return null;
+      case 'vault.encrypt':
+        return { re: msg.id, result: this.ctx.whatsapp?.vault({ kind: 'vault.encrypt', bytes: msg.payload.bytes }) ?? fail('UNKNOWN') };
+      case 'vault.decrypt':
+        return { re: msg.id, result: this.ctx.whatsapp?.vault({ kind: 'vault.decrypt' }) ?? fail('UNKNOWN') };
     }
   }
 

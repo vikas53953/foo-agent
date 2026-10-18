@@ -44,6 +44,11 @@ const INVOKES = new Set([
   'ai:detect',
   'ai:choose',
   'notifications:status',
+  // M8 T3
+  'whatsapp:linkStart',
+  'whatsapp:linkCancel',
+  'whatsapp:unlink',
+  'chat:archive',
 ]);
 const EVENTS = new Set([
   'chat:upsert',
@@ -61,6 +66,8 @@ const EVENTS = new Set([
   'settings:changed',
   'net:state',
   'navigate',
+  // M8 T3
+  'whatsapp:qr',
 ]);
 
 const platform = ipcRenderer.sendSync('app:platform') as PlatformInfo;

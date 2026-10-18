@@ -23,6 +23,8 @@ import { filterSay } from './prompt/filters';
 import { PromptBuilder, type ConversationMessage } from './prompt/PromptBuilder';
 import { ReleaseGate } from './prompt/releaseGate';
 import { Redactor } from './redact/Redactor';
+// M8
+import { WhatsAppConnector, type WaPortLike } from './tools/connectors/whatsapp';
 
 export interface EngineOptions {
   link: MainLink;
@@ -46,6 +48,8 @@ export class Engine {
   readonly lane: ChatLane;
   readonly redactor: Redactor;
   private prompts: PromptBuilder;
+  // M8 (T3): the WhatsApp side of the wa-bridge port (08-3 §16.4).
+  readonly whatsapp: WhatsAppConnector;
 
   static create(o: EngineOptions): Engine {
     return new Engine(o);
@@ -93,6 +97,12 @@ export class Engine {
       onUsable: () => void this.drainQueued(),
       detectRow: (row) => o.link.send('ui.patch', { event: 'ai:detectRow', payload: row }),
       retestTimers: !o.testRun,
+    });
+    this.whatsapp = new WhatsAppConnector({
+      link: o.link,
+      clock: o.clock,
+      settings: () => this.settings,
+      log: (evt, kind) => log(evt, kind),
     });
     this.lane = new ChatLane({
       link: o.link,
@@ -261,9 +271,19 @@ export class Engine {
       // M4 T1 stub (G-M4-04): the job runner (T2/T4) pauses its WORKING jobs here; until then there are none to pause.
       case 'jobs.pauseAll':
         return ok({ paused: [] as string[] });
+      // M8 (T3): Google's commands are T2's.
+      case 'connection.cmd':
+        if (msg.payload.target === 'whatsapp' && ['linkStart', 'linkCancel', 'unlink'].includes(msg.payload.cmd))
+          this.whatsapp.command(msg.payload.cmd as 'linkStart' | 'linkCancel' | 'unlink');
+        return undefined;
       default:
         return undefined;
     }
+  }
+
+  /** M8 (T3): `bridge.port` hands over the engine end of a (re)started wa-bridge (08-1 §2.4.2). */
+  attachBridge(port: WaPortLike): void {
+    void this.whatsapp.attach(port);
   }
   private firstSettings = true;
 }

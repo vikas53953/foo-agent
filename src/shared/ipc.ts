@@ -2,6 +2,7 @@
 // 08-0 §B.5 (no event shares a name with an invoke). The maps hold the channels built so far (M1: the shell's channels);
 // each later milestone adds its rows from 08-1 §3.2/§3.3 with the same names and shapes.
 import type { Result } from './errors';
+import type { BridgeTestOp } from './waBridge';
 import type {
   AiStatus,
   Bootstrap,
@@ -104,6 +105,11 @@ export interface Invokes {
   'ai:detect': { req: Record<string, never>; res: DetectRow[] };
   'ai:choose': { req: { primary: ProviderId; backup?: ProviderId | null }; res: AiStatus };
   'notifications:status': { req: Record<string, never>; res: { windowsAllowed: boolean; focusAssist: boolean } };
+  // M8 T3: 08-1 §3.2 WhatsApp link and Hide from foo
+  'whatsapp:linkStart': { req: Record<string, never>; res: void };
+  'whatsapp:linkCancel': { req: Record<string, never>; res: void };
+  'whatsapp:unlink': { req: Record<string, never>; res: void };
+  'chat:archive': { req: { chatId: string; on: boolean }; res: ChatRow };
 }
 
 /** 08-1 §3.3 rows built so far: event → payload. */
@@ -123,6 +129,8 @@ export interface Events {
   'settings:changed': PublicSettings;
   'net:state': { online: boolean };
   navigate: { view: View; act?: string };
+  // M8 T3: 08-1 §3.3
+  'whatsapp:qr': { png: string; expiresAt: number };
 }
 
 export type InvokeChannel = keyof Invokes;
@@ -179,6 +187,11 @@ export const INVOKE_CHANNELS = [
   'ai:detect',
   'ai:choose',
   'notifications:status',
+  // M8 T3
+  'whatsapp:linkStart',
+  'whatsapp:linkCancel',
+  'whatsapp:unlink',
+  'chat:archive',
 ] as const satisfies readonly InvokeChannel[];
 
 export const EVENT_CHANNELS = [
@@ -196,6 +209,8 @@ export const EVENT_CHANNELS = [
   'connection:upsert',
   'settings:changed',
   'net:state',
+  // M8 T3
+  'whatsapp:qr',
   'navigate',
 ] as const satisfies readonly EventChannel[];
 
@@ -237,6 +252,8 @@ export interface FooTestBridge {
   reset(): Promise<ClockReply>;
   /** Moves a job to a state the way the job runner would (writes the row, re-derives the chat pill, sends the patches). */
   jobState(jobId: string, state: JobRow['state']): Promise<{ chatId: string }>;
+  /** M8 T3: plays the fake phone of the FOO_TEST wa-bridge (scan, a group message, logout). */
+  wa(op: BridgeTestOp): Promise<{ delivered: boolean }>;
 }
 
 declare global {

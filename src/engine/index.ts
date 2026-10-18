@@ -9,7 +9,7 @@ import type { Result } from '../shared/errors';
 
 interface PortLike {
   postMessage(msg: unknown): void;
-  on(event: 'message', fn: (e: { data: unknown }) => void): void;
+  on(event: 'message', fn: (e: { data: unknown; ports?: PortLike[] }) => void): void;
   start(): void;
 }
 interface ParentPort {
@@ -61,6 +61,12 @@ function connect(port: PortLike): void {
       return;
     }
     const msg = parsed.data;
+    // M8 (T3): the wa-bridge port arrives as a transferred port on `bridge.port` (08-1 §2.4.2).
+    if (msg.kind === 'bridge.port') {
+      const bridgePort = e.ports?.[0];
+      if (bridgePort) engine.attachBridge(bridgePort);
+      return;
+    }
     if (msg.kind === 'test.clock') {
       if (clock instanceof FakeClock) clock.set(msg.payload.now);
       return;
