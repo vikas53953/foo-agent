@@ -5,6 +5,7 @@
 // 04 §6 (reply, edit, delete), §7 (Not sent → Try again), §8 (one reaction per person per bubble; picking another replaces
 // it), §9.1 (keep a voice note), §10.5 / §13.1 / §13.2 / §15 (expanding is permanent for that message), §17 (👍/👎 state).
 // The composer (builder B) calls insertOptimistic / confirmSent / failSend and reads `composer[chatId]` requests.
+import { isDraft, original } from 'immer';
 import type { BadgeValue, DraftRow, MessageRow, WaMessageRow } from '../../shared/types';
 import { invoke } from '../ipc/client';
 import { acceptRev } from './chats';
@@ -68,7 +69,12 @@ export const initialMessages = (): MessagesState => ({
 const emptyChat = (): ChatMessages => ({ ids: [], byId: {}, oldestSeq: null, hasMore: false, lastSeq: 0 });
 
 function sortIds(c: ChatMessages): void {
-  c.ids.sort((a, b) => (c.byId[a]?.seq ?? 0) - (c.byId[b]?.seq ?? 0));
+  // The seqs come from the store's base objects where they exist: reading every message through the draft made a child
+  // draft of each of the chat's rows, and sorting the draft array trapped every read and write (PERF-04: 5,000 rows on
+  // each page of history). A message's seq never changes; rows added in this update are read as they were assigned.
+  const base = isDraft(c.byId) ? (original(c.byId) as ChatMessages['byId']) : c.byId;
+  const seq = (id: string) => (base[id] ?? c.byId[id])?.seq ?? 0;
+  c.ids = Array.from(c.ids).sort((a, b) => seq(a) - seq(b));
 }
 
 /** chat:open / bootstrap firstMessages: the newest page; `hasMore` when a full page came back. Optimistic rows stay. */

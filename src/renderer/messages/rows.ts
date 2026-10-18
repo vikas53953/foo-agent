@@ -119,6 +119,15 @@ export function estimateText(text: string, attachments: number): number {
   return 56 + Math.max(0, lines - 1) * LINE + (attachments ? 204 : 0);
 }
 
+/** Kept per message object (immutable): the virtualiser re-reads every row's estimate whenever the row count changes,
+ *  which is every page of history (PERF-04). */
+const textEstimates = new WeakMap<MessageRow, number>();
+function textEstimate(m: MessageRow): number {
+  let e = textEstimates.get(m);
+  if (e === undefined) textEstimates.set(m, (e = estimateText(m.text, m.attachments?.length ?? 0)));
+  return e;
+}
+
 /** 02-2 §F13.3 estimates: bubble 56 (longer text grows), card by type, marker 40, date separator 56, voice 88. */
 export function estimateRow(r: VRow, cardType: (cardId: string) => string | undefined, cardEstimate: Record<string, number>): number {
   switch (r.kind) {
@@ -139,7 +148,7 @@ export function estimateRow(r: VRow, cardType: (cardId: string) => string | unde
       if (m.kind === 'card' && m.cardId) return cardEstimate[cardType(m.cardId) ?? ''] ?? 160;
       if (m.kind === 'voice') return 88;
       if (m.deletedAt !== null) return 56;
-      return estimateText(m.text, m.attachments?.length ?? 0);
+      return textEstimate(m);
     }
   }
 }

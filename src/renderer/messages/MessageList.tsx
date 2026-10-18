@@ -30,7 +30,7 @@ import { JumpToLatest } from './JumpToLatest';
 import { LoadOlder, StartOfChat } from './LoadOlder';
 import styles from './MessageList.module.css';
 import { REVEAL_EVENT, takeReveal } from './reveal';
-import { MessageView, WaBubble, messageAccessibleName, runRowCommand, senderOf, type RowCtx } from './Bubble';
+import { MessageView, WaBubble, messageAccessibleName, messagePlainText, runRowCommand, senderOf, type RowCtx } from './Bubble';
 import { MessageDialogs } from './MessageDialogs';
 import { RowHotCtx } from './bubbleContext';
 import { RetentionLine, StatusLine, ThinkingRow } from './Markers';
@@ -46,6 +46,13 @@ export const PAGE = 50;
 export const HIGHLIGHT_MS = 1600;
 /** 04 §1.8: new foo rows are announced with their first 140 characters. */
 export const ANNOUNCE_CHARS = 140;
+/**
+ * PERF-04: the user's own scrolling faster than this (px per ms, about four 900px screens a second) is a fling, and message
+ * rows are drawn light until the scroll settles (`FlingRow`).
+ */
+export const FLING_PX_PER_MS = 4;
+/** Below one frame apart, two scroll events are timed as one frame (a jump of a whole wheel arrives as one event). */
+const FRAME_MS = 16;
 
 const remPx = () => parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
 
@@ -91,6 +98,29 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   const markUserInput = () => {
     userInputAt.current = performance.now();
   };
+  // PERF-04: a fast fling by the user draws message rows light (same box and colours, plain text, nothing measured) and the
+  // full rows return when the scroll settles (the virtualiser's isScrolling ends 150 ms after the last scroll event).
+  const [fling, setFling] = useState(false);
+  const flinging = useRef(false);
+  const lastScroll = useRef<{ at: number; offset: number } | null>(null);
+  const flingCheck = (offset: number, isScrolling: boolean) => {
+    const at = performance.now();
+    const prev = lastScroll.current;
+    lastScroll.current = { at, offset };
+    if (!isScrolling) {
+      if (flinging.current) {
+        flinging.current = false;
+        setFling(false);
+      }
+      return;
+    }
+    if (flinging.current || !prev || at - userInputAt.current >= motion['delay-sticky-hide']) return;
+    if (Math.abs(offset - prev.offset) / Math.max(at - prev.at, FRAME_MS) <= FLING_PX_PER_MS) return;
+    flinging.current = true;
+    setFling(true);
+  };
+  const flingCheckRef = useRef(flingCheck);
+  flingCheckRef.current = flingCheck;
 
   const messages = useMemo<StoredMessage[]>(() => (slice ? slice.ids.map((id) => slice.byId[id]!) : []), [slice]);
   const isWa = chat.kind === 'wa_mirror';
@@ -208,6 +238,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     // from the virtualiser instead of the DOM (PERF-04, `scrollMetrics`).
     observeElementOffset: (inst, cb) =>
       observeElementOffset(inst, (offset, isScrolling) => {
+        flingCheckRef.current(offset, isScrolling);
         cb(offset, isScrolling);
         if (isScrolling) afterScroll.current();
       }),
@@ -546,6 +577,18 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
         <div ref={v.containerRef} className={styles.column} role="list">
           {v.getVirtualItems().map((item) => {
             const r = rows[item.index]!;
+            if (fling && r.kind === 'message' && r.key !== lastFocused.current)
+              return (
+                <FlingRow
+                  key={item.key}
+                  index={item.index}
+                  start={item.start}
+                  size={item.size}
+                  m={r.message}
+                  layout={layouts[item.index]!}
+                  cards={cards}
+                />
+              );
             return (
               <RowFrame
                 key={item.key}
@@ -616,6 +659,43 @@ const RowFrame = memo(function RowFrame({
     </div>
   );
 });
+
+/**
+ * PERF-04: a message row while the user flings the list: the bubble's or card's box at the row's known (measured, else
+ * estimated) height, its colours and its plain text, with no meta, badges, chips, markdown, media or toolbar, and nothing
+ * measured. Mounting a screen of full rows per wheel was the long frame; at rest every row is the full row again.
+ */
+const FlingRow = memo(function FlingRow({
+  index,
+  start,
+  size,
+  m,
+  layout,
+  cards,
+}: {
+  index: number;
+  start: number;
+  size: number;
+  m: MessageRow;
+  layout: RowLayout;
+  cards: Record<string, CardRow>;
+}) {
+  const side = m.kind === 'card' ? 'card' : m.authorKind === 'user' ? 'me' : 'them';
+  const text = m.kind === 'marker' ? m.text : flingText(m, cards);
+  return (
+    <div data-index={index} className={styles.row} role="listitem" style={{ top: start, height: size }}>
+      <div className={styles.fling} data-side={side} data-gap={layout.gap} data-marker={m.kind === 'marker' || undefined}>
+        <div className={styles.flingBox} data-deleted={m.deletedAt !== null || undefined}>
+          {text}
+        </div>
+      </div>
+    </div>
+  );
+});
+
+/** Enough plain text to fill any row's box (the box clips it). */
+const FLING_CHARS = 600;
+const flingText = (m: MessageRow, cards: Record<string, CardRow>) => messagePlainText(m, cards).slice(0, FLING_CHARS);
 
 function Row({
   row,

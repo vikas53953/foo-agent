@@ -57,3 +57,66 @@
     transition: none;
   }
 }
+/* PERF-04: a message row while the user flings the list (MessageList FlingRow). The box, colours and plain text of the
+ * bubble (04 §1.2 gaps, §1.4 --r-bubble, §2 / §3 colours, 72 % capped at --bubble-max) or card (--card-w, --r-lg,
+ * --bg-raised, 1px --line), clipped to the row's known height; no meta, badges, chips, markdown, media or toolbar. */
+.fling {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+  overflow: hidden;
+}
+.fling[data-side='me'] {
+  align-items: flex-end;
+}
+.fling[data-gap='s-1'] {
+  padding-top: var(--s-1);
+}
+.fling[data-gap='s0'] {
+  padding-top: var(--s0);
+}
+.fling[data-gap='s2'] {
+  padding-top: var(--s2);
+}
+.fling[data-gap='s3'] {
+  padding-top: var(--s3);
+}
+.flingBox {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: calc(var(--s9) + var(--s5));
+  max-width: min(72%, var(--bubble-max));
+  padding: var(--s1) var(--s2);
+  overflow: hidden;
+  border-radius: var(--r-bubble);
+  background: var(--bubble-foo);
+  color: var(--on-bubble-foo);
+  font: var(--t-body);
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.fling[data-side='me'] > .flingBox {
+  background: var(--bubble-me);
+  color: var(--on-bubble-me);
+}
+.fling[data-side='card'] > .flingBox {
+  width: min(var(--card-w), 100%);
+  max-width: 100%;
+  padding: var(--s2) calc(var(--s2) + var(--s-1));
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg-raised);
+  color: var(--fg-1);
+}
+.fling[data-marker] {
+  align-items: center;
+}
+.fling[data-marker] > .flingBox,
+.flingBox[data-deleted] {
+  background: transparent;
+  color: var(--fg-3);
+}
+.fling[data-marker] > .flingBox {
+  font: var(--t-caption);
+}
