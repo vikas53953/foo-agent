@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>foo M3 fidelity report</title>
+<style>
+:root{--bg:#FFFFFF;--fg:#0B0B10;--fg2:#55555F;--line:#E4E4EA;--panel:#F6F6F9;--ok:#17804D;--warn:#9A6200;--bad:#C4302B;--acc:#2B3FD6;color-scheme:light}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0D0D11;--fg:#F1F1F5;--fg2:#B0B0BC;--line:#26262E;--panel:#16161C;--ok:#4CC38A;--warn:#F2B84B;--bad:#FF7A72;--acc:#8C9BFF;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0D0D11;--fg:#F1F1F5;--fg2:#B0B0BC;--line:#26262E;--panel:#16161C;--ok:#4CC38A;--warn:#F2B84B;--bad:#FF7A72;--acc:#8C9BFF;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 "Segoe UI Variable","Segoe UI",system-ui,sans-serif}
+main{max-width:1180px;margin:0 auto;padding:24px 16px 64px}h1{font-size:26px;margin:0 0 4px}h2{font-size:19px;margin:36px 0 10px;padding-top:12px;border-top:1px solid var(--line)}
+.sub{color:var(--fg2)}.vikas{background:var(--panel);border:2px solid var(--acc);border-radius:12px;padding:16px 20px;margin:18px 0}.vikas h2{border:0;margin:0 0 8px;padding:0}
+.vikas ul{margin:4px 0 10px;padding-left:20px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 20px}
+.kv b{display:block;font-size:12px;color:var(--fg2);font-weight:600}.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}th{font-size:12px;color:var(--fg2)}
+img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:4px;background:#fff}td img{max-width:300px;max-height:420px;width:auto}.none{color:var(--fg2);font-style:italic}
+.b{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid currentColor;white-space:nowrap}
+.b-done,.b-pass{color:var(--ok)}.b-not-done,.b-fail,.b-failed{color:var(--bad)}.b-partial,.b-review,.b-disputed,.b-unverifiable,.b-changed,.b-not-run,.b-not-built{color:var(--warn)}
+.verdict{font-size:20px}button{font:inherit;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:4px 14px;cursor:pointer;float:right}
+code{font-family:Consolas,ui-monospace,monospace;font-size:13px;word-break:break-all}
+</style>
+</head>
+<body>
+<main>
+<button type="button" id="theme">Light / dark</button>
+<h1>foo · M3 fidelity report</h1>
+<p class="sub">Report M3-239fdd3-39161469615 · 2026-10-18T20:05:57.411Z</p>
+
+<section class="vikas" aria-labelledby="v">
+<h2 id="v">For Vikas</h2>
+<p class="verdict">Verdict: <span class="b b-fail">FAIL</span></p>
+<p>Why: missing evidence: unit test results (Vitest JSON); E2E results (Playwright JSON); golden runner identity (golden/runner.json); FID-14 results; 20 audit item(s) not DONE (the milestone is not complete); CHANGED items need an approved CR.</p>
+<b>What you can try now</b><ul><li>Nothing new to try yet: none of the 2 M3 drawings is built in the app. This run shows that the checking machinery works.</li></ul>
+<b>What changed from the drawings, and why</b><ul><li>Nothing differs from the drawings so far.</li></ul>
+<b>What needs your yes</b><ul><li>Nothing.</li></ul>
+</section>
+
+<h2>1 · Header</h2>
+<div class="grid kv">
+<div><b>Milestone</b>M3</div>
+<div><b>Commit</b><code>239fdd3da01903c5188c7a896d13d6091278f1a5</code><br><small>tested merge <code>1668dfe588d264b880815df453dcb3238c6bcaf7</code></small></div>
+<div><b>CI run</b><a href="https://github.com/vikas53953/foo-agent/actions/runs/39161469615">39161469615</a></div>
+<div><b>Spec</b>spec-v1.0<br><code>f808565536284e7d4e3a7dd182cb349ec76d2f2e7287d9c529c31af2bc5da6da</code></div>
+<div><b>Golden runner (FID-04)</b>not recorded<br>not recorded<br>pinned image: <span class="b b-unverifiable">UNVERIFIABLE</span></div>
+<div><b>Builder · reviewer</b>builder agent · not signed yet</div>
+</div>
+
+<h2>2 · Plan vs built audit</h2>
+<div class="tw"><table><thead><tr><th>Group</th><th>Item</th><th>Status</th><th>Evidence / note</th></tr></thead><tbody><tr><td>M3 Goal</td><td>foo finds, tests and talks through the user's own AI with tools disabled; plain replies stream into foo's bubble under the reply protocol and output filters</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:AT-005 + test:streamed reply (past the hold) + test:command_execution item → AI_PROTOCOL_VIOLATION + test:a tool_use block is a violation · covers part of the item · manual check: demo on Vikas's PC (plan §5 M3 Demo): &quot;✓ Using Claude (your AI)&quot;, chat in English, Hindi and Punjabi, &quot;thanks!&quot; gets a 👍, Wi-Fi off shows the AI-unreachable strip; the real CLIs were captured once on his PC (test/fixtures/cli-captures), CI runs only the fake AI</td></tr><tr><td>M3 Constitution</td><td>08-2 §6, §7 · 08-1 §2.1, §2.4 · 08-2 §11.4 (pattern part) · Art. 1, 2, 12, 22, 23 · X-18</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:ART-12a + test:ART-23a + test:0 banned terms displayed · covers part of the item · manual check: independent reviewer reads 08-2 §6, §7, §11.4 and 08-1 §2.1, §2.4 against the build (the Sonnet checker pass on the PR); Job Object (§6.3) is deferred to M11 (CR-0007 pick 1)</td></tr><tr><td>M3 Create</td><td>engine/index.ts, EngineSupervisor, engine/ai/* (all adapters + fake), ProcessHost, engine/prompt/*, engine/chat/ChatLane.ts + intake.ts, engine/redact/Redactor.ts, test/fakes/fake-cli/*, test/fixtures/cli-captures/*</td><td><span class="b b-done">DONE</span></td><td></td></tr><tr><td>M3 Create</td><td>ProcessHost Job Object via foo-native/jobobject.cc</td><td><span class="b b-changed">CHANGED</span></td><td>taskkill /T /F on Windows (a process group on POSIX) until the native parts land in M11: CHANGED until CR-0007 is approved (pick 1).</td></tr><tr><td>M3 Spike</td><td>Real stream output and --help for claude, codex, gemini and Ollama on Vikas's PC become fixtures</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:claude-cli stream-json + test:codex-cli exec --json + test:real /api/tags · covers part of the item · manual check: claude 2.1.282, codex 0.156.1 and Ollama captured 2026-10-18; gemini is not installed on the PC and the key APIs need a test key (both stay seeds, test/fixtures/cli-captures/capture.md)</td></tr><tr><td>M3 Must pass</td><td>AT-005</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:AT-005</td></tr><tr><td>M3 Must pass</td><td>AT-006</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:AT-006</td></tr><tr><td>M3 Must pass</td><td>AT-027</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:AT-027</td></tr><tr><td>M3 Must pass</td><td>AT-030</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:AT-030</td></tr><tr><td>M3 Must pass</td><td>AT-031</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:AT-031</td></tr><tr><td>M3 Must pass</td><td>ART-02b</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:0 banned terms displayed</td></tr><tr><td>M3 Must pass</td><td>ART-23a</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:ART-23a</td></tr><tr><td>M3 Must pass</td><td>ART-12a (AI words never move status)</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:ART-12a</td></tr><tr><td>M3 Must pass</td><td>unit: every adapter parser on fixtures</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:claude-cli stream-json + test:codex-cli exec --json + test:openai-key + test:anthropic-key + test:google-key + test:ollama and LM Studio · covers part of the item · manual check: gemini and the three key APIs parse seed fixtures written from the spec until a capture replaces them (capture.md)</td></tr><tr><td>M3 Must pass</td><td>unit: stop kills the whole process tree (child count = 0 after cancel)</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:cancel kills the child AND its grandchild · covers part of the item · manual check: the grandchild test runs on POSIX only; the Windows taskkill /T path is checked by hand on the Windows build (Stop a Claude reply, Task Manager shows no claude.exe / node.exe left)</td></tr><tr><td>M3 Must pass</td><td>unit: prompt never on argv</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:prompt only on stdin</td></tr><tr><td>M3 Must pass</td><td>unit: AI_PROTOCOL_VIOLATION for Codex command_execution</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:command_execution item → AI_PROTOCOL_VIOLATION + test:a tool-use violation runs the turn once more</td></tr><tr><td>M3 Fidelity exit</td><td>UX-08 re-run with replies through the fake AI; Tier R with no Fail</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:steps 1 to 5 live with fake-AI replies · covers part of the item · manual check: UX-08-02 is captured live on the walkthrough's own frame (seed set ux-world-ch8-live: &quot;thanks!&quot; at 8:06, the question at 8:10, the Thinking face and Stop); R1 stays disputed under CR-0003 like the other UX-08 steps. Steps 6 and 7 stay on the seeded scene (job badge M4, source pill from engine entities)</td></tr><tr><td>M3 Fidelity exit</td><td>BP-MSG-02 and BP-COMP-03 captured for Tier R</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:M3 Blueprint captures for Tier R · covers part of the item · manual check: R1/R2 disputed under CR-0003 like the other 350px Blueprint minis</td></tr><tr><td>M3 Fidelity exit</td><td>UX-02 engine assertions (UI frames in M12)</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>test:AT-005 + test:detectAll runs in parallel · covers part of the item · manual check: UX-02 frames are built with the setup screen in M12</td></tr><tr><td>M3 Fidelity exit</td><td>Tier B green for every step blessed in earlier milestones; FID-01…FID-20 on the whole app</td><td><span class="b b-unverifiable">UNVERIFIABLE</span></td><td>refs + determinism + runner · covers part of the item · manual check: reviewer signs the fidelity report and Vikas sees it (the side-by-side compare page)</td></tr></tbody></table></div>
+
+<h2>3 · Golden summary</h2>
+<p>Tier R: 0 pass · 0 review · 0 fail · 0 disputed · 2 not built yet. References rendered this run: 0. Tier B baselines: 0.</p>
+<div class="tw"><table><thead><tr><th>Step</th><th>Reference</th><th>App</th><th>Diff</th><th>R1–R5</th></tr></thead><tbody><tr><td><b>BP-MSG-02</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr><tr><td><b>BP-COMP-03</b><br>light<br><span class="b b-not-built">not built</span></td><td><div class="none">no reference image</div></td><td><div class="none">not built yet</div></td><td><div class="none">–</div></td><td>R1 –<br>R2 –<br>R3 –<br>R4 –<br>R5 –</td></tr></tbody></table></div>
+
+<h2>4 · Copy</h2>
+<div class="tw"><table><thead><tr><th>Check</th><th>Result</th></tr></thead><tbody><tr><td>FID-09 runtime copy match</td><td><span class="b b-not-done">NOT DONE</span> built with the M1 runtime copy check</td></tr><tr><td>FID-10 copy coverage</td><td><span class="b b-not-done">NOT DONE</span> built with the M1 runtime copy check</td></tr><tr><td>ART-02a banned words</td><td><span class="b b-not-run">NOT RUN</span></td></tr></tbody></table></div>
+
+<h2>5 · Tokens and values</h2>
+<div class="tw"><table><thead><tr><th>Check</th><th>Result</th></tr></thead><tbody><tr><td>ESLint errors (incl. foo/no-raw-design-values)</td><td><span class="b b-not-run">NOT RUN</span></td></tr><tr><td>Stylelint</td><td>not installed yet (FID-13 Stylelint half; ART-24a scans styles today)</td></tr><tr><td>FID-11 tokens.json = spec</td><td><span class="b b-not-run">NOT RUN</span></td></tr><tr><td>FID-12 generated token files fresh</td><td><span class="b b-not-run">NOT RUN</span></td></tr></tbody></table></div>
+<div class="tw"><table><thead><tr><th>FID-14 row</th><th>Expected</th><th>Measured</th><th>Result</th></tr></thead><tbody><tr><td colspan="4">None.</td></tr></tbody></table></div>
+
+<h2>6 · Behaviour</h2>
+<p>Unit/article/fidelity: 0 passed · 0 failed · 0 skipped. E2E: 0 passed · 0 failed · 0 skipped.</p>
+<div class="tw"><table><thead><tr><th>AT / ART / PERF / UX / BP id</th><th>Status</th><th>File</th></tr></thead><tbody><tr><td colspan="3">None.</td></tr></tbody></table></div>
+
+<p>Traceability (spec/trace.csv): 16 live rows · 112 pending · by milestone {&quot;M0&quot;:5,&quot;M1&quot;:23,&quot;M2&quot;:27,&quot;M3&quot;:16,&quot;M4&quot;:57}. State-machine coverage: not built (FID-16/17, M4).</p>
+
+<h2>7 · Gaps and CRs</h2>
+<div class="tw"><table><thead><tr><th>CR</th><th>Title</th><th>Status</th></tr></thead><tbody><tr><td>CR-0001</td><td>Complete the spec-v1.0 freeze with the reference drawings and machine tables</td><td>Approved</td></tr><tr><td>CR-0002</td><td>M1 shell, where the Blueprint drawing and the written spec disagree</td><td>Approved: keep the app as built; the drawing is redrawn to the written spec</td></tr><tr><td>CR-0003</td><td>M2 trace rows, M2 Blueprint ids, and where the drawings and the M2 app disagree</td><td>Approved by Vikas, DECISIONS X-156 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)</td></tr><tr><td>CR-0004</td><td>The dark user bubble is indigo (X-145) everywhere, and the M2 golden-lane differences that follow from the spec</td><td>Approved by Vikas, DECISIONS X-157 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)</td></tr><tr><td>CR-0005</td><td>how PERF-02 measures &quot;keydown → character painted&quot;</td><td>Approved by Vikas, DECISIONS X-158 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)</td></tr><tr><td>CR-0006</td><td>Light message rows while the user flings the list (PERF-04)</td><td>Approved by Vikas, DECISIONS X-159 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)</td></tr><tr><td>CR-0007</td><td>M3 trace rows, and the picks the M3 build made where the spec forks</td><td>Approved by Vikas, DECISIONS X-160 (2026-10-18 15:58Z, after the independent review in §(e))</td></tr><tr><td>CR-0008</td><td>M4 trace rows, the job machine, and the picks the M4 build makes where the spec forks</td><td>Approved by Vikas's approve-on-my-behalf rule (his message 2026-10-18 14:56Z), after the independent review in §(e), DECISIONS X-161</td></tr></tbody></table></div>
+<p>Conservative picks and deferrals: implementation-notes.md (the ## M3 sections).</p>
+
+<h2>8 · Deviations found by reading</h2>
+<ul><li>Not reviewed yet: the independent reviewer adds what no test caught.</li></ul>
+<p class="sub">Missing inputs (reported as UNVERIFIABLE): unit test results (Vitest JSON); E2E results (Playwright JSON); golden runner identity (golden/runner.json); FID-14 results.</p>
+</main>
+<script>
+document.getElementById('theme').addEventListener('click', function () {
+  var root = document.documentElement;
+  var dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme = dark ? 'light' : 'dark';
+});
+</script>
+</body>
+</html>
