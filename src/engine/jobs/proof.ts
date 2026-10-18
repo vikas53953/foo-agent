@@ -11,11 +11,32 @@ import type { Proof } from '../../shared/schemas';
 export interface ProofContext {
   /** This job's pre-redaction results kept in RAM (§26.11 item 1). */
   raw: ReadonlyMap<string, string>;
-  /** This job's stored (redacted) result text of a tool call, or null when the call is not this job's. */
+  /** This job's stored (redacted) result text of a tool call that ended ok, or null (not this job's, or an error). */
   stored(toolCallId: string): string | null;
   /** This job's folder `{DATA}\jobs\{id}`. */
   jobDir: string;
   exists(file: string): boolean;
+}
+
+/** A confirmation code shorter than this could match by chance. */
+export const CODE_MIN = 4;
+
+/** The string values inside a recorded result (JSON), so a code never matches key names or punctuation. */
+function stringValues(text: string): string[] {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    return [text];
+  }
+  const out: string[] = [];
+  const walk = (v: unknown): void => {
+    if (typeof v === 'string') out.push(v);
+    else if (Array.isArray(v)) v.forEach(walk);
+    else if (v && typeof v === 'object') Object.values(v).forEach(walk);
+  };
+  walk(parsed);
+  return out;
 }
 
 export type ProofCheck = { ok: true } | { ok: false; why: 'missing' | 'not_found' | 'secret' | 'not_checkable' };
@@ -24,9 +45,11 @@ export function checkProof(proof: Proof | undefined, ctx: ProofContext): ProofCh
   if (!proof) return { ok: false, why: 'missing' };
   switch (proof.kind) {
     case 'confirmation': {
+      if (proof.code.trim().length < CODE_MIN) return { ok: false, why: 'not_found' };
       if (redactSecrets(proof.code).hits > 0) return { ok: false, why: 'secret' };
       const text = ctx.raw.get(proof.seenInToolCallId) ?? ctx.stored(proof.seenInToolCallId);
-      return text !== null && text !== undefined && text.includes(proof.code) ? { ok: true } : { ok: false, why: 'not_found' };
+      if (text === null || text === undefined) return { ok: false, why: 'not_found' };
+      return stringValues(text).some((v) => v.includes(proof.code)) ? { ok: true } : { ok: false, why: 'not_found' };
     }
     case 'emails_read': {
       if (proof.messageIds.length === 0 || proof.count !== proof.messageIds.length) return { ok: false, why: 'not_found' };

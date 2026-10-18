@@ -555,8 +555,9 @@ files are real and which stay seeds). What the real output pinned:
 - T2-01 · `request_approval` is logged and counted as a failed turn until M5 builds approvals.
 - T2-02 · Plan card "Change plan" cancels the queued job (`stop_reason` system, badge stopped); re-intake with the change
   is left to T3/M5.
-- T2-03 · An answered NEEDS_YOU job resumes even when 3 jobs are WORKING (needs_you → working is its only move; it held a
-  slot in spirit).
+- T2-03 · (lead review: the first pick broke max 3 WORKING) An answered NEEDS_YOU card keeps its answer and the job stays
+  NEEDS_YOU (badge ⏳) until a slot frees; `startNext` then resumes answered jobs ahead of queued ones, oldest answer
+  (`cards.resolved_at`) first, then queued jobs FIFO (`queue.ts` `pickStartable`).
 - T2-04 · Seams: an AI error ends FAILED `UNKNOWN` (`hooks.onAiError`, T4 replaces it with WAITING); 3 failed turns in a
   row end FAILED (`hooks.onStuck`, T3 replaces it with the stuck card).
 - T2-05 · Proofs the app cannot re-check yet (email, sent_folder, wa_delivered, calendar_event, receipt, read_source) end
@@ -570,6 +571,14 @@ files are real and which stay seeds). What the real output pinned:
 - T2-10 · Files beyond the ticket's owned list: `src/engine/jobs/verbs.ts`, `test/unit/jobs/verbs.test.ts`,
   `test/integration/jobs/jobHarness.ts`, `test/verify/m4-t2-runner.journey.ts`; additive edits to `schemas.ts`,
   `PromptBuilder.ts`, `envelope.ts`, `AiService.ts`, `test/unit/m3-engine-helpers.ts`.
+- T2-11 · Approval / payment stubs (until M5 / M10): only `choice: 'approve'` resumes; `choice: 'decline'` → card DECLINED,
+  job CANCELLED with `stop_reason` approval_declined (07-2 `declined`); any other answer is ignored.
+- T2-12 · Lead review fixes: an answer that lands while the old loop is still finishing relaunches the loop when it ends; a
+  crashed loop ends the job FAILED `UNKNOWN`; a tool result JSON cannot hold is the tool's `UNKNOWN` error; `finish` / `fail`
+  end nothing when their move is refused; typed answers are redacted before Decisions / plan.md; one retry per old job;
+  a confirmation proof needs ≥ 4 characters, matches only string values, and only from tool calls that ended ok.
+- T2-13 · Not done (lead's "consider"): posting "I didn't get that…" when `createJob` returns null. Its only null path is a
+  failed db write, where the fallback line's own write would fail the same way.
 - Still in `copy-pending.json` for T2: `thread.queued.ai_back` and `thread.approval_typed.*` (intake paths: AI down is T4,
   typed yes needs M5 approval cards) and `cards.not_live_chip.job_title.text` (renderer, T5).
 - Found by foo-verify, not T2's file: the Doing now line and `JobRow.nowLine` show the raw phrase key ("read_email")

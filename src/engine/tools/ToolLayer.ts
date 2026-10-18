@@ -163,11 +163,22 @@ export class ToolLayer {
     } catch {
       out = { kind: 'error', errorKind: 'UNKNOWN' };
     }
+    let rawText: string;
+    let redacted: unknown;
+    let fullText: string;
+    try {
+      rawText = capText(JSON.stringify(out.result ?? null));
+      redacted = redactDeep(out.result ?? null);
+      fullText = JSON.stringify(redacted);
+    } catch {
+      // A result JSON cannot hold (BigInt, a cycle) is the tool's error, never a crash of the job's loop.
+      out = { kind: 'error', errorKind: 'UNKNOWN' };
+      rawText = 'null';
+      redacted = null;
+      fullText = 'null';
+    }
     const cancelled = signal.aborted;
     const outcome = cancelled ? 'cancelled' : out.kind === 'error' ? 'error' : 'ok';
-    const rawText = capText(JSON.stringify(out.result ?? null));
-    const redacted = redactDeep(out.result ?? null);
-    const fullText = JSON.stringify(redacted);
     const redactedText = capText(fullText);
     // A result over 16 KB is stored as its first part, marked cut (08-1 §4.3.4: result ≤ 16 KB).
     const stored: unknown = redactedText === fullText ? redacted : { cut: true, text: capText(fullText.slice(0, RAW_MAX_BYTES - 1024)) };

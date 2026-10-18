@@ -15,7 +15,7 @@ import type { Clock, TimerId } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
 import { formatInr } from '../../shared/format';
 import { redactSecrets } from '../../shared/redactor';
-import { BADGE_OF_STATE, TERMINAL } from '../../shared/jobMachine';
+import { BADGE_OF_STATE, JOB_STATES, TERMINAL } from '../../shared/jobMachine';
 import { phraseText, resolvePhrase, type PhraseKey } from '../../shared/phrases';
 import type { IntakeDecision, PlanStep, StepAct, StepDecision } from '../../shared/schemas';
 import type { Settings } from '../../shared/settings';
@@ -26,7 +26,7 @@ import type { DbOp, DbTxReply, MainLink } from '../protocol';
 import type { ExecResult, NeedsUserCard, ToolLayer } from '../tools/ToolLayer';
 import { estCostPaise, estMinutes, estTokens, isBigOne, needsPlanCard } from './estimates';
 import { checkProof } from './proof';
-import { needsVerify, pickStartable } from './queue';
+import { needsVerify, pickStartable, type QueueJob } from './queue';
 import { buildTitle, insertShowBefore, retryTitle, PLAN_MAX } from './title';
 import { extractDoVerbs } from './verbs';
 
@@ -110,11 +110,11 @@ const STEP_LABEL: Record<StepRow['state'], string> = {
 const ANSWERED_STATE: Partial<Record<string, string>> = {
   choice: 'answered',
   tiles: 'answered',
-  approval: 'APPROVED',
-  payment: 'APPROVED',
   signin: 'signed_in',
   secret: 'saved',
 };
+/** Approval / payment stubs until M5 / M10: only an explicit Approve resumes; Decline cancels (07-2 "declined → cancelled"). */
+const APPROVAL_CARDS = new Set(['approval', 'payment']);
 
 function domainOf(site: string | null): string | null {
   return site && /^[a-z0-9.-]+\.[a-z]{2,}$/i.test(site) ? site.toLowerCase() : null;
@@ -134,6 +134,8 @@ function errorCopy(kind: 'SITE_BLOCKED' | 'UNKNOWN', site: string) {
 export class JobRunner {
   private ctxs = new Map<string, JobCtx>();
   private loops = new Map<string, Promise<void>>();
+  /** Jobs that became WORKING again while their old loop was still finishing; they relaunch when it ends. */
+  private relaunch = new Set<string>();
   private busy = 0;
   private idleWaiters: (() => void)[] = [];
   private sched: Promise<void> = Promise.resolve();
@@ -345,21 +347,32 @@ export class JobRunner {
   /** When a slot frees, the oldest startable queued jobs start (FIFO), serialised so two callers never overfill the slots. */
   startNext(): Promise<void> {
     const run = async () => {
-      const live = (await this.query<JobRow[]>('jobsByState', ['queued', 'working'])) ?? [];
+      const live = (await this.query<JobRow[]>('jobsByState', ['queued', 'working', 'needs_you'])) ?? [];
       const windows = live.filter((j) => j.state === 'working' && j.usesBrowser).length;
-      const ids = pickStartable(
-        live.map((j) => ({ id: j.id, state: j.state, createdAt: j.createdAt, usesBrowser: j.usesBrowser })),
-        windows,
-      );
-      for (const id of ids) await this.start(id);
+      const queue: QueueJob[] = [];
+      for (const j of live) {
+        const q: QueueJob = { id: j.id, state: j.state, createdAt: j.createdAt, usesBrowser: j.usesBrowser };
+        if (j.state === 'needs_you') {
+          // An answered card waits here until a slot frees (08-2 §5.4.1: NEEDS_YOU released its slot).
+          const card = j.needsYouCardId ? await this.query<CardRow>('cardById', j.needsYouCardId) : null;
+          if (card?.resolvedAt === null || !card) continue;
+          q.answeredAt = card.resolvedAt;
+        }
+        queue.push(q);
+      }
+      for (const id of pickStartable(queue, windows)) await this.start(id);
     };
-    this.sched = this.sched.then(run, run);
+    this.sched = this.sched.then(run, run).catch((e: unknown) => {
+      this.d.log('job.schedule_failed', 'UNKNOWN', {});
+      if (process.env.FOO_DEBUG) console.error(e);
+    });
     return this.track(this.sched);
   }
 
   /** queued → working: a verify first when the AI was not verified in the last 10 min (AT-106). */
   private async start(jobId: string): Promise<void> {
     const job = await this.job(jobId);
+    if (job?.state === 'needs_you') return this.resume(job);
     if (!job || job.state !== 'queued') return;
     const pick = this.d.ai.pick();
     if (!pick) return; // T4: the AI is not available; the job stays queued until it is.
@@ -389,14 +402,22 @@ export class JobRunner {
 
   /** Starts the loop of a job now WORKING (fresh start, or answered after NEEDS_YOU). */
   private launch(jobId: string): void {
-    if (this.loops.has(jobId)) return;
+    if (this.loops.has(jobId)) {
+      // The old loop is still finishing its last turn (mirrors after NEEDS_YOU): start again once it ends.
+      this.relaunch.add(jobId);
+      return;
+    }
     const p = this.runJob(jobId)
-      .catch((e: unknown) => {
+      .catch(async (e: unknown) => {
         this.d.log('job.loop_crashed', 'UNKNOWN', { jobId });
         if (process.env.FOO_DEBUG) console.error(e);
+        // A crashed loop must not leave a WORKING job holding a slot (T4 may take this over with recovery).
+        const job = await this.job(jobId).catch(() => null);
+        if (job?.state === 'working') await this.fail(job, 'UNKNOWN').catch(() => undefined);
       })
       .finally(() => {
         this.loops.delete(jobId);
+        if (this.relaunch.delete(jobId)) this.launch(jobId);
         void this.startNext();
         this.keepAwake();
         if (this.busy === 0 && this.loops.size === 0) for (const w of this.idleWaiters.splice(0)) w();
@@ -655,10 +676,13 @@ export class JobRunner {
       return;
     }
     if (job.state !== 'needs_you' || job.needsYouCardId !== card.id) return;
-    const answered = ANSWERED_STATE[card.type];
     const answer = a.answer ?? (a.choice ? { optionId: a.choice } : a.text ? { text: a.text } : null);
-    const steps = await this.steps(job.id);
-    const waiting = steps.find((s) => s.state === 'waiting_user');
+    if (APPROVAL_CARDS.has(card.type)) {
+      if (a.choice === 'decline') return this.declined(job, card, resolve);
+      if (a.choice !== 'approve') return;
+    }
+    const answered = APPROVAL_CARDS.has(card.type) ? 'APPROVED' : ANSWERED_STATE[card.type];
+    // The answer is kept on the card; the job stays NEEDS_YOU until a slot is free (max 3 WORKING), then resumes.
     const r = await this.tx([
       {
         op: 'update',
@@ -666,6 +690,24 @@ export class JobRunner {
         id: card.id,
         set: { ...(answered ? { state: answered } : {}), ...resolve, ...(answer ? { answer } : {}) },
       },
+    ]);
+    if (!r.ok) return;
+    if (card.type === 'choice') {
+      const options = (card.payload.options as { id: string; label: string }[] | undefined) ?? [];
+      const label = options.find((o) => o.id === a.choice)?.label ?? a.text ?? '';
+      const q = String(card.payload.question ?? '');
+      this.ctx(job.id).decisions.push(redactSecrets(`- Q: ${q} → A: ${label}`).text);
+      await this.writeMirrors(job.id);
+    }
+    await this.startNext();
+  }
+
+  /** NEEDS_YOU → WORKING once its card is answered and a slot is free (08-4 §26.9 item 5). */
+  private async resume(job: JobRow): Promise<void> {
+    const now = this.d.clock.now();
+    const steps = await this.steps(job.id);
+    const waiting = steps.find((s) => s.state === 'waiting_user');
+    const r = await this.tx([
       {
         op: 'transition',
         table: 'jobs',
@@ -679,12 +721,32 @@ export class JobRunner {
       ...(await this.editChecklistOps(job)),
     ]);
     if (!r.ok) return;
-    if (card.type === 'choice') {
-      const options = (card.payload.options as { id: string; label: string }[] | undefined) ?? [];
-      const label = options.find((o) => o.id === a.choice)?.label ?? a.text ?? '';
-      this.ctx(job.id).decisions.push(`- Q: ${String(card.payload.question ?? '')} → A: ${label}`);
-    }
     this.launch(job.id);
+  }
+
+  /** Decline on an approval / payment card: NEEDS_YOU → CANCELLED (07-2 §4 `declined`, stop_reason approval_declined). */
+  private async declined(job: JobRow, card: CardRow, resolve: Record<string, unknown>): Promise<void> {
+    const now = this.d.clock.now();
+    const steps = await this.steps(job.id);
+    const r = await this.tx([
+      { op: 'update', table: 'cards', id: card.id, set: { state: 'DECLINED', ...resolve, answer: { optionId: 'decline' } } },
+      {
+        op: 'transition',
+        table: 'jobs',
+        id: job.id,
+        from: ['needs_you'],
+        to: 'cancelled',
+        set: { needs_you_card_id: null, stop_reason: 'approval_declined', finished_at: now },
+      },
+      ...steps
+        .filter((s) => s.state === 'waiting_user' || s.state === 'pending' || s.state === 'running')
+        .map((s): DbOp => ({ op: 'update', table: 'steps', id: s.id, set: { state: 'skipped' } })),
+      ...this.badgeOp(job, 'cancelled'),
+      ...(await this.editChecklistOps(job, 'stopped')),
+    ]);
+    if (!r.ok) return;
+    await this.ended(job.id, this.ctx(job.id));
+    await this.startNext();
   }
 
   // ---- 08-2 §5.8 finish ----
@@ -696,8 +758,8 @@ export class JobRunner {
       return !(await this.countFailure(job));
     }
     const stored = new Map<string, string>();
-    for (const tc of (await this.query<{ id: string; result: unknown }[]>('toolCallsForJob', job.id)) ?? [])
-      stored.set(tc.id, JSON.stringify(tc.result ?? null));
+    for (const tc of (await this.query<{ id: string; result: unknown; outcome: string | null }[]>('toolCallsForJob', job.id)) ?? [])
+      if (tc.outcome === 'ok') stored.set(tc.id, JSON.stringify(tc.result ?? null));
     const check = checkProof(d.proof, {
       raw: this.d.tools.rawResults(job.id),
       stored: (id) => stored.get(id) ?? null,
@@ -744,8 +806,8 @@ export class JobRunner {
       ...this.badgeOp(job, to),
       ...(await this.editChecklistOps(job, to)),
     ];
-    await this.tx(ops);
-    await this.ended(job.id, c);
+    // A refused move (the job left WORKING meanwhile, e.g. a stop) rolls the whole write back: nothing to end here.
+    if ((await this.tx(ops)).ok) await this.ended(job.id, c);
     return false;
   }
 
@@ -781,14 +843,14 @@ export class JobRunner {
     const now = this.d.clock.now();
     const steps = await this.steps(job.id);
     const current = steps.find((s) => s.state === 'running' || s.state === 'waiting_user');
-    await this.tx([
+    const r = await this.tx([
       ...this.cardOps(job.chatId, 'error', 'shown', payload, job.id, job.ownerId).ops,
       { op: 'transition', table: 'jobs', id: job.id, from: ['working'], to: 'failed', set: { finished_at: now } },
       ...(current ? [{ op: 'update', table: 'steps', id: current.id, set: { state: 'failed', finished_at: now } } as DbOp] : []),
       ...this.badgeOp(job, 'failed'),
       ...(await this.editChecklistOps(job, 'failed')),
     ]);
-    await this.ended(job.id, c);
+    if (r.ok) await this.ended(job.id, c);
   }
 
   private async ended(jobId: string, c: JobCtx): Promise<void> {
@@ -811,6 +873,9 @@ export class JobRunner {
     const old = await this.job(jobId);
     if (!old) return { ok: false, error: { kind: 'JOB_GONE' } };
     if (old.state !== 'failed' && old.state !== 'cancelled') return { ok: false, error: { kind: 'VALIDATION' } };
+    // One retry per job: a second "Try again" on the same old job is refused (the new job is the one to retry).
+    const all = (await this.query<JobRow[]>('jobsByState', [...JOB_STATES])) ?? [];
+    if (all.some((j) => j.origin === 'retry' && j.originRef === old.id)) return { ok: false, error: { kind: 'VALIDATION' } };
     const steps = (await this.steps(jobId)).filter((s) => s.state !== 'skipped');
     const now = this.d.clock.now();
     const ctx = this.ctx(newJobId);
