@@ -1,7 +1,7 @@
 // 11-fidelity §11.2.1, §11.2.7: golden/manifest.json is generated from the frozen walkthrough and fixes the BP ids.
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { BP, BP_M2, BP_M4, CHAPTER_MILESTONE, EARLY_STEPS, SUPERSEDED, readManifest } from '../../scripts/golden-manifest';
+import { BP, BP_M2, BP_M4, BP_M13, CHAPTER_MILESTONE, EARLY_STEPS, SUPERSEDED, readManifest } from '../../scripts/golden-manifest';
 import { compareRenders, select, type RefJson } from '../../scripts/golden-render';
 
 const manifest = readManifest();
@@ -69,6 +69,22 @@ describe('golden manifest', () => {
       'UX-05-03',
       'UX-05-04',
       ...['01', '02', '03', '04', '05', '06', '09', '11'].map((s) => `UX-23-${s}`),
+    ]);
+  });
+  it('CR-0017 adds the ten M13 screen refs, the group-private card and the M13 early UX-15 / UX-25 steps', () => {
+    expect(BP_M13.map((b) => b.id)).toEqual([
+      ...['05', '06', '07', '08', '11', '12', '15', '16', '17', '19'].map((n) => `BP-SCR-${n}`),
+      'BP-CARD-25',
+    ]);
+    for (const b of BP_M13) {
+      expect(b.milestone).toBe('M13');
+      expect(b.selector).toMatch(/^#(scrgal > \.scr:nth-child\(\d+\) > \.body|cardgal > \.panel:nth-child\(25\) > \.mini)$/);
+    }
+    const early = manifest.ux.filter((e) => e.firstTested === 'M13').map((e) => [e.id, e.milestone]);
+    expect(early).toEqual([
+      ['UX-15-10', 'M9'],
+      ['UX-25-01', 'M14'],
+      ['UX-25-02', 'M14'],
     ]);
   });
   it('the selectors exist in the frozen Blueprint', () => {

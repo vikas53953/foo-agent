@@ -54,6 +54,9 @@ import type { EngineBridge } from '../engine-supervisor/EngineBridge';
 import { FIX_ACTION_KINDS, JOB_CHANNELS, jobIpc } from '../jobs/jobIpc';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
+import { platformLook } from '../platformLook';
+import { M13_SCHEMAS } from '../screens/schemas';
+import { registerScreens } from '../screens/index';
 import { isTrustedUrl } from '../windows/protocol';
 
 const trusted = (e: IpcMainEvent) => !!e.senderFrame && isTrustedUrl(e.senderFrame.url);
@@ -215,6 +218,7 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'error:fix': cardAnswer
     .extend({ action: z.object({ kind: z.enum(FIX_ACTION_KINDS) }).catchall(z.unknown()) as unknown as z.ZodType<FixAction> })
     .strict(),
+  ...M13_SCHEMAS,
 };
 
 type Handler<C extends InvokeChannel> = (req: InvokeIn[C]) => Result<InvokeOut[C]> | Promise<Result<InvokeOut[C]>>;
@@ -260,6 +264,7 @@ export function registerIpc(ctx: AppContext): void {
       os: process.platform === 'win32' ? 'win32' : process.platform === 'darwin' ? 'darwin' : 'linux',
       reducedMotion: reducedMotion(),
       animations: settings.get().appearance.animations,
+      ...platformLook(),
       now: now(),
     };
     e.returnValue = info;
@@ -528,4 +533,5 @@ export function registerIpc(ctx: AppContext): void {
     return r;
   });
   handle('notifications:status', () => ok({ windowsAllowed: true, focusAssist: false }));
+  registerScreens(ctx);
 }

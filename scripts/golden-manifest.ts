@@ -304,6 +304,47 @@ export const BP_M4: BpEntry[] = (
 }));
 
 /**
+ * CR-0017: the M13 screen refs (00-common "Proposed Blueprint ids"): the `.body` of the screen gallery panels M13 builds —
+ * New helper (5), Helper profile (6), New group (7), Settings (8), Activity log (11), Spend (12), Search (15), Attachment
+ * viewer (16), Confirm dialogs (17), Update / crash / safe mode / shortcuts (19, G-M13-18: M13 owns it, M11 proves the update
+ * strip by Tier R on UX-24-12) — and the card gallery's "Group, private" mini (25). Minis are drawn at 350px, so the R2 boxes
+ * are disputed by construction (CR-0003 §b); no size is fixed here.
+ */
+export const BP_M13: BpEntry[] = [
+  ...(
+    [
+      ['BP-SCR-05', 5, 'New helper', '06-1 §3'],
+      ['BP-SCR-06', 6, 'Helper profile', '06-1 §4.1'],
+      ['BP-SCR-07', 7, 'New group', '06-1 §5'],
+      ['BP-SCR-08', 8, 'Settings', '06-2 §6'],
+      ['BP-SCR-11', 11, 'Activity log', '06-3 §9'],
+      ['BP-SCR-12', 12, 'Spend', '06-3 §10'],
+      ['BP-SCR-15', 15, 'Search', '06-3 §12'],
+      ['BP-SCR-16', 16, 'Attachment viewer', '06-3 §13'],
+      ['BP-SCR-17', 17, 'Confirm dialogs', '06-3 §14'],
+      ['BP-SCR-19', 19, 'Update, crash, safe mode, shortcuts', '06-3 §19; 09 §9.20'],
+    ] as const
+  ).map(([id, n, name, spec]): BpEntry => ({
+    id,
+    selector: `#scrgal > .scr:nth-child(${n}) > .body`,
+    drawn: true,
+    size: { width: null, height: null },
+    spec,
+    milestone: 'M13',
+    note: `Screen gallery: ${name}. App: that screen on the seeded world.`,
+  })),
+  {
+    id: 'BP-CARD-25',
+    selector: '#cardgal > .panel:nth-child(25) > .mini',
+    drawn: true,
+    size: { width: null, height: null },
+    spec: '01-articles Art. 14; 08-3 §17.3',
+    milestone: 'M13',
+    note: 'Card gallery: Group, private. App: the group thread line that a card stays private in the owner helper chat.',
+  },
+];
+
+/**
  * CR-0003: UX steps an earlier milestone runs before the chapter's owner (11 §11.12 M2 "UX-09 steps not needing
  * transcription"). UX-09-01 (the recording bar) and UX-09-08 (Windows blocks the microphone) need no speech-to-text; the
  * other UX-09 steps show transcripts or foo's voice replies (M11).
@@ -316,6 +357,11 @@ export const EARLY_STEPS: Record<string, string> = {
   // checklist within 2 s, the result with its Proof chip) sent as a typed request. UX-23-07/-08 are M10, UX-23-10 is M11.
   ...Object.fromEntries(['01', '02', '03', '04', '05', '06', '09', '11'].map((s) => [`UX-23-${s}`, 'M4'])),
   ...Object.fromEntries(['02', '03', '04'].map((s) => [`UX-05-${s}`, 'M4'])),
+  // CR-0017: Replay mode in the attachment viewer moved to M13 (G-M9-03), and the Activity log and Privacy `leaves` row steps of
+  // chapter 25 (G-M13-08); UX-25-03…13 (export, wipe, uninstaller) stay with M14.
+  'UX-15-10': 'M13',
+  'UX-25-01': 'M13',
+  'UX-25-02': 'M13',
 };
 
 /** Chapter anchor → the milestone that completes the chapter (11 §11.12 item 8: a chapter is owned by the milestone that completes it). */
@@ -457,8 +503,13 @@ async function main() {
     version: 'spec-v1.0',
     generatedBy: 'scripts/golden-manifest.ts',
     sources: { ux: UX_FILE, bp: BP_FILE },
-    counts: { uxChapters: chapters.length, uxSteps: ux.length, uxFrames: ux.length * 2, bp: BP.length + BP_M2.length + BP_M4.length },
-    bp: [...BP, ...BP_M2, ...BP_M4],
+    counts: {
+      uxChapters: chapters.length,
+      uxSteps: ux.length,
+      uxFrames: ux.length * 2,
+      bp: BP.length + BP_M2.length + BP_M4.length + BP_M13.length,
+    },
+    bp: [...BP, ...BP_M2, ...BP_M4, ...BP_M13],
     ux,
     superseded: Object.entries(SUPERSEDED).map(([id, decision]) => ({ id, decision })),
   };
@@ -472,7 +523,9 @@ async function main() {
     return;
   }
   writeFileSync(MANIFEST_PATH, text);
-  console.log(`golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length + BP_M2.length + BP_M4.length} BP ids`);
+  console.log(
+    `golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length + BP_M2.length + BP_M4.length + BP_M13.length} BP ids`,
+  );
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) void main();

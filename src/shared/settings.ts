@@ -1,6 +1,7 @@
 // Spec: 08-0 §A (settings.json schema, X-53), §A.1 (ranges), X-150 (appearance.animations).
 // Holds the keys the milestones built so far read (M0: window shell; M1: setup, identity, user, locale, ai, money,
-// notifications.mutedChats for the chat list, footer and banners); later milestones add their keys with their defaults.
+// notifications.mutedChats for the chat list, footer and banners; M13: notifications kinds/sound/unprompted, brief, chat,
+// search); later milestones add their keys with their defaults.
 import { z } from 'zod';
 
 export const ZOOM_STEPS = [80, 90, 100, 110, 125, 150, 175, 200] as const;
@@ -84,7 +85,31 @@ export const settingsSchema = z.object({
       })
       .refine((q) => q.from !== q.to),
     mutedChats: z.record(z.string(), z.union([z.number().int(), z.literal('forever')])),
+    // M13 T1 (CR-0017): the Notifications page rows n-*, n-sound, unprompted (06-2 §6.3).
+    kinds: z.object({
+      needsYou: z.boolean(),
+      done: z.boolean(),
+      routine: z.boolean(),
+      brief: z.boolean(),
+      helper: z.boolean(),
+      problem: z.boolean(),
+    }),
+    sound: z.boolean(),
+    unpromptedPerDay: z.number().int().min(0).max(3),
   }),
+  // M13 T1 (CR-0017): 08-0 §A `brief` (rows notifications/brief-time and the Routines page, UJ-39), `chat` (06-2 §6.9),
+  // `search` (06-3 §12 recent searches, ≤ 10; G-M13-16).
+  brief: z.object({ enabled: z.boolean(), at: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/) }),
+  chat: z.object({
+    voiceReplies: z.enum(['when_i_send_voice', 'always', 'never']),
+    holdToTalk: z.string().min(1).max(40),
+    showStatusOnMyMessages: z.boolean(),
+    voiceToText: z.enum(['openai', 'this_pc']),
+    openAiKeyOffered: z.boolean(),
+    voiceKeyRefused: z.boolean(),
+    transcribeModel: z.enum(['gpt-4o-mini-transcribe', 'gpt-4o-transcribe']),
+  }),
+  search: z.object({ recent: z.array(z.string().max(200)).max(10) }),
   flags: z.object({
     screenHands: z.boolean(),
     hub: z.boolean(),
@@ -102,5 +127,25 @@ export const WRITABLE_PATHS = [
   'window.lastChatId',
   'money.warnAt80',
   'money.aiCapPaise',
+  // M13 T1 (CR-0017): the rows of the M13 Settings pages whose keys exist on this branch (06-2 §6; 08-0 §A). Locks are M5's
+  // (src/main/settings/locks.ts, AT-280); `src/main/settings/change.ts` (T3) replaces the two-level setPath.
+  'user.firstName',
+  'app.closeToTray',
+  'zoom',
+  'appearance.theme',
+  'appearance.useWindowsAccent',
+  'appearance.animations',
+  'money.purchaseCapPaise',
+  'money.bigPaymentPaise',
+  'notifications.kinds',
+  'notifications.sound',
+  'notifications.quiet',
+  'notifications.unpromptedPerDay',
+  'brief.enabled',
+  'brief.at',
+  'chat.voiceReplies',
+  'chat.holdToTalk',
+  'chat.showStatusOnMyMessages',
+  'chat.voiceToText',
 ] as const;
 export type WritablePath = (typeof WRITABLE_PATHS)[number];

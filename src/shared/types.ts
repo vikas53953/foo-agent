@@ -735,3 +735,84 @@ export interface JobDetails {
   proof?: unknown;
   costs: unknown[];
 }
+
+// ---- M13 (CR-0017): helpers, files, suggestions, search (08-5 §3.3 `HelperForm`, §3.7 `SearchHit` / `SearchResults`,
+// 08-0 §B.2 `SearchFilter` + `'settings'` by G-M13-16; `FileRow` / `SuggestionRow` = the table columns camelCased, 08-0 §0) ----
+export type HelperTemplate = 'trips' | 'money' | 'home' | 'family';
+export type HelperApp = 'gmail' | 'gcal' | 'contacts' | 'whatsapp' | 'x' | 'outlook' | 'browser' | 'payments';
+export interface HelperForm {
+  /** ≤ 20 */
+  name: string;
+  /** ≤ 120 */
+  jobText: string;
+  /** ≤ 120 */
+  goodResult?: string;
+  faceRef: FaceRef;
+  /** One of the ten 02 F2 helper tokens, '--h-terracotta' … '--h-ochre' (X-138). */
+  colorToken: string;
+  allowedApps: Record<HelperApp, boolean>;
+  template?: HelperTemplate;
+}
+export interface FileRow {
+  id: string;
+  kind: 'made' | 'received' | 'downloaded' | 'screenshot';
+  name: string;
+  mime: string | null;
+  bytes: number | null;
+  path: string;
+  chatId: string | null;
+  messageId: string | null;
+  jobId: string | null;
+  helperId: string | null;
+  createdAt: number;
+  missingSince: number | null;
+}
+export type SuggestionKind =
+  | 'helper_offer'
+  | 'habit_offer'
+  | 'routine_offer'
+  | 'connector_offer'
+  | 'brief_kind_stop'
+  | 'memory_conflict'
+  | 'memory_share'
+  | 'stale_routine'
+  | 'save_login'
+  | 'read_codes'
+  | 'voice_key';
+export interface SuggestionRow {
+  id: string;
+  key: string;
+  kind: SuggestionKind;
+  text: string;
+  state: 'offered' | 'accepted' | 'dismissed';
+  offeredAt: number;
+  decidedAt: number | null;
+}
+export type SearchFilter = 'all' | 'messages' | 'files' | 'jobs' | 'routines' | 'memory' | 'settings';
+export interface SearchHit {
+  group: 'chats' | 'messages' | 'jobs' | 'files' | 'routines' | 'memory' | 'settings';
+  id: string;
+  title: string;
+  /** Snippet; the match is wrapped in \u0001…\u0002. */
+  line?: string;
+  at?: number;
+  view: View;
+}
+export interface SearchResults {
+  q: string;
+  /** ≤ 5 hits per group. */
+  groups: { group: SearchHit['group']; total: number; hits: SearchHit[] }[];
+}
+/** `activity:list` In (08-1 §3.2, X-124). */
+export interface ActivityQuery {
+  kind?: ActivityKind;
+  actor?: string;
+  chatId?: string;
+  jobId?: string;
+  from: number;
+  to: number;
+  q?: string;
+  beforeAt?: number;
+  /** ≤ 200 */
+  limit: number;
+}

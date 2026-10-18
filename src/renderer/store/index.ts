@@ -14,7 +14,18 @@ import { initialLive, type LiveState } from './live';
 import { initialMessages, type MessagesState } from './messages';
 import { initialSettings, type SettingsState } from './settings';
 import { initialSpend, type SpendState } from './spend';
-import { backReducer, closeDialogReducer, initialUi, navigateReducer, openDialogReducer, type UiState, type XsPane } from './ui';
+import {
+  backReducer,
+  closeDialogReducer,
+  initialUi,
+  navigateReducer,
+  openConfirmReducer,
+  openDialogReducer,
+  openOverlayReducer,
+  type Overlay,
+  type UiState,
+  type XsPane,
+} from './ui';
 
 enableMapSet();
 
@@ -96,6 +107,29 @@ export function openDialog(id: DialogId): void {
 
 export function closeDialog(): void {
   update((s) => closeDialogReducer(s.ui));
+}
+
+/** M13 (06 §0.1): a confirm on top of the open Dialog; closing it gives the Dialog back. */
+export function openConfirm(id: DialogId): void {
+  update((s) => openConfirmReducer(s.ui, id));
+}
+
+export function closeConfirm(): void {
+  update((s) => {
+    if (s.ui.confirm !== null) s.ui.confirm = null;
+    else closeDialogReducer(s.ui);
+  });
+}
+
+/** M13 (06 §0.1): Search (Ctrl+K) or the attachment viewer. */
+export function openOverlay(overlay: Overlay): void {
+  update((s) => openOverlayReducer(s.ui, overlay));
+}
+
+export function closeOverlay(): void {
+  update((s) => {
+    s.ui.overlay = null;
+  });
 }
 
 export function setMenu(id: string | null): void {

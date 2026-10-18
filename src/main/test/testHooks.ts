@@ -8,6 +8,7 @@ import { TEST_EPOCH_MS, type FakeClock } from '../../shared/clock';
 import { SEED_SETS, type ClockReply, type SeedReply, type SeedSet } from '../../shared/ipc';
 import type { JobState } from '../../shared/types';
 import { deps } from '../deps';
+import { setLookOverride } from '../platformLook';
 import { channels, emit, listContext, type AppContext } from '../ipc/IpcRouter';
 import { aiStatus, chatRowById, chatRows, fooChatId, jobRows, publicSettings, recomputePill, spendSummary } from '../store/queries';
 import { writeSeedMedia } from './seed/media';
@@ -38,6 +39,15 @@ const seedArg = z.object({ set: z.enum(SEED_SETS) }).strict();
 const onlineArg = z.object({ online: z.boolean() }).strict();
 const themeArg = z.object({ theme: z.enum(['light', 'dark', 'system']) }).strict();
 const jobStateArg = z.object({ jobId: z.string().min(1), state: z.enum(JOB_STATES) }).strict();
+const accentArg = z
+  .object({
+    accent: z
+      .string()
+      .regex(/^#[0-9A-Fa-f]{6}$/)
+      .nullable(),
+  })
+  .strict();
+const osAnimationsArg = z.object({ on: z.boolean().nullable() }).strict();
 
 /** Seed registry (08-3 §22.9). Rows are generated into the open foo.db through the real schema; open windows get them as patches. */
 export function seeds(ctx: AppContext, clock: FakeClock): Record<SeedSet, () => SeedReply> {
@@ -122,6 +132,17 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
     if (chat) emit('chat:upsert', chat);
     return { chatId: row.chat_id };
   });
+  // M13 (AT-147, AT-283): stand-ins for the Windows accent colour and animation effects; the next window load reads them.
+  guard.handle('test:accent', (raw: unknown) => {
+    const { accent } = accentArg.parse(raw);
+    setLookOverride({ accent });
+    return { accent };
+  });
+  guard.handle('test:osAnimations', (raw: unknown) => {
+    const { on } = osAnimationsArg.parse(raw);
+    setLookOverride({ osAnimations: on });
+    return { on };
+  });
   guard.handle('test:theme', (raw: unknown) => {
     const { theme } = themeArg.parse(raw);
     nativeTheme.themeSource = theme === 'system' ? ctx.settings.get().appearance.theme : theme;
@@ -134,6 +155,7 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
     deps.net.online = true;
     ctx.net.report(true);
     nativeTheme.themeSource = ctx.settings.get().appearance.theme;
+    setLookOverride({ accent: null, osAnimations: null });
     return reply();
   });
   return guard.registered;

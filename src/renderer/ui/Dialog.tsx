@@ -2,28 +2,51 @@
 // `--t-subtitle`, ✕ 36px icon button 12px inset; body `--t-body`; buttons `--btn-h` 40, gap 8, right-aligned; destructive
 // order `[Destructive] [Cancel]` with Cancel focused, `role="alertdialog"`; non-destructive `[Secondary] [Primary]` with Primary
 // focused; focus trapped; focus returns to the opener; ids `dialog-close` / `dialog-primary` / `dialog-secondary`), 03-shell-2
-// §3.9.4 (Esc closes the dialog through the ladder: closeDialog).
-import { useEffect, useId, useRef, type KeyboardEvent } from 'react';
+// §3.9.4 (Esc closes the dialog through the ladder: closeDialog); 06 §0.1 sizes sm 400 / md 520 / lg 720, max height window
+// − 64 with the body scrolling and title and footer fixed, a confirm on top of a Dialog at --z-confirm (M13, CR-0017).
+import { useEffect, useId, useRef, type KeyboardEvent, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
 import { Button } from './Button';
+import { cx } from './cx';
 import { IconButton } from './IconButton';
 import styles from './Dialog.module.css';
 
 export interface DialogProps {
   tid: keyof typeof TID;
   title: string;
-  body: string;
+  /** The first body paragraph (read by Narrator as the description). */
+  body?: string;
+  /** Dialog content under the body paragraph (forms, lists); it scrolls when the dialog is taller than the window − 64. */
+  children?: ReactNode;
   primary: string;
   secondary: string;
   destructive?: boolean;
+  /** 06 §0.1 widths: sm 400 (default), md 520, lg 720. */
+  size?: 'sm' | 'md' | 'lg';
+  /** A confirm on top of another Dialog (06 §0.1): drawn at --z-confirm. */
+  onTop?: boolean;
+  primaryDisabled?: boolean;
   onPrimary: () => void;
   /** Cancel, ✕ and Esc. */
   onClose: () => void;
 }
 
-export function Dialog({ tid, title, body, primary, secondary, destructive, onPrimary, onClose }: DialogProps) {
+export function Dialog({
+  tid,
+  title,
+  body,
+  children,
+  primary,
+  secondary,
+  destructive,
+  size = 'sm',
+  onTop,
+  primaryDisabled,
+  onPrimary,
+  onClose,
+}: DialogProps) {
   const ref = useRef<HTMLDivElement>(null);
   const titleId = useId();
   const bodyId = useId();
@@ -50,7 +73,13 @@ export function Dialog({ tid, title, body, primary, secondary, destructive, onPr
   };
 
   const primaryButton = (
-    <Button variant={destructive ? 'destructive' : 'primary'} size="md" data-testid={TID.dialogPrimary} onClick={onPrimary}>
+    <Button
+      variant={destructive ? 'destructive' : 'primary'}
+      size="md"
+      data-testid={TID.dialogPrimary}
+      disabled={primaryDisabled}
+      onClick={onPrimary}
+    >
       {primary}
     </Button>
   );
@@ -61,14 +90,14 @@ export function Dialog({ tid, title, body, primary, secondary, destructive, onPr
   );
 
   return createPortal(
-    <div className={styles.scrim}>
+    <div className={cx(styles.scrim, onTop && styles.onTop)}>
       <div
         ref={ref}
         role={destructive ? 'alertdialog' : 'dialog'}
         aria-modal="true"
         aria-labelledby={titleId}
-        aria-describedby={bodyId}
-        className={styles.dialog}
+        aria-describedby={body ? bodyId : undefined}
+        className={cx(styles.dialog, styles[size])}
         data-testid={TID[tid]}
         onKeyDown={trap}
       >
@@ -84,9 +113,14 @@ export function Dialog({ tid, title, body, primary, secondary, destructive, onPr
             onClick={onClose}
           />
         </div>
-        <p id={bodyId} className={styles.body}>
-          {body}
-        </p>
+        <div className={styles.scroll}>
+          {body && (
+            <p id={bodyId} className={styles.body}>
+              {body}
+            </p>
+          )}
+          {children}
+        </div>
         <div className={styles.buttons}>
           {destructive ? (
             <>

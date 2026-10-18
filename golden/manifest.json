@@ -9,7 +9,7 @@
     "uxChapters": 25,
     "uxSteps": 245,
     "uxFrames": 490,
-    "bp": 39
+    "bp": 50
   },
   "bp": [
     {
@@ -471,6 +471,138 @@
       "spec": "05-3 §5.21",
       "milestone": "M4",
       "note": "Card gallery: Spend cap. App: the spend cap card in the thread, from seeded card rows."
+    },
+    {
+      "id": "BP-SCR-05",
+      "selector": "#scrgal > .scr:nth-child(5) > .body",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "06-1 §3",
+      "milestone": "M13",
+      "note": "Screen gallery: New helper. App: that screen on the seeded world."
+    },
+    {
+      "id": "BP-SCR-06",
+      "selector": "#scrgal > .scr:nth-child(6) > .body",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "06-1 §4.1",
+      "milestone": "M13",
+      "note": "Screen gallery: Helper profile. App: that screen on the seeded world."
+    },
+    {
+      "id": "BP-SCR-07",
+      "selector": "#scrgal > .scr:nth-child(7) > .body",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "06-1 §5",
+      "milestone": "M13",
+      "note": "Screen gallery: New group. App: that screen on the seeded world."
+    },
+    {
+      "id": "BP-SCR-08",
+      "selector": "#scrgal > .scr:nth-child(8) > .body",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "06-2 §6",
+      "milestone": "M13",
+      "note": "Screen gallery: Settings. App: that screen on the seeded world."
+    },
+    {
+      "id": "BP-SCR-11",
+      "selector": "#scrgal > .scr:nth-child(11) > .body",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "06-3 §9",
+      "milestone": "M13",
+      "note": "Screen gallery: Activity log. App: that screen on the seeded world."
+    },
+    {
+      "id": "BP-SCR-12",
+      "selector": "#scrgal > .scr:nth-child(12) > .body",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "06-3 §10",
+      "milestone": "M13",
+      "note": "Screen gallery: Spend. App: that screen on the seeded world."
+    },
+    {
+      "id": "BP-SCR-15",
+      "selector": "#scrgal > .scr:nth-child(15) > .body",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "06-3 §12",
+      "milestone": "M13",
+      "note": "Screen gallery: Search. App: that screen on the seeded world."
+    },
+    {
+      "id": "BP-SCR-16",
+      "selector": "#scrgal > .scr:nth-child(16) > .body",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "06-3 §13",
+      "milestone": "M13",
+      "note": "Screen gallery: Attachment viewer. App: that screen on the seeded world."
+    },
+    {
+      "id": "BP-SCR-17",
+      "selector": "#scrgal > .scr:nth-child(17) > .body",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "06-3 §14",
+      "milestone": "M13",
+      "note": "Screen gallery: Confirm dialogs. App: that screen on the seeded world."
+    },
+    {
+      "id": "BP-SCR-19",
+      "selector": "#scrgal > .scr:nth-child(19) > .body",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "06-3 §19; 09 §9.20",
+      "milestone": "M13",
+      "note": "Screen gallery: Update, crash, safe mode, shortcuts. App: that screen on the seeded world."
+    },
+    {
+      "id": "BP-CARD-25",
+      "selector": "#cardgal > .panel:nth-child(25) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "01-articles Art. 14; 08-3 §17.3",
+      "milestone": "M13",
+      "note": "Card gallery: Group, private. App: the group thread line that a card stays private in the owner helper chat."
     }
   ],
   "ux": [
@@ -2811,7 +2943,8 @@
       "s": "Watch live in \"Replay\" mode on the Pizza by the Bay booking, with a step bar.",
       "f": "Sign-in screens are never captured.",
       "hl": "live",
-      "milestone": "M9"
+      "milestone": "M9",
+      "firstTested": "M13"
     },
     {
       "id": "UX-16-01",
@@ -4264,7 +4397,8 @@
       "s": "Today: Paid ₹14,600 to Taj Holiday Village · Sent an email to Rakesh Sharma · Booked Pizza by the Bay · Stopped \"Delhi flights\" · Paid ₹1,179 to Airtel. Proof chips on each.",
       "f": "Built only from what really happened, never from what the AI said.",
       "hl": "act-taj",
-      "milestone": "M14"
+      "milestone": "M14",
+      "firstTested": "M13"
     },
     {
       "id": "UX-25-02",
@@ -4280,7 +4414,8 @@
       "s": "\"Your messages and job details go to your AI (Claude). Sites you ask me to use see what you'd send them yourself. Nothing else leaves this PC. foo never uses your data to train anything.\"",
       "f": "No foo account, no foo cloud.",
       "hl": "leaves",
-      "milestone": "M14"
+      "milestone": "M14",
+      "firstTested": "M13"
     },
     {
       "id": "UX-25-03",

@@ -7,7 +7,7 @@ import { TID } from '../../shared/testids';
 import { chatSearch } from '../chatlist/ChatSearch';
 import { closeFind } from '../shell/FindBar';
 import { layoutNow, rightShellOpenNow, rightShellOverlaysNow, setRightShell } from '../shell/useRightShell';
-import { back, clearSelection, closeDialog, setMenu, setXsPane, useStore } from '../store/index';
+import { back, clearSelection, closeConfirm, closeDialog, closeOverlay, setMenu, setXsPane, useStore } from '../store/index';
 import { escRung, type EscRung, type EscState } from './escLadder';
 
 export function readEscState(): EscState {
@@ -16,7 +16,7 @@ export function readEscState(): EscState {
   return {
     focusInComposer: !!active?.closest('[data-composer-row]'),
     menuOpen: s.ui.menu !== null || !!document.querySelector('[role="menu"]'),
-    dialogOpen: s.ui.dialog !== null,
+    dialogOpen: s.ui.dialog !== null || s.ui.overlay !== null,
     selecting: s.ui.selection.size > 0,
     findOpen: s.ui.findOpen,
     rightShellOpen: rightShellOpenNow(),
@@ -36,8 +36,13 @@ export function runEscRung(rung: EscRung): void {
     case 'menu':
       // A menu that has focus closes itself; one left open without focus (a click elsewhere) closes here.
       return setMenu(null);
-    case 'dialog':
+    case 'dialog': {
+      // 06 §0.7: a confirm over a Dialog closes first; an Overlay and a Dialog are never open together (06 §0.1).
+      const ui = useStore.getState().ui;
+      if (ui.confirm !== null) return closeConfirm();
+      if (ui.overlay !== null) return closeOverlay();
       return closeDialog();
+    }
     case 'selection':
       return clearSelection();
     case 'find':

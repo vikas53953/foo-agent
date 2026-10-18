@@ -512,7 +512,7 @@
     {
       "id": "SV-36",
       "component": "Search overlay (Ctrl+K)",
-      "testid": null,
+      "testid": "search-overlay",
       "property": "width",
       "expected": "640px",
       "source": "02 F5 `--palette-w`",

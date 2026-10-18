@@ -21,6 +21,24 @@ export const settingsDefaults: Settings = {
   window: { maximized: false, sidebarWidth: 340, rightShellOpen: true },
   ai: { primary: null, backup: null, providers: {}, plainChatFallback: true },
   money: { purchaseCapPaise: 2_500_000, aiCapPaise: 100_000, warnAt80: true, bigPaymentPaise: 1_000_000 },
-  notifications: { quiet: { on: true, from: '22:00', to: '07:00', days: [0, 1, 2, 3, 4, 5, 6] }, mutedChats: {} },
+  notifications: {
+    quiet: { on: true, from: '22:00', to: '07:00', days: [0, 1, 2, 3, 4, 5, 6] },
+    mutedChats: {},
+    kinds: { needsYou: true, done: true, routine: true, brief: true, helper: true, problem: true },
+    sound: true,
+    unpromptedPerDay: 3,
+  },
+  brief: { enabled: true, at: '08:00' },
+  // voiceToText: 'openai' only when an OpenAI key is saved (X-43); no key is saved before M5's vault, so 'this_pc'.
+  chat: {
+    voiceReplies: 'when_i_send_voice',
+    holdToTalk: 'Ctrl+Space',
+    showStatusOnMyMessages: true,
+    voiceToText: 'this_pc',
+    openAiKeyOffered: false,
+    voiceKeyRefused: false,
+    transcribeModel: 'gpt-4o-mini-transcribe',
+  },
+  search: { recent: [] },
   flags: { screenHands: false, hub: false, outlook: false, multiAccount: false },
 };

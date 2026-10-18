@@ -1,13 +1,14 @@
 // Spec: 03-shell-2 §3.9.3 chat list keys that work anywhere in the app (Ctrl+1…9 opens the chat at that position in the
 // current list; Alt+↓ / Alt+↑ and Ctrl+Tab / Ctrl+Shift+Tab open the next / previous chat; Alt+Shift+↓ opens the next
 // chat that needs you), 09 §9.17 shell shortcuts (Ctrl+N New helper, Ctrl+Shift+N New group, Ctrl+, Settings, Ctrl+/
-// Keyboard shortcuts, Ctrl+Shift+F search chats, Ctrl+Shift+P pin, Ctrl+Shift+U unread), 03-shell-1 §3.4.2 / §3.4.9
+// Keyboard shortcuts, Ctrl+Shift+F search chats, Ctrl+Shift+P pin, Ctrl+Shift+U unread; M13: Ctrl+K Search, Ctrl+H Activity
+// log, Ctrl+I profile of this chat, 06 §0.10), 03-shell-1 §3.4.2 / §3.4.9
 // (the hints shown in menus and tooltips). Chat-view keys (Ctrl+F, Ctrl+Shift+D, F6, Esc) belong to the main shell.
 import { useEffect } from 'react';
 import { focusPane } from '../a11y/focusTargets';
-import { togglePin, toggleUnread } from '../chatlist/actions';
+import { profileView, togglePin, toggleUnread } from '../chatlist/actions';
 import { effectivePill } from '../chatlist/rules';
-import { navigate, openDialog, useStore } from '../store/index';
+import { navigate, openDialog, openOverlay, useStore } from '../store/index';
 import { selectOrderedChatIds, selectVisibleChatIds } from '../store/chats';
 import { openChat } from './actions';
 
@@ -80,6 +81,12 @@ function onKeyDown(e: KeyboardEvent): void {
     run(() => navigate({ kind: 'settings', page: 'account' }));
   } else if (e.key === '/' && !e.shiftKey) {
     run(() => openDialog('shortcuts'));
+  } else if (key === 'k' && !e.shiftKey) {
+    run(() => openOverlay({ kind: 'search' }));
+  } else if (key === 'h' && !e.shiftKey) {
+    run(() => navigate({ kind: 'screen', id: 'activity' }));
+  } else if (key === 'i' && !e.shiftKey && row) {
+    run(() => navigate(profileView(row)));
   } else if (key === 'f' && e.shiftKey) {
     run(() => focusPane('search'));
   } else if (key === 'p' && e.shiftKey && row && row.kind !== 'foo' && row.kind !== 'wa_mirror' && !row.private) {

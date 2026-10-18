@@ -11,7 +11,10 @@
 }
 .dialog {
   position: relative;
+  display: flex;
+  flex-direction: column;
   width: min(var(--dialog-sm), 100%);
+  max-height: calc(100vh - var(--s9));
   padding: var(--s5);
   border-radius: var(--r-lg);
   background: var(--bg-raised);
@@ -23,6 +26,19 @@
   from {
     opacity: 0;
   }
+}
+.md {
+  width: min(var(--dialog-md), 100%);
+}
+.lg {
+  width: min(var(--dialog-lg), 100%);
+}
+.onTop {
+  z-index: var(--z-confirm);
+}
+.scroll {
+  min-height: 0;
+  overflow-y: auto;
 }
 .head {
   display: flex;

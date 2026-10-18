@@ -8,4 +8,8 @@ export const KEY_HINT = {
   pin: 'Ctrl+Shift+P',
   unread: 'Ctrl+Shift+U',
   mute: 'Ctrl+Shift+M',
+  // M13 (06 §0.10, 06-3 §19)
+  search: 'Ctrl+K',
+  activity: 'Ctrl+H',
+  profile: 'Ctrl+I',
 } as const;

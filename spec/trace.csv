@@ -127,3 +127,90 @@ R17 · R8 · R14,J5,,UX-05-04,,05-1 §5.2; 05-3 §5.15; 04 §4.2,test/fidelity/u
 ,,,,BP-CARD-18,05-3 §5.19,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
 ,,,,BP-CARD-19,05-3 §5.20,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
 ,,,,BP-CARD-20,05-3 §5.21,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
+,J15,AT-009,,,10-acceptance-1 §B; 06-2 §6.1 (ai-paid row half; G-M5-10),test/e2e/m13-settings-a.spec.ts,M13,pending
+,J15,AT-065,,,10-acceptance-1 §B; 06-1 §3; G-M13-01,test/e2e/m13-helpers.spec.ts,M13,pending
+,J15,AT-066,,,10-acceptance-1 §B; 08-3 §17.1; 05-3 §5.18,test/integration/helpers/routing.test.ts,M13,pending
+,J15,AT-067,,,10-acceptance-1 §B; 08-3 §17.5,test/integration/helpers/receipts.test.ts,M13,pending
+,J15,AT-068,,,10-acceptance-1 §B; 06-1 §4.1; 08-1 §4.6,test/integration/helpers/delete.test.ts,M13,pending
+,J16,AT-069,,,10-acceptance-1 §B; 08-3 §17.3; 01-articles Art. 14,test/integration/helpers/group-private.test.ts,M13,pending
+,J16,AT-071,,,10-acceptance-1 §B; 08-3 §17.3,test/integration/helpers/group-loop.test.ts,M13,pending
+,J21,AT-091,,,10-acceptance-1 §B; 06-2 §6.4; 08-0 §A.2,test/e2e/m13-settings-b.spec.ts,M13,pending
+,J21,AT-094,,,10-acceptance-1 §B; 08-0 §A.3; 08-1 §4.4.2,test/integration/settings/by-words.test.ts,M13,pending
+,J22,AT-096,,,10-acceptance-1 §B; 06-3 §12,test/e2e/m13-search.spec.ts,M13,pending
+,J22,AT-097,,,10-acceptance-1 §B; 06-3 §12,test/e2e/m13-search.spec.ts,M13,pending
+,J22,AT-098,,,10-acceptance-1 §B; 06-3 §12,test/integration/search/no-ai.test.ts,M13,pending
+,J22,AT-099,,,10-acceptance-1 §B; 06-3 §12,test/integration/search/ask.test.ts,M13,pending
+,J21,AT-147,,,10-acceptance-1 §B; 06-2 §6.2; X-51,test/e2e/m13-settings-a.spec.ts,M13,pending
+,,AT-148,,,10-acceptance-1 §B; 02-foundations-3 §F27.1,test/unit/m13-cursor-scan.test.ts,M13,pending
+,,AT-149,,,10-acceptance-1 §B; 02-foundations-2 §F16.1; X-144,test/e2e/m13-drawings.spec.ts,M13,pending
+,J21,AT-156,,,10-acceptance-1 §B; 06-2 §6.3; 01-articles Art. 19,test/integration/settings/unprompted.test.ts,M13,pending
+,J15,AT-216,,,10-acceptance-1 §B; 08-3 §17.1,test/integration/helpers/two-fit.test.ts,M13,pending
+,J15,AT-217,,,10-acceptance-1 §B; 06-1 §4.1; 08-3 §17,test/integration/helpers/pause.test.ts,M13,pending
+,J16,AT-218,,,10-acceptance-1 §B; 08-3 §17.3,test/integration/helpers/group-owner.test.ts,M13,pending
+,J19,AT-222,,,10-acceptance-1 §B; 06-2 §6.5; G-M13-17,test/integration/settings/cap-below.test.ts,M13,pending
+,J22,AT-223,,,10-acceptance-1 §B; 06-3 §12; 08-2 §11.4,test/integration/search/secret.test.ts,M13,pending
+,J21,AT-226,,,10-acceptance-1 §B; 08-1 §4.6,test/integration/data/chat-delete.test.ts,M13,pending
+,J21,AT-283,,,10-acceptance-1 §B; 06-2 §6.2; X-150; G-M13-14,test/e2e/m13-settings-a.spec.ts,M13,pending
+,,ART-01a,,,01-articles Art. 1; 10-acceptance-2 §D,test/articles/ART-01a.test.ts,M13,pending
+,,ART-01b,,,01-articles Art. 1; 10-acceptance-2 §D,test/articles/ART-01b.test.ts,M13,pending
+,,ART-13b,,,01-articles Art. 13; 10-acceptance-2 §D,test/articles/ART-13b.test.ts,M13,pending
+,,ART-14,,,01-articles Art. 14; 10-acceptance-2 §D,test/articles/ART-14.test.ts,M13,pending
+,J22,PERF-05,,,10-acceptance-2 §E; 06-3 §12,test/perf/PERF-05.test.ts,M13,pending
+,J15,,UX-06-01,,06-1 §3; 06-1 §4.1,test/fidelity/ux/UX-06.helpers.spec.ts,M13,pending
+,J15,,UX-06-02,,06-1 §3; 06-1 §4.1,test/fidelity/ux/UX-06.helpers.spec.ts,M13,pending
+,J15,,UX-06-03,,06-1 §3; 06-1 §4.1,test/fidelity/ux/UX-06.helpers.spec.ts,M13,pending
+,J15,,UX-06-04,,06-1 §3; 06-1 §4.1,test/fidelity/ux/UX-06.helpers.spec.ts,M13,pending
+,J15,,UX-06-05,,06-1 §3; 06-1 §4.1,test/fidelity/ux/UX-06.helpers.spec.ts,M13,pending
+,J15,,UX-06-06,,06-1 §3; 06-1 §4.1,test/fidelity/ux/UX-06.helpers.spec.ts,M13,pending
+,J15,,UX-06-07,,06-1 §3; 06-1 §4.1,test/fidelity/ux/UX-06.helpers.spec.ts,M13,pending
+,J15,,UX-06-08,,06-1 §3; 06-1 §4.1,test/fidelity/ux/UX-06.helpers.spec.ts,M13,pending
+,J16,,UX-19-01,,06-1 §5; 08-3 §17.3,test/fidelity/ux/UX-19.groups.spec.ts,M13,pending
+,J16,,UX-19-02,,06-1 §5; 08-3 §17.3,test/fidelity/ux/UX-19.groups.spec.ts,M13,pending
+,J16,,UX-19-03,,06-1 §5; 08-3 §17.3,test/fidelity/ux/UX-19.groups.spec.ts,M13,pending
+,J16,,UX-19-04,,06-1 §5; 08-3 §17.3,test/fidelity/ux/UX-19.groups.spec.ts,M13,pending
+,J16,,UX-19-05,,06-1 §5; 08-3 §17.3,test/fidelity/ux/UX-19.groups.spec.ts,M13,pending
+,J16,,UX-19-06,,06-1 §5; 08-3 §17.3,test/fidelity/ux/UX-19.groups.spec.ts,M13,pending
+,J16,,UX-19-07,,06-1 §5; 08-3 §17.3,test/fidelity/ux/UX-19.groups.spec.ts,M13,pending
+,J16,,UX-19-08,,06-1 §5; 08-3 §17.3,test/fidelity/ux/UX-19.groups.spec.ts,M13,pending
+,J16,,UX-19-09,,06-1 §5; 08-3 §17.3,test/fidelity/ux/UX-19.groups.spec.ts,M13,pending
+,J16,,UX-19-10,,06-1 §5; 08-3 §17.3,test/fidelity/ux/UX-19.groups.spec.ts,M13,pending
+,J22,,UX-20-01,,06-3 §12,test/fidelity/ux/UX-20.search.spec.ts,M13,pending
+,J22,,UX-20-02,,06-3 §12,test/fidelity/ux/UX-20.search.spec.ts,M13,pending
+,J22,,UX-20-03,,06-3 §12,test/fidelity/ux/UX-20.search.spec.ts,M13,pending
+,J22,,UX-20-04,,06-3 §12,test/fidelity/ux/UX-20.search.spec.ts,M13,pending
+,J22,,UX-20-05,,06-3 §12,test/fidelity/ux/UX-20.search.spec.ts,M13,pending
+,J22,,UX-20-06,,06-3 §12,test/fidelity/ux/UX-20.search.spec.ts,M13,pending
+,J19,,UX-22-01,,06-3 §10; 06-2 §6.5,test/fidelity/ux/UX-22.spend.spec.ts,M13,pending
+,J19,,UX-22-02,,06-3 §10; 06-2 §6.5,test/fidelity/ux/UX-22.spend.spec.ts,M13,pending
+,J19,,UX-22-03,,06-3 §10; 06-2 §6.5,test/fidelity/ux/UX-22.spend.spec.ts,M13,pending
+,J19,,UX-22-04,,06-3 §10; 06-2 §6.5,test/fidelity/ux/UX-22.spend.spec.ts,M13,pending
+,J19,,UX-22-05,,06-3 §10; 06-2 §6.5,test/fidelity/ux/UX-22.spend.spec.ts,M13,pending
+,J19,,UX-22-06,,06-3 §10; 06-2 §6.5,test/fidelity/ux/UX-22.spend.spec.ts,M13,pending
+,J19,,UX-22-07,,06-3 §10; 06-2 §6.5,test/fidelity/ux/UX-22.spend.spec.ts,M13,pending
+,J19,,UX-22-08,,06-3 §10; 06-2 §6.5,test/fidelity/ux/UX-22.spend.spec.ts,M13,pending
+,J21,,UX-24-01,,06-2 §6,test/fidelity/ux/UX-24.settings.spec.ts,M13,pending
+,J21,,UX-24-02,,06-2 §6,test/fidelity/ux/UX-24.settings.spec.ts,M13,pending
+,J21,,UX-24-03,,06-2 §6,test/fidelity/ux/UX-24.settings.spec.ts,M13,pending
+,J21,,UX-24-04,,06-2 §6,test/fidelity/ux/UX-24.settings.spec.ts,M13,pending
+,J21,,UX-24-05,,06-2 §6,test/fidelity/ux/UX-24.settings.spec.ts,M13,pending
+,J21,,UX-24-06,,06-2 §6,test/fidelity/ux/UX-24.settings.spec.ts,M13,pending
+,J21,,UX-24-07,,06-2 §6,test/fidelity/ux/UX-24.settings.spec.ts,M13,pending
+,J21,,UX-24-08,,06-2 §6,test/fidelity/ux/UX-24.settings.spec.ts,M13,pending
+,J21,,UX-24-09,,06-2 §6,test/fidelity/ux/UX-24.settings.spec.ts,M13,pending
+,J21,,UX-24-10,,06-2 §6,test/fidelity/ux/UX-24.settings.spec.ts,M13,pending
+,J21,,UX-24-11,,06-2 §6,test/fidelity/ux/UX-24.settings.spec.ts,M13,pending
+,J21,,UX-24-12,,06-2 §6,test/fidelity/ux/UX-24.settings.spec.ts,M13,pending
+,J18,,UX-15-10,,06-3 §13 (Replay mode); X-128; G-M9-03,test/fidelity/ux/UX-15.replay.spec.ts,M13,pending
+,J21,,UX-25-01,,06-3 §9,test/fidelity/ux/UX-25.activity.spec.ts,M13,pending
+,J21,,UX-25-02,,06-2 §6.6 (leaves row),test/fidelity/ux/UX-25.activity.spec.ts,M13,pending
+,,,,BP-SCR-05,06-1 §3,test/fidelity/bp/BP-screens-m13.spec.ts,M13,pending
+,,,,BP-SCR-06,06-1 §4.1,test/fidelity/bp/BP-screens-m13.spec.ts,M13,pending
+,,,,BP-SCR-07,06-1 §5,test/fidelity/bp/BP-screens-m13.spec.ts,M13,pending
+,,,,BP-SCR-08,06-2 §6,test/fidelity/bp/BP-screens-m13.spec.ts,M13,pending
+,,,,BP-SCR-11,06-3 §9,test/fidelity/bp/BP-screens-m13.spec.ts,M13,pending
+,,,,BP-SCR-12,06-3 §10,test/fidelity/bp/BP-screens-m13.spec.ts,M13,pending
+,,,,BP-SCR-15,06-3 §12,test/fidelity/bp/BP-screens-m13.spec.ts,M13,pending
+,,,,BP-SCR-16,06-3 §13,test/fidelity/bp/BP-screens-m13.spec.ts,M13,pending
+,,,,BP-SCR-17,06-3 §14,test/fidelity/bp/BP-screens-m13.spec.ts,M13,pending
+,,,,BP-SCR-19,06-3 §19; G-M13-18,test/fidelity/bp/BP-screens-m13.spec.ts,M13,pending
+,,,,BP-CARD-25,01-articles Art. 14; 08-3 §17.3,test/fidelity/bp/BP-screens-m13.spec.ts,M13,pending

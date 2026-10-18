@@ -3,7 +3,14 @@
 // each later milestone adds its rows from 08-1 §3.2/§3.3 with the same names and shapes.
 import type { Result } from './errors';
 import type {
+  ActivityQuery,
+  ActivityRow,
   AiStatus,
+  FileRow,
+  HelperForm,
+  SearchFilter,
+  SearchResults,
+  SuggestionRow,
   Bootstrap,
   ChatFilter,
   ChatOpenResult,
@@ -36,6 +43,10 @@ export interface PlatformInfo {
   /** Value at launch; the renderer follows matchMedia afterwards (02 F7, FE-31). */
   reducedMotion: boolean;
   animations: 'full' | 'basic' | 'off';
+  /** M13 (06-2 §6.2 `accent`, AT-147): the Windows accent colour as '#rrggbb', or null when Windows gives none. */
+  accent: string | null;
+  /** M13 (06-2 §6.2 `animations`, X-150, AT-283): false when Windows "Animation effects" is off ("Off · set by Windows"). */
+  osAnimations: boolean;
   /** Main's clock at preload time (epoch ms). The renderer keeps the offset so row times follow main's injected Clock. */
   now: number;
 }
@@ -113,6 +124,39 @@ export interface Invokes {
   'stuck:choose': { req: CardAnswerReq & { choice: 'other_way' | 'take_over' | 'stop' }; res: CardRow };
   'recovery:choose': { req: CardAnswerReq & { choice: 'resume' | 'stop' }; res: CardRow };
   'error:fix': { req: CardAnswerReq & { action: FixAction }; res: CardRow };
+  // M13 T1 (CR-0017): 08-1 §3.2 rows of the M13 screens; `search:query` takes `helperId` for the Files group (G-M13-16).
+  'helper:create': { req: HelperForm; res: HelperRow };
+  'helper:update': { req: { helperId: string; patch: Partial<HelperForm> }; res: HelperRow };
+  'helper:delete': { req: { helperId: string; confirm: true; stopJobs: boolean }; res: void };
+  'group:create': { req: { name: string; helperIds: string[] }; res: ChatRow };
+  'group:update': { req: { chatId: string; name?: string; helperIds?: string[] }; res: ChatRow };
+  'group:delete': { req: { chatId: string; confirm: true }; res: void };
+  'chat:delete': { req: { chatId: string; confirm: true }; res: void };
+  'files:list': {
+    req: { helperId?: string; chatId?: string; jobId?: string; kinds?: FileRow['kind'][]; limit: number };
+    res: FileRow[];
+  };
+  'files:pickFolder': { req: { purpose: 'output' | 'grant' | 'export' | 'avatar' }; res: { path?: string } };
+  'activity:list': { req: ActivityQuery; res: { rows: ActivityRow[]; more: boolean } };
+  'activity:saveCsv': {
+    req: { folder: string; fileName: string; filter: Omit<ActivityQuery, 'beforeAt' | 'limit'> };
+    res: { path: string };
+  };
+  'spend:month': { req: { month: string }; res: SpendSummary };
+  'search:query': { req: { q: string; filter: SearchFilter; limit?: number; helperId?: string }; res: SearchResults };
+  'search:recent': { req: Record<string, never>; res: string[] };
+  'search:clearRecent': { req: Record<string, never>; res: void };
+  'search:ask': { req: { q: string }; res: { messageId: string } };
+  'settings:undo': { req: { changeId: string }; res: { settings: PublicSettings } };
+  'data:deleteOlderThan': {
+    req: { days: 0 | 30 | 90 | 365; chatId?: string; confirm: true; dryRun?: true };
+    res: { chats: number; messages: number };
+  };
+  // M7's rows, typed here because M7 has not merged (pack M13 §1; main answers from src/main/settings/m7Stubs.ts until it does).
+  'suggestions:listDismissed': { req: Record<string, never>; res: SuggestionRow[] };
+  'suggestions:restoreDismissed': { req: { key?: string }; res: { count: number } };
+  'routine:pauseAll': { req: { hours?: number }; res: { count: number } };
+  'routine:resumeAll': { req: { hours?: number }; res: { count: number } };
 }
 
 /** 08-1 §3.2: a card answer names the card, carries its nonce (a stale card is refused) and says how it was answered. */
@@ -202,6 +246,28 @@ export const INVOKE_CHANNELS = [
   'stuck:choose',
   'recovery:choose',
   'error:fix',
+  'helper:create',
+  'helper:update',
+  'helper:delete',
+  'group:create',
+  'group:update',
+  'group:delete',
+  'chat:delete',
+  'files:list',
+  'files:pickFolder',
+  'activity:list',
+  'activity:saveCsv',
+  'spend:month',
+  'search:query',
+  'search:recent',
+  'search:clearRecent',
+  'search:ask',
+  'settings:undo',
+  'data:deleteOlderThan',
+  'suggestions:listDismissed',
+  'suggestions:restoreDismissed',
+  'routine:pauseAll',
+  'routine:resumeAll',
 ] as const satisfies readonly InvokeChannel[];
 
 export const EVENT_CHANNELS = [
@@ -261,6 +327,10 @@ export interface FooTestBridge {
   reset(): Promise<ClockReply>;
   /** Moves a job to a state the way the job runner would (writes the row, re-derives the chat pill, sends the patches). */
   jobState(jobId: string, state: JobRow['state']): Promise<{ chatId: string }>;
+  /** M13 (AT-147): stands in for the Windows accent colour (hex) the renderer reads; null returns to the OS value. */
+  accent(hex: string | null): Promise<{ accent: string | null }>;
+  /** M13 (AT-283): stands in for Windows "Animation effects" (false = off); null returns to the OS value. */
+  osAnimations(on: boolean | null): Promise<{ on: boolean | null }>;
 }
 
 declare global {
