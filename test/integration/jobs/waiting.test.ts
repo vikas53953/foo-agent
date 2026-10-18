@@ -178,11 +178,12 @@ describe('09 §9.22 sleep and wake', () => {
     expect(h.job().state).toBe('waiting');
     expect(h.job().waiting_reason).toBe('asleep');
     expect(h.cards('error')).toHaveLength(0);
-    // While asleep nothing starts or resumes.
-    await h.settle();
+    // While asleep nothing starts or resumes. 2 s clock steps: the held 20 s turn would take 80 rounds at the default 250 ms,
+    // past the 5 s test limit on Windows' coarse timers.
+    await h.settle(2_000);
     expect(h.job().state).toBe('waiting');
     h.send('power', { event: 'resume' });
-    await h.settle();
+    await h.settle(2_000);
     expect(h.job().state).toBe('done_unverified');
     expect(h.cards('error')).toHaveLength(0);
   });
