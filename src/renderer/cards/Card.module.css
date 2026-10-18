@@ -1,7 +1,8 @@
 /* Spec: 05-1 §0.2 card frame and header row, §0.3 buttons (40 tall pills, Link buttons --t-small --accent), §0.5 hover
  * for whole-surface cards; 05-3 §5.22 (table: header --t-caption-strong uppercase +0.08em --fg-2 on --bg-sunken; body
  * --t-small, first column 600; rows only), §5.23 (file 56 high, 40 tile --bg-sunken, Document 24 --fg-2; link preview
- * info block --bg-sunken, image 1.91:1 with top corners --r-lg), §5.24 (place: Location 20, two Secondary buttons). */
+ * info block --bg-sunken, image 1.91:1 with top corners --r-lg), §5.24 (place: Location 20, two Secondary buttons).
+ * M5 (CR-0009): the gated status edge (1.5px --accent top, 05-1 §0.5) and the folded summary row. */
 .card {
   container-type: inline-size;
   position: relative;
@@ -15,6 +16,13 @@
   background: var(--bg-raised);
   color: var(--fg-1);
   user-select: text;
+}
+.gated {
+  border-top: 1.5px solid var(--accent);
+}
+.summary {
+  font: var(--t-small);
+  color: var(--fg-2);
 }
 .wide {
   width: min(var(--card-w-wide), 100%);

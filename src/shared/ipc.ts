@@ -4,7 +4,14 @@
 import type { Result } from './errors';
 import type {
   AiStatus,
+  ApprovalFields,
+  ApprovalScope,
+  ApprovalState,
   Bootstrap,
+  CardAnswer,
+  DraftFields,
+  SecretIndexRow,
+  SecretKind,
   ChatFilter,
   ChatOpenResult,
   ChatRow,
@@ -104,7 +111,29 @@ export interface Invokes {
   'ai:detect': { req: Record<string, never>; res: DetectRow[] };
   'ai:choose': { req: { primary: ProviderId; backup?: ProviderId | null }; res: AiStatus };
   'notifications:status': { req: Record<string, never>; res: { windowsAllowed: boolean; focusAssist: boolean } };
+  // M5 (CR-0009; 08-1 §3.2): cards, drafts and the vault. Handlers: card:answer T5, card:approve|decline|askAgain|heldPick T4,
+  // draft:* T6, secret:* and code:submit T2 (stubs answer VALIDATION 'not_implemented' until their ticket lands).
+  'card:answer': { req: { cardId: string; nonce: string; answer: CardAnswer; resolvedBy: CardTapBy }; res: CardRow };
+  'card:approve': { req: { cardId: string; nonce: string; scope: ApprovalScope; resolvedBy: CardTapBy }; res: { state: ApprovalState } };
+  'card:decline': { req: { cardId: string; nonce: string; resolvedBy: CardTapBy }; res: CardRow };
+  'card:askAgain': { req: { cardId: string }; res: { newCardId?: string } };
+  'card:heldPick': { req: { cardId: string; nonce: string; optionId: string; resolvedBy: CardTapBy }; res: CardRow };
+  'draft:update': { req: { cardId: string; nonce: string; fields: DraftFields }; res: CardRow };
+  'draft:send': { req: { cardId: string; nonce: string; resolvedBy: CardTapBy }; res: { approvalId: string; undoUntil: number } };
+  'draft:undo': { req: { approvalId: string }; res: { undone: boolean } };
+  'draft:discard': { req: { cardId: string; nonce: string; resolvedBy: CardTapBy }; res: CardRow };
+  'draft:openInApp': { req: { cardId: string }; res: void };
+  'secret:save': {
+    req: { requestId?: string; kind: SecretKind; name: string; fields: Record<string, string> };
+    res: { target: string; savedAt: number; label: string };
+  };
+  'secret:list': { req: Record<string, never>; res: SecretIndexRow[] };
+  'secret:delete': { req: { target: string; confirm: true }; res: void };
+  'code:submit': { req: { requestId: string; code: string }; res: void };
 }
+
+/** 08-1 §3.2: a card is answered from the card itself (toasts, typed words and reactions resolve inside main/engine). */
+export type CardTapBy = 'tap' | 'keyboard';
 
 /** 08-1 §3.3 rows built so far: event → payload. */
 export interface Events {
@@ -179,6 +208,20 @@ export const INVOKE_CHANNELS = [
   'ai:detect',
   'ai:choose',
   'notifications:status',
+  'card:answer',
+  'card:approve',
+  'card:decline',
+  'card:askAgain',
+  'card:heldPick',
+  'draft:update',
+  'draft:send',
+  'draft:undo',
+  'draft:discard',
+  'draft:openInApp',
+  'secret:save',
+  'secret:list',
+  'secret:delete',
+  'code:submit',
 ] as const satisfies readonly InvokeChannel[];
 
 export const EVENT_CHANNELS = [
@@ -237,6 +280,27 @@ export interface FooTestBridge {
   reset(): Promise<ClockReply>;
   /** Moves a job to a state the way the job runner would (writes the row, re-derives the chat pill, sends the patches). */
   jobState(jobId: string, state: JobRow['state']): Promise<{ chatId: string }>;
+  /** M5 (CR-0009): writes one card (and its approvals row when `approval` is given); see main/test/testHooks.ts. */
+  cardSeed(arg: CardSeedRequest): Promise<CardSeedResult>;
+}
+
+/** `test:card.seed` request (FOO_TEST only). */
+export interface CardSeedRequest {
+  chatId?: string;
+  type: CardRow['type'];
+  state: string;
+  payload: Record<string, unknown>;
+  jobId?: string;
+  expiresAt?: number;
+  approval?: { fields: ApprovalFields; hardLimit?: boolean; state?: ApprovalState; expiresAt?: number };
+}
+export interface CardSeedResult {
+  chatId: string;
+  cardId: string;
+  messageId: string;
+  nonce: string;
+  jobId?: string;
+  approvalId?: string;
 }
 
 declare global {

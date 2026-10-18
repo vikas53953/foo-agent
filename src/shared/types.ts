@@ -237,6 +237,155 @@ export interface JobLinkPayload {
   jobId: string;
 }
 
+// ---- M5 (CR-0009): approvals, choice and tiles, drafts, secrets (08-0 §B.2–§B.3, 08-1 §4.5, 08-2 §9.3, §11, 08-4 §25.1) ----
+/** 08-0 §B.2 ApprovalVerb (X-55); cancelling a booking is `delete`. */
+export type ApprovalVerb = 'send' | 'book' | 'buy' | 'pay' | 'post' | 'delete' | 'share' | 'switch' | 'use_app' | 'calendar_write';
+/** 08-0 §B.2 ApprovalDraftVerb (X-125): what the AI may request; `send` reaches the user only through a Draft card. */
+export type ApprovalDraftVerb = 'book' | 'buy' | 'pay' | 'delete';
+/** 08-0 §B.2 PermissionApp. */
+export type PermissionApp = 'gmail' | 'calendar' | 'contacts' | 'whatsapp' | 'browser' | 'outlook';
+/** 08-0 §B.2 ChoicePurpose (§G.1). */
+export type ChoicePurpose = 'job' | 'setup' | 'memory_confirm' | 'app_use' | 'stop_which' | 'conflict' | 'file_in' | 'photo_notice';
+/** 08-0 §B.2 SecretKind (= secrets_index.kind CHECK). */
+export type SecretKind = 'ai_key' | 'login' | 'card' | 'conn_token' | 'wa_session' | 'web_key' | 'hub_key';
+/** 08-0 §G.1 `secret.secretKind` (the card's sub-kind; otp and cvv are never saved). */
+export type SecretCardKind = 'ai_key' | 'voice_key' | 'web_key' | 'login' | 'card' | 'otp' | 'cvv';
+/** 08-1 §3.2 card:approve scope. */
+export type ApprovalScope = 'once' | 'chat' | 'always';
+
+/** 08-2 §9.3 ApprovalFields (canonical; hashed with fieldsHash; drives the card text, never free AI text). */
+export interface ApprovalFields {
+  verb: ApprovalVerb;
+  channel?: 'email' | 'whatsapp' | 'web' | 'x';
+  recipients?: { name: string; address: string; isNew: boolean; isGroup: boolean; groupSize?: number }[];
+  payee?: string;
+  siteDomain?: string;
+  amountPaise?: number;
+  lines?: { label: string; amountPaise: number }[];
+  currency?: 'INR';
+  when?: { start: number; end?: number; tz: string };
+  partySize?: number;
+  item?: string;
+  personalShared?: ('name' | 'email' | 'phone' | 'address')[];
+  cancelTerms?: { freeUntil?: number; feePaise?: number; refundable: boolean };
+  /** send/post: subject + first 140 chars, redacted. */
+  contentSummary?: string;
+  irreversible: boolean;
+}
+
+/** 08-0 §B.3 ApprovalDraft (08-4 §25.1): created by the AI through `request_approval` (§28.1). */
+export interface ApprovalDraft {
+  verb: ApprovalDraftVerb;
+  fields: ApprovalFields;
+  /** `quote` ≤ 200 chars verbatim from that tool result; `ref` = snapshot element. */
+  evidence: { field: keyof ApprovalFields; toolCallId: string; quote: string; ref?: string }[];
+}
+
+/** 08-0 §B.3 SecondLookResult (08-4 §28.4); stored in approvals.second_look. */
+export interface SecondLookResult {
+  at: number;
+  deterministic: { ok: boolean; mismatches: string[] };
+  ai?: { ok: boolean; note: string };
+  turnId?: string;
+  held?: { field: 'recipient' | 'amount' | 'date' | 'time' | 'item' | 'people' | 'place'; userSaid: string; actionHas: string };
+}
+
+/** 08-5 §3.3 Rule (settings.rules); `mail_organise` exists only here (its approvals row is verb use_app, fields.app gmail). */
+export interface Rule {
+  id: string;
+  verb: 'use_app' | 'calendar_write' | 'mail_organise';
+  match: { app?: PermissionApp; calendarId?: 'primary'; labelOrFolder?: string };
+  text: string;
+  helperId?: string;
+  createdAt: number;
+  source: 'card';
+}
+
+/** 08-0 §B.3 `secrets_index` columns camelCased; 08-5 §3.6 drops `target` from the renderer copy (secret:list). */
+export interface SecretIndexRow {
+  kind: SecretKind;
+  name: string;
+  label: string;
+  domain: string | null;
+  brand: string | null;
+  last4: string | null;
+  storage: 'credman' | 'blob';
+  createdAt: number;
+  updatedAt: number;
+  lastUsedAt: number | null;
+}
+
+/** 08-2 §11.3 VaultUseRequest. */
+export interface VaultUseRequest {
+  purpose: 'fill_login' | 'fill_card' | 'ai_call' | 'connector_refresh' | 'wa_session' | 'voice_call' | 'web_tool' | 'hub_call';
+  name: string;
+  jobId?: string;
+  approvalId?: string;
+}
+
+/** 08-4 §25.1 ChoiceCardSpec: what the AI writes (zod limits per 08-4, G-M5-07); the engine adds the rest (§26.7). */
+export interface ChoiceCardSpec {
+  question: string;
+  options: { label: string; detail?: string }[];
+  multi?: boolean;
+  reversible?: boolean;
+}
+
+/** 08-1 §4.5 choice / tiles payload (ChoicePayload, 08-0 §B.3). */
+export interface ChoicePayload {
+  purpose: ChoicePurpose;
+  question: string;
+  options: { id: 'o1' | 'o2' | 'o3' | 'o4'; label: string; detail?: string; bestFit?: boolean; photoRef?: string }[];
+  multi?: boolean;
+  stepper?: { index: number; total: number };
+  aiReversible: boolean;
+  reversible: boolean;
+  livePrices: boolean;
+  setupCard?: string;
+}
+/** 08-1 §4.5 approval payload. */
+export interface ApprovalPayload {
+  variant: 'standard' | 'deadline_reminder';
+  approvalId: string;
+  verb: ApprovalVerb;
+  title: string;
+  impact: string;
+  fields: ApprovalFields;
+  scopes: ApprovalScope[];
+  hardLimit: boolean;
+  expiresAt: number;
+}
+/** 08-1 §4.5 draft payload. */
+export interface DraftPayload {
+  approvalId: string;
+  channel: 'email' | 'whatsapp' | 'x';
+  to?: { name: string; address: string; isNew: boolean };
+  subject?: string;
+  body: string;
+  signature?: string;
+  edited: boolean;
+  sendAllowed: boolean;
+  xRemaining?: number;
+  undoUntil?: number;
+}
+/** 08-1 §4.5 secret payload (never a value). */
+export interface SecretPayload {
+  secretKind: SecretCardKind;
+  name: string;
+  why: string;
+  fields: { key: string; label: string; masked: boolean }[];
+  savedAt?: number;
+  requestId?: string;
+  sentTo?: string;
+  paymentCardId?: string;
+}
+/** 08-5 §3.3 DraftFields (`draft:update`); `body` includes the signature text when the user kept it (X-84). */
+export interface DraftFields {
+  to?: string;
+  subject?: string;
+  body: string;
+}
+
 // ---- chats (08-1 §4.3.1) ----
 export type ChatKind = 'foo' | 'helper' | 'group' | 'wa_mirror';
 /** `chats.pill`, derived by main from job and card writes (08-1 §4.6 rule 7; 03-shell-1 §3.4.5 precedence). */
@@ -677,6 +826,21 @@ export type ErrorKind =
   | 'PROTOCOL_FIX_ACTION'
   | 'IDEMPOTENT_REPEAT'
   | 'CARD_STALE'
+  // M5 (CR-0009; 08-3 §21.2–§21.4): cards, the approval gate and the vault
+  | 'CARD_EXPIRED'
+  | 'SCOPE_NOT_ALLOWED'
+  | 'TOO_LATE'
+  | 'HELPER_NOT_ALLOWED'
+  | 'APPROVAL_EVIDENCE'
+  | 'APPROVAL_BAD_TRANSITION'
+  | 'RULE_NOT_ALLOWED'
+  | 'SECRET_IN_TYPE'
+  | 'USE_SUBMIT'
+  | 'VAULT_WRITE_FAILED'
+  | 'VAULT_PURPOSE_DENIED'
+  | 'VAULT_MISSING'
+  | 'SECRET_EXISTS'
+  | 'REQUEST_GONE'
   | 'UNKNOWN';
 
 // ---- card payloads (08-5 §4.1) the M2 cards draw ----
