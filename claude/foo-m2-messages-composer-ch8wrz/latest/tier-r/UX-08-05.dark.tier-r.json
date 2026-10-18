@@ -248,6 +248,18 @@
         "Village",
         "Watch",
         "live",
+        "Got",
+        "it.",
+        "I",
+        "won’t",
+        "do",
+        "anything",
+        "until",
+        "you",
+        "say",
+        "so.",
+        "9:45",
+        "AM",
         "let’s",
         "do",
         "the",
@@ -476,11 +488,11 @@
         },
         "app": {
           "x": 356,
-          "y": 586,
+          "y": 601,
           "width": 398.15625,
           "height": 64
         },
-        "dPos": 75,
+        "dPos": 60,
         "dSize": 6,
         "verdict": "fail"
       }
@@ -506,8 +518,8 @@
     "total": 23026
   },
   "r5": {
-    "ratio": 0.16337109375,
-    "diffPixels": 167292,
+    "ratio": 0.156080078125,
+    "diffPixels": 159826,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-08-05.dark.diff.png"

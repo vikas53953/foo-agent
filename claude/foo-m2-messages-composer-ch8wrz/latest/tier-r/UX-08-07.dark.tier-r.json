@@ -382,11 +382,11 @@
         },
         "app": {
           "x": 356,
-          "y": 355,
+          "y": 370,
           "width": 553,
           "height": 255
         },
-        "dPos": 172.75,
+        "dPos": 157.75,
         "dSize": 127,
         "verdict": "fail"
       }
@@ -407,13 +407,13 @@
   "r4": {
     "verdict": "review",
     "skipped": null,
-    "ratio": 0.05498152140437327,
-    "diffPixels": 7141,
+    "ratio": 0.05406529103788112,
+    "diffPixels": 7022,
     "total": 129880
   },
   "r5": {
-    "ratio": 0.1754560546875,
-    "diffPixels": 179667,
+    "ratio": 0.1724638671875,
+    "diffPixels": 176603,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-08-07.dark.diff.png"

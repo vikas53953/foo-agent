@@ -519,11 +519,11 @@
         },
         "app": {
           "x": 356,
-          "y": 590,
+          "y": 605,
           "width": 398.15625,
           "height": 60
         },
-        "dPos": 69,
+        "dPos": 54,
         "dSize": 0.71875,
         "verdict": "fail"
       }
@@ -549,8 +549,8 @@
     "total": 23820
   },
   "r5": {
-    "ratio": 0.148564453125,
-    "diffPixels": 152130,
+    "ratio": 0.14047265625,
+    "diffPixels": 143844,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-08-04.dark.diff.png"

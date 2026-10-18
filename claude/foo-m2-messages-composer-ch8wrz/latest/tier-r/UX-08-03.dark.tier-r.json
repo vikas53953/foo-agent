@@ -244,6 +244,10 @@
         "Village",
         "Watch",
         "live",
+        "All",
+        "set.",
+        "12:45",
+        "AM",
         "ok",
         "thanks",
         "3:00",
@@ -565,11 +569,11 @@
         },
         "app": {
           "x": 356,
-          "y": 612,
+          "y": 627,
           "width": 321.984375,
           "height": 38
         },
-        "dPos": 69,
+        "dPos": 54,
         "dSize": 1.96875,
         "verdict": "fail"
       }
@@ -595,8 +599,8 @@
     "total": 12312
   },
   "r5": {
-    "ratio": 0.1071435546875,
-    "diffPixels": 109715,
+    "ratio": 0.0991103515625,
+    "diffPixels": 101489,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-08-03.dark.diff.png"

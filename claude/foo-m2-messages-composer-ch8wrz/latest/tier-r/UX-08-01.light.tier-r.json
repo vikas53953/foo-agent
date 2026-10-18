@@ -557,11 +557,11 @@
         },
         "app": {
           "x": 761.21875,
-          "y": 612,
+          "y": 627,
           "width": 147.78125,
           "height": 38
         },
-        "dPos": 69,
+        "dPos": 54,
         "dSize": 0.90625,
         "verdict": "fail"
       }
@@ -582,13 +582,13 @@
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.1564625850340136,
-    "diffPixels": 874,
+    "ratio": 0.21732903687790905,
+    "diffPixels": 1214,
     "total": 5586
   },
   "r5": {
-    "ratio": 0.070662109375,
-    "diffPixels": 72358,
+    "ratio": 0.0676962890625,
+    "diffPixels": 69321,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-08-01.light.diff.png"
