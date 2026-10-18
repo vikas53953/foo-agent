@@ -34,7 +34,8 @@ describe('08-3 §12.2 parser', () => {
       ['Lives at 14 Hill Road, Bandra', 'said', '2026-10-03', null, true, 'f_0194c1d0-5e22-7f10-a3b4-6c7d8e9f0a13', 'fact'],
     ]);
     expect(r.facts.map((f) => f.lineNo)).toEqual([2, 3, 6]);
-    expect(r.facts.map((f) => f.origin)).toEqual(['chat', null, 'chat']);
+    // CR-0010 G-M6-13: a brace with no origin label (the example's guessed fact) reads as `manual`.
+    expect(r.facts.map((f) => f.origin)).toEqual(['chat', 'manual', 'chat']);
   });
 
   it('maps exactly the 7 origin labels 1:1 to MemoryOrigin, case-sensitive', () => {
@@ -134,10 +135,12 @@ describe('08-3 §12.2 parser', () => {
 });
 
 describe('08-3 §12.2 writer', () => {
-  it('writes the spec example back byte for byte: UTF-8, LF, no BOM', () => {
+  it('writes the spec example back as UTF-8, LF, no BOM; the label-less fact gains `you typed it` (CR-0010 G-M6-13)', () => {
     const r = parseMemoryFile(SPEC_EXAMPLE.replace(/\n/g, '\r\n'), opts());
     const out = writeMemoryFile(r.doc);
-    expect(out).toBe(SPEC_EXAMPLE);
+    expect(out).toBe(
+      SPEC_EXAMPLE.replace('{I guessed · 2026-10-09 · from 4 bookings', '{I guessed · 2026-10-09 · you typed it · from 4 bookings'),
+    );
     expect(out.includes('\r')).toBe(false);
     expect(out.charCodeAt(0)).not.toBe(0xfeff);
   });
