@@ -534,6 +534,57 @@ files are real and which stay seeds). What the real output pinned:
   callers pass an ErrorKind (T7 / the integrator: a call to the stack from `Composer.tsx`).
 - `trace.csv` rows AT-281/282/286/287 still say `pending`: the status column is the integrator's at close-out.
 
+## M4 · runner core (ticket T2)
+
+### Built
+
+- `src/engine/jobs/JobRunner.ts` (08-2 §5): `createJob` (do-verbs → intent, plan with `show_before`, title, estimates, Plan
+  card when > 2 min or > ₹5, mirrors `state.json` / `plan.md`), FIFO queue with 3 WORKING slots and the 3-window browser
+  gate (`queue.ts`), verify-first when the AI was not checked in 10 min, the step loop (one repair turn per step), NEEDS_YOU
+  cards and their answers, `finish` (proof check, result posted once, checklist state), `fail` (error card with one
+  alternative), `job.retry` (G-M4-01: a new linked job, the old one never moves). One checklist per job, posted 1.5 s after
+  start (or at once when queued with ≥ 2 steps) and edited in place.
+- `src/engine/tools/ToolLayer.ts`: catalogue lines for the step prompt, gate check, X-113 idem key, raw result (≤ 16 KB)
+  kept in RAM for the proof check, redacted result stored. `src/engine/gate/GateLogic.ts`: stub gate (read / prepare run,
+  everything else refused) until M5.
+- `title.ts`, `estimates.ts`, `verbs.ts`, `proof.ts` (08-4 §26 rules); `StepActSchema` + `ProofSchema` in `schemas.ts`;
+  `PromptBuilder.buildStep`; ChatLane hands an intake `job` decision to the runner.
+
+### Picks and gaps (for the lead's independent check)
+
+- T2-01 · `request_approval` is logged and counted as a failed turn until M5 builds approvals.
+- T2-02 · Plan card "Change plan" cancels the queued job (`stop_reason` system, badge stopped); re-intake with the change
+  is left to T3/M5.
+- T2-03 · (lead review: the first pick broke max 3 WORKING) An answered NEEDS_YOU card keeps its answer and the job stays
+  NEEDS_YOU (badge ⏳) until a slot frees; `startNext` then resumes answered jobs ahead of queued ones, oldest answer
+  (`cards.resolved_at`) first, then queued jobs FIFO (`queue.ts` `pickStartable`).
+- T2-04 · Seams: an AI error ends FAILED `UNKNOWN` (`hooks.onAiError`, T4 replaces it with WAITING); 3 failed turns in a
+  row end FAILED (`hooks.onStuck`, T3 replaces it with the stuck card).
+- T2-05 · Proofs the app cannot re-check yet (email, sent_folder, wa_delivered, calendar_event, receipt, read_source) end
+  done_unverified until M8/M10; a done_unverified job stores `proof` null.
+- T2-06 · A retry job points at the old job's user message, so that bubble's badge restarts at 👀.
+- T2-07 · SITE_BLOCKED with no usable AI alternative → `open_url https://{domain}/`; UNKNOWN → retry; else dismiss.
+- T2-08 · "email / message / text" count as the send verb only at the start of the ask or after please / and / then
+  (so "find the email from…" stays a read).
+- T2-09 · `Engine` gets an empty tool registry outside tests; real tools arrive with M8/M9. The step prompt's tool list is
+  headed "Tools you can use:".
+- T2-10 · Files beyond the ticket's owned list: `src/engine/jobs/verbs.ts`, `test/unit/jobs/verbs.test.ts`,
+  `test/integration/jobs/jobHarness.ts`, `test/verify/m4-t2-runner.journey.ts`; additive edits to `schemas.ts`,
+  `PromptBuilder.ts`, `envelope.ts`, `AiService.ts`, `test/unit/m3-engine-helpers.ts`.
+- T2-11 · Approval / payment stubs (until M5 / M10): only `choice: 'approve'` resumes; `choice: 'decline'` → card DECLINED,
+  job CANCELLED with `stop_reason` approval_declined (07-2 `declined`); any other answer is ignored.
+- T2-12 · Lead review fixes: an answer that lands while the old loop is still finishing relaunches the loop when it ends; a
+  crashed loop ends the job FAILED `UNKNOWN`; a tool result JSON cannot hold is the tool's `UNKNOWN` error; `finish` / `fail`
+  end nothing when their move is refused; typed answers are redacted before Decisions / plan.md; one retry per old job;
+  a confirmation proof needs ≥ 4 characters, matches only string values, and only from tool calls that ended ok.
+- T2-13 · Not done (lead's "consider"): posting "I didn't get that…" when `createJob` returns null. Its only null path is a
+  failed db write, where the fallback line's own write would fail the same way.
+- Still in `copy-pending.json` for T2: `thread.queued.ai_back` and `thread.approval_typed.*` (intake paths: AI down is T4,
+  typed yes needs M5 approval cards) and `cards.not_live_chip.job_title.text` (renderer, T5).
+- Found by foo-verify, not T2's file: the Doing now line and `JobRow.nowLine` show the raw phrase key ("read_email")
+  because `jobRows` (`src/main/store/queries.ts`) uses `slots.text ?? phrase_key`; 08-1 §4 says the running step's phrase,
+  i.e. `phraseText(phrase_key, slots, 'running')`.
+
 ## M4 · cards and job IPC (ticket T5)
 
 ### Built
@@ -557,12 +608,19 @@ files are real and which stay seeds). What the real output pinned:
 ### Picks and gaps (for the lead's independent check)
 
 - T5-01 · Steps: no `steps:upsert` event exists, so the checklist refetches `job:details` on every `job:upsert` for its job.
-- T5-02 · Plan `costLine` is the pre-formatted cost (`{x}`, or `{p}` on plan billing); plan billing with no percentage
-  shows the duration only (`cards.checklist.footer_text.plan` stays pending).
+- T5-02 · Plan `costLine` is the runner's pre-formatted rupee estimate (T2: `formatInr(cost)`, '' when unknown); with
+  plan billing or no estimate the card shows "About {n} minutes" only (new keys `cards.plan.estimate.base`,
+  `cards.plan.label_base`; `cards.plan.estimate.plan` and `cards.checklist.footer_text.plan` stay pending until the
+  adapter reports plan usage).
 - T5-03 · Spend cap "Wait until {date}" ends the card through `error:fix` with `dismiss` (G-M4-09); routines paused = 0
   until M7; the purchase variant keeps the placeholder (G-M4-10).
 - T5-04 · "Check for real" (not-live chip) and "Start again" on a withdrawn plan use `job:retry`, which now also accepts a
-  DONE-unverified job.
+  DONE-unverified job (05-3 §5.16: a new linked job "Checking {title} live"); main refuses a second retry of the same job
+  as the runner does. Seam for T2's runner: `retryInner` still refuses `done_unverified` and does not use
+  `cards.not_live_chip.job_title.text`, so Check for real ends in no new job until it does.
+- T5-04b · Seam for T2's runner: `fail()` posts the error card in state `shown` with a fix button; 05-3 §5.20 says `shown`
+  has no fix button and `asking` is the state with one, so the card renders without Try again until the runner writes
+  `asking`.
 - T5-05 · A 10-digit confirmation code reads as a PNR; `calendar_event` and `emails_read` proofs draw no chip.
 - T5-06 · A Stuck card in `taken_over` / `stopped` stays read-only with no summary words (05-3 §5.19 gives none).
 - T5-07 · C-21 shows "Raise cap" while the field is empty or invalid (06-3 §14 names only "Raise to ₹{x}").

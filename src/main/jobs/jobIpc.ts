@@ -135,6 +135,8 @@ export function jobIpc(d: JobIpcDeps): JobHandlers {
       if (!j) return fail('JOB_GONE');
       // G-M4-01: Try again on a failed or stopped job; 05-3 §5.16 "Check for real" on a done-but-unverified one (a new linked job).
       if (j.state !== 'failed' && j.state !== 'cancelled' && j.state !== 'done_unverified') return fail('VALIDATION');
+      // One retry per old job, as the runner keeps it (the new job is the one to retry): refuse here so the button never spins.
+      if (d.db.prepare("SELECT 1 FROM jobs WHERE origin = 'retry' AND origin_ref = ?").get(jobId)) return fail('VALIDATION');
       const newJobId = d.newJobId();
       if (!d.engine?.send('job.retry', { jobId, newJobId })) return fail('UNKNOWN', 'engine not running');
       return ok({ newJobId });

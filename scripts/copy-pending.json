@@ -46,14 +46,9 @@
     "errors.safe_mode.what_happened": "M4-T4 waiting/recovery",
     "errors.safe_mode.what_is_safe": "M4-T4 waiting/recovery",
     "errors.safe_mode.button": "M4-T4 waiting/recovery",
-    "errors.site_blocked.what_happened": "M4-T2 runner",
-    "errors.site_blocked.what_is_safe": "M4-T2 runner",
-    "errors.site_blocked.button": "M4-T2 runner",
     "errors.db_rebuilt.what_happened": "M4-T4 waiting/recovery",
     "errors.db_rebuilt.what_is_safe": "M4-T4 waiting/recovery",
     "errors.db_rebuilt.button": "M4-T4 waiting/recovery",
-    "errors.unknown.what_is_safe": "M4-T2 runner",
-    "errors.unknown.button": "M4-T2 runner",
     "errors.ai_service_down.link": "M4-T4 waiting/recovery",
     "errors.ai_limit.link": "M4-T4 waiting/recovery",
     "errors.ai_limit.what_happened.no_reset": "M4-T4 waiting/recovery",
@@ -66,6 +61,7 @@
     "cards.plan.change_placeholder": "M4-T7 close-out (needs runner data not wired yet)",
     "cards.proof_chip.popover.file_missing": "M4-T7 close-out (needs runner data not wired yet)",
     "cards.not_live_chip.still_failed.text": "M4-T7 close-out (needs runner data not wired yet)",
-    "cards.error.still_failing": "M4-T7 close-out (needs runner data not wired yet)"
+    "cards.error.still_failing": "M4-T7 close-out (needs runner data not wired yet)",
+    "cards.plan.estimate.plan": "M4-T7 close-out (needs runner data not wired yet)"
   }
 }

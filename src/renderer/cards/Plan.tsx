@@ -6,7 +6,7 @@
 // back." + "Start again"; Offline → Go disabled + the offline line; cap reached → Go disabled + "You've reached this month's AI
 // cap." + "Raise cap" (C-21)). §5.12.3: Ctrl+Enter = Go; label "Plan: {title}, {n} steps, about {n} minutes, about ₹{x}"; steps
 // an ordered list. 05-1 §0.2 data rule: the words come from the runner's fields, never AI free text. `costLine` is the cost
-// value the runner formatted (₹ amount, or the plan percentage) — implementation-notes "M4 T5".
+// value the runner formatted (a ₹ amount); plan billing or no estimate drops the AI part — implementation-notes "M4 T5".
 import { useState } from 'react';
 import { t } from '../../shared/copy/t';
 import { formatTime } from '../../shared/format';
@@ -32,11 +32,12 @@ export function Plan({ card, time }: { card: CardRow; time: CardTime }) {
   const [showAll, setShowAll] = useState(false);
   const [capDialog, setCapDialog] = useState(false);
   const { busy, run } = useCardAction<'go' | 'change' | 'again'>();
-  const plan = ai?.billing === 'plan';
-  const estimate = plan
-    ? t('cards.plan.estimate.plan', { n: p.minutes, p: p.costLine, AI: ai?.displayName ?? '' })
-    : t('cards.plan.estimate.key', { n: p.minutes, x: p.costLine });
-  const label = t('cards.plan.label', { title: p.title, n: p.steps.length, minutes: p.minutes, x: p.costLine });
+  // `costLine` is the runner's rupee estimate (formatInr); with plan billing, or no estimate, the AI part is left out (08-2 §5.8).
+  const cost = ai?.billing !== 'plan' && p.costLine ? p.costLine : null;
+  const estimate = cost ? t('cards.plan.estimate.key', { n: p.minutes, x: cost }) : t('cards.plan.estimate.base', { n: p.minutes });
+  const label = cost
+    ? t('cards.plan.label', { title: p.title, n: p.steps.length, minutes: p.minutes, x: cost })
+    : t('cards.plan.label_base', { title: p.title, n: p.steps.length, minutes: p.minutes });
   const capReached = !!spend && spend.aiBilling === 'key' && (spend.aiSpentPaise ?? 0) >= spend.aiCapPaise;
   const canGo = !offline && !capReached && busy === null;
   const answer = { cardId: card.id, nonce: card.nonce };

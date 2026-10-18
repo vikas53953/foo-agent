@@ -187,6 +187,12 @@ describe('job:retry (08-1 §3.2, X-124, G-M4-01)', () => {
     expect(h['job:retry']({ jobId: 'j_x' })).toEqual({ ok: false, error: { kind: 'JOB_GONE' } });
     expect(sent).toHaveLength(1);
   });
+
+  it('one retry per old job, as the runner keeps it: a second Try again on the same job is refused and sends nothing', () => {
+    tx([job('j_1', 'failed'), job('j_2', 'working', { origin: 'retry', origin_ref: 'j_1' })]);
+    expect(h['job:retry']({ jobId: 'j_1' })).toEqual({ ok: false, error: { kind: 'VALIDATION' } });
+    expect(sent).toHaveLength(0);
+  });
 });
 
 describe('plan:go, plan:change (05-3 §5.12, 08-1 §3.2)', () => {
