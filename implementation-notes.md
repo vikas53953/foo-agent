@@ -628,6 +628,17 @@ files are real and which stay seeds). What the real output pinned:
   buttons removed, last row Stopped by you"); the card row's own `state` moves to `stopped` when the runner writes it (T3).
 - T5-09 · `cards.spend_cap.line2.ai` uses ICU plurals ("1 job", "2 jobs"); `errors.spend_cap.what_is_safe` (T3's) has
   the same "{jobs} jobs" wording.
+- T5-11 · Checklist max 6 visible rows (05-1 §5.2.1): finished rows fold first; if more than 6 still remain, the last
+  not-started rows wait below until rows fold (no "more" row exists in the spec); a current, failed or stopped row is
+  never cut. "Show" lists all once a row has folded.
+- T5-12 · `job:retry` keeps a per-job in-flight mark for 30 s after a send, so a double tap sends one `job.retry`; after
+  that the one-retry-per-job row check (or the runner's refusal) decides. The not-live chip's "Checking…" follows the
+  linked job's state, with the same 30 s wait before its row arrives.
+- T5-13 (lead review) · Plan `withdrawn`: only `resolvedBy` auto (the 24 h timeout) says "I didn't start {title} because
+  I didn't hear back." with Start again; any other withdrawal is 05-1 §0.5 "No longer needed. The job was stopped." with
+  no buttons (`cards.common.content.withdrawn`). The checklist's Replay link is hidden until the screen viewer has a
+  handler (`cards.checklist.replay` back to pending). C-21 stops key events at the dialog so Ctrl+Enter cannot reach the
+  host card; its Tab trap skips disabled buttons. Contract extensions are in CR-0008 §(f).
 - T5-10 · Old checklist rows (the ux-world Goa card) carry the job only on `cards.job_id`; the card falls back to it. The
   ux-world seed writes `freeform` steps, which resolve to "Working on it" (08-4 §26.1 closed catalogue); its walkthrough
   words need phrase keys (seed owner).

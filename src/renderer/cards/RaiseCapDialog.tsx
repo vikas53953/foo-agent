@@ -61,6 +61,9 @@ export function RaiseCapDialog({ capPaise, onClose, onRaised }: { capPaise: numb
   };
 
   const keys = (e: KeyboardEvent) => {
+    // React events bubble through the portal to the card that hosts the dialog: Ctrl+Enter here must not reach the
+    // card's own Primary (Plan "Go", Error fix).
+    e.stopPropagation();
     if (e.key === 'Escape') {
       e.preventDefault();
       onClose();
@@ -72,7 +75,9 @@ export function RaiseCapDialog({ capPaise, onClose, onRaised }: { capPaise: numb
       return;
     }
     if (e.key !== 'Tab') return;
-    const list = Array.from(ref.current?.querySelectorAll<HTMLElement>('button, input') ?? []);
+    const list = Array.from(
+      ref.current?.querySelectorAll<HTMLElement>('button:not(:disabled):not([aria-disabled="true"]), input:not(:disabled)') ?? [],
+    );
     const i = list.indexOf(document.activeElement as HTMLElement);
     const next = e.shiftKey ? (i <= 0 ? list.length - 1 : i - 1) : i === list.length - 1 ? 0 : i + 1;
     e.preventDefault();

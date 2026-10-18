@@ -9,7 +9,7 @@
 // components only draw what these return.
 import { t } from '../../shared/copy/t';
 import { phraseCopyKey, resolvePhrase, type PhraseForm } from '../../shared/phrases';
-import type { AiStatus, JobRow, ProofKind, StepRow, StopReason, WaitingReason } from '../../shared/types';
+import type { AiStatus, CardRow, JobRow, ProofKind, StepRow, StopReason, WaitingReason } from '../../shared/types';
 
 export type ChecklistRowState = 'done' | 'current' | 'waiting' | 'next' | 'failed' | 'stopped' | 'took_over';
 
@@ -79,7 +79,23 @@ export function checklistView(job: Pick<JobRow, 'state' | 'stopReason'>, steps: 
   const finished = lines.findIndex((l) => l.state !== 'done');
   const leading = finished === -1 ? lines.length : finished;
   const fold = Math.min(leading, lines.length - (CHECKLIST_MAX_ROWS - 1));
-  return fold > 0 ? { folded: fold, lines: lines.slice(fold) } : { folded: 0, lines };
+  const shown = fold > 0 ? lines.slice(fold) : lines;
+  // T5-11: still more than 6 rows (few steps finished): the last not-started rows wait below until rows fold; "Show"
+  // (once a row has folded) or the job's details list them all. A current, failed or stopped row is never cut.
+  const room = CHECKLIST_MAX_ROWS - (fold > 0 ? 1 : 0);
+  while (shown.length > room) {
+    const last = shown.map((l) => l.state).lastIndexOf('next');
+    if (last === -1) break;
+    shown.splice(last, 1);
+  }
+  return { folded: Math.max(fold, 0), lines: shown };
+}
+
+/** 05-3 §5.12.2 / 05-1 §0.5: a withdrawn Plan card. Only the 24 h no-answer timeout (`resolvedBy` auto) offers Start again. */
+export function planWithdrawn(title: string, resolvedBy: CardRow['resolvedBy']): { text: string; startAgain: boolean } {
+  return resolvedBy === 'auto'
+    ? { text: t('cards.plan.summary.withdrawn', { title }), startAgain: true }
+    : { text: t('cards.common.content.withdrawn'), startAgain: false };
 }
 
 /** 05-1 §5.2.2 right label. */

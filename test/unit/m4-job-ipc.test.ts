@@ -188,6 +188,21 @@ describe('job:retry (08-1 §3.2, X-124, G-M4-01)', () => {
     expect(sent).toHaveLength(1);
   });
 
+  it('a double tap before the engine writes the new row sends one job.retry (retry in flight)', () => {
+    tx([job('j_1', 'failed')]);
+    expect(h['job:retry']({ jobId: 'j_1' }).ok).toBe(true);
+    expect(h['job:retry']({ jobId: 'j_1' })).toEqual({ ok: false, error: { kind: 'VALIDATION' } });
+    expect(sent).toHaveLength(1);
+  });
+
+  it('a retry whose send failed can be tapped again', () => {
+    tx([job('j_1', 'failed')]);
+    live = false;
+    expect(h['job:retry']({ jobId: 'j_1' }).ok).toBe(false);
+    live = true;
+    expect(h['job:retry']({ jobId: 'j_1' }).ok).toBe(true);
+  });
+
   it('one retry per old job, as the runner keeps it: a second Try again on the same job is refused and sends nothing', () => {
     tx([job('j_1', 'failed'), job('j_2', 'working', { origin: 'retry', origin_ref: 'j_1' })]);
     expect(h['job:retry']({ jobId: 'j_1' })).toEqual({ ok: false, error: { kind: 'VALIDATION' } });

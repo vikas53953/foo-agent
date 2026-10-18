@@ -172,11 +172,6 @@ export function Checklist({ card, time }: { card: CardRow; time: CardTime }) {
         {open && (
           <>
             <StepList job={row} steps={steps} showAll />
-            {(details?.frames.length ?? 0) > 0 && (
-              <button type="button" className={styles.link} data-testid={TID.cardChecklistReplay}>
-                {t('cards.checklist.replay')}
-              </button>
-            )}
           </>
         )}
       </CardFrame>

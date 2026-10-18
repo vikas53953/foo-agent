@@ -19,7 +19,7 @@ import { selectSpend } from '../store/spend';
 import { Icon } from '../ui/Icon';
 import { CardButton } from './CardButton';
 import { CardFrame, CardTimeLabel, type CardTime } from './CardFrame';
-import { planRows } from './jobCards';
+import { planRows, planWithdrawn } from './jobCards';
 import { RaiseCapDialog } from './RaiseCapDialog';
 import { ctrlEnter, useCardAction } from './useCardAction';
 import styles from './JobCards.module.css';
@@ -56,15 +56,14 @@ export function Plan({ card, time }: { card: CardRow; time: CardTime }) {
         </div>
       </CardFrame>
     );
-  if (card.state === 'changed' || card.state === 'withdrawn')
+  if (card.state === 'changed' || card.state === 'withdrawn') {
+    const gone = card.state === 'withdrawn' ? planWithdrawn(p.title, card.resolvedBy) : null;
     return (
       <CardFrame tid="cardPlan" card={card} state={card.state} label={label} muted>
         <div className={styles.summary}>
-          <Icon name={card.state === 'changed' ? 'Dismiss' : 'Clock'} size={16} className={styles.dim} />
-          <span className={styles.summaryText}>
-            {card.state === 'changed' ? t('cards.plan.summary.changed') : t('cards.plan.summary.withdrawn', { title: p.title })}
-          </span>
-          {card.state === 'withdrawn' && card.jobId && (
+          <Icon name={gone ? 'Clock' : 'Dismiss'} size={16} className={styles.dim} />
+          <span className={styles.summaryText}>{gone ? gone.text : t('cards.plan.summary.changed')}</span>
+          {gone?.startAgain && card.jobId && (
             <CardButton
               tid="cardPlanStartAgain"
               kind="link"
@@ -79,6 +78,7 @@ export function Plan({ card, time }: { card: CardRow; time: CardTime }) {
         </div>
       </CardFrame>
     );
+  }
 
   const { shown, more } = planRows(p.steps, showAll);
   return (

@@ -738,5 +738,6 @@
   "errors.crash_recovery.link": "Stop it",
   "errors.crash_recovery.what_is_safe.paying": "I was in the middle of paying {amount}. Checking whether it went through before anything else.",
   "errors.safe_mode.link": "Send a report",
-  "cards.common.offline_line": "You’re offline. I’ll do this when you’re back."
+  "cards.common.offline_line": "You’re offline. I’ll do this when you’re back.",
+  "cards.common.content.withdrawn": "No longer needed. The job was stopped."
 }

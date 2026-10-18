@@ -62,6 +62,7 @@
     "cards.proof_chip.popover.file_missing": "M4-T7 close-out (needs runner data not wired yet)",
     "cards.not_live_chip.still_failed.text": "M4-T7 close-out (needs runner data not wired yet)",
     "cards.error.still_failing": "M4-T7 close-out (needs runner data not wired yet)",
-    "cards.plan.estimate.plan": "M4-T7 close-out (needs runner data not wired yet)"
+    "cards.plan.estimate.plan": "M4-T7 close-out (needs runner data not wired yet)",
+    "cards.checklist.replay": "M4-T7 close-out (Replay waits for the screen viewer's handler)"
   }
 }

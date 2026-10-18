@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
   checkNewCap,
+  planWithdrawn,
   checklistFooter,
   checklistRightLabel,
   checklistView,
@@ -124,6 +125,32 @@ describe('Checklist rows (05-1 §5.2.2–§5.2.3)', () => {
     expect(g.costPaise).toBeNull();
     expect(stepOf({ currentStepIdx: 2, stepsDone: 2, stepCount: 4 })).toEqual({ k: 3, n: 4 });
     expect(t('cards.checklist.summary_done', { n: 4, m: 6 })).toBe('Done · 4 steps · 6 min');
+  });
+});
+
+describe('Checklist: max 6 rows visible (05-1 §5.2.1, T5-11)', () => {
+  it('8 steps with 1 done: the fold row plus 5 rows; the not-started tail waits until rows fold', () => {
+    const steps = [step(0, 'done'), step(1, 'running'), ...[2, 3, 4, 5, 6, 7].map((i) => step(i, 'pending'))];
+    const v = checklistView({ state: 'working', stopReason: null }, steps);
+    expect(v.folded).toBe(1);
+    expect(v.lines.length + (v.folded > 0 ? 1 : 0)).toBeLessThanOrEqual(6);
+    expect(v.lines.map((l) => l.index)).toEqual([1, 2, 3, 4, 5]);
+  });
+
+  it('nothing done yet: 6 rows, the current one first; a stopped row is never cut', () => {
+    const steps = [step(0, 'running'), ...[1, 2, 3, 4, 5, 6, 7].map((i) => step(i, 'pending'))];
+    expect(checklistView({ state: 'working', stopReason: null }, steps).lines.map((l) => l.index)).toEqual([0, 1, 2, 3, 4, 5]);
+    const stopped = checklistView({ state: 'cancelled', stopReason: 'user_button' }, steps);
+    expect(stopped.lines).toHaveLength(6);
+    expect(stopped.lines.at(-1)!.state).toBe('stopped');
+  });
+});
+
+describe('Plan card withdrawn summary (05-3 §5.12.2, 05-1 §0.5)', () => {
+  it('only the 24 h timeout (resolvedBy auto) says “didn’t hear back” with Start again; stopped elsewhere is the Withdrawn look, no buttons', () => {
+    expect(planWithdrawn('Goa stay', 'auto')).toEqual({ text: 'I didn’t start Goa stay because I didn’t hear back.', startAgain: true });
+    expect(planWithdrawn('Goa stay', 'system')).toEqual({ text: 'No longer needed. The job was stopped.', startAgain: false });
+    expect(planWithdrawn('Goa stay', null)).toEqual({ text: 'No longer needed. The job was stopped.', startAgain: false });
   });
 });
 

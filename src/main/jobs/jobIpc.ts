@@ -77,8 +77,12 @@ const OPEN: Partial<Record<CardType, readonly string[]>> = {
 
 const sameAction = (a: FixAction, b: FixAction | undefined) => !!b && JSON.stringify(a) === JSON.stringify(b);
 
+/** How long a sent job.retry blocks a second one for the same job (the runner writes the new row well within it). */
+export const RETRY_IN_FLIGHT_MS = 30_000;
+
 export function jobIpc(d: JobIpcDeps): JobHandlers {
   const { db } = d;
+  const retrying = new Map<string, number>();
 
   const jobState = (jobId: string) =>
     db.prepare('SELECT state, uses_browser FROM jobs WHERE id = ?').get(jobId) as { state: JobState; uses_browser: number } | undefined;
@@ -137,8 +141,13 @@ export function jobIpc(d: JobIpcDeps): JobHandlers {
       if (j.state !== 'failed' && j.state !== 'cancelled' && j.state !== 'done_unverified') return fail('VALIDATION');
       // One retry per old job, as the runner keeps it (the new job is the one to retry): refuse here so the button never spins.
       if (d.db.prepare("SELECT 1 FROM jobs WHERE origin = 'retry' AND origin_ref = ?").get(jobId)) return fail('VALIDATION');
+      // A double tap before the engine writes the new row: one job.retry per old job while it is in flight (T5-12: the
+      // mark lapses after RETRY_IN_FLIGHT_MS, when the runner has written the row or refused the retry).
+      const sentAt = retrying.get(jobId);
+      if (sentAt !== undefined && d.now() - sentAt < RETRY_IN_FLIGHT_MS) return fail('VALIDATION');
       const newJobId = d.newJobId();
       if (!d.engine?.send('job.retry', { jobId, newJobId })) return fail('UNKNOWN', 'engine not running');
+      retrying.set(jobId, d.now());
       return ok({ newJobId });
     },
     'plan:go': plan('go'),
