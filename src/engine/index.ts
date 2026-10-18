@@ -4,7 +4,7 @@
 // this file only connects it to the port Electron hands over.
 import { FakeClock, systemClock, TEST_EPOCH_MS } from '../shared/clock';
 import { Engine } from './Engine';
-import { mainToEngineSchema, type MainLink } from './protocol';
+import { mainToEngineSchema, type MainLink, type MainRequestKind } from './protocol';
 import type { Result } from '../shared/errors';
 
 interface PortLike {
@@ -24,7 +24,7 @@ function connect(port: PortLike): void {
   let seq = 0;
   const waiters = new Map<string, (r: Result<unknown>) => void>();
   const link: MainLink = {
-    request<T>(kind: 'db.tx' | 'db.query', payload: unknown): Promise<Result<T>> {
+    request<T>(kind: MainRequestKind, payload: unknown): Promise<Result<T>> {
       seq += 1;
       const id = `e${seq}`;
       return new Promise((resolve) => {

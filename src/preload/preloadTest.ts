@@ -43,6 +43,9 @@ const INVOKES = new Set([
   'stuck:choose',
   'recovery:choose',
   'error:fix',
+  'app:restart',
+  'app:downloadUpdate',
+  'app:closeChoice',
   'memory:list',
   'routine:list',
   'helper:list',
@@ -69,6 +72,8 @@ const EVENTS = new Set([
   'settings:changed',
   'net:state',
   'navigate',
+  'update:status',
+  'app:closeAsk',
 ]);
 
 const platform = ipcRenderer.sendSync('app:platform') as PlatformInfo;
@@ -99,5 +104,10 @@ const testBridge: FooTestBridge = {
   theme: (theme) => call('test:theme', { theme }),
   reset: () => call('test:reset'),
   jobState: (jobId, state) => call('test:jobState', { jobId, state }),
+  power: (event) => call('test:power', { event }),
+  notifier: () => call('test:notifier', {}),
+  toastSetting: (value) => call('test:toastSetting', { value }),
+  textScale: (factor) => call('test:textScale', { factor }),
+  crashRenderer: () => call('test:crashRenderer', {}),
 };
 contextBridge.exposeInMainWorld('__fooTest', testBridge);

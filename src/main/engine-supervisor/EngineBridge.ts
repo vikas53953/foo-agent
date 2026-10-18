@@ -2,7 +2,14 @@
 // (db.tx, db.query), §3.3 (ui.patch forwarded to the renderer as-is), 08-0 §A (main owns settings.json: the engine's
 // your-AI results are written here), 08-5 §3.1 (AiStatus), 08-1 §3.3 (job:upsert / card:upsert for rows a db.tx wrote),
 // 09 §9.22 (power.keepAwake → powerSaveBlocker in main). Electron-free so unit tests drive it with an in-process engine.
-import { engineToMainSchema, type DbOp, type EngineToMain, type MainToEngine, type NamedQuery } from '../../engine/protocol';
+import {
+  engineToMainSchema,
+  type DbOp,
+  type EngineToMain,
+  type MainToEngine,
+  type NamedQuery,
+  type ProcReply,
+} from '../../engine/protocol';
 import type { Result } from '../../shared/errors';
 import type { EventChannel, EventPayload } from '../../shared/ipc';
 import type { Settings } from '../../shared/settings';
@@ -30,11 +37,31 @@ export interface BridgeContext {
   notify?(req: unknown): void;
 }
 
+/**
+ * CR-0015 (G-M11-01, G-M11-02): what main does for the engine's native requests. The defaults are the 08-5 §6 fallbacks
+ * (no Job Object, no voice); M11 T2's `installNative` replaces them with the addon's.
+ */
+export interface NativeHost {
+  track(pid: number, purpose: 'ai_cli' | 'whisper'): ProcReply;
+  kill(pid: number): ProcReply;
+  synthesize(text: string, lang: string, outPath: string): Promise<Result<void>>;
+}
+
+export const FALLBACK_NATIVE_HOST: NativeHost = {
+  track: () => ({ native: false }),
+  kill: () => ({ native: false }),
+  synthesize: () => Promise.resolve({ ok: false, error: { kind: 'VOICE_UNAVAILABLE' } }),
+};
+
 type AiStatePayload = Extract<EngineToMain, { kind: 'ai.state' }>['payload'];
 
 /** Main's half of the engine port. `post` is set by the transport (MessagePort in production, a function in tests). */
 export class EngineBridge {
   post: (msg: MainToEngine) => void = () => {};
+  /** Posts a reply that is ready later than `receive` returns (voice.synthesize); set by the transport. */
+  postReply: (reply: { re: string; result: Result<unknown> }) => void = () => {};
+  /** M11: Job Objects and speech (CR-0015). */
+  native: NativeHost = FALLBACK_NATIVE_HOST;
   /** True while an engine process is connected (FOO_TEST runs without FOO_FAKE_AI run no engine: rule 5, no real AI). */
   live = false;
   private seq = 0;
@@ -139,6 +166,18 @@ export class EngineBridge {
       case 'ai.state':
         this.applyAiState(msg.payload);
         return null;
+      case 'proc.track':
+        return { re: msg.id, result: { ok: true, value: this.native.track(msg.payload.pid, msg.payload.purpose) } };
+      case 'proc.kill':
+        return { re: msg.id, result: { ok: true, value: this.native.kill(msg.payload.pid) } };
+      case 'voice.synthesize': {
+        const { text, lang, outPath } = msg.payload;
+        void this.native
+          .synthesize(text, lang, outPath)
+          .catch((): Result<void> => ({ ok: false, error: { kind: 'VOICE_UNAVAILABLE' } }))
+          .then((result) => this.postReply({ re: msg.id, result }));
+        return null;
+      }
     }
   }
 

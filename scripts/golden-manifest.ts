@@ -24,6 +24,11 @@ export interface BpEntry {
   milestone: string;
   /** §11.2.5 masks by name (caption-buttons: the native min/max/close area, 03-shell-1 §3.2 reserved width 144 × 32). */
   masks?: 'caption-buttons'[];
+  /**
+   * 11 §11.2.5 capture kind; absent = `window`. `native` (CR-0015): drawn by Windows, so the automated check compares the
+   * payload (toast XML from the Notifier fake, tray menu template, overlay description) and the picture part is manual.
+   */
+  capture?: 'native';
   note?: string;
 }
 
@@ -304,6 +309,30 @@ export const BP_M4: BpEntry[] = (
 }));
 
 /**
+ * CR-0015 (G-M11-04): the native Windows surfaces of the Blueprint's "Living in Windows" section (`#windows`, 09 §9.9–§9.10,
+ * §9.8). Payload compared exactly; pictures manual (11 §11.2.5 `native`, manual list items 2–4). The Blueprint draws a
+ * Choice toast, not a Message toast, so BP-WIN-02 is the Choice toast; it has no panel for the jump list or the tray icon
+ * states, so those ids are dropped (G-M11-04).
+ */
+export const BP_M11: BpEntry[] = (
+  [
+    ['BP-WIN-01', ':nth-child(1) > .toast', 'Payment toast', '09 §9.9.3'],
+    ['BP-WIN-02', ':nth-child(2) > .toast', 'Choice toast', '09 §9.9.3'],
+    ['BP-WIN-03', ':nth-child(3) > .taskbar', 'Taskbar overlay', '09 §9.10.1'],
+    ['BP-WIN-04', ':nth-child(3) > .menu', 'Tray menu', '09 §9.8.4'],
+  ] as const
+).map(([id, sel, name, spec]): BpEntry => ({
+  id,
+  selector: `#windows .panel${sel}`,
+  drawn: true,
+  size: { width: null, height: null },
+  spec,
+  milestone: 'M11',
+  capture: 'native',
+  note: `Living in Windows: ${name}. App: the payload the Notifier fake / menu template / overlay spy records.`,
+}));
+
+/**
  * CR-0003: UX steps an earlier milestone runs before the chapter's owner (11 §11.12 M2 "UX-09 steps not needing
  * transcription"). UX-09-01 (the recording bar) and UX-09-08 (Windows blocks the microphone) need no speech-to-text; the
  * other UX-09 steps show transcripts or foo's voice replies (M11).
@@ -316,6 +345,16 @@ export const EARLY_STEPS: Record<string, string> = {
   // checklist within 2 s, the result with its Proof chip) sent as a typed request. UX-23-07/-08 are M10, UX-23-10 is M11.
   ...Object.fromEntries(['01', '02', '03', '04', '05', '06', '09', '11'].map((s) => [`UX-23-${s}`, 'M4'])),
   ...Object.fromEntries(['02', '03', '04'].map((s) => [`UX-05-${s}`, 'M4'])),
+};
+
+/**
+ * CR-0015: steps whose milestone is set by CR instead of by their chapter. UX-23-10 (safe mode; chapter `errors` has no owner)
+ * is M11's (G-M11-31); UX-10-07 (a choice answered from the notification) needs Windows toasts, so it moves from M5 to M11
+ * (G-M5-09).
+ */
+export const STEP_MILESTONE: Record<string, string> = {
+  'UX-23-10': 'M11',
+  'UX-10-07': 'M11',
 };
 
 /** Chapter anchor → the milestone that completes the chapter (11 §11.12 item 8: a chapter is owned by the milestone that completes it). */
@@ -425,7 +464,7 @@ export function buildUx(chapters: RawChapter[], steps: RawStep[]): UxEntry[] {
       s: S.s,
       f: S.f,
       hl: S.hl,
-      milestone: CHAPTER_MILESTONE[ch.id] ?? null,
+      milestone: STEP_MILESTONE[id] ?? CHAPTER_MILESTONE[ch.id] ?? null,
     };
     if (EARLY_STEPS[id]) entry.firstTested = EARLY_STEPS[id];
     if (SUPERSEDED[id]) entry.superseded = { decision: SUPERSEDED[id] };
@@ -457,8 +496,13 @@ async function main() {
     version: 'spec-v1.0',
     generatedBy: 'scripts/golden-manifest.ts',
     sources: { ux: UX_FILE, bp: BP_FILE },
-    counts: { uxChapters: chapters.length, uxSteps: ux.length, uxFrames: ux.length * 2, bp: BP.length + BP_M2.length + BP_M4.length },
-    bp: [...BP, ...BP_M2, ...BP_M4],
+    counts: {
+      uxChapters: chapters.length,
+      uxSteps: ux.length,
+      uxFrames: ux.length * 2,
+      bp: BP.length + BP_M2.length + BP_M4.length + BP_M11.length,
+    },
+    bp: [...BP, ...BP_M2, ...BP_M4, ...BP_M11],
     ux,
     superseded: Object.entries(SUPERSEDED).map(([id, decision]) => ({ id, decision })),
   };
@@ -472,7 +516,9 @@ async function main() {
     return;
   }
   writeFileSync(MANIFEST_PATH, text);
-  console.log(`golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length + BP_M2.length + BP_M4.length} BP ids`);
+  console.log(
+    `golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length + BP_M2.length + BP_M4.length + BP_M11.length} BP ids`,
+  );
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) void main();

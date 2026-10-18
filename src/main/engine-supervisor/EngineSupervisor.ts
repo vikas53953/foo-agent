@@ -33,6 +33,7 @@ export class EngineSupervisor {
     private paths: SupervisorPaths,
   ) {
     bridge.post = (msg: MainToEngine) => this.port?.postMessage(msg);
+    bridge.postReply = (reply) => this.port?.postMessage(reply);
   }
 
   /** 08-2 §1 rule 5 / plan §1 rule 5: a FOO_TEST run never reaches a real AI, so it runs an engine only with FOO_FAKE_AI. */

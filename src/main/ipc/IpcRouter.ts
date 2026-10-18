@@ -215,6 +215,10 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'error:fix': cardAnswer
     .extend({ action: z.object({ kind: z.enum(FIX_ACTION_KINDS) }).catchall(z.unknown()) as unknown as z.ZodType<FixAction> })
     .strict(),
+  // M11 (CR-0015): the handlers are registered by the M11 install modules (src/main/updater, src/main/windows).
+  'app:restart': z.object({ confirm: z.boolean().optional() }).strict(),
+  'app:downloadUpdate': empty as z.ZodType<Record<string, never>>,
+  'app:closeChoice': z.object({ choice: z.enum(['tray', 'quit']), dontShowAgain: z.boolean() }).strict(),
 };
 
 type Handler<C extends InvokeChannel> = (req: InvokeIn[C]) => Result<InvokeOut[C]> | Promise<Result<InvokeOut[C]>>;

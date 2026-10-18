@@ -84,6 +84,11 @@ export const settingsSchema = z.object({
       })
       .refine((q) => q.from !== q.to),
     mutedChats: z.record(z.string(), z.union([z.number().int(), z.literal('forever')])),
+    /** CR-0015 (G-M11-13): the tray's one-off "Quiet until…" / "End quiet time" (09 §9.8.4); M7's isQuiet reads it. */
+    quietOverride: z
+      .object({ mode: z.enum(['quiet', 'awake']), until: z.number().int() })
+      .strict()
+      .nullable(),
   }),
   flags: z.object({
     screenHands: z.boolean(),

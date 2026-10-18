@@ -43,6 +43,9 @@ const INVOKES = new Set([
   'stuck:choose',
   'recovery:choose',
   'error:fix',
+  'app:restart',
+  'app:downloadUpdate',
+  'app:closeChoice',
   'memory:list',
   'routine:list',
   'helper:list',
@@ -69,6 +72,8 @@ const EVENTS = new Set([
   'settings:changed',
   'net:state',
   'navigate',
+  'update:status',
+  'app:closeAsk',
 ]);
 
 const platform = ipcRenderer.sendSync('app:platform') as PlatformInfo;

@@ -21,6 +21,15 @@ import { newId } from '../shared/ids';
 import { createMainWindow } from './windows/mainWindow';
 import { handleAppScheme, registerAppScheme } from './windows/protocol';
 import { claimSingleInstance } from './windows/singleInstance';
+import type { InstallDeps } from './installDeps';
+import { fooNative } from './native/fooNative';
+import { installNative } from './native/installNative';
+import { installNotify } from './notify/installNotify';
+import { installTray } from './notify/installTray';
+import { installUpdater } from './updater/installUpdater';
+import { installCrashGuard } from './windows/installCrashGuard';
+import { installDisplay } from './windows/installDisplay';
+import { installLifecycle } from './windows/installLifecycle';
 
 export const AUMID = 'com.foo.desktop';
 
@@ -100,6 +109,10 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
     handleAppScheme(paths.data);
     registerIpc(ctx);
     mainWindow = createMainWindow(settings, { hidden });
+    // M11 (CR-0015): each Windows module installs itself; the ticket that owns a module replaces its install file only.
+    const installDeps: InstallDeps = { ctx, window: () => mainWindow, native: fooNative(), hidden, testRun: !!testClock };
+    for (const install of [installNative, installNotify, installTray, installLifecycle, installDisplay, installUpdater, installCrashGuard])
+      install(installDeps);
     if (process.platform === 'win32') {
       mainWindow.setAppDetails({
         appId: AUMID,
