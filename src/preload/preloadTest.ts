@@ -40,7 +40,6 @@ const INVOKES = new Set([
   'job:handBack',
   'signin:done',
   'signin:skip',
-  'code:submit',
   'app:openExternal',
   'memory:list',
   'routine:list',

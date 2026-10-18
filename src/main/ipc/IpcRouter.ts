@@ -181,7 +181,6 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'job:handBack': z.object({ jobId: z.string().min(1).max(80) }).strict(),
   'signin:done': z.object({ jobId: z.string().min(1).max(80) }).strict(),
   'signin:skip': z.object({ jobId: z.string().min(1).max(80) }).strict(),
-  'code:submit': z.object({ requestId: z.string().min(1).max(80), code: z.string().min(1).max(64) }).strict(),
   'app:openExternal': z
     .object({
       target: z.enum(['google_signin', 'x_intent', 'google_account', 'maker_page', 'handback_site']),
@@ -495,7 +494,6 @@ export function registerIpc(ctx: AppContext): void {
   handle('job:handBack', () => fail('JOB_GONE'));
   handle('signin:done', () => fail('JOB_GONE'));
   handle('signin:skip', () => fail('JOB_GONE'));
-  handle('code:submit', () => fail('REQUEST_GONE'));
   handle('app:openExternal', () => fail('URL_NOT_ALLOWED'));
   handle('memory:list', ({ filter, q }) => ok(memoryList(db, filter, q, now())));
   handle('routine:list', () => ok(routineList(db)));

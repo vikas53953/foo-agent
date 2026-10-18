@@ -100,7 +100,6 @@ export interface Invokes {
   'job:handBack': { req: { jobId: string }; res: void };
   'signin:done': { req: { jobId: string }; res: void };
   'signin:skip': { req: { jobId: string }; res: void };
-  'code:submit': { req: { requestId: string; code: string }; res: void };
   'app:openExternal': {
     req: {
       target: 'google_signin' | 'x_intent' | 'google_account' | 'maker_page' | 'handback_site';
@@ -196,7 +195,6 @@ export const INVOKE_CHANNELS = [
   'job:handBack',
   'signin:done',
   'signin:skip',
-  'code:submit',
   'app:openExternal',
   'memory:list',
   'routine:list',
