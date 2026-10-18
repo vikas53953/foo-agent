@@ -1,19 +1,19 @@
 {
-  "reportId": "M3-c7de245-39154577343",
+  "reportId": "M3-328f293-39154963974",
   "milestone": "M3",
-  "generatedAt": "2026-10-18T18:37:41.785Z",
-  "commit": "194e3a091b8f86fcf3d72c59f7bc84da1929718a",
-  "head": "c7de245444101579adaa84f80c4c8612cc4512ad",
+  "generatedAt": "2026-10-18T18:42:47.776Z",
+  "commit": "a04fd6f2724f4cfe5b5889787713844d05294220",
+  "head": "328f293215be0d6fea8dfa2b20df420dc15ae5e5",
   "ci": {
-    "runId": "39154577343",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39154577343"
+    "runId": "39154963974",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39154963974"
   },
   "spec": {
     "version": "spec-v1.0",
-    "setSha256": "037c820ae64312170f0fe210fb75af56f837c06a026ca15fac195b5834d566bc"
+    "setSha256": "8e4be8ca89681b02e0a6457b3bdb9d1eb0b1f4e31cea6e10fe078f8934be9171"
   },
   "runner": {
-    "recordedAt": "2026-10-18T18:35:47.072Z",
+    "recordedAt": "2026-10-18T18:42:14.770Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000003011"
+      "runner": "GitHub Actions 1000003024"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -290,205 +290,6 @@
     "fid12": "DONE",
     "fid14": [
       {
-        "id": "SV-13",
-        "ok": true,
-        "expected": "height 72 (±0.5)",
-        "measured": "323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72"
-      },
-      {
-        "id": "SV-14",
-        "ok": true,
-        "expected": "width 48 × height 48 (±0.5)",
-        "measured": "48×48, 48×48, 48×48, 48×48, 48×48, 48×48, 48×48, 48×48"
-      },
-      {
-        "id": "SV-17",
-        "ok": true,
-        "expected": "width 340 (±0.5)",
-        "measured": "340×868"
-      },
-      {
-        "id": "SV-23",
-        "ok": true,
-        "expected": "min-height: 40px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-24",
-        "ok": true,
-        "expected": "height 36 (±0.5)",
-        "measured": "307×36"
-      },
-      {
-        "id": "SV-25",
-        "ok": true,
-        "expected": "≥ width 40 × height 40 (±0.5)",
-        "measured": "122.125×40, 40×40, 40×40, 91.078125×40, 79.140625×40, 52.515625×40, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 271×42, 40×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40"
-      },
-      {
-        "id": "SV-15",
-        "ok": true,
-        "expected": "60px",
-        "measured": "60px"
-      },
-      {
-        "id": "SV-15",
-        "ok": true,
-        "expected": "60px; aligned",
-        "measured": "chat header 32+60; left header 32+60"
-      },
-      {
-        "id": "SV-18",
-        "ok": true,
-        "expected": "width 340 (±0.5)",
-        "measured": "340×868"
-      },
-      {
-        "id": "SV-29",
-        "ok": true,
-        "expected": "background-color: rgb(255, 255, 255)",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-29",
-        "ok": true,
-        "expected": "background-color: rgb(13, 13, 17)",
-        "measured": "all equal",
-        "note": "dark"
-      },
-      {
-        "id": "SV-10",
-        "ok": true,
-        "expected": "height 46 (±0.5)",
-        "measured": "640×46"
-      },
-      {
-        "id": "SV-11",
-        "ok": true,
-        "expected": "border-top-left-radius: 24px; border-top-right-radius: 24px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-12",
-        "ok": true,
-        "expected": "width 36 × height 36 (±0.5)",
-        "measured": "36×36, 36×36"
-      },
-      {
-        "id": "SV-26",
-        "ok": true,
-        "expected": "color: rgb(105, 105, 117)",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-30",
-        "ok": true,
-        "expected": "transition-duration: 0.083s (background-color)",
-        "measured": "background-color, transform 0.083s, 0.083s; background-color, transform 0.083s, 0.083s"
-      },
-      {
-        "id": "SV-26",
-        "ok": true,
-        "expected": "color: rgb(142, 142, 154)",
-        "measured": "all equal",
-        "note": "dark"
-      },
-      {
-        "id": "SV-03",
-        "ok": true,
-        "expected": "border-bottom-left-radius: 6px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-04",
-        "ok": true,
-        "expected": "background-color: rgb(11, 11, 16)",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-05",
-        "ok": true,
-        "expected": "background-color: rgb(240, 240, 244)",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-06",
-        "ok": true,
-        "expected": "font-size: 15px; line-height: 22px; font-weight: 400",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-07",
-        "ok": true,
-        "expected": "line-height: 24px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-09",
-        "ok": true,
-        "expected": "max-width: 760px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-26",
-        "ok": true,
-        "expected": "color: rgb(105, 105, 117)",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-01",
-        "ok": true,
-        "expected": "18px non-tail corners (tail corners 6px)",
-        "measured": "13 bubbles, all equal"
-      },
-      {
-        "id": "SV-08",
-        "ok": true,
-        "expected": "≤ 72 % of the column and ≤ 620px (rich ≤ 680px)",
-        "measured": "13 bubbles within"
-      },
-      {
-        "id": "SV-04",
-        "ok": true,
-        "expected": "background-color: rgb(43, 63, 214)",
-        "measured": "all equal",
-        "note": "dark"
-      },
-      {
-        "id": "SV-05",
-        "ok": true,
-        "expected": "background-color: rgb(32, 32, 40)",
-        "measured": "all equal",
-        "note": "dark"
-      },
-      {
-        "id": "SV-26",
-        "ok": true,
-        "expected": "color: rgb(142, 142, 154)",
-        "measured": "all equal",
-        "note": "dark"
-      },
-      {
-        "id": "SV-02",
-        "ok": true,
-        "expected": "border-bottom-right-radius: 6px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-01",
-        "ok": true,
-        "expected": "18px non-tail corners (tail corners 6px)",
-        "measured": "14 bubbles, all equal",
-        "note": "Trips"
-      },
-      {
-        "id": "SV-08",
-        "ok": true,
-        "expected": "≤ 72 % of the column and ≤ 620px (rich ≤ 680px)",
-        "measured": "14 bubbles within",
-        "note": "Trips"
-      },
-      {
         "id": "SV-16",
         "ok": true,
         "expected": "height 32 (±0.5)",
@@ -511,17 +312,82 @@
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 2674,
+        "passed": 2758,
         "failed": 0,
         "skipped": 2
       },
       "e2e": {
-        "passed": 34,
+        "passed": 11,
         "failed": 0,
-        "skipped": 21
+        "skipped": 45
       }
     },
     "ids": [
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
       {
         "id": "ART-02a",
         "status": "passed",
@@ -13183,6 +13049,136 @@
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
       },
       {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
         "id": "ART-22",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-22.test.ts"
@@ -13191,6 +13187,86 @@
         "id": "ART-22",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-22.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
       },
       {
         "id": "ART-24a",
@@ -14519,57 +14595,57 @@
       },
       {
         "id": "ART-26a",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m1-shell.spec.ts"
       },
       {
         "id": "ART-29",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m1-shell.spec.ts"
       },
       {
         "id": "PERF-03",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m1-shell.spec.ts"
       },
       {
         "id": "AT-007",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
         "id": "PERF-02",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
         "id": "ART-26a",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
         "id": "PERF-04",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-messages.spec.ts"
       },
       {
         "id": "ART-26a",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-messages.spec.ts"
       },
       {
         "id": "ART-21a",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-messages.spec.ts"
       },
       {
         "id": "AT-027",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "ART-23a",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
