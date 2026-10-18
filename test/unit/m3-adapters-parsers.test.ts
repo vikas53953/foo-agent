@@ -1,3 +1,4 @@
+import path from 'node:path';
 // 08-2 §6.4 stream parsing, §6.7 classification, 08-4 §30.1 models, §30.2 pricing, §30.3 SSE, §30.4 probe.
 import { afterAll, describe, expect, it } from 'vitest';
 import {
@@ -313,7 +314,8 @@ describe('process plumbing', () => {
   });
   it('npm .cmd shim → target JS', () => {
     const shim = '@ECHO off\r\n"%_prog%"  "%dp0%\\node_modules\\@openai\\codex\\bin\\codex.js" %*\r\n';
-    expect(parseCmdShim('/npm/codex.cmd', shim)).toBe('/npm/node_modules/@openai/codex/bin/codex.js');
+    // Joined with the platform's separator (backslashes on Windows).
+    expect(parseCmdShim('/npm/codex.cmd', shim)).toBe(path.join('/npm', 'node_modules/@openai/codex/bin/codex.js'));
     expect(parseCmdShim('/npm/x.cmd', 'echo hi')).toBeNull();
   });
 });
