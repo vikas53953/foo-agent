@@ -68,6 +68,10 @@ export const SELECTORS: Record<string, string> = {
   // SV-26 "timestamp, placeholder": foo's bubble times (the user's sit on the dark bubble in --on-bubble-me-2, 04 §3.1) and
   // the composer placeholder (the field's aria-hidden twin).
   'SV-26': '[data-testid="bubble-foo"] [data-testid="bubble-meta"], [data-testid="composer"] span[aria-hidden="true"][id]',
+  // M4 cards (05-1 §0.1, §0.8; T5): the card frames that carry a card row; the Job link card is one whole-surface button
+  // with its own hover motion (05-3 §5.18.2), so SV-31's --m-card state motion is measured on the framed cards.
+  'SV-20': '[data-card-type]',
+  'SV-31': '[data-card-type]:not([data-testid="card-job-link"])',
 };
 
 export function readRows(file = 'spec/spec-values.json'): SvRow[] {
