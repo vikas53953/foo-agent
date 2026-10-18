@@ -4,7 +4,10 @@ name: CI
 on:
   push:
     branches: [main]
+  # Windows minutes count double against the Actions quota: on a draft PR only the fast lane runs; the two Windows lanes
+  # run when the PR is marked ready (and on every push after that), on main, and by hand (workflow_dispatch).
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
 
 concurrency:
@@ -43,6 +46,7 @@ jobs:
 
   windows:
     name: Full suite (windows-latest)
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -99,6 +103,7 @@ jobs:
   # for each capture (M1's Blueprint captures keep running until they are blessed into Tier B).
   golden:
     name: Golden lane (windows-latest)
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: windows-latest
     permissions:
       contents: write
