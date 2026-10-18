@@ -26,6 +26,7 @@ import type {
   StopReport,
   View,
   WindowsSettingsPage,
+  LiveState,
 } from './types';
 
 export type ThemeName = 'light' | 'dark';
@@ -93,6 +94,23 @@ export interface Invokes {
   'app:showEmojiPanel': { req: Record<string, never>; res: void };
   'job:stop': { req: { jobId: string }; res: StopReport };
   'job:watch': { req: { jobId: string; on: boolean }; res: void };
+  // M9 (CR-0013; 08-1 §3.2): live window, sign-in and take over, hand-back sites (X-124, X-129, X-135).
+  'job:openWindow': { req: { jobId: string }; res: void };
+  'job:takeOver': { req: { jobId: string }; res: void };
+  'job:handBack': { req: { jobId: string }; res: void };
+  'signin:done': { req: { jobId: string }; res: void };
+  'signin:skip': { req: { jobId: string }; res: void };
+  'code:submit': { req: { requestId: string; code: string }; res: void };
+  'app:openExternal': {
+    req: {
+      target: 'google_signin' | 'x_intent' | 'google_account' | 'maker_page' | 'handback_site';
+      url?: string;
+      providerId?: ProviderId;
+      cardId?: string;
+      nonce?: string;
+    };
+    res: void;
+  };
   'memory:list': { req: { filter: MemoryFilter; q?: string }; res: MemoryFactView[] };
   'routine:list': { req: Record<string, never>; res: RoutineRow[] };
   /** Not in 08-1 §3.2 (gap, see implementation-notes "M1 integration"): the helpers' names and one-line jobs for the shell. */
@@ -123,6 +141,9 @@ export interface Events {
   'settings:changed': PublicSettings;
   'net:state': { online: boolean };
   navigate: { view: View; act?: string };
+  // M9 (08-1 §3.3): to the `live` window only (08-0 §G.8); frames ≤ 5 fps while watched, always masked.
+  'live:frame': { jobId: string; jpeg: ArrayBuffer; w: number; h: number; masked: true; nowLine: string };
+  'live:state': { jobId: string; state: LiveState };
 }
 
 export type InvokeChannel = keyof Invokes;
@@ -170,6 +191,13 @@ export const INVOKE_CHANNELS = [
   'app:showEmojiPanel',
   'job:stop',
   'job:watch',
+  'job:openWindow',
+  'job:takeOver',
+  'job:handBack',
+  'signin:done',
+  'signin:skip',
+  'code:submit',
+  'app:openExternal',
   'memory:list',
   'routine:list',
   'helper:list',
@@ -197,6 +225,8 @@ export const EVENT_CHANNELS = [
   'settings:changed',
   'net:state',
   'navigate',
+  'live:frame',
+  'live:state',
 ] as const satisfies readonly EventChannel[];
 
 /**

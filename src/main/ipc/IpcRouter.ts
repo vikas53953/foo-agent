@@ -175,6 +175,22 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'app:showEmojiPanel': empty as z.ZodType<Record<string, never>>,
   'job:stop': z.object({ jobId: z.string().min(1).max(80) }).strict(),
   'job:watch': z.object({ jobId: z.string().min(1).max(80), on: z.boolean() }).strict(),
+  // M9 (CR-0013, 08-1 §3.2). Handlers below are stubs until T5 (live), T6 (sign-in, take over), T8 (hand-back sites).
+  'job:openWindow': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'job:takeOver': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'job:handBack': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'signin:done': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'signin:skip': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'code:submit': z.object({ requestId: z.string().min(1).max(80), code: z.string().min(1).max(64) }).strict(),
+  'app:openExternal': z
+    .object({
+      target: z.enum(['google_signin', 'x_intent', 'google_account', 'maker_page', 'handback_site']),
+      url: z.string().max(2048).optional(),
+      providerId: z.enum(PROVIDER_IDS).optional(),
+      cardId: z.string().max(80).optional(),
+      nonce: z.string().max(80).optional(),
+    })
+    .strict(),
   'memory:list': z
     .object({
       filter: z
@@ -474,6 +490,13 @@ export function registerIpc(ctx: AppContext): void {
   });
   // The Live window (09 §9.27) arrives with the browser milestone; until then the shell shows no live view.
   handle('job:watch', () => fail('LIVE_UNAVAILABLE'));
+  handle('job:openWindow', () => fail('BROWSER_MISSING'));
+  handle('job:takeOver', () => fail('JOB_GONE'));
+  handle('job:handBack', () => fail('JOB_GONE'));
+  handle('signin:done', () => fail('JOB_GONE'));
+  handle('signin:skip', () => fail('JOB_GONE'));
+  handle('code:submit', () => fail('REQUEST_GONE'));
+  handle('app:openExternal', () => fail('URL_NOT_ALLOWED'));
   handle('memory:list', ({ filter, q }) => ok(memoryList(db, filter, q, now())));
   handle('routine:list', () => ok(routineList(db)));
   handle('helper:list', () => ok(helperList(db)));

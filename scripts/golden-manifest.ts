@@ -304,6 +304,42 @@ export const BP_M4: BpEntry[] = (
 }));
 
 /**
+ * CR-0013: the M9 refs (00-common "Proposed Blueprint ids"): card gallery Sign in here (10) and Handoff (17), screen gallery
+ * Watch live (13) and Sign-in window (14). Card minis are drawn in 350px panels (R2 disputed by construction, CR-0003 §b);
+ * the Sign-in window panel is checked against X-66 (real Edge + docked banner) before it is blessed.
+ */
+export const BP_M9: BpEntry[] = [
+  ...(
+    [
+      ['BP-CARD-10', 10, 'Sign in here', '05-3 §5.10'],
+      ['BP-CARD-17', 17, 'Handoff', '05-3 §5.18'],
+    ] as const
+  ).map(([id, n, name, spec]): BpEntry => ({
+    id,
+    selector: `#cardgal > .panel:nth-child(${n}) > .mini`,
+    drawn: true,
+    size: { width: null, height: null },
+    spec,
+    milestone: 'M9',
+    note: `Card gallery: ${name}. App: the ${name.toLowerCase()} card in the thread, from seeded card rows.`,
+  })),
+  ...(
+    [
+      ['BP-SCR-13', 13, 'Watch live', '06-3 §11.1–§11.2', 'the live window (live.html) with masked frames'],
+      ['BP-SCR-14', 14, 'Sign-in window', '06-3 §11.3', 'the docked sign-in banner over Edge (X-66)'],
+    ] as const
+  ).map(([id, n, name, spec, app]): BpEntry => ({
+    id,
+    selector: `#scrgal > .scr:nth-child(${n}) > .body`,
+    drawn: true,
+    size: { width: null, height: null },
+    spec,
+    milestone: 'M9',
+    note: `Screen gallery: ${name}. App: ${app}.`,
+  })),
+];
+
+/**
  * CR-0003: UX steps an earlier milestone runs before the chapter's owner (11 §11.12 M2 "UX-09 steps not needing
  * transcription"). UX-09-01 (the recording bar) and UX-09-08 (Windows blocks the microphone) need no speech-to-text; the
  * other UX-09 steps show transcripts or foo's voice replies (M11).
@@ -316,6 +352,8 @@ export const EARLY_STEPS: Record<string, string> = {
   // checklist within 2 s, the result with its Proof chip) sent as a typed request. UX-23-07/-08 are M10, UX-23-10 is M11.
   ...Object.fromEntries(['01', '02', '03', '04', '05', '06', '09', '11'].map((s) => [`UX-23-${s}`, 'M4'])),
   ...Object.fromEntries(['02', '03', '04'].map((s) => [`UX-05-${s}`, 'M4'])),
+  // CR-0013 (G-M9-03): the 7-day replay is 06-3 §13 Replay mode in the attachment viewer (X-128), built by M13.
+  'UX-15-10': 'M13',
 };
 
 /** Chapter anchor → the milestone that completes the chapter (11 §11.12 item 8: a chapter is owned by the milestone that completes it). */
@@ -361,6 +399,7 @@ export const SUPERSEDED: Record<string, string> = {
   'UX-14-03': 'X-66 (real Edge window + signin-banner.html)',
   'UX-14-04': 'X-66 (real Edge window + signin-banner.html)',
   'UX-15-01': '06 §0.11 (ArrowMaximize button)',
+  'UX-15-02': 'X-95 (no in-panel live view; Watch live opens live.html, CR-0013 G-M9-02)',
   'UX-16-06': 'X-79 ("Change")',
   'UX-18-04': '06-2 §7.3 (⋯ menu)',
   'UX-21-05': '05 §0.10 (toast without reply box)',
@@ -457,8 +496,13 @@ async function main() {
     version: 'spec-v1.0',
     generatedBy: 'scripts/golden-manifest.ts',
     sources: { ux: UX_FILE, bp: BP_FILE },
-    counts: { uxChapters: chapters.length, uxSteps: ux.length, uxFrames: ux.length * 2, bp: BP.length + BP_M2.length + BP_M4.length },
-    bp: [...BP, ...BP_M2, ...BP_M4],
+    counts: {
+      uxChapters: chapters.length,
+      uxSteps: ux.length,
+      uxFrames: ux.length * 2,
+      bp: BP.length + BP_M2.length + BP_M4.length + BP_M9.length,
+    },
+    bp: [...BP, ...BP_M2, ...BP_M4, ...BP_M9],
     ux,
     superseded: Object.entries(SUPERSEDED).map(([id, decision]) => ({ id, decision })),
   };
@@ -472,7 +516,9 @@ async function main() {
     return;
   }
   writeFileSync(MANIFEST_PATH, text);
-  console.log(`golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length + BP_M2.length + BP_M4.length} BP ids`);
+  console.log(
+    `golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length + BP_M2.length + BP_M4.length + BP_M9.length} BP ids`,
+  );
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) void main();
