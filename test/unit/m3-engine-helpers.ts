@@ -86,6 +86,16 @@ export interface HarnessOptions {
   tools?: ToolRegistry;
 }
 
+/** M4: per-prefix counters (`tc_000001` is the first tool call), so a fake AI line can name an id in a proof. */
+function countingIds(): (prefix: string) => string {
+  const n = new Map<string, number>();
+  return (p) => {
+    const next = (n.get(p) ?? 0) + 1;
+    n.set(p, next);
+    return `${p}_${String(next).padStart(6, '0')}`;
+  };
+}
+
 const realSleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
 /** Primary set and verified (lastVerifyOk true): the "your AI works" state after J2. */
@@ -174,7 +184,7 @@ export function makeHarness(o: HarnessOptions): Harness {
     execPath: process.execPath,
     testRun: true,
     fetch: (() => Promise.reject(new Error('network is not allowed in tests'))) as typeof fetch,
-    ...(o.tools ? { tools: o.tools } : {}),
+    ...(o.tools ? { tools: o.tools, newId: countingIds() } : {}),
   });
   bridge.live = true;
   bridge.post = (msg) => {
