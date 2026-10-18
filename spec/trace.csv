@@ -57,3 +57,16 @@ R1 · R24,J7,,UX-08-06,,04 §6.4; 04 §9.2,test/fidelity/ux/UX-08.chat.spec.ts,M
 R1 · R24,J7,,UX-08-07,,04 §12.1; 04 §13.2; 04 §13.4,test/fidelity/ux/UX-08.chat.spec.ts,M2,pending
 R16,J7,,UX-09-01,,04-2 §22.1,test/fidelity/ux/UX-09.voice.spec.ts,M2,pending
 R16,J7,,UX-09-08,,04-2 §23.2,test/fidelity/ux/UX-09.voice.spec.ts,M2,pending
+,J2,AT-005,,,10-acceptance-1 §B; 08-2 §6.6,test/unit/m3-engine.test.ts,M3,live
+,J2,AT-006,,,10-acceptance-1 §B; 04 §3.3; 08-2 §6.6,test/unit/m3-engine.test.ts,M3,live
+,J7,AT-027,,,10-acceptance-1 §B; 08-4 §25.5,test/unit/m3-engine.test.ts,M3,live
+,J7,AT-031,,,10-acceptance-1 §B; 08-2 §7.6,test/unit/m3-engine.test.ts,M3,live
+,,ART-12a,,,01-articles Art. 12; 10-acceptance-2 §D,test/unit/m3-engine.test.ts,M3,live
+,,ART-23a,,,01-articles Art. 23; 10-acceptance-2 §D,test/unit/m3-engine.test.ts,M3,live
+,J7,AT-030,,,10-acceptance-1 §B; 04 §12.3,test/unit/m3-chunks.test.ts,M3,live
+,J7,AT-031,,,10-acceptance-1 §B; 08-2 §7.6,test/unit/m3-prompt-filters.test.ts,M3,live
+,,ART-02b,,,01-articles Art. 2; 10-acceptance-2 §D; 08-4 §25.8,test/articles/ART-02b.test.ts,M3,live
+,J2,AT-006,,,10-acceptance-1 §B; 04-2 §23.1,test/e2e/m3-replies.spec.ts,M3,pending
+,J7,AT-027,,,10-acceptance-1 §B; 04 §4.1,test/e2e/m3-replies.spec.ts,M3,pending
+,J7,AT-030,,,10-acceptance-1 §B; 04 §12.3,test/e2e/m3-replies.spec.ts,M3,pending
+,,ART-23a,,,01-articles Art. 23; 10-acceptance-2 §D,test/e2e/m3-replies.spec.ts,M3,pending

@@ -8,7 +8,7 @@ import { app, BrowserWindow, ipcMain, net, shell, systemPreferences, type IpcMai
 import { z } from 'zod';
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
-import type { EventChannel, EventPayload, InvokeChannel, InvokeIn, InvokeOut, PlatformInfo } from '../../shared/ipc';
+import type { EventChannel, EventPayload, InvokeChannel, InvokeIn, InvokeOut, PlatformInfo, VerifyResult } from '../../shared/ipc';
 import { PROVIDER_IDS, settingsSchema, WRITABLE_PATHS, type Settings } from '../../shared/settings';
 import type { MessageRow, WindowsSettingsPage } from '../../shared/types';
 import { deps } from '../deps';
@@ -50,6 +50,8 @@ import { draftAttachments, pauseHelper, saveDraft, sendMessage, submitVoice } fr
 import { helperRow } from '../db/rows';
 import type { DbRow } from '../db/rows';
 import { ChannelGuard } from './guard';
+import type { EngineBridge } from '../engine-supervisor/EngineBridge';
+import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
 import { isTrustedUrl } from '../windows/protocol';
 
@@ -84,6 +86,8 @@ export interface AppContext {
   probe: () => boolean;
   /** {DATA} (08-0 §E.6): files:open / showInFolder and the app://media host only reach files under it. */
   dataDir: string;
+  /** M3: main's half of the engine port (08-1 §2.4); absent only in unit tests that build main alone. */
+  engine?: EngineBridge;
 }
 
 export function listContext(settings: Settings): ListContext {
@@ -162,6 +166,7 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'message:edit': z.object({ messageId, text: z.string().min(1).max(40_000) }).strict(),
   'message:delete': z.object({ messageIds: z.array(messageId).min(1).max(500), confirm: z.literal(true) }).strict(),
   'message:retry': z.object({ messageId }).strict(),
+  'message:stopReply': z.object({ chatId: z.string().min(1).max(80) }).strict(),
   'files:open': z.object({ path: z.string().min(1).max(1024) }).strict(),
   'files:showInFolder': z.object({ path: z.string().min(1).max(1024) }).strict(),
   'job:details': z.object({ jobId: z.string().min(1).max(80) }).strict(),
@@ -187,6 +192,11 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'settings:get': empty as z.ZodType<Record<string, never>>,
   'settings:set': z.object({ path: z.enum(WRITABLE_PATHS), value: z.unknown() }).strict() as z.ZodType<{ path: string; value: unknown }>,
   'ai:verify': z.object({ providerId: z.enum(PROVIDER_IDS) }).strict(),
+  'ai:detect': empty as z.ZodType<Record<string, never>>,
+  'ai:choose': z.object({ primary: z.enum(PROVIDER_IDS), backup: z.enum(PROVIDER_IDS).nullable().optional() }).strict() as z.ZodType<{
+    primary: (typeof PROVIDER_IDS)[number];
+    backup?: (typeof PROVIDER_IDS)[number] | null;
+  }>,
   'notifications:status': empty as z.ZodType<Record<string, never>>,
 };
 
@@ -239,13 +249,14 @@ export function registerIpc(ctx: AppContext): void {
   });
 
   ctx.net.onChange((online) => {
+    ctx.engine?.send('net', { online });
     emit('net:state', { online });
-    emit('ai:status', aiStatus(settings.get(), ctx.net.offline));
+    emit('ai:status', aiStatus(settings.get(), ctx.net.offline, ctx.engine?.aiStatus ?? null));
   });
 
   handle('app:getBootstrap', () => {
     const s = settings.get();
-    return ok(bootstrap(db, { ...listContext(s), settings: s, offline: ctx.net.offline }));
+    return ok(bootstrap(db, { ...listContext(s), settings: s, offline: ctx.net.offline, engineAi: ctx.engine?.aiStatus ?? null }));
   });
   handle('app:quit', ({ confirm }) => {
     const runningJobs = db
@@ -316,7 +327,23 @@ export function registerIpc(ctx: AppContext): void {
     for (const id of r.chatIds) emitChat(id);
     return ok(undefined);
   });
-  handle('message:retry', ({ messageId: id }) => written(retryMessage(db, id)));
+  handle('message:retry', ({ messageId: id }) => {
+    // 04 §19.4: "Try again" on a cut-off foo reply runs its turn again (the engine knows which message it answered).
+    const target = messageGet(db, id);
+    if (target && target.authorKind !== 'user' && target.status === 'failed') {
+      ctx.engine?.send('reply.retry', { messageId: id });
+      return ok(target);
+    }
+    const r = written(retryMessage(db, id));
+    if (r.ok && target) ctx.engine?.send('user.message', { messageId: id, chatId: target.chatId });
+    return r;
+  });
+
+  handle('message:stopReply', ({ chatId }) => {
+    if (!ctx.engine?.live) return ok(false);
+    ctx.engine.send('reply.stop', { chatId });
+    return ok(true);
+  });
 
   // ---------------------------------------------------------------- the composer (M2 builder B)
   const inbox = new Inbox(ctx.dataDir);
@@ -330,7 +357,7 @@ export function registerIpc(ctx: AppContext): void {
         DbRow | undefined;
       if (paused?.paused === 1) return true;
     }
-    const ai = aiStatus(settings.get(), ctx.net.offline);
+    const ai = aiStatus(settings.get(), ctx.net.offline, ctx.engine?.aiStatus ?? null);
     if (ai.state === 'offline' || ai.state === 'down' || ai.state === 'signed_out' || ai.state === 'limit') return true;
     const spend = spendSummary(db, settings.get(), now());
     return spend.aiBilling === 'key' && spend.aiSpentPaise !== null && spend.aiSpentPaise >= spend.aiCapPaise;
@@ -349,11 +376,20 @@ export function registerIpc(ctx: AppContext): void {
       if (r.reason === 'secret') return { ok: false, error: { kind: 'SECRET_SUSPECTED', ...(r.paste ? { paste: r.paste } : {}) } };
       return fail(r.reason === 'not_found' || r.reason === 'attachment_missing' ? 'NOT_FOUND' : 'VALIDATION', r.reason);
     }
+    let queued = r.queued;
     if (r.created) {
-      emit('message:upsert', r.row);
+      // 08-1 §2.4 `user.message`: after main stored it, the engine's chat lane takes it (08-2 §5.2). While the engine is
+      // starting or restarting it waits to send (04 §3.3) and goes when the engine drains its queue.
+      const taken = ctx.engine?.send('user.message', { messageId: r.messageId, chatId: req.chatId }) ?? false;
+      // EngineSupervisor.wanted(): a FOO_TEST run without the fake AI never has an engine, and its sends stay as M2 left them.
+      if (!taken && !r.queued && (process.env.FOO_TEST !== '1' || !!process.env.FOO_FAKE_AI)) {
+        queued = true;
+        db.prepare(`UPDATE messages SET status = 'queued' WHERE id = ? AND status = 'sent'`).run(r.messageId);
+        emit('message:upsert', messageGet(db, r.messageId) ?? r.row);
+      } else emit('message:upsert', r.row);
       emitChat(req.chatId);
     }
-    return ok({ messageId: r.messageId, queued: r.queued });
+    return ok({ messageId: r.messageId, queued });
   });
   handle('composer:checkSecret', ({ text }) => ok(checkSecret(text)));
   handle('composer:saveDraft', (req) => {
@@ -449,12 +485,22 @@ export function registerIpc(ctx: AppContext): void {
     emitSettings();
     return ok({ settings: publicSettings(settings.get()), changeId: null });
   });
-  handle('ai:verify', ({ providerId }) => {
-    // M1 has no AI engine (M3): "Try again" re-tests the network now; the engine adds the real check.
+  handle('ai:verify', async ({ providerId }) => {
+    // "Try again" re-tests the network now, then the engine sends `Reply with the word ready` (08-2 §6.6).
     ctx.net.report(ctx.probe());
-    emit('ai:status', aiStatus(settings.get(), ctx.net.offline));
+    const r = ctx.engine?.live
+      ? await ctx.engine.request<VerifyResult>('ai.cmd', { cmd: 'verify', providerId }, 60_000)
+      : ok<VerifyResult>({ ok: false, providerId, kind: ctx.net.rawOnline ? 'UNKNOWN' : 'NET_OFFLINE' });
+    emit('ai:status', aiStatus(settings.get(), ctx.net.offline, ctx.engine?.aiStatus ?? null));
     emit('spend:update', spendSummary(db, settings.get(), now()));
-    return ok({ ok: false, providerId, kind: ctx.net.rawOnline ? 'UNKNOWN' : 'NET_OFFLINE' });
+    return r;
+  });
+  handle('ai:detect', async () => (ctx.engine?.live ? ctx.engine.request<DetectRow[]>('ai.cmd', { cmd: 'detect' }, 60_000) : ok([])));
+  handle('ai:choose', async ({ primary, backup }) => {
+    if (!ctx.engine?.live) return fail('AI_NOT_VERIFIED');
+    const r = await ctx.engine.request<AiStatus>('ai.cmd', { cmd: 'choose', providerId: primary, backup: backup ?? null });
+    if (r.ok) emitSettings();
+    return r;
   });
   handle('notifications:status', () => ok({ windowsAllowed: true, focusAssist: false }));
 }

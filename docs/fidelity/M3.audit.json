@@ -1,0 +1,171 @@
+{
+  "milestone": "M3",
+  "source": "foo-plan §5 M3 (Goal, Constitution, Create, Spike, Must pass, Fidelity exit, Demo) and CR-0007 (M3 trace rows and picks)",
+  "rows": [
+    {
+      "group": "M3 Goal",
+      "item": "foo finds, tests and talks through the user's own AI with tools disabled; plain replies stream into foo's bubble under the reply protocol and output filters",
+      "status": "PARTIAL",
+      "evidence": [
+        "test:AT-005",
+        "test:streamed reply (past the hold)",
+        "test:command_execution item → AI_PROTOCOL_VIOLATION",
+        "test:a tool_use block is a violation"
+      ],
+      "covers": "part",
+      "manual": "demo on Vikas's PC (plan §5 M3 Demo): \"✓ Using Claude (your AI)\", chat in English, Hindi and Punjabi, \"thanks!\" gets a 👍, Wi-Fi off shows the AI-unreachable strip; the real CLIs were captured once on his PC (test/fixtures/cli-captures), CI runs only the fake AI"
+    },
+    {
+      "group": "M3 Constitution",
+      "item": "08-2 §6, §7 · 08-1 §2.1, §2.4 · 08-2 §11.4 (pattern part) · Art. 1, 2, 12, 22, 23 · X-18",
+      "status": "PARTIAL",
+      "evidence": ["test:ART-12a", "test:ART-23a", "test:0 banned terms displayed"],
+      "covers": "part",
+      "manual": "independent reviewer reads 08-2 §6, §7, §11.4 and 08-1 §2.1, §2.4 against the build (the Sonnet checker pass on the PR); Job Object (§6.3) is deferred to M11 (CR-0007 pick 1)"
+    },
+    {
+      "group": "M3 Create",
+      "item": "engine/index.ts, EngineSupervisor, engine/ai/* (all adapters + fake), ProcessHost, engine/prompt/*, engine/chat/ChatLane.ts + intake.ts, engine/redact/Redactor.ts, test/fakes/fake-cli/*, test/fixtures/cli-captures/*",
+      "status": "DONE"
+    },
+    {
+      "group": "M3 Create",
+      "item": "ProcessHost Job Object via foo-native/jobobject.cc",
+      "status": "CHANGED",
+      "note": "taskkill /T /F on Windows (a process group on POSIX) until the native parts land in M11: CHANGED until CR-0007 is approved (pick 1)."
+    },
+    {
+      "group": "M3 Spike",
+      "item": "Real stream output and --help for claude, codex, gemini and Ollama on Vikas's PC become fixtures",
+      "status": "PARTIAL",
+      "evidence": ["test:claude-cli stream-json", "test:codex-cli exec --json", "test:real /api/tags"],
+      "covers": "part",
+      "manual": "claude 2.1.282, codex 0.156.1 and Ollama captured 2026-10-18; gemini is not installed on the PC and the key APIs need a test key (both stay seeds, test/fixtures/cli-captures/capture.md)"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "AT-005",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-005",
+      "covers": "whole"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "AT-006",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-006",
+      "covers": "whole"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "AT-027",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-027",
+      "covers": "whole"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "AT-030",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-030",
+      "covers": "whole"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "AT-031",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-031",
+      "covers": "whole"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "ART-02b",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:0 banned terms displayed",
+      "covers": "whole"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "ART-23a",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-23a",
+      "covers": "whole"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "ART-12a (AI words never move status)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-12a",
+      "covers": "whole"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "unit: every adapter parser on fixtures",
+      "status": "UNVERIFIABLE",
+      "evidence": [
+        "test:claude-cli stream-json",
+        "test:codex-cli exec --json",
+        "test:openai-key",
+        "test:anthropic-key",
+        "test:google-key",
+        "test:ollama and LM Studio"
+      ],
+      "covers": "part",
+      "manual": "gemini and the three key APIs parse seed fixtures written from the spec until a capture replaces them (capture.md)"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "unit: stop kills the whole process tree (child count = 0 after cancel)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:cancel kills the child AND its grandchild",
+      "covers": "part",
+      "manual": "the grandchild test runs on POSIX only; the Windows taskkill /T path is checked by hand on the Windows build (Stop a Claude reply, Task Manager shows no claude.exe / node.exe left)"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "unit: prompt never on argv",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:prompt only on stdin",
+      "covers": "whole"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "unit: AI_PROTOCOL_VIOLATION for Codex command_execution",
+      "status": "UNVERIFIABLE",
+      "evidence": ["test:command_execution item → AI_PROTOCOL_VIOLATION", "test:a tool-use violation runs the turn once more"],
+      "covers": "whole"
+    },
+    {
+      "group": "M3 Fidelity exit",
+      "item": "UX-08 re-run with replies through the fake AI; Tier R with no Fail",
+      "status": "PARTIAL",
+      "evidence": "test:steps 1 to 5 live with fake-AI replies",
+      "covers": "part",
+      "manual": "UX-08-02 is captured live on the walkthrough's own frame (seed set ux-world-ch8-live: \"thanks!\" at 8:06, the question at 8:10, the Thinking face and Stop); R1 stays disputed under CR-0003 like the other UX-08 steps. Steps 6 and 7 stay on the seeded scene (job badge M4, source pill from engine entities)"
+    },
+    {
+      "group": "M3 Fidelity exit",
+      "item": "BP-MSG-02 and BP-COMP-03 captured for Tier R",
+      "status": "PARTIAL",
+      "evidence": "test:M3 Blueprint captures for Tier R",
+      "covers": "part",
+      "manual": "R1/R2 disputed under CR-0003 like the other 350px Blueprint minis"
+    },
+    {
+      "group": "M3 Fidelity exit",
+      "item": "UX-02 engine assertions (UI frames in M12)",
+      "status": "PARTIAL",
+      "evidence": ["test:AT-005", "test:detectAll runs in parallel"],
+      "covers": "part",
+      "manual": "UX-02 frames are built with the setup screen in M12"
+    },
+    {
+      "group": "M3 Fidelity exit",
+      "item": "Tier B green for every step blessed in earlier milestones; FID-01…FID-20 on the whole app",
+      "status": "UNVERIFIABLE",
+      "evidence": ["refs", "determinism", "runner"],
+      "covers": "part",
+      "manual": "reviewer signs the fidelity report and Vikas sees it (the side-by-side compare page)"
+    }
+  ]
+}

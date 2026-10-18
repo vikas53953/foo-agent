@@ -1,0 +1,1 @@
+Rewrite the text you are given for a non-technical reader without these words: {bannedList}. Keep the meaning, the language and the script. Put the new text in <say> and an empty object in <act>.

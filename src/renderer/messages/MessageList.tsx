@@ -37,6 +37,7 @@ import { FlingRow } from './FlingRow';
 import { RowHotCtx } from './bubbleContext';
 import { RetentionLine, StatusLine, ThinkingRow } from './Markers';
 import { buildRows, buildWaRows, estimateRow, firstUnreadId, type VRow } from './rows';
+import { pacingPlan } from './chunks';
 import { layoutRows, type RowLayout } from './runs';
 import { followStreaming, MARK_READ_AFTER_MS, nearTop, rowVisible, showJump, unreadOpenTop, type ScrollMetrics } from './stickToBottom';
 import { Marked } from './Marked';
@@ -172,6 +173,41 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     return null;
   }, [isWa, messages, jobs, cards, chat.id, chat.kind, chat.helperId, typing]);
 
+  // 04 §12.3: a chat-mode reply that arrives while the chat is open shows its 2nd and 3rd bubbles after the pacing delay.
+  const [paced, setPaced] = useState<Record<string, number>>({});
+  const seenIds = useRef<Set<string> | null>(null);
+  const paceTimers = useRef<number[]>([]);
+  useEffect(() => {
+    if (seenIds.current === null) {
+      seenIds.current = new Set(messages.map((m) => m.id));
+      return;
+    }
+    for (const m of messages) {
+      if (seenIds.current.has(m.id)) continue;
+      seenIds.current.add(m.id);
+      // A reply that streamed in is already on screen: it is not re-revealed bubble by bubble when it completes.
+      if (m.status === 'streaming') continue;
+      const plan = pacingPlan(m);
+      if (!plan) continue;
+      setPaced((p) => ({ ...p, [plan.id]: 1 }));
+      let at = 0;
+      plan.delays.forEach((d, i) => {
+        at += d;
+        paceTimers.current.push(window.setTimeout(() => setPaced((p) => ({ ...p, [plan.id]: i + 2 })), at));
+      });
+    }
+  }, [messages]);
+  useEffect(
+    () => () => {
+      // Another chat opened: pending parts show at once next time (history is never paced).
+      for (const id of paceTimers.current) window.clearTimeout(id);
+      paceTimers.current = [];
+      seenIds.current = null;
+      setPaced({});
+    },
+    [chat.id],
+  );
+
   const rows = useMemo<VRow[]>(() => {
     if (isWa) return buildWaRows(waRowsData ?? [], { now, timeZone: tz });
     const r = buildRows(messages, {
@@ -184,10 +220,11 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
       chatCreatedAt: chat.createdAt,
       isFoo: chat.kind === 'foo' && !chat.private,
       agentName,
+      shownParts: (id) => paced[id],
     });
     if (live) r.push(live);
     return r;
-  }, [isWa, waRowsData, messages, now, tz, slice?.hasMore, unreadFrom, unread.count, chat, agentName, live]);
+  }, [isWa, waRowsData, messages, now, tz, slice?.hasMore, unreadFrom, unread.count, chat, agentName, live, paced]);
   const layouts = useMemo<RowLayout[]>(() => layoutRows(rows, { isGroup }), [rows, isGroup]);
   const latestUserId = useMemo(() => {
     for (let i = messages.length - 1; i >= 0; i--)

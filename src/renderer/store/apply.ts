@@ -58,6 +58,8 @@ export const REDUCERS: Reducers = {
   'net:state': (s, { online }) => {
     s.live.connection = online ? (s.live.ai?.state === 'down' ? 'ai_down' : 'online') : 'offline';
   },
+  // Detect rows feed the setup screen (M12); nothing in M3's shell shows them yet.
+  'ai:detectRow': () => undefined,
   // `navigate` is handled by wireEvents (it is an action, not a row patch).
   navigate: () => undefined,
 };

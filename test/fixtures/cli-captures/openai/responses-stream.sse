@@ -1,0 +1,15 @@
+event: response.created
+data: {"type":"response.created","sequence_number":0,"response":{"id":"resp_1","object":"response","status":"in_progress","model":"gpt-5-2025-08-07"}}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","sequence_number":4,"item_id":"msg_1","output_index":0,"content_index":0,"delta":"<say>Hello "}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","sequence_number":5,"item_id":"msg_1","output_index":0,"content_index":0,"delta":"Vikas</say>"}
+
+event: response.output_text.done
+data: {"type":"response.output_text.done","sequence_number":6,"item_id":"msg_1","output_index":0,"content_index":0,"text":"<say>Hello Vikas</say>"}
+
+event: response.completed
+data: {"type":"response.completed","sequence_number":9,"response":{"id":"resp_1","object":"response","status":"completed","model":"gpt-5-2025-08-07","incomplete_details":null,"usage":{"input_tokens":328,"input_tokens_details":{"cached_tokens":256},"output_tokens":52,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":380}}}
+

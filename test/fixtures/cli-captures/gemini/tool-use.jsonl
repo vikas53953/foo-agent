@@ -1,0 +1,4 @@
+{"type":"init","timestamp":"2026-10-16T03:30:00.000Z","session_id":"c3a1f2d4-0000-4000-8000-000000000002","model":"gemini-2.5-pro"}
+{"type":"tool_use","timestamp":"2026-10-16T03:30:01.000Z","tool_name":"run_shell_command","tool_id":"t1","parameters":{"command":"dir"}}
+{"type":"tool_result","timestamp":"2026-10-16T03:30:01.100Z","tool_id":"t1","status":"error","output":"denied"}
+{"type":"result","timestamp":"2026-10-16T03:30:01.300Z","status":"success","stats":{"input_tokens":10,"output_tokens":2}}

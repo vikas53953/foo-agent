@@ -57,7 +57,11 @@ function filler(
 }
 
 /** `now` is the clock the pills are derived at (the E2E clock starts at Fri 16 Oct 2026, 9:00 AM IST). */
-export function seedUxWorld(db: Db, now = ist(2026, 10, 16, 9, 0)): SeedResult {
+/**
+ * `ch8Live` (seed set `ux-world-ch8-live`, CR-0007): foo's chat stops at the chapter 8 cake line (8:05 AM) and has nothing
+ * after it (no Goa job, no older purchases), so a live run continues the walkthrough's chapter 8 from there.
+ */
+export function seedUxWorld(db: Db, now = ist(2026, 10, 16, 9, 0), o: { ch8Live?: boolean } = {}): SeedResult {
   const w = new SeedWriter(db, 1);
   w.wipe();
   const refs: Record<string, string> = {};
@@ -115,71 +119,86 @@ export function seedUxWorld(db: Db, now = ist(2026, 10, 16, 9, 0)): SeedResult {
     });
 
     // UX-08 (M2): the chapter 8 conversation, 8:05–8:20 AM.
-    seedChatScene(w, foo.chatId, refs);
+    seedChatScene(w, foo.chatId, refs, { untilCake: o.ch8Live === true });
 
-    // Goa stay: NEEDS YOU on a ₹14,600 payment that expires 9:51 AM.
-    const goa = w.job({
-      chatId: foo.chatId,
-      title: 'Goa stay',
-      state: 'needs_you',
-      usesBrowser: true,
-      createdAt: d(16, 9, 36),
-      lastProgressAt: d(16, 9, 41),
-      steps: [
-        { text: 'Checked Booking.com, MakeMyTrip and hotel sites', state: 'done' },
-        { text: 'Kept 3 under ₹8,000 a night, beach within 5 min', state: 'done' },
-        { text: 'Waiting for you to approve the payment', state: 'waiting_user' },
-        { text: 'Book and add to your calendar', state: 'pending' },
-      ],
-    });
-    refs.goaJob = goa;
-    const ask = w.message(foo.chatId, {
-      author: 'user',
-      text: 'ok book the Goa hotel then, under ₹8,000 a night, near the beach',
-      at: d(16, 9, 36),
-      badge: 'waiting',
-      jobId: goa,
-    });
-    w.card(foo.chatId, {
-      type: 'checklist',
-      state: 'live',
-      jobId: goa,
-      at: d(16, 9, 38),
-      payload: { title: 'Booking your Goa stay', done: 2, total: 4 },
-    });
-    const pay = w.card(foo.chatId, {
-      type: 'payment',
-      state: 'PENDING',
-      jobId: goa,
-      at: d(16, 9, 41),
-      expiresAt: d(16, 9, 51),
-      payload: {
-        title: 'Pay Taj Holiday Village',
-        payee: 'Taj Holiday Village',
-        amountPaise: 1_460_000,
-        description: 'Sat 12 Dec – Mon 14 Dec, 2 nights',
-      },
-    });
-    w.approval(pay.cardId, goa, foo.chatId, 'PENDING', { payee: 'Taj Holiday Village', paise: 1_460_000, at: d(16, 9, 41) }, d(16, 9, 51));
-    w.linkJob(goa, { userMessageId: ask, needsYouCardId: pay.cardId });
+    if (!o.ch8Live) {
+      // Goa stay: NEEDS YOU on a ₹14,600 payment that expires 9:51 AM.
+      const goa = w.job({
+        chatId: foo.chatId,
+        title: 'Goa stay',
+        state: 'needs_you',
+        usesBrowser: true,
+        createdAt: d(16, 9, 36),
+        lastProgressAt: d(16, 9, 41),
+        steps: [
+          { text: 'Checked Booking.com, MakeMyTrip and hotel sites', state: 'done' },
+          { text: 'Kept 3 under ₹8,000 a night, beach within 5 min', state: 'done' },
+          { text: 'Waiting for you to approve the payment', state: 'waiting_user' },
+          { text: 'Book and add to your calendar', state: 'pending' },
+        ],
+      });
+      refs.goaJob = goa;
+      const ask = w.message(foo.chatId, {
+        author: 'user',
+        text: 'ok book the Goa hotel then, under ₹8,000 a night, near the beach',
+        at: d(16, 9, 36),
+        badge: 'waiting',
+        jobId: goa,
+      });
+      w.card(foo.chatId, {
+        type: 'checklist',
+        state: 'live',
+        jobId: goa,
+        at: d(16, 9, 38),
+        payload: { title: 'Booking your Goa stay', done: 2, total: 4 },
+      });
+      const pay = w.card(foo.chatId, {
+        type: 'payment',
+        state: 'PENDING',
+        jobId: goa,
+        at: d(16, 9, 41),
+        expiresAt: d(16, 9, 51),
+        payload: {
+          title: 'Pay Taj Holiday Village',
+          payee: 'Taj Holiday Village',
+          amountPaise: 1_460_000,
+          description: 'Sat 12 Dec – Mon 14 Dec, 2 nights',
+        },
+      });
+      w.approval(
+        pay.cardId,
+        goa,
+        foo.chatId,
+        'PENDING',
+        { payee: 'Taj Holiday Village', paise: 1_460_000, at: d(16, 9, 41) },
+        d(16, 9, 51),
+      );
+      w.linkJob(goa, { userMessageId: ask, needsYouCardId: pay.cardId });
 
-    // Two older purchases this month (₹953 + ₹13,376; with the cake, ₹15,779).
-    const groceries = w.job({ chatId: foo.chatId, title: 'Groceries', state: 'done', createdAt: d(10, 10, 0), finishedAt: d(10, 10, 20) });
-    w.paid(foo.chatId, groceries, {
-      payee: 'BigBasket',
-      description: 'Weekly groceries',
-      paise: 95_300,
-      at: d(10, 10, 18),
-      site: 'bigbasket.com',
-    });
-    const train = w.job({ chatId: foo.chatId, title: 'Train to Pune', state: 'done', createdAt: d(6, 18, 0), finishedAt: d(6, 18, 30) });
-    w.paid(foo.chatId, train, {
-      payee: 'MakeMyTrip',
-      description: 'Mumbai to Pune, 4 people',
-      paise: 1_337_600,
-      at: d(6, 18, 25),
-      site: 'makemytrip.com',
-    });
+      // Two older purchases this month (₹953 + ₹13,376; with the cake, ₹15,779).
+      const groceries = w.job({
+        chatId: foo.chatId,
+        title: 'Groceries',
+        state: 'done',
+        createdAt: d(10, 10, 0),
+        finishedAt: d(10, 10, 20),
+      });
+      w.paid(foo.chatId, groceries, {
+        payee: 'BigBasket',
+        description: 'Weekly groceries',
+        paise: 95_300,
+        at: d(10, 10, 18),
+        site: 'bigbasket.com',
+      });
+      const train = w.job({ chatId: foo.chatId, title: 'Train to Pune', state: 'done', createdAt: d(6, 18, 0), finishedAt: d(6, 18, 30) });
+      w.paid(foo.chatId, train, {
+        payee: 'MakeMyTrip',
+        description: 'Mumbai to Pune, 4 people',
+        paise: 1_337_600,
+        at: d(6, 18, 25),
+        site: 'makemytrip.com',
+      });
+    }
 
     // Trips: working on "Flights for 12 Dec", step 2 of 4.
     const trips = w.chat({

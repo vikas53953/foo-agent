@@ -11,3 +11,4 @@ qa-evidence/
 test-results/
 playwright-report/
 golden/manifest.json
+resources/prompts/

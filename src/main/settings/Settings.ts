@@ -66,7 +66,15 @@ export class SettingsStore {
   update(patch: (s: Settings) => Settings): void {
     this.current = settingsSchema.parse(patch(this.current));
     this.write();
+    for (const fn of this.listeners) fn(this.current);
   }
+
+  /** M3: the engine keeps a full copy (08-1 §2.4 `settings.changed`). Returns the unsubscribe function. */
+  onChange(fn: (s: Settings) => void): () => void {
+    this.listeners.add(fn);
+    return () => this.listeners.delete(fn);
+  }
+  private listeners = new Set<(s: Settings) => void>();
 
   /** Atomic: write a temp file, then rename over the old one. */
   private write(): void {

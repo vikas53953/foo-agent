@@ -10,6 +10,7 @@ import type {
   ChatRow,
   CardRow,
   ConnectionRow,
+  DetectRow,
   BadgeValue,
   HelperRow,
   JobDetails,
@@ -80,6 +81,8 @@ export interface Invokes {
   'message:delete': { req: { messageIds: string[]; confirm: true }; res: void };
   /** Not in 08-1 §3.2 (gap): 04 §7 "Try again" on a Not sent bubble (same text and attachments). */
   'message:retry': { req: { messageId: string }; res: MessageRow };
+  /** Not in 08-1 §3.2 (gap): 04 §14.4 Stop on the reply that is coming in (composer Stop button or Esc). */
+  'message:stopReply': { req: { chatId: string }; res: boolean };
   'files:open': { req: { path: string }; res: void };
   'files:showInFolder': { req: { path: string }; res: void };
   'job:details': { req: { jobId: string }; res: JobDetails };
@@ -97,6 +100,9 @@ export interface Invokes {
   'settings:get': { req: Record<string, never>; res: PublicSettings };
   'settings:set': { req: { path: string; value: unknown }; res: { settings: PublicSettings; changeId: string | null } };
   'ai:verify': { req: { providerId: ProviderId }; res: VerifyResult };
+  /** M3 (08-1 §3.2): detection ladder; rows also stream on `ai:detectRow`. The J2 screen that shows them is M12. */
+  'ai:detect': { req: Record<string, never>; res: DetectRow[] };
+  'ai:choose': { req: { primary: ProviderId; backup?: ProviderId | null }; res: AiStatus };
   'notifications:status': { req: Record<string, never>; res: { windowsAllowed: boolean; focusAssist: boolean } };
 }
 
@@ -111,6 +117,7 @@ export interface Events {
   'card:upsert': CardRow;
   'job:upsert': JobRow;
   'ai:status': AiStatus;
+  'ai:detectRow': DetectRow;
   'spend:update': SpendSummary;
   'connection:upsert': ConnectionRow;
   'settings:changed': PublicSettings;
@@ -154,6 +161,7 @@ export const INVOKE_CHANNELS = [
   'message:edit',
   'message:delete',
   'message:retry',
+  'message:stopReply',
   'files:open',
   'files:showInFolder',
   'job:details',
@@ -168,6 +176,8 @@ export const INVOKE_CHANNELS = [
   'settings:get',
   'settings:set',
   'ai:verify',
+  'ai:detect',
+  'ai:choose',
   'notifications:status',
 ] as const satisfies readonly InvokeChannel[];
 
@@ -181,6 +191,7 @@ export const EVENT_CHANNELS = [
   'card:upsert',
   'job:upsert',
   'ai:status',
+  'ai:detectRow',
   'spend:update',
   'connection:upsert',
   'settings:changed',
@@ -188,8 +199,12 @@ export const EVENT_CHANNELS = [
   'navigate',
 ] as const satisfies readonly EventChannel[];
 
-/** 08-3 §22.9 seed sets (`ux-world` is the generator name of `demo`; both load the walkthrough world). */
-export const SEED_SETS = ['demo', 'perf', 'ux-world'] as const;
+/**
+ * 08-3 §22.9 seed sets (`ux-world` is the generator name of `demo`; both load the walkthrough world). `ux-world-ch8-live`
+ * (CR-0007): the same world at 8:05 AM, foo's chat ending at the cake line, so a test sends chapter 8's "thanks!" and
+ * question live and the frame matches the walkthrough's UX-08-02.
+ */
+export const SEED_SETS = ['demo', 'perf', 'ux-world', 'ux-world-ch8-live'] as const;
 export type SeedSet = (typeof SEED_SETS)[number];
 
 export interface ClockReply {

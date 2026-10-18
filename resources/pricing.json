@@ -1,0 +1,47 @@
+{
+  "version": "seed-M3",
+  "usdToInr": 88,
+  "anthropicVersion": "2023-06-01",
+  "models": {
+    "claude-cli": { "defaultModel": null, "cheapModel": "haiku" },
+    "codex-cli": { "defaultModel": null, "cheapModel": "gpt-5-mini" },
+    "gemini-cli": { "defaultModel": null, "cheapModel": "gemini-2.5-flash" },
+    "openai-key": { "defaultModel": "gpt-5", "cheapModel": "gpt-5-mini" },
+    "anthropic-key": { "defaultModel": "claude-sonnet-4-5", "cheapModel": "claude-haiku-4-5" },
+    "google-key": { "defaultModel": "gemini-2.5-pro", "cheapModel": "gemini-2.5-flash" }
+  },
+  "providers": {
+    "openai-key": {
+      "models": {
+        "gpt-5": { "inPerMTokUsd": 1.25, "outPerMTokUsd": 10, "cacheReadPerMTokUsd": 0.125, "vision": true },
+        "gpt-5-mini": { "inPerMTokUsd": 0.25, "outPerMTokUsd": 2, "cacheReadPerMTokUsd": 0.025, "vision": true }
+      }
+    },
+    "anthropic-key": {
+      "models": {
+        "claude-sonnet-4-5": { "inPerMTokUsd": 3, "outPerMTokUsd": 15, "cacheReadPerMTokUsd": 0.3, "vision": true },
+        "claude-haiku-4-5": { "inPerMTokUsd": 1, "outPerMTokUsd": 5, "cacheReadPerMTokUsd": 0.1, "vision": true }
+      }
+    },
+    "google-key": {
+      "models": {
+        "gemini-2.5-pro": { "inPerMTokUsd": 1.25, "outPerMTokUsd": 10, "cacheReadPerMTokUsd": 0.31, "vision": true },
+        "gemini-2.5-flash": { "inPerMTokUsd": 0.3, "outPerMTokUsd": 2.5, "cacheReadPerMTokUsd": 0.075, "vision": true }
+      }
+    }
+  },
+  "voice": {
+    "gpt-4o-mini-transcribe": { "perMinuteUsd": 0.003 },
+    "gpt-4o-transcribe": { "perMinuteUsd": 0.006 }
+  },
+  "web": {
+    "exa": { "perCallUsd": 0.005 },
+    "tavily": { "perCallUsd": 0.008 },
+    "firecrawl": { "perCallUsd": 0.001 },
+    "browseruse": { "perStepUsd": 0.01 }
+  },
+  "hub": {
+    "composio": { "perCallUsd": 0 },
+    "zapier": { "perCallUsd": 0 }
+  }
+}

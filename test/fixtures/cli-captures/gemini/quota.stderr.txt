@@ -1,0 +1,1 @@
+Error when talking to Gemini API: [API Error: Quota exceeded for quota metric 'Gemini 2.5 Pro Requests'. Rate limit reached; try again in 2 hours.]

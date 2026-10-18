@@ -7,7 +7,10 @@ import { join } from 'node:path';
 import { resolvePaths } from './data/paths';
 import { deps, installTestDeps } from './deps';
 import { testHooksEnabled } from './ipc/guard';
-import { electronProbe, registerIpc, type AppContext } from './ipc/IpcRouter';
+import { electronProbe, emit, listContext, registerIpc, type AppContext } from './ipc/IpcRouter';
+import { EngineBridge } from './engine-supervisor/EngineBridge';
+import { EngineSupervisor } from './engine-supervisor/EngineSupervisor';
+import { chatRowById, messageGet } from './store/queries';
 import { NetMonitor } from './net/netMonitor';
 import type { FakeClock } from '../shared/clock';
 import { SettingsStore } from './settings/Settings';
@@ -24,6 +27,7 @@ app.setAppUserModelId(AUMID); // §9.2: first line after app exists, before any 
 
 let mainWindow: BrowserWindow | null = null;
 let db: Db | null = null;
+let supervisor: EngineSupervisor | null = null;
 
 const hidden = process.argv.includes('--hidden');
 
@@ -62,7 +66,28 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
     // Network state on the injected clock: the injected Net in test runs, Electron's probe otherwise.
     const netMonitor = new NetMonitor(deps.clock);
     const probe = testClock ? () => deps.net.online : electronProbe;
-    const ctx: AppContext = { db, settings, net: netMonitor, probe, dataDir: paths.data };
+    const store = db;
+    // 08-1 §2.4: main's half of the engine port; the engine forks after first paint (step 6).
+    const engine = new EngineBridge({
+      db: store,
+      settings,
+      emit,
+      emitMessage: (id) => {
+        const row = messageGet(store, id);
+        if (row) emit('message:upsert', row);
+      },
+      emitChat: (id) => {
+        const row = chatRowById(store, listContext(settings.get()), id);
+        if (row) emit('chat:upsert', row);
+      },
+    });
+    const ctx: AppContext = { db, settings, net: netMonitor, probe, dataDir: paths.data, engine };
+    supervisor = new EngineSupervisor(engine, { data: paths.data, local: paths.local });
+    supervisor.onStarted = () => {
+      engine.send('settings.changed', { paths: [], settings: settings.get() });
+      engine.send('net', { online: !netMonitor.offline });
+    };
+    settings.onChange((s) => engine.send('settings.changed', { paths: [], settings: s }));
     if (testClock) await loadTestHooks(ctx, testClock);
     else netMonitor.poll(probe);
     // Step 4: theme before any window, then the window.
@@ -78,6 +103,8 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
         relaunchDisplayName: 'foo',
       });
     }
+    // Step 6: +300 ms after first paint, fork the engine.
+    mainWindow.once('ready-to-show', () => setTimeout(() => supervisor?.start(), 300));
     mainWindow.on('closed', () => {
       mainWindow = null;
     });
@@ -85,5 +112,8 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
 
   // Close to tray needs the tray (M11); until then closing the window quits.
   app.on('window-all-closed', () => app.quit());
-  app.on('will-quit', () => db?.close());
+  app.on('will-quit', () => {
+    supervisor?.stop();
+    db?.close();
+  });
 }

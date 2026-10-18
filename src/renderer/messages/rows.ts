@@ -6,6 +6,7 @@
 import { formatDate } from '../../shared/format';
 import { t } from '../../shared/copy/t';
 import type { MessageRow, WaMessageRow } from '../../shared/types';
+import { messageParts } from './chunks';
 
 export type VRow =
   | { kind: 'start'; key: string; label: string; messageId?: string }
@@ -76,6 +77,8 @@ export interface BuildOpts extends DateOpts {
   chatCreatedAt: number;
   isFoo: boolean;
   agentName: string;
+  /** 04 §12.3 pacing: how many parts of a chunked reply show yet (absent = all). */
+  shownParts?: (messageId: string) => number | undefined;
 }
 
 export function startLabel(o: Pick<BuildOpts, 'chatTitle' | 'chatCreatedAt' | 'isFoo' | 'agentName' | 'timeZone'>): string {
@@ -100,7 +103,10 @@ export function buildRows(messages: MessageRow[], o: BuildOpts): VRow[] {
     }
     if (m.id === o.unreadFromId)
       rows.push({ kind: 'unread', key: 'unread', label: t('thread.unread_divider.text', { count: o.unreadCount }) });
-    rows.push({ kind: 'message', key: m.id, message: m });
+    // 04 §12.3: a chat-mode reply shows as 1–3 bubbles; the last part keeps the message's key.
+    const parts = messageParts(m);
+    const shown = Math.min(parts.length, o.shownParts?.(m.id) ?? parts.length);
+    for (let i = 0; i < shown; i++) rows.push({ kind: 'message', key: i === parts.length - 1 ? m.id : `${m.id}~${i}`, message: parts[i]! });
   }
   return rows;
 }

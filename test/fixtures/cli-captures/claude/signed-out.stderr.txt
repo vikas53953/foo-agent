@@ -1,0 +1,2 @@
+Invalid API key · Please run /login
+Error: Not logged in. Please run `claude auth login`.

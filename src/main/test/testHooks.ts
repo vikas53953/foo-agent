@@ -40,15 +40,18 @@ const jobStateArg = z.object({ jobId: z.string().min(1), state: z.enum(JOB_STATE
 
 /** Seed registry (08-3 §22.9). Rows are generated into the open foo.db through the real schema; open windows get them as patches. */
 export function seeds(ctx: AppContext, clock: FakeClock): Record<SeedSet, () => SeedReply> {
-  const demo = (set: SeedSet) => (): SeedReply => {
-    const r = seedUxWorld(ctx.db, clock.now());
-    writeSeedMedia(ctx.dataDir, r.media);
-    ctx.settings.update((s) => uxWorldSettings(s, r.refs, clock.now()));
-    return { set, loaded: true, chats: r.chats, messages: r.messages, refs: r.refs };
-  };
+  const demo =
+    (set: SeedSet, o: { ch8Live?: boolean } = {}) =>
+    (): SeedReply => {
+      const r = seedUxWorld(ctx.db, clock.now(), o);
+      writeSeedMedia(ctx.dataDir, r.media);
+      ctx.settings.update((s) => uxWorldSettings(s, r.refs, clock.now()));
+      return { set, loaded: true, chats: r.chats, messages: r.messages, refs: r.refs };
+    };
   return {
     demo: demo('demo'),
     'ux-world': demo('ux-world'),
+    'ux-world-ch8-live': demo('ux-world-ch8-live', { ch8Live: true }),
     perf: () => {
       const r = seedPerf(ctx.db, clock.now());
       writeSeedMedia(ctx.dataDir, r.media);
@@ -82,6 +85,7 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
     const arg = clockArg.parse(raw);
     if (arg?.set !== undefined) clock.set(typeof arg.set === 'string' ? Date.parse(arg.set) : arg.set);
     if (arg?.advance !== undefined) clock.advance(arg.advance);
+    ctx.engine?.send('test.clock', { now: clock.now() });
     return reply();
   });
   guard.handle('test:seed', (raw: unknown) => {
@@ -118,6 +122,8 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
   });
   guard.handle('test:reset', () => {
     clock.reset(TEST_EPOCH_MS);
+    ctx.engine?.send('test.reset', {});
+    ctx.engine?.send('test.clock', { now: clock.now() });
     deps.net.online = true;
     ctx.net.report(true);
     nativeTheme.themeSource = ctx.settings.get().appearance.theme;

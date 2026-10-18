@@ -150,6 +150,7 @@ export const TID = {
   bubbleHelper: 'bubble-helper',
   bubbleWa: 'bubble-wa',
   bubbleBackupMark: 'bubble-backup-mark',
+  bubbleStopped: 'bubble-stopped',
   bubbleSender: 'bubble-sender',
   bubbleMeta: 'bubble-meta',
   bubbleTick: 'bubble-tick',

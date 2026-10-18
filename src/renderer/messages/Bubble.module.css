@@ -319,6 +319,10 @@
 .time {
   font: inherit;
 }
+.stopped {
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
 .backup {
   display: inline-flex;
   align-items: center;

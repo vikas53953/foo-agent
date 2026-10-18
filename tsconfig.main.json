@@ -9,5 +9,5 @@
     "outDir": "out/main",
     "verbatimModuleSyntax": false
   },
-  "include": ["src/main/**/*.ts", "src/preload/**/*.ts", "src/shared/**/*.ts", "src/shared/**/*.json"]
+  "include": ["src/main/**/*.ts", "src/engine/**/*.ts", "src/preload/**/*.ts", "src/shared/**/*.ts", "src/shared/**/*.json"]
 }

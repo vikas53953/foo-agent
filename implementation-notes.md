@@ -384,3 +384,85 @@ Removed at integration: `_m1b-stubs.ts` / `.css` are gone and every import point
 36. **PERF-02 cause found:** the test pressed a key every ~5 ms, faster than frames, so keys queued behind earlier keys' frames (per-key log: times step down by 5 ms to one late frame, no long task, same with nothing focused). Keys are now paced one per paint at a random point in the refresh cycle, and the wait from "character in the DOM" to the next refresh (≤ 16.7 ms) is taken off; the hosted-runner exception is gone (CR-0005 revised). Local ×3: p95 7.0–7.1 ms, control 2.5–2.6 ms.
 37. **Sideways scroll in the message list:** the hover toolbar of a full-width foo bubble (04 §9.2) sat past the column once mounted, so the list grew a horizontal scroll bar (seen in the UX-09 captures on 7740e7e). The column is now `overflow-x: clip` (on the scroller itself, `overflow-x: hidden` cost PERF-04 1.4 % long frames on CI 06c0be6); the no-room toolbar position is a GAPS line.
 38. **Composer banner over the right shell:** the strip stack above the pill was a grid with an auto column, so the `mic_blocked` banner (text plus a 215px button) sized it to 680px, past the 600px bar and over the Details panel (UX-09-08 captures). The stack is now `minmax(0, 1fr)`; the banner text ellipsises (04-2 §23.2).
+
+## M3 · your-AI adapters and first real replies
+
+### Built
+
+- **Engine process** (`src/engine/index.ts`, `Engine.ts`): a utility process forked by `main/engine-supervisor/EngineSupervisor.ts`
+  300 ms after the window is ready, over one MessagePort (`{ id, kind, payload }`, replies `{ re, result }`, zod on receipt,
+  `src/engine/protocol.ts`). Main stays the single writer: the engine sends `db.tx` ops (`engineHost.applyDbOps`, column
+  allow-lists, seq and chat columns filled by main, text through the Redactor) and named reads (`main/db/queries.ts`).
+  `EngineBridge` turns the effects into `message:upsert` / `chat:upsert` and forwards `ui.patch` events; `ai.state` lands in
+  settings. Restarts up to 3 times.
+- **Adapters** (`src/engine/ai/*`, builder A): claude, codex, gemini CLIs; Ollama; OpenAI, Anthropic, Google keys; LM Studio
+  helper; the fake. Prompt on stdin only; `.cmd` shims run through `process.execPath` with `ELECTRON_RUN_AS_NODE=1`; tree kill
+  on cancel and timeout; probe, detect, verify, choose (`AiRegistry`); `resources/pricing.json`.
+- **Prompt rules** (`src/engine/prompt/*`, `src/engine/redact/Redactor.ts`, `resources/prompts/*`, builder B): prompt
+  assembly, FOO/1 envelope, `<act>` schemas, one repair turn, output filters, the 1.5 s release gate, the rewrite turn.
+- **Chat lane** (`src/engine/chat/ChatLane.ts`) and **AiService** (`src/engine/AiService.ts`): per-chat queues (2 turns at
+  once), ticks and 👀 (04 §3.3, §4), streaming deltas, react acts, empty-reply rule, cut-off with Try again, Stop (04 §14.4),
+  `ai_turns` rows with cost (plan CLIs: unknown, never guessed), provider health and backup (08-2 §6.7, 08-4 §30.9).
+- **Renderer:** 1–3 bubble chunking and pacing (`renderer/messages/chunks.ts`, 04 §12.3); Stop button and Esc call
+  `message:stopReply`; "Stopped." caption.
+
+### Picks and gaps (each listed in CR-0007 for Vikas)
+
+1. **GAP · Job Object:** `foo-native/jobobject.cc` is not built; the tree is killed with `taskkill /T /F` (Windows) or a process
+   group (POSIX). Native Job Object moves to M11 with the other native parts.
+2. **GAP · engine crash count / safe mode** (08-1 §2.2) are M11; M3 restarts up to 3 times and then stays down.
+3. **GAP · no vault before M5:** key providers get no key, so their verify fails `AI_KEY_INVALID`.
+4. **GAP · writable tables:** 08-1's WritableTable list has no `reactions`; the react act needs it, so it was added.
+5. **GAP · extra IPC and engine kinds:** `ai:detect`, `ai:choose`, event `ai:detectRow`, `message:stopReply`; engine kinds
+   `reply.retry`, `reply.stop`; named reads `messageById`, `messagesQueued`.
+6. **Intake kinds before their milestones:** acts other than `reply` and `react` (job, brief, setup…) post
+   "I didn’t get that. Say it another way?" until M4–M8 build them.
+7. **Tests and the engine:** a FOO_TEST run starts the engine only when `FOO_FAKE_AI` is set, so no test can reach a real AI;
+   in a FOO_FAKE_AI run every turn goes to the fake adapter. The +20 s health check runs only outside tests.
+8. **Read tick after the badge clears:** M2's tick derives "read" from the badge, so ✓✓ Read shows only while 👀 is on.
+   Kept to protect the M2 goldens (CR-0003 P5 asks the spec keeper).
+9. **Chunking applies by content** to every finished foo reply ≤ 600 characters (history too); pacing only to replies that
+   arrive while the chat is open.
+10. **Stop is stored** as badge `stopped` on the foo message (no new column); the caption shows for a complete foo message
+    with that badge. Esc in the message list is not wired yet (composer Esc is).
+11. **AT-006 copy:** 06-1 says "Connect your AI first, then we can talk."; 04-2 uses "Connect your AI first". The composer keeps
+    04-2's; the long line belongs to the M12 setup screen.
+12. Builder A's and B's own picks (Codex resume keeps the read-only sandbox, `.cmd` shim with no target fails, seed fixtures,
+    `z.toJSONSchema`, missing redactor patterns for Bearer / URL params / OTP, Hindi inflections) are listed in CR-0007 §(c).
+
+### Independent check (M3 review) and what changed
+
+- Windows `where` lists npm's extensionless sh shim first; `pickWhereHit` takes `.exe`, then `.cmd` / `.bat`, never the sh
+  shim or `.ps1`.
+- A prompt that cannot be built (over the budget) ends as a cut-off with Try again, not a stuck 👀.
+- A react act after words already showed finishes that bubble and still adds the 👍.
+- Nothing reaches the bubble after Stop or a cut-off; the rewrite turn for a held sentence is cancelled with the reply.
+- AI_PROTOCOL_VIOLATION: the turn runs once more; a second one in a row, or AI_CLI_INCOMPATIBLE, makes the provider
+  unusable (state `down`) until a re-verify, which re-probes the CLI.
+- A message sent while the engine is starting or restarting waits to send (status `queued`) and goes on the drain.
+- Try again answers once per cut-off bubble; a streamed reply is not re-revealed bubble by bubble when it completes.
+- The engine may change a user message's status and badge only, never its text.
+- The +20 s health check (08-1 §2.2 step 7) re-verifies the chosen AI when its last verify is over 10 minutes old.
+- Left for later (logged): rows left `streaming` after an engine crash (M11 recovery); the repair turn is not resumed in
+  the same CLI session and Stop does not reach it; CLI stderr is not scanned for network errors; a grandchild holding the
+  pipe makes a turn wait for its timeout; a waiting badge while online with the AI down.
+
+### Real CLI captures (Vikas's PC, 2026-10-18) and what they changed
+
+claude 2.1.282, codex 0.156.1 and Ollama were captured on Vikas's PC (`test/fixtures/cli-captures/README.md` lists which
+files are real and which stay seeds). What the real output pinned:
+
+- `claude --help` no longer lists `--append-system-prompt-file`, but the switch still works; the probe accepts it hidden.
+- claude streams a `rate_limit_event` with the plan's used share and reset time; a rejected one gives the reset of the
+  binding window. `error_max_turns` ends a turn like a cut-off.
+- npm's `.cmd` shims name a `.exe` (claude) or a `node` script (codex); a `.exe` target runs directly, no shell.
+- Under the read-only sandbox on Windows, codex's shell attempt never shows as a `command_execution` item: the stream is
+  clean and only stderr says `exec_command failed`. That stderr line is read as AI_PROTOCOL_VIOLATION too.
+- codex reports `cache_write` tokens; Ollama reports cached prompt tokens.
+- Ollama's `/api/tags` lists cloud models (`remote_host`) and embedding models; detect leaves both out, so a PC with only
+  those has nothing to test. A cloud model's "not included in your free usage" is AI_LIMIT.
+
+### Not verified here
+
+- Gemini CLI (not installed on the PC) and the three key APIs (no test key) parse seed fixtures written from the spec.
+- The Windows `taskkill /T` tree kill: the grandchild test runs on POSIX only.

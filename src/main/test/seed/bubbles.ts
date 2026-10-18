@@ -15,10 +15,11 @@ const SEC = 1000;
  * every user bubble; the app derives "read" from a badge (04 §3.3, bubbleState.tickState), so the user bubbles without a drawn
  * badge are stored as `complete` (✓✓ delivered) with no badge (implementation-notes, M2 builder C).
  */
-export function seedChatScene(w: SeedWriter, fooChatId: string, refs: Record<string, string>): void {
+export function seedChatScene(w: SeedWriter, fooChatId: string, refs: Record<string, string>, o: { untilCake?: boolean } = {}): void {
   const plain = { status: 'complete' as const };
   const cake = w.message(fooChatId, { author: 'foo', text: 'Cake from Theobroma is booked for Sun 18 Oct, 11:00 AM.', at: d(16, 8, 5) });
   refs.cake = cake;
+  if (o.untilCake) return;
   const thanks = w.message(fooChatId, { author: 'user', text: 'thanks!', at: d(16, 8, 6), ...plain });
   w.reaction(thanks, 'foo', '👍', d(16, 8, 6) + 2 * SEC);
   refs.thanks = thanks;

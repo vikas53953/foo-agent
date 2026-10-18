@@ -638,6 +638,12 @@ function BubbleBody({
         )}
         {!found && !endsInParagraph(bl) && spacer}
       </div>
+      {/* §14.4: a stopped reply keeps its text with a caption line under it, inside the bubble. */}
+      {m.badge === 'stopped' && m.status === 'complete' && (
+        <div className={styles.stopped} data-testid={TID.bubbleStopped}>
+          {t('bubble.stopped.caption')}
+        </div>
+      )}
       {sources.length >= 2 && <SourcesRow sources={sources} />}
       {worked && job && <WorkedLine messageId={m.id} jobId={job.id} ms={job.finishedAt! - job.startedAt!} />}
       {m.status === 'failed' && <CutOffRow onRetry={() => void retryMessage(m.id)} />}

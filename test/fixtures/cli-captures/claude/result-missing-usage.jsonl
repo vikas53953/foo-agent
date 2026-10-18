@@ -1,0 +1,2 @@
+{"type":"system","subtype":"init","session_id":"5f0c7d1e-1111-4a2b-9c3d-000000000003","model":"claude-sonnet-4-5-20250929"}
+{"type":"result","subtype":"success","is_error":false,"result":"ok","session_id":"5f0c7d1e-1111-4a2b-9c3d-000000000003","usage":{"input_tokens":5}}
