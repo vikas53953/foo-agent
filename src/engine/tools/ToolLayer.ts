@@ -95,7 +95,10 @@ export class ToolLayer {
   /** System part 3 (§27.1): the tools a job may use, one line each. */
   catalogue(): string {
     return Object.values(this.d.tools)
-      .map((t) => `- ${t.name}(${t.args}): ${t.description}${t.actionClass === 'read' || t.actionClass === 'prepare' ? '' : ' (asks the user first)'}`)
+      .map(
+        (t) =>
+          `- ${t.name}(${t.args}): ${t.description}${t.actionClass === 'read' || t.actionClass === 'prepare' ? '' : ' (asks the user first)'}`,
+      )
       .join('\n');
   }
 
@@ -117,7 +120,11 @@ export class ToolLayer {
     return this.d.link.request<DbTxReply>('db.tx', { ops });
   }
 
-  async execute(job: { id: string; stepId: string | null; turnId: string | null }, call: ToolCallAct, signal: AbortSignal): Promise<ExecResult> {
+  async execute(
+    job: { id: string; stepId: string | null; turnId: string | null },
+    call: ToolCallAct,
+    signal: AbortSignal,
+  ): Promise<ExecResult> {
     const id = this.d.newId('tc');
     const startedAt = this.d.clock.now();
     const def = this.d.tools[call.tool];

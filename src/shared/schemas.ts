@@ -250,9 +250,7 @@ export const StepDecisionSchema = z.discriminatedUnion('kind', [
 export const StepActSchema = z
   .object({
     decision: StepDecisionSchema,
-    steer: z
-      .array(z.object({ messageId: z.string(), effect: z.enum(['folded', 'answered', 'restart', 'new_job']) }).strict())
-      .optional(),
+    steer: z.array(z.object({ messageId: z.string(), effect: z.enum(['folded', 'answered', 'restart', 'new_job']) }).strict()).optional(),
     usedMemoryIds: z.array(z.string()),
   })
   .strict();

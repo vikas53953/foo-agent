@@ -10,7 +10,7 @@
 // T3 stop / steer / watchdog / stuck / caps, T4 waiting / recovery / power events.
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { t, type CopyKey } from '../../shared/copy/t';
+import { t } from '../../shared/copy/t';
 import type { Clock, TimerId } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
 import { formatInr } from '../../shared/format';
@@ -120,6 +120,17 @@ function domainOf(site: string | null): string | null {
   return site && /^[a-z0-9.-]+\.[a-z]{2,}$/i.test(site) ? site.toLowerCase() : null;
 }
 
+/** 08-1 §4.5 error card words per kind, as literal t() calls so check:copy sees every key. */
+function errorCopy(kind: 'SITE_BLOCKED' | 'UNKNOWN', site: string) {
+  return kind === 'SITE_BLOCKED'
+    ? {
+        whatHappened: t('errors.site_blocked.what_happened', { site }),
+        whatIsSafe: t('errors.site_blocked.what_is_safe'),
+        label: t('errors.site_blocked.button'),
+      }
+    : { whatHappened: t('errors.unknown.what_happened'), whatIsSafe: t('errors.unknown.what_is_safe'), label: t('errors.unknown.button') };
+}
+
 export class JobRunner {
   private ctxs = new Map<string, JobCtx>();
   private loops = new Map<string, Promise<void>>();
@@ -194,7 +205,14 @@ export class JobRunner {
   }
 
   /** A card message + its cards row (08-1 §4.3.3 insert order). */
-  private cardOps(chatId: string, type: string, state: string, payload: Record<string, unknown>, jobId: string | null, helperId: string | null) {
+  private cardOps(
+    chatId: string,
+    type: string,
+    state: string,
+    payload: Record<string, unknown>,
+    jobId: string | null,
+    helperId: string | null,
+  ) {
     const cardId = this.d.newId('k');
     const messageId = this.d.newId('m');
     const now = this.d.clock.now();
@@ -217,7 +235,17 @@ export class JobRunner {
       {
         op: 'insert',
         table: 'cards',
-        row: { id: cardId, chat_id: chatId, message_id: messageId, job_id: jobId, type, state, payload, nonce: this.d.newId('k'), created_at: now },
+        row: {
+          id: cardId,
+          chat_id: chatId,
+          message_id: messageId,
+          job_id: jobId,
+          type,
+          state,
+          payload,
+          nonce: this.d.newId('k'),
+          created_at: now,
+        },
       },
     ];
     return { cardId, messageId, ops };
@@ -278,13 +306,11 @@ export class JobRunner {
           created_at: now,
         },
       },
-      ...plan.map(
-        (p, idx): DbOp => ({
-          op: 'insert',
-          table: 'steps',
-          row: { id: this.d.newId('s'), job_id: id, idx, phrase_key: p.phraseKey, slots: p.slots, state: 'pending', route: p.route },
-        }),
-      ),
+      ...plan.map((p, idx): DbOp => ({
+        op: 'insert',
+        table: 'steps',
+        row: { id: this.d.newId('s'), job_id: id, idx, phrase_key: p.phraseKey, slots: p.slots, state: 'pending', route: p.route },
+      })),
     ];
     let planCard = false;
     if (needsPlanCard(minutes, cost) && (input.origin ?? 'user') === 'user') {
@@ -543,11 +569,20 @@ export class JobRunner {
     fresh.forEach((p, i) => {
       const idx = base + i;
       const row = steps.find((s) => s.idx === idx);
-      const set = { phrase_key: p.phraseKey, slots: p.slots, route: p.route, state: i === 0 ? 'running' : 'pending', started_at: i === 0 ? now : null, finished_at: null };
+      const set = {
+        phrase_key: p.phraseKey,
+        slots: p.slots,
+        route: p.route,
+        state: i === 0 ? 'running' : 'pending',
+        started_at: i === 0 ? now : null,
+        finished_at: null,
+      };
       if (row) ops.push({ op: 'update', table: 'steps', id: row.id, set });
       else ops.push({ op: 'insert', table: 'steps', row: { id: this.d.newId('s'), job_id: job.id, idx, ...set } });
     });
-    for (const s of steps) if (s.idx >= base + fresh.length && s.state !== 'done') ops.push({ op: 'update', table: 'steps', id: s.id, set: { state: 'skipped' } });
+    for (const s of steps)
+      if (s.idx >= base + fresh.length && s.state !== 'done')
+        ops.push({ op: 'update', table: 'steps', id: s.id, set: { state: 'skipped' } });
     ops.push({
       op: 'update',
       table: 'jobs',
@@ -599,8 +634,20 @@ export class JobRunner {
       } else if (a.choice === 'change') {
         // TODO(T3/M5 chat lane): "Change plan" sends the text back to an intake turn with the old plan attached (08-2 §5.3.3).
         await this.tx([
-          { op: 'update', table: 'cards', id: card.id, set: { state: 'changed', ...resolve, ...(a.text ? { answer: { text: a.text } } : {}) } },
-          { op: 'transition', table: 'jobs', id: job.id, from: ['queued'], to: 'cancelled', set: { stop_reason: 'system', finished_at: now } },
+          {
+            op: 'update',
+            table: 'cards',
+            id: card.id,
+            set: { state: 'changed', ...resolve, ...(a.text ? { answer: { text: a.text } } : {}) },
+          },
+          {
+            op: 'transition',
+            table: 'jobs',
+            id: job.id,
+            from: ['queued'],
+            to: 'cancelled',
+            set: { stop_reason: 'system', finished_at: now },
+          },
           ...this.badgeOp(job, 'cancelled'),
         ]);
         this.ctxs.delete(job.id);
@@ -613,8 +660,20 @@ export class JobRunner {
     const steps = await this.steps(job.id);
     const waiting = steps.find((s) => s.state === 'waiting_user');
     const r = await this.tx([
-      { op: 'update', table: 'cards', id: card.id, set: { ...(answered ? { state: answered } : {}), ...resolve, ...(answer ? { answer } : {}) } },
-      { op: 'transition', table: 'jobs', id: job.id, from: ['needs_you'], to: 'working', set: { needs_you_card_id: null, last_progress_at: now } },
+      {
+        op: 'update',
+        table: 'cards',
+        id: card.id,
+        set: { ...(answered ? { state: answered } : {}), ...resolve, ...(answer ? { answer } : {}) },
+      },
+      {
+        op: 'transition',
+        table: 'jobs',
+        id: job.id,
+        from: ['needs_you'],
+        to: 'working',
+        set: { needs_you_card_id: null, last_progress_at: now },
+      },
       ...(waiting ? [{ op: 'update', table: 'steps', id: waiting.id, set: { state: 'running' } } as DbOp] : []),
       ...this.badgeOp(job, 'working'),
       ...(await this.editChecklistOps(job)),
@@ -668,14 +727,12 @@ export class JobRunner {
       },
       ...steps
         .filter((s) => s.state === 'running' || s.state === 'pending' || s.state === 'waiting_user')
-        .map(
-          (s): DbOp => ({
-            op: 'update',
-            table: 'steps',
-            id: s.id,
-            set: s.state === 'pending' ? { state: 'skipped' } : { state: 'done', finished_at: now },
-          }),
-        ),
+        .map((s): DbOp => ({
+          op: 'update',
+          table: 'steps',
+          id: s.id,
+          set: s.state === 'pending' ? { state: 'skipped' } : { state: 'done', finished_at: now },
+        })),
       {
         op: 'transition',
         table: 'jobs',
@@ -696,7 +753,6 @@ export class JobRunner {
 
   async fail(job: JobRow, kind: 'SITE_BLOCKED' | 'UNKNOWN', alternative?: { kind: string; [k: string]: unknown }): Promise<void> {
     const c = this.ctx(job.id);
-    const lower = kind.toLowerCase();
     const site = c.lastError?.site ?? job.siteDomain ?? '';
     let action: FixAction;
     if (alternative?.kind === 'retry' || alternative?.kind === 'dismiss') action = { kind: alternative.kind };
@@ -706,14 +762,20 @@ export class JobRunner {
       // The AI may fill only retry, open_url or dismiss (M4 pack §4); otherwise the runner's own pick.
       if (alternative) this.d.log('job.fix_action_refused', 'PROTOCOL_FIX_ACTION', { jobId: job.id });
       const domain = domainOf(site);
-      action = kind === 'SITE_BLOCKED' && domain ? { kind: 'open_url', url: `https://${domain}/` } : kind === 'UNKNOWN' ? { kind: 'retry' } : { kind: 'dismiss' };
+      action =
+        kind === 'SITE_BLOCKED' && domain
+          ? { kind: 'open_url', url: `https://${domain}/` }
+          : kind === 'UNKNOWN'
+            ? { kind: 'retry' }
+            : { kind: 'dismiss' };
     }
+    const words = errorCopy(kind, site);
     const payload = {
       variant: 'error',
       kind,
-      whatHappened: t(`errors.${lower}.what_happened` as CopyKey, { site }),
-      whatIsSafe: t(`errors.${lower}.what_is_safe` as CopyKey),
-      button: { label: t(`errors.${lower}.button` as CopyKey), action },
+      whatHappened: words.whatHappened,
+      whatIsSafe: words.whatIsSafe,
+      button: { label: words.label, action },
       jobId: job.id,
     };
     const now = this.d.clock.now();
@@ -781,14 +843,14 @@ export class JobRunner {
           created_at: now,
         },
       },
-      ...steps.map(
-        (s, idx): DbOp => ({
-          op: 'insert',
-          table: 'steps',
-          row: { id: this.d.newId('s'), job_id: newJobId, idx, phrase_key: s.phraseKey, slots: s.slots, state: 'pending', route: s.route },
-        }),
-      ),
-      ...(old.userMessageId ? [{ op: 'update', table: 'messages', id: old.userMessageId, set: { badge: BADGE_OF_STATE.queued } } as DbOp] : []),
+      ...steps.map((s, idx): DbOp => ({
+        op: 'insert',
+        table: 'steps',
+        row: { id: this.d.newId('s'), job_id: newJobId, idx, phrase_key: s.phraseKey, slots: s.slots, state: 'pending', route: s.route },
+      })),
+      ...(old.userMessageId
+        ? [{ op: 'update', table: 'messages', id: old.userMessageId, set: { badge: BADGE_OF_STATE.queued } } as DbOp]
+        : []),
     ]);
     if (!r.ok) {
       this.ctxs.delete(newJobId);
@@ -809,7 +871,10 @@ export class JobRunner {
       `Plan (version ${job.planVersion}):`,
       ...steps
         .filter((s) => s.state !== 'skipped')
-        .map((s, i) => `${i + 1}. [${STEP_LABEL[s.state]}] ${phraseText(s.phraseKey as PhraseKey, 'next', s.slots as Record<string, string>) ?? s.phraseKey}`),
+        .map(
+          (s, i) =>
+            `${i + 1}. [${STEP_LABEL[s.state]}] ${phraseText(s.phraseKey as PhraseKey, 'next', s.slots as Record<string, string>) ?? s.phraseKey}`,
+        ),
       'Approved so far:',
       '- none yet',
     ];
@@ -836,7 +901,12 @@ export class JobRunner {
           c.abort.signal,
         );
       } catch {
-        r = { text: '', usage: { tokensIn: null, tokensOut: null, cacheRead: null, cacheWrite: null, costUsd: null }, stopReason: 'error', errorKind: 'UNKNOWN' };
+        r = {
+          text: '',
+          usage: { tokensIn: null, tokensOut: null, cacheRead: null, cacheWrite: null, costUsd: null },
+          stopReason: 'error',
+          errorKind: 'UNKNOWN',
+        };
       }
       await this.recordTurn(job, pick, id, purpose, startedAt, r);
       return r;
@@ -866,7 +936,8 @@ export class JobRunner {
     r: TurnResult,
   ): Promise<void> {
     const cost = this.d.ai.costPaise(pick.providerId, r.usage, r.modelReported);
-    const outcome = r.stopReason === 'end' ? 'ok' : r.stopReason === 'cancelled' ? 'cancelled' : r.errorKind === 'AI_TIMEOUT' ? 'timeout' : 'error';
+    const outcome =
+      r.stopReason === 'end' ? 'ok' : r.stopReason === 'cancelled' ? 'cancelled' : r.errorKind === 'AI_TIMEOUT' ? 'timeout' : 'error';
     const fresh = (await this.job(job.id)) ?? job;
     await this.tx([
       {
