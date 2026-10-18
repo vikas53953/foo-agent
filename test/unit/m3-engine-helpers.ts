@@ -17,6 +17,7 @@ import { newId } from '../../src/shared/ids';
 import { settingsSchema, type Settings } from '../../src/shared/settings';
 import { settingsDefaults } from '../../src/shared/settingsDefaults';
 import type { ProviderId } from '../../src/shared/types';
+import type { ToolRegistry } from '../../src/engine/tools/ToolLayer';
 
 export const ROOT = path.resolve(__dirname, '../..');
 export const RESOURCES = path.join(ROOT, 'resources');
@@ -81,6 +82,8 @@ export interface HarnessOptions {
   settings?: (s: Settings) => Settings;
   /** Skip the initial settings.changed (the caller sends it). */
   noInitialSettings?: boolean;
+  /** M4: the tools the engine's ToolLayer offers (fake tools); also gives the bridge the data folder and the fake clock. */
+  tools?: ToolRegistry;
 }
 
 const realSleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
@@ -140,6 +143,7 @@ export function makeHarness(o: HarnessOptions): Harness {
     emitMessage: () => undefined,
     emitChat: () => undefined,
     log: (line) => logs.push(line as Record<string, unknown>),
+    ...(o.tools ? { dataDir, now: () => clock.now() } : {}),
   });
 
   let seq = 0;
@@ -170,6 +174,7 @@ export function makeHarness(o: HarnessOptions): Harness {
     execPath: process.execPath,
     testRun: true,
     fetch: (() => Promise.reject(new Error('network is not allowed in tests'))) as typeof fetch,
+    ...(o.tools ? { tools: o.tools } : {}),
   });
   bridge.live = true;
   bridge.post = (msg) => {
