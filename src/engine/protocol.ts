@@ -112,9 +112,8 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
     kind: z.literal('test.jobEvent'),
     payload: z.object({ jobId: z.string(), event: z.string() }).strict(),
   }),
-  // M8 (CR-0012, T3): 08-1 §2.4 `bridge.port` (the engine end of the wa-bridge port rides along as a transferred port) and
-  // `connection.cmd` (one row for every connector: T2's Google commands reuse it).
-  z.object({ id: z.string(), kind: z.literal('bridge.port'), payload: z.object({}).strict() }),
+  // M8 (CR-0012, landed by the lead so T2 and T3 share one row): 08-1 §2.4 `connection.cmd` and `bridge.port`. The port itself
+  // travels as the message's transferred MessagePort; the payload is empty.
   z.object({
     id: z.string(),
     kind: z.literal('connection.cmd'),
@@ -127,6 +126,7 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
       })
       .strict(),
   }),
+  z.object({ id: z.string(), kind: z.literal('bridge.port'), payload: z.object({}).strict() }),
 ]);
 export type MainToEngine = z.infer<typeof mainToEngineSchema>;
 
