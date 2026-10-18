@@ -1,0 +1,99 @@
+{
+  "id": "BP-COMP-05",
+  "theme": "light",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0003",
+    "checks": [
+      "r1",
+      "r2"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "＋",
+        "➤"
+      ],
+      "extra": [
+        "Waiting",
+        "for",
+        "your",
+        "OK:",
+        "₹14,600",
+        "to",
+        "Taj",
+        "Holiday",
+        "Village",
+        "9:59",
+        "left",
+        "Show"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-COMP-05",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 351.328125,
+          "height": 180
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 600,
+          "height": 204
+        },
+        "dPos": 0,
+        "dSize": 248.671875,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-COMP-05",
+        "ref": "#FFFFFF",
+        "app": "#FFFFFF",
+        "deltaE": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.14207027540360873,
+    "diffPixels": 8976,
+    "total": 63180,
+    "sizeMismatch": {
+      "a": [
+        351,
+        180
+      ],
+      "b": [
+        600,
+        204
+      ]
+    },
+    "heatmap": "BP-COMP-05.light.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-COMP-05.light.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-COMP-05.light.png"
+}
