@@ -1,19 +1,19 @@
 {
-  "reportId": "M2-a925b0e-39108703278",
+  "reportId": "M2-98df290-39109674167",
   "milestone": "M2",
-  "generatedAt": "2026-10-18T07:54:58.527Z",
-  "commit": "bcdc7a4dc33e567acdb211defb77a86a93b0e0fa",
-  "head": "a925b0ec7d884ac3f3b6dd6b1b7363cd744d7ef5",
+  "generatedAt": "2026-10-18T08:08:58.003Z",
+  "commit": "275c51b47f3912e0896d439481bb837a63f1ddaf",
+  "head": "98df2903b149a14b98d89d4cde2ccd4c1e37e81c",
   "ci": {
-    "runId": "39108703278",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39108703278"
+    "runId": "39109674167",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39109674167"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "a563b9da076143846b99614e34f0d5c4f55396b7725ba7b305f70b2185914da4"
   },
   "runner": {
-    "recordedAt": "2026-10-18T07:48:19.209Z",
+    "recordedAt": "2026-10-18T08:02:31.308Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000002844"
+      "runner": "GitHub Actions 1000002846"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -9748,7 +9748,7 @@
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
         "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05420910900362955,
+        "r5": 0.05526284978339773,
         "ref": true,
         "app": true,
         "diff": true
@@ -9761,7 +9761,7 @@
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
         "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05366272489560161,
+        "r5": 0.053584670023026186,
         "ref": true,
         "app": true,
         "diff": true
@@ -10138,7 +10138,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 20.59)",
         "r4": "fail (21.84 %)",
-        "r5": 0.116650390625,
+        "r5": 0.1166630859375,
         "ref": true,
         "app": true,
         "diff": true
@@ -10151,7 +10151,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 35.2)",
         "r4": "fail (21.68 %)",
-        "r5": 0.0988369140625,
+        "r5": 0.0988349609375,
         "ref": true,
         "app": true,
         "diff": true
@@ -10161,10 +10161,10 @@
         "theme": "dark",
         "verdict": "disputed",
         "r1": "fail",
-        "r2": "fail (hl 373.484375/26.125 px)",
-        "r3": "fail (hl ΔE 51.22)",
-        "r4": "fail (23.36 %)",
-        "r5": 0.1985810546875,
+        "r2": "fail (hl 295.984375/26.125 px)",
+        "r3": "fail (hl ΔE 21.23)",
+        "r4": "fail (24.64 %)",
+        "r5": 0.1892236328125,
         "ref": true,
         "app": true,
         "diff": true
@@ -10174,10 +10174,10 @@
         "theme": "light",
         "verdict": "disputed",
         "r1": "fail",
-        "r2": "fail (hl 373.484375/26.125 px)",
-        "r3": "fail (hl ΔE 29.25)",
-        "r4": "fail (23.94 %)",
-        "r5": 0.141484375,
+        "r2": "fail (hl 295.984375/26.125 px)",
+        "r3": "fail (hl ΔE 15.74)",
+        "r4": "fail (24.92 %)",
+        "r5": 0.137169921875,
         "ref": true,
         "app": true,
         "diff": true
