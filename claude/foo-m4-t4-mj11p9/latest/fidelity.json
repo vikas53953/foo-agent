@@ -1,19 +1,19 @@
 {
-  "reportId": "M3-7b34037-39155789950",
+  "reportId": "M3-821a6e4-39160808216",
   "milestone": "M3",
-  "generatedAt": "2026-10-18T18:59:25.674Z",
-  "commit": "a0d0a26beccba8271343a044c1e7d7ea03792ec4",
-  "head": "7b3403704da57ba1284ebf6738280869e2963591",
+  "generatedAt": "2026-10-18T20:03:43.494Z",
+  "commit": "8317382abf6dce4021a320698cf7c4845a857d21",
+  "head": "821a6e4b4dc9ebb9057842d5cb09b8de196ac8b9",
   "ci": {
-    "runId": "39155789950",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39155789950"
+    "runId": "39160808216",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39160808216"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "f808565536284e7d4e3a7dd182cb349ec76d2f2e7287d9c529c31af2bc5da6da"
   },
   "runner": {
-    "recordedAt": "2026-10-18T18:52:36.829Z",
+    "recordedAt": "2026-10-18T19:57:28.363Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000003044"
+      "runner": "GitHub Actions 1000003087"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,9 +59,9 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "6 test(s) failed",
+    "1 test(s) failed",
     "2 Tier R step(s) failed",
-    "12 audit item(s) not DONE (the milestone is not complete)",
+    "10 audit item(s) not DONE (the milestone is not complete)",
     "CHANGED items need an approved CR"
   ],
   "missingInputs": [],
@@ -70,7 +70,7 @@
       "M3: 1 of 2 drawings match; open the side-by-side rows below."
     ],
     "changed": [
-      "16 picture(s) differ a little from the drawing and need your look (Review rows), whatever else a CR disputes:",
+      "14 picture(s) differ a little from the drawing and need your look (Review rows), whatever else a CR disputes:",
       "BP-ANAT-CHIPS (dark): R3 colour (ΔE 4.78) in the Review band; see it side by side below.",
       "BP-ANAT-L (dark): R3 colour (ΔE 4.78) in the Review band; see it side by side below.",
       "BP-ANAT-LHEAD (dark): R3 colour (ΔE 2.91) in the Review band; see it side by side below.",
@@ -79,14 +79,12 @@
       "BP-APP-R (light): R3 colour (ΔE 3.65) in the Review band; see it side by side below.",
       "BP-MSG-02 (dark): R3 colour (ΔE 3.19) in the Review band; see it side by side below.",
       "BP-MSG-02 (light): R3 colour (ΔE 3.65) in the Review band; see it side by side below.",
+      "UX-08-02 (dark): R2 boxes in the Review band; see it side by side below.",
+      "UX-08-02 (light): R2 boxes in the Review band; see it side by side below.",
       "UX-08-03 (dark): R4 pixels (3.47 %) in the Review band; see it side by side below.",
       "UX-08-03 (light): R4 pixels (3.20 %) in the Review band; see it side by side below.",
       "UX-08-05 (dark): R4 pixels (3.97 %) in the Review band; see it side by side below.",
-      "UX-08-05 (light): R4 pixels (3.63 %) in the Review band; see it side by side below.",
-      "UX-08-07 (dark): R4 pixels (5.49 %) in the Review band; see it side by side below.",
-      "UX-08-07 (light): R4 pixels (4.54 %) in the Review band; see it side by side below.",
-      "UX-09-01 (dark): R2 boxes in the Review band; see it side by side below.",
-      "UX-09-01 (light): R2 boxes in the Review band; see it side by side below."
+      "UX-08-05 (light): R4 pixels (3.63 %) in the Review band; see it side by side below."
     ],
     "needsYes": []
   },
@@ -116,7 +114,7 @@
       ],
       "covers": "part",
       "manual": "independent reviewer reads 08-2 §6, §7, §11.4 and 08-1 §2.1, §2.4 against the build (the Sonnet checker pass on the PR); Job Object (§6.3) is deferred to M11 (CR-0007 pick 1)",
-      "resolved": "NOT DONE"
+      "resolved": "PARTIAL"
     },
     {
       "group": "M3 Create",
@@ -166,7 +164,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-027",
       "covers": "whole",
-      "resolved": "NOT DONE"
+      "resolved": "DONE"
     },
     {
       "group": "M3 Must pass",
@@ -198,7 +196,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:ART-23a",
       "covers": "whole",
-      "resolved": "NOT DONE"
+      "resolved": "DONE"
     },
     {
       "group": "M3 Must pass",
@@ -259,7 +257,7 @@
       "evidence": "test:steps 1 to 5 live with fake-AI replies",
       "covers": "part",
       "manual": "UX-08-02 is captured live on the walkthrough's own frame (seed set ux-world-ch8-live: \"thanks!\" at 8:06, the question at 8:10, the Thinking face and Stop); R1 stays disputed under CR-0003 like the other UX-08 steps. Steps 6 and 7 stay on the seeded scene (job badge M4, source pill from engine entities)",
-      "resolved": "NOT DONE"
+      "resolved": "PARTIAL"
     },
     {
       "group": "M3 Fidelity exit",
@@ -529,13 +527,13 @@
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 2545,
-        "failed": 0,
+        "passed": 2641,
+        "failed": 1,
         "skipped": 2
       },
       "e2e": {
-        "passed": 51,
-        "failed": 6,
+        "passed": 57,
+        "failed": 0,
         "skipped": 0
       }
     },
@@ -4476,6 +4474,31 @@
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-11.test.ts"
       },
       {
+        "id": "ART-12a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-12.test.ts"
+      },
+      {
+        "id": "ART-12b",
+        "status": "failed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-12.test.ts"
+      },
+      {
+        "id": "ART-13a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-13.test.ts"
+      },
+      {
+        "id": "ART-13c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-13.test.ts"
+      },
+      {
+        "id": "ART-13c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-13.test.ts"
+      },
+      {
         "id": "ART-16",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-16.test.ts"
@@ -4511,6 +4534,46 @@
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-17.test.ts"
       },
       {
+        "id": "ART-18a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-18.test.ts"
+      },
+      {
+        "id": "ART-18b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-18.test.ts"
+      },
+      {
+        "id": "AT-077",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-18.test.ts"
+      },
+      {
+        "id": "ART-18b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-18.test.ts"
+      },
+      {
+        "id": "AT-077",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-18.test.ts"
+      },
+      {
+        "id": "ART-18b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-18.test.ts"
+      },
+      {
+        "id": "AT-077",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-18.test.ts"
+      },
+      {
+        "id": "ART-18b",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-18.test.ts"
+      },
+      {
         "id": "ART-21a",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
@@ -13024,6 +13087,11 @@
         "id": "ART-24a",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
+      },
+      {
+        "id": "PERF-06",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/perf/PERF-06.test.ts"
       },
       {
         "id": "AT-225",
@@ -13179,6 +13247,31 @@
         "id": "AT-019",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/AT-019.test.ts"
+      },
+      {
+        "id": "AT-083",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/cap.test.ts"
+      },
+      {
+        "id": "AT-083",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/cap.test.ts"
+      },
+      {
+        "id": "AT-083",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/cap.test.ts"
+      },
+      {
+        "id": "AT-083",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/cap.test.ts"
+      },
+      {
+        "id": "AT-083",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/cap.test.ts"
       },
       {
         "id": "AT-117",
@@ -13376,6 +13469,81 @@
         "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/start.test.ts"
       },
       {
+        "id": "AT-077",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/stop.test.ts"
+      },
+      {
+        "id": "AT-077",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/stop.test.ts"
+      },
+      {
+        "id": "AT-077",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/stop.test.ts"
+      },
+      {
+        "id": "AT-077",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/stop.test.ts"
+      },
+      {
+        "id": "AT-107",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/stop.test.ts"
+      },
+      {
+        "id": "AT-107",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/stop.test.ts"
+      },
+      {
+        "id": "AT-107",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/stop.test.ts"
+      },
+      {
+        "id": "AT-107",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/stop.test.ts"
+      },
+      {
+        "id": "AT-107",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/stop.test.ts"
+      },
+      {
+        "id": "AT-107",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/stop.test.ts"
+      },
+      {
+        "id": "AT-084",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/stuck.test.ts"
+      },
+      {
+        "id": "AT-084",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/stuck.test.ts"
+      },
+      {
+        "id": "AT-116",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/stuck.test.ts"
+      },
+      {
+        "id": "AT-116",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/stuck.test.ts"
+      },
+      {
+        "id": "AT-116",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/stuck.test.ts"
+      },
+      {
         "id": "AT-112",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/waiting.test.ts"
@@ -13441,6 +13609,11 @@
         "file": "D:/a/foo-agent/foo-agent/test/unit/jobs/queue.test.ts"
       },
       {
+        "id": "AT-116a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/jobs/watchdog.test.ts"
+      },
+      {
         "id": "PERF-01",
         "status": "passed",
         "file": "test/e2e/m0-window.spec.ts"
@@ -13462,7 +13635,7 @@
       },
       {
         "id": "AT-007",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
@@ -13492,12 +13665,12 @@
       },
       {
         "id": "AT-027",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "ART-23a",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
@@ -13612,45 +13785,15 @@
       },
       {
         "id": "UX-08-02",
-        "status": "failed",
+        "status": "passed",
         "file": "test/fidelity/ux/UX-08.chat.spec.ts"
       }
     ],
     "failed": [
       {
-        "suite": "e2e",
-        "file": "test/e2e/m2-composer.spec.ts",
-        "title": "AT-007 · a pasted key, a typed card number and a labelled code are caught before anything is sent",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m2-composer.spec.ts",
-        "title": "Enter sends: the bubble shows at once, the field clears and keeps focus, Shift+Enter is a new line",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m3-replies.spec.ts",
-        "title": "AT-027 · \"thanks!\" gets a 👍 and no message",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m3-replies.spec.ts",
-        "title": "ART-23a · ack messages get a reaction only",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m3-replies.spec.ts",
-        "title": "Stop while foo is thinking ends the reply and posts nothing; Esc does the same",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/fidelity/ux/UX-08.chat.spec.ts",
-        "title": "UX-08 · Just chatting, in your language: steps 1 to 5 live with fake-AI replies, UX-08-02 captured, light and dark",
+        "suite": "unit",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-12.test.ts",
+        "title": "Article 12: the runner owns progress ART-12b: a step frozen for 3 min → the stuck card at 3:00 ± 5 s",
         "status": "failed"
       }
     ],
@@ -13717,9 +13860,9 @@
   "golden": {
     "counts": {
       "pass": 1,
-      "review": 16,
+      "review": 14,
       "fail": 2,
-      "disputed": 57,
+      "disputed": 53,
       "notBuilt": 0
     },
     "refsRendered": [
@@ -14866,6 +15009,32 @@
         "diff": true
       },
       {
+        "id": "UX-08-02",
+        "theme": "dark",
+        "verdict": "review",
+        "r1": "fail",
+        "r2": "review (hl 8/8 px)",
+        "r3": "pass (hl ΔE 0)",
+        "r4": "fail (18.80 %)",
+        "r5": 0.086287109375,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "UX-08-02",
+        "theme": "light",
+        "verdict": "review",
+        "r1": "fail",
+        "r2": "review (hl 8/8 px)",
+        "r3": "pass (hl ΔE 0)",
+        "r4": "fail (18.70 %)",
+        "r5": 0.061392578125,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
         "id": "UX-08-03",
         "theme": "dark",
         "verdict": "review",
@@ -14939,110 +15108,6 @@
         "r3": "pass (hl ΔE 0)",
         "r4": "review (3.63 %)",
         "r5": 0.1351005859375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-06",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 80/35.578125 px)",
-        "r3": "fail (hl ΔE 61.41)",
-        "r4": "fail (87.53 %)",
-        "r5": 0.1944921875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-06",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 80/35.578125 px)",
-        "r3": "fail (hl ΔE 7.8)",
-        "r4": "fail (30.68 %)",
-        "r5": 0.168482421875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-07",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 157.75/127 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (5.49 %)",
-        "r5": 0.1722734375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-07",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 157.75/127 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (4.54 %)",
-        "r5": 0.1510185546875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-09-01",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "review (hl 8/0 px)",
-        "r3": "fail (hl ΔE 20.59)",
-        "r4": "fail (21.84 %)",
-        "r5": 0.085326171875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-09-01",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "review (hl 8/0 px)",
-        "r3": "fail (hl ΔE 35.2)",
-        "r4": "fail (21.68 %)",
-        "r5": 0.0679873046875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-09-08",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 295.984375/26.125 px)",
-        "r3": "fail (hl ΔE 21.23)",
-        "r4": "fail (24.64 %)",
-        "r5": 0.16173828125,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-09-08",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 295.984375/26.125 px)",
-        "r3": "fail (hl ΔE 15.74)",
-        "r4": "fail (24.92 %)",
-        "r5": 0.1222666015625,
         "ref": true,
         "app": true,
         "diff": true
