@@ -1,0 +1,951 @@
+// Spec: 08-2 §5.1 (the runner alone creates jobs, moves job state, edits checklists, sets C1 badges and decides when the AI is
+// called for a job; main writes the derived chat columns in the same transaction), §5.3.3 (createJob: queued row, steps from
+// the plan with catalogue keys only, plan.md + state.json; title and estimates are the engine's; Plan card when est_minutes > 2
+// or est_cost_paise > 500, else enqueue), §5.4.1–§5.4.2 (scheduling and the loop: badge 🛠, checklist after 1.5 s when
+// step_count ≥ 2, keepAwake while WORKING; tool / step_done / replan / ask / request_approval / done / fail), §5.8 (finish),
+// §5.10 item 1 (one ai_turns row per call, usage as reported), 08-4 §26.1–§26.3, §26.8, §26.9 item 5 (NEEDS_YOU step →
+// waiting_user and back), §26.11, §26.12 (ids on a step turn), §24.22 (part 8), 07-2 §4 + SM-A1/A12 (machine; badges), 08-1
+// §4.1.2 (mirrors), §4.5 (card payloads), CR-0008 G-M4-01 (retry = new linked job), G-M4-05, G-M4-06.
+// Ticket T2 builds the core. Seams the next tickets fill (they replace the T2 defaults named in `RunnerHooks`):
+// T3 stop / steer / watchdog / stuck / caps, T4 waiting / recovery / power events.
+import { existsSync } from 'node:fs';
+import path from 'node:path';
+import { t, type CopyKey } from '../../shared/copy/t';
+import type { Clock, TimerId } from '../../shared/clock';
+import type { Result } from '../../shared/errors';
+import { formatInr } from '../../shared/format';
+import { redactSecrets } from '../../shared/redactor';
+import { BADGE_OF_STATE, TERMINAL } from '../../shared/jobMachine';
+import { phraseText, resolvePhrase, type PhraseKey } from '../../shared/phrases';
+import type { IntakeDecision, PlanStep, StepAct, StepDecision } from '../../shared/schemas';
+import type { Settings } from '../../shared/settings';
+import type { CardRow, ErrorKind, FixAction, JobRow, JobState, ProviderId, StepRow } from '../../shared/types';
+import type { LaneAi } from '../chat/ChatLane';
+import type { AiErrorKind, TurnResult } from '../ai/types';
+import type { DbOp, DbTxReply, MainLink } from '../protocol';
+import type { ExecResult, NeedsUserCard, ToolLayer } from '../tools/ToolLayer';
+import { estCostPaise, estMinutes, estTokens, isBigOne, needsPlanCard } from './estimates';
+import { checkProof } from './proof';
+import { needsVerify, pickStartable } from './queue';
+import { buildTitle, insertShowBefore, retryTitle, PLAN_MAX } from './title';
+import { extractDoVerbs } from './verbs';
+
+export const CHECKLIST_AFTER_MS = 1_500;
+const OBSERVATION_CAP = 4_000;
+
+type JobDecision = Extract<IntakeDecision, { kind: 'job' }>;
+
+export interface RunnerAi extends LaneAi {
+  verify(providerId: ProviderId): Promise<{ ok: boolean }>;
+}
+
+export interface RunnerPrompts {
+  buildStep(jobBlock: string, tools: string): { system: string; prompt: string };
+  buildRepair(issues: string): string;
+  /** Parse a step reply: the validated StepAct, or the zod issues for the repair turn. */
+  parseStep(text: string): { act: StepAct | null; issues: string | null };
+  /** 08-2 §7.6 output filters (result text, card text from the AI). */
+  filter(text: string): string;
+  isBanned(text: string): boolean;
+}
+
+/** What the next tickets plug in. The T2 defaults are the conservative stand-ins named on each line. */
+export interface RunnerHooks {
+  /** T4: an AI error moves the job to WAITING (08-2 §6.7). T2 default: FAILED with the UNKNOWN error card. */
+  onAiError?(job: JobRow, kind: AiErrorKind): Promise<void>;
+  /** T3: the watchdog's stuck rules (08-2 §5.6). T2 default: three failures in a row end the job FAILED. */
+  onStuck?(job: JobRow, rule: 'fail_streak'): Promise<void>;
+}
+
+export interface JobRunnerDeps {
+  link: MainLink;
+  clock: Clock;
+  newId(prefix: 'j' | 's' | 'm' | 'k' | 't'): string;
+  settings(): Settings;
+  ai: RunnerAi;
+  prompts: RunnerPrompts;
+  tools: ToolLayer;
+  /** `{DATA}`: job folders live under `{DATA}\jobs\{id}`. */
+  dataDir: string;
+  /** 08-4 §26.3 item 3: the provider's default-model rate, or null when unpriced. */
+  rateOf(providerId: ProviderId): { inPerMTokUsd: number; outPerMTokUsd: number } | null;
+  usdToInr: number;
+  log(evt: string, kind?: string, ids?: { chatId?: string; jobId?: string }): void;
+  hooks?: RunnerHooks;
+}
+
+export interface CreateJobInput {
+  chatId: string;
+  userMessageId: string | null;
+  decision: JobDecision;
+  /** The user's words, for do-verbs (Art. 3) and plan.md "Asked:". */
+  askedText: string;
+  helperId?: string | null;
+  origin?: JobRow['origin'];
+  originRef?: string | null;
+}
+
+interface JobCtx {
+  abort: AbortController;
+  asked: string;
+  workingSince: number | null;
+  workingMs: number;
+  lastObservation: { toolCallId: string; tool: string; text: string } | null;
+  decisions: string[];
+  aiEstimate: { minutes?: number; tokens?: number } | null;
+  lastError: { kind: ErrorKind; site: string | null } | null;
+  checklistTimer: TimerId | null;
+}
+
+const STEP_LABEL: Record<StepRow['state'], string> = {
+  done: 'done',
+  running: 'running',
+  pending: 'next',
+  waiting_user: 'waiting_user',
+  skipped: 'skipped',
+  failed: 'running',
+};
+
+/** The resolved state of a NEEDS_YOU card once the user answers it (08-0 §G.2). */
+const ANSWERED_STATE: Partial<Record<string, string>> = {
+  choice: 'answered',
+  tiles: 'answered',
+  approval: 'APPROVED',
+  payment: 'APPROVED',
+  signin: 'signed_in',
+  secret: 'saved',
+};
+
+function domainOf(site: string | null): string | null {
+  return site && /^[a-z0-9.-]+\.[a-z]{2,}$/i.test(site) ? site.toLowerCase() : null;
+}
+
+export class JobRunner {
+  private ctxs = new Map<string, JobCtx>();
+  private loops = new Map<string, Promise<void>>();
+  private busy = 0;
+  private idleWaiters: (() => void)[] = [];
+  private sched: Promise<void> = Promise.resolve();
+
+  constructor(private d: JobRunnerDeps) {}
+
+  // ---- bookkeeping ----
+
+  private track<T>(p: Promise<T>): Promise<T> {
+    this.busy += 1;
+    return p.finally(() => {
+      this.busy -= 1;
+      if (this.busy === 0 && this.loops.size === 0) for (const w of this.idleWaiters.splice(0)) w();
+    });
+  }
+  /** Resolves when no job is computing (a job waiting on the user or on a slot does not count). Tests. */
+  idle(): Promise<void> {
+    if (this.busy === 0 && this.loops.size === 0) return Promise.resolve();
+    return new Promise((r) => this.idleWaiters.push(r));
+  }
+  /** Aborts every running loop (test teardown; T3 builds the user's stop). */
+  cancelAll(): void {
+    for (const c of this.ctxs.values()) {
+      c.abort.abort();
+      if (c.checklistTimer !== null) this.d.clock.clearTimeout(c.checklistTimer);
+    }
+  }
+
+  private ctx(jobId: string, asked = ''): JobCtx {
+    let c = this.ctxs.get(jobId);
+    if (!c) {
+      c = {
+        abort: new AbortController(),
+        asked,
+        workingSince: null,
+        workingMs: 0,
+        lastObservation: null,
+        decisions: [],
+        aiEstimate: null,
+        lastError: null,
+        checklistTimer: null,
+      };
+      this.ctxs.set(jobId, c);
+    }
+    return c;
+  }
+
+  private tx(ops: DbOp[]): Promise<Result<DbTxReply>> {
+    return this.d.link.request<DbTxReply>('db.tx', { ops });
+  }
+  private async query<T>(q: string, ...args: unknown[]): Promise<T | null> {
+    const r = await this.d.link.request<T>('db.query', { q, args });
+    return r.ok ? r.value : null;
+  }
+  private job(id: string): Promise<JobRow | null> {
+    return this.query<JobRow>('jobById', id);
+  }
+  private async steps(jobId: string): Promise<StepRow[]> {
+    return (await this.query<StepRow[]>('stepsForJob', jobId)) ?? [];
+  }
+  private async checklistOf(job: JobRow): Promise<CardRow | null> {
+    const open = (await this.query<CardRow[]>('cards.openForChat', job.chatId, 'checklist')) ?? [];
+    return open.find((c) => c.payload.jobId === job.id) ?? null;
+  }
+
+  /** The C1 badge of the job's bubble follows the machine (FID-17 "badge = runner state", 08-0 §F). */
+  private badgeOp(job: JobRow, to: JobState): DbOp[] {
+    return job.userMessageId ? [{ op: 'update', table: 'messages', id: job.userMessageId, set: { badge: BADGE_OF_STATE[to] } }] : [];
+  }
+
+  /** A card message + its cards row (08-1 §4.3.3 insert order). */
+  private cardOps(chatId: string, type: string, state: string, payload: Record<string, unknown>, jobId: string | null, helperId: string | null) {
+    const cardId = this.d.newId('k');
+    const messageId = this.d.newId('m');
+    const now = this.d.clock.now();
+    const ops: DbOp[] = [
+      {
+        op: 'insert',
+        table: 'messages',
+        row: {
+          id: messageId,
+          chat_id: chatId,
+          author_kind: helperId ? 'helper' : 'foo',
+          author_id: helperId,
+          kind: 'card',
+          card_id: cardId,
+          job_id: jobId,
+          status: 'complete',
+          created_at: now,
+        },
+      },
+      {
+        op: 'insert',
+        table: 'cards',
+        row: { id: cardId, chat_id: chatId, message_id: messageId, job_id: jobId, type, state, payload, nonce: this.d.newId('k'), created_at: now },
+      },
+    ];
+    return { cardId, messageId, ops };
+  }
+
+  // ---- 08-2 §5.3.3 createJob ----
+
+  async createJob(input: CreateJobInput): Promise<string | null> {
+    return this.track(this.createJobInner(input));
+  }
+
+  private async createJobInner(input: CreateJobInput): Promise<string | null> {
+    const s = this.d.settings();
+    const pick = this.d.ai.pick();
+    const billing = pick?.billing ?? 'plan';
+    const doVerbs = extractDoVerbs(input.askedText);
+    const intent = doVerbs.length ? 'do' : 'read_only';
+    const isBanned = (x: string) => this.d.prompts.isBanned(x);
+    const plan = insertShowBefore(
+      input.decision.plan.map((p) => {
+        const r = resolvePhrase(p.phraseKey, p.slots, { inPlan: true, isBanned });
+        return { phraseKey: r.key, slots: r.slots, route: p.route };
+      }),
+    ).slice(0, PLAN_MAX);
+    const title = buildTitle({ intent, plan, hint: input.decision.title, isBanned });
+    const tokens = estTokens(input.decision.estimate?.tokens, plan.length);
+    const minutes = estMinutes(input.decision.estimate?.minutes, plan.length);
+    const cost = pick ? estCostPaise(tokens, billing, this.d.rateOf(pick.providerId), this.d.usdToInr) : null;
+    const id = this.d.newId('j');
+    const now = this.d.clock.now();
+    const c = this.ctx(id, input.askedText);
+    c.aiEstimate = input.decision.estimate ?? null;
+    const ops: DbOp[] = [
+      {
+        op: 'insert',
+        table: 'jobs',
+        row: {
+          id,
+          chat_id: input.chatId,
+          origin_chat_id: input.chatId,
+          owner_kind: input.helperId ? 'helper' : 'foo',
+          owner_id: input.helperId ?? null,
+          title,
+          origin: input.origin ?? 'user',
+          origin_ref: input.originRef ?? input.userMessageId,
+          user_message_id: input.userMessageId,
+          intent,
+          do_verbs: doVerbs,
+          state: 'queued',
+          plan_version: 1,
+          step_count: plan.length,
+          route: plan[0]?.route ?? null,
+          uses_browser: plan.some((p) => p.route === 'browser'),
+          est_minutes: minutes,
+          est_tokens: tokens,
+          est_cost_paise: cost,
+          provider_id: pick?.providerId ?? null,
+          created_at: now,
+        },
+      },
+      ...plan.map(
+        (p, idx): DbOp => ({
+          op: 'insert',
+          table: 'steps',
+          row: { id: this.d.newId('s'), job_id: id, idx, phrase_key: p.phraseKey, slots: p.slots, state: 'pending', route: p.route },
+        }),
+      ),
+    ];
+    let planCard = false;
+    if (needsPlanCard(minutes, cost) && (input.origin ?? 'user') === 'user') {
+      planCard = true;
+      const payload = {
+        title,
+        steps: plan.map((p) => phraseText(p.phraseKey as PhraseKey, 'next', p.slots) ?? ''),
+        minutes,
+        costLine: cost === null ? '' : formatInr(cost),
+        big: isBigOne(billing, cost, s.money.aiCapPaise),
+      };
+      ops.push(...this.cardOps(input.chatId, 'plan', 'pending', payload, id, input.helperId ?? null).ops);
+    }
+    const r = await this.tx(ops);
+    if (!r.ok) {
+      this.d.log('job.create_failed', r.error.kind, { chatId: input.chatId });
+      this.ctxs.delete(id);
+      return null;
+    }
+    await this.writeMirrors(id);
+    if (!planCard) await this.enqueue(id);
+    return id;
+  }
+
+  /** 08-2 §5.4.1 enqueue: start now if a slot is free, else stay queued with the checklist showing the queued caption. */
+  async enqueue(jobId: string): Promise<void> {
+    await this.startNext();
+    const job = await this.job(jobId);
+    if (job?.state === 'queued' && job.stepCount >= 2 && !(await this.checklistOf(job))) await this.postChecklist(jobId);
+  }
+
+  /** When a slot frees, the oldest startable queued jobs start (FIFO), serialised so two callers never overfill the slots. */
+  startNext(): Promise<void> {
+    const run = async () => {
+      const live = (await this.query<JobRow[]>('jobsByState', ['queued', 'working'])) ?? [];
+      const windows = live.filter((j) => j.state === 'working' && j.usesBrowser).length;
+      const ids = pickStartable(
+        live.map((j) => ({ id: j.id, state: j.state, createdAt: j.createdAt, usesBrowser: j.usesBrowser })),
+        windows,
+      );
+      for (const id of ids) await this.start(id);
+    };
+    this.sched = this.sched.then(run, run);
+    return this.track(this.sched);
+  }
+
+  /** queued → working: a verify first when the AI was not verified in the last 10 min (AT-106). */
+  private async start(jobId: string): Promise<void> {
+    const job = await this.job(jobId);
+    if (!job || job.state !== 'queued') return;
+    const pick = this.d.ai.pick();
+    if (!pick) return; // T4: the AI is not available; the job stays queued until it is.
+    const lastVerifiedAt = this.d.settings().ai.providers[pick.providerId]?.lastVerifiedAt;
+    if (needsVerify(lastVerifiedAt, this.d.clock.now())) {
+      const v = await this.d.ai.verify(pick.providerId).catch(() => ({ ok: false }));
+      if (!v.ok) return;
+    }
+    const steps = await this.steps(jobId);
+    const first = steps.find((s) => s.state === 'pending' || s.state === 'running');
+    const now = this.d.clock.now();
+    const r = await this.tx([
+      {
+        op: 'transition',
+        table: 'jobs',
+        id: jobId,
+        from: ['queued'],
+        to: 'working',
+        set: { started_at: job.startedAt ?? now, last_progress_at: now, current_step_idx: first?.idx ?? null },
+      },
+      ...(first ? [{ op: 'update', table: 'steps', id: first.id, set: { state: 'running', started_at: now } } as DbOp] : []),
+      ...this.badgeOp(job, 'working'),
+    ]);
+    if (!r.ok) return;
+    this.launch(jobId);
+  }
+
+  /** Starts the loop of a job now WORKING (fresh start, or answered after NEEDS_YOU). */
+  private launch(jobId: string): void {
+    if (this.loops.has(jobId)) return;
+    const p = this.runJob(jobId)
+      .catch((e: unknown) => {
+        this.d.log('job.loop_crashed', 'UNKNOWN', { jobId });
+        if (process.env.FOO_DEBUG) console.error(e);
+      })
+      .finally(() => {
+        this.loops.delete(jobId);
+        void this.startNext();
+        this.keepAwake();
+        if (this.busy === 0 && this.loops.size === 0) for (const w of this.idleWaiters.splice(0)) w();
+      });
+    this.loops.set(jobId, p);
+    this.keepAwake();
+  }
+
+  /** 09 §9.22: main keeps the PC awake only while a job is WORKING. */
+  private keepAwake(): void {
+    this.d.link.send('power.keepAwake', { on: this.loops.size > 0, jobCount: this.loops.size });
+  }
+
+  // ---- checklist (05-1 §5.2; one message id for the life of the job, ART-17) ----
+
+  private async postChecklist(jobId: string): Promise<void> {
+    const job = await this.job(jobId);
+    if (!job || TERMINAL.has(job.state) || job.stepCount < 2 || (await this.checklistOf(job))) return;
+    const { ops } = this.cardOps(job.chatId, 'checklist', 'live', { jobId }, jobId, job.ownerId);
+    await this.tx(ops);
+  }
+
+  private scheduleChecklist(job: JobRow, c: JobCtx): void {
+    if (c.checklistTimer !== null || job.stepCount < 2) return;
+    const due = Math.max(0, (job.startedAt ?? this.d.clock.now()) + CHECKLIST_AFTER_MS - this.d.clock.now());
+    c.checklistTimer = this.d.clock.setTimeout(() => {
+      c.checklistTimer = null;
+      void this.track(this.postChecklist(job.id));
+    }, due);
+  }
+
+  /** The checklist renders from the steps; an `update` with no columns bumps its rev so it re-renders in place. */
+  private async editChecklistOps(job: JobRow, state?: string): Promise<DbOp[]> {
+    const card = await this.checklistOf(job);
+    return card ? [{ op: 'update', table: 'cards', id: card.id, set: state ? { state } : {} }] : [];
+  }
+
+  // ---- 08-2 §5.4.2 the loop ----
+
+  private async runJob(jobId: string): Promise<void> {
+    const c = this.ctx(jobId);
+    let job = await this.job(jobId);
+    if (!job || job.state !== 'working') return;
+    c.workingSince = this.d.clock.now();
+    this.scheduleChecklist(job, c);
+    try {
+      for (;;) {
+        if (c.abort.signal.aborted) return;
+        job = await this.job(jobId);
+        if (!job || job.state !== 'working') return;
+        const turn = await this.stepTurn(job, c);
+        if (c.abort.signal.aborted) return;
+        if (turn.error) {
+          await (this.d.hooks?.onAiError ?? ((j: JobRow) => this.fail(j, 'UNKNOWN')))(job, turn.error);
+          return;
+        }
+        if (!turn.act) {
+          if (await this.countFailure(job)) return;
+          continue;
+        }
+        const goOn = await this.apply(job, c, turn.act.decision, turn.turnId);
+        if (!goOn) return;
+      }
+    } finally {
+      if (c.workingSince !== null) c.workingMs += this.d.clock.now() - c.workingSince;
+      c.workingSince = null;
+    }
+  }
+
+  /** One decision; false when the loop ends (NEEDS_YOU or a final state). */
+  private async apply(job: JobRow, c: JobCtx, decision: StepDecision, turnId: string): Promise<boolean> {
+    switch (decision.kind) {
+      case 'tool':
+        return this.runTool(job, c, decision, turnId);
+      case 'step_done':
+        await this.stepDone(job, decision.idx);
+        return true;
+      case 'replan':
+        await this.replan(job, decision.steps);
+        return true;
+      case 'ask': {
+        const card = decision.card;
+        const payload = {
+          question: this.d.prompts.filter(card.question),
+          options: card.options.map((o, i) => ({ id: `o${i + 1}`, label: o.label, ...(o.detail ? { detail: o.detail } : {}) })),
+          multi: card.multi ?? false,
+          reversible: false,
+          purpose: 'job',
+        };
+        await this.needsYou(job, { type: 'choice', state: 'asking', payload });
+        return false;
+      }
+      case 'request_approval':
+        // TODO(M5): the engine verifies the draft and the gate opens the Approval card. M4 has no gate: count it as a failure.
+        this.d.log('job.approval_not_built', 'VALIDATION', { jobId: job.id });
+        return !(await this.countFailure(job));
+      case 'done':
+        return this.finish(job, c, decision);
+      case 'fail':
+        await this.fail(job, c.lastError?.kind === 'SITE_BLOCKED' ? 'SITE_BLOCKED' : 'UNKNOWN', decision.alternative);
+        return false;
+    }
+  }
+
+  /** fail_streak + 1; at 3 the stuck seam takes over (T3). Returns true when the loop must end. */
+  private async countFailure(job: JobRow): Promise<boolean> {
+    const streak = job.failStreak + 1;
+    await this.tx([{ op: 'update', table: 'jobs', id: job.id, set: { fail_streak: streak } }]);
+    if (streak < 3) return false;
+    const fresh = (await this.job(job.id)) ?? job;
+    await (this.d.hooks?.onStuck ?? ((j: JobRow) => this.fail(j, 'UNKNOWN')))(fresh, 'fail_streak');
+    return true;
+  }
+
+  private async runTool(job: JobRow, c: JobCtx, decision: Extract<StepDecision, { kind: 'tool' }>, turnId: string): Promise<boolean> {
+    const steps = await this.steps(job.id);
+    const current = steps.find((s) => s.state === 'running') ?? null;
+    const r: ExecResult = await this.d.tools.execute({ id: job.id, stepId: current?.id ?? null, turnId }, decision.call, c.abort.signal);
+    if (r.outcome === 'cancelled') return false;
+    c.lastObservation = { toolCallId: r.toolCallId, tool: r.tool, text: JSON.stringify(r.result ?? null).slice(0, OBSERVATION_CAP) };
+    if (r.needsUser) {
+      await this.needsYou(job, r.needsUser);
+      return false;
+    }
+    if (r.outcome === 'error') {
+      const site = (r.result as { site?: unknown } | null)?.site;
+      c.lastError = { kind: r.errorKind ?? 'UNKNOWN', site: typeof site === 'string' ? site : null };
+      if (current) await this.tx([{ op: 'update', table: 'steps', id: current.id, set: { attempts: current.attempts + 1 } }]);
+      return !(await this.countFailure(job));
+    }
+    c.lastError = null;
+    const set: Record<string, unknown> = { fail_streak: 0 };
+    if (r.changed) set.last_progress_at = this.d.clock.now();
+    await this.tx([{ op: 'update', table: 'jobs', id: job.id, set }]);
+    return true;
+  }
+
+  private async stepDone(job: JobRow, idx: number): Promise<void> {
+    const steps = await this.steps(job.id);
+    const done = steps.find((s) => s.idx === idx && (s.state === 'running' || s.state === 'pending'));
+    if (!done) {
+      this.d.log('job.step_done_unknown', 'VALIDATION', { jobId: job.id });
+      return;
+    }
+    const now = this.d.clock.now();
+    const next = steps.find((s) => s.idx > idx && s.state === 'pending');
+    await this.tx([
+      { op: 'update', table: 'steps', id: done.id, set: { state: 'done', finished_at: now, started_at: done.startedAt ?? now } },
+      ...(next ? [{ op: 'update', table: 'steps', id: next.id, set: { state: 'running', started_at: now } } as DbOp] : []),
+      { op: 'update', table: 'jobs', id: job.id, set: { current_step_idx: next?.idx ?? idx, last_progress_at: now, fail_streak: 0 } },
+      ...(await this.editChecklistOps(job)),
+    ]);
+    await this.writeMirrors(job.id);
+  }
+
+  /** Done steps never change; the remaining ones are replaced (show-before inserted), plan_version + 1. */
+  private async replan(job: JobRow, next: PlanStep[]): Promise<void> {
+    const steps = await this.steps(job.id);
+    const kept = steps.filter((s) => s.state === 'done');
+    const isBanned = (x: string) => this.d.prompts.isBanned(x);
+    const fresh = insertShowBefore(
+      next.map((p) => {
+        const r = resolvePhrase(p.phraseKey, p.slots, { inPlan: true, isBanned });
+        return { phraseKey: r.key, slots: r.slots, route: p.route };
+      }),
+    ).slice(0, Math.max(1, PLAN_MAX - kept.length));
+    const base = kept.length ? Math.max(...kept.map((s) => s.idx)) + 1 : 0;
+    const now = this.d.clock.now();
+    const ops: DbOp[] = [];
+    fresh.forEach((p, i) => {
+      const idx = base + i;
+      const row = steps.find((s) => s.idx === idx);
+      const set = { phrase_key: p.phraseKey, slots: p.slots, route: p.route, state: i === 0 ? 'running' : 'pending', started_at: i === 0 ? now : null, finished_at: null };
+      if (row) ops.push({ op: 'update', table: 'steps', id: row.id, set });
+      else ops.push({ op: 'insert', table: 'steps', row: { id: this.d.newId('s'), job_id: job.id, idx, ...set } });
+    });
+    for (const s of steps) if (s.idx >= base + fresh.length && s.state !== 'done') ops.push({ op: 'update', table: 'steps', id: s.id, set: { state: 'skipped' } });
+    ops.push({
+      op: 'update',
+      table: 'jobs',
+      id: job.id,
+      set: {
+        plan_version: job.planVersion + 1,
+        step_count: base + fresh.length,
+        current_step_idx: base,
+        uses_browser: fresh.some((p) => p.route === 'browser') || job.usesBrowser,
+      },
+    });
+    ops.push(...(await this.editChecklistOps(job)));
+    await this.tx(ops);
+    await this.writeMirrors(job.id);
+  }
+
+  /** WORKING → NEEDS_YOU with its card (SM-A1 badge ⏳); the current step waits on the user; the slot is released. */
+  private async needsYou(job: JobRow, card: NeedsUserCard): Promise<void> {
+    const { cardId, ops } = this.cardOps(job.chatId, card.type, card.state, card.payload, job.id, job.ownerId);
+    const steps = await this.steps(job.id);
+    const current = steps.find((s) => s.state === 'running');
+    await this.tx([
+      ...ops,
+      { op: 'transition', table: 'jobs', id: job.id, from: ['working'], to: 'needs_you', set: { needs_you_card_id: cardId } },
+      ...(current ? [{ op: 'update', table: 'steps', id: current.id, set: { state: 'waiting_user' } } as DbOp] : []),
+      ...this.badgeOp(job, 'needs_you'),
+      ...(await this.editChecklistOps(job)),
+    ]);
+    await this.writeMirrors(job.id);
+  }
+
+  // ---- card answers (card.answered) ----
+
+  async onCardAnswered(a: { cardId: string; choice?: string; text?: string; answer?: unknown; resolvedBy: string }): Promise<void> {
+    return this.track(this.onCardAnsweredInner(a));
+  }
+
+  private async onCardAnsweredInner(a: { cardId: string; choice?: string; text?: string; answer?: unknown; resolvedBy: string }) {
+    const card = await this.query<CardRow>('cardById', a.cardId);
+    if (!card || card.resolvedAt !== null || !card.jobId) return;
+    const job = await this.job(card.jobId);
+    if (!job) return;
+    const now = this.d.clock.now();
+    const resolve = { resolved_by: a.resolvedBy, resolved_at: now };
+    if (card.type === 'plan' && card.state === 'pending' && job.state === 'queued') {
+      if (a.choice === 'go') {
+        await this.tx([{ op: 'update', table: 'cards', id: card.id, set: { state: 'go', ...resolve } }]);
+        await this.enqueue(job.id);
+      } else if (a.choice === 'change') {
+        // TODO(T3/M5 chat lane): "Change plan" sends the text back to an intake turn with the old plan attached (08-2 §5.3.3).
+        await this.tx([
+          { op: 'update', table: 'cards', id: card.id, set: { state: 'changed', ...resolve, ...(a.text ? { answer: { text: a.text } } : {}) } },
+          { op: 'transition', table: 'jobs', id: job.id, from: ['queued'], to: 'cancelled', set: { stop_reason: 'system', finished_at: now } },
+          ...this.badgeOp(job, 'cancelled'),
+        ]);
+        this.ctxs.delete(job.id);
+      }
+      return;
+    }
+    if (job.state !== 'needs_you' || job.needsYouCardId !== card.id) return;
+    const answered = ANSWERED_STATE[card.type];
+    const answer = a.answer ?? (a.choice ? { optionId: a.choice } : a.text ? { text: a.text } : null);
+    const steps = await this.steps(job.id);
+    const waiting = steps.find((s) => s.state === 'waiting_user');
+    const r = await this.tx([
+      { op: 'update', table: 'cards', id: card.id, set: { ...(answered ? { state: answered } : {}), ...resolve, ...(answer ? { answer } : {}) } },
+      { op: 'transition', table: 'jobs', id: job.id, from: ['needs_you'], to: 'working', set: { needs_you_card_id: null, last_progress_at: now } },
+      ...(waiting ? [{ op: 'update', table: 'steps', id: waiting.id, set: { state: 'running' } } as DbOp] : []),
+      ...this.badgeOp(job, 'working'),
+      ...(await this.editChecklistOps(job)),
+    ]);
+    if (!r.ok) return;
+    if (card.type === 'choice') {
+      const options = (card.payload.options as { id: string; label: string }[] | undefined) ?? [];
+      const label = options.find((o) => o.id === a.choice)?.label ?? a.text ?? '';
+      this.ctx(job.id).decisions.push(`- Q: ${String(card.payload.question ?? '')} → A: ${label}`);
+    }
+    this.launch(job.id);
+  }
+
+  // ---- 08-2 §5.8 finish ----
+
+  private async finish(job: JobRow, c: JobCtx, d: Extract<StepDecision, { kind: 'done' }>): Promise<boolean> {
+    if (!d.proof && d.unverified !== true) {
+      // AT-119: "All done!" without a proof object or the unverified flag is not an end; the runner's state stays.
+      this.d.log('job.done_without_proof', 'PROOF_INVALID', { jobId: job.id });
+      return !(await this.countFailure(job));
+    }
+    const stored = new Map<string, string>();
+    for (const tc of (await this.query<{ id: string; result: unknown }[]>('toolCallsForJob', job.id)) ?? [])
+      stored.set(tc.id, JSON.stringify(tc.result ?? null));
+    const check = checkProof(d.proof, {
+      raw: this.d.tools.rawResults(job.id),
+      stored: (id) => stored.get(id) ?? null,
+      jobDir: path.join(this.d.dataDir, 'jobs', job.id),
+      exists: (f) => existsSync(f),
+    });
+    if (d.proof && !check.ok) this.d.log('job.proof_unchecked', 'PROOF_INVALID', { jobId: job.id });
+    const to: JobState = check.ok ? 'done' : 'done_unverified';
+    const now = this.d.clock.now();
+    const resultId = this.d.newId('m');
+    const steps = await this.steps(job.id);
+    const ops: DbOp[] = [
+      {
+        op: 'insert',
+        table: 'messages',
+        row: {
+          id: resultId,
+          chat_id: job.chatId,
+          author_kind: job.ownerId ? 'helper' : 'foo',
+          author_id: job.ownerId,
+          kind: 'text',
+          text: this.d.prompts.filter(d.result),
+          status: 'complete',
+          job_id: job.id,
+          created_at: now,
+        },
+      },
+      ...steps
+        .filter((s) => s.state === 'running' || s.state === 'pending' || s.state === 'waiting_user')
+        .map(
+          (s): DbOp => ({
+            op: 'update',
+            table: 'steps',
+            id: s.id,
+            set: s.state === 'pending' ? { state: 'skipped' } : { state: 'done', finished_at: now },
+          }),
+        ),
+      {
+        op: 'transition',
+        table: 'jobs',
+        id: job.id,
+        from: ['working'],
+        to,
+        set: { proof: check.ok ? d.proof : null, finished_at: now, result_message_id: resultId, last_progress_at: now },
+      },
+      ...this.badgeOp(job, to),
+      ...(await this.editChecklistOps(job, to)),
+    ];
+    await this.tx(ops);
+    await this.ended(job.id, c);
+    return false;
+  }
+
+  // ---- FAILED + error card with one alternative (AT-117) ----
+
+  async fail(job: JobRow, kind: 'SITE_BLOCKED' | 'UNKNOWN', alternative?: { kind: string; [k: string]: unknown }): Promise<void> {
+    const c = this.ctx(job.id);
+    const lower = kind.toLowerCase();
+    const site = c.lastError?.site ?? job.siteDomain ?? '';
+    let action: FixAction;
+    if (alternative?.kind === 'retry' || alternative?.kind === 'dismiss') action = { kind: alternative.kind };
+    else if (alternative?.kind === 'open_url' && typeof alternative.url === 'string' && /^https:\/\//.test(alternative.url))
+      action = { kind: 'open_url', url: alternative.url };
+    else {
+      // The AI may fill only retry, open_url or dismiss (M4 pack §4); otherwise the runner's own pick.
+      if (alternative) this.d.log('job.fix_action_refused', 'PROTOCOL_FIX_ACTION', { jobId: job.id });
+      const domain = domainOf(site);
+      action = kind === 'SITE_BLOCKED' && domain ? { kind: 'open_url', url: `https://${domain}/` } : kind === 'UNKNOWN' ? { kind: 'retry' } : { kind: 'dismiss' };
+    }
+    const payload = {
+      variant: 'error',
+      kind,
+      whatHappened: t(`errors.${lower}.what_happened` as CopyKey, { site }),
+      whatIsSafe: t(`errors.${lower}.what_is_safe` as CopyKey),
+      button: { label: t(`errors.${lower}.button` as CopyKey), action },
+      jobId: job.id,
+    };
+    const now = this.d.clock.now();
+    const steps = await this.steps(job.id);
+    const current = steps.find((s) => s.state === 'running' || s.state === 'waiting_user');
+    await this.tx([
+      ...this.cardOps(job.chatId, 'error', 'shown', payload, job.id, job.ownerId).ops,
+      { op: 'transition', table: 'jobs', id: job.id, from: ['working'], to: 'failed', set: { finished_at: now } },
+      ...(current ? [{ op: 'update', table: 'steps', id: current.id, set: { state: 'failed', finished_at: now } } as DbOp] : []),
+      ...this.badgeOp(job, 'failed'),
+      ...(await this.editChecklistOps(job, 'failed')),
+    ]);
+    await this.ended(job.id, c);
+  }
+
+  private async ended(jobId: string, c: JobCtx): Promise<void> {
+    if (c.checklistTimer !== null) this.d.clock.clearTimeout(c.checklistTimer);
+    c.checklistTimer = null;
+    if (c.workingSince !== null) c.workingMs += this.d.clock.now() - c.workingSince;
+    c.workingSince = null;
+    await this.writeMirrors(jobId);
+    this.d.tools.clearJob(jobId);
+    this.ctxs.delete(jobId);
+  }
+
+  // ---- G-M4-01 retry: a new linked job; the old one never moves (AT-120) ----
+
+  async retry(jobId: string, newJobId: string): Promise<Result<{ newJobId: string }>> {
+    return this.track(this.retryInner(jobId, newJobId));
+  }
+
+  private async retryInner(jobId: string, newJobId: string): Promise<Result<{ newJobId: string }>> {
+    const old = await this.job(jobId);
+    if (!old) return { ok: false, error: { kind: 'JOB_GONE' } };
+    if (old.state !== 'failed' && old.state !== 'cancelled') return { ok: false, error: { kind: 'VALIDATION' } };
+    const steps = (await this.steps(jobId)).filter((s) => s.state !== 'skipped');
+    const now = this.d.clock.now();
+    const ctx = this.ctx(newJobId);
+    ctx.asked = old.title;
+    const r = await this.tx([
+      {
+        op: 'insert',
+        table: 'jobs',
+        row: {
+          id: newJobId,
+          chat_id: old.chatId,
+          origin_chat_id: old.originChatId,
+          owner_kind: old.ownerKind,
+          owner_id: old.ownerId,
+          title: retryTitle(old.title),
+          origin: 'retry',
+          origin_ref: old.id,
+          user_message_id: old.userMessageId,
+          intent: old.intent,
+          do_verbs: old.doVerbs,
+          state: 'queued',
+          plan_version: 1,
+          step_count: steps.length,
+          route: old.route,
+          uses_browser: old.usesBrowser,
+          est_minutes: old.estMinutes,
+          est_tokens: old.estTokens,
+          est_cost_paise: old.estCostPaise,
+          provider_id: old.providerId,
+          created_at: now,
+        },
+      },
+      ...steps.map(
+        (s, idx): DbOp => ({
+          op: 'insert',
+          table: 'steps',
+          row: { id: this.d.newId('s'), job_id: newJobId, idx, phrase_key: s.phraseKey, slots: s.slots, state: 'pending', route: s.route },
+        }),
+      ),
+      ...(old.userMessageId ? [{ op: 'update', table: 'messages', id: old.userMessageId, set: { badge: BADGE_OF_STATE.queued } } as DbOp] : []),
+    ]);
+    if (!r.ok) {
+      this.ctxs.delete(newJobId);
+      return { ok: false, error: { kind: r.error.kind } };
+    }
+    await this.writeMirrors(newJobId);
+    await this.enqueue(newJobId);
+    return { ok: true, value: { newJobId } };
+  }
+
+  // ---- one step turn (08-2 §7; ai_turns row per call, 08-4 §26.12) ----
+
+  private jobBlock(job: JobRow, steps: StepRow[], c: JobCtx): string {
+    const lines = [
+      'The job:',
+      `Title: ${job.title}`,
+      `You may: ${job.doVerbs.length ? job.doVerbs.join(', ') : 'only look (no booking, paying, sending or deleting)'}`,
+      `Plan (version ${job.planVersion}):`,
+      ...steps
+        .filter((s) => s.state !== 'skipped')
+        .map((s, i) => `${i + 1}. [${STEP_LABEL[s.state]}] ${phraseText(s.phraseKey as PhraseKey, 'next', s.slots as Record<string, string>) ?? s.phraseKey}`),
+      'Approved so far:',
+      '- none yet',
+    ];
+    if (c.decisions.length) lines.push('Decisions:', ...c.decisions);
+    if (c.lastObservation)
+      lines.push(`Last observation (${c.lastObservation.toolCallId}, ${c.lastObservation.tool}):`, c.lastObservation.text);
+    return lines.join('\n');
+  }
+
+  private async stepTurn(job: JobRow, c: JobCtx): Promise<{ act: StepAct | null; error?: AiErrorKind; turnId: string }> {
+    const pick = this.d.ai.pick();
+    const turnId = this.d.newId('t');
+    if (!pick) return { act: null, error: 'AI_SERVICE_DOWN', turnId };
+    const built = this.d.prompts.buildStep(this.jobBlock(job, await this.steps(job.id), c), this.d.tools.catalogue());
+    const run = async (purpose: 'step' | 'repair', id: string, system: string, prompt: string) => {
+      const startedAt = this.d.clock.now();
+      const params = this.d.ai.turnParams(pick.providerId, purpose === 'repair' ? 'repair' : 'step');
+      let r: TurnResult;
+      try {
+        r = await this.d.ai.runTurn(
+          pick.providerId,
+          { ...params, turnId: id, purpose, system, prompt, chatId: job.chatId },
+          { onText: () => {}, onSession: () => {} },
+          c.abort.signal,
+        );
+      } catch {
+        r = { text: '', usage: { tokensIn: null, tokensOut: null, cacheRead: null, cacheWrite: null, costUsd: null }, stopReason: 'error', errorKind: 'UNKNOWN' };
+      }
+      await this.recordTurn(job, pick, id, purpose, startedAt, r);
+      return r;
+    };
+    const r = await run('step', turnId, built.system, built.prompt);
+    if (r.stopReason === 'cancelled' || c.abort.signal.aborted) return { act: null, turnId };
+    if (r.stopReason !== 'end') {
+      this.d.ai.reportError(pick.providerId, r.errorKind ?? 'UNKNOWN', r.resetAt);
+      return { act: null, error: r.errorKind ?? 'UNKNOWN', turnId };
+    }
+    this.d.ai.reportOk(pick.providerId);
+    const parsed = this.d.prompts.parseStep(r.text);
+    if (parsed.act) return { act: parsed.act, turnId };
+    // 08-2 §7.5: one repair turn in the same session.
+    const repair = await run('repair', this.d.newId('t'), built.system, this.d.prompts.buildRepair(parsed.issues ?? ''));
+    const again = repair.stopReason === 'end' ? this.d.prompts.parseStep(repair.text).act : null;
+    if (!again) this.d.log('job.protocol_invalid', 'PROTOCOL_INVALID', { jobId: job.id });
+    return { act: again, turnId };
+  }
+
+  private async recordTurn(
+    job: JobRow,
+    pick: { providerId: ProviderId; billing: 'plan' | 'key' | 'local' },
+    turnId: string,
+    purpose: 'step' | 'repair',
+    startedAt: number,
+    r: TurnResult,
+  ): Promise<void> {
+    const cost = this.d.ai.costPaise(pick.providerId, r.usage, r.modelReported);
+    const outcome = r.stopReason === 'end' ? 'ok' : r.stopReason === 'cancelled' ? 'cancelled' : r.errorKind === 'AI_TIMEOUT' ? 'timeout' : 'error';
+    const fresh = (await this.job(job.id)) ?? job;
+    await this.tx([
+      {
+        op: 'insert',
+        table: 'ai_turns',
+        row: {
+          id: turnId,
+          chat_id: job.chatId,
+          job_id: job.id,
+          purpose,
+          provider_id: pick.providerId,
+          model_reported: r.modelReported ?? null,
+          session_id: r.sessionId ?? null,
+          tokens_in: r.usage.tokensIn,
+          tokens_out: r.usage.tokensOut,
+          tokens_cache_read: r.usage.cacheRead,
+          tokens_cache_write: r.usage.cacheWrite,
+          cost_paise: cost.paise,
+          cost_source: cost.source,
+          billing: pick.billing,
+          duration_ms: this.d.clock.now() - startedAt,
+          outcome,
+          error_kind: outcome === 'ok' ? null : (r.errorKind ?? 'UNKNOWN'),
+          started_at: startedAt,
+        },
+      },
+      {
+        op: 'update',
+        table: 'jobs',
+        id: job.id,
+        set: {
+          spent_tokens_in: fresh.spentTokensIn + (r.usage.tokensIn ?? 0),
+          spent_tokens_out: fresh.spentTokensOut + (r.usage.tokensOut ?? 0),
+          spent_cost_paise: fresh.spentCostPaise + (cost.paise ?? 0),
+          ...(cost.paise === null ? { cost_unknown: 1 } : {}),
+        },
+      },
+    ]);
+  }
+
+  // ---- 08-1 §4.1.2 mirrors ----
+
+  private async writeMirrors(jobId: string): Promise<void> {
+    const job = await this.job(jobId);
+    if (!job) return;
+    const steps = await this.steps(jobId);
+    const c = this.ctxs.get(jobId);
+    const now = this.d.clock.now();
+    const workingMs = (c?.workingMs ?? 0) + (c?.workingSince !== null && c?.workingSince !== undefined ? now - c.workingSince : 0);
+    const state = {
+      schemaVersion: 1,
+      job,
+      steps,
+      approvals: [],
+      payments: [],
+      steerQueue: [],
+      estimate: { minutes: job.estMinutes, tokens: job.estTokens, costPaise: job.estCostPaise },
+      actual: { tokens: job.spentTokensIn + job.spentTokensOut, costPaise: job.spentCostPaise },
+      workingMs,
+      ...(c?.aiEstimate ? { aiEstimate: c.aiEstimate } : {}),
+      writtenAt: now,
+    };
+    const planLines = steps
+      .filter((s) => s.state !== 'skipped')
+      .map((s, i) => {
+        const form = s.state === 'done' ? 'done' : 'next';
+        return `${i + 1}. [${s.state === 'done' ? 'x' : ' '}] ${phraseText(s.phraseKey as PhraseKey, form, s.slots as Record<string, string>) ?? s.phraseKey}`;
+      });
+    const plan = [
+      `# ${job.title}`,
+      `Asked: ${redactSecrets(c?.asked ?? '').text}`,
+      ...planLines,
+      'Decisions:',
+      ...(c?.decisions ?? []),
+      `Route: ${job.route ?? 'api'}`,
+    ].join('\n');
+    await this.tx([
+      { op: 'mirror', kind: 'job_state', id: jobId, text: JSON.stringify(state) },
+      { op: 'mirror', kind: 'plan_md', id: jobId, text: plan },
+    ]);
+  }
+}
