@@ -65,7 +65,7 @@ export function fakeGoogle(handlers: FakeHandler[], now: () => number = () => 0)
 }
 
 /** The same router served over HTTP on 127.0.0.1 (for a real-app run: `FOO_FAKE_GOOGLE={url}`). */
-export async function serveFakeGoogle(handlers: FakeHandler[]): Promise<{ url: string; close(): Promise<void> }> {
+export async function serveFakeGoogle(handlers: FakeHandler[]): Promise<{ url: string; requests: FakeRequest[]; close(): Promise<void> }> {
   const g = fakeGoogle(handlers);
   const server: Server = createServer((req, res) => {
     const chunks: Buffer[] = [];
@@ -81,7 +81,7 @@ export async function serveFakeGoogle(handlers: FakeHandler[]): Promise<{ url: s
   });
   await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
   const { port } = server.address() as AddressInfo;
-  return { url: `http://127.0.0.1:${port}`, close: () => new Promise((r) => server.close(() => r())) };
+  return { url: `http://127.0.0.1:${port}`, requests: g.requests, close: () => new Promise((r) => server.close(() => r())) };
 }
 
 // ---- the fake Gmail mailbox ----
