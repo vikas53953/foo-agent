@@ -1,19 +1,19 @@
 {
-  "reportId": "M2-a3fa368-39135419956",
-  "milestone": "M2",
-  "generatedAt": "2026-10-18T14:31:51.701Z",
-  "commit": "3f1a3ad864f12978b5dc1a9fdd66abfb05f1c3f1",
-  "head": "a3fa368f38864519fd271b37d170e476c9651e49",
+  "reportId": "M3-3b950d6-39137193776",
+  "milestone": "M3",
+  "generatedAt": "2026-10-18T14:53:14.839Z",
+  "commit": "08c3f664c924a3cc290d7c533e85fb0b1605d92a",
+  "head": "3b950d6c252087009d97e258ca9bb87d77c8b283",
   "ci": {
-    "runId": "39135419956",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39135419956"
+    "runId": "39137193776",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39137193776"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "3f8906ce944c00d85d0d87d8054d917585d14af03acdaa5f9a9ca71681b8d5fe"
   },
   "runner": {
-    "recordedAt": "2026-10-18T14:24:51.737Z",
+    "recordedAt": "2026-10-18T14:47:18.437Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000002859"
+      "runner": "GitHub Actions 1000002863"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,18 +59,16 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "1 test(s) failed",
-    "2 Tier R step(s) failed",
-    "12 audit item(s) not DONE (the milestone is not complete)",
+    "10 audit item(s) not DONE (the milestone is not complete)",
     "CHANGED items need an approved CR"
   ],
   "missingInputs": [],
   "forVikas": {
     "tryNow": [
-      "M2: 1 of 20 drawings match; open the side-by-side rows below."
+      "M3: 1 of 2 drawings match; open the side-by-side rows below."
     ],
     "changed": [
-      "15 picture(s) differ a little from the drawing and need your look (Review rows), whatever else a CR disputes:",
+      "17 picture(s) differ a little from the drawing and need your look (Review rows), whatever else a CR disputes:",
       "BP-ANAT-CHIPS (dark): R3 colour (ΔE 4.78) in the Review band; see it side by side below.",
       "BP-ANAT-L (light): R3 colour (ΔE 3.65) in the Review band; see it side by side below.",
       "BP-ANAT-LHEAD (dark): R3 colour (ΔE 2.91) in the Review band; see it side by side below.",
@@ -78,6 +76,8 @@
       "BP-APP-M (light): R3 colour (ΔE 3.65) in the Review band; see it side by side below.",
       "BP-APP-R (dark): R3 colour (ΔE 3.19) in the Review band; see it side by side below.",
       "BP-APP-R (light): R3 colour (ΔE 3.65) in the Review band; see it side by side below.",
+      "BP-MSG-02 (dark): R3 colour (ΔE 3.19) in the Review band; see it side by side below.",
+      "BP-MSG-02 (light): R3 colour (ΔE 3.65) in the Review band; see it side by side below.",
       "UX-08-03 (dark): R4 pixels (3.47 %) in the Review band; see it side by side below.",
       "UX-08-03 (light): R4 pixels (3.20 %) in the Review band; see it side by side below.",
       "UX-08-05 (dark): R4 pixels (3.97 %) in the Review band; see it side by side below.",
@@ -93,166 +93,207 @@
   },
   "audit": [
     {
-      "group": "M2 Goal",
-      "item": "Both bubble types and every message state rendered from the store, smooth at 5,000 messages",
+      "group": "M3 Goal",
+      "item": "foo finds, tests and talks through the user's own AI with tools disabled; plain replies stream into foo's bubble under the reply protocol and output filters",
       "status": "PARTIAL",
       "evidence": [
-        "test:PERF-04",
-        "test:ART-26a · bubbles"
+        "test:AT-005",
+        "test:streamed reply (past the hold)",
+        "test:command_execution item → AI_PROTOCOL_VIOLATION",
+        "test:a tool_use block is a violation"
       ],
       "covers": "part",
-      "manual": "reviewer reading of 04 §1–§19 per state (per-word streaming fade, \"Stopped.\", Not sent reasons, the user's link preview, image aspect and \"Save as…\" are logged gaps); smoothness: Vikas with the coordinator, on the reference laptop (10-2 §E.1: 20 runs, a job running, repeated at 225 % text size), before M2 sign-off",
+      "manual": "demo on Vikas's PC (plan §5 M3 Demo): \"✓ Using Claude (your AI)\", chat in English, Hindi and Punjabi, \"thanks!\" gets a 👍, Wi-Fi off shows the AI-unreachable strip; the real CLIs were captured once on his PC (test/fixtures/cli-captures), CI runs only the fake AI",
       "resolved": "PARTIAL"
     },
     {
-      "group": "M2 Goal",
-      "item": "The paste catcher blocks secrets at the composer",
+      "group": "M3 Constitution",
+      "item": "08-2 §6, §7 · 08-1 §2.1, §2.4 · 08-2 §11.4 (pattern part) · Art. 1, 2, 12, 22, 23 · X-18",
       "status": "PARTIAL",
       "evidence": [
-        "test:AT-007",
-        "test:ART-08b",
-        "test:re-checks like message:send",
-        "test:passes the paste catcher and the limit"
+        "test:ART-12a",
+        "test:ART-23a",
+        "test:0 banned terms displayed"
       ],
       "covers": "part",
-      "manual": "\"Move to secret box\" hands the value to the Secret box card: scheduled M5 (05-2 §5.8); demo on the Windows build (paste an sk-proj- key, edit a message with a key)",
+      "manual": "independent reviewer reads 08-2 §6, §7, §11.4 and 08-1 §2.1, §2.4 against the build (the Sonnet checker pass on the PR); Job Object (§6.3) is deferred to M11 (CR-0007 pick 1)",
       "resolved": "PARTIAL"
     },
     {
-      "group": "M2 Constitution",
-      "item": "04 §1–§19 · 04-2 §20–§27 · 05 §5.9, §5.22–§5.25 · Art. 8, 16, 23, 26, 28",
-      "status": "PARTIAL",
-      "evidence": "test:ART-26a",
-      "covers": "part",
-      "manual": "independent reviewer reads 04 §1–§19, 04-2 §20–§27, 05 §5.9, §5.22–§5.25 and Art. 8, 16, 23, 26, 28 against the build (axe covers Art. 26 at rest only)",
-      "resolved": "PARTIAL"
-    },
-    {
-      "group": "M2 Create",
-      "item": "renderer/messages/*, renderer/composer/*, renderer/cards/{TableCard,FileCard,LinkPreview,PlaceCard}.tsx, renderer/store/messages.ts, messages.* and composer.* copy keys",
+      "group": "M3 Create",
+      "item": "engine/index.ts, EngineSupervisor, engine/ai/* (all adapters + fake), ProcessHost, engine/prompt/*, engine/chat/ChatLane.ts + intake.ts, engine/redact/Redactor.ts, test/fakes/fake-cli/*, test/fixtures/cli-captures/*",
       "status": "DONE",
       "resolved": "DONE"
     },
     {
-      "group": "M2 Create",
-      "item": "Secret patterns shared with the paste catcher (08-0 §E path src/shared/redactor.ts over the plan's engine/redact/patterns.ts)",
-      "status": "DONE",
-      "evidence": [
-        "test:ART-08b",
-        "test:invisible characters cannot split a secret"
-      ],
-      "covers": "whole",
-      "resolved": "DONE"
-    },
-    {
-      "group": "M2 Create",
-      "item": "Voice capture to {DATA}\\data\\voice\\*.webm (transcription in M11)",
+      "group": "M3 Create",
+      "item": "ProcessHost Job Object via foo-native/jobobject.cc",
       "status": "CHANGED",
-      "note": "WebM Opus as the plan says; 04-2 §22.1 says Ogg Opus: CHANGED until a CR is approved (CR-0003 P2 is only a proposal).",
+      "note": "taskkill /T /F on Windows (a process group on POSIX) until the native parts land in M11: CHANGED until CR-0007 is approved (pick 1).",
       "resolved": "CHANGED"
     },
     {
-      "group": "M2 Must pass",
-      "item": "AT-007",
-      "status": "UNVERIFIABLE",
-      "evidence": "test:AT-007",
-      "covers": "whole",
-      "resolved": "DONE"
-    },
-    {
-      "group": "M2 Must pass",
-      "item": "AT-225 (message:send idempotent on clientId)",
-      "status": "UNVERIFIABLE",
-      "evidence": "test:AT-225",
-      "covers": "whole",
-      "resolved": "DONE"
-    },
-    {
-      "group": "M2 Must pass",
-      "item": "ART-08b (every C8 pattern caught, ≤ 1 false positive in 200)",
-      "status": "UNVERIFIABLE",
-      "evidence": "test:ART-08b",
-      "covers": "whole",
-      "resolved": "DONE"
-    },
-    {
-      "group": "M2 Must pass",
-      "item": "PERF-02 (typing < 16 ms with the 5,000-message chat)",
-      "status": "UNVERIFIABLE",
-      "evidence": "test:PERF-02",
-      "covers": "part",
-      "manual": "Vikas with the coordinator, on the reference laptop (10-2 §E.1: 20 runs, a job running, repeated at 225 % text size), before M2 sign-off; the CI run is a proxy",
-      "resolved": "PARTIAL"
-    },
-    {
-      "group": "M2 Must pass",
-      "item": "PERF-04 (60 fps scroll, bounded DOM)",
-      "status": "UNVERIFIABLE",
-      "evidence": "test:PERF-04",
-      "covers": "part",
-      "manual": "Vikas with the coordinator, on the reference laptop (10-2 §E.1: 20 runs, a job running, repeated at 225 % text size), before M2 sign-off; the CI run is a proxy",
-      "resolved": "PARTIAL"
-    },
-    {
-      "group": "M2 Must pass",
-      "item": "ART-21a (rendered thread; bubble meta exemption)",
-      "status": "UNVERIFIABLE",
-      "evidence": "test:ART-21a · the rendered thread",
-      "covers": "whole",
-      "resolved": "DONE"
-    },
-    {
-      "group": "M2 Must pass",
-      "item": "ART-26a (messages, composer)",
-      "status": "UNVERIFIABLE",
+      "group": "M3 Spike",
+      "item": "Real stream output and --help for claude, codex, gemini and Ollama on Vikas's PC become fixtures",
+      "status": "PARTIAL",
       "evidence": [
-        "test:ART-26a · bubbles",
-        "test:ART-26a · the composer"
+        "test:claude-cli stream-json",
+        "test:codex-cli exec --json",
+        "test:real /api/tags"
       ],
       "covers": "part",
-      "manual": "axe while the list scrolls (states other than at rest) and a Narrator pass on Windows (11 §11.9.3)",
+      "manual": "claude 2.1.282, codex 0.156.1 and Ollama captured 2026-10-18; gemini is not installed on the PC and the key APIs need a test key (both stay seeds, test/fixtures/cli-captures/capture.md)",
       "resolved": "PARTIAL"
     },
     {
-      "group": "M2 Must pass",
-      "item": "10-2 §C.3 rows (messages, composer)",
+      "group": "M3 Must pass",
+      "item": "AT-005",
       "status": "UNVERIFIABLE",
-      "evidence": "test:Enter sends",
-      "covers": "part",
-      "manual": "10-2 §C.3 rows not run by a test: streaming word fade 150 ms, 225 % text size, high contrast (manual on Windows, before M2 sign-off); reactions on Choice / Approval cards (M5) and transcript rows (M11) are scheduled",
-      "resolved": "PARTIAL"
+      "evidence": "test:AT-005",
+      "covers": "whole",
+      "resolved": "DONE"
     },
     {
-      "group": "M2 Fidelity exit",
-      "item": "Tier R for UX-08 (all 7) with no Fail; blessed into Tier B",
-      "status": "PARTIAL",
-      "note": "UX-08-01 and 03–07 are captured from the seeded chapter 8 scene (test/fidelity/ux/UX-08.chat.spec.ts). UX-08-02 (typing face, Stop while foo replies) needs the engine's reply stream: scheduled M3 (CR-0003). R1 is disputed under CR-0003; UX-08-07 also R2.",
-      "resolved": "PARTIAL"
-    },
-    {
-      "group": "M2 Fidelity exit",
-      "item": "Tier R for the UX-09 steps not needing transcription (UX-09-01, UX-09-08)",
-      "status": "PARTIAL",
-      "evidence": "test:UX-09 · Voice notes",
-      "note": "R1 disputed under CR-0003 (UX-09-08 also R2: the written spec puts the microphone problem in the composer banner).",
-      "covers": "part",
-      "manual": "Tier R R1–R4 for UX-09-01 and UX-09-08 are disputed under CR-0003 (not approved): Vikas looks at the frames side by side",
-      "resolved": "PARTIAL"
-    },
-    {
-      "group": "M2 Fidelity exit",
-      "item": "Tier R for BP-MSG-* and BP-COMP-* with no Fail",
-      "status": "PARTIAL",
-      "note": "11 of 13 drawn ids are captured (test/fidelity/bp/BP-messages.spec.ts); BP-MSG-02 and BP-COMP-03 need the reply stream: M3. R1/R2 disputed under CR-0003 (350px minis with glyph icons and their own words).",
-      "resolved": "PARTIAL"
-    },
-    {
-      "group": "M2 Fidelity exit",
-      "item": "FID-14 rows SV-01–12, 26, 30",
+      "group": "M3 Must pass",
+      "item": "AT-006",
       "status": "UNVERIFIABLE",
-      "evidence": "fid14",
+      "evidence": "test:AT-006",
+      "covers": "whole",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "AT-027",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-027",
+      "covers": "whole",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "AT-030",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-030",
+      "covers": "whole",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "AT-031",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-031",
+      "covers": "whole",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "ART-02b",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:0 banned terms displayed",
+      "covers": "whole",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "ART-23a",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-23a",
+      "covers": "whole",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "ART-12a (AI words never move status)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-12a",
+      "covers": "whole",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "unit: every adapter parser on fixtures",
+      "status": "UNVERIFIABLE",
+      "evidence": [
+        "test:claude-cli stream-json",
+        "test:codex-cli exec --json",
+        "test:openai-key",
+        "test:anthropic-key",
+        "test:google-key",
+        "test:ollama and LM Studio"
+      ],
       "covers": "part",
-      "manual": "SV-01 corners, SV-08 widths and SV-30 hover motion are hand checks (reviewer, on the golden-lane captures)",
+      "manual": "gemini and the three key APIs parse seed fixtures written from the spec until a capture replaces them (capture.md)",
+      "resolved": "PARTIAL"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "unit: stop kills the whole process tree (child count = 0 after cancel)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:cancel kills the child AND its grandchild",
+      "covers": "part",
+      "manual": "the grandchild test runs on POSIX only; the Windows taskkill /T path is checked by hand on the Windows build (Stop a Claude reply, Task Manager shows no claude.exe / node.exe left)",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "unit: prompt never on argv",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:prompt only on stdin",
+      "covers": "whole",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "unit: AI_PROTOCOL_VIOLATION for Codex command_execution",
+      "status": "UNVERIFIABLE",
+      "evidence": [
+        "test:command_execution item → AI_PROTOCOL_VIOLATION",
+        "test:a tool-use violation runs the turn once more"
+      ],
+      "covers": "whole",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M3 Fidelity exit",
+      "item": "UX-08 re-run with replies through the fake AI; Tier R with no Fail",
+      "status": "PARTIAL",
+      "evidence": "test:steps 1 to 5 live with fake-AI replies",
+      "covers": "part",
+      "manual": "UX-08-02 is captured live (Thinking face, Stop button). The walkthrough draws UX-08-02 on another scene (the morning-brief chat at 8:10) than its other chapter 8 steps, so R1–R4 are disputed under CR-0007 until the spec keeper redraws it; steps 6 and 7 stay on the seeded scene (job badge M4, source pill from engine entities)",
+      "resolved": "PARTIAL"
+    },
+    {
+      "group": "M3 Fidelity exit",
+      "item": "BP-MSG-02 and BP-COMP-03 captured for Tier R",
+      "status": "PARTIAL",
+      "evidence": "test:M3 Blueprint captures for Tier R",
+      "covers": "part",
+      "manual": "R1/R2 disputed under CR-0003 like the other 350px Blueprint minis",
+      "resolved": "PARTIAL"
+    },
+    {
+      "group": "M3 Fidelity exit",
+      "item": "UX-02 engine assertions (UI frames in M12)",
+      "status": "PARTIAL",
+      "evidence": [
+        "test:AT-005",
+        "test:detectAll runs in parallel"
+      ],
+      "covers": "part",
+      "manual": "UX-02 frames are built with the setup screen in M12",
+      "resolved": "PARTIAL"
+    },
+    {
+      "group": "M3 Fidelity exit",
+      "item": "Tier B green for every step blessed in earlier milestones; FID-01…FID-20 on the whole app",
+      "status": "UNVERIFIABLE",
+      "evidence": [
+        "refs",
+        "determinism",
+        "runner"
+      ],
+      "covers": "part",
+      "manual": "reviewer signs the fidelity report and Vikas sees it (the side-by-side compare page)",
       "resolved": "PARTIAL"
     }
   ],
@@ -489,13 +530,13 @@
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 1773,
+        "passed": 1793,
         "failed": 0,
         "skipped": 2
       },
       "e2e": {
-        "passed": 49,
-        "failed": 1,
+        "passed": 50,
+        "failed": 0,
         "skipped": 0
       }
     },
@@ -9081,14 +9122,7 @@
         "file": "test/fidelity/ux/UX-08.chat.spec.ts"
       }
     ],
-    "failed": [
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m3-replies.spec.ts",
-        "title": "Stop keeps the text that already showed, with \"Stopped.\" under it",
-        "status": "failed"
-      }
-    ],
+    "failed": [],
     "trace": {
       "live": 16,
       "pending": 55,
@@ -9138,7 +9172,7 @@
         "status": "Pending Vikas"
       }
     ],
-    "notes": "Conservative picks and deferrals: implementation-notes.md (the ## M2 sections)."
+    "notes": "Conservative picks and deferrals: implementation-notes.md (the ## M3 sections)."
   },
   "deviations": [
     "Not reviewed yet: the independent reviewer adds what no test caught."
@@ -9146,9 +9180,9 @@
   "golden": {
     "counts": {
       "pass": 1,
-      "review": 15,
-      "fail": 2,
-      "disputed": 56,
+      "review": 17,
+      "fail": 0,
+      "disputed": 60,
       "notBuilt": 0
     },
     "refsRendered": [
@@ -9320,6 +9354,14 @@
         ]
       },
       {
+        "id": "BP-COMP-03",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
         "id": "BP-COMP-04",
         "family": "bp",
         "themes": [
@@ -9369,6 +9411,14 @@
       },
       {
         "id": "BP-MSG-01",
+        "family": "bp",
+        "themes": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "id": "BP-MSG-02",
         "family": "bp",
         "themes": [
           "light",
@@ -9466,8 +9516,8 @@
     ],
     "determinism": {
       "fid": "FID-03",
-      "compared": 74,
-      "identical": 74,
+      "compared": 78,
+      "identical": 78,
       "differing": [],
       "engine": "electron"
     },
@@ -9967,6 +10017,32 @@
         "diff": true
       },
       {
+        "id": "BP-COMP-03",
+        "theme": "dark",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-COMP-03 0/248.65625 px)",
+        "r3": "pass (BP-COMP-03 ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.07287027005336864,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-COMP-03",
+        "theme": "light",
+        "verdict": "disputed",
+        "r1": "fail",
+        "r2": "fail (BP-COMP-03 0/248.65625 px)",
+        "r3": "pass (BP-COMP-03 ΔE 0)",
+        "r4": "skipped: no hl element",
+        "r5": 0.07792624694033144,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
         "id": "BP-COMP-04",
         "theme": "dark",
         "verdict": "disputed",
@@ -9974,7 +10050,7 @@
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
         "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05428716387620497,
+        "r5": 0.05436521874878039,
         "ref": true,
         "app": true,
         "diff": true
@@ -9987,7 +10063,7 @@
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
         "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.053584670023026186,
+        "r5": 0.05374077976817703,
         "ref": true,
         "app": true,
         "diff": true
@@ -10149,6 +10225,32 @@
         "diff": true
       },
       {
+        "id": "BP-MSG-02",
+        "theme": "dark",
+        "verdict": "review",
+        "r1": "fail",
+        "r2": "fail (BP-MSG-02 0/250 px)",
+        "r3": "review (BP-MSG-02 ΔE 3.19)",
+        "r4": "skipped: no hl element",
+        "r5": 0.0588967468175389,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
+        "id": "BP-MSG-02",
+        "theme": "light",
+        "verdict": "review",
+        "r1": "fail",
+        "r2": "fail (BP-MSG-02 0/250 px)",
+        "r3": "review (BP-MSG-02 ΔE 3.65)",
+        "r4": "skipped: no hl element",
+        "r5": 0.052984441301272986,
+        "ref": true,
+        "app": true,
+        "diff": true
+      },
+      {
         "id": "BP-MSG-03",
         "theme": "dark",
         "verdict": "disputed",
@@ -10229,12 +10331,12 @@
       {
         "id": "UX-08-02",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (hl 10/525 px)",
         "r3": "fail (hl ΔE 91.43)",
         "r4": "fail (10.61 %)",
-        "r5": 0.1030166015625,
+        "r5": 0.10301171875,
         "ref": true,
         "app": true,
         "diff": true
@@ -10242,12 +10344,12 @@
       {
         "id": "UX-08-02",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (hl 10/525 px)",
         "r3": "fail (hl ΔE 96.14)",
         "r4": "fail (10.50 %)",
-        "r5": 0.0769248046875,
+        "r5": 0.07692578125,
         "ref": true,
         "app": true,
         "diff": true
@@ -10390,7 +10492,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 20.59)",
         "r4": "fail (21.84 %)",
-        "r5": 0.117392578125,
+        "r5": 0.11662109375,
         "ref": true,
         "app": true,
         "diff": true
@@ -10403,7 +10505,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 35.2)",
         "r4": "fail (21.68 %)",
-        "r5": 0.099583984375,
+        "r5": 0.0988173828125,
         "ref": true,
         "app": true,
         "diff": true

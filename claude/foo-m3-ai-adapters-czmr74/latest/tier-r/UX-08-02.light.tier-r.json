@@ -1,11 +1,14 @@
 {
   "id": "UX-08-02",
   "theme": "light",
-  "verdict": "fail",
+  "verdict": "disputed",
   "disputed": {
-    "cr": "CR-0003",
+    "cr": "CR-0003 + CR-0007",
     "checks": [
-      "r1"
+      "r1",
+      "r2",
+      "r3",
+      "r4"
     ]
   },
   "r1": {
@@ -486,8 +489,8 @@
     "total": 952
   },
   "r5": {
-    "ratio": 0.0769248046875,
-    "diffPixels": 78771,
+    "ratio": 0.07692578125,
+    "diffPixels": 78772,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-08-02.light.diff.png"
