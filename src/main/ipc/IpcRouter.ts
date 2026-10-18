@@ -522,7 +522,15 @@ export function registerIpc(ctx: AppContext): void {
     // The full export (J21) is a later milestone; M6 builds the memory-only zip (06-2 §7.4, G-M6-11).
     if (scope !== 'memory') return fail('VALIDATION');
     const exportId = `exp_${now()}`;
-    void runMemoryExport({ dataDir: ctx.dataDir, folder, exportId, now: now(), progress: (p) => emit('data:exportProgress', p) });
+    void runMemoryExport({
+      dataDir: ctx.dataDir,
+      folder,
+      exportId,
+      now: now(),
+      timeZone: settings.get().locale.timeZone,
+      db,
+      progress: (p) => emit('data:exportProgress', p),
+    });
     return ok({ exportId });
   });
   handle('routine:list', () => ok(routineList(db)));

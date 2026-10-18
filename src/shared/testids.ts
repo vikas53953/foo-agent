@@ -340,6 +340,14 @@ export const TID = {
   dialogUnreadableLines: 'dialog-unreadable-lines',
   appUndo: 'app-undo',
   appUndoAction: 'app-undo-action',
+  // M6 T6: the shared page frame and common states (06 §0.2 `screen-back`, `screen-title`; §0.5 `screen-empty`,
+  // `screen-empty-action`, `screen-loading`, `screen-error`), first used by the Memory page
+  screenBack: 'screen-back',
+  screenTitle: 'screen-title',
+  screenEmpty: 'screen-empty',
+  screenEmptyAction: 'screen-empty-action',
+  screenLoading: 'screen-loading',
+  screenError: 'screen-error',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

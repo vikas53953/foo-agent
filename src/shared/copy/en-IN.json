@@ -823,5 +823,6 @@
   "dialog.c_04.secondary": "Cancel",
   "dialog.unreadable_lines.primary": "Open the file",
   "dialog.unreadable_lines.secondary": "Close",
-  "activity.forgot_facts.summary": "Forgot {count, plural, one {# thing} other {# things}} from {source}"
+  "activity.forgot_facts.summary": "Forgot {count, plural, one {# thing} other {# things}} from {source}",
+  "activity.exported.summary": "Exported everything to {path}"
 }

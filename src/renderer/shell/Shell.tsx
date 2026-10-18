@@ -1,12 +1,14 @@
 // Spec: 03-shell-1 §3.1.3 (breakpoints and columns), §3.1.3.4 (grid rows: title bar, banner strip, content; the window
 // never scrolls), §3.5 (main shell frame: `--bg-app`), 03-shell-2 §3.7.1 (right shell: push at L, overlay at M/S, page at
-// XS), §3.9.6 (`settings` and `screen` views replace the main and right shells; the list stays at L/M/S).
+// XS), §3.9.6 (`settings` and `screen` views replace the main and right shells; the list stays at L/M/S). M6: the Memory
+// page (06-2 §7) is the first real page; the rest stay placeholders until their milestones.
 // Mount points: `main` (the chat: header, find bar, message column, composer) and `right` (the details panel) are passed
 // in by App; the shell gives them their grid cells and the layout through LayoutContext / useLayout().
 import type { CSSProperties, ReactNode } from 'react';
 import { BannerStrip } from '../banner/BannerStrip';
 import { LeftShell } from '../chatlist/LeftShell';
 import { PlaceholderPage } from '../pages/PlaceholderPage';
+import { MemoryPage } from '../screens/Memory';
 import { useStore } from '../store/index';
 import { selectRightShellOpen, selectSidebarWidth } from '../store/settings';
 import { selectRightShellOpenOverlay, selectView, selectXsPane } from '../store/ui';
@@ -44,7 +46,17 @@ export function Shell({ main, right }: ShellProps) {
         <BannerStrip />
         <div className={styles.content}>
           {showLeft && <LeftShell />}
-          {showMain && <div className={styles.main}>{page ? <PlaceholderPage view={view} /> : main}</div>}
+          {showMain && (
+            <div className={styles.main}>
+              {view.kind === 'screen' && view.id === 'memory' ? (
+                <MemoryPage key={JSON.stringify(view.params ?? {})} view={view} />
+              ) : page ? (
+                <PlaceholderPage view={view} />
+              ) : (
+                main
+              )}
+            </div>
+          )}
           {showRight && (
             <div className={styles.right} data-state={layout.right}>
               {right}
