@@ -13,7 +13,7 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
       tid="cardDraft"
       card={card}
       state={card.state}
-      gated={card.state === 'pending'}
+      edge={card.state === 'pending' ? 'accent' : undefined}
       label={t('cards.draft.label', { channel: p.channel, name: p.to?.name ?? '' })}
     >
       <div className={styles.head}>

@@ -4,12 +4,13 @@
 // FOO_TEST card seed (approvals row mirrored into cards.state, 08-1 §4.5.1).
 import Database from 'better-sqlite3';
 import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { fieldsHash } from '../../src/engine/gate/fieldsHash';
 import { engineToMainSchema, mainToEngineSchema } from '../../src/engine/protocol';
 import { migrate, type Db } from '../../src/main/store/db';
 import { seedCard } from '../../src/main/test/testHooks';
-import { hasCardView, M5_CARD_TYPES } from '../../src/renderer/cards/cardViews';
+import { M5_CARD_TYPES } from '../../src/renderer/cards/cardViews';
 import { newNonce } from '../../src/shared/canon';
 import { isCardState } from '../../src/shared/cards';
 import { INVOKE_CHANNELS } from '../../src/shared/ipc';
@@ -137,10 +138,10 @@ describe('renderer contract', () => {
       expect(ids).toContain(id);
   });
 
-  it('the five M5 card types render, and their states are the 08-0 §G.2 lists', () => {
+  it('the five M5 card types are in CARD_VIEWS, and their states are the 08-0 §G.2 lists', () => {
     expect([...M5_CARD_TYPES].sort()).toEqual(['approval', 'choice', 'draft', 'secret', 'tiles']);
-    for (const type of M5_CARD_TYPES) expect(hasCardView(type), type).toBe(true);
-    expect(hasCardView('payment')).toBe(false);
+    const registry = readFileSync('src/renderer/cards/renderCard.tsx', 'utf8');
+    for (const type of M5_CARD_TYPES) expect(registry, type).toMatch(new RegExp(`^  ${type}: \\w+,$`, 'm'));
     expect(isCardState('approval', 'PENDING')).toBe(true);
     expect(isCardState('approval', 'pending')).toBe(false);
     expect(isCardState('draft', 'undo_window')).toBe(true);

@@ -6,6 +6,14 @@ import type { ApprovalPayload, CardRow } from '../../shared/types';
 import { CardFrame, CardTimeLabel, type CardTime } from './CardFrame';
 import styles from './Card.module.css';
 
+/** 05-1 §0.5 status edge per approval state (gated pending, held / checking, failed). */
+const APPROVAL_EDGE: Partial<Record<string, 'accent' | 'warn' | 'bad'>> = {
+  PENDING: 'accent',
+  HELD: 'warn',
+  CHECKING: 'warn',
+  FAILED: 'bad',
+};
+
 export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
   const p = card.payload as unknown as ApprovalPayload;
   return (
@@ -13,7 +21,7 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
       tid="cardApproval"
       card={card}
       state={card.state}
-      gated={card.state === 'PENDING'}
+      edge={APPROVAL_EDGE[card.state]}
       label={t('cards.approval.label', { title: p.title })}
     >
       <div className={styles.head}>

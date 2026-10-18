@@ -101,7 +101,12 @@ Picks T1 made where the spec is silent (also in implementation-notes "M5"):
     row; `approved_at` / `approved_via` are cleared and `expires_at` is reset to the undo time + 60 min (05-2 §5.7 "expiry
     reset to 60 min"; 08-0 §G.7 is silent on undo).
     Allowed only while the row is APPROVED and `undo_until > now`; RUNNING never goes back.
-20. **Contract shapes.** 08-1 §2.4.1 says a new message kind or channel is a constitution change: this CR is that change for:
+20. **G-M5-20** (the M5 lead's review fix 10; numbered 20 because 18 and 19 were already taken) Paste catcher "Send
+    anyway": 08-2 §11.5 says the value is registered, but 04-2 §22.4 (wins) says "The real value is not kept anywhere": the
+    renderer swaps in "•••• (hidden)" before `message:send`, so main registers a value (`registerSecretValue`, T3's
+    `src/main/secrets/registerValue.ts`) only when its R1 re-check catches something the renderer missed. 08-2 §11.5 is
+    aligned to 04-2 by this CR.
+21. **Contract shapes.** 08-1 §2.4.1 says a new message kind or channel is a constitution change: this CR is that change for:
     - invoke channels `card:answer|approve|decline|askAgain|heldPick`, `draft:update|send|undo|discard|openInApp`,
       `secret:save|list|delete`, `code:submit` (08-1 §3.2 shapes; `by: 'tap' | 'keyboard'` named `CardTapBy`). T1 registers
       every one in `IpcRouter.ts` with a stub that answers `VALIDATION` `not_implemented`; each owning ticket fills only its
@@ -114,10 +119,10 @@ codeRef }` (a handle, never the code); engine → main `approval.open` (an `Appr
     - FOO_TEST adds `test:card.seed { chatId?, type, state, payload, jobId?, expiresAt?, approval? }`: one card of any type, with an
       `approvals` row for approval / draft / payment cards (PENDING by default, expiry per verb, the card state mirrored
       for approval cards), written through `applyDbOps` so card states are checked against 08-0 §G.2.
-21. **Approval machine** (`src/shared/approvalMachine.ts`): 11 states, 17 events, 21 transitions; the six final states
+22. **Approval machine** (`src/shared/approvalMachine.ts`): 11 states, 17 events, 21 transitions; the six final states
     (COMPLETED, DECLINED, EXPIRED, SUPERSEDED, WITHDRAWN, FAILED) have no exits; expiry minutes per verb (pay / buy 10,
     book 15, every other verb 60). Main's `ApprovalGate` and the engine gate both use this table.
-22. **Copy.** 287 `cards.choice|tiles|approval|draft|secret|common.*` keys from 05-1 / 05-2 copy tables (mechanical names
+23. **Copy.** 287 `cards.choice|tiles|approval|draft|secret|common.*` keys from 05-1 / 05-2 copy tables (mechanical names
     `cards.{type}.{slot}[.{state}]`, 05-1 §0.4; spec-fixed names as written in the pack). Keys landed before the ticket that
     renders them are in `scripts/copy-pending.json` with the owning ticket (must be empty at M5 close-out). Notes for the
     lead: `cards.common.gated_typed_yes` repeats `thread.approval_typed.approve` (both kept, both spec-named);
@@ -140,7 +145,7 @@ cases for the three new engine kinds); the lead owns them after T1.
 
 ## (e) Open items for the spec-keeper
 
-X-162 supersedes: 08-2 §9.6 "old card → SUPERSEDED" (G-M5-03); 05-2 §5.9.4 paste catcher ids / keys (G-M5-05); the plan's
+X-162 supersedes: 08-2 §11.5 "Send anyway registers the value" (G-M5-20); 08-2 §9.6 "old card → SUPERSEDED" (G-M5-03); 05-2 §5.9.4 paste catcher ids / keys (G-M5-05); the plan's
 `engine/redact/Redactor.ts` (G-M5-06); 05-1 §5.3.2 limits for the AI's spec (G-M5-07); 05-1 §5.3.2 "posts Checking those
 prices…" (G-M5-08); 08-2 §9.5 "until app restart" (G-M5-01); 08-2 §9.1 expiry list (adds use_app, calendar_write, buy,
 G-M5-15); 07-2 §5 diagram (adds HELD → EXPIRED, HELD → WITHDRAWN, APPROVED → WITHDRAWN, APPROVED → PENDING for
@@ -159,7 +164,10 @@ Sonnet reviewer, 2026-10-18 ~18:40Z, read-only, against prep/M5.md §8, 07-2 §5
   steps; this CR assigns `UX-12.booking.spec.ts` (T4) and `UX-16.drafts.spec.ts` (T6).
 - Checked, no issue: G-M5-01…17 equal the pack's recommended options with no screen or copy change; the machine matches
   07-2 §5 plus the cited extras with no exit from a final state; expiry minutes match 08-2 §9.1 + G-M5-15; the 56 M5 trace
-  rows cover the pack list with the owning tickets' files; the item 20 shapes match 08-1 §2.4 / §3.2 and the code.
+  rows cover the pack list with the owning tickets' files; the item 21 shapes match 08-1 §2.4 / §3.2 and the code.
+
+G-M5-20 was added after this review at the M5 lead's request (map review fix 10, from the cross-milestone monitor). It takes
+the spec's own precedence (04-2 §22.4 wins over 08-2 §11.5) and changes no screen or copy.
 
 Recorded as approved on Vikas's behalf under his standing rule (his message 2026-10-18 14:56Z: "take care of it on my
 behalf and then keep on working"); listed for his later review.
