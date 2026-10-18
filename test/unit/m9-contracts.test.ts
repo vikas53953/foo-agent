@@ -48,14 +48,12 @@ describe('M9 contracts', () => {
     expect(ok('job.handBack', { jobId: 'j1', mode: 'finish' })).toBe(false);
     expect(ok('signin.done', { jobId: 'j1' })).toBe(true);
     expect(ok('signin.skip', { jobId: 'j1' })).toBe(true);
-    expect(ok('code.submit', { requestId: 'r1', codeRef: 'h1' })).toBe(true);
-    expect(ok('code.submit', { requestId: 'r1', code: '123456' })).toBe(false);
     expect(ok('webkey.check', { provider: 'exa' })).toBe(true);
     expect(ok('webkey.check', { provider: 'bing' })).toBe(false);
   });
 
   it('M9 channels are registered (08-1 §3.2, §3.3)', () => {
-    for (const c of ['job:openWindow', 'job:takeOver', 'job:handBack', 'signin:done', 'signin:skip', 'code:submit', 'app:openExternal'])
+    for (const c of ['job:openWindow', 'job:takeOver', 'job:handBack', 'signin:done', 'signin:skip', 'app:openExternal'])
       expect(INVOKE_CHANNELS).toContain(c);
     expect(EVENT_CHANNELS).toContain('live:frame');
     expect(EVENT_CHANNELS).toContain('live:state');

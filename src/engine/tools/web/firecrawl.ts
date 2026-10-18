@@ -17,11 +17,11 @@ export const firecrawl = {
   },
 
   /** null → the local path reads the page. */
-  map(body: unknown): ReadResult | null {
+  map(body: unknown, requested = ''): ReadResult | null {
     if (field(body, 'success') === false) return null;
     const md = str(field(body, 'data', 'markdown'));
     if (!md) return null;
-    const url = str(field(body, 'data', 'metadata', 'sourceURL')) ?? '';
+    const url = str(field(body, 'data', 'metadata', 'sourceURL')) || requested;
     return { text: md.slice(0, MAX_READ_CHARS), title: str(field(body, 'data', 'metadata', 'title')), url, site: hostOf(url), date: null };
   },
 };

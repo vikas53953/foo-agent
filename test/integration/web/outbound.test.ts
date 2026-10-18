@@ -47,4 +47,16 @@ describe('cloud.outbound (R11)', () => {
     expect(JSON.stringify(out)).not.toContain(CANARY_VAULT);
     expect(JSON.stringify(out)).not.toContain(CANARY_KEY);
   });
+
+  it('secret params are whole name parts: keyword and zipcode survive; api_key, access_token and code are dropped', () => {
+    const out = cloudOutbound(scrub, {
+      urls: { url: 'https://example.org/s?keyword=bandra&zipcode=400050&discount_code=X1&api_key=a&access_token=b&code=c&page=2' },
+    });
+    expect(out.ok && out.urls.url).toBe('https://example.org/s?keyword=bandra&zipcode=400050&page=2');
+  });
+
+  it('a query that is only a secret becomes empty (the caller then uses the local path)', () => {
+    const out = cloudOutbound(scrub, { text: { query: CANARY_VAULT } });
+    expect(out.ok && out.text.query).toBe('');
+  });
 });

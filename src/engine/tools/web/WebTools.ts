@@ -18,6 +18,9 @@ import { RestingClock } from './resting';
 import { tavily } from './tavily';
 import type { CloudErrorKind, ReadResult, SearchResult, WebCallContext, WebProvider, WebToolDeps, WebToolResult } from './types';
 
+/** 08-4 §27.3 item 2: CLOUD_DOWN is 5xx, timeout or network (no status). */
+const downStatus = (status: number | null): boolean => status === null || status >= 500;
+
 /** 08-2 §8.2 `web.fetch`: 15-min cache per URL. */
 export const FETCH_CACHE_MS = 15 * 60 * 1000;
 
@@ -48,7 +51,7 @@ export class WebTools {
     const key = await this.cloudKey(p, 0);
     if (!key) return null;
     const out = cloudOutbound(this.d.scrub, { text: { query } });
-    if (!out.ok) return this.blocked(p, ctx);
+    if (!out.ok || !out.text.query) return this.blocked(p, ctx);
     const client = p === 'exa' ? exa : tavily;
     const r = await this.call(p, ctx, client.search(this.d.resource[p].base, key, out.text.query!, max), TIMEOUT_MS[p]);
     return r.ok ? client.map(r.body).slice(0, max) : null;
@@ -116,7 +119,7 @@ export class WebTools {
       TIMEOUT_MS.firecrawl,
       (body) => (firecrawl.map(body) ? null : 'CLOUD_DOWN'),
     );
-    return r.ok ? firecrawl.map(r.body) : null;
+    return r.ok ? firecrawl.map(r.body, url) : null;
   }
 
   private async localRead(
@@ -176,15 +179,27 @@ export class WebTools {
     const created = await cloudRequest(net, browseruse.create(base, key, goal, url), TIMEOUT_MS.exa);
     const id = created.ok ? browseruse.taskId(created.body) : null;
     if (!created.ok || !id) {
-      this.settle('browseruse', ctx, startedAt, created.ok ? 'CLOUD_DOWN' : created.kind, created.ok ? false : created.timeout, 0);
+      this.settle(
+        'browseruse',
+        ctx,
+        startedAt,
+        created.ok ? 'CLOUD_DOWN' : created.kind,
+        created.ok ? false : created.timeout,
+        0,
+        created.ok || downStatus(created.status),
+      );
       return null;
     }
     let last: unknown = null;
+    let failed: { kind: CloudErrorKind; rests: boolean } = { kind: 'CLOUD_DOWN', rests: true };
     for (;;) {
       if (this.d.clock.now() + POLL_MS > deadline) break;
       await this.d.sleep(POLL_MS);
       const r = await cloudRequest(net, browseruse.get(base, key, id), Math.max(1, deadline - this.d.clock.now()));
-      if (!r.ok) break;
+      if (!r.ok) {
+        failed = { kind: r.kind, rests: downStatus(r.status) };
+        break;
+      }
       last = r.body;
       const st = browseruse.status(r.body);
       if (st === 'finished') {
@@ -195,7 +210,7 @@ export class WebTools {
     }
     // Any other terminal status, a failed poll or the deadline: stop the task; the step moves to foo's Edge.
     await cloudRequest(net, browseruse.stop(base, key, id), TIMEOUT_MS.exa);
-    this.settle('browseruse', ctx, startedAt, 'CLOUD_DOWN', this.d.clock.now() >= deadline - POLL_MS, browseruse.steps(last));
+    this.settle('browseruse', ctx, startedAt, failed.kind, this.d.clock.now() >= deadline - POLL_MS, browseruse.steps(last), failed.rests);
     return null;
   }
 
@@ -256,7 +271,7 @@ export class WebTools {
     const startedAt = this.d.clock.now();
     const r = await cloudRequest({ fetch: this.d.fetch, clock: this.d.clock }, req, timeoutMs);
     const kind = r.ok ? (bodyError?.(r.body) ?? null) : r.kind;
-    this.settle(p, ctx, startedAt, kind, r.ok ? false : r.timeout, 0);
+    this.settle(p, ctx, startedAt, kind, r.ok ? false : r.timeout, 0, r.ok || downStatus(r.status));
     return kind && r.ok ? { ok: false, kind: 'CLOUD_DOWN', status: r.status, timeout: false } : r;
   }
 
@@ -268,6 +283,8 @@ export class WebTools {
     kind: CloudErrorKind | null,
     timeout: boolean,
     steps: number,
+    /** CLOUD_DOWN from a 5xx, timeout, network or unusable body; a dead page's other 4xx goes local without resting. */
+    rests = true,
   ): void {
     const cost = priceWebCall(this.d.pricing, p, steps);
     if (cost.source === 'unknown') this.d.log('pricing.missing', { provider: p });
@@ -290,7 +307,8 @@ export class WebTools {
       this.resting.ok(p);
       return;
     }
-    this.resting.fail(p);
+    // 08-4 §27.3 item 2: only CLOUD_DOWN counts toward the 3-in-a-row resting streak.
+    if (kind === 'CLOUD_DOWN' && rests) this.resting.fail(p);
     if (kind === 'CLOUD_AUTH') this.d.onRefused?.(p);
     if (kind === 'CLOUD_QUOTA') this.d.onQuota?.(p);
   }

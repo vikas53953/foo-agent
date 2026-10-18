@@ -7,7 +7,7 @@ import { WebTools } from '../../../src/engine/tools/web/WebTools';
 import { REST_MS } from '../../../src/engine/tools/web/resting';
 import { fakeExa } from '../../fakes/web/exa';
 import { fakeTavily } from '../../fakes/web/tavily';
-import { EXA_KEY_SETTINGS, FakeNet, FakePage, fixture, keys, NO_KEYS_SETTINGS, world } from '../../fakes/web/net';
+import { CANARY_VAULT, EXA_KEY_SETTINGS, FakeNet, FakePage, fixture, keys, NO_KEYS_SETTINGS, world } from '../../fakes/web/net';
 
 const ctx = { chatId: 'c_trips', jobId: 'j_1', toolCallId: 'tc_1' };
 const bingPage = (url: string): string | null =>
@@ -147,5 +147,23 @@ describe('web.search', () => {
     const page = new FakePage(bingPage);
     await new WebTools(world({ page, searchLang: () => 'hi' }).deps).search({ query: 'cafe' }, ctx);
     expect(page.loads[0]).toContain('&setlang=hi');
+  });
+
+  it('only CLOUD_DOWN counts toward resting: three 401s or 429s never rest the provider', async () => {
+    for (const status of [401, 429]) {
+      const net = new FakeNet().on('api.exa.ai', fakeExa({ status }));
+      const w = world({ net, page: new FakePage(bingPage), settings: () => EXA_KEY_SETTINGS, keys: keys({ exa: 'k' }) });
+      const tools = new WebTools(w.deps);
+      for (let i = 0; i < 4; i++) await tools.search({ query: 'cafe' }, ctx);
+      expect(tools.resting.isResting('exa')).toBe(false);
+      expect(net.to('api.exa.ai')).toHaveLength(4);
+    }
+  });
+
+  it('a query that is only a secret is never sent to the cloud', async () => {
+    const net = new FakeNet().on('api.exa.ai', fakeExa());
+    const w = world({ net, page: new FakePage(bingPage), settings: () => EXA_KEY_SETTINGS, keys: keys({ exa: 'k' }) });
+    await new WebTools(w.deps).search({ query: CANARY_VAULT }, ctx);
+    expect(net.requests).toEqual([]);
   });
 });

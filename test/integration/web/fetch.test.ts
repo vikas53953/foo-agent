@@ -126,4 +126,16 @@ describe('web.fetch', () => {
     const net = newsNet();
     expect(await new WebTools(world({ net }).deps).fetch({ url: SPA }, ctx)).toEqual({ ok: false, errorKind: 'needsBrowser' });
   });
+
+  it('Firecrawl 404 on a dead page → local path, and three of them never rest Firecrawl', async () => {
+    const net = newsNet().on('api.firecrawl.dev', fakeFirecrawl({ status: 404 }));
+    const w = world({ net, settings: () => ({ ...NO_KEYS_SETTINGS, read: 'firecrawl' }), keys: keys({ firecrawl: 'k' }) });
+    const tools = new WebTools(w.deps);
+    for (let i = 0; i < 4; i++) {
+      const r = await tools.fetch({ url: `${NEWS}?p=${i}` }, ctx);
+      expect(r.ok && r.via).toBe('this_pc');
+    }
+    expect(tools.resting.isResting('firecrawl')).toBe(false);
+    expect(net.to('api.firecrawl.dev')).toHaveLength(4);
+  });
 });

@@ -1,8 +1,9 @@
 // Spec: 08-1 §2.4 (MainToEngine `webkey.check {provider}` → ok | refused | unknown), 08-4 §27.3 (`resources/web-tools.json`,
 // key check), §27.4 (`resources/handback-sites.json` through `src/shared/handback.ts`, X-129), §27.6 (FOO_TEST_ALLOW_HOSTS:
 // test builds only), 08-2 §8.2 (web.fetch URL policy as browser.open), 08-0 §E.8 (vault `foo/web_key/{provider}`). Builds the
-// engine's web tools from the resource files. Until their milestones land: no vault (M5) so no key is ever returned and every
-// call takes the local path; no connectors (M8) so no ROUTE_ORDER host; no biller list (M10); no job window (M9 T3), whose
+// engine's web tools from the resource files. Until their milestones land: no vault (M5: keys come through `vaultWebKeys` over
+// an empty in-memory vault) so no key is ever returned and every call takes the local path; no AI spend meter (M4-T3: the
+// default never crosses, harmless while no key exists); no connectors (M8) so no ROUTE_ORDER host; no biller list (M10); no job window (M9 T3), whose
 // `browser.open` URL policy replaces the default below when it lands.
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -11,10 +12,13 @@ import type { Clock } from '../../../shared/clock';
 import { createHandback, handbackSitesSchema } from '../../../shared/handback';
 import type { Settings } from '../../../shared/settings';
 import { checkWebKey, type KeyCheck } from './keyCheck';
+import { memoryVault, vaultWebKeys } from './keys';
 import type { HttpFetch, PageLoader, SpendMeter, WebKeys, WebPricing, WebProvider, WebToolsResource, WebTurnRow } from './types';
 import { WebTools } from './WebTools';
 
 export { WebTools } from './WebTools';
+export { memoryVault, vaultWebKeys } from './keys';
+export { webToolDefs } from './toolDefs';
 export type { KeyCheck } from './keyCheck';
 
 const PRIVATE_V4 = [/^10\./, /^127\./, /^169\.254\./, /^172\.(1[6-9]|2\d|3[01])\./, /^192\.168\./, /^0\./];
@@ -55,6 +59,10 @@ export interface EngineWebOptions {
   log: (kind: string) => void;
   keys?: WebKeys;
   meter?: SpendMeter;
+  /** 401/403 at run time: main stores `connections.web.refused.{provider}`. */
+  onRefused?: (provider: WebProvider) => void;
+  /** A used-up key: one line in the next brief (`cards.brief.line.web_key_quota`). */
+  onQuota?: (provider: WebProvider) => void;
   page?: PageLoader;
 }
 
@@ -68,7 +76,7 @@ export function createEngineWeb(o: EngineWebOptions): EngineWeb {
   const read = (f: string): unknown => JSON.parse(readFileSync(join(o.resourcesDir, f), 'utf8'));
   const resource = read('web-tools.json') as WebToolsResource;
   const handback = createHandback(handbackSitesSchema.parse(read('handback-sites.json')));
-  const keys: WebKeys = o.keys ?? { use: async () => null };
+  const keys: WebKeys = o.keys ?? vaultWebKeys(memoryVault());
   const tools = new WebTools({
     clock: o.clock,
     sleep: (ms) => new Promise((r) => o.clock.setTimeout(r, ms)),
@@ -88,6 +96,8 @@ export function createEngineWeb(o: EngineWebOptions): EngineWeb {
     page: o.page,
     newId: o.newId,
     log: (kind) => o.log(kind),
+    onRefused: o.onRefused,
+    onQuota: o.onQuota,
   });
   return {
     tools,

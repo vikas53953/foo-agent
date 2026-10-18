@@ -16,8 +16,9 @@ export interface OutboundPayload {
 export type OutboundResult =
   { ok: true; text: Record<string, string>; urls: Record<string, string> } | { ok: false; kind: 'CLOUD_SECRET_BLOCKED' };
 
-/** The R11 names (08-2 §11.4 item 2 URL row), matched anywhere in the param name (`api_key`, `access_token`). */
-const SECRET_PARAM = /token|key|code|sig|password|pwd|secret|auth/i;
+/** The R11 names (08-2 §11.4 item 2 URL row) as whole parts of a param name split on _ and - (`api_key`, `access_token`). */
+const SECRET_PART = /^(?:token|key|apikey|code|sig|signature|password|pwd|secret|auth)$/i;
+const secretParam = (name: string): boolean => name.split(/[_-]/).some((part) => SECRET_PART.test(part));
 const MARKS = /\[hidden\]|•••• \d{4}/gu;
 
 function removeHits(scrub: Scrub, text: string): string {
@@ -52,7 +53,7 @@ export function outboundUrl(scrub: Scrub, raw: string): string | null {
   u.password = '';
   u.hash = '';
   for (const [name, value] of [...u.searchParams]) {
-    if (SECRET_PARAM.test(name) || hit(scrub, value)) u.searchParams.delete(name);
+    if (secretParam(name) || hit(scrub, value)) u.searchParams.delete(name);
   }
   return u.toString();
 }
