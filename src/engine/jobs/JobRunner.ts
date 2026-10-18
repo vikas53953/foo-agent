@@ -493,6 +493,11 @@ export class JobRunner {
           if (card?.resolvedAt === null || !card) continue;
           q.answeredAt = card.resolvedAt;
         }
+        // 08-2 §5.3.3: a job waiting on its Plan card stays queued until "Go" (found by T3: any free slot started it).
+        if (j.state === 'queued') {
+          const plans = (await this.query<CardRow[]>('cards.openForChat', j.chatId, 'plan')) ?? [];
+          if (plans.some((p) => p.jobId === j.id && p.state === 'pending')) continue;
+        }
         queue.push(q);
       }
       for (const id of pickStartable(queue, windows)) await this.start(id);
