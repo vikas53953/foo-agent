@@ -106,6 +106,24 @@ export interface AuditRow {
   note?: string;
 }
 
+/** The checks of a Tier R step that are in the Review band (with their numbers where there is one). */
+export function reviewChecks(t: TierRJson): string[] {
+  const out: string[] = [];
+  if (t.r1.verdict === 'review') out.push('R1 copy');
+  if (t.r2.verdict === 'review') out.push('R2 boxes');
+  if (t.r3.verdict === 'review') out.push(`R3 colour (ΔE ${t.r3.anchors.map((a) => a.deltaE ?? '–').join('/')})`);
+  if (t.r4.verdict === 'review') out.push(`R4 pixels (${((t.r4.ratio ?? 0) * 100).toFixed(2)} %)`);
+  return out;
+}
+
+/**
+ * §11.2.4 "A Review result is not a pass": a step any of whose checks is in the Review band is "review", even when Tier R
+ * JSON from an older run called it "disputed" for other checks (a dispute covers only the failing checks its CR names).
+ */
+export function withReview(t: TierRJson): TierRJson {
+  return t.verdict === 'disputed' && reviewChecks(t).length ? { ...t, verdict: 'review' } : t;
+}
+
 const evidenceList = (row: AuditRow): string[] => (row.evidence === undefined ? [] : [row.evidence].flat());
 
 /**
@@ -122,7 +140,7 @@ export function resolveAudit(row: AuditRow, one: (needle: string) => Status | nu
   return row.covers === 'whole' ? 'DONE' : 'PARTIAL';
 }
 
-interface TierRJson {
+export interface TierRJson {
   id: string;
   theme: string;
   verdict: 'pass' | 'review' | 'fail' | 'disputed';
@@ -245,8 +263,9 @@ export function build(opts: {
     ? readdirSync(opts.tierRDir)
         .filter((f) => f.endsWith('.tier-r.json'))
         .sort()
-        .map((f) => JSON.parse(readFileSync(join(opts.tierRDir, f), 'utf8')) as TierRJson)
+        .map((f) => withReview(JSON.parse(readFileSync(join(opts.tierRDir, f), 'utf8')) as TierRJson))
     : [];
+  const reviewRows = tierR.filter((t) => t.verdict === 'review');
   const wanted = [
     ...manifest.bp.filter((b) => b.milestone === opts.milestone).map((b) => b.id),
     // A UX step counts for its chapter's milestone and for the earlier milestone that first tests it (CR-0003).
@@ -366,8 +385,11 @@ export function build(opts: {
             `Nothing new to try yet: none of the ${wanted.length} ${opts.milestone} drawings is built in the app. This run shows that the checking machinery works.`,
           ]
         : [`${opts.milestone}: ${counts.pass} of ${wanted.length} drawings match; open the side-by-side rows below.`],
-      changed: counts.review
-        ? [`${counts.review} picture(s) differ a little from the drawing and need your look (Review rows).`]
+      changed: reviewRows.length
+        ? [
+            `${counts.review} picture(s) differ a little from the drawing and need your look (Review rows), whatever else a CR disputes:`,
+            ...reviewRows.map((t) => `${t.id} (${t.theme}): ${reviewChecks(t).join(', ')} in the Review band; see it side by side below.`),
+          ]
         : ['Nothing differs from the drawings so far.'],
       needsYes: crs()
         .filter((c) => !/^Approved/i.test(c.status))
