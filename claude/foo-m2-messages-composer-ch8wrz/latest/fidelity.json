@@ -1,19 +1,19 @@
 {
-  "reportId": "M2-0093412-39090125275",
+  "reportId": "M2-d1f3cf4-39091301150",
   "milestone": "M2",
-  "generatedAt": "2026-10-18T02:38:06.522Z",
-  "commit": "b9d61684562f11c84db0a7434d7c0ddde002fb42",
-  "head": "00934124b261f49184de06a568abcb8963ccb1a3",
+  "generatedAt": "2026-10-18T02:57:39.838Z",
+  "commit": "5c2d4bb477dfb61c40b9d0f269b7a95b22931708",
+  "head": "d1f3cf4ebe872004f30691d674464af50c851165",
   "ci": {
-    "runId": "39090125275",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39090125275"
+    "runId": "39091301150",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39091301150"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "a563b9da076143846b99614e34f0d5c4f55396b7725ba7b305f70b2185914da4"
   },
   "runner": {
-    "recordedAt": "2026-10-18T02:31:08.508Z",
+    "recordedAt": "2026-10-18T02:52:23.421Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000002832"
+      "runner": "GitHub Actions 1000002833"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,7 +59,6 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "1 test(s) failed",
     "12 audit item(s) not DONE (the milestone is not complete)",
     "CHANGED items need an approved CR"
   ],
@@ -179,7 +178,7 @@
       "evidence": "test:PERF-02",
       "covers": "part",
       "manual": "Vikas with the coordinator, on the reference laptop (10-2 §E.1: 20 runs, a job running, repeated at 225 % text size), before M2 sign-off; the CI run is a proxy",
-      "resolved": "NOT DONE"
+      "resolved": "PARTIAL"
     },
     {
       "group": "M2 Must pass",
@@ -491,8 +490,8 @@
         "skipped": 0
       },
       "e2e": {
-        "passed": 36,
-        "failed": 1,
+        "passed": 37,
+        "failed": 0,
         "skipped": 0
       }
     },
@@ -8784,7 +8783,7 @@
       },
       {
         "id": "PERF-02",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
@@ -8868,14 +8867,7 @@
         "file": "test/fidelity/bp/BP-shell.spec.ts"
       }
     ],
-    "failed": [
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m2-composer.spec.ts",
-        "title": "PERF-02 · typing in the 5,000-message chat paints within a frame (p95)",
-        "status": "failed"
-      }
-    ],
+    "failed": [],
     "trace": {
       "live": 7,
       "pending": 51,
@@ -8911,7 +8903,7 @@
       },
       {
         "id": "CR-0005",
-        "title": "PERF-02 on the hosted runner is measured against the runner's own floor",
+        "title": "how PERF-02 measures \"keydown → character painted\"",
         "status": "Approved under overnight instruction (Vikas, 2026-10-17 18:52Z/18:59Z: continue the overnight build, don't wait"
       },
       {
@@ -9340,7 +9332,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "pass (BP-ANAT-L ΔE 1.68)",
         "r4": "skipped: no hl element",
-        "r5": 0.15494140625,
+        "r5": 0.1549462890625,
         "ref": true,
         "app": true,
         "diff": true
@@ -9353,7 +9345,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "review (BP-ANAT-L ΔE 3.65)",
         "r4": "skipped: no hl element",
-        "r5": 0.1343076171875,
+        "r5": 0.134306640625,
         "ref": true,
         "app": true,
         "diff": true
@@ -9769,7 +9761,7 @@
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
         "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05366272489560161,
+        "r5": 0.05374077976817703,
         "ref": true,
         "app": true,
         "diff": true
@@ -9808,7 +9800,7 @@
         "r2": "fail (BP-COMP-06 0/248.65625 px)",
         "r3": "pass (BP-COMP-06 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.15836676550962264,
+        "r5": 0.1584539798825513,
         "ref": true,
         "app": true,
         "diff": true
@@ -10146,7 +10138,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 20.59)",
         "r4": "fail (21.84 %)",
-        "r5": 0.1200634765625,
+        "r5": 0.1200380859375,
         "ref": true,
         "app": true,
         "diff": true
@@ -10159,7 +10151,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 35.2)",
         "r4": "fail (21.68 %)",
-        "r5": 0.098533203125,
+        "r5": 0.0985458984375,
         "ref": true,
         "app": true,
         "diff": true
@@ -10172,7 +10164,7 @@
         "r2": "fail (hl 373.484375/26.125 px)",
         "r3": "fail (hl ΔE 51.22)",
         "r4": "fail (23.36 %)",
-        "r5": 0.1824306640625,
+        "r5": 0.2014892578125,
         "ref": true,
         "app": true,
         "diff": true
@@ -10185,7 +10177,7 @@
         "r2": "fail (hl 373.484375/26.125 px)",
         "r3": "fail (hl ΔE 29.25)",
         "r4": "fail (23.94 %)",
-        "r5": 0.1277783203125,
+        "r5": 0.148251953125,
         "ref": true,
         "app": true,
         "diff": true
