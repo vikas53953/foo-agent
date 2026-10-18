@@ -7,12 +7,12 @@
 import { appendFileSync, mkdirSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fail, ok, type Result } from '../../shared/errors';
-import { redactSecrets } from '../../shared/redactor';
 import { isCardState } from '../../shared/cards';
 import { canTransition } from '../../shared/jobMachine';
 import type { ActivityOpRow, DbOp, DbTxReply } from '../../engine/protocol';
 import type { Db } from '../store/db';
 import { nextSeq } from '../store/composerQueries';
+import { redactRow, writeRedacted } from '../store/writeRedacted';
 import { recomputePill } from '../store/queries';
 import { NAMED_QUERIES, type QueryCtx } from '../db/queries';
 import { newId } from '../../shared/ids';
@@ -199,7 +199,7 @@ function checkColumns(cols: string[], allowed: readonly string[] | undefined): v
 }
 
 function redactLeaves(v: unknown): unknown {
-  if (typeof v === 'string') return redactSecrets(v).text;
+  if (typeof v === 'string') return writeRedacted(v);
   if (Array.isArray(v)) return v.map(redactLeaves);
   if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, redactLeaves(x)]));
   return v;
@@ -241,11 +241,9 @@ function noteJob(db: Db, jobId: string, fx: TxEffects): void {
 
 function insertRow(db: Db, op: Extract<DbOp, { op: 'insert' }>, fx: TxEffects, now: number): { id: string; rev: number } {
   checkColumns(Object.keys(op.row), INSERT_COLUMNS[op.table]);
-  const row = normalise(op.table, op.row);
-  for (const col of op.redact ?? []) if (typeof row[col] === 'string') row[col] = redactSecrets(row[col] as string).text;
+  // Art. 8 / §4.6 rule 2: every listed text column (and the op's `redact` list) is stored redacted (Store.writeRedacted).
+  const row = redactRow(op.table, normalise(op.table, op.row), op.redact ?? []);
   if (op.table === 'messages') {
-    // Art. 8 / §4.6 rule 2: message text is always stored redacted.
-    if (typeof row.text === 'string') row.text = redactSecrets(row.text).text;
     const chatId = String(row.chat_id);
     const seq = nextSeq(db, chatId);
     const cols = [...Object.keys(row), 'seq'];
@@ -324,8 +322,7 @@ function writeSet(
 function updateRow(db: Db, op: Extract<DbOp, { op: 'update' }>, fx: TxEffects, now: number): { id: string; rev: number } {
   if (op.table === 'reactions') throw new DbOpError('DB_NOT_WRITABLE');
   checkColumns(Object.keys(op.set), UPDATE_COLUMNS[op.table]);
-  const set = normalise(op.table, op.set);
-  if (op.table === 'messages' && typeof set.text === 'string') set.text = redactSecrets(set.text).text;
+  const set = redactRow(op.table, normalise(op.table, op.set));
   const cur = currentRow(db, op.table, op.id);
   // The engine moves a user message's status and badge only; its words are the user's (Art. 8, main is the writer).
   if (op.table === 'messages' && cur.author_kind === 'user' && ('text' in set || 'provider_note' in set))
@@ -335,7 +332,7 @@ function updateRow(db: Db, op: Extract<DbOp, { op: 'update' }>, fx: TxEffects, n
 }
 
 function transitionRow(db: Db, op: Extract<DbOp, { op: 'transition' }>, fx: TxEffects, now: number): { id: string; rev: number } {
-  const set = normalise(op.table, op.set ?? {});
+  const set = redactRow(op.table, normalise(op.table, op.set ?? {}));
   checkColumns(Object.keys(set), UPDATE_COLUMNS[op.table]);
   if ('state' in set) throw new DbOpError('DB_NOT_WRITABLE', 'state is the transition target');
   const cur = currentRow(db, op.table, op.id);
@@ -372,7 +369,7 @@ function insertActivity(db: Db, row: ActivityOpRow, now: number, lines: string[]
   const id = newId('act', now);
   const clean: ActivityOpRow = {
     ...row,
-    summary: redactSecrets(row.summary).text,
+    summary: writeRedacted(row.summary),
     fields: row.fields ? (redactLeaves(row.fields) as Record<string, unknown>) : null,
   };
   const cols = ['id', 'at', ...Object.keys(clean).map((k) => ACTIVITY_COLUMNS[k as keyof ActivityOpRow])];
