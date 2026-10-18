@@ -9,7 +9,7 @@
     "uxChapters": 25,
     "uxSteps": 245,
     "uxFrames": 490,
-    "bp": 39
+    "bp": 41
   },
   "bp": [
     {
@@ -471,6 +471,30 @@
       "spec": "05-3 §5.21",
       "milestone": "M4",
       "note": "Card gallery: Spend cap. App: the spend cap card in the thread, from seeded card rows."
+    },
+    {
+      "id": "BP-CARD-16",
+      "selector": "#cardgal > .panel:nth-child(16) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "05-3 §5.17",
+      "milestone": "M6",
+      "note": "Card gallery: Memory chip. App: the chip under a reply in the thread, from a seeded marker row."
+    },
+    {
+      "id": "BP-SCR-09",
+      "selector": "#scrgal > .scr:nth-child(9) > .body",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "06-2 §7",
+      "milestone": "M6",
+      "note": "Screen gallery: What I know about you. App: the Memory page on the seeded world."
     }
   ],
   "ux": [

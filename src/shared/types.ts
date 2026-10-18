@@ -473,8 +473,14 @@ export interface RoutineRow {
   updatedAt: number;
 }
 
-// ---- memory (08-5 §3.6: memory_index camelCased without hash, plus labels) ----
+// ---- memory (08-0 §B.2 X-06/X-112; 08-5 §3.6: memory_index camelCased without hash, plus labels) ----
 export type MemoryScope = 'global' | 'chat' | 'helper';
+export type MemoryKind = 'person' | 'preference' | 'place' | 'fact';
+export type MemoryProvenance = 'said' | 'guessed';
+/** = MemorySource; labels chat, Gmail, Calendar, WhatsApp, you typed it, setup, a task (08-3 §12.2). */
+export type MemoryOrigin = 'chat' | 'gmail' | 'gcal' | 'whatsapp' | 'manual' | 'setup' | 'job';
+export type MemoryCategory =
+  'food' | 'travel' | 'health' | 'money' | 'people' | 'places' | 'work' | 'style' | 'home' | 'family' | 'religion' | 'politics' | 'other';
 export interface MemoryFactView {
   id: string;
   file: string;
@@ -482,12 +488,12 @@ export interface MemoryFactView {
   scope: MemoryScope;
   chatId: string | null;
   text: string;
-  provenance: 'said' | 'guessed';
+  provenance: MemoryProvenance;
   origin: string;
-  originKind: 'chat' | 'gmail' | 'gcal' | 'whatsapp' | 'manual' | 'setup' | 'job';
+  originKind: MemoryOrigin;
   reason: string | null;
-  category: string | null;
-  kind: 'person' | 'preference' | 'place' | 'fact';
+  category: MemoryCategory | null;
+  kind: MemoryKind;
   sensitive: boolean;
   private: boolean;
   learnedAt: number;
@@ -501,6 +507,16 @@ export interface MemoryFilter {
   chip: 'all' | 'said' | 'guessed' | 'gmail' | 'whatsapp' | 'chat';
   helperId?: string;
   last7?: boolean;
+}
+/** 08-5 §3.6; 05-3 §5.17.1 rows. `text` is the full fact (the renderer ellipsises at 48). */
+export interface MemoryChip {
+  messageId: string;
+  factIds: string[];
+  kind: 'saved' | 'guessed' | 'updated' | 'used' | 'not_saving';
+  text: string;
+  was?: string;
+  undoToken?: string;
+  undoUntil?: number;
 }
 
 /** 08-5 §3 StopReport (`done` holds ActivityRow rows; the activity log arrives with J21, so M1 sends none). */
@@ -677,6 +693,13 @@ export type ErrorKind =
   | 'PROTOCOL_FIX_ACTION'
   | 'IDEMPOTENT_REPEAT'
   | 'CARD_STALE'
+  // M6 (08-1 §3.2 memory rows, 08-3 §21.3, §19.4): memory
+  | 'MEMORY_PARSE'
+  | 'TOO_LATE'
+  | 'CONFIRM_MISMATCH'
+  | 'PRIVATE_BLOCKED'
+  | 'EXPORT_SECRET_FOUND'
+  | 'DISK_FULL'
   | 'UNKNOWN';
 
 // ---- card payloads (08-5 §4.1) the M2 cards draw ----

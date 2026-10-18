@@ -84,6 +84,14 @@ export const settingsSchema = z.object({
       })
       .refine((q) => q.from !== q.to),
     mutedChats: z.record(z.string(), z.union([z.number().int(), z.literal('forever')])),
+    /** M6 (08-0 §A.1, Art. 19): the unprompted budget the memory conflict card counts against (0–3). */
+    unpromptedPerDay: z.number().int().min(0).max(3),
+  }),
+  /** M6 (08-0 §A.1): memory switches (06-2 §6.6 rows mem-on, mem-learn, mem-ask). */
+  privacy: z.object({
+    rememberOn: z.boolean(),
+    learnFromChats: z.boolean(),
+    askBeforeRemembering: z.boolean(),
   }),
   flags: z.object({
     screenHands: z.boolean(),
@@ -96,5 +104,12 @@ export const settingsSchema = z.object({
 export type Settings = z.infer<typeof settingsSchema>;
 
 /** Paths `settings:set` accepts in M1 (the shell writes only these; 08-0 §A). Later milestones extend the list. */
-export const WRITABLE_PATHS = ['window.sidebarWidth', 'window.rightShellOpen', 'window.lastChatId', 'money.warnAt80'] as const;
+export const WRITABLE_PATHS = [
+  'window.sidebarWidth',
+  'window.rightShellOpen',
+  'window.lastChatId',
+  'money.warnAt80',
+  // M6: the Memory page banner's "Turn back on" (06-2 §7.5); the Privacy rows arrive with M13.
+  'privacy.rememberOn',
+] as const;
 export type WritablePath = (typeof WRITABLE_PATHS)[number];

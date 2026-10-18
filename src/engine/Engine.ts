@@ -18,6 +18,7 @@ import { AiRegistry, CliLimiter, createAdapters, loadPricing, nodeAiFs, nodeWhic
 import { AiService } from './AiService';
 import { ChatLane, type IntakeDecisionView, type IntakeInput, type LaneProtocol } from './chat/ChatLane';
 import type { MainLink, MainToEngine } from './protocol';
+import { memoryNotBuilt, type MemoryPort } from './memory/MemoryPort';
 import { parseEnvelope, validateAct, formatIssues } from './prompt/envelope';
 import { filterSay } from './prompt/filters';
 import { PromptBuilder, type ConversationMessage } from './prompt/PromptBuilder';
@@ -46,6 +47,8 @@ export class Engine {
   readonly lane: ChatLane;
   readonly redactor: Redactor;
   private prompts: PromptBuilder;
+  /** M6 slot (CR-0010): T3 sets MemoryService here, T7 its tidy. */
+  memory: MemoryPort = memoryNotBuilt;
 
   static create(o: EngineOptions): Engine {
     return new Engine(o);
@@ -261,6 +264,11 @@ export class Engine {
       // M4 T1 stub (G-M4-04): the job runner (T2/T4) pauses its WORKING jobs here; until then there are none to pause.
       case 'jobs.pauseAll':
         return ok({ paused: [] as string[] });
+      // M6 (CR-0010 G-M6-01): the Memory page's invokes, answered with the invoke's result.
+      case 'memory.cmd':
+        return this.memory.cmd(msg.payload);
+      case 'test.memoryTidy':
+        return this.memory.tidy();
       default:
         return undefined;
     }

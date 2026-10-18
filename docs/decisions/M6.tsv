@@ -1,0 +1,4 @@
+ts	phase	decision	why	evidence	result
+2026-10-18T18:06:00Z	contract	goal: M6 memory as 8 tickets (T1-T8), one thread per ticket, merged into claude/foo-m6-bg91as, run ahead of M5 (based on the M4 branch); PR to main only after M5 is on main	Vikas 2026-10-18 16:46Z (thread per ticket) and 18:03Z (run independent milestones in parallel now)	/mnt/project-files/foo/prep/M6-tickets.md	open
+2026-10-18T18:12:00Z	approval	M6 ticket map approved on Vikas's behalf	independent Sonnet review PASS-WITH-FIXES; 4 act + 3 consider applied; his rule 2026-10-18 14:56Z	M6-tickets.md header	done
+2026-10-18T18:26:00Z	approval	CR-0010 (G-M6-01..12, contract shapes, X-163) approved on Vikas's behalf	independent Fable review PASS-WITH-FIXES; 2 act + 2 consider applied; his rule 2026-10-18 14:56Z	docs/cr/CR-0010-m6-rows-and-picks.md (e)	done

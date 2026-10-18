@@ -4,8 +4,10 @@
 // naming one of them → DB_NOT_WRITABLE), §4.5.1 (card states validated on every write → VALIDATION), §4.1.2 (mirrors written
 // temp + replace by main), §4.6 rule 2 (stored text goes through the Redactor), §2.4 (ui.patch is forwarded to the renderer
 // as-is), 07-2 §4 (job machine, src/shared/jobMachine.ts). Main is the single writer (08-1 §1.1). CR-0008.
+// M6 (CR-0010): writable memory tables; `INSERT INTO memory_fts(memory_fts) VALUES ('rebuild')` in the same tx whenever
+// memory_index moved (08-1 §2.5); `file.write` for memory files and helper notes only (08-1 §2.4, 08-3 §12.2).
 import { appendFileSync, mkdirSync, renameSync, rmSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { fail, ok, type Result } from '../../shared/errors';
 import { redactSecrets } from '../../shared/redactor';
 import { isCardState } from '../../shared/cards';
@@ -117,6 +119,27 @@ const AI_TURN_COLUMNS = [
   'started_at',
 ];
 
+const MEMORY_INDEX_COLUMNS = [
+  'id',
+  'file',
+  'line_no',
+  'scope',
+  'chat_id',
+  'text',
+  'provenance',
+  'origin',
+  'origin_kind',
+  'reason',
+  'category',
+  'kind',
+  'sensitive',
+  'private',
+  'learned_at',
+  'last_used_at',
+  'use_count',
+  'hash',
+];
+
 /** Columns the engine may set on insert, per table (anything else → DB_NOT_WRITABLE). */
 const INSERT_COLUMNS: Record<string, readonly string[]> = {
   messages: [
@@ -145,7 +168,13 @@ const INSERT_COLUMNS: Record<string, readonly string[]> = {
   steps: STEP_COLUMNS,
   tool_calls: TOOL_CALL_COLUMNS,
   cards: CARD_COLUMNS,
+  memory_index: MEMORY_INDEX_COLUMNS,
+  memory_tombstones: ['hash', 'origin_kind', 'forgotten_at', 'expires_at'],
+  memory_uses: ['fact_id', 'chat_id', 'job_id', 'at'],
+  memory_group_grants: ['fact_id', 'chat_id', 'until'],
 };
+/** Re-learning or re-granting replaces the row (PK hash+origin_kind / fact_id+chat_id). */
+const UPSERT_TABLES = new Set(['memory_tombstones', 'memory_group_grants']);
 /** Columns the engine may change with `update` (ids, owners and creation times never move; `jobs.state` only by transition). */
 const UPDATE_COLUMNS: Record<string, readonly string[]> = {
   messages: ['text', 'status', 'badge', 'provider_note', 'job_id'],
@@ -156,6 +185,7 @@ const UPDATE_COLUMNS: Record<string, readonly string[]> = {
   steps: STEP_COLUMNS.filter((c) => !['id', 'job_id', 'idx'].includes(c)),
   tool_calls: TOOL_CALL_COLUMNS.filter((c) => !['id', 'job_id', 'started_at', 'idem_key'].includes(c)),
   cards: ['state', 'payload', 'answer', 'expires_at', 'resolved_by', 'resolved_at', 'supersedes_id', 'job_id'],
+  memory_index: MEMORY_INDEX_COLUMNS.filter((c) => c !== 'id'),
 };
 /** JSON columns: an object or array is stored as JSON text; `REDACT_JSON` ones have every string leaf redacted (§4.6 rule 2). */
 const JSON_COLUMNS: Record<string, readonly string[]> = {
@@ -173,6 +203,8 @@ export interface TxEffects {
   chatIds: Set<string>;
   jobIds: Set<string>;
   cardIds: Set<string>;
+  /** M6: memory_index rows written in this tx (main then rebuilds memory_fts in the same tx). */
+  factIds: Set<string>;
 }
 export interface TxOptions {
   /** Epoch ms for derived columns (`pill_until`), card `updated_at` and activity `at` (the injected clock). */
@@ -191,7 +223,13 @@ class DbOpError extends Error {
   }
 }
 
-const emptyEffects = (): TxEffects => ({ messageIds: new Set(), chatIds: new Set(), jobIds: new Set(), cardIds: new Set() });
+const emptyEffects = (): TxEffects => ({
+  messageIds: new Set(),
+  chatIds: new Set(),
+  jobIds: new Set(),
+  cardIds: new Set(),
+  factIds: new Set(),
+});
 
 function checkColumns(cols: string[], allowed: readonly string[] | undefined): void {
   if (!allowed) throw new DbOpError('DB_NOT_WRITABLE');
@@ -263,7 +301,11 @@ function insertRow(db: Db, op: Extract<DbOp, { op: 'insert' }>, fx: TxEffects, n
     if (row.updated_at === undefined) row.updated_at = row.created_at ?? now;
   }
   const cols = Object.keys(row);
-  db.prepare(`INSERT INTO ${op.table} (${cols.join(', ')}) VALUES (${cols.map(() => '?').join(', ')})`).run(...Object.values(row));
+  const verb = UPSERT_TABLES.has(op.table) ? 'INSERT OR REPLACE' : 'INSERT';
+  db.prepare(`${verb} INTO ${op.table} (${cols.join(', ')}) VALUES (${cols.map(() => '?').join(', ')})`).run(...Object.values(row));
+  if (op.table === 'memory_tombstones') return { id: `${String(row.hash)}|${String(row.origin_kind)}`, rev: 0 };
+  if (op.table === 'memory_group_grants') return { id: `${String(row.fact_id)}|${String(row.chat_id)}`, rev: 0 };
+  if (op.table === 'memory_uses') return { id: String(row.fact_id), rev: 0 };
   if (op.table === 'reactions') {
     const messageId = String(row.message_id);
     db.prepare('UPDATE messages SET rev = rev + 1 WHERE id = ?').run(messageId);
@@ -277,6 +319,7 @@ function insertRow(db: Db, op: Extract<DbOp, { op: 'insert' }>, fx: TxEffects, n
     fx.cardIds.add(id);
     fx.chatIds.add(String(row.chat_id));
   }
+  if (op.table === 'memory_index') fx.factIds.add(id);
   return { id, rev: HAS_REV.has(op.table) ? 1 : 0 };
 }
 
@@ -318,11 +361,11 @@ function writeSet(
     fx.cardIds.add(id);
     fx.chatIds.add(String(cur.chat_id));
   }
+  if (table === 'memory_index') fx.factIds.add(id);
   return { id, rev: HAS_REV.has(table) ? Number(cur.rev) + 1 : 0 };
 }
 
 function updateRow(db: Db, op: Extract<DbOp, { op: 'update' }>, fx: TxEffects, now: number): { id: string; rev: number } {
-  if (op.table === 'reactions') throw new DbOpError('DB_NOT_WRITABLE');
   checkColumns(Object.keys(op.set), UPDATE_COLUMNS[op.table]);
   const set = normalise(op.table, op.set);
   if (op.table === 'messages' && typeof set.text === 'string') set.text = redactSecrets(set.text).text;
@@ -412,6 +455,53 @@ function stageMirror(db: Db, op: Extract<DbOp, { op: 'mirror' }>, dataDir: strin
   return { id: op.id, rev: 0 };
 }
 
+function deleteRow(db: Db, op: Extract<DbOp, { op: 'delete' }>, fx: TxEffects): { id: string; rev: number } {
+  const [a, b] = op.id.split('|');
+  switch (op.table) {
+    case 'reactions':
+      db.prepare('DELETE FROM reactions WHERE message_id = ? AND by = ?').run(a, b);
+      db.prepare('UPDATE messages SET rev = rev + 1 WHERE id = ?').run(a);
+      fx.messageIds.add(String(a));
+      return { id: String(a), rev: 0 };
+    case 'memory_index':
+      db.prepare('DELETE FROM memory_index WHERE id = ?').run(op.id);
+      db.prepare('DELETE FROM memory_group_grants WHERE fact_id = ?').run(op.id);
+      fx.factIds.add(op.id);
+      return { id: op.id, rev: 0 };
+    case 'memory_tombstones':
+      db.prepare('DELETE FROM memory_tombstones WHERE hash = ? AND origin_kind = ?').run(a, b);
+      return { id: op.id, rev: 0 };
+    case 'memory_group_grants':
+      db.prepare('DELETE FROM memory_group_grants WHERE fact_id = ? AND chat_id = ?').run(a, b);
+      return { id: op.id, rev: 0 };
+  }
+}
+
+/** 08-3 §12.2 / §12.7 / X-112: the only files `file.write` may touch, relative to `{DATA}` with forward slashes. */
+const WRITABLE_FILE =
+  /^(memory\/(?:(?:people|preferences)\/)?[^/\\:*?"<>|]+\.md|memory\/\.tombstones|memory\/\.tidy-log\.md|helpers\/h_[A-Za-z0-9_-]+\/notes\.md)$/u;
+
+export function isWritableDataFile(relPath: string): boolean {
+  return WRITABLE_FILE.test(relPath) && !relPath.split('/').some((seg) => seg === '..' || seg === '.' || seg === '');
+}
+
+/** 08-1 §2.4 `file.write { relPath; text; atomic: true }`: UTF-8, temp file then rename (§4.1.2). */
+export function writeDataFile(dataDir: string | undefined, relPath: string, text: string): Result<Record<string, never>> {
+  if (!dataDir || !isWritableDataFile(relPath)) return fail('PATH_NOT_ALLOWED');
+  const dest = join(dataDir, ...relPath.split('/'));
+  const tmp = `${dest}.${process.pid}.${Date.now()}.tmp`;
+  try {
+    mkdirSync(dirname(dest), { recursive: true });
+    writeFileSync(tmp, text, 'utf8');
+    renameSync(tmp, dest);
+    return ok({});
+  } catch (e) {
+    rmSync(tmp, { force: true });
+    const full = (e as NodeJS.ErrnoException).code === 'ENOSPC';
+    return fail(full ? 'DISK_FULL' : 'PATH_NOT_ALLOWED', e instanceof Error ? e.message : undefined);
+  }
+}
+
 /** One db.tx. */
 export function applyDbOps(db: Db, ops: DbOp[], opts: TxOptions = {}): { result: Result<DbTxReply>; effects: TxEffects } {
   const now = opts.now ?? Date.now();
@@ -434,18 +524,15 @@ export function applyDbOps(db: Db, ops: DbOp[], opts: TxOptions = {}): { result:
               return insertActivity(db, op.row, now, activityLines);
             case 'mirror':
               return stageMirror(db, op, opts.dataDir, mirrors);
-            case 'delete': {
-              const [messageId, by] = op.id.split('|');
-              db.prepare('DELETE FROM reactions WHERE message_id = ? AND by = ?').run(messageId, by);
-              db.prepare('UPDATE messages SET rev = rev + 1 WHERE id = ?').run(messageId);
-              effects.messageIds.add(String(messageId));
-              return { id: String(messageId), rev: 0 };
-            }
+            case 'delete':
+              return deleteRow(db, op, effects);
           }
         })();
         out.ids.push(r.id);
         out.revs.push(r.rev);
       }
+      // 08-1 §2.5: memory_fts follows memory_index in the same transaction.
+      if (effects.factIds.size) db.prepare("INSERT INTO memory_fts(memory_fts) VALUES ('rebuild')").run();
       // §4.6 rule 7: the pill of every chat whose jobs or cards moved, in this same transaction.
       if (effects.jobIds.size || effects.cardIds.size) for (const chatId of effects.chatIds) recomputePill(db, chatId, now);
       return out;
