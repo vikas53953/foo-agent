@@ -1,0 +1,24 @@
+{
+  "before": "16acd2df7adb0c68a735b199f51212ddfa6b90e5",
+  "after": "16acd2df7adb0c68a735b199f51212ddfa6b90e5",
+  "rows": [
+    {
+      "name": "foo-chat-open.light",
+      "before": "before/01-foo-chat-open.light.png",
+      "after": "after/01-foo-chat-open.light.png",
+      "changed": 0
+    },
+    {
+      "name": "foo-replied.light",
+      "before": "before/02-foo-replied.light.png",
+      "after": "after/02-foo-replied.light.png",
+      "changed": 0
+    },
+    {
+      "name": "foo-replied.dark",
+      "before": "before/03-foo-replied.dark.png",
+      "after": "after/03-foo-replied.dark.png",
+      "changed": 0
+    }
+  ]
+}

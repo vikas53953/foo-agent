@@ -1,0 +1,35 @@
+{
+  "journey": "test/verify/send-and-reply.journey.ts",
+  "label": "before",
+  "appDir": "/tmp/claude-0/-home-claude-foo-agent/75510af7-ae90-54ed-a353-1d429d857f92/scratchpad/foo-base",
+  "commit": "16acd2df7adb0c68a735b199f51212ddfa6b90e5",
+  "dirty": false,
+  "started": "2026-10-18T16:50:51.624Z",
+  "finished": "2026-10-18T16:50:55.590Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "sent \"What is on today?\" through the composer; it shows as my bubble",
+    "foo answered \"Two things today: the dentist at 4 PM and Riya’s birthday cake pickup at 6.\" in a new bubble (5 → 6 foo bubbles)",
+    "the fake AI got exactly one intake request and answered it with line 1"
+  ],
+  "shots": [
+    {
+      "file": "before/01-foo-chat-open.light.png",
+      "name": "foo-chat-open",
+      "theme": "light"
+    },
+    {
+      "file": "before/02-foo-replied.light.png",
+      "name": "foo-replied",
+      "theme": "light"
+    },
+    {
+      "file": "before/03-foo-replied.dark.png",
+      "name": "foo-replied",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": []
+}
