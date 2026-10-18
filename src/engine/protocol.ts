@@ -112,6 +112,21 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
     kind: z.literal('test.jobEvent'),
     payload: z.object({ jobId: z.string(), event: z.string() }).strict(),
   }),
+  // M8 (CR-0012, landed by the lead so T2 and T3 share one row): 08-1 §2.4 `connection.cmd` and `bridge.port`. The port itself
+  // travels as the message's transferred MessagePort; the payload is empty.
+  z.object({
+    id: z.string(),
+    kind: z.literal('connection.cmd'),
+    payload: z
+      .object({
+        target: z.enum(['google', 'outlook', 'whatsapp']),
+        cmd: z.enum(['connect', 'reconnect', 'disconnect', 'linkStart', 'linkCancel', 'unlink']),
+        connectionId: z.string().optional(),
+        scopes: z.array(z.enum(['gmail', 'gcal', 'contacts'])).optional(),
+      })
+      .strict(),
+  }),
+  z.object({ id: z.string(), kind: z.literal('bridge.port'), payload: z.object({}).strict() }),
 ]);
 export type MainToEngine = z.infer<typeof mainToEngineSchema>;
 
