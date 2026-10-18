@@ -466,3 +466,38 @@ files are real and which stay seeds). What the real output pinned:
 
 - Gemini CLI (not installed on the PC) and the three key APIs (no test key) parse seed fixtures written from the spec.
 - The Windows `taskkill /T` tree kill: the grandchild test runs on POSIX only.
+
+## M4 · job runner contracts (ticket T1, CR-0008)
+
+### Built
+
+- `spec/state-machines.json` from `scripts/extract-sm.ts` (job machine: 8 states, 23 events, 32 transitions, forbidden pairs,
+  badge per state, FID-17 invariants; `--check` also fails when 07-2 §4 names a pair the machine lacks) and
+  `src/shared/jobMachine.ts` (`JOB_STATES`, `TERMINAL`, `JOB_EVENTS`, `nextState`, `canTransition`, `BADGE_OF_STATE`), checked
+  against each other by FID-16 (`test/fidelity/sm/FID-16.test.ts`, every state × event and every from × to through `db.tx`).
+- Migration `0002_routes.sql` (G-M4-03); `migrate()` runs a migration whose first line is `-- foo:foreign-keys-off` with
+  foreign keys off and `foreign_key_check` before commit.
+- `src/engine/protocol.ts`: DbOp `insert | update(expectRev) | transition | delete | activity | mirror`, writable jobs, steps,
+  tool_calls, cards; MainToEngine `card.answered`, `job.stop`, `job.stopAll`, `job.retry`, `power`, `jobs.pauseAll`,
+  `test.jobEvent`; EngineToMain `power.keepAwake`, `notify`; the 12 job NamedQuery names (`src/main/db/queries.ts`).
+- `engineHost.ts`: every op in one transaction; `DB_BAD_TRANSITION`, `DB_STALE_REV`, `VALIDATION` (card states), tool call
+  args/results, card payloads and activity summaries redacted; chat pill re-derived in the transaction; mirrors staged as temp
+  files and renamed after commit; activity rows appended to `{DATA}\activity.jsonl` after commit. `EngineBridge` emits
+  `job:upsert` / `card:upsert`, forwards `power.keepAwake` to `ctx.keepAwake` and logs `notify` (stub until M11).
+- `src/shared/phrases.ts` (08-4 §26.1 table, `resolvePhrase`, `phraseCopyKey`, `phraseText`), M4 test ids, M4 copy keys,
+  `CARD_STATES` / `isCardState` (`src/shared/cards.ts`), M4 types (`StopReason`, `ProofKind`, `FixAction`, `ActivityRow`,
+  the M4 card payloads) and error kinds; `fast-check` 4.10.2.
+
+### Picks and gaps (each in CR-0008 §(b))
+
+- G-M4-01…15: the pack's recommended options.
+- G-M4-16: `jobs.pauseAll` pauses WORKING jobs only; QUEUED stays queued, NEEDS_YOU keeps waiting on the user.
+- G-M4-17: a WAITING job's bubble badge stays `working`; the pill says Paused.
+- DbOp `mirror` keeps 08-1's `{ kind, id, text }` shape; `transition` also accepts `cards`; `activity` is not a writable
+  table (only op `activity`); `jobs.state` moves only by `transition`.
+- `card.answered` = `{ cardId, choice?, text?, answer?, resolvedBy }`; `job.retry` carries `newJobId` (main allocates it).
+- Step state moves are not checked against a step machine (the spec has none); only `from` and the DDL CHECK apply.
+- Copy: money placeholders take `formatInr()` output (no "₹" in the template); keys landed before their renderer are in
+  `scripts/copy-pending.json` (empty by M4 close-out); phrase keys are checked against `PHRASES`.
+- The engine answers `jobs.pauseAll` with `{ paused: [] }` until T2/T4 build the runner.
+- `steps:upsert` (08-1 §3.3) is not wired: T5 asks for it with the checklist.

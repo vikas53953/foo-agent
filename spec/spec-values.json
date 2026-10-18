@@ -493,7 +493,7 @@
       "property": "height",
       "expected": "48px",
       "source": "§F21.3 `--undo-h`; X-32",
-      "pending": "M4",
+      "pending": "M6",
       "expect": {
         "kind": "box",
         "height": 48

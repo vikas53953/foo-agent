@@ -280,11 +280,43 @@ export const BP_M2: BpEntry[] = [
 ];
 
 /**
+ * CR-0008: the M4 card refs (00-common "Proposed Blueprint ids"): the `.mini` of the card gallery panels the M4 cards draw —
+ * Checklist (2), Plan (12), Proof (15), Stuck (18), Error (19), Spend cap (20). The minis are drawn in 350px panels, so the R2
+ * boxes are disputed by construction (CR-0003 §b); no size is fixed here.
+ */
+export const BP_M4: BpEntry[] = (
+  [
+    ['BP-CARD-02', 2, 'Checklist', '05-1 §5.2'],
+    ['BP-CARD-12', 12, 'Plan', '05-3 §5.12'],
+    ['BP-CARD-15', 15, 'Proof', '05-3 §5.15–§5.16'],
+    ['BP-CARD-18', 18, 'Stuck', '05-3 §5.19'],
+    ['BP-CARD-19', 19, 'Error', '05-3 §5.20'],
+    ['BP-CARD-20', 20, 'Spend cap', '05-3 §5.21'],
+  ] as const
+).map(([id, n, name, spec]): BpEntry => ({
+  id,
+  selector: `#cardgal > .panel:nth-child(${n}) > .mini`,
+  drawn: true,
+  size: { width: null, height: null },
+  spec,
+  milestone: 'M4',
+  note: `Card gallery: ${name}. App: the ${name.toLowerCase()} card in the thread, from seeded card rows.`,
+}));
+
+/**
  * CR-0003: UX steps an earlier milestone runs before the chapter's owner (11 §11.12 M2 "UX-09 steps not needing
  * transcription"). UX-09-01 (the recording bar) and UX-09-08 (Windows blocks the microphone) need no speech-to-text; the
  * other UX-09 steps show transcripts or foo's voice replies (M11).
  */
-export const EARLY_STEPS: Record<string, string> = { 'UX-09-01': 'M2', 'UX-09-08': 'M2' };
+export const EARLY_STEPS: Record<string, string> = {
+  'UX-09-01': 'M2',
+  'UX-09-08': 'M2',
+  // CR-0008 (G-PREP-02): the UX-23 steps the M4 job runner shows with fakes (offline strip, typed text kept, the error that edits
+  // itself, AI not answering, plan limit, stuck with cost, recovery card, one line one button) and the UX-05 job steps (👀, the
+  // checklist within 2 s, the result with its Proof chip) sent as a typed request. UX-23-07/-08 are M10, UX-23-10 is M11.
+  ...Object.fromEntries(['01', '02', '03', '04', '05', '06', '09', '11'].map((s) => [`UX-23-${s}`, 'M4'])),
+  ...Object.fromEntries(['02', '03', '04'].map((s) => [`UX-05-${s}`, 'M4'])),
+};
 
 /** Chapter anchor → the milestone that completes the chapter (11 §11.12 item 8: a chapter is owned by the milestone that completes it). */
 export const CHAPTER_MILESTONE: Record<string, string | null> = {
@@ -425,8 +457,8 @@ async function main() {
     version: 'spec-v1.0',
     generatedBy: 'scripts/golden-manifest.ts',
     sources: { ux: UX_FILE, bp: BP_FILE },
-    counts: { uxChapters: chapters.length, uxSteps: ux.length, uxFrames: ux.length * 2, bp: BP.length + BP_M2.length },
-    bp: [...BP, ...BP_M2],
+    counts: { uxChapters: chapters.length, uxSteps: ux.length, uxFrames: ux.length * 2, bp: BP.length + BP_M2.length + BP_M4.length },
+    bp: [...BP, ...BP_M2, ...BP_M4],
     ux,
     superseded: Object.entries(SUPERSEDED).map(([id, decision]) => ({ id, decision })),
   };
@@ -440,7 +472,7 @@ async function main() {
     return;
   }
   writeFileSync(MANIFEST_PATH, text);
-  console.log(`golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length + BP_M2.length} BP ids`);
+  console.log(`golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length + BP_M2.length + BP_M4.length} BP ids`);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) void main();

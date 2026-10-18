@@ -9,7 +9,7 @@
     "uxChapters": 25,
     "uxSteps": 245,
     "uxFrames": 490,
-    "bp": 33
+    "bp": 39
   },
   "bp": [
     {
@@ -399,6 +399,78 @@
       "spec": "04-2 §20–§23",
       "milestone": "M2",
       "note": "Composer: Not set up. App: the composer bar (`composer`) in that state."
+    },
+    {
+      "id": "BP-CARD-02",
+      "selector": "#cardgal > .panel:nth-child(2) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "05-1 §5.2",
+      "milestone": "M4",
+      "note": "Card gallery: Checklist. App: the checklist card in the thread, from seeded card rows."
+    },
+    {
+      "id": "BP-CARD-12",
+      "selector": "#cardgal > .panel:nth-child(12) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "05-3 §5.12",
+      "milestone": "M4",
+      "note": "Card gallery: Plan. App: the plan card in the thread, from seeded card rows."
+    },
+    {
+      "id": "BP-CARD-15",
+      "selector": "#cardgal > .panel:nth-child(15) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "05-3 §5.15–§5.16",
+      "milestone": "M4",
+      "note": "Card gallery: Proof. App: the proof card in the thread, from seeded card rows."
+    },
+    {
+      "id": "BP-CARD-18",
+      "selector": "#cardgal > .panel:nth-child(18) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "05-3 §5.19",
+      "milestone": "M4",
+      "note": "Card gallery: Stuck. App: the stuck card in the thread, from seeded card rows."
+    },
+    {
+      "id": "BP-CARD-19",
+      "selector": "#cardgal > .panel:nth-child(19) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "05-3 §5.20",
+      "milestone": "M4",
+      "note": "Card gallery: Error. App: the error card in the thread, from seeded card rows."
+    },
+    {
+      "id": "BP-CARD-20",
+      "selector": "#cardgal > .panel:nth-child(20) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "05-3 §5.21",
+      "milestone": "M4",
+      "note": "Card gallery: Spend cap. App: the spend cap card in the thread, from seeded card rows."
     }
   ],
   "ux": [
@@ -1072,7 +1144,8 @@
       "s": "Your dark bubble \"Find bills due this week\" with a 👀 badge.",
       "f": "Starts a job. 👀 means \"seen\", and it comes from the real job, not from the AI.",
       "hl": "mybill",
-      "milestone": "M12"
+      "milestone": "M12",
+      "firstTested": "M4"
     },
     {
       "id": "UX-05-03",
@@ -1088,7 +1161,8 @@
       "s": "✓ Reading your Gmail (last 30 days) · ◌ Looking for bills and due dates · ○ Checking your calendar for trips.",
       "f": "Edits this one checklist in place. No \"ok, on it\" messages.",
       "hl": "chk",
-      "milestone": "M12"
+      "milestone": "M12",
+      "firstTested": "M4"
     },
     {
       "id": "UX-05-04",
@@ -1104,7 +1178,8 @@
       "s": "\"Found 2 bills coming up and your Goa dates.\" Airtel ₹1,179 · Tata Power ₹2,340 · Goa trip Sat 12–Mon 14 Dec. \"✓ Proof: 3 emails · open\". Your badge is ✅.",
       "f": "Shows \"done\" only because it has proof: the three emails it read. foo's very first job, so its face celebrates once, with a few sparks.",
       "hl": "proof",
-      "milestone": "M12"
+      "milestone": "M12",
+      "firstTested": "M4"
     },
     {
       "id": "UX-05-05",
@@ -3807,7 +3882,8 @@
       "s": "\"You're offline. Your jobs are saved and I'll carry on when you're back.\" · Try again. The message box reads \"You're offline. I'll send when you're back.\"",
       "f": "Pauses jobs where they are. Your chats and memory still open.",
       "hl": "banner",
-      "milestone": null
+      "milestone": null,
+      "firstTested": "M4"
     },
     {
       "id": "UX-23-02",
@@ -3823,7 +3899,8 @@
       "s": "Your bubble with a small clock instead of ticks.",
       "f": "Never loses a typed message.",
       "hl": "q1",
-      "milestone": null
+      "milestone": null,
+      "firstTested": "M4"
     },
     {
       "id": "UX-23-03",
@@ -3839,7 +3916,8 @@
       "s": "The strip is gone. The checklist ticks again; your message gets ✓✓.",
       "f": "Re-tests every 30 seconds while offline.",
       "hl": "chk",
-      "milestone": null
+      "milestone": null,
+      "firstTested": "M4"
     },
     {
       "id": "UX-23-04",
@@ -3855,7 +3933,8 @@
       "s": "\"Claude isn't answering right now. Your Goa job is saved at step 3. Nothing was booked or paid.\" · Try again · \"Use ChatGPT instead\".",
       "f": "Offers ChatGPT only because it passed its test at setup.",
       "hl": "usegpt",
-      "milestone": null
+      "milestone": null,
+      "firstTested": "M4"
     },
     {
       "id": "UX-23-05",
@@ -3871,7 +3950,8 @@
       "s": "\"You've hit your Claude plan's limit until Fri 16 Oct, 3:00 PM. Your jobs are paused, not lost.\" · Remind me at 3:00 PM. A reply marked \"answered with ChatGPT while Claude rests\".",
       "f": "Never uses the backup AI for jobs that send, buy or book.",
       "hl": "rested",
-      "milestone": null
+      "milestone": null,
+      "firstTested": "M4"
     },
     {
       "id": "UX-23-06",
@@ -3887,7 +3967,8 @@
       "s": "\"I'm stuck on the Goa job. What's wrong: MakeMyTrip keeps sending me back to the search page. Spent so far: about ₹6 of your AI · 9 minutes. What I'd do: try Booking.com instead.\" Try another way · Stop · Take over.",
       "f": "No answer for 15 minutes → it stops and reports, fail-safe.",
       "hl": "anotherway",
-      "milestone": null
+      "milestone": null,
+      "firstTested": "M4"
     },
     {
       "id": "UX-23-07",
@@ -3935,7 +4016,8 @@
       "s": "\"I closed unexpectedly at 9:42 AM. Delhi flights was at step 2 of 4. Nothing was paid.\" Pick up where I left off · Stop it. The message box still has \"also check Akasa\".",
       "f": "Missed routines get one catch-up run each, not eight.",
       "hl": "pickup",
-      "milestone": null
+      "milestone": null,
+      "firstTested": "M4"
     },
     {
       "id": "UX-23-10",
@@ -3967,7 +4049,8 @@
       "s": "\"Your Gmail connection expired. Bills and drafts are on hold.\" Reconnect · \"WhatsApp unlinked foo.\" Link again · \"irctc.co.in won't let me in. Nothing was booked.\" Open the page myself.",
       "f": "Says \"Nothing was booked, paid or sent\" only when the activity log proves it.",
       "hl": "reconn",
-      "milestone": null
+      "milestone": null,
+      "firstTested": "M4"
     },
     {
       "id": "UX-24-01",

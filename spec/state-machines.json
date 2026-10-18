@@ -1,0 +1,684 @@
+{
+  "version": 1,
+  "generatedBy": "scripts/extract-sm.ts",
+  "sources": [
+    "07-journeys-2 §4 (job machine and table)",
+    "07-journeys-2 §7.4.3 SM-A1…A13",
+    "08-0 §F, §G.2, §B.2",
+    "08-2 §5.4–§5.9",
+    "08-4 §26.10",
+    "08-1 §2.3",
+    "DECISIONS X-17, X-61, X-80, X-124",
+    "CR-0008"
+  ],
+  "machines": {
+    "job": {
+      "states": [
+        "queued",
+        "working",
+        "needs_you",
+        "waiting",
+        "done",
+        "done_unverified",
+        "failed",
+        "cancelled"
+      ],
+      "initial": "queued",
+      "terminal": [
+        "done",
+        "done_unverified",
+        "failed",
+        "cancelled"
+      ],
+      "events": [
+        "slot_free",
+        "stop",
+        "system_cancel",
+        "needs_person",
+        "purchase_cap",
+        "stuck",
+        "answered",
+        "declined_other_route",
+        "declined",
+        "card_expired",
+        "choice_expired",
+        "stuck_stop",
+        "stuck_timeout",
+        "recovery_resume",
+        "pause",
+        "pause_all",
+        "resume",
+        "opens_at_missed",
+        "finish_proof",
+        "finish_unverified",
+        "fail",
+        "crash_recover",
+        "retry"
+      ],
+      "transitions": [
+        {
+          "from": "queued",
+          "event": "slot_free",
+          "to": "working",
+          "badge": "working",
+          "pill": "working",
+          "checklist": "live",
+          "effects": [
+            "needs count(working) < 3 and the AI verified within 10 min (else a 1-word verify first)",
+            "checklist after 1.5 s when step_count ≥ 2",
+            "power.keepAwake on"
+          ],
+          "source": "07-2 §4 row QUEUED → WORKING; 08-2 §5.4.1"
+        },
+        {
+          "from": "queued",
+          "event": "stop",
+          "to": "cancelled",
+          "badge": "stopped",
+          "pill": null,
+          "checklist": "stopped",
+          "effects": [
+            "stop_reason ∈ user_word | user_button | stop_all | window_closed",
+            "checklist last row \"Stopped by you\"",
+            "open cards withdrawn",
+            "stop report from activity rows"
+          ],
+          "source": "07-2 §4 row Stop; 08-2 §5.7; CR-0008 G-M4-06"
+        },
+        {
+          "from": "working",
+          "event": "stop",
+          "to": "cancelled",
+          "badge": "stopped",
+          "pill": null,
+          "checklist": "stopped",
+          "effects": [
+            "stop_reason ∈ user_word | user_button | stop_all | window_closed",
+            "checklist last row \"Stopped by you\"",
+            "open cards withdrawn",
+            "stop report from activity rows"
+          ],
+          "source": "07-2 §4 row Stop; 08-2 §5.7; CR-0008 G-M4-06"
+        },
+        {
+          "from": "needs_you",
+          "event": "stop",
+          "to": "cancelled",
+          "badge": "stopped",
+          "pill": null,
+          "checklist": "stopped",
+          "effects": [
+            "stop_reason ∈ user_word | user_button | stop_all | window_closed",
+            "checklist last row \"Stopped by you\"",
+            "open cards withdrawn",
+            "stop report from activity rows"
+          ],
+          "source": "07-2 §4 row Stop; 08-2 §5.7; CR-0008 G-M4-06"
+        },
+        {
+          "from": "waiting",
+          "event": "stop",
+          "to": "cancelled",
+          "badge": "stopped",
+          "pill": null,
+          "checklist": "stopped",
+          "effects": [
+            "stop_reason ∈ user_word | user_button | stop_all | window_closed",
+            "checklist last row \"Stopped by you\"",
+            "open cards withdrawn",
+            "stop report from activity rows"
+          ],
+          "source": "07-2 §4 row Stop; 08-2 §5.7; CR-0008 G-M4-06"
+        },
+        {
+          "from": "queued",
+          "event": "system_cancel",
+          "to": "cancelled",
+          "badge": "stopped",
+          "pill": null,
+          "checklist": "stopped",
+          "effects": [
+            "stop_reason ∈ choice_timeout | signin_timeout | helper_deleted | chat_deleted | wipe | system",
+            "no \"Stopped by you\" row"
+          ],
+          "source": "08-0 §B.2 StopReason; CR-0008 G-M4-06"
+        },
+        {
+          "from": "working",
+          "event": "system_cancel",
+          "to": "cancelled",
+          "badge": "stopped",
+          "pill": null,
+          "checklist": "stopped",
+          "effects": [
+            "stop_reason ∈ choice_timeout | signin_timeout | helper_deleted | chat_deleted | wipe | system",
+            "no \"Stopped by you\" row"
+          ],
+          "source": "08-0 §B.2 StopReason; CR-0008 G-M4-06"
+        },
+        {
+          "from": "needs_you",
+          "event": "system_cancel",
+          "to": "cancelled",
+          "badge": "stopped",
+          "pill": null,
+          "checklist": "stopped",
+          "effects": [
+            "stop_reason ∈ choice_timeout | signin_timeout | helper_deleted | chat_deleted | wipe | system",
+            "no \"Stopped by you\" row"
+          ],
+          "source": "08-0 §B.2 StopReason; CR-0008 G-M4-06"
+        },
+        {
+          "from": "waiting",
+          "event": "system_cancel",
+          "to": "cancelled",
+          "badge": "stopped",
+          "pill": null,
+          "checklist": "stopped",
+          "effects": [
+            "stop_reason ∈ choice_timeout | signin_timeout | helper_deleted | chat_deleted | wipe | system",
+            "no \"Stopped by you\" row"
+          ],
+          "source": "08-0 §B.2 StopReason; CR-0008 G-M4-06"
+        },
+        {
+          "from": "working",
+          "event": "needs_person",
+          "to": "needs_you",
+          "badge": "waiting",
+          "pill": "needs_you",
+          "checklist": "live",
+          "effects": [
+            "choice, approval, payment, sign-in, code or secret card",
+            "current step waiting_user",
+            "slot released"
+          ],
+          "source": "07-2 §4; SM-A1; 08-2 §5.4.1"
+        },
+        {
+          "from": "working",
+          "event": "purchase_cap",
+          "to": "needs_you",
+          "badge": "waiting",
+          "pill": "needs_you",
+          "checklist": "live",
+          "effects": [
+            "purchase-cap card, no Payment card"
+          ],
+          "source": "SM-A3"
+        },
+        {
+          "from": "working",
+          "event": "stuck",
+          "to": "needs_you",
+          "badge": "waiting",
+          "pill": "needs_you",
+          "checklist": "live",
+          "effects": [
+            "stuck card; ⚠ only in its header",
+            "stuck_count + 1"
+          ],
+          "source": "07-2 §4 stuck row; SM-A2; 08-2 §5.6"
+        },
+        {
+          "from": "needs_you",
+          "event": "answered",
+          "to": "working",
+          "badge": "working",
+          "pill": "working",
+          "checklist": "live",
+          "effects": [
+            "card collapses to its answered state",
+            "step back to running"
+          ],
+          "source": "07-2 §4 row NEEDS YOU → WORKING"
+        },
+        {
+          "from": "needs_you",
+          "event": "declined_other_route",
+          "to": "working",
+          "badge": "working",
+          "pill": "working",
+          "checklist": "live",
+          "effects": [
+            "\"Okay, I won't. {next step}\""
+          ],
+          "source": "07-2 §4 row declined"
+        },
+        {
+          "from": "needs_you",
+          "event": "declined",
+          "to": "cancelled",
+          "badge": "stopped",
+          "pill": null,
+          "checklist": "stopped",
+          "effects": [
+            "stop_reason approval_declined",
+            "\"Okay, I won't. Nothing else to do here.\""
+          ],
+          "source": "07-2 §4 row declined; G-M4-06"
+        },
+        {
+          "from": "needs_you",
+          "event": "card_expired",
+          "to": "cancelled",
+          "badge": "stopped",
+          "pill": null,
+          "checklist": "stopped",
+          "effects": [
+            "payment or booking card expired: stop_reason approval_expired"
+          ],
+          "source": "07-2 §4 row card expired; §5"
+        },
+        {
+          "from": "needs_you",
+          "event": "choice_expired",
+          "to": "needs_you",
+          "badge": null,
+          "pill": "needs_you",
+          "checklist": "live",
+          "effects": [
+            "choice card: one reminder, stays NEEDS YOU"
+          ],
+          "source": "07-2 §4 row card expired"
+        },
+        {
+          "from": "needs_you",
+          "event": "stuck_stop",
+          "to": "cancelled",
+          "badge": "stopped",
+          "pill": null,
+          "checklist": "stopped",
+          "effects": [
+            "stop_reason stuck_stop",
+            "stuck card stopped",
+            "activity stopped_job"
+          ],
+          "source": "SM-A11; X-80; 08-0 §G.16"
+        },
+        {
+          "from": "needs_you",
+          "event": "stuck_timeout",
+          "to": "failed",
+          "badge": "failed",
+          "pill": null,
+          "checklist": "failed",
+          "effects": [
+            "stuck card timed_out after 15 min without an answer"
+          ],
+          "source": "SM-A11"
+        },
+        {
+          "from": "needs_you",
+          "event": "recovery_resume",
+          "to": "working",
+          "badge": "working",
+          "pill": "working",
+          "checklist": "live",
+          "effects": [
+            "recovery card resumed"
+          ],
+          "source": "08-2 §5.9 step 3; 08-1 §3.2 recovery:choose"
+        },
+        {
+          "from": "working",
+          "event": "pause",
+          "to": "waiting",
+          "badge": null,
+          "pill": "paused",
+          "checklist": "live",
+          "effects": [
+            "waiting_reason ∈ ai_offline | ai_down | ai_signed_out | ai_limit | spend_cap | net_offline | asleep | opens_at",
+            "one error card (not for asleep)",
+            "no stuck timer",
+            "slot released"
+          ],
+          "source": "07-2 §4 row WORKING → WAITING; SM-A3; 08-2 §5.4.1; CR-0008 G-M4-17"
+        },
+        {
+          "from": "working",
+          "event": "pause_all",
+          "to": "waiting",
+          "badge": null,
+          "pill": "paused",
+          "checklist": "live",
+          "effects": [
+            "waiting_reason app_quit | windows_shutdown (jobs.pauseAll)"
+          ],
+          "source": "08-1 §2.3 steps 4–5; CR-0008 G-M4-04, G-M4-16"
+        },
+        {
+          "from": "waiting",
+          "event": "pause",
+          "to": "waiting",
+          "badge": null,
+          "pill": "paused",
+          "checklist": "live",
+          "effects": [
+            "the waiting reason changes (for example AI down, then the cap)"
+          ],
+          "source": "08-2 §5.9 step 4 (condition re-evaluated)"
+        },
+        {
+          "from": "waiting",
+          "event": "resume",
+          "to": "working",
+          "badge": "working",
+          "pill": "working",
+          "checklist": "live",
+          "effects": [
+            "app_quit | windows_shutdown | asleep: checklist edit only",
+            "other reasons: the error card edited in place \"Back on it. Picking up from step {n}.\"",
+            "never a new message"
+          ],
+          "source": "SM-A10; 08-4 §26.10; CR-0008 G-M4-02"
+        },
+        {
+          "from": "waiting",
+          "event": "opens_at_missed",
+          "to": "failed",
+          "badge": "failed",
+          "pill": null,
+          "checklist": "failed",
+          "effects": [
+            "wake_at passed while foo was closed: thread.trains.tatkal_missed"
+          ],
+          "source": "08-2 §5.4.1; 08-4 §26.8 item 6"
+        },
+        {
+          "from": "working",
+          "event": "finish_proof",
+          "to": "done",
+          "badge": "done",
+          "pill": "done",
+          "checklist": "done",
+          "effects": [
+            "proof verified from recorded tool results",
+            "Proof chip, receipt footer"
+          ],
+          "source": "07-2 §4 row DONE; 08-2 §5.8"
+        },
+        {
+          "from": "working",
+          "event": "finish_unverified",
+          "to": "done_unverified",
+          "badge": "done_unverified",
+          "pill": "done",
+          "checklist": "done_unverified",
+          "effects": [
+            "\"Not checked live\" on the proof line only"
+          ],
+          "source": "07-2 §4 row DONE (unverified); SM-A12"
+        },
+        {
+          "from": "working",
+          "event": "fail",
+          "to": "failed",
+          "badge": "failed",
+          "pill": null,
+          "checklist": "failed",
+          "effects": [
+            "error card with one alternative"
+          ],
+          "source": "07-2 §4 row unrecoverable"
+        },
+        {
+          "from": "working",
+          "event": "crash_recover",
+          "to": "needs_you",
+          "badge": "waiting",
+          "pill": "needs_you",
+          "checklist": "live",
+          "effects": [
+            "recovery card (error, variant recovery)"
+          ],
+          "source": "08-2 §5.9 step 3"
+        },
+        {
+          "from": "queued",
+          "event": "crash_recover",
+          "to": "needs_you",
+          "badge": "waiting",
+          "pill": "needs_you",
+          "checklist": "live",
+          "effects": [
+            "recovery card (error, variant recovery)"
+          ],
+          "source": "08-2 §5.9 step 3"
+        },
+        {
+          "from": "failed",
+          "event": "retry",
+          "to": null,
+          "badge": null,
+          "pill": null,
+          "checklist": null,
+          "effects": [
+            "a new job origin=retry, origin_ref = this job, title \"Trying again: {title}\"; this job never returns to WORKING"
+          ],
+          "source": "07-2 §4 rules; AT-120; CR-0008 G-M4-01"
+        },
+        {
+          "from": "cancelled",
+          "event": "retry",
+          "to": null,
+          "badge": null,
+          "pill": null,
+          "checklist": null,
+          "effects": [
+            "a new job origin=retry, origin_ref = this job, title \"Trying again: {title}\""
+          ],
+          "source": "07-2 §4 rules; AT-120; CR-0008 G-M4-01"
+        }
+      ],
+      "forbidden": [
+        {
+          "from": "queued",
+          "to": "queued"
+        },
+        {
+          "from": "queued",
+          "to": "waiting"
+        },
+        {
+          "from": "queued",
+          "to": "done"
+        },
+        {
+          "from": "queued",
+          "to": "done_unverified"
+        },
+        {
+          "from": "queued",
+          "to": "failed"
+        },
+        {
+          "from": "working",
+          "to": "queued"
+        },
+        {
+          "from": "working",
+          "to": "working"
+        },
+        {
+          "from": "needs_you",
+          "to": "queued"
+        },
+        {
+          "from": "needs_you",
+          "to": "waiting"
+        },
+        {
+          "from": "needs_you",
+          "to": "done"
+        },
+        {
+          "from": "needs_you",
+          "to": "done_unverified"
+        },
+        {
+          "from": "waiting",
+          "to": "queued"
+        },
+        {
+          "from": "waiting",
+          "to": "needs_you"
+        },
+        {
+          "from": "waiting",
+          "to": "done"
+        },
+        {
+          "from": "waiting",
+          "to": "done_unverified"
+        },
+        {
+          "from": "done",
+          "to": "queued"
+        },
+        {
+          "from": "done",
+          "to": "working"
+        },
+        {
+          "from": "done",
+          "to": "needs_you"
+        },
+        {
+          "from": "done",
+          "to": "waiting"
+        },
+        {
+          "from": "done",
+          "to": "done"
+        },
+        {
+          "from": "done",
+          "to": "done_unverified"
+        },
+        {
+          "from": "done",
+          "to": "failed"
+        },
+        {
+          "from": "done",
+          "to": "cancelled"
+        },
+        {
+          "from": "done_unverified",
+          "to": "queued"
+        },
+        {
+          "from": "done_unverified",
+          "to": "working"
+        },
+        {
+          "from": "done_unverified",
+          "to": "needs_you"
+        },
+        {
+          "from": "done_unverified",
+          "to": "waiting"
+        },
+        {
+          "from": "done_unverified",
+          "to": "done"
+        },
+        {
+          "from": "done_unverified",
+          "to": "done_unverified"
+        },
+        {
+          "from": "done_unverified",
+          "to": "failed"
+        },
+        {
+          "from": "done_unverified",
+          "to": "cancelled"
+        },
+        {
+          "from": "failed",
+          "to": "queued"
+        },
+        {
+          "from": "failed",
+          "to": "working"
+        },
+        {
+          "from": "failed",
+          "to": "needs_you"
+        },
+        {
+          "from": "failed",
+          "to": "waiting"
+        },
+        {
+          "from": "failed",
+          "to": "done"
+        },
+        {
+          "from": "failed",
+          "to": "done_unverified"
+        },
+        {
+          "from": "failed",
+          "to": "failed"
+        },
+        {
+          "from": "failed",
+          "to": "cancelled"
+        },
+        {
+          "from": "cancelled",
+          "to": "queued"
+        },
+        {
+          "from": "cancelled",
+          "to": "working"
+        },
+        {
+          "from": "cancelled",
+          "to": "needs_you"
+        },
+        {
+          "from": "cancelled",
+          "to": "waiting"
+        },
+        {
+          "from": "cancelled",
+          "to": "done"
+        },
+        {
+          "from": "cancelled",
+          "to": "done_unverified"
+        },
+        {
+          "from": "cancelled",
+          "to": "failed"
+        },
+        {
+          "from": "cancelled",
+          "to": "cancelled"
+        }
+      ],
+      "badgeOf": {
+        "queued": "seen",
+        "working": "working",
+        "needs_you": "waiting",
+        "waiting": "working",
+        "done": "done",
+        "done_unverified": "done_unverified",
+        "failed": "failed",
+        "cancelled": "stopped"
+      },
+      "invariants": [
+        "never working after done, done_unverified, failed or cancelled",
+        "done only with a verified proof; done_unverified only with no proof or an unverified flag",
+        "the bubble badge always equals badgeOf[the runner's state]",
+        "only the job runner moves jobs.state (db.tx transition); AI text never does (ART-12a)",
+        "at most 3 jobs working at once"
+      ]
+    }
+  }
+}

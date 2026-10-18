@@ -258,6 +258,11 @@ export class Engine {
         return undefined;
       case 'test.clock':
         return undefined;
+      // M4 T1 stub (G-M4-04): the job runner (T2/T4) pauses its WORKING jobs here; until then there are none to pause.
+      case 'jobs.pauseAll':
+        return ok({ paused: [] as string[] });
+      default:
+        return undefined;
     }
   }
   private firstSettings = true;

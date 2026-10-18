@@ -125,6 +125,117 @@ export type WaitingReason =
   | 'windows_shutdown'
   | 'opens_at';
 export type Route = 'api' | 'browser' | 'screen' | 'email' | 'handback';
+/** 08-0 §B.2 StopReason (= jobs.stop_reason CHECK). */
+export type StopReason =
+  | 'user_word'
+  | 'user_button'
+  | 'stop_all'
+  | 'window_closed'
+  | 'stuck_stop'
+  | 'choice_timeout'
+  | 'signin_timeout'
+  | 'approval_expired'
+  | 'approval_declined'
+  | 'helper_deleted'
+  | 'chat_deleted'
+  | 'wipe'
+  | 'system';
+/** 08-0 §B.2 ProofKind (08-2 §5.8 + read_source). */
+export type ProofKind =
+  'confirmation' | 'email' | 'sent_folder' | 'wa_delivered' | 'calendar_event' | 'emails_read' | 'read_source' | 'screenshot' | 'receipt';
+/** 08-0 §G.2 `cards.resolved_by`. */
+export type ResolvedBy = 'tap' | 'keyboard' | 'toast' | 'typed' | 'reaction' | 'auto' | 'system';
+/** 08-4 §25.1 CardAnswer (08-0 §B.3). */
+export type CardAnswer = { optionId: string } | { optionIds: string[] } | { text: string } | { skip: true };
+/** 08-5 §3.7 FixAction: the one button of an error card. */
+export type FixAction =
+  | { kind: 'retry' }
+  | { kind: 'sign_in_ai'; providerId: ProviderId }
+  | { kind: 'remind_at'; at: number }
+  | { kind: 'replace_key'; providerId: ProviderId }
+  | { kind: 'use_backup' }
+  | { kind: 'raise_cap'; which: 'ai' | 'purchase' }
+  | { kind: 'try_other_way' }
+  | { kind: 'take_over' }
+  | { kind: 'stop' }
+  | { kind: 'resume_job' }
+  | { kind: 'start_normally' }
+  | { kind: 'reconnect'; app: 'google' | 'outlook' }
+  | { kind: 'link_whatsapp' }
+  | { kind: 'allow_scope'; scopes: ('gmail' | 'gcal' | 'contacts')[] }
+  | { kind: 'open_url'; url: string }
+  | { kind: 'open_settings'; page: SettingsPage; row?: string }
+  | { kind: 'open_chat'; chatId: string; cardId?: string }
+  | { kind: 'repair_app' }
+  | { kind: 'try_another_card' }
+  | { kind: 'pay_with_upi' }
+  | { kind: 'checked_try_again' }
+  | { kind: 'dismiss' };
+/** 08-0 §G.4 activity kinds (= activity.kind CHECK). */
+export type ActivityKind = 'sent' | 'paid' | 'booked' | 'deleted' | 'connected' | 'stopped' | 'changed';
+/** activity columns camelCased (08-0 §0, 08-1 §4.3.11). */
+export interface ActivityRow {
+  id: string;
+  at: number;
+  kind: ActivityKind;
+  event: string;
+  actor: string;
+  chatId: string | null;
+  chatTitle: string | null;
+  jobId: string | null;
+  approvalId: string | null;
+  paymentId: string | null;
+  routineId: string | null;
+  summary: string;
+  toLabel: string | null;
+  fromLabel: string | null;
+  amountPaise: number | null;
+  approvedHow: 'card_once' | 'card_chat' | 'card_always' | 'rule' | 'hello' | 'typed_amount' | 'user' | 'none' | null;
+  ruleText: string | null;
+  proofKind: string | null;
+  proofRef: string | null;
+  outcome: 'done' | 'failed' | 'unknown';
+  fields: Record<string, unknown> | null;
+}
+
+// ---- M4 card payloads (08-1 §4.5) ----
+export interface ChecklistPayload {
+  jobId: string;
+}
+export interface PlanPayload {
+  title: string;
+  steps: string[];
+  minutes: number;
+  costLine: string;
+  big: boolean;
+}
+export interface StuckPayload {
+  whatsWrong: string;
+  spentLine: string;
+  suggestion: string;
+  allowOtherWay: boolean;
+}
+export interface ErrorPayload {
+  variant: 'error' | 'recovery';
+  kind: ErrorKind;
+  whatHappened: string;
+  whatIsSafe: string;
+  button: { label: string; action: FixAction };
+  secondary?: { label: string; action: FixAction };
+  jobId?: string;
+  atStep?: number;
+  of?: number;
+  paymentChecking?: boolean;
+  doneLines?: string[];
+}
+export interface SpendCapPayload {
+  which: 'ai' | 'purchase';
+  capPaise: number;
+  spentPaise: number;
+}
+export interface JobLinkPayload {
+  jobId: string;
+}
 
 // ---- chats (08-1 §4.3.1) ----
 export type ChatKind = 'foo' | 'helper' | 'group' | 'wa_mirror';
@@ -554,6 +665,18 @@ export type ErrorKind =
   | 'DB_NOT_WRITABLE'
   | 'DB_STALE_REV'
   | 'DB_CONSTRAINT'
+  // M4 (08-3 §21.2, §21.3, §21.4): the job runner's kinds
+  | 'DB_BAD_TRANSITION'
+  | 'SPEND_CAP'
+  | 'STUCK'
+  | 'CRASH_RECOVERY'
+  | 'SAFE_MODE'
+  | 'SITE_BLOCKED'
+  | 'DB_REBUILT'
+  | 'PROOF_INVALID'
+  | 'PROTOCOL_FIX_ACTION'
+  | 'IDEMPOTENT_REPEAT'
+  | 'CARD_STALE'
   | 'UNKNOWN';
 
 // ---- card payloads (08-5 §4.1) the M2 cards draw ----

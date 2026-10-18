@@ -80,6 +80,8 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
         const row = chatRowById(store, listContext(settings.get()), id);
         if (row) emit('chat:upsert', row);
       },
+      dataDir: paths.data,
+      now: () => deps.clock.now(),
     });
     const ctx: AppContext = { db, settings, net: netMonitor, probe, dataDir: paths.data, engine };
     supervisor = new EngineSupervisor(engine, { data: paths.data, local: paths.local });
