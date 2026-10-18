@@ -1,0 +1,42 @@
+{
+  "before": "3fcbed6781380f21a048d0d251440d3174dab639",
+  "after": "cbf88060c276063e6546b03cd4f8887a3164169e",
+  "rows": [
+    {
+      "name": "verify-failed.light",
+      "before": "before/01-verify-failed.light.png",
+      "after": "after/01-verify-failed.light.png",
+      "changed": 0.09259413580246914
+    },
+    {
+      "name": "resumed-done.light",
+      "before": null,
+      "after": "after/02-resumed-done.light.png",
+      "changed": null
+    },
+    {
+      "name": "offline-waiting.light",
+      "before": null,
+      "after": "after/03-offline-waiting.light.png",
+      "changed": null
+    },
+    {
+      "name": "offline-waiting.dark",
+      "before": null,
+      "after": "after/04-offline-waiting.dark.png",
+      "changed": null
+    },
+    {
+      "name": "back-online-done.light",
+      "before": null,
+      "after": "after/05-back-online-done.light.png",
+      "changed": null
+    },
+    {
+      "name": "back-online-done.dark",
+      "before": null,
+      "after": "after/06-back-online-done.dark.png",
+      "changed": null
+    }
+  ]
+}
