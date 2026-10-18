@@ -42,7 +42,7 @@ describe('claude-cli stream-json', () => {
     expect(texts(events)).toBe('<say>Hello, Vikas!</say>');
     expect(r.text).toBe('<say>Hello, Vikas!</say>');
     expect(r.stopReason).toBe('end');
-    expect(r.sessionId).toBe('f2f7aacf-54bb-42d4-8a54-c42fb6584389');
+    expect(r.sessionId).toBe('00000000-0000-4000-8000-0000000000a2');
     expect(events.filter((e) => e.type === 'session')).toHaveLength(1);
     // planUsedPct: the five_hour window's utilization 0.22 from rate_limit_event.
     expect(r.usage).toEqual({ tokensIn: 2, tokensOut: 17, cacheRead: 544, cacheWrite: 2064, costUsd: 0.0169688, planUsedPct: 22 });

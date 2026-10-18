@@ -1,5 +1,5 @@
 {"type":"thread.started","thread_id":"01a14f5c-6db6-7862-b99a-3ebe8218d45b"}
 {"type":"turn.started"}
 {"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"I’ll list the current folder’s contents.\n"}}
-{"type":"item.completed","item":{"id":"item_1","type":"agent_message","text":"I couldn’t run `dir`: the terminal failed to start (`setup refresh had errors`).\n\nFolder: `C:\\Users\\vikasmit\\AppData\\Local\\Temp\\foo-cap`. Its contents remain unverified."}}
+{"type":"item.completed","item":{"id":"item_1","type":"agent_message","text":"I couldn’t run `dir`: the terminal failed to start (`setup refresh had errors`).\n\nFolder: `C:\\Users\\user\\AppData\\Local\\Temp\\foo-cap`. Its contents remain unverified."}}
 {"type":"turn.completed","usage":{"input_tokens":87329,"cached_input_tokens":64768,"cache_write_input_tokens":0,"output_tokens":161,"reasoning_output_tokens":5}}

@@ -80,10 +80,10 @@ describe('claude-cli', () => {
     expect(existsSync(sys)).toBe(false);
     expect(dump.cwd).toBe(scratch);
     expect(dump.env).toEqual({ NO_COLOR: '1', TERM: 'dumb', ELECTRON_RUN_AS_NODE: '1', FAKE_MARKER: 'kept' });
-    expect(r).toMatchObject({ text: '<say>Hello, Vikas!</say>', stopReason: 'end', sessionId: 'f2f7aacf-54bb-42d4-8a54-c42fb6584389' });
+    expect(r).toMatchObject({ text: '<say>Hello, Vikas!</say>', stopReason: 'end', sessionId: '00000000-0000-4000-8000-0000000000a2' });
     expect(r.usage).toMatchObject({ tokensOut: 17, planUsedPct: 22 });
     expect(s.text.join('')).toBe('<say>Hello, Vikas!</say>');
-    expect(s.sessions).toEqual(['f2f7aacf-54bb-42d4-8a54-c42fb6584389']);
+    expect(s.sessions).toEqual(['00000000-0000-4000-8000-0000000000a2']);
   });
 
   it('resume and model flags; no partial messages when not streaming; no deltas to the sink', async () => {
