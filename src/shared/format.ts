@@ -64,7 +64,21 @@ type Parts = { y: number; mo: number; d: number; wd: number; h: number; mi: numb
 
 const formatters = new Map<string, Intl.DateTimeFormat>();
 
+/** formatToParts is the slow part of every bubble time and accessible name: remember recent answers (PERF-04). */
+const partsCache = new Map<string, Parts>();
+const PARTS_CACHE_MAX = 4096;
+
 function partsIn(epochMs: number, timeZone: string): Parts {
+  const key = `${timeZone}|${epochMs}`;
+  const hit = partsCache.get(key);
+  if (hit) return hit;
+  const parts = computeParts(epochMs, timeZone);
+  if (partsCache.size >= PARTS_CACHE_MAX) partsCache.clear();
+  partsCache.set(key, parts);
+  return parts;
+}
+
+function computeParts(epochMs: number, timeZone: string): Parts {
   let f = formatters.get(timeZone);
   if (!f) {
     f = new Intl.DateTimeFormat('en-US', {
@@ -158,4 +172,13 @@ export function formatDuration(ms: number): string {
 export function monthKey(epochMs: number, timeZone: string): string {
   const p = partsIn(epochMs, timeZone);
   return `${p.y}-${String(p.mo + 1).padStart(2, '0')}`;
+}
+
+/** F19.5 file size: "640 KB", "2.4 MB" (1 decimal from MB up). */
+export function formatBytes(bytes: number): string {
+  const kb = bytes / 1024;
+  if (kb < 1024) return `${Math.max(1, Math.round(kb))} KB`;
+  const mb = kb / 1024;
+  if (mb < 1024) return `${mb.toFixed(1)} MB`;
+  return `${(mb / 1024).toFixed(1)} GB`;
 }

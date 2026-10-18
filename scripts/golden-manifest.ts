@@ -1,7 +1,7 @@
 // Spec: 11-fidelity §11.2.1 (UX and BP families, counts from window.__CH / window.__STEPS), §11.2.7 (superseded steps),
 // §11.12 item 8 (which milestone brings which refs to Tier R). Writes golden/manifest.json.
 // The UX list is read from the frozen walkthrough in a browser, never typed by hand. The BP list (selector → id) is fixed
-// here at freeze for the ids the current milestones need; later milestones add their ids through a CR.
+// here at freeze for the ids the current milestones need; later milestones add their ids through a CR (M2: CR-0003).
 // Usage: tsx scripts/golden-manifest.ts [--engine electron|chromium] [--chromium-path <exe>] [--check]
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -43,6 +43,11 @@ export interface UxEntry {
   f: string;
   hl: string | null;
   milestone: string | null;
+  /**
+   * The milestone that first runs this step in Tier R before its chapter's owner completes it (11 §11.12 item 8: "earlier
+   * milestones test the steps they can"). Set only by CR (EARLY_STEPS).
+   */
+  firstTested?: string;
   superseded?: { decision: string };
 }
 
@@ -204,6 +209,83 @@ export const BP: BpEntry[] = [
   },
 ];
 
+/**
+ * CR-0003: the M2 Blueprint refs (11 §11.12 item 8 "BP-MSG-*, BP-COMP-*"). BP-MSG-01…04 are the four `#messages` mini mocks
+ * and BP-COMP-01…09 the nine `#compstates` mocks, in the order the Blueprint shows them. Each id names the `.mini` drawing
+ * inside its panel (the panel's title, caption, table and source line are notes about the drawing, not the drawing). The
+ * minis are drawn in 350px panels, not at the app's size, so no size is fixed here; `milestone` is the milestone whose app
+ * can show the state (BP-MSG-02's status line and typing dots, and BP-COMP-03's Stop, need the engine's reply stream, M3).
+ */
+export const BP_M2: BpEntry[] = [
+  {
+    id: 'BP-MSG-01',
+    selector: '#messages .grid2 > .panel:nth-child(1) > .mini',
+    drawn: true,
+    size: { width: null, height: null },
+    spec: '04 §2–§10',
+    milestone: 'M2',
+    note: 'Your message (input): a run of two user bubbles with ticks and the 🛠 badge. App: the seeded user bubble with the working badge (foo chat, UX-08-06).',
+  },
+  {
+    id: 'BP-MSG-02',
+    selector: '#messages .grid2 > .panel:nth-child(2) > .mini',
+    drawn: true,
+    size: { width: null, height: null },
+    spec: '04 §11–§19',
+    milestone: 'M3',
+    note: 'foo\'s message (output): the status line "Checking your calendar…", two foo bubbles, the action row and typing dots. The status line and typing dots exist only while the engine streams a reply: capturable from M3.',
+  },
+  {
+    id: 'BP-MSG-03',
+    selector: '#messages .grid2 > .panel:nth-child(3) > .mini',
+    drawn: true,
+    size: { width: null, height: null },
+    spec: '04 §12–§13',
+    milestone: 'M2',
+    note: 'Rich answer (tables, code, sources). App: the seeded rich answer "Goa flights, Sat 12 Dec" (foo chat, UX-08-07).',
+  },
+  {
+    id: 'BP-MSG-04',
+    selector: '#messages .grid2 > .panel:nth-child(4) > .mini',
+    drawn: true,
+    size: { width: null, height: null },
+    spec: '04 §15–§19; 05 §5.18, §5.25',
+    milestone: 'M2',
+    note: 'Around the messages: date chip, handoff line, an unprompted foo bubble with "Why am I getting this?", a voice note. App: the seeded unprompted answer with its why footer (Trips gallery).',
+  },
+  ...(
+    [
+      ['BP-COMP-01', 'Rest', 'M2'],
+      ['BP-COMP-02', 'Typing', 'M2'],
+      ['BP-COMP-03', 'foo is replying (Stop)', 'M3'],
+      ['BP-COMP-04', 'Recording', 'M2'],
+      ['BP-COMP-05', 'With a photo', 'M2'],
+      ['BP-COMP-06', 'Secret caught (paste catcher)', 'M2'],
+      ['BP-COMP-07', 'Card waiting above (pending-card strip)', 'M2'],
+      ['BP-COMP-08', 'Offline', 'M2'],
+      ['BP-COMP-09', 'Not set up', 'M2'],
+    ] as const
+  ).map(([id, state, milestone], i): BpEntry => ({
+    id,
+    selector: `#compstates > .panel:nth-child(${i + 1}) > .mini`,
+    drawn: true,
+    size: { width: null, height: null },
+    spec: '04-2 §20–§23',
+    milestone,
+    note:
+      milestone === 'M2'
+        ? `Composer: ${state}. App: the composer bar (\`composer\`) in that state.`
+        : `Composer: ${state}. The round button is Stop only while the engine streams a reply: capturable from M3.`,
+  })),
+];
+
+/**
+ * CR-0003: UX steps an earlier milestone runs before the chapter's owner (11 §11.12 M2 "UX-09 steps not needing
+ * transcription"). UX-09-01 (the recording bar) and UX-09-08 (Windows blocks the microphone) need no speech-to-text; the
+ * other UX-09 steps show transcripts or foo's voice replies (M11).
+ */
+export const EARLY_STEPS: Record<string, string> = { 'UX-09-01': 'M2', 'UX-09-08': 'M2' };
+
 /** Chapter anchor → the milestone that completes the chapter (11 §11.12 item 8: a chapter is owned by the milestone that completes it). */
 export const CHAPTER_MILESTONE: Record<string, string | null> = {
   install: 'M14',
@@ -313,6 +395,7 @@ export function buildUx(chapters: RawChapter[], steps: RawStep[]): UxEntry[] {
       hl: S.hl,
       milestone: CHAPTER_MILESTONE[ch.id] ?? null,
     };
+    if (EARLY_STEPS[id]) entry.firstTested = EARLY_STEPS[id];
     if (SUPERSEDED[id]) entry.superseded = { decision: SUPERSEDED[id] };
     return entry;
   });
@@ -342,8 +425,8 @@ async function main() {
     version: 'spec-v1.0',
     generatedBy: 'scripts/golden-manifest.ts',
     sources: { ux: UX_FILE, bp: BP_FILE },
-    counts: { uxChapters: chapters.length, uxSteps: ux.length, uxFrames: ux.length * 2, bp: BP.length },
-    bp: BP,
+    counts: { uxChapters: chapters.length, uxSteps: ux.length, uxFrames: ux.length * 2, bp: BP.length + BP_M2.length },
+    bp: [...BP, ...BP_M2],
     ux,
     superseded: Object.entries(SUPERSEDED).map(([id, decision]) => ({ id, decision })),
   };
@@ -357,7 +440,7 @@ async function main() {
     return;
   }
   writeFileSync(MANIFEST_PATH, text);
-  console.log(`golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length} BP ids`);
+  console.log(`golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length + BP_M2.length} BP ids`);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) void main();

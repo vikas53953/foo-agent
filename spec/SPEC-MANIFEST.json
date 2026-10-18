@@ -9,8 +9,8 @@
     "constitution/02-foundations.md": "74cae0fbc2f0daca25c9ba3ff81ecfb5832372737d64e750c727c43fd9d6c526",
     "constitution/03-shell-1.md": "d43c1c1c55a1fd9c1d8ebdcaed7fb572725677618451b7670dfa9d482e82f11c",
     "constitution/03-shell-2.md": "52162b276602ec9ac1f2a551cade4552b6f4c79f15d8a529e9eba5c3f7a16327",
-    "constitution/04-messages-and-composer-2.md": "e666a96e86ae93b6e3495d71c0e9bf25bda4751eaaf41d9ef0bfa93d3897ee92",
-    "constitution/04-messages-and-composer.md": "660f641f774da4902359c84c4c9bbe66735e4355c8c489e5c2263480a67fcfba",
+    "constitution/04-messages-and-composer-2.md": "5c62a3f6493555772b1665199a85796037ad7f0d9354fdf66aecf33c02d20c1a",
+    "constitution/04-messages-and-composer.md": "58b9d87d1a8ed597023fd85ad749da20cda20e1977fead380adb9c742007f780",
     "constitution/05-cards-1.md": "8d67804e35ccdebccb63b09056b258892340793f5e6b3c9313bf26d135988332",
     "constitution/05-cards-2.md": "14329196936e577e437e56f2ceb524d6eae61f3597dd172ed0151af3b7f35702",
     "constitution/05-cards-3.md": "da8ce00a2d1c34a3b714c072cc0a817aa9a39c88d0eb8a20a47d392ba01221af",
@@ -34,7 +34,7 @@
     "constitution/12-features-r25-r31-1.md": "cbadb85a7da0533e27169929a18c725ed67938c65265ec1783f13ad6690849e4",
     "constitution/12-features-r25-r31-2.md": "5ad445f0950e2c5b3907e587f92819610524b52c60b7d130eeeb63a4b648db1f",
     "constitution/CHANGELOG.md": "ea2638f512ebc100213db9019d94be15586a7d2a41e830e011a7b68d5fc08b2b",
-    "constitution/DECISIONS.md": "f1d04e15b20de4a6b7c69a8ab7ca9c6f8ba428852eba720663847a0d65026224",
+    "constitution/DECISIONS.md": "0d6b025408f3d861755bd6e078ec5754c4adf0d2220af1ec45406c0bd77323c9",
     "constitution/GAPS.md": "0fc540ebf9754ec6e87a0e114cc7b25123f1312d025a62ed42a175fa085a0229",
     "constitution/research/capabilities-sources.md": "aa1c57be0b731b7e77dd5275c3db9c7fc76c1819e52f51881627d4c4be1c2c1f",
     "constitution/research/capabilities.md": "9ea45503d0d2f6dea65915d0bf9f35aa5f2b02a9d7ad9113557284f100684daf",
@@ -54,7 +54,7 @@
     "refs/look-book/assets/logo-face.svg": "67296b64ddbc603bc1f1c71744daae691cbb7edaa88fcc92860e6ae3fbcf0ff6",
     "refs/look-book/foo-look-book.html": "300db914e4fc4213968af755e940774ce12acebab32853189e1480cafc7d8bfa",
     "refs/ux/foo-ux-walkthrough.html": "d5eb3d4a42bce526548be701afaf4585a843e3098af2200d8f0a2c7535778f87",
-    "spec-values.json": "738c6e33080182cb2763b892411fb74959135bf23655819ef7f2b9c17d44a234",
-    "trace.csv": "0c3b8be9d167f04e42c1db77ca1540e44c5b417484a49b41c0f3c116ab6751fd"
+    "spec-values.json": "3722dd27226d2c60d2c4ab555d0178ce87ff5a9a8528e85b4ea7955cbdccb15d",
+    "trace.csv": "1f09207601e4005c45a68d8ee0b04fb3a6e369830cfe83b8f464c9f265449f28"
   }
 }

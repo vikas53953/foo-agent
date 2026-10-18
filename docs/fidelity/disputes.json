@@ -23,6 +23,55 @@
         "BP-ANAT-SPENT"
       ],
       "checks": ["r1", "r2"]
+    },
+    {
+      "cr": "CR-0003",
+      "ids": [
+        "BP-MSG-01",
+        "BP-MSG-02",
+        "BP-MSG-03",
+        "BP-MSG-04",
+        "BP-COMP-01",
+        "BP-COMP-02",
+        "BP-COMP-03",
+        "BP-COMP-04",
+        "BP-COMP-05",
+        "BP-COMP-06",
+        "BP-COMP-07",
+        "BP-COMP-08",
+        "BP-COMP-09"
+      ],
+      "checks": ["r1", "r2"]
+    },
+    {
+      "cr": "CR-0003",
+      "ids": ["UX-08-07", "UX-09-08"],
+      "checks": ["r1", "r2"]
+    },
+    {
+      "cr": "CR-0003",
+      "ids": ["UX-08-01", "UX-08-02", "UX-08-03", "UX-08-04", "UX-08-05", "UX-08-06", "UX-09-01"],
+      "checks": ["r1"]
+    },
+    {
+      "cr": "CR-0004",
+      "ids": ["UX-08-01", "UX-08-06", "UX-09-01"],
+      "checks": ["r2", "r3", "r4"]
+    },
+    {
+      "cr": "CR-0004",
+      "ids": ["UX-08-03", "UX-08-04", "UX-08-05"],
+      "checks": ["r2"]
+    },
+    {
+      "cr": "CR-0004",
+      "ids": ["BP-MSG-01"],
+      "checks": ["r3"]
+    },
+    {
+      "cr": "CR-0004",
+      "ids": ["UX-09-08"],
+      "checks": ["r3", "r4"]
     }
   ]
 }

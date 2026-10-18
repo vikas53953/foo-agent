@@ -13,6 +13,7 @@ import {
 } from '../../src/renderer/messages/stickToBottom';
 import { buildRows, dateLabel, firstUnreadId } from '../../src/renderer/messages/rows';
 import { findMatches, stepMatch } from '../../src/renderer/shell/findMatches';
+import { aboveFold } from '../../src/renderer/messages/scrollAdjust';
 import type { MessageRow } from '../../src/shared/types';
 
 const TZ = 'Asia/Kolkata';
@@ -152,5 +153,21 @@ describe('find in this chat (§3.6.3, local)', () => {
     expect(stepMatch(1, 2, 1)).toBe(0);
     expect(stepMatch(0, 2, -1)).toBe(1);
     expect(stepMatch(-1, 0, 1)).toBe(-1);
+  });
+});
+
+describe('measured rows above the fold keep the view still (§3.6.4, batched corrections while flinging)', () => {
+  const row = { start: 400, size: 100, fold: 450, backward: false };
+  it('a first measurement moves the view when the row starts above the fold', () => {
+    expect(aboveFold({ ...row, firstMeasure: true })).toBe(true);
+    expect(aboveFold({ ...row, start: 450, firstMeasure: true })).toBe(false);
+  });
+  it('a re-measurement only when the whole row is above the fold and the user is not scrolling up', () => {
+    expect(aboveFold({ ...row, firstMeasure: false })).toBe(false);
+    expect(aboveFold({ ...row, start: 300, firstMeasure: false })).toBe(true);
+    expect(aboveFold({ ...row, start: 300, firstMeasure: false, backward: true })).toBe(false);
+  });
+  it('corrections not yet written count into the fold', () => {
+    expect(aboveFold({ ...row, start: 460, firstMeasure: true, fold: 450 + 20 })).toBe(true);
   });
 });

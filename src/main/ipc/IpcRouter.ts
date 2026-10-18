@@ -1,13 +1,16 @@
 // Spec: 08-1 §3 (IPC contract: sender check + zod validation, `Result<T>` replies), §3.1 (platform info), §3.2 (the
 // invoke rows M1 builds), §3.3 (events are patches; every *Row carries its rev), 08-0 §B.5; 08-3 §22.8 (test:* refused
-// outside test runs, through ChannelGuard).
+// outside test runs, through ChannelGuard). M2 builder A: message:get/react/pin, files:open/showInFolder, job:details,
+// routine:pause and the gap channels message:edit/delete/retry, link:open, app:showEmojiPanel (implementation-notes). M2
+// builder B: message:send (idempotent, AT-225; R1 secret re-check, 08-2 §11.4), composer:checkSecret, composer:saveDraft,
+// files:stage, voice:submit (04-2 §22.1), helper:pause (04-2 §23.2 "Turn on").
 import { app, BrowserWindow, ipcMain, net, shell, systemPreferences, type IpcMainEvent } from 'electron';
 import { z } from 'zod';
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
 import type { EventChannel, EventPayload, InvokeChannel, InvokeIn, InvokeOut, PlatformInfo } from '../../shared/ipc';
 import { PROVIDER_IDS, settingsSchema, WRITABLE_PATHS, type Settings } from '../../shared/settings';
-import type { WindowsSettingsPage } from '../../shared/types';
+import type { MessageRow, WindowsSettingsPage } from '../../shared/types';
 import { deps } from '../deps';
 import type { NetMonitor } from '../net/netMonitor';
 import type { SettingsStore } from '../settings/Settings';
@@ -17,21 +20,37 @@ import {
   bootstrap,
   chatOpen,
   chatRowById,
+  deleteMessages,
+  editMessage,
   helperList,
+  jobDetails,
   jobRows,
   listChats,
   markRead,
   memoryList,
+  messageGet,
   messageList,
+  pauseRoutine,
   pinChat,
+  pinMessage,
+  reactMessage,
+  retryMessage,
   publicSettings,
   recomputePill,
   routineList,
   spendSummary,
   stopJob,
   type ListContext,
+  type MessageWriteResult,
 } from '../store/queries';
+import { newId } from '../../shared/ids';
+import { askedForCode, checkSecret } from '../../shared/redactor';
+import { Inbox } from '../data/inbox';
+import { draftAttachments, pauseHelper, saveDraft, sendMessage, submitVoice } from '../store/composerQueries';
+import { helperRow } from '../db/rows';
+import type { DbRow } from '../db/rows';
 import { ChannelGuard } from './guard';
+import { insideDir } from '../windows/protocol';
 import { isTrustedUrl } from '../windows/protocol';
 
 const trusted = (e: IpcMainEvent) => !!e.senderFrame && isTrustedUrl(e.senderFrame.url);
@@ -63,6 +82,8 @@ export interface AppContext {
   net: NetMonitor;
   /** The network probe: Electron's net.isOnline() in production, the injected Net in test runs. */
   probe: () => boolean;
+  /** {DATA} (08-0 §E.6): files:open / showInFolder and the app://media host only reach files under it. */
+  dataDir: string;
 }
 
 export function listContext(settings: Settings): ListContext {
@@ -73,6 +94,16 @@ export const electronProbe = () => net.isOnline();
 
 const empty = z.object({}).strict();
 const chatId = z.string().min(1).max(80);
+const messageId = z.string().min(1).max(80);
+/** 04 §9: one emoji grapheme (a ZWJ or flag sequence is several code points). */
+const emoji = z
+  .string()
+  .min(1)
+  .max(32)
+  .regex(/^\p{Extended_Pictographic}|^\p{Regional_Indicator}|^[0-9#*]\uFE0F?\u20E3/u);
+// GAP: GAPS.md 2026-10-17 "message channels with no 08-1 entry"
+/** link:open (gap): the schemes 04 §10.7 / §16.1 open; anything else is URL_NOT_ALLOWED. */
+const LINK_SCHEMES = ['http:', 'https:', 'mailto:', 'tel:'];
 const SETTINGS_PAGE: Record<WindowsSettingsPage, string> = {
   notifications: 'ms-settings:notifications',
   'privacy-microphone': 'ms-settings:privacy-microphone',
@@ -95,6 +126,48 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'chat:pin': z.object({ chatId, on: z.boolean() }).strict(),
   'chat:mute': z.object({ chatId, until: z.union([z.number().int(), z.literal('forever'), z.null()]) }).strict(),
   'message:list': z.object({ chatId, beforeSeq: z.number().int().optional(), limit: z.number().int().min(1).max(200) }).strict(),
+  'message:get': z.object({ messageId }).strict(),
+  'message:react': z.object({ messageId, emoji, on: z.boolean() }).strict(),
+  'message:pin': z.object({ messageId, on: z.boolean() }).strict(),
+  'message:send': z
+    .object({
+      chatId,
+      clientId: z.string().min(1).max(80),
+      text: z.string().max(40_000),
+      replyToId: messageId.optional(),
+      attachmentIds: z.array(z.string().min(1).max(80)).max(6).optional(),
+      secretOverride: z.boolean().optional(),
+    })
+    .strict(),
+  'composer:checkSecret': z.object({ text: z.string().max(200_000) }).strict(),
+  'composer:saveDraft': z
+    .object({
+      chatId,
+      text: z.string().max(40_000),
+      attachmentIds: z.array(z.string().min(1).max(80)).max(6),
+      replyToId: messageId.optional(),
+      linkPreviewRemoved: z.boolean(),
+    })
+    .strict(),
+  'files:stage': z
+    .object({
+      name: z.string().min(1).max(255),
+      bytes: z.custom<ArrayBuffer>((v) => v instanceof ArrayBuffer || ArrayBuffer.isView(v)),
+    })
+    .strict(),
+  'voice:submit': z
+    .object({ chatId, attachmentId: z.string().min(1).max(80), durationMs: z.number().int().min(0).max(3_600_000) })
+    .strict(),
+  'helper:pause': z.object({ helperId: z.string().min(1).max(80), on: z.boolean().optional() }).strict(),
+  'message:edit': z.object({ messageId, text: z.string().min(1).max(40_000) }).strict(),
+  'message:delete': z.object({ messageIds: z.array(messageId).min(1).max(500), confirm: z.literal(true) }).strict(),
+  'message:retry': z.object({ messageId }).strict(),
+  'files:open': z.object({ path: z.string().min(1).max(1024) }).strict(),
+  'files:showInFolder': z.object({ path: z.string().min(1).max(1024) }).strict(),
+  'job:details': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'routine:pause': z.object({ routineId: z.string().min(1).max(80), confirm: z.literal(true).optional() }).strict(),
+  'link:open': z.object({ url: z.string().min(1).max(2048) }).strict(),
+  'app:showEmojiPanel': empty as z.ZodType<Record<string, never>>,
   'job:stop': z.object({ jobId: z.string().min(1).max(80) }).strict(),
   'job:watch': z.object({ jobId: z.string().min(1).max(80), on: z.boolean() }).strict(),
   'memory:list': z
@@ -214,6 +287,145 @@ export function registerIpc(ctx: AppContext): void {
     return ok(undefined);
   });
   handle('message:list', ({ chatId: id, beforeSeq, limit }) => ok(messageList(db, id, limit, beforeSeq)));
+  handle('message:get', ({ messageId: id }) => {
+    const row = messageGet(db, id);
+    return row ? ok(row) : fail('NOT_FOUND');
+  });
+  const written = (r: MessageWriteResult): Result<MessageRow> => {
+    if (!r.ok) return fail(r.reason === 'not_found' ? 'NOT_FOUND' : 'VALIDATION');
+    emit('message:upsert', r.row);
+    return ok(r.row);
+  };
+  const asVoid = (r: Result<MessageRow>): Result<void> => (r.ok ? ok(undefined) : r);
+  handle('message:react', ({ messageId: id, emoji: e, on }) => asVoid(written(reactMessage(db, id, e, on, now()))));
+  handle('message:pin', ({ messageId: id, on }) => asVoid(written(pinMessage(db, id, on))));
+  handle('message:edit', ({ messageId: id, text }) => {
+    // Art. 8 / R1: the edit is re-checked like message:send (askedForCode from the chat's recent messages).
+    const chatOf = messageGet(db, id)?.chatId;
+    const asked = chatOf ? askedForCode(messageList(db, chatOf, 20), now()) : false;
+    const e = editMessage(db, id, text, now(), { askedForCode: asked });
+    if (!e.ok && e.reason === 'secret') return { ok: false, error: { kind: 'SECRET_SUSPECTED', paste: e.paste } };
+    if (!e.ok && e.reason === 'too_long') return fail('VALIDATION', 'too_long');
+    const r = written(e);
+    if (r.ok) emitChat(r.value.chatId);
+    return r;
+  });
+  handle('message:delete', ({ messageIds }) => {
+    const r = deleteMessages(db, messageIds, now());
+    for (const row of r.rows) emit('message:upsert', row);
+    for (const id of r.chatIds) emitChat(id);
+    return ok(undefined);
+  });
+  handle('message:retry', ({ messageId: id }) => written(retryMessage(db, id)));
+
+  // ---------------------------------------------------------------- the composer (M2 builder B)
+  const inbox = new Inbox(ctx.dataDir);
+  /**
+   * 04 §3.3 / 04-2 §23.1: saved, but foo cannot hand it on (offline, AI down, signed out, at its limit, spend cap, or the
+   * chat's helper is paused).
+   */
+  const waiting = (chatId?: string) => {
+    if (chatId) {
+      const paused = db.prepare('SELECT h.paused FROM chats c JOIN helpers h ON h.id = c.helper_id WHERE c.id = ?').get(chatId) as
+        DbRow | undefined;
+      if (paused?.paused === 1) return true;
+    }
+    const ai = aiStatus(settings.get(), ctx.net.offline);
+    if (ai.state === 'offline' || ai.state === 'down' || ai.state === 'signed_out' || ai.state === 'limit') return true;
+    const spend = spendSummary(db, settings.get(), now());
+    return spend.aiBilling === 'key' && spend.aiSpentPaise !== null && spend.aiSpentPaise >= spend.aiCapPaise;
+  };
+  const recent = (id: string) => messageList(db, id, 20);
+  handle('message:send', (req) => {
+    const fromDraft = draftAttachments(db, req.chatId);
+    const r = sendMessage(db, req, {
+      now: now(),
+      newId: () => newId('m', now()),
+      waiting: waiting(req.chatId),
+      attachment: (id) => inbox.get(id) ?? fromDraft.find((a) => a.id === id),
+      askedForCode: askedForCode(recent(req.chatId), now()),
+    });
+    if (!r.ok) {
+      if (r.reason === 'secret') return { ok: false, error: { kind: 'SECRET_SUSPECTED', ...(r.paste ? { paste: r.paste } : {}) } };
+      return fail(r.reason === 'not_found' || r.reason === 'attachment_missing' ? 'NOT_FOUND' : 'VALIDATION', r.reason);
+    }
+    if (r.created) {
+      emit('message:upsert', r.row);
+      emitChat(req.chatId);
+    }
+    return ok({ messageId: r.messageId, queued: r.queued });
+  });
+  handle('composer:checkSecret', ({ text }) => ok(checkSecret(text)));
+  handle('composer:saveDraft', (req) => {
+    const r = saveDraft(db, req, {
+      now: now(),
+      newId: () => newId('dr', now()),
+      attachment: (id) => inbox.get(id) ?? draftAttachments(db, req.chatId).find((a) => a.id === id),
+    });
+    if (!r) return fail('NOT_FOUND');
+    if (r.changed) emitChat(req.chatId);
+    return ok(undefined);
+  });
+  handle('files:stage', ({ name, bytes }) => {
+    const view = bytes as unknown as ArrayBufferView;
+    const data = bytes instanceof ArrayBuffer ? new Uint8Array(bytes) : new Uint8Array(view.buffer, view.byteOffset, view.byteLength);
+    const id = newId('att', now());
+    const r = inbox.stage(id, name, data);
+    if (!r.ok) return fail(r.reason === 'too_big' ? 'FILE_TOO_BIG' : 'FILE_TYPE');
+    return ok({ attachmentId: id });
+  });
+  handle('voice:submit', ({ chatId: id, attachmentId, durationMs }) => {
+    if (durationMs < 500) return fail('VOICE_TOO_SHORT');
+    // Review S4: only a recording the recorder staged (name, WebM/Ogg header, voice mime) becomes a voice note.
+    if (!inbox.isRecording(attachmentId)) return fail(inbox.get(attachmentId) ? 'VALIDATION' : 'NOT_FOUND', 'not_a_recording');
+    const messageId = newId('m', now());
+    const voicePath = inbox.moveToVoice(attachmentId, messageId);
+    if (!voicePath) return fail('NOT_FOUND');
+    const r = submitVoice(db, { chatId: id, messageId, voicePath, durationMs }, { now: now(), waiting: waiting(id) });
+    if (!r.ok) return fail(r.reason === 'too_short' ? 'VOICE_TOO_SHORT' : 'NOT_FOUND');
+    emit('message:upsert', r.row);
+    emitChat(id);
+    return ok({ messageId });
+  });
+  handle('helper:pause', ({ helperId, on }) => {
+    if (!pauseHelper(db, helperId, on ?? true)) return fail('NOT_FOUND');
+    return ok(helperRow(db.prepare('SELECT * FROM helpers WHERE id = ?').get(helperId) as DbRow));
+  });
+  handle('files:open', async ({ path }) => {
+    const file = insideDir(ctx.dataDir, path);
+    if (!file) return fail('PATH_NOT_ALLOWED');
+    const err = await shell.openPath(file);
+    return err ? fail('NOT_FOUND', err) : ok(undefined);
+  });
+  handle('files:showInFolder', ({ path }) => {
+    const file = insideDir(ctx.dataDir, path);
+    if (!file) return fail('PATH_NOT_ALLOWED');
+    shell.showItemInFolder(file);
+    return ok(undefined);
+  });
+  handle('job:details', ({ jobId }) => {
+    const d = jobDetails(db, jobId, now());
+    return d ? ok(d) : fail('JOB_GONE');
+  });
+  handle('routine:pause', ({ routineId }) => {
+    const row = pauseRoutine(db, routineId, now());
+    return row ? ok(row) : fail('NOT_FOUND');
+  });
+  handle('link:open', async ({ url }) => {
+    let parsed: URL;
+    try {
+      parsed = new URL(url);
+    } catch {
+      return fail('URL_NOT_ALLOWED');
+    }
+    if (!LINK_SCHEMES.includes(parsed.protocol)) return fail('URL_NOT_ALLOWED');
+    await shell.openExternal(parsed.toString());
+    return ok(undefined);
+  });
+  handle('app:showEmojiPanel', () => {
+    if (app.isEmojiPanelSupported()) app.showEmojiPanel();
+    return ok(undefined);
+  });
   handle('job:stop', ({ jobId }) => {
     // M1 has no engine (M3): the job row is cancelled here and the chat pill re-derived; nothing was done for the user yet.
     const r = stopJob(db, jobId, now());

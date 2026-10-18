@@ -1,6 +1,7 @@
 /* Spec: 03-shell-2 §3.6.4 (column --column-max centred; side padding --s5 when the main shell is ≥ 900 wide, else --s3;
-   top/bottom --s3 are the virtualiser's padding), 02-2 §F13.3 (overscroll contain), §3.6.3 match highlight (--warn-soft,
-   current match --focus-outer-w --accent outline, --r-xs). The placeholder row stands in for 04's bubbles until M2. */
+ * top/bottom --s3 are the virtualiser's padding), 02-2 §F13.3 (overscroll contain), §3.6.3 match highlight (--warn-soft,
+ * current match --focus-outer-w --accent outline, --r-xs); 04 §1.8 the focus ring is drawn on the bubble or card, so a
+ * message row draws none of its own (markers keep the row ring). */
 .area {
   position: relative;
   min-height: 0;
@@ -17,6 +18,9 @@
 }
 .column {
   position: relative;
+  /* Never sideways: a wide foo bubble's hover toolbar (04 §9.2, 8px right of the bubble) can reach past the column. Clip,
+   * not hidden, so the scroller keeps its own scrolling as it was (PERF-04). */
+  overflow-x: clip;
   max-width: var(--column-max);
   margin: 0 auto;
 }
@@ -30,28 +34,12 @@
   left: var(--s5);
   right: var(--s5);
 }
-.placeholder {
-  display: flex;
-  padding: var(--s0) 0;
-  font: var(--t-body);
-  color: var(--fg-1);
-}
-.placeholder[data-author='user'] {
-  justify-content: flex-end;
-}
-.placeholder[data-kind='marker'] {
-  justify-content: center;
-  font: var(--t-caption);
-  color: var(--fg-3);
-}
-.text {
-  max-width: var(--bubble-max);
-  overflow-wrap: anywhere;
-  white-space: pre-wrap;
-}
 .row[data-message-id]:focus-visible {
   outline-offset: calc(-1 * var(--focus-outer-w));
   border-radius: var(--r-sm);
+}
+.row[data-message-id]:focus-visible:has([data-testid^='bubble-'], [data-testid^='card-'], [role='group']) {
+  outline: none;
 }
 .match {
   background: var(--warn-soft);
@@ -71,4 +59,43 @@
   .row[data-flash] {
     transition: none;
   }
+}
+/* PERF-04, CR-0006: a light row while the user flings the list (FlingRow.tsx) is clipped to the row's known height. Bubbles
+ * use Bubble.module.css; a card is its box (--card-w, --r-lg, --bg-raised, 1px --line, 04 §19.7 gap) with its title, a
+ * marker its centred --t-caption --fg-3 line (§19.5). */
+.row[data-light] {
+  overflow: hidden;
+  contain: strict;
+}
+.lightCard,
+.lightMarker {
+  height: 100%;
+}
+.lightMarker {
+  font: var(--t-caption);
+  color: var(--fg-3);
+  text-align: center;
+}
+.lightCardBox {
+  box-sizing: border-box;
+  width: min(var(--card-w), 100%);
+  height: 100%;
+  padding: var(--s2) calc(var(--s2) + var(--s-1));
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg-raised);
+  color: var(--fg-1);
+  font: var(--t-body);
+}
+.lightCard[data-gap='s0'],
+.lightMarker[data-gap='s0'] {
+  padding-top: var(--s0);
+}
+.lightCard[data-gap='s2'],
+.lightMarker[data-gap='s2'] {
+  padding-top: var(--s2);
+}
+.lightCard[data-gap='s3'],
+.lightMarker[data-gap='s3'] {
+  padding-top: var(--s3);
 }

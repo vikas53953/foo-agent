@@ -10,11 +10,14 @@ import type {
   ChatRow,
   CardRow,
   ConnectionRow,
+  BadgeValue,
   HelperRow,
+  JobDetails,
   JobRow,
   MemoryFactView,
   MemoryFilter,
   MessageRow,
+  PasteCatch,
   ProviderId,
   PublicSettings,
   RoutineRow,
@@ -53,6 +56,38 @@ export interface Invokes {
   'chat:pin': { req: { chatId: string; on: boolean }; res: ChatRow };
   'chat:mute': { req: { chatId: string; until: number | 'forever' | null }; res: void };
   'message:list': { req: { chatId: string; beforeSeq?: number; limit: number }; res: MessageRow[] };
+  'message:get': { req: { messageId: string }; res: MessageRow };
+  'message:react': { req: { messageId: string; emoji: string; on: boolean }; res: void };
+  'message:pin': { req: { messageId: string; on: boolean }; res: void };
+  /** M2 builder B: idempotent on `(chatId, clientId)` (AT-225); `SECRET_SUSPECTED` carries the PasteCatch in `error.paste`. */
+  'message:send': {
+    req: { chatId: string; clientId: string; text: string; replyToId?: string; attachmentIds?: string[]; secretOverride?: boolean };
+    res: { messageId: string; queued: boolean };
+  };
+  'composer:checkSecret': { req: { text: string }; res: PasteCatch | null };
+  'composer:saveDraft': {
+    req: { chatId: string; text: string; attachmentIds: string[]; replyToId?: string; linkPreviewRemoved: boolean };
+    res: void;
+  };
+  'files:stage': { req: { name: string; bytes: ArrayBuffer }; res: { attachmentId: string } };
+  'voice:submit': { req: { chatId: string; attachmentId: string; durationMs: number }; res: { messageId: string } };
+  'helper:pause': { req: { helperId: string; on?: boolean }; res: HelperRow };
+  // GAP: GAPS.md 2026-10-17 "message channels with no 08-1 entry"
+  /** Not in 08-1 §3.2 (gap, implementation-notes "M2 (builder A)"): 04 §6.2 edit of the user's last message. Re-checked like
+   * message:send (Art. 8): `SECRET_SUSPECTED` carries the PasteCatch in `error.paste`; over 10,000 is `VALIDATION`. */
+  'message:edit': { req: { messageId: string; text: string }; res: MessageRow };
+  /** Not in 08-1 §3.2 (gap): 04 §6.3 / §1.9 delete after C-24 / C-25 (soft delete; the row stays as the deleted state). */
+  'message:delete': { req: { messageIds: string[]; confirm: true }; res: void };
+  /** Not in 08-1 §3.2 (gap): 04 §7 "Try again" on a Not sent bubble (same text and attachments). */
+  'message:retry': { req: { messageId: string }; res: MessageRow };
+  'files:open': { req: { path: string }; res: void };
+  'files:showInFolder': { req: { path: string }; res: void };
+  'job:details': { req: { jobId: string }; res: JobDetails };
+  'routine:pause': { req: { routineId: string; confirm?: true }; res: RoutineRow };
+  /** Not in 08-1 §3.2 (gap): 04 §10.6, §10.7, §13, §16.1 open a link in the default browser (http, https, mailto, tel). */
+  'link:open': { req: { url: string }; res: void };
+  /** Not in 08-1 §3.2 (gap): 04 §9.3 "+" opens the Windows emoji panel (Electron app.showEmojiPanel). */
+  'app:showEmojiPanel': { req: Record<string, never>; res: void };
   'job:stop': { req: { jobId: string }; res: StopReport };
   'job:watch': { req: { jobId: string; on: boolean }; res: void };
   'memory:list': { req: { filter: MemoryFilter; q?: string }; res: MemoryFactView[] };
@@ -71,6 +106,8 @@ export interface Events {
   'chat:removed': { chatId: string };
   'chat:typing': { chatId: string; on: boolean; who: string };
   'message:upsert': MessageRow;
+  'message:delta': { messageId: string; seq: number; append: string };
+  'message:badge': { messageId: string; badge: BadgeValue | null };
   'card:upsert': CardRow;
   'job:upsert': JobRow;
   'ai:status': AiStatus;
@@ -105,6 +142,24 @@ export const INVOKE_CHANNELS = [
   'chat:pin',
   'chat:mute',
   'message:list',
+  'message:get',
+  'message:react',
+  'message:pin',
+  'message:send',
+  'composer:checkSecret',
+  'composer:saveDraft',
+  'files:stage',
+  'voice:submit',
+  'helper:pause',
+  'message:edit',
+  'message:delete',
+  'message:retry',
+  'files:open',
+  'files:showInFolder',
+  'job:details',
+  'routine:pause',
+  'link:open',
+  'app:showEmojiPanel',
   'job:stop',
   'job:watch',
   'memory:list',
@@ -121,6 +176,8 @@ export const EVENT_CHANNELS = [
   'chat:removed',
   'chat:typing',
   'message:upsert',
+  'message:delta',
+  'message:badge',
   'card:upsert',
   'job:upsert',
   'ai:status',

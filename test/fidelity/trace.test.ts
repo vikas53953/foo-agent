@@ -31,6 +31,18 @@ describe('FID-18 trace matrix', () => {
       'ART-02a: trace.csv names test/a.test.ts, but the test is in test/b.test.ts',
     ]);
   });
+  it('an id may have one row per file (the axe audit per milestone); each file needs its own row, and a repeat is flagged', () => {
+    const two = csv(',,ART-26a,,,Art. 26,test/a.spec.ts,M1,live', ',,ART-26a,,,Art. 26,test/b.spec.ts,M2,live');
+    expect(checkTrace(two, { 'test/a.spec.ts': src('ART-26a x'), 'test/b.spec.ts': src('ART-26a y') })).toEqual([]);
+    expect(checkTrace(two, { 'test/a.spec.ts': src('ART-26a x'), 'test/b.spec.ts': src('other') })).toEqual([
+      'trace.csv:3: test/b.spec.ts has no test titled with ART-26a',
+    ]);
+    expect(
+      checkTrace(two, { 'test/a.spec.ts': src('ART-26a x'), 'test/b.spec.ts': src('ART-26a y'), 'test/c.spec.ts': src('ART-26a z') }),
+    ).toEqual(['ART-26a: trace.csv names test/a.spec.ts, test/b.spec.ts, but the test is in test/c.spec.ts']);
+    const dup = csv(',,ART-26a,,,Art. 26,test/a.spec.ts,M1,pending', ',,ART-26a,,,Art. 26,test/a.spec.ts,M2,pending');
+    expect(checkTrace(dup, {})).toEqual(['trace.csv:3: ART-26a is listed twice for test/a.spec.ts']);
+  });
   it('pending rows may name files that do not exist yet; bad rows are reported', () => {
     expect(checkTrace(csv(',,,,BP-APP-L,03-shell-1 §3.4,test/fidelity/bp/x.spec.ts,M1,pending'), {})).toEqual([]);
     expect(checkTrace(csv(',,,,,,,M1,later'), {})).toEqual([

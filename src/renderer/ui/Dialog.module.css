@@ -1,0 +1,58 @@
+/* Spec: 06 §0.3 Dialog anatomy (--dialog-sm, --r-lg, --bg-raised, --shadow-28, padding 24; title --t-subtitle; ✕ 12px
+ * inset; body --t-body; buttons right-aligned, gap 8; scrim --scrim, layer --z-dialog). */
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-dialog);
+  display: grid;
+  place-items: center;
+  padding: var(--s3);
+  background: var(--scrim);
+}
+.dialog {
+  position: relative;
+  width: min(var(--dialog-sm), 100%);
+  padding: var(--s5);
+  border-radius: var(--r-lg);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-28);
+  color: var(--fg-1);
+  animation: dialog-in var(--m-normal) var(--ease-in);
+}
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+  }
+}
+.head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s1);
+  padding-right: var(--s6);
+}
+.title {
+  margin: 0;
+  font: var(--t-subtitle);
+}
+.close {
+  position: absolute;
+  top: var(--s2);
+  right: var(--s2);
+}
+.body {
+  margin: var(--s1) 0 0;
+  font: var(--t-body);
+  color: var(--fg-1);
+}
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--s1);
+  margin-top: var(--s5);
+}
+@media (forced-colors: active) {
+  .dialog {
+    border: 1px solid CanvasText;
+  }
+}

@@ -1,15 +1,21 @@
 // Spec: 03-shell-2 §3.6.5 (one date separator before the first message of each calendar day; copy "Today, Fri 16 Oct" /
 // "Yesterday, Thu 15 Oct" / "Wed 14 Oct" / "Tue 14 Oct 2025"; unread divider before the first unread), §3.6.7 + 04 §19.5
-// (start-of-chat line first, 24 above the first separator), 02-2 §F13.3 (per-kind height estimates). Pure.
+// (start-of-chat line first, 24 above the first separator), 02-2 §F13.3 (per-kind height estimates); 04 §14.2 / §14.3 (the
+// status line or the Thinking row sits where foo's next bubble will appear), §10.11 (a WhatsApp mirror shows the retention
+// line and its mirrored rows). Pure.
 import { formatDate } from '../../shared/format';
 import { t } from '../../shared/copy/t';
-import type { MessageRow } from '../../shared/types';
+import type { MessageRow, WaMessageRow } from '../../shared/types';
 
 export type VRow =
   | { kind: 'start'; key: string; label: string; messageId?: string }
   | { kind: 'date'; key: string; label: string; dayKey: string }
   | { kind: 'unread'; key: string; label: string }
-  | { kind: 'message'; key: string; message: MessageRow };
+  | { kind: 'message'; key: string; message: MessageRow }
+  | { kind: 'status'; key: string; text: string }
+  | { kind: 'thinking'; key: string; helperId: string | null }
+  | { kind: 'retention'; key: string }
+  | { kind: 'wa'; key: string; wa: WaMessageRow };
 
 export interface DateOpts {
   now: number;
@@ -18,8 +24,33 @@ export interface DateOpts {
 
 const DAY = 24 * 3_600_000;
 
+const dayFormats = new Map<string, Intl.DateTimeFormat>();
+
+/** "2026-10-16" in `timeZone`. One formatter per zone: building an Intl.DateTimeFormat costs far more than using it, and
+ *  buildRows calls this for every loaded message each time a page of history arrives (PERF-04). */
 export function dayKey(at: number, timeZone: string): string {
-  return new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(at));
+  let f = dayFormats.get(timeZone);
+  if (!f) dayFormats.set(timeZone, (f = new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' })));
+  // The same instants come back on every page of history: each is formatted once per zone (the newest DAY_KEYS_MAX).
+  const memo = `${timeZone}|${at}`;
+  const hit = dayKeys.get(memo);
+  if (hit !== undefined) return hit;
+  const k = f.format(at);
+  if (dayKeys.size >= DAY_KEYS_MAX) dayKeys.delete(dayKeys.keys().next().value as string);
+  dayKeys.set(memo, k);
+  return k;
+}
+const DAY_KEYS_MAX = 20_000;
+const dayKeys = new Map<string, string>();
+
+/** A message's day key, kept on the message object (buildRows runs over every loaded message on each page of history). */
+const messageDays = new WeakMap<MessageRow, { timeZone: string; key: string }>();
+function messageDay(m: MessageRow, timeZone: string): string {
+  const hit = messageDays.get(m);
+  if (hit?.timeZone === timeZone) return hit.key;
+  const key = dayKey(m.createdAt, timeZone);
+  messageDays.set(m, { timeZone, key });
+  return key;
 }
 
 export function dateLabel(at: number, o: DateOpts): string {
@@ -62,7 +93,7 @@ export function buildRows(messages: MessageRow[], o: BuildOpts): VRow[] {
   let lastDay = '';
   for (const m of messages) {
     if (m === startMarker) continue;
-    const k = dayKey(m.createdAt, o.timeZone);
+    const k = messageDay(m, o.timeZone);
     if (k !== lastDay) {
       rows.push({ kind: 'date', key: `date-${k}`, label: dateLabel(m.createdAt, o), dayKey: k });
       lastDay = k;
@@ -74,18 +105,60 @@ export function buildRows(messages: MessageRow[], o: BuildOpts): VRow[] {
   return rows;
 }
 
-/** 02-2 §F13.3 estimates: bubble 56, card by type, marker 40, date separator 56. */
+/** 04 §10.11: the mirror's rows: the retention line, date separators, then the mirrored messages (oldest first). */
+export function buildWaRows(rows: WaMessageRow[], o: DateOpts): VRow[] {
+  const out: VRow[] = [{ kind: 'retention', key: 'retention' }];
+  let lastDay = '';
+  for (const w of rows) {
+    const k = dayKey(w.at, o.timeZone);
+    if (k !== lastDay) {
+      out.push({ kind: 'date', key: `date-${k}`, label: dateLabel(w.at, o), dayKey: k });
+      lastDay = k;
+    }
+    out.push({ kind: 'wa', key: w.id, wa: w });
+  }
+  return out;
+}
+
+const CHARS_PER_LINE = 60;
+const LINE = 22;
+
+/** A text bubble's estimate: 56 for one or two lines, then 22 per line (rich answers and long texts measure later anyway). */
+export function estimateText(text: string, attachments: number): number {
+  const lines = text.split('\n').reduce((n, l) => n + Math.max(1, Math.ceil(l.length / CHARS_PER_LINE)), 0);
+  return 56 + Math.max(0, lines - 1) * LINE + (attachments ? 204 : 0);
+}
+
+/** Kept per message object (immutable): the virtualiser re-reads every row's estimate whenever the row count changes,
+ *  which is every page of history (PERF-04). */
+const textEstimates = new WeakMap<MessageRow, number>();
+function textEstimate(m: MessageRow): number {
+  let e = textEstimates.get(m);
+  if (e === undefined) textEstimates.set(m, (e = estimateText(m.text, m.attachments?.length ?? 0)));
+  return e;
+}
+
+/** 02-2 §F13.3 estimates: bubble 56 (longer text grows), card by type, marker 40, date separator 56, voice 88. */
 export function estimateRow(r: VRow, cardType: (cardId: string) => string | undefined, cardEstimate: Record<string, number>): number {
   switch (r.kind) {
     case 'date':
       return 56;
     case 'start':
     case 'unread':
+    case 'retention':
+    case 'status':
       return 40;
+    case 'thinking':
+      return 46;
+    case 'wa':
+      return estimateText(r.wa.text, 0) + (r.wa.fromMe ? 0 : 18);
     case 'message': {
-      if (r.message.kind === 'marker') return 40;
-      if (r.message.kind === 'card' && r.message.cardId) return cardEstimate[cardType(r.message.cardId) ?? ''] ?? 160;
-      return 56;
+      const m = r.message;
+      if (m.kind === 'marker') return 40;
+      if (m.kind === 'card' && m.cardId) return cardEstimate[cardType(m.cardId) ?? ''] ?? 160;
+      if (m.kind === 'voice') return 88;
+      if (m.deletedAt !== null) return 56;
+      return textEstimate(m);
     }
   }
 }

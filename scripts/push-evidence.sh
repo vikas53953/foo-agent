@@ -25,7 +25,7 @@ copy golden/ref/determinism-second determinism-second
 copy golden/ref/bp refs/bp
 copy golden/ref/ux refs/ux
 copy golden/out/tier-r tier-r
-copy test-results/fid-14.json fid-14.json
+for f in test-results/fid-14*.json; do copy "$f" "$(basename "$f")"; done # one per E2E that measures spec values
 printf '%s\n' "run ${GITHUB_RUN_ID:-local} · commit $HEAD_SHA · milestone $MILESTONE" > "$stage/RUN.txt"
 
 auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 | tr -d '\n')"

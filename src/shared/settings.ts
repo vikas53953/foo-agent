@@ -96,5 +96,5 @@ export const settingsSchema = z.object({
 export type Settings = z.infer<typeof settingsSchema>;
 
 /** Paths `settings:set` accepts in M1 (the shell writes only these; 08-0 §A). Later milestones extend the list. */
-export const WRITABLE_PATHS = ['window.sidebarWidth', 'window.rightShellOpen', 'window.lastChatId'] as const;
+export const WRITABLE_PATHS = ['window.sidebarWidth', 'window.rightShellOpen', 'window.lastChatId', 'money.warnAt80'] as const;
 export type WritablePath = (typeof WRITABLE_PATHS)[number];

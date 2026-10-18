@@ -159,3 +159,7 @@ These settle every conflict the chapter writers found, and record the owner's an
 | X-153 | **Finished helper chats fold to one line** (R7; Claude projects). 03-1 §3.4.7 "Folded" row state.
 | X-154 | **Quiet "Working on…" preview line** (R9; Instinct). 03-1 §3.4.6 rule 3a.
 | X-155 | **Choice card stepper and number keys** (R8; Unify, Emergent, Cofounder on Mobbin). Confirms 05-1 §5.3.1 pager "{k} of {n}" and §5.3.5 keys 1–4; already in the spec, now binding for QA.
+| X-156 | **M2 trace rows and drawing disputes** (CR-0003). M2 trace.csv rows and Blueprint ids; BP-MSG-02, BP-COMP-03 and UX-08-02 move to M3; the listed UX-08/UX-09 drawing differences are disputed, the app follows the written spec.
+| X-157 | **Dark user bubble is indigo everywhere** (CR-0004). X-145 wins over the 04 §2 and walkthrough near-white dark bubble; the listed M2 golden differences that follow from the spec are disputed.
+| X-158 | **PERF-02 typing probe** (CR-0005). Keys are typed one per frame; keydown → paint is measured less the wait for the next display refresh (at most one frame); p95 < 16 ms.
+| X-159 | **Light message rows during a fling** (CR-0006). While the user's own scroll runs faster than 4 px/ms, rows draw light until the scroll settles (PERF-04).

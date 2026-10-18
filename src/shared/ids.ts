@@ -1,8 +1,29 @@
-// Spec: 08-0 §E.7 (ids are `{prefix}_{UUIDv7}`), 08-1 §0.6 (prefix table), 08-3 §22.2 (IdGen is injected; the seeds use a
+// Spec: 08-0 §E.7 (ids are `{prefix}_{UUIDv7}`), 08-1 §0.6 (prefix table; `att_` from 08-5 §3.4 Attachment.id), 08-3 §22.2 (IdGen is injected; the seeds use a
 // deterministic one).
 
 export type IdPrefix =
-  'c' | 'm' | 'k' | 'j' | 's' | 'h' | 't' | 'ap' | 'py' | 'dr' | 'cn' | 'tc' | 'r' | 'rr' | 'act' | 'nt' | 'sg' | 'hi' | 'fl' | 'bf' | 'f';
+  | 'c'
+  | 'm'
+  | 'k'
+  | 'j'
+  | 's'
+  | 'h'
+  | 't'
+  | 'ap'
+  | 'py'
+  | 'dr'
+  | 'cn'
+  | 'tc'
+  | 'r'
+  | 'rr'
+  | 'act'
+  | 'nt'
+  | 'sg'
+  | 'hi'
+  | 'fl'
+  | 'bf'
+  | 'f'
+  | 'att';
 
 /** A new id on the system clock and crypto randomness (works in main, engine and renderer without imports). */
 export function newId(prefix: IdPrefix, now: number = Date.now()): string {

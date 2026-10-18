@@ -1,7 +1,18 @@
 // FID-02, FID-06, FID-19 (11-fidelity §11.1.3, §11.2.7, §11.7.1): the PR guard.
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { addedLines, citedCrs, guard, ownedBy, parseOwners, type GuardInput } from '../../scripts/fid-guard';
+import {
+  addedLines,
+  citedCrs,
+  crPending,
+  guard,
+  ownedBy,
+  parseOwners,
+  pendingCrs,
+  statusLine,
+  type GuardInput,
+} from '../../scripts/fid-guard';
+import { crFile } from '../../scripts/golden-bless';
 
 const owners = parseOwners(readFileSync('OWNERS.yml', 'utf8'));
 const base: GuardInput = { files: [], added: [], text: '', owners, crExists: (id) => id === 'CR-0001' };
@@ -51,6 +62,45 @@ describe('fid-guard', () => {
     expect(ownedBy('a/b/c.ts', 'a/*.ts')).toBe(false);
     expect(ownedBy('a/b/c.ts', 'a/**')).toBe(true);
     expect(guard({ ...base, files: ['x/y.md'], owners: ['spec/'] })).toEqual(['FID-19: x/y.md has no owner in OWNERS.yml']);
+  });
+  it('FID-02 CR status: a cited CR not "Approved by Vikas" with a DECISIONS row is PENDING; only --strict fails (review D1)', () => {
+    const status: Record<string, string> = {
+      'CR-0001': 'Approved by Vikas (2026-10-18, "yes") · DECISIONS X-145',
+      'CR-0003': "Approved under overnight instruction (Vikas, 2026-10-17 18:52Z: continue the overnight build, don't wait",
+      'CR-0004': 'Approved by Vikas (2026-10-18) · DECISIONS X-999',
+    };
+    const input: GuardInput = {
+      ...base,
+      files: ['spec/trace.csv'],
+      text: 'Fidelity-CR: CR-0001\nsee CR-0003 and CR-0004 and CR-0042',
+      crExists: (id) => id in status,
+      crStatus: (id) => status[id] ?? null,
+      decisions: new Set(['X-145']),
+    };
+    expect(pendingCrs(input)).toEqual([
+      { id: 'CR-0003', status: status['CR-0003'], reason: 'not "Approved by Vikas"' },
+      { id: 'CR-0004', status: status['CR-0004'], reason: 'no DECISIONS row id that exists' },
+    ]);
+    // Without --strict the pending CRs warn only (CI keeps running while they await Vikas's review).
+    expect(guard(input)).toEqual(['cited CR-0042 has no file in docs/cr/']);
+    const strict = guard({ ...input, strict: true });
+    expect(strict.filter((p) => p.startsWith('FID-02 (--strict)'))).toHaveLength(2);
+    expect(strict.join('\n')).toContain('CR-0003: not "Approved by Vikas"');
+    expect(guard({ ...input, text: 'Fidelity-CR: CR-0001', strict: true })).toEqual([]);
+  });
+  it('reads the Status line of a CR file in both written forms', () => {
+    expect(statusLine('# CR-0007 · x\n\nStatus: Draft\nRaised by: me')).toBe('Draft');
+    expect(statusLine('# CR-0003\n- **Asked by:** b\n- **Status:** Approved under overnight instruction\n  more')).toBe(
+      'Approved under overnight instruction',
+    );
+    expect(statusLine('# no status')).toBeNull();
+    expect(crPending('CR-0001', 'Approved', new Set(['X-1']))?.reason).toBe('not "Approved by Vikas"');
+    expect(crPending('CR-0001', 'Approved by Vikas (X-1)', new Set(['X-1']))).toBeNull();
+    // The real CR files on this branch: every one is listed, none silently counted.
+    for (const id of ['CR-0003', 'CR-0004', 'CR-0005']) {
+      const f = crFile(id)!;
+      expect(crPending(id, statusLine(readFileSync(f, 'utf8')), new Set()), id).not.toBeNull();
+    }
   });
   it('reads added lines per file from a -U0 diff', () => {
     const patch = ['diff --git a/x.ts b/x.ts', '--- a/x.ts', '+++ b/x.ts', '@@ -1 +1 @@', '-old', '+new', '+++not a header'].join('\n');

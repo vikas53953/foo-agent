@@ -1,6 +1,8 @@
-// Spec: 11-fidelity §11.5.3 FID-18 (traceability matrix spec/trace.csv): every live row's ids appear in a test title in
-// exactly the file the matrix names; no test title carries an AT/ART/PERF/UX/BP id the matrix does not know (no orphans);
-// pending rows name their milestone. The per-R coverage rule (every R1–R31 has an AT and a UX step) waits until the matrix
+// Spec: 11-fidelity §11.5.3 FID-18 (traceability matrix spec/trace.csv, "one row per link"): every live row's ids appear in
+// a test title in exactly the file the row names; no test title carries an AT/ART/PERF/UX/BP id the matrix does not know,
+// or an id in a file no row names for it (no orphans); pending rows name their milestone. An id may have several rows, one
+// per file: ART-26a is the axe audit of every surface (10-2 §D) and §11.2.3 runs it in every golden step file, so it lives
+// in one file per milestone (CR-0003). The same id twice for the same file is a duplicate row. The per-R coverage rule (every R1–R31 has an AT and a UX step) waits until the matrix
 // is complete (it grows per milestone).
 // Usage: tsx scripts/trace-check.ts
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
@@ -78,7 +80,7 @@ export function checkTrace(trace: string, tests: Record<string, string>): string
   const { header, rows } = readTrace(trace);
   if (header.join(',') !== HEADER.join(',')) problems.push(`header must be: ${HEADER.join(',')}`);
   const titles = Object.fromEntries(Object.entries(tests).map(([f, src]) => [f, titleIds(src)]));
-  const fileOf = new Map<string, string>();
+  const filesOf = new Map<string, Set<string>>();
   for (const r of rows) {
     const { cells } = r;
     const where = `trace.csv:${r.line}`;
@@ -89,9 +91,10 @@ export function checkTrace(trace: string, tests: Record<string, string>): string
     const file = norm(cells['Test file'] ?? '');
     if (!file) problems.push(`${where}: no test file`);
     for (const id of r.ids) {
-      const prev = fileOf.get(id);
-      if (prev && prev !== file) problems.push(`${where}: ${id} is listed in ${prev} and ${file}`);
-      fileOf.set(id, file);
+      const files = filesOf.get(id) ?? new Set<string>();
+      if (files.has(file)) problems.push(`${where}: ${id} is listed twice for ${file}`);
+      files.add(file);
+      filesOf.set(id, files);
       if (cells.Status !== 'live') continue;
       if (!(file in tests)) problems.push(`${where}: ${file} does not exist`);
       else if (!titles[file]!.includes(id)) problems.push(`${where}: ${file} has no test titled with ${id}`);
@@ -99,9 +102,9 @@ export function checkTrace(trace: string, tests: Record<string, string>): string
   }
   for (const [file, ids] of Object.entries(titles))
     for (const id of ids) {
-      const listed = fileOf.get(id);
+      const listed = filesOf.get(id);
       if (!listed) problems.push(`orphan: ${file} has a test titled ${id}, which trace.csv does not know`);
-      else if (listed !== file) problems.push(`${id}: trace.csv names ${listed}, but the test is in ${file}`);
+      else if (!listed.has(file)) problems.push(`${id}: trace.csv names ${[...listed].join(', ')}, but the test is in ${file}`);
     }
   return problems;
 }

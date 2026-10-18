@@ -2,11 +2,14 @@
 // skip, only, mask or threshold change without a CR), §11.7.1 FID-19 (every changed path has an owner in OWNERS.yml);
 // foo-plan §1 rule 8. Runs on pull_request events (GITHUB_EVENT_PATH); a CR is cited as CR-nnnn in a commit message of the
 // PR or in the PR body, and must exist as docs/cr/CR-nnnn*.md. golden/app/** baselines may instead cite
-// "Fidelity-Report: <id>" (written by golden-bless).
-// Usage: tsx scripts/fid-guard.ts            (in CI, pull_request events)
-//        tsx scripts/fid-guard.ts --base <ref> [--head <ref>] [--body <text>]   (locally)
+// "Fidelity-Report: <id>" (written by golden-bless). FID-02 also needs the CR file to say `Status: Approved by Vikas` with a
+// DECISIONS row id that exists: a cited CR that does not is listed as PENDING (a warning; CRs wait for Vikas's morning
+// review), and `--strict` (the merge gate) fails on it (M2 review D1).
+// Usage: tsx scripts/fid-guard.ts [--strict]           (in CI, pull_request events)
+//        tsx scripts/fid-guard.ts --base <ref> [--head <ref>] [--body <text>] [--strict]   (locally)
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import { crFile } from './golden-bless';
@@ -23,7 +26,47 @@ export interface GuardInput {
   text: string;
   owners: string[];
   crExists: (id: string) => boolean;
+  /** The CR file's Status line (text after "Status:"), or null when it has none. */
+  crStatus?: (id: string) => string | null;
+  /** DECISIONS.md row ids (X-nn) that exist. */
+  decisions?: ReadonlySet<string>;
+  /** The merge gate: a cited CR that is not approved by Vikas fails instead of warning. */
+  strict?: boolean;
 }
+
+/** A cited CR that FID-02 cannot count yet, and why. */
+export interface PendingCr {
+  id: string;
+  status: string;
+  reason: string;
+}
+
+/** The Status line of a CR file: `Status: …` or `- **Status:** …` (first line only). */
+export function statusLine(md: string): string | null {
+  const m = md.match(/^[ \t]*(?:[-*][ \t]+)?(?:\*\*)?Status:(?:\*\*)?[ \t]*(.+)$/im);
+  return m ? m[1]!.trim() : null;
+}
+
+/** FID-02: `Approved by Vikas` with a DECISIONS row id (X-nn) that exists; anything else is pending, with the reason. */
+export function crPending(id: string, status: string | null, decisions: ReadonlySet<string>): PendingCr | null {
+  const s = status ?? '';
+  if (!/^Approved by Vikas\b/i.test(s)) return { id, status: s || '(no Status line)', reason: 'not "Approved by Vikas"' };
+  const rows = s.match(/\bX-\d+\b/g) ?? [];
+  if (!rows.some((x) => decisions.has(x))) return { id, status: s, reason: 'no DECISIONS row id that exists' };
+  return null;
+}
+
+/** Cited CRs (with a file) whose Status does not yet satisfy FID-02. */
+export function pendingCrs(input: GuardInput): PendingCr[] {
+  if (!input.crStatus) return [];
+  return citedCrs(input.text)
+    .filter((id) => input.crExists(id))
+    .map((id) => crPending(id, input.crStatus!(id), input.decisions ?? new Set()))
+    .filter((p): p is PendingCr => !!p);
+}
+
+export const pendingLine = (p: PendingCr) =>
+  `${p.id}: ${p.reason} (Status: ${p.status.length > 120 ? `${p.status.slice(0, 117)}…` : p.status})`;
 
 /** Where picture masks and thresholds live (§11.2.4–§11.2.5); app code and docs may say "threshold" for other things. */
 const PICTURE_CODE = /^(?:test\/|golden\/|playwright\.config\.ts$|scripts\/(?:tier-r|golden[\w-]*)\.ts$|scripts\/golden\/)/;
@@ -98,6 +141,7 @@ export function guard(input: GuardInput): string[] {
   if (risky.length && !crs.length) problems.push(`FID-06: added without a CR:\n  ${risky.join('\n  ')}`);
 
   for (const f of input.files) if (!input.owners.some((p) => ownedBy(f, p))) problems.push(`FID-19: ${f} has no owner in OWNERS.yml`);
+  if (input.strict) for (const p of pendingCrs(input)) problems.push(`FID-02 (--strict): ${pendingLine(p)}`);
   return problems;
 }
 
@@ -115,7 +159,9 @@ export function addedLines(patch: string): Added[] {
 }
 
 function main() {
-  const { values } = parseArgs({ options: { base: { type: 'string' }, head: { type: 'string' }, body: { type: 'string' } } });
+  const { values } = parseArgs({
+    options: { base: { type: 'string' }, head: { type: 'string' }, body: { type: 'string' }, strict: { type: 'boolean', default: false } },
+  });
   let base = values.base;
   let head = values.head ?? 'HEAD';
   let body = values.body ?? '';
@@ -135,18 +181,35 @@ function main() {
   const files = git('diff', '--name-only', '--no-renames', range).split('\n').filter(Boolean);
   const added = addedLines(git('diff', '-U0', '--no-renames', '--no-color', range));
   const messages = git('log', '--format=%B', `${base}..${head}`);
-  const problems = guard({
+  const decisionsMd = join('spec', 'constitution', 'DECISIONS.md');
+  const input: GuardInput = {
     files,
     added,
     text: `${messages}\n${body}`,
     owners: parseOwners(readFileSync('OWNERS.yml', 'utf8')),
     crExists: (id) => crFile(id) !== null,
-  });
+    crStatus: (id) => {
+      const f = crFile(id);
+      return f ? statusLine(readFileSync(f, 'utf8')) : null;
+    },
+    decisions: new Set(
+      existsSync(decisionsMd) ? (readFileSync(decisionsMd, 'utf8').match(/^\| (X-\d+) \|/gm) ?? []).map((r) => r.slice(2, -2)) : [],
+    ),
+    strict: values.strict,
+  };
+  const pending = pendingCrs(input);
+  if (pending.length && !values.strict)
+    console.warn(
+      `fid-guard: PENDING CRs (cited, not yet counted by FID-02; they await Vikas's review${values.strict ? '' : '; not failing without --strict'}):\n  ${pending.map(pendingLine).join('\n  ')}`,
+    );
+  const problems = guard(input);
   if (problems.length) {
     console.error(problems.join('\n'));
     process.exit(1);
   }
-  console.log(`fid-guard: ${files.length} changed files checked (FID-02, FID-06, FID-19)`);
+  console.log(
+    `fid-guard: ${files.length} changed files checked (FID-02, FID-06, FID-19)${pending.length ? `; ${pending.length} cited CR(s) PENDING` : ''}`,
+  );
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) main();

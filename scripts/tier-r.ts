@@ -144,10 +144,16 @@ export interface Dispute {
   checks: CheckId[];
 }
 
-/** §11.2.7 step 3: the checks an approved CR disputes for this ref (only those, only until the drawing is redrawn). */
+/**
+ * §11.2.7 step 3: the checks approved CRs dispute for this ref (only those, only until the drawing is redrawn). A later CR
+ * can add checks for a ref an earlier one already names: every entry for the id counts, and the CRs are listed together.
+ */
 export function disputedChecks(disputes: Dispute[], id: string): { cr: string; checks: CheckId[] } | null {
-  const d = disputes.find((x) => x.ids.includes(id));
-  return d ? { cr: d.cr, checks: d.checks } : null;
+  const all = disputes.filter((x) => x.ids.includes(id));
+  if (!all.length) return null;
+  const order: CheckId[] = ['r1', 'r2', 'r3', 'r4'];
+  const checks = order.filter((c) => all.some((d) => d.checks.includes(c)));
+  return { cr: [...new Set(all.map((d) => d.cr))].join(' + '), checks };
 }
 
 export function tierR(
@@ -159,13 +165,24 @@ export function tierR(
   dispute: { cr: string; checks: CheckId[] } | null = null,
 ) {
   const res = { r1: r1(ref, app), r2: r2(ref, app), r3: r3(ref, app), r4: r4(ref, app, superseded), r5: r5(ref, app) };
+  return { id, theme, ...rollUp(res, dispute), ...res };
+}
+
+/**
+ * The step's verdict from its checks (§11.2.4, §11.2.7 step 3). A dispute covers only the exact checks its CR names, and
+ * only when they fail ("expected fail (CR)"); every other check counts. "A Review result is not a pass": when any counted
+ * check is in the Review band (e.g. R4 between 3 % and 10 %), the step is "review" (it goes to the reviewer and Vikas),
+ * even if other checks are disputed. A counted failure fails the step. Only when the rest pass is the step "disputed".
+ */
+export function rollUp(
+  res: Record<CheckId, { verdict: Verdict }>,
+  dispute: { cr: string; checks: CheckId[] } | null,
+): { verdict: Verdict | 'disputed'; disputed: { cr: string; checks: CheckId[] } | null } {
   const checks: CheckId[] = ['r1', 'r2', 'r3', 'r4'];
-  // A disputed check that fails is "expected fail (CR)" and leaves the verdict to the other checks; it never passes silently.
   const expectedFail = checks.filter((c) => dispute?.checks.includes(c) && res[c].verdict === 'fail');
-  const counted = checks.filter((c) => !expectedFail.includes(c)).map((c) => res[c].verdict);
-  const rest = worst(counted);
-  const verdict: Verdict | 'disputed' = expectedFail.length && rest !== 'fail' ? 'disputed' : rest;
-  return { id, theme, verdict, disputed: expectedFail.length ? { cr: dispute!.cr, checks: expectedFail } : null, ...res };
+  const rest = worst(checks.filter((c) => !expectedFail.includes(c)).map((c) => res[c].verdict));
+  const verdict: Verdict | 'disputed' = rest === 'pass' && expectedFail.length ? 'disputed' : rest;
+  return { verdict, disputed: expectedFail.length ? { cr: dispute!.cr, checks: expectedFail } : null };
 }
 
 // ---------- CLI ----------

@@ -1,0 +1,137 @@
+{
+  "milestone": "M2",
+  "source": "foo-plan §5 M2 (Goal, Constitution, Create, Must pass, Fidelity exit) and CR-0003 (M2 trace rows, BP-MSG-*/BP-COMP-* ids)",
+  "rows": [
+    {
+      "group": "M2 Goal",
+      "item": "Both bubble types and every message state rendered from the store, smooth at 5,000 messages",
+      "status": "PARTIAL",
+      "evidence": ["test:PERF-04", "test:ART-26a · bubbles"],
+      "covers": "part",
+      "manual": "reviewer reading of 04 §1–§19 per state (per-word streaming fade, \"Stopped.\", Not sent reasons, the user's link preview, image aspect and \"Save as…\" are logged gaps); smoothness: Vikas with the coordinator, on the reference laptop (10-2 §E.1: 20 runs, a job running, repeated at 225 % text size), before M2 sign-off"
+    },
+    {
+      "group": "M2 Goal",
+      "item": "The paste catcher blocks secrets at the composer",
+      "status": "PARTIAL",
+      "evidence": ["test:AT-007", "test:ART-08b", "test:re-checks like message:send", "test:passes the paste catcher and the limit"],
+      "covers": "part",
+      "manual": "\"Move to secret box\" hands the value to the Secret box card: scheduled M5 (05-2 §5.8); demo on the Windows build (paste an sk-proj- key, edit a message with a key)"
+    },
+    {
+      "group": "M2 Constitution",
+      "item": "04 §1–§19 · 04-2 §20–§27 · 05 §5.9, §5.22–§5.25 · Art. 8, 16, 23, 26, 28",
+      "status": "PARTIAL",
+      "evidence": "test:ART-26a",
+      "covers": "part",
+      "manual": "independent reviewer reads 04 §1–§19, 04-2 §20–§27, 05 §5.9, §5.22–§5.25 and Art. 8, 16, 23, 26, 28 against the build (axe covers Art. 26 at rest only)"
+    },
+    {
+      "group": "M2 Create",
+      "item": "renderer/messages/*, renderer/composer/*, renderer/cards/{TableCard,FileCard,LinkPreview,PlaceCard}.tsx, renderer/store/messages.ts, messages.* and composer.* copy keys",
+      "status": "DONE"
+    },
+    {
+      "group": "M2 Create",
+      "item": "Secret patterns shared with the paste catcher (08-0 §E path src/shared/redactor.ts over the plan's engine/redact/patterns.ts)",
+      "status": "DONE",
+      "evidence": ["test:ART-08b", "test:invisible characters cannot split a secret"],
+      "covers": "whole"
+    },
+    {
+      "group": "M2 Create",
+      "item": "Voice capture to {DATA}\\data\\voice\\*.webm (transcription in M11)",
+      "status": "CHANGED",
+      "note": "WebM Opus as the plan says; 04-2 §22.1 says Ogg Opus: CHANGED until a CR is approved (CR-0003 P2 is only a proposal)."
+    },
+    {
+      "group": "M2 Must pass",
+      "item": "AT-007",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-007",
+      "covers": "whole"
+    },
+    {
+      "group": "M2 Must pass",
+      "item": "AT-225 (message:send idempotent on clientId)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-225",
+      "covers": "whole"
+    },
+    {
+      "group": "M2 Must pass",
+      "item": "ART-08b (every C8 pattern caught, ≤ 1 false positive in 200)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-08b",
+      "covers": "whole"
+    },
+    {
+      "group": "M2 Must pass",
+      "item": "PERF-02 (typing < 16 ms with the 5,000-message chat)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:PERF-02",
+      "covers": "part",
+      "manual": "Vikas with the coordinator, on the reference laptop (10-2 §E.1: 20 runs, a job running, repeated at 225 % text size), before M2 sign-off; the CI run is a proxy"
+    },
+    {
+      "group": "M2 Must pass",
+      "item": "PERF-04 (60 fps scroll, bounded DOM)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:PERF-04",
+      "covers": "part",
+      "manual": "Vikas with the coordinator, on the reference laptop (10-2 §E.1: 20 runs, a job running, repeated at 225 % text size), before M2 sign-off; the CI run is a proxy"
+    },
+    {
+      "group": "M2 Must pass",
+      "item": "ART-21a (rendered thread; bubble meta exemption)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-21a · the rendered thread",
+      "covers": "whole"
+    },
+    {
+      "group": "M2 Must pass",
+      "item": "ART-26a (messages, composer)",
+      "status": "UNVERIFIABLE",
+      "evidence": ["test:ART-26a · bubbles", "test:ART-26a · the composer"],
+      "covers": "part",
+      "manual": "axe while the list scrolls (states other than at rest) and a Narrator pass on Windows (11 §11.9.3)"
+    },
+    {
+      "group": "M2 Must pass",
+      "item": "10-2 §C.3 rows (messages, composer)",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:Enter sends",
+      "covers": "part",
+      "manual": "10-2 §C.3 rows not run by a test: streaming word fade 150 ms, 225 % text size, high contrast (manual on Windows, before M2 sign-off); reactions on Choice / Approval cards (M5) and transcript rows (M11) are scheduled"
+    },
+    {
+      "group": "M2 Fidelity exit",
+      "item": "Tier R for UX-08 (all 7) with no Fail; blessed into Tier B",
+      "status": "PARTIAL",
+      "note": "UX-08-01 and 03–07 are captured from the seeded chapter 8 scene (test/fidelity/ux/UX-08.chat.spec.ts). UX-08-02 (typing face, Stop while foo replies) needs the engine's reply stream: scheduled M3 (CR-0003). R1 is disputed under CR-0003; UX-08-07 also R2."
+    },
+    {
+      "group": "M2 Fidelity exit",
+      "item": "Tier R for the UX-09 steps not needing transcription (UX-09-01, UX-09-08)",
+      "status": "PARTIAL",
+      "evidence": "test:UX-09 · Voice notes",
+      "note": "R1 disputed under CR-0003 (UX-09-08 also R2: the written spec puts the microphone problem in the composer banner).",
+      "covers": "part",
+      "manual": "Tier R R1–R4 for UX-09-01 and UX-09-08 are disputed under CR-0003 (not approved): Vikas looks at the frames side by side"
+    },
+    {
+      "group": "M2 Fidelity exit",
+      "item": "Tier R for BP-MSG-* and BP-COMP-* with no Fail",
+      "status": "PARTIAL",
+      "note": "11 of 13 drawn ids are captured (test/fidelity/bp/BP-messages.spec.ts); BP-MSG-02 and BP-COMP-03 need the reply stream: M3. R1/R2 disputed under CR-0003 (350px minis with glyph icons and their own words)."
+    },
+    {
+      "group": "M2 Fidelity exit",
+      "item": "FID-14 rows SV-01–12, 26, 30",
+      "status": "UNVERIFIABLE",
+      "evidence": "fid14",
+      "covers": "part",
+      "manual": "SV-01 corners, SV-08 widths and SV-30 hover motion are hand checks (reviewer, on the golden-lane captures)"
+    }
+  ]
+}

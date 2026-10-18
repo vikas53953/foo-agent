@@ -1,0 +1,223 @@
+/* Spec: 05-1 §0.2 card frame and header row, §0.3 buttons (40 tall pills, Link buttons --t-small --accent), §0.5 hover
+ * for whole-surface cards; 05-3 §5.22 (table: header --t-caption-strong uppercase +0.08em --fg-2 on --bg-sunken; body
+ * --t-small, first column 600; rows only), §5.23 (file 56 high, 40 tile --bg-sunken, Document 24 --fg-2; link preview
+ * info block --bg-sunken, image 1.91:1 with top corners --r-lg), §5.24 (place: Location 20, two Secondary buttons). */
+.card {
+  container-type: inline-size;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  width: min(var(--card-w), 100%);
+  padding: var(--s2) calc(var(--s2) + var(--s-1));
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg-raised);
+  color: var(--fg-1);
+  user-select: text;
+}
+.wide {
+  width: min(var(--card-w-wide), 100%);
+}
+.surface {
+  text-align: start;
+  cursor: default;
+  transition: box-shadow var(--m-fast) var(--ease-standard);
+}
+.surface:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-4);
+}
+.surface:focus-visible {
+  border-radius: var(--r-lg);
+}
+.head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s1);
+  min-height: var(--t-body-strong-lh);
+}
+.headIcon {
+  flex: none;
+  color: var(--fg-2);
+}
+.title {
+  flex: 1;
+  min-width: 0;
+  font: var(--t-body-strong);
+  text-wrap: balance;
+}
+.right {
+  flex: none;
+  font: var(--t-caption);
+  color: var(--fg-3);
+  white-space: nowrap;
+}
+.foot {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+.footSpacer {
+  flex: 1;
+}
+.timeTip {
+  display: inline-flex;
+}
+.time {
+  font: var(--t-caption);
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+.link {
+  min-height: var(--s7);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font: var(--t-small);
+}
+.link:hover {
+  text-decoration: underline;
+}
+.link:active {
+  color: var(--accent-pressed);
+}
+.small {
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+}
+
+/* §5.22 table */
+.tableBox {
+  overflow-x: auto;
+  border-radius: var(--r-sm);
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font: var(--t-small);
+}
+.table th {
+  padding: var(--s1) var(--s2);
+  background: var(--bg-sunken);
+  color: var(--fg-2);
+  font: var(--t-caption-strong);
+  letter-spacing: 0.08em; /* local: 05-3 §5.22 header tracking +0.08em */
+  text-align: start;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.table td {
+  padding: var(--s1) var(--s2);
+  border-top: 1px solid var(--line);
+  color: var(--fg-1);
+  vertical-align: top;
+}
+.table td:first-child {
+  font-weight: 600;
+}
+.table .num {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+.best td {
+  background: var(--accent-soft);
+}
+
+/* §5.23 file */
+.file {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--s2);
+  min-height: var(--s9);
+  padding-top: var(--s1);
+  padding-bottom: var(--s1);
+  font: inherit;
+}
+.fileTile {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--s7);
+  height: var(--s7);
+  border-radius: var(--r-sm);
+  background: var(--bg-sunken);
+  color: var(--fg-2);
+}
+.fileText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+.fileName {
+  font: var(--t-body-strong);
+}
+.fileMeta {
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+.missing {
+  color: var(--fg-2);
+}
+.removed,
+.removed .fileName {
+  color: var(--fg-3);
+  cursor: default;
+}
+
+/* §5.23 link preview */
+.preview {
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  font: inherit;
+}
+.previewImg {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.91;
+  object-fit: cover;
+}
+.previewInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  padding: var(--s2) calc(var(--s2) + var(--s-1));
+  background: var(--bg-sunken);
+}
+.clamp2 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.previewTitle {
+  font: var(--t-body-strong);
+}
+.previewDesc {
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.previewDomain {
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+.cardFoot {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 calc(var(--s2) + var(--s-1)) var(--s1);
+}
+
+@media (forced-colors: active) {
+  .card {
+    border-color: CanvasText;
+  }
+}

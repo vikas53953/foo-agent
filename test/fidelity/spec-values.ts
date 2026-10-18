@@ -37,8 +37,12 @@ export const BOX_TOLERANCE = 0.5;
 
 /**
  * Elements for rows whose spec entry has no data-testid (SV-38 "base styles" = the body rule in global.css; M1 builder B:
- * SV-18 right shell = `app-panel`, SV-29 main shell = `thread`, 03-shell-2 §3.9.5).
+ * SV-18 right shell = `app-panel`, SV-29 main shell = `thread`, 03-shell-2 §3.9.5), and for rows whose test id names more
+ * than the row measures (M2 builder C, CR-0003): SV-02 "last of a run" narrows `bubble-me` to `data-pos="last"`; SV-10 and
+ * SV-11 measure the pill box, which in the app wraps `composer-field` (the contenteditable sits inside the pill with the
+ * chips and strips, 04-2 §20.3; GAPS.md). An entry here wins over the row's test id.
  */
+// GAP: GAPS.md 2026-10-17 "composer-field is on the inner contenteditable"
 export const SELECTORS: Record<string, string> = {
   'SV-38': 'body',
   // M1 left shell (03-shell-1 §3.4): measured with the list on screen and, for SV-23, a menu open.
@@ -49,6 +53,21 @@ export const SELECTORS: Record<string, string> = {
   'SV-25': '[data-testid="sidebar"] button, [data-testid="sidebar"] [role="radio"], [data-testid="chatlist-row"], [role="menuitem"]',
   'SV-18': '[data-testid="app-panel"]',
   'SV-29': '[data-testid="thread"]',
+  // M2 messages (04 §1–§2, §11): measured in foo's chat on the ux-world seed (the chapter 8 scene) and Trips' gallery.
+  'SV-02': '[data-testid="bubble-me"][data-pos="last"]',
+  'SV-03': '[data-testid="bubble-foo"][data-pos="last"]',
+  'SV-05': '[data-testid="bubble-foo"]',
+  'SV-06':
+    '[data-testid="bubble-me"]:not([lang]) > [data-copy], [data-testid="bubble-foo"]:not([lang]) > [data-copy], [data-testid="bubble-helper"]:not([lang]) > [data-copy]',
+  'SV-07': '[data-testid^="bubble-"][lang="pa"] > [data-copy], [data-testid^="bubble-"][lang="hi"] > [data-copy]',
+  'SV-09': '[data-testid="thread-log"] [role="list"]',
+  // M2 composer (04-2 §20–§21).
+  'SV-10': '[data-testid="composer"] div:has(> div > [data-testid="composer-field"])',
+  'SV-11': '[data-testid="composer"] div:has(> div > [data-testid="composer-field"])',
+  'SV-12': '[data-testid="composer-attach"], [data-testid="composer-send"]',
+  // SV-26 "timestamp, placeholder": foo's bubble times (the user's sit on the dark bubble in --on-bubble-me-2, 04 §3.1) and
+  // the composer placeholder (the field's aria-hidden twin).
+  'SV-26': '[data-testid="bubble-foo"] [data-testid="bubble-meta"], [data-testid="composer"] span[aria-hidden="true"][id]',
 };
 
 export function readRows(file = 'spec/spec-values.json'): SvRow[] {
@@ -60,8 +79,8 @@ export const liveRows = (rows = readRows()) => rows.filter((r) => !r.pending);
 const pick = (v: Themed, theme: Theme) => (typeof v === 'string' ? v : v[theme]);
 
 export function locator(row: SvRow): string | null {
-  if (row.testid) return `[data-testid="${row.testid}"]`;
-  return SELECTORS[row.id] ?? null;
+  if (SELECTORS[row.id]) return SELECTORS[row.id]!;
+  return row.testid ? `[data-testid="${row.testid}"]` : null;
 }
 
 /** Pure comparison, unit-tested: CSS values exact, boxes within ±0.5 px, min-boxes at least the size. */

@@ -164,6 +164,16 @@ describe('tierR end to end on a synthetic frame', () => {
     const moved = paint(solid(40, 30, WHITE), 15, 15, 20, 10, [200, 30, 30]);
     expect(tierR('BP-X', 'light', side(frame), side(moved, { x: 15, y: 15, width: 20, height: 10 }), null, d).verdict).toBe('fail');
     expect(disputedChecks([{ cr: 'CR-0002', ids: ['BP-X'], checks: ['r1'] }], 'BP-Y')).toBeNull();
+    // A later CR adds checks for a ref an earlier CR already names: both count.
+    expect(
+      disputedChecks(
+        [
+          { cr: 'CR-0003', ids: ['UX-X'], checks: ['r1'] },
+          { cr: 'CR-0004', ids: ['UX-X', 'UX-Y'], checks: ['r3', 'r2'] },
+        ],
+        'UX-X',
+      ),
+    ).toEqual({ cr: 'CR-0003 + CR-0004', checks: ['r1', 'r2', 'r3'] });
     expect(tierR('BP-X', 'light', side(frame), side(frame), null, d)).toMatchObject({ verdict: 'pass', disputed: null });
   });
 });

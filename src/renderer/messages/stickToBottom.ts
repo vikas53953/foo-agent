@@ -1,6 +1,7 @@
 // Spec: 03-shell-2 §3.6.4 (stick to bottom; no overflow-anchor), 04 §1.6 + DECISIONS X-152 (15px, wins over §3.6.4's 80),
 // §3.6.5 (open at the unread divider 1/3 down), §3.6.6 (button when > one screen above; "99+"), §3.6.7 (600px, keep anchor).
-// Pure maths; useStickToBottom.ts and MessageList.tsx apply it.
+// 04 §1.6 streaming rule (follow a streaming answer until its top is 16px below the chat header). Pure maths;
+// useStickToBottom.ts and MessageList.tsx apply it.
 export const STICK_THRESHOLD = 15;
 export const LOAD_OLDER_WITHIN = 600;
 export const JUMP_COUNT_CAP = 99;
@@ -37,3 +38,19 @@ export function unreadOpenTop(a: { dividerTop: number; totalHeight: number; clie
   if (a.totalHeight - a.dividerTop <= a.clientHeight) return end;
   return Math.min(end, Math.max(0, a.dividerTop - a.clientHeight / 3));
 }
+
+/** 04 §1.6: the gap under the chat header at which the list stops following a streaming answer. */
+export const STREAM_TOP_GAP = 16;
+
+/**
+ * 04 §1.6 / §14.4: while at the bottom, keep following a growing streaming bubble only while its top is still more than
+ * 16px below the top of the list (the chat header's bottom edge); then stop, so the user reads from the first line.
+ */
+export const followStreaming = (a: { rowStart: number; scrollTop: number }) => a.rowStart - a.scrollTop > STREAM_TOP_GAP;
+
+/** 04 §1.6 / X-152: the newest message must stay visible this long (window focused) before the chat is marked read. */
+export const MARK_READ_AFTER_MS = 1000;
+
+/** Is a row (offsets inside the scroller) inside the visible part of the list? */
+export const rowVisible = (a: { start: number; end: number; scrollTop: number; clientHeight: number }) =>
+  a.end > a.scrollTop && a.start < a.scrollTop + a.clientHeight;
