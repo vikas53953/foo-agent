@@ -1,19 +1,19 @@
 {
-  "reportId": "M2-98df290-39109674167",
+  "reportId": "M2-221c459-39129893464",
   "milestone": "M2",
-  "generatedAt": "2026-10-18T08:08:58.003Z",
-  "commit": "275c51b47f3912e0896d439481bb837a63f1ddaf",
-  "head": "98df2903b149a14b98d89d4cde2ccd4c1e37e81c",
+  "generatedAt": "2026-10-18T13:11:49.585Z",
+  "commit": "962ecd6c89e45b0cdfc5795e1668af89b581f1ea",
+  "head": "221c4594554dfa77f299fd9b91c511047b54ae7b",
   "ci": {
-    "runId": "39109674167",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39109674167"
+    "runId": "39129893464",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39129893464"
   },
   "spec": {
     "version": "spec-v1.0",
-    "setSha256": "a563b9da076143846b99614e34f0d5c4f55396b7725ba7b305f70b2185914da4"
+    "setSha256": "e2b3e3b3713505d67997c239a96b618fd1bdd2233e52f100e1e630e3a3e6e878"
   },
   "runner": {
-    "recordedAt": "2026-10-18T08:02:31.308Z",
+    "recordedAt": "2026-10-18T13:06:58.444Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000002846"
+      "runner": "GitHub Actions 1000002849"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -8894,22 +8894,22 @@
       {
         "id": "CR-0003",
         "title": "M2 trace rows, M2 Blueprint ids, and where the drawings and the M2 app disagree",
-        "status": "Approved under overnight instruction (Vikas, 2026-10-17 18:52Z/18:59Z: continue the overnight build, don't wait"
+        "status": "Approved by Vikas, DECISIONS X-156 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)"
       },
       {
         "id": "CR-0004",
         "title": "The dark user bubble is indigo (X-145) everywhere, and the M2 golden-lane differences that follow from the spec",
-        "status": "Approved under overnight instruction (Vikas, 2026-10-17 18:52Z/18:59Z: continue the overnight build, don't wait"
+        "status": "Approved by Vikas, DECISIONS X-157 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)"
       },
       {
         "id": "CR-0005",
         "title": "how PERF-02 measures \"keydown → character painted\"",
-        "status": "Approved under overnight instruction (Vikas, 2026-10-17 18:52Z/18:59Z: continue the overnight build, don't wait"
+        "status": "Approved by Vikas, DECISIONS X-158 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)"
       },
       {
         "id": "CR-0006",
         "title": "Light message rows while the user flings the list (PERF-04)",
-        "status": "Approved under overnight instruction (Vikas, 2026-10-17 18:52Z/18:59Z: continue the overnight build, don't wait"
+        "status": "Approved by Vikas, DECISIONS X-159 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)"
       }
     ],
     "notes": "Conservative picks and deferrals: implementation-notes.md (the ## M2 sections)."
@@ -9748,7 +9748,7 @@
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
         "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05526284978339773,
+        "r5": 0.05420910900362955,
         "ref": true,
         "app": true,
         "diff": true
@@ -9761,7 +9761,7 @@
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
         "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.053584670023026186,
+        "r5": 0.05350661515045077,
         "ref": true,
         "app": true,
         "diff": true
@@ -9800,7 +9800,7 @@
         "r2": "fail (BP-COMP-06 0/248.65625 px)",
         "r3": "pass (BP-COMP-06 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.15836676550962264,
+        "r5": 0.1584539798825513,
         "ref": true,
         "app": true,
         "diff": true
@@ -10138,7 +10138,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 20.59)",
         "r4": "fail (21.84 %)",
-        "r5": 0.1166630859375,
+        "r5": 0.11663671875,
         "ref": true,
         "app": true,
         "diff": true
@@ -10151,7 +10151,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 35.2)",
         "r4": "fail (21.68 %)",
-        "r5": 0.0988349609375,
+        "r5": 0.0988173828125,
         "ref": true,
         "app": true,
         "diff": true
