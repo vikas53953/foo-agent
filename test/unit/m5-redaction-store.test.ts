@@ -199,7 +199,7 @@ describe('R1: message:send re-check and "Send anyway"', () => {
     expect(dump()).not.toContain(CANARY);
   });
 
-  it('Send anyway with the value still in the text: stored "•••• (hidden)", AI placeholder, value registered', () => {
+  it('Send anyway where main\'s re-check catches a secret the composer missed: stored "•••• (hidden)", AI placeholder, value registered', () => {
     const r = sendMessage(db, { chatId: 'c_1', clientId: 'a2', text: `my key ${CANARY} thanks`, secretOverride: true }, ctx());
     expect(r.ok).toBe(true);
     if (!r.ok) return;
@@ -221,11 +221,14 @@ describe('R1: message:send re-check and "Send anyway"', () => {
     expect(writeRedacted('the bank took 482913 fine')).toBe('the bank took [hidden] fine');
   });
 
-  it('Send anyway with the span already masked by the composer: the value never reached main, nothing to register', () => {
+  it('Send anyway as it really arrives (the composer already masked the span): stored as sent, AI placeholder, nothing registered', () => {
     const r = sendMessage(db, { chatId: 'c_1', clientId: 'a4', text: 'my key •••• (hidden) thanks', secretOverride: true }, ctx());
     expect(r.ok).toBe(true);
     if (!r.ok) return;
-    expect(db.prepare('SELECT text_for_ai FROM messages WHERE id = ?').pluck().get(r.messageId)).toBe(`my key ${HIDDEN_FOR_AI} thanks`);
+    expect(db.prepare('SELECT text, text_for_ai FROM messages WHERE id = ?').get(r.messageId)).toEqual({
+      text: 'my key •••• (hidden) thanks',
+      text_for_ai: `my key ${HIDDEN_FOR_AI} thanks`,
+    });
     expect(mainRegistry().size).toBe(0);
   });
 });
