@@ -211,14 +211,18 @@ export function parseMemoryFile(text: string, opts: ParseOptions): ParseResult {
   return { doc, facts, badLines, rewrite };
 }
 
+/** One fact on one line: white space runs fold to one space, so a line break or "  {" in the text can't corrupt the file. */
+const oneLine = (s: string) => s.replace(/\s+/gu, ' ').trim();
+
 export function formatFactLine(fact: MemoryFact, file: string): string {
   const tokens = [PROVENANCE_LABELS[fact.provenance], fact.date, ORIGIN_LABELS[fact.origin]];
-  if (fact.reason) tokens.push(fact.reason);
+  if (fact.reason) tokens.push(oneLine(fact.reason));
+  // A kind equal to the folder's default (X-06) is not written: it reads back the same, so a redundant token is dropped.
   if (fact.kind !== kindForFile(file)) tokens.push(fact.kind);
   if (fact.private) tokens.push('private');
   if (fact.chatId) tokens.push(`chat:${fact.chatId}`);
   tokens.push(fact.id);
-  return `- ${fact.text}  {${tokens.join(SEP)}}`;
+  return `- ${oneLine(fact.text)}  {${tokens.join(SEP)}}`;
 }
 
 /** UTF-8 text with LF line ends and no BOM; `## Private` holds exactly the private facts (and lines kept from there). */
@@ -240,10 +244,11 @@ export function writeMemoryFile(doc: MemoryDoc): string {
 
 export type AddCheck = { ok: true } | { ok: false; reason: 'text' | 'person' | 'category' };
 
-/** §12.4: `text` 1–120 chars, `kind='person'` needs `person`, `category` (when given) from the closed list. */
+/** §12.4: `text` 1–120 chars once trimmed and on one line, `kind='person'` needs `person`, `category` (when given) from the
+ * closed list. */
 export function validateAdd(add: { text: string; kind: MemoryKind; person?: string; category?: string }): AddCheck {
   const text = add.text.trim();
-  if (text.length === 0 || [...add.text].length > 120) return { ok: false, reason: 'text' };
+  if (text.length === 0 || [...text].length > 120 || /[\r\n]/.test(text)) return { ok: false, reason: 'text' };
   if (add.kind === 'person' && !add.person?.trim()) return { ok: false, reason: 'person' };
   if (add.category !== undefined && !(MEMORY_CATEGORIES as readonly string[]).includes(add.category)) {
     return { ok: false, reason: 'category' };
