@@ -127,3 +127,39 @@ R17 · R8 · R14,J5,,UX-05-04,,05-1 §5.2; 05-3 §5.15; 04 §4.2,test/fidelity/u
 ,,,,BP-CARD-18,05-3 §5.19,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
 ,,,,BP-CARD-19,05-3 §5.20,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
 ,,,,BP-CARD-20,05-3 §5.21,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
+,J4,AT-014,,,10-acceptance-1 §B; 08-3 §16.1; 05-3 §5.11,test/e2e/m8-connectors.spec.ts,M8,pending
+,J4,AT-015,,,10-acceptance-1 §B; 08-3 §16.1.4; CR-0012 G-M8-04,test/integration/m8-gmail-drafts.test.ts,M8,pending
+,J4,AT-018,,,10-acceptance-1 §B; 08-3 §16.4.2,test/integration/m8-whatsapp-send.test.ts,M8,pending
+,J5,AT-020,,,10-acceptance-1 §B; 08-3 §16.1.3,test/integration/m8-gmail-read.test.ts,M8,pending
+,J12,AT-051,,,10-acceptance-1 §B; 05-2 §5.7,test/e2e/m8-drafts.spec.ts,M8,pending
+,J12,AT-052,,,10-acceptance-1 §B; 05-2 §5.5; 08-2 §8.2,test/e2e/m8-drafts.spec.ts,M8,pending
+,J12,AT-053,,,10-acceptance-1 §B; 05-2 §5.7.2,test/integration/m8-gmail-drafts.test.ts,M8,pending
+,J12,AT-054,,,10-acceptance-1 §B; 08-3 §16.3,test/integration/m8-x.test.ts,M8,pending
+,J12,AT-055,,,10-acceptance-1 §B; 08-3 §16.1.4,test/integration/m8-gmail-drafts.test.ts,M8,pending
+,J16,AT-070,,,10-acceptance-1 §B; 08-3 §16.4.2,test/integration/m8-whatsapp-send.test.ts,M8,pending
+,J21,AT-093,,,10-acceptance-1 §B; 08-1 §3.2,test/e2e/m8-connectors.spec.ts,M8,pending
+,,AT-145,,,10-acceptance-1 §B; 08-3 §16.7; X-48,test/integration/m8-contacts.test.ts,M8,pending
+,J19,AT-220,,,10-acceptance-1 §B; 08-3 §21.2,test/integration/m8-expiry.test.ts,M8,pending
+,J16,AT-269,,,10-acceptance-1 §B.10; 08-3 §16.4.3; CR-0012 G-M8-12,test/e2e/m8-whatsapp.spec.ts,M8,pending
+,J16,AT-270,,,10-acceptance-1 §B.10; 04 §10.11; 08-3 §16.4.3,test/e2e/m8-whatsapp.spec.ts,M8,pending
+,,ART-04a,,,01-articles Art. 4; 10-acceptance-2 §D,test/articles/ART-04.test.ts,M8,pending
+,,ART-04b,,,01-articles Art. 4; 10-acceptance-2 §D,test/articles/ART-04.test.ts,M8,pending
+,,ART-09,,,01-articles Art. 9; 10-acceptance-2 §D,test/articles/ART-09.test.ts,M8,pending
+,,ART-15b,,,01-articles Art. 15; 10-acceptance-2 §D; CR-0012 G-M8-01,test/articles/ART-15b.test.ts,M8,pending
+,J12,,UX-16-01,,05-2 §5.7; 08-3 §16,test/fidelity/ux/UX-16.drafts.spec.ts,M8,pending
+,J12,,UX-16-02,,05-2 §5.7; 08-3 §16,test/fidelity/ux/UX-16.drafts.spec.ts,M8,pending
+,J12,,UX-16-03,,05-2 §5.7; 08-3 §16,test/fidelity/ux/UX-16.drafts.spec.ts,M8,pending
+,J12,,UX-16-04,,05-2 §5.7; 08-3 §16,test/fidelity/ux/UX-16.drafts.spec.ts,M8,pending
+,J12,,UX-16-05,,05-2 §5.7; 08-3 §16,test/fidelity/ux/UX-16.drafts.spec.ts,M8,pending
+,J12,,UX-16-06,,05-2 §5.7; 08-3 §16,test/fidelity/ux/UX-16.drafts.spec.ts,M8,pending
+,J12,,UX-16-07,,05-2 §5.7; 08-3 §16,test/fidelity/ux/UX-16.drafts.spec.ts,M8,pending
+,J12,,UX-16-08,,05-2 §5.7; 08-3 §16,test/fidelity/ux/UX-16.drafts.spec.ts,M8,pending
+,J12,,UX-16-09,,05-2 §5.7; 08-3 §16,test/fidelity/ux/UX-16.drafts.spec.ts,M8,pending
+,J12,,UX-16-10,,05-2 §5.7; 08-3 §16,test/fidelity/ux/UX-16.drafts.spec.ts,M8,pending
+,J4,,UX-04-04,,05-3 §5.11; 08-3 §16.1; 08-3 §16.4,test/fidelity/ux/UX-04.connect.spec.ts,M8,pending
+,J4,,UX-04-05,,05-3 §5.11; 08-3 §16.1; 08-3 §16.4,test/fidelity/ux/UX-04.connect.spec.ts,M8,pending
+,J4,,UX-04-06,,05-3 §5.11; 08-3 §16.1; 08-3 §16.4,test/fidelity/ux/UX-04.connect.spec.ts,M8,pending
+,J4,,UX-04-07,,05-3 §5.11; 08-3 §16.1; 08-3 §16.4,test/fidelity/ux/UX-04.connect.spec.ts,M8,pending
+,J4,,UX-04-08,,05-3 §5.11; 08-3 §16.1; 08-3 §16.4,test/fidelity/ux/UX-04.connect.spec.ts,M8,pending
+,J4,,UX-04-09,,05-3 §5.11; 08-3 §16.1; 08-3 §16.4,test/fidelity/ux/UX-04.connect.spec.ts,M8,pending
+,,,,BP-CARD-11,05-3 §5.11,test/fidelity/bp/BP-cards-m8.spec.ts,M8,pending

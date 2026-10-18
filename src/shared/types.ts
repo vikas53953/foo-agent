@@ -735,3 +735,23 @@ export interface JobDetails {
   proof?: unknown;
   costs: unknown[];
 }
+
+// ---- connectors (CR-0012, M8): 08-5 §3.3, §4.1 ----
+/** 08-0 §B.2 `ConnectorApp` (connections.app also allows 'hub'; X has no row). */
+export type ConnectorApp = 'gmail' | 'gcal' | 'contacts' | 'whatsapp' | 'x' | 'outlook';
+/** 08-5 §3.3. `id` is the People API resourceName, or `'wa:{jid}'`; phones in E.164 where Google gives canonicalForm. */
+export interface ContactHit {
+  id: string;
+  name: string;
+  emails: string[];
+  phones: string[];
+  source: 'google' | 'whatsapp';
+}
+/** 08-5 §4.1 `connect` card payload; Card E is `{ variant: 'whatsapp', setupCard: 'E' }` (X-139). */
+export interface ConnectPayload {
+  variant: 'google' | 'whatsapp' | 'outlook' | 'one_app' | 'allow_send' | 'contacts_only';
+  app: ConnectorApp;
+  why?: string;
+  scopes?: ('gmail' | 'gcal' | 'contacts')[];
+  setupCard?: 'D' | 'E';
+}

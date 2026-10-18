@@ -533,3 +533,17 @@ files are real and which stay seeds). What the real output pinned:
 - T6-05 · Voice-note and attachment refusals still use M2's single 8 s `composer-notice`; they join the stack when their
   callers pass an ErrorKind (T7 / the integrator: a call to the stack from `Composer.tsx`).
 - `trace.csv` rows AT-281/282/286/287 still say `pending`: the status column is the integrator's at close-out.
+
+## M8 · connector contracts (ticket T1, CR-0012)
+
+- M8 is built in tickets (`/mnt/project-files/foo/prep/M8-tickets.md`) on `claude/foo-m8-b39npx`, based on the M4 branch ahead of
+  the plan's lane order (Vikas 2026-10-18 18:03Z: run independent work in parallel). Tickets that need M5 wait for M5 on main.
+- Packages pinned exactly: `@whiskeysockets/baileys` 7.0.0-rc14 (npm `latest`; 6.7.x is `legacy`), `qrcode` 1.5.4, `twitter-text`
+  3.1.0, `@types/qrcode` 1.5.6, `@types/twitter-text` 3.1.10 (G-M8-02). pnpm skipped their build scripts (none needed: Baileys runs
+  in the bridge as plain JS).
+- Settings: `connections.google` / `connections.whatsapp` added with 08-0 §A.1 defaults; `connections.web` is M9's and
+  `permissions.*` is M5's.
+- `src/engine/tools/connectors/types.ts` holds the seams the parallel tickets share (`HttpFetch`, `GoogleAccess`,
+  `ConnTokenStore`). Until M5's SecretVault lands, the Google refresh token is held in memory only (never on disk); T6 swaps in the
+  vault (`foo/conn_token/google`).
+- `oauthLoopback.ts` lives in `src/main/windows/` per the plan; 08-0 §E names no file for it.

@@ -1,0 +1,2 @@
+ts	phase	decision	why	evidence	result
+2026-10-18T18:30:00Z	contract	goal: M8 connectors as 8 tickets (T1-T8), one thread per ticket, merged into claude/foo-m8-b39npx (based on the M4 branch), one PR to main after M5 is on main; done means AT/ART/UX rows of CR-0012 live and CI green; may: build on fakes, pick recommended options; may not: real accounts, real sends, spec edits without CR; escape: stop and write why	Vikas 18:03Z: run independent milestones in parallel; ticket threads per 16:46Z	/mnt/project-files/foo/prep/M8-tickets.md	open

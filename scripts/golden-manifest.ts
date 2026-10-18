@@ -304,6 +304,22 @@ export const BP_M4: BpEntry[] = (
 }));
 
 /**
+ * CR-0012: the M8 card ref — the `.mini` of card gallery panel 11 (Connect). Drawn in a 350px panel, so the R2 box is disputed
+ * by construction (CR-0003 §b). The Draft card's email / WhatsApp / X variants are compared against M5's BP-CARD-07 row.
+ */
+export const BP_M8: BpEntry[] = [
+  {
+    id: 'BP-CARD-11',
+    selector: '#cardgal > .panel:nth-child(11) > .mini',
+    drawn: true,
+    size: { width: null, height: null },
+    spec: '05-3 §5.11',
+    milestone: 'M8',
+    note: 'Card gallery: Connect. App: the Connect card in the thread, from seeded card rows.',
+  },
+];
+
+/**
  * CR-0003: UX steps an earlier milestone runs before the chapter's owner (11 §11.12 M2 "UX-09 steps not needing
  * transcription"). UX-09-01 (the recording bar) and UX-09-08 (Windows blocks the microphone) need no speech-to-text; the
  * other UX-09 steps show transcripts or foo's voice replies (M11).
@@ -316,6 +332,9 @@ export const EARLY_STEPS: Record<string, string> = {
   // checklist within 2 s, the result with its Proof chip) sent as a typed request. UX-23-07/-08 are M10, UX-23-10 is M11.
   ...Object.fromEntries(['01', '02', '03', '04', '05', '06', '09', '11'].map((s) => [`UX-23-${s}`, 'M4'])),
   ...Object.fromEntries(['02', '03', '04'].map((s) => [`UX-05-${s}`, 'M4'])),
+  // CR-0012 (G-PREP-03): the UX-04 connection steps M8 shows with fakes (Connect card, Google's page, connected, WhatsApp card,
+  // QR, linked + mirror row). M12 still owns and blesses the chapter; UX-04-05 is Google's own page (UNVERIFIABLE).
+  ...Object.fromEntries(['04', '05', '06', '07', '08', '09'].map((s) => [`UX-04-${s}`, 'M8'])),
 };
 
 /** Chapter anchor → the milestone that completes the chapter (11 §11.12 item 8: a chapter is owned by the milestone that completes it). */
@@ -457,8 +476,13 @@ async function main() {
     version: 'spec-v1.0',
     generatedBy: 'scripts/golden-manifest.ts',
     sources: { ux: UX_FILE, bp: BP_FILE },
-    counts: { uxChapters: chapters.length, uxSteps: ux.length, uxFrames: ux.length * 2, bp: BP.length + BP_M2.length + BP_M4.length },
-    bp: [...BP, ...BP_M2, ...BP_M4],
+    counts: {
+      uxChapters: chapters.length,
+      uxSteps: ux.length,
+      uxFrames: ux.length * 2,
+      bp: BP.length + BP_M2.length + BP_M4.length + BP_M8.length,
+    },
+    bp: [...BP, ...BP_M2, ...BP_M4, ...BP_M8],
     ux,
     superseded: Object.entries(SUPERSEDED).map(([id, decision]) => ({ id, decision })),
   };
@@ -472,7 +496,9 @@ async function main() {
     return;
   }
   writeFileSync(MANIFEST_PATH, text);
-  console.log(`golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length + BP_M2.length + BP_M4.length} BP ids`);
+  console.log(
+    `golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length + BP_M2.length + BP_M4.length + BP_M8.length} BP ids`,
+  );
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) void main();

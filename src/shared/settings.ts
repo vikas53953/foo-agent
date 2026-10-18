@@ -85,6 +85,11 @@ export const settingsSchema = z.object({
       .refine((q) => q.from !== q.to),
     mutedChats: z.record(z.string(), z.union([z.number().int(), z.literal('forever')])),
   }),
+  // CR-0012 (M8): 08-0 §A.1 rows `connections.google` and `connections.whatsapp`; `connections.web` is M9's.
+  connections: z.object({
+    google: z.object({ calendarOn: z.boolean(), contactsOn: z.boolean() }),
+    whatsapp: z.object({ read: z.boolean(), draft: z.boolean(), hiddenJids: z.array(z.string()) }),
+  }),
   flags: z.object({
     screenHands: z.boolean(),
     hub: z.boolean(),
