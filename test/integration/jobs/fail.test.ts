@@ -3,6 +3,7 @@
 // PROTOCOL_FIX_ACTION), 08-1 §4.5 (error payload), 08-0 §G.2 (error card state `shown`; checklist `failed`).
 import { afterEach, describe, expect, it } from 'vitest';
 import { t } from '../../../src/shared/copy/t';
+import type { ToolDef } from '../../../src/engine/tools/ToolLayer';
 import { jobHarness, jobIntake, step, tool, badgeSets, type JobHarness, type PlanStepIn } from './jobHarness';
 
 let h: JobHarness | null = null;
@@ -63,5 +64,72 @@ describe('AT-117 · FAILED with one alternative', () => {
     await blocked({ kind: 'open_url', url: 'https://stay.example/help' });
     const payload = JSON.parse(String(h!.cards('error')[0]!.payload)) as { button: { action: unknown } };
     expect(payload.button.action).toEqual({ kind: 'open_url', url: 'https://stay.example/help' });
+  });
+});
+
+describe('a crashed loop never leaves a zombie WORKING job', () => {
+  it('the loop throwing → FAILED with the UNKNOWN error card; the slot is free again', async () => {
+    let reads = 0;
+    const crashing: ToolDef = {
+      name: 'fake.crash',
+      actionClass: 'read',
+      args: '',
+      // The step prompt reads the catalogue every turn; the second read throws inside the loop.
+      get description(): string {
+        reads += 1;
+        if (reads > 1) throw new Error('boom');
+        return 'Test only: breaks the loop on the next turn.';
+      },
+      run: () => Promise.resolve({ kind: 'ok', result: { fine: true } }),
+    };
+    h = jobHarness({
+      tools: { extra: [crashing] },
+      script: [jobIntake(PLAN), tool('gmail.search', { query: 'bill' }), step({ kind: 'done', result: 'Done.', unverified: true })],
+    });
+    const userId = h.userSays('Find a stay');
+    await h.settle();
+    expect(h.job().state).toBe('failed');
+    expect(h.message(userId).badge).toBe('failed');
+    expect(JSON.parse(String(h.cards('error')[0]!.payload))).toMatchObject({ kind: 'UNKNOWN' });
+    expect(h.logs.some((l) => l.kind === 'UNKNOWN')).toBe(true);
+  });
+
+  it('a tool result that cannot be stored (BigInt) is an error outcome, not a crash', async () => {
+    const odd: ToolDef = {
+      name: 'fake.odd',
+      actionClass: 'read',
+      args: '',
+      description: 'Test only: returns a value JSON cannot hold.',
+      run: () => Promise.resolve({ kind: 'ok', result: { n: BigInt(1) } }),
+    };
+    h = jobHarness({
+      tools: { extra: [odd] },
+      script: [jobIntake(PLAN), tool('fake.odd', {}), step({ kind: 'done', result: 'Done.', unverified: true })],
+    });
+    h.userSays('Find a stay');
+    await h.settle();
+    expect(h.toolCalls()[0]).toMatchObject({ tool: 'fake.odd', outcome: 'error', error_kind: 'UNKNOWN' });
+    expect(h.job().state).toBe('done_unverified');
+  });
+});
+
+describe('a refused move ends nothing', () => {
+  it('fail() when the job already left WORKING: no error card, no badge change, the job keeps its state', async () => {
+    h = jobHarness({
+      tools: { blockedSites: ['stay.example'] },
+      script: [
+        jobIntake(PLAN),
+        tool('fake.site', { site: 'stay.example' }),
+        step({ kind: 'fail', reason: 'Blocked.' }, { delayMs: 5_000 }),
+      ],
+    });
+    const userId = h.userSays('Find a stay');
+    for (let i = 0; i < 40; i++) await new Promise((r) => setTimeout(r, 2));
+    // Stands in for a stop (T3) landing while the fail turn is in flight.
+    h.db.prepare("UPDATE jobs SET state = 'cancelled' WHERE id = ?").run(String(h.job().id));
+    await h.settle();
+    expect(h.job().state).toBe('cancelled');
+    expect(h.cards('error')).toHaveLength(0);
+    expect(h.message(userId).badge).toBe('working');
   });
 });

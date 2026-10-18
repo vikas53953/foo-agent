@@ -51,6 +51,8 @@ export interface FakeToolOptions {
   blockedSites?: string[];
   /** Make the next n calls of a tool fail with UNKNOWN. */
   failNext?: Record<string, number>;
+  /** Extra tools for one test (crash and serialisation cases). */
+  extra?: ToolDef[];
 }
 
 /** The fake tool set and the log of every call (tool, args, clock time). */
@@ -120,5 +122,5 @@ export function fakeTools(o: FakeToolOptions = {}): { tools: ToolRegistry; calls
       run: wrap('fake.send', () => ({ kind: 'ok', result: { sent: true } })),
     },
   ];
-  return { tools: Object.fromEntries(defs.map((d) => [d.name, d])), calls };
+  return { tools: Object.fromEntries([...defs, ...(o.extra ?? [])].map((d) => [d.name, d])), calls };
 }

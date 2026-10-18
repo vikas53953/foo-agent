@@ -74,3 +74,49 @@ describe('AT-115 · done_unverified', () => {
     expect(h.job().state).toBe('done_unverified');
   });
 });
+
+describe('finish when the job already left WORKING', () => {
+  it('no result message is posted and the job keeps its state', async () => {
+    h = jobHarness({
+      script: [
+        jobIntake(SITE_PLAN),
+        tool('fake.site', { site: 'stay.example' }),
+        step({ kind: 'done', result: 'Booked. Reference ABC123.', proof: confirmation('ABC123') }, { delayMs: 5_000 }),
+      ],
+    });
+    h.userSays('Check my stay booking');
+    for (let i = 0; i < 40; i++) await new Promise((r) => setTimeout(r, 2));
+    h.db.prepare("UPDATE jobs SET state = 'cancelled' WHERE id = ?").run(String(h.job().id));
+    await h.settle();
+    expect(h.job().state).toBe('cancelled');
+    expect(h.job().result_message_id).toBeNull();
+    expect(h.messages().some((m) => String(m.text).startsWith('Booked.'))).toBe(false);
+  });
+});
+
+describe('08-4 §26.11 · proof hardening', () => {
+  it('a code shorter than 4 characters is not a proof', async () => {
+    const { h } = await run({ result: 'Booked.', proof: confirmation('ABC') });
+    expect(h.job().state).toBe('done_unverified');
+  });
+
+  it('a code found only in a tool call that ended in an error is not a proof', async () => {
+    h = jobHarness({
+      tools: { blockedSites: ['stay.example'] },
+      script: [
+        jobIntake(SITE_PLAN),
+        tool('fake.site', { site: 'stay.example' }, { delayMs: 1_000 }),
+        step({ kind: 'done', result: 'Booked.', proof: { ...confirmation('stay.example') } }, { delayMs: 1_000 }),
+      ],
+    });
+    h.userSays('Check my stay booking');
+    await h.settle();
+    expect(h.toolCalls()[0]!.outcome).toBe('error');
+    expect(h.job().state).toBe('done_unverified');
+  });
+
+  it('a code that matches only JSON punctuation or key names is not a proof', async () => {
+    const { h } = await run({ result: 'Booked.', proof: confirmation('"site"') });
+    expect(h.job().state).toBe('done_unverified');
+  });
+});

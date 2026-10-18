@@ -60,4 +60,23 @@ describe('AT-120 · Try again', () => {
     const r = await h.bridge.request('job.retry', { jobId: String(h.job().id), newJobId: 'j_retry2' });
     expect(r.ok).toBe(false);
   });
+
+  it('the same old job cannot be retried twice', async () => {
+    h = jobHarness({
+      tools: { blockedSites: ['stay.example'] },
+      script: [
+        jobIntake(PLAN),
+        tool('fake.site', { site: 'stay.example' }),
+        step({ kind: 'fail', reason: 'Blocked.' }),
+        step({ kind: 'done', result: 'Here are the stays.', unverified: true }),
+      ],
+    });
+    h.userSays('Find a stay');
+    await h.settle();
+    const old = String(h.job().id);
+    expect((await h.bridge.request('job.retry', { jobId: old, newJobId: 'j_r1' })).ok).toBe(true);
+    await h.settle();
+    expect((await h.bridge.request('job.retry', { jobId: old, newJobId: 'j_r2' })).ok).toBe(false);
+    expect(h.jobs().filter((j) => j.origin_ref === old)).toHaveLength(1);
+  });
 });

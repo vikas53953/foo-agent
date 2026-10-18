@@ -28,6 +28,23 @@ describe('08-2 §5.4.1 scheduling', () => {
     expect(pickStartable(jobs, 0)).toEqual(['q']);
   });
 
+  it('an answered NEEDS_YOU job resumes ahead of queued jobs, oldest answer first, within the free slots', () => {
+    const jobs = [
+      job('w1', 'working', 1),
+      job('q', 'queued', 2),
+      { ...job('late', 'needs_you', 3), answeredAt: 50 },
+      { ...job('early', 'needs_you', 4), answeredAt: 40 },
+      job('open', 'needs_you', 5),
+    ];
+    expect(pickStartable(jobs, 0)).toEqual(['early', 'late']);
+    expect(
+      pickStartable(
+        [job('w1', 'working', 1), job('w2', 'working', 2), job('w3', 'working', 3), { ...job('n', 'needs_you', 4), answeredAt: 9 }],
+        0,
+      ),
+    ).toEqual([]);
+  });
+
   it('08-4 §26.8: a queued browser job waits for one of the 3 job windows; a later non-browser job may start', () => {
     const jobs = [job('b', 'queued', 1, true), job('p', 'queued', 2)];
     expect(pickStartable(jobs, 3)).toEqual(['p']);
