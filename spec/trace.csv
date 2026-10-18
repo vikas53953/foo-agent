@@ -127,3 +127,59 @@ R17 · R8 · R14,J5,,UX-05-04,,05-1 §5.2; 05-3 §5.15; 04 §4.2,test/fidelity/u
 ,,,,BP-CARD-18,05-3 §5.19,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
 ,,,,BP-CARD-19,05-3 §5.20,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
 ,,,,BP-CARD-20,05-3 §5.21,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
+,J2,AT-008,,,10-acceptance-1 §B; 08-3 §17; 05-2 §5.8,test/integration/vault/AT-008.test.ts,M5,pending
+,J2,AT-009,,,10-acceptance-1 §B; 05-2 §5.8,test/e2e/m5-secret.spec.ts,M5,pending
+,J4,AT-016,,,10-acceptance-1 §B; 05-1 §5.3.4,test/unit/choice/typed.test.ts,M5,pending
+,J8,AT-032,,,10-acceptance-1 §B; 05-1 §5.3,test/e2e/m5-choice.spec.ts,M5,pending
+,J8,AT-033,,,10-acceptance-1 §B; 05-1 §5.3.3; 08-4 §25,test/integration/choice/timeouts.test.ts,M5,pending
+,J8,AT-034,,,10-acceptance-1 §B; 05-1 §5.3.3; 08-4 §25,test/integration/choice/timeouts.test.ts,M5,pending
+,J8,AT-035,,,10-acceptance-1 §B; 05-1 §5.3.4,test/unit/choice/typed.test.ts,M5,pending
+,J8,AT-035,,,10-acceptance-1 §B; 05-1 §5.3.4,test/e2e/m5-choice.spec.ts,M5,pending
+,J8,AT-035a,,,10-acceptance-1 §B; 05-1 §5.3.4; 08-4 §25,test/unit/choice/typed.test.ts,M5,pending
+,J18,AT-077a,,,10-acceptance-1 §B; 08-2 §5.7; 05-1 §5.3,test/integration/jobs/stop-which.test.ts,M5,pending
+,J18,AT-077b,,,10-acceptance-1 §B; 08-4 §26.5; 07-2 §5,test/integration/approvals/steer.test.ts,M5,pending
+,J19,AT-085,,,10-acceptance-1 §B; 05-3 §5.20,test/articles/ART-02c.test.ts,M5,pending
+,Job,AT-110,,,10-acceptance-1 §B; 07-2 §4; 07-2 §5,test/integration/approvals/decline.test.ts,M5,pending
+,Job,AT-111,,,10-acceptance-1 §B; 07-2 §5; 08-2 §9.1 (approval part),test/integration/approvals/expiry.test.ts,M5,pending
+,Job,AT-111,,,10-acceptance-1 §B; 07-2 §4 (job half),test/integration/approvals/expiry-job.test.ts,M5,pending
+,Approval,AT-121,,,10-acceptance-1 §B; 08-2 §9.1; 07-2 §5,test/unit/approvals/expiry.test.ts,M5,pending
+,Approval,AT-122,,,10-acceptance-1 §B; 07-2 §5; 05-2 §5.5,test/e2e/m5-approval.spec.ts,M5,pending
+,Approval,AT-123,,,10-acceptance-1 §B; 07-2 §5 SM-A5; X-125,test/integration/approvals/second-look.test.ts,M5,pending
+,Approval,AT-124,,,10-acceptance-1 §B; 07-2 §5; 08-2 §9.4.2,test/integration/approvals/fresh-terms.test.ts,M5,pending
+,Approval,AT-126,,,10-acceptance-1 §B; 07-2 §5; 05-2 §5.5,test/e2e/m5-approval.spec.ts,M5,pending
+,Approval,AT-127,,,10-acceptance-1 §B; 07-2 §5; 05-2 §5.5,test/e2e/m5-approval.spec.ts,M5,pending
+,Approval,AT-127,,,10-acceptance-1 §B; 07-2 §5; 08-2 §9.1,test/integration/approvals/expiry.test.ts,M5,pending
+,Approval,AT-128,,,10-acceptance-1 §B; 07-2 §5 (approval part),test/integration/approvals/withdraw.test.ts,M5,pending
+,Approval,AT-128,,,10-acceptance-1 §B; 07-2 §4 (job half),test/integration/approvals/expiry-job.test.ts,M5,pending
+,Approval,AT-132,,,10-acceptance-1 §B; 07-2 SM-A7; 08-0 §G.3 (rules),test/unit/approvals/rules.test.ts,M5,pending
+,Approval,AT-132,,,10-acceptance-1 §B; 08-2 §9 (gate),test/unit/gate/decide.test.ts,M5,pending
+,Approval,AT-133,,,10-acceptance-1 §B; 07-2 SM-A8; X-65; 08-0 §G.7,test/integration/approvals/draft.test.ts,M5,pending
+,"J10, J12",AT-280,,,10-acceptance-1 §B; 05-2 §5.5.2,test/e2e/m5-approval.spec.ts,M5,pending
+,J8,AT-288,,,10-acceptance-1 §B; 05-1 §5.3.1,test/e2e/m5-choice.spec.ts,M5,pending
+,,ART-02c,,,01-articles Art. 2; 10-acceptance-2 §D,test/articles/ART-02c.test.ts,M5,pending
+,,ART-03,,,01-articles Art. 3; 10-acceptance-2 §D,test/articles/ART-03.test.ts,M5,pending
+,,ART-05a,,,01-articles Art. 5; 10-acceptance-2 §D,test/articles/ART-05a.test.ts,M5,pending
+,,ART-05b,,,01-articles Art. 5; 10-acceptance-2 §D,test/articles/ART-05b.test.ts,M5,pending
+,,ART-06a,,,01-articles Art. 6; 10-acceptance-2 §D,test/articles/ART-06.test.ts,M5,pending
+,,ART-06b,,,01-articles Art. 6; 10-acceptance-2 §D,test/articles/ART-06.test.ts,M5,pending
+,,ART-08a,,,01-articles Art. 8; 10-acceptance-2 §D,test/articles/ART-08a.test.ts,M5,pending
+,,ART-08c,,,01-articles Art. 8; 10-acceptance-2 §D,test/articles/ART-08c.test.ts,M5,pending
+,,ART-10,,,01-articles Art. 10; 10-acceptance-2 §D,test/articles/ART-10.test.ts,M5,pending
+R9 · R10,J8,,UX-10-01,,05-1 §5.3,test/fidelity/ux/UX-10.choice.spec.ts,M5,pending
+R9 · R10,J8,,UX-10-02,,05-1 §5.3,test/fidelity/ux/UX-10.choice.spec.ts,M5,pending
+R9 · R10,J8,,UX-10-03,,05-1 §5.3.4,test/fidelity/ux/UX-10.choice.spec.ts,M5,pending
+R9 · R10,J8,,UX-10-04,,05-1 §5.3.3,test/fidelity/ux/UX-10.choice.spec.ts,M5,pending
+R9 · R10,J8,,UX-10-05,,05-1 §5.3.1,test/fidelity/ux/UX-10.choice.spec.ts,M5,pending
+R9 · R10,J8,,UX-10-06,,05-1 §5.3,test/fidelity/ux/UX-10.choice.spec.ts,M5,pending
+R9 · R10,J8,,UX-10-08,,05-1 §5.3.3; 08-4 §25,test/fidelity/ux/UX-10.choice.spec.ts,M5,pending
+R5 · R10 · R14,J9,,UX-12-05,,05-2 §5.5,test/fidelity/ux/UX-12.booking.spec.ts,M5,pending
+R5 · R10 · R14,J9,,UX-12-06,,05-2 §5.5; 01-articles Art. 6,test/fidelity/ux/UX-12.booking.spec.ts,M5,pending
+R18 · R5,J12,,UX-16-02,,05-2 §5.7,test/fidelity/ux/UX-16.drafts.spec.ts,M5,pending
+R18 · R5,J12,,UX-16-04,,05-2 §5.7,test/fidelity/ux/UX-16.drafts.spec.ts,M5,pending
+R18 · R5,J12,,UX-16-06,,05-2 §5.5; X-79,test/fidelity/ux/UX-16.drafts.spec.ts,M5,pending
+,,,,BP-CARD-03,05-1 §5.3,test/fidelity/bp/BP-cards-m5-choice.spec.ts,M5,pending
+,,,,BP-CARD-04,05-1 §5.4,test/fidelity/bp/BP-cards-m5-choice.spec.ts,M5,pending
+,,,,BP-CARD-05,05-2 §5.5,test/fidelity/bp/BP-cards-m5-approval.spec.ts,M5,pending
+,,,,BP-CARD-07,05-2 §5.7,test/fidelity/bp/BP-cards-m5-draft.spec.ts,M5,pending
+,,,,BP-CARD-08,05-2 §5.8,test/fidelity/bp/BP-cards-m5-secret.spec.ts,M5,pending
+,,,,BP-CARD-09,05-2 §5.9; 04-2 §22.4,test/fidelity/bp/BP-cards-m5-secret.spec.ts,M5,pending
