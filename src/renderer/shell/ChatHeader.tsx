@@ -275,7 +275,7 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
             data-testid={TID.chatHeaderWatchLive}
             aria-label={compact ? t('chat_header.watch_live.label') : undefined}
             title={t('chat_header.watch_live.tooltip')}
-            onClick={() => void invoke('job:watch', { jobId: live.id, on: true }).catch(() => undefined)}
+            onClick={() => void invoke('job:openWindow', { jobId: live.id }).catch(() => undefined)}
           >
             {!compact && <span>{t('chat_header.watch_live.label')}</span>}
           </Button>

@@ -1,0 +1,168 @@
+/* Spec: 06-3 §11.2 (foo bar 48, padding 0 16, bg --bg-sidebar, 1px --line bottom; avatar 26; title --t-body-strong; LIVE pill
+   --s1 dot + caption-strong in --live; other pills --warn / --fg-3 / --ok; site --t-small --fg-2; buttons 32; picture letterboxed
+   on --bg-sunken; control bar 48, bg --warn, text and HandRight 20 --on-warn, --t-body-strong; Hand back bg --on-warn text
+   --warn; Stop 1px --on-warn border, text --on-warn), 02-3 §F27 (tooltip look). */
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--bg-sunken);
+  color: var(--fg-1);
+}
+.bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  height: var(--s8);
+  padding: 0 var(--s3);
+  background: var(--bg-sidebar);
+  border-bottom: 1px solid var(--line);
+  min-width: 0;
+}
+.avatar {
+  flex: none;
+}
+.title {
+  font: var(--t-body-strong);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.pill {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s0);
+  font: var(--t-caption-strong);
+  letter-spacing: var(--t-caption-strong-tracking);
+}
+.pill[data-tone='live'] {
+  color: var(--live);
+}
+.pill[data-tone='warn'] {
+  color: var(--warn);
+}
+.pill[data-tone='muted'] {
+  color: var(--fg-3);
+}
+.pill[data-tone='ok'] {
+  color: var(--ok);
+}
+.dot {
+  width: var(--s1);
+  height: var(--s1);
+  border-radius: var(--r-full);
+  background: currentColor;
+}
+.site {
+  flex: 1;
+  min-width: 0;
+  font: var(--t-small);
+  color: var(--fg-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.actions {
+  flex: none;
+  display: flex;
+  gap: var(--s1);
+}
+.picture {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  background: var(--bg-sunken);
+  overflow: hidden;
+  cursor: default;
+  user-select: none;
+}
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+.starting {
+  display: grid;
+  place-items: center;
+}
+.line {
+  flex: none;
+  margin: 0;
+  padding: var(--s1) var(--s3);
+  font: var(--t-small);
+  color: var(--fg-2);
+  background: var(--bg-sunken);
+}
+.lineCentre {
+  text-align: center;
+}
+.tip {
+  position: fixed;
+  z-index: var(--z-tooltip);
+  max-width: var(--tooltip-max);
+  padding: var(--s0) var(--s1);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-4);
+  color: var(--fg-1);
+  font: var(--t-caption);
+  pointer-events: none;
+  transform: translate(var(--s1), var(--s1));
+}
+.control {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  height: var(--s8);
+  padding: 0 var(--s3);
+  background: var(--warn);
+  color: var(--on-warn);
+  font: var(--t-body-strong);
+}
+.controlText {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.handBack,
+.controlStop {
+  flex: none;
+  height: var(--btn-h-sm);
+  padding: 0 var(--s3);
+  border-radius: var(--r-full);
+  font: var(--t-body-strong);
+  cursor: pointer;
+}
+.handBack {
+  border: 0;
+  background: var(--on-warn);
+  color: var(--warn);
+}
+.controlStop {
+  border: 1px solid var(--on-warn);
+  background: transparent;
+  color: var(--on-warn);
+}
+.handBack:focus-visible,
+.controlStop:focus-visible {
+  outline-color: var(--on-warn);
+}
+@media (forced-colors: active) {
+  .control {
+    border-top: 1px solid CanvasText;
+  }
+  .handBack,
+  .controlStop {
+    border: 1px solid ButtonText;
+  }
+}

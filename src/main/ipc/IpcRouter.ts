@@ -50,6 +50,7 @@ import { draftAttachments, pauseHelper, saveDraft, sendMessage, submitVoice } fr
 import { helperRow } from '../db/rows';
 import type { DbRow } from '../db/rows';
 import { ChannelGuard } from './guard';
+import { registerLiveIpc, routeLive } from '../jobs/liveIpc';
 import type { EngineBridge } from '../engine-supervisor/EngineBridge';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
@@ -75,6 +76,7 @@ export function channels(): ChannelGuard {
 
 /** Sends an event (08-1 §3.3) to foo's windows. */
 export function emit<E extends EventChannel>(event: E, payload: EventPayload[E]): void {
+  if (routeLive(event, payload)) return; // live:* go to their job's live window only (M9 T5, 08-0 §G.8)
   for (const w of BrowserWindow.getAllWindows()) if (!w.isDestroyed()) w.webContents.send(event, payload);
 }
 
@@ -488,9 +490,7 @@ export function registerIpc(ctx: AppContext): void {
     emitChat(r.chatId);
     return ok({ jobId, done: [], nothingDone: true });
   });
-  // The Live window (09 §9.27) arrives with the browser milestone; until then the shell shows no live view.
-  handle('job:watch', () => fail('LIVE_UNAVAILABLE'));
-  handle('job:openWindow', () => fail('BROWSER_MISSING'));
+  registerLiveIpc(ctx, handle); // job:openWindow, job:watch (M9 T5, 09 §9.27.2)
   handle('job:takeOver', () => fail('JOB_GONE'));
   handle('job:handBack', () => fail('JOB_GONE'));
   handle('signin:done', () => fail('JOB_GONE'));

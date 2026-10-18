@@ -320,6 +320,15 @@ export const TID = {
   composerErrorsClear: 'composer-errors-clear',
   dialogC21: 'dialog-c-21',
   dialogConfirmField: 'dialog-confirm-field',
+  // M9 T5: the live window (06-3 §11.2 list, 08-0 §C.3, X-121)
+  liveRoot: 'live-root',
+  liveBar: 'live-bar',
+  livePill: 'live-pill',
+  livePicture: 'live-picture',
+  liveTakeOver: 'live-take-over',
+  liveControlBar: 'live-control-bar',
+  liveHandBack: 'live-hand-back',
+  liveStop: 'live-stop',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

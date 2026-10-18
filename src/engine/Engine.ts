@@ -28,6 +28,7 @@ import { findBanned } from './prompt/filters';
 import { priceOf, resolveModel } from './ai/models';
 import { stubGate } from './gate/GateLogic';
 import { JobRunner } from './jobs/JobRunner';
+import { engineScreencast, type Screencast } from './tools/browser/screencast';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
 import type { StepAct } from '../shared/schemas';
 
@@ -64,7 +65,10 @@ export class Engine {
     return new Engine(o);
   }
 
+  private readonly screencast: Screencast; // M9 T5: Watch live frames (08-2 §8.3.7)
+
   private constructor(private o: EngineOptions) {
+    this.screencast = engineScreencast(o);
     const newId = (p: IdPrefix, now: number) => (o.newId ? o.newId(p) : mintId(p, now));
     const log = (evt: string, kind?: string) =>
       o.link.send('log', { t: o.clock.now(), lvl: 'info', mod: 'engine', evt, ...(kind ? { kind } : {}) });
@@ -326,6 +330,8 @@ export class Engine {
         return this.jobs.retry(msg.payload.jobId, msg.payload.newJobId);
       case 'test.clock':
         return undefined;
+      case 'job.watch':
+        return this.screencast.watch(msg.payload.jobId, msg.payload.on);
       // M4 T1 stub (G-M4-04): the job runner (T2/T4) pauses its WORKING jobs here; until then there are none to pause.
       case 'jobs.pauseAll':
         return ok({ paused: [] as string[] });
