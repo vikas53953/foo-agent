@@ -1,0 +1,19 @@
+/* Spec: 06 §0.4 Row group (1px --line, --r-lg, --bg-app; 1px --line divider between rows inset 16px left). */
+.group {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg-app);
+}
+.group > * + * {
+  position: relative;
+}
+.group > * + *::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: var(--s3);
+  border-top: 1px solid var(--line);
+  pointer-events: none;
+}

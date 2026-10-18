@@ -1,0 +1,29 @@
+/* Spec: 06 §0.5 empty-state block (icon 24 --fg-3; title --t-subtitle --fg-1; body --t-small --fg-2, max 360, centred;
+   48px above). */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s1);
+  margin: var(--s8) auto 0;
+  /* local: 06 §0.5 body max width 360px. */
+  max-width: 22.5rem;
+  text-align: center;
+}
+.icon {
+  color: var(--fg-3);
+}
+.title {
+  margin: 0;
+  color: var(--fg-1);
+  font: var(--t-subtitle);
+  text-wrap: balance;
+}
+.body {
+  margin: 0;
+  color: var(--fg-2);
+  font: var(--t-small);
+}
+.empty > button {
+  margin-top: var(--s1);
+}

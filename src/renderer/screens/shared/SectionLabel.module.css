@@ -1,0 +1,8 @@
+/* Spec: 06 §0.4 Section label (--t-caption-strong, uppercase, +0.08em, --fg-3; 24px above, 8px below). */
+.label {
+  margin: var(--s5) 0 var(--s1);
+  color: var(--fg-3);
+  font: var(--t-caption-strong);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}

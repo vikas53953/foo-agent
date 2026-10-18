@@ -1,0 +1,45 @@
+/* Spec: 08-0 §E.3 Dropdown; 06 §0.4 Text field look (--field-h, padding 0 12px, --r-sm, --bg-sunken, 1px --line-input,
+   --t-body; hover --fg-3), ChevronDown 16, U-5 hit 40, 02-3 §F27.1 cursor default. */
+.dropdown {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s1);
+  box-sizing: border-box;
+  min-height: var(--field-h);
+  max-width: 100%;
+  margin: calc((var(--s7) - var(--field-h)) / 2) 0;
+  padding: 0 var(--s2);
+  border: 1px solid var(--line-input);
+  border-radius: var(--r-sm);
+  background: var(--bg-sunken);
+  color: var(--fg-1);
+  font: var(--t-body);
+  cursor: default;
+  -webkit-app-region: no-drag;
+}
+.dropdown:hover {
+  border-color: var(--fg-3);
+}
+.dropdown[aria-expanded='true'] {
+  border-color: var(--accent);
+}
+.dropdown[aria-disabled='true'],
+.dropdown[aria-disabled='true']:hover {
+  border-color: var(--line);
+  color: var(--fg-disabled);
+}
+.value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chevron {
+  flex: none;
+  color: var(--fg-2);
+}
+@media (forced-colors: active) {
+  .dropdown {
+    border-color: ButtonText;
+  }
+}

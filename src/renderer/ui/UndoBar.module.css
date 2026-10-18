@@ -1,0 +1,64 @@
+/* Spec: 02-3 §F21.3 Undo bar (--undo-h; min 280, max min(560, column − 32); bottom-centre, 16px above the composer /
+   24px above the pane bottom; --bg-raised, --r-md, --shadow-16, dark + 1px --line; padding 0 8px 0 16px; --t-body
+   --fg-1 one line; Undo 16px after the text; --z-undo; enter fade + rise 8px --m-normal --ease-in; the tokens drop the rise under reduced motion). */
+.bar {
+  position: absolute;
+  left: 50%;
+  z-index: var(--z-undo);
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  box-sizing: border-box;
+  min-height: var(--undo-h);
+  /* local: 02-3 §F21.3 min width 280px, max min(560px, column − 32px). */
+  min-width: 17.5rem;
+  max-width: min(35rem, 100% - var(--s6));
+  padding: 0 var(--s1) 0 var(--s3);
+  border-radius: var(--r-md);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-16);
+  color: var(--fg-1);
+  transform: translateX(-50%);
+  animation: undo-in var(--m-normal) var(--ease-in);
+}
+.page {
+  bottom: var(--s5);
+}
+.chat {
+  bottom: var(--s3);
+}
+@keyframes undo-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(var(--s1) * var(--motion-move, 1)));
+  }
+}
+:global([data-theme='dark']) .bar {
+  box-shadow:
+    var(--shadow-16),
+    inset 0 0 0 1px var(--line);
+}
+.text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font: var(--t-body);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.spoken {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+@media (forced-colors: active) {
+  .bar {
+    border: 1px solid CanvasText;
+  }
+}

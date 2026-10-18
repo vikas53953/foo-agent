@@ -1,0 +1,77 @@
+/* Spec: 06 §0.4 Checkbox (20×20, --r-xs, 1.5px --line-input, --bg-app; checked --accent + Checkmark 16 --on-accent),
+   U-5 hit 40, 02-3 §F27.1 cursor default. */
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  min-width: var(--s7);
+  min-height: var(--s7);
+  color: var(--fg-1);
+  font: var(--t-body);
+  cursor: default;
+  -webkit-app-region: no-drag;
+}
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  opacity: 0;
+}
+.box {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--s4);
+  height: var(--s4);
+  /* local: 06 §0.4 hit area 40 around the 20 box. */
+  margin: calc((var(--s7) - var(--s4)) / 2);
+  border: 1.5px solid var(--line-input);
+  border-radius: var(--r-xs);
+  background: var(--bg-app);
+  color: var(--on-accent);
+}
+.box:has(+ .label) {
+  margin-right: 0;
+}
+.checkbox:hover .box {
+  border-color: var(--fg-3);
+}
+.checkbox:active .box {
+  background: var(--bg-pressed);
+}
+.input:checked + .box {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+.input:focus-visible + .box {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+.disabled {
+  color: var(--fg-disabled);
+}
+.disabled .box,
+.disabled:hover .box {
+  border-color: var(--fg-disabled);
+  background: var(--bg-app);
+}
+.disabled .input:checked + .box {
+  border-color: var(--fg-disabled);
+  background: var(--fg-disabled);
+}
+.mark {
+  color: inherit;
+}
+@media (forced-colors: active) {
+  .box {
+    border-color: ButtonText;
+  }
+  .input:checked + .box {
+    background: Highlight;
+    color: HighlightText;
+  }
+}

@@ -739,5 +739,17 @@
   "errors.crash_recovery.what_is_safe.paying": "I was in the middle of paying {amount}. Checking whether it went through before anything else.",
   "errors.safe_mode.link": "Send a report",
   "cards.common.offline_line": "You’re offline. I’ll do this when you’re back.",
-  "cards.common.content.withdrawn": "No longer needed. The job was stopped."
+  "cards.common.content.withdrawn": "No longer needed. The job was stopped.",
+  "screen.common.still_loading": "Still loading…",
+  "screen.common.saving_failed": "That didn’t save. Try again.",
+  "screen.common.try_again": "Try again",
+  "screen.common.saved": "Saved",
+  "screen.common.offline_tooltip": "You’re offline. This needs the internet.",
+  "screen.common.clear_filters": "Clear filters",
+  "screen.common.back_tooltip": "Back (Esc)",
+  "screen.common.back_to": "Back to {place}",
+  "screen.kbd.key.ctrl": "Control",
+  "screen.kbd.joined": "{left} plus {right}",
+  "app.undo.action": "Undo",
+  "app.undo.narrator": "{text}. Undo available, press Control Z."
 }

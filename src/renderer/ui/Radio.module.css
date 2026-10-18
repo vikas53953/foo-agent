@@ -1,0 +1,83 @@
+/* Spec: 06 §0.4 Radio (20px circle, 1px --line-input; selected 1px --accent + 10px --accent dot), U-5 hit 40, 02-3
+   §F27.1 cursor default. */
+.radio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  min-width: var(--s7);
+  min-height: var(--s7);
+  color: var(--fg-1);
+  font: var(--t-body);
+  cursor: default;
+  -webkit-app-region: no-drag;
+}
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  opacity: 0;
+}
+.circle {
+  position: relative;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--s4);
+  height: var(--s4);
+  /* local: 06 §0.4 hit area 40 around the 20 circle. */
+  margin: calc((var(--s7) - var(--s4)) / 2);
+  border: 1px solid var(--line-input);
+  border-radius: var(--r-full);
+  background: var(--bg-app);
+}
+.circle:has(+ .label) {
+  margin-right: 0;
+}
+.circle::after {
+  content: '';
+  position: absolute;
+  inset: 50% auto auto 50%;
+  /* local: 06 §0.4 selected dot 10px. */
+  width: calc(var(--s1) + var(--s-1));
+  height: calc(var(--s1) + var(--s-1));
+  border-radius: var(--r-full);
+  transform: translate(-50%, -50%);
+}
+.radio:hover .circle {
+  border-color: var(--fg-3);
+}
+.radio:active .circle {
+  background: var(--bg-pressed);
+}
+.input:checked + .circle {
+  border-color: var(--accent);
+}
+.input:checked + .circle::after {
+  background: var(--accent);
+}
+.input:focus-visible + .circle {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+.disabled {
+  color: var(--fg-disabled);
+}
+.disabled .circle,
+.disabled:hover .circle,
+.disabled .input:checked + .circle {
+  border-color: var(--fg-disabled);
+  background: var(--bg-app);
+}
+.disabled .input:checked + .circle::after {
+  background: var(--fg-disabled);
+}
+@media (forced-colors: active) {
+  .circle {
+    border-color: ButtonText;
+  }
+  .input:checked + .circle::after {
+    background: Highlight;
+  }
+}

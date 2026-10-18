@@ -1,0 +1,87 @@
+/* Spec: 06 §0.4 Settings row (min-height 56, padding 0 16px; label --t-body --fg-1, second line --t-small --fg-2;
+   control 16px from the edge; whole-row hover --bg-hover / pressed --bg-pressed; ring --r-sm; disabled --fg-disabled),
+   06 §0.5 ("Saved" --t-caption --ok + Checkmark 16; retry line), 02-3 §F27.1 cursor default. */
+.row {
+  color: var(--fg-1);
+}
+.main {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  box-sizing: border-box;
+  width: 100%;
+  /* local: 06 §0.4 settings row min-height 56px. */
+  min-height: calc(var(--s8) + var(--s1));
+  margin: 0;
+  padding: var(--s1) var(--s3);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: default;
+}
+.button:hover {
+  background: var(--bg-hover);
+}
+.button:active {
+  background: var(--bg-pressed);
+}
+.button:focus-visible {
+  border-radius: var(--r-sm);
+}
+.text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+.label {
+  font: var(--t-body);
+}
+.description {
+  color: var(--fg-2);
+  font: var(--t-small);
+}
+.control,
+.value {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--s1);
+}
+.value {
+  color: var(--fg-2);
+  font: var(--t-small);
+}
+.chevron {
+  flex: none;
+  color: var(--fg-2);
+}
+.saved {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--s0);
+  color: var(--ok);
+  font: var(--t-caption);
+}
+.failed {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s1);
+  margin: calc(-1 * var(--s1)) 0 0;
+  padding: 0 var(--s3);
+  color: var(--bad);
+  font: var(--t-small);
+}
+.disabled .label,
+.disabled .description,
+.disabled .value {
+  color: var(--fg-disabled);
+}
+.disabled .button:hover,
+.disabled .button:active {
+  background: transparent;
+}

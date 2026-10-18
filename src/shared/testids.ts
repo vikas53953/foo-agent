@@ -320,6 +320,16 @@ export const TID = {
   composerErrorsClear: 'composer-errors-clear',
   dialogC21: 'dialog-c-21',
   dialogConfirmField: 'dialog-confirm-field',
+  // M13 T1 screen kit (06 §0.5, 08-0 §E.3)
+  screenBack: 'screen-back',
+  screenTitle: 'screen-title',
+  screenEmpty: 'screen-empty',
+  screenEmptyAction: 'screen-empty-action',
+  screenLoading: 'screen-loading',
+  screenError: 'screen-error',
+  screenSavingRetry: 'screen-saving-retry',
+  appUndo: 'app-undo',
+  appUndoAction: 'app-undo-action',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

@@ -1,0 +1,50 @@
+/* Spec: 08-0 §E.3 TextArea (auto-grow from `rows`), 06 §0.4 Text field (padding 0 12px — 8px top/bottom for multi-line
+   text, --r-sm, --t-body, --bg-sunken, 1px --line-input, focus --accent, invalid --bad), 02-3 §F27.1 cursor text. */
+.area {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: calc(var(--rows, 3) * var(--t-body-lh) + 2 * var(--s1) + 2px);
+  margin: 0;
+  padding: var(--s1) var(--s2);
+  border: 1px solid var(--line-input);
+  border-radius: var(--r-sm);
+  background: var(--bg-sunken);
+  color: var(--fg-1);
+  font: var(--t-body);
+  resize: none;
+  field-sizing: content;
+  cursor: text;
+}
+.capped {
+  max-height: calc(var(--max-rows) * var(--t-body-lh) + 2 * var(--s1) + 2px);
+  overflow-y: auto;
+}
+.area::placeholder {
+  color: var(--fg-3);
+}
+.area:hover {
+  border-color: var(--fg-3);
+}
+.area:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+.area:focus-visible {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+.area:disabled {
+  border-color: var(--line);
+  color: var(--fg-disabled);
+}
+.invalid,
+.invalid:hover,
+.invalid:focus {
+  border-color: var(--bad);
+}
+@media (forced-colors: active) {
+  .area {
+    border-color: ButtonText;
+  }
+}

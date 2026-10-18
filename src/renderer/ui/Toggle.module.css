@@ -1,0 +1,104 @@
+/* Spec: 06 §0.4 Toggle (--toggle-w × --toggle-h track, --r-full; knob 12 / 14px; pressed knob +4px), U-5 hit 40, 02-3
+   §F27.1 cursor default. */
+.toggle {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  min-width: var(--s7);
+  min-height: var(--s7);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: default;
+  -webkit-app-region: no-drag;
+  --knob: var(--s2);
+  --knob-grow: 0px;
+}
+.track {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: var(--toggle-w);
+  height: var(--toggle-h);
+  border: 1px solid var(--line-input);
+  border-radius: var(--r-full);
+  background: var(--bg-sunken);
+  transition:
+    background-color var(--m-fast) var(--ease-standard),
+    border-color var(--m-fast) var(--ease-standard);
+}
+.knob {
+  position: absolute;
+  top: 50%;
+  /* local: 06 §0.4 knob at left 4px from the track edge (inside the 1px border). */
+  left: calc(var(--s0) - 1px);
+  width: calc(var(--knob) + var(--knob-grow));
+  height: var(--knob);
+  border-radius: var(--r-full);
+  background: var(--fg-2);
+  transform: translateY(-50%);
+  transition:
+    left var(--m-fast) var(--ease-standard),
+    width var(--m-fast) var(--ease-standard);
+}
+.toggle:hover .track {
+  border-color: var(--fg-3);
+}
+.toggle:active {
+  --knob-grow: var(--s0);
+}
+.toggle[aria-checked='true'] {
+  /* local: 06 §0.4 on knob 14px. */
+  --knob: calc(var(--s2) + var(--s-1));
+}
+.toggle[aria-checked='true'] .track {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+.toggle[aria-checked='true']:hover .track {
+  border-color: var(--accent-hover);
+}
+.toggle[aria-checked='true'] .knob {
+  /* local: 06 §0.4 on knob at right 3px from the track edge (inside the 1px border). */
+  left: calc(100% - var(--knob) - var(--knob-grow) - 2px);
+  background: var(--on-accent);
+}
+.toggle[aria-disabled='true'] {
+  --knob-grow: 0px;
+}
+.toggle[aria-disabled='true'] .track,
+.toggle[aria-disabled='true']:hover .track {
+  border-color: var(--line);
+  background: var(--bg-sunken);
+}
+.toggle[aria-disabled='true'] .knob {
+  background: var(--fg-disabled);
+}
+.toggle:focus-visible {
+  outline: none;
+}
+.toggle:focus-visible .track {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+@media (prefers-reduced-motion: reduce) {
+  .track,
+  .knob {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .track {
+    border-color: ButtonText;
+  }
+  .knob {
+    background: ButtonText;
+  }
+  .toggle[aria-checked='true'] .track {
+    background: Highlight;
+  }
+  .toggle[aria-checked='true'] .knob {
+    background: HighlightText;
+  }
+}

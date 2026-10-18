@@ -1,0 +1,49 @@
+/* Spec: 06 §0.6 page banner (tone fills --accent-soft / --warn-soft / --bad-soft; min-height --s7; icon 20; --t-small;
+   32px outlined pills; --r-md; 16px below), 03-shell-1 §3.3.1 anatomy. */
+.banner {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: var(--s7);
+  margin: 0 0 var(--s3);
+  padding: 0 var(--s1) 0 var(--s3);
+  border-radius: var(--r-md);
+  color: var(--fg-1);
+}
+.info {
+  background: var(--accent-soft);
+}
+.warn {
+  background: var(--warn-soft);
+}
+.bad {
+  background: var(--bad-soft);
+}
+.icon {
+  flex: none;
+}
+.info .icon {
+  color: var(--accent);
+}
+.warn .icon {
+  color: var(--warn);
+}
+.bad .icon {
+  color: var(--bad);
+}
+.text {
+  flex: 1;
+  min-width: 0;
+  padding: var(--s1) 0;
+  font: var(--t-small);
+}
+.actions {
+  display: flex;
+  flex: none;
+  gap: var(--s1);
+}
+@media (forced-colors: active) {
+  .banner {
+    border: 1px solid CanvasText;
+  }
+}

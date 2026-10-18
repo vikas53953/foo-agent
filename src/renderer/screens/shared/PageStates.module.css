@@ -1,0 +1,46 @@
+/* Spec: 06 §0.5 Loading (skeleton rows --bg-sunken --r-xs at real row heights, no shimmer; "Still loading…" --t-small
+   --fg-3 under them) and Error (the 05 C16 shape: what happened, what is safe, one fix button; in the content column). */
+.loading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  margin-top: var(--s3);
+}
+.loading > span {
+  border-radius: var(--r-xs);
+}
+.still {
+  margin: var(--s1) 0 0;
+  color: var(--fg-3);
+  font: var(--t-small);
+}
+.error {
+  display: flex;
+  gap: var(--s2);
+  margin-top: var(--s5);
+  padding: var(--s3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg-raised);
+}
+.errorIcon {
+  flex: none;
+  color: var(--bad);
+}
+.errorText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s1);
+  min-width: 0;
+}
+.what {
+  margin: 0;
+  color: var(--fg-1);
+  font: var(--t-body-strong);
+}
+.safe {
+  margin: 0;
+  color: var(--fg-2);
+  font: var(--t-small);
+}

@@ -1,0 +1,17 @@
+/* Spec: 06 §0.4 Search field (in pages): TextField sm / search; Dismiss 16 clear button inside the field's right end
+   (an icon button inside a text field keeps --r-sm, UX-08). */
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search > label {
+  flex: 1;
+  padding-right: var(--s7);
+}
+.clear {
+  position: absolute;
+  right: 0;
+  /* IconButton inside a field: a 28px visual so it fits the 36 field (06 §0.4 UX-08). */
+  --icon-btn: calc(var(--s6) - var(--s0));
+}

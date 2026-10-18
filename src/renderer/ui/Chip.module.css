@@ -1,0 +1,88 @@
+/* Spec: 06 §0.4 Chip (sm --btn-h-sm 32 --t-caption / lg --btn-h 40 --t-body; padding 0 12px; --r-full; --bg-sunken;
+   selected --accent-soft + --accent), 08-0 §E.3 (remove = IconButton xs, 24 visual inside the 40 hit), U-5 hit 40,
+   02-3 §F27.1 cursor default. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--s7);
+  -webkit-app-region: no-drag;
+  --chip-h: var(--btn-h-sm);
+  --chip-fill: var(--bg-sunken);
+  --chip-fg: var(--fg-1);
+}
+.lg {
+  --chip-h: var(--btn-h);
+}
+.main {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s0);
+  min-height: var(--s7);
+  margin: 0;
+  padding: 0 var(--s2);
+  border: 0;
+  background: transparent;
+  color: var(--chip-fg);
+  font: var(--t-caption);
+  white-space: nowrap;
+  cursor: default;
+  isolation: isolate;
+}
+.lg .main {
+  font: var(--t-body);
+}
+/* The visual pill; the button box around it is the 40px hit area. */
+.main::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: calc((var(--s7) - var(--chip-h)) / 2) 0;
+  border-radius: var(--r-full);
+  background: var(--chip-fill);
+  transition: background-color var(--m-fast) var(--ease-standard);
+}
+.main:hover::before {
+  background: var(--bg-hover);
+}
+.main:active::before {
+  background: var(--bg-pressed);
+}
+.main:focus-visible {
+  border-radius: var(--r-full);
+}
+.selected {
+  --chip-fill: var(--accent-soft);
+  --chip-fg: var(--accent);
+}
+.selected .main:hover::before,
+.selected .main:active::before {
+  background: var(--accent-soft);
+}
+.disabled {
+  --chip-fg: var(--fg-disabled);
+}
+.disabled .main:hover::before,
+.disabled .main:active::before {
+  background: var(--chip-fill);
+}
+.label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* IconButton xs (08-0 §E.3): a 24px round visual; the button keeps its 40px hit box. */
+.remove {
+  --icon-btn: var(--s5);
+}
+@media (forced-colors: active) {
+  .main::before {
+    background: ButtonFace;
+    box-shadow: inset 0 0 0 1px ButtonText;
+  }
+  .selected .main::before {
+    background: Highlight;
+  }
+  .selected .main {
+    color: HighlightText;
+  }
+}
