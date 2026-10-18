@@ -4,7 +4,7 @@ description: "Review the changes since a fixed point (commit, branch, tag, or me
 disable-model-invocation: true
 ---
 
-> **foo note:** entry point is the `foo-review` skill (milestone close-out, two axes beside the fidelity checker). Spec source = `spec/constitution/` + the milestone pack + `docs/tickets/M<n>/`; standards sources = `CLAUDE.md`, `docs/build-method.md`, `eslint-rules/index.js`, `implementation-notes.md`. Ignore `/setup-matt-pocock-skills`.
+> **foo note:** entry point is the `foo-review` skill (milestone close-out, two axes beside the fidelity checker). Spec source = `spec/constitution/` + the milestone pack + the ticket map `/mnt/project-files/foo/prep/M<n>-tickets.md`; standards sources = `CLAUDE.md`, `docs/build-method.md`, `eslint-rules/index.js`, `implementation-notes.md`. Ignore `/setup-matt-pocock-skills`.
 
 Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
 

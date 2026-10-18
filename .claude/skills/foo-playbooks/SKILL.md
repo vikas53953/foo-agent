@@ -11,8 +11,8 @@ Every builder brief names one playbook. Read it, then follow it to its **Reply**
 
 | Playbook | Use for | File |
 | --- | --- | --- |
-| Milestone | a milestone thread (M4 onward): ticket map, helpers, one branch, one PR | [playbooks/milestone.md](playbooks/milestone.md) |
-| Ticket | one ticket from a ticket map, built test-first against the spec | [playbooks/ticket.md](playbooks/ticket.md) |
+| Milestone | the milestone lead thread (M4 onward): ticket map, one thread per ticket, review and merge each, one PR to main | [playbooks/milestone.md](playbooks/milestone.md) |
+| Ticket | a ticket thread: one ticket built test-first against the spec, draft PR into the milestone branch | [playbooks/ticket.md](playbooks/ticket.md) |
 | Bug fix | something the app does wrong | [playbooks/bug-fix.md](playbooks/bug-fix.md) |
 | Visual parity | making a surface match its frozen drawing | [playbooks/visual-parity.md](playbooks/visual-parity.md) |
 | Overnight | any run Vikas is not watching | [playbooks/overnight.md](playbooks/overnight.md) |

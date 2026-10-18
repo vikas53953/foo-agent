@@ -4,7 +4,7 @@ description: "Implement the result of /to-spec and /to-tickets in code."
 disable-model-invocation: true
 ---
 
-> **foo note:** entry point is the `foo-tickets` skill. Integration branch = the milestone branch; at most 3 implementer helpers at once (`docs/build-method.md`); step 7's review is the `foo-review` close-out. Ignore `/setup-matt-pocock-skills`.
+> **foo note:** entry point is the `foo-tickets` skill. Integration branch = the milestone branch; each implementer is its own project thread (one per ready ticket, all in parallel), not a subagent, and the milestone lead does the merging (`docs/build-method.md`); step 7's review is the `foo-review` close-out. Ignore `/setup-matt-pocock-skills`.
 
 You have been provided a spec. This spec should have tickets associated with it, describing how to implement the spec.
 

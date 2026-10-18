@@ -4,7 +4,7 @@ description: Break a plan, spec, or the current conversation into a set of trace
 disable-model-invocation: true
 ---
 
-> **foo note:** entry point is the `foo-tickets` skill. In foo-agent the tracker is local files under `docs/tickets/M<n>/NN-slug.md` (committed), the spec is `spec/constitution/` plus the milestone pack, and step 4's "quiz the user" is replaced by the independent reviewer under the approve-on-Vikas's-behalf rule (`docs/build-method.md`). Ignore `/setup-matt-pocock-skills`.
+> **foo note:** entry point is the `foo-tickets` skill. In foo-agent the tracker is one shared file, `/mnt/project-files/foo/prep/M<n>-tickets.md` (one section per ticket, each ticket built in its own thread), the spec is `spec/constitution/` plus the milestone pack, and step 4's "quiz the user" is replaced by the independent reviewer under the approve-on-Vikas's-behalf rule (`docs/build-method.md`). Ignore `/setup-matt-pocock-skills`.
 
 # To Tickets
 

@@ -4,29 +4,31 @@ Chosen by Vikas on 2026-10-18: borrow the PStack ideas (option A, 14:00Z) and bu
 
 **The approved spec stays the boss.** `spec/constitution/`, DECISIONS and `11-fidelity.md` win over every rule here. Where the spec is silent, take the most conservative option and write it in `implementation-notes.md` and the decision log.
 
-## 1. One milestone = one branch, one PR, one compare page
+## 1. One milestone = one lead, a thread per ticket, one PR
 
-What Vikas sees does not change: one PR per milestone and one side-by-side compare page. Inside, the work is split:
+What Vikas sees at the end is unchanged: one PR per milestone and one side-by-side compare page with an installer. The work inside is split so that tickets run in parallel, **each ticket in its own thread with its own agent** (Vikas, 2026-10-18 16:46Z):
 
 ```
 milestone pack (prep/M<n>.md)
-   │  foo-tickets
+   │  milestone lead: foo-tickets
    ▼
-ticket map: docs/tickets/M<n>/  (4–8 vertical tickets, each "blocked by", each demoable alone)
+ticket map: prep/M<n>-tickets.md  (4–8 vertical tickets: blocked by, owned files with no overlap, test-first acceptance)
    │  independent reviewer → approved on Vikas's behalf (logged)
    ▼
-milestone branch claude/foo-m<n>-…  ── draft PR
-   │  frontier: up to 3 helpers at once, own worktree + branch each, disjoint files
-   │  each ticket: red → green at agreed seams + foo-verify proof
+lead pushes milestone branch claude/foo-m<n>-…  ── draft milestone PR to main
+   │  lead → coordinator: the ready tickets
    ▼
-tickets merge into the milestone branch as they verify
-   │  close-out: foo-review (Standards + Spec, two Sonnet reviewers) + fidelity checker
-   │             TS rulebook + comment clean-up
+coordinator starts one thread per ready ticket (all in parallel)
+   │  each ticket thread: own branch, red → green + foo-verify proof,
+   │  draft PR into the milestone branch, messages the lead when green
    ▼
-PR ready → full CI (Windows) → merge when CI + checker are green → decision log + mission board
+lead reviews (foo-review) and merges each ticket PR, reports newly unblocked tickets → more threads
+   │  close-out: foo-review (Standards + Spec) + fidelity checker, TS rulebook + comment clean-up
+   ▼
+milestone PR ready → full CI (Windows) → merge when CI + checker are green → decision log + mission board
 ```
 
-Steps in detail: `.claude/skills/foo-playbooks/playbooks/milestone.md`.
+Steps in detail: `.claude/skills/foo-playbooks/playbooks/milestone.md` (lead) and `playbooks/ticket.md` (ticket thread).
 
 ## 2. Proof
 
@@ -38,7 +40,7 @@ Steps in detail: `.claude/skills/foo-playbooks/playbooks/milestone.md`.
 
 - **Vertical:** each cuts through every layer it needs and is demoable alone.
 - **Test-first, one slice at a time** (`matt-tdd`): seams agreed in the ticket; no bulk tests first; expected values from the spec, not recomputed.
-- **Parallel safely:** at most 3 helpers; one worktree per helper; shared files (`testids.ts`, `en-IN.json`, `types.ts`, `ipc.ts`, `spec/trace.csv`, `PROJECT-MAP.md`) have one owner at a time.
+- **Parallel safely:** every ready ticket runs in its own thread on its own branch. Tickets running at the same time never own the same file; shared files (`testids.ts`, `en-IN.json`, `types.ts`, `ipc.ts`, `spec/trace.csv`, `PROJECT-MAP.md`) have one owner at a time. Only the lead merges into the milestone branch.
 
 ## 4. Review
 
@@ -55,13 +57,13 @@ Vikas's standing rule (2026-10-18 14:56Z and 14:59Z): he is often away and build
 
 ## 7. Unattended runs (overnight contract)
 
-Before the first change, write the contract as the log's first row: **goal**, **done means** (a check that can pass or fail), **own branch/worktree**, **may do / may not**, **escape hatch** (truly stuck: stop and write why). Then loop: smallest change the evidence justifies → verify on the real app → commit or discard → one log row. A plateau means change approach; "done" never relaxes. Details: `playbooks/overnight.md`.
+Before the first change, write the contract as the log's first row: **goal**, **done means** (a check that can pass or fail), **own branch**, **may do / may not**, **escape hatch** (truly stuck: stop and write why). Then loop: smallest change the evidence justifies → verify on the real app → commit or discard → one log row. A plateau means change approach; "done" never relaxes. Details: `playbooks/overnight.md`.
 
 ## 8. Pitfalls we watch for
 
 - Reporting success off a green build.
 - Accepting every review comment, or dismissing without a reason.
-- Two helpers in one worktree.
+- Two agents on one branch, or two running tickets owning the same file.
 - An unattended loop before foo-verify works.
 - A duration instead of a finish condition.
 - Correcting the same mistake by hand twice (use `foo-correct`).

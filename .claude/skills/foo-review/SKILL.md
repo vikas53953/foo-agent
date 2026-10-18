@@ -30,6 +30,6 @@ Cheaper path: for a small ticket (one seam, under ~150 lines) one Sonnet reviewe
 On the whole milestone branch (`git diff origin/main...HEAD`), spawn two **separate Sonnet** reviewers in one message (`matt-code-review`):
 
 - **Standards:** `CLAUDE.md`, `docs/build-method.md`, `eslint-rules/index.js`, `implementation-notes.md`, the `typescript-best-practices` table and the smell baseline in `matt-code-review`. Report violations with the rule cited; smells are judgement calls.
-- **Spec:** the milestone pack, `docs/tickets/M<n>/`, and the spec sections they cite. Report missing or partial requirements, behaviour nobody asked for, and requirements that look implemented but wrong, quoting the spec line.
+- **Spec:** the milestone pack, the ticket map (`/mnt/project-files/foo/prep/M<n>-tickets.md`), and the spec sections they cite. Report missing or partial requirements, behaviour nobody asked for, and requirements that look implemented but wrong, quoting the spec line.
 
 Report the two axes side by side, never merged or re-ranked, then sort their findings into the four buckets as above. Then the comment and type clean-up on the diff: delete comments that only restate code or narrate history (keep the `// Spec:` headers and spec-citing notes the repo uses), and apply the TS rulebook. The fidelity checker runs as before.
