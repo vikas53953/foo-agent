@@ -28,7 +28,7 @@ describe('sign-in sandbox site', () => {
     expect((await control(sb, 'signin')).counters.logins).toBe(2);
   });
 
-  it('OTP: wrong code 401; right code signs in, and the account page needs the session (AT-056, AT-057)', async () => {
+  it('OTP: wrong code 401; right code signs in, and the account page needs the session', async () => {
     await reset(sb, 'signin');
     const step1 = await f('/login', { method: 'POST', form: { username: 'sandbox-user', password: 'sandbox-pass' } });
     expect((await f('/otp', { method: 'POST', form: { otp: '000000' }, cookie: step1.cookie })).status).toBe(401);
@@ -41,7 +41,7 @@ describe('sign-in sandbox site', () => {
     expect(anon.headers.location).toBe('/login');
   });
 
-  it('passkey mode: phone-approval page waits until the control approves it (AT-211)', async () => {
+  it('passkey mode: phone-approval page waits until the control approves it', async () => {
     await reset(sb, 'signin');
     await setToggles(sb, 'signin', { method: 'passkey' });
     const step1 = await f('/login', { method: 'POST', form: { username: 'sandbox-user', password: 'sandbox-pass' } });
@@ -70,7 +70,7 @@ describe('captcha sandbox site', () => {
 });
 
 describe('bot-check sandbox site', () => {
-  it('blocks every page with a challenge until the toggle is off (AT-039)', async () => {
+  it('blocks every page with a challenge until the toggle is off', async () => {
     await reset(sb, 'botcheck');
     const r = await sandboxFetch(sb, 'botcheck', '/book');
     expect(r.status).toBe(403);
@@ -93,7 +93,7 @@ describe('injection sandbox site', () => {
 });
 
 describe('bank hand-back sandbox site', () => {
-  it('its host matches the hand-back seed pattern ^netbanking\\. as is, and every request is counted (AT-142)', async () => {
+  it('its host matches the hand-back seed pattern ^netbanking\\. as is, and every request is counted', async () => {
     await reset(sb, 'handback');
     expect(/^netbanking\./.test(sb.hosts.handback)).toBe(true);
     const r = await sandboxFetch(sb, 'handback', '/');
@@ -113,7 +113,7 @@ describe('news sandbox site', () => {
     expect((r.text.match(/<p>/g) ?? []).length).toBeGreaterThanOrEqual(3);
   });
 
-  it('the live page has its words only inside a script, so it needs the browser (AT-139)', async () => {
+  it('the live page has its words only inside a script, so it needs the browser', async () => {
     const r = await sandboxFetch(sb, 'news', '/live');
     expect(r.text).toContain('<script>');
     const outsideScript = r.text.replace(/<script>[\s\S]*?<\/script>/g, '');

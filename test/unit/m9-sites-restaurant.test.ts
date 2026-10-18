@@ -24,7 +24,7 @@ describe('restaurant sandbox site', () => {
     const r = await get('/');
     expect(r.status).toBe(200);
     expect(r.text).toContain('<form');
-    const unknown = await sandboxFetch(sb, 'restaurant', '/', { host: 'nowhere.test' });
+    const unknown = await sandboxFetch(sb, 'restaurant', '/', { hostHeader: 'nowhere.test' });
     expect(unknown.status).toBe(421);
   });
 
@@ -53,7 +53,7 @@ describe('restaurant sandbox site', () => {
     expect(r.text).toContain('<button type="submit">Book table</button>');
   });
 
-  it('one submit books once, shows "Booking code TJ8821" and counts 1 submit (AT-037, AT-114a)', async () => {
+  it('one submit books once, shows "Booking code TJ8821" and counts 1 submit', async () => {
     const r = await book('coastline');
     expect(r.status).toBe(200);
     expect(r.text).toContain('Booking code TJ8821');
@@ -64,7 +64,7 @@ describe('restaurant sandbox site', () => {
     expect(history.text).toContain('Coastline Kitchen');
   });
 
-  it('a fee change shows on the page the engine re-reads before submit (AT-038)', async () => {
+  it('a fee change shows on the page the engine re-reads before submit', async () => {
     await setToggles(sb, 'restaurant', { noShowFeePaise: 150_000 });
     const r = await get('/book/coastline?party=4&time=8:00+PM');
     expect(r.text).toMatch(/data-field="no-show-fee">₹1,500</);
