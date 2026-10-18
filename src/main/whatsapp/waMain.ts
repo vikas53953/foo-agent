@@ -99,7 +99,9 @@ export class WhatsAppMain {
     this.c.emitSettings();
     const row = this.c.chatRow(chatId);
     if (!row) return fail('NOT_FOUND');
-    this.c.emit('chat:upsert', row);
+    // The chat list shows no archived chat: a hidden mirror leaves it, a shown one comes back.
+    if (on) this.c.emit('chat:removed', { chatId });
+    else this.c.emit('chat:upsert', row);
     return ok(row);
   }
 

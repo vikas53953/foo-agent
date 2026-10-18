@@ -282,7 +282,8 @@ function groupBy<T>(rows: T[], key: (r: T) => string): Map<string, T[]> {
 export function chatRows(db: Db, ctx: ListContext, ids: string[] | null = null): ChatRow[] {
   const idFilter = ids ? `AND id IN (${ids.map(() => '?').join(',')})` : '';
   const chats = db
-    .prepare(`SELECT * FROM chats WHERE deleted_at IS NULL AND archived = 0 ${idFilter} ORDER BY last_activity_at DESC`)
+    // M8 T3: a read by id also returns an archived row (a mirror hidden with C-8, for chat:archive's reply); lists never do.
+    .prepare(`SELECT * FROM chats WHERE deleted_at IS NULL ${ids ? '' : 'AND archived = 0'} ${idFilter} ORDER BY last_activity_at DESC`)
     .all(...(ids ?? [])) as DbRow[];
   if (!chats.length) return [];
   const chatIds = chats.map((c) => String(c.id));

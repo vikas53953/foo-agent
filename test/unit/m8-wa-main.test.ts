@@ -164,7 +164,7 @@ describe('ingest (db.tx insert into wa_messages)', () => {
     expect(db.prepare('SELECT name FROM wa_contacts').pluck().all()).toEqual(['Mummy']);
   });
 
-  it('AT-270 ingest side: 250 stored messages from 3 senders → chat:open gives the newest 200, oldest first', () => {
+  it('ingest side of the 200-message window: 250 stored messages from 3 senders → chat:open gives the newest 200, oldest first', () => {
     const senders = ['Mom', 'Ravi', 'Priya'];
     const ops = Array.from({ length: 250 }, (_, i) => waRow(`M${i}`, { at: NOW - 250_000 + i * 1000, sender: senders[i % 3] }));
     expect(tx(ops).result.ok).toBe(true);
