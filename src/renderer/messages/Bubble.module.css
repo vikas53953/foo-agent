@@ -109,9 +109,12 @@
   width: min(var(--bubble-max-rich), 100%);
   max-width: none;
 }
+/* A card sizes itself (`min(--card-w, 100%)`, 05-1 §0.2) but has inline-size containment, so it has no intrinsic width:
+ * the hold takes the whole line and the card keeps its own width inside it (M4 T5). */
 .hold:has(> [role='group']),
 .hold:has(> .cardPlaceholder),
 .hold:has(> [data-testid^='card-']) {
+  width: 100%;
   max-width: 100%;
 }
 .bubble {
