@@ -501,3 +501,35 @@ files are real and which stay seeds). What the real output pinned:
   `scripts/copy-pending.json` (empty by M4 close-out); phrase keys are checked against `PHRASES`.
 - The engine answers `jobs.pauseAll` with `{ paused: [] }` until T2/T4 build the runner.
 - `steps:upsert` (08-1 §3.3) is not wired: T5 asks for it with the checklist.
+
+## M4 · shell wiring and stacked notices (ticket T6)
+
+### Built
+
+- G-M4-07: `slow` stays derived. `stepProgressAt()` (`src/main/db/rows.ts`) = the later of the running step's `started_at`
+  and the last `steps.finished_at`, else the job's `started_at`; `slow` = WORKING and 60 s past it. `last_progress_at` is
+  no longer read for it (tool progress moves that column without a step finishing). `jobRows` selects the two step times.
+- Chat rev: `recomputePill` now bumps `chats.rev` on every call, not only when the pill changes. The ChatRow's preview
+  ("Working on…" / "Waiting to start…"), folded and active facts are derived from the same jobs and cards, and the renderer
+  drops a `chat:upsert` whose rev did not move, so QUEUED ↔ WORKING (same "working" pill) left a stale preview (AT-287;
+  reproduced by `test/verify/m4-t6-shell.journey.ts` before the fix).
+- `spend:update` goes through `updateSpendReducer` (`store/spend.ts`): a late summary for an older month is ignored.
+- 04-2 §23.2a stack (G-M4-12): `composer/ComposerNotices.ts` derives the notices from the rows (user messages with status
+  `failed`; jobs in FAILED with their newest error card's `kind` / `whatHappened`), so a notice never disagrees with the
+  chat; dismissed ids, "+{n} more" expansion and the 24 h-away clock are renderer-only view state.
+  `ComposerNoticeStack.tsx` draws it; `Composer.tsx` mounts it (one line) above the banner slot.
+
+### Picks and gaps (for the lead's independent check)
+
+- T6-01 · "{6-char id}" is not defined by 08-0: the code is `{ErrorKind}-` + the last 6 letters or digits of the source row
+  id, upper case (message id, `local:{clientId}` while unsent, or job id).
+- T6-02 · A failed job with no error card yet shows "Something went wrong on my side." with kind `UNKNOWN` (the card's
+  sentence replaces it once T2 posts the card).
+- T6-03 · A not-sent message's notice reads "Not sent." (the in-chat sentence, 04 §7). Its kind is `UNKNOWN` unless
+  `noteSendError(rowId, kind)` was called: `composer/send.ts` (not T6's file) should call it with `r.error.kind`; asked of
+  the lead.
+- T6-04 · "Notices clear when the user leaves the chat for 24 h": the first open in a session shows failures from the last
+  24 h only; back after ≥ 24 h away clears them; Dismiss / Clear all are kept for the session (not stored).
+- T6-05 · Voice-note and attachment refusals still use M2's single 8 s `composer-notice`; they join the stack when their
+  callers pass an ErrorKind (T7 / the integrator: a call to the stack from `Composer.tsx`).
+- `trace.csv` rows AT-281/282/286/287 still say `pending`: the status column is the integrator's at close-out.

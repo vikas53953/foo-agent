@@ -9,4 +9,10 @@ export interface SpendState {
 
 export const initialSpend = (): SpendState => ({ summary: null });
 
+/** spend:update: the newest month wins; a late summary for an older month (sent before the month turned) is ignored. */
+export function updateSpendReducer(s: SpendState, summary: SpendSummary): void {
+  if (s.summary && summary.month < s.summary.month) return;
+  s.summary = summary;
+}
+
 export const selectSpend = (s: RootState) => s.spend.summary;

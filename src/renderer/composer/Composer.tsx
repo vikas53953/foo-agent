@@ -32,6 +32,7 @@ import { AttachmentChips, type ChipsHandle } from './AttachmentChips';
 import { chipAttachment, chipKind, planFiles, type Chip } from './chips';
 import { ComposerBanner } from './ComposerBanner';
 import { ComposerNotice, NOTICE_MS, type Notice } from './ComposerNotice';
+import { ComposerNoticeStack } from './ComposerNoticeStack';
 import { composerKeyAction, isPrintable, WRAP } from './composerKeys';
 import { cacheDraft, cachedDraft, cancelDraftSave, saveDraftLater, saveDraftNow, type DraftPayload } from './drafts';
 import { DropOverlay, type DropLook } from './DropOverlay';
@@ -961,6 +962,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
   return (
     <div ref={bar} className={styles.bar} data-testid={TID.composer} data-state={round}>
       <div className={styles.column}>
+        <ComposerNoticeStack chatId={chatId} />
         {(composerBanner || catchOpen || showPending || notice || counter) && (
           <div className={styles.stack}>
             {composerBanner && (

@@ -16,6 +16,7 @@ import {
   parseJson,
   reactionBy,
   routineRow,
+  stepProgressAt,
   stepRow,
   waMessageRow,
   type DbRow,
@@ -611,7 +612,9 @@ export function jobRows(db: Db, where: string, args: unknown[], now: number): Jo
   const ids = rows.map((r) => String(r.id));
   const steps = groupBy(
     db
-      .prepare(`SELECT job_id, idx, state, phrase_key, slots FROM steps WHERE job_id IN (${ids.map(() => '?').join(',')}) ORDER BY idx`)
+      .prepare(
+        `SELECT job_id, idx, state, phrase_key, slots, started_at, finished_at FROM steps WHERE job_id IN (${ids.map(() => '?').join(',')}) ORDER BY idx`,
+      )
       .all(...ids) as DbRow[],
     (r) => String(r.job_id),
   );
@@ -621,7 +624,11 @@ export function jobRows(db: Db, where: string, args: unknown[], now: number): Jo
     const slots = running ? parseJson<Record<string, unknown>>(running.slots, {}) : {};
     return jobRow(
       r,
-      { stepsDone: s.filter((x) => x.state === 'done').length, nowLine: running ? String(slots.text ?? running.phrase_key) : '' },
+      {
+        stepsDone: s.filter((x) => x.state === 'done').length,
+        nowLine: running ? String(slots.text ?? running.phrase_key) : '',
+        progressAt: stepProgressAt(s),
+      },
       now,
     );
   });
@@ -670,7 +677,12 @@ export function ensureFooChat(db: Db, now: number, agentName: string, id: string
   return id;
 }
 
-/** Re-derives chats.pill from the chat's jobs and cards (08-1 §4.6 rule 7). Returns true when it changed. */
+/**
+ * Re-derives chats.pill from the chat's jobs and cards (08-1 §4.6 rule 7). Returns true when the pill changed. The chat's
+ * rev moves on every call, pill changed or not: the ChatRow's list facts (preview "Working on…" / "Waiting to start…",
+ * folded, active) are derived from the same jobs and cards, and a chat:upsert with an unchanged rev is dropped by the
+ * renderer's rev rule (08-5 §5 rule 2).
+ */
 export function recomputePill(db: Db, chatId: string, now: number): boolean {
   const jobs = (db.prepare('SELECT state, finished_at FROM jobs WHERE chat_id = ?').all(chatId) as DbRow[]).map((r) => ({
     state: r.state as JobState,
@@ -682,9 +694,9 @@ export function recomputePill(db: Db, chatId: string, now: number): boolean {
   }));
   const next = derivePill({ jobs, cards }, now);
   const cur = db.prepare('SELECT pill, pill_until FROM chats WHERE id = ?').get(chatId) as DbRow | undefined;
-  if (!cur || (cur.pill === next.pill && (cur.pill_until ?? null) === next.pillUntil)) return false;
+  if (!cur) return false;
   db.prepare('UPDATE chats SET pill = ?, pill_until = ?, rev = rev + 1 WHERE id = ?').run(next.pill, next.pillUntil, chatId);
-  return true;
+  return cur.pill !== next.pill || (cur.pill_until ?? null) !== next.pillUntil;
 }
 
 export type PinResult = { ok: true } | { ok: false; reason: 'not_found' | 'not_allowed' | 'limit' };
