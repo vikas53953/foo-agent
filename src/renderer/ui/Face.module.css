@@ -1,0 +1,279 @@
+/* Spec: 02-2 §F15.9.1 colours and ring, §F15.9.2 motion tokens, §F15.9.5 reduced motion, §F15.9.7 forced colours,
+   §F15.9.8 (transform / opacity keyframes only; paused off screen and while the window is hidden). The SVG draws in a
+   100-unit disc, so lengths inside it are in disc units. */
+.face {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  line-height: 0;
+  user-select: none;
+  --disc: var(--fg-1);
+  --eye: var(--bg-app);
+}
+.foo {
+  --disc: var(--fg-1);
+  --eye: var(--bg-app);
+}
+.helper {
+  --disc: var(--face-disc, var(--h-slate));
+  --eye: var(--on-helper);
+}
+.svg {
+  display: block;
+  overflow: visible;
+  animation: cross var(--m-face-cross) linear;
+}
+.disc {
+  fill: var(--disc);
+}
+.discOffline {
+  fill: var(--bg-sunken);
+  stroke: var(--fg-3);
+  stroke-dasharray: 5 3.3;
+}
+.eye {
+  fill: var(--eye);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.arc {
+  fill: none;
+  stroke: var(--eye);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.eyeOffline {
+  fill: none;
+  stroke: var(--fg-3);
+}
+.eyes {
+  transform-box: view-box;
+  transform-origin: center;
+}
+
+/* Mood ring: outside the disc; arcs start at the top. */
+.ring {
+  fill: none;
+  stroke-linecap: round;
+  transform-box: view-box;
+  transform-origin: center;
+  transform: rotate(-90deg);
+}
+.ring_arc_turning {
+  animation: orbit var(--m-face-orbit) linear infinite;
+}
+.ring_full_fade {
+  animation: ringFade var(--m-face-happy) linear forwards;
+}
+
+/* Eye motion (§F15.9.2). */
+.m_blink .eye {
+  animation: blink var(--face-blink) linear infinite;
+}
+.m_blink_slow .eye {
+  animation: blink var(--m-face-blink-slow) linear infinite;
+}
+.m_drift {
+  animation: drift var(--m-face-drift) ease-in-out infinite alternate;
+}
+.m_drift .eye {
+  animation: blink var(--m-face-blink-slow) linear infinite;
+}
+.m_scan {
+  animation: scan var(--m-face-scan) ease-in-out infinite;
+}
+.m_pop {
+  animation: pop var(--m-face-once) var(--ease-standard);
+}
+.m_nod {
+  animation: nod var(--m-face-once) var(--ease-standard);
+}
+.m_wake .eye {
+  animation: wake var(--m-face-wake) var(--ease-standard);
+}
+
+.spark {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0);
+  /* Each spark plays 1360 of the 1600ms, started 0 / 120 / 240ms in (§F15.9.2 --m-face-party). */
+  animation: spark calc(var(--m-face-party) * 0.85) var(--ease-standard) forwards;
+}
+.spark1 {
+  animation-delay: calc(var(--m-face-party) * 0.075);
+}
+.spark2 {
+  animation-delay: calc(var(--m-face-party) * 0.15);
+}
+.z {
+  fill: var(--eye);
+  opacity: 0.55;
+  font-weight: 700;
+  animation: zFade 4000ms ease-in-out infinite; /* local: §F15.9.3 #18 the 4000ms fade loop of the "z" */
+}
+.badge {
+  position: absolute;
+  right: -8%;
+  bottom: -8%;
+  width: 36%;
+  height: 36%;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+  animation: badgePop var(--m-face-react) var(--ease-standard) forwards;
+}
+
+@keyframes cross {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes orbit {
+  from {
+    transform: rotate(-90deg);
+  }
+  to {
+    transform: rotate(270deg);
+  }
+}
+@keyframes ringFade {
+  0% {
+    opacity: 0;
+  }
+  7.5%,
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes blink {
+  0%,
+  95%,
+  100% {
+    transform: scaleY(1);
+  }
+  97.5% {
+    transform: scaleY(0.08);
+  }
+}
+@keyframes drift {
+  from {
+    transform: translateX(-5px); /* local: ±5% of the 100-unit disc (§F15.9.2) */
+  }
+  to {
+    transform: translateX(5px); /* local: ±5% of the 100-unit disc (§F15.9.2) */
+  }
+}
+@keyframes scan {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px); /* local: ±5% of the 100-unit disc (§F15.9.2) */
+  }
+  75% {
+    transform: translateX(5px); /* local: ±5% of the 100-unit disc (§F15.9.2) */
+  }
+}
+@keyframes pop {
+  50% {
+    transform: scale(1.1);
+  }
+}
+@keyframes nod {
+  50% {
+    transform: translateY(5px); /* local: ±5% of the 100-unit disc (§F15.9.2) */
+  }
+}
+@keyframes wake {
+  from {
+    transform: scaleY(0.08);
+  }
+}
+@keyframes spark {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes zFade {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+/* The badge pops 0 → 1.15 → 1 in the first 430 of the 900ms (§F15.9.2 --m-face-react). */
+@keyframes badgePop {
+  0% {
+    transform: scale(0);
+  }
+  33% {
+    transform: scale(1.15);
+  }
+  48%,
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* §F15.9.5 reduced motion and §F15.9.3d still faces: static poses; the Working ring stays as a still quarter-arc. */
+.reduced *,
+.still * {
+  animation: none !important;
+}
+.reduced .spark {
+  transform: scale(1);
+}
+.reduced .ring_full_fade {
+  opacity: 1;
+}
+.still .ring_arc_turning {
+  animation: orbit var(--m-face-orbit) linear infinite !important;
+}
+.reduced .ring_arc_turning {
+  animation: none !important;
+}
+.reduced .svg {
+  animation: cross var(--m-face-cross) linear !important;
+}
+
+/* §F15.9.8: paused off screen and while the window is hidden. */
+.face[data-offscreen] *,
+:global(:root[data-face-paused]) .face * {
+  animation-play-state: paused !important;
+}
+
+/* §F15.9.7 forced colours. */
+@media (forced-colors: active) {
+  .face {
+    forced-color-adjust: none;
+    --disc: Canvas;
+    --eye: CanvasText;
+  }
+  .disc {
+    stroke: CanvasText;
+    stroke-width: 4;
+  }
+  .ring {
+    stroke: Highlight;
+  }
+  .eyeOffline,
+  .discOffline {
+    stroke: CanvasText;
+  }
+  .badge {
+    background: Canvas;
+    color: CanvasText;
+  }
+}

@@ -12,12 +12,14 @@ import type {
   ConnectionRow,
   DetectRow,
   BadgeValue,
+  FaceRef,
   HelperRow,
   JobDetails,
   JobRow,
   MemoryFactView,
   MemoryFilter,
   MessageRow,
+  Mood,
   PasteCatch,
   ProviderId,
   PublicSettings,
@@ -131,10 +133,19 @@ export type InvokeOut = { [C in InvokeChannel]: Invokes[C]['res'] };
 export type EventChannel = keyof Events;
 export type EventPayload = Events;
 
+/** 08-1 §3.3.1 (X-124, X-135): the one renderer → main event, sent with `window.foo.send`. */
+export interface RendererEvents {
+  'face:raster': { faceRef: FaceRef; size: 16 | 20 | 24 | 32 | 48; mood: Mood; png: ArrayBuffer };
+}
+export type RendererEvent = keyof RendererEvents;
+export const RENDERER_EVENTS = ['face:raster'] as const satisfies readonly RendererEvent[];
+
 export interface FooBridge {
   invoke<C extends InvokeChannel>(channel: C, payload: InvokeIn[C]): Promise<Result<InvokeOut[C]>>;
   /** Returns the unsubscribe function. */
   on<E extends EventChannel>(event: E, cb: (payload: EventPayload[E]) => void): () => void;
+  /** 08-1 §3.1: the one renderer → main event (§3.3.1). */
+  send<E extends RendererEvent>(event: E, payload: RendererEvents[E]): void;
   platform: PlatformInfo;
 }
 

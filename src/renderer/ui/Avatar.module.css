@@ -81,6 +81,18 @@
   height: 55%;
 }
 
+/* A living face inside the cluster (§F15.9.3d): still, no ring, scaled to the member slot. */
+.living {
+  background: transparent;
+}
+.living svg {
+  width: 100%;
+  height: 100%;
+}
+.livingRoot {
+  flex: none;
+}
+
 @media (forced-colors: active) {
   .avatar,
   .member {
