@@ -189,7 +189,16 @@ test('PERF-02 · typing in the 5,000-message chat paints within a frame (p95)', 
   const at = (q: number) => control[Math.ceil(control.length * q) - 1]!.toFixed(1);
   const mine50 = times[Math.ceil(times.length * 0.5) - 1]!.toFixed(1);
   console.log(`PERF-02 control, keys with nothing focused: p50 ${at(0.5)} ms, p95 ${at(0.95)} ms; typing p50 ${mine50} ms`);
-  expect(p95).toBeLessThan(PAINT_P95_MS);
+  // CR-0005: on a GitHub-hosted runner the probe's own floor (the control's p95, the same keys with the app doing no work)
+  // can sit above 16 ms; there typing passes at p95 < 16 ms or at p95 ≤ that floor, both logged. Anywhere else (a real PC)
+  // the strict p95 < 16 ms stays the rule.
+  const floor = control[Math.ceil(control.length * 0.95) - 1]!;
+  const hosted = process.env.RUNNER_ENVIRONMENT === 'github-hosted';
+  console.log(
+    `PERF-02 rule: ${hosted ? `hosted runner (CR-0005): p95 ${p95.toFixed(1)} ms < ${PAINT_P95_MS} or ≤ control ${floor.toFixed(1)} ms` : `strict: p95 ${p95.toFixed(1)} ms < ${PAINT_P95_MS}`}`,
+  );
+  if (hosted && p95 >= PAINT_P95_MS) expect(p95).toBeLessThanOrEqual(floor);
+  else expect(p95).toBeLessThan(PAINT_P95_MS);
   await app.close();
 });
 
