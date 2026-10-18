@@ -2,7 +2,8 @@
 // `plan:go | plan:change`, `stuck:choose`, `recovery:choose`, each `{ cardId; nonce; …; resolvedBy }` → CardRow), X-124 (an
 // invoke that drives the engine sends exactly one MainToEngine message), 08-1 §2.4 (`job.stop`, `job.stopAll`, `job.retry`,
 // `card.answered`), 08-2 §5.7 step 4 (the stop report is built only from activity rows: done rows of kinds sent, paid,
-// booked, deleted), G-M4-01 (retry = a new linked job; main allocates its id, the old job never moves), G-M4-09 / CR-0008
+// booked, deleted), G-M4-01 (retry = a new linked job; main allocates its id, the old job never moves; 05-3 §5.16 "Check
+// for real" is the same linked job from done_unverified), G-M4-09 / CR-0008
 // (`error:fix`: main checks the action against the card's payload), 05-3 §5.19 (Take over only when the job uses the
 // browser), §5.21 (the Spend-cap card's "Wait until" ends it as dismissed). Main only checks and forwards: every state change
 // is the runner's (Art. 12), written back through db.tx and seen as card:upsert / job:upsert.
@@ -134,7 +135,8 @@ export function jobIpc(d: JobIpcDeps): JobHandlers {
     'job:retry': ({ jobId }) => {
       const j = jobState(jobId);
       if (!j) return fail('JOB_GONE');
-      if (j.state !== 'failed' && j.state !== 'cancelled') return fail('VALIDATION');
+      // G-M4-01: Try again on a failed or stopped job; 05-3 §5.16 "Check for real" on a done-but-unverified one (a new linked job).
+      if (j.state !== 'failed' && j.state !== 'cancelled' && j.state !== 'done_unverified') return fail('VALIDATION');
       const newJobId = d.newJobId();
       if (!d.engine?.send('job.retry', { jobId, newJobId })) return fail('UNKNOWN', 'engine not running');
       return ok({ newJobId });

@@ -225,9 +225,10 @@ export const EVENT_CHANNELS = [
 /**
  * 08-3 §22.9 seed sets (`ux-world` is the generator name of `demo`; both load the walkthrough world). `ux-world-ch8-live`
  * (CR-0007): the same world at 8:05 AM, foo's chat ending at the cake line, so a test sends chapter 8's "thanks!" and
- * question live and the frame matches the walkthrough's UX-08-02.
+ * question live and the frame matches the walkthrough's UX-08-02. `m4-cards` (M4 T5): the ux-world plus one of each M4 job
+ * card in two helper chats (Errands, Home help), with no engine.
  */
-export const SEED_SETS = ['demo', 'perf', 'ux-world', 'ux-world-ch8-live'] as const;
+export const SEED_SETS = ['demo', 'perf', 'ux-world', 'ux-world-ch8-live', 'm4-cards'] as const;
 export type SeedSet = (typeof SEED_SETS)[number];
 
 export interface ClockReply {

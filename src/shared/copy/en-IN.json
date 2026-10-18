@@ -439,6 +439,15 @@
   "bubble.why.reason.housekeeping": "Housekeeping for your routines.",
   "bubble.why.reason.cap_warning": "You turned on a warning at 80% of your monthly caps.",
   "thread.wa_mirror.retention": "I keep 7 days of WhatsApp messages.",
+  "dialog.c_21.title": "Raise this month’s AI cap?",
+  "dialog.c_21.body": "Now {cap}. New cap:",
+  "dialog.c_21.field_prefix": "₹",
+  "dialog.c_21.error_min": "The new cap has to be at least {min}.",
+  "dialog.c_21.error_max": "The highest AI cap is ₹1,00,000.",
+  "dialog.c_21.error_nan": "Type an amount in rupees.",
+  "dialog.c_21.primary": "Raise to {amount}",
+  "dialog.c_21.primary_empty": "Raise cap",
+  "dialog.c_21.secondary": "Not now",
   "dialog.c_24.title": "Delete this message?",
   "dialog.c_24.body_mine": "It’s removed from this chat on your PC. Anything {agentName} already did because of it stays done.",
   "dialog.c_24.body_other": "It’s removed from this chat on your PC.",
@@ -721,5 +730,6 @@
   "errors.ai_limit.button.no_reset": "Try again",
   "errors.crash_recovery.link": "Stop it",
   "errors.crash_recovery.what_is_safe.paying": "I was in the middle of paying {amount}. Checking whether it went through before anything else.",
-  "errors.safe_mode.link": "Send a report"
+  "errors.safe_mode.link": "Send a report",
+  "cards.common.offline_line": "You’re offline. I’ll do this when you’re back."
 }

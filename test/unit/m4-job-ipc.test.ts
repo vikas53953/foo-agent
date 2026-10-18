@@ -152,9 +152,11 @@ describe('job:retry (08-1 §3.2, X-124, G-M4-01)', () => {
     expect((db.prepare("SELECT state FROM jobs WHERE id = 'j_1'").get() as { state: string }).state).toBe('failed');
   });
 
-  it('works for a cancelled job, refuses a job that is still running, JOB_GONE for an unknown one', () => {
-    tx([job('j_1', 'cancelled', { stop_reason: 'user_button' }), job('j_2', 'working')]);
+  it('works for a cancelled job and for “Check for real” on a done-unverified one; refuses a running job; JOB_GONE for an unknown one', () => {
+    tx([job('j_1', 'cancelled', { stop_reason: 'user_button' }), job('j_2', 'working'), job('j_3', 'done_unverified')]);
     expect(h['job:retry']({ jobId: 'j_1' }).ok).toBe(true);
+    expect(h['job:retry']({ jobId: 'j_3' }).ok).toBe(true);
+    sent.pop();
     expect(h['job:retry']({ jobId: 'j_2' })).toEqual({ ok: false, error: { kind: 'VALIDATION' } });
     expect(h['job:retry']({ jobId: 'j_x' })).toEqual({ ok: false, error: { kind: 'JOB_GONE' } });
     expect(sent).toHaveLength(1);
