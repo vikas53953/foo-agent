@@ -10,4 +10,6 @@ golden/runner.json
 golden/out/
 qa-evidence/*/fidelity.html
 qa-evidence/*/fidelity.json
-.claude/
+.claude/*
+!.claude/skills/
+qa-evidence/verify/

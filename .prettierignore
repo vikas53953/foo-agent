@@ -12,3 +12,5 @@ test-results/
 playwright-report/
 golden/manifest.json
 resources/prompts/
+# vendored and adapted skill text keeps its source formatting (NOTICE.md)
+.claude/skills/
