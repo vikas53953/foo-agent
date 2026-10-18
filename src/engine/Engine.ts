@@ -3,13 +3,14 @@
 // Redactor on every AI input), 08-4 §24.9 / §25.5 (the rewrite turn for a held sentence: cheap model, `rewrite.md`),
 // §30.8 (on engine start every `sys-*.md` in the scratch folders is deleted), 08-3 §22.3 (FOO_FAKE_AI).
 // The +20 s health check of 08-1 §2.2 step 7 runs only outside FOO_TEST runs (tests verify explicitly). Deferred to their
-// milestones: job lanes (M4), memory parts 5/5b (M6; empty here), the vault for key providers (M5: no key yet, so a
+// milestones: M4 T2 wires the JobRunner + ToolLayer (08-2 §5, §8; the job lane's tools come from `tools`, fake in tests
+// until M8/M9);  memory parts 5/5b (M6; empty here), the vault for key providers (M5: no key yet, so a
 // key provider reports `AI_KEY_INVALID` on verify).
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
 import type { Clock } from '../shared/clock';
 import { ok, type Result } from '../shared/errors';
-import { newId } from '../shared/ids';
+import { newId as mintId, type IdPrefix } from '../shared/ids';
 import { settingsSchema, type Settings } from '../shared/settings';
 import { settingsDefaults } from '../shared/settingsDefaults';
 import type { ProviderId } from '../shared/types';
@@ -24,6 +25,12 @@ import { filterSay } from './prompt/filters';
 import { PromptBuilder, type ConversationMessage } from './prompt/PromptBuilder';
 import { ReleaseGate } from './prompt/releaseGate';
 import { Redactor } from './redact/Redactor';
+import { findBanned } from './prompt/filters';
+import { priceOf, resolveModel } from './ai/models';
+import { stubGate } from './gate/GateLogic';
+import { JobRunner } from './jobs/JobRunner';
+import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
+import type { StepAct } from '../shared/schemas';
 
 export interface EngineOptions {
   link: MainLink;
@@ -38,6 +45,10 @@ export interface EngineOptions {
   fetch?: typeof fetch;
   /** Tests inject PATH lookup so detect does not depend on the machine. */
   which?: ReturnType<typeof nodeWhich>;
+  /** M4: the tools jobs may use (08-2 §8.2). Tests pass the fake tools; M8 connectors and M9 browser add the real ones. */
+  tools?: ToolRegistry;
+  /** Tests only: deterministic ids (a fake AI script can then name a tool call id in a proof). */
+  newId?: (prefix: IdPrefix) => string;
 }
 
 export class Engine {
@@ -46,6 +57,8 @@ export class Engine {
   readonly ai: AiService;
   readonly lane: ChatLane;
   readonly redactor: Redactor;
+  readonly tools: ToolLayer;
+  readonly jobs: JobRunner;
   private prompts: PromptBuilder;
   /** M6 slot (CR-0010): T3 sets MemoryService here, T7 its tidy. */
   memory: MemoryPort = memoryNotBuilt;
@@ -55,6 +68,7 @@ export class Engine {
   }
 
   private constructor(private o: EngineOptions) {
+    const newId = (p: IdPrefix, now: number) => (o.newId ? o.newId(p) : mintId(p, now));
     const log = (evt: string, kind?: string) =>
       o.link.send('log', { t: o.clock.now(), lvl: 'info', mod: 'engine', evt, ...(kind ? { kind } : {}) });
     this.redactor = new Redactor({ clock: o.clock, log: (kind) => log('redact', kind) });
@@ -97,6 +111,27 @@ export class Engine {
       detectRow: (row) => o.link.send('ui.patch', { event: 'ai:detectRow', payload: row }),
       retestTimers: !o.testRun,
     });
+    this.tools = new ToolLayer({
+      link: o.link,
+      clock: o.clock,
+      newId: (p) => newId(p, o.clock.now()),
+      tools: o.tools ?? {},
+      gate: stubGate,
+      log: (evt, kind) => log(evt, kind),
+    });
+    this.jobs = new JobRunner({
+      link: o.link,
+      clock: o.clock,
+      newId: (p) => newId(p, o.clock.now()),
+      settings: () => this.settings,
+      ai: this.ai,
+      prompts: this.stepProtocol(),
+      tools: this.tools,
+      dataDir: o.dataDir,
+      rateOf: (id) => priceOf(pricing, id, resolveModel(id, 'default', pricing, this.settings.ai.providers[id])) ?? null,
+      usdToInr: pricing.usdToInr,
+      log: (evt, kind) => log(evt, kind),
+    });
     this.lane = new ChatLane({
       link: o.link,
       clock: o.clock,
@@ -105,7 +140,34 @@ export class Engine {
       ai: this.ai,
       protocol: this.protocol(),
       log: (evt, kind) => log(evt, kind),
+      jobs: this.jobs,
     });
+  }
+
+  /** The step protocol for the job runner (08-4 §24.1 step row, §25.3, 08-2 §7.5–§7.6). */
+  private stepProtocol(): ConstructorParameters<typeof JobRunner>[0]['prompts'] {
+    const redactor = this.redactor;
+    return {
+      buildStep: (jobBlock, tools) =>
+        this.prompts.buildStep({
+          agentName: this.settings.identity.agentName,
+          firstName: this.settings.user.firstName ?? null,
+          vibeLine: '',
+          emoji: '',
+          timeZone: this.settings.locale.timeZone,
+          tools,
+          jobBlock,
+        }),
+      buildRepair: (issues) => this.prompts.buildRepair(issues).prompt,
+      parseStep: (text) => {
+        const env = parseEnvelope(text);
+        if (env.act === undefined) return { act: null, issues: env.actError ?? formatIssues([]) };
+        const v = validateAct('step', env.act);
+        return v.ok ? { act: v.act as StepAct, issues: null } : { act: null, issues: v.issues };
+      },
+      filter: (text) => filterSay(text, { redactor }).text,
+      isBanned: (text) => findBanned(text).length > 0,
+    };
   }
 
   /** The reply protocol for the chat lane, from the prompt modules. */
@@ -194,7 +256,7 @@ export class Engine {
     const r = await this.ai
       .runTurn(
         pick.providerId,
-        { ...this.ai.turnParams(pick.providerId, 'rewrite'), turnId: newId('t', this.o.clock.now()), purpose: 'rewrite', ...built },
+        { ...this.ai.turnParams(pick.providerId, 'rewrite'), turnId: mintId('t', this.o.clock.now()), purpose: 'rewrite', ...built },
         { onText: () => {}, onSession: () => {} },
         signal,
       )
@@ -258,7 +320,13 @@ export class Engine {
       }
       case 'test.reset':
         this.lane.cancelAll();
+        this.jobs.cancelAll();
         return undefined;
+      case 'card.answered':
+        await this.jobs.onCardAnswered(msg.payload);
+        return undefined;
+      case 'job.retry':
+        return this.jobs.retry(msg.payload.jobId, msg.payload.newJobId);
       case 'test.clock':
         return undefined;
       // M4 T1 stub (G-M4-04): the job runner (T2/T4) pauses its WORKING jobs here; until then there are none to pause.
