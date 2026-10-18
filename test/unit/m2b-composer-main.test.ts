@@ -124,7 +124,7 @@ describe('message:send (main)', () => {
     expect(chatOpen(db, chat, NOW)!.draft?.text).toBe('call mom\nlater');
     expect(saveDraft(db, { chatId: chat, text: 'call mom\nlater', attachmentIds: [], linkPreviewRemoved: false }, d)?.changed).toBe(false);
     saveDraft(db, { chatId: chat, text: 'pin 4821 for the gate', attachmentIds: [], linkPreviewRemoved: false }, d);
-    expect(chatOpen(db, chat, NOW)!.draft?.text).toBe('•••• for the gate');
+    expect(chatOpen(db, chat, NOW)!.draft?.text).toBe('[hidden] for the gate');
     const e = saveDraft(db, { chatId: chat, text: '', attachmentIds: [], linkPreviewRemoved: false }, d);
     expect(e).toEqual({ changed: true, draft: null });
     saveDraft(db, { chatId: chat, text: 'again', attachmentIds: [], linkPreviewRemoved: false }, d);
