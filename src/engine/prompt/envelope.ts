@@ -5,7 +5,7 @@
 // 08-4 §25.2/§25.4 (the act schema per purpose).
 import type { z } from 'zod';
 import type { AiPurpose } from '../ai/types';
-import { IntakeActSchema, RewriteActSchema, SecondLookActSchema, StuckActSchema } from '../../shared/schemas';
+import { IntakeActSchema, RewriteActSchema, SecondLookActSchema, StepActSchema, StuckActSchema } from '../../shared/schemas';
 import type { LogFn } from '../redact/Redactor';
 
 export interface Envelope {
@@ -80,6 +80,7 @@ export function parseEnvelope(text: string, opts: { log?: LogFn } = {}): Envelop
 /** Purposes whose `<act>` schema exists in M3 (others arrive with their milestone). */
 const SCHEMAS: Partial<Record<AiPurpose, z.ZodType>> = {
   intake: IntakeActSchema,
+  step: StepActSchema, // M4
   second_look: SecondLookActSchema,
   rewrite: RewriteActSchema,
   classify: StuckActSchema,
