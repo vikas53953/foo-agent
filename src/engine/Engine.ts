@@ -28,6 +28,7 @@ import { findBanned } from './prompt/filters';
 import { priceOf, resolveModel } from './ai/models';
 import { stubGate } from './gate/GateLogic';
 import { JobRunner } from './jobs/JobRunner';
+import { JobRecovery } from './jobs/recovery';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
 import type { StepAct } from '../shared/schemas';
 
@@ -58,6 +59,7 @@ export class Engine {
   readonly redactor: Redactor;
   readonly tools: ToolLayer;
   readonly jobs: JobRunner;
+  readonly recovery: JobRecovery;
   private prompts: PromptBuilder;
 
   static create(o: EngineOptions): Engine {
@@ -104,7 +106,10 @@ export class Engine {
       fake,
       publish: (status) => o.link.send('ui.patch', { event: 'ai:status', payload: status }),
       persist: (p) => o.link.send('ai.state', p),
-      onUsable: () => void this.drainQueued(),
+      onUsable: () => {
+        void this.drainQueued();
+        void this.jobs.startNext();
+      },
       detectRow: (row) => o.link.send('ui.patch', { event: 'ai:detectRow', payload: row }),
       retestTimers: !o.testRun,
     });
@@ -114,6 +119,14 @@ export class Engine {
       newId: (p) => newId(p, o.clock.now()),
       tools: o.tools ?? {},
       gate: stubGate,
+      log: (evt, kind) => log(evt, kind),
+    });
+    this.recovery = new JobRecovery({
+      link: o.link,
+      clock: o.clock,
+      newId: (p) => newId(p, o.clock.now()),
+      settings: () => this.settings,
+      ai: this.ai,
       log: (evt, kind) => log(evt, kind),
     });
     this.jobs = new JobRunner({
@@ -128,7 +141,13 @@ export class Engine {
       rateOf: (id) => priceOf(pricing, id, resolveModel(id, 'default', pricing, this.settings.ai.providers[id])) ?? null,
       usdToInr: pricing.usdToInr,
       log: (evt, kind) => log(evt, kind),
+      hooks: {
+        onAiError: (job, kind) => this.recovery.onAiError(job, kind),
+        onCannotStart: (job, kind) => this.recovery.onCannotStart(job, kind),
+        beforeSchedule: () => this.recovery.beforeSchedule(),
+      },
     });
+    this.recovery.attach(this.jobs);
     this.lane = new ChatLane({
       link: o.link,
       clock: o.clock,
@@ -292,12 +311,15 @@ export class Engine {
           // First settings, or a chosen AI that just became usable (J2 choose → ai.state → settings): waiting messages go now.
           if (first || (!usableBefore && this.ai.pick())) void this.drainQueued();
           if (first && !this.o.testRun) this.scheduleHealthCheck();
+          // 08-2 §5.9 (G-M4-13): main decided safe mode and whether the last exit was clean; recovery runs once per start.
+          if (first) void this.jobs.track(this.recovery.recoverAll(msg.payload.launch ?? { safeMode: false, cleanStart: true }));
         }
         return undefined;
       }
       case 'net':
         this.online = msg.payload.online;
         this.ai.netChanged(msg.payload.online);
+        await this.recovery.netChanged(msg.payload.online);
         return undefined;
       case 'user.message':
         this.lane.enqueue(msg.payload.chatId, msg.payload.messageId);
@@ -320,15 +342,18 @@ export class Engine {
         this.jobs.cancelAll();
         return undefined;
       case 'card.answered':
-        await this.jobs.onCardAnswered(msg.payload);
+        if (!(await this.recovery.onCardAnswered(msg.payload))) await this.jobs.onCardAnswered(msg.payload);
         return undefined;
       case 'job.retry':
         return this.jobs.retry(msg.payload.jobId, msg.payload.newJobId);
       case 'test.clock':
         return undefined;
-      // M4 T1 stub (G-M4-04): the job runner (T2/T4) pauses its WORKING jobs here; until then there are none to pause.
+      // G-M4-04: a request; main waits for the ack before it exits.
       case 'jobs.pauseAll':
-        return ok({ paused: [] as string[] });
+        return ok({ paused: await this.recovery.pauseAll(msg.payload.reason) });
+      case 'power':
+        await this.recovery.power(msg.payload.event);
+        return undefined;
       default:
         return undefined;
     }

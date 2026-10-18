@@ -7,7 +7,7 @@
 import type { Db } from '../store/db';
 import type { ActivityRow, CardRow, CardType, JobRow, StepRow } from '../../shared/types';
 import { cardRow, parseJson, stepRow, type DbRow } from './rows';
-import { jobRows } from '../store/queries';
+import { fooChatId, jobRows } from '../store/queries';
 
 /** What every named query gets: the database and the injected clock's now (JobRow.slow is derived from it). */
 export interface QueryCtx {
@@ -275,4 +275,6 @@ export const NAMED_QUERIES = {
     ),
   /** X-124: the chat's open cards of one type. */
   'cards.openForChat': ({ db }: QueryCtx, chatId: unknown, type: unknown): CardRow[] => openCards(db, chatId, type),
+  /** foo's chat (kind 'foo', not private): where the safe-mode card goes (08-2 §5.9 step 1). */
+  'chats.foo': ({ db }: QueryCtx): string | null => fooChatId(db),
 } as const;
