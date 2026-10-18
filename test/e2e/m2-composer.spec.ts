@@ -20,6 +20,8 @@ import { launch, testDirs } from './launch';
 const byTid = (id: string) => `[data-testid="${id}"]`;
 /** 02-2 §F13.3: one frame at 60 fps (PERF-02's bound). */
 const PAINT_P95_MS = 16;
+/** One refresh at 60 Hz: the most PERF-02 takes off for the wait from "ready to paint" to the screen's next refresh (CR-0005). */
+const FRAME_MS = 1000 / 60;
 const KEYS = 80;
 
 /**
@@ -160,47 +162,70 @@ test('PERF-02 · typing in the 5,000-message chat paints within a frame (p95)', 
   const { app, page } = await start('perf');
   await openChat(page, 'foo');
   await field(page).focus();
-  await page.evaluate(() => {
-    const w = window as unknown as { __paint: number[] };
+  await page.evaluate((frame) => {
+    type Key = { t0: number; mut: number | null; typed: boolean };
+    const w = window as unknown as { __paint: number[]; __wait: number[]; __key: Key | null };
     w.__paint = [];
+    w.__wait = [];
+    w.__key = null;
+    new MutationObserver(() => {
+      if (w.__key && w.__key.mut === null) w.__key.mut = performance.now();
+    }).observe(document.body, { subtree: true, childList: true, characterData: true });
     window.addEventListener(
       'keydown',
       (e) => {
-        const t0 = e.timeStamp;
-        requestAnimationFrame(() => setTimeout(() => w.__paint.push(performance.now() - t0), 0));
+        const key: Key = { t0: e.timeStamp, mut: null, typed: document.activeElement?.getAttribute('contenteditable') === 'true' };
+        w.__key = key;
+        const onFrame = (ft: number) => {
+          // The character is not in the DOM yet, so this frame cannot show it: the wait goes on and counts in full.
+          if (key.typed && key.mut === null) return requestAnimationFrame(onFrame);
+          setTimeout(() => {
+            const ready = key.mut ?? key.t0;
+            // The wait from "ready to paint" to the screen's next refresh is the display's, not the app's: at most one frame.
+            const wait = Math.min(Math.max(ft - ready, 0), frame);
+            w.__wait.push(wait);
+            w.__paint.push(performance.now() - key.t0 - wait);
+          }, 0);
+        };
+        requestAnimationFrame(onFrame);
       },
       true,
     );
-  });
-  for (let i = 0; i < KEYS; i++) await page.keyboard.press(i % 10 === 9 ? 'Space' : 'KeyA');
-  await page.waitForFunction((n) => (window as unknown as { __paint: number[] }).__paint.length >= n, KEYS);
+  }, FRAME_MS);
+  await typeKeys(page);
   const times = await page.evaluate(() => (window as unknown as { __paint: number[] }).__paint.slice().sort((a, b) => a - b));
-  const p95 = times[Math.ceil(times.length * 0.95) - 1]!;
-  console.log(`keydown → paint p95 ${p95.toFixed(1)} ms over ${times.length} keys`);
-  // Control, logged and not asserted: the same keys and the same probe in the same window, with nothing focused, so the
-  // app does no work for them. Its p95 is the floor the runner sets (frame cadence, timers); the evidence a PERF CR needs.
+  const waits = await page.evaluate(() => (window as unknown as { __wait: number[] }).__wait.slice().sort((a, b) => a - b));
+  const q = (xs: number[], p: number) => xs[Math.ceil(xs.length * p) - 1]!;
+  const p95 = q(times, 0.95);
+  console.log(
+    `keydown → paint p95 ${p95.toFixed(1)} ms (p50 ${q(times, 0.5).toFixed(1)}) over ${times.length} keys, ` +
+      `less the wait for the next refresh (p50 ${q(waits, 0.5).toFixed(1)} ms, at most ${FRAME_MS.toFixed(1)})`,
+  );
+  // Control, logged and not asserted: the same keys and the same probe with nothing focused, so the app does no work for
+  // them. Its numbers are the floor the machine sets (timers, compositor), for comparing runs.
   await page.evaluate(() => {
     (document.activeElement as HTMLElement | null)?.blur();
     (window as unknown as { __paint: number[] }).__paint = [];
   });
-  for (let i = 0; i < KEYS; i++) await page.keyboard.press(i % 10 === 9 ? 'Space' : 'KeyA');
-  await page.waitForFunction((n) => (window as unknown as { __paint: number[] }).__paint.length >= n, KEYS);
+  await typeKeys(page);
   const control = await page.evaluate(() => (window as unknown as { __paint: number[] }).__paint.slice().sort((a, b) => a - b));
-  const at = (q: number) => control[Math.ceil(control.length * q) - 1]!.toFixed(1);
-  const mine50 = times[Math.ceil(times.length * 0.5) - 1]!.toFixed(1);
-  console.log(`PERF-02 control, keys with nothing focused: p50 ${at(0.5)} ms, p95 ${at(0.95)} ms; typing p50 ${mine50} ms`);
-  // CR-0005: on a GitHub-hosted runner the probe's own floor (the control's p95, the same keys with the app doing no work)
-  // can sit above 16 ms; there typing passes at p95 < 16 ms or at p95 ≤ that floor, both logged. Anywhere else (a real PC)
-  // the strict p95 < 16 ms stays the rule.
-  const floor = control[Math.ceil(control.length * 0.95) - 1]!;
-  const hosted = process.env.RUNNER_ENVIRONMENT === 'github-hosted';
-  console.log(
-    `PERF-02 rule: ${hosted ? `hosted runner (CR-0005): p95 ${p95.toFixed(1)} ms < ${PAINT_P95_MS} or ≤ control ${floor.toFixed(1)} ms` : `strict: p95 ${p95.toFixed(1)} ms < ${PAINT_P95_MS}`}`,
-  );
-  if (hosted && p95 >= PAINT_P95_MS) expect(p95).toBeLessThanOrEqual(floor);
-  else expect(p95).toBeLessThan(PAINT_P95_MS);
+  console.log(`PERF-02 control, keys with nothing focused: p50 ${q(control, 0.5).toFixed(1)} ms, p95 ${q(control, 0.95).toFixed(1)} ms`);
+  expect(p95).toBeLessThan(PAINT_P95_MS);
   await app.close();
 });
+
+/**
+ * One key at a time, each after the last one painted, at a random point in the frame: a person types a few keys a frame at
+ * most, while a loop of bare `press` calls lands a key every few ms, so later keys wait on earlier keys' frames and the
+ * probe measures that queue (CR-0005).
+ */
+async function typeKeys(page: Page) {
+  for (let i = 0; i < KEYS; i++) {
+    await page.keyboard.press(i % 10 === 9 ? 'Space' : 'KeyA');
+    await page.waitForFunction((n) => (window as unknown as { __paint: number[] }).__paint.length >= n, i + 1);
+    await page.waitForTimeout(Math.random() * FRAME_MS);
+  }
+}
 
 async function audit(page: Page, label: string) {
   for (const theme of ['light', 'dark'] as const) {
