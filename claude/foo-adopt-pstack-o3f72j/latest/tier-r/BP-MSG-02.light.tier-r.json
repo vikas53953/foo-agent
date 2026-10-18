@@ -1,0 +1,97 @@
+{
+  "id": "BP-MSG-02",
+  "theme": "light",
+  "verdict": "review",
+  "disputed": {
+    "cr": "CR-0003",
+    "checks": [
+      "r1",
+      "r2"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "Checking",
+        "your",
+        "calendar…",
+        "10:41",
+        "10:41",
+        "⧉",
+        "↻",
+        "👍",
+        "👎"
+      ],
+      "extra": [
+        "9:41",
+        "9:41",
+        "f"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-MSG-02",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 350,
+          "height": 270
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 600,
+          "height": 202
+        },
+        "dPos": 0,
+        "dSize": 250,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "review",
+    "anchors": [
+      {
+        "name": "BP-MSG-02",
+        "ref": "#F0F0F4",
+        "app": "#FFFFFF",
+        "deltaE": 3.65,
+        "verdict": "review"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.052984441301272986,
+    "diffPixels": 3746,
+    "total": 70700,
+    "sizeMismatch": {
+      "a": [
+        350,
+        270
+      ],
+      "b": [
+        600,
+        202
+      ]
+    },
+    "heatmap": "BP-MSG-02.light.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-MSG-02.light.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-MSG-02.light.png"
+}
