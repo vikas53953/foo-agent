@@ -31,7 +31,7 @@
 | BP-CARD-11             | `test/fidelity/bp/BP-cards-m8.spec.ts`      | T2                                          |
 
 Every row is `pending` until its ticket lands the test and flips it to `live` in the same commit (FID-18 checks live rows
-only). Not added here: ART-08c (M5's row; M8 extends that test with a Gmail OTP case) and BP-CARD-07 (M5's row; the email /
+only). Not added here: ART-08c (M5's row in CR-0009; M8 extends that test with a Gmail OTP case) and BP-CARD-07 (M5's row in CR-0009; the email /
 WhatsApp / X variant states are compared against the same panel).
 
 Blueprint id (`BP_M8`): `#cardgal > .panel:nth-child(11) > .mini` (Connect). Drawn in a 350px panel, so its R2 box is disputed
@@ -40,10 +40,10 @@ UX-04-05 is Google's own page (UNVERIFIABLE, not foo's UI). UX-11 stays with M10
 
 ## (b) Picks for the M8 gaps (pack `prep/M8.md` §8; each is the pack's "Recommended" option, approved in GAPS-for-review.md by Vikas 2026-10-18 13:34Z)
 
-1. **G-M8-01** ART-15b allow-list for connector traffic: `oauth2.googleapis.com`, `gmail.googleapis.com`, `www.googleapis.com` (Calendar v3), `people.googleapis.com`, and the WhatsApp hosts Baileys opens on the pinned version (captured once by T3 and listed in implementation-notes). `accounts.google.com` and `x.com` open in the default browser and are not foo traffic.
+1. **G-M8-01** ART-15b allow-list for connector traffic: `oauth2.googleapis.com`, `gmail.googleapis.com`, `www.googleapis.com` (Calendar v3), `people.googleapis.com`, `web.whatsapp.com`, and the other WhatsApp hosts Baileys opens on the pinned version (captured once by T3 and listed in implementation-notes). `accounts.google.com` and `x.com` open in the default browser and are not foo traffic.
 2. **G-M8-02** `twitter-text` is pinned now (3.1.0) with `@whiskeysockets/baileys` (7.0.0-rc14, the npm `latest` tag) and `qrcode` (1.5.4), exact versions (08-1 §1.1).
 3. **G-M8-03** The `draft` card payload gains `gmailDraftId?`, `gmailMessageId?`, `threadId?`, `waJid?`, `isGroup?` (added by T6 on M5's payload type).
-4. **G-M8-04** Without `gmail.compose`, `draft = send = false`: the Draft card stays in foo (`sendAllowed:false`, state `pending`); Primary "Open in Gmail" opens Gmail's compose page prefilled (`https://mail.google.com/mail/?authuser={email}&view=cm&to=…&su=…&body=…`, hand-back rung, no proof), plus the `allow_send` Connect card once. "Partly granted" copy is used only for a missing Calendar or Contacts scope.
+4. **G-M8-04** Without `gmail.compose`, `draft = send = false`: the Draft card stays in foo (`sendAllowed:false`, state `pending`); Primary "Open in Gmail" opens Gmail's compose page prefilled (`https://mail.google.com/mail/?authuser={email}&view=cm&to=…&su=…&body=…`, hand-back rung, no proof), plus the `allow_send` Connect card once. "Partly granted" copy is used only for a missing Calendar or Contacts scope. The 05-2 §5.7.2 "No send permission" row ("I can't send from your Gmail, so I've saved this as a draft there.", 05-2 line 271) would be false under this pick (no Gmail draft exists without `gmail.compose`), so it is not rendered in v1; the `allow_send` Connect card carries the explanation. No new words.
 5. **G-M8-05** M8 builds the Connections page body `screens/settings/ConnectionsPage.tsx` (Gmail, Calendar, Contacts, WhatsApp, X rows), `dialog-link-whatsapp`, C-8, C-10, C-11; M13 adds the Settings frame and the Browser / AI / Internet rows.
 6. **G-M8-06** If `fetchLatestBaileysVersion()` on the pinned version calls a non-WhatsApp host, the call is dropped and the pinned version is used.
 7. **G-M8-07** `connections.vault_name` for WhatsApp is `wa-session` (08-3 §16.4; matches `SecretKind 'wa_session'`). The 0001 DDL comment `'vault\wa-session.bin'` is read as a file path note only; no migration.
@@ -61,9 +61,19 @@ Picks T1 made where the spec is silent (also in implementation-notes "M8"):
 
 ## (c) Not changed
 
-No new screen, word or flow. Copy keys, test ids, IPC channels and DbOp tables are added by the ticket that first uses them
+No new screen, word or flow. One existing row goes unused: the 05-2 §5.7.2 "No send permission" line (pick 4). Copy keys, test ids, IPC channels and DbOp tables are added by the ticket that first uses them
 (append-only edits to the shared files; the ticket map names the owner of each).
 
 ## (e) Independent review
 
-(filled in below by the lead after the reviewer reports)
+Fable reviewer, 2026-10-18 ~18:40Z, read-only, against pack `prep/M8.md` §4–§8, GAPS-for-review (G-M8 answers), 08-0 §A.1 /
+§B.2, 08-5 §3.3 / §4.1, 10-acceptance-1/-2, golden/manifest.json. **Verdict: PASS.**
+
+- Trace ids exist, J columns match, no duplicate rows; settings defaults and the three shared types match the spec verbatim;
+  picks 1–12 match the pack's recommended answers and the approved GAPS answers; BP_M8 / EARLY_STEPS follow CR-0003 / CR-0008.
+- Acted on: pick 4 now says the 05-2 "No send permission" line goes unused (it would be false); `web.whatsapp.com` named in
+  pick 1; ART-08c / BP-CARD-07 rows named as CR-0009's. The UX rows' R column stays blank for now (trace-check's per-R rule
+  waits); T8 fills it with the Tier R spec.
+
+Recorded as approved on Vikas's behalf under his standing rule (his message 2026-10-18 14:56Z: "take care of it on my
+behalf and then keep on working"); listed for his later review.

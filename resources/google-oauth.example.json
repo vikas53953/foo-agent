@@ -1,0 +1,5 @@
+{
+  "_note": "Copy to resources/google-oauth.json with the Desktop-app OAuth client from your own Google Cloud project (08-3 §16.1.1). Never commit the real file.",
+  "client_id": "000000000000-example.apps.googleusercontent.com",
+  "client_secret": "EXAMPLE-NOT-A-REAL-SECRET"
+}
