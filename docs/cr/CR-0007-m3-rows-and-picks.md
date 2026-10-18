@@ -71,7 +71,9 @@
 
 - A test-only seed set `ux-world-ch8-live` (08-3 §22.9 lists `demo`, `perf`): the walkthrough world at 8:05 AM with foo's
   chat ending at the cake line, so the live run sends "thanks!" and the holiday question at the walkthrough's own times and
-  UX-08-02 is captured on the walkthrough's frame (no Tier R dispute needed).
+  UX-08-02 is captured on the walkthrough's frame. Its highlight is foo's thinking face, which the app still draws as the
+  letter face (M1 pick 6, accepted as built under CR-0002), so UX-08-02 R4 is listed under CR-0002 in
+  `docs/fidelity/disputes.json`.
 
 ## (e) Independent review (Fable, 2026-10-18) and what it asks the spec keeper
 

@@ -177,7 +177,8 @@ test('UX-08 · Just chatting, in your language: steps 1 to 5 live with fake-AI r
     for (const theme of THEMES) {
       await setTheme(page, theme);
       await settle(page);
-      await captureUx(page, 'UX-08-02', byTid(TID.threadThinking), theme);
+      // The walkthrough highlights foo's thinking face itself (28 × 34), not the whole Thinking row.
+      await captureUx(page, 'UX-08-02', `${byTid(TID.threadThinking)} [data-mood="thinking"]`, theme);
     }
     await setTheme(page, 'light');
   });
