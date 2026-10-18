@@ -76,8 +76,6 @@ const EVENTS = new Set([
   'settings:changed',
   'net:state',
   'navigate',
-  'live:frame',
-  'live:state',
 ]);
 
 const platform = ipcRenderer.sendSync('app:platform') as PlatformInfo;

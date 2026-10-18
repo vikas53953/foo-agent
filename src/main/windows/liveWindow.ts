@@ -5,6 +5,7 @@
 // 08-0 §G.8 (`live:*` events go to the live window only), 08-1 §3.3 (`live:frame`, `live:state`), §3.1.1 (its channels are
 // checked by ChannelGuard, `windowChannelAllowed`). The window manager is plain logic over `LiveWin`, so it is unit-tested
 // with a fake clock; `electronLiveWindow` is the real BrowserWindow behind it.
+import { dirname, join } from 'node:path';
 import { BrowserWindow, nativeTheme, screen } from 'electron';
 import { t } from '../../shared/copy/t';
 import type { Clock, TimerId } from '../../shared/clock';
@@ -154,7 +155,7 @@ export function electronLiveWindow(job: JobRow, o: { main: BrowserWindow | null;
     backgroundColor: tokens.colors['--bg-sidebar'][th],
     titleBarStyle: 'hidden',
     titleBarOverlay: { ...overlayColours(), height: tokens.size['titlebar-h'] },
-    webPreferences: { preload: preloadPath(), contextIsolation: true, sandbox: true, nodeIntegration: false, spellcheck: false },
+    webPreferences: { preload: join(dirname(preloadPath()), 'preloadLive.js'), contextIsolation: true, sandbox: true, nodeIntegration: false, spellcheck: false },
   });
   win.on('page-title-updated', (e) => e.preventDefault());
   win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
