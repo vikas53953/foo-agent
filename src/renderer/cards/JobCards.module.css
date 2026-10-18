@@ -1,0 +1,191 @@
+/* Spec: 05-1 §0.2 card header (20px icon, 8 gap, title --t-body-strong, wraps), label/value rows (grid max-content 1fr, gap
+ * 16 / 4, label --t-small --fg-2, value --t-body), §0.3 buttons row (gap 8, wraps), §0.5 summary row (min 40; 16 icon + 8 +
+ * --t-small) and Disabled/Offline reason line (--t-caption --fg-2, Globe 16 --fg-3); 05-3 §5.12.1 plan steps (number
+ * --t-body-strong --fg-2 in a 20px column, gap 4; estimate --t-small --fg-2, big line --warn), §5.18.2 job link (status pill
+ * 24: chip 0.3, tones per status), §5.19 / §5.20 / §5.21 header icon tones, 06-3 §14 C-21 field (₹ prefix, --t-mono, error
+ * --t-caption --bad). */
+.head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s1);
+  min-height: var(--t-body-strong-lh);
+}
+.headIcon {
+  flex: none;
+  color: var(--fg-2);
+}
+.title {
+  flex: 1;
+  min-width: 0;
+  font: var(--t-body-strong);
+  text-align: start;
+  text-wrap: balance;
+}
+.body {
+  font: var(--t-body);
+}
+.small {
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.reason {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s0) var(--s1);
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
+.grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--s0) var(--s3);
+  margin: 0;
+}
+.grid dt {
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.grid dd {
+  margin: 0;
+  font: var(--t-body);
+}
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s1) var(--s2);
+}
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s1);
+}
+.spacer {
+  flex: 1;
+}
+.summary {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--s7);
+}
+.summaryText {
+  font: var(--t-small);
+}
+.ok {
+  color: var(--ok);
+}
+.dim {
+  color: var(--fg-3);
+}
+.warn {
+  color: var(--warn);
+}
+.warnIcon {
+  flex: none;
+  color: var(--warn);
+}
+.badIcon {
+  flex: none;
+  color: var(--bad);
+}
+.dimIcon {
+  flex: none;
+  color: var(--fg-2);
+}
+.planSteps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s0);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: var(--t-body);
+}
+.planStep {
+  display: flex;
+  gap: var(--s1);
+}
+.planNum {
+  flex: none;
+  width: var(--icon-md);
+  color: var(--fg-2);
+  font: var(--t-body-strong);
+  font-variant-numeric: tabular-nums;
+}
+.jobLink {
+  border-style: solid;
+  font: inherit;
+}
+.openLabel {
+  flex: none;
+  color: var(--accent);
+  font: var(--t-small);
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: var(--s0);
+  min-height: var(--icon-md);
+  padding: var(--s0) var(--s1);
+  border-radius: var(--r-full);
+  font: var(--t-caption);
+}
+.pill_working {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.pill_needs_you {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+.pill_done {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+.pill_failed {
+  background: var(--bad-soft);
+  color: var(--bad);
+}
+.pill_stopped {
+  background: var(--bg-sunken);
+  color: var(--fg-2);
+}
+.capField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+.capInput {
+  display: flex;
+  align-items: center;
+  gap: var(--s0);
+  min-height: var(--btn-h);
+  padding: 0 var(--s2);
+  border: 1px solid var(--line-input);
+  border-radius: var(--r-sm);
+  background: var(--bg-sunken);
+  font: var(--t-mono);
+}
+.capInput:focus-within {
+  border-color: var(--accent);
+}
+.capInput[data-invalid] {
+  border-color: var(--bad);
+}
+.capInput input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--fg-1);
+  font: inherit;
+}
+.capError {
+  color: var(--bad);
+  font: var(--t-caption);
+}
