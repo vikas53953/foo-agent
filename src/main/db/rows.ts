@@ -121,10 +121,25 @@ export function cardRow(r: DbRow): CardRow {
 
 export const SLOW_MS = 60_000;
 
-/** JobRow drops aiSessionId and adds stepsDone, nowLine and slow (08-0 §B.1, 08-1 §3.4). */
-export function jobRow(r: DbRow, derived: { stepsDone: number; nowLine: string }, now: number): JobRow {
+/** The last moment a step started running or finished; null when no step has started (G-M4-07, CR-0008). */
+export function stepProgressAt(steps: DbRow[]): number | null {
+  let at: number | null = null;
+  for (const s of steps) {
+    const t = Math.max(s.state === 'running' ? (num(s.started_at) ?? -Infinity) : -Infinity, num(s.finished_at) ?? -Infinity);
+    if (t !== -Infinity && (at === null || t > at)) at = t;
+  }
+  return at;
+}
+
+/**
+ * JobRow drops aiSessionId and adds stepsDone, nowLine and slow (08-0 §B.1, 08-1 §3.4). `slow` = WORKING and no step
+ * finished for 60 s (08-2 §5.6): measured from the running step's start or the last finished step, else the job's start;
+ * `last_progress_at` is not used because tool progress moves it without a step finishing (G-M4-07).
+ */
+export function jobRow(r: DbRow, derived: { stepsDone: number; nowLine: string; progressAt?: number | null }, now: number): JobRow {
   const state = r.state as JobRow['state'];
   const lastProgressAt = num(r.last_progress_at);
+  const slowFrom = derived.progressAt ?? num(r.started_at);
   return {
     id: String(r.id),
     chatId: String(r.chat_id),
@@ -167,7 +182,7 @@ export function jobRow(r: DbRow, derived: { stepsDone: number; nowLine: string }
     finishedAt: num(r.finished_at),
     stepsDone: derived.stepsDone,
     nowLine: derived.nowLine,
-    slow: state === 'working' && lastProgressAt !== null && now - lastProgressAt >= SLOW_MS,
+    slow: state === 'working' && slowFrom !== null && now - slowFrom >= SLOW_MS,
   };
 }
 
