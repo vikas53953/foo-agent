@@ -636,9 +636,9 @@ export function Composer({ chat }: { chat: ChatRow }) {
   const activateRound = useCallback(() => {
     if (round === 'send' || round === 'save_edit') void send();
     else if (round === 'send_voice') voice.finish();
-    // 'stop' stops the streaming reply (§14.4): there is no stop channel before M3.
-    // GAP: GAPS.md 2026-10-17 "no stop channel before the engine"
-  }, [round, send, voice]);
+    // §14.4: Stop on the reply that is coming in.
+    else if (round === 'stop') void invoke('message:stopReply', { chatId }).catch(() => undefined);
+  }, [round, send, voice, chatId]);
 
   // ---------------------------------------------------------------- field events
   const readField = useCallback(() => {
@@ -811,7 +811,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
           closeStrip();
           break;
         case 'stop_reply':
-          break; // GAP: GAPS.md 2026-10-17 "no stop channel before the engine"
+          void invoke('message:stopReply', { chatId }).catch(() => undefined);
+          break;
         case 'focus_last_chip':
           chipsRef.current?.focusLast();
           break;

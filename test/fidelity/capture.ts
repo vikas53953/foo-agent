@@ -188,6 +188,65 @@ export async function captureBp(page: Page, id: string, sel: string, theme: Them
   );
 }
 
+/**
+ * Tier R app side for a Blueprint id drawn as several rows of the thread (e.g. BP-MSG-02: answer bubbles, the action row
+ * and the Thinking row): the box from the top of `first` to the bottom of `last`, the width of the message log; texts are
+ * the text nodes inside that box.
+ */
+export async function captureBpRange(page: Page, id: string, first: string, last: string, theme: Theme): Promise<void> {
+  const log = await boxOf(page.locator(byTid(TID.threadLog)));
+  const top = await boxOf(page.locator(first).first());
+  const bottom = await boxOf(page.locator(last).last());
+  const clip = { x: log.x, y: top.y, width: log.width, height: bottom.y + bottom.height - top.y };
+  const png = await page.screenshot({ ...SHOT, clip });
+  const inside = await page.evaluate(
+    ([l, c]) => {
+      const root = document.querySelector(l as string);
+      const box = c as { x: number; y: number; width: number; height: number };
+      const out: string[] = [];
+      if (!root) return out;
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+        const el = n.parentElement;
+        if (!el || getComputedStyle(el).display === 'none') continue;
+        const r = el.getBoundingClientRect();
+        if (r.bottom <= box.y || r.top >= box.y + box.height) continue;
+        const t = (n.textContent ?? '').replace(/\s+/g, ' ').trim();
+        if (t) out.push(t);
+      }
+      return out;
+    },
+    [byTid(TID.threadLog), clip] as const,
+  );
+  const name = `${id}.${theme}`;
+  write(
+    name,
+    {
+      id,
+      theme,
+      png: `${name}.png`,
+      texts: inside,
+      hlTexts: [],
+      hl: null,
+      anchors: { [id]: { x: 0, y: 0, width: clip.width, height: clip.height } },
+    },
+    png,
+  );
+}
+
+/**
+ * The words of one Blueprint message mini (`<h3>{panel}</h3>` in the frozen Blueprint's #messages section): the text of each
+ * bubble of the given side, without its meta. The words a step types or the fake AI answers come from the reference.
+ */
+export function blueprintBubbles(panel: string, side: 'me' | 'foo'): string[] {
+  const html = readFileSync(BP_FILE, 'utf8');
+  const start = html.indexOf(`<h3>${panel}</h3>`);
+  if (start === -1) throw new Error(`no "${panel}" panel in ${BP_FILE}`);
+  const end = html.indexOf('</div>\n    <div class="panel">', start);
+  const part = html.slice(start, end === -1 ? undefined : end);
+  return [...part.matchAll(new RegExp(`<div class="b ${side}[^"]*"[^>]*>([^<]+)<span class="meta">`, 'g'))].map((m) => m[1]!.trim());
+}
+
 /** Tier R app side for a walkthrough step: the whole 1280 × 800 window, its texts, the hl element's texts and box. */
 export async function captureUx(page: Page, id: string, hlSel: string, theme: Theme): Promise<void> {
   const hl = await boxOf(page.locator(hlSel).first());

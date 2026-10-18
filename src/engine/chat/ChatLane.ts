@@ -90,7 +90,13 @@ export class ChatLane {
   private busy = new Set<string>();
   private waitingChats: string[] = [];
   private running = 0;
+  /** User messages whose turn is running now (a second drain must not answer them twice). */
+  private inflight = new Set<string>();
+  /** Enqueued by a drain of Waiting-to-send messages: skipped if another turn already answered it. */
+  private drained = new Set<string>();
   private aborts = new Map<string, AbortController>();
+  /** chat id → the running turn's abort, for Stop (04 §14.4). */
+  private chatTurns = new Map<string, { abort: AbortController; stopped: boolean }>();
   /** foo reply id → the user message it answered (04 §19.4 Try again). */
   private answered = new Map<string, string>();
   /** Resolves when every queued turn has finished (tests). */
@@ -99,8 +105,10 @@ export class ChatLane {
   constructor(private d: LaneDeps) {}
 
   /** A user message main stored (MainToEngine user.message). */
-  enqueue(chatId: string, messageId: string): void {
+  enqueue(chatId: string, messageId: string, opts: { onlyIfQueued?: boolean } = {}): void {
+    if (opts.onlyIfQueued) this.drained.add(messageId);
     const q = this.queues.get(chatId) ?? [];
+    if (this.inflight.has(messageId)) return;
     if (!q.includes(messageId)) q.push(messageId);
     this.queues.set(chatId, q);
     this.pump(chatId);
@@ -111,6 +119,15 @@ export class ChatLane {
     const userId = this.answered.get(fooMessageId);
     if (!userId) return false;
     void this.messageById(userId).then((m) => m && this.enqueue(m.chatId, m.id));
+    return true;
+  }
+
+  /** 04 §14.4 Stop: the reply that is coming in stops; what was shown stays, with "Stopped." under it. */
+  stop(chatId: string): boolean {
+    const t = this.chatTurns.get(chatId);
+    if (!t) return false;
+    t.stopped = true;
+    t.abort.abort();
     return true;
   }
 
@@ -134,11 +151,13 @@ export class ChatLane {
     const messageId = q.shift()!;
     this.busy.add(chatId);
     this.running += 1;
+    this.inflight.add(messageId);
     void this.turn(chatId, messageId)
       .catch((e: unknown) => this.d.log('chat.turn_crashed', 'UNKNOWN', { chatId }) ?? console.error(e))
       .finally(() => {
         this.busy.delete(chatId);
         this.running -= 1;
+        this.inflight.delete(messageId);
         this.pump(chatId);
         const next = this.waitingChats.shift();
         if (next) this.pump(next);
@@ -164,7 +183,9 @@ export class ChatLane {
 
   private async turn(chatId: string, messageId: string): Promise<void> {
     const message = await this.messageById(messageId);
+    const fromDrain = this.drained.delete(messageId);
     if (!message || message.authorKind !== 'user') return;
+    if (fromDrain && message.status !== 'queued') return;
     const pick = this.d.ai.pick();
     if (!pick) {
       // 04 §3.3 Waiting to send: foo cannot hand it on now; drained when the AI is back (Engine.drainQueued).
@@ -181,8 +202,9 @@ export class ChatLane {
     const settings = this.d.settings();
     const who = helper?.name ?? settings.identity.agentName;
 
-    // ✓✓ Delivered: the lane accepted it (04 §3.3).
-    await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { status: 'complete' } }]);
+    // ✓✓ Delivered: the lane accepted it (04 §3.3). 👀 shows now, within 1 s of send, while foo thinks (04 §4.2, §14.1;
+    // UX-08-02 draws it beside the Thinking row).
+    await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { status: 'complete', badge: 'seen' } }]);
     this.typing(chatId, true, who);
 
     const built = this.d.protocol.buildIntake({ settings, chat, helper, conversation, message, local: pick.billing === 'local' });
@@ -191,10 +213,11 @@ export class ChatLane {
     const params = this.d.ai.turnParams(pick.providerId, 'intake');
     const abort = new AbortController();
     this.aborts.set(turnId, abort);
+    const live = { abort, stopped: false };
+    this.chatTurns.set(chatId, live);
 
     let fooId: string | null = null;
     let deltaSeq = 0;
-    let firstByte = false;
     let pending = Promise.resolve();
     const later = (fn: () => Promise<unknown>) => {
       pending = pending.then(fn).then(() => undefined);
@@ -235,11 +258,6 @@ export class ChatLane {
     const sink: TurnSink = {
       onText: (delta) => {
         if (abort.signal.aborted) return; // 08-4 §30.7: nothing after cancel
-        if (!firstByte) {
-          firstByte = true;
-          // Read (04 §3.3) and 👀 (04 §4.2 `seen`).
-          later(() => this.tx([{ op: 'update', table: 'messages', id: messageId, set: { badge: 'seen' } }]));
-        }
         gate.push(delta);
       },
       onSession: () => {},
@@ -253,6 +271,19 @@ export class ChatLane {
       result = { text: '', usage: emptyUsage(), stopReason: 'error', errorKind: 'UNKNOWN' };
     } finally {
       this.aborts.delete(turnId);
+      this.chatTurns.delete(chatId);
+    }
+
+    if (live.stopped) {
+      abort.abort();
+      await pending;
+      const shown = gate.released();
+      if (fooId)
+        await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: shown, status: 'complete', badge: 'stopped' } }]);
+      else await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { badge: null } }]);
+      this.typing(chatId, false, who);
+      await this.turnRow(turnId, chatId, pick, startedAt, result, 'cancelled');
+      return;
     }
 
     const failed = result.stopReason === 'error' || result.stopReason === 'cancelled';

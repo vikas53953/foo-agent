@@ -3,12 +3,19 @@
 // language", J7 · R1 · R24), 04 §1–§13 (bubbles, reactions, reply-quote, Hindi/Punjabi, rich answers).
 // M2 has no engine, so foo's replies cannot be produced by the steps' actions: the chapter's state is the ux-world seed's
 // chapter 8 scene (built from the walkthrough's state objects, test/seed/ux-world.ts), and each step frames the walkthrough's
-// highlighted message as the newest row. M3 re-runs the chapter with replies from the fake AI (§11.12 M3). UX-08-02 (the
-// typing face and the Stop button while foo replies) needs the reply stream: M3 (CR-0003).
+// highlighted message as the newest row. M3 re-runs the chapter with replies from the fake AI (§11.12 M3): the second test
+// does steps 1 to 5 through the real UI, the fake answering the walkthrough's own words (read from golden/manifest.json),
+// and captures UX-08-02 (the Thinking face and the Stop button while foo replies, CR-0003), which only a live reply shows.
+// Steps 1 and 3 to 7 keep their captures from the seeded scene, where the rows above the step's message are the
+// walkthrough's (the live run adds its rows under the whole seeded chapter). Steps 6 and 7 are not re-run live: the
+// walkthrough's result for 6 carries a 🛠 job badge (job runner, M4) and 7's source pill comes from engine entities, not
+// from reply text.
 // The quoted strings asserted below are read from golden/manifest.json (the frozen walkthrough's own s/f texts).
 import { expect, test } from '@playwright/test';
 import type {} from '../../../src/shared/ipc';
 import { TID } from '../../../src/shared/testids';
+import { t } from '../../../src/shared/copy/t';
+import { intake, launchWithFakeAi } from '../../e2e/fakeAi';
 import { launch } from '../../e2e/launch';
 import { byTid, captureUx, frameAt, openChat, openWorld, quoted, rest, rowOf, setTheme, settle, step, THEMES } from '../capture';
 
@@ -101,6 +108,96 @@ test('UX-08 · Just chatting, in your language: the seeded chapter 8 scene, step
     await expect(rich.locator('table')).toBeVisible();
     await expect(rich).toContainText(source!);
     await shoot('UX-08-07', refs.richAnswer!, TID.bubbleFoo);
+  });
+  await app.close();
+});
+
+test('UX-08 · Just chatting, in your language: steps 1 to 5 live with fake-AI replies, UX-08-02 captured, light and dark', async () => {
+  test.setTimeout(240_000);
+  // The fake AI's script, from the walkthrough's words: "thanks!" gets a 👍; the holiday question is answered in two short
+  // paragraphs; the Hinglish and Punjabi questions in their own language.
+  const thanks = quoted(step('UX-08-01').c)[0]!;
+  const holiday = 'is Mon 2 Nov a holiday?';
+  const [no, next] = quoted(step('UX-08-03').s);
+  const [hiAsk, hiAnswer] = quoted(step('UX-08-04').s);
+  const [paAsk, paAnswer] = quoted(step('UX-08-05').s);
+  const { app } = await launchWithFakeAi([
+    intake(thanks, '', { decision: { kind: 'react', emoji: '👍' } }),
+    // Inside the engine's 1.5 s hold on the fake clock, so the answer is a chat-mode reply (04 §12.3).
+    intake(holiday, `${no}\n\n${next}`, { delayMs: 1_000 }),
+    intake(hiAsk!, hiAnswer!),
+    intake(paAsk!, paAnswer!),
+  ]);
+  const page = await app.firstWindow();
+  await openWorld(app, page);
+  await openChat(page, 'foo');
+  await page.getByTestId(TID.appPanel).waitFor();
+  const log = page.getByTestId(TID.threadLog);
+  const field = page.getByTestId(TID.composerField);
+  const sendText = async (text: string) => {
+    await field.focus();
+    await page.keyboard.type(text);
+    await page.keyboard.press('Enter');
+  };
+  const last = (tid: string, text: string) => page.getByTestId(tid).filter({ hasText: text }).last();
+
+  await test.step('UX-08-01 · "thanks!" gets a 👍 on the bubble and no reply', async () => {
+    const fooBefore = await page.getByTestId(TID.bubbleFoo).count();
+    await sendText(thanks);
+    // foo's reaction takes the badge slot on the bubble's row (04 §4.1 rule 5).
+    const row = last(TID.bubbleMe, thanks).locator('xpath=ancestor::*[@data-message-id][1]');
+    await expect(row.getByTestId(TID.bubbleReaction).first()).toContainText('👍');
+    await expect(page.getByTestId(TID.threadThinking)).toHaveCount(0);
+    await expect(page.getByTestId(TID.bubbleFoo)).toHaveCount(fooBefore);
+    for (const never of quoted(step('UX-08-01').s)) await expect(log).not.toContainText(never);
+  });
+
+  await test.step('UX-08-02 · a real question: the Thinking face, "typing…" and the Stop button', async () => {
+    await sendText(holiday);
+    await expect(last(TID.bubbleMe, holiday)).toBeVisible();
+    const thinking = page.getByTestId(TID.threadThinking);
+    await expect(thinking).toBeVisible();
+    // 04 §14.3: the speaker's face in the Thinking mood, no bubble behind it.
+    await expect(thinking.locator('[data-mood="thinking"]')).toHaveCount(1);
+    // "typing…" under foo's name: the chat-list row (03-shell-1 §3.4.6 rule 1). The header status line shows the seeded
+    // Needs-you job first (03-shell-2 §3.6.2.1 row 2 before row 8): reported by Tier R R1, not asserted here.
+    const fooRow = page
+      .getByTestId(TID.chatlistRow)
+      .filter({ has: page.getByTestId(TID.chatlistRowName).getByText('foo', { exact: true }) })
+      .first();
+    await expect(fooRow.getByTestId(TID.chatlistRowPreview)).toContainText(t('chatlist.row.preview.typing'));
+    await expect(page.getByTestId(TID.composerSend)).toHaveAttribute('data-state', 'stop');
+    await log.evaluate((el) => (el.scrollTop = el.scrollHeight));
+    await rest(page);
+    for (const theme of THEMES) {
+      await setTheme(page, theme);
+      await settle(page);
+      await captureUx(page, 'UX-08-02', byTid(TID.threadThinking), theme);
+    }
+    await setTheme(page, 'light');
+  });
+
+  await test.step('UX-08-03 · a short answer comes as two bubbles, no filler', async () => {
+    await page.evaluate(() => window.__fooTest!.clock.advance(1_000));
+    await expect(last(TID.bubbleFoo, no!)).toBeVisible();
+    await expect(last(TID.bubbleFoo, next!)).toBeVisible({ timeout: 5_000 });
+    await expect(last(TID.bubbleFoo, next!)).toHaveAttribute('data-pos', 'last');
+    await expect(page.getByTestId(TID.threadThinking)).toHaveCount(0);
+    await expect(page.getByTestId(TID.composerSend)).toHaveAttribute('data-state', 'mic');
+    for (const filler of quoted(step('UX-08-03').f)) await expect(log).not.toContainText(filler);
+  });
+
+  await test.step('UX-08-04 · Hinglish in, Hinglish out', async () => {
+    await sendText(hiAsk!);
+    await expect(last(TID.bubbleFoo, hiAnswer!)).toBeVisible();
+  });
+
+  await test.step('UX-08-05 · Punjabi in its own script, with the taller Indic line', async () => {
+    await sendText(paAsk!);
+    const bubble = last(TID.bubbleFoo, paAnswer!);
+    await expect(bubble).toBeVisible();
+    await expect(bubble).toHaveAttribute('lang', 'pa');
+    expect(await bubble.locator('[data-copy]').evaluate((el) => getComputedStyle(el).lineHeight)).toBe('24px');
   });
   await app.close();
 });

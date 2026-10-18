@@ -43,6 +43,7 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
   }),
   /** Not in 08-1 §2.4 (gap, implementation-notes "M3"): 04 §19.4 "Try again" on a cut-off foo reply re-runs its turn. */
   z.object({ id: z.string(), kind: z.literal('reply.retry'), payload: z.object({ messageId: z.string() }).strict() }),
+  z.object({ id: z.string(), kind: z.literal('reply.stop'), payload: z.object({ chatId: z.string() }).strict() }),
   // FOO_TEST runs only (08-3 §22): the engine's fake clock follows main's, and test:reset cancels every turn.
   z.object({ id: z.string(), kind: z.literal('test.reset'), payload: z.object({}).strict() }),
   z.object({ id: z.string(), kind: z.literal('test.clock'), payload: z.object({ now: z.number() }).strict() }),

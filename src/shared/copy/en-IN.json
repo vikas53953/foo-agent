@@ -255,6 +255,7 @@
   "bubble.badge.tooltip.done_unverified": "Done · Not checked live",
   "bubble.badge.tooltip.failed": "Didn’t work",
   "bubble.badge.tooltip.stopped": "Stopped",
+  "bubble.stopped.caption": "Stopped.",
   "bubble.badge.tooltip.reacted": "{agentName} reacted {emoji}",
   "bubble.menu.reply": "Reply",
   "bubble.menu.react": "React",

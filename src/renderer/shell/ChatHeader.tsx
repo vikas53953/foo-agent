@@ -9,7 +9,7 @@ import type { ChatRow, JobRow, View } from '../../shared/types';
 import { invoke } from '../ipc/client';
 import { navigate, openDialog, setFindOpen, setMenu, setXsPane, update, useStore } from '../store/index';
 import { selectHelpers } from '../store/helpers';
-import { selectAi, selectConnection, selectNow, selectTypingChatId } from '../store/live';
+import { selectAi, selectChatMood, selectConnection, selectNow, selectTypingChatId } from '../store/live';
 import { selectSettings } from '../store/settings';
 import { selectMenu } from '../store/ui';
 import { Avatar, type AvatarMember } from '../ui/Avatar';
@@ -54,6 +54,8 @@ export function ChatHeader({ chat, findOpen }: { chat: ChatRow; findOpen: boolea
 }
 
 function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
+  // 04 §14.3: the face thinks while foo replies (02-2 §F15.9.3 moods).
+  const mood = useStore(selectChatMood(chat.id));
   const { bp } = useLayout();
   const now = useStore(selectNow);
   const jobsById = useStore((s) => s.jobs.byId);
@@ -247,6 +249,7 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
           size="header"
           color={chat.colorToken ?? chat.helper?.color}
           members={members}
+          mood={mood}
         />
       </button>
       <div className={styles.text}>

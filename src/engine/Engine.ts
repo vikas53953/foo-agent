@@ -35,6 +35,8 @@ export interface EngineOptions {
   testRun: boolean;
   /** Tests inject a fetch; production uses the global one. */
   fetch?: typeof fetch;
+  /** Tests inject PATH lookup so detect does not depend on the machine. */
+  which?: ReturnType<typeof nodeWhich>;
 }
 
 export class Engine {
@@ -68,7 +70,7 @@ export class Engine {
       env: o.env,
       platform: process.platform,
       getKey: async () => null,
-      which: nodeWhich(),
+      which: o.which ?? nodeWhich(),
       fs: nodeAiFs,
       pricing,
       providerSettings: (id) => this.settings.ai.providers[id],
@@ -200,7 +202,7 @@ export class Engine {
   /** 04 §3.3: messages that waited to send go now, oldest first. */
   async drainQueued(): Promise<void> {
     const r = await this.o.link.request<EngineMessage[]>('db.query', { q: 'messagesQueued', args: [] });
-    if (r.ok) for (const m of r.value) this.lane.enqueue(m.chatId, m.id);
+    if (r.ok) for (const m of r.value) this.lane.enqueue(m.chatId, m.id, { onlyIfQueued: true });
   }
 
   /** One message from main; a defined return value is the reply to a request. */
@@ -210,10 +212,12 @@ export class Engine {
         const parsed = settingsSchema.safeParse(msg.payload.settings);
         if (parsed.success) {
           const first = this.firstSettings;
+          const usableBefore = this.ai.pick() !== null;
           this.settings = parsed.data;
           this.firstSettings = false;
           this.ai.settingsChanged();
-          if (first) void this.drainQueued();
+          // First settings, or a chosen AI that just became usable (J2 choose → ai.state → settings): waiting messages go now.
+          if (first || (!usableBefore && this.ai.pick())) void this.drainQueued();
         }
         return undefined;
       }
@@ -223,6 +227,9 @@ export class Engine {
         return undefined;
       case 'user.message':
         this.lane.enqueue(msg.payload.chatId, msg.payload.messageId);
+        return undefined;
+      case 'reply.stop':
+        this.lane.stop(msg.payload.chatId);
         return undefined;
       case 'reply.retry':
         this.lane.retry(msg.payload.messageId);

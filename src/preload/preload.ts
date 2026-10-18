@@ -26,6 +26,7 @@ const INVOKES = new Set([
   'message:edit',
   'message:delete',
   'message:retry',
+  'message:stopReply',
   'files:open',
   'files:showInFolder',
   'job:details',

@@ -43,6 +43,7 @@ export const fakeLineSchema = z.object({
   reply: z.string().default(''),
   usage: usageSchema.optional(),
   delayMs: z.number().nonnegative().optional(),
+  chunks: z.array(z.object({ text: z.string(), delayMs: z.number().nonnegative().optional() })).optional(),
   error: z.string().optional(),
   once: z.boolean().optional(),
 });
@@ -125,16 +126,41 @@ export class FakeAdapter implements AiAdapter {
     try {
       if (signal.aborted) return cancelledResult();
       if (line.delayMs) {
-        const done = await new Promise<boolean>((resolve) => {
-          const t = this.deps.clock.setTimeout(() => resolve(true), line.delayMs!);
+        // A delay longer than the turn's timeout ends as AI_TIMEOUT, as a real adapter would (08-4 §30.7).
+        const timeoutMs = req.timeoutMs > 0 && req.timeoutMs < line.delayMs ? req.timeoutMs : null;
+        const done = await new Promise<'ok' | 'cancelled' | 'timeout'>((resolve) => {
+          const t = this.deps.clock.setTimeout(() => resolve('ok'), line.delayMs!);
+          const to = timeoutMs === null ? null : this.deps.clock.setTimeout(() => resolve('timeout'), timeoutMs);
           ctl.signal.addEventListener('abort', () => {
             this.deps.clock.clearTimeout(t);
-            resolve(false);
+            if (to !== null) this.deps.clock.clearTimeout(to);
+            resolve('cancelled');
           });
         });
-        if (!done) return cancelledResult();
+        if (done === 'cancelled') return cancelledResult();
+        if (done === 'timeout') return failResult('AI_TIMEOUT');
       }
       if (line.error) return failResult(line.error as ErrorKind as AiErrorKind);
+      if (line.chunks) {
+        // Extension (CR-0007): text streamed piece by piece on the clock, so a test can see a reply while it is coming in.
+        let text = '';
+        for (const c of line.chunks) {
+          if (c.delayMs) {
+            const ok = await new Promise<boolean>((resolve) => {
+              const t = this.deps.clock.setTimeout(() => resolve(true), c.delayMs!);
+              ctl.signal.addEventListener('abort', () => {
+                this.deps.clock.clearTimeout(t);
+                resolve(false);
+              });
+            });
+            if (!ok) return cancelledResult();
+          }
+          if (ctl.signal.aborted) return cancelledResult();
+          text += c.text;
+          if (req.stream) sink.onText(c.text);
+        }
+        return { text, usage: line.usage ?? FAKE_DEFAULT_USAGE, stopReason: 'end' };
+      }
       if (req.stream && line.reply) sink.onText(line.reply);
       return { text: line.reply, usage: line.usage ?? FAKE_DEFAULT_USAGE, stopReason: 'end' };
     } finally {

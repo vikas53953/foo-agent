@@ -16,7 +16,8 @@ export interface SupervisorPaths {
 }
 
 export function resourcesDir(): string {
-  return app.isPackaged ? join(process.resourcesPath, 'resources') : join(app.getAppPath(), 'resources');
+  // electron-builder.yml packs resources/** into app.asar, which the utility process reads through Electron's asar fs.
+  return join(app.getAppPath(), 'resources');
 }
 
 export class EngineSupervisor {

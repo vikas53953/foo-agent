@@ -166,6 +166,7 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'message:edit': z.object({ messageId, text: z.string().min(1).max(40_000) }).strict(),
   'message:delete': z.object({ messageIds: z.array(messageId).min(1).max(500), confirm: z.literal(true) }).strict(),
   'message:retry': z.object({ messageId }).strict(),
+  'message:stopReply': z.object({ chatId: z.string().min(1).max(80) }).strict(),
   'files:open': z.object({ path: z.string().min(1).max(1024) }).strict(),
   'files:showInFolder': z.object({ path: z.string().min(1).max(1024) }).strict(),
   'job:details': z.object({ jobId: z.string().min(1).max(80) }).strict(),
@@ -336,6 +337,12 @@ export function registerIpc(ctx: AppContext): void {
     const r = written(retryMessage(db, id));
     if (r.ok && target) ctx.engine?.send('user.message', { messageId: id, chatId: target.chatId });
     return r;
+  });
+
+  handle('message:stopReply', ({ chatId }) => {
+    if (!ctx.engine?.live) return ok(false);
+    ctx.engine.send('reply.stop', { chatId });
+    return ok(true);
   });
 
   // ---------------------------------------------------------------- the composer (M2 builder B)

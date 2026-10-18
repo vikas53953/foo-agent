@@ -384,3 +384,53 @@ Removed at integration: `_m1b-stubs.ts` / `.css` are gone and every import point
 36. **PERF-02 cause found:** the test pressed a key every ~5 ms, faster than frames, so keys queued behind earlier keys' frames (per-key log: times step down by 5 ms to one late frame, no long task, same with nothing focused). Keys are now paced one per paint at a random point in the refresh cycle, and the wait from "character in the DOM" to the next refresh (≤ 16.7 ms) is taken off; the hosted-runner exception is gone (CR-0005 revised). Local ×3: p95 7.0–7.1 ms, control 2.5–2.6 ms.
 37. **Sideways scroll in the message list:** the hover toolbar of a full-width foo bubble (04 §9.2) sat past the column once mounted, so the list grew a horizontal scroll bar (seen in the UX-09 captures on 7740e7e). The column is now `overflow-x: clip` (on the scroller itself, `overflow-x: hidden` cost PERF-04 1.4 % long frames on CI 06c0be6); the no-room toolbar position is a GAPS line.
 38. **Composer banner over the right shell:** the strip stack above the pill was a grid with an auto column, so the `mic_blocked` banner (text plus a 215px button) sized it to 680px, past the 600px bar and over the Details panel (UX-09-08 captures). The stack is now `minmax(0, 1fr)`; the banner text ellipsises (04-2 §23.2).
+
+## M3 · your-AI adapters and first real replies
+
+### Built
+
+- **Engine process** (`src/engine/index.ts`, `Engine.ts`): a utility process forked by `main/engine-supervisor/EngineSupervisor.ts`
+  300 ms after the window is ready, over one MessagePort (`{ id, kind, payload }`, replies `{ re, result }`, zod on receipt,
+  `src/engine/protocol.ts`). Main stays the single writer: the engine sends `db.tx` ops (`engineHost.applyDbOps`, column
+  allow-lists, seq and chat columns filled by main, text through the Redactor) and named reads (`main/db/queries.ts`).
+  `EngineBridge` turns the effects into `message:upsert` / `chat:upsert` and forwards `ui.patch` events; `ai.state` lands in
+  settings. Restarts up to 3 times.
+- **Adapters** (`src/engine/ai/*`, builder A): claude, codex, gemini CLIs; Ollama; OpenAI, Anthropic, Google keys; LM Studio
+  helper; the fake. Prompt on stdin only; `.cmd` shims run through `process.execPath` with `ELECTRON_RUN_AS_NODE=1`; tree kill
+  on cancel and timeout; probe, detect, verify, choose (`AiRegistry`); `resources/pricing.json`.
+- **Prompt rules** (`src/engine/prompt/*`, `src/engine/redact/Redactor.ts`, `resources/prompts/*`, builder B): prompt
+  assembly, FOO/1 envelope, `<act>` schemas, one repair turn, output filters, the 1.5 s release gate, the rewrite turn.
+- **Chat lane** (`src/engine/chat/ChatLane.ts`) and **AiService** (`src/engine/AiService.ts`): per-chat queues (2 turns at
+  once), ticks and 👀 (04 §3.3, §4), streaming deltas, react acts, empty-reply rule, cut-off with Try again, Stop (04 §14.4),
+  `ai_turns` rows with cost (plan CLIs: unknown, never guessed), provider health and backup (08-2 §6.7, 08-4 §30.9).
+- **Renderer:** 1–3 bubble chunking and pacing (`renderer/messages/chunks.ts`, 04 §12.3); Stop button and Esc call
+  `message:stopReply`; "Stopped." caption.
+
+### Picks and gaps (each listed in CR-0007 for Vikas)
+
+1. **GAP · Job Object:** `foo-native/jobobject.cc` is not built; the tree is killed with `taskkill /T /F` (Windows) or a process
+   group (POSIX). Native Job Object moves to M11 with the other native parts.
+2. **GAP · engine crash count / safe mode** (08-1 §2.2) are M11; M3 restarts up to 3 times and then stays down.
+3. **GAP · no vault before M5:** key providers get no key, so their verify fails `AI_KEY_INVALID`.
+4. **GAP · writable tables:** 08-1's WritableTable list has no `reactions`; the react act needs it, so it was added.
+5. **GAP · extra IPC and engine kinds:** `ai:detect`, `ai:choose`, event `ai:detectRow`, `message:stopReply`; engine kinds
+   `reply.retry`, `reply.stop`; named reads `messageById`, `messagesQueued`.
+6. **Intake kinds before their milestones:** acts other than `reply` and `react` (job, brief, setup…) post
+   "I didn’t get that. Say it another way?" until M4–M8 build them.
+7. **Tests and the engine:** a FOO_TEST run starts the engine only when `FOO_FAKE_AI` is set, so no test can reach a real AI;
+   in a FOO_FAKE_AI run every turn goes to the fake adapter. The +20 s health check runs only outside tests.
+8. **Read tick after the badge clears:** M2's tick derives "read" from the badge, so ✓✓ Read shows only while 👀 is on.
+   Kept to protect the M2 goldens (CR-0003 P5 asks the spec keeper).
+9. **Chunking applies by content** to every finished foo reply ≤ 600 characters (history too); pacing only to replies that
+   arrive while the chat is open.
+10. **Stop is stored** as badge `stopped` on the foo message (no new column); the caption shows for a complete foo message
+    with that badge. Esc in the message list is not wired yet (composer Esc is).
+11. **AT-006 copy:** 06-1 says "Connect your AI first, then we can talk."; 04-2 uses "Connect your AI first". The composer keeps
+    04-2's; the long line belongs to the M12 setup screen.
+12. Builder A's and B's own picks (Codex resume keeps the read-only sandbox, `.cmd` shim with no target fails, seed fixtures,
+    `z.toJSONSchema`, missing redactor patterns for Bearer / URL params / OTP, Hindi inflections) are listed in CR-0007 §(c).
+
+### Not verified here
+
+- Real CLI output: every fixture under `test/fixtures/cli-captures/` is a seed written from the spec until the PC capture
+  (`capture.md`) replaces it.

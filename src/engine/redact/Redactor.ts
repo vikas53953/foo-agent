@@ -105,7 +105,32 @@ export class SecretRegistry {
   }
 }
 
-/** The engine's Redactor: registry scrub, then the shared patterns (08-2 §11.4 steps 1–2). */
+/** 08-2 §11.4 item 2 rows beyond the paste catcher's: `Bearer …`, secret URL query params, URL userinfo, OTP near its word. */
+const BEARER = /\bBearer\s+[A-Za-z0-9._~+/=-]{8,}/gu;
+const URL_PARAM = /[?&](?:token|key|code|sig|signature|password|pwd|secret|auth)=([^&#\s]+)/giu;
+const URL_USERINFO = /\b[a-z][a-z0-9+.-]*:\/\/([^\s/@:]+(?::[^\s/@]*)?)@/giu;
+// The words confirmation, booking, reference, order, PNR, ticket, receipt and a bare "code" do not trigger (§11.4).
+const OTP_WORD = /(?:\b(?:otp|one[- ]?time|verification code|security code|passcode)\b|पासकोड|ओटीपी|ਓਟੀਪੀ)/giu;
+const CODE_NEAR = /(?<!\d)\d{4,8}(?!\d)/gu;
+
+export function extraSpans(text: string): { start: number; end: number }[] {
+  const out: { start: number; end: number }[] = [];
+  for (const m of text.matchAll(BEARER)) out.push({ start: m.index, end: m.index + m[0].length });
+  for (const re of [URL_PARAM, URL_USERINFO])
+    for (const m of text.matchAll(re)) {
+      const v = m[1]!;
+      const start = m.index + m[0].indexOf(v);
+      out.push({ start, end: start + v.length });
+    }
+  for (const w of text.matchAll(OTP_WORD)) {
+    const from = Math.max(0, w.index - 40);
+    const to = Math.min(text.length, w.index + w[0].length + 40);
+    for (const m of text.slice(from, to).matchAll(CODE_NEAR)) out.push({ start: from + m.index, end: from + m.index + m[0].length });
+  }
+  return out;
+}
+
+/** The engine's Redactor: registry scrub, then the patterns (08-2 §11.4 steps 1–2). */
 export class Redactor {
   readonly registry: SecretRegistry;
   private readonly log: LogFn;
@@ -128,16 +153,30 @@ export class Redactor {
     return { text: out, handles: [...handles] };
   }
 
-  /** Pattern scrub with the shared module's patterns: card numbers → "•••• {last4}", every other hit → [hidden]. */
+  /**
+   * Pattern scrub: the shared module's patterns plus the §11.4 rows the paste catcher does not have ({@link extraSpans}).
+   * Card numbers → "•••• {last4}", every other hit → [hidden]. Overlapping spans are merged.
+   */
   private patternScrub(text: string): { text: string; hits: number } {
-    const hits = findSecrets(text);
+    const spans = [
+      ...findSecrets(text).map((h) => ({ start: h.start, end: h.end, card: h.pattern === 'P12' })),
+      ...extraSpans(text).map((x) => ({ ...x, card: false })),
+    ].sort((x, y) => x.start - y.start || y.end - x.end);
+    const merged: { start: number; end: number; card: boolean }[] = [];
+    for (const sp of spans) {
+      const last = merged[merged.length - 1];
+      if (last && sp.start < last.end) {
+        last.end = Math.max(last.end, sp.end);
+        last.card = last.card && sp.card;
+      } else merged.push({ ...sp });
+    }
     let out = text;
-    for (const h of [...hits].reverse()) {
+    for (const h of [...merged].reverse()) {
       const span = out.slice(h.start, h.end);
-      const rep = h.pattern === 'P12' ? `•••• ${span.replace(/\D/g, '').slice(-4)}` : HIDDEN;
+      const rep = h.card ? `•••• ${span.replace(/\D/g, '').slice(-4)}` : HIDDEN;
       out = out.slice(0, h.start) + rep + out.slice(h.end);
     }
-    return { text: out, hits: hits.length };
+    return { text: out, hits: merged.length };
   }
 
   /** 08-2 §11.4 steps 1–2 over any text (R10: AI output before display). */

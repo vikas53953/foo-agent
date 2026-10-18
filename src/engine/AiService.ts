@@ -98,7 +98,10 @@ export class AiService implements LaneAi {
       primary,
       backup,
       displayName: PROVIDER_DISPLAY_NAME[primary],
-      billing: this.adapter(primary).billing === 'local' ? 'local' : (s.ai.providers[primary]?.kind ?? this.adapter(primary).billing),
+      billing:
+        this.d.registry.adapter(primary).billing === 'local'
+          ? 'local'
+          : (s.ai.providers[primary]?.kind ?? this.d.registry.adapter(primary).billing),
       state: !this.d.online() ? 'offline' : x.state,
       usingBackup: pick?.backup === true,
     };
@@ -117,7 +120,7 @@ export class AiService implements LaneAi {
   pick(): { providerId: ProviderId; billing: 'plan' | 'key' | 'local'; backup: boolean } | null {
     if (!this.d.online()) return null;
     const s = this.d.settings();
-    const billingOf = (id: ProviderId) => s.ai.providers[id]?.kind ?? this.adapter(id).billing;
+    const billingOf = (id: ProviderId) => s.ai.providers[id]?.kind ?? this.d.registry.adapter(id).billing;
     const primary = s.ai.primary;
     if (!primary) return null;
     const p = this.h(primary);
@@ -216,7 +219,7 @@ export class AiService implements LaneAi {
   async verify(providerId: ProviderId): Promise<WireVerifyResult> {
     const r = await this.d.registry.verify(this.adapterId(providerId));
     const at = this.d.clock.now();
-    const kind = this.d.settings().ai.providers[providerId]?.kind ?? this.adapter(providerId).billing;
+    const kind = this.d.settings().ai.providers[providerId]?.kind ?? this.d.registry.adapter(providerId).billing;
     this.d.persist({ providers: { [providerId]: { kind, lastVerifiedAt: at, lastVerifyOk: r.ok } } });
     const x = this.h(providerId);
     if (r.ok) this.reportOk(providerId);

@@ -3,6 +3,7 @@
 // `clamp(800 + 12 × chars(bubble n), 800, 2500)` ms, reduced motion unchanged; anything else is one bubble that is never
 // split), 08-4 §25.9 (the engine never splits a reply; chunking is the renderer's rule). Pure.
 import type { MessageRow } from '../../shared/types';
+import { isRich } from './markdownParse';
 
 export const CHAT_MODE_MAX_CHARS = 600;
 export const MAX_BUBBLES = 3;
@@ -64,7 +65,9 @@ export function chunkable(m: MessageRow): boolean {
     m.status === 'complete' &&
     m.deletedAt === null &&
     !(m.attachments?.length ?? 0) &&
-    m.text.length <= CHAT_MODE_MAX_CHARS
+    m.text.length <= CHAT_MODE_MAX_CHARS &&
+    // A rich answer (heading, table, sources) is one bubble (04 §12.3 "anything else"; UX-08-07).
+    !isRich(m.text)
   );
 }
 
