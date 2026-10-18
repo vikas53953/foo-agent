@@ -320,6 +320,17 @@ export const TID = {
   composerErrorsClear: 'composer-errors-clear',
   dialogC21: 'dialog-c-21',
   dialogConfirmField: 'dialog-confirm-field',
+  cardSignin: 'card-signin',
+  cardSigninDone: 'card-signin-done',
+  cardSigninTakeOver: 'card-signin-take-over',
+  cardSigninSkip: 'card-signin-skip',
+  cardSigninUseCodeBox: 'card-signin-use-code-box',
+  cardSigninLive: 'card-signin-live',
+  signinBanner: 'signin-banner',
+  signinBannerAddress: 'signin-banner-address',
+  signinBannerDone: 'signin-banner-done',
+  signinBannerSuccess: 'signin-banner-success',
+  signinBannerHandBack: 'signin-banner-hand-back',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

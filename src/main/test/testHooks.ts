@@ -11,6 +11,7 @@ import { deps } from '../deps';
 import { channels, emit, listContext, type AppContext } from '../ipc/IpcRouter';
 import { aiStatus, chatRowById, chatRows, fooChatId, jobRows, publicSettings, recomputePill, spendSummary } from '../store/queries';
 import { writeSeedMedia } from './seed/media';
+import { m9SigninSettings, seedM9Signin } from './seed/m9Signin';
 import { seedPerf } from './seed/perf';
 import { seedUxWorld, uxWorldSettings } from './seed/uxWorld';
 
@@ -57,6 +58,12 @@ export function seeds(ctx: AppContext, clock: FakeClock): Record<SeedSet, () => 
       writeSeedMedia(ctx.dataDir, r.media);
       ctx.settings.update((s) => uxWorldSettings(s, r.refs, clock.now()));
       return { set: 'perf', loaded: true, chats: r.chats, messages: r.messages, refs: r.refs };
+    },
+    // M9 T6: sign-in cards in two lanes, a signed-in summary and two handoff markers.
+    'm9-signin': () => {
+      const r = seedM9Signin(ctx.db, clock.now());
+      ctx.settings.update((s) => m9SigninSettings(s, r.refs, clock.now()));
+      return { set: 'm9-signin', loaded: true, chats: r.chats, messages: r.messages, refs: r.refs };
     },
   };
 }

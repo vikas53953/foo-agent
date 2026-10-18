@@ -234,7 +234,7 @@ export const EVENT_CHANNELS = [
  * (CR-0007): the same world at 8:05 AM, foo's chat ending at the cake line, so a test sends chapter 8's "thanks!" and
  * question live and the frame matches the walkthrough's UX-08-02.
  */
-export const SEED_SETS = ['demo', 'perf', 'ux-world', 'ux-world-ch8-live'] as const;
+export const SEED_SETS = ['demo', 'perf', 'ux-world', 'ux-world-ch8-live', 'm9-signin'] as const;
 export type SeedSet = (typeof SEED_SETS)[number];
 
 export interface ClockReply {

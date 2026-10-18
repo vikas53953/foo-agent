@@ -53,6 +53,7 @@ import { ChannelGuard } from './guard';
 import type { EngineBridge } from '../engine-supervisor/EngineBridge';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
+import { registerSigninIpc } from '../jobs/signinIpc';
 import { isTrustedUrl } from '../windows/protocol';
 
 const trusted = (e: IpcMainEvent) => !!e.senderFrame && isTrustedUrl(e.senderFrame.url);
@@ -491,10 +492,7 @@ export function registerIpc(ctx: AppContext): void {
   // The Live window (09 §9.27) arrives with the browser milestone; until then the shell shows no live view.
   handle('job:watch', () => fail('LIVE_UNAVAILABLE'));
   handle('job:openWindow', () => fail('BROWSER_MISSING'));
-  handle('job:takeOver', () => fail('JOB_GONE'));
-  handle('job:handBack', () => fail('JOB_GONE'));
-  handle('signin:done', () => fail('JOB_GONE'));
-  handle('signin:skip', () => fail('JOB_GONE'));
+  registerSigninIpc(ctx, handle);
   handle('code:submit', () => fail('REQUEST_GONE'));
   handle('app:openExternal', () => fail('URL_NOT_ALLOWED'));
   handle('memory:list', ({ filter, q }) => ok(memoryList(db, filter, q, now())));
