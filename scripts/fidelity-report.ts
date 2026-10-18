@@ -90,12 +90,36 @@ export function evidenceStatus(cases: TestCase[], needle: string): Status | null
   return hits.every((c) => c.status === 'passed') ? 'DONE' : 'NOT DONE';
 }
 
-interface AuditRow {
+export interface AuditRow {
   group: string;
   item: string;
   status: Status;
-  evidence?: string;
+  /** One needle or several: `test:{title part}`, `refs`, `determinism`, `runner`, `fid14`. Every one must pass. */
+  evidence?: string | string[];
+  /**
+   * §11.6.1: evidence turns a row DONE only when it covers the whole item (`"whole"`). Otherwise (the default) passing
+   * evidence makes it PARTIAL at most, and `manual` names the check that covers the rest (review D7).
+   */
+  covers?: 'whole' | 'part';
+  /** The named manual check for what the evidence does not cover (who, where, what). */
+  manual?: string;
   note?: string;
+}
+
+const evidenceList = (row: AuditRow): string[] => (row.evidence === undefined ? [] : [row.evidence].flat());
+
+/**
+ * An audit row against this run's evidence (§11.6.1, §11.6.2). No evidence: the row's own status. Any needle failing:
+ * NOT DONE. Any needle without a result: UNVERIFIABLE. All passing: DONE only when the row says the evidence covers the
+ * whole item; otherwise PARTIAL (the rest is the row's `manual` check). A CHANGED row stays CHANGED (it needs a CR).
+ */
+export function resolveAudit(row: AuditRow, one: (needle: string) => Status | null): Status {
+  const evs = evidenceList(row);
+  if (!evs.length || row.status === 'CHANGED') return row.status;
+  const got = evs.map((e) => one(e) ?? row.status);
+  if (got.includes('NOT DONE')) return 'NOT DONE';
+  if (got.some((s) => s !== 'DONE')) return got.includes('PARTIAL') ? 'PARTIAL' : 'UNVERIFIABLE';
+  return row.covers === 'whole' ? 'DONE' : 'PARTIAL';
 }
 
 interface TierRJson {
@@ -273,17 +297,15 @@ export function build(opts: {
   };
 
   // Audit rows, resolved against the evidence of this run.
-  const resolve = (row: AuditRow): Status => {
-    const ev = row.evidence;
-    if (!ev) return row.status;
+  const one = (ev: string): Status | null => {
     if (ev === 'refs') return refsRendered.length ? 'DONE' : 'UNVERIFIABLE';
     if (ev === 'determinism') return determinism ? (determinism.differing.length ? 'NOT DONE' : 'DONE') : 'UNVERIFIABLE';
     if (ev === 'runner') return opts.runner ? 'DONE' : 'UNVERIFIABLE';
     if (ev === 'fid14') return opts.fid14 ? (opts.fid14.every((r) => r.ok) ? 'DONE' : 'NOT DONE') : 'UNVERIFIABLE';
     if (ev.startsWith('test:')) return evidenceStatus(cases, ev.slice(5)) ?? 'UNVERIFIABLE';
-    return row.status;
+    return null;
   };
-  const audit = (opts.audit?.rows ?? []).map((r) => ({ ...r, resolved: resolve(r) }));
+  const audit = (opts.audit?.rows ?? []).map((r) => ({ ...r, resolved: resolveAudit(r, one) }));
   if (!opts.audit) missingInputs.push(`audit list (docs/fidelity/${opts.milestone}.audit.json)`);
 
   const failed = cases.filter((c) => c.status === 'failed');
@@ -473,7 +495,21 @@ ${r.verdictReasons.length ? `<p>Why: ${r.verdictReasons.map(esc).join('; ')}.</p
 <h2>2 · Plan vs built audit</h2>
 ${table(
   ['Group', 'Item', 'Status', 'Evidence / note'],
-  r.audit.map((a) => [esc(a.group), esc(a.item), badge(a.resolved), esc([a.evidence, a.note].filter(Boolean).join(' · '))]),
+  r.audit.map((a) => [
+    esc(a.group),
+    esc(a.item),
+    badge(a.resolved),
+    esc(
+      [
+        evidenceList(a).join(' + '),
+        a.covers === 'whole' ? '' : evidenceList(a).length ? 'covers part of the item' : '',
+        a.resolved !== 'DONE' && a.manual ? `manual check: ${a.manual}` : '',
+        a.note,
+      ]
+        .filter(Boolean)
+        .join(' · '),
+    ),
+  ]),
 )}
 
 <h2>3 · Golden summary</h2>

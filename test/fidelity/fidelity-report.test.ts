@@ -1,10 +1,10 @@
 // 11-fidelity §11.6.2: the fidelity report reads Vitest/Playwright JSON, resolves audit rows against fresh evidence and
 // never reports a missing input as passing.
-import { mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { build, evidenceStatus, html, playwrightCases, readFid14, vitestCases } from '../../scripts/fidelity-report';
+import { build, evidenceStatus, html, playwrightCases, readFid14, resolveAudit, vitestCases } from '../../scripts/fidelity-report';
 
 const vitest = {
   testResults: [
@@ -38,7 +38,7 @@ const base = {
   runner: { pinned: null },
   fid14: [{ id: 'SV-16', ok: true, expected: 'height 32', measured: '1280×32' }],
   eslint: [{ errorCount: 0 }],
-  audit: { rows: [{ group: 'g', item: 'FID-01', status: 'UNVERIFIABLE' as const, evidence: 'test:FID-01' }] },
+  audit: { rows: [{ group: 'g', item: 'FID-01', status: 'UNVERIFIABLE' as const, evidence: 'test:FID-01', covers: 'whole' as const }] },
   env: { GITHUB_RUN_ID: '42', GITHUB_SHA: 'abcdef0123456789', GITHUB_REPOSITORY: 'o/r' },
 };
 
@@ -118,5 +118,46 @@ describe('fidelity report', () => {
       expect(page).toContain(h);
     expect(page).toContain('prefers-color-scheme: dark');
     expect(page).not.toMatch(/<(script|link)[^>]+(src|href)="http/);
+  });
+
+  it('an audit row is DONE only when its evidence covers the whole item (§11.6.1, review D7)', () => {
+    const pass = (n: string) => (n.includes('fail') ? 'NOT DONE' : n.includes('none') ? null : 'DONE');
+    const row = { group: 'M2 Must pass', item: '10-2 §C.3 rows', status: 'UNVERIFIABLE' as const };
+    // One loosely related passing test: PARTIAL, never DONE.
+    expect(resolveAudit({ ...row, evidence: 'test:Enter sends' }, pass)).toBe('PARTIAL');
+    expect(resolveAudit({ ...row, evidence: 'test:Enter sends', covers: 'part', manual: '225 %' }, pass)).toBe('PARTIAL');
+    expect(resolveAudit({ ...row, evidence: 'test:AT-007', covers: 'whole' }, pass)).toBe('DONE');
+    // Every needle counts: one failing → NOT DONE; one without a result → UNVERIFIABLE.
+    expect(resolveAudit({ ...row, evidence: ['test:a', 'test:fail'], covers: 'whole' }, pass)).toBe('NOT DONE');
+    expect(resolveAudit({ ...row, evidence: ['test:a', 'test:none'], covers: 'whole' }, pass)).toBe('UNVERIFIABLE');
+    // No evidence: the row's own status; CHANGED stays CHANGED whatever passes.
+    expect(resolveAudit(row, pass)).toBe('UNVERIFIABLE');
+    expect(resolveAudit({ ...row, status: 'CHANGED', evidence: 'test:a', covers: 'whole' }, pass)).toBe('CHANGED');
+  });
+
+  it('M2 audit rows the reviewer flagged stay PARTIAL with a named manual check even when every test passes', () => {
+    const m2 = JSON.parse(readFileSync(join(__dirname, '../../docs/fidelity/M2.audit.json'), 'utf8')) as {
+      rows: Parameters<typeof resolveAudit>[0][];
+    };
+    const allPass = () => 'DONE' as const;
+    const row = (prefix: string) => m2.rows.find((x) => x.item.startsWith(prefix))!;
+    const flagged = [
+      '10-2 §C.3 rows',
+      '04 §1–§19',
+      'Both bubble types',
+      'The paste catcher',
+      'PERF-02',
+      'PERF-04',
+      'ART-26a (messages',
+      'FID-14 rows',
+      'Tier R for the UX-09',
+    ];
+    for (const p of flagged) {
+      expect(resolveAudit(row(p), allPass), p).toBe('PARTIAL');
+      expect(row(p).manual, p).toBeTruthy();
+    }
+    expect(resolveAudit(row('Voice capture'), allPass)).toBe('CHANGED');
+    expect(resolveAudit(row('AT-007'), allPass)).toBe('DONE');
+    for (const r of m2.rows) if (r.evidence && r.covers !== 'whole') expect(r.manual, r.item).toBeTruthy();
   });
 });
