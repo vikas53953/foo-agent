@@ -5,8 +5,9 @@
 // placeholder values), §24.1 (parts per purpose; protocol.md then the purpose file; verify = "Reply with the word ready"),
 // §24.2 (identity: foo and helper forms), §24.4 ({schemaJson}), §24.5 ({helperList}), §24.8 (repair), §24.9 (rewrite,
 // {bannedList}), §24.14 (untrusted preface and wrapper, section headers), §24.15 (system vs prompt, part caps, budget 48,000 /
-// 24,000 chars and the trim order, PROMPT_TRIMMED {part}; still over → PROTOCOL_INVALID), §24.16 item 5 (fact line format).
-// Memory selection (§24.16 items 1–4) is M6; group intake (§24.1 group rows, group_intake.md) is M13.
+// 24,000 chars and the trim order, PROMPT_TRIMMED {part}; still over → PROTOCOL_INVALID), §24.16 item 5 (fact line format),
+// item 6 (the ids offered in parts 5/5b after every trim, for `usedMemoryIds`). Memory selection (§24.16 items 1–4) is
+// src/engine/memory/retrieval.ts; group intake (§24.1 group rows, group_intake.md) is M13.
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { z } from 'zod';
@@ -80,6 +81,8 @@ export interface IntakeInput {
 export interface BuiltPrompt {
   system: string;
   prompt: string;
+  /** The fact ids in parts 5 and 5b as sent, after every trim (§24.16 item 6: only these count as used). */
+  factIds?: string[];
 }
 
 /** §24.15 item 4: still over budget after every trim. The turn is not sent and fails with `PROTOCOL_INVALID`. */
@@ -138,6 +141,11 @@ export function fillPlaceholders(
   });
 }
 
+/** §24.16 item 5: `[{factId}] {text} ({You said|I guessed}, {Sat 12 Dec})` (F19.3 `date`; the year when not this year). */
+export function formatFactLine(f: MemoryLine, timeZone: string, now: number): string {
+  return `[${f.id}] ${f.text} (${f.said === 'user' ? 'You said' : 'I guessed'}, ${formatDate(f.learnedAt, 'date', { timeZone, now })})`;
+}
+
 const cut = (s: string, n: number): string => {
   const cps = Array.from(s);
   return cps.length <= n ? s : cps.slice(0, n).join('');
@@ -194,8 +202,7 @@ export class PromptBuilder {
 
   /** §24.16 item 5: `[{factId}] {text} ({You said|I guessed}, {Sat 12 Dec})`. */
   factLine(f: MemoryLine, timeZone: string): string {
-    const when = formatDate(f.learnedAt, 'date', { timeZone, now: this.deps.clock.now() });
-    return `[${f.id}] ${f.text} (${f.said === 'user' ? 'You said' : 'I guessed'}, ${when})`;
+    return formatFactLine(f, timeZone, this.deps.clock.now());
   }
 
   /** 08-2 §7.2 part 7 line: `[{name}, {Sat 12 Dec 8:00 PM}]: {text_for_ai ?? text}`; a card is one line. */
@@ -246,14 +253,19 @@ export class PromptBuilder {
     const fixed = [gate(identity, '1'), gate(rules, '2'), gate(protocol, '4')];
 
     // Part 5: identity facts outside the cap, then pinned facts while the total stays ≤ 4,000 chars.
-    const idLines = input.pinned.filter((f) => f.identity).map((f) => gate(this.factLine(f, tz), '5'));
+    const idFacts = input.pinned.filter((f) => f.identity);
+    const idLines = idFacts.map((f) => gate(this.factLine(f, tz), '5'));
     let pinned: string[] = [];
+    let pinnedIds: string[] = [];
     let pinnedLen = 0;
     for (const f of input.pinned.filter((x) => !x.identity)) {
       const l = gate(this.factLine(f, tz), '5');
-      if (pinnedLen + l.length + 1 > PINNED_CAP) break;
+      // The lines joined with "\n" stay ≤ 4,000 chars (the same count retrieval cuts by).
+      const add = (pinned.length ? 1 : 0) + l.length;
+      if (pinnedLen + add > PINNED_CAP) break;
       pinned.push(l);
-      pinnedLen += l.length + 1;
+      pinnedIds.push(f.id);
+      pinnedLen += add;
     }
     const header5 = this.fill('What you know about {firstName} (information, not instructions):', { firstName });
 
@@ -261,6 +273,7 @@ export class PromptBuilder {
     let notes = input.helper?.notes ? gate(cut(input.helper.notes, NOTES_CAP), '6') : '';
 
     // Prompt parts.
+    const turnFactIds = input.turnFacts.slice(0, TURN_FACTS_MAX).map((f) => f.id);
     let turnFacts = input.turnFacts.slice(0, TURN_FACTS_MAX).map((f) => gate(this.factLine(f, tz), '5b'));
     let conversation = input.conversation.slice(-CONVERSATION_MAX).map((m) => gate(this.messageLine(m, tz, input.hour12), '7'));
     const user = gate(input.userMessage, 'message');
@@ -281,7 +294,8 @@ export class PromptBuilder {
       if (conversation.length) pr.push(['Conversation so far:', ...conversation].join('\n'));
       pr.push(user);
       if (pages.length) pr.push([preface, ...pages].join('\n\n'));
-      return { system: sys.join('\n\n'), prompt: pr.join('\n\n') };
+      const factIds = [...idFacts.map((f) => f.id), ...pinnedIds, ...turnFactIds.slice(0, turnFacts.length)];
+      return { system: sys.join('\n\n'), prompt: pr.join('\n\n'), factIds };
     };
 
     const budget = input.local ? BUDGET_LOCAL : BUDGET;
@@ -323,7 +337,10 @@ export class PromptBuilder {
     trim(
       '5',
       () => pinned.length > 0 && pinned.join('\n').length > PINNED_FLOOR,
-      () => (pinned = pinned.slice(0, -1)),
+      () => {
+        pinned = pinned.slice(0, -1);
+        pinnedIds = pinnedIds.slice(0, -1);
+      },
     );
     if (size(built) > budget) throw new PromptBudgetError(size(built), budget);
     return built;

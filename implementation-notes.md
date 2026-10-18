@@ -550,3 +550,14 @@ CR-0010 §(b). Where the code stands for the ticket threads:
   `useFooEvent`.
 - Copy keys are in `en-IN.json` and listed in `scripts/copy-pending.json` by ticket. The two-match forget reply "nothing
   matched" has no spec words yet: T5 takes them from J17 or files a CR line.
+
+### M6 T4 · memory in replies
+
+- `src/engine/memory/retrieval.ts` `buildMemoryParts(query, {chatId, text, timeZone, now})` picks parts 5/5b per turn:
+  identity rows first (outside the cap), the pinned set cut at 4,000 chars of lines joined by `\n`, then ≤ 8 FTS rows that
+  were not pinned (`memorySearch` takes the pinned ids as `excludeIds`). `ftsMatch` is the §24.16 item 3 query build.
+- The chat lane calls it before `buildIntake`; `PromptBuilder` reports `factIds` (parts 5/5b as sent, after trims) and the
+  lane records uses only for those ids (`memory_index` `last_used_at`, `use_count + 1`; one `memory_uses` row each).
+- Groups: a grant never re-admits a `private=1` fact (08-3 §12.5.1, Art. 14). Step turns (job title + slot values as the
+  query, §24.16 item 3) call the same function from the job lane when it builds part 5b.
+- AT-075 (an edited file shows in the next prompt) lands once T3's watcher is on the milestone branch.

@@ -3,8 +3,8 @@
 // Redactor on every AI input), 08-4 §24.9 / §25.5 (the rewrite turn for a held sentence: cheap model, `rewrite.md`),
 // §30.8 (on engine start every `sys-*.md` in the scratch folders is deleted), 08-3 §22.3 (FOO_FAKE_AI).
 // The +20 s health check of 08-1 §2.2 step 7 runs only outside FOO_TEST runs (tests verify explicitly). Deferred to their
-// milestones: job lanes (M4), memory parts 5/5b (M6; empty here), the vault for key providers (M5: no key yet, so a
-// key provider reports `AI_KEY_INVALID` on verify).
+// milestones: job lanes (M4), the vault for key providers (M5: no key yet, so a key provider reports `AI_KEY_INVALID` on
+// verify). Memory parts 5/5b come from the chat lane (08-4 §24.16, memory/retrieval.ts).
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
 import type { Clock } from '../shared/clock';
@@ -115,6 +115,11 @@ export class Engine {
       const v = validateAct('intake', act);
       return v.ok ? ((v.act as { decision: IntakeDecisionView }).decision ?? null) : null;
     };
+    // 08-4 §25.2 IntakeAct.usedMemoryIds (the lane keeps only the ids it offered, §24.16 item 6).
+    const usedIds = (act: unknown): string[] => {
+      const v = validateAct('intake', act);
+      return v.ok ? (v.act as { usedMemoryIds: string[] }).usedMemoryIds : [];
+    };
     const issuesOf = (act: unknown, error: string | null) => {
       if (error) return error;
       const v = validateAct('intake', act);
@@ -144,8 +149,8 @@ export class Engine {
           timeZone: i.settings.locale.timeZone,
           ...(helper ? { helper } : {}),
           helpers: [],
-          pinned: [],
-          turnFacts: [],
+          pinned: i.memory.part5,
+          turnFacts: i.memory.part5b,
           conversation,
           userMessage: i.message.textForAi ?? i.message.text,
           local: i.local,
@@ -155,12 +160,13 @@ export class Engine {
       parse: (text) => {
         const env = parseEnvelope(text);
         const act = env.act === undefined ? null : decision(env.act);
-        return { say: env.say, act, issues: act ? null : (issuesOf(env.act, env.actError) ?? formatIssues([])) };
+        const issues = act ? null : (issuesOf(env.act, env.actError) ?? formatIssues([]));
+        return { say: env.say, act, issues, usedMemoryIds: act ? usedIds(env.act) : [] };
       },
       parseAct: (text) => {
         const env = parseEnvelope(text);
         const act = env.act === undefined ? null : decision(env.act);
-        return { act, issues: act ? null : issuesOf(env.act, env.actError) };
+        return { act, issues: act ? null : issuesOf(env.act, env.actError), usedMemoryIds: act ? usedIds(env.act) : [] };
       },
       gate: (onRelease, signal) => {
         let resolve!: () => void;
