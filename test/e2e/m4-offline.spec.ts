@@ -7,6 +7,7 @@ import type {} from '../../src/shared/ipc';
 import { t } from '../../src/shared/copy/t';
 import { TID } from '../../src/shared/testids';
 import { byTid, openChat, openWorld, windowSize } from '../fidelity/capture';
+import { settleSeededJobs } from './m4-start';
 import { launchWithFakeAi, VERIFY_OK, type FakeLine } from './fakeAi';
 
 const ASK = 'Find my bills due this week';
@@ -45,7 +46,8 @@ async function advance(page: Page, ms: number): Promise<void> {
 test('AT-081: offline mid-job → WAITING + banner within 10 s, no card, no composer bar; back online → resumes, ✅', async () => {
   const { app } = await launchWithFakeAi(SCRIPT);
   const page = await app.firstWindow();
-  await openWorld(app, page);
+  // The seeded Goa stay job is live in foo's chat; end it so the ask starts a job instead of steering it (08-2 §5.2).
+  await settleSeededJobs(page, await openWorld(app, page));
   await windowSize(app, page, 1440, 900); // the right panel is open from 1440 px (03-shell-2 §3.7.1)
   await openChat(page, 'foo');
   const log = page.getByTestId(TID.threadLog);

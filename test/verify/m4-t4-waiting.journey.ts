@@ -11,6 +11,7 @@ import { t } from '../../src/shared/copy/t';
 import { TID } from '../../src/shared/testids';
 import type { FakeLine } from '../e2e/fakeAi';
 import { byTid, openChat, openWorld, rest, setTheme, settle, windowSize } from '../fidelity/capture';
+import { settleSeededJobs } from '../e2e/m4-start';
 
 const ASK = 'Find my bills due this week';
 const ASK2 = 'Check my calendar for tomorrow';
@@ -72,7 +73,8 @@ async function ask(page: Page, text: string): Promise<void> {
 
 export default async function journey(v: Verify): Promise<void> {
   const { app, page } = await v.launch({ fakeAi: SCRIPT });
-  await openWorld(app, page);
+  // The seeded Goa stay job is live in foo's chat; end it so the asks start jobs instead of steering it (08-2 §5.2).
+  await settleSeededJobs(page, await openWorld(app, page));
   await windowSize(app, page, 1440, 900);
   await openChat(page, 'foo');
   await setTheme(page, 'light');
@@ -100,15 +102,17 @@ export default async function journey(v: Verify): Promise<void> {
   const cards = await errorCards.count();
   if (cards !== cardsBefore + 1) throw new Error(`error cards ${cardsBefore} → ${cards}, expected one more`);
   v.note('exactly one new error card in the thread for the job (AT-112)');
-  const messages = await log.locator(`${byTid(TID.bubbleFoo)}, ${byTid(TID.bubbleMe)}, [data-card-type]`).count();
+  // The list is virtual (rows at the top unmount), so new items are counted by message id, not by a row count.
+  const rowIds = () => log.locator('[data-message-id]').evaluateAll((els) => els.map((e) => e.getAttribute('data-message-id')!));
+  const before = new Set(await rowIds());
 
   // 2 · The AI answers its test again → the job carries on; the card is edited in place, no new message but the result.
   await page.evaluate(() => window.foo.invoke('ai:verify', { providerId: 'claude-cli' }));
   await advance(page, 5_000);
   await log.locator(byTid(TID.bubbleFoo), { hasText: RESULT }).first().waitFor({ timeout: 10_000 });
   await settle(page);
-  const after = await log.locator(`${byTid(TID.bubbleFoo)}, ${byTid(TID.bubbleMe)}, [data-card-type]`).count();
-  if (after !== messages + 2) throw new Error(`thread items ${messages} → ${after}: expected only the checklist and the result`);
+  const added = new Set((await rowIds()).filter((id) => !before.has(id)));
+  if (added.size !== 2) throw new Error(`${added.size} new thread items: expected only the checklist and the result`);
   if ((await errorCards.count()) !== cards) throw new Error('a second error card appeared on resume');
   const back = t('cards.checklist.resumed', { n: 1 });
   const fixedCard = errorCards.last();
