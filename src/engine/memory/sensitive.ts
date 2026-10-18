@@ -4,7 +4,7 @@
 // person: `kind='person'`, a `people\` file, or a name in `contacts_index`; sensitive and guessed → dropped and logged
 // `memory.dropped_sensitive`, no chip; sensitive and said → saved with `private` forced on), §12.1, AT-076, R-33. The patterns
 // are §12.4.1's, copied as written.
-import type { MemoryKind, MemoryProvenance } from './fileFormat';
+import type { MemoryKind, MemoryProvenance } from '../../shared/types';
 
 const SENSITIVE_CATEGORIES: ReadonlySet<string> = new Set(['health', 'money', 'religion', 'politics', 'family']);
 

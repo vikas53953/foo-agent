@@ -4,14 +4,11 @@
 // and brace at reindex; the `private` token is authoritative and `## Private` is rewritten from it; CRLF read, UTF-8 LF
 // without BOM written; unparseable lines kept untouched and reported), X-06 (kind; derived from the folder when missing),
 // X-112 (`chat:{chatId}`), 08-0 §B.2 (MemoryKind, MemoryProvenance, MemoryOrigin, MemoryCategory), §12.4 (`add.text` ≤ 120,
-// `kind='person'` needs `person`, category from the closed list). Local types until T1 lands them in src/shared/types.ts.
+// `kind='person'` needs `person`, category from the closed list).
+import type { MemoryCategory, MemoryKind, MemoryOrigin, MemoryProvenance } from '../../shared/types';
 import { factHash } from './hash';
 
-export type MemoryKind = 'person' | 'preference' | 'place' | 'fact';
-export type MemoryProvenance = 'said' | 'guessed';
-export type MemoryOrigin = 'chat' | 'gmail' | 'gcal' | 'whatsapp' | 'manual' | 'setup' | 'job';
-export type MemoryCategory =
-  'food' | 'travel' | 'health' | 'money' | 'people' | 'places' | 'work' | 'style' | 'home' | 'family' | 'religion' | 'politics' | 'other';
+export type { MemoryCategory, MemoryKind, MemoryOrigin, MemoryProvenance };
 
 export const MEMORY_KINDS: readonly MemoryKind[] = ['person', 'preference', 'place', 'fact'];
 export const MEMORY_CATEGORIES: readonly MemoryCategory[] = [

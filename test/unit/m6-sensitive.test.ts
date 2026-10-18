@@ -97,7 +97,7 @@ describe('08-3 §12.4.1 (b) regex families', () => {
   });
 });
 
-describe('08-3 §12.4.1 saving rule: the AI label never decides saving', () => {
+describe('AT-076 (unit): the AI label never decides saving', () => {
   it('guessed and sensitive → dropped (no chip), even when the AI labels it food/other', () => {
     expect(sensitiveRule({ text: 'Allergic to peanuts', category: 'food', kind: 'fact', provenance: 'guessed', private: false })).toEqual({
       save: false,
