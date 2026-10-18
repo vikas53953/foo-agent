@@ -52,7 +52,6 @@
     "errors.db_rebuilt.what_happened": "M4-T4 waiting/recovery",
     "errors.db_rebuilt.what_is_safe": "M4-T4 waiting/recovery",
     "errors.db_rebuilt.button": "M4-T4 waiting/recovery",
-    "errors.unknown.what_happened": "M4-T2 runner",
     "errors.unknown.what_is_safe": "M4-T2 runner",
     "errors.unknown.button": "M4-T2 runner",
     "errors.ai_service_down.link": "M4-T4 waiting/recovery",
