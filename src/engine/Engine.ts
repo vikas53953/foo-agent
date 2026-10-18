@@ -29,6 +29,7 @@ import { priceOf, resolveModel } from './ai/models';
 import { stubGate } from './gate/GateLogic';
 import { JobRunner } from './jobs/JobRunner';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
+import { engineBrowserTools } from './tools/browser/tools';
 import type { StepAct } from '../shared/schemas';
 
 export interface EngineOptions {
@@ -112,7 +113,7 @@ export class Engine {
       link: o.link,
       clock: o.clock,
       newId: (p) => newId(p, o.clock.now()),
-      tools: o.tools ?? {},
+      tools: o.tools ?? engineBrowserTools({ ...o, redactor: this.redactor, settings: () => this.settings, log }),
       gate: stubGate,
       log: (evt, kind) => log(evt, kind),
     });
