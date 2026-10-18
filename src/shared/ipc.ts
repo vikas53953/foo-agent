@@ -10,6 +10,7 @@ import type {
   ChatRow,
   CardRow,
   ConnectionRow,
+  DataProgress,
   DetectRow,
   BadgeValue,
   HelperRow,
@@ -113,6 +114,21 @@ export interface Invokes {
   'stuck:choose': { req: CardAnswerReq & { choice: 'other_way' | 'take_over' | 'stop' }; res: CardRow };
   'recovery:choose': { req: CardAnswerReq & { choice: 'resume' | 'stop' }; res: CardRow };
   'error:fix': { req: CardAnswerReq & { action: FixAction }; res: CardRow };
+}
+
+/**
+ * M14 data rows of 08-1 §3.2 and §3.3 (CR-0018). The shapes are fixed here; M14 T3 (export) and T4 (Delete everything) move
+ * each row into `Invokes` / `Events` in the commit that adds its handler, schema, reducer and the preload allow-list lines.
+ */
+export interface DataInvokes {
+  /** Returns at once; progress, the final `{ path }` and `EXPORT_SECRET_FOUND` / `DISK_FULL` arrive on data:exportProgress. */
+  'data:export': { req: { folder: string }; res: { exportId: string } };
+  /** Progress on data:wipeProgress; the app restarts to 06-1 §2.1 Welcome. Error `PARTIAL_WIPE` lists the items in words. */
+  'data:deleteEverything': { req: { typed: 'DELETE' }; res: void };
+}
+export interface DataEvents {
+  'data:exportProgress': DataProgress;
+  'data:wipeProgress': DataProgress;
 }
 
 /** 08-1 §3.2: a card answer names the card, carries its nonce (a stale card is refused) and says how it was answered. */

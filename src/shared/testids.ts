@@ -1,6 +1,7 @@
 // Spec: 08-0 §C (data-testid scheme, X-58), 02-3 §F32.2 (ids used by 02–04; this file holds the shell areas: titlebar,
 // banner, sidebar, chatlist, chat-header, thread, app), 06 `screen-{slug}` roots for the pages the shell opens; M4 adds the
-// job cards, proof chips, stacked composer notices and dialog C-21 (CR-0008).
+// job cards, proof chips, stacked composer notices and dialog C-21 (CR-0008); M14 the privacy data rows, C-16 and the
+// wiping screen (CR-0018).
 // Ids are static; components read them from here (lint foo/testid-from-registry).
 export const TID = {
   // titlebar (03-shell-1 §3.2.5)
@@ -320,6 +321,13 @@ export const TID = {
   composerErrorsClear: 'composer-errors-clear',
   dialogC21: 'dialog-c-21',
   dialogConfirmField: 'dialog-confirm-field',
+
+  // M14 (CR-0018): Privacy → Your data rows (06-2 §6.6), C-16 (06-3 §14), the "Deleting everything…" screen (G-M14-22)
+  settingsRowPrivacyExport: 'settings-row-privacy-export',
+  settingsRowPrivacyDeleteAll: 'settings-row-privacy-delete-all',
+  dialogC16: 'dialog-c-16',
+  screenWiping: 'screen-wiping',
+  screenWipingProgress: 'screen-wiping-progress',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

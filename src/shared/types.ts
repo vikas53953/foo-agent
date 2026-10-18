@@ -677,6 +677,10 @@ export type ErrorKind =
   | 'PROTOCOL_FIX_ACTION'
   | 'IDEMPOTENT_REPEAT'
   | 'CARD_STALE'
+  // M14 (08-1 §3.2 data rows, 08-3 §21): export and Delete everything
+  | 'EXPORT_SECRET_FOUND'
+  | 'DISK_FULL'
+  | 'PARTIAL_WIPE'
   | 'UNKNOWN';
 
 // ---- card payloads (08-5 §4.1) the M2 cards draw ----
@@ -734,4 +738,47 @@ export interface JobDetails {
   frames: { stepId: string; path: string; at: number }[];
   proof?: unknown;
   costs: unknown[];
+}
+
+// ---- M14 install, export, delete everything (CR-0018) ----
+/**
+ * 08-5 l.57 `ReadinessResult`, extended by CR-0018 G-M14-14 with the 09 §9.3.2 checks the type lacked (stored only, no new
+ * user copy). `webview2` is always 'ok' (Electron ships Chromium). Written to `settings.install.readiness` by
+ * `foo.exe --install-readiness` (M14 T2) or on first launch (M12) when it is absent.
+ */
+export interface ReadinessResult {
+  os: 'ok' | 'too_old';
+  disk: 'ok' | 'low';
+  webview2: 'ok' | 'missing';
+  edge: 'ok' | 'missing';
+  /** `%APPDATA%` on a network drive. */
+  appdata: 'ok' | 'network';
+  /** Documents is an online-only OneDrive folder (then `files.outputFolder` = `%USERPROFILE%\foo files`, AT-002). */
+  documents: 'ok' | 'online_only';
+  /** Minutes before the PC sleeps on mains power; null = never or unknown. */
+  sleepAcMinutes: number | null;
+  checkedAt: number;
+}
+
+/** 09 §9.23.4 (X-124): `{LOCAL}\uninstall-result.json`, written by `--uninstall-cleanup`; `outPath` added by G-M14-17. */
+export interface UninstallResult {
+  revoked: { google: boolean; whatsapp: boolean };
+  /** Labels in words, never a `foo/…` target (07 R-02b): 'your IRCTC login'. */
+  credsFailed: string[];
+  exportPath?: string;
+  /** Display path of `files.outputFolder` for the done screen's "Your files in {folder} were kept." (G-M14-17). */
+  outPath: string;
+}
+
+/** CR-0018 G-M14-15: `{LOCAL}\uninstall-probe.json`, written by the running foo on `--uninstall-probe`. */
+export interface UninstallProbe {
+  jobs: number;
+}
+
+/** 08-1 §3.3 `data:exportProgress` / `data:wipeProgress`; the last export event carries `path` or `error`. */
+export interface DataProgress {
+  pct: number;
+  phase: string;
+  path?: string;
+  error?: ErrorKind;
 }

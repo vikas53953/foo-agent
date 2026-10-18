@@ -21,6 +21,7 @@ import { newId } from '../shared/ids';
 import { createMainWindow } from './windows/mainWindow';
 import { handleAppScheme, registerAppScheme } from './windows/protocol';
 import { claimSingleInstance } from './windows/singleInstance';
+import { CLI_EXIT, lockLostExitCode, parseCliArgv, refusedExitCode, routeArgv } from './cli/argv';
 
 export const AUMID = 'com.foo.desktop';
 
@@ -47,9 +48,17 @@ function onDeepLink(url: string): void {
   console.warn('URL_NOT_ALLOWED', url);
 }
 
-// Step 1: single instance.
+// Step 1: single instance. An installer switch that loses the lock exits with lockLostExitCode (CR-0018).
+const cli = parseCliArgv(process.argv);
 if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
-  app.quit();
+  if (cli) app.exit(lockLostExitCode(cli));
+  else app.quit();
+} else if (cli) {
+  // CR-0018: the installer and uninstaller helpers run main only, with no window, tray or engine.
+  void app.whenReady().then(async () => {
+    const route = routeArgv(process.argv, 'primary');
+    app.exit(route.kind === 'handled' ? await route.done : route.kind === 'refused' ? refusedExitCode(route) : CLI_EXIT.ok);
+  });
 } else {
   registerAppScheme();
   if (!app.isDefaultProtocolClient('foo')) app.setAsDefaultProtocolClient('foo');

@@ -1,0 +1,9 @@
+ts	phase	decision	why	evidence	result
+2026-10-18T18:30:00Z	contract	goal: M14 hardening, perf, acceptance, installer as 8 tickets (T1-T8); T1 lead, T2-T7 one ticket thread each into claude/foo-m14-6muiy7, T8 RC pass last; PR to main after M15 on main (plan §6)	Vikas: tickets from M4 (14:55Z), one thread per ticket (16:46Z), run non-dependent milestones now (18:03Z)	/mnt/project-files/foo/prep/M14-tickets.md	open
+2026-10-18T18:30:00Z	contract	milestone branch based on claude/foo-m4-fgejhm (M4 contracts), not main	coordinator brief; T4 needs jobs.pauseAll and the job rows	coordinator relay 18:28Z	done
+2026-10-18T18:45:00Z	pick	OWNERS.yml unchanged: its * row owns every M14 path	FID-19 needs one owner per path, already met	OWNERS.yml	done
+2026-10-18T18:45:00Z	pick	data:* shapes as DataInvokes/DataEvents; T3/T4 move rows into Invokes/Events with handler, schema, reducer, preload lines	SCHEMAS and reducers must cover every channel	CR-0018 (b) 18	done
+2026-10-18T18:45:00Z	pick	no errors.partial_wipe.* keys; PARTIAL_WIPE maps to thread.wipe.* lines after restart	no spec words for an in-app partial-wipe line (G-M14-22)	CR-0018 (b) 11	done
+2026-10-18T18:45:00Z	pick	cred_failed_many line for two or more saved items; {n} jobs line stays word for word	09 §9.23.3 words only the one-item case	CR-0018 (b) 16-17	open
+2026-10-18T18:50:00Z	approval	CR-0018 (rows, native capture kind, switches, G-M14-06..34 = X-171, X-177) approved on Vikas's behalf	independent Fable review PASS WITH FIXES, act fix applied (probe/quit exit 0 when handed on); his rule 2026-10-18 14:56Z	docs/cr/CR-0018-m14-rows-and-picks.md (e); prep/GAPS-2-for-review.md	done
+2026-10-18T18:50:00Z	vikas	G-M14-01, 02, 04, 05 recommended; G-M14-03 no stranger test for the tester build, only before the public release	Vikas answered 18:42Z "M11-M14 choices: 1A 2A 3A 4B 5A 6A"	message cmsg_013hHT4a7moXJEgc8zmrmn2BJb759zJ22GicKyDRfhQBHn; CR-0018 (c)	done

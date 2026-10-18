@@ -1,7 +1,7 @@
 // 11-fidelity §11.2.1, §11.2.7: golden/manifest.json is generated from the frozen walkthrough and fixes the BP ids.
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { BP, BP_M2, BP_M4, CHAPTER_MILESTONE, EARLY_STEPS, SUPERSEDED, readManifest } from '../../scripts/golden-manifest';
+import { BP, BP_M2, BP_M4, CHAPTER_MILESTONE, EARLY_STEPS, NATIVE_STEPS, SUPERSEDED, readManifest } from '../../scripts/golden-manifest';
 import { compareRenders, select, type RefJson } from '../../scripts/golden-render';
 
 const manifest = readManifest();
@@ -70,6 +70,15 @@ describe('golden manifest', () => {
       'UX-05-04',
       ...['01', '02', '03', '04', '05', '06', '09', '11'].map((s) => `UX-23-${s}`),
     ]);
+  });
+  it('CR-0018 marks the 12 steps Windows draws as native, so Tier B covers 233 steps', () => {
+    const native = manifest.ux.filter((e) => e.capture === 'native');
+    expect(native.map((e) => e.id)).toEqual([
+      ...['01', '02', '03', '04', '05'].map((s) => `UX-01-${s}`),
+      ...['07', '08', '09', '10', '11', '12', '13'].map((s) => `UX-25-${s}`),
+    ]);
+    for (const e of native) expect(e.captureNote).toBe(NATIVE_STEPS[e.id]);
+    expect(manifest.ux.length - native.length).toBe(233);
   });
   it('the selectors exist in the frozen Blueprint', () => {
     const html = readFileSync(manifest.sources.bp, 'utf8');

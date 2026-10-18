@@ -488,7 +488,9 @@
       "s": "Your normal Downloads folder. The installer says it's signed by foo.",
       "f": "Nothing yet. Because the installer is signed and installs just for you, Windows doesn't ask for an admin password.",
       "hl": "setupfile",
-      "milestone": "M14"
+      "milestone": "M14",
+      "capture": "native",
+      "captureNote": "first signed build only (G-M14-06); the tester RC files a manual record of the SmartScreen path"
     },
     {
       "id": "UX-01-02",
@@ -504,7 +506,9 @@
       "s": "\"Install foo\" with one line about what foo is, a ticked box, and Install / Cancel.",
       "f": "Waits for your tap. Installs only into your own user folder.",
       "hl": "install",
-      "milestone": "M14"
+      "milestone": "M14",
+      "capture": "native",
+      "captureNote": "string payload (strings.nsh = en-IN keys) + manual list 1 and 10, Windows 10 and 11"
     },
     {
       "id": "UX-01-03",
@@ -520,7 +524,9 @@
       "s": "\"Installing… this takes about a minute.\" and a bar. Nothing else to read.",
       "f": "Copies foo, adds a Start menu shortcut and registers notifications.",
       "hl": "progress",
-      "milestone": "M14"
+      "milestone": "M14",
+      "capture": "native",
+      "captureNote": "string payload (strings.nsh = en-IN keys) + manual list 1 and 10, Windows 10 and 11"
     },
     {
       "id": "UX-01-04",
@@ -536,7 +542,9 @@
       "s": "The same progress bar, almost full. No questions.",
       "f": "Runs the readiness check silently and only speaks up if something would stop it working.",
       "hl": "progress",
-      "milestone": "M14"
+      "milestone": "M14",
+      "capture": "native",
+      "captureNote": "string payload (strings.nsh = en-IN keys) + manual list 1 and 10, Windows 10 and 11"
     },
     {
       "id": "UX-01-05",
@@ -552,7 +560,9 @@
       "s": "The last installer screen, plus foo's \"f\" now in the taskbar and the tray.",
       "f": "Starts foo hidden in the tray first, with the tooltip \"foo · setting up\".",
       "hl": "openfoo",
-      "milestone": "M14"
+      "milestone": "M14",
+      "capture": "native",
+      "captureNote": "string payload (strings.nsh = en-IN keys) + manual list 1 and 10, Windows 10 and 11"
     },
     {
       "id": "UX-01-06",
@@ -4360,7 +4370,9 @@
       "s": "Windows' Installed apps list, foo's ⋯ menu open on Uninstall.",
       "f": "Windows starts foo's own uninstaller.",
       "hl": "uninstallmenu",
-      "milestone": "M14"
+      "milestone": "M14",
+      "capture": "native",
+      "captureNote": "string payload (strings.nsh = en-IN keys) + manual list 1 and 10, Windows 10 and 11"
     },
     {
       "id": "UX-25-08",
@@ -4376,7 +4388,9 @@
       "s": "Keep my data on this PC · Delete everything (selected): \"Chats, memory, routines, saved logins, cards and keys are erased. Your Gmail, Calendar and WhatsApp connections are disconnected.\"",
       "f": "Defaults to deleting, so secrets never outlive the app.",
       "hl": "delev",
-      "milestone": "M14"
+      "milestone": "M14",
+      "capture": "native",
+      "captureNote": "string payload (strings.nsh = en-IN keys) + manual list 1 and 10, Windows 10 and 11"
     },
     {
       "id": "UX-25-09",
@@ -4392,7 +4406,9 @@
       "s": "\"2 jobs are still running. Uninstalling stops them. Nothing will be paid.\" Stop and uninstall · Cancel.",
       "f": "Stops jobs cleanly and withdraws approvals.",
       "hl": "stopuninst",
-      "milestone": "M14"
+      "milestone": "M14",
+      "capture": "native",
+      "captureNote": "string payload (strings.nsh = en-IN keys) + manual list 1 and 10, Windows 10 and 11"
     },
     {
       "id": "UX-25-10",
@@ -4408,7 +4424,9 @@
       "s": "\"This can't be undone. Want a copy first? Export everything\".",
       "f": "Runs the same export as Settings, then continues.",
       "hl": "uexport",
-      "milestone": "M14"
+      "milestone": "M14",
+      "capture": "native",
+      "captureNote": "string payload (strings.nsh = en-IN keys) + manual list 1 and 10, Windows 10 and 11"
     },
     {
       "id": "UX-25-11",
@@ -4424,7 +4442,9 @@
       "s": "\"Removing foo…\" with a bar: \"Signing foo out of Google and WhatsApp…\"",
       "f": "Stop jobs → disconnect apps → clear saved logins, cards and keys → delete foo's folder → remove shortcuts.",
       "hl": "progress",
-      "milestone": "M14"
+      "milestone": "M14",
+      "capture": "native",
+      "captureNote": "string payload (strings.nsh = en-IN keys) + manual list 1 and 10, Windows 10 and 11"
     },
     {
       "id": "UX-25-12",
@@ -4440,7 +4460,9 @@
       "s": "\"foo is removed. Your files in Documents\\foo were kept. Your Claude account is untouched.\" · Close.",
       "f": "No survey, no web page, nothing left behind.",
       "hl": "uclose",
-      "milestone": "M14"
+      "milestone": "M14",
+      "capture": "native",
+      "captureNote": "string payload (strings.nsh = en-IN keys) + manual list 1 and 10, Windows 10 and 11"
     },
     {
       "id": "UX-25-13",
@@ -4456,7 +4478,9 @@
       "s": "\"foo is removed. Your data is kept on this PC. Reinstall foo to pick up where you left off.\"",
       "f": "Skips setup next time if your AI still passes its test.",
       "hl": "uclose",
-      "milestone": "M14"
+      "milestone": "M14",
+      "capture": "native",
+      "captureNote": "string payload (strings.nsh = en-IN keys) + manual list 1 and 10, Windows 10 and 11"
     }
   ],
   "superseded": [

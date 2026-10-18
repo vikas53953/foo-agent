@@ -127,3 +127,52 @@ R17 · R8 · R14,J5,,UX-05-04,,05-1 §5.2; 05-3 §5.15; 04 §4.2,test/fidelity/u
 ,,,,BP-CARD-18,05-3 §5.19,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
 ,,,,BP-CARD-19,05-3 §5.20,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
 ,,,,BP-CARD-20,05-3 §5.21,test/fidelity/bp/BP-cards-m4.spec.ts,M4,pending
+,J1,AT-001,,,10-acceptance-1 §B; 09 §9.3.1; M11 proves the toast half (G-M14-30),test/installer/AT-001.spec.ts,M14,pending
+,J1,AT-004,,,10-acceptance-1 §B; 09 §9.3.2; 10-acceptance-2 §D ART-02a,test/installer/strings.test.ts,M14,pending
+,J1,AT-004,,,10-acceptance-1 §B; 09 §9.3.2,test/installer/branches.spec.ts,M14,pending
+,J21,AT-092,,,10-acceptance-1 §B; 08-3 §19.4,test/integration/data/export.test.ts,M14,pending
+,J23,"AT-100, AT-103",,,10-acceptance-1 §B; 09 §9.23.3; G-M14-32 silent /MODE,test/installer/uninstall-delete.spec.ts,M14,pending
+,J23,"AT-100, AT-103",,,10-acceptance-1 §B; 08-3 §19.4; 06-3 §14 C-16,test/integration/data/wipe.test.ts,M14,pending
+,J23,AT-101,,,10-acceptance-1 §B; 09 §9.23.4,test/integration/data/wipe-revoke.test.ts,M14,pending
+,J23,AT-102,,,10-acceptance-1 §B; 09 §9.23.3; G-M14-18,test/installer/keep-reinstall.spec.ts,M14,pending
+,J23,AT-104,,,10-acceptance-1 §B; 09 §9.23.2; G-M14-15,test/installer/jobs-warning.spec.ts,M14,pending
+,,AT-150,,,10-acceptance-1 §B; 06-2 §6.9; X-44; G-M14-24,test/e2e/m14-about-version.spec.ts,M14,pending
+,J23,AT-224,,,10-acceptance-1 §B; 09 §9.23.3; 06-3 §14 C-16,test/integration/data/wipe-offline.test.ts,M14,pending
+,,AT-277,,,10-acceptance-1 §B; X-143; G-M14-28 (M11 and M12 prove their halves as notes),test/installer/icon.spec.ts,M14,pending
+,,ART-15a,,,01-articles Art. 15; 10-acceptance-2 §D,test/articles/ART-15a.test.ts,M14,pending
+,,ART-15b,,,01-articles Art. 15; 10-acceptance-2 §D; feed host waits on G-M14-05,test/articles/ART-15b.test.ts,M14,pending
+,,ART-24b,,,01-articles Art. 24; 10-acceptance-2 §D,test/articles/ART-24b.test.ts,M14,pending
+,,ART-25,,,01-articles Art. 25; 10-acceptance-2 §D,test/articles/ART-25.test.ts,M14,pending
+,,ART-26a,,,01-articles Art. 26; 10-acceptance-2 §D; 06-2 §6.6; 06-3 §14,test/e2e/m14-axe.spec.ts,M14,pending
+,,ART-28,,,01-articles Art. 28; 10-acceptance-2 §D; 10-acceptance-2 §E,test/perf/probes/budgets.test.ts,M14,pending
+,,ART-30,,,01-articles Art. 30; 10-acceptance-2 §D,test/articles/ART-30.test.ts,M14,pending
+,,PERF-05,,,10-acceptance-2 §E; 08-3 §20; measurable when M13 lands,test/perf/probes/budgets.test.ts,M14,pending
+,,PERF-06,,,10-acceptance-2 §E; 08-3 §20; measurable when M4 lands,test/perf/probes/budgets.test.ts,M14,pending
+,,PERF-07,,,10-acceptance-2 §E; 08-3 §20; measurable when M4 lands,test/perf/probes/budgets.test.ts,M14,pending
+,,PERF-08,,,10-acceptance-2 §E; 08-3 §20; measurable when M4 lands,test/perf/probes/budgets.test.ts,M14,pending
+,,PERF-09,,,10-acceptance-2 §E; 08-3 §20; measurable when M11 lands,test/perf/probes/budgets.test.ts,M14,pending
+,,PERF-10,,,10-acceptance-2 §E; 08-3 §20; measurable when M11 lands,test/perf/probes/budgets.test.ts,M14,pending
+,,PERF-11,,,10-acceptance-2 §E; 08-3 §20; measurable when M4 lands,test/perf/probes/budgets.test.ts,M14,pending
+,,PERF-12,,,10-acceptance-2 §E; 08-3 §20; measurable when M12 and M14 T2 land,test/perf/probes/budgets.test.ts,M14,pending
+,,PERF-13,,,10-acceptance-2 §E; 08-3 §20; measurable when M12 lands,test/perf/probes/budgets.test.ts,M14,pending
+,,PERF-14,,,10-acceptance-2 §E; 08-3 §20; measurable now (M0–M3 and the perf seed),test/perf/probes/budgets.test.ts,M14,pending
+,,PERF-15,,,10-acceptance-2 §E; 08-3 §20; measurable now (M0–M3 and the perf seed),test/perf/probes/budgets.test.ts,M14,pending
+,,PERF-16,,,10-acceptance-2 §E; 08-3 §20; measurable now (M0–M3 and the perf seed),test/perf/probes/budgets.test.ts,M14,pending
+,,PERF-17,,,10-acceptance-2 §E; 08-3 §20; measurable now (M0–M3 and the perf seed),test/perf/probes/budgets.test.ts,M14,pending
+,,PERF-18,,,10-acceptance-2 §E; 08-3 §20; measurable when M11 lands,test/perf/probes/budgets.test.ts,M14,pending
+R17 · R23,J1,,UX-01-01,,09 §9.3.2; capture kind native (G-M14-10); first signed build (G-M14-06),test/installer/native-steps.test.ts,M14,pending
+R17 · R23,J1,,UX-01-02,,09 §9.3.2; capture kind native (G-M14-10),test/installer/native-steps.test.ts,M14,pending
+R17 · R23,J1,,UX-01-03,,09 §9.3.2; capture kind native (G-M14-10),test/installer/native-steps.test.ts,M14,pending
+R17 · R23,J1,,UX-01-04,,09 §9.3.2; capture kind native (G-M14-10),test/installer/native-steps.test.ts,M14,pending
+R17 · R23,J1,,UX-01-05,,09 §9.3.2; capture kind native (G-M14-10),test/installer/native-steps.test.ts,M14,pending
+R21 · R14,J23 · J21,,UX-25-03,,06-2 §6.6 export,test/fidelity/ux/UX-25.privacy.spec.ts,M14,pending
+R21 · R14,J23 · J21,,UX-25-04,,06-2 §6.6 export,test/fidelity/ux/UX-25.privacy.spec.ts,M14,pending
+R21 · R14,J23 · J21,,UX-25-05,,06-3 §14 C-16,test/fidelity/ux/UX-25.privacy.spec.ts,M14,pending
+R21 · R14,J23 · J21,,UX-25-06,,06-3 §14 C-16,test/fidelity/ux/UX-25.privacy.spec.ts,M14,pending
+R21 · R14,J23 · J21,,UX-25-07,,09 §9.23.2; capture kind native (G-M14-10),test/installer/native-steps.test.ts,M14,pending
+R21 · R14,J23 · J21,,UX-25-08,,09 §9.23.2; capture kind native (G-M14-10),test/installer/native-steps.test.ts,M14,pending
+R21 · R14,J23 · J21,,UX-25-09,,09 §9.23.2; capture kind native (G-M14-10),test/installer/native-steps.test.ts,M14,pending
+R21 · R14,J23 · J21,,UX-25-10,,09 §9.23.2; capture kind native (G-M14-10),test/installer/native-steps.test.ts,M14,pending
+R21 · R14,J23 · J21,,UX-25-11,,09 §9.23.2; capture kind native (G-M14-10),test/installer/native-steps.test.ts,M14,pending
+R21 · R14,J23 · J21,,UX-25-12,,09 §9.23.2; capture kind native (G-M14-10),test/installer/native-steps.test.ts,M14,pending
+R21 · R14,J23 · J21,,UX-25-13,,09 §9.23.2; capture kind native (G-M14-10),test/installer/native-steps.test.ts,M14,pending

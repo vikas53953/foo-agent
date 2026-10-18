@@ -49,6 +49,12 @@ export interface UxEntry {
    */
   firstTested?: string;
   superseded?: { decision: string };
+  /**
+   * CR-0018 (G-M14-10): 'native' = Windows draws the frame (NSIS pages, Downloads, SmartScreen, Settings → Apps): checked by
+   * string payload equality and the 11 §11.9.1 manual list, never Tier B (no dark theme, no Playwright capture).
+   */
+  capture?: 'native';
+  captureNote?: string;
 }
 
 /** BP ids for the M1 fidelity exit: BP-APP-L/M/R and BP-ANAT-* (shell frame, chat list, headers, right shell, widths L/M/S/XS). */
@@ -318,6 +324,18 @@ export const EARLY_STEPS: Record<string, string> = {
   ...Object.fromEntries(['02', '03', '04'].map((s) => [`UX-05-${s}`, 'M4'])),
 };
 
+/**
+ * CR-0018 (G-M14-10): the 12 steps Windows draws. Their words are checked against the generated `strings.nsh` (09 §9.3.2,
+ * §9.23.2 = en-IN `installer.*` / `uninstaller.*`) and their look by manual list items 1 and 10 on Windows 10 and 11, so Tier
+ * B covers 233 steps × 2 themes. UX-01-01 shows a signed installer: it is checked on the first signed build (G-M14-06).
+ */
+const NATIVE_NOTE = 'string payload (strings.nsh = en-IN keys) + manual list 1 and 10, Windows 10 and 11';
+export const NATIVE_STEPS: Record<string, string> = {
+  'UX-01-01': 'first signed build only (G-M14-06); the tester RC files a manual record of the SmartScreen path',
+  ...Object.fromEntries(['02', '03', '04', '05'].map((s) => [`UX-01-${s}`, NATIVE_NOTE])),
+  ...Object.fromEntries(['07', '08', '09', '10', '11', '12', '13'].map((s) => [`UX-25-${s}`, NATIVE_NOTE])),
+};
+
 /** Chapter anchor → the milestone that completes the chapter (11 §11.12 item 8: a chapter is owned by the milestone that completes it). */
 export const CHAPTER_MILESTONE: Record<string, string | null> = {
   install: 'M14',
@@ -429,6 +447,7 @@ export function buildUx(chapters: RawChapter[], steps: RawStep[]): UxEntry[] {
     };
     if (EARLY_STEPS[id]) entry.firstTested = EARLY_STEPS[id];
     if (SUPERSEDED[id]) entry.superseded = { decision: SUPERSEDED[id] };
+    if (NATIVE_STEPS[id]) Object.assign(entry, { capture: 'native', captureNote: NATIVE_STEPS[id] });
     return entry;
   });
 }

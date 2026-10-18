@@ -7,5 +7,5 @@
     "types": ["node"],
     "noEmit": true
   },
-  "include": ["scripts/**/*.ts", "test/**/*.ts", "*.config.ts", "eslint-rules/**/*.ts"]
+  "include": ["scripts/**/*.ts", "test/**/*.ts", "*.config.ts", "eslint-rules/**/*.ts", "src/types/build-defines.d.ts"]
 }
