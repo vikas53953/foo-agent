@@ -87,6 +87,11 @@ export interface JobHarness extends Harness {
 }
 
 const realSleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+/** One macrotask turn. Windows timers fire every ~15.6 ms, so settle() yields with setImmediate rather than a 1 ms sleep. */
+const tick = () => new Promise<void>((r) => setImmediate(r));
+const ticks = async (n: number) => {
+  for (let i = 0; i < n; i++) await tick();
+};
 
 export function jobHarness(
   o: { script: FakeLineIn[]; tools?: FakeToolOptions; settings?: (s: Settings) => Settings } & Omit<
@@ -104,14 +109,19 @@ export function jobHarness(
     calls: ft.calls,
     async settle(stepMs = 250) {
       for (let round = 0; round < 800; round++) {
-        for (let i = 0; i < 4; i++) await realSleep(1);
+        await realSleep(1);
+        await ticks(8);
         let done = false;
         const p = Promise.all([h.engine.lane.idle(), h.engine.jobs.idle()]).then(() => (done = true));
-        await Promise.race([p, realSleep(3)]);
+        await Promise.race([p, ticks(24)]);
+        if (!done) await Promise.race([p, realSleep(3)]);
         if (done) {
-          for (let i = 0; i < 4; i++) await realSleep(1);
+          await realSleep(1);
+          await ticks(8);
           let again = false;
-          await Promise.race([Promise.all([h.engine.lane.idle(), h.engine.jobs.idle()]).then(() => (again = true)), realSleep(3)]);
+          const q = Promise.all([h.engine.lane.idle(), h.engine.jobs.idle()]).then(() => (again = true));
+          await Promise.race([q, ticks(24)]);
+          if (!again) await Promise.race([q, realSleep(3)]);
           if (again) return;
         }
         h.clock.advance(stepMs);

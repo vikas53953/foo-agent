@@ -87,5 +87,5 @@ describe('Article 18: the user can always steer or stop', () => {
       h.close();
       h = null;
     }
-  }, 60_000);
+  }, 180_000);
 });

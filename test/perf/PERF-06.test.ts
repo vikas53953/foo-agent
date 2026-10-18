@@ -33,5 +33,5 @@ describe('PERF-06 stop is fast', () => {
       h.close();
       h = null;
     }
-  });
+  }, 60_000);
 });

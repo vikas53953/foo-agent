@@ -89,7 +89,7 @@ describe('AT-116 · stuck rules, Stop and the 15-minute timeout', () => {
     // G-M4-11: the stop report is the thread.stop.report line.
     expect(fooTexts(h).at(-1)).toBe(t('thread.stop.report.nothing'));
     for (const c of h.cards('checklist')) expect(c.state).toBe('stopped');
-  });
+  }, 30_000);
 
   it('AT-116: nobody answers for 15 min → FAILED ❌, stuck card timed_out', async () => {
     h = jobHarness({ tools: { failNext: { 'gmail.search': 10 } }, script: [jobIntake(PLAN), ...failing(3)] });

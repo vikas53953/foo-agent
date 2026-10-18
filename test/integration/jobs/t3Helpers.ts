@@ -8,11 +8,14 @@ import { TEST_EPOCH_MS } from '../../../src/shared/clock';
 import type { Settings } from '../../../src/shared/settings';
 
 const realSleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+/** One macrotask turn. Windows timers fire every ~15.6 ms, so the loops below take one real sleep per round, not three. */
+const tick = () => new Promise<void>((r) => setImmediate(r));
 
 /** Lets the engine work, advancing the fake clock `stepMs` per round, until `cond` holds. */
 export async function until(h: JobHarness, cond: () => boolean, stepMs = 100, rounds = 2_000): Promise<void> {
   for (let i = 0; i < rounds; i++) {
-    for (let j = 0; j < 3; j++) await realSleep(1);
+    await realSleep(1);
+    for (let j = 0; j < 8; j++) await tick();
     if (cond()) return;
     h.clock.advance(stepMs);
   }
@@ -21,7 +24,9 @@ export async function until(h: JobHarness, cond: () => boolean, stepMs = 100, ro
 
 /** Lets queued engine work run without moving the clock. */
 export async function flush(rounds = 30): Promise<void> {
-  for (let i = 0; i < rounds; i++) await realSleep(1);
+  await realSleep(1);
+  for (let i = 0; i < rounds * 4; i++) await tick();
+  await realSleep(1);
 }
 
 /** The chosen AI is an API key (metered) and verified: the "key billing" world of 08-2 §5.10. */

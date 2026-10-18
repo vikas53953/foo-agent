@@ -54,5 +54,5 @@ describe('Article 12: the runner owns progress', () => {
     const frozenFor = Number(h.cards('stuck')[0]!.created_at) - Number(h.job().last_progress_at);
     expect(frozenFor).toBeGreaterThanOrEqual(180_000 - 5_000);
     expect(frozenFor).toBeLessThanOrEqual(180_000 + 5_000);
-  });
+  }, 30_000);
 });
