@@ -1,0 +1,57 @@
+{
+  "journey": "test/verify/m4-t5-cards.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "4b8ae610272a85c6fb1102f34f2e603a91d6a74e",
+  "dirty": false,
+  "started": "2026-10-18T18:14:18.341Z",
+  "finished": "2026-10-18T18:14:22.668Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "Errands shows card-plan, card-error, card-stuck, card-spend-cap, card-checklist and the proof chip from seeded rows, no engine",
+    "proof chip \"Proof: booking #TB40217\" → popover with Copy and See in activity",
+    "C-21 with ₹1,050 shows \"The new cap has to be at least ₹1,100.\"",
+    "Raise to ₹1,500 saved money.aiCapPaise = 150000 through settings:set",
+    "Stop with no engine → main cancels the job, the checklist follows job:upsert: Birthday gift live checklist Looked for a gift under ₹2,000 Compared 3 shops Keep 3 gifts that fit your budget Show you before doing anything Stopped by you 9:33 AM"
+  ],
+  "shots": [
+    {
+      "file": "after/01-errands-top-light.light.png",
+      "name": "errands-top-light",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-errands-bottom-light.light.png",
+      "name": "errands-bottom-light",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-errands-top-dark.dark.png",
+      "name": "errands-top-dark",
+      "theme": "dark"
+    },
+    {
+      "file": "after/04-errands-bottom-dark.dark.png",
+      "name": "errands-bottom-dark",
+      "theme": "dark"
+    },
+    {
+      "file": "after/05-proof-popover.light.png",
+      "name": "proof-popover",
+      "theme": "light"
+    },
+    {
+      "file": "after/06-c21-raise.light.png",
+      "name": "c21-raise",
+      "theme": "light"
+    },
+    {
+      "file": "after/07-checklist-stopped.light.png",
+      "name": "checklist-stopped",
+      "theme": "light"
+    }
+  ],
+  "consoleErrors": []
+}
