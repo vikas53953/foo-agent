@@ -407,6 +407,14 @@
   opacity: 1;
   pointer-events: auto;
 }
+/* The toolbar mounts on the row's first hover or focus (MessageList RowFrame); it still fades in from 0. */
+@starting-style {
+  .row:hover .toolbar,
+  .row:focus-within .toolbar,
+  :global([data-index]:focus-visible) .toolbar {
+    opacity: 0;
+  }
+}
 .toolbar .toolButton::before {
   inset: calc((var(--s7) - var(--btn-h-sm)) / 2);
 }

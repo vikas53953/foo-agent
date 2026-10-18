@@ -31,8 +31,17 @@ const dayFormats = new Map<string, Intl.DateTimeFormat>();
 export function dayKey(at: number, timeZone: string): string {
   let f = dayFormats.get(timeZone);
   if (!f) dayFormats.set(timeZone, (f = new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' })));
-  return f.format(at);
+  // The same instants come back on every page of history: each is formatted once per zone (the newest DAY_KEYS_MAX).
+  const memo = `${timeZone}|${at}`;
+  const hit = dayKeys.get(memo);
+  if (hit !== undefined) return hit;
+  const k = f.format(at);
+  if (dayKeys.size >= DAY_KEYS_MAX) dayKeys.delete(dayKeys.keys().next().value as string);
+  dayKeys.set(memo, k);
+  return k;
 }
+const DAY_KEYS_MAX = 20_000;
+const dayKeys = new Map<string, string>();
 
 export function dateLabel(at: number, o: DateOpts): string {
   const date = formatDate(at, 'date', o);

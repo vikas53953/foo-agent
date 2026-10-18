@@ -8,7 +8,7 @@
 // newest message was visible for 1 s with the window focused; §1.8 each row is named "{sender}, {time}: {text}. {state}",
 // keys Enter / Shift+F10 / Menu, Ctrl+Shift+R, Ctrl+Shift+E, Ctrl+C; new foo rows are announced once (streaming: when done);
 // §6.4 a quote click jumps and highlights 1600 ms; §14.2 / §14.3 status line and Thinking row; §10.11 the WhatsApp mirror.
-import { useVirtualizer } from '@tanstack/react-virtual';
+import { observeElementOffset, useVirtualizer } from '@tanstack/react-virtual';
 import { batchScrollAdjustments } from './scrollAdjust';
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import { t } from '../../shared/copy/t';
@@ -32,10 +32,11 @@ import styles from './MessageList.module.css';
 import { REVEAL_EVENT, takeReveal } from './reveal';
 import { MessageView, WaBubble, messageAccessibleName, runRowCommand, senderOf, type RowCtx } from './Bubble';
 import { MessageDialogs } from './MessageDialogs';
+import { RowHotCtx } from './bubbleContext';
 import { RetentionLine, StatusLine, ThinkingRow } from './Markers';
 import { buildRows, buildWaRows, estimateRow, firstUnreadId, type VRow } from './rows';
 import { layoutRows, type RowLayout } from './runs';
-import { followStreaming, MARK_READ_AFTER_MS, nearTop, rowVisible, showJump, unreadOpenTop } from './stickToBottom';
+import { followStreaming, MARK_READ_AFTER_MS, nearTop, rowVisible, showJump, unreadOpenTop, type ScrollMetrics } from './stickToBottom';
 import { Marked } from './Marked';
 import { UnreadDivider } from './UnreadDivider';
 import { useStickToBottom } from './useStickToBottom';
@@ -189,6 +190,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
 
   const cardType = useCallback((id: string) => (cards as Record<string, CardRow>)[id]?.type, [cards]);
   const onVirtualChange = useRef<(total: number) => void>(() => undefined);
+  const afterScroll = useRef<() => void>(() => undefined);
   const rem = useMemo(remPx, []);
   const v = useVirtualizer({
     count: rows.length,
@@ -202,17 +204,31 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     directDomUpdatesMode: 'position',
     useFlushSync: false,
     onChange: (inst) => onVirtualChange.current(inst.getTotalSize()),
+    // The list's own scroll handling runs right after the virtualiser has taken the new offset, so it reads the offset
+    // from the virtualiser instead of the DOM (PERF-04, `scrollMetrics`).
+    observeElementOffset: (inst, cb) =>
+      observeElementOffset(inst, (offset, isScrolling) => {
+        cb(offset, isScrolling);
+        if (isScrolling) afterScroll.current();
+      }),
     paddingStart: rem,
     paddingEnd: rem,
   });
   // PERF-04: one scroll correction per measurement pass instead of one forced layout per row measured above the fold.
-  useLayoutEffect(() => batchScrollAdjustments(v), [v]);
+  const sticking = useRef<() => boolean>(() => false);
+  useLayoutEffect(() => batchScrollAdjustments(v, () => sticking.current()), [v]);
 
   const target = useMemo(
-    () => ({ scrollToEnd: () => rows.length && v.scrollToIndex(rows.length - 1, { align: 'end' }), getTotalSize: () => v.getTotalSize() }),
+    () => ({
+      scrollToEnd: () => rows.length && v.scrollToIndex(rows.length - 1, { align: 'end' }),
+      getTotalSize: () => v.getTotalSize(),
+      // TanStack Virtual keeps a scroll-to-index in `scrollState` until the target holds still (private in its typings).
+      isFollowing: () => (v as unknown as { scrollState: unknown }).scrollState != null,
+    }),
     [rows.length, v],
   );
   const stick = useStickToBottom(scrollRef, rows, target);
+  sticking.current = () => stick.wasAtBottom.current;
 
   // Open position: restore this session's scrollTop, else the unread divider 1/3 down, else the end (§3.6.4, §3.6.5).
   const opened = useRef(false);
@@ -345,22 +361,38 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     return rows.map((r) => (r.kind === 'date' ? (label = r.label) : label));
   }, [rows]);
 
+  // PERF-04: the scroller's metrics from the virtualiser (this runs from its offset observer, right after it read the
+  // offset; the column is its total size), not from the DOM: reading scrollHeight after the virtualiser wrote the row
+  // positions forced a style and layout pass on every scroll event. The "load older" banner above the column is the one thing it does not know; while it shows
+  // (rarely), the DOM is read.
+  const scrollMetrics = (el: HTMLElement): ScrollMetrics => {
+    const scrollTop = v.scrollOffset;
+    const clientHeight = v.scrollRect?.height;
+    if (scrollTop === null || clientHeight === undefined || older === 'loading' || older === 'failed')
+      return { scrollTop: el.scrollTop, scrollHeight: el.scrollHeight, clientHeight: el.clientHeight };
+    return { scrollTop, clientHeight, scrollHeight: Math.max(clientHeight, v.getTotalSize()) };
+  };
+
   const onScroll = () => {
     const el = scrollRef.current;
     if (!el) return;
-    stick.onScroll();
+    const m = scrollMetrics(el);
+    const byUser = performance.now() - userInputAt.current < motion['delay-sticky-hide'];
+    stick.onScroll(m, byUser);
     // Only the mark-read check (X-152) reads the tick; with nothing unread a scroll needs no list re-render for it.
     if (chat.unreadCount > 0) setScrollTick((n) => (n + 1) % 1024);
-    setJumpShown(showJump(el));
-    if (nearTop(el.scrollTop) && older === 'idle' && slice?.hasMore) void loadOlder();
-    const firstVisible = v.getVirtualItems().find((i) => i.end > el.scrollTop + rem);
+    setJumpShown(showJump(m));
+    if (nearTop(m.scrollTop) && older === 'idle' && slice?.hasMore) void loadOlder();
+    const firstVisible = v.getVirtualItems().find((i) => i.end > m.scrollTop + rem);
     const label = firstVisible ? dayLabels[firstVisible.index] : '';
-    if (label && el.scrollTop > 0 && performance.now() - userInputAt.current < motion['delay-sticky-hide']) {
-      setSticky({ label, shown: true });
+    if (label && m.scrollTop > 0 && byUser) {
+      // The same label while shown is no change: no list re-render per scroll event for it.
+      setSticky((s) => (s.shown && s.label === label ? s : { label, shown: true }));
       clearTimeout(stickyTimer.current);
       stickyTimer.current = setTimeout(() => setSticky((s) => ({ ...s, shown: false })), motion['delay-sticky-hide']);
     }
   };
+  afterScroll.current = onScroll;
   useEffect(() => () => clearTimeout(stickyTimer.current), []);
 
   const focusRow = useCallback(
@@ -498,7 +530,6 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
         aria-label={t('thread.log.label', { name: chat.title })}
         tabIndex={0}
         data-testid={TID.threadLog}
-        onScroll={onScroll}
         onWheel={markUserInput}
         onPointerDown={markUserInput}
         onTouchStart={markUserInput}
@@ -563,9 +594,15 @@ const RowFrame = memo(function RowFrame({
 }) {
   const m = row.kind === 'message' ? row.message : null;
   const name = useMemo(() => (m ? messageAccessibleName(m, ctx) : undefined), [m, ctx]);
+  const [hot, setHot] = useState(false);
+  const warm = () => {
+    if (!hot) setHot(true);
+  };
   return (
     <div
       ref={measure}
+      onPointerEnter={warm}
+      onFocus={warm}
       data-index={index}
       className={styles.row}
       role="listitem"
@@ -573,7 +610,9 @@ const RowFrame = memo(function RowFrame({
       data-new={isNew ? '' : undefined}
       data-flash={flash || undefined}
     >
-      <Row row={row} index={index} cards={cards} layout={layout} ctx={ctx} />
+      <RowHotCtx.Provider value={hot}>
+        <Row row={row} index={index} cards={cards} layout={layout} ctx={ctx} />
+      </RowHotCtx.Provider>
     </div>
   );
 });

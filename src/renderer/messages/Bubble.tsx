@@ -7,7 +7,7 @@
 // picker), §10 (attachments, deleted state, Read more, emoji-only, WhatsApp formatting, the WhatsApp mirror bubble), §13
 // (markdown), §14.4 (streaming: held-back markdown, no meta until done), §15, §17, §19.4, §19.6, §19.7 (cards sit as rows
 // aligned like foo's bubbles).
-import { memo, useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from 'react';
+import { memo, useContext, useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import { motion } from '../../shared/tokens';
 import { TID } from '../../shared/testids';
@@ -33,7 +33,7 @@ import { IconButton } from '../ui/IconButton';
 import { Menu, type MenuAnchor } from '../ui/Menu';
 import { cx } from '../ui/cx';
 import { ActionRow, CutOffRow, FeedbackMark, WhyFooter, WorkedLine } from './AnswerExtras';
-import { BubbleCtx, type BubbleInfo } from './bubbleContext';
+import { BubbleCtx, RowHotCtx, type BubbleInfo } from './bubbleContext';
 import {
   BadgeSlotView,
   FileChip,
@@ -100,17 +100,48 @@ export function senderOf(m: Pick<MessageRow, 'authorKind' | 'authorId'>, ctx: Pi
   return { name: ctx.agentName, face: ctx.fooFace, kind: 'foo', color: null };
 }
 
+/**
+ * PERF-04: a row's text is parsed when the row mounts, and rows mount again every time they scroll back into view. The
+ * parses depend on the text only, so they are kept per text (the newest TEXT_CACHE_MAX texts; results are read-only).
+ */
+const TEXT_CACHE_MAX = 2_000;
+function perText<T>(fn: (text: string) => T): (text: string) => T {
+  const cache = new Map<string, T>();
+  return (text) => {
+    if (cache.has(text)) return cache.get(text) as T;
+    const v = fn(text);
+    if (cache.size >= TEXT_CACHE_MAX) cache.delete(cache.keys().next().value as string);
+    cache.set(text, v);
+    return v;
+  };
+}
+const blocksOf = perText((text) => parseBlocks(text));
+const waOf = perText(parseWhatsApp);
+const plainOf = perText((text) => plainText(blocksOf(text)));
+const waPlainOf = perText((text) => inlineText(waOf(text)));
+const emojiOf = perText(emojiOnly);
+
 /** The plain text of a row: what Copy copies and what the accessible name reads (§1.9, 02-3 §F30.4). */
 export function messagePlainText(m: MessageRow, cards: Record<string, CardRow>): string {
   if (m.deletedAt !== null) return t('bubble.deleted.text');
   if (m.kind === 'card') return (m.cardId && titleOfCard(cards[m.cardId])) || '';
   if (m.kind === 'voice') return m.transcript ?? '';
   if (m.kind === 'marker') return m.text;
-  if (m.authorKind === 'user') return inlineText(parseWhatsApp(m.text));
-  return plainText(parseBlocks(m.text));
+  if (m.authorKind === 'user') return waPlainOf(m.text);
+  return plainOf(m.text);
 }
 
+const names = new WeakMap<StoredMessage, { ctx: RowCtx; name: string }>();
+/** Kept per message object and list context (both immutable), so a row scrolled back into view does not rebuild it. */
 export function messageAccessibleName(m: StoredMessage, ctx: RowCtx): string {
+  const hit = names.get(m);
+  if (hit?.ctx === ctx) return hit.name;
+  const name = accessibleName(m, ctx);
+  names.set(m, { ctx, name });
+  return name;
+}
+
+function accessibleName(m: StoredMessage, ctx: RowCtx): string {
   if (m.kind === 'marker') return m.text;
   const sender = senderOf(m, ctx).name;
   const state: string[] = [];
@@ -208,7 +239,12 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
   const job = jobOf(m, ctx);
   const text = useMemo(() => messagePlainText(m, ctx.cards), [m, ctx.cards]);
   const blocks = useMemo(
-    () => (side === 'them' && m.kind === 'text' && !deleted ? parseBlocks(m.status === 'streaming' ? streamSafe(m.text) : m.text) : null),
+    () =>
+      side === 'them' && m.kind === 'text' && !deleted
+        ? m.status === 'streaming'
+          ? parseBlocks(streamSafe(m.text))
+          : blocksOf(m.text)
+        : null,
     [side, m.kind, m.text, m.status, deleted],
   );
   const hasTable = !!blocks?.some((b) => b.t === 'table');
@@ -296,6 +332,7 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
     isGroup: ctx.isGroup,
   };
   const selected = useStore((s) => s.ui.selection.has(m.id));
+  const hot = useContext(RowHotCtx);
   const offlineQueued = ctx.offline;
   const slot = badgeSlot(m, { offline: offlineQueued });
   const shownSlot = useDebounced(slot ? JSON.stringify(slot) : '');
@@ -358,7 +395,7 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
             {side === 'them' && !isCard && !deleted && m.reactions.length > 0 && (
               <ReactionChips reactions={m.reactions} onToggle={(e) => void react(m.chatId, m.id, e)} />
             )}
-            {!ctx.selecting && !isCard && (
+            {!ctx.selecting && !isCard && (hot || menu || picker) && (
               <div className={styles.toolbar} data-side={side}>
                 {side === 'them' && !deleted && (
                   <IconButton
@@ -506,7 +543,7 @@ function BubbleBody({
   if (side === 'me') {
     const images = (m.attachments ?? []).filter((a) => attachmentKind(a) === 'image');
     const files = (m.attachments ?? []).filter((a) => attachmentKind(a) !== 'image');
-    const big = !images.length && !files.length && !m.replyToId && !found ? emojiOnly(m.text) : null;
+    const big = !images.length && !files.length && !m.replyToId && !found ? emojiOf(m.text) : null;
     const lang = (m.lang === 'hi' || m.lang === 'pa' ? m.lang : undefined) ?? scriptLang(m.text);
     if (big)
       return (
@@ -528,7 +565,7 @@ function BubbleBody({
         {m.text.trim() && (
           <>
             <div ref={readRef} className={cx(styles.text, clamp && styles.clamp15)} data-copy="user" data-side="me">
-              {found ?? <Inlines nodes={parseWhatsApp(m.text)} />}
+              {found ?? <Inlines nodes={waOf(m.text)} />}
               {!clamp && <MetaSpacer wide={m.editedAt !== null} />}
             </div>
             {clamp && (
@@ -645,7 +682,7 @@ export function WaBubble({ w, gap, ctx }: { w: WaMessageRow; gap: RowLayout['gap
             lang={scriptLang(w.text)}
           >
             <div className={styles.text} data-copy="external" data-side={side === 'me' ? 'me' : 'foo'}>
-              <Inlines nodes={parseWhatsApp(w.text)} />
+              <Inlines nodes={waOf(w.text)} />
               <MetaSpacer wide={false} />
             </div>
             <Meta at={w.at} timeZone={ctx.timeZone} now={ctx.now} />

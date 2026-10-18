@@ -13,6 +13,12 @@ export interface BubbleInfo {
 export const BubbleCtx = createContext<BubbleInfo>({ messageId: '', chatId: '', side: 'foo', agentName: '', isGroup: false });
 export const useBubble = () => useContext(BubbleCtx);
 
+/**
+ * 04 §9.2: whether the row has been hovered or focused. The hover toolbar shows only then, so it is mounted only then: a
+ * row mounted while flinging carries no toolbar buttons, tooltips or icons (PERF-04). Outside a list row: always.
+ */
+export const RowHotCtx = createContext(true);
+
 /** A file under {DATA} (relative or absolute) as the URL the CSP allows (img-src app:). Web images are not loaded. */
 export function mediaUrl(path: string): string | null {
   if (!path || /^(https?:|data:|blob:|javascript:)/i.test(path)) return null;
