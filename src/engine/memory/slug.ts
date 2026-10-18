@@ -1,8 +1,8 @@
 // Spec: 08-3 §12.2 (`people\{slug}.md`: the name as the user wrote it, NFKC, lower-cased, spaces → `-`, characters outside
 // `\p{L}\p{N}-` removed, ≤ 40 chars, Devanagari/Gurmukhi kept as written (`people\माँ.md` is legal), then `safeName()`;
 // `preferences\{topic}.md` topic ∈ travel, food, shopping, work, home, family, style, brief, other; anything else → other),
-// §12.4 (topic = the category when it is a legal topic), 08-0 §E.7 (`safeName()`). Combining marks (\p{M}) are kept as well:
-// without them `माँ` would lose its vowel sign and nasal mark, and §12.2 names it as legal as written.
+// §12.4 (topic = the category when it is a legal topic), 08-0 §E.7 (`safeName()`), CR-0010 G-M6-14 (combining marks \p{M} are
+// kept: without them `माँ` would lose its vowel sign and nasal mark, and §12.2 names it as legal as written).
 import { safeName } from '../../shared/safeName';
 
 const MAX = 40;

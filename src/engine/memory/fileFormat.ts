@@ -4,7 +4,8 @@
 // and brace at reindex; the `private` token is authoritative and `## Private` is rewritten from it; CRLF read, UTF-8 LF
 // without BOM written; unparseable lines kept untouched and reported), X-06 (kind; derived from the folder when missing),
 // X-112 (`chat:{chatId}`), 08-0 §B.2 (MemoryKind, MemoryProvenance, MemoryOrigin, MemoryCategory), §12.4 (`add.text` ≤ 120,
-// `kind='person'` needs `person`, category from the closed list).
+// `kind='person'` needs `person`, category from the closed list), CR-0010 G-M6-13 (a brace with no origin label reads as
+// `manual`; the writer always writes the label).
 import type { MemoryCategory, MemoryKind, MemoryOrigin, MemoryProvenance } from '../../shared/types';
 import { factHash } from './hash';
 
@@ -55,8 +56,8 @@ export interface MemoryFact {
   provenance: MemoryProvenance;
   /** YYYY-MM-DD. */
   date: string;
-  /** Null when the line carries no origin label (the §12.2 example's guessed fact); never invented. */
-  origin: MemoryOrigin | null;
+  /** A brace without an origin label reads as `manual` (CR-0010 G-M6-13); never null. */
+  origin: MemoryOrigin;
   /** The whole `from …` token, e.g. "from 4 bookings". */
   reason: string | null;
   kind: MemoryKind;
@@ -131,20 +132,20 @@ function readTokens(tokens: string[], file: string): (Omit<MemoryFact, 'text' | 
   const date = tokens[1]!;
   const id = tokens[tokens.length - 1]!;
   if (!provenance || !isCalendarDate(date) || !FACT_ID.test(id)) return null;
-  // §12.2's own example ("Prefers window seats") has no origin label: the label is read when present, never invented.
-  const origin = tokens.length > 3 ? (ORIGIN_BY_LABEL.get(tokens[2]!) ?? null) : null;
+  // §12.2's own example ("Prefers window seats") has no origin label: CR-0010 G-M6-13 reads it as `manual`.
+  const label = tokens.length > 3 ? ORIGIN_BY_LABEL.get(tokens[2]!) : undefined;
   let reason: string | null = null;
   let kind: MemoryKind | null = null;
   let priv = false;
   let chatId: string | null = null;
-  for (const t of tokens.slice(origin ? 3 : 2, -1)) {
+  for (const t of tokens.slice(label ? 3 : 2, -1)) {
     if (/^from \S/.test(t) && reason === null) reason = t;
     else if ((MEMORY_KINDS as readonly string[]).includes(t) && kind === null) kind = t as MemoryKind;
     else if (t === 'private' && !priv) priv = true;
     else if (/^chat:\S+$/.test(t) && chatId === null && file === ABOUT_YOU_FILE) chatId = t.slice('chat:'.length);
     else return null;
   }
-  return { id, provenance, date, origin, reason, kind: kind ?? kindForFile(file), private: priv, chatId };
+  return { id, provenance, date, origin: label ?? 'manual', reason, kind: kind ?? kindForFile(file), private: priv, chatId };
 }
 
 export function parseMemoryFile(text: string, opts: ParseOptions): ParseResult {
@@ -211,8 +212,7 @@ export function parseMemoryFile(text: string, opts: ParseOptions): ParseResult {
 }
 
 export function formatFactLine(fact: MemoryFact, file: string): string {
-  const tokens = [PROVENANCE_LABELS[fact.provenance], fact.date];
-  if (fact.origin) tokens.push(ORIGIN_LABELS[fact.origin]);
+  const tokens = [PROVENANCE_LABELS[fact.provenance], fact.date, ORIGIN_LABELS[fact.origin]];
   if (fact.reason) tokens.push(fact.reason);
   if (fact.kind !== kindForFile(file)) tokens.push(fact.kind);
   if (fact.private) tokens.push('private');
