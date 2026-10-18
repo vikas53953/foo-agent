@@ -9,6 +9,7 @@
 // keys Enter / Shift+F10 / Menu, Ctrl+Shift+R, Ctrl+Shift+E, Ctrl+C; new foo rows are announced once (streaming: when done);
 // §6.4 a quote click jumps and highlights 1600 ms; §14.2 / §14.3 status line and Thinking row; §10.11 the WhatsApp mirror.
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { batchScrollAdjustments } from './scrollAdjust';
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import { t } from '../../shared/copy/t';
 import { bp, motion } from '../../shared/tokens';
@@ -199,10 +200,13 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     // visible range changes, not once per measured row. 'position' (top) keeps rows off their own compositor layers.
     directDomUpdates: true,
     directDomUpdatesMode: 'position',
+    useFlushSync: false,
     onChange: (inst) => onVirtualChange.current(inst.getTotalSize()),
     paddingStart: rem,
     paddingEnd: rem,
   });
+  // PERF-04: one scroll correction per measurement pass instead of one forced layout per row measured above the fold.
+  useLayoutEffect(() => batchScrollAdjustments(v), [v]);
 
   const target = useMemo(
     () => ({ scrollToEnd: () => rows.length && v.scrollToIndex(rows.length - 1, { align: 'end' }), getTotalSize: () => v.getTotalSize() }),
