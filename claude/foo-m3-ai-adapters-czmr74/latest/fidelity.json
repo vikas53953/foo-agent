@@ -1,19 +1,19 @@
 {
-  "reportId": "M3-b75599c-39144265269",
+  "reportId": "M3-98fca1b-39145336869",
   "milestone": "M3",
-  "generatedAt": "2026-10-18T16:26:44.954Z",
-  "commit": "41c494961a27700104225c6160124745a6a2d624",
-  "head": "b75599c1f4062446b43be437ff12ce81545257ce",
+  "generatedAt": "2026-10-18T16:39:50.485Z",
+  "commit": "dd069bfd1044fc64944fbd8cbb0c14bd74ab2be8",
+  "head": "98fca1be4b4673a439d9fe6c79a6205c14e73781",
   "ci": {
-    "runId": "39144265269",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39144265269"
+    "runId": "39145336869",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39145336869"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "aef08a9df25b6c5772ffcc60c97417a6a771272a84f0110cc70ac28b4832b8c5"
   },
   "runner": {
-    "recordedAt": "2026-10-18T16:21:06.841Z",
+    "recordedAt": "2026-10-18T16:34:12.225Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000002880"
+      "runner": "GitHub Actions 1000002882"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,7 +59,6 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "2 Tier R step(s) failed",
     "10 audit item(s) not DONE (the milestone is not complete)",
     "CHANGED items need an approved CR"
   ],
@@ -69,7 +68,7 @@
       "M3: 1 of 2 drawings match; open the side-by-side rows below."
     ],
     "changed": [
-      "17 picture(s) differ a little from the drawing and need your look (Review rows), whatever else a CR disputes:",
+      "19 picture(s) differ a little from the drawing and need your look (Review rows), whatever else a CR disputes:",
       "BP-ANAT-CHIPS (dark): R3 colour (ΔE 4.78) in the Review band; see it side by side below.",
       "BP-ANAT-L (light): R3 colour (ΔE 3.65) in the Review band; see it side by side below.",
       "BP-ANAT-LHEAD (dark): R3 colour (ΔE 2.91) in the Review band; see it side by side below.",
@@ -79,6 +78,8 @@
       "BP-APP-R (light): R3 colour (ΔE 3.65) in the Review band; see it side by side below.",
       "BP-MSG-02 (dark): R3 colour (ΔE 3.19) in the Review band; see it side by side below.",
       "BP-MSG-02 (light): R3 colour (ΔE 3.65) in the Review band; see it side by side below.",
+      "UX-08-02 (dark): R2 boxes in the Review band; see it side by side below.",
+      "UX-08-02 (light): R2 boxes in the Review band; see it side by side below.",
       "UX-08-03 (dark): R4 pixels (3.47 %) in the Review band; see it side by side below.",
       "UX-08-03 (light): R4 pixels (3.20 %) in the Review band; see it side by side below.",
       "UX-08-05 (dark): R4 pixels (3.97 %) in the Review band; see it side by side below.",
@@ -9179,8 +9180,8 @@
   "golden": {
     "counts": {
       "pass": 1,
-      "review": 17,
-      "fail": 2,
+      "review": 19,
+      "fail": 0,
       "disputed": 58,
       "notBuilt": 0
     },
@@ -10049,7 +10050,7 @@
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
         "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05420910900362955,
+        "r5": 0.05428716387620497,
         "ref": true,
         "app": true,
         "diff": true
@@ -10062,7 +10063,7 @@
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
         "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05350661515045077,
+        "r5": 0.053584670023026186,
         "ref": true,
         "app": true,
         "diff": true
@@ -10330,11 +10331,11 @@
       {
         "id": "UX-08-02",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "review",
         "r1": "fail",
-        "r2": "fail (hl 10/525 px)",
-        "r3": "fail (hl ΔE 91.43)",
-        "r4": "fail (10.61 %)",
+        "r2": "review (hl 8/8 px)",
+        "r3": "pass (hl ΔE 0)",
+        "r4": "fail (18.80 %)",
         "r5": 0.0844892578125,
         "ref": true,
         "app": true,
@@ -10343,12 +10344,12 @@
       {
         "id": "UX-08-02",
         "theme": "light",
-        "verdict": "fail",
+        "verdict": "review",
         "r1": "fail",
-        "r2": "fail (hl 10/525 px)",
-        "r3": "fail (hl ΔE 96.14)",
-        "r4": "fail (10.50 %)",
-        "r5": 0.0595576171875,
+        "r2": "review (hl 8/8 px)",
+        "r3": "pass (hl ΔE 0)",
+        "r4": "fail (18.70 %)",
+        "r5": 0.0595556640625,
         "ref": true,
         "app": true,
         "diff": true
@@ -10491,7 +10492,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 20.59)",
         "r4": "fail (21.84 %)",
-        "r5": 0.116626953125,
+        "r5": 0.117392578125,
         "ref": true,
         "app": true,
         "diff": true
@@ -10504,7 +10505,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 35.2)",
         "r4": "fail (21.68 %)",
-        "r5": 0.0988173828125,
+        "r5": 0.0995703125,
         "ref": true,
         "app": true,
         "diff": true
