@@ -2,9 +2,21 @@
 // CRLF in / LF out, no BOM, unparseable lines kept and reported), §12.4 (`add.text` ≤ 120, `kind='person'` needs `person`),
 // 08-1 §2.5 (parsing and hashing run in worker_threads). Expected values are copied from the spec text.
 import { describe, expect, it } from 'vitest';
-import { ORIGIN_LABELS, parseMemoryFile, validateAdd, writeMemoryFile, type MemoryOrigin } from '../../src/engine/memory/fileFormat';
+import {
+  formatFactLine,
+  ORIGIN_LABELS,
+  parseMemoryFile,
+  validateAdd,
+  writeMemoryFile,
+  type MemoryOrigin,
+} from '../../src/engine/memory/fileFormat';
 import { factHash } from '../../src/engine/memory/hash';
 import { createParseWorker } from '../../src/engine/memory/parseWorker';
+
+// CR-0010 G-M6-15: sha256 (UTF-8, lower-case hex) of NFKC text, white space runs → one space, trimmed, lower-cased.
+// Pinned outside the code under test: sha256("vegetarian on tuesdays"), sha256("kiran likes tea").
+const VEG_HASH = 'e896e833240e0cc4248a7fb2aedeb58185715a3b351a9531307205b3addb5f0f';
+const KIRAN_HASH = '3a699097e8c1f663afd79116e35a8b7776340f384fa1808f5fca654372ed6707';
 
 // The §12.2 example file, verbatim.
 const SPEC_EXAMPLE = [
@@ -167,11 +179,42 @@ describe('08-3 §12.2 writer', () => {
   });
 });
 
+describe('08-3 §12.2 fact hash (CR-0010 G-M6-15)', () => {
+  it('matches the pinned vectors, across CRLF/LF, spacing, case and NFKC', () => {
+    expect(factHash('Vegetarian on Tuesdays')).toBe(VEG_HASH);
+    expect(factHash(' vegetarian\r\n on  tuesdays ')).toBe(VEG_HASH);
+    expect(factHash('Kiran likes tea')).toBe(KIRAN_HASH);
+    expect(factHash('Ｋｉｒａｎ likes tea')).toBe(KIRAN_HASH);
+  });
+});
+
+describe('08-3 §12.2 writer keeps one fact on one line', () => {
+  it('folds line breaks and double spaces in the text, so "  {" can never start a fake brace', () => {
+    const fact = {
+      id: 'f_01929a3e-7c41-7d2a-9b1e-3f5a2c8d4e61',
+      text: 'Likes tea\r\nand  {coffee}',
+      provenance: 'said' as const,
+      date: '2026-10-02',
+      origin: 'chat' as const,
+      reason: null,
+      kind: 'fact' as const,
+      private: false,
+      chatId: null,
+    };
+    const line = formatFactLine(fact, ABOUT);
+    expect(line).toBe('- Likes tea and {coffee}  {you said · 2026-10-02 · chat · f_01929a3e-7c41-7d2a-9b1e-3f5a2c8d4e61}');
+    expect(parseMemoryFile(line, opts()).facts[0]?.text).toBe('Likes tea and {coffee}');
+  });
+});
+
 describe('08-3 §12.4 add validation', () => {
   it('text ≤ 120 chars; kind person needs person', () => {
     expect(validateAdd({ text: 'x'.repeat(120), kind: 'fact' })).toEqual({ ok: true });
     expect(validateAdd({ text: 'x'.repeat(121), kind: 'fact' }).ok).toBe(false);
     expect(validateAdd({ text: '  ', kind: 'fact' }).ok).toBe(false);
+    expect(validateAdd({ text: `  ${'x'.repeat(120)}  `, kind: 'fact' })).toEqual({ ok: true });
+    expect(validateAdd({ text: 'Likes tea\nand coffee', kind: 'fact' })).toEqual({ ok: false, reason: 'text' });
+    expect(validateAdd({ text: 'Likes tea\rand coffee', kind: 'fact' })).toEqual({ ok: false, reason: 'text' });
     expect(validateAdd({ text: 'Birthday 18 Oct', kind: 'person' }).ok).toBe(false);
     expect(validateAdd({ text: 'Birthday 18 Oct', kind: 'person', person: 'Asha' })).toEqual({ ok: true });
   });
@@ -183,7 +226,7 @@ describe('08-1 §2.5 parse worker', () => {
     try {
       const r = await w.parse(SPEC_EXAMPLE, { file: ABOUT, today: TODAY });
       expect(r.facts.map((f) => f.text)).toEqual(['Vegetarian on Tuesdays', 'Prefers window seats', 'Lives at 14 Hill Road, Bandra']);
-      expect(r.facts[0]!.hash).toBe(factHash('Vegetarian on Tuesdays'));
+      expect(r.facts[0]!.hash).toBe(VEG_HASH);
       const fresh = await w.parse('- Hates loud ringtones', { file: ABOUT, today: TODAY });
       expect(fresh.rewrite).toBe(true);
       expect(fresh.facts[0]!.id).toMatch(/^f_[0-9a-f-]{36}$/);
