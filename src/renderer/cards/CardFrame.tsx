@@ -38,6 +38,7 @@ export function CardFrame({
   className,
   card,
   gated,
+  data,
 }: {
   tid: keyof typeof TID;
   label: string;
@@ -49,6 +50,8 @@ export function CardFrame({
   card?: { id: string; type: CardType };
   /** Gated cards waiting on the user show the status edge (05-1 §0.5). */
   gated?: boolean;
+  /** Extra `data-*` attributes on the root (e.g. Choice's `data-purpose`), so the root stays the bubble's direct child. */
+  data?: Record<`data-${string}`, string | undefined>;
 }) {
   return (
     <div
@@ -60,6 +63,7 @@ export function CardFrame({
       data-card-type={card?.type}
       data-card-state={state}
       data-state={state}
+      {...data}
     >
       {children}
     </div>

@@ -8,18 +8,22 @@ import styles from './Card.module.css';
 export function Choice({ card, time }: { card: CardRow; time: CardTime }) {
   const p = card.payload as unknown as ChoicePayload;
   return (
-    <div data-purpose={p.purpose}>
-      <CardFrame tid="cardChoice" card={card} state={card.state} label={t('cards.choice.label', { question: p.question })}>
-        <div className={styles.head}>
-          <span className={styles.title} data-copy="external">
-            {p.question}
-          </span>
-        </div>
-        <div className={styles.foot}>
-          <span className={styles.footSpacer} />
-          <CardTimeLabel {...time} />
-        </div>
-      </CardFrame>
-    </div>
+    <CardFrame
+      tid="cardChoice"
+      card={card}
+      state={card.state}
+      data={{ 'data-purpose': p.purpose }}
+      label={t('cards.choice.label', { question: p.question })}
+    >
+      <div className={styles.head}>
+        <span className={styles.title} data-copy="external">
+          {p.question}
+        </span>
+      </div>
+      <div className={styles.foot}>
+        <span className={styles.footSpacer} />
+        <CardTimeLabel {...time} />
+      </div>
+    </CardFrame>
   );
 }

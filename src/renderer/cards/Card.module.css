@@ -9,7 +9,10 @@
   display: flex;
   flex-direction: column;
   gap: var(--s1);
-  width: min(var(--card-w), 100%);
+  /* A definite width, capped by max-width: with inline-size containment the card has no content width, so a percentage
+   * against the shrink-wrapped bubble column collapsed it to its padding (M5 T1 proof). */
+  width: var(--card-w);
+  max-width: 100%;
   padding: var(--s2) calc(var(--s2) + var(--s-1));
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
@@ -25,7 +28,7 @@
   color: var(--fg-2);
 }
 .wide {
-  width: min(var(--card-w-wide), 100%);
+  width: var(--card-w-wide);
 }
 .surface {
   text-align: start;

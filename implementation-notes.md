@@ -563,5 +563,10 @@ service, username)`, `setPassword`, `getPassword(): string | null`, `setSecret(U
   `deleteCredential(): boolean`; an `AsyncEntry` mirrors it with Promises. It is a native module: the packager may need it
   in `asarUnpack` (T2 checks the installer).
 - `settings.json` has no `permissions` / `rules` section yet: T4 adds `rules`, T7 adds the permission chips.
+- Card width: `.card` had `width: min(var(--card-w), 100%)` with `container-type: inline-size`; in a shrink-wrapped bubble
+  column the percentage collapsed every card (the M2 table card too) to its padding (30px). Now `width: var(--card-w);
+max-width: 100%` (`.wide` the same with `--card-w-wide`). CardFrame takes `data` for extra `data-*` attributes so a card
+  root stays the bubble's direct child (`.hold:has(> [data-testid^='card-'])`).
+- WhatsApp daily-limit line: the slot is `{date}` (it holds "Sat 17 Oct, 12:00 AM"), so ART-21's scan reads it as absolute.
 - Copy: `cards.common.gated_typed_yes` repeats `thread.approval_typed.approve` (both spec-named); 05-1 §0.6 "Nothing needs
   you here." has no key yet.

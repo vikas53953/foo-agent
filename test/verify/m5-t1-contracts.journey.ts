@@ -47,8 +47,10 @@ export default async function journey(v: Verify): Promise<void> {
     await root.waitFor({ timeout: 5_000 });
     const [type, state] = await Promise.all([root.getAttribute('data-card-type'), root.getAttribute('data-card-state')]);
     if (type !== seed.type || state !== seed.state) throw new Error(`${TID[tid]}: type ${type}, state ${state}`);
+    const width = (await root.boundingBox())?.width ?? 0;
+    if (width < 400) throw new Error(`${TID[tid]} is ${width}px wide; a card is --card-w (440) or the column width`);
     v.note(
-      `${seed.type} card seeded (${seed.state}${r.approvalId ? `, approvals row ${seed.approval!.fields.verb}` : ''}) → ${TID[tid]} renders with data-card-type="${type}" data-card-state="${state}"`,
+      `${seed.type} card seeded (${seed.state}${r.approvalId ? `, approvals row ${seed.approval!.fields.verb}` : ''}) → ${TID[tid]} renders with data-card-type="${type}" data-card-state="${state}", ${Math.round(width)}px wide`,
     );
   }
 
