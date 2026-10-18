@@ -1,0 +1,4 @@
+ts	phase	decision	why	evidence	result
+2026-10-18T16:50:00Z	contract	goal: M4 job runner, checklist, badges as 8 tickets (T1-T8), one ticket thread each from wave 2, merged into claude/foo-m4-fgejhm, one PR to main	Vikas chose Tickets from M4 (14:55Z) and one thread per ticket (16:46Z)	docs/tickets/M4.md	open
+2026-10-18T17:12:00Z	review	T8 reply-time fix merged into the M4 branch after lead review (standards + spec)	bug found by foo-verify in PR #6	PR #7, 568c809	done
+2026-10-18T17:22:00Z	approval	CR-0008 (G-M4-01..17, contract shapes, SV-34 to M6, X-161) approved on Vikas's behalf	independent Fable review PASS, no act findings; his rule 2026-10-18 14:56Z	docs/cr/CR-0008-m4-rows-and-picks.md (e)	done
