@@ -3,7 +3,7 @@
 - **Asked by:** the M3 builder, 2026-10-18, while building M3 (foo-plan §5 M3).
 - **Spec sections:** 08-1 §2.1–§2.4, 08-2 §6, §7, §11.4, 08-4 §25, §30, 04 §3.3, §4, §12.3, §14.4, 10-acceptance-1 §B (AT-005,
   AT-006, AT-027, AT-030, AT-031), 10-acceptance-2 §D (ART-02b, ART-12a, ART-23a), 11-fidelity §11.4 (FID-18).
-- **Status:** Pending Vikas
+- **Status:** Approved by Vikas, DECISIONS X-160 (2026-10-18 15:58Z, after the independent review in §(e))
 - **Change:** `spec/trace.csv` only (rows below). No other `spec/` or `golden/` file changes.
 - **Manifest:** `pnpm tsx scripts/spec-verify.ts --write` run in the same commit.
 
