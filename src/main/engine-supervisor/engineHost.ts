@@ -498,7 +498,7 @@ export function writeDataFile(dataDir: string | undefined, relPath: string, text
   } catch (e) {
     rmSync(tmp, { force: true });
     const full = (e as NodeJS.ErrnoException).code === 'ENOSPC';
-    return fail(full ? 'DISK_FULL' : 'PATH_NOT_ALLOWED', e instanceof Error ? e.message : undefined);
+    return fail(full ? 'DISK_FULL' : 'UNKNOWN', e instanceof Error ? e.message : undefined);
   }
 }
 

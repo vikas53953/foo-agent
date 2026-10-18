@@ -106,3 +106,19 @@ Fable reviewer, 2026-10-18 ~17:20Z, read-only, against 07-2 §4 + SM-A1…A13, D
 
 Recorded as approved on Vikas's behalf under his standing rule (his message 2026-10-18 14:56Z: "take care of it on my
 behalf and then keep on working"); listed for his later review.
+
+## (f) Addendum (T5)
+
+Three contract extensions the T5 handlers need, each a narrow reading of a spec line CR-0008 did not cover. For the M4
+lead's independent check.
+
+- (a) `error:fix` also answers a Spend-cap card's "Wait until {date}" with `{ kind: 'dismiss' }` (the card turns
+  `dismissed`); on a `spend_cap` card no other action is accepted. Extends G-M4-09 to 05-3 §5.21 line 548 ("Wait until {Sun 1 Nov}",
+  state `dismissed`), which names no channel.
+- (b) `error:fix` accepts any `FixAction` that deep-equals the card's stored `button.action` or `secondary.action`, not only
+  `dismiss` / `remind_at` / `use_backup`, as the fallback while the channels the renderer would otherwise map to
+  (`ai:signIn`, `open_settings`, …) do not exist yet. Extends G-M4-09 (main still checks the action against the payload,
+  08-5 §3.7).
+- (c) `job:retry` also accepts a `done_unverified` job, for 05-3 §5.16 line 352 ("Check for real" → a new job "Checking
+  {title} live" linked to the old one). Extends 08-1 line 375 / G-M4-01 (a new linked job); main refuses a second retry
+  of the same job, as the runner does.

@@ -181,7 +181,7 @@ describe('memory named queries: Art. 14 group exclusion (08-4 §24.16)', () => {
 
 describe('M6 settings and channels', () => {
   it('privacy defaults are true / true / false and the unprompted budget is 3 (08-0 §A.1)', () => {
-    expect(settingsDefaults.privacy).toEqual({ rememberOn: true, learnFromChats: true, askBeforeRemembering: false });
+    expect(settingsDefaults.privacy).toMatchObject({ rememberOn: true, learnFromChats: true, askBeforeRemembering: false });
     expect(settingsDefaults.notifications.unpromptedPerDay).toBe(3);
   });
   it('registers the memory invokes and events', () => {

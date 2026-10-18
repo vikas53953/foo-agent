@@ -1,0 +1,93 @@
+/* Spec: 05-1 §0.3 Chip (visual 24 = 16 icon + 2 × --s0; padding 0 8; --r-full; --t-caption; hit area padded to 40 with a
+ * transparent ::before inset −8px), 05-3 §5.15.1 (Proof chip --ok-soft / --ok / --t-caption-strong, numbers tabular; several
+ * chips wrap with 4px gaps; 4px under the bubble; footer --t-caption --fg-3), §5.15.3 (hover underline, pressed scale 0.97),
+ * §5.16 ("Not checked live" --warn-soft / --warn; "Check for real" Link button). */
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s0);
+  margin-top: var(--s0);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s0);
+}
+.proof,
+.notLive {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s0);
+  max-width: 100%;
+  min-height: calc(var(--icon-sm) + 2 * var(--s0));
+  padding: 0 var(--s1);
+  border: 0;
+  border-radius: var(--r-full);
+  font: var(--t-caption-strong);
+  font-variant-numeric: tabular-nums;
+  transition: transform var(--m-fast) var(--ease-standard);
+}
+.proof::before,
+.notLive::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--s1));
+}
+.proof {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+.notLive {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+.proof:hover .chipText {
+  text-decoration: underline;
+}
+.proof:active,
+.notLive:active {
+  transform: scale(0.97);
+}
+.chipText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.notLiveRow {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s1);
+}
+.link {
+  min-height: var(--s7);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font: var(--t-small);
+}
+.link:hover {
+  text-decoration: underline;
+}
+.footer {
+  color: var(--fg-3);
+  font: var(--t-caption);
+  font-variant-numeric: tabular-nums;
+}
+.popover {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+.number {
+  font: var(--t-mono);
+}
+.popButtons {
+  display: flex;
+  gap: var(--s1);
+}
+.popText {
+  font: var(--t-small);
+}

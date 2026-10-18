@@ -67,7 +67,7 @@ beforeEach(() => {
 
 describe('turn-fact query build (08-4 §24.16 item 3)', () => {
   it('keeps tokens of 2+ graphemes, quoted, joined with OR', () => {
-    expect(ftsMatch("What's my wife's name?")).toBe('"What" OR "my" OR "wife" OR "name"');
+    expect(ftsMatch("Where's my brother's flat?")).toBe('"Where" OR "my" OR "brother" OR "flat"');
   });
   it('drops duplicates and splits on every non-letter, non-mark, non-number', () => {
     expect(ftsMatch('Pune, Pune! seats/Pune 2026')).toBe('"Pune" OR "seats" OR "2026"');
@@ -128,38 +128,38 @@ describe('part 5: identity and pinned facts (08-4 §24.16 items 1, 2, 5)', () =>
 });
 
 describe('part 5b: turn facts (08-4 §24.16 item 3)', () => {
-  // 30 filler facts fill the 4,000-char pinned set, so the wife facts (used less) are not pinned.
+  // 30 filler facts fill the 4,000-char pinned set, so the brother facts (used less) are not pinned.
   const filler = () =>
     Array.from({ length: 30 }, (_, i) =>
       fact(`f_fill${String(i).padStart(2, '0')}`, `Filler ${String(i).padStart(2, '0')} ${'y'.repeat(120)}`, { use_count: 50 }),
     );
   it('up to 8 FTS rows that are not pinned, bm25 then use_count DESC then learned_at DESC', async () => {
     const wives = Array.from({ length: 10 }, (_, i) =>
-      fact(`f_w${i}`, `Wife note n${i} here`, { use_count: i % 5, learned_at: SAT_3_OCT + i * 60_000 }),
+      fact(`f_b${i}`, `Brother note n${i} here`, { use_count: i % 5, learned_at: SAT_3_OCT + i * 60_000 }),
     );
     tx([...filler(), ...wives]);
-    const p = await parts('c_1', "what's my wife's name?");
-    expect(p.part5.some((l) => l.id.startsWith('f_w'))).toBe(false);
-    // Same bm25 for every wife note (same length, one hit): use_count 4,4,3,3,2,2,1,1 then learned_at newest first.
-    expect(p.part5b.map((l) => l.id)).toEqual(['f_w9', 'f_w4', 'f_w8', 'f_w3', 'f_w7', 'f_w2', 'f_w6', 'f_w1']);
-    expect(p.part5b[0]!.line).toBe('[f_w9] Wife note n9 here (You said, Sat 3 Oct)');
+    const p = await parts('c_1', 'where does my brother live?');
+    expect(p.part5.some((l) => l.id.startsWith('f_b'))).toBe(false);
+    // Same bm25 for every brother note (same length, one hit): use_count 4,4,3,3,2,2,1,1 then learned_at newest first.
+    expect(p.part5b.map((l) => l.id)).toEqual(['f_b9', 'f_b4', 'f_b8', 'f_b3', 'f_b7', 'f_b2', 'f_b6', 'f_b1']);
+    expect(p.part5b[0]!.line).toBe('[f_b9] Brother note n9 here (You said, Sat 3 Oct)');
   });
   it('a better bm25 match comes first whatever its use_count', async () => {
     tx([
       ...filler(),
-      fact('f_a', 'wife wife wife'),
-      fact('f_b', 'my wife and a long list of other unrelated words here', { use_count: 9 }),
+      fact('f_a', 'brother brother brother'),
+      fact('f_b', 'my brother and a long list of other unrelated words here', { use_count: 9 }),
     ]);
-    expect((await parts('c_1', 'wife')).part5b.map((l) => l.id)).toEqual(['f_a', 'f_b']);
+    expect((await parts('c_1', 'brother')).part5b.map((l) => l.id)).toEqual(['f_a', 'f_b']);
   });
   it('a pinned fact is never repeated in 5b', async () => {
-    tx([fact('f_1', 'Wife is Simran')]);
-    const p = await parts('c_1', "what's my wife's name?");
+    tx([fact('f_1', 'Brother Rohit lives in Pune')]);
+    const p = await parts('c_1', 'where does my brother live?');
     expect(p.part5.map((l) => l.id)).toEqual(['f_1']);
     expect(p.part5b).toEqual([]);
   });
   it('no tokens → no turn set', async () => {
-    tx([...filler(), fact('f_w', 'Wife is Simran')]);
+    tx([...filler(), fact('f_b', 'Brother Rohit lives in Pune')]);
     expect((await parts('c_1', '?!')).part5b).toEqual([]);
   });
 });
@@ -211,27 +211,27 @@ describe('a reply turn (08-4 §24.1 intake, §24.16 item 6)', () => {
     `<say>${say}</say><act>${JSON.stringify({ decision: { kind: 'reply' }, usedMemoryIds: used })}</act>`;
 
   it('puts the pinned facts in the system text and the turn facts in the prompt', async () => {
-    h = makeHarness({ script: [VERIFY_LINE, intake(replyUsing('Her name is Simran.', []))], settings: verified() });
-    seedFact(h, 'f_wife', 'Wife is Simran');
-    h.userSays("What's my wife's name?");
+    h = makeHarness({ script: [VERIFY_LINE, intake(replyUsing('He lives in Pune.', []))], settings: verified() });
+    seedFact(h, 'f_bro', 'Brother Rohit lives in Pune');
+    h.userSays('Where does my brother live?');
     await h.idle();
     const turn = h.turnsJsonl().find((t) => t.purpose === 'intake')!;
     expect(String(turn.system)).toContain('What you know about');
-    expect(String(turn.system)).toMatch(/\[f_wife\] Wife is Simran \(You said, \w{3} \d{1,2} \w{3}\)/);
-    expect(String(turn.prompt)).not.toContain('[f_wife]');
+    expect(String(turn.system)).toMatch(/\[f_bro\] Brother Rohit lives in Pune \(You said, \w{3} \d{1,2} \w{3}\)/);
+    expect(String(turn.prompt)).not.toContain('[f_bro]');
   });
   it('records a use for every offered id the AI names, and ignores ids it was not offered', async () => {
     h = makeHarness({
-      script: [VERIFY_LINE, intake(replyUsing('Her name is Simran.', ['f_wife', 'f_wife', 'f_nope']))],
+      script: [VERIFY_LINE, intake(replyUsing('He lives in Pune.', ['f_bro', 'f_bro', 'f_nope']))],
       settings: verified(),
     });
-    seedFact(h, 'f_wife', 'Wife is Simran', 2);
+    seedFact(h, 'f_bro', 'Brother Rohit lives in Pune', 2);
     seedFact(h, 'f_other', 'Likes filter coffee');
-    h.userSays("What's my wife's name?");
+    h.userSays('Where does my brother live?');
     await h.idle();
     const uses = h.db.prepare('SELECT fact_id, chat_id, job_id, at FROM memory_uses').all() as Record<string, unknown>[];
-    expect(uses).toEqual([{ fact_id: 'f_wife', chat_id: h.chatId, job_id: null, at: expect.any(Number) }]);
-    const row = h.db.prepare("SELECT use_count, last_used_at FROM memory_index WHERE id = 'f_wife'").get() as Record<string, number>;
+    expect(uses).toEqual([{ fact_id: 'f_bro', chat_id: h.chatId, job_id: null, at: expect.any(Number) }]);
+    const row = h.db.prepare("SELECT use_count, last_used_at FROM memory_index WHERE id = 'f_bro'").get() as Record<string, number>;
     expect(row.use_count).toBe(3);
     expect(row.last_used_at).toBe(uses[0]!.at);
     const other = h.db.prepare("SELECT use_count, last_used_at FROM memory_index WHERE id = 'f_other'").get() as Record<string, unknown>;

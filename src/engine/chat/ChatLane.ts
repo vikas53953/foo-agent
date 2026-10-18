@@ -5,7 +5,7 @@
 // message, read on the first byte), §4.1 rule 4 (a plain answer's badge is `seen` and goes when the first word appears),
 // §14.3 (Thinking row only while a request is really in flight: chat:typing), §19.4 (cut-off reply: partial text stays,
 // bubble status `failed`), 08-1 §4.3.5 (ai_turns row per turn), Art. 12 (AI words never move a status), Art. 16, 22.
-// M3 builds `reply` and `react`; the other intake kinds (job, ask, handoff, routine, memory, setting, catch_up) arrive with
+// M3 builds `reply` and `react`; M4 adds `job` (the runner's createJob). The other intake kinds (ask, handoff, routine, memory, setting, catch_up) arrive with
 // M4–M8. Until then their unreleased `<say>` is discarded and foo posts the empty-reply line so it never goes silent
 // (GAPS.md 2026-10-18 "intake kinds before their milestone"). M6: memory parts 5/5b per turn (08-4 §24.16, retrieval.ts)
 // and the uses of the offered facts the AI names in `usedMemoryIds` (§24.16 item 6, 08-3 §12.5).
@@ -14,6 +14,7 @@ import type { Clock } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
 import type { Settings } from '../../shared/settings';
 import type { ProviderId } from '../../shared/types';
+import type { IntakeDecision } from '../../shared/schemas';
 import type { EngineChat, EngineHelper, EngineMessage } from '../../main/db/queries';
 import type { DbOp, DbTxReply, MainLink } from '../protocol';
 import type { AiErrorKind, AiUsage, TurnRequest, TurnResult, TurnSink } from '../ai/types';
@@ -25,7 +26,7 @@ export interface LaneAi {
   pick(): { providerId: ProviderId; billing: 'plan' | 'key' | 'local'; backup: boolean } | null;
   turnParams(
     providerId: ProviderId,
-    purpose: 'intake' | 'repair' | 'rewrite',
+    purpose: 'intake' | 'repair' | 'rewrite' | 'step',
   ): Omit<TurnRequest, 'turnId' | 'purpose' | 'system' | 'prompt'>;
   runTurn(providerId: ProviderId, req: TurnRequest, sink: TurnSink, signal: AbortSignal): Promise<TurnResult>;
   reportOk(providerId: ProviderId): void;
@@ -71,7 +72,19 @@ export interface LaneGate {
 export type IntakeDecisionView =
   | { kind: 'reply' }
   | { kind: 'react'; emoji: '👍' | '❤️' }
-  | { kind: 'ask' | 'handoff' | 'job' | 'routine' | 'memory' | 'setting' | 'catch_up' };
+  | Extract<IntakeDecision, { kind: 'job' }>
+  | { kind: 'ask' | 'handoff' | 'routine' | 'memory' | 'setting' | 'catch_up' };
+
+/** M4: the job runner's intake seam (08-2 §5.3.3; JobRunner.createJob). */
+export interface LaneJobs {
+  createJob(input: {
+    chatId: string;
+    userMessageId: string;
+    decision: Extract<IntakeDecision, { kind: 'job' }>;
+    askedText: string;
+    helperId: string | null;
+  }): Promise<string | null>;
+}
 
 export interface LaneDeps {
   link: MainLink;
@@ -81,6 +94,8 @@ export interface LaneDeps {
   ai: LaneAi;
   protocol: LaneProtocol;
   log(evt: string, kind?: string, ids?: { chatId?: string }): void;
+  /** M4: kind 'job' creates a job; the user's bubble keeps 👀 and nothing is posted (Art. 22, 08-4 §25.5). */
+  jobs?: LaneJobs;
 }
 
 const MAX_TOTAL = 2; // 08-2 §6.9 chat lane
@@ -373,13 +388,23 @@ export class ChatLane {
     const released = gate.released().trimEnd();
     if (kind !== 'reply' && released.trim()) this.d.log('chat.say_leak', 'PROTOCOL_SAY_LEAK', { chatId });
 
-    if (kind === 'reply' || (kind !== 'react' && released.trim())) {
+    if (kind === 'reply' || (kind !== 'react' && !(kind === 'job' && this.d.jobs) && released.trim())) {
       if (fooId) {
         await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
       } else {
         // Nothing passed the filters: 08-4 §25.5 item 6 (F-092).
         await this.emptyReply(chatId, messageId, message, helper, who, providerNote);
       }
+    } else if (act && act.kind === 'job' && this.d.jobs) {
+      // 08-2 §5.3.3: the runner takes over; its checklist and result are what the user sees next (ART-22).
+      if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
+      await this.d.jobs.createJob({
+        chatId,
+        userMessageId: messageId,
+        decision: act,
+        askedText: message.textForAi ?? message.text,
+        helperId: helper?.id ?? null,
+      });
     } else if (act && act.kind === 'react') {
       // Words that already showed past the hold stay as a finished bubble (they cannot be taken back); the 👍 still goes on.
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
