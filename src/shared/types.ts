@@ -677,6 +677,8 @@ export type ErrorKind =
   | 'PROTOCOL_FIX_ACTION'
   | 'IDEMPOTENT_REPEAT'
   | 'CARD_STALE'
+  // M11 (08-5 §6, CR-0015 G-M11-02): `foo-native.synthesize` has no voice or no addon
+  | 'VOICE_UNAVAILABLE'
   | 'UNKNOWN';
 
 // ---- card payloads (08-5 §4.1) the M2 cards draw ----

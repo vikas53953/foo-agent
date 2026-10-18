@@ -1,9 +1,10 @@
 // Spec: 08-1 §2.4 (main ⇄ engine messages; every payload zod-validated on receipt; requests get `{ re, result }`), §2.4.1
 // (db.tx, db.query), §3.3 (ui.patch forwarded to the renderer as-is), 08-0 §A (main owns settings.json: the engine's
 // your-AI results are written here), 08-5 §3.1 (AiStatus), 08-1 §3.3 (job:upsert / card:upsert for rows a db.tx wrote),
-// 09 §9.22 (power.keepAwake → powerSaveBlocker in main). Electron-free so unit tests drive it with an in-process engine.
+// 09 §9.22 (power.keepAwake → powerSaveBlocker in main), M11 pack §4.1 / G-M11-01 / G-M11-02 (CR-0015: proc.track,
+// proc.kill → JobObjects; voice.synthesize → foo-native, answered later through `reply`). Electron-free so unit tests drive it with an in-process engine.
 import { engineToMainSchema, type DbOp, type EngineToMain, type MainToEngine, type NamedQuery } from '../../engine/protocol';
-import type { Result } from '../../shared/errors';
+import { fail, ok, type Result } from '../../shared/errors';
 import type { EventChannel, EventPayload } from '../../shared/ipc';
 import type { Settings } from '../../shared/settings';
 import type { AiStatus, ProviderId } from '../../shared/types';
@@ -11,6 +12,7 @@ import type { Db } from '../store/db';
 import { cardRow, type DbRow } from '../db/rows';
 import { jobRows } from '../store/queries';
 import { applyDbOps, runNamedQuery } from './engineHost';
+import type { JobAnswer, ProcPurpose } from '../proc/JobObjects';
 
 export interface BridgeContext {
   db: Db;
@@ -28,13 +30,21 @@ export interface BridgeContext {
   keepAwake?(on: boolean, jobCount: number): void;
   /** 08-3 §15: a toast request. Stub until M11 (logged only). */
   notify?(req: unknown): void;
+  /** M11: main's Job Objects (src/main/proc/JobObjects.ts); absent → every kill answers `native:false` (taskkill). */
+  proc?: { track(pid: number, purpose: ProcPurpose): JobAnswer; kill(pid: number): JobAnswer };
+  /** M11: `foo-native.synthesize`; absent → VOICE_UNAVAILABLE. */
+  synthesize?(text: string, lang: string, outPath: string): Promise<void>;
 }
+
+type Reply = { re: string; result: Result<unknown> };
 
 type AiStatePayload = Extract<EngineToMain, { kind: 'ai.state' }>['payload'];
 
 /** Main's half of the engine port. `post` is set by the transport (MessagePort in production, a function in tests). */
 export class EngineBridge {
   post: (msg: MainToEngine) => void = () => {};
+  /** Posts a reply that is ready later than `receive` returns (voice.synthesize); set by the transport. */
+  reply: (r: Reply) => void = () => {};
   /** True while an engine process is connected (FOO_TEST runs without FOO_FAKE_AI run no engine: rule 5, no real AI). */
   live = false;
   private seq = 0;
@@ -90,7 +100,7 @@ export class EngineBridge {
   }
 
   /** One message from the engine. Returns the reply to post back (for db.tx / db.query), or null. */
-  receive(raw: unknown): { re: string; result: Result<unknown> } | null {
+  receive(raw: unknown): Reply | null {
     if (raw && typeof raw === 'object' && 're' in raw) {
       const r = raw as { re: string; result: Result<unknown> };
       this.waiters.get(r.re)?.(r.result);
@@ -139,6 +149,21 @@ export class EngineBridge {
       case 'ai.state':
         this.applyAiState(msg.payload);
         return null;
+      case 'proc.track':
+        this.ctx.proc?.track(msg.payload.pid, msg.payload.purpose);
+        return null;
+      case 'proc.kill':
+        return { re: msg.id, result: ok(this.ctx.proc ? this.ctx.proc.kill(msg.payload.pid) : { native: false }) };
+      case 'voice.synthesize': {
+        const id = msg.id;
+        const { text, lang, outPath } = msg.payload;
+        const run = this.ctx.synthesize ? this.ctx.synthesize(text, lang, outPath) : Promise.reject(new Error('no addon'));
+        run.then(
+          () => this.reply({ re: id, result: ok(null) }),
+          () => this.reply({ re: id, result: fail('VOICE_UNAVAILABLE') }),
+        );
+        return null;
+      }
     }
   }
 

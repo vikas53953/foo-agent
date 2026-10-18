@@ -26,6 +26,7 @@ import { ReleaseGate } from './prompt/releaseGate';
 import { Redactor } from './redact/Redactor';
 import { findBanned } from './prompt/filters';
 import { priceOf, resolveModel } from './ai/models';
+import { linkJobs } from './ai/ProcessHost';
 import { stubGate } from './gate/GateLogic';
 import { JobRunner } from './jobs/JobRunner';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
@@ -92,6 +93,7 @@ export class Engine {
       timeZone: this.settings.locale.timeZone,
       isOnline: () => this.online,
       cliLimiter: new CliLimiter(),
+      jobs: linkJobs(o.link),
     });
     const registry = new AiRegistry(adapters, { clock: o.clock, fakeEnabled: fake });
     void sweepSystemFiles({ fs: nodeAiFs, paths: { LOCAL: o.localDir, DATA: o.dataDir } }).catch(() => undefined);

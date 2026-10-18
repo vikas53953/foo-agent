@@ -1,12 +1,34 @@
 // Spec: 08-2 §6.3 common CLI rules (prompt on stdin only, npm `.cmd` shim → target JS run with foo's Electron as Node,
 // cwd {LOCAL}\ai-scratch\{providerId}\, env scrub, windowsHide, kill the whole tree, line reader UTF-8 + CRLF, stderr
 // ≤ 40 lines × 4,000 chars, per-turn timeout), §6.5 / 08-4 §30.4 (probe capture: 8 s, 2 MiB cap), 08-4 §30.7 (no late text).
-// No foo-native Job Object yet: `killTree` is the one place a Job Object replaces later (implementation-notes M3).
+// 08-2 §5.4 l.119 + M11 pack §4.1 (G-M11-01, CR-0015): on Windows each child is tracked in a main-side Job Object
+// (`proc.track` right after spawn, before stdin); Stop sends `proc.kill`, waits ≤ 1 s, then sweeps with taskkill.
 import { spawn as nodeSpawn, type ChildProcess } from 'node:child_process';
 import path from 'node:path';
 import { StringDecoder } from 'node:string_decoder';
 import type { ProviderId } from '../../shared/types';
+import type { MainLink } from '../protocol';
 import type { AdapterDeps } from './deps';
+
+/** Job Object kill: how long ProcessHost waits for main's `proc.kill` reply before the taskkill sweep (pack §4.7). */
+export const KILL_REPLY_WAIT_MS = 1000;
+
+/** The engine's view of main's Job Objects (G-M11-01). `kill` resolves `native:false` when the addon did not take it. */
+export interface ProcJobs {
+  track(pid: number, purpose: 'ai_cli' | 'whisper'): void;
+  kill(pid: number): Promise<{ native: boolean }>;
+}
+
+/** ProcJobs over the engine port: `proc.track` fire and forget, `proc.kill` as a request (an error reads as native:false). */
+export function linkJobs(link: MainLink): ProcJobs {
+  return {
+    track: (pid, purpose) => link.send('proc.track', { pid, purpose }),
+    kill: async (pid) => {
+      const r = await link.request<{ native: boolean }>('proc.kill', { pid });
+      return r.ok ? r.value : { native: false };
+    },
+  };
+}
 
 export const STDERR_MAX_LINES = 40;
 export const STDERR_MAX_LINE_CHARS = 4000;
@@ -68,12 +90,12 @@ export async function resolveCommand(bin: string, args: string[], deps: Pick<Ada
   return { command: deps.execPath, args: [target, ...args], extraEnv: { ELECTRON_RUN_AS_NODE: '1' } };
 }
 
-/** Kills the process and all its descendants. Idempotent; never throws. A Job Object replaces this later. */
-export function killTree(pid: number | undefined, platform: NodeJS.Platform = process.platform): void {
+/** Kills the process and all its descendants (taskkill on Windows, the process group elsewhere). Idempotent; never throws. */
+export function killTree(pid: number | undefined, platform: NodeJS.Platform = process.platform, spawn: typeof nodeSpawn = nodeSpawn): void {
   if (pid === undefined || pid <= 0) return;
   if (platform === 'win32') {
     try {
-      const k = nodeSpawn('taskkill', ['/PID', String(pid), '/T', '/F'], { windowsHide: true, stdio: 'ignore' });
+      const k = spawn('taskkill', ['/PID', String(pid), '/T', '/F'], { windowsHide: true, stdio: 'ignore' });
       k.on('error', () => undefined);
     } catch {
       /* already gone */
@@ -141,6 +163,8 @@ export interface RunSpec {
   maxStdoutBytes?: number;
   /** Override cwd (probe runs in the scratch folder too, by default). */
   cwd?: string;
+  /** What main's Job Object records the child as (G-M11-01); AI CLIs by default, `whisper-cli.exe` for voice. */
+  purpose?: 'ai_cli' | 'whisper';
 }
 
 export interface RunOutcome {
@@ -157,7 +181,38 @@ export interface RunOutcome {
 /** Spawns AI CLIs (08-2 §6.3). One per engine; the caller holds a CliLimiter slot around `run`. */
 export class ProcessHost {
   private readonly live = new Set<ChildProcess>();
-  constructor(private readonly deps: Pick<AdapterDeps, 'spawn' | 'env' | 'platform' | 'fs' | 'execPath' | 'clock' | 'paths'>) {}
+  constructor(private readonly deps: Pick<AdapterDeps, 'spawn' | 'env' | 'platform' | 'fs' | 'execPath' | 'clock' | 'paths' | 'jobs'>) {}
+
+  /** The Windows Job Object path when main is linked (08-2 l.119 order); otherwise today's killTree. */
+  private jobsFor(): ProcJobs | undefined {
+    return this.deps.platform === 'win32' ? this.deps.jobs : undefined;
+  }
+
+  private killChild(child: ChildProcess): void {
+    const pid = child.pid;
+    const jobs = this.jobsFor();
+    const spawn = this.deps.spawn ?? nodeSpawn;
+    if (!jobs || pid === undefined) {
+      killTree(pid, this.deps.platform, spawn);
+      return;
+    }
+    let swept = false;
+    const sweep = (): void => {
+      if (swept) return;
+      swept = true;
+      this.deps.clock.clearTimeout(timer);
+      killTree(pid, 'win32', spawn);
+    };
+    const timer = this.deps.clock.setTimeout(sweep, KILL_REPLY_WAIT_MS);
+    jobs.kill(pid).then((r) => {
+      // Belt and braces (pack §7): a grandchild spawned before `proc.track` landed is outside the job.
+      if (!r.native || (child.exitCode === null && child.signalCode === null)) sweep();
+      else {
+        swept = true;
+        this.deps.clock.clearTimeout(timer);
+      }
+    }, sweep);
+  }
 
   async run(spec: RunSpec): Promise<RunOutcome> {
     const cmd = await resolveCommand(spec.bin, spec.args, this.deps);
@@ -192,7 +247,11 @@ export class ProcessHost {
       let bytes = 0;
       const stderr = new StderrTail();
       const pid = child.pid;
-      const kill = (): void => killTree(child.pid, this.deps.platform);
+      let killed = false;
+      const kill = (): void => {
+        killed = true;
+        this.killChild(child);
+      };
       const reader = new LineReader((line) => {
         if (!timedOut && !cancelled && !truncated) spec.onLine(line); // no late text after cancel/timeout (§30.7)
       });
@@ -233,6 +292,9 @@ export class ProcessHost {
         spec.signal.removeEventListener('abort', onAbort);
         this.live.delete(child);
         if (!timedOut && !cancelled && !truncated) reader.end();
+        const jobs = this.jobsFor();
+        // Windows: release the pid's job; TerminateJobObject also takes any children the CLI left behind.
+        if (jobs && pid !== undefined && !killed) void jobs.kill(pid).catch(() => undefined);
         // Belt and braces: a CLI that exits while its own children live must not leave them behind.
         if (posix && pid !== undefined) {
           try {
@@ -247,6 +309,7 @@ export class ProcessHost {
         resolve(out);
       };
 
+      if (pid !== undefined) this.jobsFor()?.track(pid, spec.purpose ?? 'ai_cli');
       try {
         child.stdin?.end(spec.stdin, 'utf8');
       } catch {
@@ -257,7 +320,7 @@ export class ProcessHost {
 
   /** Kills every live child (engine shutdown). */
   killAll(): void {
-    for (const c of this.live) killTree(c.pid, this.deps.platform);
+    for (const c of this.live) this.killChild(c);
   }
 }
 

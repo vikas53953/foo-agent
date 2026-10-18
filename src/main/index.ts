@@ -13,6 +13,7 @@ import { EngineSupervisor } from './engine-supervisor/EngineSupervisor';
 import { engineHello } from './engine-supervisor/hello';
 import { chatRowById, messageGet } from './store/queries';
 import { NetMonitor } from './net/netMonitor';
+import { installNative } from './proc/installNative';
 import type { FakeClock } from '../shared/clock';
 import { SettingsStore } from './settings/Settings';
 import { openDb, type Db } from './store/db';
@@ -68,6 +69,7 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
     const netMonitor = new NetMonitor(deps.clock);
     const probe = testClock ? () => deps.net.online : electronProbe;
     const store = db;
+    const native = installNative(); // M11: foo-native + Job Objects (G-M11-01)
     // 08-1 §2.4: main's half of the engine port; the engine forks after first paint (step 6).
     const engine = new EngineBridge({
       db: store,
@@ -83,9 +85,12 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
       },
       dataDir: paths.data,
       now: () => deps.clock.now(),
+      proc: native.jobs,
+      synthesize: native.synthesize,
     });
     const ctx: AppContext = { db, settings, net: netMonitor, probe, dataDir: paths.data, engine };
     supervisor = new EngineSupervisor(engine, { data: paths.data, local: paths.local });
+    supervisor.onExit = () => native.jobs.killAll(); // CR-0007 §(e): no orphaned CLI tree after an engine crash
     supervisor.onStarted = () =>
       engineHello(engine.send.bind(engine), {
         settings: () => settings.get(),

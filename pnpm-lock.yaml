@@ -17,6 +17,9 @@ importers:
       better-sqlite3:
         specifier: 13.0.3
         version: 13.0.3
+      foo-native:
+        specifier: link:native/foo-native
+        version: link:native/foo-native
       immer:
         specifier: 11.1.21
         version: 11.1.21

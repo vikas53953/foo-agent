@@ -31,12 +31,14 @@
     "tier-r": "tsx scripts/tier-r.ts",
     "fid:guard": "tsx scripts/fid-guard.ts",
     "trace:check": "tsx scripts/trace-check.ts",
-    "fidelity:report": "tsx scripts/fidelity-report.ts"
+    "fidelity:report": "tsx scripts/fidelity-report.ts",
+    "native:build": "node-gyp rebuild --release --directory=native/foo-native"
   },
   "dependencies": {
     "@fluentui/react-icons": "2.0.343",
     "@tanstack/react-virtual": "3.14.13",
     "better-sqlite3": "13.0.3",
+    "foo-native": "link:native/foo-native",
     "immer": "11.1.21",
     "intl-messageformat": "12.1.3",
     "react": "19.3.1",

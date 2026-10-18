@@ -1,6 +1,7 @@
 // Spec: 08-1 §2.1 (utility `engine`: forked by EngineSupervisor at app ready + 300 ms, after first paint; on a crash the
 // supervisor restarts it), §2.2 step 6, §2.4 (transport: `utilityProcess.fork(engine.js)` + one MessageChannelMain, 08-0 §G.6),
-// 08-0 §E.6 (the engine sees the same {DATA}/{LOCAL} and test overrides as main).
+// 08-0 §E.6 (the engine sees the same {DATA}/{LOCAL} and test overrides as main), CR-0007 §(e) pick 1 / M11 G-M11-01
+// (on engine exit or crash every tracked CLI tree is killed: `onExit` → JobObjects.killAll()).
 // Deferred: `engineCrashes` in launches.json and safe mode at 3 crashes (08-0 §G.14) arrive with launches.json (M11); until
 // then a crash restarts the engine at most 3 times per launch (implementation-notes "M3").
 import { app, MessageChannelMain, utilityProcess, type MessagePortMain, type UtilityProcess } from 'electron';
@@ -27,12 +28,15 @@ export class EngineSupervisor {
   private stopping = false;
   /** Called after every (re)start once the port is wired: main sends settings and the network state. */
   onStarted: () => void = () => {};
+  /** Called on every engine exit (crash or stop), before any restart: main kills the engine's tracked process trees. */
+  onExit: () => void = () => {};
 
   constructor(
     private bridge: EngineBridge,
     private paths: SupervisorPaths,
   ) {
     bridge.post = (msg: MainToEngine) => this.port?.postMessage(msg);
+    bridge.reply = (r) => this.port?.postMessage(r);
   }
 
   /** 08-2 §1 rule 5 / plan §1 rule 5: a FOO_TEST run never reaches a real AI, so it runs an engine only with FOO_FAKE_AI. */
@@ -63,6 +67,7 @@ export class EngineSupervisor {
       this.bridge.failPending();
       this.port = null;
       this.child = null;
+      this.onExit();
       if (this.stopping) return;
       console.error(`engine exited (${code})`);
       if (this.restarts < MAX_RESTARTS) {

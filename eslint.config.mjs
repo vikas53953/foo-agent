@@ -15,6 +15,7 @@ export default tseslint.config(
       'playwright-report/',
       'src/shared/tokens.ts',
       'src/renderer/public/',
+      'native/foo-native/build/',
     ],
   },
   js.configs.recommended,
@@ -35,6 +36,11 @@ export default tseslint.config(
   {
     files: ['src/renderer/**/*.{ts,tsx}'],
     rules: { 'foo/no-raw-design-values': 'error' },
+  },
+  {
+    files: ['native/foo-native/*.js', 'test/fakes/cli/*.js'],
+    languageOptions: { sourceType: 'commonjs' },
+    rules: { '@typescript-eslint/no-require-imports': 'off', '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }] },
   },
   {
     files: ['eslint-rules/**/*.js'],

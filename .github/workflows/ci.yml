@@ -62,6 +62,9 @@ jobs:
         run: node node_modules/electron/install.js
       - name: Build better-sqlite3 for Node (unit tests)
         run: pnpm rebuild:node
+      # 09 §9.19.2: foo-native is N-API, so one build loads in Node (the Job Object tests) and in Electron (the app).
+      - name: Build foo-native
+        run: pnpm native:build
       - run: pnpm typecheck
       - name: Unit, article and fidelity tests
         run: pnpm test
@@ -72,6 +75,9 @@ jobs:
         run: pnpm test:e2e
       - name: Package (unpacked)
         run: pnpm package:dir
+      - name: foo-native ships unpacked next to app.asar (09 §9.19.2)
+        shell: bash
+        run: test -f dist/win-unpacked/resources/app.asar.unpacked/node_modules/foo-native/build/Release/foo_native.node
       - name: No test hooks in the production build (08-3 §22.1)
         shell: bash
         run: |
@@ -123,6 +129,8 @@ jobs:
         run: node node_modules/electron/install.js
       - name: Build better-sqlite3 for Node (unit tests)
         run: pnpm rebuild:node
+      - name: Build foo-native
+        run: pnpm native:build
       - name: Unit, article and fidelity tests (JSON for the report)
         id: unit
         continue-on-error: true

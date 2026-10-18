@@ -5,6 +5,7 @@ import type { ProviderId } from '../../shared/types';
 import type { Clock } from '../../shared/clock';
 import type { Pricing } from './models';
 import type { CliLimiter } from './lanes';
+import type { ProcJobs } from './ProcessHost';
 
 /** The few file-system calls detect/fake/key adapters need; tests pass an in-memory fake. */
 export interface AiFs {
@@ -43,4 +44,6 @@ export interface AdapterDeps {
   isOnline?(): boolean;
   /** Shared cap of 4 CLI children (08-2 §6.9). One per engine. */
   cliLimiter: CliLimiter;
+  /** M11 (G-M11-01): main's Job Objects over the engine port; absent (tests, no main) → taskkill only. */
+  jobs?: ProcJobs;
 }

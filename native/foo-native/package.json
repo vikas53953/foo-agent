@@ -1,0 +1,10 @@
+{
+  "name": "foo-native",
+  "version": "0.0.1",
+  "private": true,
+  "description": "foo's one C++/WinRT N-API addon (09 §9.19.2)",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "gypfile": false,
+  "license": "UNLICENSED"
+}
