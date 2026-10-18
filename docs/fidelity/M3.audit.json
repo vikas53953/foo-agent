@@ -42,11 +42,41 @@
       "covers": "part",
       "manual": "claude 2.1.282, codex 0.156.1 and Ollama captured 2026-10-18; gemini is not installed on the PC and the key APIs need a test key (both stay seeds, test/fixtures/cli-captures/capture.md)"
     },
-    { "group": "M3 Must pass", "item": "AT-005", "status": "UNVERIFIABLE", "evidence": "test:AT-005", "covers": "whole" },
-    { "group": "M3 Must pass", "item": "AT-006", "status": "UNVERIFIABLE", "evidence": "test:AT-006", "covers": "whole" },
-    { "group": "M3 Must pass", "item": "AT-027", "status": "UNVERIFIABLE", "evidence": "test:AT-027", "covers": "whole" },
-    { "group": "M3 Must pass", "item": "AT-030", "status": "UNVERIFIABLE", "evidence": "test:AT-030", "covers": "whole" },
-    { "group": "M3 Must pass", "item": "AT-031", "status": "UNVERIFIABLE", "evidence": "test:AT-031", "covers": "whole" },
+    {
+      "group": "M3 Must pass",
+      "item": "AT-005",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-005",
+      "covers": "whole"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "AT-006",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-006",
+      "covers": "whole"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "AT-027",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-027",
+      "covers": "whole"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "AT-030",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-030",
+      "covers": "whole"
+    },
+    {
+      "group": "M3 Must pass",
+      "item": "AT-031",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-031",
+      "covers": "whole"
+    },
     {
       "group": "M3 Must pass",
       "item": "ART-02b",
@@ -54,7 +84,13 @@
       "evidence": "test:0 banned terms displayed",
       "covers": "whole"
     },
-    { "group": "M3 Must pass", "item": "ART-23a", "status": "UNVERIFIABLE", "evidence": "test:ART-23a", "covers": "whole" },
+    {
+      "group": "M3 Must pass",
+      "item": "ART-23a",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-23a",
+      "covers": "whole"
+    },
     {
       "group": "M3 Must pass",
       "item": "ART-12a (AI words never move status)",
@@ -105,7 +141,7 @@
       "status": "PARTIAL",
       "evidence": "test:steps 1 to 5 live with fake-AI replies",
       "covers": "part",
-      "manual": "UX-08-02 is captured live (Thinking face, Stop button). The walkthrough draws UX-08-02 on another scene (the morning-brief chat at 8:10) than its other chapter 8 steps, so R1–R4 are disputed under CR-0007 until the spec keeper redraws it; steps 6 and 7 stay on the seeded scene (job badge M4, source pill from engine entities)"
+      "manual": "UX-08-02 is captured live on the walkthrough's own frame (seed set ux-world-ch8-live: \"thanks!\" at 8:06, the question at 8:10, the Thinking face and Stop); R1 stays disputed under CR-0003 like the other UX-08 steps. Steps 6 and 7 stay on the seeded scene (job badge M4, source pill from engine entities)"
     },
     {
       "group": "M3 Fidelity exit",

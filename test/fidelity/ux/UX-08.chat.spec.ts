@@ -6,8 +6,8 @@
 // highlighted message as the newest row. M3 re-runs the chapter with replies from the fake AI (§11.12 M3): the second test
 // does steps 1 to 5 through the real UI, the fake answering the walkthrough's own words (read from golden/manifest.json),
 // and captures UX-08-02 (the Thinking face and the Stop button while foo replies, CR-0003), which only a live reply shows.
-// Steps 1 and 3 to 7 keep their captures from the seeded scene, where the rows above the step's message are the
-// walkthrough's (the live run adds its rows under the whole seeded chapter). Steps 6 and 7 are not re-run live: the
+// The live run starts from the world at 8:06 AM with foo's chat ending at the cake line (seed set ux-world-ch8-live), so
+// its rows are the walkthrough's. Steps 1 and 3 to 7 keep their captures from the whole seeded scene. Steps 6 and 7 are not re-run live: the
 // walkthrough's result for 6 carries a 🛠 job badge (job runner, M4) and 7's source pill comes from engine entities, not
 // from reply text.
 // The quoted strings asserted below are read from golden/manifest.json (the frozen walkthrough's own s/f texts).
@@ -129,7 +129,9 @@ test('UX-08 · Just chatting, in your language: steps 1 to 5 live with fake-AI r
     intake(paAsk!, paAnswer!),
   ]);
   const page = await app.firstWindow();
-  await openWorld(app, page);
+  // The world at 8:06 AM with foo's chat ending at the cake line (seed set ux-world-ch8-live, CR-0007): steps 1 and 2 are sent
+  // at the walkthrough's own times (8:06, 8:10), so the UX-08-02 frame is the one the walkthrough draws.
+  await openWorld(app, page, '2026-10-16T08:06:00+05:30', 'ux-world-ch8-live');
   await openChat(page, 'foo');
   await page.getByTestId(TID.appPanel).waitFor();
   const log = page.getByTestId(TID.threadLog);
@@ -153,14 +155,14 @@ test('UX-08 · Just chatting, in your language: steps 1 to 5 live with fake-AI r
   });
 
   await test.step('UX-08-02 · a real question: the Thinking face, "typing…" and the Stop button', async () => {
+    await page.evaluate(() => window.__fooTest!.clock.set('2026-10-16T08:10:00+05:30'));
     await sendText(holiday);
     await expect(last(TID.bubbleMe, holiday)).toBeVisible();
     const thinking = page.getByTestId(TID.threadThinking);
     await expect(thinking).toBeVisible();
     // 04 §14.3: the speaker's face in the Thinking mood, no bubble behind it.
     await expect(thinking.locator('[data-mood="thinking"]')).toHaveCount(1);
-    // "typing…" under foo's name: the chat-list row (03-shell-1 §3.4.6 rule 1). The header status line shows the seeded
-    // Needs-you job first (03-shell-2 §3.6.2.1 row 2 before row 8): reported by Tier R R1, not asserted here.
+    // "typing…" under foo's name: the chat-list row (03-shell-1 §3.4.6 rule 1).
     const fooRow = page
       .getByTestId(TID.chatlistRow)
       .filter({ has: page.getByTestId(TID.chatlistRowName).getByText('foo', { exact: true }) })

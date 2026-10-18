@@ -4,8 +4,7 @@
 - **Spec sections:** 08-1 §2.1–§2.4, 08-2 §6, §7, §11.4, 08-4 §25, §30, 04 §3.3, §4, §12.3, §14.4, 10-acceptance-1 §B (AT-005,
   AT-006, AT-027, AT-030, AT-031), 10-acceptance-2 §D (ART-02b, ART-12a, ART-23a), 11-fidelity §11.4 (FID-18).
 - **Status:** Pending Vikas
-- **Change:** `spec/trace.csv` only (rows below), and one Tier R dispute in `docs/fidelity/disputes.json` (section d). No
-  other `spec/` or `golden/` file changes.
+- **Change:** `spec/trace.csv` only (rows below). No other `spec/` or `golden/` file changes.
 - **Manifest:** `pnpm tsx scripts/spec-verify.ts --write` run in the same commit.
 
 ## (a) Trace rows (`spec/trace.csv`)
@@ -68,10 +67,19 @@
 - A tool-use answer runs the turn once more; two in a row, or a CLI that cannot turn its tools off, mark that AI unusable
   until it is tested again.
 
-## (d) Tier R dispute (11-fidelity §11.2.7)
+## (d) Test seed for the live UX-08 run
 
-- **UX-08-02, checks R1–R4.** The walkthrough draws step 2 ("a real question: the Thinking face and Stop") on another
-  scene than its other chapter 8 steps: the morning-brief chat at 8:10 with the chapter 1 chat list. The app captures the
-  step live in the chapter 8 world (the fake AI answering), so the words, boxes, colours and pixels around the Thinking
-  row differ. The Thinking face, "typing…" and the Stop button themselves are asserted by the test. Ask: the spec keeper
-  redraws UX-08-02 on the chapter 8 scene, then Tier R re-runs.
+- A test-only seed set `ux-world-ch8-live` (08-3 §22.9 lists `demo`, `perf`): the walkthrough world at 8:05 AM with foo's
+  chat ending at the cake line, so the live run sends "thanks!" and the holiday question at the walkthrough's own times and
+  UX-08-02 is captured on the walkthrough's frame (no Tier R dispute needed).
+
+## (e) Independent review (Fable, 2026-10-18) and what it asks the spec keeper
+
+- Pick 1: add `foo-native/jobobject.cc` to M11's Create list (plan §5); until then an engine crash can orphan a CLI child
+  that `taskkill /T` would not reach.
+- Picks 4 and 5: 08-1 §2.4.1 says a new query or writable table is a constitution change: amend 08-1 §2.4.1 (`reactions`
+  writable; `messageById`, `messagesQueued`) and §2.4 / §3.2 (the new channels and engine kinds).
+- Pick 9: a reply that streamed as one bubble shows as 2–3 bubbles when the chat is reopened (04 §12.3 says stream mode
+  never splits). Follow-up: split only replies that finished inside the 1.5 s hold.
+- Pick 11: 04 §3.3 (Read on first byte) and 04 §4.2 (👀 within 1 s) disagree; the spec keeper picks one.
+- Pick 14: revisit the AT-006 composer line with the M12 setup screen.

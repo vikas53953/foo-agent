@@ -77,13 +77,21 @@ export async function setTheme(page: Page, theme: Theme): Promise<void> {
  * The Blueprint/walkthrough world: fake clock, the ux-world seed (built from the walkthrough's own state objects, X-129),
  * a reload so the window opens on it, 1280 × 800 content (§11.2.3 launch). Returns the seed's row ids.
  */
-export async function openWorld(app: ElectronApplication, page: Page, at = '2026-10-16T09:41:00+05:30'): Promise<Record<string, string>> {
+export async function openWorld(
+  app: ElectronApplication,
+  page: Page,
+  at = '2026-10-16T09:41:00+05:30',
+  set: 'ux-world' | 'ux-world-ch8-live' = 'ux-world',
+): Promise<Record<string, string>> {
   await page.getByTestId(TID.titlebarStrip).waitFor();
-  const reply = await page.evaluate(async (iso) => {
-    const t = window.__fooTest!;
-    await t.clock.set(iso);
-    return t.seed('ux-world');
-  }, at);
+  const reply = await page.evaluate(
+    async ([iso, s]) => {
+      const t = window.__fooTest!;
+      await t.clock.set(iso);
+      return t.seed(s);
+    },
+    [at, set] as const,
+  );
   await page.reload();
   await page.getByTestId(TID.titlebarStrip).waitFor();
   await windowSize(app, page, 1280, 800);

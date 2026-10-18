@@ -40,15 +40,18 @@ const jobStateArg = z.object({ jobId: z.string().min(1), state: z.enum(JOB_STATE
 
 /** Seed registry (08-3 §22.9). Rows are generated into the open foo.db through the real schema; open windows get them as patches. */
 export function seeds(ctx: AppContext, clock: FakeClock): Record<SeedSet, () => SeedReply> {
-  const demo = (set: SeedSet) => (): SeedReply => {
-    const r = seedUxWorld(ctx.db, clock.now());
-    writeSeedMedia(ctx.dataDir, r.media);
-    ctx.settings.update((s) => uxWorldSettings(s, r.refs, clock.now()));
-    return { set, loaded: true, chats: r.chats, messages: r.messages, refs: r.refs };
-  };
+  const demo =
+    (set: SeedSet, o: { ch8Live?: boolean } = {}) =>
+    (): SeedReply => {
+      const r = seedUxWorld(ctx.db, clock.now(), o);
+      writeSeedMedia(ctx.dataDir, r.media);
+      ctx.settings.update((s) => uxWorldSettings(s, r.refs, clock.now()));
+      return { set, loaded: true, chats: r.chats, messages: r.messages, refs: r.refs };
+    };
   return {
     demo: demo('demo'),
     'ux-world': demo('ux-world'),
+    'ux-world-ch8-live': demo('ux-world-ch8-live', { ch8Live: true }),
     perf: () => {
       const r = seedPerf(ctx.db, clock.now());
       writeSeedMedia(ctx.dataDir, r.media);
