@@ -584,6 +584,7 @@ files are real and which stay seeds). What the real output pinned:
 - Found by foo-verify, not T2's file: the Doing now line and `JobRow.nowLine` show the raw phrase key ("read_email")
   because `jobRows` (`src/main/store/queries.ts`) uses `slots.text ?? phrase_key`; 08-1 §4 says the running step's phrase,
   i.e. `phraseText(phrase_key, slots, 'running')`.
+
 ## M8 · connector contracts (ticket T1, CR-0012)
 
 - M8 is built in tickets (`/mnt/project-files/foo/prep/M8-tickets.md`) on `claude/foo-m8-b39npx`, based on the M4 branch ahead of
