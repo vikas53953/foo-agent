@@ -1,7 +1,7 @@
 {
   "id": "BP-APP-R",
   "theme": "dark",
-  "verdict": "disputed",
+  "verdict": "review",
   "disputed": {
     "cr": "CR-0002",
     "checks": [
