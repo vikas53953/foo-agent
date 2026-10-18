@@ -35,7 +35,7 @@ describe('08-2 §5.4.1 scheduling', () => {
     expect(pickStartable([job('b1', 'queued', 1, true), job('b2', 'queued', 2, true)], 2)).toEqual(['b1']);
   });
 
-  it('AT-106: the AI must have been verified in the last 10 min', () => {
+  it('the AI must have been verified in the last 10 min', () => {
     const now = 1_000_000_000;
     expect(needsVerify(undefined, now)).toBe(true);
     expect(needsVerify(now - 10 * 60_000, now)).toBe(false);

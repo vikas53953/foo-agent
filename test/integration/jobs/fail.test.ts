@@ -3,7 +3,7 @@
 // PROTOCOL_FIX_ACTION), 08-1 §4.5 (error payload), 08-0 §G.2 (error card state `shown`; checklist `failed`).
 import { afterEach, describe, expect, it } from 'vitest';
 import { t } from '../../../src/shared/copy/t';
-import { jobHarness, jobIntake, step, tool, badgeSets, type JobHarness } from './jobHarness';
+import { jobHarness, jobIntake, step, tool, badgeSets, type JobHarness, type PlanStepIn } from './jobHarness';
 
 let h: JobHarness | null = null;
 afterEach(() => {
@@ -11,7 +11,10 @@ afterEach(() => {
   h = null;
 });
 
-const PLAN = [{ phraseKey: 'check_site', slots: { site: 'stay.example' } }, { phraseKey: 'compare', slots: { what: 'stays' } }];
+const PLAN: PlanStepIn[] = [
+  { phraseKey: 'check_site', slots: { site: 'stay.example' } },
+  { phraseKey: 'compare', slots: { what: 'stays' } },
+];
 
 async function blocked(alternative?: Record<string, unknown>) {
   h = jobHarness({

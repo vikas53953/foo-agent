@@ -26,9 +26,7 @@ describe('08-4 §26.2 job title', () => {
     const plan = [step('writing')];
     expect(buildTitle({ intent: 'read_only', plan, hint: 'Sort my notes', isBanned: noBan })).toBe('Sort my notes');
     expect(buildTitle({ intent: 'read_only', plan, hint: 'Sort my notes; now!', isBanned: noBan })).toBe('Working on it');
-    expect(buildTitle({ intent: 'read_only', plan, hint: 'Leverage synergy', isBanned: (t) => /leverage/i.test(t) })).toBe(
-      'Working on it',
-    );
+    expect(buildTitle({ intent: 'read_only', plan, hint: 'Leverage synergy', isBanned: (t) => /leverage/i.test(t) })).toBe('Working on it');
   });
 
   it('a title over 40 chars is cut at the last space before char 39 and gets "…"', () => {
@@ -39,7 +37,7 @@ describe('08-4 §26.2 job title', () => {
     expect(cutTitle('Short title')).toBe('Short title');
   });
 
-  it('AT-120: a retry is titled "Trying again: {title}", still ≤ 40 chars', () => {
+  it('a retry is titled "Trying again: {title}", still ≤ 40 chars', () => {
     expect(retryTitle('Reading your email')).toBe('Trying again: Reading your email');
     expect(retryTitle('Looking for bills due this week').length).toBeLessThanOrEqual(40);
   });
@@ -59,7 +57,10 @@ describe('08-4 §26.2 item 0 · show-before step (X-131)', () => {
   });
 
   it('a plan that grows past 12 drops its last non-acting step', () => {
-    const plan = [...Array.from({ length: 11 }, (_, i) => step('look_for', { what: `thing ${i}` })), step('send', { channel: 'email', to: 'Asha' })];
+    const plan = [
+      ...Array.from({ length: 11 }, (_, i) => step('look_for', { what: `thing ${i}` })),
+      step('send', { channel: 'email', to: 'Asha' }),
+    ];
     const out = insertShowBefore(plan);
     expect(out).toHaveLength(12);
     expect(out.slice(-2).map((s) => s.phraseKey)).toEqual(['show_before', 'send']);

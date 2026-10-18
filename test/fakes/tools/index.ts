@@ -72,11 +72,12 @@ export function fakeTools(o: FakeToolOptions = {}): { tools: ToolRegistry; calls
       name: 'gmail.search',
       actionClass: 'read',
       args: 'query: string, max?: number ≤ 50, sinceDays?: number ≤ 365',
-      description: 'Find emails. Returns ids, sender, subject, date and a snippet. Use Gmail search words like from:, subject:, newer_than:7d.',
+      description:
+        'Find emails. Returns ids, sender, subject, date and a snippet. Use Gmail search words like from:, subject:, newer_than:7d.',
       run: wrap('gmail.search', (a) => {
         const q = String(a.query ?? '').toLowerCase();
         const hits = FAKE_MAILBOX.filter((m) => !q.includes('bill') || /bill/i.test(m.subject));
-        return { kind: 'ok', result: hits.map(({ body: _b, ...m }) => m) };
+        return { kind: 'ok', result: hits.map((m) => ({ id: m.id, from: m.from, subject: m.subject, date: m.date, snippet: m.snippet })) };
       }),
     },
     {

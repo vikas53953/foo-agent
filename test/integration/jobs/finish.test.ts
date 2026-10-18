@@ -4,7 +4,7 @@
 // text is posted as one message), 08-4 §26.11 (a code that is also a secret → PROOF_INVALID → done_unverified).
 // Engine ids are counters in these tests: `tc_000001` is the job's first tool call.
 import { afterEach, describe, expect, it } from 'vitest';
-import { jobHarness, jobIntake, step, stepDone, tool, type JobHarness } from './jobHarness';
+import { jobHarness, jobIntake, step, stepDone, tool, type JobHarness, type PlanStepIn } from './jobHarness';
 
 let h: JobHarness | null = null;
 afterEach(() => {
@@ -12,7 +12,7 @@ afterEach(() => {
   h = null;
 });
 
-const SITE_PLAN = [{ phraseKey: 'check_site', slots: { site: 'stay.example' } }, { phraseKey: 'find_proof' }];
+const SITE_PLAN: PlanStepIn[] = [{ phraseKey: 'check_site', slots: { site: 'stay.example' } }, { phraseKey: 'find_proof' }];
 const confirmation = (code: string, seenInToolCallId = 'tc_000001') => ({
   kind: 'confirmation',
   code,

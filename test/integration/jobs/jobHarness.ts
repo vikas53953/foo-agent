@@ -46,6 +46,23 @@ export function jobIntake(
 
 export const BILLS_PLAN: PlanStepIn[] = [{ phraseKey: 'read_email' }, { phraseKey: 'look_for', slots: { what: 'bills due this week' } }];
 
+/** A 6-step job, each turn held 600 ms so the 1.5 s checklist exists (ART-17, ART-22). */
+export const SIX_STEPS: PlanStepIn[] = [
+  { phraseKey: 'read_email' },
+  { phraseKey: 'look_for', slots: { what: 'bills' } },
+  { phraseKey: 'check_site', slots: { site: 'stay.example' } },
+  { phraseKey: 'compare', slots: { what: 'stays' } },
+  { phraseKey: 'check_calendar' },
+  { phraseKey: 'make_file', slots: { what: 'a list' } },
+];
+const slow = { delayMs: 600 };
+export const sixStepScript = (): FakeLineIn[] => [
+  jobIntake(SIX_STEPS, { estimate: { minutes: 2 } }),
+  tool('gmail.search', { query: 'bill' }, slow),
+  ...[0, 1, 2, 3, 4, 5].map((i) => stepDone(i, slow)),
+  step({ kind: 'done', result: 'Here is your list.', unverified: true }, slow),
+];
+
 export interface JobHarness extends Harness {
   calls: FakeToolLog[];
   /** Settles the chat lane and the runner, advancing the fake clock by `stepMs` per round. */
@@ -63,7 +80,10 @@ export interface JobHarness extends Harness {
 const realSleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
 export function jobHarness(
-  o: { script: FakeLineIn[]; tools?: FakeToolOptions; settings?: (s: Settings) => Settings } & Partial<HarnessOptions>,
+  o: { script: FakeLineIn[]; tools?: FakeToolOptions; settings?: (s: Settings) => Settings } & Omit<
+    Partial<HarnessOptions>,
+    'script' | 'tools' | 'settings'
+  >,
 ): JobHarness {
   const ft = fakeTools(o.tools);
   const h = makeHarness({ ...o, settings: o.settings ?? verified(), tools: ft.tools });
@@ -114,6 +134,8 @@ export function jobHarness(
 export function badgeSets(h: Harness, messageId: string): unknown[] {
   const out: unknown[] = [];
   for (const t of h.txs)
-    if (t.ok) for (const op of t.ops) if (op.op === 'update' && op.table === 'messages' && op.id === messageId && 'badge' in op.set) out.push(op.set.badge);
+    if (t.ok)
+      for (const op of t.ops)
+        if (op.op === 'update' && op.table === 'messages' && op.id === messageId && 'badge' in op.set) out.push(op.set.badge);
   return out;
 }

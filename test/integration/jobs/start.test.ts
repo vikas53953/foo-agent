@@ -15,7 +15,7 @@ afterEach(() => {
 
 const doneUnverified = (extra = {}) => step({ kind: 'done', result: 'Done.', unverified: true }, extra);
 
-describe('AT-105 · three WORKING slots', () => {
+describe('three WORKING slots, end to end', () => {
   it('a 4th job is QUEUED with 👀 and its checklist; it starts only when a slot frees', async () => {
     const script = [
       jobIntake(BILLS_PLAN, { match: 'job one' }),
@@ -44,7 +44,12 @@ describe('AT-105 · three WORKING slots', () => {
     await h.settle(500);
     expect(h.jobs().every((j) => j.state === 'done_unverified')).toBe(true);
     // Never 4 at once: the 4th started only after another finished.
-    const firstEnd = Math.min(...h.jobs().filter((j) => j.id !== fourth.id).map((j) => Number(j.finished_at)));
+    const firstEnd = Math.min(
+      ...h
+        .jobs()
+        .filter((j) => j.id !== fourth.id)
+        .map((j) => Number(j.finished_at)),
+    );
     expect(Number(h.job(String(fourth.id)).started_at)).toBeGreaterThanOrEqual(firstEnd);
   });
 });
@@ -53,7 +58,10 @@ describe('AT-106 · verify first when the AI is stale', () => {
   it('a one-word test runs before the job turns; then WORKING 🛠 and the checklist at 1.5 s', async () => {
     const stale = (s: Settings): Settings => {
       const v = verified()(s);
-      return { ...v, ai: { ...v.ai, providers: { 'claude-cli': { kind: 'plan', lastVerifiedAt: TEST_EPOCH_MS - 11 * 60_000, lastVerifyOk: true } } } };
+      return {
+        ...v,
+        ai: { ...v.ai, providers: { 'claude-cli': { kind: 'plan', lastVerifiedAt: TEST_EPOCH_MS - 11 * 60_000, lastVerifyOk: true } } },
+      };
     };
     h = jobHarness({
       settings: stale,
