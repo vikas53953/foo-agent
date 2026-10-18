@@ -52,7 +52,7 @@ export interface LaneProtocol {
   parse(text: string): { say: string; act: IntakeDecisionView | null; issues: string | null };
   parseAct(text: string): { act: IntakeDecisionView | null; issues: string | null };
   /** The release gate for one streamed turn (08-4 §25.5 item 2). */
-  gate(onRelease: (text: string, mode: 'whole' | 'sentence') => void): LaneGate;
+  gate(onRelease: (text: string, mode: 'whole' | 'sentence') => void, signal: AbortSignal): LaneGate;
   /** 08-2 §7.6 over a whole `<say>` (used for repair results and the post-check). */
   filter(text: string): string;
 }
@@ -92,6 +92,8 @@ export class ChatLane {
   private running = 0;
   /** User messages whose turn is running now (a second drain must not answer them twice). */
   private inflight = new Set<string>();
+  /** User messages whose turn already ran once more after a tool-use violation. */
+  private violationRetried = new Set<string>();
   /** Enqueued by a drain of Waiting-to-send messages: skipped if another turn already answered it. */
   private drained = new Set<string>();
   private aborts = new Map<string, AbortController>();
@@ -118,6 +120,8 @@ export class ChatLane {
   retry(fooMessageId: string): boolean {
     const userId = this.answered.get(fooMessageId);
     if (!userId) return false;
+    // One retry per cut-off bubble: repeated clicks do not answer twice.
+    this.answered.delete(fooMessageId);
     void this.messageById(userId).then((m) => m && this.enqueue(m.chatId, m.id));
     return true;
   }
@@ -207,9 +211,26 @@ export class ChatLane {
     await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { status: 'complete', badge: 'seen' } }]);
     this.typing(chatId, true, who);
 
-    const built = this.d.protocol.buildIntake({ settings, chat, helper, conversation, message, local: pick.billing === 'local' });
     const turnId = this.d.newId('t');
     const startedAt = this.d.clock.now();
+    let built: { system: string; prompt: string };
+    try {
+      built = this.d.protocol.buildIntake({ settings, chat, helper, conversation, message, local: pick.billing === 'local' });
+    } catch {
+      // A message over the prompt budget (PromptBudgetError) or a broken prompt file: the reply is cut off with Try again
+      // instead of leaving 👀 and the Thinking row up (04 §19.4).
+      this.d.log('chat.prompt_failed', 'PROTOCOL_INVALID', { chatId });
+      await this.cutOff(chatId, messageId, null, who, '', helper, pick.backup ? 'backup' : null);
+      await this.turnRow(
+        turnId,
+        chatId,
+        pick,
+        startedAt,
+        { text: '', usage: emptyUsage(), stopReason: 'error', errorKind: 'PROTOCOL_INVALID' },
+        'error',
+      );
+      return;
+    }
     const params = this.d.ai.turnParams(pick.providerId, 'intake');
     const abort = new AbortController();
     this.aborts.set(turnId, abort);
@@ -225,7 +246,8 @@ export class ChatLane {
     const providerNote = pick.backup ? 'backup' : null;
     const gate = this.d.protocol.gate((text, mode) => {
       later(async () => {
-        if (abort.signal.aborted && !fooId) return;
+        // Nothing reaches the bubble after Stop or a cut-off (08-4 §30.7), not even a held sentence's late rewrite.
+        if (abort.signal.aborted) return;
         if (!fooId) {
           fooId = this.d.newId('m');
           this.answered.set(fooId, messageId);
@@ -254,7 +276,7 @@ export class ChatLane {
         deltaSeq += 1;
         this.d.link.send('ui.patch', { event: 'message:delta', payload: { messageId: fooId, seq: deltaSeq, append: text } });
       });
-    });
+    }, abort.signal);
     const sink: TurnSink = {
       onText: (delta) => {
         if (abort.signal.aborted) return; // 08-4 §30.7: nothing after cancel
@@ -277,7 +299,7 @@ export class ChatLane {
     if (live.stopped) {
       abort.abort();
       await pending;
-      const shown = gate.released();
+      const shown = gate.released().trimEnd();
       if (fooId)
         await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: shown, status: 'complete', badge: 'stopped' } }]);
       else await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { badge: null } }]);
@@ -287,10 +309,19 @@ export class ChatLane {
     }
 
     const failed = result.stopReason === 'error' || result.stopReason === 'cancelled';
+    if (failed && result.errorKind === 'AI_PROTOCOL_VIOLATION' && !fooId && !this.violationRetried.has(messageId)) {
+      // 08-2 §6.5: the AI used a tool; the turn runs once more before it counts as broken.
+      this.violationRetried.add(messageId);
+      abort.abort();
+      await pending;
+      this.d.ai.reportError(pick.providerId, 'AI_PROTOCOL_VIOLATION');
+      await this.turnRow(turnId, chatId, pick, startedAt, result, 'error');
+      return this.turn(chatId, messageId);
+    }
     if (failed) {
       abort.abort();
       await pending;
-      await this.cutOff(chatId, messageId, fooId, who, gate.released(), helper, providerNote);
+      await this.cutOff(chatId, messageId, fooId, who, gate.released().trimEnd(), helper, providerNote);
       this.d.ai.reportError(pick.providerId, result.errorKind ?? 'UNKNOWN', result.resetAt);
       await this.turnRow(turnId, chatId, pick, startedAt, result, result.errorKind === 'AI_TIMEOUT' ? 'timeout' : 'error');
       return;
@@ -325,7 +356,7 @@ export class ChatLane {
       if (!act && parsed.say.trim()) act = { kind: 'reply' };
     }
     const kind = act?.kind ?? 'reply';
-    const released = gate.released();
+    const released = gate.released().trimEnd();
     if (kind !== 'reply' && released.trim()) this.d.log('chat.say_leak', 'PROTOCOL_SAY_LEAK', { chatId });
 
     if (kind === 'reply' || (kind !== 'react' && released.trim())) {
@@ -336,6 +367,8 @@ export class ChatLane {
         await this.emptyReply(chatId, messageId, message, helper, who, providerNote);
       }
     } else if (act && act.kind === 'react') {
+      // Words that already showed past the hold stay as a finished bubble (they cannot be taken back); the 👍 still goes on.
+      if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
       await this.react(messageId, act.emoji, helper);
     } else {
       // Kinds built in later milestones (see the header).

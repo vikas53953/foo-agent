@@ -29,6 +29,8 @@ export interface FakeLineIn {
   error?: string;
   once?: boolean;
   usage?: Record<string, number | null>;
+  /** CR-0007: streamed piece by piece on the clock. */
+  chunks?: { text: string; delayMs?: number }[];
 }
 
 /** A FOO/1 envelope (08-2 §7.3) for an intake reply. */

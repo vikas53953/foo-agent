@@ -306,3 +306,82 @@ describe('Languages pass through', () => {
     });
   }
 });
+
+describe('Checker fixes (M3 review)', () => {
+  const act = (decision: Record<string, unknown>) => `</say><act>${JSON.stringify({ decision, usedMemoryIds: [] })}</act>`;
+
+  it('a tool-use violation runs the turn once more; the second answer lands (08-2 §6.5)', async () => {
+    const x = harness({ script: [intake('', { error: 'AI_PROTOCOL_VIOLATION' }), intake(envelope('Fine, done.'))], settings: verified() });
+    x.userSays('hello');
+    await x.idle();
+    expect(fooMessages(x).map((m) => [m.text, m.status])).toEqual([['Fine, done.', 'complete']]);
+    expect(count(x, 'ai_turns')).toBe(2);
+  });
+
+  it('two violations in a row: cut off, and the provider is no longer usable', async () => {
+    const x = harness({
+      script: [intake('', { error: 'AI_PROTOCOL_VIOLATION' }), intake('', { error: 'AI_PROTOCOL_VIOLATION' })],
+      settings: verified(),
+    });
+    x.userSays('hello');
+    await x.idle();
+    expect(fooMessages(x).map((m) => m.status)).toEqual(['failed']);
+    const states = x.patches.filter((p) => p.event === 'ai:status').map((p) => (p.payload as AiStatus).state);
+    expect(states.at(-1)).toBe('down');
+  });
+
+  it('a react act after words already streamed: the bubble is finished, and the 👍 still goes on', async () => {
+    const x = harness({
+      script: [
+        {
+          match: { purpose: 'intake' },
+          chunks: [{ text: '<say>Glad to help with that today. ' }, { text: act({ kind: 'react', emoji: '👍' }), delayMs: 3_000 }],
+        },
+      ],
+      settings: verified(),
+    });
+    const id = x.userSays('thanks a lot');
+    await x.idle();
+    expect(fooMessages(x).map((m) => [m.text, m.status])).toEqual([['Glad to help with that today.', 'complete']]);
+    expect(x.db.prepare('SELECT emoji FROM reactions WHERE message_id = ?').all(id)).toEqual([{ emoji: '👍' }]);
+  });
+
+  it('Stop mid-reply keeps what showed, marks it stopped, and nothing arrives later (04 §14.4)', async () => {
+    const x = harness({
+      script: [
+        {
+          match: { purpose: 'intake' },
+          chunks: [{ text: '<say>First part is here. ' }, { text: 'Second part never shows.</say>', delayMs: 60_000 }],
+        },
+      ],
+      settings: verified(),
+    });
+    x.userSays('tell me a story');
+    // Past the 1.5 s hold so the first sentence shows; the second chunk is still 60 s away.
+    for (let i = 0; i < 8; i++) {
+      await new Promise((r) => setTimeout(r, 20));
+      x.clock.advance(250);
+    }
+    await new Promise((r) => setTimeout(r, 50));
+    expect(fooMessages(x).map((m) => m.status)).toEqual(['streaming']);
+    x.send('reply.stop', { chatId: x.chatId });
+    await x.idle();
+    const [m] = fooMessages(x);
+    expect(m).toMatchObject({ text: 'First part is here.', status: 'complete', badge: 'stopped' });
+    expect(x.db.prepare('SELECT outcome FROM ai_turns').all()).toEqual([{ outcome: 'cancelled' }]);
+  });
+
+  it('Try again twice on the same cut-off bubble answers once', async () => {
+    const x = harness({
+      script: [intake('', { error: 'AI_SERVICE_DOWN' }), intake(envelope('Here it is.'), { once: false })],
+      settings: verified(),
+    });
+    x.userSays('weather?');
+    await x.idle();
+    const [failed] = fooMessages(x);
+    x.send('reply.retry', { messageId: String(failed!.id) });
+    x.send('reply.retry', { messageId: String(failed!.id) });
+    await x.idle();
+    expect(x.turnsJsonl().filter((t) => t.purpose === 'intake')).toHaveLength(2);
+  });
+});

@@ -1,3 +1,5 @@
-{"type":"thread.started","thread_id":"0199a213-81c0-7800-8aa1-bbab2a035a56"}
+{"type":"thread.started","thread_id":"01a14f5d-65bf-7142-a747-1317f4a59da2"}
+{"type":"item.completed","item":{"id":"item_0","type":"error","message":"Model metadata for `gpt-5-mini` not found. Defaulting to fallback metadata; this can degrade performance and cause issues."}}
 {"type":"turn.started"}
-{"type":"turn.failed","error":{"message":"unexpected status 400 Bad Request: {\"detail\":\"The 'gpt-5-mini' model is not supported when using Codex with a ChatGPT account.\"}"}}
+{"type":"error","message":"{\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-5-mini' model is not supported when using Codex with a ChatGPT account.\"}}"}
+{"type":"turn.failed","error":{"message":"{\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-5-mini' model is not supported when using Codex with a ChatGPT account.\"}}"}}

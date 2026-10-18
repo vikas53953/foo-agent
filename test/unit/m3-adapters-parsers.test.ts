@@ -1,5 +1,7 @@
-import path from 'node:path';
 // 08-2 §6.4 stream parsing, §6.7 classification, 08-4 §30.1 models, §30.2 pricing, §30.3 SSE, §30.4 probe.
+// claude, codex and ollama fixtures are real captures (Windows 11, 2026-10-18); the rest are spec-derived seeds.
+import path from 'node:path';
+import { pickWhereHit } from '../../src/engine/ai/index';
 import { afterAll, describe, expect, it } from 'vitest';
 import {
   createAnthropicParser,
@@ -13,10 +15,13 @@ import {
   type ParserEvent,
   type StreamParser,
 } from '../../src/engine/ai/parsers';
-import { classifyError, parseResetAt, parseRetryAfter, resetAtFor } from '../../src/engine/ai/classify';
+import { classifyError, parseResetAt, parseRetryAfter, resetAtFor, RE_UNKNOWN_MODEL } from '../../src/engine/ai/classify';
+import { CODEX_STDERR_TOOL_ATTEMPT } from '../../src/engine/ai/codexCli';
+import { classifyOllama } from '../../src/engine/ai/ollama';
 import { loadPricing, paramsFor, resolveModel, temperatureFor } from '../../src/engine/ai/models';
 import { parseCapabilities, parseVersion } from '../../src/engine/ai/probe';
-import { LineReader, parseCmdShim, scrubEnv } from '../../src/engine/ai/ProcessHost';
+import { LineReader, parseCmdShim, resolveCommand, scrubEnv } from '../../src/engine/ai/ProcessHost';
+import type { AiFs } from '../../src/engine/ai/deps';
 import { fixture, fixtureLines, pricing, cleanupTmp } from './m3-adapters-helpers';
 
 afterAll(cleanupTmp);
@@ -32,15 +37,27 @@ const texts = (ev: ParserEvent[]): string =>
     .join('');
 
 describe('claude-cli stream-json', () => {
-  it('streams text_delta, takes usage only from the result envelope, reports the session', () => {
+  it('streams text_delta, takes usage only from the result envelope, reports the session (real 2.1.282)', () => {
     const { events, r } = run(createClaudeParser(), fixtureLines('claude/stream-partial.jsonl'));
-    expect(texts(events)).toBe('<say>Hello Vikas</say>');
-    expect(r.text).toBe('<say>Hello Vikas</say>');
+    expect(texts(events)).toBe('<say>Hello, Vikas!</say>');
+    expect(r.text).toBe('<say>Hello, Vikas!</say>');
     expect(r.stopReason).toBe('end');
-    expect(r.sessionId).toBe('5f0c7d1e-1111-4a2b-9c3d-000000000001');
+    expect(r.sessionId).toBe('f2f7aacf-54bb-42d4-8a54-c42fb6584389');
     expect(events.filter((e) => e.type === 'session')).toHaveLength(1);
-    expect(r.usage).toEqual({ tokensIn: 3, tokensOut: 8, cacheRead: 14000, cacheWrite: 1200, costUsd: 0.0123 });
-    expect(r.modelReported).toBe('claude-sonnet-4-5-20250929');
+    // planUsedPct: the five_hour window's utilization 0.22 from rate_limit_event.
+    expect(r.usage).toEqual({ tokensIn: 2, tokensOut: 17, cacheRead: 544, cacheWrite: 2064, costUsd: 0.0169688, planUsedPct: 22 });
+    expect(r.modelReported).toBe('claude-opus-5-5');
+    expect(r.limitResetAt).toBeUndefined(); // status "allowed"
+  });
+  it('a rejected rate_limit_event gives the reset time of the binding window', () => {
+    const line = (status: string): string =>
+      JSON.stringify({
+        type: 'rate_limit_event',
+        rate_limit_info: { status, resetsAt: 1792346400, rateLimitType: 'five_hour', unifiedWindows: { five_hour: { utilization: 1 } } },
+      });
+    const r = run(createClaudeParser(), [line('rejected'), ...fixtureLines('claude/usage-limit.jsonl')]).r;
+    expect(r.limitResetAt).toBe(1792346400_000);
+    expect(r.usage.planUsedPct).toBe(100);
   });
   it('without partial messages the assistant text is the delta', () => {
     const { events, r } = run(createClaudeParser(), fixtureLines('claude/stream-no-partial.jsonl'));
@@ -63,7 +80,10 @@ describe('claude-cli stream-json', () => {
     expect(r.errorText).toMatch(/usage limit/);
   });
   it('a tool_use block is a violation', () => {
-    expect(run(createClaudeParser(), fixtureLines('claude/tool-use.jsonl')).r.violation).toBe('tool_use:Bash');
+    const { events, r } = run(createClaudeParser(), fixtureLines('claude/tool-use.jsonl'));
+    expect(r.violation).toBe('tool_use:PowerShell');
+    expect(events.some((e) => e.type === 'violation')).toBe(true); // emitted at once, so the adapter can kill early
+    expect(r.stopReason).toBe('error'); // subtype error_max_turns, is_error true
   });
   it('3 unparseable lines → incompatible', () => {
     expect(run(createClaudeParser(), fixtureLines('claude/garbage.txt')).r.incompatible).toBe(true);
@@ -72,13 +92,38 @@ describe('claude-cli stream-json', () => {
 });
 
 describe('codex-cli exec --json', () => {
-  it('prefix-diffs agent_message, reads turn.completed usage and thread id', () => {
+  it('reads agent_message, turn.completed usage (incl. cache_write_input_tokens) and thread id (real 0.156.1)', () => {
     const { events, r } = run(createCodexParser(), fixtureLines('codex/exec-json.jsonl'));
-    expect(events.filter((e) => e.type === 'text').map((e) => (e as { delta: string }).delta)).toEqual(['<say>Hello', ' Vikas', '</say>']);
-    expect(r.text).toBe('<say>Hello Vikas</say>');
-    expect(r.sessionId).toBe('0199a213-81c0-7800-8aa1-bbab2a035a53');
-    expect(r.usage).toEqual({ tokensIn: 24763, tokensOut: 122, cacheRead: 24448, cacheWrite: null, costUsd: null });
+    expect(texts(events)).toBe('<say>Hello, Vikas!</say>');
+    expect(r.text).toBe('<say>Hello, Vikas!</say>');
+    expect(r.sessionId).toBe('01a14f5c-0ec1-7211-8c0b-2f4eaa695dfd');
+    expect(r.usage).toEqual({ tokensIn: 24392, tokensOut: 13, cacheRead: 0, cacheWrite: 0, costUsd: null });
     expect(r.stopReason).toBe('end');
+    const resumed = run(createCodexParser(), fixtureLines('codex/resume.jsonl')).r;
+    expect(resumed).toMatchObject({ text: 'Hi, Vikas!', sessionId: '01a14f5c-0ec1-7211-8c0b-2f4eaa695dfd', stopReason: 'end' });
+    expect(resumed.usage.cacheRead).toBe(24192);
+  });
+  it('prefix-diffs item.updated text (the real run sent item.completed only; this shape is from the spec)', () => {
+    const it = (t: string, ty = 'item.updated') => JSON.stringify({ type: ty, item: { id: 'item_1', type: 'agent_message', text: t } });
+    const { events } = run(createCodexParser(), [
+      it('<say>Hello', 'item.started'),
+      it('<say>Hello Vikas'),
+      it('<say>Hello Vikas</say>', 'item.completed'),
+    ]);
+    expect(events.map((e) => (e as { delta: string }).delta)).toEqual(['<say>Hello', ' Vikas', '</say>']);
+  });
+  it('unknown model on a ChatGPT plan: the item.error warning is not fatal; turn.failed carries the reason', () => {
+    const lines = fixtureLines('codex/unknown-model.jsonl');
+    const head = run(createCodexParser(), lines.slice(0, 3)).r; // thread.started, item.completed{type:error}, turn.started
+    expect(head.stopReason).toBeNull();
+    expect(head.errorText).toBeUndefined();
+    const r = run(createCodexParser(), lines).r;
+    expect(r.stopReason).toBe('error');
+    expect(r.errorText).toMatch(RE_UNKNOWN_MODEL);
+  });
+  it('the sandbox-failed run has no command_execution item; its stderr shows the attempt', () => {
+    expect(run(createCodexParser(), fixtureLines('codex/command-execution-sandbox-failed.jsonl')).r.violation).toBeUndefined();
+    expect(fixture('codex/command-execution-sandbox-failed.stderr.txt')).toMatch(CODEX_STDERR_TOOL_ATTEMPT);
   });
   it('command_execution item → violation', () => {
     const { events, r } = run(createCodexParser(), fixtureLines('codex/command-execution.jsonl'));
@@ -117,14 +162,29 @@ describe('gemini-cli', () => {
 describe('ollama NDJSON', () => {
   it('message.content per chunk; final prompt_eval_count / eval_count', () => {
     const { events, r } = run(createOllamaParser(), fixtureLines('ollama/chat-stream.ndjson'));
-    expect(texts(events)).toBe('<say>Hello Vikas</say>');
-    expect(r.usage).toEqual({ tokensIn: 26, tokensOut: 9, cacheRead: null, cacheWrite: null, costUsd: null });
+    expect(texts(events)).toBe('<say>Hello, Vikas!</say>'); // real: "<say", ">", "Hello", … arrive as separate chunks
+    expect(events.filter((e) => e.type === 'text').length).toBe(8);
+    expect(r.usage).toEqual({ tokensIn: 34, tokensOut: 10, cacheRead: 0, cacheWrite: null, costUsd: null });
+    expect(r.modelReported).toBe('gemma4:31b');
     expect(r.stopReason).toBe('end');
   });
-  it('done_reason length → max_tokens; a missing eval_count is null', () => {
+  it('done_reason length → max_tokens; prompt_eval_cached_count → cacheRead; a missing metric is null', () => {
     const { r } = run(createOllamaParser(), fixtureLines('ollama/chat-length.ndjson'));
     expect(r.stopReason).toBe('max_tokens');
-    expect(r.usage.tokensOut).toBeNull();
+    expect(r.usage).toMatchObject({ tokensIn: 34, tokensOut: 5, cacheRead: 32 });
+    const noEval = run(createOllamaParser(), [
+      '{"model":"m","message":{"role":"assistant","content":"x"},"done":true,"done_reason":"stop"}',
+    ]).r;
+    expect(noEval.usage.tokensOut).toBeNull();
+  });
+  it.each([
+    ['ollama/error.ndjson', 'UNKNOWN'],
+    ['ollama/not-chat-model.ndjson', 'UNKNOWN'],
+    ['ollama/paid-model-error.ndjson', 'AI_LIMIT'],
+  ] as const)('%s → %s', (file, kind) => {
+    const r = run(createOllamaParser(), fixtureLines(file)).r;
+    expect(r.stopReason).toBe('error');
+    expect(classifyOllama({ providerId: 'ollama', message: r.errorText! })).toBe(kind);
   });
   it('error field', () => {
     expect(run(createOllamaParser(), fixtureLines('ollama/error.ndjson')).r.errorText).toMatch(/not found/);
@@ -267,7 +327,7 @@ describe('models and pricing (08-4 §30.1, §30.2)', () => {
 describe('probe parsing (08-4 §30.4)', () => {
   it('claude: full help', () => {
     const p = parseCapabilities('claude-cli', fixture('claude/help.txt'), parseVersion(fixture('claude/version.txt')));
-    expect(p.version).toBe('2.0.14');
+    expect(p.version).toBe('2.1.282');
     expect(p.caps).toMatchObject({
       systemPromptFile: true,
       resume: true,
@@ -317,5 +377,33 @@ describe('process plumbing', () => {
     // Joined with the platform's separator (backslashes on Windows).
     expect(parseCmdShim('/npm/codex.cmd', shim)).toBe(path.join('/npm', 'node_modules/@openai/codex/bin/codex.js'));
     expect(parseCmdShim('/npm/x.cmd', 'echo hi')).toBeNull();
+  });
+  it('real npm shims (Windows 11, 2026-10-18): claude.cmd → native exe run directly; codex.cmd → JS with Electron as Node', async () => {
+    const crlf = (p: string): string => fixture(p).replace(/\r?\n/g, '\r\n'); // .gitattributes keeps files LF
+    const shims: Record<string, string> = { '/npm/claude.cmd': crlf('shims/claude.cmd'), '/npm/codex.cmd': crlf('shims/codex.cmd') };
+    const deps = { execPath: '/foo/foo.exe', fs: { readText: async (p: string) => shims[p]! } as unknown as AiFs };
+    const claudeExe = path.join('/npm', 'node_modules/@anthropic-ai/claude-code/bin/claude.exe');
+    expect(parseCmdShim('/npm/claude.cmd', shims['/npm/claude.cmd']!)).toBe(claudeExe);
+    expect(await resolveCommand('/npm/claude.cmd', ['-p'], deps)).toEqual({ command: claudeExe, args: ['-p'], extraEnv: {} });
+    const codexJs = path.join('/npm', 'node_modules/@openai/codex/bin/codex.js');
+    expect(await resolveCommand('/npm/codex.cmd', ['exec'], deps)).toEqual({
+      command: '/foo/foo.exe',
+      args: [codexJs, 'exec'],
+      extraEnv: { ELECTRON_RUN_AS_NODE: '1' },
+    });
+    expect(await resolveCommand('C:/npm/codex.exe', ['exec'], deps)).toEqual({ command: 'C:/npm/codex.exe', args: ['exec'], extraEnv: {} });
+  });
+});
+
+describe('Windows `where` output (08-2 §6.6 detect)', () => {
+  it('picks .exe, then the npm .cmd shim, never the extensionless sh shim or .ps1', () => {
+    const npm = [
+      'C:\\Users\\v\\AppData\\Roaming\\npm\\codex',
+      'C:\\Users\\v\\AppData\\Roaming\\npm\\codex.cmd',
+      'C:\\Users\\v\\AppData\\Roaming\\npm\\codex.ps1',
+    ];
+    expect(pickWhereHit(npm)).toBe('C:\\Users\\v\\AppData\\Roaming\\npm\\codex.cmd');
+    expect(pickWhereHit(['C:\\x\\claude', 'C:\\x\\claude.exe', 'C:\\x\\claude.cmd'])).toBe('C:\\x\\claude.exe');
+    expect(pickWhereHit(['C:\\x\\gemini', 'C:\\x\\gemini.ps1'])).toBeNull();
   });
 });

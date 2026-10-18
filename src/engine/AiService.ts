@@ -23,6 +23,7 @@ interface ProviderHealth {
   resetAt?: number;
   since?: number;
   timer?: TimerId;
+  violations?: number;
 }
 
 export interface AiServiceDeps {
@@ -158,6 +159,7 @@ export class AiService implements LaneAi {
     const changed = x.state !== 'ok';
     x.streak = 0;
     x.state = 'ok';
+    x.violations = 0;
     delete x.resetAt;
     if (changed) this.publish();
   }
@@ -182,8 +184,17 @@ export class AiService implements LaneAi {
         if (resetAt !== undefined) x.resetAt = resetAt;
         this.rest(providerId, x, 'limit', resetAt !== undefined ? Math.max(1_000, resetAt - this.d.clock.now()) : 15 * MIN);
         break;
+      case 'AI_CLI_INCOMPATIBLE':
+        // Unusable until the next probe (a re-verify re-probes) (08-2 §6.7).
+        x.state = 'down';
+        break;
+      case 'AI_PROTOCOL_VIOLATION':
+        // The lane retries once; a second violation in a row makes the provider unusable like AI_CLI_INCOMPATIBLE (08-2 §6.5).
+        x.violations = (x.violations ?? 0) + 1;
+        if (x.violations >= 2) x.state = 'down';
+        break;
       default:
-        // AI_TIMEOUT, PROTOCOL_INVALID, AI_CLI_INCOMPATIBLE, …: one failed turn, no state change (08-2 §6.7).
+        // AI_TIMEOUT, PROTOCOL_INVALID, …: one failed turn, no state change (08-2 §6.7).
         break;
     }
     if (x.state !== before) this.publish();

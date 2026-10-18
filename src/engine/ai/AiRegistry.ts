@@ -67,6 +67,11 @@ export function toDetectRow(providerId: ProviderId, r: DetectResult): DetectRow 
       break;
     case 'ready':
     case 'running_local':
+      // A local server with no model that can chat on this PC has nothing to test (08-4 §30.5).
+      if (r.state === 'running_local' && r.models?.length === 0) {
+        row.state = 'not_found';
+        break;
+      }
       row.state = 'testing';
       row.signedIn = true;
       break;
@@ -105,7 +110,10 @@ export class AiRegistry {
   }
 
   async verify(id: ProviderId, signal: AbortSignal = new AbortController().signal): Promise<VerifyResult> {
-    const r = await this.adapters[id].verify(signal);
+    // A fresh probe on every verify, so a CLI that was updated (or marked incompatible) is looked at again (08-2 §6.7).
+    const a = this.adapters[id] as AiAdapter & { reprobe?: () => void };
+    a.reprobe?.();
+    const r = await a.verify(signal);
     this.verified.set(id, { ok: r.ok, at: this.deps.clock.now() });
     return r;
   }

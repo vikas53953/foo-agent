@@ -58,10 +58,32 @@ async function getJson(deps: Deps, url: string): Promise<unknown> {
   }
 }
 
+interface OllamaTag {
+  name?: string;
+  model?: string;
+  size?: number;
+  remote_host?: string;
+  details?: { family?: string; families?: string[] | null };
+}
+
+/**
+ * A model that runs on this PC and can chat. Real /api/tags (2026-10-18) also lists Ollama cloud models (`remote_host`,
+ * size ≈ 300 bytes: the reply would leave the PC, so not "AI on this PC") and embedding models (`nomic-bert`; /api/chat
+ * answers "does not support chat"). Both are left out.
+ */
+export function isLocalChatModel(m: OllamaTag): boolean {
+  if (m.remote_host) return false;
+  const name = m.name ?? m.model ?? '';
+  const fams = [m.details?.family ?? '', ...(m.details?.families ?? [])];
+  if (/embed/i.test(name) || fams.some((f) => /bert/i.test(f))) return false;
+  return name !== '';
+}
+
 export async function detectOllama(deps: Deps): Promise<DetectResult> {
-  const j = (await getJson(deps, `${OLLAMA_BASE}/api/tags`)) as { models?: { name?: string; model?: string; size?: number }[] } | null;
+  const j = (await getJson(deps, `${OLLAMA_BASE}/api/tags`)) as { models?: OllamaTag[] } | null;
   if (!j || !Array.isArray(j.models)) return { found: false, state: 'not_installed' };
-  const models = [...j.models]
+  const models = j.models
+    .filter(isLocalChatModel)
     .sort((a, b) => (b.size ?? 0) - (a.size ?? 0))
     .map((m) => m.name ?? m.model ?? '')
     .filter(Boolean);

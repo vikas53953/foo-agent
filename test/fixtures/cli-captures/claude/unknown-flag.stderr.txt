@@ -1,1 +1,1 @@
-error: unknown option '--tools'
+error: unknown option '--no-such-flag'

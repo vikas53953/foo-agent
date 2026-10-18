@@ -25,6 +25,8 @@ export interface ParsedTurn {
   violation?: string;
   /** 3 unparseable lines before any parsed one (08-2 §6.7). */
   incompatible: boolean;
+  /** claude-cli `rate_limit_event`: the binding window's reset (epoch ms) when the CLI says it is not `allowed`. */
+  limitResetAt?: number;
 }
 
 export interface StreamParser {
@@ -77,6 +79,13 @@ export function createClaudeParser(): StreamParser {
   let maxTokens = false;
   let errorText: string | undefined;
   let violation: string | undefined;
+  let planUsedPct: number | null | undefined;
+  let limitResetAt: number | undefined;
+  const toolUse = (b: Obj | undefined, ev: ParserEvent[]): void => {
+    if (violation || (b?.type !== 'tool_use' && b?.type !== 'server_tool_use')) return;
+    violation = `tool_use:${str(b.name) ?? ''}`;
+    ev.push({ type: 'violation', what: violation });
+  };
 
   return {
     push(line) {
@@ -102,8 +111,7 @@ export function createClaudeParser(): StreamParser {
               ev.push({ type: 'text', delta: d.text });
             }
           } else if (e?.type === 'content_block_start') {
-            const b = obj(e.content_block);
-            if (b?.type === 'tool_use' || b?.type === 'server_tool_use') violation ??= `tool_use:${str(b.name) ?? ''}`;
+            toolUse(obj(e.content_block), ev);
           } else if (e?.type === 'message_delta') {
             if (obj(e.delta)?.stop_reason === 'max_tokens') maxTokens = true;
           }
@@ -118,12 +126,22 @@ export function createClaudeParser(): StreamParser {
           for (const c of content) {
             const b = obj(c);
             if (b?.type === 'text' && typeof b.text === 'string') t += b.text;
-            if (b?.type === 'tool_use' || b?.type === 'server_tool_use') violation ??= `tool_use:${str(b.name) ?? ''}`;
+            toolUse(b, ev);
           }
           if (t) {
             assistantText += t;
             if (!sawDeltas) ev.push({ type: 'text', delta: t });
           }
+          break;
+        }
+        case 'rate_limit_event': {
+          // claude 2.1.282 (real capture): { status, resetsAt (epoch s), rateLimitType, unifiedWindows{[type]{utilization}} }.
+          const info = obj(o.rate_limit_info);
+          const win = obj(obj(info?.unifiedWindows)?.[str(info?.rateLimitType) ?? '']);
+          const util = num(win?.utilization);
+          if (util !== null) planUsedPct = Math.round(util * 100);
+          const resets = num(info?.resetsAt);
+          limitResetAt = info?.status !== undefined && info.status !== 'allowed' && resets !== null ? resets * 1000 : undefined;
           break;
         }
         case 'result': {
@@ -135,9 +153,11 @@ export function createClaudeParser(): StreamParser {
             cacheWrite: num(u?.cache_creation_input_tokens),
             costUsd: num(o.total_cost_usd),
           };
+          if (planUsedPct !== undefined) usage.planUsedPct = planUsedPct;
           if (o.is_error === true) {
             stop = 'error';
-            errorText = str(o.result) ?? str(o.error) ?? str(o.subtype) ?? 'error';
+            const errs = Array.isArray(o.errors) ? o.errors.find((x): x is string => typeof x === 'string') : undefined;
+            errorText = str(o.result) ?? errs ?? str(o.error) ?? str(o.subtype) ?? 'error';
             ev.push({ type: 'error', message: errorText });
           } else {
             finalText = str(o.result);
@@ -159,6 +179,7 @@ export function createClaudeParser(): StreamParser {
       if (model) r.modelReported = model;
       if (errorText) r.errorText = errorText;
       if (violation) r.violation = violation;
+      if (limitResetAt !== undefined) r.limitResetAt = limitResetAt;
       return r;
     },
   };
@@ -224,7 +245,7 @@ export function createCodexParser(): StreamParser {
             tokensIn: num(u?.input_tokens),
             tokensOut: num(u?.output_tokens),
             cacheRead: num(u?.cached_input_tokens),
-            cacheWrite: null,
+            cacheWrite: num(u?.cache_write_input_tokens), // codex 0.156.1 reports it (real capture)
             costUsd: null,
           };
           stop = 'end';
@@ -376,7 +397,13 @@ export function createOllamaParser(): StreamParser {
         ev.push({ type: 'text', delta: c });
       }
       if (o.done === true) {
-        usage = { tokensIn: num(o.prompt_eval_count), tokensOut: num(o.eval_count), cacheRead: null, cacheWrite: null, costUsd: null };
+        usage = {
+          tokensIn: num(o.prompt_eval_count),
+          tokensOut: num(o.eval_count),
+          cacheRead: num(o.prompt_eval_cached_count), // present in real captures (2026-10-18)
+          cacheWrite: null,
+          costUsd: null,
+        };
         stop = o.done_reason === 'length' ? 'max_tokens' : 'end';
       }
       return ev;

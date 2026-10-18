@@ -39,6 +39,8 @@ export interface CliSpec {
   build(req: TurnRequest, probe: CliProbe, ctx: { scratch: string; model: string | undefined }): BuiltCommand;
   /** 08-4 §30.1: a cheap turn that fails with an unknown-model error is retried once without the model flag. */
   unknownModelRetry: boolean;
+  /** stderr that shows the CLI tried to run a tool although tools are off (08-2 §6.5 → AI_PROTOCOL_VIOLATION). */
+  stderrViolation?: RegExp;
 }
 
 /** COMBINED stdin (08-4 §30.4): system + blank line + prompt. */
@@ -223,6 +225,7 @@ export class CliAdapter implements AiAdapter {
       });
       const parsed = cmd.parser.result();
       violation ??= parsed.violation;
+      if (!violation && this.spec.stderrViolation?.test(out.stderr)) violation = 'stderr';
       if (violation) return { result: failResult('AI_PROTOCOL_VIOLATION') };
       if (out.timedOut) return { result: failResult('AI_TIMEOUT') };
       if (out.cancelled || signal.aborted) return { result: cancelledResult() };
@@ -253,7 +256,8 @@ export class CliAdapter implements AiAdapter {
       let kind = parsed.errorKind ?? this.classifyError(raw);
       // Exit 0 with no terminal envelope in JSON mode: the stream did not follow the format.
       if (kind === 'UNKNOWN' && okExit && parsed.stopReason === null) kind = 'AI_CLI_INCOMPATIBLE';
-      return { result: failResult(kind, kind === 'AI_LIMIT' ? resetAtFor(raw, this.deps.clock.now(), this.deps.timeZone) : undefined) };
+      const resetAt = kind === 'AI_LIMIT' ? (parsed.limitResetAt ?? resetAtFor(raw, this.deps.clock.now(), this.deps.timeZone)) : undefined;
+      return { result: failResult(kind, resetAt) };
     } finally {
       signal.removeEventListener('abort', onOuter);
       if (cmd.systemFile) {

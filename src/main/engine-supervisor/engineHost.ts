@@ -99,8 +99,11 @@ function updateMessage(db: Db, op: Extract<DbOp, { op: 'update' }>, fx: TxEffect
   const set = { ...op.set };
   checkColumns(Object.keys(set), MESSAGE_UPDATE_COLUMNS);
   if (typeof set.text === 'string') set.text = redactSecrets(set.text).text;
-  const cur = db.prepare('SELECT rev, chat_id FROM messages WHERE id = ?').get(op.id) as { rev: number; chat_id: string } | undefined;
+  const cur = db.prepare('SELECT rev, chat_id, author_kind FROM messages WHERE id = ?').get(op.id) as
+    { rev: number; chat_id: string; author_kind: string } | undefined;
   if (!cur) throw new DbOpError('DB_CONSTRAINT');
+  // The engine moves a user message's status and badge only; its words are the user's (Art. 8, main is the writer).
+  if (cur.author_kind === 'user' && ('text' in set || 'provider_note' in set)) throw new DbOpError('DB_CONSTRAINT');
   if (op.expectRev !== undefined && cur.rev !== op.expectRev) throw new DbOpError('DB_STALE_REV');
   const cols = Object.keys(set);
   db.prepare(`UPDATE messages SET ${cols.map((c) => `${c} = ?`).join(', ')}, rev = rev + 1 WHERE id = ?`).run(...Object.values(set), op.id);

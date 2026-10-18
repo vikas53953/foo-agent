@@ -1,5 +1,8 @@
 # How to capture the real files (M3 spike, Vikas's PC, Windows 11, PowerShell)
 
+Status 2026-10-18: claude (2.1.282), codex (0.156.1) and ollama rows were captured (see README for the exact files);
+gemini (not installed) and the key APIs are still to do. The commands below stay as the recipe for re-captures.
+
 Run each command from an empty folder (`mkdir $env:TEMP\foo-cap; cd $env:TEMP\foo-cap`), with
 `$env:NO_COLOR=1; $env:TERM='dumb'`, and with `CLAUDECODE` / `CLAUDE_CODE_ENTRYPOINT` removed
 (`Remove-Item Env:CLAUDECODE -ErrorAction SilentlyContinue`). The prompt always goes on stdin.

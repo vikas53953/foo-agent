@@ -7,7 +7,7 @@ import { HttpAdapter, type HttpCall, type PreparedImage } from './httpCommon';
 import { createOllamaParser } from './parsers';
 import { detectOllama, OLLAMA_BASE } from './detect';
 import { classifyError } from './classify';
-import type { TurnRequest } from './types';
+import type { AiErrorKind, RawAiError, TurnRequest } from './types';
 
 export const OLLAMA_NUM_CTX = 16384;
 
@@ -22,6 +22,23 @@ export function buildOllamaCall(req: TurnRequest, model: string, images: Prepare
     body: { model, messages: [{ role: 'system', content: req.system }, user], stream: req.stream, options },
     parser: createOllamaParser(),
   };
+}
+
+/** "not included in your free usage, add usage credits…" (real capture, a cloud model on the free plan). */
+export const RE_OLLAMA_PAID = /not included in your free usage|add usage credits|upgrade for included usage/i;
+
+/**
+ * Ollama errors arrive as `{"error":"…"}` (status not captured). Text first, then the common rules:
+ * a refused localhost connection → AI_SERVICE_DOWN (the server is not answering, the PC is not offline);
+ * "…not included in your free usage" → AI_LIMIT (no reset time: 15 min polling);
+ * "model 'x' not found" and "does not support chat" → UNKNOWN (the picked model is wrong: J2 "didn't work").
+ */
+export function classifyOllama(raw: RawAiError): AiErrorKind {
+  const text = `${raw.message}\n${raw.stderr ?? ''}`;
+  if (raw.code === 'ECONNREFUSED') return 'AI_SERVICE_DOWN';
+  if (RE_OLLAMA_PAID.test(text)) return 'AI_LIMIT';
+  if (/not found|does not support chat/i.test(text)) return 'UNKNOWN';
+  return classifyError(raw, 'local');
 }
 
 export function createOllama(deps: AdapterDeps): HttpAdapter {
@@ -62,10 +79,7 @@ export function createOllama(deps: AdapterDeps): HttpAdapter {
       },
       costPaise: () => 0,
       // A refused localhost connection means the local server is not answering, not that the PC is offline.
-      classify: (raw) => {
-        if (raw.code === 'ECONNREFUSED') return 'AI_SERVICE_DOWN';
-        return classifyError(raw, 'local');
-      },
+      classify: classifyOllama,
     },
     deps,
   );

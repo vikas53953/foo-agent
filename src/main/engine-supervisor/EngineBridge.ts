@@ -38,10 +38,11 @@ export class EngineBridge {
     return `me${this.seq}`;
   }
 
-  /** Fire-and-forget message to the engine. */
-  send<K extends MainToEngine['kind']>(kind: K, payload: Extract<MainToEngine, { kind: K }>['payload']): void {
-    if (!this.live) return;
+  /** Fire-and-forget message to the engine; false when it is not running (nothing was sent). */
+  send<K extends MainToEngine['kind']>(kind: K, payload: Extract<MainToEngine, { kind: K }>['payload']): boolean {
+    if (!this.live) return false;
     this.post({ id: this.nextId(), kind, payload } as MainToEngine);
+    return true;
   }
 
   /** A request the engine answers with `{ re, result }` (ai.cmd). */

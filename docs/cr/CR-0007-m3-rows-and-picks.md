@@ -4,7 +4,8 @@
 - **Spec sections:** 08-1 §2.1–§2.4, 08-2 §6, §7, §11.4, 08-4 §25, §30, 04 §3.3, §4, §12.3, §14.4, 10-acceptance-1 §B (AT-005,
   AT-006, AT-027, AT-030, AT-031), 10-acceptance-2 §D (ART-02b, ART-12a, ART-23a), 11-fidelity §11.4 (FID-18).
 - **Status:** Pending Vikas
-- **Change:** `spec/trace.csv` only (rows below). No other `spec/` or `golden/` file changes.
+- **Change:** `spec/trace.csv` only (rows below), and one Tier R dispute in `docs/fidelity/disputes.json` (section d). No
+  other `spec/` or `golden/` file changes.
 - **Manifest:** `pnpm tsx scripts/spec-verify.ts --write` run in the same commit.
 
 ## (a) Trace rows (`spec/trace.csv`)
@@ -60,3 +61,17 @@
 - The Redactor's pattern scrub adds §11.4's Bearer, URL-parameter, URL-login and OTP-near-its-word rows on top of the paste
   catcher's patterns (in the engine, not in the shared paste catcher, so M2's catcher is unchanged).
 - Banned-word filter: Hindi inflections beyond the listed forms are not caught yet (ART-02b passes on its 300 fixtures).
+- Ollama: cloud models (`remote_host`) and embedding models are not offered as your AI (they need a paid plan or cannot
+  chat); a cloud model's "not included in your free usage" counts as the plan limit.
+- Codex on Windows: a shell attempt that the read-only sandbox blocked shows only on stderr (`exec_command failed`); foo
+  treats it as tool use too.
+- A tool-use answer runs the turn once more; two in a row, or a CLI that cannot turn its tools off, mark that AI unusable
+  until it is tested again.
+
+## (d) Tier R dispute (11-fidelity §11.2.7)
+
+- **UX-08-02, checks R1–R4.** The walkthrough draws step 2 ("a real question: the Thinking face and Stop") on another
+  scene than its other chapter 8 steps: the morning-brief chat at 8:10 with the chapter 1 chat list. The app captures the
+  step live in the chapter 8 world (the fake AI answering), so the words, boxes, colours and pixels around the Thinking
+  row differ. The Thinking face, "typing…" and the Stop button themselves are asserted by the test. Ask: the spec keeper
+  redraws UX-08-02 on the chapter 8 scene, then Tier R re-runs.

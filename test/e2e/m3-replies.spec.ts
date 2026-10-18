@@ -373,8 +373,16 @@ test('Stop keeps the text that already showed, with "Stopped." under it', async 
   ]);
   await openChat(page, 'foo');
   await send(page, 'tell me a long story');
-  await advance(page, HOLD_MS + 100);
+  // The turn starts on the engine's own schedule: wait until the fake took it, then move the clock past the hold until
+  // the first part shows (a single advance can land before the turn started on a slow runner).
+  await expect.poll(() => fakeTurns(dirs).filter((x) => x.purpose === 'intake').length).toBeGreaterThan(0);
   const bubble = page.getByTestId(TID.bubbleFoo).filter({ hasText: 'Here is the first part.' });
+  await expect
+    .poll(async () => {
+      await advance(page, HOLD_MS + 100);
+      return bubble.count();
+    })
+    .toBeGreaterThan(0);
   await expect(bubble).toBeVisible();
   await expect(round(page)).toHaveAttribute('data-state', 'stop');
   await round(page).click();

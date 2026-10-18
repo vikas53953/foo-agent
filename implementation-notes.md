@@ -430,7 +430,39 @@ Removed at integration: `_m1b-stubs.ts` / `.css` are gone and every import point
 12. Builder A's and B's own picks (Codex resume keeps the read-only sandbox, `.cmd` shim with no target fails, seed fixtures,
     `z.toJSONSchema`, missing redactor patterns for Bearer / URL params / OTP, Hindi inflections) are listed in CR-0007 §(c).
 
+### Independent check (M3 review) and what changed
+
+- Windows `where` lists npm's extensionless sh shim first; `pickWhereHit` takes `.exe`, then `.cmd` / `.bat`, never the sh
+  shim or `.ps1`.
+- A prompt that cannot be built (over the budget) ends as a cut-off with Try again, not a stuck 👀.
+- A react act after words already showed finishes that bubble and still adds the 👍.
+- Nothing reaches the bubble after Stop or a cut-off; the rewrite turn for a held sentence is cancelled with the reply.
+- AI_PROTOCOL_VIOLATION: the turn runs once more; a second one in a row, or AI_CLI_INCOMPATIBLE, makes the provider
+  unusable (state `down`) until a re-verify, which re-probes the CLI.
+- A message sent while the engine is starting or restarting waits to send (status `queued`) and goes on the drain.
+- Try again answers once per cut-off bubble; a streamed reply is not re-revealed bubble by bubble when it completes.
+- The engine may change a user message's status and badge only, never its text.
+- The +20 s health check (08-1 §2.2 step 7) re-verifies the chosen AI when its last verify is over 10 minutes old.
+- Left for later (logged): rows left `streaming` after an engine crash (M11 recovery); the repair turn is not resumed in
+  the same CLI session and Stop does not reach it; CLI stderr is not scanned for network errors; a grandchild holding the
+  pipe makes a turn wait for its timeout; a waiting badge while online with the AI down.
+
+### Real CLI captures (Vikas's PC, 2026-10-18) and what they changed
+
+claude 2.1.282, codex 0.156.1 and Ollama were captured on Vikas's PC (`test/fixtures/cli-captures/README.md` lists which
+files are real and which stay seeds). What the real output pinned:
+
+- `claude --help` no longer lists `--append-system-prompt-file`, but the switch still works; the probe accepts it hidden.
+- claude streams a `rate_limit_event` with the plan's used share and reset time; a rejected one gives the reset of the
+  binding window. `error_max_turns` ends a turn like a cut-off.
+- npm's `.cmd` shims name a `.exe` (claude) or a `node` script (codex); a `.exe` target runs directly, no shell.
+- Under the read-only sandbox on Windows, codex's shell attempt never shows as a `command_execution` item: the stream is
+  clean and only stderr says `exec_command failed`. That stderr line is read as AI_PROTOCOL_VIOLATION too.
+- codex reports `cache_write` tokens; Ollama reports cached prompt tokens.
+- Ollama's `/api/tags` lists cloud models (`remote_host`) and embedding models; detect leaves both out, so a PC with only
+  those has nothing to test. A cloud model's "not included in your free usage" is AI_LIMIT.
+
 ### Not verified here
 
-- Real CLI output: every fixture under `test/fixtures/cli-captures/` is a seed written from the spec until the PC capture
-  (`capture.md`) replaces it.
+- Gemini CLI (not installed on the PC) and the three key APIs (no test key) parse seed fixtures written from the spec.
+- The Windows `taskkill /T` tree kill: the grandchild test runs on POSIX only.

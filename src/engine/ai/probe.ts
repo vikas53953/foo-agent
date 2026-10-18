@@ -41,7 +41,8 @@ export function parseCapabilities(providerId: CliId, help: string, version: stri
     const disallowed = has(help, flag('--disallowedTools')) || has(help, flag('--disallowed-tools'));
     const caps: Capabilities = {
       ...base,
-      systemPromptFile: has(help, flag('--append-system-prompt-file')),
+      // claude 2.1.282 hides the option from its own list; it is named only as `--append-system-prompt[-file]` (real help).
+      systemPromptFile: has(help, flag('--append-system-prompt-file')) || help.includes('--append-system-prompt[-file]'),
       appendSystemPrompt: has(help, flag('--append-system-prompt')),
       resume: has(help, flag('--resume')),
       disableTools: tools || disallowed ? 'flag' : 'none',

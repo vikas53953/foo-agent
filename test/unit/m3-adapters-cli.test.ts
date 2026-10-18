@@ -80,10 +80,10 @@ describe('claude-cli', () => {
     expect(existsSync(sys)).toBe(false);
     expect(dump.cwd).toBe(scratch);
     expect(dump.env).toEqual({ NO_COLOR: '1', TERM: 'dumb', ELECTRON_RUN_AS_NODE: '1', FAKE_MARKER: 'kept' });
-    expect(r).toMatchObject({ text: '<say>Hello Vikas</say>', stopReason: 'end', sessionId: '5f0c7d1e-1111-4a2b-9c3d-000000000001' });
-    expect(r.usage.tokensOut).toBe(8);
-    expect(s.text.join('')).toBe('<say>Hello Vikas</say>');
-    expect(s.sessions).toEqual(['5f0c7d1e-1111-4a2b-9c3d-000000000001']);
+    expect(r).toMatchObject({ text: '<say>Hello, Vikas!</say>', stopReason: 'end', sessionId: 'f2f7aacf-54bb-42d4-8a54-c42fb6584389' });
+    expect(r.usage).toMatchObject({ tokensOut: 17, planUsedPct: 22 });
+    expect(s.text.join('')).toBe('<say>Hello, Vikas!</say>');
+    expect(s.sessions).toEqual(['f2f7aacf-54bb-42d4-8a54-c42fb6584389']);
   });
 
   it('resume and model flags; no partial messages when not streaming; no deltas to the sink', async () => {
@@ -157,8 +157,8 @@ describe('claude-cli', () => {
     }
   });
 
-  it('a tool_use in the stream → AI_PROTOCOL_VIOLATION, turn discarded', async () => {
-    const r = await createClaudeCli(cliDeps('claude', { FAKE_CLI_FIXTURE: fx('claude/tool-use.jsonl') })).runTurn(
+  it('a tool_use in the stream (real: PowerShell, then error_max_turns, exit 1) → AI_PROTOCOL_VIOLATION', async () => {
+    const r = await createClaudeCli(cliDeps('claude', { FAKE_CLI_FIXTURE: fx('claude/tool-use.jsonl'), FAKE_CLI_EXIT: '1' })).runTurn(
       req(),
       sink(),
       new AbortController().signal,
@@ -256,8 +256,18 @@ describe('codex-cli', () => {
     expect(dump.stdin).toBe('SYSTEM TEXT\n\nPROMPT TEXT with "quotes" & spaces');
     expect(dump.argv.join(' ')).not.toContain('PROMPT TEXT');
     expect(dump.cwd).toBe(scratch);
-    expect(r).toMatchObject({ text: '<say>Hello Vikas</say>', sessionId: '0199a213-81c0-7800-8aa1-bbab2a035a53' });
-    expect(s.text.join('')).toBe('<say>Hello Vikas</say>');
+    expect(r).toMatchObject({ text: '<say>Hello, Vikas!</say>', sessionId: '01a14f5c-0ec1-7211-8c0b-2f4eaa695dfd' });
+    expect(s.text.join('')).toBe('<say>Hello, Vikas!</say>');
+  });
+
+  it('a shell attempt seen only on stderr (real Windows read-only sandbox run) → AI_PROTOCOL_VIOLATION', async () => {
+    const r = await createCodexCli(
+      cliDeps('codex', {
+        FAKE_CLI_FIXTURE: fx('codex/command-execution-sandbox-failed.jsonl'),
+        FAKE_CLI_STDERR: fx('codex/command-execution-sandbox-failed.stderr.txt'),
+      }),
+    ).runTurn(req(), sink(), new AbortController().signal);
+    expect(r).toMatchObject({ stopReason: 'error', errorKind: 'AI_PROTOCOL_VIOLATION', text: '' });
   });
 
   it('cheap purpose: -m and low effort; resume form keeps the read-only sandbox', async () => {

@@ -376,13 +376,20 @@ export function registerIpc(ctx: AppContext): void {
       if (r.reason === 'secret') return { ok: false, error: { kind: 'SECRET_SUSPECTED', ...(r.paste ? { paste: r.paste } : {}) } };
       return fail(r.reason === 'not_found' || r.reason === 'attachment_missing' ? 'NOT_FOUND' : 'VALIDATION', r.reason);
     }
+    let queued = r.queued;
     if (r.created) {
-      emit('message:upsert', r.row);
+      // 08-1 §2.4 `user.message`: after main stored it, the engine's chat lane takes it (08-2 §5.2). While the engine is
+      // starting or restarting it waits to send (04 §3.3) and goes when the engine drains its queue.
+      const taken = ctx.engine?.send('user.message', { messageId: r.messageId, chatId: req.chatId }) ?? false;
+      // EngineSupervisor.wanted(): a FOO_TEST run without the fake AI never has an engine, and its sends stay as M2 left them.
+      if (!taken && !r.queued && (process.env.FOO_TEST !== '1' || !!process.env.FOO_FAKE_AI)) {
+        queued = true;
+        db.prepare(`UPDATE messages SET status = 'queued' WHERE id = ? AND status = 'sent'`).run(r.messageId);
+        emit('message:upsert', messageGet(db, r.messageId) ?? r.row);
+      } else emit('message:upsert', r.row);
       emitChat(req.chatId);
-      // 08-1 §2.4 `user.message`: after main stored it, the engine's chat lane takes it (08-2 §5.2).
-      ctx.engine?.send('user.message', { messageId: r.messageId, chatId: req.chatId });
     }
-    return ok({ messageId: r.messageId, queued: r.queued });
+    return ok({ messageId: r.messageId, queued });
   });
   handle('composer:checkSecret', ({ text }) => ok(checkSecret(text)));
   handle('composer:saveDraft', (req) => {

@@ -1,0 +1,1 @@
+2026-10-18T14:14:34.843557Z ERROR codex_core::tools::router: error=exec_command failed: CreateProcess { message: "Rejected(\"Failed to create unified exec process: helper_unknown_error: setup refresh had errors\")" }

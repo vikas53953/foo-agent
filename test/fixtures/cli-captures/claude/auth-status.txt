@@ -1,0 +1,12 @@
+{
+  "loggedIn": true,
+  "authMethod": "claude.ai",
+  "apiProvider": "firstParty",
+  "analyticsDisabled": false,
+  "projectsDirectory": "C:\\Users\\vikasmit\\.claude\\projects",
+  "configDirectory": "C:\\Users\\vikasmit\\.claude",
+  "email": "[hidden]",
+  "orgId": "[hidden]",
+  "orgName": "[hidden]'s Organization",
+  "subscriptionType": "max"
+}

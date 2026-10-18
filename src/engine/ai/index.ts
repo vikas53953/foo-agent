@@ -54,7 +54,19 @@ export const nodeAiFs: AiFs = {
   list: (d) => fsp.readdir(d),
 };
 
-/** `where <bin>` on Windows (first hit, `.exe` preferred), `which` elsewhere; null when absent. */
+/**
+ * The hit to run from `where`'s lines on Windows: `.exe` first, then an npm `.cmd` / `.bat` shim. The extensionless sh shim
+ * and `.ps1` that npm also writes (and `where` usually lists first) cannot be spawned directly, so they are never chosen.
+ */
+export function pickWhereHit(hits: string[]): string | null {
+  for (const ext of [/\.exe$/i, /\.cmd$/i, /\.bat$/i]) {
+    const h = hits.find((x) => ext.test(x));
+    if (h) return h;
+  }
+  return null;
+}
+
+/** `where <bin>` on Windows ({@link pickWhereHit}), `which` elsewhere; null when absent. */
 export function nodeWhich(platform: NodeJS.Platform = process.platform): (bin: string) => Promise<string | null> {
   return (bin) =>
     new Promise((resolve) => {
@@ -64,7 +76,7 @@ export function nodeWhich(platform: NodeJS.Platform = process.platform): (bin: s
           .split(/\r?\n/)
           .map((l) => l.trim())
           .filter(Boolean);
-        resolve(hits.find((h) => /\.exe$/i.test(h)) ?? hits[0] ?? null);
+        resolve(platform === 'win32' ? pickWhereHit(hits) : (hits[0] ?? null));
       });
     });
 }

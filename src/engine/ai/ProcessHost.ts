@@ -35,11 +35,13 @@ export function safeTurnId(turnId: string): string {
 }
 
 /**
- * The target JS of an npm `.cmd` shim, e.g. `"%dp0%\node_modules\@openai\codex\bin\codex.js" %*` → absolute path.
- * Null when the shim does not name one (then the CLI is not run: no shell, 08-2 §6.3).
+ * The target of an npm `.cmd` shim → absolute path: a JS file (`"%dp0%\node_modules\@openai\codex\bin\codex.js" %*`)
+ * or, since claude 2.x, a native exe (`"%dp0%\node_modules\@anthropic-ai\claude-code\bin\claude.exe" %*`; real shims
+ * captured on Windows 11, 2026-10-18). Null when the shim names neither (then the CLI is not run: no shell, 08-2 §6.3).
  */
 export function parseCmdShim(cmdPath: string, shimText: string): string | null {
-  const m = /"%~?dp0%?\\?([^"%]+?\.(?:c|m)?js)"/i.exec(shimText);
+  // The target is the quoted path that `%*` follows; codex.cmd also names `"%dp0%\node.exe"` in an IF EXIST test first.
+  const m = /"%~?dp0%?\\?([^"%]+?\.(?:(?:c|m)?js|exe))"\s*%\*/i.exec(shimText);
   if (!m?.[1]) return null;
   const rel = m[1].replace(/\\/g, '/');
   return path.join(path.dirname(cmdPath), rel);
@@ -51,7 +53,7 @@ export interface Command {
   extraEnv: Record<string, string>;
 }
 
-/** `.cmd`/`.bat` → foo's Electron as Node running the shim's target JS; anything else runs as is. */
+/** `.cmd`/`.bat` → its target: an `.exe` runs directly, a JS file runs with foo's Electron as Node; anything else as is. */
 export async function resolveCommand(bin: string, args: string[], deps: Pick<AdapterDeps, 'fs' | 'execPath'>): Promise<Command | null> {
   if (!/\.(cmd|bat)$/i.test(bin)) return { command: bin, args, extraEnv: {} };
   let text: string;
@@ -60,9 +62,10 @@ export async function resolveCommand(bin: string, args: string[], deps: Pick<Ada
   } catch {
     return null;
   }
-  const js = parseCmdShim(bin, text);
-  if (!js) return null;
-  return { command: deps.execPath, args: [js, ...args], extraEnv: { ELECTRON_RUN_AS_NODE: '1' } };
+  const target = parseCmdShim(bin, text);
+  if (!target) return null;
+  if (/\.exe$/i.test(target)) return { command: target, args, extraEnv: {} };
+  return { command: deps.execPath, args: [target, ...args], extraEnv: { ELECTRON_RUN_AS_NODE: '1' } };
 }
 
 /** Kills the process and all its descendants. Idempotent; never throws. A Job Object replaces this later. */

@@ -183,8 +183,10 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
       return;
     }
     for (const m of messages) {
-      if (seenIds.current.has(m.id) || m.status === 'streaming') continue;
+      if (seenIds.current.has(m.id)) continue;
       seenIds.current.add(m.id);
+      // A reply that streamed in is already on screen: it is not re-revealed bubble by bubble when it completes.
+      if (m.status === 'streaming') continue;
       const plan = pacingPlan(m);
       if (!plan) continue;
       setPaced((p) => ({ ...p, [plan.id]: 1 }));

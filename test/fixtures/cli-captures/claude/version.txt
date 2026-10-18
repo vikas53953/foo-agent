@@ -1,1 +1,1 @@
-2.0.14 (Claude Code)
+2.1.282 (Claude Code)

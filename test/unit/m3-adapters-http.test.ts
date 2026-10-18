@@ -9,6 +9,7 @@ import { createAnthropicKey } from '../../src/engine/ai/anthropicKey';
 import { createGoogleKey } from '../../src/engine/ai/googleKey';
 import { createOllama } from '../../src/engine/ai/ollama';
 import { detectProvider } from '../../src/engine/ai/detect';
+import { toDetectRow } from '../../src/engine/ai/AiRegistry';
 import { fakeFetch, fixture, keyFor, makeDeps, pricing, req, sink, streamResponse, cleanupTmp } from './m3-adapters-helpers';
 
 afterAll(cleanupTmp);
@@ -243,11 +244,27 @@ describe('google-key', () => {
 
 describe('ollama and LM Studio', () => {
   const tags = (): Response => new Response(fixture('ollama/tags.json'), { status: 200 });
-  it('detect lists models largest first; /api/chat body with num_ctx 16384', async () => {
-    const f = fakeFetch((url) => (url.endsWith('/api/tags') ? tags() : streamResponse(fixture('ollama/chat-stream.ndjson'))));
+  it('real /api/tags: cloud models (remote_host) and the embedding model are left out → nothing to test', async () => {
+    const a = createOllama(makeDeps({ fetch: fakeFetch(() => tags()).fetch }));
+    const r = await a.detect();
+    expect(r).toEqual({ found: true, state: 'running_local', models: [] });
+    expect(toDetectRow('ollama', r).state).toBe('not_found');
+  });
+  it('detect lists local chat models largest first; /api/chat body with num_ctx 16384', async () => {
+    const local = {
+      models: [
+        { name: 'llama3.2:3b', size: 2019393189, details: { families: ['llama'] } },
+        { name: 'qwen2.5:14b', size: 8988124069, details: { families: ['qwen2'] } },
+        { name: 'nomic-embed-text:latest', size: 274302450, details: { families: ['nomic-bert'] } },
+        { name: 'gemma4:31b-cloud', size: 342, remote_host: 'https://ollama.com:443' },
+      ],
+    };
+    const f = fakeFetch((url) =>
+      url.endsWith('/api/tags') ? new Response(JSON.stringify(local)) : streamResponse(fixture('ollama/chat-stream.ndjson')),
+    );
     const d = makeDeps({ fetch: f.fetch, providerSettings: (p) => (p === 'ollama' ? { model: 'qwen2.5:14b' } : undefined) });
     const a = createOllama(d);
-    expect(await a.detect()).toEqual({ found: true, state: 'running_local', models: ['qwen2.5:14b', 'llava:7b', 'llama3.2:3b'] });
+    expect(await a.detect()).toEqual({ found: true, state: 'running_local', models: ['qwen2.5:14b', 'llama3.2:3b'] });
     const r = await a.runTurn(req(), sink(), new AbortController().signal);
     const chat = f.calls.find((c) => c.url.endsWith('/api/chat'))!;
     expect(chat.url).toBe('http://127.0.0.1:11434/api/chat');
@@ -260,8 +277,23 @@ describe('ollama and LM Studio', () => {
       stream: true,
       options: { num_ctx: 16384, temperature: 0.4 },
     });
-    expect(r.usage).toEqual({ tokensIn: 26, tokensOut: 9, cacheRead: null, cacheWrite: null, costUsd: null });
+    expect(r.usage).toEqual({ tokensIn: 34, tokensOut: 10, cacheRead: 0, cacheWrite: null, costUsd: null });
+    expect(r.text).toBe('<say>Hello, Vikas!</say>');
     expect(a.estimate(req()).costPaise).toBe(0);
+  });
+  it.each([
+    ['ollama/error.ndjson', 404, 'UNKNOWN'],
+    ['ollama/not-chat-model.ndjson', 400, 'UNKNOWN'],
+    ['ollama/paid-model-error.ndjson', 403, 'AI_LIMIT'],
+    ['ollama/paid-model-error.ndjson', 200, 'AI_LIMIT'],
+  ] as const)('%s (HTTP %i) → %s', async (file, status, kind) => {
+    const f = fakeFetch(() => new Response(fixture(file), { status }));
+    const r = await createOllama(makeDeps({ fetch: f.fetch, providerSettings: () => ({ model: 'm' }) })).runTurn(
+      req(),
+      sink(),
+      new AbortController().signal,
+    );
+    expect(r).toMatchObject({ stopReason: 'error', errorKind: kind });
   });
   it('not running → not_installed; refused connection on a turn → AI_SERVICE_DOWN; images need clip', async () => {
     const refused = (): Promise<Response> =>

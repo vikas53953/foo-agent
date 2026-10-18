@@ -35,7 +35,18 @@ export function buildCodexCommand(req: TurnRequest, probe: CliProbe, ctx: { scra
   return { args, stdin: combined(req.system, req.prompt), parser: c.jsonStream ? createCodexParser() : createPlainTextParser() };
 }
 
-export const codexSpec: CliSpec = { id: 'codex-cli', build: buildCodexCommand, unknownModelRetry: true };
+/**
+ * A shell attempt that never reaches the JSON stream: on Windows the read-only sandbox refuses to start the shell and
+ * codex only logs it (real capture 2026-10-18, codex 0.156.1: `ERROR codex_core::tools::router: error=exec_command failed`).
+ */
+export const CODEX_STDERR_TOOL_ATTEMPT = /codex_core::tools::|exec_command failed/;
+
+export const codexSpec: CliSpec = {
+  id: 'codex-cli',
+  build: buildCodexCommand,
+  unknownModelRetry: true,
+  stderrViolation: CODEX_STDERR_TOOL_ATTEMPT,
+};
 
 export function createCodexCli(deps: AdapterDeps): CliAdapter {
   return new CliAdapter(codexSpec, deps);

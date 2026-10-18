@@ -2,8 +2,8 @@
 // engine answers), 08-2 §6 (adapters; detect, verify, choose), §7 (prompt assembly, FOO/1, output filters), §11.4 (the
 // Redactor on every AI input), 08-4 §24.9 / §25.5 (the rewrite turn for a held sentence: cheap model, `rewrite.md`),
 // §30.8 (on engine start every `sys-*.md` in the scratch folders is deleted), 08-3 §22.3 (FOO_FAKE_AI).
-// Deferred to their milestones: the +20 s health check of 08-1 §2.2 step 7 runs only outside FOO_TEST runs (tests verify
-// explicitly), job lanes (M4), memory parts 5/5b (M6; empty here), the vault for key providers (M5: no key yet, so a
+// The +20 s health check of 08-1 §2.2 step 7 runs only outside FOO_TEST runs (tests verify explicitly). Deferred to their
+// milestones: job lanes (M4), memory parts 5/5b (M6; empty here), the vault for key providers (M5: no key yet, so a
 // key provider reports `AI_KEY_INVALID` on verify).
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
@@ -159,13 +159,13 @@ export class Engine {
         const act = env.act === undefined ? null : decision(env.act);
         return { act, issues: act ? null : issuesOf(env.act, env.actError) };
       },
-      gate: (onRelease) => {
+      gate: (onRelease, signal) => {
         let resolve!: () => void;
         const closed = new Promise<void>((r) => (resolve = r));
         const g = new ReleaseGate({
           clock: this.o.clock,
           redactor,
-          rewrite: (sentence) => this.rewrite(sentence),
+          rewrite: (sentence) => this.rewrite(sentence, signal),
           onRelease,
           onSayClosed: () => resolve(),
         });
@@ -183,7 +183,8 @@ export class Engine {
   }
 
   /** 08-4 §24.9: one rewrite turn on the cheap model for a sentence that still holds a banned word. */
-  private async rewrite(sentence: string): Promise<string | null> {
+  private async rewrite(sentence: string, signal: AbortSignal): Promise<string | null> {
+    if (signal.aborted) return null;
     const pick = this.ai.pick();
     if (!pick) return null;
     const built = this.prompts.buildRewrite(sentence);
@@ -192,11 +193,21 @@ export class Engine {
         pick.providerId,
         { ...this.ai.turnParams(pick.providerId, 'rewrite'), turnId: newId('t', this.o.clock.now()), purpose: 'rewrite', ...built },
         { onText: () => {}, onSession: () => {} },
-        new AbortController().signal,
+        signal,
       )
       .catch(() => null);
     if (!r || r.stopReason !== 'end') return null;
     return parseEnvelope(r.text).say;
+  }
+
+  /** 08-1 §2.2 step 7: +20 s after start, re-verify the chosen AI when its last verify is more than 10 min old. */
+  private scheduleHealthCheck(): void {
+    this.o.clock.setTimeout(() => {
+      const primary = this.settings.ai.primary;
+      if (!primary) return;
+      const at = this.settings.ai.providers[primary]?.lastVerifiedAt ?? 0;
+      if (this.o.clock.now() - at > 10 * 60_000) void this.ai.verify(primary).catch(() => undefined);
+    }, 20_000);
   }
 
   /** 04 §3.3: messages that waited to send go now, oldest first. */
@@ -218,6 +229,7 @@ export class Engine {
           this.ai.settingsChanged();
           // First settings, or a chosen AI that just became usable (J2 choose → ai.state → settings): waiting messages go now.
           if (first || (!usableBefore && this.ai.pick())) void this.drainQueued();
+          if (first && !this.o.testRun) this.scheduleHealthCheck();
         }
         return undefined;
       }
