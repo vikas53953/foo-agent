@@ -320,6 +320,21 @@ export const TID = {
   composerErrorsClear: 'composer-errors-clear',
   dialogC21: 'dialog-c-21',
   dialogConfirmField: 'dialog-confirm-field',
+  // M8 T2: Connect card (05-3 §5.11.3), Settings → Connections Google + X rows (06-2 §6.8), C-10
+  cardConnect: 'card-connect',
+  cardConnectConnect: 'card-connect-connect',
+  cardConnectAllowSend: 'card-connect-allow-send',
+  cardConnectNotNow: 'card-connect-not-now',
+  cardConnectReopen: 'card-connect-reopen',
+  cardConnectTryAgain: 'card-connect-try-again',
+  cardConnectSkip: 'card-connect-skip',
+  cardConnectRemind: 'card-connect-remind',
+  cardConnectDifferentAccount: 'card-connect-different-account',
+  settingsRowConnectionsGmail: 'settings-row-connections-gmail',
+  settingsRowConnectionsCalendar: 'settings-row-connections-calendar',
+  settingsRowConnectionsContacts: 'settings-row-connections-contacts',
+  settingsRowConnectionsX: 'settings-row-connections-x',
+  dialogC10: 'dialog-c-10',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];
