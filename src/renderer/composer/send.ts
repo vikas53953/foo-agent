@@ -8,6 +8,7 @@ import { invoke, IpcTimeoutError } from '../ipc/client';
 import { clockNow } from '../store/apply';
 import { update } from '../store/index';
 import { confirmSent, failSend, insertOptimistic, localId } from '../store/messages';
+import { noteSendError } from './ComposerNotices';
 
 // GAP: GAPS.md 2026-10-17 "files:stage has no chunking"
 export const STAGE_TIMEOUT_MS = 60_000;
@@ -91,6 +92,7 @@ async function deliver(o: Outgoing): Promise<SendOutcome> {
         confirmSent(o.chatId, o.clientId, r.value.messageId, r.value.queued);
         return { ok: true, messageId: r.value.messageId };
       }
+      noteSendError(localId(o.clientId), r.error.kind);
       failSend(o.chatId, o.clientId);
       return r.error.paste ? { ok: false, paste: r.error.paste } : { ok: false };
     } catch (e) {

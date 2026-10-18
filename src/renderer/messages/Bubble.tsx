@@ -33,6 +33,7 @@ import { IconButton } from '../ui/IconButton';
 import { Menu, type MenuAnchor } from '../ui/Menu';
 import { cx } from '../ui/cx';
 import { ActionRow, CutOffRow, FeedbackMark, WhyFooter, WorkedLine } from './AnswerExtras';
+import { ResultProof } from './ReceiptFooter';
 import { BubbleCtx, RowHotCtx, type BubbleInfo } from './bubbleContext';
 import {
   BadgeSlotView,
@@ -440,6 +441,8 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
           </div>
         </div>
         {notSent && <NotSentLine onRetry={() => void (m.pending && m.clientId ? retryOutgoing(m.clientId) : retryMessage(m.id))} />}
+        {/* 05-3 §5.15–§5.16 (M4 T5): proof chip or "Not checked live" chip + receipt footer under a job's result. */}
+        {job && job.resultMessageId === m.id && !deleted && <ResultProof job={job} />}
         {layout.latestAnswer && !deleted && m.kind === 'text' && (
           <ActionRow messageId={m.id} text={text} canTryAgain={canTryAgain} onTryAgain={() => void retryMessage(m.id)} />
         )}
@@ -470,7 +473,7 @@ export function cornerAttrs(layout: RowLayout | null, side: 'me' | 'them') {
 function CardBody({ m, card, ctx }: { m: MessageRow; card: CardRow | undefined; ctx: RowCtx }) {
   const time = { at: m.createdAt, timeZone: ctx.timeZone, now: ctx.now };
   const view = card ? <CardView card={card} time={time} /> : null;
-  if (view && card && hasCardView(card.type)) return view;
+  if (view && card && hasCardView(card.type, card)) return view;
   // Card types of later milestones keep the M1 placeholder: the card's title in the frame (05 builds them).
   return (
     <div className={styles.cardPlaceholder} data-card-type={card?.type}>

@@ -1,0 +1,162 @@
+/* Spec: 05-1 §5.2.1 checklist anatomy (header 22 with no icon; step rows min 30 = line 22 + 2 × --s0, 16px mark column,
+ * 8px gap, --t-body, current row --t-body-strong, at most 2 lines; footer buttons left, text right --t-caption --fg-3
+ * tabular, text moves under the buttons when it can't fit), mark colours (--ok, --accent ring, --warn, --fg-3 circle with a
+ * 1.5px stroke, --bad, --fg-2), "Paused" pill (--warn-soft, --warn, Clock 16), §0.5 summary row (min 40, 16 icon + 8 +
+ * --t-small), §0.8 / §5.2.4 (step done: ring → ✓ scale 0.6→1 over --m-normal; reduced motion: no scale). */
+.head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s1);
+  min-height: var(--t-body-strong-lh);
+}
+.title {
+  flex: 1;
+  min-width: 0;
+  font: var(--t-body-strong);
+  text-wrap: balance;
+}
+.right {
+  flex: none;
+  font: var(--t-caption);
+  color: var(--fg-3);
+  white-space: nowrap;
+}
+.paused {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--s0);
+  padding: 0 var(--s1);
+  border-radius: var(--r-full);
+  background: var(--warn-soft);
+  color: var(--warn);
+  font: var(--t-caption);
+  white-space: nowrap;
+}
+.steps {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s1);
+  min-height: calc(var(--t-body-lh) + 2 * var(--s0));
+  padding: var(--s0) 0;
+  font: var(--t-body);
+}
+.current {
+  font: var(--t-body-strong);
+}
+.mark {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-sm);
+  height: var(--t-body-lh);
+}
+.mark > svg {
+  animation: tick var(--m-normal) var(--ease-standard);
+}
+.ring {
+  border-color: transparent;
+  border-top-color: var(--accent);
+  border-right-color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.circle {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  border: 1.5px solid var(--fg-3);
+  border-radius: var(--r-full);
+}
+.stepText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+.caption {
+  color: var(--fg-3);
+  font: var(--t-caption);
+}
+.waitLink,
+.foldLink,
+.link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  text-align: start;
+}
+.foldLink,
+.link {
+  min-height: var(--s7);
+  font: var(--t-small);
+}
+.waitLink:hover,
+.foldLink:hover,
+.link:hover {
+  text-decoration: underline;
+}
+.ok {
+  color: var(--ok);
+}
+.warn {
+  color: var(--warn);
+}
+.bad {
+  color: var(--bad);
+}
+.dim {
+  color: var(--fg-2);
+}
+.next {
+  border-color: var(--fg-3);
+}
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s1) var(--s2);
+}
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+}
+.spacer {
+  flex: 1;
+}
+.footText {
+  color: var(--fg-3);
+  font: var(--t-caption);
+  font-variant-numeric: tabular-nums;
+}
+.summary {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--s7);
+}
+.summaryText {
+  font: var(--t-small);
+}
+@keyframes tick {
+  from {
+    transform: scale(0.6);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mark > svg {
+    animation: none;
+  }
+}
