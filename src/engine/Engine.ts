@@ -23,6 +23,7 @@ import { filterSay } from './prompt/filters';
 import { PromptBuilder, type ConversationMessage } from './prompt/PromptBuilder';
 import { ReleaseGate } from './prompt/releaseGate';
 import { Redactor } from './redact/Redactor';
+import { createEngineWeb, type EngineWeb } from './tools/web';
 
 export interface EngineOptions {
   link: MainLink;
@@ -45,6 +46,7 @@ export class Engine {
   readonly ai: AiService;
   readonly lane: ChatLane;
   readonly redactor: Redactor;
+  readonly web: EngineWeb;
   private prompts: PromptBuilder;
 
   static create(o: EngineOptions): Engine {
@@ -62,6 +64,18 @@ export class Engine {
       promptsDir: join(o.resourcesDir, 'prompts'),
     });
     const pricing = loadPricing(JSON.parse(readFileSync(join(o.resourcesDir, 'pricing.json'), 'utf8')));
+    // M9 T4: web tools (08-2 §8.2); each cloud call writes its ai_turns row (08-4 §27.3 item 5).
+    this.web = createEngineWeb({
+      ...o,
+      fetch: o.fetch ?? fetch,
+      settings: () => this.settings,
+      online: () => this.online,
+      scrub: (t) => this.redactor.scrub(t),
+      pricing,
+      recordTurn: (row) => void o.link.request('db.tx', { ops: [{ op: 'insert', table: 'ai_turns', row: { ...row } }] }),
+      newId: () => newId('t', o.clock.now()),
+      log: (kind) => log('web', kind),
+    });
     const fake = o.testRun && Boolean(o.env.FOO_FAKE_AI);
     const adapters = createAdapters({
       clock: o.clock,
@@ -253,6 +267,8 @@ export class Engine {
         if (msg.payload.cmd === 'choose' && id) return this.ai.choose(id, (msg.payload.backup as ProviderId | null | undefined) ?? null);
         return { ok: false, error: { kind: 'AI_CLI_INCOMPATIBLE' } };
       }
+      case 'webkey.check':
+        return ok({ result: await this.web.checkKey(msg.payload.provider) });
       case 'test.reset':
         this.lane.cancelAll();
         return undefined;

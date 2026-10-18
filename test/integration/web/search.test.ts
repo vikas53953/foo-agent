@@ -11,7 +11,11 @@ import { EXA_KEY_SETTINGS, FakeNet, FakePage, fixture, keys, NO_KEYS_SETTINGS, w
 
 const ctx = { chatId: 'c_trips', jobId: 'j_1', toolCallId: 'tc_1' };
 const bingPage = (url: string): string | null =>
-  url.startsWith('https://www.bing.com/') ? fixture('bing.html') : url.startsWith('https://html.duckduckgo.com/') ? fixture('ddg.html') : null;
+  url.startsWith('https://www.bing.com/')
+    ? fixture('bing.html')
+    : url.startsWith('https://html.duckduckgo.com/')
+      ? fixture('ddg.html')
+      : null;
 
 describe('web.search', () => {
   it('AT-138 with an Exa key the fake Exa endpoint is called once and results reach the AI wrapped as untrusted', async () => {
@@ -26,7 +30,18 @@ describe('web.search', () => {
     expect(r.data.map((x) => x.title)).toEqual(['Trattoria Uno, Bandra West', 'Pasta Corner']);
     expect(r.forAi.startsWith('<untrusted source="web" ref="tc_1">')).toBe(true);
     expect(r.forAi.endsWith('</untrusted>')).toBe(true);
-    expect(w.turns).toMatchObject([{ purpose: 'web', provider_id: 'exa', billing: 'key', cost_source: 'priced', cost_paise: 44, outcome: 'ok', chat_id: 'c_trips', job_id: 'j_1' }]);
+    expect(w.turns).toMatchObject([
+      {
+        purpose: 'web',
+        provider_id: 'exa',
+        billing: 'key',
+        cost_source: 'priced',
+        cost_paise: 44,
+        outcome: 'ok',
+        chat_id: 'c_trips',
+        job_id: 'j_1',
+      },
+    ]);
   });
 
   it.each([401, 429, 500])('AT-138 Exa %i → the same search runs on Bing in foo’s window, silently', async (status) => {
@@ -36,8 +51,15 @@ describe('web.search', () => {
     const r = await new WebTools(w.deps).search({ query: 'Italian places in Bandra' }, ctx);
     expect(r.ok && r.via).toBe('this_pc');
     expect(page.loads).toEqual(['https://www.bing.com/search?q=Italian%20places%20in%20Bandra&cc=IN&setlang=en-IN']);
-    if (r.ok) expect(r.data.map((x) => x.url)).toEqual(['https://example-food.test/trattoria-uno', 'https://www.example-guide.test/bandra/pasta-corner']);
-    expect(w.turns[0]).toMatchObject({ outcome: 'error', error_kind: status === 401 ? 'CLOUD_AUTH' : status === 429 ? 'CLOUD_QUOTA' : 'CLOUD_DOWN' });
+    if (r.ok)
+      expect(r.data.map((x) => x.url)).toEqual([
+        'https://example-food.test/trattoria-uno',
+        'https://www.example-guide.test/bandra/pasta-corner',
+      ]);
+    expect(w.turns[0]).toMatchObject({
+      outcome: 'error',
+      error_kind: status === 401 ? 'CLOUD_AUTH' : status === 429 ? 'CLOUD_QUOTA' : 'CLOUD_DOWN',
+    });
     // A used-up key adds one line to the next brief; a refused key is stored by main; neither is a message now.
     expect(w.quota).toEqual(status === 429 ? ['exa'] : []);
     expect(w.refused).toEqual(status === 401 ? ['exa'] : []);
@@ -47,7 +69,13 @@ describe('web.search', () => {
     const w = world({ page: new FakePage(bingPage) });
     const r = await new WebTools(w.deps).search({ query: 'pizza', max: 1 }, ctx);
     expect(r.ok && r.data).toEqual([
-      { title: 'Trattoria Uno, Bandra West', url: 'https://example-food.test/trattoria-uno', snippet: 'Wood-fired pizza and fresh pasta on Hill Road.', site: 'example-food.test', date: null },
+      {
+        title: 'Trattoria Uno, Bandra West',
+        url: 'https://example-food.test/trattoria-uno',
+        snippet: 'Wood-fired pizza and fresh pasta on Hill Road.',
+        site: 'example-food.test',
+        date: null,
+      },
     ]);
   });
 
@@ -55,7 +83,15 @@ describe('web.search', () => {
     const ddgOk = new FakePage((u) => (u.includes('bing.com') ? fixture('bing-challenge.html') : fixture('ddg.html')));
     const r1 = await new WebTools(world({ page: ddgOk }).deps).search({ query: 'cafe' }, ctx);
     expect(ddgOk.loads.map((u) => new URL(u).host)).toEqual(['www.bing.com', 'html.duckduckgo.com']);
-    expect(r1.ok && r1.data).toEqual([{ title: 'Cafe Due', url: 'https://example-cafe.test/due', snippet: 'Italian cafe with garden seating.', site: 'example-cafe.test', date: null }]);
+    expect(r1.ok && r1.data).toEqual([
+      {
+        title: 'Cafe Due',
+        url: 'https://example-cafe.test/due',
+        snippet: 'Italian cafe with garden seating.',
+        site: 'example-cafe.test',
+        date: null,
+      },
+    ]);
 
     const both = new FakePage((u) => (u.includes('bing.com') ? fixture('bing-challenge.html') : fixture('ddg-challenge.html')));
     const r2 = await new WebTools(world({ page: both }).deps).search({ query: 'cafe' }, ctx);
@@ -73,7 +109,12 @@ describe('web.search', () => {
 
   it('a refused key is not called again; local path instead', async () => {
     const net = new FakeNet().on('api.exa.ai', fakeExa());
-    const w = world({ net, page: new FakePage(bingPage), settings: () => ({ ...EXA_KEY_SETTINGS, refused: { ...EXA_KEY_SETTINGS.refused, exa: true } }), keys: keys({ exa: 'k' }) });
+    const w = world({
+      net,
+      page: new FakePage(bingPage),
+      settings: () => ({ ...EXA_KEY_SETTINGS, refused: { ...EXA_KEY_SETTINGS.refused, exa: true } }),
+      keys: keys({ exa: 'k' }),
+    });
     const r = await new WebTools(w.deps).search({ query: 'cafe' }, ctx);
     expect(r.ok && r.via).toBe('this_pc');
     expect(net.requests).toEqual([]);

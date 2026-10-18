@@ -5,10 +5,11 @@
 // (`CostProviderId` web members), §E.8 / G-M9-13 (vault `foo/web_key/{provider}`, `vault.use` purpose `web_tool`), §A
 // (`connections.web`). The seams M5 (vault), M4-T3 (spend meter) and M9-T3 (foo's Edge window) fill are interfaces here.
 import type { Clock } from '../../../shared/clock';
+import type { WebProvider } from '../../../shared/types';
 
+export type { WebProvider };
 /** The four cloud web services (08-0 §B.2 `CostProviderId` web members). */
-export const WEB_PROVIDERS = ['exa', 'tavily', 'firecrawl', 'browseruse'] as const;
-export type WebProvider = (typeof WEB_PROVIDERS)[number];
+export const WEB_PROVIDERS: readonly WebProvider[] = ['exa', 'tavily', 'firecrawl', 'browseruse'];
 
 /** 08-4 §27.3 item 2: internal, never a card; written as `tool_calls.error_kind`. */
 export type CloudErrorKind = 'CLOUD_AUTH' | 'CLOUD_QUOTA' | 'CLOUD_DOWN' | 'CLOUD_SECRET_BLOCKED';
