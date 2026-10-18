@@ -1,7 +1,7 @@
 {
   "id": "UX-08-05",
   "theme": "dark",
-  "verdict": "disputed",
+  "verdict": "review",
   "disputed": {
     "cr": "CR-0003 + CR-0004",
     "checks": [

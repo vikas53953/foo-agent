@@ -38,7 +38,7 @@
           "x": 0,
           "y": 0,
           "width": 600,
-          "height": 159
+          "height": 156
         },
         "dPos": 0,
         "dSize": 248.671875,
@@ -66,9 +66,9 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.09731405328889606,
-    "diffPixels": 5431,
-    "total": 55809,
+    "ratio": 0.10073781868653664,
+    "diffPixels": 5516,
+    "total": 54756,
     "sizeMismatch": {
       "a": [
         351,
@@ -76,7 +76,7 @@
       ],
       "b": [
         600,
-        159
+        156
       ]
     },
     "heatmap": "BP-COMP-05.dark.diff.png"

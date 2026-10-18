@@ -1,7 +1,7 @@
 {
   "id": "BP-APP-M",
   "theme": "light",
-  "verdict": "disputed",
+  "verdict": "review",
   "disputed": {
     "cr": "CR-0002",
     "checks": [
@@ -317,8 +317,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.20021164297658864,
-    "diffPixels": 91950,
+    "ratio": 0.2002138203734671,
+    "diffPixels": 91951,
     "total": 459264,
     "sizeMismatch": {
       "a": [
