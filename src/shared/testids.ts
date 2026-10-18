@@ -1,6 +1,6 @@
 // Spec: 08-0 §C (data-testid scheme, X-58), 02-3 §F32.2 (ids used by 02–04; this file holds the shell areas: titlebar,
 // banner, sidebar, chatlist, chat-header, thread, app), 06 `screen-{slug}` roots for the pages the shell opens; M4 adds the
-// job cards, proof chips, stacked composer notices and dialog C-21 (CR-0008).
+// job cards, proof chips, stacked composer notices and dialog C-21 (CR-0008); M6 adds memory (CR-0010).
 // Ids are static; components read them from here (lint foo/testid-from-registry).
 export const TID = {
   // titlebar (03-shell-1 §3.2.5)
@@ -320,6 +320,26 @@ export const TID = {
   composerErrorsClear: 'composer-errors-clear',
   dialogC21: 'dialog-c-21',
   dialogConfirmField: 'dialog-confirm-field',
+  // M6 memory (CR-0010): Memory page (06-2 §7.7), memory chip (05-3 §5.17.1), confirms C-3/C-4 (06-3 §14), unreadable-lines
+  // dialog (X-118), the undo bar (02 §F21.3)
+  memorySearch: 'memory-search',
+  memoryAdd: 'memory-add',
+  memoryMenu: 'memory-menu',
+  memoryFilter: 'memory-filter',
+  memoryLearned: 'memory-learned',
+  memoryRow: 'memory-row',
+  memoryRowEdit: 'memory-row-edit',
+  memoryRowForget: 'memory-row-forget',
+  memoryRowMenu: 'memory-row-menu',
+  memoryHelper: 'memory-helper',
+  threadMemoryUndo: 'thread-memory-undo',
+  threadMemoryForget: 'thread-memory-forget',
+  threadMemorySee: 'thread-memory-see',
+  dialogC03: 'dialog-c-03',
+  dialogC04: 'dialog-c-04',
+  dialogUnreadableLines: 'dialog-unreadable-lines',
+  appUndo: 'app-undo',
+  appUndoAction: 'app-undo-action',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

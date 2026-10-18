@@ -10,7 +10,7 @@ import type { AiStatus, ProviderId } from '../../shared/types';
 import type { Db } from '../store/db';
 import { cardRow, type DbRow } from '../db/rows';
 import { jobRows } from '../store/queries';
-import { applyDbOps, runNamedQuery } from './engineHost';
+import { applyDbOps, runNamedQuery, writeDataFile } from './engineHost';
 
 export interface BridgeContext {
   db: Db;
@@ -120,6 +120,8 @@ export class EngineBridge {
         for (const id of effects.chatIds) this.ctx.emitChat(id);
         return { re: msg.id, result };
       }
+      case 'file.write':
+        return { re: msg.id, result: writeDataFile(this.ctx.dataDir, msg.payload.relPath, msg.payload.text) };
       case 'db.query':
         return { re: msg.id, result: runNamedQuery(this.ctx.db, msg.payload.q as NamedQuery, msg.payload.args, this.now()) };
       case 'power.keepAwake':

@@ -533,3 +533,20 @@ files are real and which stay seeds). What the real output pinned:
 - T6-05 · Voice-note and attachment refusals still use M2's single 8 s `composer-notice`; they join the stack when their
   callers pass an ErrorKind (T7 / the integrator: a call to the stack from `Composer.tsx`).
 - `trace.csv` rows AT-281/282/286/287 still say `pending`: the status column is the integrator's at close-out.
+
+## M6 · memory contracts (ticket T1, CR-0010)
+
+Running ahead of M5 (Vikas, 2026-10-18 18:03Z): the M6 branch `claude/foo-m6-bg91as` is based on the M4 branch. Picks are
+CR-0010 §(b). Where the code stands for the ticket threads:
+
+- Engine seam `src/engine/memory/MemoryPort.ts` (`cmd`, `tidy`), slot `Engine.memory` (stub answers UNKNOWN "not built"). T3
+  sets MemoryService, T7 its tidy. `memory.cmd` and `test.memoryTidy` reach it from `Engine.handle`.
+- Main forwards the eight engine-bound `memory:*` invokes in `IpcRouter.ts` (30 s timeout); `memory:openFolder`,
+  `files:pickFolder` and `data:export {scope:'memory'}` run in main. `src/main/memory/export.ts` is T6's stub to fill.
+- `file.write` → `writeDataFile` in `engineHost.ts` (allow-list `isWritableDataFile`). The engine reads files itself.
+- Named queries in `src/main/db/queries.ts`; `memoryByScope` / `memorySearch` apply the Art. 14 group rule (a live grant
+  admits an about-you or chat-scope fact; private never). T4 refines their bodies.
+- No memory slice in the renderer store (08-5 §5): `memory:changed` and `data:exportProgress` reducers are no-ops; pages use
+  `useFooEvent`.
+- Copy keys are in `en-IN.json` and listed in `scripts/copy-pending.json` by ticket. The two-match forget reply "nothing
+  matched" has no spec words yet: T5 takes them from J17 or files a CR line.

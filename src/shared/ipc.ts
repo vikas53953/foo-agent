@@ -15,8 +15,12 @@ import type {
   HelperRow,
   JobDetails,
   JobRow,
+  MemoryChip,
   MemoryFactView,
   MemoryFilter,
+  MemoryKind,
+  MemoryOrigin,
+  ErrorKind,
   MessageRow,
   PasteCatch,
   ProviderId,
@@ -94,6 +98,19 @@ export interface Invokes {
   'job:stop': { req: { jobId: string }; res: StopReport };
   'job:watch': { req: { jobId: string; on: boolean }; res: void };
   'memory:list': { req: { filter: MemoryFilter; q?: string }; res: MemoryFactView[] };
+  // M6 (08-1 §3.2 memory rows; CR-0010 G-M6-01: main validates and forwards each to the engine as one `memory.cmd`)
+  'memory:add': { req: { text: string }; res: MemoryFactView };
+  'memory:edit': { req: { factId: string; text: string }; res: MemoryFactView };
+  'memory:setPrivate': { req: { factId: string; private: boolean }; res: MemoryFactView };
+  'memory:setKind': { req: { factId: string; kind: MemoryKind }; res: MemoryFactView };
+  'memory:forget': { req: { factId: string }; res: { undoToken: string } };
+  'memory:undo': { req: { undoToken: string }; res: MemoryFactView };
+  'memory:forgetBySource': { req: { source: MemoryOrigin; confirm: true }; res: { count: number } };
+  'memory:forgetAll': { req: { typed: 'FORGET' }; res: { count: number } };
+  'memory:openFolder': { req: Record<string, never>; res: void };
+  /** 08-1 §3.2 `data:export`; CR-0010 G-M6-11 adds `scope` ('memory' = 06-2 §7.4 "Export what I know", 08-3 §19.4.1). */
+  'data:export': { req: { folder: string; scope?: 'all' | 'memory' }; res: { exportId: string } };
+  'files:pickFolder': { req: { purpose: 'output' | 'grant' | 'export' | 'avatar' }; res: { path?: string } };
   'routine:list': { req: Record<string, never>; res: RoutineRow[] };
   /** Not in 08-1 §3.2 (gap, see implementation-notes "M1 integration"): the helpers' names and one-line jobs for the shell. */
   'helper:list': { req: Record<string, never>; res: HelperRow[] };
@@ -123,6 +140,9 @@ export interface Events {
   'settings:changed': PublicSettings;
   'net:state': { online: boolean };
   navigate: { view: View; act?: string };
+  // M6 (08-1 §3.3)
+  'memory:changed': { factIds: string[]; chip?: MemoryChip };
+  'data:exportProgress': { pct: number; phase: string; path?: string; error?: ErrorKind };
 }
 
 export type InvokeChannel = keyof Invokes;
@@ -171,6 +191,17 @@ export const INVOKE_CHANNELS = [
   'job:stop',
   'job:watch',
   'memory:list',
+  'memory:add',
+  'memory:edit',
+  'memory:setPrivate',
+  'memory:setKind',
+  'memory:forget',
+  'memory:undo',
+  'memory:forgetBySource',
+  'memory:forgetAll',
+  'memory:openFolder',
+  'data:export',
+  'files:pickFolder',
   'routine:list',
   'helper:list',
   'settings:get',
@@ -197,6 +228,8 @@ export const EVENT_CHANNELS = [
   'settings:changed',
   'net:state',
   'navigate',
+  'memory:changed',
+  'data:exportProgress',
 ] as const satisfies readonly EventChannel[];
 
 /**

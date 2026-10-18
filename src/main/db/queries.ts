@@ -4,8 +4,21 @@
 // lane uses; later milestones add their names here (a new name is a constitution change, 08-1 §2.4.1). M4 (CR-0008): the job
 // runner's reads — jobs, steps, tool calls (08-2 §5.9 step 5), activity (stop report, 08-2 §5.7 step 4), open cards,
 // approvals (stub until M5), the month's AI spend (08-2 §5.10), and the round-2 names 'jobs.liveForChat', 'cards.openForChat'.
+// M6 (CR-0010): memory reads for the engine — facts with their hash (tombstones, dedupe), live tombstones, the retrieval
+// sets of 08-4 §24.16 (parts 5/5b with the Art. 14 group exclusion; T4 owns those two bodies) and the week count (08-3 §12.7).
 import type { Db } from '../store/db';
-import type { ActivityRow, CardRow, CardType, JobRow, StepRow } from '../../shared/types';
+import type {
+  ActivityRow,
+  CardRow,
+  CardType,
+  JobRow,
+  MemoryCategory,
+  MemoryKind,
+  MemoryOrigin,
+  MemoryProvenance,
+  MemoryScope,
+  StepRow,
+} from '../../shared/types';
 import { cardRow, parseJson, stepRow, type DbRow } from './rows';
 import { jobRows } from '../store/queries';
 
@@ -13,6 +26,67 @@ import { jobRows } from '../store/queries';
 export interface QueryCtx {
   db: Db;
   now: number;
+}
+
+/** memory_index camelCased, hash included (the engine needs it; MemoryFactView drops it). */
+export interface EngineFact {
+  id: string;
+  file: string;
+  lineNo: number;
+  scope: MemoryScope;
+  chatId: string | null;
+  text: string;
+  provenance: MemoryProvenance;
+  origin: string;
+  originKind: MemoryOrigin;
+  reason: string | null;
+  category: MemoryCategory | null;
+  kind: MemoryKind;
+  sensitive: boolean;
+  private: boolean;
+  learnedAt: number;
+  lastUsedAt: number | null;
+  useCount: number;
+  hash: string;
+}
+export interface EngineTombstone {
+  hash: string;
+  originKind: MemoryOrigin;
+  forgottenAt: number;
+  expiresAt: number;
+}
+
+function engineFact(r: DbRow): EngineFact {
+  return {
+    id: String(r.id),
+    file: String(r.file),
+    lineNo: Number(r.line_no),
+    scope: r.scope as MemoryScope,
+    chatId: r.chat_id == null ? null : String(r.chat_id),
+    text: String(r.text),
+    provenance: r.provenance as MemoryProvenance,
+    origin: String(r.origin),
+    originKind: r.origin_kind as MemoryOrigin,
+    reason: r.reason == null ? null : String(r.reason),
+    category: (r.category as MemoryCategory | null) ?? null,
+    kind: r.kind as MemoryKind,
+    sensitive: Number(r.sensitive) === 1,
+    private: Number(r.private) === 1,
+    learnedAt: Number(r.learned_at),
+    lastUsedAt: r.last_used_at == null ? null : Number(r.last_used_at),
+    useCount: Number(r.use_count),
+    hash: String(r.hash),
+  };
+}
+
+/**
+ * Art. 14 / 08-4 §24.16: in a group chat, no private fact, and no about-you or chat-scope fact unless it has a live
+ * `memory_group_grants` row (askShare, 08-3 §12.5.1; chat-scope facts live in about-you.md, X-112, so the grant covers both).
+ */
+function groupExclusion(alias: string): string {
+  return `AND ${alias}.private = 0 AND (
+    (${alias}.file <> 'memory/about-you.md' AND ${alias}.scope <> 'chat')
+    OR EXISTS (SELECT 1 FROM memory_group_grants g WHERE g.fact_id = ${alias}.id AND g.chat_id = ? AND g.until > ?))`;
 }
 
 export interface EngineChat {
@@ -275,4 +349,65 @@ export const NAMED_QUERIES = {
     ),
   /** X-124: the chat's open cards of one type. */
   'cards.openForChat': ({ db }: QueryCtx, chatId: unknown, type: unknown): CardRow[] => openCards(db, chatId, type),
+  // ---- M6 memory (CR-0010) ----
+  'memory.byId': ({ db }: QueryCtx, factId: unknown): EngineFact | null => {
+    const r = db.prepare('SELECT * FROM memory_index WHERE id = ?').get(String(factId)) as DbRow | undefined;
+    return r ? engineFact(r) : null;
+  },
+  'memory.byFile': ({ db }: QueryCtx, file: unknown): EngineFact[] =>
+    (db.prepare('SELECT * FROM memory_index WHERE file = ? ORDER BY line_no').all(String(file)) as DbRow[]).map(engineFact),
+  'memory.all': ({ db }: QueryCtx): EngineFact[] =>
+    (db.prepare('SELECT * FROM memory_index ORDER BY file, line_no').all() as DbRow[]).map(engineFact),
+  /** J17: a live tombstone for the same hash and origin kind blocks re-learning for 90 days. */
+  memoryTombstoned: ({ db, now }: QueryCtx, hash: unknown, originKind: unknown): boolean =>
+    !!db
+      .prepare('SELECT 1 FROM memory_tombstones WHERE hash = ? AND origin_kind = ? AND expires_at > ?')
+      .get(String(hash), String(originKind), now),
+  'memory.tombstones': ({ db, now }: QueryCtx): EngineTombstone[] =>
+    (db.prepare('SELECT * FROM memory_tombstones WHERE expires_at > ? ORDER BY forgotten_at').all(now) as DbRow[]).map((r) => ({
+      hash: String(r.hash),
+      originKind: r.origin_kind as MemoryOrigin,
+      forgottenAt: Number(r.forgotten_at),
+      expiresAt: Number(r.expires_at),
+    })),
+  /**
+   * 08-4 §24.16 part 5 candidates for one chat: identity rows, global rows, this chat's chat-scope rows, this helper's notes;
+   * order `use_count DESC, learned_at DESC`. The caller cuts at 4,000 chars (identity rows outside the budget). T4 refines.
+   */
+  memoryByScope: ({ db, now }: QueryCtx, chatId: unknown): EngineFact[] => {
+    const chat = db.prepare('SELECT kind, helper_id FROM chats WHERE id = ?').get(String(chatId)) as DbRow | undefined;
+    if (!chat) return [];
+    const group = chat.kind === 'group';
+    const helperFile = chat.helper_id ? `helpers/${String(chat.helper_id)}/notes.md` : '';
+    const sql = `SELECT m.* FROM memory_index m
+      WHERE (m.scope = 'global' OR (m.scope = 'chat' AND m.chat_id = ?) OR (m.scope = 'helper' AND m.file = ?))
+      ${group ? groupExclusion('m') : ''}
+      ORDER BY m.use_count DESC, m.learned_at DESC`;
+    const args: unknown[] = [String(chatId), helperFile, ...(group ? [String(chatId), now] : [])];
+    return (db.prepare(sql).all(...args) as DbRow[]).map(engineFact);
+  },
+  /** 08-4 §24.16 part 5b: ≤ `limit` FTS rows for a prepared MATCH string, `bm25 ASC, use_count DESC, learned_at DESC`. */
+  memorySearch: ({ db, now }: QueryCtx, chatId: unknown, match: unknown, limit: unknown): EngineFact[] => {
+    const chat = db.prepare('SELECT kind, helper_id FROM chats WHERE id = ?').get(String(chatId)) as DbRow | undefined;
+    if (!chat || typeof match !== 'string' || !match.trim()) return [];
+    const group = chat.kind === 'group';
+    const helperFile = chat.helper_id ? `helpers/${String(chat.helper_id)}/notes.md` : '';
+    const sql = `SELECT m.* FROM memory_fts f JOIN memory_index m ON m.rowid = f.rowid
+      WHERE memory_fts MATCH ?
+        AND (m.scope = 'global' OR (m.scope = 'chat' AND m.chat_id = ?) OR (m.scope = 'helper' AND m.file = ?))
+        ${group ? groupExclusion('m') : ''}
+      ORDER BY bm25(memory_fts) ASC, m.use_count DESC, m.learned_at DESC LIMIT ?`;
+    const args: unknown[] = [match, String(chatId), helperFile, ...(group ? [String(chatId), now] : []), Math.min(Number(limit) || 8, 8)];
+    return (db.prepare(sql).all(...args) as DbRow[]).map(engineFact);
+  },
+  /** 08-3 §12.7 step 5 / §14.2 `memory_week`: facts learned in the last 7 days. */
+  'memory.weekCount': ({ db, now }: QueryCtx): number =>
+    Number((db.prepare('SELECT COUNT(*) AS n FROM memory_index WHERE learned_at > ?').get(now - 7 * 86_400_000) as DbRow).n),
+  /** 08-0 §G (B-3): the facts used in a chat since `sinceMs`, newest first (the "Used:" chip and review input). */
+  memoryUsedInChat: ({ db }: QueryCtx, chatId: unknown, sinceMs: unknown): { factId: string; jobId: string | null; at: number }[] =>
+    (
+      db
+        .prepare('SELECT fact_id, job_id, at FROM memory_uses WHERE chat_id = ? AND at >= ? ORDER BY at DESC')
+        .all(String(chatId), Number(sinceMs) || 0) as DbRow[]
+    ).map((r) => ({ factId: String(r.fact_id), jobId: r.job_id == null ? null : String(r.job_id), at: Number(r.at) })),
 } as const;

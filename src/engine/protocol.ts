@@ -3,6 +3,9 @@
 // M3 carries the rows the chat lane and the your-AI service need; later milestones add theirs with the same names.
 // M4 (CR-0008): the job runner's rows — DbOp transition/activity/mirror, writable jobs/steps/tool_calls/cards, card.answered,
 // job.stop/stopAll/retry, power, jobs.pauseAll (G-M4-04), power.keepAwake, notify (stub until M11), the job NamedQuery names.
+// M6 (CR-0010): memory — MainToEngine `memory.cmd` (G-M6-01), EngineToMain `file.write` (08-1 §2.4, memory\ and helper notes
+// only), writable memory_index / memory_tombstones / memory_uses / memory_group_grants (main rebuilds memory_fts in the tx,
+// 08-1 §2.5), delete on the memory tables, the memory NamedQuery names, and FOO_TEST `test.memoryTidy`.
 // GAP (GAPS.md 2026-10-18 "reactions not in WritableTable"): foo's reaction (08-4 §25.2 kind 'react', AT-027) needs a row in
 // `reactions`, which 08-1 §2.4.1 lists neither as writable nor as main-only; M3 adds `reactions` to the engine's inserts.
 import { z } from 'zod';
@@ -45,7 +48,23 @@ const cardAnswerSchema: z.ZodType<CardAnswer> = z.union([
   z.object({ skip: z.literal(true) }).strict(),
 ]);
 
-// ---- main → engine (08-1 §2.4 MainToEngine, the rows M3 and M4 use) ----
+const MEMORY_KINDS = ['person', 'preference', 'place', 'fact'] as const;
+const MEMORY_ORIGINS = ['chat', 'gmail', 'gcal', 'whatsapp', 'manual', 'setup', 'job'] as const;
+const factId = z.string().min(1).max(80);
+/** CR-0010 G-M6-01: one engine message per `memory:*` invoke (08-1 §3.1.7); the payload is the invoke's request. */
+export const memoryCmdSchema = z.discriminatedUnion('cmd', [
+  z.object({ cmd: z.literal('add'), text: z.string().min(1).max(120) }).strict(),
+  z.object({ cmd: z.literal('edit'), factId, text: z.string().min(1).max(120) }).strict(),
+  z.object({ cmd: z.literal('setPrivate'), factId, private: z.boolean() }).strict(),
+  z.object({ cmd: z.literal('setKind'), factId, kind: z.enum(MEMORY_KINDS) }).strict(),
+  z.object({ cmd: z.literal('forget'), factId }).strict(),
+  z.object({ cmd: z.literal('undo'), undoToken: z.string().min(1).max(80) }).strict(),
+  z.object({ cmd: z.literal('forgetBySource'), source: z.enum(MEMORY_ORIGINS), confirm: z.literal(true) }).strict(),
+  z.object({ cmd: z.literal('forgetAll'), typed: z.literal('FORGET') }).strict(),
+]);
+export type MemoryCmdPayload = z.infer<typeof memoryCmdSchema>;
+
+// ---- main → engine (08-1 §2.4 MainToEngine, the rows M3, M4 and M6 use) ----
 export type AiCmd = 'detect' | 'verify' | 'choose' | 'signIn';
 export const mainToEngineSchema = z.discriminatedUnion('kind', [
   z.object({ id: z.string(), kind: z.literal('user.message'), payload: z.object({ messageId: z.string(), chatId: z.string() }).strict() }),
@@ -106,6 +125,10 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
   // FOO_TEST runs only (08-3 §22): the engine's fake clock follows main's, and test:reset cancels every turn.
   z.object({ id: z.string(), kind: z.literal('test.reset'), payload: z.object({}).strict() }),
   z.object({ id: z.string(), kind: z.literal('test.clock'), payload: z.object({ now: z.number() }).strict() }),
+  /** M6 (CR-0010 G-M6-01): a request; the engine answers `{ re, result }` with the invoke's response type. */
+  z.object({ id: z.string(), kind: z.literal('memory.cmd'), payload: memoryCmdSchema }),
+  /** M6: FOO_TEST only. Runs `memory.tidy()` now (M7 schedules it at 03:00, G-M6-09). */
+  z.object({ id: z.string(), kind: z.literal('test.memoryTidy'), payload: z.object({}).strict() }),
   /** M4: FOO_TEST only. The engine's runner moves a job by the named machine event (test:jobState, 08-3 §22). */
   z.object({
     id: z.string(),
@@ -117,7 +140,24 @@ export type MainToEngine = z.infer<typeof mainToEngineSchema>;
 
 // ---- engine → main ----
 /** 08-1 §2.4.1 WritableTable (the members built so far). `activity` is written only through op `activity`. */
-export const WRITABLE_TABLES = ['messages', 'ai_turns', 'reactions', 'jobs', 'steps', 'tool_calls', 'cards'] as const;
+export const WRITABLE_TABLES = [
+  'messages',
+  'ai_turns',
+  'reactions',
+  'jobs',
+  'steps',
+  'tool_calls',
+  'cards',
+  // M6 (CR-0010; 08-1 §2.5): the index follows the files; main rebuilds memory_fts in the same tx
+  'memory_index',
+  'memory_tombstones',
+  'memory_uses',
+  'memory_group_grants',
+] as const;
+/** Tables the `delete` op takes, with the id each uses: reactions `{messageId}|{by}`, memory_index the fact id,
+ * memory_tombstones `{hash}|{originKind}`, memory_group_grants `{factId}|{chatId}`. */
+export const DELETE_TABLES = ['reactions', 'memory_index', 'memory_tombstones', 'memory_group_grants'] as const;
+export type DeleteTable = (typeof DELETE_TABLES)[number];
 export type WritableTable = (typeof WRITABLE_TABLES)[number];
 /** Tables with a `state` column the `transition` op moves (08-1 §2.4.1 names jobs, routines, steps; CR-0008 adds cards). */
 export const TRANSITION_TABLES = ['jobs', 'steps', 'cards'] as const;
@@ -136,7 +176,7 @@ export type DbOp =
   | { op: 'insert'; table: WritableTable; row: Record<string, unknown>; redact?: string[] }
   | { op: 'update'; table: WritableTable; id: string; set: Record<string, unknown>; expectRev?: number }
   | { op: 'transition'; table: TransitionTable; id: string; from: string[]; to: string; set?: Record<string, unknown> }
-  | { op: 'delete'; table: 'reactions'; id: string }
+  | { op: 'delete'; table: DeleteTable; id: string }
   | { op: 'activity'; row: ActivityOpRow }
   | { op: 'mirror'; kind: MirrorKind; id: string; text: string };
 
@@ -192,7 +232,7 @@ const dbOpSchema = z.discriminatedUnion('op', [
       set: z.record(z.string(), z.unknown()).optional(),
     })
     .strict(),
-  z.object({ op: z.literal('delete'), table: z.literal('reactions'), id: z.string() }).strict(),
+  z.object({ op: z.literal('delete'), table: z.enum(DELETE_TABLES), id: z.string() }).strict(),
   z.object({ op: z.literal('activity'), row: activityRowSchema }).strict(),
   z.object({ op: z.literal('mirror'), kind: z.enum(MIRROR_KINDS), id: z.string(), text: z.string() }).strict(),
 ]);
@@ -217,6 +257,17 @@ export const NAMED_QUERY_NAMES = [
   'monthAiSpend',
   'jobs.liveForChat',
   'cards.openForChat',
+  // M6 (CR-0010): memory. The four 08-1 §2.4.1 names (memoryByScope, memorySearch, memoryTombstoned, memoryUsedInChat) plus
+  // the reads the store needs; T4 owns the retrieval bodies (memoryByScope, memorySearch) in src/main/db/queries.ts.
+  'memory.byId',
+  'memory.byFile',
+  'memory.all',
+  'memoryTombstoned',
+  'memory.tombstones',
+  'memoryByScope',
+  'memorySearch',
+  'memory.weekCount',
+  'memoryUsedInChat',
 ] as const;
 export type NamedQuery = (typeof NAMED_QUERY_NAMES)[number];
 
@@ -251,6 +302,13 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
         ids: z.object({ chatId: z.string().optional(), jobId: z.string().optional() }).strict().optional(),
       })
       .strict(),
+  }),
+  /** M6 (08-1 §2.4; 08-3 §12.2): a request. Main writes `{DATA}/{relPath}` (temp + rename); only `memory/**.md`,
+   * `memory/.tombstones`, `memory/.tidy-log.md` and `helpers/{h_id}/notes.md` (else PATH_NOT_ALLOWED). Answers `ok({})`. */
+  z.object({
+    id: z.string(),
+    kind: z.literal('file.write'),
+    payload: z.object({ relPath: z.string().min(1).max(260), text: z.string(), atomic: z.literal(true) }).strict(),
   }),
   /** 09 §9.22: main holds powerSaveBlocker('prevent-app-suspension') while `on` (a job is WORKING). */
   z.object({
@@ -309,7 +367,7 @@ export type DbTxReply = { ids: string[]; revs: number[] };
 
 /** The engine side of the port (in production a MessagePort; in tests a direct call into main's handlers). */
 export interface MainLink {
-  request<T>(kind: 'db.tx' | 'db.query', payload: unknown): Promise<Result<T>>;
+  request<T>(kind: 'db.tx' | 'db.query' | 'file.write', payload: unknown): Promise<Result<T>>;
   send(kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify', payload: unknown): void;
 }
 
