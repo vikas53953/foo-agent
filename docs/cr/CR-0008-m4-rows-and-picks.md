@@ -73,7 +73,7 @@ Blueprint ids (`scripts/golden-manifest.ts` `BP_M4`): `#cardgal > .panel:nth-chi
 
 Picks T1 made where the spec is silent (also in implementation-notes "M4"):
 
-16. **G-M4-16** `jobs.pauseAll` moves WORKING jobs only to WAITING (`app_quit` / `windows_shutdown`). QUEUED jobs stay queued (nothing ran) and NEEDS_YOU jobs keep waiting on the user (their cards keep `expires_at`, 08-1 §2.3 step 4).
+16. **G-M4-16** Resolves a conflict: 08-1 §2.3 step 4 and AT-089 say `jobs.pauseAll` makes every unfinished job `waiting`, but 07-2 §4 has no queued→waiting or needs_you→waiting move and 08-4 §26.10 would resume a NEEDS_YOU job past the user's answer. Pick: `jobs.pauseAll` moves WORKING jobs only to WAITING (`app_quit` / `windows_shutdown`). QUEUED jobs stay queued (nothing ran) and NEEDS_YOU jobs keep waiting on the user (their cards keep `expires_at`, 08-1 §2.3 step 4).
 17. **G-M4-17** A WAITING job's bubble badge stays `working` 🛠 (04 §4.2 replaces `working` only when the job needs the user or ends; the `waiting_ai` tooltip is for a queued message). The pill says "Paused" and the error card explains.
 18. **Contract shapes.** DbOp `mirror` keeps 08-1's shape `{ kind: 'job_state' | 'plan_md', id, text }`; `transition` also takes `cards` (card states are validated against 08-0 §G.2 on every write, failure `VALIDATION` per 08-1 §4.5.1); `jobs.state` changes only through `transition` (an `update` naming it is `DB_NOT_WRITABLE`); `activity` rows go only through op `activity` (camelCase `ActivityRow` without id/at). `card.answered` is `{ cardId, choice?, text?, answer?: CardAnswer, resolvedBy }` (08-1's `{ cardId, answer }` plus the named choice the M4 cards answer with). FOO_TEST adds `test.jobEvent { jobId, event }`. Named queries get the injected clock (`JobRow.slow`). 08-1 §2.4.1 says a new writable table or query is a constitution change: this CR is that change for the rows above.
 19. **Copy.** Money placeholders hold `formatInr()` output, so the templates drop the "₹" the spec writes before `{x}` / `{cap}` (as `banner.ai_cap.text` did in M1); straight apostrophes are stored as ’ (as every existing key). Keys landed before the ticket that renders them are listed in `scripts/copy-pending.json` and count as used by `check:copy` until a `t()` call uses them (the list must be empty at M4 close-out); the 08-4 §26.1 phrase keys are checked against `PHRASES`.
@@ -93,4 +93,16 @@ yet (T5 asks for it when the checklist needs it).
 
 ## (e) Independent review
 
-pending
+Fable reviewer, 2026-10-18 ~17:20Z, read-only, against 07-2 §4 + SM-A1…A13, DECISIONS X-17/61/80/124/125/129/131, 08-4 §26.1,
+08-1 §2.4/§2.4.1/§4.2/§4.3 and the pack's G-M4 list. **Verdict: PASS**, no "act" findings.
+
+- G-M4-01…15 are the pack's recommended options and stay inside the cited spec lines; no approved screen or copy changes.
+- `spec/state-machines.json` matches 07-2 §4 + SM-A + X-80 (all 14 rows; extra events each sourced; terminal states have
+  no exits); `jobMachine.ts` equals the JSON; `PHRASES` matches 08-4 §26.1 word for word (36 keys, slots, "—" = null).
+- Migration 0002 is forward-only, uses the §4.2 item 2 rebuild recipe, differs from 0001 only in the two route CHECKs.
+- Considered and applied: §(b)16 now names the conflict it resolves. Spec-keeper list: X-161 supersedes 08-1 §4.3 lines
+  690 / 717 (route CHECKs), §2.4 line 207 (`job.retry` "re-enters WORKING"), §2.4 line 188 (`card.answered` shape) and
+  §2.4.1 line 240 (`transition` tables, now with `cards`).
+
+Recorded as approved on Vikas's behalf under his standing rule (his message 2026-10-18 14:56Z: "take care of it on my
+behalf and then keep on working"); listed for his later review.
