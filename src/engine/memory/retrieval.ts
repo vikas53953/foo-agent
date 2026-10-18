@@ -1,8 +1,9 @@
 // Spec: 08-4 §24.16 (memory retrieval for parts 5 and 5b: identity rows always, outside the 4,000-char cap; the pinned set
 // `use_count DESC, learned_at DESC` while the lines stay ≤ 4,000 chars; up to 8 further FTS rows `bm25 ASC, use_count DESC,
-// learned_at DESC`; the query build; Art. 14 group exclusion, applied by the named queries; line format), §24.1 (intake gets
-// part 5 in the system and 5b in the prompt), 08-3 §12.5 (retrieval per turn), Art. 14.
+// learned_at DESC`; the query build, step turns included; Art. 14 group exclusion and tombstones, applied by the named
+// queries; line format), §24.1 (intake and step get part 5 in the system and 5b in the prompt), 08-3 §12.5, Art. 14.
 import type { EngineFact } from '../../main/db/queries';
+import type { StepRow } from '../../shared/types';
 import { formatFactLine, type MemoryLine } from '../prompt/PromptBuilder';
 
 /** A named query through main (`db.query`); resolves null when main refuses. */
@@ -39,6 +40,16 @@ export function ftsMatch(text: string): string | null {
   const tokens: string[] = [];
   for (const tok of words) if (tok && !tokens.includes(tok) && [...graphemes.segment(tok)].length >= 2) tokens.push(tok);
   return tokens.length ? tokens.map((t) => `"${t}"`).join(' OR ') : null;
+}
+
+/**
+ * §24.16 item 3, step turns: the job's last user message + `jobs.title` + the current step's slot values (the running or
+ * waiting step, else the first pending one).
+ */
+export function stepQueryText(asked: string, title: string, steps: Pick<StepRow, 'state' | 'slots'>[]): string {
+  const current = steps.find((s) => s.state === 'running' || s.state === 'waiting_user') ?? steps.find((s) => s.state === 'pending');
+  const slots = current ? Object.values(current.slots).filter((v): v is string => typeof v === 'string') : [];
+  return [asked, title, ...slots].join(' ');
 }
 
 function offer(f: EngineFact, timeZone: string, now: number): OfferedFact {

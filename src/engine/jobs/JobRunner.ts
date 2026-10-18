@@ -19,6 +19,7 @@ import { BADGE_OF_STATE, JOB_STATES, TERMINAL } from '../../shared/jobMachine';
 import { phraseText, resolvePhrase, type PhraseKey } from '../../shared/phrases';
 import type { IntakeDecision, PlanStep, StepAct, StepDecision } from '../../shared/schemas';
 import type { Settings } from '../../shared/settings';
+import { buildMemoryParts, stepQueryText, type MemoryParts } from '../memory/retrieval';
 import type { CardRow, ErrorKind, FixAction, JobRow, JobState, ProviderId, StepRow } from '../../shared/types';
 import type { LaneAi } from '../chat/ChatLane';
 import type { AiErrorKind, TurnResult } from '../ai/types';
@@ -40,7 +41,8 @@ export interface RunnerAi extends LaneAi {
 }
 
 export interface RunnerPrompts {
-  buildStep(jobBlock: string, tools: string): { system: string; prompt: string };
+  /** `memory`: parts 5/5b for this step turn (08-4 §24.1 step row, §24.16; M6 T4). */
+  buildStep(jobBlock: string, tools: string, memory: MemoryParts): { system: string; prompt: string };
   buildRepair(issues: string): string;
   /** Parse a step reply: the validated StepAct, or the zod issues for the repair turn. */
   parseStep(text: string): { act: StepAct | null; issues: string | null };
@@ -953,7 +955,14 @@ export class JobRunner {
     const pick = this.d.ai.pick();
     const turnId = this.d.newId('t');
     if (!pick) return { act: null, error: 'AI_SERVICE_DOWN', turnId };
-    const built = this.d.prompts.buildStep(this.jobBlock(job, await this.steps(job.id), c), this.d.tools.catalogue());
+    const steps = await this.steps(job.id);
+    const memory = await buildMemoryParts((q, ...args) => this.query(q, ...args), {
+      chatId: job.chatId,
+      text: stepQueryText(c.asked, job.title, steps),
+      timeZone: this.d.settings().locale.timeZone,
+      now: this.d.clock.now(),
+    });
+    const built = this.d.prompts.buildStep(this.jobBlock(job, steps, c), this.d.tools.catalogue(), memory);
     const run = async (purpose: 'step' | 'repair', id: string, system: string, prompt: string) => {
       const startedAt = this.d.clock.now();
       const params = this.d.ai.turnParams(pick.providerId, purpose === 'repair' ? 'repair' : 'step');

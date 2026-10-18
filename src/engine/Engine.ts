@@ -148,8 +148,10 @@ export class Engine {
   private stepProtocol(): ConstructorParameters<typeof JobRunner>[0]['prompts'] {
     const redactor = this.redactor;
     return {
-      buildStep: (jobBlock, tools) =>
+      buildStep: (jobBlock, tools, memory) =>
         this.prompts.buildStep({
+          pinned: memory.part5,
+          turnFacts: memory.part5b,
           agentName: this.settings.identity.agentName,
           firstName: this.settings.user.firstName ?? null,
           vibeLine: '',

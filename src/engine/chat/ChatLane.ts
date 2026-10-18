@@ -430,6 +430,7 @@ export class ChatLane {
       const f = facts.get(id);
       if (!f) continue;
       ops.push(
+        // DbOp `update` sets values, so this is the count read for this turn + 1 (a parallel turn's use can be lost).
         { op: 'update', table: 'memory_index', id, set: { last_used_at: at, use_count: f.useCount + 1 } },
         { op: 'insert', table: 'memory_uses', row: { fact_id: id, chat_id: chatId, job_id: null, at } },
       );

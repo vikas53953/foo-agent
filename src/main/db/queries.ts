@@ -89,6 +89,10 @@ function groupExclusion(alias: string): string {
     OR EXISTS (SELECT 1 FROM memory_group_grants g WHERE g.fact_id = ${alias}.id AND g.chat_id = ? AND g.until > ?))`;
 }
 
+/** AT-074 / J17: a fact with a live tombstone (same hash and origin kind) never reaches a prompt, even if its row survives. */
+const NOT_TOMBSTONED = `AND NOT EXISTS (SELECT 1 FROM memory_tombstones t
+        WHERE t.hash = m.hash AND t.origin_kind = m.origin_kind AND t.expires_at > ?)`;
+
 export interface EngineChat {
   id: string;
   kind: 'foo' | 'helper' | 'group' | 'wa_mirror';
@@ -382,8 +386,9 @@ export const NAMED_QUERIES = {
     const sql = `SELECT m.* FROM memory_index m
       WHERE (m.scope = 'global' OR (m.scope = 'chat' AND m.chat_id = ?) OR (m.scope = 'helper' AND m.file = ?))
       ${group ? groupExclusion('m') : ''}
+      ${NOT_TOMBSTONED}
       ORDER BY m.use_count DESC, m.learned_at DESC`;
-    const args: unknown[] = [String(chatId), helperFile, ...(group ? [String(chatId), now] : [])];
+    const args: unknown[] = [String(chatId), helperFile, ...(group ? [String(chatId), now] : []), now];
     return (db.prepare(sql).all(...args) as DbRow[]).map(engineFact);
   },
   /**
@@ -399,6 +404,7 @@ export const NAMED_QUERIES = {
       WHERE memory_fts MATCH ?
         AND (m.scope = 'global' OR (m.scope = 'chat' AND m.chat_id = ?) OR (m.scope = 'helper' AND m.file = ?))
         ${group ? groupExclusion('m') : ''}
+        ${NOT_TOMBSTONED}
         AND m.id NOT IN (SELECT value FROM json_each(?))
       ORDER BY bm25(memory_fts) ASC, m.use_count DESC, m.learned_at DESC LIMIT ?`;
     const exclude = JSON.stringify(Array.isArray(excludeIds) ? excludeIds.map(String) : []);
@@ -407,6 +413,7 @@ export const NAMED_QUERIES = {
       String(chatId),
       helperFile,
       ...(group ? [String(chatId), now] : []),
+      now,
       exclude,
       Math.min(Number(limit) || 8, 8),
     ];
