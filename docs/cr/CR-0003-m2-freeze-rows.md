@@ -5,9 +5,8 @@
 - **Spec sections:** 11-fidelity §11.2.3 (data rule), §11.2.4 (R1, R2), §11.2.7 (when the reference is wrong), §11.4 (FID-18);
   04 §1–§19; 04-2 §20–§23; 10-acceptance-1 §B (AT-007, AT-225); 10-acceptance-2 §D (ART-08b, ART-21a, ART-26a), §E (PERF-02,
   PERF-04).
-- **Status:** Approved under overnight instruction (Vikas, 2026-10-17 18:52Z/18:59Z: continue the overnight build, don't wait
-  for my approval), for morning review
-- **Approved by Vikas:** pending morning review (overnight instruction above, foo project M2 build thread)
+- **Status:** Approved by Vikas, DECISIONS X-156 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)
+- **Approved by Vikas:** 2026-10-18 13:00Z, in the M2 build thread of the foo project ("CR-0003 approved")
 
 ## (a) Trace rows (`spec/trace.csv`)
 

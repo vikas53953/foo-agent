@@ -6,9 +6,8 @@
   16.7 ms); 03-shell-2 §3.6.4 (virtualised list, measureElement on every row); 02-2 §F13.3 (row estimates); 04 §1.4 (tail
   corners), §1.8 (row name and keys), §3 (meta), §4 (badges), §8 (reaction chips), §10.1 (images), §10.8 (file chips),
   §12–§13 (answers, markdown).
-- **Status:** Approved under overnight instruction (Vikas, 2026-10-17 18:52Z/18:59Z: continue the overnight build, don't wait
-  for my approval), for morning review
-- **Approved by Vikas:** pending morning review (overnight instruction above, foo project M2 build thread)
+- **Status:** Approved by Vikas, DECISIONS X-159 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)
+- **Approved by Vikas:** 2026-10-18 13:00Z, in the M2 build thread of the foo project ("CR-0006 approved")
 
 ## (a) Why
 

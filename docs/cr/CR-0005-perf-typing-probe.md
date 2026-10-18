@@ -4,9 +4,8 @@
   the cause was found (implementation-notes, M2 CI fixes 36).
 - **Spec sections:** 10-acceptance-2 §E (PERF-02, typing latency p95 < 16 ms); 08-3 PERF-02; 04-2 §20.3;
   `spec/trace.csv` PERF-02 (`test/e2e/m2-composer.spec.ts`).
-- **Status:** Approved under overnight instruction (Vikas, 2026-10-17 18:52Z/18:59Z: continue the overnight build, don't wait
-  for my approval), for morning review
-- **Approved by Vikas:** pending morning review (overnight instruction above, foo project M2 build thread)
+- **Status:** Approved by Vikas, DECISIONS X-158 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)
+- **Approved by Vikas:** 2026-10-18 13:00Z, in the M2 build thread of the foo project ("CR-0005 approved")
 
 ## (a) What was wrong
 

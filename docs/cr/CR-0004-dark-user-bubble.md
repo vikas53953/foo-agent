@@ -5,9 +5,8 @@
 - **Spec sections:** 02 F2 (`--bubble-me` and the `--on-bubble-me*` family), DECISIONS X-145; 04 §2 (user bubble fill),
   04 §1.1 (column side padding), 04 §3.1 (meta), 04 §6.4 (reply-quote); 04-2 §25 #4, §26; 11-fidelity §11.2.4 (R2, R3, R4),
   §11.2.7 (when the reference is wrong); `spec/spec-values.json` SV-04.
-- **Status:** Approved under overnight instruction (Vikas, 2026-10-17 18:52Z/18:59Z: continue the overnight build, don't wait
-  for my approval), for morning review
-- **Approved by Vikas:** pending morning review (overnight instruction above, foo project M2 build thread)
+- **Status:** Approved by Vikas, DECISIONS X-157 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)
+- **Approved by Vikas:** 2026-10-18 13:00Z, in the M2 build thread of the foo project ("CR-0004 approved")
 
 ## (a) The contradiction
 
