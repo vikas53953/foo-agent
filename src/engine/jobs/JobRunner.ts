@@ -849,7 +849,7 @@ export class JobRunner {
     const steps = await this.steps(job.id);
     const current = steps.find((s) => s.state === 'running' || s.state === 'waiting_user');
     const r = await this.tx([
-      ...this.cardOps(job.chatId, 'error', 'shown', payload, job.id, job.ownerId).ops,
+      ...this.cardOps(job.chatId, 'error', 'asking', payload, job.id, job.ownerId).ops,
       { op: 'transition', table: 'jobs', id: job.id, from: ['working'], to: 'failed', set: { finished_at: now } },
       ...(current ? [{ op: 'update', table: 'steps', id: current.id, set: { state: 'failed', finished_at: now } } as DbOp] : []),
       ...this.badgeOp(job, 'failed'),

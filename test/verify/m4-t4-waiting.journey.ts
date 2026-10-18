@@ -110,7 +110,13 @@ export default async function journey(v: Verify): Promise<void> {
   const after = await log.locator(`${byTid(TID.bubbleFoo)}, ${byTid(TID.bubbleMe)}, [data-card-type]`).count();
   if (after !== messages + 2) throw new Error(`thread items ${messages} → ${after}: expected only the checklist and the result`);
   if ((await errorCards.count()) !== cards) throw new Error('a second error card appeared on resume');
-  v.note(`AI back → the job resumed and finished: "${RESULT}"; no new error card, only the checklist and the result were added`);
+  const back = t('cards.checklist.resumed', { n: 1 });
+  const fixedCard = errorCards.last();
+  if ((await fixedCard.getAttribute('data-state')) !== 'fixed' || !((await fixedCard.textContent()) ?? '').includes(back))
+    throw new Error(`the error card should be edited in place to fixed with "${back}" (SM-A10)`);
+  v.note(
+    `AI back → the job resumed and finished: "${RESULT}"; the same error card now reads "${back}"; no new error card, only the checklist and the result were added`,
+  );
   await v.shot('resumed-done');
 
   // 3 · Offline mid-job (AT-081): the banner, the Doing-now line, no card; back online → resumes.

@@ -393,7 +393,7 @@ export class JobRecovery {
         id: card.id,
         set: {
           state: 'fixed',
-          payload: { ...card.payload, resumedLine: t('cards.checklist.resumed', { n }), fixedAt: now },
+          payload: { ...card.payload, resumedLine: t('cards.checklist.resumed', { n }) },
           resolved_by: 'system',
           resolved_at: now,
         },
