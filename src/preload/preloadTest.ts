@@ -35,6 +35,15 @@ const INVOKES = new Set([
   'app:showEmojiPanel',
   'job:stop',
   'job:watch',
+  // M4 T5 job and card answers (08-1 §3.2, CR-0008 G-M4-09).
+  'job:stopAll',
+  'job:retry',
+  'plan:go',
+  'plan:change',
+  'stuck:choose',
+  'recovery:choose',
+  'error:fix',
+  // M9 (CR-0013).
   'job:openWindow',
   'job:takeOver',
   'job:handBack',
