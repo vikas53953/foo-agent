@@ -139,13 +139,14 @@ export class Engine {
       log: (evt, kind) => log(evt, kind),
       jobs: this.jobs,
     });
+    this.jobs.setIntake((chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }));
   }
 
   /** The step protocol for the job runner (08-4 §24.1 step row, §25.3, 08-2 §7.5–§7.6). */
   private stepProtocol(): ConstructorParameters<typeof JobRunner>[0]['prompts'] {
     const redactor = this.redactor;
     return {
-      buildStep: (jobBlock, tools) =>
+      buildStep: (jobBlock, tools, steer) =>
         this.prompts.buildStep({
           agentName: this.settings.identity.agentName,
           firstName: this.settings.user.firstName ?? null,
@@ -154,13 +155,20 @@ export class Engine {
           timeZone: this.settings.locale.timeZone,
           tools,
           jobBlock,
+          steer: steer ?? null,
         }),
       buildRepair: (issues) => this.prompts.buildRepair(issues).prompt,
       parseStep: (text) => {
         const env = parseEnvelope(text);
         if (env.act === undefined) return { act: null, issues: env.actError ?? formatIssues([]) };
         const v = validateAct('step', env.act);
-        return v.ok ? { act: v.act as StepAct, issues: null } : { act: null, issues: v.issues };
+        return v.ok ? { act: v.act as StepAct, issues: null, say: env.say } : { act: null, issues: v.issues };
+      },
+      buildStuck: (results) => this.prompts.buildStuck(results),
+      parseStuck: (text) => {
+        const env = parseEnvelope(text);
+        const v = env.act === undefined ? null : validateAct('classify', env.act);
+        return v?.ok ? (v.act as { whatsWrong: string }).whatsWrong : null;
       },
       filter: (text) => filterSay(text, { redactor }).text,
       isBanned: (text) => findBanned(text).length > 0,
@@ -289,6 +297,8 @@ export class Engine {
           this.settings = parsed.data;
           this.firstSettings = false;
           this.ai.settingsChanged();
+          // 08-2 §5.10 item 4: a raised AI cap resumes the jobs paused at it.
+          if (!first) void this.jobs.capChanged();
           // First settings, or a chosen AI that just became usable (J2 choose → ai.state → settings): waiting messages go now.
           if (first || (!usableBefore && this.ai.pick())) void this.drainQueued();
           if (first && !this.o.testRun) this.scheduleHealthCheck();
@@ -322,6 +332,12 @@ export class Engine {
       case 'card.answered':
         await this.jobs.onCardAnswered(msg.payload);
         return undefined;
+      case 'job.stop': {
+        const r = await this.jobs.stopJob(msg.payload.jobId, msg.payload.reason);
+        return r ? ok(r) : { ok: false, error: { kind: 'JOB_GONE' } };
+      }
+      case 'job.stopAll':
+        return ok(await this.jobs.stopAll());
       case 'job.retry':
         return this.jobs.retry(msg.payload.jobId, msg.payload.newJobId);
       case 'test.clock':

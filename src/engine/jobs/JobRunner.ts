@@ -7,7 +7,8 @@
 // waiting_user and back), §26.11, §26.12 (ids on a step turn), §24.22 (part 8), 07-2 §4 + SM-A1/A12 (machine; badges), 08-1
 // §4.1.2 (mirrors), §4.5 (card payloads), CR-0008 G-M4-01 (retry = new linked job), G-M4-05, G-M4-06.
 // Ticket T2 builds the core. Seams the next tickets fill (they replace the T2 defaults named in `RunnerHooks`):
-// T3 stop / steer / watchdog / stuck / caps, T4 waiting / recovery / power events.
+// T3 stop / steer / watchdog / stuck / caps, T4 waiting / recovery / power events. T3's logic lives in stopFlow.ts,
+// steer.ts, watchdog.ts and costMeter.ts; they reach the runner through `RunnerCore` (08-2 §5.2, §5.5–§5.7, §5.10).
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { t } from '../../shared/copy/t';
@@ -19,16 +20,20 @@ import { BADGE_OF_STATE, JOB_STATES, TERMINAL } from '../../shared/jobMachine';
 import { phraseText, resolvePhrase, type PhraseKey } from '../../shared/phrases';
 import type { IntakeDecision, PlanStep, StepAct, StepDecision } from '../../shared/schemas';
 import type { Settings } from '../../shared/settings';
-import type { CardRow, ErrorKind, FixAction, JobRow, JobState, ProviderId, StepRow } from '../../shared/types';
+import type { CardRow, ErrorKind, FixAction, JobRow, JobState, ProviderId, StepRow, StopReason, StopReport } from '../../shared/types';
 import type { LaneAi } from '../chat/ChatLane';
 import type { AiErrorKind, TurnResult } from '../ai/types';
 import type { DbOp, DbTxReply, MainLink } from '../protocol';
 import type { ExecResult, NeedsUserCard, ToolLayer } from '../tools/ToolLayer';
 import { estCostPaise, estMinutes, estTokens, isBigOne, needsPlanCard } from './estimates';
+import { CostMeter } from './costMeter';
 import { checkProof } from './proof';
 import { needsVerify, pickStartable, type QueueJob } from './queue';
 import { buildTitle, insertShowBefore, retryTitle, PLAN_MAX } from './title';
 import { extractDoVerbs } from './verbs';
+import { Steer } from './steer';
+import { StopFlow } from './stopFlow';
+import { Watchdog, type StuckRule } from './watchdog';
 
 export const CHECKLIST_AFTER_MS = 1_500;
 const OBSERVATION_CAP = 4_000;
@@ -40,10 +45,14 @@ export interface RunnerAi extends LaneAi {
 }
 
 export interface RunnerPrompts {
-  buildStep(jobBlock: string, tools: string): { system: string; prompt: string };
+  /** `steer` is part 10 (08-2 §7.2), present only when steers are queued. */
+  buildStep(jobBlock: string, tools: string, steer?: string | null): { system: string; prompt: string };
   buildRepair(issues: string): string;
   /** Parse a step reply: the validated StepAct, or the zod issues for the repair turn. */
-  parseStep(text: string): { act: StepAct | null; issues: string | null };
+  parseStep(text: string): { act: StepAct | null; issues: string | null; say?: string };
+  /** 08-4 §24.13 / §24.21: the classify turn over the last tool results, and its StuckAct `whatsWrong` (null if invalid). */
+  buildStuck(results: string): { system: string; prompt: string };
+  parseStuck(text: string): string | null;
   /** 08-2 §7.6 output filters (result text, card text from the AI). */
   filter(text: string): string;
   isBanned(text: string): boolean;
@@ -55,6 +64,48 @@ export interface RunnerHooks {
   onAiError?(job: JobRow, kind: AiErrorKind): Promise<void>;
   /** T3: the watchdog's stuck rules (08-2 §5.6). T2 default: three failures in a row end the job FAILED. */
   onStuck?(job: JobRow, rule: 'fail_streak'): Promise<void>;
+}
+
+/** What T3's modules (stopFlow, steer, watchdog, costMeter) may use of the runner. */
+export interface RunnerCore {
+  d: JobRunnerDeps;
+  cost: CostMeter;
+  tx(ops: DbOp[]): Promise<Result<DbTxReply>>;
+  query<T>(q: string, ...args: unknown[]): Promise<T | null>;
+  job(id: string): Promise<JobRow | null>;
+  steps(jobId: string): Promise<StepRow[]>;
+  badgeOps(job: JobRow, to: JobState): DbOp[];
+  cardOps(
+    chatId: string,
+    type: string,
+    state: string,
+    payload: Record<string, unknown>,
+    jobId: string | null,
+    helperId: string | null,
+  ): { cardId: string; messageId: string; ops: DbOp[] };
+  editChecklistOps(job: JobRow, state?: string): Promise<DbOp[]>;
+  /** A foo (or helper) text message in the chat, tied to the job when there is one. */
+  textOp(job: Pick<JobRow, 'chatId' | 'ownerId'> & { id: string | null }, text: string): DbOp;
+  /** WORKING → NEEDS_YOU with the card; the new card's id, or null when the move was refused. */
+  needsYou(job: JobRow, card: NeedsUserCard): Promise<string | null>;
+  /** Aborts the job's loop: no more AI turns or tool calls (08-2 §5.7 step 1). */
+  halt(jobId: string): void;
+  launch(jobId: string): void;
+  startNext(): Promise<void>;
+  ended(jobId: string): Promise<void>;
+  writeMirrors(jobId: string): Promise<void>;
+  workingMs(jobId: string): number;
+  recordTurn(
+    job: JobRow,
+    pick: { providerId: ProviderId; billing: 'plan' | 'key' | 'local' },
+    turnId: string,
+    purpose: 'step' | 'repair' | 'classify',
+    startedAt: number,
+    r: TurnResult,
+  ): Promise<void>;
+  track<T>(p: Promise<T>): Promise<T>;
+  /** 08-2 §5.5 `new_job`: the message goes to a normal intake turn. */
+  intake(chatId: string, messageId: string): void;
 }
 
 export interface JobRunnerDeps {
@@ -85,7 +136,7 @@ export interface CreateJobInput {
   originRef?: string | null;
 }
 
-interface JobCtx {
+export interface JobCtx {
   abort: AbortController;
   asked: string;
   workingSince: number | null;
@@ -139,8 +190,68 @@ export class JobRunner {
   private busy = 0;
   private idleWaiters: (() => void)[] = [];
   private sched: Promise<void> = Promise.resolve();
+  readonly cost: CostMeter;
+  readonly stopper: StopFlow;
+  readonly steering: Steer;
+  readonly watchdog: Watchdog;
+  private intakeHook: ((chatId: string, messageId: string) => void) | null = null;
 
-  constructor(private d: JobRunnerDeps) {}
+  constructor(private d: JobRunnerDeps) {
+    const core: RunnerCore = {
+      d,
+      get cost() {
+        return cost;
+      },
+      tx: (ops) => this.tx(ops),
+      query: (q, ...args) => this.query(q, ...args),
+      job: (id) => this.job(id),
+      steps: (id) => this.steps(id),
+      badgeOps: (job, to) => this.badgeOp(job, to),
+      cardOps: (...a) => this.cardOps(...a),
+      editChecklistOps: (job, state) => this.editChecklistOps(job, state),
+      textOp: (job, text) => this.textOp(job, text),
+      needsYou: (job, card) => this.needsYou(job, card),
+      halt: (id) => this.ctxs.get(id)?.abort.abort(),
+      launch: (id) => this.launch(id),
+      startNext: () => this.startNext(),
+      ended: (id) => this.ended(id, this.ctx(id)),
+      writeMirrors: (id) => this.writeMirrors(id),
+      workingMs: (id) => {
+        const c = this.ctxs.get(id);
+        return c ? c.workingMs + (c.workingSince !== null ? this.d.clock.now() - c.workingSince : 0) : 0;
+      },
+      recordTurn: (...a) => this.recordTurn(...a),
+      track: (p) => this.track(p),
+      intake: (chatId, messageId) => this.intakeHook?.(chatId, messageId),
+    };
+    const cost = new CostMeter(core);
+    this.cost = cost;
+    this.stopper = new StopFlow(core);
+    this.steering = new Steer(core, this.stopper);
+    this.watchdog = new Watchdog(core, this.stopper);
+  }
+
+  // ---- T3 entry points (08-2 §5.2, §5.7, §5.10) ----
+
+  /** The runner's branches of onUserMessage (stop, yes-text, steer, fold-which); false → the chat lane's intake turn. */
+  onUserMessage(m: { chatId: string; messageId: string; text: string }): Promise<boolean> {
+    return this.track(this.steering.onUserMessage(m));
+  }
+  /** job.stop (a Stop button: user_button; the stuck card: stuck_stop). */
+  stopJob(jobId: string, reason: StopReason): Promise<StopReport | null> {
+    return this.track(this.stopper.stopJob(jobId, reason));
+  }
+  stopAll(): Promise<StopReport[]> {
+    return this.track(this.stopper.stopAll());
+  }
+  /** settings.changed: a raised AI cap resumes waiting(spend_cap) jobs. */
+  capChanged(): Promise<void> {
+    return this.track(this.cost.resumeCapped());
+  }
+  /** Engine: where a steer judged `new_job` goes (the chat lane's intake, past the runner's branches). */
+  setIntake(fn: (chatId: string, messageId: string) => void): void {
+    this.intakeHook = fn;
+  }
 
   // ---- bookkeeping ----
 
@@ -156,8 +267,11 @@ export class JobRunner {
     if (this.busy === 0 && this.loops.size === 0) return Promise.resolve();
     return new Promise((r) => this.idleWaiters.push(r));
   }
-  /** Aborts every running loop (test teardown; T3 builds the user's stop). */
+  /** Aborts every running loop and timer (test teardown, engine stop). */
   cancelAll(): void {
+    this.watchdog.dispose();
+    this.stopper.dispose();
+    this.cost.dispose();
     for (const c of this.ctxs.values()) {
       c.abort.abort();
       if (c.checklistTimer !== null) this.d.clock.clearTimeout(c.checklistTimer);
@@ -203,7 +317,28 @@ export class JobRunner {
 
   /** The C1 badge of the job's bubble follows the machine (FID-17 "badge = runner state", 08-0 §F). */
   private badgeOp(job: JobRow, to: JobState): DbOp[] {
-    return job.userMessageId ? [{ op: 'update', table: 'messages', id: job.userMessageId, set: { badge: BADGE_OF_STATE[to] } }] : [];
+    const own: DbOp[] = job.userMessageId
+      ? [{ op: 'update', table: 'messages', id: job.userMessageId, set: { badge: BADGE_OF_STATE[to] } }]
+      : [];
+    return [...own, ...this.steering.badgeOps(job.id, BADGE_OF_STATE[to])];
+  }
+
+  private textOp(job: Pick<JobRow, 'chatId' | 'ownerId'> & { id: string | null }, text: string): DbOp {
+    return {
+      op: 'insert',
+      table: 'messages',
+      row: {
+        id: this.d.newId('m'),
+        chat_id: job.chatId,
+        author_kind: job.ownerId ? 'helper' : 'foo',
+        author_id: job.ownerId,
+        kind: 'text',
+        text,
+        status: 'complete',
+        job_id: job.id,
+        created_at: this.d.clock.now(),
+      },
+    };
   }
 
   /** A card message + its cards row (08-1 §4.3.3 insert order). */
@@ -407,6 +542,9 @@ export class JobRunner {
       this.relaunch.add(jobId);
       return;
     }
+    // A loop halted by a stuck card (or a steer) starts again with a fresh signal.
+    const ctx = this.ctxs.get(jobId);
+    if (ctx?.abort.signal.aborted) ctx.abort = new AbortController();
     const p = this.runJob(jobId)
       .catch(async (e: unknown) => {
         this.d.log('job.loop_crashed', 'UNKNOWN', { jobId });
@@ -463,13 +601,14 @@ export class JobRunner {
     if (!job || job.state !== 'working') return;
     c.workingSince = this.d.clock.now();
     this.scheduleChecklist(job, c);
+    this.watchdog.watch(jobId);
     try {
       for (;;) {
         if (c.abort.signal.aborted) return;
         job = await this.job(jobId);
         if (!job || job.state !== 'working') return;
         const turn = await this.stepTurn(job, c);
-        if (c.abort.signal.aborted) return;
+        if (turn.capped || c.abort.signal.aborted) return;
         if (turn.error) {
           await (this.d.hooks?.onAiError ?? ((j: JobRow) => this.fail(j, 'UNKNOWN')))(job, turn.error);
           return;
@@ -480,8 +619,10 @@ export class JobRunner {
         }
         const goOn = await this.apply(job, c, turn.act.decision, turn.turnId);
         if (!goOn) return;
+        if (await this.watchdog.check(jobId)) return;
       }
     } finally {
+      this.watchdog.unwatch(jobId);
       if (c.workingSince !== null) c.workingMs += this.d.clock.now() - c.workingSince;
       c.workingSince = null;
     }
@@ -528,7 +669,7 @@ export class JobRunner {
     await this.tx([{ op: 'update', table: 'jobs', id: job.id, set: { fail_streak: streak } }]);
     if (streak < 3) return false;
     const fresh = (await this.job(job.id)) ?? job;
-    await (this.d.hooks?.onStuck ?? ((j: JobRow) => this.fail(j, 'UNKNOWN')))(fresh, 'fail_streak');
+    await (this.d.hooks?.onStuck ?? ((j: JobRow, rule: StuckRule) => this.watchdog.stuck(j, rule)))(fresh, 'fail_streak');
     return true;
   }
 
@@ -621,11 +762,11 @@ export class JobRunner {
   }
 
   /** WORKING → NEEDS_YOU with its card (SM-A1 badge ⏳); the current step waits on the user; the slot is released. */
-  private async needsYou(job: JobRow, card: NeedsUserCard): Promise<void> {
+  private async needsYou(job: JobRow, card: NeedsUserCard): Promise<string | null> {
     const { cardId, ops } = this.cardOps(job.chatId, card.type, card.state, card.payload, job.id, job.ownerId);
     const steps = await this.steps(job.id);
     const current = steps.find((s) => s.state === 'running');
-    await this.tx([
+    const r = await this.tx([
       ...ops,
       { op: 'transition', table: 'jobs', id: job.id, from: ['working'], to: 'needs_you', set: { needs_you_card_id: cardId } },
       ...(current ? [{ op: 'update', table: 'steps', id: current.id, set: { state: 'waiting_user' } } as DbOp] : []),
@@ -633,6 +774,7 @@ export class JobRunner {
       ...(await this.editChecklistOps(job)),
     ]);
     await this.writeMirrors(job.id);
+    return r.ok ? cardId : null;
   }
 
   // ---- card answers (card.answered) ----
@@ -643,6 +785,11 @@ export class JobRunner {
 
   private async onCardAnsweredInner(a: { cardId: string; choice?: string; text?: string; answer?: unknown; resolvedBy: string }) {
     const card = await this.query<CardRow>('cardById', a.cardId);
+    // T3 cards: stuck (stuck:choose), "Stop which one?" and "Fold this into which job?" (no job of their own).
+    if (card?.type === 'stuck') return this.watchdog.answer(card, a.choice, a.resolvedBy);
+    if (card?.type === 'choice' && card.payload.purpose === 'stop_which') return this.stopper.answerStopWhich(card, a.choice, a.resolvedBy);
+    if (card?.type === 'choice' && card.payload.purpose === 'fold_which')
+      return this.steering.answerFoldWhich(card, a.choice, a.resolvedBy);
     if (!card || card.resolvedAt !== null || !card.jobId) return;
     const job = await this.job(card.jobId);
     if (!job) return;
@@ -861,6 +1008,10 @@ export class JobRunner {
     await this.writeMirrors(jobId);
     this.d.tools.clearJob(jobId);
     this.ctxs.delete(jobId);
+    this.steering.forget(jobId);
+    this.watchdog.forget(jobId);
+    // A slot may have freed for a job paused at the AI cap.
+    void this.cost.resumeCapped();
   }
 
   // ---- G-M4-01 retry: a new linked job; the old one never moves (AT-120) ----
@@ -944,16 +1095,37 @@ export class JobRunner {
       '- none yet',
     ];
     if (c.decisions.length) lines.push('Decisions:', ...c.decisions);
+    const avoid = this.watchdog.avoidList(job.id);
+    if (avoid.length) lines.push(`Avoid: ${avoid.join(', ')}`);
     if (c.lastObservation)
       lines.push(`Last observation (${c.lastObservation.toolCallId}, ${c.lastObservation.tool}):`, c.lastObservation.text);
     return lines.join('\n');
   }
 
-  private async stepTurn(job: JobRow, c: JobCtx): Promise<{ act: StepAct | null; error?: AiErrorKind; turnId: string }> {
+  private async stepTurn(job: JobRow, c: JobCtx): Promise<{ act: StepAct | null; error?: AiErrorKind; turnId: string; capped?: boolean }> {
     const pick = this.d.ai.pick();
     const turnId = this.d.newId('t');
     if (!pick) return { act: null, error: 'AI_SERVICE_DOWN', turnId };
-    const built = this.d.prompts.buildStep(this.jobBlock(job, await this.steps(job.id), c), this.d.tools.catalogue());
+    // 08-2 §5.4.2: drainSteer, then capCheck, then the turn.
+    const steer = await this.steering.drain(job);
+    const built = this.d.prompts.buildStep(this.jobBlock(job, await this.steps(job.id), c), this.d.tools.catalogue(), steer);
+    const maxOut = this.d.ai.turnParams(pick.providerId, 'step').maxOutputTokens;
+    if (!(await this.cost.allowStep(job, built.system.length + built.prompt.length, maxOut))) {
+      await this.steering.settle(job, null, '');
+      return { act: null, turnId, capped: true };
+    }
+    const result = await this.stepTurnInner(job, c, pick, turnId, built);
+    await this.steering.settle(job, result.act, result.say ?? '');
+    return result;
+  }
+
+  private async stepTurnInner(
+    job: JobRow,
+    c: JobCtx,
+    pick: { providerId: ProviderId; billing: 'plan' | 'key' | 'local' },
+    turnId: string,
+    built: { system: string; prompt: string },
+  ): Promise<{ act: StepAct | null; error?: AiErrorKind; turnId: string; say?: string }> {
     const run = async (purpose: 'step' | 'repair', id: string, system: string, prompt: string) => {
       const startedAt = this.d.clock.now();
       const params = this.d.ai.turnParams(pick.providerId, purpose === 'repair' ? 'repair' : 'step');
@@ -973,7 +1145,10 @@ export class JobRunner {
           errorKind: 'UNKNOWN',
         };
       }
-      await this.recordTurn(job, pick, id, purpose, startedAt, r);
+      await this.recordTurn(job, pick, id, purpose, startedAt, r, {
+        tokensIn: Math.ceil((system.length + prompt.length) / 3.5),
+        tokensOut: params.maxOutputTokens,
+      });
       return r;
     };
     const r = await run('step', turnId, built.system, built.prompt);
@@ -984,21 +1159,23 @@ export class JobRunner {
     }
     this.d.ai.reportOk(pick.providerId);
     const parsed = this.d.prompts.parseStep(r.text);
-    if (parsed.act) return { act: parsed.act, turnId };
+    if (parsed.act) return { act: parsed.act, turnId, say: parsed.say ?? '' };
     // 08-2 §7.5: one repair turn in the same session.
     const repair = await run('repair', this.d.newId('t'), built.system, this.d.prompts.buildRepair(parsed.issues ?? ''));
-    const again = repair.stopReason === 'end' ? this.d.prompts.parseStep(repair.text).act : null;
-    if (!again) this.d.log('job.protocol_invalid', 'PROTOCOL_INVALID', { jobId: job.id });
-    return { act: again, turnId };
+    const again = repair.stopReason === 'end' ? this.d.prompts.parseStep(repair.text) : null;
+    if (!again?.act) this.d.log('job.protocol_invalid', 'PROTOCOL_INVALID', { jobId: job.id });
+    return { act: again?.act ?? null, turnId, say: again?.say ?? '' };
   }
 
   private async recordTurn(
     job: JobRow,
     pick: { providerId: ProviderId; billing: 'plan' | 'key' | 'local' },
     turnId: string,
-    purpose: 'step' | 'repair',
+    purpose: 'step' | 'repair' | 'classify',
     startedAt: number,
     r: TurnResult,
+    /** 08-4 §26.3 item 5: unreported usage adds the estimate to spent_tokens_* (the stuck cost rule only). */
+    estimate?: { tokensIn: number; tokensOut: number },
   ): Promise<void> {
     const cost = this.d.ai.costPaise(pick.providerId, r.usage, r.modelReported);
     const outcome =
@@ -1034,8 +1211,8 @@ export class JobRunner {
         table: 'jobs',
         id: job.id,
         set: {
-          spent_tokens_in: fresh.spentTokensIn + (r.usage.tokensIn ?? 0),
-          spent_tokens_out: fresh.spentTokensOut + (r.usage.tokensOut ?? 0),
+          spent_tokens_in: fresh.spentTokensIn + (r.usage.tokensIn ?? estimate?.tokensIn ?? 0),
+          spent_tokens_out: fresh.spentTokensOut + (r.usage.tokensOut ?? estimate?.tokensOut ?? 0),
           spent_cost_paise: fresh.spentCostPaise + (cost.paise ?? 0),
           ...(cost.paise === null ? { cost_unknown: 1 } : {}),
         },
@@ -1058,7 +1235,7 @@ export class JobRunner {
       steps,
       approvals: [],
       payments: [],
-      steerQueue: [],
+      steerQueue: this.steering.queue.pending(jobId),
       estimate: { minutes: job.estMinutes, tokens: job.estTokens, costPaise: job.estCostPaise },
       actual: { tokens: job.spentTokensIn + job.spentTokensOut, costPaise: job.spentCostPaise },
       workingMs,
