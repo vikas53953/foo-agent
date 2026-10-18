@@ -10,6 +10,7 @@
 // §6.4 a quote click jumps and highlights 1600 ms; §14.2 / §14.3 status line and Thinking row; §10.11 the WhatsApp mirror.
 import { observeElementOffset, useVirtualizer } from '@tanstack/react-virtual';
 import { batchScrollAdjustments } from './scrollAdjust';
+import { flushSync } from 'react-dom';
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import { t } from '../../shared/copy/t';
 import { bp, motion } from '../../shared/tokens';
@@ -20,9 +21,9 @@ import { registerFocusTarget } from '../a11y/focusTargets';
 import { useReducedMotion } from '../a11y/useReducedMotion';
 import { CARD_ESTIMATE, titleOfCard } from '../cards/registry';
 import { invoke } from '../ipc/client';
-import { saveScroll, update, useStore } from '../store/index';
+import { saveScroll, useStore } from '../store/index';
 import { selectConnection, selectNow, selectTypingChatId, selectWindowFocused } from '../store/live';
-import { prependMessagesReducer, selectChatMessages, setHighlight, type StoredMessage } from '../store/messages';
+import { prependMessages, selectChatMessages, setHighlight, type StoredMessage } from '../store/messages';
 import { selectAgentName, selectTimeZone } from '../store/settings';
 import { useFind } from '../shell/FindBar';
 import { DateSeparator, StickyDate } from './DateSeparator';
@@ -30,8 +31,9 @@ import { JumpToLatest } from './JumpToLatest';
 import { LoadOlder, StartOfChat } from './LoadOlder';
 import styles from './MessageList.module.css';
 import { REVEAL_EVENT, takeReveal } from './reveal';
-import { MessageView, WaBubble, messageAccessibleName, messagePlainText, runRowCommand, senderOf, type RowCtx } from './Bubble';
+import { MessageView, WaBubble, messageAccessibleName, runRowCommand, senderOf, type RowCtx } from './Bubble';
 import { MessageDialogs } from './MessageDialogs';
+import { FlingRow } from './FlingRow';
 import { RowHotCtx } from './bubbleContext';
 import { RetentionLine, StatusLine, ThinkingRow } from './Markers';
 import { buildRows, buildWaRows, estimateRow, firstUnreadId, type VRow } from './rows';
@@ -51,12 +53,21 @@ export const ANNOUNCE_CHARS = 140;
  * rows are drawn light until the scroll settles (`FlingRow`).
  */
 export const FLING_PX_PER_MS = 4;
+/** A scroll event this soon after the wheel, touch move or key that caused it. */
+const FLING_INPUT_MS = 250;
 /** Below one frame apart, two scroll events are timed as one frame (a jump of a whole wheel arrives as one event). */
 const FRAME_MS = 16;
 
 const remPx = () => parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
 
 type OlderState = 'idle' | 'pending' | 'loading' | 'failed';
+/** The page of older messages fetched ahead (§3.6.4, PERF-04); `ready` once it arrived. */
+interface Ahead {
+  chatId: string;
+  beforeSeq: number | null;
+  rows: Promise<MessageRow[] | null>;
+  ready: MessageRow[] | null;
+}
 
 export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: number } }) {
   const slice = useStore(selectChatMessages(chat.id));
@@ -103,6 +114,12 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   const [fling, setFling] = useState(false);
   const flinging = useRef(false);
   const lastScroll = useRef<{ at: number; offset: number } | null>(null);
+  // Only input that scrolls by itself (wheel, touch moves, keys on the list) starts a fling, and only for the scroll it
+  // causes: a click or a programmatic scroll right after one (a test placing a row, a jump) keeps the full rows.
+  const flingInputAt = useRef(-Infinity);
+  const markFlingInput = () => {
+    flingInputAt.current = performance.now();
+  };
   const flingCheck = (offset: number, isScrolling: boolean) => {
     const at = performance.now();
     const prev = lastScroll.current;
@@ -114,7 +131,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
       }
       return;
     }
-    if (flinging.current || !prev || at - userInputAt.current >= motion['delay-sticky-hide']) return;
+    if (flinging.current || !prev || at - flingInputAt.current >= FLING_INPUT_MS) return;
     if (Math.abs(offset - prev.offset) / Math.max(at - prev.at, FRAME_MS) <= FLING_PX_PER_MS) return;
     flinging.current = true;
     setFling(true);
@@ -127,7 +144,9 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   const isGroup = chat.kind === 'group';
   // The unread divider is fixed when the chat opens and removed when the user sends a message here (§3.6.5).
   const [unreadFrom, setUnreadFrom] = useState<string | null>(() => firstUnreadId(messages, unread.count));
-  const userCount = useRef(messages.filter((m) => m.authorKind === 'user').length);
+  // Counted once here (a useRef argument is evaluated on every render: 5,000 rows per scroll render, PERF-04).
+  const userCount = useRef(-1);
+  if (userCount.current < 0) userCount.current = messages.filter((m) => m.authorKind === 'user').length;
   useEffect(() => {
     const n = messages.filter((m) => m.authorKind === 'user').length;
     if (n > userCount.current) setUnreadFrom(null);
@@ -222,11 +241,14 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   const onVirtualChange = useRef<(total: number) => void>(() => undefined);
   const afterScroll = useRef<() => void>(() => undefined);
   const rem = useMemo(remPx, []);
+  // Stable while the rows are: TanStack Virtual recomputes every row's position from the first whenever this function
+  // changes, which was once per scroll render over all 5,000 rows (PERF-04).
+  const getItemKey = useCallback((i: number) => rows[i]!.key, [rows]);
   const v = useVirtualizer({
     count: rows.length,
     getScrollElement: () => scrollRef.current,
     estimateSize: (i) => estimateRow(rows[i]!, cardType, CARD_ESTIMATE),
-    getItemKey: (i) => rows[i]!.key,
+    getItemKey,
     overscan: 8,
     // PERF-04: row positions and the column height are written straight to the DOM; React re-renders only when the
     // visible range changes, not once per measured row. 'position' (top) keeps rows off their own compositor layers.
@@ -248,6 +270,15 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   // PERF-04: one scroll correction per measurement pass instead of one forced layout per row measured above the fold.
   const sticking = useRef<() => boolean>(() => false);
   useLayoutEffect(() => batchScrollAdjustments(v, () => sticking.current()), [v]);
+  // An older page was just added (its total before is kept here): the visible range of this render is taken at the offset
+  // the prepend anchor (useStickToBottom) moves the view to before the frame paints, not at the old offset, which mounted a
+  // screen of the new page's rows for one render only (PERF-04).
+  const pageFrom = useRef<number | null>(null);
+  if (pageFrom.current !== null) {
+    const inner = v as unknown as { scrollOffset: number | null };
+    if (inner.scrollOffset !== null) inner.scrollOffset += v.getTotalSize() - pageFrom.current;
+    pageFrom.current = null;
+  }
 
   const target = useMemo(
     () => ({
@@ -370,22 +401,70 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     return () => clearTimeout(id);
   }, [chat.unreadCount, chat.id, chat.nextSeq, focused, isWa, rows.length, scrollTick, slice?.lastSeq, v]);
 
+  // §3.6.4: within 600px of the top the previous 50 messages are added. The page after the ones shown is fetched ahead
+  // (kept here, not shown) once the user scrolls, so reaching the 600px line adds it in the same frame instead of after a
+  // round trip: a fast fling could otherwise reach the very top while the page was still on its way (PERF-04).
+  const ahead = useRef<Ahead | null>(null);
+  const adding = useRef<{ a: Ahead | null; timer: ReturnType<typeof setTimeout> | undefined }>({ a: null, timer: undefined });
+  useEffect(() => () => clearTimeout(adding.current.timer), []);
+  const fetchAhead = useCallback((): Ahead | null => {
+    const s = useStore.getState().messages.byChat[chat.id];
+    if (!s?.hasMore) return null;
+    const beforeSeq = s.oldestSeq;
+    const a = ahead.current;
+    if (a && a.chatId === chat.id && a.beforeSeq === beforeSeq) return a;
+    const rows = invoke('message:list', { chatId: chat.id, beforeSeq: beforeSeq ?? undefined, limit: PAGE }).then(
+      (r) => (r.ok ? r.value : null),
+      () => null,
+    );
+    const next: Ahead = { chatId: chat.id, beforeSeq, rows, ready: null };
+    void rows.then((v) => {
+      if (ahead.current === next) next.ready = v;
+    });
+    ahead.current = next;
+    return next;
+  }, [chat.id]);
+
   const loadOlder = useCallback(async () => {
     const s = useStore.getState().messages.byChat[chat.id];
     if (!s?.hasMore) return;
+    const a = fetchAhead();
+    if (!a) return;
+    const take = (rows: MessageRow[]) => {
+      ahead.current = null;
+      pageFrom.current = v.getTotalSize();
+      prependMessages(chat.id, rows, PAGE);
+      setOlder('idle');
+    };
+    const ready = a.ready;
+    if (ready) {
+      // Already here. At the very top it is added now, in this scroll event, so the view never rests at the top while older
+      // messages exist; otherwise in a task of its own right after this frame (a page joins 5,000 rows, and doing that in
+      // the frame that also mounts the newly scrolled-in rows made it a long frame). The anchor holds before either paints.
+      const now = () => {
+        clearTimeout(adding.current.timer);
+        adding.current = { a: null, timer: undefined };
+        if (ahead.current === a) flushSync(() => take(ready));
+      };
+      if ((v.scrollOffset ?? 0) <= 0) now();
+      else if (adding.current.a !== a) adding.current = { a, timer: setTimeout(now, 0) };
+      return;
+    }
     setOlder('pending');
     const slow = setTimeout(() => setOlder((o) => (o === 'pending' ? 'loading' : o)), motion['delay-loading']);
     try {
-      const r = await invoke('message:list', { chatId: chat.id, beforeSeq: s.oldestSeq ?? undefined, limit: PAGE });
-      if (!r.ok) throw new Error(r.error.kind);
-      update((d) => prependMessagesReducer(d.messages, chat.id, r.value, PAGE));
-      setOlder('idle');
+      const rows = await a.rows;
+      if (!rows) {
+        ahead.current = null;
+        throw new Error('message:list');
+      }
+      take(rows);
     } catch {
       setOlder('failed');
     } finally {
       clearTimeout(slow);
     }
-  }, [chat.id]);
+  }, [chat.id, fetchAhead, v]);
 
   const dayLabels = useMemo(() => {
     let label = '';
@@ -414,6 +493,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     if (chat.unreadCount > 0) setScrollTick((n) => (n + 1) % 1024);
     setJumpShown(showJump(m));
     if (nearTop(m.scrollTop) && older === 'idle' && slice?.hasMore) void loadOlder();
+    else if (byUser && older === 'idle' && slice?.hasMore) fetchAhead();
     const firstVisible = v.getVirtualItems().find((i) => i.end > m.scrollTop + rem);
     const label = firstVisible ? dayLabels[firstVisible.index] : '';
     if (label && m.scrollTop > 0 && byUser) {
@@ -561,11 +641,16 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
         aria-label={t('thread.log.label', { name: chat.title })}
         tabIndex={0}
         data-testid={TID.threadLog}
-        onWheel={markUserInput}
+        onWheel={() => {
+          markUserInput();
+          markFlingInput();
+        }}
         onPointerDown={markUserInput}
         onTouchStart={markUserInput}
+        onTouchMove={markFlingInput}
         onKeyDown={(e) => {
           markUserInput();
+          markFlingInput();
           onKeyDown(e);
         }}
         onFocus={(e) => {
@@ -586,7 +671,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
                   size={item.size}
                   m={r.message}
                   layout={layouts[item.index]!}
-                  cards={cards}
+                  ctx={ctx}
                 />
               );
             return (
@@ -659,43 +744,6 @@ const RowFrame = memo(function RowFrame({
     </div>
   );
 });
-
-/**
- * PERF-04: a message row while the user flings the list: the bubble's or card's box at the row's known (measured, else
- * estimated) height, its colours and its plain text, with no meta, badges, chips, markdown, media or toolbar, and nothing
- * measured. Mounting a screen of full rows per wheel was the long frame; at rest every row is the full row again.
- */
-const FlingRow = memo(function FlingRow({
-  index,
-  start,
-  size,
-  m,
-  layout,
-  cards,
-}: {
-  index: number;
-  start: number;
-  size: number;
-  m: MessageRow;
-  layout: RowLayout;
-  cards: Record<string, CardRow>;
-}) {
-  const side = m.kind === 'card' ? 'card' : m.authorKind === 'user' ? 'me' : 'them';
-  const text = m.kind === 'marker' ? m.text : flingText(m, cards);
-  return (
-    <div data-index={index} className={styles.row} role="listitem" style={{ top: start, height: size }}>
-      <div className={styles.fling} data-side={side} data-gap={layout.gap} data-marker={m.kind === 'marker' || undefined}>
-        <div className={styles.flingBox} data-deleted={m.deletedAt !== null || undefined}>
-          {text}
-        </div>
-      </div>
-    </div>
-  );
-});
-
-/** Enough plain text to fill any row's box (the box clips it). */
-const FLING_CHARS = 600;
-const flingText = (m: MessageRow, cards: Record<string, CardRow>) => messagePlainText(m, cards).slice(0, FLING_CHARS);
 
 function Row({
   row,

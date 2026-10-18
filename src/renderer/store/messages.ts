@@ -5,7 +5,7 @@
 // 04 §6 (reply, edit, delete), §7 (Not sent → Try again), §8 (one reaction per person per bubble; picking another replaces
 // it), §9.1 (keep a voice note), §10.5 / §13.1 / §13.2 / §15 (expanding is permanent for that message), §17 (👍/👎 state).
 // The composer (builder B) calls insertOptimistic / confirmSent / failSend and reads `composer[chatId]` requests.
-import { isDraft, original } from 'immer';
+import { freeze, isDraft, original } from 'immer';
 import type { BadgeValue, DraftRow, MessageRow, WaMessageRow } from '../../shared/types';
 import { invoke } from '../ipc/client';
 import { acceptRev } from './chats';
@@ -111,6 +111,30 @@ export function prependMessagesReducer(s: MessagesState, chatId: string, rows: M
   sortIds(c);
   if (rows.length) c.oldestSeq = Math.min(c.oldestSeq ?? Infinity, ...rows.map((m) => m.seq));
   c.hasMore = rows.length >= pageSize;
+}
+
+/**
+ * The chat after an older page, built from plain objects (no draft): the same result as `prependMessagesReducer`. A 5,000-row
+ * chat made Immer copy, finalise and freeze the whole chat on every page through a draft (PERF-04).
+ */
+export function withOlderPage(c: ChatMessages | undefined, rows: MessageRow[], pageSize: number): ChatMessages {
+  const base = c ?? emptyChat();
+  const added = rows.filter((m, i) => !base.byId[m.id] && rows.findIndex((r) => r.id === m.id) === i);
+  const byId = added.length ? { ...base.byId } : base.byId;
+  for (const m of added) byId[m.id] = m;
+  const seq = (id: string) => byId[id]?.seq ?? 0;
+  const ids = added.length ? [...base.ids, ...added.map((m) => m.id)].sort((a, b) => seq(a) - seq(b)) : base.ids;
+  const oldestSeq = rows.length ? Math.min(base.oldestSeq ?? Infinity, ...rows.map((m) => m.seq)) : base.oldestSeq;
+  return { ...base, ids, byId, oldestSeq, hasMore: rows.length >= pageSize };
+}
+
+/** message:list (older page) into the store: `withOlderPage` set as a new state object, not through an Immer draft. */
+export function prependMessages(chatId: string, rows: MessageRow[], pageSize: number): void {
+  const messages = useStore.getState().messages;
+  // Frozen as Immer would leave it (deep; the rows already in the store are frozen and skipped), so the next Immer update
+  // does not freeze the whole chat itself.
+  const byChat = freeze({ ...messages.byChat, [chatId]: freeze(withOlderPage(messages.byChat[chatId], rows, pageSize), true) });
+  useStore.setState({ messages: freeze({ ...messages, byChat }) });
 }
 
 function rekey(c: ChatMessages, from: string, to: string): void {

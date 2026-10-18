@@ -3,7 +3,7 @@
 // §1.6 (the composer's optimistic row and its re-key when main stores it), §8 (one reaction per person: the toggle rule).
 import { describe, expect, it } from 'vitest';
 // The store module first: messages.ts and index.ts import each other, and index builds the initial state on load.
-import '../../src/renderer/store/index';
+import { update, useStore } from '../../src/renderer/store/index';
 import {
   applyDeltaReducer,
   confirmSentReducer,
@@ -12,6 +12,8 @@ import {
   insertOptimisticReducer,
   loadMessagesReducer,
   localId,
+  prependMessages,
+  prependMessagesReducer,
   reactionChange,
   setBadgeReducer,
   upsertMessageReducer,
@@ -90,6 +92,32 @@ describe('the optimistic seam (builder B)', () => {
     expect(s.byChat.c_1!.byId[localId('cl_3')]!.status).toBe('failed');
     loadMessagesReducer(s, 'c_1', [msg({ id: 'm_1', seq: 1 })], 50);
     expect(s.byChat.c_1!.ids).toContain(localId('cl_3'));
+  });
+});
+
+describe('older pages (03-shell-2 §3.6.4)', () => {
+  const page = (from: number, n: number) => Array.from({ length: n }, (_, i) => msg({ id: `m_${from + i}`, seq: from + i }));
+  it('prependMessages (plain objects) gives the same chat as the Immer reducer, frozen, and keeps rows already loaded', () => {
+    const s = initialMessages();
+    loadMessagesReducer(s, 'c_1', page(51, 50), 50);
+    prependMessagesReducer(s, 'c_1', [...page(1, 50), msg({ id: 'm_51', seq: 51, text: 'dup' })], 50);
+    update((d) => {
+      loadMessagesReducer(d.messages, 'c_1', page(51, 50), 50);
+    });
+    prependMessages('c_1', [...page(1, 50), msg({ id: 'm_51', seq: 51, text: 'dup' })], 50);
+    const c = useStore.getState().messages.byChat['c_1']!;
+    expect(c.ids).toEqual(s.byChat['c_1']!.ids);
+    expect(c.ids[0]).toBe('m_1');
+    expect(c.byId['m_51']!.text).toBe('hi');
+    expect(c.oldestSeq).toBe(1);
+    expect(c.hasMore).toBe(true);
+    expect(Object.isFrozen(c) && Object.isFrozen(c.ids) && Object.isFrozen(c.byId['m_1'])).toBe(true);
+    // A later Immer update still works on it.
+    update((d) => {
+      prependMessagesReducer(d.messages, 'c_1', [msg({ id: 'm_0', seq: 0 })], 50);
+    });
+    expect(useStore.getState().messages.byChat['c_1']!.ids.slice(0, 2)).toEqual(['m_0', 'm_1']);
+    expect(useStore.getState().messages.byChat['c_1']!.hasMore).toBe(false);
   });
 });
 

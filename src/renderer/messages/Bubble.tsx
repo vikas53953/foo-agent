@@ -120,6 +120,20 @@ const waOf = perText(parseWhatsApp);
 const plainOf = perText((text) => plainText(blocksOf(text)));
 const waPlainOf = perText((text) => inlineText(waOf(text)));
 const emojiOf = perText(emojiOnly);
+const langOf = perText(scriptLang);
+const richOf = perText((text) => isRich(text, blocksOf(text)));
+
+/**
+ * PERF-04 `FlingRow`: what a light row needs of a message, from the same per-text caches as the full bubble: its plain text
+ * (markdown as plain runs), whether it takes the rich width (§12) and its script for `lang` (§2, §13).
+ */
+export function lightFacts(m: MessageRow, cards: Record<string, CardRow>): { text: string; rich: boolean; lang?: 'hi' | 'pa' } {
+  const text = messagePlainText(m, cards);
+  if (m.kind !== 'text' || m.deletedAt !== null) return { text, rich: false };
+  if (m.authorKind === 'user')
+    return { text, rich: false, lang: (m.lang === 'hi' || m.lang === 'pa' ? m.lang : undefined) ?? langOf(m.text) };
+  return { text, rich: richOf(m.text), lang: langOf(m.text) };
+}
 
 /** The plain text of a row: what Copy copies and what the accessible name reads (§1.9, 02-3 §F30.4). */
 export function messagePlainText(m: MessageRow, cards: Record<string, CardRow>): string {
@@ -132,10 +146,12 @@ export function messagePlainText(m: MessageRow, cards: Record<string, CardRow>):
 }
 
 const names = new WeakMap<StoredMessage, { ctx: RowCtx; name: string }>();
+/** The context fields a name reads (a new page of history changes `byId` only, which no name reads). */
+const NAME_CTX = ['agentName', 'fooFace', 'helpers', 'timeZone', 'now', 'offline', 'aiDown', 'jobs', 'cards'] as const;
 /** Kept per message object and list context (both immutable), so a row scrolled back into view does not rebuild it. */
 export function messageAccessibleName(m: StoredMessage, ctx: RowCtx): string {
   const hit = names.get(m);
-  if (hit?.ctx === ctx) return hit.name;
+  if (hit && (hit.ctx === ctx || NAME_CTX.every((k) => hit.ctx[k] === ctx[k]))) return hit.name;
   const name = accessibleName(m, ctx);
   names.set(m, { ctx, name });
   return name;
@@ -446,7 +462,7 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
 
 // ---------------------------------------------------------------- bodies
 
-function cornerAttrs(layout: RowLayout | null, side: 'me' | 'them') {
+export function cornerAttrs(layout: RowLayout | null, side: 'me' | 'them') {
   const [tl, tr, br, bl] = tailCorners(layout?.pos ?? 'single', side);
   return { 'data-tl': tl || undefined, 'data-tr': tr || undefined, 'data-br': br || undefined, 'data-bl': bl || undefined };
 }

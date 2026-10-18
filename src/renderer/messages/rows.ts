@@ -43,6 +43,16 @@ export function dayKey(at: number, timeZone: string): string {
 const DAY_KEYS_MAX = 20_000;
 const dayKeys = new Map<string, string>();
 
+/** A message's day key, kept on the message object (buildRows runs over every loaded message on each page of history). */
+const messageDays = new WeakMap<MessageRow, { timeZone: string; key: string }>();
+function messageDay(m: MessageRow, timeZone: string): string {
+  const hit = messageDays.get(m);
+  if (hit?.timeZone === timeZone) return hit.key;
+  const key = dayKey(m.createdAt, timeZone);
+  messageDays.set(m, { timeZone, key });
+  return key;
+}
+
 export function dateLabel(at: number, o: DateOpts): string {
   const date = formatDate(at, 'date', o);
   const k = dayKey(at, o.timeZone);
@@ -83,7 +93,7 @@ export function buildRows(messages: MessageRow[], o: BuildOpts): VRow[] {
   let lastDay = '';
   for (const m of messages) {
     if (m === startMarker) continue;
-    const k = dayKey(m.createdAt, o.timeZone);
+    const k = messageDay(m, o.timeZone);
     if (k !== lastDay) {
       rows.push({ kind: 'date', key: `date-${k}`, label: dateLabel(m.createdAt, o), dayKey: k });
       lastDay = k;

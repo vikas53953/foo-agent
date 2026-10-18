@@ -57,66 +57,42 @@
     transition: none;
   }
 }
-/* PERF-04: a message row while the user flings the list (MessageList FlingRow). The box, colours and plain text of the
- * bubble (04 §1.2 gaps, §1.4 --r-bubble, §2 / §3 colours, 72 % capped at --bubble-max) or card (--card-w, --r-lg,
- * --bg-raised, 1px --line), clipped to the row's known height; no meta, badges, chips, markdown, media or toolbar. */
-.fling {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+/* PERF-04, CR-0006: a light row while the user flings the list (FlingRow.tsx) is clipped to the row's known height. Bubbles
+ * use Bubble.module.css; a card is its box (--card-w, --r-lg, --bg-raised, 1px --line, 04 §19.7 gap) with its title, a
+ * marker its centred --t-caption --fg-3 line (§19.5). */
+.row[data-light] {
+  overflow: hidden;
+  contain: strict;
+}
+.lightCard,
+.lightMarker {
   height: 100%;
-  overflow: hidden;
 }
-.fling[data-side='me'] {
-  align-items: flex-end;
+.lightMarker {
+  font: var(--t-caption);
+  color: var(--fg-3);
+  text-align: center;
 }
-.fling[data-gap='s-1'] {
-  padding-top: var(--s-1);
-}
-.fling[data-gap='s0'] {
-  padding-top: var(--s0);
-}
-.fling[data-gap='s2'] {
-  padding-top: var(--s2);
-}
-.fling[data-gap='s3'] {
-  padding-top: var(--s3);
-}
-.flingBox {
-  flex: 1 1 auto;
-  min-height: 0;
-  min-width: calc(var(--s9) + var(--s5));
-  max-width: min(72%, var(--bubble-max));
-  padding: var(--s1) var(--s2);
-  overflow: hidden;
-  border-radius: var(--r-bubble);
-  background: var(--bubble-foo);
-  color: var(--on-bubble-foo);
-  font: var(--t-body);
-  white-space: pre-line;
-  overflow-wrap: anywhere;
-}
-.fling[data-side='me'] > .flingBox {
-  background: var(--bubble-me);
-  color: var(--on-bubble-me);
-}
-.fling[data-side='card'] > .flingBox {
+.lightCardBox {
+  box-sizing: border-box;
   width: min(var(--card-w), 100%);
-  max-width: 100%;
+  height: 100%;
   padding: var(--s2) calc(var(--s2) + var(--s-1));
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
   background: var(--bg-raised);
   color: var(--fg-1);
+  font: var(--t-body);
 }
-.fling[data-marker] {
-  align-items: center;
+.lightCard[data-gap='s0'],
+.lightMarker[data-gap='s0'] {
+  padding-top: var(--s0);
 }
-.fling[data-marker] > .flingBox,
-.flingBox[data-deleted] {
-  background: transparent;
-  color: var(--fg-3);
+.lightCard[data-gap='s2'],
+.lightMarker[data-gap='s2'] {
+  padding-top: var(--s2);
 }
-.fling[data-marker] > .flingBox {
-  font: var(--t-caption);
+.lightCard[data-gap='s3'],
+.lightMarker[data-gap='s3'] {
+  padding-top: var(--s3);
 }
