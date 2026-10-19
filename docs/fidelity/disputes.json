@@ -22,10 +22,7 @@
         "BP-ANAT-KNOW",
         "BP-ANAT-SPENT"
       ],
-      "checks": [
-        "r1",
-        "r2"
-      ]
+      "checks": ["r1", "r2"]
     },
     {
       "cr": "CR-0003",
@@ -44,113 +41,52 @@
         "BP-COMP-08",
         "BP-COMP-09"
       ],
-      "checks": [
-        "r1",
-        "r2"
-      ]
+      "checks": ["r1", "r2"]
     },
     {
       "cr": "CR-0003",
-      "ids": [
-        "UX-08-07",
-        "UX-09-08"
-      ],
-      "checks": [
-        "r1",
-        "r2"
-      ]
+      "ids": ["UX-08-07", "UX-09-08"],
+      "checks": ["r1", "r2"]
     },
     {
       "cr": "CR-0003",
-      "ids": [
-        "UX-08-01",
-        "UX-08-02",
-        "UX-08-03",
-        "UX-08-04",
-        "UX-08-05",
-        "UX-08-06",
-        "UX-09-01"
-      ],
-      "checks": [
-        "r1"
-      ]
+      "ids": ["UX-08-01", "UX-08-02", "UX-08-03", "UX-08-04", "UX-08-05", "UX-08-06", "UX-09-01"],
+      "checks": ["r1"]
     },
     {
       "cr": "CR-0004",
-      "ids": [
-        "UX-08-01",
-        "UX-08-06",
-        "UX-09-01"
-      ],
-      "checks": [
-        "r2",
-        "r3",
-        "r4"
-      ]
+      "ids": ["UX-08-01", "UX-08-06", "UX-09-01"],
+      "checks": ["r2", "r3", "r4"]
     },
     {
       "cr": "CR-0004",
-      "ids": [
-        "UX-08-03",
-        "UX-08-04",
-        "UX-08-05"
-      ],
-      "checks": [
-        "r2"
-      ]
+      "ids": ["UX-08-03", "UX-08-04", "UX-08-05"],
+      "checks": ["r2"]
     },
     {
       "cr": "CR-0004",
-      "ids": [
-        "BP-MSG-01"
-      ],
-      "checks": [
-        "r3"
-      ]
+      "ids": ["BP-MSG-01"],
+      "checks": ["r3"]
     },
     {
       "cr": "CR-0004",
-      "ids": [
-        "UX-09-08"
-      ],
-      "checks": [
-        "r3",
-        "r4"
-      ]
+      "ids": ["UX-09-08"],
+      "checks": ["r3", "r4"]
     },
     {
       "cr": "CR-0002",
-      "ids": [
-        "UX-08-02"
-      ],
-      "checks": [
-        "r4"
-      ]
+      "ids": ["UX-08-02"],
+      "checks": ["r4"]
     },
     {
       "cr": "CR-0008",
-      "ids": [
-        "BP-CARD-02",
-        "BP-CARD-12",
-        "BP-CARD-15",
-        "BP-CARD-18",
-        "BP-CARD-19",
-        "BP-CARD-20"
-      ],
-      "checks": [
-        "r1",
-        "r2"
-      ]
+      "ids": ["BP-CARD-02", "BP-CARD-12", "BP-CARD-15", "BP-CARD-18", "BP-CARD-19", "BP-CARD-20"],
+      "checks": ["r1", "r2"]
     },
     {
       "cr": "CR-0008",
-      "ids": [
-        "BP-CARD-15",
-        "BP-CARD-19"
-      ],
-      "checks": [
-        "r3"
-      ]
+      "ids": ["BP-CARD-15", "BP-CARD-19"],
+      "checks": ["r3"]
     }
   ]
 }

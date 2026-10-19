@@ -130,12 +130,12 @@ The M4 card captures (BP-CARD-02/12/15/18/19/20, `golden/manifest.json`) run in 
 and R2, and BP-CARD-15 and BP-CARD-19 on R3; R4 passed on all six. The app follows the written spec and the `ux-world`
 seed (11-fidelity §11.2.3: state comes from the seed, never bent to match a picture), as in CR-0003 §(b).
 
-| #   | Ref(s)               | Drawing shows                                                        | App and spec                                                                                  | Spec               |
-| --- | -------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------ |
-| 1   | all six              | Card words from the Blueprint gallery's own example jobs              | Card words from the `ux-world` seed's card rows (R1 counts every word)                         | §11.2.3            |
-| 2   | all six              | 350px mini panels                                                    | Cards at their spec width (up to 440px) inside the real column (R2 size)                        | 05-1 §0.2; CR-0003 §(b)1 |
-| 3   | BP-CARD-15           | Proof bubble plus chips; R3 samples the bubble                        | The capture is the proof chip only (186×24, measured; bg `--ok-soft`); the centre sample lands on an anti-aliased pixel of the `--ok` chip text | 05-3 §5.15         |
-| 4   | BP-CARD-19           | Error card filled pink                                               | `--bg-raised` card with a 1.5px `--bad` / `--warn` top edge                                            | 05-3 §5.20.1       |
+| #   | Ref(s)     | Drawing shows                                            | App and spec                                                                                                                                    | Spec                     |
+| --- | ---------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| 1   | all six    | Card words from the Blueprint gallery's own example jobs | Card words from the `ux-world` seed's card rows (R1 counts every word)                                                                          | §11.2.3                  |
+| 2   | all six    | 350px mini panels                                        | Cards at their spec width (up to 440px) inside the real column (R2 size)                                                                        | 05-1 §0.2; CR-0003 §(b)1 |
+| 3   | BP-CARD-15 | Proof bubble plus chips; R3 samples the bubble           | The capture is the proof chip only (186×24, measured; bg `--ok-soft`); the centre sample lands on an anti-aliased pixel of the `--ok` chip text | 05-3 §5.15               |
+| 4   | BP-CARD-19 | Error card filled pink                                   | `--bg-raised` card with a 1.5px `--bad` / `--warn` top edge                                                                                     | 05-3 §5.20.1             |
 
 Disputed checks (`docs/fidelity/disputes.json`): `{cr: "CR-0008", ids: [the six], checks: ["r1", "r2"]}` and
 `{cr: "CR-0008", ids: ["BP-CARD-15", "BP-CARD-19"], checks: ["r3"]}`, until the spec keeper redraws the gallery. Every
