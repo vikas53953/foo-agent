@@ -61,7 +61,7 @@ import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
 import { isTrustedUrl } from '../windows/protocol';
 import { logEvent } from '../log/techLog';
-import { answerIpc } from '../cards/answerIpc';
+import { answerIpc, cardReaction } from '../cards/answerIpc';
 import { approvalIpc } from '../approvals/approvalIpc';
 import { draftIpc } from '../drafts/draftIpc';
 import { secretIpc } from '../vault/secretIpc';
@@ -392,7 +392,12 @@ export function registerIpc(ctx: AppContext): void {
     return ok(r.row);
   };
   const asVoid = (r: Result<MessageRow>): Result<void> => (r.ok ? ok(undefined) : r);
-  handle('message:react', ({ messageId: id, emoji: e, on }) => asVoid(written(reactMessage(db, id, e, on, now()))));
+  handle('message:react', ({ messageId: id, emoji: e, on }) => {
+    const r = asVoid(written(reactMessage(db, id, e, on, now())));
+    // M5 (T5): a reaction on a card's bubble may answer a Choice card or get the G16 line (08-4 §26.6 rule 4, 08-2 §5.2.2).
+    if (r.ok && on) cardReaction(ctx, id, e);
+    return r;
+  });
   handle('message:pin', ({ messageId: id, on }) => asVoid(written(pinMessage(db, id, on))));
   handle('message:edit', ({ messageId: id, text }) => {
     // Art. 8 / R1: the edit is re-checked like message:send (askedForCode from the chat's recent messages).
