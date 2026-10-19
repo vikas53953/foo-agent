@@ -230,6 +230,14 @@ batch independent review (Fable) checks them before the milestone PR; until then
   `[ Show me the email ]` after the injection line (§9.4.3) are not drawn: a text message has no button in the model
   (08-1 messages DDL, 05-1 bubbles), so the lines post without them. Needs a spec call (a message action, or a small card
   kind) for the spec-keeper.
+- **G-M5-38** (lead, close-out copy pass) The `{row}` slot of 08-0 §G.3 "I'm not allowed to {row}." and the `{action}` /
+  `{verb}` slots of the read-only offer (08-2 §9.4, "Want me to {action}?" · "Yes, {verb}") get words through copy keys,
+  never the settings key or class id: `thread.permission.row.{read,drafts,calendar,send,book,pay,post,delete,share}`
+  ("look things up", "write drafts", "add to your calendar", "send messages", "book things", "pay for things", "post for
+  you", "delete things", "share your details"), `thread.permission.row.use_app` "use {app}", and
+  `cards.choice.offer_action.*` ("book one" as J9 draws it, "send it", …, "add it to your calendar", "fill that in") with
+  `cards.choice.offer_verb.{calendar_write,prepare}` ("add it", "fill it in"). The spec gives no row phrasing; the M13
+  Permissions page labels win if they differ. Pending review.
 
 ### Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`)
 
