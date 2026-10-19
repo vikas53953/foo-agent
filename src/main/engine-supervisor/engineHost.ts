@@ -198,10 +198,16 @@ function checkColumns(cols: string[], allowed: readonly string[] | undefined): v
   for (const c of cols) if (!allowed.includes(c)) throw new DbOpError('DB_NOT_WRITABLE', `${c} is not writable`);
 }
 
-function redactLeaves(v: unknown): unknown {
+// M5 T10: in a card payload, the row ids foo made (`jobId`, `jobIds`, `stepId` …) are not user text. A uuid-like id now
+// and then passed P17's entropy line and was stored as "••••", so the Checklist and the runner lost their job (PERF-08).
+// Tool-call args and results keep every leaf redacted: there an `accountId` can be the user's own.
+const ID_KEY = /^(?:id|ids|[a-z][A-Za-z]*Ids?)$/u;
+
+function redactLeaves(v: unknown, keepIds = false, key?: string): unknown {
+  if (keepIds && key !== undefined && ID_KEY.test(key)) return v;
   if (typeof v === 'string') return redactSecrets(v).text;
-  if (Array.isArray(v)) return v.map(redactLeaves);
-  if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, redactLeaves(x)]));
+  if (Array.isArray(v)) return v.map((x) => redactLeaves(x, keepIds));
+  if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, redactLeaves(x, keepIds, k)]));
   return v;
 }
 
@@ -219,7 +225,7 @@ function normalise(table: string, row: Record<string, unknown>): Record<string, 
           throw new DbOpError('VALIDATION', `${table}.${k} is not JSON`);
         }
       }
-      if (REDACT_JSON[table]?.includes(k)) parsed = redactLeaves(parsed);
+      if (REDACT_JSON[table]?.includes(k)) parsed = redactLeaves(parsed, table === 'cards');
       x = JSON.stringify(parsed);
     }
     if (typeof x === 'boolean') x = x ? 1 : 0;
