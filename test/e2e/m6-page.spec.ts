@@ -5,6 +5,8 @@
 import { expect, test, type Page } from '@playwright/test';
 import { t } from '../../src/shared/copy/t';
 import { TID } from '../../src/shared/testids';
+import { openWorld, windowSize } from '../fidelity/capture';
+import { launchWithFakeAi, VERIFY_OK } from './fakeAi';
 import { openPanelChat, startWorld } from './m4-start';
 
 // "You said · 2 Oct", "I guessed · from your chats · 2 Oct", "From Gmail · 9 Oct", optionally " · Private" (06-2 §7.3), or "Only in {chat}"
@@ -98,5 +100,51 @@ test('C-4: Forget everything stays disabled until FORGET is typed exactly; Ctrl+
   await expect(primary).toBeEnabled();
   await c4.getByTestId(TID.dialogSecondary).click();
   await expect(c4).toHaveCount(0);
+  await app.close();
+});
+
+test('Forget + Undo, C-3 confirm and C-4 FORGET run against the memory store', async () => {
+  const { app } = await launchWithFakeAi([VERIFY_OK]);
+  const page = await app.firstWindow();
+  await openWorld(app, page);
+  await windowSize(app, page, 1440, 900);
+  await openFromMenu(page);
+  const screen = page.getByTestId(TID.screenMemory);
+  const rows = page.getByTestId(TID.memoryRow);
+  const all = await rows.count();
+
+  // Forget one row: it leaves at once and the 48px undo bar says so; Undo brings it back
+  const first = rows.first();
+  const id = (await first.getAttribute('data-row-id'))!;
+  const text = (await first.innerText()).split('\n')[0]!;
+  await first.getByTestId(TID.memoryRowForget).click();
+  const bar = page.getByTestId(TID.appUndo);
+  await expect(bar).toContainText(t('screen.memory.undo.text', { fact: text }));
+  await expect(bar).toHaveCSS('height', '48px');
+  await expect(page.locator(`[data-testid="${TID.memoryRow}"][data-row-id="${id}"]`)).toHaveCount(0);
+  await bar.getByTestId(TID.appUndoAction).click();
+  await expect(rows).toHaveCount(all);
+
+  // C-3 from chats: confirm forgets every fact learned from chats
+  await page.getByTestId(TID.memoryMenu).click();
+  await page.getByRole('menuitem', { name: t('screen.memory.menu.forget_chats') }).click();
+  await page.getByTestId(TID.dialogC03).getByTestId(TID.dialogPrimary).click();
+  await expect(page.getByTestId(TID.dialogC03)).toHaveCount(0);
+  await expect(rows).toHaveCount(0);
+  // it is gone from the store, not only from the page: a reload reads memory:list again
+  await page.reload();
+  await page.getByTestId(TID.sidebarMore).click();
+  await page.getByTestId(TID.sidebarMenuMemory).click();
+  await expect(screen).not.toHaveAttribute('data-state', 'loading');
+  await expect(rows).toHaveCount(0);
+
+  // C-4: typed FORGET, then the forgotten-all state
+  await page.getByTestId(TID.memoryMenu).click();
+  await page.getByRole('menuitem', { name: t('screen.memory.menu.forget_all'), exact: true }).click();
+  const c4 = page.getByTestId(TID.dialogC04);
+  await c4.getByTestId(TID.dialogConfirmField).fill('FORGET');
+  await c4.getByTestId(TID.dialogPrimary).click();
+  await expect(c4).toHaveCount(0);
+  await expect(screen).toContainText(t('screen.memory.forgotten.title'));
   await app.close();
 });
