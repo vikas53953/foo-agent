@@ -45,7 +45,8 @@ export class ConnectorHooks {
 
   /** Any listener already handled this message. */
   async seen(messageId: string): Promise<boolean> {
-    for (const l of [...this.email, ...this.brief]) if (await l.seen?.(messageId)) return true;
+    // A listener whose check throws counts as not seen, so one broken listener never stalls the poller's re-baseline.
+    for (const l of [...this.email, ...this.brief]) if (await seenBy(l, messageId)) return true;
     return false;
   }
 
@@ -62,5 +63,14 @@ async function settle(run: () => void | Promise<void>): Promise<void> {
     await run();
   } catch {
     // one listener failing never stops the others
+  }
+}
+
+/** One listener's `seen`; a sync throw or a rejection reads as false. */
+async function seenBy(l: Dedupe, messageId: string): Promise<boolean> {
+  try {
+    return (await l.seen?.(messageId)) === true;
+  } catch {
+    return false;
   }
 }

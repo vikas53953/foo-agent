@@ -193,6 +193,23 @@ describe('08-3 §16.1.3 · Gmail poller', () => {
     expect(got).toEqual(['email:m1', 'brief:m1']);
   });
 
+  it("a listener's seen() that throws reads as not seen; the re-baseline still saves", async () => {
+    const t = setup();
+    await drive(t.poller.baseline(), t.clock);
+    t.arrive('s1');
+    t.state.oldestHistoryId = 150;
+    const hooks = (t.poller as unknown as { d: { hooks: ConnectorHooks } }).d.hooks;
+    hooks.addBriefSource({
+      collect: () => undefined,
+      seen: () => {
+        throw new Error('broken');
+      },
+    });
+    await drive(t.poller.pollOnce(), t.clock);
+    expect(t.onEmail.map((m) => m.messageId)).toEqual(['s1']);
+    expect(t.saved()).toBe('101');
+  });
+
   it('a poll that fails keeps the saved historyId and emits nothing', async () => {
     const t = setup();
     await drive(t.poller.baseline(), t.clock);

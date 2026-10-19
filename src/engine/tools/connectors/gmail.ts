@@ -288,7 +288,7 @@ export class GmailPoller {
     const ids = await this.d.gmail.list({ q: 'newer_than:1d', labelIds: 'INBOX', maxResults: REBASELINE_MAX });
     await this.emitNew(ids.reverse(), true);
     if (historyId) await this.d.store.save(historyId);
-    this.emitted.clear();
+    // Kept until the next regular poll saves: mail arriving between profile() and list() comes back in that history.
   }
 
   private async emitNew(ids: string[], checkHooks: boolean): Promise<void> {
