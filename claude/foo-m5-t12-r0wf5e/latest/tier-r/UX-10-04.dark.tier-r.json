@@ -403,7 +403,7 @@
         "early",
         "9:41",
         "AM",
-        "🛠",
+        "⏳",
         "Checking",
         "airlines",
         "live",
@@ -559,8 +559,8 @@
     "total": 21120
   },
   "r5": {
-    "ratio": 0.116294921875,
-    "diffPixels": 119086,
+    "ratio": 0.116287109375,
+    "diffPixels": 119078,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-04.dark.diff.png"
