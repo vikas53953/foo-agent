@@ -270,6 +270,13 @@ himself.
   real gap: `cards.choice.offer_action.*` ("book one" as J9 draws it, "send it", …, "add it to your calendar", "fill
   that in") and `cards.choice.offer_verb.{calendar_write,prepare}` ("add it", "fill it in"). Independent review
   APPROVE-WITH-NOTE (row words aligned to 06-screens-2 as asked); approved on Vikas's behalf.
+- **G-M5-40** (T15) 05-1 §0.7 card arrival ("{sender} sent {card name}: {title}", gated cards add ", needs you") is
+  built for the card types that have a `cards.<type>.card_name` key in M5 (choice, tiles, approval, draft, secret); every
+  other type keeps the 04 §1.8 row line until its milestone lands its name key (no new words in M5). The Draft `{title}`
+  is the tail of its card label "{Email} to {name}" (05-2 §5.7.4); ", needs you" goes on Approval / Payment in PENDING or
+  HELD only. `card:approve` keeps the picked scope in `cards.answer` so the expanded view can say "· {scope}". The
+  read-only expanded view (05-1 §0.5) opens on APPROVED, RUNNING and COMPLETED Approval cards and on sent Drafts; FAILED
+  keeps its plain summary. Pending review.
 
 ### Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`)
 

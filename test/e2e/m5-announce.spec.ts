@@ -137,6 +137,16 @@ test('05-2 §5.5.4 the approved summary expands to the card plus "Approved by yo
   await expect(card).not.toContainText(line);
 });
 
+test('05-2 §5.5.4 a FAILED card the user had approved keeps its plain summary: no expand toggle, no decision line', async () => {
+  const { card } = await seed(
+    { ...BOOK, state: 'FAILED', answer: { optionId: 'approve', scope: 'once' }, approval: { ...BOOK.approval!, state: 'FAILED' } },
+    TID.cardApproval,
+  );
+  await expect(card).toHaveAttribute('data-card-state', 'FAILED');
+  await expect(card.locator('[aria-expanded]')).toHaveCount(0);
+  await expect(card).not.toContainText(t('cards.approval.decision_line', { time: '9:48 AM', scope: t('cards.approval.scope.once') }));
+});
+
 test('05-2 §5.7.3 the sent Draft summary expands to the sent text plus "Sent by you at {time}"', async () => {
   const sentAt = Date.parse('2026-10-16T09:52:00+05:30');
   const { card } = await seed(draft('sent', { sentAt, sentMessageId: 'msg_announce' }), TID.cardDraft);

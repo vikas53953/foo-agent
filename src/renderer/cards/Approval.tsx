@@ -36,6 +36,8 @@ const APPROVAL_EDGE: Partial<Record<ApprovalState, 'accent' | 'warn' | 'bad'>> =
 };
 /** 05-1 §0.5 Declined / Expired / Superseded / Withdrawn: the muted look. */
 const MUTED: ReadonlySet<string> = new Set(['DECLINED', 'EXPIRED', 'SUPERSEDED', 'WITHDRAWN']);
+/** 05-2 §5.5.4: the folded states whose summary expands to the card as approved plus the decision line. */
+const DECIDED: ReadonlySet<string> = new Set(['APPROVED', 'RUNNING', 'COMPLETED']);
 
 const APP_NAME: Record<PermissionApp, () => string> = {
   gmail: () => t('cards.approval.app.gmail'),
@@ -253,9 +255,11 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
   const resolvedAt = card.resolvedAt ?? card.updatedAt;
   // 05-2 §5.5.4 read-only in history: the expanded view shows the card as approved plus "Approved by you at {time} · {scope}".
   const answer = card.answer as { optionId?: string; scope?: ApprovalScope } | null;
+  // Only a card the user approved and that has not failed gets the toggle: a FAILED summary keeps its own buttons.
   const decision =
+    DECIDED.has(state) &&
     // A HELD card's "action" pick (SM-A4) is the user approving the action's terms once.
-    answer?.optionId === 'approve' || answer?.optionId === 'action'
+    (answer?.optionId === 'approve' || answer?.optionId === 'action')
       ? t('cards.approval.decision_line', {
           time: formatTime(resolvedAt, { timeZone: tz }),
           scope: SCOPE_LABEL[answer.scope ?? 'once'](),

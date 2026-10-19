@@ -305,6 +305,10 @@ test('a reply: ✓✓, 👀 on the first byte, the Thinking row while it is in f
   await expect(bubble).toHaveAttribute('data-state', 'complete');
   await expect(thinking).toHaveCount(0);
   await expect(round(page)).toHaveAttribute('data-state', 'mic');
+  // 04 §1.8: a finished text row is announced once as "{sender}: {text}" (cards use 05-1 §0.7's line instead).
+  await expect(page.getByTestId(TID.appAnnouncer).locator('[aria-live="polite"]')).toHaveText(
+    t('bubble.row.announce_new', { sender: 'foo', text: say }),
+  );
 
   const evs = await events(page);
   const fooEv = evs.filter((e) => e.ch === 'message:upsert' && e.p.authorKind === 'foo');

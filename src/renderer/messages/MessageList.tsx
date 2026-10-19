@@ -426,6 +426,8 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   useEffect(() => {
     for (const m of [...waitingCard.current.values()]) if (cards[m.cardId ?? '']) announceRow(m);
   }, [cards]); // eslint-disable-line react-hooks/exhaustive-deps
+  // A card still waiting for its row is never announced in another chat.
+  useEffect(() => () => waitingCard.current.clear(), [chat.id]);
   // Streaming text is announced once, when it finishes (§1.8).
   const streamingIds = useRef<Set<string>>(new Set());
   useEffect(() => {
