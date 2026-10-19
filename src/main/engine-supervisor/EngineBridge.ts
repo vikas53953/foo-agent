@@ -19,6 +19,7 @@ import { applyDbOps, runNamedQuery, writeDataFile } from './engineHost';
 import { vaultRuntime } from '../vault/vaultRuntime';
 import type { ApprovalGate } from '../approvals/ApprovalGate';
 import { logEvent } from '../log/techLog';
+import type { GoogleConnections } from '../connections/GoogleConnections';
 
 export interface BridgeContext {
   db: Db;
@@ -39,6 +40,9 @@ export interface BridgeContext {
   // M5
   /** T7: main's ApprovalGate for engine `approval.open` / `approval.transition` (08-2 §9.1, §9.7); lazy, it needs this bridge. */
   approvals?(): Pick<ApprovalGate, 'openFromEngine' | 'transition'>;
+  // M8
+  /** T5: main's GoogleConnections for engine `connection.google` requests (gap pick T5-01); lazy, it registers after the bridge. */
+  google?(): Pick<GoogleConnections, 'forEngine'> | null;
 }
 
 type AiStatePayload = Extract<EngineToMain, { kind: 'ai.state' }>['payload'];
@@ -90,6 +94,11 @@ export class EngineBridge {
       });
       this.post({ id, kind, payload } as MainToEngine);
     });
+  }
+
+  /** M8 T5: a reply `receive` could not give at once (it returned null), posted on the same port when it is ready. */
+  private reply(re: string, result: Result<unknown>): void {
+    (this.post as (msg: unknown) => void)({ re, result });
   }
 
   /** The engine is gone (crash, quit): every open request fails at once. */
@@ -182,6 +191,17 @@ export class EngineBridge {
       case 'vault.use': {
         const vault = vaultRuntime()?.vault;
         return { re: msg.id, result: vault ? vault.use(msg.payload) : { ok: false, error: { kind: 'VAULT_MISSING' } } };
+      }
+      // M8 T5: answered when main's Google call is done (a refresh is an HTTP call), so the reply is posted later.
+      case 'connection.google': {
+        const google = this.ctx.google?.();
+        if (!google) return { re: msg.id, result: { ok: false, error: { kind: 'VALIDATION', message: 'not_connected' } } };
+        const id = msg.id;
+        void google
+          .forEngine(msg.payload)
+          .catch((): Result<unknown> => ({ ok: false, error: { kind: 'UNKNOWN' } }))
+          .then((result) => this.reply(id, result));
+        return null;
       }
     }
   }
