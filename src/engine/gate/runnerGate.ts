@@ -206,7 +206,7 @@ export class RunnerGate {
       if (unknown.length) {
         this.d.tools.holdUnknown(
           job.id,
-          unknown.map((u) => u.idemKey).filter((k): k is string => !!k),
+          unknown.map((u) => ({ tool: u.tool, args: u.args })),
         );
         x.recovery = unknown.map((u) => `- ${u.tool} ${summary(u.args)}`);
       }
