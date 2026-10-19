@@ -869,6 +869,9 @@ export type ErrorKind =
   | 'PROTOCOL_FIX_ACTION'
   | 'IDEMPOTENT_REPEAT'
   | 'CARD_STALE'
+  // M8 T3: 08-3 §21.2 WhatsApp kinds
+  | 'WA_LINK_FAILED'
+  | 'WA_UNLINKED'
   // M8 (08-3 §21.2, §21.3): connections
   | 'OAUTH_DENIED'
   | 'OAUTH_TIMEOUT'

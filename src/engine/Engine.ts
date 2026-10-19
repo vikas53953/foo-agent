@@ -47,6 +47,7 @@ import { JobRecovery } from './jobs/recovery';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
 import type { SecondLookAct, StepAct } from '../shared/schemas';
 // M8
+import { WhatsAppConnector, type WaPortLike } from './tools/connectors/whatsapp';
 import { googleTools, testGoogleAccess, type GoogleConnectors, type GoogleOptions } from './tools/connectors/google-tools';
 import { ConnTrouble } from './connections/trouble';
 import type { GoogleBases } from './tools/connectors/limiter';
@@ -86,6 +87,8 @@ export class Engine {
   readonly jobs: JobRunner;
   readonly recovery: JobRecovery;
   private prompts: PromptBuilder;
+  // M8 (T3): the WhatsApp side of the wa-bridge port (08-3 §16.4).
+  readonly whatsapp: WhatsAppConnector;
   /** M6 slot (CR-0010): T3's MemoryService (the `memory:*` commands, learn, the watcher); T7 fills its tidy. */
   readonly memory: MemoryService;
   private memoryWatcher: MemoryWatcher | null = null;
@@ -232,6 +235,12 @@ export class Engine {
         },
         jobDone: (chatId) => this.memoryReview.after(chatId),
       },
+    });
+    this.whatsapp = new WhatsAppConnector({
+      link: o.link,
+      clock: o.clock,
+      settings: () => this.settings,
+      log: (evt, kind) => log(evt, kind),
     });
     this.recovery.attach(this.jobs);
     this.trouble.attach(this.jobs, this.google);
@@ -698,6 +707,11 @@ export class Engine {
       // G-M4-04: a request; main waits for the ack before it exits.
       case 'jobs.pauseAll':
         return ok({ paused: await this.recovery.pauseAll(msg.payload.reason) });
+      // M8 (T3): Google's commands are T2's.
+      case 'connection.cmd':
+        if (msg.payload.target === 'whatsapp' && ['linkStart', 'linkCancel', 'unlink'].includes(msg.payload.cmd))
+          this.whatsapp.command(msg.payload.cmd as 'linkStart' | 'linkCancel' | 'unlink');
+        return undefined;
       case 'power':
         this.trouble.power(msg.payload.event);
         await this.recovery.power(msg.payload.event);
@@ -722,6 +736,11 @@ export class Engine {
       default:
         return undefined;
     }
+  }
+
+  /** M8 (T3): `bridge.port` hands over the engine end of a (re)started wa-bridge (08-1 §2.4.2). */
+  attachBridge(port: WaPortLike): void {
+    void this.whatsapp.attach(port);
   }
   private firstSettings = true;
 }

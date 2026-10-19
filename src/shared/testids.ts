@@ -463,6 +463,16 @@ export const TID = {
   settingsRowAccountAiPaid: 'settings-row-account-ai-paid',
   settingsRowAccountAiAdd: 'settings-row-account-ai-add',
   dialogReplaceKey: 'dialog-replace-key',
+  // M8 T3: WhatsApp Connect card + QR panel (05-3 §5.11.3), Connections WhatsApp rows (06-2 §6.8), C-8, C-11 (06-3 §14),
+  // dialog-link-whatsapp (X-118). card-connect, -not-now and -skip are T2's (above).
+  cardConnectShowQr: 'card-connect-show-qr',
+  cardConnectNewCode: 'card-connect-new-code',
+  cardConnectQr: 'card-connect-qr',
+  settingsRowConnectionsWhatsapp: 'settings-row-connections-whatsapp',
+  settingsRowConnectionsWHidden: 'settings-row-connections-w-hidden',
+  dialogLinkWhatsapp: 'dialog-link-whatsapp',
+  dialogC08: 'dialog-c-08',
+  dialogC11: 'dialog-c-11',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

@@ -8,7 +8,7 @@ import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
 import type { ChatRow, JobRow, View } from '../../shared/types';
 import { invoke } from '../ipc/client';
-import { navigate, openDialog, setFindOpen, setMenu, setXsPane, update, useStore } from '../store/index';
+import { closeDialog, navigate, openDialog, setFindOpen, setMenu, setXsPane, update, useStore } from '../store/index';
 import { selectHelpers } from '../store/helpers';
 import { selectAi, selectChatMood, selectConnection, selectNow, selectTypingChatId } from '../store/live';
 import { selectSettings } from '../store/settings';
@@ -18,6 +18,9 @@ import { Button } from '../ui/Button';
 import { Icon } from '../ui/Icon';
 import { IconButton } from '../ui/IconButton';
 import { Menu, type MenuEntry } from '../ui/Menu';
+// M8 T3
+import { C08 } from '../screens/confirms/C08';
+import { archiveMirror } from '../screens/settings/connections/archiveMirror';
 import { openChat } from './actions';
 import styles from './ChatHeader.module.css';
 import { hasLiveBrowser } from './doingNowRows';
@@ -91,6 +94,8 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
   const helpers = useStore(selectHelpers);
   const panel = useRightShell();
   const menuOpen = useStore(selectMenu) === MENU_ID;
+  const dialog = useStore((s) => s.ui.dialog);
+  const dialogTarget = useStore((s) => s.ui.dialogTarget);
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const [compact, setCompact] = useState(false);
@@ -210,6 +215,9 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
       tid: 'chatHeaderMenuCatchUp',
       onSelect: () => fooChatId && openChat(fooChatId),
     });
+  // M8 T3 (04 §10.11 mirror menu: Hide from foo → 06-3 §14 C-8).
+  if (chat.kind === 'wa_mirror')
+    entries.push({ kind: 'item', id: 'hide', label: t('chat_header.menu.hide_from_foo'), onSelect: () => confirm('c-08') });
   entries.push({ kind: 'separator', id: 'sep' });
   if (chat.private)
     entries.push({
@@ -252,6 +260,7 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
   );
   // 06-1 §2.0 step pill (CR-0020): foo's chat header during first run, after the name; never a "Step 5".
   const pill = isFoo && !chat.private && !setup.complete ? stepPillText(setup.step) : null;
+  const hideAsked = dialog === 'c-08' && dialogTarget === chat.id;
 
   return (
     <div ref={rootRef} className={styles.header} data-testid={TID.chatHeader} data-compact={compact || undefined}>
@@ -374,6 +383,18 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
           )}
         </span>
       </div>
+      {hideAsked && (
+        <C08
+          group={chat.title}
+          onClose={closeDialog}
+          onConfirm={() => {
+            closeDialog();
+            void archiveMirror(chat.id, true)
+              .then((r) => r && fooChatId && openChat(fooChatId))
+              .catch(() => undefined);
+          }}
+        />
+      )}
     </div>
   );
 }

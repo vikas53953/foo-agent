@@ -109,6 +109,8 @@ export interface AppContext {
   dataDir: string;
   /** M3: main's half of the engine port (08-1 §2.4); absent only in unit tests that build main alone. */
   engine?: EngineBridge;
+  // M8 T3: FOO_TEST control line to the running wa-bridge (the fake phone and its clock); false when no bridge runs.
+  bridgeTest?(msg: unknown): boolean;
 }
 
 export function listContext(settings: Settings): ListContext {
@@ -250,6 +252,11 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
     backup?: (typeof PROVIDER_IDS)[number] | null;
   }>,
   'notifications:status': empty as z.ZodType<Record<string, never>>,
+  // M8 T3 (handlers in src/main/whatsapp/waMain.ts)
+  'whatsapp:linkStart': empty as z.ZodType<Record<string, never>>,
+  'whatsapp:linkCancel': empty as z.ZodType<Record<string, never>>,
+  'whatsapp:unlink': empty as z.ZodType<Record<string, never>>,
+  'chat:archive': z.object({ chatId, on: z.boolean() }).strict(),
   // M8 T2 (08-1 §3.2)
   'connection:list': empty as z.ZodType<Record<string, never>>,
   'connection:connect': z

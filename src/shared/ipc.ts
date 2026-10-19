@@ -2,6 +2,7 @@
 // 08-0 §B.5 (no event shares a name with an invoke). The maps hold the channels built so far (M1: the shell's channels);
 // each later milestone adds its rows from 08-1 §3.2/§3.3 with the same names and shapes.
 import type { Result } from './errors';
+import type { BridgeTestOp } from './waBridge';
 import type {
   AiStatus,
   ApprovalFields,
@@ -131,6 +132,11 @@ export interface Invokes {
   'ai:detect': { req: Record<string, never>; res: DetectRow[] };
   'ai:choose': { req: { primary: ProviderId; backup?: ProviderId | null }; res: AiStatus };
   'notifications:status': { req: Record<string, never>; res: { windowsAllowed: boolean; focusAssist: boolean } };
+  // M8 T3: 08-1 §3.2 WhatsApp link and Hide from foo
+  'whatsapp:linkStart': { req: Record<string, never>; res: void };
+  'whatsapp:linkCancel': { req: Record<string, never>; res: void };
+  'whatsapp:unlink': { req: Record<string, never>; res: void };
+  'chat:archive': { req: { chatId: string; on: boolean }; res: ChatRow };
   // M8 T2 (08-1 §3.2): Google connections. `outlook` only while flags.outlook (X-41), so v1 accepts 'google' alone.
   'connection:list': { req: Record<string, never>; res: ConnectionRow[] };
   'connection:connect': {
@@ -231,6 +237,8 @@ export interface Events {
   'settings:changed': PublicSettings;
   'net:state': { online: boolean };
   navigate: { view: View; act?: string };
+  // M8 T3: 08-1 §3.3
+  'whatsapp:qr': { png: string; expiresAt: number };
   // M6 (08-1 §3.3)
   'memory:changed': { factIds: string[]; chip?: MemoryChip };
   'data:exportProgress': { pct: number; phase: string; path?: string; error?: ErrorKind };
@@ -301,6 +309,11 @@ export const INVOKE_CHANNELS = [
   'ai:detect',
   'ai:choose',
   'notifications:status',
+  // M8 T3
+  'whatsapp:linkStart',
+  'whatsapp:linkCancel',
+  'whatsapp:unlink',
+  'chat:archive',
   // M8
   'connection:list',
   'connection:connect',
@@ -352,6 +365,8 @@ export const EVENT_CHANNELS = [
   'connection:upsert',
   'settings:changed',
   'net:state',
+  // M8 T3
+  'whatsapp:qr',
   'navigate',
   'memory:changed',
   'data:exportProgress',
@@ -397,6 +412,8 @@ export interface FooTestBridge {
   reset(): Promise<ClockReply>;
   /** Moves a job to a state the way the job runner would (writes the row, re-derives the chat pill, sends the patches). */
   jobState(jobId: string, state: JobRow['state']): Promise<{ chatId: string }>;
+  /** M8 T3: plays the fake phone of the FOO_TEST wa-bridge (scan, a group message, logout). */
+  wa(op: BridgeTestOp): Promise<{ delivered: boolean }>;
   /** M5 (CR-0009): writes one card (and its approvals row when `approval` is given); see main/test/testHooks.ts. */
   cardSeed(arg: CardSeedRequest): Promise<CardSeedResult>;
   /** M6 T7 (CR-0010 G-M6-09): runs the nightly memory tidy now (engine `test.memoryTidy`); the engine's TidyReport result. */

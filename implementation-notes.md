@@ -994,6 +994,31 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
   vault (`foo/conn_token/google`).
 - `oauthLoopback.ts` lives in `src/main/windows/` per the plan; 08-0 §E names no file for it.
 
+## M8 · WhatsApp link, QR and group mirrors (ticket T3, CR-0012)
+
+- Hosts (G-M8-01/06): on the pinned Baileys 7.0.0-rc14 the bridge opens one host, `wss://web.whatsapp.com/ws/chat`.
+  `fetchLatestBaileysVersion` fetches from GitHub, a non-WhatsApp host, so it is dropped: the bridge uses the version Baileys ships.
+  No media is requested (§16.4.1); there is no send path until T7.
+- `wa.report` (engine → main) is a gap pick: main alone writes the `connections` and `chats` rows (08-1 §4.6 rule 1), so the
+  engine reports link status, linked account, groups and unlinked to main, which writes them. The lead logs it at merge.
+- The link's placeholder row (`account_hash 'pending'` while connecting) becomes the linked row in place (same id, rev up), so the
+  renderer's `connection:upsert` replaces it; the renderer reads the newest whatsapp row by `connectedAt` (an Unlink leaves a
+  `disconnected` row in the window's store).
+- The QR panel's phase comes from the whatsapp row and the newest `whatsapp:qr`, never the renderer's clock: the engine's 60 s
+  timer and failed-link count report `disconnected` (third time with `WA_LINK_FAILED`) → "This code expired." / failed.
+- `dialog-link-whatsapp` has no button row (06-2 §6.8 names none): the panel's New code / Skip for now and ✕ are its actions;
+  closing it before a scan sends `whatsapp:linkCancel`; it closes itself 2 s after linked.
+- C-8 is reached from the mirror's header menu "Hide from foo" (04 §10.11 menu); the group profile variant (06-1 §4) is not built
+  yet. Hidden groups are listed in "Groups I read" while the window knows them (`connections.hiddenMirrors`, filled by every
+  `chat:archive` reply): no read lists archived chats, so after a restart a group hidden earlier is not listed until a CR adds one.
+- A WhatsApp `error` row (the bridge gave up after 4 failures) reads like "WhatsApp unlinked foo." with Link again; the
+  `WA_UNLINKED` error card (08-3 §21.2) is not built here (the row status only).
+- The Connect card `whatsapp` variant (`cards/connect/WhatsAppConnect.tsx`) is drawn by T2's `Connect.tsx`; "Not now" lives
+  in the window like T2's. T2's `ConnectionsPage` draws the WhatsApp rows between Contacts and X (06-2 §6.8 order).
+- The WhatsApp session is held in memory (`src/main/vault/waSessionMemory.ts`) until the M5 vault swap to
+  `{DATA}\vault\wa-session.bin` (engine `vault.encrypt` / `vault.decrypt` already go through main).
+- The fake phone's groups are the ux-world's two mirrors (same jids and titles), so a seeded world and a link agree.
+
 ## M8 · Gmail, Calendar and Contacts reading (ticket T4)
 
 - Files: `src/engine/tools/connectors/{limiter,gmail,gcal,contacts}.ts`, `src/engine/connectors/hooks.ts`, plus
