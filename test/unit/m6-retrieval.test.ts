@@ -4,11 +4,12 @@
 import Database from 'better-sqlite3';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import type { DbOp } from '../../src/engine/protocol';
-import { buildMemoryParts, ftsMatch, type MemoryQuery } from '../../src/engine/memory/retrieval';
+import { buildMemoryParts, ftsMatch, stepQueryText, type MemoryQuery } from '../../src/engine/memory/retrieval';
 import { applyDbOps } from '../../src/main/engine-supervisor/engineHost';
 import { NAMED_QUERIES } from '../../src/main/db/queries';
 import { migrate, type Db } from '../../src/main/store/db';
 import { intake, makeHarness, verified, VERIFY_LINE, type Harness } from './m3-engine-helpers';
+import { BILLS_PLAN, jobHarness, jobIntake, step, type JobHarness } from '../integration/jobs/jobHarness';
 
 const TZ = 'Asia/Kolkata';
 const NOW = Date.parse('2026-10-16T09:41:00+05:30'); // Fri 16 Oct 2026
@@ -127,6 +128,27 @@ describe('part 5: identity and pinned facts (08-4 §24.16 items 1, 2, 5)', () =>
   });
 });
 
+describe('forgotten facts (08-4 §24.16, J17 tombstones)', () => {
+  const tomb = (hash: string, expiresAt: number, originKind = 'manual'): DbOp => ({
+    op: 'insert',
+    table: 'memory_tombstones',
+    row: { hash, origin_kind: originKind, forgotten_at: NOW - DAY, expires_at: expiresAt },
+  });
+  it('an index row with a live tombstone is in neither part 5 nor part 5b', async () => {
+    tx([fact('f_gone', 'Brother Rohit lives in Pune'), fact('f_kept', 'Likes filter coffee'), tomb('h_f_gone', NOW + 90 * DAY)]);
+    const p = await parts('c_1', 'where does my brother live?');
+    expect([...p.part5, ...p.part5b].map((l) => l.id)).toEqual(['f_kept']);
+  });
+  it('an expired tombstone no longer hides the row', async () => {
+    tx([fact('f_back', 'Brother Rohit lives in Pune'), tomb('h_f_back', NOW - 1)]);
+    expect((await parts('c_1', 'brother')).part5.map((l) => l.id)).toEqual(['f_back']);
+  });
+  it('a tombstone of another origin kind does not hide the row', async () => {
+    tx([fact('f_x', 'Brother Rohit lives in Pune'), tomb('h_f_x', NOW + DAY, 'chat')]);
+    expect((await parts('c_1', 'brother')).part5.map((l) => l.id)).toEqual(['f_x']);
+  });
+});
+
 describe('part 5b: turn facts (08-4 §24.16 item 3)', () => {
   // 30 filler facts fill the 4,000-char pinned set, so the brother facts (used less) are not pinned.
   const filler = () =>
@@ -236,5 +258,44 @@ describe('a reply turn (08-4 §24.1 intake, §24.16 item 6)', () => {
     expect(row.last_used_at).toBe(uses[0]!.at);
     const other = h.db.prepare("SELECT use_count, last_used_at FROM memory_index WHERE id = 'f_other'").get() as Record<string, unknown>;
     expect(other).toEqual({ use_count: 0, last_used_at: null });
+  });
+});
+
+describe('a step turn (08-4 §24.1 step row, §24.16 item 3)', () => {
+  let h: JobHarness | null = null;
+  afterEach(() => {
+    h?.close();
+    h = null;
+  });
+  it('queries with what was asked, the job title and the current step slots', () => {
+    const steps = [
+      { state: 'done' as const, slots: { what: 'old' } },
+      { state: 'running' as const, slots: { what: 'bills due this week', n: 2 } },
+      { state: 'pending' as const, slots: { what: 'later' } },
+    ];
+    expect(stepQueryText('Find my bills', 'Bills this week', steps)).toBe('Find my bills Bills this week bills due this week');
+    expect(stepQueryText('Find my bills', 'Bills', [{ state: 'pending', slots: { what: 'next' } }])).toBe('Find my bills Bills next');
+    expect(stepQueryText('Hi', 'Job', [])).toBe('Hi Job');
+  });
+  it('carries part 5 in the system text and part 5b in the prompt', async () => {
+    h = jobHarness({
+      script: [jobIntake(BILLS_PLAN, { title: 'Electricity bill' }), step({ kind: 'done', result: 'One bill.', unverified: true })],
+    });
+    const ins = h.db.prepare(
+      `INSERT INTO memory_index (id, file, line_no, scope, text, provenance, origin, origin_kind, kind, learned_at, use_count, hash)
+       VALUES (?, 'memory/about-you.md', ?, 'global', ?, 'said', 'manual', 'manual', 'fact', ?, ?, ?)`,
+    );
+    // 30 fillers (used more) fill the 4,000-char pinned set, so the Pune fact can only come in as a turn fact.
+    for (let i = 0; i < 30; i++)
+      ins.run(`f_fill${i}`, i + 2, `Filler ${String(i).padStart(2, '0')} ${'y'.repeat(120)}`, h.clock.now() - DAY, 50, `h_fill${i}`);
+    ins.run('f_flat', 1, 'Brother Rohit lives in Pune', h.clock.now() - DAY, 0, 'h_flat');
+    h.userSays("Find Rohit's electricity bill");
+    await h.settle();
+    const turn = h.turnsJsonl().find((t) => t.purpose === 'step')!;
+    expect(String(turn.system)).toContain('What you know about');
+    expect(String(turn.system)).toContain('[f_fill0] Filler 00');
+    expect(String(turn.system)).not.toContain('[f_flat]');
+    expect(String(turn.prompt)).toMatch(/Facts that may matter now:\n\[f_flat\] Brother Rohit lives in Pune \(You said, /);
+    expect(String(turn.prompt).indexOf('[f_flat]')).toBeLessThan(String(turn.prompt).indexOf('The job:'));
   });
 });

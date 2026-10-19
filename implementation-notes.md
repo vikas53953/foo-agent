@@ -675,6 +675,7 @@ CR-0010 §(b). Where the code stands for the ticket threads:
 - Groups: a grant never re-admits a `private=1` fact (08-3 §12.5.1, Art. 14). Step turns (job title + slot values as the
   query, §24.16 item 3) call the same function from the job lane when it builds part 5b.
 - AT-075 (an edited file shows in the next prompt) lands once T3's watcher is on the milestone branch.
+
 ## M5 · contracts, approval machine and card stubs (ticket T1, CR-0009)
 
 ### Built
