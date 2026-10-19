@@ -2,7 +2,7 @@
 // eye, [ Save securely ] [ Cancel ], `LockClosed` footer in `--ok`; saved row "{Name} · saved {date}" [ Replace ] [ Remove ]
 // → 06-3 §14 C-22), §5.8.2 copy, §5.8.3 states (asking / saved / rejected / withdrawn; Failed keeps the value in memory;
 // Disabled when safe storage is unavailable, 09 §9.18 line + [ Try again ]), §5.8.4 variants (key, login, card, code box,
-// CVV, voice key, web key; field errors), §5.8.5 rules (one IPC call carries the value; the field is cleared right after a
+// CVV, voice key, web key; code box placeholder "123 456", CVV "123"; field errors), §5.8.5 rules (one IPC call carries the value; the field is cleared right after a
 // successful write; copy and drag out are blocked while masked), §5.8.6 (Enter / Ctrl+Enter = Save securely; Alt+F8 toggles
 // the eye; field label "{title}, hidden|shown", Narrator reads only "{n} characters" while hidden; "Saved securely." is
 // announced), the eye hides again after 30 s, on every render and after a save (OCL §7.1). 04-2 §22.4 Move: the card
@@ -81,6 +81,7 @@ function saveTarget(p: SecretPayload, v: Record<string, string>): { kind: Secret
 
 function SecretField({
   field,
+  kind,
   index,
   title,
   value,
@@ -92,6 +93,7 @@ function SecretField({
   onToggleEye,
 }: {
   field: Field;
+  kind: SecretCardKind;
   index: number;
   title: string;
   value: string;
@@ -130,7 +132,11 @@ function SecretField({
     field.key === 'expiry'
       ? t('cards.secret.field.expiry_placeholder')
       : field.key === 'code'
-        ? undefined
+        ? kind === 'otp'
+          ? t('cards.secret.otp.placeholder')
+          : kind === 'cvv'
+            ? t('cards.secret.cvv.placeholder')
+            : undefined
         : field.label
           ? undefined
           : t('cards.secret.placeholder');
@@ -148,7 +154,13 @@ function SecretField({
         spellCheck={false}
         autoCapitalize="off"
         inputMode={field.key === 'code' || field.key === 'number' || field.key === 'cvv' ? 'numeric' : undefined}
-        aria-label={field.masked ? t(shown ? 'cards.secret.field_label.shown' : 'cards.secret.field_label.hidden', { title: name }) : name}
+        aria-label={
+          field.masked
+            ? shown
+              ? t('cards.secret.field_label.shown', { title: name })
+              : t('cards.secret.field_label.hidden', { title: name })
+            : name
+        }
         aria-describedby={hidden ? lengthId : undefined}
         onChange={(e) => onChange(field.key === 'number' ? (digits(e.target.value).match(/.{1,4}/g) ?? []).join(' ') : e.target.value)}
         onKeyDown={onKeyDown}
@@ -165,7 +177,7 @@ function SecretField({
         <IconButton
           className={box.eye}
           icon={shown ? 'EyeOff' : 'Eye'}
-          label={t(shown ? 'cards.secret.eye.hide' : 'cards.secret.eye.show')}
+          label={shown ? t('cards.secret.eye.hide') : t('cards.secret.eye.show')}
           pressed={shown}
           data-testid={TID.cardSecretEye}
           data-index={index}
@@ -338,6 +350,7 @@ export function SecretBox({ card, time }: { card: CardRow; time: CardTime }) {
             <SecretField
               key={f.key}
               field={f}
+              kind={p.secretKind}
               index={i}
               title={title}
               value={values[f.key] ?? ''}

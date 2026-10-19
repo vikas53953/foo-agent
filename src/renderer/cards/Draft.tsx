@@ -6,7 +6,7 @@
 // "Not sent. The draft is still here."; Sent "✓ Sent · {time}" + the Sent-folder proof chip; Discarded; Expired + "Ask me
 // again"; Superseded / Withdrawn; No send permission → "Open in Gmail"; Failed; Queued), §5.7.3 states (`cards.state`:
 // pending, editing, undo_window, sending, sent, discarded, opened_in_app, queued_offline, failed, expired, superseded,
-// withdrawn), §5.7.4 (Tab order Show all → Send → Change → Discard; Ctrl+Enter = Save changes in Change mode only, never
+// withdrawn; read-only in history: the Sent row toggles the final sent text and "Sent by you at {time}"), §5.7.4 (Tab order Show all → Send → Change → Discard; Ctrl+Enter = Save changes in Change mode only, never
 // sends; Esc cancels the edit; Undo is focused in the countdown; card label "Draft, not sent: {Email} to {name}"; Send
 // label "Send email to {name}"), 05-1 §0.5 muted and failed looks, 09 §9.17.4. Email only in M5; the WhatsApp and X variants,
 // the offline queue and real send errors arrive with M8 (review fix 5). Card words come from copy keys and the draft's own
@@ -25,6 +25,7 @@ import { Icon, type IconName } from '../ui/Icon';
 import { CardButton } from './CardButton';
 import { CardFrame, CardTimeLabel, type CardTime } from './CardFrame';
 import { HeldStrip } from './parts/HeldStrip';
+import { useSummaryToggle } from './parts/useSummaryToggle';
 import { useCardAction } from './useCardAction';
 import styles from './Draft.module.css';
 
@@ -109,6 +110,7 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
   // Change mode is the renderer's (no invoke opens it); a card that left `pending` is out of it.
   const state = editing && card.state === 'pending' ? 'editing' : card.state;
   const tap = { cardId: card.id, nonce: card.nonce, resolvedBy: 'tap' as const };
+  const folded = useSummaryToggle();
   const at = (ms: number) => formatDate(ms, 'full', { timeZone: tz, now: time.now });
 
   // §5.7.4: in the countdown, Undo receives focus (it is the safe action).
@@ -145,21 +147,59 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
     </CardFrame>
   );
 
+  const rows = (
+    <dl className={styles.rows}>
+      <div className={styles.row}>
+        <dt>{t('cards.draft.row_label.to')}</dt>
+        <dd data-copy="external">{p.to ? `${p.to.name} <${p.to.address}>` : ''}</dd>
+      </div>
+      {p.subject !== undefined && (
+        <div className={styles.row}>
+          <dt>{t('cards.draft.row_label.subject')}</dt>
+          {editing ? (
+            <dd>
+              <input
+                className={styles.subjectField}
+                data-testid={TID.cardDraftSubject}
+                aria-label={t('cards.draft.row_label.subject')}
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+              />
+            </dd>
+          ) : (
+            <dd data-testid={TID.cardDraftSubject} data-copy="external">
+              {p.subject}
+            </dd>
+          )}
+        </div>
+      )}
+    </dl>
+  );
+
   switch (state) {
-    case 'sent':
+    case 'sent': {
+      const sentAt = formatTime(p.sentAt ?? card.updatedAt, { timeZone: tz });
       return (
-        <CardFrame {...frame}>
+        <CardFrame {...frame} data={{ 'data-expanded': folded.open ? 'true' : undefined }}>
           {head()}
-          <div className={styles.summary}>
+          <div className={styles.summary} {...folded.rowProps(true)}>
             <Icon name="CheckmarkCircle" size={16} className={styles.okIcon} />
-            <span className={styles.sentText}>
-              {t('cards.draft.summary.sent', { time: formatTime(p.sentAt ?? card.updatedAt, { timeZone: tz }) })}
-            </span>
+            <span className={styles.sentText}>{t('cards.draft.summary.sent', { time: sentAt })}</span>
             <CardTimeLabel {...time} />
           </div>
           {p.sentMessageId && <ProofChip proof={{ kind: 'sent_folder', connectionId: '', messageId: p.sentMessageId }} />}
+          {/* 05-2 §5.7.3 read-only in history: the final sent text and "Sent by you at {time}". */}
+          {folded.open && (
+            <>
+              {rows}
+              <hr className={styles.rule} />
+              <Body text={p.body} signature={p.signature} />
+              <div className={styles.decisionLine}>{t('cards.draft.decision_line', { time: sentAt })}</div>
+            </>
+          )}
         </CardFrame>
       );
+    }
     case 'discarded':
       return summary('Dismiss', styles.dimIcon, t('cards.draft.summary.discarded'));
     case 'expired':
@@ -196,34 +236,6 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
       break;
   }
 
-  const rows = (
-    <dl className={styles.rows}>
-      <div className={styles.row}>
-        <dt>{t('cards.draft.row_label.to')}</dt>
-        <dd data-copy="external">{p.to ? `${p.to.name} <${p.to.address}>` : ''}</dd>
-      </div>
-      {p.subject !== undefined && (
-        <div className={styles.row}>
-          <dt>{t('cards.draft.row_label.subject')}</dt>
-          {editing ? (
-            <dd>
-              <input
-                className={styles.subjectField}
-                data-testid={TID.cardDraftSubject}
-                aria-label={t('cards.draft.row_label.subject')}
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-              />
-            </dd>
-          ) : (
-            <dd data-testid={TID.cardDraftSubject} data-copy="external">
-              {p.subject}
-            </dd>
-          )}
-        </div>
-      )}
-    </dl>
-  );
   const rightLabel = <span className={styles.right}>{p.edited ? t('cards.draft.right_label.edited', { channel }) : channel}</span>;
   const footer = (
     <div className={styles.footRow}>

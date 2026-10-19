@@ -297,6 +297,13 @@ outcome: 'went_through' | 'did_not', resolvedBy }`. Main's 15 min `no_proof` mov
   Gmail draft with their value, that fresh Draft re-holds on the same mismatch until the user taps Change (a placeholder,
   as G-M5-28). Nothing weakens an approval, a hard limit, a secret or an irreversible act; (b) closes a path that sent
   with no second look. Pending review.
+- **G-M5-40** (T15) 05-1 §0.7 card arrival ("{sender} sent {card name}: {title}", gated cards add ", needs you") is
+  built for the card types that have a `cards.<type>.card_name` key in M5 (choice, tiles, approval, draft, secret); every
+  other type keeps the 04 §1.8 row line until its milestone lands its name key (no new words in M5). The Draft `{title}`
+  is the tail of its card label "{Email} to {name}" (05-2 §5.7.4); ", needs you" goes on Approval / Payment in PENDING or
+  HELD only. `card:approve` keeps the picked scope in `cards.answer` so the expanded view can say "· {scope}". The
+  read-only expanded view (05-1 §0.5) opens on APPROVED, RUNNING and COMPLETED Approval cards and on sent Drafts; FAILED
+  keeps its plain summary. Pending review.
 
 ### Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`)
 

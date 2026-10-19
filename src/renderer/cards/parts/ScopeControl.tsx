@@ -7,7 +7,7 @@ import type { ApprovalScope } from '../../../shared/types';
 import { Segmented } from '../../ui/Segmented';
 import styles from '../Approval.module.css';
 
-const LABEL: Record<ApprovalScope, () => string> = {
+export const SCOPE_LABEL: Record<ApprovalScope, () => string> = {
   once: () => t('cards.approval.scope.once'),
   chat: () => t('cards.approval.scope.chat'),
   always: () => t('cards.approval.scope.always'),
@@ -30,7 +30,7 @@ export function ScopeControl({
         tid="cardApprovalScope"
         label={t('cards.approval.scope_label')}
         value={value}
-        options={scopes.map((s) => ({ value: s, label: LABEL[s]() }))}
+        options={scopes.map((s) => ({ value: s, label: SCOPE_LABEL[s]() }))}
         onChange={onChange}
       />
       {value === 'always' && (

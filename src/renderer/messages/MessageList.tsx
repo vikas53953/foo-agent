@@ -6,7 +6,8 @@
 // bubbles, cards and markers (Bubble.tsx) with the run layout of runs.ts; §1.5 new rows fade and rise (history rows do
 // not); §1.6 a streaming answer is followed until its top is 16px below the header; X-152 the chat is marked read after the
 // newest message was visible for 1 s with the window focused; §1.8 each row is named "{sender}, {time}: {text}. {state}",
-// keys Enter / Shift+F10 / Menu, Ctrl+Shift+R, Ctrl+Shift+E, Ctrl+C; new foo rows are announced once (streaming: when done);
+// keys Enter / Shift+F10 / Menu, Ctrl+Shift+R, Ctrl+Shift+E, Ctrl+C; new foo rows are announced once (streaming: when done;
+// a card row as 05-1 §0.7 "{sender} sent {card name}: {title}[, needs you]");
 // §6.4 a quote click jumps and highlights 1600 ms; §14.2 / §14.3 status line and Thinking row; §10.11 the WhatsApp mirror.
 import { observeElementOffset, useVirtualizer } from '@tanstack/react-virtual';
 import { batchScrollAdjustments } from './scrollAdjust';
@@ -19,6 +20,7 @@ import type { CardRow, ChatRow, MessageRow } from '../../shared/types';
 import { announce } from '../a11y/announce';
 import { registerFocusTarget } from '../a11y/focusTargets';
 import { useReducedMotion } from '../a11y/useReducedMotion';
+import { cardArrival } from '../cards/announce';
 import { CARD_ESTIMATE, titleOfCard } from '../cards/registry';
 import { invoke } from '../ipc/client';
 import { saveScroll, useStore } from '../store/index';
@@ -404,12 +406,28 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   }, [rows]); // eslint-disable-line react-hooks/exhaustive-deps
   const prevLast = useRef<number | null>(slice?.lastSeq ?? null);
   const announced = useRef<Set<string>>(new Set());
+  // A card message can land before its card row; it is announced once the row is in the store.
+  const waitingCard = useRef<Map<string, MessageRow>>(new Map());
   const announceRow = (m: MessageRow) => {
     if (m.authorKind === 'user' || m.kind === 'marker' || m.status === 'streaming' || announced.current.has(m.id)) return;
+    const card = m.kind === 'card' ? cards[m.cardId ?? ''] : undefined;
+    if (m.kind === 'card' && !card) {
+      waitingCard.current.set(m.id, m);
+      return;
+    }
+    waitingCard.current.delete(m.id);
     announced.current.add(m.id);
-    const text = m.kind === 'card' ? (titleOfCard(cards[m.cardId ?? '']) ?? '') : m.text;
-    announce(t('bubble.row.announce_new', { sender: senderOf(m, ctx).name, text: text.slice(0, ANNOUNCE_CHARS) }), 'polite');
+    const sender = senderOf(m, ctx).name;
+    // 05-1 §0.7: "{sender} sent {card name}: {title}[, needs you]".
+    const arrival = card ? cardArrival(card, sender) : null;
+    const text = card ? (titleOfCard(card) ?? '') : m.text;
+    announce(arrival ?? t('bubble.row.announce_new', { sender, text: text.slice(0, ANNOUNCE_CHARS) }), 'polite');
   };
+  useEffect(() => {
+    for (const m of [...waitingCard.current.values()]) if (cards[m.cardId ?? '']) announceRow(m);
+  }, [cards]); // eslint-disable-line react-hooks/exhaustive-deps
+  // A card still waiting for its row is never announced in another chat.
+  useEffect(() => () => waitingCard.current.clear(), [chat.id]);
   // Streaming text is announced once, when it finishes (§1.8).
   const streamingIds = useRef<Set<string>>(new Set());
   useEffect(() => {

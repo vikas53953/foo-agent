@@ -89,6 +89,8 @@ export const cardSeedArg = z
     payload: z.record(z.string(), z.unknown()),
     jobId: z.string().min(1).optional(),
     expiresAt: z.number().optional(),
+    // M5 T15: a folded card as the user left it (e.g. an approve answer on a FAILED card).
+    answer: z.record(z.string(), z.unknown()).optional(),
     approval: z
       .object({
         fields: ApprovalFieldsSchema,
@@ -176,6 +178,7 @@ export function seedCard(db: Db, arg: CardSeedArg, now: number): CardSeedReply {
         payload,
         nonce,
         expires_at: arg.approval ? (arg.approval.expiresAt ?? approvalExpiresAt(arg.approval.fields.verb, now)) : (arg.expiresAt ?? null),
+        ...(arg.answer ? { answer: arg.answer, resolved_by: 'tap', resolved_at: now } : {}),
         created_at: now,
       },
     },

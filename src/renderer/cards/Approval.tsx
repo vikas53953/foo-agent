@@ -5,13 +5,14 @@
 // "Checking…", HELD strip and two value buttons, APPROVED/RUNNING "Approved by you at {time}. Doing it now…", COMPLETED,
 // DECLINED, EXPIRED + "Ask me again", SUPERSEDED, WITHDRAWN, FAILED + "Try again", CHECKING, Offline), §5.5.5 (Ctrl+Enter
 // does nothing, Approve has no shortcut; card label "Approval needed: {title}"; Primary label "{Primary} to {object}"),
-// 05-1 §0.5 status edges, §0.6 (Esc never declines; the Primary is never focused automatically), 09 §9.17.4, X-01, X-03,
+// §5.5.4 read-only in history (the folded row toggles the card as approved plus "Approved by you at {time} · {scope}"),
+// 05-1 §0.5 status edges and summary row, §0.6 (Esc never declines; the Primary is never focused automatically), 09 §9.17.4, X-01, X-03,
 // X-04. CR-0009 G-M5-14 (Change focuses the composer; the typed text steers). Card words come from the card's fields and
 // copy keys, never AI free text. M5 T14: CHECKING → FAILED ("I can't tell if {site} did it…" + [ It went through ]
 // [ It didn't ], no Try again; a tap collapses it to "You said…", the card staying FAILED; G-M5-39, G-M5-32 (b)).
 import { useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
-import { formatDate, formatInr } from '../../shared/format';
+import { formatDate, formatInr, formatTime } from '../../shared/format';
 import { TID } from '../../shared/testids';
 import type { ApprovalFields, ApprovalPayload, ApprovalScope, ApprovalState, CardRow, PermissionApp } from '../../shared/types';
 import { invoke } from '../ipc/client';
@@ -22,7 +23,8 @@ import { CardButton } from './CardButton';
 import { CardFrame, CardTimeLabel, type CardTime } from './CardFrame';
 import { Countdown } from './parts/Countdown';
 import { HeldStrip } from './parts/HeldStrip';
-import { ScopeControl } from './parts/ScopeControl';
+import { SCOPE_LABEL, ScopeControl } from './parts/ScopeControl';
+import { useSummaryToggle } from './parts/useSummaryToggle';
 import { useCardAction } from './useCardAction';
 import styles from './Approval.module.css';
 
@@ -35,6 +37,8 @@ const APPROVAL_EDGE: Partial<Record<ApprovalState, 'accent' | 'warn' | 'bad'>> =
 };
 /** 05-1 §0.5 Declined / Expired / Superseded / Withdrawn: the muted look. */
 const MUTED: ReadonlySet<string> = new Set(['DECLINED', 'EXPIRED', 'SUPERSEDED', 'WITHDRAWN']);
+/** 05-2 §5.5.4: the folded states whose summary expands to the card as approved plus the decision line. */
+const DECIDED: ReadonlySet<string> = new Set(['APPROVED', 'RUNNING', 'COMPLETED']);
 
 const APP_NAME: Record<PermissionApp, () => string> = {
   gmail: () => t('cards.approval.app.gmail'),
@@ -203,21 +207,90 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
   const tap = { cardId: card.id, nonce: card.nonce, resolvedBy: 'tap' as const };
   const label = t('cards.approval.label', { title: p.title });
   const frame = { tid: 'cardApproval' as const, card, state, label, onKeyDown: swallowCtrlEnter };
+  const folded = useSummaryToggle();
 
+  const quote = kind === 'send_email' || kind === 'send_whatsapp' ? f.contentSummary : undefined;
+  const risks = [
+    ...(kind === 'send_email' && f.personalShared?.includes('address') ? [t('cards.approval.risk.home_address')] : []),
+    ...(kind === 'send_email' && f.amountPaise ? [t('cards.approval.risk.agrees_to_pay', { amount: formatInr(f.amountPaise) })] : []),
+  ];
+  const free = f.cancelTerms?.freeUntil;
+  const rows =
+    kind === 'book'
+      ? [
+          { label: t('cards.approval.book.row.charged_now'), value: formatInr(f.amountPaise ?? 0) },
+          ...(f.cancelTerms?.feePaise !== undefined
+            ? [{ label: t('cards.approval.book.row.no_show_fee'), value: formatInr(f.cancelTerms.feePaise) }]
+            : []),
+        ]
+      : [];
+  // The card's read-only body: the live card shows it above its buttons, a folded card's expanded view above its decision line.
+  const details = (
+    <>
+      <div className={styles.impact} data-testid={TID.cardApprovalImpact} data-copy="external">
+        {p.impact}
+      </div>
+      {risks.map((r, i) => (
+        <div key={i} className={styles.risk} data-testid={TID.cardApprovalRisk} data-index={i}>
+          <Icon name="Warning" size={16} className={styles.warnIcon} />
+          {r}
+        </div>
+      ))}
+      {quote && <Quote text={quote} />}
+      {rows.length > 0 && (
+        <dl className={styles.rows}>
+          {rows.map((r) => (
+            <div key={r.label} className={styles.row}>
+              <dt>{r.label}</dt>
+              <dd className={styles.money}>{r.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+      {kind === 'book' && free !== undefined && (
+        <div className={styles.small}>{t('cards.approval.book.row.free_cancel_until', { time: at(free) })}</div>
+      )}
+    </>
+  );
+
+  const resolvedAt = card.resolvedAt ?? card.updatedAt;
+  // 05-2 §5.5.4 read-only in history: the expanded view shows the card as approved plus "Approved by you at {time} · {scope}".
+  const answer = card.answer as { optionId?: string; scope?: ApprovalScope } | null;
+  // Only a card the user approved and that has not failed gets the toggle: a FAILED summary keeps its own buttons.
+  const decision =
+    DECIDED.has(state) &&
+    // A HELD card's "action" pick (SM-A4) is the user approving the action's terms once.
+    (answer?.optionId === 'approve' || answer?.optionId === 'action')
+      ? t('cards.approval.decision_line', {
+          time: formatTime(resolvedAt, { timeZone: tz }),
+          scope: SCOPE_LABEL[answer.scope ?? 'once'](),
+        })
+      : null;
   const summary = (icon: IconName, iconClass: string | undefined, text: string, extra?: ReactNode) => (
-    <CardFrame {...frame} muted={MUTED.has(state)} edge={APPROVAL_EDGE[state]}>
+    <CardFrame
+      {...frame}
+      muted={MUTED.has(state)}
+      edge={APPROVAL_EDGE[state]}
+      data={decision ? { 'data-expanded': folded.open ? 'true' : undefined } : undefined}
+    >
       <div className={styles.head}>
         <Icon name={KIND_ICON[kind]} size={20} className={styles.headIcon} />
         <span className={styles.title} data-copy="external">
           {p.title}
         </span>
       </div>
-      <div className={styles.summary}>
+      <div className={styles.summary} {...folded.rowProps(decision !== null)}>
         <Icon name={icon} size={16} className={iconClass} />
         <span className={styles.summaryText}>{text}</span>
         {extra}
         <CardTimeLabel {...time} />
       </div>
+      {decision !== null && folded.open && (
+        <>
+          {details}
+          <div className={styles.decisionLine}>{decision}</div>
+        </>
+      )}
     </CardFrame>
   );
 
@@ -263,7 +336,6 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
     );
   };
 
-  const resolvedAt = card.resolvedAt ?? card.updatedAt;
   switch (state) {
     case 'APPROVED':
     case 'RUNNING':
@@ -338,21 +410,6 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
   const decline = () => run('decline', () => invoke('card:decline', tap));
   const pick = (optionId: 'own' | 'action') => run('held', () => invoke('card:heldPick', { ...tap, optionId }));
   const change = () => document.querySelector<HTMLElement>(`[data-testid="${TID.composerField}"]`)?.focus();
-  const quote = kind === 'send_email' || kind === 'send_whatsapp' ? f.contentSummary : undefined;
-  const risks = [
-    ...(kind === 'send_email' && f.personalShared?.includes('address') ? [t('cards.approval.risk.home_address')] : []),
-    ...(kind === 'send_email' && f.amountPaise ? [t('cards.approval.risk.agrees_to_pay', { amount: formatInr(f.amountPaise) })] : []),
-  ];
-  const free = f.cancelTerms?.freeUntil;
-  const rows =
-    kind === 'book'
-      ? [
-          { label: t('cards.approval.book.row.charged_now'), value: formatInr(f.amountPaise ?? 0) },
-          ...(f.cancelTerms?.feePaise !== undefined
-            ? [{ label: t('cards.approval.book.row.no_show_fee'), value: formatInr(f.cancelTerms.feePaise) }]
-            : []),
-        ]
-      : [];
   const footer =
     kind === 'book' ? t('cards.approval.footer.book', { time: at(expiresAt) }) : t('cards.approval.footer.do', { time: at(expiresAt) });
 
@@ -371,29 +428,7 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
         </span>
         <Countdown expiresAt={expiresAt} timeZone={tz} />
       </div>
-      <div className={styles.impact} data-testid={TID.cardApprovalImpact} data-copy="external">
-        {p.impact}
-      </div>
-      {risks.map((r, i) => (
-        <div key={i} className={styles.risk} data-testid={TID.cardApprovalRisk} data-index={i}>
-          <Icon name="Warning" size={16} className={styles.warnIcon} />
-          {r}
-        </div>
-      ))}
-      {quote && <Quote text={quote} />}
-      {rows.length > 0 && (
-        <dl className={styles.rows}>
-          {rows.map((r) => (
-            <div key={r.label} className={styles.row}>
-              <dt>{r.label}</dt>
-              <dd className={styles.money}>{r.value}</dd>
-            </div>
-          ))}
-        </dl>
-      )}
-      {kind === 'book' && free !== undefined && (
-        <div className={styles.small}>{t('cards.approval.book.row.free_cancel_until', { time: at(free) })}</div>
-      )}
+      {details}
       {held ? (
         <>
           <HeldStrip word={t('cards.common.held_word')}>

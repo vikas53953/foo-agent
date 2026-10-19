@@ -337,6 +337,7 @@ export interface CardSeedRequest {
   payload: Record<string, unknown>;
   jobId?: string;
   expiresAt?: number;
+  answer?: Record<string, unknown>;
   approval?: { fields: ApprovalFields; hardLimit?: boolean; state?: ApprovalState; expiresAt?: number; submittedAt?: number };
 }
 export interface CardSeedResult {
