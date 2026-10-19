@@ -119,9 +119,6 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.checked {
-  border-color: var(--accent);
-}
 .summary {
   display: flex;
   align-items: center;

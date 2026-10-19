@@ -17,7 +17,7 @@ export interface ChoiceQuestion {
 export type ChoiceView = ChoicePayload & { steps?: ChoiceQuestion[] };
 
 export function questionsOf(p: ChoiceView): ChoiceQuestion[] {
-  return [{ question: p.question, options: p.options, multi: p.multi ?? false }, ...(p.steps ?? []).slice(0, 2)];
+  return [{ question: p.question, options: p.options ?? [], multi: p.multi ?? false }, ...(p.steps ?? []).slice(0, 2)];
 }
 
 const AND = new Intl.ListFormat('en-IN', { type: 'conjunction' });

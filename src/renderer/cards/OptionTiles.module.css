@@ -10,8 +10,7 @@
   gap: var(--s1);
   grid-template-columns: 1fr;
 }
-/* Card inner width ≥ 520 = the card (container) at ≥ 520 + 2 × (12 + 4) padding. */
-@container (min-width: 552px) {
+@container (min-width: 520px) /* local: 05-1 §5.4.1 wide layout at card inner width ≥ 520 (no token) */ {
   .n2,
   .n4 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -139,7 +138,7 @@
 .elseButton:hover {
   background: var(--bg-hover);
 }
-@container (min-width: 552px) {
+@container (min-width: 520px) /* local: 05-1 §5.4.1 wide layout at card inner width ≥ 520 (no token) */ {
   .tile {
     flex-direction: column;
     gap: var(--s0);

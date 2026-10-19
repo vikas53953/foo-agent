@@ -262,7 +262,7 @@ function OptionRow({
       aria-label={label}
       aria-disabled={disabled || undefined}
       tabIndex={onPick ? undefined : -1}
-      className={cx(cs.row, bestFit && cs.best, checked && cs.checked)}
+      className={cx(cs.row, bestFit && cs.best)}
       data-testid={TID.cardChoiceOption}
       data-index={index + 1}
       onClick={disabled || !onPick ? undefined : onPick}

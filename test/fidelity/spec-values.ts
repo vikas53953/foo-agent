@@ -72,6 +72,10 @@ export const SELECTORS: Record<string, string> = {
   // with its own hover motion (05-3 §5.18.2), so SV-31's --m-card state motion is measured on the framed cards.
   'SV-20': '[data-card-type]',
   'SV-31': '[data-card-type]:not([data-testid="card-job-link"])',
+  // M5 (T5): SV-21 "every text button" and SV-22 "primary button in cards" measured on the Choice card's Primary "Done"
+  // (05-1 §5.3.1 multi-select), a card pill button.
+  'SV-21': '[data-testid="card-choice-done"]',
+  'SV-22': '[data-testid="card-choice-done"]',
 };
 
 export function readRows(file = 'spec/spec-values.json'): SvRow[] {
