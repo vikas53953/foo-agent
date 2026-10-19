@@ -48,11 +48,7 @@ export function normalise(text: string): string {
 }
 
 /** Rule 2's comparison form: punctuation out, spaces collapsed. */
-const bare = (s: string) =>
-  normalise(s)
-    .replace(/\p{P}/gu, '')
-    .replace(/\s+/gu, ' ')
-    .trim();
+const bare = (s: string) => normalise(s).replace(/\p{P}/gu, '').replace(/\s+/gu, ' ').trim();
 
 const fold = (s: string) => s.normalize('NFKC').toLowerCase();
 

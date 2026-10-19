@@ -81,11 +81,27 @@ describe('AT-035a · 08-4 §26.6 rule 7: a tie is not an answer', () => {
   });
   it('AT-035a: the older card answers when only it matches', () => {
     const older = { ...flights, id: 'k1', createdAt: 1 };
-    const newer = { id: 'k2', createdAt: 2, purpose: 'job' as const, options: [{ id: 'o1', label: 'Window' }, { id: 'o2', label: 'Aisle' }] };
+    const newer = {
+      id: 'k2',
+      createdAt: 2,
+      purpose: 'job' as const,
+      options: [
+        { id: 'o1', label: 'Window' },
+        { id: 'o2', label: 'Aisle' },
+      ],
+    };
     expect(pickCard('indigo', [older, newer])).toEqual({ card: older, result: ans('o1') });
   });
   it('AT-035a: a tie on the newest card is the answer for that message (no older card takes it)', () => {
-    const older = { id: 'k1', createdAt: 1, purpose: 'job' as const, options: [{ id: 'o1', label: 'Air' }, { id: 'o2', label: 'Rail' }] };
+    const older = {
+      id: 'k1',
+      createdAt: 1,
+      purpose: 'job' as const,
+      options: [
+        { id: 'o1', label: 'Air' },
+        { id: 'o2', label: 'Rail' },
+      ],
+    };
     const newer = { ...flights, id: 'k2', createdAt: 2 };
     expect(pickCard('air', [older, newer])?.result.kind).toBe('tie');
   });
@@ -108,7 +124,8 @@ describe('08-4 §26.6 rule 4: reactions 1️⃣–4️⃣ answer Choice cards', 
 
 describe('08-4 §26.6 rule 5: skip words, only when the card shows Skip', () => {
   it.each(['skip', 'Skip it', 'rehne do', 'छोड़ो', 'ਛੱਡੋ'])('"%s" → skip', (text) =>
-    expect(typedAnswer(text, flights)).toEqual({ kind: 'answer', answer: { skip: true } }));
+    expect(typedAnswer(text, flights)).toEqual({ kind: 'answer', answer: { skip: true } }),
+  );
   it('file_in and photo_notice cards show no Skip, so "skip" is not an answer', () => {
     expect(typedAnswer('skip', { ...flights, purpose: 'file_in' })).toEqual({ kind: 'none' });
     expect(typedAnswer('skip', { ...flights, purpose: 'photo_notice' })).toEqual({ kind: 'none' });
