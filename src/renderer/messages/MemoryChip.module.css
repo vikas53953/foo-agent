@@ -1,0 +1,64 @@
+/* Spec: 05-3 §5.17.1 (0.3 Chip: visual 24 = 16 icon + 2 × --s0, padding 0 --s1, --r-full; bg --bg-sunken, text --fg-2,
+ * --t-caption; Brain 16 --fg-2; hover text --fg-1; undone / forgotten --fg-3; Undo / ✕ are 40px-hit Link / Icon buttons inside
+ * the pill's right end; chip change --m-normal), 05-1 §0.3 (hit area padded with a transparent ::before). */
+.row {
+  display: flex;
+  padding-top: var(--s0);
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s0);
+  max-width: 100%;
+  min-height: calc(var(--icon-sm) + 2 * var(--s0));
+  padding: 0 var(--s1);
+  border-radius: var(--r-full);
+  background: var(--bg-sunken);
+  color: var(--fg-2);
+  font: var(--t-caption);
+  transition: color var(--m-normal) var(--ease-standard);
+}
+.chip:hover {
+  color: var(--fg-1);
+}
+.chip[data-muted] {
+  color: var(--fg-3);
+}
+.text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.link,
+.icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: var(--t-caption);
+  cursor: pointer;
+}
+.icon {
+  color: var(--fg-2);
+}
+.link::before,
+.icon::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--s1));
+}
+.link:hover {
+  text-decoration: underline;
+}
+.link:focus-visible,
+.icon:focus-visible {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+.link:disabled,
+.icon:disabled {
+  cursor: default;
+}
