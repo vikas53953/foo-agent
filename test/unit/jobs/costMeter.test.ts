@@ -2,7 +2,9 @@
 // user's zone; pre-call cap check: monthSpent + estimateNextCall > cap → do not call), 08-4 §26.3 item 3 (pricing at the
 // provider's default-model rate), ART-13a (cap reached → 0 AI calls).
 import { describe, expect, it } from 'vitest';
+import { capRateOf, priceOf } from '../../../src/engine/ai/models';
 import { estimateCallPaise, monthBounds, overCap } from '../../../src/engine/jobs/costMeter';
+import { pricing } from '../m3-adapters-helpers';
 import { monthKey } from '../../../src/shared/format';
 
 const IST = 'Asia/Kolkata';
@@ -38,5 +40,21 @@ describe('08-2 §5.10 item 4 pre-call check', () => {
     // 3,500 chars ≈ 1,000 tokens in at $3/M + 1,000 out at $15/M = $0.018 → × 88 × 100 = 158.4 → 159 paise.
     expect(estimateCallPaise(3_500, 1_000, { inPerMTokUsd: 3, outPerMTokUsd: 15 }, 88)).toBe(159);
     expect(estimateCallPaise(3_500, 1_000, null, 88)).toBe(0);
+  });
+});
+
+describe("08-2 §5.10.2 an unpriced key model is priced at the provider's most expensive listed rate", () => {
+  it('a model with no price row still costs something, so the cap holds (Art. 13)', () => {
+    const rows = Object.values(pricing.providers['openai-key'].models);
+    const top = Math.max(...rows.map((r) => r.inPerMTokUsd + r.outPerMTokUsd));
+    const rate = capRateOf(pricing, 'openai-key', 'model-with-no-price-row');
+    expect(rate && rate.inPerMTokUsd + rate.outPerMTokUsd).toBe(top);
+    expect(estimateCallPaise(3_500, 1_000, rate ?? null, pricing.usdToInr)).toBeGreaterThan(0);
+  });
+
+  it('a priced model keeps its own rate; a plan or local provider has none', () => {
+    const model = pricing.models['openai-key'].defaultModel;
+    expect(capRateOf(pricing, 'openai-key', model)).toEqual(priceOf(pricing, 'openai-key', model));
+    expect(capRateOf(pricing, 'claude-cli', 'any')).toBeUndefined();
   });
 });

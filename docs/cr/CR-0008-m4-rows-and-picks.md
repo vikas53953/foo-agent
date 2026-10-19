@@ -183,3 +183,43 @@ Independent review (Fable, 2026-10-19 ~04:05Z, read-only): **PASS**; its one act
 pre-X-145 dark user bubble) and its considers (row 5 card fill, row 7 button colour, light-run note, clock note) are
 applied above. Recorded as approved on Vikas's behalf under his standing rule (2026-10-18 14:56Z) and his overnight
 message (2026-10-18 19:16Z); listed for his later review.
+
+## (j) Close-out (T7): what M4 does not do yet, moved to M5
+
+The close-out two-axis review (Standards + Spec, 2026-10-19 ~05:35Z, read-only) found these spec lines not met on the
+M4 branch. None is a design change; each is work the spec already describes, moved to M5 so M4 can land. Until M5 the
+tester build behaves as the "Now" column says.
+
+| #   | Spec line                                                                                        | Now (M4)                                                                                                                                                                                       | M5 does                                                                  |
+| --- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| 1   | 08-2 §5.10.3 "updated per turn, `spend:update` event"                                            | the Spent meter refreshes only at launch and after an AI check                                                                                                                                 | main emits `spend:update` after each `ai_turns` write                    |
+| 2   | 08-2 §5.10.4 "At ≥ 80 % (once per month) → amber state + one line in foo's chat"                 | no 80 % state or line; the stop at the cap works                                                                                                                                               | the 80 % check in the cost meter, once per month                         |
+| 3   | 08-2 §5.3.3 "'Change plan' → the text goes back to an intake turn with the old plan attached"    | **user-visible:** Change plan stops the job and the card says "Plan changed. See the new one below." with nothing below; the typed change is kept only in the card's answer, never sent to foo | re-intake with the old plan and the new Plan card below (05-3 §5.12)     |
+| 4   | 05-3 §5.12 "No answer 24 h → … 'I didn't start {job} because I didn't hear back.'" (`withdrawn`) | a Plan card waits for Go with no time limit                                                                                                                                                    | the 24 h timer and the `withdrawn` summary                               |
+| 5   | 08-2 §5.10.4 cap check "every AI call on a key provider, including background ones"              | checked before job step turns and the stuck-classify turn; chat-lane turns (intake, repair, rewrite) are not checked                                                                           | intake, repair and rewrite turns checked too                             |
+| 6   | 08-2 §5.9.5 first step after a crash gets a `RECOVERY` block; the gate refuses repeats           | unknown calls are marked `unknown` (not in safe mode); no block. The M4 gate refuses every side-effect tool, so nothing can repeat yet                                                         | the `RECOVERY` block and the gate rule                                   |
+| 7   | CR-0008 (b)19 "the list must be empty at M4 close-out"                                           | `scripts/copy-pending.json` keeps 20 keys: 18 labelled M4 (T2 2, T3 3, T4 3, T7 10) whose screens or runner data M4 did not wire, and 2 for M5/M10                                             | each key leaves the list with the code that shows it                     |
+| 8   | 07-2 §4 `waiting` reason `opens_at`; pack: queue 15 s tick for `wake_at`                         | no producer of `opens_at` and no tick                                                                                                                                                          | the tick, with its first producer                                        |
+| 9   | 08-2 §5.9.1 safe mode "do not start jobs or routines"                                            | the runner is held; jobs that were `working` stay `working` with nothing running                                                                                                               | what those jobs show in safe mode (no `WaitingReason` fits: a GAPS pick) |
+| 10  | 08-2 §5.7.3–4 every stop writes `stopped_job` and a stop-report line                             | a stop from the crash-recovery card writes neither                                                                                                                                             | `stopRecovered` writes both                                              |
+| 11  | pack PERF-07/08/11 (p95)                                                                         | single-run smokes; PERF-07 measures a plain question (a job's 👀 is debounced away, 04 §4.2)                                                                                                   | the p95 runs; PERF-07 on the job path                                    |
+| 12  | the app bug found in (i)                                                                         | with no reset time the chat header and sidebar read "Claude limit until" with nothing after                                                                                                    | a no-reset copy form (its own CR)                                        |
+
+Built at close-out instead of moved: 08-2 §5.10.2 "an unpriced key model uses that provider's most expensive listed
+rate" (Art. 13). The cap estimate now uses `capRateOf` (`src/engine/ai/models.ts`; most expensive = highest in + out
+per MTok), so the cap holds for a key model with no price row (test in `test/unit/jobs/costMeter.test.ts`). The
+recorded cost of such a turn is still null (no price row), as before. Also built: the two AI-turn `catch` blocks
+(`JobRunner.ts`, `watchdog.ts`) now write a log line before falling back to an `UNKNOWN` result.
+
+Trace rows these moves touch: PERF-07, PERF-08 and PERF-11 stay `live` in `spec/trace.csv` as smokes (row 11);
+AT-083 / ART-13a cover the step and classify turns only (row 5). Code-standard item also for M5: card payloads are read
+with `as unknown as` casts instead of a schema per card type (renderer cards and `jobIpc.ts`; main still checks every
+answer against the stored card).
+
+Kept as built (decided earlier, not moved): answered NEEDS_YOU jobs go ahead of queued ones (T2 picks); `error:fix`
+accepts any action equal to the stored card's button (this CR, (f)).
+
+Independent review (Fable, 2026-10-19 ~05:40Z, read-only): FAIL on the first draft with five act items (row 5 and 3
+wording, row 7 count, build the unpriced-rate fallback, these closing lines) and considers (rows 9 and 10, the limit
+copy bug); all applied above; a Sonnet re-check of the fixes passed. Recorded as approved on Vikas's behalf under his standing rule (2026-10-18 14:56Z) and
+his overnight message (2026-10-18 19:16Z); listed for his later review.

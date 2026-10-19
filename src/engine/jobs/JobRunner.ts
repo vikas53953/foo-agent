@@ -1153,6 +1153,7 @@ export class JobRunner {
           c.abort.signal,
         );
       } catch {
+        this.d.log('job.ai_turn_threw', 'UNKNOWN', { jobId: job.id, chatId: job.chatId });
         r = {
           text: '',
           usage: { tokensIn: null, tokensOut: null, cacheRead: null, cacheWrite: null, costUsd: null },
