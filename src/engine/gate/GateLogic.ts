@@ -4,9 +4,11 @@
 // booking), 08-0 §A.2 (send, book, pay, delete, share can never be `always`; post is `never` in v1), Art. 3 (read-only jobs
 // only offer), Art. 14 (group chats: cards go to the owner helper's 1:1 chat), 08-3 §17 (helper allowedApps AND permissions).
 // M5 T7 replaces the M4 stub (CR-0008 G-M4-05) under the same interface name (M5 map, monitor pass 1 (e)).
+// M5 T8: `GateCall.content` feeds the §9.2 send hard limit.
 import type { Settings } from '../../shared/settings';
 import type { ApprovalFields, PermissionApp } from '../../shared/types';
 import { appOf, classOf, isHardLimit, personalHard, rowFor, type PermRow } from './classes';
+import type { SendContent } from './sendContent';
 
 export type ActionClass =
   'read' | 'prepare' | 'calendar_write' | 'send' | 'book' | 'buy' | 'pay' | 'post' | 'delete' | 'share_personal' | 'switch';
@@ -48,6 +50,8 @@ export interface GateCall {
   fields?: ApprovalFields;
   /** 08-4 §28.2: a `gcal.create` whose start equals an approved booking of this job. */
   coveredByBooking?: boolean;
+  /** M5 T8: a send's message text and attachments (§9.2 send hard limit). */
+  content?: SendContent;
 }
 
 export type GateDecision =
@@ -103,7 +107,7 @@ export function createGate(d: GateDeps): GateLogic {
       if (cls === 'read') return { kind: 'EXECUTE' };
       if (cls === 'prepare' && !personalHard(call.tool, call.args)) return { kind: 'EXECUTE' };
       if (job.intent === 'read_only') return { kind: 'ASK_CHOICE', purpose: 'offer_action', cls };
-      const hard = isHardLimit(cls, call.fields, d.now());
+      const hard = isHardLimit(cls, call.fields, d.now(), call.content);
       // Only read, drafts and calendar may be `always` (08-0 §A.2); no second look for them.
       if (!hard && perm === 'always') return { kind: 'EXECUTE' };
       if (!hard && cls === 'calendar_write' && call.coveredByBooking) return { kind: 'EXECUTE' };

@@ -2,8 +2,10 @@
 // only browser.click §8.2.1, browser.fillPersonal and browser.submit need the tool to find the class), §8.2 (tools; the
 // engine-only tools the AI never calls: gmail.send, whatsapp.send, gmail.trash, browser.fillCard, browser.submit),
 // pack M5 §7 risk 1 (AI-called fill/submit/send → USE_SUBMIT), 08-0 §G.3 (permission rows), X-125.
+// M5 T8: the send hard limit also reads the message content (bank details, attachments from Documents, agrees to pay).
 import type { ApprovalFields, PermissionApp } from '../../shared/types';
 import type { ActionClass } from './GateLogic';
+import { sendContentHard, type SendContent } from './sendContent';
 
 /** 08-0 §G.3 permission rows (settings.permissions.actions keys). */
 export type PermRow = 'read' | 'drafts' | 'calendar' | 'send' | 'book' | 'pay' | 'post' | 'delete' | 'share';
@@ -87,10 +89,10 @@ export function personalHard(tool: string, args: unknown): boolean {
 
 /**
  * §9.2 hard-limit column. send: a new recipient, a group, or content with address / phone / bank details / documents or an
- * agreement to pay (the engine marks the last ones in `personalShared`); book: a phone or address shared, or no free cancel;
- * buy, pay, post, delete, share_personal, switch: always. read, prepare, calendar_write: never.
+ * agreement to pay (address and phone in `personalShared`, the rest read from `content`, M5 T8); book: a phone or address
+ * shared, or no free cancel; buy, pay, post, delete, share_personal, switch: always. read, prepare, calendar_write: never.
  */
-export function isHardLimit(cls: ActionClass, fields: ApprovalFields | undefined, now: number): boolean {
+export function isHardLimit(cls: ActionClass, fields: ApprovalFields | undefined, now: number, content?: SendContent): boolean {
   switch (cls) {
     case 'read':
     case 'prepare':
@@ -100,7 +102,8 @@ export function isHardLimit(cls: ActionClass, fields: ApprovalFields | undefined
       return (
         !fields ||
         (fields.recipients ?? []).some((r) => r.isNew || r.isGroup) ||
-        (fields.personalShared ?? []).some((p) => p === 'phone' || p === 'address')
+        (fields.personalShared ?? []).some((p) => p === 'phone' || p === 'address') ||
+        sendContentHard(content)
       );
     case 'book': {
       if (!fields) return true;
