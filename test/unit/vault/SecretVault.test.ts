@@ -47,6 +47,41 @@ describe('SecretVault.save', () => {
     expect(keyring.entries.size).toBe(0);
   });
 
+  it('an ai_key name is a key provider only: a CLI, local or fake provider has no key to save', () => {
+    const { vault, keyring } = vaultHarness();
+    for (const name of ['claude-cli', 'codex-cli', 'gemini-cli', 'ollama', 'fake', 'openai']) {
+      const r = vault.save('ai_key', name, { value: FAKE_KEY });
+      expect(r.ok ? 'ok' : r.error.kind).toBe('VALIDATION');
+    }
+    expect(keyring.entries.size).toBe(0);
+    for (const name of ['openai-key', 'anthropic-key', 'google-key']) expect(vault.save('ai_key', name, { value: FAKE_KEY }).ok).toBe(true);
+  });
+
+  it('an index write that fails takes the stored value back: no value is left without its row', () => {
+    const { vault, keyring, db, blobDir } = vaultHarness();
+    db.exec("CREATE TRIGGER t9_fail BEFORE INSERT ON secrets_index BEGIN SELECT RAISE(ABORT, 'index down'); END");
+    const r = vault.save('ai_key', 'openai-key', { value: FAKE_KEY });
+    expect(r.ok ? 'ok' : r.error.kind).toBe('VAULT_WRITE_FAILED');
+    expect(keyring.entries.size).toBe(0);
+    // The same for a value too big for Credential Manager (a safeStorage blob).
+    const big = vault.save('hub_key', 'composio', { key: 'k'.repeat(CREDMAN_MAX_BYTES), userId: 'u_example' });
+    expect(big.ok ? 'ok' : big.error.kind).toBe('VAULT_WRITE_FAILED');
+    expect(existsSync(blobDir) ? readdirSync(blobDir) : []).toEqual([]);
+    expect(db.prepare('SELECT COUNT(*) AS n FROM secrets_index').get()).toEqual({ n: 0 });
+  });
+
+  it('a replace that moves stores and then fails its index write keeps the old value its row still names', () => {
+    const { vault, keyring, db, blobDir } = vaultHarness();
+    expect(vault.save('hub_key', 'composio', { key: 'k-small-fake', userId: 'u_example' }).ok).toBe(true);
+    expect(keyring.entries.has('foo/hub_key/composio')).toBe(true);
+    db.exec("CREATE TRIGGER t9_fail BEFORE UPDATE ON secrets_index BEGIN SELECT RAISE(ABORT, 'index down'); END");
+    const r = vault.save('hub_key', 'composio', { key: 'k'.repeat(CREDMAN_MAX_BYTES), userId: 'u_example' });
+    expect(r.ok ? 'ok' : r.error.kind).toBe('VAULT_WRITE_FAILED');
+    expect(keyring.entries.has('foo/hub_key/composio')).toBe(true);
+    expect(existsSync(blobDir) ? readdirSync(blobDir) : []).toEqual([]);
+    expect(db.prepare('SELECT storage FROM secrets_index').get()).toEqual({ storage: 'credman' });
+  });
+
   it('X-129: a second card with the same last 4 is SECRET_EXISTS; other kinds replace', () => {
     const { vault, keyring } = vaultHarness();
     const card = { number: '4242424242424242', expiry: '08/29', name: 'A' };

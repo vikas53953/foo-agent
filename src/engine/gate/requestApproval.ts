@@ -63,7 +63,7 @@ const fail = (why: string): VerifyResult => ({ ok: false, reason: 'APPROVAL_EVID
 export function verifyRequestApproval(raw: unknown, snap: ApprovalSnapshot): VerifyResult {
   const parsed = ApprovalDraftSchema.safeParse(raw);
   if (!parsed.success) return fail('schema');
-  const draft = parsed.data as ApprovalDraft;
+  const draft: ApprovalDraft = parsed.data;
   const verb = draft.verb;
   // Item 6: buy and pay are interchangeable for this check.
   const asked =
