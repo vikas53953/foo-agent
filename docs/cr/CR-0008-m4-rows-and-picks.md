@@ -122,3 +122,64 @@ lead's independent check.
 - (c) `job:retry` also accepts a `done_unverified` job, for 05-3 §5.16 line 352 ("Check for real" → a new job "Checking
   {title} live" linked to the old one). Extends 08-1 line 375 / G-M4-01 (a new linked job); main refuses a second retry
   of the same job, as the runner does.
+
+## (g) Addendum (T7): where the M4 card drawings and the M4 app disagree
+
+The M4 card captures (BP-CARD-02/12/15/18/19/20, `golden/manifest.json`) run in the golden lane from M4 on
+(`FIDELITY_MILESTONE: M4`). A local Tier R run (M1…M4 refs, app captures from `test/fidelity/bp/`) failed all six on R1
+and R2, and BP-CARD-15 and BP-CARD-19 on R3; R4 passed on all six. The app follows the written spec and the `ux-world`
+seed (11-fidelity §11.2.3: state comes from the seed, never bent to match a picture), as in CR-0003 §(b).
+
+| #   | Ref(s)     | Drawing shows                                            | App and spec                                                                                                                                    | Spec                     |
+| --- | ---------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| 1   | all six    | Card words from the Blueprint gallery's own example jobs | Card words from the `ux-world` seed's card rows (R1 counts every word)                                                                          | §11.2.3                  |
+| 2   | all six    | 350px mini panels                                        | Cards at their spec width (up to 440px) inside the real column (R2 size)                                                                        | 05-1 §0.2; CR-0003 §(b)1 |
+| 3   | BP-CARD-15 | Proof bubble plus chips; R3 samples the bubble           | The capture is the proof chip only (186×24, measured; bg `--ok-soft`); the centre sample lands on an anti-aliased pixel of the `--ok` chip text | 05-3 §5.15               |
+| 4   | BP-CARD-19 | Error card filled pink                                   | `--bg-raised` card with a 1.5px `--bad` / `--warn` top edge                                                                                     | 05-3 §5.20.1             |
+
+Disputed checks (`docs/fidelity/disputes.json`): `{cr: "CR-0008", ids: [the six], checks: ["r1", "r2"]}` and
+`{cr: "CR-0008", ids: ["BP-CARD-15", "BP-CARD-19"], checks: ["r3"]}`, until the spec keeper redraws the gallery. Every
+other check still counts. Spec-keeper list: redraw the six gallery minis from the `ux-world` seed at card width; error
+card per 05-3 §5.20.1. The §11.2.7 step 2 GAPS.md line is left to the spec keeper with that redraw, as for CR-0003 (GAPS.md
+is CR-gated in `spec/`).
+
+Independent review (Fable, 2026-10-19 ~03:20Z, read-only): **PASS**, no "act" findings; all four cites checked against
+`spec/constitution/` and the app code (`Card.module.css` edge rules, `Pill.module.css` `--ok-soft`). Its three "consider"
+wordings are applied above. Recorded as approved on Vikas's behalf under his standing rule (2026-10-18 14:56Z) and his
+overnight message (2026-10-18 19:16Z, "dont wait for my aproval"); listed for his later review.
+
+## (h) Close-out (T7): trace statuses
+
+At close-out the §(a) rows whose test files exist and carry their ids in a test title are set `live` in `spec/trace.csv`
+(FID-18 checks each one), and `spec/SPEC-MANIFEST.json` is regenerated (`pnpm spec:verify --write`) under this CR. No row
+is added, removed or moved to another milestone; ids, files and spec sections are unchanged.
+
+## (i) Addendum (T7): where the UX-05 and UX-23 frames and the M4 app disagree
+
+The M4 walkthrough steps (UX-05-02…04, UX-23-01…06, 09, 11) are captured by `test/fidelity/ux/UX-05.first.spec.ts` and
+`UX-23.errors.spec.ts` from the `ux-world` seed and the real job runner on the fake AI (§11.2.3). A local Tier R run
+failed every step on R1; the table names each gap and the checks it disputes. The app follows the written spec; each
+file's header lists the same gaps.
+
+| #   | Step(s)                   | Frame shows                                                                   | App and spec                                                                                                                                             | Spec                                | Disputed |
+| --- | ------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | -------- |
+| 1   | all eleven                | Chapter 5 / 23 scenes with their own words and times (7:48 PM, Goa rows)      | The one `ux-world` seed at 9:41 AM; step rows are catalogue phrases                                                                                      | §11.2.3; 08-4 §26.1                 | r1       |
+| 2   | all but UX-23-01          | Mini frames: rows at the frame's own positions and sizes                      | Real column and card widths; the seeded Trips gallery and "Not sent." notice move rows                                                                   | 05-1 §0.2; CR-0003 §(b)1            | r2       |
+| 3   | UX-05-02, UX-23-02 (dark) | User bubble drawn #F1F1F5 in dark (the walkthrough's pre-X-145 `--bubble-me`) | `--bubble-me` dark = indigo #2B3FD6                                                                                                                      | 02 §F2; X-145 (badge glyph 04 §4.2) | r3, r4   |
+| 4   | UX-05-04                  | "✓ Proof: 3 emails · open", green                                             | M4 has no connector to re-check the emails, so the job ends unverified: "⚠ Not checked live" (amber), no sparks                                          | 05-3 §5.15–§5.16; Art. 11           | r3, r4   |
+| 5   | UX-23-04                  | "Use ChatGPT instead" link on a pink (`--bad-soft`) card fill                 | No verified backup AI in the run, so only "Try again"; the card is the §0.2 `--bg-raised` frame with a `--bad` top edge, no tint                         | 05-3 §5.20; 08-3 §21.2              | r3, r4   |
+| 6   | UX-23-06, UX-23-09        | Dark filled button                                                            | The card's primary pill in `--accent`                                                                                                                    | 05-1 §0 (buttons); X-01             | r3, r4   |
+| 7   | UX-23-11                  | Connector / site one-liners with a dark "Reconnect" pill                      | Connectors (M8) and the browser (M9) are not built; the runner's one-line UNKNOWN card with its one fixing button, an `--accent` primary pill (as row 6) | 08-3 §21.2; 05-1 §0                 | r3, r4   |
+
+Disputed checks (`docs/fidelity/disputes.json`): r1 on all eleven; r2 on all but UX-23-01; r3 and r4 on rows 3–7. Every
+other check still counts. disputes.json has no theme axis, so row 3's r3/r4 dispute also covers the light runs of
+UX-05-02 and UX-23-02 (there r3 passes and r4 is review). The clock stays at the seed's 9:41 AM rather than each step's
+time (§11.2.3): one world for every chapter, as CR-0003 row 12 kept it for chapter 9. Spec-keeper list: redraw chapter 5 and 23 frames from the `ux-world` seed; the M8/M9 steps
+(UX-23-04 backup link, UX-23-11 connector lines) re-run when those milestones land. App bug found while capturing
+(not a fidelity dispute, for M5): with a plan limit and no reset time the chat header and sidebar read "Claude limit
+until" with nothing after it; those two copy keys need a no-reset form (copy change, its own CR).
+
+Independent review (Fable, 2026-10-19 ~04:05Z, read-only): **PASS**; its one act item (row 3's reason: the drawing's
+pre-X-145 dark user bubble) and its considers (row 5 card fill, row 7 button colour, light-run note, clock note) are
+applied above. Recorded as approved on Vikas's behalf under his standing rule (2026-10-18 14:56Z) and his overnight
+message (2026-10-18 19:16Z); listed for his later review.

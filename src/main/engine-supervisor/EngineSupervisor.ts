@@ -1,8 +1,8 @@
 // Spec: 08-1 §2.1 (utility `engine`: forked by EngineSupervisor at app ready + 300 ms, after first paint; on a crash the
 // supervisor restarts it), §2.2 step 6, §2.4 (transport: `utilityProcess.fork(engine.js)` + one MessageChannelMain, 08-0 §G.6),
 // 08-0 §E.6 (the engine sees the same {DATA}/{LOCAL} and test overrides as main).
-// Deferred: `engineCrashes` in launches.json and safe mode at 3 crashes (08-0 §G.14) arrive with launches.json (M11); until
-// then a crash restarts the engine at most 3 times per launch (implementation-notes "M3").
+// M4 T4: each crash is counted in launches.json (`onCrashed`, 08-1 §4.1.3); at 3 crashes in one launch the restarted engine
+// runs in safe mode (08-0 §G.14). A crash restarts the engine at most 3 times per launch.
 import { app, MessageChannelMain, utilityProcess, type MessagePortMain, type UtilityProcess } from 'electron';
 import { join } from 'node:path';
 import type { MainToEngine } from '../../engine/protocol';
@@ -27,6 +27,8 @@ export class EngineSupervisor {
   private stopping = false;
   /** Called after every (re)start once the port is wired: main sends settings and the network state. */
   onStarted: () => void = () => {};
+  /** Called on every crash before the restart (launches.json `engineCrashes`). */
+  onCrashed: () => void = () => {};
 
   constructor(
     private bridge: EngineBridge,
@@ -65,6 +67,7 @@ export class EngineSupervisor {
       this.child = null;
       if (this.stopping) return;
       console.error(`engine exited (${code})`);
+      this.onCrashed();
       if (this.restarts < MAX_RESTARTS) {
         this.restarts += 1;
         this.start();

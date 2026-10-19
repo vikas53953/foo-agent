@@ -108,8 +108,8 @@ jobs:
     permissions:
       contents: write
     env:
-      FIDELITY_MILESTONE: M3
-      FIDELITY_REFS: M1,M2,M3
+      FIDELITY_MILESTONE: M4
+      FIDELITY_REFS: M1,M2,M3,M4
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4

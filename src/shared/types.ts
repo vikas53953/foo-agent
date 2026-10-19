@@ -227,6 +227,8 @@ export interface ErrorPayload {
   of?: number;
   paymentChecking?: boolean;
   doneLines?: string[];
+  /** SM-A10: set when the job resumes; the fixed card shows it under "Fixed · {time}". */
+  resumedLine?: string;
 }
 export interface SpendCapPayload {
   which: 'ai' | 'purchase';
