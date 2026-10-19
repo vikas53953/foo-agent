@@ -23,8 +23,11 @@ async function start() {
 async function seedCard(page: Page, payload: Record<string, unknown>) {
   const r = await page.evaluate((s) => window.__fooTest!.cardSeed(s), seed(payload));
   const card = page.locator(`${byTid(TID.cardChoice)}[data-card-id="${r.cardId}"]`);
-  await card.scrollIntoViewIfNeeded();
-  await expect(card).toBeVisible();
+  // The virtual log can re-render the row while it scrolls (a new row lands, Windows CI): retry until it holds still.
+  await expect(async () => {
+    await card.scrollIntoViewIfNeeded({ timeout: 1_000 });
+    await expect(card).toBeVisible({ timeout: 500 });
+  }).toPass({ timeout: 10_000 });
   return { card, r };
 }
 
