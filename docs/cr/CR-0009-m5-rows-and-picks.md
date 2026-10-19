@@ -213,11 +213,10 @@ batch independent review (Fable) checks them before the milestone PR; until then
   and 05-2 §5.5.2 says the text is built only from the verified fields. The engine builds `title` / `impact` from the
   verified draft (`src/engine/gate/approvalText.ts`); main's `openFromEngine` stores them. Rejected: main builds the
   text (two copies of the card-kind rules, and main would need the job's time zone logic). Pending review.
-- **G-M5-30** (T7) Decline line keys: `thread.approval.declined` "Okay, I won't. {next}" and
-  `thread.approval.declined.nothing_else` "Nothing else to do here." The words are AT-110's and 07-2 §4's verbatim;
-  the fork is only the key names. Pending review.
-- **G-M5-31** (T7) `cards.approval.book.party` "{count} people" (05-2 §5.5.2 booking line "… · 4 people", 08-4 §28.4
-  "people '4 people'"); no key existed. Pending review.
+- **G-M5-30** (T7) T7 copy keys: `thread.approval.declined` "Okay, I won't. {next}" and
+  `thread.approval.declined.nothing_else` "Nothing else to do here." (AT-110 and 07-2 §4 verbatim), and
+  `cards.approval.book.party` "{count} people" (05-2 §5.5.2 booking line "… · 4 people", 08-4 §28.4). The fork is only
+  the key names. Pending review.
 - **G-M5-32** (T7, deferral and spec-keeper items) (a) The deadline-reminder buttons stay disabled: Keep it needs a
   PENDING → COMPLETED approval edge the machine does not have (07-2 §5), and neither Keep it nor Cancel booking has an
   IPC channel (08-1 §3.2). Both move to the first milestone that creates `deadline_reminder` cards; M5 makes none.
