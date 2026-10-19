@@ -22,6 +22,7 @@
 // - UX-23-11: the drawn one-liners are connector and site problems (Gmail expired, WhatsApp unlinked: M8; a blocked site
 //   needs the M9 browser's SITE_BLOCKED). M4's runner raises the one-line UNKNOWN card ("Nothing was booked, paid or sent",
 //   one fixing button), captured with its button as hl.
+import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test, type ElectronApplication, type Locator, type Page } from '@playwright/test';
@@ -255,14 +256,28 @@ test('UX-23 · When things go wrong: steps UX-23-01 to UX-23-06, UX-23-09 and UX
     // (which pauses the job instead, 08-2 §5.9 step 3), and the relaunch would find no unfinished job.
     const proc = first.app.process();
     const gone = new Promise<void>((r) => (proc.exitCode !== null || proc.signalCode !== null ? r() : proc.once('exit', () => r())));
-    proc.kill('SIGKILL');
+    // On Windows a kill of the main process alone leaves its Chromium children holding the profile lock, so the
+    // relaunch exits at once; kill the whole tree there.
+    if (process.platform === 'win32' && proc.pid !== undefined) {
+      execFileSync('taskkill', ['/PID', String(proc.pid), '/T', '/F'], { stdio: 'ignore' });
+    } else proc.kill('SIGKILL');
     await gone;
     const launches = JSON.parse(readFileSync(join(first.dirs.FOO_DATA_DIR, 'launches.json'), 'utf8')) as {
       launches: { clean: boolean }[];
     };
     expect(launches.launches.at(-1)?.clean).toBe(false);
 
-    const { app } = await launchWithFakeAi([VERIFY_OK, HOLD], { dirs: first.dirs });
+    // Windows can take a moment to release the killed tree's file locks; a relaunch that meets one exits at once.
+    let relaunched: Awaited<ReturnType<typeof launchWithFakeAi>> | undefined;
+    for (let attempt = 1; !relaunched; attempt++) {
+      try {
+        relaunched = await launchWithFakeAi([VERIFY_OK, HOLD], { dirs: first.dirs });
+      } catch (err) {
+        if (attempt >= 3) throw err;
+        await new Promise((r) => setTimeout(r, 2_000));
+      }
+    }
+    const { app } = relaunched;
     const page = await app.firstWindow();
     await page.getByTestId(TID.titlebarStrip).waitFor();
     await windowSize(app, page, 1280, 800);

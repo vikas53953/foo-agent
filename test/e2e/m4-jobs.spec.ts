@@ -93,10 +93,16 @@ test('PERF-08: job start → checklist painted no earlier than 1.5 s and by 2 s'
   await expect(badge).toHaveAttribute('data-state', 'working');
   // foo's chat already holds the seeded Goa job's checklist (and the log is virtualised), so find this job's by its step.
   const checklist = log.getByTestId(TID.cardChecklist).filter({ hasText: 'bills due this week' });
+  // The log keeps only rows near the viewport in the DOM, so pin it to the newest row before each look.
+  const toNewest = () => log.evaluate((el) => (el.scrollTop = el.scrollHeight));
   await advance(page, 1_400, 100);
+  await toNewest();
   await expect(checklist).toHaveCount(0);
   await advance(page, 600, 100);
-  await expect(checklist).toHaveCount(1);
+  await expect(async () => {
+    await toNewest();
+    await expect(checklist).toHaveCount(1, { timeout: 1_000 });
+  }).toPass({ timeout: 15_000 });
   await app.close();
 });
 
