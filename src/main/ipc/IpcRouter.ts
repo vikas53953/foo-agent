@@ -59,6 +59,7 @@ import { FIX_ACTION_KINDS, JOB_CHANNELS, jobIpc } from '../jobs/jobIpc';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
 import { isTrustedUrl } from '../windows/protocol';
+import { logEvent } from '../log/techLog';
 import { answerIpc, cardReaction } from '../cards/answerIpc';
 import { approvalIpc } from '../approvals/approvalIpc';
 import { draftIpc } from '../drafts/draftIpc';
@@ -279,13 +280,14 @@ export function handle<C extends InvokeChannel>(channel: C, fn: Handler<C>): voi
   channels().handle(channel, async (raw: unknown) => {
     const parsed = SCHEMAS[channel].safeParse(raw ?? {});
     if (!parsed.success) {
-      console.warn(`IPC_REJECTED ${channel}: payload failed validation`);
+      logEvent({ lvl: 'warn', mod: 'ipc', evt: 'IPC_REJECTED', kind: channel });
       return fail('IPC_REJECTED');
     }
     try {
       return await fn(parsed.data);
     } catch (e) {
-      console.error(`ipc ${channel}`, e);
+      // The error object can carry message text or a payload; only its name reaches the log (R7).
+      logEvent({ lvl: 'error', mod: 'ipc', evt: 'IPC_FAILED', kind: `${channel} ${e instanceof Error ? e.name : typeof e}` });
       return fail('UNKNOWN');
     }
   });
