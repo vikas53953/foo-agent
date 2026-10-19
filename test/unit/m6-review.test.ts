@@ -128,9 +128,11 @@ describe('M6 T5 review trigger (08-3 §12.4)', () => {
             ? chat
             : q === 'messagesBefore'
               ? [...messages]
-              : q === 'memoryByScope' || q === 'memory.tombstones'
-                ? []
-                : null) as T,
+              : q === 'memory.byId'
+                ? fact('f_secret', 'said')
+                : q === 'memoryByScope' || q === 'memory.tombstones'
+                  ? []
+                  : null) as T,
         ),
       tx: () => Promise.resolve({ ok: true, value: { ids: [] } } as never),
       newId: (p) => `${p}_x`,
@@ -152,11 +154,11 @@ describe('M6 T5 review trigger (08-3 §12.4)', () => {
       log: () => undefined,
     };
     const review = new MemoryReview(d);
-    const say = (text: string, author: EngineMessage['authorKind'] = 'user') => {
+    const say = (text: string, author: EngineMessage['authorKind'] = 'user', thisRun = true) => {
       seq += 1;
       const m = msg(`m_${seq}`, seq, author, text);
       messages.push(m);
-      if (author === 'user') review.userMessage('c_1', seq);
+      if (author === 'user' && thisRun) review.userMessage('c_1', seq);
       return m;
     };
     const tick = async (ms: number) => {
@@ -234,6 +236,8 @@ describe('M6 T5 review trigger (08-3 §12.4)', () => {
 
   it('a job-done review with no user message in this run reads nothing (no re-read after a restart)', async () => {
     const r = rig();
+    // Written before a restart: in the chat, but never seen by this run's userMessage().
+    r.say('I hate early flights', 'user', false);
     r.review.after('c_1');
     await r.tick(30_000);
     expect(r.turns).toHaveLength(0);
