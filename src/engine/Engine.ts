@@ -26,7 +26,7 @@ import { ReleaseGate } from './prompt/releaseGate';
 import { Redactor } from './redact/Redactor';
 import { findBanned } from './prompt/filters';
 import { capRateOf, resolveModel } from './ai/models';
-import { stubGate } from './gate/GateLogic';
+import { createGate } from './gate/GateLogic';
 import { JobRunner } from './jobs/JobRunner';
 import { JobRecovery } from './jobs/recovery';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
@@ -113,13 +113,16 @@ export class Engine {
       detectRow: (row) => o.link.send('ui.patch', { event: 'ai:detectRow', payload: row }),
       retestTimers: !o.testRun,
     });
+    // M5 T7: the real gate (08-2 §9.4) replaces the M4 stub; R4 results go through Redactor.scrub (08-2 §11.4).
+    const gate = createGate({ settings: () => this.settings, now: () => o.clock.now() });
     this.tools = new ToolLayer({
       link: o.link,
       clock: o.clock,
       newId: (p) => newId(p, o.clock.now()),
       tools: o.tools ?? {},
-      gate: stubGate,
+      gate,
       log: (evt, kind) => log(evt, kind),
+      scrub: (text) => this.redactor.scrub(text),
     });
     this.recovery = new JobRecovery({
       link: o.link,
@@ -141,6 +144,8 @@ export class Engine {
       rateOf: (id) => capRateOf(pricing, id, resolveModel(id, 'default', pricing, this.settings.ai.providers[id])) ?? null,
       usdToInr: pricing.usdToInr,
       log: (evt, kind) => log(evt, kind),
+      gate,
+      scrub: (text) => this.redactor.scrub(text),
       hooks: {
         onAiError: (job, kind) => this.recovery.onAiError(job, kind),
         onCannotStart: (job, kind) => this.recovery.onCannotStart(job, kind),
@@ -362,6 +367,10 @@ export class Engine {
         return undefined;
       case 'card.answered':
         if (!(await this.recovery.onCardAnswered(msg.payload))) await this.jobs.onCardAnswered(msg.payload);
+        return undefined;
+      // M5 T7: main moved an approval (08-1 §2.4); an expired payment / booking card ends its job (AT-111).
+      case 'approval.changed':
+        await this.jobs.onApprovalChanged(msg.payload);
         return undefined;
       case 'job.stop': {
         const r = await this.jobs.stopJob(msg.payload.jobId, msg.payload.reason);

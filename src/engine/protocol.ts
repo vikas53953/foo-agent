@@ -254,6 +254,8 @@ export const NAMED_QUERY_NAMES = [
   'chats.foo',
   // M4 T3: the watchdog's budget ceiling (08-4 §26.3 item 6, "counts come from the DB").
   'stepTurnsForJob',
+  // M5 T7: one approval by id (approval.changed after an engine restart, when the runner holds nothing in RAM).
+  'approvals.byId',
 ] as const;
 export type NamedQuery = (typeof NAMED_QUERY_NAMES)[number];
 
@@ -328,7 +330,20 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
   // M5 (CR-0009). Requests: approval.open → { approvalId, cardId, nonce } (ApprovalGate.create, T4); approval.transition →
   // { ok: true } or APPROVAL_BAD_TRANSITION (08-2 §9.1; no ack in 2 s = HELD(cannot_check), 08-4 §29.1); vault.use → the
   // value, to the engine filler only (08-2 §11.3; VAULT_PURPOSE_DENIED, VAULT_MISSING).
-  z.object({ id: z.string(), kind: z.literal('approval.open'), payload: ApprovalDraftSchema }),
+  // M5 T7 (lead-approved edit): the job and the card text ride with the verified draft (ApprovalGate.openFromEngine, T4 hand-off).
+  z.object({
+    id: z.string(),
+    kind: z.literal('approval.open'),
+    payload: z
+      .object({
+        jobId: z.string(),
+        draft: ApprovalDraftSchema,
+        title: z.string(),
+        impact: z.string(),
+        submitRef: z.string().max(64).optional(),
+      })
+      .strict(),
+  }),
   z.object({
     id: z.string(),
     kind: z.literal('approval.transition'),

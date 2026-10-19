@@ -81,8 +81,15 @@ describe('main ⇄ engine M5 rows (08-1 §2.4)', () => {
   it('engine → main: approval.open (ApprovalDraft), approval.transition, vault.use purposes', () => {
     const ok = (m: unknown) => engineToMainSchema.safeParse(m).success;
     const draft = { verb: 'book', fields: { verb: 'book', irreversible: false }, evidence: [] };
-    expect(ok({ id: '1', kind: 'approval.open', payload: draft })).toBe(true);
-    expect(ok({ id: '1', kind: 'approval.open', payload: { ...draft, verb: 'send' } })).toBe(false);
+    // M5 T7: the job and the card text ride with the draft (ApprovalGate.openFromEngine).
+    const open = (d: unknown) => ({
+      id: '1',
+      kind: 'approval.open',
+      payload: { jobId: 'j_1', draft: d, title: 'Book this table?', impact: 'x' },
+    });
+    expect(ok(open(draft))).toBe(true);
+    expect(ok(open({ ...draft, verb: 'send' }))).toBe(false);
+    expect(ok({ id: '1', kind: 'approval.open', payload: draft })).toBe(false);
     expect(ok({ id: '2', kind: 'approval.transition', payload: { approvalId: 'ap_1', to: 'RUNNING', data: { submittedAt: NOW } } })).toBe(
       true,
     );
