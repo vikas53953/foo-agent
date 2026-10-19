@@ -83,9 +83,10 @@ function engineFact(r: DbRow): EngineFact {
 /**
  * Art. 14 / 08-4 §24.16: in a group chat, no private fact, and no about-you or chat-scope fact unless it has a live
  * `memory_group_grants` row (askShare, 08-3 §12.5.1; chat-scope facts live in about-you.md, X-112, so the grant covers both).
+ * Style stats (`preferences\style.md`) are never in groups (08-3 §12.1, §12.9).
  */
 function groupExclusion(alias: string): string {
-  return `AND ${alias}.private = 0 AND (
+  return `AND ${alias}.private = 0 AND ${alias}.file <> 'memory/preferences/style.md' AND (
     (${alias}.file <> 'memory/about-you.md' AND ${alias}.scope <> 'chat')
     OR EXISTS (SELECT 1 FROM memory_group_grants g WHERE g.fact_id = ${alias}.id AND g.chat_id = ? AND g.until > ?))`;
 }

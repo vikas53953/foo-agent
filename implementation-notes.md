@@ -919,3 +919,9 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
    on its UNIQUE key) and `suggestionState` is a named query; two new names, `chats.forHelper` and `messages.userTexts`, are
    additions for the CR.
 10. A private fact is blocked from `askShare` like a sensitive one (§12.5 / Art. 14: private facts never reach a group).
+11. **Review follow-ups (Fable)**: style.md lines never reach a group prompt (`groupExclusion` drops the file; 08-3 §12.1).
+    Left for the CR-0010 addendum or M7: a conflict where both facts are guessed and the AI gives no `ask` is left alone, and
+    TidyAct `keep` is not read (pick 3); the conflict card's why source `housekeeping` may fall under
+    `routines.housekeepingMessages`; the budget gate has no `urgent` exemption and writes no `notifications` row yet
+    (§15.2, §15.6, M7); a held conflict whose held item is never delivered is not asked again (M7's brief should re-post it
+    from `ref.factIds`).

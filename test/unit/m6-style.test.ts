@@ -107,4 +107,16 @@ describe('08-3 §12.9 StyleStatsRunner', () => {
     expect(await b.style.onUserMessage('c_foo')).toEqual({ ok: true, value: { written: 0 } });
     expect(b.h.rows()).toEqual([]);
   });
+
+  it('the style lines reach foo’s chat prompts but never a group’s (§12.1 “never in groups”)', async () => {
+    const { h, say, style } = runner();
+    for (let i = 0; i < 20; i++) say('c_foo', 'ok sounds good');
+    await style.onUserMessage('c_foo');
+    const inChat = (chatId: string) => {
+      const r = runNamedQuery(h.db, 'memoryByScope', [chatId], h.clock.now()) as Result<{ file: string }[]>;
+      return r.ok ? r.value : [];
+    };
+    expect(inChat('c_foo').filter((f) => f.file === 'memory/preferences/style.md')).toHaveLength(4);
+    expect(inChat('c_g').filter((f) => f.file === 'memory/preferences/style.md')).toEqual([]);
+  });
 });
