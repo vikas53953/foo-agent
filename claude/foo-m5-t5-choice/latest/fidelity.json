@@ -1,19 +1,19 @@
 {
-  "reportId": "M5-8bfb73a-39219184213",
+  "reportId": "M5-3889a72-39219736798",
   "milestone": "M5",
-  "generatedAt": "2026-10-19T08:01:07.355Z",
-  "commit": "ce6f3f1d77e5c45d0a4602fe42a07cb8686f7d03",
-  "head": "8bfb73afc10759d36a2682280d91c5909499cc07",
+  "generatedAt": "2026-10-19T08:08:22.472Z",
+  "commit": "67e350e89857180a42791906207c7aa907ce37c4",
+  "head": "3889a72416534ee00d0a7899d56db664fad3f4f6",
   "ci": {
-    "runId": "39219184213",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39219184213"
+    "runId": "39219736798",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39219736798"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "b87a87af2c09dc83b532af5b269c2078c75bb161ac690ea8814763705e0ca000"
   },
   "runner": {
-    "recordedAt": "2026-10-19T08:00:02.129Z",
+    "recordedAt": "2026-10-19T08:08:13.158Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000003253"
+      "runner": "GitHub Actions 1000003262"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,9 +59,11 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "missing evidence: audit list (docs/fidelity/M5.audit.json)"
+    "missing evidence: E2E results (Playwright JSON); FID-14 results; audit list (docs/fidelity/M5.audit.json)"
   ],
   "missingInputs": [
+    "E2E results (Playwright JSON)",
+    "FID-14 results",
     "audit list (docs/fidelity/M5.audit.json)"
   ],
   "forVikas": {
@@ -84,93 +86,7 @@
     "stylelint": "not installed yet (FID-13 Stylelint half; ART-24a scans styles today)",
     "fid11": "DONE",
     "fid12": "DONE",
-    "fid14": [
-      {
-        "id": "SV-13",
-        "ok": true,
-        "expected": "height 72 (±0.5)",
-        "measured": "323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72"
-      },
-      {
-        "id": "SV-14",
-        "ok": true,
-        "expected": "width 48 × height 48 (±0.5)",
-        "measured": "48×48, 48×48, 48×48, 48×48, 48×48, 48×48, 48×48, 48×48"
-      },
-      {
-        "id": "SV-17",
-        "ok": true,
-        "expected": "width 340 (±0.5)",
-        "measured": "340×868"
-      },
-      {
-        "id": "SV-23",
-        "ok": true,
-        "expected": "min-height: 40px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-24",
-        "ok": true,
-        "expected": "height 36 (±0.5)",
-        "measured": "307×36"
-      },
-      {
-        "id": "SV-25",
-        "ok": true,
-        "expected": "≥ width 40 × height 40 (±0.5)",
-        "measured": "122.125×40, 40×40, 40×40, 91.078125×40, 79.140625×40, 52.515625×40, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 271×42, 40×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40"
-      },
-      {
-        "id": "SV-15",
-        "ok": true,
-        "expected": "60px",
-        "measured": "60px"
-      },
-      {
-        "id": "SV-15",
-        "ok": true,
-        "expected": "60px; aligned",
-        "measured": "chat header 32+60; left header 32+60"
-      },
-      {
-        "id": "SV-18",
-        "ok": true,
-        "expected": "width 340 (±0.5)",
-        "measured": "340×868"
-      },
-      {
-        "id": "SV-29",
-        "ok": true,
-        "expected": "background-color: rgb(255, 255, 255)",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-29",
-        "ok": true,
-        "expected": "background-color: rgb(13, 13, 17)",
-        "measured": "all equal",
-        "note": "dark"
-      },
-      {
-        "id": "SV-16",
-        "ok": true,
-        "expected": "height 32 (±0.5)",
-        "measured": "922×32"
-      },
-      {
-        "id": "SV-37",
-        "ok": true,
-        "expected": "922×648 (work area 1024×720)",
-        "measured": "922×648"
-      },
-      {
-        "id": "SV-38",
-        "ok": true,
-        "expected": "font-synthesis: none",
-        "measured": "all equal"
-      }
-    ]
+    "fid14": []
   },
   "behaviour": {
     "totals": {
@@ -180,9 +96,9 @@
         "skipped": 2
       },
       "e2e": {
-        "passed": 25,
+        "passed": 0,
         "failed": 0,
-        "skipped": 42
+        "skipped": 0
       }
     },
     "ids": [
@@ -17740,296 +17656,6 @@
         "id": "AT-116a",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/unit/jobs/watchdog.test.ts"
-      },
-      {
-        "id": "PERF-01",
-        "status": "passed",
-        "file": "test/e2e/m0-window.spec.ts"
-      },
-      {
-        "id": "ART-26a",
-        "status": "passed",
-        "file": "test/e2e/m1-shell.spec.ts"
-      },
-      {
-        "id": "ART-29",
-        "status": "passed",
-        "file": "test/e2e/m1-shell.spec.ts"
-      },
-      {
-        "id": "PERF-03",
-        "status": "passed",
-        "file": "test/e2e/m1-shell.spec.ts"
-      },
-      {
-        "id": "AT-007",
-        "status": "passed",
-        "file": "test/e2e/m2-composer.spec.ts"
-      },
-      {
-        "id": "PERF-02",
-        "status": "skipped",
-        "file": "test/e2e/m2-composer.spec.ts"
-      },
-      {
-        "id": "ART-26a",
-        "status": "skipped",
-        "file": "test/e2e/m2-composer.spec.ts"
-      },
-      {
-        "id": "PERF-04",
-        "status": "skipped",
-        "file": "test/e2e/m2-messages.spec.ts"
-      },
-      {
-        "id": "ART-26a",
-        "status": "skipped",
-        "file": "test/e2e/m2-messages.spec.ts"
-      },
-      {
-        "id": "ART-21a",
-        "status": "skipped",
-        "file": "test/e2e/m2-messages.spec.ts"
-      },
-      {
-        "id": "AT-027",
-        "status": "skipped",
-        "file": "test/e2e/m3-replies.spec.ts"
-      },
-      {
-        "id": "ART-23a",
-        "status": "skipped",
-        "file": "test/e2e/m3-replies.spec.ts"
-      },
-      {
-        "id": "AT-030",
-        "status": "skipped",
-        "file": "test/e2e/m3-replies.spec.ts"
-      },
-      {
-        "id": "AT-006",
-        "status": "skipped",
-        "file": "test/e2e/m3-replies.spec.ts"
-      },
-      {
-        "id": "AT-006",
-        "status": "skipped",
-        "file": "test/e2e/m3-replies.spec.ts"
-      },
-      {
-        "id": "PERF-07",
-        "status": "skipped",
-        "file": "test/e2e/m4-jobs.spec.ts"
-      },
-      {
-        "id": "PERF-08",
-        "status": "skipped",
-        "file": "test/e2e/m4-jobs.spec.ts"
-      },
-      {
-        "id": "PERF-11",
-        "status": "skipped",
-        "file": "test/e2e/m4-jobs.spec.ts"
-      },
-      {
-        "id": "AT-287",
-        "status": "skipped",
-        "file": "test/e2e/m4-list.spec.ts"
-      },
-      {
-        "id": "AT-286",
-        "status": "skipped",
-        "file": "test/e2e/m4-list.spec.ts"
-      },
-      {
-        "id": "AT-282",
-        "status": "skipped",
-        "file": "test/e2e/m4-notices.spec.ts"
-      },
-      {
-        "id": "AT-081",
-        "status": "skipped",
-        "file": "test/e2e/m4-offline.spec.ts"
-      },
-      {
-        "id": "AT-281",
-        "status": "skipped",
-        "file": "test/e2e/m4-panel.spec.ts"
-      },
-      {
-        "id": "AT-032",
-        "status": "skipped",
-        "file": "test/e2e/m5-choice.spec.ts"
-      },
-      {
-        "id": "AT-035",
-        "status": "skipped",
-        "file": "test/e2e/m5-choice.spec.ts"
-      },
-      {
-        "id": "AT-288",
-        "status": "skipped",
-        "file": "test/e2e/m5-choice.spec.ts"
-      },
-      {
-        "id": "BP-CARD-02",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
-      },
-      {
-        "id": "BP-CARD-12",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
-      },
-      {
-        "id": "BP-CARD-15",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
-      },
-      {
-        "id": "BP-CARD-18",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
-      },
-      {
-        "id": "BP-CARD-19",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
-      },
-      {
-        "id": "BP-CARD-20",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
-      },
-      {
-        "id": "BP-CARD-03",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-cards-m5-choice.spec.ts"
-      },
-      {
-        "id": "BP-CARD-04",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-cards-m5-choice.spec.ts"
-      },
-      {
-        "id": "BP-MSG-01",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-messages.spec.ts"
-      },
-      {
-        "id": "BP-MSG-03",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-messages.spec.ts"
-      },
-      {
-        "id": "BP-MSG-04",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-messages.spec.ts"
-      },
-      {
-        "id": "BP-COMP-01",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-messages.spec.ts"
-      },
-      {
-        "id": "BP-COMP-02",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-messages.spec.ts"
-      },
-      {
-        "id": "BP-COMP-04",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-messages.spec.ts"
-      },
-      {
-        "id": "BP-COMP-05",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-messages.spec.ts"
-      },
-      {
-        "id": "BP-COMP-06",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-messages.spec.ts"
-      },
-      {
-        "id": "BP-COMP-07",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-messages.spec.ts"
-      },
-      {
-        "id": "BP-COMP-08",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-messages.spec.ts"
-      },
-      {
-        "id": "BP-COMP-09",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-messages.spec.ts"
-      },
-      {
-        "id": "BP-MSG-02",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-messages.spec.ts"
-      },
-      {
-        "id": "BP-COMP-03",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-messages.spec.ts"
-      },
-      {
-        "id": "BP-APP-L",
-        "status": "skipped",
-        "file": "test/fidelity/bp/BP-shell.spec.ts"
-      },
-      {
-        "id": "UX-05-02",
-        "status": "skipped",
-        "file": "test/fidelity/ux/UX-05.first.spec.ts"
-      },
-      {
-        "id": "UX-05-03",
-        "status": "skipped",
-        "file": "test/fidelity/ux/UX-05.first.spec.ts"
-      },
-      {
-        "id": "UX-05-04",
-        "status": "skipped",
-        "file": "test/fidelity/ux/UX-05.first.spec.ts"
-      },
-      {
-        "id": "UX-08-02",
-        "status": "skipped",
-        "file": "test/fidelity/ux/UX-08.chat.spec.ts"
-      },
-      {
-        "id": "UX-10-01",
-        "status": "skipped",
-        "file": "test/fidelity/ux/UX-10.choice.spec.ts"
-      },
-      {
-        "id": "UX-10-06",
-        "status": "skipped",
-        "file": "test/fidelity/ux/UX-10.choice.spec.ts"
-      },
-      {
-        "id": "UX-23-01",
-        "status": "skipped",
-        "file": "test/fidelity/ux/UX-23.errors.spec.ts"
-      },
-      {
-        "id": "UX-23-06",
-        "status": "skipped",
-        "file": "test/fidelity/ux/UX-23.errors.spec.ts"
-      },
-      {
-        "id": "UX-23-09",
-        "status": "skipped",
-        "file": "test/fidelity/ux/UX-23.errors.spec.ts"
-      },
-      {
-        "id": "UX-23-11",
-        "status": "skipped",
-        "file": "test/fidelity/ux/UX-23.errors.spec.ts"
       }
     ],
     "failed": [],
@@ -18716,13 +18342,7 @@
         ]
       }
     ],
-    "determinism": {
-      "fid": "FID-03",
-      "compared": 148,
-      "identical": 148,
-      "differing": [],
-      "engine": "electron"
-    },
+    "determinism": null,
     "rows": [
       {
         "id": "BP-CARD-03",
