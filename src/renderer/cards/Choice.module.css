@@ -1,0 +1,156 @@
+/* Spec: 05-1 §5.3.1 (option rows min 56, padding 8 12, --r-md, 1px --line on --bg-raised, 8 apart; badge 20 --r-xs
+ * --bg-sunken --t-caption --fg-2; label --t-body --fg-1 up to 2 lines; detail --t-small --fg-2 one line, ellipsis; Best fit
+ * 1.5px --accent on --accent-soft, tag --t-caption-strong uppercase +0.08em --accent; "Something else…" 40 high --fg-2;
+ * multi-select box 20 --r-xs 1.5px --line-input, ticked --accent with --on-accent), §5.3.3 (hover --bg-hover, Best fit
+ * border --accent-hover; pressed --bg-pressed scale 0.97; focus ring following --r-md), 05-1 §0.5 summary row (min 40,
+ * 16 icon + 8 + --t-small, time right), §0.5 Offline line (--t-caption --fg-2, Globe 16 --fg-3). */
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  width: 100%;
+  min-height: calc(var(--s8) + var(--s1)); /* 56 */
+  padding: var(--s1) var(--s2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-raised);
+  color: var(--fg-1);
+  text-align: start;
+  cursor: default;
+  transition:
+    background-color var(--m-fast) var(--ease-standard),
+    border-color var(--m-fast) var(--ease-standard),
+    transform var(--m-fast) var(--ease-standard);
+}
+.row:hover {
+  background: var(--bg-hover);
+}
+.row:active {
+  background: var(--bg-pressed);
+  transform: scale(0.97);
+}
+.row:focus-visible {
+  border-radius: var(--r-md);
+}
+.row[aria-disabled='true'] {
+  pointer-events: none;
+}
+.best {
+  border: 1.5px solid var(--accent);
+  background: var(--accent-soft);
+}
+.best:hover {
+  border-color: var(--accent-hover);
+  background: var(--accent-soft);
+}
+.else {
+  min-height: var(--s7);
+  color: var(--fg-2);
+  font: var(--t-body);
+}
+.badge {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-md);
+  height: var(--icon-md);
+  border-radius: var(--r-xs);
+  background: var(--bg-sunken);
+  color: var(--fg-2);
+  font: var(--t-caption);
+}
+.box {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-md);
+  height: var(--icon-md);
+  border: 1.5px solid var(--line-input);
+  border-radius: var(--r-xs);
+  color: var(--on-accent);
+}
+.boxOn {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+.text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+.labelLine {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s1);
+}
+.label {
+  flex: 1;
+  min-width: 0;
+  font: var(--t-body);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.tag {
+  flex: none;
+  color: var(--accent);
+  font: var(--t-caption-strong);
+  letter-spacing: 0.08em; /* local: 05-1 §5.3.1 tag tracking +0.08em */
+  text-transform: uppercase;
+}
+.detailTip {
+  display: block;
+  min-width: 0;
+}
+.detail {
+  display: block;
+  overflow: hidden;
+  color: var(--fg-2);
+  font: var(--t-small);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.checked {
+  border-color: var(--accent);
+}
+.summary {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--s7);
+  cursor: default;
+}
+.summaryText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  font: var(--t-small);
+}
+.summaryLine {
+  overflow-wrap: anywhere;
+}
+.ok {
+  flex: none;
+  color: var(--ok);
+}
+.dim {
+  flex: none;
+  color: var(--fg-3);
+}
+.offline {
+  display: flex;
+  align-items: center;
+  gap: var(--s0);
+  color: var(--fg-2);
+  font: var(--t-caption);
+}
