@@ -1,0 +1,44 @@
+{
+  "journey": "test/verify/m6-t7-tidy.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "54a5bc0f04c6d0201aa780b7abea9ecaf7cab178",
+  "dirty": false,
+  "started": "2026-10-19T16:29:46.937Z",
+  "finished": "2026-10-19T16:29:50.426Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "about-you.md holds \"Lives in Mumbai\" (2026-09-01) and the newer \"Lives in Pune\" (2026-10-10), both You said; 28 facts indexed",
+    "test.memoryTidy → {\"merged\":0,\"settled\":0,\"dropped\":0,\"asked\":1,\"weekCount\":3}",
+    "one fake-AI turn with purpose tidy; its prompt has \"Facts grouped by entity:\" and a \"## lives in\" group",
+    "one Choice card (data-purpose=\"conflict\") in foo’s chat: \"Do you live in Pune now, or Mumbai?\" [ Pune ] [ Mumbai ], with the footer \"Why am I getting this?\"",
+    "a second tidy run asks nothing: still one conflict card",
+    "tapped Pune: about-you.md now has \"- Lives in Pune  {you said · 2026-10-16 · chat · f_0193b2c4-1a07-7e3f-8c55-0d9e6f7a1b72}\" and no Mumbai line; memory\\.tombstones holds 1 line(s)",
+    "memory\\.tidy-log.md: \"2026-10-16 · Merged 0 duplicates · Settled 0 conflicts · Dropped 0 old guesses · Asked about 1 conflict\", \"2026-10-16 · Merged 0 duplicates · Settled 0 conflicts · Dropped 0 old guesses · Asked about 0 conflicts\""
+  ],
+  "shots": [
+    {
+      "file": "after/01-foo-chat-before.light.png",
+      "name": "foo-chat-before",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-conflict-card.light.png",
+      "name": "conflict-card",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-conflict-card.dark.png",
+      "name": "conflict-card",
+      "theme": "dark"
+    },
+    {
+      "file": "after/04-conflict-answered.light.png",
+      "name": "conflict-answered",
+      "theme": "light"
+    }
+  ],
+  "consoleErrors": []
+}
