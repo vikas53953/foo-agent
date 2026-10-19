@@ -1,0 +1,59 @@
+{
+  "journey": "test/verify/m5-t6-draft.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "8262436e4abc5ec47721a700a0e5c6e6ca2baa58",
+  "dirty": false,
+  "started": "2026-10-19T08:58:06.790Z",
+  "finished": "2026-10-19T08:58:12.856Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "Draft seeded pending: \"Will send to r.sharma@example.com from your Gmail. Can’t be unsent.\" + \"Expires Fri 16 Oct, 10:41 AM · …\"",
+    "Ctrl+Enter with focus inside the card: still pending (it never sends)",
+    "Change → textarea; Ctrl+Enter = Save changes → body updated in place, header right label \"Email · edited\"",
+    "Send → data-card-state=\"undo_window\", \"Sending in 5…\" with Undo focused; then \"Sending in 3…\" (counting down)",
+    "Undo → back to pending, \"Not sent. The draft is still here.\"",
+    "Send again, clock +5 s → within one tick data-card-state=\"sent\", \"Sent · 9:48 AM\" + \"Proof: in your Gmail Sent folder\"",
+    "Second draft → Discard → data-card-state=\"discarded\", \"Draft discarded\""
+  ],
+  "shots": [
+    {
+      "file": "after/01-pending.light.png",
+      "name": "pending",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-editing.light.png",
+      "name": "editing",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-edited.light.png",
+      "name": "edited",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-undo-window.light.png",
+      "name": "undo-window",
+      "theme": "light"
+    },
+    {
+      "file": "after/05-undone.light.png",
+      "name": "undone",
+      "theme": "light"
+    },
+    {
+      "file": "after/06-sent.light.png",
+      "name": "sent",
+      "theme": "light"
+    },
+    {
+      "file": "after/07-discarded.light.png",
+      "name": "discarded",
+      "theme": "light"
+    }
+  ],
+  "consoleErrors": []
+}
