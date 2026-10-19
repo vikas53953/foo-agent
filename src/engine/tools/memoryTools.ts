@@ -66,10 +66,10 @@ export function memoryTools(d: MemoryToolDeps): ToolRegistry {
       const job = await d.query<JobRow>('jobById', ctx.jobId);
       if (!job) return err('NOT_FOUND');
       const turn = ctx.turnId ?? null;
-      if (proposed.has(job.id) && proposed.get(job.id) === turn) return err('VALIDATION', 'one memory.propose per turn');
+      if (turn !== null && proposed.get(job.id) === turn) return err('VALIDATION', 'one memory.propose per turn');
       proposed.set(job.id, turn);
       const chat = await d.query<EngineChat>('chatOpen', job.chatId);
-      if (!chat || chat.private) return err('PRIVATE_BLOCKED');
+      if (!chat || chat.private || chat.kind === 'group') return err('PRIVATE_BLOCKED');
       if (!d.settings().privacy.rememberOn) return { kind: 'ok', result: { saved: false } };
       const evidence = await Promise.all(op.evidenceMessageIds.map((id) => d.query<EngineMessage>('messageById', id)));
       const byId = new Map(evidence.filter((m): m is EngineMessage => !!m && m.chatId === job.chatId).map((m) => [m.id, m]));
