@@ -187,7 +187,17 @@ batch independent review (Fable) checks them before the milestone PR; until then
   (new key `cards.secret.line.no_kind`) and nothing is stored. Groups: never (05-2 §5.8.6): no Move in a group, and
   main refuses `secret:offer` for a group chat. When the vault can't save, the card shows the §5.8.3 Disabled state
   up front. Pending review.
-- **G-M5-22**, **G-M5-23**: reserved for T10 (CR-0008 (j) rows 9 and 12).
+- **G-M5-22** (T10) Safe mode and interrupted jobs (08-4 §26.7, 03 safe mode). In safe mode, recovery still marks
+  unknown tool calls and posts the crash-recovery card for each WORKING or QUEUED job, but starts nothing (no
+  startNext, no resume runs, no `opens_at` wake) until the user taps Start normally. The job keeps its recovered state
+  with a needs_you badge. Rejected: keep the job `working` (it reads as running when it is not); a new
+  `waiting_reason 'safe_mode'` (needs DDL). Pending review.
+- **G-M5-23** (T10) Plan limit with no reset time (03 §3.3, 04 header status). With no `resetAt`, the sidebar footer
+  reads "{AI} limit reached" and the chat header "Paused · {ai} limit reached" (new `*.no_time` keys), the wording the
+  banner and composer already use. Rejected: "until it resets". Pending review.
+- **G-M5-23b** (T10, deferral) 08-4 §26.8 item 6, quit past `wake_at` → job FAILED + `thread.trains.tatkal_missed`,
+  moves to M9 with the trains journey, its copy and the only producer of `opens_at` jobs. Until then a job that slept
+  past its time wakes on the first tick. Pending review.
 - **G-M5-24** (T4) `ApprovalFields` gains optional `app: PermissionApp`. 08-5 §3.3 says a `use_app` approvals row
   carries `fields.app`; 08-2 §9.3 leaves it out. A `use_app` approval sets it, and its "For this chat" / "Always"
   rule matches `{ app }`. A `use_app` approval without `app` cannot make a rule (`RULE_NOT_ALLOWED`). Pending review.
