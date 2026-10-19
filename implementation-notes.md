@@ -752,7 +752,7 @@ max-width: 100%` (`.wide` the same with `--card-w-wide`). CardFrame takes `data`
   the fresh-terms re-read (`ToolLayer.reread`) leaves the IDEMPOTENT_REPEAT and held-`unknown` sets as they are.
 - M5-T14-01 · G-M5-39 (a): CHECKING → FAILED is marked by main's 15 min no-proof move (`payload.unknownResult`); the card
   shows "I can't tell…" with [ It went through ] [ It didn't ] and no Try again. The tap is `approval:report { cardId,
-  nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED, `answer` and `resolved_by='tap'`, the
+nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED, `answer` and `resolved_by='tap'`, the
   nonce turns over (once only), and the approval's activity rows still `unknown` take done / failed. Nothing writes such a
   row on the CHECKING path yet (no live book or pay producer before M8 / M9), so today the card alone records the answer;
   the activity.jsonl mirror is not rewritten on that update.
