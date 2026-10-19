@@ -45,6 +45,8 @@ export const BOX_TOLERANCE = 0.5;
 // GAP: GAPS.md 2026-10-17 "composer-field is on the inner contenteditable"
 export const SELECTORS: Record<string, string> = {
   'SV-38': 'body',
+  // M5 T2: the Secret box field's edge (05-2 §5.8.1, a Text field).
+  'SV-27': '[data-testid="card-secret"] :has(> [data-testid="card-secret-field"])',
   // M1 left shell (03-shell-1 §3.4): measured with the list on screen and, for SV-23, a menu open.
   'SV-14': '[data-testid="chatlist-row"]:not([data-folded="true"]) [data-testid="chatlist-row-avatar"]',
   'SV-17': '[data-testid="sidebar"]',

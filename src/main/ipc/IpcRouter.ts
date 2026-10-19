@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
 import type { EventChannel, EventPayload, InvokeChannel, InvokeIn, InvokeOut, PlatformInfo, VerifyResult } from '../../shared/ipc';
+import { SECRET_OFFER_SLOTS } from '../../shared/ipc'; // M5 T2
 import { PROVIDER_IDS, settingsSchema, WRITABLE_PATHS, type Settings } from '../../shared/settings';
 import type { FixAction, MessageRow, WindowsSettingsPage } from '../../shared/types';
 import { deps } from '../deps';
@@ -265,6 +266,8 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'secret:list': empty as z.ZodType<Record<string, never>>,
   'secret:delete': z.object({ target: z.string().min(1).max(300), confirm: z.literal(true) }).strict(),
   'code:submit': z.object({ requestId: z.string().min(1).max(80), code: z.string().min(1).max(64) }).strict(),
+  // M5 T2 (G-M5-21)
+  'secret:offer': z.object({ chatId, slot: z.enum(SECRET_OFFER_SLOTS) }).strict(),
 };
 
 export type Handler<C extends InvokeChannel> = (req: InvokeIn[C]) => Result<InvokeOut[C]> | Promise<Result<InvokeOut[C]>>;

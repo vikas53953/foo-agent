@@ -2,7 +2,7 @@
 // 08-3 §22.1–§22.2 (test runs: fake clock and test channels, loaded only when the build has them); 03-shell-1 §3.3.2
 // type 1 (network state for the offline banner). M4 T4: §2.2 step 1 launches.json + safe mode (G-M4-13), step 3 damaged
 // database rebuild (§4.1.1), §2.3 quit / shutdown (`jobs.pauseAll`, `clean: true`; G-M4-04), 09 §9.22 power.
-import { app, BrowserWindow, nativeTheme, powerMonitor, powerSaveBlocker } from 'electron';
+import { app, BrowserWindow, nativeTheme, powerMonitor, powerSaveBlocker, safeStorage } from 'electron';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { resolvePaths } from './data/paths';
@@ -26,6 +26,13 @@ import { logEvent, setAppTechLog, TechLog } from './log/techLog';
 import { createMainWindow } from './windows/mainWindow';
 import { handleAppScheme, registerAppScheme } from './windows/protocol';
 import { claimSingleInstance } from './windows/singleInstance';
+// M5 T2
+import { normalisedForms } from '../shared/redactor';
+import { mainRegistry, registerSecretValue, setRegisterValue } from './secrets/registerValue';
+import { memoryKeyring, memorySafeStore, napiKeyring } from './vault/keyring';
+import { registryMirror } from './vault/registryMirror';
+import { noOpenApproval, SecretVault } from './vault/SecretVault';
+import { installVault } from './vault/vaultRuntime';
 
 export const AUMID = 'com.foo.desktop';
 
@@ -109,7 +116,7 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
     const launchLog = launches;
     power = new PowerService({
       blocker: powerSaveBlocker,
-      send: (kind, payload) => engine.send(kind, payload),
+      send: (kind, payload) => engine.send(kind, payload as never),
       pauseAll: async (reason) => {
         // No engine wanted (a test run without the fake AI): nothing can be running.
         if (!EngineSupervisor.wanted()) return;
@@ -119,15 +126,49 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
       markClean: () => launchLog.markClean(),
     });
     power.attach(powerMonitor);
+    // M5 T2 (08-2 §11.2–§11.4): main's registry of record mirrored to the engine, and the vault. FOO_TEST runs use the
+    // in-memory keyring and safeStorage (08-3 §22.2); Credential Manager is Windows only.
+    const mirror = registryMirror({
+      registry: mainRegistry(),
+      engine,
+      normalisedForms,
+      clock: deps.clock,
+    });
+    setRegisterValue((value, opts) => mirror.register(value, opts));
+    installVault({
+      vault: new SecretVault({
+        db: store,
+        keyring: testClock ? memoryKeyring() : process.platform === 'win32' ? napiKeyring() : null,
+        safe: testClock ? memorySafeStore() : safeStorage,
+        blobDir: join(paths.data, 'vault'),
+        clock: deps.clock,
+        register: registerSecretValue,
+        findOpenApproval: noOpenApproval,
+      }),
+      register: registerSecretValue,
+      now: () => deps.clock.now(),
+      emitCard: (row) => emit('card:upsert', row),
+      emitMessage: (id) => {
+        const row = messageGet(store, id);
+        if (row) emit('message:upsert', row);
+      },
+      emitChat: (id) => {
+        const row = chatRowById(store, listContext(settings.get()), id);
+        if (row) emit('chat:upsert', row);
+      },
+    });
     const ctx: AppContext = { db, settings, net: netMonitor, probe, dataDir: paths.data, engine };
     supervisor = new EngineSupervisor(engine, { data: paths.data, local: paths.local });
-    supervisor.onStarted = () =>
+    supervisor.onStarted = () => {
       engineHello(engine.send.bind(engine), {
         settings: () => settings.get(),
         online: () => !netMonitor.offline,
         testClock,
         launch: () => launchLog.nextEngineStart(),
       });
+      // M5 T2: a new engine starts with an empty registry; main's live values go to it again.
+      mirror.replay();
+    };
     supervisor.onCrashed = () => launchLog.engineCrashed();
     settings.onChange((s) => engine.send('settings.changed', { paths: [], settings: s }));
     if (testClock) await loadTestHooks(ctx, testClock);
