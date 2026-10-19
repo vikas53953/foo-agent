@@ -133,7 +133,8 @@ export async function googleCall(d: GoogleCallDeps, req: GoogleRequest): Promise
     const status = res.status;
     if (status >= 200 && status < 300) return status === 204 ? null : bodyOf(res);
     if (status === 401) {
-      if (refreshed) throw new ConnError('CONN_EXPIRED', status);
+      // §21.2 CONN_REVOKED: "an access token is refused with 401 right after a successful refresh" (M8 T5).
+      if (refreshed) throw new ConnError('CONN_REVOKED', status);
       refreshed = true;
       try {
         token = await d.access.refreshAfter401();

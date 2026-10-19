@@ -35,6 +35,7 @@ import { findOpenApproval } from './approvals/ApprovalGate'; // M5 T4 (review fi
 import { approvalGate } from './approvals/approvalIpc'; // M5 T7
 import { SecretVault } from './vault/SecretVault';
 import { installVault } from './vault/vaultRuntime';
+import { google } from './connections/connectionIpc'; // M8 T5
 
 export const AUMID = 'com.foo.desktop';
 
@@ -116,6 +117,8 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
       keepAwake: (on, jobCount) => power?.keepAwake(on, jobCount),
       // M5 T7 (08-1 §2.4): engine `approval.open` / `approval.transition` go to main's one ApprovalGate.
       approvals: () => approvalGate(ctx),
+      // M8 T5: the engine's Google calls (connection.google) go to main's one GoogleConnections.
+      google: () => google(),
     });
     const launchLog = launches;
     power = new PowerService({

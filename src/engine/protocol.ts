@@ -70,6 +70,27 @@ export type MemoryCmdPayload = z.infer<typeof memoryCmdSchema>;
 
 // ---- main → engine (08-1 §2.4 MainToEngine, the rows M3, M4 and M6 use) ----
 export type AiCmd = 'detect' | 'verify' | 'choose' | 'signIn';
+// M8 T5: the Google rows as the engine sees them, and what the engine asks main for (gap pick T5-01).
+export const googleConnStateSchema = z
+  .object({
+    target: z.literal('google'),
+    status: z.enum(['connected', 'needs_signin', 'disconnected']),
+    /** The `contacts` row id while Contacts is connected and allowed, else null (Contacts sync, 08-3 §16.7). */
+    contactsConnectionId: z.string().nullable(),
+  })
+  .strict();
+export type GoogleConnState = z.infer<typeof googleConnStateSchema>;
+export const googleEngineReqSchema = z.discriminatedUnion('op', [
+  z.object({ op: z.literal('state') }).strict(),
+  z.object({ op: z.literal('token') }).strict(),
+  z.object({ op: z.literal('refresh') }).strict(),
+  z.object({ op: z.literal('scopeMissing'), flag: z.enum(['read', 'draft', 'send', 'calendarWrite', 'contactsRead']) }).strict(),
+  z.object({ op: z.literal('lost'), kind: z.enum(['CONN_EXPIRED', 'CONN_REVOKED']) }).strict(),
+  z.object({ op: z.literal('history') }).strict(),
+  z.object({ op: z.literal('saveHistory'), historyId: z.string().min(1).max(64) }).strict(),
+]);
+export type GoogleEngineReq = z.infer<typeof googleEngineReqSchema>;
+
 export const mainToEngineSchema = z.discriminatedUnion('kind', [
   z.object({ id: z.string(), kind: z.literal('user.message'), payload: z.object({ messageId: z.string(), chatId: z.string() }).strict() }),
   z.object({ id: z.string(), kind: z.literal('net'), payload: z.object({ online: z.boolean() }).strict() }),
@@ -193,6 +214,9 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
       .strict(),
   }),
   z.object({ id: z.string(), kind: z.literal('bridge.port'), payload: z.object({}).strict() }),
+  // M8 T5 (gap pick T5-01, 08-1 §2.4 has no row for it): main tells the engine the Google rows' state on every change, so
+  // the Gmail poller and Contacts sync start and stop with the rows and jobs waiting on a lost connection resume.
+  z.object({ id: z.string(), kind: z.literal('connection.state'), payload: googleConnStateSchema }),
 ]);
 export type MainToEngine = z.infer<typeof mainToEngineSchema>;
 
@@ -533,6 +557,9 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
       })
       .strict(),
   }),
+  // M8 T5 (gap pick T5-01): the engine's Google calls get their access token from main, which holds the refresh token and
+  // writes the rows (08-3 §16.1 Tokens; 08-1 §2.4: the engine never writes `connections`). One request per op.
+  z.object({ id: z.string(), kind: z.literal('connection.google'), payload: googleEngineReqSchema }),
 ]);
 export type EngineToMain = z.infer<typeof engineToMainSchema>;
 export type DbTxReply = { ids: string[]; revs: number[] };
@@ -540,7 +567,7 @@ export type DbTxReply = { ids: string[]; revs: number[] };
 /** The engine side of the port (in production a MessagePort; in tests a direct call into main's handlers). */
 export interface MainLink {
   request<T>(
-    kind: 'db.tx' | 'db.query' | 'file.write' | 'approval.open' | 'approval.transition' | 'vault.use',
+    kind: 'db.tx' | 'db.query' | 'file.write' | 'approval.open' | 'approval.transition' | 'vault.use' | 'connection.google',
     payload: unknown,
   ): Promise<Result<T>>;
   send(kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify', payload: unknown): void;

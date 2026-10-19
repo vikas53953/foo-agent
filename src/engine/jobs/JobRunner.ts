@@ -106,6 +106,9 @@ export interface RunnerHooks {
   // M5
   /** T10: the cap was raised or the month turned (08-2 §5.10 item 4): the Engine drains messages that waited at the cap. */
   onCapLifted?(): void;
+  // M8
+  /** T5: a tool failed; true when the connection-trouble handler took the job over (08-3 §21.2–§21.3) and the loop ends. */
+  onToolError?(job: JobRow, tool: string, kind: ErrorKind, stepId: string | null): Promise<boolean>;
 }
 
 /** What T3's modules (stopFlow, steer, watchdog, costMeter) may use of the runner. */
@@ -848,6 +851,8 @@ export class JobRunner {
       const site = (r.result as { site?: unknown } | null)?.site;
       c.lastError = { kind: r.errorKind ?? 'UNKNOWN', site: typeof site === 'string' ? site : null };
       if (current) await this.tx([{ op: 'update', table: 'steps', id: current.id, set: { attempts: current.attempts + 1 } }]);
+      // M8 T5: a lost or limited Google connection waits instead of counting toward STUCK.
+      if (await this.d.hooks?.onToolError?.(job, r.tool, c.lastError.kind, current?.id ?? null)) return false;
       return !(await this.countFailure(job));
     }
     c.lastError = null;

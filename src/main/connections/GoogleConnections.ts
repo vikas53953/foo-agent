@@ -20,6 +20,7 @@ import {
   exchangeCode,
   GOOGLE_APPS,
   GOOGLE_VAULT_NAME,
+  GoogleAccessError,
   grantedFromScope,
   pkcePair,
   revokeToken,
@@ -32,6 +33,7 @@ import {
 } from '../../engine/tools/connectors/google';
 import { maskEmail } from '../../shared/redactor';
 import type { ConnTokenStore, GoogleAccess, HttpFetch } from '../../engine/tools/connectors/types';
+import type { GoogleConnState, GoogleEngineReq } from '../../engine/protocol';
 import { applyDbOps } from '../engine-supervisor/engineHost';
 import { connectionRow, type DbRow } from '../db/rows';
 import type { Db } from '../store/db';
@@ -60,6 +62,9 @@ export interface GoogleConnectionsDeps {
   /** {DATA}: the activity.jsonl line goes with the activity row (08-1 §4.1). */
   dataDir?: string;
   log?: (evt: string, kind?: string) => void;
+  // M8 T5
+  /** `connection.state` to the engine whenever a Google row changes (gap pick T5-01). */
+  engineState?: (s: GoogleConnState) => void;
 }
 
 const NOT_ALLOWED: Granted = { read: false, draft: false, send: false, calendarWrite: false, contactsRead: false };
@@ -104,6 +109,7 @@ export class GoogleConnections {
   private emitRow(id: string): void {
     const r = this.d.db.prepare('SELECT * FROM connections WHERE id = ?').get(id) as DbRow | undefined;
     if (r) this.d.emit(connectionRow(r));
+    this.tellEngine();
   }
 
   /** connection:list: every row a surface shows (a `disconnected` row is history, 08-1 §3.2). */
@@ -294,6 +300,7 @@ export class GoogleConnections {
     })();
     await this.d.tokens.delete(GOOGLE_VAULT_NAME);
     for (const r of rows) this.d.emit({ ...connectionRow(r), status: 'disconnected', rev: Number(r.rev) + 1 });
+    this.tellEngine();
     this.activity('disconnected', t('activity.summary.disconnected_google'), { app: 'google' });
     if (stored) {
       const revoked = this.d.online() && (await revokeToken(this.d.http, this.d.endpoints, stored.refresh_token));
@@ -413,5 +420,62 @@ export class GoogleConnections {
       if (app) out.push({ title: String(r.title), app });
     }
     return out;
+  }
+
+  // ------------------------------------------------------------------ M8 T5: the engine's half (gap pick T5-01)
+  private lastState = '';
+
+  /** The Google rows as the engine needs them: the gmail row's status, and the contacts row while Contacts is allowed. */
+  engineState(): GoogleConnState {
+    const gmail = this.rowOf('gmail');
+    const status = gmail?.status === 'connected' ? 'connected' : gmail?.status === 'needs_signin' ? 'needs_signin' : 'disconnected';
+    const contacts = this.rowOf('contacts');
+    const allowed = contacts?.status === 'connected' && connectionRow(contacts).granted.contactsRead;
+    return { target: 'google', status, contactsConnectionId: allowed ? String(contacts.id) : null };
+  }
+
+  /** Pushes the state when it changed (a sign-in in progress or a granted-only edit is not a change for the engine). */
+  private tellEngine(): void {
+    if (this.rowOf('gmail')?.status === 'connecting') return;
+    const s = this.engineState();
+    const key = JSON.stringify(s);
+    if (key === this.lastState) return;
+    this.lastState = key;
+    this.d.engineState?.(s);
+  }
+
+  /** `connection.google` from the engine. Tokens never leave main except the live access token, to the engine only. */
+  async forEngine(req: GoogleEngineReq): Promise<Result<unknown>> {
+    const gmail = this.rowOf('gmail');
+    switch (req.op) {
+      case 'state':
+        this.lastState = JSON.stringify(this.engineState());
+        return ok(this.engineState());
+      case 'token':
+      case 'refresh': {
+        // Nothing to call with: never connected (or disconnected) is not trouble; a lost row answers with its kind.
+        if (!gmail || gmail.status === 'disconnected') return fail('VALIDATION', 'not_connected');
+        if (gmail.status === 'needs_signin') return fail(gmail.last_error_kind === 'CONN_REVOKED' ? 'CONN_REVOKED' : 'CONN_EXPIRED');
+        try {
+          const a = this.access();
+          return ok(await (req.op === 'token' ? a.accessToken() : a.refreshAfter401()));
+        } catch (e) {
+          return fail(e instanceof GoogleAccessError ? e.kind : 'UNKNOWN');
+        }
+      }
+      case 'scopeMissing':
+        this.scopeMissing(req.flag);
+        return ok(undefined);
+      case 'lost':
+        this.accessCache?.forget();
+        this.markLost(req.kind);
+        return ok(undefined);
+      case 'history':
+        return ok(gmail?.history_id == null ? null : String(gmail.history_id));
+      case 'saveHistory':
+        // 08-3 §16.1.3: the poller's baseline lives on the gmail row; main writes it (the engine never writes `connections`).
+        if (gmail) this.d.db.prepare('UPDATE connections SET history_id = ? WHERE id = ?').run(req.historyId, gmail.id);
+        return ok(undefined);
+    }
   }
 }

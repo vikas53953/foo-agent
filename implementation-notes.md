@@ -1046,3 +1046,29 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
   routine list is a heuristic until M11 routines; "Not now" is kept in the window only (M5's `card:answer` answers Choice and
   tiles cards, not Connect); official Google logos are not bundled (a Fluent icon stands in). BP-CARD-11's Blueprint mini has a
   shorter line and no icon; the app follows the 05-3 §5.11 words, so Tier R R1 may report word differences.
+
+## M8 · connection trouble, poller and Contacts sync start / stop (ticket T5)
+
+- T5-01 (gap, 08-1 §2.4 has no row): main keeps the Google refresh token and the rows (T2), so the engine's Gmail, Calendar and
+  People calls ask main for a live access token with `connection.google { op }` (`token`, `refresh`, `scopeMissing`, `lost`,
+  `history`, `saveHistory`, `state`), and main pushes `connection.state { status, contactsConnectionId }` whenever the gmail row's
+  status or the Contacts permission changes. The refresh token never leaves main; the engine never writes `connections`
+  (`history_id` is written by main). Production now builds the Google tools on this path; FOO_TEST runs still need a fake
+  (`FOO_FAKE_GOOGLE`; with `FOO_TEST_GOOGLE_BASE` too they go through main like production).
+- T5-02: jobs waiting on a lost connection keep `waiting_reason` NULL (08-0 §B.2 `WaitingReason` has no connection member and
+  the DDL CHECK allows NULL); they are found by their open `CONN_EXPIRED` / `CONN_REVOKED` error card and resume in the runner's
+  schedule pass after recovery's, inside the 3 WORKING slots, when main says Google is connected again.
+- T5-03: `CONN_RATE_LIMITED` keeps the job WORKING (08-3 §21.2 "the tool call fails"): one card, the loop pauses, the step runs
+  once more after 60 s (or at once on [ Try again ]), the card is edited to "Back on it"; a second limit on the same step counts
+  toward STUCK and posts no second card. A 401 right after a successful refresh is now `CONN_REVOKED` (limiter; §21.2 row).
+- T5-04: `CONN_SCOPE_MISSING` in a job posts the line `errors.conn_scope_missing.line` once per job and app, with `{calendar}` =
+  Gmail / calendar / contacts; the job goes on (the AI sees the tool error). The [ Open Connections ] button waits for the
+  message-button contract (CR-0009 G-M5-32d), so `errors.conn_scope_missing.button` is in `scripts/copy-pending.json`; Settings
+  → Connections already shows "Not allowed yet" + Allow.
+- T5-05: line 2 of both connection cards is "Bills and drafts are on hold." for every app (05-3 §5.20.2 and AT-220 give only this
+  value for `{Bills and drafts}`). Icons (G-M8-10): 🔌 → `PlugConnected` with the `--warn` edge (jobs are paused, not failed),
+  ⏳ → `Clock`. [ Reconnect ] on the card calls `connection:connect { app: 'google' }` (T2 makes it select_account + login_hint).
+- 08-4 §27.1: the step catalogue lists Google tools only while a Google connection exists (connected or needing sign-in) when the
+  tools go through main; other tools and T4's fixed-token FOO_TEST path are unchanged.
+- Not done here: the "with no job, Google" card (a routine or the poller losing the token) belongs to the routines that M7 wires
+  to the poller; T2's `CONN_REVOKED` test on the refresh reply (`/revoked/` in `error_description`) is kept as T2 left it.
