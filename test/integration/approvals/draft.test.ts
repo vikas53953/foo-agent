@@ -260,7 +260,41 @@ describe('Draft card lifecycle (08-0 §G.7, X-65)', () => {
     expect(await w.drafts.tick()).toEqual([]);
     expect(order).toEqual(['look']);
     expect(w.gmail.sent).toHaveLength(0);
-    expect(w.h.approval(d.approvalId).state).toBe('APPROVED');
+    expect(w.h.approval(d.approvalId)).toMatchObject({ state: 'APPROVED', undo_until: null });
+    // A held look runs once, not every tick.
+    w.h.clock.now = T0 + 6_000;
+    expect(await w.drafts.tick()).toEqual([]);
+    expect(order).toEqual(['look']);
+  });
+
+  it('a Send that lands while Gmail saves a Change wins: the change is refused and Gmail gets the approved words back', async () => {
+    const w = world();
+    const d = await made(w);
+    const update = w.gmail.update.bind(w.gmail);
+    let raced = false;
+    w.gmail.update = async (id, msg) => {
+      const r = await update(id, msg);
+      if (!raced) {
+        raced = true;
+        expect(w.drafts.send(tap(d)).ok).toBe(true);
+      }
+      return r;
+    };
+    const r = await w.drafts.update({ cardId: d.cardId, nonce: d.nonce, fields: { subject: 'Rent', body: 'Changed words.' } });
+    expect(r).toEqual({ ok: false, error: { kind: 'CARD_STALE' } });
+    expect(w.gmail.drafts.get('gd_1')).toEqual({ to: TO.address, subject: DRAFT.subject, body: DRAFT.body });
+    expect(payload(w, d.cardId)).toMatchObject({ body: DRAFT.body, edited: false });
+    w.h.clock.now = T0 + 5_000;
+    expect(await w.drafts.tick()).toEqual([d.approvalId]);
+  });
+
+  it('a Draft the gate refuses to record leaves no Gmail draft behind', async () => {
+    const w = world();
+    w.h.gate.createDraft = () => ({ ok: false, error: { kind: 'DB_NOT_WRITABLE' } });
+    const r = await w.drafts.create({ jobId: w.h.jobId, ...DRAFT });
+    expect(r).toEqual({ ok: false, error: { kind: 'DB_NOT_WRITABLE' } });
+    expect(w.gmail.calls).toEqual(['create', 'delete:gd_1']);
+    expect(w.gmail.drafts.size).toBe(0);
   });
 
   it('No send permission: Open in Gmail opens the Gmail draft and the card reads opened_in_app; the approval is withdrawn', async () => {
@@ -272,13 +306,16 @@ describe('Draft card lifecycle (08-0 §G.7, X-65)', () => {
       now: () => w.h.clock.now,
       gmail: () => w.gmail,
       changed: () => undefined,
-      openExternal: (url) => void opened.push(url),
+      // The card is folded before Gmail opens, so a failed open never leaves a live approval behind.
+      openExternal: (url) => void opened.push(`${url} ${String(w.h.card(r.value.cardId).state)}`),
     });
-    const r = await drafts.create({ jobId: w.h.jobId, ...DRAFT, sendAllowed: false });
-    if (!r.ok) throw new Error('create refused');
+    const r = await drafts.create({ jobId: w.h.jobId, ...DRAFT, sendAllowed: false }).then((x) => {
+      if (!x.ok) throw new Error('create refused');
+      return x;
+    });
     expect(drafts.send(tap(r.value))).toEqual({ ok: false, error: { kind: 'CONN_SCOPE_MISSING' } });
     expect(await drafts.openInApp({ cardId: r.value.cardId })).toEqual({ ok: true, value: undefined });
-    expect(opened).toEqual(['https://mail.google.com/mail/#drafts']);
+    expect(opened).toEqual(['https://mail.google.com/mail/#drafts opened_in_app']);
     expect(w.h.card(r.value.cardId).state).toBe('opened_in_app');
     expect(w.h.approval(r.value.approvalId).state).toBe('WITHDRAWN');
   });

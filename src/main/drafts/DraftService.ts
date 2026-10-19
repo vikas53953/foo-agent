@@ -94,7 +94,7 @@ export class DraftService {
       body: input.body,
     });
     if (!g.ok) return g;
-    return this.d.gate.createDraft({
+    const made = this.d.gate.createDraft({
       jobId: input.jobId,
       fields: sendFields(input.to, input.subject, input.body),
       payload: {
@@ -108,6 +108,9 @@ export class DraftService {
         gmailDraftId: g.value.gmailDraftId,
       },
     });
+    // No card, no approval: the Gmail draft would be left behind with nothing pointing at it.
+    if (!made.ok) await gmail.delete(g.value.gmailDraftId);
+    return made;
   }
 
   /** The Draft card the renderer holds, still pending and in time (08-1 §3.2 CARD_STALE / CARD_EXPIRED). */
@@ -223,7 +226,11 @@ export class DraftService {
     const a = this.d.gate.get(approvalId);
     if (!a || a.state !== 'APPROVED') return false;
     const look = await (this.d.secondLook ?? alwaysPass)(a);
-    if (!look.pass) return false;
+    if (!look.pass) {
+      // Out of the tick's due list, so the look runs once; HELD and its card come with T8.
+      this.d.db.prepare("UPDATE approvals SET undo_until = NULL WHERE id = ? AND state = 'APPROVED' AND submitted_at IS NULL").run(a.id);
+      return false;
+    }
     const card = this.card(a.cardId);
     const gmail = this.d.gmail();
     if (!card) return false;
@@ -239,7 +246,7 @@ export class DraftService {
     const at = this.d.now();
     if (!r.ok) {
       this.d.gate.draftMove(a.id, 'submit_failed', { approval: { failure_kind: r.error.kind }, card: { state: 'failed' } });
-      this.d.log?.({ t: at, lvl: 'warn', mod: 'drafts', evt: 'SEND_FAILED', approvalId: a.id, kind: r.error.kind });
+      this.d.log?.({ t: at, lvl: 'warn', mod: 'drafts', evt: r.error.kind, approvalId: a.id });
       return false;
     }
     const proof = { kind: 'sent_folder' as const, connectionId: gmail!.connectionId, messageId: r.value.messageId };
@@ -294,6 +301,17 @@ export class DraftService {
       body: req.fields.body,
     });
     if (!g.ok) return g;
+    // A Send can land while Gmail answers: then the old words are the approved ones, so Gmail gets them back.
+    const revert = async (r: Result<never>): Promise<Result<never>> => {
+      await gmail.update(p.gmailDraftId!, {
+        to: p.to?.address ?? '',
+        ...(p.subject !== undefined ? { subject: p.subject } : {}),
+        body: p.body,
+      });
+      return r;
+    };
+    const still = this.pending(req);
+    if (!still.ok) return revert(still);
     const fields: ApprovalFields = { ...a.fields, contentSummary: summaryOf(subject, req.fields.body) };
     const now = this.d.now();
     const payload: DraftPayload = {
@@ -316,7 +334,7 @@ export class DraftService {
       if (!w.result.ok) throw new Error(w.result.error.kind);
       return w.effects;
     })();
-    if (!r) return fail('CARD_STALE');
+    if (!r) return revert(fail('CARD_STALE'));
     this.d.changed(r);
     this.d.log?.({ t: now, lvl: 'info', mod: 'drafts', evt: 'card.changed', approvalId: a.id, cardId: card.id });
     return ok(this.card(card.id)!);
@@ -349,10 +367,11 @@ export class DraftService {
     if (!a) return fail('NOT_FOUND');
     if (card.state !== 'pending' || a.state !== 'PENDING') return fail('CARD_STALE');
     if ((card.payload as unknown as DraftPayload).sendAllowed) return fail('VALIDATION');
-    await this.d.openExternal?.(GMAIL_DRAFTS_URL);
     const now = this.d.now();
     const moved = this.d.gate.draftMove(a.id, 'withdraw', { card: { state: 'opened_in_app', resolved_by: 'tap', resolved_at: now } });
-    return moved.ok ? ok(undefined) : moved;
+    if (!moved.ok) return moved;
+    await this.d.openExternal?.(GMAIL_DRAFTS_URL);
+    return ok(undefined);
   }
 
   /** `card:askAgain` on an expired Draft (05-2 §5.7.2): a fresh pending Draft card on the same Gmail draft, 60 min again. */
