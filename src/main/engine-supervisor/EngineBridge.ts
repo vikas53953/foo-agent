@@ -1,16 +1,22 @@
 // Spec: 08-1 §2.4 (main ⇄ engine messages; every payload zod-validated on receipt; requests get `{ re, result }`), §2.4.1
 // (db.tx, db.query), §3.3 (ui.patch forwarded to the renderer as-is), 08-0 §A (main owns settings.json: the engine's
 // your-AI results are written here), 08-5 §3.1 (AiStatus), 08-1 §3.3 (job:upsert / card:upsert for rows a db.tx wrote),
-// 09 §9.22 (power.keepAwake → powerSaveBlocker in main). Electron-free so unit tests drive it with an in-process engine.
+// 09 §9.22 (power.keepAwake → powerSaveBlocker in main), 08-2 §5.10 item 3 (the spend meter is updated per turn: a db.tx that
+// writes an `ai_turns` row emits `spend:update`, and the 80 % line of §5.10 item 4; M5 T10, CR-0008 (j) rows 1–2). Electron-free so unit tests drive it with an
+// in-process engine.
 import { engineToMainSchema, type DbOp, type EngineToMain, type MainToEngine, type NamedQuery } from '../../engine/protocol';
 import type { Result } from '../../shared/errors';
 import type { EventChannel, EventPayload } from '../../shared/ipc';
 import type { Settings } from '../../shared/settings';
-import type { AiStatus, ProviderId } from '../../shared/types';
+import type { AiStatus, ApprovalDraft, ProviderId } from '../../shared/types';
 import type { Db } from '../store/db';
 import { cardRow, type DbRow } from '../db/rows';
-import { jobRows } from '../store/queries';
+import { jobRows, spendSummary } from '../store/queries';
+import { postCapWarning } from '../jobs/capWarning';
 import { applyDbOps, runNamedQuery, writeDataFile } from './engineHost';
+import { vaultRuntime } from '../vault/vaultRuntime';
+import type { ApprovalGate } from '../approvals/ApprovalGate';
+import { logEvent } from '../log/techLog';
 
 export interface BridgeContext {
   db: Db;
@@ -28,6 +34,9 @@ export interface BridgeContext {
   keepAwake?(on: boolean, jobCount: number): void;
   /** 08-3 §15: a toast request. Stub until M11 (logged only). */
   notify?(req: unknown): void;
+  // M5
+  /** T7: main's ApprovalGate for engine `approval.open` / `approval.transition` (08-2 §9.1, §9.7); lazy, it needs this bridge. */
+  approvals?(): Pick<ApprovalGate, 'openFromEngine' | 'transition'>;
 }
 
 type AiStatePayload = Extract<EngineToMain, { kind: 'ai.state' }>['payload'];
@@ -99,7 +108,7 @@ export class EngineBridge {
     }
     const parsed = engineToMainSchema.safeParse(raw);
     if (!parsed.success) {
-      console.warn('IPC_REJECTED engine message failed validation');
+      logEvent({ lvl: 'warn', mod: 'engine', evt: 'IPC_REJECTED', kind: 'ENGINE_MESSAGE_INVALID' }); // M5 T7 (08-3 §19.1)
       const id = raw && typeof raw === 'object' && 'id' in raw ? String((raw as { id: unknown }).id) : '';
       return id ? { re: id, result: { ok: false, error: { kind: 'IPC_REJECTED' } } } : null;
     }
@@ -118,6 +127,17 @@ export class EngineBridge {
           for (const job of jobRows(this.ctx.db, `id IN (${ids.map(() => '?').join(', ')})`, ids, now)) this.ctx.emit('job:upsert', job);
         }
         for (const id of effects.chatIds) this.ctx.emitChat(id);
+        // M5 T10: 08-2 §5.10 item 3, the Spent meter moves after every AI turn.
+        if (result.ok && msg.payload.ops.some((o) => o.op === 'insert' && o.table === 'ai_turns')) {
+          const summary = spendSummary(this.ctx.db, this.ctx.settings.get(), now);
+          this.ctx.emit('spend:update', summary);
+          // Row 2: at 80 % of the AI cap, one line in foo's chat once a month.
+          const warned = postCapWarning(this.ctx.db, this.ctx.settings.get(), summary, now, this.ctx.dataDir);
+          if (warned) {
+            this.ctx.emitMessage(warned.messageId);
+            this.ctx.emitChat(warned.chatId);
+          }
+        }
         return { re: msg.id, result };
       }
       case 'file.write':
@@ -141,6 +161,24 @@ export class EngineBridge {
       case 'ai.state':
         this.applyAiState(msg.payload);
         return null;
+      // M5 T7 (08-2 §9.1, §9.7; 08-4 §28.1 item 8, §29.1): only main's ApprovalGate writes approvals.state. A verified draft
+      // opens its card; the engine's moves are checked against the table (APPROVAL_BAD_TRANSITION, logged).
+      case 'approval.open': {
+        const gate = this.ctx.approvals?.();
+        if (!gate) return { re: msg.id, result: { ok: false, error: { kind: 'VALIDATION', message: 'not_implemented' } } };
+        return { re: msg.id, result: gate.openFromEngine({ ...msg.payload, draft: msg.payload.draft as ApprovalDraft }) };
+      }
+      case 'approval.transition': {
+        const gate = this.ctx.approvals?.();
+        if (!gate) return { re: msg.id, result: { ok: false, error: { kind: 'VALIDATION', message: 'not_implemented' } } };
+        const r = gate.transition(msg.payload.approvalId, msg.payload.to, msg.payload.data ?? {});
+        return { re: msg.id, result: r.ok ? { ok: true, value: { ok: true } } : r };
+      }
+      // M5 T2 (08-2 §11.3): purpose checks in main; the value goes back to the engine only, registered first. Never logged.
+      case 'vault.use': {
+        const vault = vaultRuntime()?.vault;
+        return { re: msg.id, result: vault ? vault.use(msg.payload) : { ok: false, error: { kind: 'VAULT_MISSING' } } };
+      }
     }
   }
 

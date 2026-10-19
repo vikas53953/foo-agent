@@ -31,10 +31,12 @@
     "tier-r": "tsx scripts/tier-r.ts",
     "fid:guard": "tsx scripts/fid-guard.ts",
     "trace:check": "tsx scripts/trace-check.ts",
-    "fidelity:report": "tsx scripts/fidelity-report.ts"
+    "fidelity:report": "tsx scripts/fidelity-report.ts",
+    "closeout": "tsx scripts/closeout.ts"
   },
   "dependencies": {
     "@fluentui/react-icons": "2.0.343",
+    "@napi-rs/keyring": "2.1.1",
     "@tanstack/react-virtual": "3.14.13",
     "better-sqlite3": "13.0.3",
     "immer": "11.1.21",

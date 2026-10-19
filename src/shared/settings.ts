@@ -24,6 +24,26 @@ const providerSchema = z.object({
   cheapModel: z.string().optional(),
 });
 
+// M5 (CR-0009): 08-0 §A `Tri` and 08-5 §3.3 `Rule`.
+const TRI = z.enum(['always', 'ask', 'never']);
+const RULE = z
+  .object({
+    id: z.string().min(1),
+    verb: z.enum(['use_app', 'calendar_write', 'mail_organise']),
+    match: z
+      .object({
+        app: z.enum(['gmail', 'calendar', 'contacts', 'whatsapp', 'browser', 'outlook']).optional(),
+        calendarId: z.literal('primary').optional(),
+        labelOrFolder: z.string().optional(),
+      })
+      .strict(),
+    text: z.string(),
+    helperId: z.string().optional(),
+    createdAt: z.number(),
+    source: z.literal('card'),
+  })
+  .strict();
+
 export const settingsSchema = z.object({
   schemaVersion: z.literal(2),
   setup: z.object({
@@ -68,6 +88,23 @@ export const settingsSchema = z.object({
     providers: z.partialRecord(z.enum(PROVIDER_IDS), providerSchema),
     plainChatFallback: z.boolean(),
   }),
+  // M5 (CR-0009; 08-0 §A, §A.2, §G.3): the permission rows and the rules the Approval card's scope writes (08-2 §9.5).
+  permissions: z.object({
+    actions: z.object({
+      read: TRI,
+      drafts: TRI,
+      calendar: TRI,
+      send: TRI,
+      book: TRI,
+      pay: TRI,
+      post: TRI,
+      delete: TRI,
+      share: TRI,
+    }),
+    apps: z.object({ gmail: TRI, calendar: TRI, contacts: TRI, whatsapp: TRI, browser: TRI, outlook: TRI }),
+    folders: z.array(z.object({ path: z.string().min(1), mode: TRI })),
+  }),
+  rules: z.array(RULE),
   money: z.object({
     purchaseCapPaise: z.number().int().min(0).max(100_000_000),
     aiCapPaise: z.number().int().min(10_000).max(10_000_000),
@@ -110,7 +147,40 @@ export const WRITABLE_PATHS = [
   'window.lastChatId',
   'money.warnAt80',
   'money.aiCapPaise',
+  // M5 (CR-0009): the Permissions rows (the page is M13; AT-280 checks the locks through settings:set now).
+  'permissions.actions.read',
+  'permissions.actions.drafts',
+  'permissions.actions.calendar',
+  'permissions.actions.send',
+  'permissions.actions.book',
+  'permissions.actions.pay',
+  'permissions.actions.post',
+  'permissions.actions.delete',
+  'permissions.actions.share',
+  'permissions.apps.gmail',
+  'permissions.apps.calendar',
+  'permissions.apps.contacts',
+  'permissions.apps.whatsapp',
+  'permissions.apps.browser',
+  'permissions.apps.outlook',
   // M6: the Memory page banner's "Turn back on" (06-2 §7.5); the Privacy rows arrive with M13.
   'privacy.rememberOn',
 ] as const;
 export type WritablePath = (typeof WRITABLE_PATHS)[number];
+
+// M5 (CR-0009)
+/** 08-0 §A.2 lock 1: these action rows take only ask | never (an approval is always a card, Art. 5). */
+export const ASK_OR_NEVER = ['send', 'book', 'pay', 'delete', 'share'] as const;
+
+/**
+ * 08-0 §A.2 locks 1–5 (`SETTING_LOCKED`, checked after the zod check): send/book/pay/delete/share never `always`, `post`
+ * stays `never` in v1, the big-payment and AI-cap ranges. The renderer reads the same function to disable locked choices.
+ */
+export function settingLocked(path: string, value: unknown): boolean {
+  const action = /^permissions\.actions\.(\w+)$/.exec(path)?.[1];
+  if (action === 'post') return value !== 'never';
+  if (action && (ASK_OR_NEVER as readonly string[]).includes(action)) return value === 'always';
+  if (path === 'money.bigPaymentPaise') return typeof value === 'number' && (value < 0 || value > 1_000_000);
+  if (path === 'money.aiCapPaise') return typeof value === 'number' && value < 10_000;
+  return false;
+}

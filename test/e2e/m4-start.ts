@@ -34,3 +34,11 @@ export async function openPanelChat(page: Page, name: string): Promise<void> {
   await openChat(page, name);
   await expect(page.getByTestId(TID.appPanel)).toHaveAttribute('data-state', 'open');
 }
+
+/**
+ * The M2/M3 chat specs test replies, not jobs. From M4 the runner acts on the ux-world's live jobs (a text in a chat with one
+ * live job steers it, 08-2 §5.2; an unowned working job raises a card as the clock moves), so those specs end them first.
+ */
+export async function settleSeededJobs(page: Page, refs: Record<string, string> | undefined): Promise<void> {
+  for (const id of [refs?.goaJob, refs?.tripsJob]) if (id) await jobState(page, id, 'done');
+}

@@ -70,13 +70,19 @@ export function openDb(file: string, dir = MIGRATIONS_DIR): Db {
   mkdirSync(dirname(file), { recursive: true });
   const existed = existsSync(file);
   const db = new Database(file);
-  db.pragma('journal_mode = WAL');
-  db.pragma('synchronous = NORMAL');
-  db.pragma('foreign_keys = ON');
-  db.pragma('busy_timeout = 2000');
-  if (existed && pendingCount(db, dir) > 0) backup(db, file);
-  migrate(db, dir);
-  const check = db.pragma('quick_check', { simple: true });
-  if (check !== 'ok') throw new Error(`DB quick_check failed: ${String(check)}`);
-  return db;
+  try {
+    db.pragma('journal_mode = WAL');
+    db.pragma('synchronous = NORMAL');
+    db.pragma('foreign_keys = ON');
+    db.pragma('busy_timeout = 2000');
+    if (existed && pendingCount(db, dir) > 0) backup(db, file);
+    migrate(db, dir);
+    const check = db.pragma('quick_check', { simple: true });
+    if (check !== 'ok') throw new Error(`DB quick_check failed: ${String(check)}`);
+    return db;
+  } catch (e) {
+    // §4.1.1: a damaged file is renamed next; Windows cannot rename a file that is still open.
+    db.close();
+    throw e;
+  }
 }

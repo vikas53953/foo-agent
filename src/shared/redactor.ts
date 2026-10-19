@@ -4,8 +4,13 @@
 // digit and a letter, never inside a URL; Aadhaar, PAN, phone numbers and addresses are not caught), 08-0 §B.3 / 08-5 §3.4
 // (`PasteCatch { start; end; kind; mask: '••••' }`), 08-0 §G.6 / 08-2 §11.4 (the Redactor is one module,
 // `src/shared/redactor.ts`, used by main and the engine; R1 main re-checks what the composer's catcher saw), 08-2 §11.5
-// (`composer.checkSecret`). M2 builds the pattern part shared by the composer and main; the SecretRegistry and the context
-// rules of §11.4 arrive with the engine (M3).
+// (`composer.checkSecret`). 08-2 §11.4 pipeline (X-72, G-M5-06): 1 registry scrub (exact + normalised forms, longest first →
+// [hidden]; RAM only, ≤ 256 values, LRU); 2 pattern scrub (the patterns above plus Bearer, PEM blocks, secret URL params,
+// URL userinfo, 4–8 digits near an OTP word; card numbers → "•••• {last4}"); 3 context rules `toast` / `log` / `group`.
+// 08-2 §7.2 (a registry hit at the final gate is a bug: the value is blanked, the turn proceeds, REDACTION_LATE_HIT is logged
+// with the part number, not the value).
+import type { Clock } from './clock';
+import { formatInr } from './format';
 import type { PasteCatch } from './types';
 
 /** 08-0 §B.3: the mask is always exactly this, whatever the secret's length. */
@@ -222,4 +227,290 @@ export function askedForCode(
     return now - m.createdAt <= ASKED_FOR_CODE_MS && ASKS_FOR_CODE.test(m.text);
   }
   return false;
+}
+
+// ── 08-2 §11.4 Redaction pipeline (one module for main and the engine, X-72 / G-M5-06) ──────────────────────────────────
+
+/** The replacement for registry and pattern hits (08-2 §11.4). */
+export const HIDDEN = '[hidden]';
+
+/** Tech-log writer injected by the caller (kind, small detail; never a secret value). */
+export type LogFn = (kind: string, detail?: Record<string, string | number | boolean>) => void;
+
+/** 08-0 §G.6 `registry:add { handle, hash, len, value, normalised, ttlMs }` as main and the engine keep it. */
+export interface RegistryEntry {
+  handle: string;
+  value: string;
+  /** Extra forms matched as well (CR/LF stripped; card digits only and grouped 4-4-4-4). */
+  normalised: string[];
+  expiresAt: number | null;
+  lastUsed: number;
+}
+
+/** 08-2 §11.4 item 1: the forms a value is also found under. */
+export function normalisedForms(value: string): string[] {
+  const forms = new Set<string>();
+  const noBreaks = value.replace(/[\r\n]/g, '');
+  forms.add(noBreaks);
+  const digits = value.replace(/[ -]/g, '');
+  if (/^\d{13,19}$/.test(digits)) {
+    forms.add(digits);
+    const groups = digits.match(/.{1,4}/g) ?? [];
+    forms.add(groups.join(' '));
+    forms.add(groups.join('-'));
+  }
+  forms.delete(value);
+  forms.delete('');
+  return [...forms];
+}
+
+/**
+ * Secret values used this app run (vault values, typed codes, CVVs, pasted secrets). RAM only, never persisted, at most 256
+ * entries with least-recently-used eviction; an entry with a TTL disappears once it expires.
+ */
+export class SecretRegistry {
+  private readonly entries = new Map<string, RegistryEntry>();
+
+  constructor(
+    private readonly clock: Clock,
+    private readonly maxValues = 256,
+  ) {}
+
+  /** Adds (or refreshes) a handle. `normalised` defaults to {@link normalisedForms}. */
+  add(e: { handle: string; value: string; normalised?: string[]; ttlMs?: number | null }): void {
+    if (!e.value) return;
+    const now = this.clock.now();
+    this.entries.delete(e.handle);
+    this.entries.set(e.handle, {
+      handle: e.handle,
+      value: e.value,
+      normalised: e.normalised ?? normalisedForms(e.value),
+      expiresAt: e.ttlMs == null ? null : now + e.ttlMs,
+      lastUsed: now,
+    });
+    while (this.entries.size > this.maxValues) {
+      let oldest: RegistryEntry | undefined;
+      for (const x of this.entries.values()) if (!oldest || x.lastUsed < oldest.lastUsed) oldest = x;
+      if (!oldest) break;
+      this.entries.delete(oldest.handle);
+    }
+  }
+
+  /** `registry:remove { handles }`. */
+  remove(handles: readonly string[]): void {
+    for (const h of handles) this.entries.delete(h);
+  }
+
+  clear(): void {
+    this.entries.clear();
+  }
+
+  get size(): number {
+    this.purge();
+    return this.entries.size;
+  }
+
+  /** Every live form with its handle, longest first. */
+  forms(): { handle: string; form: string }[] {
+    this.purge();
+    const out: { handle: string; form: string }[] = [];
+    for (const e of this.entries.values()) for (const f of [e.value, ...e.normalised]) out.push({ handle: e.handle, form: f });
+    return out.sort((a, b) => b.form.length - a.form.length);
+  }
+
+  /** Marks a handle used (LRU). */
+  touch(handle: string): void {
+    const e = this.entries.get(handle);
+    if (e) e.lastUsed = this.clock.now();
+  }
+
+  private purge(): void {
+    const now = this.clock.now();
+    for (const [h, e] of this.entries) if (e.expiresAt !== null && e.expiresAt <= now) this.entries.delete(h);
+  }
+}
+
+/** 08-2 §11.4 item 2 rows beyond the paste catcher's: `Bearer …`, PEM blocks, secret URL params, URL userinfo, OTP near its word. */
+const BEARER = /\bBearer\s+[A-Za-z0-9._~+/=-]{8,}/gu;
+const PEM_BLOCK = /-----BEGIN (?:[A-Z0-9]+ )*PRIVATE KEY-----[\s\S]*?(?:-----END (?:[A-Z0-9]+ )*PRIVATE KEY-----|$)/gu;
+const URL_PARAM = /[?&](?:token|key|code|sig|signature|password|pwd|secret|auth)=([^&#\s]+)/giu;
+const URL_USERINFO = /\b[a-z][a-z0-9+.-]{0,31}:\/\/([^\s/@:]+(?::[^\s/@]*)?)@/giu;
+// The words confirmation, booking, reference, order, PNR, ticket, receipt and a bare "code" do not trigger (§11.4).
+const OTP_WORD = /(?:\b(?:otp|one[- ]?time|verification code|security code|passcode)\b|पासकोड|ओटीपी|ਓਟੀਪੀ)/giu;
+const CODE_NEAR = /(?<!\d)\d{4,8}(?!\d)/gu;
+
+export function extraSpans(text: string): { start: number; end: number }[] {
+  const out: { start: number; end: number }[] = [];
+  for (const re of [BEARER, PEM_BLOCK]) for (const m of text.matchAll(re)) out.push({ start: m.index, end: m.index + m[0].length });
+  for (const re of [URL_PARAM, URL_USERINFO])
+    for (const m of text.matchAll(re)) {
+      const v = m[1]!;
+      const start = m.index + m[0].indexOf(v);
+      out.push({ start, end: start + v.length });
+    }
+  const near = new Set<number>(); // a code near several OTP words is one span
+  for (const w of text.matchAll(OTP_WORD)) {
+    const from = Math.max(0, w.index - 40);
+    const to = Math.min(text.length, w.index + w[0].length + 40);
+    for (const m of text.slice(from, to).matchAll(CODE_NEAR)) {
+      const start = from + m.index;
+      if (near.has(start)) continue;
+      near.add(start);
+      out.push({ start, end: start + m[0].length });
+    }
+  }
+  return out;
+}
+
+/** 08-2 §11.4 item 3: where the text is going. No channel = stored text and AI input (steps 1–2 only). */
+export type RedactChannel = 'toast' | 'log' | 'group';
+
+export interface RedactCtx {
+  channel?: RedactChannel;
+  /** `toast`: the user's own addresses stay readable; every other address is third-party. */
+  ownEmails?: readonly string[];
+  /** `group` (b): `payments.amount_paise` of the job's succeeded payments. */
+  paidAmountsPaise?: readonly number[];
+  /** `group` (c): text of the private `memory_index` rows offered in this job's turns. */
+  privateFacts?: readonly string[];
+  /** `group` (d): address values the job's approvals shared. */
+  sharedAddresses?: readonly string[];
+}
+
+const EMAIL = /\b[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9-]{1,63}(?:\.[A-Za-z0-9-]{1,63}){0,8}\.[A-Za-z]{2,63}\b/gu;
+/** A phone number: optional +country code, then 10 digits with optional spaces or dashes. */
+const PHONE = /(?<![\w+•])(?:\+(\d{1,3})[ -]?)?((?:\d[ -]?){9}\d)(?![\w•])/gu;
+/** Reference numbers that look like phone numbers (a PNR is 10 digits) are not phone numbers. */
+const NOT_A_PHONE = /\b(?:pnr|order|booking|ref(?:erence)?|ticket|invoice|receipt|confirmation|id|no\.?)\W{0,4}$|#\s*$/iu;
+
+/** J20 / 08-2 §11.4: "r***@gmail.com". */
+export function maskEmail(email: string): string {
+  const at = email.indexOf('@');
+  return `${email.slice(0, 1)}***${email.slice(at)}`;
+}
+
+/** J20 / 08-2 §11.4: "+91 98••• ••210" (country code kept; first 2 and last 3 digits of the number). */
+export function maskPhone(national: string, countryCode?: string): string {
+  const d = national.replace(/\D/g, '');
+  return `${countryCode ? `+${countryCode} ` : ''}${d.slice(0, 2)}••• ••${d.slice(-3)}`;
+}
+
+function maskContacts(text: string, ownEmails: readonly string[]): string {
+  const own = new Set(ownEmails.map((e) => e.toLowerCase()));
+  let out = text.replace(EMAIL, (e) => (own.has(e.toLowerCase()) ? e : maskEmail(e)));
+  out = out.replace(PHONE, (m: string, cc: string | undefined, national: string, offset: number, whole: string) => {
+    if (!cc && !/^[6-9]/.test(national)) return m;
+    if (NOT_A_PHONE.test(whole.slice(Math.max(0, offset - 16), offset))) return m;
+    return maskPhone(national, cc);
+  });
+  return out;
+}
+
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/** F11 / F19.2 forms of an amount: "₹14,600", "14,600", "14600", and each with paise ("14,600.00"). */
+function amountForms(paise: number): string[] {
+  const exact = formatInr(paise);
+  const grouped = exact.replace(/^-?₹/, '').replace(/\.\d{2}$/, '');
+  const plain = grouped.replace(/,/g, '');
+  const p = (Math.abs(paise) % 100).toString().padStart(2, '0');
+  const forms = [`₹${grouped}.${p}`, `₹${grouped}`, `${grouped}.${p}`, `${plain}.${p}`, grouped, plain];
+  return [...new Set(forms)].sort((a, b) => b.length - a.length);
+}
+
+function groupRules(text: string, ctx: RedactCtx): string {
+  let out = text;
+  for (const paise of ctx.paidAmountsPaise ?? [])
+    for (const f of amountForms(paise)) out = out.replace(new RegExp(`(?<![\\d.,])${escapeRe(f)}(?![\\d]|[.,]\\d)`, 'gu'), 'the amount');
+  const facts = (ctx.privateFacts ?? []).filter(Boolean).map((f) => f.normalize('NFKC'));
+  if (facts.length) {
+    out = out.normalize('NFKC');
+    for (const f of facts.sort((a, b) => b.length - a.length)) out = out.replace(new RegExp(escapeRe(f), 'giu'), 'something private');
+  }
+  for (const a of [...(ctx.sharedAddresses ?? [])].filter(Boolean).sort((x, y) => y.length - x.length))
+    out = out.split(a).join('the address');
+  return out;
+}
+
+/**
+ * The Redactor (08-2 §11.4): `redact(text, ctx)` runs the registry scrub, the pattern scrub and the context rules in that
+ * order. Main and the engine each make one; each holds its copy of the registry (`registry:add` mirrors main's to the engine).
+ */
+export class Redactor {
+  readonly registry: SecretRegistry;
+  private readonly log: LogFn;
+
+  constructor(deps: { clock: Clock; log?: LogFn; maxValues?: number; registry?: SecretRegistry }) {
+    this.registry = deps.registry ?? new SecretRegistry(deps.clock, deps.maxValues);
+    this.log = deps.log ?? (() => {});
+  }
+
+  /** Replaces every registry form found in `text`, longest first, with `replacement`; returns the handles hit. */
+  private registryScrub(text: string, replacement: string): { text: string; handles: string[] } {
+    let out = text;
+    const handles = new Set<string>();
+    for (const { handle, form } of this.registry.forms()) {
+      if (!out.includes(form)) continue;
+      out = out.split(form).join(replacement);
+      handles.add(handle);
+      this.registry.touch(handle);
+    }
+    return { text: out, handles: [...handles] };
+  }
+
+  /**
+   * Pattern scrub: the paste catcher's patterns plus the §11.4 rows it does not have ({@link extraSpans}). Card numbers →
+   * "•••• {last4}", every other hit → [hidden]. Overlapping spans are merged.
+   */
+  private patternScrub(text: string): { text: string; hits: number } {
+    const spans = [
+      ...findSecrets(text).map((h) => ({ start: h.start, end: h.end, card: h.pattern === 'P12' })),
+      ...extraSpans(text).map((x) => ({ ...x, card: false })),
+    ].sort((x, y) => x.start - y.start || y.end - x.end);
+    const merged: { start: number; end: number; card: boolean }[] = [];
+    for (const sp of spans) {
+      const last = merged[merged.length - 1];
+      if (last && sp.start < last.end) {
+        last.end = Math.max(last.end, sp.end);
+        last.card = last.card && sp.card;
+      } else merged.push({ ...sp });
+    }
+    // One pass, so thousands of hits in a long text stay linear.
+    const parts: string[] = [];
+    let at = 0;
+    for (const h of merged) {
+      const span = text.slice(h.start, h.end);
+      parts.push(text.slice(at, h.start), h.card ? `${MASK} ${span.replace(/\D/g, '').slice(-4)}` : HIDDEN);
+      at = h.end;
+    }
+    parts.push(text.slice(at));
+    return { text: parts.join(''), hits: merged.length };
+  }
+
+  /** 08-2 §11.4 steps 1–3. */
+  redact(text: string, ctx: RedactCtx = {}): { text: string; hits: number } {
+    const r = this.registryScrub(text, HIDDEN);
+    const p = this.patternScrub(r.text);
+    let out = p.text;
+    if (ctx.channel === 'toast') out = maskContacts(out, ctx.ownEmails ?? []);
+    if (ctx.channel === 'log') out = maskContacts(out, []);
+    if (ctx.channel === 'group') out = groupRules(maskContacts(out, []), ctx);
+    return { text: out, hits: r.handles.length + p.hits };
+  }
+
+  /** Steps 1–2 over any text (R2 stored text, R10 AI output before display). */
+  scrub(text: string): { text: string; hits: number } {
+    return this.redact(text);
+  }
+
+  /**
+   * R3, 08-2 §7.2: the last pass over an assembled AI input. A registry hit here is a bug: the value is blanked (removed), the
+   * turn proceeds, and `REDACTION_LATE_HIT` is logged with the part number (never the value). Pattern hits are then scrubbed
+   * as in {@link scrub} (they are expected: stored text was scrubbed on write, tool results may carry key-like strings).
+   */
+  finalGate(text: string, part?: number | string): string {
+    const r = this.registryScrub(text, '');
+    if (r.handles.length) this.log('REDACTION_LATE_HIT', { part: part === undefined ? 'unknown' : String(part), hits: r.handles.length });
+    return this.patternScrub(r.text).text;
+  }
 }

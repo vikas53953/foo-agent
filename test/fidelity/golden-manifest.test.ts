@@ -1,7 +1,18 @@
 // 11-fidelity §11.2.1, §11.2.7: golden/manifest.json is generated from the frozen walkthrough and fixes the BP ids.
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { BP, BP_M2, BP_M4, BP_M6, CHAPTER_MILESTONE, EARLY_STEPS, SUPERSEDED, readManifest } from '../../scripts/golden-manifest';
+import {
+  BP,
+  BP_M2,
+  BP_M4,
+  BP_M5,
+  BP_M6,
+  CHAPTER_MILESTONE,
+  EARLY_STEPS,
+  STEP_MILESTONE,
+  SUPERSEDED,
+  readManifest,
+} from '../../scripts/golden-manifest';
 import { compareRenders, select, type RefJson } from '../../scripts/golden-render';
 
 const manifest = readManifest();
@@ -12,7 +23,7 @@ describe('golden manifest', () => {
       uxChapters: 25,
       uxSteps: 245,
       uxFrames: 490,
-      bp: BP.length + BP_M2.length + BP_M4.length + BP_M6.length,
+      bp: BP.length + BP_M2.length + BP_M4.length + BP_M5.length + BP_M6.length,
     });
     expect(manifest.ux).toHaveLength(245);
     expect(new Set(manifest.ux.map((e) => e.id)).size).toBe(245);
@@ -33,7 +44,7 @@ describe('golden manifest', () => {
     for (const s of manifest.superseded) expect(manifest.ux.find((e) => e.id === s.id)?.superseded?.decision).toBe(s.decision);
   });
   it('fixes the BP ids for M1 with selectors and spec sections', () => {
-    expect(manifest.bp).toEqual([...BP, ...BP_M2, ...BP_M4, ...BP_M6]);
+    expect(manifest.bp).toEqual([...BP, ...BP_M2, ...BP_M4, ...BP_M5, ...BP_M6]);
     const ids = manifest.bp.map((b) => b.id);
     for (const id of ['BP-APP-L', 'BP-APP-M', 'BP-APP-R', 'BP-ANAT-L', 'BP-ANAT-M', 'BP-ANAT-S', 'BP-ANAT-XS']) expect(ids).toContain(id);
     for (const b of BP) {
@@ -69,7 +80,7 @@ describe('golden manifest', () => {
     expect(early).toEqual(
       manifest.ux
         .filter((e) => e.id in EARLY_STEPS)
-        .map((e) => [e.id, CHAPTER_MILESTONE[e.anchor.split('-')[0]!] ?? null, EARLY_STEPS[e.id]]),
+        .map((e) => [e.id, STEP_MILESTONE[e.id] ?? CHAPTER_MILESTONE[e.anchor.split('-')[0]!] ?? null, EARLY_STEPS[e.id]]),
     );
     expect(early.filter((e) => e[2] === 'M4').map((e) => e[0])).toEqual([
       'UX-05-02',
@@ -77,6 +88,28 @@ describe('golden manifest', () => {
       'UX-05-04',
       ...['01', '02', '03', '04', '05', '06', '09', '11'].map((s) => `UX-23-${s}`),
     ]);
+  });
+  it('CR-0009 adds the six M5 card refs, the M5 early Approval / Draft steps, moves the notification-answer step of chapter 10 to M11 and the memory chip step to M6', () => {
+    expect(BP_M5.map((b) => b.id)).toEqual(['BP-CARD-03', 'BP-CARD-04', 'BP-CARD-05', 'BP-CARD-07', 'BP-CARD-08', 'BP-CARD-09']);
+    for (const b of BP_M5) {
+      expect(b.milestone).toBe('M5');
+      expect(b.selector).toMatch(/^#cardgal > \.panel:nth-child\(\d+\) > \.mini$/);
+    }
+    const early = manifest.ux.filter((e) => e.firstTested === 'M5').map((e) => [e.id, e.milestone]);
+    expect(early).toEqual([
+      ['UX-12-05', 'M9'],
+      ['UX-12-06', 'M9'],
+      ['UX-16-02', 'M8'],
+      ['UX-16-04', 'M8'],
+      ['UX-16-06', 'M8'],
+    ]);
+    const choice = manifest.ux.filter((e) => e.id.startsWith('UX-10-'));
+    expect(choice.filter((e) => e.milestone === 'M5').map((e) => e.id)).toEqual(['01', '03', '04', '05', '06'].map((s) => `UX-10-${s}`));
+    expect(choice.find((e) => e.id === 'UX-10-07')?.milestone).toBe('M11');
+    // G-M5-26: the memory chip step waits for memory in replies.
+    expect(choice.find((e) => e.id === 'UX-10-02')?.milestone).toBe('M6');
+    // G-M5-41: the [ Search again ] step waits for the message-button contract.
+    expect(choice.find((e) => e.id === 'UX-10-08')?.milestone).toBe('M13');
   });
   it('the selectors exist in the frozen Blueprint', () => {
     const html = readFileSync(manifest.sources.bp, 'utf8');
