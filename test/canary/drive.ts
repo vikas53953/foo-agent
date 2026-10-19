@@ -35,7 +35,7 @@ export async function captureTexts(page: Page, label: string): Promise<TextSourc
     page.content(),
     page.evaluate(() => document.body.innerText),
     page.evaluate(() =>
-      [...document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea')]
+      Array.from(document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea'))
         .filter((el) => el.type !== 'password')
         .map((el) => el.value)
         .join('\n'),
