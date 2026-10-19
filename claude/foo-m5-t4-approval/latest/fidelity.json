@@ -1,19 +1,19 @@
 {
-  "reportId": "M5-5c81248-39218718136",
+  "reportId": "M5-6369879-39221123686",
   "milestone": "M5",
-  "generatedAt": "2026-10-19T08:04:16.591Z",
-  "commit": "ae6077eedcea96d0b03efed1e08d9f6ae711b987",
-  "head": "5c812482b6bc83038db793ef251e7a7cc414968e",
+  "generatedAt": "2026-10-19T08:17:58.386Z",
+  "commit": "a7698f3aab68d9be711da9bd10c02c2ca888cee5",
+  "head": "6369879524accd540949b136dad2067078b3ae83",
   "ci": {
-    "runId": "39218718136",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39218718136"
+    "runId": "39221123686",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39221123686"
   },
   "spec": {
     "version": "spec-v1.0",
-    "setSha256": "b87a87af2c09dc83b532af5b269c2078c75bb161ac690ea8814763705e0ca000"
+    "setSha256": "ace5c85e9383ebf8c09e6a22aae45fdffebe341f12e85cdfb30a971da6685aba"
   },
   "runner": {
-    "recordedAt": "2026-10-19T07:56:02.300Z",
+    "recordedAt": "2026-10-19T08:16:46.441Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000003250"
+      "runner": "GitHub Actions 1000003268"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,7 +59,6 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "2 Tier R step(s) failed",
     "missing evidence: audit list (docs/fidelity/M5.audit.json)"
   ],
   "missingInputs": [
@@ -67,38 +66,10 @@
   ],
   "forVikas": {
     "tryNow": [
-      "M5: 1 of 18 drawings match; open the side-by-side rows below."
+      "Nothing new to try yet: none of the 17 M5 drawings is built in the app. This run shows that the checking machinery works."
     ],
     "changed": [
-      "28 picture(s) differ a little from the drawing and need your look (Review rows), whatever else a CR disputes:",
-      "BP-ANAT-CHIPS (dark): R3 colour (ΔE 4.78) in the Review band; see it side by side below.",
-      "BP-ANAT-L (dark): R3 colour (ΔE 4.78) in the Review band; see it side by side below.",
-      "BP-ANAT-LHEAD (dark): R3 colour (ΔE 2.91) in the Review band; see it side by side below.",
-      "BP-ANAT-LHEAD (light): R3 colour (ΔE 2.53) in the Review band; see it side by side below.",
-      "BP-APP-R (dark): R3 colour (ΔE 3.19) in the Review band; see it side by side below.",
-      "BP-APP-R (light): R3 colour (ΔE 3.65) in the Review band; see it side by side below.",
-      "BP-MSG-02 (dark): R3 colour (ΔE 3.19) in the Review band; see it side by side below.",
-      "BP-MSG-02 (light): R3 colour (ΔE 3.65) in the Review band; see it side by side below.",
-      "UX-05-02 (light): R4 pixels (4.47 %) in the Review band; see it side by side below.",
-      "UX-05-03 (dark): R4 pixels (7.17 %) in the Review band; see it side by side below.",
-      "UX-05-03 (light): R4 pixels (6.27 %) in the Review band; see it side by side below.",
-      "UX-08-02 (dark): R2 boxes in the Review band; see it side by side below.",
-      "UX-08-02 (light): R2 boxes in the Review band; see it side by side below.",
-      "UX-08-03 (dark): R4 pixels (3.47 %) in the Review band; see it side by side below.",
-      "UX-08-03 (light): R4 pixels (3.20 %) in the Review band; see it side by side below.",
-      "UX-08-05 (dark): R4 pixels (3.97 %) in the Review band; see it side by side below.",
-      "UX-08-05 (light): R4 pixels (3.63 %) in the Review band; see it side by side below.",
-      "UX-08-07 (dark): R4 pixels (5.49 %) in the Review band; see it side by side below.",
-      "UX-08-07 (light): R4 pixels (4.54 %) in the Review band; see it side by side below.",
-      "UX-09-01 (dark): R2 boxes in the Review band; see it side by side below.",
-      "UX-09-01 (light): R2 boxes in the Review band; see it side by side below.",
-      "UX-23-01 (dark): R4 pixels (4.46 %) in the Review band; see it side by side below.",
-      "UX-23-01 (light): R4 pixels (4.19 %) in the Review band; see it side by side below.",
-      "UX-23-02 (light): R4 pixels (7.22 %) in the Review band; see it side by side below.",
-      "UX-23-03 (dark): R4 pixels (8.07 %) in the Review band; see it side by side below.",
-      "UX-23-03 (light): R4 pixels (7.02 %) in the Review band; see it side by side below.",
-      "UX-23-05 (dark): R4 pixels (8.61 %) in the Review band; see it side by side below.",
-      "UX-23-05 (light): R4 pixels (8.07 %) in the Review band; see it side by side below."
+      "Nothing differs from the drawings so far."
     ],
     "needsYes": []
   },
@@ -182,138 +153,6 @@
         "note": "dark"
       },
       {
-        "id": "SV-10",
-        "ok": true,
-        "expected": "height 46 (±0.5)",
-        "measured": "640×46"
-      },
-      {
-        "id": "SV-11",
-        "ok": true,
-        "expected": "border-top-left-radius: 24px; border-top-right-radius: 24px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-12",
-        "ok": true,
-        "expected": "width 36 × height 36 (±0.5)",
-        "measured": "36×36, 36×36"
-      },
-      {
-        "id": "SV-26",
-        "ok": true,
-        "expected": "color: rgb(105, 105, 117)",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-30",
-        "ok": true,
-        "expected": "transition-duration: 0.083s (background-color)",
-        "measured": "background-color, transform 0.083s, 0.083s; background-color, transform 0.083s, 0.083s"
-      },
-      {
-        "id": "SV-26",
-        "ok": true,
-        "expected": "color: rgb(142, 142, 154)",
-        "measured": "all equal",
-        "note": "dark"
-      },
-      {
-        "id": "SV-03",
-        "ok": true,
-        "expected": "border-bottom-left-radius: 6px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-04",
-        "ok": true,
-        "expected": "background-color: rgb(11, 11, 16)",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-05",
-        "ok": true,
-        "expected": "background-color: rgb(240, 240, 244)",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-06",
-        "ok": true,
-        "expected": "font-size: 15px; line-height: 22px; font-weight: 400",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-07",
-        "ok": true,
-        "expected": "line-height: 24px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-09",
-        "ok": true,
-        "expected": "max-width: 760px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-26",
-        "ok": true,
-        "expected": "color: rgb(105, 105, 117)",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-01",
-        "ok": true,
-        "expected": "18px non-tail corners (tail corners 6px)",
-        "measured": "17 bubbles, all equal"
-      },
-      {
-        "id": "SV-08",
-        "ok": true,
-        "expected": "≤ 72 % of the column and ≤ 620px (rich ≤ 680px)",
-        "measured": "17 bubbles within"
-      },
-      {
-        "id": "SV-04",
-        "ok": true,
-        "expected": "background-color: rgb(43, 63, 214)",
-        "measured": "all equal",
-        "note": "dark"
-      },
-      {
-        "id": "SV-05",
-        "ok": true,
-        "expected": "background-color: rgb(32, 32, 40)",
-        "measured": "all equal",
-        "note": "dark"
-      },
-      {
-        "id": "SV-26",
-        "ok": true,
-        "expected": "color: rgb(142, 142, 154)",
-        "measured": "all equal",
-        "note": "dark"
-      },
-      {
-        "id": "SV-02",
-        "ok": true,
-        "expected": "border-bottom-right-radius: 6px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-01",
-        "ok": true,
-        "expected": "18px non-tail corners (tail corners 6px)",
-        "measured": "13 bubbles, all equal",
-        "note": "Trips"
-      },
-      {
-        "id": "SV-08",
-        "ok": true,
-        "expected": "≤ 72 % of the column and ≤ 620px (rich ≤ 680px)",
-        "measured": "13 bubbles within",
-        "note": "Trips"
-      },
-      {
         "id": "SV-16",
         "ok": true,
         "expected": "height 32 (±0.5)",
@@ -341,9 +180,9 @@
         "skipped": 2
       },
       "e2e": {
-        "passed": 67,
+        "passed": 25,
         "failed": 0,
-        "skipped": 0
+        "skipped": 42
       }
     },
     "ids": [
@@ -17934,257 +17773,257 @@
       },
       {
         "id": "PERF-02",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
         "id": "ART-26a",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
         "id": "PERF-04",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-messages.spec.ts"
       },
       {
         "id": "ART-26a",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-messages.spec.ts"
       },
       {
         "id": "ART-21a",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-messages.spec.ts"
       },
       {
         "id": "AT-027",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "ART-23a",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "AT-030",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "AT-006",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "AT-006",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "PERF-07",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m4-jobs.spec.ts"
       },
       {
         "id": "PERF-08",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m4-jobs.spec.ts"
       },
       {
         "id": "PERF-11",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m4-jobs.spec.ts"
       },
       {
         "id": "AT-287",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m4-list.spec.ts"
       },
       {
         "id": "AT-286",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m4-list.spec.ts"
       },
       {
         "id": "AT-282",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m4-notices.spec.ts"
       },
       {
         "id": "AT-081",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m4-offline.spec.ts"
       },
       {
         "id": "AT-281",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m4-panel.spec.ts"
       },
       {
         "id": "AT-122",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m5-approval.spec.ts"
       },
       {
         "id": "AT-126",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m5-approval.spec.ts"
       },
       {
         "id": "AT-127",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m5-approval.spec.ts"
       },
       {
         "id": "AT-280",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m5-approval.spec.ts"
       },
       {
         "id": "BP-CARD-02",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
       },
       {
         "id": "BP-CARD-12",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
       },
       {
         "id": "BP-CARD-15",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
       },
       {
         "id": "BP-CARD-18",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
       },
       {
         "id": "BP-CARD-19",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
       },
       {
         "id": "BP-CARD-20",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
       },
       {
         "id": "BP-CARD-05",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-cards-m5-approval.spec.ts"
       },
       {
         "id": "BP-MSG-01",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-MSG-03",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-MSG-04",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-01",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-02",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-04",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-05",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-06",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-07",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-08",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-09",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-MSG-02",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-03",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-APP-L",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/bp/BP-shell.spec.ts"
       },
       {
         "id": "UX-05-02",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/ux/UX-05.first.spec.ts"
       },
       {
         "id": "UX-05-03",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/ux/UX-05.first.spec.ts"
       },
       {
         "id": "UX-05-04",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/ux/UX-05.first.spec.ts"
       },
       {
         "id": "UX-08-02",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/ux/UX-08.chat.spec.ts"
       },
       {
         "id": "UX-23-01",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/ux/UX-23.errors.spec.ts"
       },
       {
         "id": "UX-23-06",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/ux/UX-23.errors.spec.ts"
       },
       {
         "id": "UX-23-09",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/ux/UX-23.errors.spec.ts"
       },
       {
         "id": "UX-23-11",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/fidelity/ux/UX-23.errors.spec.ts"
       }
     ],
@@ -18198,7 +18037,8 @@
         "M2": 27,
         "M3": 16,
         "M4": 57,
-        "M5": 56
+        "M5": 55,
+        "M6": 1
       }
     }
   },
@@ -18257,10 +18097,10 @@
   ],
   "golden": {
     "counts": {
-      "pass": 1,
-      "review": 28,
-      "fail": 2,
-      "disputed": 83,
+      "pass": 0,
+      "review": 0,
+      "fail": 0,
+      "disputed": 0,
       "notBuilt": 17
     },
     "refsRendered": [
@@ -18720,14 +18560,6 @@
         ]
       },
       {
-        "id": "UX-10-02",
-        "family": "ux",
-        "themes": [
-          "light",
-          "dark"
-        ]
-      },
-      {
         "id": "UX-10-03",
         "family": "ux",
         "themes": [
@@ -18874,1495 +18706,13 @@
     ],
     "determinism": {
       "fid": "FID-03",
-      "compared": 148,
-      "identical": 148,
+      "compared": 146,
+      "identical": 146,
       "differing": [],
       "engine": "electron"
     },
     "rows": [
       {
-        "id": "BP-ANAT-CHIPS",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "pass",
-        "r2": "pass (BP-ANAT-CHIPS 0/0 px)",
-        "r3": "review (BP-ANAT-CHIPS ΔE 4.78)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07488602842585143,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-CHIPS",
-        "theme": "light",
-        "verdict": "pass",
-        "r1": "pass",
-        "r2": "pass (BP-ANAT-CHIPS 0/0 px)",
-        "r3": "pass (BP-ANAT-CHIPS ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07421560740144811,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-DOING",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-DOING 0/24 px)",
-        "r3": "pass (BP-ANAT-DOING ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.0555930424351477,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-DOING",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-DOING 0/24 px)",
-        "r3": "pass (BP-ANAT-DOING ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.04969510671265057,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-KNOW",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-KNOW 0/70 px)",
-        "r3": "pass (BP-ANAT-KNOW ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.06590049010484521,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-KNOW",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-KNOW 0/70 px)",
-        "r3": "pass (BP-ANAT-KNOW ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.05831627272163285,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-L",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-L 0/20 px)",
-        "r3": "review (BP-ANAT-L ΔE 4.78)",
-        "r4": "skipped: no hl element",
-        "r5": 0.1012099609375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-L",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-L 0/20 px)",
-        "r3": "pass (BP-ANAT-L ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.068677734375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-LFOOT",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-LFOOT 0/0 px)",
-        "r3": "pass (BP-ANAT-LFOOT ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.074898598820059,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-LFOOT",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-LFOOT 0/0 px)",
-        "r3": "pass (BP-ANAT-LFOOT ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07194874631268437,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-LHEAD",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-LHEAD 0/0 px)",
-        "r3": "review (BP-ANAT-LHEAD ΔE 2.91)",
-        "r4": "skipped: no hl element",
-        "r5": 0.023008849557522124,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-LHEAD",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-LHEAD 0/0 px)",
-        "r3": "review (BP-ANAT-LHEAD ΔE 2.53)",
-        "r4": "skipped: no hl element",
-        "r5": 0.022910521140609635,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-LIST",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-LIST 0/18 px)",
-        "r3": "pass (BP-ANAT-LIST ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.10063060662581046,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-LIST",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-LIST 0/18 px)",
-        "r3": "pass (BP-ANAT-LIST ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.09472422062350119,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-MHEAD",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-MHEAD 0/2 px)",
-        "r3": "pass (BP-ANAT-MHEAD ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.038684503901895206,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-MHEAD",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-MHEAD 0/2 px)",
-        "r3": "pass (BP-ANAT-MHEAD ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.0346711259754738,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-RHEAD",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-RHEAD 0/0 px)",
-        "r3": "pass (BP-ANAT-RHEAD ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.006243854473942969,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-RHEAD",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-RHEAD 0/0 px)",
-        "r3": "pass (BP-ANAT-RHEAD ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.0072271386430678465,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-ROW",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "pass",
-        "r2": "fail (BP-ANAT-ROW 0/15 px)",
-        "r3": "pass (BP-ANAT-ROW ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.037698412698412696,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-ROW",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "pass",
-        "r2": "fail (BP-ANAT-ROW 0/15 px)",
-        "r3": "pass (BP-ANAT-ROW ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.03648088023088023,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-SEARCH",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-SEARCH 0/0 px)",
-        "r3": "pass (BP-ANAT-SEARCH ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.028682591386174447,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-SEARCH",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-SEARCH 0/0 px)",
-        "r3": "pass (BP-ANAT-SEARCH ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.029134998190372782,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-SPENT",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "pass",
-        "r2": "fail (BP-ANAT-SPENT 0/20 px)",
-        "r3": "pass (BP-ANAT-SPENT ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07997209538305429,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-SPENT",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "pass",
-        "r2": "fail (BP-ANAT-SPENT 0/20 px)",
-        "r3": "pass (BP-ANAT-SPENT ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.076103500761035,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-TBAR",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-TBAR 0/2 px)",
-        "r3": "pass (BP-ANAT-TBAR ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.00004890453834115806,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-TBAR",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "pass (BP-ANAT-TBAR 0/2 px)",
-        "r3": "pass (BP-ANAT-TBAR ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.00004890453834115806,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-USING",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-USING 0/23 px)",
-        "r3": "pass (BP-ANAT-USING ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.04039780521262003,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-ANAT-USING",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-ANAT-USING 0/23 px)",
-        "r3": "pass (BP-ANAT-USING ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.036248285322359394,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-APP-L",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-APP-L 0/18 px)",
-        "r3": "pass (BP-APP-L ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.1036688112745098,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-APP-L",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-APP-L 0/18 px)",
-        "r3": "pass (BP-APP-L ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.0987438725490196,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-APP-M",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-APP-M 0/18 px)",
-        "r3": "pass (BP-APP-M ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.11214464882943144,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-APP-M",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-APP-M 0/18 px)",
-        "r3": "pass (BP-APP-M ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.05464612945930881,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-APP-R",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (BP-APP-R 0/18 px)",
-        "r3": "review (BP-APP-R ΔE 3.19)",
-        "r4": "skipped: no hl element",
-        "r5": 0.09011182598039216,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-APP-R",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (BP-APP-R 0/18 px)",
-        "r3": "review (BP-APP-R ΔE 3.65)",
-        "r4": "skipped: no hl element",
-        "r5": 0.06579733455882353,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-CARD-02",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-CARD-02 0/88.671875 px)",
-        "r3": "pass (BP-CARD-02 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07257459889038836,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-CARD-02",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-CARD-02 0/88.671875 px)",
-        "r3": "pass (BP-CARD-02 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.0645224171539961,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-CARD-05",
-        "theme": "dark",
-        "verdict": "fail",
-        "r1": "fail",
-        "r2": "fail (BP-CARD-05 0/88.671875 px)",
-        "r3": "pass (BP-CARD-05 ΔE 1.7)",
-        "r4": "skipped: no hl element",
-        "r5": 0.16142523193805244,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-CARD-05",
-        "theme": "light",
-        "verdict": "fail",
-        "r1": "fail",
-        "r2": "fail (BP-CARD-05 0/88.671875 px)",
-        "r3": "review (BP-CARD-05 ΔE 3.65)",
-        "r4": "skipped: no hl element",
-        "r5": 0.14783767988896193,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-CARD-12",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-CARD-12 0/88.65625 px)",
-        "r3": "pass (BP-CARD-12 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.10706252811515969,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-CARD-12",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-CARD-12 0/88.65625 px)",
-        "r3": "pass (BP-CARD-12 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.09617633828160144,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-CARD-15",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-CARD-15 0/176.640625 px)",
-        "r3": "fail (BP-CARD-15 ΔE 32)",
-        "r4": "skipped: no hl element",
-        "r5": 0.085,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-CARD-15",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-CARD-15 0/176.640625 px)",
-        "r3": "fail (BP-CARD-15 ΔE 23.21)",
-        "r4": "skipped: no hl element",
-        "r5": 0.08238095238095237,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-CARD-18",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-CARD-18 0/88.65625 px)",
-        "r3": "pass (BP-CARD-18 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.15598290598290598,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-CARD-18",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-CARD-18 0/88.65625 px)",
-        "r3": "pass (BP-CARD-18 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.14747242311344874,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-CARD-19",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-CARD-19 0/88.671875 px)",
-        "r3": "fail (BP-CARD-19 ΔE 17.22)",
-        "r4": "skipped: no hl element",
-        "r5": 0.12831818387373942,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-CARD-19",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-CARD-19 0/88.671875 px)",
-        "r3": "fail (BP-CARD-19 ΔE 9.45)",
-        "r4": "skipped: no hl element",
-        "r5": 0.12445168000723557,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-CARD-20",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-CARD-20 0/88.671875 px)",
-        "r3": "pass (BP-CARD-20 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.15438882105548773,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-CARD-20",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-CARD-20 0/88.671875 px)",
-        "r3": "pass (BP-CARD-20 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.1439424772758106,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-01",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-01 0/248.671875 px)",
-        "r3": "pass (BP-COMP-01 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07700333052445729,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-01",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-01 0/248.671875 px)",
-        "r3": "pass (BP-COMP-01 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.08234019501625135,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-02",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-02 0/248.671875 px)",
-        "r3": "pass (BP-COMP-02 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07780586653826091,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-02",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-02 0/248.671875 px)",
-        "r3": "pass (BP-COMP-02 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07375305966855263,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-03",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-03 0/248.65625 px)",
-        "r3": "pass (BP-COMP-03 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07287027005336864,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-03",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-03 0/248.65625 px)",
-        "r3": "pass (BP-COMP-03 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07792624694033144,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-04",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-04 0/248.671875 px)",
-        "r3": "pass (BP-COMP-04 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.05436521874878039,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-04",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-04 0/248.671875 px)",
-        "r3": "pass (BP-COMP-04 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.05350661515045077,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-05",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-05 0/248.671875 px)",
-        "r3": "pass (BP-COMP-05 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.10073781868653664,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-05",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-05 0/248.671875 px)",
-        "r3": "pass (BP-COMP-05 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.1018335890130762,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-06",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-06 0/248.65625 px)",
-        "r3": "pass (BP-COMP-06 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.1584539798825513,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-06",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-06 0/248.65625 px)",
-        "r3": "pass (BP-COMP-06 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.15499447642304784,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-07",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-07 0/248.671875 px)",
-        "r3": "pass (BP-COMP-07 ΔE 0.8)",
-        "r4": "skipped: no hl element",
-        "r5": 0.08137614019966961,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-07",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-07 0/248.671875 px)",
-        "r3": "pass (BP-COMP-07 ΔE 1.4)",
-        "r4": "skipped: no hl element",
-        "r5": 0.08353084823673058,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-08",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-08 0/248.671875 px)",
-        "r3": "pass (BP-COMP-08 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07724409132859837,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-08",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-08 0/248.671875 px)",
-        "r3": "pass (BP-COMP-08 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.0809758837927852,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-09",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-09 0/248.65625 px)",
-        "r3": "pass (BP-COMP-09 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.018257694314032343,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-09",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-09 0/248.65625 px)",
-        "r3": "pass (BP-COMP-09 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.02110669716303519,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-01",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-01 0/203 px)",
-        "r3": "fail (BP-MSG-01 ΔE 61.41)",
-        "r4": "skipped: no hl element",
-        "r5": 0.6141534391534391,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-01",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-01 0/203 px)",
-        "r3": "fail (BP-MSG-01 ΔE 7.8)",
-        "r4": "skipped: no hl element",
-        "r5": 0.49264550264550266,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-02",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-02 0/250 px)",
-        "r3": "review (BP-MSG-02 ΔE 3.19)",
-        "r4": "skipped: no hl element",
-        "r5": 0.05951909476661952,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-02",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-02 0/250 px)",
-        "r3": "review (BP-MSG-02 ΔE 3.65)",
-        "r4": "skipped: no hl element",
-        "r5": 0.053536067892503536,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-03",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-03 0/203 px)",
-        "r3": "pass (BP-MSG-03 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.05692823608316566,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-03",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-03 0/203 px)",
-        "r3": "pass (BP-MSG-03 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.05368209255533199,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-04",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-04 0/203 px)",
-        "r3": "pass (BP-MSG-04 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.04525974025974026,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-04",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-04 0/203 px)",
-        "r3": "pass (BP-MSG-04 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.03957792207792208,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-05-02",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 52/1.9375 px)",
-        "r3": "fail (hl ΔE 55.97)",
-        "r4": "fail (90.57 %)",
-        "r5": 0.099662109375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-05-02",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 52/1.9375 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (4.47 %)",
-        "r5": 0.0802099609375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-05-03",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 74/68 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (7.17 %)",
-        "r5": 0.1047412109375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-05-03",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 74/68 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (6.27 %)",
-        "r5": 0.0844248046875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-05-04",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 72/23.75 px)",
-        "r3": "fail (hl ΔE 21.81)",
-        "r4": "fail (15.95 %)",
-        "r5": 0.0834296875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-05-04",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 72/23.75 px)",
-        "r3": "fail (hl ΔE 12.97)",
-        "r4": "fail (14.72 %)",
-        "r5": 0.0609921875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-01",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 54/0.90625 px)",
-        "r3": "fail (hl ΔE 55.97)",
-        "r4": "fail (88.83 %)",
-        "r5": 0.0856640625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-01",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 54/0.90625 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "fail (21.73 %)",
-        "r5": 0.0682314453125,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-02",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "review (hl 8/8 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "fail (18.80 %)",
-        "r5": 0.086287109375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-02",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "review (hl 8/8 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "fail (18.70 %)",
-        "r5": 0.0613916015625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-03",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 54/1.96875 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (3.47 %)",
-        "r5": 0.099982421875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-03",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 54/1.96875 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (3.20 %)",
-        "r5": 0.0796591796875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-04",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 54/0.71875 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "pass (2.34 %)",
-        "r5": 0.1408408203125,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-04",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 54/0.71875 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "pass (2.21 %)",
-        "r5": 0.1181259765625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-05",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 60/6 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (3.97 %)",
-        "r5": 0.156083984375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-05",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 60/6 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (3.63 %)",
-        "r5": 0.1351005859375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-06",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 80/35.578125 px)",
-        "r3": "fail (hl ΔE 61.41)",
-        "r4": "fail (87.53 %)",
-        "r5": 0.1944921875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-06",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 80/35.578125 px)",
-        "r3": "fail (hl ΔE 7.8)",
-        "r4": "fail (30.68 %)",
-        "r5": 0.168482421875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-07",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 157.75/127 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (5.49 %)",
-        "r5": 0.1722734375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-08-07",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 157.75/127 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (4.54 %)",
-        "r5": 0.1510185546875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-09-01",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "review (hl 8/0 px)",
-        "r3": "fail (hl ΔE 20.59)",
-        "r4": "fail (21.84 %)",
-        "r5": 0.08532421875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-09-01",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "review (hl 8/0 px)",
-        "r3": "fail (hl ΔE 35.2)",
-        "r4": "fail (21.68 %)",
-        "r5": 0.0679814453125,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-09-08",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 295.984375/26.125 px)",
-        "r3": "fail (hl ΔE 21.23)",
-        "r4": "fail (24.64 %)",
-        "r5": 0.16173828125,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-09-08",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 295.984375/26.125 px)",
-        "r3": "fail (hl ΔE 15.74)",
-        "r4": "fail (24.92 %)",
-        "r5": 0.1222666015625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-01",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "pass (hl 0/1 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (4.46 %)",
-        "r5": 0.118041015625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-01",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "pass (hl 0/1 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (4.19 %)",
-        "r5": 0.094892578125,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-02",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 54/2.421875 px)",
-        "r3": "fail (hl ΔE 55.97)",
-        "r4": "fail (90.60 %)",
-        "r5": 0.1147861328125,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-02",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 54/2.421875 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (7.22 %)",
-        "r5": 0.087087890625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-03",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 196/36 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (8.07 %)",
-        "r5": 0.1090634765625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-03",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 196/36 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (7.02 %)",
-        "r5": 0.0809609375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-04",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 91.46875/25.609375 px)",
-        "r3": "fail (hl ΔE 56.4)",
-        "r4": "fail (56.72 %)",
-        "r5": 0.119716796875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-04",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 91.46875/25.609375 px)",
-        "r3": "fail (hl ΔE 57.24)",
-        "r4": "fail (57.56 %)",
-        "r5": 0.086427734375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-05",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 46/20 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (8.61 %)",
-        "r5": 0.1271767578125,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-05",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 46/20 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (8.07 %)",
-        "r5": 0.096111328125,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-06",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 66/24.46875 px)",
-        "r3": "fail (hl ΔE 54.97)",
-        "r4": "fail (86.33 %)",
-        "r5": 0.1170322265625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-06",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 66/24.46875 px)",
-        "r3": "fail (hl ΔE 12.77)",
-        "r4": "fail (87.44 %)",
-        "r5": 0.092509765625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-09",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 66/30.5 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "fail (85.85 %)",
-        "r5": 0.0969541015625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-09",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 66/30.5 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "fail (86.59 %)",
-        "r5": 0.073986328125,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-11",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 130/12 px)",
-        "r3": "fail (hl ΔE 30.38)",
-        "r4": "fail (85.67 %)",
-        "r5": 0.14412109375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-11",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 130/12 px)",
-        "r3": "fail (hl ΔE 41.46)",
-        "r4": "fail (87.91 %)",
-        "r5": 0.0915166015625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
         "id": "BP-CARD-03",
         "theme": "light",
         "verdict": "not built",
@@ -20403,6 +18753,32 @@
       },
       {
         "id": "BP-CARD-04",
+        "theme": "dark",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-CARD-05",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": true,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-CARD-05",
         "theme": "dark",
         "verdict": "not built",
         "r1": "–",
@@ -20507,32 +18883,6 @@
       },
       {
         "id": "UX-10-01",
-        "theme": "dark",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": true,
-        "app": false,
-        "diff": false
-      },
-      {
-        "id": "UX-10-02",
-        "theme": "light",
-        "verdict": "not built",
-        "r1": "–",
-        "r2": "–",
-        "r3": "–",
-        "r4": "–",
-        "r5": null,
-        "ref": true,
-        "app": false,
-        "diff": false
-      },
-      {
-        "id": "UX-10-02",
         "theme": "dark",
         "verdict": "not built",
         "r1": "–",
@@ -20808,11 +19158,11 @@
     "notBuilt": [
       "BP-CARD-03",
       "BP-CARD-04",
+      "BP-CARD-05",
       "BP-CARD-07",
       "BP-CARD-08",
       "BP-CARD-09",
       "UX-10-01",
-      "UX-10-02",
       "UX-10-03",
       "UX-10-04",
       "UX-10-05",
