@@ -184,9 +184,9 @@ R18 · R5,J12,,UX-16-06,,05-2 §5.5; X-79,test/fidelity/ux/UX-16.drafts.spec.ts,
 ,,,,BP-CARD-08,05-2 §5.8,test/fidelity/bp/BP-cards-m5-secret.spec.ts,M5,live
 ,,,,BP-CARD-09,05-2 §5.9; 04-2 §22.4,test/fidelity/bp/BP-cards-m5-secret.spec.ts,M5,live
 R13,J17,AT-072,,,10-acceptance-1 §B; 06-2 §7.3; 05-3 §5.17,test/e2e/m6-page.spec.ts,M6,pending
-R13,J17,AT-073,,,10-acceptance-1 §B; 08-3 §12.6; 06-3 §14 C-3,test/integration/m6-forget.test.ts,M6,pending
+R13,J17,AT-073,,,10-acceptance-1 §B; 08-3 §12.6; 06-3 §14 C-3,test/integration/m6-forget.test.ts,M6,live
 R13,J17,AT-073,,,10-acceptance-1 §B; 06-3 §14 C-3,test/e2e/m6-page.spec.ts,M6,pending
-R13,J17,AT-074,,,10-acceptance-1 §B; 08-3 §12.6,test/integration/m6-tombstone.test.ts,M6,pending
+R13,J17,AT-074,,,10-acceptance-1 §B; 08-3 §12.6,test/integration/m6-tombstone.test.ts,M6,live
 R13,J17,AT-074,,,10-acceptance-1 §B; 08-4 §24.16,test/integration/m6-prompt-forgotten.test.ts,M6,live
 R13,J17,AT-075,,,10-acceptance-1 §B; 08-3 §12.2; 08-4 §24.16,test/integration/m6-watcher.test.ts,M6,pending
 R13,J17,AT-076,,,10-acceptance-1 §B; 08-3 §12.4.1,test/unit/m6-sensitive.test.ts,M6,live

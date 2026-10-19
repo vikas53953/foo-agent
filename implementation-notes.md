@@ -829,3 +829,47 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
   detail move to `logEvent`; `EngineBridge.ts` is still open.
 - Tier R drawings disputed on BP-CARD-03/04/08/09 and UX-10-01/03/04/05/06 stay disputed until the gallery redraw.
 - Windows-only checks left for the release run: Credential Manager through `@napi-rs/keyring` on a real PC.
+
+## M6 · memory store (ticket T3)
+
+### Built
+
+- `src/engine/memory/MemoryService.ts` is the `Engine.memory` slot: the eight `memory.cmd` commands (add, edit, setPrivate,
+  setKind, forget, undo, forgetBySource, forgetAll), `learn()` for T5 (placement, §12.4.1 sensitive rule, tombstone check),
+  `forgetFromChip()` (G-M6-10 activity row), and `fileChanged()` / `reindexAll()` for the watcher. Every change is read file →
+  edit → `file.write` (only when the text changed) → parse in the worker → one `db.tx`; commands run one at a time.
+- `reindex.ts` turns one parsed file into index ops (update in place by id, a line moved from another file keeps its row,
+  index-only columns kept: origin reference, category, learned_at, last_used_at, use_count). `sensitive` is re-derived.
+- `watcher.ts`: `fs.watch({DATA}/memory, recursive)`, 500 ms debounce per file on the injected clock; foo's own writes are
+  skipped by comparing the file's sha256 with the last text foo wrote (pack Risk 2).
+- `tombstones.ts`: 90-day rows plus the `memory\.tombstones` mirror (one JSON object per line, the row's columns).
+- Seed: `SeedWriter.fact()` stores the real fact hash and `writeSeedMemory()` writes every seeded fact as its file line, then
+  fixes `line_no`, `hash`, `chat_id`, `sensitive` from the written file, so the engine's reindex of a seed changes nothing
+  (pack Risk 1). `testHooks.ts` calls it after each seed set (the seed functions have no data folder).
+- Checked: the parse worker loads from inside `app.asar` in a utility process (Electron 44, Linux; T2's open note).
+
+### Picks and gaps (for the lead's independent check)
+
+1. **No prompt for the manual-add classify turn.** 08-4 §24 has no prompt file for it (`classify` = `stuck.md` only), and
+   prompt files must equal the spec's blocks. So every manual add takes §12.4's own fallback (kind `fact`, category `other`);
+   the act schema and the turn hook (`classifyFact.ts`) are built and tested. Needs a CR adding the prompt block.
+2. Tombstones block **learning** (`learn()`: review, intake, jobs). The user's own add or edit on the Memory page is not
+   blocked by a tombstone (their typed act, as G-M6-06 treats `rememberOn`).
+3. `setKind`: preference → `preferences\{topic of its category}.md`; fact / place leave `people\` and `preferences\` for
+   `about-you.md`; person stays in its file (the invoke carries no name for a slug); helper notes and chat-only facts keep
+   their file and gain the kind token.
+4. forgetAll: the engine writes each file empty (08-1 §2.4 has no delete), tombstones every fact, and logs `forgot_facts`
+   with the page's own words "Forgot {count} things." (the activity summary needs a `{source}` word the spec does not give);
+   main's `memory:forgetAll` handler then removes the emptied files (`src/main/memory/forgetFiles.ts`), so no person's file
+   name is left (§12.6).
+5. A Notepad line's `learned_at` is now when its date is today, else midday UTC of the written date (the file has no time).
+6. On engine start every memory file on disk is reindexed; index rows whose file is missing are kept (no delete on start).
+7. A sensitive line typed or edited in Notepad is made private at reindex (the file is rewritten once with the token).
+
+### Left for later tickets (from the Fable review)
+
+- Undo of a forget restores the index row but not the fact's `memory_group_grants` rows (main deletes them with the row):
+  T4/T5 own grants.
+- The Notepad reindex runs the sensitive rule without `contacts_index` names, so the contact-details branch (§12.4.1) does
+  not fire there; T5 wires the contacts list into `learn()` and can pass it here too.
+- The watcher and the parse worker are not closed on engine shutdown (main ends the utility process; the worker is unref'd).

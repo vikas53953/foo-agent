@@ -1,5 +1,12 @@
 // Spec: 08-3 §22.9 (seed sets generated deterministically from IdGen(seed=1) and a fixed PRNG seeded 1, relative to the
-// pinned clock), 08-1 §4.3 (tables and their insert order), 08-0 §E.7 (ids). Test builds only (this folder never ships).
+// pinned clock), 08-1 §4.3 (tables and their insert order), 08-0 §E.7 (ids), 08-3 §12.2 (M6: a seeded fact is a line in its
+// Markdown file as well as an index row; files are the truth, so the index row matches the line: line_no, hash, chat_id).
+// Test builds only (this folder never ships).
+import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { ABOUT_YOU_FILE, parseMemoryFile, writeMemoryFile, type MemoryDoc } from '../../../engine/memory/fileFormat';
+import { factHash } from '../../../engine/memory/hash';
+import { isSensitive } from '../../../engine/memory/sensitive';
 import type { Db } from '../../store/db';
 import { recomputePill } from '../../store/queries';
 import { uuid7 } from '../../../shared/ids';
@@ -367,7 +374,7 @@ export class SeedWriter {
         f.learnedAt,
         f.lastUsedAt ?? null,
         f.lastUsedAt ? 1 : 0,
-        `seed:${id}`,
+        factHash(f.text),
       );
     return id;
   }
@@ -485,5 +492,62 @@ export class SeedWriter {
     for (const [chatId, m] of this.last) upd.run(m.id, (this.seq.get(chatId) ?? 0) + 1, chatId);
     for (const id of this.db.prepare('SELECT id FROM chats').pluck().all() as string[]) recomputePill(this.raw, id, now);
     return { ...this.counts };
+  }
+}
+
+/**
+ * M6 (pack Risk 1): writes `{DATA}/memory/**.md` and `helpers/{id}/notes.md` from the seeded `memory_index` rows, replacing
+ * the files of an earlier seed, then sets each row's `line_no`, `hash`, `chat_id` and `sensitive` (08-3 §12.4.1) from the
+ * written file, so the engine's reindex of these files changes nothing. Returns the number of files written.
+ */
+export function writeSeedMemory(db: Db, dataDir: string, timeZone: string): number {
+  // Files only: the engine watches `{DATA}/memory`, and removing the folder itself would end that watch on Windows.
+  for (const sub of ['memory', 'memory/people', 'memory/preferences'])
+    for (const n of safeList(join(dataDir, ...sub.split('/'))))
+      if (n.endsWith('.md') || n === '.tombstones') rmSync(join(dataDir, ...sub.split('/'), n), { force: true });
+  for (const h of safeList(join(dataDir, 'helpers'))) rmSync(join(dataDir, 'helpers', h, 'notes.md'), { force: true });
+  const rows = db.prepare('SELECT * FROM memory_index ORDER BY file, line_no, rowid').all() as Record<string, unknown>[];
+  const day = new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' });
+  const docs = new Map<string, MemoryDoc>();
+  for (const r of rows) {
+    const file = String(r.file);
+    let doc = docs.get(file);
+    if (!doc) docs.set(file, (doc = { file, title: file === ABOUT_YOU_FILE ? '# About you' : null, entries: [] }));
+    doc.entries.push({
+      type: 'fact',
+      fact: {
+        id: String(r.id),
+        text: String(r.text),
+        provenance: r.provenance as 'said' | 'guessed',
+        date: day.format(Number(r.learned_at)),
+        origin: r.origin_kind as 'chat',
+        reason: r.reason === null ? null : String(r.reason),
+        kind: r.kind as 'fact',
+        private: r.private === 1,
+        chatId: r.scope === 'chat' && r.chat_id ? String(r.chat_id) : null,
+      },
+    });
+  }
+  const fix = db.prepare('UPDATE memory_index SET line_no = ?, hash = ?, chat_id = ?, sensitive = ? WHERE id = ?');
+  const category = new Map(rows.map((r) => [String(r.id), r.category === null ? 'other' : String(r.category)]));
+  for (const doc of docs.values()) {
+    const text = writeMemoryFile(doc);
+    const dest = join(dataDir, ...doc.file.split('/'));
+    mkdirSync(dirname(dest), { recursive: true });
+    writeFileSync(dest, text, 'utf8');
+    const parsed = parseMemoryFile(text, { file: doc.file, today: '2026-01-01', newId: () => 'f_unused' });
+    for (const f of parsed.facts) {
+      const sensitive = isSensitive({ text: f.text, category: category.get(f.id) ?? 'other', kind: f.kind, file: doc.file });
+      fix.run(f.lineNo, f.hash, f.chatId, sensitive ? 1 : 0, f.id);
+    }
+  }
+  return docs.size;
+}
+
+function safeList(dir: string): string[] {
+  try {
+    return readdirSync(dir);
+  } catch {
+    return [];
   }
 }
