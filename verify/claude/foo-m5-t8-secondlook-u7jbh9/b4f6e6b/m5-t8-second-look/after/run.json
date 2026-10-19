@@ -1,0 +1,41 @@
+{
+  "journey": "test/verify/m5-t8-second-look.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "b4f6e6b8db10ed71f41a82aa9a26d6fa60837b9c",
+  "dirty": false,
+  "started": "2026-10-19T11:23:43.132Z",
+  "finished": "2026-10-19T11:23:47.199Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "\"Book a table for 4 at Toit on Saturday\" → Approval card PENDING: \"Book this table? · Expires in 14:59\"",
+    "Approve → card state HELD; strip reads \"Before I do this, one check: you asked for 4 people, this is 6 people. Which one?\"; options [\"4 people\",\"6 people\"]",
+    "Pick \"6 people\" → card states [\"APPROVED\",\"RUNNING\",\"FAILED\"]; second_look AI turns: 0",
+    "FAILED after RUNNING is expected here: the real app has no browser.submit until M9, so the one submit errors."
+  ],
+  "shots": [
+    {
+      "file": "after/01-pending.light.png",
+      "name": "pending",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-held-light.light.png",
+      "name": "held-light",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-held-dark.dark.png",
+      "name": "held-dark",
+      "theme": "dark"
+    },
+    {
+      "file": "after/04-after-pick.light.png",
+      "name": "after-pick",
+      "theme": "light"
+    }
+  ],
+  "consoleErrors": []
+}
