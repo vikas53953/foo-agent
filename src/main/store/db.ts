@@ -1,4 +1,6 @@
-// Spec: 08-1 §2.2 step 3 (open + pragmas + quick_check), §4.2 (forward-only migrations, backups).
+// Spec: 08-1 §2.2 step 3 (open + pragmas + quick_check), §4.2 (forward-only migrations, backups). A migration whose first line
+// is `-- foo:foreign-keys-off` rebuilds tables (sqlite.org/lang_altertable.html §7): foreign keys are switched off around its
+// transaction (the pragma is a no-op inside one) and `PRAGMA foreign_key_check` must be empty before it commits (CR-0008).
 import Database from 'better-sqlite3';
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -26,10 +28,18 @@ export function migrate(db: Db, dir = MIGRATIONS_DIR): number[] {
   for (const m of listMigrations(dir)) {
     if (done.has(m.version)) continue;
     const sql = readFileSync(join(dir, m.file), 'utf8');
-    db.transaction(() => {
-      db.exec(sql);
-      db.prepare('INSERT INTO schema_migrations (version, applied_at) VALUES (?, ?)').run(m.version, Date.now());
-    })();
+    const fkOff = sql.startsWith('-- foo:foreign-keys-off');
+    const fkWasOn = Number(db.pragma('foreign_keys', { simple: true })) === 1;
+    if (fkOff) db.pragma('foreign_keys = OFF');
+    try {
+      db.transaction(() => {
+        db.exec(sql);
+        if (fkOff && (db.pragma('foreign_key_check') as unknown[]).length > 0) throw new Error(`${m.file}: foreign_key_check failed`);
+        db.prepare('INSERT INTO schema_migrations (version, applied_at) VALUES (?, ?)').run(m.version, Date.now());
+      })();
+    } finally {
+      if (fkOff && fkWasOn) db.pragma('foreign_keys = ON');
+    }
     applied.push(m.version);
   }
   return applied;
@@ -60,13 +70,19 @@ export function openDb(file: string, dir = MIGRATIONS_DIR): Db {
   mkdirSync(dirname(file), { recursive: true });
   const existed = existsSync(file);
   const db = new Database(file);
-  db.pragma('journal_mode = WAL');
-  db.pragma('synchronous = NORMAL');
-  db.pragma('foreign_keys = ON');
-  db.pragma('busy_timeout = 2000');
-  if (existed && pendingCount(db, dir) > 0) backup(db, file);
-  migrate(db, dir);
-  const check = db.pragma('quick_check', { simple: true });
-  if (check !== 'ok') throw new Error(`DB quick_check failed: ${String(check)}`);
-  return db;
+  try {
+    db.pragma('journal_mode = WAL');
+    db.pragma('synchronous = NORMAL');
+    db.pragma('foreign_keys = ON');
+    db.pragma('busy_timeout = 2000');
+    if (existed && pendingCount(db, dir) > 0) backup(db, file);
+    migrate(db, dir);
+    const check = db.pragma('quick_check', { simple: true });
+    if (check !== 'ok') throw new Error(`DB quick_check failed: ${String(check)}`);
+    return db;
+  } catch (e) {
+    // §4.1.1: a damaged file is renamed next; Windows cannot rename a file that is still open.
+    db.close();
+    throw e;
+  }
 }

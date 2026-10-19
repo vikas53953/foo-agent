@@ -60,6 +60,7 @@
     "electron-builder": "26.15.3",
     "eslint": "10.13.0",
     "eslint-plugin-react-hooks": "7.1.1",
+    "fast-check": "4.10.2",
     "globals": "17.13.0",
     "node-gyp": "12.4.0",
     "pixelmatch": "7.2.0",

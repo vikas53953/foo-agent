@@ -1,5 +1,6 @@
 // Spec: 08-0 §C (data-testid scheme, X-58), 02-3 §F32.2 (ids used by 02–04; this file holds the shell areas: titlebar,
-// banner, sidebar, chatlist, chat-header, thread, app), 06 `screen-{slug}` roots for the pages the shell opens.
+// banner, sidebar, chatlist, chat-header, thread, app), 06 `screen-{slug}` roots for the pages the shell opens; M4 adds the
+// job cards, proof chips, stacked composer notices and dialog C-21 (CR-0008).
 // Ids are static; components read them from here (lint foo/testid-from-registry).
 export const TID = {
   // titlebar (03-shell-1 §3.2.5)
@@ -276,6 +277,49 @@ export const TID = {
   composerPending: 'composer-pending',
   composerPendingShow: 'composer-pending-show',
   threadDrop: 'thread-drop',
+  // M4 (CR-0008) · cards (05-1 §5.2.5, 05-3 §5.12.3, §5.15.3, §5.16, §5.18.3, §5.19, §5.20, §5.21), stacked composer notices
+  // (04-2 §23.2a, G-M4-12), Raise AI cap dialog (06-3 §14 C-21)
+  cardChecklist: 'card-checklist',
+  cardChecklistStep: 'card-checklist-step',
+  cardChecklistWaitingLink: 'card-checklist-waiting-link',
+  cardChecklistWatchLive: 'card-checklist-watch-live',
+  cardChecklistStop: 'card-checklist-stop',
+  cardChecklistDetails: 'card-checklist-details',
+  cardChecklistReplay: 'card-checklist-replay',
+  cardChecklistShowDone: 'card-checklist-show-done',
+  cardPlan: 'card-plan',
+  cardPlanGo: 'card-plan-go',
+  cardPlanChange: 'card-plan-change',
+  cardPlanStartAgain: 'card-plan-start-again',
+  cardPlanRaiseCap: 'card-plan-raise-cap',
+  cardPlanStep: 'card-plan-step',
+  cardPlanEstimate: 'card-plan-estimate',
+  cardPlanShowAll: 'card-plan-show-all',
+  cardStuck: 'card-stuck',
+  cardStuckOtherWay: 'card-stuck-other-way',
+  cardStuckTakeOver: 'card-stuck-take-over',
+  cardStuckStop: 'card-stuck-stop',
+  cardError: 'card-error',
+  cardErrorFix: 'card-error-fix',
+  cardErrorLink: 'card-error-link',
+  cardSpendCap: 'card-spend-cap',
+  cardSpendCapRaise: 'card-spend-cap-raise',
+  cardSpendCapWait: 'card-spend-cap-wait',
+  cardSpendCapNotNow: 'card-spend-cap-not-now',
+  cardJobLink: 'card-job-link',
+  cardJobLinkStatus: 'card-job-link-status',
+  threadProofChip: 'thread-proof-chip',
+  threadReceiptFooter: 'thread-receipt-footer',
+  threadProofCopy: 'thread-proof-copy',
+  threadProofSeeActivity: 'thread-proof-see-activity',
+  threadNotLiveChip: 'thread-not-live-chip',
+  threadCheckForReal: 'thread-check-for-real',
+  composerError: 'composer-error',
+  composerErrorCopy: 'composer-error-copy',
+  composerErrorDismiss: 'composer-error-dismiss',
+  composerErrorsClear: 'composer-errors-clear',
+  dialogC21: 'dialog-c-21',
+  dialogConfirmField: 'dialog-confirm-field',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

@@ -1,6 +1,70 @@
 // Spec: 05 card payloads (the line a card is known by: a checklist or brief `title`, a choice `question`, a payment or bill
-// `payee`, a sign-in `site`), 03-shell-1 §3.4.6 (list preview), 03-shell-2 §3.6.2.1 row 2 / §3.7.3.1 ("Needs you: {title}").
+// `payee`, a sign-in `site`), 03-shell-1 §3.4.6 (list preview), 03-shell-2 §3.6.2.1 row 2 / §3.7.3.1 ("Needs you: {title}");
+// 08-0 §G.2 (card states per type; approval and payment use ApprovalState), 08-1 §4.5.1 (every write validates the state).
+import type { ApprovalState, CardType } from './types';
+
 /** The short name of a card, from its payload. */
 export function cardTitle(payload: Record<string, unknown>): string {
   return String(payload.title ?? payload.question ?? payload.payee ?? payload.site ?? '');
+}
+
+const APPROVAL_STATES: readonly ApprovalState[] = [
+  'PENDING',
+  'APPROVED',
+  'RUNNING',
+  'COMPLETED',
+  'HELD',
+  'CHECKING',
+  'DECLINED',
+  'EXPIRED',
+  'SUPERSEDED',
+  'WITHDRAWN',
+  'FAILED',
+];
+
+/** 08-0 §G.2: the `cards.state` values each card type may hold ("all others": shown). */
+export const CARD_STATES: Record<CardType, readonly string[]> = {
+  brief: ['open', 'expired'],
+  checklist: ['live', 'done', 'done_unverified', 'failed', 'stopped'],
+  choice: ['asking', 'answered', 'auto_picked', 'skipped', 'expired', 'superseded', 'withdrawn'],
+  tiles: ['asking', 'answered', 'auto_picked', 'skipped', 'expired', 'superseded', 'withdrawn'],
+  approval: APPROVAL_STATES,
+  payment: APPROVAL_STATES,
+  bill: ['waiting', 'reminded', 'paying', 'paid', 'already_paid', 'expired'],
+  draft: [
+    'pending',
+    'editing',
+    'undo_window',
+    'sending',
+    'sent',
+    'discarded',
+    'opened_in_app',
+    'queued_offline',
+    'failed',
+    'expired',
+    'superseded',
+    'withdrawn',
+  ],
+  secret: ['asking', 'checking', 'saved', 'rejected', 'expired', 'withdrawn'],
+  signin: ['waiting', 'live', 'signed_in', 'skipped', 'timed_out', 'handed_back', 'withdrawn'],
+  connect: ['offered', 'opening', 'waiting', 'connected', 'partial', 'denied', 'expired', 'failed', 'skipped'],
+  plan: ['pending', 'go', 'changed', 'withdrawn'],
+  routine: ['shown'],
+  routine_offer: ['offered', 'accepted', 'dismissed'],
+  stuck: ['asking', 'other_way', 'taken_over', 'stopped', 'timed_out'],
+  error: ['shown', 'asking', 'fixed', 'resumed', 'stopped', 'dismissed'],
+  spend_cap: ['shown', 'raised', 'dismissed'],
+  job_link: ['live', 'done', 'failed', 'stopped'],
+  setup: ['shown', 'answered', 'skipped'],
+  table: ['shown'],
+  file: ['shown'],
+  link_preview: ['shown'],
+  place: ['shown'],
+  face_explainer: ['shown'],
+  catch_up: ['shown'],
+};
+
+/** 08-1 §4.5.1: is `state` one of the type's states? */
+export function isCardState(type: string, state: string): boolean {
+  return (CARD_STATES as Record<string, readonly string[] | undefined>)[type]?.includes(state) ?? false;
 }

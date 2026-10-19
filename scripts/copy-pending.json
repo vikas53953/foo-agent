@@ -1,0 +1,25 @@
+{
+  "_why": "CR-0008: M4 copy keys landed by T1 before the ticket that renders them. check-copy counts a key listed here as used and fails once a t() call uses it (then delete the line). Empty by M4 close-out (T7).",
+  "keys": {
+    "thread.stop.in_flight": "M5/M10 (stop during a submitted approval; M4 has no approvals)",
+    "thread.queued.ai_back": "M4-T2 runner",
+    "cards.not_live_chip.job_title.text": "M4-T2 runner",
+    "errors.net_offline.what_happened": "M4-T4 waiting/recovery",
+    "errors.net_offline.what_is_safe": "M4-T4 waiting/recovery",
+    "errors.net_offline.button": "M4-T4 waiting/recovery",
+    "errors.spend_cap.what_happened": "M4-T3 stop/steer/stuck",
+    "errors.spend_cap.what_is_safe": "M4-T3 stop/steer/stuck",
+    "errors.spend_cap.button": "M4-T3 stop/steer/stuck",
+    "errors.ai_service_down.link": "M4-T7: the use_backup link needs error:fix (G-M4-09)",
+    "errors.ai_limit.link": "M4-T7: the use_backup link needs error:fix (G-M4-09)",
+    "errors.crash_recovery.what_is_safe.paying": "M10: crash mid-payment",
+    "errors.safe_mode.link": "M4-T7: Send a report has no FixAction yet (08-5 §3.7)",
+    "cards.checklist.footer_text.plan": "M4-T7 close-out (needs runner data not wired yet)",
+    "cards.plan.change_placeholder": "M4-T7 close-out (needs runner data not wired yet)",
+    "cards.proof_chip.popover.file_missing": "M4-T7 close-out (needs runner data not wired yet)",
+    "cards.not_live_chip.still_failed.text": "M4-T7 close-out (needs runner data not wired yet)",
+    "cards.error.still_failing": "M4-T7 close-out (needs runner data not wired yet)",
+    "cards.plan.estimate.plan": "M4-T7 close-out (needs runner data not wired yet)",
+    "cards.checklist.replay": "M4-T7 close-out (Replay waits for the screen viewer's handler)"
+  }
+}

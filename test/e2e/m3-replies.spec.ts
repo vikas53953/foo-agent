@@ -15,6 +15,7 @@ import { TID } from '../../src/shared/testids';
 import { bubbleDelayMs } from '../../src/renderer/messages/chunks';
 import { fakeTurns, intake, launchWithFakeAi, VERIFY_OK, type FakeLine } from './fakeAi';
 import type { testDirs } from './launch';
+import { settleSeededJobs } from './m4-start';
 
 const byTid = (id: string) => `[data-testid="${id}"]`;
 /** The engine's hold before a reply streams (08-4 §25.5 item 2). */
@@ -31,8 +32,9 @@ async function start(lines: FakeLine[], o: { seed?: boolean } = {}): Promise<Run
   const page = await app.firstWindow();
   await page.getByTestId(TID.titlebarStrip).waitFor();
   if (o.seed !== false) {
-    await page.evaluate(() => window.__fooTest!.seed('ux-world'));
+    const { refs } = await page.evaluate(() => window.__fooTest!.seed('ux-world'));
     await expect(page.getByTestId(TID.chatlistRow).first()).toBeVisible();
+    await settleSeededJobs(page, refs);
   }
   await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0]!.setContentSize(1280, 800));
   await page.waitForFunction(() => window.innerWidth === 1280);
@@ -454,4 +456,34 @@ test('the chat header face thinks while foo replies', async () => {
   } finally {
     await app.close();
   }
+});
+
+test('M4 T8 · foo’s reply carries the test clock set before the engine started', async () => {
+  // 08-3 §22: the engine's fake clock follows main's. Set it to 9:41 AM IST as soon as the window has the test hooks,
+  // before the engine forks (ready + 300 ms): the hello on engine start must carry it (main's engine-supervisor/hello).
+  const at = Date.parse('2026-10-16T04:11:00.000Z');
+  const { app } = await launchWithFakeAi([intake('what time', 'Here you go.')]);
+  const page = await app.firstWindow();
+  await page.waitForFunction(() => Boolean(window.__fooTest));
+  await page.evaluate((n) => window.__fooTest!.clock.set(n), at);
+  await page.getByTestId(TID.titlebarStrip).waitFor();
+  const { refs } = await page.evaluate(() => window.__fooTest!.seed('ux-world'));
+  await expect(page.getByTestId(TID.chatlistRow).first()).toBeVisible();
+  await settleSeededJobs(page, refs);
+  await recordEvents(page);
+  await openChat(page, 'foo');
+  const { row } = await send(page, 'what time');
+  const reply = await page.waitForFunction(
+    () =>
+      (window as unknown as { __events: { ch: string; p: { authorKind?: string; status?: string; createdAt?: number } }[] }).__events.find(
+        (e) => e.ch === 'message:upsert' && e.p.authorKind === 'foo' && e.p.status === 'complete',
+      )?.p,
+  );
+  const foo = (await reply.jsonValue()) as { id: string; createdAt: number };
+  expect(foo.createdAt).toBeGreaterThanOrEqual(at);
+  const meta = (r: typeof row) => r.getByTestId(TID.bubbleMeta).first();
+  const fooRow = page.locator(`${byTid(TID.threadLog)} [data-message-id="${foo.id}"]`);
+  await expect(meta(row)).toContainText('9:41');
+  await expect(meta(fooRow)).toContainText('9:41');
+  await app.close();
 });

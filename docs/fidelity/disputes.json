@@ -1,5 +1,5 @@
 {
-  "note": "11-fidelity §11.2.7 step 3: checks an approved CR sets to 'expected fail' until the spec keeper redraws the reference and Tier R re-runs. Only the listed checks; every other check still counts.",
+  "note": "11-fidelity \u00a711.2.7 step 3: checks an approved CR sets to 'expected fail' until the spec keeper redraws the reference and Tier R re-runs. Only the listed checks; every other check still counts.",
   "disputes": [
     {
       "cr": "CR-0002",
@@ -77,6 +77,43 @@
       "cr": "CR-0002",
       "ids": ["UX-08-02"],
       "checks": ["r4"]
+    },
+    {
+      "cr": "CR-0008",
+      "ids": ["BP-CARD-02", "BP-CARD-12", "BP-CARD-15", "BP-CARD-18", "BP-CARD-19", "BP-CARD-20"],
+      "checks": ["r1", "r2"]
+    },
+    {
+      "cr": "CR-0008",
+      "ids": ["BP-CARD-15", "BP-CARD-19"],
+      "checks": ["r3"]
+    },
+    {
+      "cr": "CR-0008",
+      "ids": [
+        "UX-05-02",
+        "UX-05-03",
+        "UX-05-04",
+        "UX-23-01",
+        "UX-23-02",
+        "UX-23-03",
+        "UX-23-04",
+        "UX-23-05",
+        "UX-23-06",
+        "UX-23-09",
+        "UX-23-11"
+      ],
+      "checks": ["r1"]
+    },
+    {
+      "cr": "CR-0008",
+      "ids": ["UX-05-02", "UX-05-03", "UX-05-04", "UX-23-02", "UX-23-03", "UX-23-04", "UX-23-05", "UX-23-06", "UX-23-09", "UX-23-11"],
+      "checks": ["r2"]
+    },
+    {
+      "cr": "CR-0008",
+      "ids": ["UX-05-02", "UX-05-04", "UX-23-02", "UX-23-04", "UX-23-06", "UX-23-09", "UX-23-11"],
+      "checks": ["r3", "r4"]
     }
   ]
 }

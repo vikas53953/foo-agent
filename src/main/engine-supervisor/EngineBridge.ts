@@ -1,12 +1,15 @@
 // Spec: 08-1 §2.4 (main ⇄ engine messages; every payload zod-validated on receipt; requests get `{ re, result }`), §2.4.1
 // (db.tx, db.query), §3.3 (ui.patch forwarded to the renderer as-is), 08-0 §A (main owns settings.json: the engine's
-// your-AI results are written here), 08-5 §3.1 (AiStatus). Electron-free so unit tests drive it with an in-process engine.
+// your-AI results are written here), 08-5 §3.1 (AiStatus), 08-1 §3.3 (job:upsert / card:upsert for rows a db.tx wrote),
+// 09 §9.22 (power.keepAwake → powerSaveBlocker in main). Electron-free so unit tests drive it with an in-process engine.
 import { engineToMainSchema, type DbOp, type EngineToMain, type MainToEngine, type NamedQuery } from '../../engine/protocol';
 import type { Result } from '../../shared/errors';
 import type { EventChannel, EventPayload } from '../../shared/ipc';
 import type { Settings } from '../../shared/settings';
 import type { AiStatus, ProviderId } from '../../shared/types';
 import type { Db } from '../store/db';
+import { cardRow, type DbRow } from '../db/rows';
+import { jobRows } from '../store/queries';
 import { applyDbOps, runNamedQuery } from './engineHost';
 
 export interface BridgeContext {
@@ -17,6 +20,14 @@ export interface BridgeContext {
   emitMessage(messageId: string): void;
   emitChat(chatId: string): void;
   log?(line: unknown): void;
+  /** `{DATA}`: where `mirror` ops write `jobs\{id}\state.json|plan.md` and activity ops append `activity.jsonl` (08-1 §4.1). */
+  dataDir?: string;
+  /** The injected clock (08-3 §22); defaults to Date.now. */
+  now?(): number;
+  /** 09 §9.22: hold or release powerSaveBlocker('prevent-app-suspension'); M4 T4 (PowerService) fills it. */
+  keepAwake?(on: boolean, jobCount: number): void;
+  /** 08-3 §15: a toast request. Stub until M11 (logged only). */
+  notify?(req: unknown): void;
 }
 
 type AiStatePayload = Extract<EngineToMain, { kind: 'ai.state' }>['payload'];
@@ -32,6 +43,10 @@ export class EngineBridge {
   aiStatus: AiStatus | null = null;
 
   constructor(private ctx: BridgeContext) {}
+
+  private now(): number {
+    return this.ctx.now ? this.ctx.now() : Date.now();
+  }
 
   nextId(): string {
     this.seq += 1;
@@ -91,13 +106,29 @@ export class EngineBridge {
     const msg = parsed.data;
     switch (msg.kind) {
       case 'db.tx': {
-        const { result, effects } = applyDbOps(this.ctx.db, msg.payload.ops as DbOp[]);
+        const now = this.now();
+        const { result, effects } = applyDbOps(this.ctx.db, msg.payload.ops as DbOp[], { now, dataDir: this.ctx.dataDir });
         for (const id of effects.messageIds) this.ctx.emitMessage(id);
+        for (const id of effects.cardIds) {
+          const r = this.ctx.db.prepare('SELECT * FROM cards WHERE id = ?').get(id) as DbRow | undefined;
+          if (r) this.ctx.emit('card:upsert', cardRow(r));
+        }
+        if (effects.jobIds.size) {
+          const ids = [...effects.jobIds];
+          for (const job of jobRows(this.ctx.db, `id IN (${ids.map(() => '?').join(', ')})`, ids, now)) this.ctx.emit('job:upsert', job);
+        }
         for (const id of effects.chatIds) this.ctx.emitChat(id);
         return { re: msg.id, result };
       }
       case 'db.query':
-        return { re: msg.id, result: runNamedQuery(this.ctx.db, msg.payload.q as NamedQuery, msg.payload.args) };
+        return { re: msg.id, result: runNamedQuery(this.ctx.db, msg.payload.q as NamedQuery, msg.payload.args, this.now()) };
+      case 'power.keepAwake':
+        this.ctx.keepAwake?.(msg.payload.on, msg.payload.jobCount);
+        return null;
+      case 'notify':
+        if (this.ctx.notify) this.ctx.notify(msg.payload);
+        else this.ctx.log?.({ t: this.now(), lvl: 'info', mod: 'notify', evt: 'stub', kind: msg.payload.kind });
+        return null;
       case 'ui.patch':
         this.ctx.emit(msg.payload.event as EventChannel, msg.payload.payload as never);
         if (msg.payload.event === 'ai:status') this.aiStatus = msg.payload.payload as AiStatus;

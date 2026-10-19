@@ -1,0 +1,60 @@
+/* Spec: 04-2 §23.2a (error notices: min-height 40, --r-md, --bad-soft fill, ErrorCircle 16 --bad, --t-small --fg-1 one line,
+ * Link buttons, Dismiss 16 in a 40 hit; the stack sits above the composer row and the banner slot, 8 apart like §20.5). */
+.stack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s1);
+  margin-bottom: var(--s1);
+}
+.notice {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--s7);
+  padding: 0 var(--s1) 0 var(--s2);
+  border-radius: var(--r-md);
+  background: var(--bad-soft);
+  font: var(--t-small);
+  color: var(--fg-1);
+}
+.icon {
+  display: inline-flex;
+  flex: none;
+  color: var(--bad);
+}
+.text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.notice > button {
+  flex: none;
+}
+.more {
+  justify-self: start;
+}
+.close {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--s5);
+  height: var(--s5);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-full);
+  background: transparent;
+  color: var(--fg-2);
+  cursor: default;
+}
+.close::after {
+  content: '';
+  position: absolute;
+  inset: calc((var(--s5) - var(--s7)) / 2);
+}
+.close:hover {
+  background: var(--bg-hover);
+}

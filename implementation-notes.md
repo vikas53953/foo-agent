@@ -466,3 +466,206 @@ files are real and which stay seeds). What the real output pinned:
 
 - Gemini CLI (not installed on the PC) and the three key APIs (no test key) parse seed fixtures written from the spec.
 - The Windows `taskkill /T` tree kill: the grandchild test runs on POSIX only.
+
+## M4 · job runner contracts (ticket T1, CR-0008)
+
+### Built
+
+- `spec/state-machines.json` from `scripts/extract-sm.ts` (job machine: 8 states, 23 events, 32 transitions, forbidden pairs,
+  badge per state, FID-17 invariants; `--check` also fails when 07-2 §4 names a pair the machine lacks) and
+  `src/shared/jobMachine.ts` (`JOB_STATES`, `TERMINAL`, `JOB_EVENTS`, `nextState`, `canTransition`, `BADGE_OF_STATE`), checked
+  against each other by FID-16 (`test/fidelity/sm/FID-16.test.ts`, every state × event and every from × to through `db.tx`).
+- Migration `0002_routes.sql` (G-M4-03); `migrate()` runs a migration whose first line is `-- foo:foreign-keys-off` with
+  foreign keys off and `foreign_key_check` before commit.
+- `src/engine/protocol.ts`: DbOp `insert | update(expectRev) | transition | delete | activity | mirror`, writable jobs, steps,
+  tool_calls, cards; MainToEngine `card.answered`, `job.stop`, `job.stopAll`, `job.retry`, `power`, `jobs.pauseAll`,
+  `test.jobEvent`; EngineToMain `power.keepAwake`, `notify`; the 12 job NamedQuery names (`src/main/db/queries.ts`).
+- `engineHost.ts`: every op in one transaction; `DB_BAD_TRANSITION`, `DB_STALE_REV`, `VALIDATION` (card states), tool call
+  args/results, card payloads and activity summaries redacted; chat pill re-derived in the transaction; mirrors staged as temp
+  files and renamed after commit; activity rows appended to `{DATA}\activity.jsonl` after commit. `EngineBridge` emits
+  `job:upsert` / `card:upsert`, forwards `power.keepAwake` to `ctx.keepAwake` and logs `notify` (stub until M11).
+- `src/shared/phrases.ts` (08-4 §26.1 table, `resolvePhrase`, `phraseCopyKey`, `phraseText`), M4 test ids, M4 copy keys,
+  `CARD_STATES` / `isCardState` (`src/shared/cards.ts`), M4 types (`StopReason`, `ProofKind`, `FixAction`, `ActivityRow`,
+  the M4 card payloads) and error kinds; `fast-check` 4.10.2.
+
+### Picks and gaps (each in CR-0008 §(b))
+
+- G-M4-01…15: the pack's recommended options.
+- G-M4-16: `jobs.pauseAll` pauses WORKING jobs only; QUEUED stays queued, NEEDS_YOU keeps waiting on the user.
+- G-M4-17: a WAITING job's bubble badge stays `working`; the pill says Paused.
+- DbOp `mirror` keeps 08-1's `{ kind, id, text }` shape; `transition` also accepts `cards`; `activity` is not a writable
+  table (only op `activity`); `jobs.state` moves only by `transition`.
+- `card.answered` = `{ cardId, choice?, text?, answer?, resolvedBy }`; `job.retry` carries `newJobId` (main allocates it).
+- Step state moves are not checked against a step machine (the spec has none); only `from` and the DDL CHECK apply.
+- Copy: money placeholders take `formatInr()` output (no "₹" in the template); keys landed before their renderer are in
+  `scripts/copy-pending.json` (empty by M4 close-out); phrase keys are checked against `PHRASES`.
+- The engine answers `jobs.pauseAll` with `{ paused: [] }` until T2/T4 build the runner.
+- `steps:upsert` (08-1 §3.3) is not wired: T5 asks for it with the checklist.
+
+## M4 · shell wiring and stacked notices (ticket T6)
+
+### Built
+
+- G-M4-07: `slow` stays derived. `stepProgressAt()` (`src/main/db/rows.ts`) = the later of the running step's `started_at`
+  and the last `steps.finished_at`, else the job's `started_at`; `slow` = WORKING and 60 s past it. `last_progress_at` is
+  no longer read for it (tool progress moves that column without a step finishing). `jobRows` selects the two step times.
+- Chat rev: `recomputePill` now bumps `chats.rev` on every call, not only when the pill changes. The ChatRow's preview
+  ("Working on…" / "Waiting to start…"), folded and active facts are derived from the same jobs and cards, and the renderer
+  drops a `chat:upsert` whose rev did not move, so QUEUED ↔ WORKING (same "working" pill) left a stale preview (AT-287;
+  reproduced by `test/verify/m4-t6-shell.journey.ts` before the fix).
+- `spend:update` goes through `updateSpendReducer` (`store/spend.ts`): a late summary for an older month is ignored.
+- 04-2 §23.2a stack (G-M4-12): `composer/ComposerNotices.ts` derives the notices from the rows (user messages with status
+  `failed`; jobs in FAILED with their newest error card's `kind` / `whatHappened`), so a notice never disagrees with the
+  chat; dismissed ids, "+{n} more" expansion and the 24 h-away clock are renderer-only view state.
+  `ComposerNoticeStack.tsx` draws it; `Composer.tsx` mounts it (one line) above the banner slot.
+
+### Picks and gaps (for the lead's independent check)
+
+- T6-01 · "{6-char id}" is not defined by 08-0: the code is `{ErrorKind}-` + the last 6 letters or digits of the source row
+  id, upper case (message id, `local:{clientId}` while unsent, or job id).
+- T6-02 · A failed job with no error card yet shows "Something went wrong on my side." with kind `UNKNOWN` (the card's
+  sentence replaces it once T2 posts the card).
+- T6-03 · A not-sent message's notice reads "Not sent." (the in-chat sentence, 04 §7). Its kind is `UNKNOWN` unless
+  `noteSendError(rowId, kind)` was called: `composer/send.ts` (not T6's file) should call it with `r.error.kind`; asked of
+  the lead.
+- T6-04 · "Notices clear when the user leaves the chat for 24 h": the first open in a session shows failures from the last
+  24 h only; back after ≥ 24 h away clears them; Dismiss / Clear all are kept for the session (not stored).
+- T6-05 · Voice-note and attachment refusals still use M2's single 8 s `composer-notice`; they join the stack when their
+  callers pass an ErrorKind (T7 / the integrator: a call to the stack from `Composer.tsx`).
+- `trace.csv` rows AT-281/282/286/287 still say `pending`: the status column is the integrator's at close-out.
+
+## M4 · runner core (ticket T2)
+
+### Built
+
+- `src/engine/jobs/JobRunner.ts` (08-2 §5): `createJob` (do-verbs → intent, plan with `show_before`, title, estimates, Plan
+  card when > 2 min or > ₹5, mirrors `state.json` / `plan.md`), FIFO queue with 3 WORKING slots and the 3-window browser
+  gate (`queue.ts`), verify-first when the AI was not checked in 10 min, the step loop (one repair turn per step), NEEDS_YOU
+  cards and their answers, `finish` (proof check, result posted once, checklist state), `fail` (error card with one
+  alternative), `job.retry` (G-M4-01: a new linked job, the old one never moves). One checklist per job, posted 1.5 s after
+  start (or at once when queued with ≥ 2 steps) and edited in place.
+- `src/engine/tools/ToolLayer.ts`: catalogue lines for the step prompt, gate check, X-113 idem key, raw result (≤ 16 KB)
+  kept in RAM for the proof check, redacted result stored. `src/engine/gate/GateLogic.ts`: stub gate (read / prepare run,
+  everything else refused) until M5.
+- `title.ts`, `estimates.ts`, `verbs.ts`, `proof.ts` (08-4 §26 rules); `StepActSchema` + `ProofSchema` in `schemas.ts`;
+  `PromptBuilder.buildStep`; ChatLane hands an intake `job` decision to the runner.
+
+### Picks and gaps (for the lead's independent check)
+
+- T2-01 · `request_approval` is logged and counted as a failed turn until M5 builds approvals.
+- T2-02 · Plan card "Change plan" cancels the queued job (`stop_reason` system, badge stopped); re-intake with the change
+  is left to T3/M5.
+- T2-03 · (lead review: the first pick broke max 3 WORKING) An answered NEEDS_YOU card keeps its answer and the job stays
+  NEEDS_YOU (badge ⏳) until a slot frees; `startNext` then resumes answered jobs ahead of queued ones, oldest answer
+  (`cards.resolved_at`) first, then queued jobs FIFO (`queue.ts` `pickStartable`).
+- T2-04 · Seams: an AI error ends FAILED `UNKNOWN` (`hooks.onAiError`, T4 replaces it with WAITING); 3 failed turns in a
+  row end FAILED (`hooks.onStuck`, T3 replaces it with the stuck card).
+- T2-05 · Proofs the app cannot re-check yet (email, sent_folder, wa_delivered, calendar_event, receipt, read_source) end
+  done_unverified until M8/M10; a done_unverified job stores `proof` null.
+- T2-06 · A retry job points at the old job's user message, so that bubble's badge restarts at 👀.
+- T2-07 · SITE_BLOCKED with no usable AI alternative → `open_url https://{domain}/`; UNKNOWN → retry; else dismiss.
+- T2-08 · "email / message / text" count as the send verb only at the start of the ask or after please / and / then
+  (so "find the email from…" stays a read).
+- T2-09 · `Engine` gets an empty tool registry outside tests; real tools arrive with M8/M9. The step prompt's tool list is
+  headed "Tools you can use:".
+- T2-10 · Files beyond the ticket's owned list: `src/engine/jobs/verbs.ts`, `test/unit/jobs/verbs.test.ts`,
+  `test/integration/jobs/jobHarness.ts`, `test/verify/m4-t2-runner.journey.ts`; additive edits to `schemas.ts`,
+  `PromptBuilder.ts`, `envelope.ts`, `AiService.ts`, `test/unit/m3-engine-helpers.ts`.
+- T2-11 · Approval / payment stubs (until M5 / M10): only `choice: 'approve'` resumes; `choice: 'decline'` → card DECLINED,
+  job CANCELLED with `stop_reason` approval_declined (07-2 `declined`); any other answer is ignored.
+- T2-12 · Lead review fixes: an answer that lands while the old loop is still finishing relaunches the loop when it ends; a
+  crashed loop ends the job FAILED `UNKNOWN`; a tool result JSON cannot hold is the tool's `UNKNOWN` error; `finish` / `fail`
+  end nothing when their move is refused; typed answers are redacted before Decisions / plan.md; one retry per old job;
+  a confirmation proof needs ≥ 4 characters, matches only string values, and only from tool calls that ended ok.
+- T2-13 · Not done (lead's "consider"): posting "I didn't get that…" when `createJob` returns null. Its only null path is a
+  failed db write, where the fallback line's own write would fail the same way.
+- Still in `copy-pending.json` for T2: `thread.queued.ai_back` and `thread.approval_typed.*` (intake paths: AI down is T4,
+  typed yes needs M5 approval cards) and `cards.not_live_chip.job_title.text` (renderer, T5).
+- Found by foo-verify, not T2's file: the Doing now line and `JobRow.nowLine` show the raw phrase key ("read_email")
+  because `jobRows` (`src/main/store/queries.ts`) uses `slots.text ?? phrase_key`; 08-1 §4 says the running step's phrase,
+  i.e. `phraseText(phrase_key, slots, 'running')`.
+
+## M4 · cards and job IPC (ticket T5)
+
+### Built
+
+- `src/main/jobs/jobIpc.ts`: `job:stop|stopAll|retry`, `plan:go|change`, `stuck:choose`, `recovery:choose`, `error:fix`
+  (G-M4-09). Each checks the card (exists, type, nonce, still open) or the job (not terminal) and sends exactly one
+  MainToEngine message (X-124); `job:stop` / `job:stopAll` return the stop report built from the activity log (only done
+  `sent`, `paid`, `booked`, `deleted` rows). With no engine, `job:stop` cancels in main as M1 did; card answers fail
+  `UNKNOWN`. Registered in `IpcRouter.ts`, `shared/ipc.ts` and both preload allow-lists.
+- Cards: `Checklist`, `Plan`, `Stuck`, `ErrorCard` (both variants), `SpendCap` (AI variant), `JobLink`, in the
+  `CARD_VIEWS` map of `renderCard.tsx`; `CardFrame` gained `card` (data-card-id/type), `edge`, `busy`, `muted`; shared
+  pure helpers in `cards/jobCards.ts` (unit-tested; they return final words through literal `t()` calls so check:copy sees
+  every key). Under foo's result bubble: `ProofChip`, `NotLiveChip`, `ReceiptFooter` (`messages/`). C-21 is
+  `cards/RaiseCapDialog.tsx`; `money.aiCapPaise` joined `WRITABLE_PATHS`.
+- Card holds take the whole line (`Bubble.module.css`): a card has inline-size containment, so inside a shrink-to-fit hold
+  it collapsed to its padding (30px). Card button icons and spinners now sit on the label's line.
+- Seed set `m4-cards` (`src/main/test/seed/m4Cards.ts`): the ux-world plus one of each M4 card in two new helper chats,
+  steps from the phrase catalogue. Used by `test/fidelity/bp/BP-cards-m4.spec.ts` (BP-CARD-02/12/15/18/19/20, SV-19 by
+  hand, SV-20 and SV-31 through `SELECTORS`) and `test/verify/m4-t5-cards.journey.ts`.
+
+### Picks and gaps (for the lead's independent check)
+
+- T5-01 · Steps: no `steps:upsert` event exists, so the checklist refetches `job:details` on every `job:upsert` for its job.
+- T5-02 · Plan `costLine` is the runner's pre-formatted rupee estimate (T2: `formatInr(cost)`, '' when unknown); with
+  plan billing or no estimate the card shows "About {n} minutes" only (new keys `cards.plan.estimate.base`,
+  `cards.plan.label_base`; `cards.plan.estimate.plan` and `cards.checklist.footer_text.plan` stay pending until the
+  adapter reports plan usage).
+- T5-03 · Spend cap "Wait until {date}" ends the card through `error:fix` with `dismiss` (G-M4-09); routines paused = 0
+  until M7; the purchase variant keeps the placeholder (G-M4-10).
+- T5-04 · "Check for real" (not-live chip) and "Start again" on a withdrawn plan use `job:retry`, which now also accepts a
+  DONE-unverified job (05-3 §5.16: a new linked job "Checking {title} live"); main refuses a second retry of the same job
+  as the runner does. Seam for T2's runner: `retryInner` still refuses `done_unverified` and does not use
+  `cards.not_live_chip.job_title.text`, so Check for real ends in no new job until it does.
+- T5-04b · Seam for T2's runner: `fail()` posts the error card in state `shown` with a fix button; 05-3 §5.20 says `shown`
+  has no fix button and `asking` is the state with one, so the card renders without Try again until the runner writes
+  `asking`.
+- T5-05 · A 10-digit confirmation code reads as a PNR; `calendar_event` and `emails_read` proofs draw no chip.
+- T5-06 · A Stuck card in `taken_over` / `stopped` stays read-only with no summary words (05-3 §5.19 gives none).
+- T5-07 · C-21 shows "Raise cap" while the field is empty or invalid (06-3 §14 names only "Raise to ₹{x}").
+- T5-08 · CANCELLED checklist: rows the runner left running or waiting read as not started (05-1 §5.2 "stays expanded,
+  buttons removed, last row Stopped by you"); the card row's own `state` moves to `stopped` when the runner writes it (T3).
+- T5-09 · `cards.spend_cap.line2.ai` uses ICU plurals ("1 job", "2 jobs"); `errors.spend_cap.what_is_safe` (T3's) has
+  the same "{jobs} jobs" wording.
+- T5-11 · Checklist max 6 visible rows (05-1 §5.2.1): finished rows fold first; if more than 6 still remain, the last
+  not-started rows wait below until rows fold (no "more" row exists in the spec); a current, failed or stopped row is
+  never cut. "Show" lists all once a row has folded.
+- T5-12 · `job:retry` keeps a per-job in-flight mark for 30 s after a send, so a double tap sends one `job.retry`; after
+  that the one-retry-per-job row check (or the runner's refusal) decides. The not-live chip's "Checking…" follows the
+  linked job's state, with the same 30 s wait before its row arrives.
+- T5-13 (lead review) · Plan `withdrawn`: only `resolvedBy` auto (the 24 h timeout) says "I didn't start {title} because
+  I didn't hear back." with Start again; any other withdrawal is 05-1 §0.5 "No longer needed. The job was stopped." with
+  no buttons (`cards.common.content.withdrawn`). The checklist's Replay link is hidden until the screen viewer has a
+  handler (`cards.checklist.replay` back to pending). C-21 stops key events at the dialog so Ctrl+Enter cannot reach the
+  host card; its Tab trap skips disabled buttons. Contract extensions are in CR-0008 §(f).
+- T5-10 · Old checklist rows (the ux-world Goa card) carry the job only on `cards.job_id`; the card falls back to it. The
+  ux-world seed writes `freeform` steps, which resolve to "Working on it" (08-4 §26.1 closed catalogue); its walkthrough
+  words need phrase keys (seed owner).
+- Not T5's: raising the cap through C-21 does not yet write the `cap_changed` activity row, resume paused jobs or turn the
+  Spend-cap card Raised (06-3 §14 effects: T3 / the integrator). `spec/spec-values.json` still marks SV-19/20/31 pending and
+  SV-19 has no machine form; `trace.csv` BP-CARD rows say `pending` (integrator at close-out). Copy keys still unused, now
+  tagged "M4-T7 close-out": `cards.checklist.footer_text.plan`, `cards.plan.change_placeholder`,
+  `cards.proof_chip.popover.file_missing`, `cards.not_live_chip.still_failed.text`, `cards.error.still_failing`.
+
+## M4 · close-out (ticket T7)
+
+### Built
+
+- Golden lane renders M1–M4 refs (`FIDELITY_MILESTONE: M4`); the six M4 card drawings are disputed on r1/r2 (and r3 on
+  BP-CARD-15 and BP-CARD-19) under CR-0008 §(g); r4 still counts.
+- `test/e2e/m4-jobs.spec.ts`: PERF-07, PERF-08, PERF-11 as single-run smokes on the fake clock and fake AI (the E.1 p95 on
+  the reference laptop is the release check). PERF-07 uses a plain question: a job's 👀 is replaced by 🛠 within 700 ms,
+  so the badge debounce (04 §4.2) skips it and only 🛠 paints.
+- UX-05 (job parts) and UX-23 (stuck, offline, AI down, recovery) golden step files; M4 trace rows `live`.
+- Done from the carry list: the now line reads the running phrase (`phraseText(..., 'running')`); not-sent notices carry
+  the send ErrorKind (`noteSendError`).
+
+### Moved to M5 (each needs the M5 choice / approval UI or the screen viewer)
+
+- "Change plan" supersede (05-3 §5.12 old card Superseded + new plan card; 08-2 §5.3.3 old plan attached to intake).
+- "Check for real" retry of a `done_unverified` job (05-3 §5.16); the `job:retry` contract is in (CR-0008 §(f)c).
+- `request_approval` still counts as a failed turn until the gate exists.
+- Replay, Send a report, use-backup links and the other keys left in `scripts/copy-pending.json`, each tagged with the
+  ticket or milestone that renders it.
+- Main-side checks the renderer does today: a new AI cap ≥ current + ₹100 (08-0 §A.2); `plan:go` offline / cap gate.
