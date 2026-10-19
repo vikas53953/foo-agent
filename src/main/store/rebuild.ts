@@ -30,6 +30,12 @@ export interface OpenResult {
 }
 
 /** The errors that mean "this file is damaged" (anything else, e.g. a full disk, is not ours to rebuild from). */
+/** 08-3 §19.1: a log line carries a code, never an error's message text (it can quote a path or a row). */
+function errCode(e: unknown): string {
+  const code = (e as { code?: unknown } | null)?.code;
+  return typeof code === 'string' && /^[A-Z][A-Z0-9_]{0,40}$/u.test(code) ? code : 'UNKNOWN';
+}
+
 export function isDamage(e: unknown): boolean {
   const code = (e as { code?: unknown } | null)?.code;
   const msg = e instanceof Error ? e.message : String(e);
@@ -48,7 +54,7 @@ export function openDbOrRebuild(file: string, o: RebuildOptions): OpenResult {
     return { db: openDb(file, o.migrationsDir), damagedFile: null };
   } catch (e) {
     if (!isDamage(e)) throw e;
-    o.log?.('DB_REBUILT', e instanceof Error ? e.message : String(e));
+    o.log?.('DB_REBUILT', errCode(e));
   }
   const damaged = join(dirname(file), `foo-damaged-${stamp(o.now)}.db`);
   renameSync(file, damaged);
@@ -60,7 +66,7 @@ export function openDbOrRebuild(file: string, o: RebuildOptions): OpenResult {
     return { db, damagedFile: damaged };
   } catch (e) {
     // §4.1.1: if the rebuild itself fails the damaged file is never deleted; startup reports it.
-    o.log?.('DB_REBUILD_FAILED', e instanceof Error ? e.message : String(e));
+    o.log?.('DB_REBUILD_FAILED', errCode(e));
     db?.close();
     throw e;
   }

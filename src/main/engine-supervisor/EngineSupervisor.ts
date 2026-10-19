@@ -6,6 +6,7 @@
 import { app, MessageChannelMain, utilityProcess, type MessagePortMain, type UtilityProcess } from 'electron';
 import { join } from 'node:path';
 import type { MainToEngine } from '../../engine/protocol';
+import { logEvent } from '../log/techLog';
 import type { EngineBridge } from './EngineBridge';
 
 const MAX_RESTARTS = 3;
@@ -66,7 +67,7 @@ export class EngineSupervisor {
       this.port = null;
       this.child = null;
       if (this.stopping) return;
-      console.error(`engine exited (${code})`);
+      logEvent({ lvl: 'error', mod: 'engine', evt: 'ENGINE_EXITED', kind: String(code) });
       this.onCrashed();
       if (this.restarts < MAX_RESTARTS) {
         this.restarts += 1;

@@ -68,8 +68,17 @@ describe('AT-118a · damaged foo.db is rebuilt from the mirrors', () => {
     mkdirSync(path.dirname(file), { recursive: true });
     writeFileSync(file, Buffer.alloc(8192, 0x5a)); // not a database
     const now = new Date(2026, 9, 18, 9, 41).getTime();
-    const { db, damagedFile } = openDbOrRebuild(file, { dataDir: data, now, agentName: 'foo' });
+    const logged: [string, string][] = [];
+    const { db, damagedFile } = openDbOrRebuild(file, {
+      dataDir: data,
+      now,
+      agentName: 'foo',
+      log: (evt, detail) => logged.push([evt, detail]),
+    });
     try {
+      // 08-3 §19.1: the log gets a code, never the driver's message text.
+      expect(logged[0]).toEqual(['DB_REBUILT', 'SQLITE_NOTADB']);
+      expect(logged.some(([, d]) => /not a database|file is/iu.test(d))).toBe(false);
       expect(damagedFile).toBe(path.join(data, 'data', 'foo-damaged-2026-10-18-0941.db'));
       expect(existsSync(damagedFile!)).toBe(true);
       expect(readFileSync(damagedFile!)[0]).toBe(0x5a);
