@@ -82,7 +82,14 @@ async function start(o: { intakeDelayMs?: number } = {}) {
   /** Ends the run's job with the stop word, so the next ask starts its own job (08-2 §5.2: a live job would be steered). */
   const stopJob = async (tag: string) => {
     await send('stop');
-    await expect(badgeOf(ask(tag))).toHaveAttribute('data-state', 'stopped');
+    try {
+      await expect(badgeOf(ask(tag))).toHaveAttribute('data-state', 'stopped');
+    } catch (e) {
+      // What foo's chat shows when the stop word did not stop the run's job (the newest rows), for the failure report.
+      await toNewest();
+      console.log(`stopJob ${tag}: chat ends with:\n${(await log.innerText()).slice(-1500)}`);
+      throw e;
+    }
   };
   return { app, page, log, badgeOf, toNewest, type, send, stopJob };
 }
