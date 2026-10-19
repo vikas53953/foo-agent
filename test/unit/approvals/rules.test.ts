@@ -2,7 +2,7 @@
 // 08-2 §9.5 (rules never match hard limits, payments, new recipients, groups or personal attachments; use_app,
 // calendar_write and mail_organise only), §9.7 (matchRule / addRule / removeRule, RULE_NOT_ALLOWED), 08-1 §3.2
 // (SCOPE_NOT_ALLOWED), 08-0 §A.2 (locks, SETTING_LOCKED), CR-0009 G-M5-01 ("For this chat" until restart or 11:59 PM),
-// G-M5-02 (no scope for email moves), G-M5-21 (use_app rules match fields.app). The gate's own use of rules is AT-132
+// G-M5-02 (no scope for email moves), G-M5-24 (use_app rules match fields.app). The gate's own use of rules is AT-132
 // (gate, engine), T7.
 import { describe, expect, it } from 'vitest';
 import { addRule, checkScope, endOfLocalDay, matchRule, removeRule, scopesFor } from '../../../src/main/approvals/rules';
@@ -81,7 +81,7 @@ describe('scopes and rules (08-2 §9.5)', () => {
         });
       expect(h.approval(o.approvalId).state).toBe('PENDING');
     }
-    // A use_app card with no app to match: RULE_NOT_ALLOWED (G-M5-21).
+    // A use_app card with no app to match: RULE_NOT_ALLOWED (G-M5-24).
     const o = h.open({ verb: 'use_app', fields: { verb: 'use_app', irreversible: false }, hardLimit: false });
     expect(h.gate.approve({ cardId: o.cardId, nonce: o.nonce, scope: 'always', resolvedBy: 'tap' })).toEqual({
       ok: false,

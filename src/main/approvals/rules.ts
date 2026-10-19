@@ -5,7 +5,7 @@
 // SCOPE_NOT_ALLOWED), 08-2 §9.7 (`matchRule` / `addRule` / `removeRule`, RULE_NOT_ALLOWED), 08-0 §G.4 (activity `changed`
 // rule_added | rule_removed), X-03, X-147. CR-0009 G-M5-01 ("For this chat" ends when foo restarts or at 11:59 PM local
 // today, whichever comes first: so it lives in memory, never in settings.json), G-M5-02 (no scope for email moves in v1),
-// G-M5-21 (a use_app rule matches `fields.app`, 08-5 §3.3).
+// G-M5-24 (a use_app rule matches `fields.app`, 08-5 §3.3).
 import { fail, ok, type Result } from '../../shared/errors';
 import type { ActivityOpRow } from '../../engine/protocol';
 import type { ApprovalFields, ApprovalScope, ApprovalVerb, Rule } from '../../shared/types';

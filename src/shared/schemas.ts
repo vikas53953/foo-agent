@@ -312,7 +312,7 @@ export const ApprovalFieldsSchema = z
       .optional(),
     contentSummary: z.string().max(400).optional(),
     irreversible: z.boolean(),
-    // M5 T4 (G-M5-21): the app of a `use_app` approval, which its "For this chat" / "Always" rule matches (08-5 §3.3).
+    // M5 T4 (G-M5-24): the app of a `use_app` approval, which its "For this chat" / "Always" rule matches (08-5 §3.3).
     app: z.enum(['gmail', 'calendar', 'contacts', 'whatsapp', 'browser', 'outlook']).optional(),
   })
   .strict();

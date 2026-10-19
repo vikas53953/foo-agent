@@ -26,6 +26,7 @@ import { cardTitle } from '../../shared/cards';
 import { t } from '../../shared/copy/t';
 import { phraseCopyKey, resolvePhrase } from '../../shared/phrases';
 import { checkSecret } from '../../shared/redactor';
+import { writeRedacted } from './writeRedacted';
 import { monthKey } from '../../shared/format';
 import type { Settings } from '../../shared/settings';
 import type {
@@ -551,7 +552,12 @@ export function editMessage(db: Db, messageId: string, text: string, now: number
   if (paste) return { ok: false, reason: 'secret', paste };
   const hidden = t('composer.paste.hidden_in_bubble');
   const forAi = text.includes(hidden) ? text.split(hidden).join(HIDDEN_FOR_AI) : null;
-  db.prepare('UPDATE messages SET text = ?, text_for_ai = ?, edited_at = ?, rev = rev + 1 WHERE id = ?').run(text, forAi, now, messageId);
+  db.prepare('UPDATE messages SET text = ?, text_for_ai = ?, edited_at = ?, rev = rev + 1 WHERE id = ?').run(
+    writeRedacted(text),
+    forAi === null ? null : writeRedacted(forAi),
+    now,
+    messageId,
+  );
   return touched(db, messageId);
 }
 

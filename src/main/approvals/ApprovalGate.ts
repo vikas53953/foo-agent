@@ -6,7 +6,7 @@
 // approvals row, in the same transaction), §2.4 (`approval.changed` tells the engine an approval moved; `card.answered` is how
 // the M4 runner resumes or cancels the job on a tap), 05-2 §5.5.4 (EXPIRED → "Ask me again" re-checks live terms first and
 // builds a fresh card), X-03, X-04, X-125. CR-0009 G-M5-03 (HELD → own value → DECLINED), G-M5-04 (HELD expires),
-// G-M5-18 (HELD / APPROVED → WITHDRAWN on a stopped job), G-M5-21 (use_app rules match `fields.app`).
+// G-M5-18 (HELD / APPROVED → WITHDRAWN on a stopped job), G-M5-24 (use_app rules match `fields.app`).
 import { APPROVAL_EVENTS, approvalExpiresAt, nextApproval, type ApprovalEvent } from '../../shared/approvalMachine';
 import { newNonce } from '../../shared/canon';
 import { fail, ok, type Result } from '../../shared/errors';

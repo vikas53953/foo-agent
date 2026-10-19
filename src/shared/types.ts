@@ -273,7 +273,7 @@ export interface ApprovalFields {
   /** send/post: subject + first 140 chars, redacted. */
   contentSummary?: string;
   irreversible: boolean;
-  /** M5 T4 (G-M5-21, 08-5 §3.3): the app a `use_app` approval lets a helper use; its rule matches this app. */
+  /** M5 T4 (G-M5-24, 08-5 §3.3): the app a `use_app` approval lets a helper use; its rule matches this app. */
   app?: PermissionApp;
 }
 
