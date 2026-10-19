@@ -1,6 +1,7 @@
 // Spec: 03-shell-2 §3.6.2 (chat header: back at XS, avatar 40, name h1, status line), §3.6.2.1 (status from the job runner),
 // §3.6.2.2 (actions in X-128 order: Watch live · Private toggle · Find · Panel toggle · Options; the Chat options menu),
 // §3.6.2.3 (the selection bar takes this box), §3.9.5 (Narrator), 12-2 §12.30.4 (private chat), 03-shell-1 §3.0.2.
+// 06-1 §2.0 step pill (first run, CR-0020).
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { t } from '../../shared/copy/t';
@@ -51,6 +52,22 @@ export function ChatHeader({ chat, findOpen }: { chat: ChatRow; findOpen: boolea
   const selection = useStore((s) => s.ui.selection);
   if (selection.size > 0) return <SelectionBar chatId={chat.id} count={selection.size} />;
   return <HeaderBar chat={chat} findOpen={findOpen} />;
+}
+
+/** 06-1 §2.0: "Step {n} of 4 · …" for setup steps 1–4; none for the welcome and closing steps. */
+function stepPillText(step: number): string | null {
+  switch (step) {
+    case 1:
+      return t('setup.step_pill.1');
+    case 2:
+      return t('setup.step_pill.2');
+    case 3:
+      return t('setup.step_pill.3');
+    case 4:
+      return t('setup.step_pill.4');
+    default:
+      return null;
+  }
 }
 
 function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
@@ -223,6 +240,18 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
     });
 
   const byKey = (e: MouseEvent) => e.detail === 0;
+  const heading = (
+    <h1 className={styles.name} data-testid={TID.chatHeaderName}>
+      {chat.private && (
+        <span data-testid={TID.chatHeaderPrivateMark} className={styles.privateMark}>
+          <Icon name="EyeOff" size={16} />
+        </span>
+      )}
+      <span className={styles.nameText}>{name}</span>
+    </h1>
+  );
+  // 06-1 §2.0 step pill (CR-0020): foo's chat header during first run, after the name; never a "Step 5".
+  const pill = isFoo && !chat.private && !setup.complete ? stepPillText(setup.step) : null;
 
   return (
     <div ref={rootRef} className={styles.header} data-testid={TID.chatHeader} data-compact={compact || undefined}>
@@ -253,14 +282,16 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
         />
       </button>
       <div className={styles.text}>
-        <h1 className={styles.name} data-testid={TID.chatHeaderName}>
-          {chat.private && (
-            <span data-testid={TID.chatHeaderPrivateMark} className={styles.privateMark}>
-              <Icon name="EyeOff" size={16} />
+        {pill ? (
+          <div className={styles.nameRow}>
+            {heading}
+            <span className={styles.stepPill} data-testid={TID.setupStepPill}>
+              {pill}
             </span>
-          )}
-          <span className={styles.nameText}>{name}</span>
-        </h1>
+          </div>
+        ) : (
+          heading
+        )}
         <div role="status" className={styles.status} data-testid={TID.chatHeaderStatus} data-state={status.tone} data-row={status.row}>
           {status.dot && <span className={styles.dot} aria-hidden />}
           <span className={styles.statusText}>{status.text}</span>

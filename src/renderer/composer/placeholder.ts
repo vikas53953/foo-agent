@@ -2,13 +2,16 @@
 // with no text, a pill under 360px, then the chat kind: private, WhatsApp mirror, group, helper, foo), §23.1 (offline and the
 // AI states keep the composer usable and change only the placeholder), §23.2 (the composer never adds a bar for them).
 // "Starting {agentName}…" needs the engine's start signal (M3) and is not shown yet. 05-3 §5.12.2 (after "Change plan" the
-// composer reads "Tell me what to change" until the user answers; M5 T10, CR-0008 (j) row 3). Pure.
+// composer reads "Tell me what to change" until the user answers; M5 T10, CR-0008 (j) row 3), 06-1 §2.0 (first run: the long
+// "Connect your AI first, then we can talk."; 04-2's short line stays for the send tooltip and drop overlay, CR-0020). Pure.
 // GAP: GAPS.md 2026-10-17 "no engine start signal"
 import { t } from '../../shared/copy/t';
 import type { BannerType, CardRow, ChatKind, MessageRow } from '../../shared/types';
 
 export interface PlaceholderFacts {
   notSetUp: boolean;
+  /** 06-1 §2.0 (CR-0020): first run is not finished, so the locked composer says "Connect your AI first, then we can talk." */
+  setupMode?: boolean;
   /** The 03 §3.3 banner that shows now (only types 1–5 change the placeholder). */
   banner: BannerType | null;
   aiName: string;
@@ -45,7 +48,7 @@ export function planChangePending(
 export const NARROW_PILL_PX = 360;
 
 export function placeholderText(f: PlaceholderFacts): string {
-  if (f.notSetUp) return t('composer.placeholder.not_set_up');
+  if (f.notSetUp) return f.setupMode ? t('setup.composer.locked') : t('composer.placeholder.not_set_up');
   switch (f.banner) {
     case 'offline':
       return t('composer.placeholder.offline');

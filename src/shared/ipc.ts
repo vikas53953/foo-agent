@@ -27,6 +27,7 @@ import type {
   MemoryFilter,
   MessageRow,
   PasteCatch,
+  KeyProviderId,
   ProviderId,
   PublicSettings,
   RoutineRow,
@@ -49,7 +50,7 @@ export interface PlatformInfo {
 
 export type VerifyResult =
   | { ok: true; providerId: ProviderId; displayName: string; billing: 'plan' | 'key' | 'local'; model?: string; verifiedAt: number }
-  | { ok: false; providerId: ProviderId; kind: string };
+  | { ok: false; providerId: ProviderId; kind: string; resetAt?: number };
 
 /** 08-1 §3.2 rows built so far: channel → request and response. */
 export interface Invokes {
@@ -108,10 +109,25 @@ export interface Invokes {
   'settings:get': { req: Record<string, never>; res: PublicSettings };
   'settings:set': { req: { path: string; value: unknown }; res: { settings: PublicSettings; changeId: string | null } };
   'ai:verify': { req: { providerId: ProviderId }; res: VerifyResult };
-  /** M3 (08-1 §3.2): detection ladder; rows also stream on `ai:detectRow`. The J2 screen that shows them is M12. */
+  /** M3 (08-1 §3.2): detection ladder; rows also stream on `ai:detectRow`. The J2 screen that shows them is the AI step (CR-0020). */
   'ai:detect': { req: Record<string, never>; res: DetectRow[] };
   'ai:choose': { req: { primary: ProviderId; backup?: ProviderId | null }; res: AiStatus };
   'notifications:status': { req: Record<string, never>; res: { windowsAllowed: boolean; focusAssist: boolean } };
+  // AI step (CR-0020 (c)): 06-2 §6.1 "Change" / "Add another AI" post the 06-1 §2.2 card in foo's chat; 06-1 §2.2 "I have a key"
+  // posts the key's Secret box (05-2 §5.8) with the J2 lead line. `app:openExternal` is 08-1 §3.2's row; only `maker_page` is
+  // built here (the other targets answer URL_NOT_ALLOWED until their milestones).
+  'ai:openFinder': { req: Record<string, never>; res: { chatId: string; cardId: string } };
+  'ai:askKey': { req: { providerId: KeyProviderId }; res: CardRow };
+  'app:openExternal': {
+    req: {
+      target: 'google_signin' | 'x_intent' | 'google_account' | 'maker_page' | 'handback_site';
+      url?: string;
+      providerId?: ProviderId;
+      cardId?: string;
+      nonce?: string;
+    };
+    res: void;
+  };
   // M4 T5 (08-1 §3.2 job rows; X-124: each sends exactly one MainToEngine message; G-M4-09 error:fix, CR-0008).
   'job:stopAll': { req: { confirm: true }; res: StopReport[] };
   'job:retry': { req: { jobId: string }; res: { newJobId: string } };
@@ -240,6 +256,9 @@ export const INVOKE_CHANNELS = [
   'ai:detect',
   'ai:choose',
   'notifications:status',
+  'ai:openFinder',
+  'ai:askKey',
+  'app:openExternal',
   'job:stopAll',
   'job:retry',
   'plan:go',

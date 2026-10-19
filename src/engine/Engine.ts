@@ -4,8 +4,7 @@
 // §30.8 (on engine start every `sys-*.md` in the scratch folders is deleted), 08-3 §22.3 (FOO_FAKE_AI).
 // The +20 s health check of 08-1 §2.2 step 7 runs only outside FOO_TEST runs (tests verify explicitly). Deferred to their
 // milestones: M4 T2 wires the JobRunner + ToolLayer (08-2 §5, §8; the job lane's tools come from `tools`, fake in tests
-// until M8/M9);  memory parts 5/5b (M6; empty here), the vault for key providers (M5: no key yet, so a
-// key provider reports `AI_KEY_INVALID` on verify).
+// until M8/M9);  memory parts 5/5b (M6; empty here). Key providers read the vault through `vault.use` (CR-0020).
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
 import type { Clock } from '../shared/clock';
@@ -17,6 +16,7 @@ import type { ProviderId } from '../shared/types';
 import type { EngineMessage } from '../main/db/queries';
 import { AiRegistry, CliLimiter, createAdapters, loadPricing, nodeAiFs, nodeWhich, sweepSystemFiles } from './ai';
 import { AiService } from './AiService';
+import { testHomeEnv, testHomeWhich, vaultKeyReader } from './ai/vaultKeys';
 import { ChatLane, type IntakeDecisionView, type IntakeInput, type LaneProtocol } from './chat/ChatLane';
 import type { MainLink, MainToEngine } from './protocol';
 import { parseEnvelope, validateAct, formatIssues } from './prompt/envelope';
@@ -79,14 +79,16 @@ export class Engine {
     });
     const pricing = loadPricing(JSON.parse(readFileSync(join(o.resourcesDir, 'pricing.json'), 'utf8')));
     const fake = o.testRun && Boolean(o.env.FOO_FAKE_AI);
+    // CR-0020: keys come from main's vault; a FOO_TEST run may stand in a fake home for the J2 ladder (ai/vaultKeys.ts).
+    const testHome = o.testRun ? o.env.FOO_TEST_AI_HOME : undefined;
     const adapters = createAdapters({
       clock: o.clock,
       fetch: o.fetch ?? fetch,
       paths: { LOCAL: o.localDir, DATA: o.dataDir },
-      env: o.env,
+      env: testHome ? testHomeEnv(o.env, testHome) : o.env,
       platform: process.platform,
-      getKey: async () => null,
-      which: o.which ?? nodeWhich(),
+      getKey: vaultKeyReader(o.link),
+      which: o.which ?? (testHome ? testHomeWhich(testHome, nodeAiFs) : nodeWhich()),
       fs: nodeAiFs,
       pricing,
       providerSettings: (id) => this.settings.ai.providers[id],

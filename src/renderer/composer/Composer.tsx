@@ -115,6 +115,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
   const request = useStore((s) => s.messages.composer[chatId]);
 
   const notSetUp = ai !== null && ai.primary === null;
+  // 06-1 §2.0 (CR-0020): in setup mode the locked composer reads the long line.
+  const setupMode = useStore((s) => s.settings.value?.setup.complete === false);
   const talkKey = useMemo(() => talkKeyLabel(typeof navigator === 'undefined' ? [] : navigator.languages), []);
   const chatName = chat.kind === 'foo' && chat.private ? t('chat_header.private.title') : chat.title;
   const helpers = useMemo(() => Object.values(helpersById).filter((h) => h.deletedAt === null), [helpersById]);
@@ -349,6 +351,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
       ? hint
       : placeholderText({
           notSetUp,
+          setupMode,
           banner,
           aiName: ai?.displayName ?? '',
           hasAttachments: chips.length > 0,
