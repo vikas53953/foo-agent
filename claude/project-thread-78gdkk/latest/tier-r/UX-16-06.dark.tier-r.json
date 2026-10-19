@@ -437,7 +437,7 @@
         "it.",
         "11:01",
         "in",
-        "73:52",
+        "73:51",
         "Will",
         "send",
         "to",
@@ -541,18 +541,18 @@
         "·",
         "Edit",
         "₹15,779",
-        "foo",
-        "sent",
-        "Approval",
-        "needed:",
+        "Waiting",
+        "for",
+        "your",
+        "OK:",
         "Send",
         "this",
         "email",
         "to",
         "Priya",
-        "Nair?,",
-        "needs",
-        "you"
+        "Nair?.",
+        "Show",
+        "button."
       ]
     },
     "hl": {
@@ -580,7 +580,7 @@
       ],
       "extra": [
         "in",
-        "73:52",
+        "73:51",
         "Will",
         "send",
         "to",
@@ -667,8 +667,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.1305263671875,
-    "diffPixels": 133659,
+    "ratio": 0.1229326171875,
+    "diffPixels": 125883,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-06.dark.diff.png"
