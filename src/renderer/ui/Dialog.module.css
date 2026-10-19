@@ -24,6 +24,9 @@
     opacity: 0;
   }
 }
+.md {
+  width: min(var(--dialog-md), 100%);
+}
 .head {
   display: flex;
   align-items: flex-start;
