@@ -544,8 +544,10 @@ export function registerIpc(ctx: AppContext): void {
     const err = await shell.openPath(file);
     return err ? fail('NOT_FOUND', err) : ok(undefined);
   });
+  // The memory zip lands in a folder the person picked (06-2 §7.4 "Show in folder"), so the last export path is allowed too.
+  let lastExportPath: string | undefined;
   handle('files:showInFolder', ({ path }) => {
-    const file = insideDir(ctx.dataDir, path);
+    const file = path === lastExportPath ? path : insideDir(ctx.dataDir, path);
     if (!file) return fail('PATH_NOT_ALLOWED');
     shell.showItemInFolder(file);
     return ok(undefined);
@@ -628,7 +630,10 @@ export function registerIpc(ctx: AppContext): void {
       now: now(),
       timeZone: settings.get().locale.timeZone,
       db,
-      progress: (p) => emit('data:exportProgress', p),
+      progress: (p) => {
+        if (p.path) lastExportPath = p.path;
+        emit('data:exportProgress', p);
+      },
     });
     return ok({ exportId });
   });
