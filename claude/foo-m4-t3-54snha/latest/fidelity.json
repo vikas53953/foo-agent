@@ -1,19 +1,19 @@
 {
-  "reportId": "M3-77f9002-39161715928",
+  "reportId": "M3-7bcc34b-39193442455",
   "milestone": "M3",
-  "generatedAt": "2026-10-18T20:15:54.793Z",
-  "commit": "af4c0bc4d002e88ef26a4bcdfcf257820490830d",
-  "head": "77f9002187c56325bc5c8392de672e847337a0fb",
+  "generatedAt": "2026-10-19T03:21:40.189Z",
+  "commit": "aaca4f6759ba9c188b2aabba3d4eae4720d28677",
+  "head": "7bcc34b604cd9e3996e4160e00f56c675b5c0d4b",
   "ci": {
-    "runId": "39161715928",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39161715928"
+    "runId": "39193442455",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39193442455"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "f808565536284e7d4e3a7dd182cb349ec76d2f2e7287d9c529c31af2bc5da6da"
   },
   "runner": {
-    "recordedAt": "2026-10-18T20:09:32.888Z",
+    "recordedAt": "2026-10-19T03:14:51.302Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000003106"
+      "runner": "GitHub Actions 1000003176"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,7 +59,6 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "1 test(s) failed",
     "10 audit item(s) not DONE (the milestone is not complete)",
     "CHANGED items need an approved CR"
   ],
@@ -535,8 +534,8 @@
         "skipped": 2
       },
       "e2e": {
-        "passed": 55,
-        "failed": 1,
+        "passed": 56,
+        "failed": 0,
         "skipped": 0
       }
     },
@@ -13553,7 +13552,7 @@
       },
       {
         "id": "ART-26a",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/m2-messages.spec.ts"
       },
       {
@@ -13682,14 +13681,7 @@
         "file": "test/fidelity/ux/UX-08.chat.spec.ts"
       }
     ],
-    "failed": [
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m2-messages.spec.ts",
-        "title": "ART-26a · bubbles, cards, the bubble menu and the reaction picker pass axe in light and dark",
-        "status": "failed"
-      }
-    ],
+    "failed": [],
     "trace": {
       "live": 16,
       "pending": 112,
@@ -14623,7 +14615,7 @@
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
         "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05420910900362955,
+        "r5": 0.05436521874878039,
         "ref": true,
         "app": true,
         "diff": true
@@ -14636,7 +14628,7 @@
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
         "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05350661515045077,
+        "r5": 0.05366272489560161,
         "ref": true,
         "app": true,
         "diff": true
@@ -14922,7 +14914,7 @@
         "r2": "review (hl 8/8 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (18.70 %)",
-        "r5": 0.058625,
+        "r5": 0.0586240234375,
         "ref": true,
         "app": true,
         "diff": true
@@ -15065,7 +15057,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 20.59)",
         "r4": "fail (21.84 %)",
-        "r5": 0.08532421875,
+        "r5": 0.085328125,
         "ref": true,
         "app": true,
         "diff": true
