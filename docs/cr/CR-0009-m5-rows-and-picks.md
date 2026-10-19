@@ -277,7 +277,9 @@ himself.
   add them, and the report's `notCovered` list names each one until then. Short canaries (CVV, OTP) match as whole tokens
   only, so a 4-digit run inside an id or a timestamp is not counted. The ART-08a trace row stays `pending` on
   `test/articles/ART-08a.test.ts` (scanner + tech-log proofs); the app run is `test/e2e/m5-canary.spec.ts`, untitled with
-  the id so FID-18 sees no orphan; the lead flips the row live and may add the e2e row at close-out. Pending review.
+  the id so FID-18 sees no orphan; the lead flips the row live and may add the e2e row at close-out. Each capture also
+  searches the `.value` of every non-password input (review fix). Independent review PASS WITH FIXES; approved on
+  Vikas's behalf.
 
 ### Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`)
 
