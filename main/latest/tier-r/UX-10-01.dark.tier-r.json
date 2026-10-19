@@ -137,7 +137,7 @@
         "Fri",
         "18",
         "Dec?",
-        "2",
+        "3",
         "f",
         "foo",
         "9:41",
@@ -405,6 +405,10 @@
         "Skip",
         "9:41",
         "AM",
+        "Used:",
+        "hates",
+        "early",
+        "flights",
         "Not",
         "sent.",
         "Copy",
@@ -553,11 +557,11 @@
         },
         "app": {
           "x": 356,
-          "y": 89,
+          "y": 61,
           "width": 440,
           "height": 224
         },
-        "dPos": 478,
+        "dPos": 506,
         "dSize": 72,
         "verdict": "fail"
       }
@@ -578,13 +582,13 @@
   "r4": {
     "verdict": "review",
     "skipped": null,
-    "ratio": 0.07495514354066986,
-    "diffPixels": 5013,
+    "ratio": 0.08971291866028708,
+    "diffPixels": 6000,
     "total": 66880
   },
   "r5": {
-    "ratio": 0.095564453125,
-    "diffPixels": 97858,
+    "ratio": 0.0951611328125,
+    "diffPixels": 97445,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-01.dark.diff.png"

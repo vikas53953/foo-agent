@@ -96,10 +96,6 @@
         "Getting",
         "the",
         "ready",
-        "Used:",
-        "hates",
-        "early",
-        "flights",
         "✕",
         "9:03",
         "✓",
@@ -447,11 +443,14 @@
         "15",
         "Oct",
         "₹15,779",
-        "foo",
-        "sent",
-        "Question:",
+        "Waiting",
+        "for",
+        "your",
+        "answer:",
         "Checked",
-        "bag?",
+        "bag?.",
+        "Show",
+        "button.",
         "Not",
         "sent."
       ]
@@ -516,8 +515,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.0680986328125,
-    "diffPixels": 69733,
+    "ratio": 0.0683212890625,
+    "diffPixels": 69961,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-05.light.diff.png"

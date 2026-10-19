@@ -89,10 +89,6 @@
         "add",
         "to",
         "calendar",
-        "Used:",
-        "hates",
-        "early",
-        "flights",
         "✕",
         "＋",
         "➤",
@@ -504,8 +500,8 @@
     "total": 1296
   },
   "r5": {
-    "ratio": 0.086615234375,
-    "diffPixels": 88694,
+    "ratio": 0.086044921875,
+    "diffPixels": 88110,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-03.dark.diff.png"
