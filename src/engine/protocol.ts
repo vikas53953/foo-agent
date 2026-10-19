@@ -139,6 +139,15 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
   }),
   z.object({ id: z.string(), kind: z.literal('registry:remove'), payload: z.object({ handles: z.array(z.string()) }).strict() }),
   z.object({ id: z.string(), kind: z.literal('code.submit'), payload: z.object({ requestId: z.string(), codeRef: z.string() }).strict() }),
+  // M5 T14 (CR-0009 G-M5-39 (b); 08-2 §9.6, 08-0 §G.7): main's Draft tick asks for the second look before Gmail drafts.send;
+  // the engine answers `{ pass, result, held? }` (a request, like ai.cmd). `content` is the card text, redacted.
+  z.object({
+    id: z.string(),
+    kind: z.literal('draft.secondLook'),
+    payload: z
+      .object({ approvalId: z.string(), content: z.string().max(50_000), recipients: z.array(z.string().max(320)).max(50) })
+      .strict(),
+  }),
   /** M4: FOO_TEST only. The engine's runner moves a job by the named machine event (test:jobState, 08-3 §22). */
   z.object({
     id: z.string(),
