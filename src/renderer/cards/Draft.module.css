@@ -167,3 +167,9 @@
 .okIcon {
   color: var(--ok);
 }
+/* 05-1 §0.5: the decision line at the bottom of a folded card's read-only expanded view. */
+.decisionLine {
+  margin-top: var(--s1);
+  font: var(--t-small);
+  color: var(--fg-2);
+}

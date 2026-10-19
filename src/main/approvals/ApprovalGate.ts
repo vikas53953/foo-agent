@@ -375,7 +375,7 @@ export class ApprovalGate {
     }
     const moved = this.move(a, 'approve', now, {
       approval: { approved_at: now, approved_via: 'card', scope: req.scope },
-      card: { resolved_by: req.resolvedBy, resolved_at: now, answer: { optionId: 'approve' } },
+      card: { resolved_by: req.resolvedBy, resolved_at: now, answer: { optionId: 'approve', scope: req.scope } },
       extra: rule
         ? [{ op: 'activity', row: ruleActivity('rule_added', rule, { ...this.where(a), approvalId: a.id, scope: req.scope }) }]
         : [],
