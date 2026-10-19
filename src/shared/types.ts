@@ -379,6 +379,15 @@ export interface SecretPayload {
   requestId?: string;
   sentTo?: string;
   paymentCardId?: string;
+  // M5 T2: the vault target a Save wrote (Remove and Replace name it) and when Remove ran (05-2 §5.8.2 "Removed").
+  target?: string;
+  removedAt?: number;
+  /** The vault `{name}` a Save writes (08-0 §E.8: providerId, host, web provider); a card's is its last 4. */
+  vaultName?: string;
+  /** The saved row's name after a Save ("Visa ••4242" for a card, X-116). */
+  label?: string;
+  /** Set when the card was posted while the vault could not save (05-2 §5.8.3 Disabled shows up front). */
+  vaultOff?: 'keyring_unavailable' | 'encryption_unavailable';
 }
 /** 08-5 §3.3 DraftFields (`draft:update`); `body` includes the signature text when the user kept it (X-84). */
 export interface DraftFields {
