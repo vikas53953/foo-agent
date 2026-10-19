@@ -1,0 +1,74 @@
+{
+  "journey": "test/verify/m8-t3-whatsapp.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "8b63bf23c09a828ec76bc20caeb90edee697f895",
+  "dirty": false,
+  "started": "2026-10-19T23:10:27.180Z",
+  "finished": "2026-10-19T23:10:34.946Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "Connections → WhatsApp row: \"WhatsApp · Not linked · Link WhatsApp\"",
+    "\"Link WhatsApp\" dialog shows a 200×200 QR with the 3 steps and the risk note",
+    "after the scan the dialog says \"✓ WhatsApp linked (+91 98••• ••210)\"",
+    "dialog closed by itself; row \"WhatsApp · Linked · +91 98••• ••210 · Unlink\"; Groups I read lists 2 groups",
+    "\"Building society\" is a muted wa_mirror chat; the phone's message shows in its thread: \"Water tank cleaning on Sunday 10 AM · 9:41 AM\"",
+    "Unlink → C-11 \"Unlink WhatsApp?\"",
+    "after Unlink the row reads \"Not linked\" and \"Building society\" is gone from the chat list"
+  ],
+  "shots": [
+    {
+      "file": "after/01-connections-not-linked.light.png",
+      "name": "connections-not-linked",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-link-dialog-qr.light.png",
+      "name": "link-dialog-qr",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-link-dialog-qr.dark.png",
+      "name": "link-dialog-qr",
+      "theme": "dark"
+    },
+    {
+      "file": "after/04-link-dialog-linked.light.png",
+      "name": "link-dialog-linked",
+      "theme": "light"
+    },
+    {
+      "file": "after/05-connections-linked.light.png",
+      "name": "connections-linked",
+      "theme": "light"
+    },
+    {
+      "file": "after/06-connections-linked.dark.png",
+      "name": "connections-linked",
+      "theme": "dark"
+    },
+    {
+      "file": "after/07-mirror-thread.light.png",
+      "name": "mirror-thread",
+      "theme": "light"
+    },
+    {
+      "file": "after/08-unlink-c11.light.png",
+      "name": "unlink-c11",
+      "theme": "light"
+    },
+    {
+      "file": "after/09-after-unlink.light.png",
+      "name": "after-unlink",
+      "theme": "light"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}
