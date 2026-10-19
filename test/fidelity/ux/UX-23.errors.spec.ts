@@ -249,6 +249,17 @@ test('UX-23 · When things go wrong: steps UX-23-01 to UX-23-06, UX-23-09 and UX
     const first = await startTrips([jobLine(ask, title, flights), stepLine({ kind: 'step_done', idx: 0 }, 60_000), HOLD]);
     await send(first.page, ask);
     await advance(first.page, 61_000); // step 1 done at 9:42 AM, step 2 running
+    // Kill only once step 1's done is saved (slower on the Windows runner): the checklist shows step 2 as the current one.
+    const firstLog = first.page.getByTestId(TID.threadLog);
+    const secondStep = firstLog
+      .getByTestId(TID.cardChecklist)
+      .filter({ hasText: 'fares' })
+      .getByTestId(TID.cardChecklistStep)
+      .and(first.page.locator('[data-index="1"][data-state="current"]'));
+    await expect(async () => {
+      await firstLog.evaluate((el) => (el.scrollTop = el.scrollHeight));
+      await expect(secondStep).toHaveCount(1, { timeout: 1_000 });
+    }).toPass({ timeout: 20_000 });
     await send(first.page, draft!, false);
     await first.page.waitForTimeout(1_000); // the draft's 500 ms save (04-2 §23.5)
     // foo closes unexpectedly: the process is killed, no clean quit (08-1 §4.1.3 launches.json stays unclean).

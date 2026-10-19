@@ -188,11 +188,14 @@ test('ART-26a · bubbles, cards, the bubble menu and the reaction picker pass ax
         const row = () => log.querySelector(`[data-testid="${id}"]`);
         log.scrollTop = 0;
         await frames();
-        for (let i = 0, still = 0; i < 400 && !row() && still < 6; i++) {
-          const before = log.scrollTop;
-          log.scrollTop = before + log.clientHeight * 0.5;
-          await frames();
-          still = log.scrollTop === before ? still + 1 : 0;
+        // Down from the oldest row, then back up: a new row from the live job can snap the list past the one we want.
+        for (const dir of [1, -1]) {
+          for (let i = 0, still = 0; i < 400 && !row() && still < 6; i++) {
+            const before = log.scrollTop;
+            log.scrollTop = before + dir * log.clientHeight * 0.3;
+            await frames();
+            still = log.scrollTop === before ? still + 1 : 0;
+          }
         }
         row()?.scrollIntoView({ block: 'center' });
         await frames();

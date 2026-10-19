@@ -91,8 +91,17 @@ async function atNewest(page: Page): Promise<void> {
   const pending = page.getByTestId(TID.composerPending);
   await expect(async () => {
     if (await pending.count()) await page.getByTestId(TID.composerPendingShow).click();
+    // Show does nothing while the card's row is not loaded yet (the log is virtual and pages older rows in): walk up
+    // until the card is half in view, which hides the strip (04-2 §23.4).
+    await page.getByTestId(TID.threadLog).evaluate(async (el) => {
+      for (let i = 0; i < 80 && document.querySelector('[data-testid="composer-pending"]'); i++) {
+        await new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
+        if (!document.querySelector('[data-testid="composer-pending"]')) break;
+        el.scrollTop = Math.max(0, el.scrollTop - el.clientHeight * 0.4);
+      }
+    });
     await expect(pending).toHaveCount(0, { timeout: 1_500 });
-  }).toPass({ timeout: 20_000 });
+  }).toPass({ timeout: 30_000 });
 }
 
 /** Holds {talkKey} (Ctrl+Space here) until the timer reads `at`, captures, then Esc cancels: nothing is sent. */
