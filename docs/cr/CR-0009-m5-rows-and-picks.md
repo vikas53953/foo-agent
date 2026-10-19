@@ -257,12 +257,13 @@ himself.
   in §(e); no safety effect.
 - **G-M5-38** (lead, close-out copy pass) The `{row}` slot of 08-0 §G.3 "I'm not allowed to {row}." and the `{action}` /
   `{verb}` slots of the read-only offer (08-2 §9.4, "Want me to {action}?" · "Yes, {verb}") get words through copy keys,
-  never the settings key or class id: `thread.permission.row.{read,drafts,calendar,send,book,pay,post,delete,share}`
-  ("look things up", "write drafts", "add to your calendar", "send messages", "book things", "pay for things", "post for
-  you", "delete things", "share your details"), `thread.permission.row.use_app` "use {app}", and
-  `cards.choice.offer_action.*` ("book one" as J9 draws it, "send it", …, "add it to your calendar", "fill that in") with
-  `cards.choice.offer_verb.{calendar_write,prepare}` ("add it", "fill it in"). The spec gives no row phrasing; the M13
-  Permissions page labels win if they differ. Pending review.
+  never the settings key or class id. `thread.permission.row.*` are the second-person form of the 06-screens-2
+  Permissions row labels ("read your emails, calendar and chats", "write drafts", "add things to your calendar", "send
+  emails and messages", "book things", "pay", "post in public", "delete things", "share your address or phone"; its own
+  example "I'm not allowed to {send emails}"), plus `thread.permission.row.use_app` "use {app}". The offer slots are a
+  real gap: `cards.choice.offer_action.*` ("book one" as J9 draws it, "send it", …, "add it to your calendar", "fill
+  that in") and `cards.choice.offer_verb.{calendar_write,prepare}` ("add it", "fill it in"). Independent review
+  APPROVE-WITH-NOTE (row words aligned to 06-screens-2 as asked); approved on Vikas's behalf.
 
 ### Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`)
 

@@ -1,5 +1,5 @@
 // Spec: 08-0 §G.3 and 08-2 §9.4 (`never` on a permission row or an app refuses with "I'm not allowed to {row}. You can
-// change that in Settings → Permissions."), G-M5-38 (the row and the app read as words, never the settings key).
+// change that in Settings → Permissions."), G-M5-38 (the row reads as the 06-screens-2 Permissions label, the app as its name; never the settings key).
 import { afterEach, describe, expect, it } from 'vitest';
 import { jobHarness, jobIntake, step, tool, type JobHarness } from '../jobs/jobHarness';
 import { gateTools, permissive } from './gateFlow';
