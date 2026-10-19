@@ -459,6 +459,18 @@
         "you.",
         "the",
         "foo.",
+        "Waiting",
+        "for",
+        "your",
+        "OK:",
+        "₹14,600",
+        "to",
+        "Taj",
+        "Holiday",
+        "Village",
+        "9:59",
+        "left",
+        "Show",
         "In",
         "progress",
         "Scheduled",
@@ -535,7 +547,7 @@
         },
         "app": {
           "x": 674.984375,
-          "y": 694,
+          "y": 646,
           "width": 205.015625,
           "height": 40
         },
@@ -565,8 +577,8 @@
     "total": 5012
   },
   "r5": {
-    "ratio": 0.16173828125,
-    "diffPixels": 165620,
+    "ratio": 0.1344677734375,
+    "diffPixels": 137695,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-09-08.dark.diff.png"
