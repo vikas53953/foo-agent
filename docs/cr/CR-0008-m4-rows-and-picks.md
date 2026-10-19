@@ -122,3 +122,104 @@ lead's independent check.
 - (c) `job:retry` also accepts a `done_unverified` job, for 05-3 §5.16 line 352 ("Check for real" → a new job "Checking
   {title} live" linked to the old one). Extends 08-1 line 375 / G-M4-01 (a new linked job); main refuses a second retry
   of the same job, as the runner does.
+
+## (g) Addendum (T7): where the M4 card drawings and the M4 app disagree
+
+The M4 card captures (BP-CARD-02/12/15/18/19/20, `golden/manifest.json`) run in the golden lane from M4 on
+(`FIDELITY_MILESTONE: M4`). A local Tier R run (M1…M4 refs, app captures from `test/fidelity/bp/`) failed all six on R1
+and R2, and BP-CARD-15 and BP-CARD-19 on R3; R4 passed on all six. The app follows the written spec and the `ux-world`
+seed (11-fidelity §11.2.3: state comes from the seed, never bent to match a picture), as in CR-0003 §(b).
+
+| #   | Ref(s)     | Drawing shows                                            | App and spec                                                                                                                                    | Spec                     |
+| --- | ---------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| 1   | all six    | Card words from the Blueprint gallery's own example jobs | Card words from the `ux-world` seed's card rows (R1 counts every word)                                                                          | §11.2.3                  |
+| 2   | all six    | 350px mini panels                                        | Cards at their spec width (up to 440px) inside the real column (R2 size)                                                                        | 05-1 §0.2; CR-0003 §(b)1 |
+| 3   | BP-CARD-15 | Proof bubble plus chips; R3 samples the bubble           | The capture is the proof chip only (186×24, measured; bg `--ok-soft`); the centre sample lands on an anti-aliased pixel of the `--ok` chip text | 05-3 §5.15               |
+| 4   | BP-CARD-19 | Error card filled pink                                   | `--bg-raised` card with a 1.5px `--bad` / `--warn` top edge                                                                                     | 05-3 §5.20.1             |
+
+Disputed checks (`docs/fidelity/disputes.json`): `{cr: "CR-0008", ids: [the six], checks: ["r1", "r2"]}` and
+`{cr: "CR-0008", ids: ["BP-CARD-15", "BP-CARD-19"], checks: ["r3"]}`, until the spec keeper redraws the gallery. Every
+other check still counts. Spec-keeper list: redraw the six gallery minis from the `ux-world` seed at card width; error
+card per 05-3 §5.20.1. The §11.2.7 step 2 GAPS.md line is left to the spec keeper with that redraw, as for CR-0003 (GAPS.md
+is CR-gated in `spec/`).
+
+Independent review (Fable, 2026-10-19 ~03:20Z, read-only): **PASS**, no "act" findings; all four cites checked against
+`spec/constitution/` and the app code (`Card.module.css` edge rules, `Pill.module.css` `--ok-soft`). Its three "consider"
+wordings are applied above. Recorded as approved on Vikas's behalf under his standing rule (2026-10-18 14:56Z) and his
+overnight message (2026-10-18 19:16Z, "dont wait for my aproval"); listed for his later review.
+
+## (h) Close-out (T7): trace statuses
+
+At close-out the §(a) rows whose test files exist and carry their ids in a test title are set `live` in `spec/trace.csv`
+(FID-18 checks each one), and `spec/SPEC-MANIFEST.json` is regenerated (`pnpm spec:verify --write`) under this CR. No row
+is added, removed or moved to another milestone; ids, files and spec sections are unchanged.
+
+## (i) Addendum (T7): where the UX-05 and UX-23 frames and the M4 app disagree
+
+The M4 walkthrough steps (UX-05-02…04, UX-23-01…06, 09, 11) are captured by `test/fidelity/ux/UX-05.first.spec.ts` and
+`UX-23.errors.spec.ts` from the `ux-world` seed and the real job runner on the fake AI (§11.2.3). A local Tier R run
+failed every step on R1; the table names each gap and the checks it disputes. The app follows the written spec; each
+file's header lists the same gaps.
+
+| #   | Step(s)                   | Frame shows                                                                   | App and spec                                                                                                                                             | Spec                                | Disputed |
+| --- | ------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | -------- |
+| 1   | all eleven                | Chapter 5 / 23 scenes with their own words and times (7:48 PM, Goa rows)      | The one `ux-world` seed at 9:41 AM; step rows are catalogue phrases                                                                                      | §11.2.3; 08-4 §26.1                 | r1       |
+| 2   | all but UX-23-01          | Mini frames: rows at the frame's own positions and sizes                      | Real column and card widths; the seeded Trips gallery and "Not sent." notice move rows                                                                   | 05-1 §0.2; CR-0003 §(b)1            | r2       |
+| 3   | UX-05-02, UX-23-02 (dark) | User bubble drawn #F1F1F5 in dark (the walkthrough's pre-X-145 `--bubble-me`) | `--bubble-me` dark = indigo #2B3FD6                                                                                                                      | 02 §F2; X-145 (badge glyph 04 §4.2) | r3, r4   |
+| 4   | UX-05-04                  | "✓ Proof: 3 emails · open", green                                             | M4 has no connector to re-check the emails, so the job ends unverified: "⚠ Not checked live" (amber), no sparks                                          | 05-3 §5.15–§5.16; Art. 11           | r3, r4   |
+| 5   | UX-23-04                  | "Use ChatGPT instead" link on a pink (`--bad-soft`) card fill                 | No verified backup AI in the run, so only "Try again"; the card is the §0.2 `--bg-raised` frame with a `--bad` top edge, no tint                         | 05-3 §5.20; 08-3 §21.2              | r3, r4   |
+| 6   | UX-23-06, UX-23-09        | Dark filled button                                                            | The card's primary pill in `--accent`                                                                                                                    | 05-1 §0 (buttons); X-01             | r3, r4   |
+| 7   | UX-23-11                  | Connector / site one-liners with a dark "Reconnect" pill                      | Connectors (M8) and the browser (M9) are not built; the runner's one-line UNKNOWN card with its one fixing button, an `--accent` primary pill (as row 6) | 08-3 §21.2; 05-1 §0                 | r3, r4   |
+
+Disputed checks (`docs/fidelity/disputes.json`): r1 on all eleven; r2 on all but UX-23-01; r3 and r4 on rows 3–7. Every
+other check still counts. disputes.json has no theme axis, so row 3's r3/r4 dispute also covers the light runs of
+UX-05-02 and UX-23-02 (there r3 passes and r4 is review). The clock stays at the seed's 9:41 AM rather than each step's
+time (§11.2.3): one world for every chapter, as CR-0003 row 12 kept it for chapter 9. Spec-keeper list: redraw chapter 5 and 23 frames from the `ux-world` seed; the M8/M9 steps
+(UX-23-04 backup link, UX-23-11 connector lines) re-run when those milestones land. App bug found while capturing
+(not a fidelity dispute, for M5): with a plan limit and no reset time the chat header and sidebar read "Claude limit
+until" with nothing after it; those two copy keys need a no-reset form (copy change, its own CR).
+
+Independent review (Fable, 2026-10-19 ~04:05Z, read-only): **PASS**; its one act item (row 3's reason: the drawing's
+pre-X-145 dark user bubble) and its considers (row 5 card fill, row 7 button colour, light-run note, clock note) are
+applied above. Recorded as approved on Vikas's behalf under his standing rule (2026-10-18 14:56Z) and his overnight
+message (2026-10-18 19:16Z); listed for his later review.
+
+## (j) Close-out (T7): what M4 does not do yet, moved to M5
+
+The close-out two-axis review (Standards + Spec, 2026-10-19 ~05:35Z, read-only) found these spec lines not met on the
+M4 branch. None is a design change; each is work the spec already describes, moved to M5 so M4 can land. Until M5 the
+tester build behaves as the "Now" column says.
+
+| #   | Spec line                                                                                        | Now (M4)                                                                                                                                                                                       | M5 does                                                                  |
+| --- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| 1   | 08-2 §5.10.3 "updated per turn, `spend:update` event"                                            | the Spent meter refreshes only at launch and after an AI check                                                                                                                                 | main emits `spend:update` after each `ai_turns` write                    |
+| 2   | 08-2 §5.10.4 "At ≥ 80 % (once per month) → amber state + one line in foo's chat"                 | no 80 % state or line; the stop at the cap works                                                                                                                                               | the 80 % check in the cost meter, once per month                         |
+| 3   | 08-2 §5.3.3 "'Change plan' → the text goes back to an intake turn with the old plan attached"    | **user-visible:** Change plan stops the job and the card says "Plan changed. See the new one below." with nothing below; the typed change is kept only in the card's answer, never sent to foo | re-intake with the old plan and the new Plan card below (05-3 §5.12)     |
+| 4   | 05-3 §5.12 "No answer 24 h → … 'I didn't start {job} because I didn't hear back.'" (`withdrawn`) | a Plan card waits for Go with no time limit                                                                                                                                                    | the 24 h timer and the `withdrawn` summary                               |
+| 5   | 08-2 §5.10.4 cap check "every AI call on a key provider, including background ones"              | checked before job step turns and the stuck-classify turn; chat-lane turns (intake, repair, rewrite) are not checked                                                                           | intake, repair and rewrite turns checked too                             |
+| 6   | 08-2 §5.9.5 first step after a crash gets a `RECOVERY` block; the gate refuses repeats           | unknown calls are marked `unknown` (not in safe mode); no block. The M4 gate refuses every side-effect tool, so nothing can repeat yet                                                         | the `RECOVERY` block and the gate rule                                   |
+| 7   | CR-0008 (b)19 "the list must be empty at M4 close-out"                                           | `scripts/copy-pending.json` keeps 20 keys: 18 labelled M4 (T2 2, T3 3, T4 3, T7 10) whose screens or runner data M4 did not wire, and 2 for M5/M10                                             | each key leaves the list with the code that shows it                     |
+| 8   | 07-2 §4 `waiting` reason `opens_at`; pack: queue 15 s tick for `wake_at`                         | no producer of `opens_at` and no tick                                                                                                                                                          | the tick, with its first producer                                        |
+| 9   | 08-2 §5.9.1 safe mode "do not start jobs or routines"                                            | the runner is held; jobs that were `working` stay `working` with nothing running                                                                                                               | what those jobs show in safe mode (no `WaitingReason` fits: a GAPS pick) |
+| 10  | 08-2 §5.7.3–4 every stop writes `stopped_job` and a stop-report line                             | a stop from the crash-recovery card writes neither                                                                                                                                             | `stopRecovered` writes both                                              |
+| 11  | pack PERF-07/08/11 (p95)                                                                         | single-run smokes; PERF-07 measures a plain question (a job's 👀 is debounced away, 04 §4.2)                                                                                                   | the p95 runs; PERF-07 on the job path                                    |
+| 12  | the app bug found in (i)                                                                         | with no reset time the chat header and sidebar read "Claude limit until" with nothing after                                                                                                    | a no-reset copy form (its own CR)                                        |
+
+Built at close-out instead of moved: 08-2 §5.10.2 "an unpriced key model uses that provider's most expensive listed
+rate" (Art. 13). The cap estimate now uses `capRateOf` (`src/engine/ai/models.ts`; most expensive = highest in + out
+per MTok), so the cap holds for a key model with no price row (test in `test/unit/jobs/costMeter.test.ts`). The
+recorded cost of such a turn is still null (no price row), as before. Also built: the two AI-turn `catch` blocks
+(`JobRunner.ts`, `watchdog.ts`) now write a log line before falling back to an `UNKNOWN` result.
+
+Trace rows these moves touch: PERF-07, PERF-08 and PERF-11 stay `live` in `spec/trace.csv` as smokes (row 11);
+AT-083 / ART-13a cover the step and classify turns only (row 5). Code-standard item also for M5: card payloads are read
+with `as unknown as` casts instead of a schema per card type (renderer cards and `jobIpc.ts`; main still checks every
+answer against the stored card).
+
+Kept as built (decided earlier, not moved): answered NEEDS_YOU jobs go ahead of queued ones (T2 picks); `error:fix`
+accepts any action equal to the stored card's button (this CR, (f)).
+
+Independent review (Fable, 2026-10-19 ~05:40Z, read-only): FAIL on the first draft with five act items (row 5 and 3
+wording, row 7 count, build the unpriced-rate fallback, these closing lines) and considers (rows 9 and 10, the limit
+copy bug); all applied above; a Sonnet re-check of the fixes passed. Recorded as approved on Vikas's behalf under his standing rule (2026-10-18 14:56Z) and
+his overnight message (2026-10-18 19:16Z); listed for his later review.

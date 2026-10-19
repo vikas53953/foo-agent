@@ -15,6 +15,7 @@ import { PROVIDER_IDS, settingsSchema, WRITABLE_PATHS, type Settings } from '../
 import type { FixAction, MessageRow, WindowsSettingsPage } from '../../shared/types';
 import { deps } from '../deps';
 import type { NetMonitor } from '../net/netMonitor';
+import { changeRecordRow } from '../settings/changeRecord';
 import type { SettingsStore } from '../settings/Settings';
 import type { Db } from '../store/db';
 import {
@@ -53,6 +54,7 @@ import { helperRow } from '../db/rows';
 import type { DbRow } from '../db/rows';
 import { ChannelGuard } from './guard';
 import type { EngineBridge } from '../engine-supervisor/EngineBridge';
+import { applyDbOps } from '../engine-supervisor/engineHost';
 import { FIX_ACTION_KINDS, JOB_CHANNELS, jobIpc } from '../jobs/jobIpc';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
@@ -287,6 +289,11 @@ export function handle<C extends InvokeChannel>(channel: C, fn: Handler<C>): voi
       return fail('UNKNOWN');
     }
   });
+}
+
+function getPath(s: Settings, path: string): unknown {
+  const [head, key] = path.split('.') as [keyof Settings, string];
+  return (s[head] as Record<string, unknown>)[key];
 }
 
 function setPath(s: Settings, path: string, value: unknown): Settings {
@@ -557,11 +564,15 @@ export function registerIpc(ctx: AppContext): void {
   handle('helper:list', () => ok(helperList(db)));
   handle('settings:get', () => ok(publicSettings(settings.get())));
   handle('settings:set', ({ path, value }) => {
-    const next = setPath(settings.get(), path, value);
+    const before = settings.get();
+    const next = setPath(before, path, value);
     if (!settingsSchema.safeParse(next).success) return fail('VALIDATION');
     settings.update(() => next);
+    // 08-1 §4.4.2 step 3: the change record (M4: the AI cap only).
+    const row = changeRecordRow(path, getPath(before, path), value);
+    const tx = row ? applyDbOps(db, [{ op: 'activity', row }], { dataDir: ctx.dataDir }).result : null;
     emitSettings();
-    return ok({ settings: publicSettings(settings.get()), changeId: null });
+    return ok({ settings: publicSettings(settings.get()), changeId: tx?.ok ? (tx.value.ids[0] ?? null) : null });
   });
   handle('ai:verify', async ({ providerId }) => {
     // "Try again" re-tests the network now, then the engine sends `Reply with the word ready` (08-2 §6.6).

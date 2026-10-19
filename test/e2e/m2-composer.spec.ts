@@ -16,6 +16,7 @@ import { settingsDefaults } from '../../src/shared/settingsDefaults';
 import { TID } from '../../src/shared/testids';
 import { checkSpecValues, readRows, type SvResult } from '../fidelity/spec-values';
 import { launch, testDirs } from './launch';
+import { settleSeededJobs } from './m4-start';
 
 const byTid = (id: string) => `[data-testid="${id}"]`;
 /** 02-2 §F13.3: one frame at 60 fps (PERF-02's bound). */
@@ -40,8 +41,9 @@ async function start(seed: 'perf' | 'ux-world', o: { animations?: 'full' } = {})
   const app = await launch(dirs);
   const page = await app.firstWindow();
   await page.getByTestId(TID.titlebarStrip).waitFor();
-  await page.evaluate((s) => window.__fooTest!.seed(s), seed);
+  const { refs } = await page.evaluate((s) => window.__fooTest!.seed(s), seed);
   await expect(page.getByTestId(TID.chatlistRow).first()).toBeVisible();
+  await settleSeededJobs(page, refs);
   await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0]!.setContentSize(1440, 900));
   await page.waitForFunction(() => window.innerWidth === 1440);
   return { app, page };
@@ -68,6 +70,8 @@ async function paste(page: Page, text: string) {
 
 const field = (page: Page) => page.getByTestId(TID.composerField);
 const mine = (page: Page) => page.getByTestId(TID.bubbleMe);
+/** The list is virtual: a new bottom bubble can unmount one at the top, so a sent bubble is checked by its text, not a count. */
+const mineWith = (page: Page, text: string) => mine(page).filter({ hasText: text });
 
 async function clearField(page: Page) {
   await field(page).focus();
@@ -130,8 +134,9 @@ test('AT-007 · a pasted key, a typed card number and a labelled code are caught
   await clearField(page);
   await paste(page, 'the OTP is 482913');
   await expect(page.getByTestId(TID.composerPaste)).toBeVisible();
+  const hidden = await mineWith(page, '•••• (hidden)').count();
   await page.getByTestId(TID.composerPasteSend).click();
-  await expect(mine(page)).toHaveCount(before + 1);
+  await expect(mineWith(page, '•••• (hidden)')).toHaveCount(hidden + 1);
   await expect(mine(page).last()).toContainText('•••• (hidden)');
   await expect(mine(page).last()).not.toContainText('482913');
   await expect(field(page)).toHaveText('');
@@ -141,14 +146,13 @@ test('AT-007 · a pasted key, a typed card number and a labelled code are caught
 test('Enter sends: the bubble shows at once, the field clears and keeps focus, Shift+Enter is a new line', async () => {
   const { app, page } = await start('ux-world');
   await openChat(page, 'foo');
-  const before = await mine(page).count();
   await field(page).focus();
   await page.keyboard.type('Remind me about the electricity bill');
   await page.keyboard.press('Shift+Enter');
   await page.keyboard.type('before Friday');
   await expect(page.getByTestId(TID.composerSend)).toHaveAttribute('data-state', 'send');
   await page.keyboard.press('Enter');
-  await expect(mine(page)).toHaveCount(before + 1);
+  await expect(mineWith(page, 'Remind me about the electricity bill')).toHaveCount(1);
   await expect(mine(page).last()).toContainText('Remind me about the electricity bill');
   await expect(mine(page).last()).toContainText('before Friday');
   await expect(field(page)).toHaveText('');

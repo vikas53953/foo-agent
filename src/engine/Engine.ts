@@ -25,9 +25,10 @@ import { PromptBuilder, type ConversationMessage } from './prompt/PromptBuilder'
 import { ReleaseGate } from './prompt/releaseGate';
 import { Redactor } from './redact/Redactor';
 import { findBanned } from './prompt/filters';
-import { priceOf, resolveModel } from './ai/models';
+import { capRateOf, resolveModel } from './ai/models';
 import { stubGate } from './gate/GateLogic';
 import { JobRunner } from './jobs/JobRunner';
+import { JobRecovery } from './jobs/recovery';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
 import type { StepAct } from '../shared/schemas';
 
@@ -58,6 +59,7 @@ export class Engine {
   readonly redactor: Redactor;
   readonly tools: ToolLayer;
   readonly jobs: JobRunner;
+  readonly recovery: JobRecovery;
   private prompts: PromptBuilder;
 
   static create(o: EngineOptions): Engine {
@@ -104,7 +106,10 @@ export class Engine {
       fake,
       publish: (status) => o.link.send('ui.patch', { event: 'ai:status', payload: status }),
       persist: (p) => o.link.send('ai.state', p),
-      onUsable: () => void this.drainQueued(),
+      onUsable: () => {
+        void this.drainQueued();
+        void this.jobs.startNext();
+      },
       detectRow: (row) => o.link.send('ui.patch', { event: 'ai:detectRow', payload: row }),
       retestTimers: !o.testRun,
     });
@@ -116,6 +121,14 @@ export class Engine {
       gate: stubGate,
       log: (evt, kind) => log(evt, kind),
     });
+    this.recovery = new JobRecovery({
+      link: o.link,
+      clock: o.clock,
+      newId: (p) => newId(p, o.clock.now()),
+      settings: () => this.settings,
+      ai: this.ai,
+      log: (evt, kind) => log(evt, kind),
+    });
     this.jobs = new JobRunner({
       link: o.link,
       clock: o.clock,
@@ -125,10 +138,16 @@ export class Engine {
       prompts: this.stepProtocol(),
       tools: this.tools,
       dataDir: o.dataDir,
-      rateOf: (id) => priceOf(pricing, id, resolveModel(id, 'default', pricing, this.settings.ai.providers[id])) ?? null,
+      rateOf: (id) => capRateOf(pricing, id, resolveModel(id, 'default', pricing, this.settings.ai.providers[id])) ?? null,
       usdToInr: pricing.usdToInr,
       log: (evt, kind) => log(evt, kind),
+      hooks: {
+        onAiError: (job, kind) => this.recovery.onAiError(job, kind),
+        onCannotStart: (job, kind) => this.recovery.onCannotStart(job, kind),
+        beforeSchedule: () => this.recovery.beforeSchedule(),
+      },
     });
+    this.recovery.attach(this.jobs);
     this.lane = new ChatLane({
       link: o.link,
       clock: o.clock,
@@ -139,13 +158,14 @@ export class Engine {
       log: (evt, kind) => log(evt, kind),
       jobs: this.jobs,
     });
+    this.jobs.setIntake((chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }));
   }
 
   /** The step protocol for the job runner (08-4 §24.1 step row, §25.3, 08-2 §7.5–§7.6). */
   private stepProtocol(): ConstructorParameters<typeof JobRunner>[0]['prompts'] {
     const redactor = this.redactor;
     return {
-      buildStep: (jobBlock, tools) =>
+      buildStep: (jobBlock, tools, steer) =>
         this.prompts.buildStep({
           agentName: this.settings.identity.agentName,
           firstName: this.settings.user.firstName ?? null,
@@ -154,13 +174,20 @@ export class Engine {
           timeZone: this.settings.locale.timeZone,
           tools,
           jobBlock,
+          steer: steer ?? null,
         }),
       buildRepair: (issues) => this.prompts.buildRepair(issues).prompt,
       parseStep: (text) => {
         const env = parseEnvelope(text);
         if (env.act === undefined) return { act: null, issues: env.actError ?? formatIssues([]) };
         const v = validateAct('step', env.act);
-        return v.ok ? { act: v.act as StepAct, issues: null } : { act: null, issues: v.issues };
+        return v.ok ? { act: v.act as StepAct, issues: null, say: env.say } : { act: null, issues: v.issues };
+      },
+      buildStuck: (results) => this.prompts.buildStuck(results),
+      parseStuck: (text) => {
+        const env = parseEnvelope(text);
+        const v = env.act === undefined ? null : validateAct('classify', env.act);
+        return v?.ok ? (v.act as { whatsWrong: string }).whatsWrong : null;
       },
       filter: (text) => filterSay(text, { redactor }).text,
       isBanned: (text) => findBanned(text).length > 0,
@@ -286,18 +313,25 @@ export class Engine {
         if (parsed.success) {
           const first = this.firstSettings;
           const usableBefore = this.ai.pick() !== null;
+          const capBefore = first ? null : this.settings.money.aiCapPaise;
           this.settings = parsed.data;
           this.firstSettings = false;
           this.ai.settingsChanged();
+          // 08-2 §5.10 item 4: a raised AI cap resumes the jobs paused at it.
+          // Main sends no paths, so a changed cap is read from the value itself.
+          if (capBefore !== null && capBefore !== parsed.data.money.aiCapPaise) void this.jobs.capChanged();
           // First settings, or a chosen AI that just became usable (J2 choose → ai.state → settings): waiting messages go now.
           if (first || (!usableBefore && this.ai.pick())) void this.drainQueued();
           if (first && !this.o.testRun) this.scheduleHealthCheck();
+          // 08-2 §5.9 (G-M4-13): main decided safe mode and whether the last exit was clean; recovery runs once per start.
+          if (first) void this.jobs.track(this.recovery.recoverAll(msg.payload.launch ?? { safeMode: false, cleanStart: true }));
         }
         return undefined;
       }
       case 'net':
         this.online = msg.payload.online;
         this.ai.netChanged(msg.payload.online);
+        await this.recovery.netChanged(msg.payload.online);
         return undefined;
       case 'user.message':
         this.lane.enqueue(msg.payload.chatId, msg.payload.messageId);
@@ -320,15 +354,24 @@ export class Engine {
         this.jobs.cancelAll();
         return undefined;
       case 'card.answered':
-        await this.jobs.onCardAnswered(msg.payload);
+        if (!(await this.recovery.onCardAnswered(msg.payload))) await this.jobs.onCardAnswered(msg.payload);
         return undefined;
+      case 'job.stop': {
+        const r = await this.jobs.stopJob(msg.payload.jobId, msg.payload.reason);
+        return r ? ok(r) : { ok: false, error: { kind: 'JOB_GONE' } };
+      }
+      case 'job.stopAll':
+        return ok(await this.jobs.stopAll());
       case 'job.retry':
         return this.jobs.retry(msg.payload.jobId, msg.payload.newJobId);
       case 'test.clock':
         return undefined;
-      // M4 T1 stub (G-M4-04): the job runner (T2/T4) pauses its WORKING jobs here; until then there are none to pause.
+      // G-M4-04: a request; main waits for the ack before it exits.
       case 'jobs.pauseAll':
-        return ok({ paused: [] as string[] });
+        return ok({ paused: await this.recovery.pauseAll(msg.payload.reason) });
+      case 'power':
+        await this.recovery.power(msg.payload.event);
+        return undefined;
       default:
         return undefined;
     }
