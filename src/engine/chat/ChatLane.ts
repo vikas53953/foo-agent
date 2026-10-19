@@ -18,7 +18,7 @@ import type { IntakeDecision } from '../../shared/schemas';
 import type { EngineChat, EngineHelper, EngineMessage } from '../../main/db/queries';
 import type { DbOp, DbTxReply, MainLink } from '../protocol';
 import type { AiErrorKind, AiUsage, TurnRequest, TurnResult, TurnSink } from '../ai/types';
-import { buildMemoryParts, type MemoryParts } from '../memory/retrieval';
+import { buildMemoryParts, memoryUseOps, type MemoryParts } from '../memory/retrieval';
 // M5 (T5)
 import type { CardAnswer } from '../../shared/types';
 import { answerTyped, type TypedHookDeps } from '../cards/typedHook';
@@ -481,20 +481,8 @@ export class ChatLane {
 
   /** 08-4 §24.16 item 6: each offered id the AI names gets `last_used_at`, `use_count` + 1 and one `memory_uses` row. */
   private async recordUses(chatId: string, named: string[], offered: string[], memory: MemoryParts): Promise<void> {
-    const ids = [...new Set(named)].filter((id) => offered.includes(id));
-    if (!ids.length) return;
-    const at = this.d.clock.now();
-    const facts = new Map([...memory.part5, ...memory.part5b].map((x) => [x.id, x.fact]));
-    const ops: DbOp[] = [];
-    for (const id of ids) {
-      const f = facts.get(id);
-      if (!f) continue;
-      ops.push(
-        // DbOp `update` sets values, so this is the count read for this turn + 1 (a parallel turn's use can be lost).
-        { op: 'update', table: 'memory_index', id, set: { last_used_at: at, use_count: f.useCount + 1 } },
-        { op: 'insert', table: 'memory_uses', row: { fact_id: id, chat_id: chatId, job_id: null, at } },
-      );
-    }
+    const ops = memoryUseOps(named, offered, memory, this.d.clock.now(), { chatId, jobId: null });
+    if (!ops.length) return;
     const r = await this.tx(ops);
     if (!r.ok) this.d.log('memory.uses_failed', r.error.kind, { chatId });
   }

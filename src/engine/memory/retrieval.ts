@@ -4,6 +4,7 @@
 // queries; line format), §24.1 (intake and step get part 5 in the system and 5b in the prompt), 08-3 §12.5, Art. 14.
 import type { EngineFact } from '../../main/db/queries';
 import type { StepRow } from '../../shared/types';
+import type { DbOp } from '../protocol';
 import { formatFactLine, type MemoryLine } from '../prompt/PromptBuilder';
 
 /** A named query through main (`db.query`); resolves null when main refuses. */
@@ -99,4 +100,29 @@ export async function buildMemoryParts(
       part5.map((x) => x.id),
     )) ?? [];
   return { part5, part5b: hits.slice(0, TURN_FACTS_MAX).map((f) => offer(f, o.timeZone, o.now)) };
+}
+
+/**
+ * §24.16 item 6: the uses of a turn. Only ids offered in parts 5/5b as sent (`offered`, after the budget trims) count, once
+ * each; any other id the AI names is ignored. `memory_index` gets `last_used_at` and `use_count + 1` (the count read for this
+ * turn, since a DbOp `update` sets values, so a parallel turn's use can be lost); `memory_uses` one row each.
+ */
+export function memoryUseOps(
+  named: string[],
+  offered: string[],
+  memory: MemoryParts,
+  at: number,
+  where: { chatId: string; jobId: string | null },
+): DbOp[] {
+  const facts = new Map([...memory.part5, ...memory.part5b].map((x) => [x.id, x.fact]));
+  const ops: DbOp[] = [];
+  for (const id of new Set(named)) {
+    const f = offered.includes(id) ? facts.get(id) : undefined;
+    if (!f) continue;
+    ops.push(
+      { op: 'update', table: 'memory_index', id, set: { last_used_at: at, use_count: f.useCount + 1 } },
+      { op: 'insert', table: 'memory_uses', row: { fact_id: id, chat_id: where.chatId, job_id: where.jobId, at } },
+    );
+  }
+  return ops;
 }

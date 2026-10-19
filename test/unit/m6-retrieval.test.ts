@@ -9,7 +9,7 @@ import { applyDbOps } from '../../src/main/engine-supervisor/engineHost';
 import { NAMED_QUERIES } from '../../src/main/db/queries';
 import { migrate, type Db } from '../../src/main/store/db';
 import { intake, makeHarness, verified, VERIFY_LINE, type Harness } from './m3-engine-helpers';
-import { BILLS_PLAN, jobHarness, jobIntake, step, type JobHarness } from '../integration/jobs/jobHarness';
+import { BILLS_PLAN, jobHarness, jobIntake, type JobHarness } from '../integration/jobs/jobHarness';
 
 const TZ = 'Asia/Kolkata';
 const NOW = Date.parse('2026-10-16T09:41:00+05:30'); // Fri 16 Oct 2026
@@ -277,9 +277,18 @@ describe('a step turn (08-4 §24.1 step row, §24.16 item 3)', () => {
     expect(stepQueryText('Find my bills', 'Bills', [{ state: 'pending', slots: { what: 'next' } }])).toBe('Find my bills Bills next');
     expect(stepQueryText('Hi', 'Job', [])).toBe('Hi Job');
   });
-  it('carries part 5 in the system text and part 5b in the prompt', async () => {
+  it('carries part 5 in the system text and part 5b in the prompt, and records the uses the act names', async () => {
     h = jobHarness({
-      script: [jobIntake(BILLS_PLAN, { title: 'Electricity bill' }), step({ kind: 'done', result: 'One bill.', unverified: true })],
+      script: [
+        jobIntake(BILLS_PLAN, { title: 'Electricity bill' }),
+        {
+          match: { purpose: 'step' },
+          reply: `<say></say><act>${JSON.stringify({
+            decision: { kind: 'done', result: 'One bill.', unverified: true },
+            usedMemoryIds: ['f_flat', 'f_flat', 'f_nope'],
+          })}</act>`,
+        },
+      ],
     });
     const ins = h.db.prepare(
       `INSERT INTO memory_index (id, file, line_no, scope, text, provenance, origin, origin_kind, kind, learned_at, use_count, hash)
@@ -297,5 +306,11 @@ describe('a step turn (08-4 §24.1 step row, §24.16 item 3)', () => {
     expect(String(turn.system)).not.toContain('[f_flat]');
     expect(String(turn.prompt)).toMatch(/Facts that may matter now:\n\[f_flat\] Brother Rohit lives in Pune \(You said, /);
     expect(String(turn.prompt).indexOf('[f_flat]')).toBeLessThan(String(turn.prompt).indexOf('The job:'));
+    // §24.16 item 6: the offered fact the step act names gets one use, tied to the job; an id not offered is ignored.
+    const job = h.job();
+    expect(h.db.prepare('SELECT fact_id, chat_id, job_id FROM memory_uses').all()).toEqual([
+      { fact_id: 'f_flat', chat_id: job.chat_id, job_id: job.id },
+    ]);
+    expect(h.db.prepare("SELECT use_count FROM memory_index WHERE id = 'f_flat'").get()).toEqual({ use_count: 1 });
   });
 });
