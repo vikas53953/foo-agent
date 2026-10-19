@@ -6,6 +6,7 @@
 import { createHash } from 'node:crypto';
 import type { Clock } from '../../shared/clock';
 import type { MainToEngine } from '../../engine/protocol';
+import type { EngineBridge } from '../engine-supervisor/EngineBridge';
 
 type AddPayload = Extract<MainToEngine, { kind: 'registry:add' }>['payload'];
 
@@ -17,8 +18,8 @@ export interface RegistryOfRecord {
 
 export interface MirrorDeps {
   registry: RegistryOfRecord;
-  /** `EngineBridge.send` (false while no engine runs; the replay on start covers it). */
-  send: <K extends 'registry:add' | 'registry:remove'>(kind: K, payload: Extract<MainToEngine, { kind: K }>['payload']) => boolean;
+  /** The engine port (`send` is false while no engine runs; the replay on start covers it). */
+  engine: Pick<EngineBridge, 'send'>;
   normalisedForms: (value: string) => string[];
   clock: Clock;
 }
@@ -59,19 +60,19 @@ export function registryMirror(d: MirrorDeps): RegistryMirror {
       live.set(handle, { p, expiresAt: ttlMs === null ? null : d.clock.now() + ttlMs });
       // The registry keeps at most 256 values (LRU); the replay list follows it.
       while (live.size > 256) live.delete(live.keys().next().value!);
-      d.send('registry:add', p);
+      d.engine.send('registry:add', p);
       return handle;
     },
     remove(handles) {
       d.registry.remove(handles);
       for (const h of handles) live.delete(h);
-      d.send('registry:remove', { handles: [...handles] });
+      d.engine.send('registry:remove', { handles: [...handles] });
     },
     replay() {
       purge();
       const now = d.clock.now();
       for (const { p, expiresAt } of live.values())
-        d.send('registry:add', { ...p, ttlMs: expiresAt === null ? 0 : Math.max(1, expiresAt - now) });
+        d.engine.send('registry:add', { ...p, ttlMs: expiresAt === null ? 0 : Math.max(1, expiresAt - now) });
     },
     handles() {
       purge();

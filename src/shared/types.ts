@@ -379,6 +379,8 @@ export interface SecretPayload {
   vaultName?: string;
   /** The saved row's name after a Save ("Visa ••4242" for a card, X-116). */
   label?: string;
+  /** Set when the card was posted while the vault could not save (05-2 §5.8.3 Disabled shows up front). */
+  vaultOff?: 'keyring_unavailable' | 'encryption_unavailable';
 }
 /** 08-5 §3.3 DraftFields (`draft:update`); `body` includes the signature text when the user kept it (X-84). */
 export interface DraftFields {

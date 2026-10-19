@@ -7,10 +7,10 @@
 // the eye; field label "{title}, hidden|shown", Narrator reads only "{n} characters" while hidden; "Saved securely." is
 // announced), the eye hides again after 30 s, on every render and after a save (OCL §7.1). 04-2 §22.4 Move: the card
 // arrives with the moved value in its field and the field focused. The renderer never receives a value (08-1 §1 rule 1).
-import { useEffect, useId, useRef, useState, type ClipboardEvent, type DragEvent, type KeyboardEvent } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState, type ClipboardEvent, type DragEvent, type KeyboardEvent } from 'react';
 import { t } from '../../shared/copy/t';
 import { formatDate } from '../../shared/format';
-import type { SecretOfferSlot } from '../../shared/ipc';
+import { isVaultOff, type VaultOff } from '../../shared/ipc';
 import { luhn } from '../../shared/redactor';
 import { TID } from '../../shared/testids';
 import type { CardRow, SecretCardKind, SecretKind, SecretPayload } from '../../shared/types';
@@ -53,11 +53,6 @@ const DEFAULT_FIELDS: Record<SecretCardKind, Field[]> = {
   otp: [{ key: 'code', label: '', masked: true }],
   cvv: [{ key: 'code', label: '', masked: true }],
 };
-
-/** The pattern a moved value came from decides the card the composer asks for (04-2 §22.4 suggested names, G-M5-21). */
-export function offerSlot(nameSlot: string): SecretOfferSlot | null {
-  return nameSlot === 'openai' || nameSlot === 'google' || nameSlot === 'card' || nameSlot === 'otp' ? nameSlot : null;
-}
 
 const isCode = (k: SecretCardKind) => k === 'otp' || k === 'cvv';
 const digits = (s: string) => s.replace(/\D/g, '');
@@ -114,6 +109,11 @@ function SecretField({
   useEffect(() => {
     if (autoFocus) ref.current?.focus();
   }, [autoFocus]);
+  // The value is set as a property only: a React-controlled input mirrors it into the `value` attribute, which puts the secret
+  // in the DOM's markup (05-2 §5.8.5 rule 2).
+  useLayoutEffect(() => {
+    if (ref.current && ref.current.value !== value) ref.current.value = value;
+  }, [value]);
   const block = (e: ClipboardEvent | DragEvent) => {
     if (hidden) e.preventDefault();
   };
@@ -142,7 +142,6 @@ function SecretField({
         data-testid={TID.cardSecretField}
         data-index={index}
         type={hidden ? 'password' : 'text'}
-        value={value}
         readOnly={readOnly}
         placeholder={placeholder}
         autoComplete="off"
@@ -185,7 +184,8 @@ function SecretField({
   );
 }
 
-type Failure = 'save_failed' | 'unavailable' | null;
+/** `no_kind`: a moved password or unknown key has no vault name yet (G-M5-21); Save refuses it plainly. */
+type Failure = 'save_failed' | 'no_kind' | VaultOff | null;
 type Action = 'save' | 'cancel' | 'remove';
 
 export function SecretBox({ card, time }: { card: CardRow; time: CardTime }) {
@@ -205,6 +205,8 @@ export function SecretBox({ card, time }: { card: CardRow; time: CardTime }) {
   const [shown, setShown] = useState(false);
   const [replacing, setReplacing] = useState(false);
   const [failure, setFailure] = useState<Failure>(null);
+  // Try again on a card posted while the vault was off (§5.8.3 Disabled) lets the next Save ask main again.
+  const [retried, setRetried] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [cancelled, setCancelled] = useState(false);
   const [confirmRemove, setConfirmRemove] = useState(false);
@@ -251,11 +253,13 @@ export function SecretBox({ card, time }: { card: CardRow; time: CardTime }) {
     }
     const target = saveTarget(p, values);
     if (!target) {
-      setFailure('save_failed');
+      setFailure('no_kind');
       return;
     }
+    // A card's CVV is never stored (08-2 §11.2); it does not travel either.
+    const fields = Object.fromEntries(Object.entries(values).filter(([k]) => !(p.secretKind === 'card' && k === 'cvv')));
     run('save', () =>
-      invoke('secret:save', { requestId: card.id, kind: target.kind, name: target.name, fields: values }).then((r) => {
+      invoke('secret:save', { requestId: card.id, kind: target.kind, name: target.name, fields }).then((r) => {
         if (r.ok) {
           forget();
           setReplacing(false);
@@ -263,7 +267,7 @@ export function SecretBox({ card, time }: { card: CardRow; time: CardTime }) {
           announce(t('cards.secret.saved_announce'));
         } else if (r.error.kind !== 'SECRET_EXISTS') {
           // §5.8.2 Save failed: the value stays in the field (memory only).
-          setFailure(r.error.message === 'unavailable' ? 'unavailable' : 'save_failed');
+          setFailure(isVaultOff(r.error.message) ? r.error.message : 'save_failed');
         }
         return r;
       }),
@@ -305,12 +309,22 @@ export function SecretBox({ card, time }: { card: CardRow; time: CardTime }) {
     state === 'rejected' && p.secretKind === 'card'
       ? t('cards.secret.line.exists', { last4: digits(values.number ?? '').slice(-4) || (p.target?.slice(-4) ?? '') })
       : null;
+  const off: VaultOff | null = failure && isVaultOff(failure) ? failure : !retried && !failure && p.vaultOff ? p.vaultOff : null;
   const failLine =
-    failure === 'unavailable'
-      ? t('cards.secret.line.no_safe_storage')
-      : failure === 'save_failed'
-        ? t('cards.secret.line.save_failed')
-        : null;
+    off === 'keyring_unavailable'
+      ? t('cards.secret.line.disabled')
+      : off === 'encryption_unavailable'
+        ? t('cards.secret.line.no_safe_storage')
+        : failure === 'save_failed'
+          ? t('cards.secret.line.save_failed')
+          : failure === 'no_kind'
+            ? t('cards.secret.line.no_kind')
+            : null;
+  const tryAgain = () => {
+    setRetried(true);
+    setFailure(null);
+    if (filled) save();
+  };
   const bad = !!failLine || state === 'rejected';
   const muted = state === 'withdrawn' || state === 'expired';
   const busySave = busy === 'save';
@@ -348,6 +362,18 @@ export function SecretBox({ card, time }: { card: CardRow; time: CardTime }) {
             <CardButton tid="cardSecretOpenMoney" kind="primary" disabled onClick={() => undefined}>
               {t('cards.secret.button.open_money')}
             </CardButton>
+          ) : off || failure === 'no_kind' ? (
+            // §5.8.3 Disabled: the Primary stays and is disabled; Try again sits beside it (none for a box with no vault name).
+            <>
+              <CardButton tid="cardSecretSave" kind="primary" disabled onClick={() => undefined}>
+                {t('cards.secret.primary')}
+              </CardButton>
+              {off && (
+                <CardButton tid="cardSecretTryAgain" kind="secondary" busy={busySave} disabled={!!busy} onClick={tryAgain}>
+                  {t('cards.secret.button.try_again')}
+                </CardButton>
+              )}
+            </>
           ) : failLine ? (
             <CardButton tid="cardSecretTryAgain" kind="primary" busy={busySave} disabled={!!busy} onClick={save}>
               {t('cards.secret.button.try_again')}
@@ -388,9 +414,12 @@ export function SecretBox({ card, time }: { card: CardRow; time: CardTime }) {
               {t('cards.secret.saved_row', { name: savedName, date: formatDate(p.savedAt ?? card.updatedAt, 'date', time) })}
             </span>
           </span>
-          <CardButton tid="cardSecretReplace" kind="secondary" disabled={!!busy} onClick={() => setReplacing(true)}>
-            {t('cards.secret.button.replace')}
-          </CardButton>
+          {/* X-129: a saved card is removed first, never replaced. */}
+          {p.secretKind !== 'card' && (
+            <CardButton tid="cardSecretReplace" kind="secondary" disabled={!!busy} onClick={() => setReplacing(true)}>
+              {t('cards.secret.button.replace')}
+            </CardButton>
+          )}
           <CardButton
             tid="cardSecretRemove"
             kind="link"

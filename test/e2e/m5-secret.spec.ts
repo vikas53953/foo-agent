@@ -67,3 +67,39 @@ test('Secret box eye: shows on click and Alt+F8, Narrator reads the length while
   await expect(card).toContainText(t('cards.secret.summary.cancelled'));
   await app.close();
 });
+
+test('Move to secret box: a password gets its own box, and Save refuses it plainly while it has no vault name (G-M5-21)', async () => {
+  const { app, page, refs } = await startWorld();
+  await settleSeededJobs(page, refs);
+  await openChat(page, 'foo');
+  const typed = 'password: FAKEt2pass99';
+  await page.getByTestId(TID.composerField).focus();
+  await page.keyboard.type(typed);
+  await page.keyboard.press('Enter');
+  await page.getByTestId(TID.composerPasteMove).click();
+  const card = page.locator(byTid(TID.cardSecret)).last();
+  await expect(card).toContainText(t('composer.paste.name.password'));
+  const field = card.getByTestId(TID.cardSecretField);
+  await expect(field).toHaveValue('FAKEt2pass99');
+  // The value is never in the page's markup (a property, not a `value` attribute).
+  expect(await page.content()).not.toContain('FAKEt2pass99');
+  await card.getByTestId(TID.cardSecretSave).click();
+  await expect(card).toContainText(t('cards.secret.line.no_kind'));
+  await expect(card.getByTestId(TID.cardSecretSave)).toBeDisabled();
+  await expect(card).toHaveAttribute('data-card-state', 'asking');
+  expect(await page.content()).not.toContain('FAKEt2pass99');
+  await app.close();
+});
+
+test('05-2 §5.8.6 Groups: never; the paste catcher in a group has no Move to secret box', async () => {
+  const { app, page, refs } = await startWorld();
+  await settleSeededJobs(page, refs);
+  await openChat(page, 'Family group');
+  await page.getByTestId(TID.composerField).focus();
+  await page.keyboard.type(KEY);
+  await page.keyboard.press('Enter');
+  await expect(page.getByTestId(TID.composerPaste)).toBeVisible();
+  await expect(page.getByTestId(TID.composerPasteMove)).toHaveCount(0);
+  await expect(page.getByTestId(TID.composerPasteSend)).toBeVisible();
+  await app.close();
+});

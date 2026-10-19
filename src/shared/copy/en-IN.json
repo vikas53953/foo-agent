@@ -969,6 +969,7 @@
   "cards.secret.summary.removed": "Removed. {agentName} can’t use it any more.",
   "cards.secret.line.disabled": "I can’t reach this PC’s safe storage right now.",
   "cards.secret.line.no_safe_storage": "I can’t save keys safely on this PC right now. Restart your PC and try again.",
+  "cards.secret.line.no_kind": "I don’t have a safe place for this one yet, so I didn’t save it.",
   "cards.secret.line.offline": "I’ll check the key when you’re back online.",
   "cards.secret.login.saved": "{site} login saved. I’ll fill it in without seeing it.",
   "cards.secret.login.offer": "Save your {site} login so I can sign in myself next time? It stays on this PC and I fill it in without seeing it.",

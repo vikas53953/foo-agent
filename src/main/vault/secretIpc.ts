@@ -11,7 +11,7 @@ import { newNonce } from '../../shared/canon';
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
 import { newId } from '../../shared/ids';
-import type { SecretOfferSlot } from '../../shared/ipc';
+import type { SecretOfferSlot, VaultOff } from '../../shared/ipc';
 import type { CardRow, SecretCardKind, SecretPayload } from '../../shared/types';
 import { cardRow, type DbRow } from '../db/rows';
 import { applyDbOps } from '../engine-supervisor/engineHost';
@@ -69,6 +69,9 @@ const OFFER: Record<SecretOfferSlot, { kind: SecretCardKind; vaultName?: string;
     ],
   },
   otp: { kind: 'otp', title: () => t('composer.paste.name.otp'), fields: [{ key: 'code', label: '', masked: true }] },
+  // No vault kind yet (08-0 §E.8 names keys by provider, logins by host): the box is posted and its Save refuses plainly.
+  password: { kind: 'ai_key', title: () => t('composer.paste.name.password'), fields: [{ key: 'value', label: '', masked: true }] },
+  key: { kind: 'ai_key', title: () => t('composer.paste.name.key'), fields: [{ key: 'value', label: '', masked: true }] },
 };
 
 export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
@@ -177,6 +180,9 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
 
     'secret:offer': ({ chatId, slot }) => {
       const o = OFFER[slot];
+      // 05-2 §5.8.6 "Groups: never": a Secret box is never posted in a group (the composer offers no Move there).
+      const chat = d.db.prepare('SELECT kind FROM chats WHERE id = ?').get(chatId) as { kind: string } | undefined;
+      if (!chat || chat.kind === 'group') return fail('VALIDATION');
       // 05-2 §5.9.4 tech log line (no value).
       console.info(`paste catcher shown: ${slot}, choice: move`);
       // A code goes into the code box foo already asked with, when there is one (P16 fires only after foo asked).
@@ -198,6 +204,8 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
         fields: o.fields,
         ...(o.vaultName ? { vaultName: o.vaultName } : {}),
       };
+      const off = o.kind === 'otp' ? null : d.vault.off();
+      if (off) payload.vaultOff = off;
       const r = tx([
         {
           op: 'insert',
@@ -229,7 +237,7 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
   };
 }
 
-const notReady = () => fail<never>('VAULT_WRITE_FAILED', 'unavailable');
+const notReady = () => fail<never>('VAULT_WRITE_FAILED', 'keyring_unavailable' satisfies VaultOff);
 
 /** The router's rows. Main wires the vault at startup (src/main/index.ts → {@link vaultRuntime}). */
 export function secretIpc(ctx: AppContext): IpcHandlers<SecretChannels> {

@@ -12,8 +12,7 @@ import { COUNTER_FROM, ACCEPT, isLongPaste, TEXT_LIMIT } from '../../shared/atta
 import { t } from '../../shared/copy/t';
 import { askedForCode, findSecrets, suggestedNameSlot, type CheckContext } from '../../shared/redactor';
 // M5 T2
-import { offerSlot } from '../cards/SecretBox';
-import { prefillSecret } from '../cards/secretPrefill';
+import { clearSecretPrefill, prefillSecret } from '../cards/secretPrefill';
 import { TID } from '../../shared/testids';
 import type { ChatRow, ComposerBannerType, HelperRow } from '../../shared/types';
 import { announce } from '../a11y/announce';
@@ -97,6 +96,9 @@ const maskSeq = { n: 0 };
 const newMaskId = () => `m${++maskSeq.n}`;
 
 const trimBlankLines = (s: string) => s.replace(/^(?:[^\S\n]*\n)+/, '').replace(/(?:\n[^\S\n]*)+$/, '');
+// M5 T2: a P11 match carries its label ("password: …"); only what follows the label goes into the Secret box (04-2 §22.4).
+const secretPart = (m: MaskValue) =>
+  m.hit.pattern === 'P11' ? m.value.replace(/^(?:password|passwd|pwd|passcode|pass|पासवर्ड|ਪਾਸਵਰਡ)\s*(?:is|है|:|=|-)?\s*/iu, '') : m.value;
 
 export function Composer({ chat }: { chat: ChatRow }) {
   const chatId = chat.id;
@@ -117,6 +119,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
   const chatName = chat.kind === 'foo' && chat.private ? t('chat_header.private.title') : chat.title;
   const helpers = useMemo(() => Object.values(helpersById).filter((h) => h.deletedAt === null), [helpersById]);
   const pausedHelper = chat.kind === 'helper' && chat.helperId ? helpersById[chat.helperId] : undefined;
+  // M5 T2: 05-2 §5.8.6 "Groups: never" for a Secret box, so the paste catcher there has no Move.
+  const inGroup = chat.kind === 'group';
 
   const field = useRef<HTMLDivElement>(null);
   const pill = useRef<HTMLDivElement>(null);
@@ -140,7 +144,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
   const [pendingInView, setPendingInView] = useState(true);
   const [linkPreviewRemoved, setLinkPreviewRemoved] = useState(false);
   const touched = useRef(false);
-  // M5 T2: the caught values behind the masks, in memory only, for "Move to secret box" (04-2 §22.4).
+  // M5 T2: the caught values behind the masks still in the field, in memory only, for "Move to secret box" (04-2 §22.4);
+  // a value goes as soon as its mask leaves the field (setSegs), on Send and on a chat switch.
   const maskValues = useRef(new Map<string, MaskValue>());
   const typedTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const lastKeystroke = useRef(0);
@@ -149,6 +154,10 @@ export function Composer({ chat }: { chat: ChatRow }) {
   const setSegs = useCallback((next: Segment[]) => {
     segsRef.current = next;
     setSegsState(next);
+    if (maskValues.current.size) {
+      const live = new Set(next.flatMap((x) => (x.kind === 'mask' ? [x.id] : [])));
+      for (const id of maskValues.current.keys()) if (!live.has(id)) maskValues.current.delete(id);
+    }
   }, []);
   const setChips = useCallback((fn: (c: Chip[]) => Chip[]) => {
     const next = fn(chipsRefState.current);
@@ -250,6 +259,15 @@ export function Composer({ chat }: { chat: ChatRow }) {
     if (!touched.current) return;
     saveDraftLater(chatId, () => latestPayload.current());
   }, [segs, chips, strip, draftPayload, chatId]);
+
+  // M5 T2: a chat switch forgets every caught value (04-2 §22.4 "the real value is not kept anywhere").
+  useEffect(() => {
+    const values = maskValues.current;
+    return () => {
+      values.clear();
+      clearSecretPrefill();
+    };
+  }, [chatId]);
 
   // Chat switch (unmount) and window close save at once.
   useEffect(() => {
@@ -550,15 +568,14 @@ export function Composer({ chat }: { chat: ChatRow }) {
   // ---------------------------------------------------------------- the paste catcher (§22.4)
   const moveToSecretBox = useCallback(() => {
     // The span is removed from the field and a Secret box card (C7) is posted in this chat with the value in its masked
-    // field (M5 T2). A password or an unknown key has no vault kind yet, so it is only removed (G-M5-21).
+    // field (M5 T2, G-M5-21), titled from the pattern; groups never get one (the catcher offers no Move there).
     const first = segsRef.current.find((x): x is Extract<Segment, { kind: 'mask' }> => x.kind === 'mask');
     const moved = first ? maskValues.current.get(first.id) : undefined;
-    const slot = moved ? offerSlot(suggestedNameSlot(moved.hit)) : null;
     maskValues.current.clear();
-    if (moved && slot)
-      void invoke('secret:offer', { chatId, slot })
+    if (moved && !inGroup)
+      void invoke('secret:offer', { chatId, slot: suggestedNameSlot(moved.hit) })
         .then((r) => {
-          if (r.ok) prefillSecret(r.value.id, moved.value);
+          if (r.ok) prefillSecret(r.value.id, secretPart(moved));
         })
         .catch(() => undefined);
     writeField(dropMasks(segsRef.current));
@@ -566,7 +583,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
     setCatchOpen(false);
     touched.current = true;
     focusField();
-  }, [chatId, focusField, setChips, writeField]);
+  }, [chatId, focusField, inGroup, setChips, writeField]);
 
   const dismissCatch = useCallback(() => {
     setCatchOpen(false);
@@ -637,6 +654,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
       // The field, chips, preview and reply strip clear; the draft is deleted (main deletes it with the send); focus stays.
       cancelDraftSave(chatId);
       cacheDraft(chatId, null);
+      maskValues.current.clear();
       writeField([]);
       setChips(() => []);
       setStrip(null);
@@ -992,7 +1010,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
               />
             )}
             {catchOpen ? (
-              <PasteCatcher onMove={moveToSecretBox} onSendAnyway={() => void send(true)} onDismiss={dismissCatch} />
+              <PasteCatcher onMove={inGroup ? undefined : moveToSecretBox} onSendAnyway={() => void send(true)} onDismiss={dismissCatch} />
             ) : showPending && strip23 ? (
               <PendingStrip view={strip23} onShow={() => requestRevealCard(chatId, strip23.card.id)} />
             ) : (

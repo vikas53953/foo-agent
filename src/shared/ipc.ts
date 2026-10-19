@@ -144,8 +144,13 @@ export interface Invokes {
   'secret:offer': { req: { chatId: string; slot: SecretOfferSlot }; res: CardRow };
 }
 
-/** M5 T2: the paste catcher patterns that have a Secret box (04-2 §22.4 suggested names; a password or unknown key has none). */
-export type SecretOfferSlot = 'openai' | 'google' | 'card' | 'otp';
+/** M5 T2: the 04-2 §22.4 suggested names, one Secret box each (G-M5-21); `password` and `key` have no vault kind yet. */
+export const SECRET_OFFER_SLOTS = ['openai', 'google', 'card', 'otp', 'password', 'key'] as const;
+export type SecretOfferSlot = (typeof SECRET_OFFER_SLOTS)[number];
+/** M5 T2: why the vault can't save right now (05-2 §5.8.3 Disabled: Credential Manager; 09 §9.18: encryption). */
+export const VAULT_OFF = ['keyring_unavailable', 'encryption_unavailable'] as const;
+export type VaultOff = (typeof VAULT_OFF)[number];
+export const isVaultOff = (s: string | undefined): s is VaultOff => (VAULT_OFF as readonly (string | undefined)[]).includes(s);
 
 /** 08-1 §3.2: a card answer names the card, carries its nonce (a stale card is refused) and says how it was answered. */
 export interface CardAnswerReq {

@@ -13,6 +13,7 @@ import { join } from 'node:path';
 import type { Clock } from '../../shared/clock';
 import { fail, ok, type Result } from '../../shared/errors';
 import { PROVIDER_IDS } from '../../shared/settings';
+import type { VaultOff } from '../../shared/ipc';
 import type { SecretIndexRow, SecretKind, VaultUseRequest } from '../../shared/types';
 import type { RegisterOptions } from '../secrets/registerValue';
 import type { Db } from '../store/db';
@@ -144,9 +145,14 @@ const indexRow = (r: IndexDbRow): SecretIndexRow => ({
 export class SecretVault {
   constructor(private readonly d: VaultDeps) {}
 
-  /** False when nothing can be saved safely right now (09 §9.18 "Never": no plaintext fallback). */
+  /** Why nothing can be saved safely right now, or null (09 §9.18 "Never": no plaintext fallback). */
+  off(): VaultOff | null {
+    if (this.d.keyring === null) return 'keyring_unavailable';
+    return this.d.safe.isEncryptionAvailable() ? null : 'encryption_unavailable';
+  }
+
   available(): boolean {
-    return this.d.keyring !== null && this.d.safe.isEncryptionAvailable();
+    return this.off() === null;
   }
 
   private blobPath(name: string): string {
@@ -164,7 +170,8 @@ export class SecretVault {
     // A card is named by its last 4 (08-0 §E.8); the name it came with must agree.
     if (enc.card && name !== enc.card.last4) return fail('VALIDATION');
     if (!validSecretName(kind, name)) return fail('VALIDATION');
-    if (!this.available()) return fail('VAULT_WRITE_FAILED', 'unavailable');
+    const off = this.off();
+    if (off) return fail('VAULT_WRITE_FAILED', off);
     const target = vaultTarget(kind, name);
     const before = this.find(target);
     if (before && kind === 'card') return fail('SECRET_EXISTS');

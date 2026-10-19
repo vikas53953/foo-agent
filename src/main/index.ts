@@ -130,7 +130,7 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
     // in-memory keyring and safeStorage (08-3 §22.2); Credential Manager is Windows only.
     const mirror = registryMirror({
       registry: mainRegistry(),
-      send: (kind, payload) => engine.send(kind, payload as never),
+      engine,
       normalisedForms,
       clock: deps.clock,
     });

@@ -17,7 +17,7 @@ export const NOW = Date.UTC(2026, 9, 16, 3, 30);
 /** A fake OpenAI-style key (never a real one). */
 export const FAKE_KEY = 'sk-proj-T2fakeFAKEfake0123456789abcdefABCDEF';
 
-export function vaultHarness(o: { findOpenApproval?: VaultDeps['findOpenApproval']; live?: boolean } = {}) {
+export function vaultHarness(o: { findOpenApproval?: VaultDeps['findOpenApproval']; live?: boolean; noKeyring?: boolean } = {}) {
   const db: Db = new Database(':memory:');
   db.pragma('foreign_keys = ON');
   migrate(db, 'src/main/store/migrations');
@@ -33,12 +33,12 @@ export function vaultHarness(o: { findOpenApproval?: VaultDeps['findOpenApproval
     sent.push({ kind, payload: payload as Record<string, unknown> });
     return true;
   };
-  const mirror = registryMirror({ registry, send, normalisedForms, clock });
+  const mirror = registryMirror({ registry, engine: { send }, normalisedForms, clock });
   const register = (value: string, opts: { kind: string; ttlMs?: number | null }) => mirror.register(value, opts);
   const blobDir = join(mkdtempSync(join(tmpdir(), 'foo-t2-')), 'vault');
   const vault = new SecretVault({
     db,
-    keyring,
+    keyring: o.noKeyring ? null : keyring,
     safe,
     blobDir,
     clock,

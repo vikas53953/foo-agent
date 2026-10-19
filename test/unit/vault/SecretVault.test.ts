@@ -77,9 +77,13 @@ describe('SecretVault.save', () => {
     const h = vaultHarness();
     h.safe.available = false;
     const r = h.vault.save('ai_key', 'openai-key', { value: FAKE_KEY });
-    expect(r.ok ? 'ok' : r.error.kind).toBe('VAULT_WRITE_FAILED');
+    expect(r.ok ? 'ok' : r.error).toEqual({ kind: 'VAULT_WRITE_FAILED', message: 'encryption_unavailable' });
     expect(h.keyring.entries.size).toBe(0);
     expect(h.db.prepare('SELECT COUNT(*) AS n FROM secrets_index').get()).toEqual({ n: 0 });
+    const noCredman = vaultHarness({ noKeyring: true });
+    const r2 = noCredman.vault.save('ai_key', 'openai-key', { value: FAKE_KEY });
+    expect(r2.ok ? 'ok' : r2.error).toEqual({ kind: 'VAULT_WRITE_FAILED', message: 'keyring_unavailable' });
+    expect(noCredman.vault.off()).toBe('keyring_unavailable');
   });
 
   it('a failed keyring write is VAULT_WRITE_FAILED and leaves no index row', () => {

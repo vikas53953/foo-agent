@@ -29,6 +29,23 @@ describe('secret:offer (Move to secret box, 04-2 §22.4)', () => {
     const asked = val(await t2.h['secret:offer']({ chatId: 'c_1', slot: 'otp' }));
     expect(val(await t2.h['secret:offer']({ chatId: 'c_1', slot: 'otp' })).id).toBe(asked.id);
   });
+
+  it('a password or unknown key gets its box too, titled from the pattern, with no vault name to save under', async () => {
+    const t2 = vaultHarness();
+    const pw = val(await t2.h['secret:offer']({ chatId: 'c_1', slot: 'password' }));
+    expect(pw.payload).toMatchObject({ name: 'Password' });
+    expect((pw.payload as unknown as SecretPayload).vaultName).toBeUndefined();
+    expect(val(await t2.h['secret:offer']({ chatId: 'c_1', slot: 'key' })).payload).toMatchObject({ name: 'Key' });
+  });
+
+  it('05-2 §5.8.6 Groups: never; and the box says up front when the vault cannot save (§5.8.3 Disabled)', async () => {
+    const t2 = vaultHarness({ noKeyring: true });
+    t2.db.prepare("INSERT INTO chats (id, kind, title, last_activity_at, created_at) VALUES ('c_g', 'group', 'Trip', ?, ?)").run(NOW, NOW);
+    expect(err(await t2.h['secret:offer']({ chatId: 'c_g', slot: 'openai' }))).toBe('VALIDATION');
+    expect(t2.db.prepare("SELECT COUNT(*) AS n FROM cards WHERE chat_id = 'c_g'").get()).toEqual({ n: 0 });
+    const box = val(await t2.h['secret:offer']({ chatId: 'c_1', slot: 'openai' }));
+    expect(box.payload).toMatchObject({ vaultOff: 'keyring_unavailable' });
+  });
 });
 
 describe('secret:save', () => {

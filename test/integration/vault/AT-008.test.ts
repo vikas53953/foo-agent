@@ -35,13 +35,15 @@ describe('AT-008', () => {
     const mirror = registryMirror({
       registry: new SecretRegistry(clock),
       // The port to the engine: what main posts arrives as `registry:add` (Engine.handle keeps it in its Redactor).
-      send: (kind, payload) => {
-        logs.push(kind);
-        if (kind === 'registry:add') {
-          const p = payload as { handle: string; value: string; normalised: string[]; ttlMs: number };
-          engine.registry.add({ handle: p.handle, value: p.value, normalised: p.normalised, ttlMs: p.ttlMs || null });
-        }
-        return true;
+      engine: {
+        send: (kind, payload) => {
+          logs.push(kind);
+          if (kind === 'registry:add') {
+            const p = payload as { handle: string; value: string; normalised: string[]; ttlMs: number };
+            engine.registry.add({ handle: p.handle, value: p.value, normalised: p.normalised, ttlMs: p.ttlMs || null });
+          }
+          return true;
+        },
       },
       normalisedForms,
       clock,
