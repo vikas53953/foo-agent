@@ -25,7 +25,7 @@ import { PromptBuilder, type ConversationMessage } from './prompt/PromptBuilder'
 import { ReleaseGate } from './prompt/releaseGate';
 import { Redactor } from './redact/Redactor';
 import { findBanned } from './prompt/filters';
-import { priceOf, resolveModel } from './ai/models';
+import { capRateOf, resolveModel } from './ai/models';
 import { stubGate } from './gate/GateLogic';
 import { JobRunner } from './jobs/JobRunner';
 import { JobRecovery } from './jobs/recovery';
@@ -138,7 +138,7 @@ export class Engine {
       prompts: this.stepProtocol(),
       tools: this.tools,
       dataDir: o.dataDir,
-      rateOf: (id) => priceOf(pricing, id, resolveModel(id, 'default', pricing, this.settings.ai.providers[id])) ?? null,
+      rateOf: (id) => capRateOf(pricing, id, resolveModel(id, 'default', pricing, this.settings.ai.providers[id])) ?? null,
       usdToInr: pricing.usdToInr,
       log: (evt, kind) => log(evt, kind),
       hooks: {

@@ -81,6 +81,18 @@ async function advance(page: Page, ms: number, by = 250): Promise<void> {
   }
 }
 
+/**
+ * Waits for a card the runner posts on the fake clock. On the slower Windows runner the job can start after an advance
+ * has run, so its timers (the 1.5 s checklist) need more fake time; the log is virtual, so keep the newest row in view.
+ */
+async function untilPosted(page: Page, log: Locator, card: Locator): Promise<void> {
+  await expect(async () => {
+    await advance(page, 250);
+    await log.evaluate((el) => (el.scrollTop = el.scrollHeight));
+    await expect(card).toHaveCount(1, { timeout: 500 });
+  }).toPass({ timeout: 30_000 });
+}
+
 /** The message row (`data-message-id`) that holds a bubble or a card, so a capture selector can name it in CSS. */
 async function rowId(el: Locator): Promise<string> {
   const id = await el.locator('xpath=ancestor::*[@data-message-id][1]').getAttribute('data-message-id');
@@ -135,7 +147,7 @@ test('UX-23 · When things go wrong: steps UX-23-01 to UX-23-06, UX-23-09 and UX
     await send(page, GOA_ASK);
     const checklist = log.getByTestId(TID.cardChecklist).filter({ hasText: 'makemytrip.com' });
     await advance(page, 3_000);
-    await expect(checklist).toHaveCount(1);
+    await untilPosted(page, log, checklist);
     const checklistRow = await rowId(checklist);
     // 05-3 §5.20 / X-13: offline raises no error card (the ux-world's Trips already holds a recovery card of its own).
     const offlineCards = log.getByTestId(TID.cardError).filter({ hasText: t('errors.net_offline.what_happened') });
