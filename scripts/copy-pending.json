@@ -60,6 +60,7 @@
     "cards.draft.button.send_message": "M8 WhatsApp connector (Draft WhatsApp variant)",
     "cards.draft.button.open_in_x": "M8 X drafts (Draft X variant)",
     "cards.draft.button.shorten": "M8 X drafts (Draft X variant)",
+    "cards.draft.line.no_permission": "CR-0012 G-M8-04: not rendered in v1 (no Gmail draft exists without gmail.compose); kept for the spec text",
     "cards.draft.line.updating": "spec-keeper: steer supersede vs update in place (08-4 §26.5 vs 05-1 §5.3.4 / 05-2 §5.7.2), CR-0009 §(e)",
     "cards.draft.line.x_too_long": "M8 X drafts (Draft X variant)",
     "cards.draft.line.wa_daily_limit": "M8 WhatsApp connector (Draft WhatsApp variant)",

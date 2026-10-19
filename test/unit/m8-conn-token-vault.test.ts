@@ -4,6 +4,7 @@
 // M8 T6: T2's `ConnTokenStore` seam over M5's SecretVault (CR-0012 pick 14, the "needs M5" swap). Fake values only.
 import { describe, expect, it } from 'vitest';
 import { VaultConnTokenStore } from '../../src/main/vault/connTokenVault';
+import type { ConnTokenStore } from '../../src/engine/tools/connectors/types';
 import { vaultHarness, NOW } from './vault/harness';
 
 const NAME = 'foo/conn_token/google' as const;
@@ -12,7 +13,7 @@ const TOKEN = { refresh_token: '1//fake-refresh-T6-0123456789', scope: 'openid e
 describe('M8 T6 · the Google refresh token lives in the vault', () => {
   it('write → read gives the token back, from Credential Manager, named foo/conn_token/google', async () => {
     const h = vaultHarness();
-    const store = new VaultConnTokenStore(
+    const store: ConnTokenStore = new VaultConnTokenStore(
       () => h.vault,
       (v) => h.mirror.register(v, { kind: 'conn_token' }),
     );
@@ -30,7 +31,7 @@ describe('M8 T6 · the Google refresh token lives in the vault', () => {
 
   it('a second sign-in replaces it; delete removes it and its index row', async () => {
     const h = vaultHarness();
-    const store = new VaultConnTokenStore(() => h.vault);
+    const store: ConnTokenStore = new VaultConnTokenStore(() => h.vault);
     await store.write(NAME, TOKEN);
     await store.write(NAME, { ...TOKEN, refresh_token: '1//fake-refresh-T6-second' });
     expect((await store.read(NAME))?.refresh_token).toBe('1//fake-refresh-T6-second');
@@ -41,13 +42,13 @@ describe('M8 T6 · the Google refresh token lives in the vault', () => {
 
   it('with no safe store the write is refused (no plaintext fallback), and nothing is kept', async () => {
     const h = vaultHarness({ noKeyring: true });
-    const store = new VaultConnTokenStore(() => h.vault);
+    const store: ConnTokenStore = new VaultConnTokenStore(() => h.vault);
     await expect(store.write(NAME, TOKEN)).rejects.toMatchObject({ kind: 'VAULT_WRITE_FAILED' });
     expect(await store.read(NAME)).toBeNull();
   });
 
   it('before the vault exists, read is empty and write is refused', async () => {
-    const store = new VaultConnTokenStore(() => null);
+    const store: ConnTokenStore = new VaultConnTokenStore(() => null);
     expect(await store.read(NAME)).toBeNull();
     await expect(store.write(NAME, TOKEN)).rejects.toMatchObject({ kind: 'VAULT_WRITE_FAILED' });
     await expect(store.delete(NAME)).resolves.toBeUndefined();

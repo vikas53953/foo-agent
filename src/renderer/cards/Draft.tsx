@@ -13,11 +13,17 @@
 // fields, never AI free text. M5 T14: HELD (second look, Art. 10; a look of `pending`): the Held strip "Before I send this,
 // one check: you said {Monday}, the draft says {Tuesday 20 Oct}. Which one?" and one Secondary button per value in place
 // of Send / Change / Discard (cannot_check / no_user_words: the strip alone, 08-4 §28.6).
+// M8 T6: 05-2 §5.7.2 Send to someone new ("Waiting for your OK below ›", the Link focuses the full Approval card), Offline at
+// Send (the line + [ Yes, send when online ] [ No, keep the draft ]; Queued + Link "Cancel"), Failed [ Try again ] (a fresh
+// Draft that needs its own Send), 08-3 §16.1.4 ("That didn't save. Try again." keeps Change mode), CR-0012 G-M8-04 (no send
+// permission: Primary "Open in Gmail" and no "saved as a draft there" line; after it the card stays readable, muted, and Open
+// in Gmail opens it again). The channel's words come from `channelWords` (T7 adds WhatsApp and X there).
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import { formatDate, formatTime } from '../../shared/format';
 import { TID } from '../../shared/testids';
 import type { CardRow, DraftPayload } from '../../shared/types';
+import type { Result } from '../../shared/errors';
 import { invoke } from '../ipc/client';
 import { ProofChip } from '../messages/ProofChip';
 import { clockNow } from '../store/apply';
@@ -34,6 +40,15 @@ const MUTED: ReadonlySet<string> = new Set(['discarded', 'expired', 'superseded'
 
 /** 05-2 §5.7.2 / 08-0 §G.7: the local undo window after Send. */
 const UNDO_MS = 5_000;
+
+// M8 T6
+/** The words that change with the draft's channel (05-2 §5.7.2 Right label, Buttons). Email only until T7. */
+function channelWords(channel: DraftPayload['channel']): { label: string; primary: string; app: string } {
+  switch (channel) {
+    default:
+      return { label: t('cards.draft.right_label.email'), primary: t('cards.draft.button.send_email'), app: t('cards.approval.app.gmail') };
+  }
+}
 
 /** "Sending in {n}…": whole seconds left in the 5 s window, counting 5 → 1 (05-2 §5.7.2). */
 export function undoSecondsLeft(undoUntil: number, now: number): number {
@@ -102,9 +117,13 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
   const p = card.payload as unknown as DraftPayload;
   const tz = time.timeZone;
   const name = p.to?.name ?? '';
-  const channel = t('cards.draft.right_label.email');
-  const { busy, run } = useCardAction<'send' | 'save' | 'discard' | 'undo' | 'open' | 'again' | 'held'>();
+  const words = channelWords(p.channel);
+  const channel = words.label;
+  const { busy, run } = useCardAction<'send' | 'save' | 'discard' | 'undo' | 'open' | 'again' | 'held' | 'queue' | 'cancel'>();
   const [editing, setEditing] = useState(false);
+  // M8 T6: what the last tap answered that only this card shows (05-2 §5.7.2 Offline at Send; a Change that didn't save).
+  const [offline, setOffline] = useState(false);
+  const [saveFailed, setSaveFailed] = useState(false);
   const [subject, setSubject] = useState(p.subject ?? '');
   const [body, setBody] = useState(p.body);
   // Change mode is the renderer's (no invoke opens it); a card that left `pending` is out of it.
@@ -220,15 +239,18 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
       return summary('Dismiss', styles.dimIcon, t('cards.common.superseded'));
     case 'withdrawn':
       return summary('Dismiss', styles.dimIcon, t('cards.common.withdrawn'));
-    case 'opened_in_app':
-      return summary('Mail', styles.dimIcon, t('cards.draft.line.no_permission'));
     case 'queued_offline':
       return summary(
         'CloudOff',
         styles.dimIcon,
         t('cards.draft.summary.queued'),
-        // The offline queue is M8's; until then Cancel has nothing to cancel.
-        <CardButton tid="cardDraftCancelQueued" kind="link" disabled onClick={() => undefined}>
+        <CardButton
+          tid="cardDraftCancelQueued"
+          kind="link"
+          busy={busy === 'cancel'}
+          disabled={busy !== null}
+          onClick={() => run('cancel', () => invoke('draft:undo', { approvalId: p.approvalId }))}
+        >
           {t('cards.draft.button.cancel_queued')}
         </CardButton>,
       );
@@ -253,6 +275,7 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
           nonce: card.nonce,
           fields: { ...(p.subject !== undefined ? { subject } : {}), body },
         }).then((r) => {
+          setSaveFailed(!r.ok);
           if (r.ok) setEditing(false);
           return r;
         }),
@@ -260,6 +283,7 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
     const cancel = () => {
       setSubject(p.subject ?? '');
       setBody(p.body);
+      setSaveFailed(false);
       setEditing(false);
     };
     const keys = (e: KeyboardEvent) => {
@@ -291,6 +315,7 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
             {p.signature}
           </div>
         )}
+        {saveFailed && <div className={styles.badLine}>{t('cards.draft.line.save_failed')}</div>}
         <div className={styles.buttons}>
           <CardButton tid="cardDraftSave" kind="primary" busy={busy === 'save'} disabled={busy !== null || !body.trim()} onClick={save}>
             {t('cards.draft.button.save')}
@@ -304,14 +329,28 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
     );
   }
 
-  const primary = t('cards.draft.button.send_email');
-  const send = () => run('send', () => invoke('draft:send', tap));
+  const primary = words.primary;
+  // 05-2 §5.7.2 Offline at Send: main answers NET_OFFLINE and nothing moved; the card asks.
+  const send = () =>
+    run('send', () =>
+      invoke('draft:send', tap).then((r: Result<unknown>) => {
+        setOffline(!r.ok && r.error.kind === 'NET_OFFLINE');
+        return r;
+      }),
+    );
+  const openGmail = () => run('open', () => invoke('draft:openInApp', { cardId: card.id }));
   const discard = () => run('discard', () => invoke('draft:discard', tap));
   const change = () => {
     setSubject(p.subject ?? '');
     setBody(p.body);
+    setSaveFailed(false);
+    setOffline(false);
     setEditing(true);
   };
+  // 05-2 §5.7.2 Send to someone new: the full Approval card under the draft is the only tap; this Link focuses it.
+  const waiting = state === 'pending' && p.approvalCardId !== undefined;
+  const focusApproval = () =>
+    document.querySelector<HTMLElement>(`[data-card-id="${p.approvalCardId ?? ''}"]`)?.focus({ preventScroll: false });
 
   let buttons: ReactNode;
   // M5 T14 (05-2 §5.7.2 HELD): only the user's pick answers a held draft.
@@ -364,9 +403,54 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
   } else if (state === 'failed') {
     buttons = (
       <div className={styles.buttons}>
-        {/* Real send errors and their retry arrive with the M8 connector (review fix 5). */}
-        <CardButton tid="cardDraftSend" kind="primary" disabled onClick={() => undefined}>
+        <CardButton
+          tid="cardDraftSend"
+          kind="primary"
+          busy={busy === 'again'}
+          disabled={busy !== null}
+          onClick={() => run('again', () => invoke('card:askAgain', { cardId: card.id }))}
+        >
           {t('cards.draft.button.try_again')}
+        </CardButton>
+      </div>
+    );
+  } else if (state === 'opened_in_app') {
+    buttons = (
+      <div className={styles.buttons}>
+        <CardButton tid="cardDraftOpenGmail" kind="secondary" busy={busy === 'open'} disabled={busy !== null} onClick={openGmail}>
+          {t('cards.draft.button.open_gmail')}
+        </CardButton>
+      </div>
+    );
+  } else if (waiting) {
+    buttons = (
+      <div className={styles.buttons}>
+        <CardButton tid="cardDraftWaiting" kind="link" onClick={focusApproval}>
+          {t('cards.draft.line.waiting_approval')}
+        </CardButton>
+      </div>
+    );
+  } else if (offline && state === 'pending') {
+    buttons = (
+      <div className={styles.buttons}>
+        <CardButton
+          tid="cardDraftSendWhenOnline"
+          kind="primary"
+          busy={busy === 'queue'}
+          disabled={busy !== null}
+          onClick={() =>
+            run('queue', () =>
+              invoke('card:answer', { ...tap, answer: { optionId: 'send_when_online' } }).then((r: Result<unknown>) => {
+                if (r.ok) setOffline(false);
+                return r;
+              }),
+            )
+          }
+        >
+          {t('cards.draft.button.send_when_online')}
+        </CardButton>
+        <CardButton tid="cardDraftKeepDraft" kind="secondary" disabled={busy !== null} onClick={() => setOffline(false)}>
+          {t('cards.draft.button.keep_draft')}
         </CardButton>
       </div>
     );
@@ -385,13 +469,7 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
             {primary}
           </CardButton>
         ) : (
-          <CardButton
-            tid="cardDraftOpenGmail"
-            kind="primary"
-            busy={busy === 'open'}
-            disabled={busy !== null}
-            onClick={() => run('open', () => invoke('draft:openInApp', { cardId: card.id }))}
-          >
+          <CardButton tid="cardDraftOpenGmail" kind="primary" busy={busy === 'open'} disabled={busy !== null} onClick={openGmail}>
             {t('cards.draft.button.open_gmail')}
           </CardButton>
         )}
@@ -406,18 +484,27 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
   }
 
   // The pending look (X-65) says where it goes while the card waits; after an Undo it also says nothing went out.
+  // CR-0012 G-M8-04: with no send permission there is no Gmail draft, so the "saved as a draft there" line is never shown.
   const lines =
     state === 'failed'
       ? [t('cards.draft.line.failed')]
       : !p.sendAllowed
-        ? [t('cards.draft.line.no_permission')]
-        : [
-            ...(p.undone && state === 'pending' && !held ? [t('cards.draft.line.undone')] : []),
-            t('cards.draft.line.pending', { address: p.to?.address ?? '', app: t('cards.approval.app.gmail') }),
-          ];
+        ? []
+        : offline && state === 'pending'
+          ? [t('cards.draft.line.offline')]
+          : [
+              ...(p.undone && state === 'pending' && !held ? [t('cards.draft.line.undone')] : []),
+              t('cards.draft.line.pending', { address: p.to?.address ?? '', app: words.app }),
+            ];
 
   return (
-    <CardFrame {...frame} edge={state === 'failed' ? 'bad' : undefined} busy={busy !== null} onKeyDown={swallowCtrlEnter}>
+    <CardFrame
+      {...frame}
+      muted={MUTED.has(state)}
+      edge={state === 'failed' ? 'bad' : undefined}
+      busy={busy !== null}
+      onKeyDown={swallowCtrlEnter}
+    >
       {head(rightLabel)}
       {rows}
       <hr className={styles.rule} />

@@ -6,31 +6,12 @@
 // message), AT-055 (a second email in the same chat still needs its own Send tap, R-13). M8 T6: main's real GmailDrafts port
 // over the shared fake Google (HTTP seam), DraftService on main's ApprovalGate with a fake clock. Made-up addresses only.
 import { describe, expect, it } from 'vitest';
-import { FakeClock } from '../../src/shared/clock';
-import { googleGmailDrafts, rawMessage } from '../../src/main/drafts/gmailDraftsGoogle';
+import { rawMessage } from '../../src/main/drafts/gmailDraftsGoogle';
 import { DraftService } from '../../src/main/drafts/DraftService';
 import type { DraftPayload } from '../../src/shared/types';
-import { draftsState, fakeGmailDrafts, parseRaw } from '../fakes/connectors/gmail';
-import { drive, fakeAccess, fakeGoogle, fakeGmailRead, gmailState } from '../fakes/connectors/gmail-read';
-import { gateHarness, T0 } from '../unit/approvals/gateHarness';
-
-const TO = { name: 'Rakesh Example', address: 'rakesh@example.com' };
-
-function port() {
-  const clock = new FakeClock(T0);
-  const mail = gmailState();
-  const drafts = draftsState();
-  const g = fakeGoogle([fakeGmailDrafts(drafts, mail), fakeGmailRead(mail)], () => clock.now());
-  const access = fakeAccess();
-  const p = googleGmailDrafts({
-    http: g.fetch,
-    access: access.access,
-    clock,
-    connectionId: () => 'cn_gmail',
-    base: 'https://gmail.example',
-  });
-  return { clock, mail, drafts, g, access, p };
-}
+import { parseRaw } from '../fakes/connectors/gmail';
+import { drive } from '../fakes/connectors/gmail-read';
+import { TO, port, service, tap } from './m8-drafts-harness';
 
 describe('08-3 §16.1.4 · the real Gmail drafts port', () => {
   it('create / update / send / delete are the four drafts calls, with the full message each time', async () => {
@@ -115,34 +96,6 @@ describe('08-3 §16.1.4 · the real Gmail drafts port', () => {
     expect(m.subject).toBe('Rent ₹14,600');
   });
 });
-
-// ---- DraftService over the real port (the slices below) ----
-
-function service(over: { granted?: { draft: boolean; send: boolean } } = {}) {
-  const x = port();
-  const h = gateHarness();
-  const looks: string[] = [];
-  const opened: string[] = [];
-  const drafts = new DraftService({
-    db: h.db,
-    gate: h.gate,
-    now: () => h.clock.now,
-    gmail: () => x.p,
-    changed: (e) => h.changed.push(e),
-    secondLook: (a) => {
-      looks.push(a.id);
-      return Promise.resolve({ pass: true });
-    },
-    openExternal: (url) => void opened.push(url),
-    signature: () => x.p.signature(),
-    granted: () => over.granted ?? { draft: true, send: true },
-    email: () => 'tester@example.com',
-  });
-  const payload = (cardId: string) => JSON.parse(String(h.card(cardId).payload)) as DraftPayload;
-  return { ...x, store: x.drafts, h, drafts, looks, opened, payload };
-}
-
-const tap = (c: { cardId: string; nonce: string }) => ({ cardId: c.cardId, nonce: c.nonce, resolvedBy: 'tap' as const });
 
 describe('M8 · DraftService on the real Gmail port', () => {
   it('the Gmail signature is appended below the body in Gmail and kept apart on the card', async () => {
@@ -347,5 +300,52 @@ describe('05-2 §5.7.2 · Offline at Send', () => {
     expect(s.h.card(d.value.cardId)).toMatchObject({ state: 'pending' });
     expect(s.payload(d.value.cardId).undone).toBe(false);
     expect(drafts.resumeQueued()).toEqual([]);
+  });
+});
+
+describe('05-2 §5.7.2 · Failed and Open in Gmail again', () => {
+  it('Failed → [ Try again ] is a fresh pending Draft on the same Gmail draft that needs its own Send', async () => {
+    const s = service();
+    const d = await s.drafts.create({ jobId: s.h.jobId, to: TO, subject: 'Hi', body: 'Hello.' });
+    if (!d.ok) throw new Error(d.error.kind);
+    expect(s.drafts.send(tap(d.value)).ok).toBe(true);
+    s.h.clock.now += 5_000;
+    s.g.failNext('/gmail/v1/users/me/drafts/send', { status: 503, body: { error: { code: 503 } } });
+    expect(await drive(s.drafts.tick(), s.clock)).toEqual([]);
+    expect(s.h.card(d.value.cardId)).toMatchObject({ state: 'failed' });
+    const again = s.drafts.askAgain({ cardId: d.value.cardId });
+    if (!again.ok || !again.value.newCardId) throw new Error('no new card');
+    const fresh = s.h.card(again.value.newCardId);
+    expect(fresh).toMatchObject({ type: 'draft', state: 'pending' });
+    expect(s.payload(again.value.newCardId)).toMatchObject({ gmailDraftId: 'r_1', body: 'Hello.' });
+    // Nothing goes out until its own tap.
+    s.h.clock.now += 60_000;
+    expect(await drive(s.drafts.tick(), s.clock)).toEqual([]);
+    expect(s.store.sent).toEqual([]);
+    // A second Try again on the same failed card is refused.
+    expect(s.drafts.askAgain({ cardId: d.value.cardId })).toEqual({ ok: false, error: { kind: 'CARD_STALE' } });
+  });
+
+  it('a someone-new draft stays a hard-limit draft after Try again (its Send opens the full Approval card)', async () => {
+    const s = service();
+    const d = await s.drafts.create({ jobId: s.h.jobId, to: TO, subject: 'Hi', body: 'Hello.', isNew: true });
+    if (!d.ok) throw new Error(d.error.kind);
+    s.h.db.prepare("UPDATE approvals SET state = 'FAILED' WHERE id = ?").run(d.value.approvalId);
+    const again = s.drafts.askAgain({ cardId: d.value.cardId });
+    if (!again.ok || !again.value.newCardId) throw new Error('no new card');
+    const a = s.h.gate.byCard(again.value.newCardId)!;
+    expect(a.hardLimit).toBe(true);
+    expect(s.payload(again.value.newCardId).approvalCardId).toBeUndefined();
+  });
+
+  it('with no send permission, Open in Gmail opens the compose page again on a second tap (G-M8-04)', async () => {
+    const s = service({ granted: { draft: false, send: false } });
+    const d = await s.drafts.create({ jobId: s.h.jobId, to: TO, subject: 'Hi', body: 'Hello.' });
+    if (!d.ok) throw new Error(d.error.kind);
+    expect((await s.drafts.openInApp({ cardId: d.value.cardId })).ok).toBe(true);
+    expect((await s.drafts.openInApp({ cardId: d.value.cardId })).ok).toBe(true);
+    expect(s.opened).toHaveLength(2);
+    expect(s.opened[0]).toBe(s.opened[1]);
+    expect(s.h.card(d.value.cardId)).toMatchObject({ state: 'opened_in_app' });
   });
 });

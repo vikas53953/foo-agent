@@ -817,9 +817,14 @@ export class DraftService {
     if (card.type !== 'draft') return fail('VALIDATION');
     const a = this.d.gate.byCard(card.id);
     if (!a) return fail('NOT_FOUND');
-    if (card.state !== 'pending' || a.state !== 'PENDING') return fail('CARD_STALE');
     const p = draftPayloadOf(card);
     if (!p || p.sendAllowed) return fail('VALIDATION');
+    // M8 T6: a draft kept in foo (G-M8-04) opens Gmail's compose page again on a second tap; nothing moves.
+    if (card.state === 'opened_in_app' && !p.gmailDraftId) {
+      await this.d.openExternal?.(gmailUrl(p, this.d.email?.() ?? null));
+      return ok(undefined);
+    }
+    if (card.state !== 'pending' || a.state !== 'PENDING') return fail('CARD_STALE');
     const now = this.d.now();
     const moved = this.d.gate.draftMove(a.id, 'withdraw', { card: { state: 'opened_in_app', resolved_by: 'tap', resolved_at: now } });
     if (!moved.ok) return moved;
@@ -827,23 +832,35 @@ export class DraftService {
     return ok(undefined);
   }
 
-  /** `card:askAgain` on an expired Draft (05-2 §5.7.2): a fresh pending Draft card on the same Gmail draft, 60 min again. */
+  /**
+   * `card:askAgain` on an expired Draft (05-2 §5.7.2): a fresh pending Draft card on the same Gmail draft, 60 min again.
+   * M8 T6: a Failed Draft's [ Try again ] is the same: drafts.send left the Gmail draft in place, and the new card needs its
+   * own Send tap (never a silent resend).
+   */
   askAgain(req: { cardId: string }): Result<{ newCardId?: string }> {
     const card = this.card(req.cardId);
     if (!card) return fail('NOT_FOUND');
     if (card.type !== 'draft') return fail('VALIDATION');
     const a = this.d.gate.byCard(card.id);
     if (!a) return fail('NOT_FOUND');
-    if (a.state !== 'EXPIRED') return fail('CARD_STALE');
+    if (a.state !== 'EXPIRED' && a.state !== 'FAILED') return fail('CARD_STALE');
     const already = this.d.db.prepare('SELECT 1 FROM cards WHERE supersedes_id = ?').pluck().get(card.id);
     if (already) return fail('CARD_STALE');
     const p0 = draftPayloadOf(card);
     if (!p0) return fail('VALIDATION');
-    const { approvalId: _old, undoUntil: _u, undone: _d, ...p } = p0;
+    const { approvalId: _old, undoUntil: _u, undone: _d, approvalCardId: _f, ...p } = p0;
     void _old;
     void _u;
     void _d;
-    const made = this.d.gate.createDraft({ jobId: a.jobId, fields: a.fields, payload: p, supersedesCardId: card.id });
+    void _f;
+    // A hard-limit draft (someone new, a switch) stays one: its Send opens the full Approval card again.
+    const made = this.d.gate.createDraft({
+      jobId: a.jobId,
+      fields: a.fields,
+      payload: p,
+      supersedesCardId: card.id,
+      ...(a.hardLimit ? { hardLimit: true } : {}),
+    });
     return made.ok ? ok({ newCardId: made.value.cardId }) : made;
   }
 }

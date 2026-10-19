@@ -33,7 +33,6 @@ export interface GoogleDraftsDeps {
 /** A header value with no line breaks (no header injection) and RFC 2047 words for anything outside ASCII. */
 function header(v: string): string {
   const flat = v.replace(/[\r\n]+/g, ' ').trim();
-  // eslint-disable-next-line no-control-regex
   return /^[\x20-\x7e]*$/.test(flat) ? flat : `=?UTF-8?B?${Buffer.from(flat, 'utf8').toString('base64')}?=`;
 }
 

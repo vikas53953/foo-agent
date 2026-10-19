@@ -20,7 +20,7 @@ export class VaultConnTokenStore implements ConnTokenStore {
     private readonly register?: (value: string) => void,
   ) {}
 
-  async read(_name: Name): Promise<Stored | null> {
+  async read(): Promise<Stored | null> {
     const r = this.vault()?.use({ purpose: 'connector_refresh', name: 'google' });
     if (!r?.ok) return null;
     try {
@@ -41,7 +41,7 @@ export class VaultConnTokenStore implements ConnTokenStore {
     if (!r.ok) throw refused(r.error.kind);
   }
 
-  async delete(_name: Name): Promise<void> {
+  async delete(): Promise<void> {
     this.vault()?.delete(vaultTarget('conn_token', 'google'));
   }
 }
