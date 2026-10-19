@@ -5,6 +5,7 @@
 import { describe, expect, it } from 'vitest';
 import { draftSecondLook } from '../../../src/engine/gate/draftSecondLook';
 import type { RunnerCore } from '../../../src/engine/jobs/JobRunner';
+import { FakeClock } from '../../../src/shared/clock';
 import type { ApprovalFields } from '../../../src/shared/types';
 
 const NOW = Date.UTC(2026, 9, 19, 6, 0);
@@ -19,9 +20,10 @@ const FIELDS: ApprovalFields = {
 /** Just what the look reads: main's approval row, the job, the chat's user messages, the clock, the AI's primary. */
 function core(o: { words?: string[]; approval?: boolean; primary?: boolean } = {}) {
   const prompts: unknown[] = [];
+  const clock = new FakeClock(NOW);
   const c = {
     d: {
-      clock: { now: () => NOW },
+      clock,
       ai: {
         pick: () => (o.primary === false ? null : { providerId: 'claude', backup: false }),
         turnParams: () => ({ maxOutputTokens: 200 }),
@@ -48,7 +50,7 @@ function core(o: { words?: string[]; approval?: boolean; primary?: boolean } = {
     cost: { allows: () => Promise.resolve(false) },
     job: () => Promise.resolve({ id: 'j_1', origin: 'user', createdAt: NOW - 120_000, chatId: 'c_1', originChatId: 'c_1' }),
   };
-  return { core: c as unknown as RunnerCore, prompts };
+  return { core: c as unknown as RunnerCore, prompts, clock };
 }
 
 const req = {
@@ -66,8 +68,10 @@ describe('draft.secondLook (08-2 §9.6 on a Draft send, G-M5-39 (b))', () => {
   });
 
   it('the AI check reads the whole card text, not the 140-character summary, and the user’s own words', async () => {
-    const { core: c, prompts } = core({ words: ['Email Rakesh that I’ll pay the rent on Monday'] });
+    const { core: c, prompts, clock } = core({ words: ['Email Rakesh that I’ll pay the rent on Monday'] });
     expect(await draftSecondLook(c, 'Asia/Kolkata', req)).toMatchObject({ pass: false, held: { reason: 'cannot_check' } });
+    // The 60 s cap on the AI turn is cleared once the look answers.
+    expect(clock.pendingTimers).toBe(0);
     expect(prompts).toHaveLength(1);
     const p = prompts[0] as { userWords: string[]; actionJson: string };
     expect(JSON.parse(p.actionJson).contentSummary).toBe(req.content);

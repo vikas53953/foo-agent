@@ -271,7 +271,7 @@ himself.
   that in") and `cards.choice.offer_verb.{calendar_write,prepare}` ("add it", "fill it in"). Independent review
   APPROVE-WITH-NOTE (row words aligned to 06-screens-2 as asked); approved on Vikas's behalf.
 - **G-M5-39** (T14) (a) 05-2 §5.5.4 CHECKING → FAILED has no tap channel in 08-1 §3.2: `approval:report { cardId, nonce,
-  outcome: 'went_through' | 'did_not', resolvedBy }`. Main's 15 min `no_proof` move sets `payload.unknownResult`; the tap
+outcome: 'went_through' | 'did_not', resolvedBy }`. Main's 15 min `no_proof` move sets `payload.unknownResult`; the tap
   keeps the card FAILED with `answer` and `resolved_by='tap'`, turns the nonce over (once only) and sets the approval's
   `unknown` activity rows to done / failed. With no verified phone the `{phone}` clause is left out with its words
   (`cards.approval.body.checking_failed_no_phone`, the G-M5-32 (b) rule). (b) A Draft's Send runs the 08-2 §9.6 second
