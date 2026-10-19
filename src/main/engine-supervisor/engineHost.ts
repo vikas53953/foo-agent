@@ -501,11 +501,12 @@ function movesFtsText(op: DbOp): boolean {
   return op.op === 'update' && op.table === 'memory_index' && 'text' in op.set;
 }
 
-// M8: 08-3 §16.7 rows are replaced wholesale on each sync (the FTS triggers keep contacts_fts in step).
+// M8: 08-3 §16.7 rows are replaced wholesale on each sync (the FTS triggers keep contacts_fts in step). OR IGNORE, not
+// OR REPLACE: a REPLACE conflict deletes without firing the FTS delete trigger; the engine already sends each id once.
 function replaceContacts(db: Db, op: Extract<DbOp, { op: 'contacts_replace' }>): { id: string; rev: number } {
   db.prepare('DELETE FROM contacts_index WHERE connection_id = ?').run(op.connectionId);
   const ins = db.prepare(
-    'INSERT OR REPLACE INTO contacts_index (id, connection_id, display_name, emails, phones, synced_at) VALUES (?, ?, ?, ?, ?, ?)',
+    'INSERT OR IGNORE INTO contacts_index (id, connection_id, display_name, emails, phones, synced_at) VALUES (?, ?, ?, ?, ?, ?)',
   );
   for (const r of op.rows) ins.run(r.id, op.connectionId, r.name, JSON.stringify(r.emails), JSON.stringify(r.phones), op.syncedAt);
   return { id: op.connectionId, rev: 0 };

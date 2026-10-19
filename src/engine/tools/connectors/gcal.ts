@@ -83,7 +83,8 @@ export function createCalendar(d: CalendarDeps) {
       const timeMax = o.to ? new Date(o.to).toISOString() : w.timeMax;
       const r = (await googleCall(d, {
         url: `${url}${qs({ timeMin, timeMax, singleEvents: true, orderBy: 'startTime', maxResults: LIST_MAX })}`,
-        flag: 'read',
+        // The Calendar scope is the calendarWrite grant (08-3 §16.1); a Calendar 403 must never clear Gmail's read flag.
+        flag: 'calendarWrite',
       })) as { items?: RawEvent[] } | null;
       return (r?.items ?? []).map((e) => {
         const allDay = !e.start?.dateTime;
@@ -120,7 +121,8 @@ const instant = z.string().refine((s) => !Number.isNaN(Date.parse(s)));
 const listArgs = z
   .object({ from: instant.optional(), to: instant.optional() })
   .strict()
-  .refine((a) => !a.from || !a.to || Date.parse(a.to) > Date.parse(a.from));
+  // Both ends or neither: one end alone would pair with the default window's other end (timeMax before timeMin).
+  .refine((a) => (!a.from && !a.to) || (!!a.from && !!a.to && Date.parse(a.to) > Date.parse(a.from)));
 const createArgs = z
   .object({
     title: z.string().min(1).max(200),

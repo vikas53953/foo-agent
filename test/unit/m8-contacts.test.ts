@@ -107,6 +107,26 @@ describe('08-3 §16.7 · contacts sync', () => {
     t.sync.stop();
   });
 
+  it('stop() while a sync is running never arms the next one', async () => {
+    const t = setup();
+    t.sync.start();
+    t.clock.advance(0); // the first sync is now waiting on People
+    t.sync.stop();
+    await drive(Promise.resolve(), t.clock);
+    expect(t.store.replaced).toBe(1);
+    t.clock.advance(SYNC_EVERY_MS);
+    await drive(Promise.resolve(), t.clock);
+    expect(t.store.replaced).toBe(1);
+  });
+
+  it('a person listed twice is kept once', async () => {
+    const state = peopleState();
+    state.people.push({ ...state.people[0]! });
+    const t = setup(state);
+    const { rows } = await drive(t.people.all(), t.clock);
+    expect(rows.map((r) => r.id)).toEqual(['people/c1', 'people/c2', 'people/c3', 'people/c4']);
+  });
+
   it('a failed sync keeps the old rows', async () => {
     const t = setup();
     await drive(t.sync.syncNow(), t.clock);
@@ -157,6 +177,13 @@ describe('contacts.search ladder (08-2 §8.2)', () => {
       { id: 'people/c1', label: 'Priya Sharma · p•••@example.com' },
       { id: 'people/c2', label: 'Priya Nair · p•••@example.com' },
     ]);
+  });
+
+  it('max 1 with two matches still shows both: one is never read as the one', async () => {
+    const t = await ready();
+    const r = await drive(findPerson('Priya', t.deps, 1), t.clock);
+    expect(r.match).toBe('many');
+    expect(r.hits).toHaveLength(2);
   });
 
   it('a miss locally → people.searchContacts finds them', async () => {

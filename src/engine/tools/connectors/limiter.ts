@@ -146,7 +146,7 @@ export async function googleCall(d: GoogleCallDeps, req: GoogleRequest): Promise
     const body = await bodyOf(res);
     const why = reasons(body);
     if (status === 403 && why.some((r) => SCOPE_REASONS.has(r))) {
-      await d.access.scopeMissing(req.flag);
+      await d.access.scopeMissing(req.flag).catch(() => undefined);
       d.log?.('google.call', 'CONN_SCOPE_MISSING');
       throw new ConnError('CONN_SCOPE_MISSING', status);
     }

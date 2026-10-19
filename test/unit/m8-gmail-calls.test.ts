@@ -128,6 +128,31 @@ describe('08-3 §16.1 Tokens · 401 and 403', () => {
     expect(a.missing).toEqual(['contactsRead']);
   });
 
+  it('scopeMissing failing (the grant write) still answers CONN_SCOPE_MISSING', async () => {
+    const { clock, g, deps } = setup();
+    deps.access.scopeMissing = () => Promise.reject(new Error('db busy'));
+    g.failNext('/gmail/v1/users/me/profile', { status: 403, body: { error: { errors: [{ reason: 'insufficientPermissions' }] } } });
+    expect(await drive(kindOf(googleCall(deps, { url: PROFILE, flag: 'read' })), clock)).toBe('CONN_SCOPE_MISSING');
+  });
+
+  it('429 then 401 → one backoff, one refresh, then the answer (the refresh is not a backoff try)', async () => {
+    const { clock, g, a, deps } = setup();
+    g.failNext('/gmail/v1/users/me/profile', { status: 429 }, { status: 401 });
+    await drive(googleCall(deps, { url: PROFILE, flag: 'read' }), clock);
+    expect(a.refreshes).toBe(1);
+    expect(g.requests.map((r) => r.auth)).toEqual(['Bearer tok_0', 'Bearer tok_0', 'Bearer tok_1']);
+  });
+
+  it('401 on a noRetry call still refreshes once and resends once', async () => {
+    const { clock, g, a, deps } = setup();
+    g.failNext('/gmail/v1/users/me/drafts/send', { status: 401 });
+    const url = 'https://gmail.googleapis.com/gmail/v1/users/me/drafts/send';
+    const k = await drive(kindOf(googleCall(deps, { url, method: 'POST', body: { id: 'd1' }, flag: 'send', noRetry: true })), clock);
+    expect(k).not.toBe('CONN_EXPIRED');
+    expect(a.refreshes).toBe(1);
+    expect(g.requests).toHaveLength(2);
+  });
+
   it('a network failure → NET_OFFLINE', async () => {
     const clock = new FakeClock();
     const deps = {

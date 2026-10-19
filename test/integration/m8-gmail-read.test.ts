@@ -132,8 +132,8 @@ describe('Gmail case of the code rule (08-2 §11.4): "Your OTP is 482913" never 
     expect(prompts.length).toBeGreaterThan(2);
     for (const p of prompts) expect(p).not.toContain('482913');
     for (const c of toolCalls(x)) expect(String(c.result)).not.toContain('482913');
-    // the rest of the email did reach the step prompt, with the code masked
-    expect(prompts.some((p) => p.includes('Your ••••. Do not share it.'))).toBe(true);
+    // the rest of the email did reach the step prompt, with the code hidden (M5's Redactor.scrub marks it [hidden])
+    expect(prompts.some((p) => p.includes('Your [hidden]. Do not share it.'))).toBe(true);
   });
 });
 

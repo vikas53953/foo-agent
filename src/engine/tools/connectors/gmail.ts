@@ -207,7 +207,7 @@ export class GmailPoller {
   private running = false;
   private suspended = false;
   private busy: Promise<void> | null = null;
-  /** Ids emitted in this run, so a page seen twice never emits twice. */
+  /** Ids emitted since the last saved historyId, so a poll retried after a failed save never emits twice. */
   private emitted = new Set<string>();
 
   constructor(private d: GmailPollerDeps) {}
@@ -278,6 +278,7 @@ export class GmailPoller {
     }
     await this.emitNew([...new Set(ids)], false);
     await this.d.store.save(newest);
+    this.emitted.clear();
   }
 
   /** History too old: start again from the newest historyId and catch up on the last day, skipping handled ids. */
@@ -287,13 +288,21 @@ export class GmailPoller {
     const ids = await this.d.gmail.list({ q: 'newer_than:1d', labelIds: 'INBOX', maxResults: REBASELINE_MAX });
     await this.emitNew(ids.reverse(), true);
     if (historyId) await this.d.store.save(historyId);
+    this.emitted.clear();
   }
 
   private async emitNew(ids: string[], checkHooks: boolean): Promise<void> {
     for (const id of ids) {
       if (this.emitted.has(id)) continue;
       if (checkHooks && (await this.d.hooks.seen(id))) continue;
-      const m = await this.d.gmail.hit(id);
+      let m: Awaited<ReturnType<Gmail['hit']>>;
+      try {
+        m = await this.d.gmail.hit(id);
+      } catch (e) {
+        // Deleted between history and fetch: skip it, or the saved historyId never moves past it.
+        if (e instanceof ConnError && e.kind === 'NOT_FOUND') continue;
+        throw e;
+      }
       this.emitted.add(id);
       await this.d.hooks.emitEmail({ messageId: m.id, threadId: m.threadId, from: m.from, subject: m.subject, date: m.date });
     }

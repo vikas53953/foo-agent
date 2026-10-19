@@ -91,6 +91,22 @@ describe('gcal.list', () => {
   });
 });
 
+describe('gcal.list · window ends and scope', () => {
+  it('only one end of the window → VALIDATION, nothing sent (one end alone would pair with the default other end)', async () => {
+    const { run, g } = setup();
+    expect(await run('gcal.list', { from: '2026-10-21T00:00:00Z' })).toEqual({ kind: 'error', errorKind: 'VALIDATION' });
+    expect(await run('gcal.list', { to: '2026-10-21T00:00:00Z' })).toEqual({ kind: 'error', errorKind: 'VALIDATION' });
+    expect(g.requests).toHaveLength(0);
+  });
+
+  it("a Calendar 403 for scope flips calendarWrite, never Gmail's read flag", async () => {
+    const { run, g, a } = setup();
+    g.failNext('/calendar/v3/', { status: 403, body: { error: { errors: [{ reason: 'insufficientPermissions' }] } } });
+    expect(await run('gcal.list', {})).toEqual({ kind: 'error', errorKind: 'CONN_SCOPE_MISSING' });
+    expect(a.missing).toEqual(['calendarWrite']);
+  });
+});
+
 describe('gcal.create', () => {
   it('inserts { summary, start/end dateTime + timeZone, location, description } and returns the event id', async () => {
     const { run, state, g } = setup();

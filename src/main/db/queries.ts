@@ -499,7 +499,8 @@ export const NAMED_QUERIES = {
       .reverse();
     return { total, texts };
   },
-  // M8: contacts_fts prefix match on every word of the query (08-3 §16.7), best first.
+  // M8: contacts_fts prefix match on every word of the query (08-3 §16.7), best first. All three columns: the
+  // DDL's tokenchars '@._-+' exist so an address finds its person (decision T4-06).
   'contacts.search': ({ db }: QueryCtx, query: unknown, max: unknown): ContactHit[] => {
     const words = String(query)
       .split(/\s+/)

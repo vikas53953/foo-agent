@@ -51,7 +51,16 @@ export class ConnectorHooks {
 
   /** Gives one new message to every listener; one listener failing never stops the others. */
   async emitEmail(mail: NewEmail): Promise<void> {
-    for (const h of this.email) await Promise.resolve(h.onEmail(mail)).catch(() => undefined);
-    for (const b of this.brief) await Promise.resolve(b.collect(mail)).catch(() => undefined);
+    for (const h of this.email) await settle(() => h.onEmail(mail));
+    for (const b of this.brief) await settle(() => b.collect(mail));
+  }
+}
+
+/** Runs one listener; a sync throw or a rejection is swallowed so the next listener still runs. */
+async function settle(run: () => void | Promise<void>): Promise<void> {
+  try {
+    await run();
+  } catch {
+    // one listener failing never stops the others
   }
 }

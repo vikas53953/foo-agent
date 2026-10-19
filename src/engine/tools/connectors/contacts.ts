@@ -47,6 +47,7 @@ export function createPeople(d: PeopleDeps) {
     /** Every connection, ≤ 25,000; `dropped` counts the rest. */
     async all(): Promise<{ rows: ContactIndexRow[]; dropped: number }> {
       const rows: ContactIndexRow[] = [];
+      const seen = new Set<string>();
       let dropped = 0;
       let pageToken: string | undefined;
       do {
@@ -56,7 +57,9 @@ export function createPeople(d: PeopleDeps) {
         })) as { connections?: RawPerson[]; nextPageToken?: string } | null;
         for (const p of r?.connections ?? []) {
           const row = toRow(p);
-          if (!row) continue;
+          // A person listed twice across pages is kept once (contacts_index.id is the primary key).
+          if (!row || seen.has(row.id)) continue;
+          seen.add(row.id);
           if (rows.length < CONTACTS_MAX) rows.push(row);
           else dropped += 1;
         }
@@ -112,20 +115,27 @@ export interface ContactsSyncDeps {
 export class ContactsSync {
   private timer: TimerId | null = null;
   private busy: Promise<void> | null = null;
+  private running = false;
 
   constructor(private d: ContactsSyncDeps) {}
 
   start(): void {
     this.stop();
+    this.running = true;
     const tick = (ms: number) => {
       this.timer = this.d.clock.setTimeout(() => {
-        void this.syncNow().finally(() => tick(SYNC_EVERY_MS));
+        this.timer = null;
+        // stop() during a sync must not re-arm the next one.
+        void this.syncNow().finally(() => {
+          if (this.running) tick(SYNC_EVERY_MS);
+        });
       }, ms);
     };
     tick(0);
   }
 
   stop(): void {
+    this.running = false;
     if (this.timer !== null) this.d.clock.clearTimeout(this.timer);
     this.timer = null;
   }
@@ -192,7 +202,7 @@ export async function findPerson(query: string, d: FindPersonDeps, max = SEARCH_
   d.log?.('contacts.search', `hits_${hits.length}`);
   if (hits.length === 1) return { match: 'one', hits: [hits[0]!] };
   if (hits.length > 1) {
-    const shown = hits.slice(0, Math.max(max, 1));
+    const shown = hits.slice(0, want);
     return { match: 'many', hits: shown, choices: shown.map((h) => ({ id: h.id, label: maskedLabel(h) })) };
   }
   const sent = await d.sentMailTo(query);

@@ -167,6 +167,32 @@ describe('08-3 §16.1.3 · Gmail poller', () => {
     t.poller.stop();
   });
 
+  it('a message deleted before it is fetched (404) is skipped; the others are emitted and the historyId moves on', async () => {
+    const t = setup();
+    await drive(t.poller.baseline(), t.clock);
+    t.arrive('d1');
+    t.arrive('d2');
+    t.g.failNext('/gmail/v1/users/me/messages/d1', { status: 404 });
+    await drive(t.poller.pollOnce(), t.clock);
+    expect(t.onEmail.map((m) => m.messageId)).toEqual(['d2']);
+    expect(t.saved()).toBe('102');
+  });
+
+  it('a listener that throws (sync or async) never stops the other listeners', async () => {
+    const hooks = new ConnectorHooks();
+    const got: string[] = [];
+    hooks.addEmailHook({
+      onEmail: () => {
+        throw new Error('sync');
+      },
+    });
+    hooks.addEmailHook({ onEmail: () => Promise.reject(new Error('async')) });
+    hooks.addEmailHook({ onEmail: (m) => void got.push(`email:${m.messageId}`) });
+    hooks.addBriefSource({ collect: (m) => void got.push(`brief:${m.messageId}`) });
+    await hooks.emitEmail({ messageId: 'm1', threadId: 't1', from: 'a@example.com', subject: 's', date: '2026-10-16T03:00:00Z' });
+    expect(got).toEqual(['email:m1', 'brief:m1']);
+  });
+
   it('a poll that fails keeps the saved historyId and emits nothing', async () => {
     const t = setup();
     await drive(t.poller.baseline(), t.clock);
