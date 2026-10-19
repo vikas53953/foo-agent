@@ -355,6 +355,8 @@ export interface ApprovalPayload {
   held?: { reason: 'mismatch' | 'cannot_check' | 'no_user_words'; userSaid?: string; actionHas?: string; verbing?: string };
   /** What a SUPERSEDED card names (05-2 §5.5.4: the term that changed; 08-4 §26.5 a steer); T8 writes it. */
   superseded?: 'price' | 'time' | 'recipient' | 'fee' | 'steer';
+  /** M5 T7 (G-M5-29): the page element the engine submits once approved; kept here so an engine restart can still run it. */
+  submitRef?: string;
 }
 /** 08-1 §4.5 draft payload. */
 export interface DraftPayload {

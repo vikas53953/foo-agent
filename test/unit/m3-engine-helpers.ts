@@ -8,6 +8,7 @@ import path from 'node:path';
 import { Engine } from '../../src/engine/Engine';
 import type { DbOp, MainLink, MainToEngine } from '../../src/engine/protocol';
 import { EngineBridge } from '../../src/main/engine-supervisor/EngineBridge';
+import { ApprovalGate } from '../../src/main/approvals/ApprovalGate';
 import { migrate, type Db } from '../../src/main/store/db';
 import { sendMessage } from '../../src/main/store/composerQueries';
 import { ensureFooChat } from '../../src/main/store/queries';
@@ -53,6 +54,8 @@ export interface UiPatch {
 export interface Harness {
   engine: Engine;
   bridge: EngineBridge;
+  /** M5 T7: main's ApprovalGate behind the bridge (approval.open / approval.transition; taps from tests). */
+  approvals: ApprovalGate;
   db: Db;
   clock: FakeClock;
   dir: string;
@@ -140,7 +143,7 @@ export function makeHarness(o: HarnessOptions): Harness {
   const logs: Record<string, unknown>[] = [];
   const aiStates: Record<string, unknown>[] = [];
 
-  const bridge = new EngineBridge({
+  const bridge: EngineBridge = new EngineBridge({
     db,
     settings: {
       get: () => current,
@@ -154,6 +157,17 @@ export function makeHarness(o: HarnessOptions): Harness {
     emitChat: () => undefined,
     log: (line) => logs.push(line as Record<string, unknown>),
     ...(o.tools ? { dataDir, now: () => clock.now() } : {}),
+    approvals: (): ApprovalGate => approvals,
+  });
+  // M5 T7: main's ApprovalGate, told nothing of the engine until the bridge is live.
+  const approvals: ApprovalGate = new ApprovalGate({
+    db,
+    now: () => clock.now(),
+    timeZone: () => current.locale.timeZone,
+    rules: { get: () => current.rules, set: (rules) => (current = { ...current, rules }) },
+    changed: () => undefined,
+    engine: { send: (kind, payload): boolean => bridge.send(kind, payload as never) },
+    ...(o.tools ? { dataDir } : {}),
   });
 
   let seq = 0;
@@ -198,6 +212,7 @@ export function makeHarness(o: HarnessOptions): Harness {
   const h: Harness = {
     engine,
     bridge,
+    approvals,
     db,
     clock,
     dir,

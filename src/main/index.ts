@@ -32,6 +32,7 @@ import { mainRegistry, registerSecretValue, setRegisterValue } from './secrets/r
 import { memoryKeyring, memorySafeStore, napiKeyring } from './vault/keyring';
 import { registryMirror } from './vault/registryMirror';
 import { findOpenApproval } from './approvals/ApprovalGate'; // M5 T4 (review fix 4)
+import { approvalGate } from './approvals/approvalIpc'; // M5 T7
 import { SecretVault } from './vault/SecretVault';
 import { installVault } from './vault/vaultRuntime';
 
@@ -113,6 +114,8 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
       dataDir: paths.data,
       now: () => deps.clock.now(),
       keepAwake: (on, jobCount) => power?.keepAwake(on, jobCount),
+      // M5 T7 (08-1 §2.4): engine `approval.open` / `approval.transition` go to main's one ApprovalGate.
+      approvals: () => approvalGate(ctx),
     });
     const launchLog = launches;
     power = new PowerService({
@@ -161,6 +164,8 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
     const ctx: AppContext = { db, settings, net: netMonitor, probe, dataDir: paths.data, engine };
     supervisor = new EngineSupervisor(engine, { data: paths.data, local: paths.local });
     supervisor.onStarted = () => {
+      // M5 T7 (08-2 §5.9 step 2): an engine that crashed mid-submit left RUNNING behind; main moves it to CHECKING first.
+      approvalGate(ctx).recoverSubmitted();
       engineHello(engine.send.bind(engine), {
         settings: () => settings.get(),
         online: () => !netMonitor.offline,

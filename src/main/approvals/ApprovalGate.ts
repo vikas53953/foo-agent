@@ -6,8 +6,10 @@
 // approvals row, in the same transaction), §2.4 (`approval.changed` tells the engine an approval moved; `card.answered` is how
 // the M4 runner resumes or cancels the job on a tap), 05-2 §5.5.4 (EXPIRED → "Ask me again" re-checks live terms first and
 // builds a fresh card), X-03, X-04, X-125. CR-0009 G-M5-03 (HELD → own value → DECLINED), G-M5-04 (HELD expires),
-// G-M5-18 (HELD / APPROVED → WITHDRAWN on a stopped job), G-M5-24 (use_app rules match `fields.app`). M5 T6: 08-0 §G.7
-// (a Draft's approvals row is made with the card; Send = approve once, then the 5 s undo; X-65).
+// G-M5-18 (HELD / APPROVED → WITHDRAWN on a stopped job), G-M5-24 (use_app rules match `fields.app`).
+// M5 T7: §5.9 step 2 / 08-1 §4.1.1 step 5 (`recoverSubmitted`: RUNNING with `submitted_at` → CHECKING, never re-submitted,
+// Art. 7; this also sweeps a Draft send cut between its write-ahead and `gmail.send`, 08-2 §10.4).
+// M5 T6: 08-0 §G.7 (a Draft's approvals row is made with the card; Send = approve once, then the 5 s undo; X-65).
 import { APPROVAL_EVENTS, approvalExpiresAt, nextApproval, type ApprovalEvent } from '../../shared/approvalMachine';
 import { newNonce } from '../../shared/canon';
 import { fail, ok, type Result } from '../../shared/errors';
@@ -123,6 +125,8 @@ export interface CreateInput {
   variant?: ApprovalPayload['variant'];
   /** The card this one replaces (Ask me again, a superseded card). */
   supersedesCardId?: string;
+  /** M5 T7 (G-M5-29): the engine's submit target, stored on the card payload for a restart. */
+  submitRef?: string;
 }
 
 export interface Created {
@@ -223,6 +227,7 @@ export class ApprovalGate {
       scopes: scopesFor(input.verb, input.hardLimit),
       hardLimit: input.hardLimit,
       expiresAt,
+      ...(input.submitRef ? { submitRef: input.submitRef } : {}),
     };
     const ops: DbOp[] = [
       {
@@ -288,7 +293,7 @@ export class ApprovalGate {
    * The main half of engine `approval.open` (08-1 §2.4): a verified ApprovalDraft from the gate (X-125). Book and delete get
    * an Approval card here; buy / pay are the Payment card (08-2 §10.2, M10).
    */
-  openFromEngine(req: { jobId: string; draft: ApprovalDraft; title: string; impact: string }): Result<Created> {
+  openFromEngine(req: { jobId: string; draft: ApprovalDraft; title: string; impact: string; submitRef?: string }): Result<Created> {
     if (req.draft.verb === 'buy' || req.draft.verb === 'pay') return fail('VALIDATION', 'payment_card');
     return this.create({
       jobId: req.jobId,
@@ -297,6 +302,7 @@ export class ApprovalGate {
       hardLimit: hardLimitOf(req.draft.fields, this.d.now()),
       title: req.title,
       impact: req.impact,
+      ...(req.submitRef ? { submitRef: req.submitRef } : {}),
     });
   }
 
@@ -549,6 +555,20 @@ export class ApprovalGate {
     if (to === 'RUNNING') set.submitted_at = data.submittedAt ?? now;
     if (to === 'COMPLETED') set.completed_at = now;
     return this.moveTo(a, to, now, { approval: set });
+  }
+
+  // M5 T7
+  /**
+   * 08-2 §5.9 step 2 (main's half, run when the app or the engine starts): every approval RUNNING with `submitted_at` set →
+   * CHECKING (`result_unknown`), never re-submitted (Art. 7). A Draft card keeps `sending`; the CHECKING procedure is T8's
+   * (§10.5). Returns the ids it moved.
+   */
+  recoverSubmitted(): string[] {
+    const now = this.d.now();
+    const rows = this.d.db
+      .prepare("SELECT * FROM approvals WHERE state = 'RUNNING' AND submitted_at IS NOT NULL ORDER BY submitted_at, id")
+      .all() as DbRow[];
+    return rows.filter((r) => this.move(approvalRow(r), 'result_unknown', now, {}).ok).map((r) => String(r.id));
   }
 
   /**
