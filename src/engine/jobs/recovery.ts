@@ -29,6 +29,7 @@ import type { AiErrorKind } from '../ai/types';
 import type { DbOp, DbTxReply, MainLink } from '../protocol';
 import type { Result } from '../../shared/errors';
 import { MAX_WORKING, needsVerify } from './queue';
+import { activityRow, stopReportText } from './stopFlow';
 
 /** Waiting reasons a clean pause writes; their resume is a checklist edit only (08-4 §26.10, G-M4-02). */
 export const QUIET_REASONS: ReadonlySet<WaitingReason> = new Set<WaitingReason>(['app_quit', 'windows_shutdown', 'asleep']);
@@ -543,10 +544,15 @@ export class JobRecovery {
     return false;
   }
 
-  /** "Stop it" on the recovery card: NEEDS_YOU → CANCELLED (user_button), badge ⛔, checklist stopped. */
+  /**
+   * "Stop it" on the recovery card: NEEDS_YOU → CANCELLED (user_button), badge ⛔, checklist stopped, and like every stop the
+   * activity line `stopped_job` and the J18 report from the job's activity rows (08-2 §5.7 steps 3–4; M5 T10, CR-0008 (j) row 10).
+   */
   private async stopRecovered(job: JobRow, card: CardRow, resolve: Record<string, unknown>): Promise<void> {
     const now = this.d.clock.now();
     const steps = await this.steps(job.id);
+    const activity = (await this.query<ActivityRow[]>('activityForJob', job.id)) ?? [];
+    const report = stopReportText(activity, { timeZone: this.d.settings().locale.timeZone });
     const res = await this.tx([
       { op: 'update', table: 'cards', id: card.id, set: { state: 'stopped', ...resolve, answer: { optionId: 'stop' } } },
       {
@@ -562,6 +568,33 @@ export class JobRecovery {
         .map((s): DbOp => ({ op: 'update', table: 'steps', id: s.id, set: { state: 'skipped' } })),
       ...this.badgeOp(job, 'cancelled'),
       ...(await this.checklistOps(job, 'stopped')),
+      {
+        op: 'activity',
+        row: activityRow({
+          kind: 'stopped',
+          event: 'stopped_job',
+          actor: 'user',
+          chatId: job.chatId,
+          jobId: job.id,
+          summary: `Stopped "${job.title}"`,
+          outcome: 'done',
+        }),
+      },
+      {
+        op: 'insert',
+        table: 'messages',
+        row: {
+          id: this.d.newId('m'),
+          chat_id: job.chatId,
+          author_kind: job.ownerId ? 'helper' : 'foo',
+          author_id: job.ownerId,
+          kind: 'text',
+          text: report,
+          status: 'complete',
+          job_id: job.id,
+          created_at: now,
+        },
+      },
     ]);
     if (res.ok) await this.r.writeMirrors(job.id);
   }

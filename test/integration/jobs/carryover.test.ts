@@ -1,12 +1,14 @@
 // Spec: M5 T10, the M4 spec lines CR-0008 (j) moved to M5. Rows 1–2: 08-2 §5.10 item 3 (the spend meter is updated per turn,
 // `spend:update`) and item 4 (at ≥ 80 % once per month → one line in foo's chat, 05-3 §5.21 trigger "You've used ₹{800} of
 // your ₹{1,000} AI cap this month.", `messages.why` cap_warning, 08-0 §G.17); row 5: item 4 "every AI call on a key
-// provider" (intake, repair and rewrite turns too; at the cap a message waits to send, 04 §3.3).
+// provider" (intake, repair and rewrite turns too; at the cap a message waits to send, 04 §3.3); row 10: 08-2 §5.7 steps 3–4
+// (every stop writes the `stopped_job` activity line and the J18 report, the recovery card's "Stop it" too).
 import { afterEach, describe, expect, it } from 'vitest';
 import { t } from '../../../src/shared/copy/t';
 import type { Settings } from '../../../src/shared/settings';
 import { envelope, intake } from '../../unit/m3-engine-helpers';
-import { jobHarness, type JobHarness } from './jobHarness';
+import { BILLS_PLAN, jobHarness, jobIntake, stepDone, tool, type JobHarness } from './jobHarness';
+import { restartEngine } from './restart';
 import { keyBilling, seedSpend, until } from './t3Helpers';
 
 let h: JobHarness | null = null;
@@ -118,5 +120,23 @@ describe('CR-0008 (j) row 5 · the cap check covers chat-lane turns', () => {
     expect(h.turnsJsonl().filter((r) => r.purpose === 'repair')).toHaveLength(0);
     // The valid <say> is still posted as a plain reply (08-2 §7.5).
     expect(h.messages().some((m) => m.text === 'Hi.')).toBe(true);
+  });
+});
+
+describe('CR-0008 (j) row 10 · "Stop it" on the recovery card writes stopped_job and the stop report', () => {
+  it('after a crash, Stop it → CANCELLED, one stopped_job activity row and "Stopped. Nothing was booked, paid or sent."', async () => {
+    h = jobHarness({ script: [jobIntake(BILLS_PLAN), stepDone(0), tool('gmail.search', { query: 'bill' }, { delayMs: 20_000 })] });
+    h.userSays('Find bills due this week');
+    await until(h, () => h!.jobs().length > 0 && h!.job().state === 'working', 500);
+    restartEngine(h, [], { safeMode: false, cleanStart: false });
+    await h.settle();
+    h.answer(String(h.cards('error')[0]!.id), 'stop');
+    await h.settle();
+    expect(h.job().state).toBe('cancelled');
+    const act = h.db.prepare("SELECT * FROM activity WHERE event = 'stopped_job'").all() as Record<string, unknown>[];
+    expect(act).toHaveLength(1);
+    expect(act[0]).toMatchObject({ kind: 'stopped', actor: 'user', job_id: h.job().id, outcome: 'done' });
+    const last = h.messages().filter((m) => m.author_kind === 'foo' && m.kind === 'text').at(-1);
+    expect(last?.text).toBe(t('thread.stop.report.nothing'));
   });
 });
