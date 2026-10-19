@@ -208,7 +208,8 @@ batch independent review (Fable) checks them before the milestone PR; until then
   hex characters and passed P17, so stored card payloads, activity fields and tool calls held `[hidden]` in place of
   their ids. An id inside a longer string gets no exemption. `src/main/store/writeRedacted.ts`. Pending review.
 - **G-M5-29** (T7) Engine `approval.open` carries `{ jobId, draft, title, impact }` (strict), not the bare draft. 08-1
-  §2.4 names the message and 08-2 §9.7 `createApproval(job, draft)`, but main's card needs the job and the card text,
+  §2.4 (the line to amend) gives `payload: ApprovalDraft`, and 08-2 §9.4 `createApproval(draft, hard)` / §9.7
+  `ApprovalGate.create (main): ApprovalDraft`, but an ApprovalDraft has no job id; main's card needs the job and the text,
   and 05-2 §5.5.2 says the text is built only from the verified fields. The engine builds `title` / `impact` from the
   verified draft (`src/engine/gate/approvalText.ts`); main's `openFromEngine` stores them. Rejected: main builds the
   text (two copies of the card-kind rules, and main would need the job's time zone logic). Pending review.
