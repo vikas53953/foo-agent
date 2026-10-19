@@ -63,6 +63,27 @@ describe('card:answer in main', () => {
     expect(w.sent).toEqual([]);
   });
 
+  it('05-2 §5.8.3 a Secret box Cancel ({ skip: true }) → withdrawn and stays so; a saved box is stale; no other answer fits', () => {
+    const w = world();
+    const secret = { secretKind: 'password', name: 'example.com' };
+    const c = seedCard(w.db, { chatId: w.chatId, type: 'secret', state: 'asking', payload: secret, now: NOW });
+    const r = answerCard(w.d, { cardId: c.id, nonce: c.nonce, answer: { skip: true }, resolvedBy: 'tap' });
+    expect(r.ok && r.value.state).toBe('withdrawn');
+    expect(cardOf(w.db, c.id)).toMatchObject({ state: 'withdrawn', answer: { skip: true }, resolvedBy: 'tap' });
+    expect(w.emitted).toContain(`card:${c.id}:withdrawn`);
+    expect(w.sent).toEqual([]);
+    const saved = seedCard(w.db, { chatId: w.chatId, type: 'secret', state: 'saved', payload: secret, now: NOW });
+    expect(answerCard(w.d, { cardId: saved.id, nonce: saved.nonce, answer: { skip: true }, resolvedBy: 'tap' })).toMatchObject({
+      ok: false,
+      error: { kind: 'CARD_STALE' },
+    });
+    const asking = seedCard(w.db, { chatId: w.chatId, type: 'secret', state: 'asking', payload: secret, now: NOW });
+    expect(answerCard(w.d, { cardId: asking.id, nonce: asking.nonce, answer: { optionId: 'o1' }, resolvedBy: 'tap' })).toMatchObject({
+      ok: false,
+      error: { kind: 'VALIDATION' },
+    });
+  });
+
   it('Skip → skipped; not allowed on file_in or photo_notice', () => {
     const w = world();
     const c = w.seed({ ...FLIGHTS, purpose: 'setup' });

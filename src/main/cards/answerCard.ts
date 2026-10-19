@@ -5,7 +5,8 @@
 // 08-2 §5.2.2 (a 👍 / ✅ reaction on an Approval, Payment or Draft card never approves: it only gets the G16 reply,
 // `thread.approval_typed.approve|send`), Art. 12 (state moves of a job's card are the runner's: main checks and forwards).
 // A card with no job (setup, memory_confirm, file_in, photo_notice …) has no runner to move it, so main writes its answer
-// itself through the same db.tx path (implementation-notes M5-T5).
+// itself through the same db.tx path (implementation-notes M5-T5). 05-2 §5.8.3: a Secret box's Cancel (`{ skip: true }`) moves
+// an asking or rejected box to `withdrawn` ("Skipped. Nothing was saved."); main writes it, as secret:save writes `saved`.
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
 import { newId } from '../../shared/ids';
@@ -82,6 +83,7 @@ export function answerCard(
 ): Result<CardRow> {
   const c = card(d.db, 'id = ?', req.cardId);
   if (!c) return fail('NOT_FOUND');
+  if (c.type === 'secret') return cancelSecret(d, c, req);
   if (!ANSWERABLE.has(c.type)) return fail('VALIDATION');
   if (req.nonce !== undefined && c.nonce !== req.nonce) return fail('CARD_STALE');
   const now = d.now();
@@ -106,6 +108,27 @@ export function answerCard(
   const r = write(
     d,
     [{ op: 'update', table: 'cards', id: c.id, set: { state, answer: req.answer, resolved_by: req.resolvedBy, resolved_at: now } }],
+    c.chatId,
+  );
+  if (!r.ok) return r;
+  return ok(card(d.db, 'id = ?', c.id) ?? c);
+}
+
+/** 05-2 §5.8.3 Cancelled: an asking (or rejected) Secret box → `withdrawn`; nothing is saved and no value moves. */
+function cancelSecret(d: AnswerDeps, c: CardRow, req: { nonce?: string; answer: CardAnswer; resolvedBy: AnswerBy }): Result<CardRow> {
+  if (!('skip' in req.answer)) return fail('VALIDATION');
+  if (req.nonce !== undefined && c.nonce !== req.nonce) return fail('CARD_STALE');
+  if (c.state !== 'asking' && c.state !== 'rejected') return fail('CARD_STALE');
+  const r = write(
+    d,
+    [
+      {
+        op: 'update',
+        table: 'cards',
+        id: c.id,
+        set: { state: 'withdrawn', answer: req.answer, resolved_by: req.resolvedBy, resolved_at: d.now() },
+      },
+    ],
     c.chatId,
   );
   if (!r.ok) return r;

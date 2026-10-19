@@ -2,6 +2,7 @@
 // router line in src/main/ipc/IpcRouter.ts stays T1's. Main's 1 s draft tick (like the approval expiry tick) sends each
 // Draft whose 5 s undo window has closed, so a send happens with the window closed too. M5 T14: its second look goes to the
 // engine (`draft.secondLook`, 08-2 §9.6, CR-0009 G-M5-39 (b)).
+import { logEvent } from '../log/techLog';
 import { shell } from 'electron';
 import { deps } from '../deps';
 import type { AppContext, IpcHandlers } from '../ipc/IpcRouter';
@@ -42,7 +43,11 @@ export function draftService(ctx: AppContext): DraftService {
   services.set(ctx.db, s);
   const service = s;
   const timer = setInterval(() => {
-    service.tick().catch((e: unknown) => console.error('drafts.tick', e));
+    service
+      .tick()
+      .catch((e: unknown) =>
+        logEvent({ lvl: 'error', mod: 'drafts', evt: 'DRAFT_TICK_FAILED', kind: e instanceof Error ? e.name : typeof e }),
+      );
   }, EXPIRY_TICK_MS);
   timer.unref?.();
   return s;
