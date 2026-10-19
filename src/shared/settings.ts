@@ -16,6 +16,12 @@ export const PROVIDER_IDS = [
   'fake',
 ] as const;
 
+/** 08-2 §11.2 / 08-0 §E.8: the providers whose key lives in the vault as `foo/ai_key/{providerId}` (M6 T9: the one list). */
+export const KEY_PROVIDER_IDS = ['openai-key', 'anthropic-key', 'google-key'] as const;
+export type KeyProviderId = (typeof KEY_PROVIDER_IDS)[number];
+/** The one check for an `ai_key` vault name: a key provider, never a CLI, local or fake provider (which have no key). */
+export const isKeyProviderId = (n: string): n is KeyProviderId => (KEY_PROVIDER_IDS as readonly string[]).includes(n);
+
 const providerSchema = z.object({
   kind: z.enum(['plan', 'key', 'local']),
   lastVerifiedAt: z.number().optional(),

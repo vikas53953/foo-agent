@@ -13,6 +13,7 @@ import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import type { MemoryCmdPayload } from '../../engine/protocol';
 import { runMemoryExport } from '../memory/export';
+import { removeForgottenFiles } from '../memory/forgetFiles';
 import { z } from 'zod';
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
@@ -606,9 +607,13 @@ export function registerIpc(ctx: AppContext): void {
   handle('memory:forget', ({ factId }) => memoryCmd({ cmd: 'forget', factId }));
   handle('memory:undo', ({ undoToken }) => memoryCmd({ cmd: 'undo', undoToken }));
   handle('memory:forgetBySource', ({ source }) => memoryCmd({ cmd: 'forgetBySource', source, confirm: true }));
-  handle('memory:forgetAll', ({ typed }) =>
-    typed === 'FORGET' ? memoryCmd({ cmd: 'forgetAll', typed: 'FORGET' }) : Promise.resolve(fail('CONFIRM_MISMATCH')),
-  );
+  handle('memory:forgetAll', async ({ typed }) => {
+    if (typed !== 'FORGET') return fail('CONFIRM_MISMATCH');
+    const r = await memoryCmd<{ count: number }>({ cmd: 'forgetAll', typed: 'FORGET' });
+    // 08-3 §12.6: the files the engine emptied are deleted (M6 T3).
+    if (r.ok) removeForgottenFiles(ctx.dataDir);
+    return r;
+  });
   handle('memory:openFolder', async () => {
     const folder = join(ctx.dataDir, 'memory');
     mkdirSync(folder, { recursive: true });

@@ -29,7 +29,6 @@
     "cards.choice.option.remember": "M6-T5 learning + chips",
     "cards.choice.option.dont_remember": "M6-T5 learning + chips",
     "thread.memory.stays_private": "M6-T7 tidy + share",
-    "activity.forgot_facts.summary": "M6-T3 store",
     "cards.checklist.footer_text.plan": "M4-T7 close-out (needs runner data not wired yet)",
     "cards.proof_chip.popover.file_missing": "M4-T7 close-out (needs runner data not wired yet)",
     "cards.not_live_chip.still_failed.text": "M4-T7 close-out (needs runner data not wired yet)",

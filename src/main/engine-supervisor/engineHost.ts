@@ -490,6 +490,12 @@ export function writeDataFile(dataDir: string | undefined, relPath: string, text
   }
 }
 
+/** An op that adds, removes or rewrites a fact's text (the one column memory_fts indexes). */
+function movesFtsText(op: DbOp): boolean {
+  if (op.op === 'insert' || op.op === 'delete') return op.table === 'memory_index';
+  return op.op === 'update' && op.table === 'memory_index' && 'text' in op.set;
+}
+
 /** One db.tx. */
 export function applyDbOps(db: Db, ops: DbOp[], opts: TxOptions = {}): { result: Result<DbTxReply>; effects: TxEffects } {
   const now = opts.now ?? Date.now();
@@ -519,8 +525,9 @@ export function applyDbOps(db: Db, ops: DbOp[], opts: TxOptions = {}): { result:
         out.ids.push(r.id);
         out.revs.push(r.rev);
       }
-      // 08-1 §2.5: memory_fts follows memory_index in the same transaction.
-      if (effects.factIds.size) db.prepare("INSERT INTO memory_fts(memory_fts) VALUES ('rebuild')").run();
+      // 08-1 §2.5: memory_fts follows memory_index in the same transaction, when the indexed text moved (memory_fts indexes
+      // `text` only; a use count or a line number never needs the rebuild).
+      if (ops.some(movesFtsText)) db.prepare("INSERT INTO memory_fts(memory_fts) VALUES ('rebuild')").run();
       // §4.6 rule 7: the pill of every chat whose jobs or cards moved, in this same transaction.
       if (effects.jobIds.size || effects.cardIds.size) for (const chatId of effects.chatIds) recomputePill(db, chatId, now);
       return out;
