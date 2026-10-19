@@ -1,0 +1,22 @@
+{
+  "claude-cli": {
+    "name": "Claude",
+    "maker": "Anthropic",
+    "url": "https://code.claude.com/docs/en/setup"
+  },
+  "codex-cli": {
+    "name": "ChatGPT",
+    "maker": "OpenAI",
+    "url": "https://developers.openai.com/codex/cli"
+  },
+  "gemini-cli": {
+    "name": "Gemini",
+    "maker": "Google",
+    "url": "https://github.com/google-gemini/gemini-cli"
+  },
+  "ollama": {
+    "name": "Ollama",
+    "maker": "Ollama",
+    "url": "https://ollama.com/download"
+  }
+}

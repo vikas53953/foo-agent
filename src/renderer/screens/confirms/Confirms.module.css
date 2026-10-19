@@ -1,0 +1,38 @@
+/* Spec: 06-3 §14 typed confirm field (40px, --t-mono, 06 §0.4 Text field look), 06-2 §7.5 unreadable lines in --t-mono. */
+.fieldLabel {
+  display: block;
+  margin: var(--s3) 0 var(--s0);
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.field {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--btn-h);
+  padding: 0 var(--s2);
+  border: 1px solid var(--line-input);
+  border-radius: var(--r-sm);
+  background: var(--bg-sunken);
+  font: var(--t-mono);
+  color: var(--fg-1);
+}
+.field:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+.field:focus-visible {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+.lines {
+  max-height: 50vh;
+  margin: var(--s3) 0 0;
+  padding: var(--s2);
+  overflow: auto;
+  border-radius: var(--r-sm);
+  background: var(--bg-sunken);
+  font: var(--t-mono);
+  color: var(--fg-1);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

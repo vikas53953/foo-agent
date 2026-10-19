@@ -1,7 +1,7 @@
 // Spec: 03-shell-2 §3.9.3 chat list keys that work anywhere in the app (Ctrl+1…9 opens the chat at that position in the
 // current list; Alt+↓ / Alt+↑ and Ctrl+Tab / Ctrl+Shift+Tab open the next / previous chat; Alt+Shift+↓ opens the next
 // chat that needs you), 09 §9.17 shell shortcuts (Ctrl+N New helper, Ctrl+Shift+N New group, Ctrl+, Settings, Ctrl+/
-// Keyboard shortcuts, Ctrl+Shift+F search chats, Ctrl+Shift+P pin, Ctrl+Shift+U unread), 03-shell-1 §3.4.2 / §3.4.9
+// Keyboard shortcuts, Ctrl+Shift+F search chats, Ctrl+Shift+P pin, Ctrl+Shift+U unread, Ctrl+M Memory), 03-shell-1 §3.4.2 / §3.4.9
 // (the hints shown in menus and tooltips). Chat-view keys (Ctrl+F, Ctrl+Shift+D, F6, Esc) belong to the main shell.
 import { useEffect } from 'react';
 import { focusPane } from '../a11y/focusTargets';
@@ -78,6 +78,8 @@ function onKeyDown(e: KeyboardEvent): void {
     if (setup) run(() => openDialog('new-group'));
   } else if (e.key === ',' && !e.shiftKey) {
     run(() => navigate({ kind: 'settings', page: 'account' }));
+  } else if (key === 'm' && !e.shiftKey) {
+    run(() => navigate({ kind: 'screen', id: 'memory' }));
   } else if (e.key === '/' && !e.shiftKey) {
     run(() => openDialog('shortcuts'));
   } else if (key === 'f' && e.shiftKey) {

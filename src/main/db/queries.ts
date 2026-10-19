@@ -4,16 +4,97 @@
 // lane uses; later milestones add their names here (a new name is a constitution change, 08-1 §2.4.1). M4 (CR-0008): the job
 // runner's reads — jobs, steps, tool calls (08-2 §5.9 step 5), activity (stop report, 08-2 §5.7 step 4), open cards,
 // approvals (stub until M5), the month's AI spend (08-2 §5.10), and the round-2 names 'jobs.liveForChat', 'cards.openForChat'.
+// M6 (CR-0010): memory reads for the engine — facts with their hash (tombstones, dedupe), live tombstones, the retrieval
+// sets of 08-4 §24.16 (parts 5/5b with the Art. 14 group exclusion; T4 owns those two bodies) and the week count (08-3 §12.7).
 import type { Db } from '../store/db';
-import type { ActivityRow, CardRow, CardType, ContactHit, JobRow, StepRow } from '../../shared/types';
+import type {
+  ActivityRow,
+  ApprovalFields,
+  CardRow,
+  CardType,
+  ContactHit,
+  JobRow,
+  MemoryCategory,
+  MemoryKind,
+  MemoryOrigin,
+  MemoryProvenance,
+  MemoryScope,
+  StepRow,
+} from '../../shared/types';
 import { cardRow, parseJson, stepRow, type DbRow } from './rows';
-import { jobRows } from '../store/queries';
+import { fooChatId, jobRows } from '../store/queries';
 
 /** What every named query gets: the database and the injected clock's now (JobRow.slow is derived from it). */
 export interface QueryCtx {
   db: Db;
   now: number;
 }
+
+/** memory_index camelCased, hash included (the engine needs it; MemoryFactView drops it). */
+export interface EngineFact {
+  id: string;
+  file: string;
+  lineNo: number;
+  scope: MemoryScope;
+  chatId: string | null;
+  text: string;
+  provenance: MemoryProvenance;
+  origin: string;
+  originKind: MemoryOrigin;
+  reason: string | null;
+  category: MemoryCategory | null;
+  kind: MemoryKind;
+  sensitive: boolean;
+  private: boolean;
+  learnedAt: number;
+  lastUsedAt: number | null;
+  useCount: number;
+  hash: string;
+}
+export interface EngineTombstone {
+  hash: string;
+  originKind: MemoryOrigin;
+  forgottenAt: number;
+  expiresAt: number;
+}
+
+function engineFact(r: DbRow): EngineFact {
+  return {
+    id: String(r.id),
+    file: String(r.file),
+    lineNo: Number(r.line_no),
+    scope: r.scope as MemoryScope,
+    chatId: r.chat_id == null ? null : String(r.chat_id),
+    text: String(r.text),
+    provenance: r.provenance as MemoryProvenance,
+    origin: String(r.origin),
+    originKind: r.origin_kind as MemoryOrigin,
+    reason: r.reason == null ? null : String(r.reason),
+    category: (r.category as MemoryCategory | null) ?? null,
+    kind: r.kind as MemoryKind,
+    sensitive: Number(r.sensitive) === 1,
+    private: Number(r.private) === 1,
+    learnedAt: Number(r.learned_at),
+    lastUsedAt: r.last_used_at == null ? null : Number(r.last_used_at),
+    useCount: Number(r.use_count),
+    hash: String(r.hash),
+  };
+}
+
+/**
+ * Art. 14 / 08-4 §24.16: in a group chat, no private fact, and no about-you or chat-scope fact unless it has a live
+ * `memory_group_grants` row (askShare, 08-3 §12.5.1; chat-scope facts live in about-you.md, X-112, so the grant covers both).
+ * Style stats (`preferences\style.md`) are never in groups (08-3 §12.1, §12.9).
+ */
+function groupExclusion(alias: string): string {
+  return `AND ${alias}.private = 0 AND ${alias}.file <> 'memory/preferences/style.md' AND (
+    (${alias}.file <> 'memory/about-you.md' AND ${alias}.scope <> 'chat')
+    OR EXISTS (SELECT 1 FROM memory_group_grants g WHERE g.fact_id = ${alias}.id AND g.chat_id = ? AND g.until > ?))`;
+}
+
+/** AT-074 / J17: a fact with a live tombstone (same hash and origin kind) never reaches a prompt, even if its row survives. */
+const NOT_TOMBSTONED = `AND NOT EXISTS (SELECT 1 FROM memory_tombstones t
+        WHERE t.hash = m.hash AND t.origin_kind = m.origin_kind AND t.expires_at > ?)`;
 
 export interface EngineChat {
   id: string;
@@ -36,6 +117,9 @@ export interface EngineMessage {
   createdAt: number;
   transcript: string | null;
   attachments: number;
+  // M6 T5
+  /** 08-1 §4.3.2 `why` (JSON); a memory chip marker keeps its chip fields here (`{ memoryChip }`). */
+  why: Record<string, unknown> | null;
 }
 export interface EngineHelper {
   id: string;
@@ -43,6 +127,9 @@ export interface EngineHelper {
   jobText: string;
   goodResult: string | null;
   paused: boolean;
+  // M5
+  /** T7: HelperForm.allowedApps (08-3 §17.6), for the gate's helper check. */
+  allowedApps: Record<string, boolean>;
 }
 
 function chat(r: DbRow): EngineChat {
@@ -70,6 +157,7 @@ function message(r: DbRow): EngineMessage {
     createdAt: Number(r.created_at),
     transcript: (r.transcript as string | null) ?? null,
     attachments: atts.length,
+    why: r.why ? (JSON.parse(String(r.why)) as Record<string, unknown>) : null,
   };
 }
 
@@ -101,6 +189,30 @@ export interface EngineApproval {
   state: string;
   expiresAt: number;
   submittedAt: number | null;
+  // M5 T7: what the runner needs to run or cancel it after an engine restart (verified fields, the card's submitRef).
+  fields: ApprovalFields;
+  submitRef: string | null;
+  // M5 T8: the user already answered a HELD second look on it (08-2 §9.6: the action's value → APPROVED proceeds).
+  heldPicked: boolean;
+}
+
+/** One approvals row for the engine, with its card's `submitRef` (M5 T7, G-M5-29). */
+function engineApproval(db: Db, r: DbRow): EngineApproval {
+  const card = db.prepare('SELECT payload FROM cards WHERE id = ?').get(String(r.card_id)) as { payload: string | null } | undefined;
+  const ref = parseJson<{ submitRef?: unknown }>(card?.payload ?? null, {}).submitRef;
+  return {
+    id: String(r.id),
+    cardId: String(r.card_id),
+    jobId: String(r.job_id),
+    chatId: String(r.chat_id),
+    verb: String(r.verb),
+    state: String(r.state),
+    expiresAt: Number(r.expires_at),
+    submittedAt: r.submitted_at === null || r.submitted_at === undefined ? null : Number(r.submitted_at),
+    fields: parseJson<ApprovalFields>(r.fields, { verb: String(r.verb) as ApprovalFields['verb'], irreversible: true }),
+    submitRef: typeof ref === 'string' ? ref : null,
+    heldPicked: !!parseJson<{ held?: unknown }>(r.second_look ?? null, {}).held,
+  };
 }
 
 const LIVE_JOB_STATES = ['queued', 'working', 'needs_you', 'waiting'];
@@ -205,6 +317,7 @@ export const NAMED_QUERIES = {
           jobText: String(r.job_text),
           goodResult: (r.good_result as string | null) ?? null,
           paused: r.paused === 1,
+          allowedApps: parseJson<Record<string, boolean>>(r.allowed_apps, {}),
         }
       : null;
   },
@@ -245,16 +358,12 @@ export const NAMED_QUERIES = {
       db
         .prepare(`SELECT * FROM approvals WHERE job_id = ? AND state IN (${inList(OPEN_APPROVAL_STATES.length)}) ORDER BY created_at`)
         .all(String(jobId), ...OPEN_APPROVAL_STATES) as DbRow[]
-    ).map((r) => ({
-      id: String(r.id),
-      cardId: String(r.card_id),
-      jobId: String(r.job_id),
-      chatId: String(r.chat_id),
-      verb: String(r.verb),
-      state: String(r.state),
-      expiresAt: Number(r.expires_at),
-      submittedAt: r.submitted_at === null || r.submitted_at === undefined ? null : Number(r.submitted_at),
-    })),
+    ).map((r) => engineApproval(db, r)),
+  // M5 T7
+  'approvals.byId': ({ db }: QueryCtx, approvalId: unknown): EngineApproval | null => {
+    const r = db.prepare('SELECT * FROM approvals WHERE id = ?').get(String(approvalId)) as DbRow | undefined;
+    return r ? engineApproval(db, r) : null;
+  },
   /** 08-2 §5.10: metered AI spend (billing 'key') between fromMs (inclusive) and toMs (exclusive); unknown-cost turns counted apart. */
   monthAiSpend: ({ db }: QueryCtx, fromMs: unknown, toMs: unknown): { paise: number; turns: number; unknownTurns: number } => {
     const r = db
@@ -275,6 +384,121 @@ export const NAMED_QUERIES = {
     ),
   /** X-124: the chat's open cards of one type. */
   'cards.openForChat': ({ db }: QueryCtx, chatId: unknown, type: unknown): CardRow[] => openCards(db, chatId, type),
+  /** foo's chat (kind 'foo', not private): where the safe-mode card goes (08-2 §5.9 step 1). */
+  'chats.foo': ({ db }: QueryCtx): string | null => fooChatId(db),
+  /** 08-4 §26.3 item 6 budget: the job's step turns so far. */
+  stepTurnsForJob: ({ db }: QueryCtx, jobId: unknown): number =>
+    Number((db.prepare("SELECT COUNT(*) AS n FROM ai_turns WHERE job_id = ? AND purpose = 'step'").get(String(jobId)) as DbRow).n),
+  // ---- M6 memory (CR-0010) ----
+  'memory.byId': ({ db }: QueryCtx, factId: unknown): EngineFact | null => {
+    const r = db.prepare('SELECT * FROM memory_index WHERE id = ?').get(String(factId)) as DbRow | undefined;
+    return r ? engineFact(r) : null;
+  },
+  'memory.byFile': ({ db }: QueryCtx, file: unknown): EngineFact[] =>
+    (db.prepare('SELECT * FROM memory_index WHERE file = ? ORDER BY line_no').all(String(file)) as DbRow[]).map(engineFact),
+  'memory.all': ({ db }: QueryCtx): EngineFact[] =>
+    (db.prepare('SELECT * FROM memory_index ORDER BY file, line_no').all() as DbRow[]).map(engineFact),
+  /** J17: a live tombstone for the same hash and origin kind blocks re-learning for 90 days. */
+  memoryTombstoned: ({ db, now }: QueryCtx, hash: unknown, originKind: unknown): boolean =>
+    !!db
+      .prepare('SELECT 1 FROM memory_tombstones WHERE hash = ? AND origin_kind = ? AND expires_at > ?')
+      .get(String(hash), String(originKind), now),
+  'memory.tombstones': ({ db, now }: QueryCtx): EngineTombstone[] =>
+    (db.prepare('SELECT * FROM memory_tombstones WHERE expires_at > ? ORDER BY forgotten_at').all(now) as DbRow[]).map((r) => ({
+      hash: String(r.hash),
+      originKind: r.origin_kind as MemoryOrigin,
+      forgottenAt: Number(r.forgotten_at),
+      expiresAt: Number(r.expires_at),
+    })),
+  /**
+   * 08-4 §24.16 part 5 candidates for one chat: identity rows, global rows, this chat's chat-scope rows, this helper's notes;
+   * order `use_count DESC, learned_at DESC`. retrieval.ts cuts at 4,000 chars (identity rows outside the budget).
+   */
+  memoryByScope: ({ db, now }: QueryCtx, chatId: unknown): EngineFact[] => {
+    const chat = db.prepare('SELECT kind, helper_id FROM chats WHERE id = ?').get(String(chatId)) as DbRow | undefined;
+    if (!chat) return [];
+    const group = chat.kind === 'group';
+    const helperFile = chat.helper_id ? `helpers/${String(chat.helper_id)}/notes.md` : '';
+    const sql = `SELECT m.* FROM memory_index m
+      WHERE (m.scope = 'global' OR (m.scope = 'chat' AND m.chat_id = ?) OR (m.scope = 'helper' AND m.file = ?))
+      ${group ? groupExclusion('m') : ''}
+      ${NOT_TOMBSTONED}
+      ORDER BY m.use_count DESC, m.learned_at DESC`;
+    const args: unknown[] = [String(chatId), helperFile, ...(group ? [String(chatId), now] : []), now];
+    return (db.prepare(sql).all(...args) as DbRow[]).map(engineFact);
+  },
+  /**
+   * 08-4 §24.16 part 5b: ≤ `limit` (max 8) FTS rows for a prepared MATCH string (retrieval.ts `ftsMatch`), not in
+   * `excludeIds` (the facts already pinned), `bm25 ASC, use_count DESC, learned_at DESC`; the same scope and group rule.
+   */
+  memorySearch: ({ db, now }: QueryCtx, chatId: unknown, match: unknown, limit: unknown, excludeIds?: unknown): EngineFact[] => {
+    const chat = db.prepare('SELECT kind, helper_id FROM chats WHERE id = ?').get(String(chatId)) as DbRow | undefined;
+    if (!chat || typeof match !== 'string' || !match.trim()) return [];
+    const group = chat.kind === 'group';
+    const helperFile = chat.helper_id ? `helpers/${String(chat.helper_id)}/notes.md` : '';
+    const sql = `SELECT m.* FROM memory_fts f JOIN memory_index m ON m.rowid = f.rowid
+      WHERE memory_fts MATCH ?
+        AND (m.scope = 'global' OR (m.scope = 'chat' AND m.chat_id = ?) OR (m.scope = 'helper' AND m.file = ?))
+        ${group ? groupExclusion('m') : ''}
+        ${NOT_TOMBSTONED}
+        AND m.id NOT IN (SELECT value FROM json_each(?))
+      ORDER BY bm25(memory_fts) ASC, m.use_count DESC, m.learned_at DESC LIMIT ?`;
+    const exclude = JSON.stringify(Array.isArray(excludeIds) ? excludeIds.map(String) : []);
+    const args: unknown[] = [
+      match,
+      String(chatId),
+      helperFile,
+      ...(group ? [String(chatId), now] : []),
+      now,
+      exclude,
+      Math.min(Number(limit) || 8, 8),
+    ];
+    return (db.prepare(sql).all(...args) as DbRow[]).map(engineFact);
+  },
+  /** 08-3 §12.7 step 5 / §14.2 `memory_week`: facts learned in the last 7 days. */
+  'memory.weekCount': ({ db, now }: QueryCtx): number =>
+    Number((db.prepare('SELECT COUNT(*) AS n FROM memory_index WHERE learned_at > ?').get(now - 7 * 86_400_000) as DbRow).n),
+  /** 08-0 §G (B-3): the facts used in a chat since `sinceMs`, newest first (the "Used:" chip and review input). */
+  memoryUsedInChat: ({ db }: QueryCtx, chatId: unknown, sinceMs: unknown): { factId: string; jobId: string | null; at: number }[] =>
+    (
+      db
+        .prepare('SELECT fact_id, job_id, at FROM memory_uses WHERE chat_id = ? AND at >= ? ORDER BY at DESC')
+        .all(String(chatId), Number(sinceMs) || 0) as DbRow[]
+    ).map((r) => ({ factId: String(r.fact_id), jobId: r.job_id == null ? null : String(r.job_id), at: Number(r.at) })),
+  // ---- M6 T7 ----
+  /** 08-3 §15.7: the state of a suggestion key ('offered' | 'accepted' | 'dismissed'), or null when never offered. */
+  suggestionState: ({ db }: QueryCtx, key: unknown): 'offered' | 'accepted' | 'dismissed' | null => {
+    const r = db.prepare('SELECT state FROM suggestions WHERE key = ?').get(String(key)) as DbRow | undefined;
+    return r ? (r.state as 'offered' | 'accepted' | 'dismissed') : null;
+  },
+  /** 08-3 §12.5.1: the helper's own 1:1 chat (kind 'helper'), where the share question is asked. */
+  'chats.forHelper': ({ db }: QueryCtx, helperId: unknown): EngineChat | null => {
+    const r = db
+      .prepare("SELECT * FROM chats WHERE kind = 'helper' AND helper_id = ? AND deleted_at IS NULL ORDER BY created_at LIMIT 1")
+      .get(String(helperId)) as DbRow | undefined;
+    return r ? chat(r) : null;
+  },
+  /** 08-3 §12.9: how many user messages the chat has, and the newest `limit` user text messages' text, oldest first. */
+  'messages.userTexts': ({ db }: QueryCtx, chatId: unknown, limit: unknown): { total: number; texts: string[] } => {
+    const total = Number(
+      (
+        db
+          .prepare("SELECT COUNT(*) AS n FROM messages WHERE chat_id = ? AND author_kind = 'user' AND deleted_at IS NULL")
+          .get(String(chatId)) as DbRow
+      ).n,
+    );
+    const texts = (
+      db
+        .prepare(
+          `SELECT text FROM messages WHERE chat_id = ? AND author_kind = 'user' AND kind = 'text' AND deleted_at IS NULL
+            ORDER BY seq DESC LIMIT ?`,
+        )
+        .all(String(chatId), Number(limit) || 20) as DbRow[]
+    )
+      .map((r) => String(r.text))
+      .reverse();
+    return { total, texts };
+  },
   // M8: contacts_fts prefix match on every word of the query (08-3 §16.7), best first.
   'contacts.search': ({ db }: QueryCtx, query: unknown, max: unknown): ContactHit[] => {
     const words = String(query)

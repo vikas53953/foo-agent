@@ -3,16 +3,27 @@
 // outside test runs, through ChannelGuard). M2 builder A: message:get/react/pin, files:open/showInFolder, job:details,
 // routine:pause and the gap channels message:edit/delete/retry, link:open, app:showEmojiPanel (implementation-notes). M2
 // builder B: message:send (idempotent, AT-225; R1 secret re-check, 08-2 §11.4), composer:checkSecret, composer:saveDraft,
-// files:stage, voice:submit (04-2 §22.1), helper:pause (04-2 §23.2 "Turn on").
-import { app, BrowserWindow, ipcMain, net, shell, systemPreferences, type IpcMainEvent } from 'electron';
+// files:stage, voice:submit (04-2 §22.1), helper:pause (04-2 §23.2 "Turn on"). M5 (CR-0009): the card, draft, secret and
+// code channels; each ticket's handler file fills its own rows (cards/answerIpc T5, approvals/approvalIpc T4, drafts/draftIpc
+// T6, vault/secretIpc T2), and this file only registers them. M6 (CR-0010): the memory:* invokes, each validated here and
+// forwarded to the engine as one `memory.cmd` (G-M6-01); memory:openFolder, files:pickFolder and the memory-only `data:export`
+// (G-M6-11) run in main.
+import { app, BrowserWindow, dialog, ipcMain, net, shell, systemPreferences, type IpcMainEvent } from 'electron';
+import { mkdirSync } from 'node:fs';
+import { join } from 'node:path';
+import type { MemoryCmdPayload } from '../../engine/protocol';
+import { runMemoryExport } from '../memory/export';
+import { removeForgottenFiles } from '../memory/forgetFiles';
 import { z } from 'zod';
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
 import type { EventChannel, EventPayload, InvokeChannel, InvokeIn, InvokeOut, PlatformInfo, VerifyResult } from '../../shared/ipc';
-import { PROVIDER_IDS, settingsSchema, WRITABLE_PATHS, type Settings } from '../../shared/settings';
-import type { MessageRow, WindowsSettingsPage } from '../../shared/types';
+import { SECRET_OFFER_SLOTS } from '../../shared/ipc'; // M5 T2
+import { PROVIDER_IDS, settingLocked, settingsSchema, WRITABLE_PATHS, type Settings } from '../../shared/settings';
+import type { FixAction, MessageRow, WindowsSettingsPage } from '../../shared/types';
 import { deps } from '../deps';
 import type { NetMonitor } from '../net/netMonitor';
+import { changeRecordRow } from '../settings/changeRecord';
 import type { SettingsStore } from '../settings/Settings';
 import type { Db } from '../store/db';
 import {
@@ -51,9 +62,18 @@ import { helperRow } from '../db/rows';
 import type { DbRow } from '../db/rows';
 import { ChannelGuard } from './guard';
 import type { EngineBridge } from '../engine-supervisor/EngineBridge';
+import { applyDbOps } from '../engine-supervisor/engineHost';
+import { FIX_ACTION_KINDS, JOB_CHANNELS, jobIpc } from '../jobs/jobIpc';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
 import { isTrustedUrl } from '../windows/protocol';
+import { logEvent } from '../log/techLog';
+import { answerIpc, cardReaction } from '../cards/answerIpc';
+import { approvalIpc } from '../approvals/approvalIpc';
+import { draftIpc } from '../drafts/draftIpc';
+import { secretIpc } from '../vault/secretIpc';
+import { ensureFinder, finderChosen, finderWanted } from '../setup/aiFinder';
+import { aiFinderIpc, emitFinderWrite } from '../setup/aiFinderIpc';
 
 const trusted = (e: IpcMainEvent) => !!e.senderFrame && isTrustedUrl(e.senderFrame.url);
 
@@ -99,6 +119,17 @@ export const electronProbe = () => net.isOnline();
 const empty = z.object({}).strict();
 const chatId = z.string().min(1).max(80);
 const messageId = z.string().min(1).max(80);
+const cardId = z.string().min(1).max(80);
+/** 08-2 §9.3: the card nonce is 32 lower-case hex. */
+const nonce = z.string().regex(/^[0-9a-f]{32}$/);
+const tapBy = z.enum(['tap', 'keyboard']);
+/** M5 08-1 §3.2 `CardAnswer` (the value a Choice card is answered with). */
+const cardAnswerValue = z.union([
+  z.object({ optionId: z.string().min(1).max(40) }).strict(),
+  z.object({ optionIds: z.array(z.string().min(1).max(40)).min(1).max(4) }).strict(),
+  z.object({ text: z.string().min(1).max(4_000) }).strict(),
+  z.object({ skip: z.literal(true) }).strict(),
+]);
 /** 04 §9: one emoji grapheme (a ZWJ or flag sequence is several code points). */
 const emoji = z
   .string()
@@ -116,6 +147,12 @@ const SETTINGS_PAGE: Record<WindowsSettingsPage, string> = {
   storagesense: 'ms-settings:storagesense',
   dateandtime: 'ms-settings:dateandtime',
 };
+
+const cardAnswer = z.object({
+  cardId: z.string().min(1).max(80),
+  nonce: z.string().min(1).max(80),
+  resolvedBy: z.enum(['tap', 'keyboard']),
+});
 
 /** One zod schema per invoke channel (08-1 §3.1.1: a payload that fails zod is IPC_REJECTED). */
 export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
@@ -187,6 +224,20 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
       q: z.string().max(200).optional(),
     })
     .strict(),
+  'memory:add': z.object({ text: z.string().trim().min(1).max(120) }).strict(),
+  'memory:edit': z.object({ factId: z.string().min(1).max(80), text: z.string().trim().min(1).max(120) }).strict(),
+  'memory:setPrivate': z.object({ factId: z.string().min(1).max(80), private: z.boolean() }).strict(),
+  'memory:setKind': z.object({ factId: z.string().min(1).max(80), kind: z.enum(['person', 'preference', 'place', 'fact']) }).strict(),
+  'memory:forget': z.object({ factId: z.string().min(1).max(80), chipId: z.string().min(1).max(80).optional() }).strict(),
+  'memory:undo': z.object({ undoToken: z.string().min(1).max(80) }).strict(),
+  'memory:forgetBySource': z
+    .object({ source: z.enum(['chat', 'gmail', 'gcal', 'whatsapp', 'manual', 'setup', 'job']), confirm: z.literal(true) })
+    .strict(),
+  // CONFIRM_MISMATCH (not IPC_REJECTED) for a wrong word: the dialog keeps its button disabled, this is the backstop.
+  'memory:forgetAll': z.object({ typed: z.string().max(40) }).strict() as unknown as z.ZodType<{ typed: 'FORGET' }>,
+  'memory:openFolder': empty as z.ZodType<Record<string, never>>,
+  'data:export': z.object({ folder: z.string().min(1).max(1024), scope: z.enum(['all', 'memory']).optional() }).strict(),
+  'files:pickFolder': z.object({ purpose: z.enum(['output', 'grant', 'export', 'avatar']) }).strict(),
   'routine:list': empty as z.ZodType<Record<string, never>>,
   'helper:list': empty as z.ZodType<Record<string, never>>,
   'settings:get': empty as z.ZodType<Record<string, never>>,
@@ -198,31 +249,101 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
     backup?: (typeof PROVIDER_IDS)[number] | null;
   }>,
   'notifications:status': empty as z.ZodType<Record<string, never>>,
+  // AI step (CR-0020 (c)): the J2 card and the key's Secret box; `app:openExternal` per 08-1 §3.2 (only maker_page is built).
+  'ai:openFinder': empty as z.ZodType<Record<string, never>>,
+  'ai:askKey': z.object({ providerId: z.enum(['openai-key', 'anthropic-key', 'google-key']) }).strict(),
+  'app:openExternal': z
+    .object({
+      target: z.enum(['google_signin', 'x_intent', 'google_account', 'maker_page', 'handback_site']),
+      url: z.string().max(2048).optional(),
+      providerId: z.enum(PROVIDER_IDS).optional(),
+      cardId: z.string().max(80).optional(),
+      nonce: z.string().max(80).optional(),
+    })
+    .strict(),
+  // M4 T5 (08-1 §3.2; G-M4-09 error:fix). Main re-checks every card answer against the stored card (src/main/jobs/jobIpc.ts).
+  'job:stopAll': z.object({ confirm: z.literal(true) }).strict(),
+  'job:retry': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'plan:go': cardAnswer.extend({ text: z.string().max(10_000).optional() }).strict(),
+  'plan:change': cardAnswer.extend({ text: z.string().max(10_000).optional() }).strict(),
+  'stuck:choose': cardAnswer.extend({ choice: z.enum(['other_way', 'take_over', 'stop']) }).strict(),
+  'recovery:choose': cardAnswer.extend({ choice: z.enum(['resume', 'stop']) }).strict(),
+  'error:fix': cardAnswer
+    .extend({ action: z.object({ kind: z.enum(FIX_ACTION_KINDS) }).catchall(z.unknown()) as unknown as z.ZodType<FixAction> })
+    .strict(),
+  // M5 (08-1 §3.2). `secret:save` names are refined per kind by its handler (G-M5-16); values never leave main.
+  'card:answer': z.object({ cardId, nonce, answer: cardAnswerValue, resolvedBy: tapBy }).strict(),
+  'card:approve': z.object({ cardId, nonce, scope: z.enum(['once', 'chat', 'always']), resolvedBy: tapBy }).strict(),
+  'card:decline': z.object({ cardId, nonce, resolvedBy: tapBy }).strict(),
+  'card:askAgain': z.object({ cardId }).strict(),
+  'card:heldPick': z.object({ cardId, nonce, optionId: z.string().min(1).max(40), resolvedBy: tapBy }).strict(),
+  // M5 T14 (G-M5-39)
+  'approval:report': z.object({ cardId, nonce, outcome: z.enum(['went_through', 'did_not']), resolvedBy: tapBy }).strict(),
+  'draft:update': z
+    .object({
+      cardId,
+      nonce,
+      fields: z
+        .object({ to: z.string().max(320).optional(), subject: z.string().max(998).optional(), body: z.string().max(40_000) })
+        .strict(),
+    })
+    .strict(),
+  'draft:send': z.object({ cardId, nonce, resolvedBy: tapBy }).strict(),
+  'draft:undo': z.object({ approvalId: z.string().min(1).max(80) }).strict(),
+  'draft:discard': z.object({ cardId, nonce, resolvedBy: tapBy }).strict(),
+  'draft:openInApp': z.object({ cardId }).strict(),
+  'secret:save': z
+    .object({
+      requestId: z.string().min(1).max(80).optional(),
+      kind: z.enum(['ai_key', 'login', 'card', 'conn_token', 'wa_session', 'web_key', 'hub_key']),
+      name: z.string().min(1).max(253),
+      fields: z.record(z.string().min(1).max(40), z.string().max(20_000)),
+    })
+    .strict(),
+  'secret:list': empty as z.ZodType<Record<string, never>>,
+  'secret:delete': z.object({ target: z.string().min(1).max(300), confirm: z.literal(true) }).strict(),
+  'code:submit': z.object({ requestId: z.string().min(1).max(80), code: z.string().min(1).max(64) }).strict(),
+  // M5 T2 (G-M5-21)
+  'secret:offer': z.object({ chatId, slot: z.enum(SECRET_OFFER_SLOTS) }).strict(),
 };
 
-type Handler<C extends InvokeChannel> = (req: InvokeIn[C]) => Result<InvokeOut[C]> | Promise<Result<InvokeOut[C]>>;
+export type Handler<C extends InvokeChannel> = (req: InvokeIn[C]) => Result<InvokeOut[C]> | Promise<Result<InvokeOut[C]>>;
+/** One ticket's rows: channel → handler (M5 handler files return these; registerIpc registers them). */
+export type IpcHandlers<C extends InvokeChannel> = { [K in C]: Handler<K> };
+
+function handleAll<C extends InvokeChannel>(rows: IpcHandlers<C>): void {
+  for (const channel of Object.keys(rows) as C[]) handle(channel, rows[channel] as Handler<C>);
+}
 
 /** Registers one channel: zod-validated, sender-checked, always answering with a Result. */
 export function handle<C extends InvokeChannel>(channel: C, fn: Handler<C>): void {
   channels().handle(channel, async (raw: unknown) => {
     const parsed = SCHEMAS[channel].safeParse(raw ?? {});
     if (!parsed.success) {
-      console.warn(`IPC_REJECTED ${channel}: payload failed validation`);
+      logEvent({ lvl: 'warn', mod: 'ipc', evt: 'IPC_REJECTED', kind: channel });
       return fail('IPC_REJECTED');
     }
     try {
       return await fn(parsed.data);
     } catch (e) {
-      console.error(`ipc ${channel}`, e);
+      // The error object can carry message text or a payload; only its name reaches the log (R7).
+      logEvent({ lvl: 'error', mod: 'ipc', evt: 'IPC_FAILED', kind: `${channel} ${e instanceof Error ? e.name : typeof e}` });
       return fail('UNKNOWN');
     }
   });
 }
 
+function getPath(s: Settings, path: string): unknown {
+  return path.split('.').reduce<unknown>((o, k) => (o as Record<string, unknown> | undefined)?.[k], s);
+}
+
+/** Copies each object on the path (M5: three-level paths such as `permissions.actions.send`). */
 function setPath(s: Settings, path: string, value: unknown): Settings {
-  const [head, key] = path.split('.') as [keyof Settings, string];
-  const section = s[head] as Record<string, unknown>;
-  return { ...s, [head]: { ...section, [key]: value } } as Settings;
+  const set = (o: Record<string, unknown>, [k, ...rest]: string[]): Record<string, unknown> => ({
+    ...o,
+    [k!]: rest.length ? set(o[k!] as Record<string, unknown>, rest) : value,
+  });
+  return set(s as unknown as Record<string, unknown>, path.split('.')) as unknown as Settings;
 }
 
 export function registerIpc(ctx: AppContext): void {
@@ -255,6 +376,9 @@ export function registerIpc(ctx: AppContext): void {
   });
 
   handle('app:getBootstrap', () => {
+    // CR-0020 (b): a first run with no AI opens on the J2 card (FOO_TEST runs only when they ask for a first run).
+    if (process.env.FOO_TEST !== '1' || process.env.FOO_TEST_FIRST_RUN === '1')
+      emitFinderWrite(ctx, ensureFinder(db, settings, now(), ctx.dataDir));
     const s = settings.get();
     return ok(bootstrap(db, { ...listContext(s), settings: s, offline: ctx.net.offline, engineAi: ctx.engine?.aiStatus ?? null }));
   });
@@ -308,7 +432,12 @@ export function registerIpc(ctx: AppContext): void {
     return ok(r.row);
   };
   const asVoid = (r: Result<MessageRow>): Result<void> => (r.ok ? ok(undefined) : r);
-  handle('message:react', ({ messageId: id, emoji: e, on }) => asVoid(written(reactMessage(db, id, e, on, now()))));
+  handle('message:react', ({ messageId: id, emoji: e, on }) => {
+    const r = asVoid(written(reactMessage(db, id, e, on, now())));
+    // M5 (T5): a reaction on a card's bubble may answer a Choice card or get the G16 line (08-4 §26.6 rule 4, 08-2 §5.2.2).
+    if (r.ok && on) cardReaction(ctx, id, e);
+    return r;
+  });
   handle('message:pin', ({ messageId: id, on }) => asVoid(written(pinMessage(db, id, on))));
   handle('message:edit', ({ messageId: id, text }) => {
     // Art. 8 / R1: the edit is re-checked like message:send (askedForCode from the chat's recent messages).
@@ -433,8 +562,10 @@ export function registerIpc(ctx: AppContext): void {
     const err = await shell.openPath(file);
     return err ? fail('NOT_FOUND', err) : ok(undefined);
   });
+  // The memory zip lands in a folder the person picked (06-2 §7.4 "Show in folder"), so the last export path is allowed too.
+  let lastExportPath: string | undefined;
   handle('files:showInFolder', ({ path }) => {
-    const file = insideDir(ctx.dataDir, path);
+    const file = path === lastExportPath ? path : insideDir(ctx.dataDir, path);
     if (!file) return fail('PATH_NOT_ALLOWED');
     shell.showItemInFolder(file);
     return ok(undefined);
@@ -462,28 +593,87 @@ export function registerIpc(ctx: AppContext): void {
     if (app.isEmojiPanelSupported()) app.showEmojiPanel();
     return ok(undefined);
   });
-  handle('job:stop', ({ jobId }) => {
-    // M1 has no engine (M3): the job row is cancelled here and the chat pill re-derived; nothing was done for the user yet.
-    const r = stopJob(db, jobId, now());
-    if (!r) return fail('JOB_GONE');
-    const [row] = jobRows(db, 'id = ?', [jobId], now());
-    if (row) emit('job:upsert', row);
-    recomputePill(db, r.chatId, now());
-    emitChat(r.chatId);
-    return ok({ jobId, done: [], nothingDone: true });
+  // M4 T5: the job and job-card channels check and forward one MainToEngine message each (X-124).
+  const jobs = jobIpc({
+    db,
+    engine: ctx.engine,
+    now,
+    newJobId: () => newId('j', now()),
+    stopWithoutEngine: (jobId) => {
+      // No engine connected: the job row is cancelled here and the chat pill re-derived (M1); nothing was done for the user.
+      const r = stopJob(db, jobId, now());
+      if (!r) return fail('JOB_GONE');
+      const [row] = jobRows(db, 'id = ?', [jobId], now());
+      if (row) emit('job:upsert', row);
+      recomputePill(db, r.chatId, now());
+      emitChat(r.chatId);
+      return ok({ jobId, done: [], nothingDone: true });
+    },
   });
+  for (const c of JOB_CHANNELS) handle(c, jobs[c] as Handler<typeof c>);
   // The Live window (09 §9.27) arrives with the browser milestone; until then the shell shows no live view.
   handle('job:watch', () => fail('LIVE_UNAVAILABLE'));
   handle('memory:list', ({ filter, q }) => ok(memoryList(db, filter, q, now())));
+  // M6 (CR-0010 G-M6-01): the engine owns files, the classify turn and the sensitive rule; main forwards one message each.
+  const memoryCmd = <T>(cmd: MemoryCmdPayload): Promise<Result<T>> =>
+    ctx.engine?.live ? ctx.engine.request<T, 'memory.cmd'>('memory.cmd', cmd, 30_000) : Promise.resolve(fail<T>('UNKNOWN', 'no engine'));
+  handle('memory:add', ({ text }) => memoryCmd({ cmd: 'add', text }));
+  handle('memory:edit', ({ factId, text }) => memoryCmd({ cmd: 'edit', factId, text }));
+  handle('memory:setPrivate', (req) => memoryCmd({ cmd: 'setPrivate', factId: req.factId, private: req.private }));
+  handle('memory:setKind', ({ factId, kind }) => memoryCmd({ cmd: 'setKind', factId, kind }));
+  handle('memory:forget', ({ factId, chipId }) => memoryCmd({ cmd: 'forget', factId, ...(chipId ? { chipId } : {}) }));
+  handle('memory:undo', ({ undoToken }) => memoryCmd({ cmd: 'undo', undoToken }));
+  handle('memory:forgetBySource', ({ source }) => memoryCmd({ cmd: 'forgetBySource', source, confirm: true }));
+  handle('memory:forgetAll', async ({ typed }) => {
+    if (typed !== 'FORGET') return fail('CONFIRM_MISMATCH');
+    const r = await memoryCmd<{ count: number }>({ cmd: 'forgetAll', typed: 'FORGET' });
+    // 08-3 §12.6: the files the engine emptied are deleted (M6 T3).
+    if (r.ok) removeForgottenFiles(ctx.dataDir);
+    return r;
+  });
+  handle('memory:openFolder', async () => {
+    const folder = join(ctx.dataDir, 'memory');
+    mkdirSync(folder, { recursive: true });
+    await shell.openPath(folder);
+    return ok(undefined);
+  });
+  handle('files:pickFolder', async () => {
+    const r = await dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] });
+    return ok(r.canceled || !r.filePaths[0] ? {} : { path: r.filePaths[0] });
+  });
+  handle('data:export', ({ folder, scope }) => {
+    // The full export (J21) is a later milestone; M6 builds the memory-only zip (06-2 §7.4, G-M6-11).
+    if (scope !== 'memory') return fail('VALIDATION');
+    const exportId = `exp_${now()}`;
+    void runMemoryExport({
+      dataDir: ctx.dataDir,
+      folder,
+      exportId,
+      now: now(),
+      timeZone: settings.get().locale.timeZone,
+      db,
+      progress: (p) => {
+        if (p.path) lastExportPath = p.path;
+        emit('data:exportProgress', p);
+      },
+    });
+    return ok({ exportId });
+  });
   handle('routine:list', () => ok(routineList(db)));
   handle('helper:list', () => ok(helperList(db)));
   handle('settings:get', () => ok(publicSettings(settings.get())));
   handle('settings:set', ({ path, value }) => {
-    const next = setPath(settings.get(), path, value);
+    const before = settings.get();
+    const next = setPath(before, path, value);
     if (!settingsSchema.safeParse(next).success) return fail('VALIDATION');
+    // M5 (CR-0009; 08-1 §4.4.2 step 1, 08-0 §A.2): a locked value is refused and nothing is written.
+    if (settingLocked(path, value)) return fail('SETTING_LOCKED');
     settings.update(() => next);
+    // 08-1 §4.4.2 step 3: the change record (M4: the AI cap only).
+    const row = changeRecordRow(path, getPath(before, path), value);
+    const tx = row ? applyDbOps(db, [{ op: 'activity', row }], { dataDir: ctx.dataDir }).result : null;
     emitSettings();
-    return ok({ settings: publicSettings(settings.get()), changeId: null });
+    return ok({ settings: publicSettings(settings.get()), changeId: tx?.ok ? (tx.value.ids[0] ?? null) : null });
   });
   handle('ai:verify', async ({ providerId }) => {
     // "Try again" re-tests the network now, then the engine sends `Reply with the word ready` (08-2 §6.6).
@@ -498,9 +688,23 @@ export function registerIpc(ctx: AppContext): void {
   handle('ai:detect', async () => (ctx.engine?.live ? ctx.engine.request<DetectRow[]>('ai.cmd', { cmd: 'detect' }, 60_000) : ok([])));
   handle('ai:choose', async ({ primary, backup }) => {
     if (!ctx.engine?.live) return fail('AI_NOT_VERIFIED');
+    const before = settings.get();
     const r = await ctx.engine.request<AiStatus>('ai.cmd', { cmd: 'choose', providerId: primary, backup: backup ?? null });
-    if (r.ok) emitSettings();
+    if (r.ok) {
+      // 06-1 §2.2 step 5: open finder cards collapse to "✓ Using {AI} (your AI)"; a first run moves to step 2 (CR-0020). A
+      // backup change from Settings (same primary, setup done) leaves an open finder card alone.
+      if (before.ai.primary !== primary || finderWanted(before))
+        emitFinderWrite(ctx, finderChosen(db, settings, primary, now(), ctx.dataDir));
+      emitSettings();
+    }
     return r;
   });
   handle('notifications:status', () => ok({ windowsAllowed: true, focusAssist: false }));
+
+  // M5 (CR-0009): the card, draft, secret and code channels.
+  handleAll(answerIpc(ctx));
+  handleAll(aiFinderIpc(ctx));
+  handleAll(approvalIpc(ctx));
+  handleAll(draftIpc(ctx));
+  handleAll(secretIpc(ctx));
 }

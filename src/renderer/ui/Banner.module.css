@@ -1,0 +1,39 @@
+/* Spec: 06 §0.6 page banner (content-column width, min-height 40px --s7, icon 20, text --t-small --fg-1, --r-md, 16px
+ * below; tones Info / Warn / Bad). */
+.banner {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: var(--s7);
+  margin-bottom: var(--s3);
+  padding: var(--s0) var(--s2);
+  border-radius: var(--r-md);
+  color: var(--fg-1);
+}
+.text {
+  flex: 1;
+  font: var(--t-small);
+}
+.info {
+  background: var(--accent-soft);
+}
+.info .icon {
+  color: var(--accent);
+}
+.warn {
+  background: var(--warn-soft);
+}
+.warn .icon {
+  color: var(--warn);
+}
+.bad {
+  background: var(--bad-soft);
+}
+.bad .icon {
+  color: var(--bad);
+}
+@media (forced-colors: active) {
+  .banner {
+    border: 1px solid CanvasText;
+  }
+}

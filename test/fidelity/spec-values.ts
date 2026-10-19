@@ -45,6 +45,8 @@ export const BOX_TOLERANCE = 0.5;
 // GAP: GAPS.md 2026-10-17 "composer-field is on the inner contenteditable"
 export const SELECTORS: Record<string, string> = {
   'SV-38': 'body',
+  // M5 T2: the Secret box field's edge (05-2 §5.8.1, a Text field).
+  'SV-27': '[data-testid="card-secret"] :has(> [data-testid="card-secret-field"])',
   // M1 left shell (03-shell-1 §3.4): measured with the list on screen and, for SV-23, a menu open.
   'SV-14': '[data-testid="chatlist-row"]:not([data-folded="true"]) [data-testid="chatlist-row-avatar"]',
   'SV-17': '[data-testid="sidebar"]',
@@ -68,6 +70,14 @@ export const SELECTORS: Record<string, string> = {
   // SV-26 "timestamp, placeholder": foo's bubble times (the user's sit on the dark bubble in --on-bubble-me-2, 04 §3.1) and
   // the composer placeholder (the field's aria-hidden twin).
   'SV-26': '[data-testid="bubble-foo"] [data-testid="bubble-meta"], [data-testid="composer"] span[aria-hidden="true"][id]',
+  // M4 cards (05-1 §0.1, §0.8; T5): the card frames that carry a card row; the Job link card is one whole-surface button
+  // with its own hover motion (05-3 §5.18.2), so SV-31's --m-card state motion is measured on the framed cards.
+  'SV-20': '[data-card-type]',
+  'SV-31': '[data-card-type]:not([data-testid="card-job-link"])',
+  // M5 (T5): SV-21 "every text button" and SV-22 "primary button in cards" are checked in M5 on the Choice card's Primary
+  // "Done" (`card-choice-done`, 05-1 §5.3.1 multi-select) only; the other text buttons join as their milestones add them.
+  'SV-21': '[data-testid="card-choice-done"]',
+  'SV-22': '[data-testid="card-choice-done"]',
 };
 
 export function readRows(file = 'spec/spec-values.json'): SvRow[] {

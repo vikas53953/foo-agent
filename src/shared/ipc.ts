@@ -4,7 +4,14 @@
 import type { Result } from './errors';
 import type {
   AiStatus,
+  ApprovalFields,
+  ApprovalScope,
+  ApprovalState,
   Bootstrap,
+  CardAnswer,
+  DraftFields,
+  SecretIndexRow,
+  SecretKind,
   ChatFilter,
   ChatOpenResult,
   ChatRow,
@@ -14,11 +21,17 @@ import type {
   BadgeValue,
   HelperRow,
   JobDetails,
+  FixAction,
   JobRow,
+  MemoryChip,
   MemoryFactView,
   MemoryFilter,
+  MemoryKind,
+  MemoryOrigin,
+  ErrorKind,
   MessageRow,
   PasteCatch,
+  KeyProviderId,
   ProviderId,
   PublicSettings,
   RoutineRow,
@@ -41,7 +54,7 @@ export interface PlatformInfo {
 
 export type VerifyResult =
   | { ok: true; providerId: ProviderId; displayName: string; billing: 'plan' | 'key' | 'local'; model?: string; verifiedAt: number }
-  | { ok: false; providerId: ProviderId; kind: string };
+  | { ok: false; providerId: ProviderId; kind: string; resetAt?: number };
 
 /** 08-1 §3.2 rows built so far: channel → request and response. */
 export interface Invokes {
@@ -94,17 +107,99 @@ export interface Invokes {
   'job:stop': { req: { jobId: string }; res: StopReport };
   'job:watch': { req: { jobId: string; on: boolean }; res: void };
   'memory:list': { req: { filter: MemoryFilter; q?: string }; res: MemoryFactView[] };
+  // M6 (08-1 §3.2 memory rows; CR-0010 G-M6-01: main validates and forwards each to the engine as one `memory.cmd`)
+  'memory:add': { req: { text: string }; res: MemoryFactView };
+  'memory:edit': { req: { factId: string; text: string }; res: MemoryFactView };
+  'memory:setPrivate': { req: { factId: string; private: boolean }; res: MemoryFactView };
+  'memory:setKind': { req: { factId: string; kind: MemoryKind }; res: MemoryFactView };
+  /** M6 T5: `chipId` = the ✕ on a memory chip (05-3 §5.17.1; G-M6-10 activity `forgot_facts`). */
+  'memory:forget': { req: { factId: string; chipId?: string }; res: { undoToken: string } };
+  'memory:undo': { req: { undoToken: string }; res: MemoryFactView };
+  'memory:forgetBySource': { req: { source: MemoryOrigin; confirm: true }; res: { count: number } };
+  'memory:forgetAll': { req: { typed: 'FORGET' }; res: { count: number } };
+  'memory:openFolder': { req: Record<string, never>; res: void };
+  /** 08-1 §3.2 `data:export`; CR-0010 G-M6-11 adds `scope` ('memory' = 06-2 §7.4 "Export what I know", 08-3 §19.4.1). */
+  'data:export': { req: { folder: string; scope?: 'all' | 'memory' }; res: { exportId: string } };
+  'files:pickFolder': { req: { purpose: 'output' | 'grant' | 'export' | 'avatar' }; res: { path?: string } };
   'routine:list': { req: Record<string, never>; res: RoutineRow[] };
   /** Not in 08-1 §3.2 (gap, see implementation-notes "M1 integration"): the helpers' names and one-line jobs for the shell. */
   'helper:list': { req: Record<string, never>; res: HelperRow[] };
   'settings:get': { req: Record<string, never>; res: PublicSettings };
   'settings:set': { req: { path: string; value: unknown }; res: { settings: PublicSettings; changeId: string | null } };
   'ai:verify': { req: { providerId: ProviderId }; res: VerifyResult };
-  /** M3 (08-1 §3.2): detection ladder; rows also stream on `ai:detectRow`. The J2 screen that shows them is M12. */
+  /** M3 (08-1 §3.2): detection ladder; rows also stream on `ai:detectRow`. The J2 screen that shows them is the AI step (CR-0020). */
   'ai:detect': { req: Record<string, never>; res: DetectRow[] };
   'ai:choose': { req: { primary: ProviderId; backup?: ProviderId | null }; res: AiStatus };
   'notifications:status': { req: Record<string, never>; res: { windowsAllowed: boolean; focusAssist: boolean } };
+  // AI step (CR-0020 (c)): 06-2 §6.1 "Change" / "Add another AI" post the 06-1 §2.2 card in foo's chat; 06-1 §2.2 "I have a key"
+  // posts the key's Secret box (05-2 §5.8) with the J2 lead line. `app:openExternal` is 08-1 §3.2's row; only `maker_page` is
+  // built here (the other targets answer URL_NOT_ALLOWED until their milestones).
+  'ai:openFinder': { req: Record<string, never>; res: { chatId: string; cardId: string } };
+  'ai:askKey': { req: { providerId: KeyProviderId }; res: CardRow };
+  'app:openExternal': {
+    req: {
+      target: 'google_signin' | 'x_intent' | 'google_account' | 'maker_page' | 'handback_site';
+      url?: string;
+      providerId?: ProviderId;
+      cardId?: string;
+      nonce?: string;
+    };
+    res: void;
+  };
+  // M4 T5 (08-1 §3.2 job rows; X-124: each sends exactly one MainToEngine message; G-M4-09 error:fix, CR-0008).
+  'job:stopAll': { req: { confirm: true }; res: StopReport[] };
+  'job:retry': { req: { jobId: string }; res: { newJobId: string } };
+  'plan:go': { req: CardAnswerReq & { text?: string }; res: CardRow };
+  'plan:change': { req: CardAnswerReq & { text?: string }; res: CardRow };
+  'stuck:choose': { req: CardAnswerReq & { choice: 'other_way' | 'take_over' | 'stop' }; res: CardRow };
+  'recovery:choose': { req: CardAnswerReq & { choice: 'resume' | 'stop' }; res: CardRow };
+  'error:fix': { req: CardAnswerReq & { action: FixAction }; res: CardRow };
+  // M5 (CR-0009; 08-1 §3.2): cards, drafts and the vault. Handlers: card:answer T5, card:approve|decline|askAgain|heldPick T4,
+  // draft:* T6, secret:* and code:submit T2 (stubs answer VALIDATION 'not_implemented' until their ticket lands).
+  'card:answer': { req: { cardId: string; nonce: string; answer: CardAnswer; resolvedBy: CardTapBy }; res: CardRow };
+  'card:approve': { req: { cardId: string; nonce: string; scope: ApprovalScope; resolvedBy: CardTapBy }; res: { state: ApprovalState } };
+  'card:decline': { req: { cardId: string; nonce: string; resolvedBy: CardTapBy }; res: CardRow };
+  'card:askAgain': { req: { cardId: string }; res: { newCardId?: string } };
+  'card:heldPick': { req: { cardId: string; nonce: string; optionId: string; resolvedBy: CardTapBy }; res: CardRow };
+  // M5 T14 (CR-0009 G-M5-39): the CHECKING → FAILED card's [ It went through ] / [ It didn't ] (05-2 §5.5.4).
+  'approval:report': {
+    req: { cardId: string; nonce: string; outcome: 'went_through' | 'did_not'; resolvedBy: CardTapBy };
+    res: CardRow;
+  };
+  'draft:update': { req: { cardId: string; nonce: string; fields: DraftFields }; res: CardRow };
+  'draft:send': { req: { cardId: string; nonce: string; resolvedBy: CardTapBy }; res: { approvalId: string; undoUntil: number } };
+  'draft:undo': { req: { approvalId: string }; res: { undone: boolean } };
+  'draft:discard': { req: { cardId: string; nonce: string; resolvedBy: CardTapBy }; res: CardRow };
+  'draft:openInApp': { req: { cardId: string }; res: void };
+  'secret:save': {
+    req: { requestId?: string; kind: SecretKind; name: string; fields: Record<string, string> };
+    res: { target: string; savedAt: number; label: string };
+  };
+  'secret:list': { req: Record<string, never>; res: SecretIndexRow[] };
+  'secret:delete': { req: { target: string; confirm: true }; res: void };
+  'code:submit': { req: { requestId: string; code: string }; res: void };
+  // M5 T2 (04-2 §22.4 "Move to secret box" posts a Secret box card in this chat; CR-0009 gap G-M5-21): the card only, never
+  // the value (the renderer keeps it in memory for the card's field until Save or Cancel).
+  'secret:offer': { req: { chatId: string; slot: SecretOfferSlot }; res: CardRow };
 }
+
+/** M5 T2: the 04-2 §22.4 suggested names, one Secret box each (G-M5-21); `password` and `key` have no vault kind yet. */
+export const SECRET_OFFER_SLOTS = ['openai', 'google', 'card', 'otp', 'password', 'key'] as const;
+export type SecretOfferSlot = (typeof SECRET_OFFER_SLOTS)[number];
+/** M5 T2: why the vault can't save right now (05-2 §5.8.3 Disabled: Credential Manager; 09 §9.18: encryption). */
+export const VAULT_OFF = ['keyring_unavailable', 'encryption_unavailable'] as const;
+export type VaultOff = (typeof VAULT_OFF)[number];
+export const isVaultOff = (s: string | undefined): s is VaultOff => (VAULT_OFF as readonly (string | undefined)[]).includes(s);
+
+/** 08-1 §3.2: a card answer names the card, carries its nonce (a stale card is refused) and says how it was answered. */
+export interface CardAnswerReq {
+  cardId: string;
+  nonce: string;
+  resolvedBy: 'tap' | 'keyboard';
+}
+
+/** 08-1 §3.2: a card is answered from the card itself (toasts, typed words and reactions resolve inside main/engine). */
+export type CardTapBy = CardAnswerReq['resolvedBy'];
 
 /** 08-1 §3.3 rows built so far: event → payload. */
 export interface Events {
@@ -123,6 +218,9 @@ export interface Events {
   'settings:changed': PublicSettings;
   'net:state': { online: boolean };
   navigate: { view: View; act?: string };
+  // M6 (08-1 §3.3)
+  'memory:changed': { factIds: string[]; chip?: MemoryChip };
+  'data:exportProgress': { pct: number; phase: string; path?: string; error?: ErrorKind };
 }
 
 export type InvokeChannel = keyof Invokes;
@@ -171,6 +269,17 @@ export const INVOKE_CHANNELS = [
   'job:stop',
   'job:watch',
   'memory:list',
+  'memory:add',
+  'memory:edit',
+  'memory:setPrivate',
+  'memory:setKind',
+  'memory:forget',
+  'memory:undo',
+  'memory:forgetBySource',
+  'memory:forgetAll',
+  'memory:openFolder',
+  'data:export',
+  'files:pickFolder',
   'routine:list',
   'helper:list',
   'settings:get',
@@ -179,6 +288,35 @@ export const INVOKE_CHANNELS = [
   'ai:detect',
   'ai:choose',
   'notifications:status',
+  'ai:openFinder',
+  'ai:askKey',
+  'app:openExternal',
+  'job:stopAll',
+  'job:retry',
+  'plan:go',
+  'plan:change',
+  'stuck:choose',
+  'recovery:choose',
+  'error:fix',
+  // M5 (CR-0009)
+  'card:answer',
+  'card:approve',
+  'card:decline',
+  'card:askAgain',
+  'card:heldPick',
+  'draft:update',
+  'draft:send',
+  'draft:undo',
+  'draft:discard',
+  'draft:openInApp',
+  'secret:save',
+  'secret:list',
+  'secret:delete',
+  'code:submit',
+  // M5 T2
+  'secret:offer',
+  // M5 T14
+  'approval:report',
 ] as const satisfies readonly InvokeChannel[];
 
 export const EVENT_CHANNELS = [
@@ -197,14 +335,17 @@ export const EVENT_CHANNELS = [
   'settings:changed',
   'net:state',
   'navigate',
+  'memory:changed',
+  'data:exportProgress',
 ] as const satisfies readonly EventChannel[];
 
 /**
  * 08-3 §22.9 seed sets (`ux-world` is the generator name of `demo`; both load the walkthrough world). `ux-world-ch8-live`
  * (CR-0007): the same world at 8:05 AM, foo's chat ending at the cake line, so a test sends chapter 8's "thanks!" and
- * question live and the frame matches the walkthrough's UX-08-02.
+ * question live and the frame matches the walkthrough's UX-08-02. `m4-cards` (M4 T5): the ux-world plus one of each M4 job
+ * card in two helper chats (Errands, Home help), with no engine.
  */
-export const SEED_SETS = ['demo', 'perf', 'ux-world', 'ux-world-ch8-live'] as const;
+export const SEED_SETS = ['demo', 'perf', 'ux-world', 'ux-world-ch8-live', 'm4-cards'] as const;
 export type SeedSet = (typeof SEED_SETS)[number];
 
 export interface ClockReply {
@@ -237,6 +378,30 @@ export interface FooTestBridge {
   reset(): Promise<ClockReply>;
   /** Moves a job to a state the way the job runner would (writes the row, re-derives the chat pill, sends the patches). */
   jobState(jobId: string, state: JobRow['state']): Promise<{ chatId: string }>;
+  /** M5 (CR-0009): writes one card (and its approvals row when `approval` is given); see main/test/testHooks.ts. */
+  cardSeed(arg: CardSeedRequest): Promise<CardSeedResult>;
+  /** M6 T7 (CR-0010 G-M6-09): runs the nightly memory tidy now (engine `test.memoryTidy`); the engine's TidyReport result. */
+  memoryTidy(): Promise<unknown>;
+}
+
+/** `test:card.seed` request (FOO_TEST only). */
+export interface CardSeedRequest {
+  chatId?: string;
+  type: CardRow['type'];
+  state: string;
+  payload: Record<string, unknown>;
+  jobId?: string;
+  expiresAt?: number;
+  answer?: Record<string, unknown>;
+  approval?: { fields: ApprovalFields; hardLimit?: boolean; state?: ApprovalState; expiresAt?: number; submittedAt?: number };
+}
+export interface CardSeedResult {
+  chatId: string;
+  cardId: string;
+  messageId: string;
+  nonce: string;
+  jobId?: string;
+  approvalId?: string;
 }
 
 declare global {

@@ -534,6 +534,23 @@ files are real and which stay seeds). What the real output pinned:
   callers pass an ErrorKind (T7 / the integrator: a call to the stack from `Composer.tsx`).
 - `trace.csv` rows AT-281/282/286/287 still say `pending`: the status column is the integrator's at close-out.
 
+## M6 · memory contracts (ticket T1, CR-0010)
+
+Running ahead of M5 (Vikas, 2026-10-18 18:03Z): the M6 branch `claude/foo-m6-bg91as` is based on the M4 branch. Picks are
+CR-0010 §(b). Where the code stands for the ticket threads:
+
+- Engine seam `src/engine/memory/MemoryPort.ts` (`cmd`, `tidy`), slot `Engine.memory` (stub answers UNKNOWN "not built"). T3
+  sets MemoryService, T7 its tidy. `memory.cmd` and `test.memoryTidy` reach it from `Engine.handle`.
+- Main forwards the eight engine-bound `memory:*` invokes in `IpcRouter.ts` (30 s timeout); `memory:openFolder`,
+  `files:pickFolder` and `data:export {scope:'memory'}` run in main. `src/main/memory/export.ts` is T6's stub to fill.
+- `file.write` → `writeDataFile` in `engineHost.ts` (allow-list `isWritableDataFile`). The engine reads files itself.
+- Named queries in `src/main/db/queries.ts`; `memoryByScope` / `memorySearch` apply the Art. 14 group rule (a live grant
+  admits an about-you or chat-scope fact; private never). T4 refines their bodies.
+- No memory slice in the renderer store (08-5 §5): `memory:changed` and `data:exportProgress` reducers are no-ops; pages use
+  `useFooEvent`.
+- Copy keys are in `en-IN.json` and listed in `scripts/copy-pending.json` by ticket. The two-match forget reply "nothing
+  matched" has no spec words yet: T5 takes them from J17 or files a CR line.
+
 ## M4 · runner core (ticket T2)
 
 ### Built
@@ -584,6 +601,384 @@ files are real and which stay seeds). What the real output pinned:
 - Found by foo-verify, not T2's file: the Doing now line and `JobRow.nowLine` show the raw phrase key ("read_email")
   because `jobRows` (`src/main/store/queries.ts`) uses `slots.text ?? phrase_key`; 08-1 §4 says the running step's phrase,
   i.e. `phraseText(phrase_key, slots, 'running')`.
+
+## M4 · cards and job IPC (ticket T5)
+
+### Built
+
+- `src/main/jobs/jobIpc.ts`: `job:stop|stopAll|retry`, `plan:go|change`, `stuck:choose`, `recovery:choose`, `error:fix`
+  (G-M4-09). Each checks the card (exists, type, nonce, still open) or the job (not terminal) and sends exactly one
+  MainToEngine message (X-124); `job:stop` / `job:stopAll` return the stop report built from the activity log (only done
+  `sent`, `paid`, `booked`, `deleted` rows). With no engine, `job:stop` cancels in main as M1 did; card answers fail
+  `UNKNOWN`. Registered in `IpcRouter.ts`, `shared/ipc.ts` and both preload allow-lists.
+- Cards: `Checklist`, `Plan`, `Stuck`, `ErrorCard` (both variants), `SpendCap` (AI variant), `JobLink`, in the
+  `CARD_VIEWS` map of `renderCard.tsx`; `CardFrame` gained `card` (data-card-id/type), `edge`, `busy`, `muted`; shared
+  pure helpers in `cards/jobCards.ts` (unit-tested; they return final words through literal `t()` calls so check:copy sees
+  every key). Under foo's result bubble: `ProofChip`, `NotLiveChip`, `ReceiptFooter` (`messages/`). C-21 is
+  `cards/RaiseCapDialog.tsx`; `money.aiCapPaise` joined `WRITABLE_PATHS`.
+- Card holds take the whole line (`Bubble.module.css`): a card has inline-size containment, so inside a shrink-to-fit hold
+  it collapsed to its padding (30px). Card button icons and spinners now sit on the label's line.
+- Seed set `m4-cards` (`src/main/test/seed/m4Cards.ts`): the ux-world plus one of each M4 card in two new helper chats,
+  steps from the phrase catalogue. Used by `test/fidelity/bp/BP-cards-m4.spec.ts` (BP-CARD-02/12/15/18/19/20, SV-19 by
+  hand, SV-20 and SV-31 through `SELECTORS`) and `test/verify/m4-t5-cards.journey.ts`.
+
+### Picks and gaps (for the lead's independent check)
+
+- T5-01 · Steps: no `steps:upsert` event exists, so the checklist refetches `job:details` on every `job:upsert` for its job.
+- T5-02 · Plan `costLine` is the runner's pre-formatted rupee estimate (T2: `formatInr(cost)`, '' when unknown); with
+  plan billing or no estimate the card shows "About {n} minutes" only (new keys `cards.plan.estimate.base`,
+  `cards.plan.label_base`; `cards.plan.estimate.plan` and `cards.checklist.footer_text.plan` stay pending until the
+  adapter reports plan usage).
+- T5-03 · Spend cap "Wait until {date}" ends the card through `error:fix` with `dismiss` (G-M4-09); routines paused = 0
+  until M7; the purchase variant keeps the placeholder (G-M4-10).
+- T5-04 · "Check for real" (not-live chip) and "Start again" on a withdrawn plan use `job:retry`, which now also accepts a
+  DONE-unverified job (05-3 §5.16: a new linked job "Checking {title} live"); main refuses a second retry of the same job
+  as the runner does. Seam for T2's runner: `retryInner` still refuses `done_unverified` and does not use
+  `cards.not_live_chip.job_title.text`, so Check for real ends in no new job until it does.
+- T5-04b · Seam for T2's runner: `fail()` posts the error card in state `shown` with a fix button; 05-3 §5.20 says `shown`
+  has no fix button and `asking` is the state with one, so the card renders without Try again until the runner writes
+  `asking`.
+- T5-05 · A 10-digit confirmation code reads as a PNR; `calendar_event` and `emails_read` proofs draw no chip.
+- T5-06 · A Stuck card in `taken_over` / `stopped` stays read-only with no summary words (05-3 §5.19 gives none).
+- T5-07 · C-21 shows "Raise cap" while the field is empty or invalid (06-3 §14 names only "Raise to ₹{x}").
+- T5-08 · CANCELLED checklist: rows the runner left running or waiting read as not started (05-1 §5.2 "stays expanded,
+  buttons removed, last row Stopped by you"); the card row's own `state` moves to `stopped` when the runner writes it (T3).
+- T5-09 · `cards.spend_cap.line2.ai` uses ICU plurals ("1 job", "2 jobs"); `errors.spend_cap.what_is_safe` (T3's) has
+  the same "{jobs} jobs" wording.
+- T5-11 · Checklist max 6 visible rows (05-1 §5.2.1): finished rows fold first; if more than 6 still remain, the last
+  not-started rows wait below until rows fold (no "more" row exists in the spec); a current, failed or stopped row is
+  never cut. "Show" lists all once a row has folded.
+- T5-12 · `job:retry` keeps a per-job in-flight mark for 30 s after a send, so a double tap sends one `job.retry`; after
+  that the one-retry-per-job row check (or the runner's refusal) decides. The not-live chip's "Checking…" follows the
+  linked job's state, with the same 30 s wait before its row arrives.
+- T5-13 (lead review) · Plan `withdrawn`: only `resolvedBy` auto (the 24 h timeout) says "I didn't start {title} because
+  I didn't hear back." with Start again; any other withdrawal is 05-1 §0.5 "No longer needed. The job was stopped." with
+  no buttons (`cards.common.content.withdrawn`). The checklist's Replay link is hidden until the screen viewer has a
+  handler (`cards.checklist.replay` back to pending). C-21 stops key events at the dialog so Ctrl+Enter cannot reach the
+  host card; its Tab trap skips disabled buttons. Contract extensions are in CR-0008 §(f).
+- T5-10 · Old checklist rows (the ux-world Goa card) carry the job only on `cards.job_id`; the card falls back to it. The
+  ux-world seed writes `freeform` steps, which resolve to "Working on it" (08-4 §26.1 closed catalogue); its walkthrough
+  words need phrase keys (seed owner).
+- Not T5's: raising the cap through C-21 does not yet write the `cap_changed` activity row, resume paused jobs or turn the
+  Spend-cap card Raised (06-3 §14 effects: T3 / the integrator). `spec/spec-values.json` still marks SV-19/20/31 pending and
+  SV-19 has no machine form; `trace.csv` BP-CARD rows say `pending` (integrator at close-out). Copy keys still unused, now
+  tagged "M4-T7 close-out": `cards.checklist.footer_text.plan`, `cards.plan.change_placeholder`,
+  `cards.proof_chip.popover.file_missing`, `cards.not_live_chip.still_failed.text`, `cards.error.still_failing`.
+
+### M6 T4 · memory in replies
+
+- `src/engine/memory/retrieval.ts` `buildMemoryParts(query, {chatId, text, timeZone, now})` picks parts 5/5b per turn:
+  identity rows first (outside the cap), the pinned set cut at 4,000 chars of lines joined by `\n`, then ≤ 8 FTS rows that
+  were not pinned (`memorySearch` takes the pinned ids as `excludeIds`). `ftsMatch` is the §24.16 item 3 query build.
+- The chat lane calls it before `buildIntake`; `PromptBuilder` reports `factIds` (parts 5/5b as sent, after trims) and the
+  lane records uses only for those ids (`memory_index` `last_used_at`, `use_count + 1`; one `memory_uses` row each).
+- Groups: a grant never re-admits a `private=1` fact (08-3 §12.5.1, Art. 14). Step turns (job title + slot values as the
+  query, §24.16 item 3) call the same function from the job lane when it builds part 5b.
+- AT-075 (an edited file shows in the next prompt) lands once T3's watcher is on the milestone branch.
+
+### M6 T5 · learning from chat, chips
+
+- `src/engine/memory/review.ts`: the post-turn review (08-3 §12.4): 20 s of quiet after the last message, at most once per
+  chat per 2 min and only with a user message since the last one; never in a private chat, with `privacy.learnFromChats` or
+  memory off (G-M6-06), at the AI spend cap, or over a "don't remember this" message. Each `add` op passes §12.3 (said =
+  a user message among the evidence with token overlap ≥ 0.6; guessed = ≥ 2 distinct evidence ids + a reason) and then
+  `MemoryService.learn` (§12.4.1). `update` ops go through the new `MemoryService.update` (sensitive rule first). A
+  `memory_review` turn writes one `ai_turns` row whose chat is foo's 1:1 chat for a job-done review.
+- `src/engine/memory/intakeMemory.ts`: intake "remember …" = the manual-add path (G-M6-03): 👍 + chip, no bubble;
+  "forget …" (G-M6-04) = FTS + overlap ≥ 0.6: one → forget + 5 s Undo chip, ≥ 2 → a `memory_confirm` Choice card, none →
+  "I don’t have anything like that saved."; "don't remember this" (J17) skips that message (a bare phrase covers the next
+  one) and posts "Not saving this one."; `privacy.askBeforeRemembering` → "Remember that {fact}?" [ Remember ] [ Don’t ].
+- `src/engine/memory/chips.ts`: chips are `memory_chip` marker rows whose fields are `messages.why.memoryChip`
+  (`ChipData`); Undo for 24 h through a `chip_{markerId}` token on `memory:undo`; ✕ on a "Used:" chip sends
+  `memory:forget { factId, chipId }` → `forgetFromChip` (activity `forgot_facts` count 1, G-M6-10). At most 2 "Used:"
+  chips, guessed first (§12.5), under the reply: the foo bubble, or the Choice / Done card for a job step.
+- `src/engine/tools/memoryTools.ts`: `memory.search` (read) and `memory.propose` (prepare; one per turn; a private chat
+  answers `PRIVATE_BLOCKED`; origin `job:{jobId}`), always in the ToolLayer registry.
+- Renderer `MemoryChip.tsx`: the six kinds (05-3 §5.17.1), 48-character ellipsis with the whole fact in the tooltip and
+  for Narrator, `data-state="memory"` (G-M6-05).
+- Picks to carry in the CR-0010 addendum (T5-01…T5-08):
+  - T5-01 · Chip fields live in `messages.why` (JSON); main lets the engine update `why`.
+  - T5-02 · `memory:forget` gains optional `chipId`; a chip's own Undo uses `chip_{markerId}` on `memory:undo`.
+  - T5-03 · Two new copy keys with no spec words: `thread.memory.forget_none` "I don’t have anything like that saved."
+    and `thread.memory.forget_which` "Which one should I forget?".
+  - T5-04 · `memory_confirm` joins `RUNNER_PURPOSES` so its answers reach the engine.
+  - T5-05 · Undo of a save forgets with a tombstone and no activity row; Undo of an update restores the old text.
+  - T5-06 · A job's "Used:" chip anchors to the chat's newest message (its ask / done card).
+  - T5-07 · No classify turn yet (T3's gap): a chat "remember" saves as kind `fact`, category `other`.
+  - T5-08 · UX-10-02 drawing vs spec: the chip is a marker row under the card (05-3 §5.17.1, 08-3 §12.5, the drawing),
+    not in the card's bottom row (05-1 §5.3.1 sketch); its fill is `--bg-sunken` / `--fg-2` (§5.17.1) where the drawing
+    tints it accent (R3); the ✕ is the `Dismiss` icon (R1 misses the text "✕"). The step adds the drawn fact "hates early
+    flights" with `memory:add`, since the ux-world fact reads "Likes beach stays, hates early flights".
+  - T5-09 (Fable review) · After the Undo of an intake forget, the chip reads "I’ll remember: {fact}" with no button
+    (state `restored`; the spec names no words). A typed "remember …" with memory off or in a private chat gets 👍 and
+    J17's "Not saving this one." chip. A group chat neither learns nor reacts to "remember / forget" (05-3 §5.17
+    "Groups: never", §17.3.3), and its review never runs.
+- Review fixes: a `guessed` fact's evidence ids must resolve to real messages; a review `update` may only touch a fact it
+  was shown; a job-done review reads nothing in a chat with no user message in this run (no re-read after a restart);
+  `memory.propose`'s one-per-turn rule applies only when the turn is known. Kept as is: a review skipped at the spend
+  cap still counts as read (§12.4 "skipped").
+
+## M5 · contracts, approval machine and card stubs (ticket T1, CR-0009)
+
+### Built
+
+- `src/shared/approvalMachine.ts` (11 states, 17 events, 21 transitions, expiry minutes per verb) and the approval half of
+  `spec/state-machines.json` (`scripts/extract-sm.ts`, checked against the 07-2 §5 state table and diagram words), checked
+  against each other by `test/fidelity/sm/FID-16-approval.test.ts`.
+- M5 types, error kinds and schemas (`ApprovalFields` strict, `ApprovalDraft` verbs book|buy|pay|delete); `fieldsHash` in
+  `src/engine/gate/fieldsHash.ts` (node:crypto, so not in `shared/`); `newNonce()` in `shared/canon.ts` (Web Crypto).
+- The 14 M5 invoke channels in `shared/ipc.ts`, both preloads and `IpcRouter.ts`, each answered by a stub
+  (`VALIDATION` `not_implemented`) in its owner's file: `main/cards/answerIpc.ts` (T5), `main/approvals/approvalIpc.ts` (T4),
+  `main/drafts/draftIpc.ts` (T6), `main/vault/secretIpc.ts` (T2). Register with `handleAll(rows)`; only the body changes.
+- Engine protocol rows `approval.changed`, `registry:add|remove`, `code.submit` (main → engine) and `approval.open`,
+  `approval.transition`, `vault.use` (engine → main); `EngineBridge` answers the three engine kinds `not_implemented`.
+- `test:card.seed` / `__fooTest.cardSeed`: any card type through `applyDbOps`, plus an `approvals` row for approval /
+  payment / draft cards (a payload key `approvalId` is filled with the new id).
+- Card stubs `Choice`, `OptionTiles`, `Approval`, `Draft`, `SecretBox`; registered in M4-T5's `CARD_VIEWS`; `CardFrame` gains
+  `edge: 'accent'` (the gated card's 1.5px top edge; Chromium draws it 1px at 100% scale), `data` and `CardSummary`.
+- M5 test ids, 287 copy keys (pending ones listed with their ticket in `scripts/copy-pending.json`), `@napi-rs/keyring` 2.1.1.
+
+### Picks and gaps (each in CR-0009 §(b))
+
+- G-M5-01…17: the pack's recommended options. G-M5-18: HELD / APPROVED → WITHDRAWN on a stopped job. G-M5-19: Draft undo
+  moves the same row APPROVED → PENDING (card_id is UNIQUE), expiry reset to undo time + 60 min.
+- `@napi-rs/keyring` 2.1.1 API (from its `index.d.ts`): sync `new Entry(service, username)` / `Entry.withTarget(target,
+service, username)`, `setPassword`, `getPassword(): string | null`, `setSecret(Uint8Array)`, `getSecret()`,
+  `deleteCredential(): boolean`; an `AsyncEntry` mirrors it with Promises. It is a native module: the packager may need it
+  in `asarUnpack` (T2 checks the installer).
+- `settings.json` has no `permissions` / `rules` section yet: T4 adds `rules`, T7 adds the permission chips.
+- Card width: `.card` had `width: min(var(--card-w), 100%)` with `container-type: inline-size`; in a shrink-wrapped bubble
+  column the percentage collapsed every card (the M2 table card too) to its padding (30px). Now `width: var(--card-w);
+max-width: 100%` (`.wide` the same with `--card-w-wide`). CardFrame takes `data` for extra `data-*` attributes so a card
+  root stays the bubble's direct child (`.hold:has(> [data-testid^='card-'])`).
+- WhatsApp daily-limit line: the slot is `{date}` (it holds "Sat 17 Oct, 12:00 AM"), so ART-21's scan reads it as absolute.
+- Copy: `cards.common.gated_typed_yes` repeats `thread.approval_typed.approve` (both spec-named); 05-1 §0.6 "Nothing needs
+  you here." has no key yet.
+
+## M4 · close-out (ticket T7)
+
+### Built
+
+- Golden lane renders M1–M4 refs (`FIDELITY_MILESTONE: M4`); the six M4 card drawings are disputed on r1/r2 (and r3 on
+  BP-CARD-15 and BP-CARD-19) under CR-0008 §(g); r4 still counts.
+- `test/e2e/m4-jobs.spec.ts`: PERF-07, PERF-08, PERF-11 as single-run smokes on the fake clock and fake AI (the E.1 p95 on
+  the reference laptop is the release check). PERF-07 uses a plain question: a job's 👀 is replaced by 🛠 within 700 ms,
+  so the badge debounce (04 §4.2) skips it and only 🛠 paints.
+- UX-05 (job parts) and UX-23 (stuck, offline, AI down, recovery) golden step files; M4 trace rows `live`.
+- Done from the carry list: the now line reads the running phrase (`phraseText(..., 'running')`); not-sent notices carry
+  the send ErrorKind (`noteSendError`).
+
+### Moved to M5 (each needs the M5 choice / approval UI or the screen viewer)
+
+- "Change plan" supersede (05-3 §5.12 old card Superseded + new plan card; 08-2 §5.3.3 old plan attached to intake).
+- "Check for real" retry of a `done_unverified` job (05-3 §5.16); the `job:retry` contract is in (CR-0008 §(f)c).
+- `request_approval` still counts as a failed turn until the gate exists.
+- Replay, Send a report, use-backup links and the other keys left in `scripts/copy-pending.json`, each tagged with the
+  ticket or milestone that renders it.
+- Main-side checks the renderer does today: a new AI cap ≥ current + ₹100 (08-0 §A.2); `plan:go` offline / cap gate.
+
+## M5 · second look, fresh terms, steer supersede, choice timeouts (ticket T8)
+
+### Built
+
+- After APPROVED (X-125 order): second look (`gate/secondLook.ts`: rule checks for the user-stated ₹, recipients, the
+  site, dates through a parser port, people count by `extractCounts`; then one `second_look` AI turn) → live terms check
+  (`gate/liveTerms.ts`, re-reading the money evidence) → RUNNING with `secondLook` on the transition.
+- A failed second look → HELD with `cards.approval.held.mismatch` and its two options; a pick goes back to APPROVED (no
+  second AI check) or DECLINED with the user's own value as a decision line.
+- Changed live terms → SUPERSEDED `{ superseded: 'price'|'time'|'recipient'|'fee' }` and a new card with the live fields
+  (`approval.open.supersedes`; main links `superseded_by`).
+- Steer on a PENDING approval or payment card → SUPERSEDED `{ superseded: 'steer' }` (AT-077b); "stop" with 2+ jobs →
+  `stop_which` (AT-077a tests).
+- Choice timeouts on the 15 s tick (`cards/choiceTimeouts.ts`): reversible → Best fit at 15 min; otherwise one reminder
+  toast at 15 min and CANCELLED (`choice_timeout`) at 24 h.
+- CHECKING → FAILED (`no_proof`) by main's expire tick 15 min after `submitted_at` (G-M5-33).
+- T7 review hand-offs: `holdUnknown` keyed by (tool, redacted args) for the whole job; the send hard limit reads bank
+  details, attachments from Documents and agreeing to pay from the message (`gate/sendContent.ts`, G-M5-31).
+
+### Picks and gaps (for the lead's independent check)
+
+- M5-T8-01 · No rule check of the amount against the user's words (review 3): §9.6 A's amount is the live total, which the
+  fresh-terms check covers (SUPERSEDED, AT-124); "under ₹3,000" must not hold a ₹2,400 booking. The AI step sees both.
+- M5-T8-02 · Dates are checked only when a parser is wired (`parseWhen`); chrono-node is not in package.json (lead).
+- M5-T8-03 · Only recipients from untrusted text are flagged; an untrusted site or payee is not.
+- M5-T8-04 · Live terms that cannot be read (`unreadable`) → HELD `cannot_check`; no money evidence at all (`none`, e.g.
+  after a restart) skips the check.
+- M5-T8-05 · A job not started by the user reads the chat's last 30 min as user words; none → HELD `no_user_words`.
+- M5-T8-06 · Not built (no contract yet): the [ Search again ] button under the 24 h stop line, the G-M5-08 late-answer
+  caption, and `cards.approval.superseded.price_changed` (Payment card copy, M10). A Draft card steer still updates the
+  card directly until T6 lands.
+- M5-T8-07 · G-M5-34 (open, spec keeper): `{job}` in the 24 h stop line and `{what}` in the reminder take jobs.title
+  unchanged, as the stuck card does; 08-4 §26.2 titles are running phrases ("Looking for flights") while 05-1 §5.3.2 reads
+  a noun ("the Delhi flight search").
+- M5-T8-08 · Only the send content marks the engine can read are wired; the Draft send path (T6) passes
+  `GateCall.content`.
+- M5-T8-09 · From the Fable review, logged not fixed: (4) a steer while HELD is silent, since the machine has no
+  HELD → SUPERSEDED edge (CR item); (5) live recipients and siteDomain reach the second look only with the M8/M9 tools;
+  (8) rename `EngineApproval.heldPicked` → `secondLookHeld` when next touched; (9) a cannot_check retry belongs to J19;
+  (10) `userWordsFor` reads the last 50 messages per chat, to page by `since` later.
+- M5-T8-10 · Review fixes: a write-ahead with no ack in 2 s → HELD with the cannot_check strip and the card kept open;
+  the AI check retries only an invalid act (timeout, error or refused cost → cannot_check) and runs on the job's signal;
+  the fresh-terms re-read (`ToolLayer.reread`) leaves the IDEMPOTENT_REPEAT and held-`unknown` sets as they are.
+- M5-T14-01 · G-M5-39 (a): CHECKING → FAILED is marked by main's 15 min no-proof move (`payload.unknownResult`); the card
+  shows "I can't tell…" with [ It went through ] [ It didn't ] and no Try again. The tap is `approval:report { cardId,
+nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED, `answer` and `resolved_by='tap'`, the
+  nonce turns over (once only), and the approval's activity rows still `unknown` take done / failed. Nothing writes such a
+  row on the CHECKING path yet (no live book or pay producer before M8 / M9), so today the card alone records the answer;
+  the activity.jsonl mirror is not rewritten on that update.
+- M5-T14-02 · No phone is verified in M5, so the `{phone}` clause is left out with its words
+  (`cards.approval.body.checking_failed_no_phone`, G-M5-32 (b) rule); `unknownResult.phone` carries one when a later
+  milestone verifies it. 08-2 §10.5's payment wording ("I couldn't confirm it…" + [ I checked, try again ]) is the
+  Payment card's (M8 payments) and is not touched.
+- M5-T14-03 · G-M5-39 (b): a Draft's Send runs the second look when its 5 s close (08-2 §9.6, 08-3 §16.1): main's tick asks
+  the engine `draft.secondLook { approvalId, content, recipients }` (the AI and the job's words are there; content = the
+  redacted subject + body, not the 140-char summary) and acts on the answer. No engine / no answer → HELD cannot_check
+  (fail closed); the port is required, so no Draft can send without it. HELD keeps the card `pending` with the held strip;
+  the draft's value → HELD → APPROVED and sends at once; the user's value → DECLINED (G-M5-03), the card superseded and a
+  fresh pending Draft on the same Gmail draft (as G-M5-28), since re-writing it with their value is M8's draft producer.
+- M5-T14-04 · Fable review PASS WITH FIXES: fixed (1) the draft's-value pick sets `undo_until = now`, so a crash before the
+  send leaves it on the tick's list (sent without a second look, the pick being its answer); (4) a unit case proves the AI
+  check reads the whole card text. Logged: (2) the Draft look's AI turn runs on its own signal, bounded by main's 60 s
+  request timeout; (3) a Draft held cannot_check is never looked at again when the AI returns (the strip's "I'll ask again"
+  is J19's, as for T8); (5) the activity.jsonl mirror is not rewritten by `approval:report` (the M8 / M9 producer of
+  `unknown` rows mirrors it); (6) a CHECKING card with no site or payee would read "{site}" empty (no such card in M5).
+- M5-T14-05 · Lead review: the Draft look's AI turn now aborts at 60 s on the engine clock (`DRAFT_LOOK_TIMEOUT_MS`, the
+  same cap main waits), so a late turn frees its lane slot (closes T14-04 (2)); `send.failed` logs a fixed `code`
+  (`errCode`, 08-3 §19.1), never the error text. T14-04 (3) stays a J19 follow-up (M5.tsv). A user's-value pick re-holds
+  on the same mismatch until they tap Change, since nothing re-writes the Gmail draft before M8's producer.
+
+## M5 · close-out (lead)
+
+### Built
+
+- Cards: Choice (reversible Best fit, typed answers, timeouts), Approval (countdown, held strip, scope control), Draft
+  (send with undo, Gmail draft), Secret box. All words in `en-IN.json`; drawings checked by BP-CARD and UX-10/12/16.
+- Approval gate: `request_approval` tool, approval state machine (07-2 §5), second look and live terms check after
+  APPROVED, expiry, withdraw and decline, steer supersede, "stop" with 2+ jobs asks which (CR-0009).
+- Secret vault on Windows Credential Manager (in-memory under FOO_TEST), paste catcher, R1/R2 scrub on everything
+  stored or logged, tech log as main's log sink.
+- Golden lane renders M1-M5 refs; M5 trace rows `live`; `docs/fidelity/M5.audit.json` lists the Must-pass ids.
+- M4 carry-over merged (T10): see `docs/decisions/M5.tsv` for what moved.
+
+### Moved to later milestones
+
+- UX-10-02 (memory chip highlight) to M6 with memory in replies (G-M5-26).
+- Deadline-reminder buttons (Keep it, Cancel booking) stay disabled until a milestone makes `deadline_reminder` cards
+  (G-M5-32a); 08-4 §26.8 item 6 (quit past `wake_at` fails the job) to M9 (G-M5-23b).
+- The booking `area` slot and `when` from chrono-node stay out of the verified fields until the spec-keeper settles
+  them (G-M5-32b, c).
+- Remaining `console.*` sinks outside T3 (`Settings.ts`, `EngineSupervisor.ts`, `guard.ts`) and `rebuild.ts` error
+  detail move to `logEvent`; `EngineBridge.ts` is still open.
+- Tier R drawings disputed on BP-CARD-03/04/08/09 and UX-10-01/03/04/05/06 stay disputed until the gallery redraw.
+- Windows-only checks left for the release run: Credential Manager through `@napi-rs/keyring` on a real PC.
+
+## M6 · memory store (ticket T3)
+
+### Built
+
+- `src/engine/memory/MemoryService.ts` is the `Engine.memory` slot: the eight `memory.cmd` commands (add, edit, setPrivate,
+  setKind, forget, undo, forgetBySource, forgetAll), `learn()` for T5 (placement, §12.4.1 sensitive rule, tombstone check),
+  `forgetFromChip()` (G-M6-10 activity row), and `fileChanged()` / `reindexAll()` for the watcher. Every change is read file →
+  edit → `file.write` (only when the text changed) → parse in the worker → one `db.tx`; commands run one at a time.
+- `reindex.ts` turns one parsed file into index ops (update in place by id, a line moved from another file keeps its row,
+  index-only columns kept: origin reference, category, learned_at, last_used_at, use_count). `sensitive` is re-derived.
+- `watcher.ts`: `fs.watch({DATA}/memory, recursive)`, 500 ms debounce per file on the injected clock; foo's own writes are
+  skipped by comparing the file's sha256 with the last text foo wrote (pack Risk 2).
+- `tombstones.ts`: 90-day rows plus the `memory\.tombstones` mirror (one JSON object per line, the row's columns).
+- Seed: `SeedWriter.fact()` stores the real fact hash and `writeSeedMemory()` writes every seeded fact as its file line, then
+  fixes `line_no`, `hash`, `chat_id`, `sensitive` from the written file, so the engine's reindex of a seed changes nothing
+  (pack Risk 1). `testHooks.ts` calls it after each seed set (the seed functions have no data folder).
+- Checked: the parse worker loads from inside `app.asar` in a utility process (Electron 44, Linux; T2's open note).
+
+### Picks and gaps (for the lead's independent check)
+
+1. **No prompt for the manual-add classify turn.** 08-4 §24 has no prompt file for it (`classify` = `stuck.md` only), and
+   prompt files must equal the spec's blocks. So every manual add takes §12.4's own fallback (kind `fact`, category `other`);
+   the act schema and the turn hook (`classifyFact.ts`) are built and tested. Needs a CR adding the prompt block.
+2. Tombstones block **learning** (`learn()`: review, intake, jobs). The user's own add or edit on the Memory page is not
+   blocked by a tombstone (their typed act, as G-M6-06 treats `rememberOn`).
+3. `setKind`: preference → `preferences\{topic of its category}.md`; fact / place leave `people\` and `preferences\` for
+   `about-you.md`; person stays in its file (the invoke carries no name for a slug); helper notes and chat-only facts keep
+   their file and gain the kind token.
+4. forgetAll: the engine writes each file empty (08-1 §2.4 has no delete), tombstones every fact, and logs `forgot_facts`
+   with the page's own words "Forgot {count} things." (the activity summary needs a `{source}` word the spec does not give);
+   main's `memory:forgetAll` handler then removes the emptied files (`src/main/memory/forgetFiles.ts`), so no person's file
+   name is left (§12.6).
+5. A Notepad line's `learned_at` is now when its date is today, else midday UTC of the written date (the file has no time).
+6. On engine start every memory file on disk is reindexed; index rows whose file is missing are kept (no delete on start).
+7. A sensitive line typed or edited in Notepad is made private at reindex (the file is rewritten once with the token).
+
+### Left for later tickets (from the Fable review)
+
+- Undo of a forget restores the index row but not the fact's `memory_group_grants` rows (main deletes them with the row):
+  T4/T5 own grants.
+- The Notepad reindex runs the sensitive rule without `contacts_index` names, so the contact-details branch (§12.4.1) does
+  not fire there; T5 wires the contacts list into `learn()` and can pass it here too.
+- The watcher and the parse worker are not closed on engine shutdown (main ends the utility process; the worker is unref'd).
+
+## M6 · nightly tidy, conflicts, share, style (ticket T7)
+
+### Built
+
+- `src/engine/memory/tidy.ts`: `tidy({ facts, now, ai, asked, merge }) → { ops, card? }` (08-3 §12.7 steps 1–3) and
+  `MemoryTidy.run()` (applies the plan, posts the conflict card, appends `memory\.tidy-log.md`, returns `TidyReport` with
+  the week count of step 5). `catchUpDue({ lastRunAt, now, timeZone, idleSec })` is the missed-03:00 rule; M7 registers the
+  `memory_tidy` builtin and feeds it `powerMonitor.getSystemIdleTime()` (G-M6-09). FOO_TEST `test:memoryTidy` runs it now.
+- `src/main/notify/budget.ts`: `countToday`, `isQuiet`, `holdOp`, and `gateUnprompted`, which EngineBridge runs on every
+  engine `db.tx` before applying it (§15.2 step 5 "at message time, before anything is posted"): an unprompted message at the
+  budget or in quiet hours is not written, nor the card it carries; a `held_items` row takes its place. M7 extends the file.
+- `src/engine/memory/askShare.ts`: `MemoryShare.ask` (§12.5.1 card in the helper's 1:1 chat) and its answer (24 h grant /
+  dismissed key). The `memory.askShare` tool row in the group helper turn's catalogue lands with group turns (M13).
+- `src/engine/memory/styleStats.ts`: §12.9 numbers and lines, run on each `user.message` and acting at every 20th user
+  message in foo's chat.
+- Main tells the engine about jobless `memory_confirm` / `conflict` answers after writing them (`answerCard.ts`).
+
+### Picks where the spec is silent or reads two ways (decision log M6.tsv, for the CR-0010 addendum)
+
+1. **Entity words (G-M6-T7a).** §12.7 says the entity is "the first noun phrase after `lives in|works at|…`". Read
+   literally, "Lives in Mumbai" and "Lives in Pune" are two entities (Mumbai, Pune) and AT-219's conflict is never sent to
+   the AI. The code groups by the relation word itself (`lives in`) for about-you facts, and by the person's file for
+   `people\` facts; the AI still decides what conflicts.
+2. **Near-duplicates need the same file** as well as the same scope: two people's files can hold the same words
+   ("Birthday 18 Oct").
+3. **A conflict with no `ask`** keeps the newest `said` and drops the other with no tombstone (the user did not forget it);
+   two guesses with no `ask` stay as they are (no words to ask with). Merged duplicates and old guesses are dropped with no
+   tombstone and no undo either.
+4. **Option ↔ fact.** Option i keeps the fact whose text holds the option's words; when that does not decide, the AI's
+   order (`factIds[i]`). The card payload carries `factIds` in option order.
+5. **Why source** of the conflict card is `housekeeping` ("Housekeeping for your routines." — the tidy is the built-in
+   `memory_tidy` routine); `suggestionKey` = `memory_conflict:{idA}-{idB}` (§15.7) and a `suggestions` row is written in the
+   same tx, so the pair is asked once even when the item is held.
+6. **Held payload.** `HeldItemPayload.text` = the message text, or the card's question for a card message; `open` =
+   `open_chat` of the chat; `ref.factIds` from the card payload, so the brief's Review can ask again.
+7. **Words not in the spec** (new keys, need the CR): the share card question `cards.choice.question.memory_share` and
+   `cards.choice.option.no` (the spec's "Okay to tell the {Goa trip} group {…}?" [ Yes ] [ No ]); the tidy log line adds
+   "Settled {n} conflicts" and "Dropped {n} old guesses" to the spec's "Merged 2 duplicates · Asked about 1 conflict"; the
+   style lines `memory.style.*` (the spec names the measures, not the words).
+8. **Style lines** are three when neither a greeting nor a sign-off reaches 5 of 20 (the spec says four lines; the fourth
+   needs a token to name).
+9. **Contracts caught up to 08-1 §2.4.1**: `held_items` and `suggestions` are engine-writable (`suggestions` insert-or-replace
+   on its UNIQUE key) and `suggestionState` is a named query; two new names, `chats.forHelper` and `messages.userTexts`, are
+   additions for the CR.
+10. A private fact is blocked from `askShare` like a sensitive one (§12.5 / Art. 14: private facts never reach a group).
+11. **Review follow-ups (Fable)**: style.md lines never reach a group prompt (`groupExclusion` drops the file; 08-3 §12.1).
+    Left for the CR-0010 addendum or M7: a conflict where both facts are guessed and the AI gives no `ask` is left alone, and
+    TidyAct `keep` is not read (pick 3); the conflict card's why source `housekeeping` may fall under
+    `routines.housekeepingMessages`; the budget gate has no `urgent` exemption and writes no `notifications` row yet
+    (§15.2, §15.6, M7); a held conflict whose held item is never delivered is not asked again (M7's brief should re-post it
+    from `ref.factIds`).
+
+## M6 · close-out (lead, CR-0010)
+
+- Built: the memory store and Notepad watcher (T3), memory in replies (T4), learning from chat and chips (T5), the Memory
+  page with forget dialogs and export (T6), the nightly tidy, conflicts, share and style (T7), and the M5 clean-up (T9). T2
+  (secrets and approvals contracts) and T1 (contracts) landed first.
+- The lead merged T5 and T7 together. Both used `memory_confirm`, so the engine now owns that card (G-M6-21).
+- AT-075 (a Notepad edit reaches the next reply) is `test/integration/m6-watcher.test.ts` over the real Engine and bridge.
+- Golden lane: `FIDELITY_MILESTONE: M6`; captures in `test/fidelity/ux/UX-18.spec.ts` and `test/fidelity/bp/BP-m6.spec.ts`.
+- Moved on (CR-0010 §(f)): to M7, the budget's `urgent` exemption, the `notifications` row, and re-asking a held conflict
+  (G-M6-24). To M8, "Show where I learned it" for Gmail and WhatsApp (G-M6-25). To the spec-keeper, G-M6-16 (X-06 vs §24.16
+  item 4) and G-M6-17 (no classify prompt).
 
 ## M8 · connector contracts (ticket T1, CR-0012)
 
