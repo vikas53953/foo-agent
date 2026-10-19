@@ -7,7 +7,8 @@ import { t } from '../../src/shared/copy/t';
 import { TID } from '../../src/shared/testids';
 import { openPanelChat, startWorld } from './m4-start';
 
-const SOURCE = /^(You said|I guessed · .+) · \d{1,2} [A-Z][a-z]{2}$/;
+// "You said · 2 Oct", "I guessed · from your chats · 2 Oct", "From Gmail · 9 Oct", optionally " · Private" (06-2 §7.3), or "Only in {chat}"
+const SOURCE = /^((You said|I guessed · .+|From .+) · \d{1,2} [A-Z][a-z]{2}( · Private)?|Only in .+)$/;
 
 async function openFromMenu(page: Page): Promise<void> {
   await page.getByTestId(TID.sidebarMore).click();

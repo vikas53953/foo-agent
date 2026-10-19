@@ -46,7 +46,10 @@ export function UndoBar({ text, actionLabel, onUndo, onFinal }: UndoBarProps) {
     };
     const el = ref.current;
     const paused = () => !!el && (el.matches(':hover') || el.contains(document.activeElement));
-    const resume = () => window.setTimeout(() => !paused() && start(), 0);
+    let resumeAt: number | undefined;
+    const resume = () => {
+      resumeAt = window.setTimeout(() => !paused() && start(), 0);
+    };
     el?.addEventListener('pointerenter', stop);
     el?.addEventListener('pointerleave', resume);
     el?.addEventListener('focusin', stop);
@@ -60,6 +63,7 @@ export function UndoBar({ text, actionLabel, onUndo, onFinal }: UndoBarProps) {
     window.addEventListener('keydown', onKey);
     start();
     return () => {
+      window.clearTimeout(resumeAt);
       stop();
       window.removeEventListener('keydown', onKey);
       el?.removeEventListener('pointerenter', stop);

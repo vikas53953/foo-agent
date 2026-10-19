@@ -90,7 +90,8 @@ describe('memory export (08-3 §19.4.1)', () => {
   it('a secret in any file aborts the whole export with EXPORT_SECRET_FOUND and saves nothing', async () => {
     write(
       'memory/preferences/work.md',
-      '- My key is sk-proj-abcdefghij1234567890ABCDEFGHIJ  {you said · 2026-10-06 · chat · fact · f_5}\n',
+      // built at run time so the public repo holds no key-shaped string
+      `- My key is ${['sk', 'proj', 'abcdefghij1234567890ABCDEFGHIJ'].join('-')}  {you said · 2026-10-06 · chat · fact · f_5}\n`,
     );
     await run();
     expect(events.at(-1)).toEqual({ pct: 100, phase: 'done', error: 'EXPORT_SECRET_FOUND' });

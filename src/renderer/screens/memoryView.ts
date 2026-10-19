@@ -4,7 +4,7 @@
 // (Narrator row name), 08-3 §12 (facts read from Gmail/WhatsApp/Calendar are `guessed` with that origin), 06-3 §14 C-3.
 // Pure: the page renders from a `MemoryFactView[]` and these functions.
 import { t } from '../../shared/copy/t';
-import type { MemoryFactView, MemoryFilter, MemoryKind, MemoryOrigin } from '../../shared/types';
+import type { ErrorKind, MemoryFactView, MemoryFilter, MemoryKind, MemoryOrigin } from '../../shared/types';
 import { dayMonth } from '../shell/panelData';
 
 export type MemoryChipId = MemoryFilter['chip'];
@@ -125,4 +125,10 @@ export function undoText(fact: string): string {
   const chars = [...fact];
   const item = chars.length > UNDO_ITEM_MAX ? `${chars.slice(0, UNDO_ITEM_MAX - 1).join('')}…` : fact;
   return t('screen.memory.undo.text', { fact: item });
+}
+
+/** The status line when the memory export stops (08-3 §19.6); DISK_FULL raises main's DISK_LOW card instead, so no line. */
+export function exportErrorLine(error: ErrorKind | undefined): string | null {
+  if (!error || error === 'DISK_FULL') return null;
+  return error === 'EXPORT_SECRET_FOUND' ? t('errors.export_secret_found.line') : t('errors.unknown.what_happened');
 }

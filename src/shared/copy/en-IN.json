@@ -1162,5 +1162,6 @@
   "thread.cap_warning.line": "You’ve used {spent} of your {cap} AI cap this month.",
   "sidebar.footer.ai.plan_limit.no_time": "{AI} limit reached",
   "chat_header.status.paused_plan_limit.no_time": "Paused · {ai} limit reached",
-  "activity.exported.summary": "Exported everything to {path}"
+  "activity.exported.summary": "Exported everything to {path}",
+  "errors.export_secret_found.line": "I found a key in the export, so I stopped. Nothing was saved."
 }

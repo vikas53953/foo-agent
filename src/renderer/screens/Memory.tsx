@@ -33,6 +33,7 @@ import { fileName, UnreadableLines, type UnreadableFile } from './confirms/Unrea
 import { learnedInChat, memoryActions } from './memoryActions';
 import {
   APP_NAME,
+  exportErrorLine,
   forgetSource,
   groupFacts,
   helperIdOf,
@@ -378,6 +379,8 @@ export function MemoryPage({ view }: { view: Extract<View, { kind: 'screen' }> }
   useFooEvent('memory:changed', load);
   useFooEvent('data:exportProgress', (p) => {
     if (p.path) say({ text: t('screen.memory.export.saved', { path: shownPath(p.path) }), path: p.path });
+    const failed = exportErrorLine(p.error);
+    if (failed) say({ text: failed });
   });
 
   // Ctrl+F focuses the page search (06-2 §7.6).
@@ -486,6 +489,8 @@ export function MemoryPage({ view }: { view: Extract<View, { kind: 'screen' }> }
       kind: 'item',
       id: `forget-${item}`,
       label: forgetLabel(item),
+      // C-3 names a count; with nothing learned from that app there is nothing to forget.
+      disabled: forgetSource(item, scoped).count === 0,
       onSelect: () => {
         setSource(item);
         openDialog('c-03');

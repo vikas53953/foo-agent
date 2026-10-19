@@ -1,9 +1,11 @@
 // M6 T6 Memory page rows (06-2 §7.3 source table, groups, chips, learned strip; §7.5 states; 08-3 §12 origins). Expected
 // strings are copied from the spec tables, not rebuilt from the copy file.
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { t } from '../../src/shared/copy/t';
 import { setBridge } from '../../src/renderer/ipc/client';
 import { learnedInChat, memoryActions } from '../../src/renderer/screens/memoryActions';
 import {
+  exportErrorLine,
   forgetSource,
   groupFacts,
   highlight,
@@ -151,6 +153,15 @@ describe('forget by source (06-3 §14 C-3)', () => {
     expect(forgetSource('gmail', facts)).toEqual({ origin: 'gmail', count: 2 });
     expect(forgetSource('chat', facts)).toEqual({ origin: 'chat', count: 1 });
     expect(forgetSource('whatsapp', facts)).toEqual({ origin: 'whatsapp', count: 0 });
+  });
+});
+
+describe('export stops (08-3 §19.6)', () => {
+  it('a secret says "I found a key in the export…"; DISK_FULL leaves it to the DISK_LOW card; others say something went wrong', () => {
+    expect(exportErrorLine('EXPORT_SECRET_FOUND')).toBe('I found a key in the export, so I stopped. Nothing was saved.');
+    expect(exportErrorLine('DISK_FULL')).toBeNull();
+    expect(exportErrorLine(undefined)).toBeNull();
+    expect(exportErrorLine('UNKNOWN')).toBe(t('errors.unknown.what_happened'));
   });
 });
 
