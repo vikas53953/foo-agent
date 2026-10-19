@@ -684,6 +684,7 @@ max-width: 100%` (`.wide` the same with `--card-w-wide`). CardFrame takes `data`
 - WhatsApp daily-limit line: the slot is `{date}` (it holds "Sat 17 Oct, 12:00 AM"), so ART-21's scan reads it as absolute.
 - Copy: `cards.common.gated_typed_yes` repeats `thread.approval_typed.approve` (both spec-named); 05-1 §0.6 "Nothing needs
   you here." has no key yet.
+
 ## M4 · close-out (ticket T7)
 
 ### Built

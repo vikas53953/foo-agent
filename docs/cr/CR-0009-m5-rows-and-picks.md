@@ -5,8 +5,7 @@
 - **Spec sections:** 07-journeys-2 §5 (approval machine), §7.4.3 (SM-A4…A9), 08-0 §C, §G.2, §G.3, §G.7, 08-1 §2.4, §3.2,
   §4.5.1, 08-2 §5.7, §5.9, §9.1, §9.3, §9.4.2, §9.5, §9.6, 08-4 §25.1, §26.5, §26.7, 05-1 §0.4, §0.8, §5.3, §5.4, 05-2 §5.5, §5.7,
   §5.8, §5.9, 10-acceptance-1 §B, 10-acceptance-2 §D, 11-fidelity §11.5 (FID-16/17), X-65, X-125.
-- **Status:** Approved by Vikas's approve-on-my-behalf rule (his message 2026-10-18 14:56Z), after the independent review in
-  §(f), DECISIONS X-162
+- **Status:** Approved by Vikas's approve-on-my-behalf rule (his message 2026-10-18 14:56Z), after the independent review in §(f), DECISIONS X-162
 - **Change:** `spec/trace.csv` (rows below), `spec/state-machines.json` (approval machine added by `scripts/extract-sm.ts`),
   `spec/constitution/DECISIONS.md` (row X-162); `scripts/golden-manifest.ts` (`BP_M5`, `EARLY_STEPS`, new `STEP_MILESTONE`)
   and `golden/manifest.json` regenerated (`pnpm golden:manifest`). No other `spec/` or `golden/` file changes.
