@@ -1,0 +1,36 @@
+{
+  "journey": "test/verify/m5-t3-redaction.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "74385bfa1d68ddca66402244ba819da22f931310",
+  "dirty": false,
+  "started": "2026-10-19T06:42:31.719Z",
+  "finished": "2026-10-19T06:42:34.643Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "typing the canary and pressing Enter opened the paste catch",
+    "Send anyway: my bubble reads \"my key •••• (hidden) thanks\"",
+    "the AI request carried \"[the user typed a secret; it was hidden]\" and not the key (1 intake request)",
+    "searched 10 files the app wrote (/data/data/foo.db, logs, activity): 0 hits for the canary"
+  ],
+  "shots": [
+    {
+      "file": "after/01-paste-catch-open.light.png",
+      "name": "paste-catch-open",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-sent-anyway.light.png",
+      "name": "sent-anyway",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-sent-anyway.dark.png",
+      "name": "sent-anyway",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": []
+}
