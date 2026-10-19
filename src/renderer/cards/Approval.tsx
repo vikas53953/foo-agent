@@ -177,10 +177,10 @@ function Quote({ text }: { text: string }) {
   );
 }
 
-/** 09 §9.17.4: Ctrl+Enter inside an Approval card does nothing (and goes no further). */
 /** The deadline-reminder buttons until T7 wires them (they render disabled). */
 const noop = () => undefined;
 
+/** 09 §9.17.4: Ctrl+Enter inside an Approval card does nothing (and goes no further). */
 const swallowCtrlEnter = (e: KeyboardEvent) => {
   if (e.key === 'Enter' && e.ctrlKey) {
     e.preventDefault();
