@@ -23,10 +23,13 @@ export function writeRedacted(text: string): string {
   return redactor.redact(text).text;
 }
 
+/** A whole leaf that is a foo id (08-0 §E.7 `{prefix}_{UUIDv7}`): never a secret, so P17 must not hide it. */
+const FOO_ID = /^[a-z]{1,4}_[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$/u;
+
 /** Every string leaf of a JSON value through {@link writeRedacted} (keys stay). */
 export function writeRedactedJson<T>(value: T): T {
   const walk = (v: unknown): unknown => {
-    if (typeof v === 'string') return writeRedacted(v);
+    if (typeof v === 'string') return FOO_ID.test(v) ? v : writeRedacted(v);
     if (Array.isArray(v)) return v.map(walk);
     if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)]));
     return v;

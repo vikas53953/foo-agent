@@ -243,3 +243,16 @@ describe('R1: message:send re-check and "Send anyway"', () => {
     expect(mainRegistry().size).toBe(0);
   });
 });
+
+// M5 T4 (proposed G-M5-25): a JSON leaf that is exactly a foo id (08-0 §E.7) is not a P17 secret; ids around it still are.
+describe('R2: foo ids in JSON columns', () => {
+  it('a card payload keeps its approval and job ids; a key next to them is still hidden', () => {
+    const id = 'ap_01a142c2-6ac0-74eb-a023-d38efbc37e5f';
+    const row = redactRow('cards', {
+      payload: JSON.stringify({ approvalId: id, jobId: 'j_01a142c2-6ac0-74eb-a023-d38efbc37e60', note: CANARY }),
+    });
+    expect(JSON.parse(String(row.payload))).toEqual({ approvalId: id, jobId: 'j_01a142c2-6ac0-74eb-a023-d38efbc37e60', note: '[hidden]' });
+    // In free text the id is not a whole leaf, so the text column keeps the P17 rule unchanged.
+    expect(redactRow('messages', { text: `id ${id}` }).text).toBe('id [hidden]');
+  });
+});
