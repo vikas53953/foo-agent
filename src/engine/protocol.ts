@@ -217,6 +217,8 @@ export const NAMED_QUERY_NAMES = [
   'monthAiSpend',
   'jobs.liveForChat',
   'cards.openForChat',
+  // M4 T3: the watchdog's budget ceiling (08-4 §26.3 item 6, "counts come from the DB").
+  'stepTurnsForJob',
 ] as const;
 export type NamedQuery = (typeof NAMED_QUERY_NAMES)[number];
 

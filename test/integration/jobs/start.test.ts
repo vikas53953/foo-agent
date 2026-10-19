@@ -28,7 +28,8 @@ describe('three WORKING slots, end to end', () => {
       tool('gmail.search', { query: 'bill' }),
     ];
     h = jobHarness({ script });
-    const ids = ['job one', 'job two', 'job three', 'job four'].map((t) => h!.userSays(t));
+    // One chat each: a second message in a chat with a live job would steer it (08-2 §5.2).
+    const ids = ['job one', 'job two', 'job three', 'job four'].map((t) => h!.userSaysIn(h!.chat(t.replace(' ', '_')), t));
     // Let the four intakes land, then look before the 20 s turns end.
     for (let i = 0; i < 40; i++) await new Promise((r) => setTimeout(r, 2));
     h.clock.advance(2_000);
