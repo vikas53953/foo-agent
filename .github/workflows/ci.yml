@@ -12,8 +12,10 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
 
+# The PR action is in the group: marking a PR ready right after a push must not let the push's run (draft payload, no
+# golden lane) cancel the ready run.
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.ref }}-${{ github.event.action }}
   cancel-in-progress: true
 
 permissions:
