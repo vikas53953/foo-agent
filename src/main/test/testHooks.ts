@@ -26,6 +26,8 @@ import { writeSeedMedia } from './seed/media';
 import { seedPerf } from './seed/perf';
 import { seedM4Cards } from './seed/m4Cards';
 import { seedUxWorld, uxWorldSettings } from './seed/uxWorld';
+// M5
+import { installGmailDrafts, memoryGmailDrafts } from '../drafts/gmailDrafts';
 
 const JOB_STATES = [
   'queued',
@@ -250,6 +252,8 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
   const guard = channels();
   const reply = (): ClockReply => ({ now: clock.now(), iso: new Date(clock.now()).toISOString() });
   const registry = seeds(ctx, clock);
+  // M5 T6 (08-3 §22.2, G-M5-12): the in-memory Gmail drafts behind the Draft card until the M8 connector.
+  installGmailDrafts(memoryGmailDrafts({ adoptUnknown: true }));
 
   guard.handle('test:clock', (raw: unknown) => {
     const arg = clockArg.parse(raw);

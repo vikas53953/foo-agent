@@ -368,6 +368,12 @@ export interface DraftPayload {
   sendAllowed: boolean;
   xRemaining?: number;
   undoUntil?: number;
+  // M5 T6 (05-2 §5.7.2): the Gmail draft the card's Change / Send / Discard act on; the "Not sent. The draft is still here."
+  // line after an Undo; the sent time and the Sent-folder proof message.
+  gmailDraftId?: string;
+  undone?: boolean;
+  sentAt?: number;
+  sentMessageId?: string;
 }
 /** 08-1 §4.5 secret payload (never a value). */
 export interface SecretPayload {
@@ -851,6 +857,10 @@ export type ErrorKind =
   | 'VAULT_MISSING'
   | 'SECRET_EXISTS'
   | 'REQUEST_GONE'
+  // M5 T6 (08-1 §3.2 draft:send, 08-3 §16.6 gmail drafts; M8 adds the rest of the connector kinds)
+  | 'CONN_EXPIRED'
+  | 'CONN_SCOPE_MISSING'
+  | 'SEND_FAILED'
   | 'UNKNOWN';
 
 // ---- card payloads (08-5 §4.1) the M2 cards draw ----

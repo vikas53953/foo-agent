@@ -6,7 +6,8 @@
 // approvals row, in the same transaction), §2.4 (`approval.changed` tells the engine an approval moved; `card.answered` is how
 // the M4 runner resumes or cancels the job on a tap), 05-2 §5.5.4 (EXPIRED → "Ask me again" re-checks live terms first and
 // builds a fresh card), X-03, X-04, X-125. CR-0009 G-M5-03 (HELD → own value → DECLINED), G-M5-04 (HELD expires),
-// G-M5-18 (HELD / APPROVED → WITHDRAWN on a stopped job), G-M5-24 (use_app rules match `fields.app`).
+// G-M5-18 (HELD / APPROVED → WITHDRAWN on a stopped job), G-M5-24 (use_app rules match `fields.app`). M5 T6: 08-0 §G.7
+// (a Draft's approvals row is made with the card; Send = approve once, then the 5 s undo; X-65).
 import { APPROVAL_EVENTS, approvalExpiresAt, nextApproval, type ApprovalEvent } from '../../shared/approvalMachine';
 import { newNonce } from '../../shared/canon';
 import { fail, ok, type Result } from '../../shared/errors';
@@ -20,6 +21,7 @@ import type {
   ApprovalState,
   ApprovalVerb,
   CardRow,
+  DraftPayload,
   JobState,
   Rule,
   SecondLookResult,
@@ -428,6 +430,106 @@ export class ApprovalGate {
       if (r.result.ok) this.d.changed(r.effects);
     }
     return ok({ newCardId: made.value.cardId });
+  }
+
+  // M5 T6 (08-0 §G.7, X-65): a Draft card is its own approval card. Its approvals row is made with the card, and the
+  // Draft's moves (Send = approve once, the 5 s Undo, the send itself, Discard) go through this gate like any approval.
+
+  /** A known-recipient Draft: message + `draft` card (pending) + its approvals row (PENDING, 60 min), one transaction. */
+  createDraft(input: {
+    jobId: string;
+    fields: ApprovalFields;
+    payload: Omit<DraftPayload, 'approvalId'>;
+    /** The expired Draft card an "Ask me again" replaces. */
+    supersedesCardId?: string;
+  }): Result<Created> {
+    const fields = ApprovalFieldsSchema.safeParse(input.fields);
+    if (!fields.success || fields.data.verb !== 'send') return fail('VALIDATION');
+    const job = this.d.db.prepare('SELECT chat_id FROM jobs WHERE id = ?').get(input.jobId) as { chat_id: string } | undefined;
+    if (!job) return fail('JOB_GONE');
+    const now = this.d.now();
+    const approvalId = newId('ap', now);
+    const cardId = newId('k', now);
+    const messageId = newId('m', now);
+    const nonce = newNonce();
+    const expiresAt = approvalExpiresAt('send', now);
+    const payload: DraftPayload = { ...input.payload, approvalId };
+    const effects = this.tx(() => {
+      const e = this.ops(
+        [
+          {
+            op: 'insert',
+            table: 'messages',
+            row: {
+              id: messageId,
+              chat_id: job.chat_id,
+              author_kind: 'foo',
+              kind: 'card',
+              card_id: cardId,
+              status: 'complete',
+              job_id: input.jobId,
+              created_at: now,
+            },
+          },
+          {
+            op: 'insert',
+            table: 'cards',
+            row: {
+              id: cardId,
+              chat_id: job.chat_id,
+              message_id: messageId,
+              job_id: input.jobId,
+              type: 'draft',
+              state: 'pending',
+              payload,
+              nonce,
+              expires_at: expiresAt,
+              supersedes_id: input.supersedesCardId ?? null,
+              created_at: now,
+            },
+          },
+        ],
+        now,
+      );
+      this.d.db
+        .prepare(
+          `INSERT INTO approvals (id, card_id, job_id, chat_id, verb, hard_limit, fields, fields_hash, state, expires_at, created_at)
+           VALUES (?, ?, ?, ?, 'send', 0, ?, ?, 'PENDING', ?, ?)`,
+        )
+        .run(
+          approvalId,
+          cardId,
+          input.jobId,
+          job.chat_id,
+          JSON.stringify(fields.data),
+          fieldsHash(fields.data as ApprovalFields),
+          expiresAt,
+          now,
+        );
+      return e;
+    });
+    if (!effects.ok) return effects;
+    this.d.changed(effects.value);
+    this.d.log?.({ t: now, lvl: 'info', mod: 'approvals', evt: 'card.state', approvalId, cardId, to: 'PENDING', verb: 'send' });
+    return ok({ approvalId, cardId, nonce });
+  }
+
+  /**
+   * A Draft card's move: the approval event (guarded on the row's state, as every move) and the Draft card's own state and
+   * fields in the same transaction (08-0 §G.2 Draft states), plus any extra ops (the `sent_email` activity row).
+   */
+  draftMove(
+    approvalId: string,
+    event: 'approve' | 'draft_undo' | 'submit' | 'proof_ok' | 'submit_failed' | 'withdraw',
+    w: { approval?: Record<string, unknown>; card: Record<string, unknown>; extra?: DbOp[] },
+  ): Result<ApprovalState> {
+    const a = this.get(approvalId);
+    if (!a) return fail('NOT_FOUND');
+    const now = this.d.now();
+    return this.move(a, event, now, {
+      ...(w.approval ? { approval: w.approval } : {}),
+      extra: [{ op: 'update', table: 'cards', id: a.cardId, set: w.card }, ...(w.extra ?? [])],
+    });
   }
 
   /**
