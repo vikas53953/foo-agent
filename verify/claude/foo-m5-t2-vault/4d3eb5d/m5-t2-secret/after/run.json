@@ -1,0 +1,47 @@
+{
+  "journey": "test/verify/m5-t2-secret.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "4d3eb5d1884b263c6bb524576a3167eb656a7fa8",
+  "dirty": false,
+  "started": "2026-10-19T07:26:27.651Z",
+  "finished": "2026-10-19T07:26:31.450Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "typing the key and pressing Enter opened the paste catch",
+    "Move to secret box: a Secret box \"OpenAI key\" was posted with the key in its password field (focused: true); the composer kept \"here is my key\"",
+    "Save securely: the card shows the saved row \"OpenAI key · saved Fri 16 Oct Replace Remove\" and the page holds the key nowhere",
+    "C-22 \"Remove your saved OpenAI key?\" → Remove: the card reads \"Removed. foo can’t use it any more.\"",
+    "searched 10 files the app wrote (foo.db, logs, activity.jsonl): 0 hits for the key; activity has \"Saved your OpenAI key\" and \"Removed your OpenAI key\""
+  ],
+  "shots": [
+    {
+      "file": "after/01-secret-box-moved.light.png",
+      "name": "secret-box-moved",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-secret-saved.light.png",
+      "name": "secret-saved",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-secret-saved.dark.png",
+      "name": "secret-saved",
+      "theme": "dark"
+    },
+    {
+      "file": "after/04-c-22-remove.light.png",
+      "name": "c-22-remove",
+      "theme": "light"
+    },
+    {
+      "file": "after/05-secret-removed.light.png",
+      "name": "secret-removed",
+      "theme": "light"
+    }
+  ],
+  "consoleErrors": []
+}
