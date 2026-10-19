@@ -101,12 +101,12 @@ describe('golden manifest', () => {
       ['UX-16-06', 'M8'],
     ]);
     const choice = manifest.ux.filter((e) => e.id.startsWith('UX-10-'));
-    expect(choice.filter((e) => e.milestone === 'M5').map((e) => e.id)).toEqual(
-      ['01', '03', '04', '05', '06', '08'].map((s) => `UX-10-${s}`),
-    );
+    expect(choice.filter((e) => e.milestone === 'M5').map((e) => e.id)).toEqual(['01', '03', '04', '05', '06'].map((s) => `UX-10-${s}`));
     expect(choice.find((e) => e.id === 'UX-10-07')?.milestone).toBe('M11');
     // G-M5-26: the memory chip step waits for memory in replies.
     expect(choice.find((e) => e.id === 'UX-10-02')?.milestone).toBe('M6');
+    // G-M5-41: the [ Search again ] step waits for the message-button contract.
+    expect(choice.find((e) => e.id === 'UX-10-08')?.milestone).toBe('M13');
   });
   it('the selectors exist in the frozen Blueprint', () => {
     const html = readFileSync(manifest.sources.bp, 'utf8');

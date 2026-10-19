@@ -274,12 +274,12 @@ himself.
   as a card that needs the user, beside PENDING, as 03-shell-1 §3.4.4 does for the Needs you chip (and the pending strip,
   04-2 §23.4), so the three agree. Choice covers tiles in `asking`; sign-in counts only in `waiting` (`live` = the user is
   signing in already); expired and deleted cards never count. Copy key `thread.jump.none` "Nothing needs you here."
-  (05-1 §0 verbatim). Pending review.
+  (05-1 §0 verbatim). Independent review PASS WITH FIXES; approved on Vikas's behalf.
 - **G-M5-37** (T13) UX-12-05 / UX-12-06 are captured against the seeded booking card with no new ApprovalFields; the
   gaps are Tier R disputes (r1, r2, r4). The drawn area ("Marine Drive") and "Booked under" row are in 05-2 §5.5.1 /
   §5.5.2 but have no field (08-2 §9.3): that is G-M5-32 (b), a spec-keeper item, not spec over drawing. The rest is
   spec over drawing: the "Free to cancel until" line and footer expiry (05-2 §5.5.1), 40 px buttons, and Art. 6's "Tap
-  Approve on the card so I know it's really you." Pending review.
+  Approve on the card so I know it's really you." Independent review PASS WITH FIXES; approved on Vikas's behalf.
 - **G-M5-35** (T11) ART-08a in M5 searches the DOM captured with each picture instead of OCR of the picture (10-2 §D says
   "OCR of all screenshots and live-view frames"). 05-2 §5.8.5 already keeps a value out of the markup (a property, never a
   `value` attribute), and the fields are masked, so the DOM text is the stricter search for what M5 draws; OCR, live-view
@@ -301,14 +301,19 @@ outcome: 'went_through' | 'did_not', resolvedBy }`. Main's 15 min `no_proof` mov
   superseded and a fresh pending Draft on the same Gmail draft (as G-M5-28). Until M8's draft producer re-writes the
   Gmail draft with their value, that fresh Draft re-holds on the same mismatch until the user taps Change (a placeholder,
   as G-M5-28). Nothing weakens an approval, a hard limit, a secret or an irreversible act; (b) closes a path that sent
-  with no second look. Pending review.
+  with no second look. Independent review PASS WITH FIXES; approved on Vikas's behalf.
 - **G-M5-40** (T15) 05-1 §0.7 card arrival ("{sender} sent {card name}: {title}", gated cards add ", needs you") is
   built for the card types that have a `cards.<type>.card_name` key in M5 (choice, tiles, approval, draft, secret); every
   other type keeps the 04 §1.8 row line until its milestone lands its name key (no new words in M5). The Draft `{title}`
   is the tail of its card label "{Email} to {name}" (05-2 §5.7.4); ", needs you" goes on Approval / Payment in PENDING or
   HELD only. `card:approve` keeps the picked scope in `cards.answer` so the expanded view can say "· {scope}". The
   read-only expanded view (05-1 §0.5) opens on APPROVED, RUNNING and COMPLETED Approval cards and on sent Drafts; FAILED
-  keeps its plain summary. Pending review.
+  keeps its plain summary. Independent review PASS WITH FIXES; approved on Vikas's behalf.
+- **G-M5-41** (lead, close-out) UX-10-08 moves to M13 (`STEP_MILESTONE`, trace row): its hl is the [ Search again ]
+  button under the 24 h stop line (05-1 §5.3.2 rows, §5.3.3 statuses), and a text message has no button in the model until the message-button
+  contract lands with M13 (G-M5-32 (d), the close-out copy audit in §(e)). M5 builds and tests the stop itself (AT-034,
+  `test/integration/choice/timeouts.test.ts`); only the frame moves. Same rule as G-M5-09 and G-M5-26. Independent review APPROVE-WITH-NOTE (regenerate golden/manifest.json and its test; §(h)
+  wording); notes done; approved on Vikas's behalf.
 
 ### Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`)
 
@@ -328,3 +333,11 @@ outcome: 'went_through' | 'did_not', resolvedBy }`. Main's 15 min `no_proof` mov
 
 The app follows the spec; the Blueprint sketches predate those sections. Expected to fail until the spec-keeper redraws
 them. Pending the batch review.
+
+## (h) Close-out (lead): trace statuses
+
+At close-out the §(a) rows whose test files exist and carry their ids in a test title are set `live` in `spec/trace.csv`
+(`pnpm closeout M5 --write`; FID-18 checks each one), and `spec/SPEC-MANIFEST.json` is regenerated
+(`pnpm tsx scripts/spec-verify.ts --write`) under this CR. No row is added or removed, and none moves to another milestone except UX-10-08 (G-M5-41); ids,
+files and spec sections are unchanged. SV-21 and SV-22 keep `pending: "M5"` flags in their values, as M2 kept its own
+(`BP-cards-m5-choice.spec.ts` checks both). PERF-04 is an M2 row, not M5 work.

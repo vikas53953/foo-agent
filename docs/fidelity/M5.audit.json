@@ -556,13 +556,6 @@
     },
     {
       "group": "M5 Must pass",
-      "item": "UX-10-08",
-      "status": "UNVERIFIABLE",
-      "evidence": "test:UX-10-08",
-      "covers": "whole"
-    },
-    {
-      "group": "M5 Must pass",
       "item": "UX-12-05",
       "status": "UNVERIFIABLE",
       "evidence": "test:UX-12-05",
@@ -642,9 +635,9 @@
       "group": "M5 Fidelity exit",
       "item": "Tier R for BP-CARD-03/04/05/07/08/09 and UX-10, UX-12, UX-16 steps with no Fail",
       "status": "PARTIAL",
-      "evidence": ["test:BP-CARD-05", "test:UX-10-08"],
+      "evidence": ["test:BP-CARD-05", "test:UX-12-05"],
       "covers": "part",
-      "manual": "golden lane fidelity report: drawings for BP-CARD-03/04/08/09 and UX-10-01/03/04/05/06 are disputed under CR-0009 until the gallery redraw; UX-10-02 moved to M6 (G-M5-26)"
+      "manual": "golden lane fidelity report: drawings for BP-CARD-03/04/08/09 and UX-10-01/03/04/05/06 are disputed under CR-0009 until the gallery redraw; UX-10-02 moved to M6 (G-M5-26); UX-10-08 moved to M13 with the message-button contract (G-M5-41)"
     },
     {
       "group": "M5 Fidelity exit",

@@ -1,7 +1,7 @@
 // Spec: 11-fidelity §11.2.3 (one spec per chapter, one test.step per walkthrough step named with its id; the s and f facts by
 // hand, then the Tier R capture), 05-1 §5.3 (Choice card), 05-3 §5.2 (checklist), 08-4 §26.6 (typed answers), §26.7 (engine
 // fields), X-155 (stepper, keys), CR-0009 (UX-10 in M5; G-M5-09: UX-10-07 needs Windows toasts and moves to M11; map review
-// fix 3: UX-10-08, the 24 h stop, is M5-T8's).
+// fix 3: UX-10-08, the 24 h stop, was M5-T8's; G-M5-41 moves its frame to M13 with the message-button contract).
 // Steps 1–4 come from the real job runner on the fake AI (08-3 §22.3) in the Trips chat where chapter 10 is drawn, with the
 // ux-world's own jobs settled first: the job checks, shortlists, then asks; typing "1" answers it and the job carries on.
 // Steps 5 and 6 are seeded Choice rows (test:card.seed): M5's AI writes one question per ask (08-4 §25.1), so a stepper and the
