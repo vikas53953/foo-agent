@@ -454,6 +454,14 @@ export class PromptBuilder {
     return { system: this.deps.redactor.finalGate(system, '4'), prompt: this.deps.redactor.finalGate(prompt, 'second_look') };
   }
 
+  // M6 T7
+  /** Purpose `tidy` (§24.1): system = 2 rules.md · protocol.md (TidyAct) + memory_review.md; prompt = the §24.21 tidy block. */
+  buildTidy(schema: z.ZodType, dataBlock: string, timeZone: string): BuiltPrompt {
+    const rules = this.fill(this.file('rules.md'), { today: this.today(timeZone), tz: timeZone });
+    const system = `${rules}\n\n${this.protocolThen(schema, 'memory_review.md', {})}`;
+    return { system: this.deps.redactor.finalGate(system, '4'), prompt: this.deps.redactor.finalGate(dataBlock, 'tidy') };
+  }
+
   /** Purpose `verify` (§24.1): no system, no protocol, exactly "Reply with the word ready". */
   buildVerify(): BuiltPrompt {
     return { system: '', prompt: VERIFY_PROMPT };

@@ -317,6 +317,11 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
     if (chat) emit('chat:upsert', chat);
     return out;
   });
+  // M6 T7 (CR-0010 G-M6-09): the nightly tidy, now (M7 schedules it at 03:00).
+  guard.handle('test:memoryTidy', async () => {
+    if (!ctx.engine) throw new Error('no engine');
+    return ctx.engine.request('test.memoryTidy', {}, 30_000);
+  });
   guard.handle('test:theme', (raw: unknown) => {
     const { theme } = themeArg.parse(raw);
     nativeTheme.themeSource = theme === 'system' ? ctx.settings.get().appearance.theme : theme;

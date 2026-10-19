@@ -2,7 +2,8 @@
 // (db.tx, db.query), §3.3 (ui.patch forwarded to the renderer as-is), 08-0 §A (main owns settings.json: the engine's
 // your-AI results are written here), 08-5 §3.1 (AiStatus), 08-1 §3.3 (job:upsert / card:upsert for rows a db.tx wrote),
 // 09 §9.22 (power.keepAwake → powerSaveBlocker in main), 08-2 §5.10 item 3 (the spend meter is updated per turn: a db.tx that
-// writes an `ai_turns` row emits `spend:update`, and the 80 % line of §5.10 item 4; M5 T10, CR-0008 (j) rows 1–2). Electron-free so unit tests drive it with an
+// writes an `ai_turns` row emits `spend:update`, and the 80 % line of §5.10 item 4; M5 T10, CR-0008 (j) rows 1–2), 08-3 §15.2
+// step 5 (M6 T7: an engine db.tx's unprompted messages pass the budget first). Electron-free so unit tests drive it with an
 // in-process engine.
 import { engineToMainSchema, type DbOp, type EngineToMain, type MainToEngine, type NamedQuery } from '../../engine/protocol';
 import type { Result } from '../../shared/errors';
@@ -13,6 +14,7 @@ import type { Db } from '../store/db';
 import { cardRow, type DbRow } from '../db/rows';
 import { jobRows, spendSummary } from '../store/queries';
 import { postCapWarning } from '../jobs/capWarning';
+import { gateUnprompted } from '../notify/budget';
 import { applyDbOps, runNamedQuery, writeDataFile } from './engineHost';
 import { vaultRuntime } from '../vault/vaultRuntime';
 import type { ApprovalGate } from '../approvals/ApprovalGate';
@@ -116,7 +118,9 @@ export class EngineBridge {
     switch (msg.kind) {
       case 'db.tx': {
         const now = this.now();
-        const { result, effects } = applyDbOps(this.ctx.db, msg.payload.ops as DbOp[], { now, dataDir: this.ctx.dataDir });
+        // M6 T7 (08-3 §15.2 step 5): unprompted messages pass the interruption budget here, before anything is posted.
+        const { ops } = gateUnprompted(this.ctx.db, this.ctx.settings.get(), now, msg.payload.ops as DbOp[]);
+        const { result, effects } = applyDbOps(this.ctx.db, ops, { now, dataDir: this.ctx.dataDir });
         for (const id of effects.messageIds) this.ctx.emitMessage(id);
         for (const id of effects.cardIds) {
           const r = this.ctx.db.prepare('SELECT * FROM cards WHERE id = ?').get(id) as DbRow | undefined;

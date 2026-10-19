@@ -5,7 +5,8 @@
 // 08-2 §5.2.2 (a 👍 / ✅ reaction on an Approval, Payment or Draft card never approves: it only gets the G16 reply,
 // `thread.approval_typed.approve|send`), Art. 12 (state moves of a job's card are the runner's: main checks and forwards).
 // A card with no job (setup, memory_confirm, file_in, photo_notice …) has no runner to move it, so main writes its answer
-// itself through the same db.tx path (implementation-notes M5-T5). 05-2 §5.8.3: a Secret box's Cancel (`{ skip: true }`) moves
+// itself through the same db.tx path (implementation-notes M5-T5); a memory card's answer is then sent on to the engine
+// (08-3 §12.5.1, §12.7; M6 T7). 05-2 §5.8.3: a Secret box's Cancel (`{ skip: true }`) moves
 // an asking or rejected box to `withdrawn` ("Skipped. Nothing was saved."); main writes it, as secret:save writes `saved`.
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
@@ -35,6 +36,8 @@ export interface AnswerDeps {
 const ANSWERABLE = new Set(['choice', 'tiles']);
 /** Engine-made choice cards the runner answers by option id (08-4 §26.9 stop_which; 08-2 §5.2 fold_which). */
 const RUNNER_PURPOSES = new Set(['stop_which', 'fold_which']);
+/** Jobless memory cards main answers and then tells the engine about (08-3 §12.5.1 share, §12.7 conflict; M6 T7). */
+const ENGINE_TOLD = new Set(['memory_confirm', 'conflict']);
 /** 08-2 §5.2.2: a single 👍 or ✅ reaction on these cards gets the G16 reply. */
 const YES_REACTIONS = new Set(['👍', '✅']);
 
@@ -111,6 +114,16 @@ export function answerCard(
     c.chatId,
   );
   if (!r.ok) return r;
+  // M6 T7: the engine acts on a memory card's answer (a conflict edits and forgets, a share grants) once main wrote it.
+  if (ENGINE_TOLD.has(purpose)) {
+    const a = req.answer;
+    d.engine?.send('card.answered', {
+      cardId: c.id,
+      answer: a,
+      ...('optionId' in a ? { choice: a.optionId } : {}),
+      resolvedBy: req.resolvedBy,
+    });
+  }
   return ok(card(d.db, 'id = ?', c.id) ?? c);
 }
 

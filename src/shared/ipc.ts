@@ -360,6 +360,8 @@ export interface FooTestBridge {
   jobState(jobId: string, state: JobRow['state']): Promise<{ chatId: string }>;
   /** M5 (CR-0009): writes one card (and its approvals row when `approval` is given); see main/test/testHooks.ts. */
   cardSeed(arg: CardSeedRequest): Promise<CardSeedResult>;
+  /** M6 T7 (CR-0010 G-M6-09): runs the nightly memory tidy now (engine `test.memoryTidy`); the engine's TidyReport result. */
+  memoryTidy(): Promise<unknown>;
 }
 
 /** `test:card.seed` request (FOO_TEST only). */
