@@ -1,0 +1,42 @@
+{
+  "journey": "test/verify/m5-t4-approval.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "5c812482b6bc83038db793ef251e7a7cc414968e",
+  "dirty": false,
+  "started": "2026-10-19T07:51:25.788Z",
+  "finished": "2026-10-19T07:51:30.093Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "booking approval seeded PENDING: countdown \"Expires in 14:59\", footer \"Expires Fri 16 Oct, 9:56 AM · If you don’t answer, I won’t book it.\"",
+    "Ctrl+Enter with focus inside the card: still PENDING (no shortcut approves)",
+    "Approve tapped at 9:48 → data-card-state=\"APPROVED\", line \"Approved by you at Fri 16 Oct, 9:48 AM. Doing it now…\"",
+    "clock set to 10:03 → within one tick data-card-state=\"EXPIRED\", \"This expired at Fri 16 Oct, 10:03 AM. Nothing was booked.\" + Ask me again",
+    "Ask me again → a new PENDING Approval card; the expired card stays EXPIRED"
+  ],
+  "shots": [
+    {
+      "file": "after/01-pending.light.png",
+      "name": "pending",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-approved.light.png",
+      "name": "approved",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-expired.light.png",
+      "name": "expired",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-asked-again.light.png",
+      "name": "asked-again",
+      "theme": "light"
+    }
+  ],
+  "consoleErrors": []
+}
