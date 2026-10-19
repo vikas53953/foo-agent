@@ -79,7 +79,7 @@ describe('AT-108 / AT-109 · NEEDS YOU and back', () => {
         step({ kind: 'done', result: 'Done.', unverified: true }),
       ],
     });
-    for (const w of ['first', 'second', 'third', 'fourth']) h.userSays(w);
+    for (const w of ['first', 'second', 'third', 'fourth']) h.userSaysIn(h.chat(w), w);
     await h.settle();
     const states = h.jobs().map((j) => j.state);
     expect(states.filter((s) => s === 'needs_you')).toHaveLength(3);
@@ -103,7 +103,7 @@ describe('AT-108 / AT-109 · NEEDS YOU and back', () => {
         done('epsilon'),
       ],
     });
-    const ids = names.map((n) => h!.userSays(`job ${n}`));
+    const ids = names.map((n) => h!.userSaysIn(h!.chat(n), `job ${n}`));
     const jobOf = (i: number) => h!.jobs().find((j) => j.user_message_id === ids[i])!;
     const poll = async (rounds = 60) => {
       for (let i = 0; i < rounds; i++) await new Promise((r) => setTimeout(r, 2));

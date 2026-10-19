@@ -9,6 +9,7 @@
 import type { Db } from '../store/db';
 import type {
   ActivityRow,
+  ApprovalFields,
   CardRow,
   CardType,
   JobRow,
@@ -20,7 +21,7 @@ import type {
   StepRow,
 } from '../../shared/types';
 import { cardRow, parseJson, stepRow, type DbRow } from './rows';
-import { jobRows } from '../store/queries';
+import { fooChatId, jobRows } from '../store/queries';
 
 /** What every named query gets: the database and the injected clock's now (JobRow.slow is derived from it). */
 export interface QueryCtx {
@@ -121,6 +122,9 @@ export interface EngineHelper {
   jobText: string;
   goodResult: string | null;
   paused: boolean;
+  // M5
+  /** T7: HelperForm.allowedApps (08-3 §17.6), for the gate's helper check. */
+  allowedApps: Record<string, boolean>;
 }
 
 function chat(r: DbRow): EngineChat {
@@ -179,6 +183,30 @@ export interface EngineApproval {
   state: string;
   expiresAt: number;
   submittedAt: number | null;
+  // M5 T7: what the runner needs to run or cancel it after an engine restart (verified fields, the card's submitRef).
+  fields: ApprovalFields;
+  submitRef: string | null;
+  // M5 T8: the user already answered a HELD second look on it (08-2 §9.6: the action's value → APPROVED proceeds).
+  heldPicked: boolean;
+}
+
+/** One approvals row for the engine, with its card's `submitRef` (M5 T7, G-M5-29). */
+function engineApproval(db: Db, r: DbRow): EngineApproval {
+  const card = db.prepare('SELECT payload FROM cards WHERE id = ?').get(String(r.card_id)) as { payload: string | null } | undefined;
+  const ref = parseJson<{ submitRef?: unknown }>(card?.payload ?? null, {}).submitRef;
+  return {
+    id: String(r.id),
+    cardId: String(r.card_id),
+    jobId: String(r.job_id),
+    chatId: String(r.chat_id),
+    verb: String(r.verb),
+    state: String(r.state),
+    expiresAt: Number(r.expires_at),
+    submittedAt: r.submitted_at === null || r.submitted_at === undefined ? null : Number(r.submitted_at),
+    fields: parseJson<ApprovalFields>(r.fields, { verb: String(r.verb) as ApprovalFields['verb'], irreversible: true }),
+    submitRef: typeof ref === 'string' ? ref : null,
+    heldPicked: !!parseJson<{ held?: unknown }>(r.second_look ?? null, {}).held,
+  };
 }
 
 const LIVE_JOB_STATES = ['queued', 'working', 'needs_you', 'waiting'];
@@ -283,6 +311,7 @@ export const NAMED_QUERIES = {
           jobText: String(r.job_text),
           goodResult: (r.good_result as string | null) ?? null,
           paused: r.paused === 1,
+          allowedApps: parseJson<Record<string, boolean>>(r.allowed_apps, {}),
         }
       : null;
   },
@@ -323,16 +352,12 @@ export const NAMED_QUERIES = {
       db
         .prepare(`SELECT * FROM approvals WHERE job_id = ? AND state IN (${inList(OPEN_APPROVAL_STATES.length)}) ORDER BY created_at`)
         .all(String(jobId), ...OPEN_APPROVAL_STATES) as DbRow[]
-    ).map((r) => ({
-      id: String(r.id),
-      cardId: String(r.card_id),
-      jobId: String(r.job_id),
-      chatId: String(r.chat_id),
-      verb: String(r.verb),
-      state: String(r.state),
-      expiresAt: Number(r.expires_at),
-      submittedAt: r.submitted_at === null || r.submitted_at === undefined ? null : Number(r.submitted_at),
-    })),
+    ).map((r) => engineApproval(db, r)),
+  // M5 T7
+  'approvals.byId': ({ db }: QueryCtx, approvalId: unknown): EngineApproval | null => {
+    const r = db.prepare('SELECT * FROM approvals WHERE id = ?').get(String(approvalId)) as DbRow | undefined;
+    return r ? engineApproval(db, r) : null;
+  },
   /** 08-2 §5.10: metered AI spend (billing 'key') between fromMs (inclusive) and toMs (exclusive); unknown-cost turns counted apart. */
   monthAiSpend: ({ db }: QueryCtx, fromMs: unknown, toMs: unknown): { paise: number; turns: number; unknownTurns: number } => {
     const r = db
@@ -353,6 +378,11 @@ export const NAMED_QUERIES = {
     ),
   /** X-124: the chat's open cards of one type. */
   'cards.openForChat': ({ db }: QueryCtx, chatId: unknown, type: unknown): CardRow[] => openCards(db, chatId, type),
+  /** foo's chat (kind 'foo', not private): where the safe-mode card goes (08-2 §5.9 step 1). */
+  'chats.foo': ({ db }: QueryCtx): string | null => fooChatId(db),
+  /** 08-4 §26.3 item 6 budget: the job's step turns so far. */
+  stepTurnsForJob: ({ db }: QueryCtx, jobId: unknown): number =>
+    Number((db.prepare("SELECT COUNT(*) AS n FROM ai_turns WHERE job_id = ? AND purpose = 'step'").get(String(jobId)) as DbRow).n),
   // ---- M6 memory (CR-0010) ----
   'memory.byId': ({ db }: QueryCtx, factId: unknown): EngineFact | null => {
     const r = db.prepare('SELECT * FROM memory_index WHERE id = ?').get(String(factId)) as DbRow | undefined;

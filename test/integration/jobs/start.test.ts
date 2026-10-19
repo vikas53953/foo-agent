@@ -28,16 +28,20 @@ describe('three WORKING slots, end to end', () => {
       tool('gmail.search', { query: 'bill' }),
     ];
     h = jobHarness({ script });
-    const ids = ['job one', 'job two', 'job three', 'job four'].map((t) => h!.userSays(t));
+    // One chat each: a second message in a chat with a live job would steer it (08-2 §5.2).
+    const ids = ['job one', 'job two', 'job three', 'job four'].map((t) => h!.userSaysIn(h!.chat(t.replace(' ', '_')), t));
     // Let the four intakes land, then look before the 20 s turns end.
     for (let i = 0; i < 40; i++) await new Promise((r) => setTimeout(r, 2));
     h.clock.advance(2_000);
     for (let i = 0; i < 40; i++) await new Promise((r) => setTimeout(r, 2));
     const states = h.jobs().map((j) => j.state);
     expect(states.filter((s) => s === 'working')).toHaveLength(3);
-    const fourth = h.jobs().find((j) => j.user_message_id === ids[3])!;
-    expect(fourth.state).toBe('queued');
-    expect(h.message(ids[3]!).badge).toBe('seen');
+    // M5 (T5): the four intakes race across four chats, so any one of them may be the job left waiting; find it by state.
+    const queued = h.jobs().filter((j) => j.state === 'queued');
+    expect(queued).toHaveLength(1);
+    const fourth = queued[0]!;
+    expect(ids).toContain(fourth.user_message_id);
+    expect(h.message(String(fourth.user_message_id)).badge).toBe('seen');
     const checklists = h.cards('checklist').map((c) => JSON.parse(String(c.payload)) as { jobId: string });
     expect(checklists.some((c) => c.jobId === fourth.id)).toBe(true);
 

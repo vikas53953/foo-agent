@@ -11,7 +11,16 @@ import { Button } from '../ui/Button';
 import { Icon } from '../ui/Icon';
 import styles from './Composer.module.css';
 
-export function PasteCatcher({ onMove, onSendAnyway, onDismiss }: { onMove: () => void; onSendAnyway: () => void; onDismiss: () => void }) {
+// M5 T2: `onMove` is absent in a group chat (05-2 §5.8.6 "Groups: never"): no Move button, focus stays in the field.
+export function PasteCatcher({
+  onMove,
+  onSendAnyway,
+  onDismiss,
+}: {
+  onMove?: () => void;
+  onSendAnyway: () => void;
+  onDismiss: () => void;
+}) {
   const title = useId();
   const move = useRef<HTMLButtonElement>(null);
   useEffect(() => {
@@ -28,7 +37,7 @@ export function PasteCatcher({ onMove, onSendAnyway, onDismiss }: { onMove: () =
           e.preventDefault();
           e.stopPropagation();
           onDismiss();
-        } else if (e.key === 'Enter' && e.ctrlKey) {
+        } else if (e.key === 'Enter' && e.ctrlKey && onMove) {
           e.preventDefault();
           onMove();
         }
@@ -42,9 +51,11 @@ export function PasteCatcher({ onMove, onSendAnyway, onDismiss }: { onMove: () =
       </div>
       <p className={styles.catchBody}>{t('composer.paste.body')}</p>
       <div className={styles.catchButtons}>
-        <Button ref={move} variant="primary" size="md" data-testid={TID.composerPasteMove} onClick={onMove}>
-          {t('composer.paste.move')}
-        </Button>
+        {onMove && (
+          <Button ref={move} variant="primary" size="md" data-testid={TID.composerPasteMove} onClick={onMove}>
+            {t('composer.paste.move')}
+          </Button>
+        )}
         <Button variant="secondary" size="md" data-testid={TID.composerPasteSend} onClick={onSendAnyway}>
           {t('composer.paste.send_anyway')}
         </Button>
