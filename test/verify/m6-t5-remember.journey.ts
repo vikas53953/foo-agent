@@ -116,10 +116,14 @@ export default async function journey(v: Verify): Promise<void> {
   if ((await list(page)).some((f) => f.text === SEEDED)) throw new Error('the matched fact is still there');
   if ((await forgot.getByTestId(TID.threadMemoryUndo).count()) !== 1) throw new Error('no Undo on the forgot chip');
   v.note(`typed "${FORGET}": "${SEEDED}" forgotten, chip "${t('memory_chip.line.forgotten')}" with Undo`);
-  await both(v, page, 'forget-chip', byTid(TID.threadLog));
+  // The store's Undo lasts 5 s on the fake clock and settling a shot moves that clock, so one shot, then Undo at once;
+  // the dark shot shows the chip after the Undo.
+  await page.getByTestId(TID.threadLog).evaluate((el) => (el.scrollTop = el.scrollHeight));
+  await v.shot('forget-chip', byTid(TID.threadLog));
   await forgot.getByTestId(TID.threadMemoryUndo).click();
   await until(page, 'the fact back', async () => (await list(page)).some((f) => f.text === SEEDED));
   v.note(`its Undo inside 5 s put "${SEEDED}" back`);
+  await both(v, page, 'forget-undone', byTid(TID.threadLog));
 
   // The run's own data folder (FOO_DATA_DIR above) holds what the fake AI was asked.
   const turns = readFileSync(join(data, 'test', 'turns.jsonl'), 'utf8')
