@@ -647,3 +647,25 @@ files are real and which stay seeds). What the real output pinned:
   SV-19 has no machine form; `trace.csv` BP-CARD rows say `pending` (integrator at close-out). Copy keys still unused, now
   tagged "M4-T7 close-out": `cards.checklist.footer_text.plan`, `cards.plan.change_placeholder`,
   `cards.proof_chip.popover.file_missing`, `cards.not_live_chip.still_failed.text`, `cards.error.still_failing`.
+
+## M4 · close-out (ticket T7)
+
+### Built
+
+- Golden lane renders M1–M4 refs (`FIDELITY_MILESTONE: M4`); the six M4 card drawings are disputed on r1/r2 (and r3 on
+  BP-CARD-15 and BP-CARD-19) under CR-0008 §(g); r4 still counts.
+- `test/e2e/m4-jobs.spec.ts`: PERF-07, PERF-08, PERF-11 as single-run smokes on the fake clock and fake AI (the E.1 p95 on
+  the reference laptop is the release check). PERF-07 uses a plain question: a job's 👀 is replaced by 🛠 within 700 ms,
+  so the badge debounce (04 §4.2) skips it and only 🛠 paints.
+- UX-05 (job parts) and UX-23 (stuck, offline, AI down, recovery) golden step files; M4 trace rows `live`.
+- Done from the carry list: the now line reads the running phrase (`phraseText(..., 'running')`); not-sent notices carry
+  the send ErrorKind (`noteSendError`).
+
+### Moved to M5 (each needs the M5 choice / approval UI or the screen viewer)
+
+- "Change plan" supersede (05-3 §5.12 old card Superseded + new plan card; 08-2 §5.3.3 old plan attached to intake).
+- "Check for real" retry of a `done_unverified` job (05-3 §5.16); the `job:retry` contract is in (CR-0008 §(f)c).
+- `request_approval` still counts as a failed turn until the gate exists.
+- Replay, Send a report, use-backup links and the other keys left in `scripts/copy-pending.json`, each tagged with the
+  ticket or milestone that renders it.
+- Main-side checks the renderer does today: a new AI cap ≥ current + ₹100 (08-0 §A.2); `plan:go` offline / cap gate.

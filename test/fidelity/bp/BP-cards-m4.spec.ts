@@ -32,7 +32,7 @@ async function openCards(page: Page): Promise<void> {
   await page.getByTestId(TID.titlebarStrip).waitFor();
 }
 
-test('M4 Blueprint cards, both themes, and SV-19 / SV-20 / SV-31', async () => {
+test('M4 Blueprint captures for Tier R: BP-CARD-02, BP-CARD-12, BP-CARD-15, BP-CARD-18, BP-CARD-19, BP-CARD-20, both themes, and SV-19 / SV-20 / SV-31', async () => {
   const app = await launch();
   const page = await app.firstWindow();
   await openCards(page);

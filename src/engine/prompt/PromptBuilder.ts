@@ -13,7 +13,7 @@ import { join } from 'node:path';
 import type { z } from 'zod';
 import type { Clock } from '../../shared/clock';
 import { formatDate, formatTime } from '../../shared/format';
-import { IntakeActSchema, RewriteActSchema, StepActSchema, schemaJson } from '../../shared/schemas';
+import { IntakeActSchema, RewriteActSchema, StepActSchema, StuckActSchema, schemaJson } from '../../shared/schemas';
 import { PHRASES, RUNNER_ONLY, type PhraseKey } from '../../shared/phrases';
 import type { LogFn, Redactor } from '../redact/Redactor';
 import { BANNED_LIST } from './filters';
@@ -91,6 +91,8 @@ export interface StepPromptInput {
   tools: string;
   /** Part 8 (§24.22), fixed layout. */
   jobBlock: string;
+  /** Part 10 STEER (08-2 §7.2), only when steers are queued; never trimmed (§24.15). */
+  steer?: string | null;
 }
 
 export interface BuiltPrompt {
@@ -347,7 +349,7 @@ export class PromptBuilder {
 
   /**
    * Purpose `step` (§24.1 step row). System: 1 identity · 2 rules.md · 3 tool catalogue · 4 protocol.md + step.md; prompt:
-   * 8 the job · `Next decision?`. Parts 5/5b/6/7 (memory, helper notes, conversation) arrive with M6; part 10 STEER with T3.
+   * 8 the job · 10 steer (when queued) · `Next decision?`. Parts 5/5b/6/7 (memory, helper notes, conversation) arrive with M6.
    */
   buildStep(input: StepPromptInput): BuiltPrompt {
     const gate = (text: string, part: string) => this.deps.redactor.finalGate(text, part);
@@ -365,7 +367,14 @@ export class PromptBuilder {
       .join(', ');
     const protocol = this.protocolThen(StepActSchema, 'step.md', { phraseKeys });
     const system = [gate(identity, '1'), gate(rules, '2'), gate(`Tools you can use:\n${input.tools || 'none'}`, '3'), gate(protocol, '4')];
-    return { system: system.join('\n\n'), prompt: [gate(input.jobBlock, '8'), 'Next decision?'].join('\n\n') };
+    const prompt = [gate(input.jobBlock, '8'), ...(input.steer ? [gate(input.steer, '10')] : []), 'Next decision?'];
+    return { system: system.join('\n\n'), prompt: prompt.join('\n\n') };
+  }
+
+  /** Purpose `classify` (§24.1 row, §24.13, §24.21): system protocol.md + stuck.md; prompt `Last results:` + the results. */
+  buildStuck(results: string): BuiltPrompt {
+    const system = this.protocolThen(StuckActSchema, 'stuck.md', {});
+    return { system: this.deps.redactor.finalGate(system, '4'), prompt: this.deps.redactor.finalGate(`Last results:\n${results}`, '9') };
   }
 
   /** Purpose `repair` (§24.8): same session as the failed turn, so only the prompt is new. `zodIssues` ≤ 400 chars. */
