@@ -23,10 +23,15 @@ export function writeRedacted(text: string): string {
   return redactor.redact(text).text;
 }
 
-/** Every string leaf of a JSON value through {@link writeRedacted} (keys stay). */
+// M5 (CR-0009 G-M5-25): a JSON leaf that is exactly a foo id (08-0 §E.7 `{prefix}_{UUIDv7}`) is never a secret, but its
+// 39+ characters of hex pass P17's length and entropy test; scrubbing it broke every stored card, activity and tool id.
+const FOO_ID =
+  /^(?:c|m|k|j|s|h|t|ap|py|dr|cn|tc|r|rr|act|nt|sg|hi|fl|bf|f|att)_[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$/u;
+
+/** Every string leaf of a JSON value through {@link writeRedacted} (keys stay); whole foo ids pass unchanged. */
 export function writeRedactedJson<T>(value: T): T {
   const walk = (v: unknown): unknown => {
-    if (typeof v === 'string') return writeRedacted(v);
+    if (typeof v === 'string') return FOO_ID.test(v) ? v : writeRedacted(v);
     if (Array.isArray(v)) return v.map(walk);
     if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)]));
     return v;

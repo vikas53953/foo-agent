@@ -75,6 +75,17 @@ describe('R2: Store.writeRedacted on every §4.6 rule 2 column', () => {
     expect(JSON.parse(String(redactRow('activity', { fields: JSON.stringify({ to: CANARY }) }).fields))).toEqual({ to: '[hidden]' });
   });
 
+  it('a JSON leaf that is exactly a foo id is kept; the same id inside a sentence or with a secret is not an exemption (G-M5-25)', () => {
+    const ids = { approvalId: 'ap_01a142c2-6ac0-74eb-a023-d38efbc37e5f', jobId: 'j_019a0b1c-2d3e-7f40-8a1b-2c3d4e5f6a7b' };
+    expect(JSON.parse(String(redactRow('cards', { payload: JSON.stringify({ ...ids, key: CANARY }) }).payload))).toEqual({
+      ...ids,
+      key: '[hidden]',
+    });
+    expect(JSON.parse(String(redactRow('activity', { fields: JSON.stringify({ ruleId: `${ids.jobId}${CANARY}` }) }).fields))).toEqual({
+      ruleId: expect.stringContaining('[hidden]'),
+    });
+  });
+
   it('card numbers keep their last 4; ordinary text is unchanged', () => {
     expect(writeRedacted('card 4111 1111 1111 1111 ok')).toBe('card •••• 1111 ok');
     expect(writeRedacted('Train 12951 leaves 16 Oct at 5:00 PM, ₹1,250')).toBe('Train 12951 leaves 16 Oct at 5:00 PM, ₹1,250');
