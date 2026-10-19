@@ -1,0 +1,88 @@
+{
+  "id": "BP-CARD-04",
+  "theme": "dark",
+  "verdict": "fail",
+  "disputed": null,
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "BEST",
+        "FIT"
+      ],
+      "extra": [
+        "Best",
+        "fit",
+        "Something",
+        "else…",
+        "Skip",
+        "9:41",
+        "AM"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-CARD-04",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 351.328125,
+          "height": 364
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 553,
+          "height": 303.25
+        },
+        "dPos": 0,
+        "dSize": 201.671875,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-CARD-04",
+        "ref": "#1B1B22",
+        "app": "#16161C",
+        "deltaE": 1.7,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.032501124606387766,
+    "diffPixels": 3468,
+    "total": 106704,
+    "sizeMismatch": {
+      "a": [
+        351,
+        364
+      ],
+      "b": [
+        553,
+        304
+      ]
+    },
+    "heatmap": "BP-CARD-04.dark.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-CARD-04.dark.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-CARD-04.dark.png"
+}
