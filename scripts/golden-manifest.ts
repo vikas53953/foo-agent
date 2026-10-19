@@ -304,6 +304,44 @@ export const BP_M4: BpEntry[] = (
 }));
 
 /**
+ * CR-0009: the M5 card refs — Choice (3), Option tiles (4), Approval (5), Draft (7, base; the email / WhatsApp / X variants
+ * are M8's), Secret box (8; the CVV variant is M10's), Paste catcher (9). Disputed R2 boxes as BP_M4 (CR-0003 §b).
+ */
+export const BP_M5: BpEntry[] = (
+  [
+    ['BP-CARD-03', 3, 'Choice', '05-1 §5.3'],
+    ['BP-CARD-04', 4, 'Option tiles', '05-1 §5.4'],
+    ['BP-CARD-05', 5, 'Approval', '05-2 §5.5'],
+    ['BP-CARD-07', 7, 'Draft', '05-2 §5.7'],
+    ['BP-CARD-08', 8, 'Secret box', '05-2 §5.8'],
+    ['BP-CARD-09', 9, 'Paste catcher', '05-2 §5.9; 04-2 §22.4'],
+  ] as const
+).map(([id, n, name, spec]): BpEntry => ({
+  id,
+  selector: `#cardgal > .panel:nth-child(${n}) > .mini`,
+  drawn: true,
+  size: { width: null, height: null },
+  spec,
+  milestone: 'M5',
+  note:
+    id === 'BP-CARD-09'
+      ? 'Card gallery: Paste catcher. App: the composer paste catcher (`composer-paste`) after pasting a fake key.'
+      : `Card gallery: ${name}. App: the ${name.toLowerCase()} card in the thread, from seeded card rows (test:card.seed).`,
+}));
+
+/**
+ * CR-0009 (G-M5-09): a step whose chapter milestone cannot show it moves to the milestone that can. UX-10-07 answers a Choice
+ * from a Windows notification (toasts are M11); M5 unit-tests that answer path with a fake notifier. CR-0009 G-M5-26: UX-10-02
+ * highlights the "Used: hates early flights" memory chip, which arrives with memory in replies (M6). CR-0009 G-M5-41: UX-10-08
+ * highlights [ Search again ] under the stop line, a message button that waits for the message-button contract (M13).
+ */
+export const STEP_MILESTONE: Record<string, string> = {
+  'UX-10-07': 'M11',
+  'UX-10-02': 'M6',
+  'UX-10-08': 'M13',
+};
+
+/**
  * CR-0003: UX steps an earlier milestone runs before the chapter's owner (11 §11.12 M2 "UX-09 steps not needing
  * transcription"). UX-09-01 (the recording bar) and UX-09-08 (Windows blocks the microphone) need no speech-to-text; the
  * other UX-09 steps show transcripts or foo's voice replies (M11).
@@ -316,6 +354,14 @@ export const EARLY_STEPS: Record<string, string> = {
   // checklist within 2 s, the result with its Proof chip) sent as a typed request. UX-23-07/-08 are M10, UX-23-10 is M11.
   ...Object.fromEntries(['01', '02', '03', '04', '05', '06', '09', '11'].map((s) => [`UX-23-${s}`, 'M4'])),
   ...Object.fromEntries(['02', '03', '04'].map((s) => [`UX-05-${s}`, 'M4'])),
+  // CR-0009: steps whose frame is an Approval or Draft card the M5 cards draw from seeded rows with fakes — the booking Approval
+  // card (UX-12-05) and "yes" is not a tap (UX-12-06), the Draft card (UX-16-02), its 5 s undo (UX-16-04) and the
+  // new-recipient Approval card (UX-16-06). Their owners (M9, M8) still bless them.
+  'UX-12-05': 'M5',
+  'UX-12-06': 'M5',
+  'UX-16-02': 'M5',
+  'UX-16-04': 'M5',
+  'UX-16-06': 'M5',
 };
 
 /** Chapter anchor → the milestone that completes the chapter (11 §11.12 item 8: a chapter is owned by the milestone that completes it). */
@@ -425,7 +471,7 @@ export function buildUx(chapters: RawChapter[], steps: RawStep[]): UxEntry[] {
       s: S.s,
       f: S.f,
       hl: S.hl,
-      milestone: CHAPTER_MILESTONE[ch.id] ?? null,
+      milestone: STEP_MILESTONE[id] ?? CHAPTER_MILESTONE[ch.id] ?? null,
     };
     if (EARLY_STEPS[id]) entry.firstTested = EARLY_STEPS[id];
     if (SUPERSEDED[id]) entry.superseded = { decision: SUPERSEDED[id] };
@@ -457,8 +503,13 @@ async function main() {
     version: 'spec-v1.0',
     generatedBy: 'scripts/golden-manifest.ts',
     sources: { ux: UX_FILE, bp: BP_FILE },
-    counts: { uxChapters: chapters.length, uxSteps: ux.length, uxFrames: ux.length * 2, bp: BP.length + BP_M2.length + BP_M4.length },
-    bp: [...BP, ...BP_M2, ...BP_M4],
+    counts: {
+      uxChapters: chapters.length,
+      uxSteps: ux.length,
+      uxFrames: ux.length * 2,
+      bp: BP.length + BP_M2.length + BP_M4.length + BP_M5.length,
+    },
+    bp: [...BP, ...BP_M2, ...BP_M4, ...BP_M5],
     ux,
     superseded: Object.entries(SUPERSEDED).map(([id, decision]) => ({ id, decision })),
   };
@@ -472,7 +523,9 @@ async function main() {
     return;
   }
   writeFileSync(MANIFEST_PATH, text);
-  console.log(`golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length + BP_M2.length + BP_M4.length} BP ids`);
+  console.log(
+    `golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length + BP_M2.length + BP_M4.length + BP_M5.length} BP ids`,
+  );
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) void main();

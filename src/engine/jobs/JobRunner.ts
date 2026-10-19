@@ -9,8 +9,12 @@
 // Ticket T2 builds the core. Seams the next tickets fill (they replace the T2 defaults named in `RunnerHooks`):
 // T3 stop / steer / watchdog / stuck / caps, T4 waiting / recovery / power events. T3's logic lives in stopFlow.ts,
 // steer.ts, watchdog.ts and costMeter.ts; they reach the runner through `RunnerCore` (08-2 §5.2, §5.5–§5.7, §5.10).
+// M5 T7: the gate's job side lives in engine/gate/runnerGate.ts (08-2 §9.4, 08-4 §28.1, §5.9 step 5, §24.22 part 8); the
+// runner only calls it: before each step turn, on request_approval, on a tool the gate held, on a card answer, and the
+// decline line of AT-110 (07-2 §4 "Okay, I won't. …"). Stored text goes through `Redactor.scrub` (08-2 §11.4, map fix 11).
 import { existsSync } from 'node:fs';
 import path from 'node:path';
+import { newNonce } from '../../shared/canon';
 import { t } from '../../shared/copy/t';
 import type { Clock, TimerId } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
@@ -18,15 +22,29 @@ import { formatInr } from '../../shared/format';
 import { redactSecrets } from '../../shared/redactor';
 import { BADGE_OF_STATE, JOB_STATES, TERMINAL } from '../../shared/jobMachine';
 import { phraseText, resolvePhrase, type PhraseKey } from '../../shared/phrases';
-import type { IntakeDecision, PlanStep, StepAct, StepDecision } from '../../shared/schemas';
+import type { IntakeDecision, PlanStep, SecondLookAct, StepAct, StepDecision } from '../../shared/schemas';
 import type { Settings } from '../../shared/settings';
-import type { CardRow, ErrorKind, FixAction, JobRow, JobState, ProviderId, StepRow, StopReason, StopReport } from '../../shared/types';
+import type {
+  ApprovalState,
+  CardRow,
+  ErrorKind,
+  FixAction,
+  JobRow,
+  JobState,
+  ProviderId,
+  StepRow,
+  StopReason,
+  StopReport,
+} from '../../shared/types';
 import type { LaneAi } from '../chat/ChatLane';
 import type { AiErrorKind, TurnResult } from '../ai/types';
 import type { DbOp, DbTxReply, MainLink } from '../protocol';
 import type { ExecResult, NeedsUserCard, ToolLayer } from '../tools/ToolLayer';
 import { estCostPaise, estMinutes, estTokens, isBigOne, needsPlanCard } from './estimates';
+import { choiceFields } from '../cards/choiceFields';
 import { CostMeter } from './costMeter';
+import { RunnerTick } from './tick';
+import { ChoiceTimeouts } from '../cards/choiceTimeouts';
 import { checkProof } from './proof';
 import { needsVerify, pickStartable, type QueueJob } from './queue';
 import { buildTitle, insertShowBefore, retryTitle, PLAN_MAX } from './title';
@@ -34,6 +52,10 @@ import { extractDoVerbs } from './verbs';
 import { Steer } from './steer';
 import { StopFlow } from './stopFlow';
 import { Watchdog, type StuckRule } from './watchdog';
+import type { GateLogic } from '../gate/GateLogic';
+import { RunnerGate } from '../gate/runnerGate';
+// M5 T14
+import { draftSecondLook, type DraftLookAnswer, type DraftLookReq } from '../gate/draftSecondLook';
 
 export const CHECKLIST_AFTER_MS = 1_500;
 const OBSERVATION_CAP = 4_000;
@@ -56,6 +78,10 @@ export interface RunnerPrompts {
   /** 08-2 §7.6 output filters (result text, card text from the AI). */
   filter(text: string): string;
   isBanned(text: string): boolean;
+  // M5
+  /** T8: 08-4 §24.7 the second look's prompt, and its SecondLookAct (null if invalid). Absent → the look cannot check. */
+  buildSecondLook?(userWords: readonly string[], actionJson: string): { system: string; prompt: string };
+  parseSecondLook?(text: string): SecondLookAct | null;
 }
 
 /** What the next tickets plug in. The T2 defaults are the conservative stand-ins named on each line. */
@@ -68,6 +94,9 @@ export interface RunnerHooks {
   onCannotStart?(job: JobRow, kind?: string): Promise<void>;
   /** T4: runs before each schedule pass (waiting jobs whose condition cleared resume first); false holds every start. */
   beforeSchedule?(): Promise<boolean>;
+  // M5
+  /** T10: the cap was raised or the month turned (08-2 §5.10 item 4): the Engine drains messages that waited at the cap. */
+  onCapLifted?(): void;
 }
 
 /** What T3's modules (stopFlow, steer, watchdog, costMeter) may use of the runner. */
@@ -96,6 +125,8 @@ export interface RunnerCore {
   halt(jobId: string): void;
   launch(jobId: string): void;
   startNext(): Promise<void>;
+  // M5 T10: one scheduling pass on the same chain as startNext, after the beforeSchedule hold (null when held).
+  schedule(pass: () => Promise<void>): Promise<void>;
   ended(jobId: string): Promise<void>;
   writeMirrors(jobId: string): Promise<void>;
   workingMs(jobId: string): number;
@@ -103,7 +134,7 @@ export interface RunnerCore {
     job: JobRow,
     pick: { providerId: ProviderId; billing: 'plan' | 'key' | 'local' },
     turnId: string,
-    purpose: 'step' | 'repair' | 'classify',
+    purpose: 'step' | 'repair' | 'classify' | 'second_look',
     startedAt: number,
     r: TurnResult,
   ): Promise<void>;
@@ -127,6 +158,11 @@ export interface JobRunnerDeps {
   usdToInr: number;
   log(evt: string, kind?: string, ids?: { chatId?: string; jobId?: string }): void;
   hooks?: RunnerHooks;
+  // M5
+  /** T7: 08-2 §9.4 GateLogic (the same one the ToolLayer holds), for request_approval drafts. */
+  gate: GateLogic;
+  /** T7: 08-2 §11.4 `Redactor.scrub` (registry + patterns) for runner-written text; the pattern scrub alone when absent. */
+  scrub?(text: string): { text: string; hits: number };
 }
 
 export interface CreateJobInput {
@@ -138,6 +174,16 @@ export interface CreateJobInput {
   helperId?: string | null;
   origin?: JobRow['origin'];
   originRef?: string | null;
+  // M5
+  /** T10: the job may not start before this time (08-4 §26.8 item 6, `opens_at`); its first producer is a timed opening. */
+  wakeAt?: number | null;
+}
+
+/** M5 T10: a changed Plan card's plan, attached to the chat's next intake turn (08-2 §5.3.3). */
+export interface OldPlan {
+  title: string;
+  /** The steps as the card showed them (phrase next forms). */
+  steps: string[];
 }
 
 export interface JobCtx {
@@ -160,6 +206,12 @@ const STEP_LABEL: Record<StepRow['state'], string> = {
   skipped: 'skipped',
   failed: 'running',
 };
+
+/** M5 T8: the HELD strip's values, for the decision line the AI reads after the user picked their own. */
+function heldVars(card: CardRow): { userSaid: string; actionHas: string } {
+  const h = (card.payload as { held?: { userSaid?: string; actionHas?: string } }).held;
+  return { userSaid: h?.userSaid ?? '', actionHas: h?.actionHas ?? '' };
+}
 
 /** The resolved state of a NEEDS_YOU card once the user answers it (08-0 §G.2). */
 const ANSWERED_STATE: Partial<Record<string, string>> = {
@@ -199,6 +251,12 @@ export class JobRunner {
   readonly steering: Steer;
   readonly watchdog: Watchdog;
   private intakeHook: ((chatId: string, messageId: string) => void) | null = null;
+  // M5
+  /** T10: chat id → the plan the user asked to change; the chat's next intake turn carries it (08-2 §5.3.3). */
+  private planChanges = new Map<string, OldPlan>();
+  private ticker: RunnerTick;
+  /** T7: the gate's job side (08-2 §9.4). */
+  readonly gating: RunnerGate;
 
   constructor(private d: JobRunnerDeps) {
     const core: RunnerCore = {
@@ -218,6 +276,7 @@ export class JobRunner {
       halt: (id) => this.ctxs.get(id)?.abort.abort(),
       launch: (id) => this.launch(id),
       startNext: () => this.startNext(),
+      schedule: (pass) => this.schedule(pass),
       ended: (id) => this.ended(id, this.ctx(id)),
       writeMirrors: (id) => this.writeMirrors(id),
       workingMs: (id) => {
@@ -231,8 +290,48 @@ export class JobRunner {
     const cost = new CostMeter(core);
     this.cost = cost;
     this.stopper = new StopFlow(core);
-    this.steering = new Steer(core, this.stopper);
+    // M5 T8: a steer supersedes the open approval through main's gate and the next card names it (08-4 §26.5).
+    this.steering = new Steer(core, this.stopper, (jobId, approvalId) => this.gating.onSteerSuperseded(jobId, approvalId));
     this.watchdog = new Watchdog(core, this.stopper);
+    // M5 T10: the 15 s tick (opens_at wake, 24 h Plan withdraw).
+    // M5 T8: J8 choice timeouts (AT-033, AT-034) on the same tick.
+    const timeouts = new ChoiceTimeouts({
+      core,
+      answered: async (job, card, optionId, label) => {
+        this.ctx(job.id).decisions.push(this.scrub(`- Q: ${String(card.payload.question ?? '')} → A: ${label}`));
+        await this.gating.onChoiceAnswered(job, card, optionId);
+        await this.writeMirrors(job.id);
+        await this.startNext();
+      },
+    });
+    this.ticker = new RunnerTick(core, () => timeouts.run());
+    this.ticker.start();
+    // M5 T7
+    this.gating = new RunnerGate({
+      core,
+      gate: d.gate,
+      tools: d.tools,
+      timeZone: () => d.settings().locale.timeZone,
+      countFailure: (j) => this.countFailure(j),
+    });
+    // M5 T14
+    this.draftLook = (req) => draftSecondLook(core, d.settings().locale.timeZone, req);
+  }
+
+  // M5 T14
+  private readonly draftLook: (req: DraftLookReq) => Promise<DraftLookAnswer>;
+  /** main's `draft.secondLook` (08-2 §9.6 on a Draft's Send, G-M5-39 (b)): the look's answer; main holds or sends. */
+  draftSecondLook(req: DraftLookReq): Promise<DraftLookAnswer> {
+    return this.track(this.draftLook(req));
+  }
+
+  /** M5 T7: 08-2 §11.4 for text the runner stores (decisions, plan.md "Asked:"). */
+  private scrub(text: string): string {
+    return (this.d.scrub ? this.d.scrub(text) : redactSecrets(text)).text;
+  }
+  /** M5 T7: main's `approval.changed` (an expired payment / booking card cancels its job, AT-111). */
+  onApprovalChanged(p: { approvalId: string; state: ApprovalState }): Promise<void> {
+    return this.track(this.gating.onApprovalChanged(p.approvalId, p.state).then(() => undefined));
   }
 
   // ---- T3 entry points (08-2 §5.2, §5.7, §5.10) ----
@@ -247,6 +346,18 @@ export class JobRunner {
   }
   stopAll(): Promise<StopReport[]> {
     return this.track(this.stopper.stopAll());
+  }
+  /** M5 T10: the plan the user asked to change in this chat, for its next intake turn; `take` clears it once that turn ran. */
+  planChange(chatId: string, take = false): OldPlan | null {
+    const p = this.planChanges.get(chatId) ?? null;
+    if (take) this.planChanges.delete(chatId);
+    return p;
+  }
+  /** M5 T10: the pre-call cap check of a chat-lane turn (intake, repair, rewrite); true when the call may go. */
+  allowChatCall(promptChars: number, purpose: 'intake' | 'repair' | 'rewrite'): Promise<boolean> {
+    const pick = this.d.ai.pick();
+    if (!pick) return Promise.resolve(true);
+    return this.cost.allowChatCall(promptChars, this.d.ai.turnParams(pick.providerId, purpose).maxOutputTokens);
   }
   /** settings.changed: a raised AI cap resumes waiting(spend_cap) jobs. */
   capChanged(): Promise<void> {
@@ -276,6 +387,7 @@ export class JobRunner {
     this.watchdog.dispose();
     this.stopper.dispose();
     this.cost.dispose();
+    this.ticker.dispose();
     for (const c of this.ctxs.values()) {
       c.abort.abort();
       if (c.checklistTimer !== null) this.d.clock.clearTimeout(c.checklistTimer);
@@ -327,7 +439,7 @@ export class JobRunner {
     return [...own, ...this.steering.badgeOps(job.id, BADGE_OF_STATE[to])];
   }
 
-  private textOp(job: Pick<JobRow, 'chatId' | 'ownerId'> & { id: string | null }, text: string): DbOp {
+  textOp(job: Pick<JobRow, 'chatId' | 'ownerId'> & { id: string | null }, text: string): DbOp {
     return {
       op: 'insert',
       table: 'messages',
@@ -384,7 +496,8 @@ export class JobRunner {
           type,
           state,
           payload,
-          nonce: this.d.newId('k'),
+          // M5 T7: 08-1 §3.2 card nonces are 32 hex (card:answer refuses any other, IPC_REJECTED).
+          nonce: newNonce(),
           created_at: now,
         },
       },
@@ -444,6 +557,7 @@ export class JobRunner {
           est_tokens: tokens,
           est_cost_paise: cost,
           provider_id: pick?.providerId ?? null,
+          wake_at: input.wakeAt ?? null,
           created_at: now,
         },
       },
@@ -485,8 +599,7 @@ export class JobRunner {
 
   /** When a slot frees, the oldest startable queued jobs start (FIFO), serialised so two callers never overfill the slots. */
   startNext(): Promise<void> {
-    const run = async () => {
-      if (this.d.hooks?.beforeSchedule && !(await this.d.hooks.beforeSchedule())) return;
+    return this.schedule(async () => {
       const live = (await this.query<JobRow[]>('jobsByState', ['queued', 'working', 'needs_you'])) ?? [];
       const windows = live.filter((j) => j.state === 'working' && j.usesBrowser).length;
       const queue: QueueJob[] = [];
@@ -506,6 +619,14 @@ export class JobRunner {
         queue.push(q);
       }
       for (const id of pickStartable(queue, windows)) await this.start(id);
+    });
+  }
+
+  /** One pass on the scheduling chain, so two callers never overfill the slots; skipped while beforeSchedule holds. */
+  schedule(pass: () => Promise<void>): Promise<void> {
+    const run = async () => {
+      if (this.d.hooks?.beforeSchedule && !(await this.d.hooks.beforeSchedule())) return;
+      await pass();
     };
     this.sched = this.sched.then(run, run).catch((e: unknown) => {
       this.d.log('job.schedule_failed', 'UNKNOWN', {});
@@ -614,6 +735,11 @@ export class JobRunner {
     const c = this.ctx(jobId);
     let job = await this.job(jobId);
     if (!job || job.state !== 'working') return;
+    // M5 T10 (08-4 §26.8 item 6): a job whose start is a future opening time sleeps until then, with no AI turn.
+    if (job.wakeAt !== null && job.wakeAt > this.d.clock.now()) {
+      await this.ticker.sleep(job);
+      return;
+    }
     c.workingSince = this.d.clock.now();
     this.scheduleChecklist(job, c);
     this.watchdog.watch(jobId);
@@ -622,6 +748,9 @@ export class JobRunner {
         if (c.abort.signal.aborted) return;
         job = await this.job(jobId);
         if (!job || job.state !== 'working') return;
+        // M5 T7: the RECOVERY list and an approved action run before the AI's next turn (08-4 §28.1 item 8).
+        if (!(await this.gating.beforeTurn(job, c.abort.signal))) return;
+        if (c.abort.signal.aborted) return;
         const turn = await this.stepTurn(job, c);
         if (turn.capped || c.abort.signal.aborted) return;
         if (turn.error) {
@@ -655,21 +784,15 @@ export class JobRunner {
         await this.replan(job, decision.steps);
         return true;
       case 'ask': {
+        // M5-T5: the engine fields of 08-4 §26.7 (ids, Best fit, livePrices, effective reversible).
         const card = decision.card;
-        const payload = {
-          question: this.d.prompts.filter(card.question),
-          options: card.options.map((o, i) => ({ id: `o${i + 1}`, label: o.label, ...(o.detail ? { detail: o.detail } : {}) })),
-          multi: card.multi ?? false,
-          reversible: false,
-          purpose: 'job',
-        };
-        await this.needsYou(job, { type: 'choice', state: 'asking', payload });
+        const payload = choiceFields({ ...card, question: this.d.prompts.filter(card.question) }, job);
+        await this.needsYou(job, { type: 'choice', state: 'asking', payload: { ...payload } });
         return false;
       }
       case 'request_approval':
-        // TODO(M5): the engine verifies the draft and the gate opens the Approval card. M4 has no gate: count it as a failure.
-        this.d.log('job.approval_not_built', 'VALIDATION', { jobId: job.id });
-        return !(await this.countFailure(job));
+        // M5 T7: verified (08-4 §28.1), decided (08-2 §9.4), the card opened by main; the job waits on it.
+        return this.gating.requestApproval(job, decision, c.asked);
       case 'done':
         return this.finish(job, c, decision);
       case 'fail':
@@ -691,8 +814,15 @@ export class JobRunner {
   private async runTool(job: JobRow, c: JobCtx, decision: Extract<StepDecision, { kind: 'tool' }>, turnId: string): Promise<boolean> {
     const steps = await this.steps(job.id);
     const current = steps.find((s) => s.state === 'running') ?? null;
-    const r: ExecResult = await this.d.tools.execute({ id: job.id, stepId: current?.id ?? null, turnId }, decision.call, c.abort.signal);
+    const gate = await this.gating.gateJob(job);
+    const r: ExecResult = await this.d.tools.execute(
+      { id: job.id, stepId: current?.id ?? null, turnId, gate },
+      decision.call,
+      c.abort.signal,
+    );
     if (r.outcome === 'cancelled') return false;
+    // M5 T7: a call the gate held (a refusal line, a hand-back, an app_use / offer Choice) is not a failed tool.
+    if (r.gate) return this.gating.onToolGate(job, r);
     c.lastObservation = { toolCallId: r.toolCallId, tool: r.tool, text: JSON.stringify(r.result ?? null).slice(0, OBSERVATION_CAP) };
     if (r.needsUser) {
       await this.needsYou(job, r.needsUser);
@@ -805,7 +935,8 @@ export class JobRunner {
     if (card?.type === 'choice' && card.payload.purpose === 'stop_which') return this.stopper.answerStopWhich(card, a.choice, a.resolvedBy);
     if (card?.type === 'choice' && card.payload.purpose === 'fold_which')
       return this.steering.answerFoldWhich(card, a.choice, a.resolvedBy);
-    if (!card || card.resolvedAt !== null || !card.jobId) return;
+    // M5 T7: main's ApprovalGate resolves an approval card itself before it tells the runner (08-2 §9.1).
+    if (!card || (card.resolvedAt !== null && !APPROVAL_CARDS.has(card.type)) || !card.jobId) return;
     const job = await this.job(card.jobId);
     if (!job) return;
     const now = this.d.clock.now();
@@ -815,8 +946,10 @@ export class JobRunner {
         await this.tx([{ op: 'update', table: 'cards', id: card.id, set: { state: 'go', ...resolve } }]);
         await this.enqueue(job.id);
       } else if (a.choice === 'change') {
-        // TODO(T3/M5 chat lane): "Change plan" sends the text back to an intake turn with the old plan attached (08-2 §5.3.3).
-        await this.tx([
+        // 08-2 §5.3.3 (M5 T10, CR-0008 (j) row 3): the user's next words go to an intake turn with the old plan attached, and
+        // its Plan card shows below this one (05-3 §5.12.2: the composer reads "Tell me what to change").
+        const steps = Array.isArray(card.payload.steps) ? card.payload.steps.map(String) : [];
+        const r = await this.tx([
           {
             op: 'update',
             table: 'cards',
@@ -834,16 +967,31 @@ export class JobRunner {
           ...this.badgeOp(job, 'cancelled'),
         ]);
         this.ctxs.delete(job.id);
+        if (r.ok) this.planChanges.set(job.chatId, { title: job.title, steps });
       }
       return;
     }
     if (job.state !== 'needs_you' || job.needsYouCardId !== card.id) return;
     const answer = a.answer ?? (a.choice ? { optionId: a.choice } : a.text ? { text: a.text } : null);
     if (APPROVAL_CARDS.has(card.type)) {
+      // M5 T8 (08-2 §9.6): a pick on a HELD card; main already moved the row and the card.
+      if (a.choice === 'held_action' || a.choice === 'held_own') {
+        const own = await this.gating.onHeldPick(job, card, a.choice);
+        if (own !== null)
+          this.ctx(job.id).decisions.push(this.scrub(`- Q: ${t('cards.approval.held.mismatch', heldVars(card))} → A: ${own}`));
+        await this.writeMirrors(job.id);
+        return this.startNext();
+      }
       if (a.choice === 'decline') return this.declined(job, card, resolve);
       if (a.choice !== 'approve') return;
+      await this.gating.onApproved(job, card.id);
     }
-    const answered = APPROVAL_CARDS.has(card.type) ? 'APPROVED' : ANSWERED_STATE[card.type];
+    // M5 (T5): a Skip is stored `skipped` so the card reads "Skipped. I'll go with {Best fit}." (05-1 §5.3.2).
+    const answered = APPROVAL_CARDS.has(card.type)
+      ? 'APPROVED'
+      : (answer as { skip?: true } | null)?.skip
+        ? 'skipped'
+        : ANSWERED_STATE[card.type];
     // The answer is kept on the card; the job stays NEEDS_YOU until a slot is free (max 3 WORKING), then resumes.
     const r = await this.tx([
       {
@@ -858,7 +1006,8 @@ export class JobRunner {
       const options = (card.payload.options as { id: string; label: string }[] | undefined) ?? [];
       const label = options.find((o) => o.id === a.choice)?.label ?? a.text ?? '';
       const q = String(card.payload.question ?? '');
-      this.ctx(job.id).decisions.push(redactSecrets(`- Q: ${q} → A: ${label}`).text);
+      this.ctx(job.id).decisions.push(this.scrub(`- Q: ${q} → A: ${label}`));
+      await this.gating.onChoiceAnswered(job, card, a.choice);
       await this.writeMirrors(job.id);
     }
     await this.startNext();
@@ -905,6 +1054,8 @@ export class JobRunner {
         .map((s): DbOp => ({ op: 'update', table: 'steps', id: s.id, set: { state: 'skipped' } })),
       ...this.badgeOp(job, 'cancelled'),
       ...(await this.editChecklistOps(job, 'stopped')),
+      // M5 T7 (AT-110, 07-2 §4): no other route is known in M5, so the line closes with "Nothing else to do here."
+      this.textOp(job, t('thread.approval.declined', { next: t('thread.approval.declined.nothing_else') })),
     ]);
     if (!r.ok) return;
     await this.ended(job.id, this.ctx(job.id));
@@ -927,6 +1078,7 @@ export class JobRunner {
       stored: (id) => stored.get(id) ?? null,
       jobDir: path.join(this.d.dataDir, 'jobs', job.id),
       exists: (f) => existsSync(f),
+      ...(this.d.scrub ? { scrub: this.d.scrub } : {}),
     });
     if (d.proof && !check.ok) this.d.log('job.proof_unchecked', 'PROOF_INVALID', { jobId: job.id });
     const to: JobState = check.ok ? 'done' : 'done_unverified';
@@ -1025,6 +1177,7 @@ export class JobRunner {
     this.ctxs.delete(jobId);
     this.steering.forget(jobId);
     this.watchdog.forget(jobId);
+    this.gating.forget(jobId);
     // A slot may have freed for a job paused at the AI cap.
     void this.cost.resumeCapped();
   }
@@ -1107,11 +1260,15 @@ export class JobRunner {
             `${i + 1}. [${STEP_LABEL[s.state]}] ${phraseText(s.phraseKey as PhraseKey, 'next', s.slots as Record<string, string>) ?? s.phraseKey}`,
         ),
       'Approved so far:',
-      '- none yet',
     ];
+    // M5 T7 (08-4 §24.22): approved actions, the RECOVERY list once after a restart, the APPROVAL_EVIDENCE retry line.
+    const g = this.gating.blockParts(job.id);
+    lines.push(...(g.approved.length ? g.approved : ['- none yet']));
     if (c.decisions.length) lines.push('Decisions:', ...c.decisions);
     const avoid = this.watchdog.avoidList(job.id);
     if (avoid.length) lines.push(`Avoid: ${avoid.join(', ')}`);
+    if (g.recovery) lines.push('Unfinished from before the restart (check before repeating any):', ...g.recovery);
+    if (g.retry) lines.push(g.retry);
     if (c.lastObservation)
       lines.push(`Last observation (${c.lastObservation.toolCallId}, ${c.lastObservation.tool}):`, c.lastObservation.text);
     return lines.join('\n');
@@ -1140,7 +1297,7 @@ export class JobRunner {
     pick: { providerId: ProviderId; billing: 'plan' | 'key' | 'local' },
     turnId: string,
     built: { system: string; prompt: string },
-  ): Promise<{ act: StepAct | null; error?: AiErrorKind; turnId: string; say?: string }> {
+  ): Promise<{ act: StepAct | null; error?: AiErrorKind; turnId: string; say?: string; capped?: boolean }> {
     const run = async (purpose: 'step' | 'repair', id: string, system: string, prompt: string) => {
       const startedAt = this.d.clock.now();
       const params = this.d.ai.turnParams(pick.providerId, purpose === 'repair' ? 'repair' : 'step');
@@ -1177,7 +1334,11 @@ export class JobRunner {
     const parsed = this.d.prompts.parseStep(r.text);
     if (parsed.act) return { act: parsed.act, turnId, say: parsed.say ?? '' };
     // 08-2 §7.5: one repair turn in the same session.
-    const repair = await run('repair', this.d.newId('t'), built.system, this.d.prompts.buildRepair(parsed.issues ?? ''));
+    const repairPrompt = this.d.prompts.buildRepair(parsed.issues ?? '');
+    // M5 T10 (CR-0008 (j) row 5): the repair turn is a key call too, so it passes the cap check first.
+    const repairOut = this.d.ai.turnParams(pick.providerId, 'repair').maxOutputTokens;
+    if (!(await this.cost.allowStep(job, built.system.length + repairPrompt.length, repairOut))) return { act: null, turnId, capped: true };
+    const repair = await run('repair', this.d.newId('t'), built.system, repairPrompt);
     const again = repair.stopReason === 'end' ? this.d.prompts.parseStep(repair.text) : null;
     if (!again?.act) this.d.log('job.protocol_invalid', 'PROTOCOL_INVALID', { jobId: job.id });
     return { act: again?.act ?? null, turnId, say: again?.say ?? '' };
@@ -1187,7 +1348,7 @@ export class JobRunner {
     job: JobRow,
     pick: { providerId: ProviderId; billing: 'plan' | 'key' | 'local' },
     turnId: string,
-    purpose: 'step' | 'repair' | 'classify',
+    purpose: 'step' | 'repair' | 'classify' | 'second_look',
     startedAt: number,
     r: TurnResult,
     /** 08-4 §26.3 item 5: unreported usage adds the estimate to spent_tokens_* (the stuck cost rule only). */
@@ -1266,7 +1427,7 @@ export class JobRunner {
       });
     const plan = [
       `# ${job.title}`,
-      `Asked: ${redactSecrets(c?.asked ?? '').text}`,
+      `Asked: ${this.scrub(c?.asked ?? '')}`,
       ...planLines,
       'Decisions:',
       ...(c?.decisions ?? []),

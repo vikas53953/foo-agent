@@ -8,6 +8,7 @@
 // 09 §9.22 (sleep → WAITING asleep; resume re-tests the AI), 07-2 §4 + SM-A10 (WAITING → WORKING edits the error card in
 // place, never a new message), CR-0008 G-M4-02, G-M4-04, G-M4-13 (main decides safe mode and tells the engine).
 // The runner (JobRunner.ts) owns the loop; this file fills its T4 hooks and moves jobs in and out of WAITING / recovery.
+import { newNonce } from '../../shared/canon';
 import { t } from '../../shared/copy/t';
 import type { Clock } from '../../shared/clock';
 import { formatTime } from '../../shared/format';
@@ -29,6 +30,7 @@ import type { AiErrorKind } from '../ai/types';
 import type { DbOp, DbTxReply, MainLink } from '../protocol';
 import type { Result } from '../../shared/errors';
 import { MAX_WORKING, needsVerify } from './queue';
+import { activityRow, stopReportText } from './stopFlow';
 
 /** Waiting reasons a clean pause writes; their resume is a checklist edit only (08-4 §26.10, G-M4-02). */
 export const QUIET_REASONS: ReadonlySet<WaitingReason> = new Set<WaitingReason>(['app_quit', 'windows_shutdown', 'asleep']);
@@ -65,6 +67,8 @@ export interface RecoveryRunner {
   writeMirrors(jobId: string): Promise<void>;
   /** Aborts the job's running loop: a turn still in flight returns and its decision is dropped. */
   halt(jobId: string): void;
+  // M5 T10: the foo (or helper) text message tied to the job, as every runner message is written.
+  textOp(job: Pick<JobRow, 'chatId' | 'ownerId'> & { id: string | null }, text: string): DbOp;
 }
 
 export interface RecoveryAi {
@@ -171,7 +175,8 @@ export class JobRecovery {
           type: 'error',
           state: 'asking',
           payload,
-          nonce: this.d.newId('k'),
+          // M5 T7: 08-1 §3.2 card nonces are 32 hex (card:answer refuses any other, IPC_REJECTED).
+          nonce: newNonce(),
           created_at: now,
         },
       },
@@ -445,7 +450,6 @@ export class JobRecovery {
     if (launch.safeMode) {
       this.holds.add('safe_mode');
       await this.postSafeMode();
-      return;
     }
     // Step 5: side-effect calls that started and never finished are `unknown` (never repeated blindly).
     const unknown = (await this.query<{ id: string; outcome: string | null }[]>('toolCallsUnknown')) ?? [];
@@ -453,9 +457,12 @@ export class JobRecovery {
       .filter((c) => c.outcome === null)
       .map((c): DbOp => ({ op: 'update', table: 'tool_calls', id: c.id, set: { outcome: 'unknown' } }));
     if (marks.length) await this.tx(marks);
-    // Step 3: WORKING (always an unclean exit: a clean quit pauses them) and, after an unclean exit, QUEUED.
+    // Step 3: WORKING (always an unclean exit: a clean quit pauses them) and, after an unclean exit, QUEUED. In safe mode too
+    // (M5 T10, CR-0009 G-M5-22): a recovery card starts nothing, so a job that was working shows it is waiting on the user
+    // instead of a working job with nothing running; the hold keeps every start back until "Start normally".
     const found = await this.jobsIn(launch.cleanStart ? ['working'] : ['working', 'queued']);
     for (const job of found) await this.recoveryCard(job);
+    if (launch.safeMode) return;
     // Step 4: WAITING jobs are re-evaluated by the next schedule pass (beforeSchedule).
     await this.r.startNext();
   }
@@ -543,10 +550,15 @@ export class JobRecovery {
     return false;
   }
 
-  /** "Stop it" on the recovery card: NEEDS_YOU → CANCELLED (user_button), badge ⛔, checklist stopped. */
+  /**
+   * "Stop it" on the recovery card: NEEDS_YOU → CANCELLED (user_button), badge ⛔, checklist stopped, and like every stop the
+   * activity line `stopped_job` and the J18 report from the job's activity rows (08-2 §5.7 steps 3–4; M5 T10, CR-0008 (j) row 10).
+   */
   private async stopRecovered(job: JobRow, card: CardRow, resolve: Record<string, unknown>): Promise<void> {
     const now = this.d.clock.now();
     const steps = await this.steps(job.id);
+    const activity = (await this.query<ActivityRow[]>('activityForJob', job.id)) ?? [];
+    const report = stopReportText(activity, { timeZone: this.d.settings().locale.timeZone });
     const res = await this.tx([
       { op: 'update', table: 'cards', id: card.id, set: { state: 'stopped', ...resolve, answer: { optionId: 'stop' } } },
       {
@@ -562,6 +574,19 @@ export class JobRecovery {
         .map((s): DbOp => ({ op: 'update', table: 'steps', id: s.id, set: { state: 'skipped' } })),
       ...this.badgeOp(job, 'cancelled'),
       ...(await this.checklistOps(job, 'stopped')),
+      {
+        op: 'activity',
+        row: activityRow({
+          kind: 'stopped',
+          event: 'stopped_job',
+          actor: 'user',
+          chatId: job.chatId,
+          jobId: job.id,
+          summary: `Stopped "${job.title}"`,
+          outcome: 'done',
+        }),
+      },
+      this.r.textOp(job, report),
     ]);
     if (res.ok) await this.r.writeMirrors(job.id);
   }

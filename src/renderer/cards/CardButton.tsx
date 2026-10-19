@@ -14,6 +14,7 @@ export function CardButton({
   busyLabel,
   disabled,
   label,
+  index,
   onClick,
   children,
 }: {
@@ -25,6 +26,8 @@ export function CardButton({
   disabled?: boolean;
   /** The full meaning for Narrator (05-1 §0.7), when it says more than the visible words. */
   label?: string;
+  /** M5: `data-index` for a row of same-id buttons (e.g. `card-approval-held-option` 0–1). */
+  index?: number;
   onClick: () => void;
   children: ReactNode;
 }) {
@@ -42,6 +45,7 @@ export function CardButton({
         type="button"
         className={styles.link}
         data-testid={TID[tid]}
+        data-index={index}
         aria-label={label}
         aria-disabled={disabled || undefined}
         onClick={disabled ? undefined : onClick}
@@ -55,6 +59,7 @@ export function CardButton({
       size="md"
       className={styles.button}
       data-testid={TID[tid]}
+      data-index={index}
       aria-label={label}
       disabled={disabled}
       onClick={onClick}

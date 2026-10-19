@@ -6,7 +6,7 @@ import path from 'node:path';
 import { Engine } from '../../../src/engine/Engine';
 import type { MainLink } from '../../../src/engine/protocol';
 import type { Result } from '../../../src/shared/errors';
-import { fakeTools } from '../../fakes/tools';
+import { fakeTools, type FakeToolOptions } from '../../fakes/tools';
 import { RESOURCES, type FakeLineIn } from '../../unit/m3-engine-helpers';
 import type { JobHarness } from './jobHarness';
 
@@ -21,7 +21,13 @@ function restartIds(): (prefix: string) => string {
 }
 
 /** The old engine is gone (its loops cancelled, as a killed process stops); a new one starts on the same rows. */
-export function restartEngine(h: JobHarness, script: FakeLineIn[], launch: { safeMode: boolean; cleanStart: boolean }): Engine {
+export function restartEngine(
+  h: JobHarness,
+  script: FakeLineIn[],
+  launch: { safeMode: boolean; cleanStart: boolean },
+  // M5 T7: the same extra fake tools as before the restart (the gate tests' browser.submit).
+  tools?: FakeToolOptions,
+): Engine {
   h.engine.jobs.cancelAll();
   h.engine.lane.cancelAll();
   writeFileSync(path.join(h.dir, 'fake-ai.jsonl'), script.map((l) => JSON.stringify(l)).join('\n') + '\n');
@@ -49,7 +55,7 @@ export function restartEngine(h: JobHarness, script: FakeLineIn[], launch: { saf
     execPath: process.execPath,
     testRun: true,
     fetch: (() => Promise.reject(new Error('network is not allowed in tests'))) as typeof fetch,
-    tools: fakeTools().tools,
+    tools: fakeTools(tools).tools,
     newId: restartIds(),
   });
   h.bridge.post = (msg) => {

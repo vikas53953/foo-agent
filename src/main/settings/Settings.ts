@@ -2,6 +2,7 @@
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { cpus, totalmem } from 'node:os';
 import { dirname } from 'node:path';
+import { logEvent } from '../log/techLog';
 import { settingsSchema, type Settings } from '../../shared/settings';
 import { settingsDefaults } from '../../shared/settingsDefaults';
 
@@ -54,7 +55,8 @@ export class SettingsStore {
     const { settings, repaired } = repair(raw);
     this.current = settings;
     if (repaired.length > 0) {
-      console.warn('settings.repaired', repaired);
+      // M5 close-out (08-3 §19.1): the repaired paths are setting names, never values.
+      logEvent({ lvl: 'warn', mod: 'settings', evt: 'SETTINGS_REPAIRED', kind: repaired.join(',') });
       this.write();
     }
   }

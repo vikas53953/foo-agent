@@ -170,9 +170,10 @@ describe('AT-107 · Stop in each live state', () => {
 
   it('AT-107: WAITING (at the AI cap) → CANCELLED user_button', async () => {
     h = jobHarness({ settings: keyBilling(100_000), script: [jobIntake(BILLS_PLAN)] });
-    seedSpend(h, 100_000);
     const userId = h.userSays('Find my bills');
     await h.settle();
+    // Reached after the intake turn (an intake at the cap waits too, M5 T10 CR-0008 (j) row 5).
+    seedSpend(h, 100_000);
     // Key billing prices the job over ₹5, so it asks first (Plan card); Go starts it and the cap stops the first turn.
     h.answer(String(h.cards('plan')[0]!.id), 'go');
     await h.settle();

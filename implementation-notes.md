@@ -648,6 +648,43 @@ files are real and which stay seeds). What the real output pinned:
   tagged "M4-T7 close-out": `cards.checklist.footer_text.plan`, `cards.plan.change_placeholder`,
   `cards.proof_chip.popover.file_missing`, `cards.not_live_chip.still_failed.text`, `cards.error.still_failing`.
 
+## M5 · contracts, approval machine and card stubs (ticket T1, CR-0009)
+
+### Built
+
+- `src/shared/approvalMachine.ts` (11 states, 17 events, 21 transitions, expiry minutes per verb) and the approval half of
+  `spec/state-machines.json` (`scripts/extract-sm.ts`, checked against the 07-2 §5 state table and diagram words), checked
+  against each other by `test/fidelity/sm/FID-16-approval.test.ts`.
+- M5 types, error kinds and schemas (`ApprovalFields` strict, `ApprovalDraft` verbs book|buy|pay|delete); `fieldsHash` in
+  `src/engine/gate/fieldsHash.ts` (node:crypto, so not in `shared/`); `newNonce()` in `shared/canon.ts` (Web Crypto).
+- The 14 M5 invoke channels in `shared/ipc.ts`, both preloads and `IpcRouter.ts`, each answered by a stub
+  (`VALIDATION` `not_implemented`) in its owner's file: `main/cards/answerIpc.ts` (T5), `main/approvals/approvalIpc.ts` (T4),
+  `main/drafts/draftIpc.ts` (T6), `main/vault/secretIpc.ts` (T2). Register with `handleAll(rows)`; only the body changes.
+- Engine protocol rows `approval.changed`, `registry:add|remove`, `code.submit` (main → engine) and `approval.open`,
+  `approval.transition`, `vault.use` (engine → main); `EngineBridge` answers the three engine kinds `not_implemented`.
+- `test:card.seed` / `__fooTest.cardSeed`: any card type through `applyDbOps`, plus an `approvals` row for approval /
+  payment / draft cards (a payload key `approvalId` is filled with the new id).
+- Card stubs `Choice`, `OptionTiles`, `Approval`, `Draft`, `SecretBox`; registered in M4-T5's `CARD_VIEWS`; `CardFrame` gains
+  `edge: 'accent'` (the gated card's 1.5px top edge; Chromium draws it 1px at 100% scale), `data` and `CardSummary`.
+- M5 test ids, 287 copy keys (pending ones listed with their ticket in `scripts/copy-pending.json`), `@napi-rs/keyring` 2.1.1.
+
+### Picks and gaps (each in CR-0009 §(b))
+
+- G-M5-01…17: the pack's recommended options. G-M5-18: HELD / APPROVED → WITHDRAWN on a stopped job. G-M5-19: Draft undo
+  moves the same row APPROVED → PENDING (card_id is UNIQUE), expiry reset to undo time + 60 min.
+- `@napi-rs/keyring` 2.1.1 API (from its `index.d.ts`): sync `new Entry(service, username)` / `Entry.withTarget(target,
+service, username)`, `setPassword`, `getPassword(): string | null`, `setSecret(Uint8Array)`, `getSecret()`,
+  `deleteCredential(): boolean`; an `AsyncEntry` mirrors it with Promises. It is a native module: the packager may need it
+  in `asarUnpack` (T2 checks the installer).
+- `settings.json` has no `permissions` / `rules` section yet: T4 adds `rules`, T7 adds the permission chips.
+- Card width: `.card` had `width: min(var(--card-w), 100%)` with `container-type: inline-size`; in a shrink-wrapped bubble
+  column the percentage collapsed every card (the M2 table card too) to its padding (30px). Now `width: var(--card-w);
+max-width: 100%` (`.wide` the same with `--card-w-wide`). CardFrame takes `data` for extra `data-*` attributes so a card
+  root stays the bubble's direct child (`.hold:has(> [data-testid^='card-'])`).
+- WhatsApp daily-limit line: the slot is `{date}` (it holds "Sat 17 Oct, 12:00 AM"), so ART-21's scan reads it as absolute.
+- Copy: `cards.common.gated_typed_yes` repeats `thread.approval_typed.approve` (both spec-named); 05-1 §0.6 "Nothing needs
+  you here." has no key yet.
+
 ## M4 · close-out (ticket T7)
 
 ### Built
@@ -669,3 +706,98 @@ files are real and which stay seeds). What the real output pinned:
 - Replay, Send a report, use-backup links and the other keys left in `scripts/copy-pending.json`, each tagged with the
   ticket or milestone that renders it.
 - Main-side checks the renderer does today: a new AI cap ≥ current + ₹100 (08-0 §A.2); `plan:go` offline / cap gate.
+
+## M5 · second look, fresh terms, steer supersede, choice timeouts (ticket T8)
+
+### Built
+
+- After APPROVED (X-125 order): second look (`gate/secondLook.ts`: rule checks for the user-stated ₹, recipients, the
+  site, dates through a parser port, people count by `extractCounts`; then one `second_look` AI turn) → live terms check
+  (`gate/liveTerms.ts`, re-reading the money evidence) → RUNNING with `secondLook` on the transition.
+- A failed second look → HELD with `cards.approval.held.mismatch` and its two options; a pick goes back to APPROVED (no
+  second AI check) or DECLINED with the user's own value as a decision line.
+- Changed live terms → SUPERSEDED `{ superseded: 'price'|'time'|'recipient'|'fee' }` and a new card with the live fields
+  (`approval.open.supersedes`; main links `superseded_by`).
+- Steer on a PENDING approval or payment card → SUPERSEDED `{ superseded: 'steer' }` (AT-077b); "stop" with 2+ jobs →
+  `stop_which` (AT-077a tests).
+- Choice timeouts on the 15 s tick (`cards/choiceTimeouts.ts`): reversible → Best fit at 15 min; otherwise one reminder
+  toast at 15 min and CANCELLED (`choice_timeout`) at 24 h.
+- CHECKING → FAILED (`no_proof`) by main's expire tick 15 min after `submitted_at` (G-M5-33).
+- T7 review hand-offs: `holdUnknown` keyed by (tool, redacted args) for the whole job; the send hard limit reads bank
+  details, attachments from Documents and agreeing to pay from the message (`gate/sendContent.ts`, G-M5-31).
+
+### Picks and gaps (for the lead's independent check)
+
+- M5-T8-01 · No rule check of the amount against the user's words (review 3): §9.6 A's amount is the live total, which the
+  fresh-terms check covers (SUPERSEDED, AT-124); "under ₹3,000" must not hold a ₹2,400 booking. The AI step sees both.
+- M5-T8-02 · Dates are checked only when a parser is wired (`parseWhen`); chrono-node is not in package.json (lead).
+- M5-T8-03 · Only recipients from untrusted text are flagged; an untrusted site or payee is not.
+- M5-T8-04 · Live terms that cannot be read (`unreadable`) → HELD `cannot_check`; no money evidence at all (`none`, e.g.
+  after a restart) skips the check.
+- M5-T8-05 · A job not started by the user reads the chat's last 30 min as user words; none → HELD `no_user_words`.
+- M5-T8-06 · Not built (no contract yet): the [ Search again ] button under the 24 h stop line, the G-M5-08 late-answer
+  caption, and `cards.approval.superseded.price_changed` (Payment card copy, M10). A Draft card steer still updates the
+  card directly until T6 lands.
+- M5-T8-07 · G-M5-34 (open, spec keeper): `{job}` in the 24 h stop line and `{what}` in the reminder take jobs.title
+  unchanged, as the stuck card does; 08-4 §26.2 titles are running phrases ("Looking for flights") while 05-1 §5.3.2 reads
+  a noun ("the Delhi flight search").
+- M5-T8-08 · Only the send content marks the engine can read are wired; the Draft send path (T6) passes
+  `GateCall.content`.
+- M5-T8-09 · From the Fable review, logged not fixed: (4) a steer while HELD is silent, since the machine has no
+  HELD → SUPERSEDED edge (CR item); (5) live recipients and siteDomain reach the second look only with the M8/M9 tools;
+  (8) rename `EngineApproval.heldPicked` → `secondLookHeld` when next touched; (9) a cannot_check retry belongs to J19;
+  (10) `userWordsFor` reads the last 50 messages per chat, to page by `since` later.
+- M5-T8-10 · Review fixes: a write-ahead with no ack in 2 s → HELD with the cannot_check strip and the card kept open;
+  the AI check retries only an invalid act (timeout, error or refused cost → cannot_check) and runs on the job's signal;
+  the fresh-terms re-read (`ToolLayer.reread`) leaves the IDEMPOTENT_REPEAT and held-`unknown` sets as they are.
+- M5-T14-01 · G-M5-39 (a): CHECKING → FAILED is marked by main's 15 min no-proof move (`payload.unknownResult`); the card
+  shows "I can't tell…" with [ It went through ] [ It didn't ] and no Try again. The tap is `approval:report { cardId,
+nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED, `answer` and `resolved_by='tap'`, the
+  nonce turns over (once only), and the approval's activity rows still `unknown` take done / failed. Nothing writes such a
+  row on the CHECKING path yet (no live book or pay producer before M8 / M9), so today the card alone records the answer;
+  the activity.jsonl mirror is not rewritten on that update.
+- M5-T14-02 · No phone is verified in M5, so the `{phone}` clause is left out with its words
+  (`cards.approval.body.checking_failed_no_phone`, G-M5-32 (b) rule); `unknownResult.phone` carries one when a later
+  milestone verifies it. 08-2 §10.5's payment wording ("I couldn't confirm it…" + [ I checked, try again ]) is the
+  Payment card's (M8 payments) and is not touched.
+- M5-T14-03 · G-M5-39 (b): a Draft's Send runs the second look when its 5 s close (08-2 §9.6, 08-3 §16.1): main's tick asks
+  the engine `draft.secondLook { approvalId, content, recipients }` (the AI and the job's words are there; content = the
+  redacted subject + body, not the 140-char summary) and acts on the answer. No engine / no answer → HELD cannot_check
+  (fail closed); the port is required, so no Draft can send without it. HELD keeps the card `pending` with the held strip;
+  the draft's value → HELD → APPROVED and sends at once; the user's value → DECLINED (G-M5-03), the card superseded and a
+  fresh pending Draft on the same Gmail draft (as G-M5-28), since re-writing it with their value is M8's draft producer.
+- M5-T14-04 · Fable review PASS WITH FIXES: fixed (1) the draft's-value pick sets `undo_until = now`, so a crash before the
+  send leaves it on the tick's list (sent without a second look, the pick being its answer); (4) a unit case proves the AI
+  check reads the whole card text. Logged: (2) the Draft look's AI turn runs on its own signal, bounded by main's 60 s
+  request timeout; (3) a Draft held cannot_check is never looked at again when the AI returns (the strip's "I'll ask again"
+  is J19's, as for T8); (5) the activity.jsonl mirror is not rewritten by `approval:report` (the M8 / M9 producer of
+  `unknown` rows mirrors it); (6) a CHECKING card with no site or payee would read "{site}" empty (no such card in M5).
+- M5-T14-05 · Lead review: the Draft look's AI turn now aborts at 60 s on the engine clock (`DRAFT_LOOK_TIMEOUT_MS`, the
+  same cap main waits), so a late turn frees its lane slot (closes T14-04 (2)); `send.failed` logs a fixed `code`
+  (`errCode`, 08-3 §19.1), never the error text. T14-04 (3) stays a J19 follow-up (M5.tsv). A user's-value pick re-holds
+  on the same mismatch until they tap Change, since nothing re-writes the Gmail draft before M8's producer.
+
+## M5 · close-out (lead)
+
+### Built
+
+- Cards: Choice (reversible Best fit, typed answers, timeouts), Approval (countdown, held strip, scope control), Draft
+  (send with undo, Gmail draft), Secret box. All words in `en-IN.json`; drawings checked by BP-CARD and UX-10/12/16.
+- Approval gate: `request_approval` tool, approval state machine (07-2 §5), second look and live terms check after
+  APPROVED, expiry, withdraw and decline, steer supersede, "stop" with 2+ jobs asks which (CR-0009).
+- Secret vault on Windows Credential Manager (in-memory under FOO_TEST), paste catcher, R1/R2 scrub on everything
+  stored or logged, tech log as main's log sink.
+- Golden lane renders M1-M5 refs; M5 trace rows `live`; `docs/fidelity/M5.audit.json` lists the Must-pass ids.
+- M4 carry-over merged (T10): see `docs/decisions/M5.tsv` for what moved.
+
+### Moved to later milestones
+
+- UX-10-02 (memory chip highlight) to M6 with memory in replies (G-M5-26).
+- Deadline-reminder buttons (Keep it, Cancel booking) stay disabled until a milestone makes `deadline_reminder` cards
+  (G-M5-32a); 08-4 §26.8 item 6 (quit past `wake_at` fails the job) to M9 (G-M5-23b).
+- The booking `area` slot and `when` from chrono-node stay out of the verified fields until the spec-keeper settles
+  them (G-M5-32b, c).
+- Remaining `console.*` sinks outside T3 (`Settings.ts`, `EngineSupervisor.ts`, `guard.ts`) and `rebuild.ts` error
+  detail move to `logEvent`; `EngineBridge.ts` is still open.
+- Tier R drawings disputed on BP-CARD-03/04/08/09 and UX-10-01/03/04/05/06 stay disputed until the gallery redraw.
+- Windows-only checks left for the release run: Credential Manager through `@napi-rs/keyring` on a real PC.

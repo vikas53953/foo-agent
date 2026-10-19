@@ -18,9 +18,10 @@ const CAP = 100_000;
 /** A key-billed job that reaches the cap on its first step turn (spend already at ₹1,000 this month). */
 async function cappedJob(): Promise<{ userId: string; from: number }> {
   h = jobHarness({ settings: keyBilling(CAP), script: [jobIntake(BILLS_PLAN), step({ kind: 'done', result: 'Done.', unverified: true })] });
-  seedSpend(h, CAP);
   const userId = h.userSays('Find my bills');
   await h.settle();
+  // The month's spend reaches the cap after the intake turn (M5 T10: an intake turn at the cap waits too, CR-0008 (j) row 5).
+  seedSpend(h, CAP);
   const from = h.clock.now();
   h.answer(String(h.cards('plan')[0]!.id), 'go');
   await h.settle();

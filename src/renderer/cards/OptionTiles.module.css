@@ -1,0 +1,154 @@
+/* Spec: 05-1 §5.4.1 (wide ≥ 520 inner: 2 → 2 columns, 3 → 3, 4 → 2 × 2, gap 8; narrow: rows of min 88 with the 72 --thumb
+ * left, --r-sm, text 12 to the right; tile 1px --line, --r-md, padding 8, --bg-raised, rows inside 4 apart; photo 4:3 cover
+ * --r-sm, loading / missing --bg-sunken + Image 24 --fg-3; Best fit 1.5px --accent; name --t-body-strong one line; price
+ * --t-small --fg-1 tabular; facts --t-small --fg-2 two lines, non-refundable --bad), §5.4.3 (hover --shadow-4 and
+ * --line-strong, Best fit keeps --accent as --accent-hover; pressed 0.97 in 83ms; focus ring on --r-md; Submitting strip
+ * --t-caption; answered thumb 40 --r-sm; history tick CheckmarkCircle 16 --ok top-right of the photo, 8 in), §5.4.4 (hover
+ * shadow at --m-fast). */
+.grid {
+  display: grid;
+  gap: var(--s1);
+  grid-template-columns: 1fr;
+}
+@container (min-width: 520px) /* local: 05-1 §5.4.1 wide layout at card inner width ≥ 520 (no token) */ {
+  .n2,
+  .n4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .n3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.tile {
+  position: relative;
+  display: flex;
+  gap: var(--s2);
+  min-height: calc(var(--thumb) + 2 * var(--s1));
+  padding: var(--s1);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-raised);
+  color: var(--fg-1);
+  text-align: start;
+  cursor: default;
+  transition:
+    box-shadow var(--m-fast) var(--ease-standard),
+    border-color var(--m-fast) var(--ease-standard),
+    transform var(--m-fast) var(--ease-standard);
+}
+.tile:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-4);
+}
+.tile:active {
+  transform: scale(0.97);
+}
+.tile:focus-visible {
+  border-radius: var(--r-md);
+}
+.tile[aria-disabled='true'] {
+  pointer-events: none;
+}
+.best,
+.best:hover {
+  border: 1.5px solid var(--accent);
+}
+.best:hover {
+  border-color: var(--accent-hover);
+}
+.media {
+  position: relative;
+  flex: none;
+  width: var(--thumb);
+}
+.photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: var(--thumb);
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  background: var(--bg-sunken);
+}
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.thumbSmall {
+  flex: none;
+  width: var(--s7);
+  height: var(--s7);
+}
+.missing {
+  color: var(--fg-3);
+}
+.tick {
+  position: absolute;
+  top: var(--s1);
+  right: var(--s1);
+  color: var(--ok);
+}
+.checking {
+  display: flex;
+  align-items: center;
+  gap: var(--s0);
+  color: var(--fg-2);
+  font: var(--t-caption);
+}
+.text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--s0);
+  min-width: 0;
+}
+.name {
+  overflow: hidden;
+  font: var(--t-body-strong);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.price {
+  color: var(--fg-1);
+  font: var(--t-small);
+  font-variant-numeric: tabular-nums;
+}
+.facts {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  color: var(--fg-2);
+  font: var(--t-small);
+}
+.bad {
+  color: var(--bad);
+}
+.elseButton {
+  min-height: var(--s7);
+  padding: 0 var(--s2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-raised);
+  color: var(--fg-2);
+  font: var(--t-body);
+}
+.elseButton:hover {
+  background: var(--bg-hover);
+}
+@container (min-width: 520px) /* local: 05-1 §5.4.1 wide layout at card inner width ≥ 520 (no token) */ {
+  .tile {
+    flex-direction: column;
+    gap: var(--s0);
+    min-height: 0;
+  }
+  .media {
+    width: 100%;
+  }
+  .photo:not(.thumbSmall) {
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+}

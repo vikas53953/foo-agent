@@ -4,7 +4,14 @@
 import type { Result } from './errors';
 import type {
   AiStatus,
+  ApprovalFields,
+  ApprovalScope,
+  ApprovalState,
   Bootstrap,
+  CardAnswer,
+  DraftFields,
+  SecretIndexRow,
+  SecretKind,
   ChatFilter,
   ChatOpenResult,
   ChatRow,
@@ -113,7 +120,42 @@ export interface Invokes {
   'stuck:choose': { req: CardAnswerReq & { choice: 'other_way' | 'take_over' | 'stop' }; res: CardRow };
   'recovery:choose': { req: CardAnswerReq & { choice: 'resume' | 'stop' }; res: CardRow };
   'error:fix': { req: CardAnswerReq & { action: FixAction }; res: CardRow };
+  // M5 (CR-0009; 08-1 §3.2): cards, drafts and the vault. Handlers: card:answer T5, card:approve|decline|askAgain|heldPick T4,
+  // draft:* T6, secret:* and code:submit T2 (stubs answer VALIDATION 'not_implemented' until their ticket lands).
+  'card:answer': { req: { cardId: string; nonce: string; answer: CardAnswer; resolvedBy: CardTapBy }; res: CardRow };
+  'card:approve': { req: { cardId: string; nonce: string; scope: ApprovalScope; resolvedBy: CardTapBy }; res: { state: ApprovalState } };
+  'card:decline': { req: { cardId: string; nonce: string; resolvedBy: CardTapBy }; res: CardRow };
+  'card:askAgain': { req: { cardId: string }; res: { newCardId?: string } };
+  'card:heldPick': { req: { cardId: string; nonce: string; optionId: string; resolvedBy: CardTapBy }; res: CardRow };
+  // M5 T14 (CR-0009 G-M5-39): the CHECKING → FAILED card's [ It went through ] / [ It didn't ] (05-2 §5.5.4).
+  'approval:report': {
+    req: { cardId: string; nonce: string; outcome: 'went_through' | 'did_not'; resolvedBy: CardTapBy };
+    res: CardRow;
+  };
+  'draft:update': { req: { cardId: string; nonce: string; fields: DraftFields }; res: CardRow };
+  'draft:send': { req: { cardId: string; nonce: string; resolvedBy: CardTapBy }; res: { approvalId: string; undoUntil: number } };
+  'draft:undo': { req: { approvalId: string }; res: { undone: boolean } };
+  'draft:discard': { req: { cardId: string; nonce: string; resolvedBy: CardTapBy }; res: CardRow };
+  'draft:openInApp': { req: { cardId: string }; res: void };
+  'secret:save': {
+    req: { requestId?: string; kind: SecretKind; name: string; fields: Record<string, string> };
+    res: { target: string; savedAt: number; label: string };
+  };
+  'secret:list': { req: Record<string, never>; res: SecretIndexRow[] };
+  'secret:delete': { req: { target: string; confirm: true }; res: void };
+  'code:submit': { req: { requestId: string; code: string }; res: void };
+  // M5 T2 (04-2 §22.4 "Move to secret box" posts a Secret box card in this chat; CR-0009 gap G-M5-21): the card only, never
+  // the value (the renderer keeps it in memory for the card's field until Save or Cancel).
+  'secret:offer': { req: { chatId: string; slot: SecretOfferSlot }; res: CardRow };
 }
+
+/** M5 T2: the 04-2 §22.4 suggested names, one Secret box each (G-M5-21); `password` and `key` have no vault kind yet. */
+export const SECRET_OFFER_SLOTS = ['openai', 'google', 'card', 'otp', 'password', 'key'] as const;
+export type SecretOfferSlot = (typeof SECRET_OFFER_SLOTS)[number];
+/** M5 T2: why the vault can't save right now (05-2 §5.8.3 Disabled: Credential Manager; 09 §9.18: encryption). */
+export const VAULT_OFF = ['keyring_unavailable', 'encryption_unavailable'] as const;
+export type VaultOff = (typeof VAULT_OFF)[number];
+export const isVaultOff = (s: string | undefined): s is VaultOff => (VAULT_OFF as readonly (string | undefined)[]).includes(s);
 
 /** 08-1 §3.2: a card answer names the card, carries its nonce (a stale card is refused) and says how it was answered. */
 export interface CardAnswerReq {
@@ -121,6 +163,9 @@ export interface CardAnswerReq {
   nonce: string;
   resolvedBy: 'tap' | 'keyboard';
 }
+
+/** 08-1 §3.2: a card is answered from the card itself (toasts, typed words and reactions resolve inside main/engine). */
+export type CardTapBy = CardAnswerReq['resolvedBy'];
 
 /** 08-1 §3.3 rows built so far: event → payload. */
 export interface Events {
@@ -202,6 +247,25 @@ export const INVOKE_CHANNELS = [
   'stuck:choose',
   'recovery:choose',
   'error:fix',
+  // M5 (CR-0009)
+  'card:answer',
+  'card:approve',
+  'card:decline',
+  'card:askAgain',
+  'card:heldPick',
+  'draft:update',
+  'draft:send',
+  'draft:undo',
+  'draft:discard',
+  'draft:openInApp',
+  'secret:save',
+  'secret:list',
+  'secret:delete',
+  'code:submit',
+  // M5 T2
+  'secret:offer',
+  // M5 T14
+  'approval:report',
 ] as const satisfies readonly InvokeChannel[];
 
 export const EVENT_CHANNELS = [
@@ -261,6 +325,28 @@ export interface FooTestBridge {
   reset(): Promise<ClockReply>;
   /** Moves a job to a state the way the job runner would (writes the row, re-derives the chat pill, sends the patches). */
   jobState(jobId: string, state: JobRow['state']): Promise<{ chatId: string }>;
+  /** M5 (CR-0009): writes one card (and its approvals row when `approval` is given); see main/test/testHooks.ts. */
+  cardSeed(arg: CardSeedRequest): Promise<CardSeedResult>;
+}
+
+/** `test:card.seed` request (FOO_TEST only). */
+export interface CardSeedRequest {
+  chatId?: string;
+  type: CardRow['type'];
+  state: string;
+  payload: Record<string, unknown>;
+  jobId?: string;
+  expiresAt?: number;
+  answer?: Record<string, unknown>;
+  approval?: { fields: ApprovalFields; hardLimit?: boolean; state?: ApprovalState; expiresAt?: number; submittedAt?: number };
+}
+export interface CardSeedResult {
+  chatId: string;
+  cardId: string;
+  messageId: string;
+  nonce: string;
+  jobId?: string;
+  approvalId?: string;
 }
 
 declare global {

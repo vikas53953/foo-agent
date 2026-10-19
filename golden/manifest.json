@@ -9,7 +9,7 @@
     "uxChapters": 25,
     "uxSteps": 245,
     "uxFrames": 490,
-    "bp": 39
+    "bp": 45
   },
   "bp": [
     {
@@ -471,6 +471,78 @@
       "spec": "05-3 §5.21",
       "milestone": "M4",
       "note": "Card gallery: Spend cap. App: the spend cap card in the thread, from seeded card rows."
+    },
+    {
+      "id": "BP-CARD-03",
+      "selector": "#cardgal > .panel:nth-child(3) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "05-1 §5.3",
+      "milestone": "M5",
+      "note": "Card gallery: Choice. App: the choice card in the thread, from seeded card rows (test:card.seed)."
+    },
+    {
+      "id": "BP-CARD-04",
+      "selector": "#cardgal > .panel:nth-child(4) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "05-1 §5.4",
+      "milestone": "M5",
+      "note": "Card gallery: Option tiles. App: the option tiles card in the thread, from seeded card rows (test:card.seed)."
+    },
+    {
+      "id": "BP-CARD-05",
+      "selector": "#cardgal > .panel:nth-child(5) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "05-2 §5.5",
+      "milestone": "M5",
+      "note": "Card gallery: Approval. App: the approval card in the thread, from seeded card rows (test:card.seed)."
+    },
+    {
+      "id": "BP-CARD-07",
+      "selector": "#cardgal > .panel:nth-child(7) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "05-2 §5.7",
+      "milestone": "M5",
+      "note": "Card gallery: Draft. App: the draft card in the thread, from seeded card rows (test:card.seed)."
+    },
+    {
+      "id": "BP-CARD-08",
+      "selector": "#cardgal > .panel:nth-child(8) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "05-2 §5.8",
+      "milestone": "M5",
+      "note": "Card gallery: Secret box. App: the secret box card in the thread, from seeded card rows (test:card.seed)."
+    },
+    {
+      "id": "BP-CARD-09",
+      "selector": "#cardgal > .panel:nth-child(9) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "05-2 §5.9; 04-2 §22.4",
+      "milestone": "M5",
+      "note": "Card gallery: Paste catcher. App: the composer paste catcher (`composer-paste`) after pasting a fake key."
     }
   ],
   "ux": [
@@ -1766,7 +1838,7 @@
       "s": "10:15 AM · IndiGo · ₹5,240 (Best fit) · 7:10 AM · Air India · ₹4,890 · 1:35 PM · Akasa Air · ₹5,610 · Something else… · Skip. Chip: \"Used: hates early flights ✕\".",
       "f": "Doesn't repeat the options in its own words. ✕ on the chip would forget that fact.",
       "hl": "usedchip",
-      "milestone": "M5"
+      "milestone": "M6"
     },
     {
       "id": "UX-10-03",
@@ -1849,7 +1921,7 @@
       "s": "\"Trips · Which flight time works for Delhi on Fri 18 Dec?\" with 10:15 AM · Open.",
       "f": "Allowed only for choices. Money, sends and bookings never get an answer button on a notification.",
       "hl": "toast-1",
-      "milestone": "M5"
+      "milestone": "M11"
     },
     {
       "id": "UX-10-08",
@@ -1865,7 +1937,7 @@
       "s": "\"I stopped the Delhi flight search because I didn't hear back. Options change fast, so ask me again when you're ready.\" · Search again.",
       "f": "Small reversible things (like a summary format) get Best fit after 15 minutes, and foo tells you.",
       "hl": "again",
-      "milestone": "M5"
+      "milestone": "M13"
     },
     {
       "id": "UX-11-01",
@@ -2105,7 +2177,8 @@
       "s": "\"Book this table?\" Pizza by the Bay, Sat 17 Oct, 8:00 PM, 4 people · charged now ₹0 · no-show fee ₹500 · free to cancel until Sat 17 Oct, 6:00 PM · Book table · Change · Not now. Expires 9:27 AM.",
       "f": "Waits for a tap. If you don't answer, it won't book.",
       "hl": "booktable",
-      "milestone": "M9"
+      "milestone": "M9",
+      "firstTested": "M5"
     },
     {
       "id": "UX-12-06",
@@ -2121,7 +2194,8 @@
       "s": "\"Tap Book table on the card so I know it's really you.\"",
       "f": "Typing \"yes\", \"haan kar do\" or reacting 👍 never approves a card.",
       "hl": "tapit",
-      "milestone": "M9"
+      "milestone": "M9",
+      "firstTested": "M5"
     },
     {
       "id": "UX-12-07",
@@ -2843,7 +2917,8 @@
       "s": "\"Draft · not sent\" To: Rakesh Sharma · Subject: Re: October rent · the message · \"Will send to r.sharma@gmail.com from your Gmail. Can't be unsent.\" · Send email · Change · Not now.",
       "f": "Because you've emailed Rakesh before, this draft is also the approval. Expires in 60 minutes.",
       "hl": "draft",
-      "milestone": "M8"
+      "milestone": "M8",
+      "firstTested": "M5"
     },
     {
       "id": "UX-16-03",
@@ -2875,7 +2950,8 @@
       "s": "A dark bar: \"Sending… Undo\".",
       "f": "Holds the email on your PC for 5 seconds, then the \"second look\" checks name and date against your words.",
       "hl": "undo",
-      "milestone": "M8"
+      "milestone": "M8",
+      "firstTested": "M5"
     },
     {
       "id": "UX-16-05",
@@ -2908,6 +2984,7 @@
       "f": "Messaging someone new always asks, whatever your settings.",
       "hl": "priya",
       "milestone": "M8",
+      "firstTested": "M5",
       "superseded": {
         "decision": "X-79 (\"Change\")"
       }

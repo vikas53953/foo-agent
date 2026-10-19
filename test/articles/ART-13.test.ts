@@ -23,9 +23,10 @@ describe('Article 13: money and loops', () => {
       settings: keyBilling(100_000),
       script: [jobIntake(BILLS_PLAN), step({ kind: 'done', result: 'Done.', unverified: true })],
     });
-    seedSpend(h, 100_000);
     h.userSays('Find my bills');
     await h.settle();
+    // The cap is reached after the intake turn (M5 T10: an intake turn at the cap is not made either, CR-0008 (j) row 5).
+    seedSpend(h, 100_000);
     const before = aiTurns();
     h.answer(String(h.cards('plan')[0]!.id), 'go');
     await h.settle();

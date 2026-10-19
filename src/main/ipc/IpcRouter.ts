@@ -3,13 +3,16 @@
 // outside test runs, through ChannelGuard). M2 builder A: message:get/react/pin, files:open/showInFolder, job:details,
 // routine:pause and the gap channels message:edit/delete/retry, link:open, app:showEmojiPanel (implementation-notes). M2
 // builder B: message:send (idempotent, AT-225; R1 secret re-check, 08-2 §11.4), composer:checkSecret, composer:saveDraft,
-// files:stage, voice:submit (04-2 §22.1), helper:pause (04-2 §23.2 "Turn on").
+// files:stage, voice:submit (04-2 §22.1), helper:pause (04-2 §23.2 "Turn on"). M5 (CR-0009): the card, draft, secret and
+// code channels; each ticket's handler file fills its own rows (cards/answerIpc T5, approvals/approvalIpc T4, drafts/draftIpc
+// T6, vault/secretIpc T2), and this file only registers them.
 import { app, BrowserWindow, ipcMain, net, shell, systemPreferences, type IpcMainEvent } from 'electron';
 import { z } from 'zod';
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
 import type { EventChannel, EventPayload, InvokeChannel, InvokeIn, InvokeOut, PlatformInfo, VerifyResult } from '../../shared/ipc';
-import { PROVIDER_IDS, settingsSchema, WRITABLE_PATHS, type Settings } from '../../shared/settings';
+import { SECRET_OFFER_SLOTS } from '../../shared/ipc'; // M5 T2
+import { PROVIDER_IDS, settingLocked, settingsSchema, WRITABLE_PATHS, type Settings } from '../../shared/settings';
 import type { FixAction, MessageRow, WindowsSettingsPage } from '../../shared/types';
 import { deps } from '../deps';
 import type { NetMonitor } from '../net/netMonitor';
@@ -57,6 +60,11 @@ import { FIX_ACTION_KINDS, JOB_CHANNELS, jobIpc } from '../jobs/jobIpc';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
 import { isTrustedUrl } from '../windows/protocol';
+import { logEvent } from '../log/techLog';
+import { answerIpc, cardReaction } from '../cards/answerIpc';
+import { approvalIpc } from '../approvals/approvalIpc';
+import { draftIpc } from '../drafts/draftIpc';
+import { secretIpc } from '../vault/secretIpc';
 
 const trusted = (e: IpcMainEvent) => !!e.senderFrame && isTrustedUrl(e.senderFrame.url);
 
@@ -102,6 +110,17 @@ export const electronProbe = () => net.isOnline();
 const empty = z.object({}).strict();
 const chatId = z.string().min(1).max(80);
 const messageId = z.string().min(1).max(80);
+const cardId = z.string().min(1).max(80);
+/** 08-2 §9.3: the card nonce is 32 lower-case hex. */
+const nonce = z.string().regex(/^[0-9a-f]{32}$/);
+const tapBy = z.enum(['tap', 'keyboard']);
+/** M5 08-1 §3.2 `CardAnswer` (the value a Choice card is answered with). */
+const cardAnswerValue = z.union([
+  z.object({ optionId: z.string().min(1).max(40) }).strict(),
+  z.object({ optionIds: z.array(z.string().min(1).max(40)).min(1).max(4) }).strict(),
+  z.object({ text: z.string().min(1).max(4_000) }).strict(),
+  z.object({ skip: z.literal(true) }).strict(),
+]);
 /** 04 §9: one emoji grapheme (a ZWJ or flag sequence is several code points). */
 const emoji = z
   .string()
@@ -217,36 +236,79 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'error:fix': cardAnswer
     .extend({ action: z.object({ kind: z.enum(FIX_ACTION_KINDS) }).catchall(z.unknown()) as unknown as z.ZodType<FixAction> })
     .strict(),
+  // M5 (08-1 §3.2). `secret:save` names are refined per kind by its handler (G-M5-16); values never leave main.
+  'card:answer': z.object({ cardId, nonce, answer: cardAnswerValue, resolvedBy: tapBy }).strict(),
+  'card:approve': z.object({ cardId, nonce, scope: z.enum(['once', 'chat', 'always']), resolvedBy: tapBy }).strict(),
+  'card:decline': z.object({ cardId, nonce, resolvedBy: tapBy }).strict(),
+  'card:askAgain': z.object({ cardId }).strict(),
+  'card:heldPick': z.object({ cardId, nonce, optionId: z.string().min(1).max(40), resolvedBy: tapBy }).strict(),
+  // M5 T14 (G-M5-39)
+  'approval:report': z.object({ cardId, nonce, outcome: z.enum(['went_through', 'did_not']), resolvedBy: tapBy }).strict(),
+  'draft:update': z
+    .object({
+      cardId,
+      nonce,
+      fields: z
+        .object({ to: z.string().max(320).optional(), subject: z.string().max(998).optional(), body: z.string().max(40_000) })
+        .strict(),
+    })
+    .strict(),
+  'draft:send': z.object({ cardId, nonce, resolvedBy: tapBy }).strict(),
+  'draft:undo': z.object({ approvalId: z.string().min(1).max(80) }).strict(),
+  'draft:discard': z.object({ cardId, nonce, resolvedBy: tapBy }).strict(),
+  'draft:openInApp': z.object({ cardId }).strict(),
+  'secret:save': z
+    .object({
+      requestId: z.string().min(1).max(80).optional(),
+      kind: z.enum(['ai_key', 'login', 'card', 'conn_token', 'wa_session', 'web_key', 'hub_key']),
+      name: z.string().min(1).max(253),
+      fields: z.record(z.string().min(1).max(40), z.string().max(20_000)),
+    })
+    .strict(),
+  'secret:list': empty as z.ZodType<Record<string, never>>,
+  'secret:delete': z.object({ target: z.string().min(1).max(300), confirm: z.literal(true) }).strict(),
+  'code:submit': z.object({ requestId: z.string().min(1).max(80), code: z.string().min(1).max(64) }).strict(),
+  // M5 T2 (G-M5-21)
+  'secret:offer': z.object({ chatId, slot: z.enum(SECRET_OFFER_SLOTS) }).strict(),
 };
 
-type Handler<C extends InvokeChannel> = (req: InvokeIn[C]) => Result<InvokeOut[C]> | Promise<Result<InvokeOut[C]>>;
+export type Handler<C extends InvokeChannel> = (req: InvokeIn[C]) => Result<InvokeOut[C]> | Promise<Result<InvokeOut[C]>>;
+/** One ticket's rows: channel → handler (M5 handler files return these; registerIpc registers them). */
+export type IpcHandlers<C extends InvokeChannel> = { [K in C]: Handler<K> };
+
+function handleAll<C extends InvokeChannel>(rows: IpcHandlers<C>): void {
+  for (const channel of Object.keys(rows) as C[]) handle(channel, rows[channel] as Handler<C>);
+}
 
 /** Registers one channel: zod-validated, sender-checked, always answering with a Result. */
 export function handle<C extends InvokeChannel>(channel: C, fn: Handler<C>): void {
   channels().handle(channel, async (raw: unknown) => {
     const parsed = SCHEMAS[channel].safeParse(raw ?? {});
     if (!parsed.success) {
-      console.warn(`IPC_REJECTED ${channel}: payload failed validation`);
+      logEvent({ lvl: 'warn', mod: 'ipc', evt: 'IPC_REJECTED', kind: channel });
       return fail('IPC_REJECTED');
     }
     try {
       return await fn(parsed.data);
     } catch (e) {
-      console.error(`ipc ${channel}`, e);
+      // The error object can carry message text or a payload; only its name reaches the log (R7).
+      logEvent({ lvl: 'error', mod: 'ipc', evt: 'IPC_FAILED', kind: `${channel} ${e instanceof Error ? e.name : typeof e}` });
       return fail('UNKNOWN');
     }
   });
 }
 
 function getPath(s: Settings, path: string): unknown {
-  const [head, key] = path.split('.') as [keyof Settings, string];
-  return (s[head] as Record<string, unknown>)[key];
+  return path.split('.').reduce<unknown>((o, k) => (o as Record<string, unknown> | undefined)?.[k], s);
 }
 
+/** Copies each object on the path (M5: three-level paths such as `permissions.actions.send`). */
 function setPath(s: Settings, path: string, value: unknown): Settings {
-  const [head, key] = path.split('.') as [keyof Settings, string];
-  const section = s[head] as Record<string, unknown>;
-  return { ...s, [head]: { ...section, [key]: value } } as Settings;
+  const set = (o: Record<string, unknown>, [k, ...rest]: string[]): Record<string, unknown> => ({
+    ...o,
+    [k!]: rest.length ? set(o[k!] as Record<string, unknown>, rest) : value,
+  });
+  return set(s as unknown as Record<string, unknown>, path.split('.')) as unknown as Settings;
 }
 
 export function registerIpc(ctx: AppContext): void {
@@ -332,7 +394,12 @@ export function registerIpc(ctx: AppContext): void {
     return ok(r.row);
   };
   const asVoid = (r: Result<MessageRow>): Result<void> => (r.ok ? ok(undefined) : r);
-  handle('message:react', ({ messageId: id, emoji: e, on }) => asVoid(written(reactMessage(db, id, e, on, now()))));
+  handle('message:react', ({ messageId: id, emoji: e, on }) => {
+    const r = asVoid(written(reactMessage(db, id, e, on, now())));
+    // M5 (T5): a reaction on a card's bubble may answer a Choice card or get the G16 line (08-4 §26.6 rule 4, 08-2 §5.2.2).
+    if (r.ok && on) cardReaction(ctx, id, e);
+    return r;
+  });
   handle('message:pin', ({ messageId: id, on }) => asVoid(written(pinMessage(db, id, on))));
   handle('message:edit', ({ messageId: id, text }) => {
     // Art. 8 / R1: the edit is re-checked like message:send (askedForCode from the chat's recent messages).
@@ -514,6 +581,8 @@ export function registerIpc(ctx: AppContext): void {
     const before = settings.get();
     const next = setPath(before, path, value);
     if (!settingsSchema.safeParse(next).success) return fail('VALIDATION');
+    // M5 (CR-0009; 08-1 §4.4.2 step 1, 08-0 §A.2): a locked value is refused and nothing is written.
+    if (settingLocked(path, value)) return fail('SETTING_LOCKED');
     settings.update(() => next);
     // 08-1 §4.4.2 step 3: the change record (M4: the AI cap only).
     const row = changeRecordRow(path, getPath(before, path), value);
@@ -539,4 +608,10 @@ export function registerIpc(ctx: AppContext): void {
     return r;
   });
   handle('notifications:status', () => ok({ windowsAllowed: true, focusAssist: false }));
+
+  // M5 (CR-0009): the card, draft, secret and code channels.
+  handleAll(answerIpc(ctx));
+  handleAll(approvalIpc(ctx));
+  handleAll(draftIpc(ctx));
+  handleAll(secretIpc(ctx));
 }

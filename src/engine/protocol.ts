@@ -3,10 +3,13 @@
 // M3 carries the rows the chat lane and the your-AI service need; later milestones add theirs with the same names.
 // M4 (CR-0008): the job runner's rows — DbOp transition/activity/mirror, writable jobs/steps/tool_calls/cards, card.answered,
 // job.stop/stopAll/retry, power, jobs.pauseAll (G-M4-04), power.keepAwake, notify (stub until M11), the job NamedQuery names.
+// M5 (CR-0009; 08-1 §2.4 lines 185–232): approval.changed, registry:add|remove (X-93), code.submit (main → engine);
+// approval.open, approval.transition, vault.use (engine → main). Main's handlers are stubs until T4 (approvals) / T2 (vault).
 // GAP (GAPS.md 2026-10-18 "reactions not in WritableTable"): foo's reaction (08-4 §25.2 kind 'react', AT-027) needs a row in
 // `reactions`, which 08-1 §2.4.1 lists neither as writable nor as main-only; M3 adds `reactions` to the engine's inserts.
 import { z } from 'zod';
 import { PROVIDER_IDS } from '../shared/settings';
+import { ApprovalDraftSchema, ApprovalStateSchema } from '../shared/schemas';
 import type { Result } from '../shared/errors';
 import type { EventChannel, EventPayload } from '../shared/ipc';
 import type { ProviderId, AiStatus, ErrorKind, ResolvedBy, StopReason, CardAnswer, ActivityRow } from '../shared/types';
@@ -113,6 +116,38 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
   // FOO_TEST runs only (08-3 §22): the engine's fake clock follows main's, and test:reset cancels every turn.
   z.object({ id: z.string(), kind: z.literal('test.reset'), payload: z.object({}).strict() }),
   z.object({ id: z.string(), kind: z.literal('test.clock'), payload: z.object({ now: z.number() }).strict() }),
+  // M5 (CR-0009): main tells the engine an approval moved; the SecretRegistry mirror (X-93: values live in main and engine
+  // memory only, never logged); a typed code reaches the engine as a registry handle, never the code.
+  z.object({
+    id: z.string(),
+    kind: z.literal('approval.changed'),
+    payload: z.object({ approvalId: z.string(), state: ApprovalStateSchema }).strict(),
+  }),
+  z.object({
+    id: z.string(),
+    kind: z.literal('registry:add'),
+    payload: z
+      .object({
+        handle: z.string(),
+        hash: z.string(),
+        len: z.number().int().min(1),
+        value: z.string().min(1),
+        normalised: z.array(z.string()),
+        ttlMs: z.number().int().min(0),
+      })
+      .strict(),
+  }),
+  z.object({ id: z.string(), kind: z.literal('registry:remove'), payload: z.object({ handles: z.array(z.string()) }).strict() }),
+  z.object({ id: z.string(), kind: z.literal('code.submit'), payload: z.object({ requestId: z.string(), codeRef: z.string() }).strict() }),
+  // M5 T14 (CR-0009 G-M5-39 (b); 08-2 §9.6, 08-0 §G.7): main's Draft tick asks for the second look before Gmail drafts.send;
+  // the engine answers `{ pass, result, held? }` (a request, like ai.cmd). `content` is the card text, redacted.
+  z.object({
+    id: z.string(),
+    kind: z.literal('draft.secondLook'),
+    payload: z
+      .object({ approvalId: z.string(), content: z.string().max(50_000), recipients: z.array(z.string().max(320)).max(50) })
+      .strict(),
+  }),
   /** M4: FOO_TEST only. The engine's runner moves a job by the named machine event (test:jobState, 08-3 §22). */
   z.object({
     id: z.string(),
@@ -228,6 +263,8 @@ export const NAMED_QUERY_NAMES = [
   'chats.foo',
   // M4 T3: the watchdog's budget ceiling (08-4 §26.3 item 6, "counts come from the DB").
   'stepTurnsForJob',
+  // M5 T7: one approval by id (approval.changed after an engine restart, when the runner holds nothing in RAM).
+  'approvals.byId',
 ] as const;
 export type NamedQuery = (typeof NAMED_QUERY_NAMES)[number];
 
@@ -299,6 +336,83 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
       })
       .strict(),
   }),
+  // M5 (CR-0009). Requests: approval.open → { approvalId, cardId, nonce } (ApprovalGate.create, T4); approval.transition →
+  // { ok: true } or APPROVAL_BAD_TRANSITION (08-2 §9.1; no ack in 2 s = HELD(cannot_check), 08-4 §29.1); vault.use → the
+  // value, to the engine filler only (08-2 §11.3; VAULT_PURPOSE_DENIED, VAULT_MISSING).
+  // M5 T7 (lead-approved edit): the job and the card text ride with the verified draft (ApprovalGate.openFromEngine, T4 hand-off).
+  z.object({
+    id: z.string(),
+    kind: z.literal('approval.open'),
+    payload: z
+      .object({
+        jobId: z.string(),
+        draft: ApprovalDraftSchema,
+        title: z.string(),
+        impact: z.string(),
+        submitRef: z.string().max(64).optional(),
+        // M5 T8 (lead edit): the approval this card replaces (a steer or changed terms); main sets its superseded_by.
+        supersedes: z.string().optional(),
+      })
+      .strict(),
+  }),
+  z.object({
+    id: z.string(),
+    kind: z.literal('approval.transition'),
+    payload: z
+      .object({
+        approvalId: z.string(),
+        to: ApprovalStateSchema,
+        data: z
+          .object({
+            submittedAt: z.number().optional(),
+            paymentState: z.enum(['submitted', 'checking', 'succeeded', 'failed']).optional(),
+            // M5 T8 (lead edit): the second look's result (approvals.second_look, 08-0 §B.3) and what the card shows for a
+            // HELD or SUPERSEDED move (ApprovalPayload.held / .superseded, 05-2 §5.5.4, 08-4 §28.6).
+            secondLook: z
+              .object({
+                at: z.number(),
+                deterministic: z.object({ ok: z.boolean(), mismatches: z.array(z.string()) }).strict(),
+                ai: z.object({ ok: z.boolean(), note: z.string() }).strict().optional(),
+                turnId: z.string().optional(),
+                held: z
+                  .object({
+                    field: z.enum(['recipient', 'amount', 'date', 'time', 'item', 'people', 'place']),
+                    userSaid: z.string(),
+                    actionHas: z.string(),
+                  })
+                  .strict()
+                  .optional(),
+              })
+              .strict()
+              .optional(),
+            held: z
+              .object({
+                reason: z.enum(['mismatch', 'cannot_check', 'no_user_words']),
+                userSaid: z.string().optional(),
+                actionHas: z.string().optional(),
+                verbing: z.string().optional(),
+              })
+              .strict()
+              .optional(),
+            superseded: z.enum(['price', 'time', 'recipient', 'fee', 'steer']).optional(),
+          })
+          .strict()
+          .optional(),
+      })
+      .strict(),
+  }),
+  z.object({
+    id: z.string(),
+    kind: z.literal('vault.use'),
+    payload: z
+      .object({
+        purpose: z.enum(['fill_login', 'fill_card', 'ai_call', 'connector_refresh', 'wa_session', 'voice_call', 'web_tool', 'hub_call']),
+        name: z.string().min(1),
+        jobId: z.string().optional(),
+        approvalId: z.string().optional(),
+      })
+      .strict(),
+  }),
   /** The engine's answer to `ai.cmd`: main stores the chosen/verified provider in settings.json (main owns settings). */
   z.object({
     id: z.string(),
@@ -320,7 +434,7 @@ export type DbTxReply = { ids: string[]; revs: number[] };
 
 /** The engine side of the port (in production a MessagePort; in tests a direct call into main's handlers). */
 export interface MainLink {
-  request<T>(kind: 'db.tx' | 'db.query', payload: unknown): Promise<Result<T>>;
+  request<T>(kind: 'db.tx' | 'db.query' | 'approval.open' | 'approval.transition' | 'vault.use', payload: unknown): Promise<Result<T>>;
   send(kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify', payload: unknown): void;
 }
 

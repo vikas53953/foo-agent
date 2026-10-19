@@ -26,11 +26,11 @@ import { ReleaseGate } from './prompt/releaseGate';
 import { Redactor } from './redact/Redactor';
 import { findBanned } from './prompt/filters';
 import { capRateOf, resolveModel } from './ai/models';
-import { stubGate } from './gate/GateLogic';
+import { createGate } from './gate/GateLogic';
 import { JobRunner } from './jobs/JobRunner';
 import { JobRecovery } from './jobs/recovery';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
-import type { StepAct } from '../shared/schemas';
+import type { SecondLookAct, StepAct } from '../shared/schemas';
 
 export interface EngineOptions {
   link: MainLink;
@@ -113,13 +113,16 @@ export class Engine {
       detectRow: (row) => o.link.send('ui.patch', { event: 'ai:detectRow', payload: row }),
       retestTimers: !o.testRun,
     });
+    // M5 T7: the real gate (08-2 §9.4) replaces the M4 stub; R4 results go through Redactor.scrub (08-2 §11.4).
+    const gate = createGate({ settings: () => this.settings, now: () => o.clock.now() });
     this.tools = new ToolLayer({
       link: o.link,
       clock: o.clock,
       newId: (p) => newId(p, o.clock.now()),
       tools: o.tools ?? {},
-      gate: stubGate,
+      gate,
       log: (evt, kind) => log(evt, kind),
+      scrub: (text) => this.redactor.scrub(text),
     });
     this.recovery = new JobRecovery({
       link: o.link,
@@ -141,10 +144,14 @@ export class Engine {
       rateOf: (id) => capRateOf(pricing, id, resolveModel(id, 'default', pricing, this.settings.ai.providers[id])) ?? null,
       usdToInr: pricing.usdToInr,
       log: (evt, kind) => log(evt, kind),
+      gate,
+      scrub: (text) => this.redactor.scrub(text),
       hooks: {
         onAiError: (job, kind) => this.recovery.onAiError(job, kind),
         onCannotStart: (job, kind) => this.recovery.onCannotStart(job, kind),
         beforeSchedule: () => this.recovery.beforeSchedule(),
+        // M5 T10: messages that waited at the AI cap go when it is raised or the month turns.
+        onCapLifted: () => void this.drainQueued(),
       },
     });
     this.recovery.attach(this.jobs);
@@ -157,6 +164,8 @@ export class Engine {
       protocol: this.protocol(),
       log: (evt, kind) => log(evt, kind),
       jobs: this.jobs,
+      // M5 T10: the cap check covers chat-lane turns (08-2 §5.10 item 4, CR-0008 (j) row 5).
+      capCheck: (chars, purpose) => this.jobs.allowChatCall(chars, purpose),
     });
     this.jobs.setIntake((chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }));
   }
@@ -191,6 +200,13 @@ export class Engine {
       },
       filter: (text) => filterSay(text, { redactor }).text,
       isBanned: (text) => findBanned(text).length > 0,
+      // M5 T8 (08-4 §24.7, §25.4)
+      buildSecondLook: (userWords, actionJson) => this.prompts.buildSecondLook(userWords, actionJson),
+      parseSecondLook: (text) => {
+        const env = parseEnvelope(text);
+        const v = env.act === undefined ? null : validateAct('second_look', env.act);
+        return v?.ok ? (v.act as SecondLookAct) : null;
+      },
     };
   }
 
@@ -235,6 +251,7 @@ export class Engine {
           conversation,
           userMessage: i.message.textForAi ?? i.message.text,
           local: i.local,
+          ...(i.oldPlan ? { oldPlan: i.oldPlan } : {}),
         });
       },
       buildRepair: (issues) => this.prompts.buildRepair(issues).prompt,
@@ -277,6 +294,8 @@ export class Engine {
     const pick = this.ai.pick();
     if (!pick) return null;
     const built = this.prompts.buildRewrite(sentence);
+    // M5 T10 (row 5): a rewrite is a key call too; at the cap the held sentence is dropped, as when the turn fails.
+    if (!(await this.jobs.allowChatCall(built.system.length + built.prompt.length, 'rewrite'))) return null;
     const r = await this.ai
       .runTurn(
         pick.providerId,
@@ -356,6 +375,13 @@ export class Engine {
       case 'card.answered':
         if (!(await this.recovery.onCardAnswered(msg.payload))) await this.jobs.onCardAnswered(msg.payload);
         return undefined;
+      // M5 T7: main moved an approval (08-1 §2.4); an expired payment / booking card ends its job (AT-111).
+      case 'approval.changed':
+        await this.jobs.onApprovalChanged(msg.payload);
+        return undefined;
+      // M5 T14 (G-M5-39 (b)): the second look of a Draft's Send, asked by main's Draft tick.
+      case 'draft.secondLook':
+        return ok(await this.jobs.draftSecondLook(msg.payload));
       case 'job.stop': {
         const r = await this.jobs.stopJob(msg.payload.jobId, msg.payload.reason);
         return r ? ok(r) : { ok: false, error: { kind: 'JOB_GONE' } };
@@ -365,6 +391,18 @@ export class Engine {
       case 'job.retry':
         return this.jobs.retry(msg.payload.jobId, msg.payload.newJobId);
       case 'test.clock':
+        return undefined;
+      // M5 T2 (08-0 §G.6, X-93): main's registry of record, mirrored here; `ttlMs: 0` = until the app quits. Never logged.
+      case 'registry:add':
+        this.redactor.registry.add({
+          handle: msg.payload.handle,
+          value: msg.payload.value,
+          normalised: msg.payload.normalised,
+          ttlMs: msg.payload.ttlMs || null,
+        });
+        return undefined;
+      case 'registry:remove':
+        this.redactor.registry.remove(msg.payload.handles);
         return undefined;
       // G-M4-04: a request; main waits for the ack before it exits.
       case 'jobs.pauseAll':
