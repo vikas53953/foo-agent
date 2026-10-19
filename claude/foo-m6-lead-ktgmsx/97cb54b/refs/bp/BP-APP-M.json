@@ -1,0 +1,83 @@
+{
+  "id": "BP-APP-M",
+  "family": "bp",
+  "selector": "#win .mid",
+  "box": {
+    "x": 451.5,
+    "y": 1191.0625,
+    "width": 598,
+    "height": 786
+  },
+  "files": {
+    "light": {
+      "png": "BP-APP-M.light.png",
+      "sha256": "e25de5da96d46e5e45033c304744b712ac20af6181113b2f2dea99143adba7a8"
+    },
+    "dark": {
+      "png": "BP-APP-M.dark.png",
+      "sha256": "688d2fff95e9e719eacf49e5831b0e218bfbd3f58d4af3505e66d5f4d0b24625"
+    }
+  },
+  "texts": [
+    "f",
+    "foo",
+    "Needs you: Pay Taj Holiday Village",
+    "▣ Watch live",
+    "⌕",
+    "▯",
+    "⋯",
+    "Today, Fri 16 Oct",
+    "☀ Good morning, Vikas",
+    "Morning brief",
+    "Mom's birthday is Sun 18 Oct. Cake ordered from Theobroma.",
+    "Airtel bill ₹1,179 due Fri 23 Oct. Sent to Money.",
+    "Goa stays for Sat 12 Dec dropped 18%.",
+    "That's all for today · 👍 · 👎",
+    "ok book the Goa hotel then, under ₹8,000 a night, near the beach",
+    "9:36 AM ✓",
+    "✓",
+    "⏳",
+    "Booking your Goa stay",
+    "Step 3 of 4",
+    "✓",
+    "Checked Booking.com, MakeMyTrip and hotel sites",
+    "✓",
+    "Kept 3 under ₹8,000 a night, beach within 5 min",
+    "Waiting for you to approve the payment",
+    "Book and add to your calendar",
+    "Pay Taj Holiday Village",
+    "Expires 9:51 AM",
+    "Sat 12 Dec – Mon 14 Dec, 2 nights",
+    "₹14,600",
+    "Free cancellation until Thu 10 Dec",
+    "₹0",
+    "Charged once",
+    "₹14,600",
+    "Approve ₹14,600",
+    "Not now",
+    "foo never sees your card",
+    "＋",
+    "Message foo, or hold Ctrl+Space to talk",
+    "🎙"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-APP-M": {
+      "x": 0,
+      "y": 0,
+      "width": 598,
+      "height": 786
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M1",
+  "spec": "03-shell-1 §3.5; 03-shell-2 §3.6",
+  "size": {
+    "width": 600,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}
