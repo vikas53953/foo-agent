@@ -14,6 +14,7 @@ import type { Clock } from '../../shared/clock';
 import { fail, ok, type Result } from '../../shared/errors';
 import { PROVIDER_IDS } from '../../shared/settings';
 import type { SecretIndexRow, SecretKind, VaultUseRequest } from '../../shared/types';
+import type { RegisterOptions } from '../secrets/registerValue';
 import type { Db } from '../store/db';
 import { fitsCredman, type Keyring, type SafeStore } from './keyring';
 import { secretLabel } from './labels';
@@ -56,7 +57,11 @@ export function cardBrand(number: string): string | null {
 }
 
 /** The stored value for one save, built from the Secret box fields (08-2 §11.2 formats), or null when a field is missing. */
-function encode(kind: SecretKind, f: Record<string, string>, now: number): { value: string; card?: { last4: string; brand: string | null } } | null {
+function encode(
+  kind: SecretKind,
+  f: Record<string, string>,
+  now: number,
+): { value: string; card?: { last4: string; brand: string | null } } | null {
   const has = (...keys: string[]) => keys.every((k) => (f[k] ?? '').trim() !== '');
   switch (kind) {
     case 'ai_key':
@@ -74,7 +79,9 @@ function encode(kind: SecretKind, f: Record<string, string>, now: number): { val
       return { value, card: { last4: number.slice(-4), brand: cardBrand(number) } };
     }
     case 'conn_token':
-      return has('refresh_token') ? { value: JSON.stringify({ refresh_token: f.refresh_token, scope: f.scope ?? '', issued_at: now }) } : null;
+      return has('refresh_token')
+        ? { value: JSON.stringify({ refresh_token: f.refresh_token, scope: f.scope ?? '', issued_at: now }) }
+        : null;
     case 'hub_key':
       return has('key') ? { value: JSON.stringify({ key: f.key, userId: f.userId ?? '', issued_at: now }) } : null;
     case 'wa_session':
@@ -83,9 +90,7 @@ function encode(kind: SecretKind, f: Record<string, string>, now: number): { val
 }
 
 /** Registers a value in the SecretRegistry of record (and its engine mirror) before anyone uses it (08-2 §11.3). */
-export type RegisterFn = (value: string, opts: { kind: RegisterKind; ttlMs?: number | null }) => string;
-/** T3's `RegisterKind` (src/main/secrets/registerValue.ts): the vault kinds plus the registry-only ones (X-114). */
-export type RegisterKind = SecretKind | 'voice_key' | 'otp' | 'cvv' | 'pasted';
+export type RegisterFn = (value: string, opts: RegisterOptions) => string;
 
 export interface VaultDeps {
   db: Db;
@@ -251,28 +256,33 @@ export class SecretVault {
     if (!validSecretName(kind, req.name)) return fail('VAULT_PURPOSE_DENIED');
     if (req.purpose === 'fill_card') {
       const a = req.jobId ? this.d.findOpenApproval(req.jobId, 'pay') : null;
-      if (!a || !['APPROVED', 'RUNNING'].includes(a.state) || (req.approvalId && req.approvalId !== a.id)) return fail('VAULT_PURPOSE_DENIED');
+      if (!a || !['APPROVED', 'RUNNING'].includes(a.state) || (req.approvalId && req.approvalId !== a.id))
+        return fail('VAULT_PURPOSE_DENIED');
     }
     if (req.purpose === 'fill_login') {
       const job = req.jobId
         ? (this.d.db.prepare('SELECT state, site_domain FROM jobs WHERE id = ?').get(req.jobId) as
-            | { state: string; site_domain: string | null }
-            | undefined)
+            { state: string; site_domain: string | null } | undefined)
         : undefined;
-      if (!job || job.state !== 'running' || job.site_domain !== req.name) return fail('VAULT_PURPOSE_DENIED');
+      if (!job || job.state !== 'working' || job.site_domain !== req.name) return fail('VAULT_PURPOSE_DENIED');
     }
     const target = vaultTarget(kind, req.name);
     const r = this.find(target);
     if (!r) return fail('VAULT_MISSING');
     let value: string | null;
     try {
-      value = r.storage === 'credman' ? this.d.keyring?.get(target) ?? null : this.d.safe.decryptString(readFileSync(this.blobPath(r.name)));
+      value =
+        r.storage === 'credman' ? (this.d.keyring?.get(target) ?? null) : this.d.safe.decryptString(readFileSync(this.blobPath(r.name)));
     } catch {
       value = null;
     }
     if (!value) return fail('VAULT_MISSING');
-    this.d.register(value, { kind });
+    // T3's register kinds have no WhatsApp session; it is a connection credential like a refresh token.
+    this.d.register(value, { kind: kind === 'wa_session' ? 'conn_token' : kind });
     this.d.db.prepare('UPDATE secrets_index SET last_used_at = ? WHERE target = ?').run(this.d.clock.now(), target);
     return ok(value);
   }
 }
+
+/** Until T4's `findOpenApproval` (src/main/approvals/ApprovalGate.ts) lands, no card is ever filled (M5 review fix 4). */
+export const noOpenApproval: VaultDeps['findOpenApproval'] = () => null;

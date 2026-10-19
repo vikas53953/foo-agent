@@ -189,7 +189,16 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
         {
           op: 'insert',
           table: 'cards',
-          row: { id: cardId, chat_id: chatId, message_id: messageId, type: 'secret', state: 'asking', payload, nonce: newNonce(), created_at: now },
+          row: {
+            id: cardId,
+            chat_id: chatId,
+            message_id: messageId,
+            type: 'secret',
+            state: 'asking',
+            payload,
+            nonce: newNonce(),
+            created_at: now,
+          },
         },
       ]);
       if (!r.result.ok) return r.result as Result<never>;

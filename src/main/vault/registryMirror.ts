@@ -70,7 +70,8 @@ export function registryMirror(d: MirrorDeps): RegistryMirror {
     replay() {
       purge();
       const now = d.clock.now();
-      for (const { p, expiresAt } of live.values()) d.send('registry:add', { ...p, ttlMs: expiresAt === null ? 0 : Math.max(1, expiresAt - now) });
+      for (const { p, expiresAt } of live.values())
+        d.send('registry:add', { ...p, ttlMs: expiresAt === null ? 0 : Math.max(1, expiresAt - now) });
     },
     handles() {
       purge();
