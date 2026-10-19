@@ -1,19 +1,19 @@
 {
-  "reportId": "M3-a50ec15-39161728369",
+  "reportId": "M3-1a603bd-39193446987",
   "milestone": "M3",
-  "generatedAt": "2026-10-18T20:16:33.608Z",
-  "commit": "b97282a02f455e5fd5816fd4c028d288931bca85",
-  "head": "a50ec15aaadd60f5e5751d9acd431d2e93b901a5",
+  "generatedAt": "2026-10-19T03:19:39.064Z",
+  "commit": "cd7e4739107921de60480811394f599ac94225a1",
+  "head": "1a603bd16047c03a5d5301bf07809d302330f0f3",
   "ci": {
-    "runId": "39161728369",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39161728369"
+    "runId": "39193446987",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39193446987"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "f808565536284e7d4e3a7dd182cb349ec76d2f2e7287d9c529c31af2bc5da6da"
   },
   "runner": {
-    "recordedAt": "2026-10-18T20:10:09.832Z",
+    "recordedAt": "2026-10-19T03:13:42.157Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000003102"
+      "runner": "GitHub Actions 1000003180"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,8 +59,7 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "1 test(s) failed",
-    "2 Tier R step(s) failed",
+    "2 test(s) failed",
     "10 audit item(s) not DONE (the milestone is not complete)",
     "CHANGED items need an approved CR"
   ],
@@ -536,8 +535,8 @@
         "skipped": 2
       },
       "e2e": {
-        "passed": 57,
-        "failed": 0,
+        "passed": 56,
+        "failed": 1,
         "skipped": 0
       }
     },
@@ -13228,23 +13227,13 @@
         "file": "D:/a/foo-agent/foo-agent/test/unit/m3-prompt-filters.test.ts"
       },
       {
-        "id": "AT-118a",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts"
-      },
-      {
-        "id": "AT-118a",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts"
-      },
-      {
         "id": "AT-119",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/ai-words.test.ts"
       },
       {
         "id": "AT-019",
-        "status": "failed",
+        "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/AT-019.test.ts"
       },
       {
@@ -13608,6 +13597,16 @@
         "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/waiting.test.ts"
       },
       {
+        "id": "AT-118a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts"
+      },
+      {
+        "id": "AT-118a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts"
+      },
+      {
         "id": "AT-105",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/unit/jobs/queue.test.ts"
@@ -13659,7 +13658,7 @@
       },
       {
         "id": "ART-26a",
-        "status": "passed",
+        "status": "failed",
         "file": "test/e2e/m2-messages.spec.ts"
       },
       {
@@ -13796,8 +13795,14 @@
     "failed": [
       {
         "suite": "unit",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/AT-019.test.ts",
-        "title": "AT-019 · Find bills due this week runs to DONE: checklist within 2 s, the result within 60 s, proof checked, badge ✅",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/m3-adapters-fake.test.ts",
+        "title": "fake AI (08-3 §22.3) error makes the turn fail with that kind; delayMs runs on the injected clock; cancel during the delay",
+        "status": "failed"
+      },
+      {
+        "suite": "e2e",
+        "file": "test/e2e/m2-messages.spec.ts",
+        "title": "ART-26a · bubbles, cards, the bubble menu and the reaction picker pass axe in light and dark",
         "status": "failed"
       }
     ],
@@ -13865,8 +13870,8 @@
     "counts": {
       "pass": 1,
       "review": 18,
-      "fail": 2,
-      "disputed": 57,
+      "fail": 0,
+      "disputed": 59,
       "notBuilt": 0
     },
     "refsRendered": [
@@ -14305,7 +14310,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "pass (BP-ANAT-L ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.068677734375,
+        "r5": 0.0686435546875,
         "ref": true,
         "app": true,
         "diff": true
@@ -14617,7 +14622,7 @@
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "pass (BP-APP-M ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05464612945930881,
+        "r5": 0.05456992056856187,
         "ref": true,
         "app": true,
         "diff": true
@@ -14729,12 +14734,12 @@
       {
         "id": "BP-COMP-04",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
-        "r3": "fail (BP-COMP-04 ΔE 5.19)",
+        "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.08620059902111184,
+        "r5": 0.054677438239082075,
         "ref": true,
         "app": true,
         "diff": true
@@ -14745,9 +14750,9 @@
         "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
-        "r3": "pass (BP-COMP-04 ΔE 1.2)",
+        "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.08338812184966031,
+        "r5": 0.05350661515045077,
         "ref": true,
         "app": true,
         "diff": true
@@ -14760,7 +14765,7 @@
         "r2": "fail (BP-COMP-05 0/248.671875 px)",
         "r3": "pass (BP-COMP-05 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.11103197214308326,
+        "r5": 0.10073781868653664,
         "ref": true,
         "app": true,
         "diff": true
@@ -14773,7 +14778,7 @@
         "r2": "fail (BP-COMP-05 0/248.671875 px)",
         "r3": "pass (BP-COMP-05 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.14207027540360873,
+        "r5": 0.1018335890130762,
         "ref": true,
         "app": true,
         "diff": true
@@ -14833,12 +14838,12 @@
       {
         "id": "BP-COMP-08",
         "theme": "dark",
-        "verdict": "fail",
+        "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-COMP-08 0/248.671875 px)",
-        "r3": "fail (BP-COMP-08 ΔE 5.52)",
+        "r3": "pass (BP-COMP-08 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.10461538461538461,
+        "r5": 0.07724409132859837,
         "ref": true,
         "app": true,
         "diff": true
@@ -14849,9 +14854,9 @@
         "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (BP-COMP-08 0/248.671875 px)",
-        "r3": "pass (BP-COMP-08 ΔE 1.4)",
+        "r3": "pass (BP-COMP-08 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.1064102564102564,
+        "r5": 0.0809758837927852,
         "ref": true,
         "app": true,
         "diff": true
@@ -15176,7 +15181,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 20.59)",
         "r4": "fail (21.84 %)",
-        "r5": 0.0853359375,
+        "r5": 0.085333984375,
         "ref": true,
         "app": true,
         "diff": true
