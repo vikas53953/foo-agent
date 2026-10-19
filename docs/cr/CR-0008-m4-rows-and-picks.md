@@ -134,10 +134,16 @@ seed (11-fidelity §11.2.3: state comes from the seed, never bent to match a pic
 | --- | -------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------ |
 | 1   | all six              | Card words from the Blueprint gallery's own example jobs              | Card words from the `ux-world` seed's card rows (R1 counts every word)                         | §11.2.3            |
 | 2   | all six              | 350px mini panels                                                    | Cards at their spec width (up to 440px) inside the real column (R2 size)                        | 05-1 §0.2; CR-0003 §(b)1 |
-| 3   | BP-CARD-15           | Proof bubble plus chips; R3 samples the bubble                        | The capture is the 186×24 proof chip only (`--ok-soft` #E3F5EA); the centre sample lands on chip text (#B9DBC9) | 05-3 §5.15         |
-| 4   | BP-CARD-19           | Error card filled pink                                               | White card with a 1.5px `--bad` / `--warn` top edge                                            | 05-3 §5.20.1       |
+| 3   | BP-CARD-15           | Proof bubble plus chips; R3 samples the bubble                        | The capture is the proof chip only (186×24, measured; bg `--ok-soft`); the centre sample lands on an anti-aliased pixel of the `--ok` chip text | 05-3 §5.15         |
+| 4   | BP-CARD-19           | Error card filled pink                                               | `--bg-raised` card with a 1.5px `--bad` / `--warn` top edge                                            | 05-3 §5.20.1       |
 
 Disputed checks (`docs/fidelity/disputes.json`): `{cr: "CR-0008", ids: [the six], checks: ["r1", "r2"]}` and
 `{cr: "CR-0008", ids: ["BP-CARD-15", "BP-CARD-19"], checks: ["r3"]}`, until the spec keeper redraws the gallery. Every
 other check still counts. Spec-keeper list: redraw the six gallery minis from the `ux-world` seed at card width; error
-card per 05-3 §5.20.1.
+card per 05-3 §5.20.1. The §11.2.7 step 2 GAPS.md line is left to the spec keeper with that redraw, as for CR-0003 (GAPS.md
+is CR-gated in `spec/`).
+
+Independent review (Fable, 2026-10-19 ~03:20Z, read-only): **PASS**, no "act" findings; all four cites checked against
+`spec/constitution/` and the app code (`Card.module.css` edge rules, `Pill.module.css` `--ok-soft`). Its three "consider"
+wordings are applied above. Recorded as approved on Vikas's behalf under his standing rule (2026-10-18 14:56Z) and his
+overnight message (2026-10-18 19:16Z, "dont wait for my aproval"); listed for his later review.
