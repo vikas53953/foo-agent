@@ -6,12 +6,12 @@
 // The frames are drawn in the foo chat on Fri 16 Oct from 9:05 AM. M5 has no booking site, so the Approval card is a seeded
 // row (test:card.seed) with its approvals row, its title and impact built by the engine's approvalText from the fields; the
 // "yes" is really typed and the engine's runner answers it (08-2 §5.2).
-// Drawing-vs-app gaps (R1/R2 disputes go to a CR, never into code; CR-0009 row UX-12):
-// - the drawn impact names the area ("Pizza by the Bay, Marine Drive"); ApprovalFields carries no area (08-2 §9.3), so the
-//   slot stays empty; the drawn "Booked under: Vikas Sharma · +91 98••• ••210" row has no ApprovalFields value either
-//   (08-0 §B.3; the row is M9's, with the booking site's form);
-// - the drawing shows "Free to cancel until" as a third money row and "Expires 9:27 AM" in the header; 05-2 §5.5.1 draws it as
-//   a line under the rows and puts the expiry in the footer ("Expires {time} · If you don't answer, I won't book it.");
+// Drawing-vs-app gaps (R1/R2/R4 disputes go to a CR, never into code; CR-0009 G-M5-37 and its UX-12 row):
+// - the area ("Pizza by the Bay, Marine Drive") and the "Booked under: Vikas Sharma · +91 98••• ••210" row are in 05-2
+//   §5.5.1 / §5.5.2, but 08-2 §9.3 ApprovalFields has no field for them: the open spec-keeper item G-M5-32 (b), so the area
+//   slot stays out and the row is not drawn until the spec settles it;
+// - the drawing shows "Free to cancel until" as a third money row, "Expires 9:27 AM" in the header and a 28 px [ Book table ];
+//   05-2 §5.5.1 draws a line under the rows, the expiry in the footer, and --btn-h 40 px buttons;
 // - UX-12-06 draws "Tap Book table on the card…"; 01-articles Art. 6, 05-1 §5.1 and 08-2 §5.2 fix the words "Tap Approve on
 //   the card so I know it's really you." (`thread.approval_typed.approve`). The M9 ask bubble and checklist are not drawn by M5.
 import { expect, test, type Page } from '@playwright/test';
@@ -105,7 +105,8 @@ test('UX-12 · Booking a restaurant: steps UX-12-05 and UX-12-06, light and dark
     // f: "Waits for a tap. If you don't answer, it won't book."
     expect(s.f).toContain('Waits for a tap');
     await expect(card).toContainText(t('cards.approval.footer.book', { time: 'Fri 16 Oct, 9:27 AM' }));
-    await shoot(page, 'UX-12-05', sel);
+    // hl 'booktable': the walkthrough highlights the Book table button.
+    await shoot(page, 'UX-12-05', `${sel} ${byTid(TID.cardApprovalApprove)}`);
   });
 
   await test.step('UX-12-06 · a typed "yes" never approves; foo says to tap the card', async () => {
