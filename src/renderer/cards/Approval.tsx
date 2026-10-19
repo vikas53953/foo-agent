@@ -8,7 +8,8 @@
 // §5.5.4 read-only in history (the folded row toggles the card as approved plus "Approved by you at {time} · {scope}"),
 // 05-1 §0.5 status edges and summary row, §0.6 (Esc never declines; the Primary is never focused automatically), 09 §9.17.4, X-01, X-03,
 // X-04. CR-0009 G-M5-14 (Change focuses the composer; the typed text steers). Card words come from the card's fields and
-// copy keys, never AI free text.
+// copy keys, never AI free text. M5 T14: CHECKING → FAILED ("I can't tell if {site} did it…" + [ It went through ]
+// [ It didn't ], no Try again; a tap collapses it to "You said…", the card staying FAILED; G-M5-39, G-M5-32 (b)).
 import { useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import { formatDate, formatInr, formatTime } from '../../shared/format';
@@ -199,7 +200,7 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
   const state = card.state as ApprovalState;
   const offline = useStore(selectConnection) === 'offline';
   const [scope, setScope] = useState<ApprovalScope>('once');
-  const { busy, run } = useCardAction<'approve' | 'decline' | 'held' | 'again' | 'retry'>();
+  const { busy, run } = useCardAction<'approve' | 'decline' | 'held' | 'again' | 'retry' | 'report'>();
   const kind = approvalKind(f);
   const tz = time.timeZone;
   const at = (ms: number) => formatDate(ms, 'full', { timeZone: tz, now: time.now });
@@ -292,6 +293,49 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
       )}
     </CardFrame>
   );
+
+  // M5 T14 (05-2 §5.5.4 CHECKING → FAILED): foo can't tell, so it never says "Nothing was booked." and never offers Try again.
+  const unknownResult = (phone: string | undefined) => {
+    const said = (card.answer as { optionId?: unknown } | null)?.optionId;
+    if (said === 'went_through') return summary('ErrorCircle', styles.badIcon, t('cards.approval.body.said_went_through'));
+    if (said === 'did_not') return summary('ErrorCircle', styles.badIcon, t('cards.approval.body.said_did_not'));
+    const site = f.siteDomain ?? f.payee ?? '';
+    const report = (outcome: 'went_through' | 'did_not') =>
+      run('report', () => invoke('approval:report', { cardId: card.id, nonce: card.nonce, outcome, resolvedBy: 'tap' }));
+    return (
+      <CardFrame {...frame} edge="bad" busy={busy !== null}>
+        <div className={styles.head}>
+          <Icon name={KIND_ICON[kind]} size={20} className={styles.headIcon} />
+          <span className={styles.title} data-copy="external">
+            {p.title}
+          </span>
+        </div>
+        <div className={styles.impact}>
+          {/* G-M5-32 (b): with no verified phone the call clause is left out with its words. */}
+          {phone ? t('cards.approval.body.checking_failed', { site, phone }) : t('cards.approval.body.checking_failed_no_phone', { site })}
+        </div>
+        <div className={styles.buttons}>
+          <CardButton
+            tid="cardApprovalWentThrough"
+            kind="secondary"
+            busy={busy === 'report'}
+            disabled={busy !== null}
+            onClick={() => report('went_through')}
+          >
+            {t('cards.approval.button.went_through')}
+          </CardButton>
+          <CardButton tid="cardApprovalDidNot" kind="secondary" disabled={busy !== null} onClick={() => report('did_not')}>
+            {t('cards.approval.button.did_not')}
+          </CardButton>
+        </div>
+        <div className={styles.footRow}>
+          <span className={styles.spacer} />
+          <CardTimeLabel {...time} />
+        </div>
+      </CardFrame>
+    );
+  };
+
   switch (state) {
     case 'APPROVED':
     case 'RUNNING':
@@ -321,6 +365,7 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
     case 'WITHDRAWN':
       return summary('Dismiss', styles.dimIcon, t('cards.common.withdrawn'));
     case 'FAILED':
+      if (p.unknownResult) return unknownResult(p.unknownResult.phone);
       return summary(
         'ErrorCircle',
         styles.badIcon,

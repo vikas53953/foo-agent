@@ -270,6 +270,11 @@ himself.
   real gap: `cards.choice.offer_action.*` ("book one" as J9 draws it, "send it", …, "add it to your calendar", "fill
   that in") and `cards.choice.offer_verb.{calendar_write,prepare}` ("add it", "fill it in"). Independent review
   APPROVE-WITH-NOTE (row words aligned to 06-screens-2 as asked); approved on Vikas's behalf.
+- **G-M5-36** (T12) Ctrl+J (05-1 §0, 09 §9.17.1, X-09, X-21) "pending gated card" also counts a HELD approval or payment
+  as a card that needs the user, beside PENDING, as 03-shell-1 §3.4.4 does for the Needs you chip (and the pending strip,
+  04-2 §23.4), so the three agree. Choice covers tiles in `asking`; sign-in counts only in `waiting` (`live` = the user is
+  signing in already); expired and deleted cards never count. Copy key `thread.jump.none` "Nothing needs you here."
+  (05-1 §0 verbatim). Pending review.
 - **G-M5-35** (T11) ART-08a in M5 searches the DOM captured with each picture instead of OCR of the picture (10-2 §D says
   "OCR of all screenshots and live-view frames"). 05-2 §5.8.5 already keeps a value out of the markup (a property, never a
   `value` attribute), and the fields are masked, so the DOM text is the stricter search for what M5 draws; OCR, live-view
@@ -280,6 +285,18 @@ himself.
   the id so FID-18 sees no orphan; the lead flips the row live and may add the e2e row at close-out. Each capture also
   searches the `.value` of every non-password input (review fix). Independent review PASS WITH FIXES; approved on
   Vikas's behalf.
+- **G-M5-39** (T14) (a) 05-2 §5.5.4 CHECKING → FAILED has no tap channel in 08-1 §3.2: `approval:report { cardId, nonce,
+outcome: 'went_through' | 'did_not', resolvedBy }`. Main's 15 min `no_proof` move sets `payload.unknownResult`; the tap
+  keeps the card FAILED with `answer` and `resolved_by='tap'`, turns the nonce over (once only) and sets the approval's
+  `unknown` activity rows to done / failed. With no verified phone the `{phone}` clause is left out with its words
+  (`cards.approval.body.checking_failed_no_phone`, the G-M5-32 (b) rule). (b) A Draft's Send runs the 08-2 §9.6 second
+  look on the card text (08-3 §16.1) when the 5 s close: main asks the engine (`draft.secondLook`, 60 s cap on both
+  sides), no answer → HELD cannot_check (not re-looked when the AI returns: a J19 follow-up, as T8). HELD keeps the Draft
+  `pending` with the Held strip; the draft's value → APPROVED and sends; the user's value → DECLINED (G-M5-03), the card
+  superseded and a fresh pending Draft on the same Gmail draft (as G-M5-28). Until M8's draft producer re-writes the
+  Gmail draft with their value, that fresh Draft re-holds on the same mismatch until the user taps Change (a placeholder,
+  as G-M5-28). Nothing weakens an approval, a hard limit, a secret or an irreversible act; (b) closes a path that sent
+  with no second look. Pending review.
 - **G-M5-40** (T15) 05-1 §0.7 card arrival ("{sender} sent {card name}: {title}", gated cards add ", needs you") is
   built for the card types that have a `cards.<type>.card_name` key in M5 (choice, tiles, approval, draft, secret); every
   other type keeps the 04 §1.8 row line until its milestone lands its name key (no new words in M5). The Draft `{title}`

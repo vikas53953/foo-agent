@@ -97,6 +97,8 @@ export const cardSeedArg = z
         hardLimit: z.boolean().optional(),
         state: ApprovalStateSchema.optional(),
         expiresAt: z.number().optional(),
+        // M5 T14: a CHECKING row's write-ahead time (08-2 §10.4), so main's 15 min no-proof move can run on it.
+        submittedAt: z.number().optional(),
       })
       .strict()
       .optional(),
@@ -202,6 +204,9 @@ export function seedCard(db: Db, arg: CardSeedArg, now: number): CardSeedReply {
         arg.approval.expiresAt ?? approvalExpiresAt(fields.verb, now),
         now,
       );
+      // M5 T14
+      if (arg.approval.submittedAt !== undefined)
+        db.prepare('UPDATE approvals SET submitted_at = ? WHERE id = ?').run(arg.approval.submittedAt, approvalId);
     }
   })();
   return { chatId, cardId, messageId, nonce, ...(jobId ? { jobId } : {}), ...(approvalId ? { approvalId } : {}) };

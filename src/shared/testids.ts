@@ -388,6 +388,8 @@ export const TID = {
   dialogC22: 'dialog-c-22',
   // M5 T4: the FAILED Approval card's one fix button "Try again" (05-2 §5.5.4; 08-0 §C names no id for it).
   cardApprovalTryAgain: 'card-approval-try-again',
+  // M5 T14: a held Draft's two values (05-2 §5.7.2 HELD; 08-0 §C names no id), data-index 0 (user's) and 1 (the draft's).
+  cardDraftHeldOption: 'card-draft-held-option',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

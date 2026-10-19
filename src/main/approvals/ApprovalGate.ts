@@ -13,6 +13,9 @@
 // M5 T8: §9.6 / 08-0 §B.3 (`approval.transition` stores `second_look`; HELD and SUPERSEDED write the card's `held` /
 // `superseded`), 08-4 §26.5 item 3 (superseded_by set once the new card exists), §10.5 + G-M5-33 (CHECKING 15 min → FAILED),
 // SM-A4 (the HELD picks go to the runner as `held_action` / `held_own`).
+// M5 T14: 05-2 §5.5.4 CHECKING → FAILED (the card says "I can't tell…"; [ It went through ] / [ It didn't ] collapse it and
+// set the action's activity `outcome` done / failed, `resolved_by='tap'`, the card staying FAILED, Art. 11), CR-0009
+// G-M5-39 (`approval:report`, the narrowest channel for that tap; 08-1 §3.2 has none).
 import { APPROVAL_EVENTS, approvalExpiresAt, nextApproval, type ApprovalEvent } from '../../shared/approvalMachine';
 import { newNonce } from '../../shared/canon';
 import { fail, ok, type Result } from '../../shared/errors';
@@ -191,6 +194,13 @@ export function findOpenApproval(db: Db, jobId: string, verb: ApprovalVerb): { i
     state: ApprovalState;
   }[];
   return rows.length === 1 ? rows[0]! : null;
+}
+
+// M5 T14
+/** What the user said on a CHECKING → FAILED card (`approval:report`), or null while it waits on them. */
+export function reportedOf(card: Pick<CardRow, 'answer'>): 'went_through' | 'did_not' | null {
+  const id = (card.answer as { optionId?: unknown } | null)?.optionId;
+  return id === 'went_through' || id === 'did_not' ? id : null;
 }
 
 export class ApprovalGate {
@@ -435,6 +445,44 @@ export class ApprovalGate {
     return ok(this.card(req.cardId)!);
   }
 
+  // M5 T14
+  /**
+   * `approval:report` (CR-0009 G-M5-39): on a card that went CHECKING → FAILED, the user says whether it went through. The
+   * card collapses to "You said it went through." / "You said it didn't go through." and stays FAILED (foo has no proof,
+   * Art. 11); the action's activity rows still `unknown` take `done` / `failed`. Nothing is re-submitted (Art. 7). Once only.
+   */
+  report(req: TapReq & { outcome: 'went_through' | 'did_not' }): Result<CardRow> {
+    const t = this.tapped(req, ['FAILED']);
+    if (!t.ok) return t;
+    const { card, a } = t.value;
+    if (!(card.payload as unknown as ApprovalPayload).unknownResult || reportedOf(card)) return fail('CARD_STALE');
+    const now = this.d.now();
+    const outcome = req.outcome === 'went_through' ? 'done' : 'failed';
+    const r = this.tx(() => {
+      // The card's own row is guarded on its nonce, so a second tap (or a second window) finds it stale.
+      const changed = this.d.db
+        .prepare("UPDATE cards SET nonce = ? WHERE id = ? AND nonce = ? AND state = 'FAILED'")
+        .run(newNonce(), card.id, req.nonce).changes;
+      if (changed !== 1) throw new GateAbort('CARD_STALE');
+      this.d.db.prepare("UPDATE activity SET outcome = ? WHERE approval_id = ? AND outcome = 'unknown'").run(outcome, a.id);
+      return this.ops(
+        [
+          {
+            op: 'update',
+            table: 'cards',
+            id: card.id,
+            set: { resolved_by: req.resolvedBy, resolved_at: now, answer: { optionId: req.outcome } },
+          },
+        ],
+        now,
+      );
+    });
+    if (!r.ok) return r;
+    this.d.changed(r.value);
+    this.d.log?.({ t: now, lvl: 'info', mod: 'approvals', evt: 'card.reported', approvalId: a.id, cardId: card.id, outcome });
+    return ok(this.card(card.id)!);
+  }
+
   /**
    * card:askAgain on an EXPIRED card (05-2 §5.5.4): live terms first (08-2 §9.4.2), then a fresh PENDING card with a new
    * id, nonce and expiry; the expired card stays EXPIRED (single use, never auto-retried).
@@ -559,7 +607,17 @@ export class ApprovalGate {
    */
   draftMove(
     approvalId: string,
-    event: 'approve' | 'draft_undo' | 'submit' | 'proof_ok' | 'submit_failed' | 'withdraw',
+    event:
+      | 'approve'
+      | 'draft_undo'
+      | 'submit'
+      | 'proof_ok'
+      | 'submit_failed'
+      | 'withdraw'
+      // M5 T14: the second look on a Draft send (HELD) and its two picks.
+      | 'second_look_held'
+      | 'held_pick_action'
+      | 'held_pick_own',
     w: { approval?: Record<string, unknown>; card: Record<string, unknown>; extra?: DbOp[] },
   ): Result<ApprovalState> {
     const a = this.get(approvalId);
@@ -644,8 +702,13 @@ export class ApprovalGate {
         "SELECT * FROM approvals WHERE state = 'CHECKING' AND submitted_at IS NOT NULL AND submitted_at <= ? ORDER BY submitted_at, id",
       )
       .all(now - CHECKING_MS) as DbRow[];
-    for (const r of unproven)
-      if (this.move(approvalRow(r), 'no_proof', now, { card: { resolved_by: 'system', resolved_at: now } }).ok) moved.push(String(r.id));
+    for (const r of unproven) {
+      // M5 T14: the card says foo can't tell (05-2 §5.5.4 CHECKING → FAILED), never the plain "Nothing was booked."
+      const a = approvalRow(r);
+      const payload = (this.card(a.cardId)?.payload ?? {}) as unknown as ApprovalPayload;
+      const card = { resolved_by: 'system', resolved_at: now, payload: { ...payload, unknownResult: payload.unknownResult ?? {} } };
+      if (this.move(a, 'no_proof', now, { card }).ok) moved.push(String(r.id));
+    }
     return moved;
   }
 
