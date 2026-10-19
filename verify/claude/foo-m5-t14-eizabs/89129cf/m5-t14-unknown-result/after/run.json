@@ -1,0 +1,72 @@
+{
+  "journey": "test/verify/m5-t14-unknown-result.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "89129cfa7ef1b4c1e6b8a62539410692f3b0ef26",
+  "dirty": false,
+  "started": "2026-10-19T12:26:02.247Z",
+  "finished": "2026-10-19T12:26:12.287Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "CHECKING booking, clock 9:41 → 9:56 AM: FAILED, \"I can’t tell if example.com did it. Check example.com before trying again.\", buttons [It went through] [It didn’t], no Try again",
+    "Tap \"It went through\" → \"You said it went through.\", data-card-state still \"FAILED\", no buttons left",
+    "Plain FAILED (site refused) beside it: \"example.com didn’t accept it. Nothing was booked.\" + [ Try again ] (the look the unknown result used to get)",
+    "\"Email Rakesh that I’ll pay the rent on Monday\", then Draft (body says Tuesday 20 Oct) → Send → clock +5 s → one second_look turn on the card text → held: \"Before I send this, one check: you said Monday 19 Oct, the draft says Tuesday 20 Oct. Which one?\" with [Monday 19 Oct] [Tuesday 20 Oct], no Send",
+    "Pick \"Tuesday 20 Oct\" → data-card-state \"sent\", \"Sent · 10:00 AM\""
+  ],
+  "shots": [
+    {
+      "file": "after/01-unknown-result.light.png",
+      "name": "unknown-result",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-unknown-result.dark.png",
+      "name": "unknown-result",
+      "theme": "dark"
+    },
+    {
+      "file": "after/03-said-went-through.light.png",
+      "name": "said-went-through",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-said-went-through.dark.png",
+      "name": "said-went-through",
+      "theme": "dark"
+    },
+    {
+      "file": "after/05-plain-failed.light.png",
+      "name": "plain-failed",
+      "theme": "light"
+    },
+    {
+      "file": "after/06-plain-failed.dark.png",
+      "name": "plain-failed",
+      "theme": "dark"
+    },
+    {
+      "file": "after/07-draft-held.light.png",
+      "name": "draft-held",
+      "theme": "light"
+    },
+    {
+      "file": "after/08-draft-held.dark.png",
+      "name": "draft-held",
+      "theme": "dark"
+    },
+    {
+      "file": "after/09-draft-sent.light.png",
+      "name": "draft-sent",
+      "theme": "light"
+    },
+    {
+      "file": "after/10-draft-sent.dark.png",
+      "name": "draft-sent",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": []
+}
