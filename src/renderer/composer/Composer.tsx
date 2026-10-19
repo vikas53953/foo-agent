@@ -24,7 +24,7 @@ import { canEdit } from '../messages/bubbleState';
 import { requestRevealCard } from '../messages/reveal';
 import { clockNow } from '../store/apply';
 import { loadHelpersReducer, selectHelpers } from '../store/helpers';
-import { update, useStore } from '../store/index';
+import { setComposerHint, update, useStore } from '../store/index';
 import { selectAi, selectNow } from '../store/live';
 import { editMessage, selectChatMessages, takeComposerRequest, type StoredMessage } from '../store/messages';
 import { selectAgentName } from '../store/settings';
@@ -339,20 +339,28 @@ export function Composer({ chat }: { chat: ChatRow }) {
   const counter = length >= COUNTER_FROM ? { n: tooLong ? length - TEXT_LIMIT : TEXT_LIMIT - length, over: tooLong } : null;
   const composerBanner: ComposerBannerType | null = micProblem ?? (pausedHelper?.paused ? 'helper_paused' : null);
 
-  const placeholder = placeholderText({
-    notSetUp,
-    banner,
-    aiName: ai?.displayName ?? '',
-    hasAttachments: chips.length > 0,
-    hasText: !empty,
-    narrow,
-    kind: chat.kind,
-    private: chat.private,
-    title: chatName,
-    agentName,
-    talkKey,
-    planChange: slice ? planChangePending(slice.ids, slice.byId, cardsById) : false,
-  });
+  // M5 (T5): a Choice card's "Something else…" hint, while the box is still empty (05-1 §5.3.2).
+  const hint = useStore((s) => (s.ui.composerHint?.chatId === chatId ? s.ui.composerHint.text : null));
+  useEffect(() => {
+    if (hint && !empty) setComposerHint(null);
+  }, [hint, empty]);
+  const placeholder =
+    hint && empty && !chips.length
+      ? hint
+      : placeholderText({
+          notSetUp,
+          banner,
+          aiName: ai?.displayName ?? '',
+          hasAttachments: chips.length > 0,
+          hasText: !empty,
+          narrow,
+          kind: chat.kind,
+          private: chat.private,
+          title: chatName,
+          agentName,
+          talkKey,
+          planChange: slice ? planChangePending(slice.ids, slice.byId, cardsById) : false,
+        });
 
   // Pill width → the short placeholder under 360 px (§20.4).
   useEffect(() => {

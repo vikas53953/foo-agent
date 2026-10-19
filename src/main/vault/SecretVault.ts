@@ -290,6 +290,3 @@ export class SecretVault {
     return ok(value);
   }
 }
-
-/** Until T4's `findOpenApproval` (src/main/approvals/ApprovalGate.ts) lands, no card is ever filled (M5 review fix 4). */
-export const noOpenApproval: VaultDeps['findOpenApproval'] = () => null;

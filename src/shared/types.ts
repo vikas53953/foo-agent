@@ -273,6 +273,8 @@ export interface ApprovalFields {
   /** send/post: subject + first 140 chars, redacted. */
   contentSummary?: string;
   irreversible: boolean;
+  /** M5 T4 (G-M5-24, 08-5 §3.3): the app a `use_app` approval lets a helper use; its rule matches this app. */
+  app?: PermissionApp;
 }
 
 /** 08-0 §B.3 ApprovalDraft (08-4 §25.1): created by the AI through `request_approval` (§28.1). */
@@ -348,6 +350,11 @@ export interface ApprovalPayload {
   scopes: ApprovalScope[];
   hardLimit: boolean;
   expiresAt: number;
+  // M5 T4
+  /** What a HELD card shows (05-2 §5.5.4, 08-4 §28.3–§28.4); the second look (T8) writes it with the HELD move. */
+  held?: { reason: 'mismatch' | 'cannot_check' | 'no_user_words'; userSaid?: string; actionHas?: string; verbing?: string };
+  /** What a SUPERSEDED card names (05-2 §5.5.4: the term that changed; 08-4 §26.5 a steer); T8 writes it. */
+  superseded?: 'price' | 'time' | 'recipient' | 'fee' | 'steer';
 }
 /** 08-1 §4.5 draft payload. */
 export interface DraftPayload {

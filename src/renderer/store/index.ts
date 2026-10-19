@@ -153,3 +153,10 @@ export function saveScroll(chatId: string, top: number): void {
     s.ui.scroll[chatId] = top;
   });
 }
+
+// M5 (T5): the composer's placeholder after a Choice card's "Something else…" (05-1 §5.3.2).
+export function setComposerHint(hint: { chatId: string; text: string } | null): void {
+  update((s) => {
+    s.ui.composerHint = hint;
+  });
+}

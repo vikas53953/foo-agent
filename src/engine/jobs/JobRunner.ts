@@ -26,6 +26,7 @@ import type { AiErrorKind, TurnResult } from '../ai/types';
 import type { DbOp, DbTxReply, MainLink } from '../protocol';
 import type { ExecResult, NeedsUserCard, ToolLayer } from '../tools/ToolLayer';
 import { estCostPaise, estMinutes, estTokens, isBigOne, needsPlanCard } from './estimates';
+import { choiceFields } from '../cards/choiceFields';
 import { CostMeter } from './costMeter';
 import { RunnerTick } from './tick';
 import { checkProof } from './proof';
@@ -705,15 +706,10 @@ export class JobRunner {
         await this.replan(job, decision.steps);
         return true;
       case 'ask': {
+        // M5-T5: the engine fields of 08-4 §26.7 (ids, Best fit, livePrices, effective reversible).
         const card = decision.card;
-        const payload = {
-          question: this.d.prompts.filter(card.question),
-          options: card.options.map((o, i) => ({ id: `o${i + 1}`, label: o.label, ...(o.detail ? { detail: o.detail } : {}) })),
-          multi: card.multi ?? false,
-          reversible: false,
-          purpose: 'job',
-        };
-        await this.needsYou(job, { type: 'choice', state: 'asking', payload });
+        const payload = choiceFields({ ...card, question: this.d.prompts.filter(card.question) }, job);
+        await this.needsYou(job, { type: 'choice', state: 'asking', payload: { ...payload } });
         return false;
       }
       case 'request_approval':
@@ -896,7 +892,12 @@ export class JobRunner {
       if (a.choice === 'decline') return this.declined(job, card, resolve);
       if (a.choice !== 'approve') return;
     }
-    const answered = APPROVAL_CARDS.has(card.type) ? 'APPROVED' : ANSWERED_STATE[card.type];
+    // M5 (T5): a Skip is stored `skipped` so the card reads "Skipped. I'll go with {Best fit}." (05-1 §5.3.2).
+    const answered = APPROVAL_CARDS.has(card.type)
+      ? 'APPROVED'
+      : (answer as { skip?: true } | null)?.skip
+        ? 'skipped'
+        : ANSWERED_STATE[card.type];
     // The answer is kept on the card; the job stays NEEDS_YOU until a slot is free (max 3 WORKING), then resumes.
     const r = await this.tx([
       {

@@ -31,7 +31,8 @@ import { normalisedForms } from '../shared/redactor';
 import { mainRegistry, registerSecretValue, setRegisterValue } from './secrets/registerValue';
 import { memoryKeyring, memorySafeStore, napiKeyring } from './vault/keyring';
 import { registryMirror } from './vault/registryMirror';
-import { noOpenApproval, SecretVault } from './vault/SecretVault';
+import { findOpenApproval } from './approvals/ApprovalGate'; // M5 T4 (review fix 4)
+import { SecretVault } from './vault/SecretVault';
 import { installVault } from './vault/vaultRuntime';
 
 export const AUMID = 'com.foo.desktop';
@@ -143,7 +144,7 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
         blobDir: join(paths.data, 'vault'),
         clock: deps.clock,
         register: registerSecretValue,
-        findOpenApproval: noOpenApproval,
+        findOpenApproval: (j, v) => findOpenApproval(store, j, v),
       }),
       register: registerSecretValue,
       now: () => deps.clock.now(),

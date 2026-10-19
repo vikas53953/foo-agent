@@ -17,6 +17,9 @@ import type { IntakeDecision } from '../../shared/schemas';
 import type { EngineChat, EngineHelper, EngineMessage } from '../../main/db/queries';
 import type { DbOp, DbTxReply, MainLink } from '../protocol';
 import type { AiErrorKind, AiUsage, TurnRequest, TurnResult, TurnSink } from '../ai/types';
+// M5 (T5)
+import type { CardAnswer } from '../../shared/types';
+import { answerTyped, type TypedHookDeps } from '../cards/typedHook';
 
 /** The your-AI service the lane talks to (Engine wires AiService). */
 export interface LaneAi {
@@ -87,6 +90,8 @@ export interface LaneJobs {
   planChange?(chatId: string, take?: boolean): { title: string; steps: string[] } | null;
   /** M4 T3: the runner's branches of 08-2 §5.2 (stop word, yes-text on a tap-only card, steer, fold-which); true = handled. */
   onUserMessage?(m: { chatId: string; messageId: string; text: string }): Promise<boolean>;
+  // M5 (T5): a typed answer to a job's Choice card goes to the runner as card.answered (08-2 §5.2, 08-4 §26.6).
+  onCardAnswered?(a: { cardId: string; answer: CardAnswer; choice?: string; resolvedBy: 'typed' }): Promise<void>;
 }
 
 export interface LaneDeps {
@@ -133,6 +138,15 @@ export class ChatLane {
   private idleWaiters: (() => void)[] = [];
 
   constructor(private d: LaneDeps) {}
+
+  // M5 (T5)
+  private typedDeps: TypedHookDeps = {
+    now: () => this.d.clock.now(),
+    newId: (p) => this.d.newId(p),
+    query: (q, ...args) => this.query(q, ...args),
+    tx: (ops) => this.tx(ops),
+    answerJobCard: async (a) => this.d.jobs?.onCardAnswered?.(a),
+  };
 
   /** A user message main stored (MainToEngine user.message). */
   enqueue(chatId: string, messageId: string, opts: { onlyIfQueued?: boolean; intakeOnly?: boolean } = {}): void {
@@ -221,6 +235,8 @@ export class ChatLane {
     if (fromDrain && message.status !== 'queued') return;
     // M4 T3: stop, steer and the G16 reply come before the intake turn and need no AI (08-2 §5.2).
     const intakeOnly = this.intakeOnly.delete(messageId);
+    // M5 (T5): a typed answer to an open Choice or tiles card comes after the stop word and before the G16 reply (08-2 §5.2).
+    if (!intakeOnly && message.kind === 'text' && (await answerTyped(this.typedDeps, { chatId, messageId, text: message.text }))) return;
     if (!intakeOnly && message.kind === 'text' && (await this.d.jobs?.onUserMessage?.({ chatId, messageId, text: message.text }))) return;
     const pick = this.d.ai.pick();
     if (!pick) {

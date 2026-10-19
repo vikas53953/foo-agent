@@ -386,6 +386,8 @@ export const TID = {
   cardSecretTryAgain: 'card-secret-try-again',
   cardSecretOpenMoney: 'card-secret-open-money',
   dialogC22: 'dialog-c-22',
+  // M5 T4: the FAILED Approval card's one fix button "Try again" (05-2 §5.5.4; 08-0 §C names no id for it).
+  cardApprovalTryAgain: 'card-approval-try-again',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

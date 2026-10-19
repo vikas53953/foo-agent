@@ -12,7 +12,7 @@ import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
 import type { EventChannel, EventPayload, InvokeChannel, InvokeIn, InvokeOut, PlatformInfo, VerifyResult } from '../../shared/ipc';
 import { SECRET_OFFER_SLOTS } from '../../shared/ipc'; // M5 T2
-import { PROVIDER_IDS, settingsSchema, WRITABLE_PATHS, type Settings } from '../../shared/settings';
+import { PROVIDER_IDS, settingLocked, settingsSchema, WRITABLE_PATHS, type Settings } from '../../shared/settings';
 import type { FixAction, MessageRow, WindowsSettingsPage } from '../../shared/types';
 import { deps } from '../deps';
 import type { NetMonitor } from '../net/netMonitor';
@@ -61,7 +61,7 @@ import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
 import { isTrustedUrl } from '../windows/protocol';
 import { logEvent } from '../log/techLog';
-import { answerIpc } from '../cards/answerIpc';
+import { answerIpc, cardReaction } from '../cards/answerIpc';
 import { approvalIpc } from '../approvals/approvalIpc';
 import { draftIpc } from '../drafts/draftIpc';
 import { secretIpc } from '../vault/secretIpc';
@@ -297,14 +297,16 @@ export function handle<C extends InvokeChannel>(channel: C, fn: Handler<C>): voi
 }
 
 function getPath(s: Settings, path: string): unknown {
-  const [head, key] = path.split('.') as [keyof Settings, string];
-  return (s[head] as Record<string, unknown>)[key];
+  return path.split('.').reduce<unknown>((o, k) => (o as Record<string, unknown> | undefined)?.[k], s);
 }
 
+/** Copies each object on the path (M5: three-level paths such as `permissions.actions.send`). */
 function setPath(s: Settings, path: string, value: unknown): Settings {
-  const [head, key] = path.split('.') as [keyof Settings, string];
-  const section = s[head] as Record<string, unknown>;
-  return { ...s, [head]: { ...section, [key]: value } } as Settings;
+  const set = (o: Record<string, unknown>, [k, ...rest]: string[]): Record<string, unknown> => ({
+    ...o,
+    [k!]: rest.length ? set(o[k!] as Record<string, unknown>, rest) : value,
+  });
+  return set(s as unknown as Record<string, unknown>, path.split('.')) as unknown as Settings;
 }
 
 export function registerIpc(ctx: AppContext): void {
@@ -390,7 +392,12 @@ export function registerIpc(ctx: AppContext): void {
     return ok(r.row);
   };
   const asVoid = (r: Result<MessageRow>): Result<void> => (r.ok ? ok(undefined) : r);
-  handle('message:react', ({ messageId: id, emoji: e, on }) => asVoid(written(reactMessage(db, id, e, on, now()))));
+  handle('message:react', ({ messageId: id, emoji: e, on }) => {
+    const r = asVoid(written(reactMessage(db, id, e, on, now())));
+    // M5 (T5): a reaction on a card's bubble may answer a Choice card or get the G16 line (08-4 §26.6 rule 4, 08-2 §5.2.2).
+    if (r.ok && on) cardReaction(ctx, id, e);
+    return r;
+  });
   handle('message:pin', ({ messageId: id, on }) => asVoid(written(pinMessage(db, id, on))));
   handle('message:edit', ({ messageId: id, text }) => {
     // Art. 8 / R1: the edit is re-checked like message:send (askedForCode from the chat's recent messages).
@@ -572,6 +579,8 @@ export function registerIpc(ctx: AppContext): void {
     const before = settings.get();
     const next = setPath(before, path, value);
     if (!settingsSchema.safeParse(next).success) return fail('VALIDATION');
+    // M5 (CR-0009; 08-1 §4.4.2 step 1, 08-0 §A.2): a locked value is refused and nothing is written.
+    if (settingLocked(path, value)) return fail('SETTING_LOCKED');
     settings.update(() => next);
     // 08-1 §4.4.2 step 3: the change record (M4: the AI cap only).
     const row = changeRecordRow(path, getPath(before, path), value);
