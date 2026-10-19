@@ -768,6 +768,8 @@
   "memory.style.greeting_signoff": "Often starts with “{greeting}” and ends with “{signoff}”",
   "memory.style.greeting": "Often starts with “{greeting}”",
   "memory.style.signoff": "Often ends with “{signoff}”",
+  "thread.memory.forget_none": "I don’t have anything like that saved.",
+  "thread.memory.forget_which": "Which one should I forget?",
   "screen.memory.title": "What I know about you",
   "screen.memory.back": "Back",
   "screen.memory.search.placeholder": "Search what I know",

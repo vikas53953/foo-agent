@@ -10,7 +10,7 @@ import type { EngineChat, EngineFact } from '../../main/db/queries';
 import type { Clock } from '../../shared/clock';
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
-import type { CardRow, ChoicePayload } from '../../shared/types';
+import type { CardAnswer, CardRow, ChoicePayload } from '../../shared/types';
 import type { DbOp, MainLink } from '../protocol';
 import { isSensitive } from './sensitive';
 
@@ -119,16 +119,33 @@ export class MemoryShare {
     return r.ok ? ok({ asked: true, cardId }) : r;
   }
 
-  /** The card's answer (main wrote the card's state). Yes → a 24 h grant; No → the key dismissed for good. True when the
-   * card was a share card. The sensitive rule is checked again: the fact may have changed since the question. */
-  async onCardAnswered(a: { cardId: string; choice?: string }): Promise<boolean> {
+  /** The card's answer. A `memory_confirm` card is the engine's (main hands it over, M6 T5), so this moves the card out of
+   * `asking` too. Yes → a 24 h grant; No → the key dismissed for good. True when the card was a share card. The sensitive
+   * rule is checked again: the fact may have changed since the question. */
+  async onCardAnswered(a: { cardId: string; answer?: CardAnswer; choice?: string; resolvedBy?: string }): Promise<boolean> {
     const card = await this.query<CardRow>('cardById', [a.cardId]);
     const share = card?.payload.share as { factId?: unknown; groupChatId?: unknown } | undefined;
     if (card?.type !== 'choice' || card.payload.purpose !== 'memory_confirm' || !share) return false;
+    const now = this.d.clock.now();
+    const answer: CardAnswer = a.answer ?? (a.choice ? { optionId: a.choice } : { skip: true });
+    const choice = 'optionId' in answer ? answer.optionId : undefined;
+    const resolve: DbOp[] =
+      card.state === 'asking'
+        ? [
+            {
+              op: 'update',
+              table: 'cards',
+              id: card.id,
+              set: { state: 'skip' in answer ? 'skipped' : 'answered', answer, resolved_by: a.resolvedBy ?? 'tap', resolved_at: now },
+            },
+          ]
+        : [];
     const factId = String(share.factId ?? '');
     const groupChatId = String(share.groupChatId ?? '');
-    if (!factId || !groupChatId || (a.choice !== 'o1' && a.choice !== 'o2')) return true;
-    const now = this.d.clock.now();
+    if (!factId || !groupChatId || (choice !== 'o1' && choice !== 'o2')) {
+      if (resolve.length) await this.d.link.request('db.tx', { ops: resolve });
+      return true;
+    }
     const key = shareKey(factId, groupChatId);
     const decided = (state: 'accepted' | 'dismissed'): DbOp => ({
       op: 'insert',
@@ -143,14 +160,18 @@ export class MemoryShare {
         decided_at: now,
       },
     });
-    if (a.choice === 'o2') {
-      await this.d.link.request('db.tx', { ops: [decided('dismissed')] });
+    if (choice === 'o2') {
+      await this.d.link.request('db.tx', { ops: [...resolve, decided('dismissed')] });
       return true;
     }
     const fact = await this.query<EngineFact>('memory.byId', [factId]);
-    if (!fact || shareBlocked(fact)) return true;
+    if (!fact || shareBlocked(fact)) {
+      if (resolve.length) await this.d.link.request('db.tx', { ops: resolve });
+      return true;
+    }
     await this.d.link.request('db.tx', {
       ops: [
+        ...resolve,
         decided('accepted'),
         { op: 'insert', table: 'memory_group_grants', row: { fact_id: factId, chat_id: groupChatId, until: now + SHARE_GRANT_MS } },
       ],

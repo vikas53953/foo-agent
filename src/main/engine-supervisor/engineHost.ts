@@ -181,7 +181,7 @@ const INSERT_COLUMNS: Record<string, readonly string[]> = {
 const UPSERT_TABLES = new Set(['memory_tombstones', 'memory_group_grants', 'suggestions']);
 /** Columns the engine may change with `update` (ids, owners and creation times never move; `jobs.state` only by transition). */
 const UPDATE_COLUMNS: Record<string, readonly string[]> = {
-  messages: ['text', 'status', 'badge', 'provider_note', 'job_id'],
+  messages: ['text', 'status', 'badge', 'provider_note', 'job_id', 'why'], // M6 T5: a memory chip's state (why.memoryChip)
   ai_turns: AI_TURN_COLUMNS.filter((c) => c !== 'id'),
   jobs: JOB_COLUMNS.filter(
     (c) => !['id', 'chat_id', 'origin_chat_id', 'owner_kind', 'origin', 'origin_ref', 'created_at', 'state'].includes(c),
@@ -193,6 +193,7 @@ const UPDATE_COLUMNS: Record<string, readonly string[]> = {
 };
 /** JSON columns: an object or array is stored as JSON text; `redactRow` then scrubs the §4.6 rule 2 ones leaf by leaf. */
 const JSON_COLUMNS: Record<string, readonly string[]> = {
+  messages: ['why'],
   jobs: ['do_verbs', 'proof'],
   steps: ['slots'],
   tool_calls: ['args', 'result'],

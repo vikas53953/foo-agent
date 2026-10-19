@@ -60,7 +60,8 @@ export const memoryCmdSchema = z.discriminatedUnion('cmd', [
   z.object({ cmd: z.literal('edit'), factId, text: z.string().min(1).max(120) }).strict(),
   z.object({ cmd: z.literal('setPrivate'), factId, private: z.boolean() }).strict(),
   z.object({ cmd: z.literal('setKind'), factId, kind: z.enum(MEMORY_KINDS) }).strict(),
-  z.object({ cmd: z.literal('forget'), factId }).strict(),
+  // M6 T5: `chipId` = the ✕ on a memory chip (the forget is then activity `forgot_facts`, G-M6-10).
+  z.object({ cmd: z.literal('forget'), factId, chipId: z.string().min(1).max(80).optional() }).strict(),
   z.object({ cmd: z.literal('undo'), undoToken: z.string().min(1).max(80) }).strict(),
   z.object({ cmd: z.literal('forgetBySource'), source: z.enum(MEMORY_ORIGINS), confirm: z.literal(true) }).strict(),
   z.object({ cmd: z.literal('forgetAll'), typed: z.literal('FORGET') }).strict(),

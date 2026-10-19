@@ -9,6 +9,7 @@
 // item 6 (the ids offered in parts 5/5b after every trim, for `usedMemoryIds`). M4: purpose `step` (§24.1 step row, §24.6
 // step.md {phraseKeys}, §24.22 part 8 "The job:", §27.1 part 3).
 // M5 T8: purpose `second_look` (§24.7: system protocol.md + second_look.md; prompt `<user_words>` lines and `<action>`).
+// M6 T5: purpose `memory_review` (§24.1, §24.10, §24.21).
 // Memory selection (§24.16 items 1–4) is src/engine/memory/retrieval.ts; group intake (§24.1 group rows, group_intake.md)
 // is M13.
 import { readFileSync } from 'node:fs';
@@ -460,6 +461,17 @@ export class PromptBuilder {
     const rules = this.fill(this.file('rules.md'), { today: this.today(timeZone), tz: timeZone });
     const system = `${rules}\n\n${this.protocolThen(schema, 'memory_review.md', {})}`;
     return { system: this.deps.redactor.finalGate(system, '4'), prompt: this.deps.redactor.finalGate(dataBlock, 'tidy') };
+  }
+
+  // M6 T5
+  /**
+   * Purpose `memory_review` (§24.1 row: system 2 rules.md · 4 protocol.md + memory_review.md; prompt the §24.21 data block,
+   * which the caller builds with `messageLine` / `factLine`). `schema` is the `MemoryReviewAct` schema (08-3 §12.4).
+   */
+  buildMemoryReview(schema: z.ZodType, data: string, timeZone: string): BuiltPrompt {
+    const rules = this.fill(this.file('rules.md'), { today: this.today(timeZone), tz: timeZone });
+    const system = `${rules}\n\n${this.protocolThen(schema, 'memory_review.md', {})}`;
+    return { system: this.deps.redactor.finalGate(system, '4'), prompt: this.deps.redactor.finalGate(data, 'memory_review') };
   }
 
   /** Purpose `verify` (§24.1): no system, no protocol, exactly "Reply with the word ready". */

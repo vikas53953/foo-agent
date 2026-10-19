@@ -36,6 +36,8 @@ export type ToolOutcome =
 
 export interface ToolContext {
   jobId: string;
+  /** M6 T5: the step turn that made the call (`memory.propose`: one call per turn, 08-2 §8.2). */
+  turnId?: string | null;
   signal: AbortSignal;
   now: number;
 }
@@ -258,7 +260,7 @@ export class ToolLayer {
     await this.tx([{ op: 'insert', table: 'tool_calls', row: { ...base, idem_key: idemKey, gate: gateCol } }]);
     let out: ToolOutcome;
     try {
-      out = await def.run(args, { jobId: job.id, signal, now: startedAt });
+      out = await def.run(args, { jobId: job.id, turnId: job.turnId, signal, now: startedAt });
     } catch {
       out = { kind: 'error', errorKind: 'UNKNOWN' };
     }

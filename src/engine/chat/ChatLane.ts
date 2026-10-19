@@ -8,7 +8,9 @@
 // M3 builds `reply` and `react`; M4 adds `job` (the runner's createJob). The other intake kinds (ask, handoff, routine, memory, setting, catch_up) arrive with
 // M4–M8. Until then their unreleased `<say>` is discarded and foo posts the empty-reply line so it never goes silent
 // (GAPS.md 2026-10-18 "intake kinds before their milestone"). M6: memory parts 5/5b per turn (08-4 §24.16, retrieval.ts)
-// and the uses of the offered facts the AI names in `usedMemoryIds` (§24.16 item 6, 08-3 §12.5).
+// and the uses of the offered facts the AI names in `usedMemoryIds` (§24.16 item 6, 08-3 §12.5). M6 T5: intake kind `memory`
+// (08-4 §25.2, §25.5 item 5; memory/intakeMemory.ts), "don't remember this" before the turn (J17), the "Used: {fact}" chips
+// under a reply (08-3 §12.5) and the post-turn review trigger after every answered turn (08-3 §12.4).
 import { t } from '../../shared/copy/t';
 import type { Clock } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
@@ -19,6 +21,8 @@ import type { EngineChat, EngineHelper, EngineMessage } from '../../main/db/quer
 import type { DbOp, DbTxReply, MainLink } from '../protocol';
 import type { AiErrorKind, AiUsage, TurnRequest, TurnResult, TurnSink } from '../ai/types';
 import { buildMemoryParts, memoryUseOps, type MemoryParts } from '../memory/retrieval';
+import type { EngineFact } from '../../main/db/queries';
+import { usedFacts } from '../memory/chips';
 // M5 (T5)
 import type { CardAnswer } from '../../shared/types';
 import { answerTyped, type TypedHookDeps } from '../cards/typedHook';
@@ -29,7 +33,7 @@ export interface LaneAi {
   pick(): { providerId: ProviderId; billing: 'plan' | 'key' | 'local'; backup: boolean } | null;
   turnParams(
     providerId: ProviderId,
-    purpose: 'intake' | 'repair' | 'rewrite' | 'step' | 'classify' | 'second_look' | 'tidy', // M5 T8: second_look; M6 T7: tidy
+    purpose: 'intake' | 'repair' | 'rewrite' | 'step' | 'classify' | 'second_look' | 'tidy' | 'memory_review', // M5 T8: second_look; M6 T7: tidy; M6 T5: memory_review
   ): Omit<TurnRequest, 'turnId' | 'purpose' | 'system' | 'prompt'>;
   runTurn(providerId: ProviderId, req: TurnRequest, sink: TurnSink, signal: AbortSignal): Promise<TurnResult>;
   reportOk(providerId: ProviderId): void;
@@ -79,7 +83,27 @@ export type IntakeDecisionView =
   | { kind: 'reply' }
   | { kind: 'react'; emoji: '👍' | '❤️' }
   | Extract<IntakeDecision, { kind: 'job' }>
-  | { kind: 'ask' | 'handoff' | 'routine' | 'memory' | 'setting' | 'catch_up' };
+  | Extract<IntakeDecision, { kind: 'memory' }>
+  | { kind: 'ask' | 'handoff' | 'routine' | 'setting' | 'catch_up' };
+
+/** M6 T5: the memory seam of the lane (Engine wires IntakeMemory, MemoryChips and MemoryReview). */
+export interface LaneMemory {
+  /** Before the intake turn, no AI: J17 "don't remember this"; the review's quiet period restarts. */
+  beforeTurn(chat: EngineChat, message: EngineMessage): Promise<void>;
+  /** Intake kind `memory` (08-4 §25.2). */
+  decide(
+    chat: EngineChat,
+    helper: EngineHelper | null,
+    message: EngineMessage,
+    act: { op: 'remember' | 'forget'; text: string },
+  ): Promise<void>;
+  /** 08-3 §12.5: the "Used: {fact}" chips under the reply `anchorId`. */
+  used(chatId: string, anchorId: string, facts: EngineFact[]): Promise<void>;
+  /** 08-3 §12.4 trigger: a chat-lane turn answered in `chatId`. */
+  answered(chatId: string): void;
+  /** A typed answer to a `memory_confirm` card; true = taken. */
+  onCardAnswered(a: { cardId: string; answer: CardAnswer; choice?: string; resolvedBy: 'typed' }): Promise<boolean>;
+}
 
 /** M4: the job runner's intake seam (08-2 §5.3.3; JobRunner.createJob). */
 export interface LaneJobs {
@@ -112,6 +136,9 @@ export interface LaneDeps {
   // M5
   /** T10: the pre-call cap check of a chat-lane turn (08-2 §5.10 item 4); false = no call. */
   capCheck?(promptChars: number, purpose: 'intake' | 'repair'): Promise<boolean>;
+  // M6
+  /** T5: memory in the lane (intake remember / forget, chips, review trigger). */
+  memory?: LaneMemory;
 }
 
 const MAX_TOTAL = 2; // 08-2 §6.9 chat lane
@@ -150,7 +177,11 @@ export class ChatLane {
     newId: (p) => this.d.newId(p),
     query: (q, ...args) => this.query(q, ...args),
     tx: (ops) => this.tx(ops),
-    answerJobCard: async (a) => this.d.jobs?.onCardAnswered?.(a),
+    answerJobCard: async (a) => {
+      // M6 T5: a `memory_confirm` card is the memory seam's, not the runner's.
+      if (await this.d.memory?.onCardAnswered(a)) return;
+      await this.d.jobs?.onCardAnswered?.(a);
+    },
   };
 
   /** A user message main stored (MainToEngine user.message). */
@@ -252,6 +283,8 @@ export class ChatLane {
     const chat = await this.query<EngineChat>('chatOpen', chatId);
     if (!chat) return;
     const helper = chat.helperId ? await this.query<EngineHelper>('helpers.byId', chat.helperId) : null;
+    // M6 T5: J17 "don't remember this" is read before the turn, with no AI.
+    await this.d.memory?.beforeTurn(chat, message);
     const history = (await this.query<EngineMessage[]>('messagesBefore', chatId, message.seq, CONVERSATION * 2)) ?? [];
     const conversation = history
       .filter((m) => m.kind !== 'marker' && (m.status === 'complete' || m.status === 'sent'))
@@ -448,7 +481,8 @@ export class ChatLane {
     const released = gate.released().trimEnd();
     if (kind !== 'reply' && released.trim()) this.d.log('chat.say_leak', 'PROTOCOL_SAY_LEAK', { chatId });
 
-    if (kind === 'reply' || (kind !== 'react' && !(kind === 'job' && this.d.jobs) && released.trim())) {
+    const memoryKind = act?.kind === 'memory' && this.d.memory ? act : null;
+    if (kind === 'reply' || (kind !== 'react' && !(kind === 'job' && this.d.jobs) && !memoryKind && released.trim())) {
       if (fooId) {
         await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
       } else {
@@ -465,6 +499,10 @@ export class ChatLane {
         askedText: message.textForAi ?? message.text,
         helperId: helper?.id ?? null,
       });
+    } else if (memoryKind && this.d.memory) {
+      // M6 T5 (08-4 §25.5 item 5): text already released stands; the reaction, chip or card follows it.
+      if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
+      await this.d.memory.decide(chat, helper, message, memoryKind);
     } else if (act && act.kind === 'react') {
       // Words that already showed past the hold stay as a finished bubble (they cannot be taken back); the 👍 still goes on.
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
@@ -476,7 +514,13 @@ export class ChatLane {
     }
     this.typing(chatId, false, who);
     await this.recordUses(chatId, usedMemoryIds, built.factIds ?? [], memory);
+    // M6 T5 (08-3 §12.5): "Used: {fact} ✕" under the reply, for the offered facts the AI named.
+    if (kind === 'reply' && fooId && this.d.memory) {
+      const used = usedFacts(usedMemoryIds, built.factIds ?? [], memory);
+      if (used.length) await this.d.memory.used(chatId, fooId, used);
+    }
     await this.turnRow(turnId, chatId, pick, startedAt, result, 'ok');
+    this.d.memory?.answered(chatId);
   }
 
   /** 08-4 §24.16 item 6: each offered id the AI names gets `last_used_at`, `use_count` + 1 and one `memory_uses` row. */
@@ -501,14 +545,14 @@ export class ChatLane {
   }
 
   /** foo's reaction on the user's bubble takes the badge slot (04 §4.1 rule 5); no message is posted (AT-027). */
-  private async react(messageId: string, emoji: '👍' | '❤️', helper: EngineHelper | null): Promise<void> {
+  async react(messageId: string, emoji: '👍' | '❤️', helper: EngineHelper | null): Promise<void> {
     await this.tx([
       { op: 'insert', table: 'reactions', row: { message_id: messageId, by: helper?.id ?? 'foo', emoji, created_at: this.d.clock.now() } },
       { op: 'update', table: 'messages', id: messageId, set: { badge: null } },
     ]);
   }
 
-  private async post(chatId: string, messageId: string, text: string, helper: EngineHelper | null, note: string | null): Promise<void> {
+  async post(chatId: string, messageId: string, text: string, helper: EngineHelper | null, note: string | null): Promise<void> {
     const id = this.d.newId('m');
     this.answered.set(id, messageId);
     await this.tx([

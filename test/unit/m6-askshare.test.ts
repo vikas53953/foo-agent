@@ -47,10 +47,8 @@ function world() {
   };
   const share = new MemoryShare({ link, clock, newId: (p) => newId(p, clock.now()), newNonce });
   const ask = (factId = FACT) => share.ask({ factId, groupChatId: 'c_g', why: 'Planning dinner', helperId: 'h_trips' });
-  const answer = async (cardId: string, choice: 'o1' | 'o2') => {
-    db.prepare("UPDATE cards SET state = 'answered', resolved_at = ? WHERE id = ?").run(clock.now(), cardId);
-    return share.onCardAnswered({ cardId, choice });
-  };
+  // Main hands a memory_confirm answer to the engine as it is (answerCard RUNNER_PURPOSES); the engine moves the card.
+  const answer = (cardId: string, choice: 'o1' | 'o2') => share.onCardAnswered({ cardId, answer: { optionId: choice }, resolvedBy: 'tap' });
   const suggestion = () => db.prepare('SELECT key, kind, state FROM suggestions').all();
   return { db, clock, share, ask, answer, suggestion };
 }
@@ -90,6 +88,7 @@ describe('08-3 §12.5.1 memory.askShare', () => {
       { fact_id: FACT, chat_id: 'c_g', until: w.clock.now() + SHARE_GRANT_MS },
     ]);
     expect(SHARE_GRANT_MS).toBe(24 * 60 * 60 * 1000);
+    expect(w.db.prepare('SELECT state, resolved_by FROM cards WHERE id = ?').get(cardId)).toEqual({ state: 'answered', resolved_by: 'tap' });
   });
 
   it('No → the key memory_share:{factId}:{groupChatId} is dismissed and the question is never asked again', async () => {

@@ -25,6 +25,7 @@ import { phraseText, resolvePhrase, type PhraseKey } from '../../shared/phrases'
 import type { IntakeDecision, PlanStep, SecondLookAct, StepAct, StepDecision } from '../../shared/schemas';
 import type { Settings } from '../../shared/settings';
 import { buildMemoryParts, stepQueryText, memoryUseOps, type MemoryParts } from '../memory/retrieval';
+import { usedFacts } from '../memory/chips';
 import type {
   ApprovalState,
   CardRow,
@@ -38,7 +39,7 @@ import type {
   StopReport,
 } from '../../shared/types';
 import type { LaneAi } from '../chat/ChatLane';
-import type { EngineMessage } from '../../main/db/queries';
+import type { EngineFact, EngineMessage } from '../../main/db/queries';
 import type { AiErrorKind, TurnResult } from '../ai/types';
 import type { DbOp, DbTxReply, MainLink } from '../protocol';
 import type { ExecResult, NeedsUserCard, ToolLayer } from '../tools/ToolLayer';
@@ -171,6 +172,9 @@ export interface JobRunnerDeps {
   gate: GateLogic;
   /** T7: 08-2 §11.4 `Redactor.scrub` (registry + patterns) for runner-written text; the pattern scrub alone when absent. */
   scrub?(text: string): { text: string; hits: number };
+  // M6
+  /** T5: the "Used: {fact}" chips after a step that asks or finishes (08-3 §12.5), and the review after DONE (§12.4). */
+  memory?: { used(chatId: string, facts: EngineFact[]): Promise<void>; jobDone(chatId: string): void };
 }
 
 export interface CreateJobInput {
@@ -362,7 +366,7 @@ export class JobRunner {
     return p;
   }
   /** M5 T10: the pre-call cap check of a chat-lane turn (intake, repair, rewrite); true when the call may go. */
-  allowChatCall(promptChars: number, purpose: 'intake' | 'repair' | 'rewrite' | 'tidy'): Promise<boolean> {
+  allowChatCall(promptChars: number, purpose: 'intake' | 'repair' | 'rewrite' | 'tidy' | 'memory_review'): Promise<boolean> {
     const pick = this.d.ai.pick();
     if (!pick) return Promise.resolve(true);
     return this.cost.allowChatCall(promptChars, this.d.ai.turnParams(pick.providerId, purpose).maxOutputTokens);
@@ -770,6 +774,10 @@ export class JobRunner {
           continue;
         }
         const goOn = await this.apply(job, c, turn.act.decision, turn.turnId);
+        // M6 T5 (08-3 §12.5): the facts a step that asked or finished relied on show as chips under what it posted.
+        const kind = turn.act.decision.kind;
+        if ((kind === 'ask' || kind === 'done') && turn.used?.length) await this.d.memory?.used(job.chatId, turn.used);
+        if (kind === 'done') this.d.memory?.jobDone(job.chatId);
         if (!goOn) return;
         if (await this.watchdog.check(jobId)) return;
       }
@@ -1282,7 +1290,10 @@ export class JobRunner {
     return lines.join('\n');
   }
 
-  private async stepTurn(job: JobRow, c: JobCtx): Promise<{ act: StepAct | null; error?: AiErrorKind; turnId: string; capped?: boolean }> {
+  private async stepTurn(
+    job: JobRow,
+    c: JobCtx,
+  ): Promise<{ act: StepAct | null; error?: AiErrorKind; turnId: string; capped?: boolean; used?: EngineFact[] }> {
     const pick = this.d.ai.pick();
     const turnId = this.d.newId('t');
     if (!pick) return { act: null, error: 'AI_SERVICE_DOWN', turnId };
@@ -1319,6 +1330,7 @@ export class JobRunner {
         const r = await this.tx(uses);
         if (!r.ok) this.d.log('memory.uses_failed', r.error.kind, { jobId: job.id });
       }
+      return { ...result, used: usedFacts(result.act.usedMemoryIds, built.factIds ?? [], memory) };
     }
     return result;
   }

@@ -35,9 +35,10 @@ export interface AnswerDeps {
 /** The cards answered here (05-1 §5.3, §5.4). */
 const ANSWERABLE = new Set(['choice', 'tiles']);
 /** Engine-made choice cards the runner answers by option id (08-4 §26.9 stop_which; 08-2 §5.2 fold_which). */
-const RUNNER_PURPOSES = new Set(['stop_which', 'fold_which']);
-/** Jobless memory cards main answers and then tells the engine about (08-3 §12.5.1 share, §12.7 conflict; M6 T7). */
-const ENGINE_TOLD = new Set(['memory_confirm', 'conflict']);
+// M6 T5: a `memory_confirm` card's answer is the engine's (08-3 §12.4.2; G-M6-04); the engine moves the card.
+const RUNNER_PURPOSES = new Set(['stop_which', 'fold_which', 'memory_confirm']);
+/** Jobless memory cards main answers and then tells the engine about (08-3 §12.7 conflict; M6 T7). */
+const ENGINE_TOLD = new Set(['conflict']);
 /** 08-2 §5.2.2: a single 👍 or ✅ reaction on these cards gets the G16 reply. */
 const YES_REACTIONS = new Set(['👍', '✅']);
 
