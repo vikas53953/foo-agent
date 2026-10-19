@@ -1,19 +1,19 @@
 {
-  "reportId": "M4-d2c0058-39200065577",
+  "reportId": "M4-53e59b6-39201604336",
   "milestone": "M4",
-  "generatedAt": "2026-10-19T04:47:26.725Z",
-  "commit": "26bd0733c63fe7ded425bbeabcbf24b5a5ad175a",
-  "head": "d2c00581f01c102e16e9d7a67ca7adfb2f2a7533",
+  "generatedAt": "2026-10-19T05:04:40.949Z",
+  "commit": "66d0c0411daa3be9a20795a43cd55aa0611eaffc",
+  "head": "53e59b68cc83f170d5d63d3086393eec58b011d0",
   "ci": {
-    "runId": "39200065577",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39200065577"
+    "runId": "39201604336",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39201604336"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "a8c652ea014d8c6c709a2d519ca9abf799dd91b2be4a907a4fa430b0e62d2883"
   },
   "runner": {
-    "recordedAt": "2026-10-19T04:39:13.600Z",
+    "recordedAt": "2026-10-19T04:55:51.426Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000003195"
+      "runner": "GitHub Actions 1000003199"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,7 +59,7 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "1 test(s) failed",
+    "3 test(s) failed",
     "7 audit item(s) not DONE (the milestone is not complete)"
   ],
   "missingInputs": [],
@@ -757,8 +757,8 @@
         "skipped": 2
       },
       "e2e": {
-        "passed": 61,
-        "failed": 1,
+        "passed": 59,
+        "failed": 3,
         "skipped": 0
       }
     },
@@ -13880,7 +13880,7 @@
       },
       {
         "id": "ART-26a",
-        "status": "passed",
+        "status": "failed",
         "file": "test/e2e/m2-messages.spec.ts"
       },
       {
@@ -13985,57 +13985,57 @@
       },
       {
         "id": "BP-MSG-01",
-        "status": "passed",
+        "status": "failed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-MSG-03",
-        "status": "passed",
+        "status": "failed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-MSG-04",
-        "status": "passed",
+        "status": "failed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-01",
-        "status": "passed",
+        "status": "failed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-02",
-        "status": "passed",
+        "status": "failed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-04",
-        "status": "passed",
+        "status": "failed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-05",
-        "status": "passed",
+        "status": "failed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-06",
-        "status": "passed",
+        "status": "failed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-07",
-        "status": "passed",
+        "status": "failed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-08",
-        "status": "passed",
+        "status": "failed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-09",
-        "status": "passed",
+        "status": "failed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
@@ -14095,6 +14095,18 @@
       }
     ],
     "failed": [
+      {
+        "suite": "e2e",
+        "file": "test/e2e/m2-messages.spec.ts",
+        "title": "ART-26a · bubbles, cards, the bubble menu and the reaction picker pass axe in light and dark",
+        "status": "failed"
+      },
+      {
+        "suite": "e2e",
+        "file": "test/fidelity/bp/BP-messages.spec.ts",
+        "title": "M2 Blueprint captures for Tier R: BP-MSG-01, BP-MSG-03, BP-MSG-04, BP-COMP-01, BP-COMP-02, BP-COMP-04, BP-COMP-05, BP-COMP-06, BP-COMP-07, BP-COMP-08, BP-COMP-09, light and dark",
+        "status": "failed"
+      },
       {
         "suite": "e2e",
         "file": "test/fidelity/ux/UX-23.errors.spec.ts",
@@ -14167,7 +14179,7 @@
       "pass": 1,
       "review": 28,
       "fail": 0,
-      "disputed": 79,
+      "disputed": 67,
       "notBuilt": 2
     },
     "refsRendered": [
@@ -15320,32 +15332,6 @@
         "diff": true
       },
       {
-        "id": "BP-COMP-04",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-04 0/248.671875 px)",
-        "r3": "pass (BP-COMP-04 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.05420910900362955,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-04",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-04 0/248.671875 px)",
-        "r3": "pass (BP-COMP-04 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.05366272489560161,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
         "id": "BP-COMP-05",
         "theme": "dark",
         "verdict": "disputed",
@@ -15353,7 +15339,7 @@
         "r2": "fail (BP-COMP-05 0/248.671875 px)",
         "r3": "pass (BP-COMP-05 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.10073781868653664,
+        "r5": 0.11103197214308326,
         "ref": true,
         "app": true,
         "diff": true
@@ -15366,7 +15352,7 @@
         "r2": "fail (BP-COMP-05 0/248.671875 px)",
         "r3": "pass (BP-COMP-05 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.1018335890130762,
+        "r5": 0.14207027540360873,
         "ref": true,
         "app": true,
         "diff": true
@@ -15398,58 +15384,6 @@
         "diff": true
       },
       {
-        "id": "BP-COMP-07",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-07 0/248.671875 px)",
-        "r3": "pass (BP-COMP-07 ΔE 0.8)",
-        "r4": "skipped: no hl element",
-        "r5": 0.08137614019966961,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-07",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-07 0/248.671875 px)",
-        "r3": "pass (BP-COMP-07 ΔE 1.4)",
-        "r4": "skipped: no hl element",
-        "r5": 0.08353084823673058,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-08",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-08 0/248.671875 px)",
-        "r3": "pass (BP-COMP-08 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.07724409132859837,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-COMP-08",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-COMP-08 0/248.671875 px)",
-        "r3": "pass (BP-COMP-08 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.0809758837927852,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
         "id": "BP-COMP-09",
         "theme": "dark",
         "verdict": "disputed",
@@ -15476,32 +15410,6 @@
         "diff": true
       },
       {
-        "id": "BP-MSG-01",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-01 0/203 px)",
-        "r3": "fail (BP-MSG-01 ΔE 61.41)",
-        "r4": "skipped: no hl element",
-        "r5": 0.6141534391534391,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-01",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-01 0/203 px)",
-        "r3": "fail (BP-MSG-01 ΔE 7.8)",
-        "r4": "skipped: no hl element",
-        "r5": 0.49264550264550266,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
         "id": "BP-MSG-02",
         "theme": "dark",
         "verdict": "review",
@@ -15523,58 +15431,6 @@
         "r3": "review (BP-MSG-02 ΔE 3.65)",
         "r4": "skipped: no hl element",
         "r5": 0.053536067892503536,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-03",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-03 0/203 px)",
-        "r3": "pass (BP-MSG-03 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.05692823608316566,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-03",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-03 0/203 px)",
-        "r3": "pass (BP-MSG-03 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.05368209255533199,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-04",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-04 0/203 px)",
-        "r3": "pass (BP-MSG-04 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.04525974025974026,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "BP-MSG-04",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (BP-MSG-04 0/203 px)",
-        "r3": "pass (BP-MSG-04 ΔE 0)",
-        "r4": "skipped: no hl element",
-        "r5": 0.03957792207792208,
         "ref": true,
         "app": true,
         "diff": true
@@ -15704,7 +15560,7 @@
         "r2": "review (hl 8/8 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (18.70 %)",
-        "r5": 0.061392578125,
+        "r5": 0.06139453125,
         "ref": true,
         "app": true,
         "diff": true
@@ -15847,7 +15703,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 20.59)",
         "r4": "fail (21.84 %)",
-        "r5": 0.085330078125,
+        "r5": 0.08532421875,
         "ref": true,
         "app": true,
         "diff": true
@@ -15899,7 +15755,7 @@
         "r2": "pass (hl 0/1 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.46 %)",
-        "r5": 0.1043974609375,
+        "r5": 0.1045556640625,
         "ref": true,
         "app": true,
         "diff": true
@@ -15912,7 +15768,7 @@
         "r2": "pass (hl 0/1 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.19 %)",
-        "r5": 0.0806064453125,
+        "r5": 0.0806953125,
         "ref": true,
         "app": true,
         "diff": true
@@ -15925,7 +15781,7 @@
         "r2": "fail (hl 54/2.421875 px)",
         "r3": "fail (hl ΔE 55.97)",
         "r4": "fail (90.60 %)",
-        "r5": 0.117587890625,
+        "r5": 0.1175888671875,
         "ref": true,
         "app": true,
         "diff": true
@@ -15964,7 +15820,7 @@
         "r2": "fail (hl 196/36 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (7.02 %)",
-        "r5": 0.0879833984375,
+        "r5": 0.087982421875,
         "ref": true,
         "app": true,
         "diff": true
@@ -15990,7 +15846,7 @@
         "r2": "fail (hl 91.46875/25.609375 px)",
         "r3": "fail (hl ΔE 57.24)",
         "r4": "fail (57.56 %)",
-        "r5": 0.0864150390625,
+        "r5": 0.0864482421875,
         "ref": true,
         "app": true,
         "diff": true
