@@ -100,6 +100,8 @@ test('UX-10 · Choices: steps UX-10-01 to UX-10-06, light and dark', async () =>
     await page.keyboard.type(ASK);
     await page.keyboard.press('Enter');
     await untilPosted(page, log, choice);
+    // The checklist and the Choice card post on separate engine writes; on a slow runner the Choice can land first.
+    await untilPosted(page, log, checklist);
     const rows = checklist.getByTestId(TID.cardChecklistStep);
     await expect(rows.nth(0)).toHaveAttribute('data-state', 'done');
     await expect(rows.nth(0)).toContainText('Checked 4 airlines');
