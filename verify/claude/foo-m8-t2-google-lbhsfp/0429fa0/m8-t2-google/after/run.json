@@ -1,0 +1,67 @@
+{
+  "journey": "test/verify/m8-t2-google.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "0429fa07b3621d4ab68f8b1bf84c39f11146247a",
+  "dirty": false,
+  "started": "2026-10-19T22:39:16.454Z",
+  "finished": "2026-10-19T22:39:20.636Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "Connect card shows \"Connect Gmail and Calendar\" with Connect / Not now; no Google request yet",
+    "Connect → main opened accounts.google.com (PKCE S256, prompt=consent, loopback 127.0.0.1:57141)",
+    "browser returned → card reads \"✓ Connected as v***@example.com\" after 37 ms (AT-014: under 3 s)",
+    "Settings → Connections: Gmail connected (can send), Calendar and Contacts on, X \"Drafts only\"",
+    "C-10 Disconnect → token revoked at the fake endpoint, rows \"Not connected\", no Google request after (/token, /revoke)"
+  ],
+  "shots": [
+    {
+      "file": "after/01-card-offered.light.png",
+      "name": "card-offered",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-card-offered.dark.png",
+      "name": "card-offered",
+      "theme": "dark"
+    },
+    {
+      "file": "after/03-card-waiting.light.png",
+      "name": "card-waiting",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-card-connected.light.png",
+      "name": "card-connected",
+      "theme": "light"
+    },
+    {
+      "file": "after/05-card-connected.dark.png",
+      "name": "card-connected",
+      "theme": "dark"
+    },
+    {
+      "file": "after/06-connections-connected.light.png",
+      "name": "connections-connected",
+      "theme": "light"
+    },
+    {
+      "file": "after/07-c10-disconnect.light.png",
+      "name": "c10-disconnect",
+      "theme": "light"
+    },
+    {
+      "file": "after/08-connections-disconnected.light.png",
+      "name": "connections-disconnected",
+      "theme": "light"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}
