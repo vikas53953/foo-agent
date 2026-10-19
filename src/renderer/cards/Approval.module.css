@@ -1,0 +1,208 @@
+/* Spec: 05-2 §5.5.1 Approval card anatomy (header 22 --t-body-strong with a 20px --fg-2 icon; impact --t-body --fg-1;
+ * risk lines --t-body --warn with Warning 16; payload quote --bg-sunken, --r-sm, padding 8 12, --t-small --fg-1, max 6
+ * lines then "Show all"; booking rows --t-small label / --t-body value, money right and tabular; scope segmented full inner
+ * width; always line --t-small --fg-2; hard-limit line and footer --t-caption --fg-3), 05-1 §0.5 (Held strip --warn-soft +
+ * Warning + the word "Check"; folded summary row), §0.7 (countdown text; announcements in a visually hidden live region),
+ * 02-3 §F25.2 (visually hidden). */
+.head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s1);
+  min-height: var(--t-body-strong-lh);
+}
+.headIcon {
+  flex: none;
+  color: var(--fg-2);
+}
+.title {
+  flex: 1;
+  min-width: 0;
+  font: var(--t-body-strong);
+  text-wrap: balance;
+}
+.countdownTip {
+  display: inline-flex;
+  flex: none;
+}
+.countdown {
+  font: var(--t-caption);
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+.impact {
+  font: var(--t-body);
+  color: var(--fg-1);
+}
+.risk {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s1);
+  font: var(--t-body);
+  color: var(--warn);
+}
+.quote {
+  display: flex;
+  flex-direction: column;
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r-sm);
+  background: var(--bg-sunken);
+  color: var(--fg-1);
+  font: var(--t-small);
+}
+.quoteText {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  white-space: pre-wrap;
+}
+.quoteText[data-expanded] {
+  display: block;
+}
+.showAll {
+  align-self: flex-end;
+}
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s0);
+  margin: 0;
+}
+.row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+}
+.row dt {
+  flex: 1;
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.row dd {
+  margin: 0;
+  font: var(--t-body);
+}
+.money {
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+.small {
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.held {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s1);
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r-sm);
+  background: var(--warn-soft);
+  color: var(--fg-1);
+  font: var(--t-small);
+}
+.heldIcon {
+  flex: none;
+  color: var(--warn);
+}
+.heldWord {
+  flex: none;
+  font-weight: 600;
+  color: var(--warn);
+}
+.scope {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+.scope > [role='radiogroup'] {
+  width: 100%;
+}
+.alwaysLine {
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s1);
+}
+.reason {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
+.hardLine {
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+.footRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+.footer {
+  flex: 1;
+  min-width: 0;
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+.footRow > :last-child {
+  flex: none;
+  white-space: nowrap;
+}
+.spacer {
+  flex: 1;
+}
+.summary {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--s7);
+}
+.summary > * {
+  flex: none;
+  white-space: nowrap;
+}
+.summary > .summaryText {
+  flex: 1;
+  min-width: 0;
+  font: var(--t-small);
+  white-space: normal;
+}
+.dimIcon {
+  flex: none;
+  color: var(--fg-2);
+}
+.okIcon {
+  flex: none;
+  color: var(--ok);
+}
+.badIcon {
+  flex: none;
+  color: var(--bad);
+}
+.warnIcon {
+  flex: none;
+  color: var(--warn);
+}
+/* 05-1 §0.5: the decision line at the bottom of a folded card's read-only expanded view. */
+.decisionLine {
+  margin-top: var(--s1);
+  font: var(--t-small);
+  color: var(--fg-2);
+}

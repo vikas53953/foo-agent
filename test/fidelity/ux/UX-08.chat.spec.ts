@@ -144,13 +144,14 @@ test('UX-08 · Just chatting, in your language: steps 1 to 5 live with fake-AI r
   const last = (tid: string, text: string) => page.getByTestId(tid).filter({ hasText: text }).last();
 
   await test.step('UX-08-01 · "thanks!" gets a 👍 on the bubble and no reply', async () => {
-    const fooBefore = await page.getByTestId(TID.bubbleFoo).count();
     await sendText(thanks);
     // foo's reaction takes the badge slot on the bubble's row (04 §4.1 rule 5).
     const row = last(TID.bubbleMe, thanks).locator('xpath=ancestor::*[@data-message-id][1]');
     await expect(row.getByTestId(TID.bubbleReaction).first()).toContainText('👍');
     await expect(page.getByTestId(TID.threadThinking)).toHaveCount(0);
-    await expect(page.getByTestId(TID.bubbleFoo)).toHaveCount(fooBefore);
+    // No reply: the thanks row stays the last row (the list is virtual, so a bubble count can drop as rows unmount).
+    const id = await row.getAttribute('data-message-id');
+    await expect(log.locator('[data-message-id]').last()).toHaveAttribute('data-message-id', id!);
     for (const never of quoted(step('UX-08-01').s)) await expect(log).not.toContainText(never);
   });
 
