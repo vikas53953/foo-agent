@@ -1020,3 +1020,29 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
   hiding tools of apps that are off is the runner's catalogue filter (08-4 §27.1).
 - Seen while testing: the step prompt's redaction runs over the whole observation JSON, so P15 can join a subject "Login
   code" with the next field's date digits and hide them ("[hidden]-10-16…"). Over-hiding, never a leak; M3/M4 Redactor.
+
+## M8 · Google sign-in, Connect card, Connections page (ticket T2, CR-0012)
+
+- (a) Sign-in, the loopback, token exchange and the `connections` rows live in MAIN (`src/main/connections/`); 08-1 §2.4 says the
+  engine never writes `connections`. Main sends the lead's one `connection.cmd` per call; `src/engine/tools/connectors/google.ts`
+  is pure logic (PKCE, scopes, granted map, revoke) both sides share.
+- (b) Gap channel `connection:googleInfo` (not in 08-1 §3.2): whether this build has the Google client file (08-3 §16.1.1 "Gmail
+  isn't available in this build.") and the routines C-10 names (06-3 §14).
+- (c) One account mask everywhere, the 08-2 §11.4 form `v***@example.com` (shared `maskEmail` in `src/shared/redactor.ts`), on the
+  card's "✓ Connected as" line and in Settings.
+- (d) The client-file loader accepts three shapes: the spec's `{clientId, clientSecret}`, Google's Desktop-app download
+  `{installed:{client_id, client_secret}}`, and the flat `{client_id, client_secret}` of the repo's example file.
+- (e) `cards.connect.line.no_refresh` is not used: no-refresh and browser-denied both end as OAUTH_DENIED (08-3 §21.3), so the
+  card shows the denied line for both (gap). (b) and (e) need a CR-0012 gap row before close-out (the lead owns the CR).
+- (f) The Connect card frame has a definite width (`.frame`, `var(--card-w)`): `.card` is `container-type: inline-size`, so in
+  the thread's shrink-to-fit hold it collapses to its padding. Other cards in that hold likely need the same (lead told).
+- (g) The Connections body renders inside the CR-0020 Settings frame (06-2 §6.0); the frame draws the title, so the page's own
+  title line and its key are gone.
+- Google's revoke ends the whole user + client grant, so a new sign-in revokes the old refresh token only when a different
+  account signed in; the same account's incremental consent just replaces it.
+- `app:openExternal` is not declared here (main already has it; M9 T1 owns its other targets): the sign-in URL opens through
+  `shell.openExternal` in main.
+- Deferred: the unfocused-finish toast (M11); AT-093's "no Gmail requests" half is fully exercised once T4's tools exist; the C-10
+  routine list is a heuristic until M11 routines; "Not now" is kept in the window only (M5's `card:answer` answers Choice and
+  tiles cards, not Connect); official Google logos are not bundled (a Fluent icon stands in). BP-CARD-11's Blueprint mini has a
+  shorter line and no icon; the app follows the 05-3 §5.11 words, so Tier R R1 may report word differences.

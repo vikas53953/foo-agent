@@ -1,0 +1,49 @@
+/* Spec: 05-3 §5.11.1 (header row 32 with the app logo `--icon-xl` 32; title --t-body-strong; lines --t-body; connected
+ * summary --ok; Not connected summary grey), 05-1 §0.2 (rows 8 apart). */
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--icon-xl);
+}
+.logo {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-xl);
+  height: var(--icon-xl);
+  color: var(--fg-2);
+}
+.line {
+  margin: 0;
+  font: var(--t-body);
+}
+.note {
+  margin: 0;
+  font: var(--t-body);
+  color: var(--fg-2);
+}
+.ok {
+  margin: 0;
+  font: var(--t-body);
+  color: var(--ok);
+}
+.status {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  font: var(--t-body);
+  color: var(--fg-2);
+}
+/* The frame is a size container, so its words don't size it: inside the thread's shrink-to-fit row it needs a definite
+ * width (05-1 §0.2: --card-w, never wider than the column). */
+.frame {
+  width: var(--card-w);
+  max-width: 100%;
+}

@@ -23,6 +23,8 @@ import { SetupCard } from './setup/SetupCard';
 import { SpendCap } from './SpendCap';
 import { Stuck } from './Stuck';
 import { TableCard } from './TableCard';
+// M8
+import { ConnectCard } from './Connect';
 
 type CardComponent = ComponentType<{ card: CardRow; time: CardTime }>;
 
@@ -46,6 +48,8 @@ export const CARD_VIEWS: Partial<Record<CardType, CardComponent>> = {
   secret: SecretBox,
   // AI step (CR-0020): the first-run AI finder (06-1 §2.2); the other setup cards are M12's.
   setup: SetupCard,
+  // M8 T2: the Connect card (05-3 §5.11).
+  connect: ConnectCard,
 };
 
 /** G-M4-10: the purchase variant of the Spend-cap card is M10's; until then it keeps the placeholder. */

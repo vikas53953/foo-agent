@@ -157,6 +157,9 @@ export const WRITABLE_PATHS = [
   'window.rightShellOpen',
   'window.lastChatId',
   'money.warnAt80',
+  // M8 (06-2 §6.8 Calendar / Contacts Turn off / on, 08-3 §16.1.2)
+  'connections.google.calendarOn',
+  'connections.google.contactsOn',
   'money.aiCapPaise',
   // M5 (CR-0009): the Permissions rows (the page is M13; AT-280 checks the locks through settings:set now).
   'permissions.actions.read',

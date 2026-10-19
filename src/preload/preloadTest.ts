@@ -63,6 +63,11 @@ const INVOKES = new Set([
   'ai:detect',
   'ai:choose',
   'notifications:status',
+  // M8
+  'connection:list',
+  'connection:connect',
+  'connection:disconnect',
+  'connection:googleInfo',
   'ai:openFinder',
   'ai:askKey',
   'app:openExternal',

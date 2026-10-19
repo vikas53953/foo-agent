@@ -131,6 +131,19 @@ export interface Invokes {
   'ai:detect': { req: Record<string, never>; res: DetectRow[] };
   'ai:choose': { req: { primary: ProviderId; backup?: ProviderId | null }; res: AiStatus };
   'notifications:status': { req: Record<string, never>; res: { windowsAllowed: boolean; focusAssist: boolean } };
+  // M8 T2 (08-1 §3.2): Google connections. `outlook` only while flags.outlook (X-41), so v1 accepts 'google' alone.
+  'connection:list': { req: Record<string, never>; res: ConnectionRow[] };
+  'connection:connect': {
+    req: { app: 'google'; scopes?: ('gmail' | 'gcal' | 'contacts')[] };
+    res: { connectionId: string; status: 'connecting' };
+  };
+  'connection:disconnect': { req: { connectionId: string; confirm: true }; res: void };
+  /** Not in 08-1 §3.2 (gap, implementation-notes "M8 T2"): whether this build has the Google client file (08-3 §16.1.1
+   * "Gmail isn't available in this build.") and the routines C-10 names (06-3 §14). */
+  'connection:googleInfo': {
+    req: Record<string, never>;
+    res: { available: boolean; routines: { title: string; app: 'gmail' | 'gcal' | 'contacts' }[] };
+  };
   // AI step (CR-0020 (c)): 06-2 §6.1 "Change" / "Add another AI" post the 06-1 §2.2 card in foo's chat; 06-1 §2.2 "I have a key"
   // posts the key's Secret box (05-2 §5.8) with the J2 lead line. `app:openExternal` is 08-1 §3.2's row; only `maker_page` is
   // built here (the other targets answer URL_NOT_ALLOWED until their milestones).
@@ -288,6 +301,11 @@ export const INVOKE_CHANNELS = [
   'ai:detect',
   'ai:choose',
   'notifications:status',
+  // M8
+  'connection:list',
+  'connection:connect',
+  'connection:disconnect',
+  'connection:googleInfo',
   'ai:openFinder',
   'ai:askKey',
   'app:openExternal',
@@ -343,9 +361,10 @@ export const EVENT_CHANNELS = [
  * 08-3 §22.9 seed sets (`ux-world` is the generator name of `demo`; both load the walkthrough world). `ux-world-ch8-live`
  * (CR-0007): the same world at 8:05 AM, foo's chat ending at the cake line, so a test sends chapter 8's "thanks!" and
  * question live and the frame matches the walkthrough's UX-08-02. `m4-cards` (M4 T5): the ux-world plus one of each M4 job
- * card in two helper chats (Errands, Home help), with no engine.
+ * card in two helper chats (Errands, Home help), with no engine. `ux-world-m8-connect` (M8 T2): the ux-world plus a Google
+ * Connect card in foo's chat and no connections.
  */
-export const SEED_SETS = ['demo', 'perf', 'ux-world', 'ux-world-ch8-live', 'm4-cards'] as const;
+export const SEED_SETS = ['demo', 'perf', 'ux-world', 'ux-world-ch8-live', 'm4-cards', 'ux-world-m8-connect'] as const;
 export type SeedSet = (typeof SEED_SETS)[number];
 
 export interface ClockReply {
