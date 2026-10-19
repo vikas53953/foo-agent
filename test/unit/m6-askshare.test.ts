@@ -88,7 +88,10 @@ describe('08-3 §12.5.1 memory.askShare', () => {
       { fact_id: FACT, chat_id: 'c_g', until: w.clock.now() + SHARE_GRANT_MS },
     ]);
     expect(SHARE_GRANT_MS).toBe(24 * 60 * 60 * 1000);
-    expect(w.db.prepare('SELECT state, resolved_by FROM cards WHERE id = ?').get(cardId)).toEqual({ state: 'answered', resolved_by: 'tap' });
+    expect(w.db.prepare('SELECT state, resolved_by FROM cards WHERE id = ?').get(cardId)).toEqual({
+      state: 'answered',
+      resolved_by: 'tap',
+    });
   });
 
   it('No → the key memory_share:{factId}:{groupChatId} is dismissed and the question is never asked again', async () => {
