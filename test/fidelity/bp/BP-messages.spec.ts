@@ -16,6 +16,7 @@ import type {} from '../../../src/shared/ipc';
 import { TID } from '../../../src/shared/testids';
 import { intake, launchWithFakeAi } from '../../e2e/fakeAi';
 import { launch } from '../../e2e/launch';
+import { settleSeededJobs } from '../../e2e/m4-start';
 import {
   blueprintBubbles,
   blueprintComposerText,
@@ -215,7 +216,7 @@ test('M3 Blueprint captures for Tier R: BP-MSG-02, BP-COMP-03, light and dark', 
     intake(more!, 'never shown', { delayMs: 3_600_000 }),
   ]);
   const page = await app.firstWindow();
-  await openWorld(app, page);
+  await settleSeededJobs(page, await openWorld(app, page));
   await openChat(page, 'foo');
 
   await field(page).focus();

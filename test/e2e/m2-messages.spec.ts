@@ -179,18 +179,26 @@ test('ART-26a · bubbles, cards, the bubble menu and the reaction picker pass ax
   await openChat(page, 'Trips');
   for (const tid of [TID.bubbleNotSent, TID.bubbleImage, TID.cardTable, TID.cardPlace]) {
     const el = page.getByTestId(tid).first();
-    // The list is virtual (Article 28): rows above the window are not in the DOM until scrolled near.
-    await logOf(page).evaluate(async (log, id) => {
-      // Up towards the start first, then back down towards the newest row.
-      for (const dir of [-1, 1]) {
-        for (let i = 0; i < 60 && !log.querySelector(`[data-testid="${id}"]`); i++) {
-          log.scrollTop = Math.max(0, log.scrollTop + dir * log.clientHeight * 0.5);
-          await new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
+    // The list is virtual (Article 28): rows above the window are not in the DOM until scrolled near. Row heights settle
+    // and the live Trips job re-renders the list while we walk, so a found row can leave the DOM again before Playwright
+    // reaches it: centre it in the same frame it is found, and walk again until it stays visible.
+    await expect(async () => {
+      await logOf(page).evaluate(async (log, id) => {
+        const frames = () => new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
+        const row = () => log.querySelector(`[data-testid="${id}"]`);
+        log.scrollTop = 0;
+        await frames();
+        for (let i = 0, still = 0; i < 400 && !row() && still < 6; i++) {
+          const before = log.scrollTop;
+          log.scrollTop = before + log.clientHeight * 0.5;
+          await frames();
+          still = log.scrollTop === before ? still + 1 : 0;
         }
-      }
-    }, tid);
-    await el.scrollIntoViewIfNeeded();
-    await expect(el).toBeVisible();
+        row()?.scrollIntoView({ block: 'center' });
+        await frames();
+      }, tid);
+      await expect(el).toBeVisible({ timeout: 2_000 });
+    }).toPass({ timeout: 60_000 });
     await audit(page, [thread], `trips ${tid}`);
   }
 

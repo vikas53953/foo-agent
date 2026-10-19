@@ -275,4 +275,7 @@ export const NAMED_QUERIES = {
     ),
   /** X-124: the chat's open cards of one type. */
   'cards.openForChat': ({ db }: QueryCtx, chatId: unknown, type: unknown): CardRow[] => openCards(db, chatId, type),
+  /** 08-4 §26.3 item 6 budget: the job's step turns so far. */
+  stepTurnsForJob: ({ db }: QueryCtx, jobId: unknown): number =>
+    Number((db.prepare("SELECT COUNT(*) AS n FROM ai_turns WHERE job_id = ? AND purpose = 'step'").get(String(jobId)) as DbRow).n),
 } as const;

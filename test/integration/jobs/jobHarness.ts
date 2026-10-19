@@ -4,6 +4,8 @@ import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { envelope, makeHarness, verified, type FakeLineIn, type Harness, type HarnessOptions } from '../../unit/m3-engine-helpers';
 import { fakeTools, type FakeToolLog, type FakeToolOptions } from '../../fakes/tools';
+import { sendMessage } from '../../../src/main/store/composerQueries';
+import { newId } from '../../../src/shared/ids';
 import type { Settings } from '../../../src/shared/settings';
 
 export { envelope, verified };
@@ -75,9 +77,24 @@ export interface JobHarness extends Harness {
   /** A card answer as main relays it (card.answered). */
   answer(cardId: string, choice?: string): void;
   mirror(jobId: string, file: 'state.json' | 'plan.md'): string | null;
+  /**
+   * A helper chat of its own (made once per name). One chat with a live job steers its next message into that job (08-2
+   * §5.2), so tests that need several jobs at once start each in its own chat.
+   */
+  chat(name: string): string;
+  /** userSays in another chat. */
+  userSaysIn(chatId: string, text: string): string;
 }
 
-const realSleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+/**
+ * Real time passing for `ms`, yielding with setImmediate so I/O and the engine run. Not setTimeout: Windows timers fire every
+ * ~15.6 ms, so a 1 ms sleep there costs 15 ms and long fake-clock tests ran out of time.
+ */
+export async function realPause(ms: number): Promise<void> {
+  const end = performance.now() + ms;
+  do await new Promise<void>((r) => setImmediate(r));
+  while (performance.now() < end);
+}
 
 export function jobHarness(
   o: { script: FakeLineIn[]; tools?: FakeToolOptions; settings?: (s: Settings) => Settings } & Omit<
@@ -90,18 +107,19 @@ export function jobHarness(
   const all = (sql: string, ...args: unknown[]) => h.db.prepare(sql).all(...args) as Record<string, unknown>[];
   const firstJob = () => String(all('SELECT id FROM jobs ORDER BY created_at, id')[0]?.id ?? '');
   const dataDir = path.join(h.dir, 'data');
+  const chats = new Map<string, string>();
   const jh: JobHarness = Object.assign(h, {
     calls: ft.calls,
     async settle(stepMs = 250) {
       for (let round = 0; round < 800; round++) {
-        for (let i = 0; i < 4; i++) await realSleep(1);
+        await realPause(4);
         let done = false;
         const p = Promise.all([h.engine.lane.idle(), h.engine.jobs.idle()]).then(() => (done = true));
-        await Promise.race([p, realSleep(3)]);
+        await Promise.race([p, realPause(3)]);
         if (done) {
-          for (let i = 0; i < 4; i++) await realSleep(1);
+          await realPause(4);
           let again = false;
-          await Promise.race([Promise.all([h.engine.lane.idle(), h.engine.jobs.idle()]).then(() => (again = true)), realSleep(3)]);
+          await Promise.race([Promise.all([h.engine.lane.idle(), h.engine.jobs.idle()]).then(() => (again = true)), realPause(3)]);
           if (again) return;
         }
         h.clock.advance(stepMs);
@@ -116,6 +134,38 @@ export function jobHarness(
     toolCalls: (jobId?: string) => all('SELECT * FROM tool_calls WHERE job_id = ? ORDER BY started_at, id', jobId ?? firstJob()),
     answer(cardId: string, choice?: string) {
       h.bridge.send('card.answered', { cardId, ...(choice ? { choice } : {}), resolvedBy: 'tap' });
+    },
+    chat(name: string) {
+      const known = chats.get(name);
+      if (known) return known;
+      const now = h.clock.now();
+      const chatId = `c_${name}`;
+      const helperId = `h_${name}`;
+      // The chat and its helper point at each other; the FKs are deferred to the end of the transaction.
+      h.db.transaction(() => {
+        h.db
+          .prepare("INSERT INTO chats (id, kind, helper_id, title, last_activity_at, created_at) VALUES (?, 'helper', ?, ?, ?, ?)")
+          .run(chatId, helperId, name, now, now);
+        h.db
+          .prepare(
+            `INSERT INTO helpers (id, name, job_text, face_ref, color_token, allowed_apps, chat_id, created_at)
+             VALUES (?, ?, 'Test helper', 'face:default', '--h-teal', '{}', ?, ?)`,
+          )
+          .run(helperId, name, chatId, now);
+      })();
+      chats.set(name, chatId);
+      return chatId;
+    },
+    userSaysIn(chatId: string, text: string) {
+      h.clock.advance(1_000);
+      const r = sendMessage(
+        h.db,
+        { chatId, clientId: newId('k', h.clock.now()), text },
+        { now: h.clock.now(), newId: () => newId('m', h.clock.now()), waiting: false, attachment: () => undefined },
+      );
+      if (!r.ok) throw new Error(`sendMessage: ${r.reason}`);
+      h.bridge.send('user.message', { messageId: r.messageId, chatId });
+      return r.messageId;
     },
     mirror(jobId: string, file: 'state.json' | 'plan.md') {
       const f = path.join(dataDir, 'jobs', jobId, file);
