@@ -387,7 +387,7 @@ export class ApprovalGate {
       rule = {
         id: newId('rule', now),
         ...m.value,
-        text: String((card.payload as Partial<ApprovalPayload>).title ?? ''),
+        text: approvalPayloadOf(card)?.title ?? '',
         createdAt: now,
         source: 'card',
       };
