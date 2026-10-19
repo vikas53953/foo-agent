@@ -1,0 +1,39 @@
+{
+  "journey": "test/verify/m6-t3-store.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "7172e9677e6270375f8c64d4f6b3d4ee9416d381",
+  "dirty": true,
+  "started": "2026-10-19T15:28:27.057Z",
+  "finished": "2026-10-19T15:28:29.854Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "the demo seed wrote about-you.md with 24 lines; every indexed about-you fact sits on its own line_no",
+    "right shell \"What I know\" still shows 3 seeded fact tiles",
+    "memory:add wrote line 28 of about-you.md under ## Private: \"- I’m allergic to peanuts  {you said · 2026-10-16 · you typed it · private · f_01a142e7-f420-7a00-aff3-2827a3e94f17}\"",
+    "edited the line on disk (CRLF, as Notepad saves); after 600 ms memory:list shows \"I’m allergic to peanuts and cashews\" (same id, line 28)",
+    "memory:forget removed \"Works from home on Fridays\" (line 5); memory\\.tombstones now holds 1 tombstone",
+    "memory:undo put the exact line back at line 5; every line of the file is what it was",
+    "the same undo again answers TOO_LATE"
+  ],
+  "shots": [
+    {
+      "file": "after/01-right-shell-know.light.png",
+      "name": "right-shell-know",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-right-shell-know-after.light.png",
+      "name": "right-shell-know-after",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-right-shell-know-after.dark.png",
+      "name": "right-shell-know-after",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": []
+}
