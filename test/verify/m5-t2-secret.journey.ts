@@ -84,7 +84,9 @@ export default async function journey(v: Verify): Promise<void> {
   await v.shot('c-22-remove');
   await dialog.getByTestId(TID.dialogPrimary).click();
   await card.getByText('can’t use it any more').waitFor();
-  v.note(`C-22 "Remove your saved OpenAI key?" → Remove: the card reads "${(await card.innerText()).split('\n').find((l) => l.startsWith('Removed'))}"`);
+  v.note(
+    `C-22 "Remove your saved OpenAI key?" → Remove: the card reads "${(await card.innerText()).split('\n').find((l) => l.startsWith('Removed'))}"`,
+  );
   await rest(page);
   await settle(page);
   await v.shot('secret-removed');
@@ -96,6 +98,9 @@ export default async function journey(v: Verify): Promise<void> {
   const hits = written.filter((f) => readFileSync(f).includes(KEY));
   if (hits.length) throw new Error(`key found in ${hits.join(', ')}`);
   const activity = readFileSync(join(dirs.FOO_DATA_DIR, 'activity.jsonl'), 'utf8');
-  if (!activity.includes('Saved your OpenAI key') || !activity.includes('Removed your OpenAI key')) throw new Error('activity rows missing');
-  v.note(`searched ${written.length} files the app wrote (foo.db, logs, activity.jsonl): 0 hits for the key; activity has "Saved your OpenAI key" and "Removed your OpenAI key"`);
+  if (!activity.includes('Saved your OpenAI key') || !activity.includes('Removed your OpenAI key'))
+    throw new Error('activity rows missing');
+  v.note(
+    `searched ${written.length} files the app wrote (foo.db, logs, activity.jsonl): 0 hits for the key; activity has "Saved your OpenAI key" and "Removed your OpenAI key"`,
+  );
 }
