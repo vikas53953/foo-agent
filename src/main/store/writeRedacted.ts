@@ -14,8 +14,6 @@ export const REDACTED_COLUMNS: Readonly<Record<string, readonly string[]>> = {
   activity: ['summary', 'fields'],
   cards: ['payload'],
   suggestions: ['text'],
-  // M8 T3 (08-3 §16.4)
-  wa_messages: ['text'],
 };
 
 const redactor = new Redactor({ clock: systemClock, registry: mainRegistry() });

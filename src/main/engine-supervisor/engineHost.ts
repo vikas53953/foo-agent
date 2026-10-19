@@ -333,7 +333,8 @@ function insertWa(
   fx: TxEffects,
   now: number,
 ): { id: string; rev: number } {
-  // §4.6 rule 2: `redactRow` already scrubbed wa_messages.text (REDACTED_COLUMNS).
+  // Art. 8: stored WhatsApp text goes through Store.writeRedacted too, whatever the engine asked for.
+  if (table === 'wa_messages' && typeof row.text === 'string') row.text = writeRedacted(row.text);
   const cols = Object.keys(row);
   const verb = table === 'wa_contacts' ? 'INSERT OR REPLACE' : 'INSERT OR IGNORE';
   const r = db.prepare(`${verb} INTO ${table} (${cols.join(', ')}) VALUES (${cols.map(() => '?').join(', ')})`).run(...Object.values(row));
