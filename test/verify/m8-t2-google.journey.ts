@@ -48,7 +48,7 @@ export default async function journey(v: Verify): Promise<void> {
     const back = await browserReturns(link);
     const returned = Date.now();
     if (!back.body.includes(t('app.signin_page.connected'))) throw new Error('loopback page did not say connected');
-    const done = t('cards.connect.line.connected', { account: 'v•••@example.com' });
+    const done = t('cards.connect.line.connected', { account: 'v***@example.com' });
     await card.getByText(done).waitFor({ timeout: 3_000 });
     v.note(`browser returned → card reads "${done}" after ${Date.now() - returned} ms (AT-014: under 3 s)`);
     for (const theme of ['light', 'dark'] as const) {

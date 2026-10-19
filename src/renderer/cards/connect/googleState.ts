@@ -28,9 +28,6 @@ export function cardScopes(p: ConnectPayload): GoogleApp[] {
   return [...GOOGLE_ROW_APPS];
 }
 
-/** Account labels are stored `v***@…` (0001); the card draws `v•••@…` (05-3 §5.11.2). */
-export const cardAccount = (label: string) => label.replace('***', '•••');
-
 export function connectLook(o: {
   payload: ConnectPayload;
   rows: ConnectionRow[];
@@ -47,7 +44,7 @@ export function connectLook(o: {
   const main = rows.find((r) => r.app === scopes[0]) ?? rows[0];
   if (main && main.status === 'connected') {
     const g = main.granted;
-    const account = cardAccount(main.accountLabel);
+    const account = main.accountLabel;
     const allow = o.payload.variant === 'allow_send';
     if (scopes.includes('gmail') && g.read && !g.send) return allow ? offered(o) : { state: 'partial', account, missing: 'send' };
     if (allow) return { state: 'connected', account };

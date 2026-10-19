@@ -21,7 +21,6 @@ import {
   GOOGLE_APPS,
   GOOGLE_VAULT_NAME,
   grantedFromScope,
-  maskEmail,
   pkcePair,
   revokeToken,
   scopeList,
@@ -31,6 +30,7 @@ import {
   type Granted,
   type GrantedFlag,
 } from '../../engine/tools/connectors/google';
+import { maskEmail } from '../../shared/redactor';
 import type { ConnTokenStore, GoogleAccess, HttpFetch } from '../../engine/tools/connectors/types';
 import { applyDbOps } from '../engine-supervisor/engineHost';
 import { connectionRow, type DbRow } from '../db/rows';

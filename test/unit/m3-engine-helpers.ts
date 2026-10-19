@@ -8,6 +8,7 @@ import path from 'node:path';
 import { Engine } from '../../src/engine/Engine';
 import type { DbOp, MainLink, MainToEngine } from '../../src/engine/protocol';
 import { EngineBridge } from '../../src/main/engine-supervisor/EngineBridge';
+import { ApprovalGate } from '../../src/main/approvals/ApprovalGate';
 import { migrate, type Db } from '../../src/main/store/db';
 import { sendMessage } from '../../src/main/store/composerQueries';
 import { ensureFooChat } from '../../src/main/store/queries';
@@ -17,6 +18,7 @@ import { newId } from '../../src/shared/ids';
 import { settingsSchema, type Settings } from '../../src/shared/settings';
 import { settingsDefaults } from '../../src/shared/settingsDefaults';
 import type { ProviderId } from '../../src/shared/types';
+import type { ToolRegistry } from '../../src/engine/tools/ToolLayer';
 
 export const ROOT = path.resolve(__dirname, '../..');
 export const RESOURCES = path.join(ROOT, 'resources');
@@ -52,6 +54,8 @@ export interface UiPatch {
 export interface Harness {
   engine: Engine;
   bridge: EngineBridge;
+  /** M5 T7: main's ApprovalGate behind the bridge (approval.open / approval.transition; taps from tests). */
+  approvals: ApprovalGate;
   db: Db;
   clock: FakeClock;
   dir: string;
@@ -81,6 +85,18 @@ export interface HarnessOptions {
   settings?: (s: Settings) => Settings;
   /** Skip the initial settings.changed (the caller sends it). */
   noInitialSettings?: boolean;
+  /** M4: the tools the engine's ToolLayer offers (fake tools); also gives the bridge the data folder and the fake clock. */
+  tools?: ToolRegistry;
+}
+
+/** M4: per-prefix counters (`tc_000001` is the first tool call), so a fake AI line can name an id in a proof. */
+function countingIds(): (prefix: string) => string {
+  const n = new Map<string, number>();
+  return (p) => {
+    const next = (n.get(p) ?? 0) + 1;
+    n.set(p, next);
+    return `${p}_${String(next).padStart(6, '0')}`;
+  };
 }
 
 const realSleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
@@ -127,7 +143,7 @@ export function makeHarness(o: HarnessOptions): Harness {
   const logs: Record<string, unknown>[] = [];
   const aiStates: Record<string, unknown>[] = [];
 
-  const bridge = new EngineBridge({
+  const bridge: EngineBridge = new EngineBridge({
     db,
     settings: {
       get: () => current,
@@ -140,6 +156,18 @@ export function makeHarness(o: HarnessOptions): Harness {
     emitMessage: () => undefined,
     emitChat: () => undefined,
     log: (line) => logs.push(line as Record<string, unknown>),
+    ...(o.tools ? { dataDir, now: () => clock.now() } : {}),
+    approvals: (): ApprovalGate => approvals,
+  });
+  // M5 T7: main's ApprovalGate, told nothing of the engine until the bridge is live.
+  const approvals: ApprovalGate = new ApprovalGate({
+    db,
+    now: () => clock.now(),
+    timeZone: () => current.locale.timeZone,
+    rules: { get: () => current.rules, set: (rules) => (current = { ...current, rules }) },
+    changed: () => undefined,
+    engine: { send: (kind, payload): boolean => bridge.send(kind, payload as never) },
+    ...(o.tools ? { dataDir } : {}),
   });
 
   let seq = 0;
@@ -170,6 +198,7 @@ export function makeHarness(o: HarnessOptions): Harness {
     execPath: process.execPath,
     testRun: true,
     fetch: (() => Promise.reject(new Error('network is not allowed in tests'))) as typeof fetch,
+    ...(o.tools ? { tools: o.tools, newId: countingIds() } : {}),
   });
   bridge.live = true;
   bridge.post = (msg) => {
@@ -183,6 +212,7 @@ export function makeHarness(o: HarnessOptions): Harness {
   const h: Harness = {
     engine,
     bridge,
+    approvals,
     db,
     clock,
     dir,

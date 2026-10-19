@@ -134,12 +134,6 @@ export function emailFromIdToken(idToken: string, clientId: string): string | nu
   }
 }
 
-/** 0001 `connections.account_label` / 08-2 §11.4: `v***@gmail.com`. */
-export function maskEmail(email: string): string {
-  const at = email.lastIndexOf('@');
-  return `${email.slice(0, 1)}***${email.slice(at)}`;
-}
-
 async function postForm(http: HttpFetch, url: string, form: Record<string, string>) {
   return http(url, {
     method: 'POST',

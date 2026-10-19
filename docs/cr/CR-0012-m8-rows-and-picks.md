@@ -66,7 +66,7 @@ No new screen, word or flow. One existing row goes unused: the 05-2 §5.7.2 "No 
 
 ## (e) Independent review
 
-Fable reviewer, 2026-10-18 ~18:40Z, read-only, against pack `prep/M8.md` §4–§8, GAPS-for-review (G-M8 answers), 08-0 §A.1 /
+Fable reviewer, 2026-10-18 ~18:16Z, read-only, against pack `prep/M8.md` §4–§8, GAPS-for-review (G-M8 answers), 08-0 §A.1 /
 §B.2, 08-5 §3.3 / §4.1, 10-acceptance-1/-2, golden/manifest.json. **Verdict: PASS.**
 
 - Trace ids exist, J columns match, no duplicate rows; settings defaults and the three shared types match the spec verbatim;

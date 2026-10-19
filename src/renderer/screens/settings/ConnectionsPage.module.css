@@ -1,18 +1,10 @@
 /* Spec: 06-2 §6.8 (each connection is a row group: header row with the `--t-body-strong` name, status line and buttons,
  * then detail rows; "Not allowed yet" and "expired" lines `--warn`; notes `--t-small` `--fg-2`), 06 §0 page frame. The
- * Settings frame and nav are M13's (CR-0012 G-M8-05); this is the Connections page body. */
+ * Settings frame (06-2 §6.0, SettingsPage) pads and scrolls the column; this is the Connections page body. */
 .page {
   display: flex;
   flex-direction: column;
   gap: var(--s4);
-  max-width: var(--card-w-wide);
-  padding: var(--s5) var(--gutter);
-  overflow-y: auto;
-  height: 100%;
-}
-.title {
-  margin: 0;
-  font: var(--t-subtitle);
 }
 .group {
   display: flex;

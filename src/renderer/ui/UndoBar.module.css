@@ -1,0 +1,64 @@
+/* Spec: 02-3 §F21.3 undo bar (--undo-h 48 min; min 280, max min(560px, column − 32px); 24px above the pane bottom;
+ * --bg-raised, --r-md, --shadow-16, dark + 1px --line; padding 0 8 0 16; --t-body; Link "Undo" --accent 40px hit, 16px after
+ * the text; --z-undo; enter fade + rise 8px --m-normal --ease-in), SV-34. */
+.bar {
+  position: absolute;
+  bottom: var(--s5);
+  left: 50%;
+  z-index: var(--z-undo);
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  box-sizing: border-box;
+  min-width: 280px; /* local: 02-3 §F21.3 undo bar min width (no token) */
+  max-width: min(560px, calc(100% - var(--s6))); /* local: 02-3 §F21.3 max min(560, column − 32) */
+  min-height: var(--undo-h);
+  padding: 0 var(--s1) 0 var(--s3);
+  border-radius: var(--r-md);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-16);
+  transform: translateX(-50%);
+  animation: undo-in var(--m-normal) var(--ease-in);
+}
+:global([data-theme='dark']) .bar {
+  border: 1px solid var(--line);
+}
+@keyframes undo-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, var(--s1));
+  }
+}
+/* Reduced motion: --m-normal is already 83ms (tokens); the bar only fades, no rise. */
+@media (prefers-reduced-motion: reduce) {
+  @keyframes undo-in {
+    from {
+      opacity: 0;
+    }
+  }
+}
+.text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font: var(--t-body);
+  color: var(--fg-1);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.action {
+  min-height: var(--btn-h);
+  padding: 0 var(--s1);
+  border: 0;
+  background: none;
+  font: var(--t-body-strong);
+  color: var(--accent);
+  cursor: pointer;
+}
+.action:hover {
+  text-decoration: underline;
+}
+.action:focus-visible {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  border-radius: var(--r-sm);
+}

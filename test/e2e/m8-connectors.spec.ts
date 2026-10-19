@@ -9,7 +9,7 @@ import { openChat } from '../fidelity/capture';
 import { launch, testDirs } from './launch';
 import { browserReturns, googleEnv, lastOpened, openConnections, openConnectWorld } from './m8-google';
 
-test('AT-014: Connect card → Google sign-in → "✓ Connected as v•••@example.com" within 3 s; three rows connected', async () => {
+test('AT-014: Connect card → Google sign-in → "✓ Connected as v***@example.com" within 3 s; three rows connected', async () => {
   const { server, env } = await googleEnv();
   const app = await launch(testDirs(), [], env);
   try {
@@ -30,7 +30,7 @@ test('AT-014: Connect card → Google sign-in → "✓ Connected as v•••@e
     const page2 = await browserReturns(link);
     const returned = Date.now();
     expect(page2.body).toContain(t('app.signin_page.connected'));
-    await expect(card).toContainText(t('cards.connect.line.connected', { account: 'v•••@example.com' }), { timeout: 3_000 });
+    await expect(card).toContainText(t('cards.connect.line.connected', { account: 'v***@example.com' }), { timeout: 3_000 });
     expect(Date.now() - returned).toBeLessThan(3_000);
     await expect(card).toHaveAttribute('data-state', 'connected');
     expect(server.fake.paths()).toEqual(['/token']);

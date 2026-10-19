@@ -24,7 +24,7 @@ function connect(port: PortLike): void {
   let seq = 0;
   const waiters = new Map<string, (r: Result<unknown>) => void>();
   const link: MainLink = {
-    request<T>(kind: 'db.tx' | 'db.query', payload: unknown): Promise<Result<T>> {
+    request<T>(kind: 'db.tx' | 'db.query' | 'file.write', payload: unknown): Promise<Result<T>> {
       seq += 1;
       const id = `e${seq}`;
       return new Promise((resolve) => {

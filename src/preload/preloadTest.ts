@@ -35,7 +35,26 @@ const INVOKES = new Set([
   'app:showEmojiPanel',
   'job:stop',
   'job:watch',
+  // M4 T5 job and card answers (08-1 §3.2, CR-0008 G-M4-09).
+  'job:stopAll',
+  'job:retry',
+  'plan:go',
+  'plan:change',
+  'stuck:choose',
+  'recovery:choose',
+  'error:fix',
   'memory:list',
+  'memory:add',
+  'memory:edit',
+  'memory:setPrivate',
+  'memory:setKind',
+  'memory:forget',
+  'memory:undo',
+  'memory:forgetBySource',
+  'memory:forgetAll',
+  'memory:openFolder',
+  'data:export',
+  'files:pickFolder',
   'routine:list',
   'helper:list',
   'settings:get',
@@ -49,6 +68,27 @@ const INVOKES = new Set([
   'connection:connect',
   'connection:disconnect',
   'connection:googleInfo',
+  'ai:openFinder',
+  'ai:askKey',
+  'app:openExternal',
+  'card:answer',
+  'card:approve',
+  'card:decline',
+  'card:askAgain',
+  'card:heldPick',
+  'draft:update',
+  'draft:send',
+  'draft:undo',
+  'draft:discard',
+  'draft:openInApp',
+  'secret:save',
+  'secret:list',
+  'secret:delete',
+  'code:submit',
+  // M5 T2
+  'secret:offer',
+  // M5 T14
+  'approval:report',
 ]);
 const EVENTS = new Set([
   'chat:upsert',
@@ -66,6 +106,8 @@ const EVENTS = new Set([
   'settings:changed',
   'net:state',
   'navigate',
+  'memory:changed',
+  'data:exportProgress',
 ]);
 
 const platform = ipcRenderer.sendSync('app:platform') as PlatformInfo;
@@ -96,5 +138,7 @@ const testBridge: FooTestBridge = {
   theme: (theme) => call('test:theme', { theme }),
   reset: () => call('test:reset'),
   jobState: (jobId, state) => call('test:jobState', { jobId, state }),
+  cardSeed: (arg) => call('test:card.seed', arg),
+  memoryTidy: () => call('test:memoryTidy'),
 };
 contextBridge.exposeInMainWorld('__fooTest', testBridge);

@@ -10,13 +10,13 @@ import {
   exchangeCode,
   googleEndpoints,
   grantedFromScope,
-  maskEmail,
   pkcePair,
   refreshAccess,
   revokeToken,
   scopeList,
   scopeFlagFrom403,
 } from '../../src/engine/tools/connectors/google';
+import { maskEmail } from '../../src/shared/redactor';
 import { MemoryConnTokenStore } from '../../src/main/vault/connTokenMemory';
 import { ALL_SCOPES, FAKE_CLIENT, FAKE_EMAIL, FakeGoogle, fakeIdToken } from '../fakes/connectors/google-oauth';
 

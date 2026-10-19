@@ -88,12 +88,18 @@ describe('fake AI (08-3 §22.3)', () => {
     expect(await a.runTurn(req({ purpose: 'step' }), sink(), sig())).toMatchObject({ stopReason: 'error', errorKind: 'AI_LIMIT' });
     let done = false;
     const p = a.runTurn(req(), sink(), sig()).then((r) => ((done = true), r));
-    await new Promise((r) => setTimeout(r, 10));
+    // Wait for the fake to arm its delay timer (script read and record are real I/O): a fixed 10 ms sleep let a slow
+    // Windows runner advance the clock before the timer existed, and the turn never ended.
+    const armed = async () => {
+      for (let i = 0; i < 500 && clock.pendingTimers === 0; i++) await new Promise((r) => setTimeout(r, 5));
+      expect(clock.pendingTimers).toBeGreaterThan(0);
+    };
+    await armed();
     expect(done).toBe(false);
     clock.advance(5000);
     expect((await p).text).toBe('late');
     const p2 = a.runTurn(req({ turnId: 'slow' }), sink(), sig());
-    await new Promise((r) => setTimeout(r, 10));
+    await armed();
     await a.cancel('slow');
     expect((await p2).stopReason).toBe('cancelled');
   });

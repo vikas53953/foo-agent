@@ -8,6 +8,8 @@ export type { Settings } from './settings';
 
 // ---- 08-0 §B.2 enums (the members M1 uses; closed lists copied exactly) ----
 export type ProviderId = 'claude-cli' | 'codex-cli' | 'gemini-cli' | 'openai-key' | 'anthropic-key' | 'google-key' | 'ollama' | 'fake';
+/** The key-billed providers (08-0 §E.8 vault `foo/ai_key/{providerId}`). */
+export type KeyProviderId = 'openai-key' | 'anthropic-key' | 'google-key';
 export type ApprovalState =
   'PENDING' | 'APPROVED' | 'RUNNING' | 'COMPLETED' | 'HELD' | 'CHECKING' | 'DECLINED' | 'EXPIRED' | 'SUPERSEDED' | 'WITHDRAWN' | 'FAILED';
 export type SettingsPage =
@@ -227,6 +229,8 @@ export interface ErrorPayload {
   of?: number;
   paymentChecking?: boolean;
   doneLines?: string[];
+  /** SM-A10: set when the job resumes; the fixed card shows it under "Fixed · {time}". */
+  resumedLine?: string;
 }
 export interface SpendCapPayload {
   which: 'ai' | 'purchase';
@@ -235,6 +239,178 @@ export interface SpendCapPayload {
 }
 export interface JobLinkPayload {
   jobId: string;
+}
+
+// ---- M5 (CR-0009): approvals, choice and tiles, drafts, secrets (08-0 §B.2–§B.3, 08-1 §4.5, 08-2 §9.3, §11, 08-4 §25.1) ----
+/** 08-0 §B.2 ApprovalVerb (X-55); cancelling a booking is `delete`. */
+export type ApprovalVerb = 'send' | 'book' | 'buy' | 'pay' | 'post' | 'delete' | 'share' | 'switch' | 'use_app' | 'calendar_write';
+/** 08-0 §B.2 ApprovalDraftVerb (X-125): what the AI may request; `send` reaches the user only through a Draft card. */
+export type ApprovalDraftVerb = 'book' | 'buy' | 'pay' | 'delete';
+/** 08-0 §B.2 PermissionApp. */
+export type PermissionApp = 'gmail' | 'calendar' | 'contacts' | 'whatsapp' | 'browser' | 'outlook';
+/** 08-0 §B.2 ChoicePurpose (§G.1). */
+export type ChoicePurpose = 'job' | 'setup' | 'memory_confirm' | 'app_use' | 'stop_which' | 'conflict' | 'file_in' | 'photo_notice';
+/** 08-0 §B.2 SecretKind (= secrets_index.kind CHECK). */
+export type SecretKind = 'ai_key' | 'login' | 'card' | 'conn_token' | 'wa_session' | 'web_key' | 'hub_key';
+/** 08-0 §G.1 `secret.secretKind` (the card's sub-kind; otp and cvv are never saved). */
+export type SecretCardKind = 'ai_key' | 'voice_key' | 'web_key' | 'login' | 'card' | 'otp' | 'cvv';
+/** 08-1 §3.2 card:approve scope. */
+export type ApprovalScope = 'once' | 'chat' | 'always';
+
+/** 08-2 §9.3 ApprovalFields (canonical; hashed with fieldsHash; drives the card text, never free AI text). */
+export interface ApprovalFields {
+  verb: ApprovalVerb;
+  channel?: 'email' | 'whatsapp' | 'web' | 'x';
+  recipients?: { name: string; address: string; isNew: boolean; isGroup: boolean; groupSize?: number }[];
+  payee?: string;
+  siteDomain?: string;
+  amountPaise?: number;
+  lines?: { label: string; amountPaise: number }[];
+  currency?: 'INR';
+  when?: { start: number; end?: number; tz: string };
+  partySize?: number;
+  item?: string;
+  personalShared?: ('name' | 'email' | 'phone' | 'address')[];
+  cancelTerms?: { freeUntil?: number; feePaise?: number; refundable: boolean };
+  /** send/post: subject + first 140 chars, redacted. */
+  contentSummary?: string;
+  irreversible: boolean;
+  /** M5 T4 (G-M5-24, 08-5 §3.3): the app a `use_app` approval lets a helper use; its rule matches this app. */
+  app?: PermissionApp;
+}
+
+/** 08-0 §B.3 ApprovalDraft (08-4 §25.1): created by the AI through `request_approval` (§28.1). */
+export interface ApprovalDraft {
+  verb: ApprovalDraftVerb;
+  fields: ApprovalFields;
+  /** `quote` ≤ 200 chars verbatim from that tool result; `ref` = snapshot element. */
+  evidence: { field: keyof ApprovalFields; toolCallId: string; quote: string; ref?: string }[];
+}
+
+/** 08-0 §B.3 SecondLookResult (08-4 §28.4); stored in approvals.second_look. */
+export interface SecondLookResult {
+  at: number;
+  deterministic: { ok: boolean; mismatches: string[] };
+  ai?: { ok: boolean; note: string };
+  turnId?: string;
+  held?: { field: 'recipient' | 'amount' | 'date' | 'time' | 'item' | 'people' | 'place'; userSaid: string; actionHas: string };
+}
+
+/** 08-5 §3.3 Rule (settings.rules); `mail_organise` exists only here (its approvals row is verb use_app, fields.app gmail). */
+export interface Rule {
+  id: string;
+  verb: 'use_app' | 'calendar_write' | 'mail_organise';
+  match: { app?: PermissionApp; calendarId?: 'primary'; labelOrFolder?: string };
+  text: string;
+  helperId?: string;
+  createdAt: number;
+  source: 'card';
+}
+
+/** 08-0 §B.3 `secrets_index` columns camelCased; 08-5 §3.6 drops `target` from the renderer copy (secret:list). */
+export interface SecretIndexRow {
+  kind: SecretKind;
+  name: string;
+  label: string;
+  domain: string | null;
+  brand: string | null;
+  last4: string | null;
+  storage: 'credman' | 'blob';
+  createdAt: number;
+  updatedAt: number;
+  lastUsedAt: number | null;
+}
+
+/** 08-2 §11.3 VaultUseRequest. */
+export interface VaultUseRequest {
+  purpose: 'fill_login' | 'fill_card' | 'ai_call' | 'connector_refresh' | 'wa_session' | 'voice_call' | 'web_tool' | 'hub_call';
+  name: string;
+  jobId?: string;
+  approvalId?: string;
+}
+
+/** 08-1 §4.5 choice / tiles payload (ChoicePayload, 08-0 §B.3). */
+export interface ChoicePayload {
+  purpose: ChoicePurpose;
+  question: string;
+  options: { id: 'o1' | 'o2' | 'o3' | 'o4'; label: string; detail?: string; bestFit?: boolean; photoRef?: string }[];
+  multi?: boolean;
+  stepper?: { index: number; total: number };
+  aiReversible: boolean;
+  reversible: boolean;
+  livePrices: boolean;
+  setupCard?: string;
+}
+/** 08-1 §4.5 approval payload. */
+export interface ApprovalPayload {
+  variant: 'standard' | 'deadline_reminder';
+  approvalId: string;
+  verb: ApprovalVerb;
+  title: string;
+  impact: string;
+  fields: ApprovalFields;
+  scopes: ApprovalScope[];
+  hardLimit: boolean;
+  expiresAt: number;
+  // M5 T4
+  /** What a HELD card shows (05-2 §5.5.4, 08-4 §28.3–§28.4); the second look (T8) writes it with the HELD move. */
+  held?: { reason: 'mismatch' | 'cannot_check' | 'no_user_words'; userSaid?: string; actionHas?: string; verbing?: string };
+  /** What a SUPERSEDED card names (05-2 §5.5.4: the term that changed; 08-4 §26.5 a steer); T8 writes it. */
+  superseded?: 'price' | 'time' | 'recipient' | 'fee' | 'steer';
+  /** M5 T7 (G-M5-29): the page element the engine submits once approved; kept here so an engine restart can still run it. */
+  submitRef?: string;
+  // M5 T14
+  /** 05-2 §5.5.4 CHECKING → FAILED: main's 15 min no-proof move sets it, so the card says "I can't tell…" instead of the plain
+   * FAILED line; `phone` only when a verified one exists (G-M5-32 (b): an unverified slot is left out with its words). */
+  unknownResult?: { phone?: string };
+}
+/** 08-1 §4.5 draft payload. */
+export interface DraftPayload {
+  approvalId: string;
+  channel: 'email' | 'whatsapp' | 'x';
+  to?: { name: string; address: string; isNew: boolean };
+  subject?: string;
+  body: string;
+  signature?: string;
+  edited: boolean;
+  sendAllowed: boolean;
+  xRemaining?: number;
+  undoUntil?: number;
+  // M5 T6 (05-2 §5.7.2): the Gmail draft the card's Change / Send / Discard act on; the "Not sent. The draft is still here."
+  // line after an Undo; the sent time and the Sent-folder proof message.
+  gmailDraftId?: string;
+  undone?: boolean;
+  sentAt?: number;
+  sentMessageId?: string;
+  // M5 T14
+  /** 05-2 §5.7.2 HELD (second look, Art. 10): what the Draft's held strip shows; main writes it with the HELD move. */
+  held?: ApprovalPayload['held'];
+}
+/** 08-1 §4.5 secret payload (never a value). */
+export interface SecretPayload {
+  secretKind: SecretCardKind;
+  name: string;
+  why: string;
+  fields: { key: string; label: string; masked: boolean }[];
+  savedAt?: number;
+  requestId?: string;
+  sentTo?: string;
+  paymentCardId?: string;
+  // M5 T2: the vault target a Save wrote (Remove and Replace name it) and when Remove ran (05-2 §5.8.2 "Removed").
+  target?: string;
+  removedAt?: number;
+  /** The vault `{name}` a Save writes (08-0 §E.8: providerId, host, web provider); a card's is its last 4. */
+  vaultName?: string;
+  /** The saved row's name after a Save ("Visa ••4242" for a card, X-116). */
+  label?: string;
+  /** Set when the card was posted while the vault could not save (05-2 §5.8.3 Disabled shows up front). */
+  vaultOff?: 'keyring_unavailable' | 'encryption_unavailable';
+}
+/** 08-5 §3.3 DraftFields (`draft:update`); `body` includes the signature text when the user kept it (X-84). */
+export interface DraftFields {
+  to?: string;
+  subject?: string;
+  body: string;
 }
 
 // ---- chats (08-1 §4.3.1) ----
@@ -473,8 +649,14 @@ export interface RoutineRow {
   updatedAt: number;
 }
 
-// ---- memory (08-5 §3.6: memory_index camelCased without hash, plus labels) ----
+// ---- memory (08-0 §B.2 X-06/X-112; 08-5 §3.6: memory_index camelCased without hash, plus labels) ----
 export type MemoryScope = 'global' | 'chat' | 'helper';
+export type MemoryKind = 'person' | 'preference' | 'place' | 'fact';
+export type MemoryProvenance = 'said' | 'guessed';
+/** = MemorySource; labels chat, Gmail, Calendar, WhatsApp, you typed it, setup, a task (08-3 §12.2). */
+export type MemoryOrigin = 'chat' | 'gmail' | 'gcal' | 'whatsapp' | 'manual' | 'setup' | 'job';
+export type MemoryCategory =
+  'food' | 'travel' | 'health' | 'money' | 'people' | 'places' | 'work' | 'style' | 'home' | 'family' | 'religion' | 'politics' | 'other';
 export interface MemoryFactView {
   id: string;
   file: string;
@@ -482,12 +664,12 @@ export interface MemoryFactView {
   scope: MemoryScope;
   chatId: string | null;
   text: string;
-  provenance: 'said' | 'guessed';
+  provenance: MemoryProvenance;
   origin: string;
-  originKind: 'chat' | 'gmail' | 'gcal' | 'whatsapp' | 'manual' | 'setup' | 'job';
+  originKind: MemoryOrigin;
   reason: string | null;
-  category: string | null;
-  kind: 'person' | 'preference' | 'place' | 'fact';
+  category: MemoryCategory | null;
+  kind: MemoryKind;
   sensitive: boolean;
   private: boolean;
   learnedAt: number;
@@ -501,6 +683,16 @@ export interface MemoryFilter {
   chip: 'all' | 'said' | 'guessed' | 'gmail' | 'whatsapp' | 'chat';
   helperId?: string;
   last7?: boolean;
+}
+/** 08-5 §3.6; 05-3 §5.17.1 rows. `text` is the full fact (the renderer ellipsises at 48). */
+export interface MemoryChip {
+  messageId: string;
+  factIds: string[];
+  kind: 'saved' | 'guessed' | 'updated' | 'used' | 'not_saving';
+  text: string;
+  was?: string;
+  undoToken?: string;
+  undoUntil?: number;
 }
 
 /** 08-5 §3 StopReport (`done` holds ActivityRow rows; the activity log arrives with J21, so M1 sends none). */
@@ -684,9 +876,40 @@ export type ErrorKind =
   | 'CONN_REVOKED'
   | 'CONN_RATE_LIMITED'
   | 'CONN_SCOPE_MISSING'
+  // M5 (CR-0009; 08-3 §21.2–§21.4): cards, the approval gate and the vault
+  | 'CARD_EXPIRED'
+  | 'SCOPE_NOT_ALLOWED'
+  | 'TOO_LATE'
+  | 'HELPER_NOT_ALLOWED'
+  | 'APPROVAL_EVIDENCE'
+  | 'APPROVAL_BAD_TRANSITION'
+  | 'RULE_NOT_ALLOWED'
+  | 'SECRET_IN_TYPE'
+  | 'USE_SUBMIT'
+  | 'VAULT_WRITE_FAILED'
+  | 'VAULT_PURPOSE_DENIED'
+  | 'VAULT_MISSING'
+  | 'SECRET_EXISTS'
+  | 'REQUEST_GONE'
+  // M5 T6 (08-1 §3.2 draft:send, 08-3 §16.6 gmail drafts; M8 adds the rest of the connector kinds)
+  | 'SEND_FAILED'
+  // M6 (08-1 §3.2 memory rows, 08-3 §21.3, §19.4): memory
+  | 'MEMORY_PARSE'
+  | 'CONFIRM_MISMATCH'
+  | 'PRIVATE_BLOCKED'
+  | 'EXPORT_SECRET_FOUND'
+  | 'DISK_FULL'
   | 'UNKNOWN';
 
 // ---- card payloads (08-5 §4.1) the M2 cards draw ----
+/**
+ * 08-5 §4.1 SetupCardPayload (X-119). The AI step (CR-0020 (b) pick 3) adds the answered finder's choice: `using` is the
+ * provider picked with [ Use … ], kept so the collapsed line "✓ Using {AI} (your AI)" survives a restart.
+ */
+export interface SetupCardPayload {
+  setupCard: 'welcome' | 'ai_finder' | 'name' | 'face' | 'apps';
+  using?: ProviderId;
+}
 export interface TablePayload {
   title: string;
   columns: { key: string; label: string; align: 'left' | 'right'; unit?: 'inr' | 'text' | 'date' | 'time' }[];
