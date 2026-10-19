@@ -472,11 +472,13 @@ export class MemoryService implements MemoryPort {
     return this.d.parser().parse(text, { file, today: this.today() });
   }
 
+  /** A missing file reads as empty. Any other read error throws: an empty text would rewrite the file or drop its rows. */
   private async read(file: string): Promise<string> {
     try {
       return await readFile(join(this.d.dataDir, ...file.split('/')), 'utf8');
-    } catch {
-      return '';
+    } catch (e) {
+      if ((e as NodeJS.ErrnoException).code === 'ENOENT') return '';
+      throw e;
     }
   }
 

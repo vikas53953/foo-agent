@@ -1,6 +1,6 @@
 // M6 T3 store (08-3 §12.2–§12.6, 08-1 §3.2 memory rows): add / edit / setPrivate / setKind / forget / undo through
 // `memory.cmd`, the file line and the index row each writes, the watcher's reindex of a Notepad edit, and the worker parse.
-import { writeFileSync } from 'node:fs';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { createParseWorker } from '../../src/engine/memory/parseWorker';
@@ -264,6 +264,21 @@ describe('M6 T3 reindex from disk (08-3 §12.2 watcher)', () => {
     });
     await h.svc.fileChanged('memory/about-you.md');
     expect(h.logs).toContain('memory.reindex_failed');
+  });
+
+  it('a file that cannot be read (not missing) keeps its rows and is not rewritten', async () => {
+    const h = storeHarness();
+    h.put('memory/about-you.md', `- Lives in Pune  {you said · 2026-10-01 · chat · ${fid(1)}}\n`);
+    await h.svc.fileChanged('memory/about-you.md');
+    const path = join(h.dataDir, 'memory', 'about-you.md');
+    rmSync(path);
+    mkdirSync(path); // EISDIR: a read error other than ENOENT
+    const writes = h.writes.length;
+    await h.svc.fileChanged('memory/about-you.md');
+    expect(h.logs).toContain('memory.reindex_failed');
+    expect(h.rows().map((r) => r.id)).toEqual([fid(1)]);
+    expect(await h.svc.cmd({ cmd: 'add', text: 'Likes tea' })).toMatchObject({ ok: false, error: { kind: 'UNKNOWN' } });
+    expect(h.writes.length).toBe(writes);
   });
 
   it('a line moved by hand to another file keeps its row (one row per id)', async () => {

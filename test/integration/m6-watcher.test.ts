@@ -1,5 +1,5 @@
 // Spec: 10-acceptance-1 §B AT-075 (an edit to about-you.md in Notepad is used by the next foo reply), 08-3 §12.2 (the
-// watcher reindexes a changed memory file), 08-4 §24.16 (parts 5/5b read memory_index). The real Engine and main's
+// engine's watcher reindexes a changed memory file), 08-4 §24.16 (parts 5/5b read memory_index). The real Engine and main's
 // EngineBridge over a temp SQLite db; CR-0010 G-M6-21 (an unclaimed memory_confirm card still leaves `asking`); the AI turns are the fake script (08-3 §22.3).
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -21,18 +21,26 @@ describe('AT-075 · a Notepad edit to about-you.md reaches the next reply', () =
     const x = h;
     const file = path.join(x.dir, 'data', 'memory', 'about-you.md');
     mkdirSync(path.dirname(file), { recursive: true });
-    writeFileSync(file, '# About you\n- Lives in Pune\n');
-    await x.engine.memory.fileChanged('memory/about-you.md');
+    const rows = () => x.db.prepare('SELECT id, text FROM memory_index').all() as { id: string; text: string }[];
+    // The engine's own `fs.watch` on {DATA}/memory (started with the first settings) and its 500 ms debounce on the fake clock.
+    const watched = async (done: () => boolean) => {
+      for (let i = 0; i < 250 && !done(); i++) {
+        await new Promise((r) => setTimeout(r, 20));
+        x.clock.advance(100);
+        await x.idle();
+      }
+    };
     await x.idle();
-    const row = x.db.prepare('SELECT id, text FROM memory_index').get() as { id: string; text: string };
-    expect(row.text).toBe('Lives in Pune');
+    writeFileSync(file, '# About you\n- Lives in Pune\n');
+    await watched(() => rows().length === 1);
+    const [row] = rows();
+    expect(row?.text).toBe('Lives in Pune');
 
-    // The user opens the file in Notepad and changes the city; the watcher hands the file to the store.
+    // The user opens the file in Notepad and changes the city; nothing calls the store but the watcher.
     const ours = readFileSync(file, 'utf8');
     writeFileSync(file, ours.replace('Lives in Pune', 'Lives in Mumbai'));
-    await x.engine.memory.fileChanged('memory/about-you.md');
-    await x.idle();
-    expect(x.db.prepare('SELECT id, text FROM memory_index').all()).toEqual([{ id: row.id, text: 'Lives in Mumbai' }]);
+    await watched(() => rows()[0]?.text === 'Lives in Mumbai');
+    expect(rows()).toEqual([{ id: row!.id, text: 'Lives in Mumbai' }]);
 
     x.userSays('Where do I live?');
     await x.idle();

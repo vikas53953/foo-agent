@@ -164,6 +164,18 @@ the decision rows are in `docs/decisions/M6.tsv`.
 - **G-M6-21 safety net** (lead, from the batch review) A `memory_confirm` card that no memory seam claims is still moved out
   of `asking` by the engine. Both seams write the card with `expectRev`, so a second, racing tap writes nothing more.
   Tests: `test/integration/m6-watcher.test.ts` and `test/unit/m6-askshare.test.ts`.
+- **G-M6-31** (lead, close-out spec review) ART-15c is partial at M6. The memory folder opens in Explorer and every file is
+  readable Markdown (foo-verify `m6-t3-store`, `m6-t6-page`). The Privacy sentence "foo never uses your data to train
+  anything." lives on Settings › Privacy (06-2, row `leaves`) and the first-run dialog (06-1 §2.1), which M13 and M12
+  build. The audit row stays manual until then.
+- **G-M6-32** (lead, close-out spec review) AT-219 reading: when the tidy asks "Do you live in Pune now, or Mumbai?", both
+  facts stay until the card is answered. The answer then forgets the one not picked (G-M6-23). Nothing is deleted on a
+  guess.
+- **G-M6-33** (lead, close-out spec review) AT-072 reading for app-origin guesses: a fact guessed from an app shows
+  "From Gmail" (or WhatsApp, Calendar) as its source line, with the app's display name from the copy file, not the raw
+  `origin_kind` (06-2 §7.3).
+- **G-M6-34** (lead, close-out spec review) Re-asking a held conflict card that is never delivered belongs to M7 (G-M6-24),
+  with the scheduler that releases held items.
 
 Batch review 2026-10-19 (Fable, independent): G-M6-16…27 PASS WITH FIXES. Its 3 act items are in: the unclaimed-card
 safety net, the missing picks (G-M6-28…30), and the G-M6-24 wording. Its consider items are in too: X-112 in G-M6-16,
