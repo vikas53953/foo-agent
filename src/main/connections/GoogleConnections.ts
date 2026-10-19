@@ -176,11 +176,12 @@ export class GoogleConnections {
     let first: string | null = null;
     for (const app of GOOGLE_APPS) {
       const row = this.rowOf(app);
+      // Every existing row's status is kept, so an incremental "Allow" does not re-announce the apps already connected.
+      if (row) before.set(String(row.id), row.status as ConnectionRow['status']);
       if (!apps.includes(app) && !(row && reconnect)) continue;
       let id: string;
       if (row) {
         id = String(row.id);
-        before.set(id, row.status as ConnectionRow['status']);
         this.d.db.prepare("UPDATE connections SET status = 'connecting', last_error_kind = NULL, rev = rev + 1 WHERE id = ?").run(id);
       } else {
         id = newId('cn', now);
@@ -206,7 +207,13 @@ export class GoogleConnections {
       loginHint: reconnect ? (this.email ?? undefined) : undefined,
     });
     this.d.engineCmd({ target: 'google', cmd: reconnect ? 'reconnect' : 'connect', scopes: apps });
-    await this.d.openExternal(url);
+    try {
+      await this.d.openExternal(url);
+    } catch {
+      loopback.close();
+      this.endSignIn(running, 'OAUTH_DENIED');
+      return fail('UNKNOWN', 'open_external_failed');
+    }
     void loopback.result.then((outcome) => {
       if (this.running !== running) return;
       if (outcome.kind === 'cancelled') return;
@@ -239,8 +246,12 @@ export class GoogleConnections {
     const now = this.d.now();
     const { email, scope, refreshToken } = r.value;
     const old = await this.d.tokens.read(GOOGLE_VAULT_NAME);
+    const oldHash = (this.rowOf('gmail') ?? this.rowOf('gcal') ?? this.rowOf('contacts'))?.account_hash;
     await this.d.tokens.write(GOOGLE_VAULT_NAME, { refresh_token: refreshToken, scope, issued_at: now });
-    if (old && old.refresh_token !== refreshToken) void revokeToken(this.d.http, this.d.endpoints, old.refresh_token);
+    // Google's revoke ends the whole user + client grant, so the old token is revoked only when a different account signed in;
+    // the same account's incremental consent ("Allow sending") just replaces it.
+    const otherAccount = typeof oldHash === 'string' && !oldHash.startsWith('pending:') && oldHash !== hash(email);
+    if (old && old.refresh_token !== refreshToken && otherAccount) void revokeToken(this.d.http, this.d.endpoints, old.refresh_token);
     this.email = email;
     this.accessCache?.forget();
     const granted = grantedFromScope(scope);

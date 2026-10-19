@@ -228,6 +228,14 @@ describe('M8 T2 · connection:connect (08-1 §3.2, 08-3 §16.1)', () => {
     expect(rows().map((x) => [x.status, x.last_error_kind])).toEqual(Array(3).fill(['disconnected', 'OAUTH_TIMEOUT']));
   }, 10_000);
 
+  it('incremental consent for the same account replaces the token without revoking the grant or re-announcing apps', async () => {
+    await signIn();
+    await signIn(['gmail']);
+    expect(fake.revoked).toEqual([]);
+    expect(rows().map((x) => x.status)).toEqual(['connected', 'connected', 'connected']);
+    expect(activity()).toHaveLength(3);
+  });
+
   it('a failed incremental consent leaves the connected rows connected', async () => {
     await signIn();
     await signIn(['gcal'], 'error=access_denied');

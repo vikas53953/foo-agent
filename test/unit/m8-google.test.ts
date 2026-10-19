@@ -217,11 +217,12 @@ describe('M8 T2 · GoogleAccess (08-3 §16.1 Tokens)', () => {
     expect(lost).toEqual(['CONN_EXPIRED']);
   });
 
-  it('no stored token → CONN_EXPIRED without a request', async () => {
+  it('no stored token → CONN_EXPIRED and onLost (the rows go needs_signin) without a request', async () => {
     const g = new FakeGoogle();
-    const { access, tokens } = await stored(g);
+    const { access, tokens, lost } = await stored(g);
     await tokens.delete('foo/conn_token/google');
     await expect(access.accessToken()).rejects.toMatchObject({ kind: 'CONN_EXPIRED' });
+    expect(lost).toEqual(['CONN_EXPIRED']);
     expect(g.requests).toHaveLength(0);
   });
 

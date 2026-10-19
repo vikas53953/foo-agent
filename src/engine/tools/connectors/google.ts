@@ -250,7 +250,12 @@ export function createGoogleAccess(d: GoogleAccessDeps): GoogleAccess & { forget
     access = null;
     const stored = await d.tokens.read(GOOGLE_VAULT_NAME);
     const client = d.client();
-    if (!stored || !client) throw new GoogleAccessError('CONN_EXPIRED');
+    if (!client) throw new GoogleAccessError('CONN_EXPIRED');
+    if (!stored) {
+      // The token is gone (a restart forgets the in-memory store until T6's vault): the rows go needs_signin.
+      d.onLost('CONN_EXPIRED');
+      throw new GoogleAccessError('CONN_EXPIRED');
+    }
     const r = await refreshAccess(d.http, d.endpoints, client, stored.refresh_token);
     if (!r.ok) {
       if (r.error.kind === 'CONN_EXPIRED' || r.error.kind === 'CONN_REVOKED') d.onLost(r.error.kind);

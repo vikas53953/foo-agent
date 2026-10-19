@@ -83,7 +83,10 @@ export async function openLoopback(o: LoopbackOptions): Promise<Loopback> {
     const page = loopbackPage(code ? 'ok' : 'denied');
     done = true; // one request: anything after this one is a 404
     res.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store', connection: 'close' });
-    res.end(page, () => finish(code ? { kind: 'code', code } : { kind: 'denied' }));
+    const outcome: LoopbackOutcome = code ? { kind: 'code', code } : { kind: 'denied' };
+    // A browser that drops the socket before the page flushes never calls end's callback; the close still settles it.
+    res.on('close', () => finish(outcome));
+    res.end(page, () => finish(outcome));
   });
   let settled = false;
   const finish = (r: LoopbackOutcome) => {
