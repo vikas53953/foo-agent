@@ -122,3 +122,22 @@ lead's independent check.
 - (c) `job:retry` also accepts a `done_unverified` job, for 05-3 §5.16 line 352 ("Check for real" → a new job "Checking
   {title} live" linked to the old one). Extends 08-1 line 375 / G-M4-01 (a new linked job); main refuses a second retry
   of the same job, as the runner does.
+
+## (g) Addendum (T7): where the M4 card drawings and the M4 app disagree
+
+The M4 card captures (BP-CARD-02/12/15/18/19/20, `golden/manifest.json`) run in the golden lane from M4 on
+(`FIDELITY_MILESTONE: M4`). A local Tier R run (M1…M4 refs, app captures from `test/fidelity/bp/`) failed all six on R1
+and R2, and BP-CARD-15 and BP-CARD-19 on R3; R4 passed on all six. The app follows the written spec and the `ux-world`
+seed (11-fidelity §11.2.3: state comes from the seed, never bent to match a picture), as in CR-0003 §(b).
+
+| #   | Ref(s)               | Drawing shows                                                        | App and spec                                                                                  | Spec               |
+| --- | -------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------ |
+| 1   | all six              | Card words from the Blueprint gallery's own example jobs              | Card words from the `ux-world` seed's card rows (R1 counts every word)                         | §11.2.3            |
+| 2   | all six              | 350px mini panels                                                    | Cards at their spec width (up to 440px) inside the real column (R2 size)                        | 05-1 §0.2; CR-0003 §(b)1 |
+| 3   | BP-CARD-15           | Proof bubble plus chips; R3 samples the bubble                        | The capture is the 186×24 proof chip only (`--ok-soft` #E3F5EA); the centre sample lands on chip text (#B9DBC9) | 05-3 §5.15         |
+| 4   | BP-CARD-19           | Error card filled pink                                               | White card with a 1.5px `--bad` / `--warn` top edge                                            | 05-3 §5.20.1       |
+
+Disputed checks (`docs/fidelity/disputes.json`): `{cr: "CR-0008", ids: [the six], checks: ["r1", "r2"]}` and
+`{cr: "CR-0008", ids: ["BP-CARD-15", "BP-CARD-19"], checks: ["r3"]}`, until the spec keeper redraws the gallery. Every
+other check still counts. Spec-keeper list: redraw the six gallery minis from the `ux-world` seed at card width; error
+card per 05-3 §5.20.1.
