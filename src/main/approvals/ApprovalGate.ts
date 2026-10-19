@@ -9,6 +9,9 @@
 // G-M5-18 (HELD / APPROVED → WITHDRAWN on a stopped job), G-M5-24 (use_app rules match `fields.app`).
 // M5 T7: §5.9 step 2 / 08-1 §4.1.1 step 5 (`recoverSubmitted`: RUNNING with `submitted_at` → CHECKING, never re-submitted,
 // Art. 7; this also sweeps a Draft send cut between its write-ahead and `gmail.send`, 08-2 §10.4).
+// M5 T8: §9.6 / 08-0 §B.3 (`approval.transition` stores `second_look`; HELD and SUPERSEDED write the card's `held` /
+// `superseded`), 08-4 §26.5 item 3 (superseded_by set once the new card exists), §10.5 + G-M5-33 (CHECKING 15 min → FAILED),
+// SM-A4 (the HELD picks go to the runner as `held_action` / `held_own`).
 import { APPROVAL_EVENTS, approvalExpiresAt, nextApproval, type ApprovalEvent } from '../../shared/approvalMachine';
 import { newNonce } from '../../shared/canon';
 import { fail, ok, type Result } from '../../shared/errors';
@@ -74,6 +77,9 @@ const approvalRow = (r: DbRow): ApprovalRow => ({
   createdAt: Number(r.created_at),
 });
 
+/** 08-2 §10.5: the CHECKING procedure runs 15 min, then the approval is FAILED. */
+export const CHECKING_MS = 15 * 60_000;
+
 /** Engine-side job states after which nothing of the job may still run (07-2 §4). */
 const JOB_ENDED: readonly JobState[] = ['done', 'done_unverified', 'failed', 'cancelled'];
 /** Approval states a stopped job withdraws (07-2 §5 PENDING; G-M5-18 HELD, APPROVED). */
@@ -125,6 +131,14 @@ export interface CreateInput {
   supersedesCardId?: string;
   /** M5 T7 (G-M5-29): the engine's submit target, stored on the card payload for a restart. */
   submitRef?: string;
+}
+
+/** M5 T8: what the engine's `approval.transition` may carry (08-4 §29.1; 08-0 §B.3 SecondLookResult; 05-2 §5.5.4). */
+export interface TransitionData {
+  submittedAt?: number;
+  secondLook?: SecondLookResult;
+  held?: ApprovalPayload['held'];
+  superseded?: ApprovalPayload['superseded'];
 }
 
 export interface Created {
@@ -291,9 +305,19 @@ export class ApprovalGate {
    * The main half of engine `approval.open` (08-1 §2.4): a verified ApprovalDraft from the gate (X-125). Book and delete get
    * an Approval card here; buy / pay are the Payment card (08-2 §10.2, M10).
    */
-  openFromEngine(req: { jobId: string; draft: ApprovalDraft; title: string; impact: string; submitRef?: string }): Result<Created> {
+  openFromEngine(req: {
+    jobId: string;
+    draft: ApprovalDraft;
+    title: string;
+    impact: string;
+    submitRef?: string;
+    supersedes?: string;
+  }): Result<Created> {
     if (req.draft.verb === 'buy' || req.draft.verb === 'pay') return fail('VALIDATION', 'payment_card');
-    return this.create({
+    // M5 T8 (08-4 §26.5 item 3, 08-2 §9.4.2): the card this one replaces; its superseded_by is set once the new card exists.
+    const old = req.supersedes ? this.get(req.supersedes) : null;
+    const usable = old && old.jobId === req.jobId && old.state === 'SUPERSEDED' && old.supersededBy === null ? old : null;
+    const made = this.create({
       jobId: req.jobId,
       verb: req.draft.verb,
       fields: req.draft.fields,
@@ -301,7 +325,13 @@ export class ApprovalGate {
       title: req.title,
       impact: req.impact,
       ...(req.submitRef ? { submitRef: req.submitRef } : {}),
+      ...(usable ? { supersedesCardId: usable.cardId } : {}),
     });
+    if (made.ok && usable)
+      this.d.db
+        .prepare('UPDATE approvals SET superseded_by = ? WHERE id = ? AND superseded_by IS NULL')
+        .run(made.value.approvalId, usable.id);
+    return made;
   }
 
   /** The open Approval card the renderer holds (nonce, not resolved); CARD_STALE / CARD_EXPIRED otherwise (08-1 §3.2). */
@@ -397,7 +427,10 @@ export class ApprovalGate {
       approval: req.optionId === 'action' ? { approved_at: now, approved_via: 'card' } : {},
       card: { resolved_by: req.resolvedBy, resolved_at: now, answer: { optionId: req.optionId } },
     });
-    return moved.ok ? ok(this.card(req.cardId)!) : moved;
+    if (!moved.ok) return moved;
+    // M5 T8: the runner goes on (action) or re-prepares with the user's value (own), 08-2 §9.6, G-M5-03.
+    this.d.engine?.send('card.answered', { cardId: req.cardId, choice: `held_${req.optionId}`, resolvedBy: req.resolvedBy });
+    return ok(this.card(req.cardId)!);
   }
 
   /**
@@ -441,7 +474,7 @@ export class ApprovalGate {
    * APPROVAL_BAD_TRANSITION (logged). The user's own moves (USER_EVENTS) are refused here too: only a tap approves.
    * RUNNING writes `submitted_at` ahead of the one irreversible call (08-2 §10.4).
    */
-  transition(approvalId: string, to: ApprovalState, data: { submittedAt?: number } = {}): Result<ApprovalState> {
+  transition(approvalId: string, to: ApprovalState, data: TransitionData = {}): Result<ApprovalState> {
     const a = this.get(approvalId);
     if (!a) return fail('NOT_FOUND');
     if (!ENGINE_EDGES.has(`${a.state}>${to}`)) {
@@ -452,7 +485,19 @@ export class ApprovalGate {
     const set: Record<string, unknown> = {};
     if (to === 'RUNNING') set.submitted_at = data.submittedAt ?? now;
     if (to === 'COMPLETED') set.completed_at = now;
-    return this.moveTo(a, to, now, { approval: set });
+    // M5 T8: the second look's result is kept on the row; HELD and SUPERSEDED write what the card shows (05-2 §5.5.4). A
+    // HELD card waits on the user again, so its earlier Approve tap is cleared.
+    if (data.secondLook) set.second_look = JSON.stringify(data.secondLook);
+    let card: Record<string, unknown> | undefined;
+    if (data.held || data.superseded) {
+      const payload = (this.card(a.cardId)?.payload ?? {}) as unknown as ApprovalPayload;
+      card = {
+        payload: { ...payload, ...(data.held ? { held: data.held } : {}), ...(data.superseded ? { superseded: data.superseded } : {}) },
+      };
+    }
+    if (to === 'HELD') card = { ...card, resolved_by: null, resolved_at: null, answer: null };
+    if (to === 'SUPERSEDED') card = { ...card, resolved_by: 'system', resolved_at: now };
+    return this.moveTo(a, to, now, { approval: set, ...(card ? { card } : {}) });
   }
 
   // M5 T7
@@ -490,6 +535,15 @@ export class ApprovalGate {
       .all(...WITHDRAWABLE, ...JOB_ENDED) as DbRow[];
     for (const r of ended)
       if (this.move(approvalRow(r), 'withdraw', now, { card: { resolved_by: 'system', resolved_at: now } }).ok) moved.push(String(r.id));
+    // M5 T8 (08-2 §10.5, CR-0009 G-M5-33): 15 min in CHECKING without proof → FAILED, never re-submitted. The proof search
+    // (history page, Gmail) is M8 / M9's; until then nothing finds proof, so the timer alone decides.
+    const unproven = this.d.db
+      .prepare(
+        "SELECT * FROM approvals WHERE state = 'CHECKING' AND submitted_at IS NOT NULL AND submitted_at <= ? ORDER BY submitted_at, id",
+      )
+      .all(now - CHECKING_MS) as DbRow[];
+    for (const r of unproven)
+      if (this.move(approvalRow(r), 'no_proof', now, { card: { resolved_by: 'system', resolved_at: now } }).ok) moved.push(String(r.id));
     return moved;
   }
 

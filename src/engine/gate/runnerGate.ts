@@ -6,8 +6,10 @@
 // §28.1 (request_approval: APPROVAL_EVIDENCE → part 8 retry line, a second → stuck rules), item 8 (write-ahead
 // `approval.transition RUNNING`, then the side-effect tool exactly once; outcome classified), §29.1 (no ack in 2 s → do not
 // click, HELD cannot_check), §24.22 (part 8 "Approved so far", the RECOVERY list, the retry line), 07-2 §4 (needs_you →
-// cancelled `approval_expired`), AT-111 (job half), X-125, CR-0008 (j) row 6. Second look and fresh terms are T8's
-// (`secondLook` port, always pass until then).
+// cancelled `approval_expired`), AT-111 (job half), X-125, CR-0008 (j) row 6.
+// M5 T8: 08-2 §9.6 (second look after APPROVED; a fail → HELD with the card's copy, the job waits on the user again; the
+// action's value → APPROVED proceeds, the user's own → DECLINED and the job re-prepares, G-M5-03), §9.4.2 (fresh terms right
+// before executing; a change → SUPERSEDED + a new PENDING card), 08-4 §26.5 item 3 (the next card links the superseded one).
 import { t } from '../../shared/copy/t';
 import { formatDate, formatInr } from '../../shared/format';
 import type { ApprovalDraft, ApprovalFields, ApprovalState, CardRow, JobRow, PermissionApp } from '../../shared/types';
@@ -19,6 +21,18 @@ import { approvalText } from './approvalText';
 import { classOfVerb, untrustedSource } from './classes';
 import type { ActionClass, GateJob, GateLogic } from './GateLogic';
 import { EVIDENCE_RETRY_LINE, verifyRequestApproval, type ApprovalSnapshot } from './requestApproval';
+import type { ApprovalPayload, SecondLookResult } from '../../shared/types';
+import { askSecondLook, readLiveTerms, userWordsFor } from './afterApproved';
+import { checkLiveTerms } from './liveTerms';
+import { secondLook as runSecondLook, verbingOf } from './secondLook';
+
+/** M5 T8: what `approval.transition` may carry (08-4 §29.1; the second look; the card's HELD / SUPERSEDED copy). */
+interface TransitionData {
+  submittedAt?: number;
+  secondLook?: SecondLookResult;
+  held?: ApprovalPayload['held'];
+  superseded?: ApprovalPayload['superseded'];
+}
 
 /** 08-4 §29.1 item 2: the write-ahead must be acknowledged within 2 s, else nothing is clicked. */
 export const WRITE_AHEAD_MS = 2_000;
@@ -29,6 +43,9 @@ interface OpenApproval {
   draft: ApprovalDraft;
   submitRef: string | null;
   untrusted: string[];
+  // M5 T8
+  /** The user picked the action's value on its HELD card: the second look does not ask again (08-2 §9.6). */
+  confirmed?: boolean;
 }
 
 interface GateState {
@@ -43,6 +60,9 @@ interface GateState {
   toRun: OpenApproval | null;
   /** The job's open approval was read back from the DB (after an engine restart nothing is in RAM). */
   openLoaded: boolean;
+  // M5 T8
+  /** A steer or changed terms superseded this approval; the job's next card names it (08-4 §26.5 item 3). */
+  supersedes: string | null;
 }
 
 /** `approvalsOpenForJob` / `approvals.byId` rows (main's queries.ts EngineApproval). */
@@ -54,6 +74,7 @@ interface ApprovalRowLite {
   state: string;
   fields: ApprovalFields;
   submitRef: string | null;
+  heldPicked?: boolean;
 }
 
 const fromRow = (a: ApprovalRowLite): OpenApproval => ({
@@ -62,6 +83,7 @@ const fromRow = (a: ApprovalRowLite): OpenApproval => ({
   draft: { verb: a.verb as ApprovalDraft['verb'], fields: a.fields, evidence: [] },
   submitRef: a.submitRef,
   untrusted: [],
+  ...(a.heldPicked ? { confirmed: true } : {}),
 });
 
 /**
@@ -127,6 +149,7 @@ export class RunnerGate {
         open: null,
         toRun: null,
         openLoaded: false,
+        supersedes: null,
       };
       this.s.set(jobId, x);
     }
@@ -329,7 +352,9 @@ export class RunnerGate {
       title: text.title,
       impact: text.impact,
       ...(decision.submitRef ? { submitRef: decision.submitRef } : {}),
+      ...(x.supersedes ? { supersedes: x.supersedes } : {}),
     });
+    if (made.ok) x.supersedes = null;
     if (!made.ok) {
       // buy / pay are the Payment card (M10); anything else main refused.
       core.d.log('gate.approval_open_failed', made.error.kind, { jobId: job.id });
@@ -384,18 +409,48 @@ export class RunnerGate {
     if (x.open || x.toRun || !job.needsYouCardId) return;
     const rows = (await this.d.core.query<ApprovalRowLite[]>('approvalsOpenForJob', job.id)) ?? [];
     const a = rows.find((r) => r.cardId === job.needsYouCardId);
-    if (a?.state === 'PENDING') x.open = fromRow(a);
+    if (a?.state === 'PENDING' || a?.state === 'HELD') x.open = fromRow(a);
     if (a?.state === 'APPROVED') x.toRun = fromRow(a);
   }
 
   /** 08-4 §28.1 item 8: second look → write-ahead RUNNING (acked in 2 s) → the tool once → COMPLETED / FAILED / CHECKING. */
   private async runApproved(job: JobRow, a: OpenApproval, signal: AbortSignal): Promise<boolean> {
     const core = this.d.core;
-    const look = this.d.secondLook ? await this.d.secondLook(a, job) : { pass: true };
-    if (!look.pass) return false;
+    // M5 T8 (X-125): second look → live terms → write-ahead.
+    let look: SecondLookResult | undefined;
+    if (this.d.secondLook) {
+      if (!(await this.d.secondLook(a, job)).pass) return false;
+    } else if (!a.confirmed) {
+      const out = await runSecondLook({
+        fields: a.draft.fields,
+        userWords: await userWordsFor(core, job),
+        timeZone: this.d.timeZone(),
+        now: core.d.clock.now(),
+        untrusted: a.untrusted,
+        askAi: (p) => askSecondLook(core, job, p),
+      });
+      if (!out.pass) return this.hold(job, a, { secondLook: out.result, held: out.held });
+      look = out.result;
+    }
+    const steps0 = await core.steps(job.id);
+    const live = await readLiveTerms(
+      core,
+      this.d.tools,
+      { id: job.id, stepId: steps0.find((s) => s.state === 'running')?.id ?? null, turnId: null, gate: await this.gateJob(job) },
+      a.draft,
+      signal,
+    );
+    if (live === 'unreadable') {
+      core.d.log('gate.live_terms_unreadable', 'cannot_check', { jobId: job.id });
+      return this.hold(job, a, { held: { reason: 'cannot_check', verbing: verbingOf(a.draft.verb) } });
+    }
+    if (live !== 'none') {
+      const c = checkLiveTerms(a.draft.fields, live);
+      if (!c.same) return this.supersedeTerms(job, a, live, c.changed[0]!);
+    }
     let timer: ReturnType<typeof core.d.clock.setTimeout> | null = null;
     const moved = await Promise.race([
-      this.transition(a.approvalId, 'RUNNING', { submittedAt: core.d.clock.now() }),
+      this.transition(a.approvalId, 'RUNNING', { submittedAt: core.d.clock.now(), ...(look ? { secondLook: look } : {}) }),
       new Promise<false>((r) => (timer = core.d.clock.setTimeout(() => r(false), WRITE_AHEAD_MS))),
     ]);
     if (timer !== null) core.d.clock.clearTimeout(timer);
@@ -426,7 +481,83 @@ export class RunnerGate {
     return true;
   }
 
-  private async transition(approvalId: string, to: ApprovalState, data?: { submittedAt?: number }): Promise<boolean> {
+  // ---- M5 T8 ----
+
+  /** 08-2 §9.6: APPROVED → HELD with the card's copy; the job waits on the same card again. */
+  private async hold(job: JobRow, a: OpenApproval, data: TransitionData): Promise<false> {
+    const core = this.d.core;
+    if (!(await this.transition(a.approvalId, 'HELD', data))) {
+      core.d.log('gate.hold_failed', 'APPROVAL_BAD_TRANSITION', { jobId: job.id });
+      return false;
+    }
+    this.st(job.id).open = a;
+    await this.waitOn((await core.job(job.id)) ?? job, a.cardId);
+    return false;
+  }
+
+  /** 08-2 §9.4.2: the live terms changed → SUPERSEDED (naming the term) and a new PENDING card with the live values. */
+  private async supersedeTerms(
+    job: JobRow,
+    a: OpenApproval,
+    live: Partial<ApprovalFields>,
+    term: NonNullable<ApprovalPayload['superseded']>,
+  ): Promise<false> {
+    const core = this.d.core;
+    if (!(await this.transition(a.approvalId, 'SUPERSEDED', { superseded: term }))) {
+      core.d.log('gate.supersede_failed', 'APPROVAL_BAD_TRANSITION', { jobId: job.id });
+      return false;
+    }
+    const draft: ApprovalDraft = { ...a.draft, fields: { ...a.draft.fields, ...live } };
+    const text = approvalText(draft.fields, { timeZone: this.d.timeZone(), now: core.d.clock.now() });
+    const made = await core.d.link.request<{ approvalId: string; cardId: string; nonce: string }>('approval.open', {
+      jobId: job.id,
+      draft,
+      title: text.title,
+      impact: text.impact,
+      ...(a.submitRef ? { submitRef: a.submitRef } : {}),
+      supersedes: a.approvalId,
+    });
+    if (!made.ok) {
+      core.d.log('gate.approval_open_failed', made.error.kind, { jobId: job.id });
+      await this.countFailure(job);
+      return false;
+    }
+    this.st(job.id).open = { ...made.value, draft, submitRef: a.submitRef, untrusted: a.untrusted };
+    await this.waitOn((await core.job(job.id)) ?? job, made.value.cardId);
+    return false;
+  }
+
+  /**
+   * A pick on a HELD card (main already moved it, SM-A4): the action's value → it runs on the next turn without asking
+   * again; the user's own → DECLINED, and the job re-prepares with the value (the answer reaches the AI as a decision line).
+   */
+  async onHeldPick(job: JobRow, card: CardRow, pick: 'held_action' | 'held_own'): Promise<string | null> {
+    const x = this.st(job.id);
+    await this.loadOpen(job);
+    const open = x.open?.cardId === card.id ? x.open : null;
+    x.open = null;
+    const held = (card.payload as unknown as ApprovalPayload).held;
+    if (pick === 'held_action') {
+      if (open) x.toRun = { ...open, confirmed: true };
+      else {
+        x.openLoaded = false;
+        await this.loadOpen(job);
+        const loaded: OpenApproval | null = x.toRun;
+        if (loaded) x.toRun = { ...loaded, confirmed: true };
+      }
+      return null;
+    }
+    return held?.userSaid ?? null;
+  }
+
+  /** 08-4 §26.5 item 3: a steer superseded this job's approval; the next card the job makes names it. */
+  onSteerSuperseded(jobId: string, approvalId: string): void {
+    const x = this.st(jobId);
+    if (x.open?.approvalId === approvalId) x.open = null;
+    x.supersedes = approvalId;
+  }
+
+  private async transition(approvalId: string, to: ApprovalState, data?: TransitionData): Promise<boolean> {
     const r = await this.d.core.d.link.request('approval.transition', { approvalId, to, ...(data ? { data } : {}) });
     return r.ok;
   }

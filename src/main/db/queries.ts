@@ -107,6 +107,8 @@ export interface EngineApproval {
   // M5 T7: what the runner needs to run or cancel it after an engine restart (verified fields, the card's submitRef).
   fields: ApprovalFields;
   submitRef: string | null;
+  // M5 T8: the user already answered a HELD second look on it (08-2 §9.6: the action's value → APPROVED proceeds).
+  heldPicked: boolean;
 }
 
 /** One approvals row for the engine, with its card's `submitRef` (M5 T7, G-M5-29). */
@@ -124,6 +126,7 @@ function engineApproval(db: Db, r: DbRow): EngineApproval {
     submittedAt: r.submitted_at === null || r.submitted_at === undefined ? null : Number(r.submitted_at),
     fields: parseJson<ApprovalFields>(r.fields, { verb: String(r.verb) as ApprovalFields['verb'], irreversible: true }),
     submitRef: typeof ref === 'string' ? ref : null,
+    heldPicked: !!parseJson<{ held?: unknown }>(r.second_look ?? null, {}).held,
   };
 }
 

@@ -27,7 +27,7 @@ export interface LaneAi {
   pick(): { providerId: ProviderId; billing: 'plan' | 'key' | 'local'; backup: boolean } | null;
   turnParams(
     providerId: ProviderId,
-    purpose: 'intake' | 'repair' | 'rewrite' | 'step' | 'classify',
+    purpose: 'intake' | 'repair' | 'rewrite' | 'step' | 'classify' | 'second_look', // M5 T8: second_look
   ): Omit<TurnRequest, 'turnId' | 'purpose' | 'system' | 'prompt'>;
   runTurn(providerId: ProviderId, req: TurnRequest, sink: TurnSink, signal: AbortSignal): Promise<TurnResult>;
   reportOk(providerId: ProviderId): void;

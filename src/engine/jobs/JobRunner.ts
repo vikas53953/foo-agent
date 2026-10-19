@@ -22,7 +22,7 @@ import { formatInr } from '../../shared/format';
 import { redactSecrets } from '../../shared/redactor';
 import { BADGE_OF_STATE, JOB_STATES, TERMINAL } from '../../shared/jobMachine';
 import { phraseText, resolvePhrase, type PhraseKey } from '../../shared/phrases';
-import type { IntakeDecision, PlanStep, StepAct, StepDecision } from '../../shared/schemas';
+import type { IntakeDecision, PlanStep, SecondLookAct, StepAct, StepDecision } from '../../shared/schemas';
 import type { Settings } from '../../shared/settings';
 import type {
   ApprovalState,
@@ -75,6 +75,10 @@ export interface RunnerPrompts {
   /** 08-2 §7.6 output filters (result text, card text from the AI). */
   filter(text: string): string;
   isBanned(text: string): boolean;
+  // M5
+  /** T8: 08-4 §24.7 the second look's prompt, and its SecondLookAct (null if invalid). Absent → the look cannot check. */
+  buildSecondLook?(userWords: readonly string[], actionJson: string): { system: string; prompt: string };
+  parseSecondLook?(text: string): SecondLookAct | null;
 }
 
 /** What the next tickets plug in. The T2 defaults are the conservative stand-ins named on each line. */
@@ -127,7 +131,7 @@ export interface RunnerCore {
     job: JobRow,
     pick: { providerId: ProviderId; billing: 'plan' | 'key' | 'local' },
     turnId: string,
-    purpose: 'step' | 'repair' | 'classify',
+    purpose: 'step' | 'repair' | 'classify' | 'second_look',
     startedAt: number,
     r: TurnResult,
   ): Promise<void>;
@@ -199,6 +203,12 @@ const STEP_LABEL: Record<StepRow['state'], string> = {
   skipped: 'skipped',
   failed: 'running',
 };
+
+/** M5 T8: the HELD strip's values, for the decision line the AI reads after the user picked their own. */
+function heldVars(card: CardRow): { userSaid: string; actionHas: string } {
+  const h = (card.payload as { held?: { userSaid?: string; actionHas?: string } }).held;
+  return { userSaid: h?.userSaid ?? '', actionHas: h?.actionHas ?? '' };
+}
 
 /** The resolved state of a NEEDS_YOU card once the user answers it (08-0 §G.2). */
 const ANSWERED_STATE: Partial<Record<string, string>> = {
@@ -277,7 +287,8 @@ export class JobRunner {
     const cost = new CostMeter(core);
     this.cost = cost;
     this.stopper = new StopFlow(core);
-    this.steering = new Steer(core, this.stopper);
+    // M5 T8: a steer supersedes the open approval through main's gate and the next card names it (08-4 §26.5).
+    this.steering = new Steer(core, this.stopper, (jobId, approvalId) => this.gating.onSteerSuperseded(jobId, approvalId));
     this.watchdog = new Watchdog(core, this.stopper);
     // M5 T10: the 15 s tick (opens_at wake, 24 h Plan withdraw).
     this.ticker = new RunnerTick(core);
@@ -941,6 +952,14 @@ export class JobRunner {
     if (job.state !== 'needs_you' || job.needsYouCardId !== card.id) return;
     const answer = a.answer ?? (a.choice ? { optionId: a.choice } : a.text ? { text: a.text } : null);
     if (APPROVAL_CARDS.has(card.type)) {
+      // M5 T8 (08-2 §9.6): a pick on a HELD card; main already moved the row and the card.
+      if (a.choice === 'held_action' || a.choice === 'held_own') {
+        const own = await this.gating.onHeldPick(job, card, a.choice);
+        if (own !== null)
+          this.ctx(job.id).decisions.push(this.scrub(`- Q: ${t('cards.approval.held.mismatch', heldVars(card))} → A: ${own}`));
+        await this.writeMirrors(job.id);
+        return this.startNext();
+      }
       if (a.choice === 'decline') return this.declined(job, card, resolve);
       if (a.choice !== 'approve') return;
       await this.gating.onApproved(job, card.id);
@@ -1307,7 +1326,7 @@ export class JobRunner {
     job: JobRow,
     pick: { providerId: ProviderId; billing: 'plan' | 'key' | 'local' },
     turnId: string,
-    purpose: 'step' | 'repair' | 'classify',
+    purpose: 'step' | 'repair' | 'classify' | 'second_look',
     startedAt: number,
     r: TurnResult,
     /** 08-4 §26.3 item 5: unreported usage adds the estimate to spent_tokens_* (the stuck cost rule only). */

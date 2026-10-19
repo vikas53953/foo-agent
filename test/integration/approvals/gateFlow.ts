@@ -3,6 +3,7 @@
 import type { ToolDef } from '../../../src/engine/tools/ToolLayer';
 import type { Settings } from '../../../src/shared/settings';
 import { jobIntake, step, tool, verified, type PlanStepIn } from '../jobs/jobHarness';
+import type { FakeLineIn } from '../../unit/m3-engine-helpers';
 
 export const TABLE_PAGE = 'Table for 4 at Toit, Sat 8:00 PM. Total ₹2,400. Free cancellation until Sat 6:00 PM.';
 export const BOOK_PLAN: PlanStepIn[] = [
@@ -11,7 +12,7 @@ export const BOOK_PLAN: PlanStepIn[] = [
 ];
 
 /** Test-only page read and the acting tools a fake AI tries directly (ART-05a). */
-export function gateTools(log: string[] = []): ToolDef[] {
+export function gateTools(log: string[] = [], page: () => string = () => TABLE_PAGE): ToolDef[] {
   const acting = (name: string, cls: ToolDef['actionClass']): ToolDef => ({
     name,
     actionClass: cls,
@@ -25,8 +26,7 @@ export function gateTools(log: string[] = []): ToolDef[] {
       actionClass: 'read',
       args: 'site: string',
       description: 'Test only: read a made-up booking page.',
-      run: (a) =>
-        Promise.resolve({ kind: 'ok', result: { site: String((a as { site?: string }).site ?? 'table.example'), text: TABLE_PAGE } }),
+      run: (a) => Promise.resolve({ kind: 'ok', result: { site: String((a as { site?: string }).site ?? 'table.example'), text: page() } }),
     },
     {
       ...acting('browser.submit', 'book'),
@@ -42,29 +42,40 @@ export function gateTools(log: string[] = []): ToolDef[] {
 }
 
 /** The fake AI's request_approval for the table read by tool call `tc` (08-4 §25.3). */
-export const bookRequest = (tc = 'tc_000001', payee: string | null = 'Toit') =>
-  step({
-    kind: 'request_approval',
-    draft: {
-      verb: 'book',
-      fields: {
+export const bookRequest = (tc = 'tc_000001', payee: string | null = 'Toit', partySize = 4, extra: Partial<FakeLineIn> = {}) =>
+  step(
+    {
+      kind: 'request_approval',
+      draft: {
         verb: 'book',
-        ...(payee === null ? {} : { payee }),
-        siteDomain: 'table.example',
-        partySize: 4,
-        amountPaise: 1,
-        cancelTerms: { refundable: true },
-        irreversible: false,
+        fields: {
+          verb: 'book',
+          ...(payee === null ? {} : { payee }),
+          siteDomain: 'table.example',
+          partySize,
+          amountPaise: 1,
+          cancelTerms: { refundable: true },
+          irreversible: false,
+        },
+        evidence: [{ field: 'amountPaise', toolCallId: tc, quote: 'Total ₹2,400', ref: 'e7' }],
       },
-      evidence: [{ field: 'amountPaise', toolCallId: tc, quote: 'Total ₹2,400', ref: 'e7' }],
+      submitRef: 'e9',
     },
-    submitRef: 'e9',
-  });
+    extra,
+  );
+
+/** M5 T8: the fake second look (08-4 §25.4) the engine asks after Approve. */
+export const secondLookOk = (): FakeLineIn => ({ match: { purpose: 'second_look' }, reply: '<say></say><act>{"match":true}</act>' });
+export const secondLookNo = (field: string, userSaid: string, actionHas: string): FakeLineIn => ({
+  match: { purpose: 'second_look' },
+  reply: `<say></say><act>${JSON.stringify({ match: false, field, userSaid, actionHas })}</act>`,
+});
 
 export const bookScript = (after = [step({ kind: 'done', result: 'Booked.', unverified: true })]) => [
   jobIntake(BOOK_PLAN, { title: 'Book a table' }),
   tool('fake.page', { site: 'table.example' }),
   bookRequest(),
+  secondLookOk(),
   ...after,
 ];
 

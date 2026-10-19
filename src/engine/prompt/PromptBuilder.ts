@@ -7,13 +7,14 @@
 // {bannedList}), §24.14 (untrusted preface and wrapper, section headers), §24.15 (system vs prompt, part caps, budget 48,000 /
 // 24,000 chars and the trim order, PROMPT_TRIMMED {part}; still over → PROTOCOL_INVALID), §24.16 item 5 (fact line format).
 // M4: purpose `step` (§24.1 step row, §24.6 step.md {phraseKeys}, §24.22 part 8 "The job:", §27.1 part 3).
+// M5 T8: purpose `second_look` (§24.7: system protocol.md + second_look.md; prompt `<user_words>` lines and `<action>`).
 // Memory selection (§24.16 items 1–4) is M6; group intake (§24.1 group rows, group_intake.md) is M13.
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { z } from 'zod';
 import type { Clock } from '../../shared/clock';
 import { formatDate, formatTime } from '../../shared/format';
-import { IntakeActSchema, RewriteActSchema, StepActSchema, StuckActSchema, schemaJson } from '../../shared/schemas';
+import { IntakeActSchema, RewriteActSchema, SecondLookActSchema, StepActSchema, StuckActSchema, schemaJson } from '../../shared/schemas';
 import { PHRASES, RUNNER_ONLY, type PhraseKey } from '../../shared/phrases';
 import type { LogFn, Redactor } from '../redact/Redactor';
 import { BANNED_LIST } from './filters';
@@ -402,6 +403,14 @@ export class PromptBuilder {
   buildRewrite(text: string): BuiltPrompt {
     const system = this.protocolThen(RewriteActSchema, 'rewrite.md', { bannedList: BANNED_LIST.join(', ') });
     return { system: this.deps.redactor.finalGate(system, '4'), prompt: this.deps.redactor.finalGate(text, 'rewrite') };
+  }
+
+  // M5
+  /** T8 purpose `second_look` (§24.7): the user's lines (already `[{when}] {text}`, oldest first) and the action JSON. */
+  buildSecondLook(userWords: readonly string[], actionJson: string): BuiltPrompt {
+    const system = this.protocolThen(SecondLookActSchema, 'second_look.md', {});
+    const prompt = `<user_words>\n${userWords.join('\n')}\n</user_words>\n<action>${actionJson}</action>`;
+    return { system: this.deps.redactor.finalGate(system, '4'), prompt: this.deps.redactor.finalGate(prompt, 'second_look') };
   }
 
   /** Purpose `verify` (§24.1): no system, no protocol, exactly "Reply with the word ready". */

@@ -30,7 +30,7 @@ import { createGate } from './gate/GateLogic';
 import { JobRunner } from './jobs/JobRunner';
 import { JobRecovery } from './jobs/recovery';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
-import type { StepAct } from '../shared/schemas';
+import type { SecondLookAct, StepAct } from '../shared/schemas';
 
 export interface EngineOptions {
   link: MainLink;
@@ -200,6 +200,13 @@ export class Engine {
       },
       filter: (text) => filterSay(text, { redactor }).text,
       isBanned: (text) => findBanned(text).length > 0,
+      // M5 T8 (08-4 §24.7, §25.4)
+      buildSecondLook: (userWords, actionJson) => this.prompts.buildSecondLook(userWords, actionJson),
+      parseSecondLook: (text) => {
+        const env = parseEnvelope(text);
+        const v = env.act === undefined ? null : validateAct('second_look', env.act);
+        return v?.ok ? (v.act as SecondLookAct) : null;
+      },
     };
   }
 

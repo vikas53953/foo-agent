@@ -5,6 +5,9 @@
 // message's badge follows the job's; do-verbs in a steer join do_verbs), §7.2 part 10 + 08-4 §24.14 (header), 08-4 §25.3
 // (StepAct.steer), §26.5 (steer while NEEDS_YOU: open choice / approval / payment / draft cards superseded, the job → working,
 // drain at once, the withdrawn line; a sign-in in progress is not interrupted), ART-18a/b.
+// M5 T8: §26.5 item 3 for approval and payment cards goes through main's ApprovalGate (`approval.transition` SUPERSEDED,
+// `superseded: 'steer'`, so the approvals row and the card move together; 08-2 §9.1 only main writes approvals.state), and the
+// runner's gate learns which approval the job's next card replaces (superseded_by, AT-077b).
 import { t } from '../../shared/copy/t';
 import { BADGE_OF_STATE, TERMINAL } from '../../shared/jobMachine';
 import type { CardRow, JobRow, StepRow } from '../../shared/types';
@@ -81,6 +84,8 @@ const SUPERSEDE_TO: Record<string, string> = {
   approval: 'SUPERSEDED',
   payment: 'SUPERSEDED',
 };
+/** M5 T8: cards whose state mirrors an approvals row (main moves both). */
+const GATED = new Set(['approval', 'payment']);
 /** Approval-like cards a typed "yes" never answers (Art. 6). */
 const TAP_ONLY = new Set(['approval', 'payment', 'draft']);
 
@@ -94,6 +99,8 @@ export class Steer {
   constructor(
     private core: RunnerCore,
     private stop: StopFlow,
+    // M5 T8
+    private onSuperseded?: (jobId: string, approvalId: string) => void,
   ) {}
 
   /** The runner's branches of 08-2 §5.2. True when the message is handled here (no intake turn). */
@@ -184,10 +191,17 @@ export class Steer {
     const to = card ? SUPERSEDE_TO[card.type] : undefined;
     if (card && !to) return; // signin, secret, stuck: the steer waits for that card (§26.5 item 2)
     const now = this.core.d.clock.now();
+    // M5 T8: an approval or payment card moves with its approvals row, in main.
+    const approvalId = card && GATED.has(card.type) ? String(card.payload.approvalId ?? '') : '';
+    if (approvalId) {
+      const moved = await this.core.d.link.request('approval.transition', { approvalId, to: 'SUPERSEDED', data: { superseded: 'steer' } });
+      if (!moved.ok) return; // answered or expired meanwhile: nothing to withdraw
+      this.onSuperseded?.(job.id, approvalId);
+    }
     const steps = await this.core.steps(job.id);
     const waiting = steps.find((s) => s.state === 'waiting_user');
     const r = await this.core.tx([
-      ...(card && to
+      ...(card && to && !approvalId
         ? [{ op: 'update', table: 'cards', id: card.id, set: { state: to, resolved_by: 'system', resolved_at: now } } as DbOp]
         : []),
       {
