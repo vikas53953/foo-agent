@@ -1046,3 +1046,39 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
   routine list is a heuristic until M11 routines; "Not now" is kept in the window only (M5's `card:answer` answers Choice and
   tiles cards, not Connect); official Google logos are not bundled (a Fluent icon stands in). BP-CARD-11's Blueprint mini has a
   shorter line and no icon; the app follows the 05-3 §5.11 words, so Tier R R1 may report word differences.
+
+## M8 · Email drafts and sending (ticket T6, CR-0012)
+
+- (a) The real `GmailDrafts` port is in MAIN (`src/main/drafts/gmailDraftsGoogle.ts`, over T2's `GoogleAccess` and T4's
+  `googleCall`); `draftIpc.ts` installs it while the gmail row is connected. FOO_TEST runs with `FOO_FAKE_GOOGLE` use it against
+  the fake Google; without it, M5's memory fake. One fake Gmail: `test/fakes/connectors/gmail.ts` adds the drafts API to T4's
+  router (Sent folder filled on send).
+- (b) Engine `gmail.draft` (`src/engine/tools/connectors/gmailDraftTool.ts`) resolves the person with T4's `findPerson` and asks
+  main with a new engine → main request `draft.create` (protocol + EngineBridge; main answers on the port when Gmail has
+  answered). One person per draft (the card has one To line). Two or more matches → Choice "Which {name}?" (purpose `job`,
+  masked labels); the answer comes back to the AI as its label ("Decisions:" line) and the next call naming it is resolved from
+  the job's remembered picks. A bare name with no match is NOT_FOUND (the AI asks for an address); an address with no match is
+  someone new.
+- (c) Someone new and a switch of channel (Art. 9: an email inside a job with an APPROVED/RUNNING/CHECKING/COMPLETED book, buy
+  or pay approval) are hard-limit drafts: Send opens the full Approval card (`cards.approval.send_email.*` /
+  `cards.approval.switch_how.*` with route "Send email"); the draft shows "Waiting for your OK below ›"; the full card's tap
+  approves the draft's row and sends with no 5 s undo; the full card follows the outcome (COMPLETED with the same proof /
+  FAILED). The two are linked by the Draft payload's `approvalCardId` (a bare id: card payloads are redacted leaf by leaf and
+  only a whole foo id passes; `draft:{id}` in `submitRef` was sometimes hidden).
+- (d) The pronoun in "You haven't emailed {them} before" is "them" (`cards.approval.them`): foo has no gender for a contact and
+  never guesses. AT-052 and UX-16-06 draw "her"; dispute for the close-out CR.
+- (e) Offline at Send: `draft:send` answers NET_OFFLINE with nothing moved; [ Yes, send when online ] is `card:answer` with
+  optionId `send_when_online` (approve once, card `queued_offline`, no undo window yet); back online the window opens (5 s
+  undo) and the tick sends; Cancel is `draft:undo`. [ No, keep the draft ] is renderer-only.
+- (f) G-M8-04: with no `gmail.compose` the draft is kept in foo (no Gmail call), "Open in Gmail" opens the prefilled compose page,
+  the `allow_send` Connect card is offered once per chat; the 05-2 "saved as a draft there" line is never shown (key listed in
+  `scripts/copy-pending.json`). After Open in Gmail the card stays readable, muted, and the button opens it again (no new words).
+- (g) Failed → [ Try again ] is `card:askAgain` (now also for FAILED): a fresh pending Draft on the same Gmail draft that needs
+  its own Send (never a silent resend; a hard-limit draft stays one).
+- (h) Sends outlive their job: `ApprovalGate.expireTick` no longer withdraws `send` approvals of a done job (the drafting job
+  ends when the draft is made).
+- (i) A drafting job ends `done_unverified`: 08-2 §5.8 has no proof kind for "draft made" (UX-16-05/-10 draw ✅). Gap for the
+  close-out CR.
+- (j) The Google refresh token moved to the vault (`foo/conn_token/google`, `VaultConnTokenStore`); the bare token is also
+  registered with the SecretRegistry. `connTokenMemory.ts` stays as the unit tests' store.
+- (k) ART-09's "new site" switch is the browser rung (M9); this ticket covers email and a new person.

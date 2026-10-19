@@ -11,12 +11,19 @@
 // - UX-16-04 draws a dark "Sending… Undo" bar over the chat; 05-2 §5.7.2 puts the countdown and Undo in the card's button
 //   row ("Sending in {5}…", then "Sending…" when the window closes);
 // - UX-16-06 is superseded by X-79 ("Change", not "Edit") and draws a compact header countdown.
+// M8 T6 (CR-0012): UX-16-01, -03 and -05 run the real flow: the ask, the engine's `gmail.draft` on the fake AI, main's real
+// Gmail drafts port on a fake Google (FOO_FAKE_GOOGLE), Change → "Email · edited", Send → "✓ Sent" with the Sent-folder proof
+// and the ✅ badge. Gaps: the drawn Gmail search for "landlord" is the contacts ladder here (08-3 §16.7 resolves Rakesh, the AI
+// names him); the drawn "✓ Sent · Fri 16 Oct, 11:06 AM" is the card's §5.7.2 "Sent · {time}" with the ✓ icon; the drawn ✅
+// badge is `done_unverified` here, because 08-2 §5.8 has no proof kind for "draft made" (the job ends when the draft is made;
+// the send's proof is on the Draft card). Logged in docs/decisions/M8.tsv for the close-out CR.
 import { expect, test, type Page } from '@playwright/test';
 import type { CardSeedRequest } from '../../../src/shared/ipc';
 import { t } from '../../../src/shared/copy/t';
 import { TID } from '../../../src/shared/testids';
 import type { ApprovalFields } from '../../../src/shared/types';
 import { launch } from '../../e2e/launch';
+import { ASK_LANDLORD, advance, draftsGoogle, draftsScript, launchDrafts, waitForDraft } from '../../e2e/m8-drafts-world';
 import { byTid, captureUx, openChat, openWorld, rest, setTheme, settle, step, THEMES, windowSize } from '../capture';
 
 const AT = (hhmm: string) => Date.parse(`2026-10-16T${hhmm}:00+05:30`);
@@ -155,4 +162,75 @@ test('UX-16 · Drafts and sends: steps UX-16-02, UX-16-04 and UX-16-06, light an
     await shoot(page, 'UX-16-06', `${byTid(TID.cardApproval)}[data-card-id="${p.cardId}"]`);
   });
   await app.close();
+});
+
+// M8 T6
+test('UX-16 · Drafts and sends (M8): steps UX-16-01, UX-16-03 and UX-16-05 on the real Gmail draft, light and dark', async () => {
+  test.setTimeout(240_000);
+  const google = await draftsGoogle();
+  const app = await launchDrafts(google, draftsScript(['landlord'], 2_000));
+  try {
+    const page = await app.firstWindow();
+    await openWorld(app, page, '2026-10-16T11:01:00+05:30');
+    await windowSize(app, page, 1280, 800);
+    await openChat(page, 'Home');
+    const log = page.getByTestId(TID.threadLog);
+
+    let mineSel = '';
+    await test.step('UX-16-01 · the ask, with the working badge; foo resolves the person before drafting', async () => {
+      const s = step('UX-16-01');
+      expect(s.s).toContain('reply to my landlord');
+      await page.getByTestId(TID.composerField).focus();
+      await page.keyboard.type(ASK_LANDLORD);
+      await page.keyboard.press('Enter');
+      const mine = log.locator(byTid(TID.bubbleMe), { hasText: ASK_LANDLORD }).last();
+      await mine.waitFor();
+      const row = mine.locator('xpath=ancestor-or-self::*[@data-message-id][1]');
+      mineSel = `${byTid(TID.threadLog)} [data-message-id="${await row.getAttribute('data-message-id')}"]`;
+      await advance(page, 1_000);
+      await expect(page.locator(mineSel).getByTestId(TID.bubbleBadge)).toHaveAttribute('data-state', 'working', { timeout: 10_000 });
+      await shoot(page, 'UX-16-01', mineSel);
+    });
+
+    const cardId = await waitForDraft(page, 0);
+    const sel = `${byTid(TID.cardDraft)}[data-card-id="${cardId}"]`;
+    const draft = page.locator(sel);
+
+    await test.step('UX-16-03 · Change edits the one card and shows "edited"; nothing is sent', async () => {
+      const s = step('UX-16-03');
+      expect(s.s).toContain('edited');
+      await draft.scrollIntoViewIfNeeded();
+      await draft.getByTestId(TID.cardDraftChange).click();
+      await draft.locator(`textarea[data-testid="${TID.cardDraftBody}"]`).fill(FORMAL);
+      await draft.getByTestId(TID.cardDraftSave).click();
+      await expect(draft).toContainText(t('cards.draft.right_label.edited', { channel: 'Email' }));
+      await expect(draft.getByTestId(TID.cardDraftBody)).toHaveText(FORMAL);
+      // f: one card, edited in place; Gmail's draft was updated, nothing sent.
+      await expect(log.locator(byTid(TID.cardDraft))).toHaveCount(1);
+      expect(google.drafts.calls).toEqual(['create', 'update:r_1']);
+      expect(google.drafts.sent).toEqual([]);
+      await shoot(page, 'UX-16-03', sel);
+    });
+
+    await test.step('UX-16-05 · Sent, with the Gmail Sent-folder proof and the ✅ badge', async () => {
+      const s = step('UX-16-05');
+      expect(s.s).toContain('Proof: in your Gmail Sent folder');
+      await draft.getByTestId(TID.cardDraftSend).click();
+      await expect(draft).toHaveAttribute('data-card-state', 'undo_window');
+      await advance(page, 6_000);
+      await expect(draft).toHaveAttribute('data-card-state', 'sent', { timeout: 10_000 });
+      await expect(draft).toContainText(/Sent · \d{1,2}:\d{2} [AP]M/);
+      await expect(draft.getByTestId(TID.threadProofChip)).toBeVisible();
+      await advance(page, 10_000);
+      await expect(page.locator(mineSel).getByTestId(TID.bubbleBadge)).toHaveAttribute('data-state', 'done_unverified', {
+        timeout: 15_000,
+      });
+      // f: it is in the Activity log, and approving this send approved nothing else.
+      expect(google.drafts.calls).toEqual(['create', 'update:r_1', 'send:r_1']);
+      await shoot(page, 'UX-16-05', sel);
+    });
+  } finally {
+    await app.close();
+    await google.close();
+  }
 });

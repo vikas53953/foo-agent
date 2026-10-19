@@ -349,8 +349,13 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
   };
   // 05-2 §5.7.2 Send to someone new: the full Approval card under the draft is the only tap; this Link focuses it.
   const waiting = state === 'pending' && p.approvalCardId !== undefined;
-  const focusApproval = () =>
-    document.querySelector<HTMLElement>(`[data-card-id="${p.approvalCardId ?? ''}"]`)?.focus({ preventScroll: false });
+  const focusApproval = () => {
+    const btn = document.querySelector<HTMLElement>(
+      `[data-card-id="${p.approvalCardId ?? ''}"] [data-testid="${TID.cardApprovalApprove}"]`,
+    );
+    btn?.scrollIntoView({ block: 'nearest' });
+    btn?.focus();
+  };
 
   let buttons: ReactNode;
   // M5 T14 (05-2 §5.7.2 HELD): only the user's pick answers a held draft.

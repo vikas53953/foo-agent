@@ -8,7 +8,11 @@ import type { ConnTokenStore } from '../../src/engine/tools/connectors/types';
 import { vaultHarness, NOW } from './vault/harness';
 
 const NAME = 'foo/conn_token/google' as const;
-const TOKEN = { refresh_token: '1//fake-refresh-T6-0123456789', scope: 'openid email https://www.googleapis.com/auth/gmail.compose', issued_at: 1 };
+const TOKEN = {
+  refresh_token: '1//fake-refresh-T6-0123456789',
+  scope: 'openid email https://www.googleapis.com/auth/gmail.compose',
+  issued_at: 1,
+};
 
 describe('M8 T6 · the Google refresh token lives in the vault', () => {
   it('write → read gives the token back, from Credential Manager, named foo/conn_token/google', async () => {

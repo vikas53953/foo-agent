@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest';
 import { drive } from '../fakes/connectors/gmail-read';
 import { TO, service, tap } from '../integration/m8-drafts-harness';
 
-describe('ART-04 · nothing goes out without its own Draft card and approval', () => {
+describe('Article 4 · nothing goes out without its own Draft card and approval', () => {
   it('ART-04a every sent_email row has a Draft card id and an approvals row made before it', async () => {
     const s = service();
     // A known person (Send + the 5 s undo) and someone new (the full Approval card) both write a sent row.
