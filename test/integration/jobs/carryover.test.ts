@@ -4,12 +4,14 @@
 // provider" (intake, repair and rewrite turns too; at the cap a message waits to send, 04 §3.3); row 10: 08-2 §5.7 steps 3–4
 // (every stop writes the `stopped_job` activity line and the J18 report, the recovery card's "Stop it" too); row 3: 08-2
 // §5.3.3 ("Change plan" → the text goes back to an intake turn with the old plan attached) and 05-3 §5.12.2 (the new Plan
-// card shows below; the old one reads "Plan changed. See the new one below.").
+// card shows below; the old one reads "Plan changed. See the new one below."); row 4: 05-3 §5.12.2 (no answer 24 h →
+// `withdrawn`, resolved_by auto: "I didn't start {title} because I didn't hear back."); row 8: 08-4 §26.8 item 6 (WAITING
+// opens_at sleeps until wake_at with no AI turn; the 15 s tick moves it to WORKING).
 import { afterEach, describe, expect, it } from 'vitest';
 import { t } from '../../../src/shared/copy/t';
 import type { Settings } from '../../../src/shared/settings';
 import { envelope, intake } from '../../unit/m3-engine-helpers';
-import { BILLS_PLAN, jobHarness, jobIntake, stepDone, tool, type JobHarness } from './jobHarness';
+import { BILLS_PLAN, jobHarness, jobIntake, step, stepDone, tool, type JobHarness } from './jobHarness';
 import { restartEngine } from './restart';
 import { keyBilling, seedSpend, until } from './t3Helpers';
 
@@ -214,5 +216,55 @@ describe('CR-0008 (j) row 3 · Change plan → re-intake with the old plan → a
     expect(prompts).toHaveLength(3);
     expect(prompts[1]).toContain('The job:');
     expect(prompts[2]).not.toContain('The job:');
+  });
+});
+
+describe('CR-0008 (j) row 4 · an unanswered Plan card withdraws after 24 h', () => {
+  it('pending for 24 h → withdrawn (auto), the job is not started and never ran a step', async () => {
+    h = jobHarness({ script: [jobIntake(BILLS_PLAN, { title: 'Goa stay', estimate: { minutes: 6 } })] });
+    h.userSays('Find a Goa stay');
+    await h.settle();
+    h.clock.advance(23 * 3_600_000);
+    await h.settle();
+    expect(h.cards('plan')[0]!.state).toBe('pending');
+    h.clock.advance(3_600_000);
+    await h.settle(15_000);
+    const card = h.cards('plan')[0]!;
+    expect(card.state).toBe('withdrawn');
+    expect(card.resolved_by).toBe('auto');
+    expect(h.job().state).toBe('cancelled');
+    expect(h.turnsJsonl().filter((r) => r.purpose === 'step')).toHaveLength(0);
+  });
+});
+
+describe('CR-0008 (j) row 8 · the opens_at tick', () => {
+  it('a job that opens later waits with no AI turn, and the 15 s tick starts it at wake_at', async () => {
+    h = jobHarness({ script: [step({ kind: 'done', result: 'Ready.', unverified: true })] });
+    const opensAt = h.clock.now() + 10 * 60_000;
+    const jobId = await h.engine.jobs.createJob({
+      chatId: h.chatId,
+      userMessageId: null,
+      askedText: 'Get ready for the 10:10 opening',
+      decision: {
+        kind: 'job',
+        title: 'Opening',
+        plan: [{ phraseKey: 'read_email', slots: {}, route: 'api' }],
+        routeHint: ['api'],
+        needsApps: [],
+      } as never,
+      origin: 'system',
+      wakeAt: opensAt,
+    });
+    await h.settle();
+    expect(h.job(jobId!).state).toBe('waiting');
+    expect(h.job(jobId!).waiting_reason).toBe('opens_at');
+    expect(h.job(jobId!).wake_at).toBe(opensAt);
+    h.clock.advance(9 * 60_000);
+    await h.settle();
+    expect(h.job(jobId!).state).toBe('waiting');
+    expect(h.turnsJsonl().filter((r) => r.purpose === 'step')).toHaveLength(0);
+    await until(h, () => h!.job(jobId!).state === 'done_unverified', 5_000);
+    expect(h.turnsJsonl().filter((r) => r.purpose === 'step')).toHaveLength(1);
+    expect(h.job(jobId!).wake_at).toBeNull();
   });
 });

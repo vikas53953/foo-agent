@@ -27,6 +27,7 @@ import type { DbOp, DbTxReply, MainLink } from '../protocol';
 import type { ExecResult, NeedsUserCard, ToolLayer } from '../tools/ToolLayer';
 import { estCostPaise, estMinutes, estTokens, isBigOne, needsPlanCard } from './estimates';
 import { CostMeter } from './costMeter';
+import { RunnerTick } from './tick';
 import { checkProof } from './proof';
 import { needsVerify, pickStartable, type QueueJob } from './queue';
 import { buildTitle, insertShowBefore, retryTitle, PLAN_MAX } from './title';
@@ -141,6 +142,9 @@ export interface CreateJobInput {
   helperId?: string | null;
   origin?: JobRow['origin'];
   originRef?: string | null;
+  // M5
+  /** T10: the job may not start before this time (08-4 §26.8 item 6, `opens_at`); its first producer is a timed opening. */
+  wakeAt?: number | null;
 }
 
 /** M5 T10: a changed Plan card's plan, attached to the chat's next intake turn (08-2 §5.3.3). */
@@ -212,6 +216,7 @@ export class JobRunner {
   // M5
   /** T10: chat id → the plan the user asked to change; the chat's next intake turn carries it (08-2 §5.3.3). */
   private planChanges = new Map<string, OldPlan>();
+  private ticker: RunnerTick;
 
   constructor(private d: JobRunnerDeps) {
     const core: RunnerCore = {
@@ -246,6 +251,9 @@ export class JobRunner {
     this.stopper = new StopFlow(core);
     this.steering = new Steer(core, this.stopper);
     this.watchdog = new Watchdog(core, this.stopper);
+    // M5 T10: the 15 s tick (opens_at wake, 24 h Plan withdraw).
+    this.ticker = new RunnerTick(core);
+    this.ticker.start();
   }
 
   // ---- T3 entry points (08-2 §5.2, §5.7, §5.10) ----
@@ -301,6 +309,7 @@ export class JobRunner {
     this.watchdog.dispose();
     this.stopper.dispose();
     this.cost.dispose();
+    this.ticker.dispose();
     for (const c of this.ctxs.values()) {
       c.abort.abort();
       if (c.checklistTimer !== null) this.d.clock.clearTimeout(c.checklistTimer);
@@ -469,6 +478,7 @@ export class JobRunner {
           est_tokens: tokens,
           est_cost_paise: cost,
           provider_id: pick?.providerId ?? null,
+          wake_at: input.wakeAt ?? null,
           created_at: now,
         },
       },
@@ -639,6 +649,11 @@ export class JobRunner {
     const c = this.ctx(jobId);
     let job = await this.job(jobId);
     if (!job || job.state !== 'working') return;
+    // M5 T10 (08-4 §26.8 item 6): a job whose start is a future opening time sleeps until then, with no AI turn.
+    if (job.wakeAt !== null && job.wakeAt > this.d.clock.now()) {
+      await this.ticker.sleep(job);
+      return;
+    }
     c.workingSince = this.d.clock.now();
     this.scheduleChecklist(job, c);
     this.watchdog.watch(jobId);
