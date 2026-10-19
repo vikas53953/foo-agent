@@ -1,6 +1,7 @@
 // Spec: 08-0 §C (data-testid scheme, X-58), 02-3 §F32.2 (ids used by 02–04; this file holds the shell areas: titlebar,
 // banner, sidebar, chatlist, chat-header, thread, app), 06 `screen-{slug}` roots for the pages the shell opens; M4 adds the
-// job cards, proof chips, stacked composer notices and dialog C-21 (CR-0008); M5 the gated and choice cards and C-22 (CR-0009).
+// job cards, proof chips, stacked composer notices and dialog C-21 (CR-0008); M5 the gated and choice cards and C-22 (CR-0009);
+// M6 adds memory (CR-0010).
 // Ids are static; components read them from here (lint foo/testid-from-registry).
 export const TID = {
   // titlebar (03-shell-1 §3.2.5)
@@ -390,6 +391,34 @@ export const TID = {
   cardApprovalTryAgain: 'card-approval-try-again',
   // M5 T14: a held Draft's two values (05-2 §5.7.2 HELD; 08-0 §C names no id), data-index 0 (user's) and 1 (the draft's).
   cardDraftHeldOption: 'card-draft-held-option',
+  // M6 memory (CR-0010): Memory page (06-2 §7.7), memory chip (05-3 §5.17.1), confirms C-3/C-4 (06-3 §14), unreadable-lines
+  // dialog (X-118), the undo bar (02 §F21.3)
+  memorySearch: 'memory-search',
+  memoryAdd: 'memory-add',
+  memoryMenu: 'memory-menu',
+  memoryFilter: 'memory-filter',
+  memoryLearned: 'memory-learned',
+  memoryRow: 'memory-row',
+  memoryRowEdit: 'memory-row-edit',
+  memoryRowForget: 'memory-row-forget',
+  memoryRowMenu: 'memory-row-menu',
+  memoryHelper: 'memory-helper',
+  threadMemoryUndo: 'thread-memory-undo',
+  threadMemoryForget: 'thread-memory-forget',
+  threadMemorySee: 'thread-memory-see',
+  dialogC03: 'dialog-c-03',
+  dialogC04: 'dialog-c-04',
+  dialogUnreadableLines: 'dialog-unreadable-lines',
+  appUndo: 'app-undo',
+  appUndoAction: 'app-undo-action',
+  // M6 T6: the shared page frame and common states (06 §0.2 `screen-back`, `screen-title`; §0.5 `screen-empty`,
+  // `screen-empty-action`, `screen-loading`, `screen-error`), first used by the Memory page
+  screenBack: 'screen-back',
+  screenTitle: 'screen-title',
+  screenEmpty: 'screen-empty',
+  screenEmptyAction: 'screen-empty-action',
+  screenLoading: 'screen-loading',
+  screenError: 'screen-error',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

@@ -5,6 +5,7 @@
 // M5-T14: `approval:report` (05-2 §5.5.4 CHECKING → FAILED, CR-0009 G-M5-39) and `card:heldPick` on a held Draft card.
 import { cardRow, type DbRow } from '../db/rows';
 import type { TxEffects } from '../engine-supervisor/engineHost';
+import { logEvent } from '../log/techLog';
 import { emit, listContext, type AppContext, type IpcHandlers } from '../ipc/IpcRouter';
 import { deps } from '../deps';
 import { chatRowById, jobRows, messageGet } from '../store/queries';
@@ -48,7 +49,7 @@ export function approvalGate(ctx: AppContext): ApprovalGate {
     dataDir: ctx.dataDir,
     changed: (effects) => publish(ctx, effects),
     ...(ctx.engine ? { engine: ctx.engine } : {}),
-    log: (line) => console.info('approvals', JSON.stringify(line)),
+    log: logEvent,
   });
   gates.set(ctx.db, gate);
   // M5 T7 (08-2 §5.9 step 2): an irreversible call cut by a crash or power cut is checked, never repeated.

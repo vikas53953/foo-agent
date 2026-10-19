@@ -5,8 +5,15 @@
 // builder B: message:send (idempotent, AT-225; R1 secret re-check, 08-2 §11.4), composer:checkSecret, composer:saveDraft,
 // files:stage, voice:submit (04-2 §22.1), helper:pause (04-2 §23.2 "Turn on"). M5 (CR-0009): the card, draft, secret and
 // code channels; each ticket's handler file fills its own rows (cards/answerIpc T5, approvals/approvalIpc T4, drafts/draftIpc
-// T6, vault/secretIpc T2), and this file only registers them.
-import { app, BrowserWindow, ipcMain, net, shell, systemPreferences, type IpcMainEvent } from 'electron';
+// T6, vault/secretIpc T2), and this file only registers them. M6 (CR-0010): the memory:* invokes, each validated here and
+// forwarded to the engine as one `memory.cmd` (G-M6-01); memory:openFolder, files:pickFolder and the memory-only `data:export`
+// (G-M6-11) run in main.
+import { app, BrowserWindow, dialog, ipcMain, net, shell, systemPreferences, type IpcMainEvent } from 'electron';
+import { mkdirSync } from 'node:fs';
+import { join } from 'node:path';
+import type { MemoryCmdPayload } from '../../engine/protocol';
+import { runMemoryExport } from '../memory/export';
+import { removeForgottenFiles } from '../memory/forgetFiles';
 import { z } from 'zod';
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
@@ -215,6 +222,20 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
       q: z.string().max(200).optional(),
     })
     .strict(),
+  'memory:add': z.object({ text: z.string().trim().min(1).max(120) }).strict(),
+  'memory:edit': z.object({ factId: z.string().min(1).max(80), text: z.string().trim().min(1).max(120) }).strict(),
+  'memory:setPrivate': z.object({ factId: z.string().min(1).max(80), private: z.boolean() }).strict(),
+  'memory:setKind': z.object({ factId: z.string().min(1).max(80), kind: z.enum(['person', 'preference', 'place', 'fact']) }).strict(),
+  'memory:forget': z.object({ factId: z.string().min(1).max(80), chipId: z.string().min(1).max(80).optional() }).strict(),
+  'memory:undo': z.object({ undoToken: z.string().min(1).max(80) }).strict(),
+  'memory:forgetBySource': z
+    .object({ source: z.enum(['chat', 'gmail', 'gcal', 'whatsapp', 'manual', 'setup', 'job']), confirm: z.literal(true) })
+    .strict(),
+  // CONFIRM_MISMATCH (not IPC_REJECTED) for a wrong word: the dialog keeps its button disabled, this is the backstop.
+  'memory:forgetAll': z.object({ typed: z.string().max(40) }).strict() as unknown as z.ZodType<{ typed: 'FORGET' }>,
+  'memory:openFolder': empty as z.ZodType<Record<string, never>>,
+  'data:export': z.object({ folder: z.string().min(1).max(1024), scope: z.enum(['all', 'memory']).optional() }).strict(),
+  'files:pickFolder': z.object({ purpose: z.enum(['output', 'grant', 'export', 'avatar']) }).strict(),
   'routine:list': empty as z.ZodType<Record<string, never>>,
   'helper:list': empty as z.ZodType<Record<string, never>>,
   'settings:get': empty as z.ZodType<Record<string, never>>,
@@ -524,8 +545,10 @@ export function registerIpc(ctx: AppContext): void {
     const err = await shell.openPath(file);
     return err ? fail('NOT_FOUND', err) : ok(undefined);
   });
+  // The memory zip lands in a folder the person picked (06-2 §7.4 "Show in folder"), so the last export path is allowed too.
+  let lastExportPath: string | undefined;
   handle('files:showInFolder', ({ path }) => {
-    const file = insideDir(ctx.dataDir, path);
+    const file = path === lastExportPath ? path : insideDir(ctx.dataDir, path);
     if (!file) return fail('PATH_NOT_ALLOWED');
     shell.showItemInFolder(file);
     return ok(undefined);
@@ -574,6 +597,51 @@ export function registerIpc(ctx: AppContext): void {
   // The Live window (09 §9.27) arrives with the browser milestone; until then the shell shows no live view.
   handle('job:watch', () => fail('LIVE_UNAVAILABLE'));
   handle('memory:list', ({ filter, q }) => ok(memoryList(db, filter, q, now())));
+  // M6 (CR-0010 G-M6-01): the engine owns files, the classify turn and the sensitive rule; main forwards one message each.
+  const memoryCmd = <T>(cmd: MemoryCmdPayload): Promise<Result<T>> =>
+    ctx.engine?.live ? ctx.engine.request<T, 'memory.cmd'>('memory.cmd', cmd, 30_000) : Promise.resolve(fail<T>('UNKNOWN', 'no engine'));
+  handle('memory:add', ({ text }) => memoryCmd({ cmd: 'add', text }));
+  handle('memory:edit', ({ factId, text }) => memoryCmd({ cmd: 'edit', factId, text }));
+  handle('memory:setPrivate', (req) => memoryCmd({ cmd: 'setPrivate', factId: req.factId, private: req.private }));
+  handle('memory:setKind', ({ factId, kind }) => memoryCmd({ cmd: 'setKind', factId, kind }));
+  handle('memory:forget', ({ factId, chipId }) => memoryCmd({ cmd: 'forget', factId, ...(chipId ? { chipId } : {}) }));
+  handle('memory:undo', ({ undoToken }) => memoryCmd({ cmd: 'undo', undoToken }));
+  handle('memory:forgetBySource', ({ source }) => memoryCmd({ cmd: 'forgetBySource', source, confirm: true }));
+  handle('memory:forgetAll', async ({ typed }) => {
+    if (typed !== 'FORGET') return fail('CONFIRM_MISMATCH');
+    const r = await memoryCmd<{ count: number }>({ cmd: 'forgetAll', typed: 'FORGET' });
+    // 08-3 §12.6: the files the engine emptied are deleted (M6 T3).
+    if (r.ok) removeForgottenFiles(ctx.dataDir);
+    return r;
+  });
+  handle('memory:openFolder', async () => {
+    const folder = join(ctx.dataDir, 'memory');
+    mkdirSync(folder, { recursive: true });
+    await shell.openPath(folder);
+    return ok(undefined);
+  });
+  handle('files:pickFolder', async () => {
+    const r = await dialog.showOpenDialog({ properties: ['openDirectory', 'createDirectory'] });
+    return ok(r.canceled || !r.filePaths[0] ? {} : { path: r.filePaths[0] });
+  });
+  handle('data:export', ({ folder, scope }) => {
+    // The full export (J21) is a later milestone; M6 builds the memory-only zip (06-2 §7.4, G-M6-11).
+    if (scope !== 'memory') return fail('VALIDATION');
+    const exportId = `exp_${now()}`;
+    void runMemoryExport({
+      dataDir: ctx.dataDir,
+      folder,
+      exportId,
+      now: now(),
+      timeZone: settings.get().locale.timeZone,
+      db,
+      progress: (p) => {
+        if (p.path) lastExportPath = p.path;
+        emit('data:exportProgress', p);
+      },
+    });
+    return ok({ exportId });
+  });
   handle('routine:list', () => ok(routineList(db)));
   handle('helper:list', () => ok(helperList(db)));
   handle('settings:get', () => ok(publicSettings(settings.get())));

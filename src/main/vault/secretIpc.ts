@@ -14,7 +14,9 @@ import { newId } from '../../shared/ids';
 import type { SecretOfferSlot, VaultOff } from '../../shared/ipc';
 import type { CardRow, SecretCardKind, SecretPayload } from '../../shared/types';
 import { cardRow, type DbRow } from '../db/rows';
+import { secretPayloadOf } from '../approvals/cardPayloads';
 import { applyDbOps } from '../engine-supervisor/engineHost';
+import { logEvent } from '../log/techLog';
 import type { EngineBridge } from '../engine-supervisor/EngineBridge';
 import type { AppContext, IpcHandlers } from '../ipc/IpcRouter';
 import type { Db } from '../store/db';
@@ -39,10 +41,15 @@ export interface SecretIpcDeps {
 
 export type SecretChannels = 'secret:save' | 'secret:list' | 'secret:delete' | 'code:submit' | 'secret:offer';
 
-const getCard = (db: Db, id: string): CardRow | null => {
-  const r = db.prepare("SELECT * FROM cards WHERE id = ? AND type = 'secret' AND deleted_at IS NULL").get(id) as DbRow | undefined;
-  return r ? cardRow(r) : null;
+/** A Secret box with a well-formed payload (M6 T9: guarded, never cast). */
+type SecretCard = { card: CardRow; p: SecretPayload };
+const secretCard = (r: DbRow | undefined): SecretCard | null => {
+  const card = r ? cardRow(r) : null;
+  const p = card ? secretPayloadOf(card) : null;
+  return card && p ? { card, p } : null;
 };
+const getCard = (db: Db, id: string): SecretCard | null =>
+  secretCard(db.prepare("SELECT * FROM cards WHERE id = ? AND type = 'secret' AND deleted_at IS NULL").get(id) as DbRow | undefined);
 
 /** 04-2 §22.4 suggested names → the Secret box variant and title (G-M5-21). */
 const OFFER: Record<SecretOfferSlot, { kind: SecretCardKind; vaultName?: string; title: () => string; fields: SecretPayload['fields'] }> = {
@@ -117,23 +124,23 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
 
   return {
     'secret:save': ({ requestId, kind, name, fields }) => {
-      const card = requestId ? getCard(d.db, requestId) : null;
+      const box = requestId ? getCard(d.db, requestId) : null;
       const saved = d.vault.save(kind, name, fields);
       if (!saved.ok) {
         // A refused card number stays on the card as `rejected` (05-2 §5.8.2 "Card already saved"); the value stays in the field.
-        if (card && card.state === 'asking' && saved.error.kind === 'SECRET_EXISTS') {
-          const r = tx([moveCard(card, 'rejected', card.payload as unknown as SecretPayload)]);
-          if (r.result.ok) emitCards([card.id]);
+        if (box && box.card.state === 'asking' && saved.error.kind === 'SECRET_EXISTS') {
+          const r = tx([moveCard(box.card, 'rejected', box.p)]);
+          if (r.result.ok) emitCards([box.card.id]);
         }
         return saved;
       }
       const { target, savedAt, label, replaced } = saved.value;
       const ops: DbOp[] = [activity(replaced ? 'secret_replaced' : 'secret_saved', label)];
       // Replace from a saved row keeps the card `saved` with the new date (05-2 §5.8.3 Replaced).
-      if (card && ['asking', 'rejected', 'saved'].includes(card.state)) {
-        const payload = { ...(card.payload as unknown as SecretPayload), savedAt, target, label };
-        delete payload.removedAt;
-        ops.push(moveCard(card, 'saved', payload));
+      if (box && ['asking', 'rejected', 'saved'].includes(box.card.state)) {
+        const { removedAt: _gone, ...p } = box.p;
+        void _gone;
+        ops.push(moveCard(box.card, 'saved', { ...p, savedAt, target, label }));
       }
       const r = tx(ops);
       if (r.result.ok) emitCards(r.effects.cardIds);
@@ -147,14 +154,14 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
       if (!del.ok) return del;
       if (!del.value.removed) return ok(undefined);
       // Every saved Secret box that wrote this target collapses to "Removed" (06-3 §14 C-22).
-      const cards = (
+      const boxes = (
         d.db
           .prepare("SELECT * FROM cards WHERE type = 'secret' AND state = 'saved' AND json_extract(payload, '$.target') = ?")
           .all(target) as DbRow[]
-      ).map(cardRow);
+      ).flatMap((r) => secretCard(r) ?? []);
       const ops: DbOp[] = [
         activity('secret_removed', del.value.removed.label),
-        ...cards.map((c) => moveCard(c, 'withdrawn', { ...(c.payload as unknown as SecretPayload), removedAt: d.now() })),
+        ...boxes.map((b) => moveCard(b.card, 'withdrawn', { ...b.p, removedAt: d.now() })),
       ];
       const r = tx(ops);
       if (r.result.ok) emitCards(r.effects.cardIds);
@@ -168,12 +175,12 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
           "SELECT * FROM cards WHERE type = 'secret' AND state = 'asking' AND json_extract(payload, '$.secretKind') = 'otp' AND json_extract(payload, '$.requestId') = ?",
         )
         .get(requestId) as DbRow | undefined;
-      if (!row || !/^\d{4,8}$/.test(code.replace(/\s/g, ''))) return fail(row ? 'VALIDATION' : 'REQUEST_GONE');
+      const box = secretCard(row);
+      if (!box || !/^\d{4,8}$/.test(code.replace(/\s/g, ''))) return fail(box ? 'VALIDATION' : 'REQUEST_GONE');
       if (!d.engine?.live) return fail('REQUEST_GONE');
       const codeRef = d.register(code.replace(/\s/g, ''), { kind: 'otp', ttlMs: OTP_TTL_MS });
       d.engine.send('code.submit', { requestId, codeRef });
-      const card = cardRow(row);
-      const r = tx([moveCard(card, 'saved', card.payload as unknown as SecretPayload)]);
+      const r = tx([moveCard(box.card, 'saved', box.p)]);
       if (r.result.ok) emitCards(r.effects.cardIds);
       return ok(undefined);
     },
@@ -183,8 +190,8 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
       // 05-2 §5.8.6 "Groups: never": a Secret box is never posted in a group (the composer offers no Move there).
       const chat = d.db.prepare('SELECT kind FROM chats WHERE id = ?').get(chatId) as { kind: string } | undefined;
       if (!chat || chat.kind === 'group') return fail('VALIDATION');
-      // 05-2 §5.9.4 tech log line (no value).
-      console.info(`paste catcher shown: ${slot}, choice: move`);
+      // 05-2 §5.9.4 tech log line (no value), through the one log sink (08-3 §19.1).
+      logEvent({ lvl: 'info', mod: 'composer', evt: 'paste catcher shown', ids: { chatId }, kind: `${slot}, choice: move` });
       // A code goes into the code box foo already asked with, when there is one (P16 fires only after foo asked).
       if (o.kind === 'otp') {
         const open = d.db
@@ -203,6 +210,8 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
         why: '',
         fields: o.fields,
         ...(o.vaultName ? { vaultName: o.vaultName } : {}),
+        // 08-1 §4.5 / §3.2: a code box carries the `requestId` its `code:submit` names; a box this Move posts answers itself.
+        ...(o.kind === 'otp' ? { requestId: cardId } : {}),
       };
       const off = o.kind === 'otp' ? null : d.vault.off();
       if (off) payload.vaultOff = off;
@@ -228,7 +237,7 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
         },
       ]);
       if (!r.result.ok) return r.result as Result<never>;
-      const card = getCard(d.db, cardId)!;
+      const card = getCard(d.db, cardId)!.card;
       d.emitCard(card);
       d.emitMessage(messageId);
       d.emitChat(chatId);

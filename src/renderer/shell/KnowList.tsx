@@ -1,24 +1,18 @@
 // Spec: 03-shell-2 §3.7.3.3 (What I know: label per chat kind; up to 3 facts most recently used, then newest; bordered tile with
 // "You said · {d Mon}" / "I guessed · {reason}" meta and an "Edit" link → Memory in edit mode; "See all ({n})" → Memory; empty
-// line), §3.7.4 (foo: general facts; helper: its notes; group: not shown, GroupMembers takes its place).
+// line), §3.7.4 (foo: general facts; helper: its notes; group: not shown, GroupMembers takes its place). M6 T6: the tile list
+// reloads on `memory:changed` (CR-0010: no memory store slice; the panel subscribes itself).
 import { useEffect, useMemo, useState } from 'react';
 import { t } from '../../shared/copy/t';
-import { formatDate } from '../../shared/format';
 import { TID } from '../../shared/testids';
 import type { ChatRow, MemoryFactView } from '../../shared/types';
-import { invoke } from '../ipc/client';
 import { navigate, useStore } from '../store/index';
 import { selectHelper } from '../store/helpers';
 import { selectNow } from '../store/live';
 import { selectTimeZone } from '../store/settings';
 import styles from './KnowList.module.css';
-import { knowFacts } from './panelData';
+import { dayMonth, knowFacts, watchKnow } from './panelData';
 import section from './PanelSection.module.css';
-
-/** F19.3 "d Mon" ("3 Oct"; the year joins when it is not this year): the `date` form without its weekday. */
-export function dayMonth(at: number, now: number, timeZone: string): string {
-  return formatDate(at, 'date', { now, timeZone }).replace(/^\S+\s/, '');
-}
 
 export function KnowList({ chat }: { chat: ChatRow }) {
   const timeZone = useStore(selectTimeZone);
@@ -26,15 +20,7 @@ export function KnowList({ chat }: { chat: ChatRow }) {
   const now = useStore(selectNow);
   const [facts, setFacts] = useState<MemoryFactView[]>([]);
 
-  useEffect(() => {
-    let live = true;
-    invoke('memory:list', { filter: { chip: 'all' } })
-      .then((r) => live && setFacts(r.ok ? r.value : []))
-      .catch(() => live && setFacts([]));
-    return () => {
-      live = false;
-    };
-  }, [chat.id]);
+  useEffect(() => watchKnow(setFacts), [chat.id]);
 
   const { rows, total } = useMemo(() => knowFacts(facts, chat), [facts, chat]);
   const helperName = helper?.name ?? chat.title;

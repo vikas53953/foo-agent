@@ -44,6 +44,17 @@ const INVOKES = new Set([
   'recovery:choose',
   'error:fix',
   'memory:list',
+  'memory:add',
+  'memory:edit',
+  'memory:setPrivate',
+  'memory:setKind',
+  'memory:forget',
+  'memory:undo',
+  'memory:forgetBySource',
+  'memory:forgetAll',
+  'memory:openFolder',
+  'data:export',
+  'files:pickFolder',
   'routine:list',
   'helper:list',
   'settings:get',
@@ -87,6 +98,8 @@ const EVENTS = new Set([
   'settings:changed',
   'net:state',
   'navigate',
+  'memory:changed',
+  'data:exportProgress',
 ]);
 
 const platform = ipcRenderer.sendSync('app:platform') as PlatformInfo;
@@ -118,5 +131,6 @@ const testBridge: FooTestBridge = {
   reset: () => call('test:reset'),
   jobState: (jobId, state) => call('test:jobState', { jobId, state }),
   cardSeed: (arg) => call('test:card.seed', arg),
+  memoryTidy: () => call('test:memoryTidy'),
 };
 contextBridge.exposeInMainWorld('__fooTest', testBridge);

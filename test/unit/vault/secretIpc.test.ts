@@ -152,6 +152,23 @@ describe('code:submit (X-114)', () => {
     expect(t2.mirror.handles()).toEqual([]);
   });
 
+  it('a code box the Move posts carries its own requestId, so its code reaches the engine', async () => {
+    const t2 = vaultHarness();
+    const box = val(await t2.h['secret:offer']({ chatId: 'c_1', slot: 'otp' }));
+    expect(box.payload).toMatchObject({ secretKind: 'otp', requestId: box.id });
+    val(await t2.h['code:submit']({ requestId: box.id, code: '482913' }));
+    expect(t2.sent.find((s) => s.kind === 'code.submit')!.payload).toMatchObject({ requestId: box.id });
+    expect(t2.cards.at(-1)).toMatchObject({ id: box.id, state: 'saved' });
+  });
+
+  it('a code box whose payload is not a Secret box payload is refused, never misread', async () => {
+    const t2 = vaultHarness();
+    askCode(t2);
+    t2.db.prepare("UPDATE cards SET payload = json_remove(payload, '$.fields') WHERE id = 'k_1'").run();
+    expect(err(await t2.h['code:submit']({ requestId: 'rq_1', code: '123456' }))).toBe('REQUEST_GONE');
+    expect(t2.sent.some((s) => s.kind === 'code.submit')).toBe(false);
+  });
+
   it('REQUEST_GONE when no box asked, or the engine is gone', async () => {
     const t2 = vaultHarness();
     expect(err(await t2.h['code:submit']({ requestId: 'rq_1', code: '123456' }))).toBe('REQUEST_GONE');

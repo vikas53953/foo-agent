@@ -6,6 +6,7 @@ import {
   BP_M2,
   BP_M4,
   BP_M5,
+  BP_M6,
   CHAPTER_MILESTONE,
   EARLY_STEPS,
   STEP_MILESTONE,
@@ -22,7 +23,7 @@ describe('golden manifest', () => {
       uxChapters: 25,
       uxSteps: 245,
       uxFrames: 490,
-      bp: BP.length + BP_M2.length + BP_M4.length + BP_M5.length,
+      bp: BP.length + BP_M2.length + BP_M4.length + BP_M5.length + BP_M6.length,
     });
     expect(manifest.ux).toHaveLength(245);
     expect(new Set(manifest.ux.map((e) => e.id)).size).toBe(245);
@@ -43,7 +44,7 @@ describe('golden manifest', () => {
     for (const s of manifest.superseded) expect(manifest.ux.find((e) => e.id === s.id)?.superseded?.decision).toBe(s.decision);
   });
   it('fixes the BP ids for M1 with selectors and spec sections', () => {
-    expect(manifest.bp).toEqual([...BP, ...BP_M2, ...BP_M4, ...BP_M5]);
+    expect(manifest.bp).toEqual([...BP, ...BP_M2, ...BP_M4, ...BP_M5, ...BP_M6]);
     const ids = manifest.bp.map((b) => b.id);
     for (const id of ['BP-APP-L', 'BP-APP-M', 'BP-APP-R', 'BP-ANAT-L', 'BP-ANAT-M', 'BP-ANAT-S', 'BP-ANAT-XS']) expect(ids).toContain(id);
     for (const b of BP) {
@@ -68,6 +69,8 @@ describe('golden manifest', () => {
     );
   });
   it('CR-0008 adds the six M4 card refs and the M4 early UX-23 / UX-05 steps', () => {
+    // CR-0010: the M6 refs.
+    expect(BP_M6.map((b) => b.id)).toEqual(['BP-CARD-16', 'BP-SCR-09']);
     expect(BP_M4.map((b) => b.id)).toEqual(['BP-CARD-02', 'BP-CARD-12', 'BP-CARD-15', 'BP-CARD-18', 'BP-CARD-19', 'BP-CARD-20']);
     for (const b of BP_M4) {
       expect(b.milestone).toBe('M4');

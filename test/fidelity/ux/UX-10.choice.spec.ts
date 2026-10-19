@@ -9,8 +9,13 @@
 // Drawing-vs-app gaps (R1/R2 disputes go to a CR, never into code):
 // - UX-10-01: the checklist's rows are catalogue phrases (08-4 §26.1): "Kept 3 flights that fit your times", not the drawn
 //   "Kept 3 that fit"; the Trips chat also holds its seeded bubbles and the flights job of the ux-world.
-// - UX-10-02: its hl is the memory chip "Used: hates early flights ✕" (05-3 §5.17), built in M6 (CR-0009 G-M5-26), so M5
-//   checks the step's words here but captures no UX-10-02 frame.
+// - UX-10-02: its hl is the memory chip "Used: hates early flights ✕" (05-3 §5.17), built in M6 T5 (CR-0009 G-M5-26).
+//   The ux-world's fact reads "Likes beach stays, hates early flights" (03-shell-2 §3.6.2.1), so the step adds the drawn
+//   fact "hates early flights" through Memory's own add (`memory:add`) and the fake AI's ask names it in `usedMemoryIds`;
+//   the script is written once that id is known, before the first AI turn. The chip is a marker row under the card, as
+//   the drawing, 05-3 §5.17.1 ("a marker message") and 08-3 §12.5 ("under the reply") have it; 05-1 §5.3.1's sketch puts
+//   it in the card's bottom row. Its fill is §5.17.1's `--bg-sunken` / `--fg-2` where the drawing tints it accent (R3), and
+//   the ✕ is the `Dismiss` icon, not a text "✕" (R1). All three go to the CR-0010 addendum.
 // - UX-10-04: the summary carries the whole option label, price included ("10:15 AM · IndiGo · ₹5,240"), as 05-1 §5.3.2
 //   "{question} → {answer}" says; the drawing shortens it to "10:15 AM · IndiGo".
 // - UX-10-05: the drawing's "Back · Next" is superseded by 05-1 §5.3.1 (no Next; Back from question 2), so question 1 shows
@@ -19,7 +24,8 @@ import { expect, test, type Locator, type Page } from '@playwright/test';
 import type {} from '../../../src/shared/ipc';
 import { t } from '../../../src/shared/copy/t';
 import { TID } from '../../../src/shared/testids';
-import { launchWithFakeAi, VERIFY_OK, type FakeLine } from '../../e2e/fakeAi';
+import { writeFileSync } from 'node:fs';
+import { fakeTurns, launchWithFakeAi, VERIFY_OK, type FakeLine } from '../../e2e/fakeAi';
 import { settleSeededJobs } from '../../e2e/m4-start';
 import { BAG_STEPS, seed, SUBSCRIPTIONS } from '../../e2e/m5-choice-seeds';
 import { byTid, captureUx, openChat, openWorld, rest, setTheme, settle, step, THEMES, windowSize } from '../capture';
@@ -31,8 +37,10 @@ const OPTIONS = [
   { label: '7:10 AM · Air India · ₹4,890', detail: 'Cheapest, leaves early' },
   { label: '1:35 PM · Akasa Air · ₹5,610' },
 ];
-const act = (decision: Record<string, unknown>) => `<say></say><act>${JSON.stringify({ decision, usedMemoryIds: [] })}</act>`;
-const SCRIPT: FakeLine[] = [
+const USED_FACT = 'hates early flights';
+const act = (decision: Record<string, unknown>, usedMemoryIds: string[] = []) =>
+  `<say></say><act>${JSON.stringify({ decision, usedMemoryIds })}</act>`;
+const script = (usedId: string): FakeLine[] => [
   VERIFY_OK,
   {
     match: { purpose: 'intake', promptIncludes: ASK },
@@ -52,7 +60,7 @@ const SCRIPT: FakeLine[] = [
   },
   { match: { purpose: 'step' }, reply: act({ kind: 'step_done', idx: 0 }), delayMs: 500 },
   { match: { purpose: 'step' }, reply: act({ kind: 'step_done', idx: 1 }), delayMs: 500 },
-  { match: { purpose: 'step' }, reply: act({ kind: 'ask', card: { question: QUESTION, options: OPTIONS } }), delayMs: 500 },
+  { match: { purpose: 'step' }, reply: act({ kind: 'ask', card: { question: QUESTION, options: OPTIONS } }, [usedId]), delayMs: 500 },
   // After the answer the job carries on (held, so it stays Working while captured).
   { match: { purpose: 'step' }, reply: act({ kind: 'step_done', idx: 2 }), delayMs: 3_600_000 },
 ];
@@ -86,10 +94,21 @@ async function shoot(page: Page, id: string, sel: string): Promise<void> {
 
 test('UX-10 · Choices: steps UX-10-01 to UX-10-06, light and dark', async () => {
   test.setTimeout(300_000);
-  const { app } = await launchWithFakeAi(SCRIPT);
+  const run = await launchWithFakeAi(script(''));
+  const { app } = run;
   const page = await app.firstWindow();
   const refs = await openWorld(app, page);
   await settleSeededJobs(page, refs);
+  // UX-10-02's fact, then the script that names it (the fake reads its script on the first turn).
+  const added = await page.evaluate((text) => window.foo.invoke('memory:add', { text }), USED_FACT);
+  if (!added.ok) throw new Error(`memory:add failed: ${added.error.kind}`);
+  expect(fakeTurns(run.dirs)).toEqual([]);
+  writeFileSync(
+    run.script,
+    script(added.value.id)
+      .map((l) => JSON.stringify(l))
+      .join('\n') + '\n',
+  );
   await windowSize(app, page, 1280, 800);
   await openChat(page, 'Trips');
   const log = page.getByTestId(TID.threadLog);
@@ -122,8 +141,15 @@ test('UX-10 · Choices: steps UX-10-01 to UX-10-06, light and dark', async () =>
     await expect(choice.getByTestId(TID.cardChoiceSomethingElse)).toHaveText(t('cards.choice.something_else'));
     await expect(choice.getByTestId(TID.cardChoiceSkip)).toHaveText(t('cards.choice.skip'));
     expect(s.s).toContain('Something else… · Skip');
+    // The memory the ask used, a chip under the card (08-3 §12.5); ✕ would forget it (05-3 §5.17.1).
+    const chip = log.locator(`${byTid(TID.threadMarker)}[data-state="memory"]`);
+    await expect(chip).toHaveText(`Used: ${USED_FACT}`);
+    expect(s.s).toContain(`Chip: "Used: ${USED_FACT} ✕"`);
+    await expect(chip.getByTestId(TID.threadMemoryForget)).toHaveAccessibleName(t('memory_chip.button.forget'));
+    await expect(chip).toHaveCount(1);
     // f: no bubble repeats an option.
     await expect(log.locator(byTid(TID.bubbleFoo), { hasText: 'Air India' })).toHaveCount(0);
+    await shoot(page, 'UX-10-02', `${byTid(TID.threadMarker)}[data-state="memory"]`);
   });
 
   await test.step('UX-10-03 · "1" in the message box, the send button blue', async () => {

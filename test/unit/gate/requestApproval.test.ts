@@ -128,6 +128,11 @@ describe('verifyRequestApproval (08-4 §28.1)', () => {
     expect(parsed.ok && parsed.draft.fields.when).toEqual({ start: 42, tz: 'Asia/Kolkata' });
   });
 
+  it('evidence may only name a field of ApprovalFields (the schema types it; no cast)', () => {
+    const bad = draft({ evidence: [{ field: 'notAField', toolCallId: 'tc_1', quote: 'Total ₹2,400', ref: 'e12' }] });
+    expect(verifyRequestApproval(bad, snap())).toMatchObject({ ok: false, reason: 'APPROVAL_EVIDENCE', why: 'schema' });
+  });
+
   it('helpers: amountIn and registrableDomain', () => {
     expect(amountIn('Total ₹1,23,450.50 incl. tax')).toBe(12_345_050);
     expect(amountIn('no money here')).toBeNull();
