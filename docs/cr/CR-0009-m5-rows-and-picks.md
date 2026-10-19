@@ -195,3 +195,13 @@ batch independent review (Fable) checks them before the milestone PR; until then
     to a JSON leaf that is exactly a foo id (08-0 §E.7 `{prefix}_{UUIDv7}`, prefixes of 08-1 §0.6). Every id is 39+
     hex characters and passed P17, so stored card payloads, activity fields and tool calls held `[hidden]` in place of
     their ids. An id inside a longer string gets no exemption. `src/main/store/writeRedacted.ts`. Pending review.
+
+### Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`)
+
+| Ids        | Checks | Drawing                                                   | Spec (wins)                                                         |
+| ---------- | ------ | --------------------------------------------------------- | ------------------------------------------------------------------- |
+| BP-CARD-08 | r1, r2 | 351 px sketch, emoji, a "Show" text eye, value half shown | 05-2 §5.8.1 / §5.8.5: 440 px card, icon eye, field fully masked     |
+| BP-CARD-09 | r1, r2 | "Remove it" with no body                                  | 04-2 §22.4: "Move to secret box" / "Send anyway" plus the body line |
+
+The app follows the spec; the Blueprint sketches predate those sections. Expected to fail until the spec-keeper redraws
+them. Pending the batch review.
