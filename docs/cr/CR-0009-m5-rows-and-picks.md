@@ -153,7 +153,13 @@ Draft undo).
 From the M5 build (§(g), batch review 2026-10-19): G-M5-32 (b) `{area}` and (d) buttons after text lines; G-M5-34 `{job}`
 noun vs running-phrase title; HELD → SUPERSEDED on a steer (M5-T8-09 item 4: the machine has no such edge, the steer
 waits); `cards.secret.line.no_kind` (G-M5-21) is copy outside the 08-4 tables; 08-4 §26.8 item 6 deferred to M9
-(G-M5-23b); chrono-node before M9 book cards (G-M5-32 (c)).
+(G-M5-23b); chrono-node before M9 book cards (G-M5-32 (c)). Close-out copy audit: the stop line's [ Search again ] (AT-034,
+05-1 §5.3.2) and the Skip-on-irreversible question ([ Decide later ] [ Stop it ]) need the same message-button contract
+as G-M5-32 (d), so M5 posts the lines without them and Skip takes Best fit (an irreversible pick still opens its
+Approval card); 08-4 §26.5 supersedes on a steer ("you changed the plan") where 05-1 §5.3.4 asks again
+(`cards.choice.summary.asked_again`) and 05-2 §5.7.2 updates a Draft in place (`cards.draft.line.updating`): M5 follows
+08-4. The keys `cards.common.{gated_typed_yes,no_answer_footer,ask_again}` are removed: they duplicate
+`thread.approval_typed.approve`, the footer inside `cards.approval.footer.do`, and the card-level `button.ask_again`.
 
 ## (f) Independent review
 
