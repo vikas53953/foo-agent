@@ -259,6 +259,12 @@ test('UX-23 · When things go wrong: steps UX-23-01 to UX-23-06, UX-23-09 and UX
     await openChat(page, 'Trips');
     const log = page.getByTestId(TID.threadLog);
     const card = log.getByTestId(TID.cardError).filter({ hasText: title }).last();
+    // The relaunch rebuilds from the job mirrors before the card is written (slower on the Windows runner), and the log
+    // is virtual: keep the newest row in view until the recovery card is there.
+    await expect(async () => {
+      await log.evaluate((el) => (el.scrollTop = el.scrollHeight));
+      await expect(card).toBeVisible({ timeout: 2_000 });
+    }).toPass({ timeout: 45_000 });
     await expect(card).toContainText(t('errors.crash_recovery.what_is_safe', { job: title, n: 2, of: 4 }));
     await expect(card).toContainText(words!.split('.')[0]!);
     await expect(card.getByTestId(TID.cardErrorFix)).toHaveText(t('errors.crash_recovery.button'));

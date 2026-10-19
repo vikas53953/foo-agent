@@ -78,17 +78,20 @@ async function clearField(page: Page): Promise<void> {
 }
 
 /**
- * The thread at its newest row, with the Goa stay approval in view so the pending-card strip (BP-COMP-07's state) is
- * gone. Row heights settle after a scroll (virtual list), so scroll again until the strip stays hidden.
+ * The thread at its newest row with the Goa stay approval in view, so the pending-card strip (BP-COMP-07's state) is gone.
+ * How far the approval sits from the bottom depends on the window (the Windows runner's log is shorter), so when the strip
+ * still shows at the bottom, its Show button brings the card into view, as a user would (04-2 §23.4).
  */
 async function atNewest(page: Page): Promise<void> {
+  await page.getByTestId(TID.threadLog).evaluate(async (el) => {
+    el.scrollTop = el.scrollHeight;
+    await new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
+    el.scrollTop = el.scrollHeight;
+  });
+  const pending = page.getByTestId(TID.composerPending);
   await expect(async () => {
-    await page.getByTestId(TID.threadLog).evaluate(async (el) => {
-      el.scrollTop = el.scrollHeight;
-      await new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
-      el.scrollTop = el.scrollHeight;
-    });
-    await expect(page.getByTestId(TID.composerPending)).toHaveCount(0, { timeout: 1_000 });
+    if (await pending.count()) await page.getByTestId(TID.composerPendingShow).click();
+    await expect(pending).toHaveCount(0, { timeout: 1_500 });
   }).toPass({ timeout: 20_000 });
 }
 
