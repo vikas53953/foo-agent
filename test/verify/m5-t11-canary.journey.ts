@@ -9,7 +9,7 @@ import { join } from 'node:path';
 import type { Verify } from '../../scripts/foo-verify';
 import { fakeTurns } from '../e2e/fakeAi';
 import { rest, setTheme, settle } from '../fidelity/capture';
-import { CANARY_AI, driveCanaries, openCanaryWorld, scanRun, untilAiTurns } from '../canary/drive';
+import { aiRequestTexts, CANARY_AI, captureTexts, driveCanaries, openCanaryWorld, scanRun, untilAiTurns } from '../canary/drive';
 import { summary, writeReport, type TextSource } from '../canary/scan';
 
 export default async function journey(v: Verify): Promise<void> {
@@ -28,8 +28,7 @@ export default async function journey(v: Verify): Promise<void> {
     await settle(page);
     await v.shot(name);
     // The DOM the picture was taken from (G-M5-35: M5 searches it instead of OCR).
-    texts.push({ source: 'dom', label: name, text: await page.content() });
-    texts.push({ source: 'dom-text', label: name, text: await page.evaluate(() => document.body.innerText) });
+    texts.push(...(await captureTexts(page, name)));
   });
   v.note('AI key moved and saved, card saved (CVV typed, never saved), login saved, code used, three "Send anyway" messages');
   // Read from this run's own data folder (the env above), where the fake AI records each request.
@@ -37,11 +36,13 @@ export default async function journey(v: Verify): Promise<void> {
   await untilAiTurns(page, () => turns().length, 3);
   await app.close();
 
-  for (const t of fakeTurns(dirs)) texts.push({ source: 'ai-request', label: t.turnId, text: t.prompt });
+  texts.push(...aiRequestTexts(fakeTurns(dirs)));
   texts.push({ source: 'process-output', label: 'stdout+stderr', text: output.join('') });
   const report = scanRun(dirs, texts);
   const file = writeReport(report);
   v.note(summary(report).split('\n')[0]!);
   v.note(`searched: ${JSON.stringify(report.scanned.byRoot)} files, texts ${JSON.stringify(report.scanned.texts)}; report ${file}`);
+  if (!report.files.some((f) => /^DATA\/(.+\/)?foo\.db$/.test(f)) || !report.files.some((f) => /^DATA\/logs\/app-[\d-]+\.log$/.test(f)))
+    throw new Error(`the search missed foo.db or the tech log: ${report.files.join(', ')}`);
   if (report.hits.length) throw new Error(summary(report));
 }

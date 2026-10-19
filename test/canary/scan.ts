@@ -68,6 +68,8 @@ export interface ScanReport {
   article: 'ART-08a';
   canaries: { kind: Canary['kind']; forms: number }[];
   scanned: { files: number; bytes: number; byRoot: Record<string, number>; texts: Record<string, number> };
+  /** Every file searched, as `ROOT/relative/path`, so a run can prove the database and the logs were in it. */
+  files: string[];
   /** Spec sources this run could not search yet, with the milestone that adds them. */
   notCovered: { what: string; why: string }[];
   /** Where the canaries are allowed to be: the vault (an in-memory Credential Manager in FOO_TEST, 08-3 §22.2). */
@@ -78,6 +80,7 @@ export interface ScanReport {
 export function scan(input: ScanInput, notCovered: ScanReport['notCovered'] = []): ScanReport {
   const hits: CanaryHit[] = [];
   const byRoot: Record<string, number> = {};
+  const searched: string[] = [];
   let files = 0;
   let bytes = 0;
   for (const [name, root] of Object.entries(input.roots)) {
@@ -85,9 +88,11 @@ export function scan(input: ScanInput, notCovered: ScanReport['notCovered'] = []
     byRoot[name] = list.length;
     for (const f of list) {
       const buf = readFileSync(f);
+      const where = `${name}/${relative(root, f).split('\\').join('/')}`;
       files++;
       bytes += buf.length;
-      hits.push(...scanBuffer(buf, `${name}/${relative(root, f).split('\\').join('/')}`, input.canaries));
+      searched.push(where);
+      hits.push(...scanBuffer(buf, where, input.canaries));
     }
   }
   const texts: Record<string, number> = {};
@@ -99,6 +104,7 @@ export function scan(input: ScanInput, notCovered: ScanReport['notCovered'] = []
     article: 'ART-08a',
     canaries: input.canaries.map((c) => ({ kind: c.kind, forms: forms(c).length })),
     scanned: { files, bytes, byRoot, texts },
+    files: searched,
     notCovered,
     allowed: 'the vault only (FOO_TEST: in-memory Credential Manager stand-in, 08-3 §22.2)',
     hits,

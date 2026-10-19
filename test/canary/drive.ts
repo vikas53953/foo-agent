@@ -22,7 +22,35 @@ export const NOT_COVERED_M5: ScanReport['notCovered'] = [
   { what: 'toasts', why: 'Windows toasts are M11; in M5 a toast request is only a tech-log line, which is searched' },
   { what: 'crash reports', why: 'crashReporter (08-3 §19.2) starts in a later milestone; {DATA}/logs/crashes is searched if present' },
   { what: 'OCR of screenshots and live-view frames', why: 'M5 searches the DOM at each capture (G-M5-35); OCR and live view come later' },
+  { what: 'a job that uses the key (vault.use → AI request header)', why: 'no real AI call in M5; the fake AI never reads the key' },
+  { what: '{LOCAL}', why: 'searched, but M5 writes nothing there (caches and the voice pack come later)' },
 ];
+
+/**
+ * What one picture shows, as text: the markup, the rendered text, and the value of every field that is not a password field
+ * (React sets `value` as a property, so neither the markup nor innerText holds it; an unmasked field would slip past both).
+ */
+export async function captureTexts(page: Page, label: string): Promise<TextSource[]> {
+  const [markup, rendered, values] = await Promise.all([
+    page.content(),
+    page.evaluate(() => document.body.innerText),
+    page.evaluate(() =>
+      [...document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea')]
+        .filter((el) => el.type !== 'password')
+        .map((el) => el.value)
+        .join('\n'),
+    ),
+  ]);
+  return [
+    { source: 'dom', label, text: markup },
+    { source: 'dom-text', label, text: rendered },
+    { source: 'field-values', label, text: values },
+  ];
+}
+
+/** Every request the fake AI recorded, whole (system prompt, prompt, purpose): the AI request bodies. */
+export const aiRequestTexts = (turns: { turnId: string }[]): TextSource[] =>
+  turns.map((t) => ({ source: 'ai-request', label: t.turnId, text: JSON.stringify(t) }));
 
 const RUN_ON = 400;
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));

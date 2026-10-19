@@ -5,7 +5,7 @@
 // on test/articles/ART-08a.test.ts (its trace row); this file is the app half.
 import { expect, test } from '@playwright/test';
 import { fakeTurns, launchWithFakeAi } from './fakeAi';
-import { CANARY_AI, driveCanaries, openCanaryWorld, scanRun, untilAiTurns } from '../canary/drive';
+import { aiRequestTexts, CANARY_AI, captureTexts, driveCanaries, openCanaryWorld, scanRun, untilAiTurns } from '../canary/drive';
 import { summary, writeReport, type TextSource } from '../canary/scan';
 
 test('Article 8 canary scan: 0 canary hits after the M5 secret journeys (10-2 §D)', async () => {
@@ -19,19 +19,21 @@ test('Article 8 canary scan: 0 canary hits after the M5 secret journeys (10-2 §
 
   const texts: TextSource[] = [];
   await driveCanaries(page, async (name) => {
-    texts.push({ source: 'dom', label: name, text: await page.content() });
-    texts.push({ source: 'dom-text', label: name, text: await page.evaluate(() => document.body.innerText) });
+    texts.push(...(await captureTexts(page, name)));
   });
   // The three "Send anyway" messages each start an AI turn; their request bodies are part of the scan.
   await untilAiTurns(page, () => fakeTurns(dirs).filter((t) => t.purpose === 'intake').length, 3);
   await app.close();
 
-  for (const t of fakeTurns(dirs)) texts.push({ source: 'ai-request', label: t.turnId, text: t.prompt });
+  texts.push(...aiRequestTexts(fakeTurns(dirs)));
   texts.push({ source: 'process-output', label: 'stdout+stderr', text: output.join('') });
   const report = scanRun(dirs, texts);
   writeReport(report);
   console.log(summary(report));
-  expect(report.scanned.byRoot.DATA).toBeGreaterThan(0);
+  // The search reached the database and the tech log, not just some file.
+  expect(report.files.some((f) => /^DATA\/(.+\/)?foo\.db$/.test(f))).toBe(true);
+  expect(report.files.some((f) => /^DATA\/logs\/app-[\d-]+\.log$/.test(f))).toBe(true);
+  expect(report.scanned.texts['field-values']).toBeGreaterThan(0);
   expect(report.scanned.texts['ai-request']).toBeGreaterThanOrEqual(3);
   expect(report.hits).toEqual([]);
 });
