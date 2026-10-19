@@ -1,0 +1,117 @@
+{
+  "id": "BP-MSG-04",
+  "theme": "dark",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0003",
+    "checks": [
+      "r1",
+      "r2"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "Today,",
+        "Fri",
+        "16",
+        "Oct",
+        "Handed",
+        "Trips",
+        "Your",
+        "BTC",
+        "alert:",
+        "it's",
+        "at",
+        "₹54,80,000",
+        "(54.8",
+        "lakh).",
+        "11:02",
+        "AM",
+        "▶",
+        "0:14"
+      ],
+      "extra": [
+        "Fares",
+        "Goa",
+        "for",
+        "Sat",
+        "12",
+        "Dec",
+        "dropped",
+        "by",
+        "₹600",
+        "since",
+        "this",
+        "morning.",
+        "10:31",
+        "PM"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-MSG-04",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 350,
+          "height": 260
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 553,
+          "height": 88
+        },
+        "dPos": 0,
+        "dSize": 203,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-MSG-04",
+        "ref": "#202028",
+        "app": "#202028",
+        "deltaE": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.04525974025974026,
+    "diffPixels": 1394,
+    "total": 30800,
+    "sizeMismatch": {
+      "a": [
+        350,
+        260
+      ],
+      "b": [
+        553,
+        88
+      ]
+    },
+    "heatmap": "BP-MSG-04.dark.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-MSG-04.dark.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-MSG-04.dark.png"
+}
