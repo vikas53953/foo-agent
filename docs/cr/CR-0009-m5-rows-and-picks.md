@@ -275,6 +275,11 @@ himself.
   04-2 §23.4), so the three agree. Choice covers tiles in `asking`; sign-in counts only in `waiting` (`live` = the user is
   signing in already); expired and deleted cards never count. Copy key `thread.jump.none` "Nothing needs you here."
   (05-1 §0 verbatim). Pending review.
+- **G-M5-37** (T13) UX-12-05 / UX-12-06 are captured against the seeded booking card with no new ApprovalFields; the
+  gaps are Tier R disputes (r1, r2, r4). The drawn area ("Marine Drive") and "Booked under" row are in 05-2 §5.5.1 /
+  §5.5.2 but have no field (08-2 §9.3): that is G-M5-32 (b), a spec-keeper item, not spec over drawing. The rest is
+  spec over drawing: the "Free to cancel until" line and footer expiry (05-2 §5.5.1), 40 px buttons, and Art. 6's "Tap
+  Approve on the card so I know it's really you." Pending review.
 - **G-M5-35** (T11) ART-08a in M5 searches the DOM captured with each picture instead of OCR of the picture (10-2 §D says
   "OCR of all screenshots and live-view frames"). 05-2 §5.8.5 already keeps a value out of the markup (a property, never a
   `value` attribute), and the fields are masked, so the DOM text is the stricter search for what M5 draws; OCR, live-view
@@ -319,6 +324,7 @@ outcome: 'went_through' | 'did_not', resolvedBy }`. Main's 15 min `no_proof` mov
 | UX-16-06                                   | r1, r2         | gmail.com / company.com addresses; [ Edit ] and a header countdown                                                                                                  | example.com fixtures (public repo); 05-2 §5.7.1–§5.7.2 [ Discard ] and a --t-small pending line; M5 seeds the cards (no Gmail connector until M8); X-79 [ Change ] (step superseded) |
 | UX-16-04                                   | r1, r2, r3, r4 | a dark "Sending… Undo" bar floating over the chat                                                                                                                   | 05-2 §5.7.2: the card's button row becomes "Sending in {5}…" + Secondary [ Undo ] ("Sending…" when the 5 s close)                                                                    |
 | BP-CARD-07                                 | r1, r2         | an X post draft ("X post", "Open in X", no To/Subject); 351 px mini panel                                                                                           | 05-2 §5.7.1: M5 builds the email base (To, Subject, pending line, footer, [ Send email ] [ Change ] [ Discard ]); the X and WhatsApp variants are M8; 440 px wide                    |
+| UX-12-05, UX-12-06                         | r1, r2, r4     | "Marine Drive" area, a "Booked under" name + phone row; Free to cancel as a money row; expiry in the header; [ Book table ] 28 px; "Tap Book table on the card…"    | area, Booked under: G-M5-32 (b) spec-keeper item (no ApprovalFields field, 08-2 §9.3); 05-2 §5.5.1 cancel line, footer expiry, --btn-h 40 px; Art. 6 "Tap Approve on the card…"      |
 
 The app follows the spec; the Blueprint sketches predate those sections. Expected to fail until the spec-keeper redraws
 them. Pending the batch review.
