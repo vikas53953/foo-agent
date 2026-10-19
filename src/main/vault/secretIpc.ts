@@ -45,9 +45,19 @@ const getCard = (db: Db, id: string): CardRow | null => {
 };
 
 /** 04-2 §22.4 suggested names → the Secret box variant and title (G-M5-21). */
-const OFFER: Record<SecretOfferSlot, { kind: SecretCardKind; title: () => string; fields: SecretPayload['fields'] }> = {
-  openai: { kind: 'ai_key', title: () => t('composer.paste.name.openai'), fields: [{ key: 'value', label: '', masked: true }] },
-  google: { kind: 'ai_key', title: () => t('composer.paste.name.google'), fields: [{ key: 'value', label: '', masked: true }] },
+const OFFER: Record<SecretOfferSlot, { kind: SecretCardKind; vaultName?: string; title: () => string; fields: SecretPayload['fields'] }> = {
+  openai: {
+    kind: 'ai_key',
+    vaultName: 'openai-key',
+    title: () => t('composer.paste.name.openai'),
+    fields: [{ key: 'value', label: '', masked: true }],
+  },
+  google: {
+    kind: 'ai_key',
+    vaultName: 'google-key',
+    title: () => t('composer.paste.name.google'),
+    fields: [{ key: 'value', label: '', masked: true }],
+  },
   card: {
     kind: 'card',
     title: () => t('composer.paste.name.card'),
@@ -118,7 +128,7 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
       const ops: DbOp[] = [activity(replaced ? 'secret_replaced' : 'secret_saved', label)];
       // Replace from a saved row keeps the card `saved` with the new date (05-2 §5.8.3 Replaced).
       if (card && ['asking', 'rejected', 'saved'].includes(card.state)) {
-        const payload = { ...(card.payload as unknown as SecretPayload), savedAt, target };
+        const payload = { ...(card.payload as unknown as SecretPayload), savedAt, target, label };
         delete payload.removedAt;
         ops.push(moveCard(card, 'saved', payload));
       }
@@ -167,6 +177,8 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
 
     'secret:offer': ({ chatId, slot }) => {
       const o = OFFER[slot];
+      // 05-2 §5.9.4 tech log line (no value).
+      console.info(`paste catcher shown: ${slot}, choice: move`);
       // A code goes into the code box foo already asked with, when there is one (P16 fires only after foo asked).
       if (o.kind === 'otp') {
         const open = d.db
@@ -179,7 +191,13 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
       const now = d.now();
       const cardId = newId('k', now);
       const messageId = newId('m', now);
-      const payload: SecretPayload = { secretKind: o.kind, name: o.title(), why: '', fields: o.fields };
+      const payload: SecretPayload = {
+        secretKind: o.kind,
+        name: o.title(),
+        why: '',
+        fields: o.fields,
+        ...(o.vaultName ? { vaultName: o.vaultName } : {}),
+      };
       const r = tx([
         {
           op: 'insert',

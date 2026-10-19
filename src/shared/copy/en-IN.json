@@ -1025,5 +1025,9 @@
   "cards.common.private_things.your_address": "Your address",
   "cards.common.private_things.their_address": "{name}’s address",
   "cards.common.private_things.password": "Your password",
-  "cards.common.private_things.signin": "The sign-in"
+  "cards.common.private_things.signin": "The sign-in",
+  "dialog.c_22.title": "Remove your saved {name}?",
+  "dialog.c_22.body": "I’ll ask you for it again the next time a job needs it.",
+  "dialog.c_22.primary": "Remove",
+  "dialog.c_22.secondary": "Cancel"
 }

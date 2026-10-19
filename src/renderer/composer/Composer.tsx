@@ -10,7 +10,10 @@ import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useSta
 import { createPortal } from 'react-dom';
 import { COUNTER_FROM, ACCEPT, isLongPaste, TEXT_LIMIT } from '../../shared/attachmentRules';
 import { t } from '../../shared/copy/t';
-import { askedForCode, findSecrets, type CheckContext } from '../../shared/redactor';
+import { askedForCode, findSecrets, suggestedNameSlot, type CheckContext } from '../../shared/redactor';
+// M5 T2
+import { offerSlot } from '../cards/SecretBox';
+import { prefillSecret } from '../cards/secretPrefill';
 import { TID } from '../../shared/testids';
 import type { ChatRow, ComposerBannerType, HelperRow } from '../../shared/types';
 import { announce } from '../a11y/announce';
@@ -53,6 +56,7 @@ import {
   splitAt,
   textLength,
   tidy,
+  type MaskValue,
   type Segment,
 } from './fieldModel';
 import { MentionMenu, MENTION_LIST_ID, mentionRowId } from './MentionMenu';
@@ -136,6 +140,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
   const [pendingInView, setPendingInView] = useState(true);
   const [linkPreviewRemoved, setLinkPreviewRemoved] = useState(false);
   const touched = useRef(false);
+  // M5 T2: the caught values behind the masks, in memory only, for "Move to secret box" (04-2 §22.4).
+  const maskValues = useRef(new Map<string, MaskValue>());
   const typedTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const lastKeystroke = useRef(0);
   const mentionDismissedAt = useRef<number | null>(null);
@@ -192,6 +198,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
     const hits = findSecrets(checkText(segsRef.current), ctx);
     if (hits.length) {
       const masked = maskHits(segsRef.current, hits, newMaskId);
+      for (const [id, v] of masked.masks) maskValues.current.set(id, v);
       writeField(masked.segs);
       caught = true;
     }
@@ -542,14 +549,24 @@ export function Composer({ chat }: { chat: ChatRow }) {
 
   // ---------------------------------------------------------------- the paste catcher (§22.4)
   const moveToSecretBox = useCallback(() => {
-    // The span is removed from the field; the Secret box card (C7) it would carry the value to arrives in M5.
-    // GAP: GAPS.md 2026-10-17 "no Secret box before M5"
+    // The span is removed from the field and a Secret box card (C7) is posted in this chat with the value in its masked
+    // field (M5 T2). A password or an unknown key has no vault kind yet, so it is only removed (G-M5-21).
+    const first = segsRef.current.find((x): x is Extract<Segment, { kind: 'mask' }> => x.kind === 'mask');
+    const moved = first ? maskValues.current.get(first.id) : undefined;
+    const slot = moved ? offerSlot(suggestedNameSlot(moved.hit)) : null;
+    maskValues.current.clear();
+    if (moved && slot)
+      void invoke('secret:offer', { chatId, slot })
+        .then((r) => {
+          if (r.ok) prefillSecret(r.value.id, moved.value);
+        })
+        .catch(() => undefined);
     writeField(dropMasks(segsRef.current));
     setChips((list) => list.map((c) => (c.kind === 'pasted' ? { ...c, text: (c.text ?? '').split(MASK_CHAR).join('') } : c)));
     setCatchOpen(false);
     touched.current = true;
     focusField();
-  }, [focusField, setChips, writeField]);
+  }, [chatId, focusField, setChips, writeField]);
 
   const dismissCatch = useCallback(() => {
     setCatchOpen(false);
@@ -745,6 +762,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
       const [a, rest] = splitAt(segsRef.current, sel.start);
       const [, b] = splitAt(rest, sel.end - sel.start);
       const masked = maskHits([{ kind: 'text', text }], hits, newMaskId);
+      for (const [id, v] of masked.masks) maskValues.current.set(id, v);
       const head = tidy([...a, ...masked.segs]);
       writeField(tidy([...head, ...b]), checkText(head).length);
       setCatchOpen(true);
