@@ -12,6 +12,7 @@ import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
 import type { CardAnswer, CardRow, ChoicePayload } from '../../shared/types';
 import type { DbOp, MainLink } from '../protocol';
+import { answerOf, resolveCardOp } from './cardAnswer';
 import { isSensitive } from './sensitive';
 
 /** §12.5.1: a Yes lets the fact into that group's prompts for 24 hours. */
@@ -127,19 +128,11 @@ export class MemoryShare {
     const share = card?.payload.share as { factId?: unknown; groupChatId?: unknown } | undefined;
     if (card?.type !== 'choice' || card.payload.purpose !== 'memory_confirm' || !share) return false;
     const now = this.d.clock.now();
-    const answer: CardAnswer = a.answer ?? (a.choice ? { optionId: a.choice } : { skip: true });
+    const answer = answerOf(a);
     const choice = 'optionId' in answer ? answer.optionId : undefined;
     // Already answered (a second tap, or a stale one): nothing more to write. expectRev stops a racing second answer.
     if (card.state !== 'asking') return true;
-    const resolve: DbOp[] = [
-      {
-        op: 'update',
-        table: 'cards',
-        id: card.id,
-        set: { state: 'skip' in answer ? 'skipped' : 'answered', answer, resolved_by: a.resolvedBy ?? 'tap', resolved_at: now },
-        expectRev: card.rev,
-      },
-    ];
+    const resolve: DbOp[] = [resolveCardOp(card, answer, a.resolvedBy, now)];
     const factId = String(share.factId ?? '');
     const groupChatId = String(share.groupChatId ?? '');
     if (!factId || !groupChatId || (choice !== 'o1' && choice !== 'o2')) {

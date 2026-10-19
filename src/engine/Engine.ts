@@ -27,6 +27,7 @@ import { StyleStatsRunner } from './memory/styleStats';
 import { MemoryTidy, TidyActSchema, tidyTurnVia } from './memory/tidy';
 import { newNonce } from '../shared/canon';
 import { isChipToken, MemoryChips } from './memory/chips';
+import { answerOf, resolveCardOp } from './memory/cardAnswer';
 import { IntakeMemory } from './memory/intakeMemory';
 import { MemoryReview, MemoryReviewActSchema } from './memory/review';
 import { memoryTools } from './tools/memoryTools';
@@ -295,14 +296,7 @@ export class Engine {
     const card = await this.query<CardRow>('cardById', a.cardId);
     if (!card || card.jobId !== null || card.type !== 'choice' || card.payload.purpose !== 'memory_confirm') return false;
     if (card.state !== 'asking') return true;
-    const answer: CardAnswer = a.answer ?? (a.choice ? { optionId: a.choice } : { skip: true });
-    const set = {
-      state: 'skip' in answer ? 'skipped' : 'answered',
-      answer,
-      resolved_by: a.resolvedBy ?? 'tap',
-      resolved_at: this.o.clock.now(),
-    };
-    await this.o.link.request<DbTxReply>('db.tx', { ops: [{ op: 'update', table: 'cards', id: card.id, set, expectRev: card.rev }] });
+    await this.o.link.request<DbTxReply>('db.tx', { ops: [resolveCardOp(card, answerOf(a), a.resolvedBy, this.o.clock.now())] });
     return true;
   }
 

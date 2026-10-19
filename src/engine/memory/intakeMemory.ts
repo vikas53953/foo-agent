@@ -18,6 +18,7 @@ import type { Clock } from '../../shared/clock';
 import { classifyFact, type ClassifyTurn } from './classifyFact';
 import type { MemoryChips } from './chips';
 import type { LearnOp, LearnResult } from './MemoryService';
+import { answerOf, resolveCardOp } from './cardAnswer';
 import { ftsMatch } from './retrieval';
 import { askRemember, overlap, postChoice, saveAndChip, SAID_OVERLAP, tokens, type MemoryReview } from './review';
 
@@ -167,17 +168,9 @@ export class IntakeMemory {
     const p = card?.payload as MemoryCard | undefined;
     if (!card || p?.purpose !== 'memory_confirm' || !p.memory) return false;
     if (card.state !== 'asking') return true;
-    const answer: CardAnswer = a.answer ?? (a.choice ? { optionId: a.choice as 'o1' } : { skip: true });
+    const answer = answerOf(a);
     const skipped = 'skip' in answer;
-    const r = await this.d.tx([
-      {
-        op: 'update',
-        table: 'cards',
-        id: card.id,
-        set: { state: skipped ? 'skipped' : 'answered', answer, resolved_by: a.resolvedBy, resolved_at: this.d.clock.now() },
-        expectRev: card.rev,
-      },
-    ]);
+    const r = await this.d.tx([resolveCardOp(card, answer, a.resolvedBy, this.d.clock.now())]);
     if (!r.ok || skipped || !('optionId' in answer)) return true;
     if (p.memory.op === 'remember') {
       // [ Remember ] = o1; [ Don't ] saves nothing.

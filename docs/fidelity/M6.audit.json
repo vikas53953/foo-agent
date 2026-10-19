@@ -319,7 +319,7 @@
       "group": "M6 Must pass",
       "item": "ART-15c",
       "status": "UNVERIFIABLE",
-      "manual": "manual row (10-acceptance-2): the memory folder opens in Explorer, every file is readable Markdown in Notepad, Privacy shows \"foo never uses your data to train anything.\"; foo-verify m6-t3-store and m6-t6-page show the folder and files"
+      "manual": "partial at M6 (CR-0010 G-M6-31: the Privacy sentence comes with Settings in M12/M13). Manual row (10-acceptance-2): the memory folder opens in Explorer, every file is readable Markdown in Notepad, Privacy shows \"foo never uses your data to train anything.\"; foo-verify m6-t3-store and m6-t6-page show the folder and files"
     },
     {
       "group": "M6 Fidelity exit",
