@@ -44,6 +44,7 @@ import {
   rowStatus,
   rowTone,
   SETTLE_LIMIT_MS,
+  DETECT_RETRY_MS,
   stateAfterVerify,
   upsertRow,
   VERIFY_LIMIT_MS,
@@ -211,7 +212,13 @@ function LiveFinder({ card, time }: { card: CardRow; time: CardTime }) {
 
   /** Detection (rows stream in fixed order), then a test of every AI that is ready. */
   const detect = useCallback(async () => {
-    const r = await invoke('ai:detect', {}).catch(() => null);
+    // The engine may still be starting on a first run (main then answers with no rows): rows stay Looking and detection
+    // asks again until the engine answers; a running engine always returns every rung of the ladder.
+    let r = await invoke('ai:detect', {}).catch(() => null);
+    for (let tries = 1; alive.current && !(r?.ok && r.value.length > 0) && tries * DETECT_RETRY_MS < SETTLE_LIMIT_MS; tries++) {
+      await new Promise((done) => window.setTimeout(done, DETECT_RETRY_MS));
+      r = await invoke('ai:detect', {}).catch(() => null);
+    }
     if (!alive.current) return;
     const next = rowsFromDetect(r?.ok ? r.value : []);
     setRows(next);

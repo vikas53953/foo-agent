@@ -688,7 +688,8 @@
       "s": "A card with five rows, each spinning \"Looking…\". A pill in the header says \"Step 1 of 4\".",
       "f": "Checks your PC for sign-ins and saved keys. It doesn't install anything.",
       "hl": "finder",
-      "milestone": "M12"
+      "milestone": "M12",
+      "firstTested": "M6"
     },
     {
       "id": "UX-02-02",
@@ -704,7 +705,8 @@
       "s": "Claude and ChatGPT say \"Testing…\". Gemini and a local AI aren't here. \"OpenAI key\" offers a secret box.",
       "f": "Sends \"Reply with the word ready\" to each AI it found.",
       "hl": "finder",
-      "milestone": "M12"
+      "milestone": "M12",
+      "firstTested": "M6"
     },
     {
       "id": "UX-02-03",
@@ -720,7 +722,8 @@
       "s": "Two green \"✓ works\". The message box reads \"Connect your AI first, then we can talk.\"",
       "f": "Keeps chat locked until a live test passes, so you never talk to a dead end.",
       "hl": "comp",
-      "milestone": "M12"
+      "milestone": "M12",
+      "firstTested": "M6"
     },
     {
       "id": "UX-02-04",
@@ -736,7 +739,8 @@
       "s": "\"I'll use Claude…\" with Use Claude / Pick another, and a note that this uses your Claude plan.",
       "f": "Picks Claude because it's first in the order and good at bookings. Waits for your tap.",
       "hl": "useclaude",
-      "milestone": "M12"
+      "milestone": "M12",
+      "firstTested": "M6"
     },
     {
       "id": "UX-02-05",
@@ -752,7 +756,8 @@
       "s": "\"✓ Using Claude (your AI)\". Details → Using shows \"Claude (your AI)\". The pill moves to \"Step 2 of 4\".",
       "f": "Saves Claude as your AI. Your words go only to Claude, nowhere else.",
       "hl": "using",
-      "milestone": "M12"
+      "milestone": "M12",
+      "firstTested": "M6"
     },
     {
       "id": "UX-02-06",
@@ -768,7 +773,8 @@
       "s": "\"I couldn't find an AI on this PC yet. Which one do you use?\" with sign-in choices and \"I have a key\".",
       "f": "Links to the maker's own sign-in page. It never installs anything silently.",
       "hl": "havekey",
-      "milestone": "M12"
+      "milestone": "M12",
+      "firstTested": "M6"
     },
     {
       "id": "UX-02-07",
@@ -784,7 +790,8 @@
       "s": "\"To use your own AI I need your OpenAI key. Paste it in the box below, not in the chat.\" A masked box with Save securely.",
       "f": "The key goes straight into Windows' own safe store. foo's AI only ever sees the name \"OpenAI key\".",
       "hl": "savesecure",
-      "milestone": "M12"
+      "milestone": "M12",
+      "firstTested": "M6"
     },
     {
       "id": "UX-02-08",
@@ -816,7 +823,8 @@
       "s": "\"✓ Saved securely. foo's AI never sees it.\" and \"OpenAI key ✓ works\", with a line about the ₹1,000 cap.",
       "f": "Tests the key with one real question, then turns on the AI spend meter.",
       "hl": "changecap",
-      "milestone": "M12"
+      "milestone": "M12",
+      "firstTested": "M6"
     },
     {
       "id": "UX-03-01",
@@ -4159,7 +4167,8 @@
       "s": "\"Using: Claude (your AI) · ✓ works · checked 2 min ago\" · Test now · Change. Backup AI: ChatGPT.",
       "f": "Test now sends one tiny real question.",
       "hl": "testnow",
-      "milestone": "M13"
+      "milestone": "M13",
+      "firstTested": "M6"
     },
     {
       "id": "UX-24-03",

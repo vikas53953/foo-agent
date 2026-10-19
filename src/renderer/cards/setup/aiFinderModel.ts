@@ -27,6 +27,8 @@ export interface FinderRow {
 
 export const VERIFY_LIMIT_MS = 20_000;
 export const SETTLE_LIMIT_MS = 25_000;
+/** While the engine starts, detection is asked again this often. */
+export const DETECT_RETRY_MS = 1_000;
 export const HELPER_POLL_MS = 5_000;
 export const HELPER_LIMIT_MS = 10 * 60_000;
 export const OFFLINE_RETRY_MS = 30_000;

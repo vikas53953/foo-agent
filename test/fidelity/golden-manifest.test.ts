@@ -108,6 +108,10 @@ describe('golden manifest', () => {
     // G-M5-41: the [ Search again ] step waits for the message-button contract.
     expect(choice.find((e) => e.id === 'UX-10-08')?.milestone).toBe('M13');
   });
+  it('CR-0020 runs the Find your AI steps and the Settings "Your AI" step early, labelled M6; M12 and M13 still own them', () => {
+    const early = manifest.ux.filter((e) => e.firstTested === 'M6').map((e) => [e.id, e.milestone]);
+    expect(early).toEqual([...['01', '02', '03', '04', '05', '06', '07', '09'].map((s) => [`UX-02-${s}`, 'M12']), ['UX-24-02', 'M13']]);
+  });
   it('the selectors exist in the frozen Blueprint', () => {
     const html = readFileSync(manifest.sources.bp, 'utf8');
     for (const cls of [
