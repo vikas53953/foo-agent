@@ -372,6 +372,9 @@ export interface SecretPayload {
   requestId?: string;
   sentTo?: string;
   paymentCardId?: string;
+  // M5 T2: the vault target a Save wrote (Remove and Replace name it) and when Remove ran (05-2 §5.8.2 "Removed").
+  target?: string;
+  removedAt?: number;
 }
 /** 08-5 §3.3 DraftFields (`draft:update`); `body` includes the signature text when the user kept it (X-84). */
 export interface DraftFields {

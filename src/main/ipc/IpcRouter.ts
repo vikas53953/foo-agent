@@ -264,6 +264,8 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'secret:list': empty as z.ZodType<Record<string, never>>,
   'secret:delete': z.object({ target: z.string().min(1).max(300), confirm: z.literal(true) }).strict(),
   'code:submit': z.object({ requestId: z.string().min(1).max(80), code: z.string().min(1).max(64) }).strict(),
+  // M5 T2 (G-M5-21)
+  'secret:offer': z.object({ chatId, slot: z.enum(['openai', 'google', 'card', 'otp']) }).strict(),
 };
 
 export type Handler<C extends InvokeChannel> = (req: InvokeIn[C]) => Result<InvokeOut[C]> | Promise<Result<InvokeOut[C]>>;

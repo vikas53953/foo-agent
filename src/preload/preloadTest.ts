@@ -66,6 +66,8 @@ const INVOKES = new Set([
   'secret:list',
   'secret:delete',
   'code:submit',
+  // M5 T2
+  'secret:offer',
 ]);
 const EVENTS = new Set([
   'chat:upsert',
