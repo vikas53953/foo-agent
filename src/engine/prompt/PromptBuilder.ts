@@ -77,6 +77,9 @@ export interface IntakeInput {
   attachmentText?: { fileId: string; page: number; text: string }[];
   /** ollama / LM Studio: the 24,000-char budget. */
   local?: boolean;
+  // M5
+  /** T10: after "Change plan" the old plan goes with the turn, in the part 8 form (08-2 §5.3.3; 08-4 §24.22). */
+  oldPlan?: { title: string; steps: string[] };
 }
 
 /** Purpose `step` (08-4 §24.1 step row). The runner writes part 8 (§24.22) and part 3 (§27.1, ToolLayer.catalogue). */
@@ -282,6 +285,18 @@ export class PromptBuilder {
     let turnFacts = input.turnFacts.slice(0, TURN_FACTS_MAX).map((f) => gate(this.factLine(f, tz), '5b'));
     let conversation = input.conversation.slice(-CONVERSATION_MAX).map((m) => gate(this.messageLine(m, tz, input.hour12), '7'));
     const user = gate(input.userMessage, 'message');
+    // M5 T10: the changed plan, as part 8 shows a job's plan (header, Title, Plan lines; none of its steps had started).
+    const oldPlan = input.oldPlan
+      ? gate(
+          [
+            'The job:',
+            `Title: ${input.oldPlan.title}`,
+            'Plan (version 1):',
+            ...input.oldPlan.steps.map((st, i) => `${i + 1}. [next] ${st}`),
+          ].join('\n'),
+          '8',
+        )
+      : '';
     let pages = (input.attachmentText ?? []).map((p) =>
       gate(
         `ATTACHMENT TEXT (page ${p.page}, from the user's file)\n${PromptBuilder.untrusted('file', `${p.fileId}-${p.page}`, p.text)}`,
@@ -297,6 +312,7 @@ export class PromptBuilder {
       const pr: string[] = [];
       if (turnFacts.length) pr.push(['Facts that may matter now:', ...turnFacts].join('\n'));
       if (conversation.length) pr.push(['Conversation so far:', ...conversation].join('\n'));
+      if (oldPlan) pr.push(oldPlan);
       pr.push(user);
       if (pages.length) pr.push([preface, ...pages].join('\n\n'));
       return { system: sys.join('\n\n'), prompt: pr.join('\n\n') };

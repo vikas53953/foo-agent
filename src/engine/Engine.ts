@@ -239,6 +239,7 @@ export class Engine {
           conversation,
           userMessage: i.message.textForAi ?? i.message.text,
           local: i.local,
+          ...(i.oldPlan ? { oldPlan: i.oldPlan } : {}),
         });
       },
       buildRepair: (issues) => this.prompts.buildRepair(issues).prompt,

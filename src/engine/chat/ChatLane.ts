@@ -43,6 +43,9 @@ export interface IntakeInput {
   conversation: EngineMessage[];
   message: EngineMessage;
   local: boolean;
+  // M5
+  /** T10: "Change plan": the old plan goes with this turn (08-2 §5.3.3). */
+  oldPlan?: { title: string; steps: string[] };
 }
 
 /** The reply protocol (builder B's modules, wired by Engine). */
@@ -79,6 +82,9 @@ export interface LaneJobs {
     askedText: string;
     helperId: string | null;
   }): Promise<string | null>;
+  // M5
+  /** T10: the plan the user asked to change in this chat (08-2 §5.3.3); `take` clears it. */
+  planChange?(chatId: string, take?: boolean): { title: string; steps: string[] } | null;
   /** M4 T3: the runner's branches of 08-2 §5.2 (stop word, yes-text on a tap-only card, steer, fold-which); true = handled. */
   onUserMessage?(m: { chatId: string; messageId: string; text: string }): Promise<boolean>;
 }
@@ -234,7 +240,16 @@ export class ChatLane {
 
     let built: { system: string; prompt: string } | null;
     try {
-      built = this.d.protocol.buildIntake({ settings, chat, helper, conversation, message, local: pick.billing === 'local' });
+      const oldPlan = this.d.jobs?.planChange?.(chatId) ?? null;
+      built = this.d.protocol.buildIntake({
+        settings,
+        chat,
+        helper,
+        conversation,
+        message,
+        local: pick.billing === 'local',
+        ...(oldPlan ? { oldPlan } : {}),
+      });
     } catch {
       built = null;
     }
@@ -363,6 +378,8 @@ export class ChatLane {
       return;
     }
     this.d.ai.reportOk(pick.providerId);
+    // M5 T10: the changed plan went with a turn that answered; the next message is a fresh one.
+    this.d.jobs?.planChange?.(chatId, true);
     await gate.end();
     await pending;
 

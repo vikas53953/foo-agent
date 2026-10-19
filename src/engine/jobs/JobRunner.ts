@@ -143,6 +143,13 @@ export interface CreateJobInput {
   originRef?: string | null;
 }
 
+/** M5 T10: a changed Plan card's plan, attached to the chat's next intake turn (08-2 §5.3.3). */
+export interface OldPlan {
+  title: string;
+  /** The steps as the card showed them (phrase next forms). */
+  steps: string[];
+}
+
 export interface JobCtx {
   abort: AbortController;
   asked: string;
@@ -202,6 +209,9 @@ export class JobRunner {
   readonly steering: Steer;
   readonly watchdog: Watchdog;
   private intakeHook: ((chatId: string, messageId: string) => void) | null = null;
+  // M5
+  /** T10: chat id → the plan the user asked to change; the chat's next intake turn carries it (08-2 §5.3.3). */
+  private planChanges = new Map<string, OldPlan>();
 
   constructor(private d: JobRunnerDeps) {
     const core: RunnerCore = {
@@ -250,6 +260,12 @@ export class JobRunner {
   }
   stopAll(): Promise<StopReport[]> {
     return this.track(this.stopper.stopAll());
+  }
+  /** M5 T10: the plan the user asked to change in this chat, for its next intake turn; `take` clears it once that turn ran. */
+  planChange(chatId: string, take = false): OldPlan | null {
+    const p = this.planChanges.get(chatId) ?? null;
+    if (take) this.planChanges.delete(chatId);
+    return p;
   }
   /** M5 T10: the pre-call cap check of a chat-lane turn (intake, repair, rewrite); true when the call may go. */
   allowChatCall(promptChars: number, purpose: 'intake' | 'repair' | 'rewrite'): Promise<boolean> {
@@ -824,8 +840,10 @@ export class JobRunner {
         await this.tx([{ op: 'update', table: 'cards', id: card.id, set: { state: 'go', ...resolve } }]);
         await this.enqueue(job.id);
       } else if (a.choice === 'change') {
-        // TODO(T3/M5 chat lane): "Change plan" sends the text back to an intake turn with the old plan attached (08-2 §5.3.3).
-        await this.tx([
+        // 08-2 §5.3.3 (M5 T10, CR-0008 (j) row 3): the user's next words go to an intake turn with the old plan attached, and
+        // its Plan card shows below this one (05-3 §5.12.2: the composer reads "Tell me what to change").
+        const steps = Array.isArray(card.payload.steps) ? card.payload.steps.map(String) : [];
+        const r = await this.tx([
           {
             op: 'update',
             table: 'cards',
@@ -843,6 +861,7 @@ export class JobRunner {
           ...this.badgeOp(job, 'cancelled'),
         ]);
         this.ctxs.delete(job.id);
+        if (r.ok) this.planChanges.set(job.chatId, { title: job.title, steps });
       }
       return;
     }

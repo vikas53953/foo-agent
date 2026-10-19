@@ -2,7 +2,9 @@
 // `spend:update`) and item 4 (at ≥ 80 % once per month → one line in foo's chat, 05-3 §5.21 trigger "You've used ₹{800} of
 // your ₹{1,000} AI cap this month.", `messages.why` cap_warning, 08-0 §G.17); row 5: item 4 "every AI call on a key
 // provider" (intake, repair and rewrite turns too; at the cap a message waits to send, 04 §3.3); row 10: 08-2 §5.7 steps 3–4
-// (every stop writes the `stopped_job` activity line and the J18 report, the recovery card's "Stop it" too).
+// (every stop writes the `stopped_job` activity line and the J18 report, the recovery card's "Stop it" too); row 3: 08-2
+// §5.3.3 ("Change plan" → the text goes back to an intake turn with the old plan attached) and 05-3 §5.12.2 (the new Plan
+// card shows below; the old one reads "Plan changed. See the new one below.").
 import { afterEach, describe, expect, it } from 'vitest';
 import { t } from '../../../src/shared/copy/t';
 import type { Settings } from '../../../src/shared/settings';
@@ -136,7 +138,81 @@ describe('CR-0008 (j) row 10 · "Stop it" on the recovery card writes stopped_jo
     const act = h.db.prepare("SELECT * FROM activity WHERE event = 'stopped_job'").all() as Record<string, unknown>[];
     expect(act).toHaveLength(1);
     expect(act[0]).toMatchObject({ kind: 'stopped', actor: 'user', job_id: h.job().id, outcome: 'done' });
-    const last = h.messages().filter((m) => m.author_kind === 'foo' && m.kind === 'text').at(-1);
+    const last = h
+      .messages()
+      .filter((m) => m.author_kind === 'foo' && m.kind === 'text')
+      .at(-1);
     expect(last?.text).toBe(t('thread.stop.report.nothing'));
+  });
+});
+
+describe('CR-0008 (j) row 3 · Change plan → re-intake with the old plan → a new Plan card below', () => {
+  const GOA = [
+    { phraseKey: 'look_for', slots: { what: 'Goa stays under ₹8,000' } },
+    { phraseKey: 'look_for', slots: { what: 'beach walks' } },
+  ];
+  const CHEAPER = [
+    { phraseKey: 'look_for', slots: { what: 'Goa stays under ₹5,000' } },
+    { phraseKey: 'look_for', slots: { what: 'beach walks' } },
+  ];
+
+  it('the next message carries the old plan; its job gets a new Plan card after the changed one', async () => {
+    h = jobHarness({
+      script: [
+        jobIntake(GOA, { title: 'Goa stay', estimate: { minutes: 6 }, match: 'Find a Goa stay' }),
+        jobIntake(CHEAPER, { title: 'Goa stay', estimate: { minutes: 6 }, match: 'cheaper please' }),
+      ],
+    });
+    h.userSays('Find a Goa stay');
+    await h.settle();
+    const [first] = h.cards('plan');
+    expect(first!.state).toBe('pending');
+    h.answer(String(first!.id), 'change');
+    await h.settle();
+    expect(h.cards('plan')[0]!.state).toBe('changed');
+    expect(h.jobs()[0]!.state).toBe('cancelled');
+
+    h.userSays('cheaper please');
+    await h.settle();
+    const turn = h
+      .turnsJsonl()
+      .filter((r) => r.purpose === 'intake')
+      .at(-1)!;
+    const prompt = String(turn.prompt);
+    expect(prompt).toContain(`The job:\nTitle: ${String(h.jobs()[0]!.title)}\nPlan (version 1):\n1. [next] `);
+    expect(prompt).toContain('Goa stays under ₹8,000');
+    // The old plan sits before the user's words.
+    expect(prompt.indexOf('The job:')).toBeLessThan(prompt.indexOf('cheaper please'));
+    const plans = h.cards('plan');
+    expect(plans.map((c) => c.state)).toEqual(['changed', 'pending']);
+    const seqOf = (cardId: unknown) =>
+      Number((h!.db.prepare('SELECT seq FROM messages WHERE card_id = ?').get(cardId) as { seq: number }).seq);
+    expect(seqOf(plans[1]!.id)).toBeGreaterThan(seqOf(plans[0]!.id));
+    expect(JSON.parse(String(plans[1]!.payload)).steps.join(' ')).toContain('Goa stays under ₹5,000');
+  });
+
+  it('only the next intake turn carries it', async () => {
+    h = jobHarness({
+      script: [
+        jobIntake(GOA, { title: 'Goa stay', estimate: { minutes: 6 }, match: 'Find a Goa stay' }),
+        intake(envelope('Okay.'), { match: { purpose: 'intake', promptIncludes: 'cheaper' } } as never),
+        intake(envelope('Hi.')),
+      ],
+    });
+    h.userSays('Find a Goa stay');
+    await h.settle();
+    h.answer(String(h.cards('plan')[0]!.id), 'change');
+    await h.settle();
+    h.userSays('cheaper');
+    await h.settle();
+    h.userSays('thanks');
+    await h.settle();
+    const prompts = h
+      .turnsJsonl()
+      .filter((r) => r.purpose === 'intake')
+      .map((r) => String(r.prompt));
+    expect(prompts).toHaveLength(3);
+    expect(prompts[1]).toContain('The job:');
+    expect(prompts[2]).not.toContain('The job:');
   });
 });
