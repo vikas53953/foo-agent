@@ -230,6 +230,14 @@ batch independent review (Fable) checks them before the milestone PR; until then
   `[ Show me the email ]` after the injection line (§9.4.3) are not drawn: a text message has no button in the model
   (08-1 messages DDL, 05-1 bubbles), so the lines post without them. Needs a spec call (a message action, or a small card
   kind) for the spec-keeper.
+- **G-M5-35** (T11) ART-08a in M5 searches the DOM captured with each picture instead of OCR of the picture (10-2 §D says
+  "OCR of all screenshots and live-view frames"). 05-2 §5.8.5 already keeps a value out of the markup (a property, never a
+  `value` attribute), and the fields are masked, so the DOM text is the stricter search for what M5 draws; OCR, live-view
+  frames (M9 browser), the export zip (M12), toasts (M11) and crash reports (later) join the harness in the milestones that
+  add them, and the report's `notCovered` list names each one until then. Short canaries (CVV, OTP) match as whole tokens
+  only, so a 4-digit run inside an id or a timestamp is not counted. The ART-08a trace row stays `pending` on
+  `test/articles/ART-08a.test.ts` (scanner + tech-log proofs); the app run is `test/e2e/m5-canary.spec.ts`, untitled with
+  the id so FID-18 sees no orphan; the lead flips the row live and may add the e2e row at close-out. Pending review.
 
 ### Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`)
 
