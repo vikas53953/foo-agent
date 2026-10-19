@@ -197,3 +197,40 @@ test('AT-280 send / book / delete cards hide the scope with "I’ll always ask f
     calendar: 'ok',
   });
 });
+
+test('Narrator: Approval and Draft cards carry the §5.5.5 / §5.7.4 description after their label', async () => {
+  await page.evaluate(() => window.__fooTest!.clock.set('2026-10-16T09:41:00+05:30'));
+  const { card } = await seed(SEND);
+  // §5.5.5: impact line + extra risk lines + "Expires {absolute time}".
+  await expect(card).toHaveAttribute(
+    'aria-description',
+    /^Will send to priya@example\.com from your Gmail\..*Expires Fri 16 Oct, 10:41 AM/u,
+  );
+  const body = 'Hi Rakesh, I’ll pay October’s rent on Mon 19 Oct. ' + 'x'.repeat(300);
+  const fields: ApprovalFields = {
+    verb: 'send',
+    channel: 'email',
+    recipients: [{ name: 'Rakesh Example', address: 'rakesh@example.com', isNew: false, isGroup: false }],
+    contentSummary: `Re: October rent\n${body}`,
+    irreversible: true,
+  };
+  const r = await page.evaluate((s) => window.__fooTest!.cardSeed(s), {
+    type: 'draft',
+    state: 'pending',
+    payload: {
+      approvalId: '',
+      channel: 'email',
+      to: { name: 'Rakesh Example', address: 'rakesh@example.com', isNew: false },
+      subject: 'Re: October rent',
+      body,
+      edited: false,
+      sendAllowed: true,
+      gmailDraftId: 'gd_narrator',
+    },
+    approval: { fields, expiresAt: T + 60 * MIN },
+  } satisfies CardSeedRequest);
+  const draft = page.locator(`${byTid(TID.cardDraft)}[data-card-id="${r.cardId}"]`);
+  await draft.scrollIntoViewIfNeeded();
+  // §5.7.4: "Subject {subject}. {first 200 characters of body}".
+  await expect(draft).toHaveAttribute('aria-description', `Subject Re: October rent. ${body.slice(0, 200)}`);
+});

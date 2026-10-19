@@ -313,7 +313,13 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
     kind === 'book' ? t('cards.approval.footer.book', { time: at(expiresAt) }) : t('cards.approval.footer.do', { time: at(expiresAt) });
 
   return (
-    <CardFrame {...frame} edge={APPROVAL_EDGE[state]} busy={busy !== null}>
+    <CardFrame
+      {...frame}
+      // §5.5.5: impact line + extra risk lines + "Expires {absolute time}".
+      description={[p.impact, ...risks, t('cards.approval.expires', { time: at(expiresAt) })].filter(Boolean).join(' ')}
+      edge={APPROVAL_EDGE[state]}
+      busy={busy !== null}
+    >
       <div className={styles.head}>
         <Icon name={KIND_ICON[kind]} size={20} className={styles.headIcon} />
         <span className={styles.title} data-copy="external">

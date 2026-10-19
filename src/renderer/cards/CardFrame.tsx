@@ -31,6 +31,7 @@ export function CardTimeLabel({ at, timeZone, now }: CardTime) {
 export function CardFrame({
   tid,
   label,
+  description,
   wide,
   state,
   children,
@@ -44,6 +45,8 @@ export function CardFrame({
 }: {
   tid: keyof typeof TID;
   label: string;
+  /** 05-2 §5.5.5 / §5.7.4: the card's Narrator description (read after the label). */
+  description?: string;
   wide?: boolean;
   state: string;
   children: ReactNode;
@@ -64,6 +67,7 @@ export function CardFrame({
     <div
       role="group"
       aria-label={label}
+      aria-description={description}
       aria-busy={busy || undefined}
       className={cx(styles.card, wide && styles.wide, edge && styles[`edge_${edge}`], muted && styles.muted, className)}
       data-testid={TID[tid]}

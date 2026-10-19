@@ -126,6 +126,8 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
     card,
     state,
     label: t('cards.draft.label', { channel, name }),
+    // §5.7.4: "Subject {subject}. {first 200 characters of body}".
+    description: t('cards.draft.description', { subject: p.subject ?? '', preview: p.body.slice(0, 200) }),
   };
 
   const summary = (icon: IconName, iconClass: string | undefined, text: string, extra?: ReactNode) => (
