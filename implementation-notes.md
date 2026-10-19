@@ -967,3 +967,15 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
     `routines.housekeepingMessages`; the budget gate has no `urgent` exemption and writes no `notifications` row yet
     (§15.2, §15.6, M7); a held conflict whose held item is never delivered is not asked again (M7's brief should re-post it
     from `ref.factIds`).
+
+## M6 · close-out (lead, CR-0010)
+
+- Built: the memory store and Notepad watcher (T3), memory in replies (T4), learning from chat and chips (T5), the Memory
+  page with forget dialogs and export (T6), the nightly tidy, conflicts, share and style (T7), and the M5 clean-up (T9). T2
+  (secrets and approvals contracts) and T1 (contracts) landed first.
+- The lead merged T5 and T7 together. Both used `memory_confirm`, so the engine now owns that card (G-M6-21).
+- AT-075 (a Notepad edit reaches the next reply) is `test/integration/m6-watcher.test.ts` over the real Engine and bridge.
+- Golden lane: `FIDELITY_MILESTONE: M6`; captures in `test/fidelity/ux/UX-18.spec.ts` and `test/fidelity/bp/BP-m6.spec.ts`.
+- Moved on (CR-0010 §(f)): to M7, the budget's `urgent` exemption, the `notifications` row, and re-asking a held conflict
+  (G-M6-24). To M8, "Show where I learned it" for Gmail and WhatsApp (G-M6-25). To the spec-keeper, G-M6-16 (X-06 vs §24.16
+  item 4) and G-M6-17 (no classify prompt).

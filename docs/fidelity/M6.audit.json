@@ -1,0 +1,339 @@
+{
+  "milestone": "M6",
+  "source": "foo-plan §5 M6 (Goal, Constitution, Create, Must pass, Fidelity exit, Demo) and CR-0010 (M6 trace rows, memory contracts, picks)",
+  "rows": [
+    {
+      "group": "M6 Goal",
+      "item": "memory as readable files, facts with provenance and kind, memory chips with Undo, the Memory page, forget with tombstones, private facts, nightly tidy",
+      "status": "PARTIAL",
+      "evidence": ["test:AT-072", "test:AT-073", "test:AT-074", "test:AT-075", "test:AT-076", "test:AT-219", "test:ART-14"],
+      "covers": "part",
+      "manual": "demo on Vikas's PC (plan §5 M6 Demo): \"my wife's name is Simran\" → \"I'll remember: …\" with Undo; edit the fact in Notepad and ask again; forget a fact and see it never come back; carry items in docs/decisions/M6.tsv and CR-0010 §(f)"
+    },
+    {
+      "group": "M6 Constitution",
+      "item": "08-3 §12 · 05-3 §5.17 · 06-2 §7 · 03-shell-2 §3.7 · Art. 14, 15 · X-05, X-06",
+      "status": "PARTIAL",
+      "evidence": ["test:ART-14", "test:AT-076", "test:AT-074"],
+      "covers": "part",
+      "manual": "independent reviewer reads 08-3 §12 and 06-2 §7 against the build (two-axis review on the M6 PR); the picks and clashes are in CR-0010 §(f) (G-M6-16 X-06 vs §24.16 item 4; G-M6-17 no classify prompt)"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/MemoryPort.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/MemoryService.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/askShare.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/chips.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/classifyFact.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/fileFormat.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/hash.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/intakeMemory.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/parseWorker.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/reindex.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/retrieval.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/review.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/sensitive.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/slug.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/styleStats.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/tidy.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/tombstones.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/memory/watcher.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/engine/tools/memoryTools.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/main/approvals/cardPayloads.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/main/memory/export.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/main/memory/forgetFiles.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/main/notify/budget.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/messages/MemoryChip.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/messages/MemoryChip.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/screens/Memory.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/screens/Memory.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/screens/confirms/C03.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/screens/confirms/C04.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/screens/confirms/Confirms.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/screens/confirms/UnreadableLines.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/screens/memoryActions.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/screens/memoryView.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/screens/shared/PageHeader.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/screens/shared/PageHeader.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/screens/shared/PageSearchField.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/screens/shared/PageSearchField.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/screens/shared/RowGroup.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/screens/shared/RowGroup.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/screens/shared/SectionLabel.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/screens/shared/SectionLabel.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/ui/Banner.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/ui/Banner.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/ui/Chip.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/ui/Chip.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/ui/EmptyState.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/ui/EmptyState.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/ui/TextArea.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/ui/TextArea.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/ui/UndoBar.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Create",
+      "item": "src/renderer/ui/UndoBar.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M6 Must pass",
+      "item": "AT-072",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-072",
+      "covers": "whole"
+    },
+    {
+      "group": "M6 Must pass",
+      "item": "AT-073",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-073",
+      "covers": "whole"
+    },
+    {
+      "group": "M6 Must pass",
+      "item": "AT-074",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-074",
+      "covers": "whole"
+    },
+    {
+      "group": "M6 Must pass",
+      "item": "AT-075",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-075",
+      "covers": "whole"
+    },
+    {
+      "group": "M6 Must pass",
+      "item": "AT-076",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-076",
+      "covers": "whole"
+    },
+    {
+      "group": "M6 Must pass",
+      "item": "ART-14",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-14",
+      "covers": "whole"
+    },
+    {
+      "group": "M6 Must pass",
+      "item": "ART-15c",
+      "status": "UNVERIFIABLE",
+      "manual": "manual row (10-acceptance-2): the memory folder opens in Explorer, every file is readable Markdown in Notepad, Privacy shows \"foo never uses your data to train anything.\"; foo-verify m6-t3-store and m6-t6-page show the folder and files"
+    },
+    {
+      "group": "M6 Fidelity exit",
+      "item": "Tier R for UX-18 (all 10), BP-CARD-16 and BP-SCR-09 with no Fail",
+      "status": "PARTIAL",
+      "evidence": ["test:UX-18-01", "test:BP-CARD-16", "test:BP-SCR-09"],
+      "covers": "part",
+      "manual": "golden lane fidelity report; drawing-vs-spec gaps are disputed under CR-0010 until the gallery redraw"
+    },
+    {
+      "group": "M6 Fidelity exit",
+      "item": "fidelity report signed by the reviewer and seen by Vikas",
+      "status": "UNVERIFIABLE",
+      "manual": "compare page for Vikas's review (approve-on-his-behalf rule)"
+    }
+  ]
+}

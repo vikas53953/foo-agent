@@ -72,3 +72,71 @@ Ticket map reviewed by an independent Sonnet reviewer (2026-10-18 18:12Z): PASS-
 all applied to the map (memory step tools in T5, the export contract in T1, the right-shell refresh in T6, `Engine.ts`
 slots in T1; budget file noted as G-M6-12, `intakeMemory.ts` = the memory half of intake, prompt-file owners, week count,
 ART-15c, chip-forget activity). This CR, by an independent Fable reviewer (2026-10-18 18:24Z): PASS-WITH-FIXES; act 1 (X-163 + manifest in the same commit) and act 2 (the tables were already writable in 08-1 §2.4.1) applied; consider 3 (reuse the four 08-1 query names) and 4 (record the `memory_confirm` reuse) applied. Approved on Vikas's behalf. G-M6-13…15 and 13d were added after the M6 monitor's pass 2 (2026-10-18 18:32Z) on T2's PR #12; they pick the spec's own example or the most conservative reading.
+
+## (f) Addenda during the build (G-M6-16 onwards; ids handed out by the M6 lead)
+
+Each addendum is a pick where the spec is silent, forks or clashes, taken by the ticket that met it and landed here by
+the lead. Each ticket's picks already passed that ticket's independent Fable review; the batch below gets one more
+independent review before the milestone PR. Details live in `implementation-notes.md` under each ticket's heading, and
+the decision rows are in `docs/decisions/M6.tsv`.
+
+- **G-M6-16** (T4, clash) Private facts and group grants. 08-4 §24.16 item 4, 08-3 §12.5.1 and §17.3.5 let a live
+  `memory_group_grants` row re-admit a fact into a group. DECISIONS X-06 says a private fact never reaches a group. The
+  code follows X-06 (DECISIONS wins): a grant re-admits an about-you or chat-scope fact, never a private one, and T7's
+  `askShare` refuses a private fact as it refuses a sensitive one. Open item for the spec-keeper: align the chapter text
+  with X-06.
+- **G-M6-17** (T3, T5, gap) The manual-add classify turn. 08-4 §24 has no prompt for classifying a fact added on the Memory
+  page or by a chat "remember …". Until one lands, both save with §12.4's fallback category (`fact` / `other`). Open
+  item for the spec-keeper.
+- **G-M6-18** (T4) `usedMemoryIds` count only for ids in parts 5/5b as sent (after the budget trims), once each, and
+  only when the act is valid (also after a repair). Step turns record their uses with the `job_id`. The step query falls
+  back to the job's user message.
+- **G-M6-19** (T3) `memory_fts` is rebuilt only when a tx inserts or deletes a `memory_index` row or sets its `text`. A
+  use write (`use_count` / `last_used_at`) does not rebuild it, because the FTS index covers `text` only (0001).
+  `forgetAll` deletes the files it empties. A file that fails to parse answers `UNKNOWN`. The own-write mark is spent by
+  the first outside edit, so a Notepad Ctrl+Z back to foo's text is reindexed.
+- **G-M6-20** (T5) Chips. Chip fields live in `messages.why.memoryChip`, and main lets the engine update `why` (T5-01).
+  `memory:forget` takes an optional `chipId`, and a chip's own Undo is a `chip_{markerId}` token on `memory:undo` (T5-02).
+  Undo of a save forgets with a tombstone and writes no activity row (T5-05). A job's "Used:" chip anchors to the chat's
+  newest message (T5-06). After the Undo of an intake forget, the chip reads "I'll remember" with no button. Memory off or
+  a private chat gets "Not saving this one."; groups ignore remember and forget (T5-09).
+- **G-M6-21** (T5 + T7, lead merge) A `memory_confirm` card is the engine's: it is in `answerCard` `RUNNER_PURPOSES`, and
+  the engine moves the card out of `asking` for the three uses (ask-before-remembering, the two-match forget, the group
+  share). A `conflict` card is answered by main, which then tells the engine (`ENGINE_TOLD`).
+- **G-M6-22** (T5, T6, T7) Words the spec does not give, added as keys:
+  - `thread.memory.forget_none` "I don’t have anything like that saved." and `thread.memory.forget_which` "Which one should
+    I forget?" (T5-03).
+  - `cards.choice.question.memory_share` and `cards.choice.option.no` for the spec's "Okay to tell the {Goa trip} group
+    {…}?" [ Yes ] [ No ].
+  - The tidy log line adds "Settled {n} conflicts" and "Dropped {n} old guesses".
+  - The `memory.style.*` lines: the spec names the measures, not the words. There are three lines when neither a greeting
+    nor a sign-off reaches 5 of 20.
+  - The T6 export activity summary "Exported everything to {path}".
+  - The C-3 `{app}` for chat-learned facts is "chats".
+- **G-M6-23** (T7) Tidy readings:
+  - The entity is the relation word (`lives in`) for about-you facts and the person's file for `people\` facts (the
+    literal noun-phrase reading fails AT-219).
+  - Near-duplicates need the same file.
+  - A conflict with no `ask` keeps the newest `said`, with no tombstone. When both facts are guesses, it leaves them, and
+    `TidyAct.keep` is not read.
+  - Option i keeps the fact whose text holds the option's words.
+  - The conflict card's why source is `housekeeping`, with `suggestionKey` `memory_conflict:{idA}-{idB}`.
+  - Style lines never reach a group prompt.
+- **G-M6-24** (T7) The unprompted budget (08-3 §15.2 step 5) runs in main on every engine `db.tx`
+  (`EngineBridge` → `budget.gateUnprompted`). When over budget or in quiet hours, the message and its card become one
+  `held_items` row. `held_items` and `suggestions` are engine-writable. `suggestionState`, `chats.forHelper` and
+  `messages.userTexts` are added named queries. Left for M7: the `urgent` exemption, the `notifications` row, and
+  re-asking a held conflict that is never delivered.
+- **G-M6-25** (T6) Owner exceptions:
+  - `data:export` gets `db` and `timeZone`.
+  - `files:showInFolder` also allows the last memory-export path (exact match), because a picked export folder sits
+    outside `{DATA}`.
+  - Left for later: the unreadable-lines banner and dialog are built but not fed (no contract carries bad lines yet).
+  - Left for later: Narrator undo text and Esc focus (02-3 §F21.3).
+  - Left for later: "Show where I learned it" opens the chat, not the message, and is off for Gmail and WhatsApp until
+    M8.
+- **G-M6-26** (T9, M5 carry-overs) A code box posted by `secret:offer` carries `requestId` = its card id (08-1 §4.5).
+  `ai_key` vault names are narrowed to the key providers (`openai-key`, `anthropic-key`, `google-key`). The vault entry
+  is removed when its index write fails. The payload casts are replaced by guards (`cardPayloads.ts`).
+- **G-M6-27** (lead, cross-lane C14) M6 owns `data:export`, `data:exportProgress` and `files:pickFolder`. M13 and M14
+  extend M6's handler and drop their own declarations when they merge.
