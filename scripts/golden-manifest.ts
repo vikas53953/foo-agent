@@ -331,10 +331,12 @@ export const BP_M5: BpEntry[] = (
 
 /**
  * CR-0009 (G-M5-09): a step whose chapter milestone cannot show it moves to the milestone that can. UX-10-07 answers a Choice
- * from a Windows notification (toasts are M11); M5 unit-tests that answer path with a fake notifier.
+ * from a Windows notification (toasts are M11); M5 unit-tests that answer path with a fake notifier. CR-0009 G-M5-26: UX-10-02
+ * highlights the "Used: hates early flights" memory chip, which arrives with memory in replies (M6).
  */
 export const STEP_MILESTONE: Record<string, string> = {
   'UX-10-07': 'M11',
+  'UX-10-02': 'M6',
 };
 
 /**

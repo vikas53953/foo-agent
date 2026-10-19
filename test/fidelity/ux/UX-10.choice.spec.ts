@@ -9,7 +9,8 @@
 // Drawing-vs-app gaps (R1/R2 disputes go to a CR, never into code):
 // - UX-10-01: the checklist's rows are catalogue phrases (08-4 §26.1): "Kept 3 flights that fit your times", not the drawn
 //   "Kept 3 that fit"; the Trips chat also holds its seeded bubbles and the flights job of the ux-world.
-// - UX-10-02: the memory chip "Used: hates early flights ✕" (05-3 §5.17) is not built yet (memory, M6), so hl is the card.
+// - UX-10-02: its hl is the memory chip "Used: hates early flights ✕" (05-3 §5.17), built in M6 (CR-0009 G-M5-26), so M5
+//   checks the step's words here but captures no UX-10-02 frame.
 // - UX-10-04: the summary carries the whole option label, price included ("10:15 AM · IndiGo · ₹5,240"), as 05-1 §5.3.2
 //   "{question} → {answer}" says; the drawing shortens it to "10:15 AM · IndiGo".
 // - UX-10-05: the drawing's "Back · Next" is superseded by 05-1 §5.3.1 (no Next; Back from question 2), so question 1 shows
@@ -21,7 +22,7 @@ import { TID } from '../../../src/shared/testids';
 import { launchWithFakeAi, VERIFY_OK, type FakeLine } from '../../e2e/fakeAi';
 import { settleSeededJobs } from '../../e2e/m4-start';
 import { BAG_STEPS, seed, SUBSCRIPTIONS } from '../../e2e/m5-choice-seeds';
-import { byTid, captureUx, openChat, openWorld, rest, rowOf, setTheme, settle, step, THEMES, windowSize } from '../capture';
+import { byTid, captureUx, openChat, openWorld, rest, setTheme, settle, step, THEMES, windowSize } from '../capture';
 
 const ASK = 'find me a flight to Delhi on Fri 18 Dec, not too early';
 const QUESTION = 'Which flight time works for Delhi on Fri 18 Dec?';
@@ -123,8 +124,6 @@ test('UX-10 · Choices: steps UX-10-01 to UX-10-06, light and dark', async () =>
     expect(s.s).toContain('Something else… · Skip');
     // f: no bubble repeats an option.
     await expect(log.locator(byTid(TID.bubbleFoo), { hasText: 'Air India' })).toHaveCount(0);
-    const id = await choice.locator('xpath=ancestor::*[@data-message-id][1]').getAttribute('data-message-id');
-    await shoot(page, 'UX-10-02', `${rowOf(id!)} ${byTid(TID.cardChoice)}`);
   });
 
   await test.step('UX-10-03 · "1" in the message box, the send button blue', async () => {
