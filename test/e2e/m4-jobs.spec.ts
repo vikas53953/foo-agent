@@ -71,6 +71,16 @@ async function start(o: { intakeDelayMs?: number } = {}) {
         await new Promise((r) => requestAnimationFrame(r));
       }
     });
+  /** The run's ask badge, looked at with the log pinned to the newest row each time (the row may be out of the DOM). */
+  const expectBadge = (tag: string, state: string) =>
+    expect
+      .poll(async () => {
+        await toNewest();
+        return badgeOf(ask(tag))
+          .getAttribute('data-state', { timeout: 500 })
+          .catch(() => null);
+      })
+      .toBe(state);
   const type = async (text: string) => {
     await page.getByTestId(TID.composerField).focus();
     await page.keyboard.type(text);
@@ -83,7 +93,7 @@ async function start(o: { intakeDelayMs?: number } = {}) {
   const stopJob = async (tag: string) => {
     await send('stop');
     try {
-      await expect(badgeOf(ask(tag))).toHaveAttribute('data-state', 'stopped');
+      await expectBadge(tag, 'stopped');
     } catch (e) {
       // What foo's chat shows when the stop word did not stop the run's job (the newest rows), for the failure report.
       await toNewest();
@@ -91,12 +101,12 @@ async function start(o: { intakeDelayMs?: number } = {}) {
       throw e;
     }
   };
-  return { app, page, log, badgeOf, toNewest, type, send, stopJob };
+  return { app, page, log, badgeOf, expectBadge, toNewest, type, send, stopJob };
 }
 
 test('PERF-07: send → 👀 painted, p95 ≤ 1 s over 20 runs (job path)', async () => {
   test.setTimeout(300_000);
-  const { app, page, badgeOf, type, stopJob } = await start({ intakeDelayMs: 2_000 });
+  const { app, page, expectBadge, type, stopJob } = await start({ intakeDelayMs: 2_000 });
   const ms: number[] = [];
   for (const tag of TAGS) {
     await type(ask(tag));
@@ -124,7 +134,7 @@ test('PERF-07: send → 👀 painted, p95 ≤ 1 s over 20 runs (job path)', asyn
     ms.push(Math.round(paintedAt - sentAt));
     // The held intake answers: the ask becomes a job (🛠), then the stop word ends it.
     await tick(page, 2_000);
-    await expect(badgeOf(ask(tag))).toHaveAttribute('data-state', 'working');
+    await expectBadge(tag, 'working');
     await stopJob(tag);
   }
   console.log(`PERF-07 runs (ms): ${ms.join(', ')} · p95 ${p95(ms)} ms`);
@@ -135,7 +145,7 @@ test('PERF-07: send → 👀 painted, p95 ≤ 1 s over 20 runs (job path)', asyn
 
 test('PERF-08: job start → checklist painted, 1.5 s ≤ p95 ≤ 2 s over 20 runs', async () => {
   test.setTimeout(300_000);
-  const { app, page, log, badgeOf, toNewest, send, stopJob } = await start();
+  const { app, page, log, expectBadge, toNewest, send, stopJob } = await start();
   // The fake-clock time each checklist card reaches the window (card:upsert), read the moment it arrives: no tick runs
   // until the arrival has been seen.
   await page.evaluate(() => {
@@ -154,7 +164,7 @@ test('PERF-08: job start → checklist painted, 1.5 s ≤ p95 ≤ 2 s over 20 ru
     const checklist = log.getByTestId(TID.cardChecklist).filter({ hasText: `bills ${tag}` });
     const before = await arrived();
     await send(ask(tag));
-    await expect(badgeOf(ask(tag))).toHaveAttribute('data-state', 'working');
+    await expectBadge(tag, 'working');
     // The job started at this fake-clock instant; step the clock until its checklist arrives.
     let at = 0;
     while (at < 3_000) {
@@ -185,13 +195,13 @@ test('PERF-08: job start → checklist painted, 1.5 s ≤ p95 ≤ 2 s over 20 ru
 
 test('PERF-11: network cut → WAITING + offline banner strip, 10 s design delay + paint lag p95 ≤ 1 s over 20 runs', async () => {
   test.setTimeout(400_000);
-  const { app, page, badgeOf, send, stopJob } = await start();
+  const { app, page, expectBadge, send, stopJob } = await start();
   const offlineBanner = page.locator(`${byTid(TID.bannerStrip)}[data-state="offline"]`);
   const waitingRow = page.getByTestId(TID.appPanelDoingRow).and(page.locator('[data-state="waiting"]'));
   const lag: number[] = [];
   for (const tag of TAGS) {
     await send(ask(tag));
-    await expect(badgeOf(ask(tag))).toHaveAttribute('data-state', 'working');
+    await expectBadge(tag, 'working');
     await tick(page, 2_000);
     await expect(offlineBanner).toHaveCount(0);
     await page.evaluate(() => window.__fooTest!.setOnline(false));
