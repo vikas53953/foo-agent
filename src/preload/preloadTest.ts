@@ -68,6 +68,8 @@ const INVOKES = new Set([
   'code:submit',
   // M5 T2
   'secret:offer',
+  // M5 T14
+  'approval:report',
 ]);
 const EVENTS = new Set([
   'chat:upsert',

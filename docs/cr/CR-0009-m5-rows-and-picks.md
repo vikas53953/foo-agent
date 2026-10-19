@@ -285,6 +285,18 @@ himself.
   the id so FID-18 sees no orphan; the lead flips the row live and may add the e2e row at close-out. Each capture also
   searches the `.value` of every non-password input (review fix). Independent review PASS WITH FIXES; approved on
   Vikas's behalf.
+- **G-M5-39** (T14) (a) 05-2 §5.5.4 CHECKING → FAILED has no tap channel in 08-1 §3.2: `approval:report { cardId, nonce,
+outcome: 'went_through' | 'did_not', resolvedBy }`. Main's 15 min `no_proof` move sets `payload.unknownResult`; the tap
+  keeps the card FAILED with `answer` and `resolved_by='tap'`, turns the nonce over (once only) and sets the approval's
+  `unknown` activity rows to done / failed. With no verified phone the `{phone}` clause is left out with its words
+  (`cards.approval.body.checking_failed_no_phone`, the G-M5-32 (b) rule). (b) A Draft's Send runs the 08-2 §9.6 second
+  look on the card text (08-3 §16.1) when the 5 s close: main asks the engine (`draft.secondLook`, 60 s cap on both
+  sides), no answer → HELD cannot_check (not re-looked when the AI returns: a J19 follow-up, as T8). HELD keeps the Draft
+  `pending` with the Held strip; the draft's value → APPROVED and sends; the user's value → DECLINED (G-M5-03), the card
+  superseded and a fresh pending Draft on the same Gmail draft (as G-M5-28). Until M8's draft producer re-writes the
+  Gmail draft with their value, that fresh Draft re-holds on the same mismatch until the user taps Change (a placeholder,
+  as G-M5-28). Nothing weakens an approval, a hard limit, a secret or an irreversible act; (b) closes a path that sent
+  with no second look. Pending review.
 
 ### Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`)
 

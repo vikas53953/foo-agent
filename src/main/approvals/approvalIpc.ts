@@ -2,6 +2,7 @@
 // CARD_EXPIRED, SCOPE_NOT_ALLOWED; `card:approve` answers `{ state }`), §3.3 (events are patches: the moved card, message,
 // job and chat rows), 08-2 §9.1, §9.5, §9.7 (main's ApprovalGate and its 1 s expiry tick). The router line in
 // src/main/ipc/IpcRouter.ts stays T1's; this file fills the four rows (M5-T4). M5-T6: `card:askAgain` on a Draft card.
+// M5-T14: `approval:report` (05-2 §5.5.4 CHECKING → FAILED, CR-0009 G-M5-39) and `card:heldPick` on a held Draft card.
 import { cardRow, type DbRow } from '../db/rows';
 import type { TxEffects } from '../engine-supervisor/engineHost';
 import { emit, listContext, type AppContext, type IpcHandlers } from '../ipc/IpcRouter';
@@ -60,13 +61,17 @@ export function approvalGate(ctx: AppContext): ApprovalGate {
 const cardType = (ctx: AppContext, cardId: string) =>
   ctx.db.prepare('SELECT type FROM cards WHERE id = ?').pluck().get(cardId) as string | undefined;
 
-export function approvalIpc(ctx: AppContext): IpcHandlers<'card:approve' | 'card:decline' | 'card:askAgain' | 'card:heldPick'> {
+export function approvalIpc(
+  ctx: AppContext,
+): IpcHandlers<'card:approve' | 'card:decline' | 'card:askAgain' | 'card:heldPick' | 'approval:report'> {
   const gate = approvalGate(ctx);
   return {
     'card:approve': (req) => gate.approve(req),
     'card:decline': (req) => gate.decline(req),
     // M5 T6 (05-2 §5.7.2): an expired Draft's "Ask me again" makes a fresh Draft card on the same Gmail draft.
     'card:askAgain': (req) => (cardType(ctx, req.cardId) === 'draft' ? draftService(ctx).askAgain(req) : gate.askAgain(req)),
-    'card:heldPick': (req) => gate.heldPick(req),
+    // M5 T14 (05-2 §5.7.2 HELD): a held Draft's two values.
+    'card:heldPick': (req) => (cardType(ctx, req.cardId) === 'draft' ? draftService(ctx).heldPick(req) : gate.heldPick(req)),
+    'approval:report': (req) => gate.report(req),
   };
 }

@@ -379,6 +379,9 @@ export class Engine {
       case 'approval.changed':
         await this.jobs.onApprovalChanged(msg.payload);
         return undefined;
+      // M5 T14 (G-M5-39 (b)): the second look of a Draft's Send, asked by main's Draft tick.
+      case 'draft.secondLook':
+        return ok(await this.jobs.draftSecondLook(msg.payload));
       case 'job.stop': {
         const r = await this.jobs.stopJob(msg.payload.jobId, msg.payload.reason);
         return r ? ok(r) : { ok: false, error: { kind: 'JOB_GONE' } };

@@ -54,6 +54,8 @@ import { StopFlow } from './stopFlow';
 import { Watchdog, type StuckRule } from './watchdog';
 import type { GateLogic } from '../gate/GateLogic';
 import { RunnerGate } from '../gate/runnerGate';
+// M5 T14
+import { draftSecondLook, type DraftLookAnswer, type DraftLookReq } from '../gate/draftSecondLook';
 
 export const CHECKLIST_AFTER_MS = 1_500;
 const OBSERVATION_CAP = 4_000;
@@ -312,6 +314,15 @@ export class JobRunner {
       timeZone: () => d.settings().locale.timeZone,
       countFailure: (j) => this.countFailure(j),
     });
+    // M5 T14
+    this.draftLook = (req) => draftSecondLook(core, d.settings().locale.timeZone, req);
+  }
+
+  // M5 T14
+  private readonly draftLook: (req: DraftLookReq) => Promise<DraftLookAnswer>;
+  /** main's `draft.secondLook` (08-2 §9.6 on a Draft's Send, G-M5-39 (b)): the look's answer; main holds or sends. */
+  draftSecondLook(req: DraftLookReq): Promise<DraftLookAnswer> {
+    return this.track(this.draftLook(req));
   }
 
   /** M5 T7: 08-2 §11.4 for text the runner stores (decisions, plan.md "Asked:"). */

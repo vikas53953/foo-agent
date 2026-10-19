@@ -242,6 +242,8 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'card:decline': z.object({ cardId, nonce, resolvedBy: tapBy }).strict(),
   'card:askAgain': z.object({ cardId }).strict(),
   'card:heldPick': z.object({ cardId, nonce, optionId: z.string().min(1).max(40), resolvedBy: tapBy }).strict(),
+  // M5 T14 (G-M5-39)
+  'approval:report': z.object({ cardId, nonce, outcome: z.enum(['went_through', 'did_not']), resolvedBy: tapBy }).strict(),
   'draft:update': z
     .object({
       cardId,

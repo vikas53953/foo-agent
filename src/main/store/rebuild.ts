@@ -31,7 +31,7 @@ export interface OpenResult {
 
 /** The errors that mean "this file is damaged" (anything else, e.g. a full disk, is not ours to rebuild from). */
 /** 08-3 §19.1: a log line carries a code, never an error's message text (it can quote a path or a row). */
-function errCode(e: unknown): string {
+export function errCode(e: unknown): string {
   const code = (e as { code?: unknown } | null)?.code;
   return typeof code === 'string' && /^[A-Z][A-Z0-9_]{0,40}$/u.test(code) ? code : 'UNKNOWN';
 }
