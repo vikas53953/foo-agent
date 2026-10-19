@@ -285,6 +285,8 @@ export class ConnTrouble {
     if (LOST.has(kind)) {
       // §16.1 Tokens: main marks the three rows needs_signin (a no-op when its own refresh already did).
       await this.ask({ op: 'lost', kind: kind as LostKind });
+      // Main pushes needs_signin before it answers; set it here too so beforeSchedule never resumes on a stale "connected".
+      if (this.state?.status === 'connected') this.state = { ...this.state, status: 'needs_signin' };
       return this.pauseLost(job.id, kind as LostKind, app);
     }
     if (kind === 'CONN_RATE_LIMITED') return this.rateLimited(job, app, stepId);
