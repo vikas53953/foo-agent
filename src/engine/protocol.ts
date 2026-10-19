@@ -53,7 +53,14 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
   z.object({
     id: z.string(),
     kind: z.literal('settings.changed'),
-    payload: z.object({ paths: z.array(z.string()), settings: z.unknown() }).strict(),
+    // G-M4-13: on the first settings.changed after a fork main adds what it decided from launches.json (08-1 §2.2 step 1).
+    payload: z
+      .object({
+        paths: z.array(z.string()),
+        settings: z.unknown(),
+        launch: z.object({ safeMode: z.boolean(), cleanStart: z.boolean() }).strict().optional(),
+      })
+      .strict(),
   }),
   z.object({
     id: z.string(),
@@ -217,6 +224,10 @@ export const NAMED_QUERY_NAMES = [
   'monthAiSpend',
   'jobs.liveForChat',
   'cards.openForChat',
+  // M4 T4: foo's chat for the safe-mode card (08-2 §5.9 step 1).
+  'chats.foo',
+  // M4 T3: the watchdog's budget ceiling (08-4 §26.3 item 6, "counts come from the DB").
+  'stepTurnsForJob',
 ] as const;
 export type NamedQuery = (typeof NAMED_QUERY_NAMES)[number];
 
