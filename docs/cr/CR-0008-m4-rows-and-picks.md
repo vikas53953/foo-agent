@@ -161,18 +161,25 @@ The M4 walkthrough steps (UX-05-02…04, UX-23-01…06, 09, 11) are captured by 
 failed every step on R1; the table names each gap and the checks it disputes. The app follows the written spec; each
 file's header lists the same gaps.
 
-| #   | Step(s)                   | Frame shows                                                              | App and spec                                                                                                      | Spec                      | Disputed |
-| --- | ------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | ------------------------- | -------- |
-| 1   | all eleven                | Chapter 5 / 23 scenes with their own words and times (7:48 PM, Goa rows) | The one `ux-world` seed at 9:41 AM; step rows are catalogue phrases                                               | §11.2.3; 08-4 §26.1       | r1       |
-| 2   | all but UX-23-01          | Mini frames: rows at the frame's own positions and sizes                 | Real column and card widths; the seeded Trips gallery and "Not sent." notice move rows                            | 05-1 §0.2; CR-0003 §(b)1  | r2       |
-| 3   | UX-05-02, UX-23-02 (dark) | 👀 / 🕓 drawn as emoji on the light frame colours                        | Badge and Clock tick as glyph/SVG on the dark theme's bubble                                                      | 04 §3.3, §4.2; 02 §F29    | r3, r4   |
-| 4   | UX-05-04                  | "✓ Proof: 3 emails · open", green                                        | M4 has no connector to re-check the emails, so the job ends unverified: "⚠ Not checked live" (amber), no sparks   | 05-3 §5.15–§5.16; Art. 11 | r3, r4   |
-| 5   | UX-23-04                  | "Use ChatGPT instead" link                                               | No verified backup AI in the run, so the card has only "Try again"                                                | 05-3 §5.20; 08-3 §21.2    | r3, r4   |
-| 6   | UX-23-06, UX-23-09        | Dark filled button                                                       | The card's primary pill in `--accent`                                                                             | 05-1 §0 (buttons); X-01   | r3, r4   |
-| 7   | UX-23-11                  | Connector / site one-liners with "Reconnect"                             | Connectors (M8) and the browser (M9) are not built; the runner's one-line UNKNOWN card with its one fixing button | 08-3 §21.2                | r3, r4   |
+| #   | Step(s)                   | Frame shows                                                                   | App and spec                                                                                                                                             | Spec                                | Disputed |
+| --- | ------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | -------- |
+| 1   | all eleven                | Chapter 5 / 23 scenes with their own words and times (7:48 PM, Goa rows)      | The one `ux-world` seed at 9:41 AM; step rows are catalogue phrases                                                                                      | §11.2.3; 08-4 §26.1                 | r1       |
+| 2   | all but UX-23-01          | Mini frames: rows at the frame's own positions and sizes                      | Real column and card widths; the seeded Trips gallery and "Not sent." notice move rows                                                                   | 05-1 §0.2; CR-0003 §(b)1            | r2       |
+| 3   | UX-05-02, UX-23-02 (dark) | User bubble drawn #F1F1F5 in dark (the walkthrough's pre-X-145 `--bubble-me`) | `--bubble-me` dark = indigo #2B3FD6                                                                                                                      | 02 §F2; X-145 (badge glyph 04 §4.2) | r3, r4   |
+| 4   | UX-05-04                  | "✓ Proof: 3 emails · open", green                                             | M4 has no connector to re-check the emails, so the job ends unverified: "⚠ Not checked live" (amber), no sparks                                          | 05-3 §5.15–§5.16; Art. 11           | r3, r4   |
+| 5   | UX-23-04                  | "Use ChatGPT instead" link on a pink (`--bad-soft`) card fill                 | No verified backup AI in the run, so only "Try again"; the card is the §0.2 `--bg-raised` frame with a `--bad` top edge, no tint                         | 05-3 §5.20; 08-3 §21.2              | r3, r4   |
+| 6   | UX-23-06, UX-23-09        | Dark filled button                                                            | The card's primary pill in `--accent`                                                                                                                    | 05-1 §0 (buttons); X-01             | r3, r4   |
+| 7   | UX-23-11                  | Connector / site one-liners with a dark "Reconnect" pill                      | Connectors (M8) and the browser (M9) are not built; the runner's one-line UNKNOWN card with its one fixing button, an `--accent` primary pill (as row 6) | 08-3 §21.2; 05-1 §0                 | r3, r4   |
 
 Disputed checks (`docs/fidelity/disputes.json`): r1 on all eleven; r2 on all but UX-23-01; r3 and r4 on rows 3–7. Every
-other check still counts. Spec-keeper list: redraw chapter 5 and 23 frames from the `ux-world` seed; the M8/M9 steps
+other check still counts. disputes.json has no theme axis, so row 3's r3/r4 dispute also covers the light runs of
+UX-05-02 and UX-23-02 (there r3 passes and r4 is review). The clock stays at the seed's 9:41 AM rather than each step's
+time (§11.2.3): one world for every chapter, as CR-0003 row 12 kept it for chapter 9. Spec-keeper list: redraw chapter 5 and 23 frames from the `ux-world` seed; the M8/M9 steps
 (UX-23-04 backup link, UX-23-11 connector lines) re-run when those milestones land. App bug found while capturing
 (not a fidelity dispute, for M5): with a plan limit and no reset time the chat header and sidebar read "Claude limit
 until" with nothing after it; those two copy keys need a no-reset form (copy change, its own CR).
+
+Independent review (Fable, 2026-10-19 ~04:05Z, read-only): **PASS**; its one act item (row 3's reason: the drawing's
+pre-X-145 dark user bubble) and its considers (row 5 card fill, row 7 button colour, light-run note, clock note) are
+applied above. Recorded as approved on Vikas's behalf under his standing rule (2026-10-18 14:56Z) and his overnight
+message (2026-10-18 19:16Z); listed for his later review.
