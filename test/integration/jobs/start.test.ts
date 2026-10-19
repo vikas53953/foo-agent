@@ -36,9 +36,12 @@ describe('three WORKING slots, end to end', () => {
     for (let i = 0; i < 40; i++) await new Promise((r) => setTimeout(r, 2));
     const states = h.jobs().map((j) => j.state);
     expect(states.filter((s) => s === 'working')).toHaveLength(3);
-    const fourth = h.jobs().find((j) => j.user_message_id === ids[3])!;
-    expect(fourth.state).toBe('queued');
-    expect(h.message(ids[3]!).badge).toBe('seen');
+    // M5 (T5): the four intakes race across four chats, so any one of them may be the job left waiting; find it by state.
+    const queued = h.jobs().filter((j) => j.state === 'queued');
+    expect(queued).toHaveLength(1);
+    const fourth = queued[0]!;
+    expect(ids).toContain(fourth.user_message_id);
+    expect(h.message(String(fourth.user_message_id)).badge).toBe('seen');
     const checklists = h.cards('checklist').map((c) => JSON.parse(String(c.payload)) as { jobId: string });
     expect(checklists.some((c) => c.jobId === fourth.id)).toBe(true);
 
