@@ -52,6 +52,20 @@ const INVOKES = new Set([
   'ai:detect',
   'ai:choose',
   'notifications:status',
+  'card:answer',
+  'card:approve',
+  'card:decline',
+  'card:askAgain',
+  'card:heldPick',
+  'draft:update',
+  'draft:send',
+  'draft:undo',
+  'draft:discard',
+  'draft:openInApp',
+  'secret:save',
+  'secret:list',
+  'secret:delete',
+  'code:submit',
 ]);
 const EVENTS = new Set([
   'chat:upsert',
@@ -99,5 +113,6 @@ const testBridge: FooTestBridge = {
   theme: (theme) => call('test:theme', { theme }),
   reset: () => call('test:reset'),
   jobState: (jobId, state) => call('test:jobState', { jobId, state }),
+  cardSeed: (arg) => call('test:card.seed', arg),
 };
 contextBridge.exposeInMainWorld('__fooTest', testBridge);

@@ -139,6 +139,11 @@ export class EngineBridge {
       case 'ai.state':
         this.applyAiState(msg.payload);
         return null;
+      // M5-T1 stubs (CR-0009): T4 builds ApprovalGate (approval.open / approval.transition), T2 the vault (vault.use).
+      case 'approval.open':
+      case 'approval.transition':
+      case 'vault.use':
+        return { re: msg.id, result: { ok: false, error: { kind: 'VALIDATION', message: 'not_implemented' } } };
     }
   }
 

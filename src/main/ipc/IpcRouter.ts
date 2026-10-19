@@ -3,7 +3,9 @@
 // outside test runs, through ChannelGuard). M2 builder A: message:get/react/pin, files:open/showInFolder, job:details,
 // routine:pause and the gap channels message:edit/delete/retry, link:open, app:showEmojiPanel (implementation-notes). M2
 // builder B: message:send (idempotent, AT-225; R1 secret re-check, 08-2 §11.4), composer:checkSecret, composer:saveDraft,
-// files:stage, voice:submit (04-2 §22.1), helper:pause (04-2 §23.2 "Turn on").
+// files:stage, voice:submit (04-2 §22.1), helper:pause (04-2 §23.2 "Turn on"). M5 (CR-0009): the card, draft, secret and
+// code channels; each ticket's handler file fills its own rows (cards/answerIpc T5, approvals/approvalIpc T4, drafts/draftIpc
+// T6, vault/secretIpc T2), and this file only registers them.
 import { app, BrowserWindow, ipcMain, net, shell, systemPreferences, type IpcMainEvent } from 'electron';
 import { z } from 'zod';
 import { t } from '../../shared/copy/t';
@@ -58,6 +60,10 @@ import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
 import { isTrustedUrl } from '../windows/protocol';
 import { logEvent } from '../log/techLog';
+import { answerIpc } from '../cards/answerIpc';
+import { approvalIpc } from '../approvals/approvalIpc';
+import { draftIpc } from '../drafts/draftIpc';
+import { secretIpc } from '../vault/secretIpc';
 
 const trusted = (e: IpcMainEvent) => !!e.senderFrame && isTrustedUrl(e.senderFrame.url);
 
@@ -103,6 +109,17 @@ export const electronProbe = () => net.isOnline();
 const empty = z.object({}).strict();
 const chatId = z.string().min(1).max(80);
 const messageId = z.string().min(1).max(80);
+const cardId = z.string().min(1).max(80);
+/** 08-2 §9.3: the card nonce is 32 lower-case hex. */
+const nonce = z.string().regex(/^[0-9a-f]{32}$/);
+const tapBy = z.enum(['tap', 'keyboard']);
+/** M5 08-1 §3.2 `CardAnswer` (the value a Choice card is answered with). */
+const cardAnswerValue = z.union([
+  z.object({ optionId: z.string().min(1).max(40) }).strict(),
+  z.object({ optionIds: z.array(z.string().min(1).max(40)).min(1).max(4) }).strict(),
+  z.object({ text: z.string().min(1).max(4_000) }).strict(),
+  z.object({ skip: z.literal(true) }).strict(),
+]);
 /** 04 §9: one emoji grapheme (a ZWJ or flag sequence is several code points). */
 const emoji = z
   .string()
@@ -218,9 +235,45 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'error:fix': cardAnswer
     .extend({ action: z.object({ kind: z.enum(FIX_ACTION_KINDS) }).catchall(z.unknown()) as unknown as z.ZodType<FixAction> })
     .strict(),
+  // M5 (08-1 §3.2). `secret:save` names are refined per kind by its handler (G-M5-16); values never leave main.
+  'card:answer': z.object({ cardId, nonce, answer: cardAnswerValue, resolvedBy: tapBy }).strict(),
+  'card:approve': z.object({ cardId, nonce, scope: z.enum(['once', 'chat', 'always']), resolvedBy: tapBy }).strict(),
+  'card:decline': z.object({ cardId, nonce, resolvedBy: tapBy }).strict(),
+  'card:askAgain': z.object({ cardId }).strict(),
+  'card:heldPick': z.object({ cardId, nonce, optionId: z.string().min(1).max(40), resolvedBy: tapBy }).strict(),
+  'draft:update': z
+    .object({
+      cardId,
+      nonce,
+      fields: z
+        .object({ to: z.string().max(320).optional(), subject: z.string().max(998).optional(), body: z.string().max(40_000) })
+        .strict(),
+    })
+    .strict(),
+  'draft:send': z.object({ cardId, nonce, resolvedBy: tapBy }).strict(),
+  'draft:undo': z.object({ approvalId: z.string().min(1).max(80) }).strict(),
+  'draft:discard': z.object({ cardId, nonce, resolvedBy: tapBy }).strict(),
+  'draft:openInApp': z.object({ cardId }).strict(),
+  'secret:save': z
+    .object({
+      requestId: z.string().min(1).max(80).optional(),
+      kind: z.enum(['ai_key', 'login', 'card', 'conn_token', 'wa_session', 'web_key', 'hub_key']),
+      name: z.string().min(1).max(253),
+      fields: z.record(z.string().min(1).max(40), z.string().max(20_000)),
+    })
+    .strict(),
+  'secret:list': empty as z.ZodType<Record<string, never>>,
+  'secret:delete': z.object({ target: z.string().min(1).max(300), confirm: z.literal(true) }).strict(),
+  'code:submit': z.object({ requestId: z.string().min(1).max(80), code: z.string().min(1).max(64) }).strict(),
 };
 
-type Handler<C extends InvokeChannel> = (req: InvokeIn[C]) => Result<InvokeOut[C]> | Promise<Result<InvokeOut[C]>>;
+export type Handler<C extends InvokeChannel> = (req: InvokeIn[C]) => Result<InvokeOut[C]> | Promise<Result<InvokeOut[C]>>;
+/** One ticket's rows: channel → handler (M5 handler files return these; registerIpc registers them). */
+export type IpcHandlers<C extends InvokeChannel> = { [K in C]: Handler<K> };
+
+function handleAll<C extends InvokeChannel>(rows: IpcHandlers<C>): void {
+  for (const channel of Object.keys(rows) as C[]) handle(channel, rows[channel] as Handler<C>);
+}
 
 /** Registers one channel: zod-validated, sender-checked, always answering with a Result. */
 export function handle<C extends InvokeChannel>(channel: C, fn: Handler<C>): void {
@@ -541,4 +594,10 @@ export function registerIpc(ctx: AppContext): void {
     return r;
   });
   handle('notifications:status', () => ok({ windowsAllowed: true, focusAssist: false }));
+
+  // M5 (CR-0009): the card, draft, secret and code channels.
+  handleAll(answerIpc(ctx));
+  handleAll(approvalIpc(ctx));
+  handleAll(draftIpc(ctx));
+  handleAll(secretIpc(ctx));
 }

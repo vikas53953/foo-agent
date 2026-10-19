@@ -12,8 +12,10 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
 
+# The PR action is in the group: marking a PR ready right after a push must not let the push's run (draft payload, no
+# golden lane) cancel the ready run.
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.ref }}-${{ github.event.action }}
   cancel-in-progress: true
 
 permissions:
@@ -68,9 +70,15 @@ jobs:
           fi
 
   windows:
-    name: Full suite (windows-latest)
+    # Split into 4 parallel shards (Vikas, option A, 2026-10-19 06:53Z): same tests, a quarter of the wall time each.
+    # Shard 1 also typechecks, packages and uploads the app for manual testing.
+    name: Full suite (windows-latest, shard ${{ matrix.shard }}/4)
     if: github.event_name != 'pull_request' || (!github.event.pull_request.draft && github.event.pull_request.base.ref == 'main')
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -86,16 +94,19 @@ jobs:
       - name: Build better-sqlite3 for Node (unit tests)
         run: pnpm rebuild:node
       - run: pnpm typecheck
+        if: matrix.shard == 1
       - name: Unit, article and fidelity tests
-        run: pnpm test
+        run: pnpm test --shard=${{ matrix.shard }}/4
       - run: pnpm build
       - name: Rebuild native modules for Electron
         run: pnpm rebuild:electron
       - name: E2E (Playwright for Electron)
-        run: pnpm test:e2e
+        run: pnpm test:e2e --shard=${{ matrix.shard }}/4
       - name: Package (unpacked)
+        if: matrix.shard == 1
         run: pnpm package:dir
       - name: No test hooks in the production build (08-3 §22.1)
+        if: matrix.shard == 1
         shell: bash
         run: |
           for needle in "__fooTest" "test:clock" "test:seed"; do
@@ -105,7 +116,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: m0-evidence-windows
+          name: m0-evidence-windows-${{ matrix.shard }}
           path: |
             qa-evidence/
             playwright-report/
@@ -113,6 +124,7 @@ jobs:
           if-no-files-found: ignore
       # A ready-to-run copy for manual testing on Vikas's PC: unzip, open foo.exe (unsigned for testers).
       - name: Upload the app for manual testing
+        if: matrix.shard == 1
         uses: actions/upload-artifact@v4
         with:
           name: foo-windows-app
