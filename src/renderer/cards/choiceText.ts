@@ -1,9 +1,8 @@
 // Spec: 05-1 §5.3.2 (answered summary "{question} → {answer}"; multi-select "{A}, {B} and {C}", commas then "and" before the
 // last, no Oxford comma; typed free text "{question} → {typed text}"; skipped "Skipped. I'll go with {Best fit}."; cancelled
 // "{question} → no answer"; superseded "These options changed. See the new ones below."; steer "{question} → you changed the
-// plan" (08-4 §26.5 item 3)), §5.3.5 (Narrator "You chose {answer}."), §5.4.2 (tiles summaries as §5.3.2), 05-1 §5.3.1
-// Stepper (implementation-notes M5-T5: questions after the first live in `payload.steps`; the answer is one id per question).
-// Pure.
+// plan" (08-4 §26.5 item 3)), §5.3.5 (Narrator "You chose {answer}."), §5.4.2 (tiles summaries as §5.3.2), 08-1 §4.5
+// (a stepper is one card per question with `stepper: { index, total }`; X-129). Pure.
 import type { ChoicePayload } from '../../shared/types';
 
 export type ChoiceOption = ChoicePayload['options'][number];
