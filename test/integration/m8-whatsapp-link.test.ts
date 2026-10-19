@@ -86,7 +86,7 @@ function world() {
     emit: emit as never,
     emitChat: (id) => emit('chat:upsert', { id }),
     emitSettings: () => emit('settings:changed', {}),
-    chatRow: (id) => ({ id }) as never,
+    chatRow: (id) => ({ id, archived: db.prepare('SELECT archived FROM chats WHERE id = ?').pluck().get(id) === 1 }) as never,
     now: () => clock.now(),
     unlinkGraceMs: 0,
   });
@@ -216,8 +216,13 @@ describe('M8 T3: link WhatsApp, mirror the groups, read a message, unlink', () =
     await settle();
     expect(w.db.prepare('SELECT chat_jid FROM wa_messages').pluck().all()).toEqual([soc]);
 
+    const upserts = () => w.events.filter((e) => e.event === 'chat:upsert').map((e) => (e.payload as { id: string }).id);
+    const before = upserts().length;
     w.store.update((s) => ({ ...s, connections: { ...s.connections, whatsapp: { ...s.connections.whatsapp, read: false } } }));
     expect(w.db.prepare('SELECT COUNT(*) FROM wa_messages').pluck().get()).toBe(0);
+    // the shown mirror is refreshed; the hidden one is not sent back to the chat list
+    const socId = w.db.prepare('SELECT id FROM chats WHERE wa_jid = ?').pluck().get(soc) as string;
+    expect(upserts().slice(before)).toEqual([socId]);
     say(soc!, 'S2');
     await settle();
     expect(w.db.prepare('SELECT COUNT(*) FROM wa_messages').pluck().get()).toBe(0);

@@ -52,9 +52,15 @@ export class WhatsAppMain {
     return bridgeWanted(this.c.db);
   }
 
+  /** The chat list shows no archived chat, so a mirror hidden with C-8 is not sent back to it. */
+  private emitShown(chatId: string): void {
+    if (this.c.chatRow(chatId)?.archived) return;
+    this.c.emitChat(chatId);
+  }
+
   private apply(fx: WaEffects): void {
     if (fx.connection) this.c.emit('connection:upsert', fx.connection);
-    for (const id of fx.chatIds) this.c.emitChat(id);
+    for (const id of fx.chatIds) this.emitShown(id);
     for (const id of fx.removedChatIds) this.c.emit('chat:removed', { chatId: id });
   }
 
@@ -111,7 +117,7 @@ export class WhatsAppMain {
     if (this.reading && !now) {
       deleteWaData(this.c.db);
       const mirrors = this.c.db.prepare("SELECT id FROM chats WHERE kind = 'wa_mirror' AND deleted_at IS NULL").pluck().all() as string[];
-      for (const id of mirrors) this.c.emitChat(id);
+      for (const id of mirrors) this.emitShown(id);
     }
     this.reading = now;
   }

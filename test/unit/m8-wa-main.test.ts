@@ -98,6 +98,16 @@ describe('connection row (08-1 §4.3.10 status machine)', () => {
     expect(r.connection).toMatchObject({ status: 'unlinked', lastErrorKind: 'WA_UNLINKED' });
   });
 
+  it.each(['unlinked', 'error'] as const)('Link again after a %s row goes connecting, so a failed attempt can show', (from) => {
+    linked();
+    applyWaReport(db, store, { event: 'status', status: from, errorKind: null }, NOW);
+    expect(applyWaReport(db, store, { event: 'status', status: 'connecting', errorKind: null }, NOW).connection).toMatchObject({
+      status: 'connecting',
+    });
+    const r = applyWaReport(db, store, { event: 'status', status: 'disconnected', errorKind: 'WA_LINK_FAILED' }, NOW);
+    expect(r.connection).toMatchObject({ status: 'disconnected', lastErrorKind: 'WA_LINK_FAILED' });
+  });
+
   it('at startup a connecting row becomes disconnected, and only a live row starts the bridge', () => {
     applyWaReport(db, store, { event: 'status', status: 'connecting', errorKind: null }, NOW);
     expect(bridgeWanted(db)).toBe(false);

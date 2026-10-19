@@ -89,6 +89,9 @@ function setStatus(db: Db, id: string, status: ConnectionRow['status'], errorKin
   db.prepare('UPDATE connections SET status = ?, last_error_kind = ?, rev = rev + 1 WHERE id = ?').run(status, errorKind, id);
 }
 
+/** Statuses a new link may start from: dropped, unlinked from the phone, or a failed attempt. */
+const NOT_LINKED: ReadonlySet<unknown> = new Set(['disconnected', 'unlinked', 'error']);
+
 const rowById = (db: Db, id: string) => connectionRow(db.prepare('SELECT * FROM connections WHERE id = ?').get(id) as DbRow);
 
 /** One `wa.report` from the engine. */
@@ -105,7 +108,7 @@ export function applyWaReport(db: Db, settings: SettingsLike, r: WaReport, now: 
              VALUES (?, 'whatsapp', '', ?, ?, 'connecting', ?, ?)`,
           ).run(id, PENDING_HASH, JSON.stringify(GRANTED), WA_VAULT_NAME, now);
           fx.connection = rowById(db, id);
-        } else if (cur.status === 'disconnected') {
+        } else if (NOT_LINKED.has(cur.status)) {
           setStatus(db, String(cur.id), 'connecting', null);
           fx.connection = rowById(db, String(cur.id));
         }
@@ -113,7 +116,7 @@ export function applyWaReport(db: Db, settings: SettingsLike, r: WaReport, now: 
       }
       if (!cur) return fx;
       // A failed link touches only a row that is not linked; a dropped link touches only a linked one.
-      const linking = cur.status === 'connecting' || cur.status === 'disconnected';
+      const linking = cur.status === 'connecting' || NOT_LINKED.has(cur.status);
       if (r.status === 'disconnected' ? !linking : linking) return fx;
       setStatus(db, String(cur.id), r.status, r.errorKind);
       fx.connection = rowById(db, String(cur.id));
