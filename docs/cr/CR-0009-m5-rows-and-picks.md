@@ -170,3 +170,16 @@ the spec's own precedence (04-2 §22.4 wins over 08-2 §11.5) and changes no scr
 
 Recorded as approved on Vikas's behalf under his standing rule (his message 2026-10-18 14:56Z: "take care of it on my
 behalf and then keep on working"); listed for his later review.
+
+## (g) Addenda during the build (G-M5-21 onwards; ids handed out by the M5 lead)
+
+Each addendum is a pick where the spec is silent or forks, taken by the ticket that met it, landed here by the lead. A
+batch independent review (Fable) checks them before the milestone PR; until then each is "pending review".
+
+24. **G-M5-24** (T4) `ApprovalFields` gains optional `app: PermissionApp`. 08-5 §3.3 says a `use_app` approvals row
+    carries `fields.app`; 08-2 §9.3 leaves it out. A `use_app` approval sets it, and its "For this chat" / "Always"
+    rule matches `{ app }`. A `use_app` approval without `app` cannot make a rule (`RULE_NOT_ALLOWED`). Pending review.
+25. **G-M5-25** (lead, found by T4) The R2 store scrub does not apply P17 (04-2 key-like 32+ characters, entropy ≥ 4)
+    to a JSON leaf that is exactly a foo id (08-0 §E.7 `{prefix}_{UUIDv7}`, prefixes of 08-1 §0.6). Every id is 39+
+    hex characters and passed P17, so stored card payloads, activity fields and tool calls held `[hidden]` in place of
+    their ids. An id inside a longer string gets no exemption. `src/main/store/writeRedacted.ts`. Pending review.
