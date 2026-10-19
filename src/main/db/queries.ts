@@ -43,6 +43,9 @@ export interface EngineHelper {
   jobText: string;
   goodResult: string | null;
   paused: boolean;
+  // M5
+  /** T7: HelperForm.allowedApps (08-3 §17.6), for the gate's helper check. */
+  allowedApps: Record<string, boolean>;
 }
 
 function chat(r: DbRow): EngineChat {
@@ -205,6 +208,7 @@ export const NAMED_QUERIES = {
           jobText: String(r.job_text),
           goodResult: (r.good_result as string | null) ?? null,
           paused: r.paused === 1,
+          allowedApps: parseJson<Record<string, boolean>>(r.allowed_apps, {}),
         }
       : null;
   },

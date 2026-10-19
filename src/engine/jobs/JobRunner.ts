@@ -9,6 +9,9 @@
 // Ticket T2 builds the core. Seams the next tickets fill (they replace the T2 defaults named in `RunnerHooks`):
 // T3 stop / steer / watchdog / stuck / caps, T4 waiting / recovery / power events. T3's logic lives in stopFlow.ts,
 // steer.ts, watchdog.ts and costMeter.ts; they reach the runner through `RunnerCore` (08-2 §5.2, §5.5–§5.7, §5.10).
+// M5 T7: the gate's job side lives in engine/gate/runnerGate.ts (08-2 §9.4, 08-4 §28.1, §5.9 step 5, §24.22 part 8); the
+// runner only calls it: before each step turn, on request_approval, on a tool the gate held, on a card answer, and the
+// decline line of AT-110 (07-2 §4 "Okay, I won't. …"). Stored text goes through `Redactor.scrub` (08-2 §11.4, map fix 11).
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { t } from '../../shared/copy/t';
@@ -20,7 +23,18 @@ import { BADGE_OF_STATE, JOB_STATES, TERMINAL } from '../../shared/jobMachine';
 import { phraseText, resolvePhrase, type PhraseKey } from '../../shared/phrases';
 import type { IntakeDecision, PlanStep, StepAct, StepDecision } from '../../shared/schemas';
 import type { Settings } from '../../shared/settings';
-import type { CardRow, ErrorKind, FixAction, JobRow, JobState, ProviderId, StepRow, StopReason, StopReport } from '../../shared/types';
+import type {
+  ApprovalState,
+  CardRow,
+  ErrorKind,
+  FixAction,
+  JobRow,
+  JobState,
+  ProviderId,
+  StepRow,
+  StopReason,
+  StopReport,
+} from '../../shared/types';
 import type { LaneAi } from '../chat/ChatLane';
 import type { AiErrorKind, TurnResult } from '../ai/types';
 import type { DbOp, DbTxReply, MainLink } from '../protocol';
@@ -36,6 +50,8 @@ import { extractDoVerbs } from './verbs';
 import { Steer } from './steer';
 import { StopFlow } from './stopFlow';
 import { Watchdog, type StuckRule } from './watchdog';
+import type { GateLogic } from '../gate/GateLogic';
+import { RunnerGate } from '../gate/runnerGate';
 
 export const CHECKLIST_AFTER_MS = 1_500;
 const OBSERVATION_CAP = 4_000;
@@ -134,6 +150,11 @@ export interface JobRunnerDeps {
   usdToInr: number;
   log(evt: string, kind?: string, ids?: { chatId?: string; jobId?: string }): void;
   hooks?: RunnerHooks;
+  // M5
+  /** T7: 08-2 §9.4 GateLogic (the same one the ToolLayer holds), for request_approval drafts. */
+  gate: GateLogic;
+  /** T7: 08-2 §11.4 `Redactor.scrub` (registry + patterns) for runner-written text; the pattern scrub alone when absent. */
+  scrub?(text: string): { text: string; hits: number };
 }
 
 export interface CreateJobInput {
@@ -220,6 +241,8 @@ export class JobRunner {
   /** T10: chat id → the plan the user asked to change; the chat's next intake turn carries it (08-2 §5.3.3). */
   private planChanges = new Map<string, OldPlan>();
   private ticker: RunnerTick;
+  /** T7: the gate's job side (08-2 §9.4). */
+  readonly gating: RunnerGate;
 
   constructor(private d: JobRunnerDeps) {
     const core: RunnerCore = {
@@ -258,6 +281,23 @@ export class JobRunner {
     // M5 T10: the 15 s tick (opens_at wake, 24 h Plan withdraw).
     this.ticker = new RunnerTick(core);
     this.ticker.start();
+    // M5 T7
+    this.gating = new RunnerGate({
+      core,
+      gate: d.gate,
+      tools: d.tools,
+      timeZone: () => d.settings().locale.timeZone,
+      countFailure: (j) => this.countFailure(j),
+    });
+  }
+
+  /** M5 T7: 08-2 §11.4 for text the runner stores (decisions, plan.md "Asked:"). */
+  private scrub(text: string): string {
+    return (this.d.scrub ? this.d.scrub(text) : redactSecrets(text)).text;
+  }
+  /** M5 T7: main's `approval.changed` (an expired payment / booking card cancels its job, AT-111). */
+  onApprovalChanged(p: { approvalId: string; state: ApprovalState }): Promise<void> {
+    return this.track(this.gating.onApprovalChanged(p.approvalId, p.state).then(() => undefined));
   }
 
   // ---- T3 entry points (08-2 §5.2, §5.7, §5.10) ----
@@ -673,6 +713,9 @@ export class JobRunner {
         if (c.abort.signal.aborted) return;
         job = await this.job(jobId);
         if (!job || job.state !== 'working') return;
+        // M5 T7: the RECOVERY list and an approved action run before the AI's next turn (08-4 §28.1 item 8).
+        if (!(await this.gating.beforeTurn(job, c.abort.signal))) return;
+        if (c.abort.signal.aborted) return;
         const turn = await this.stepTurn(job, c);
         if (turn.capped || c.abort.signal.aborted) return;
         if (turn.error) {
@@ -713,9 +756,8 @@ export class JobRunner {
         return false;
       }
       case 'request_approval':
-        // TODO(M5): the engine verifies the draft and the gate opens the Approval card. M4 has no gate: count it as a failure.
-        this.d.log('job.approval_not_built', 'VALIDATION', { jobId: job.id });
-        return !(await this.countFailure(job));
+        // M5 T7: verified (08-4 §28.1), decided (08-2 §9.4), the card opened by main; the job waits on it.
+        return this.gating.requestApproval(job, decision, c.asked);
       case 'done':
         return this.finish(job, c, decision);
       case 'fail':
@@ -737,8 +779,15 @@ export class JobRunner {
   private async runTool(job: JobRow, c: JobCtx, decision: Extract<StepDecision, { kind: 'tool' }>, turnId: string): Promise<boolean> {
     const steps = await this.steps(job.id);
     const current = steps.find((s) => s.state === 'running') ?? null;
-    const r: ExecResult = await this.d.tools.execute({ id: job.id, stepId: current?.id ?? null, turnId }, decision.call, c.abort.signal);
+    const gate = await this.gating.gateJob(job);
+    const r: ExecResult = await this.d.tools.execute(
+      { id: job.id, stepId: current?.id ?? null, turnId, gate },
+      decision.call,
+      c.abort.signal,
+    );
     if (r.outcome === 'cancelled') return false;
+    // M5 T7: a call the gate held (a refusal line, a hand-back, an app_use / offer Choice) is not a failed tool.
+    if (r.gate) return this.gating.onToolGate(job, r);
     c.lastObservation = { toolCallId: r.toolCallId, tool: r.tool, text: JSON.stringify(r.result ?? null).slice(0, OBSERVATION_CAP) };
     if (r.needsUser) {
       await this.needsYou(job, r.needsUser);
@@ -891,6 +940,7 @@ export class JobRunner {
     if (APPROVAL_CARDS.has(card.type)) {
       if (a.choice === 'decline') return this.declined(job, card, resolve);
       if (a.choice !== 'approve') return;
+      this.gating.onApproved(job.id, card.id);
     }
     // M5 (T5): a Skip is stored `skipped` so the card reads "Skipped. I'll go with {Best fit}." (05-1 §5.3.2).
     const answered = APPROVAL_CARDS.has(card.type)
@@ -912,7 +962,8 @@ export class JobRunner {
       const options = (card.payload.options as { id: string; label: string }[] | undefined) ?? [];
       const label = options.find((o) => o.id === a.choice)?.label ?? a.text ?? '';
       const q = String(card.payload.question ?? '');
-      this.ctx(job.id).decisions.push(redactSecrets(`- Q: ${q} → A: ${label}`).text);
+      this.ctx(job.id).decisions.push(this.scrub(`- Q: ${q} → A: ${label}`));
+      await this.gating.onChoiceAnswered(job, card, a.choice);
       await this.writeMirrors(job.id);
     }
     await this.startNext();
@@ -959,6 +1010,8 @@ export class JobRunner {
         .map((s): DbOp => ({ op: 'update', table: 'steps', id: s.id, set: { state: 'skipped' } })),
       ...this.badgeOp(job, 'cancelled'),
       ...(await this.editChecklistOps(job, 'stopped')),
+      // M5 T7 (AT-110, 07-2 §4): no other route is known in M5, so the line closes with "Nothing else to do here."
+      this.textOp(job, t('thread.approval.declined', { next: t('thread.approval.declined.nothing_else') })),
     ]);
     if (!r.ok) return;
     await this.ended(job.id, this.ctx(job.id));
@@ -981,6 +1034,7 @@ export class JobRunner {
       stored: (id) => stored.get(id) ?? null,
       jobDir: path.join(this.d.dataDir, 'jobs', job.id),
       exists: (f) => existsSync(f),
+      ...(this.d.scrub ? { scrub: this.d.scrub } : {}),
     });
     if (d.proof && !check.ok) this.d.log('job.proof_unchecked', 'PROOF_INVALID', { jobId: job.id });
     const to: JobState = check.ok ? 'done' : 'done_unverified';
@@ -1079,6 +1133,7 @@ export class JobRunner {
     this.ctxs.delete(jobId);
     this.steering.forget(jobId);
     this.watchdog.forget(jobId);
+    this.gating.forget(jobId);
     // A slot may have freed for a job paused at the AI cap.
     void this.cost.resumeCapped();
   }
@@ -1161,11 +1216,15 @@ export class JobRunner {
             `${i + 1}. [${STEP_LABEL[s.state]}] ${phraseText(s.phraseKey as PhraseKey, 'next', s.slots as Record<string, string>) ?? s.phraseKey}`,
         ),
       'Approved so far:',
-      '- none yet',
     ];
+    // M5 T7 (08-4 §24.22): approved actions, the RECOVERY list once after a restart, the APPROVAL_EVIDENCE retry line.
+    const g = this.gating.blockParts(job.id);
+    lines.push(...(g.approved.length ? g.approved : ['- none yet']));
     if (c.decisions.length) lines.push('Decisions:', ...c.decisions);
     const avoid = this.watchdog.avoidList(job.id);
     if (avoid.length) lines.push(`Avoid: ${avoid.join(', ')}`);
+    if (g.recovery) lines.push('Unfinished from before the restart (check before repeating any):', ...g.recovery);
+    if (g.retry) lines.push(g.retry);
     if (c.lastObservation)
       lines.push(`Last observation (${c.lastObservation.toolCallId}, ${c.lastObservation.tool}):`, c.lastObservation.text);
     return lines.join('\n');
@@ -1324,7 +1383,7 @@ export class JobRunner {
       });
     const plan = [
       `# ${job.title}`,
-      `Asked: ${redactSecrets(c?.asked ?? '').text}`,
+      `Asked: ${this.scrub(c?.asked ?? '')}`,
       ...planLines,
       'Decisions:',
       ...(c?.decisions ?? []),

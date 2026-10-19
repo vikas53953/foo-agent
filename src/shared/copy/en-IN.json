@@ -595,6 +595,8 @@
   "thread.queued.ai_back": "I’ll answer when your AI is back.",
   "thread.approval_typed.approve": "Tap Approve on the card so I know it’s really you.",
   "thread.approval_typed.send": "Tap Send on the draft so I know it’s really you.",
+  "thread.approval.declined": "Okay, I won’t. {next}",
+  "thread.approval.declined.nothing_else": "Nothing else to do here.",
   "cards.choice.question.fold_which": "Fold this into which job?",
   "cards.choice.question.stop_which": "Stop which one?",
   "cards.choice.option.stop_both": "Both",

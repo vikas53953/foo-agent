@@ -8,13 +8,14 @@ import { engineToMainSchema, type DbOp, type EngineToMain, type MainToEngine, ty
 import type { Result } from '../../shared/errors';
 import type { EventChannel, EventPayload } from '../../shared/ipc';
 import type { Settings } from '../../shared/settings';
-import type { AiStatus, ProviderId } from '../../shared/types';
+import type { AiStatus, ApprovalDraft, ProviderId } from '../../shared/types';
 import type { Db } from '../store/db';
 import { cardRow, type DbRow } from '../db/rows';
 import { jobRows, spendSummary } from '../store/queries';
 import { postCapWarning } from '../jobs/capWarning';
 import { applyDbOps, runNamedQuery } from './engineHost';
 import { vaultRuntime } from '../vault/vaultRuntime';
+import type { ApprovalGate } from '../approvals/ApprovalGate';
 
 export interface BridgeContext {
   db: Db;
@@ -32,6 +33,9 @@ export interface BridgeContext {
   keepAwake?(on: boolean, jobCount: number): void;
   /** 08-3 §15: a toast request. Stub until M11 (logged only). */
   notify?(req: unknown): void;
+  // M5
+  /** T7: main's ApprovalGate for engine `approval.open` / `approval.transition` (08-2 §9.1, §9.7); lazy, it needs this bridge. */
+  approvals?(): Pick<ApprovalGate, 'openFromEngine' | 'transition'>;
 }
 
 type AiStatePayload = Extract<EngineToMain, { kind: 'ai.state' }>['payload'];
@@ -154,10 +158,19 @@ export class EngineBridge {
       case 'ai.state':
         this.applyAiState(msg.payload);
         return null;
-      // M5-T1 stubs (CR-0009): T4 builds ApprovalGate (approval.open / approval.transition).
-      case 'approval.open':
-      case 'approval.transition':
-        return { re: msg.id, result: { ok: false, error: { kind: 'VALIDATION', message: 'not_implemented' } } };
+      // M5 T7 (08-2 §9.1, §9.7; 08-4 §28.1 item 8, §29.1): only main's ApprovalGate writes approvals.state. A verified draft
+      // opens its card; the engine's moves are checked against the table (APPROVAL_BAD_TRANSITION, logged).
+      case 'approval.open': {
+        const gate = this.ctx.approvals?.();
+        if (!gate) return { re: msg.id, result: { ok: false, error: { kind: 'VALIDATION', message: 'not_implemented' } } };
+        return { re: msg.id, result: gate.openFromEngine({ ...msg.payload, draft: msg.payload.draft as ApprovalDraft }) };
+      }
+      case 'approval.transition': {
+        const gate = this.ctx.approvals?.();
+        if (!gate) return { re: msg.id, result: { ok: false, error: { kind: 'VALIDATION', message: 'not_implemented' } } };
+        const r = gate.transition(msg.payload.approvalId, msg.payload.to, msg.payload.data ?? {});
+        return { re: msg.id, result: r.ok ? { ok: true, value: { ok: true } } : r };
+      }
       // M5 T2 (08-2 §11.3): purpose checks in main; the value goes back to the engine only, registered first. Never logged.
       case 'vault.use': {
         const vault = vaultRuntime()?.vault;
