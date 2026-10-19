@@ -85,9 +85,9 @@ async function advance(page: Page, ms: number, by = 250): Promise<void> {
  * Waits for a card the runner posts on the fake clock. On the slower Windows runner the job can start after an advance
  * has run, so its timers (the 1.5 s checklist) need more fake time; the log is virtual, so keep the newest row in view.
  */
-async function untilPosted(page: Page, log: Locator, card: Locator): Promise<void> {
+async function untilPosted(page: Page, log: Locator, card: Locator, step = 250): Promise<void> {
   await expect(async () => {
-    await advance(page, 250);
+    await advance(page, step);
     await log.evaluate((el) => (el.scrollTop = el.scrollHeight));
     await expect(card).toHaveCount(1, { timeout: 500 });
   }).toPass({ timeout: 30_000 });
@@ -268,10 +268,8 @@ test('UX-23 · When things go wrong: steps UX-23-01 to UX-23-06, UX-23-09 and UX
       .filter({ hasText: 'fares' })
       .getByTestId(TID.cardChecklistStep)
       .and(first.page.locator('[data-index="1"][data-state="current"]'));
-    await expect(async () => {
-      await firstLog.evaluate((el) => (el.scrollTop = el.scrollHeight));
-      await expect(secondStep).toHaveCount(1, { timeout: 1_000 });
-    }).toPass({ timeout: 20_000 });
+    // A job that started late (after part of the advance ran) needs more fake time for step 1's 60 s turn.
+    await untilPosted(first.page, firstLog, secondStep, 1_000);
     await send(first.page, draft!, false);
     await first.page.waitForTimeout(1_000); // the draft's 500 ms save (04-2 §23.5)
     // foo closes unexpectedly: the process is killed, no clean quit (08-1 §4.1.3 launches.json stays unclean).
