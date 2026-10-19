@@ -271,7 +271,7 @@ export function memoryFactView(r: DbRow, labels: { fileLabel: string; originLabe
     origin: String(r.origin),
     originKind: r.origin_kind as MemoryFactView['originKind'],
     reason: str(r.reason),
-    category: str(r.category),
+    category: str(r.category) as MemoryFactView['category'],
     kind: (r.kind ?? 'fact') as MemoryFactView['kind'],
     sensitive: flag(r.sensitive),
     private: flag(r.private),

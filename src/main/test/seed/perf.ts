@@ -230,7 +230,9 @@ export function seedPerf(db: Db, now: number): SeedResult {
           const [type, state] = CARD_MIX.find(([, , p]) => (x -= p) < 0) ?? CARD_MIX[0]!;
           const title = `${w.pick(WORDS)} ${type}`;
           if (chat.kind === 'foo' && extra() < 0.6) w.card(chat.id, { ...reply, ...m2Card(extra, at, total), at });
-          else w.card(chat.id, { ...reply, type, state, at, payload: { title } });
+          // A Draft card reads its subject and body (05-2 §5.7.4 Narrator line), so its payload carries both.
+          else
+            w.card(chat.id, { ...reply, type, state, at, payload: type === 'draft' ? { title, subject: title, body: title } : { title } });
         } else if (r < 0.93) {
           w.message(
             chat.id,

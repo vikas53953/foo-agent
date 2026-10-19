@@ -2,8 +2,9 @@
 // `--t-subtitle`, ✕ 36px icon button 12px inset; body `--t-body`; buttons `--btn-h` 40, gap 8, right-aligned; destructive
 // order `[Destructive] [Cancel]` with Cancel focused, `role="alertdialog"`; non-destructive `[Secondary] [Primary]` with Primary
 // focused; focus trapped; focus returns to the opener; ids `dialog-close` / `dialog-primary` / `dialog-secondary`), 03-shell-2
-// §3.9.4 (Esc closes the dialog through the ladder: closeDialog).
-import { useEffect, useId, useRef, type KeyboardEvent } from 'react';
+// §3.9.4 (Esc closes the dialog through the ladder: closeDialog). M6 T6: `--dialog-md` 520, extra body content (06-3 §14
+// typed confirm field, the X-118 unreadable-lines list) and a Primary that stays disabled until the field matches.
+import { useEffect, useId, useRef, type KeyboardEvent, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
@@ -14,16 +15,32 @@ import styles from './Dialog.module.css';
 export interface DialogProps {
   tid: keyof typeof TID;
   title: string;
-  body: string;
+  body?: string;
   primary: string;
   secondary: string;
   destructive?: boolean;
+  size?: 'sm' | 'md';
+  primaryDisabled?: boolean;
+  /** Shown after the body (a typed-confirm field, a list). */
+  children?: ReactNode;
   onPrimary: () => void;
   /** Cancel, ✕ and Esc. */
   onClose: () => void;
 }
 
-export function Dialog({ tid, title, body, primary, secondary, destructive, onPrimary, onClose }: DialogProps) {
+export function Dialog({
+  tid,
+  title,
+  body,
+  primary,
+  secondary,
+  destructive,
+  size = 'sm',
+  primaryDisabled,
+  children,
+  onPrimary,
+  onClose,
+}: DialogProps) {
   const ref = useRef<HTMLDivElement>(null);
   const titleId = useId();
   const bodyId = useId();
@@ -41,7 +58,7 @@ export function Dialog({ tid, title, body, primary, secondary, destructive, onPr
 
   const trap = (e: KeyboardEvent) => {
     if (e.key !== 'Tab') return;
-    const list = Array.from(ref.current?.querySelectorAll<HTMLElement>('button') ?? []);
+    const list = Array.from(ref.current?.querySelectorAll<HTMLElement>('button:not(:disabled), input, textarea') ?? []);
     if (!list.length) return;
     const i = list.indexOf(document.activeElement as HTMLElement);
     const next = e.shiftKey ? (i <= 0 ? list.length - 1 : i - 1) : i === list.length - 1 ? 0 : i + 1;
@@ -50,7 +67,13 @@ export function Dialog({ tid, title, body, primary, secondary, destructive, onPr
   };
 
   const primaryButton = (
-    <Button variant={destructive ? 'destructive' : 'primary'} size="md" data-testid={TID.dialogPrimary} onClick={onPrimary}>
+    <Button
+      variant={destructive ? 'destructive' : 'primary'}
+      size="md"
+      data-testid={TID.dialogPrimary}
+      disabled={primaryDisabled}
+      onClick={onPrimary}
+    >
       {primary}
     </Button>
   );
@@ -67,8 +90,8 @@ export function Dialog({ tid, title, body, primary, secondary, destructive, onPr
         role={destructive ? 'alertdialog' : 'dialog'}
         aria-modal="true"
         aria-labelledby={titleId}
-        aria-describedby={bodyId}
-        className={styles.dialog}
+        aria-describedby={body ? bodyId : undefined}
+        className={size === 'md' ? `${styles.dialog} ${styles.md}` : styles.dialog}
         data-testid={TID[tid]}
         onKeyDown={trap}
       >
@@ -84,9 +107,12 @@ export function Dialog({ tid, title, body, primary, secondary, destructive, onPr
             onClick={onClose}
           />
         </div>
-        <p id={bodyId} className={styles.body}>
-          {body}
-        </p>
+        {body && (
+          <p id={bodyId} className={styles.body}>
+            {body}
+          </p>
+        )}
+        {children}
         <div className={styles.buttons}>
           {destructive ? (
             <>

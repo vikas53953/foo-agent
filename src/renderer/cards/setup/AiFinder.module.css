@@ -1,0 +1,173 @@
+/* Spec: 06-1 §2.0 setup cards (05 card frame; max width 520 inside the message column, left-aligned), §2.2 (lead line
+ * --t-body-strong, 8 below; rows 56 high, padding 0 12px, 26px disc --avatar-inline on --bg-sunken with the first letter
+ * --t-caption-strong --fg-1, name --t-body-strong, detail --t-small --fg-2, status right with a 16px spinner ring or icon, tones
+ * --fg-3 / --ok / --warn / --bad, Secondary 32px row controls; 12 between rows and the choice line, 8 between the line, the
+ * buttons and the note; note --t-caption --fg-3; offline strip in the Warn banner style, 40 high, inside the card), 06 §0.4
+ * Row group (1px --line, --r-lg, --bg-app, 1px --line dividers inset 16px left). The width 520 is the --dialog-md token. */
+.setup.setup {
+  width: var(--dialog-md);
+}
+.lead {
+  margin: 0;
+  font: var(--t-body-strong);
+  color: var(--fg-1);
+}
+.rows {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg-app);
+  overflow: hidden;
+}
+.row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: calc(var(--s8) + var(--s1)); /* 56 */
+  padding: 0 var(--s2);
+}
+.row + .row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--s3);
+  right: 0;
+  border-top: 1px solid var(--line);
+}
+.row:focus-visible {
+  border-radius: var(--r-sm);
+}
+.disc {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--avatar-inline);
+  height: var(--avatar-inline);
+  border-radius: var(--r-full);
+  background: var(--bg-sunken);
+  color: var(--fg-1);
+  font: var(--t-caption-strong);
+}
+.text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+.name {
+  font: var(--t-body-strong);
+  color: var(--fg-1);
+}
+.detail {
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.status {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--s0);
+  max-width: 60%;
+  font: var(--t-small);
+  text-align: end;
+}
+.status[data-tone='dim'] {
+  color: var(--fg-3);
+}
+.status[data-tone='ok'] {
+  color: var(--ok);
+}
+.status[data-tone='warn'] {
+  color: var(--warn);
+}
+.status[data-tone='bad'] {
+  color: var(--bad);
+}
+.statusText {
+  min-width: 0;
+}
+/* 06 §0.4 Secondary 32px (--btn-h-sm) inside a 40px hit area. */
+.action {
+  flex: none;
+  height: var(--btn-h-sm);
+  padding: 0 var(--s2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-full);
+  background: var(--bg-raised);
+  color: var(--fg-1);
+  font: var(--t-body);
+  white-space: nowrap;
+}
+.action:hover {
+  background: var(--bg-hover);
+}
+.action:active {
+  background: var(--bg-pressed);
+}
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  margin-top: var(--s0);
+}
+.line {
+  margin: 0;
+  font: var(--t-body);
+  color: var(--fg-1);
+}
+.waiting {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+}
+.note {
+  margin: 0;
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+.choice {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  margin-top: var(--s0);
+}
+.question {
+  margin: 0;
+  font: var(--t-body);
+  color: var(--fg-1);
+}
+.offline {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--s7); /* 40 */
+  margin: calc(-1 * var(--s2)) calc(-1 * (var(--s2) + var(--s-1))) 0;
+  padding: 0 calc(var(--s2) + var(--s-1));
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  background: var(--warn-soft);
+  color: var(--fg-1);
+  font: var(--t-small);
+}
+.offlineIcon {
+  color: var(--warn);
+}
+.offlineText {
+  flex: 1;
+}
+.summary {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--s7);
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.summaryText {
+  min-width: 0;
+}
+.spacer {
+  flex: 1;
+}

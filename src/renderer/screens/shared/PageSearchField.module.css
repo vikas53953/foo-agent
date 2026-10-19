@@ -1,0 +1,11 @@
+/* Spec: 06-2 §7.3 page search 240px wide; 06 §0.4 the Dismiss 16 clear button inside the field. */
+.wrap {
+  position: relative;
+  width: 240px; /* local: 06-2 §7.3 page search 240w (no token) */
+}
+.clear {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}

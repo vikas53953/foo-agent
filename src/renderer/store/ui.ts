@@ -30,6 +30,9 @@ export interface UiState {
   menu: string | null;
   chatFilter: ChatFilter;
   chatQuery: string;
+  // M5 (T5): 05-1 §5.3.2 "Something else…" focuses the composer with "Tell me what you want instead" until the chat changes
+  // or the user types.
+  composerHint: { chatId: string; text: string } | null;
 }
 
 export function initialUi(): UiState {
@@ -50,6 +53,7 @@ export function initialUi(): UiState {
     menu: null,
     chatFilter: 'all',
     chatQuery: '',
+    composerHint: null,
   };
 }
 
