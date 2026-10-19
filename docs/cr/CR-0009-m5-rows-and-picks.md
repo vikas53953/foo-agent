@@ -13,39 +13,41 @@
 
 ## (a) Trace rows (`spec/trace.csv`), Milestone M5
 
-| Id                                                          | Test file                                        | Ticket |
-| ----------------------------------------------------------- | ------------------------------------------------ | ------ |
-| AT-008                                                      | `test/integration/vault/AT-008.test.ts`          | T2     |
-| AT-009 (Secret box half, G-M5-10)                           | `test/e2e/m5-secret.spec.ts`                     | T2     |
-| AT-016 (Choice `purpose:'setup'`, G-M5-11), AT-035, AT-035a | `test/unit/choice/typed.test.ts`                 | T5     |
-| AT-032, AT-035, AT-288                                      | `test/e2e/m5-choice.spec.ts`                     | T5     |
-| AT-033, AT-034                                              | `test/integration/choice/timeouts.test.ts`       | T8     |
-| AT-077a                                                     | `test/integration/jobs/stop-which.test.ts`       | T8     |
-| AT-077b                                                     | `test/integration/approvals/steer.test.ts`       | T8     |
-| AT-085, ART-02c                                             | `test/articles/ART-02c.test.ts`                  | T9     |
-| AT-110                                                      | `test/integration/approvals/decline.test.ts`     | T7     |
-| AT-111 (approval part), AT-127                              | `test/integration/approvals/expiry.test.ts`      | T4     |
-| AT-111 (job half), AT-128 (job half)                        | `test/integration/approvals/expiry-job.test.ts`  | T7     |
-| AT-121                                                      | `test/unit/approvals/expiry.test.ts`             | T4     |
-| AT-122, AT-126, AT-127, AT-280                              | `test/e2e/m5-approval.spec.ts`                   | T4     |
-| AT-123                                                      | `test/integration/approvals/second-look.test.ts` | T8     |
-| AT-124                                                      | `test/integration/approvals/fresh-terms.test.ts` | T8     |
-| AT-128 (approval part)                                      | `test/integration/approvals/withdraw.test.ts`    | T4     |
-| AT-132 (rules, main)                                        | `test/unit/approvals/rules.test.ts`              | T4     |
-| AT-132 (gate, engine)                                       | `test/unit/gate/decide.test.ts`                  | T7     |
-| AT-133                                                      | `test/integration/approvals/draft.test.ts`       | T6     |
-| ART-03, ART-05a, ART-05b                                    | `test/articles/ART-{03,05a,05b}.test.ts`         | T7     |
-| ART-06a, ART-06b                                            | `test/articles/ART-06.test.ts`                   | T5     |
-| ART-08a                                                     | `test/articles/ART-08a.test.ts`                  | T9     |
-| ART-08c                                                     | `test/articles/ART-08c.test.ts`                  | T3     |
-| ART-10                                                      | `test/articles/ART-10.test.ts`                   | T8     |
-| UX-10-01…06, UX-10-08                                       | `test/fidelity/ux/UX-10.choice.spec.ts`          | T5     |
-| UX-12-05, UX-12-06 (early, owner M9)                        | `test/fidelity/ux/UX-12.booking.spec.ts`         | T4     |
-| UX-16-02, UX-16-04, UX-16-06 (early, owner M8)              | `test/fidelity/ux/UX-16.drafts.spec.ts`          | T6     |
-| BP-CARD-03, BP-CARD-04                                      | `test/fidelity/bp/BP-cards-m5-choice.spec.ts`    | T5     |
-| BP-CARD-05                                                  | `test/fidelity/bp/BP-cards-m5-approval.spec.ts`  | T4     |
-| BP-CARD-07                                                  | `test/fidelity/bp/BP-cards-m5-draft.spec.ts`     | T6     |
-| BP-CARD-08, BP-CARD-09                                      | `test/fidelity/bp/BP-cards-m5-secret.spec.ts`    | T2     |
+| Id                                                          | Test file                                        | Ticket                                                                                                                                                |
+| ----------------------------------------------------------- | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| AT-008                                                      | `test/integration/vault/AT-008.test.ts`          | T2                                                                                                                                                    |
+| AT-009 (Secret box half, G-M5-10)                           | `test/e2e/m5-secret.spec.ts`                     | T2                                                                                                                                                    |
+| AT-016 (Choice `purpose:'setup'`, G-M5-11), AT-035, AT-035a | `test/unit/choice/typed.test.ts`                 | T5                                                                                                                                                    |
+| AT-032, AT-035, AT-288                                      | `test/e2e/m5-choice.spec.ts`                     | T5                                                                                                                                                    |
+| AT-033, AT-034                                              | `test/integration/choice/timeouts.test.ts`       | T8                                                                                                                                                    |
+| AT-077a                                                     | `test/integration/jobs/stop-which.test.ts`       | T8                                                                                                                                                    |
+| AT-077b                                                     | `test/integration/approvals/steer.test.ts`       | T8                                                                                                                                                    |
+| AT-085, ART-02c                                             | `test/articles/ART-02c.test.ts`                  | T9                                                                                                                                                    |
+| AT-110                                                      | `test/integration/approvals/decline.test.ts`     | T7                                                                                                                                                    |
+| AT-111 (approval part), AT-127                              | `test/integration/approvals/expiry.test.ts`      | T4                                                                                                                                                    |
+| AT-111 (job half), AT-128 (job half)                        | `test/integration/approvals/expiry-job.test.ts`  | T7                                                                                                                                                    |
+| AT-121                                                      | `test/unit/approvals/expiry.test.ts`             | T4                                                                                                                                                    |
+| AT-122, AT-126, AT-127, AT-280                              | `test/e2e/m5-approval.spec.ts`                   | T4                                                                                                                                                    |
+| AT-123                                                      | `test/integration/approvals/second-look.test.ts` | T8                                                                                                                                                    |
+| AT-124                                                      | `test/integration/approvals/fresh-terms.test.ts` | T8                                                                                                                                                    |
+| AT-128 (approval part)                                      | `test/integration/approvals/withdraw.test.ts`    | T4                                                                                                                                                    |
+| AT-132 (rules, main)                                        | `test/unit/approvals/rules.test.ts`              | T4                                                                                                                                                    |
+| AT-132 (gate, engine)                                       | `test/unit/gate/decide.test.ts`                  | T7                                                                                                                                                    |
+| AT-133                                                      | `test/integration/approvals/draft.test.ts`       | T6                                                                                                                                                    |
+| ART-03, ART-05a, ART-05b                                    | `test/articles/ART-{03,05a,05b}.test.ts`         | T7                                                                                                                                                    |
+| ART-06a, ART-06b                                            | `test/articles/ART-06.test.ts`                   | T5                                                                                                                                                    |
+| ART-08a                                                     | `test/articles/ART-08a.test.ts`                  | T9                                                                                                                                                    |
+| ART-08c                                                     | `test/articles/ART-08c.test.ts`                  | T3                                                                                                                                                    |
+| ART-10                                                      | `test/articles/ART-10.test.ts`                   | T8                                                                                                                                                    |
+| UX-10-01…06, UX-10-08                                       | `test/fidelity/ux/UX-10.choice.spec.ts`          | T5                                                                                                                                                    |
+| UX-12-05, UX-12-06 (early, owner M9)                        | `test/fidelity/ux/UX-12.booking.spec.ts`         | T4                                                                                                                                                    |
+| UX-16-02, UX-16-04, UX-16-06 (early, owner M8)              | `test/fidelity/ux/UX-16.drafts.spec.ts`          | T6                                                                                                                                                    |
+| BP-CARD-03, BP-CARD-04                                      | `test/fidelity/bp/BP-cards-m5-choice.spec.ts`    | T5                                                                                                                                                    |
+| BP-CARD-05                                                  | `test/fidelity/bp/BP-cards-m5-approval.spec.ts`  | T4                                                                                                                                                    |
+| BP-CARD-07                                                  | `test/fidelity/bp/BP-cards-m5-draft.spec.ts`     | T6                                                                                                                                                    |
+| UX-16-02, UX-16-06                                          | r1, r2                                           | gmail.com / company.com addresses; Draft [ Not now ] and a grey pending box; the M8 ask bubble and ⏳ badge; UX-16-06 [ Edit ] and a header countdown | example.com fixtures (public repo); 05-2 §5.7.1–§5.7.2 [ Discard ] and a --t-small pending line; M5 seeds the cards (no Gmail connector until M8); X-79 [ Change ] (step superseded) |
+| UX-16-04                                                    | r1, r2, r3, r4                                   | a dark "Sending… Undo" bar floating over the chat                                                                                                     | 05-2 §5.7.2: the card's button row becomes "Sending in {5}…" + Secondary [ Undo ] ("Sending…" when the 5 s close)                                                                    |
+| BP-CARD-08, BP-CARD-09                                      | `test/fidelity/bp/BP-cards-m5-secret.spec.ts`    | T2                                                                                                                                                    |
 
 Every row is `pending` until its ticket lands the test and flips it to `live` in the same commit (FID-18 checks live rows
 only). Split ids have one row per file: their test titles carry the half (`AT-132 (rules, main)` / `AT-132 (gate, engine)`).
