@@ -126,8 +126,30 @@ export class MemoryService implements MemoryPort {
     }
   }
 
+  /** 08-3 §12.7: T7's nightly tidy (src/engine/memory/tidy.ts), set by the engine. */
+  tidyWith: (() => Promise<Result<unknown>>) | null = null;
+
   tidy(): Promise<Result<unknown>> {
-    return Promise.resolve(fail('UNKNOWN', 'memory tidy not built yet'));
+    return this.tidyWith ? this.tidyWith() : Promise.resolve(fail('UNKNOWN', 'memory tidy not built yet'));
+  }
+
+  /** M6 T7 (08-3 §12.7 steps 1–3, §12.9): removes lines with no tombstone and no undo (a merged duplicate, an old guess,
+   * the style lines being replaced). Returns the ids actually removed. */
+  drop(factIds: readonly string[]): Promise<Result<string[]>> {
+    return this.run(async (): Promise<Result<string[]>> => {
+      const rows = (await Promise.all(factIds.map((id) => this.row(id)))).filter((r): r is EngineFact => r !== null);
+      const gone: string[] = [];
+      for (const file of new Set(rows.map((r) => r.file))) {
+        const ids = new Set(rows.filter((r) => r.file === file).map((r) => r.id));
+        const { doc, text } = await this.load(file);
+        doc.entries = doc.entries.filter((x) => x.type !== 'fact' || !ids.has(x.fact.id));
+        const r = await this.commit(file, doc, { diskText: text });
+        if (!r.ok) return r;
+        gone.push(...ids);
+      }
+      this.changed(gone);
+      return ok(gone);
+    });
   }
 
   /** Saves one learned fact (review, intake "remember", a job's note). */

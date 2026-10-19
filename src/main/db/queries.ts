@@ -459,4 +459,38 @@ export const NAMED_QUERIES = {
         .prepare('SELECT fact_id, job_id, at FROM memory_uses WHERE chat_id = ? AND at >= ? ORDER BY at DESC')
         .all(String(chatId), Number(sinceMs) || 0) as DbRow[]
     ).map((r) => ({ factId: String(r.fact_id), jobId: r.job_id == null ? null : String(r.job_id), at: Number(r.at) })),
+  // ---- M6 T7 ----
+  /** 08-3 §15.7: the state of a suggestion key ('offered' | 'accepted' | 'dismissed'), or null when never offered. */
+  suggestionState: ({ db }: QueryCtx, key: unknown): 'offered' | 'accepted' | 'dismissed' | null => {
+    const r = db.prepare('SELECT state FROM suggestions WHERE key = ?').get(String(key)) as DbRow | undefined;
+    return r ? (r.state as 'offered' | 'accepted' | 'dismissed') : null;
+  },
+  /** 08-3 §12.5.1: the helper's own 1:1 chat (kind 'helper'), where the share question is asked. */
+  'chats.forHelper': ({ db }: QueryCtx, helperId: unknown): EngineChat | null => {
+    const r = db
+      .prepare("SELECT * FROM chats WHERE kind = 'helper' AND helper_id = ? AND deleted_at IS NULL ORDER BY created_at LIMIT 1")
+      .get(String(helperId)) as DbRow | undefined;
+    return r ? chat(r) : null;
+  },
+  /** 08-3 §12.9: how many user messages the chat has, and the newest `limit` user text messages' text, oldest first. */
+  'messages.userTexts': ({ db }: QueryCtx, chatId: unknown, limit: unknown): { total: number; texts: string[] } => {
+    const total = Number(
+      (
+        db
+          .prepare("SELECT COUNT(*) AS n FROM messages WHERE chat_id = ? AND author_kind = 'user' AND deleted_at IS NULL")
+          .get(String(chatId)) as DbRow
+      ).n,
+    );
+    const texts = (
+      db
+        .prepare(
+          `SELECT text FROM messages WHERE chat_id = ? AND author_kind = 'user' AND kind = 'text' AND deleted_at IS NULL
+            ORDER BY seq DESC LIMIT ?`,
+        )
+        .all(String(chatId), Number(limit) || 20) as DbRow[]
+    )
+      .map((r) => String(r.text))
+      .reverse();
+    return { total, texts };
+  },
 } as const;

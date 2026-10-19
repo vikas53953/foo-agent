@@ -191,7 +191,7 @@ R13,J17,AT-074,,,10-acceptance-1 §B; 08-4 §24.16,test/integration/m6-prompt-fo
 R13,J17,AT-075,,,10-acceptance-1 §B; 08-3 §12.2; 08-4 §24.16,test/integration/m6-watcher.test.ts,M6,pending
 R13,J17,AT-076,,,10-acceptance-1 §B; 08-3 §12.4.1,test/unit/m6-sensitive.test.ts,M6,live
 R13,J17,AT-076,,,10-acceptance-1 §B; 08-3 §12.4,test/integration/m6-review.test.ts,M6,pending
-R13,J17,AT-219,,,10-acceptance-1 §B; 08-3 §12.7; CR-0010 G-M6-02,test/integration/m6-tidy.test.ts,M6,pending
+R13,J17,AT-219,,,10-acceptance-1 §B; 08-3 §12.7; CR-0010 G-M6-02,test/integration/m6-tidy.test.ts,M6,live
 ,,ART-14,,,01-articles Art. 14; 10-acceptance-2 §D (memory part); 08-4 §24.16,test/unit/m6-retrieval.test.ts,M6,live
 R13,J17,,UX-18-01,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,pending
 R13,J17,,UX-18-02,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,pending

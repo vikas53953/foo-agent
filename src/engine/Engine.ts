@@ -20,6 +20,10 @@ import { AiService } from './AiService';
 import { ChatLane, type IntakeDecisionView, type IntakeInput, type LaneProtocol } from './chat/ChatLane';
 import type { MainLink, MainToEngine } from './protocol';
 import { MemoryService } from './memory/MemoryService';
+import { MemoryShare } from './memory/askShare';
+import { StyleStatsRunner } from './memory/styleStats';
+import { MemoryTidy, TidyActSchema, tidyTurnVia } from './memory/tidy';
+import { newNonce } from '../shared/canon';
 import { createParseWorker, type ParseWorker } from './memory/parseWorker';
 import { watchMemory, type MemoryWatcher } from './memory/watcher';
 import { parseEnvelope, validateAct, formatIssues } from './prompt/envelope';
@@ -67,6 +71,10 @@ export class Engine {
   /** M6 slot (CR-0010): T3's MemoryService (the `memory:*` commands, learn, the watcher); T7 fills its tidy. */
   readonly memory: MemoryService;
   private memoryWatcher: MemoryWatcher | null = null;
+  /** M6 T7: the nightly tidy (08-3 §12.7), sharing a fact into a group (§12.5.1) and style stats (§12.9). */
+  readonly tidy: MemoryTidy;
+  readonly share: MemoryShare;
+  private readonly style: StyleStatsRunner;
 
   static create(o: EngineOptions): Engine {
     return new Engine(o);
@@ -187,6 +195,25 @@ export class Engine {
       classify: null,
       log: (evt, kind) => log(evt, kind),
     });
+    const ids = { newId: (p: IdPrefix) => newId(p, o.clock.now()), newNonce };
+    const turn = tidyTurnVia({
+      link: o.link,
+      clock: o.clock,
+      newId: ids.newId,
+      timeZone: () => this.settings.locale.timeZone,
+      fooChatId: async () => {
+        const r = await o.link.request<string | null>('db.query', { q: 'chats.foo', args: [] });
+        return r.ok ? r.value : null;
+      },
+      ai: this.ai,
+      build: (block) => this.prompts.buildTidy(TidyActSchema, block, this.settings.locale.timeZone),
+      allow: (chars) => this.jobs.allowChatCall(chars, 'tidy'),
+    });
+    const settings = () => this.settings;
+    this.tidy = new MemoryTidy({ link: o.link, clock: o.clock, dataDir: o.dataDir, memory: this.memory, settings, turn, log, ...ids });
+    this.memory.tidyWith = () => this.tidy.run();
+    this.share = new MemoryShare({ link: o.link, clock: o.clock, ...ids });
+    this.style = new StyleStatsRunner({ link: o.link, memory: this.memory, settings, log });
   }
 
   /** 08-3 §12.2: reindex what changed while foo was closed, then watch `{DATA}/memory`. */
@@ -393,6 +420,7 @@ export class Engine {
         return undefined;
       case 'user.message':
         this.lane.enqueue(msg.payload.chatId, msg.payload.messageId);
+        void this.style.onUserMessage(msg.payload.chatId).catch(() => undefined);
         return undefined;
       case 'reply.stop':
         this.lane.stop(msg.payload.chatId);
@@ -412,6 +440,7 @@ export class Engine {
         this.jobs.cancelAll();
         return undefined;
       case 'card.answered':
+        if ((await this.tidy.onCardAnswered(msg.payload)) || (await this.share.onCardAnswered(msg.payload))) return undefined;
         if (!(await this.recovery.onCardAnswered(msg.payload))) await this.jobs.onCardAnswered(msg.payload);
         return undefined;
       // M5 T7: main moved an approval (08-1 §2.4); an expired payment / booking card ends its job (AT-111).

@@ -362,7 +362,7 @@ export class JobRunner {
     return p;
   }
   /** M5 T10: the pre-call cap check of a chat-lane turn (intake, repair, rewrite); true when the call may go. */
-  allowChatCall(promptChars: number, purpose: 'intake' | 'repair' | 'rewrite'): Promise<boolean> {
+  allowChatCall(promptChars: number, purpose: 'intake' | 'repair' | 'rewrite' | 'tidy'): Promise<boolean> {
     const pick = this.d.ai.pick();
     if (!pick) return Promise.resolve(true);
     return this.cost.allowChatCall(promptChars, this.d.ai.turnParams(pick.providerId, purpose).maxOutputTokens);

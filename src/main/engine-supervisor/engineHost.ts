@@ -172,9 +172,13 @@ const INSERT_COLUMNS: Record<string, readonly string[]> = {
   memory_tombstones: ['hash', 'origin_kind', 'forgotten_at', 'expires_at'],
   memory_uses: ['fact_id', 'chat_id', 'job_id', 'at'],
   memory_group_grants: ['fact_id', 'chat_id', 'until'],
+  // M6 T7: 08-3 §15.6 held items (written by the budget gate) and §15.7 suggestions (UNIQUE key).
+  held_items: ['id', 'kind', 'chat_id', 'payload', 'created_at'],
+  suggestions: ['id', 'key', 'kind', 'text', 'state', 'offered_at', 'decided_at'],
 };
-/** Re-learning or re-granting replaces the row (PK hash+origin_kind / fact_id+chat_id). */
-const UPSERT_TABLES = new Set(['memory_tombstones', 'memory_group_grants']);
+/** Re-learning or re-granting replaces the row (PK hash+origin_kind / fact_id+chat_id); a suggestion key's row is replaced
+ * when its state moves (UNIQUE key). */
+const UPSERT_TABLES = new Set(['memory_tombstones', 'memory_group_grants', 'suggestions']);
 /** Columns the engine may change with `update` (ids, owners and creation times never move; `jobs.state` only by transition). */
 const UPDATE_COLUMNS: Record<string, readonly string[]> = {
   messages: ['text', 'status', 'badge', 'provider_note', 'job_id'],

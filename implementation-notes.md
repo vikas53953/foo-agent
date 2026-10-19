@@ -873,3 +873,49 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
 - The Notepad reindex runs the sensitive rule without `contacts_index` names, so the contact-details branch (§12.4.1) does
   not fire there; T5 wires the contacts list into `learn()` and can pass it here too.
 - The watcher and the parse worker are not closed on engine shutdown (main ends the utility process; the worker is unref'd).
+
+## M6 · nightly tidy, conflicts, share, style (ticket T7)
+
+### Built
+
+- `src/engine/memory/tidy.ts`: `tidy({ facts, now, ai, asked, merge }) → { ops, card? }` (08-3 §12.7 steps 1–3) and
+  `MemoryTidy.run()` (applies the plan, posts the conflict card, appends `memory\.tidy-log.md`, returns `TidyReport` with
+  the week count of step 5). `catchUpDue({ lastRunAt, now, timeZone, idleSec })` is the missed-03:00 rule; M7 registers the
+  `memory_tidy` builtin and feeds it `powerMonitor.getSystemIdleTime()` (G-M6-09). FOO_TEST `test:memoryTidy` runs it now.
+- `src/main/notify/budget.ts`: `countToday`, `isQuiet`, `holdOp`, and `gateUnprompted`, which EngineBridge runs on every
+  engine `db.tx` before applying it (§15.2 step 5 "at message time, before anything is posted"): an unprompted message at the
+  budget or in quiet hours is not written, nor the card it carries; a `held_items` row takes its place. M7 extends the file.
+- `src/engine/memory/askShare.ts`: `MemoryShare.ask` (§12.5.1 card in the helper's 1:1 chat) and its answer (24 h grant /
+  dismissed key). The `memory.askShare` tool row in the group helper turn's catalogue lands with group turns (M13).
+- `src/engine/memory/styleStats.ts`: §12.9 numbers and lines, run on each `user.message` and acting at every 20th user
+  message in foo's chat.
+- Main tells the engine about jobless `memory_confirm` / `conflict` answers after writing them (`answerCard.ts`).
+
+### Picks where the spec is silent or reads two ways (decision log M6.tsv, for the CR-0010 addendum)
+
+1. **Entity words (G-M6-T7a).** §12.7 says the entity is "the first noun phrase after `lives in|works at|…`". Read
+   literally, "Lives in Mumbai" and "Lives in Pune" are two entities (Mumbai, Pune) and AT-219's conflict is never sent to
+   the AI. The code groups by the relation word itself (`lives in`) for about-you facts, and by the person's file for
+   `people\` facts; the AI still decides what conflicts.
+2. **Near-duplicates need the same file** as well as the same scope: two people's files can hold the same words
+   ("Birthday 18 Oct").
+3. **A conflict with no `ask`** keeps the newest `said` and drops the other with no tombstone (the user did not forget it);
+   two guesses with no `ask` stay as they are (no words to ask with). Merged duplicates and old guesses are dropped with no
+   tombstone and no undo either.
+4. **Option ↔ fact.** Option i keeps the fact whose text holds the option's words; when that does not decide, the AI's
+   order (`factIds[i]`). The card payload carries `factIds` in option order.
+5. **Why source** of the conflict card is `housekeeping` ("Housekeeping for your routines." — the tidy is the built-in
+   `memory_tidy` routine); `suggestionKey` = `memory_conflict:{idA}-{idB}` (§15.7) and a `suggestions` row is written in the
+   same tx, so the pair is asked once even when the item is held.
+6. **Held payload.** `HeldItemPayload.text` = the message text, or the card's question for a card message; `open` =
+   `open_chat` of the chat; `ref.factIds` from the card payload, so the brief's Review can ask again.
+7. **Words not in the spec** (new keys, need the CR): the share card question `cards.choice.question.memory_share` and
+   `cards.choice.option.no` (the spec's "Okay to tell the {Goa trip} group {…}?" [ Yes ] [ No ]); the tidy log line adds
+   "Settled {n} conflicts" and "Dropped {n} old guesses" to the spec's "Merged 2 duplicates · Asked about 1 conflict"; the
+   style lines `memory.style.*` (the spec names the measures, not the words).
+8. **Style lines** are three when neither a greeting nor a sign-off reaches 5 of 20 (the spec says four lines; the fourth
+   needs a token to name).
+9. **Contracts caught up to 08-1 §2.4.1**: `held_items` and `suggestions` are engine-writable (`suggestions` insert-or-replace
+   on its UNIQUE key) and `suggestionState` is a named query; two new names, `chats.forHelper` and `messages.userTexts`, are
+   additions for the CR.
+10. A private fact is blocked from `askShare` like a sensitive one (§12.5 / Art. 14: private facts never reach a group).
