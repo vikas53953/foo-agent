@@ -16,6 +16,7 @@ import { postCapWarning } from '../jobs/capWarning';
 import { applyDbOps, runNamedQuery } from './engineHost';
 import { vaultRuntime } from '../vault/vaultRuntime';
 import type { ApprovalGate } from '../approvals/ApprovalGate';
+import { logEvent } from '../log/techLog';
 
 export interface BridgeContext {
   db: Db;
@@ -107,7 +108,7 @@ export class EngineBridge {
     }
     const parsed = engineToMainSchema.safeParse(raw);
     if (!parsed.success) {
-      console.warn('IPC_REJECTED engine message failed validation');
+      logEvent({ lvl: 'warn', mod: 'engine', evt: 'IPC_REJECTED', kind: 'ENGINE_MESSAGE_INVALID' }); // M5 T7 (08-3 §19.1)
       const id = raw && typeof raw === 'object' && 'id' in raw ? String((raw as { id: unknown }).id) : '';
       return id ? { re: id, result: { ok: false, error: { kind: 'IPC_REJECTED' } } } : null;
     }
