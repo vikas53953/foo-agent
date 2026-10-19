@@ -756,6 +756,8 @@
   "cards.choice.option.remember": "Remember",
   "cards.choice.option.dont_remember": "Don’t",
   "thread.memory.stays_private": "That one stays between us.",
+  "thread.memory.forget_none": "I don’t have anything like that saved.",
+  "thread.memory.forget_which": "Which one should I forget?",
   "screen.memory.title": "What I know about you",
   "screen.memory.back": "Back",
   "screen.memory.search.placeholder": "Search what I know",

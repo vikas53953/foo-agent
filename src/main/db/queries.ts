@@ -115,6 +115,9 @@ export interface EngineMessage {
   createdAt: number;
   transcript: string | null;
   attachments: number;
+  // M6 T5
+  /** 08-1 §4.3.2 `why` (JSON); a memory chip marker keeps its chip fields here (`{ memoryChip }`). */
+  why: Record<string, unknown> | null;
 }
 export interface EngineHelper {
   id: string;
@@ -152,6 +155,7 @@ function message(r: DbRow): EngineMessage {
     createdAt: Number(r.created_at),
     transcript: (r.transcript as string | null) ?? null,
     attachments: atts.length,
+    why: r.why ? (JSON.parse(String(r.why)) as Record<string, unknown>) : null,
   };
 }
 

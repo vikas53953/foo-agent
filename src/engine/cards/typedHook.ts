@@ -20,7 +20,8 @@ export interface TypedHookDeps {
   answerJobCard?(a: { cardId: string; answer: CardAnswer; choice?: string; resolvedBy: 'typed' }): Promise<void>;
 }
 
-const RUNNER_PURPOSES = new Set(['stop_which', 'fold_which']);
+// M6 T5: a `memory_confirm` card's answer is the engine's (08-3 §12.4.2; G-M6-04).
+const RUNNER_PURPOSES = new Set(['stop_which', 'fold_which', 'memory_confirm']);
 
 /** True when the message answered an open Choice or tiles card, or got the tie line (no intake turn then). */
 export async function answerTyped(d: TypedHookDeps, m: { chatId: string; messageId: string; text: string }): Promise<boolean> {

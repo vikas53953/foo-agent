@@ -226,7 +226,7 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'memory:edit': z.object({ factId: z.string().min(1).max(80), text: z.string().trim().min(1).max(120) }).strict(),
   'memory:setPrivate': z.object({ factId: z.string().min(1).max(80), private: z.boolean() }).strict(),
   'memory:setKind': z.object({ factId: z.string().min(1).max(80), kind: z.enum(['person', 'preference', 'place', 'fact']) }).strict(),
-  'memory:forget': z.object({ factId: z.string().min(1).max(80) }).strict(),
+  'memory:forget': z.object({ factId: z.string().min(1).max(80), chipId: z.string().min(1).max(80).optional() }).strict(),
   'memory:undo': z.object({ undoToken: z.string().min(1).max(80) }).strict(),
   'memory:forgetBySource': z
     .object({ source: z.enum(['chat', 'gmail', 'gcal', 'whatsapp', 'manual', 'setup', 'job']), confirm: z.literal(true) })
@@ -602,7 +602,7 @@ export function registerIpc(ctx: AppContext): void {
   handle('memory:edit', ({ factId, text }) => memoryCmd({ cmd: 'edit', factId, text }));
   handle('memory:setPrivate', (req) => memoryCmd({ cmd: 'setPrivate', factId: req.factId, private: req.private }));
   handle('memory:setKind', ({ factId, kind }) => memoryCmd({ cmd: 'setKind', factId, kind }));
-  handle('memory:forget', ({ factId }) => memoryCmd({ cmd: 'forget', factId }));
+  handle('memory:forget', ({ factId, chipId }) => memoryCmd({ cmd: 'forget', factId, ...(chipId ? { chipId } : {}) }));
   handle('memory:undo', ({ undoToken }) => memoryCmd({ cmd: 'undo', undoToken }));
   handle('memory:forgetBySource', ({ source }) => memoryCmd({ cmd: 'forgetBySource', source, confirm: true }));
   handle('memory:forgetAll', async ({ typed }) => {
