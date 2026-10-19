@@ -15,13 +15,16 @@ afterEach(() => {
 });
 
 const approvals = (x: JobHarness) =>
-  x.db.prepare('SELECT state, second_look, submitted_at FROM approvals ORDER BY created_at, id').all() as {
+  x.db.prepare('SELECT state, second_look, submitted_at FROM approvals ORDER BY rowid').all() as {
     state: string;
     second_look: string | null;
     submitted_at: number | null;
   }[];
 const payload = (c: Record<string, unknown>) =>
   JSON.parse(String(c.payload)) as { held?: Record<string, string>; fields: { partySize?: number } };
+/** In insert order: two cards made in the same fake-clock millisecond. */
+const approvalCards = (x: JobHarness) =>
+  x.db.prepare("SELECT * FROM cards WHERE type = 'approval' ORDER BY rowid").all() as Record<string, unknown>[];
 const tap = (c: Record<string, unknown>) => ({ cardId: String(c.id), nonce: String(c.nonce), resolvedBy: 'tap' as const });
 
 const done = step({ kind: 'done', result: 'Booked your table.', unverified: true });
@@ -35,11 +38,11 @@ describe('second look after Approve (08-2 §9.6)', () => {
     });
     h.userSays('Book a table for 2 at Toit on Saturday');
     await h.settle();
-    const card = h.cards('approval')[0]!;
+    const card = approvalCards(h)[0]!;
     expect(h.approvals.approve({ ...tap(card), scope: 'once' }).ok).toBe(true);
     await h.settle();
 
-    const held = h.cards('approval')[0]!;
+    const held = approvalCards(h)[0]!;
     expect(held.state).toBe('HELD');
     expect(held.resolved_at).toBeNull();
     const p = payload(held).held!;
@@ -68,10 +71,10 @@ describe('second look after Approve (08-2 §9.6)', () => {
     });
     h.userSays('Book a table for 2 at Toit on Saturday');
     await h.settle();
-    const card = h.cards('approval')[0]!;
+    const card = approvalCards(h)[0]!;
     h.approvals.approve({ ...tap(card), scope: 'once' });
     await h.settle();
-    expect(h.approvals.heldPick({ ...tap(h.cards('approval')[0]!), optionId: 'action' }).ok).toBe(true);
+    expect(h.approvals.heldPick({ ...tap(approvalCards(h)[0]!), optionId: 'action' }).ok).toBe(true);
     await h.settle();
     expect(ran).toEqual(['browser.submit']);
     expect(approvals(h).map((a) => a.state)).toEqual(['COMPLETED']);
@@ -93,11 +96,11 @@ describe('second look after Approve (08-2 §9.6)', () => {
     });
     h.userSays('Book a table for 2 at Toit on Saturday');
     await h.settle();
-    h.approvals.approve({ ...tap(h.cards('approval')[0]!), scope: 'once' });
+    h.approvals.approve({ ...tap(approvalCards(h)[0]!), scope: 'once' });
     await h.settle();
-    expect(h.approvals.heldPick({ ...tap(h.cards('approval')[0]!), optionId: 'own' }).ok).toBe(true);
+    expect(h.approvals.heldPick({ ...tap(approvalCards(h)[0]!), optionId: 'own' }).ok).toBe(true);
     await h.settle();
-    const cards = h.cards('approval');
+    const cards = approvalCards(h);
     expect(cards.map((c) => c.state)).toEqual(['DECLINED', 'PENDING']);
     expect(payload(cards[1]!).fields.partySize).toBe(2);
     expect(ran).toEqual([]);
@@ -123,9 +126,9 @@ describe('second look after Approve (08-2 §9.6)', () => {
     });
     h.userSays('Book a window table for 4 at Toit on Saturday');
     await h.settle();
-    h.approvals.approve({ ...tap(h.cards('approval')[0]!), scope: 'once' });
+    h.approvals.approve({ ...tap(approvalCards(h)[0]!), scope: 'once' });
     await h.settle();
-    const held = h.cards('approval')[0]!;
+    const held = approvalCards(h)[0]!;
     expect(held.state).toBe('HELD');
     expect(payload(held).held).toEqual({ reason: 'mismatch', userSaid: 'window table', actionHas: 'bar seats' });
     expect(JSON.parse(approvals(h)[0]!.second_look!).ai).toEqual({ ok: false, note: 'item: window table ≠ bar seats' });
@@ -148,9 +151,9 @@ describe('second look after Approve (08-2 §9.6)', () => {
     });
     h.userSays('Book a table for 4 at Toit on Saturday');
     await h.settle();
-    h.approvals.approve({ ...tap(h.cards('approval')[0]!), scope: 'once' });
+    h.approvals.approve({ ...tap(approvalCards(h)[0]!), scope: 'once' });
     await h.settle();
-    const held = h.cards('approval')[0]!;
+    const held = approvalCards(h)[0]!;
     expect(held.state).toBe('HELD');
     expect(payload(held).held).toEqual({ reason: 'cannot_check', verbing: 'booking' });
     expect(t('cards.approval.held.cannot_check', { verbing: 'booking' })).toBe(
@@ -173,7 +176,7 @@ describe('second look after Approve (08-2 §9.6)', () => {
     });
     h.userSays('Book a table for 4 at Toit on Saturday');
     await h.settle();
-    h.approvals.approve({ ...tap(h.cards('approval')[0]!), scope: 'once' });
+    h.approvals.approve({ ...tap(approvalCards(h)[0]!), scope: 'once' });
     await h.settle();
     expect(ran).toEqual(['browser.submit']);
     const [ap] = approvals(h);
