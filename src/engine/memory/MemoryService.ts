@@ -101,26 +101,29 @@ export class MemoryService implements MemoryPort {
   constructor(private readonly d: MemoryServiceDeps) {}
 
   cmd(c: MemoryCmdPayload): Promise<Result<unknown>> {
-    return this.run(async (): Promise<Result<unknown>> => {
-      switch (c.cmd) {
-        case 'add':
-          return this.add(c.text);
-        case 'edit':
-          return this.edit(c.factId, c.text);
-        case 'setPrivate':
-          return this.change(c.factId, (f) => ({ ...f, private: c.private }));
-        case 'setKind':
-          return this.setKind(c.factId, c.kind);
-        case 'forget':
-          return this.forgetOne(c.factId, false);
-        case 'undo':
-          return this.undo(c.undoToken);
-        case 'forgetBySource':
-          return this.forgetWhere((r) => r.originKind === c.source, c.source);
-        case 'forgetAll':
-          return this.forgetWhere((r) => r.file !== IDENTITY_FILE, null);
-      }
-    });
+    // A worker that died rejects its parse: the invoke answers UNKNOWN instead of hanging main's 30 s wait.
+    return this.run(() => this.command(c)).catch((e: unknown) => fail('UNKNOWN', e instanceof Error ? e.message : String(e)));
+  }
+
+  private async command(c: MemoryCmdPayload): Promise<Result<unknown>> {
+    switch (c.cmd) {
+      case 'add':
+        return this.add(c.text);
+      case 'edit':
+        return this.edit(c.factId, c.text);
+      case 'setPrivate':
+        return this.change(c.factId, (f) => ({ ...f, private: c.private }));
+      case 'setKind':
+        return this.setKind(c.factId, c.kind);
+      case 'forget':
+        return this.forgetOne(c.factId, false);
+      case 'undo':
+        return this.undo(c.undoToken);
+      case 'forgetBySource':
+        return this.forgetWhere((r) => r.originKind === c.source, c.source);
+      case 'forgetAll':
+        return this.forgetWhere((r) => r.file !== IDENTITY_FILE, null);
+    }
   }
 
   tidy(): Promise<Result<unknown>> {
@@ -162,28 +165,34 @@ export class MemoryService implements MemoryPort {
 
   /** The watcher's call: one file changed on disk (Notepad). */
   fileChanged(file: string): Promise<void> {
-    return this.run(async () => {
-      const text = await this.read(file);
-      if (this.own.get(file) === sha(text)) return;
-      const parsed = await this.parse(file, text);
-      const rows = (await this.query<EngineFact[]>('memory.byFile', [file])) ?? [];
-      const byId = new Map(rows.map((r) => [r.id, r]));
-      let rewrite = parsed.rewrite;
-      // §12.4.1: a new or edited line that is sensitive is saved private.
-      for (const e of parsed.doc.entries) {
-        if (e.type !== 'fact' || e.fact.private || e.fact.provenance !== 'said') continue;
-        const row = byId.get(e.fact.id);
-        if (row && row.text === e.fact.text) continue;
-        if (isSensitive({ text: e.fact.text, category: row?.category ?? 'other', kind: e.fact.kind, file })) {
-          e.fact.private = true;
-          rewrite = true;
-        }
+    return this.run(() => this.reindexFile(file)).catch((e: unknown) =>
+      this.d.log('memory.reindex_failed', e instanceof Error ? e.message : 'UNKNOWN'),
+    );
+  }
+
+  private async reindexFile(file: string): Promise<void> {
+    const text = await this.read(file);
+    if (this.own.get(file) === sha(text)) return;
+    // Someone else's text: the mark is spent, so a later Ctrl+Z back to foo's text is reindexed too.
+    this.own.delete(file);
+    const parsed = await this.parse(file, text);
+    const rows = (await this.query<EngineFact[]>('memory.byFile', [file])) ?? [];
+    const byId = new Map(rows.map((r) => [r.id, r]));
+    let rewrite = parsed.rewrite;
+    // §12.4.1: a new or edited line that is sensitive is saved private.
+    for (const e of parsed.doc.entries) {
+      if (e.type !== 'fact' || e.fact.private || e.fact.provenance !== 'said') continue;
+      const row = byId.get(e.fact.id);
+      if (row && row.text === e.fact.text) continue;
+      if (isSensitive({ text: e.fact.text, category: row?.category ?? 'other', kind: e.fact.kind, file })) {
+        e.fact.private = true;
+        rewrite = true;
       }
-      if (parsed.badLines.length) this.d.log('memory.parse', 'MEMORY_PARSE');
-      const r = rewrite ? await this.commit(file, parsed.doc, { diskText: text }) : await this.index(file, parsed.facts, {});
-      if (!r.ok) this.d.log('memory.reindex_failed', r.error.kind);
-      else this.changed(r.value);
-    });
+    }
+    if (parsed.badLines.length) this.d.log('memory.parse', 'MEMORY_PARSE');
+    const r = rewrite ? await this.commit(file, parsed.doc, { diskText: text }) : await this.index(file, parsed.facts, {});
+    if (!r.ok) this.d.log('memory.reindex_failed', r.error.kind);
+    else this.changed(r.value);
   }
 
   /** Every memory file on disk is reindexed once (edits made while foo was closed). */
@@ -270,7 +279,8 @@ export class MemoryService implements MemoryPort {
     if (!e || e.type !== 'fact') return fail('NOT_FOUND');
     doc.entries.splice(at, 1);
     const now = this.d.clock.now();
-    const hash = factHash(row.text);
+    // The line actually removed (an unindexed Notepad edit may differ from the row).
+    const hash = factHash(e.fact.text);
     const extra: DbOp[] = [tombstoneOp(hash, row.originKind, now)];
     if (fromChip) extra.push(forgotActivity(1, row.originKind));
     const r = await this.commit(row.file, doc, { diskText: text, extra });

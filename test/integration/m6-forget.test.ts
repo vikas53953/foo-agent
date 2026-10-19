@@ -1,7 +1,10 @@
 // AT-073 (engine part; 10-acceptance-1 §B, 08-3 §12.6, 06-3 §14 C-3): "Forget everything from Gmail" deletes every
 // `origin_kind='gmail'` fact from disk and index, the Gmail connection stays; forgetAll keeps identity.md and empties helpers'
 // notes. The C-3 dialog half is T6's e2e.
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { removeForgottenFiles } from '../../src/main/memory/forgetFiles';
 import { DAY, fid, storeHarness } from './m6-store-harness';
 
 function world() {
@@ -60,6 +63,11 @@ describe('AT-073 forget by source (engine)', () => {
     expect(h.read('memory/identity.md')).toContain(fid(5));
     expect(h.rows().map((x) => x.id)).toEqual([fid(5)]);
     expect(h.db.prepare("SELECT summary FROM activity WHERE event = 'forgot_facts'").all()).toEqual([{ summary: 'Forgot 5 things.' }]);
+    // main's memory:forgetAll then deletes the emptied files: no file name of a person is left (§12.6).
+    expect(removeForgottenFiles(h.dataDir)).toBe(3);
+    for (const f of ['memory/about-you.md', 'memory/people/meera.md', 'helpers/h_trips/notes.md'])
+      expect(existsSync(join(h.dataDir, ...f.split('/')))).toBe(false);
+    expect(existsSync(join(h.dataDir, 'memory', 'identity.md'))).toBe(true);
   });
 
   it('AT-073: nothing from that source answers count 0 and writes nothing', async () => {

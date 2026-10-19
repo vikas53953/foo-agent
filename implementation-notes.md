@@ -847,8 +847,18 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
 3. `setKind`: preference → `preferences\{topic of its category}.md`; fact / place leave `people\` and `preferences\` for
    `about-you.md`; person stays in its file (the invoke carries no name for a slug); helper notes and chat-only facts keep
    their file and gain the kind token.
-4. forgetAll writes each file empty (main's `file.write` has no delete), tombstones every fact, and logs `forgot_facts` with
-   the page's own words "Forgot {count} things." (the activity summary needs a `{source}` word the spec does not give).
+4. forgetAll: the engine writes each file empty (08-1 §2.4 has no delete), tombstones every fact, and logs `forgot_facts`
+   with the page's own words "Forgot {count} things." (the activity summary needs a `{source}` word the spec does not give);
+   main's `memory:forgetAll` handler then removes the emptied files (`src/main/memory/forgetFiles.ts`), so no person's file
+   name is left (§12.6).
 5. A Notepad line's `learned_at` is now when its date is today, else midday UTC of the written date (the file has no time).
 6. On engine start every memory file on disk is reindexed; index rows whose file is missing are kept (no delete on start).
 7. A sensitive line typed or edited in Notepad is made private at reindex (the file is rewritten once with the token).
+
+### Left for later tickets (from the Fable review)
+
+- Undo of a forget restores the index row but not the fact's `memory_group_grants` rows (main deletes them with the row):
+  T4/T5 own grants.
+- The Notepad reindex runs the sensitive rule without `contacts_index` names, so the contact-details branch (§12.4.1) does
+  not fire there; T5 wires the contacts list into `learn()` and can pass it here too.
+- The watcher and the parse worker are not closed on engine shutdown (main ends the utility process; the worker is unref'd).

@@ -229,6 +229,43 @@ describe('M6 T3 reindex from disk (08-3 §12.2 watcher)', () => {
     expect(tokens(h.read('memory/about-you.md').split('\n')[3]!)).toContain('private');
   });
 
+  it('a Notepad Ctrl+Z back to foo’s own text is reindexed (the own-write mark is spent by the first outside edit)', async () => {
+    const h = storeHarness();
+    const v = value<MemoryFactView>(await h.svc.cmd({ cmd: 'add', text: 'Likes filter coffee' }));
+    const ours = h.read('memory/about-you.md');
+    h.put('memory/about-you.md', ours.replace('Likes filter coffee', 'Likes cold coffee'));
+    await h.svc.fileChanged('memory/about-you.md');
+    expect(h.rows()[0]).toMatchObject({ id: v.id, text: 'Likes cold coffee' });
+    h.put('memory/about-you.md', ours);
+    await h.svc.fileChanged('memory/about-you.md');
+    expect(h.rows()[0]).toMatchObject({ id: v.id, text: 'Likes filter coffee' });
+  });
+
+  it('commands sent together run one after another on the file (no lost line)', async () => {
+    const h = storeHarness();
+    const rs = await Promise.all(['Gym on Mondays', 'Reads at night', 'Wakes at 6'].map((text) => h.svc.cmd({ cmd: 'add', text })));
+    expect(rs.every((r) => r.ok)).toBe(true);
+    expect(
+      h
+        .read('memory/about-you.md')
+        .split('\n')
+        .filter((l) => l.startsWith('- ')),
+    ).toHaveLength(3);
+    expect(h.rows().map((r) => r.line_no)).toEqual([2, 3, 4]);
+  });
+
+  it('a parse that throws answers UNKNOWN instead of hanging the invoke', async () => {
+    const h = storeHarness({
+      parser: { parse: () => Promise.reject(new Error('memory parse worker exited')), close: () => Promise.resolve() },
+    });
+    expect(await h.svc.cmd({ cmd: 'add', text: 'Likes tea' })).toEqual({
+      ok: false,
+      error: { kind: 'UNKNOWN', message: 'memory parse worker exited' },
+    });
+    await h.svc.fileChanged('memory/about-you.md');
+    expect(h.logs).toContain('memory.reindex_failed');
+  });
+
   it('a line moved by hand to another file keeps its row (one row per id)', async () => {
     const h = storeHarness();
     h.put('memory/about-you.md', `- Likes beach stays  {you said · 2026-10-01 · chat · ${fid(1)}}\n`);
