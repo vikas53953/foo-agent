@@ -270,6 +270,14 @@ himself.
   real gap: `cards.choice.offer_action.*` ("book one" as J9 draws it, "send it", …, "add it to your calendar", "fill
   that in") and `cards.choice.offer_verb.{calendar_write,prepare}` ("add it", "fill it in"). Independent review
   APPROVE-WITH-NOTE (row words aligned to 06-screens-2 as asked); approved on Vikas's behalf.
+- **G-M5-35** (T11) ART-08a in M5 searches the DOM captured with each picture instead of OCR of the picture (10-2 §D says
+  "OCR of all screenshots and live-view frames"). 05-2 §5.8.5 already keeps a value out of the markup (a property, never a
+  `value` attribute), and the fields are masked, so the DOM text is the stricter search for what M5 draws; OCR, live-view
+  frames (M9 browser), the export zip (M12), toasts (M11) and crash reports (later) join the harness in the milestones that
+  add them, and the report's `notCovered` list names each one until then. Short canaries (CVV, OTP) match as whole tokens
+  only, so a 4-digit run inside an id or a timestamp is not counted. The ART-08a trace row stays `pending` on
+  `test/articles/ART-08a.test.ts` (scanner + tech-log proofs); the app run is `test/e2e/m5-canary.spec.ts`, untitled with
+  the id so FID-18 sees no orphan; the lead flips the row live and may add the e2e row at close-out. Pending review.
 
 ### Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`)
 
