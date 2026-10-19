@@ -900,7 +900,8 @@ export class JobRunner {
     if (card?.type === 'choice' && card.payload.purpose === 'stop_which') return this.stopper.answerStopWhich(card, a.choice, a.resolvedBy);
     if (card?.type === 'choice' && card.payload.purpose === 'fold_which')
       return this.steering.answerFoldWhich(card, a.choice, a.resolvedBy);
-    if (!card || card.resolvedAt !== null || !card.jobId) return;
+    // M5 T7: main's ApprovalGate resolves an approval card itself before it tells the runner (08-2 §9.1).
+    if (!card || (card.resolvedAt !== null && !APPROVAL_CARDS.has(card.type)) || !card.jobId) return;
     const job = await this.job(card.jobId);
     if (!job) return;
     const now = this.d.clock.now();

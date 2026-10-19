@@ -46,6 +46,8 @@ export function jobIntake(
   };
 }
 
+const HELPER_APPS = JSON.stringify({ gmail: true, gcal: true, contacts: true, whatsapp: true, x: true, outlook: true, browser: true, payments: false });
+
 export const BILLS_PLAN: PlanStepIn[] = [{ phraseKey: 'read_email' }, { phraseKey: 'look_for', slots: { what: 'bills due this week' } }];
 
 /** A 6-step job, each turn held 600 ms so the 1.5 s checklist exists (ART-17, ART-22). */
@@ -149,9 +151,10 @@ export function jobHarness(
         h.db
           .prepare(
             `INSERT INTO helpers (id, name, job_text, face_ref, color_token, allowed_apps, chat_id, created_at)
-             VALUES (?, ?, 'Test helper', 'face:default', '--h-teal', '{}', ?, ?)`,
+             VALUES (?, ?, 'Test helper', 'face:default', '--h-teal', ?, ?, ?)`,
           )
-          .run(helperId, name, chatId, now);
+          // M5 T7: the gate checks HelperForm.allowedApps (08-3 §17.6); test helpers may use every app but payments.
+          .run(helperId, name, HELPER_APPS, chatId, now);
       })();
       chats.set(name, chatId);
       return chatId;

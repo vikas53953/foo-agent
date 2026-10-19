@@ -257,7 +257,8 @@ export class RunnerGate {
       // 08-2 §9.4.3: the ask to act came only from untrusted content: no card, the injection line.
       core.d.log('gate.injection_blocked', 'untrusted', { jobId: job.id });
       await core.tx([core.textOp(job, t('thread.injection.blocked'))]);
-      return true;
+      // A repeated injected ask ends through the stuck rules instead of looping (§24.5 fail_streak).
+      return !(await this.countFailure(job));
     }
     if (!v.ok) {
       // The verb was never asked: the gate's read-only branch (Art. 3).
