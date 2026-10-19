@@ -212,7 +212,9 @@ batch independent review (Fable) checks them before the milestone PR; until then
   `ApprovalGate.create (main): ApprovalDraft`, but an ApprovalDraft has no job id; main's card needs the job and the text,
   and 05-2 §5.5.2 says the text is built only from the verified fields. The engine builds `title` / `impact` from the
   verified draft (`src/engine/gate/approvalText.ts`); main's `openFromEngine` stores them. Rejected: main builds the
-  text (two copies of the card-kind rules, and main would need the job's time zone logic). Pending review.
+  text (two copies of the card-kind rules, and main would need the job's time zone logic). The envelope also carries the
+  optional `submitRef` (the element the engine submits once approved), which main keeps on the card payload, so an engine
+  restart while the card waits can still run the approved action once. Pending review.
 - **G-M5-30** (T7) T7 copy keys: `thread.approval.declined` "Okay, I won't. {next}" and
   `thread.approval.declined.nothing_else` "Nothing else to do here." (AT-110 and 07-2 §4 verbatim), and
   `cards.approval.book.party` "{count} people" (05-2 §5.5.2 booking line "… · 4 people", 08-4 §28.4). The fork is only
@@ -222,7 +224,12 @@ batch independent review (Fable) checks them before the milestone PR; until then
   IPC channel (08-1 §3.2). Both move to the first milestone that creates `deadline_reminder` cards; M5 makes none.
   (b) Spec gap: the booking impact line has an {area} slot (05-2 §5.5.2 "{Place}, {area} · …") but ApprovalFields has
   no `area` (08-2 §9.3). Until the spec settles it, a slot nothing verified fills (area; `when` with no quote) is left
-  out with its separator, never guessed or shown empty. Open for the spec-keeper.
+  out with its separator, never guessed or shown empty. Open for the spec-keeper. (c) 08-4 §28.1 item 3: until
+  chrono-node is a dependency (package.json, lead) no parser re-reads `when` from its quote, so `when` is dropped from the
+  verified fields and never reaches the card. (d) The `[ Open Permissions ]` button after the REFUSE line (08-0 §G.3) and
+  `[ Show me the email ]` after the injection line (§9.4.3) are not drawn: a text message has no button in the model
+  (08-1 messages DDL, 05-1 bubbles), so the lines post without them. Needs a spec call (a message action, or a small card
+  kind) for the spec-keeper.
 
 ### Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`)
 

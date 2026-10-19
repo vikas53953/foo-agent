@@ -10,13 +10,13 @@
 // (`secondLook` port, always pass until then).
 import { t } from '../../shared/copy/t';
 import { formatDate, formatInr } from '../../shared/format';
-import type { ApprovalDraft, ApprovalState, CardRow, JobRow, PermissionApp } from '../../shared/types';
+import type { ApprovalDraft, ApprovalFields, ApprovalState, CardRow, JobRow, PermissionApp } from '../../shared/types';
 import type { StepDecision } from '../../shared/schemas';
 import type { RunnerCore } from '../jobs/JobRunner';
 import type { DbOp } from '../protocol';
 import type { ExecResult, ToolLayer } from '../tools/ToolLayer';
 import { approvalText } from './approvalText';
-import { classOfVerb } from './classes';
+import { classOfVerb, untrustedSource } from './classes';
 import type { ActionClass, GateJob, GateLogic } from './GateLogic';
 import { EVIDENCE_RETRY_LINE, verifyRequestApproval, type ApprovalSnapshot } from './requestApproval';
 
@@ -41,6 +41,39 @@ interface GateState {
   approved: string[];
   open: OpenApproval | null;
   toRun: OpenApproval | null;
+  /** The job's open approval was read back from the DB (after an engine restart nothing is in RAM). */
+  openLoaded: boolean;
+}
+
+/** `approvalsOpenForJob` / `approvals.byId` rows (main's queries.ts EngineApproval). */
+interface ApprovalRowLite {
+  id: string;
+  cardId: string;
+  jobId: string;
+  verb: string;
+  state: string;
+  fields: ApprovalFields;
+  submitRef: string | null;
+}
+
+const fromRow = (a: ApprovalRowLite): OpenApproval => ({
+  approvalId: a.id,
+  cardId: a.cardId,
+  draft: { verb: a.verb as ApprovalDraft['verb'], fields: a.fields, evidence: [] },
+  submitRef: a.submitRef,
+  untrusted: [],
+});
+
+/**
+ * 08-2 §10.4: after the one click only a pre-click refusal (the call never ran) or the site's explicit refusal
+ * (`{ refused: true }` in the result) is FAILED; a timeout, a cancel or anything unclear is CHECKING, never re-submitted.
+ */
+const PRE_CLICK: ReadonlySet<string> = new Set(['IDEMPOTENT_REPEAT', 'VALIDATION', 'USE_SUBMIT', 'URL_NOT_ALLOWED', 'PATH_NOT_ALLOWED']);
+export function outcomeState(r: Pick<ExecResult, 'outcome' | 'errorKind' | 'result'>): ApprovalState {
+  if (r.outcome === 'ok') return 'COMPLETED';
+  if (r.outcome !== 'error') return 'CHECKING';
+  if (r.errorKind && PRE_CLICK.has(r.errorKind)) return 'FAILED';
+  return (r.result as { refused?: unknown } | null)?.refused === true ? 'FAILED' : 'CHECKING';
 }
 
 export interface RunnerGateDeps {
@@ -93,6 +126,7 @@ export class RunnerGate {
         approved: [],
         open: null,
         toRun: null,
+        openLoaded: false,
       };
       this.s.set(jobId, x);
     }
@@ -154,6 +188,7 @@ export class RunnerGate {
         x.recovery = unknown.map((u) => `- ${u.tool} ${summary(u.args)}`);
       }
     }
+    await this.loadOpen(job);
     const run = x.toRun;
     if (!run) return true;
     x.toRun = null;
@@ -240,12 +275,15 @@ export class RunnerGate {
   async requestApproval(job: JobRow, decision: Extract<StepDecision, { kind: 'request_approval' }>, asked: string): Promise<boolean> {
     const core = this.d.core;
     const x = this.st(job.id);
-    const calls = (await core.query<{ id: string; result: unknown; outcome: string | null }[]>('toolCallsForJob', job.id)) ?? [];
+    const calls =
+      (await core.query<{ id: string; tool: string; result: unknown; outcome: string | null }[]>('toolCallsForJob', job.id)) ?? [];
+    const ok = calls.filter((c) => c.outcome === 'ok');
     const snap: ApprovalSnapshot = {
-      results: new Map(calls.filter((c) => c.outcome === 'ok').map((c) => [c.id, JSON.stringify(c.result ?? null)])),
+      results: new Map(ok.map((c) => [c.id, JSON.stringify(c.result ?? null)])),
       doVerbs: job.doVerbs,
       timeZone: this.d.timeZone(),
       userWords: [asked],
+      untrustedResults: ok.filter((c) => untrustedSource(c.tool)).map((c) => JSON.stringify(c.result ?? null)),
     };
     const v = verifyRequestApproval(decision.draft, snap);
     if (!v.ok && v.reason === 'APPROVAL_EVIDENCE') {
@@ -253,8 +291,8 @@ export class RunnerGate {
       x.evidenceRetry = true;
       return !(await this.countFailure(job));
     }
-    if (!v.ok && v.untrusted.length) {
-      // 08-2 §9.4.3: the ask to act came only from untrusted content: no card, the injection line.
+    if (!v.ok && v.injected.length) {
+      // 08-2 §9.4.3: a recipient or URL to act on came only from untrusted content: no card, the injection line.
       core.d.log('gate.injection_blocked', 'untrusted', { jobId: job.id });
       await core.tx([core.textOp(job, t('thread.injection.blocked'))]);
       // A repeated injected ask ends through the stuck rules instead of looping (§24.5 fail_streak).
@@ -290,6 +328,7 @@ export class RunnerGate {
       draft: v.draft,
       title: text.title,
       impact: text.impact,
+      ...(decision.submitRef ? { submitRef: decision.submitRef } : {}),
     });
     if (!made.ok) {
       // buy / pay are the Payment card (M10); anything else main refused.
@@ -322,12 +361,31 @@ export class RunnerGate {
   // ---- after the card ----
 
   /** The user tapped Approve (main moved PENDING → APPROVED): the next loop turn runs it first. */
-  onApproved(jobId: string, cardId: string): void {
-    const x = this.st(jobId);
+  async onApproved(job: JobRow, cardId: string): Promise<void> {
+    const x = this.st(job.id);
     if (x.open?.cardId === cardId) {
       x.toRun = x.open;
       x.open = null;
+      return;
     }
+    // Nothing in RAM (the engine restarted while the card waited): read it back; it is APPROVED by now.
+    x.openLoaded = false;
+    await this.loadOpen(job);
+  }
+
+  /**
+   * The approval the job waits on, read back once from main's DB: PENDING → `open`, APPROVED (tapped, not yet run) →
+   * `toRun`. RUNNING / CHECKING were handed to main's restart sweep (§5.9 step 2) and are never run again.
+   */
+  private async loadOpen(job: JobRow): Promise<void> {
+    const x = this.st(job.id);
+    if (x.openLoaded) return;
+    x.openLoaded = true;
+    if (x.open || x.toRun || !job.needsYouCardId) return;
+    const rows = (await this.d.core.query<ApprovalRowLite[]>('approvalsOpenForJob', job.id)) ?? [];
+    const a = rows.find((r) => r.cardId === job.needsYouCardId);
+    if (a?.state === 'PENDING') x.open = fromRow(a);
+    if (a?.state === 'APPROVED') x.toRun = fromRow(a);
   }
 
   /** 08-4 §28.1 item 8: second look → write-ahead RUNNING (acked in 2 s) → the tool once → COMPLETED / FAILED / CHECKING. */
@@ -342,11 +400,17 @@ export class RunnerGate {
     ]);
     if (timer !== null) core.d.clock.clearTimeout(timer);
     if (!moved) {
-      // No ack: nothing is clicked; the card is HELD (cannot_check) and the job waits on it again.
+      // No ack in 2 s: nothing is clicked (§29.1). main answers in order, so when HELD comes back the RUNNING request
+      // has been handled too: HELD → the card waits on the user again (cannot_check); refused → the late ack moved the row
+      // to RUNNING, and it goes on to FAILED (`submit_failed`, nothing was submitted) so it is never left RUNNING.
       core.d.log('gate.write_ahead_failed', 'APPROVAL_BAD_TRANSITION', { jobId: job.id });
-      await this.transition(a.approvalId, 'HELD');
-      await this.waitOn((await core.job(job.id)) ?? job, a.cardId);
-      return false;
+      if (await this.transition(a.approvalId, 'HELD')) {
+        await this.waitOn((await core.job(job.id)) ?? job, a.cardId);
+        return false;
+      }
+      core.d.log('gate.write_ahead_late', 'APPROVAL_BAD_TRANSITION', { jobId: job.id });
+      await this.transition(a.approvalId, 'FAILED');
+      return true;
     }
     const tool = 'browser.submit';
     const steps = await core.steps(job.id);
@@ -356,8 +420,7 @@ export class RunnerGate {
       a.approvalId,
       signal,
     );
-    // 08-2 §10.4: success → COMPLETED; an explicit refusal → FAILED; anything else → CHECKING (never re-submitted).
-    const to: ApprovalState = r.outcome === 'ok' ? 'COMPLETED' : r.outcome === 'error' && r.errorKind !== 'UNKNOWN' ? 'FAILED' : 'CHECKING';
+    const to = outcomeState(r);
     await this.transition(a.approvalId, to);
     if (to === 'COMPLETED') this.st(job.id).approved.push(approvedLine(a.draft, this.d.timeZone(), core.d.clock.now()));
     return true;
@@ -373,16 +436,26 @@ export class RunnerGate {
    * `approval_expired`, AT-111); other verbs keep the job NEEDS_YOU with [ Ask me again ] (08-2 §9.1).
    */
   async onApprovalChanged(approvalId: string, state: ApprovalState): Promise<string | null> {
-    const hit = [...this.s.entries()].find(([, x]) => x.open?.approvalId === approvalId);
-    if (!hit) return null;
-    const [jobId, x] = hit;
     if (state !== 'EXPIRED' && state !== 'WITHDRAWN' && state !== 'DECLINED') return null;
-    const verb = x.open!.draft.verb;
-    x.open = null;
-    if (state !== 'EXPIRED' || verb === 'delete') return null;
     const core = this.d.core;
+    const hit = [...this.s.entries()].find(([, x]) => x.open?.approvalId === approvalId);
+    let jobId: string;
+    let verb: string;
+    let cardId: string;
+    if (hit) {
+      jobId = hit[0];
+      ({ verb } = hit[1].open!.draft);
+      cardId = hit[1].open!.cardId;
+      hit[1].open = null;
+    } else {
+      // After an engine restart the runner holds nothing: main's row names the job (AT-111 still cancels).
+      const row = await core.query<ApprovalRowLite | null>('approvals.byId', approvalId);
+      if (!row) return null;
+      ({ jobId, verb, cardId } = row);
+    }
+    if (state !== 'EXPIRED' || verb === 'delete') return null;
     const job = await core.job(jobId);
-    if (!job || job.state !== 'needs_you') return null;
+    if (!job || job.state !== 'needs_you' || job.needsYouCardId !== cardId) return null;
     const now = core.d.clock.now();
     const steps = await core.steps(job.id);
     const r = await core.tx([

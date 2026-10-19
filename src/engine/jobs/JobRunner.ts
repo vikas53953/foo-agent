@@ -943,7 +943,7 @@ export class JobRunner {
     if (APPROVAL_CARDS.has(card.type)) {
       if (a.choice === 'decline') return this.declined(job, card, resolve);
       if (a.choice !== 'approve') return;
-      this.gating.onApproved(job.id, card.id);
+      await this.gating.onApproved(job, card.id);
     }
     // M5 (T5): a Skip is stored `skipped` so the card reads "Skipped. I'll go with {Best fit}." (05-1 §5.3.2).
     const answered = APPROVAL_CARDS.has(card.type)

@@ -136,3 +136,9 @@ export function verbOfClass(cls: ActionClass): string | null {
       return null;
   }
 }
+
+/** 08-2 §7.2 part 9: tools whose results hold what other people wrote (mail, chats), the untrusted content of §9.4.3. */
+export function untrustedSource(tool: string): boolean {
+  const app = appOf(tool);
+  return app === 'gmail' || app === 'outlook' || app === 'whatsapp';
+}

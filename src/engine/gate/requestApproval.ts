@@ -22,6 +22,8 @@ export interface ApprovalSnapshot {
   timeZone: string;
   /** The user's own words for this job (08-4 §28.3), for the untrusted-origin check. */
   userWords: readonly string[];
+  /** This job's results of tools that read what other people wrote (mail, chats; 08-2 §7.2 part 9 untrusted). */
+  untrustedResults?: readonly string[];
   readRef?(ref: string): string | null;
   currentDomain?(): string | null;
   inContacts?(address: string): boolean;
@@ -31,8 +33,11 @@ export interface ApprovalSnapshot {
 
 export type VerifyResult =
   | { ok: true; draft: ApprovalDraft; untrusted: string[] }
-  /** The verb was not asked for: the gate's read-only branch offers it (08-2 §9.4). */
-  | { ok: false; reason: 'not_asked'; verb: ApprovalDraft['verb']; untrusted: string[] }
+  /**
+   * The verb was not asked for: the gate's read-only branch offers it (08-2 §9.4, Art. 3), unless a recipient or URL in it
+   * came only from untrusted content (`injected`, §9.4.3): then no card and the injection line.
+   */
+  | { ok: false; reason: 'not_asked'; verb: ApprovalDraft['verb']; injected: string[] }
   /** A check failed: the turn is rejected; the next step turn carries the retry line; a second → stuck (fail_streak). */
   | { ok: false; reason: 'APPROVAL_EVIDENCE'; why: string };
 
@@ -63,7 +68,7 @@ export function verifyRequestApproval(raw: unknown, snap: ApprovalSnapshot): Ver
   // Item 6: buy and pay are interchangeable for this check.
   const asked =
     snap.doVerbs.includes(verb) || ((verb === 'buy' || verb === 'pay') && (snap.doVerbs.includes('buy') || snap.doVerbs.includes('pay')));
-  if (!asked) return { ok: false, reason: 'not_asked', verb, untrusted: untrustedOf(draft.fields, snap.userWords) };
+  if (!asked) return { ok: false, reason: 'not_asked', verb, injected: untrustedOf(draft.fields, snap, false) };
 
   // Item 2: every quote verbatim in the redacted result of its tool call of this job.
   for (const e of draft.evidence) {
@@ -106,10 +111,14 @@ export function verifyRequestApproval(raw: unknown, snap: ApprovalSnapshot): Ver
   if (f.when) {
     const e = ev('when')[0];
     if (!e) return fail('when');
-    const w = snap.parseWhen?.(e.quote, snap.timeZone);
-    if (snap.parseWhen && !w) return fail('when');
-    if (w) f.when = { ...w, tz: snap.timeZone };
-    else f.when = { ...f.when, tz: snap.timeZone };
+    if (!snap.parseWhen) {
+      // No parser until chrono-node lands (CR-0009 G-M5-32 hand-off): the AI's own time never reaches the card (item 3).
+      delete f.when;
+    } else {
+      const w = snap.parseWhen(e.quote, snap.timeZone);
+      if (!w) return fail('when');
+      f.when = { ...w, tz: snap.timeZone };
+    }
   }
 
   // Item 4: recipients verbatim in an evidenced result or Contacts; isNew / isGroup are the engine's.
@@ -135,13 +144,23 @@ export function verifyRequestApproval(raw: unknown, snap: ApprovalSnapshot): Ver
     return fail('site');
   f.irreversible = f.cancelTerms?.refundable === false || verb === 'pay' || verb === 'buy' || verb === 'delete';
 
-  return { ok: true, draft: { verb, fields: f, evidence: draft.evidence }, untrusted: untrustedOf(f, snap.userWords) };
+  return { ok: true, draft: { verb, fields: f, evidence: draft.evidence }, untrusted: untrustedOf(f, snap, true) };
 }
 
-/** 08-2 §9.4.3: a recipient address or payee the user's own words never name (it came from untrusted content). */
-function untrustedOf(f: ApprovalFields, userWords: readonly string[]): string[] {
-  const said = userWords.join('\n').toLowerCase();
-  return [...(f.recipients ?? []).map((r) => r.address), ...(f.payee ? [f.payee] : [])].filter((v) => !said.includes(v.toLowerCase()));
+/**
+ * 08-2 §9.4.3: a recipient address, payee or URL found in untrusted content (mail, chats) but never in the user's own words.
+ * `withPayee` false keeps only recipients and URLs: what the injection line is for; a payee off a web page the AI found is
+ * ordinary browsing and gets the Art. 3 offer.
+ */
+function untrustedOf(f: ApprovalFields, snap: ApprovalSnapshot, withPayee: boolean): string[] {
+  const said = snap.userWords.join('\n').toLowerCase();
+  const seen = (snap.untrustedResults ?? []).map((t) => t.toLowerCase());
+  const values = [
+    ...(f.recipients ?? []).map((r) => r.address),
+    ...(f.siteDomain ? [f.siteDomain] : []),
+    ...(withPayee && f.payee ? [f.payee] : []),
+  ];
+  return values.filter((v) => !said.includes(v.toLowerCase()) && seen.some((t) => t.includes(v.toLowerCase())));
 }
 
 /** Results are stored as JSON text: a quote matches the raw text or its JSON-escaped form. */

@@ -3,6 +3,7 @@
 // shown + "Want me to book one?". 08-2 §5.3.1 (no do-verb → intent read_only), §9.4 (read_only → Choice offer_action; the
 // fake AI tries a book tool directly or asks for an approval), 08-4 §28.1 item 6.
 import { afterEach, describe, expect, it } from 'vitest';
+import { t } from '../../src/shared/copy/t';
 import { jobHarness, jobIntake, tool, type JobHarness } from '../integration/jobs/jobHarness';
 import { BOOK_PLAN, bookRequest, gateTools } from '../integration/approvals/gateFlow';
 
@@ -41,9 +42,10 @@ describe('Article 3: look, never act, unless asked', () => {
       const h2 = jobHarness({
         script: [
           { ...jobIntake(BOOK_PLAN, { title: 'Look at stays' }), once: false },
-          // After the page read (its observation is in part 8) the AI asks for an approval it was never given (no payee, so
-          // the untrusted-origin branch, ART-05 territory, stays out of this article).
-          { ...bookRequest('tc_000001', null), match: { purpose: 'step', promptIncludes: 'Last observation' }, once: false },
+          // After the page read (its observation is in part 8) the AI asks to book "Toit", a payee it found on the page and
+          // most asks never name ("Find hotels in Goa…"): still the offer, never the injection line (08-2 §9.4.3 is for
+          // recipients and URLs from mail or chats).
+          { ...bookRequest(), match: { purpose: 'step', promptIncludes: 'Last observation' }, once: false },
           { ...tool('fake.page', { site: 'table.example' }), once: false },
         ],
         tools: { extra: gateTools(ran) },
@@ -63,6 +65,7 @@ describe('Article 3: look, never act, unless asked', () => {
           expect(offers, JSON.stringify(x.cards().map((c) => [c.type, c.state, c.chat_id]))).toHaveLength(20);
           // 08-1 §3.2: a tap sends the card's nonce, which card:answer accepts only as 32 hex.
           for (const c of x.cards('choice')) expect(String(c.nonce)).toMatch(/^[0-9a-f]{32}$/);
+          expect(x.messages().some((m) => m.text === t('thread.injection.blocked'))).toBe(false);
           for (const o of offers) {
             expect(o.question).toBe('Want me to book one?');
             expect(o.options.map((p) => p.label)).toEqual(['Yes, book', 'Not now']);

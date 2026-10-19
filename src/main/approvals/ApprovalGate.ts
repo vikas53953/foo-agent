@@ -123,6 +123,8 @@ export interface CreateInput {
   variant?: ApprovalPayload['variant'];
   /** The card this one replaces (Ask me again, a superseded card). */
   supersedesCardId?: string;
+  /** M5 T7 (G-M5-29): the engine's submit target, stored on the card payload for a restart. */
+  submitRef?: string;
 }
 
 export interface Created {
@@ -223,6 +225,7 @@ export class ApprovalGate {
       scopes: scopesFor(input.verb, input.hardLimit),
       hardLimit: input.hardLimit,
       expiresAt,
+      ...(input.submitRef ? { submitRef: input.submitRef } : {}),
     };
     const ops: DbOp[] = [
       {
@@ -288,7 +291,7 @@ export class ApprovalGate {
    * The main half of engine `approval.open` (08-1 §2.4): a verified ApprovalDraft from the gate (X-125). Book and delete get
    * an Approval card here; buy / pay are the Payment card (08-2 §10.2, M10).
    */
-  openFromEngine(req: { jobId: string; draft: ApprovalDraft; title: string; impact: string }): Result<Created> {
+  openFromEngine(req: { jobId: string; draft: ApprovalDraft; title: string; impact: string; submitRef?: string }): Result<Created> {
     if (req.draft.verb === 'buy' || req.draft.verb === 'pay') return fail('VALIDATION', 'payment_card');
     return this.create({
       jobId: req.jobId,
@@ -297,6 +300,7 @@ export class ApprovalGate {
       hardLimit: hardLimitOf(req.draft.fields, this.d.now()),
       title: req.title,
       impact: req.impact,
+      ...(req.submitRef ? { submitRef: req.submitRef } : {}),
     });
   }
 

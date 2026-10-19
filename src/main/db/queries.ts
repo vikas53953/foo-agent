@@ -5,7 +5,7 @@
 // runner's reads — jobs, steps, tool calls (08-2 §5.9 step 5), activity (stop report, 08-2 §5.7 step 4), open cards,
 // approvals (stub until M5), the month's AI spend (08-2 §5.10), and the round-2 names 'jobs.liveForChat', 'cards.openForChat'.
 import type { Db } from '../store/db';
-import type { ActivityRow, CardRow, CardType, JobRow, StepRow } from '../../shared/types';
+import type { ActivityRow, ApprovalFields, CardRow, CardType, JobRow, StepRow } from '../../shared/types';
 import { cardRow, parseJson, stepRow, type DbRow } from './rows';
 import { fooChatId, jobRows } from '../store/queries';
 
@@ -104,6 +104,27 @@ export interface EngineApproval {
   state: string;
   expiresAt: number;
   submittedAt: number | null;
+  // M5 T7: what the runner needs to run or cancel it after an engine restart (verified fields, the card's submitRef).
+  fields: ApprovalFields;
+  submitRef: string | null;
+}
+
+/** One approvals row for the engine, with its card's `submitRef` (M5 T7, G-M5-29). */
+function engineApproval(db: Db, r: DbRow): EngineApproval {
+  const card = db.prepare('SELECT payload FROM cards WHERE id = ?').get(String(r.card_id)) as { payload: string | null } | undefined;
+  const ref = parseJson<{ submitRef?: unknown }>(card?.payload ?? null, {}).submitRef;
+  return {
+    id: String(r.id),
+    cardId: String(r.card_id),
+    jobId: String(r.job_id),
+    chatId: String(r.chat_id),
+    verb: String(r.verb),
+    state: String(r.state),
+    expiresAt: Number(r.expires_at),
+    submittedAt: r.submitted_at === null || r.submitted_at === undefined ? null : Number(r.submitted_at),
+    fields: parseJson<ApprovalFields>(r.fields, { verb: String(r.verb) as ApprovalFields['verb'], irreversible: true }),
+    submitRef: typeof ref === 'string' ? ref : null,
+  };
 }
 
 const LIVE_JOB_STATES = ['queued', 'working', 'needs_you', 'waiting'];
@@ -249,16 +270,12 @@ export const NAMED_QUERIES = {
       db
         .prepare(`SELECT * FROM approvals WHERE job_id = ? AND state IN (${inList(OPEN_APPROVAL_STATES.length)}) ORDER BY created_at`)
         .all(String(jobId), ...OPEN_APPROVAL_STATES) as DbRow[]
-    ).map((r) => ({
-      id: String(r.id),
-      cardId: String(r.card_id),
-      jobId: String(r.job_id),
-      chatId: String(r.chat_id),
-      verb: String(r.verb),
-      state: String(r.state),
-      expiresAt: Number(r.expires_at),
-      submittedAt: r.submitted_at === null || r.submitted_at === undefined ? null : Number(r.submitted_at),
-    })),
+    ).map((r) => engineApproval(db, r)),
+  // M5 T7
+  'approvals.byId': ({ db }: QueryCtx, approvalId: unknown): EngineApproval | null => {
+    const r = db.prepare('SELECT * FROM approvals WHERE id = ?').get(String(approvalId)) as DbRow | undefined;
+    return r ? engineApproval(db, r) : null;
+  },
   /** 08-2 §5.10: metered AI spend (billing 'key') between fromMs (inclusive) and toMs (exclusive); unknown-cost turns counted apart. */
   monthAiSpend: ({ db }: QueryCtx, fromMs: unknown, toMs: unknown): { paise: number; turns: number; unknownTurns: number } => {
     const r = db
