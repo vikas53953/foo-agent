@@ -439,8 +439,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.068677734375,
-    "diffPixels": 70326,
+    "ratio": 0.0686787109375,
+    "diffPixels": 70327,
     "total": 1024000,
     "sizeMismatch": {
       "a": [
