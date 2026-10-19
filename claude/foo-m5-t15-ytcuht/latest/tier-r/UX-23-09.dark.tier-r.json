@@ -383,7 +383,7 @@
         "Dec",
         "9:41",
         "AM",
-        "⏳",
+        "🛠",
         "Delhi",
         "flights",
         "live",
@@ -527,8 +527,8 @@
     "total": 4340
   },
   "r5": {
-    "ratio": 0.0969541015625,
-    "diffPixels": 99281,
+    "ratio": 0.0969619140625,
+    "diffPixels": 99289,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-09.dark.diff.png"
