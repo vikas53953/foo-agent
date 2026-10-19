@@ -19,7 +19,7 @@ const invoke = <T>(page: Page, channel: string, payload: unknown) =>
   page.evaluate(([c, p]) => window.foo.invoke(c as never, p as never), [channel, payload] as const) as Promise<R<T>>;
 
 function value<T>(r: R<T>, what: string): T {
-  if (!r.ok) throw new Error(`${what}: ${r.error.kind} ${r.error.message ?? ""}`);
+  if (!r.ok) throw new Error(`${what}: ${r.error.kind} ${r.error.message ?? ''}`);
   return r.value;
 }
 
@@ -39,7 +39,8 @@ export default async function journey(v: Verify): Promise<void> {
   const seeded = readFileSync(aboutYou, 'utf8').split('\n');
   const indexed = await list(page);
   const missing = indexed.filter((f) => f.file === 'memory/about-you.md' && !seeded[f.lineNo - 1]?.startsWith(`- ${f.text}  {`));
-  if (seeded[0] !== '# About you' || missing.length) throw new Error(`seed file and index disagree: ${missing.map((f) => f.text).join(', ')}`);
+  if (seeded[0] !== '# About you' || missing.length)
+    throw new Error(`seed file and index disagree: ${missing.map((f) => f.text).join(', ')}`);
   v.note(`the demo seed wrote about-you.md with ${seeded.length - 2} lines; every indexed about-you fact sits on its own line_no`);
   await openChat(page, 'foo');
   await setTheme(page, 'light');
@@ -70,7 +71,9 @@ export default async function journey(v: Verify): Promise<void> {
     if (edited?.text !== 'I’m allergic to peanuts and cashews') await page.waitForTimeout(100);
   }
   if (edited?.text !== 'I’m allergic to peanuts and cashews') throw new Error(`memory:list after the edit: ${edited?.text}`);
-  v.note(`edited the line on disk (CRLF, as Notepad saves); after 600 ms memory:list shows "${edited.text}" (same id, line ${edited.lineNo})`);
+  v.note(
+    `edited the line on disk (CRLF, as Notepad saves); after 600 ms memory:list shows "${edited.text}" (same id, line ${edited.lineNo})`,
+  );
 
   // Forget + Undo: the same line comes back at the same place.
   // foo writes LF (08-3 §12.2), so the Notepad CRLF becomes LF on its first write.
@@ -80,10 +83,13 @@ export default async function journey(v: Verify): Promise<void> {
   const gone = readFileSync(aboutYou, 'utf8');
   if (gone.includes('Works from home on Fridays')) throw new Error('the forgotten line is still in the file');
   const tomb = readFileSync(join(data, 'memory', '.tombstones'), 'utf8').trim();
-  v.note(`memory:forget removed "Works from home on Fridays" (line ${target.lineNo}); memory\\.tombstones now holds ${tomb.split('\n').length} tombstone`);
+  v.note(
+    `memory:forget removed "Works from home on Fridays" (line ${target.lineNo}); memory\\.tombstones now holds ${tomb.split('\n').length} tombstone`,
+  );
   const back = value(await invoke<MemoryFactView>(page, 'memory:undo', { undoToken }), 'memory:undo');
   const after = readFileSync(aboutYou, 'utf8');
-  if (after !== before || back.lineNo !== target.lineNo) throw new Error(`undo: line ${back.lineNo} vs ${target.lineNo}; file same: ${after === before}`);
+  if (after !== before || back.lineNo !== target.lineNo)
+    throw new Error(`undo: line ${back.lineNo} vs ${target.lineNo}; file same: ${after === before}`);
   v.note(`memory:undo put the exact line back at line ${back.lineNo}; every line of the file is what it was`);
   await page.evaluate(() => window.__fooTest!.clock.advance(6_000));
   const late = await invoke(page, 'memory:undo', { undoToken });

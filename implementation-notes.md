@@ -822,6 +822,7 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
 ## M6 · memory store (ticket T3)
 
 ### Built
+
 - `src/engine/memory/MemoryService.ts` is the `Engine.memory` slot: the eight `memory.cmd` commands (add, edit, setPrivate,
   setKind, forget, undo, forgetBySource, forgetAll), `learn()` for T5 (placement, §12.4.1 sensitive rule, tombstone check),
   `forgetFromChip()` (G-M6-10 activity row), and `fileChanged()` / `reindexAll()` for the watcher. Every change is read file →
@@ -837,6 +838,7 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
 - Checked: the parse worker loads from inside `app.asar` in a utility process (Electron 44, Linux; T2's open note).
 
 ### Picks and gaps (for the lead's independent check)
+
 1. **No prompt for the manual-add classify turn.** 08-4 §24 has no prompt file for it (`classify` = `stuck.md` only), and
    prompt files must equal the spec's blocks. So every manual add takes §12.4's own fallback (kind `fact`, category `other`);
    the act schema and the turn hook (`classifyFact.ts`) are built and tested. Needs a CR adding the prompt block.
