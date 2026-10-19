@@ -456,7 +456,7 @@
         "Holiday",
         "Village",
         "in",
-        "18:59",
+        "18:58",
         "Bay",
         "I’ll",
         "always",
@@ -597,8 +597,8 @@
     "total": 22232
   },
   "r5": {
-    "ratio": 0.0912919921875,
-    "diffPixels": 93483,
+    "ratio": 0.0912890625,
+    "diffPixels": 93480,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-06.dark.diff.png"

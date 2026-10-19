@@ -1,8 +1,15 @@
 {
   "id": "UX-02-07",
   "theme": "dark",
-  "verdict": "fail",
-  "disputed": null,
+  "verdict": "review",
+  "disputed": {
+    "cr": "CR-0020",
+    "checks": [
+      "r1",
+      "r2",
+      "r4"
+    ]
+  },
   "r1": {
     "verdict": "fail",
     "frame": {

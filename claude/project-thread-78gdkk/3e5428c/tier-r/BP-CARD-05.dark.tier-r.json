@@ -1,0 +1,140 @@
+{
+  "id": "BP-CARD-05",
+  "theme": "dark",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0009",
+    "checks": [
+      "r1",
+      "r2"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "10:41",
+        "AM",
+        "From",
+        "your",
+        "Gmail",
+        "r.sharma@gmail.com.",
+        "It",
+        "can't",
+        "Edit"
+      ],
+      "extra": [
+        "in",
+        "59:59",
+        "Will",
+        "send",
+        "r.sharma@example.com",
+        "from",
+        "your",
+        "Gmail.",
+        "You",
+        "haven’t",
+        "emailed",
+        "him",
+        "before.",
+        "Can’t",
+        "Hi",
+        "Rakesh,",
+        "the",
+        "rent",
+        "for",
+        "October",
+        "is",
+        "sent.",
+        "Change",
+        "I’ll",
+        "always",
+        "ask",
+        "for",
+        "this",
+        "one.",
+        "Expires",
+        "Fri",
+        "16",
+        "Oct,",
+        "10:41",
+        "AM",
+        "·",
+        "If",
+        "you",
+        "don’t",
+        "answer,",
+        "I",
+        "won’t",
+        "do",
+        "it.",
+        "9:41",
+        "AM"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-CARD-05",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 351.328125,
+          "height": 156
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 440,
+          "height": 238
+        },
+        "dPos": 0,
+        "dSize": 88.671875,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-CARD-05",
+        "ref": "#1B1B22",
+        "app": "#16161C",
+        "deltaE": 1.7,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.16142523193805244,
+    "diffPixels": 8839,
+    "total": 54756,
+    "sizeMismatch": {
+      "a": [
+        351,
+        156
+      ],
+      "b": [
+        440,
+        238
+      ]
+    },
+    "heatmap": "BP-CARD-05.dark.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-CARD-05.dark.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-CARD-05.dark.png"
+}

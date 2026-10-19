@@ -1,0 +1,86 @@
+{
+  "id": "BP-COMP-05",
+  "theme": "dark",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0003",
+    "checks": [
+      "r1",
+      "r2"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "＋",
+        "➤"
+      ],
+      "extra": []
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-COMP-05",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 351.328125,
+          "height": 180
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 600,
+          "height": 156
+        },
+        "dPos": 0,
+        "dSize": 248.671875,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-COMP-05",
+        "ref": "#1B1B22",
+        "app": "#1B1B22",
+        "deltaE": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.10073781868653664,
+    "diffPixels": 5516,
+    "total": 54756,
+    "sizeMismatch": {
+      "a": [
+        351,
+        180
+      ],
+      "b": [
+        600,
+        156
+      ]
+    },
+    "heatmap": "BP-COMP-05.dark.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-COMP-05.dark.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-COMP-05.dark.png"
+}
