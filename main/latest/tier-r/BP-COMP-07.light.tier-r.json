@@ -15,16 +15,23 @@
       "missing": [
         "⏳",
         "Needs",
+        "your",
+        "OK:",
         "Pay",
+        "Taj",
+        "Holiday",
+        "Village",
         "↑",
         "＋",
         "🎙"
       ],
       "extra": [
-        "Waiting",
+        "2",
+        "things",
+        "are",
+        "waiting",
         "for",
-        "₹14,600",
-        "to",
+        "you",
         "9:59",
         "left"
       ]
@@ -77,8 +84,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.08353084823673058,
-    "diffPixels": 3489,
+    "ratio": 0.07709066532595944,
+    "diffPixels": 3220,
     "total": 41769,
     "sizeMismatch": {
       "a": [

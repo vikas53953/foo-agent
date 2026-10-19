@@ -93,13 +93,11 @@
         "₹0"
       ],
       "extra": [
-        "1",
         "f",
         "9:41",
         "AM",
         "typing…",
-        "Needs",
-        "you",
+        "Done",
         "T",
         "Trips",
         "9:41",
@@ -476,8 +474,8 @@
     "total": 9576
   },
   "r5": {
-    "ratio": 0.0997626953125,
-    "diffPixels": 102157,
+    "ratio": 0.099662109375,
+    "diffPixels": 102054,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-05-02.dark.diff.png"

@@ -106,7 +106,6 @@
       ],
       "extra": [
         "1",
-        "1",
         "f",
         "9:41",
         "AM",
@@ -115,8 +114,7 @@
         "Reading",
         "your",
         "Gmail…",
-        "Needs",
-        "you",
+        "Working",
         "1",
         "T",
         "Trips",
@@ -555,8 +553,8 @@
     "total": 55440
   },
   "r5": {
-    "ratio": 0.08443359375,
-    "diffPixels": 86460,
+    "ratio": 0.0844248046875,
+    "diffPixels": 86451,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-05-03.light.diff.png"

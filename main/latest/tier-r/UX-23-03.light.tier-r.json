@@ -129,18 +129,14 @@
         "₹0"
       ],
       "extra": [
-        "1",
         "f",
         "9:41",
-        "Needs",
-        "your",
-        "OK:",
+        "Payment:",
         "Pay",
         "Taj",
         "Holiday",
         "Village",
-        "Needs",
-        "you",
+        "Done",
         "T",
         "9:41",
         "on",
@@ -596,8 +592,8 @@
     "total": 82720
   },
   "r5": {
-    "ratio": 0.087982421875,
-    "diffPixels": 90094,
+    "ratio": 0.087984375,
+    "diffPixels": 90096,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-03.light.diff.png"
