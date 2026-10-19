@@ -86,7 +86,7 @@ describe('golden manifest', () => {
       ...['01', '02', '03', '04', '05', '06', '09', '11'].map((s) => `UX-23-${s}`),
     ]);
   });
-  it('CR-0009 adds the six M5 card refs, the M5 early Approval / Draft steps, and moves the notification-answer step of chapter 10 to M11', () => {
+  it('CR-0009 adds the six M5 card refs, the M5 early Approval / Draft steps, moves the notification-answer step of chapter 10 to M11 and the memory chip step to M6', () => {
     expect(BP_M5.map((b) => b.id)).toEqual(['BP-CARD-03', 'BP-CARD-04', 'BP-CARD-05', 'BP-CARD-07', 'BP-CARD-08', 'BP-CARD-09']);
     for (const b of BP_M5) {
       expect(b.milestone).toBe('M5');
@@ -102,9 +102,11 @@ describe('golden manifest', () => {
     ]);
     const choice = manifest.ux.filter((e) => e.id.startsWith('UX-10-'));
     expect(choice.filter((e) => e.milestone === 'M5').map((e) => e.id)).toEqual(
-      ['01', '02', '03', '04', '05', '06', '08'].map((s) => `UX-10-${s}`),
+      ['01', '03', '04', '05', '06', '08'].map((s) => `UX-10-${s}`),
     );
     expect(choice.find((e) => e.id === 'UX-10-07')?.milestone).toBe('M11');
+    // G-M5-26: the memory chip step waits for memory in replies.
+    expect(choice.find((e) => e.id === 'UX-10-02')?.milestone).toBe('M6');
   });
   it('the selectors exist in the frozen Blueprint', () => {
     const html = readFileSync(manifest.sources.bp, 'utf8');
