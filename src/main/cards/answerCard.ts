@@ -4,9 +4,9 @@
 // (file_in / photo_notice show no Skip), 08-4 §25.1 CardAnswer, §26.6 rule 4 (reactions 1️⃣–4️⃣ answer Choice cards only),
 // 08-2 §5.2.2 (a 👍 / ✅ reaction on an Approval, Payment or Draft card never approves: it only gets the G16 reply,
 // `thread.approval_typed.approve|send`), Art. 12 (state moves of a job's card are the runner's: main checks and forwards).
-// A card with no job (setup, memory_confirm, file_in, photo_notice …) has no runner to move it, so main writes its answer
-// itself through the same db.tx path (implementation-notes M5-T5); a memory card's answer is then sent on to the engine
-// (08-3 §12.5.1, §12.7; M6 T7). 05-2 §5.8.3: a Secret box's Cancel (`{ skip: true }`) moves
+// A card with no job (setup, file_in, photo_notice …) has no runner to move it, so main writes its answer itself through
+// the same db.tx path (implementation-notes M5-T5); a `conflict` card's answer is then sent on to the engine (08-3 §12.7;
+// M6 T7). A `memory_confirm` card is the engine's: main forwards it and the engine moves it (CR-0010 G-M6-21). 05-2 §5.8.3: a Secret box's Cancel (`{ skip: true }`) moves
 // an asking or rejected box to `withdrawn` ("Skipped. Nothing was saved."); main writes it, as secret:save writes `saved`.
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';

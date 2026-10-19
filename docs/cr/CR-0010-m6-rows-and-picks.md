@@ -80,21 +80,25 @@ the lead. Each ticket's picks already passed that ticket's independent Fable rev
 independent review before the milestone PR. Details live in `implementation-notes.md` under each ticket's heading, and
 the decision rows are in `docs/decisions/M6.tsv`.
 
-- **G-M6-16** (T4, clash) Private facts and group grants. 08-4 §24.16 item 4, 08-3 §12.5.1 and §17.3.5 let a live
-  `memory_group_grants` row re-admit a fact into a group. DECISIONS X-06 says a private fact never reaches a group. The
+- **G-M6-16** (T4, clash) Private facts and group grants. 08-4 §24.16 item 4, 08-3 §12.5.1, §17.3.5 and DECISIONS X-112
+  ("unless a live `memory_group_grants` row exists") let a live grant re-admit a private fact into a group. DECISIONS X-06
+  says a private fact never reaches a group. The
   code follows X-06 (DECISIONS wins): a grant re-admits an about-you or chat-scope fact, never a private one, and T7's
-  `askShare` refuses a private fact as it refuses a sensitive one. Open item for the spec-keeper: align the chapter text
-  with X-06.
-- **G-M6-17** (T3, T5, gap) The manual-add classify turn. 08-4 §24 has no prompt for classifying a fact added on the Memory
-  page or by a chat "remember …". Until one lands, both save with §12.4's fallback category (`fact` / `other`). Open
-  item for the spec-keeper.
+  `askShare` refuses a private fact as it refuses a sensitive one. The stricter reading weakens nothing. Open item for
+  the spec-keeper: settle X-06 against X-112 and align the chapter text.
+- **G-M6-17** (T3, T5, gap) The manual-add classify turn. 08-3 §12.4 and X-112 settle the turn's act shape, purpose and
+  fallback, but 08-4 §24 has no prompt block for it, and prompt files must equal the spec's blocks. So no classify turn
+  is run: a fact added on the Memory page or by a chat "remember …" saves with §12.4's AI-failure fallback (`fact` /
+  `other`). The act schema and the turn hook (`classifyFact.ts`) are built and tested. Open item for the spec-keeper:
+  add the prompt block.
 - **G-M6-18** (T4) `usedMemoryIds` count only for ids in parts 5/5b as sent (after the budget trims), once each, and
   only when the act is valid (also after a repair). Step turns record their uses with the `job_id`. The step query falls
   back to the job's user message.
 - **G-M6-19** (T3) `memory_fts` is rebuilt only when a tx inserts or deletes a `memory_index` row or sets its `text`. A
   use write (`use_count` / `last_used_at`) does not rebuild it, because the FTS index covers `text` only (0001).
-  `forgetAll` deletes the files it empties. A file that fails to parse answers `UNKNOWN`. The own-write mark is spent by
-  the first outside edit, so a Notepad Ctrl+Z back to foo's text is reindexed.
+  `forgetAll` deletes the files it empties. Bad lines are `MEMORY_PARSE` and kept (§12.2); only a dead parse worker
+  answers `UNKNOWN`. The own-write mark is spent by the first outside edit, so a Notepad Ctrl+Z back to foo's text is
+  reindexed.
 - **G-M6-20** (T5) Chips. Chip fields live in `messages.why.memoryChip`, and main lets the engine update `why` (T5-01).
   `memory:forget` takes an optional `chipId`, and a chip's own Undo is a `chip_{markerId}` token on `memory:undo` (T5-02).
   Undo of a save forgets with a tombstone and writes no activity row (T5-05). A job's "Used:" chip anchors to the chat's
@@ -117,15 +121,17 @@ the decision rows are in `docs/decisions/M6.tsv`.
   - The entity is the relation word (`lives in`) for about-you facts and the person's file for `people\` facts (the
     literal noun-phrase reading fails AT-219).
   - Near-duplicates need the same file.
-  - A conflict with no `ask` keeps the newest `said`, with no tombstone. When both facts are guesses, it leaves them, and
-    `TidyAct.keep` is not read.
+  - A conflict with no `ask` keeps the newest `said`, with no tombstone. `TidyAct.keep` is not read.
+  - Deviation, not a reading: 08-3 §12.7 step 2 asks with a Choice card when both facts are guessed, but the `TidyAct`
+    gives no words to ask with when the AI returns no `ask`. The code then leaves both facts alone, which deletes nothing.
+    Open item for the spec-keeper: let the act carry the question.
   - Option i keeps the fact whose text holds the option's words.
   - The conflict card's why source is `housekeeping`, with `suggestionKey` `memory_conflict:{idA}-{idB}`.
   - Style lines never reach a group prompt.
 - **G-M6-24** (T7) The unprompted budget (08-3 §15.2 step 5) runs in main on every engine `db.tx`
   (`EngineBridge` → `budget.gateUnprompted`). When over budget or in quiet hours, the message and its card become one
-  `held_items` row. `held_items` and `suggestions` are engine-writable. `suggestionState`, `chats.forHelper` and
-  `messages.userTexts` are added named queries. Left for M7: the `urgent` exemption, the `notifications` row, and
+  `held_items` row. The code catches up to 08-1 §2.4.1, which already lists `held_items` and `suggestions` as writable
+  and `suggestionState` as a named query. This CR adds two named queries: `chats.forHelper` and `messages.userTexts`. Left for M7: the `urgent` exemption, the `notifications` row, and
   re-asking a held conflict that is never delivered.
 - **G-M6-25** (T6) Owner exceptions:
   - `data:export` gets `db` and `timeZone`.
@@ -140,3 +146,26 @@ the decision rows are in `docs/decisions/M6.tsv`.
   is removed when its index write fails. The payload casts are replaced by guards (`cardPayloads.ts`).
 - **G-M6-27** (lead, cross-lane C14) M6 owns `data:export`, `data:exportProgress` and `files:pickFolder`. M13 and M14
   extend M6's handler and drop their own declarations when they merge.
+- **G-M6-28** (T3) Store picks:
+  - Tombstones block learning (`learn()`: the review, intake and jobs). They do not block the user's own add or edit on the
+    Memory page, which is their typed act, as G-M6-06 treats `rememberOn`.
+  - `setKind` moves files. A preference goes to `preferences\{topic}.md`. A fact or place leaves `people\` and
+    `preferences\` for `about-you.md`. A person stays in its file, because the invoke carries no name for a slug.
+  - A Notepad line's `learned_at` is the reindex time when its date is today, else midday UTC of the written date.
+  - On engine start, index rows whose file is missing are kept.
+  - A sensitive line typed in Notepad is made private at reindex.
+  - Moved to M8: the Notepad reindex runs §12.4.1 without `contacts_index`, so the contact-details branch does not fire on
+    a typed line. `contacts_index` is empty until M8's Google Contacts, and M8 passes the contacts list here too.
+- **G-M6-29** (T5) A review skipped at the spend cap still marks the chat read (§12.4 "skipped"), so it is not re-run
+  when the cap lifts.
+- **G-M6-30** (T5-08, drawing vs spec) The UX-10-02 memory chip is a marker row under the card (05-3 §5.17.1, 08-3
+  §12.5, the drawing), not in the card's bottom row (the 05-1 §5.3.1 sketch). It uses the §5.17 `--bg-sunken` fill where
+  the drawing tints it accent, and its ✕ is the Dismiss icon.
+- **G-M6-21 safety net** (lead, from the batch review) A `memory_confirm` card that no memory seam claims is still moved out
+  of `asking` by the engine. Both seams write the card with `expectRev`, so a second, racing tap writes nothing more.
+  Tests: `test/integration/m6-watcher.test.ts` and `test/unit/m6-askshare.test.ts`.
+
+Batch review 2026-10-19 (Fable, independent): G-M6-16…27 PASS WITH FIXES. Its 3 act items are in: the unclaimed-card
+safety net, the missing picks (G-M6-28…30), and the G-M6-24 wording. Its consider items are in too: X-112 in G-M6-16,
+G-M6-17 stated plainly, the G-M6-23 deviation, the G-M6-19 wording and `expectRev`. Every pick is approved on Vikas's
+behalf under his standing rule. None needs Vikas himself.

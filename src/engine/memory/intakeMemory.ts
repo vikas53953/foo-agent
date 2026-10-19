@@ -175,6 +175,7 @@ export class IntakeMemory {
         table: 'cards',
         id: card.id,
         set: { state: skipped ? 'skipped' : 'answered', answer, resolved_by: a.resolvedBy, resolved_at: this.d.clock.now() },
+        expectRev: card.rev,
       },
     ]);
     if (!r.ok || skipped || !('optionId' in answer)) return true;

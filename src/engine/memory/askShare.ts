@@ -129,21 +129,21 @@ export class MemoryShare {
     const now = this.d.clock.now();
     const answer: CardAnswer = a.answer ?? (a.choice ? { optionId: a.choice } : { skip: true });
     const choice = 'optionId' in answer ? answer.optionId : undefined;
-    const resolve: DbOp[] =
-      card.state === 'asking'
-        ? [
-            {
-              op: 'update',
-              table: 'cards',
-              id: card.id,
-              set: { state: 'skip' in answer ? 'skipped' : 'answered', answer, resolved_by: a.resolvedBy ?? 'tap', resolved_at: now },
-            },
-          ]
-        : [];
+    // Already answered (a second tap, or a stale one): nothing more to write. expectRev stops a racing second answer.
+    if (card.state !== 'asking') return true;
+    const resolve: DbOp[] = [
+      {
+        op: 'update',
+        table: 'cards',
+        id: card.id,
+        set: { state: 'skip' in answer ? 'skipped' : 'answered', answer, resolved_by: a.resolvedBy ?? 'tap', resolved_at: now },
+        expectRev: card.rev,
+      },
+    ];
     const factId = String(share.factId ?? '');
     const groupChatId = String(share.groupChatId ?? '');
     if (!factId || !groupChatId || (choice !== 'o1' && choice !== 'o2')) {
-      if (resolve.length) await this.d.link.request('db.tx', { ops: resolve });
+      await this.d.link.request('db.tx', { ops: resolve });
       return true;
     }
     const key = shareKey(factId, groupChatId);
@@ -166,7 +166,7 @@ export class MemoryShare {
     }
     const fact = await this.query<EngineFact>('memory.byId', [factId]);
     if (!fact || shareBlocked(fact)) {
-      if (resolve.length) await this.d.link.request('db.tx', { ops: resolve });
+      await this.d.link.request('db.tx', { ops: resolve });
       return true;
     }
     await this.d.link.request('db.tx', {

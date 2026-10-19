@@ -15,7 +15,7 @@ import { ok, type Result } from '../shared/errors';
 import { newId as mintId, type IdPrefix } from '../shared/ids';
 import { settingsSchema, type Settings } from '../shared/settings';
 import { settingsDefaults } from '../shared/settingsDefaults';
-import type { ProviderId } from '../shared/types';
+import type { CardAnswer, CardRow, ProviderId } from '../shared/types';
 import type { EngineChat, EngineMessage } from '../main/db/queries';
 import { AiRegistry, CliLimiter, createAdapters, loadPricing, nodeAiFs, nodeWhich, sweepSystemFiles } from './ai';
 import { AiService } from './AiService';
@@ -285,6 +285,25 @@ export class Engine {
       undoMs: UNDO_MS,
       log: (evt, kind) => log(evt, kind),
     });
+  }
+
+  /**
+   * CR-0010 G-M6-21: main hands every `memory_confirm` answer to the engine, so one no seam claimed (a payload with neither
+   * `memory` nor `share`) is still moved out of `asking` here rather than left open forever.
+   */
+  private async settleMemoryConfirm(a: { cardId: string; answer?: CardAnswer; choice?: string; resolvedBy?: string }): Promise<boolean> {
+    const card = await this.query<CardRow>('cardById', a.cardId);
+    if (!card || card.jobId !== null || card.type !== 'choice' || card.payload.purpose !== 'memory_confirm') return false;
+    if (card.state !== 'asking') return true;
+    const answer: CardAnswer = a.answer ?? (a.choice ? { optionId: a.choice } : { skip: true });
+    const set = {
+      state: 'skip' in answer ? 'skipped' : 'answered',
+      answer,
+      resolved_by: a.resolvedBy ?? 'tap',
+      resolved_at: this.o.clock.now(),
+    };
+    await this.o.link.request<DbTxReply>('db.tx', { ops: [{ op: 'update', table: 'cards', id: card.id, set, expectRev: card.rev }] });
+    return true;
   }
 
   private async query<T>(q: string, ...args: unknown[]): Promise<T | null> {
@@ -601,6 +620,7 @@ export class Engine {
         // M6 T5: a `memory_confirm` card (Remember that…? / which fact to forget) is the memory seam's.
         if (await this.memoryIntake.onCardAnswered(msg.payload)) return undefined;
         if ((await this.tidy.onCardAnswered(msg.payload)) || (await this.share.onCardAnswered(msg.payload))) return undefined;
+        if (await this.settleMemoryConfirm(msg.payload)) return undefined;
         if (!(await this.recovery.onCardAnswered(msg.payload))) await this.jobs.onCardAnswered(msg.payload);
         return undefined;
       // M5 T7: main moved an approval (08-1 §2.4); an expired payment / booking card ends its job (AT-111).

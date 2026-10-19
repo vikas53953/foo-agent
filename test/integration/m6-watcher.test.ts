@@ -1,10 +1,11 @@
 // Spec: 10-acceptance-1 §B AT-075 (an edit to about-you.md in Notepad is used by the next foo reply), 08-3 §12.2 (the
 // watcher reindexes a changed memory file), 08-4 §24.16 (parts 5/5b read memory_index). The real Engine and main's
-// EngineBridge over a temp SQLite db; the AI turns are the fake script (08-3 §22.3).
+// EngineBridge over a temp SQLite db; CR-0010 G-M6-21 (an unclaimed memory_confirm card still leaves `asking`); the AI turns are the fake script (08-3 §22.3).
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { intake, makeHarness, verified, type Harness } from '../unit/m3-engine-helpers';
+import { cardOf, seedCard } from './choice/seedCard';
 
 let h: Harness | null = null;
 afterEach(() => {
@@ -42,5 +43,22 @@ describe('AT-075 · a Notepad edit to about-you.md reaches the next reply', () =
     const sent = `${String(turn.system)}\n${String(turn.prompt)}`;
     expect(sent).toContain('Lives in Mumbai');
     expect(sent).not.toContain('Lives in Pune');
+  });
+});
+
+describe('CR-0010 G-M6-21 · the engine owns memory_confirm cards', () => {
+  it('a memory_confirm card no memory seam claims is still moved out of asking (never left open)', async () => {
+    h = makeHarness({ script: [], settings: verified() });
+    const x = h;
+    const card = seedCard(x.db, {
+      chatId: x.chatId,
+      type: 'choice',
+      state: 'asking',
+      payload: { purpose: 'memory_confirm', question: 'Remember that?', options: [{ id: 'o1', label: 'Yes' }] },
+      now: x.clock.now(),
+    });
+    x.send('card.answered', { cardId: card.id, answer: { optionId: 'o1' }, choice: 'o1', resolvedBy: 'tap' });
+    await x.idle();
+    expect(cardOf(x.db, card.id)).toMatchObject({ state: 'answered', resolvedBy: 'tap', answer: { optionId: 'o1' } });
   });
 });

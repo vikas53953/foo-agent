@@ -94,6 +94,16 @@ describe('08-3 §12.5.1 memory.askShare', () => {
     });
   });
 
+  it('a second answer to the same card writes nothing more (CR-0010 G-M6-21)', async () => {
+    const w = world();
+    const cardId = ((await w.ask()) as { value: { cardId: string } }).value.cardId;
+    await w.answer(cardId, 'o1');
+    const before = w.db.prepare('SELECT rev FROM cards WHERE id = ?').get(cardId) as { rev: number };
+    expect(await w.answer(cardId, 'o2')).toBe(true);
+    expect(w.db.prepare('SELECT rev, state FROM cards WHERE id = ?').get(cardId)).toEqual({ rev: before.rev, state: 'answered' });
+    expect(w.suggestion()).toEqual([{ key: `memory_share:${FACT}:c_g`, kind: 'memory_share', state: 'accepted' }]);
+  });
+
   it('No → the key memory_share:{factId}:{groupChatId} is dismissed and the question is never asked again', async () => {
     const w = world();
     const r = await w.ask();
