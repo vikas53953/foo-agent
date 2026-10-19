@@ -20,13 +20,20 @@ const APP_ORIGINS: MemoryOrigin[] = ['gmail', 'whatsapp', 'gcal'];
 const FROM_CHIPS = ['gmail', 'whatsapp', 'chat'] as const;
 const HELPER_FILE = /^helpers\/([^/]+)\/notes\.md$/;
 
+/** 06-2 §7.3 "From Gmail": the app's own name, not the index's origin kind (the index keeps only the kind). */
+function appName(kind: MemoryOrigin): string {
+  if (kind === 'gmail') return t('cards.approval.app.gmail');
+  if (kind === 'whatsapp') return t('cards.approval.app.whatsapp');
+  return t('cards.approval.app.calendar');
+}
+
 /** Line 2 of a row, or null for a guess without a reason (never shown). */
 export function sourceLine(f: MemoryFactView, now: number, timeZone: string): string | null {
   const date = dayMonth(f.learnedAt, now, timeZone);
   let line: string;
   if (f.provenance === 'said') line = t('screen.memory.row.source.said', { date });
   else if (!f.reason) return null;
-  else if (APP_ORIGINS.includes(f.originKind)) line = t('screen.memory.row.source.app', { app: f.originLabel, date });
+  else if (APP_ORIGINS.includes(f.originKind)) line = t('screen.memory.row.source.app', { app: appName(f.originKind), date });
   else line = t('screen.memory.row.source.guessed', { reason: f.reason, date });
   return f.private ? line + t('screen.memory.row.private_suffix') : line;
 }

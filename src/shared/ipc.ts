@@ -111,7 +111,8 @@ export interface Invokes {
   'memory:edit': { req: { factId: string; text: string }; res: MemoryFactView };
   'memory:setPrivate': { req: { factId: string; private: boolean }; res: MemoryFactView };
   'memory:setKind': { req: { factId: string; kind: MemoryKind }; res: MemoryFactView };
-  'memory:forget': { req: { factId: string }; res: { undoToken: string } };
+  /** M6 T5: `chipId` = the ✕ on a memory chip (05-3 §5.17.1; G-M6-10 activity `forgot_facts`). */
+  'memory:forget': { req: { factId: string; chipId?: string }; res: { undoToken: string } };
   'memory:undo': { req: { undoToken: string }; res: MemoryFactView };
   'memory:forgetBySource': { req: { source: MemoryOrigin; confirm: true }; res: { count: number } };
   'memory:forgetAll': { req: { typed: 'FORGET' }; res: { count: number } };
@@ -360,6 +361,8 @@ export interface FooTestBridge {
   jobState(jobId: string, state: JobRow['state']): Promise<{ chatId: string }>;
   /** M5 (CR-0009): writes one card (and its approvals row when `approval` is given); see main/test/testHooks.ts. */
   cardSeed(arg: CardSeedRequest): Promise<CardSeedResult>;
+  /** M6 T7 (CR-0010 G-M6-09): runs the nightly memory tidy now (engine `test.memoryTidy`); the engine's TidyReport result. */
+  memoryTidy(): Promise<unknown>;
 }
 
 /** `test:card.seed` request (FOO_TEST only). */

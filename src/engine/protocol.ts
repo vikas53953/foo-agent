@@ -60,7 +60,8 @@ export const memoryCmdSchema = z.discriminatedUnion('cmd', [
   z.object({ cmd: z.literal('edit'), factId, text: z.string().min(1).max(120) }).strict(),
   z.object({ cmd: z.literal('setPrivate'), factId, private: z.boolean() }).strict(),
   z.object({ cmd: z.literal('setKind'), factId, kind: z.enum(MEMORY_KINDS) }).strict(),
-  z.object({ cmd: z.literal('forget'), factId }).strict(),
+  // M6 T5: `chipId` = the ✕ on a memory chip (the forget is then activity `forgot_facts`, G-M6-10).
+  z.object({ cmd: z.literal('forget'), factId, chipId: z.string().min(1).max(80).optional() }).strict(),
   z.object({ cmd: z.literal('undo'), undoToken: z.string().min(1).max(80) }).strict(),
   z.object({ cmd: z.literal('forgetBySource'), source: z.enum(MEMORY_ORIGINS), confirm: z.literal(true) }).strict(),
   z.object({ cmd: z.literal('forgetAll'), typed: z.literal('FORGET') }).strict(),
@@ -195,6 +196,9 @@ export const WRITABLE_TABLES = [
   'memory_tombstones',
   'memory_uses',
   'memory_group_grants',
+  // M6 T7 (08-1 §2.4.1 lists both): the budget's held items (08-3 §15.6) and the never-offer-twice keys (§15.7).
+  'held_items',
+  'suggestions',
 ] as const;
 /** Tables the `delete` op takes, with the id each uses: reactions `{messageId}|{by}`, memory_index the fact id,
  * memory_tombstones `{hash}|{originKind}`, memory_group_grants `{factId}|{chatId}`. */
@@ -316,6 +320,11 @@ export const NAMED_QUERY_NAMES = [
   'memorySearch',
   'memory.weekCount',
   'memoryUsedInChat',
+  // M6 T7: the never-offer-twice state (08-1 §2.4.1 `suggestionState`), a helper's 1:1 chat (askShare's card, 08-3 §12.5.1)
+  // and the user's recent texts in a chat with their count (style stats, §12.9).
+  'suggestionState',
+  'chats.forHelper',
+  'messages.userTexts',
 ] as const;
 export type NamedQuery = (typeof NAMED_QUERY_NAMES)[number];
 

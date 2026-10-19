@@ -131,5 +131,6 @@ const testBridge: FooTestBridge = {
   reset: () => call('test:reset'),
   jobState: (jobId, state) => call('test:jobState', { jobId, state }),
   cardSeed: (arg) => call('test:card.seed', arg),
+  memoryTidy: () => call('test:memoryTidy'),
 };
 contextBridge.exposeInMainWorld('__fooTest', testBridge);

@@ -4,8 +4,9 @@
 // (file_in / photo_notice show no Skip), 08-4 §25.1 CardAnswer, §26.6 rule 4 (reactions 1️⃣–4️⃣ answer Choice cards only),
 // 08-2 §5.2.2 (a 👍 / ✅ reaction on an Approval, Payment or Draft card never approves: it only gets the G16 reply,
 // `thread.approval_typed.approve|send`), Art. 12 (state moves of a job's card are the runner's: main checks and forwards).
-// A card with no job (setup, memory_confirm, file_in, photo_notice …) has no runner to move it, so main writes its answer
-// itself through the same db.tx path (implementation-notes M5-T5). 05-2 §5.8.3: a Secret box's Cancel (`{ skip: true }`) moves
+// A card with no job (setup, file_in, photo_notice …) has no runner to move it, so main writes its answer itself through
+// the same db.tx path (implementation-notes M5-T5); a `conflict` card's answer is then sent on to the engine (08-3 §12.7;
+// M6 T7). A `memory_confirm` card is the engine's: main forwards it and the engine moves it (CR-0010 G-M6-21). 05-2 §5.8.3: a Secret box's Cancel (`{ skip: true }`) moves
 // an asking or rejected box to `withdrawn` ("Skipped. Nothing was saved."); main writes it, as secret:save writes `saved`.
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
@@ -34,7 +35,10 @@ export interface AnswerDeps {
 /** The cards answered here (05-1 §5.3, §5.4). */
 const ANSWERABLE = new Set(['choice', 'tiles']);
 /** Engine-made choice cards the runner answers by option id (08-4 §26.9 stop_which; 08-2 §5.2 fold_which). */
-const RUNNER_PURPOSES = new Set(['stop_which', 'fold_which']);
+// M6 T5: a `memory_confirm` card's answer is the engine's (08-3 §12.4.2; G-M6-04); the engine moves the card.
+const RUNNER_PURPOSES = new Set(['stop_which', 'fold_which', 'memory_confirm']);
+/** Jobless memory cards main answers and then tells the engine about (08-3 §12.7 conflict; M6 T7). */
+const ENGINE_TOLD = new Set(['conflict']);
 /** 08-2 §5.2.2: a single 👍 or ✅ reaction on these cards gets the G16 reply. */
 const YES_REACTIONS = new Set(['👍', '✅']);
 
@@ -111,6 +115,16 @@ export function answerCard(
     c.chatId,
   );
   if (!r.ok) return r;
+  // M6 T7: the engine acts on a memory card's answer (a conflict edits and forgets, a share grants) once main wrote it.
+  if (ENGINE_TOLD.has(purpose)) {
+    const a = req.answer;
+    d.engine?.send('card.answered', {
+      cardId: c.id,
+      answer: a,
+      ...('optionId' in a ? { choice: a.optionId } : {}),
+      resolvedBy: req.resolvedBy,
+    });
+  }
   return ok(card(d.db, 'id = ?', c.id) ?? c);
 }
 

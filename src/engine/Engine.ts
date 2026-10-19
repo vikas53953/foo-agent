@@ -5,7 +5,9 @@
 // The +20 s health check of 08-1 §2.2 step 7 runs only outside FOO_TEST runs (tests verify explicitly). Deferred to their
 // milestones: M4 T2 wires the JobRunner + ToolLayer (08-2 §5, §8; the job lane's tools come from `tools`, fake in tests
 // until M8/M9); the vault for key providers (M5: no key yet, so a key provider reports `AI_KEY_INVALID` on verify).
-// Memory parts 5/5b come from the chat lane (08-4 §24.16, memory/retrieval.ts).
+// Memory parts 5/5b come from the chat lane (08-4 §24.16, memory/retrieval.ts). M6 T5: the memory chips, the post-turn
+// review (08-3 §12.4, one background `memory_review` turn with its ai_turns row in foo's 1:1 chat, 08-4 §30.1, §31), intake
+// remember / forget, the `memory_confirm` card answers and the `memory.search` / `memory.propose` step tools (08-2 §8.2).
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
 import type { Clock } from '../shared/clock';
@@ -13,13 +15,21 @@ import { ok, type Result } from '../shared/errors';
 import { newId as mintId, type IdPrefix } from '../shared/ids';
 import { settingsSchema, type Settings } from '../shared/settings';
 import { settingsDefaults } from '../shared/settingsDefaults';
-import type { ProviderId } from '../shared/types';
-import type { EngineMessage } from '../main/db/queries';
+import type { CardAnswer, CardRow, ProviderId } from '../shared/types';
+import type { EngineChat, EngineMessage } from '../main/db/queries';
 import { AiRegistry, CliLimiter, createAdapters, loadPricing, nodeAiFs, nodeWhich, sweepSystemFiles } from './ai';
 import { AiService } from './AiService';
 import { ChatLane, type IntakeDecisionView, type IntakeInput, type LaneProtocol } from './chat/ChatLane';
-import type { MainLink, MainToEngine } from './protocol';
-import { MemoryService } from './memory/MemoryService';
+import type { DbOp, DbTxReply, MainLink, MainToEngine } from './protocol';
+import { MemoryService, UNDO_MS } from './memory/MemoryService';
+import { MemoryShare } from './memory/askShare';
+import { StyleStatsRunner } from './memory/styleStats';
+import { MemoryTidy, TidyActSchema, tidyTurnVia } from './memory/tidy';
+import { newNonce } from '../shared/canon';
+import { isChipToken, MemoryChips } from './memory/chips';
+import { IntakeMemory } from './memory/intakeMemory';
+import { MemoryReview, MemoryReviewActSchema } from './memory/review';
+import { memoryTools } from './tools/memoryTools';
 import { createParseWorker, type ParseWorker } from './memory/parseWorker';
 import { watchMemory, type MemoryWatcher } from './memory/watcher';
 import { parseEnvelope, validateAct, formatIssues } from './prompt/envelope';
@@ -67,6 +77,14 @@ export class Engine {
   /** M6 slot (CR-0010): T3's MemoryService (the `memory:*` commands, learn, the watcher); T7 fills its tidy. */
   readonly memory: MemoryService;
   private memoryWatcher: MemoryWatcher | null = null;
+  /** M6 T7: the nightly tidy (08-3 §12.7), sharing a fact into a group (§12.5.1) and style stats (§12.9). */
+  readonly tidy: MemoryTidy;
+  readonly share: MemoryShare;
+  private readonly style: StyleStatsRunner;
+  // M6 T5
+  readonly memoryChips: MemoryChips;
+  readonly memoryReview: MemoryReview;
+  private memoryIntake: IntakeMemory;
 
   static create(o: EngineOptions): Engine {
     return new Engine(o);
@@ -125,7 +143,8 @@ export class Engine {
       link: o.link,
       clock: o.clock,
       newId: (p) => newId(p, o.clock.now()),
-      tools: o.tools ?? {},
+      // M6 T5: the memory step tools (08-2 §8.2) beside the injected ones (M8 connectors, M9 browser, fakes in tests).
+      tools: { ...this.memoryToolRegistry(newId), ...(o.tools ?? {}) },
       gate,
       log: (evt, kind) => log(evt, kind),
       scrub: (text) => this.redactor.scrub(text),
@@ -159,6 +178,14 @@ export class Engine {
         // M5 T10: messages that waited at the AI cap go when it is raised or the month turns.
         onCapLifted: () => void this.drainQueued(),
       },
+      // M6 T5: "Used:" chips under a step's card or result, and the post-turn review after DONE (08-3 §12.4, §12.5).
+      memory: {
+        used: async (chatId, facts) => {
+          const last = (await this.query<EngineMessage[]>('messagesBefore', chatId, null, 1)) ?? [];
+          if (last[0]) await this.memoryChips.used(chatId, last[0].id, facts);
+        },
+        jobDone: (chatId) => this.memoryReview.after(chatId),
+      },
     });
     this.recovery.attach(this.jobs);
     this.lane = new ChatLane({
@@ -172,6 +199,14 @@ export class Engine {
       jobs: this.jobs,
       // M5 T10: the cap check covers chat-lane turns (08-2 §5.10 item 4, CR-0008 (j) row 5).
       capCheck: (chars, purpose) => this.jobs.allowChatCall(chars, purpose),
+      // M6 T5: memory in the lane; the seams are built below and only called once messages flow.
+      memory: {
+        beforeTurn: (chat, m) => this.memoryIntake.beforeTurn(chat, m),
+        decide: (chat, helper, m, act) => this.memoryIntake.decide(chat, helper, m, act),
+        used: (chatId, anchorId, facts) => this.memoryChips.used(chatId, anchorId, facts),
+        answered: (chatId) => this.memoryReview.after(chatId),
+        onCardAnswered: (a) => this.memoryIntake.onCardAnswered(a),
+      },
     });
     this.jobs.setIntake((chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }));
     let parser: ParseWorker | null = null;
@@ -187,6 +222,174 @@ export class Engine {
       classify: null,
       log: (evt, kind) => log(evt, kind),
     });
+    const ids = { newId: (p: IdPrefix) => newId(p, o.clock.now()), newNonce };
+    const turn = tidyTurnVia({
+      link: o.link,
+      clock: o.clock,
+      newId: ids.newId,
+      timeZone: () => this.settings.locale.timeZone,
+      fooChatId: async () => {
+        const r = await o.link.request<string | null>('db.query', { q: 'chats.foo', args: [] });
+        return r.ok ? r.value : null;
+      },
+      ai: this.ai,
+      build: (block) => this.prompts.buildTidy(TidyActSchema, block, this.settings.locale.timeZone),
+      allow: (chars) => this.jobs.allowChatCall(chars, 'tidy'),
+    });
+    const settings = () => this.settings;
+    this.tidy = new MemoryTidy({ link: o.link, clock: o.clock, dataDir: o.dataDir, memory: this.memory, settings, turn, log, ...ids });
+    this.memory.tidyWith = () => this.tidy.run();
+    this.share = new MemoryShare({ link: o.link, clock: o.clock, ...ids });
+    this.style = new StyleStatsRunner({ link: o.link, memory: this.memory, settings, log });
+    // M6 T5
+    const query = <T>(q: string, ...args: unknown[]) => this.query<T>(q, ...args);
+    const tx = (ops: DbOp[]) => o.link.request<DbTxReply>('db.tx', { ops });
+    this.memoryChips = new MemoryChips({
+      now: () => o.clock.now(),
+      newId: (p) => newId(p, o.clock.now()),
+      tx,
+      query,
+      memory: this.memory,
+      changed: (factIds, chip) => o.link.send('ui.patch', { event: 'memory:changed', payload: { factIds, chip } }),
+    });
+    this.memoryReview = new MemoryReview({
+      clock: o.clock,
+      settings: () => this.settings,
+      query,
+      tx,
+      newId: (p) => newId(p, o.clock.now()),
+      messageLine: (m, chat) => this.reviewLine(m, chat),
+      factLine: (f) =>
+        this.prompts.factLine(
+          { id: f.id, text: f.text, said: f.provenance === 'said' ? 'user' : 'guess', learnedAt: f.learnedAt },
+          this.settings.locale.timeZone,
+        ),
+      build: (data) => this.prompts.buildMemoryReview(MemoryReviewActSchema, data, this.settings.locale.timeZone),
+      turn: (chatId, system, prompt) => this.reviewTurn(chatId, system, prompt),
+      memory: this.memory,
+      chips: this.memoryChips,
+      log: (evt, kind) => log(evt, kind),
+    });
+    this.memoryIntake = new IntakeMemory({
+      clock: o.clock,
+      settings: () => this.settings,
+      query,
+      tx,
+      newId: (p) => newId(p, o.clock.now()),
+      memory: this.memory,
+      classify: null,
+      chips: this.memoryChips,
+      review: this.memoryReview,
+      react: (messageId, emoji, helper) => this.lane.react(messageId, emoji, helper),
+      post: (chatId, messageId, text, helper) => this.lane.post(chatId, messageId, text, helper, null),
+      undoMs: UNDO_MS,
+      log: (evt, kind) => log(evt, kind),
+    });
+  }
+
+  /**
+   * CR-0010 G-M6-21: main hands every `memory_confirm` answer to the engine, so one no seam claimed (a payload with neither
+   * `memory` nor `share`) is still moved out of `asking` here rather than left open forever.
+   */
+  private async settleMemoryConfirm(a: { cardId: string; answer?: CardAnswer; choice?: string; resolvedBy?: string }): Promise<boolean> {
+    const card = await this.query<CardRow>('cardById', a.cardId);
+    if (!card || card.jobId !== null || card.type !== 'choice' || card.payload.purpose !== 'memory_confirm') return false;
+    if (card.state !== 'asking') return true;
+    const answer: CardAnswer = a.answer ?? (a.choice ? { optionId: a.choice } : { skip: true });
+    const set = {
+      state: 'skip' in answer ? 'skipped' : 'answered',
+      answer,
+      resolved_by: a.resolvedBy ?? 'tap',
+      resolved_at: this.o.clock.now(),
+    };
+    await this.o.link.request<DbTxReply>('db.tx', { ops: [{ op: 'update', table: 'cards', id: card.id, set, expectRev: card.rev }] });
+    return true;
+  }
+
+  private async query<T>(q: string, ...args: unknown[]): Promise<T | null> {
+    const r = await this.o.link.request<T>('db.query', { q, args });
+    return r.ok ? r.value : null;
+  }
+
+  /** M6 T5: the two memory step tools; their seams are read when a job calls them. */
+  private memoryToolRegistry(newId: (p: IdPrefix, now: number) => string): ToolRegistry {
+    return memoryTools({
+      clock: this.o.clock,
+      settings: () => this.settings,
+      query: (q, ...args) => this.query(q, ...args),
+      tx: (ops) => this.o.link.request<DbTxReply>('db.tx', { ops }),
+      newId: (p) => newId(p, this.o.clock.now()),
+      log: (evt, kind) => this.o.link.send('log', { t: this.o.clock.now(), lvl: 'info', mod: 'engine', evt, ...(kind ? { kind } : {}) }),
+      memory: { learn: (op) => this.memory.learn(op) },
+      chips: { saved: (chatId, anchorId, fact) => this.memoryChips.saved(chatId, anchorId, fact) },
+    });
+  }
+
+  /** 08-4 §24.21 memory_review line: 08-2 §7.2 part 7 (`[{name}, {when}]: {text_for_ai ?? text}`). */
+  private async reviewLine(m: EngineMessage, chat: EngineChat): Promise<string> {
+    const helper = chat.helperId ? await this.query<{ name: string }>('helpers.byId', chat.helperId) : null;
+    const name =
+      m.authorKind === 'user'
+        ? (this.settings.user.firstName ?? 'You')
+        : m.authorKind === 'helper'
+          ? (helper?.name ?? 'Helper')
+          : this.settings.identity.agentName;
+    const text = m.kind === 'voice' ? (m.transcript ?? '') : m.text;
+    return this.prompts.messageLine({ name, at: m.createdAt, text, textForAi: m.textForAi }, this.settings.locale.timeZone);
+  }
+
+  /**
+   * 08-3 §12.4: one `memory_review` turn on the background lane (cheap, 800 out, 60 s, 08-4 §30.1); skipped with no AI or at
+   * the spend cap (08-2 §5.10 item 4). One ai_turns row in foo's 1:1 chat (08-4 §31 `ai_turns.chat_id`). Returns the `<act>`.
+   */
+  private async reviewTurn(chatId: string, system: string, prompt: string): Promise<unknown> {
+    const pick = this.ai.pick();
+    if (!pick) return null;
+    if (!(await this.jobs.allowChatCall(system.length + prompt.length, 'memory_review'))) return null;
+    const turnId = mintId('t', this.o.clock.now());
+    const startedAt = this.o.clock.now();
+    const r = await this.ai
+      .runTurn(
+        pick.providerId,
+        { ...this.ai.turnParams(pick.providerId, 'memory_review'), turnId, purpose: 'memory_review', system, prompt, chatId },
+        { onText: () => {}, onSession: () => {} },
+        new AbortController().signal,
+      )
+      .catch(() => null);
+    const fooChat = await this.query<string>('chats.foo');
+    const usage = r?.usage ?? { tokensIn: null, tokensOut: null, cacheRead: null, cacheWrite: null, costUsd: null };
+    const cost = this.ai.costPaise(pick.providerId, usage, r?.modelReported);
+    const ok = !!r && r.stopReason === 'end';
+    await this.o.link.request('db.tx', {
+      ops: [
+        {
+          op: 'insert',
+          table: 'ai_turns',
+          row: {
+            id: turnId,
+            chat_id: fooChat,
+            purpose: 'memory_review',
+            provider_id: pick.providerId,
+            model_reported: r?.modelReported ?? null,
+            session_id: r?.sessionId ?? null,
+            tokens_in: usage.tokensIn,
+            tokens_out: usage.tokensOut,
+            tokens_cache_read: usage.cacheRead,
+            tokens_cache_write: usage.cacheWrite,
+            cost_paise: cost.paise,
+            cost_source: cost.source,
+            billing: pick.billing,
+            duration_ms: this.o.clock.now() - startedAt,
+            outcome: ok ? 'ok' : r?.errorKind === 'AI_TIMEOUT' ? 'timeout' : 'error',
+            error_kind: ok ? null : (r?.errorKind ?? 'UNKNOWN'),
+            started_at: startedAt,
+          },
+        },
+      ],
+    });
+    if (!ok) return null;
+    const env = parseEnvelope(r.text);
+    return env.act ?? null;
   }
 
   /** 08-3 §12.2: reindex what changed while foo was closed, then watch `{DATA}/memory`. */
@@ -393,6 +596,7 @@ export class Engine {
         return undefined;
       case 'user.message':
         this.lane.enqueue(msg.payload.chatId, msg.payload.messageId);
+        void this.style.onUserMessage(msg.payload.chatId).catch(() => undefined);
         return undefined;
       case 'reply.stop':
         this.lane.stop(msg.payload.chatId);
@@ -409,9 +613,14 @@ export class Engine {
       }
       case 'test.reset':
         this.lane.cancelAll();
+        this.memoryReview.cancelAll();
         this.jobs.cancelAll();
         return undefined;
       case 'card.answered':
+        // M6 T5: a `memory_confirm` card (Remember that…? / which fact to forget) is the memory seam's.
+        if (await this.memoryIntake.onCardAnswered(msg.payload)) return undefined;
+        if ((await this.tidy.onCardAnswered(msg.payload)) || (await this.share.onCardAnswered(msg.payload))) return undefined;
+        if (await this.settleMemoryConfirm(msg.payload)) return undefined;
         if (!(await this.recovery.onCardAnswered(msg.payload))) await this.jobs.onCardAnswered(msg.payload);
         return undefined;
       // M5 T7: main moved an approval (08-1 §2.4); an expired payment / booking card ends its job (AT-111).
@@ -450,8 +659,16 @@ export class Engine {
         await this.recovery.power(msg.payload.event);
         return undefined;
       // M6 (CR-0010 G-M6-01): the Memory page's invokes, answered with the invoke's result.
-      case 'memory.cmd':
-        return this.memory.cmd(msg.payload);
+      case 'memory.cmd': {
+        // M6 T5: a chip's own Undo (`chip_…` token) and ✕ (`chipId`) go through the chips; a store Undo also restores the
+        // intake-forget chip it belongs to.
+        const c = msg.payload;
+        if (c.cmd === 'undo' && isChipToken(c.undoToken)) return this.memoryChips.undo(c.undoToken);
+        if (c.cmd === 'forget' && c.chipId) return this.memoryChips.forget(c.chipId, c.factId);
+        const r = await this.memory.cmd(c);
+        if (r.ok && c.cmd === 'undo') await this.memoryChips.restored(c.undoToken);
+        return r;
+      }
       case 'test.memoryTidy':
         return this.memory.tidy();
       default:

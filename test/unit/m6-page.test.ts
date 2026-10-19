@@ -63,10 +63,10 @@ describe('source line (06-2 §7.3 "Source line (final copy)")', () => {
     const view = groupFacts([fact('a', { provenance: 'guessed', reason: '' }), fact('b')], () => undefined);
     expect(view.sections.flatMap((s) => s.facts.map((f) => f.id))).toEqual(['b']);
   });
-  it('from an app: "From Gmail · 9 Oct" (a guess read from Gmail, WhatsApp or the calendar, 08-3 §12)', () => {
-    const g = fact('a', { provenance: 'guessed', reason: 'from an email', originKind: 'gmail', originLabel: 'Gmail', learnedAt: at(9) });
+  it('from an app: "From Gmail · 9 Oct" (a guess read from Gmail, WhatsApp or the calendar, 08-3 §12; the label is the app name, not the index kind)', () => {
+    const g = fact('a', { provenance: 'guessed', reason: 'from an email', originKind: 'gmail', originLabel: 'gmail', learnedAt: at(9) });
     expect(sourceLine(g, NOW, TZ)).toBe('From Gmail · 9 Oct');
-    const w = fact('b', { provenance: 'guessed', reason: 'from a chat', originKind: 'whatsapp', originLabel: 'WhatsApp' });
+    const w = fact('b', { provenance: 'guessed', reason: 'from a chat', originKind: 'whatsapp', originLabel: 'whatsapp' });
     expect(sourceLine(w, NOW, TZ)).toBe('From WhatsApp · 2 Oct');
   });
   it('a fact the user confirmed or edited stays "You said" whatever its origin', () => {

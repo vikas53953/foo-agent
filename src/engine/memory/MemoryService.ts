@@ -126,8 +126,30 @@ export class MemoryService implements MemoryPort {
     }
   }
 
+  /** 08-3 §12.7: T7's nightly tidy (src/engine/memory/tidy.ts), set by the engine. */
+  tidyWith: (() => Promise<Result<unknown>>) | null = null;
+
   tidy(): Promise<Result<unknown>> {
-    return Promise.resolve(fail('UNKNOWN', 'memory tidy not built yet'));
+    return this.tidyWith ? this.tidyWith() : Promise.resolve(fail('UNKNOWN', 'memory tidy not built yet'));
+  }
+
+  /** M6 T7 (08-3 §12.7 steps 1–3, §12.9): removes lines with no tombstone and no undo (a merged duplicate, an old guess,
+   * the style lines being replaced). Returns the ids actually removed. */
+  drop(factIds: readonly string[]): Promise<Result<string[]>> {
+    return this.run(async (): Promise<Result<string[]>> => {
+      const rows = (await Promise.all(factIds.map((id) => this.row(id)))).filter((r): r is EngineFact => r !== null);
+      const gone: string[] = [];
+      for (const file of new Set(rows.map((r) => r.file))) {
+        const ids = new Set(rows.filter((r) => r.file === file).map((r) => r.id));
+        const { doc, text } = await this.load(file);
+        doc.entries = doc.entries.filter((x) => x.type !== 'fact' || !ids.has(x.fact.id));
+        const r = await this.commit(file, doc, { diskText: text });
+        if (!r.ok) return r;
+        gone.push(...ids);
+      }
+      this.changed(gone);
+      return ok(gone);
+    });
   }
 
   /** Saves one learned fact (review, intake "remember", a job's note). */
@@ -161,6 +183,33 @@ export class MemoryService implements MemoryPort {
   /** A forget from a chip (G-M6-10: logged `forgot_facts` with count 1). */
   forgetFromChip(factId: string): Promise<Result<{ undoToken: string }>> {
     return this.run(() => this.forgetOne(factId, true));
+  }
+
+  // M6 T5
+  /**
+   * A review `update` op (08-3 §12.4: supersede, never append) and a chip's Undo of one: the line's text changes in place,
+   * dated today, its provenance kept. §12.4.1 runs first: a sensitive text on a `guessed` fact is dropped (VALIDATION, logged
+   * `memory.dropped_sensitive`); on a `said` fact it turns `private` on.
+   */
+  update(factId: string, text: string): Promise<Result<MemoryFactView>> {
+    return this.run(async (): Promise<Result<MemoryFactView>> => {
+      const row = await this.row(factId);
+      if (!row) return fail('NOT_FOUND');
+      if (!validateAdd({ text, kind: 'fact' }).ok) return fail('VALIDATION');
+      const rule = sensitiveRule({
+        text,
+        category: row.category ?? 'other',
+        kind: row.kind,
+        file: row.file,
+        provenance: row.provenance,
+        private: row.private,
+      });
+      if (!rule.save) {
+        this.d.log('memory.dropped_sensitive');
+        return fail('VALIDATION');
+      }
+      return this.change(factId, (f) => ({ ...f, text: text.trim(), date: this.today(), private: rule.private }));
+    });
   }
 
   /** The watcher's call: one file changed on disk (Notepad). */
@@ -443,7 +492,8 @@ export class MemoryService implements MemoryPort {
     return [...(await md('memory')), ...(await md('memory/people')), ...(await md('memory/preferences')), ...notes];
   }
 
-  private async view(factId: string): Promise<Result<MemoryFactView>> {
+  /** One fact as `memory:list` gives it (M6 T5: the chips read it before an Undo). */
+  async view(factId: string): Promise<Result<MemoryFactView>> {
     const row = await this.row(factId);
     return row ? ok(factView(row)) : fail('NOT_FOUND');
   }
