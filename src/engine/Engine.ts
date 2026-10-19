@@ -366,6 +366,18 @@ export class Engine {
         return this.jobs.retry(msg.payload.jobId, msg.payload.newJobId);
       case 'test.clock':
         return undefined;
+      // M5 T2 (08-0 §G.6, X-93): main's registry of record, mirrored here; `ttlMs: 0` = until the app quits. Never logged.
+      case 'registry:add':
+        this.redactor.registry.add({
+          handle: msg.payload.handle,
+          value: msg.payload.value,
+          normalised: msg.payload.normalised,
+          ttlMs: msg.payload.ttlMs || null,
+        });
+        return undefined;
+      case 'registry:remove':
+        this.redactor.registry.remove(msg.payload.handles);
+        return undefined;
       // G-M4-04: a request; main waits for the ack before it exits.
       case 'jobs.pauseAll':
         return ok({ paused: await this.recovery.pauseAll(msg.payload.reason) });
