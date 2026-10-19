@@ -231,6 +231,7 @@
         "you",
         "T",
         "9:41",
+        "Checklist:",
         "2",
         "B",
         "Building",
@@ -698,7 +699,7 @@
         "ones",
         "9:30",
         "AM",
-        "⏳",
+        "🛠",
         "On",
         "it.",
         "Comparing",
@@ -846,8 +847,8 @@
     "total": 12768
   },
   "r5": {
-    "ratio": 0.0961337890625,
-    "diffPixels": 98441,
+    "ratio": 0.0962939453125,
+    "diffPixels": 98605,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-05.light.diff.png"

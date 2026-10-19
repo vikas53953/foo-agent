@@ -120,10 +120,14 @@
         "1",
         "T",
         "Trips",
-        "9:41",
+        "9:38",
         "AM",
+        "On",
+        "it.",
+        "Comparing",
+        "fares",
+        "now.",
         "Done",
-        "1",
         "B",
         "Building",
         "society",
@@ -555,8 +559,8 @@
     "total": 55440
   },
   "r5": {
-    "ratio": 0.1047529296875,
-    "diffPixels": 107267,
+    "ratio": 0.1048671875,
+    "diffPixels": 107384,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-05-03.dark.diff.png"

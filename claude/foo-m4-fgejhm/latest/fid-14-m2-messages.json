@@ -45,13 +45,13 @@
     "id": "SV-01",
     "ok": true,
     "expected": "18px non-tail corners (tail corners 6px)",
-    "measured": "17 bubbles, all equal"
+    "measured": "11 bubbles, all equal"
   },
   {
     "id": "SV-08",
     "ok": true,
     "expected": "≤ 72 % of the column and ≤ 620px (rich ≤ 680px)",
-    "measured": "17 bubbles within"
+    "measured": "11 bubbles within"
   },
   {
     "id": "SV-04",
