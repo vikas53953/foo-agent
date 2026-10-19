@@ -150,6 +150,17 @@ prices…" (G-M5-08); 08-2 §9.5 "until app restart" (G-M5-01); 08-2 §9.1 expir
 G-M5-15); 07-2 §5 diagram (adds HELD → EXPIRED, HELD → WITHDRAWN, APPROVED → WITHDRAWN, APPROVED → PENDING for
 Draft undo).
 
+From the M5 build (§(g), batch review 2026-10-19): G-M5-32 (b) `{area}` and (d) buttons after text lines; G-M5-34 `{job}`
+noun vs running-phrase title; HELD → SUPERSEDED on a steer (M5-T8-09 item 4: the machine has no such edge, the steer
+waits); `cards.secret.line.no_kind` (G-M5-21) is copy outside the 08-4 tables; 08-4 §26.8 item 6 deferred to M9
+(G-M5-23b); chrono-node before M9 book cards (G-M5-32 (c)). Close-out copy audit: the stop line's [ Search again ] (AT-034,
+05-1 §5.3.2) and the Skip-on-irreversible question ([ Decide later ] [ Stop it ]) need the same message-button contract
+as G-M5-32 (d), so M5 posts the lines without them and Skip takes Best fit (an irreversible pick still opens its
+Approval card); 08-4 §26.5 supersedes on a steer ("you changed the plan") where 05-1 §5.3.4 asks again
+(`cards.choice.summary.asked_again`) and 05-2 §5.7.2 updates a Draft in place (`cards.draft.line.updating`): M5 follows
+08-4. The keys `cards.common.{gated_typed_yes,no_answer_footer,ask_again}` are removed: they duplicate
+`thread.approval_typed.approve`, the footer inside `cards.approval.footer.do`, and the card-level `button.ask_again`.
+
 ## (f) Independent review
 
 Sonnet reviewer, 2026-10-18 ~18:40Z, read-only, against prep/M5.md §8, 07-2 §5 + SM-A4…A9, 05-2 §5.7, 08-0 §G.7, 08-1 §2.4 /
@@ -175,6 +186,10 @@ behalf and then keep on working"); listed for his later review.
 
 Each addendum is a pick where the spec is silent or forks, taken by the ticket that met it, landed here by the lead. A
 batch independent review (Fable) checks them before the milestone PR; until then each is "pending review".
+Batch review 2026-10-19 (Fable, independent): G-M5-21…34 and the dispute table PASS WITH FIXES; the fixes (G-M5-27, -28,
+-31, -33, -34 landed here, notes on -23b, -32 (c) and -33, §(e) items, UX-10-03/-06 checks aligned with
+`docs/fidelity/disputes.json`) are in; every pick is approved on Vikas's behalf under his standing rule. None needs Vikas
+himself.
 
 - **G-M5-21** (T2) Move to secret box posts the card (04-2 §22.4, 05-2 §5.8, 08-1 §3.2). 08-1 has no channel that
   posts the Secret box that 04-2 §22.4 "Move to secret box" needs, and the renderer never writes cards (08-1 §4.6).
@@ -186,27 +201,29 @@ batch independent review (Fable) checks them before the milestone PR; until then
   yet (08-0 §E.8), so its Save refuses with "I don’t have a safe place for this one yet, so I didn’t save it."
   (new key `cards.secret.line.no_kind`) and nothing is stored. Groups: never (05-2 §5.8.6): no Move in a group, and
   main refuses `secret:offer` for a group chat. When the vault can't save, the card shows the §5.8.3 Disabled state
-  up front. Pending review.
+  up front. Approved on Vikas's behalf (batch review 2026-10-19).
 - **G-M5-22** (T10) Safe mode and interrupted jobs (08-4 §26.7, 03 safe mode). In safe mode, recovery still marks
   unknown tool calls and posts the crash-recovery card for each WORKING or QUEUED job, but starts nothing (no
   startNext, no resume runs, no `opens_at` wake) until the user taps Start normally. The job keeps its recovered state
   with a needs_you badge. Rejected: keep the job `working` (it reads as running when it is not); a new
-  `waiting_reason 'safe_mode'` (needs DDL). Pending review.
+  `waiting_reason 'safe_mode'` (needs DDL). Approved on Vikas's behalf (batch review 2026-10-19).
 - **G-M5-23** (T10) Plan limit with no reset time (03 §3.3, 04 header status). With no `resetAt`, the sidebar footer
   reads "{AI} limit reached" and the chat header "Paused · {ai} limit reached" (new `*.no_time` keys), the wording the
-  banner and composer already use. Rejected: "until it resets". Pending review.
+  banner and composer already use. Rejected: "until it resets". Approved on Vikas's behalf (batch review 2026-10-19).
 - **G-M5-23b** (T10, deferral) 08-4 §26.8 item 6, quit past `wake_at` → job FAILED + `thread.trains.tatkal_missed`,
   moves to M9 with the trains journey, its copy and the only producer of `opens_at` jobs. Until then a job that slept
-  past its time wakes on the first tick. Pending review.
+  past its time wakes on the first tick. Note (review): this is weaker than §26.8 item 6 (FAILED) and is
+  acceptable only because nothing makes `opens_at` jobs before M9; M9's trains ticket lands the FAILED rule before any
+  `opens_at` producer. Approved on Vikas's behalf (batch review 2026-10-19).
 - **G-M5-24** (T4) `ApprovalFields` gains optional `app: PermissionApp`. 08-5 §3.3 says a `use_app` approvals row
   carries `fields.app`; 08-2 §9.3 leaves it out. A `use_app` approval sets it, and its "For this chat" / "Always"
-  rule matches `{ app }`. A `use_app` approval without `app` cannot make a rule (`RULE_NOT_ALLOWED`). Pending review.
+  rule matches `{ app }`. A `use_app` approval without `app` cannot make a rule (`RULE_NOT_ALLOWED`). Approved on Vikas's behalf (batch review 2026-10-19).
 - **G-M5-26** (T5) UX-10-02 moves to M6 (`STEP_MILESTONE`, trace row): it highlights the "Used: hates early flights ✕"
-  memory chip (memory in replies, M6), which M5 does not build. Same rule as G-M5-09. Pending review.
+  memory chip (memory in replies, M6), which M5 does not build. Same rule as G-M5-09. Approved on Vikas's behalf (batch review 2026-10-19).
 - **G-M5-25** (lead, found by T4) The R2 store scrub does not apply P17 (04-2 key-like 32+ characters, entropy ≥ 4)
   to a JSON leaf that is exactly a foo id (08-0 §E.7 `{prefix}_{UUIDv7}`, prefixes of 08-1 §0.6). Every id is 39+
   hex characters and passed P17, so stored card payloads, activity fields and tool calls held `[hidden]` in place of
-  their ids. An id inside a longer string gets no exemption. `src/main/store/writeRedacted.ts`. Pending review.
+  their ids. An id inside a longer string gets no exemption. `src/main/store/writeRedacted.ts`. Approved on Vikas's behalf (batch review 2026-10-19).
 - **G-M5-29** (T7) Engine `approval.open` carries `{ jobId, draft, title, impact }` (strict), not the bare draft. 08-1
   §2.4 (the line to amend) gives `payload: ApprovalDraft`, and 08-2 §9.4 `createApproval(draft, hard)` / §9.7
   `ApprovalGate.create (main): ApprovalDraft`, but an ApprovalDraft has no job id; main's card needs the job and the text,
@@ -214,11 +231,11 @@ batch independent review (Fable) checks them before the milestone PR; until then
   verified draft (`src/engine/gate/approvalText.ts`); main's `openFromEngine` stores them. Rejected: main builds the
   text (two copies of the card-kind rules, and main would need the job's time zone logic). The envelope also carries the
   optional `submitRef` (the element the engine submits once approved), which main keeps on the card payload, so an engine
-  restart while the card waits can still run the approved action once. Pending review.
+  restart while the card waits can still run the approved action once. Approved on Vikas's behalf (batch review 2026-10-19).
 - **G-M5-30** (T7) T7 copy keys: `thread.approval.declined` "Okay, I won't. {next}" and
   `thread.approval.declined.nothing_else` "Nothing else to do here." (AT-110 and 07-2 §4 verbatim), and
   `cards.approval.book.party` "{count} people" (05-2 §5.5.2 booking line "… · 4 people", 08-4 §28.4). The fork is only
-  the key names. Pending review.
+  the key names. Approved on Vikas's behalf (batch review 2026-10-19).
 - **G-M5-32** (T7, deferral and spec-keeper items) (a) The deadline-reminder buttons stay disabled: Keep it needs a
   PENDING → COMPLETED approval edge the machine does not have (07-2 §5), and neither Keep it nor Cancel booking has an
   IPC channel (08-1 §3.2). Both move to the first milestone that creates `deadline_reminder` cards; M5 makes none.
@@ -226,10 +243,33 @@ batch independent review (Fable) checks them before the milestone PR; until then
   no `area` (08-2 §9.3). Until the spec settles it, a slot nothing verified fills (area; `when` with no quote) is left
   out with its separator, never guessed or shown empty. Open for the spec-keeper. (c) 08-4 §28.1 item 3: until
   chrono-node is a dependency (package.json, lead) no parser re-reads `when` from its quote, so `when` is dropped from the
-  verified fields and never reaches the card. (d) The `[ Open Permissions ]` button after the REFUSE line (08-0 §G.3) and
+  verified fields and never reaches the card. Note (review): a book card with no date before an irreversible act is
+  acceptable only while M5 has no live book producer; chrono-node lands before M9's book cards. (d) The `[ Open Permissions ]` button after the REFUSE line (08-0 §G.3) and
   `[ Show me the email ]` after the injection line (§9.4.3) are not drawn: a text message has no button in the model
   (08-1 messages DDL, 05-1 bubbles), so the lines post without them. Needs a spec call (a message action, or a small card
   kind) for the spec-keeper.
+- **G-M5-27** (T6) "Open in Gmail" (send permission `never`, 05-2 §5.7.2) folds the card to `opened_in_app` with the
+  spec line and WITHDRAWS its approvals row (08-0 §G.7): foo never sends it later.
+- **G-M5-28** (T6) "Ask me again" on an expired Draft runs through `card:askAgain` (08-1 §3.2): a fresh pending Draft card
+  on the same Gmail draft, a new approvals row (60 min), `supersedes_id` = the old card; the old card stays expired; a
+  second tap is `CARD_STALE`.
+- **G-M5-31** (T8) `isHardLimit` takes the send content marks (bank details, attachments from Documents, agreeing to pay;
+  08-2 §9.2 send row) as a separate input; `personalShared` (§9.3) is unchanged. It only widens the hard limit.
+- **G-M5-33** (T8) Main's expire tick moves CHECKING → FAILED (`no_proof`) 15 min after `submitted_at` (07-2 §5 rule 4,
+  08-2 §10.5); it never re-submits. Note (review): FAILED has no exit, so main must fire only after the engine's §10.5
+  proof loop has ended; a later milestone that lengthens that loop checks this order.
+- **G-M5-34** (T8, open) `{job}` in the 24 h stop line and `{what}` in the reminder take `jobs.title` unchanged
+  (08-4 §26.2 running phrase vs 05-1 §5.3.2 noun slot: "I stopped the Looking for flights" reads wrong). Spec-keeper item
+  in §(e); no safety effect.
+- **G-M5-38** (lead, close-out copy pass) The `{row}` slot of 08-0 §G.3 "I'm not allowed to {row}." and the `{action}` /
+  `{verb}` slots of the read-only offer (08-2 §9.4, "Want me to {action}?" · "Yes, {verb}") get words through copy keys,
+  never the settings key or class id. `thread.permission.row.*` are the second-person form of the 06-screens-2
+  Permissions row labels ("read your emails, calendar and chats", "write drafts", "add things to your calendar", "send
+  emails and messages", "book things", "pay", "post in public", "delete things", "share your address or phone"; its own
+  example "I'm not allowed to {send emails}"), plus `thread.permission.row.use_app` "use {app}". The offer slots are a
+  real gap: `cards.choice.offer_action.*` ("book one" as J9 draws it, "send it", …, "add it to your calendar", "fill
+  that in") and `cards.choice.offer_verb.{calendar_write,prepare}` ("add it", "fill it in"). Independent review
+  APPROVE-WITH-NOTE (row words aligned to 06-screens-2 as asked); approved on Vikas's behalf.
 
 ### Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`)
 
@@ -237,8 +277,8 @@ batch independent review (Fable) checks them before the milestone PR; until then
 | ------------------------------------------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | BP-CARD-08                                 | r1, r2         | 351 px sketch, emoji, a "Show" text eye, value half shown                                                                                                           | 05-2 §5.8.1 / §5.8.5: 440 px card, icon eye, field fully masked                                                                                                                      |
 | BP-CARD-03, BP-CARD-04, UX-10-01, -04, -05 | r1, r2         | minis with badges, Skip and time; sample checklist phrases; highlight at another y                                                                                  | 05-1 §5.3: no badges/Skip/time on the minis; checklist rows are catalogue phrases; the live log places the card                                                                      |
-| UX-10-03                                   | r3, r4         | highlight on a ➤ glyph                                                                                                                                              | the M2 Send button draws the Fluent send icon (03 / 04 composer)                                                                                                                     |
-| UX-10-06                                   | r2, r4         | Done drawn 28 px                                                                                                                                                    | 05-1 §5.3: `--btn-h` 40 px (SV-22 passes)                                                                                                                                            |
+| UX-10-03                                   | r1, r3, r4     | highlight on a ➤ glyph                                                                                                                                              | the M2 Send button draws the Fluent send icon (03 / 04 composer)                                                                                                                     |
+| UX-10-06                                   | r1, r2, r4     | Done drawn 28 px                                                                                                                                                    | 05-1 §5.3: `--btn-h` 40 px (SV-22 passes)                                                                                                                                            |
 | BP-CARD-05                                 | r1, r2         | a personal email address, a short impact line, an [ Edit ] button; 351×156 mini panel                                                                               | example.com fixture (public repo), spec impact line, "I'll always ask for this one.", expiry footer, [ Change ] (05-2 §5.5 ASCII); 440 px wide (238 tall)                            |
 | BP-CARD-09                                 | r1, r2         | "Remove it" with no body                                                                                                                                            | 04-2 §22.4: "Move to secret box" / "Send anyway" plus the body line                                                                                                                  |
 | UX-16-02                                   | r1, r2, r4     | gmail.com / company.com addresses; Draft [ Not now ] and a grey pending box (they move the card pixels too, so R4 fails on Windows); the M8 ask bubble and ⏳ badge | example.com fixtures (public repo); 05-2 §5.7.1–§5.7.2 [ Discard ] and a --t-small pending line; M5 seeds the cards (no Gmail connector until M8); X-79 [ Change ] (step superseded) |
