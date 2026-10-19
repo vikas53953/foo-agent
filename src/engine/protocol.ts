@@ -341,6 +341,8 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
         title: z.string(),
         impact: z.string(),
         submitRef: z.string().max(64).optional(),
+        // M5 T8 (lead edit): the approval this card replaces (a steer or changed terms); main sets its superseded_by.
+        supersedes: z.string().optional(),
       })
       .strict(),
   }),
@@ -355,6 +357,35 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
           .object({
             submittedAt: z.number().optional(),
             paymentState: z.enum(['submitted', 'checking', 'succeeded', 'failed']).optional(),
+            // M5 T8 (lead edit): the second look's result (approvals.second_look, 08-0 §B.3) and what the card shows for a
+            // HELD or SUPERSEDED move (ApprovalPayload.held / .superseded, 05-2 §5.5.4, 08-4 §28.6).
+            secondLook: z
+              .object({
+                at: z.number(),
+                deterministic: z.object({ ok: z.boolean(), mismatches: z.array(z.string()) }).strict(),
+                ai: z.object({ ok: z.boolean(), note: z.string() }).strict().optional(),
+                turnId: z.string().optional(),
+                held: z
+                  .object({
+                    field: z.enum(['recipient', 'amount', 'date', 'time', 'item', 'people', 'place']),
+                    userSaid: z.string(),
+                    actionHas: z.string(),
+                  })
+                  .strict()
+                  .optional(),
+              })
+              .strict()
+              .optional(),
+            held: z
+              .object({
+                reason: z.enum(['mismatch', 'cannot_check', 'no_user_words']),
+                userSaid: z.string().optional(),
+                actionHas: z.string().optional(),
+                verbing: z.string().optional(),
+              })
+              .strict()
+              .optional(),
+            superseded: z.enum(['price', 'time', 'recipient', 'fee', 'steer']).optional(),
           })
           .strict()
           .optional(),

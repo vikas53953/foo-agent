@@ -4,7 +4,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { jobHarness, step, type JobHarness } from '../jobs/jobHarness';
 import { restartEngine } from '../jobs/restart';
-import { bookScript, gateTools } from './gateFlow';
+import { bookScript, gateTools, secondLookOk } from './gateFlow';
 
 let h: JobHarness | null = null;
 afterEach(() => {
@@ -26,7 +26,7 @@ describe('an approval card that waits across an engine restart', () => {
     const after: string[] = [];
     restartEngine(
       h,
-      [step({ kind: 'done', result: 'Booked your table.', unverified: true })],
+      [secondLookOk(), step({ kind: 'done', result: 'Booked your table.', unverified: true })],
       { safeMode: false, cleanStart: true },
       {
         extra: gateTools(after),

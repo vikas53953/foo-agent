@@ -8,6 +8,7 @@
 // only with an APPROVED approval id, through `executeApproved`; AI-called fill / submit / send and every acting class →
 // USE_SUBMIT), §5.9 step 5 (a call left `unknown` by a crash is not repeated until a read has run), §11.4 R4 (`Redactor.scrub`:
 // registry + patterns on every stored and observed result; CR-0008 (j) row 6; map review fix 11).
+// M5 T8: §5.9.5 held `unknown` calls are matched by (tool, redacted args) for the whole job (T7 review hand-off).
 import { createHash } from 'node:crypto';
 import { canonicalJson } from '../../shared/canon';
 import type { Clock } from '../../shared/clock';
@@ -105,12 +106,17 @@ function capText(text: string): string {
   return text.slice(0, Math.max(0, end));
 }
 
+/** M5 T8: the key a held `unknown` call is matched by (tool and the args as stored, redacted). */
+const heldKey = (tool: string, args: unknown): string => `${tool}|${canonicalJson(args ?? {})}`;
+
 export class ToolLayer {
   /** jobId → toolCallId → pre-redaction result text (§26.11 item 1; RAM only). */
   private raw = new Map<string, Map<string, string>>();
   private lastHash = new Map<string, string>();
   /** jobId → idem keys of side-effect calls since the last read call (IDEMPOTENT_REPEAT). */
   private idem = new Map<string, Set<string>>();
+  /** M5 T8: jobId → `tool|canonical redacted args` of calls a crash left `unknown`, held for the whole job until a read ran. */
+  private held = new Map<string, Set<string>>();
 
   constructor(private d: ToolLayerDeps) {}
 
@@ -119,13 +125,14 @@ export class ToolLayer {
   }
 
   /**
-   * 08-2 §5.9 step 5: the idem keys of this job's calls a crash left `unknown`. Each is refused (IDEMPOTENT_REPEAT) until a
-   * read tool has run in the job, as any repeated side-effect call is.
+   * 08-2 §5.9 step 5: this job's calls a crash left `unknown`. Each is refused (IDEMPOTENT_REPEAT) until a read tool has run
+   * in the job. M5 T8 (T7 review): keyed by tool and the stored (redacted) args for the whole job, not by the step or
+   * approval in the idem key, so the same call from a later step is held too.
    */
-  holdUnknown(jobId: string, idemKeys: readonly string[]): void {
-    const seen = this.idem.get(jobId) ?? new Set<string>();
-    for (const k of idemKeys) seen.add(k);
-    this.idem.set(jobId, seen);
+  holdUnknown(jobId: string, calls: readonly { tool: string; args: unknown }[]): void {
+    const held = this.held.get(jobId) ?? new Set<string>();
+    for (const c of calls) held.add(heldKey(c.tool, c.args));
+    this.held.set(jobId, held);
   }
 
   /** System part 3 (§27.1): the tools a job may use, one line each. */
@@ -150,6 +157,7 @@ export class ToolLayer {
     this.raw.delete(jobId);
     this.lastHash.delete(jobId);
     this.idem.delete(jobId);
+    this.held.delete(jobId);
   }
 
   private tx(ops: DbOp[]): Promise<Result<DbTxReply>> {
@@ -162,6 +170,15 @@ export class ToolLayer {
   }
 
   /**
+   * M5 T8 (review 7): the engine's fresh-terms re-read (08-2 §9.4.2) of a read the job already ran. It goes through the gate
+   * like any call but leaves the IDEMPOTENT_REPEAT and held-`unknown` sets as they are: it is not the AI's read that §5.9
+   * step 5 waits for.
+   */
+  reread(job: ToolJob, call: ToolCallAct, signal: AbortSignal): Promise<ExecResult> {
+    return this.run(job, call, signal, null, true);
+  }
+
+  /**
    * The engine's one call of a side-effect tool after its approval went APPROVED → RUNNING (08-4 §28.1 item 8, §29.1): the
    * gate already decided (the card), so only the idem rule applies; the row carries `gate='approved'` and the approval id.
    */
@@ -169,7 +186,13 @@ export class ToolLayer {
     return this.run(job, call, signal, approvalId);
   }
 
-  private async run(job: ToolJob, call: ToolCallAct, signal: AbortSignal, approvalId: string | null): Promise<ExecResult> {
+  private async run(
+    job: ToolJob,
+    call: ToolCallAct,
+    signal: AbortSignal,
+    approvalId: string | null,
+    keepSets = false,
+  ): Promise<ExecResult> {
     const id = this.d.newId('tc');
     const startedAt = this.d.clock.now();
     const def = this.d.tools[call.tool];
@@ -229,6 +252,7 @@ export class ToolLayer {
     }
     const seen = this.idem.get(job.id) ?? new Set<string>();
     if (idemKey && seen.has(idemKey)) return refused('blocked', 'IDEMPOTENT_REPEAT');
+    if (sideEffect && this.held.get(job.id)?.has(heldKey(call.tool, base.args))) return refused('blocked', 'IDEMPOTENT_REPEAT');
 
     // The row exists before the call runs (outcome NULL), so a crash leaves it for 08-2 §5.9 step 5.
     await this.tx([{ op: 'insert', table: 'tool_calls', row: { ...base, idem_key: idemKey, gate: gateCol } }]);
@@ -265,9 +289,14 @@ export class ToolLayer {
       const h = sha256(redactedText);
       changed = this.lastHash.get(job.id) !== h;
       this.lastHash.set(job.id, h);
-      if (cls === 'read') seen.clear();
-      if (idemKey) seen.add(idemKey);
-      this.idem.set(job.id, seen);
+      if (!keepSets) {
+        if (cls === 'read') {
+          seen.clear();
+          this.held.delete(job.id);
+        }
+        if (idemKey) seen.add(idemKey);
+        this.idem.set(job.id, seen);
+      }
     }
     await this.tx([
       {

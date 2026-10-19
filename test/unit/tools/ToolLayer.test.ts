@@ -85,11 +85,38 @@ describe('ToolLayer', () => {
   });
 
   it('a call left unknown by a crash is held until a read ran (08-2 §5.9 step 5)', async () => {
-    const { l, row } = layer([def('x.draft', 'prepare', 1), def('x.read', 'read', 2)]);
-    const first = await l.execute(job, { tool: 'x.draft', args: { to: 'a' } }, signal);
-    const key = String(row(first.toolCallId).idem_key);
+    const { l } = layer([def('x.draft', 'prepare', 1), def('x.read', 'read', 2)]);
+    l.holdUnknown('j1', [{ tool: 'x.draft', args: { to: 'a' } }]);
+    expect(await l.execute(job, { tool: 'x.draft', args: { to: 'a' } }, signal)).toMatchObject({ errorKind: 'IDEMPOTENT_REPEAT' });
+    expect((await l.execute(job, { tool: 'x.draft', args: { to: 'b' } }, signal)).outcome).toBe('ok');
+    await l.execute(job, { tool: 'x.read', args: {} }, signal);
+    expect((await l.execute(job, { tool: 'x.draft', args: { to: 'a' } }, signal)).outcome).toBe('ok');
+  });
+
+  it('M5 T8: the hold covers the whole job, whatever step repeats the call (08-2 §5.9.5, T7 review)', async () => {
+    const { l } = layer([def('x.draft', 'prepare', 1)]);
+    l.holdUnknown('j1', [{ tool: 'x.draft', args: { to: 'a' } }]);
+    const later = { ...job, stepId: 'st_later' };
+    expect(await l.execute(later, { tool: 'x.draft', args: { to: 'a' } }, signal)).toMatchObject({ errorKind: 'IDEMPOTENT_REPEAT' });
+  });
+
+  it('M5 T8: a held call is matched on its stored (redacted) args', async () => {
+    const { l, row } = layer([def('x.draft', 'prepare', 1)]);
+    const first = await l.execute(job, { tool: 'x.draft', args: { note: `key ${SECRET}` } }, signal);
+    const stored = row(first.toolCallId).args;
+    expect(JSON.stringify(stored)).not.toContain(SECRET);
     l.clearJob('j1');
-    l.holdUnknown('j1', [key]);
+    // What toolCallsUnknown returns is the stored row, args redacted.
+    l.holdUnknown('j1', [{ tool: 'x.draft', args: stored }]);
+    expect(await l.execute({ ...job, stepId: 'st_2' }, { tool: 'x.draft', args: { note: `key ${SECRET}` } }, signal)).toMatchObject({
+      errorKind: 'IDEMPOTENT_REPEAT',
+    });
+  });
+
+  it('M5 T8 review 7: the fresh-terms re-read (reread) leaves a held unknown call held; an AI read releases it', async () => {
+    const { l } = layer([def('x.draft', 'prepare', 1), def('x.read', 'read', 2)]);
+    l.holdUnknown('j1', [{ tool: 'x.draft', args: { to: 'a' } }]);
+    expect((await l.reread(job, { tool: 'x.read', args: {} }, signal)).outcome).toBe('ok');
     expect(await l.execute(job, { tool: 'x.draft', args: { to: 'a' } }, signal)).toMatchObject({ errorKind: 'IDEMPOTENT_REPEAT' });
     await l.execute(job, { tool: 'x.read', args: {} }, signal);
     expect((await l.execute(job, { tool: 'x.draft', args: { to: 'a' } }, signal)).outcome).toBe('ok');
