@@ -26,13 +26,18 @@ export class RunnerTick {
     if (this.timer !== null || this.stopped) return;
     this.timer = this.core.d.clock.setTimeout(() => {
       this.timer = null;
-      void this.core.track(this.run()).finally(() => this.start());
+      void this.core
+        .track(this.run())
+        .catch(() => this.core.d.log('job.tick_failed', 'UNKNOWN'))
+        .finally(() => this.start());
     }, TICK_MS);
   }
 
   /** One pass: wake opens_at jobs that are due, withdraw Plan cards unanswered for 24 h. */
   async run(): Promise<void> {
-    await this.wakeDue();
+    // Waking starts a job, so it takes the scheduling chain: the beforeSchedule hold (safe mode, quitting, asleep, offline)
+    // applies, and the free-slot count cannot race a startNext.
+    await this.core.schedule(() => this.wakeDue());
     await this.withdrawStalePlans();
   }
 

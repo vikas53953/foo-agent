@@ -267,4 +267,34 @@ describe('CR-0008 (j) row 8 · the opens_at tick', () => {
     expect(h.turnsJsonl().filter((r) => r.purpose === 'step')).toHaveLength(1);
     expect(h.job(jobId!).wake_at).toBeNull();
   });
+
+  // Review fix (T10 act 1): waking is a start, so the beforeSchedule hold applies; "Start normally" lets the tick wake it.
+  it('in safe mode a due opens_at job stays WAITING until Start normally', async () => {
+    h = jobHarness({ script: [] });
+    const opensAt = h.clock.now() + 60_000;
+    const jobId = await h.engine.jobs.createJob({
+      chatId: h.chatId,
+      userMessageId: null,
+      askedText: 'Get ready for the opening',
+      decision: {
+        kind: 'job',
+        title: 'Opening',
+        plan: [{ phraseKey: 'read_email', slots: {}, route: 'api' }],
+        routeHint: ['api'],
+        needsApps: [],
+      } as never,
+      origin: 'system',
+      wakeAt: opensAt,
+    });
+    await h.settle();
+    expect(h.job(jobId!).state).toBe('waiting');
+    restartEngine(h, [step({ kind: 'done', result: 'Ready.', unverified: true })], { safeMode: true, cleanStart: false });
+    await h.settle();
+    // Two minutes of ticks past wake_at: the job never leaves WAITING.
+    await expect(until(h, () => h!.job(jobId!).state !== 'waiting', 1_000, 120)).rejects.toThrow('condition never held');
+    expect(h.turnsJsonl().filter((r) => r.purpose === 'step')).toHaveLength(0);
+    const safe = h.cards('error').find((c) => JSON.parse(String(c.payload)).kind === 'SAFE_MODE')!;
+    h.answer(String(safe.id), 'start_normally');
+    await until(h, () => h!.job(jobId!).state === 'done_unverified', 5_000);
+  });
 });

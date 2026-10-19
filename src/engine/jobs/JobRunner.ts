@@ -100,6 +100,8 @@ export interface RunnerCore {
   halt(jobId: string): void;
   launch(jobId: string): void;
   startNext(): Promise<void>;
+  // M5 T10: one scheduling pass on the same chain as startNext, after the beforeSchedule hold (null when held).
+  schedule(pass: () => Promise<void>): Promise<void>;
   ended(jobId: string): Promise<void>;
   writeMirrors(jobId: string): Promise<void>;
   workingMs(jobId: string): number;
@@ -236,6 +238,7 @@ export class JobRunner {
       halt: (id) => this.ctxs.get(id)?.abort.abort(),
       launch: (id) => this.launch(id),
       startNext: () => this.startNext(),
+      schedule: (pass) => this.schedule(pass),
       ended: (id) => this.ended(id, this.ctx(id)),
       writeMirrors: (id) => this.writeMirrors(id),
       workingMs: (id) => {
@@ -361,7 +364,7 @@ export class JobRunner {
     return [...own, ...this.steering.badgeOps(job.id, BADGE_OF_STATE[to])];
   }
 
-  private textOp(job: Pick<JobRow, 'chatId' | 'ownerId'> & { id: string | null }, text: string): DbOp {
+  textOp(job: Pick<JobRow, 'chatId' | 'ownerId'> & { id: string | null }, text: string): DbOp {
     return {
       op: 'insert',
       table: 'messages',
@@ -520,8 +523,7 @@ export class JobRunner {
 
   /** When a slot frees, the oldest startable queued jobs start (FIFO), serialised so two callers never overfill the slots. */
   startNext(): Promise<void> {
-    const run = async () => {
-      if (this.d.hooks?.beforeSchedule && !(await this.d.hooks.beforeSchedule())) return;
+    return this.schedule(async () => {
       const live = (await this.query<JobRow[]>('jobsByState', ['queued', 'working', 'needs_you'])) ?? [];
       const windows = live.filter((j) => j.state === 'working' && j.usesBrowser).length;
       const queue: QueueJob[] = [];
@@ -541,6 +543,14 @@ export class JobRunner {
         queue.push(q);
       }
       for (const id of pickStartable(queue, windows)) await this.start(id);
+    });
+  }
+
+  /** One pass on the scheduling chain, so two callers never overfill the slots; skipped while beforeSchedule holds. */
+  schedule(pass: () => Promise<void>): Promise<void> {
+    const run = async () => {
+      if (this.d.hooks?.beforeSchedule && !(await this.d.hooks.beforeSchedule())) return;
+      await pass();
     };
     this.sched = this.sched.then(run, run).catch((e: unknown) => {
       this.d.log('job.schedule_failed', 'UNKNOWN', {});

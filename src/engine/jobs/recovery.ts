@@ -66,6 +66,8 @@ export interface RecoveryRunner {
   writeMirrors(jobId: string): Promise<void>;
   /** Aborts the job's running loop: a turn still in flight returns and its decision is dropped. */
   halt(jobId: string): void;
+  // M5 T10: the foo (or helper) text message tied to the job, as every runner message is written.
+  textOp(job: Pick<JobRow, 'chatId' | 'ownerId'> & { id: string | null }, text: string): DbOp;
 }
 
 export interface RecoveryAi {
@@ -582,21 +584,7 @@ export class JobRecovery {
           outcome: 'done',
         }),
       },
-      {
-        op: 'insert',
-        table: 'messages',
-        row: {
-          id: this.d.newId('m'),
-          chat_id: job.chatId,
-          author_kind: job.ownerId ? 'helper' : 'foo',
-          author_id: job.ownerId,
-          kind: 'text',
-          text: report,
-          status: 'complete',
-          job_id: job.id,
-          created_at: now,
-        },
-      },
+      this.r.textOp(job, report),
     ]);
     if (res.ok) await this.r.writeMirrors(job.id);
   }
