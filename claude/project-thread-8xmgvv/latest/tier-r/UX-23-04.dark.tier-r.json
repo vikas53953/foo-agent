@@ -537,7 +537,7 @@
         },
         "app": {
           "x": 371,
-          "y": 612,
+          "y": 628,
           "width": 93.703125,
           "height": 40
         },
@@ -567,8 +567,8 @@
     "total": 2618
   },
   "r5": {
-    "ratio": 0.119716796875,
-    "diffPixels": 122590,
+    "ratio": 0.1146962890625,
+    "diffPixels": 117449,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-04.dark.diff.png"
