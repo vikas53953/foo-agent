@@ -447,14 +447,7 @@
         "15",
         "Oct",
         "₹15,779",
-        "Waiting",
-        "for",
-        "your",
-        "answer:",
-        "Checked",
-        "bag?.",
-        "Show",
-        "button.",
+        "foo:",
         "Not",
         "sent."
       ]
@@ -519,8 +512,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.06809765625,
-    "diffPixels": 69732,
+    "ratio": 0.0680986328125,
+    "diffPixels": 69733,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-05.light.diff.png"

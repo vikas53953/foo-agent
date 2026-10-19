@@ -1,19 +1,19 @@
 {
-  "reportId": "M5-b60c0f0-39253240689",
+  "reportId": "M5-063b4a9-39257992869",
   "milestone": "M5",
-  "generatedAt": "2026-10-19T12:53:59.476Z",
-  "commit": "944227e062e063fcbe92aac3a290ce0c79aed582",
-  "head": "b60c0f044f9e921c26172e25a51ef2370ca59902",
+  "generatedAt": "2026-10-19T13:29:18.469Z",
+  "commit": "2dc9450462f4d91d89f6577954c46b7ccd4f8a9e",
+  "head": "063b4a9b7cc89772fe8c68c1ac50cfdc3040415c",
   "ci": {
-    "runId": "39253240689",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39253240689"
+    "runId": "39257992869",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39257992869"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "ace5c85e9383ebf8c09e6a22aae45fdffebe341f12e85cdfb30a971da6685aba"
   },
   "runner": {
-    "recordedAt": "2026-10-19T12:40:11.427Z",
+    "recordedAt": "2026-10-19T13:15:51.991Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000003323"
+      "runner": "GitHub Actions 1000003355"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,7 +59,6 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "1 test(s) failed",
     "missing evidence: audit list (docs/fidelity/M5.audit.json)"
   ],
   "missingInputs": [
@@ -345,13 +344,13 @@
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 3752,
+        "passed": 3757,
         "failed": 0,
         "skipped": 2
       },
       "e2e": {
-        "passed": 83,
-        "failed": 1,
+        "passed": 85,
+        "failed": 0,
         "skipped": 0
       }
     },
@@ -5805,6 +5804,31 @@
         "id": "ART-06b",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-06.test.ts"
+      },
+      {
+        "id": "ART-08a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08a.test.ts"
+      },
+      {
+        "id": "ART-08a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08a.test.ts"
+      },
+      {
+        "id": "ART-08a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08a.test.ts"
+      },
+      {
+        "id": "ART-08a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08a.test.ts"
+      },
+      {
+        "id": "ART-08a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-08a.test.ts"
       },
       {
         "id": "ART-08b",
@@ -18122,16 +18146,6 @@
         "file": "D:/a/foo-agent/foo-agent/test/unit/m3-prompt-filters.test.ts"
       },
       {
-        "id": "AT-033",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
-      },
-      {
-        "id": "AT-034",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
-      },
-      {
         "id": "AT-110",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/approvals/decline.test.ts"
@@ -18240,6 +18254,26 @@
         "id": "AT-128",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/approvals/withdraw.test.ts"
+      },
+      {
+        "id": "AT-033",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
+      },
+      {
+        "id": "AT-034",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
+      },
+      {
+        "id": "AT-118a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts"
+      },
+      {
+        "id": "AT-118a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts"
       },
       {
         "id": "AT-119",
@@ -18627,16 +18661,6 @@
         "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/waiting.test.ts"
       },
       {
-        "id": "AT-118a",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts"
-      },
-      {
-        "id": "AT-118a",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts"
-      },
-      {
         "id": "AT-008",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/vault/AT-008.test.ts"
@@ -18718,7 +18742,7 @@
       },
       {
         "id": "PERF-03",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/m1-shell.spec.ts"
       },
       {
@@ -19052,14 +19076,7 @@
         "file": "test/fidelity/ux/UX-23.errors.spec.ts"
       }
     ],
-    "failed": [
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m1-shell.spec.ts",
-        "title": "PERF-03: chat switch on the perf seed paints the header and messages (smoke timing)",
-        "status": "failed"
-      }
-    ],
+    "failed": [],
     "trace": {
       "live": 73,
       "pending": 111,
@@ -19843,7 +19860,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "pass (BP-ANAT-L ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.068677734375,
+        "r5": 0.06865234375,
         "ref": true,
         "app": true,
         "diff": true
@@ -20155,7 +20172,7 @@
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "pass (BP-APP-M ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05464612945930881,
+        "r5": 0.054589517140468224,
         "ref": true,
         "app": true,
         "diff": true
@@ -20584,7 +20601,7 @@
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
         "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05428716387620497,
+        "r5": 0.05420910900362955,
         "ref": true,
         "app": true,
         "diff": true
@@ -20844,7 +20861,7 @@
         "r2": "fail (hl 52/1.9375 px)",
         "r3": "fail (hl ΔE 55.97)",
         "r4": "fail (90.57 %)",
-        "r5": 0.0997763671875,
+        "r5": 0.099662109375,
         "ref": true,
         "app": true,
         "diff": true
@@ -20857,7 +20874,7 @@
         "r2": "fail (hl 52/1.9375 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.47 %)",
-        "r5": 0.08030078125,
+        "r5": 0.0802099609375,
         "ref": true,
         "app": true,
         "diff": true
@@ -20870,7 +20887,7 @@
         "r2": "fail (hl 74/68 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (7.17 %)",
-        "r5": 0.10485546875,
+        "r5": 0.1047412109375,
         "ref": true,
         "app": true,
         "diff": true
@@ -20883,7 +20900,7 @@
         "r2": "fail (hl 74/68 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.27 %)",
-        "r5": 0.0845166015625,
+        "r5": 0.0844248046875,
         "ref": true,
         "app": true,
         "diff": true
@@ -20896,7 +20913,7 @@
         "r2": "fail (hl 72/23.75 px)",
         "r3": "fail (hl ΔE 21.81)",
         "r4": "fail (15.95 %)",
-        "r5": 0.0835439453125,
+        "r5": 0.0834296875,
         "ref": true,
         "app": true,
         "diff": true
@@ -20909,7 +20926,7 @@
         "r2": "fail (hl 72/23.75 px)",
         "r3": "fail (hl ΔE 12.97)",
         "r4": "fail (14.72 %)",
-        "r5": 0.0610830078125,
+        "r5": 0.0609921875,
         "ref": true,
         "app": true,
         "diff": true
@@ -20961,7 +20978,7 @@
         "r2": "review (hl 8/8 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (18.70 %)",
-        "r5": 0.0613935546875,
+        "r5": 0.0613916015625,
         "ref": true,
         "app": true,
         "diff": true
@@ -21247,7 +21264,7 @@
         "r2": "fail (hl 388.609375/411.609375 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "skipped: superseded (05 §5.3.1 (no Next button))",
-        "r5": 0.06809765625,
+        "r5": 0.0680986328125,
         "ref": true,
         "app": true,
         "diff": true
@@ -21299,7 +21316,7 @@
         "r2": "fail (hl 17/11 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (10.10 %)",
-        "r5": 0.0869736328125,
+        "r5": 0.08697265625,
         "ref": true,
         "app": true,
         "diff": true
@@ -21325,7 +21342,7 @@
         "r2": "fail (hl 194.6328125/261.265625 px)",
         "r3": "fail (hl ΔE 96.14)",
         "r4": "fail (68.66 %)",
-        "r5": 0.086958984375,
+        "r5": 0.086951171875,
         "ref": true,
         "app": true,
         "diff": true
@@ -21338,7 +21355,7 @@
         "r2": "fail (hl 70/64 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "skipped: superseded (X-79 (\"Change\"))",
-        "r5": 0.1305263671875,
+        "r5": 0.1229326171875,
         "ref": true,
         "app": true,
         "diff": true
@@ -21364,7 +21381,7 @@
         "r2": "pass (hl 0/1 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.46 %)",
-        "r5": 0.118041015625,
+        "r5": 0.1038408203125,
         "ref": true,
         "app": true,
         "diff": true
@@ -21377,7 +21394,7 @@
         "r2": "pass (hl 0/1 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.19 %)",
-        "r5": 0.094892578125,
+        "r5": 0.0807724609375,
         "ref": true,
         "app": true,
         "diff": true
@@ -21390,7 +21407,7 @@
         "r2": "fail (hl 54/2.421875 px)",
         "r3": "fail (hl ΔE 55.97)",
         "r4": "fail (90.60 %)",
-        "r5": 0.1147861328125,
+        "r5": 0.1168095703125,
         "ref": true,
         "app": true,
         "diff": true
@@ -21403,7 +21420,7 @@
         "r2": "fail (hl 54/2.421875 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (7.22 %)",
-        "r5": 0.087087890625,
+        "r5": 0.0889013671875,
         "ref": true,
         "app": true,
         "diff": true
@@ -21416,7 +21433,7 @@
         "r2": "fail (hl 196/36 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.07 %)",
-        "r5": 0.1090634765625,
+        "r5": 0.1163701171875,
         "ref": true,
         "app": true,
         "diff": true
@@ -21429,7 +21446,7 @@
         "r2": "fail (hl 196/36 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (7.02 %)",
-        "r5": 0.0809609375,
+        "r5": 0.087984375,
         "ref": true,
         "app": true,
         "diff": true
@@ -21455,7 +21472,7 @@
         "r2": "fail (hl 91.46875/25.609375 px)",
         "r3": "fail (hl ΔE 57.24)",
         "r4": "fail (57.56 %)",
-        "r5": 0.086427734375,
+        "r5": 0.0864609375,
         "ref": true,
         "app": true,
         "diff": true
@@ -21546,7 +21563,7 @@
         "r2": "fail (hl 130/12 px)",
         "r3": "fail (hl ΔE 30.38)",
         "r4": "fail (85.67 %)",
-        "r5": 0.14412109375,
+        "r5": 0.120927734375,
         "ref": true,
         "app": true,
         "diff": true
@@ -21559,7 +21576,7 @@
         "r2": "fail (hl 130/12 px)",
         "r3": "fail (hl ΔE 41.46)",
         "r4": "fail (87.91 %)",
-        "r5": 0.0915166015625,
+        "r5": 0.0781396484375,
         "ref": true,
         "app": true,
         "diff": true
