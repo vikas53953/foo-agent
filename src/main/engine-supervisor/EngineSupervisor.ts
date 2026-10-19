@@ -4,11 +4,12 @@
 // M8 (T3): 08-1 §2.1 row wa-bridge and §2.4.2: `startBridge()` forks `wa-bridge` only when a whatsapp row exists or on
 // whatsapp:linkStart, posts one end of a MessageChannelMain to it and the other to the engine on `bridge.port`; restart and
 // back-off run in BridgeLifecycle (src/main/whatsapp); an engine restart re-wires a fresh pair.
-// Deferred: `engineCrashes` in launches.json and safe mode at 3 crashes (08-0 §G.14) arrive with launches.json (M11); until
-// then a crash restarts the engine at most 3 times per launch (implementation-notes "M3").
+// M4 T4: each crash is counted in launches.json (`onCrashed`, 08-1 §4.1.3); at 3 crashes in one launch the restarted engine
+// runs in safe mode (08-0 §G.14). A crash restarts the engine at most 3 times per launch.
 import { app, MessageChannelMain, utilityProcess, type MessagePortMain, type UtilityProcess } from 'electron';
 import { join } from 'node:path';
 import type { MainToEngine } from '../../engine/protocol';
+import { logEvent } from '../log/techLog';
 import type { EngineBridge } from './EngineBridge';
 import { deps } from '../deps';
 import { BridgeLifecycle, type BridgeProcess } from '../whatsapp/bridgeLifecycle';
@@ -35,6 +36,8 @@ export class EngineSupervisor {
   /** M8 (T3): the fourth bridge failure in a row (main marks the whatsapp row `error`). */
   onBridgeGaveUp: () => void = () => {};
   readonly bridgeLife: BridgeLifecycle;
+  /** Called on every crash before the restart (launches.json `engineCrashes`). */
+  onCrashed: () => void = () => {};
 
   constructor(
     private bridge: EngineBridge,
@@ -108,7 +111,8 @@ export class EngineSupervisor {
       this.port = null;
       this.child = null;
       if (this.stopping) return;
-      console.error(`engine exited (${code})`);
+      logEvent({ lvl: 'error', mod: 'engine', evt: 'ENGINE_EXITED', kind: String(code) });
+      this.onCrashed();
       if (this.restarts < MAX_RESTARTS) {
         this.restarts += 1;
         this.start();

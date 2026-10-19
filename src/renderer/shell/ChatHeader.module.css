@@ -96,3 +96,23 @@
   position: relative;
   display: inline-flex;
 }
+/* 06-1 §2.0 step pill (CR-0020): 28 high, padding 0 12px, --r-full, --accent-soft / --accent, --t-caption-strong without
+ * uppercase, 12px after the name; not clickable. */
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-width: 0;
+}
+.stepPill {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: calc(var(--s5) + var(--s0)); /* 28 */
+  padding: 0 var(--s2);
+  border-radius: var(--r-full);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font: var(--t-caption-strong);
+  white-space: nowrap;
+}

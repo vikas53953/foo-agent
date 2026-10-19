@@ -69,6 +69,10 @@ export const REDUCERS: Reducers = {
   'whatsapp:qr': (s, qr) => {
     s.connections.qr = qr;
   },
+  // M6: no memory slice (08-5 §5 closed list, G-M6-08); the Memory page and the right shell subscribe with useFooEvent.
+  'memory:changed': () => undefined,
+  // The export status line lives on the page that started it (06-2 §7.4).
+  'data:exportProgress': () => undefined,
 };
 
 export function applyEvent<E extends EventChannel>(event: E, payload: EventPayload[E]): void {

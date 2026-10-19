@@ -16,6 +16,9 @@ export interface ProofContext {
   /** This job's folder `{DATA}\jobs\{id}`. */
   jobDir: string;
   exists(file: string): boolean;
+  // M5
+  /** T7: 08-2 §11.4 `Redactor.scrub` (registry + patterns), so a code that is a registered secret is refused too. */
+  scrub?(text: string): { hits: number };
 }
 
 /** A confirmation code shorter than this could match by chance. */
@@ -46,7 +49,7 @@ export function checkProof(proof: Proof | undefined, ctx: ProofContext): ProofCh
   switch (proof.kind) {
     case 'confirmation': {
       if (proof.code.trim().length < CODE_MIN) return { ok: false, why: 'not_found' };
-      if (redactSecrets(proof.code).hits > 0) return { ok: false, why: 'secret' };
+      if ((ctx.scrub ? ctx.scrub(proof.code) : redactSecrets(proof.code)).hits > 0) return { ok: false, why: 'secret' };
       const text = ctx.raw.get(proof.seenInToolCallId) ?? ctx.stored(proof.seenInToolCallId);
       if (text === null || text === undefined) return { ok: false, why: 'not_found' };
       return stringValues(text).some((v) => v.includes(proof.code)) ? { ok: true } : { ok: false, why: 'not_found' };

@@ -1,0 +1,27 @@
+/* Spec: 06 §0.2 page header (--header-h 60, 1px --line bottom; 16 · back 36 · 12 · title --t-title; actions gap 8, right
+ * pad 16). */
+.header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--s2);
+  height: var(--header-h);
+  padding: 0 var(--s3);
+  border-bottom: 1px solid var(--line);
+}
+.title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  font: var(--t-title);
+  color: var(--fg-1);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  outline: none;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+}

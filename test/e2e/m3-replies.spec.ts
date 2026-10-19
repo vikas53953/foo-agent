@@ -15,6 +15,7 @@ import { TID } from '../../src/shared/testids';
 import { bubbleDelayMs } from '../../src/renderer/messages/chunks';
 import { fakeTurns, intake, launchWithFakeAi, VERIFY_OK, type FakeLine } from './fakeAi';
 import type { testDirs } from './launch';
+import { settleSeededJobs } from './m4-start';
 
 const byTid = (id: string) => `[data-testid="${id}"]`;
 /** The engine's hold before a reply streams (08-4 §25.5 item 2). */
@@ -31,8 +32,9 @@ async function start(lines: FakeLine[], o: { seed?: boolean } = {}): Promise<Run
   const page = await app.firstWindow();
   await page.getByTestId(TID.titlebarStrip).waitFor();
   if (o.seed !== false) {
-    await page.evaluate(() => window.__fooTest!.seed('ux-world'));
+    const { refs } = await page.evaluate(() => window.__fooTest!.seed('ux-world'));
     await expect(page.getByTestId(TID.chatlistRow).first()).toBeVisible();
+    await settleSeededJobs(page, refs);
   }
   await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0]!.setContentSize(1280, 800));
   await page.waitForFunction(() => window.innerWidth === 1280);
@@ -303,6 +305,10 @@ test('a reply: ✓✓, 👀 on the first byte, the Thinking row while it is in f
   await expect(bubble).toHaveAttribute('data-state', 'complete');
   await expect(thinking).toHaveCount(0);
   await expect(round(page)).toHaveAttribute('data-state', 'mic');
+  // 04 §1.8: a finished text row is announced once as "{sender}: {text}" (cards use 05-1 §0.7's line instead).
+  await expect(page.getByTestId(TID.appAnnouncer).locator('[aria-live="polite"]')).toHaveText(
+    t('bubble.row.announce_new', { sender: 'foo', text: say }),
+  );
 
   const evs = await events(page);
   const fooEv = evs.filter((e) => e.ch === 'message:upsert' && e.p.authorKind === 'foo');
@@ -465,8 +471,9 @@ test('M4 T8 · foo’s reply carries the test clock set before the engine starte
   await page.waitForFunction(() => Boolean(window.__fooTest));
   await page.evaluate((n) => window.__fooTest!.clock.set(n), at);
   await page.getByTestId(TID.titlebarStrip).waitFor();
-  await page.evaluate(() => window.__fooTest!.seed('ux-world'));
+  const { refs } = await page.evaluate(() => window.__fooTest!.seed('ux-world'));
   await expect(page.getByTestId(TID.chatlistRow).first()).toBeVisible();
+  await settleSeededJobs(page, refs);
   await recordEvents(page);
   await openChat(page, 'foo');
   const { row } = await send(page, 'what time');

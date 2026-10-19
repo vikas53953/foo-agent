@@ -7,7 +7,10 @@
 // bubble status `failed`), 08-1 §4.3.5 (ai_turns row per turn), Art. 12 (AI words never move a status), Art. 16, 22.
 // M3 builds `reply` and `react`; M4 adds `job` (the runner's createJob). The other intake kinds (ask, handoff, routine, memory, setting, catch_up) arrive with
 // M4–M8. Until then their unreleased `<say>` is discarded and foo posts the empty-reply line so it never goes silent
-// (GAPS.md 2026-10-18 "intake kinds before their milestone").
+// (GAPS.md 2026-10-18 "intake kinds before their milestone"). M6: memory parts 5/5b per turn (08-4 §24.16, retrieval.ts)
+// and the uses of the offered facts the AI names in `usedMemoryIds` (§24.16 item 6, 08-3 §12.5). M6 T5: intake kind `memory`
+// (08-4 §25.2, §25.5 item 5; memory/intakeMemory.ts), "don't remember this" before the turn (J17), the "Used: {fact}" chips
+// under a reply (08-3 §12.5) and the post-turn review trigger after every answered turn (08-3 §12.4).
 import { t } from '../../shared/copy/t';
 import type { Clock } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
@@ -17,6 +20,12 @@ import type { IntakeDecision } from '../../shared/schemas';
 import type { EngineChat, EngineHelper, EngineMessage } from '../../main/db/queries';
 import type { DbOp, DbTxReply, MainLink } from '../protocol';
 import type { AiErrorKind, AiUsage, TurnRequest, TurnResult, TurnSink } from '../ai/types';
+import { buildMemoryParts, memoryUseOps, type MemoryParts } from '../memory/retrieval';
+import type { EngineFact } from '../../main/db/queries';
+import { usedFacts } from '../memory/chips';
+// M5 (T5)
+import type { CardAnswer } from '../../shared/types';
+import { answerTyped, type TypedHookDeps } from '../cards/typedHook';
 
 /** The your-AI service the lane talks to (Engine wires AiService). */
 export interface LaneAi {
@@ -24,7 +33,7 @@ export interface LaneAi {
   pick(): { providerId: ProviderId; billing: 'plan' | 'key' | 'local'; backup: boolean } | null;
   turnParams(
     providerId: ProviderId,
-    purpose: 'intake' | 'repair' | 'rewrite' | 'step',
+    purpose: 'intake' | 'repair' | 'rewrite' | 'step' | 'classify' | 'second_look' | 'tidy' | 'memory_review', // M5 T8: second_look; M6 T7: tidy; M6 T5: memory_review
   ): Omit<TurnRequest, 'turnId' | 'purpose' | 'system' | 'prompt'>;
   runTurn(providerId: ProviderId, req: TurnRequest, sink: TurnSink, signal: AbortSignal): Promise<TurnResult>;
   reportOk(providerId: ProviderId): void;
@@ -43,15 +52,21 @@ export interface IntakeInput {
   conversation: EngineMessage[];
   message: EngineMessage;
   local: boolean;
+  /** Parts 5 and 5b for this turn (08-4 §24.16). */
+  memory: MemoryParts;
+  // M5
+  /** T10: "Change plan": the old plan goes with this turn (08-2 §5.3.3). */
+  oldPlan?: { title: string; steps: string[] };
 }
 
 /** The reply protocol (builder B's modules, wired by Engine). */
 export interface LaneProtocol {
-  buildIntake(input: IntakeInput): { system: string; prompt: string };
+  /** `factIds`: the facts parts 5/5b carry as sent (08-4 §24.16 item 6). */
+  buildIntake(input: IntakeInput): { system: string; prompt: string; factIds?: string[] };
   buildRepair(issues: string): string;
   /** Parse the whole reply: the `<say>` text and the validated IntakeAct, or the zod issues. */
-  parse(text: string): { say: string; act: IntakeDecisionView | null; issues: string | null };
-  parseAct(text: string): { act: IntakeDecisionView | null; issues: string | null };
+  parse(text: string): { say: string; act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[] };
+  parseAct(text: string): { act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[] };
   /** The release gate for one streamed turn (08-4 §25.5 item 2). */
   gate(onRelease: (text: string, mode: 'whole' | 'sentence') => void, signal: AbortSignal): LaneGate;
   /** 08-2 §7.6 over a whole `<say>` (used for repair results and the post-check). */
@@ -68,7 +83,27 @@ export type IntakeDecisionView =
   | { kind: 'reply' }
   | { kind: 'react'; emoji: '👍' | '❤️' }
   | Extract<IntakeDecision, { kind: 'job' }>
-  | { kind: 'ask' | 'handoff' | 'routine' | 'memory' | 'setting' | 'catch_up' };
+  | Extract<IntakeDecision, { kind: 'memory' }>
+  | { kind: 'ask' | 'handoff' | 'routine' | 'setting' | 'catch_up' };
+
+/** M6 T5: the memory seam of the lane (Engine wires IntakeMemory, MemoryChips and MemoryReview). */
+export interface LaneMemory {
+  /** Before the intake turn, no AI: J17 "don't remember this"; the review's quiet period restarts. */
+  beforeTurn(chat: EngineChat, message: EngineMessage): Promise<void>;
+  /** Intake kind `memory` (08-4 §25.2). */
+  decide(
+    chat: EngineChat,
+    helper: EngineHelper | null,
+    message: EngineMessage,
+    act: { op: 'remember' | 'forget'; text: string },
+  ): Promise<void>;
+  /** 08-3 §12.5: the "Used: {fact}" chips under the reply `anchorId`. */
+  used(chatId: string, anchorId: string, facts: EngineFact[]): Promise<void>;
+  /** 08-3 §12.4 trigger: a chat-lane turn answered in `chatId`. */
+  answered(chatId: string): void;
+  /** A typed answer to a `memory_confirm` card; true = taken. */
+  onCardAnswered(a: { cardId: string; answer: CardAnswer; choice?: string; resolvedBy: 'typed' }): Promise<boolean>;
+}
 
 /** M4: the job runner's intake seam (08-2 §5.3.3; JobRunner.createJob). */
 export interface LaneJobs {
@@ -79,6 +114,13 @@ export interface LaneJobs {
     askedText: string;
     helperId: string | null;
   }): Promise<string | null>;
+  // M5
+  /** T10: the plan the user asked to change in this chat (08-2 §5.3.3); `take` clears it. */
+  planChange?(chatId: string, take?: boolean): { title: string; steps: string[] } | null;
+  /** M4 T3: the runner's branches of 08-2 §5.2 (stop word, yes-text on a tap-only card, steer, fold-which); true = handled. */
+  onUserMessage?(m: { chatId: string; messageId: string; text: string }): Promise<boolean>;
+  // M5 (T5): a typed answer to a job's Choice card goes to the runner as card.answered (08-2 §5.2, 08-4 §26.6).
+  onCardAnswered?(a: { cardId: string; answer: CardAnswer; choice?: string; resolvedBy: 'typed' }): Promise<void>;
 }
 
 export interface LaneDeps {
@@ -91,6 +133,12 @@ export interface LaneDeps {
   log(evt: string, kind?: string, ids?: { chatId?: string }): void;
   /** M4: kind 'job' creates a job; the user's bubble keeps 👀 and nothing is posted (Art. 22, 08-4 §25.5). */
   jobs?: LaneJobs;
+  // M5
+  /** T10: the pre-call cap check of a chat-lane turn (08-2 §5.10 item 4); false = no call. */
+  capCheck?(promptChars: number, purpose: 'intake' | 'repair'): Promise<boolean>;
+  // M6
+  /** T5: memory in the lane (intake remember / forget, chips, review trigger). */
+  memory?: LaneMemory;
 }
 
 const MAX_TOTAL = 2; // 08-2 §6.9 chat lane
@@ -111,6 +159,8 @@ export class ChatLane {
   private violationRetried = new Set<string>();
   /** Enqueued by a drain of Waiting-to-send messages: skipped if another turn already answered it. */
   private drained = new Set<string>();
+  /** Messages a steer sent back to intake (`new_job`): they skip the runner's branches. */
+  private intakeOnly = new Set<string>();
   private aborts = new Map<string, AbortController>();
   /** chat id → the running turn's abort, for Stop (04 §14.4). */
   private chatTurns = new Map<string, { abort: AbortController; stopped: boolean }>();
@@ -121,9 +171,23 @@ export class ChatLane {
 
   constructor(private d: LaneDeps) {}
 
+  // M5 (T5)
+  private typedDeps: TypedHookDeps = {
+    now: () => this.d.clock.now(),
+    newId: (p) => this.d.newId(p),
+    query: (q, ...args) => this.query(q, ...args),
+    tx: (ops) => this.tx(ops),
+    answerJobCard: async (a) => {
+      // M6 T5: a `memory_confirm` card is the memory seam's, not the runner's.
+      if (await this.d.memory?.onCardAnswered(a)) return;
+      await this.d.jobs?.onCardAnswered?.(a);
+    },
+  };
+
   /** A user message main stored (MainToEngine user.message). */
-  enqueue(chatId: string, messageId: string, opts: { onlyIfQueued?: boolean } = {}): void {
+  enqueue(chatId: string, messageId: string, opts: { onlyIfQueued?: boolean; intakeOnly?: boolean } = {}): void {
     if (opts.onlyIfQueued) this.drained.add(messageId);
+    if (opts.intakeOnly) this.intakeOnly.add(messageId);
     const q = this.queues.get(chatId) ?? [];
     if (this.inflight.has(messageId)) return;
     if (!q.includes(messageId)) q.push(messageId);
@@ -205,6 +269,11 @@ export class ChatLane {
     const fromDrain = this.drained.delete(messageId);
     if (!message || message.authorKind !== 'user') return;
     if (fromDrain && message.status !== 'queued') return;
+    // M4 T3: stop, steer and the G16 reply come before the intake turn and need no AI (08-2 §5.2).
+    const intakeOnly = this.intakeOnly.delete(messageId);
+    // M5 (T5): a typed answer to an open Choice or tiles card comes after the stop word and before the G16 reply (08-2 §5.2).
+    if (!intakeOnly && message.kind === 'text' && (await answerTyped(this.typedDeps, { chatId, messageId, text: message.text }))) return;
+    if (!intakeOnly && message.kind === 'text' && (await this.d.jobs?.onUserMessage?.({ chatId, messageId, text: message.text }))) return;
     const pick = this.d.ai.pick();
     if (!pick) {
       // 04 §3.3 Waiting to send: foo cannot hand it on now; drained when the AI is back (Engine.drainQueued).
@@ -214,12 +283,43 @@ export class ChatLane {
     const chat = await this.query<EngineChat>('chatOpen', chatId);
     if (!chat) return;
     const helper = chat.helperId ? await this.query<EngineHelper>('helpers.byId', chat.helperId) : null;
+    // M6 T5: J17 "don't remember this" is read before the turn, with no AI.
+    await this.d.memory?.beforeTurn(chat, message);
     const history = (await this.query<EngineMessage[]>('messagesBefore', chatId, message.seq, CONVERSATION * 2)) ?? [];
     const conversation = history
       .filter((m) => m.kind !== 'marker' && (m.status === 'complete' || m.status === 'sent'))
       .slice(-CONVERSATION);
     const settings = this.d.settings();
     const who = helper?.name ?? settings.identity.agentName;
+
+    const memory = await buildMemoryParts((q, ...args) => this.query(q, ...args), {
+      chatId,
+      text: message.textForAi ?? message.text,
+      timeZone: settings.locale.timeZone,
+      now: this.d.clock.now(),
+    });
+    let built: { system: string; prompt: string; factIds?: string[] } | null;
+    try {
+      const oldPlan = this.d.jobs?.planChange?.(chatId) ?? null;
+      built = this.d.protocol.buildIntake({
+        settings,
+        chat,
+        helper,
+        conversation,
+        message,
+        local: pick.billing === 'local',
+        memory,
+        ...(oldPlan ? { oldPlan } : {}),
+      });
+    } catch {
+      built = null;
+    }
+    // M5 T10 (CR-0008 (j) row 5): the pre-call cap check covers intake turns (08-2 §5.10 item 4). At the cap the message
+    // waits to send (04 §3.3, composer "Messages wait until you raise it") and is drained when the cap is lifted.
+    if (built && this.d.capCheck && !(await this.d.capCheck(built.system.length + built.prompt.length, 'intake'))) {
+      if (message.status !== 'queued') await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { status: 'queued' } }]);
+      return;
+    }
 
     // ✓✓ Delivered: the lane accepted it (04 §3.3). 👀 shows now, within 1 s of send, while foo thinks (04 §4.2, §14.1;
     // UX-08-02 draws it beside the Thinking row).
@@ -228,10 +328,7 @@ export class ChatLane {
 
     const turnId = this.d.newId('t');
     const startedAt = this.d.clock.now();
-    let built: { system: string; prompt: string };
-    try {
-      built = this.d.protocol.buildIntake({ settings, chat, helper, conversation, message, local: pick.billing === 'local' });
-    } catch {
+    if (!built) {
       // A message over the prompt budget (PromptBudgetError) or a broken prompt file: the reply is cut off with Try again
       // instead of leaving 👀 and the Thinking row up (04 §19.4).
       this.d.log('chat.prompt_failed', 'PROTOCOL_INVALID', { chatId });
@@ -342,30 +439,40 @@ export class ChatLane {
       return;
     }
     this.d.ai.reportOk(pick.providerId);
+    // M5 T10: the changed plan went with a turn that answered; the next message is a fresh one.
+    this.d.jobs?.planChange?.(chatId, true);
     await gate.end();
     await pending;
 
     const parsed = this.d.protocol.parse(result.text);
     let act = parsed.act;
+    let usedMemoryIds = act ? (parsed.usedMemoryIds ?? []) : [];
     if (!act) {
       // 08-2 §7.5: one repair turn (same session); its <say> is ignored after streaming (08-4 §25.5 item 3).
       const repairParams = this.d.ai.turnParams(pick.providerId, 'repair');
-      const repaired = await this.d.ai
-        .runTurn(
-          pick.providerId,
-          {
-            ...repairParams,
-            turnId: this.d.newId('t'),
-            purpose: 'repair',
-            system: built.system,
-            prompt: this.d.protocol.buildRepair(parsed.issues ?? ''),
-            chatId,
-          },
-          { onText: () => {}, onSession: () => {} },
-          new AbortController().signal,
-        )
-        .catch(() => null);
-      act = repaired && repaired.stopReason === 'end' ? this.d.protocol.parseAct(repaired.text).act : null;
+      const repairPrompt = this.d.protocol.buildRepair(parsed.issues ?? '');
+      // M5 T10 (row 5): the repair turn passes the cap check too; at the cap it is skipped (the <say> rule below still applies).
+      const capOk = !this.d.capCheck || (await this.d.capCheck(built.system.length + repairPrompt.length, 'repair'));
+      const repaired = !capOk
+        ? null
+        : await this.d.ai
+            .runTurn(
+              pick.providerId,
+              {
+                ...repairParams,
+                turnId: this.d.newId('t'),
+                purpose: 'repair',
+                system: built.system,
+                prompt: repairPrompt,
+                chatId,
+              },
+              { onText: () => {}, onSession: () => {} },
+              new AbortController().signal,
+            )
+            .catch(() => null);
+      const fixed = repaired && repaired.stopReason === 'end' ? this.d.protocol.parseAct(repaired.text) : null;
+      act = fixed?.act ?? null;
+      if (act) usedMemoryIds = fixed?.usedMemoryIds ?? [];
       if (!act) this.d.log('chat.protocol_invalid', 'PROTOCOL_INVALID', { chatId });
       // A valid <say> with a broken <act> is still posted as a plain reply (08-2 §7.5).
       if (!act && parsed.say.trim()) act = { kind: 'reply' };
@@ -374,7 +481,8 @@ export class ChatLane {
     const released = gate.released().trimEnd();
     if (kind !== 'reply' && released.trim()) this.d.log('chat.say_leak', 'PROTOCOL_SAY_LEAK', { chatId });
 
-    if (kind === 'reply' || (kind !== 'react' && !(kind === 'job' && this.d.jobs) && released.trim())) {
+    const memoryKind = act?.kind === 'memory' && this.d.memory ? act : null;
+    if (kind === 'reply' || (kind !== 'react' && !(kind === 'job' && this.d.jobs) && !memoryKind && released.trim())) {
       if (fooId) {
         await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
       } else {
@@ -391,6 +499,10 @@ export class ChatLane {
         askedText: message.textForAi ?? message.text,
         helperId: helper?.id ?? null,
       });
+    } else if (memoryKind && this.d.memory) {
+      // M6 T5 (08-4 §25.5 item 5): text already released stands; the reaction, chip or card follows it.
+      if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
+      await this.d.memory.decide(chat, helper, message, memoryKind);
     } else if (act && act.kind === 'react') {
       // Words that already showed past the hold stay as a finished bubble (they cannot be taken back); the 👍 still goes on.
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
@@ -401,7 +513,22 @@ export class ChatLane {
       await this.post(chatId, messageId, t('thread.reply.empty'), helper, providerNote);
     }
     this.typing(chatId, false, who);
+    await this.recordUses(chatId, usedMemoryIds, built.factIds ?? [], memory);
+    // M6 T5 (08-3 §12.5): "Used: {fact} ✕" under the reply, for the offered facts the AI named.
+    if (kind === 'reply' && fooId && this.d.memory) {
+      const used = usedFacts(usedMemoryIds, built.factIds ?? [], memory);
+      if (used.length) await this.d.memory.used(chatId, fooId, used);
+    }
     await this.turnRow(turnId, chatId, pick, startedAt, result, 'ok');
+    this.d.memory?.answered(chatId);
+  }
+
+  /** 08-4 §24.16 item 6: each offered id the AI names gets `last_used_at`, `use_count` + 1 and one `memory_uses` row. */
+  private async recordUses(chatId: string, named: string[], offered: string[], memory: MemoryParts): Promise<void> {
+    const ops = memoryUseOps(named, offered, memory, this.d.clock.now(), { chatId, jobId: null });
+    if (!ops.length) return;
+    const r = await this.tx(ops);
+    if (!r.ok) this.d.log('memory.uses_failed', r.error.kind, { chatId });
   }
 
   private async emptyReply(
@@ -418,14 +545,14 @@ export class ChatLane {
   }
 
   /** foo's reaction on the user's bubble takes the badge slot (04 §4.1 rule 5); no message is posted (AT-027). */
-  private async react(messageId: string, emoji: '👍' | '❤️', helper: EngineHelper | null): Promise<void> {
+  async react(messageId: string, emoji: '👍' | '❤️', helper: EngineHelper | null): Promise<void> {
     await this.tx([
       { op: 'insert', table: 'reactions', row: { message_id: messageId, by: helper?.id ?? 'foo', emoji, created_at: this.d.clock.now() } },
       { op: 'update', table: 'messages', id: messageId, set: { badge: null } },
     ]);
   }
 
-  private async post(chatId: string, messageId: string, text: string, helper: EngineHelper | null, note: string | null): Promise<void> {
+  async post(chatId: string, messageId: string, text: string, helper: EngineHelper | null, note: string | null): Promise<void> {
     const id = this.d.newId('m');
     this.answered.set(id, messageId);
     await this.tx([

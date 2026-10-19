@@ -227,3 +227,20 @@ describe('spend:update (03-shell-2 §3.7.3.4)', () => {
     expect(s.summary?.month).toBe('2026-11');
   });
 });
+
+describe('T7: the now line is the running step’s phrase (08-1 §4.4 nowLine, 08-4 §26.1)', () => {
+  it('reads the running phrase with its slots, never the raw key', () => {
+    tx([
+      job('j_n', 'Find trains', 'working', { started_at: NOW }),
+      step('s_n1', 'j_n', 0, 'running', { phrase_key: 'check_site', started_at: NOW }),
+    ]);
+    expect(one('j_n', NOW).nowLine).toBe('Checking irctc.co.in');
+  });
+  it('falls back to the generic line for a key outside the catalogue', () => {
+    tx([
+      job('j_g', 'Old plan', 'working', { started_at: NOW }),
+      step('s_g1', 'j_g', 0, 'running', { phrase_key: 'freeform_thing', slots: { text: 'x' }, started_at: NOW }),
+    ]);
+    expect(one('j_g', NOW).nowLine).toBe('Working on it');
+  });
+});
