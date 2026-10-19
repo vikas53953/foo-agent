@@ -22,6 +22,8 @@
 // - UX-23-11: the drawn one-liners are connector and site problems (Gmail expired, WhatsApp unlinked: M8; a blocked site
 //   needs the M9 browser's SITE_BLOCKED). M4's runner raises the one-line UNKNOWN card ("Nothing was booked, paid or sent",
 //   one fixing button), captured with its button as hl.
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { expect, test, type ElectronApplication, type Locator, type Page } from '@playwright/test';
 import type {} from '../../../src/shared/ipc';
 import { t } from '../../../src/shared/copy/t';
@@ -249,8 +251,16 @@ test('UX-23 · When things go wrong: steps UX-23-01 to UX-23-06, UX-23-09 and UX
     await send(first.page, draft!, false);
     await first.page.waitForTimeout(1_000); // the draft's 500 ms save (04-2 §23.5)
     // foo closes unexpectedly: the process is killed, no clean quit (08-1 §4.1.3 launches.json stays unclean).
-    first.app.process().kill('SIGKILL');
-    await first.app.close().catch(() => undefined);
+    // Wait for the process to be gone before relaunching: a close() racing a kill that has not landed yet is a clean quit
+    // (which pauses the job instead, 08-2 §5.9 step 3), and the relaunch would find no unfinished job.
+    const proc = first.app.process();
+    const gone = new Promise<void>((r) => (proc.exitCode !== null || proc.signalCode !== null ? r() : proc.once('exit', () => r())));
+    proc.kill('SIGKILL');
+    await gone;
+    const launches = JSON.parse(readFileSync(join(first.dirs.FOO_DATA_DIR, 'launches.json'), 'utf8')) as {
+      launches: { clean: boolean }[];
+    };
+    expect(launches.launches.at(-1)?.clean).toBe(false);
 
     const { app } = await launchWithFakeAi([VERIFY_OK, HOLD], { dirs: first.dirs });
     const page = await app.firstWindow();
