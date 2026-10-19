@@ -11,7 +11,7 @@ import { z } from 'zod';
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
 import type { EventChannel, EventPayload, InvokeChannel, InvokeIn, InvokeOut, PlatformInfo, VerifyResult } from '../../shared/ipc';
-import { PROVIDER_IDS, settingsSchema, WRITABLE_PATHS, type Settings } from '../../shared/settings';
+import { PROVIDER_IDS, settingLocked, settingsSchema, WRITABLE_PATHS, type Settings } from '../../shared/settings';
 import type { FixAction, MessageRow, WindowsSettingsPage } from '../../shared/types';
 import { deps } from '../deps';
 import type { NetMonitor } from '../net/netMonitor';
@@ -292,14 +292,16 @@ export function handle<C extends InvokeChannel>(channel: C, fn: Handler<C>): voi
 }
 
 function getPath(s: Settings, path: string): unknown {
-  const [head, key] = path.split('.') as [keyof Settings, string];
-  return (s[head] as Record<string, unknown>)[key];
+  return path.split('.').reduce<unknown>((o, k) => (o as Record<string, unknown> | undefined)?.[k], s);
 }
 
+/** Copies each object on the path (M5: three-level paths such as `permissions.actions.send`). */
 function setPath(s: Settings, path: string, value: unknown): Settings {
-  const [head, key] = path.split('.') as [keyof Settings, string];
-  const section = s[head] as Record<string, unknown>;
-  return { ...s, [head]: { ...section, [key]: value } } as Settings;
+  const set = (o: Record<string, unknown>, [k, ...rest]: string[]): Record<string, unknown> => ({
+    ...o,
+    [k!]: rest.length ? set(o[k!] as Record<string, unknown>, rest) : value,
+  });
+  return set(s as unknown as Record<string, unknown>, path.split('.')) as unknown as Settings;
 }
 
 export function registerIpc(ctx: AppContext): void {
@@ -567,6 +569,8 @@ export function registerIpc(ctx: AppContext): void {
     const before = settings.get();
     const next = setPath(before, path, value);
     if (!settingsSchema.safeParse(next).success) return fail('VALIDATION');
+    // M5 (CR-0009; 08-1 §4.4.2 step 1, 08-0 §A.2): a locked value is refused and nothing is written.
+    if (settingLocked(path, value)) return fail('SETTING_LOCKED');
     settings.update(() => next);
     // 08-1 §4.4.2 step 3: the change record (M4: the AI cap only).
     const row = changeRecordRow(path, getPath(before, path), value);
