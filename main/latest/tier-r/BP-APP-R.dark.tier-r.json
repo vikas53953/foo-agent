@@ -15,6 +15,8 @@
       "missing": [
         "✕",
         "!",
+        "Comparing",
+        "fares",
         "✓",
         "Mom's",
         "See",
@@ -29,6 +31,9 @@
         "progress",
         "Scheduled",
         "Done",
+        "Working",
+        "on",
+        "it",
         "Mom’s",
         "Wakes",
         "up",
@@ -93,8 +98,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.09024969362745099,
-    "diffPixels": 23566,
+    "ratio": 0.09011182598039216,
+    "diffPixels": 23530,
     "total": 261120,
     "sizeMismatch": {
       "a": [
