@@ -10,7 +10,9 @@
 // sends; Esc cancels the edit; Undo is focused in the countdown; card label "Draft, not sent: {Email} to {name}"; Send
 // label "Send email to {name}"), 05-1 §0.5 muted and failed looks, 09 §9.17.4. Email only in M5; the WhatsApp and X variants,
 // the offline queue and real send errors arrive with M8 (review fix 5). Card words come from copy keys and the draft's own
-// fields, never AI free text.
+// fields, never AI free text. M5 T14: HELD (second look, Art. 10; a look of `pending`): the Held strip "Before I send this,
+// one check: you said {Monday}, the draft says {Tuesday 20 Oct}. Which one?" and one Secondary button per value in place
+// of Send / Change / Discard (cannot_check / no_user_words: the strip alone, 08-4 §28.6).
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import { formatDate, formatTime } from '../../shared/format';
@@ -22,6 +24,7 @@ import { clockNow } from '../store/apply';
 import { Icon, type IconName } from '../ui/Icon';
 import { CardButton } from './CardButton';
 import { CardFrame, CardTimeLabel, type CardTime } from './CardFrame';
+import { HeldStrip } from './parts/HeldStrip';
 import { useCardAction } from './useCardAction';
 import styles from './Draft.module.css';
 
@@ -99,7 +102,7 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
   const tz = time.timeZone;
   const name = p.to?.name ?? '';
   const channel = t('cards.draft.right_label.email');
-  const { busy, run } = useCardAction<'send' | 'save' | 'discard' | 'undo' | 'open' | 'again'>();
+  const { busy, run } = useCardAction<'send' | 'save' | 'discard' | 'undo' | 'open' | 'again' | 'held'>();
   const [editing, setEditing] = useState(false);
   const [subject, setSubject] = useState(p.subject ?? '');
   const [body, setBody] = useState(p.body);
@@ -299,7 +302,31 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
   };
 
   let buttons: ReactNode;
-  if (state === 'undo_window' && p.undoUntil !== undefined) {
+  // M5 T14 (05-2 §5.7.2 HELD): only the user's pick answers a held draft.
+  const held = state === 'pending' ? p.held : undefined;
+  if (held) {
+    const pick = (optionId: 'own' | 'action') => run('held', () => invoke('card:heldPick', { ...tap, optionId }));
+    buttons = (
+      <>
+        <HeldStrip word={t('cards.common.held_word')}>
+          {held.reason === 'mismatch'
+            ? t('cards.draft.held', { userSaid: held.userSaid ?? '', draftHas: held.actionHas ?? '' })
+            : held.reason === 'cannot_check'
+              ? t('cards.approval.held.cannot_check', { verbing: held.verbing ?? '' })
+              : t('cards.approval.held.no_user_words')}
+        </HeldStrip>
+        {held.reason === 'mismatch' && (
+          <div className={styles.buttons}>
+            {(['own', 'action'] as const).map((o, i) => (
+              <CardButton key={o} tid="cardDraftHeldOption" index={i} kind="secondary" disabled={busy !== null} onClick={() => pick(o)}>
+                {o === 'own' ? held.userSaid : held.actionHas}
+              </CardButton>
+            ))}
+          </div>
+        )}
+      </>
+    );
+  } else if (state === 'undo_window' && p.undoUntil !== undefined) {
     buttons = (
       <div className={styles.buttons}>
         <UndoCountdown key={p.undoUntil} windowMs={p.undoUntil - (card.resolvedAt ?? p.undoUntil - UNDO_MS)} />
@@ -373,7 +400,7 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
       : !p.sendAllowed
         ? [t('cards.draft.line.no_permission')]
         : [
-            ...(p.undone && state === 'pending' ? [t('cards.draft.line.undone')] : []),
+            ...(p.undone && state === 'pending' && !held ? [t('cards.draft.line.undone')] : []),
             t('cards.draft.line.pending', { address: p.to?.address ?? '', app: t('cards.approval.app.gmail') }),
           ];
 

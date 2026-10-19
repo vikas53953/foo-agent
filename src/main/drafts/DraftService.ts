@@ -6,12 +6,14 @@
 // here."; after the 5 s the undo is refused; To is not editable in the card; Discard → WITHDRAWN "Draft discarded"; No send
 // permission → "Open in Gmail"), §5.7.4 (activity `sent_email`: recipient masked, subject, approvalId, proof,
 // `approved_how='card_once'`; the body never goes to the activity log), 08-2 §10.4 (write-ahead `submitted_at` before the
-// one irreversible call), 06-3 §9.4 ("Sent an email to {name}"). CR-0009 G-M5-12 (fake Gmail drafts), review fix 5 (the
-// second look is a port that always passes until T8 fills it).
+// one irreversible call), 06-3 §9.4 ("Sent an email to {name}"). CR-0009 G-M5-12 (fake Gmail drafts).
+// M5 T14: 08-2 §9.6 + 08-3 §16.1 (the second look on the card text runs when the 5 s close, before drafts.send; fail
+// closed), 05-2 §5.7.2 HELD (held strip + one button per value; the draft's value sends, the user's builds a fresh Draft
+// card on the same Gmail draft and the old one is superseded, G-M5-03), CR-0009 G-M5-39 (b).
 import { newNonce } from '../../shared/canon';
 import { fail, ok, type Result } from '../../shared/errors';
 import { maskEmail, redactSecrets } from '../../shared/redactor';
-import type { ApprovalFields, CardRow, DraftFields, DraftPayload } from '../../shared/types';
+import type { ApprovalFields, ApprovalPayload, CardRow, DraftFields, DraftPayload, SecondLookResult } from '../../shared/types';
 import { approvalExpiresAt } from '../../shared/approvalMachine';
 import { fieldsHash } from '../../engine/gate/fieldsHash';
 import { cardRow, type DbRow } from '../db/rows';
@@ -25,9 +27,15 @@ export const UNDO_MS = 5_000;
 /** Gmail's drafts folder: where "Open in Gmail" lands when foo may not send (05-2 §5.7.2 No send permission). */
 export const GMAIL_DRAFTS_URL = 'https://mail.google.com/mail/#drafts';
 
-/** 08-4 §28.4 second look; T8 fills it. `pass: false` stops the send here (T8 adds the HELD move and its card strip). */
-export type SecondLook = (a: ApprovalRow) => Promise<{ pass: boolean }>;
-const alwaysPass: SecondLook = () => Promise.resolve({ pass: true });
+type Held = NonNullable<ApprovalPayload['held']>;
+/**
+ * 08-2 §9.6 second look on the text about to go out (main asks the engine, `draft.secondLook`). `pass: false` holds the
+ * Draft with `held` (no `held` → cannot_check: fail closed).
+ */
+export type SecondLook = (
+  a: ApprovalRow,
+  out: { content: string; recipients: string[] },
+) => Promise<{ pass: boolean; result?: SecondLookResult; held?: Held }>;
 
 export interface DraftDeps {
   db: Db;
@@ -37,7 +45,8 @@ export interface DraftDeps {
   gmail(): GmailDrafts | null;
   /** After a write the gate did not make: main emits the moved rows. */
   changed(effects: TxEffects): void;
-  secondLook?: SecondLook;
+  /** M5 T14: required, so no Draft can send without it (Art. 10). */
+  secondLook: SecondLook;
   openExternal?(url: string): void | Promise<void>;
   dataDir?: string;
   log?(line: Record<string, unknown>): void;
@@ -222,23 +231,34 @@ export class DraftService {
     return out;
   }
 
-  private async sendOne(approvalId: string): Promise<boolean> {
-    const a = this.d.gate.get(approvalId);
-    if (!a || a.state !== 'APPROVED') return false;
-    const look = await (this.d.secondLook ?? alwaysPass)(a);
-    if (!look.pass) {
-      // Out of the tick's due list, so the look runs once; HELD and its card come with T8.
-      this.d.db.prepare("UPDATE approvals SET undo_until = NULL WHERE id = ? AND state = 'APPROVED' AND submitted_at IS NULL").run(a.id);
-      return false;
+  /** `confirmed`: the user picked the draft's own value on a HELD card, which is the second look's answer (SM-A4). */
+  private async sendOne(approvalId: string, confirmed = false): Promise<boolean> {
+    const a0 = this.d.gate.get(approvalId);
+    if (!a0 || a0.state !== 'APPROVED') return false;
+    const card0 = this.card(a0.cardId);
+    if (!card0) return false;
+    const p0 = card0.payload as unknown as DraftPayload;
+    // M5 T14 (08-2 §9.6, 08-3 §16.1): the second look on the card text, right before the send.
+    let look: SecondLookResult | undefined;
+    if (!confirmed) {
+      const content = redactSecrets([p0.subject, p0.body].filter(Boolean).join('\n')).text;
+      const r = await this.d.secondLook(a0, { content, recipients: p0.to ? [p0.to.address] : [] });
+      if (!r.pass) {
+        this.hold(a0.id, r.held ?? { reason: 'cannot_check', verbing: 'sending' }, r.result);
+        return false;
+      }
+      look = r.result;
     }
-    const card = this.card(a.cardId);
+    // The look may take seconds: read the row and card again, so a move in between (expiry, a stopped job) wins.
+    const a = this.d.gate.get(approvalId);
+    const card = this.card(a0.cardId);
+    if (!a || a.state !== 'APPROVED' || !card) return false;
     const gmail = this.d.gmail();
-    if (!card) return false;
     const p = card.payload as unknown as DraftPayload;
     const now = this.d.now();
     // Write-ahead before the one irreversible call (08-2 §10.4); a crash after this never sends twice.
     const running = this.d.gate.draftMove(a.id, 'submit', {
-      approval: { submitted_at: now },
+      approval: { submitted_at: now, ...(look ? { second_look: JSON.stringify(look) } : {}) },
       card: { state: 'sending', payload: { ...p, undoUntil: undefined } },
     });
     if (!running.ok) return false;
@@ -283,6 +303,82 @@ export class DraftService {
       ],
     });
     return done.ok;
+  }
+
+  // M5 T14
+  /**
+   * 05-2 §5.7.2 HELD (Article 10): APPROVED → HELD with the look kept on the row; the card stays `pending` (Held is a look of
+   * pending, §5.7.3) and shows the held strip. Out of the tick's due list (`undo_until` cleared), so the look runs once.
+   */
+  private hold(approvalId: string, held: Held, result: SecondLookResult | undefined): void {
+    const a = this.d.gate.get(approvalId);
+    const card = a ? this.card(a.cardId) : null;
+    if (!a || !card) return;
+    const p = card.payload as unknown as DraftPayload;
+    const r = this.d.gate.draftMove(a.id, 'second_look_held', {
+      approval: { undo_until: null, ...(result ? { second_look: JSON.stringify(result) } : {}) },
+      card: { state: 'pending', payload: { ...p, undoUntil: undefined, held }, resolved_by: null, resolved_at: null, answer: null },
+    });
+    this.d.log?.({ t: this.d.now(), lvl: 'info', mod: 'drafts', evt: 'second_look.held', approvalId: a.id, reason: held.reason, ok: r.ok });
+  }
+
+  /**
+   * `card:heldPick` on a held Draft (05-2 §5.7.2, SM-A4): the draft's value (`action`) → HELD → APPROVED and it sends now;
+   * the user's own (`own`) → HELD → DECLINED (G-M5-03), this card is superseded and a fresh pending Draft card on the same
+   * Gmail draft follows, so they can change it and send (the AI re-writing it with their value is M8's draft producer).
+   */
+  heldPick(req: Tap & { optionId: string }): Result<CardRow> {
+    if (req.optionId !== 'action' && req.optionId !== 'own') return fail('VALIDATION');
+    const card = this.card(req.cardId);
+    if (!card) return fail('NOT_FOUND');
+    if (card.type !== 'draft') return fail('VALIDATION');
+    const a = this.d.gate.byCard(card.id);
+    if (!a) return fail('NOT_FOUND');
+    if (card.nonce !== req.nonce) return fail('CARD_STALE');
+    if (a.state === 'EXPIRED' || (a.state === 'HELD' && this.d.now() >= a.expiresAt)) return fail('CARD_EXPIRED');
+    if (a.state !== 'HELD') return fail('CARD_STALE');
+    const now = this.d.now();
+    const { held: _held, ...p } = card.payload as unknown as DraftPayload;
+    void _held;
+    const answered = { resolved_by: req.resolvedBy, resolved_at: now, answer: { optionId: req.optionId } };
+    if (req.optionId === 'action') {
+      const m = this.d.gate.draftMove(a.id, 'held_pick_action', {
+        approval: { approved_at: now, approved_via: 'card' },
+        card: { state: 'sending', payload: p, ...answered },
+      });
+      if (!m.ok) return m;
+      void this.sendConfirmed(a.id);
+      return ok(this.card(card.id)!);
+    }
+    const { approvalId: _old, undoUntil: _u, undone: _d, ...fresh } = p;
+    void _old;
+    void _u;
+    void _d;
+    const moved = this.d.db.transaction(() => {
+      const m = this.d.gate.draftMove(a.id, 'held_pick_own', { card: { state: 'superseded', payload: p, ...answered } });
+      if (!m.ok) throw new DraftAbort(m);
+      const made = this.d.gate.createDraft({ jobId: a.jobId, fields: a.fields, payload: fresh, supersedesCardId: card.id });
+      if (!made.ok) throw new DraftAbort(made);
+    });
+    try {
+      moved();
+    } catch (e) {
+      if (e instanceof DraftAbort) return e.result;
+      throw e;
+    }
+    return ok(this.card(card.id)!);
+  }
+
+  private async sendConfirmed(approvalId: string): Promise<void> {
+    if (this.sending.has(approvalId)) return;
+    this.sending.add(approvalId);
+    try {
+      await this.sendOne(approvalId, true);
+    } catch (e) {
+      this.d.log?.({ t: this.d.now(), lvl: 'error', mod: 'drafts', evt: 'send.failed', approvalId, err: String(e) });
+    } finally {
+      this.sending.delete(approvalId);
+    }
   }
 
   /** `draft:update` (Change → Save changes): Gmail drafts.update, the same PENDING approval re-hashed, a new nonce. */

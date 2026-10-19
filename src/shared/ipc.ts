@@ -127,6 +127,11 @@ export interface Invokes {
   'card:decline': { req: { cardId: string; nonce: string; resolvedBy: CardTapBy }; res: CardRow };
   'card:askAgain': { req: { cardId: string }; res: { newCardId?: string } };
   'card:heldPick': { req: { cardId: string; nonce: string; optionId: string; resolvedBy: CardTapBy }; res: CardRow };
+  // M5 T14 (CR-0009 G-M5-39): the CHECKING → FAILED card's [ It went through ] / [ It didn't ] (05-2 §5.5.4).
+  'approval:report': {
+    req: { cardId: string; nonce: string; outcome: 'went_through' | 'did_not'; resolvedBy: CardTapBy };
+    res: CardRow;
+  };
   'draft:update': { req: { cardId: string; nonce: string; fields: DraftFields }; res: CardRow };
   'draft:send': { req: { cardId: string; nonce: string; resolvedBy: CardTapBy }; res: { approvalId: string; undoUntil: number } };
   'draft:undo': { req: { approvalId: string }; res: { undone: boolean } };
@@ -259,6 +264,8 @@ export const INVOKE_CHANNELS = [
   'code:submit',
   // M5 T2
   'secret:offer',
+  // M5 T14
+  'approval:report',
 ] as const satisfies readonly InvokeChannel[];
 
 export const EVENT_CHANNELS = [
@@ -330,7 +337,7 @@ export interface CardSeedRequest {
   payload: Record<string, unknown>;
   jobId?: string;
   expiresAt?: number;
-  approval?: { fields: ApprovalFields; hardLimit?: boolean; state?: ApprovalState; expiresAt?: number };
+  approval?: { fields: ApprovalFields; hardLimit?: boolean; state?: ApprovalState; expiresAt?: number; submittedAt?: number };
 }
 export interface CardSeedResult {
   chatId: string;

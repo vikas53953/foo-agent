@@ -2,13 +2,23 @@
 // The draft is still here.", Sent "✓ Sent · {time}" + the Sent-folder proof chip, "Draft discarded"; §5.7.4 Ctrl+Enter
 // never sends), 08-0 §G.7 (X-65), CR-0009. foo-verify journey for M5 T6: seed a known-recipient email Draft (with its
 // approvals row) in the foo chat; Change the body and Save; Send, see the countdown and Undo; Send again and let the 5 s pass
-// on the test clock until main's tick sends it; then seed a second draft and Discard it. Run:
+// on the test clock until main's tick sends it; then seed a second draft and Discard it. M5 T14: the send runs the second look
+// (08-2 §9.6) on the fake AI, so the user first asks for the email in the chat and the look matches. Run:
 //   xvfb-run -a pnpm tsx scripts/foo-verify.ts test/verify/m5-t6-draft.journey.ts
 import type { Verify } from '../../scripts/foo-verify';
 import type { CardSeedRequest } from '../../src/shared/ipc';
 import { TID } from '../../src/shared/testids';
 import type { ApprovalFields } from '../../src/shared/types';
 import { byTid, openChat, openWorld, rest, settle } from '../fidelity/capture';
+import { intake, VERIFY_OK, type FakeLine } from '../e2e/fakeAi';
+
+// M5 T14: the user's own words for the second look, and the look's answer (08-4 §25.4 SecondLookAct).
+const ASK = 'Email Rakesh that I’ll pay the rent on Tuesday';
+const SCRIPT: FakeLine[] = [
+  VERIFY_OK,
+  intake(ASK, 'Okay.'),
+  { match: { purpose: 'second_look' }, reply: `<say></say><act>${JSON.stringify({ match: true })}</act>`, once: false },
+];
 
 const T = Date.parse('2026-10-16T09:41:00+05:30');
 const BODY = 'Hi Rakesh, I’ll pay October’s rent on Tuesday 20 Oct. Thanks for your patience. Vikas';
@@ -36,9 +46,13 @@ const DRAFT: CardSeedRequest = {
 };
 
 export default async function journey(v: Verify): Promise<void> {
-  const { app, page } = await v.launch();
+  const { app, page } = await v.launch({ fakeAi: SCRIPT });
   await openWorld(app, page);
   await openChat(page, 'foo');
+  await page.getByTestId(TID.composerField).focus();
+  await page.keyboard.type(ASK);
+  await page.keyboard.press('Enter');
+  await page.getByTestId(TID.threadLog).locator(byTid(TID.bubbleMe), { hasText: ASK }).last().waitFor();
   const seed = async () => {
     const r = await page.evaluate((s) => window.__fooTest!.cardSeed(s), DRAFT);
     const sel = `${byTid(TID.cardDraft)}[data-card-id="${r.cardId}"]`;
@@ -120,7 +134,7 @@ export default async function journey(v: Verify): Promise<void> {
   await one.card.getByTestId(TID.cardDraftSend).click();
   await stateIs(one.sel, 'undo_window');
   await page.evaluate(() => window.__fooTest!.clock.advance(5_000));
-  await stateIs(one.sel, 'sent');
+  await stateIs(one.sel, 'sent', 15_000);
   const sent = await text(one.sel);
   if (!sent.includes('Sent · 9:48 AM') || !sent.includes('Proof: in your Gmail Sent folder')) throw new Error(`sent card reads "${sent}"`);
   v.note('Send again, clock +5 s → within one tick data-card-state="sent", "Sent · 9:48 AM" + "Proof: in your Gmail Sent folder"');

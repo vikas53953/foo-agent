@@ -260,11 +260,93 @@ describe('Draft card lifecycle (08-0 §G.7, X-65)', () => {
     expect(await w.drafts.tick()).toEqual([]);
     expect(order).toEqual(['look']);
     expect(w.gmail.sent).toHaveLength(0);
-    expect(w.h.approval(d.approvalId)).toMatchObject({ state: 'APPROVED', undo_until: null });
+    // M5 T14: a look that can't say why holds all the same (fail closed, 08-2 §9.6): HELD, cannot_check.
+    expect(w.h.approval(d.approvalId)).toMatchObject({ state: 'HELD', undo_until: null });
+    expect(payload(w, d.cardId).held).toEqual({ reason: 'cannot_check', verbing: 'sending' });
     // A held look runs once, not every tick.
     w.h.clock.now = T0 + 6_000;
     expect(await w.drafts.tick()).toEqual([]);
     expect(order).toEqual(['look']);
+  });
+
+  // M5 T14 (05-2 §5.7.2 HELD, 08-2 §9.6, 08-3 §16.1, SM-A4, G-M5-03, G-M5-39 (b))
+  describe('second look on a Draft send (T14)', () => {
+    const MONDAY = { reason: 'mismatch' as const, userSaid: 'Monday 19 Oct', actionHas: 'Tuesday 20 Oct' };
+    const heldWorld = () => {
+      const seen: { content: string; recipients: string[] }[] = [];
+      const w = world((_a, out) => {
+        seen.push(out);
+        return Promise.resolve({
+          pass: false,
+          held: MONDAY,
+          result: { at: T0 + 5_000, deterministic: { ok: true, mismatches: [] }, ai: { ok: false, note: 'date: Monday ≠ Tuesday' } },
+        });
+      });
+      return { w, seen };
+    };
+    const heldDraft = async (w: World) => {
+      const d = await made(w);
+      w.drafts.send(tap(d));
+      w.h.clock.now = T0 + 5_000;
+      await w.drafts.tick();
+      return d;
+    };
+
+    it('the look reads the card text and the outgoing address; a mismatch holds: HELD, the card stays pending with the held values, nothing sent', async () => {
+      const { w, seen } = heldWorld();
+      const d = await heldDraft(w);
+      expect(seen).toEqual([{ content: `${DRAFT.subject}\n${DRAFT.body}`, recipients: [TO.address] }]);
+      expect(w.gmail.sent).toHaveLength(0);
+      expect(w.h.approval(d.approvalId)).toMatchObject({ state: 'HELD', undo_until: null, submitted_at: null });
+      expect(JSON.parse(String(w.h.approval(d.approvalId).second_look))).toMatchObject({ ai: { ok: false } });
+      expect(w.h.card(d.cardId).state).toBe('pending');
+      expect(payload(w, d.cardId).held).toEqual(MONDAY);
+      // Send / Change / Discard on a held card are stale: only the two values answer it.
+      expect(w.drafts.send(tap(d))).toEqual({ ok: false, error: { kind: 'CARD_STALE' } });
+    });
+
+    it("picking the draft's value sends it at once, without a second look", async () => {
+      const { w, seen } = heldWorld();
+      const d = await heldDraft(w);
+      const r = w.drafts.heldPick({ ...tap(d), optionId: 'action' });
+      expect(r.ok).toBe(true);
+      await new Promise((res) => setTimeout(res, 0));
+      expect(seen).toHaveLength(1);
+      expect(w.gmail.sent).toHaveLength(1);
+      expect(w.h.approval(d.approvalId).state).toBe('COMPLETED');
+      expect(w.h.card(d.cardId).state).toBe('sent');
+      expect(payload(w, d.cardId).held).toBeUndefined();
+    });
+
+    it("picking the user's own value: nothing sent, HELD → DECLINED, the card superseded by a fresh pending Draft on the same Gmail draft", async () => {
+      const { w } = heldWorld();
+      const d = await heldDraft(w);
+      expect(w.drafts.heldPick({ ...tap(d), optionId: 'own' }).ok).toBe(true);
+      expect(w.gmail.sent).toHaveLength(0);
+      expect(w.h.approval(d.approvalId).state).toBe('DECLINED');
+      expect(w.h.card(d.cardId).state).toBe('superseded');
+      const fresh = w.h.db.prepare('SELECT id, state, payload FROM cards WHERE supersedes_id = ?').get(d.cardId) as {
+        id: string;
+        state: string;
+        payload: string;
+      };
+      expect(fresh.state).toBe('pending');
+      expect(JSON.parse(fresh.payload)).toMatchObject({ gmailDraftId: 'gd_1', body: DRAFT.body });
+      expect(JSON.parse(fresh.payload).held).toBeUndefined();
+      expect(w.h.db.prepare('SELECT state FROM approvals WHERE card_id = ?').pluck().get(fresh.id)).toBe('PENDING');
+      // Once only.
+      expect(w.drafts.heldPick({ ...tap(d), optionId: 'own' })).toEqual({ ok: false, error: { kind: 'CARD_STALE' } });
+    });
+
+    it('a pass stores the look on the row and sends', async () => {
+      const result = { at: T0 + 5_000, deterministic: { ok: true, mismatches: [] }, ai: { ok: true, note: '' } };
+      const w = world(() => Promise.resolve({ pass: true, result }));
+      const d = await made(w);
+      w.drafts.send(tap(d));
+      w.h.clock.now = T0 + 5_000;
+      expect(await w.drafts.tick()).toEqual([d.approvalId]);
+      expect(JSON.parse(String(w.h.approval(d.approvalId).second_look))).toEqual(result);
+    });
   });
 
   it('a Send that lands while Gmail saves a Change wins: the change is refused and Gmail gets the approved words back', async () => {
@@ -306,6 +388,7 @@ describe('Draft card lifecycle (08-0 §G.7, X-65)', () => {
       now: () => w.h.clock.now,
       gmail: () => w.gmail,
       changed: () => undefined,
+      secondLook: () => Promise.resolve({ pass: true }),
       // The card is folded before Gmail opens, so a failed open never leaves a live approval behind.
       openExternal: (url) => void opened.push(`${url} ${String(w.h.card(r.value.cardId).state)}`),
     });

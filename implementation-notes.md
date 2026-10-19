@@ -750,3 +750,19 @@ max-width: 100%` (`.wide` the same with `--card-w-wide`). CardFrame takes `data`
 - M5-T8-10 · Review fixes: a write-ahead with no ack in 2 s → HELD with the cannot_check strip and the card kept open;
   the AI check retries only an invalid act (timeout, error or refused cost → cannot_check) and runs on the job's signal;
   the fresh-terms re-read (`ToolLayer.reread`) leaves the IDEMPOTENT_REPEAT and held-`unknown` sets as they are.
+- M5-T14-01 · G-M5-39 (a): CHECKING → FAILED is marked by main's 15 min no-proof move (`payload.unknownResult`); the card
+  shows "I can't tell…" with [ It went through ] [ It didn't ] and no Try again. The tap is `approval:report { cardId,
+  nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED, `answer` and `resolved_by='tap'`, the
+  nonce turns over (once only), and the approval's activity rows still `unknown` take done / failed. Nothing writes such a
+  row on the CHECKING path yet (no live book or pay producer before M8 / M9), so today the card alone records the answer;
+  the activity.jsonl mirror is not rewritten on that update.
+- M5-T14-02 · No phone is verified in M5, so the `{phone}` clause is left out with its words
+  (`cards.approval.body.checking_failed_no_phone`, G-M5-32 (b) rule); `unknownResult.phone` carries one when a later
+  milestone verifies it. 08-2 §10.5's payment wording ("I couldn't confirm it…" + [ I checked, try again ]) is the
+  Payment card's (M8 payments) and is not touched.
+- M5-T14-03 · G-M5-39 (b): a Draft's Send runs the second look when its 5 s close (08-2 §9.6, 08-3 §16.1): main's tick asks
+  the engine `draft.secondLook { approvalId, content, recipients }` (the AI and the job's words are there; content = the
+  redacted subject + body, not the 140-char summary) and acts on the answer. No engine / no answer → HELD cannot_check
+  (fail closed); the port is required, so no Draft can send without it. HELD keeps the card `pending` with the held strip;
+  the draft's value → HELD → APPROVED and sends at once; the user's value → DECLINED (G-M5-03), the card superseded and a
+  fresh pending Draft on the same Gmail draft (as G-M5-28), since re-writing it with their value is M8's draft producer.
