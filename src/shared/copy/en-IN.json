@@ -1037,5 +1037,8 @@
   "dialog.c_22.title": "Remove your saved {name}?",
   "dialog.c_22.body": "I’ll ask you for it again the next time a job needs it.",
   "dialog.c_22.primary": "Remove",
-  "dialog.c_22.secondary": "Cancel"
+  "dialog.c_22.secondary": "Cancel",
+  "thread.cap_warning.line": "You’ve used {spent} of your {cap} AI cap this month.",
+  "sidebar.footer.ai.plan_limit.no_time": "{AI} limit reached",
+  "chat_header.status.paused_plan_limit.no_time": "Paused · {ai} limit reached"
 }

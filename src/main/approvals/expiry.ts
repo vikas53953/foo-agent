@@ -1,6 +1,7 @@
 // Spec: 08-2 §9.1 (approval timers run in main, so they keep running while the window is closed; absolute `expires_at`),
 // §9.7 `ApprovalGate.expireTick` (1 s timer), 05-2 §5.5.4 (EXPIRED copy and [ Ask me again ]). The tick reads the injected
 // clock through the gate, so a test clock set past `expires_at` expires the card within one tick.
+import { logEvent } from '../log/techLog';
 import type { ApprovalGate } from './ApprovalGate';
 
 export const EXPIRY_TICK_MS = 1_000;
@@ -11,7 +12,8 @@ export function startExpiryTick(gate: Pick<ApprovalGate, 'expireTick'>, every = 
     try {
       gate.expireTick();
     } catch (e) {
-      console.error('approvals.expireTick', e);
+      const code = (e as { code?: unknown } | null)?.code;
+      logEvent({ lvl: 'error', mod: 'approvals', evt: 'EXPIRE_TICK_FAILED', kind: typeof code === 'string' ? code : 'UNKNOWN' });
     }
   }, every);
   timer.unref?.();
