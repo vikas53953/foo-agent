@@ -1,19 +1,19 @@
 {
-  "reportId": "M5-a897865-39254616476",
+  "reportId": "M5-196b299-39255588641",
   "milestone": "M5",
-  "generatedAt": "2026-10-19T12:53:50.558Z",
-  "commit": "047347282ac4b682a1640c69357380ca67c0d237",
-  "head": "a897865811022872ec526698e75d28ef120744dc",
+  "generatedAt": "2026-10-19T13:11:05.943Z",
+  "commit": "1da251bb3142838b10a52bcb34962469ea27de66",
+  "head": "196b299bb88d75f798a9947745f95fd358557d3d",
   "ci": {
-    "runId": "39254616476",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39254616476"
+    "runId": "39255588641",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39255588641"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "ace5c85e9383ebf8c09e6a22aae45fdffebe341f12e85cdfb30a971da6685aba"
   },
   "runner": {
-    "recordedAt": "2026-10-19T12:50:32.398Z",
+    "recordedAt": "2026-10-19T13:00:47.741Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000003335"
+      "runner": "GitHub Actions 1000003349"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,7 +59,7 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "1 test(s) failed",
+    "3 test(s) failed",
     "missing evidence: audit list (docs/fidelity/M5.audit.json)"
   ],
   "missingInputs": [
@@ -236,7 +236,7 @@
         "id": "SV-01",
         "ok": true,
         "expected": "18px non-tail corners (tail corners 6px)",
-        "measured": "17 bubbles, all equal"
+        "measured": "11 bubbles, all equal"
       },
       {
         "id": "SV-08",
@@ -308,14 +308,14 @@
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 3740,
-        "failed": 0,
+        "passed": 3739,
+        "failed": 1,
         "skipped": 2
       },
       "e2e": {
-        "passed": 33,
-        "failed": 1,
-        "skipped": 51
+        "passed": 82,
+        "failed": 2,
+        "skipped": 2
       }
     },
     "ids": [
@@ -18216,7 +18216,7 @@
       },
       {
         "id": "AT-019",
-        "status": "passed",
+        "status": "failed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/AT-019.test.ts"
       },
       {
@@ -18721,257 +18721,257 @@
       },
       {
         "id": "AT-030",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "AT-006",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "AT-006",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "PERF-07",
-        "status": "skipped",
+        "status": "failed",
         "file": "test/e2e/m4-jobs.spec.ts"
       },
       {
         "id": "PERF-08",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m4-jobs.spec.ts"
       },
       {
         "id": "PERF-11",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m4-jobs.spec.ts"
       },
       {
         "id": "AT-287",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m4-list.spec.ts"
       },
       {
         "id": "AT-286",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m4-list.spec.ts"
       },
       {
         "id": "AT-282",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m4-notices.spec.ts"
       },
       {
         "id": "AT-081",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m4-offline.spec.ts"
       },
       {
         "id": "AT-281",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m4-panel.spec.ts"
       },
       {
         "id": "AT-122",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m5-approval.spec.ts"
       },
       {
         "id": "AT-126",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m5-approval.spec.ts"
       },
       {
         "id": "AT-127",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m5-approval.spec.ts"
       },
       {
         "id": "AT-280",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m5-approval.spec.ts"
       },
       {
         "id": "AT-032",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m5-choice.spec.ts"
       },
       {
         "id": "AT-035",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m5-choice.spec.ts"
       },
       {
         "id": "AT-288",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m5-choice.spec.ts"
       },
       {
         "id": "AT-009",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m5-secret.spec.ts"
       },
       {
         "id": "BP-CARD-02",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
       },
       {
         "id": "BP-CARD-12",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
       },
       {
         "id": "BP-CARD-15",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
       },
       {
         "id": "BP-CARD-18",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
       },
       {
         "id": "BP-CARD-19",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
       },
       {
         "id": "BP-CARD-20",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
       },
       {
         "id": "BP-CARD-05",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-cards-m5-approval.spec.ts"
       },
       {
         "id": "BP-CARD-03",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-cards-m5-choice.spec.ts"
       },
       {
         "id": "BP-CARD-04",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-cards-m5-choice.spec.ts"
       },
       {
         "id": "BP-CARD-07",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-cards-m5-draft.spec.ts"
       },
       {
         "id": "BP-CARD-08",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-cards-m5-secret.spec.ts"
       },
       {
         "id": "BP-CARD-09",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-cards-m5-secret.spec.ts"
       },
       {
         "id": "BP-MSG-01",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-MSG-03",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-MSG-04",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-01",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-02",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-04",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-05",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-06",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-07",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-08",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-09",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-MSG-02",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-COMP-03",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-messages.spec.ts"
       },
       {
         "id": "BP-APP-L",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/bp/BP-shell.spec.ts"
       },
       {
         "id": "UX-05-02",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/ux/UX-05.first.spec.ts"
       },
       {
         "id": "UX-05-03",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/ux/UX-05.first.spec.ts"
       },
       {
         "id": "UX-05-04",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/ux/UX-05.first.spec.ts"
       },
       {
         "id": "UX-08-02",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/ux/UX-08.chat.spec.ts"
       },
       {
         "id": "UX-10-01",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/ux/UX-10.choice.spec.ts"
       },
       {
         "id": "UX-10-06",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/fidelity/ux/UX-10.choice.spec.ts"
       },
       {
@@ -19012,9 +19012,21 @@
     ],
     "failed": [
       {
+        "suite": "unit",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/AT-019.test.ts",
+        "title": "AT-019 · Find bills due this week runs to DONE: checklist within 2 s, the result within 60 s, proof checked, badge ✅",
+        "status": "failed"
+      },
+      {
         "suite": "e2e",
         "file": "test/e2e/m1-shell.spec.ts",
         "title": "PERF-03: chat switch on the perf seed paints the header and messages (smoke timing)",
+        "status": "failed"
+      },
+      {
+        "suite": "e2e",
+        "file": "test/e2e/m4-jobs.spec.ts",
+        "title": "PERF-07: send → 👀 painted, p95 ≤ 1 s over 20 runs (job path)",
         "status": "failed"
       }
     ],
