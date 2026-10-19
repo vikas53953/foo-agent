@@ -88,7 +88,11 @@ export class DraftService {
   async create(input: DraftInput): Promise<Result<Created>> {
     const gmail = this.d.gmail();
     if (!gmail) return fail('CONN_EXPIRED');
-    const g = await gmail.create({ to: input.to.address, ...(input.subject !== undefined ? { subject: input.subject } : {}), body: input.body });
+    const g = await gmail.create({
+      to: input.to.address,
+      ...(input.subject !== undefined ? { subject: input.subject } : {}),
+      body: input.body,
+    });
     if (!g.ok) return g;
     return this.d.gate.createDraft({
       jobId: input.jobId,
@@ -292,7 +296,13 @@ export class DraftService {
     if (!g.ok) return g;
     const fields: ApprovalFields = { ...a.fields, contentSummary: summaryOf(subject, req.fields.body) };
     const now = this.d.now();
-    const payload: DraftPayload = { ...p, ...(subject !== undefined ? { subject } : {}), body: req.fields.body, edited: true, undone: false };
+    const payload: DraftPayload = {
+      ...p,
+      ...(subject !== undefined ? { subject } : {}),
+      body: req.fields.body,
+      edited: true,
+      undone: false,
+    };
     const r = this.d.db.transaction(() => {
       const moved = this.d.db
         .prepare("UPDATE approvals SET fields = ?, fields_hash = ? WHERE id = ? AND state = 'PENDING'")
