@@ -23,6 +23,7 @@ import { deps } from '../deps';
 import { channels, emit, listContext, type AppContext } from '../ipc/IpcRouter';
 import { aiStatus, chatRowById, chatRows, fooChatId, jobRows, publicSettings, recomputePill, spendSummary } from '../store/queries';
 import { writeSeedMedia } from './seed/media';
+import { writeSeedMemory } from './seed/writer';
 import { seedPerf } from './seed/perf';
 import { seedM4Cards } from './seed/m4Cards';
 import { seedUxWorld, uxWorldSettings } from './seed/uxWorld';
@@ -220,6 +221,7 @@ export function seeds(ctx: AppContext, clock: FakeClock): Record<SeedSet, () => 
       const r = seedUxWorld(ctx.db, clock.now(), o);
       writeSeedMedia(ctx.dataDir, r.media);
       ctx.settings.update((s) => uxWorldSettings(s, r.refs, clock.now()));
+      writeSeedMemory(ctx.db, ctx.dataDir, ctx.settings.get().locale.timeZone);
       return { set, loaded: true, chats: r.chats, messages: r.messages, refs: r.refs };
     };
   return {
@@ -230,12 +232,14 @@ export function seeds(ctx: AppContext, clock: FakeClock): Record<SeedSet, () => 
       const r = seedPerf(ctx.db, clock.now());
       writeSeedMedia(ctx.dataDir, r.media);
       ctx.settings.update((s) => uxWorldSettings(s, r.refs, clock.now()));
+      writeSeedMemory(ctx.db, ctx.dataDir, ctx.settings.get().locale.timeZone);
       return { set: 'perf', loaded: true, chats: r.chats, messages: r.messages, refs: r.refs };
     },
     'm4-cards': () => {
       const r = seedM4Cards(ctx.db, clock.now());
       writeSeedMedia(ctx.dataDir, r.media);
       ctx.settings.update((s) => uxWorldSettings(s, r.refs, clock.now()));
+      writeSeedMemory(ctx.db, ctx.dataDir, ctx.settings.get().locale.timeZone);
       return { set: 'm4-cards', loaded: true, chats: r.chats, messages: r.messages, refs: r.refs };
     },
   };

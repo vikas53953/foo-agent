@@ -4,8 +4,8 @@
 // §30.8 (on engine start every `sys-*.md` in the scratch folders is deleted), 08-3 §22.3 (FOO_FAKE_AI).
 // The +20 s health check of 08-1 §2.2 step 7 runs only outside FOO_TEST runs (tests verify explicitly). Deferred to their
 // milestones: M4 T2 wires the JobRunner + ToolLayer (08-2 §5, §8; the job lane's tools come from `tools`, fake in tests
-// until M8/M9);  memory parts 5/5b (M6; empty here), the vault for key providers (M5: no key yet, so a
-// key provider reports `AI_KEY_INVALID` on verify).
+// until M8/M9); the vault for key providers (M5: no key yet, so a key provider reports `AI_KEY_INVALID` on verify).
+// Memory parts 5/5b come from the chat lane (08-4 §24.16, memory/retrieval.ts).
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
 import type { Clock } from '../shared/clock';
@@ -19,7 +19,9 @@ import { AiRegistry, CliLimiter, createAdapters, loadPricing, nodeAiFs, nodeWhic
 import { AiService } from './AiService';
 import { ChatLane, type IntakeDecisionView, type IntakeInput, type LaneProtocol } from './chat/ChatLane';
 import type { MainLink, MainToEngine } from './protocol';
-import { memoryNotBuilt, type MemoryPort } from './memory/MemoryPort';
+import { MemoryService } from './memory/MemoryService';
+import { createParseWorker, type ParseWorker } from './memory/parseWorker';
+import { watchMemory, type MemoryWatcher } from './memory/watcher';
 import { parseEnvelope, validateAct, formatIssues } from './prompt/envelope';
 import { filterSay } from './prompt/filters';
 import { PromptBuilder, type ConversationMessage } from './prompt/PromptBuilder';
@@ -62,8 +64,9 @@ export class Engine {
   readonly jobs: JobRunner;
   readonly recovery: JobRecovery;
   private prompts: PromptBuilder;
-  /** M6 slot (CR-0010): T3 sets MemoryService here, T7 its tidy. */
-  memory: MemoryPort = memoryNotBuilt;
+  /** M6 slot (CR-0010): T3's MemoryService (the `memory:*` commands, learn, the watcher); T7 fills its tidy. */
+  readonly memory: MemoryService;
+  private memoryWatcher: MemoryWatcher | null = null;
 
   static create(o: EngineOptions): Engine {
     return new Engine(o);
@@ -171,14 +174,40 @@ export class Engine {
       capCheck: (chars, purpose) => this.jobs.allowChatCall(chars, purpose),
     });
     this.jobs.setIntake((chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }));
+    let parser: ParseWorker | null = null;
+    this.memory = new MemoryService({
+      link: o.link,
+      clock: o.clock,
+      dataDir: o.dataDir,
+      timeZone: () => this.settings.locale.timeZone,
+      // Always a real UUIDv7: the file parser accepts only full `f_{UUIDv7}` ids (08-3 §12.2), never the tests' counters.
+      newFactId: () => mintId('f', o.clock.now()),
+      // 08-1 §2.5: parsing runs in a worker; from TypeScript sources (tests) the worker loads them through tsx.
+      parser: () => (parser ??= createParseWorker(__filename.endsWith('.ts') ? { execArgv: ['--require', 'tsx/cjs'] } : {})),
+      classify: null,
+      log: (evt, kind) => log(evt, kind),
+    });
+  }
+
+  /** 08-3 §12.2: reindex what changed while foo was closed, then watch `{DATA}/memory`. */
+  private async startMemory(): Promise<void> {
+    if (!this.o.dataDir || this.memoryWatcher) return;
+    this.memoryWatcher = watchMemory({
+      dataDir: this.o.dataDir,
+      clock: this.o.clock,
+      onChange: (file) => void this.memory.fileChanged(file),
+    });
+    await this.memory.reindexAll();
   }
 
   /** The step protocol for the job runner (08-4 §24.1 step row, §25.3, 08-2 §7.5–§7.6). */
   private stepProtocol(): ConstructorParameters<typeof JobRunner>[0]['prompts'] {
     const redactor = this.redactor;
     return {
-      buildStep: (jobBlock, tools, steer) =>
+      buildStep: (jobBlock, tools, memory, steer) =>
         this.prompts.buildStep({
+          pinned: memory.part5,
+          turnFacts: memory.part5b,
           agentName: this.settings.identity.agentName,
           firstName: this.settings.user.firstName ?? null,
           vibeLine: '',
@@ -220,6 +249,11 @@ export class Engine {
       const v = validateAct('intake', act);
       return v.ok ? ((v.act as { decision: IntakeDecisionView }).decision ?? null) : null;
     };
+    // 08-4 §25.2 IntakeAct.usedMemoryIds (the lane keeps only the ids it offered, §24.16 item 6).
+    const usedIds = (act: unknown): string[] => {
+      const v = validateAct('intake', act);
+      return v.ok ? (v.act as { usedMemoryIds: string[] }).usedMemoryIds : [];
+    };
     const issuesOf = (act: unknown, error: string | null) => {
       if (error) return error;
       const v = validateAct('intake', act);
@@ -249,8 +283,8 @@ export class Engine {
           timeZone: i.settings.locale.timeZone,
           ...(helper ? { helper } : {}),
           helpers: [],
-          pinned: [],
-          turnFacts: [],
+          pinned: i.memory.part5,
+          turnFacts: i.memory.part5b,
           conversation,
           userMessage: i.message.textForAi ?? i.message.text,
           local: i.local,
@@ -261,12 +295,13 @@ export class Engine {
       parse: (text) => {
         const env = parseEnvelope(text);
         const act = env.act === undefined ? null : decision(env.act);
-        return { say: env.say, act, issues: act ? null : (issuesOf(env.act, env.actError) ?? formatIssues([])) };
+        const issues = act ? null : (issuesOf(env.act, env.actError) ?? formatIssues([]));
+        return { say: env.say, act, issues, usedMemoryIds: act ? usedIds(env.act) : [] };
       },
       parseAct: (text) => {
         const env = parseEnvelope(text);
         const act = env.act === undefined ? null : decision(env.act);
-        return { act, issues: act ? null : issuesOf(env.act, env.actError) };
+        return { act, issues: act ? null : issuesOf(env.act, env.actError), usedMemoryIds: act ? usedIds(env.act) : [] };
       },
       gate: (onRelease, signal) => {
         let resolve!: () => void;
@@ -345,6 +380,7 @@ export class Engine {
           // First settings, or a chosen AI that just became usable (J2 choose → ai.state → settings): waiting messages go now.
           if (first || (!usableBefore && this.ai.pick())) void this.drainQueued();
           if (first && !this.o.testRun) this.scheduleHealthCheck();
+          if (first) void this.startMemory().catch(() => undefined);
           // 08-2 §5.9 (G-M4-13): main decided safe mode and whether the last exit was clean; recovery runs once per start.
           if (first) void this.jobs.track(this.recovery.recoverAll(msg.payload.launch ?? { safeMode: false, cleanStart: true }));
         }

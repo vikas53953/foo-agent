@@ -12,7 +12,7 @@ import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node
 import { join } from 'node:path';
 import type { Clock } from '../../shared/clock';
 import { fail, ok, type Result } from '../../shared/errors';
-import { PROVIDER_IDS } from '../../shared/settings';
+import { isKeyProviderId } from '../../shared/settings';
 import type { VaultOff } from '../../shared/ipc';
 import type { SecretIndexRow, SecretKind, VaultUseRequest } from '../../shared/types';
 import type { RegisterOptions } from '../secrets/registerValue';
@@ -22,7 +22,7 @@ import { secretLabel } from './labels';
 
 /** G-M5-16: the `{name}` part each kind accepts; anything else is VALIDATION. */
 const NAME_RULES: Record<SecretKind, (name: string) => boolean> = {
-  ai_key: (n) => (PROVIDER_IDS as readonly string[]).includes(n),
+  ai_key: isKeyProviderId,
   web_key: (n) => ['exa', 'tavily', 'firecrawl', 'browseruse'].includes(n),
   conn_token: (n) => n === 'google' || n === 'outlook',
   hub_key: (n) => n === 'composio',
@@ -185,8 +185,6 @@ export class SecretVault {
     } catch {
       return fail('VAULT_WRITE_FAILED');
     }
-    // A value that moved between stores leaves nothing behind in the old one.
-    if (before && before.storage !== storage) this.dropValue(target, name, before.storage);
     const label = secretLabel(kind, name, enc.card?.brand ?? null);
     const row: IndexDbRow = {
       target,
@@ -201,14 +199,23 @@ export class SecretVault {
       updated_at: now,
       last_used_at: before?.last_used_at ?? null,
     };
-    this.d.db
-      .prepare(
-        `INSERT INTO secrets_index (target, kind, name, label, domain, brand, last4, storage, created_at, updated_at, last_used_at)
-         VALUES (@target, @kind, @name, @label, @domain, @brand, @last4, @storage, @created_at, @updated_at, @last_used_at)
-         ON CONFLICT(target) DO UPDATE SET label = excluded.label, domain = excluded.domain, brand = excluded.brand,
-           last4 = excluded.last4, storage = excluded.storage, updated_at = excluded.updated_at`,
-      )
-      .run(row);
+    try {
+      this.d.db
+        .prepare(
+          `INSERT INTO secrets_index (target, kind, name, label, domain, brand, last4, storage, created_at, updated_at, last_used_at)
+           VALUES (@target, @kind, @name, @label, @domain, @brand, @last4, @storage, @created_at, @updated_at, @last_used_at)
+           ON CONFLICT(target) DO UPDATE SET label = excluded.label, domain = excluded.domain, brand = excluded.brand,
+             last4 = excluded.last4, storage = excluded.storage, updated_at = excluded.updated_at`,
+        )
+        .run(row);
+    } catch {
+      // M6 T9: no value without its index row (an orphan the user could never see or remove). A new value, or one written
+      // to a different store than its row names, is taken back; a same-store replace keeps the row that already names it.
+      if (!before || before.storage !== storage) this.dropValue(target, name, storage);
+      return fail('VAULT_WRITE_FAILED');
+    }
+    // A value that moved between stores leaves nothing behind in the old one (only once the row names the new store).
+    if (before && before.storage !== storage) this.dropValue(target, name, before.storage);
     return ok({ target, savedAt: now, label, replaced: before !== undefined, row: indexRow(row) });
   }
 

@@ -4,6 +4,7 @@ import Database from 'better-sqlite3';
 import { migrate, type Db } from '../../../src/main/store/db';
 import { ApprovalGate, type CreateInput, type GateDeps } from '../../../src/main/approvals/ApprovalGate';
 import type { TxEffects } from '../../../src/main/engine-supervisor/engineHost';
+import type { TechLogEntry } from '../../../src/main/log/techLog';
 import type { ApprovalFields, Rule } from '../../../src/shared/types';
 
 /** X-10: Fri 16 Oct 2026, 9:00 AM IST. */
@@ -16,7 +17,7 @@ export interface GateHarness {
   rules: Rule[];
   sent: { kind: string; payload: Record<string, unknown> }[];
   changed: TxEffects[];
-  logs: Record<string, unknown>[];
+  logs: TechLogEntry[];
   jobId: string;
   chatId: string;
   /** A new needs_you job in the chat. */

@@ -24,6 +24,7 @@ import { BADGE_OF_STATE, JOB_STATES, TERMINAL } from '../../shared/jobMachine';
 import { phraseText, resolvePhrase, type PhraseKey } from '../../shared/phrases';
 import type { IntakeDecision, PlanStep, SecondLookAct, StepAct, StepDecision } from '../../shared/schemas';
 import type { Settings } from '../../shared/settings';
+import { buildMemoryParts, stepQueryText, memoryUseOps, type MemoryParts } from '../memory/retrieval';
 import type {
   ApprovalState,
   CardRow,
@@ -37,6 +38,7 @@ import type {
   StopReport,
 } from '../../shared/types';
 import type { LaneAi } from '../chat/ChatLane';
+import type { EngineMessage } from '../../main/db/queries';
 import type { AiErrorKind, TurnResult } from '../ai/types';
 import type { DbOp, DbTxReply, MainLink } from '../protocol';
 import type { ExecResult, NeedsUserCard, ToolLayer } from '../tools/ToolLayer';
@@ -67,8 +69,14 @@ export interface RunnerAi extends LaneAi {
 }
 
 export interface RunnerPrompts {
-  /** `steer` is part 10 (08-2 §7.2), present only when steers are queued. */
-  buildStep(jobBlock: string, tools: string, steer?: string | null): { system: string; prompt: string };
+  /** `memory`: parts 5/5b for this step turn (08-4 §24.1 step row, §24.16; M6 T4). `steer` is part 10 (08-2 §7.2), present
+   * only when steers are queued. */
+  buildStep(
+    jobBlock: string,
+    tools: string,
+    memory: MemoryParts,
+    steer?: string | null,
+  ): { system: string; prompt: string; factIds?: string[] };
   buildRepair(issues: string): string;
   /** Parse a step reply: the validated StepAct, or the zod issues for the repair turn. */
   parseStep(text: string): { act: StepAct | null; issues: string | null; say?: string };
@@ -1280,7 +1288,20 @@ export class JobRunner {
     if (!pick) return { act: null, error: 'AI_SERVICE_DOWN', turnId };
     // 08-2 §5.4.2: drainSteer, then capCheck, then the turn.
     const steer = await this.steering.drain(job);
-    const built = this.d.prompts.buildStep(this.jobBlock(job, await this.steps(job.id), c), this.d.tools.catalogue(), steer);
+    const steps = await this.steps(job.id);
+    // §24.16 item 3: the job's user message; `c.asked` is '' for a job picked up again after a restart.
+    const asked =
+      c.asked ||
+      (job.userMessageId
+        ? await this.query<EngineMessage>('messageById', job.userMessageId).then((m) => (m ? (m.textForAi ?? m.text) : ''))
+        : '');
+    const memory = await buildMemoryParts((q, ...args) => this.query(q, ...args), {
+      chatId: job.chatId,
+      text: stepQueryText(asked, job.title, steps),
+      timeZone: this.d.settings().locale.timeZone,
+      now: this.d.clock.now(),
+    });
+    const built = this.d.prompts.buildStep(this.jobBlock(job, steps, c), this.d.tools.catalogue(), memory, steer);
     const maxOut = this.d.ai.turnParams(pick.providerId, 'step').maxOutputTokens;
     if (!(await this.cost.allowStep(job, built.system.length + built.prompt.length, maxOut))) {
       await this.steering.settle(job, null, '');
@@ -1288,6 +1309,17 @@ export class JobRunner {
     }
     const result = await this.stepTurnInner(job, c, pick, turnId, built);
     await this.steering.settle(job, result.act, result.say ?? '');
+    // §24.16 item 6: the offered facts a valid step act names (M6 T4).
+    if (result.act) {
+      const uses = memoryUseOps(result.act.usedMemoryIds, built.factIds ?? [], memory, this.d.clock.now(), {
+        chatId: job.chatId,
+        jobId: job.id,
+      });
+      if (uses.length) {
+        const r = await this.tx(uses);
+        if (!r.ok) this.d.log('memory.uses_failed', r.error.kind, { jobId: job.id });
+      }
+    }
     return result;
   }
 

@@ -68,6 +68,25 @@ describe('ApprovalGate (08-2 §9.7)', () => {
     ]);
   });
 
+  it('tech log lines carry ids and states only, never card text', () => {
+    const h = gateHarness();
+    const o = h.open();
+    h.gate.transition(o.approvalId, 'APPROVED');
+    h.gate.approve({ cardId: o.cardId, nonce: o.nonce, scope: 'once', resolvedBy: 'tap' });
+    expect(h.logs.length).toBeGreaterThan(0);
+    for (const l of h.logs) {
+      expect(Object.keys(l).every((k) => ['lvl', 'mod', 'evt', 'ids', 'kind', 'ms'].includes(k))).toBe(true);
+      expect(JSON.stringify(l)).not.toMatch(/Book this table|Pizza by the Bay/);
+    }
+    expect(h.logs).toContainEqual({
+      lvl: 'info',
+      mod: 'approvals',
+      evt: 'card.state',
+      ids: { approvalId: o.approvalId },
+      kind: 'book:PENDING',
+    });
+  });
+
   it('decline: PENDING → DECLINED, single use (no later approve)', () => {
     const h = gateHarness();
     const o = h.open();
