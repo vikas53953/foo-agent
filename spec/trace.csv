@@ -193,15 +193,15 @@ R13,J17,AT-076,,,10-acceptance-1 §B; 08-3 §12.4.1,test/unit/m6-sensitive.test.
 R13,J17,AT-076,,,10-acceptance-1 §B; 08-3 §12.4,test/integration/m6-review.test.ts,M6,live
 R13,J17,AT-219,,,10-acceptance-1 §B; 08-3 §12.7; CR-0010 G-M6-02,test/integration/m6-tidy.test.ts,M6,live
 ,,ART-14,,,01-articles Art. 14; 10-acceptance-2 §D (memory part); 08-4 §24.16,test/unit/m6-retrieval.test.ts,M6,live
-R13,J17,,UX-18-01,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,pending
-R13,J17,,UX-18-02,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,pending
-R13,J17,,UX-18-03,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,pending
-R13,J17,,UX-18-04,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,pending
-R13,J17,,UX-18-05,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,pending
-R13,J17,,UX-18-06,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,pending
-R13,J17,,UX-18-07,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,pending
-R13,J17,,UX-18-08,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,pending
-R13,J17,,UX-18-09,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,pending
-R13,J17,,UX-18-10,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,pending
-R13,J17,,,BP-CARD-16,05-3 §5.17,test/fidelity/bp/BP-m6.spec.ts,M6,pending
-R13,J17,,,BP-SCR-09,06-2 §7,test/fidelity/bp/BP-m6.spec.ts,M6,pending
+R13,J17,,UX-18-01,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,live
+R13,J17,,UX-18-02,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,live
+R13,J17,,UX-18-03,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,live
+R13,J17,,UX-18-04,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,live
+R13,J17,,UX-18-05,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,live
+R13,J17,,UX-18-06,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,live
+R13,J17,,UX-18-07,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,live
+R13,J17,,UX-18-08,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,live
+R13,J17,,UX-18-09,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,live
+R13,J17,,UX-18-10,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,live
+R13,J17,,,BP-CARD-16,05-3 §5.17,test/fidelity/bp/BP-m6.spec.ts,M6,live
+R13,J17,,,BP-SCR-09,06-2 §7,test/fidelity/bp/BP-m6.spec.ts,M6,live
