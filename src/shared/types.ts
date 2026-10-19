@@ -385,6 +385,13 @@ export interface DraftPayload {
   // M5 T14
   /** 05-2 §5.7.2 HELD (second look, Art. 10): what the Draft's held strip shows; main writes it with the HELD move. */
   held?: ApprovalPayload['held'];
+  // M8 T6 (CR-0012 G-M8-03): the Gmail draft's message id and thread (Open in Gmail, replies), and T7's WhatsApp jid / group.
+  gmailMessageId?: string;
+  threadId?: string;
+  waJid?: string;
+  isGroup?: boolean;
+  /** M8 T6: the full Approval card a Send opened for someone new or a switch (05-2 §5.7.2 "Waiting for your OK below ›"). */
+  approvalCardId?: string;
 }
 /** 08-1 §4.5 secret payload (never a value). */
 export interface SecretPayload {

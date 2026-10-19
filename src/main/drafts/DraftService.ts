@@ -10,6 +10,15 @@
 // M5 T14: 08-2 §9.6 + 08-3 §16.1 (the second look on the card text runs when the 5 s close, before drafts.send; fail
 // closed), 05-2 §5.7.2 HELD (held strip + one button per value; the draft's value sends, the user's builds a fresh Draft
 // card on the same Gmail draft and the old one is superseded, G-M5-03), CR-0009 G-M5-39 (b).
+// M8 T6: 08-3 §16.1 Signature (appended below the body in Gmail, shown apart on the card), §16.1.4 (the Gmail message id and
+// thread on the payload; Open in Gmail `#drafts/{messageId}`), CR-0012 G-M8-03 / G-M8-04 (no `gmail.compose`: the draft stays
+// in foo, never a Gmail draft; Open in Gmail opens the prefilled compose page; the `allow_send` Connect card once), 05-2
+// §5.7.2 "Send, new recipient / group / risky content" (Send opens the full Approval card §5.5 under the draft, the draft
+// waits "Waiting for your OK below ›"; that card's tap sends with no 5 s undo, 08-0 §G.7), "Offline at Send" (NET_OFFLINE;
+// [ Yes, send when online ] queues it, sent with the undo window once back), Art. 9 (a switch of channel inside an approved
+// job asks again).
+import { t } from '../../shared/copy/t';
+import { newId } from '../../shared/ids';
 import { newNonce } from '../../shared/canon';
 import { fail, ok, type Result } from '../../shared/errors';
 import { maskEmail, redactSecrets } from '../../shared/redactor';
@@ -23,12 +32,29 @@ import { applyDbOps, type TxEffects } from '../engine-supervisor/engineHost';
 import type { Db } from '../store/db';
 import { errCode } from '../store/rebuild';
 import type { ApprovalGate, ApprovalRow, Created } from '../approvals/ApprovalGate';
-import type { GmailDrafts } from './gmailDrafts';
+import type { DraftMessage, GmailDrafts } from './gmailDrafts';
 
 /** 05-2 §5.7.2 / 08-0 §G.7: the local undo window after Send. */
 export const UNDO_MS = 5_000;
 /** Gmail's drafts folder: where "Open in Gmail" lands when foo may not send (05-2 §5.7.2 No send permission). */
 export const GMAIL_DRAFTS_URL = 'https://mail.google.com/mail/#drafts';
+
+// M8 T6
+/**
+ * "Open in Gmail": a Gmail draft opens at `?authuser={email}#drafts/{messageId}` (08-3 §16.1.4; `#drafts` when its message id
+ * is unknown); a draft kept in foo (no `gmail.compose`, G-M8-04) opens Gmail's compose page prefilled, a hand-back with no proof.
+ */
+export function gmailUrl(p: DraftPayload, email: string | null): string {
+  const user = email ? `authuser=${encodeURIComponent(email)}` : '';
+  if (p.gmailDraftId) {
+    const at = p.gmailMessageId ? `#drafts/${encodeURIComponent(p.gmailMessageId)}` : '#drafts';
+    return `https://mail.google.com/mail/${user ? `?${user}` : ''}${at}`;
+  }
+  const q = [user, 'view=cm', `to=${encodeURIComponent(p.to?.address ?? '')}`];
+  if (p.subject !== undefined) q.push(`su=${encodeURIComponent(p.subject)}`);
+  q.push(`body=${encodeURIComponent(p.signature ? `${p.body}\n\n${p.signature}` : p.body)}`);
+  return `https://mail.google.com/mail/?${q.filter(Boolean).join('&')}`;
+}
 
 type Held = NonNullable<ApprovalPayload['held']>;
 /**
@@ -53,6 +79,15 @@ export interface DraftDeps {
   openExternal?(url: string): void | Promise<void>;
   dataDir?: string;
   log?(entry: TechLogEntry): void;
+  // M8 T6
+  /** The default Gmail send-as signature (08-3 §16.1 Signature), or null. */
+  signature?(): Promise<string | null>;
+  /** The Gmail row's granted map (08-3 §16.1 Tokens, X-127); absent → everything allowed (M5 fakes). */
+  granted?(): { draft: boolean; send: boolean };
+  /** The signed-in address (Open in Gmail `authuser`). */
+  email?(): string | null;
+  /** False while foo is offline (05-2 §5.7.2 Offline at Send). */
+  online?(): boolean;
 }
 
 export interface DraftInput {
@@ -63,6 +98,14 @@ export interface DraftInput {
   signature?: string;
   /** False when the Gmail connection has no send scope (05-2 §5.7.2 "No send permission"). */
   sendAllowed?: boolean;
+  // M8 T6
+  /** Someone the user has never emailed (08-2 §8.2 contacts ladder): Send opens the full Approval card (05-2 §5.5). */
+  isNew?: boolean;
+  /** Art. 9: an email inside a job that already has an approved booking or payment is a switch of channel. */
+  switched?: boolean;
+  /** A reply stays in its Gmail thread (08-3 §16.1.4 "the same thread headers"). */
+  threadId?: string;
+  inReplyTo?: string;
 }
 
 interface Tap {
@@ -75,11 +118,11 @@ interface Tap {
 const summaryOf = (subject: string | undefined, body: string) =>
   redactSecrets([subject, body.slice(0, 140)].filter(Boolean).join('\n')).text;
 
-function sendFields(to: DraftInput['to'], subject: string | undefined, body: string): ApprovalFields {
+function sendFields(to: DraftInput['to'], subject: string | undefined, body: string, isNew = false): ApprovalFields {
   return {
     verb: 'send',
     channel: 'email',
-    recipients: [{ name: to.name, address: to.address, isNew: false, isGroup: false }],
+    recipients: [{ name: to.name, address: to.address, isNew, isGroup: false }],
     contentSummary: summaryOf(subject, body),
     irreversible: true,
   };
@@ -96,33 +139,112 @@ export class DraftService {
     return r ? cardRow(r) : null;
   }
 
-  /** A known-recipient Draft (08-0 §G.7): the Gmail draft first, then the card and its PENDING approvals row. */
+  /** A Draft (08-0 §G.7): the Gmail draft first, then the card and its PENDING approvals row. */
   async create(input: DraftInput): Promise<Result<Created>> {
+    const granted = this.d.granted?.() ?? { draft: true, send: true };
+    const isNew = input.isNew ?? false;
+    const hardLimit = isNew || (input.switched ?? false);
+    const base = {
+      jobId: input.jobId,
+      fields: sendFields(input.to, input.subject, input.body, isNew),
+      ...(hardLimit ? { hardLimit } : {}),
+    };
+    // G-M8-04: no `gmail.compose` → no Gmail draft can exist; the draft stays in foo with "Open in Gmail".
+    if (!granted.draft) {
+      const made = this.d.gate.createDraft({ ...base, payload: this.payloadOf(input, isNew, undefined, false) });
+      if (made.ok) this.offerAllowSend(made.value.cardId);
+      return made;
+    }
     const gmail = this.d.gmail();
     if (!gmail) return fail('CONN_EXPIRED');
-    const g = await gmail.create({
-      to: input.to.address,
-      ...(input.subject !== undefined ? { subject: input.subject } : {}),
-      body: input.body,
-    });
+    const signature = input.signature ?? (await this.d.signature?.()) ?? undefined;
+    const g = await gmail.create(this.message(input.to.address, input.subject, input.body, signature, input));
     if (!g.ok) return g;
     const made = this.d.gate.createDraft({
-      jobId: input.jobId,
-      fields: sendFields(input.to, input.subject, input.body),
+      ...base,
       payload: {
-        channel: 'email',
-        to: { ...input.to, isNew: false },
-        ...(input.subject !== undefined ? { subject: input.subject } : {}),
-        body: input.body,
-        ...(input.signature ? { signature: input.signature } : {}),
-        edited: false,
-        sendAllowed: input.sendAllowed ?? true,
+        ...this.payloadOf(input, isNew, signature, input.sendAllowed ?? granted.send),
         gmailDraftId: g.value.gmailDraftId,
+        ...(g.value.gmailMessageId ? { gmailMessageId: g.value.gmailMessageId } : {}),
+        ...((g.value.threadId ?? input.threadId) ? { threadId: g.value.threadId ?? input.threadId } : {}),
       },
     });
     // No card, no approval: the Gmail draft would be left behind with nothing pointing at it.
     if (!made.ok) await gmail.delete(g.value.gmailDraftId);
     return made;
+  }
+
+  // M8 T6
+  private payloadOf(input: DraftInput, isNew: boolean, signature: string | undefined, sendAllowed: boolean): Omit<DraftPayload, 'approvalId'> {
+    return {
+      channel: 'email',
+      to: { ...input.to, isNew },
+      ...(input.subject !== undefined ? { subject: input.subject } : {}),
+      body: input.body,
+      ...(signature ? { signature } : {}),
+      edited: false,
+      sendAllowed,
+      ...(input.threadId ? { threadId: input.threadId } : {}),
+    };
+  }
+
+  /** The message Gmail holds: the card text with the signature below it (08-3 §16.1 Signature), in its thread. */
+  private message(
+    to: string,
+    subject: string | undefined,
+    body: string,
+    signature: string | undefined,
+    thread: { threadId?: string | undefined; inReplyTo?: string | undefined },
+  ): DraftMessage {
+    return {
+      to,
+      ...(subject !== undefined ? { subject } : {}),
+      body: signature ? `${body}\n\n${signature}` : body,
+      ...(thread.threadId ? { threadId: thread.threadId } : {}),
+      ...(thread.inReplyTo ? { inReplyTo: thread.inReplyTo } : {}),
+    };
+  }
+
+  /** G-M8-04: the `allow_send` Connect card, once in a chat, under a Draft foo cannot send. */
+  private offerAllowSend(draftCardId: string): void {
+    const chatId = this.d.db.prepare('SELECT chat_id FROM cards WHERE id = ?').pluck().get(draftCardId) as string | undefined;
+    if (!chatId) return;
+    const offered = this.d.db
+      .prepare("SELECT 1 FROM cards WHERE chat_id = ? AND type = 'connect' AND json_extract(payload, '$.variant') = 'allow_send'")
+      .pluck()
+      .get(chatId);
+    if (offered) return;
+    const now = this.d.now();
+    const cardId = newId('k', now);
+    const messageId = newId('m', now);
+    const jobId = this.d.db.prepare('SELECT job_id FROM cards WHERE id = ?').pluck().get(draftCardId) as string | null;
+    const w = applyDbOps(
+      this.d.db,
+      [
+        {
+          op: 'insert',
+          table: 'messages',
+          row: { id: messageId, chat_id: chatId, author_kind: 'foo', kind: 'card', card_id: cardId, status: 'complete', job_id: jobId, created_at: now },
+        },
+        {
+          op: 'insert',
+          table: 'cards',
+          row: {
+            id: cardId,
+            chat_id: chatId,
+            message_id: messageId,
+            job_id: jobId,
+            type: 'connect',
+            state: 'offered',
+            payload: { variant: 'allow_send', app: 'gmail', scopes: ['gmail'] },
+            nonce: newNonce(),
+            created_at: now,
+          },
+        },
+      ],
+      { now, ...(this.d.dataDir ? { dataDir: this.d.dataDir } : {}) },
+    );
+    if (w.result.ok) this.d.changed(w.effects);
   }
 
   /** The Draft card the renderer holds, still pending and in time (08-1 §3.2 CARD_STALE / CARD_EXPIRED). */
@@ -146,6 +268,10 @@ export class DraftService {
     if (!t.ok) return t;
     const { p, a } = t.value;
     if (!p.sendAllowed) return fail('CONN_SCOPE_MISSING');
+    // M8 T6 (05-2 §5.7.2 Offline at Send): nothing moves; the card asks "Send it as soon as you're back?".
+    if (this.d.online && !this.d.online()) return fail('NET_OFFLINE');
+    // M8 T6 (08-0 §G.7): someone new or a switch → the full Approval card is the one tap, with no 5 s undo.
+    if (a.hardLimit) return this.askFull(t.value);
     const now = this.d.now();
     const undoUntil = now + UNDO_MS;
     const moved = this.d.gate.draftMove(a.id, 'approve', {
@@ -168,7 +294,9 @@ export class DraftService {
     const card = this.card(a.cardId);
     if (!card || card.type !== 'draft') return fail('VALIDATION');
     const now = this.d.now();
-    if (a.state !== 'APPROVED' || card.state !== 'undo_window' || a.submittedAt !== null || now >= (this.undoUntil(a) ?? 0))
+    // M8 T6: a Draft queued while offline ("Will send when you're back online" + Cancel) is undone the same way.
+    const queued = card.state === 'queued_offline';
+    if (a.state !== 'APPROVED' || a.submittedAt !== null || !(queued || (card.state === 'undo_window' && now < (this.undoUntil(a) ?? 0))))
       return fail('TOO_LATE');
     const expiresAt = approvalExpiresAt('send', now);
     const p0 = draftPayloadOf(card);
@@ -183,7 +311,7 @@ export class DraftService {
         card: {
           state: 'pending',
           expires_at: expiresAt,
-          payload: { ...p, undone: true },
+          payload: { ...p, undone: !queued },
           resolved_by: null,
           resolved_at: null,
           answer: null,
@@ -231,6 +359,7 @@ export class DraftService {
       this.sending.add(id);
       try {
         if (await this.sendOne(id, this.pickedAction(id))) out.push(id);
+        this.followFull(id);
       } finally {
         this.sending.delete(id);
       }
@@ -404,6 +533,178 @@ export class DraftService {
     }
   }
 
+  // M8 T6
+  /**
+   * 05-2 §5.7.2 "Send, new recipient / group / risky content": Send opens the full Approval card (§5.5: "Send this email to
+   * {name}?", no scope chips on a hard limit) under the draft, which waits "Waiting for your OK below ›". The draft's own
+   * approval stays PENDING until that card is answered. A second Send while the card is open names the same card.
+   */
+  private askFull(x: { card: CardRow; p: DraftPayload; a: ApprovalRow }): Result<{ approvalId: string; undoUntil: number }> {
+    const { card, p, a } = x;
+    const now = this.d.now();
+    const open = p.approvalCardId ? this.d.gate.byCard(p.approvalCardId) : null;
+    if (open?.state === 'PENDING') return ok({ approvalId: open.id, undoUntil: now });
+    const to = p.to ?? { name: '', address: '', isNew: true };
+    const app = t('cards.approval.app.gmail');
+    const text = to.isNew
+      ? {
+          title: t('cards.approval.send_email.title', { name: to.name }),
+          impact: t('cards.approval.send_email.impact', { address: to.address, app, them: t('cards.approval.them') }),
+        }
+      : {
+          title: t('cards.approval.switch_how.title', { route: t('cards.approval.send_email.primary') }),
+          impact: t('cards.approval.switch_how.impact', { name: to.name, address: to.address }),
+        };
+    const made = this.d.gate.create({
+      jobId: a.jobId,
+      verb: 'send',
+      fields: a.fields,
+      hardLimit: true,
+      ...text,
+      submitRef: `draft:${card.id}`,
+    });
+    if (!made.ok) return made;
+    const w = applyDbOps(this.d.db, [{ op: 'update', table: 'cards', id: card.id, set: { payload: { ...p, approvalCardId: made.value.cardId } } }], {
+      now,
+      ...(this.d.dataDir ? { dataDir: this.d.dataDir } : {}),
+    });
+    if (w.result.ok) this.d.changed(w.effects);
+    this.d.log?.({ lvl: 'info', mod: 'drafts', evt: 'card.full_approval', ids: { approvalId: a.id } });
+    return ok({ approvalId: made.value.approvalId, undoUntil: now });
+  }
+
+  /** The Draft a full Approval card was opened for (its `submitRef` is `draft:{cardId}`), or null. */
+  private draftFor(full: ApprovalRow): { card: CardRow; p: DraftPayload; a: ApprovalRow } | null {
+    const fullCard = this.card(full.cardId);
+    const ref = (fullCard?.payload as { submitRef?: unknown } | undefined)?.submitRef;
+    if (typeof ref !== 'string' || !ref.startsWith('draft:')) return null;
+    const card = this.card(ref.slice('draft:'.length));
+    const p = card ? draftPayloadOf(card) : null;
+    const a = card ? this.d.gate.byCard(card.id) : null;
+    return card && p && a && p.approvalCardId === full.cardId ? { card, p, a } : null;
+  }
+
+  /**
+   * The full Approval card was approved (`card:approve`, main's gate already moved it to APPROVED): the draft's approval is
+   * approved too and sent now, with its second look and no 5 s undo (08-0 §G.7). The full card follows the send: RUNNING,
+   * then COMPLETED with the same proof, or FAILED. Returns false when the approval is not a draft's.
+   */
+  async fullApproved(approvalId: string, resolvedBy: 'tap' | 'keyboard'): Promise<boolean> {
+    const full = this.d.gate.get(approvalId);
+    if (!full || full.state !== 'APPROVED') return false;
+    const d = this.draftFor(full);
+    if (!d || d.a.state !== 'PENDING') return false;
+    const now = this.d.now();
+    // `undo_until = now` keeps it on the tick's due list, so a crash before the send still resumes it.
+    const m = this.d.gate.draftMove(d.a.id, 'approve', {
+      approval: { approved_at: now, approved_via: 'card', scope: 'once', undo_until: now },
+      card: { state: 'sending', payload: d.p, resolved_by: resolvedBy, resolved_at: now, answer: { optionId: 'send' } },
+    });
+    if (!m.ok) return false;
+    if (this.sending.has(d.a.id)) return true;
+    this.sending.add(d.a.id);
+    try {
+      await this.sendOne(d.a.id);
+    } finally {
+      this.sending.delete(d.a.id);
+    }
+    this.followFull(d.a.id);
+    return true;
+  }
+
+  /**
+   * The full card's row follows the draft's: COMPLETED with the same Sent-folder proof, or FAILED. A held draft (second
+   * look) leaves it APPROVED: the draft card asks now, and nothing ran.
+   */
+  private followFull(draftApprovalId: string): void {
+    const draft = this.d.gate.get(draftApprovalId);
+    if (draft?.state !== 'COMPLETED' && draft?.state !== 'FAILED') return;
+    const card = this.card(draft.cardId);
+    const p = card ? draftPayloadOf(card) : null;
+    const full = p?.approvalCardId ? this.d.gate.byCard(p.approvalCardId) : null;
+    if (full?.state !== 'APPROVED') return;
+    const fullId = full.id;
+    this.d.gate.transition(fullId, 'RUNNING', { submittedAt: draft.submittedAt ?? this.d.now() });
+    this.d.gate.transition(fullId, draft.state);
+    const proof = this.d.db.prepare('SELECT proof FROM approvals WHERE id = ?').pluck().get(draftApprovalId) as string | null;
+    if (draft.state === 'COMPLETED' && proof) this.d.db.prepare('UPDATE approvals SET proof = ? WHERE id = ?').run(proof, fullId);
+  }
+
+  /** "Not now" on the full card: the draft is a plain pending draft again (Send asks again, Discard still works). */
+  fullDeclined(approvalId: string): void {
+    const full = this.d.gate.get(approvalId);
+    const d = full ? this.draftFor(full) : null;
+    if (!d || d.a.state !== 'PENDING') return;
+    const { approvalCardId: _gone, ...p } = d.p;
+    void _gone;
+    const w = applyDbOps(this.d.db, [{ op: 'update', table: 'cards', id: d.card.id, set: { payload: p } }], {
+      now: this.d.now(),
+      ...(this.d.dataDir ? { dataDir: this.d.dataDir } : {}),
+    });
+    if (w.result.ok) this.d.changed(w.effects);
+  }
+
+  /**
+   * 05-2 §5.7.2 Offline at Send, [ Yes, send when online ] (`card:answer` optionId `send_when_online`): the tap approves
+   * once, as Send does; the card waits `queued_offline` ("Will send when you're back online" + Cancel) and the send runs
+   * with its 5 s undo once foo is back online (`resumeQueued`).
+   */
+  queueOffline(req: Tap): Result<CardRow> {
+    const t = this.pending(req);
+    if (!t.ok) return t;
+    const { card, p, a } = t.value;
+    if (!p.sendAllowed) return fail('CONN_SCOPE_MISSING');
+    if (a.hardLimit) return fail('VALIDATION');
+    const now = this.d.now();
+    const moved = this.d.gate.draftMove(a.id, 'approve', {
+      approval: { approved_at: now, approved_via: 'card', scope: 'once', undo_until: null },
+      card: {
+        state: 'queued_offline',
+        payload: { ...p, undone: false },
+        resolved_by: req.resolvedBy,
+        resolved_at: now,
+        answer: { optionId: 'send_when_online' },
+      },
+    });
+    return moved.ok ? ok(this.card(card.id)!) : moved;
+  }
+
+  /** Back online: every queued Draft opens its 5 s undo window, then the tick sends it. Returns the approvals moved. */
+  resumeQueued(): string[] {
+    const now = this.d.now();
+    const undoUntil = now + UNDO_MS;
+    const ids = this.d.db
+      .prepare(
+        `SELECT a.id FROM approvals a JOIN cards c ON c.id = a.card_id
+         WHERE c.type = 'draft' AND c.state = 'queued_offline' AND a.state = 'APPROVED' AND a.submitted_at IS NULL`,
+      )
+      .pluck()
+      .all() as string[];
+    const out: string[] = [];
+    for (const id of ids) {
+      const a = this.d.gate.get(id);
+      const card = a ? this.card(a.cardId) : null;
+      const p = card ? draftPayloadOf(card) : null;
+      if (!a || !card || !p) continue;
+      const effects = this.d.db.transaction(() => {
+        const n = this.d.db
+          .prepare("UPDATE approvals SET undo_until = ? WHERE id = ? AND state = 'APPROVED' AND submitted_at IS NULL")
+          .run(undoUntil, id).changes;
+        if (n !== 1) return null;
+        const w = applyDbOps(this.d.db, [{ op: 'update', table: 'cards', id: card.id, set: { state: 'undo_window', payload: { ...p, undoUntil } } }], {
+          now,
+          ...(this.d.dataDir ? { dataDir: this.d.dataDir } : {}),
+        });
+        if (!w.result.ok) throw new Error(w.result.error.kind);
+        return w.effects;
+      })();
+      if (!effects) continue;
+      this.d.changed(effects);
+      out.push(id);
+    }
+    return out;
+  }
+
   /** `draft:update` (Change → Save changes): Gmail drafts.update, the same PENDING approval re-hashed, a new nonce. */
   async update(req: { cardId: string; nonce: string; fields: DraftFields }): Promise<Result<CardRow>> {
     const t = this.pending(req);
@@ -413,20 +714,17 @@ export class DraftService {
     if (req.fields.to !== undefined && req.fields.to !== p.to?.address) return fail('VALIDATION');
     const subject = p.subject === undefined ? undefined : (req.fields.subject ?? p.subject);
     const gmail = this.d.gmail();
-    if (!gmail || !p.gmailDraftId) return fail('CONN_EXPIRED');
-    const g = await gmail.update(p.gmailDraftId, {
-      to: p.to?.address ?? '',
-      ...(subject !== undefined ? { subject } : {}),
-      body: req.fields.body,
-    });
-    if (!g.ok) return g;
+    const to = p.to?.address ?? '';
+    // M8 T6 (G-M8-04): a draft kept in foo (no Gmail draft without `gmail.compose`) changes in foo only.
+    const local = !p.gmailDraftId && !p.sendAllowed;
+    if (!local && (!gmail || !p.gmailDraftId)) return fail('CONN_EXPIRED');
+    if (!local) {
+      const g = await gmail!.update(p.gmailDraftId!, this.message(to, subject, req.fields.body, p.signature, p));
+      if (!g.ok) return g;
+    }
     // A Send can land while Gmail answers: then the old words are the approved ones, so Gmail gets them back.
     const revert = async (r: Result<never>): Promise<Result<never>> => {
-      await gmail.update(p.gmailDraftId!, {
-        to: p.to?.address ?? '',
-        ...(p.subject !== undefined ? { subject: p.subject } : {}),
-        body: p.body,
-      });
+      if (!local) await gmail!.update(p.gmailDraftId!, this.message(to, p.subject, p.body, p.signature, p));
       return r;
     };
     const still = this.pending(req);
@@ -490,7 +788,7 @@ export class DraftService {
     const now = this.d.now();
     const moved = this.d.gate.draftMove(a.id, 'withdraw', { card: { state: 'opened_in_app', resolved_by: 'tap', resolved_at: now } });
     if (!moved.ok) return moved;
-    await this.d.openExternal?.(GMAIL_DRAFTS_URL);
+    await this.d.openExternal?.(gmailUrl(p, this.d.email?.() ?? null));
     return ok(undefined);
   }
 
