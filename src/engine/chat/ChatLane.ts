@@ -7,7 +7,8 @@
 // bubble status `failed`), 08-1 §4.3.5 (ai_turns row per turn), Art. 12 (AI words never move a status), Art. 16, 22.
 // M3 builds `reply` and `react`; M4 adds `job` (the runner's createJob). The other intake kinds (ask, handoff, routine, memory, setting, catch_up) arrive with
 // M4–M8. Until then their unreleased `<say>` is discarded and foo posts the empty-reply line so it never goes silent
-// (GAPS.md 2026-10-18 "intake kinds before their milestone").
+// (GAPS.md 2026-10-18 "intake kinds before their milestone"). M6: memory parts 5/5b per turn (08-4 §24.16, retrieval.ts)
+// and the uses of the offered facts the AI names in `usedMemoryIds` (§24.16 item 6, 08-3 §12.5).
 import { t } from '../../shared/copy/t';
 import type { Clock } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
@@ -17,6 +18,7 @@ import type { IntakeDecision } from '../../shared/schemas';
 import type { EngineChat, EngineHelper, EngineMessage } from '../../main/db/queries';
 import type { DbOp, DbTxReply, MainLink } from '../protocol';
 import type { AiErrorKind, AiUsage, TurnRequest, TurnResult, TurnSink } from '../ai/types';
+import { buildMemoryParts, memoryUseOps, type MemoryParts } from '../memory/retrieval';
 // M5 (T5)
 import type { CardAnswer } from '../../shared/types';
 import { answerTyped, type TypedHookDeps } from '../cards/typedHook';
@@ -46,6 +48,8 @@ export interface IntakeInput {
   conversation: EngineMessage[];
   message: EngineMessage;
   local: boolean;
+  /** Parts 5 and 5b for this turn (08-4 §24.16). */
+  memory: MemoryParts;
   // M5
   /** T10: "Change plan": the old plan goes with this turn (08-2 §5.3.3). */
   oldPlan?: { title: string; steps: string[] };
@@ -53,11 +57,12 @@ export interface IntakeInput {
 
 /** The reply protocol (builder B's modules, wired by Engine). */
 export interface LaneProtocol {
-  buildIntake(input: IntakeInput): { system: string; prompt: string };
+  /** `factIds`: the facts parts 5/5b carry as sent (08-4 §24.16 item 6). */
+  buildIntake(input: IntakeInput): { system: string; prompt: string; factIds?: string[] };
   buildRepair(issues: string): string;
   /** Parse the whole reply: the `<say>` text and the validated IntakeAct, or the zod issues. */
-  parse(text: string): { say: string; act: IntakeDecisionView | null; issues: string | null };
-  parseAct(text: string): { act: IntakeDecisionView | null; issues: string | null };
+  parse(text: string): { say: string; act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[] };
+  parseAct(text: string): { act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[] };
   /** The release gate for one streamed turn (08-4 §25.5 item 2). */
   gate(onRelease: (text: string, mode: 'whole' | 'sentence') => void, signal: AbortSignal): LaneGate;
   /** 08-2 §7.6 over a whole `<say>` (used for repair results and the post-check). */
@@ -254,7 +259,13 @@ export class ChatLane {
     const settings = this.d.settings();
     const who = helper?.name ?? settings.identity.agentName;
 
-    let built: { system: string; prompt: string } | null;
+    const memory = await buildMemoryParts((q, ...args) => this.query(q, ...args), {
+      chatId,
+      text: message.textForAi ?? message.text,
+      timeZone: settings.locale.timeZone,
+      now: this.d.clock.now(),
+    });
+    let built: { system: string; prompt: string; factIds?: string[] } | null;
     try {
       const oldPlan = this.d.jobs?.planChange?.(chatId) ?? null;
       built = this.d.protocol.buildIntake({
@@ -264,6 +275,7 @@ export class ChatLane {
         conversation,
         message,
         local: pick.billing === 'local',
+        memory,
         ...(oldPlan ? { oldPlan } : {}),
       });
     } catch {
@@ -401,6 +413,7 @@ export class ChatLane {
 
     const parsed = this.d.protocol.parse(result.text);
     let act = parsed.act;
+    let usedMemoryIds = act ? (parsed.usedMemoryIds ?? []) : [];
     if (!act) {
       // 08-2 §7.5: one repair turn (same session); its <say> is ignored after streaming (08-4 §25.5 item 3).
       const repairParams = this.d.ai.turnParams(pick.providerId, 'repair');
@@ -424,7 +437,9 @@ export class ChatLane {
               new AbortController().signal,
             )
             .catch(() => null);
-      act = repaired && repaired.stopReason === 'end' ? this.d.protocol.parseAct(repaired.text).act : null;
+      const fixed = repaired && repaired.stopReason === 'end' ? this.d.protocol.parseAct(repaired.text) : null;
+      act = fixed?.act ?? null;
+      if (act) usedMemoryIds = fixed?.usedMemoryIds ?? [];
       if (!act) this.d.log('chat.protocol_invalid', 'PROTOCOL_INVALID', { chatId });
       // A valid <say> with a broken <act> is still posted as a plain reply (08-2 §7.5).
       if (!act && parsed.say.trim()) act = { kind: 'reply' };
@@ -460,7 +475,16 @@ export class ChatLane {
       await this.post(chatId, messageId, t('thread.reply.empty'), helper, providerNote);
     }
     this.typing(chatId, false, who);
+    await this.recordUses(chatId, usedMemoryIds, built.factIds ?? [], memory);
     await this.turnRow(turnId, chatId, pick, startedAt, result, 'ok');
+  }
+
+  /** 08-4 §24.16 item 6: each offered id the AI names gets `last_used_at`, `use_count` + 1 and one `memory_uses` row. */
+  private async recordUses(chatId: string, named: string[], offered: string[], memory: MemoryParts): Promise<void> {
+    const ops = memoryUseOps(named, offered, memory, this.d.clock.now(), { chatId, jobId: null });
+    if (!ops.length) return;
+    const r = await this.tx(ops);
+    if (!r.ok) this.d.log('memory.uses_failed', r.error.kind, { chatId });
   }
 
   private async emptyReply(

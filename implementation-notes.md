@@ -665,6 +665,17 @@ CR-0010 §(b). Where the code stands for the ticket threads:
   tagged "M4-T7 close-out": `cards.checklist.footer_text.plan`, `cards.plan.change_placeholder`,
   `cards.proof_chip.popover.file_missing`, `cards.not_live_chip.still_failed.text`, `cards.error.still_failing`.
 
+### M6 T4 · memory in replies
+
+- `src/engine/memory/retrieval.ts` `buildMemoryParts(query, {chatId, text, timeZone, now})` picks parts 5/5b per turn:
+  identity rows first (outside the cap), the pinned set cut at 4,000 chars of lines joined by `\n`, then ≤ 8 FTS rows that
+  were not pinned (`memorySearch` takes the pinned ids as `excludeIds`). `ftsMatch` is the §24.16 item 3 query build.
+- The chat lane calls it before `buildIntake`; `PromptBuilder` reports `factIds` (parts 5/5b as sent, after trims) and the
+  lane records uses only for those ids (`memory_index` `last_used_at`, `use_count + 1`; one `memory_uses` row each).
+- Groups: a grant never re-admits a `private=1` fact (08-3 §12.5.1, Art. 14). Step turns (job title + slot values as the
+  query, §24.16 item 3) call the same function from the job lane when it builds part 5b.
+- AT-075 (an edited file shows in the next prompt) lands once T3's watcher is on the milestone branch.
+
 ## M5 · contracts, approval machine and card stubs (ticket T1, CR-0009)
 
 ### Built

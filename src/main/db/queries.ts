@@ -90,6 +90,10 @@ function groupExclusion(alias: string): string {
     OR EXISTS (SELECT 1 FROM memory_group_grants g WHERE g.fact_id = ${alias}.id AND g.chat_id = ? AND g.until > ?))`;
 }
 
+/** AT-074 / J17: a fact with a live tombstone (same hash and origin kind) never reaches a prompt, even if its row survives. */
+const NOT_TOMBSTONED = `AND NOT EXISTS (SELECT 1 FROM memory_tombstones t
+        WHERE t.hash = m.hash AND t.origin_kind = m.origin_kind AND t.expires_at > ?)`;
+
 export interface EngineChat {
   id: string;
   kind: 'foo' | 'helper' | 'group' | 'wa_mirror';
@@ -402,7 +406,7 @@ export const NAMED_QUERIES = {
     })),
   /**
    * 08-4 §24.16 part 5 candidates for one chat: identity rows, global rows, this chat's chat-scope rows, this helper's notes;
-   * order `use_count DESC, learned_at DESC`. The caller cuts at 4,000 chars (identity rows outside the budget). T4 refines.
+   * order `use_count DESC, learned_at DESC`. retrieval.ts cuts at 4,000 chars (identity rows outside the budget).
    */
   memoryByScope: ({ db, now }: QueryCtx, chatId: unknown): EngineFact[] => {
     const chat = db.prepare('SELECT kind, helper_id FROM chats WHERE id = ?').get(String(chatId)) as DbRow | undefined;
@@ -412,12 +416,16 @@ export const NAMED_QUERIES = {
     const sql = `SELECT m.* FROM memory_index m
       WHERE (m.scope = 'global' OR (m.scope = 'chat' AND m.chat_id = ?) OR (m.scope = 'helper' AND m.file = ?))
       ${group ? groupExclusion('m') : ''}
+      ${NOT_TOMBSTONED}
       ORDER BY m.use_count DESC, m.learned_at DESC`;
-    const args: unknown[] = [String(chatId), helperFile, ...(group ? [String(chatId), now] : [])];
+    const args: unknown[] = [String(chatId), helperFile, ...(group ? [String(chatId), now] : []), now];
     return (db.prepare(sql).all(...args) as DbRow[]).map(engineFact);
   },
-  /** 08-4 §24.16 part 5b: ≤ `limit` FTS rows for a prepared MATCH string, `bm25 ASC, use_count DESC, learned_at DESC`. */
-  memorySearch: ({ db, now }: QueryCtx, chatId: unknown, match: unknown, limit: unknown): EngineFact[] => {
+  /**
+   * 08-4 §24.16 part 5b: ≤ `limit` (max 8) FTS rows for a prepared MATCH string (retrieval.ts `ftsMatch`), not in
+   * `excludeIds` (the facts already pinned), `bm25 ASC, use_count DESC, learned_at DESC`; the same scope and group rule.
+   */
+  memorySearch: ({ db, now }: QueryCtx, chatId: unknown, match: unknown, limit: unknown, excludeIds?: unknown): EngineFact[] => {
     const chat = db.prepare('SELECT kind, helper_id FROM chats WHERE id = ?').get(String(chatId)) as DbRow | undefined;
     if (!chat || typeof match !== 'string' || !match.trim()) return [];
     const group = chat.kind === 'group';
@@ -426,8 +434,19 @@ export const NAMED_QUERIES = {
       WHERE memory_fts MATCH ?
         AND (m.scope = 'global' OR (m.scope = 'chat' AND m.chat_id = ?) OR (m.scope = 'helper' AND m.file = ?))
         ${group ? groupExclusion('m') : ''}
+        ${NOT_TOMBSTONED}
+        AND m.id NOT IN (SELECT value FROM json_each(?))
       ORDER BY bm25(memory_fts) ASC, m.use_count DESC, m.learned_at DESC LIMIT ?`;
-    const args: unknown[] = [match, String(chatId), helperFile, ...(group ? [String(chatId), now] : []), Math.min(Number(limit) || 8, 8)];
+    const exclude = JSON.stringify(Array.isArray(excludeIds) ? excludeIds.map(String) : []);
+    const args: unknown[] = [
+      match,
+      String(chatId),
+      helperFile,
+      ...(group ? [String(chatId), now] : []),
+      now,
+      exclude,
+      Math.min(Number(limit) || 8, 8),
+    ];
     return (db.prepare(sql).all(...args) as DbRow[]).map(engineFact);
   },
   /** 08-3 §12.7 step 5 / §14.2 `memory_week`: facts learned in the last 7 days. */
