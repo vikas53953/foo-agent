@@ -648,6 +648,43 @@ files are real and which stay seeds). What the real output pinned:
   tagged "M4-T7 close-out": `cards.checklist.footer_text.plan`, `cards.plan.change_placeholder`,
   `cards.proof_chip.popover.file_missing`, `cards.not_live_chip.still_failed.text`, `cards.error.still_failing`.
 
+## M5 · contracts, approval machine and card stubs (ticket T1, CR-0009)
+
+### Built
+
+- `src/shared/approvalMachine.ts` (11 states, 17 events, 21 transitions, expiry minutes per verb) and the approval half of
+  `spec/state-machines.json` (`scripts/extract-sm.ts`, checked against the 07-2 §5 state table and diagram words), checked
+  against each other by `test/fidelity/sm/FID-16-approval.test.ts`.
+- M5 types, error kinds and schemas (`ApprovalFields` strict, `ApprovalDraft` verbs book|buy|pay|delete); `fieldsHash` in
+  `src/engine/gate/fieldsHash.ts` (node:crypto, so not in `shared/`); `newNonce()` in `shared/canon.ts` (Web Crypto).
+- The 14 M5 invoke channels in `shared/ipc.ts`, both preloads and `IpcRouter.ts`, each answered by a stub
+  (`VALIDATION` `not_implemented`) in its owner's file: `main/cards/answerIpc.ts` (T5), `main/approvals/approvalIpc.ts` (T4),
+  `main/drafts/draftIpc.ts` (T6), `main/vault/secretIpc.ts` (T2). Register with `handleAll(rows)`; only the body changes.
+- Engine protocol rows `approval.changed`, `registry:add|remove`, `code.submit` (main → engine) and `approval.open`,
+  `approval.transition`, `vault.use` (engine → main); `EngineBridge` answers the three engine kinds `not_implemented`.
+- `test:card.seed` / `__fooTest.cardSeed`: any card type through `applyDbOps`, plus an `approvals` row for approval /
+  payment / draft cards (a payload key `approvalId` is filled with the new id).
+- Card stubs `Choice`, `OptionTiles`, `Approval`, `Draft`, `SecretBox`; registered in M4-T5's `CARD_VIEWS`; `CardFrame` gains
+  `edge: 'accent'` (the gated card's 1.5px top edge; Chromium draws it 1px at 100% scale), `data` and `CardSummary`.
+- M5 test ids, 287 copy keys (pending ones listed with their ticket in `scripts/copy-pending.json`), `@napi-rs/keyring` 2.1.1.
+
+### Picks and gaps (each in CR-0009 §(b))
+
+- G-M5-01…17: the pack's recommended options. G-M5-18: HELD / APPROVED → WITHDRAWN on a stopped job. G-M5-19: Draft undo
+  moves the same row APPROVED → PENDING (card_id is UNIQUE), expiry reset to undo time + 60 min.
+- `@napi-rs/keyring` 2.1.1 API (from its `index.d.ts`): sync `new Entry(service, username)` / `Entry.withTarget(target,
+service, username)`, `setPassword`, `getPassword(): string | null`, `setSecret(Uint8Array)`, `getSecret()`,
+  `deleteCredential(): boolean`; an `AsyncEntry` mirrors it with Promises. It is a native module: the packager may need it
+  in `asarUnpack` (T2 checks the installer).
+- `settings.json` has no `permissions` / `rules` section yet: T4 adds `rules`, T7 adds the permission chips.
+- Card width: `.card` had `width: min(var(--card-w), 100%)` with `container-type: inline-size`; in a shrink-wrapped bubble
+  column the percentage collapsed every card (the M2 table card too) to its padding (30px). Now `width: var(--card-w);
+max-width: 100%` (`.wide` the same with `--card-w-wide`). CardFrame takes `data` for extra `data-*` attributes so a card
+  root stays the bubble's direct child (`.hold:has(> [data-testid^='card-'])`).
+- WhatsApp daily-limit line: the slot is `{date}` (it holds "Sat 17 Oct, 12:00 AM"), so ART-21's scan reads it as absolute.
+- Copy: `cards.common.gated_typed_yes` repeats `thread.approval_typed.approve` (both spec-named); 05-1 §0.6 "Nothing needs
+  you here." has no key yet.
+
 ## M4 · close-out (ticket T7)
 
 ### Built

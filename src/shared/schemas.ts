@@ -1,7 +1,8 @@
 // Spec: 08-4 §25.1 (shared act types: PlanStep, ChoiceCardSpec), §25.2 (IntakeAct), §25.2a (GroupIntakeAct, GroupMemberAct),
 // §25.4 (SecondLookAct, RewriteAct, StuckAct), 08-2 §7.3/§7.4 (`<act>` parsed with zod, unknown fields rejected, objects
 // strict), 08-4 §24.4 ({schemaJson} is the JSON Schema of the purpose's zod schema), 08-0 §B.2 (Route, ConnectorApp),
-// 08-3 §13.2 (RoutineDraft), 08-0 §E.9 (`src/shared/schemas.ts`).
+// 08-3 §13.2 (RoutineDraft), 08-0 §E.9 (`src/shared/schemas.ts`); M5 (CR-0009): ApprovalFields (08-2 §9.3), ApprovalDraft
+// (08-4 §25.1, X-125).
 import { z } from 'zod';
 
 /** 08-0 §B.2 `Route` (X-125). */
@@ -260,6 +261,77 @@ export type Proof = z.infer<typeof ProofSchema>;
 export type ToolCallAct = z.infer<typeof ToolCallSchema>;
 export type StepDecision = z.infer<typeof StepDecisionSchema>;
 export type StepAct = z.infer<typeof StepActSchema>;
+
+// M5 (CR-0009): approval verbs and states, ApprovalFields (08-2 §9.3) and the AI's ApprovalDraft (X-125).
+/** 08-0 §B.2 ApprovalVerb (X-55). */
+export const ApprovalVerbSchema = z.enum(['send', 'book', 'buy', 'pay', 'post', 'delete', 'share', 'switch', 'use_app', 'calendar_write']);
+/** 08-0 §B.2 ApprovalState (UPPER values, SM-A13). */
+export const ApprovalStateSchema = z.enum([
+  'PENDING',
+  'APPROVED',
+  'RUNNING',
+  'COMPLETED',
+  'HELD',
+  'CHECKING',
+  'DECLINED',
+  'EXPIRED',
+  'SUPERSEDED',
+  'WITHDRAWN',
+  'FAILED',
+]);
+/** 08-2 §9.3 `ApprovalFields` (strict: unknown fields never reach the hash or the card text). */
+export const ApprovalFieldsSchema = z
+  .object({
+    verb: ApprovalVerbSchema,
+    channel: z.enum(['email', 'whatsapp', 'web', 'x']).optional(),
+    recipients: z
+      .array(
+        z
+          .object({
+            name: z.string(),
+            address: z.string(),
+            isNew: z.boolean(),
+            isGroup: z.boolean(),
+            groupSize: z.number().int().min(0).optional(),
+          })
+          .strict(),
+      )
+      .optional(),
+    payee: z.string().optional(),
+    siteDomain: z.string().optional(),
+    amountPaise: z.number().int().min(0).optional(),
+    lines: z.array(z.object({ label: z.string(), amountPaise: z.number().int() }).strict()).optional(),
+    currency: z.literal('INR').optional(),
+    when: z.object({ start: z.number(), end: z.number().optional(), tz: z.string() }).strict().optional(),
+    partySize: z.number().int().min(1).optional(),
+    item: z.string().optional(),
+    personalShared: z.array(z.enum(['name', 'email', 'phone', 'address'])).optional(),
+    cancelTerms: z
+      .object({ freeUntil: z.number().optional(), feePaise: z.number().int().min(0).optional(), refundable: z.boolean() })
+      .strict()
+      .optional(),
+    contentSummary: z.string().max(400).optional(),
+    irreversible: z.boolean(),
+  })
+  .strict();
+/** 08-0 §B.3 / 08-4 §25.1 `ApprovalDraft`: verb is ApprovalDraftVerb only (X-125: no `send`; a send is a Draft card). */
+export const ApprovalDraftSchema = z
+  .object({
+    verb: z.enum(['book', 'buy', 'pay', 'delete']),
+    fields: ApprovalFieldsSchema,
+    evidence: z.array(
+      z
+        .object({
+          field: z.enum(Object.keys(ApprovalFieldsSchema.shape) as [string, ...string[]]),
+          toolCallId: z.string().min(1),
+          quote: z.string().max(200),
+          ref: z.string().optional(),
+        })
+        .strict(),
+    ),
+  })
+  .strict();
+
 export type IntakeAct = z.infer<typeof IntakeActSchema>;
 export type IntakeDecision = z.infer<typeof IntakeDecisionSchema>;
 export type ChoiceCardSpecAct = z.infer<typeof ChoiceCardSpecSchema>;
