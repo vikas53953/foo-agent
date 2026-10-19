@@ -12,7 +12,7 @@
   05-2 §5.8; 10-acceptance-1 AT-005, AT-006, AT-009, AT-155, AT-155a; 11-fidelity §11.12 item 8.
 - **Status:** Approved by Vikas's approve-on-my-behalf rule (his message 2026-10-18 14:56Z), after the independent review in §(f), DECISIONS X-178
 - **Change:** `spec/trace.csv` (rows below), `spec/constitution/DECISIONS.md` (row X-178); `scripts/golden-manifest.ts`
-  (`EARLY_STEPS`) and `golden/manifest.json` regenerated (`xvfb-run pnpm golden:manifest`). No other `spec/` or `golden/`
+  (`EARLY_STEPS`) and `golden/manifest.json` regenerated (`xvfb-run pnpm golden:manifest`); `docs/fidelity/disputes.json` (§(g)). No other `spec/` or `golden/`
   file changes.
 - **Manifest:** `pnpm tsx scripts/spec-verify.ts --write` run in the same commit.
 
@@ -119,3 +119,17 @@ diff; ran typecheck, `trace:check`, `check:copy`, eslint and the new unit tests.
 
 Recorded as approved on Vikas's behalf under his standing rule (his message 2026-10-18 14:56Z: "take care of it on my
 behalf and then keep on working"); listed for his later review.
+
+## (g) Tier R disputes (11-fidelity §11.2.7 step 3)
+
+The first Windows golden lane (PR #51, head b4271dc) ran Tier R on the eight early steps. Every one fails R1 and R2, and
+some fail R4 or R3. The app matches 06-1 §2.2 and 06-2 §6.1. These checks fail because the walkthrough draws a different
+frame, so `docs/fidelity/disputes.json` sets only the failing checks to "expected fail" until M12 / M13 redraw and bless
+the steps. Every other check still counts.
+
+| Steps                | Checks         | Drawing vs app                                                                                                                                                                                                                                                                                                                                 |
+| -------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| UX-02-02, 03, 05, 06 | r1, r2         | Frame copy: the drawing has the welcome card "Hi, I'm foo. → Let's go" above (M12), "Step 1 of 4" inside the card, the "Vikas" footer and other sample panels. The app opens on the finder (pick 1) on the fake clock's date. Hl copy matches; the hl boxes differ in size (for example, the drawn composer is 464 wide and the app's is 600). |
+| UX-02-04, 07         | r1, r2, r4     | As above. The drawing also shows the choice line as a separate foo bubble with its own button card. The app draws it inside the finder (pick 4), so the hl crop differs.                                                                                                                                                                       |
+| UX-02-09             | r1, r2, r3, r4 | As above. The drawn hl is a raised light surface, even in dark; the app's key row sits on the card's own surface (dark #0D0D11 vs drawn #F1F1F5).                                                                                                                                                                                              |
+| UX-24-02             | r1, r2, r4     | The drawing shows the full Account page with the YOU rows, "Run setup again" and foo's profile row (M13, pick 11), so the Using row and its buttons sit lower and are cropped differently.                                                                                                                                                     |
