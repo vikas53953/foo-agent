@@ -4,6 +4,8 @@ import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { createParseWorker } from '../../src/engine/memory/parseWorker';
+import { applyDbOps } from '../../src/main/engine-supervisor/engineHost';
+import type { Db } from '../../src/main/store/db';
 import { memoryFileOf, watchMemory, WATCH_DEBOUNCE_MS } from '../../src/engine/memory/watcher';
 import { FakeClock } from '../../src/shared/clock';
 import type { MemoryFactView } from '../../src/shared/types';
@@ -300,5 +302,26 @@ describe('M6 T3 seed facts are files (pack Risk 1)', () => {
     expect(after.map((r) => [r.id, r.text, r.provenance, r.learned_at])).toEqual(
       before.map((r) => [r.id, r.text, r.provenance, r.learned_at]),
     );
+  });
+});
+
+describe('M6 T3 memory_fts rebuild (08-1 §2.5)', () => {
+  it('rebuilds memory_fts only when a fact’s text is inserted, deleted or rewritten, never for a use count', async () => {
+    const h = storeHarness();
+    value(await h.svc.cmd({ cmd: 'add', text: 'Likes filter coffee' }));
+    const [row] = h.rows();
+    const id = String(row!.id);
+    const rebuilds = (ops: Parameters<typeof applyDbOps>[1]) => {
+      const seen: string[] = [];
+      const spy = new Proxy(h.db, {
+        get: (t, k) => (k === 'prepare' ? (sql: string) => (seen.push(sql), t.prepare(sql)) : Reflect.get(t, k)),
+      }) as Db;
+      expect(applyDbOps(spy, ops, { now: h.clock.now() }).result.ok).toBe(true);
+      return seen.filter((q) => q.includes("VALUES ('rebuild')")).length;
+    };
+    expect(rebuilds([{ op: 'update', table: 'memory_index', id, set: { use_count: 3, last_used_at: h.clock.now() } }])).toBe(0);
+    expect(rebuilds([{ op: 'update', table: 'memory_index', id, set: { text: 'Likes filter coffee, no sugar' } }])).toBe(1);
+    expect(rebuilds([{ op: 'delete', table: 'memory_index', id }])).toBe(1);
+    expect(h.db.prepare("SELECT COUNT(*) AS n FROM memory_fts WHERE memory_fts MATCH 'coffee'").get()).toEqual({ n: 0 });
   });
 });
