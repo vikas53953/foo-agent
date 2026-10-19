@@ -64,6 +64,17 @@ describe('R2: Store.writeRedacted on every §4.6 rule 2 column', () => {
     },
   );
 
+  it('JSON or text is decided by the column, never by sniffing the value', () => {
+    // A message that starts with "{" is text: redacted as written, not parsed and re-serialised.
+    const msg = `{ note } key ${CANARY}`;
+    expect(redactRow('messages', { text: msg }).text).toBe('{ note } key [hidden]');
+    const looksJson = `{"a": "${CANARY}"}`;
+    expect(redactRow('messages', { text: looksJson }).text).toBe('{"a": "[hidden]"}');
+    // A JSON column that does not parse is still redacted, whole.
+    expect(redactRow('tool_calls', { args: `{broken ${CANARY}` }).args).toBe('{broken [hidden]');
+    expect(JSON.parse(String(redactRow('activity', { fields: JSON.stringify({ to: CANARY }) }).fields))).toEqual({ to: '[hidden]' });
+  });
+
   it('card numbers keep their last 4; ordinary text is unchanged', () => {
     expect(writeRedacted('card 4111 1111 1111 1111 ok')).toBe('card •••• 1111 ok');
     expect(writeRedacted('Train 12951 leaves 16 Oct at 5:00 PM, ₹1,250')).toBe('Train 12951 leaves 16 Oct at 5:00 PM, ₹1,250');

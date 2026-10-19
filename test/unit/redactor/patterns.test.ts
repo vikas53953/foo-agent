@@ -39,12 +39,20 @@ const ROWS: { row: string; text: string; want: string }[] = [
     text: 'https://a.in/?password=letmein',
     want: `https://a.in/?${HIDDEN}`,
   } /* the paste catcher's password row takes the whole pair */,
+  { row: 'URL param key', text: 'https://a.in/x?key=Qm1&y=1', want: `https://a.in/x?key=${HIDDEN}&y=1` },
+  { row: 'URL param code', text: 'https://a.in/cb?code=4f2a9&state=ok', want: `https://a.in/cb?code=${HIDDEN}&state=ok` },
+  { row: 'URL param signature', text: 'https://a.in/x?a=1&signature=Zz9a', want: `https://a.in/x?a=1&signature=${HIDDEN}` },
+  { row: 'URL param pwd', text: 'https://a.in/?pwd=letmein', want: `https://a.in/?${HIDDEN}` } /* the password row takes the pair */,
+  { row: 'URL param secret', text: 'https://a.in/x?secret=s3cr3t#top', want: `https://a.in/x?secret=${HIDDEN}#top` },
+  { row: 'URL param auth', text: 'https://a.in/x?auth=Ab12', want: `https://a.in/x?auth=${HIDDEN}` },
   { row: 'URL userinfo', text: 'ftp://user:fakepass@files.example.com/a', want: `ftp://${HIDDEN}@files.example.com/a` },
   { row: 'card spaced', text: 'card 4111 1111 1111 1111 exp', want: 'card •••• 1111 exp' },
   { row: 'card dashed', text: '5500-0000-0000-0004', want: '•••• 0004' },
   { row: 'card 15 digits', text: 'amex 378282246310005', want: 'amex •••• 0005' },
   { row: 'OTP word', text: 'Your OTP for the bank login: 482913', want: `Your OTP for the bank login: ${HIDDEN}` },
   { row: 'one-time', text: 'one-time password sent, it is 99887766', want: `one-time password sent, it is ${HIDDEN}` },
+  { row: 'verification code', text: 'Your verification code is 604217', want: `Your ${HIDDEN}` } /* the labelled-code row takes the pair */,
+  { row: 'verification code, near', text: 'verification code: 3391 (valid 10 min)', want: `${HIDDEN} (valid 10 min)` },
   { row: 'security code', text: 'security code 7351 for you', want: `${HIDDEN} for you` },
   { row: 'passcode', text: 'the passcode for entry is 2468', want: `the passcode for entry is ${HIDDEN}` },
   { row: 'Hindi OTP', text: 'ओटीपी 4821 है', want: `ओटीपी ${HIDDEN} है` },
@@ -115,5 +123,20 @@ describe('08-2 §11.4 registry scrub comes first', () => {
     expect(red.registry.size).toBe(256);
     expect(red.redact('fake-value-0-zz').text).toBe('fake-value-0-zz');
     expect(red.redact('fake-value-256-zz').text).toBe(HIDDEN);
+  });
+});
+
+describe('08-2 §11.4 scrub stays linear on long text', () => {
+  // A 100 KB paste must not stall the store write or a log line: the URL scheme, the email local part and the span rebuild
+  // were quadratic (3 s for 100 KB of "ab." in the store, 18 s under log/group). The bound leaves room for a slow runner.
+  const BOUND_MS = 300;
+  it.each(['ab.', 'a.b-', 'x://', 'a@b.', 'otp 1234 '])('100 KB of %j, every channel', (unit) => {
+    const text = unit.repeat(Math.ceil(100_000 / unit.length)).slice(0, 100_000);
+    const red = r();
+    for (const channel of [undefined, 'toast', 'log', 'group'] as const) {
+      const t0 = performance.now();
+      red.redact(text, channel ? { channel } : {});
+      expect(performance.now() - t0).toBeLessThan(BOUND_MS);
+    }
   });
 });

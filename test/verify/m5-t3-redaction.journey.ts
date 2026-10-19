@@ -70,6 +70,13 @@ export default async function journey(v: Verify): Promise<void> {
   await settle(page);
   await v.shot('sent-anyway');
 
+  // R7 on a real sink: a rejected IPC call carrying the canary writes an IPC_REJECTED line, never the payload.
+  const rejected = await page.evaluate(
+    (canary) => window.foo.invoke('message:send' as never, { chatId: 42, text: canary } as never),
+    CANARY,
+  );
+  if ((rejected as { ok?: boolean }).ok !== false) throw new Error(`bad payload accepted: ${JSON.stringify(rejected)}`);
+
   // Close the app so the database and the logs are flushed, then search every byte it wrote.
   await app.close();
   const written = [...files(dirs.FOO_DATA_DIR), ...files(dirs.FOO_LOCAL_DIR)];
@@ -77,6 +84,12 @@ export default async function journey(v: Verify): Promise<void> {
   const db = written.filter((f) => /foo\.db/.test(f));
   if (!db.length) throw new Error(`no database among ${written.length} files`);
   if (hits.length) throw new Error(`canary found in ${hits.join(', ')}`);
+  const logs = written.filter((f) => /[\\/]logs[\\/]app-\d{4}-\d{2}-\d{2}\.log$/.test(f));
+  const lines = logs.flatMap((f) => readFileSync(f, 'utf8').split('\n').filter(Boolean));
+  if (!lines.some((l) => l.includes('"IPC_REJECTED"'))) throw new Error(`no IPC_REJECTED line in the tech log: ${lines.join(' | ')}`);
+  v.note(
+    `the tech log ${logs.map((f) => f.slice(base.length)).join(', ')} holds ${lines.length} lines, the rejected call among them, and no canary`,
+  );
   v.note(
     `searched ${written.length} files the app wrote (${db.map((f) => f.slice(base.length)).join(', ')}, logs, activity): 0 hits for the canary`,
   );
