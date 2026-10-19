@@ -321,6 +321,21 @@ export const TID = {
   composerErrorsClear: 'composer-errors-clear',
   dialogC21: 'dialog-c-21',
   dialogConfirmField: 'dialog-confirm-field',
+  // M8 T2: Connect card (05-3 §5.11.3), Settings → Connections Google + X rows (06-2 §6.8), C-10
+  cardConnect: 'card-connect',
+  cardConnectConnect: 'card-connect-connect',
+  cardConnectAllowSend: 'card-connect-allow-send',
+  cardConnectNotNow: 'card-connect-not-now',
+  cardConnectReopen: 'card-connect-reopen',
+  cardConnectTryAgain: 'card-connect-try-again',
+  cardConnectSkip: 'card-connect-skip',
+  cardConnectRemind: 'card-connect-remind',
+  cardConnectDifferentAccount: 'card-connect-different-account',
+  settingsRowConnectionsGmail: 'settings-row-connections-gmail',
+  settingsRowConnectionsCalendar: 'settings-row-connections-calendar',
+  settingsRowConnectionsContacts: 'settings-row-connections-contacts',
+  settingsRowConnectionsX: 'settings-row-connections-x',
+  dialogC10: 'dialog-c-10',
   // M5 (CR-0009) · cards (05-1 §5.3.5, §5.4.5; 05-2 §5.5.6, §5.7.5, §5.8.5) and dialog C-22 (06-3 §14); card roots also carry
   // data-card-id, data-card-type, data-card-state; card-choice carries data-purpose, options data-index 1–4, scope segments 0–2
   cardChoice: 'card-choice',
@@ -449,10 +464,7 @@ export const TID = {
   settingsRowAccountAiAdd: 'settings-row-account-ai-add',
   dialogReplaceKey: 'dialog-replace-key',
   // M8 T3: WhatsApp Connect card + QR panel (05-3 §5.11.3), Connections WhatsApp rows (06-2 §6.8), C-8, C-11 (06-3 §14),
-  // dialog-link-whatsapp (X-118). card-connect, -not-now and -skip are T2's names too (the same strings).
-  cardConnect: 'card-connect',
-  cardConnectNotNow: 'card-connect-not-now',
-  cardConnectSkip: 'card-connect-skip',
+  // dialog-link-whatsapp (X-118). card-connect, -not-now and -skip are T2's (above).
   cardConnectShowQr: 'card-connect-show-qr',
   cardConnectNewCode: 'card-connect-new-code',
   cardConnectQr: 'card-connect-qr',

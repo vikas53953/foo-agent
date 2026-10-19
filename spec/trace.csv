@@ -220,7 +220,7 @@ R3 · R4,J2,,UX-02-06,,06-1 §2.2,test/fidelity/ux/UX-02.ai.spec.ts,M6,live
 R3 · R4,J2,,UX-02-07,,06-1 §2.2; 05-2 §5.8,test/fidelity/ux/UX-02.ai.spec.ts,M6,live
 R3 · R4,J2,,UX-02-09,,06-1 §2.2; 05-2 §5.8,test/fidelity/ux/UX-02.ai.spec.ts,M6,live
 R21 · R23 · R5,J21,,UX-24-02,,06-2 §6.0; 06-2 §6.1,test/fidelity/ux/UX-24.settings.spec.ts,M6,live
-,J4,AT-014,,,10-acceptance-1 §B; 08-3 §16.1; 05-3 §5.11,test/e2e/m8-connectors.spec.ts,M8,pending
+,J4,AT-014,,,10-acceptance-1 §B; 08-3 §16.1; 05-3 §5.11,test/e2e/m8-connectors.spec.ts,M8,live
 ,J4,AT-015,,,10-acceptance-1 §B; 08-3 §16.1.4; CR-0012 G-M8-04,test/integration/m8-gmail-drafts.test.ts,M8,pending
 ,J4,AT-018,,,10-acceptance-1 §B; 08-3 §16.4.2,test/integration/m8-whatsapp-send.test.ts,M8,pending
 ,J5,AT-020,,,10-acceptance-1 §B; 08-3 §16.1.3,test/integration/m8-gmail-read.test.ts,M8,pending
@@ -230,7 +230,7 @@ R21 · R23 · R5,J21,,UX-24-02,,06-2 §6.0; 06-2 §6.1,test/fidelity/ux/UX-24.se
 ,J12,AT-054,,,10-acceptance-1 §B; 08-3 §16.3,test/integration/m8-x.test.ts,M8,pending
 ,J12,AT-055,,,10-acceptance-1 §B; 08-3 §16.1.4,test/integration/m8-gmail-drafts.test.ts,M8,pending
 ,J16,AT-070,,,10-acceptance-1 §B; 08-3 §16.4.2,test/integration/m8-whatsapp-send.test.ts,M8,pending
-,J21,AT-093,,,10-acceptance-1 §B; 08-1 §3.2,test/e2e/m8-connectors.spec.ts,M8,pending
+,J21,AT-093,,,10-acceptance-1 §B; 08-1 §3.2,test/e2e/m8-connectors.spec.ts,M8,live
 ,,AT-145,,,10-acceptance-1 §B; 08-3 §16.7; X-48,test/integration/m8-contacts.test.ts,M8,pending
 ,J19,AT-220,,,10-acceptance-1 §B; 08-3 §21.2,test/integration/m8-expiry.test.ts,M8,pending
 ,J16,AT-269,,,10-acceptance-1 §B.10; 08-3 §16.4.3; CR-0012 G-M8-12,test/e2e/m8-whatsapp.spec.ts,M8,pending
@@ -252,4 +252,4 @@ R21 · R23 · R5,J21,,UX-24-02,,06-2 §6.0; 06-2 §6.1,test/fidelity/ux/UX-24.se
 ,J4,,UX-04-07,,05-3 §5.11; 08-3 §16.1; 08-3 §16.4,test/fidelity/ux/UX-04.connect.spec.ts,M8,pending
 ,J4,,UX-04-08,,05-3 §5.11; 08-3 §16.1; 08-3 §16.4,test/fidelity/ux/UX-04.connect.spec.ts,M8,pending
 ,J4,,UX-04-09,,05-3 §5.11; 08-3 §16.1; 08-3 §16.4,test/fidelity/ux/UX-04.connect.spec.ts,M8,pending
-,,,,BP-CARD-11,05-3 §5.11,test/fidelity/bp/BP-cards-m8.spec.ts,M8,pending
+,,,,BP-CARD-11,05-3 §5.11,test/fidelity/bp/BP-cards-m8.spec.ts,M8,live

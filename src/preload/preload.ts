@@ -68,6 +68,11 @@ const INVOKES = new Set([
   'whatsapp:linkCancel',
   'whatsapp:unlink',
   'chat:archive',
+  // M8
+  'connection:list',
+  'connection:connect',
+  'connection:disconnect',
+  'connection:googleInfo',
   'ai:openFinder',
   'ai:askKey',
   'app:openExternal',

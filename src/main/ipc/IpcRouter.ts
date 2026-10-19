@@ -67,6 +67,7 @@ import { FIX_ACTION_KINDS, JOB_CHANNELS, jobIpc } from '../jobs/jobIpc';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
 import { isTrustedUrl } from '../windows/protocol';
+import { registerConnectionIpc } from '../connections/connectionIpc';
 import { logEvent } from '../log/techLog';
 import { answerIpc, cardReaction } from '../cards/answerIpc';
 import { approvalIpc } from '../approvals/approvalIpc';
@@ -256,6 +257,20 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'whatsapp:linkCancel': empty as z.ZodType<Record<string, never>>,
   'whatsapp:unlink': empty as z.ZodType<Record<string, never>>,
   'chat:archive': z.object({ chatId, on: z.boolean() }).strict(),
+  // M8 T2 (08-1 §3.2)
+  'connection:list': empty as z.ZodType<Record<string, never>>,
+  'connection:connect': z
+    .object({
+      app: z.literal('google'),
+      scopes: z
+        .array(z.enum(['gmail', 'gcal', 'contacts']))
+        .min(1)
+        .max(3)
+        .optional(),
+    })
+    .strict(),
+  'connection:disconnect': z.object({ connectionId: z.string().min(1).max(80), confirm: z.literal(true) }).strict(),
+  'connection:googleInfo': empty as z.ZodType<Record<string, never>>,
   // AI step (CR-0020 (c)): the J2 card and the key's Secret box; `app:openExternal` per 08-1 §3.2 (only maker_page is built).
   'ai:openFinder': empty as z.ZodType<Record<string, never>>,
   'ai:askKey': z.object({ providerId: z.enum(['openai-key', 'anthropic-key', 'google-key']) }).strict(),
@@ -707,6 +722,8 @@ export function registerIpc(ctx: AppContext): void {
     return r;
   });
   handle('notifications:status', () => ok({ windowsAllowed: true, focusAssist: false }));
+  // M8
+  registerConnectionIpc(ctx);
 
   // M5 (CR-0009): the card, draft, secret and code channels.
   handleAll(answerIpc(ctx));

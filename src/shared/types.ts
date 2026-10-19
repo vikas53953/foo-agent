@@ -872,6 +872,13 @@ export type ErrorKind =
   // M8 T3: 08-3 §21.2 WhatsApp kinds
   | 'WA_LINK_FAILED'
   | 'WA_UNLINKED'
+  // M8 (08-3 §21.2, §21.3): connections
+  | 'OAUTH_DENIED'
+  | 'OAUTH_TIMEOUT'
+  | 'CONN_EXPIRED'
+  | 'CONN_REVOKED'
+  | 'CONN_RATE_LIMITED'
+  | 'CONN_SCOPE_MISSING'
   // M5 (CR-0009; 08-3 §21.2–§21.4): cards, the approval gate and the vault
   | 'CARD_EXPIRED'
   | 'SCOPE_NOT_ALLOWED'
@@ -888,8 +895,6 @@ export type ErrorKind =
   | 'SECRET_EXISTS'
   | 'REQUEST_GONE'
   // M5 T6 (08-1 §3.2 draft:send, 08-3 §16.6 gmail drafts; M8 adds the rest of the connector kinds)
-  | 'CONN_EXPIRED'
-  | 'CONN_SCOPE_MISSING'
   | 'SEND_FAILED'
   // M6 (08-1 §3.2 memory rows, 08-3 §21.3, §19.4): memory
   | 'MEMORY_PARSE'
