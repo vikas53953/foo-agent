@@ -26,6 +26,7 @@ import type { AiErrorKind, TurnResult } from '../ai/types';
 import type { DbOp, DbTxReply, MainLink } from '../protocol';
 import type { ExecResult, NeedsUserCard, ToolLayer } from '../tools/ToolLayer';
 import { estCostPaise, estMinutes, estTokens, isBigOne, needsPlanCard } from './estimates';
+import { choiceFields } from '../cards/choiceFields';
 import { CostMeter } from './costMeter';
 import { checkProof } from './proof';
 import { needsVerify, pickStartable, type QueueJob } from './queue';
@@ -655,15 +656,10 @@ export class JobRunner {
         await this.replan(job, decision.steps);
         return true;
       case 'ask': {
+        // M5-T5: the engine fields of 08-4 §26.7 (ids, Best fit, livePrices, effective reversible).
         const card = decision.card;
-        const payload = {
-          question: this.d.prompts.filter(card.question),
-          options: card.options.map((o, i) => ({ id: `o${i + 1}`, label: o.label, ...(o.detail ? { detail: o.detail } : {}) })),
-          multi: card.multi ?? false,
-          reversible: false,
-          purpose: 'job',
-        };
-        await this.needsYou(job, { type: 'choice', state: 'asking', payload });
+        const payload = choiceFields({ ...card, question: this.d.prompts.filter(card.question) }, job);
+        await this.needsYou(job, { type: 'choice', state: 'asking', payload: { ...payload } });
         return false;
       }
       case 'request_approval':
