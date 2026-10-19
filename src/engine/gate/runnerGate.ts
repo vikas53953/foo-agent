@@ -18,7 +18,7 @@ import type { RunnerCore } from '../jobs/JobRunner';
 import type { DbOp } from '../protocol';
 import type { ExecResult, ToolLayer } from '../tools/ToolLayer';
 import { approvalText } from './approvalText';
-import { classOfVerb, untrustedSource } from './classes';
+import { classOfVerb, untrustedSource, type PermRow } from './classes';
 import type { ActionClass, GateJob, GateLogic } from './GateLogic';
 import { EVIDENCE_RETRY_LINE, verifyRequestApproval, type ApprovalSnapshot } from './requestApproval';
 import type { ApprovalPayload, SecondLookResult } from '../../shared/types';
@@ -120,6 +120,40 @@ const APP_NAME = (app: PermissionApp): string =>
   })[app];
 
 /** The verb word the offer names (08-0 §B.2 verbs; 08-4 §28.1 item 6: buy and pay are one do-verb). */
+/** 08-0 §G.3 "I'm not allowed to {row}": the row as words (G-M5-38), never the settings key. */
+const ROW_WORDS = (row: PermRow): string =>
+  ({
+    read: t('thread.permission.row.read'),
+    drafts: t('thread.permission.row.drafts'),
+    calendar: t('thread.permission.row.calendar'),
+    send: t('thread.permission.row.send'),
+    book: t('thread.permission.row.book'),
+    pay: t('thread.permission.row.pay'),
+    post: t('thread.permission.row.post'),
+    delete: t('thread.permission.row.delete'),
+    share: t('thread.permission.row.share'),
+  })[row];
+
+/** 08-2 §9.4 "Want me to {action}?" (J9 "Want me to book one?"): the action as words (G-M5-38). */
+const OFFER_ACTION: Record<string, () => string> = {
+  send: () => t('cards.choice.offer_action.send'),
+  book: () => t('cards.choice.offer_action.book'),
+  buy: () => t('cards.choice.offer_action.buy'),
+  pay: () => t('cards.choice.offer_action.pay'),
+  post: () => t('cards.choice.offer_action.post'),
+  delete: () => t('cards.choice.offer_action.delete'),
+  share: () => t('cards.choice.offer_action.share'),
+  switch: () => t('cards.choice.offer_action.switch'),
+  calendar_write: () => t('cards.choice.offer_action.calendar_write'),
+  prepare: () => t('cards.choice.offer_action.prepare'),
+};
+
+/** "Yes, {verb}" for the classes whose id is not a plain word (G-M5-38). */
+const OFFER_VERB: Record<string, () => string> = {
+  calendar_write: () => t('cards.choice.offer_verb.calendar_write'),
+  prepare: () => t('cards.choice.offer_verb.prepare'),
+};
+
 const VERB_OF: Partial<Record<ActionClass, string>> = {
   send: 'send',
   book: 'book',
@@ -249,7 +283,14 @@ export class RunnerGate {
       core.d.log('gate.hand_back', 'post', { jobId: job.id });
       return true;
     }
-    const row = g.error === 'HELPER_NOT_ALLOWED' ? null : g.app ? `use ${APP_NAME(g.app)}` : (g.row ?? null);
+    const row =
+      g.error === 'HELPER_NOT_ALLOWED'
+        ? null
+        : g.app
+          ? t('thread.permission.row.use_app', { app: APP_NAME(g.app) })
+          : g.row
+            ? ROW_WORDS(g.row)
+            : null;
     if (row !== null) await this.refuseLine(job, row);
     else core.d.log('gate.refused', 'HELPER_NOT_ALLOWED', { jobId: job.id });
     return true;
@@ -259,9 +300,9 @@ export class RunnerGate {
     const verb = VERB_OF[cls] ?? cls;
     return {
       purpose: 'job',
-      question: t('cards.choice.question.offer_action', { action: verb === 'book' || verb === 'buy' ? `${verb} one` : verb }),
+      question: t('cards.choice.question.offer_action', { action: OFFER_ACTION[verb]?.() ?? verb }),
       options: [
-        { id: 'o1', label: t('cards.choice.option.yes_do', { verb }) },
+        { id: 'o1', label: t('cards.choice.option.yes_do', { verb: OFFER_VERB[verb]?.() ?? verb }) },
         { id: 'o2', label: t('cards.choice.option.not_now') },
       ],
       offer: { verb: verb === 'buy' ? 'buy' : verb },
