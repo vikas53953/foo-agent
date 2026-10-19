@@ -19,6 +19,7 @@ import { applyDbOps, runNamedQuery, writeDataFile } from './engineHost';
 import { vaultRuntime } from '../vault/vaultRuntime';
 import type { ApprovalGate } from '../approvals/ApprovalGate';
 import { logEvent } from '../log/techLog';
+import type { DraftService } from '../drafts/DraftService';
 
 export interface BridgeContext {
   db: Db;
@@ -39,6 +40,9 @@ export interface BridgeContext {
   // M5
   /** T7: main's ApprovalGate for engine `approval.open` / `approval.transition` (08-2 §9.1, §9.7); lazy, it needs this bridge. */
   approvals?(): Pick<ApprovalGate, 'openFromEngine' | 'transition'>;
+  // M8 T6
+  /** Main's DraftService for engine `draft.create` (08-2 §8.2 `gmail.draft`); its answer is posted when Gmail has answered. */
+  drafts?(): Pick<DraftService, 'create'>;
 }
 
 type AiStatePayload = Extract<EngineToMain, { kind: 'ai.state' }>['payload'];
@@ -182,6 +186,17 @@ export class EngineBridge {
       case 'vault.use': {
         const vault = vaultRuntime()?.vault;
         return { re: msg.id, result: vault ? vault.use(msg.payload) : { ok: false, error: { kind: 'VAULT_MISSING' } } };
+      }
+      // M8 T6: the Gmail call is async, so the answer is posted later on the same port; nothing is returned now.
+      case 'draft.create': {
+        const drafts = this.ctx.drafts?.();
+        if (!drafts) return { re: msg.id, result: { ok: false, error: { kind: 'VALIDATION', message: 'not_implemented' } } };
+        const { threadId, ...rest } = msg.payload;
+        void drafts
+          .create({ ...rest, ...(threadId ? { threadId } : {}) })
+          .catch((): Result<unknown> => ({ ok: false, error: { kind: 'UNKNOWN' } }))
+          .then((result) => this.post({ re: msg.id, result } as unknown as MainToEngine));
+        return null;
       }
     }
   }

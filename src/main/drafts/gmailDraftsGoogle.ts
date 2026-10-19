@@ -56,7 +56,11 @@ export function rawMessage(msg: DraftMessage): string {
 
 /** Node's fetch as the connector seam (main's real Google calls). */
 export const nodeFetch: HttpFetch = async (url, init) => {
-  const res = await fetch(url, { method: init?.method ?? 'GET', ...(init?.headers ? { headers: init.headers } : {}), ...(init?.body ? { body: init.body } : {}) });
+  const res = await fetch(url, {
+    method: init?.method ?? 'GET',
+    ...(init?.headers ? { headers: init.headers } : {}),
+    ...(init?.body ? { body: init.body } : {}),
+  });
   return { status: res.status, json: () => res.json() as Promise<unknown>, text: () => res.text() };
 };
 

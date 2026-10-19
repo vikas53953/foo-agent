@@ -22,7 +22,13 @@ function port() {
   const drafts = draftsState();
   const g = fakeGoogle([fakeGmailDrafts(drafts, mail), fakeGmailRead(mail)], () => clock.now());
   const access = fakeAccess();
-  const p = googleGmailDrafts({ http: g.fetch, access: access.access, clock, connectionId: () => 'cn_gmail', base: 'https://gmail.example' });
+  const p = googleGmailDrafts({
+    http: g.fetch,
+    access: access.access,
+    clock,
+    connectionId: () => 'cn_gmail',
+    base: 'https://gmail.example',
+  });
   return { clock, mail, drafts, g, access, p };
 }
 
@@ -174,7 +180,11 @@ describe('AT-015 · no compose permission: the draft stays in foo and "Open in G
     expect(d2.ok).toBe(true);
     expect(s.h.db.prepare("SELECT COUNT(*) FROM cards WHERE type = 'connect'").pluck().get()).toBe(1);
     // Change keeps working in foo only.
-    const changed = await s.drafts.update({ cardId: d.value.cardId, nonce: d.value.nonce, fields: { subject: 'Re: rent', body: 'Wednesday.' } });
+    const changed = await s.drafts.update({
+      cardId: d.value.cardId,
+      nonce: d.value.nonce,
+      fields: { subject: 'Re: rent', body: 'Wednesday.' },
+    });
     expect(changed.ok).toBe(true);
     expect(s.store.calls).toEqual([]);
     const nonce = String(s.h.card(d.value.cardId).nonce);
@@ -256,7 +266,6 @@ describe('05-2 §5.7.2 · someone new: Send opens the full Approval card, with n
       hardLimit: true,
       // "Just this once" only: the scope control is not drawn (05-2 §5.5.1, AT-052 "no scope chips").
       scopes: ['once'],
-      submitRef: `draft:${d.value.cardId}`,
     });
     expect(s.payload(d.value.cardId).approvalCardId).toBe(full.id);
     // A second Send names the same card.

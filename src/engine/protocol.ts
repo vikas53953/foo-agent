@@ -518,6 +518,22 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
       })
       .strict(),
   }),
+  // M8 T6: 08-2 §8.2 `gmail.draft` (prepare; the engine resolved the recipient, 08-3 §16.7). Main makes the Gmail draft, the
+  // Draft card and its PENDING `approvals` row (08-0 §G.7) and answers `{ approvalId, cardId, nonce }` once Gmail has answered.
+  z.object({
+    id: z.string(),
+    kind: z.literal('draft.create'),
+    payload: z
+      .object({
+        jobId: z.string(),
+        to: z.object({ name: z.string().min(1).max(200), address: z.string().min(3).max(320) }).strict(),
+        isNew: z.boolean().optional(),
+        subject: z.string().max(998).optional(),
+        body: z.string().max(100_000),
+        threadId: z.string().max(200).optional(),
+      })
+      .strict(),
+  }),
   /** The engine's answer to `ai.cmd`: main stores the chosen/verified provider in settings.json (main owns settings). */
   z.object({
     id: z.string(),
@@ -540,7 +556,7 @@ export type DbTxReply = { ids: string[]; revs: number[] };
 /** The engine side of the port (in production a MessagePort; in tests a direct call into main's handlers). */
 export interface MainLink {
   request<T>(
-    kind: 'db.tx' | 'db.query' | 'file.write' | 'approval.open' | 'approval.transition' | 'vault.use',
+    kind: 'db.tx' | 'db.query' | 'file.write' | 'approval.open' | 'approval.transition' | 'vault.use' | 'draft.create',
     payload: unknown,
   ): Promise<Result<T>>;
   send(kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify', payload: unknown): void;

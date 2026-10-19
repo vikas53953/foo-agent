@@ -33,6 +33,7 @@ import { memoryKeyring, memorySafeStore, napiKeyring } from './vault/keyring';
 import { registryMirror } from './vault/registryMirror';
 import { findOpenApproval } from './approvals/ApprovalGate'; // M5 T4 (review fix 4)
 import { approvalGate } from './approvals/approvalIpc'; // M5 T7
+import { draftService } from './drafts/draftIpc'; // M8 T6
 import { SecretVault } from './vault/SecretVault';
 import { installVault } from './vault/vaultRuntime';
 
@@ -116,6 +117,8 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
       keepAwake: (on, jobCount) => power?.keepAwake(on, jobCount),
       // M5 T7 (08-1 §2.4): engine `approval.open` / `approval.transition` go to main's one ApprovalGate.
       approvals: () => approvalGate(ctx),
+      // M8 T6: engine `gmail.draft` → main's DraftService (08-0 §G.7).
+      drafts: () => draftService(ctx),
     });
     const launchLog = launches;
     power = new PowerService({

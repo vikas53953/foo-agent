@@ -143,7 +143,7 @@ export class DraftService {
   async create(input: DraftInput): Promise<Result<Created>> {
     const granted = this.d.granted?.() ?? { draft: true, send: true };
     const isNew = input.isNew ?? false;
-    const hardLimit = isNew || (input.switched ?? false);
+    const hardLimit = isNew || (input.switched ?? this.switched(input.jobId));
     const base = {
       jobId: input.jobId,
       fields: sendFields(input.to, input.subject, input.body, isNew),
@@ -175,7 +175,23 @@ export class DraftService {
   }
 
   // M8 T6
-  private payloadOf(input: DraftInput, isNew: boolean, signature: string | undefined, sendAllowed: boolean): Omit<DraftPayload, 'approvalId'> {
+  /** Art. 9: an email inside a job with an approved booking or payment switches the channel, so it asks again. */
+  private switched(jobId: string): boolean {
+    return !!this.d.db
+      .prepare(
+        `SELECT 1 FROM approvals WHERE job_id = ? AND verb IN ('book', 'buy', 'pay')
+           AND state IN ('APPROVED', 'RUNNING', 'CHECKING', 'COMPLETED') LIMIT 1`,
+      )
+      .pluck()
+      .get(jobId);
+  }
+
+  private payloadOf(
+    input: DraftInput,
+    isNew: boolean,
+    signature: string | undefined,
+    sendAllowed: boolean,
+  ): Omit<DraftPayload, 'approvalId'> {
     return {
       channel: 'email',
       to: { ...input.to, isNew },
@@ -224,7 +240,16 @@ export class DraftService {
         {
           op: 'insert',
           table: 'messages',
-          row: { id: messageId, chat_id: chatId, author_kind: 'foo', kind: 'card', card_id: cardId, status: 'complete', job_id: jobId, created_at: now },
+          row: {
+            id: messageId,
+            chat_id: chatId,
+            author_kind: 'foo',
+            kind: 'card',
+            card_id: cardId,
+            status: 'complete',
+            job_id: jobId,
+            created_at: now,
+          },
         },
         {
           op: 'insert',
@@ -561,27 +586,33 @@ export class DraftService {
       fields: a.fields,
       hardLimit: true,
       ...text,
-      submitRef: `draft:${card.id}`,
     });
     if (!made.ok) return made;
-    const w = applyDbOps(this.d.db, [{ op: 'update', table: 'cards', id: card.id, set: { payload: { ...p, approvalCardId: made.value.cardId } } }], {
-      now,
-      ...(this.d.dataDir ? { dataDir: this.d.dataDir } : {}),
-    });
+    const w = applyDbOps(
+      this.d.db,
+      [{ op: 'update', table: 'cards', id: card.id, set: { payload: { ...p, approvalCardId: made.value.cardId } } }],
+      {
+        now,
+        ...(this.d.dataDir ? { dataDir: this.d.dataDir } : {}),
+      },
+    );
     if (w.result.ok) this.d.changed(w.effects);
     this.d.log?.({ lvl: 'info', mod: 'drafts', evt: 'card.full_approval', ids: { approvalId: a.id } });
     return ok({ approvalId: made.value.approvalId, undoUntil: now });
   }
 
-  /** The Draft a full Approval card was opened for (its `submitRef` is `draft:{cardId}`), or null. */
+  /**
+   * The Draft a full Approval card was opened for (the Draft whose payload names it as `approvalCardId`), or null. Card
+   * payloads are stored redacted leaf by leaf, and only a whole foo id passes unchanged, so the link is that bare id.
+   */
   private draftFor(full: ApprovalRow): { card: CardRow; p: DraftPayload; a: ApprovalRow } | null {
-    const fullCard = this.card(full.cardId);
-    const ref = (fullCard?.payload as { submitRef?: unknown } | undefined)?.submitRef;
-    if (typeof ref !== 'string' || !ref.startsWith('draft:')) return null;
-    const card = this.card(ref.slice('draft:'.length));
+    const r = this.d.db
+      .prepare(`SELECT * FROM cards WHERE type = 'draft' AND deleted_at IS NULL AND json_extract(payload, '$.approvalCardId') = ? LIMIT 1`)
+      .get(full.cardId) as DbRow | undefined;
+    const card = r ? cardRow(r) : null;
     const p = card ? draftPayloadOf(card) : null;
     const a = card ? this.d.gate.byCard(card.id) : null;
-    return card && p && a && p.approvalCardId === full.cardId ? { card, p, a } : null;
+    return card && p && a ? { card, p, a } : null;
   }
 
   /**
@@ -691,10 +722,14 @@ export class DraftService {
           .prepare("UPDATE approvals SET undo_until = ? WHERE id = ? AND state = 'APPROVED' AND submitted_at IS NULL")
           .run(undoUntil, id).changes;
         if (n !== 1) return null;
-        const w = applyDbOps(this.d.db, [{ op: 'update', table: 'cards', id: card.id, set: { state: 'undo_window', payload: { ...p, undoUntil } } }], {
-          now,
-          ...(this.d.dataDir ? { dataDir: this.d.dataDir } : {}),
-        });
+        const w = applyDbOps(
+          this.d.db,
+          [{ op: 'update', table: 'cards', id: card.id, set: { state: 'undo_window', payload: { ...p, undoUntil } } }],
+          {
+            now,
+            ...(this.d.dataDir ? { dataDir: this.d.dataDir } : {}),
+          },
+        );
         if (!w.result.ok) throw new Error(w.result.error.kind);
         return w.effects;
       })();
