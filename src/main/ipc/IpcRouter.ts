@@ -72,6 +72,8 @@ import { answerIpc, cardReaction } from '../cards/answerIpc';
 import { approvalIpc } from '../approvals/approvalIpc';
 import { draftIpc } from '../drafts/draftIpc';
 import { secretIpc } from '../vault/secretIpc';
+import { ensureFinder, finderChosen, finderWanted } from '../setup/aiFinder';
+import { aiFinderIpc, emitFinderWrite } from '../setup/aiFinderIpc';
 
 const trusted = (e: IpcMainEvent) => !!e.senderFrame && isTrustedUrl(e.senderFrame.url);
 
@@ -247,6 +249,18 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
     backup?: (typeof PROVIDER_IDS)[number] | null;
   }>,
   'notifications:status': empty as z.ZodType<Record<string, never>>,
+  // AI step (CR-0020 (c)): the J2 card and the key's Secret box; `app:openExternal` per 08-1 §3.2 (only maker_page is built).
+  'ai:openFinder': empty as z.ZodType<Record<string, never>>,
+  'ai:askKey': z.object({ providerId: z.enum(['openai-key', 'anthropic-key', 'google-key']) }).strict(),
+  'app:openExternal': z
+    .object({
+      target: z.enum(['google_signin', 'x_intent', 'google_account', 'maker_page', 'handback_site']),
+      url: z.string().max(2048).optional(),
+      providerId: z.enum(PROVIDER_IDS).optional(),
+      cardId: z.string().max(80).optional(),
+      nonce: z.string().max(80).optional(),
+    })
+    .strict(),
   // M4 T5 (08-1 §3.2; G-M4-09 error:fix). Main re-checks every card answer against the stored card (src/main/jobs/jobIpc.ts).
   'job:stopAll': z.object({ confirm: z.literal(true) }).strict(),
   'job:retry': z.object({ jobId: z.string().min(1).max(80) }).strict(),
@@ -362,6 +376,9 @@ export function registerIpc(ctx: AppContext): void {
   });
 
   handle('app:getBootstrap', () => {
+    // CR-0020 (b): a first run with no AI opens on the J2 card (FOO_TEST runs only when they ask for a first run).
+    if (process.env.FOO_TEST !== '1' || process.env.FOO_TEST_FIRST_RUN === '1')
+      emitFinderWrite(ctx, ensureFinder(db, settings, now(), ctx.dataDir));
     const s = settings.get();
     return ok(bootstrap(db, { ...listContext(s), settings: s, offline: ctx.net.offline, engineAi: ctx.engine?.aiStatus ?? null }));
   });
@@ -671,14 +688,22 @@ export function registerIpc(ctx: AppContext): void {
   handle('ai:detect', async () => (ctx.engine?.live ? ctx.engine.request<DetectRow[]>('ai.cmd', { cmd: 'detect' }, 60_000) : ok([])));
   handle('ai:choose', async ({ primary, backup }) => {
     if (!ctx.engine?.live) return fail('AI_NOT_VERIFIED');
+    const before = settings.get();
     const r = await ctx.engine.request<AiStatus>('ai.cmd', { cmd: 'choose', providerId: primary, backup: backup ?? null });
-    if (r.ok) emitSettings();
+    if (r.ok) {
+      // 06-1 §2.2 step 5: open finder cards collapse to "✓ Using {AI} (your AI)"; a first run moves to step 2 (CR-0020). A
+      // backup change from Settings (same primary, setup done) leaves an open finder card alone.
+      if (before.ai.primary !== primary || finderWanted(before))
+        emitFinderWrite(ctx, finderChosen(db, settings, primary, now(), ctx.dataDir));
+      emitSettings();
+    }
     return r;
   });
   handle('notifications:status', () => ok({ windowsAllowed: true, focusAssist: false }));
 
   // M5 (CR-0009): the card, draft, secret and code channels.
   handleAll(answerIpc(ctx));
+  handleAll(aiFinderIpc(ctx));
   handleAll(approvalIpc(ctx));
   handleAll(draftIpc(ctx));
   handleAll(secretIpc(ctx));

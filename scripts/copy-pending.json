@@ -75,7 +75,6 @@
     "cards.draft.summary.opened_in_x": "M8 X drafts (Draft X variant)",
     "cards.draft.x_opened_line": "M8 X drafts (Draft X variant)",
     "cards.draft.toast": "M11 Windows notifications (Draft toast)",
-    "cards.secret.reason.ai_key": "M12 first run (I have a key + verify)",
     "cards.secret.title.cvv": "M10 payments (CVV box)",
     "cards.secret.title.voice_key": "M11 voice (OpenAI voice key box)",
     "cards.secret.checking": "M12 first run (I have a key + verify)",

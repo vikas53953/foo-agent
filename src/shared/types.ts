@@ -8,6 +8,8 @@ export type { Settings } from './settings';
 
 // ---- 08-0 §B.2 enums (the members M1 uses; closed lists copied exactly) ----
 export type ProviderId = 'claude-cli' | 'codex-cli' | 'gemini-cli' | 'openai-key' | 'anthropic-key' | 'google-key' | 'ollama' | 'fake';
+/** The key-billed providers (08-0 §E.8 vault `foo/ai_key/{providerId}`). */
+export type KeyProviderId = 'openai-key' | 'anthropic-key' | 'google-key';
 export type ApprovalState =
   'PENDING' | 'APPROVED' | 'RUNNING' | 'COMPLETED' | 'HELD' | 'CHECKING' | 'DECLINED' | 'EXPIRED' | 'SUPERSEDED' | 'WITHDRAWN' | 'FAILED';
 export type SettingsPage =
@@ -895,6 +897,14 @@ export type ErrorKind =
   | 'UNKNOWN';
 
 // ---- card payloads (08-5 §4.1) the M2 cards draw ----
+/**
+ * 08-5 §4.1 SetupCardPayload (X-119). The AI step (CR-0020 (b) pick 3) adds the answered finder's choice: `using` is the
+ * provider picked with [ Use … ], kept so the collapsed line "✓ Using {AI} (your AI)" survives a restart.
+ */
+export interface SetupCardPayload {
+  setupCard: 'welcome' | 'ai_finder' | 'name' | 'face' | 'apps';
+  using?: ProviderId;
+}
 export interface TablePayload {
   title: string;
   columns: { key: string; label: string; align: 'left' | 'right'; unit?: 'inr' | 'text' | 'date' | 'time' }[];

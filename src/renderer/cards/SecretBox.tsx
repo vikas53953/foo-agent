@@ -79,7 +79,7 @@ function saveTarget(p: SecretPayload, v: Record<string, string>): { kind: Secret
   return { kind: p.secretKind, name: p.vaultName };
 }
 
-function SecretField({
+export function SecretField({
   field,
   kind,
   index,

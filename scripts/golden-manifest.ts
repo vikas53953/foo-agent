@@ -387,6 +387,10 @@ export const EARLY_STEPS: Record<string, string> = {
   'UX-16-02': 'M5',
   'UX-16-04': 'M5',
   'UX-16-06': 'M5',
+  // CR-0020 (the AI step, built alongside M6 and labelled M6): the "Find your AI" card (06-1 §2.2) on a first run with fake
+  // helpers, and Settings → Account & your AI (06-2 §6.1). UX-02-08 is the M2 paste catcher. M12 and M13 still bless them.
+  ...Object.fromEntries(['01', '02', '03', '04', '05', '06', '07', '09'].map((s) => [`UX-02-${s}`, 'M6'])),
+  'UX-24-02': 'M6',
 };
 
 /** Chapter anchor → the milestone that completes the chapter (11 §11.12 item 8: a chapter is owned by the milestone that completes it). */

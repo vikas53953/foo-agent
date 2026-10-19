@@ -19,6 +19,7 @@ import { OptionTiles } from './OptionTiles';
 import { Plan } from './Plan';
 import { PlaceCard } from './PlaceCard';
 import { SecretBox } from './SecretBox';
+import { SetupCard } from './setup/SetupCard';
 import { SpendCap } from './SpendCap';
 import { Stuck } from './Stuck';
 import { TableCard } from './TableCard';
@@ -43,11 +44,15 @@ export const CARD_VIEWS: Partial<Record<CardType, CardComponent>> = {
   approval: Approval,
   draft: Draft,
   secret: SecretBox,
+  // AI step (CR-0020): the first-run AI finder (06-1 §2.2); the other setup cards are M12's.
+  setup: SetupCard,
 };
 
 /** G-M4-10: the purchase variant of the Spend-cap card is M10's; until then it keeps the placeholder. */
 export const hasCardView = (type: CardType, card?: CardRow) =>
-  !!CARD_VIEWS[type] && !(type === 'spend_cap' && card?.payload.which === 'purchase');
+  !!CARD_VIEWS[type] &&
+  !(type === 'spend_cap' && card?.payload.which === 'purchase') &&
+  !(type === 'setup' && card?.payload.setupCard !== 'ai_finder');
 
 export function CardView({ card, time }: { card: CardRow; time: CardTime }) {
   const View = CARD_VIEWS[card.type];

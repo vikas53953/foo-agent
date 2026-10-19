@@ -205,3 +205,18 @@ R13,J17,,UX-18-09,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX
 R13,J17,,UX-18-10,,11-fidelity §11.2; 06-2 §7; 05-3 §5.17,test/fidelity/ux/UX-18.spec.ts,M6,live
 R13,J17,,,BP-CARD-16,05-3 §5.17,test/fidelity/bp/BP-m6.spec.ts,M6,live
 R13,J17,,,BP-SCR-09,06-2 §7,test/fidelity/bp/BP-m6.spec.ts,M6,live
+,J2,AT-005,,,10-acceptance-1 §B; 06-1 §2.2,test/e2e/ai-step.spec.ts,M6,live
+,J2,AT-006,,,10-acceptance-1 §B; 06-1 §2.0; 04-2 §23.1,test/e2e/ai-step.spec.ts,M6,live
+,J2,AT-009,,,10-acceptance-1 §B; 06-1 §2.2; 06-2 §6.1,test/e2e/ai-step.spec.ts,M6,live
+,J2,AT-155,,,10-acceptance-1 §B; 06-1 §2.2,test/e2e/ai-step.spec.ts,M6,live
+,J2,AT-155a,,,10-acceptance-1 §B; 08-0 §E.5,test/e2e/ai-step.spec.ts,M6,live
+,J2,AT-155a,,,10-acceptance-1 §B; 08-0 §E.5,test/unit/ai-step.test.ts,M6,live
+R3 · R4,J2,,UX-02-01,,06-1 §2.2,test/fidelity/ux/UX-02.ai.spec.ts,M6,live
+R3 · R4,J2,,UX-02-02,,06-1 §2.2,test/fidelity/ux/UX-02.ai.spec.ts,M6,live
+R3 · R4,J2,,UX-02-03,,06-1 §2.2; 06-1 §2.0,test/fidelity/ux/UX-02.ai.spec.ts,M6,live
+R3 · R4,J2,,UX-02-04,,06-1 §2.2,test/fidelity/ux/UX-02.ai.spec.ts,M6,live
+R3 · R4,J2,,UX-02-05,,06-1 §2.2; 06-1 §2.0,test/fidelity/ux/UX-02.ai.spec.ts,M6,live
+R3 · R4,J2,,UX-02-06,,06-1 §2.2,test/fidelity/ux/UX-02.ai.spec.ts,M6,live
+R3 · R4,J2,,UX-02-07,,06-1 §2.2; 05-2 §5.8,test/fidelity/ux/UX-02.ai.spec.ts,M6,live
+R3 · R4,J2,,UX-02-09,,06-1 §2.2; 05-2 §5.8,test/fidelity/ux/UX-02.ai.spec.ts,M6,live
+R21 · R23 · R5,J21,,UX-24-02,,06-2 §6.0; 06-2 §6.1,test/fidelity/ux/UX-24.settings.spec.ts,M6,live

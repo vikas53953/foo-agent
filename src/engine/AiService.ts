@@ -242,11 +242,14 @@ export class AiService implements LaneAi {
     if (r.ok && this.pick()) this.d.onUsable();
     return r.ok
       ? { ok: true, providerId, displayName: PROVIDER_DISPLAY_NAME[providerId], billing: kind, verifiedAt: at }
-      : { ok: false, providerId, kind: r.kind ?? 'UNKNOWN' };
+      : { ok: false, providerId, kind: r.kind ?? 'UNKNOWN', ...(r.resetAt !== undefined ? { resetAt: r.resetAt } : {}) };
   }
 
   choose(primary: ProviderId, backup: ProviderId | null): Result<AiStatus> {
-    const v = (id: ProviderId) => this.h(id).state === 'ok' || this.d.registry.isVerified(this.adapterId(id));
+    // CR-0020 (b) pick 6: a provider whose test hit its plan limit answered (it is signed in), so 06-1 §2.2 "Continue anyway"
+    // may choose it; it rests until its reset time like any limited primary (08-2 §6.7).
+    const v = (id: ProviderId) =>
+      this.h(id).state === 'ok' || this.h(id).state === 'limit' || this.d.registry.isVerified(this.adapterId(id));
     if (!v(primary) || (backup && backup !== primary && !v(backup))) return fail('AI_NOT_VERIFIED');
     const b = backup && backup !== primary ? backup : null;
     this.d.persist({ providers: {}, primary, backup: b });

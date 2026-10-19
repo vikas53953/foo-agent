@@ -419,6 +419,35 @@ export const TID = {
   screenEmptyAction: 'screen-empty-action',
   screenLoading: 'screen-loading',
   screenError: 'screen-error',
+
+  // AI step (CR-0020): the first-run frame's step pill and the AI finder (06-1 §2.0, §2.2; 08-0 §C area `setup`), and the
+  // Settings frame with Account & your AI's AI rows (06-2 §6.0, §6.1; 08-0 §C.3 fixed families)
+  setupStepPill: 'setup-step-pill',
+  cardSetup: 'card-setup',
+  setupAiRow: 'setup-ai-row',
+  setupAiRowAction: 'setup-ai-row-action',
+  setupAiUse: 'setup-ai-use',
+  setupAiPickAnother: 'setup-ai-pick-another',
+  setupAiChangeCap: 'setup-ai-change-cap',
+  setupAiOpenPage: 'setup-ai-open-page',
+  setupAiNotNow: 'setup-ai-not-now',
+  setupAiRowOpenPage: 'setup-ai-row-open-page',
+  settingsNavAccount: 'settings-nav-account',
+  settingsNavAppearance: 'settings-nav-appearance',
+  settingsNavNotifications: 'settings-nav-notifications',
+  settingsNavPermissions: 'settings-nav-permissions',
+  settingsNavMoney: 'settings-nav-money',
+  settingsNavPrivacy: 'settings-nav-privacy',
+  settingsNavRoutinesSettings: 'settings-nav-routines-settings',
+  settingsNavConnections: 'settings-nav-connections',
+  settingsNavChat: 'settings-nav-chat',
+  settingsNavShortcuts: 'settings-nav-shortcuts',
+  settingsNavAbout: 'settings-nav-about',
+  settingsRowAccountAiUsing: 'settings-row-account-ai-using',
+  settingsRowAccountAiBackup: 'settings-row-account-ai-backup',
+  settingsRowAccountAiPaid: 'settings-row-account-ai-paid',
+  settingsRowAccountAiAdd: 'settings-row-account-ai-add',
+  dialogReplaceKey: 'dialog-replace-key',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

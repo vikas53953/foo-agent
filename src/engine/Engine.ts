@@ -4,7 +4,7 @@
 // §30.8 (on engine start every `sys-*.md` in the scratch folders is deleted), 08-3 §22.3 (FOO_FAKE_AI).
 // The +20 s health check of 08-1 §2.2 step 7 runs only outside FOO_TEST runs (tests verify explicitly). Deferred to their
 // milestones: M4 T2 wires the JobRunner + ToolLayer (08-2 §5, §8; the job lane's tools come from `tools`, fake in tests
-// until M8/M9); the vault for key providers (M5: no key yet, so a key provider reports `AI_KEY_INVALID` on verify).
+// until M8/M9); the vault for key providers (read through `vault.use`, CR-0020).
 // Memory parts 5/5b come from the chat lane (08-4 §24.16, memory/retrieval.ts). M6 T5: the memory chips, the post-turn
 // review (08-3 §12.4, one background `memory_review` turn with its ai_turns row in foo's 1:1 chat, 08-4 §30.1, §31), intake
 // remember / forget, the `memory_confirm` card answers and the `memory.search` / `memory.propose` step tools (08-2 §8.2).
@@ -19,6 +19,7 @@ import type { CardAnswer, CardRow, ProviderId } from '../shared/types';
 import type { EngineChat, EngineMessage } from '../main/db/queries';
 import { AiRegistry, CliLimiter, createAdapters, loadPricing, nodeAiFs, nodeWhich, sweepSystemFiles } from './ai';
 import { AiService } from './AiService';
+import { testHomeEnv, testHomeWhich, vaultKeyReader } from './ai/vaultKeys';
 import { ChatLane, type IntakeDecisionView, type IntakeInput, type LaneProtocol } from './chat/ChatLane';
 import type { DbOp, DbTxReply, MainLink, MainToEngine } from './protocol';
 import { MemoryService, UNDO_MS } from './memory/MemoryService';
@@ -104,14 +105,16 @@ export class Engine {
     });
     const pricing = loadPricing(JSON.parse(readFileSync(join(o.resourcesDir, 'pricing.json'), 'utf8')));
     const fake = o.testRun && Boolean(o.env.FOO_FAKE_AI);
+    // CR-0020: keys come from main's vault; a FOO_TEST run may stand in a fake home for the J2 ladder (ai/vaultKeys.ts).
+    const testHome = o.testRun ? o.env.FOO_TEST_AI_HOME : undefined;
     const adapters = createAdapters({
       clock: o.clock,
       fetch: o.fetch ?? fetch,
       paths: { LOCAL: o.localDir, DATA: o.dataDir },
-      env: o.env,
+      env: testHome ? testHomeEnv(o.env, testHome) : o.env,
       platform: process.platform,
-      getKey: async () => null,
-      which: o.which ?? nodeWhich(),
+      getKey: vaultKeyReader(o.link),
+      which: o.which ?? (testHome ? testHomeWhich(testHome, nodeAiFs) : nodeWhich()),
       fs: nodeAiFs,
       pricing,
       providerSettings: (id) => this.settings.ai.providers[id],
