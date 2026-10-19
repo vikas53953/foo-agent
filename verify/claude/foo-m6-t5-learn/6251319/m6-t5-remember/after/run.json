@@ -1,0 +1,64 @@
+{
+  "journey": "test/verify/m6-t5-remember.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "af69cde091300c0422e90f94bed0fc07572f058f",
+  "dirty": true,
+  "started": "2026-10-19T16:30:30.800Z",
+  "finished": "2026-10-19T16:30:38.844Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "typed \"remember that my sister’s flat is in Koregaon Park\": 👍 on my bubble, chip \"I’ll remember: Sister’s flat is in Koregaon Park\" + Undo, no foo bubble",
+    "about-you.md gained: - Sister’s flat is in Koregaon Park  {you said · 2026-10-16 · chat · f_01a142e7-f51a-70dd-b1b4-265ff8436c27}",
+    "Undo → chip \"Undone. I won’t remember that.\"; memory:list no longer has it; a tombstone keeps it from coming back",
+    "typed \"don't remember this, but my PIN hint is our dog's name\": chip \"Not saving this one.\", memory unchanged (26 facts)",
+    "typed \"forget that I take the train to Pune, not the bus\": \"Takes the train to Pune, not the bus\" forgotten, chip \"Forgot it. I won’t use that again.\" with Undo",
+    "its Undo inside 5 s put \"Takes the train to Pune, not the bus\" back",
+    "the fake AI was asked: intake, intake, intake"
+  ],
+  "shots": [
+    {
+      "file": "after/01-remember-chip.light.png",
+      "name": "remember-chip",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-remember-chip.dark.png",
+      "name": "remember-chip",
+      "theme": "dark"
+    },
+    {
+      "file": "after/03-remember-undone.light.png",
+      "name": "remember-undone",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-remember-undone.dark.png",
+      "name": "remember-undone",
+      "theme": "dark"
+    },
+    {
+      "file": "after/05-not-saving-chip.light.png",
+      "name": "not-saving-chip",
+      "theme": "light"
+    },
+    {
+      "file": "after/06-not-saving-chip.dark.png",
+      "name": "not-saving-chip",
+      "theme": "dark"
+    },
+    {
+      "file": "after/07-forget-chip.light.png",
+      "name": "forget-chip",
+      "theme": "light"
+    },
+    {
+      "file": "after/08-forget-chip.dark.png",
+      "name": "forget-chip",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": []
+}
