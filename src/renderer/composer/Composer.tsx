@@ -63,7 +63,7 @@ import { MorphButton } from './MorphButton';
 import { PasteCatcher } from './PasteCatcher';
 import { PendingStrip } from './PendingStrip';
 import { stripView, waitingCards } from './pending';
-import { NARROW_PILL_PX, placeholderText } from './placeholder';
+import { NARROW_PILL_PX, planChangePending, placeholderText } from './placeholder';
 import { ReplyStrip, type ReplyQuote } from './ReplyStrip';
 import { roundButtonState, roundTooltip, talkKeyLabel, isTalkChord } from './roundState';
 import { newClientId, sendOutgoing, stageFile } from './send';
@@ -359,6 +359,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
           title: chatName,
           agentName,
           talkKey,
+          planChange: slice ? planChangePending(slice.ids, slice.byId, cardsById) : false,
         });
 
   // Pill width → the short placeholder under 360 px (§20.4).

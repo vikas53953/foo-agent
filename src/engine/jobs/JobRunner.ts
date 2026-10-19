@@ -28,6 +28,7 @@ import type { ExecResult, NeedsUserCard, ToolLayer } from '../tools/ToolLayer';
 import { estCostPaise, estMinutes, estTokens, isBigOne, needsPlanCard } from './estimates';
 import { choiceFields } from '../cards/choiceFields';
 import { CostMeter } from './costMeter';
+import { RunnerTick } from './tick';
 import { checkProof } from './proof';
 import { needsVerify, pickStartable, type QueueJob } from './queue';
 import { buildTitle, insertShowBefore, retryTitle, PLAN_MAX } from './title';
@@ -69,6 +70,9 @@ export interface RunnerHooks {
   onCannotStart?(job: JobRow, kind?: string): Promise<void>;
   /** T4: runs before each schedule pass (waiting jobs whose condition cleared resume first); false holds every start. */
   beforeSchedule?(): Promise<boolean>;
+  // M5
+  /** T10: the cap was raised or the month turned (08-2 §5.10 item 4): the Engine drains messages that waited at the cap. */
+  onCapLifted?(): void;
 }
 
 /** What T3's modules (stopFlow, steer, watchdog, costMeter) may use of the runner. */
@@ -97,6 +101,8 @@ export interface RunnerCore {
   halt(jobId: string): void;
   launch(jobId: string): void;
   startNext(): Promise<void>;
+  // M5 T10: one scheduling pass on the same chain as startNext, after the beforeSchedule hold (null when held).
+  schedule(pass: () => Promise<void>): Promise<void>;
   ended(jobId: string): Promise<void>;
   writeMirrors(jobId: string): Promise<void>;
   workingMs(jobId: string): number;
@@ -139,6 +145,16 @@ export interface CreateJobInput {
   helperId?: string | null;
   origin?: JobRow['origin'];
   originRef?: string | null;
+  // M5
+  /** T10: the job may not start before this time (08-4 §26.8 item 6, `opens_at`); its first producer is a timed opening. */
+  wakeAt?: number | null;
+}
+
+/** M5 T10: a changed Plan card's plan, attached to the chat's next intake turn (08-2 §5.3.3). */
+export interface OldPlan {
+  title: string;
+  /** The steps as the card showed them (phrase next forms). */
+  steps: string[];
 }
 
 export interface JobCtx {
@@ -200,6 +216,10 @@ export class JobRunner {
   readonly steering: Steer;
   readonly watchdog: Watchdog;
   private intakeHook: ((chatId: string, messageId: string) => void) | null = null;
+  // M5
+  /** T10: chat id → the plan the user asked to change; the chat's next intake turn carries it (08-2 §5.3.3). */
+  private planChanges = new Map<string, OldPlan>();
+  private ticker: RunnerTick;
 
   constructor(private d: JobRunnerDeps) {
     const core: RunnerCore = {
@@ -219,6 +239,7 @@ export class JobRunner {
       halt: (id) => this.ctxs.get(id)?.abort.abort(),
       launch: (id) => this.launch(id),
       startNext: () => this.startNext(),
+      schedule: (pass) => this.schedule(pass),
       ended: (id) => this.ended(id, this.ctx(id)),
       writeMirrors: (id) => this.writeMirrors(id),
       workingMs: (id) => {
@@ -234,6 +255,9 @@ export class JobRunner {
     this.stopper = new StopFlow(core);
     this.steering = new Steer(core, this.stopper);
     this.watchdog = new Watchdog(core, this.stopper);
+    // M5 T10: the 15 s tick (opens_at wake, 24 h Plan withdraw).
+    this.ticker = new RunnerTick(core);
+    this.ticker.start();
   }
 
   // ---- T3 entry points (08-2 §5.2, §5.7, §5.10) ----
@@ -248,6 +272,18 @@ export class JobRunner {
   }
   stopAll(): Promise<StopReport[]> {
     return this.track(this.stopper.stopAll());
+  }
+  /** M5 T10: the plan the user asked to change in this chat, for its next intake turn; `take` clears it once that turn ran. */
+  planChange(chatId: string, take = false): OldPlan | null {
+    const p = this.planChanges.get(chatId) ?? null;
+    if (take) this.planChanges.delete(chatId);
+    return p;
+  }
+  /** M5 T10: the pre-call cap check of a chat-lane turn (intake, repair, rewrite); true when the call may go. */
+  allowChatCall(promptChars: number, purpose: 'intake' | 'repair' | 'rewrite'): Promise<boolean> {
+    const pick = this.d.ai.pick();
+    if (!pick) return Promise.resolve(true);
+    return this.cost.allowChatCall(promptChars, this.d.ai.turnParams(pick.providerId, purpose).maxOutputTokens);
   }
   /** settings.changed: a raised AI cap resumes waiting(spend_cap) jobs. */
   capChanged(): Promise<void> {
@@ -277,6 +313,7 @@ export class JobRunner {
     this.watchdog.dispose();
     this.stopper.dispose();
     this.cost.dispose();
+    this.ticker.dispose();
     for (const c of this.ctxs.values()) {
       c.abort.abort();
       if (c.checklistTimer !== null) this.d.clock.clearTimeout(c.checklistTimer);
@@ -328,7 +365,7 @@ export class JobRunner {
     return [...own, ...this.steering.badgeOps(job.id, BADGE_OF_STATE[to])];
   }
 
-  private textOp(job: Pick<JobRow, 'chatId' | 'ownerId'> & { id: string | null }, text: string): DbOp {
+  textOp(job: Pick<JobRow, 'chatId' | 'ownerId'> & { id: string | null }, text: string): DbOp {
     return {
       op: 'insert',
       table: 'messages',
@@ -445,6 +482,7 @@ export class JobRunner {
           est_tokens: tokens,
           est_cost_paise: cost,
           provider_id: pick?.providerId ?? null,
+          wake_at: input.wakeAt ?? null,
           created_at: now,
         },
       },
@@ -486,8 +524,7 @@ export class JobRunner {
 
   /** When a slot frees, the oldest startable queued jobs start (FIFO), serialised so two callers never overfill the slots. */
   startNext(): Promise<void> {
-    const run = async () => {
-      if (this.d.hooks?.beforeSchedule && !(await this.d.hooks.beforeSchedule())) return;
+    return this.schedule(async () => {
       const live = (await this.query<JobRow[]>('jobsByState', ['queued', 'working', 'needs_you'])) ?? [];
       const windows = live.filter((j) => j.state === 'working' && j.usesBrowser).length;
       const queue: QueueJob[] = [];
@@ -507,6 +544,14 @@ export class JobRunner {
         queue.push(q);
       }
       for (const id of pickStartable(queue, windows)) await this.start(id);
+    });
+  }
+
+  /** One pass on the scheduling chain, so two callers never overfill the slots; skipped while beforeSchedule holds. */
+  schedule(pass: () => Promise<void>): Promise<void> {
+    const run = async () => {
+      if (this.d.hooks?.beforeSchedule && !(await this.d.hooks.beforeSchedule())) return;
+      await pass();
     };
     this.sched = this.sched.then(run, run).catch((e: unknown) => {
       this.d.log('job.schedule_failed', 'UNKNOWN', {});
@@ -615,6 +660,11 @@ export class JobRunner {
     const c = this.ctx(jobId);
     let job = await this.job(jobId);
     if (!job || job.state !== 'working') return;
+    // M5 T10 (08-4 §26.8 item 6): a job whose start is a future opening time sleeps until then, with no AI turn.
+    if (job.wakeAt !== null && job.wakeAt > this.d.clock.now()) {
+      await this.ticker.sleep(job);
+      return;
+    }
     c.workingSince = this.d.clock.now();
     this.scheduleChecklist(job, c);
     this.watchdog.watch(jobId);
@@ -811,8 +861,10 @@ export class JobRunner {
         await this.tx([{ op: 'update', table: 'cards', id: card.id, set: { state: 'go', ...resolve } }]);
         await this.enqueue(job.id);
       } else if (a.choice === 'change') {
-        // TODO(T3/M5 chat lane): "Change plan" sends the text back to an intake turn with the old plan attached (08-2 §5.3.3).
-        await this.tx([
+        // 08-2 §5.3.3 (M5 T10, CR-0008 (j) row 3): the user's next words go to an intake turn with the old plan attached, and
+        // its Plan card shows below this one (05-3 §5.12.2: the composer reads "Tell me what to change").
+        const steps = Array.isArray(card.payload.steps) ? card.payload.steps.map(String) : [];
+        const r = await this.tx([
           {
             op: 'update',
             table: 'cards',
@@ -830,6 +882,7 @@ export class JobRunner {
           ...this.badgeOp(job, 'cancelled'),
         ]);
         this.ctxs.delete(job.id);
+        if (r.ok) this.planChanges.set(job.chatId, { title: job.title, steps });
       }
       return;
     }
@@ -1141,7 +1194,7 @@ export class JobRunner {
     pick: { providerId: ProviderId; billing: 'plan' | 'key' | 'local' },
     turnId: string,
     built: { system: string; prompt: string },
-  ): Promise<{ act: StepAct | null; error?: AiErrorKind; turnId: string; say?: string }> {
+  ): Promise<{ act: StepAct | null; error?: AiErrorKind; turnId: string; say?: string; capped?: boolean }> {
     const run = async (purpose: 'step' | 'repair', id: string, system: string, prompt: string) => {
       const startedAt = this.d.clock.now();
       const params = this.d.ai.turnParams(pick.providerId, purpose === 'repair' ? 'repair' : 'step');
@@ -1178,7 +1231,11 @@ export class JobRunner {
     const parsed = this.d.prompts.parseStep(r.text);
     if (parsed.act) return { act: parsed.act, turnId, say: parsed.say ?? '' };
     // 08-2 §7.5: one repair turn in the same session.
-    const repair = await run('repair', this.d.newId('t'), built.system, this.d.prompts.buildRepair(parsed.issues ?? ''));
+    const repairPrompt = this.d.prompts.buildRepair(parsed.issues ?? '');
+    // M5 T10 (CR-0008 (j) row 5): the repair turn is a key call too, so it passes the cap check first.
+    const repairOut = this.d.ai.turnParams(pick.providerId, 'repair').maxOutputTokens;
+    if (!(await this.cost.allowStep(job, built.system.length + repairPrompt.length, repairOut))) return { act: null, turnId, capped: true };
+    const repair = await run('repair', this.d.newId('t'), built.system, repairPrompt);
     const again = repair.stopReason === 'end' ? this.d.prompts.parseStep(repair.text) : null;
     if (!again?.act) this.d.log('job.protocol_invalid', 'PROTOCOL_INVALID', { jobId: job.id });
     return { act: again?.act ?? null, turnId, say: again?.say ?? '' };

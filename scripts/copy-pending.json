@@ -15,7 +15,6 @@
     "errors.crash_recovery.what_is_safe.paying": "M10: crash mid-payment",
     "errors.safe_mode.link": "M4-T7: Send a report has no FixAction yet (08-5 §3.7)",
     "cards.checklist.footer_text.plan": "M4-T7 close-out (needs runner data not wired yet)",
-    "cards.plan.change_placeholder": "M4-T7 close-out (needs runner data not wired yet)",
     "cards.proof_chip.popover.file_missing": "M4-T7 close-out (needs runner data not wired yet)",
     "cards.not_live_chip.still_failed.text": "M4-T7 close-out (needs runner data not wired yet)",
     "cards.error.still_failing": "M4-T7 close-out (needs runner data not wired yet)",

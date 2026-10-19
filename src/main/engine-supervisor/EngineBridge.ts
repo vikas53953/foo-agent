@@ -1,7 +1,9 @@
 // Spec: 08-1 §2.4 (main ⇄ engine messages; every payload zod-validated on receipt; requests get `{ re, result }`), §2.4.1
 // (db.tx, db.query), §3.3 (ui.patch forwarded to the renderer as-is), 08-0 §A (main owns settings.json: the engine's
 // your-AI results are written here), 08-5 §3.1 (AiStatus), 08-1 §3.3 (job:upsert / card:upsert for rows a db.tx wrote),
-// 09 §9.22 (power.keepAwake → powerSaveBlocker in main). Electron-free so unit tests drive it with an in-process engine.
+// 09 §9.22 (power.keepAwake → powerSaveBlocker in main), 08-2 §5.10 item 3 (the spend meter is updated per turn: a db.tx that
+// writes an `ai_turns` row emits `spend:update`, and the 80 % line of §5.10 item 4; M5 T10, CR-0008 (j) rows 1–2). Electron-free so unit tests drive it with an
+// in-process engine.
 import { engineToMainSchema, type DbOp, type EngineToMain, type MainToEngine, type NamedQuery } from '../../engine/protocol';
 import type { Result } from '../../shared/errors';
 import type { EventChannel, EventPayload } from '../../shared/ipc';
@@ -9,7 +11,8 @@ import type { Settings } from '../../shared/settings';
 import type { AiStatus, ProviderId } from '../../shared/types';
 import type { Db } from '../store/db';
 import { cardRow, type DbRow } from '../db/rows';
-import { jobRows } from '../store/queries';
+import { jobRows, spendSummary } from '../store/queries';
+import { postCapWarning } from '../jobs/capWarning';
 import { applyDbOps, runNamedQuery } from './engineHost';
 import { vaultRuntime } from '../vault/vaultRuntime';
 
@@ -119,6 +122,17 @@ export class EngineBridge {
           for (const job of jobRows(this.ctx.db, `id IN (${ids.map(() => '?').join(', ')})`, ids, now)) this.ctx.emit('job:upsert', job);
         }
         for (const id of effects.chatIds) this.ctx.emitChat(id);
+        // M5 T10: 08-2 §5.10 item 3, the Spent meter moves after every AI turn.
+        if (result.ok && msg.payload.ops.some((o) => o.op === 'insert' && o.table === 'ai_turns')) {
+          const summary = spendSummary(this.ctx.db, this.ctx.settings.get(), now);
+          this.ctx.emit('spend:update', summary);
+          // Row 2: at 80 % of the AI cap, one line in foo's chat once a month.
+          const warned = postCapWarning(this.ctx.db, this.ctx.settings.get(), summary, now, this.ctx.dataDir);
+          if (warned) {
+            this.ctx.emitMessage(warned.messageId);
+            this.ctx.emitChat(warned.chatId);
+          }
+        }
         return { re: msg.id, result };
       }
       case 'db.query':
