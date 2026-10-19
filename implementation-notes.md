@@ -709,6 +709,14 @@ CR-0010 §(b). Where the code stands for the ticket threads:
     not in the card's bottom row (05-1 §5.3.1 sketch); its fill is `--bg-sunken` / `--fg-2` (§5.17.1) where the drawing
     tints it accent (R3); the ✕ is the `Dismiss` icon (R1 misses the text "✕"). The step adds the drawn fact "hates early
     flights" with `memory:add`, since the ux-world fact reads "Likes beach stays, hates early flights".
+  - T5-09 (Fable review) · After the Undo of an intake forget, the chip reads "I’ll remember: {fact}" with no button
+    (state `restored`; the spec names no words). A typed "remember …" with memory off or in a private chat gets 👍 and
+    J17's "Not saving this one." chip. A group chat neither learns nor reacts to "remember / forget" (05-3 §5.17
+    "Groups: never", §17.3.3), and its review never runs.
+- Review fixes: a `guessed` fact's evidence ids must resolve to real messages; a review `update` may only touch a fact it
+  was shown; a job-done review reads nothing in a chat with no user message in this run (no re-read after a restart);
+  `memory.propose`'s one-per-turn rule applies only when the turn is known. Kept as is: a review skipped at the spend
+  cap still counts as read (§12.4 "skipped").
 
 ## M5 · contracts, approval machine and card stubs (ticket T1, CR-0009)
 

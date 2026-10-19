@@ -85,7 +85,8 @@ export function provenanceOk(
       const m = byId.get(id);
       return !!m && m.authorKind === 'user' && overlap(op.text, m.textForAi ?? m.text) >= SAID_OVERLAP;
     });
-  return new Set(op.evidenceMessageIds).size >= 2 && !!op.reason?.trim();
+  // Each evidence id must name a real message the caller resolved; a made-up id is no event.
+  return new Set(op.evidenceMessageIds.filter((id) => byId.has(id))).size >= 2 && !!op.reason?.trim();
 }
 
 /** R-20: the foo (or helper) bubble that followed the evidence, else the user's bubble that carried it. */
@@ -199,8 +200,11 @@ export class MemoryReview {
     if (!this.allowed()) return;
     const chat = await this.d.query<EngineChat>('chatOpen', chatId);
     // §12.1: a private chat never saves memory and never offers review.
-    if (!chat || chat.private) return;
+    // Groups never learn or ask (05-3 §5.17 "Groups: never", §17.3.3).
+    if (!chat || chat.private || chat.kind === 'group') return;
     const recent = (await this.d.query<EngineMessage[]>('messagesBefore', chatId, null, WINDOW_MAX)) ?? [];
+    // Only messages from this run: after a restart a job-done review must not re-read what an earlier run already read.
+    if (!this.floor.has(chatId)) return;
     const from = Math.max(this.read.get(chatId) ?? -1, this.floor.get(chatId) ?? -1);
     const window = recent.filter(
       (m) => m.seq > from && m.kind !== 'marker' && (m.status === 'complete' || m.status === 'sent') && !this.unsaved.has(m.id),
@@ -210,7 +214,7 @@ export class MemoryReview {
     this.lastRun.set(chatId, this.d.clock.now());
     this.read.set(chatId, top);
 
-    const data = await this.data(chat, window);
+    const { data, factIds } = await this.data(chat, window);
     const built = this.d.build(data);
     const act = await this.d.turn(chatId, built.system, built.prompt);
     if (act === null || act === undefined) return;
@@ -228,7 +232,7 @@ export class MemoryReview {
       }
       const upd = updateOp.safeParse(raw);
       if (upd.success) {
-        await this.update(chat, upd.data, window);
+        await this.update(chat, upd.data, window, factIds);
         continue;
       }
       if (!nothingOp.safeParse(raw).success) this.d.log('memory.review_op_rejected', 'VALIDATION', { chatId });
@@ -236,18 +240,20 @@ export class MemoryReview {
   }
 
   /** §24.21 memory_review data block. */
-  private async data(chat: EngineChat, window: EngineMessage[]): Promise<string> {
+  private async data(chat: EngineChat, window: EngineMessage[]): Promise<{ data: string; factIds: Set<string> }> {
     const lines = await Promise.all(window.map(async (m) => `[${m.id}] ${await this.d.messageLine(m, chat)}`));
     const facts: string[] = [];
+    const factIds = new Set<string>();
     let size = 0;
     for (const f of (await this.d.query<EngineFact[]>('memoryByScope', chat.id)) ?? []) {
       const line = this.d.factLine(f);
       if (size + line.length + 1 > FACTS_CAP) break;
       facts.push(line);
+      factIds.add(f.id);
       size += line.length + 1;
     }
     const stones = ((await this.d.query<EngineTombstone[]>('memory.tombstones')) ?? []).map((s) => s.hash);
-    return [
+    const data = [
       'Messages since my last look:',
       ...lines,
       '',
@@ -257,6 +263,7 @@ export class MemoryReview {
       'Never save again (hashes):',
       ...stones,
     ].join('\n');
+    return { data, factIds };
   }
 
   private async add(chat: EngineChat, op: ReviewAdd, byId: Map<string, EngineMessage>, window: EngineMessage[]): Promise<void> {
@@ -293,7 +300,12 @@ export class MemoryReview {
     await saveAndChip(this.d, chat.id, anchor, learn);
   }
 
-  private async update(chat: EngineChat, op: ReviewUpdate, window: EngineMessage[]): Promise<void> {
+  private async update(chat: EngineChat, op: ReviewUpdate, window: EngineMessage[], sent: Set<string>): Promise<void> {
+    // Only a fact this review was shown (same scopes, §24.21); never a private, other-scope or identity line it never saw.
+    if (!sent.has(op.factId)) {
+      this.d.log('memory.review_op_rejected', 'VALIDATION', { chatId: chat.id });
+      return;
+    }
     const old = await this.d.query<EngineFact>('memory.byId', op.factId);
     if (!old || old.text === op.text) return;
     const r = await this.d.memory.update(op.factId, op.text);

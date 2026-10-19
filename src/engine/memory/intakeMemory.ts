@@ -82,6 +82,11 @@ export class IntakeMemory {
 
   /** Intake kind `memory` (§25.2). */
   async decide(chat: EngineChat, helper: EngineHelper | null, message: EngineMessage, act: { op: 'remember' | 'forget'; text: string }) {
+    // Groups never learn, forget by chat or ask (05-3 §5.17 "Groups: never", §17.3.3): the line is ignored here.
+    if (chat.kind === 'group') {
+      this.d.log('memory.group_ignored', undefined, { chatId: chat.id });
+      return;
+    }
     if (act.op === 'forget') return this.forget(chat, helper, message, act.text);
     const s = this.d.settings();
     // §12.1 private chat, J17 "don't remember this", G-M6-06 memory off: nothing is saved.
