@@ -176,10 +176,32 @@ behalf and then keep on working"); listed for his later review.
 Each addendum is a pick where the spec is silent or forks, taken by the ticket that met it, landed here by the lead. A
 batch independent review (Fable) checks them before the milestone PR; until then each is "pending review".
 
-24. **G-M5-24** (T4) `ApprovalFields` gains optional `app: PermissionApp`. 08-5 §3.3 says a `use_app` approvals row
+21. **G-M5-21** (T2) Move to secret box posts the card (04-2 §22.4, 05-2 §5.8, 08-1 §3.2). 08-1 has no channel that
+    posts the Secret box that 04-2 §22.4 "Move to secret box" needs, and the renderer never writes cards (08-1 §4.6).
+    Added invoke `secret:offer { chatId, slot } → CardRow`, `slot` ∈ `openai | google | card | otp | password | key`
+    (the 04-2 §22.4 suggested names). Main writes a foo message and an `asking` Secret box titled from the slot; an
+    `otp` slot reuses the chat's open code box. The value never crosses this channel: the renderer hands it to the
+    card's field in memory, drops it after 60 s if no card takes it or when the chat changes, and forgets every caught
+    value once its mask leaves the composer, on Send and on a chat switch. A `password` or `key` box has no vault name
+    yet (08-0 §E.8), so its Save refuses with "I don’t have a safe place for this one yet, so I didn’t save it."
+    (new key `cards.secret.line.no_kind`) and nothing is stored. Groups: never (05-2 §5.8.6): no Move in a group, and
+    main refuses `secret:offer` for a group chat. When the vault can't save, the card shows the §5.8.3 Disabled state
+    up front. Pending review.
+22. **G-M5-22**, 23. **G-M5-23**: reserved for T10 (CR-0008 (j) rows 9 and 12).
+23. **G-M5-24** (T4) `ApprovalFields` gains optional `app: PermissionApp`. 08-5 §3.3 says a `use_app` approvals row
     carries `fields.app`; 08-2 §9.3 leaves it out. A `use_app` approval sets it, and its "For this chat" / "Always"
     rule matches `{ app }`. A `use_app` approval without `app` cannot make a rule (`RULE_NOT_ALLOWED`). Pending review.
-25. **G-M5-25** (lead, found by T4) The R2 store scrub does not apply P17 (04-2 key-like 32+ characters, entropy ≥ 4)
+24. **G-M5-25** (lead, found by T4) The R2 store scrub does not apply P17 (04-2 key-like 32+ characters, entropy ≥ 4)
     to a JSON leaf that is exactly a foo id (08-0 §E.7 `{prefix}_{UUIDv7}`, prefixes of 08-1 §0.6). Every id is 39+
     hex characters and passed P17, so stored card payloads, activity fields and tool calls held `[hidden]` in place of
     their ids. An id inside a longer string gets no exemption. `src/main/store/writeRedacted.ts`. Pending review.
+
+### Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`)
+
+| Ids        | Checks | Drawing                                                   | Spec (wins)                                                         |
+| ---------- | ------ | --------------------------------------------------------- | ------------------------------------------------------------------- |
+| BP-CARD-08 | r1, r2 | 351 px sketch, emoji, a "Show" text eye, value half shown | 05-2 §5.8.1 / §5.8.5: 440 px card, icon eye, field fully masked     |
+| BP-CARD-09 | r1, r2 | "Remove it" with no body                                  | 04-2 §22.4: "Move to secret box" / "Send anyway" plus the body line |
+
+The app follows the spec; the Blueprint sketches predate those sections. Expected to fail until the spec-keeper redraws
+them. Pending the batch review.
