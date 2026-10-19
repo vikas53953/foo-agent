@@ -454,7 +454,7 @@ export class JobRecovery {
       .map((c): DbOp => ({ op: 'update', table: 'tool_calls', id: c.id, set: { outcome: 'unknown' } }));
     if (marks.length) await this.tx(marks);
     // Step 3: WORKING (always an unclean exit: a clean quit pauses them) and, after an unclean exit, QUEUED. In safe mode too
-    // (M5 T10, CR-0009 G-M5-21): a recovery card starts nothing, so a job that was working shows it is waiting on the user
+    // (M5 T10, CR-0009 G-M5-22): a recovery card starts nothing, so a job that was working shows it is waiting on the user
     // instead of a working job with nothing running; the hold keeps every start back until "Start normally".
     const found = await this.jobsIn(launch.cleanStart ? ['working'] : ['working', 'queued']);
     for (const job of found) await this.recoveryCard(job);

@@ -62,7 +62,7 @@ export function aiText(a: FooterAi, ai: AiStatus | null, now: number, tz: string
     case 'signed_out':
       return t('sidebar.footer.ai.signed_out', { AI });
     case 'plan_limit':
-      // M5 T10 (CR-0009 G-M5-22): no reset time → "{AI} limit reached", never "limit until" with nothing after.
+      // M5 T10 (CR-0009 G-M5-23): no reset time → "{AI} limit reached", never "limit until" with nothing after.
       return ai?.resetAt === undefined
         ? t('sidebar.footer.ai.plan_limit.no_time', { AI })
         : t('sidebar.footer.ai.plan_limit', { AI, time: absoluteTime(ai.resetAt, now, tz) });

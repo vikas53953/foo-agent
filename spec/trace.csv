@@ -166,7 +166,7 @@ R17 · R8 · R14,J5,,UX-05-04,,05-1 §5.2; 05-3 §5.15; 04 §4.2,test/fidelity/u
 ,,ART-08c,,,01-articles Art. 8; 10-acceptance-2 §D,test/articles/ART-08c.test.ts,M5,pending
 ,,ART-10,,,01-articles Art. 10; 10-acceptance-2 §D,test/articles/ART-10.test.ts,M5,pending
 R9 · R10,J8,,UX-10-01,,05-1 §5.3,test/fidelity/ux/UX-10.choice.spec.ts,M5,pending
-R9 · R10,J8,,UX-10-02,,05-1 §5.3,test/fidelity/ux/UX-10.choice.spec.ts,M5,pending
+R9 · R10,J8,,UX-10-02,,05-1 §5.3,test/fidelity/ux/UX-10.choice.spec.ts,M6,pending
 R9 · R10,J8,,UX-10-03,,05-1 §5.3.4,test/fidelity/ux/UX-10.choice.spec.ts,M5,pending
 R9 · R10,J8,,UX-10-04,,05-1 §5.3.3,test/fidelity/ux/UX-10.choice.spec.ts,M5,pending
 R9 · R10,J8,,UX-10-05,,05-1 §5.3.1,test/fidelity/ux/UX-10.choice.spec.ts,M5,pending

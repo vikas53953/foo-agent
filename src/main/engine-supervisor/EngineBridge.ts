@@ -14,6 +14,7 @@ import { cardRow, type DbRow } from '../db/rows';
 import { jobRows, spendSummary } from '../store/queries';
 import { postCapWarning } from '../jobs/capWarning';
 import { applyDbOps, runNamedQuery } from './engineHost';
+import { vaultRuntime } from '../vault/vaultRuntime';
 
 export interface BridgeContext {
   db: Db;
@@ -153,11 +154,15 @@ export class EngineBridge {
       case 'ai.state':
         this.applyAiState(msg.payload);
         return null;
-      // M5-T1 stubs (CR-0009): T4 builds ApprovalGate (approval.open / approval.transition), T2 the vault (vault.use).
+      // M5-T1 stubs (CR-0009): T4 builds ApprovalGate (approval.open / approval.transition).
       case 'approval.open':
       case 'approval.transition':
-      case 'vault.use':
         return { re: msg.id, result: { ok: false, error: { kind: 'VALIDATION', message: 'not_implemented' } } };
+      // M5 T2 (08-2 §11.3): purpose checks in main; the value goes back to the engine only, registered first. Never logged.
+      case 'vault.use': {
+        const vault = vaultRuntime()?.vault;
+        return { re: msg.id, result: vault ? vault.use(msg.payload) : { ok: false, error: { kind: 'VAULT_MISSING' } } };
+      }
     }
   }
 

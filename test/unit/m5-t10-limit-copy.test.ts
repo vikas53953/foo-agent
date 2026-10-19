@@ -1,4 +1,4 @@
-// Spec: CR-0008 (j) row 12 and CR-0009 G-M5-22 (proposed): with no reset time the plan-limit lines read "{AI} limit reached"
+// Spec: CR-0008 (j) row 12 and CR-0009 G-M5-23 (proposed): with no reset time the plan-limit lines read "{AI} limit reached"
 // (sidebar footer, 03-shell-1 §3.4.11) and "Paused · {ai} limit reached" (chat header row 6, 03-shell-1 §3.5), never
 // "limit until" with nothing after; with a reset time they keep "until {time}". M5 T10.
 import { describe, expect, it } from 'vitest';

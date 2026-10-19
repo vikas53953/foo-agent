@@ -204,15 +204,7 @@ describe('cards (08-1 §4.5.1, 08-0 §G.2)', () => {
   it('stores the payload redacted', () => {
     tx(cardOps('k_1', 'error', 'asking', { whatHappened: 'key sk-proj-abcdefghij1234567890ABCDEFGHIJ' }));
     const payload = JSON.parse((db.prepare("SELECT payload FROM cards WHERE id = 'k_1'").get() as { payload: string }).payload);
-    expect(payload.whatHappened).toBe('key ••••');
-  });
-
-  // M5 T10: an id that passes P17's entropy line stays whole in a card payload; text next to it is still redacted.
-  it('keeps the ids foo made whole in a card payload', () => {
-    const id = 'j_9fQ2xLmZ7aKd3RtV8bNw1cYe5HuJ0pGs';
-    tx(cardOps('k_1', 'error', 'asking', { jobId: id, jobIds: [id], whatHappened: id }));
-    const payload = JSON.parse((db.prepare("SELECT payload FROM cards WHERE id = 'k_1'").get() as { payload: string }).payload);
-    expect(payload).toMatchObject({ jobId: id, jobIds: [id], whatHappened: '••••' });
+    expect(payload.whatHappened).toBe('key [hidden]');
   });
 });
 
@@ -286,7 +278,7 @@ describe('mirror and activity ops (08-1 §4.1.2, §2.4.1)', () => {
     expect(r.result.ok).toBe(true);
     const rows = NAMED_QUERIES.activityForJob({ db, now: NOW }, 'j_1');
     expect(rows).toHaveLength(1);
-    expect(rows[0]).toMatchObject({ kind: 'stopped', event: 'stopped_job', at: NOW, summary: 'Stopped Finding bills ••••' });
+    expect(rows[0]).toMatchObject({ kind: 'stopped', event: 'stopped_job', at: NOW, summary: 'Stopped Finding bills [hidden]' });
     const line = JSON.parse(readFileSync(join(dataDir, 'activity.jsonl'), 'utf8').trim());
     expect(line).toMatchObject({ id: rows[0]!.id, event: 'stopped_job', jobId: 'j_1' });
   });

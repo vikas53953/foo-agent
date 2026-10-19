@@ -7,12 +7,12 @@
 import { appendFileSync, mkdirSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fail, ok, type Result } from '../../shared/errors';
-import { redactSecrets } from '../../shared/redactor';
 import { isCardState } from '../../shared/cards';
 import { canTransition } from '../../shared/jobMachine';
 import type { ActivityOpRow, DbOp, DbTxReply } from '../../engine/protocol';
 import type { Db } from '../store/db';
 import { nextSeq } from '../store/composerQueries';
+import { redactRow, writeRedacted, writeRedactedJson } from '../store/writeRedacted';
 import { recomputePill } from '../store/queries';
 import { NAMED_QUERIES, type QueryCtx } from '../db/queries';
 import { newId } from '../../shared/ids';
@@ -157,14 +157,13 @@ const UPDATE_COLUMNS: Record<string, readonly string[]> = {
   tool_calls: TOOL_CALL_COLUMNS.filter((c) => !['id', 'job_id', 'started_at', 'idem_key'].includes(c)),
   cards: ['state', 'payload', 'answer', 'expires_at', 'resolved_by', 'resolved_at', 'supersedes_id', 'job_id'],
 };
-/** JSON columns: an object or array is stored as JSON text; `REDACT_JSON` ones have every string leaf redacted (§4.6 rule 2). */
+/** JSON columns: an object or array is stored as JSON text; `redactRow` then scrubs the §4.6 rule 2 ones leaf by leaf. */
 const JSON_COLUMNS: Record<string, readonly string[]> = {
   jobs: ['do_verbs', 'proof'],
   steps: ['slots'],
   tool_calls: ['args', 'result'],
   cards: ['payload', 'answer'],
 };
-const REDACT_JSON: Record<string, readonly string[]> = { tool_calls: ['args', 'result'], cards: ['payload'] };
 /** Tables whose rows carry `rev` (08-0 §B.1: every UPDATE bumps it). */
 const HAS_REV = new Set(['messages', 'jobs', 'steps', 'cards']);
 
@@ -198,20 +197,7 @@ function checkColumns(cols: string[], allowed: readonly string[] | undefined): v
   for (const c of cols) if (!allowed.includes(c)) throw new DbOpError('DB_NOT_WRITABLE', `${c} is not writable`);
 }
 
-// M5 T10: in a card payload, the row ids foo made (`jobId`, `jobIds`, `stepId` …) are not user text. A uuid-like id now
-// and then passed P17's entropy line and was stored as "••••", so the Checklist and the runner lost their job (PERF-08).
-// Tool-call args and results keep every leaf redacted: there an `accountId` can be the user's own.
-const ID_KEY = /^(?:id|ids|[a-z][A-Za-z]*Ids?)$/u;
-
-function redactLeaves(v: unknown, keepIds = false, key?: string): unknown {
-  if (keepIds && key !== undefined && ID_KEY.test(key)) return v;
-  if (typeof v === 'string') return redactSecrets(v).text;
-  if (Array.isArray(v)) return v.map((x) => redactLeaves(x, keepIds));
-  if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, redactLeaves(x, keepIds, k)]));
-  return v;
-}
-
-/** JSON columns to text (redacted where §4.6 rule 2 says so); booleans to 0/1. */
+/** JSON columns to text; booleans to 0/1. Redaction (§4.6 rule 2) is `redactRow`'s, after this. */
 function normalise(table: string, row: Record<string, unknown>): Record<string, unknown> {
   const out: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(row)) {
@@ -225,7 +211,6 @@ function normalise(table: string, row: Record<string, unknown>): Record<string, 
           throw new DbOpError('VALIDATION', `${table}.${k} is not JSON`);
         }
       }
-      if (REDACT_JSON[table]?.includes(k)) parsed = redactLeaves(parsed, table === 'cards');
       x = JSON.stringify(parsed);
     }
     if (typeof x === 'boolean') x = x ? 1 : 0;
@@ -247,11 +232,9 @@ function noteJob(db: Db, jobId: string, fx: TxEffects): void {
 
 function insertRow(db: Db, op: Extract<DbOp, { op: 'insert' }>, fx: TxEffects, now: number): { id: string; rev: number } {
   checkColumns(Object.keys(op.row), INSERT_COLUMNS[op.table]);
-  const row = normalise(op.table, op.row);
-  for (const col of op.redact ?? []) if (typeof row[col] === 'string') row[col] = redactSecrets(row[col] as string).text;
+  // Art. 8 / §4.6 rule 2: every listed text column (and the op's `redact` list) is stored redacted (Store.writeRedacted).
+  const row = redactRow(op.table, normalise(op.table, op.row), op.redact ?? []);
   if (op.table === 'messages') {
-    // Art. 8 / §4.6 rule 2: message text is always stored redacted.
-    if (typeof row.text === 'string') row.text = redactSecrets(row.text).text;
     const chatId = String(row.chat_id);
     const seq = nextSeq(db, chatId);
     const cols = [...Object.keys(row), 'seq'];
@@ -330,8 +313,7 @@ function writeSet(
 function updateRow(db: Db, op: Extract<DbOp, { op: 'update' }>, fx: TxEffects, now: number): { id: string; rev: number } {
   if (op.table === 'reactions') throw new DbOpError('DB_NOT_WRITABLE');
   checkColumns(Object.keys(op.set), UPDATE_COLUMNS[op.table]);
-  const set = normalise(op.table, op.set);
-  if (op.table === 'messages' && typeof set.text === 'string') set.text = redactSecrets(set.text).text;
+  const set = redactRow(op.table, normalise(op.table, op.set));
   const cur = currentRow(db, op.table, op.id);
   // The engine moves a user message's status and badge only; its words are the user's (Art. 8, main is the writer).
   if (op.table === 'messages' && cur.author_kind === 'user' && ('text' in set || 'provider_note' in set))
@@ -341,7 +323,7 @@ function updateRow(db: Db, op: Extract<DbOp, { op: 'update' }>, fx: TxEffects, n
 }
 
 function transitionRow(db: Db, op: Extract<DbOp, { op: 'transition' }>, fx: TxEffects, now: number): { id: string; rev: number } {
-  const set = normalise(op.table, op.set ?? {});
+  const set = redactRow(op.table, normalise(op.table, op.set ?? {}));
   checkColumns(Object.keys(set), UPDATE_COLUMNS[op.table]);
   if ('state' in set) throw new DbOpError('DB_NOT_WRITABLE', 'state is the transition target');
   const cur = currentRow(db, op.table, op.id);
@@ -378,8 +360,8 @@ function insertActivity(db: Db, row: ActivityOpRow, now: number, lines: string[]
   const id = newId('act', now);
   const clean: ActivityOpRow = {
     ...row,
-    summary: redactSecrets(row.summary).text,
-    fields: row.fields ? (redactLeaves(row.fields) as Record<string, unknown>) : null,
+    summary: writeRedacted(row.summary),
+    fields: row.fields ? writeRedactedJson(row.fields) : null,
   };
   const cols = ['id', 'at', ...Object.keys(clean).map((k) => ACTIVITY_COLUMNS[k as keyof ActivityOpRow])];
   const vals = [id, now, ...Object.entries(clean).map(([k, v]) => (k === 'fields' && v ? JSON.stringify(v) : v))];

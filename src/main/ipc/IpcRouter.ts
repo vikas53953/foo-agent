@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
 import type { EventChannel, EventPayload, InvokeChannel, InvokeIn, InvokeOut, PlatformInfo, VerifyResult } from '../../shared/ipc';
+import { SECRET_OFFER_SLOTS } from '../../shared/ipc'; // M5 T2
 import { PROVIDER_IDS, settingsSchema, WRITABLE_PATHS, type Settings } from '../../shared/settings';
 import type { FixAction, MessageRow, WindowsSettingsPage } from '../../shared/types';
 import { deps } from '../deps';
@@ -59,6 +60,7 @@ import { FIX_ACTION_KINDS, JOB_CHANNELS, jobIpc } from '../jobs/jobIpc';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
 import { isTrustedUrl } from '../windows/protocol';
+import { logEvent } from '../log/techLog';
 import { answerIpc } from '../cards/answerIpc';
 import { approvalIpc } from '../approvals/approvalIpc';
 import { draftIpc } from '../drafts/draftIpc';
@@ -264,6 +266,8 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'secret:list': empty as z.ZodType<Record<string, never>>,
   'secret:delete': z.object({ target: z.string().min(1).max(300), confirm: z.literal(true) }).strict(),
   'code:submit': z.object({ requestId: z.string().min(1).max(80), code: z.string().min(1).max(64) }).strict(),
+  // M5 T2 (G-M5-21)
+  'secret:offer': z.object({ chatId, slot: z.enum(SECRET_OFFER_SLOTS) }).strict(),
 };
 
 export type Handler<C extends InvokeChannel> = (req: InvokeIn[C]) => Result<InvokeOut[C]> | Promise<Result<InvokeOut[C]>>;
@@ -279,13 +283,14 @@ export function handle<C extends InvokeChannel>(channel: C, fn: Handler<C>): voi
   channels().handle(channel, async (raw: unknown) => {
     const parsed = SCHEMAS[channel].safeParse(raw ?? {});
     if (!parsed.success) {
-      console.warn(`IPC_REJECTED ${channel}: payload failed validation`);
+      logEvent({ lvl: 'warn', mod: 'ipc', evt: 'IPC_REJECTED', kind: channel });
       return fail('IPC_REJECTED');
     }
     try {
       return await fn(parsed.data);
     } catch (e) {
-      console.error(`ipc ${channel}`, e);
+      // The error object can carry message text or a payload; only its name reaches the log (R7).
+      logEvent({ lvl: 'error', mod: 'ipc', evt: 'IPC_FAILED', kind: `${channel} ${e instanceof Error ? e.name : typeof e}` });
       return fail('UNKNOWN');
     }
   });

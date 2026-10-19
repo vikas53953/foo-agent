@@ -1,5 +1,5 @@
 // Spec: AT-118 (any non-final job, app killed or Windows restarted → on next launch restored from state.json with a recovery
-// card), 08-2 §5.9 (step 1 safe mode holds every job and posts the safe-mode card, and with CR-0009 G-M5-21 the step 3
+// card), 08-2 §5.9 (step 1 safe mode holds every job and posts the safe-mode card, and with CR-0009 G-M5-22 the step 3
 // recovery cards are posted in safe mode too; step 3 WORKING / QUEUED → NEEDS_YOU with
 // the J19.5 card, doneLines from activity; step 5 unfinished side-effect calls → `unknown`), 05-3 §5.20 (recovery variant:
 // [ Pick up where I left off ] · "Stop it"; states resumed / stopped), 08-3 §21.2 CRASH_RECOVERY, SAFE_MODE, CR-0008 G-M4-13.
@@ -124,7 +124,7 @@ describe('08-2 §5.9 step 1 · safe mode', () => {
       cleanStart: false,
     });
     await h!.settle();
-    // M5 T10 (CR-0009 G-M5-21): the job that was working shows its recovery card; nothing runs while safe mode holds.
+    // M5 T10 (CR-0009 G-M5-22): the job that was working shows its recovery card; nothing runs while safe mode holds.
     expect(h!.job().state).toBe('needs_you');
     expect(h!.turnsJsonl().filter((r) => r.purpose === 'step')).toHaveLength(2);
     const cards = h!.cards('error');

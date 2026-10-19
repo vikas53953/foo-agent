@@ -67,7 +67,7 @@ export function statusLine(s: StatusInput): StatusResult {
   if (reasons.has('ai_down')) return { row: 5, text: t('chat_header.status.paused_ai_down', { ai }), tone: 'fg2' };
   if (reasons.has('ai_signed_out')) return { row: 5, text: t('chat_header.status.paused_signed_out', { ai }), tone: 'fg2' };
   if (reasons.has('ai_limit')) {
-    // M5 T10 (CR-0009 G-M5-22): with no reset time the line says the limit is reached, never "limit until" with nothing after.
+    // M5 T10 (CR-0009 G-M5-23): with no reset time the line says the limit is reached, never "limit until" with nothing after.
     if (!s.ai.resetAt) return { row: 6, text: t('chat_header.status.paused_plan_limit.no_time', { ai }), tone: 'fg2' };
     return {
       row: 6,
