@@ -19,7 +19,9 @@ import { AiRegistry, CliLimiter, createAdapters, loadPricing, nodeAiFs, nodeWhic
 import { AiService } from './AiService';
 import { ChatLane, type IntakeDecisionView, type IntakeInput, type LaneProtocol } from './chat/ChatLane';
 import type { MainLink, MainToEngine } from './protocol';
-import { memoryNotBuilt, type MemoryPort } from './memory/MemoryPort';
+import { MemoryService } from './memory/MemoryService';
+import { createParseWorker, type ParseWorker } from './memory/parseWorker';
+import { watchMemory, type MemoryWatcher } from './memory/watcher';
 import { parseEnvelope, validateAct, formatIssues } from './prompt/envelope';
 import { filterSay } from './prompt/filters';
 import { PromptBuilder, type ConversationMessage } from './prompt/PromptBuilder';
@@ -62,8 +64,9 @@ export class Engine {
   readonly jobs: JobRunner;
   readonly recovery: JobRecovery;
   private prompts: PromptBuilder;
-  /** M6 slot (CR-0010): T3 sets MemoryService here, T7 its tidy. */
-  memory: MemoryPort = memoryNotBuilt;
+  /** M6 slot (CR-0010): T3's MemoryService (the `memory:*` commands, learn, the watcher); T7 fills its tidy. */
+  readonly memory: MemoryService;
+  private memoryWatcher: MemoryWatcher | null = null;
 
   static create(o: EngineOptions): Engine {
     return new Engine(o);
@@ -171,6 +174,30 @@ export class Engine {
       capCheck: (chars, purpose) => this.jobs.allowChatCall(chars, purpose),
     });
     this.jobs.setIntake((chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }));
+    let parser: ParseWorker | null = null;
+    this.memory = new MemoryService({
+      link: o.link,
+      clock: o.clock,
+      dataDir: o.dataDir,
+      timeZone: () => this.settings.locale.timeZone,
+      // Always a real UUIDv7: the file parser accepts only full `f_{UUIDv7}` ids (08-3 §12.2), never the tests' counters.
+      newFactId: () => mintId('f', o.clock.now()),
+      // 08-1 §2.5: parsing runs in a worker; from TypeScript sources (tests) the worker loads them through tsx.
+      parser: () => (parser ??= createParseWorker(__filename.endsWith('.ts') ? { execArgv: ['--require', 'tsx/cjs'] } : {})),
+      classify: null,
+      log: (evt, kind) => log(evt, kind),
+    });
+  }
+
+  /** 08-3 §12.2: reindex what changed while foo was closed, then watch `{DATA}/memory`. */
+  private async startMemory(): Promise<void> {
+    if (!this.o.dataDir || this.memoryWatcher) return;
+    this.memoryWatcher = watchMemory({
+      dataDir: this.o.dataDir,
+      clock: this.o.clock,
+      onChange: (file) => void this.memory.fileChanged(file),
+    });
+    await this.memory.reindexAll();
   }
 
   /** The step protocol for the job runner (08-4 §24.1 step row, §25.3, 08-2 §7.5–§7.6). */
@@ -345,6 +372,7 @@ export class Engine {
           // First settings, or a chosen AI that just became usable (J2 choose → ai.state → settings): waiting messages go now.
           if (first || (!usableBefore && this.ai.pick())) void this.drainQueued();
           if (first && !this.o.testRun) this.scheduleHealthCheck();
+          if (first) void this.startMemory().catch(() => undefined);
           // 08-2 §5.9 (G-M4-13): main decided safe mode and whether the last exit was clean; recovery runs once per start.
           if (first) void this.jobs.track(this.recovery.recoverAll(msg.payload.launch ?? { safeMode: false, cleanStart: true }));
         }
