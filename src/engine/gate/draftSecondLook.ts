@@ -15,6 +15,9 @@ export interface DraftLookReq {
   /** The addresses on the outgoing Gmail send. */
   recipients: string[];
 }
+/** Main waits 60 s for the answer (draftIpc LOOK_TIMEOUT_MS); the AI turn stops at the same cap so a late turn frees its slot. */
+export const DRAFT_LOOK_TIMEOUT_MS = 60_000;
+
 export type DraftLookAnswer = { pass: true; result: SecondLookResult } | { pass: false; result?: SecondLookResult; held: Held };
 
 interface ApprovalLite {
@@ -27,13 +30,15 @@ export async function draftSecondLook(core: RunnerCore, timeZone: string, req: D
   const a = await core.query<ApprovalLite | null>('approvals.byId', req.approvalId);
   const job = a ? await core.job(a.jobId) : null;
   if (!a || !job) return cannot;
+  const ctl = new AbortController();
+  const timer = core.d.clock.setTimeout(() => ctl.abort(), DRAFT_LOOK_TIMEOUT_MS);
   const out = await secondLook({
     fields: { ...a.fields, contentSummary: req.content },
     userWords: await userWordsFor(core, job),
     timeZone,
     now: core.d.clock.now(),
     live: { recipients: req.recipients },
-    askAi: (p) => askSecondLook(core, job, p, new AbortController().signal),
-  });
+    askAi: (p) => askSecondLook(core, job, p, ctl.signal),
+  }).finally(() => core.d.clock.clearTimeout(timer));
   return out.pass ? { pass: true, result: out.result } : { pass: false, result: out.result, held: out.held };
 }

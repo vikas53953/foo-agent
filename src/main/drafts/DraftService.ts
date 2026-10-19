@@ -19,6 +19,7 @@ import { fieldsHash } from '../../engine/gate/fieldsHash';
 import { cardRow, type DbRow } from '../db/rows';
 import { applyDbOps, type TxEffects } from '../engine-supervisor/engineHost';
 import type { Db } from '../store/db';
+import { errCode } from '../store/rebuild';
 import type { ApprovalGate, ApprovalRow, Created } from '../approvals/ApprovalGate';
 import type { GmailDrafts } from './gmailDrafts';
 
@@ -383,7 +384,7 @@ export class DraftService {
     try {
       await this.sendOne(approvalId, true);
     } catch (e) {
-      this.d.log?.({ t: this.d.now(), lvl: 'error', mod: 'drafts', evt: 'send.failed', approvalId, err: String(e) });
+      this.d.log?.({ t: this.d.now(), lvl: 'error', mod: 'drafts', evt: 'send.failed', approvalId, code: errCode(e) });
     } finally {
       this.sending.delete(approvalId);
     }

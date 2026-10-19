@@ -772,3 +772,7 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
   request timeout; (3) a Draft held cannot_check is never looked at again when the AI returns (the strip's "I'll ask again"
   is J19's, as for T8); (5) the activity.jsonl mirror is not rewritten by `approval:report` (the M8 / M9 producer of
   `unknown` rows mirrors it); (6) a CHECKING card with no site or payee would read "{site}" empty (no such card in M5).
+- M5-T14-05 · Lead review: the Draft look's AI turn now aborts at 60 s on the engine clock (`DRAFT_LOOK_TIMEOUT_MS`, the
+  same cap main waits), so a late turn frees its lane slot (closes T14-04 (2)); `send.failed` logs a fixed `code`
+  (`errCode`, 08-3 §19.1), never the error text. T14-04 (3) stays a J19 follow-up (M5.tsv). A user's-value pick re-holds
+  on the same mismatch until they tap Change, since nothing re-writes the Gmail draft before M8's producer.
