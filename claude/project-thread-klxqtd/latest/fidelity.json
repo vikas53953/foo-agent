@@ -1,19 +1,19 @@
 {
-  "reportId": "M4-1c158a4-39198917964",
+  "reportId": "M4-d2c0058-39200065577",
   "milestone": "M4",
-  "generatedAt": "2026-10-19T04:33:35.216Z",
-  "commit": "0ab3f2934fed5d0ae0c2b33c9abae27e76507234",
-  "head": "1c158a4970d560ede883afa22a7cdb9ff58d00ae",
+  "generatedAt": "2026-10-19T04:47:26.725Z",
+  "commit": "26bd0733c63fe7ded425bbeabcbf24b5a5ad175a",
+  "head": "d2c00581f01c102e16e9d7a67ca7adfb2f2a7533",
   "ci": {
-    "runId": "39198917964",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39198917964"
+    "runId": "39200065577",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39200065577"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "a8c652ea014d8c6c709a2d519ca9abf799dd91b2be4a907a4fa430b0e62d2883"
   },
   "runner": {
-    "recordedAt": "2026-10-19T04:24:56.015Z",
+    "recordedAt": "2026-10-19T04:39:13.600Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000003193"
+      "runner": "GitHub Actions 1000003195"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,7 +59,7 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "2 test(s) failed",
+    "1 test(s) failed",
     "7 audit item(s) not DONE (the milestone is not complete)"
   ],
   "missingInputs": [],
@@ -757,8 +757,8 @@
         "skipped": 2
       },
       "e2e": {
-        "passed": 60,
-        "failed": 2,
+        "passed": 61,
+        "failed": 1,
         "skipped": 0
       }
     },
@@ -13880,7 +13880,7 @@
       },
       {
         "id": "ART-26a",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/m2-messages.spec.ts"
       },
       {
@@ -14095,12 +14095,6 @@
       }
     ],
     "failed": [
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m2-messages.spec.ts",
-        "title": "ART-26a · bubbles, cards, the bubble menu and the reaction picker pass axe in light and dark",
-        "status": "failed"
-      },
       {
         "suite": "e2e",
         "file": "test/fidelity/ux/UX-23.errors.spec.ts",
@@ -14748,7 +14742,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "pass (BP-ANAT-L ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.0686435546875,
+        "r5": 0.068677734375,
         "ref": true,
         "app": true,
         "diff": true
@@ -15060,7 +15054,7 @@
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "pass (BP-APP-M ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05456992056856187,
+        "r5": 0.05464612945930881,
         "ref": true,
         "app": true,
         "diff": true
@@ -15333,7 +15327,7 @@
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
         "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05459938336650665,
+        "r5": 0.05420910900362955,
         "ref": true,
         "app": true,
         "diff": true
@@ -15346,7 +15340,7 @@
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
         "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05350661515045077,
+        "r5": 0.05366272489560161,
         "ref": true,
         "app": true,
         "diff": true
@@ -15385,7 +15379,7 @@
         "r2": "fail (BP-COMP-06 0/248.65625 px)",
         "r3": "pass (BP-COMP-06 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.15836676550962264,
+        "r5": 0.1584539798825513,
         "ref": true,
         "app": true,
         "diff": true
@@ -15710,7 +15704,7 @@
         "r2": "review (hl 8/8 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (18.70 %)",
-        "r5": 0.0613935546875,
+        "r5": 0.061392578125,
         "ref": true,
         "app": true,
         "diff": true
@@ -15853,7 +15847,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 20.59)",
         "r4": "fail (21.84 %)",
-        "r5": 0.085337890625,
+        "r5": 0.085330078125,
         "ref": true,
         "app": true,
         "diff": true
@@ -15866,7 +15860,7 @@
         "r2": "review (hl 8/0 px)",
         "r3": "fail (hl ΔE 35.2)",
         "r4": "fail (21.68 %)",
-        "r5": 0.0679833984375,
+        "r5": 0.0679794921875,
         "ref": true,
         "app": true,
         "diff": true
@@ -15905,7 +15899,7 @@
         "r2": "pass (hl 0/1 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.46 %)",
-        "r5": 0.104619140625,
+        "r5": 0.1043974609375,
         "ref": true,
         "app": true,
         "diff": true
@@ -15918,7 +15912,7 @@
         "r2": "pass (hl 0/1 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.19 %)",
-        "r5": 0.080759765625,
+        "r5": 0.0806064453125,
         "ref": true,
         "app": true,
         "diff": true
@@ -15970,7 +15964,7 @@
         "r2": "fail (hl 196/36 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (7.02 %)",
-        "r5": 0.087982421875,
+        "r5": 0.0879833984375,
         "ref": true,
         "app": true,
         "diff": true
@@ -15996,7 +15990,7 @@
         "r2": "fail (hl 91.46875/25.609375 px)",
         "r3": "fail (hl ΔE 57.24)",
         "r4": "fail (57.56 %)",
-        "r5": 0.0864482421875,
+        "r5": 0.0864150390625,
         "ref": true,
         "app": true,
         "diff": true
@@ -16048,7 +16042,7 @@
         "r2": "fail (hl 66/24.46875 px)",
         "r3": "fail (hl ΔE 12.77)",
         "r4": "fail (87.44 %)",
-        "r5": 0.0896015625,
+        "r5": 0.0896025390625,
         "ref": true,
         "app": true,
         "diff": true
