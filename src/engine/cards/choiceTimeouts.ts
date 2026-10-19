@@ -5,7 +5,8 @@
 // `expired`), 08-4 §26.7 (only `effectiveReversible` cards auto-pick; the payload's `reversible` is that value), 08-0
 // StopReason `choice_timeout`, 08-3 §15 NotificationRequest (`notify`, kind choice; main stubs it until M11), AT-033, AT-034.
 // Runs on the runner's 15 s tick. Purposes the runner answers itself (stop_which, fold_which), file_in and photo_notice have
-// their own rules (05-1 §5.3.3, 08-4 §26.9) and are left alone. implementation-notes M5-T8: the [ Search again ] button
+// their own rules (05-1 §5.3.3, 08-4 §26.9) and are left alone. `{job}` / `{what}` take jobs.title unchanged, as the stuck
+// card does (G-M5-34: 08-4 §26.2 titles are running phrases, 05-1 §5.3.2 reads a noun; spec keeper). The [ Search again ] button
 // under the stop line needs a message-button contract no ticket owns yet (lead hand-off); the line is posted without it.
 import { t } from '../../shared/copy/t';
 import type { CardRow, ChoicePayload, JobRow } from '../../shared/types';
@@ -16,12 +17,6 @@ import type { RunnerCore } from '../jobs/JobRunner';
 export const CHOICE_NUDGE_MS = 15 * 60_000;
 /** J8: 24 h to the stop. */
 export const CHOICE_EXPIRE_MS = 24 * 3_600_000;
-
-/**
- * `{job}` inside the sentence: job titles are engine-made running phrases ("Looking for flights", 08-4 §26.2), so the first
- * letter drops to lower case ("I stopped the looking for flights…" reads as the title, not a new sentence).
- */
-const inLine = (title: string): string => title.charAt(0).toLowerCase() + title.slice(1);
 
 const OWN_RULES = new Set(['stop_which', 'fold_which', 'file_in', 'photo_notice']);
 
@@ -106,7 +101,7 @@ export class ChoiceTimeouts {
       ...steps
         .filter((s) => s.state === 'waiting_user' || s.state === 'pending' || s.state === 'running')
         .map((s): DbOp => ({ op: 'update', table: 'steps', id: s.id, set: { state: 'skipped' } })),
-      core.textOp(job, t('cards.choice.expired_line', { job: inLine(job.title) })),
+      core.textOp(job, t('cards.choice.expired_line', { job: job.title })),
       ...core.badgeOps(job, 'cancelled'),
       ...(await core.editChecklistOps(job, 'stopped')),
     ]);

@@ -728,8 +728,8 @@ max-width: 100%` (`.wide` the same with `--card-w-wide`). CardFrame takes `data`
 
 ### Picks and gaps (for the lead's independent check)
 
-- M5-T8-01 · The second look's amount check compares the ₹ the user typed; the live total vs the card is the fresh-terms
-  check (SUPERSEDED, AT-124), not a HELD.
+- M5-T8-01 · No rule check of the amount against the user's words (review 3): §9.6 A's amount is the live total, which the
+  fresh-terms check covers (SUPERSEDED, AT-124); "under ₹3,000" must not hold a ₹2,400 booking. The AI step sees both.
 - M5-T8-02 · Dates are checked only when a parser is wired (`parseWhen`); chrono-node is not in package.json (lead).
 - M5-T8-03 · Only recipients from untrusted text are flagged; an untrusted site or payee is not.
 - M5-T8-04 · Live terms that cannot be read (`unreadable`) → HELD `cannot_check`; no money evidence at all (`none`, e.g.
@@ -738,7 +738,15 @@ max-width: 100%` (`.wide` the same with `--card-w-wide`). CardFrame takes `data`
 - M5-T8-06 · Not built (no contract yet): the [ Search again ] button under the 24 h stop line, the G-M5-08 late-answer
   caption, and `cards.approval.superseded.price_changed` (Payment card copy, M10). A Draft card steer still updates the
   card directly until T6 lands.
-- M5-T8-07 · `{job}` in the 24 h stop line is the running title with its first letter in lower case ("I stopped the
-  reading your email…"); wording for the close-out copy pass.
+- M5-T8-07 · G-M5-34 (open, spec keeper): `{job}` in the 24 h stop line and `{what}` in the reminder take jobs.title
+  unchanged, as the stuck card does; 08-4 §26.2 titles are running phrases ("Looking for flights") while 05-1 §5.3.2 reads
+  a noun ("the Delhi flight search").
 - M5-T8-08 · Only the send content marks the engine can read are wired; the Draft send path (T6) passes
   `GateCall.content`.
+- M5-T8-09 · From the Fable review, logged not fixed: (4) a steer while HELD is silent, since the machine has no
+  HELD → SUPERSEDED edge (CR item); (5) live recipients and siteDomain reach the second look only with the M8/M9 tools;
+  (8) rename `EngineApproval.heldPicked` → `secondLookHeld` when next touched; (9) a cannot_check retry belongs to J19;
+  (10) `userWordsFor` reads the last 50 messages per chat, to page by `since` later.
+- M5-T8-10 · Review fixes: a write-ahead with no ack in 2 s → HELD with the cannot_check strip and the card kept open;
+  the AI check retries only an invalid act (timeout, error or refused cost → cannot_check) and runs on the job's signal;
+  the fresh-terms re-read (`ToolLayer.reread`) leaves the IDEMPOTENT_REPEAT and held-`unknown` sets as they are.

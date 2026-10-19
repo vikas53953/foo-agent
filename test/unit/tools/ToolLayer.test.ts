@@ -113,6 +113,15 @@ describe('ToolLayer', () => {
     });
   });
 
+  it('M5 T8 review 7: the fresh-terms re-read (reread) leaves a held unknown call held; an AI read releases it', async () => {
+    const { l } = layer([def('x.draft', 'prepare', 1), def('x.read', 'read', 2)]);
+    l.holdUnknown('j1', [{ tool: 'x.draft', args: { to: 'a' } }]);
+    expect((await l.reread(job, { tool: 'x.read', args: {} }, signal)).outcome).toBe('ok');
+    expect(await l.execute(job, { tool: 'x.draft', args: { to: 'a' } }, signal)).toMatchObject({ errorKind: 'IDEMPOTENT_REPEAT' });
+    await l.execute(job, { tool: 'x.read', args: {} }, signal);
+    expect((await l.execute(job, { tool: 'x.draft', args: { to: 'a' } }, signal)).outcome).toBe('ok');
+  });
+
   it('a result over 16 KB is stored cut ({ cut: true, text }) and the RAM copy stays ≤ 16 KB', async () => {
     const big = 'a'.repeat(40_000);
     const { l, row } = layer([def('x.read', 'read', { big })]);

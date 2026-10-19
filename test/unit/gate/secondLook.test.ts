@@ -65,9 +65,17 @@ describe('secondLook (08-2 §9.6)', () => {
     expect(r.pass).toBe(true);
   });
 
-  it('amount: a ₹ total the user stated must equal the card total ("₹2,000" vs "₹2,400")', async () => {
-    const r = await secondLook(input({ userWords: [{ at: NOW, text: 'Book Toit for 4, the ₹2,000 table' }] }));
-    expect(r.held).toEqual({ reason: 'mismatch', userSaid: '₹2,000', actionHas: '₹2,400' });
+  it('amount: no rule check against the user\'s words ("under ₹3,000" never holds a ₹2,400 booking; the live total is fresh terms)', async () => {
+    let asked = 0;
+    const r = await secondLook(
+      input({
+        userWords: [{ at: NOW, text: 'Book Toit for 4, anything under ₹3,000' }],
+        askAi: () => (asked++, Promise.resolve({ match: true })),
+      }),
+    );
+    expect(r.pass).toBe(true);
+    expect(r.result.deterministic).toEqual({ ok: true, mismatches: [] });
+    expect(asked).toBe(1);
   });
 
   it('site: the page the submit runs on must be the card site', async () => {

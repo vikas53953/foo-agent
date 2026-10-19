@@ -7,14 +7,13 @@
 // `irreversible`), §25.4 (`SecondLookAct`; `ai = { ok: act.match, note }`), §28.3 (empty user words → B skipped,
 // HELD no_user_words), §28.4 (extraction; HELD values by F10: "₹14,600", "Sat 17 Oct, 8:00 PM", "4 people",
 // "Rakesh (r***@gmail.com)"), §28.6 (`{verbing}` ∈ paying, sending, booking, deleting, sharing).
-// implementation-notes M5-T8: a live total that differs from the card is the fresh-terms check's (SUPERSEDED, 08-2 §9.4.2,
-// AT-124), so A compares the card total with a ₹ total the user stated; dates run only with a date parser (chrono-node is
-// not a dependency yet, CR-0009 G-M5-32), the AI check covers them until then. Pure apart from `askAi`.
-import { formatDate, formatInr } from '../../shared/format';
+// implementation-notes M5-T8: A's amount check is the live total, which the fresh-terms check runs (SUPERSEDED, 08-2
+// §9.4.2, AT-124), so A has no amount rule here; dates run only with a date parser (chrono-node is not a dependency yet,
+// CR-0009 G-M5-32), the AI check covers them until then. Pure apart from `askAi`.
+import { formatDate } from '../../shared/format';
 import type { SecondLookAct } from '../../shared/schemas';
 import type { ApprovalFields, ApprovalPayload, SecondLookResult } from '../../shared/types';
 import { latestCount } from './extractCounts';
-import { amountIn } from './requestApproval';
 
 type Field = NonNullable<SecondLookResult['held']>['field'];
 export type Held = NonNullable<ApprovalPayload['held']>;
@@ -72,15 +71,8 @@ function deterministic(i: SecondLookInput): Miss[] {
   const out: Miss[] = [];
   const fmt = (ms: number) => formatDate(ms, 'full', { timeZone: f.when?.tz || i.timeZone, now: i.now });
 
-  // Amount: a ₹ total the user stated (latest) against the card total.
-  if (f.amountPaise !== undefined) {
-    for (let k = texts.length - 1; k >= 0; k--) {
-      const said = amountIn(texts[k]!);
-      if (said === null) continue;
-      if (said !== f.amountPaise) out.push({ field: 'amount', userSaid: formatInr(said), actionHas: formatInr(f.amountPaise) });
-      break;
-    }
-  }
+  // Amount: no rule check (M5 T8 review 3). §9.6 A compares the live total, which the fresh-terms check does; a user's
+  // "under ₹3,000" must not hold a ₹2,400 booking. The AI step still sees the user's words and the card's total.
 
   // Recipient: the address on the outgoing call is one of the card's (case-insensitive); untrusted ones are flagged (§9.4.3).
   const cardAddrs = (f.recipients ?? []).map((r) => r.address.toLowerCase());

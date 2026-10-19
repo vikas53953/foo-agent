@@ -61,7 +61,7 @@ describe('choice timeouts (J8)', () => {
   it('AT-034 a flight choice is never picked: one reminder at 15 min, then at 24 h the job is CANCELLED (`choice_timeout`) with the stop line', async () => {
     h = jobHarness({
       script: [
-        jobIntake(PLAN, { title: 'Delhi flight search' }),
+        jobIntake([{ phraseKey: 'look_for', slots: { what: 'flights to Delhi' } }], { title: 'Delhi flight search' }),
         step({
           kind: 'ask',
           card: {
@@ -85,8 +85,10 @@ describe('choice timeouts (J8)', () => {
     expect(h.cards('choice')[0]).toMatchObject({ state: 'expired', resolved_by: 'auto' });
     expect(h.cards('choice')[0]!.answer).toBeNull();
     expect(h.job()).toMatchObject({ state: 'cancelled', stop_reason: 'choice_timeout' });
+    // G-M5-34: {job} is jobs.title unchanged (the engine's running phrase, 08-4 §26.2), as on the stuck card.
+    expect(h.job().title).toBe('Looking for flights to Delhi');
     expect(fooTexts(h)).toContain(
-      'I stopped the reading your email because I didn’t hear back. Options change fast, so ask me again when you’re ready.',
+      'I stopped the Looking for flights to Delhi because I didn’t hear back. Options change fast, so ask me again when you’re ready.',
     );
   });
 });

@@ -6,7 +6,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { t } from '../../../src/shared/copy/t';
 import { jobHarness, jobIntake, step, tool, type JobHarness } from '../jobs/jobHarness';
-import { BOOK_PLAN, bookRequest, gateTools, secondLookNo, secondLookOk } from './gateFlow';
+import { BOOK_PLAN, bookRequest, bookScript, gateTools, secondLookNo, secondLookOk } from './gateFlow';
 
 let h: JobHarness | null = null;
 afterEach(() => {
@@ -181,5 +181,25 @@ describe('second look after Approve (08-2 §9.6)', () => {
     expect(ran).toEqual(['browser.submit']);
     const [ap] = approvals(h);
     expect(JSON.parse(ap!.second_look!)).toMatchObject({ deterministic: { ok: true, mismatches: [] }, ai: { ok: true, note: '' } });
+  });
+
+  it('M5 T8 review 2: no ack for the write-ahead in 2 s → HELD with the cannot_check strip (not a bare PENDING card); nothing clicked', async () => {
+    const ran: string[] = [];
+    h = jobHarness({ script: bookScript(), tools: { extra: gateTools(ran) } });
+    // main never acks RUNNING (refused here, so the row stays APPROVED and the engine asks for HELD).
+    const receive = h.bridge.receive.bind(h.bridge);
+    h.bridge.receive = ((msg: { id: string; kind?: string; payload?: { to?: string } }) =>
+      msg.kind === 'approval.transition' && msg.payload?.to === 'RUNNING'
+        ? { re: msg.id, result: { ok: false, error: { kind: 'APPROVAL_BAD_TRANSITION' } } }
+        : receive(msg as never)) as typeof h.bridge.receive;
+    h.userSays('Book a table for 4 at Toit on Saturday');
+    await h.settle();
+    const card = approvalCards(h)[0]!;
+    h.approvals.approve({ ...tap(card), scope: 'once' });
+    await h.settle();
+    expect(approvals(h).map((a) => a.state)).toEqual(['HELD']);
+    expect(payload(approvalCards(h)[0]!).held).toEqual({ reason: 'cannot_check', verbing: 'booking' });
+    expect(ran).toEqual([]);
+    expect(h.job()).toMatchObject({ state: 'needs_you', needs_you_card_id: card.id });
   });
 });

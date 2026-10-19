@@ -66,7 +66,8 @@ for (let i = 0; i < 10; i++) {
   fixtures.push({
     name: `amount mismatch ${i}`,
     input: { fields: { ...book, amountPaise: other }, userWords: [{ at: NOW, text: `book it, ₹${rupees} is fine` }] },
-    ai: { match: true },
+    // The amount is the AI's check against the user's words (no rule: "under ₹3,000" must not hold ₹2,400).
+    ai: { match: false, field: 'amount', userSaid: `₹${rupees}`, actionHas: `₹${(other / 100).toLocaleString('en-IN')}` },
     held: { userSaid: `₹${rupees}`, actionHas: `₹${(other / 100).toLocaleString('en-IN')}` },
   });
   // date / time

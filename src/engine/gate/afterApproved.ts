@@ -37,20 +37,24 @@ export async function userWordsFor(core: RunnerCore, job: JobRow): Promise<{ at:
   return out.sort((a, b) => a.at - b.at);
 }
 
-/** Step B on the primary only (§28.5): one turn, one repair (§7.5); anything else is 'cannot_check'. */
+/**
+ * Step B on the primary only (§28.5): one turn; one repair (§7.5) only when the act was invalid. A timeout, an error or a
+ * refused cost goes straight to 'cannot_check' (M5 T8 review 6).
+ */
 export async function askSecondLook(
   core: RunnerCore,
   job: JobRow,
   p: { userWords: string[]; actionJson: string },
+  signal: AbortSignal,
 ): Promise<SecondLookAct | 'cannot_check'> {
   const d = core.d;
   const pick = d.ai.pick();
   if (!pick || pick.backup || !d.prompts.buildSecondLook || !d.prompts.parseSecondLook) return 'cannot_check';
   const built = d.prompts.buildSecondLook(p.userWords, p.actionJson);
   const params = d.ai.turnParams(pick.providerId, 'second_look');
-  const run = async (prompt: string): Promise<SecondLookAct | null> => {
+  const run = async (prompt: string): Promise<SecondLookAct | 'invalid' | 'cannot_check'> => {
     const est = estimateCallPaise(built.system.length + prompt.length, params.maxOutputTokens, d.rateOf(pick.providerId), d.usdToInr);
-    if (!(await core.cost.allows(est))) return null;
+    if (!(await core.cost.allows(est))) return 'cannot_check';
     const turnId = d.newId('t');
     const startedAt = d.clock.now();
     let r: TurnResult;
@@ -59,7 +63,7 @@ export async function askSecondLook(
         pick.providerId,
         { ...params, turnId, purpose: 'second_look', system: built.system, prompt, chatId: job.chatId },
         { onText: () => {}, onSession: () => {} },
-        new AbortController().signal,
+        signal,
       );
     } catch {
       r = {
@@ -70,13 +74,13 @@ export async function askSecondLook(
       };
     }
     await core.recordTurn(job, pick, turnId, 'second_look', startedAt, r);
-    if (r.stopReason !== 'end') return null;
-    return d.prompts.parseSecondLook!(r.text);
+    if (r.stopReason !== 'end') return 'cannot_check';
+    return d.prompts.parseSecondLook!(r.text) ?? 'invalid';
   };
   const first = await run(built.prompt);
-  if (first) return first;
+  if (first !== 'invalid') return first;
   const again = await run(`${built.prompt}\n\n${d.prompts.buildRepair('The <act> block was not a valid SecondLookAct')}`);
-  return again ?? 'cannot_check';
+  return again === 'invalid' ? 'cannot_check' : again;
 }
 
 interface CallLite {
@@ -114,7 +118,7 @@ export async function readLiveTerms(
     const src = calls.find((c) => c.id === e.toolCallId);
     if (!src) return 'unreadable';
     if (!fresh.has(src.id)) {
-      const r = await tools.execute(job, { tool: src.tool, args: (src.args ?? {}) as Record<string, unknown> }, signal);
+      const r = await tools.reread(job, { tool: src.tool, args: (src.args ?? {}) as Record<string, unknown> }, signal);
       fresh.set(src.id, r.outcome === 'ok' ? JSON.stringify(r.result ?? null) : null);
     }
     const text = fresh.get(src.id);

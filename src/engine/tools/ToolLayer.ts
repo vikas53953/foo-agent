@@ -170,6 +170,15 @@ export class ToolLayer {
   }
 
   /**
+   * M5 T8 (review 7): the engine's fresh-terms re-read (08-2 §9.4.2) of a read the job already ran. It goes through the gate
+   * like any call but leaves the IDEMPOTENT_REPEAT and held-`unknown` sets as they are: it is not the AI's read that §5.9
+   * step 5 waits for.
+   */
+  reread(job: ToolJob, call: ToolCallAct, signal: AbortSignal): Promise<ExecResult> {
+    return this.run(job, call, signal, null, true);
+  }
+
+  /**
    * The engine's one call of a side-effect tool after its approval went APPROVED → RUNNING (08-4 §28.1 item 8, §29.1): the
    * gate already decided (the card), so only the idem rule applies; the row carries `gate='approved'` and the approval id.
    */
@@ -177,7 +186,13 @@ export class ToolLayer {
     return this.run(job, call, signal, approvalId);
   }
 
-  private async run(job: ToolJob, call: ToolCallAct, signal: AbortSignal, approvalId: string | null): Promise<ExecResult> {
+  private async run(
+    job: ToolJob,
+    call: ToolCallAct,
+    signal: AbortSignal,
+    approvalId: string | null,
+    keepSets = false,
+  ): Promise<ExecResult> {
     const id = this.d.newId('tc');
     const startedAt = this.d.clock.now();
     const def = this.d.tools[call.tool];
@@ -274,12 +289,14 @@ export class ToolLayer {
       const h = sha256(redactedText);
       changed = this.lastHash.get(job.id) !== h;
       this.lastHash.set(job.id, h);
-      if (cls === 'read') {
-        seen.clear();
-        this.held.delete(job.id);
+      if (!keepSets) {
+        if (cls === 'read') {
+          seen.clear();
+          this.held.delete(job.id);
+        }
+        if (idemKey) seen.add(idemKey);
+        this.idem.set(job.id, seen);
       }
-      if (idemKey) seen.add(idemKey);
-      this.idem.set(job.id, seen);
     }
     await this.tx([
       {

@@ -427,7 +427,7 @@ export class RunnerGate {
         timeZone: this.d.timeZone(),
         now: core.d.clock.now(),
         untrusted: a.untrusted,
-        askAi: (p) => askSecondLook(core, job, p),
+        askAi: (p) => askSecondLook(core, job, p, signal),
       });
       if (!out.pass) return this.hold(job, a, { secondLook: out.result, held: out.held });
       look = out.result;
@@ -459,7 +459,9 @@ export class RunnerGate {
       // has been handled too: HELD → the card waits on the user again (cannot_check); refused → the late ack moved the row
       // to RUNNING, and it goes on to FAILED (`submit_failed`, nothing was submitted) so it is never left RUNNING.
       core.d.log('gate.write_ahead_failed', 'APPROVAL_BAD_TRANSITION', { jobId: job.id });
-      if (await this.transition(a.approvalId, 'HELD')) {
+      // M5 T8 review 2: the card shows the cannot_check strip (not a bare PENDING-looking card) and stays this job's open one.
+      if (await this.transition(a.approvalId, 'HELD', { held: { reason: 'cannot_check', verbing: verbingOf(a.draft.verb) } })) {
+        this.st(job.id).open = a;
         await this.waitOn((await core.job(job.id)) ?? job, a.cardId);
         return false;
       }
