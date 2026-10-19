@@ -1,19 +1,19 @@
 {
-  "reportId": "M4-02edb60-39206474377",
+  "reportId": "M4-e798f80-39207936004",
   "milestone": "M4",
-  "generatedAt": "2026-10-19T06:00:25.964Z",
-  "commit": "0ba00191f0c7e852b2f8556c1b839ac1b2be0005",
-  "head": "02edb605fda59c7c2474a7501a3d06e5246669cc",
+  "generatedAt": "2026-10-19T06:17:57.872Z",
+  "commit": "21fdeb2689e0fa05f5737bca58216a08eb0a3433",
+  "head": "e798f804f183458ad04ea5b89ac6e002e73b7cd5",
   "ci": {
-    "runId": "39206474377",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39206474377"
+    "runId": "39207936004",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39207936004"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "a8c652ea014d8c6c709a2d519ca9abf799dd91b2be4a907a4fa430b0e62d2883"
   },
   "runner": {
-    "recordedAt": "2026-10-19T05:52:20.807Z",
+    "recordedAt": "2026-10-19T06:09:31.502Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000003208"
+      "runner": "GitHub Actions 1000003216"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,7 +59,8 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "7 audit item(s) not DONE (the milestone is not complete)"
+    "2 test(s) failed",
+    "8 audit item(s) not DONE (the milestone is not complete)"
   ],
   "missingInputs": [],
   "forVikas": {
@@ -114,7 +115,7 @@
       ],
       "covers": "part",
       "manual": "demo on Vikas's PC (plan §5 M4 Demo): a multi-step fake-site job 👀 → 🛠, the checklist ticks itself, \"actually make it cheaper\" mid-job, \"stop\" reports what was done; kill foo from Task Manager mid-job and reopen to a recovery card",
-      "resolved": "PARTIAL"
+      "resolved": "NOT DONE"
     },
     {
       "group": "M4 Constitution",
@@ -346,7 +347,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-118",
       "covers": "whole",
-      "resolved": "DONE"
+      "resolved": "NOT DONE"
     },
     {
       "group": "M4 Must pass",
@@ -751,8 +752,8 @@
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 2644,
-        "failed": 0,
+        "passed": 2642,
+        "failed": 2,
         "skipped": 2
       },
       "e2e": {
@@ -13449,7 +13450,7 @@
       },
       {
         "id": "AT-118a",
-        "status": "passed",
+        "status": "failed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts"
       },
       {
@@ -13664,7 +13665,7 @@
       },
       {
         "id": "AT-118",
-        "status": "passed",
+        "status": "failed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/recovery.test.ts"
       },
       {
@@ -14093,7 +14094,20 @@
         "file": "test/fidelity/ux/UX-23.errors.spec.ts"
       }
     ],
-    "failed": [],
+    "failed": [
+      {
+        "suite": "unit",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts",
+        "title": "AT-118a · damaged foo.db is rebuilt from the mirrors quick_check fails → renamed, rebuilt, one DB_REBUILT card in the new foo chat, RUNNING approval → CHECKING",
+        "status": "failed"
+      },
+      {
+        "suite": "unit",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/recovery.test.ts",
+        "title": "AT-118 · killed mid-job → recovery card on restart a queued job gets a recovery card after an unclean exit, but stays queued after a clean one",
+        "status": "failed"
+      }
+    ],
     "trace": {
       "live": 73,
       "pending": 55,
@@ -14721,7 +14735,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "review (BP-ANAT-L ΔE 4.78)",
         "r4": "skipped: no hl element",
-        "r5": 0.101205078125,
+        "r5": 0.1012099609375,
         "ref": true,
         "app": true,
         "diff": true
@@ -15319,7 +15333,7 @@
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
         "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05452132849393124,
+        "r5": 0.05420910900362955,
         "ref": true,
         "app": true,
         "diff": true
@@ -15332,7 +15346,7 @@
         "r2": "fail (BP-COMP-04 0/248.671875 px)",
         "r3": "pass (BP-COMP-04 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05350661515045077,
+        "r5": 0.053584670023026186,
         "ref": true,
         "app": true,
         "diff": true
@@ -15371,7 +15385,7 @@
         "r2": "fail (BP-COMP-06 0/248.65625 px)",
         "r3": "pass (BP-COMP-06 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.15836676550962264,
+        "r5": 0.1584539798825513,
         "ref": true,
         "app": true,
         "diff": true
@@ -15696,7 +15710,7 @@
         "r2": "review (hl 8/8 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (18.70 %)",
-        "r5": 0.0613916015625,
+        "r5": 0.061392578125,
         "ref": true,
         "app": true,
         "diff": true
@@ -15891,7 +15905,7 @@
         "r2": "pass (hl 0/1 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.46 %)",
-        "r5": 0.104619140625,
+        "r5": 0.1186748046875,
         "ref": true,
         "app": true,
         "diff": true
@@ -15904,7 +15918,7 @@
         "r2": "pass (hl 0/1 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.19 %)",
-        "r5": 0.080759765625,
+        "r5": 0.0948291015625,
         "ref": true,
         "app": true,
         "diff": true
@@ -15917,7 +15931,7 @@
         "r2": "fail (hl 54/2.421875 px)",
         "r3": "fail (hl ΔE 55.97)",
         "r4": "fail (90.60 %)",
-        "r5": 0.117587890625,
+        "r5": 0.115564453125,
         "ref": true,
         "app": true,
         "diff": true
@@ -15930,7 +15944,7 @@
         "r2": "fail (hl 54/2.421875 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (7.22 %)",
-        "r5": 0.088888671875,
+        "r5": 0.0870751953125,
         "ref": true,
         "app": true,
         "diff": true
@@ -15943,7 +15957,7 @@
         "r2": "fail (hl 196/36 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.07 %)",
-        "r5": 0.1171884765625,
+        "r5": 0.1098818359375,
         "ref": true,
         "app": true,
         "diff": true
@@ -15956,7 +15970,7 @@
         "r2": "fail (hl 196/36 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (7.02 %)",
-        "r5": 0.0879833984375,
+        "r5": 0.0809599609375,
         "ref": true,
         "app": true,
         "diff": true
@@ -15969,7 +15983,7 @@
         "r2": "fail (hl 91.46875/25.609375 px)",
         "r3": "fail (hl ΔE 56.4)",
         "r4": "fail (56.72 %)",
-        "r5": 0.1204951171875,
+        "r5": 0.1156923828125,
         "ref": true,
         "app": true,
         "diff": true
@@ -15982,7 +15996,7 @@
         "r2": "fail (hl 91.46875/25.609375 px)",
         "r3": "fail (hl ΔE 57.24)",
         "r4": "fail (57.56 %)",
-        "r5": 0.0864150390625,
+        "r5": 0.081681640625,
         "ref": true,
         "app": true,
         "diff": true
@@ -15995,7 +16009,7 @@
         "r2": "fail (hl 46/20 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.61 %)",
-        "r5": 0.128021484375,
+        "r5": 0.12816796875,
         "ref": true,
         "app": true,
         "diff": true
@@ -16008,7 +16022,7 @@
         "r2": "fail (hl 46/20 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.07 %)",
-        "r5": 0.0961337890625,
+        "r5": 0.09628515625,
         "ref": true,
         "app": true,
         "diff": true
@@ -16021,7 +16035,7 @@
         "r2": "fail (hl 66/24.46875 px)",
         "r3": "fail (hl ΔE 54.97)",
         "r4": "fail (86.33 %)",
-        "r5": 0.113189453125,
+        "r5": 0.1210908203125,
         "ref": true,
         "app": true,
         "diff": true
@@ -16034,7 +16048,7 @@
         "r2": "fail (hl 66/24.46875 px)",
         "r3": "fail (hl ΔE 12.77)",
         "r4": "fail (87.44 %)",
-        "r5": 0.0896015625,
+        "r5": 0.0976748046875,
         "ref": true,
         "app": true,
         "diff": true
@@ -16073,7 +16087,7 @@
         "r2": "fail (hl 130/12 px)",
         "r3": "fail (hl ΔE 30.38)",
         "r4": "fail (85.67 %)",
-        "r5": 0.1209365234375,
+        "r5": 0.1441298828125,
         "ref": true,
         "app": true,
         "diff": true
@@ -16086,7 +16100,7 @@
         "r2": "fail (hl 130/12 px)",
         "r3": "fail (hl ΔE 41.46)",
         "r4": "fail (87.91 %)",
-        "r5": 0.0781240234375,
+        "r5": 0.0915,
         "ref": true,
         "app": true,
         "diff": true
