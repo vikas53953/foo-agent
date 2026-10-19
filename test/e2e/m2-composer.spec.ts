@@ -114,11 +114,12 @@ test('AT-007 · a pasted key, a typed card number and a labelled code are caught
   await expect(page.getByTestId(TID.composerPaste)).toBeVisible();
   await expect(mine(page)).toHaveCount(before);
 
-  // Move to secret box removes the span and keeps the rest of the text.
+  // Move to secret box removes the span and keeps the rest of the text; M5 T2 posts the Secret box card in the chat.
   await page.getByTestId(TID.composerPasteMove).click();
   await expect(page.getByTestId(TID.composerPaste)).toHaveCount(0);
   await expect(field(page)).not.toContainText('••••');
   await expect(field(page)).toContainText('here is my key');
+  await expect(page.getByTestId(TID.cardSecret).last()).toContainText('OpenAI key');
 
   // A typed Luhn-valid card number is caught 800 ms after typing stops.
   await clearField(page);
@@ -127,7 +128,8 @@ test('AT-007 · a pasted key, a typed card number and a labelled code are caught
   await expect(field(page)).not.toContainText('4111');
   await field(page).focus();
   await page.keyboard.press('Enter');
-  await expect(mine(page)).toHaveCount(before);
+  // From M5 the Secret box card above sits in the virtual list, so nothing sent is checked by text, not a count.
+  await expect(mineWith(page, 'card')).toHaveCount(0);
   await page.getByTestId(TID.composerPasteMove).click();
 
   // A labelled one-time code, then "Send anyway": the bubble shows "•••• (hidden)" and never the code.
