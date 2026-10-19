@@ -1,0 +1,141 @@
+{
+  "id": "BP-CARD-02",
+  "theme": "dark",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0008",
+    "checks": [
+      "r1",
+      "r2"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "Booking",
+        "your",
+        "Goa",
+        "stay",
+        "Step",
+        "3",
+        "of",
+        "4",
+        "✓",
+        "Checked",
+        "3",
+        "sites",
+        "Waiting",
+        "Book",
+        "and",
+        "add",
+        "to",
+        "calendar"
+      ],
+      "extra": [
+        "Birthday",
+        "gift",
+        "live",
+        "checklist",
+        "Looked",
+        "a",
+        "gift",
+        "under",
+        "₹2,000",
+        "Compared",
+        "3",
+        "shops",
+        "Picking",
+        "the",
+        "best",
+        "gifts",
+        "Still",
+        "working,",
+        "this",
+        "one",
+        "takes",
+        "a",
+        "while",
+        "Show",
+        "before",
+        "doing",
+        "anything",
+        "8",
+        "min",
+        "·",
+        "uses",
+        "about",
+        "₹2",
+        "of",
+        "your",
+        "AI",
+        "9:33",
+        "AM"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-CARD-02",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 351.328125,
+          "height": 190
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 440,
+          "height": 264
+        },
+        "dPos": 0,
+        "dSize": 88.671875,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-CARD-02",
+        "ref": "#1B1B22",
+        "app": "#1B1B22",
+        "deltaE": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.07257459889038836,
+    "diffPixels": 4840,
+    "total": 66690,
+    "sizeMismatch": {
+      "a": [
+        351,
+        190
+      ],
+      "b": [
+        440,
+        264
+      ]
+    },
+    "heatmap": "BP-CARD-02.dark.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-CARD-02.dark.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-CARD-02.dark.png"
+}
