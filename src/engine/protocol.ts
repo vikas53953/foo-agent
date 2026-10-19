@@ -242,7 +242,17 @@ export type DbOp =
   | { op: 'transition'; table: TransitionTable; id: string; from: string[]; to: string; set?: Record<string, unknown> }
   | { op: 'delete'; table: DeleteTable; id: string }
   | { op: 'activity'; row: ActivityOpRow }
-  | { op: 'mirror'; kind: MirrorKind; id: string; text: string };
+  | { op: 'mirror'; kind: MirrorKind; id: string; text: string }
+  // M8: Contacts sync replaces one connection's contacts_index rows wholesale (08-3 §16.7).
+  | { op: 'contacts_replace'; connectionId: string; rows: ContactIndexRow[]; syncedAt: number };
+
+/** M8: one contacts_index row as the engine sends it (emails and phones as arrays; main stores them as JSON). */
+export interface ContactIndexRow {
+  id: string;
+  name: string;
+  emails: string[];
+  phones: string[];
+}
 
 const activityRowSchema = z
   .object({
@@ -299,6 +309,17 @@ const dbOpSchema = z.discriminatedUnion('op', [
   z.object({ op: z.literal('delete'), table: z.enum(DELETE_TABLES), id: z.string() }).strict(),
   z.object({ op: z.literal('activity'), row: activityRowSchema }).strict(),
   z.object({ op: z.literal('mirror'), kind: z.enum(MIRROR_KINDS), id: z.string(), text: z.string() }).strict(),
+  // M8
+  z
+    .object({
+      op: z.literal('contacts_replace'),
+      connectionId: z.string().min(1),
+      rows: z
+        .array(z.object({ id: z.string().min(1), name: z.string(), emails: z.array(z.string()), phones: z.array(z.string()) }).strict())
+        .max(25_000),
+      syncedAt: z.number(),
+    })
+    .strict(),
 ]);
 
 /** 08-1 §2.4.1: exactly the exported keys of src/main/db/queries.ts (a test holds the two lists equal). */
@@ -343,6 +364,8 @@ export const NAMED_QUERY_NAMES = [
   'suggestionState',
   'chats.forHelper',
   'messages.userTexts',
+  // M8
+  'contacts.search',
 ] as const;
 export type NamedQuery = (typeof NAMED_QUERY_NAMES)[number];
 

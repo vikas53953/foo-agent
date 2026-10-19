@@ -12,6 +12,7 @@ import type {
   ApprovalFields,
   CardRow,
   CardType,
+  ContactHit,
   JobRow,
   MemoryCategory,
   MemoryKind,
@@ -497,5 +498,27 @@ export const NAMED_QUERIES = {
       .map((r) => String(r.text))
       .reverse();
     return { total, texts };
+  },
+  // M8: contacts_fts prefix match on every word of the query (08-3 §16.7), best first. All three columns: the
+  // DDL's tokenchars '@._-+' exist so an address finds its person (decision T4-06).
+  'contacts.search': ({ db }: QueryCtx, query: unknown, max: unknown): ContactHit[] => {
+    const words = String(query)
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((w) => `"${w.replace(/"/g, '""')}"*`);
+    if (!words.length) return [];
+    const rows = db
+      .prepare(
+        `SELECT ci.id, ci.display_name, ci.emails, ci.phones FROM contacts_fts JOIN contacts_index ci ON ci.rowid = contacts_fts.rowid
+         WHERE contacts_fts MATCH ? ORDER BY rank LIMIT ?`,
+      )
+      .all(words.join(' '), Math.min(Math.max(Number(max) || 20, 1), 20)) as DbRow[];
+    return rows.map((r) => ({
+      id: String(r.id),
+      name: String(r.display_name),
+      emails: JSON.parse(String(r.emails)) as string[],
+      phones: JSON.parse(String(r.phones)) as string[],
+      source: 'google' as const,
+    }));
   },
 } as const;

@@ -897,6 +897,9 @@ export type ErrorKind =
   | 'PRIVATE_BLOCKED'
   | 'EXPORT_SECRET_FOUND'
   | 'DISK_FULL'
+  // M8 (08-3 §16.1, §21.2, §21.3): the rest of the Google connector kinds
+  | 'CONN_REVOKED'
+  | 'CONN_RATE_LIMITED'
   | 'UNKNOWN';
 
 // ---- card payloads (08-5 §4.1) the M2 cards draw ----

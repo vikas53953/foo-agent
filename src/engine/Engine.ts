@@ -48,6 +48,7 @@ import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
 import type { SecondLookAct, StepAct } from '../shared/schemas';
 // M8
 import { WhatsAppConnector, type WaPortLike } from './tools/connectors/whatsapp';
+import { googleTools, testGoogleAccess, type GoogleConnectors, type GoogleOptions } from './tools/connectors/google-tools';
 
 export interface EngineOptions {
   link: MainLink;
@@ -66,6 +67,9 @@ export interface EngineOptions {
   tools?: ToolRegistry;
   /** Tests only: deterministic ids (a fake AI script can then name a tool call id in a proof). */
   newId?: (prefix: IdPrefix) => string;
+  // M8: Google (T2's GoogleAccess) → the Gmail, Calendar and Contacts tools (08-2 §8.2). FOO_TEST runs may set
+  // FOO_FAKE_GOOGLE={base url} instead (a fake Google on 127.0.0.1, test/fakes/connectors).
+  google?: GoogleOptions;
 }
 
 export class Engine {
@@ -91,6 +95,8 @@ export class Engine {
   readonly memoryChips: MemoryChips;
   readonly memoryReview: MemoryReview;
   private memoryIntake: IntakeMemory;
+  // M8
+  readonly google: GoogleConnectors | null;
 
   static create(o: EngineOptions): Engine {
     return new Engine(o);
@@ -145,6 +151,11 @@ export class Engine {
       detectRow: (row) => o.link.send('ui.patch', { event: 'ai:detectRow', payload: row }),
       retestTimers: !o.testRun,
     });
+    // M8
+    const google = o.google ?? (o.testRun && o.env.FOO_FAKE_GOOGLE ? testGoogleAccess(o.env.FOO_FAKE_GOOGLE) : null);
+    this.google = google
+      ? googleTools({ ...google, link: o.link, clock: o.clock, timeZone: () => this.settings.locale.timeZone, log })
+      : null;
     // M5 T7: the real gate (08-2 §9.4) replaces the M4 stub; R4 results go through Redactor.scrub (08-2 §11.4).
     const gate = createGate({ settings: () => this.settings, now: () => o.clock.now() });
     this.tools = new ToolLayer({
@@ -152,7 +163,7 @@ export class Engine {
       clock: o.clock,
       newId: (p) => newId(p, o.clock.now()),
       // M6 T5: the memory step tools (08-2 §8.2) beside the injected ones (M8 connectors, M9 browser, fakes in tests).
-      tools: { ...this.memoryToolRegistry(newId), ...(o.tools ?? {}) },
+      tools: { ...this.memoryToolRegistry(newId), ...(o.tools ?? {}), ...(this.google?.tools ?? {}) },
       gate,
       log: (evt, kind) => log(evt, kind),
       scrub: (text) => this.redactor.scrub(text),

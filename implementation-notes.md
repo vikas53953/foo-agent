@@ -1019,3 +1019,30 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
 - The WhatsApp session is held in memory (`src/main/vault/waSessionMemory.ts`) until the M5 vault swap to
   `{DATA}\vault\wa-session.bin` (engine `vault.encrypt` / `vault.decrypt` already go through main).
 - The fake phone's groups are the ux-world's two mirrors (same jids and titles), so a seeded world and a link agree.
+
+## M8 · Gmail, Calendar and Contacts reading (ticket T4)
+
+- Files: `src/engine/tools/connectors/{limiter,gmail,gcal,contacts}.ts`, `src/engine/connectors/hooks.ts`, plus
+  `src/engine/tools/connectors/google-tools.ts` (assembles the five tools, the poller and the contacts sync once; not named in
+  the ticket's Owns, kept inside T4's folder). Shared appends under `// M8`: `ErrorKind` CONN_EXPIRED / CONN_REVOKED /
+  CONN_RATE_LIMITED / CONN_SCOPE_MISSING; DbOp `contacts_replace` + named query `contacts.search` (protocol.ts, engineHost.ts,
+  queries.ts); `EngineOptions.google` + `engine.google` (Engine.ts).
+- Tool names follow 08-2 §8.2, not the ticket text: `gcal.create` (the ticket said `gcal.add`); `gmail.read` takes `messageId`.
+- `gcal.create` is class `calendar_write`, which M4's stub gate refuses: adding an event through a job works once M5's gate
+  lands; the module and its tests are done.
+- T4-01 · `gmail.search` with no `max` asks for 50 (the spec cap); spec gives no default.
+- T4-02 · Calendar default window ends at tomorrow 23:59:59.999 local ("tomorrow 23:59", the whole last minute kept).
+- T4-03 · `contacts.search` always looks for at least two matches, so a `max: 1` call can never read two "Priya" as one.
+  A name found only in sent mail counts as known (one hit built from the To address); none anywhere → `someoneNew: true`.
+  The Choice card "Which {Priya}?" is the caller's (M5 / T6); the tool returns masked `choices` labels for it.
+- T4-04 · Logs from the connectors carry kinds, status codes and counts only (never a name, address or number).
+- T4-05 · FOO_TEST runs may set `FOO_FAKE_GOOGLE={url}`: every Google host becomes that fake and the token a fixed fake
+  (used by `test/verify/m8-t4-reading.journey.ts`). Production always uses the real hosts with T2's `GoogleAccess`.
+- Carry (T2 / close-out): `engine.google.poller` (`baseline` on connect, `start({atLogin})`, `resume` on powerMonitor) and
+  `engine.google.contactsSync` (`start` on connect, `stop` + delete rows on contactsOn=false) need the connection rows and
+  `history_id` store, which are T2's; `EngineOptions.google` takes `contactsConnectionId`, `contactsOn`, `historyStore`,
+  `online`. `whatsappKnows` is T3's wa_contacts lookup. GoogleAccess should reject with an error carrying
+  `kind: 'CONN_EXPIRED' | 'CONN_REVOKED'`. The catalogue still lists the Google tools when Calendar/Contacts are turned off;
+  hiding tools of apps that are off is the runner's catalogue filter (08-4 §27.1).
+- Seen while testing: the step prompt's redaction runs over the whole observation JSON, so P15 can join a subject "Login
+  code" with the next field's date digits and hide them ("[hidden]-10-16…"). Over-hiding, never a leak; M3/M4 Redactor.
