@@ -135,7 +135,7 @@ export class AiService implements LaneAi {
 
   turnParams(
     providerId: ProviderId,
-    purpose: 'intake' | 'repair' | 'rewrite',
+    purpose: 'intake' | 'repair' | 'rewrite' | 'step' | 'classify' | 'second_look', // M5 T8: second_look
   ): Omit<TurnRequest, 'turnId' | 'purpose' | 'system' | 'prompt'> {
     const p = paramsFor(purpose === 'repair' ? 'intake' : purpose);
     const id = this.adapterId(providerId);

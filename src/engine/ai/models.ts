@@ -127,6 +127,21 @@ export function priceOf(pricing: Pricing, providerId: ProviderId, model: string 
   return pricing.providers[providerId].models[model];
 }
 
+/**
+ * 08-2 §5.10.2: the rate the AI cap prices a key call at. A model with no price row uses that provider's most expensive
+ * listed rate, so an unpriced model can never slip past the cap (Art. 13). Not a key provider → undefined.
+ */
+export function capRateOf(pricing: Pricing, providerId: ProviderId, model: string | undefined) {
+  if (providerId !== 'openai-key' && providerId !== 'anthropic-key' && providerId !== 'google-key') return undefined;
+  const own = priceOf(pricing, providerId, model);
+  if (own) return own;
+  let top: (typeof pricing.providers)[typeof providerId]['models'][string] | undefined;
+  for (const p of Object.values(pricing.providers[providerId].models)) {
+    if (!top || p.inPerMTokUsd + p.outPerMTokUsd > top.inPerMTokUsd + top.outPerMTokUsd) top = p;
+  }
+  return top;
+}
+
 /** A rough chars/4 token count (the estimate only; usage comes from the provider). */
 export function approxTokens(text: string): number {
   return Math.ceil(text.length / 4);

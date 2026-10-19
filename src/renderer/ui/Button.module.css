@@ -142,3 +142,8 @@
     color: GrayText;
   }
 }
+/* M5 (T5): the button box carries the pill radius too (06 §0.4 text buttons are pills, X-01 `--r-full`), so SV-21 measures
+ * it on the box; the box has no fill or edge, so nothing on screen changes. */
+.button {
+  border-radius: var(--r-full);
+}

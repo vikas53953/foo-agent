@@ -1,26 +1,14 @@
 // Spec: 05 card payloads (the line a card is known by: a checklist or brief `title`, a choice `question`, a payment or bill
 // `payee`, a sign-in `site`), 03-shell-1 §3.4.6 (list preview), 03-shell-2 §3.6.2.1 row 2 / §3.7.3.1 ("Needs you: {title}");
 // 08-0 §G.2 (card states per type; approval and payment use ApprovalState), 08-1 §4.5.1 (every write validates the state).
-import type { ApprovalState, CardType } from './types';
+// M5 (CR-0009): the approval states come from the approval machine's table.
+import { APPROVAL_STATES } from './approvalMachine';
+import type { CardType } from './types';
 
 /** The short name of a card, from its payload. */
 export function cardTitle(payload: Record<string, unknown>): string {
   return String(payload.title ?? payload.question ?? payload.payee ?? payload.site ?? '');
 }
-
-const APPROVAL_STATES: readonly ApprovalState[] = [
-  'PENDING',
-  'APPROVED',
-  'RUNNING',
-  'COMPLETED',
-  'HELD',
-  'CHECKING',
-  'DECLINED',
-  'EXPIRED',
-  'SUPERSEDED',
-  'WITHDRAWN',
-  'FAILED',
-];
 
 /** 08-0 §G.2: the `cards.state` values each card type may hold ("all others": shown). */
 export const CARD_STATES: Record<CardType, readonly string[]> = {

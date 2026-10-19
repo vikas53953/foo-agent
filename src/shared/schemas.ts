@@ -1,7 +1,8 @@
 // Spec: 08-4 §25.1 (shared act types: PlanStep, ChoiceCardSpec), §25.2 (IntakeAct), §25.2a (GroupIntakeAct, GroupMemberAct),
 // §25.4 (SecondLookAct, RewriteAct, StuckAct), 08-2 §7.3/§7.4 (`<act>` parsed with zod, unknown fields rejected, objects
 // strict), 08-4 §24.4 ({schemaJson} is the JSON Schema of the purpose's zod schema), 08-0 §B.2 (Route, ConnectorApp),
-// 08-3 §13.2 (RoutineDraft), 08-0 §E.9 (`src/shared/schemas.ts`).
+// 08-3 §13.2 (RoutineDraft), 08-0 §E.9 (`src/shared/schemas.ts`); M5 (CR-0009): ApprovalFields (08-2 §9.3), ApprovalDraft
+// (08-4 §25.1, X-125).
 import { z } from 'zod';
 
 /** 08-0 §B.2 `Route` (X-125). */
@@ -178,6 +179,160 @@ export const RewriteActSchema = z.object({}).strict();
 
 /** 08-4 §25.4 `StuckAct` (purpose `classify`). */
 export const StuckActSchema = z.object({ whatsWrong: z.string().min(1).max(80) }).strict();
+
+/** 08-2 §5.8 `Proof` plus `read_source` (08-0 §B.3, G2-8). The runner checks it against recorded tool results (§26.11). */
+export const ProofSchema = z.discriminatedUnion('kind', [
+  z
+    .object({
+      kind: z.literal('confirmation'),
+      code: z.string().min(1).max(80),
+      site: z.string().max(80),
+      screenshot: z.string().optional(),
+      seenInToolCallId: z.string().min(1),
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal('email'),
+      connectionId: z.string(),
+      messageId: z.string(),
+      from: z.string(),
+      subject: z.string(),
+    })
+    .strict(),
+  z.object({ kind: z.literal('sent_folder'), connectionId: z.string(), messageId: z.string() }).strict(),
+  z.object({ kind: z.literal('wa_delivered'), waMessageId: z.string() }).strict(),
+  z.object({ kind: z.literal('calendar_event'), eventId: z.string() }).strict(),
+  z.object({ kind: z.literal('emails_read'), count: z.number().int().min(0), messageIds: z.array(z.string()) }).strict(),
+  z.object({ kind: z.literal('screenshot'), path: z.string(), stepId: z.string() }).strict(),
+  z.object({ kind: z.literal('receipt'), paymentId: z.string(), ref: z.string(), screenshot: z.string().optional() }).strict(),
+  z
+    .object({
+      kind: z.literal('read_source'),
+      app: z.enum(['whatsapp', 'gmail']),
+      sourceKey: z.string(),
+      label: z.string(),
+      count: z.number().int().min(0),
+      since: z.number(),
+      until: z.number(),
+    })
+    .strict(),
+]);
+
+/** 08-4 §25.1 `ToolCall`: the engine adds the idem key (X-113); the AI never sends it. Args are checked per tool (§27.1). */
+export const ToolCallSchema = z.object({ tool: z.string().min(1).max(60), args: z.unknown() }).strict();
+
+/** 08-4 §25.3 `StepDecision`. `fail.alternative` is a FixAction; the runner keeps only retry / open_url / dismiss (M4 pack). */
+export const StepDecisionSchema = z.discriminatedUnion('kind', [
+  z.object({ kind: z.literal('tool'), call: ToolCallSchema, why: z.string().max(120) }).strict(),
+  z.object({ kind: z.literal('step_done'), idx: z.number().int().min(0) }).strict(),
+  z.object({ kind: z.literal('replan'), steps: z.array(PlanStepSchema).min(1).max(12) }).strict(),
+  z.object({ kind: z.literal('ask'), card: ChoiceCardSpecSchema }).strict(),
+  // TODO(M5): ApprovalDraft (§25.1, 08-2 §9.3) is checked by the gate; M4 has no gate, so the draft is not read yet.
+  z.object({ kind: z.literal('request_approval'), draft: z.record(z.string(), z.unknown()), submitRef: z.string().optional() }).strict(),
+  z
+    .object({
+      kind: z.literal('done'),
+      result: z.string().max(600),
+      proof: ProofSchema.optional(),
+      unverified: z.boolean().optional(),
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal('fail'),
+      reason: z.string().max(200),
+      alternative: z.object({ kind: z.string() }).catchall(z.unknown()).optional(),
+    })
+    .strict(),
+]);
+
+/** 08-4 §25.3 `StepAct` (purpose `step`). */
+export const StepActSchema = z
+  .object({
+    decision: StepDecisionSchema,
+    steer: z.array(z.object({ messageId: z.string(), effect: z.enum(['folded', 'answered', 'restart', 'new_job']) }).strict()).optional(),
+    usedMemoryIds: z.array(z.string()),
+  })
+  .strict();
+
+export type PlanStep = z.infer<typeof PlanStepSchema>;
+export type Proof = z.infer<typeof ProofSchema>;
+export type ToolCallAct = z.infer<typeof ToolCallSchema>;
+export type StepDecision = z.infer<typeof StepDecisionSchema>;
+export type StepAct = z.infer<typeof StepActSchema>;
+
+// M5 (CR-0009): approval verbs and states, ApprovalFields (08-2 §9.3) and the AI's ApprovalDraft (X-125).
+/** 08-0 §B.2 ApprovalVerb (X-55). */
+export const ApprovalVerbSchema = z.enum(['send', 'book', 'buy', 'pay', 'post', 'delete', 'share', 'switch', 'use_app', 'calendar_write']);
+/** 08-0 §B.2 ApprovalState (UPPER values, SM-A13). */
+export const ApprovalStateSchema = z.enum([
+  'PENDING',
+  'APPROVED',
+  'RUNNING',
+  'COMPLETED',
+  'HELD',
+  'CHECKING',
+  'DECLINED',
+  'EXPIRED',
+  'SUPERSEDED',
+  'WITHDRAWN',
+  'FAILED',
+]);
+/** 08-2 §9.3 `ApprovalFields` (strict: unknown fields never reach the hash or the card text). */
+export const ApprovalFieldsSchema = z
+  .object({
+    verb: ApprovalVerbSchema,
+    channel: z.enum(['email', 'whatsapp', 'web', 'x']).optional(),
+    recipients: z
+      .array(
+        z
+          .object({
+            name: z.string(),
+            address: z.string(),
+            isNew: z.boolean(),
+            isGroup: z.boolean(),
+            groupSize: z.number().int().min(0).optional(),
+          })
+          .strict(),
+      )
+      .optional(),
+    payee: z.string().optional(),
+    siteDomain: z.string().optional(),
+    amountPaise: z.number().int().min(0).optional(),
+    lines: z.array(z.object({ label: z.string(), amountPaise: z.number().int() }).strict()).optional(),
+    currency: z.literal('INR').optional(),
+    when: z.object({ start: z.number(), end: z.number().optional(), tz: z.string() }).strict().optional(),
+    partySize: z.number().int().min(1).optional(),
+    item: z.string().optional(),
+    personalShared: z.array(z.enum(['name', 'email', 'phone', 'address'])).optional(),
+    cancelTerms: z
+      .object({ freeUntil: z.number().optional(), feePaise: z.number().int().min(0).optional(), refundable: z.boolean() })
+      .strict()
+      .optional(),
+    contentSummary: z.string().max(400).optional(),
+    irreversible: z.boolean(),
+    // M5 T4 (G-M5-24): the app of a `use_app` approval, which its "For this chat" / "Always" rule matches (08-5 §3.3).
+    app: z.enum(['gmail', 'calendar', 'contacts', 'whatsapp', 'browser', 'outlook']).optional(),
+  })
+  .strict();
+/** 08-0 §B.3 / 08-4 §25.1 `ApprovalDraft`: verb is ApprovalDraftVerb only (X-125: no `send`; a send is a Draft card). */
+export const ApprovalDraftSchema = z
+  .object({
+    verb: z.enum(['book', 'buy', 'pay', 'delete']),
+    fields: ApprovalFieldsSchema,
+    evidence: z.array(
+      z
+        .object({
+          field: z.enum(Object.keys(ApprovalFieldsSchema.shape) as [string, ...string[]]),
+          toolCallId: z.string().min(1),
+          quote: z.string().max(200),
+          ref: z.string().optional(),
+        })
+        .strict(),
+    ),
+  })
+  .strict();
 
 export type IntakeAct = z.infer<typeof IntakeActSchema>;
 export type IntakeDecision = z.infer<typeof IntakeDecisionSchema>;

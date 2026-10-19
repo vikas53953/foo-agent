@@ -3,13 +3,14 @@
 // Redactor on every AI input), 08-4 §24.9 / §25.5 (the rewrite turn for a held sentence: cheap model, `rewrite.md`),
 // §30.8 (on engine start every `sys-*.md` in the scratch folders is deleted), 08-3 §22.3 (FOO_FAKE_AI).
 // The +20 s health check of 08-1 §2.2 step 7 runs only outside FOO_TEST runs (tests verify explicitly). Deferred to their
-// milestones: job lanes (M4), memory parts 5/5b (M6; empty here), the vault for key providers (M5: no key yet, so a
+// milestones: M4 T2 wires the JobRunner + ToolLayer (08-2 §5, §8; the job lane's tools come from `tools`, fake in tests
+// until M8/M9);  memory parts 5/5b (M6; empty here), the vault for key providers (M5: no key yet, so a
 // key provider reports `AI_KEY_INVALID` on verify).
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
 import type { Clock } from '../shared/clock';
 import { ok, type Result } from '../shared/errors';
-import { newId } from '../shared/ids';
+import { newId as mintId, type IdPrefix } from '../shared/ids';
 import { settingsSchema, type Settings } from '../shared/settings';
 import { settingsDefaults } from '../shared/settingsDefaults';
 import type { ProviderId } from '../shared/types';
@@ -24,6 +25,13 @@ import { filterSay } from './prompt/filters';
 import { PromptBuilder, type ConversationMessage } from './prompt/PromptBuilder';
 import { ReleaseGate } from './prompt/releaseGate';
 import { Redactor } from './redact/Redactor';
+import { findBanned } from './prompt/filters';
+import { capRateOf, resolveModel } from './ai/models';
+import { createGate } from './gate/GateLogic';
+import { JobRunner } from './jobs/JobRunner';
+import { JobRecovery } from './jobs/recovery';
+import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
+import type { SecondLookAct, StepAct } from '../shared/schemas';
 
 export interface EngineOptions {
   link: MainLink;
@@ -38,6 +46,10 @@ export interface EngineOptions {
   fetch?: typeof fetch;
   /** Tests inject PATH lookup so detect does not depend on the machine. */
   which?: ReturnType<typeof nodeWhich>;
+  /** M4: the tools jobs may use (08-2 §8.2). Tests pass the fake tools; M8 connectors and M9 browser add the real ones. */
+  tools?: ToolRegistry;
+  /** Tests only: deterministic ids (a fake AI script can then name a tool call id in a proof). */
+  newId?: (prefix: IdPrefix) => string;
 }
 
 export class Engine {
@@ -46,6 +58,9 @@ export class Engine {
   readonly ai: AiService;
   readonly lane: ChatLane;
   readonly redactor: Redactor;
+  readonly tools: ToolLayer;
+  readonly jobs: JobRunner;
+  readonly recovery: JobRecovery;
   private prompts: PromptBuilder;
   /** M6 slot (CR-0010): T3 sets MemoryService here, T7 its tidy. */
   memory: MemoryPort = memoryNotBuilt;
@@ -55,6 +70,7 @@ export class Engine {
   }
 
   private constructor(private o: EngineOptions) {
+    const newId = (p: IdPrefix, now: number) => (o.newId ? o.newId(p) : mintId(p, now));
     const log = (evt: string, kind?: string) =>
       o.link.send('log', { t: o.clock.now(), lvl: 'info', mod: 'engine', evt, ...(kind ? { kind } : {}) });
     this.redactor = new Redactor({ clock: o.clock, log: (kind) => log('redact', kind) });
@@ -93,10 +109,55 @@ export class Engine {
       fake,
       publish: (status) => o.link.send('ui.patch', { event: 'ai:status', payload: status }),
       persist: (p) => o.link.send('ai.state', p),
-      onUsable: () => void this.drainQueued(),
+      onUsable: () => {
+        void this.drainQueued();
+        void this.jobs.startNext();
+      },
       detectRow: (row) => o.link.send('ui.patch', { event: 'ai:detectRow', payload: row }),
       retestTimers: !o.testRun,
     });
+    // M5 T7: the real gate (08-2 §9.4) replaces the M4 stub; R4 results go through Redactor.scrub (08-2 §11.4).
+    const gate = createGate({ settings: () => this.settings, now: () => o.clock.now() });
+    this.tools = new ToolLayer({
+      link: o.link,
+      clock: o.clock,
+      newId: (p) => newId(p, o.clock.now()),
+      tools: o.tools ?? {},
+      gate,
+      log: (evt, kind) => log(evt, kind),
+      scrub: (text) => this.redactor.scrub(text),
+    });
+    this.recovery = new JobRecovery({
+      link: o.link,
+      clock: o.clock,
+      newId: (p) => newId(p, o.clock.now()),
+      settings: () => this.settings,
+      ai: this.ai,
+      log: (evt, kind) => log(evt, kind),
+    });
+    this.jobs = new JobRunner({
+      link: o.link,
+      clock: o.clock,
+      newId: (p) => newId(p, o.clock.now()),
+      settings: () => this.settings,
+      ai: this.ai,
+      prompts: this.stepProtocol(),
+      tools: this.tools,
+      dataDir: o.dataDir,
+      rateOf: (id) => capRateOf(pricing, id, resolveModel(id, 'default', pricing, this.settings.ai.providers[id])) ?? null,
+      usdToInr: pricing.usdToInr,
+      log: (evt, kind) => log(evt, kind),
+      gate,
+      scrub: (text) => this.redactor.scrub(text),
+      hooks: {
+        onAiError: (job, kind) => this.recovery.onAiError(job, kind),
+        onCannotStart: (job, kind) => this.recovery.onCannotStart(job, kind),
+        beforeSchedule: () => this.recovery.beforeSchedule(),
+        // M5 T10: messages that waited at the AI cap go when it is raised or the month turns.
+        onCapLifted: () => void this.drainQueued(),
+      },
+    });
+    this.recovery.attach(this.jobs);
     this.lane = new ChatLane({
       link: o.link,
       clock: o.clock,
@@ -105,7 +166,51 @@ export class Engine {
       ai: this.ai,
       protocol: this.protocol(),
       log: (evt, kind) => log(evt, kind),
+      jobs: this.jobs,
+      // M5 T10: the cap check covers chat-lane turns (08-2 §5.10 item 4, CR-0008 (j) row 5).
+      capCheck: (chars, purpose) => this.jobs.allowChatCall(chars, purpose),
     });
+    this.jobs.setIntake((chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }));
+  }
+
+  /** The step protocol for the job runner (08-4 §24.1 step row, §25.3, 08-2 §7.5–§7.6). */
+  private stepProtocol(): ConstructorParameters<typeof JobRunner>[0]['prompts'] {
+    const redactor = this.redactor;
+    return {
+      buildStep: (jobBlock, tools, steer) =>
+        this.prompts.buildStep({
+          agentName: this.settings.identity.agentName,
+          firstName: this.settings.user.firstName ?? null,
+          vibeLine: '',
+          emoji: '',
+          timeZone: this.settings.locale.timeZone,
+          tools,
+          jobBlock,
+          steer: steer ?? null,
+        }),
+      buildRepair: (issues) => this.prompts.buildRepair(issues).prompt,
+      parseStep: (text) => {
+        const env = parseEnvelope(text);
+        if (env.act === undefined) return { act: null, issues: env.actError ?? formatIssues([]) };
+        const v = validateAct('step', env.act);
+        return v.ok ? { act: v.act as StepAct, issues: null, say: env.say } : { act: null, issues: v.issues };
+      },
+      buildStuck: (results) => this.prompts.buildStuck(results),
+      parseStuck: (text) => {
+        const env = parseEnvelope(text);
+        const v = env.act === undefined ? null : validateAct('classify', env.act);
+        return v?.ok ? (v.act as { whatsWrong: string }).whatsWrong : null;
+      },
+      filter: (text) => filterSay(text, { redactor }).text,
+      isBanned: (text) => findBanned(text).length > 0,
+      // M5 T8 (08-4 §24.7, §25.4)
+      buildSecondLook: (userWords, actionJson) => this.prompts.buildSecondLook(userWords, actionJson),
+      parseSecondLook: (text) => {
+        const env = parseEnvelope(text);
+        const v = env.act === undefined ? null : validateAct('second_look', env.act);
+        return v?.ok ? (v.act as SecondLookAct) : null;
+      },
+    };
   }
 
   /** The reply protocol for the chat lane, from the prompt modules. */
@@ -149,6 +254,7 @@ export class Engine {
           conversation,
           userMessage: i.message.textForAi ?? i.message.text,
           local: i.local,
+          ...(i.oldPlan ? { oldPlan: i.oldPlan } : {}),
         });
       },
       buildRepair: (issues) => this.prompts.buildRepair(issues).prompt,
@@ -191,10 +297,12 @@ export class Engine {
     const pick = this.ai.pick();
     if (!pick) return null;
     const built = this.prompts.buildRewrite(sentence);
+    // M5 T10 (row 5): a rewrite is a key call too; at the cap the held sentence is dropped, as when the turn fails.
+    if (!(await this.jobs.allowChatCall(built.system.length + built.prompt.length, 'rewrite'))) return null;
     const r = await this.ai
       .runTurn(
         pick.providerId,
-        { ...this.ai.turnParams(pick.providerId, 'rewrite'), turnId: newId('t', this.o.clock.now()), purpose: 'rewrite', ...built },
+        { ...this.ai.turnParams(pick.providerId, 'rewrite'), turnId: mintId('t', this.o.clock.now()), purpose: 'rewrite', ...built },
         { onText: () => {}, onSession: () => {} },
         signal,
       )
@@ -227,18 +335,25 @@ export class Engine {
         if (parsed.success) {
           const first = this.firstSettings;
           const usableBefore = this.ai.pick() !== null;
+          const capBefore = first ? null : this.settings.money.aiCapPaise;
           this.settings = parsed.data;
           this.firstSettings = false;
           this.ai.settingsChanged();
+          // 08-2 §5.10 item 4: a raised AI cap resumes the jobs paused at it.
+          // Main sends no paths, so a changed cap is read from the value itself.
+          if (capBefore !== null && capBefore !== parsed.data.money.aiCapPaise) void this.jobs.capChanged();
           // First settings, or a chosen AI that just became usable (J2 choose → ai.state → settings): waiting messages go now.
           if (first || (!usableBefore && this.ai.pick())) void this.drainQueued();
           if (first && !this.o.testRun) this.scheduleHealthCheck();
+          // 08-2 §5.9 (G-M4-13): main decided safe mode and whether the last exit was clean; recovery runs once per start.
+          if (first) void this.jobs.track(this.recovery.recoverAll(msg.payload.launch ?? { safeMode: false, cleanStart: true }));
         }
         return undefined;
       }
       case 'net':
         this.online = msg.payload.online;
         this.ai.netChanged(msg.payload.online);
+        await this.recovery.netChanged(msg.payload.online);
         return undefined;
       case 'user.message':
         this.lane.enqueue(msg.payload.chatId, msg.payload.messageId);
@@ -258,12 +373,46 @@ export class Engine {
       }
       case 'test.reset':
         this.lane.cancelAll();
+        this.jobs.cancelAll();
         return undefined;
+      case 'card.answered':
+        if (!(await this.recovery.onCardAnswered(msg.payload))) await this.jobs.onCardAnswered(msg.payload);
+        return undefined;
+      // M5 T7: main moved an approval (08-1 §2.4); an expired payment / booking card ends its job (AT-111).
+      case 'approval.changed':
+        await this.jobs.onApprovalChanged(msg.payload);
+        return undefined;
+      // M5 T14 (G-M5-39 (b)): the second look of a Draft's Send, asked by main's Draft tick.
+      case 'draft.secondLook':
+        return ok(await this.jobs.draftSecondLook(msg.payload));
+      case 'job.stop': {
+        const r = await this.jobs.stopJob(msg.payload.jobId, msg.payload.reason);
+        return r ? ok(r) : { ok: false, error: { kind: 'JOB_GONE' } };
+      }
+      case 'job.stopAll':
+        return ok(await this.jobs.stopAll());
+      case 'job.retry':
+        return this.jobs.retry(msg.payload.jobId, msg.payload.newJobId);
       case 'test.clock':
         return undefined;
-      // M4 T1 stub (G-M4-04): the job runner (T2/T4) pauses its WORKING jobs here; until then there are none to pause.
+      // M5 T2 (08-0 §G.6, X-93): main's registry of record, mirrored here; `ttlMs: 0` = until the app quits. Never logged.
+      case 'registry:add':
+        this.redactor.registry.add({
+          handle: msg.payload.handle,
+          value: msg.payload.value,
+          normalised: msg.payload.normalised,
+          ttlMs: msg.payload.ttlMs || null,
+        });
+        return undefined;
+      case 'registry:remove':
+        this.redactor.registry.remove(msg.payload.handles);
+        return undefined;
+      // G-M4-04: a request; main waits for the ack before it exits.
       case 'jobs.pauseAll':
-        return ok({ paused: [] as string[] });
+        return ok({ paused: await this.recovery.pauseAll(msg.payload.reason) });
+      case 'power':
+        await this.recovery.power(msg.payload.event);
+        return undefined;
       // M6 (CR-0010 G-M6-01): the Memory page's invokes, answered with the invoke's result.
       case 'memory.cmd':
         return this.memory.cmd(msg.payload);

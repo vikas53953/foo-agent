@@ -35,6 +35,14 @@ const INVOKES = new Set([
   'app:showEmojiPanel',
   'job:stop',
   'job:watch',
+  // M4 T5 job and card answers (08-1 §3.2, CR-0008 G-M4-09).
+  'job:stopAll',
+  'job:retry',
+  'plan:go',
+  'plan:change',
+  'stuck:choose',
+  'recovery:choose',
+  'error:fix',
   'memory:list',
   'memory:add',
   'memory:edit',
@@ -55,6 +63,24 @@ const INVOKES = new Set([
   'ai:detect',
   'ai:choose',
   'notifications:status',
+  'card:answer',
+  'card:approve',
+  'card:decline',
+  'card:askAgain',
+  'card:heldPick',
+  'draft:update',
+  'draft:send',
+  'draft:undo',
+  'draft:discard',
+  'draft:openInApp',
+  'secret:save',
+  'secret:list',
+  'secret:delete',
+  'code:submit',
+  // M5 T2
+  'secret:offer',
+  // M5 T14
+  'approval:report',
 ]);
 const EVENTS = new Set([
   'chat:upsert',
@@ -104,5 +130,6 @@ const testBridge: FooTestBridge = {
   theme: (theme) => call('test:theme', { theme }),
   reset: () => call('test:reset'),
   jobState: (jobId, state) => call('test:jobState', { jobId, state }),
+  cardSeed: (arg) => call('test:card.seed', arg),
 };
 contextBridge.exposeInMainWorld('__fooTest', testBridge);
