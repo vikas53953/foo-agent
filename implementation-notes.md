@@ -706,3 +706,39 @@ max-width: 100%` (`.wide` the same with `--card-w-wide`). CardFrame takes `data`
 - Replay, Send a report, use-backup links and the other keys left in `scripts/copy-pending.json`, each tagged with the
   ticket or milestone that renders it.
 - Main-side checks the renderer does today: a new AI cap ≥ current + ₹100 (08-0 §A.2); `plan:go` offline / cap gate.
+
+## M5 · second look, fresh terms, steer supersede, choice timeouts (ticket T8)
+
+### Built
+
+- After APPROVED (X-125 order): second look (`gate/secondLook.ts`: rule checks for the user-stated ₹, recipients, the
+  site, dates through a parser port, people count by `extractCounts`; then one `second_look` AI turn) → live terms check
+  (`gate/liveTerms.ts`, re-reading the money evidence) → RUNNING with `secondLook` on the transition.
+- A failed second look → HELD with `cards.approval.held.mismatch` and its two options; a pick goes back to APPROVED (no
+  second AI check) or DECLINED with the user's own value as a decision line.
+- Changed live terms → SUPERSEDED `{ superseded: 'price'|'time'|'recipient'|'fee' }` and a new card with the live fields
+  (`approval.open.supersedes`; main links `superseded_by`).
+- Steer on a PENDING approval or payment card → SUPERSEDED `{ superseded: 'steer' }` (AT-077b); "stop" with 2+ jobs →
+  `stop_which` (AT-077a tests).
+- Choice timeouts on the 15 s tick (`cards/choiceTimeouts.ts`): reversible → Best fit at 15 min; otherwise one reminder
+  toast at 15 min and CANCELLED (`choice_timeout`) at 24 h.
+- CHECKING → FAILED (`no_proof`) by main's expire tick 15 min after `submitted_at` (G-M5-33).
+- T7 review hand-offs: `holdUnknown` keyed by (tool, redacted args) for the whole job; the send hard limit reads bank
+  details, attachments from Documents and agreeing to pay from the message (`gate/sendContent.ts`, G-M5-31).
+
+### Picks and gaps (for the lead's independent check)
+
+- M5-T8-01 · The second look's amount check compares the ₹ the user typed; the live total vs the card is the fresh-terms
+  check (SUPERSEDED, AT-124), not a HELD.
+- M5-T8-02 · Dates are checked only when a parser is wired (`parseWhen`); chrono-node is not in package.json (lead).
+- M5-T8-03 · Only recipients from untrusted text are flagged; an untrusted site or payee is not.
+- M5-T8-04 · Live terms that cannot be read (`unreadable`) → HELD `cannot_check`; no money evidence at all (`none`, e.g.
+  after a restart) skips the check.
+- M5-T8-05 · A job not started by the user reads the chat's last 30 min as user words; none → HELD `no_user_words`.
+- M5-T8-06 · Not built (no contract yet): the [ Search again ] button under the 24 h stop line, the G-M5-08 late-answer
+  caption, and `cards.approval.superseded.price_changed` (Payment card copy, M10). A Draft card steer still updates the
+  card directly until T6 lands.
+- M5-T8-07 · `{job}` in the 24 h stop line is the running title with its first letter in lower case ("I stopped the
+  reading your email…"); wording for the close-out copy pass.
+- M5-T8-08 · Only the send content marks the engine can read are wired; the Draft send path (T6) passes
+  `GateCall.content`.
