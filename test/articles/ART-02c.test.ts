@@ -9,6 +9,7 @@ import { describe, expect, it } from 'vitest';
 import { BANNED } from '../../scripts/check-copy';
 import { ErrorCard } from '../../src/renderer/cards/ErrorCard';
 import { SpendCap } from '../../src/renderer/cards/SpendCap';
+import buttonStyles from '../../src/renderer/ui/Button.module.css';
 import { CARD_STATES } from '../../src/shared/cards';
 import copy from '../../src/shared/copy/en-IN.json';
 import { t, type CopyKey } from '../../src/shared/copy/t';
@@ -57,7 +58,7 @@ const ACTION: FixAction = { kind: 'retry' };
 
 /** One card per copy variant of each `errors.{kind}` family: the base words, then `.no_reset` / `.paying` forms. */
 function errorCases(): { name: string; words: Words; fix: boolean }[] {
-  const families = [...new Set(Object.keys(copy).flatMap((k) => /^errors\.([a-z_]+)\.what_happened$/.exec(k)?.[1] ?? []))];
+  const families = [...new Set(Object.keys(copy).flatMap((k) => /^errors\.([a-z0-9_]+)\.what_happened$/.exec(k)?.[1] ?? []))];
   return families.flatMap((f) => {
     const kind = f.toUpperCase() as ErrorKind;
     const variant = f === 'crash_recovery' ? 'recovery' : 'error';
@@ -127,7 +128,8 @@ const render = (view: FunctionComponent<{ card: CardRow; time: typeof TIME }>, c
 function count(html: string, fix: string, link: string): Count {
   const buttons = [...html.matchAll(/<button\b([^>]*)>/g)].map((m) => m[1]!);
   const tid = (attrs: string) => /data-testid="([^"]+)"/.exec(attrs)?.[1] ?? '';
-  const primary = buttons.filter((b) => tid(b) === fix && /\b_?primary_/.test(b)).length;
+  const isPrimary = (attrs: string) => (/class="([^"]*)"/.exec(attrs)?.[1] ?? '').split(' ').includes(buttonStyles.primary!);
+  const primary = buttons.filter((b) => tid(b) === fix && isPrimary(b)).length;
   const links = buttons.filter((b) => tid(b) === link).length;
   const other = buttons.map(tid).filter((id) => id !== fix && id !== link);
   const labels = [...html.matchAll(/aria-label="([^"]*)"/g)].map((m) => m[1]);
