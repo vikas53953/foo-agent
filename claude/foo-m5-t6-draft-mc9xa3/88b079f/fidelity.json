@@ -1,0 +1,392 @@
+{
+  "reportId": "M5-88b079f-39238114030",
+  "milestone": "M5",
+  "generatedAt": "2026-10-19T10:34:46.563Z",
+  "commit": "37da3870f2c1dafaa379040cb7e57b1a71e9aaab",
+  "head": "88b079f4f62f728a5a565d2bfcd3b26c48faf078",
+  "ci": {
+    "runId": "39238114030",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39238114030"
+  },
+  "spec": {
+    "version": "spec-v1.0",
+    "setSha256": "ace5c85e9383ebf8c09e6a22aae45fdffebe341f12e85cdfb30a971da6685aba"
+  },
+  "runner": null,
+  "fid04": "UNVERIFIABLE",
+  "builders": [
+    "builder agent"
+  ],
+  "reviewer": {
+    "name": null,
+    "signed": false
+  },
+  "verdict": "FAIL",
+  "verdictReasons": [
+    "missing evidence: unit test results (Vitest JSON); E2E results (Playwright JSON); golden runner identity (golden/runner.json); FID-14 results; audit list (docs/fidelity/M5.audit.json)"
+  ],
+  "missingInputs": [
+    "unit test results (Vitest JSON)",
+    "E2E results (Playwright JSON)",
+    "golden runner identity (golden/runner.json)",
+    "FID-14 results",
+    "audit list (docs/fidelity/M5.audit.json)"
+  ],
+  "forVikas": {
+    "tryNow": [
+      "Nothing new to try yet: none of the 17 M5 drawings is built in the app. This run shows that the checking machinery works."
+    ],
+    "changed": [
+      "Nothing differs from the drawings so far."
+    ],
+    "needsYes": []
+  },
+  "audit": [],
+  "copy": {
+    "fid09": "NOT DONE",
+    "fid10": "NOT DONE",
+    "art02a": "NOT RUN"
+  },
+  "tokens": {
+    "eslintErrors": null,
+    "stylelint": "not installed yet (FID-13 Stylelint half; ART-24a scans styles today)",
+    "fid11": "NOT RUN",
+    "fid12": "NOT RUN",
+    "fid14": []
+  },
+  "behaviour": {
+    "totals": {
+      "unit": {
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0
+      },
+      "e2e": {
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    "ids": [],
+    "failed": [],
+    "trace": {
+      "live": 73,
+      "pending": 111,
+      "byMilestone": {
+        "M0": 5,
+        "M1": 23,
+        "M2": 27,
+        "M3": 16,
+        "M4": 57,
+        "M5": 55,
+        "M6": 1
+      }
+    }
+  },
+  "gaps": {
+    "crs": [
+      {
+        "id": "CR-0001",
+        "title": "Complete the spec-v1.0 freeze with the reference drawings and machine tables",
+        "status": "Approved"
+      },
+      {
+        "id": "CR-0002",
+        "title": "M1 shell, where the Blueprint drawing and the written spec disagree",
+        "status": "Approved: keep the app as built; the drawing is redrawn to the written spec"
+      },
+      {
+        "id": "CR-0003",
+        "title": "M2 trace rows, M2 Blueprint ids, and where the drawings and the M2 app disagree",
+        "status": "Approved by Vikas, DECISIONS X-156 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)"
+      },
+      {
+        "id": "CR-0004",
+        "title": "The dark user bubble is indigo (X-145) everywhere, and the M2 golden-lane differences that follow from the spec",
+        "status": "Approved by Vikas, DECISIONS X-157 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)"
+      },
+      {
+        "id": "CR-0005",
+        "title": "how PERF-02 measures \"keydown → character painted\"",
+        "status": "Approved by Vikas, DECISIONS X-158 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)"
+      },
+      {
+        "id": "CR-0006",
+        "title": "Light message rows while the user flings the list (PERF-04)",
+        "status": "Approved by Vikas, DECISIONS X-159 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)"
+      },
+      {
+        "id": "CR-0007",
+        "title": "M3 trace rows, and the picks the M3 build made where the spec forks",
+        "status": "Approved by Vikas, DECISIONS X-160 (2026-10-18 15:58Z, after the independent review in §(e))"
+      },
+      {
+        "id": "CR-0008",
+        "title": "M4 trace rows, the job machine, and the picks the M4 build makes where the spec forks",
+        "status": "Approved by Vikas's approve-on-my-behalf rule (his message 2026-10-18 14:56Z), after the independent review in §(e), DECISIONS X-161"
+      },
+      {
+        "id": "CR-0009",
+        "title": "M5 trace rows, the approval machine, and the picks the M5 build makes where the spec forks",
+        "status": "Approved by Vikas's approve-on-my-behalf rule (his message 2026-10-18 14:56Z), after the independent review in §(f), DECISIONS X-162"
+      }
+    ],
+    "notes": "Conservative picks and deferrals: implementation-notes.md (the ## M5 sections)."
+  },
+  "deviations": [
+    "Not reviewed yet: the independent reviewer adds what no test caught."
+  ],
+  "golden": {
+    "counts": {
+      "pass": 0,
+      "review": 0,
+      "fail": 0,
+      "disputed": 0,
+      "notBuilt": 17
+    },
+    "refsRendered": [],
+    "determinism": null,
+    "rows": [
+      {
+        "id": "BP-CARD-03",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-CARD-04",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-CARD-05",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-CARD-07",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-CARD-08",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "BP-CARD-09",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-10-01",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-10-03",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-10-04",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-10-05",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-10-06",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-10-08",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-12-05",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-12-06",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-16-02",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-16-04",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-16-06",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      }
+    ],
+    "notBuilt": [
+      "BP-CARD-03",
+      "BP-CARD-04",
+      "BP-CARD-05",
+      "BP-CARD-07",
+      "BP-CARD-08",
+      "BP-CARD-09",
+      "UX-10-01",
+      "UX-10-03",
+      "UX-10-04",
+      "UX-10-05",
+      "UX-10-06",
+      "UX-10-08",
+      "UX-12-05",
+      "UX-12-06",
+      "UX-16-02",
+      "UX-16-04",
+      "UX-16-06"
+    ]
+  }
+}
