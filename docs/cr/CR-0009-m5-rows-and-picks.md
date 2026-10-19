@@ -270,6 +270,11 @@ himself.
   real gap: `cards.choice.offer_action.*` ("book one" as J9 draws it, "send it", …, "add it to your calendar", "fill
   that in") and `cards.choice.offer_verb.{calendar_write,prepare}` ("add it", "fill it in"). Independent review
   APPROVE-WITH-NOTE (row words aligned to 06-screens-2 as asked); approved on Vikas's behalf.
+- **G-M5-36** (T12) Ctrl+J (05-1 §0, 09 §9.17.1, X-09, X-21) "pending gated card" also counts a HELD approval or payment
+  as a card that needs the user, beside PENDING, as 03-shell-1 §3.4.4 does for the Needs you chip (and the pending strip,
+  04-2 §23.4), so the three agree. Choice covers tiles in `asking`; sign-in counts only in `waiting` (`live` = the user is
+  signing in already); expired and deleted cards never count. Copy key `thread.jump.none` "Nothing needs you here."
+  (05-1 §0 verbatim). Pending review.
 - **G-M5-35** (T11) ART-08a in M5 searches the DOM captured with each picture instead of OCR of the picture (10-2 §D says
   "OCR of all screenshots and live-view frames"). 05-2 §5.8.5 already keeps a value out of the markup (a property, never a
   `value` attribute), and the fields are masked, so the DOM text is the stricter search for what M5 draws; OCR, live-view
