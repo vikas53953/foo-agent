@@ -147,3 +147,32 @@ Independent review (Fable, 2026-10-19 ~03:20Z, read-only): **PASS**, no "act" fi
 `spec/constitution/` and the app code (`Card.module.css` edge rules, `Pill.module.css` `--ok-soft`). Its three "consider"
 wordings are applied above. Recorded as approved on Vikas's behalf under his standing rule (2026-10-18 14:56Z) and his
 overnight message (2026-10-18 19:16Z, "dont wait for my aproval"); listed for his later review.
+
+## (h) Close-out (T7): trace statuses
+
+At close-out the §(a) rows whose test files exist and carry their ids in a test title are set `live` in `spec/trace.csv`
+(FID-18 checks each one), and `spec/SPEC-MANIFEST.json` is regenerated (`pnpm spec:verify --write`) under this CR. No row
+is added, removed or moved to another milestone; ids, files and spec sections are unchanged.
+
+## (i) Addendum (T7): where the UX-05 and UX-23 frames and the M4 app disagree
+
+The M4 walkthrough steps (UX-05-02…04, UX-23-01…06, 09, 11) are captured by `test/fidelity/ux/UX-05.first.spec.ts` and
+`UX-23.errors.spec.ts` from the `ux-world` seed and the real job runner on the fake AI (§11.2.3). A local Tier R run
+failed every step on R1; the table names each gap and the checks it disputes. The app follows the written spec; each
+file's header lists the same gaps.
+
+| #   | Step(s)                   | Frame shows                                                              | App and spec                                                                                                      | Spec                      | Disputed |
+| --- | ------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | ------------------------- | -------- |
+| 1   | all eleven                | Chapter 5 / 23 scenes with their own words and times (7:48 PM, Goa rows) | The one `ux-world` seed at 9:41 AM; step rows are catalogue phrases                                               | §11.2.3; 08-4 §26.1       | r1       |
+| 2   | all but UX-23-01          | Mini frames: rows at the frame's own positions and sizes                 | Real column and card widths; the seeded Trips gallery and "Not sent." notice move rows                            | 05-1 §0.2; CR-0003 §(b)1  | r2       |
+| 3   | UX-05-02, UX-23-02 (dark) | 👀 / 🕓 drawn as emoji on the light frame colours                        | Badge and Clock tick as glyph/SVG on the dark theme's bubble                                                      | 04 §3.3, §4.2; 02 §F29    | r3, r4   |
+| 4   | UX-05-04                  | "✓ Proof: 3 emails · open", green                                        | M4 has no connector to re-check the emails, so the job ends unverified: "⚠ Not checked live" (amber), no sparks   | 05-3 §5.15–§5.16; Art. 11 | r3, r4   |
+| 5   | UX-23-04                  | "Use ChatGPT instead" link                                               | No verified backup AI in the run, so the card has only "Try again"                                                | 05-3 §5.20; 08-3 §21.2    | r3, r4   |
+| 6   | UX-23-06, UX-23-09        | Dark filled button                                                       | The card's primary pill in `--accent`                                                                             | 05-1 §0 (buttons); X-01   | r3, r4   |
+| 7   | UX-23-11                  | Connector / site one-liners with "Reconnect"                             | Connectors (M8) and the browser (M9) are not built; the runner's one-line UNKNOWN card with its one fixing button | 08-3 §21.2                | r3, r4   |
+
+Disputed checks (`docs/fidelity/disputes.json`): r1 on all eleven; r2 on all but UX-23-01; r3 and r4 on rows 3–7. Every
+other check still counts. Spec-keeper list: redraw chapter 5 and 23 frames from the `ux-world` seed; the M8/M9 steps
+(UX-23-04 backup link, UX-23-11 connector lines) re-run when those milestones land. App bug found while capturing
+(not a fidelity dispute, for M5): with a plan limit and no reset time the chat header and sidebar read "Claude limit
+until" with nothing after it; those two copy keys need a no-reset form (copy change, its own CR).

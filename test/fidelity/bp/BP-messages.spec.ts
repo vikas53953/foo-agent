@@ -77,6 +77,21 @@ async function clearField(page: Page): Promise<void> {
   await expect(field(page)).toHaveText('');
 }
 
+/**
+ * The thread at its newest row, with the Goa stay approval in view so the pending-card strip (BP-COMP-07's state) is
+ * gone. Row heights settle after a scroll (virtual list), so scroll again until the strip stays hidden.
+ */
+async function atNewest(page: Page): Promise<void> {
+  await expect(async () => {
+    await page.getByTestId(TID.threadLog).evaluate(async (el) => {
+      el.scrollTop = el.scrollHeight;
+      await new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
+      el.scrollTop = el.scrollHeight;
+    });
+    await expect(page.getByTestId(TID.composerPending)).toHaveCount(0, { timeout: 1_000 });
+  }).toPass({ timeout: 20_000 });
+}
+
 /** Holds {talkKey} (Ctrl+Space here) until the timer reads `at`, captures, then Esc cancels: nothing is sent. */
 async function recordingShot(page: Page, id: string, at: string, theme: Theme): Promise<void> {
   await page.keyboard.down('Control');
@@ -151,6 +166,7 @@ test('M2 Blueprint captures for Tier R: BP-MSG-01, BP-MSG-03, BP-MSG-04, BP-COMP
   await expect(page.getByTestId(TID.composerChip)).toHaveCount(0);
 
   // BP-COMP-04 Recording (hold {talkKey}): the drawing's timer reads 0:07.
+  await atNewest(page);
   for (const theme of THEMES) {
     await setTheme(page, theme);
     await rest(page);
@@ -168,7 +184,7 @@ test('M2 Blueprint captures for Tier R: BP-MSG-01, BP-MSG-03, BP-MSG-04, BP-COMP
   await expect(page.getByTestId(TID.composerPending)).toBeVisible();
   await rest(page);
   await both(page, 'BP-COMP-07', COMPOSER);
-  await page.getByTestId(TID.threadLog).evaluate((el) => (el.scrollTop = el.scrollHeight));
+  await atNewest(page);
 
   // BP-COMP-08 Offline: after the 10 s grace the banner strip shows and only the placeholder changes.
   await page.evaluate(() => window.__fooTest!.setOnline(false));

@@ -65,8 +65,8 @@ test('PERF-07: send → 👀 painted within 1 s', async () => {
     const w = window as unknown as { __perf07: { sentAt?: number; paintedAt?: number } };
     w.__perf07 = {};
     addEventListener('keydown', (e) => e.key === 'Enter' && (w.__perf07.sentAt ??= performance.now()), { capture: true, once: true });
-    const before = new Set(document.querySelectorAll(sel));
-    const seen = () => [...document.querySelectorAll(sel)].some((b) => !before.has(b) && b.getAttribute('data-state') === 'seen');
+    const before = new Set(Array.from(document.querySelectorAll(sel)));
+    const seen = () => Array.from(document.querySelectorAll(sel)).some((b) => !before.has(b) && b.getAttribute('data-state') === 'seen');
     new MutationObserver((_, obs) => {
       if (w.__perf07.sentAt === undefined || !seen()) return;
       obs.disconnect();
