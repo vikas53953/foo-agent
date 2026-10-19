@@ -121,7 +121,15 @@ export function applyWaReport(db: Db, settings: SettingsLike, r: WaReport, now: 
     }
     case 'linked': {
       db.transaction(() => {
-        db.prepare("DELETE FROM connections WHERE app = 'whatsapp' AND account_hash != ?").run(r.accountHash);
+        // The placeholder row of the link becomes the linked row (same id, so the renderer's row follows by rev).
+        if (cur) {
+          db.prepare("DELETE FROM connections WHERE app = 'whatsapp' AND id != ?").run(cur.id);
+          db.prepare(
+            `UPDATE connections SET account_label = ?, account_hash = ?, status = 'connected', last_error_kind = NULL,
+               connected_at = ?, last_ok_at = ?, rev = rev + 1 WHERE id = ?`,
+          ).run(r.accountLabel, r.accountHash, now, now, cur.id);
+          return;
+        }
         db.prepare(
           `INSERT INTO connections (id, app, account_label, account_hash, granted, status, vault_name, connected_at, last_ok_at)
            VALUES (?, 'whatsapp', ?, ?, ?, 'connected', ?, ?, ?)

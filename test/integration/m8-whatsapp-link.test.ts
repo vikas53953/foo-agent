@@ -153,7 +153,7 @@ describe('M8 T3: link WhatsApp, mirror the groups, read a message, unlink', () =
       title: string;
       wa_jid: string;
     }[];
-    expect(mirrors.map((m) => m.title)).toEqual(['Family group', 'Society committee']);
+    expect(mirrors.map((m) => m.title)).toEqual(FAKE_WA.groups.map((g) => g.name));
     for (const m of mirrors) expect(w.settings().notifications.mutedChats[m.id]).toBe('forever');
 
     // the link stays: 60 s later nothing is cancelled

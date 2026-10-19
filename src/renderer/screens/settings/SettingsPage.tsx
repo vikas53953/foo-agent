@@ -14,6 +14,8 @@ import { Icon, type IconName } from '../../ui/Icon';
 import { cx } from '../../ui/cx';
 import { PageHeader } from '../shared/PageHeader';
 import { AccountAi } from './AccountAi';
+// M8 T3: Connections' WhatsApp rows (06-2 §6.8); T2's Google rows join them on this page.
+import { WhatsAppRows } from './connections/WhatsAppRows';
 import styles from './SettingsPage.module.css';
 
 interface NavItem {
@@ -90,6 +92,7 @@ export function SettingsPage({ page }: { page: PageId }) {
           <div className={styles.column}>
             <h2 className={styles.pageTitle}>{current.label()}</h2>
             {current.id === 'account' && <AccountAi />}
+            {current.id === 'connections' && <WhatsAppRows />}
           </div>
         </main>
       </div>

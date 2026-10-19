@@ -5,12 +5,12 @@ import type { Clock, TimerId } from '../shared/clock';
 import type { BridgeTestOp } from '../shared/waBridge';
 import type { SocketFactory, WaSocketEvents } from './core';
 
-/** The fake phone's own number and its groups. */
+/** The fake phone's own number and its groups (the ux-world's two mirrors, 08-3 §22.9, so a seeded world and a link agree). */
 export const FAKE_WA = {
   me: '919876543210@s.whatsapp.net',
   groups: [
-    { jid: '120363000000000001@g.us', name: 'Family group' },
-    { jid: '120363000000000002@g.us', name: 'Society committee' },
+    { jid: '120363000000000001@g.us', name: 'Building society' },
+    { jid: '120363000000000002@g.us', name: 'School friends' },
   ],
 } as const;
 

@@ -74,10 +74,12 @@ beforeEach(() => {
 
 describe('connection row (08-1 §4.3.10 status machine)', () => {
   it('linkStart makes a connecting row; a scan turns it into the linked row with the masked number', () => {
-    applyWaReport(db, store, { event: 'status', status: 'connecting', errorKind: null }, NOW);
+    const pending = applyWaReport(db, store, { event: 'status', status: 'connecting', errorKind: null }, NOW).connection!;
     expect(db.prepare("SELECT status FROM connections WHERE app = 'whatsapp'").pluck().all()).toEqual(['connecting']);
     const r = linked();
     expect(r.connection).toMatchObject({ app: 'whatsapp', status: 'connected', accountLabel: '+91 98••• ••210', lastErrorKind: null });
+    // the same row (id kept, rev up), so the renderer's connection:upsert replaces the connecting one
+    expect(r.connection).toMatchObject({ id: pending.id, rev: pending.rev + 1 });
     expect(count("SELECT COUNT(*) FROM connections WHERE app = 'whatsapp'")).toBe(1);
     expect(db.prepare("SELECT vault_name FROM connections WHERE app = 'whatsapp'").pluck().get()).toBe('wa-session');
     const act = db.prepare("SELECT kind, event, summary FROM activity WHERE event = 'connected'").get();

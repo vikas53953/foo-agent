@@ -544,15 +544,7 @@ export type DbTxReply = { ids: string[]; revs: number[] };
 /** The engine side of the port (in production a MessagePort; in tests a direct call into main's handlers). */
 export interface MainLink {
   request<T>(
-    kind:
-      | 'db.tx'
-      | 'db.query'
-      | 'file.write'
-      | 'approval.open'
-      | 'approval.transition'
-      | 'vault.use'
-      | 'vault.encrypt'
-      | 'vault.decrypt',
+    kind: 'db.tx' | 'db.query' | 'file.write' | 'approval.open' | 'approval.transition' | 'vault.use' | 'vault.encrypt' | 'vault.decrypt',
     payload: unknown,
   ): Promise<Result<T>>;
   send(kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify' | 'wa.report', payload: unknown): void;

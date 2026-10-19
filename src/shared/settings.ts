@@ -176,6 +176,9 @@ export const WRITABLE_PATHS = [
   'permissions.apps.outlook',
   // M6: the Memory page banner's "Turn back on" (06-2 §7.5); the Privacy rows arrive with M13.
   'privacy.rememberOn',
+  // M8 T3: Connections → WhatsApp toggles (06-2 §6.8, 08-3 §16.4).
+  'connections.whatsapp.read',
+  'connections.whatsapp.draft',
 ] as const;
 export type WritablePath = (typeof WRITABLE_PATHS)[number];
 
