@@ -696,7 +696,7 @@
         "ones",
         "9:30",
         "AM",
-        "⏳",
+        "🛠",
         "On",
         "it.",
         "Comparing",
@@ -844,8 +844,8 @@
     "total": 12768
   },
   "r5": {
-    "ratio": 0.0961650390625,
-    "diffPixels": 98473,
+    "ratio": 0.096173828125,
+    "diffPixels": 98482,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-05.light.diff.png"
