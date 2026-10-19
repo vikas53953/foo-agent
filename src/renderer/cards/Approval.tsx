@@ -178,6 +178,9 @@ function Quote({ text }: { text: string }) {
 }
 
 /** 09 §9.17.4: Ctrl+Enter inside an Approval card does nothing (and goes no further). */
+/** The deadline-reminder buttons until T7 wires them (they render disabled). */
+const noop = () => undefined;
+
 const swallowCtrlEnter = (e: KeyboardEvent) => {
   if (e.key === 'Enter' && e.ctrlKey) {
     e.preventDefault();
@@ -316,7 +319,7 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
         <span className={styles.title} data-copy="external">
           {p.title}
         </span>
-        {state === 'PENDING' && <Countdown expiresAt={expiresAt} timeZone={tz} />}
+        <Countdown expiresAt={expiresAt} timeZone={tz} />
       </div>
       <div className={styles.impact} data-testid={TID.cardApprovalImpact} data-copy="external">
         {p.impact}
@@ -373,16 +376,12 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
           <div className={styles.buttons}>
             {reminder ? (
               <>
-                <CardButton tid="cardApprovalKeep" kind="primary" disabled={busy !== null} busy={busy === 'approve'} onClick={approve}>
+                {/* 05-2 §5.5.2: Keep it → COMPLETED "Kept."; Cancel booking → a new cancel card + SUPERSEDED. Neither is
+                    card:approve / card:decline, so both stay disabled until T7 lands their main side. */}
+                <CardButton tid="cardApprovalKeep" kind="primary" disabled onClick={noop}>
                   {t('cards.approval.button.keep')}
                 </CardButton>
-                <CardButton
-                  tid="cardApprovalCancelBooking"
-                  kind="secondary"
-                  disabled={busy !== null}
-                  busy={busy === 'decline'}
-                  onClick={decline}
-                >
+                <CardButton tid="cardApprovalCancelBooking" kind="secondary" disabled onClick={noop}>
                   {t('cards.approval.button.cancel_booking')}
                 </CardButton>
               </>

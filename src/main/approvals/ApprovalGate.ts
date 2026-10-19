@@ -87,6 +87,10 @@ const USER_EVENTS: ReadonlySet<ApprovalEvent> = new Set<ApprovalEvent>([
   'held_pick_own',
   'draft_undo',
 ]);
+/**
+ * Every non-user edge of the table. M5 T4 has no engine caller yet; this set narrows to the edges each engine path really
+ * asks for (RUNNING / COMPLETED / FAILED / SUPERSEDED / CHECKING) when T7 and T8 wire `approval.transition`.
+ */
 const ENGINE_EDGES = new Set(
   (Object.entries(APPROVAL_EVENTS) as [ApprovalEvent, Partial<Record<ApprovalState, ApprovalState>>][])
     .filter(([e]) => !USER_EVENTS.has(e))
@@ -98,10 +102,12 @@ const DRAFT_STATE: Partial<Record<ApprovalState, string>> = { EXPIRED: 'expired'
 
 /** 08-2 §9.2 hard-limit column for the verbs the AI may request (X-125): buy, pay, delete always; book when it shares a
  * phone or address or cannot be cancelled free. */
-export function hardLimitOf(fields: ApprovalFields): boolean {
+export function hardLimitOf(fields: ApprovalFields, now: number): boolean {
   if (fields.verb !== 'book') return true;
   const shares = (fields.personalShared ?? []).some((p) => p === 'phone' || p === 'address');
-  const free = !!fields.cancelTerms && (fields.cancelTerms.refundable || fields.cancelTerms.freeUntil !== undefined);
+  const terms = fields.cancelTerms;
+  // A free-cancel window that has already closed is no free cancel.
+  const free = !!terms && (terms.refundable || (terms.freeUntil !== undefined && terms.freeUntil > now));
   return shares || !free || fields.irreversible;
 }
 
@@ -153,6 +159,19 @@ const merge = (into: TxEffects, from: TxEffects) => {
   for (const k of ['messageIds', 'chatIds', 'jobIds', 'cardIds'] as const) for (const v of from[k]) into[k].add(v);
 };
 const emptyEffects = (): TxEffects => ({ messageIds: new Set(), chatIds: new Set(), jobIds: new Set(), cardIds: new Set() });
+
+/**
+ * M5 review fix 4 (T2's `fill_card` purpose check, 08-2 §11.3): the approval a card fill may run against, read only. Fails
+ * closed: null unless exactly one row for this job and verb is APPROVED (a filled card comes after the user's tap and
+ * before the runner's write-ahead to RUNNING).
+ */
+export function findOpenApproval(db: Db, jobId: string, verb: ApprovalVerb): { id: string; state: ApprovalState } | null {
+  const rows = db.prepare("SELECT id, state FROM approvals WHERE job_id = ? AND verb = ? AND state = 'APPROVED'").all(jobId, verb) as {
+    id: string;
+    state: ApprovalState;
+  }[];
+  return rows.length === 1 ? rows[0]! : null;
+}
 
 export class ApprovalGate {
   /** "For this chat" rules: memory only, so they end when foo restarts (G-M5-01). */
@@ -273,7 +292,7 @@ export class ApprovalGate {
       jobId: req.jobId,
       verb: req.draft.verb,
       fields: req.draft.fields,
-      hardLimit: hardLimitOf(req.draft.fields),
+      hardLimit: hardLimitOf(req.draft.fields, this.d.now()),
       title: req.title,
       impact: req.impact,
     });
@@ -324,7 +343,22 @@ export class ApprovalGate {
         : [],
     });
     if (!moved.ok) return moved;
-    if (rule && req.scope === 'always') this.d.rules.set(addRule(this.d.rules.get(), rule));
+    if (rule && req.scope === 'always') {
+      // The approval is already committed; a settings write that fails loses only the rule, so foo asks again next time.
+      try {
+        this.d.rules.set(addRule(this.d.rules.get(), rule));
+      } catch (e) {
+        this.d.log?.({
+          t: now,
+          lvl: 'error',
+          mod: 'approvals',
+          evt: 'RULE_SAVE_FAILED',
+          approvalId: a.id,
+          ruleId: rule.id,
+          err: String(e),
+        });
+      }
+    }
     if (rule && req.scope === 'chat') this.chatRules.push({ rule, chatId: a.chatId, until: endOfLocalDay(now, this.d.timeZone()) });
     this.d.engine?.send('card.answered', { cardId: card.id, choice: 'approve', resolvedBy: req.resolvedBy });
     return ok({ state: moved.value });

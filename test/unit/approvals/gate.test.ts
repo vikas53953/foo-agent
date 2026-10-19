@@ -3,7 +3,7 @@
 // the approvals row), §2.4 (card.answered resumes the runner; approval.changed on every move), Art. 6 / X-04 (the engine can
 // never approve), SM-A4 / G-M5-03 (HELD picks).
 import { describe, expect, it } from 'vitest';
-import { hardLimitOf } from '../../../src/main/approvals/ApprovalGate';
+import { findOpenApproval, hardLimitOf } from '../../../src/main/approvals/ApprovalGate';
 import { FIELDS, gateHarness, T0 } from './gateHarness';
 
 describe('ApprovalGate (08-2 §9.7)', () => {
@@ -113,11 +113,30 @@ describe('ApprovalGate (08-2 §9.7)', () => {
   });
 
   it('hard limits for AI-requested verbs (08-2 §9.2): buy, pay, delete always; book when not free to cancel or it shares a phone', () => {
-    expect(hardLimitOf(FIELDS.book!)).toBe(false);
-    expect(hardLimitOf({ ...FIELDS.book!, personalShared: ['phone'] })).toBe(true);
-    expect(hardLimitOf({ ...FIELDS.book!, cancelTerms: { refundable: false } })).toBe(true);
-    expect(hardLimitOf(FIELDS.delete!)).toBe(true);
-    expect(hardLimitOf({ verb: 'pay', amountPaise: 100, irreversible: true })).toBe(true);
+    expect(hardLimitOf(FIELDS.book!, T0)).toBe(false);
+    expect(hardLimitOf({ ...FIELDS.book!, personalShared: ['phone'] }, T0)).toBe(true);
+    expect(hardLimitOf({ ...FIELDS.book!, cancelTerms: { refundable: false } }, T0)).toBe(true);
+    expect(hardLimitOf(FIELDS.delete!, T0)).toBe(true);
+    expect(hardLimitOf({ verb: 'pay', amountPaise: 100, irreversible: true }, T0)).toBe(true);
+    // A free-cancel window counts only while it is still open.
+    expect(hardLimitOf({ ...FIELDS.book!, cancelTerms: { freeUntil: T0 + 60_000, refundable: false } }, T0)).toBe(false);
+    expect(hardLimitOf({ ...FIELDS.book!, cancelTerms: { freeUntil: T0, refundable: false } }, T0)).toBe(true);
+  });
+
+  it('findOpenApproval (review fix 4) fails closed: only one APPROVED row for that job and verb, else null', () => {
+    const h = gateHarness();
+    expect(findOpenApproval(h.db, h.jobId, 'book')).toBeNull();
+    const o = h.open();
+    expect(findOpenApproval(h.db, h.jobId, 'book')).toBeNull(); // PENDING
+    expect(h.gate.approve({ cardId: o.cardId, nonce: o.nonce, resolvedBy: 'tap', scope: 'once' }).ok).toBe(true);
+    expect(findOpenApproval(h.db, h.jobId, 'book')).toEqual({ id: o.approvalId, state: 'APPROVED' });
+    expect(findOpenApproval(h.db, h.jobId, 'pay')).toBeNull(); // other verb
+    expect(findOpenApproval(h.db, 'j_other', 'book')).toBeNull(); // other job
+    expect(h.gate.transition(o.approvalId, 'RUNNING').ok).toBe(true);
+    expect(findOpenApproval(h.db, h.jobId, 'book')).toBeNull(); // RUNNING: past the fill point
+    const two = [h.open(), h.open()];
+    for (const x of two) h.gate.approve({ cardId: x.cardId, nonce: x.nonce, resolvedBy: 'tap', scope: 'once' });
+    expect(findOpenApproval(h.db, h.jobId, 'book')).toBeNull(); // two APPROVED rows: ambiguous, so none
   });
 
   it('openFromEngine: book and delete get an Approval card; buy and pay are the Payment card (M10)', () => {
