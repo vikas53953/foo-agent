@@ -1,0 +1,59 @@
+{
+  "journey": "test/verify/m8-t5-expiry.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "371ba862215295f093ccfeddb78f7aaf6ed96dd2",
+  "dirty": false,
+  "started": "2026-10-19T23:26:34.808Z",
+  "finished": "2026-10-19T23:26:40.181Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "signed in through the Connect card on the fake Google; then the fake token endpoint answers invalid_grant",
+    "one error card: \"Your Gmail connection expired.\" / \"Bills and drafts are on hold.\" with the one button [ Reconnect ] (AT-220 words)",
+    "Settings → Connections: the Gmail row is Needs sign-in (\"Your Gmail connection expired.\")",
+    "[ Reconnect ] → main opened accounts.google.com with prompt=select_account and login_hint (08-3 §16.1.1)",
+    "the same card is edited in place: \"Back on it. Picking up from step 1.\" (SM-A10), no new card",
+    "the job went on at step 1 and finished: \"Two bills are due this week: electricity ₹1,240 by Tue 20 Oct and broadband ₹799 by Thu 22 Oct.\"",
+    "after Reconnect the Gmail poller took its baseline (users.getProfile), Contacts synced (people.connections) and the step searched Gmail; every call went to the fake Google: GET /v1/people/me/connections · GET /gmail/v1/users/me/profile · GET /gmail/v1/users/me/messages · GET /gmail/v1/users/me/messages/m_bill_power · GET /gmail/v1/users/me/messages/m_bill_fibre"
+  ],
+  "shots": [
+    {
+      "file": "after/01-card-expired.light.png",
+      "name": "card-expired",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-card-expired.dark.png",
+      "name": "card-expired",
+      "theme": "dark"
+    },
+    {
+      "file": "after/03-connections-needs-signin.light.png",
+      "name": "connections-needs-signin",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-card-fixed.light.png",
+      "name": "card-fixed",
+      "theme": "light"
+    },
+    {
+      "file": "after/05-job-done.light.png",
+      "name": "job-done",
+      "theme": "light"
+    },
+    {
+      "file": "after/06-job-done.dark.png",
+      "name": "job-done",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}
