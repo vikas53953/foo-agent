@@ -38,7 +38,7 @@ export function draftService(ctx: AppContext): DraftService {
     // look can't run, so the draft is held (fail closed).
     secondLook: (a, out) => askEngine(ctx, a.id, out),
     dataDir: ctx.dataDir,
-    log: (line) => console.info('drafts', JSON.stringify(line)),
+    log: logEvent,
   });
   services.set(ctx.db, s);
   const service = s;

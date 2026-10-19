@@ -36,7 +36,10 @@ import type {
 } from '../../shared/types';
 import { fieldsHash } from '../../engine/gate/fieldsHash';
 import type { DbOp } from '../../engine/protocol';
+import { approvalPayloadOf } from './cardPayloads';
 import { cardRow, type DbRow } from '../db/rows';
+import type { TechLogEntry } from '../log/techLog';
+import { errCode } from '../store/rebuild';
 import { applyDbOps, type TxEffects } from '../engine-supervisor/engineHost';
 import type { Db } from '../store/db';
 import { addRule, checkScope, endOfLocalDay, matchRule, ruleActivity, ruleMatch, scopesFor, type ChatRule } from './rules';
@@ -168,8 +171,8 @@ export interface GateDeps {
   engine?: { send(kind: 'approval.changed' | 'card.answered', payload: Record<string, unknown>): boolean };
   /** 08-2 §9.4.2 before "Ask me again" builds a fresh card; until T8, the stored terms stand. */
   liveTerms?: LiveTerms;
-  /** Tech log (05-2 §5.5.6: card events are tech-log lines, not activity); never carries card text. */
-  log?(line: Record<string, unknown>): void;
+  /** Tech log (05-2 §5.5.6: card events are tech-log lines, not activity); ids and states only, never card text (M6 T9). */
+  log?(entry: TechLogEntry): void;
 }
 
 export interface TapReq {
@@ -315,7 +318,7 @@ export class ApprovalGate {
     });
     if (!effects.ok) return effects;
     this.d.changed(effects.value);
-    this.d.log?.({ t: now, lvl: 'info', mod: 'approvals', evt: 'card.state', approvalId, cardId, to: 'PENDING', verb: input.verb });
+    this.d.log?.({ lvl: 'info', mod: 'approvals', evt: 'card.state', ids: { approvalId }, kind: `${input.verb}:PENDING` });
     return ok({ approvalId, cardId, nonce });
   }
 
@@ -402,15 +405,7 @@ export class ApprovalGate {
       try {
         this.d.rules.set(addRule(this.d.rules.get(), rule));
       } catch (e) {
-        this.d.log?.({
-          t: now,
-          lvl: 'error',
-          mod: 'approvals',
-          evt: 'RULE_SAVE_FAILED',
-          approvalId: a.id,
-          ruleId: rule.id,
-          err: String(e),
-        });
+        this.d.log?.({ lvl: 'error', mod: 'approvals', evt: 'RULE_SAVE_FAILED', ids: { approvalId: a.id }, kind: errCode(e) });
       }
     }
     if (rule && req.scope === 'chat') this.chatRules.push({ rule, chatId: a.chatId, until: endOfLocalDay(now, this.d.timeZone()) });
@@ -461,7 +456,7 @@ export class ApprovalGate {
     const t = this.tapped(req, ['FAILED']);
     if (!t.ok) return t;
     const { card, a } = t.value;
-    if (!(card.payload as unknown as ApprovalPayload).unknownResult || reportedOf(card)) return fail('CARD_STALE');
+    if (!approvalPayloadOf(card)?.unknownResult || reportedOf(card)) return fail('CARD_STALE');
     const now = this.d.now();
     const outcome = req.outcome === 'went_through' ? 'done' : 'failed';
     const r = this.tx(() => {
@@ -485,7 +480,7 @@ export class ApprovalGate {
     });
     if (!r.ok) return r;
     this.d.changed(r.value);
-    this.d.log?.({ t: now, lvl: 'info', mod: 'approvals', evt: 'card.reported', approvalId: a.id, cardId: card.id, outcome });
+    this.d.log?.({ lvl: 'info', mod: 'approvals', evt: 'card.reported', ids: { approvalId: a.id }, kind: outcome });
     return ok(this.card(card.id)!);
   }
 
@@ -500,7 +495,8 @@ export class ApprovalGate {
     const a = this.byCard(card.id);
     if (!a) return fail('NOT_FOUND');
     if (a.state !== 'EXPIRED') return fail('CARD_STALE');
-    const p = card.payload as unknown as ApprovalPayload;
+    const p = approvalPayloadOf(card);
+    if (!p) return fail('VALIDATION');
     const live: ReturnType<LiveTerms> = this.d.liveTerms ? this.d.liveTerms(a) : ok({ fields: a.fields });
     if (!live.ok) return live;
     const made = this.create({
@@ -603,7 +599,7 @@ export class ApprovalGate {
     });
     if (!effects.ok) return effects;
     this.d.changed(effects.value);
-    this.d.log?.({ t: now, lvl: 'info', mod: 'approvals', evt: 'card.state', approvalId, cardId, to: 'PENDING', verb: 'send' });
+    this.d.log?.({ lvl: 'info', mod: 'approvals', evt: 'card.state', ids: { approvalId }, kind: 'send:PENDING' });
     return ok({ approvalId, cardId, nonce });
   }
 
@@ -644,7 +640,7 @@ export class ApprovalGate {
     const a = this.get(approvalId);
     if (!a) return fail('NOT_FOUND');
     if (!ENGINE_EDGES.has(`${a.state}>${to}`)) {
-      this.d.log?.({ t: this.d.now(), lvl: 'warn', mod: 'approvals', evt: 'APPROVAL_BAD_TRANSITION', approvalId, from: a.state, to });
+      this.d.log?.({ lvl: 'warn', mod: 'approvals', evt: 'APPROVAL_BAD_TRANSITION', ids: { approvalId }, kind: `${a.state}>${to}` });
       return fail('APPROVAL_BAD_TRANSITION');
     }
     const now = this.d.now();
@@ -656,7 +652,7 @@ export class ApprovalGate {
     if (data.secondLook) set.second_look = JSON.stringify(data.secondLook);
     let card: Record<string, unknown> | undefined;
     if (data.held || data.superseded) {
-      const payload = (this.card(a.cardId)?.payload ?? {}) as unknown as ApprovalPayload;
+      const payload = this.card(a.cardId)?.payload ?? {};
       card = {
         payload: { ...payload, ...(data.held ? { held: data.held } : {}), ...(data.superseded ? { superseded: data.superseded } : {}) },
       };
@@ -711,7 +707,7 @@ export class ApprovalGate {
     for (const r of unproven) {
       // M5 T14: the card says foo can't tell (05-2 §5.5.4 CHECKING → FAILED), never the plain "Nothing was booked."
       const a = approvalRow(r);
-      const payload = (this.card(a.cardId)?.payload ?? {}) as unknown as ApprovalPayload;
+      const payload = this.card(a.cardId)?.payload ?? {};
       const card = { resolved_by: 'system', resolved_at: now, payload: { ...payload, unknownResult: payload.unknownResult ?? {} } };
       if (this.move(a, 'no_proof', now, { card }).ok) moved.push(String(r.id));
     }
@@ -756,7 +752,7 @@ export class ApprovalGate {
     });
     if (!r.ok) return r;
     this.d.changed(r.value);
-    this.d.log?.({ t: now, lvl: 'info', mod: 'approvals', evt: 'card.state', approvalId: a.id, cardId: a.cardId, from: a.state, to });
+    this.d.log?.({ lvl: 'info', mod: 'approvals', evt: 'card.state', ids: { approvalId: a.id }, kind: `${a.state}>${to}` });
     this.d.engine?.send('approval.changed', { approvalId: a.id, state: to });
     return ok(to);
   }

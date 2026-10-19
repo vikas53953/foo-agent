@@ -8,7 +8,7 @@ import { engineToMainSchema, type DbOp, type EngineToMain, type MainToEngine, ty
 import type { Result } from '../../shared/errors';
 import type { EventChannel, EventPayload } from '../../shared/ipc';
 import type { Settings } from '../../shared/settings';
-import type { AiStatus, ApprovalDraft, ProviderId } from '../../shared/types';
+import type { AiStatus, ProviderId } from '../../shared/types';
 import type { Db } from '../store/db';
 import { cardRow, type DbRow } from '../db/rows';
 import { jobRows, spendSummary } from '../store/queries';
@@ -166,7 +166,7 @@ export class EngineBridge {
       case 'approval.open': {
         const gate = this.ctx.approvals?.();
         if (!gate) return { re: msg.id, result: { ok: false, error: { kind: 'VALIDATION', message: 'not_implemented' } } };
-        return { re: msg.id, result: gate.openFromEngine({ ...msg.payload, draft: msg.payload.draft as ApprovalDraft }) };
+        return { re: msg.id, result: gate.openFromEngine(msg.payload) };
       }
       case 'approval.transition': {
         const gate = this.ctx.approvals?.();

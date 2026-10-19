@@ -324,7 +324,7 @@ export const ApprovalDraftSchema = z
     evidence: z.array(
       z
         .object({
-          field: z.enum(Object.keys(ApprovalFieldsSchema.shape) as [string, ...string[]]),
+          field: ApprovalFieldsSchema.keyof(),
           toolCallId: z.string().min(1),
           quote: z.string().max(200),
           ref: z.string().optional(),
