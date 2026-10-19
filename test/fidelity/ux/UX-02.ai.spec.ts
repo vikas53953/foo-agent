@@ -107,7 +107,7 @@ test('UX-02 · Find your AI: nothing found, then your own key (UX-02-06, 07, 09)
       .click();
     const box = page.getByTestId(TID.cardSecret).last();
     await expect(box).toHaveAttribute('data-card-state', 'asking');
-    await expect(box).toContainText(t('setup.ai_finder.key.lead', { maker: 'OpenAI' }));
+    await expect(box).toContainText(t('cards.secret.reason.ai_key', { service: 'OpenAI' }));
     await expect(box.getByTestId(TID.cardSecretField)).toHaveAttribute('type', 'password');
     await shoot(page, 'UX-02-07', byTid(TID.cardSecret));
   });

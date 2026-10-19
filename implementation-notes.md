@@ -534,6 +534,23 @@ files are real and which stay seeds). What the real output pinned:
   callers pass an ErrorKind (T7 / the integrator: a call to the stack from `Composer.tsx`).
 - `trace.csv` rows AT-281/282/286/287 still say `pending`: the status column is the integrator's at close-out.
 
+## M6 · memory contracts (ticket T1, CR-0010)
+
+Running ahead of M5 (Vikas, 2026-10-18 18:03Z): the M6 branch `claude/foo-m6-bg91as` is based on the M4 branch. Picks are
+CR-0010 §(b). Where the code stands for the ticket threads:
+
+- Engine seam `src/engine/memory/MemoryPort.ts` (`cmd`, `tidy`), slot `Engine.memory` (stub answers UNKNOWN "not built"). T3
+  sets MemoryService, T7 its tidy. `memory.cmd` and `test.memoryTidy` reach it from `Engine.handle`.
+- Main forwards the eight engine-bound `memory:*` invokes in `IpcRouter.ts` (30 s timeout); `memory:openFolder`,
+  `files:pickFolder` and `data:export {scope:'memory'}` run in main. `src/main/memory/export.ts` is T6's stub to fill.
+- `file.write` → `writeDataFile` in `engineHost.ts` (allow-list `isWritableDataFile`). The engine reads files itself.
+- Named queries in `src/main/db/queries.ts`; `memoryByScope` / `memorySearch` apply the Art. 14 group rule (a live grant
+  admits an about-you or chat-scope fact; private never). T4 refines their bodies.
+- No memory slice in the renderer store (08-5 §5): `memory:changed` and `data:exportProgress` reducers are no-ops; pages use
+  `useFooEvent`.
+- Copy keys are in `en-IN.json` and listed in `scripts/copy-pending.json` by ticket. The two-match forget reply "nothing
+  matched" has no spec words yet: T5 takes them from J17 or files a CR line.
+
 ## M4 · runner core (ticket T2)
 
 ### Built
@@ -647,6 +664,59 @@ files are real and which stay seeds). What the real output pinned:
   SV-19 has no machine form; `trace.csv` BP-CARD rows say `pending` (integrator at close-out). Copy keys still unused, now
   tagged "M4-T7 close-out": `cards.checklist.footer_text.plan`, `cards.plan.change_placeholder`,
   `cards.proof_chip.popover.file_missing`, `cards.not_live_chip.still_failed.text`, `cards.error.still_failing`.
+
+### M6 T4 · memory in replies
+
+- `src/engine/memory/retrieval.ts` `buildMemoryParts(query, {chatId, text, timeZone, now})` picks parts 5/5b per turn:
+  identity rows first (outside the cap), the pinned set cut at 4,000 chars of lines joined by `\n`, then ≤ 8 FTS rows that
+  were not pinned (`memorySearch` takes the pinned ids as `excludeIds`). `ftsMatch` is the §24.16 item 3 query build.
+- The chat lane calls it before `buildIntake`; `PromptBuilder` reports `factIds` (parts 5/5b as sent, after trims) and the
+  lane records uses only for those ids (`memory_index` `last_used_at`, `use_count + 1`; one `memory_uses` row each).
+- Groups: a grant never re-admits a `private=1` fact (08-3 §12.5.1, Art. 14). Step turns (job title + slot values as the
+  query, §24.16 item 3) call the same function from the job lane when it builds part 5b.
+- AT-075 (an edited file shows in the next prompt) lands once T3's watcher is on the milestone branch.
+
+### M6 T5 · learning from chat, chips
+
+- `src/engine/memory/review.ts`: the post-turn review (08-3 §12.4): 20 s of quiet after the last message, at most once per
+  chat per 2 min and only with a user message since the last one; never in a private chat, with `privacy.learnFromChats` or
+  memory off (G-M6-06), at the AI spend cap, or over a "don't remember this" message. Each `add` op passes §12.3 (said =
+  a user message among the evidence with token overlap ≥ 0.6; guessed = ≥ 2 distinct evidence ids + a reason) and then
+  `MemoryService.learn` (§12.4.1). `update` ops go through the new `MemoryService.update` (sensitive rule first). A
+  `memory_review` turn writes one `ai_turns` row whose chat is foo's 1:1 chat for a job-done review.
+- `src/engine/memory/intakeMemory.ts`: intake "remember …" = the manual-add path (G-M6-03): 👍 + chip, no bubble;
+  "forget …" (G-M6-04) = FTS + overlap ≥ 0.6: one → forget + 5 s Undo chip, ≥ 2 → a `memory_confirm` Choice card, none →
+  "I don’t have anything like that saved."; "don't remember this" (J17) skips that message (a bare phrase covers the next
+  one) and posts "Not saving this one."; `privacy.askBeforeRemembering` → "Remember that {fact}?" [ Remember ] [ Don’t ].
+- `src/engine/memory/chips.ts`: chips are `memory_chip` marker rows whose fields are `messages.why.memoryChip`
+  (`ChipData`); Undo for 24 h through a `chip_{markerId}` token on `memory:undo`; ✕ on a "Used:" chip sends
+  `memory:forget { factId, chipId }` → `forgetFromChip` (activity `forgot_facts` count 1, G-M6-10). At most 2 "Used:"
+  chips, guessed first (§12.5), under the reply: the foo bubble, or the Choice / Done card for a job step.
+- `src/engine/tools/memoryTools.ts`: `memory.search` (read) and `memory.propose` (prepare; one per turn; a private chat
+  answers `PRIVATE_BLOCKED`; origin `job:{jobId}`), always in the ToolLayer registry.
+- Renderer `MemoryChip.tsx`: the six kinds (05-3 §5.17.1), 48-character ellipsis with the whole fact in the tooltip and
+  for Narrator, `data-state="memory"` (G-M6-05).
+- Picks to carry in the CR-0010 addendum (T5-01…T5-08):
+  - T5-01 · Chip fields live in `messages.why` (JSON); main lets the engine update `why`.
+  - T5-02 · `memory:forget` gains optional `chipId`; a chip's own Undo uses `chip_{markerId}` on `memory:undo`.
+  - T5-03 · Two new copy keys with no spec words: `thread.memory.forget_none` "I don’t have anything like that saved."
+    and `thread.memory.forget_which` "Which one should I forget?".
+  - T5-04 · `memory_confirm` joins `RUNNER_PURPOSES` so its answers reach the engine.
+  - T5-05 · Undo of a save forgets with a tombstone and no activity row; Undo of an update restores the old text.
+  - T5-06 · A job's "Used:" chip anchors to the chat's newest message (its ask / done card).
+  - T5-07 · No classify turn yet (T3's gap): a chat "remember" saves as kind `fact`, category `other`.
+  - T5-08 · UX-10-02 drawing vs spec: the chip is a marker row under the card (05-3 §5.17.1, 08-3 §12.5, the drawing),
+    not in the card's bottom row (05-1 §5.3.1 sketch); its fill is `--bg-sunken` / `--fg-2` (§5.17.1) where the drawing
+    tints it accent (R3); the ✕ is the `Dismiss` icon (R1 misses the text "✕"). The step adds the drawn fact "hates early
+    flights" with `memory:add`, since the ux-world fact reads "Likes beach stays, hates early flights".
+  - T5-09 (Fable review) · After the Undo of an intake forget, the chip reads "I’ll remember: {fact}" with no button
+    (state `restored`; the spec names no words). A typed "remember …" with memory off or in a private chat gets 👍 and
+    J17's "Not saving this one." chip. A group chat neither learns nor reacts to "remember / forget" (05-3 §5.17
+    "Groups: never", §17.3.3), and its review never runs.
+- Review fixes: a `guessed` fact's evidence ids must resolve to real messages; a review `update` may only touch a fact it
+  was shown; a job-done review reads nothing in a chat with no user message in this run (no re-read after a restart);
+  `memory.propose`'s one-per-turn rule applies only when the turn is known. Kept as is: a review skipped at the spend
+  cap still counts as read (§12.4 "skipped").
 
 ## M5 · contracts, approval machine and card stubs (ticket T1, CR-0009)
 
@@ -801,3 +871,111 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
   detail move to `logEvent`; `EngineBridge.ts` is still open.
 - Tier R drawings disputed on BP-CARD-03/04/08/09 and UX-10-01/03/04/05/06 stay disputed until the gallery redraw.
 - Windows-only checks left for the release run: Credential Manager through `@napi-rs/keyring` on a real PC.
+
+## M6 · memory store (ticket T3)
+
+### Built
+
+- `src/engine/memory/MemoryService.ts` is the `Engine.memory` slot: the eight `memory.cmd` commands (add, edit, setPrivate,
+  setKind, forget, undo, forgetBySource, forgetAll), `learn()` for T5 (placement, §12.4.1 sensitive rule, tombstone check),
+  `forgetFromChip()` (G-M6-10 activity row), and `fileChanged()` / `reindexAll()` for the watcher. Every change is read file →
+  edit → `file.write` (only when the text changed) → parse in the worker → one `db.tx`; commands run one at a time.
+- `reindex.ts` turns one parsed file into index ops (update in place by id, a line moved from another file keeps its row,
+  index-only columns kept: origin reference, category, learned_at, last_used_at, use_count). `sensitive` is re-derived.
+- `watcher.ts`: `fs.watch({DATA}/memory, recursive)`, 500 ms debounce per file on the injected clock; foo's own writes are
+  skipped by comparing the file's sha256 with the last text foo wrote (pack Risk 2).
+- `tombstones.ts`: 90-day rows plus the `memory\.tombstones` mirror (one JSON object per line, the row's columns).
+- Seed: `SeedWriter.fact()` stores the real fact hash and `writeSeedMemory()` writes every seeded fact as its file line, then
+  fixes `line_no`, `hash`, `chat_id`, `sensitive` from the written file, so the engine's reindex of a seed changes nothing
+  (pack Risk 1). `testHooks.ts` calls it after each seed set (the seed functions have no data folder).
+- Checked: the parse worker loads from inside `app.asar` in a utility process (Electron 44, Linux; T2's open note).
+
+### Picks and gaps (for the lead's independent check)
+
+1. **No prompt for the manual-add classify turn.** 08-4 §24 has no prompt file for it (`classify` = `stuck.md` only), and
+   prompt files must equal the spec's blocks. So every manual add takes §12.4's own fallback (kind `fact`, category `other`);
+   the act schema and the turn hook (`classifyFact.ts`) are built and tested. Needs a CR adding the prompt block.
+2. Tombstones block **learning** (`learn()`: review, intake, jobs). The user's own add or edit on the Memory page is not
+   blocked by a tombstone (their typed act, as G-M6-06 treats `rememberOn`).
+3. `setKind`: preference → `preferences\{topic of its category}.md`; fact / place leave `people\` and `preferences\` for
+   `about-you.md`; person stays in its file (the invoke carries no name for a slug); helper notes and chat-only facts keep
+   their file and gain the kind token.
+4. forgetAll: the engine writes each file empty (08-1 §2.4 has no delete), tombstones every fact, and logs `forgot_facts`
+   with the page's own words "Forgot {count} things." (the activity summary needs a `{source}` word the spec does not give);
+   main's `memory:forgetAll` handler then removes the emptied files (`src/main/memory/forgetFiles.ts`), so no person's file
+   name is left (§12.6).
+5. A Notepad line's `learned_at` is now when its date is today, else midday UTC of the written date (the file has no time).
+6. On engine start every memory file on disk is reindexed; index rows whose file is missing are kept (no delete on start).
+7. A sensitive line typed or edited in Notepad is made private at reindex (the file is rewritten once with the token).
+
+### Left for later tickets (from the Fable review)
+
+- Undo of a forget restores the index row but not the fact's `memory_group_grants` rows (main deletes them with the row):
+  T4/T5 own grants.
+- The Notepad reindex runs the sensitive rule without `contacts_index` names, so the contact-details branch (§12.4.1) does
+  not fire there; T5 wires the contacts list into `learn()` and can pass it here too.
+- The watcher and the parse worker are not closed on engine shutdown (main ends the utility process; the worker is unref'd).
+
+## M6 · nightly tidy, conflicts, share, style (ticket T7)
+
+### Built
+
+- `src/engine/memory/tidy.ts`: `tidy({ facts, now, ai, asked, merge }) → { ops, card? }` (08-3 §12.7 steps 1–3) and
+  `MemoryTidy.run()` (applies the plan, posts the conflict card, appends `memory\.tidy-log.md`, returns `TidyReport` with
+  the week count of step 5). `catchUpDue({ lastRunAt, now, timeZone, idleSec })` is the missed-03:00 rule; M7 registers the
+  `memory_tidy` builtin and feeds it `powerMonitor.getSystemIdleTime()` (G-M6-09). FOO_TEST `test:memoryTidy` runs it now.
+- `src/main/notify/budget.ts`: `countToday`, `isQuiet`, `holdOp`, and `gateUnprompted`, which EngineBridge runs on every
+  engine `db.tx` before applying it (§15.2 step 5 "at message time, before anything is posted"): an unprompted message at the
+  budget or in quiet hours is not written, nor the card it carries; a `held_items` row takes its place. M7 extends the file.
+- `src/engine/memory/askShare.ts`: `MemoryShare.ask` (§12.5.1 card in the helper's 1:1 chat) and its answer (24 h grant /
+  dismissed key). The `memory.askShare` tool row in the group helper turn's catalogue lands with group turns (M13).
+- `src/engine/memory/styleStats.ts`: §12.9 numbers and lines, run on each `user.message` and acting at every 20th user
+  message in foo's chat.
+- Main tells the engine about jobless `memory_confirm` / `conflict` answers after writing them (`answerCard.ts`).
+
+### Picks where the spec is silent or reads two ways (decision log M6.tsv, for the CR-0010 addendum)
+
+1. **Entity words (G-M6-T7a).** §12.7 says the entity is "the first noun phrase after `lives in|works at|…`". Read
+   literally, "Lives in Mumbai" and "Lives in Pune" are two entities (Mumbai, Pune) and AT-219's conflict is never sent to
+   the AI. The code groups by the relation word itself (`lives in`) for about-you facts, and by the person's file for
+   `people\` facts; the AI still decides what conflicts.
+2. **Near-duplicates need the same file** as well as the same scope: two people's files can hold the same words
+   ("Birthday 18 Oct").
+3. **A conflict with no `ask`** keeps the newest `said` and drops the other with no tombstone (the user did not forget it);
+   two guesses with no `ask` stay as they are (no words to ask with). Merged duplicates and old guesses are dropped with no
+   tombstone and no undo either.
+4. **Option ↔ fact.** Option i keeps the fact whose text holds the option's words; when that does not decide, the AI's
+   order (`factIds[i]`). The card payload carries `factIds` in option order.
+5. **Why source** of the conflict card is `housekeeping` ("Housekeeping for your routines." — the tidy is the built-in
+   `memory_tidy` routine); `suggestionKey` = `memory_conflict:{idA}-{idB}` (§15.7) and a `suggestions` row is written in the
+   same tx, so the pair is asked once even when the item is held.
+6. **Held payload.** `HeldItemPayload.text` = the message text, or the card's question for a card message; `open` =
+   `open_chat` of the chat; `ref.factIds` from the card payload, so the brief's Review can ask again.
+7. **Words not in the spec** (new keys, need the CR): the share card question `cards.choice.question.memory_share` and
+   `cards.choice.option.no` (the spec's "Okay to tell the {Goa trip} group {…}?" [ Yes ] [ No ]); the tidy log line adds
+   "Settled {n} conflicts" and "Dropped {n} old guesses" to the spec's "Merged 2 duplicates · Asked about 1 conflict"; the
+   style lines `memory.style.*` (the spec names the measures, not the words).
+8. **Style lines** are three when neither a greeting nor a sign-off reaches 5 of 20 (the spec says four lines; the fourth
+   needs a token to name).
+9. **Contracts caught up to 08-1 §2.4.1**: `held_items` and `suggestions` are engine-writable (`suggestions` insert-or-replace
+   on its UNIQUE key) and `suggestionState` is a named query; two new names, `chats.forHelper` and `messages.userTexts`, are
+   additions for the CR.
+10. A private fact is blocked from `askShare` like a sensitive one (§12.5 / Art. 14: private facts never reach a group).
+11. **Review follow-ups (Fable)**: style.md lines never reach a group prompt (`groupExclusion` drops the file; 08-3 §12.1).
+    Left for the CR-0010 addendum or M7: a conflict where both facts are guessed and the AI gives no `ask` is left alone, and
+    TidyAct `keep` is not read (pick 3); the conflict card's why source `housekeeping` may fall under
+    `routines.housekeepingMessages`; the budget gate has no `urgent` exemption and writes no `notifications` row yet
+    (§15.2, §15.6, M7); a held conflict whose held item is never delivered is not asked again (M7's brief should re-post it
+    from `ref.factIds`).
+
+## M6 · close-out (lead, CR-0010)
+
+- Built: the memory store and Notepad watcher (T3), memory in replies (T4), learning from chat and chips (T5), the Memory
+  page with forget dialogs and export (T6), the nightly tidy, conflicts, share and style (T7), and the M5 clean-up (T9). T2
+  (secrets and approvals contracts) and T1 (contracts) landed first.
+- The lead merged T5 and T7 together. Both used `memory_confirm`, so the engine now owns that card (G-M6-21).
+- AT-075 (a Notepad edit reaches the next reply) is `test/integration/m6-watcher.test.ts` over the real Engine and bridge.
+- Golden lane: `FIDELITY_MILESTONE: M6`; captures in `test/fidelity/ux/UX-18.spec.ts` and `test/fidelity/bp/BP-m6.spec.ts`.
+- Moved on (CR-0010 §(f)): to M7, the budget's `urgent` exemption, the `notifications` row, and re-asking a held conflict
+  (G-M6-24). To M8, "Show where I learned it" for Gmail and WhatsApp (G-M6-25). To the spec-keeper, G-M6-16 (X-06 vs §24.16
+  item 4) and G-M6-17 (no classify prompt).

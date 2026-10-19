@@ -44,6 +44,17 @@ const INVOKES = new Set([
   'recovery:choose',
   'error:fix',
   'memory:list',
+  'memory:add',
+  'memory:edit',
+  'memory:setPrivate',
+  'memory:setKind',
+  'memory:forget',
+  'memory:undo',
+  'memory:forgetBySource',
+  'memory:forgetAll',
+  'memory:openFolder',
+  'data:export',
+  'files:pickFolder',
   'routine:list',
   'helper:list',
   'settings:get',
@@ -90,6 +101,8 @@ const EVENTS = new Set([
   'settings:changed',
   'net:state',
   'navigate',
+  'memory:changed',
+  'data:exportProgress',
 ]);
 
 const platform = ipcRenderer.sendSync('app:platform') as PlatformInfo;

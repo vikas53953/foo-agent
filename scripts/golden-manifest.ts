@@ -342,6 +342,31 @@ export const STEP_MILESTONE: Record<string, string> = {
 };
 
 /**
+ * CR-0010: the M6 refs (pack prep/M6.md §6): the memory chip mini of the card gallery (panel 16, 05-3 §5.17) and the Memory
+ * page body of the screen gallery (panel 9, 06-2 §7). The mini is drawn in a 350px panel: R2 boxes disputed by construction.
+ */
+export const BP_M6: BpEntry[] = [
+  {
+    id: 'BP-CARD-16',
+    selector: '#cardgal > .panel:nth-child(16) > .mini',
+    drawn: true,
+    size: { width: null, height: null },
+    spec: '05-3 §5.17',
+    milestone: 'M6',
+    note: 'Card gallery: Memory chip. App: the chip under a reply in the thread, from a seeded marker row.',
+  },
+  {
+    id: 'BP-SCR-09',
+    selector: '#scrgal > .scr:nth-child(9) > .body',
+    drawn: true,
+    size: { width: null, height: null },
+    spec: '06-2 §7',
+    milestone: 'M6',
+    note: 'Screen gallery: What I know about you. App: the Memory page on the seeded world.',
+  },
+];
+
+/**
  * CR-0003: UX steps an earlier milestone runs before the chapter's owner (11 §11.12 M2 "UX-09 steps not needing
  * transcription"). UX-09-01 (the recording bar) and UX-09-08 (Windows blocks the microphone) need no speech-to-text; the
  * other UX-09 steps show transcripts or foo's voice replies (M11).
@@ -511,9 +536,9 @@ async function main() {
       uxChapters: chapters.length,
       uxSteps: ux.length,
       uxFrames: ux.length * 2,
-      bp: BP.length + BP_M2.length + BP_M4.length + BP_M5.length,
+      bp: BP.length + BP_M2.length + BP_M4.length + BP_M5.length + BP_M6.length,
     },
-    bp: [...BP, ...BP_M2, ...BP_M4, ...BP_M5],
+    bp: [...BP, ...BP_M2, ...BP_M4, ...BP_M5, ...BP_M6],
     ux,
     superseded: Object.entries(SUPERSEDED).map(([id, decision]) => ({ id, decision })),
   };
@@ -528,7 +553,7 @@ async function main() {
   }
   writeFileSync(MANIFEST_PATH, text);
   console.log(
-    `golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length + BP_M2.length + BP_M4.length + BP_M5.length} BP ids`,
+    `golden manifest: ${chapters.length} chapters, ${ux.length} UX steps, ${BP.length + BP_M2.length + BP_M4.length + BP_M5.length + BP_M6.length} BP ids`,
   );
 }
 

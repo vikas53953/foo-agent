@@ -16,7 +16,9 @@ import { maskEmail, redactSecrets } from '../../shared/redactor';
 import type { ApprovalFields, ApprovalPayload, CardRow, DraftFields, DraftPayload, SecondLookResult } from '../../shared/types';
 import { approvalExpiresAt } from '../../shared/approvalMachine';
 import { fieldsHash } from '../../engine/gate/fieldsHash';
+import { draftPayloadOf } from '../approvals/cardPayloads';
 import { cardRow, type DbRow } from '../db/rows';
+import type { TechLogEntry } from '../log/techLog';
 import { applyDbOps, type TxEffects } from '../engine-supervisor/engineHost';
 import type { Db } from '../store/db';
 import { errCode } from '../store/rebuild';
@@ -50,7 +52,7 @@ export interface DraftDeps {
   secondLook: SecondLook;
   openExternal?(url: string): void | Promise<void>;
   dataDir?: string;
-  log?(line: Record<string, unknown>): void;
+  log?(entry: TechLogEntry): void;
 }
 
 export interface DraftInput {
@@ -133,7 +135,9 @@ export class DraftService {
     if (card.nonce !== req.nonce) return fail('CARD_STALE');
     if (a.state === 'EXPIRED' || (a.state === 'PENDING' && this.d.now() >= a.expiresAt)) return fail('CARD_EXPIRED');
     if (a.state !== 'PENDING' || card.state !== 'pending') return fail('CARD_STALE');
-    return ok({ card, p: card.payload as unknown as DraftPayload, a });
+    const p = draftPayloadOf(card);
+    if (!p) return fail('VALIDATION');
+    return ok({ card, p, a });
   }
 
   /** `draft:send`: approve once (`approved_via='card'`, X-65) and open the 5 s undo window. */
@@ -167,7 +171,9 @@ export class DraftService {
     if (a.state !== 'APPROVED' || card.state !== 'undo_window' || a.submittedAt !== null || now >= (this.undoUntil(a) ?? 0))
       return fail('TOO_LATE');
     const expiresAt = approvalExpiresAt('send', now);
-    const { undoUntil: _gone, ...p } = card.payload as unknown as DraftPayload;
+    const p0 = draftPayloadOf(card);
+    if (!p0) return fail('VALIDATION');
+    const { undoUntil: _gone, ...p } = p0;
     void _gone;
     // A fresh PENDING approval needs a fresh nonce; both land in one transaction (the gate's move nests as a savepoint).
     const moved = this.d.db.transaction(() => {
@@ -237,8 +243,8 @@ export class DraftService {
     const a0 = this.d.gate.get(approvalId);
     if (!a0 || a0.state !== 'APPROVED') return false;
     const card0 = this.card(a0.cardId);
-    if (!card0) return false;
-    const p0 = card0.payload as unknown as DraftPayload;
+    const p0 = card0 ? draftPayloadOf(card0) : null;
+    if (!p0) return false;
     // M5 T14 (08-2 §9.6, 08-3 §16.1): the second look on the card text, right before the send.
     let look: SecondLookResult | undefined;
     if (!confirmed) {
@@ -253,9 +259,9 @@ export class DraftService {
     // The look may take seconds: read the row and card again, so a move in between (expiry, a stopped job) wins.
     const a = this.d.gate.get(approvalId);
     const card = this.card(a0.cardId);
-    if (!a || a.state !== 'APPROVED' || !card) return false;
+    const p = card ? draftPayloadOf(card) : null;
+    if (!a || a.state !== 'APPROVED' || !card || !p) return false;
     const gmail = this.d.gmail();
-    const p = card.payload as unknown as DraftPayload;
     const now = this.d.now();
     // Write-ahead before the one irreversible call (08-2 §10.4); a crash after this never sends twice.
     const running = this.d.gate.draftMove(a.id, 'submit', {
@@ -267,7 +273,7 @@ export class DraftService {
     const at = this.d.now();
     if (!r.ok) {
       this.d.gate.draftMove(a.id, 'submit_failed', { approval: { failure_kind: r.error.kind }, card: { state: 'failed' } });
-      this.d.log?.({ t: at, lvl: 'warn', mod: 'drafts', evt: r.error.kind, approvalId: a.id });
+      this.d.log?.({ lvl: 'warn', mod: 'drafts', evt: r.error.kind, ids: { approvalId: a.id } });
       return false;
     }
     const proof = { kind: 'sent_folder' as const, connectionId: gmail!.connectionId, messageId: r.value.messageId };
@@ -314,13 +320,19 @@ export class DraftService {
   private hold(approvalId: string, held: Held, result: SecondLookResult | undefined): void {
     const a = this.d.gate.get(approvalId);
     const card = a ? this.card(a.cardId) : null;
-    if (!a || !card) return;
-    const p = card.payload as unknown as DraftPayload;
+    const p = card ? draftPayloadOf(card) : null;
+    if (!a || !p) return;
     const r = this.d.gate.draftMove(a.id, 'second_look_held', {
       approval: { undo_until: null, ...(result ? { second_look: JSON.stringify(result) } : {}) },
       card: { state: 'pending', payload: { ...p, undoUntil: undefined, held }, resolved_by: null, resolved_at: null, answer: null },
     });
-    this.d.log?.({ t: this.d.now(), lvl: 'info', mod: 'drafts', evt: 'second_look.held', approvalId: a.id, reason: held.reason, ok: r.ok });
+    this.d.log?.({
+      lvl: 'info',
+      mod: 'drafts',
+      evt: 'second_look.held',
+      ids: { approvalId: a.id },
+      kind: `${held.reason}:${r.ok ? 'ok' : 'failed'}`,
+    });
   }
 
   /**
@@ -339,7 +351,9 @@ export class DraftService {
     if (a.state === 'EXPIRED' || (a.state === 'HELD' && this.d.now() >= a.expiresAt)) return fail('CARD_EXPIRED');
     if (a.state !== 'HELD') return fail('CARD_STALE');
     const now = this.d.now();
-    const { held: _held, ...p } = card.payload as unknown as DraftPayload;
+    const p0 = draftPayloadOf(card);
+    if (!p0) return fail('VALIDATION');
+    const { held: _held, ...p } = p0;
     void _held;
     const answered = { resolved_by: req.resolvedBy, resolved_at: now, answer: { optionId: req.optionId } };
     if (req.optionId === 'action') {
@@ -384,7 +398,7 @@ export class DraftService {
     try {
       await this.sendOne(approvalId, true);
     } catch (e) {
-      this.d.log?.({ t: this.d.now(), lvl: 'error', mod: 'drafts', evt: 'send.failed', approvalId, code: errCode(e) });
+      this.d.log?.({ lvl: 'error', mod: 'drafts', evt: 'send.failed', ids: { approvalId }, kind: errCode(e) });
     } finally {
       this.sending.delete(approvalId);
     }
@@ -441,7 +455,7 @@ export class DraftService {
     })();
     if (!r) return revert(fail('CARD_STALE'));
     this.d.changed(r);
-    this.d.log?.({ t: now, lvl: 'info', mod: 'drafts', evt: 'card.changed', approvalId: a.id, cardId: card.id });
+    this.d.log?.({ lvl: 'info', mod: 'drafts', evt: 'card.changed', ids: { approvalId: a.id } });
     return ok(this.card(card.id)!);
   }
 
@@ -471,7 +485,8 @@ export class DraftService {
     const a = this.d.gate.byCard(card.id);
     if (!a) return fail('NOT_FOUND');
     if (card.state !== 'pending' || a.state !== 'PENDING') return fail('CARD_STALE');
-    if ((card.payload as unknown as DraftPayload).sendAllowed) return fail('VALIDATION');
+    const p = draftPayloadOf(card);
+    if (!p || p.sendAllowed) return fail('VALIDATION');
     const now = this.d.now();
     const moved = this.d.gate.draftMove(a.id, 'withdraw', { card: { state: 'opened_in_app', resolved_by: 'tap', resolved_at: now } });
     if (!moved.ok) return moved;
@@ -489,7 +504,9 @@ export class DraftService {
     if (a.state !== 'EXPIRED') return fail('CARD_STALE');
     const already = this.d.db.prepare('SELECT 1 FROM cards WHERE supersedes_id = ?').pluck().get(card.id);
     if (already) return fail('CARD_STALE');
-    const { approvalId: _old, undoUntil: _u, undone: _d, ...p } = card.payload as unknown as DraftPayload;
+    const p0 = draftPayloadOf(card);
+    if (!p0) return fail('VALIDATION');
+    const { approvalId: _old, undoUntil: _u, undone: _d, ...p } = p0;
     void _old;
     void _u;
     void _d;

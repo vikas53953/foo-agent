@@ -16,6 +16,12 @@ export const PROVIDER_IDS = [
   'fake',
 ] as const;
 
+/** 08-2 §11.2 / 08-0 §E.8: the providers whose key lives in the vault as `foo/ai_key/{providerId}` (M6 T9: the one list). */
+export const KEY_PROVIDER_IDS = ['openai-key', 'anthropic-key', 'google-key'] as const;
+export type KeyProviderId = (typeof KEY_PROVIDER_IDS)[number];
+/** The one check for an `ai_key` vault name: a key provider, never a CLI, local or fake provider (which have no key). */
+export const isKeyProviderId = (n: string): n is KeyProviderId => (KEY_PROVIDER_IDS as readonly string[]).includes(n);
+
 const providerSchema = z.object({
   kind: z.enum(['plan', 'key', 'local']),
   lastVerifiedAt: z.number().optional(),
@@ -121,6 +127,14 @@ export const settingsSchema = z.object({
       })
       .refine((q) => q.from !== q.to),
     mutedChats: z.record(z.string(), z.union([z.number().int(), z.literal('forever')])),
+    /** M6 (08-0 §A.1, Art. 19): the unprompted budget the memory conflict card counts against (0–3). */
+    unpromptedPerDay: z.number().int().min(0).max(3),
+  }),
+  /** M6 (08-0 §A.1): memory switches (06-2 §6.6 rows mem-on, mem-learn, mem-ask). */
+  privacy: z.object({
+    rememberOn: z.boolean(),
+    learnFromChats: z.boolean(),
+    askBeforeRemembering: z.boolean(),
   }),
   flags: z.object({
     screenHands: z.boolean(),
@@ -155,6 +169,8 @@ export const WRITABLE_PATHS = [
   'permissions.apps.whatsapp',
   'permissions.apps.browser',
   'permissions.apps.outlook',
+  // M6: the Memory page banner's "Turn back on" (06-2 §7.5); the Privacy rows arrive with M13.
+  'privacy.rememberOn',
 ] as const;
 export type WritablePath = (typeof WRITABLE_PATHS)[number];
 

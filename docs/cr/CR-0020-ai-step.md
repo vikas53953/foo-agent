@@ -10,7 +10,7 @@
 - **Spec sections:** 06-1 §2.0, §2.2; 06-2 §6.0, §6.1; 08-0 §A (`ai.*`, `setup.*`), §E.5 (`maker-pages.json`), §E.8; 08-1
   §3.2 (`ai:detect`, `ai:verify`, `ai:choose`, `app:openExternal`, `secret:save`, `secret:list`); 08-2 §6.3.1, §6.6, §6.7;
   05-2 §5.8; 10-acceptance-1 AT-005, AT-006, AT-009, AT-155, AT-155a; 11-fidelity §11.12 item 8.
-- **Status:** pending independent review (§(f)); then approved on Vikas's behalf under his standing rule, DECISIONS X-178.
+- **Status:** Approved by Vikas's approve-on-my-behalf rule (his message 2026-10-18 14:56Z), after the independent review in §(f), DECISIONS X-178
 - **Change:** `spec/trace.csv` (rows below), `spec/constitution/DECISIONS.md` (row X-178); `scripts/golden-manifest.ts`
   (`EARLY_STEPS`) and `golden/manifest.json` regenerated (`xvfb-run pnpm golden:manifest`). No other `spec/` or `golden/`
   file changes.
@@ -66,12 +66,19 @@ stays with M12.
     to M13: Search settings, the narrow (< 720px) drill-in layout, the YOU rows, "Run setup again", foo's profile row, deep-
     link flash, and every other page's rows (those pages show their title). Gap copy: "Not set up yet" (Using with no AI),
     "Free, runs on this PC" (How it's paid for AI on this PC, from 06-1 §2.2 row 6), "checked just now / {n} min / {n} h /
-    {n} days ago".
+    {n} days ago", "Uses your {OpenAI} key" (no saved date known), "Back" (header back button name), "New key" (the
+    Replace key field name). Card copy gaps: "Find your AI" (the card's accessible name), the rows list name, and "Plan limit
+    reached" (a plan limit with no reset time).
 12. **Replace key replaces at save.** The dialog saves the new key over the old one, then tests it; a failed test keeps the
-    dialog open with "That key didn't work…". Keeping the old key until the new one passes needs a vault slot for a
+    dialog open with "That key didn't work…" and an empty field, so the user pastes again. Keeping the old key until the new one passes needs a vault slot for a
     candidate key; that waits for M12's key work.
 13. **The step pill stays at "Step 2 of 4"** after an AI is chosen, because steps 2 to 4 are M12's; chat works meanwhile.
-14. **Locked composer line.** In setup mode the not-set-up composer reads "Connect your AI first, then we can talk."
+14. **A saved key gets its own row.** 06-1 §2.2 says row 5 becomes "{OpenAI} key"; the app adds the key's row above "Your
+    own key" (row 4's place, ladder order) and keeps row 5, so a second key can still be added.
+15. **A plan limit with no reset time** reads as nothing found in the block (its row still says the limit is used up):
+    the only-plan-limited line names the time it starts working, and the AI gave none.
+16. **Choose that fails** (the AI stopped answering since its test) tests the row again, so it shows its real state.
+17. **Locked composer line.** In setup mode the not-set-up composer reads "Connect your AI first, then we can talk."
     (`setup.composer.locked`, 06-1 §2.0); outside setup it keeps "Connect your AI first".
 
 ## (c) Channels (08-1 §3.2 is a closed list)
@@ -97,4 +104,18 @@ waits for a CLI login channel (pick 5). 06-2 §6.1 "the old key is kept until th
 
 ## (f) Independent review
 
-Pending.
+Fable reviewer, 2026-10-19 ~19:00Z, read-only, against 06-1 §2.0 / §2.2, 06-2 §6.0 / §6.1, 08-1 §3.2, 08-2 §6.6 / §6.7 and the
+diff; ran typecheck, `trace:check`, `check:copy`, eslint and the new unit tests. **Verdict: PASS WITH FIXES**; applied:
+
+- Act 1: the "nothing found" question no longer hides the block once a row passes; a sign-in pick on a found helper goes
+  back to the block while it is tested.
+- Act 2: a Backup AI change from Settings (same primary, setup done) no longer answers an open finder card.
+- Consider: gap copy listed in pick 11; the key box reuses `cards.secret.reason.ai_key` instead of a duplicate key; picks
+  14–16 added; the test hook `__fooOpenedExternal` exists in FOO_TEST runs only. Not changed: the Settings "Test now" e2e
+  checks the line after the test (the fake answers at once, so "Testing…" is not held there; UX-24-02 and the unit tests
+  cover the line's states).
+- Noted, no issue: security (keys only through `secret:save` and `vault.use`, maker pages only from the bundled file,
+  `FOO_TEST_AI_HOME` only in FOO_TEST runs), the M6 labelling, existing worlds untouched, timers cleared.
+
+Recorded as approved on Vikas's behalf under his standing rule (his message 2026-10-18 14:56Z: "take care of it on my
+behalf and then keep on working"); listed for his later review.

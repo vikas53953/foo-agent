@@ -22,6 +22,7 @@ import { Menu, type MenuEntry } from '../../ui/Menu';
 import { Spinner } from '../../ui/Spinner';
 import { Tooltip } from '../../ui/Tooltip';
 import { agoOf, backupChoices, lineTone, paidByKey, usingLine, type Ago, type UsingLine } from './aiRows';
+import { RowGroup } from '../shared/RowGroup';
 import { ReplaceKeyDialog } from './ReplaceKeyDialog';
 import styles from './SettingsPage.module.css';
 
@@ -163,7 +164,7 @@ export function AccountAi() {
       <h3 id="settings-account-your-ai" className={styles.sectionLabel}>
         {t('settings.account.section.your_ai')}
       </h3>
-      <ul role="list" className={styles.group}>
+      <RowGroup>
         <li className={styles.row} data-testid={TID.settingsRowAccountAiUsing} data-row-id="settings/account/ai-using">
           <span className={styles.rowText}>
             <span className={styles.rowLabel}>{t('settings.account.ai_using.label')}</span>
@@ -234,7 +235,7 @@ export function AccountAi() {
             <Icon name="ChevronRight" size={20} className={styles.chevron} />
           </button>
         </li>
-      </ul>
+      </RowGroup>
       {replacing && keyId && <ReplaceKeyDialog providerId={keyId} onClose={() => setReplacing(false)} />}
     </section>
   );

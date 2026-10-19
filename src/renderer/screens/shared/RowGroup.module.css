@@ -1,0 +1,21 @@
+/* Spec: 06 §0.4 Row group (1px --line, --r-lg, --bg-app; 1px --line divider inset 16px left). */
+.group {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg-app);
+  list-style: none;
+}
+.group > li {
+  position: relative;
+}
+.group > li + li::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: var(--s3);
+  border-top: 1px solid var(--line);
+  content: '';
+}

@@ -30,7 +30,7 @@ let pages: MakerPages | null = null;
 
 /** FOO_TEST runs never open a browser: the pages foo would have opened are kept here for the E2E (08-3 §22.3). */
 export const openedForTest: string[] = [];
-(globalThis as { __fooOpenedExternal?: string[] }).__fooOpenedExternal = openedForTest;
+if (process.env.FOO_TEST === '1') (globalThis as { __fooOpenedExternal?: string[] }).__fooOpenedExternal = openedForTest;
 
 export function aiFinderIpc(ctx: AppContext): IpcHandlers<'ai:openFinder' | 'ai:askKey' | 'app:openExternal'> {
   const now = () => deps.clock.now();

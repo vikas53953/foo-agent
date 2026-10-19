@@ -11,8 +11,8 @@ import { TID } from '../../../shared/testids';
 import type { SettingsPage as PageId } from '../../../shared/types';
 import { back, update } from '../../store/index';
 import { Icon, type IconName } from '../../ui/Icon';
-import { IconButton } from '../../ui/IconButton';
 import { cx } from '../../ui/cx';
+import { PageHeader } from '../shared/PageHeader';
 import { AccountAi } from './AccountAi';
 import styles from './SettingsPage.module.css';
 
@@ -65,10 +65,7 @@ export function SettingsPage({ page }: { page: PageId }) {
 
   return (
     <div className={styles.page} data-testid={TID.screenSettings} data-page={page} tabIndex={-1}>
-      <header className={styles.header}>
-        <IconButton icon="ArrowLeft" label={t('settings.page.back')} onClick={back} />
-        <h1 className={styles.title}>{t('settings.page.title')}</h1>
-      </header>
+      <PageHeader title={t('settings.page.title')} backLabel={t('settings.page.back')} onBack={back} />
       <div className={styles.body}>
         <nav ref={nav} className={styles.nav} aria-label={t('settings.page.nav_label')} onKeyDown={keys}>
           {NAV.map((n) => {

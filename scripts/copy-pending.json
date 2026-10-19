@@ -1,5 +1,5 @@
 {
-  "_why": "CR-0008: M4 copy keys landed by T1 before the ticket that renders them. check-copy counts a key listed here as used and fails once a t() call uses it (then delete the line). Empty by M4 close-out (T7). CR-0009 adds the M5 keys (owner = the M5 ticket that renders them); empty by M5 close-out (T9).",
+  "_why": "CR-0008: M4 copy keys landed by T1 before the ticket that renders them. check-copy counts a key listed here as used and fails once a t() call uses it (then delete the line). Empty by M4 close-out (T7). CR-0009 adds the M5 keys (owner = the M5 ticket that renders them); empty by M5 close-out (T9). M6 (CR-0010) adds its keys the same way; empty by M6 close-out (T8).",
   "keys": {
     "thread.stop.in_flight": "M10 payments (stop during payment submit; copy names the payment)",
     "thread.queued.ai_back": "M4-T2 runner",
@@ -75,7 +75,6 @@
     "cards.draft.summary.opened_in_x": "M8 X drafts (Draft X variant)",
     "cards.draft.x_opened_line": "M8 X drafts (Draft X variant)",
     "cards.draft.toast": "M11 Windows notifications (Draft toast)",
-    "cards.secret.reason.ai_key": "M12 first run (I have a key + verify)",
     "cards.secret.title.cvv": "M10 payments (CVV box)",
     "cards.secret.title.voice_key": "M11 voice (OpenAI voice key box)",
     "cards.secret.checking": "M12 first run (I have a key + verify)",

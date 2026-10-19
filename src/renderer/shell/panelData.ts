@@ -1,6 +1,9 @@
 // Spec: 03-shell-2 §3.7.3.2 (Using: apps a job used in the last 24 h or is using now, most recent first, 8 max),
-// §3.7.3.3 (What I know: up to 3 facts, most recently used then newest; private facts never in a group, Article 14), §3.7.4.
+// §3.7.3.3 (What I know: up to 3 facts, most recently used then newest; private facts never in a group, Article 14; M6 T6:
+// reloaded on `memory:changed`), §3.7.4.
+import { formatDate } from '../../shared/format';
 import type { ChatRow, JobRow, MemoryFactView } from '../../shared/types';
+import { invoke, onFooEvent } from '../ipc/client';
 
 export const USING_MAX = 8;
 export const KNOW_MAX = 3;
@@ -35,4 +38,24 @@ export function knowFacts(facts: MemoryFactView[], chat: ChatRow): { rows: Memor
   });
   const sorted = [...mine].sort((a, b) => (b.lastUsedAt ?? -1) - (a.lastUsedAt ?? -1) || b.learnedAt - a.learnedAt);
   return { rows: sorted.slice(0, KNOW_MAX), total: mine.length };
+}
+
+/** F19.3 "d Mon" ("3 Oct"; the year joins when it is not this year): the `date` form without its weekday. */
+export function dayMonth(at: number, now: number, timeZone: string): string {
+  return formatDate(at, 'date', { now, timeZone }).replace(/^\S+\s/, '');
+}
+
+/** Loads the facts now and again on every `memory:changed`; returns the unsubscribe. */
+export function watchKnow(set: (facts: MemoryFactView[]) => void): () => void {
+  let live = true;
+  const load = () =>
+    invoke('memory:list', { filter: { chip: 'all' } })
+      .then((r) => live && set(r.ok ? r.value : []))
+      .catch(() => live && set([]));
+  void load();
+  const off = onFooEvent('memory:changed', () => void load());
+  return () => {
+    live = false;
+    off();
+  };
 }

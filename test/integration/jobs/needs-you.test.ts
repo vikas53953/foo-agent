@@ -108,14 +108,19 @@ describe('AT-108 / AT-109 · NEEDS YOU and back', () => {
     const poll = async (rounds = 60) => {
       for (let i = 0; i < rounds; i++) await new Promise((r) => setTimeout(r, 2));
     };
+    // Polls until the moves land (a slow Windows runner needs more than a fixed number of rounds), at most ~5 s.
+    const until = async (ok: () => boolean) => {
+      for (let i = 0; i < 2_500 && !ok(); i++) await new Promise((r) => setTimeout(r, 2));
+    };
     await poll();
     h.clock.advance(2_000);
-    await poll();
+    await until(() => jobOf(0).state === 'needs_you' && h!.jobs().filter((j) => j.state === 'working').length === 3);
     expect(jobOf(0).state).toBe('needs_you');
     expect(h.jobs().filter((j) => j.state === 'working')).toHaveLength(3);
     expect(jobOf(4).state).toBe('queued');
 
     h.answer(String(h.cards('choice')[0]!.id), 'o1');
+    await until(() => h!.cards('choice')[0]!.state === 'answered');
     await poll();
     expect(h.cards('choice')[0]!.state).toBe('answered');
     expect(jobOf(0).state).toBe('needs_you');

@@ -303,6 +303,10 @@ function LiveFinder({ card, time }: { card: CardRow; time: CardTime }) {
     if (busy) return;
     setBusy(action);
     void invoke('ai:choose', { primary: id, backup: backupFor(id, rowsRef.current) })
+      .then((r) => {
+        // AI_NOT_VERIFIED: the AI stopped answering since its test, so it is tested again and its row says so.
+        if (!r.ok && alive.current) test(id);
+      })
       .catch(() => null)
       .finally(() => alive.current && setBusy(null));
   };
@@ -343,8 +347,10 @@ function LiveFinder({ card, time }: { card: CardRow; time: CardTime }) {
   const pickSignIn = (id: ProviderId) => {
     const row = rowsRef.current.find((r) => r.id === id);
     if (row?.found && row.signedIn === false) signIn(id);
-    else if (row?.found) test(id);
-    else setView({ kind: 'consent', id });
+    else if (row?.found) {
+      setView({ kind: 'block' });
+      test(id);
+    } else setView({ kind: 'consent', id });
   };
 
   const onRowAction = (row: FinderRow, action: RowAction) => {
@@ -381,7 +387,13 @@ function LiveFinder({ card, time }: { card: CardRow; time: CardTime }) {
   };
 
   const block = choiceBlock(rows, timeUp);
-  const shownView: View = view.kind === 'block' && block.kind === 'nothing' ? { kind: 'nothing' } : view;
+  // "Nothing found" is a question while nothing works; once a row passes, the block offers it instead.
+  const shownView: View =
+    view.kind === 'block' && block.kind === 'nothing'
+      ? { kind: 'nothing' }
+      : view.kind === 'nothing' && block.kind !== 'nothing' && block.kind !== 'pending'
+        ? { kind: 'block' }
+        : view;
   const working = rows.filter((r) => r.state === 'works' && r.id !== 'own-key').map((r) => r.id as ProviderId);
 
   const note = (id: ProviderId) => {

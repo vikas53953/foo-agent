@@ -134,7 +134,7 @@ export function postKeyBox(db: Db, providerId: KeyProviderId, now: number, dataD
   const payload: SecretPayload = {
     secretKind: 'ai_key',
     name: AI_NAME[providerId],
-    why: t('setup.ai_finder.key.lead', { maker: AI_MAKER[providerId] }),
+    why: t('cards.secret.reason.ai_key', { service: AI_MAKER[providerId] }),
     fields: [{ key: 'value', label: '', masked: true }],
     vaultName: providerId,
   };
