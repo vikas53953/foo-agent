@@ -223,7 +223,7 @@ export class DraftService {
       if (this.sending.has(id)) continue;
       this.sending.add(id);
       try {
-        if (await this.sendOne(id)) out.push(id);
+        if (await this.sendOne(id, this.pickedAction(id))) out.push(id);
       } finally {
         this.sending.delete(id);
       }
@@ -342,8 +342,9 @@ export class DraftService {
     void _held;
     const answered = { resolved_by: req.resolvedBy, resolved_at: now, answer: { optionId: req.optionId } };
     if (req.optionId === 'action') {
+      // `undo_until = now` puts it back on the tick's due list, so a crash before the send still resumes it (review 1).
       const m = this.d.gate.draftMove(a.id, 'held_pick_action', {
-        approval: { approved_at: now, approved_via: 'card' },
+        approval: { approved_at: now, approved_via: 'card', undo_until: now },
         card: { state: 'sending', payload: p, ...answered },
       });
       if (!m.ok) return m;
@@ -367,6 +368,13 @@ export class DraftService {
       throw e;
     }
     return ok(this.card(card.id)!);
+  }
+
+  /** M5 T14: the user answered a held look with the draft's own value (SM-A4), so no second look runs again. */
+  private pickedAction(approvalId: string): boolean {
+    const a = this.d.gate.get(approvalId);
+    const card = a ? this.card(a.cardId) : null;
+    return (card?.answer as { optionId?: unknown } | null)?.optionId === 'action';
   }
 
   private async sendConfirmed(approvalId: string): Promise<void> {

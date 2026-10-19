@@ -318,6 +318,24 @@ describe('Draft card lifecycle (08-0 §G.7, X-65)', () => {
       expect(payload(w, d.cardId).held).toBeUndefined();
     });
 
+    it("after the draft's value is picked, a crash before the send leaves it on the tick's list, which sends it without a look", async () => {
+      const { w, seen } = heldWorld();
+      const d = await heldDraft(w);
+      // The in-memory send never runs (a crash): the pick is committed, then main's tick finds it.
+      const original = w.h.gate.draftMove.bind(w.h.gate);
+      let block = true;
+      w.h.gate.draftMove = (id, ev, x) =>
+        block && ev === 'submit' ? ((block = false), { ok: false, error: { kind: 'CARD_STALE' } }) : original(id, ev, x);
+      expect(w.drafts.heldPick({ ...tap(d), optionId: 'action' }).ok).toBe(true);
+      await new Promise((res) => setTimeout(res, 0));
+      expect(w.gmail.sent).toHaveLength(0);
+      expect(w.h.approval(d.approvalId)).toMatchObject({ state: 'APPROVED', submitted_at: null });
+      expect(await w.drafts.tick()).toEqual([d.approvalId]);
+      expect(seen).toHaveLength(1);
+      expect(w.gmail.sent).toHaveLength(1);
+      expect(w.h.card(d.cardId).state).toBe('sent');
+    });
+
     it("picking the user's own value: nothing sent, HELD → DECLINED, the card superseded by a fresh pending Draft on the same Gmail draft", async () => {
       const { w } = heldWorld();
       const d = await heldDraft(w);

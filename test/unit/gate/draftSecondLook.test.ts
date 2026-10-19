@@ -22,7 +22,12 @@ function core(o: { words?: string[]; approval?: boolean; primary?: boolean } = {
   const c = {
     d: {
       clock: { now: () => NOW },
-      ai: { pick: () => (o.primary === false ? null : { providerId: 'claude', backup: false }) },
+      ai: {
+        pick: () => (o.primary === false ? null : { providerId: 'claude', backup: false }),
+        turnParams: () => ({ maxOutputTokens: 200 }),
+      },
+      rateOf: () => null,
+      usdToInr: 1,
       prompts: {
         buildSecondLook: (userWords: string[], actionJson: string) => {
           prompts.push({ userWords, actionJson });
@@ -39,6 +44,8 @@ function core(o: { words?: string[]; approval?: boolean; primary?: boolean } = {
             : { jobId: 'j_1', fields: FIELDS }
           : (o.words ?? []).map((text, i) => ({ authorKind: 'user', text, createdAt: NOW - 60_000 + i })),
       ),
+    // The cap refuses the call, so the look ends cannot_check right after building its prompt.
+    cost: { allows: () => Promise.resolve(false) },
     job: () => Promise.resolve({ id: 'j_1', origin: 'user', createdAt: NOW - 120_000, chatId: 'c_1', originChatId: 'c_1' }),
   };
   return { core: c as unknown as RunnerCore, prompts };
@@ -56,6 +63,15 @@ describe('draft.secondLook (08-2 §9.6 on a Draft send, G-M5-39 (b))', () => {
     const out = await draftSecondLook(c, 'Asia/Kolkata', { ...req, recipients: ['someone@example.net'] });
     expect(out).toMatchObject({ pass: false, held: { reason: 'mismatch', actionHas: 's***@example.net' } });
     expect(prompts).toEqual([]);
+  });
+
+  it('the AI check reads the whole card text, not the 140-character summary, and the user’s own words', async () => {
+    const { core: c, prompts } = core({ words: ['Email Rakesh that I’ll pay the rent on Monday'] });
+    expect(await draftSecondLook(c, 'Asia/Kolkata', req)).toMatchObject({ pass: false, held: { reason: 'cannot_check' } });
+    expect(prompts).toHaveLength(1);
+    const p = prompts[0] as { userWords: string[]; actionJson: string };
+    expect(JSON.parse(p.actionJson).contentSummary).toBe(req.content);
+    expect(p.userWords.join('\n')).toContain('pay the rent on Monday');
   });
 
   it('no user words → HELD(no_user_words); no AI → HELD(cannot_check, sending); no approval row → cannot_check', async () => {

@@ -766,3 +766,9 @@ max-width: 100%` (`.wide` the same with `--card-w-wide`). CardFrame takes `data`
   (fail closed); the port is required, so no Draft can send without it. HELD keeps the card `pending` with the held strip;
   the draft's value → HELD → APPROVED and sends at once; the user's value → DECLINED (G-M5-03), the card superseded and a
   fresh pending Draft on the same Gmail draft (as G-M5-28), since re-writing it with their value is M8's draft producer.
+- M5-T14-04 · Fable review PASS WITH FIXES: fixed (1) the draft's-value pick sets `undo_until = now`, so a crash before the
+  send leaves it on the tick's list (sent without a second look, the pick being its answer); (4) a unit case proves the AI
+  check reads the whole card text. Logged: (2) the Draft look's AI turn runs on its own signal, bounded by main's 60 s
+  request timeout; (3) a Draft held cannot_check is never looked at again when the AI returns (the strip's "I'll ask again"
+  is J19's, as for T8); (5) the activity.jsonl mirror is not rewritten by `approval:report` (the M8 / M9 producer of
+  `unknown` rows mirrors it); (6) a CHECKING card with no site or payee would read "{site}" empty (no such card in M5).
