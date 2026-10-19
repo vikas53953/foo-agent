@@ -6,16 +6,22 @@
 // §0.6 / §0.7.1 (ids, safeName), 04 §3.3 (a message that cannot reach the job runner is saved as Waiting to send, `queued`;
 // otherwise ✓ Sent once written), 04-2 §21.3 (text trimmed of leading/trailing blank lines; spaces only never sends; the
 // draft is deleted on Send), §22.4 ("Send anyway": the span shows as "•••• (hidden)"; the AI text is the hidden note), §23.5,
-// 08-2 §11.5, AT-225. No AI turn is started here (M3).
+// 08-2 §11.5, AT-225. No AI turn is started here (M3). M5 T3: the stored text and the AI text go through
+// `Store.writeRedacted` (R2); a value main itself hides on "Send anyway" is registered in the SecretRegistry (§11.5); what
+// the composer already masked never leaves the renderer, so "the real value is not kept anywhere" (04-2 §22.4).
 import type { Db } from './db';
 import { draftRow, type DbRow } from '../db/rows';
 import { messageGet } from './queries';
 import { t } from '../../shared/copy/t';
-import { checkSecret, redactSecrets } from '../../shared/redactor';
+import { checkSecret, findSecrets } from '../../shared/redactor';
+import { registerSecretValue } from '../secrets/registerValue';
+import { writeRedacted } from './writeRedacted';
 import type { Attachment, DraftRow, MessageRow, PasteCatch } from '../../shared/types';
 
 /** 04-2 §22.4 / 08-2 §11.5: what the AI receives in place of a hidden secret (a prompt string, not copy; 08-0 §D). */
 export const HIDDEN_FOR_AI = '[the user typed a secret; it was hidden]';
+/** 08-2 §11.2 (X-114): a typed code lives in the registry for 10 minutes. */
+export const OTP_TTL_MS = 10 * 60_000;
 /** 04-2 §22.1: a voice note shorter than this is discarded. */
 export const VOICE_MIN_MS = 500;
 /** 04-2 §22.1 / J7: recording stops at 5:00. */
@@ -107,8 +113,8 @@ function insertUserMessage(
     seq,
     m.kind,
     m.clientId,
-    m.text,
-    m.textForAi,
+    writeRedacted(m.text),
+    m.textForAi === null ? null : writeRedacted(m.textForAi),
     m.status,
     m.replyToId,
     m.kind === 'text' ? textLang(m.text) : null,
@@ -148,7 +154,14 @@ export function sendMessage(db: Db, req: SendRequest, ctx: SendContext): SendRes
   let forAi: string | null = null;
   if (req.secretOverride) {
     const hidden = t('composer.paste.hidden_in_bubble');
-    stored = redactSecrets(text, hidden, { askedForCode: ctx.askedForCode }).text;
+    stored = text;
+    for (const h of findSecrets(text, { askedForCode: ctx.askedForCode }).reverse()) {
+      registerSecretValue(text.slice(h.start, h.end), {
+        kind: h.kind === 'otp' ? 'otp' : 'pasted',
+        ttlMs: h.kind === 'otp' ? OTP_TTL_MS : null,
+      });
+      stored = stored.slice(0, h.start) + hidden + stored.slice(h.end);
+    }
     if (stored.includes(hidden)) forAi = stored.split(hidden).join(HIDDEN_FOR_AI);
   } else {
     const paste = checkSecret(text, { askedForCode: ctx.askedForCode });
@@ -204,7 +217,7 @@ export function saveDraft(
   const chat = db.prepare('SELECT id FROM chats WHERE id = ? AND deleted_at IS NULL').get(req.chatId) as DbRow | undefined;
   if (!chat) return null;
   const attachments = req.attachmentIds.map(ctx.attachment).filter((a): a is Attachment => !!a);
-  const text = redactSecrets(req.text).text;
+  const text = writeRedacted(req.text);
   if (!text.trim() && !attachments.length && !req.replyToId) return { changed: deleteDraftRow(db, req.chatId), draft: null };
   const before = db.prepare('SELECT text, attachments, reply_to_id, link_preview_removed FROM drafts WHERE chat_id = ?').get(req.chatId) as
     DbRow | undefined;
