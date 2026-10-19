@@ -1,0 +1,122 @@
+{
+  "id": "BP-CARD-20",
+  "theme": "light",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0008",
+    "checks": [
+      "r1",
+      "r2"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "This",
+        "would",
+        "pass",
+        "your",
+        "purchase",
+        "₹15,779",
+        "spent",
+        "of",
+        "₹25,000.",
+        "This",
+        "is",
+        "₹14,600.",
+        "Not",
+        "now"
+      ],
+      "extra": [
+        "You’ve",
+        "reached",
+        "this",
+        "month’s",
+        "AI",
+        "(₹1,000).",
+        "I’ve",
+        "paused",
+        "1",
+        "job",
+        "and",
+        "0",
+        "routines.",
+        "Nothing",
+        "was",
+        "lost.",
+        "Wait",
+        "until",
+        "Sun",
+        "1",
+        "Nov",
+        "9:29",
+        "AM"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-CARD-20",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 351.328125,
+          "height": 138
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 440,
+          "height": 126
+        },
+        "dPos": 0,
+        "dSize": 88.671875,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-CARD-20",
+        "ref": "#FFFFFF",
+        "app": "#FFFFFF",
+        "deltaE": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.1439424772758106,
+    "diffPixels": 6366,
+    "total": 44226,
+    "sizeMismatch": {
+      "a": [
+        351,
+        138
+      ],
+      "b": [
+        440,
+        126
+      ]
+    },
+    "heatmap": "BP-CARD-20.light.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-CARD-20.light.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-CARD-20.light.png"
+}
