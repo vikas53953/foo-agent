@@ -1,0 +1,55 @@
+{
+  "journey": "test/verify/m5-t11-canary.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "69029a0944c2401e7b9e9fb88458fecde69224bf",
+  "dirty": false,
+  "started": "2026-10-19T12:08:21.635Z",
+  "finished": "2026-10-19T12:08:26.746Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "AI key moved and saved, card saved (CVV typed, never saved), login saved, code used, three \"Send anyway\" messages",
+    "ART-08a canary scan: 0 hit(s) for 5 canaries in 12 files (1163762 bytes) and 7 dom, 7 dom-text, 3 ai-request, 1 process-output text captures.",
+    "searched: {\"DATA\":12,\"LOCAL\":0,\"OUT\":0} files, texts {\"dom\":7,\"dom-text\":7,\"ai-request\":3,\"process-output\":1}; report test-results/canary/ART-08a.json"
+  ],
+  "shots": [
+    {
+      "file": "after/01-ai-key-caught.light.png",
+      "name": "ai-key-caught",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-ai-key-saved.light.png",
+      "name": "ai-key-saved",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-card-form-filled.light.png",
+      "name": "card-form-filled",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-card-saved.light.png",
+      "name": "card-saved",
+      "theme": "light"
+    },
+    {
+      "file": "after/05-login-saved.light.png",
+      "name": "login-saved",
+      "theme": "light"
+    },
+    {
+      "file": "after/06-code-used.light.png",
+      "name": "code-used",
+      "theme": "light"
+    },
+    {
+      "file": "after/07-sent-anyway.light.png",
+      "name": "sent-anyway",
+      "theme": "light"
+    }
+  ],
+  "consoleErrors": []
+}
