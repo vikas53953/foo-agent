@@ -9,6 +9,7 @@ import { join } from 'node:path';
 import type { Verify } from '../../scripts/foo-verify';
 import { TID } from '../../src/shared/testids';
 import { intake } from '../e2e/fakeAi';
+import { settleSeededJobs } from '../e2e/m4-start';
 import { byTid, openChat, openWorld, rest, setTheme, settle } from '../fidelity/capture';
 
 const CANARY = 'sk-proj-FAKE0canary0T3journey000000000';
@@ -27,7 +28,8 @@ export default async function journey(v: Verify): Promise<void> {
   const base = mkdtempSync(join(tmpdir(), 'foo-t3-proof-'));
   const dirs = { FOO_DATA_DIR: join(base, 'data'), FOO_LOCAL_DIR: join(base, 'local') };
   const { app, page } = await v.launch({ fakeAi: [intake(HIDDEN_NOTE, ANSWER)], env: dirs });
-  await openWorld(app, page);
+  // The ux-world seed carries live M4 jobs; a message sent while one runs steers it instead of starting a reply.
+  await settleSeededJobs(page, await openWorld(app, page));
   await openChat(page, 'foo');
   await setTheme(page, 'light');
   await rest(page);
