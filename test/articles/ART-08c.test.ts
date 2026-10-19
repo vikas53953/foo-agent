@@ -31,7 +31,7 @@ function input(over: Partial<IntakeInput>): IntakeInput {
   };
 }
 
-describe('Article 8c: AI requests name secrets, never their values', () => {
+describe('ART-08c · AI requests name secrets, never their values', () => {
   it('a value the engine used this run is blanked from every part of the request; its name stays', () => {
     const clock = new FakeClock(TEST_EPOCH_MS);
     const late: string[] = [];

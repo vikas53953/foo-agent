@@ -3,8 +3,8 @@
 import { mkdtempSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { describe, expect, it } from 'vitest';
-import { TechLog, techLogLine, type TechLogEntry } from '../../../src/main/log/techLog';
+import { describe, expect, it, vi } from 'vitest';
+import { logEvent, setAppTechLog, TechLog, techLogLine, type TechLogEntry } from '../../../src/main/log/techLog';
 import { FakeClock, TEST_EPOCH_MS } from '../../../src/shared/clock';
 import { Redactor } from '../../../src/shared/redactor';
 
@@ -75,5 +75,35 @@ describe('R7 tech log filter', () => {
     const lines = readFileSync(file, 'utf8').trim().split('\n');
     expect(JSON.parse(lines.at(-1)!).evt).toBe('e59');
     expect(lines.some((l) => JSON.parse(l).evt === 'e0')).toBe(false);
+  });
+});
+
+describe('R7: main logs through one sink', () => {
+  it('logEvent writes the filtered line to the app log; before the log opens it goes to the console, still filtered', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    setAppTechLog(null);
+    logEvent({ lvl: 'warn', mod: 'ipc', evt: 'IPC_REJECTED', kind: `message:send ${CANARY}`, text: CANARY } as TechLogEntry);
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(String(warn.mock.calls[0]![0])).not.toContain(CANARY);
+    warn.mockRestore();
+
+    const dir = mkdtempSync(join(tmpdir(), 'foo-applog-'));
+    setAppTechLog(new TechLog({ dir, clock: new FakeClock(TEST_EPOCH_MS) }));
+    logEvent({ lvl: 'error', mod: 'ipc', evt: 'IPC_FAILED', kind: `message:send TypeError ${CANARY}` });
+    setAppTechLog(null);
+    const [file] = readdirSync(dir);
+    const text = readFileSync(join(dir, file!), 'utf8');
+    expect(text).toContain('"IPC_FAILED"');
+    expect(text).not.toContain(CANARY);
+  });
+
+  it('a log that cannot be written never throws into the caller', () => {
+    setAppTechLog({
+      write: () => {
+        throw new Error('disk full');
+      },
+    } as unknown as TechLog);
+    expect(() => logEvent({ lvl: 'info', mod: 'main', evt: 'APP_STARTED' })).not.toThrow();
+    setAppTechLog(null);
   });
 });

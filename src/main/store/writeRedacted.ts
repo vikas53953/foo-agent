@@ -34,23 +34,34 @@ export function writeRedactedJson<T>(value: T): T {
   return walk(value) as T;
 }
 
+/** The §4.6 rule 2 columns that hold JSON: every string leaf is redacted, keys and shape stay. */
+export const REDACTED_JSON_COLUMNS: Readonly<Record<string, readonly string[]>> = {
+  tool_calls: ['args', 'result'],
+  activity: ['fields'],
+  cards: ['payload'],
+};
+
 /**
- * A row about to be written: each §4.6 rule 2 column of `table` (plus `extra`, a DbOp's `redact` list) redacted. A JSON
- * column given as text is parsed, redacted leaf by leaf and written back as JSON text.
+ * A row about to be written: each §4.6 rule 2 column of `table` (plus `extra`, a DbOp's `redact` list) redacted. Whether a
+ * column is JSON comes from {@link REDACTED_JSON_COLUMNS}, never from its content: a JSON column given as text is parsed,
+ * redacted leaf by leaf and written back as JSON text (text that does not parse is redacted whole); every other column is text.
  */
 export function redactRow(table: string, row: Record<string, unknown>, extra: readonly string[] = []): Record<string, unknown> {
   const out = { ...row };
+  const json = REDACTED_JSON_COLUMNS[table] ?? [];
   for (const col of new Set([...(REDACTED_COLUMNS[table] ?? []), ...extra])) {
     const v = out[col];
-    if (typeof v === 'string') {
+    if (typeof v === 'string' && json.includes(col)) {
       let parsed: unknown;
       try {
-        parsed = v.trim().startsWith('{') || v.trim().startsWith('[') ? JSON.parse(v) : undefined;
+        parsed = JSON.parse(v);
       } catch {
-        parsed = undefined;
+        out[col] = writeRedacted(v);
+        continue;
       }
-      out[col] = parsed === undefined ? writeRedacted(v) : JSON.stringify(writeRedactedJson(parsed));
-    } else if (v && typeof v === 'object') out[col] = writeRedactedJson(v);
+      out[col] = JSON.stringify(writeRedactedJson(parsed));
+    } else if (typeof v === 'string') out[col] = writeRedacted(v);
+    else if (v && typeof v === 'object') out[col] = writeRedactedJson(v);
   }
   return out;
 }

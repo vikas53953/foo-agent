@@ -4,7 +4,7 @@
 // 08-2 §11.4 R7 (logs go through the Redactor with channel `log`), 08-0 §G.6 (`registry:add` values never reach a log).
 import { appendFileSync, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import type { Clock } from '../../shared/clock';
+import { systemClock, type Clock } from '../../shared/clock';
 import { Redactor } from '../../shared/redactor';
 import { mainRegistry } from '../secrets/registerValue';
 
@@ -89,5 +89,29 @@ export class TechLog {
       );
     }
     appendFileSync(file, `${line}\n`, 'utf8');
+  }
+}
+
+let appLog: TechLog | null = null;
+
+/** Startup step 2 opens the app's tech log; until then (a deep link at launch) lines go to the console, still filtered. */
+export function setAppTechLog(log: TechLog | null): void {
+  appLog = log;
+}
+
+/** Main's one log sink (R7): every line passes {@link techLogLine}. A failed write never takes the app down. */
+export function logEvent(entry: TechLogEntry): void {
+  try {
+    if (appLog) appLog.write(entry);
+    else {
+      const line = techLogLine(entry, {
+        now: systemClock.now(),
+        debug: false,
+        redactor: new Redactor({ clock: systemClock, registry: mainRegistry() }),
+      });
+      if (line) console.warn(line);
+    }
+  } catch {
+    // The log is best effort; the work it describes goes on.
   }
 }

@@ -334,7 +334,7 @@ export class SecretRegistry {
 const BEARER = /\bBearer\s+[A-Za-z0-9._~+/=-]{8,}/gu;
 const PEM_BLOCK = /-----BEGIN (?:[A-Z0-9]+ )*PRIVATE KEY-----[\s\S]*?(?:-----END (?:[A-Z0-9]+ )*PRIVATE KEY-----|$)/gu;
 const URL_PARAM = /[?&](?:token|key|code|sig|signature|password|pwd|secret|auth)=([^&#\s]+)/giu;
-const URL_USERINFO = /\b[a-z][a-z0-9+.-]*:\/\/([^\s/@:]+(?::[^\s/@]*)?)@/giu;
+const URL_USERINFO = /\b[a-z][a-z0-9+.-]{0,31}:\/\/([^\s/@:]+(?::[^\s/@]*)?)@/giu;
 // The words confirmation, booking, reference, order, PNR, ticket, receipt and a bare "code" do not trigger (§11.4).
 const OTP_WORD = /(?:\b(?:otp|one[- ]?time|verification code|security code|passcode)\b|पासकोड|ओटीपी|ਓਟੀਪੀ)/giu;
 const CODE_NEAR = /(?<!\d)\d{4,8}(?!\d)/gu;
@@ -348,10 +348,16 @@ export function extraSpans(text: string): { start: number; end: number }[] {
       const start = m.index + m[0].indexOf(v);
       out.push({ start, end: start + v.length });
     }
+  const near = new Set<number>(); // a code near several OTP words is one span
   for (const w of text.matchAll(OTP_WORD)) {
     const from = Math.max(0, w.index - 40);
     const to = Math.min(text.length, w.index + w[0].length + 40);
-    for (const m of text.slice(from, to).matchAll(CODE_NEAR)) out.push({ start: from + m.index, end: from + m.index + m[0].length });
+    for (const m of text.slice(from, to).matchAll(CODE_NEAR)) {
+      const start = from + m.index;
+      if (near.has(start)) continue;
+      near.add(start);
+      out.push({ start, end: start + m[0].length });
+    }
   }
   return out;
 }
@@ -371,7 +377,7 @@ export interface RedactCtx {
   sharedAddresses?: readonly string[];
 }
 
-const EMAIL = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}\b/gu;
+const EMAIL = /\b[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9-]{1,63}(?:\.[A-Za-z0-9-]{1,63}){0,8}\.[A-Za-z]{2,63}\b/gu;
 /** A phone number: optional +country code, then 10 digits with optional spaces or dashes. */
 const PHONE = /(?<![\w+•])(?:\+(\d{1,3})[ -]?)?((?:\d[ -]?){9}\d)(?![\w•])/gu;
 /** Reference numbers that look like phone numbers (a PNR is 10 digits) are not phone numbers. */
@@ -469,13 +475,16 @@ export class Redactor {
         last.card = last.card && sp.card;
       } else merged.push({ ...sp });
     }
-    let out = text;
-    for (const h of [...merged].reverse()) {
-      const span = out.slice(h.start, h.end);
-      const rep = h.card ? `${MASK} ${span.replace(/\D/g, '').slice(-4)}` : HIDDEN;
-      out = out.slice(0, h.start) + rep + out.slice(h.end);
+    // One pass, so thousands of hits in a long text stay linear.
+    const parts: string[] = [];
+    let at = 0;
+    for (const h of merged) {
+      const span = text.slice(h.start, h.end);
+      parts.push(text.slice(at, h.start), h.card ? `${MASK} ${span.replace(/\D/g, '').slice(-4)}` : HIDDEN);
+      at = h.end;
     }
-    return { text: out, hits: merged.length };
+    parts.push(text.slice(at));
+    return { text: parts.join(''), hits: merged.length };
   }
 
   /** 08-2 §11.4 steps 1–3. */

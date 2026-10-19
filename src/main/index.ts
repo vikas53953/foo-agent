@@ -22,6 +22,7 @@ import { openDbOrRebuild } from './store/rebuild';
 import { PowerService } from './power/PowerService';
 import { ensureFooChat } from './store/queries';
 import { newId } from '../shared/ids';
+import { logEvent, setAppTechLog, TechLog } from './log/techLog';
 import { createMainWindow } from './windows/mainWindow';
 import { handleAppScheme, registerAppScheme } from './windows/protocol';
 import { claimSingleInstance } from './windows/singleInstance';
@@ -59,8 +60,9 @@ async function loadTestHooks(ctx: AppContext, clock: FakeClock): Promise<void> {
 }
 
 function onDeepLink(url: string): void {
-  // The 08-0 §G.9 route table arrives with M11; until then every URL is logged and ignored.
-  console.warn('URL_NOT_ALLOWED', url);
+  // The 08-0 §G.9 route table arrives with M11; until then every URL is ignored. The URL itself is never logged (R7).
+  void url;
+  logEvent({ lvl: 'warn', mod: 'main', evt: 'URL_NOT_ALLOWED' });
 }
 
 // Step 1: single instance.
@@ -77,6 +79,9 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
 
   app.whenReady().then(async () => {
     const testClock = testHooksEnabled() ? installTestDeps() : null;
+    // 08-3 §19.1 / R7: the tech log, on the injected clock; debug lines only in test runs.
+    setAppTechLog(new TechLog({ dir: join(paths.data, 'logs'), clock: deps.clock, debug: !!testClock }));
+    logEvent({ lvl: 'info', mod: 'main', evt: 'APP_STARTED' });
     // Step 1 (second half): the launch record and the safe-mode decision, on the injected clock.
     launches = LaunchLog.start(join(paths.data, 'launches.json'), deps.clock.now(), app.getVersion());
     // Step 3: SQLite; a damaged file is set aside and rebuilt from the mirrors (§4.1.1).
@@ -84,7 +89,7 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
       dataDir: paths.data,
       now: deps.clock.now(),
       agentName: settings.get().identity.agentName,
-      log: (evt, detail) => console.warn(evt, detail),
+      log: (evt, detail) => logEvent({ lvl: evt === 'DB_REBUILT' ? 'warn' : 'error', mod: 'store', evt, kind: detail }),
     }).db;
     ensureFooChat(db, deps.clock.now(), settings.get().identity.agentName, newId('c', deps.clock.now()));
     // Network state on the injected clock: the injected Net in test runs, Electron's probe otherwise.

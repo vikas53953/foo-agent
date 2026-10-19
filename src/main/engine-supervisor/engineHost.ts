@@ -12,7 +12,7 @@ import { canTransition } from '../../shared/jobMachine';
 import type { ActivityOpRow, DbOp, DbTxReply } from '../../engine/protocol';
 import type { Db } from '../store/db';
 import { nextSeq } from '../store/composerQueries';
-import { redactRow, writeRedacted } from '../store/writeRedacted';
+import { redactRow, writeRedacted, writeRedactedJson } from '../store/writeRedacted';
 import { recomputePill } from '../store/queries';
 import { NAMED_QUERIES, type QueryCtx } from '../db/queries';
 import { newId } from '../../shared/ids';
@@ -157,14 +157,13 @@ const UPDATE_COLUMNS: Record<string, readonly string[]> = {
   tool_calls: TOOL_CALL_COLUMNS.filter((c) => !['id', 'job_id', 'started_at', 'idem_key'].includes(c)),
   cards: ['state', 'payload', 'answer', 'expires_at', 'resolved_by', 'resolved_at', 'supersedes_id', 'job_id'],
 };
-/** JSON columns: an object or array is stored as JSON text; `REDACT_JSON` ones have every string leaf redacted (§4.6 rule 2). */
+/** JSON columns: an object or array is stored as JSON text; `redactRow` then scrubs the §4.6 rule 2 ones leaf by leaf. */
 const JSON_COLUMNS: Record<string, readonly string[]> = {
   jobs: ['do_verbs', 'proof'],
   steps: ['slots'],
   tool_calls: ['args', 'result'],
   cards: ['payload', 'answer'],
 };
-const REDACT_JSON: Record<string, readonly string[]> = { tool_calls: ['args', 'result'], cards: ['payload'] };
 /** Tables whose rows carry `rev` (08-0 §B.1: every UPDATE bumps it). */
 const HAS_REV = new Set(['messages', 'jobs', 'steps', 'cards']);
 
@@ -198,14 +197,7 @@ function checkColumns(cols: string[], allowed: readonly string[] | undefined): v
   for (const c of cols) if (!allowed.includes(c)) throw new DbOpError('DB_NOT_WRITABLE', `${c} is not writable`);
 }
 
-function redactLeaves(v: unknown): unknown {
-  if (typeof v === 'string') return writeRedacted(v);
-  if (Array.isArray(v)) return v.map(redactLeaves);
-  if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, redactLeaves(x)]));
-  return v;
-}
-
-/** JSON columns to text (redacted where §4.6 rule 2 says so); booleans to 0/1. */
+/** JSON columns to text; booleans to 0/1. Redaction (§4.6 rule 2) is `redactRow`'s, after this. */
 function normalise(table: string, row: Record<string, unknown>): Record<string, unknown> {
   const out: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(row)) {
@@ -219,7 +211,6 @@ function normalise(table: string, row: Record<string, unknown>): Record<string, 
           throw new DbOpError('VALIDATION', `${table}.${k} is not JSON`);
         }
       }
-      if (REDACT_JSON[table]?.includes(k)) parsed = redactLeaves(parsed);
       x = JSON.stringify(parsed);
     }
     if (typeof x === 'boolean') x = x ? 1 : 0;
@@ -370,7 +361,7 @@ function insertActivity(db: Db, row: ActivityOpRow, now: number, lines: string[]
   const clean: ActivityOpRow = {
     ...row,
     summary: writeRedacted(row.summary),
-    fields: row.fields ? (redactLeaves(row.fields) as Record<string, unknown>) : null,
+    fields: row.fields ? writeRedactedJson(row.fields) : null,
   };
   const cols = ['id', 'at', ...Object.keys(clean).map((k) => ACTIVITY_COLUMNS[k as keyof ActivityOpRow])];
   const vals = [id, now, ...Object.entries(clean).map(([k, v]) => (k === 'fields' && v ? JSON.stringify(v) : v))];
