@@ -179,9 +179,9 @@ describe('AT-016 · Choice cards with purpose setup (G-M5-11)', () => {
   });
 });
 
-describe('stepper cards (implementation-notes M5-T5: a stepper is answered on the card)', () => {
-  it('a card with more than one question is not answered by typing', () =>
-    expect(typedAnswer('1', { ...flights, steps: [{ question: 'Seat?', options: flights.options }] })).toEqual({ kind: 'none' }));
+describe('stepper cards (08-1 §4.5: one card per question)', () => {
+  it('a stepper card is one question, so typing answers it like any card', () =>
+    expect(typedAnswer('1', { ...flights, stepper: { index: 2, total: 3 } } as AnswerableCard)).toEqual(ans('o1')));
 });
 
 describe('G-M5-09 · the toast best-fit answer (fake notifier)', () => {

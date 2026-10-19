@@ -65,12 +65,17 @@ export async function answerTyped(d: TypedHookDeps, m: { chatId: string; message
   if (hit.result.kind !== 'answer') return false;
 
   const answer = hit.result.answer;
-  await d.tx([seen]);
   if (card.jobId !== null || RUNNER_PURPOSES.has(String(card.payload.purpose))) {
-    await d.answerJobCard?.({ cardId: card.id, answer, ...('optionId' in answer ? { choice: answer.optionId } : {}), resolvedBy: 'typed' });
+    if (!d.answerJobCard) return false;
+    await d.answerJobCard({ cardId: card.id, answer, ...('optionId' in answer ? { choice: answer.optionId } : {}), resolvedBy: 'typed' });
+    // The runner takes only the card its job waits on; when it left the card open, the message runs as a normal turn.
+    const still = ((await d.query<CardRow[]>('cardsOpenForChat', m.chatId)) ?? []).some((c) => c.id === card.id && c.state === 'asking');
+    if (still) return false;
+    await d.tx([seen]);
     return true;
   }
   await d.tx([
+    seen,
     {
       op: 'update',
       table: 'cards',

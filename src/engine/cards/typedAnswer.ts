@@ -15,8 +15,6 @@ export interface AnswerableCard {
   purpose: ChoicePayload['purpose'] | 'fold_which';
   options: Option[];
   multi?: boolean;
-  /** A stepper card's questions after the first (implementation-notes M5-T5); such a card is answered on the card only. */
-  steps?: unknown[];
   id?: string;
   createdAt?: number;
 }
@@ -57,8 +55,6 @@ export const showsSkip = (card: Pick<AnswerableCard, 'purpose'>) => card.purpose
 /** The card has a Best fit row (05-1 §5.3: file_in and photo_notice have none). */
 export const hasBestFit = showsSkip;
 
-const isStepper = (card: AnswerableCard) => (card.steps?.length ?? 0) > 0;
-
 type One = { kind: 'one'; id: string } | { kind: 'tie'; a: string; b: string } | { kind: 'none' };
 
 /** Rules 1–3 on one already-normalised piece of text. */
@@ -91,7 +87,6 @@ function resolveOne(s: string, options: Option[]): One {
 
 /** `answersCard(m, card)` (08-2 §5.2.3): the typed text as an answer, a tie, or nothing. */
 export function typedAnswer(text: string, card: AnswerableCard): TypedResult {
-  if (isStepper(card)) return NONE;
   const s = normalise(text);
   if (!s) return NONE;
   if (card.multi) {
@@ -119,7 +114,6 @@ export function typedAnswer(text: string, card: AnswerableCard): TypedResult {
 
 /** Rule 4: a reaction 1️⃣–4️⃣ on the card (Art. 6: reactions answer Choice cards only). */
 export function reactionAnswer(emoji: string, card: AnswerableCard): TypedResult {
-  if (isStepper(card)) return NONE;
   const n = KEYCAPS.indexOf(emoji.replace(/️/gu, '')) + 1;
   if (n < 1 || n > card.options.length) return NONE;
   const id = card.options[n - 1]!.id;
@@ -141,7 +135,7 @@ export function pickCard<C extends AnswerableCard>(text: string, cards: C[]): { 
 
 /** 05-1 §5.3.6 + G-M5-09: the toast's first button answers the card with its Best fit (option 1). */
 export function toastAnswer(card: AnswerableCard): { answer: CardAnswer; resolvedBy: 'toast' } | null {
-  if (!hasBestFit(card) || isStepper(card) || !card.options[0]) return null;
+  if (!hasBestFit(card) || !card.options[0]) return null;
   const id = card.options[0].id;
   return { answer: card.multi ? { optionIds: [id] } : { optionId: id }, resolvedBy: 'toast' };
 }

@@ -79,33 +79,32 @@ test('AT-035: typed "2", a 2️⃣ reaction and a tap on option 2 all fold the c
   await app.close();
 });
 
-test('AT-288: a 3-question card shows "1 of 3", a tap advances with no Next button, Back from question 2, keys 1–4 pick', async () => {
+test('AT-288: 3 questions as 3 cards "1 of 3" … "3 of 3", no Next button, Back from question 2, keys 1–4 pick', async () => {
   const { app, page } = await start();
-  const { card } = await seedCard(page, TRIP_STEPS);
-  const pager = card.getByTestId(TID.cardChoicePager);
-  await expect(pager).toHaveText(t('cards.choice.pager', { k: 1, n: 3 }));
-  await expect(card.getByTestId(TID.cardChoiceBack)).toHaveCount(0);
-  await expect(card.getByRole('button', { name: /^Next$/u })).toHaveCount(0);
-
-  await card.getByTestId(TID.cardChoiceOption).nth(0).click();
-  await expect(pager).toHaveText(t('cards.choice.pager', { k: 2, n: 3 }));
-  await expect(card).toContainText('Checked bag?');
-  await expect(card.getByTestId(TID.cardChoiceBack)).toHaveText(t('cards.choice.back'));
-
-  // Back returns to question 1; then the keys: focus a row and press 2 (question 1), 2 (question 2), 3 (question 3).
-  await card.getByTestId(TID.cardChoiceBack).click();
-  await expect(pager).toHaveText(t('cards.choice.pager', { k: 1, n: 3 }));
-  await card.getByTestId(TID.cardChoiceOption).nth(0).focus();
+  const q1 = (await seedCard(page, TRIP_STEPS[0]!)).card;
+  await expect(q1.getByTestId(TID.cardChoicePager)).toHaveText(t('cards.choice.pager', { k: 1, n: 3 }));
+  await expect(q1.getByTestId(TID.cardChoiceBack)).toHaveCount(0);
+  await expect(q1.getByRole('button', { name: /^Next$/u })).toHaveCount(0);
+  // Key 2 on question 1 answers it; the job then posts question 2 (seeded here as the runner would).
+  await q1.getByTestId(TID.cardChoiceOption).nth(0).focus();
   await page.keyboard.press('2');
-  await expect(pager).toHaveText(t('cards.choice.pager', { k: 2, n: 3 }));
-  await card.getByTestId(TID.cardChoiceOption).nth(0).focus();
-  await page.keyboard.press('2');
-  await expect(pager).toHaveText(t('cards.choice.pager', { k: 3, n: 3 }));
-  await card.getByTestId(TID.cardChoiceOption).nth(0).focus();
+  await expect(q1).toHaveAttribute('data-card-state', 'answered');
+  await expect(q1).toContainText(`${String(FLIGHTS.question)} → 7:10 AM · Air India · ₹4,890`);
+
+  const q2 = (await seedCard(page, TRIP_STEPS[1]!)).card;
+  await expect(q2.getByTestId(TID.cardChoicePager)).toHaveText(t('cards.choice.pager', { k: 2, n: 3 }));
+  await expect(q2).toContainText('Checked bag?');
+  await expect(q2.getByTestId(TID.cardChoiceBack)).toHaveText(t('cards.choice.back'));
+  // Back brings question 1's card into view with focus on it.
+  await q2.getByTestId(TID.cardChoiceBack).click();
+  await expect(q1.locator('[role="button"]').first()).toBeFocused();
+  await q2.getByTestId(TID.cardChoiceOption).nth(1).click();
+  await expect(q2).toContainText('Checked bag? → Add 25 kg');
+
+  const q3 = (await seedCard(page, TRIP_STEPS[2]!)).card;
+  await expect(q3.getByTestId(TID.cardChoicePager)).toHaveText(t('cards.choice.pager', { k: 3, n: 3 }));
+  await q3.getByTestId(TID.cardChoiceOption).nth(0).focus();
   await page.keyboard.press('3');
-  await expect(card).toHaveAttribute('data-card-state', 'answered');
-  await expect(card).toContainText(`${String(FLIGHTS.question)} → 7:10 AM · Air India · ₹4,890`);
-  await expect(card).toContainText('Checked bag? → Add 25 kg');
-  await expect(card).toContainText('Seat? → Any');
+  await expect(q3).toContainText('Seat? → Any');
   await app.close();
 });

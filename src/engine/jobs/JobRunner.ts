@@ -839,7 +839,12 @@ export class JobRunner {
       if (a.choice === 'decline') return this.declined(job, card, resolve);
       if (a.choice !== 'approve') return;
     }
-    const answered = APPROVAL_CARDS.has(card.type) ? 'APPROVED' : ANSWERED_STATE[card.type];
+    // M5 (T5): a Skip is stored `skipped` so the card reads "Skipped. I'll go with {Best fit}." (05-1 §5.3.2).
+    const answered = APPROVAL_CARDS.has(card.type)
+      ? 'APPROVED'
+      : (answer as { skip?: true } | null)?.skip
+        ? 'skipped'
+        : ANSWERED_STATE[card.type];
     // The answer is kept on the card; the job stays NEEDS_YOU until a slot is free (max 3 WORKING), then resumes.
     const r = await this.tx([
       {

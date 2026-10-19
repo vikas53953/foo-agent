@@ -10,7 +10,7 @@ import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
 import { newId } from '../../shared/ids';
 import type { CardAnswer, CardRow, ChatRow, MessageRow } from '../../shared/types';
-import { reactionAnswer, showsSkip, type AnswerableCard } from '../../engine/cards/typedAnswer';
+import { reactionAnswer, showsSkip, toastAnswer, type AnswerableCard } from '../../engine/cards/typedAnswer';
 import type { DbOp } from '../../engine/protocol';
 import type { EngineBridge } from '../engine-supervisor/EngineBridge';
 import { applyDbOps } from '../engine-supervisor/engineHost';
@@ -42,23 +42,13 @@ const card = (db: Db, sql: string, arg: string): CardRow | null => {
   return r ? cardRow(r) : null;
 };
 
-/** A stepper card's questions (05-1 §5.3.1 Stepper; implementation-notes M5-T5): the first, then `steps`. */
-export function questionsOf(c: CardRow): { options: { id: string }[] }[] {
-  const p = c.payload as { options?: { id: string }[]; steps?: { options?: { id: string }[] }[] };
-  return [{ options: p.options ?? [] }, ...(p.steps ?? []).map((s) => ({ options: s.options ?? [] }))];
-}
-
-/** The answer fits the card: a real option, many only on multi-select, one per question on a stepper, Skip only where shown. */
+/** The answer fits the card: a real option, many only on multi-select, Skip only where shown (a stepper is one card per
+ * question, 08-1 §4.5). */
 export function fitsCard(c: CardRow, a: CardAnswer): boolean {
   const p = c.payload as unknown as AnswerableCard;
   const ids = (p.options ?? []).map((o) => o.id);
-  const steps = questionsOf(c);
   if ('skip' in a) return showsSkip(p);
   if ('text' in a) return a.text.trim().length > 0;
-  if (steps.length > 1) {
-    if (!('optionIds' in a) || a.optionIds.length !== steps.length) return false;
-    return a.optionIds.every((id, i) => steps[i]!.options.some((o) => o.id === id));
-  }
   if ('optionId' in a) return !p.multi && ids.includes(a.optionId);
   return !!p.multi && new Set(a.optionIds).size === a.optionIds.length && a.optionIds.every((id) => ids.includes(id));
 }
@@ -161,4 +151,17 @@ export function onCardReaction(d: AnswerDeps, messageId: string, emoji: string):
     ],
     c.chatId,
   );
+}
+
+/**
+ * The notifier's answer button (CR-0009 G-M5-09; 05-1 §5.3.4): the toast's first button picks the card's Best fit with
+ * `resolved_by: 'toast'`, through the same path as a tap. The Windows toast that calls it is M11's; a card with no Best fit
+ * (file_in, photo_notice) has no answer button.
+ */
+export function answerFromToast(d: AnswerDeps, cardId: string): Result<CardRow> {
+  const c = card(d.db, 'id = ?', cardId);
+  if (!c) return fail('NOT_FOUND');
+  const pick = toastAnswer(c.payload as unknown as AnswerableCard);
+  if (!pick) return fail('VALIDATION');
+  return answerCard(d, { cardId, answer: pick.answer, resolvedBy: pick.resolvedBy });
 }

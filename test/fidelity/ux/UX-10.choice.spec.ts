@@ -149,7 +149,7 @@ test('UX-10 · Choices: steps UX-10-01 to UX-10-06, light and dark', async () =>
   });
 
   await test.step('UX-10-05 · up to three questions become a small stepper', async () => {
-    const r = await page.evaluate((x) => window.__fooTest!.cardSeed(x), seed(BAG_STEPS, refs.trips));
+    const r = await page.evaluate((x) => window.__fooTest!.cardSeed(x), seed(BAG_STEPS[0]!, refs.trips));
     const card = log.locator(`${byTid(TID.cardChoice)}[data-card-id="${r.cardId}"]`);
     await card.scrollIntoViewIfNeeded();
     await expect(card.getByTestId(TID.cardChoicePager)).toHaveText(t('cards.choice.pager', { k: 1, n: 2 }));

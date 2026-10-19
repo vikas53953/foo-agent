@@ -1,6 +1,6 @@
 // Seeded Choice and tiles payloads for the M5-T5 e2e, UX-10 and BP specs and the foo-verify journey: the words 05-1 §5.3.1 /
-// §5.4.1 and the UX walkthrough chapter 10 draw (UX-10-02, -05, -06), as 08-1 §4.5 ChoicePayload rows (a stepper's later
-// questions in `steps`, implementation-notes M5-T5). Fake places and prices only (public repo).
+// §5.4.1 and the UX walkthrough chapter 10 draw (UX-10-02, -05, -06), as 08-1 §4.5 ChoicePayload rows (a stepper is one card per
+// question with `stepper: { index, total }`). Fake places and prices only (public repo).
 import type { CardSeedRequest } from '../../src/shared/ipc';
 
 const base = { multi: false, aiReversible: false, reversible: false, livePrices: true };
@@ -16,49 +16,34 @@ export const FLIGHTS: Record<string, unknown> = {
   ],
 };
 
-/** AT-288: three questions, "1 of 3". */
-export const TRIP_STEPS: Record<string, unknown> = {
-  ...FLIGHTS,
-  stepper: { index: 1, total: 3 },
-  steps: [
-    {
-      question: 'Checked bag?',
-      options: [
-        { id: 'o1', label: '15 kg included', bestFit: true },
-        { id: 'o2', label: 'Add 25 kg', detail: '₹2,100' },
-      ],
-    },
-    {
-      question: 'Seat?',
-      options: [
-        { id: 'o1', label: 'Window', bestFit: true },
-        { id: 'o2', label: 'Aisle' },
-        { id: 'o3', label: 'Any' },
-      ],
-    },
-  ],
-};
-
-/** UX-10-05: "1 of 2 · Checked bag?". */
-export const BAG_STEPS: Record<string, unknown> = {
-  ...base,
-  purpose: 'job',
+const BAG = {
   question: 'Checked bag?',
   options: [
     { id: 'o1', label: '15 kg included', bestFit: true },
     { id: 'o2', label: 'Add 25 kg', detail: '₹2,100' },
   ],
-  stepper: { index: 1, total: 2 },
-  steps: [
-    {
-      question: 'Seat?',
-      options: [
-        { id: 'o1', label: 'Window', bestFit: true },
-        { id: 'o2', label: 'Aisle' },
-      ],
-    },
+};
+const SEAT = {
+  question: 'Seat?',
+  options: [
+    { id: 'o1', label: 'Window', bestFit: true },
+    { id: 'o2', label: 'Aisle' },
+    { id: 'o3', label: 'Any' },
   ],
 };
+
+/** AT-288: three questions, one card each with `stepper: { index, total }` (08-1 §4.5), posted one after another. */
+export const TRIP_STEPS: Record<string, unknown>[] = [
+  { ...FLIGHTS, stepper: { index: 1, total: 3 } },
+  { ...base, purpose: 'job', ...BAG, stepper: { index: 2, total: 3 } },
+  { ...base, purpose: 'job', ...SEAT, stepper: { index: 3, total: 3 } },
+];
+
+/** UX-10-05: "1 of 2 · Checked bag?", then "2 of 2 · Seat?". */
+export const BAG_STEPS: Record<string, unknown>[] = [
+  { ...base, purpose: 'job', ...BAG, stepper: { index: 1, total: 2 } },
+  { ...base, purpose: 'job', ...SEAT, options: SEAT.options.slice(0, 2), stepper: { index: 2, total: 2 } },
+];
 
 /** UX-10-06: tick boxes, then Done. */
 export const SUBSCRIPTIONS: Record<string, unknown> = {

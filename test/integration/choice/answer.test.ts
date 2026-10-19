@@ -1,11 +1,11 @@
 // Spec: 08-1 §3.2 card:answer (CARD_STALE when the nonce or state is old, CARD_EXPIRED past expires_at), §2.4 card.answered
 // (a job's card goes to the runner), 05-1 §5.3.3 (asking → answered | skipped; resolved_by), §5.3 purposes (no Skip on
-// file_in / photo_notice), §5.3.1 (multi-select needs ≥ 1 row; a stepper answers every question), 08-4 §26.6 rule 4
+// file_in / photo_notice), §5.3.1 (multi-select needs ≥ 1 row), CR-0009 G-M5-09 (the notifier's Best fit button), 08-4 §26.6 rule 4
 // (1️⃣–4️⃣ reactions), 08-2 §5.2.2 (👍 / ✅ on a gated card: the G16 line only), and the typed hook in the real engine
 // (08-2 §5.2 order: stop word first, then the typed answer, then the G16 reply).
 import Database from 'better-sqlite3';
 import { afterEach, describe, expect, it } from 'vitest';
-import { answerCard, onCardReaction, type AnswerDeps } from '../../../src/main/cards/answerCard';
+import { answerCard, answerFromToast, onCardReaction, type AnswerDeps } from '../../../src/main/cards/answerCard';
 import { migrate } from '../../../src/main/store/db';
 import { ensureFooChat } from '../../../src/main/store/queries';
 import { t } from '../../../src/shared/copy/t';
@@ -41,6 +41,16 @@ function world() {
 }
 
 describe('card:answer in main', () => {
+  it('G-M5-09 · the notifier answers the Best fit with resolved_by toast; no button without a Best fit', () => {
+    const w = world();
+    const c = w.seed({ ...FLIGHTS, purpose: 'setup' });
+    expect(answerFromToast(w.d, c.id).ok).toBe(true);
+    expect(cardOf(w.db, c.id)).toMatchObject({ state: 'answered', answer: { optionId: 'o1' }, resolvedBy: 'toast' });
+    const f = w.seed({ ...FLIGHTS, purpose: 'file_in' });
+    expect(answerFromToast(w.d, f.id)).toMatchObject({ ok: false, error: { kind: 'VALIDATION' } });
+    expect(cardOf(w.db, f.id).state).toBe('asking');
+  });
+
   it('a jobless card: tap on option 2 → answered, answer and resolved_by stored, the window told', () => {
     const w = world();
     const c = w.seed({ ...FLIGHTS, purpose: 'setup' });
@@ -91,7 +101,7 @@ describe('card:answer in main', () => {
     });
   });
 
-  it('answers must fit the card: a real option, many only on multi-select, one per question on a stepper', () => {
+  it('answers must fit the card: a real option, many only on multi-select; a stepper card is one question', () => {
     const w = world();
     const one = w.seed({ ...FLIGHTS, purpose: 'setup' });
     const bad = (c: CardRow, answer: Parameters<typeof answerCard>[1]['answer']) =>
@@ -102,24 +112,10 @@ describe('card:answer in main', () => {
     expect(bad(multi, { optionId: 'o1' })).toMatchObject({ ok: false, error: { kind: 'VALIDATION' } });
     expect(bad(multi, { optionIds: ['o1', 'o1'] })).toMatchObject({ ok: false, error: { kind: 'VALIDATION' } });
     expect(bad(multi, { optionIds: ['o1', 'o3'] }).ok).toBe(true);
-    const stepper = w.seed({
-      ...FLIGHTS,
-      purpose: 'setup',
-      stepper: { index: 1, total: 2 },
-      steps: [
-        {
-          question: 'Checked bag?',
-          options: [
-            { id: 'o1', label: '15 kg included' },
-            { id: 'o2', label: 'Add 25 kg' },
-          ],
-        },
-      ],
-    });
-    expect(bad(stepper, { optionId: 'o1' })).toMatchObject({ ok: false, error: { kind: 'VALIDATION' } });
-    expect(bad(stepper, { optionIds: ['o1', 'o3'] })).toMatchObject({ ok: false, error: { kind: 'VALIDATION' } });
-    expect(bad(stepper, { optionIds: ['o3', 'o2'] }).ok).toBe(true);
-    expect(cardOf(w.db, stepper.id).answer).toEqual({ optionIds: ['o3', 'o2'] });
+    const stepper = w.seed({ ...FLIGHTS, purpose: 'setup', stepper: { index: 2, total: 3 } });
+    expect(bad(stepper, { optionIds: ['o1', 'o2'] })).toMatchObject({ ok: false, error: { kind: 'VALIDATION' } });
+    expect(bad(stepper, { optionId: 'o2' }).ok).toBe(true);
+    expect(cardOf(w.db, stepper.id).answer).toEqual({ optionId: 'o2' });
   });
 
   it("a job's card goes to the runner as card.answered (the card is not moved by main)", () => {
@@ -222,5 +218,46 @@ describe('typed answers in the engine (08-2 §5.2)', () => {
     expect(h.cards('choice')[0]).toMatchObject({ state: 'answered', resolved_by: 'typed' });
     expect(JSON.parse(String(h.cards('choice')[0]!.answer))).toEqual({ optionId: 'o2' });
     expect(h.job().state).toBe('done_unverified');
+  });
+
+  const askJob = () =>
+    jobHarness({
+      script: [
+        jobIntake([{ phraseKey: 'read_email' }, { phraseKey: 'look_for', slots: { what: 'flights' } }], { estimate: { minutes: 2 } }),
+        step({
+          kind: 'ask',
+          card: { question: 'Which flight time works?', options: [{ label: 'IndiGo 10:15' }, { label: 'Air India 7:10' }] },
+        }),
+        step({ kind: 'done', result: 'Booked nothing, here is the list.', unverified: true }),
+        intake(envelope('Sure.')),
+      ],
+    });
+
+  it('Skip on a job\'s Choice card is stored skipped (05-1 §5.3.2 "Skipped. I\'ll go with {Best fit}.")', async () => {
+    h = askJob();
+    h.userSays('find me a flight to Delhi on Friday');
+    await until(h, () => h!.cards('choice').length === 1);
+    h.userSays('skip');
+    await h.settle();
+    expect(h.cards('choice')[0]).toMatchObject({ state: 'skipped', resolved_by: 'typed' });
+  });
+
+  it('a typed answer the runner does not take (a job card its job is not waiting on) is not swallowed', async () => {
+    h = askJob();
+    h.userSays('find me a flight to Delhi on Friday');
+    await until(h, () => h!.cards('choice').length === 1);
+    const other = seedCard(h.db, {
+      chatId: h.chatId,
+      type: 'choice',
+      state: 'asking',
+      payload: FLIGHTS,
+      jobId: String(h.job().id),
+      now: h.clock.now() + 1,
+    });
+    const before = h.turnsJsonl().length;
+    h.userSays('1');
+    await h.settle();
+    expect(cardOf(h.db, other.id).state).toBe('asking');
+    expect(h.turnsJsonl().length).toBeGreaterThan(before);
   });
 });

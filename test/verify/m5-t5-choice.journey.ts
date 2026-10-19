@@ -1,5 +1,5 @@
-// Spec: 05-1 §5.3 Choice (3 rows, Best fit, Something else…, Skip, the folded "{question} → {answer}"; the 3-question stepper
-// "1 of 3" with Back), §5.4 Option tiles, 08-4 §26.6 (typed "1" answers the newest open card). foo-verify journey for M5 T5:
+// Spec: 05-1 §5.3 Choice (3 rows, Best fit, Something else…, Skip, the folded "{question} → {answer}"; a 3-question stepper,
+// one card per question per 08-1 §4.5, "1 of 3" with Back), §5.4 Option tiles, 08-4 §26.6 (typed "1" answers the newest open card). foo-verify journey for M5 T5:
 // seeded cards in foo's chat (test:card.seed) on the ux-world, the typed answer through the real engine on the fake AI,
 // light and dark. Run:
 //   xvfb-run -a pnpm tsx scripts/foo-verify.ts test/verify/m5-t5-choice.journey.ts
@@ -62,18 +62,20 @@ export default async function journey(v: Verify): Promise<void> {
   await until(async () => (await stateOf(typed)) === 'answered', 'the typed answer to fold the card');
   v.note(`typed "1" → state answered, card reads "${(await typed.innerText()).split('\n')[0]}"`);
 
-  // 3. Stepper: "1 of 3"; a tap advances to "2 of 3"; Back returns to "1 of 3".
-  const stepper = await seedCard(page, TRIP_STEPS);
-  const pager = stepper.getByTestId(TID.cardChoicePager);
-  v.note(`stepper pager reads "${await pager.innerText()}"`);
-  await stepper.getByTestId(TID.cardChoiceOption).first().click();
-  await until(async () => (await pager.innerText()).includes('2'), 'the stepper to advance');
-  v.note(`after a tap the pager reads "${await pager.innerText()}" and the question is "${(await stepper.innerText()).split('\n')[0]}"`);
+  // 3. Stepper (08-1 §4.5, one card per question): "1 of 3" answers, the next card reads "2 of 3", Back shows question 1.
+  const q1 = await seedCard(page, TRIP_STEPS[0]!);
+  v.note(`stepper question 1 pager reads "${await q1.getByTestId(TID.cardChoicePager).innerText()}"`);
+  await q1.getByTestId(TID.cardChoiceOption).first().click();
+  await until(async () => (await stateOf(q1)) === 'answered', 'question 1 to fold');
+  const q2 = await seedCard(page, TRIP_STEPS[1]!);
+  v.note(
+    `question 2 card: pager "${await q2.getByTestId(TID.cardChoicePager).innerText()}", question "${(await q2.innerText()).split('\n')[0]}"`,
+  );
   await settle(page);
   await v.shot('stepper-question-2');
-  await stepper.getByTestId(TID.cardChoiceBack).click();
-  await until(async () => (await pager.innerText()).includes('1'), 'Back to question 1');
-  v.note(`Back → pager reads "${await pager.innerText()}"`);
+  await q2.getByTestId(TID.cardChoiceBack).click();
+  await until(async () => q1.evaluate((el) => el.contains(document.activeElement)), 'Back to bring question 1 into focus');
+  v.note("Back on question 2 → question 1's card is in view with focus on it");
 
   // 4. Option tiles, light and dark.
   const tiles = await seedCard(page, STAYS, 'tiles');

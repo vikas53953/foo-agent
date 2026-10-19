@@ -3,15 +3,16 @@
 // `--t-small` `--fg-2` one line with the full text in the tooltip; Best fit row 1.5px `--accent` on `--accent-soft` with the
 // right-aligned "Best fit" tag; "Something else…" 40 high `--fg-2`, no badge; Skip a Link button; multi-select checkboxes
 // (20, `--r-xs`, 1.5px `--line-input`; ticked `--accent` + Checkmark 16 `--on-accent`) and a Primary "Done" disabled until a
-// row is ticked; stepper pager "{k} of {n}", a tap advances after `--m-card` with no Next button, "Back" from question 2),
+// row is ticked; stepper pager "{k} of {n}" from 08-1 §4.5 `stepper: { index, total }`, one card per question: a tap answers
+// it and the job posts the next, no Next button; "Back" from question 2 brings the previous question's card into view),
 // §5.3.2 copy, §5.3.3 states (hover, pressed 0.97, focus ring, Submitting: the tapped row's badge becomes the spinner and the
 // other rows are disabled; answered / auto-picked / cancelled / superseded / withdrawn summary rows; offline keeps rows
 // enabled with the offline line), §5.3.4 (Art. 6: a tap, a typed answer or a reaction answer it), §5.3.5 (radiogroup or a
 // group of checkboxes; ↑/↓ move, 1–4 pick, Enter picks, Ctrl+Enter = Done; Narrator "Question: {question}", rows "{n} of
 // {total}, {label}, {detail}{, best fit}", answered "You chose {answer}."), §5.3 purposes (file_in / photo_notice: no Best fit,
 // no Skip; photo_notice has no "Something else…" row), 05-1 §0.5 (summary row: 16 icon + 8 + `--t-small` + time; click or
-// Enter toggles the read-only expanded view with the chosen row ticked), X-155, CR-0009 G-M5-17 (`--m-card`).
-import { useEffect, useRef, useState, type KeyboardEvent, type MouseEvent, type ReactNode } from 'react';
+// Enter toggles the read-only expanded view with the chosen row ticked), X-155.
+import { useRef, useState, type KeyboardEvent, type MouseEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
 import type { CardRow } from '../../shared/types';
@@ -24,7 +25,7 @@ import { Tooltip } from '../ui/Tooltip';
 import { cx } from '../ui/cx';
 import { CardButton } from './CardButton';
 import { CardFrame, CardTimeLabel, type CardTime } from './CardFrame';
-import { answerLines, chosenIds, questionsOf, type ChoiceQuestion, type ChoiceView } from './choiceText';
+import { answerText, chosenIds, questionOf, type ChoiceQuestion, type ChoiceView } from './choiceText';
 import styles from './Card.module.css';
 import cs from './Choice.module.css';
 
@@ -35,24 +36,14 @@ export const hasBestFit = (p: ChoiceView) => p.purpose !== 'file_in' && p.purpos
 export const showsSkip = hasBestFit;
 export const showsSomethingElse = (p: ChoiceView) => p.purpose !== 'photo_notice';
 
-/** `--m-card` in ms, read from the theme (Basic motion and reduced motion shorten it). */
-function cardMs(): number {
-  const v = getComputedStyle(document.documentElement).getPropertyValue('--m-card').trim();
-  const n = parseFloat(v);
-  return Number.isFinite(n) ? (v.endsWith('ms') ? n : n * 1000) : 167;
-}
-
-/** The answering logic Choice and tiles share: picks per question, the stepper, one invoke per answer. */
+/** The answering logic Choice and tiles share: multi-select picks, one invoke per answer, Back on a stepper. */
 export function useChoice(card: CardRow) {
   const p = card.payload as unknown as ChoiceView;
-  const qs = questionsOf(p);
-  const [k, setK] = useState(0);
-  const [picks, setPicks] = useState<string[][]>(() => qs.map(() => []));
+  const q = questionOf(p);
+  const [picks, setPicks] = useState<string[]>([]);
   const [busy, setBusy] = useState<string | null>(null);
   const inFlight = useRef(false);
-  const timer = useRef<number | null>(null);
-  useEffect(() => () => void (timer.current !== null && window.clearTimeout(timer.current)), []);
-  const q = qs[k]!;
+  const cards = useStore((s) => s.cards.byId);
 
   const send = (answer: { optionId: string } | { optionIds: string[] } | { skip: true }, by: 'tap' | 'keyboard', busyKey: string) => {
     if (inFlight.current) return;
@@ -66,36 +57,33 @@ export function useChoice(card: CardRow) {
       });
   };
 
-  /** A tap (or 1–4) on a row: multi toggles; a single answers, or on a stepper selects and advances after `--m-card`. */
+  /** A tap (or 1–4) on a row: multi toggles; a single answers. */
   const pick = (id: string, by: 'tap' | 'keyboard') => {
-    if (inFlight.current || timer.current !== null) return;
-    if (q.multi) {
-      setPicks((all) => all.map((row, i) => (i === k ? (row.includes(id) ? row.filter((x) => x !== id) : [...row, id]) : row)));
-      return;
-    }
-    if (qs.length === 1) return send({ optionId: id }, by, id);
-    const next = picks.map((row, i) => (i === k ? [id] : row));
-    setPicks(next);
-    if (k === qs.length - 1) return send({ optionIds: next.map((row) => row[0]!) }, by, id);
-    timer.current = window.setTimeout(() => {
-      timer.current = null;
-      setK((x) => x + 1);
-    }, cardMs());
+    if (inFlight.current) return;
+    if (q.multi) return setPicks((row) => (row.includes(id) ? row.filter((x) => x !== id) : [...row, id]));
+    send({ optionId: id }, by, id);
   };
   const done = (by: 'tap' | 'keyboard') => {
-    const ids = picks[k] ?? [];
-    if (ids.length) send({ optionIds: q.options.filter((o) => ids.includes(o.id)).map((o) => o.id) }, by, 'done');
+    if (picks.length) send({ optionIds: q.options.filter((o) => picks.includes(o.id)).map((o) => o.id) }, by, 'done');
   };
   const skip = () => send({ skip: true }, 'tap', 'skip');
+  /** The previous question of this stepper: the same job's card one index back (08-1 §4.5), scrolled into view. */
+  const previous = p.stepper
+    ? Object.values(cards).find((c) => {
+        const cp = c.payload as unknown as ChoiceView;
+        return c.id !== card.id && c.jobId === card.jobId && c.chatId === card.chatId && cp.stepper?.index === p.stepper!.index - 1;
+      })
+    : undefined;
   const backStep = () => {
-    if (timer.current !== null || inFlight.current) return;
-    setK((x) => Math.max(0, x - 1));
+    const el = previous && document.querySelector<HTMLElement>(`[data-card-id="${previous.id}"]`);
+    el?.scrollIntoView({ block: 'center' });
+    el?.querySelector<HTMLElement>('[role="button"], button')?.focus();
   };
   const somethingElse = () => {
     setComposerHint({ chatId: card.chatId, text: t('cards.choice.something_else_placeholder') });
     document.querySelector<HTMLElement>(`[data-testid="${TID.composerField}"]`)?.focus();
   };
-  return { p, qs, k, q, picks: picks[k] ?? [], busy, pick, done, skip, backStep, somethingElse };
+  return { p, q, picks, busy, pick, done, skip, backStep, somethingElse, hasPrevious: !!previous };
 }
 
 /** 05-1 §5.3.5 / §5.4.4 keys inside the card: 1–4 pick, arrows move between options, Ctrl+Enter = Done (multi). */
@@ -155,7 +143,7 @@ export function ChoiceSummary({
   const [open, setOpen] = useState(false);
   const cards = useStore((s) => s.cards.byId);
   const newer = Object.values(cards).find((c) => c.supersedesId === card.id && c.deletedAt === null);
-  const lines = answerLines(p, card.answer);
+  const answer = answerText(p, card.answer);
   const s = card.state;
   const text =
     s === 'skipped'
@@ -166,11 +154,11 @@ export function ChoiceSummary({
           ? [t('cards.common.content.withdrawn')]
           : s === 'superseded'
             ? [newer ? t('cards.choice.summary.superseded') : t('cards.choice.collapsed.superseded_steer', { question: p.question })]
-            : lines.map((l) => t('cards.choice.summary.answered', { question: l.question, answer: l.answer }));
+            : [t('cards.choice.summary.answered', { question: p.question, answer })];
   const icon = s === 'answered' || s === 'skipped' ? 'CheckmarkCircle' : s === 'auto_picked' || s === 'expired' ? 'Clock' : null;
   const answered = s === 'answered' || s === 'auto_picked' || s === 'skipped';
   const label = answered
-    ? t('cards.choice.answered', { answer: lines.map((l) => l.answer).join(', ') })
+    ? t('cards.choice.answered', { answer })
     : t(
         tid === 'cardTiles' ? 'cards.tiles.label' : 'cards.choice.label',
         tid === 'cardTiles' ? { title: p.question } : { question: p.question },
@@ -325,7 +313,7 @@ function Rows({ c, live }: { c: ReturnType<typeof useChoice>; live: boolean }) {
 
 function ReadOnly({ card }: { card: CardRow }) {
   const p = card.payload as unknown as ChoiceView;
-  const q = questionsOf(p)[0]!;
+  const q = questionOf(p);
   const ids = chosenIds(card.answer);
   return (
     <div className={cs.rows} aria-label={q.question}>
@@ -353,13 +341,14 @@ export function Choice({ card, time }: { card: CardRow; time: CardTime }) {
 function AskingChoice({ card, time }: { card: CardRow; time: CardTime }) {
   const c = useChoice(card);
   const offline = useStore(selectConnection) === 'offline';
-  const { p, qs, k, q, busy } = c;
+  const { p, q, busy } = c;
+  const step = p.stepper && p.stepper.total > 1 ? p.stepper : null;
   return (
     <CardFrame
       tid="cardChoice"
       card={card}
       state={card.state}
-      data={{ 'data-purpose': p.purpose, 'data-step': qs.length > 1 ? String(k + 1) : undefined }}
+      data={{ 'data-purpose': p.purpose, 'data-step': step ? String(step.index) : undefined }}
       label={t('cards.choice.label', { question: q.question })}
       busy={busy !== null}
       onKeyDown={choiceKeys(c, `[data-testid="${TID.cardChoiceOption}"]`)}
@@ -368,13 +357,13 @@ function AskingChoice({ card, time }: { card: CardRow; time: CardTime }) {
         <span className={styles.title} data-copy="external">
           {q.question}
         </span>
-        {qs.length > 1 && (
+        {step && (
           <span className={styles.right} data-testid={TID.cardChoicePager}>
-            {t('cards.choice.pager', { k: k + 1, n: qs.length })}
+            {t('cards.choice.pager', { k: step.index, n: step.total })}
           </span>
         )}
       </div>
-      <Rows key={k} c={c} live />
+      <Rows c={c} live />
       {showsSomethingElse(p) && (
         <button type="button" className={cx(cs.row, cs.else)} data-testid={TID.cardChoiceSomethingElse} onClick={c.somethingElse}>
           {t('cards.choice.something_else')}
@@ -401,7 +390,7 @@ function AskingChoice({ card, time }: { card: CardRow; time: CardTime }) {
       )}
       <div className={styles.foot}>
         <span className={styles.footSpacer} />
-        {k > 0 && (
+        {step && step.index > 1 && (
           <CardButton tid="cardChoiceBack" kind="link" disabled={busy !== null} onClick={c.backStep}>
             {t('cards.choice.back')}
           </CardButton>
