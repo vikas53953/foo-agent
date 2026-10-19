@@ -676,6 +676,40 @@ CR-0010 §(b). Where the code stands for the ticket threads:
   query, §24.16 item 3) call the same function from the job lane when it builds part 5b.
 - AT-075 (an edited file shows in the next prompt) lands once T3's watcher is on the milestone branch.
 
+### M6 T5 · learning from chat, chips
+
+- `src/engine/memory/review.ts`: the post-turn review (08-3 §12.4): 20 s of quiet after the last message, at most once per
+  chat per 2 min and only with a user message since the last one; never in a private chat, with `privacy.learnFromChats` or
+  memory off (G-M6-06), at the AI spend cap, or over a "don't remember this" message. Each `add` op passes §12.3 (said =
+  a user message among the evidence with token overlap ≥ 0.6; guessed = ≥ 2 distinct evidence ids + a reason) and then
+  `MemoryService.learn` (§12.4.1). `update` ops go through the new `MemoryService.update` (sensitive rule first). A
+  `memory_review` turn writes one `ai_turns` row whose chat is foo's 1:1 chat for a job-done review.
+- `src/engine/memory/intakeMemory.ts`: intake "remember …" = the manual-add path (G-M6-03): 👍 + chip, no bubble;
+  "forget …" (G-M6-04) = FTS + overlap ≥ 0.6: one → forget + 5 s Undo chip, ≥ 2 → a `memory_confirm` Choice card, none →
+  "I don’t have anything like that saved."; "don't remember this" (J17) skips that message (a bare phrase covers the next
+  one) and posts "Not saving this one."; `privacy.askBeforeRemembering` → "Remember that {fact}?" [ Remember ] [ Don’t ].
+- `src/engine/memory/chips.ts`: chips are `memory_chip` marker rows whose fields are `messages.why.memoryChip`
+  (`ChipData`); Undo for 24 h through a `chip_{markerId}` token on `memory:undo`; ✕ on a "Used:" chip sends
+  `memory:forget { factId, chipId }` → `forgetFromChip` (activity `forgot_facts` count 1, G-M6-10). At most 2 "Used:"
+  chips, guessed first (§12.5), under the reply: the foo bubble, or the Choice / Done card for a job step.
+- `src/engine/tools/memoryTools.ts`: `memory.search` (read) and `memory.propose` (prepare; one per turn; a private chat
+  answers `PRIVATE_BLOCKED`; origin `job:{jobId}`), always in the ToolLayer registry.
+- Renderer `MemoryChip.tsx`: the six kinds (05-3 §5.17.1), 48-character ellipsis with the whole fact in the tooltip and
+  for Narrator, `data-state="memory"` (G-M6-05).
+- Picks to carry in the CR-0010 addendum (T5-01…T5-08):
+  - T5-01 · Chip fields live in `messages.why` (JSON); main lets the engine update `why`.
+  - T5-02 · `memory:forget` gains optional `chipId`; a chip's own Undo uses `chip_{markerId}` on `memory:undo`.
+  - T5-03 · Two new copy keys with no spec words: `thread.memory.forget_none` "I don’t have anything like that saved."
+    and `thread.memory.forget_which` "Which one should I forget?".
+  - T5-04 · `memory_confirm` joins `RUNNER_PURPOSES` so its answers reach the engine.
+  - T5-05 · Undo of a save forgets with a tombstone and no activity row; Undo of an update restores the old text.
+  - T5-06 · A job's "Used:" chip anchors to the chat's newest message (its ask / done card).
+  - T5-07 · No classify turn yet (T3's gap): a chat "remember" saves as kind `fact`, category `other`.
+  - T5-08 · UX-10-02 drawing vs spec: the chip is a marker row under the card (05-3 §5.17.1, 08-3 §12.5, the drawing),
+    not in the card's bottom row (05-1 §5.3.1 sketch); its fill is `--bg-sunken` / `--fg-2` (§5.17.1) where the drawing
+    tints it accent (R3); the ✕ is the `Dismiss` icon (R1 misses the text "✕"). The step adds the drawn fact "hates early
+    flights" with `memory:add`, since the ux-world fact reads "Likes beach stays, hates early flights".
+
 ## M5 · contracts, approval machine and card stubs (ticket T1, CR-0009)
 
 ### Built
