@@ -143,7 +143,7 @@ export function seedCard(db: Db, arg: CardSeedArg, now: number): CardSeedReply {
     });
   }
   if (arg.approval) approvalId = newId('ap', now);
-  const payload = approvalId && 'approvalId' in arg.payload ? { ...arg.payload, approvalId } : arg.payload;
+  const payload = approvalId ? { ...arg.payload, approvalId } : arg.payload;
   ops.push(
     {
       op: 'insert',

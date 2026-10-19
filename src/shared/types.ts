@@ -325,14 +325,6 @@ export interface VaultUseRequest {
   approvalId?: string;
 }
 
-/** 08-4 §25.1 ChoiceCardSpec: what the AI writes (zod limits per 08-4, G-M5-07); the engine adds the rest (§26.7). */
-export interface ChoiceCardSpec {
-  question: string;
-  options: { label: string; detail?: string }[];
-  multi?: boolean;
-  reversible?: boolean;
-}
-
 /** 08-1 §4.5 choice / tiles payload (ChoicePayload, 08-0 §B.3). */
 export interface ChoicePayload {
   purpose: ChoicePurpose;

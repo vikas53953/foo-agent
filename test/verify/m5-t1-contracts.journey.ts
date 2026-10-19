@@ -11,7 +11,7 @@ import { byTid, openChat, openWorld, rest, setTheme, settle } from '../fidelity/
 const SEEDS: { tid: keyof typeof TID; seed: CardSeedRequest }[] = [
   {
     tid: 'cardChoice',
-    seed: { type: 'choice', state: 'asking', payload: { question: 'Which flight time works for Delhi?', purpose: 'pick' } },
+    seed: { type: 'choice', state: 'asking', payload: { question: 'Which flight time works for Delhi?', purpose: 'job' } },
   },
   { tid: 'cardTiles', seed: { type: 'tiles', state: 'asking', payload: { question: 'Which hotel looks right?' } } },
   {
