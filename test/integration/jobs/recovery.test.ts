@@ -1,5 +1,6 @@
 // Spec: AT-118 (any non-final job, app killed or Windows restarted → on next launch restored from state.json with a recovery
-// card), 08-2 §5.9 (step 1 safe mode holds every job and posts the safe-mode card; step 3 WORKING / QUEUED → NEEDS_YOU with
+// card), 08-2 §5.9 (step 1 safe mode holds every job and posts the safe-mode card, and with CR-0009 G-M5-21 the step 3
+// recovery cards are posted in safe mode too; step 3 WORKING / QUEUED → NEEDS_YOU with
 // the J19.5 card, doneLines from activity; step 5 unfinished side-effect calls → `unknown`), 05-3 §5.20 (recovery variant:
 // [ Pick up where I left off ] · "Stop it"; states resumed / stopped), 08-3 §21.2 CRASH_RECOVERY, SAFE_MODE, CR-0008 G-M4-13.
 import { afterEach, describe, expect, it } from 'vitest';
@@ -123,9 +124,11 @@ describe('08-2 §5.9 step 1 · safe mode', () => {
       cleanStart: false,
     });
     await h!.settle();
-    expect(h!.job().state).toBe('working');
+    // M5 T10 (CR-0009 G-M5-21): the job that was working shows its recovery card; nothing runs while safe mode holds.
+    expect(h!.job().state).toBe('needs_you');
+    expect(h!.turnsJsonl().filter((r) => r.purpose === 'step')).toHaveLength(2);
     const cards = h!.cards('error');
-    expect(cards).toHaveLength(1);
+    expect(cards.map((c) => payloadOf(c).kind)).toEqual(['SAFE_MODE', 'CRASH_RECOVERY']);
     expect(cards[0]!.chat_id).toBe(h!.chatId);
     expect(payloadOf(cards[0]!)).toEqual({
       variant: 'error',
@@ -134,12 +137,16 @@ describe('08-2 §5.9 step 1 · safe mode', () => {
       whatIsSafe: t('errors.safe_mode.what_is_safe'),
       button: { label: t('errors.safe_mode.button'), action: { kind: 'start_normally' } },
     });
+    // "Pick up where I left off" while safe mode holds: answered, but the job waits for "Start normally".
+    h!.answer(String(cards[1]!.id), 'resume');
+    await h!.settle();
+    expect(h!.job().state).toBe('needs_you');
     h!.answer(String(cards[0]!.id), 'start_normally');
     await h!.settle();
     expect(h!.cards('error')[0]!.state).toBe('fixed');
-    const recovery = h!.cards('error').find((c) => payloadOf(c).variant === 'recovery');
-    expect(recovery).toBeDefined();
-    expect(h!.job().state).toBe('needs_you');
-    expect(h!.message(userId).badge).toBe('waiting');
+    // One recovery card only: Start normally does not post a second one for the same job.
+    expect(h!.cards('error').filter((c) => payloadOf(c).variant === 'recovery')).toHaveLength(1);
+    expect(h!.job().state).toBe('done_unverified');
+    expect(h!.message(userId).badge).toBe('done_unverified');
   });
 });
