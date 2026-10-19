@@ -1025,5 +1025,6 @@
   "cards.common.private_things.your_address": "Your address",
   "cards.common.private_things.their_address": "{name}’s address",
   "cards.common.private_things.password": "Your password",
-  "cards.common.private_things.signin": "The sign-in"
+  "cards.common.private_things.signin": "The sign-in",
+  "thread.cap_warning.line": "You’ve used {spent} of your {cap} AI cap this month."
 }

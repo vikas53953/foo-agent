@@ -68,6 +68,9 @@ export interface RunnerHooks {
   onCannotStart?(job: JobRow, kind?: string): Promise<void>;
   /** T4: runs before each schedule pass (waiting jobs whose condition cleared resume first); false holds every start. */
   beforeSchedule?(): Promise<boolean>;
+  // M5
+  /** T10: the cap was raised or the month turned (08-2 §5.10 item 4): the Engine drains messages that waited at the cap. */
+  onCapLifted?(): void;
 }
 
 /** What T3's modules (stopFlow, steer, watchdog, costMeter) may use of the runner. */
@@ -247,6 +250,12 @@ export class JobRunner {
   }
   stopAll(): Promise<StopReport[]> {
     return this.track(this.stopper.stopAll());
+  }
+  /** M5 T10: the pre-call cap check of a chat-lane turn (intake, repair, rewrite); true when the call may go. */
+  allowChatCall(promptChars: number, purpose: 'intake' | 'repair' | 'rewrite'): Promise<boolean> {
+    const pick = this.d.ai.pick();
+    if (!pick) return Promise.resolve(true);
+    return this.cost.allowChatCall(promptChars, this.d.ai.turnParams(pick.providerId, purpose).maxOutputTokens);
   }
   /** settings.changed: a raised AI cap resumes waiting(spend_cap) jobs. */
   capChanged(): Promise<void> {
@@ -1140,7 +1149,7 @@ export class JobRunner {
     pick: { providerId: ProviderId; billing: 'plan' | 'key' | 'local' },
     turnId: string,
     built: { system: string; prompt: string },
-  ): Promise<{ act: StepAct | null; error?: AiErrorKind; turnId: string; say?: string }> {
+  ): Promise<{ act: StepAct | null; error?: AiErrorKind; turnId: string; say?: string; capped?: boolean }> {
     const run = async (purpose: 'step' | 'repair', id: string, system: string, prompt: string) => {
       const startedAt = this.d.clock.now();
       const params = this.d.ai.turnParams(pick.providerId, purpose === 'repair' ? 'repair' : 'step');
@@ -1177,7 +1186,11 @@ export class JobRunner {
     const parsed = this.d.prompts.parseStep(r.text);
     if (parsed.act) return { act: parsed.act, turnId, say: parsed.say ?? '' };
     // 08-2 §7.5: one repair turn in the same session.
-    const repair = await run('repair', this.d.newId('t'), built.system, this.d.prompts.buildRepair(parsed.issues ?? ''));
+    const repairPrompt = this.d.prompts.buildRepair(parsed.issues ?? '');
+    // M5 T10 (CR-0008 (j) row 5): the repair turn is a key call too, so it passes the cap check first.
+    const repairOut = this.d.ai.turnParams(pick.providerId, 'repair').maxOutputTokens;
+    if (!(await this.cost.allowStep(job, built.system.length + repairPrompt.length, repairOut))) return { act: null, turnId, capped: true };
+    const repair = await run('repair', this.d.newId('t'), built.system, repairPrompt);
     const again = repair.stopReason === 'end' ? this.d.prompts.parseStep(repair.text) : null;
     if (!again?.act) this.d.log('job.protocol_invalid', 'PROTOCOL_INVALID', { jobId: job.id });
     return { act: again?.act ?? null, turnId, say: again?.say ?? '' };

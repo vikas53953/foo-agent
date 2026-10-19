@@ -93,6 +93,9 @@ export interface LaneDeps {
   log(evt: string, kind?: string, ids?: { chatId?: string }): void;
   /** M4: kind 'job' creates a job; the user's bubble keeps 👀 and nothing is posted (Art. 22, 08-4 §25.5). */
   jobs?: LaneJobs;
+  // M5
+  /** T10: the pre-call cap check of a chat-lane turn (08-2 §5.10 item 4); false = no call. */
+  capCheck?(promptChars: number, purpose: 'intake' | 'repair'): Promise<boolean>;
 }
 
 const MAX_TOTAL = 2; // 08-2 §6.9 chat lane
@@ -229,6 +232,19 @@ export class ChatLane {
     const settings = this.d.settings();
     const who = helper?.name ?? settings.identity.agentName;
 
+    let built: { system: string; prompt: string } | null;
+    try {
+      built = this.d.protocol.buildIntake({ settings, chat, helper, conversation, message, local: pick.billing === 'local' });
+    } catch {
+      built = null;
+    }
+    // M5 T10 (CR-0008 (j) row 5): the pre-call cap check covers intake turns (08-2 §5.10 item 4). At the cap the message
+    // waits to send (04 §3.3, composer "Messages wait until you raise it") and is drained when the cap is lifted.
+    if (built && this.d.capCheck && !(await this.d.capCheck(built.system.length + built.prompt.length, 'intake'))) {
+      if (message.status !== 'queued') await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { status: 'queued' } }]);
+      return;
+    }
+
     // ✓✓ Delivered: the lane accepted it (04 §3.3). 👀 shows now, within 1 s of send, while foo thinks (04 §4.2, §14.1;
     // UX-08-02 draws it beside the Thinking row).
     await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { status: 'complete', badge: 'seen' } }]);
@@ -236,10 +252,7 @@ export class ChatLane {
 
     const turnId = this.d.newId('t');
     const startedAt = this.d.clock.now();
-    let built: { system: string; prompt: string };
-    try {
-      built = this.d.protocol.buildIntake({ settings, chat, helper, conversation, message, local: pick.billing === 'local' });
-    } catch {
+    if (!built) {
       // A message over the prompt budget (PromptBudgetError) or a broken prompt file: the reply is cut off with Try again
       // instead of leaving 👀 and the Thinking row up (04 §19.4).
       this.d.log('chat.prompt_failed', 'PROTOCOL_INVALID', { chatId });
@@ -358,21 +371,26 @@ export class ChatLane {
     if (!act) {
       // 08-2 §7.5: one repair turn (same session); its <say> is ignored after streaming (08-4 §25.5 item 3).
       const repairParams = this.d.ai.turnParams(pick.providerId, 'repair');
-      const repaired = await this.d.ai
-        .runTurn(
-          pick.providerId,
-          {
-            ...repairParams,
-            turnId: this.d.newId('t'),
-            purpose: 'repair',
-            system: built.system,
-            prompt: this.d.protocol.buildRepair(parsed.issues ?? ''),
-            chatId,
-          },
-          { onText: () => {}, onSession: () => {} },
-          new AbortController().signal,
-        )
-        .catch(() => null);
+      const repairPrompt = this.d.protocol.buildRepair(parsed.issues ?? '');
+      // M5 T10 (row 5): the repair turn passes the cap check too; at the cap it is skipped (the <say> rule below still applies).
+      const capOk = !this.d.capCheck || (await this.d.capCheck(built.system.length + repairPrompt.length, 'repair'));
+      const repaired = !capOk
+        ? null
+        : await this.d.ai
+            .runTurn(
+              pick.providerId,
+              {
+                ...repairParams,
+                turnId: this.d.newId('t'),
+                purpose: 'repair',
+                system: built.system,
+                prompt: repairPrompt,
+                chatId,
+              },
+              { onText: () => {}, onSession: () => {} },
+              new AbortController().signal,
+            )
+            .catch(() => null);
       act = repaired && repaired.stopReason === 'end' ? this.d.protocol.parseAct(repaired.text).act : null;
       if (!act) this.d.log('chat.protocol_invalid', 'PROTOCOL_INVALID', { chatId });
       // A valid <say> with a broken <act> is still posted as a plain reply (08-2 §7.5).

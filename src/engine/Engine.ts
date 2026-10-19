@@ -145,6 +145,8 @@ export class Engine {
         onAiError: (job, kind) => this.recovery.onAiError(job, kind),
         onCannotStart: (job, kind) => this.recovery.onCannotStart(job, kind),
         beforeSchedule: () => this.recovery.beforeSchedule(),
+        // M5 T10: messages that waited at the AI cap go when it is raised or the month turns.
+        onCapLifted: () => void this.drainQueued(),
       },
     });
     this.recovery.attach(this.jobs);
@@ -157,6 +159,8 @@ export class Engine {
       protocol: this.protocol(),
       log: (evt, kind) => log(evt, kind),
       jobs: this.jobs,
+      // M5 T10: the cap check covers chat-lane turns (08-2 §5.10 item 4, CR-0008 (j) row 5).
+      capCheck: (chars, purpose) => this.jobs.allowChatCall(chars, purpose),
     });
     this.jobs.setIntake((chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }));
   }
@@ -277,6 +281,8 @@ export class Engine {
     const pick = this.ai.pick();
     if (!pick) return null;
     const built = this.prompts.buildRewrite(sentence);
+    // M5 T10 (row 5): a rewrite is a key call too; at the cap the held sentence is dropped, as when the turn fails.
+    if (!(await this.jobs.allowChatCall(built.system.length + built.prompt.length, 'rewrite'))) return null;
     const r = await this.ai
       .runTurn(
         pick.providerId,

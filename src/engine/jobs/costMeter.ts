@@ -68,6 +68,20 @@ export class CostMeter {
     return !overCap({ billing: pick.billing, spentPaise: await this.monthSpent(), estimatePaise, capPaise });
   }
 
+  /**
+   * M5 T10 (CR-0008 (j) row 5): the chat-lane turns (intake, repair, rewrite) are checked before the call too ("every AI call
+   * on a key provider", 08-2 §5.10 item 4). False = no call; the month timer is armed so the new month lifts it.
+   */
+  async allowChatCall(promptChars: number, maxOutputTokens: number): Promise<boolean> {
+    const pick = this.core.d.ai.pick();
+    if (!pick || pick.billing !== 'key') return true;
+    const est = estimateCallPaise(promptChars, maxOutputTokens, this.core.d.rateOf(pick.providerId), this.core.d.usdToInr);
+    if (await this.allows(est)) return true;
+    this.core.d.log('chat.spend_cap', 'SPEND_CAP', {});
+    this.armMonthTimer();
+    return false;
+  }
+
   /** The next step turn of a WORKING job: the estimate from its prompt; at the cap the job waits and no call is made. */
   async allowStep(job: JobRow, promptChars: number, maxOutputTokens: number): Promise<boolean> {
     const pick = this.core.d.ai.pick();
@@ -113,6 +127,8 @@ export class CostMeter {
 
   /** Cap raised or a new month: waiting(spend_cap) jobs resume, oldest first, within the free WORKING slots. */
   async resumeCapped(): Promise<void> {
+    // M5 T10: messages that waited at the cap go now too (04 §3.3 Waiting to send).
+    this.core.d.hooks?.onCapLifted?.();
     const live = (await this.core.query<JobRow[]>('jobsByState', ['working', 'waiting'])) ?? [];
     const capped = live.filter((j) => j.state === 'waiting' && j.waitingReason === 'spend_cap').sort((a, b) => a.createdAt - b.createdAt);
     if (!capped.length) return;
