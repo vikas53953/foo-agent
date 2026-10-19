@@ -14,9 +14,16 @@
     "frame": {
       "missing": [
         "＋",
+        "first",
         "🎙"
       ],
-      "extra": []
+      "extra": [
+        "first,",
+        "then",
+        "we",
+        "can",
+        "talk."
+      ]
     },
     "hl": {
       "missing": [],
@@ -66,8 +73,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.02110669716303519,
-    "diffPixels": 526,
+    "ratio": 0.031098270534890254,
+    "diffPixels": 775,
     "total": 24921,
     "sizeMismatch": {
       "a": [
