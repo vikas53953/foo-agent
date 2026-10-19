@@ -44,6 +44,7 @@ import { estCostPaise, estMinutes, estTokens, isBigOne, needsPlanCard } from './
 import { choiceFields } from '../cards/choiceFields';
 import { CostMeter } from './costMeter';
 import { RunnerTick } from './tick';
+import { ChoiceTimeouts } from '../cards/choiceTimeouts';
 import { checkProof } from './proof';
 import { needsVerify, pickStartable, type QueueJob } from './queue';
 import { buildTitle, insertShowBefore, retryTitle, PLAN_MAX } from './title';
@@ -291,7 +292,17 @@ export class JobRunner {
     this.steering = new Steer(core, this.stopper, (jobId, approvalId) => this.gating.onSteerSuperseded(jobId, approvalId));
     this.watchdog = new Watchdog(core, this.stopper);
     // M5 T10: the 15 s tick (opens_at wake, 24 h Plan withdraw).
-    this.ticker = new RunnerTick(core);
+    // M5 T8: J8 choice timeouts (AT-033, AT-034) on the same tick.
+    const timeouts = new ChoiceTimeouts({
+      core,
+      answered: async (job, card, optionId, label) => {
+        this.ctx(job.id).decisions.push(this.scrub(`- Q: ${String(card.payload.question ?? '')} → A: ${label}`));
+        await this.gating.onChoiceAnswered(job, card, optionId);
+        await this.writeMirrors(job.id);
+        await this.startNext();
+      },
+    });
+    this.ticker = new RunnerTick(core, () => timeouts.run());
     this.ticker.start();
     // M5 T7
     this.gating = new RunnerGate({

@@ -19,7 +19,11 @@ export class RunnerTick {
   private timer: ReturnType<RunnerCore['d']['clock']['setTimeout']> | null = null;
   private stopped = false;
 
-  constructor(private core: RunnerCore) {}
+  constructor(
+    private core: RunnerCore,
+    // M5 T8: the J8 choice timeouts run on the same tick (src/engine/cards/choiceTimeouts.ts).
+    private also?: () => Promise<void>,
+  ) {}
 
   /** Arms the 15 s tick (idempotent). */
   start(): void {
@@ -39,6 +43,7 @@ export class RunnerTick {
     // applies, and the free-slot count cannot race a startNext.
     await this.core.schedule(() => this.wakeDue());
     await this.withdrawStalePlans();
+    await this.also?.();
   }
 
   /** WORKING → WAITING(opens_at) for a job whose start is still in the future (the loop calls it before any AI turn). */
