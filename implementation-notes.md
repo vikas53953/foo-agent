@@ -776,3 +776,28 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
   same cap main waits), so a late turn frees its lane slot (closes T14-04 (2)); `send.failed` logs a fixed `code`
   (`errCode`, 08-3 §19.1), never the error text. T14-04 (3) stays a J19 follow-up (M5.tsv). A user's-value pick re-holds
   on the same mismatch until they tap Change, since nothing re-writes the Gmail draft before M8's producer.
+
+## M5 · close-out (lead)
+
+### Built
+
+- Cards: Choice (reversible Best fit, typed answers, timeouts), Approval (countdown, held strip, scope control), Draft
+  (send with undo, Gmail draft), Secret box. All words in `en-IN.json`; drawings checked by BP-CARD and UX-10/12/16.
+- Approval gate: `request_approval` tool, approval state machine (07-2 §5), second look and live terms check after
+  APPROVED, expiry, withdraw and decline, steer supersede, "stop" with 2+ jobs asks which (CR-0009).
+- Secret vault on Windows Credential Manager (in-memory under FOO_TEST), paste catcher, R1/R2 scrub on everything
+  stored or logged, tech log as main's log sink.
+- Golden lane renders M1-M5 refs; M5 trace rows `live`; `docs/fidelity/M5.audit.json` lists the Must-pass ids.
+- M4 carry-over merged (T10): see `docs/decisions/M5.tsv` for what moved.
+
+### Moved to later milestones
+
+- UX-10-02 (memory chip highlight) to M6 with memory in replies (G-M5-26).
+- Deadline-reminder buttons (Keep it, Cancel booking) stay disabled until a milestone makes `deadline_reminder` cards
+  (G-M5-32a); 08-4 §26.8 item 6 (quit past `wake_at` fails the job) to M9 (G-M5-23b).
+- The booking `area` slot and `when` from chrono-node stay out of the verified fields until the spec-keeper settles
+  them (G-M5-32b, c).
+- Remaining `console.*` sinks outside T3 (`Settings.ts`, `EngineSupervisor.ts`, `guard.ts`) and `rebuild.ts` error
+  detail move to `logEvent`; `EngineBridge.ts` is still open.
+- Tier R drawings disputed on BP-CARD-03/04/08/09 and UX-10-01/03/04/05/06 stay disputed until the gallery redraw.
+- Windows-only checks left for the release run: Credential Manager through `@napi-rs/keyring` on a real PC.

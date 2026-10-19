@@ -1,0 +1,656 @@
+{
+  "milestone": "M5",
+  "source": "foo-plan §5 M5 (Goal, Constitution, Create, Must pass, Fidelity exit, Demo) and CR-0009 (M5 trace rows, approval machine, picks)",
+  "rows": [
+    {
+      "group": "M5 Goal",
+      "item": "Choice, Approval, Draft and Secret box cards; the approval gate with second look and fresh terms; the secret vault and paste catcher; steer supersede; choice timeouts; approvals expiring and withdrawn",
+      "status": "PARTIAL",
+      "evidence": ["test:AT-123", "test:AT-124", "test:AT-132", "test:AT-008", "test:AT-033", "test:ART-05a"],
+      "covers": "part",
+      "manual": "demo on Vikas's PC (plan §5 M5 Demo): a booking job stops at an Approval card, Approve runs it after the second look, a pasted card number goes to the Secret box; carry items are listed in docs/decisions/M5.tsv"
+    },
+    {
+      "group": "M5 Constitution",
+      "item": "05-1 §5.3 · 05-2 §5.5, §5.7, §5.8 · 07-2 §5 SM-A1…A10 · 08-2 §9 · 08-3 §17 · 08-4 §25 · 04-2 §22.4 · Art. 2, 3, 5, 6, 8, 10",
+      "status": "PARTIAL",
+      "evidence": ["test:ART-02c", "test:ART-03", "test:ART-06a", "test:ART-08a", "test:ART-10"],
+      "covers": "part",
+      "manual": "independent reviewer reads 07-2 §5, 08-2 §9 and 04-2 §22.4 against the build (two-axis review on the M5 PR); deferred items are in CR-0009 and docs/decisions/M5.tsv"
+    },
+    {
+      "group": "M5 Create",
+      "item": "scripts/closeout.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/engine/cards/choiceFields.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/engine/cards/choiceTimeouts.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/engine/cards/typedAnswer.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/engine/cards/typedHook.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/engine/gate/afterApproved.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/engine/gate/approvalText.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/engine/gate/classes.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/engine/gate/draftSecondLook.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/engine/gate/extractCounts.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/engine/gate/fieldsHash.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/engine/gate/liveTerms.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/engine/gate/requestApproval.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/engine/gate/runnerGate.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/engine/gate/secondLook.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/engine/gate/sendContent.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/engine/jobs/tick.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/approvals/ApprovalGate.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/approvals/approvalIpc.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/approvals/expiry.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/approvals/rules.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/cards/answerCard.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/cards/answerIpc.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/drafts/DraftService.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/drafts/draftIpc.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/drafts/gmailDrafts.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/jobs/capWarning.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/log/techLog.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/secrets/registerValue.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/store/writeRedacted.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/vault/SecretVault.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/vault/keyring.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/vault/labels.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/vault/registryMirror.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/vault/secretIpc.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/main/vault/vaultRuntime.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/renderer/cards/Approval.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/renderer/cards/Approval.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/renderer/cards/Choice.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/renderer/cards/Choice.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/renderer/cards/Draft.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/renderer/cards/Draft.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/renderer/cards/OptionTiles.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/renderer/cards/OptionTiles.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/renderer/cards/SecretBox.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/renderer/cards/SecretBox.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/renderer/cards/cardViews.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/renderer/cards/choiceText.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/renderer/cards/parts/Countdown.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/renderer/cards/parts/HeldStrip.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/renderer/cards/parts/ScopeControl.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/renderer/cards/secretPrefill.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/renderer/shell/jumpToCard.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Create",
+      "item": "src/shared/approvalMachine.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-008",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-008",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-009",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-009",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-016",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-016",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-032",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-032",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-033",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-033",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-034",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-034",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-035",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-035",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-035a",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-035a",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-077a",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-077a",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-077b",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-077b",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-085",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-085",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-110",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-110",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-111",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-111",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-121",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-121",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-122",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-122",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-123",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-123",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-124",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-124",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-126",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-126",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-127",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-127",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-128",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-128",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-132",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-132",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-133",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-133",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-280",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-280",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "AT-288",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-288",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "ART-02c",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-02c",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "ART-03",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-03",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "ART-05a",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-05a",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "ART-05b",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-05b",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "ART-06a",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-06a",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "ART-06b",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-06b",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "ART-08a",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-08a",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "ART-08c",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-08c",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "ART-10",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-10",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "UX-10-01",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:UX-10-01",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "UX-10-03",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:UX-10-03",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "UX-10-04",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:UX-10-04",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "UX-10-05",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:UX-10-05",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "UX-10-06",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:UX-10-06",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "UX-10-08",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:UX-10-08",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "UX-12-05",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:UX-12-05",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "UX-12-06",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:UX-12-06",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "UX-16-02",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:UX-16-02",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "UX-16-04",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:UX-16-04",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "UX-16-06",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:UX-16-06",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "BP-CARD-03",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:BP-CARD-03",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "BP-CARD-04",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:BP-CARD-04",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "BP-CARD-05",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:BP-CARD-05",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "BP-CARD-07",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:BP-CARD-07",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "BP-CARD-08",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:BP-CARD-08",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Must pass",
+      "item": "BP-CARD-09",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:BP-CARD-09",
+      "covers": "whole"
+    },
+    {
+      "group": "M5 Fidelity exit",
+      "item": "Tier R for BP-CARD-03/04/05/07/08/09 and UX-10, UX-12, UX-16 steps with no Fail",
+      "status": "PARTIAL",
+      "evidence": ["test:BP-CARD-05", "test:UX-10-08"],
+      "covers": "part",
+      "manual": "golden lane fidelity report: drawings for BP-CARD-03/04/08/09 and UX-10-01/03/04/05/06 are disputed under CR-0009 until the gallery redraw; UX-10-02 moved to M6 (G-M5-26)"
+    },
+    {
+      "group": "M5 Fidelity exit",
+      "item": "fidelity report signed by the reviewer and seen by Vikas",
+      "status": "UNVERIFIABLE",
+      "manual": "compare page for Vikas's morning review (approve-on-his-behalf rule for the overnight run)"
+    }
+  ]
+}
