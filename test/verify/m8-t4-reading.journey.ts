@@ -47,7 +47,8 @@ export default async function journey(v: Verify): Promise<void> {
   try {
     const { app, page } = await v.launch({ fakeAi: SCRIPT, env: { FOO_FAKE_GOOGLE: google.url } });
     await openWorld(app, page);
-    await openChat(page, 'foo');
+    // Home has no live job: in foo's chat the seeded "Goa stay" (NEEDS YOU) would take the message as a steer (08-2 §5.2).
+    await openChat(page, 'Home');
     await setTheme(page, 'light');
     await rest(page);
     await settle(page);
@@ -75,7 +76,11 @@ export default async function journey(v: Verify): Promise<void> {
 
     await advance(15_000);
     try {
-      await log.locator(byTid(TID.bubbleFoo), { hasText: RESULT }).first().waitFor({ timeout: 15_000 });
+      // A helper chat's replies are helper bubbles.
+      await log
+        .locator(`${byTid(TID.bubbleFoo)}, ${byTid(TID.bubbleHelper)}`, { hasText: RESULT })
+        .first()
+        .waitFor({ timeout: 15_000 });
       await badge.and(page.locator('[data-state="done"]')).waitFor({ timeout: 8_000 });
     } catch {
       await v.shot('not-done');
@@ -83,7 +88,7 @@ export default async function journey(v: Verify): Promise<void> {
       const seen = (v.fakeTurns() as { purpose: string; matchedLine: number | null }[]).map((t) => `${t.purpose}:${t.matchedLine}`);
       throw new Error(`expected the result and a ✅ done badge; badge is ${is}; fake AI turns ${seen.join()}`);
     }
-    v.note(`the result is posted as a foo bubble: "${RESULT}"`);
+    v.note(`the result is posted as a reply bubble in Home: "${RESULT}"`);
     v.note('my bubble ends ✅ with data-state="done": the emails_read proof was re-checked against the recorded Gmail results (AT-020)');
 
     const paths = google.requests.map((r) => `${r.method} ${r.path}`);
