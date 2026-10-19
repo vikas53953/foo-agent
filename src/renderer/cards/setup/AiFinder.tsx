@@ -399,7 +399,9 @@ function LiveFinder({ card, time }: { card: CardRow; time: CardTime }) {
 
   const chooseLine = (pick: ProviderId, many: boolean) => (
     <div className={styles.block}>
-      <p className={styles.line}>{t(many ? 'setup.ai_finder.choose.many' : 'setup.ai_finder.choose.one', { AI: AI_NAME[pick] })}</p>
+      <p className={styles.line}>
+        {many ? t('setup.ai_finder.choose.many', { AI: AI_NAME[pick] }) : t('setup.ai_finder.choose.one', { AI: AI_NAME[pick] })}
+      </p>
       <div className={cardStyles.buttons}>
         <CardButton tid="setupAiUse" kind="primary" busy={busy === 'use'} disabled={busy !== null} onClick={() => choose(pick, 'use')}>
           {t('setup.ai_finder.choose.use', { AI: AI_NAME[pick] })}
