@@ -41,7 +41,7 @@ const OBSERVATION_CAP = 4_000;
 type JobDecision = Extract<IntakeDecision, { kind: 'job' }>;
 
 export interface RunnerAi extends LaneAi {
-  verify(providerId: ProviderId): Promise<{ ok: boolean }>;
+  verify(providerId: ProviderId): Promise<{ ok: boolean; kind?: string }>;
 }
 
 export interface RunnerPrompts {
@@ -64,6 +64,10 @@ export interface RunnerHooks {
   onAiError?(job: JobRow, kind: AiErrorKind): Promise<void>;
   /** T3: the watchdog's stuck rules (08-2 §5.6). T2 default: three failures in a row end the job FAILED. */
   onStuck?(job: JobRow, rule: 'fail_streak'): Promise<void>;
+  /** T4: a queued job cannot start (no usable AI, or its verify failed) → WAITING. T2 default: it stays queued. */
+  onCannotStart?(job: JobRow, kind?: string): Promise<void>;
+  /** T4: runs before each schedule pass (waiting jobs whose condition cleared resume first); false holds every start. */
+  beforeSchedule?(): Promise<boolean>;
 }
 
 /** What T3's modules (stopFlow, steer, watchdog, costMeter) may use of the runner. */
@@ -255,7 +259,7 @@ export class JobRunner {
 
   // ---- bookkeeping ----
 
-  private track<T>(p: Promise<T>): Promise<T> {
+  track<T>(p: Promise<T>): Promise<T> {
     this.busy += 1;
     return p.finally(() => {
       this.busy -= 1;
@@ -482,6 +486,7 @@ export class JobRunner {
   /** When a slot frees, the oldest startable queued jobs start (FIFO), serialised so two callers never overfill the slots. */
   startNext(): Promise<void> {
     const run = async () => {
+      if (this.d.hooks?.beforeSchedule && !(await this.d.hooks.beforeSchedule())) return;
       const live = (await this.query<JobRow[]>('jobsByState', ['queued', 'working', 'needs_you'])) ?? [];
       const windows = live.filter((j) => j.state === 'working' && j.usesBrowser).length;
       const queue: QueueJob[] = [];
@@ -515,11 +520,11 @@ export class JobRunner {
     if (job?.state === 'needs_you') return this.resume(job);
     if (!job || job.state !== 'queued') return;
     const pick = this.d.ai.pick();
-    if (!pick) return; // T4: the AI is not available; the job stays queued until it is.
+    if (!pick) return this.d.hooks?.onCannotStart?.(job);
     const lastVerifiedAt = this.d.settings().ai.providers[pick.providerId]?.lastVerifiedAt;
     if (needsVerify(lastVerifiedAt, this.d.clock.now())) {
-      const v = await this.d.ai.verify(pick.providerId).catch(() => ({ ok: false }));
-      if (!v.ok) return;
+      const v: { ok: boolean; kind?: string } = await this.d.ai.verify(pick.providerId).catch(() => ({ ok: false }));
+      if (!v.ok) return this.d.hooks?.onCannotStart?.(job, v.kind);
     }
     const steps = await this.steps(jobId);
     const first = steps.find((s) => s.state === 'pending' || s.state === 'running');
@@ -540,8 +545,13 @@ export class JobRunner {
     this.launch(jobId);
   }
 
+  /** Aborts a job's loop (T4: a job paused to WAITING drops the turn in flight). */
+  halt(jobId: string): void {
+    this.ctxs.get(jobId)?.abort.abort();
+  }
+
   /** Starts the loop of a job now WORKING (fresh start, or answered after NEEDS_YOU). */
-  private launch(jobId: string): void {
+  launch(jobId: string): void {
     if (this.loops.has(jobId)) {
       // The old loop is still finishing its last turn (mirrors after NEEDS_YOU): start again once it ends.
       this.relaunch.add(jobId);
@@ -669,7 +679,7 @@ export class JobRunner {
   }
 
   /** fail_streak + 1; at 3 the stuck seam takes over (T3). Returns true when the loop must end. */
-  private async countFailure(job: JobRow): Promise<boolean> {
+  async countFailure(job: JobRow): Promise<boolean> {
     const streak = job.failStreak + 1;
     await this.tx([{ op: 'update', table: 'jobs', id: job.id, set: { fail_streak: streak } }]);
     if (streak < 3) return false;
@@ -996,7 +1006,7 @@ export class JobRunner {
     const steps = await this.steps(job.id);
     const current = steps.find((s) => s.state === 'running' || s.state === 'waiting_user');
     const r = await this.tx([
-      ...this.cardOps(job.chatId, 'error', 'shown', payload, job.id, job.ownerId).ops,
+      ...this.cardOps(job.chatId, 'error', 'asking', payload, job.id, job.ownerId).ops,
       { op: 'transition', table: 'jobs', id: job.id, from: ['working'], to: 'failed', set: { finished_at: now } },
       ...(current ? [{ op: 'update', table: 'steps', id: current.id, set: { state: 'failed', finished_at: now } } as DbOp] : []),
       ...this.badgeOp(job, 'failed'),
@@ -1227,7 +1237,7 @@ export class JobRunner {
 
   // ---- 08-1 §4.1.2 mirrors ----
 
-  private async writeMirrors(jobId: string): Promise<void> {
+  async writeMirrors(jobId: string): Promise<void> {
     const job = await this.job(jobId);
     if (!job) return;
     const steps = await this.steps(jobId);
