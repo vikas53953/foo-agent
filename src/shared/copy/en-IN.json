@@ -802,6 +802,7 @@
   "cards.approval.book.title.slot": "Book this slot?",
   "cards.approval.book.title.stay": "Book this stay?",
   "cards.approval.book.impact": "{place}, {area} · {when} · {party}",
+  "cards.approval.book.party": "{count} people",
   "cards.approval.book.row.booked_under": "Booked under",
   "cards.approval.book.row.charged_now": "Charged now",
   "cards.approval.book.row.no_show_fee": "No-show fee",

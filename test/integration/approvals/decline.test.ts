@@ -11,7 +11,11 @@ afterEach(() => {
   h = null;
 });
 
-const texts = (x: JobHarness) => x.messages().filter((m) => m.kind === 'text' && m.author_kind === 'foo').map((m) => m.text);
+const texts = (x: JobHarness) =>
+  x
+    .messages()
+    .filter((m) => m.kind === 'text' && m.author_kind === 'foo')
+    .map((m) => m.text);
 
 describe('approval card from a job (08-4 §28.1)', () => {
   it('AT-110 Not now on the Approval card → CANCELLED, "Okay, I won’t. Nothing else to do here.", nothing booked', async () => {
@@ -42,7 +46,10 @@ describe('approval card from a job (08-4 §28.1)', () => {
     const ran: string[] = [];
     h = jobHarness({
       script: bookScript([
-        { ...step({ kind: 'done', result: 'Booked your table.', unverified: true }), match: { purpose: 'step', promptIncludes: '- book · payee: Toit' } },
+        {
+          ...step({ kind: 'done', result: 'Booked your table.', unverified: true }),
+          match: { purpose: 'step', promptIncludes: '- book · payee: Toit' },
+        },
       ]),
       tools: { extra: gateTools(ran) },
     });

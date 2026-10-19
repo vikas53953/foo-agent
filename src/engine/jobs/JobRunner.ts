@@ -14,6 +14,7 @@
 // decline line of AT-110 (07-2 §4 "Okay, I won't. …"). Stored text goes through `Redactor.scrub` (08-2 §11.4, map fix 11).
 import { existsSync } from 'node:fs';
 import path from 'node:path';
+import { newNonce } from '../../shared/canon';
 import { t } from '../../shared/copy/t';
 import type { Clock, TimerId } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
@@ -462,7 +463,8 @@ export class JobRunner {
           type,
           state,
           payload,
-          nonce: this.d.newId('k'),
+          // M5 T7: 08-1 §3.2 card nonces are 32 hex (card:answer refuses any other, IPC_REJECTED).
+          nonce: newNonce(),
           created_at: now,
         },
       },

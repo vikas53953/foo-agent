@@ -7,6 +7,8 @@
 // the M4 runner resumes or cancels the job on a tap), 05-2 §5.5.4 (EXPIRED → "Ask me again" re-checks live terms first and
 // builds a fresh card), X-03, X-04, X-125. CR-0009 G-M5-03 (HELD → own value → DECLINED), G-M5-04 (HELD expires),
 // G-M5-18 (HELD / APPROVED → WITHDRAWN on a stopped job), G-M5-24 (use_app rules match `fields.app`).
+// M5 T7: §5.9 step 2 / 08-1 §4.1.1 step 5 (`recoverSubmitted`: RUNNING with `submitted_at` → CHECKING, never re-submitted,
+// Art. 7; this also sweeps a Draft send cut between its write-ahead and `gmail.send`, 08-2 §10.4).
 import { APPROVAL_EVENTS, approvalExpiresAt, nextApproval, type ApprovalEvent } from '../../shared/approvalMachine';
 import { newNonce } from '../../shared/canon';
 import { fail, ok, type Result } from '../../shared/errors';
@@ -447,6 +449,20 @@ export class ApprovalGate {
     if (to === 'RUNNING') set.submitted_at = data.submittedAt ?? now;
     if (to === 'COMPLETED') set.completed_at = now;
     return this.moveTo(a, to, now, { approval: set });
+  }
+
+  // M5 T7
+  /**
+   * 08-2 §5.9 step 2 (main's half, run when the app or the engine starts): every approval RUNNING with `submitted_at` set →
+   * CHECKING (`result_unknown`), never re-submitted (Art. 7). A Draft card keeps `sending`; the CHECKING procedure is T8's
+   * (§10.5). Returns the ids it moved.
+   */
+  recoverSubmitted(): string[] {
+    const now = this.d.now();
+    const rows = this.d.db
+      .prepare("SELECT * FROM approvals WHERE state = 'RUNNING' AND submitted_at IS NOT NULL ORDER BY submitted_at, id")
+      .all() as DbRow[];
+    return rows.filter((r) => this.move(approvalRow(r), 'result_unknown', now, {}).ok).map((r) => String(r.id));
   }
 
   /**

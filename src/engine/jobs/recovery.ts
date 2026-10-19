@@ -8,6 +8,7 @@
 // 09 §9.22 (sleep → WAITING asleep; resume re-tests the AI), 07-2 §4 + SM-A10 (WAITING → WORKING edits the error card in
 // place, never a new message), CR-0008 G-M4-02, G-M4-04, G-M4-13 (main decides safe mode and tells the engine).
 // The runner (JobRunner.ts) owns the loop; this file fills its T4 hooks and moves jobs in and out of WAITING / recovery.
+import { newNonce } from '../../shared/canon';
 import { t } from '../../shared/copy/t';
 import type { Clock } from '../../shared/clock';
 import { formatTime } from '../../shared/format';
@@ -174,7 +175,8 @@ export class JobRecovery {
           type: 'error',
           state: 'asking',
           payload,
-          nonce: this.d.newId('k'),
+          // M5 T7: 08-1 §3.2 card nonces are 32 hex (card:answer refuses any other, IPC_REJECTED).
+          nonce: newNonce(),
           created_at: now,
         },
       },

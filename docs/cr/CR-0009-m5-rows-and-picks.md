@@ -207,6 +207,16 @@ batch independent review (Fable) checks them before the milestone PR; until then
   to a JSON leaf that is exactly a foo id (08-0 §E.7 `{prefix}_{UUIDv7}`, prefixes of 08-1 §0.6). Every id is 39+
   hex characters and passed P17, so stored card payloads, activity fields and tool calls held `[hidden]` in place of
   their ids. An id inside a longer string gets no exemption. `src/main/store/writeRedacted.ts`. Pending review.
+- **G-M5-29** (T7) Engine `approval.open` carries `{ jobId, draft, title, impact }` (strict), not the bare draft. 08-1
+  §2.4 names the message and 08-2 §9.7 `createApproval(job, draft)`, but main's card needs the job and the card text,
+  and 05-2 §5.5.2 says the text is built only from the verified fields. The engine builds `title` / `impact` from the
+  verified draft (`src/engine/gate/approvalText.ts`); main's `openFromEngine` stores them. Rejected: main builds the
+  text (two copies of the card-kind rules, and main would need the job's time zone logic). Pending review.
+- **G-M5-30** (T7) Copy keys the spec shows but en-IN.json lacked: `thread.approval.declined` "Okay, I won't. {next}"
+  and `thread.approval.declined.nothing_else` "Nothing else to do here." (AT-110 text verbatim), and
+  `cards.approval.book.party` "{count} people" (05-2 §5.5.2 booking line "… · 4 people"). A booking line slot nothing
+  verified (ApprovalFields has no area; `when` without a quote) is left out with its separator, never guessed.
+  Pending review.
 
 ### Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`)
 

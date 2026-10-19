@@ -66,7 +66,7 @@ describe('ToolLayer', () => {
     expect(row(a.toolCallId)).toMatchObject({ gate: 'approved', approval_id: AP });
   });
 
-  it('ART-05a seam: an acting tool or an engine-only tool called by the AI → USE_SUBMIT and never runs', async () => {
+  it('Article 5 seam (the unit half of the article test): an acting tool or an engine-only tool called by the AI → USE_SUBMIT and never runs', async () => {
     let runs = 0;
     const run = () => ((runs += 1), Promise.resolve({ kind: 'ok' as const, result: 1 }));
     const tools = [

@@ -17,6 +17,15 @@ function bookTitle(f: ApprovalFields): string {
   return t('cards.approval.book.title.slot');
 }
 
+/** "{place}, {area} · {when} · {party}" with the slots nothing verified left out (no stray ", " or " · "). */
+function joinFilled(line: string): string {
+  return line
+    .split(' · ')
+    .map((part) => part.replace(/^,\s*|,\s*$/gu, '').trim())
+    .filter(Boolean)
+    .join(' · ');
+}
+
 /** The card's title and impact line for a verified book or delete draft (buy / pay are the Payment card, M10). */
 export function approvalText(f: ApprovalFields, o: { timeZone: string; now: number }): ApprovalText {
   const when = f.when ? formatDate(f.when.start, 'full', { timeZone: f.when.tz || o.timeZone, now: o.now }) : '';
@@ -24,12 +33,15 @@ export function approvalText(f: ApprovalFields, o: { timeZone: string; now: numb
   if (f.verb === 'book')
     return {
       title: bookTitle(f),
-      impact: t('cards.approval.book.impact', {
-        place,
-        area: f.siteDomain ?? '',
-        when,
-        party: f.partySize === undefined ? '' : String(f.partySize),
-      }),
+      impact: joinFilled(
+        t('cards.approval.book.impact', {
+          place,
+          // ApprovalFields has no area (08-2 §9.3); the slot stays empty rather than guess one.
+          area: '',
+          when,
+          party: f.partySize === undefined ? '' : t('cards.approval.book.party', { count: String(f.partySize) }),
+        }),
+      ),
     };
   // Cancelling a booking is `delete` (X-55, 08-2 §9.4.4).
   if (f.cancelTerms)

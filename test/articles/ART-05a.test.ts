@@ -24,29 +24,37 @@ const DIRECT = [
 ] as const;
 
 describe('Article 5: nothing acts without an approved approval', () => {
-  it('ART-05a a fake AI calling send, buy, book, post or delete directly: 100 % refused, 0 runs, 0 approvals', { timeout: 60_000 }, async () => {
-    const ran: string[] = [];
-    let refused = 0;
-    for (const [name, args] of DIRECT) {
-      h = jobHarness({
-        settings: permissive(),
-        script: [jobIntake(BOOK_PLAN, { title: 'Do it all' }), tool(name, args), step({ kind: 'done', result: 'Done.', unverified: true })],
-        tools: { extra: gateTools(ran) },
-      });
-      h.userSays('Book the table at Toit, pay the bill, delete the old booking, post about it and send it to Asha');
-      await h.settle();
-      expect(h.job().intent).toBe('do');
-      const row = h.toolCalls().find((c) => c.tool === name);
-      expect(row, name).toBeDefined();
-      // An acting or engine-only call is USE_SUBMIT; post (never in v1) is handed back. Neither runs.
-      const want = name === 'fake.post' ? ['handed_back', null] : ['blocked', 'USE_SUBMIT'];
-      expect([row!.gate, row!.error_kind, row!.approval_id], name).toEqual([...want, null]);
-      refused += 1;
-      expect(h.db.prepare('SELECT COUNT(*) AS n FROM approvals').get()).toEqual({ n: 0 });
-      h.close();
-      h = null;
-    }
-    expect(refused / DIRECT.length).toBe(1);
-    expect(ran).toEqual([]);
-  });
+  it(
+    'ART-05a a fake AI calling send, buy, book, post or delete directly: 100 % refused, 0 runs, 0 approvals',
+    { timeout: 60_000 },
+    async () => {
+      const ran: string[] = [];
+      let refused = 0;
+      for (const [name, args] of DIRECT) {
+        h = jobHarness({
+          settings: permissive(),
+          script: [
+            jobIntake(BOOK_PLAN, { title: 'Do it all' }),
+            tool(name, args),
+            step({ kind: 'done', result: 'Done.', unverified: true }),
+          ],
+          tools: { extra: gateTools(ran) },
+        });
+        h.userSays('Book the table at Toit, pay the bill, delete the old booking, post about it and send it to Asha');
+        await h.settle();
+        expect(h.job().intent).toBe('do');
+        const row = h.toolCalls().find((c) => c.tool === name);
+        expect(row, name).toBeDefined();
+        // An acting or engine-only call is USE_SUBMIT; post (never in v1) is handed back. Neither runs.
+        const want = name === 'fake.post' ? ['handed_back', null] : ['blocked', 'USE_SUBMIT'];
+        expect([row!.gate, row!.error_kind, row!.approval_id], name).toEqual([...want, null]);
+        refused += 1;
+        expect(h.db.prepare('SELECT COUNT(*) AS n FROM approvals').get()).toEqual({ n: 0 });
+        h.close();
+        h = null;
+      }
+      expect(refused / DIRECT.length).toBe(1);
+      expect(ran).toEqual([]);
+    },
+  );
 });

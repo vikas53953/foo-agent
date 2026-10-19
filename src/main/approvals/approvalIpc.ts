@@ -48,6 +48,8 @@ export function approvalGate(ctx: AppContext): ApprovalGate {
     log: (line) => console.info('approvals', JSON.stringify(line)),
   });
   gates.set(ctx.db, gate);
+  // M5 T7 (08-2 §5.9 step 2): an irreversible call cut by a crash or power cut is checked, never repeated.
+  gate.recoverSubmitted();
   startExpiryTick(gate);
   return gate;
 }

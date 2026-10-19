@@ -42,47 +42,55 @@ const CARDS: [string, string, Record<string, unknown>][] = [
 ];
 
 describe('Article 5: hard limits always ask', () => {
-  it('ART-05b most permissive chips + every allowed rule: each hard limit still asks, "I’ll always ask for this one."', { timeout: 60_000 }, async () => {
-    const ran: string[] = [];
-    for (const [label, ask, draft] of CARDS) {
-      h = jobHarness({
-        settings: permissive(),
-        script: [
-          jobIntake(BOOK_PLAN, { title: 'Book a table' }),
-          tool('fake.page', { site: 'table.example' }),
-          step({ kind: 'request_approval', draft, submitRef: 'e9' }),
-        ],
-        tools: { extra: gateTools(ran) },
-      });
-      h.userSays(ask);
-      await h.settle();
-      const cards = h.cards('approval');
-      expect(cards, label).toHaveLength(1);
-      const p = JSON.parse(String(cards[0]!.payload)) as { hardLimit: boolean; scopes: string[] };
-      // hardLimit is what draws "I'll always ask for this one." (Approval.tsx) and leaves only "Just this once".
-      expect([p.hardLimit, p.scopes], label).toEqual([true, ['once']]);
-      expect(h.db.prepare('SELECT hard_limit, state FROM approvals').get(), label).toEqual({ hard_limit: 1, state: 'PENDING' });
-      expect(h.job().state, label).toBe('needs_you');
-      h.close();
-      h = null;
-    }
-    expect(ran).toEqual([]);
+  it(
+    'ART-05b most permissive chips + every allowed rule: each hard limit still asks, "I’ll always ask for this one."',
+    { timeout: 60_000 },
+    async () => {
+      const ran: string[] = [];
+      for (const [label, ask, draft] of CARDS) {
+        h = jobHarness({
+          settings: permissive(),
+          script: [
+            jobIntake(BOOK_PLAN, { title: 'Book a table' }),
+            tool('fake.page', { site: 'table.example' }),
+            step({ kind: 'request_approval', draft, submitRef: 'e9' }),
+          ],
+          tools: { extra: gateTools(ran) },
+        });
+        h.userSays(ask);
+        await h.settle();
+        const cards = h.cards('approval');
+        expect(cards, label).toHaveLength(1);
+        const p = JSON.parse(String(cards[0]!.payload)) as { hardLimit: boolean; scopes: string[] };
+        // hardLimit is what draws "I'll always ask for this one." (Approval.tsx) and leaves only "Just this once".
+        expect([p.hardLimit, p.scopes], label).toEqual([true, ['once']]);
+        expect(h.db.prepare('SELECT hard_limit, state FROM approvals').get(), label).toEqual({ hard_limit: 1, state: 'PENDING' });
+        expect(h.job().state, label).toBe('needs_you');
+        h.close();
+        h = null;
+      }
+      expect(ran).toEqual([]);
 
-    // The gate half: the same permissive settings, every rule; pay, a new person, a public post.
-    const s = permissive()(structuredClone(settingsDefaults));
-    const gate = createGate({ settings: () => s, now: () => NOW });
-    const job: GateJob = { id: 'j1', intent: 'do', doVerbs: ['book', 'pay', 'send', 'post'], ownerId: null, appAnswers: new Map() };
-    const decide = (c: GateCall) => gate.decide(job, c);
-    const pay: ApprovalFields = { verb: 'pay', payee: 'Power Co', amountPaise: 240_000, irreversible: true };
-    expect(decide({ tool: 'browser.submit', cls: 'pay', fields: pay })).toEqual({ kind: 'CARD', hard: true });
-    const newPerson: GateCall = {
-      tool: 'gmail.send',
-      cls: 'send',
-      fields: { verb: 'send', recipients: [{ name: 'Asha', address: 'asha@example.com', isNew: true, isGroup: false }], irreversible: true },
-    };
-    // A send is never the AI's: it is the Draft card's own approval, and a new person keeps it a hard limit there.
-    expect(decide(newPerson)).toEqual({ kind: 'DRAFT_SEND' });
-    expect(isHardLimit('send', newPerson.fields, NOW)).toBe(true);
-    expect(decide({ tool: 'x.post', cls: 'post' })).toEqual({ kind: 'HAND_BACK' });
-  });
+      // The gate half: the same permissive settings, every rule; pay, a new person, a public post.
+      const s = permissive()(structuredClone(settingsDefaults));
+      const gate = createGate({ settings: () => s, now: () => NOW });
+      const job: GateJob = { id: 'j1', intent: 'do', doVerbs: ['book', 'pay', 'send', 'post'], ownerId: null, appAnswers: new Map() };
+      const decide = (c: GateCall) => gate.decide(job, c);
+      const pay: ApprovalFields = { verb: 'pay', payee: 'Power Co', amountPaise: 240_000, irreversible: true };
+      expect(decide({ tool: 'browser.submit', cls: 'pay', fields: pay })).toEqual({ kind: 'CARD', hard: true });
+      const newPerson: GateCall = {
+        tool: 'gmail.send',
+        cls: 'send',
+        fields: {
+          verb: 'send',
+          recipients: [{ name: 'Asha', address: 'asha@example.com', isNew: true, isGroup: false }],
+          irreversible: true,
+        },
+      };
+      // A send is never the AI's: it is the Draft card's own approval, and a new person keeps it a hard limit there.
+      expect(decide(newPerson)).toEqual({ kind: 'DRAFT_SEND' });
+      expect(isHardLimit('send', newPerson.fields, NOW)).toBe(true);
+      expect(decide({ tool: 'x.post', cls: 'post' })).toEqual({ kind: 'HAND_BACK' });
+    },
+  );
 });

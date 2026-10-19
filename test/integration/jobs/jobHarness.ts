@@ -46,7 +46,16 @@ export function jobIntake(
   };
 }
 
-const HELPER_APPS = JSON.stringify({ gmail: true, gcal: true, contacts: true, whatsapp: true, x: true, outlook: true, browser: true, payments: false });
+const HELPER_APPS = JSON.stringify({
+  gmail: true,
+  gcal: true,
+  contacts: true,
+  whatsapp: true,
+  x: true,
+  outlook: true,
+  browser: true,
+  payments: false,
+});
 
 export const BILLS_PLAN: PlanStepIn[] = [{ phraseKey: 'read_email' }, { phraseKey: 'look_for', slots: { what: 'bills due this week' } }];
 
