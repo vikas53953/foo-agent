@@ -1,0 +1,73 @@
+{
+  "journey": "test/verify/r1-t3-places-time.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "b5b0cfe7244fb27608d6525005711ecf14048552",
+  "dirty": false,
+  "started": "2026-10-20T11:56:53.364Z",
+  "finished": "2026-10-20T11:57:06.023Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "map: 3 numbered stops, list [\"1Bakery on FC RoadCake pickup\",\"2Post office\",\"3PharmacyRefill\"], web requests 0",
+    "timeline: [\"2 NovRent₹32,000\",\"9 NovDentist visit\",\"15 NovCar insurance due₹18,450\"]",
+    "week: 7 days, 21 slots; Narrator reads \"Mon 09:00–10:30, Busy\"",
+    "list pick: tapped \"Baner branch\", state answered, foo replied",
+    "time pick: 11:15 tapped, the AI read action pick_slot with choice 11:15, foo confirmed \"You are down for 11:15\"",
+    "web requests from the window during the whole journey: 0"
+  ],
+  "shots": [
+    {
+      "file": "after/01-before.light.png",
+      "name": "before",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-map.light.png",
+      "name": "map",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-map-dark.dark.png",
+      "name": "map-dark",
+      "theme": "dark"
+    },
+    {
+      "file": "after/04-timeline-week.light.png",
+      "name": "timeline-week",
+      "theme": "light"
+    },
+    {
+      "file": "after/05-timeline-week-dark.dark.png",
+      "name": "timeline-week-dark",
+      "theme": "dark"
+    },
+    {
+      "file": "after/06-list-pick.light.png",
+      "name": "list-pick",
+      "theme": "light"
+    },
+    {
+      "file": "after/07-list-pick-dark.dark.png",
+      "name": "list-pick-dark",
+      "theme": "dark"
+    },
+    {
+      "file": "after/08-time-pick.light.png",
+      "name": "time-pick",
+      "theme": "light"
+    },
+    {
+      "file": "after/09-time-pick-dark.dark.png",
+      "name": "time-pick-dark",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}
