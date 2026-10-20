@@ -1,0 +1,6 @@
+/* Spec: 06-2 §6.8 "Groups I read" (`w-hidden`): one row per group under its label row, in the same 06 §0.4 row group. */
+.groups {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

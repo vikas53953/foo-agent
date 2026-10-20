@@ -1,0 +1,74 @@
+/* Spec: 06 §0.4 Toggle (40×20 track, --r-full; off --bg-sunken + 1px --line-input, knob 12 --fg-2 at 4px; on --accent, knob 14
+ * --on-accent at 3px from the right; hover --fg-3 / --accent-hover border; pressed knob +4px; ring 02 F8; disabled
+ * --fg-disabled knob). The button is 40px tall around the 20px track (02 F5 hit area). */
+.toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  width: var(--toggle-w);
+  min-height: var(--s7);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: default;
+}
+.toggle::before {
+  content: '';
+  position: absolute;
+  inset: calc((var(--s7) - var(--toggle-h)) / 2) 0;
+  border-radius: var(--r-full);
+  background: var(--bg-sunken);
+  box-shadow: inset 0 0 0 1px var(--line-input);
+}
+.toggle:hover::before {
+  box-shadow: inset 0 0 0 1px var(--fg-3);
+}
+.toggle:focus-visible {
+  outline: none;
+}
+.toggle:focus-visible::before {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+.knob {
+  position: absolute;
+  top: 50%;
+  left: var(--s0);
+  width: var(--s2);
+  height: var(--s2);
+  border-radius: var(--r-full);
+  background: var(--fg-2);
+  transform: translateY(-50%);
+  transition:
+    left var(--m-fast) var(--ease-standard),
+    width var(--m-fast) var(--ease-standard);
+}
+.toggle:active .knob {
+  width: var(--s3);
+}
+.on::before {
+  background: var(--accent);
+  box-shadow: none;
+}
+.on:hover::before {
+  box-shadow: inset 0 0 0 1px var(--accent-hover);
+}
+.on .knob {
+  left: auto;
+  right: calc(var(--s0) - 1px);
+  width: calc(var(--s2) + var(--s-1));
+  height: calc(var(--s2) + var(--s-1));
+  background: var(--on-accent);
+}
+.on:active .knob {
+  width: calc(var(--s3) + var(--s-1));
+}
+.toggle:disabled .knob {
+  background: var(--fg-disabled);
+}
+.toggle:disabled::before {
+  background: var(--bg-sunken);
+  box-shadow: inset 0 0 0 1px var(--line-input);
+}

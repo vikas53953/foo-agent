@@ -25,10 +25,19 @@ coordinator starts one thread per ready ticket (all in parallel)
 lead reviews (foo-review) and merges each ticket PR, reports newly unblocked tickets → more threads
    │  close-out: foo-review (Standards + Spec) + fidelity checker, TS rulebook + comment clean-up
    ▼
-milestone PR ready → full CI (Windows) → merge when CI + checker are green → decision log + mission board
+milestone PR ready → full CI (Windows, only here) → merge when CI + checker are green → decision log + mission board
 ```
 
 Steps in detail: `.claude/skills/foo-playbooks/playbooks/milestone.md` (lead) and `playbooks/ticket.md` (ticket thread).
+
+## 1a. Speed-ups from M5 (Vikas, 2026-10-19 04:15Z)
+
+One milestone at a time; inside it, T1 contracts first, then up to 5 truly independent tickets in parallel threads.
+
+- **CI per ticket.** A ticket PR into the milestone branch runs the fast Linux lane. If it changes the screen (`src/renderer/`, copy, `design/`, `golden/`, `test/fidelity/`) it also runs the golden lane (picture checks) once marked ready. The full Windows suite runs only on the milestone PR into main. Nothing reaches main without every lane green. Enforced by `.github/workflows/ci.yml` (`screen` job and the lane `if:` lines).
+- **Windows in 4 shards (Vikas, option A, 2026-10-19 06:53Z).** The full Windows suite runs as 4 parallel jobs on the free runners (`vitest --shard`, `playwright --shard`), so the close-out run takes about a quarter of the wall time. Same tests, nothing skipped; shard 1 also typechecks, packages and uploads the `foo-windows-app` installer. The golden lane stays its own job beside them.
+- **Review.** Fable does the main independent review of each ticket and each CR. Sonnet only re-checks the small fixes Fable asked for.
+- **Close-out is one command:** `pnpm closeout <M>` (`scripts/closeout.ts`) runs the recipe's mechanical steps and prints what is left to fix.
 
 ## 2. Proof
 

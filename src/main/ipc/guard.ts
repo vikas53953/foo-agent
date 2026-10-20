@@ -1,6 +1,8 @@
 // Spec: 08-3 §22.1 and §22.8 (test:* channels exist only in test runs: FOO_TEST=1 with the FOO_*_DIR overrides, 08-0 §E.6),
 // 08-1 §3 (every channel sender-checked; §3.1.1 each window only its own channels; a refused call is logged IPC_REJECTED, 08-3 §21.4). No electron import, so the
 // guard is unit-tested in plain Node.
+import { logEvent } from '../log/techLog';
+
 export const TEST_CHANNEL_PREFIX = 'test:';
 
 type Env = Record<string, string | undefined>;
@@ -58,7 +60,9 @@ export class ChannelGuard {
     private readonly ipc: IpcMainLike,
     private readonly trusted: (url: string) => boolean,
     private readonly env: Env = process.env,
-    private readonly log: (line: string) => void = (line) => console.warn(line),
+    // M5 close-out: the default sink is the tech log (08-3 §19.1); the channel name is the line's only detail.
+    private readonly log: (line: string) => void = (line) =>
+      logEvent({ lvl: 'warn', mod: 'ipc', evt: 'IPC_REJECTED', kind: line.split(' ')[1]?.replace(/:$/u, '') }),
   ) {}
 
   handle<A, R>(channel: string, fn: (arg: A) => R | Promise<R>): boolean {

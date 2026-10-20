@@ -50,8 +50,18 @@ const INVOKES = new Set([
   'job:handBack',
   'signin:done',
   'signin:skip',
-  'app:openExternal',
   'memory:list',
+  'memory:add',
+  'memory:edit',
+  'memory:setPrivate',
+  'memory:setKind',
+  'memory:forget',
+  'memory:undo',
+  'memory:forgetBySource',
+  'memory:forgetAll',
+  'memory:openFolder',
+  'data:export',
+  'files:pickFolder',
   'routine:list',
   'helper:list',
   'settings:get',
@@ -60,6 +70,37 @@ const INVOKES = new Set([
   'ai:detect',
   'ai:choose',
   'notifications:status',
+  // M8 T3
+  'whatsapp:linkStart',
+  'whatsapp:linkCancel',
+  'whatsapp:unlink',
+  'chat:archive',
+  // M8
+  'connection:list',
+  'connection:connect',
+  'connection:disconnect',
+  'connection:googleInfo',
+  'ai:openFinder',
+  'ai:askKey',
+  'app:openExternal',
+  'card:answer',
+  'card:approve',
+  'card:decline',
+  'card:askAgain',
+  'card:heldPick',
+  'draft:update',
+  'draft:send',
+  'draft:undo',
+  'draft:discard',
+  'draft:openInApp',
+  'secret:save',
+  'secret:list',
+  'secret:delete',
+  'code:submit',
+  // M5 T2
+  'secret:offer',
+  // M5 T14
+  'approval:report',
 ]);
 const EVENTS = new Set([
   'chat:upsert',
@@ -77,6 +118,10 @@ const EVENTS = new Set([
   'settings:changed',
   'net:state',
   'navigate',
+  // M8 T3
+  'whatsapp:qr',
+  'memory:changed',
+  'data:exportProgress',
 ]);
 
 const platform = ipcRenderer.sendSync('app:platform') as PlatformInfo;

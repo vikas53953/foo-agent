@@ -24,7 +24,9 @@ import {
 import { HIDDEN_FOR_AI, SEND_TEXT_LIMIT } from './composerQueries';
 import { cardTitle } from '../../shared/cards';
 import { t } from '../../shared/copy/t';
+import { phraseCopyKey, resolvePhrase } from '../../shared/phrases';
 import { checkSecret } from '../../shared/redactor';
+import { writeRedacted } from './writeRedacted';
 import { monthKey } from '../../shared/format';
 import type { Settings } from '../../shared/settings';
 import type {
@@ -282,7 +284,8 @@ function groupBy<T>(rows: T[], key: (r: T) => string): Map<string, T[]> {
 export function chatRows(db: Db, ctx: ListContext, ids: string[] | null = null): ChatRow[] {
   const idFilter = ids ? `AND id IN (${ids.map(() => '?').join(',')})` : '';
   const chats = db
-    .prepare(`SELECT * FROM chats WHERE deleted_at IS NULL AND archived = 0 ${idFilter} ORDER BY last_activity_at DESC`)
+    // M8 T3: a read by id also returns an archived row (a mirror hidden with C-8, for chat:archive's reply); lists never do.
+    .prepare(`SELECT * FROM chats WHERE deleted_at IS NULL ${ids ? '' : 'AND archived = 0'} ${idFilter} ORDER BY last_activity_at DESC`)
     .all(...(ids ?? [])) as DbRow[];
   if (!chats.length) return [];
   const chatIds = chats.map((c) => String(c.id));
@@ -550,7 +553,12 @@ export function editMessage(db: Db, messageId: string, text: string, now: number
   if (paste) return { ok: false, reason: 'secret', paste };
   const hidden = t('composer.paste.hidden_in_bubble');
   const forAi = text.includes(hidden) ? text.split(hidden).join(HIDDEN_FOR_AI) : null;
-  db.prepare('UPDATE messages SET text = ?, text_for_ai = ?, edited_at = ?, rev = rev + 1 WHERE id = ?').run(text, forAi, now, messageId);
+  db.prepare('UPDATE messages SET text = ?, text_for_ai = ?, edited_at = ?, rev = rev + 1 WHERE id = ?').run(
+    writeRedacted(text),
+    forAi === null ? null : writeRedacted(forAi),
+    now,
+    messageId,
+  );
   return touched(db, messageId);
 }
 
@@ -606,6 +614,12 @@ export function waMessages(db: Db, jid: string): WaMessageRow[] {
   return rows.reverse().map(waMessageRow);
 }
 
+/** The running step's line (08-4 §26.1): its phrase with slots, or the generic line for a key outside the catalogue. */
+function runningLine(phraseKey: string, slots: Record<string, unknown>): string {
+  const p = resolvePhrase(phraseKey, slots);
+  return t(phraseCopyKey(p.key, 'running') ?? phraseCopyKey('generic_working', 'running')!, p.slots);
+}
+
 export function jobRows(db: Db, where: string, args: unknown[], now: number): JobRow[] {
   const rows = db.prepare(`SELECT * FROM jobs WHERE ${where}`).all(...args) as DbRow[];
   if (!rows.length) return [];
@@ -626,7 +640,7 @@ export function jobRows(db: Db, where: string, args: unknown[], now: number): Jo
       r,
       {
         stepsDone: s.filter((x) => x.state === 'done').length,
-        nowLine: running ? String(slots.text ?? running.phrase_key) : '',
+        nowLine: running ? runningLine(String(running.phrase_key), slots) : '',
         progressAt: stepProgressAt(s),
       },
       now,

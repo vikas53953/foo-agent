@@ -1,0 +1,89 @@
+/* Spec: 05-3 §5.11.1 QR panel (QR --qr-size with an 8px quiet zone, --qr-bg / --qr-fg, --r-sm; steps beside it, number
+ * --t-body-strong, text --t-body; under a < 400px inner card the steps wrap under the QR; footer --t-caption --fg-3),
+ * §5.11.2 (expired: blur 6px and --fg-3 overlay text; linked: --ok summary). */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--s2);
+}
+.qrBox {
+  position: relative;
+  flex: none;
+  width: calc(var(--qr-size) + 2 * var(--s1));
+  height: calc(var(--qr-size) + 2 * var(--s1));
+  padding: var(--s1);
+  border-radius: var(--r-sm);
+  background: var(--qr-bg);
+  overflow: hidden;
+}
+.qr {
+  display: block;
+  width: var(--qr-size);
+  height: var(--qr-size);
+  image-rendering: pixelated;
+}
+.blurred {
+  filter: blur(calc(var(--s0) + var(--s-1)));
+}
+.qrWait {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--qr-fg);
+}
+.expired {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s1);
+  font: var(--t-body);
+  color: var(--fg-3);
+}
+.steps {
+  flex: 1 1 calc(var(--s9) * 2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: var(--t-body);
+}
+.step {
+  display: flex;
+  gap: var(--s1);
+}
+.num {
+  flex: none;
+  font: var(--t-body-strong);
+}
+.risk {
+  margin: 0;
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+.line {
+  margin: 0;
+  font: var(--t-body);
+}
+.failed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+.linked {
+  margin: 0;
+  font: var(--t-body);
+  color: var(--ok);
+}

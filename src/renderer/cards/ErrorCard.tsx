@@ -1,7 +1,7 @@
 // Spec: 05-3 §5.20 Error card (one shape: line 1 what happened `--t-body-strong`, line 2 what is safe `--t-body`, exactly
 // one fix button + at most one Link button, Art. 2; edge `--bad` for failures, `--warn` for paused/limits; icon ErrorCircle
 // `--bad` (failures), Clock `--warn` (limits, waiting), Key `--warn` (signed out), Globe `--warn` (offline, site),
-// ArrowClockwise `--fg-2` (recovery); states shown / asking / fixed "Fixed · {time}" / resumed / stopped / dismissed; Resume edits
+// ArrowClockwise `--fg-2` (recovery); states shown / asking / fixed "Fixed · {time}" + "Back on it…" (SM-A10) / resumed / stopped / dismissed; Resume edits
 // the card in place, never a new message; Ctrl+Enter = the fix button; Narrator "Problem: {line 1}. {line 2}", assertive for
 // failures). The words are the runner's (payload, from `errors.{kind}.*`). G-M4-09 / CR-0008: each FixAction goes to one
 // channel — recovery resume/stop → `recovery:choose`; retry on a failed or stopped job → `job:retry`; raise_cap → C-21;
@@ -37,6 +37,12 @@ export function errorLook(kind: ErrorKind, variant: ErrorPayload['variant']): Lo
     case 'AI_SIGNED_OUT':
     case 'AI_KEY_INVALID':
       return { icon: 'Key', tone: 'warn', edge: 'warn' };
+    // M8 T5 (G-M8-10): 🔌 is drawn as the plug icon; the jobs are paused, not failed, so the edge is --warn. ⏳ is Clock.
+    case 'CONN_EXPIRED':
+    case 'CONN_REVOKED':
+      return { icon: 'PlugConnected', tone: 'warn', edge: 'warn' };
+    case 'CONN_RATE_LIMITED':
+      return { icon: 'Clock', tone: 'warn', edge: 'warn' };
     default:
       return { icon: 'ErrorCircle', tone: 'bad', edge: 'bad' };
   }
@@ -64,6 +70,8 @@ export function ErrorCard({ card, time }: { card: CardRow; time: CardTime }) {
       return undefined;
     }
     if (action.kind === 'open_url') return invoke('link:open', { url: action.url });
+    // M8 T5 (08-3 §21.2): Reconnect runs the one Google sign-in; the card is edited in place when the jobs resume.
+    if (action.kind === 'reconnect' && action.app === 'google') return invoke('connection:connect', { app: 'google' });
     return invoke('error:fix', { ...answer, action });
   };
 
@@ -78,6 +86,7 @@ export function ErrorCard({ card, time }: { card: CardRow; time: CardTime }) {
           <span className={styles.spacer} />
           <CardTimeLabel {...time} />
         </div>
+        {p.resumedLine && <div className={styles.body}>{p.resumedLine}</div>}
       </CardFrame>
     );
 

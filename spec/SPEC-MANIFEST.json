@@ -34,7 +34,7 @@
     "constitution/12-features-r25-r31-1.md": "cbadb85a7da0533e27169929a18c725ed67938c65265ec1783f13ad6690849e4",
     "constitution/12-features-r25-r31-2.md": "5ad445f0950e2c5b3907e587f92819610524b52c60b7d130eeeb63a4b648db1f",
     "constitution/CHANGELOG.md": "ea2638f512ebc100213db9019d94be15586a7d2a41e830e011a7b68d5fc08b2b",
-    "constitution/DECISIONS.md": "005312f62cfe87c363ceac6554ba2ec1f08660be580cb4552177f1a00f07a3da",
+    "constitution/DECISIONS.md": "d17208e0fe2a812c849824e7197a195aa69f44713256476ccd0a9a97bf351125",
     "constitution/GAPS.md": "0fc540ebf9754ec6e87a0e114cc7b25123f1312d025a62ed42a175fa085a0229",
     "constitution/research/capabilities-sources.md": "aa1c57be0b731b7e77dd5275c3db9c7fc76c1819e52f51881627d4c4be1c2c1f",
     "constitution/research/capabilities.md": "9ea45503d0d2f6dea65915d0bf9f35aa5f2b02a9d7ad9113557284f100684daf",
@@ -55,7 +55,7 @@
     "refs/look-book/foo-look-book.html": "300db914e4fc4213968af755e940774ce12acebab32853189e1480cafc7d8bfa",
     "refs/ux/foo-ux-walkthrough.html": "d5eb3d4a42bce526548be701afaf4585a843e3098af2200d8f0a2c7535778f87",
     "spec-values.json": "bbcd6fb2becb3bfb04e9b88bc83e10f82b5e3b60d24c43bcbe8069e2497546ef",
-    "state-machines.json": "a465980a9f260edbc1a01f668815d6876995c9d9d7bfdbb5392fd24461d1d61d",
-    "trace.csv": "8c56c16dc6006020ebc19db321b6a25beb3a532cc2cbf16292f155e385e580a4"
+    "state-machines.json": "ab7b48b785a63dc92b13a4ce60f1aefcd80411bdb7f27551de680451787b28b4",
+    "trace.csv": "3d1ba6b84eca13b847ccb3a6abee2f69a576912d0262537c34496625224dc9ad"
   }
 }
