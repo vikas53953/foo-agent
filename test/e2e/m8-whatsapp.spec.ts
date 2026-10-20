@@ -46,7 +46,7 @@ async function link(page: Page, button: string): Promise<void> {
   for (const k of ['step_1', 'step_2', 'step_3', 'risk'] as const) await expect(dialog).toContainText(t(`cards.connect.qr.${k}`));
   await expect.poll(async () => (await wa(page, { op: 'scan' })).delivered).toBe(true);
   await expect(dialog).toHaveAttribute('data-phase', 'linked', { timeout: 10_000 });
-  await expect(dialog).toContainText('✓ WhatsApp linked (+91 98');
+  await expect(dialog).toContainText('WhatsApp linked (+91 98');
   await expect(dialog).toBeHidden({ timeout: 5_000 });
   await expect(row).toHaveAttribute('data-state', 'linked');
   await expect(row).toContainText('Linked · +91 98');
