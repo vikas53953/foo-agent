@@ -63,12 +63,38 @@
 .view[data-dir='back'] {
   --view-from: -1;
 }
+/* The first view of a launch is simply there. */
+.view[data-dir='first'] {
+  animation: none;
+}
+/* The still copy of the old view (ViewFrame) fades out over the incoming one, faster than it arrives (pick 2). */
+.leaving {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  pointer-events: none;
+  background: var(--bg-app);
+  animation: view-out var(--m-normal) var(--ease-out) forwards;
+}
+.leaving > * {
+  min-width: 0;
+  min-height: 0;
+}
+@keyframes view-out {
+  to {
+    opacity: 0;
+  }
+}
 @keyframes view-in {
   from {
     opacity: 0;
     transform: translateX(calc((var(--s3) + var(--s0) / 2) * var(--view-from) * var(--motion-move)));
   }
 }
+/* While a dialog is open the shell steps back. Note: a transformed or filtered .shell is the containing block for any
+   non-portaled `position: fixed` part inside it, so such parts are placed against the shell only while a dialog is open. */
 /* While a dialog is open the shell steps back to 0.96 under a 2px blur (pick 5; §F28.4 amended for this backdrop).
    Entering uses the spring; leaving is faster (pick 2). None at Basic / Off or in high contrast. */
 .shell {

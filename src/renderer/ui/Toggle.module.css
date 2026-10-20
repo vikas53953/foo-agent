@@ -50,6 +50,8 @@
 }
 .toggle:active .knob {
   --knob-w: var(--s3);
+  /* The pressed knob grows in place: its `left` follows the width at the same speed. */
+  transition-duration: calc(var(--m-fast) * var(--motion-move));
 }
 .on::before {
   background: var(--accent);

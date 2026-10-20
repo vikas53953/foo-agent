@@ -26,7 +26,10 @@ export interface MenuProps {
   level?: number;
 }
 
-function place(anchor: MenuAnchor, menu: DOMRect): { x: number; y: number } {
+/** A placed box's untransformed size: the entrance animation scales the element, so its client rect is smaller. */
+export const layoutSize = (el: HTMLElement) => ({ width: el.offsetWidth, height: el.offsetHeight });
+
+function place(anchor: MenuAnchor, menu: { width: number; height: number }): { x: number; y: number } {
   const gap = 4;
   let x: number;
   let y: number;
@@ -45,7 +48,12 @@ function place(anchor: MenuAnchor, menu: DOMRect): { x: number; y: number } {
 }
 
 /** The point inside a placed menu or popover (at `x`, `y`, size `box`) nearest the anchor's centre, as a CSS origin. */
-export function originFrom(anchor: DOMRect | { x: number; y: number }, x: number, y: number, box: DOMRect): string {
+export function originFrom(
+  anchor: DOMRect | { x: number; y: number },
+  x: number,
+  y: number,
+  box: { width: number; height: number },
+): string {
   const cx = 'width' in anchor ? anchor.left + anchor.width / 2 : anchor.x;
   const cy = 'height' in anchor ? anchor.top + anchor.height / 2 : anchor.y;
   const ox = Math.min(Math.max(0, cx - x), box.width);
@@ -63,7 +71,7 @@ export function Menu({ entries, anchor, onClose, label, tid, autoFocus = true, l
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const box = el.getBoundingClientRect();
+    const box = layoutSize(el);
     const { x, y } = place(opened.current.anchor, box);
     const a = opened.current.anchor;
     el.style.left = `${x}px`;

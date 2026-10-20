@@ -5,9 +5,11 @@
 // Mount points: `main` (the chat: header, find bar, message column, composer) and `right` (the details panel) are passed
 // in by App; the shell gives them their grid cells and the layout through LayoutContext / useLayout().
 // P1 T3 (CR-0021 picks 2, 4, 5; 02 §F7.1 "Pages and panels", "Chat switch", "window restore"): each chat or page change
-// remounts the main cell's view, which slides 18px in (from the right; from the left on back) and cross-fades; while a
-// dialog is open the shell steps back (Dialog sets `data-dialog-open` on the root); a restored window fades up 4px.
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+// remounts the main cell's view, which slides 18px in (from the right; from the left on back) while a still copy of the
+// old view fades out over it in `--m-normal` (the cross-fade); the first view of a launch does not slide. While a dialog
+// is open the shell steps back (Dialog sets `data-dialog-open` on the root); a restored window fades up 4px.
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { reducedMotionNow } from '../a11y/useReducedMotion';
 import { BannerStrip } from '../banner/BannerStrip';
 import { LeftShell } from '../chatlist/LeftShell';
 import { PlaceholderPage } from '../pages/PlaceholderPage';
@@ -61,7 +63,7 @@ export function Shell({ main, right }: ShellProps) {
           {showLeft && <LeftShell />}
           {showMain && (
             <div className={styles.main}>
-              <div key={motion.key} className={styles.view} data-dir={motion.dir}>
+              <ViewFrame key={motion.key} dir={motion.dir}>
                 {view.kind === 'screen' && view.id === 'memory' ? (
                   <MemoryPage key={JSON.stringify(view.params ?? {})} view={view} />
                 ) : page ? (
@@ -69,7 +71,7 @@ export function Shell({ main, right }: ShellProps) {
                 ) : (
                   main
                 )}
-              </div>
+              </ViewFrame>
             </div>
           )}
           {showRight && (
@@ -83,6 +85,46 @@ export function Shell({ main, right }: ShellProps) {
   );
 }
 
+/**
+ * The main cell's view. When it leaves (its key changed) a still copy of it, stripped of ids, test ids and focus, stays
+ * over the cell while it fades out in `--m-normal` and is removed when that fade ends (CR-0021 picks 2 and 4); none at Off, where the swap is instant.
+ */
+function ViewFrame({ dir, children }: { dir: ViewDir; children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    return () => {
+      const parent = el?.parentElement;
+      if (!el || !parent || reducedMotionNow()) return;
+      const ghost = el.cloneNode(true) as HTMLDivElement;
+      const from = el.querySelectorAll('*');
+      const scrolled: (() => void)[] = [];
+      ghost.querySelectorAll('*').forEach((node, i) => {
+        node.removeAttribute('id');
+        node.removeAttribute('data-testid');
+        const top = from[i]?.scrollTop ?? 0;
+        const left = from[i]?.scrollLeft ?? 0;
+        if (top || left) scrolled.push(() => node.scrollTo(left, top));
+      });
+      ghost.className = styles.leaving!;
+      ghost.removeAttribute('data-dir');
+      ghost.setAttribute('aria-hidden', 'true');
+      ghost.inert = true;
+      parent.append(ghost);
+      for (const restore of scrolled) restore();
+      ghost.addEventListener('animationend', () => ghost.remove());
+      ghost.addEventListener('animationcancel', () => ghost.remove());
+    };
+  }, []);
+  return (
+    <div ref={ref} className={styles.view} data-dir={dir}>
+      {children}
+    </div>
+  );
+}
+
+type ViewDir = 'first' | 'forward' | 'back';
+
 /** One key per view the user sees as a new place: a chat, a screen, or Settings (its own pages swap inside it). */
 function viewKey(view: View): string {
   if (view.kind === 'chat') return `chat:${view.chatId}`;
@@ -91,9 +133,9 @@ function viewKey(view: View): string {
 }
 
 /** The main cell's view key and slide direction: `back` when the back stack shrank with this change (03-shell-2 §3.9.6). */
-function useViewMotion(view: View, backDepth: number): { key: string; dir: 'forward' | 'back' } {
+function useViewMotion(view: View, backDepth: number): { key: string; dir: ViewDir } {
   const key = viewKey(view);
-  const [seen, setSeen] = useState<{ key: string; backDepth: number; dir: 'forward' | 'back' }>({ key, backDepth, dir: 'forward' });
+  const [seen, setSeen] = useState<{ key: string; backDepth: number; dir: ViewDir }>({ key, backDepth, dir: 'first' });
   if (seen.key !== key || seen.backDepth !== backDepth) {
     // Adjusted while rendering (React's "storing information from previous renders" pattern).
     const dir = seen.key === key ? seen.dir : backDepth < seen.backDepth ? 'back' : 'forward';

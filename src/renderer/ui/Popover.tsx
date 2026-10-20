@@ -6,7 +6,7 @@ import { useEffect, useLayoutEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { TID } from '../../shared/testids';
 import { cx } from './cx';
-import { originFrom } from './Menu';
+import { layoutSize, originFrom } from './Menu';
 import styles from './Popover.module.css';
 
 export interface PopoverProps {
@@ -46,7 +46,7 @@ export function Popover({
     const el = ref.current;
     if (!el) return;
     const a = opened.current.anchor.getBoundingClientRect();
-    const r = el.getBoundingClientRect();
+    const r = layoutSize(el);
     let y = opened.current.side === 'above' ? a.top - GAP - r.height : a.bottom + GAP;
     if (y < GAP) y = a.bottom + GAP;
     if (y + r.height > window.innerHeight - GAP) y = Math.max(GAP, a.top - GAP - r.height);
