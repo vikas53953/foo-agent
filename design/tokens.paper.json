@@ -992,6 +992,16 @@
     "light": "400ms",
     "dark": "400ms"
   },
+  "--m-stagger": {
+    "type": "duration",
+    "light": "30ms",
+    "dark": "30ms"
+  },
+  "--m-breathe": {
+    "type": "duration",
+    "light": "2400ms",
+    "dark": "2400ms"
+  },
   "--delay-sticky-hide": {
     "type": "duration",
     "light": "1500ms",

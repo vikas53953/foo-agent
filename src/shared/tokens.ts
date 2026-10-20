@@ -322,6 +322,8 @@ export const motion = {
   "face-stopped": 1500,
   "face-cross": 167,
   "spring": 400,
+  "stagger": 30,
+  "breathe": 2400,
   "delay-sticky-hide": 1500,
   "delay-loading": 150,
   "delay-skeleton-chat": 300,
