@@ -1191,6 +1191,7 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
   (C12; M8 added `google_signin` and `x_intent`), and the ART-09 new-site row. Noted: no fallback resume for a WAITING job
   with `waiting_reason` NULL whose CONN card closes another way.
 - Before the real demo, Vikas's setup item: the Google OAuth client file `resources/google-oauth.json` (08-3 §16.1.1).
+
 ## M9 · Sign-in card, sign-in banner, handoff marker (ticket T6)
 
 - T6-01 · Copy slots (G-M9-14): `cards.signin.title.{sign_in,captcha,passkey,bank_3ds,saved_login_failed}`,
@@ -1202,8 +1203,11 @@ in_control.text,hand_back.label,not_secure.text,window.title}`.
   domain ("irctc.co.in"). The card shows `site` as given in both places (the engine, T7, decides what goes in it).
 - T6-03 · Gap: the bank-check title needs a masked phone ("+91 98••• ••210") the payload does not carry. The card reads an
   optional `phone` when sent and draws no bank-check card without it (never an empty slot); a CR adds the field with T7.
-- T6-04 · Not wired: "Use the code box" (§5.8 Code box) and `code:submit` need an engine path for the code (M5
-  SecretRegistry handle, `code.submit { requestId, codeRef }`). The link is shown disabled; `code:submit` stays the T1 stub.
+- T6-04 · "Use the code box" (§5.8 Code box) goes through M5: the link calls `secret:offer { chatId, slot: 'otp' }`, which
+  hands back the code box already asking in that chat (or posts one), and the chat scrolls to it; the box's "Use code" sends
+  `code:submit` (SecretRegistry handle, never stored). Seam for T7: the bank-check lane should post its own asking otp box
+  with the engine's `requestId` (and `sentTo`) before the card, so the offer returns that box and `code.submit` names a
+  request the engine knows; a box the offer posts itself answers with its own card id.
 - T6-05 · Spec silent → conservative: `timed_out` and `handed_back` have no summary words ("summary grey"), so their summary
   row is the card's own title in grey; the known-puzzle lane uses the CAPTCHA title plus its `known_puzzle_site` line (it is
   a CAPTCHA lane whose card adds the line); the signed-in copy keeps its "✓" and its own time, so that row has no extra icon
@@ -1215,8 +1219,8 @@ in_control.text,hand_back.label,not_secure.text,window.title}`.
 - T6-08 · wintrack JS fallback polls the bounds every 500 ms through a `readBounds` the sign-in lanes (T7) supply (CDP lives in
   the engine); without `foo-native` the banner cannot know which app is in the foreground, so the "hide when another app
   is in front" stacking rule (09 §9.27.3) waits for `wintrack.cc`.
-- T6-09 · Not done here (shared infra): 08-1 §3.1.1's per-window channel allow list (banner: signin:done, signin:skip,
-  job:handBack). ChannelGuard checks the sender URL only; the banner window uses the main preload.
+- T6-09 · The banner window has its own preload (`src/preload/preloadBanner.ts`, 08-1 §3.1.1): it exposes only
+  `signin:done`, `signin:skip`, `job:handBack` and no events. ChannelGuard's window→channels table in main stays T5's.
 - T6-10 · The handoff marker moved from `Markers.tsx` to `HandoffMarker.tsx` and now links every helper named in the line
   (whole word, as written), with `data-index` in reading order, so "Trips told Money …" has two links (§5.18.1).
 - T6-11 · Card width: the message row's holder shrinks to fit, so `min(--card-w, 100%)` squeezed the sign-in card to its

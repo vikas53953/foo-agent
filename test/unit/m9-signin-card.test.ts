@@ -1,9 +1,9 @@
 // Spec: 05-3 §5.10.1–§5.10.2 (six lanes, their titles and exact buttons; states waiting → live → signed_in | skipped |
 // timed_out | handed_back | withdrawn; LIVE only while Edge is in front), §5.10.4 (Tab order I'm done → Take over → Skip;
 // card label "Sign-in needed: …"), 05-1 §0.3 (Primary, then Secondary, then link buttons), §0.5 (offline: Skip stays
-// enabled), CR-0013 G-M9-10 (reason = lane), G-M9-11 (no Watch button).
+// enabled), CR-0013 G-M9-10 (reason = lane), G-M9-11 (no Watch button); "Use the code box" opens the §5.8 Code box (M5).
 import { describe, expect, it } from 'vitest';
-import { parseSignIn, signInView } from '../../src/renderer/cards/signinView';
+import { openCodeBox, parseSignIn, signInView } from '../../src/renderer/cards/signinView';
 import type { CardRow } from '../../src/shared/types';
 
 const AT = Date.UTC(2026, 9, 16, 4, 2); // Fri 16 Oct 2026, 9:32 AM IST
@@ -74,6 +74,30 @@ describe('sign-in card lanes (05-3 §5.10.2)', () => {
       ['done', 'I’m done', 'primary'],
       ['use_code_box', 'Use the code box', 'link'],
     ]);
+    expect(open(c).buttons.map((b) => b.disabled)).toEqual([false, false]);
+    expect(open(c, { ...ctx, offline: true }).buttons.map((b) => b.disabled)).toEqual([true, true]);
+  });
+
+  it('"Use the code box" asks main for the chat\'s code box (secret:offer otp) and scrolls to it', async () => {
+    const offers: unknown[] = [];
+    const reveals: [string, string][] = [];
+    const ok = await openCodeBox(card('waiting', { mode: 'take_over', reason: 'bank_3ds', phone: '+91 98••• ••210' }), {
+      offer: (req) => (offers.push(req), Promise.resolve({ ok: true, value: { id: 'k_otp' } })),
+      reveal: (chatId, cardId) => reveals.push([chatId, cardId]),
+    });
+    expect(ok).toBe(true);
+    expect(offers).toEqual([{ chatId: 'c_1', slot: 'otp' }]);
+    expect(reveals).toEqual([['c_1', 'k_otp']]);
+  });
+
+  it('"Use the code box": a refused offer scrolls nowhere', async () => {
+    const reveals: unknown[] = [];
+    const ok = await openCodeBox(card('waiting', { mode: 'take_over', reason: 'bank_3ds', phone: '+91 98••• ••210' }), {
+      offer: () => Promise.resolve({ ok: false }),
+      reveal: (...a) => reveals.push(a),
+    });
+    expect(ok).toBe(false);
+    expect(reveals).toEqual([]);
   });
 
   it('Bank check without a phone to show is not drawn (no slot left empty)', () => {

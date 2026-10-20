@@ -1,7 +1,7 @@
 // Spec: 05-3 §5.10.1–§5.10.2 (Sign-in card: lane titles and buttons, LIVE only in `live`, signed-in summary), 05-1 §0.5
 // (offline line; Skip stays enabled), 05-3 §5.18.1 / §5.18.3 (handoff marker: helper names are `thread-marker-link` with
 // `data-index`, opening that helper's chat), 08-1 §3.2 (signin:done without a running engine fails and sends nothing;
-// a finished job is JOB_GONE). The `m9-signin` seed (M9 T6). The engine side is T7's: these runs start no engine.
+// a finished job is JOB_GONE), 05-3 §5.10.2 bank check ("Use the code box" opens the 05-2 §5.8 Code box). The `m9-signin` seed (M9 T6). The engine side is T7's: these runs start no engine.
 import { expect, test, type ElectronApplication, type Page } from '@playwright/test';
 import { t } from '../../src/shared/copy/t';
 import type { SeedReply } from '../../src/shared/ipc';
@@ -44,6 +44,22 @@ test('sign-in card: sign_in and captcha lanes, exact words and buttons, LIVE onl
 
   await openChat(page, 'Money');
   await expect(card(page, 'signed_in')).toHaveText('✓ Signed in to biller.example.test · 9:02 AM');
+  await app.close();
+});
+
+test('sign-in card bank check: Use the code box opens the code box in the chat', async () => {
+  const { app, page } = await start();
+  await openChat(page, 'Money');
+  const bank = card(page, 'waiting');
+  await expect(bank).toContainText(t('cards.signin.title.bank_3ds', { phone: '+91 98••• ••210' }));
+  await expect(page.getByTestId(TID.cardSecret)).toHaveCount(0);
+  await bank.getByTestId(TID.cardSigninUseCodeBox).click();
+  const box = page.locator(`[data-testid="${TID.cardSecret}"][data-state="asking"]`);
+  await expect(box).toHaveCount(1);
+  await expect(box.getByTestId(TID.cardSecretField)).toBeVisible();
+  // A second tap goes to the same box (main hands back the one already asking), no new card.
+  await bank.getByTestId(TID.cardSigninUseCodeBox).click();
+  await expect(page.getByTestId(TID.cardSecret)).toHaveCount(1);
   await app.close();
 });
 

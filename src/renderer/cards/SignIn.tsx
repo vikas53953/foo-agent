@@ -4,7 +4,7 @@
 // Take over on the CAPTCHA lane; card label "Sign-in needed: {title}"; LIVE reads "live window open"; ids `card-signin`,
 // `card-signin-done`, `-take-over`, `-skip`, `-use-code-box`, `-live`), 05-1 §0.5 (submitting: aria-busy, every button
 // disabled; summary row for terminal states), 08-1 §3.2 (signin:done, job:takeOver, signin:skip: one engine message each,
-// X-124), CR-0013 G-M9-11 (no Watch button).
+// X-124), CR-0013 G-M9-11 (no Watch button); "Use the code box" opens the §5.8 Code box (05-2, M5's secret:offer + code:submit).
 import { useState, type KeyboardEvent } from 'react';
 import { cardTitle } from '../../shared/cards';
 import { t } from '../../shared/copy/t';
@@ -13,13 +13,14 @@ import type { CardRow } from '../../shared/types';
 import { invoke } from '../ipc/client';
 import { useStore } from '../store/index';
 import { selectConnection } from '../store/live';
+import { requestRevealCard } from '../messages/reveal';
 import { Button } from '../ui/Button';
 import { Icon } from '../ui/Icon';
 import { cx } from '../ui/cx';
 import { CardFrame, CardTimeLabel, type CardTime } from './CardFrame';
 import styles from './Card.module.css';
 import own from './SignIn.module.css';
-import { parseSignIn, signInView, type SignInAction } from './signinView';
+import { openCodeBox, parseSignIn, signInView, type SignInAction } from './signinView';
 
 const BUTTON_TID: Record<SignInAction, keyof typeof TID> = {
   done: 'cardSigninDone',
@@ -57,11 +58,13 @@ export function SignInCard({ card, time }: { card: CardRow; time: CardTime }) {
 
   const jobId = parseSignIn(card.payload)!.jobId;
   const act = (action: SignInAction) => {
-    if (action === 'use_code_box' || busy) return;
+    if (busy) return;
     setBusy(true);
-    void invoke(CHANNEL[action], { jobId })
-      .catch(() => undefined)
-      .finally(() => setBusy(false));
+    const sent =
+      action === 'use_code_box'
+        ? openCodeBox(card, { offer: (req) => invoke('secret:offer', req), reveal: requestRevealCard })
+        : invoke(CHANNEL[action], { jobId });
+    void sent.catch(() => undefined).finally(() => setBusy(false));
   };
   const primary = view.buttons[0]!;
   const onKeyDown = (e: KeyboardEvent) => {

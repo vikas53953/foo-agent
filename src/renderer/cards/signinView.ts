@@ -63,8 +63,6 @@ const LABEL: Record<SignInAction, () => string> = {
 
 /** 05-1 §0.5 Offline: "Skip" (like "Not now", "Cancel") stays enabled; the rest need the internet. */
 const WORKS_OFFLINE: ReadonlySet<SignInAction> = new Set(['skip']);
-/** "Use the code box" opens the §5.8 Code box, which needs an engine path main does not have yet (M5): shown, not usable. */
-const NOT_WIRED: ReadonlySet<SignInAction> = new Set(['use_code_box']);
 
 export interface SignInButton {
   action: SignInAction;
@@ -108,7 +106,7 @@ export function signInView(card: CardRow, o: { offline: boolean; timeZone: strin
           action,
           label: LABEL[action](),
           variant: action === 'skip' || action === 'use_code_box' ? 'link' : i === 0 ? 'primary' : 'secondary',
-          disabled: NOT_WIRED.has(action) || (o.offline && !WORKS_OFFLINE.has(action)),
+          disabled: o.offline && !WORKS_OFFLINE.has(action),
         })),
       };
     }
@@ -129,4 +127,22 @@ export function signInView(card: CardRow, o: { offline: boolean; timeZone: strin
       // timed_out, handed_back: §5.10.2 gives no summary words ("summary grey"); the card's own title, read-only.
       return { kind: 'summary', tone: 'grey', text: head };
   }
+}
+
+/**
+ * "Use the code box" (§5.10.2 bank check) opens the §5.8 Code box through M5's `secret:offer` (slot `otp`): main hands back
+ * the code box already asking in this chat, or posts one, and the chat scrolls to it. The code itself goes from that box
+ * through `code:submit` (SecretRegistry handle, never stored); this card never sees it.
+ */
+export async function openCodeBox(
+  card: Pick<CardRow, 'chatId'>,
+  d: {
+    offer(req: { chatId: string; slot: 'otp' }): Promise<{ ok: true; value: { id: string } } | { ok: false }>;
+    reveal(chatId: string, cardId: string): void;
+  },
+): Promise<boolean> {
+  const r = await d.offer({ chatId: card.chatId, slot: 'otp' });
+  if (!r.ok) return false;
+  d.reveal(card.chatId, r.value.id);
+  return true;
 }

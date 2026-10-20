@@ -1,5 +1,5 @@
 // Spec: 08-3 §22.9 (seed sets, test builds only), 05-3 §5.10 (Sign-in card rows: the `sign_in` lane waiting, the
-// `captcha` take-over lane live, a signed-in summary), §5.18.1 (handoff marker rows: foo → helper and helper → helper, the
+// `captcha` take-over lane live, a signed-in summary, the `bank_3ds` lane whose "Use the code box" opens the §5.8 Code box), §5.18.1 (handoff marker rows: foo → helper and helper → helper, the
 // BP-CARD-17 words), CR-0013 G-M9-04 / G-M9-10. The M9 T6 world: a small one, so the ux-world goldens do not move. Fake
 // sites only (public repo): the spec's own example site and words.
 import type { Settings } from '../../../shared/settings';
@@ -127,6 +127,31 @@ export function seedM9Signin(db: Db, now = ist(2026, 10, 16, 9, 41)): SeedResult
       payload: { type: 'signin', mode: 'sign_in_here', jobId: bill, site: 'biller.example.test', reason: 'sign_in' },
     });
     w.message(money.chatId, { author: 'helper', helperId: money.helperId!, text: 'Paid. Receipt saved.', at: at(9, 20) - MIN });
+
+    // Money: a card payment stopped on the bank's check (lane bank_3ds, take over); the masked number is the spec's own.
+    const pay = w.job({
+      chatId: money.chatId,
+      ownerHelperId: money.helperId!,
+      title: 'Phone bill',
+      state: 'needs_you',
+      intent: 'do',
+      usesBrowser: true,
+      createdAt: at(9, 20),
+      lastProgressAt: at(9, 20),
+      steps: [{ text: 'Pay the phone bill', state: 'waiting_user' }],
+    });
+    refs.bankJob = pay;
+    const bank = w.card(money.chatId, {
+      type: 'signin',
+      state: 'waiting',
+      author: 'helper',
+      helperId: money.helperId!,
+      jobId: pay,
+      at: at(9, 20),
+      payload: { type: 'signin', mode: 'take_over', jobId: pay, site: 'bank.example.test', reason: 'bank_3ds', phone: '+91 98••• ••210' },
+    });
+    refs.bankCard = bank.cardId;
+    w.linkJob(pay, { needsYouCardId: bank.cardId });
   })();
   const counts = w.finish(now);
   w.check();

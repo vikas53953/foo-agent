@@ -1439,7 +1439,6 @@
   "cards.signin.state.signed_in": "✓ Signed in to {site} · {time}",
   "cards.signin.state.skipped": "Skipped. I’ll try another way.",
   "cards.signin.state.withdrawn": "No longer needed. The job was stopped.",
-  "cards.common.offline_line": "You’re offline. I’ll do this when you’re back.",
   "signin_banner.waiting.text": "{agentName} is waiting. It can’t see what you type here.",
   "signin_banner.done.label": "I’m done",
   "signin_banner.success.text": "Looks like you’re in. Carrying on…",

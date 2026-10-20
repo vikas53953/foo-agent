@@ -1,8 +1,8 @@
 // Spec: 08-1 §3.2 (`signin:done` / `signin:skip` → engine `signin.done` / `signin.skip`; `job:takeOver` → `job.takeOver
 // { on: true }`; `job:handBack` → `job.handBack { jobId }`; JOB_GONE), §3.1.7 (main forwards, the engine writes the card
 // and job rows), X-124 (one IPC call = exactly one engine message), X-135 (hand back has one meaning), 05-3 §5.10.4
-// (requested, took over, handed back and skipped are tech-log lines; no values). `code:submit` waits for M5's SecretRegistry
-// path (implementation-notes "M9 T6").
+// (requested, took over, handed back and skipped are tech-log lines; no values). `code:submit` is M5's (vault/secretIpc.ts);
+// the card's "Use the code box" reaches it through the §5.8 Code box.
 import { fail, ok, type Result } from '../../shared/errors';
 import type { EngineBridge } from '../engine-supervisor/EngineBridge';
 import type { Db } from '../store/db';

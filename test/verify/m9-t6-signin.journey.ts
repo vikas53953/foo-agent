@@ -118,6 +118,26 @@ export default async function journey(v: Verify): Promise<void> {
   await rest(page);
   await v.shot('signin-summary', `${byTid(TID.cardSignin)}[data-state="signed_in"]`);
 
+  // Money: the bank-check lane; "Use the code box" opens the §5.8 Code box (M5's secret:offer), and its "Use code" goes to
+  // the engine through M5's code:submit (a SecretRegistry handle; the code is never stored).
+  const bank = page.locator(`${byTid(TID.cardSignin)}[data-state="waiting"]`);
+  await bank.waitFor();
+  const bankTitle = t('cards.signin.title.bank_3ds', { phone: '+91 98••• ••210' });
+  if (!(await bank.textContent())?.includes(bankTitle)) throw new Error(`bank-check title should read "${bankTitle}"`);
+  await rest(page);
+  await v.shot('signin-bank-check', `${byTid(TID.cardSignin)}[data-state="waiting"]`);
+  await bank.getByTestId(TID.cardSigninUseCodeBox).click();
+  const box = page.locator(`${byTid(TID.cardSecret)}[data-state="asking"]`);
+  await box.waitFor();
+  v.note(`bank_3ds lane: "${bankTitle}"; clicked "Use the code box" → the Code box opened in Money's chat`);
+  await rest(page);
+  await v.shot('code-box-opened', byTid(TID.cardSecret));
+  await box.getByTestId(TID.cardSecretField).fill('123456');
+  await box.getByTestId(TID.cardSecretUseCode).click();
+  const used = page.locator(`${byTid(TID.cardSecret)}[data-state="saved"]`);
+  await used.waitFor();
+  v.note('typed a code and clicked "Use code" → code:submit accepted (engine running), the box moved to "saved"');
+
   // foo's chat: handoff markers, helper names as links (helper → helper has two, data-index 0 and 1).
   await openChat(page, 'foo');
   const markers = page.locator(`${byTid(TID.threadMarker)}[data-state="handoff"]`);
