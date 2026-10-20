@@ -162,6 +162,7 @@ const INSERT_COLUMNS: Record<string, readonly string[]> = {
     'provider_note',
     'created_at',
     'lang',
+    'side', // R1 T6 (04 §17.5): foo's answer to a side question is marked too
   ],
   ai_turns: AI_TURN_COLUMNS,
   reactions: ['message_id', 'by', 'emoji', 'created_at'],

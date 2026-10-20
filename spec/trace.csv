@@ -367,9 +367,9 @@ R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-1
 ,,AT-360,,,10-acceptance-2 §C.9; 04 §13.6; CR-0022,test/e2e/r1-ai-page.spec.ts,M9,pending
 ,,AT-361,,,10-acceptance-2 §C.9; 04 §13.6; CR-0022,test/e2e/r1-ai-page.spec.ts,M9,pending
 ,,AT-362,,,10-acceptance-2 §C.9; 04 §13.6; CR-0022,test/e2e/r1-ai-page.spec.ts,M9,pending
-,,AT-363,,,10-acceptance-2 §C.9; 04 §6.5; 08-2 §11.4; CR-0022,test/e2e/r1-input.spec.ts,M9,pending
-,,AT-364,,,10-acceptance-2 §C.9; 04 §9.2; 04 §17; CR-0022 pick 6; CR-0022,test/e2e/r1-input.spec.ts,M9,pending
-,,AT-365,,,10-acceptance-2 §C.9; 04-2 §22.4; 04-2 §22.5; CR-0022 pick 7; CR-0022,test/e2e/r1-input.spec.ts,M9,pending
+,,AT-363,,,10-acceptance-2 §C.9; 04 §6.5; 08-2 §11.4; CR-0022,test/e2e/r1-input.spec.ts,M9,live
+,,AT-364,,,10-acceptance-2 §C.9; 04 §9.2; 04 §17; CR-0022 pick 6; CR-0022,test/e2e/r1-input.spec.ts,M9,live
+,,AT-365,,,10-acceptance-2 §C.9; 04-2 §22.4; 04-2 §22.5; CR-0022 pick 7; CR-0022,test/e2e/r1-input.spec.ts,M9,live
 ,,AT-366,,,10-acceptance-2 §C.9; 06-2 §6.2; CR-0022 pick 8; CR-0022,test/e2e/r1-output.spec.ts,M9,pending
 ,,AT-367,,,10-acceptance-2 §C.9; 04-2 §21.7; CR-0022,test/e2e/r1-output.spec.ts,M9,pending
 ,,AT-368,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-output.spec.ts,M9,pending
