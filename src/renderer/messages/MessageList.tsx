@@ -332,6 +332,12 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   );
   const stick = useStickToBottom(scrollRef, rows, target);
   sticking.current = () => stick.wasAtBottom.current;
+  // M8 T7 (04 §1.6: the user's send always jumps to the end): a mirror's Send adds its marker there.
+  const marks = useRef(mirrorDrafts.length);
+  useEffect(() => {
+    if (mirrorDrafts.length > marks.current) requestAnimationFrame(() => target.scrollToEnd());
+    marks.current = mirrorDrafts.length;
+  }, [mirrorDrafts.length, target]);
 
   // Open position: restore this session's scrollTop, else the unread divider 1/3 down, else the end (§3.6.4, §3.6.5).
   const opened = useRef(false);
