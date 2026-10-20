@@ -53,7 +53,8 @@ import {
 } from './BubbleParts';
 import { backupNames, badgeSlot, bubbleName, canEdit, slotTooltip, tickLabel, tickState } from './bubbleState';
 import { Blocks, endsInParagraph, Inlines, SourcesRow } from './Markdown';
-import { HandoffMarker, SystemLine } from './Markers';
+import { HandoffMarker } from './HandoffMarker';
+import { SystemLine } from './Markers';
 import { allSources, inlineText, isRich, parseBlocks, parseWhatsApp, plainText, streamSafe } from './markdownParse';
 import { menuEntries, type MenuAction, type MenuFacts } from './messageMenu';
 import { ReactionPicker } from './ReactionPicker';
@@ -231,7 +232,7 @@ export const MessageView = memo(function MessageView({
   found?: ReactNode;
 }) {
   if (m.kind === 'marker') {
-    if (m.markerKind === 'handoff') return <HandoffMarker m={m} helper={m.authorId ? ctx.helpers[m.authorId] : undefined} />;
+    if (m.markerKind === 'handoff') return <HandoffMarker m={m} helpers={Object.values(ctx.helpers)} />;
     return <SystemLine m={m} />;
   }
   return <BubbleRow m={m} layout={layout} ctx={ctx} found={found} />;

@@ -484,6 +484,17 @@ export const TID = {
   dialogLinkWhatsapp: 'dialog-link-whatsapp',
   dialogC08: 'dialog-c-08',
   dialogC11: 'dialog-c-11',
+  cardSignin: 'card-signin',
+  cardSigninDone: 'card-signin-done',
+  cardSigninTakeOver: 'card-signin-take-over',
+  cardSigninSkip: 'card-signin-skip',
+  cardSigninUseCodeBox: 'card-signin-use-code-box',
+  cardSigninLive: 'card-signin-live',
+  signinBanner: 'signin-banner',
+  signinBannerAddress: 'signin-banner-address',
+  signinBannerDone: 'signin-banner-done',
+  signinBannerSuccess: 'signin-banner-success',
+  signinBannerHandBack: 'signin-banner-hand-back',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

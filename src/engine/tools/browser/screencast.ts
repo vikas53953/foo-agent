@@ -131,21 +131,28 @@ export class Screencast {
 }
 
 /**
- * The engine's screencast. Until M9 T3 lands foo's Edge (BrowserHandle + masker) there is no browser, so every watch answers
- * LIVE_UNAVAILABLE and nothing can be verified, so nothing is sent; FOO_TEST runs may name a folder of fake frames
- * (FOO_FAKE_BROWSER). T7's sign-in lanes replace the guard.
+ * The engine's screencast on foo's browser (T3's `PlaywrightBrowser`) with T3's masker as the frame verifier. FOO_TEST runs
+ * may name a folder of fake frames instead (FOO_FAKE_BROWSER; masked at source). With neither, every watch answers
+ * LIVE_UNAVAILABLE and no frame is verified (fail closed). T7's sign-in lanes replace the guard.
  */
 export function engineScreencast(o: {
   link: MainLink;
   clock: Clock;
   env: Record<string, string | undefined>;
   testRun: boolean;
+  /** foo's browser and its masker; read on each watch, since the engine builds them after the screencast. */
+  runtime?: () => { browser: BrowserHandle; masker: FrameVerifier } | null;
 }): Screencast {
   const fake = o.testRun && o.env.FOO_FAKE_BROWSER ? fakeBrowser(o.env.FOO_FAKE_BROWSER) : null;
   return new Screencast({
-    browser: () => fake,
-    // Fake frames are masked at source; without T3's masker no frame is verified (fail closed).
-    verifier: { verify: async () => fake !== null },
+    browser: () => fake ?? o.runtime?.()?.browser ?? null,
+    verifier: {
+      verify: async (win) => {
+        if (fake) return true;
+        const masker = o.runtime?.()?.masker;
+        return masker ? masker.verify(win) : false;
+      },
+    },
     guard: { paused: () => false },
     clock: o.clock,
     send: (frame) => o.link.send('ui.patch', { event: 'live:frame', payload: frame }),

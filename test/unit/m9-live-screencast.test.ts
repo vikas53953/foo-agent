@@ -5,7 +5,8 @@
 import { describe, expect, it } from 'vitest';
 import { FakeClock } from '../../src/shared/clock';
 import type { BrowserHandle, CdpSession, JobWindow } from '../../src/engine/tools/browser/types';
-import { Screencast, type EngineLiveFrame } from '../../src/engine/tools/browser/screencast';
+import { engineScreencast, Screencast, type EngineLiveFrame } from '../../src/engine/tools/browser/screencast';
+import type { MainLink } from '../../src/engine/protocol';
 
 const JPEG_A = Buffer.from([0xff, 0xd8, 0xff, 0xe0, 1, 2, 3, 0xff, 0xd9]);
 const JPEG_B = Buffer.from([0xff, 0xd8, 0xff, 0xe0, 9, 8, 7, 0xff, 0xd9]);
@@ -197,5 +198,29 @@ describe('screencast (08-2 §8.3.7)', () => {
     await cast.stopAll();
     expect(cast.watching('j1')).toBe(false);
     expect(w.sent.at(-1)).toEqual({ method: 'Page.stopScreencast' });
+  });
+
+  it('the engine screencast runs on foo’s browser and sends only frames its masker verifies (T3 wiring)', async () => {
+    const w = fakeWorld();
+    let masked = true;
+    const sent: unknown[] = [];
+    const link = { send: (_kind: string, payload: unknown) => sent.push(payload) } as unknown as MainLink;
+    let runtime: { browser: BrowserHandle; masker: { verify: () => Promise<boolean> } } | null = null;
+    const clock = new FakeClock();
+    const cast = engineScreencast({ link, clock, env: {}, testRun: false, runtime: () => runtime });
+    // before the browser exists: nothing to watch
+    expect(await cast.watch('j1', true)).toMatchObject({ ok: false, error: { kind: 'LIVE_UNAVAILABLE' } });
+    runtime = { browser: w.browser, masker: { verify: async () => masked } };
+    expect(await cast.watch('j1', true)).toEqual({ ok: true, value: undefined });
+    await w.frame(JPEG_A);
+    expect(sent).toHaveLength(1);
+    masked = false;
+    clock.advance(1_000);
+    await w.frame(JPEG_B);
+    expect(sent).toHaveLength(1);
+    masked = true;
+    clock.advance(1_000);
+    await w.frame(JPEG_B);
+    expect(sent).toHaveLength(2);
   });
 });

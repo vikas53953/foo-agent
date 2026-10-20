@@ -1,0 +1,80 @@
+/* Spec: 05-3 §5.10.1 (domain line --t-small --fg-2 with a 16px favicon or Globe --fg-3; "● LIVE": 8px dot + word, both
+ * --live, --t-caption-strong, static), 05-1 §0.5 (summary row: one row, min-height 40, 16px icon + 8px + --t-small; grey
+ * summaries on --bg-sunken in --fg-2; the offline reason line --t-caption --fg-2 with Globe 16 --fg-3), §0.8 (no pulsing). */
+.domainRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.domain {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.favicon {
+  flex: none;
+  color: var(--fg-3);
+}
+.live {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--s0);
+  font: var(--t-caption-strong);
+  color: var(--live);
+}
+.liveDot {
+  width: var(--s1);
+  height: var(--s1);
+  border-radius: var(--r-full);
+  background: var(--live);
+}
+.line {
+  font: var(--t-small);
+  color: var(--fg-1);
+}
+.offline {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
+.offline svg {
+  color: var(--fg-3);
+}
+.summary {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--s7);
+  padding-top: var(--s1);
+  padding-bottom: var(--s1);
+}
+.summaryText {
+  flex: 1;
+  min-width: 0;
+  font: var(--t-small);
+}
+.ok .summaryText {
+  color: var(--ok);
+}
+.grey {
+  background: var(--bg-sunken);
+}
+.grey .summaryText {
+  color: var(--fg-2);
+}
+.grey svg {
+  color: var(--fg-3);
+}
+/* 05-1 §0.2: `--card-w` 440, never wider than the column. A fixed width (not min(…, 100%)), because the message row's
+ * holder shrinks to fit its content and a percentage of it would squeeze the card to its longest word. */
+.frame.frame {
+  width: var(--card-w);
+  max-width: 100%;
+}

@@ -48,6 +48,8 @@ import { engineScreencast, type Screencast } from './tools/browser/screencast';
 import { JobRecovery } from './jobs/recovery';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
 import type { SecondLookAct, StepAct } from '../shared/schemas';
+// M9 T3
+import { engineBrowserTools, type BrowserRuntime } from './tools/browser/tools';
 // M8
 import { WhatsAppConnector, type WaPortLike } from './tools/connectors/whatsapp';
 import { linkWaRecipients, whatsappDraftTool } from './tools/connectors/recipients'; // M8 T7
@@ -101,6 +103,8 @@ export class Engine {
   readonly tidy: MemoryTidy;
   readonly share: MemoryShare;
   private readonly style: StyleStatsRunner;
+  // M9 T3: foo's browser (none when a test injects its tools).
+  private readonly browser: BrowserRuntime | null;
   // M6 T5
   readonly memoryChips: MemoryChips;
   readonly memoryReview: MemoryReview;
@@ -116,7 +120,7 @@ export class Engine {
   private readonly screencast: Screencast; // M9 T5: Watch live frames (08-2 §8.3.7)
 
   private constructor(private o: EngineOptions) {
-    this.screencast = engineScreencast(o);
+    this.screencast = engineScreencast({ ...o, runtime: () => this.browser });
     const newId = (p: IdPrefix, now: number) => (o.newId ? o.newId(p) : mintId(p, now));
     const log = (evt: string, kind?: string) =>
       o.link.send('log', { t: o.clock.now(), lvl: 'info', mod: 'engine', evt, ...(kind ? { kind } : {}) });
@@ -212,6 +216,8 @@ export class Engine {
       : null;
     // M5 T7: the real gate (08-2 §9.4) replaces the M4 stub; R4 results go through Redactor.scrub (08-2 §11.4).
     const gate = createGate({ settings: () => this.settings, now: () => o.clock.now() });
+    const browser = o.tools ? null : engineBrowserTools({ ...o, redactor: this.redactor, settings: () => this.settings, log });
+    this.browser = browser?.runtime ?? null;
     this.tools = new ToolLayer({
       link: o.link,
       clock: o.clock,
@@ -222,7 +228,8 @@ export class Engine {
         ...webToolDefs(this.web),
         ...this.memoryToolRegistry(newId),
         ...this.draftToolRegistry(),
-        ...(o.tools ?? {}),
+        // M9 T3: foo's browser tools unless a test injects its own.
+        ...(o.tools ?? browser?.registry ?? {}),
         ...(this.google?.tools ?? {}),
       },
       gate,
@@ -261,6 +268,8 @@ export class Engine {
         onToolError: (job, tool, kind, stepId) => this.trouble.onToolError(job, tool, kind, stepId),
         // M5 T10: messages that waited at the AI cap go when it is raised or the month turns.
         onCapLifted: () => void this.drainQueued(),
+        // M9 T3: a finished job's browser window closes, so the next browser job gets its slot.
+        onEnded: (jobId) => void this.browser?.jobEnded(jobId),
       },
       // M6 T5: "Used:" chips under a step's card or result, and the post-turn review after DONE (08-3 §12.4, §12.5).
       memory: {
@@ -758,8 +767,12 @@ export class Engine {
         this.redactor.registry.remove(msg.payload.handles);
         return undefined;
       // G-M4-04: a request; main waits for the ack before it exits.
-      case 'jobs.pauseAll':
-        return ok({ paused: await this.recovery.pauseAll(msg.payload.reason) });
+      case 'jobs.pauseAll': {
+        const paused = await this.recovery.pauseAll(msg.payload.reason);
+        // M9 T3: foo's browser closes with the app (08-1 §2.3 step 4), never delaying the ack main waits on.
+        void this.browser?.browser.shutdown();
+        return ok({ paused });
+      }
       // M8 (T3): Google's commands are T2's.
       case 'connection.cmd':
         if (msg.payload.target === 'whatsapp' && ['linkStart', 'linkCancel', 'unlink'].includes(msg.payload.cmd))
