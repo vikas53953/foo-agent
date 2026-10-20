@@ -117,6 +117,12 @@ export type CardType =
   // CR-0022 (X-180): a kit surface the engine posts as its own card, and an AI page (05 §0.1).
   | 'kit'
   | 'ai_page';
+/** 04-2 §21.7 (X-180): an action chip; `value` is the number, place, ISO date-time or https URL it acts on. */
+export interface ActionChip {
+  kind: 'call' | 'map' | 'calendar' | 'link';
+  label: string;
+  value: string;
+}
 /** CR-0022 pick 9: what a kept item holds. */
 export type KeptKind = 'kit' | 'page';
 /** A `kept_items` row (08-1 §4.3, migration 0004), shown in the chat's Files tab. A kept page reopens only in the sealed box. */
@@ -573,6 +579,10 @@ export interface MessageRow {
   suggestions: string[] | null;
   /** CR-0022 pick 6: a side question ("Ask about this") or foo's answer to one; `replyToId` says what it is about. */
   side: boolean;
+  /** 04 §6.5 "foo read:": what the engine understood from this user message (redacted text only); null when none. */
+  understood: string[] | null;
+  /** 04-2 §21.7: ≤ 3 action chips on a foo reply (never after an approval or payment card); null when none. */
+  actions: ActionChip[] | null;
   rev: number;
   createdAt: number;
   editedAt: number | null;

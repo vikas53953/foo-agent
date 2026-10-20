@@ -6,7 +6,14 @@ import Database from 'better-sqlite3';
 import { describe, expect, it } from 'vitest';
 import { mainToEngineSchema } from '../../src/engine/protocol';
 import { CARD_STATES } from '../../src/shared/cards';
-import { FOO_COMPONENT_NAMES, KIT_COMPONENT_NAMES, KitComponentSchema } from '../../src/shared/kit/catalog';
+import {
+  FOO_COMPONENT_NAMES,
+  KIT_BLOCK_MAX_BYTES,
+  KIT_COMPONENT_NAMES,
+  KIT_IMAGE_MAX_CHARS,
+  KitComponentSchema,
+  KitImageSrcSchema,
+} from '../../src/shared/kit/catalog';
 import { PAGE_MAX_BYTES, parseKitBlock, parsePageBlock } from '../../src/shared/kit/parse';
 import { PageRpcCallSchema } from '../../src/shared/kit/page';
 import { catalogText, kitPromptSection } from '../../src/shared/kit/prompt';
@@ -14,6 +21,7 @@ import { INVOKE_CHANNELS } from '../../src/shared/ipc';
 import { settingsSchema } from '../../src/shared/settings';
 import { settingsDefaults } from '../../src/shared/settingsDefaults';
 import { migrate } from '../../src/main/store/db';
+import { SCHEMAS } from '../../src/main/ipc/IpcRouter';
 import { parseBlocks, plainText } from '../../src/renderer/messages/markdownParse';
 
 const create = '{"version":"v0.9.1","createSurface":{"surfaceId":"s1","catalogId":"foo.kit.v1"}}';
@@ -146,5 +154,28 @@ describe('R1 contracts: bridge, engine messages, channels, settings, store', () 
       expect.arrayContaining(['cards_open', 'cards_chat', 'cards_message', 'cards_job']),
     );
     expect(db.prepare("SELECT name FROM sqlite_master WHERE name = 'kept_items'").pluck().get()).toBe('kept_items');
+    expect(cols.map((c) => c.name)).toEqual(expect.arrayContaining(['understood', 'actions']));
+  });
+
+  it('side questions, page:open and the keep channels validate (review fixes)', () => {
+    expect(INVOKE_CHANNELS).toEqual(expect.arrayContaining(['page:open', 'keep:open', 'keep:showInFolder']));
+    const send = { chatId: 'c_1', clientId: '0b5d1f9e-4a63-4c1e-9d6e-1f2a3b4c5d6e', text: 'what is this?' };
+    expect(SCHEMAS['message:send'].safeParse({ ...send, side: true, replyToId: 'm_1' }).success).toBe(true);
+    expect(SCHEMAS['message:send'].safeParse({ ...send, side: true }).success).toBe(false);
+    expect(SCHEMAS['page:open'].safeParse({ chatId: 'c_1', messageId: 'm_1', index: 0 }).success).toBe(true);
+    expect(SCHEMAS['page:open'].safeParse({ chatId: 'c_1', messageId: 'm_1', keptId: 'ki_1' }).success).toBe(false);
+    expect(SCHEMAS['page:open'].safeParse({ chatId: 'c_1' }).success).toBe(false);
+    expect(SCHEMAS['keep:open'].safeParse({ id: 'ki_1' }).success).toBe(true);
+  });
+
+  it('a block over 512 KB draws nothing; a data image over 256 KB is refused; createSurface ignores theme', () => {
+    expect(parseKitBlock(`${create}\n${' '.repeat(KIT_BLOCK_MAX_BYTES)}`, false)).toEqual({ messages: [], dropped: 1, pending: false });
+    expect(KitImageSrcSchema.safeParse(`data:image/png;base64,${'A'.repeat(KIT_IMAGE_MAX_CHARS)}`).success).toBe(false);
+    const themed = '{"createSurface":{"surfaceId":"s1","catalogId":"foo.kit.v1","theme":{"primaryColor":"#ff0000"}}}';
+    expect(parseKitBlock(themed, false)).toEqual({
+      messages: [{ createSurface: { surfaceId: 's1', catalogId: 'foo.kit.v1' } }],
+      dropped: 0,
+      pending: false,
+    });
   });
 });

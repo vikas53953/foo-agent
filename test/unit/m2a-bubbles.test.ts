@@ -54,6 +54,8 @@ function msg(p: Partial<MessageRow> = {}): MessageRow {
     providerNote: null,
     suggestions: null,
     side: false,
+    understood: null,
+    actions: null,
     rev: 1,
     createdAt: T0,
     editedAt: null,

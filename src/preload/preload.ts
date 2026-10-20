@@ -107,6 +107,9 @@ const INVOKES = new Set([
   'page:rpc',
   'keep:save',
   'keep:list',
+  'page:open',
+  'keep:open',
+  'keep:showInFolder',
 ]);
 const EVENTS = new Set([
   'chat:upsert',

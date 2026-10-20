@@ -83,7 +83,16 @@ export interface Invokes {
   'message:pin': { req: { messageId: string; on: boolean }; res: void };
   /** M2 builder B: idempotent on `(chatId, clientId)` (AT-225); `SECRET_SUSPECTED` carries the PasteCatch in `error.paste`. */
   'message:send': {
-    req: { chatId: string; clientId: string; text: string; replyToId?: string; attachmentIds?: string[]; secretOverride?: boolean };
+    // R1 (X-180): `side` marks a side question (04 §17.5; needs replyToId).
+    req: {
+      chatId: string;
+      clientId: string;
+      text: string;
+      replyToId?: string;
+      attachmentIds?: string[];
+      secretOverride?: boolean;
+      side?: boolean;
+    };
     // M8 T7 (04 §10.11): in a mirrored WhatsApp group the message is a Draft card in foo's chat, not a message here.
     res: { messageId: string; queued: boolean; mirrorDraft?: { fooChatId: string; draftCardId: string; messageId: string } };
   };
@@ -205,10 +214,27 @@ export interface Invokes {
   'kit:refresh': { req: { chatId: string; messageId?: string; cardId?: string; surfaceId: string }; res: void };
   'page:rpc': { req: { chatId: string; pageId: string; call: PageRpcCall }; res: PageRpcResult };
   'keep:save': {
-    req: { chatId: string; messageId?: string; cardId?: string; kind: KeptKind; title: string; body: string; png?: ArrayBuffer };
+    req: {
+      chatId: string;
+      messageId?: string;
+      cardId?: string;
+      kind: KeptKind;
+      title: string;
+      body: string;
+      png?: ArrayBuffer | Uint8Array;
+    };
     res: KeptItem;
   };
   'keep:list': { req: { chatId: string }; res: KeptItem[] };
+  // page:open hands main one ```page block (by message or card and its index among the page blocks, or a kept page) and gets
+  // the id it serves at foo-page://{pageId}; keep:open returns a kept item's body for the sealed box or the kit renderer
+  // (never shell.openPath); keep:showInFolder shows its file.
+  'page:open': {
+    req: { chatId: string; messageId?: string; cardId?: string; index?: number; keptId?: string };
+    res: { pageId: string } | { failed: 'too_large' | 'not_found' };
+  };
+  'keep:open': { req: { id: string }; res: { kind: KeptKind; body: string } };
+  'keep:showInFolder': { req: { id: string }; res: void };
   'draft:update': { req: { cardId: string; nonce: string; fields: DraftFields }; res: CardRow };
   'draft:send': { req: { cardId: string; nonce: string; resolvedBy: CardTapBy }; res: { approvalId: string; undoUntil: number } };
   'draft:undo': { req: { approvalId: string }; res: { undone: boolean } };
@@ -395,6 +421,9 @@ export const INVOKE_CHANNELS = [
   'page:rpc',
   'keep:save',
   'keep:list',
+  'page:open',
+  'keep:open',
+  'keep:showInFolder',
 ] as const satisfies readonly InvokeChannel[];
 
 export const EVENT_CHANNELS = [

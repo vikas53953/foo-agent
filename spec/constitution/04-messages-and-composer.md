@@ -286,7 +286,7 @@ Test id: `bubble-quote`.
 Test id: `bubble-read-line`.
 
 - Under the last user bubble only, 4px below it, aligned with the bubble's right edge: "{agentName} read:" then the people, places, dates, times and amounts foo understood from that message, joined by " · ", `--t-caption` `--fg-3`, one line with ellipsis; a tooltip shows the full list. Narrator: "{agentName} understood: {items}".
-- Built by the engine from the redacted text (08-2 §11.4) only, so it never shows a secret; hidden when nothing was found, in groups and in WhatsApp mirrors. It is not part of the bubble and is not copied.
+- Built by the engine from the redacted text (08-2 §11.4) only, so it never shows a secret; stored as JSON `string[]` in `messages.understood` (08-1 §4.2 item 6); hidden when nothing was found, in groups and in WhatsApp mirrors. It is not part of the bubble and is not copied.
 
 ## §7. Not sent (failed to send)
 
@@ -583,7 +583,8 @@ Test ids: pill `bubble-citation` (`data-index`), popover `bubble-citation-popove
 
 Test ids: `kit-surface`, the dropped caption `kit-dropped`, one id per foo component (`kit-line-chart` … `kit-live-stamp`, `src/shared/testids.ts`).
 
-- A fenced block with language `a2ui` in foo's or a helper's text holds A2UI v0.9.1 server messages (`createSurface`, `updateComponents`, `updateDataModel`, `deleteSurface`; one JSON object per message, an outer array and line breaks allowed), restricted to foo's catalog `foo.kit.v1` (CR-0022 §(c): 15 standard parts used as-is, Modal not used, and 13 foo components). The zod schemas in `src/shared/kit/catalog.ts` are the catalog: they check every message and generate the AI's catalog text (08-4 §24.5). A `createSurface` naming another catalog is dropped.
+- A fenced block with language `a2ui` in foo's text (`side === 'foo'`; a helper's or the user's fence stays a code block) holds A2UI v0.9.1 server messages (`createSurface`, `updateComponents`, `updateDataModel`, `deleteSurface`; one JSON object per message, an outer array and line breaks allowed), restricted to foo's catalog `foo.kit.v1` (CR-0022 §(c): 15 standard parts used as-is, Modal not used, and 13 foo components). The zod schemas in `src/shared/kit/catalog.ts` are the catalog: they check every message and generate the AI's catalog text (08-4 §24.5). A `createSurface` naming another catalog is dropped; unknown keys on it (`theme`, `sendDataModel`) are ignored. A block over 512 KB draws nothing (caption shown); a `data:` image is at most 256 KB of base64.
+- Bound values (`{ "path": "/x" }` into the surface's data model) are re-checked with the field's own schema after they resolve; a value that fails is dropped like an invalid component.
 - Streaming: each complete message renders at once; an incomplete one is held back (same rule as §14.4). When the reply ends, a still-incomplete message is dropped.
 - An invalid or unknown component, or an invalid message, is dropped; the surface shows the rest, a quiet caption "Couldn't show part of this" (`kit.surface.dropped`, `--t-caption` `--fg-3`) sits under it, and the reply's words still show. Copy (§1.9) carries the words only.
 - The user's own fences are never drawn: a user message's `a2ui` block stays a code block.

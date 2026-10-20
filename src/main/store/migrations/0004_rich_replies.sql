@@ -1,11 +1,13 @@
 -- foo:foreign-keys-off
--- Spec: CR-0022 (X-180) §(b) 08-1 §4.3 and 08-0 §G.1; 08-1 §4.2 (forward-only migrations). Three changes:
+-- Spec: CR-0022 (X-180) §(b) 08-1 §4.3 and 08-0 §G.1; 08-1 §4.2 (forward-only migrations). The changes:
 -- 1. cards.type gains 'kit' and 'ai_page' (25 → 27 card types). SQLite cannot alter a CHECK, so cards is rebuilt the way
 --    0002 rebuilt jobs and steps (https://sqlite.org/lang_altertable.html §7): foreign keys off, new table, copy, drop,
 --    rename, indexes back, then PRAGMA foreign_key_check (migrate()) before commit. Every other column, default, check,
 --    foreign key and index is the 0001 text unchanged.
 -- 2. messages.side (pick 6): 1 marks a side question ("Ask about this") and foo's answer to it; reply_to_id says what it is
 --    about. One NOT NULL column with a default, no rebuild.
+-- 2b. messages.understood ("foo read:", 04 §6.5): JSON string[] the engine extracted from the redacted text of a user
+--    message, or NULL; messages.actions (04-2 §21.7 action chips): JSON ActionChip[] (≤ 3) on a foo reply, or NULL.
 -- 3. kept_items (pick 9): a kit surface or AI page the user kept. The body file holds the A2UI JSON or the `.foopage` blob,
 --    the PNG is its snapshot; both live under {DATA}. A kept page reopens only in the sealed box.
 CREATE TABLE cards_new (
@@ -38,6 +40,8 @@ CREATE INDEX cards_message ON cards(message_id);
 CREATE INDEX cards_job ON cards(job_id);                   -- X-129
 
 ALTER TABLE messages ADD COLUMN side INTEGER NOT NULL DEFAULT 0 CHECK (side IN (0, 1));
+ALTER TABLE messages ADD COLUMN understood TEXT CHECK (understood IS NULL OR json_valid(understood));
+ALTER TABLE messages ADD COLUMN actions TEXT CHECK (actions IS NULL OR json_valid(actions));
 
 CREATE TABLE kept_items (
   id          TEXT PRIMARY KEY,                            -- ki_…

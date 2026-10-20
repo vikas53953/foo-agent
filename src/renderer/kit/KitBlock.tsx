@@ -6,10 +6,14 @@ import { useMemo } from 'react';
 import { t } from '../../shared/copy/t';
 import { parseKitBlock } from '../../shared/kit/parse';
 import { TID } from '../../shared/testids';
+import { useStreamFade } from '../messages/streamFade';
 import styles from './KitBlock.module.css';
 
-export function KitBlock({ body, closed }: { body: string; closed: boolean }) {
-  const parsed = useMemo(() => parseKitBlock(body, !closed), [body, closed]);
+export function KitBlock({ body }: { body: string; closed: boolean }) {
+  // The reply's real streaming state (the fade context is null once it ends): an unclosed fence left when the reply ends
+  // drops its unfinished last message instead of holding it back forever.
+  const streaming = useStreamFade() !== null;
+  const parsed = useMemo(() => parseKitBlock(body, streaming), [body, streaming]);
   return (
     <div className={styles.block}>
       <div className={styles.surface} data-testid={TID.kitSurface} data-messages={parsed.messages.length} />

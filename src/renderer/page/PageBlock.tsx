@@ -4,9 +4,11 @@
 import { useMemo } from 'react';
 import { parsePageBlock } from '../../shared/kit/parse';
 import { TID } from '../../shared/testids';
+import { useStreamFade } from '../messages/streamFade';
 
 export function PageBlock({ body, closed }: { body: string; closed: boolean }) {
-  const page = useMemo(() => parsePageBlock(body, closed, !closed), [body, closed]);
+  const streaming = useStreamFade() !== null;
+  const page = useMemo(() => parsePageBlock(body, closed, streaming), [body, closed, streaming]);
   const state = page.tooLarge ? 'failed' : page.complete ? 'ready' : 'building';
   return <div data-testid={TID.aiPage} data-state={state} hidden />;
 }

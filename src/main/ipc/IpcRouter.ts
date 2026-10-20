@@ -186,8 +186,10 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
       replyToId: messageId.optional(),
       attachmentIds: z.array(z.string().min(1).max(80)).max(6).optional(),
       secretOverride: z.boolean().optional(),
+      side: z.boolean().optional(),
     })
-    .strict(),
+    .strict()
+    .refine((m) => !m.side || m.replyToId !== undefined, { message: 'a side question replies to a message' }),
   'composer:checkSecret': z.object({ text: z.string().max(200_000) }).strict(),
   'composer:saveDraft': z
     .object({
@@ -353,10 +355,22 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
       kind: z.enum(['kit', 'page']),
       title: z.string().min(1).max(80),
       body: z.string().min(1).max(600_000),
-      png: z.instanceof(ArrayBuffer).optional(),
+      png: z.union([z.instanceof(ArrayBuffer), z.instanceof(Uint8Array)]).optional(),
     })
     .strict(),
   'keep:list': z.object({ chatId }).strict(),
+  'page:open': z
+    .object({
+      chatId,
+      messageId: messageId.optional(),
+      cardId: cardId.optional(),
+      index: z.number().int().min(0).max(20).optional(),
+      keptId: z.string().min(1).max(80).optional(),
+    })
+    .strict()
+    .refine((m) => [m.messageId, m.cardId, m.keptId].filter((x) => x !== undefined).length === 1, { message: 'one source' }),
+  'keep:open': z.object({ id: z.string().min(1).max(80) }).strict(),
+  'keep:showInFolder': z.object({ id: z.string().min(1).max(80) }).strict(),
 };
 
 export type Handler<C extends InvokeChannel> = (req: InvokeIn[C]) => Result<InvokeOut[C]> | Promise<Result<InvokeOut[C]>>;

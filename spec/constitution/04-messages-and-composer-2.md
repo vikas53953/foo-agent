@@ -181,7 +181,7 @@ One row of `Chip`s (06 §0.4) above the pill, `role="group"` named "Suggestions"
 | Click | Fills the field with the chip's text and focuses it. **Never sends.** |
 | Hidden | on the first keystroke; while recording; in groups, WhatsApp mirrors and private chats; when the latest reply holds an Approval, Payment, Draft or Secret card or its job touched money. |
 | Motion | chips rise in 60ms apart with `--ease-spring`; fade on the first keystroke (§F7.1). |
-| Action chips [X-180, CR-0022] | Beside the reply chips, after the same reply: at most 3 action chips (`bubble-action-chips`, each `bubble-action-chip`), each a Fluent icon + label in `--accent` (Call, Open map, Add to calendar, Open link). An action chip that acts for the user goes through the normal gates (Article 6). Never shown after an Approval or Payment card. |
+| Action chips [X-180, CR-0022] | Beside the reply chips, after the same reply: at most 3 action chips (`bubble-action-chips`, each `bubble-action-chip`), each a Fluent icon + label in `--accent` (Call, Open map, Add to calendar, Open link). Stored as JSON `ActionChip[]` (`{ kind: 'call' | 'map' | 'calendar' | 'link'; label; value }`) in the reply's `messages.actions` (08-1 §4.2 item 6). An action chip that acts for the user goes through the normal gates (Article 6). Never shown after an Approval or Payment card. |
 
 ## §22. Input methods and guards
 

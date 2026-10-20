@@ -2,7 +2,7 @@
 // same rule as 04 §14.4; an invalid or unknown component is dropped with a quiet "Couldn't show part of this" caption and
 // the reply text still shows), 04 §13.6 (AI page: HTML only, ≤ 512 KB), CR-0022 AT-353, AT-354 (parser half), X-180.
 // Pure: the bubble gives the body of an ```a2ui or ```page fence and whether the message is still streaming.
-import { KitComponentSchema, KitMessageSchema, type KitComponent, type KitMessage } from './catalog';
+import { KIT_BLOCK_MAX_BYTES, KitComponentSchema, KitMessageSchema, type KitComponent, type KitMessage } from './catalog';
 
 export interface KitParse {
   /** Every complete, valid message in order (components already checked one by one). */
@@ -75,6 +75,8 @@ function checkMessage(raw: string): { msg: KitMessage; dropped: number } | null 
 
 /** 04 §13.5: the messages of an ```a2ui block. `streaming` holds an unfinished last message back instead of dropping it. */
 export function parseKitBlock(body: string, streaming: boolean): KitParse {
+  // Over the block cap nothing draws; the words of the reply still show with the caption.
+  if (new TextEncoder().encode(body).length > KIT_BLOCK_MAX_BYTES) return { messages: [], dropped: 1, pending: false };
   const { objects, rest } = splitObjects(body);
   const messages: KitMessage[] = [];
   let dropped = 0;

@@ -12,7 +12,11 @@ const id = z.string().min(1).max(64);
 const short = z.string().max(200);
 const label = z.string().min(1).max(80);
 
-/** A2UI dynamic value: a literal, or a JSON Pointer into the surface's data model (`{ "path": "/x" }`). */
+/**
+ * A2UI dynamic value: a literal, or a JSON Pointer into the surface's data model (`{ "path": "/x" }`). The data model is
+ * free JSON, so the renderer re-checks every resolved value with the field's own schema (`t` here) before drawing it; a
+ * value that fails is treated like an invalid component (dropped, caption shown). 04 §13.5.
+ */
 export const bound = <T extends z.ZodType>(t: T) => z.union([t, z.object({ path: z.string().min(1).max(200) }).strict()]);
 
 /** Static child ids, or a template that repeats `componentId` for every item of the list at `path`. */
@@ -30,8 +34,15 @@ export const KitActionSchema = z
   })
   .strict();
 
+/** 04 §13.5: a `data:` image is at most 256 KB of base64; a whole ```a2ui block at most 512 KB (the AI page cap). */
+export const KIT_IMAGE_MAX_CHARS = 256 * 1024;
+export const KIT_BLOCK_MAX_BYTES = 512 * 1024;
+
 /** 04 §13.5: an Image shows only a `data:` image or a file already in this chat's files (`file:{fileId}`). */
-export const KitImageSrcSchema = z.string().regex(/^(data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/=]+|file:[\w-]{1,80})$/);
+export const KitImageSrcSchema = z
+  .string()
+  .max(KIT_IMAGE_MAX_CHARS)
+  .regex(/^(data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/=]+|file:[\w-]{1,80})$/);
 
 const base = { id, weight: z.number().min(0).max(10).optional() };
 const part = <N extends string, S extends z.ZodRawShape>(name: N, shape: S, about: string) =>
@@ -253,7 +264,8 @@ export const KitMessageSchema = z.union([
   z
     .object({
       version: z.enum(A2UI_VERSIONS).optional(),
-      createSurface: z.object({ surfaceId, catalogId: z.literal(CATALOG_ID) }).strict(),
+      // Unknown keys (A2UI `theme`, `sendDataModel`) are stripped, not refused: foo's look comes from its tokens.
+      createSurface: z.object({ surfaceId, catalogId: z.literal(CATALOG_ID) }),
     })
     .strict(),
   z
