@@ -194,7 +194,8 @@ test('AT-303: a dialog lands 0.92 → 1 with the spring and --shadow-28; the she
   await expect(page.locator('html')).toHaveAttribute('data-dialog-open', '');
   const shell = page.getByTestId(TID.titlebarStrip).locator('xpath=..');
   await expect.poll(async () => matrix(await shell.evaluate((el) => getComputedStyle(el).transform)).scale).toBeCloseTo(0.96, 3);
-  expect(await shell.evaluate((el) => getComputedStyle(el).filter)).toBe('blur(2px)');
+  // The blur eases in beside the scale, so wait for its end value too (the scale can be within 0.0005 while the blur is not).
+  await expect.poll(() => shell.evaluate((el) => getComputedStyle(el).filter)).toBe('blur(2px)');
 
   // Leaving is faster than arriving: the shell comes back in --m-normal with --ease-out.
   await dialog.getByTestId(TID.dialogSecondary).click();
