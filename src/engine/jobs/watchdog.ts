@@ -212,6 +212,10 @@ export class Watchdog {
     if (this.showing.has(jobId)) return true;
     const job = await this.core.job(jobId);
     if (!job || job.state !== 'working') return false;
+    // M9 T8 (08-2 §5.7 step 2, §10.4): an irreversible step in flight (RUNNING after the write-ahead, or its CHECKING watch)
+    // is never cut by a stuck card; its own clocks (120 s / 5 min outcome, 10 min history) end it.
+    const open = (await this.core.query<{ state: string }[]>('approvalsOpenForJob', jobId)) ?? [];
+    if (open.some((a) => a.state === 'RUNNING' || a.state === 'CHECKING')) return false;
     const calls = (await this.core.query<ToolCallView[]>('toolCallsForJob', jobId)) ?? [];
     const signal = stuckCheck(await this.inputOf(job, calls, await this.core.steps(jobId)));
     if (!signal) return false;

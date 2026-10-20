@@ -14,6 +14,7 @@ import type { CardRow, JobRow, StepRow } from '../../shared/types';
 import type { DbOp } from '../protocol';
 import type { RunnerCore } from './JobRunner';
 import { isStopCommand, looksLikeYes, type StopFlow } from './stopFlow';
+import { flightScopePayload, isFlightBooking } from './flights'; // M9 T8
 import { extractDoVerbs } from './verbs';
 
 export type SteerEffect = 'folded' | 'answered' | 'restart' | 'new_job';
@@ -110,6 +111,12 @@ export class Steer {
     if (isStopCommand(text)) {
       await this.seen(m.messageId);
       await this.stop.stopFlow({ chatId: m.chatId, text });
+      return true;
+    }
+    // M9 T8 (08-2 §5.3.4, X-81): booking a flight is compare-and-open only; the fixed reply, before any AI turn.
+    if (isFlightBooking(text)) {
+      await this.seen(m.messageId);
+      await this.core.tx(this.core.cardOps(m.chatId, 'choice', 'asking', flightScopePayload(m.messageId), null, null).ops);
       return true;
     }
     const open = (await this.core.query<CardRow[]>('cardsOpenForChat', m.chatId)) ?? [];

@@ -142,13 +142,16 @@ export class ToolLayer {
 
   /** System part 3 (§27.1): the tools a job may use, one line each. */
   catalogue(): string {
-    return Object.values(this.d.tools)
-      .filter((t) => this.d.listed?.(t.name) ?? true)
-      .map(
-        (t) =>
-          `- ${t.name}(${t.args}): ${t.description}${t.actionClass === 'read' || t.actionClass === 'prepare' ? '' : ' (asks the user first)'}`,
-      )
-      .join('\n');
+    return (
+      Object.values(this.d.tools)
+        // M9 T8 (08-4 §27.1): engine-only tools (`browser.submit`, `browser.fillCard`, the sends) are never listed.
+        .filter((t) => !ENGINE_ONLY.has(t.name) && (this.d.listed?.(t.name) ?? true))
+        .map(
+          (t) =>
+            `- ${t.name}(${t.args}): ${t.description}${t.actionClass === 'read' || t.actionClass === 'prepare' ? '' : ' (asks the user first)'}`,
+        )
+        .join('\n')
+    );
   }
 
   rawResult(jobId: string, toolCallId: string): string | undefined {

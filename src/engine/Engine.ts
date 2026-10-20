@@ -49,7 +49,7 @@ import { JobRecovery } from './jobs/recovery';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
 import type { SecondLookAct, StepAct } from '../shared/schemas';
 // M9 T3
-import { engineBrowserTools, type BrowserRuntime } from './tools/browser/tools';
+import { engineBrowserTools, liveTermsReader, type BrowserRuntime } from './tools/browser/tools';
 // M8
 import { WhatsAppConnector, type WaPortLike } from './tools/connectors/whatsapp';
 import { linkWaRecipients, whatsappDraftTool } from './tools/connectors/recipients'; // M8 T7
@@ -81,6 +81,9 @@ export interface EngineOptions {
   google?: GoogleOptions;
   /** T5: tests only. Main holds the token (as in production) and Google is the test's fake fetch on these bases. */
   googleViaMain?: { http: HttpFetch; bases?: Partial<GoogleBases> };
+  // M9
+  /** T8: tests only. foo's browser tools over a test launcher (the sandbox sites), beside injected fake tools. */
+  browser?: { registry: ToolRegistry; runtime: BrowserRuntime };
 }
 
 export class Engine {
@@ -216,7 +219,8 @@ export class Engine {
       : null;
     // M5 T7: the real gate (08-2 §9.4) replaces the M4 stub; R4 results go through Redactor.scrub (08-2 §11.4).
     const gate = createGate({ settings: () => this.settings, now: () => o.clock.now() });
-    const browser = o.tools ? null : engineBrowserTools({ ...o, redactor: this.redactor, settings: () => this.settings, log });
+    const browser =
+      o.browser ?? (o.tools ? null : engineBrowserTools({ ...o, redactor: this.redactor, settings: () => this.settings, log }));
     this.browser = browser?.runtime ?? null;
     this.tools = new ToolLayer({
       link: o.link,
@@ -228,8 +232,9 @@ export class Engine {
         ...webToolDefs(this.web),
         ...this.memoryToolRegistry(newId),
         ...this.draftToolRegistry(),
-        // M9 T3: foo's browser tools unless a test injects its own.
+        // M9 T3: foo's browser tools unless a test injects its own (M9 T8: a test may inject both).
         ...(o.tools ?? browser?.registry ?? {}),
+        ...(o.tools && o.browser ? o.browser.registry : {}),
         ...(this.google?.tools ?? {}),
       },
       gate,
@@ -260,6 +265,14 @@ export class Engine {
       log: (evt, kind) => log(evt, kind),
       gate,
       scrub: (text) => this.redactor.scrub(text),
+      // M9 T8: the live terms right before a booking, read from the job's page (08-2 §9.4.2).
+      ...(this.browser
+        ? {
+            browserLive: liveTermsReader(this.browser),
+            browserUrl: (id: string) => this.browser?.page(id)?.url() ?? null,
+            recipes: this.browser.recipes,
+          }
+        : {}),
       hooks: {
         onAiError: (job, kind) => this.recovery.onAiError(job, kind),
         onCannotStart: (job, kind) => this.recovery.onCannotStart(job, kind),
@@ -270,6 +283,13 @@ export class Engine {
         onCapLifted: () => void this.drainQueued(),
         // M9 T3: a finished job's browser window closes, so the next browser job gets its slot.
         onEnded: (jobId) => void this.browser?.jobEnded(jobId),
+        reintake: (chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }), // M9 T8
+        // M9 T8 (T3 seams): one masked picture after each step (08-2 §8.3.8); the next step's first snapshot is whole (§8.3.4).
+        onStepDone: async (jobId, idx, next) => {
+          const page = this.browser?.page(jobId);
+          if (page) await this.browser!.shots.capture(jobId, page, idx).catch(() => null);
+          if (next !== null) this.browser?.stepStarted(jobId);
+        },
       },
       // M6 T5: "Used:" chips under a step's card or result, and the post-turn review after DONE (08-3 §12.4, §12.5).
       memory: {

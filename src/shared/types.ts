@@ -362,7 +362,7 @@ export interface ApprovalPayload {
   // M5 T14
   /** 05-2 §5.5.4 CHECKING → FAILED: main's 15 min no-proof move sets it, so the card says "I can't tell…" instead of the plain
    * FAILED line; `phone` only when a verified one exists (G-M5-32 (b): an unverified slot is left out with its words). */
-  unknownResult?: { phone?: string };
+  unknownResult?: { phone?: string; /** M9 T8 (G-M9-07): a booking its site's history page never confirmed. */ unconfirmed?: true };
 }
 /** 08-1 §4.5 draft payload. */
 export interface DraftPayload {
