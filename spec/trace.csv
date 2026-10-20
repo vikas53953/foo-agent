@@ -254,3 +254,60 @@ R21 · R23 · R5,J21,,UX-24-02,,06-2 §6.0; 06-2 §6.1,test/fidelity/ux/UX-24.se
 ,J4,,UX-04-08,,05-3 §5.11; 08-3 §16.1; 08-3 §16.4,test/fidelity/ux/UX-04.connect.spec.ts,M8,live
 ,J4,,UX-04-09,,05-3 §5.11; 08-3 §16.1; 08-3 §16.4,test/fidelity/ux/UX-04.connect.spec.ts,M8,live
 ,,,,BP-CARD-11,05-3 §5.11,test/fidelity/bp/BP-cards-m8.spec.ts,M8,live
+,J9,AT-036,,,10-acceptance-1 §B; 08-2 §9.4; 05-2 §5.5.2,test/e2e/m9-booking.spec.ts,M9,pending
+,J9,AT-037,,,10-acceptance-1 §B; 08-4 §28.1; 08-2 §8.2.1,test/integration/browser/submit.test.ts,M9,pending
+,J9,AT-038,,,10-acceptance-1 §B; 08-4 §28.1; 07-2 §7.4,test/integration/browser/submit.test.ts,M9,pending
+,J9,AT-039,,,10-acceptance-1 §B; 08-2 §8.3.9; 08-3 §21.2,test/e2e/m9-booking.spec.ts,M9,pending
+,J9,AT-040,,,10-acceptance-1 §B; 05-2 §5.5.2; 07-2 §7.6,test/integration/browser/reminder.test.ts,M9,pending
+,J13,AT-056,,,10-acceptance-1 §B; 08-2 §8.3.3; 05-3 §5.10,test/e2e/m9-signin.spec.ts,M9,pending
+,J13,AT-057,,,10-acceptance-1 §B; 08-2 §8.3.3,test/e2e/m9-signin.spec.ts,M9,pending
+,J13,AT-058,,,10-acceptance-1 §B; 05-3 §5.10.3; 09 §9.27.3,test/e2e/m9-takeover.spec.ts,M9,pending
+,J13,AT-059,,,10-acceptance-1 §B; 08-2 §11.3; 08-0 §E.8,test/integration/browser/login.test.ts,M9,pending
+,J13,AT-060,,,10-acceptance-1 §B; 08-2 §8.4; 07-2 §7.6,test/integration/browser/signin.test.ts,M9,pending
+,J18,AT-078,,,10-acceptance-1 §B; 09 §9.27.3; 08-2 §5.7,test/e2e/m9-takeover.spec.ts,M9,pending
+,J18,AT-079,,,10-acceptance-1 §B; 08-2 §8.3.6–§8.3.7; 06-3 §11.2,test/e2e/m9-live.spec.ts,M9,pending
+,J18,AT-080,,,10-acceptance-1 §B; 08-2 §5.7; 08-4 §26.9,test/e2e/m9-stop.spec.ts,M9,pending
+,J9,AT-114a,,,10-acceptance-1 §B; 08-4 §26.11,test/integration/browser/proof.test.ts,M9,pending
+,J10,AT-137,,,10-acceptance-1 §B; 08-2 §8.3.12; 08-4 §27.3,test/articles/ART-net-web.test.ts,M9,pending
+,J10,AT-138,,,10-acceptance-1 §B; 08-4 §27.3,test/integration/web/search.test.ts,M9,pending
+,J10,AT-139,,,10-acceptance-1 §B; 08-2 §8.2; 08-4 §27.3,test/integration/web/fetch.test.ts,M9,pending
+,J10,AT-140,,,10-acceptance-1 §B; 08-2 §8.3.12,test/integration/web/outbound.test.ts,M9,pending
+,J10,AT-141,,,10-acceptance-1 §B; 08-2 §8.3.12; 08-4 §27.3,test/integration/web/cloud.test.ts,M9,pending
+,J9,AT-142,,,10-acceptance-1 §B; 08-2 §8.3.10; 08-4 §27.4,test/e2e/m9-handback.spec.ts,M9,pending
+,J10,AT-143,,,10-acceptance-1 §B; 08-4 §27.3 item 5; 08-2 §5.10,test/integration/web/cost.test.ts,M9,pending
+,J9,AT-144,,,10-acceptance-1 §B; 08-2 §8.3.11,test/integration/browser/recipes.test.ts,M9,pending
+,J8,AT-157,,,10-acceptance-1 §B; 08-2 §9.2; DECISIONS X-46,test/e2e/m9-flights.spec.ts,M9,pending
+,J9,AT-207,,,10-acceptance-1 §B; 05-2 §5.5.2,test/integration/browser/reminder.test.ts,M9,pending
+,J13,AT-211,,,10-acceptance-1 §B; 05-3 §5.10.2,test/e2e/m9-signin.spec.ts,M9,pending
+,J18,AT-272,,,10-acceptance-1 §B; 06-3 §11.2; DECISIONS X-121 · X-135,test/e2e/m9-live.spec.ts,M9,pending
+,,ART-03,,,01-articles Art. 3 (the browser rung); 10-acceptance-2 §D,test/articles/ART-03.browser.test.ts,M9,pending
+R5 · R10 · R14,J9,,UX-12-01,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,pending
+R5 · R10 · R14,J9,,UX-12-02,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,pending
+R5 · R10 · R14,J9,,UX-12-03,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,pending
+R5 · R10 · R14,J9,,UX-12-04,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,pending
+R5 · R10 · R14,J9,,UX-12-05,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,pending
+R5 · R10 · R14,J9,,UX-12-06,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,pending
+R5 · R10 · R14,J9,,UX-12-07,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,pending
+R5 · R10 · R14,J9,,UX-12-08,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,pending
+R5 · R10 · R14,J9,,UX-12-09,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,pending
+R5 · R10 · R14,J9,,UX-12-10,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,pending
+R5 · R10 · R14,J9,,UX-12-11,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,pending
+R5 · R10 · R14,J9,,UX-12-12,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,pending
+R11 · R4 · R10,J13,,UX-14-01,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,pending
+R11 · R4 · R10,J13,,UX-14-05,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,pending
+R11 · R4 · R10,J13,,UX-14-06,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,pending
+R11 · R4 · R10,J13,,UX-14-07,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,pending
+R11 · R4 · R10,J13,,UX-14-08,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,pending
+R11 · R4 · R10,J13,,UX-14-09,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,pending
+R11 · R4 · R10,J13,,UX-14-10,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,pending
+R11 · R8,J18,,UX-15-03,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,pending
+R11 · R8,J18,,UX-15-04,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,pending
+R11 · R8,J18,,UX-15-05,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,pending
+R11 · R8,J18,,UX-15-06,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,pending
+R11 · R8,J18,,UX-15-07,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,pending
+R11 · R8,J18,,UX-15-08,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,pending
+R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,pending
+,,,,BP-CARD-10,05-3 §5.10,test/fidelity/bp/BP-cards-m9.spec.ts,M9,pending
+,,,,BP-CARD-17,05-3 §5.18,test/fidelity/bp/BP-cards-m9.spec.ts,M9,pending
+,,,,BP-SCR-13,06-3 §11.1–§11.2,test/fidelity/bp/BP-screens-m9.spec.ts,M9,pending
+,,,,BP-SCR-14,06-3 §11.3,test/fidelity/bp/BP-screens-m9.spec.ts,M9,pending

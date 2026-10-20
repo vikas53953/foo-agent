@@ -43,6 +43,12 @@ const INVOKES = new Set([
   'stuck:choose',
   'recovery:choose',
   'error:fix',
+  // M9 (CR-0013).
+  'job:openWindow',
+  'job:takeOver',
+  'job:handBack',
+  'signin:done',
+  'signin:skip',
   'memory:list',
   'memory:add',
   'memory:edit',
@@ -115,6 +121,8 @@ const EVENTS = new Set([
   'whatsapp:qr',
   'memory:changed',
   'data:exportProgress',
+  'live:frame',
+  'live:state',
 ]);
 
 const platform = ipcRenderer.sendSync('app:platform') as PlatformInfo;

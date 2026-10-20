@@ -34,7 +34,7 @@
     "constitution/12-features-r25-r31-1.md": "cbadb85a7da0533e27169929a18c725ed67938c65265ec1783f13ad6690849e4",
     "constitution/12-features-r25-r31-2.md": "5ad445f0950e2c5b3907e587f92819610524b52c60b7d130eeeb63a4b648db1f",
     "constitution/CHANGELOG.md": "ea2638f512ebc100213db9019d94be15586a7d2a41e830e011a7b68d5fc08b2b",
-    "constitution/DECISIONS.md": "9ea8a8fe75b064bc036c36f20e8be386510f2b43d55d45e6861ab1d92a079961",
+    "constitution/DECISIONS.md": "d17208e0fe2a812c849824e7197a195aa69f44713256476ccd0a9a97bf351125",
     "constitution/GAPS.md": "0fc540ebf9754ec6e87a0e114cc7b25123f1312d025a62ed42a175fa085a0229",
     "constitution/research/capabilities-sources.md": "aa1c57be0b731b7e77dd5275c3db9c7fc76c1819e52f51881627d4c4be1c2c1f",
     "constitution/research/capabilities.md": "9ea45503d0d2f6dea65915d0bf9f35aa5f2b02a9d7ad9113557284f100684daf",
@@ -56,6 +56,6 @@
     "refs/ux/foo-ux-walkthrough.html": "d5eb3d4a42bce526548be701afaf4585a843e3098af2200d8f0a2c7535778f87",
     "spec-values.json": "bbcd6fb2becb3bfb04e9b88bc83e10f82b5e3b60d24c43bcbe8069e2497546ef",
     "state-machines.json": "ab7b48b785a63dc92b13a4ce60f1aefcd80411bdb7f27551de680451787b28b4",
-    "trace.csv": "1857f590756aa5a793aa191459bd7b325550f30680d3468db21d2ffdcab22019"
+    "trace.csv": "e9baf5c5dbe09f2beaf9a12477d97610d346e3b7299912c29dd734026432dae2"
   }
 }

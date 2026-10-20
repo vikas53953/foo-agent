@@ -215,6 +215,12 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'app:showEmojiPanel': empty as z.ZodType<Record<string, never>>,
   'job:stop': z.object({ jobId: z.string().min(1).max(80) }).strict(),
   'job:watch': z.object({ jobId: z.string().min(1).max(80), on: z.boolean() }).strict(),
+  // M9 (CR-0013, 08-1 §3.2). Handlers below are stubs until T5 (live), T6 (sign-in, take over), T8 (hand-back sites).
+  'job:openWindow': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'job:takeOver': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'job:handBack': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'signin:done': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'signin:skip': z.object({ jobId: z.string().min(1).max(80) }).strict(),
   'memory:list': z
     .object({
       filter: z
@@ -642,6 +648,11 @@ export function registerIpc(ctx: AppContext): void {
   for (const c of JOB_CHANNELS) handle(c, jobs[c] as Handler<typeof c>);
   // The Live window (09 §9.27) arrives with the browser milestone; until then the shell shows no live view.
   handle('job:watch', () => fail('LIVE_UNAVAILABLE'));
+  handle('job:openWindow', () => fail('BROWSER_MISSING'));
+  handle('job:takeOver', () => fail('JOB_GONE'));
+  handle('job:handBack', () => fail('JOB_GONE'));
+  handle('signin:done', () => fail('JOB_GONE'));
+  handle('signin:skip', () => fail('JOB_GONE'));
   handle('memory:list', ({ filter, q }) => ok(memoryList(db, filter, q, now())));
   // M6 (CR-0010 G-M6-01): the engine owns files, the classify turn and the sensitive rule; main forwards one message each.
   const memoryCmd = <T>(cmd: MemoryCmdPayload): Promise<Result<T>> =>

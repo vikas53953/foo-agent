@@ -40,6 +40,7 @@ import type {
   StopReport,
   View,
   WindowsSettingsPage,
+  LiveState,
 } from './types';
 
 export type ThemeName = 'light' | 'dark';
@@ -108,6 +109,12 @@ export interface Invokes {
   'app:showEmojiPanel': { req: Record<string, never>; res: void };
   'job:stop': { req: { jobId: string }; res: StopReport };
   'job:watch': { req: { jobId: string; on: boolean }; res: void };
+  // M9 (CR-0013; 08-1 §3.2): live window, sign-in and take over, hand-back sites (X-124, X-129, X-135).
+  'job:openWindow': { req: { jobId: string }; res: void };
+  'job:takeOver': { req: { jobId: string }; res: void };
+  'job:handBack': { req: { jobId: string }; res: void };
+  'signin:done': { req: { jobId: string }; res: void };
+  'signin:skip': { req: { jobId: string }; res: void };
   'memory:list': { req: { filter: MemoryFilter; q?: string }; res: MemoryFactView[] };
   // M6 (08-1 §3.2 memory rows; CR-0010 G-M6-01: main validates and forwards each to the engine as one `memory.cmd`)
   'memory:add': { req: { text: string }; res: MemoryFactView };
@@ -243,6 +250,9 @@ export interface Events {
   // M6 (08-1 §3.3)
   'memory:changed': { factIds: string[]; chip?: MemoryChip };
   'data:exportProgress': { pct: number; phase: string; path?: string; error?: ErrorKind };
+  // M9 (08-1 §3.3): to the `live` window only (08-0 §G.8); frames ≤ 5 fps while watched, always masked.
+  'live:frame': { jobId: string; jpeg: ArrayBuffer; w: number; h: number; masked: true; nowLine: string };
+  'live:state': { jobId: string; state: LiveState };
 }
 
 export type InvokeChannel = keyof Invokes;
@@ -290,6 +300,11 @@ export const INVOKE_CHANNELS = [
   'app:showEmojiPanel',
   'job:stop',
   'job:watch',
+  'job:openWindow',
+  'job:takeOver',
+  'job:handBack',
+  'signin:done',
+  'signin:skip',
   'memory:list',
   'memory:add',
   'memory:edit',
@@ -371,6 +386,8 @@ export const EVENT_CHANNELS = [
   'navigate',
   'memory:changed',
   'data:exportProgress',
+  'live:frame',
+  'live:state',
 ] as const satisfies readonly EventChannel[];
 
 /**
