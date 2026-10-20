@@ -1,0 +1,56 @@
+{
+  "journey": "test/verify/r1-t5-page.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "7a6775c0fa7756b712a0bf2b28572bd0d2578f0e",
+  "dirty": true,
+  "started": "2026-10-20T11:05:24.709Z",
+  "finished": "2026-10-20T11:05:36.828Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "first view: state building, status line \"Building your page…\", frames 0",
+    "ready: state ready, sandbox=\"allow-scripts\", src foo-page://pg_…/",
+    "frame height 259px (cap 600)",
+    "\"Check prices online\" inside the page: \"Could not reach the internet from this page\"",
+    "\"Open the menu\": dialog \"This opens example.com. Open it?\"",
+    "after Cancel, links opened: 0",
+    "\"Save budget\": your bubble \"Save my food budget of Rs 12,000 for November\", foo's turn saw it (1 intake), foo answered \"I will save that budget once you say so.\""
+  ],
+  "shots": [
+    {
+      "file": "after/01-building.light.png",
+      "name": "building",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-page-ready.light.png",
+      "name": "page-ready",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-page-ready.dark.png",
+      "name": "page-ready",
+      "theme": "dark"
+    },
+    {
+      "file": "after/04-open-link.light.png",
+      "name": "open-link",
+      "theme": "light"
+    },
+    {
+      "file": "after/05-after-save.light.png",
+      "name": "after-save",
+      "theme": "light"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    "Connecting to 'https://example.com/prices.txt' violates the following Content Security Policy directive: \"connect-src 'none'\". The action has been blocked.",
+    "Fetch API cannot load https://example.com/prices.txt. Refused to connect because it violates the document's Content Security Policy."
+  ]
+}
