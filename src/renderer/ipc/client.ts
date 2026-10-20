@@ -2,7 +2,16 @@
 // timeout → IpcTimeoutError; `useFooEvent` for events, FE-25), 08-0 §G.10, 08-5 §1 (IpcTimeoutError is renderer-only).
 import { useEffect, useRef } from 'react';
 import type { FooError, Result } from '../../shared/errors';
-import type { EventChannel, EventPayload, FooBridge, InvokeChannel, InvokeIn, InvokeOut } from '../../shared/ipc';
+import type {
+  EventChannel,
+  EventPayload,
+  FooBridge,
+  InvokeChannel,
+  InvokeIn,
+  InvokeOut,
+  RendererEvent,
+  RendererEvents,
+} from '../../shared/ipc';
 
 export const IPC_TIMEOUT_MS = 15_000;
 
@@ -63,6 +72,11 @@ export async function invokeOrThrow<C extends InvokeChannel>(channel: C, payload
   const r = await invoke(channel, payload);
   if (!r.ok) throw new IpcError(channel, r.error);
   return r.value;
+}
+
+/** 08-1 §3.3.1: the one renderer → main event (`face:raster`, sent by the hidden `<FaceRaster>`). */
+export function sendFooEvent<E extends RendererEvent>(event: E, payload: RendererEvents[E]): void {
+  foo().send(event, payload);
 }
 
 /** Subscribes outside React (the store's event wiring). Returns the unsubscribe function. */

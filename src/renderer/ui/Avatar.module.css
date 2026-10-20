@@ -81,6 +81,18 @@
   height: 55%;
 }
 
+/* A living face inside the cluster (§F15.9.3d): still, no ring, scaled to the member slot. */
+.living {
+  background: transparent;
+}
+.living svg {
+  width: 100%;
+  height: 100%;
+}
+.livingRoot {
+  flex: none;
+}
+
 @media (forced-colors: active) {
   .avatar,
   .member {
@@ -91,4 +103,17 @@
   .cluster {
     border: 0;
   }
+}
+
+/* §F15.9.4: the mood overlay sits around a picked face; Offline greys it, Asleep dims it. */
+.moodRoot {
+  position: relative;
+  display: inline-grid;
+  flex: none;
+}
+.moodRoot[data-other-mood='offline'] > .avatar {
+  filter: grayscale(0.6);
+}
+.moodRoot[data-other-mood='asleep'] > .avatar {
+  opacity: 0.55;
 }
