@@ -77,6 +77,7 @@ import { answerIpc, cardReaction } from '../cards/answerIpc';
 import { approvalIpc } from '../approvals/approvalIpc';
 import { draftFromMirror, draftIpc } from '../drafts/draftIpc';
 import { secretIpc } from '../vault/secretIpc';
+import { pageIpc } from '../page/pageIpc'; // R1 T5
 import { ensureFinder, finderChosen, finderWanted } from '../setup/aiFinder';
 import { aiFinderIpc, emitFinderWrite } from '../setup/aiFinderIpc';
 
@@ -782,4 +783,6 @@ export function registerIpc(ctx: AppContext): void {
   handleAll(approvalIpc(ctx));
   handleAll(draftIpc(ctx));
   handleAll(secretIpc(ctx));
+  // R1 T5 (CR-0022, 04 §13.6): the sealed AI page's open and bridge calls.
+  handleAll(pageIpc(ctx));
 }

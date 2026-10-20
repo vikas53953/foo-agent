@@ -26,6 +26,8 @@ import { Stuck } from './Stuck';
 import { TableCard } from './TableCard';
 // M8
 import { ConnectCard } from './Connect';
+// R1
+import { AiPageCard } from '../page/AiPageCard';
 
 type CardComponent = ComponentType<{ card: CardRow; time: CardTime }>;
 
@@ -53,6 +55,8 @@ export const CARD_VIEWS: Partial<Record<CardType, CardComponent>> = {
   connect: ConnectCard,
   // M9 T6: the Sign-in card (05-3 §5.10).
   signin: SignInCard,
+  // R1 T5 (CR-0022): the AI page card (04 §13.6).
+  ai_page: AiPageCard,
 };
 
 /** G-M4-10: the purchase variant of the Spend-cap card is M10's; until then it keeps the placeholder. */
