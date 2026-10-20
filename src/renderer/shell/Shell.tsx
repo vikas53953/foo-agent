@@ -5,8 +5,9 @@
 // Mount points: `main` (the chat: header, find bar, message column, composer) and `right` (the details panel) are passed
 // in by App; the shell gives them their grid cells and the layout through LayoutContext / useLayout().
 // P1 T3 (CR-0021 picks 2, 4, 5; 02 §F7.1 "Pages and panels", "Chat switch", "window restore"): each chat or page change
-// remounts the main cell's view, which slides 18px in (from the right; from the left on back) while a still copy of the
-// old view fades out over it in `--m-normal` (the cross-fade); the first view of a launch does not slide. While a dialog
+// remounts the main cell's view, which slides 18px in (from the right; from the left on back); on a page change a still
+// copy of the old view fades out over it in `--m-normal` (the cross-fade), chat to chat the new view fades in alone
+// (PERF-03); the first view of a launch does not slide. While a dialog
 // is open the shell steps back (Dialog sets `data-dialog-open` on the root); a restored window fades up 4px.
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { motion as motionMs } from '../../shared/tokens';
@@ -65,7 +66,7 @@ export function Shell({ main, right }: ShellProps) {
           {showLeft && <LeftShell />}
           {showMain && (
             <div className={styles.main}>
-              <ViewFrame key={motion.key} dir={motion.dir}>
+              <ViewFrame key={motion.key} viewKey={motion.key} dir={motion.dir}>
                 {view.kind === 'screen' && view.id === 'memory' ? (
                   <MemoryPage key={JSON.stringify(view.params ?? {})} view={view} />
                 ) : page ? (
@@ -90,14 +91,18 @@ export function Shell({ main, right }: ShellProps) {
 /**
  * The main cell's view. When it leaves (its key changed) a still copy of it, stripped of ids, test ids and focus, stays
  * over the cell while it fades out in `--m-normal` and is removed when that fade ends (CR-0021 picks 2 and 4); none at Off, where the swap is instant.
+ * Chat to chat the old view leaves at once and the new one slides and fades in alone: the copy is a second layout of a
+ * whole chat inside the switch, which PERF-03 (< 100 ms, Article 28) cannot carry (CR-0021 close-out).
  */
-function ViewFrame({ dir, children }: { dir: ViewDir; children: ReactNode }) {
+function ViewFrame({ dir, viewKey: own, children }: { dir: ViewDir; viewKey: string; children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     const el = ref.current;
     return () => {
       const parent = el?.parentElement;
       if (!el || !parent || reducedMotionNow()) return;
+      // The store already holds the view this one is replaced by.
+      if (own.startsWith('chat:') && selectView(useStore.getState()).kind === 'chat') return;
       const ghost = el.cloneNode(true) as HTMLDivElement;
       const from = el.querySelectorAll('*');
       const scrolled: (() => void)[] = [];
@@ -124,7 +129,7 @@ function ViewFrame({ dir, children }: { dir: ViewDir; children: ReactNode }) {
       ghost.addEventListener('animationcancel', done);
       setTimeout(done, tokenMs('--m-normal', motionMs.normal) + motionMs.fast);
     };
-  }, []);
+  }, [own]);
   return (
     <div ref={ref} className={styles.view} data-dir={dir}>
       {children}
