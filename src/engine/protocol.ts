@@ -663,6 +663,9 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
   }),
   z.object({ id: z.string(), kind: z.literal('vault.decrypt'), payload: z.object({ blobRef: z.literal('wa-session') }).strict() }),
   z.object({ id: z.string(), kind: z.literal('wa.report'), payload: waReportSchema }),
+  // M9 T4 (gap pick, like wa.report): main owns settings.json (08-0 §A), so the engine reports a web key refused on a call
+  // (CLOUD_AUTH) and main writes `connections.web.refused.{provider} = true` (X-127). The key check on save clears it.
+  z.object({ id: z.string(), kind: z.literal('web.refused'), payload: z.object({ provider: WebProviderSchema }).strict() }),
 ]);
 export type EngineToMain = z.infer<typeof engineToMainSchema>;
 export type DbTxReply = { ids: string[]; revs: number[] };
@@ -684,7 +687,7 @@ export interface MainLink {
       | 'draft.openX',
     payload: unknown,
   ): Promise<Result<T>>;
-  send(kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify' | 'wa.report', payload: unknown): void;
+  send(kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify' | 'wa.report' | 'web.refused', payload: unknown): void;
 }
 
 export interface EngineSettingsView {

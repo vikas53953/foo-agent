@@ -6,6 +6,7 @@
 // the name only); 06-3 §14 C-22 (Remove: the vault entry goes, the card collapses to "Removed"); X-114 (`otp` registry only,
 // 10 min); 04-2 §22.4 + G-M5-21 `secret:offer` (Move to secret box posts the card; the value stays in the renderer's memory).
 // The IPC payloads are never logged (05-2 §5.8.5 rule 1). The router line in src/main/ipc/IpcRouter.ts stays T1's.
+// M9 T4: a web key save sends `webkey.check` and writes `connections.web`; Remove resets it (08-1 §3.2 web_key row, X-127).
 import type { DbOp } from '../../engine/protocol';
 import { newNonce } from '../../shared/canon';
 import { t } from '../../shared/copy/t';
@@ -18,7 +19,10 @@ import { secretPayloadOf } from '../approvals/cardPayloads';
 import { applyDbOps } from '../engine-supervisor/engineHost';
 import { logEvent } from '../log/techLog';
 import type { EngineBridge } from '../engine-supervisor/EngineBridge';
-import type { AppContext, IpcHandlers } from '../ipc/IpcRouter';
+import { emit, type AppContext, type IpcHandlers } from '../ipc/IpcRouter';
+import type { SettingsStore } from '../settings/Settings';
+import { webAfterKeyRemoved, webAfterKeySaved, webProviderOfTarget, writeWeb } from '../settings/webKeySettings';
+import { publicSettings } from '../store/queries';
 import type { Db } from '../store/db';
 import { secretActivityLine, type SecretEvent } from './labels';
 import type { RegisterFn, SecretVault } from './SecretVault';
@@ -31,12 +35,15 @@ export interface SecretIpcDeps {
   db: Db;
   vault: SecretVault;
   register: RegisterFn;
-  engine: Pick<EngineBridge, 'live' | 'send'> | undefined;
+  engine: (Pick<EngineBridge, 'live' | 'send'> & Partial<Pick<EngineBridge, 'request'>>) | undefined;
   now(): number;
   dataDir?: string;
   emitCard(row: CardRow): void;
   emitMessage(messageId: string): void;
   emitChat(chatId: string): void;
+  /** M9 T4: `connections.web` after a web key is saved or removed; `emitSettings` tells the renderer. */
+  settings?: Pick<SettingsStore, 'get' | 'update'>;
+  emitSettings?(): void;
 }
 
 export type SecretChannels = 'secret:save' | 'secret:list' | 'secret:delete' | 'code:submit' | 'secret:offer';
@@ -122,6 +129,20 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
     }
   };
 
+  const writeWebSettings = (fn: Parameters<typeof writeWeb>[1]) => {
+    if (d.settings && writeWeb(d.settings, fn)) d.emitSettings?.();
+  };
+  /** 08-1 §3.2 web_key row: one `webkey.check` in the engine (08-4 §27.3 item 1), then `connections.web` from its answer. */
+  const webKeySaved = async (name: string): Promise<void> => {
+    const p = webProviderOfTarget(`foo/web_key/${name}`);
+    if (!p) return;
+    const r =
+      d.engine?.live && d.engine.request
+        ? await d.engine.request<{ result: 'ok' | 'refused' | 'unknown' }>('webkey.check', { provider: p })
+        : null;
+    writeWebSettings((w) => webAfterKeySaved(w, p, r?.ok ? r.value.result : 'unknown'));
+  };
+
   return {
     'secret:save': ({ requestId, kind, name, fields }) => {
       const box = requestId ? getCard(d.db, requestId) : null;
@@ -144,7 +165,8 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
       }
       const r = tx(ops);
       if (r.result.ok) emitCards(r.effects.cardIds);
-      return ok({ target, savedAt, label });
+      const done = ok({ target, savedAt, label });
+      return kind === 'web_key' ? webKeySaved(name).then(() => done) : done;
     },
 
     'secret:list': () => ok(d.vault.list()),
@@ -153,6 +175,8 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
       const del = d.vault.delete(target);
       if (!del.ok) return del;
       if (!del.value.removed) return ok(undefined);
+      const web = webProviderOfTarget(target);
+      if (web) writeWebSettings((w) => webAfterKeyRemoved(w, web));
       // Every saved Secret box that wrote this target collapses to "Removed" (06-3 §14 C-22).
       const boxes = (
         d.db
@@ -252,7 +276,16 @@ const notReady = () => fail<never>('VAULT_WRITE_FAILED', 'keyring_unavailable' s
 export function secretIpc(ctx: AppContext): IpcHandlers<SecretChannels> {
   const rows = (): IpcHandlers<SecretChannels> | null => {
     const rt = vaultRuntime();
-    return rt ? secretHandlers({ ...rt, db: ctx.db, engine: ctx.engine, dataDir: ctx.dataDir }) : null;
+    return rt
+      ? secretHandlers({
+          ...rt,
+          db: ctx.db,
+          engine: ctx.engine,
+          dataDir: ctx.dataDir,
+          settings: ctx.settings,
+          emitSettings: () => emit('settings:changed', publicSettings(ctx.settings.get())),
+        })
+      : null;
   };
   return {
     'secret:save': (req) => rows()?.['secret:save'](req) ?? notReady(),

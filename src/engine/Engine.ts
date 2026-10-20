@@ -39,6 +39,7 @@ import { filterSay } from './prompt/filters';
 import { PromptBuilder, type ConversationMessage } from './prompt/PromptBuilder';
 import { ReleaseGate } from './prompt/releaseGate';
 import { Redactor } from './redact/Redactor';
+import { createEngineWeb, vaultWebKeys, webToolDefs, type EngineWeb } from './tools/web';
 import { findBanned } from './prompt/filters';
 import { capRateOf, resolveModel } from './ai/models';
 import { createGate } from './gate/GateLogic';
@@ -86,6 +87,7 @@ export class Engine {
   readonly ai: AiService;
   readonly lane: ChatLane;
   readonly redactor: Redactor;
+  readonly web: EngineWeb;
   readonly tools: ToolLayer;
   readonly jobs: JobRunner;
   readonly recovery: JobRecovery;
@@ -126,6 +128,26 @@ export class Engine {
       promptsDir: join(o.resourcesDir, 'prompts'),
     });
     const pricing = loadPricing(JSON.parse(readFileSync(join(o.resourcesDir, 'pricing.json'), 'utf8')));
+    // M9 T4: web tools (08-2 §8.2); each cloud call writes its ai_turns row (08-4 §27.3 item 5).
+    this.web = createEngineWeb({
+      ...o,
+      fetch: o.fetch ?? fetch,
+      settings: () => this.settings,
+      online: () => this.online,
+      scrub: (t) => this.redactor.scrub(t),
+      pricing,
+      recordTurn: (row) => void o.link.request('db.tx', { ops: [{ op: 'insert', table: 'ai_turns', row: { ...row } }] }),
+      newId: () => newId('t', o.clock.now()),
+      log: (kind) => log('web', kind),
+      // M5's vault answers the engine only (08-2 §11.3); main registers the value before it is sent.
+      keys: vaultWebKeys(async (req) => {
+        const r = await o.link.request<string>('vault.use', req).catch(() => null);
+        return r?.ok && typeof r.value === 'string' && r.value ? r.value : null;
+      }),
+      // X-127: main writes `connections.web.refused.{p}`. The brief line for a used-up key waits for the brief (M7): logged.
+      onRefused: (provider) => o.link.send('web.refused', { provider }),
+      onQuota: (p) => log('web.quota', p),
+    });
     const fake = o.testRun && Boolean(o.env.FOO_FAKE_AI);
     // CR-0020: keys come from main's vault; a FOO_TEST run may stand in a fake home for the J2 ladder (ai/vaultKeys.ts).
     const testHome = o.testRun ? o.env.FOO_TEST_AI_HOME : undefined;
@@ -197,6 +219,7 @@ export class Engine {
       // M6 T5: the memory step tools (08-2 §8.2) beside the injected ones (M8 connectors, M9 browser, fakes in tests).
       // M8 T7: whatsapp.draft and the X hand-back tools; the WhatsApp check is read through `this.whatsapp` when called.
       tools: {
+        ...webToolDefs(this.web),
         ...this.memoryToolRegistry(newId),
         ...this.draftToolRegistry(),
         ...(o.tools ?? {}),
@@ -688,6 +711,8 @@ export class Engine {
         if (msg.payload.cmd === 'choose' && id) return this.ai.choose(id, (msg.payload.backup as ProviderId | null | undefined) ?? null);
         return { ok: false, error: { kind: 'AI_CLI_INCOMPATIBLE' } };
       }
+      case 'webkey.check':
+        return ok({ result: await this.web.checkKey(msg.payload.provider) });
       case 'test.reset':
         this.lane.cancelAll();
         this.memoryReview.cancelAll();
