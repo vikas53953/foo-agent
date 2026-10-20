@@ -1,0 +1,82 @@
+{
+  "id": "BP-ANAT-ROW",
+  "theme": "light",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0002",
+    "checks": [
+      "r2"
+    ]
+  },
+  "r1": {
+    "verdict": "pass",
+    "frame": {
+      "missing": [],
+      "extra": []
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-ANAT-ROW",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 323,
+          "height": 72
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 308,
+          "height": 72
+        },
+        "dPos": 0,
+        "dSize": 15,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-ANAT-ROW",
+        "ref": "#FFFFFF",
+        "app": "#FFFFFF",
+        "deltaE": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.03648088023088023,
+    "diffPixels": 809,
+    "total": 22176,
+    "sizeMismatch": {
+      "a": [
+        323,
+        72
+      ],
+      "b": [
+        308,
+        72
+      ]
+    },
+    "heatmap": "BP-ANAT-ROW.light.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-ANAT-ROW.light.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-ANAT-ROW.light.png"
+}
