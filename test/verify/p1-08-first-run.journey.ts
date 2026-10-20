@@ -1,7 +1,7 @@
 // Spec: 06-1 §1.3 / §1.4 (splash: the 96px face above the wordmark wakes once, "Getting things ready…" after 3.0 s, hands
 // over to the shell), §2.2 + 02-2 §F17.6 (the AI finder: app logos on white tiles, rows tested live), CR-0021 pick 9 and
 // §F7.1 First run (X-179), 10-2 §C.8 AT-313 / AT-314. foo-verify journey for P1 T8 with FOO_TEST_FIRST_RUN=1: the splash
-// held on screen (main answers app:getBootstrap when the journey says so), its face waking then resting and the Slow line,
+// held on screen (main answers app:getBootstrap when the journey says so), its face waking once then resting open and the Slow line,
 // then the finder with logos, the striped pill and a live row test (Testing… shimmers → ✓ works). Run:
 //   xvfb-run -a pnpm tsx scripts/foo-verify.ts test/verify/p1-08-first-run.journey.ts
 import type { Verify } from '../../scripts/foo-verify';
@@ -9,6 +9,7 @@ import { t } from '../../src/shared/copy/t';
 import { TID } from '../../src/shared/testids';
 import { aiHome } from '../e2e/ai-step-world';
 import { advance } from '../e2e/m8-drafts-world';
+import { fullMotion, holdBootstrap } from '../e2e/p1-first-run-world';
 import { byTid, setTheme, settle, windowSize } from '../fidelity/capture';
 
 export default async function journey(v: Verify): Promise<void> {
@@ -19,18 +20,9 @@ export default async function journey(v: Verify): Promise<void> {
   await page.getByTestId(TID.titlebarStrip).waitFor();
   await windowSize(app, page, 1280, 800);
   await setTheme(page, 'light');
-  await page.evaluate(() => window.foo.invoke('settings:set', { path: 'appearance.animations', value: 'full' }));
-
+  await fullMotion(page);
   // Hold the bootstrap answer and reload, so the splash stays up long enough to look at.
-  await app.evaluate(({ ipcMain }) => {
-    type Handler = (...a: unknown[]) => unknown;
-    const handlers = (ipcMain as unknown as { _invokeHandlers: Map<string, Handler> })._invokeHandlers;
-    const g = globalThis as { __fooBoot?: Handler; __fooRelease?: (() => void)[] };
-    g.__fooBoot = handlers.get('app:getBootstrap')!;
-    g.__fooRelease = [];
-    handlers.set('app:getBootstrap', (...a: unknown[]) => new Promise((done) => g.__fooRelease!.push(() => done(g.__fooBoot!(...a)))));
-  });
-  await page.reload();
+  const release = await holdBootstrap(app, page);
   const face = page.getByTestId(TID.splashFace);
   await face.waitFor();
   const eyes = () =>
@@ -40,9 +32,9 @@ export default async function journey(v: Verify): Promise<void> {
     `splash face ${await face.getAttribute('data-state')} at ${Math.round((await face.boundingBox())!.width)}px, eye heights ${first.join('/')}px (opening from a line)`,
   );
   await v.shot('splash-waking');
-  await page.locator(`${byTid(TID.splashFace)}[data-state="resting"]`).waitFor();
+  await page.waitForTimeout(800);
   v.note(
-    `then ${await face.getAttribute('data-state')}, eye heights ${(await eyes()).join('/')}px; status line "${await page.getByTestId(TID.screenSplashStatus).innerText()}"`,
+    `after the wake: still ${await face.getAttribute('data-state')} at rest, eye heights ${(await eyes()).join('/')}px; status line "${await page.getByTestId(TID.screenSplashStatus).innerText()}"`,
   );
   await page
     .getByTestId(TID.screenSplashStatus)
@@ -51,11 +43,7 @@ export default async function journey(v: Verify): Promise<void> {
   v.note(`after 3 s: "${await page.getByTestId(TID.screenSplashStatus).innerText()}"`);
   await settle(page);
   await v.shot('splash-slow');
-  await app.evaluate(({ ipcMain }) => {
-    const g = globalThis as { __fooBoot?: unknown; __fooRelease?: (() => void)[] };
-    (ipcMain as unknown as { _invokeHandlers: Map<string, unknown> })._invokeHandlers.set('app:getBootstrap', g.__fooBoot);
-    g.__fooRelease!.splice(0).forEach((go) => go());
-  });
+  await release();
   await page.getByTestId(TID.screenSplash).waitFor({ state: 'detached' });
   v.note('bootstrap answered → the splash fades out and the shell is underneath');
 

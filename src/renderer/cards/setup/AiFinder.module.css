@@ -51,7 +51,8 @@
   border-radius: var(--r-sm);
   background: var(--logo-bg);
 }
-/* "Your own key" has no maker: the key icon on the theme's sunken tile, so it reads in both themes. */
+/* "Your own key" has no maker, so no brand logo to keep correct on white (§F17.6's reason for `--logo-bg`): the key icon
+ * sits on the theme's sunken tile so it reads in both themes. */
 .logo[data-logo='key'] {
   background: var(--bg-sunken);
   color: var(--fg-2);
@@ -117,10 +118,10 @@
     background-position: 0 0;
   }
 }
-.status[data-state='works'] .worksIcon {
+.status[data-landed] .worksIcon {
   animation: works-in var(--m-spring) var(--ease-spring) both;
 }
-.status[data-state='works'] .statusText {
+.status[data-landed] .statusText {
   animation: works-fade var(--m-normal) var(--ease-out) both;
 }
 @keyframes works-in {

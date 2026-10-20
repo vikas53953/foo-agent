@@ -657,6 +657,13 @@ function FinderRowView({
   const action = needsHelper ? null : rowAction(row);
   const tone = rowTone(row);
   const spinning = row.state === 'looking' || row.state === 'testing';
+  // "✓ works" lands only on a live test passing (Testing → works), not when a row mounts already working.
+  const [prev, setPrev] = useState(row.state);
+  const [landed, setLanded] = useState(false);
+  if (row.state !== prev) {
+    setPrev(row.state);
+    setLanded(prev === 'testing' && row.state === 'works');
+  }
   const state = needsHelper ? 'needs_helper' : row.id === 'own-key' ? 'not_found' : row.state;
   return (
     <div
@@ -674,8 +681,7 @@ function FinderRowView({
         <span className={styles.name}>{name}</span>
         {detail && <span className={styles.detail}>{detail}</span>}
       </span>
-      {/* keyed by state so a new state (✓ works after Testing…) plays its entrance once */}
-      <span key={row.state} className={styles.status} data-tone={tone} data-state={row.state}>
+      <span className={styles.status} data-tone={tone} data-state={row.state} data-landed={landed || undefined}>
         {spinning && <Spinner size={16} />}
         {row.state === 'works' && <Icon name="CheckmarkCircle" size={16} className={styles.worksIcon} />}
         {status && (

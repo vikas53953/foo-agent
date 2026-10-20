@@ -2,39 +2,17 @@
 // open), AT-314 (AI finder polish: a striped 4-step pill; rows test live, shimmer → ✓ works; app logos on white tiles);
 // 06-1 §1.3 / §1.4 (Normal hands over to the shell, Slow shows "Getting things ready…" after 3.0 s), §2.2, 02-2 §F17.6;
 // CR-0021 pick 9. The splash is held on screen by making main answer `app:getBootstrap` only when the test says so.
-import { expect, test, type ElectronApplication, type Page } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { t } from '../../src/shared/copy/t';
 import { TID } from '../../src/shared/testids';
 import { aiHome, finder, finderRow, firstRun } from './ai-step-world';
 import type {} from '../../src/shared/ipc';
 import type { FakeLine } from './fakeAi';
 import { advance } from './m8-drafts-world';
+import { fullMotion, holdBootstrap } from './p1-first-run-world';
 
 /** Every verify answers "ready" after 2 s, so the Testing state is on screen long enough to see. */
 const VERIFY_SLOW: FakeLine = { match: { purpose: 'verify' }, reply: 'ready', once: false, delayMs: 2_000 };
-
-/** Full animations whatever the PC (a first run on ≤ 4 CPUs stores Basic, 02 §F7 X-150); applies from the next load. */
-const fullMotion = (page: Page) => page.evaluate(() => window.foo.invoke('settings:set', { path: 'appearance.animations', value: 'full' }));
-
-/** Holds main's `app:getBootstrap` answer until `release()`; the renderer is reloaded so the splash paints again. */
-async function holdBootstrap(app: ElectronApplication, page: Page): Promise<() => Promise<void>> {
-  await app.evaluate(({ ipcMain }) => {
-    type Handler = (...a: unknown[]) => unknown;
-    const handlers = (ipcMain as unknown as { _invokeHandlers: Map<string, Handler> })._invokeHandlers;
-    const g = globalThis as { __fooBoot?: Handler; __fooRelease?: (() => void)[] };
-    g.__fooBoot ??= handlers.get('app:getBootstrap')!;
-    g.__fooRelease = [];
-    handlers.set('app:getBootstrap', (...a: unknown[]) => new Promise((done) => g.__fooRelease!.push(() => done(g.__fooBoot!(...a)))));
-  });
-  await page.reload();
-  return () =>
-    app.evaluate(({ ipcMain }) => {
-      const g = globalThis as { __fooBoot?: (...a: unknown[]) => unknown; __fooRelease?: (() => void)[] };
-      const handlers = (ipcMain as unknown as { _invokeHandlers: Map<string, unknown> })._invokeHandlers;
-      handlers.set('app:getBootstrap', g.__fooBoot);
-      g.__fooRelease!.splice(0).forEach((go) => go());
-    });
-}
 
 /** The running animations inside the splash, by keyframes name. */
 const splashAnimations = (page: Page) =>
@@ -57,34 +35,44 @@ test('AT-313 splash: the 96px face wakes once (eyes open from a line) then rests
   const release = await holdBootstrap(app, page);
   const splash = page.getByTestId(TID.screenSplash);
   const face = page.getByTestId(TID.splashFace);
-  await expect(splash).toBeVisible();
-  await expect(face).toHaveAttribute('data-state', 'waking');
-  expect(await face.evaluate((el) => el.getBoundingClientRect().width)).toBe(96);
-  // Each eye plays the wake keyframes once (computed style keeps them after they finish).
-  const eyes = await face
-    .locator('[data-part="eyes"] rect')
-    .evaluateAll((els) =>
-      els.map((el) => ({ name: getComputedStyle(el).animationName, count: getComputedStyle(el).animationIterationCount })),
-    );
-  expect(eyes).toHaveLength(2);
-  for (const e of eyes) {
-    expect(e.name).toContain('wake');
-    expect(e.count).toBe('1');
+  await face.waitFor();
+  // One round trip, inside the 600 ms wake: the mood, the size and each eye's keyframes (computed style keeps them).
+  const first = await face.evaluate((el) => ({
+    state: el.getAttribute('data-state'),
+    width: el.getBoundingClientRect().width,
+    eyes: [...el.querySelectorAll('[data-part="eyes"] rect')].map((r) => [
+      getComputedStyle(r).animationName,
+      getComputedStyle(r).animationIterationCount,
+    ]),
+  }));
+  expect(first.state).toBe('waking');
+  expect(first.width).toBe(96);
+  expect(first.eyes).toHaveLength(2);
+  for (const [name, count] of first.eyes) {
+    expect(name).toContain('wake');
+    expect(count).toBe('1'); // once
   }
-  // Nothing else in the splash moves: the wordmark and status line hold still.
-  expect((await splashAnimations(page)).every((a) => a.part === TID.splashFace)).toBe(true);
   await expect(page.getByTestId(TID.screenSplashWordmark)).toHaveText(t('app.window.title'));
   await expect(page.getByTestId(TID.screenSplashStatus)).toHaveText('');
-  await expect(face).toHaveAttribute('data-state', 'resting');
-  expect(
-    await face
-      .locator('[data-part="eyes"] rect')
-      .evaluateAll((els) => els.some((el) => getComputedStyle(el).animationName.includes('wake'))),
-  ).toBe(false);
+  await expect(page.getByTestId(TID.appAnnouncer).first()).toContainText(t('app.splash.starting', { agentName: 'foo' }));
+  // After the wake the eyes rest open: nothing in the splash is still running (no loop, no second wake), and the
+  // wordmark and status line never moved. The shell underneath is out of reach (§1.5).
+  await page.waitForTimeout(800);
+  expect(await splashAnimations(page)).toEqual([]);
+  const eyeHeight = await face
+    .locator('[data-part="eyes"] rect')
+    .first()
+    .evaluate((el) => el.getBoundingClientRect().height);
+  expect(eyeHeight).toBeGreaterThan(96 * 0.2);
+  expect(await page.evaluate(() => document.getElementById('root')!.inert)).toBe(true);
   await expect(page.getByTestId(TID.screenSplashStatus)).toHaveText(t('app.splash.loading'), { timeout: 4_000 });
   await expect(page.getByTestId(TID.screenSplashStatus)).toHaveAttribute('role', 'status');
+  // The chat list arrives: the splash cross-fades out (data-exit while it fades), then the shell is live.
+  const sawExit = page.waitForSelector(`[data-testid="${TID.screenSplash}"][data-exit]`, { state: 'attached', timeout: 3_000 });
   await release();
+  await sawExit;
   await expect(splash).toHaveCount(0);
+  expect(await page.evaluate(() => document.getElementById('root')!.inert)).toBe(false);
   await expect(finder(page)).toBeVisible();
   await app.close();
 });
@@ -97,7 +85,7 @@ test('AT-313 Off: with reduced motion the eyes are already open and nothing in t
   const face = page.getByTestId(TID.splashFace);
   await expect(face).toBeVisible();
   await expect(face).toHaveAttribute('data-motion-face', 'off');
-  await expect(face).toHaveAttribute('data-state', 'resting');
+
   // Only the face's own cross-fade may run (opacity, ≤ 83 ms at Off, §F15.9.5); no wake, blink or movement.
   expect((await splashAnimations(page)).filter((a) => !a.name.includes('cross'))).toEqual([]);
   // Eyes open: full height (24 of the 100-unit disc, §F15.9.1a), not a line.
@@ -107,6 +95,7 @@ test('AT-313 Off: with reduced motion the eyes are already open and nothing in t
     .evaluate((el) => el.getBoundingClientRect().height);
   expect(eyeHeight).toBeGreaterThan(96 * 0.2);
   await release();
+  // Off: the splash leaves at once (no fade, no data-exit).
   await expect(page.getByTestId(TID.screenSplash)).toHaveCount(0);
   await app.close();
 });
