@@ -979,3 +979,215 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
 - Moved on (CR-0010 §(f)): to M7, the budget's `urgent` exemption, the `notifications` row, and re-asking a held conflict
   (G-M6-24). To M8, "Show where I learned it" for Gmail and WhatsApp (G-M6-25). To the spec-keeper, G-M6-16 (X-06 vs §24.16
   item 4) and G-M6-17 (no classify prompt).
+
+## M8 · connector contracts (ticket T1, CR-0012)
+
+- M8 is built in tickets (`/mnt/project-files/foo/prep/M8-tickets.md`) on `claude/foo-m8-b39npx`, based on the M4 branch ahead of
+  the plan's lane order (Vikas 2026-10-18 18:03Z: run independent work in parallel). Tickets that need M5 wait for M5 on main.
+- Packages pinned exactly: `@whiskeysockets/baileys` 7.0.0-rc14 (npm `latest`; 6.7.x is `legacy`), `qrcode` 1.5.4, `twitter-text`
+  3.1.0, `@types/qrcode` 1.5.6, `@types/twitter-text` 3.1.10 (G-M8-02). pnpm skipped their build scripts (none needed: Baileys runs
+  in the bridge as plain JS).
+- Settings: `connections.google` / `connections.whatsapp` added with 08-0 §A.1 defaults; `connections.web` is M9's and
+  `permissions.*` is M5's.
+- `src/engine/tools/connectors/types.ts` holds the seams the parallel tickets share (`HttpFetch`, `GoogleAccess`,
+  `ConnTokenStore`). Until M5's SecretVault lands, the Google refresh token is held in memory only (never on disk); T6 swaps in the
+  vault (`foo/conn_token/google`).
+- `oauthLoopback.ts` lives in `src/main/windows/` per the plan; 08-0 §E names no file for it.
+
+## M8 · WhatsApp link, QR and group mirrors (ticket T3, CR-0012)
+
+- Hosts (G-M8-01/06): on the pinned Baileys 7.0.0-rc14 the bridge opens one host, `wss://web.whatsapp.com/ws/chat`.
+  `fetchLatestBaileysVersion` fetches from GitHub, a non-WhatsApp host, so it is dropped: the bridge uses the version Baileys ships.
+  No media is requested (§16.4.1); there is no send path until T7.
+- `wa.report` (engine → main) is a gap pick: main alone writes the `connections` and `chats` rows (08-1 §4.6 rule 1), so the
+  engine reports link status, linked account, groups and unlinked to main, which writes them. The lead logs it at merge.
+- The link's placeholder row (`account_hash 'pending'` while connecting) becomes the linked row in place (same id, rev up), so the
+  renderer's `connection:upsert` replaces it; the renderer reads the newest whatsapp row by `connectedAt` (an Unlink leaves a
+  `disconnected` row in the window's store).
+- The QR panel's phase comes from the whatsapp row and the newest `whatsapp:qr`, never the renderer's clock: the engine's 60 s
+  timer and failed-link count report `disconnected` (third time with `WA_LINK_FAILED`) → "This code expired." / failed.
+- `dialog-link-whatsapp` has no button row (06-2 §6.8 names none): the panel's New code / Skip for now and ✕ are its actions;
+  closing it before a scan sends `whatsapp:linkCancel`; it closes itself 2 s after linked.
+- C-8 is reached from the mirror's header menu "Hide from foo" (04 §10.11 menu); the group profile variant (06-1 §4) is not built
+  yet. Hidden groups are listed in "Groups I read" while the window knows them (`connections.hiddenMirrors`, filled by every
+  `chat:archive` reply): no read lists archived chats, so after a restart a group hidden earlier is not listed until a CR adds one.
+- A WhatsApp `error` row (the bridge gave up after 4 failures) reads like "WhatsApp unlinked foo." with Link again; the
+  `WA_UNLINKED` error card (08-3 §21.2) is not built here (the row status only).
+- The Connect card `whatsapp` variant (`cards/connect/WhatsAppConnect.tsx`) is drawn by T2's `Connect.tsx`; "Not now" lives
+  in the window like T2's. T2's `ConnectionsPage` draws the WhatsApp rows between Contacts and X (06-2 §6.8 order).
+- The WhatsApp session is held in memory (`src/main/vault/waSessionMemory.ts`) until the M5 vault swap to
+  `{DATA}\vault\wa-session.bin` (engine `vault.encrypt` / `vault.decrypt` already go through main).
+- The fake phone's groups are the ux-world's two mirrors (same jids and titles), so a seeded world and a link agree.
+
+## M8 · Gmail, Calendar and Contacts reading (ticket T4)
+
+- Files: `src/engine/tools/connectors/{limiter,gmail,gcal,contacts}.ts`, `src/engine/connectors/hooks.ts`, plus
+  `src/engine/tools/connectors/google-tools.ts` (assembles the five tools, the poller and the contacts sync once; not named in
+  the ticket's Owns, kept inside T4's folder). Shared appends under `// M8`: `ErrorKind` CONN_EXPIRED / CONN_REVOKED /
+  CONN_RATE_LIMITED / CONN_SCOPE_MISSING; DbOp `contacts_replace` + named query `contacts.search` (protocol.ts, engineHost.ts,
+  queries.ts); `EngineOptions.google` + `engine.google` (Engine.ts).
+- Tool names follow 08-2 §8.2, not the ticket text: `gcal.create` (the ticket said `gcal.add`); `gmail.read` takes `messageId`.
+- `gcal.create` is class `calendar_write`, which M4's stub gate refuses: adding an event through a job works once M5's gate
+  lands; the module and its tests are done.
+- T4-01 · `gmail.search` with no `max` asks for 50 (the spec cap); spec gives no default.
+- T4-02 · Calendar default window ends at tomorrow 23:59:59.999 local ("tomorrow 23:59", the whole last minute kept).
+- T4-03 · `contacts.search` always looks for at least two matches, so a `max: 1` call can never read two "Priya" as one.
+  A name found only in sent mail counts as known (one hit built from the To address); none anywhere → `someoneNew: true`.
+  The Choice card "Which {Priya}?" is the caller's (M5 / T6); the tool returns masked `choices` labels for it.
+- T4-04 · Logs from the connectors carry kinds, status codes and counts only (never a name, address or number).
+- T4-05 · FOO_TEST runs may set `FOO_FAKE_GOOGLE={url}`: every Google host becomes that fake and the token a fixed fake
+  (used by `test/verify/m8-t4-reading.journey.ts`). Production always uses the real hosts with T2's `GoogleAccess`.
+- Carry (T2 / close-out): `engine.google.poller` (`baseline` on connect, `start({atLogin})`, `resume` on powerMonitor) and
+  `engine.google.contactsSync` (`start` on connect, `stop` + delete rows on contactsOn=false) need the connection rows and
+  `history_id` store, which are T2's; `EngineOptions.google` takes `contactsConnectionId`, `contactsOn`, `historyStore`,
+  `online`. `whatsappKnows` is T3's wa_contacts lookup. GoogleAccess should reject with an error carrying
+  `kind: 'CONN_EXPIRED' | 'CONN_REVOKED'`. The catalogue still lists the Google tools when Calendar/Contacts are turned off;
+  hiding tools of apps that are off is the runner's catalogue filter (08-4 §27.1).
+- Seen while testing: the step prompt's redaction runs over the whole observation JSON, so P15 can join a subject "Login
+  code" with the next field's date digits and hide them ("[hidden]-10-16…"). Over-hiding, never a leak; M3/M4 Redactor.
+
+## M8 · Google sign-in, Connect card, Connections page (ticket T2, CR-0012)
+
+- (a) Sign-in, the loopback, token exchange and the `connections` rows live in MAIN (`src/main/connections/`); 08-1 §2.4 says the
+  engine never writes `connections`. Main sends the lead's one `connection.cmd` per call; `src/engine/tools/connectors/google.ts`
+  is pure logic (PKCE, scopes, granted map, revoke) both sides share.
+- (b) Gap channel `connection:googleInfo` (not in 08-1 §3.2): whether this build has the Google client file (08-3 §16.1.1 "Gmail
+  isn't available in this build.") and the routines C-10 names (06-3 §14).
+- (c) One account mask everywhere, the 08-2 §11.4 form `v***@example.com` (shared `maskEmail` in `src/shared/redactor.ts`), on the
+  card's "✓ Connected as" line and in Settings.
+- (d) The client-file loader accepts three shapes: the spec's `{clientId, clientSecret}`, Google's Desktop-app download
+  `{installed:{client_id, client_secret}}`, and the flat `{client_id, client_secret}` of the repo's example file.
+- (e) `cards.connect.line.no_refresh` is not used: no-refresh and browser-denied both end as OAUTH_DENIED (08-3 §21.3), so the
+  card shows the denied line for both (gap). (b) and (e) need a CR-0012 gap row before close-out (the lead owns the CR).
+- (f) The Connect card frame has a definite width (`.frame`, `var(--card-w)`): `.card` is `container-type: inline-size`, so in
+  the thread's shrink-to-fit hold it collapses to its padding. Other cards in that hold likely need the same (lead told).
+- (g) The Connections body renders inside the CR-0020 Settings frame (06-2 §6.0); the frame draws the title, so the page's own
+  title line and its key are gone.
+- Google's revoke ends the whole user + client grant, so a new sign-in revokes the old refresh token only when a different
+  account signed in; the same account's incremental consent just replaces it.
+- `app:openExternal` is not declared here (main already has it; M9 T1 owns its other targets): the sign-in URL opens through
+  `shell.openExternal` in main.
+- Deferred: the unfocused-finish toast (M11); AT-093's "no Gmail requests" half is fully exercised once T4's tools exist; the C-10
+  routine list is a heuristic until M11 routines; "Not now" is kept in the window only (M5's `card:answer` answers Choice and
+  tiles cards, not Connect); official Google logos are not bundled (a Fluent icon stands in). BP-CARD-11's Blueprint mini has a
+  shorter line and no icon; the app follows the 05-3 §5.11 words, so Tier R R1 may report word differences.
+
+## M8 · connection trouble, poller and Contacts sync start / stop (ticket T5)
+
+- T5-01 (gap, 08-1 §2.4 has no row): main keeps the Google refresh token and the rows (T2), so the engine's Gmail, Calendar and
+  People calls ask main for a live access token with `connection.google { op }` (`token`, `refresh`, `scopeMissing`, `lost`,
+  `history`, `saveHistory`, `state`), and main pushes `connection.state { status, contactsConnectionId }` whenever the gmail row's
+  status or the Contacts permission changes. The refresh token never leaves main; the engine never writes `connections`
+  (`history_id` is written by main). Production now builds the Google tools on this path; FOO_TEST runs still need a fake
+  (`FOO_FAKE_GOOGLE`; with `FOO_TEST_GOOGLE_BASE` too they go through main like production).
+- T5-02: jobs waiting on a lost connection keep `waiting_reason` NULL (08-0 §B.2 `WaitingReason` has no connection member and
+  the DDL CHECK allows NULL); they are found by their open `CONN_EXPIRED` / `CONN_REVOKED` error card and resume in the runner's
+  schedule pass after recovery's, inside the 3 WORKING slots, when main says Google is connected again.
+- T5-03: `CONN_RATE_LIMITED` keeps the job WORKING (08-3 §21.2 "the tool call fails"): one card, the loop pauses, the step runs
+  once more after 60 s (or at once on [ Try again ]), the card is edited to "Back on it"; a second limit on the same step counts
+  toward STUCK and posts no second card. A 401 right after a successful refresh is now `CONN_REVOKED` (limiter; §21.2 row).
+- T5-04: `CONN_SCOPE_MISSING` in a job posts the line `errors.conn_scope_missing.line` once per job and app, with `{calendar}` =
+  Gmail / calendar / contacts; the job goes on (the AI sees the tool error). The [ Open Connections ] button waits for the
+  message-button contract (CR-0009 G-M5-32d), so `errors.conn_scope_missing.button` is in `scripts/copy-pending.json`; Settings
+  → Connections already shows "Not allowed yet" + Allow.
+- T5-05: line 2 of both connection cards is "Bills and drafts are on hold." for every app (05-3 §5.20.2 and AT-220 give only this
+  value for `{Bills and drafts}`). Icons (G-M8-10): 🔌 → `PlugConnected` with the `--warn` edge (jobs are paused, not failed),
+  ⏳ → `Clock`. [ Reconnect ] on the card calls `connection:connect { app: 'google' }` (T2 makes it select_account + login_hint).
+- 08-4 §27.1: the step catalogue lists Google tools only while a Google connection exists (connected or needing sign-in) when the
+  tools go through main; other tools and T4's fixed-token FOO_TEST path are unchanged.
+- Not done here: the "with no job, Google" card (a routine or the poller losing the token) belongs to the routines that M7 wires
+  to the poller; T2's `CONN_REVOKED` test on the refresh reply (`/revoked/` in `error_description`) is kept as T2 left it.
+
+## M8 · Email drafts and sending (ticket T6, CR-0012)
+
+- (a) The real `GmailDrafts` port is in MAIN (`src/main/drafts/gmailDraftsGoogle.ts`, over T2's `GoogleAccess` and T4's
+  `googleCall`); `draftIpc.ts` installs it while the gmail row is connected. FOO_TEST runs with `FOO_FAKE_GOOGLE` use it against
+  the fake Google; without it, M5's memory fake. One fake Gmail: `test/fakes/connectors/gmail.ts` adds the drafts API to T4's
+  router (Sent folder filled on send).
+- (b) Engine `gmail.draft` (`src/engine/tools/connectors/gmailDraftTool.ts`) resolves the person with T4's `findPerson` and asks
+  main with a new engine → main request `draft.create` (protocol + EngineBridge; main answers on the port when Gmail has
+  answered). One person per draft (the card has one To line). Two or more matches → Choice "Which {name}?" (purpose `job`,
+  masked labels); the answer comes back to the AI as its label ("Decisions:" line) and the next call naming it is resolved from
+  the job's remembered picks. A bare name with no match is NOT_FOUND (the AI asks for an address); an address with no match is
+  someone new.
+- (c) Someone new and a switch of channel (Art. 9: an email inside a job whose book, buy or pay approval was approved but did not
+  complete, APPROVED/RUNNING/CHECKING/FAILED; CR-0012 G-M8-14) are hard-limit drafts: Send opens the full Approval card
+  (`send` with `cards.approval.send_email.*`, or the Switch how row, verb `switch`, with `cards.approval.switch_how.*` and
+  `switched_route` logged when it runs); the draft shows "Waiting for your OK below ›"; the full card's tap
+  approves the draft's row and sends with no 5 s undo; the full card follows the outcome (COMPLETED with the same proof /
+  FAILED). The two are linked by the Draft payload's `approvalCardId` (a bare id: card payloads are redacted leaf by leaf and
+  only a whole foo id passes; `draft:{id}` in `submitRef` was sometimes hidden).
+- (d) The pronoun in "You haven't emailed {them} before" is "them" (`cards.approval.them`): foo has no gender for a contact and
+  never guesses. AT-052 and UX-16-06 draw "her"; dispute for the close-out CR.
+- (e) Offline at Send: `draft:send` answers NET_OFFLINE with nothing moved; [ Yes, send when online ] is `card:answer` with
+  optionId `send_when_online` (approve once, card `queued_offline`, no undo window yet); back online the window opens (5 s
+  undo) and the tick sends; Cancel is `draft:undo`. [ No, keep the draft ] is renderer-only.
+- (f) G-M8-04: with no `gmail.compose` the draft is kept in foo (no Gmail call), "Open in Gmail" opens the prefilled compose page,
+  the `allow_send` Connect card is offered once per chat; the 05-2 "saved as a draft there" line is never shown (key listed in
+  `scripts/copy-pending.json`). After Open in Gmail the card is a summary row "Opened in Gmail · not sent by {agentName}" with the Link "Open in Gmail" (CR-0012
+  G-M8-13, one new string).
+- (g) Failed → [ Try again ] is `card:askAgain` (now also for FAILED): a fresh pending Draft on the same Gmail draft that needs
+  its own Send (never a silent resend; a hard-limit draft stays one).
+- (h) Sends outlive their job: `ApprovalGate.expireTick` no longer withdraws `send` approvals of a done job (the drafting job
+  ends when the draft is made).
+- (i) A drafting job ends `done_unverified`: 08-2 §5.8 has no proof kind for "draft made" (UX-16-05/-10 draw ✅). Gap for the
+  close-out CR.
+- (j) The Google refresh token moved to the vault (`foo/conn_token/google`, `VaultConnTokenStore`); the bare token is also
+  registered with the SecretRegistry. `connTokenMemory.ts` stays as the unit tests' store.
+- (k) ART-09's "new site" switch is the browser rung (M9, its own pending trace row); this ticket covers email and a new person.
+- (l) Review fixes: a send whose answer was lost (no reply, a 5xx, the 30 s fetch limit) checks `drafts.get` (still there →
+  nothing went out) and then the Sent folder (gone → Sent with that message as proof), so "Nothing went out" is never said of
+  an email that went. The tick hands nothing to Gmail while offline, opens the window for queued drafts whenever online (also
+  after a restart), and one failing draft never stops the others. One Change → Save at a time per card. While the full card
+  waits, Change and Discard are refused; a full card that ends unanswered gives the draft back, and a draft that ends takes its
+  full card with it. An address the AI gives is a known person only when it is that contact's own address.
+
+## M8 · WhatsApp and X drafts and sending (ticket T7, CR-0012)
+
+- (a) Send path: main's DraftService → engine request `wa.send` (MainToEngine) → the engine's FIFO queue (≥ 3 s between sends,
+  one in flight) → bridge `wa.send` → Baileys `sendMessage` with the key id `waSendKeyId(draftCardId)` (FNV-1a, `FOO`+16 hex), so
+  the bridge's ack names the draft it answers. No bridge answer in 30 s, a bridge `SEND_FAILED`, or a bridge that is not open
+  → Failed ("WhatsApp didn't send it. Nothing went out.", 08-3 §16.5's `{Gmail} didn't send it.` row with the app named).
+- (b) Sent vs proof: the card is "✓ Sent" on the server ack (level 1); "Proof: Delivered" and the approvals row's
+  `{kind:'wa_delivered'}` proof follow the first ack ≥ 2 (`wa.report {event:'delivered'}`, once per message). CHECKING is not
+  used: its 15 min timeout would fail a message the phone has not yet confirmed. Activity `sent_whatsapp` is written at send
+  (recipient masked, `approvedHow='card_once'`, proofRef = the message id).
+- (c) Daily limit: `waSentToday` counts `sent_whatsapp` rows since local midnight (settings time zone); at 30 a new draft and a
+  Send both get `waLimitUntil` (next local midnight) and Send is off; the tick lifts it after midnight.
+- (d) Recipients (`src/engine/tools/connectors/recipients.ts`, 08-3 §16.4.2): the ladder runs in the engine over main's
+  named queries `wa.recipient`, `wa.byName`, `wa.groupByName`, `wa.lastChats` and `contacts.search` (Contacts phones are looked
+  up as `+{E.164}`, the 10 national digits and `0{national}`, one FTS token each). The AI never sees a number it did not give:
+  the tool answers the name only. Choice cards hold 4 options (05-1 §5.3 reactions 1️⃣–4️⃣, ChoiceCardSpec max 4), so "Who is
+  {Mom} on WhatsApp?" lists the last 4 chats, not 5 (pick, logged). A number check that cannot run is `cant_check`; main
+  re-checks those drafts when the bridge reports `open`.
+- (e) X: `x.draft` makes a card only (no approvals row, no expiry, no footer; label "Draft, not sent: X post", new key
+  `cards.draft.label_post`). Open in X is `app:openExternal` `x_intent` with the card and nonce (main builds the URL from
+  the card, 08-1 §3.2); `x.openCompose` is engine → main `draft.openX` for a card of the same job. First open: state
+  `opened_in_app`, foo's line, Activity `opened_x_draft`; later opens only reopen the page. "Shorten it" opens Change mode (no AI).
+- (f) Mirror composer (04 §10.11): `message:send` in a `wa_mirror` chat stores nothing there; main makes a finished job in
+  foo's chat (title "Draft a message for {group}", ≤ 40) and a group Draft card (a hard limit: the full Approval card). The
+  reply carries `mirrorDraft {fooChatId, draftCardId, messageId}`; the renderer drops its optimistic bubble and shows the
+  marker "Draft ready in {agentName}'s chat." + Open (renderer state, `src/renderer/messages/mirrorDrafts.ts`; it lasts until
+  the app restarts). No app_use Choice: the user typed in the group themselves.
+- (g) FOO_TEST: the fake phone knows "Mom" (`FAKE_WA.people`) and records every send; the bridge tells main
+  (`test.outbound`) and e2e read `globalThis.__fooWaOutbound`. A test run also records opened pages in `__fooOpenedExternal`
+  instead of opening a browser (X and Gmail).
+- (h) Copy added: `cards.choice.question.who_on_whatsapp`, `cards.draft.line.wa_not_on`, `cards.draft.line.wa_failed`,
+  `cards.draft.label_post`, `thread.wa_mirror.draft_made`, `thread.wa_mirror.open` (all spec text except `label_post` and
+  the WhatsApp failed line's app name).
+
+## M8 · close-out (lead, CR-0012)
+
+- Built: Google sign-in, the Connect card and the Connections page (T2), the WhatsApp link, QR and group mirrors (T3), Gmail,
+  Calendar and Contacts reading (T4), connection trouble, the poller and the Contacts sync (T5), email drafts and sending
+  (T6), WhatsApp and X drafts and sending (T7), the UX-04 golden spec (T8a). T1 (contracts) landed first.
+- Close-out: UX-16-07…10 written on T7's real WhatsApp and X flow (`test/fidelity/ux/UX-16.drafts.spec.ts`); AT-020, AT-270,
+  ART-15b, UX-04-04…09 and UX-16-07…10 live; the Google and X Connections rows use the 06 §0.4 `RowGroup` like WhatsApp
+  (06-2 §6.8 "Each connection is a row group"); Tier R disputes for M8's 15 ids in CR-0012 §(h).
+- Golden lane: `FIDELITY_MILESTONE: M8`, `FIDELITY_REFS: M1,…,M6,M8`; captures in `test/fidelity/ux/UX-04.connect.spec.ts`,
+  `test/fidelity/ux/UX-16.drafts.spec.ts` and `test/fidelity/bp/BP-cards-m8.spec.ts` (BP-CARD-11).
+- Moved on (CR-0012 §(h) 30): to M7, wiring `routines.onEmail` and `BriefSource` to the Gmail poller (M7 is not on main);
+  to M9, folding its keys into M8's `settings.connections` object (C9) and extending main's one `app:openExternal` handler
+  (C12; M8 added `google_signin` and `x_intent`), and the ART-09 new-site row. Noted: no fallback resume for a WAITING job
+  with `waiting_reason` NULL whose CONN card closes another way.
+- Before the real demo, Vikas's setup item: the Google OAuth client file `resources/google-oauth.json` (08-3 §16.1.1).

@@ -9,7 +9,7 @@
     "uxChapters": 25,
     "uxSteps": 245,
     "uxFrames": 490,
-    "bp": 47
+    "bp": 48
   },
   "bp": [
     {
@@ -567,6 +567,18 @@
       "spec": "06-2 §7",
       "milestone": "M6",
       "note": "Screen gallery: What I know about you. App: the Memory page on the seeded world."
+    },
+    {
+      "id": "BP-CARD-11",
+      "selector": "#cardgal > .panel:nth-child(11) > .mini",
+      "drawn": true,
+      "size": {
+        "width": null,
+        "height": null
+      },
+      "spec": "05-3 §5.11",
+      "milestone": "M8",
+      "note": "Card gallery: Connect. App: the Connect card in the thread, from seeded card rows."
     }
   ],
   "ux": [
@@ -1072,7 +1084,8 @@
       "s": "\"Connect Gmail and Calendar. I'll read emails and your calendar to spot bills, trips and plans. I'll write drafts, but I never send without your tap.\"",
       "f": "Nothing yet. Connect opens Google's own sign-in in your normal browser.",
       "hl": "connect",
-      "milestone": "M12"
+      "milestone": "M12",
+      "firstTested": "M8"
     },
     {
       "id": "UX-04-05",
@@ -1088,7 +1101,8 @@
       "s": "Read email · create drafts · send only after you approve in foo · see and add calendar events.",
       "f": "Waits. foo never sees your Google password.",
       "hl": "gconsent",
-      "milestone": "M12"
+      "milestone": "M12",
+      "firstTested": "M8"
     },
     {
       "id": "UX-04-06",
@@ -1104,7 +1118,8 @@
       "s": "\"✓ Connected as v••••@gmail.com\".",
       "f": "Saves the connection in Windows' safe store. Starts reading only what it needs.",
       "hl": "using",
-      "milestone": "M12"
+      "milestone": "M12",
+      "firstTested": "M8"
     },
     {
       "id": "UX-04-07",
@@ -1120,7 +1135,8 @@
       "s": "\"Link WhatsApp. I can read your chats to remind you of things, and draft messages for you to send. I never send a WhatsApp message without your tap.\"",
       "f": "Nothing until you tap Show QR code.",
       "hl": "showqr",
-      "milestone": "M12"
+      "milestone": "M12",
+      "firstTested": "M8"
     },
     {
       "id": "UX-04-08",
@@ -1136,7 +1152,8 @@
       "s": "A QR code and three numbered lines: open WhatsApp → Linked devices → point your phone here.",
       "f": "Waits for the phone to link. Read and draft only; sending always needs your tap.",
       "hl": "qr",
-      "milestone": "M12"
+      "milestone": "M12",
+      "firstTested": "M8"
     },
     {
       "id": "UX-04-09",
@@ -1152,7 +1169,8 @@
       "s": "\"✓ WhatsApp linked (+91 98••• ••210)\" and a new Family group row with a small WhatsApp mark.",
       "f": "Mirrors chats so it can remind you of things. It never posts in groups by itself.",
       "hl": "row-family",
-      "milestone": "M12"
+      "milestone": "M12",
+      "firstTested": "M8"
     },
     {
       "id": "UX-04-10",

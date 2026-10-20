@@ -39,5 +39,6 @@ export const settingsDefaults: Settings = {
   money: { purchaseCapPaise: 2_500_000, aiCapPaise: 100_000, warnAt80: true, bigPaymentPaise: 1_000_000 },
   notifications: { quiet: { on: true, from: '22:00', to: '07:00', days: [0, 1, 2, 3, 4, 5, 6] }, mutedChats: {}, unpromptedPerDay: 3 },
   privacy: { rememberOn: true, learnFromChats: true, askBeforeRemembering: false },
+  connections: { google: { calendarOn: true, contactsOn: true }, whatsapp: { read: true, draft: true, hiddenJids: [] } },
   flags: { screenHands: false, hub: false, outlook: false, multiAccount: false },
 };

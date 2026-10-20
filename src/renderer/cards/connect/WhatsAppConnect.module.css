@@ -1,0 +1,32 @@
+/* Spec: 05-3 §5.11.1 Connect card anatomy (32px header row: `--logo` tile + title --t-body-strong; lines --t-body; notes
+ * --t-small --fg-2). */
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--logo);
+}
+.logo {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--logo);
+  height: var(--logo);
+  border-radius: var(--r-sm);
+  background: var(--qr-bg);
+}
+.line {
+  margin: 0;
+  font: var(--t-body);
+}
+.note {
+  margin: 0;
+  font: var(--t-small);
+  color: var(--fg-2);
+}

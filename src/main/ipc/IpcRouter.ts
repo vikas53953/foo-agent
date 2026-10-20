@@ -67,10 +67,11 @@ import { FIX_ACTION_KINDS, JOB_CHANNELS, jobIpc } from '../jobs/jobIpc';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
 import { isTrustedUrl } from '../windows/protocol';
+import { registerConnectionIpc } from '../connections/connectionIpc';
 import { logEvent } from '../log/techLog';
 import { answerIpc, cardReaction } from '../cards/answerIpc';
 import { approvalIpc } from '../approvals/approvalIpc';
-import { draftIpc } from '../drafts/draftIpc';
+import { draftFromMirror, draftIpc } from '../drafts/draftIpc';
 import { secretIpc } from '../vault/secretIpc';
 import { ensureFinder, finderChosen, finderWanted } from '../setup/aiFinder';
 import { aiFinderIpc, emitFinderWrite } from '../setup/aiFinderIpc';
@@ -108,6 +109,8 @@ export interface AppContext {
   dataDir: string;
   /** M3: main's half of the engine port (08-1 §2.4); absent only in unit tests that build main alone. */
   engine?: EngineBridge;
+  // M8 T3: FOO_TEST control line to the running wa-bridge (the fake phone and its clock); false when no bridge runs.
+  bridgeTest?(msg: unknown): boolean;
 }
 
 export function listContext(settings: Settings): ListContext {
@@ -249,6 +252,25 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
     backup?: (typeof PROVIDER_IDS)[number] | null;
   }>,
   'notifications:status': empty as z.ZodType<Record<string, never>>,
+  // M8 T3 (handlers in src/main/whatsapp/waMain.ts)
+  'whatsapp:linkStart': empty as z.ZodType<Record<string, never>>,
+  'whatsapp:linkCancel': empty as z.ZodType<Record<string, never>>,
+  'whatsapp:unlink': empty as z.ZodType<Record<string, never>>,
+  'chat:archive': z.object({ chatId, on: z.boolean() }).strict(),
+  // M8 T2 (08-1 §3.2)
+  'connection:list': empty as z.ZodType<Record<string, never>>,
+  'connection:connect': z
+    .object({
+      app: z.literal('google'),
+      scopes: z
+        .array(z.enum(['gmail', 'gcal', 'contacts']))
+        .min(1)
+        .max(3)
+        .optional(),
+    })
+    .strict(),
+  'connection:disconnect': z.object({ connectionId: z.string().min(1).max(80), confirm: z.literal(true) }).strict(),
+  'connection:googleInfo': empty as z.ZodType<Record<string, never>>,
   // AI step (CR-0020 (c)): the J2 card and the key's Secret box; `app:openExternal` per 08-1 §3.2 (only maker_page is built).
   'ai:openFinder': empty as z.ZodType<Record<string, never>>,
   'ai:askKey': z.object({ providerId: z.enum(['openai-key', 'anthropic-key', 'google-key']) }).strict(),
@@ -493,6 +515,13 @@ export function registerIpc(ctx: AppContext): void {
   };
   const recent = (id: string) => messageList(db, id, 20);
   handle('message:send', (req) => {
+    // M8 T7 (04 §10.11, AT-269): a mirrored WhatsApp group's Send makes a group Draft card in foo's chat; nothing is stored
+    // in the mirror and nothing is sent.
+    const mirrored = draftFromMirror(ctx, req);
+    if (mirrored)
+      return mirrored.then((r) =>
+        !r || !r.ok ? (r ?? fail('VALIDATION')) : ok({ messageId: r.value.messageId, queued: false, mirrorDraft: r.value }),
+      );
     const fromDraft = draftAttachments(db, req.chatId);
     const r = sendMessage(db, req, {
       now: now(),
@@ -700,6 +729,8 @@ export function registerIpc(ctx: AppContext): void {
     return r;
   });
   handle('notifications:status', () => ok({ windowsAllowed: true, focusAssist: false }));
+  // M8
+  registerConnectionIpc(ctx);
 
   // M5 (CR-0009): the card, draft, secret and code channels.
   handleAll(answerIpc(ctx));

@@ -31,7 +31,11 @@ type Reducers = { [E in EventChannel]: (s: RootState, p: EventPayload[E]) => voi
 
 /** One reducer per event channel (08-5 §5 rule 1). */
 export const REDUCERS: Reducers = {
-  'chat:upsert': (s, row) => upsertChatReducer(s.chats, row),
+  'chat:upsert': (s, row) => {
+    upsertChatReducer(s.chats, row);
+    // M8 T3: a mirrored group has no message:upsert (08-3 §16.4.3); an opened one re-reads its newest 200 on each change.
+    if (row.kind === 'wa_mirror' && opened.has(row.id)) queueMicrotask(() => void loadChat(row.id, true));
+  },
   'chat:removed': (s, { chatId }) => removeChatReducer(s.chats, chatId),
   'chat:typing': (s, { chatId, on }) => {
     if (on) s.live.typingChatId = chatId;
@@ -61,6 +65,10 @@ export const REDUCERS: Reducers = {
   'ai:detectRow': () => undefined,
   // `navigate` is handled by wireEvents (it is an action, not a row patch).
   navigate: () => undefined,
+  // M8 T3: the latest WhatsApp link code (08-1 §3.3).
+  'whatsapp:qr': (s, qr) => {
+    s.connections.qr = qr;
+  },
   // M6: no memory slice (08-5 §5 closed list, G-M6-08); the Memory page and the right shell subscribe with useFooEvent.
   'memory:changed': () => undefined,
   // The export status line lives on the page that started it (06-2 §7.4).

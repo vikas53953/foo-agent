@@ -14,6 +14,8 @@ import { Icon, type IconName } from '../../ui/Icon';
 import { cx } from '../../ui/cx';
 import { PageHeader } from '../shared/PageHeader';
 import { AccountAi } from './AccountAi';
+// M8 T2: Connections (06-2 §6.8; Google + X rows, the rest per CR-0012 G-M8-05)
+import { ConnectionsPage } from './ConnectionsPage';
 import styles from './SettingsPage.module.css';
 
 interface NavItem {
@@ -90,6 +92,7 @@ export function SettingsPage({ page }: { page: PageId }) {
           <div className={styles.column}>
             <h2 className={styles.pageTitle}>{current.label()}</h2>
             {current.id === 'account' && <AccountAi />}
+            {current.id === 'connections' && <ConnectionsPage />}
           </div>
         </main>
       </div>

@@ -385,6 +385,19 @@ export interface DraftPayload {
   // M5 T14
   /** 05-2 §5.7.2 HELD (second look, Art. 10): what the Draft's held strip shows; main writes it with the HELD move. */
   held?: ApprovalPayload['held'];
+  // M8 T6 (CR-0012 G-M8-03): the Gmail draft's message id and thread (Open in Gmail, replies), and T7's WhatsApp jid / group.
+  gmailMessageId?: string;
+  threadId?: string;
+  waJid?: string;
+  isGroup?: boolean;
+  /** M8 T6: the full Approval card a Send opened for someone new or a switch (05-2 §5.7.2 "Waiting for your OK below ›"). */
+  approvalCardId?: string;
+  // M8 T7 (08-3 §16.4.2, §16.4 Send): the number check ("That number isn't on WhatsApp." → no Send; "I can't check that
+  // number right now." → Send disabled until the bridge is open), the daily limit (Send disabled until that local midnight),
+  // and the delivery ack (Proof: Delivered). An X draft has no approvals row: `approvalId` is ''.
+  waCheck?: 'not_on' | 'cant_check';
+  waLimitUntil?: number;
+  delivered?: boolean;
 }
 /** 08-1 §4.5 secret payload (never a value). */
 export interface SecretPayload {
@@ -869,6 +882,16 @@ export type ErrorKind =
   | 'PROTOCOL_FIX_ACTION'
   | 'IDEMPOTENT_REPEAT'
   | 'CARD_STALE'
+  // M8 T3: 08-3 §21.2 WhatsApp kinds
+  | 'WA_LINK_FAILED'
+  | 'WA_UNLINKED'
+  // M8 (08-3 §21.2, §21.3): connections
+  | 'OAUTH_DENIED'
+  | 'OAUTH_TIMEOUT'
+  | 'CONN_EXPIRED'
+  | 'CONN_REVOKED'
+  | 'CONN_RATE_LIMITED'
+  | 'CONN_SCOPE_MISSING'
   // M5 (CR-0009; 08-3 §21.2–§21.4): cards, the approval gate and the vault
   | 'CARD_EXPIRED'
   | 'SCOPE_NOT_ALLOWED'
@@ -885,8 +908,6 @@ export type ErrorKind =
   | 'SECRET_EXISTS'
   | 'REQUEST_GONE'
   // M5 T6 (08-1 §3.2 draft:send, 08-3 §16.6 gmail drafts; M8 adds the rest of the connector kinds)
-  | 'CONN_EXPIRED'
-  | 'CONN_SCOPE_MISSING'
   | 'SEND_FAILED'
   // M6 (08-1 §3.2 memory rows, 08-3 §21.3, §19.4): memory
   | 'MEMORY_PARSE'
@@ -894,6 +915,9 @@ export type ErrorKind =
   | 'PRIVATE_BLOCKED'
   | 'EXPORT_SECRET_FOUND'
   | 'DISK_FULL'
+  // M8 (08-3 §16.1, §21.2, §21.3): the rest of the Google connector kinds
+  | 'CONN_REVOKED'
+  | 'CONN_RATE_LIMITED'
   | 'UNKNOWN';
 
 // ---- card payloads (08-5 §4.1) the M2 cards draw ----
@@ -959,4 +983,24 @@ export interface JobDetails {
   frames: { stepId: string; path: string; at: number }[];
   proof?: unknown;
   costs: unknown[];
+}
+
+// ---- connectors (CR-0012, M8): 08-5 §3.3, §4.1 ----
+/** 08-0 §B.2 `ConnectorApp` (connections.app also allows 'hub'; X has no row). */
+export type ConnectorApp = 'gmail' | 'gcal' | 'contacts' | 'whatsapp' | 'x' | 'outlook';
+/** 08-5 §3.3. `id` is the People API resourceName, or `'wa:{jid}'`; phones in E.164 where Google gives canonicalForm. */
+export interface ContactHit {
+  id: string;
+  name: string;
+  emails: string[];
+  phones: string[];
+  source: 'google' | 'whatsapp';
+}
+/** 08-5 §4.1 `connect` card payload; Card E is `{ variant: 'whatsapp', setupCard: 'E' }` (X-139). */
+export interface ConnectPayload {
+  variant: 'google' | 'whatsapp' | 'outlook' | 'one_app' | 'allow_send' | 'contacts_only';
+  app: ConnectorApp;
+  why?: string;
+  scopes?: ('gmail' | 'gcal' | 'contacts')[];
+  setupCard?: 'D' | 'E';
 }

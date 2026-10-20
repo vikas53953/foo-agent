@@ -27,8 +27,13 @@ import { writeSeedMemory } from './seed/writer';
 import { seedPerf } from './seed/perf';
 import { seedM4Cards } from './seed/m4Cards';
 import { seedUxWorld, uxWorldSettings } from './seed/uxWorld';
+import { bridgeTestSchema } from '../../shared/waBridge';
+import { seedM8Connect } from './seed/m8Connect';
 // M5
 import { installGmailDrafts, memoryGmailDrafts } from '../drafts/gmailDrafts';
+// M8 T6
+import { googleGmailDrafts, nodeFetch } from '../drafts/gmailDraftsGoogle';
+import { testGoogleAccess } from '../../engine/tools/connectors/google-tools';
 
 const JOB_STATES = [
   'queued',
@@ -53,6 +58,8 @@ const seedArg = z.object({ set: z.enum(SEED_SETS) }).strict();
 const onlineArg = z.object({ online: z.boolean() }).strict();
 const themeArg = z.object({ theme: z.enum(['light', 'dark', 'system']) }).strict();
 const jobStateArg = z.object({ jobId: z.string().min(1), state: z.enum(JOB_STATES) }).strict();
+// M8 T3
+const waArg = bridgeTestSchema;
 const CARD_TYPES = [
   'brief',
   'checklist',
@@ -228,6 +235,13 @@ export function seeds(ctx: AppContext, clock: FakeClock): Record<SeedSet, () => 
     demo: demo('demo'),
     'ux-world': demo('ux-world'),
     'ux-world-ch8-live': demo('ux-world-ch8-live', { ch8Live: true }),
+    // M8
+    'ux-world-m8-connect': () => {
+      const r = seedM8Connect(ctx.db, clock.now());
+      writeSeedMedia(ctx.dataDir, r.media);
+      ctx.settings.update((s) => uxWorldSettings(s, r.refs, clock.now()));
+      return { set: 'ux-world-m8-connect', loaded: true, chats: r.chats, messages: r.messages, refs: r.refs };
+    },
     perf: () => {
       const r = seedPerf(ctx.db, clock.now());
       writeSeedMedia(ctx.dataDir, r.media);
@@ -265,13 +279,26 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
   const reply = (): ClockReply => ({ now: clock.now(), iso: new Date(clock.now()).toISOString() });
   const registry = seeds(ctx, clock);
   // M5 T6 (08-3 §22.2, G-M5-12): the in-memory Gmail drafts behind the Draft card until the M8 connector.
-  installGmailDrafts(memoryGmailDrafts({ adoptUnknown: true }));
+  // M8 T6: with FOO_FAKE_GOOGLE (a fake Google on 127.0.0.1, 08-3 §22.3) the real Gmail drafts port talks to it instead.
+  const fakeGoogle = process.env.FOO_FAKE_GOOGLE;
+  installGmailDrafts(
+    fakeGoogle
+      ? googleGmailDrafts({
+          http: nodeFetch,
+          access: testGoogleAccess(fakeGoogle).access,
+          clock,
+          connectionId: () => 'conn_gmail_fake',
+          base: fakeGoogle,
+        })
+      : memoryGmailDrafts({ adoptUnknown: true }),
+  );
 
   guard.handle('test:clock', (raw: unknown) => {
     const arg = clockArg.parse(raw);
     if (arg?.set !== undefined) clock.set(typeof arg.set === 'string' ? Date.parse(arg.set) : arg.set);
     if (arg?.advance !== undefined) clock.advance(arg.advance);
     ctx.engine?.send('test.clock', { now: clock.now() });
+    ctx.bridgeTest?.({ kind: 'test.clock', now: clock.now() });
     return reply();
   });
   guard.handle('test:seed', (raw: unknown) => {
@@ -301,6 +328,8 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
     if (chat) emit('chat:upsert', chat);
     return { chatId: row.chat_id };
   });
+  // M8 T3: the fake phone behind the FOO_TEST wa-bridge (scan, a group message, logout).
+  guard.handle('test:wa', (raw: unknown) => ({ delivered: ctx.bridgeTest?.({ kind: 'test.wa', op: waArg.parse(raw) }) ?? false }));
   guard.handle('test:card.seed', (raw: unknown) => {
     const now = clock.now();
     const out = seedCard(ctx.db, cardSeedArg.parse(raw), now);
@@ -331,6 +360,7 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
     clock.reset(TEST_EPOCH_MS);
     ctx.engine?.send('test.reset', {});
     ctx.engine?.send('test.clock', { now: clock.now() });
+    ctx.bridgeTest?.({ kind: 'test.clock', now: clock.now() });
     deps.net.online = true;
     ctx.net.report(true);
     nativeTheme.themeSource = ctx.settings.get().appearance.theme;

@@ -18,6 +18,7 @@ import { redactRow, writeRedacted, writeRedactedJson } from '../store/writeRedac
 import { recomputePill } from '../store/queries';
 import { NAMED_QUERIES, type QueryCtx } from '../db/queries';
 import { newId } from '../../shared/ids';
+import { WA_RETENTION_MS } from '../../shared/waBridge';
 
 const JOB_COLUMNS = [
   'id',
@@ -168,6 +169,9 @@ const INSERT_COLUMNS: Record<string, readonly string[]> = {
   steps: STEP_COLUMNS,
   tool_calls: TOOL_CALL_COLUMNS,
   cards: CARD_COLUMNS,
+  // M8 (T3): WhatsApp ingest (08-3 §16.4)
+  wa_messages: ['id', 'chat_jid', 'from_me', 'sender_label', 'text', 'at', 'starred', 'mentions_me'],
+  wa_contacts: ['jid', 'name', 'phone', 'updated_at'],
   memory_index: MEMORY_INDEX_COLUMNS,
   memory_tombstones: ['hash', 'origin_kind', 'forgotten_at', 'expires_at'],
   memory_uses: ['fact_id', 'chat_id', 'job_id', 'at'],
@@ -290,6 +294,7 @@ function insertRow(db: Db, op: Extract<DbOp, { op: 'insert' }>, fx: TxEffects, n
     fx.chatIds.add(chatId);
     return { id: String(row.id), rev: 1 };
   }
+  if (op.table === 'wa_messages' || op.table === 'wa_contacts') return insertWa(db, op.table, row, fx, now);
   if (op.table === 'cards') {
     if (!isCardState(String(row.type), String(row.state))) throw new DbOpError('VALIDATION', `card state ${String(row.state)}`);
     if (row.updated_at === undefined) row.updated_at = row.created_at ?? now;
@@ -315,6 +320,39 @@ function insertRow(db: Db, op: Extract<DbOp, { op: 'insert' }>, fx: TxEffects, n
   }
   if (op.table === 'memory_index') fx.factIds.add(id);
   return { id, rev: HAS_REV.has(op.table) ? 1 : 0 };
+}
+
+// M8 (T3). 08-3 §16.4 / X-129: ingest is INSERT OR IGNORE on the row id; wa_contacts is an upsert by jid (the bridge sends
+// names again when they change). A new row in a mirrored group moves that chat's last_activity_at and, for someone else's
+// message, unread_count (derived columns, §4.6 rule 7); last_message_id stays NULL (§16.4.3). Rows older than 7 days are
+// deleted in the same transaction (J16 retention; the chat stays).
+function insertWa(
+  db: Db,
+  table: 'wa_messages' | 'wa_contacts',
+  row: Record<string, unknown>,
+  fx: TxEffects,
+  now: number,
+): { id: string; rev: number } {
+  // Art. 8: stored WhatsApp text goes through Store.writeRedacted too, whatever the engine asked for.
+  if (table === 'wa_messages' && typeof row.text === 'string') row.text = writeRedacted(row.text);
+  const cols = Object.keys(row);
+  const verb = table === 'wa_contacts' ? 'INSERT OR REPLACE' : 'INSERT OR IGNORE';
+  const r = db.prepare(`${verb} INTO ${table} (${cols.join(', ')}) VALUES (${cols.map(() => '?').join(', ')})`).run(...Object.values(row));
+  if (table === 'wa_contacts') return { id: String(row.jid), rev: 0 };
+  db.prepare('DELETE FROM wa_messages WHERE at < ?').run(now - WA_RETENTION_MS);
+  if (r.changes > 0) {
+    const chat = db.prepare("SELECT id FROM chats WHERE kind = 'wa_mirror' AND wa_jid = ? AND deleted_at IS NULL").get(row.chat_jid) as
+      { id: string } | undefined;
+    if (chat) {
+      const unread = row.from_me ? 'unread_count' : 'unread_count + 1';
+      db.prepare(`UPDATE chats SET last_activity_at = MAX(last_activity_at, ?), unread_count = ${unread}, rev = rev + 1 WHERE id = ?`).run(
+        row.at,
+        chat.id,
+      );
+      fx.chatIds.add(chat.id);
+    }
+  }
+  return { id: String(row.id), rev: 0 };
 }
 
 function currentRow(db: Db, table: string, id: string): Record<string, unknown> {
@@ -501,6 +539,17 @@ function movesFtsText(op: DbOp): boolean {
   return op.op === 'update' && op.table === 'memory_index' && 'text' in op.set;
 }
 
+// M8: 08-3 §16.7 rows are replaced wholesale on each sync (the FTS triggers keep contacts_fts in step). OR IGNORE, not
+// OR REPLACE: a REPLACE conflict deletes without firing the FTS delete trigger; the engine already sends each id once.
+function replaceContacts(db: Db, op: Extract<DbOp, { op: 'contacts_replace' }>): { id: string; rev: number } {
+  db.prepare('DELETE FROM contacts_index WHERE connection_id = ?').run(op.connectionId);
+  const ins = db.prepare(
+    'INSERT OR IGNORE INTO contacts_index (id, connection_id, display_name, emails, phones, synced_at) VALUES (?, ?, ?, ?, ?, ?)',
+  );
+  for (const r of op.rows) ins.run(r.id, op.connectionId, r.name, JSON.stringify(r.emails), JSON.stringify(r.phones), op.syncedAt);
+  return { id: op.connectionId, rev: 0 };
+}
+
 /** One db.tx. */
 export function applyDbOps(db: Db, ops: DbOp[], opts: TxOptions = {}): { result: Result<DbTxReply>; effects: TxEffects } {
   const now = opts.now ?? Date.now();
@@ -525,6 +574,9 @@ export function applyDbOps(db: Db, ops: DbOp[], opts: TxOptions = {}): { result:
               return stageMirror(db, op, opts.dataDir, mirrors);
             case 'delete':
               return deleteRow(db, op, effects);
+            // M8
+            case 'contacts_replace':
+              return replaceContacts(db, op);
           }
         })();
         out.ids.push(r.id);

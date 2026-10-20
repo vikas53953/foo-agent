@@ -70,6 +70,27 @@ export type MemoryCmdPayload = z.infer<typeof memoryCmdSchema>;
 
 // ---- main → engine (08-1 §2.4 MainToEngine, the rows M3, M4 and M6 use) ----
 export type AiCmd = 'detect' | 'verify' | 'choose' | 'signIn';
+// M8 T5: the Google rows as the engine sees them, and what the engine asks main for (gap pick T5-01).
+export const googleConnStateSchema = z
+  .object({
+    target: z.literal('google'),
+    status: z.enum(['connected', 'needs_signin', 'disconnected']),
+    /** The `contacts` row id while Contacts is connected and allowed, else null (Contacts sync, 08-3 §16.7). */
+    contactsConnectionId: z.string().nullable(),
+  })
+  .strict();
+export type GoogleConnState = z.infer<typeof googleConnStateSchema>;
+export const googleEngineReqSchema = z.discriminatedUnion('op', [
+  z.object({ op: z.literal('state') }).strict(),
+  z.object({ op: z.literal('token') }).strict(),
+  z.object({ op: z.literal('refresh') }).strict(),
+  z.object({ op: z.literal('scopeMissing'), flag: z.enum(['read', 'draft', 'send', 'calendarWrite', 'contactsRead']) }).strict(),
+  z.object({ op: z.literal('lost'), kind: z.enum(['CONN_EXPIRED', 'CONN_REVOKED']) }).strict(),
+  z.object({ op: z.literal('history') }).strict(),
+  z.object({ op: z.literal('saveHistory'), historyId: z.string().min(1).max(64) }).strict(),
+]);
+export type GoogleEngineReq = z.infer<typeof googleEngineReqSchema>;
+
 export const mainToEngineSchema = z.discriminatedUnion('kind', [
   z.object({ id: z.string(), kind: z.literal('user.message'), payload: z.object({ messageId: z.string(), chatId: z.string() }).strict() }),
   z.object({ id: z.string(), kind: z.literal('net'), payload: z.object({ online: z.boolean() }).strict() }),
@@ -178,6 +199,33 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
     kind: z.literal('test.jobEvent'),
     payload: z.object({ jobId: z.string(), event: z.string() }).strict(),
   }),
+  // M8 (CR-0012, landed by the lead so T2 and T3 share one row): 08-1 §2.4 `connection.cmd` and `bridge.port`. The port itself
+  // travels as the message's transferred MessagePort; the payload is empty.
+  z.object({
+    id: z.string(),
+    kind: z.literal('connection.cmd'),
+    payload: z
+      .object({
+        target: z.enum(['google', 'outlook', 'whatsapp']),
+        cmd: z.enum(['connect', 'reconnect', 'disconnect', 'linkStart', 'linkCancel', 'unlink']),
+        connectionId: z.string().optional(),
+        scopes: z.array(z.enum(['gmail', 'gcal', 'contacts'])).optional(),
+      })
+      .strict(),
+  }),
+  z.object({ id: z.string(), kind: z.literal('bridge.port'), payload: z.object({}).strict() }),
+  // M8 T5 (gap pick T5-01, 08-1 §2.4 has no row for it): main tells the engine the Google rows' state on every change, so
+  // the Gmail poller and Contacts sync start and stop with the rows and jobs waiting on a lost connection resume.
+  z.object({ id: z.string(), kind: z.literal('connection.state'), payload: googleConnStateSchema }),
+  // M8 T7 (08-2 §8.2 `whatsapp.send`, engine-only; 08-3 §16.4.2): main's Draft service asks the engine to send a tapped
+  // WhatsApp Draft through its queue (answers `{ waMessageId }` or SEND_FAILED) and to check a number again when the bridge
+  // is open (answers `{ exists: boolean | null }`). Requests, like draft.secondLook.
+  z.object({
+    id: z.string(),
+    kind: z.literal('wa.send'),
+    payload: z.object({ jid: z.string().min(1).max(100), text: z.string().min(1).max(65_536), draftCardId: z.string().min(1) }).strict(),
+  }),
+  z.object({ id: z.string(), kind: z.literal('wa.check'), payload: z.object({ jid: z.string().min(1).max(100) }).strict() }),
 ]);
 export type MainToEngine = z.infer<typeof mainToEngineSchema>;
 
@@ -191,6 +239,9 @@ export const WRITABLE_TABLES = [
   'steps',
   'tool_calls',
   'cards',
+  // M8 T3: WhatsApp ingest (08-1 §2.4.1 lists both; main writes them INSERT OR IGNORE / upsert, 08-3 §16.4)
+  'wa_messages',
+  'wa_contacts',
   // M6 (CR-0010; 08-1 §2.5): the index follows the files; main rebuilds memory_fts in the same tx
   'memory_index',
   'memory_tombstones',
@@ -224,7 +275,17 @@ export type DbOp =
   | { op: 'transition'; table: TransitionTable; id: string; from: string[]; to: string; set?: Record<string, unknown> }
   | { op: 'delete'; table: DeleteTable; id: string }
   | { op: 'activity'; row: ActivityOpRow }
-  | { op: 'mirror'; kind: MirrorKind; id: string; text: string };
+  | { op: 'mirror'; kind: MirrorKind; id: string; text: string }
+  // M8: Contacts sync replaces one connection's contacts_index rows wholesale (08-3 §16.7).
+  | { op: 'contacts_replace'; connectionId: string; rows: ContactIndexRow[]; syncedAt: number };
+
+/** M8: one contacts_index row as the engine sends it (emails and phones as arrays; main stores them as JSON). */
+export interface ContactIndexRow {
+  id: string;
+  name: string;
+  emails: string[];
+  phones: string[];
+}
 
 const activityRowSchema = z
   .object({
@@ -281,6 +342,17 @@ const dbOpSchema = z.discriminatedUnion('op', [
   z.object({ op: z.literal('delete'), table: z.enum(DELETE_TABLES), id: z.string() }).strict(),
   z.object({ op: z.literal('activity'), row: activityRowSchema }).strict(),
   z.object({ op: z.literal('mirror'), kind: z.enum(MIRROR_KINDS), id: z.string(), text: z.string() }).strict(),
+  // M8
+  z
+    .object({
+      op: z.literal('contacts_replace'),
+      connectionId: z.string().min(1),
+      rows: z
+        .array(z.object({ id: z.string().min(1), name: z.string(), emails: z.array(z.string()), phones: z.array(z.string()) }).strict())
+        .max(25_000),
+      syncedAt: z.number(),
+    })
+    .strict(),
 ]);
 
 /** 08-1 §2.4.1: exactly the exported keys of src/main/db/queries.ts (a test holds the two lists equal). */
@@ -325,6 +397,13 @@ export const NAMED_QUERY_NAMES = [
   'suggestionState',
   'chats.forHelper',
   'messages.userTexts',
+  // M8
+  'contacts.search',
+  // M8 T7: the WhatsApp recipient ladder's reads (08-3 §16.4.2).
+  'wa.recipient',
+  'wa.byName',
+  'wa.groupByName',
+  'wa.lastChats',
 ] as const;
 export type NamedQuery = (typeof NAMED_QUERY_NAMES)[number];
 
@@ -332,6 +411,26 @@ export interface UiPatch<E extends EventChannel = EventChannel> {
   event: E;
   payload: EventPayload[E];
 }
+
+/** M8 T3 `wa.report` payload (see the row at the end of engineToMainSchema). */
+export const waReportSchema = z.discriminatedUnion('event', [
+  z.object({ event: z.literal('linked'), accountLabel: z.string(), accountHash: z.string().min(1) }).strict(),
+  z
+    .object({
+      event: z.literal('status'),
+      status: z.enum(['connecting', 'unlinked', 'error', 'disconnected']),
+      errorKind: z.enum(['WA_LINK_FAILED', 'WA_UNLINKED']).nullable(),
+    })
+    .strict(),
+  z.object({ event: z.literal('groups'), groups: z.array(z.object({ jid: z.string().min(1), title: z.string() }).strict()) }).strict(),
+  // M8 T7: a sent message reached the phone (ack ≥ 2, the `wa_delivered` proof), and the bridge is open again (main re-checks
+  // the Draft cards whose number could not be checked, 08-3 §16.4.2).
+  z.object({ event: z.literal('delivered'), waMessageId: z.string().min(1) }).strict(),
+  z.object({ event: z.literal('open') }).strict(),
+  // M8 T7: the server acked a send after its wait ran out (08-2 §10.5: main completes the CHECKING row, never resends).
+  z.object({ event: z.literal('sent'), waMessageId: z.string().min(1) }).strict(),
+]);
+export type WaReport = z.infer<typeof waReportSchema>;
 
 export const engineToMainSchema = z.discriminatedUnion('kind', [
   z.object({ id: z.string(), kind: z.literal('db.tx'), payload: z.object({ ops: z.array(dbOpSchema).min(1) }).strict() }),
@@ -480,6 +579,53 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
       })
       .strict(),
   }),
+  // M8 T6: 08-2 §8.2 `gmail.draft` (prepare; the engine resolved the recipient, 08-3 §16.7). Main makes the Gmail draft, the
+  // Draft card and its PENDING `approvals` row (08-0 §G.7) and answers `{ approvalId, cardId, nonce }` once Gmail has answered.
+  z.object({
+    id: z.string(),
+    kind: z.literal('draft.create'),
+    payload: z
+      .object({
+        jobId: z.string(),
+        // M8 T7: email unless said; WhatsApp `to.address` is what the card shows (masked number or group name), X has no To.
+        channel: z.enum(['email', 'whatsapp', 'x']).optional(),
+        to: z.object({ name: z.string().max(200), address: z.string().max(320) }).strict(),
+        waJid: z
+          .string()
+          .regex(/^\d{6,20}@s\.whatsapp\.net$|^\d{6,30}(-\d+)?@g\.us$/)
+          .optional(),
+        isGroup: z.boolean().optional(),
+        waCheck: z.enum(['not_on', 'cant_check']).optional(),
+        isNew: z.boolean().optional(),
+        subject: z.string().max(998).optional(),
+        body: z.string().max(100_000),
+        threadId: z.string().max(200).optional(),
+      })
+      .strict()
+      .superRefine((p, ctx) => {
+        const channel = p.channel ?? 'email';
+        const bad = (message: string) => ctx.addIssue({ code: 'custom', message });
+        if (channel === 'email') {
+          if (!p.to.name) bad('to.name');
+          // One plain address: no spaces, commas, angle brackets or line breaks reach the To line (M8 T6).
+          if (!/^[^\s@<>",;]+@[^\s@<>",;]+\.[^\s@<>",;]+$/.test(p.to.address)) bad('to.address');
+          if (p.waJid || p.isGroup !== undefined || p.waCheck) bad('whatsapp fields on an email');
+        } else if (channel === 'whatsapp') {
+          if (!p.to.name || !p.to.address || !p.waJid) bad('whatsapp needs to and waJid');
+          if (p.subject !== undefined || p.threadId !== undefined) bad('email fields on a WhatsApp message');
+          if (p.isGroup !== undefined && p.isGroup !== p.waJid?.endsWith('@g.us')) bad('isGroup');
+        } else if (p.to.name || p.to.address || p.waJid || p.subject !== undefined || p.threadId !== undefined || p.isNew) {
+          bad('an X post has only a body');
+        }
+      }),
+  }),
+  // M8 T7: `x.openCompose` (08-2 §8.2) opens an X Draft card of this job in X's compose page, exactly as its button does; main
+  // builds the URL from the card (never from the AI) and answers `void`.
+  z.object({
+    id: z.string(),
+    kind: z.literal('draft.openX'),
+    payload: z.object({ jobId: z.string(), cardId: z.string().min(1).max(100) }).strict(),
+  }),
   /** The engine's answer to `ai.cmd`: main stores the chosen/verified provider in settings.json (main owns settings). */
   z.object({
     id: z.string(),
@@ -495,6 +641,19 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
       })
       .strict(),
   }),
+  // M8 T5 (gap pick T5-01): the engine's Google calls get their access token from main, which holds the refresh token and
+  // writes the rows (08-3 §16.1 Tokens; 08-1 §2.4: the engine never writes `connections`). One request per op.
+  z.object({ id: z.string(), kind: z.literal('connection.google'), payload: googleEngineReqSchema }),
+  // M8 (T3). 08-1 §2.4 `vault.encrypt` / `vault.decrypt` (the WhatsApp session only; requests). `wa.report` is a gap pick
+  // (implementation-notes "M8 T3"): `connections` and `chats` are main-only (§2.4.1), so the engine reports what the bridge
+  // said and main writes the whatsapp row, the activity line and the group mirrors.
+  z.object({
+    id: z.string(),
+    kind: z.literal('vault.encrypt'),
+    payload: z.object({ blobRef: z.literal('wa-session'), bytes: z.custom<Uint8Array>((v) => v instanceof Uint8Array) }).strict(),
+  }),
+  z.object({ id: z.string(), kind: z.literal('vault.decrypt'), payload: z.object({ blobRef: z.literal('wa-session') }).strict() }),
+  z.object({ id: z.string(), kind: z.literal('wa.report'), payload: waReportSchema }),
 ]);
 export type EngineToMain = z.infer<typeof engineToMainSchema>;
 export type DbTxReply = { ids: string[]; revs: number[] };
@@ -502,10 +661,21 @@ export type DbTxReply = { ids: string[]; revs: number[] };
 /** The engine side of the port (in production a MessagePort; in tests a direct call into main's handlers). */
 export interface MainLink {
   request<T>(
-    kind: 'db.tx' | 'db.query' | 'file.write' | 'approval.open' | 'approval.transition' | 'vault.use',
+    kind:
+      | 'db.tx'
+      | 'db.query'
+      | 'file.write'
+      | 'approval.open'
+      | 'approval.transition'
+      | 'vault.use'
+      | 'vault.encrypt'
+      | 'vault.decrypt'
+      | 'connection.google'
+      | 'draft.create'
+      | 'draft.openX',
     payload: unknown,
   ): Promise<Result<T>>;
-  send(kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify', payload: unknown): void;
+  send(kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify' | 'wa.report', payload: unknown): void;
 }
 
 export interface EngineSettingsView {

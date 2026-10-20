@@ -12,7 +12,7 @@ import { electronProbe, emit, listContext, registerIpc, type AppContext } from '
 import { EngineBridge } from './engine-supervisor/EngineBridge';
 import { EngineSupervisor } from './engine-supervisor/EngineSupervisor';
 import { engineHello } from './engine-supervisor/hello';
-import { chatRowById, messageGet } from './store/queries';
+import { chatRowById, messageGet, publicSettings } from './store/queries';
 import { NetMonitor } from './net/netMonitor';
 import type { FakeClock } from '../shared/clock';
 import { SettingsStore } from './settings/Settings';
@@ -26,6 +26,10 @@ import { logEvent, setAppTechLog, TechLog } from './log/techLog';
 import { createMainWindow } from './windows/mainWindow';
 import { handleAppScheme, registerAppScheme } from './windows/protocol';
 import { claimSingleInstance } from './windows/singleInstance';
+// M8
+import { memoryWaSession } from './vault/waSessionMemory';
+import { registerWhatsAppIpc } from './whatsapp/waIpc';
+import { BRIDGE_START_DELAY_MS, WhatsAppMain } from './whatsapp/waMain';
 // M5 T2
 import { normalisedForms } from '../shared/redactor';
 import { mainRegistry, registerSecretValue, setRegisterValue } from './secrets/registerValue';
@@ -33,8 +37,10 @@ import { memoryKeyring, memorySafeStore, napiKeyring } from './vault/keyring';
 import { registryMirror } from './vault/registryMirror';
 import { findOpenApproval } from './approvals/ApprovalGate'; // M5 T4 (review fix 4)
 import { approvalGate } from './approvals/approvalIpc'; // M5 T7
+import { draftService } from './drafts/draftIpc'; // M8 T6
 import { SecretVault } from './vault/SecretVault';
 import { installVault } from './vault/vaultRuntime';
+import { google } from './connections/connectionIpc'; // M8 T5
 
 export const AUMID = 'com.foo.desktop';
 
@@ -98,8 +104,14 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
     const netMonitor = new NetMonitor(deps.clock);
     const probe = testClock ? () => deps.net.online : electronProbe;
     const store = db;
+    // M8 (T3): WhatsApp's main half; the engine's wa.report and vault requests reach it through the bridge context.
+    let whatsapp: WhatsAppMain | null = null;
     // 08-1 §2.4: main's half of the engine port; the engine forks after first paint (step 6).
     const engine = new EngineBridge({
+      whatsapp: {
+        report: (r) => whatsapp?.report(r),
+        vault: (req) => (whatsapp ? whatsapp.vault(req) : { ok: false, error: { kind: 'UNKNOWN' } }),
+      },
       db: store,
       settings,
       emit,
@@ -116,6 +128,10 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
       keepAwake: (on, jobCount) => power?.keepAwake(on, jobCount),
       // M5 T7 (08-1 §2.4): engine `approval.open` / `approval.transition` go to main's one ApprovalGate.
       approvals: () => approvalGate(ctx),
+      // M8 T5: the engine's Google calls (connection.google) go to main's one GoogleConnections.
+      google: () => google(),
+      // M8 T6: engine `gmail.draft` → main's DraftService (08-0 §G.7).
+      drafts: () => draftService(ctx),
     });
     const launchLog = launches;
     power = new PowerService({
@@ -163,6 +179,27 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
     });
     const ctx: AppContext = { db, settings, net: netMonitor, probe, dataDir: paths.data, engine };
     supervisor = new EngineSupervisor(engine, { data: paths.data, local: paths.local });
+    const sup = supervisor;
+    ctx.bridgeTest = (msg) => sup.bridgeLife.post(msg);
+    whatsapp = new WhatsAppMain({
+      db: store,
+      settings,
+      engine,
+      bridge: sup,
+      session: memoryWaSession(),
+      emit,
+      emitChat: (id) => {
+        const row = chatRowById(store, listContext(settings.get()), id);
+        if (row) emit('chat:upsert', row);
+      },
+      emitSettings: () => emit('settings:changed', publicSettings(settings.get())),
+      chatRow: (id) => chatRowById(store, listContext(settings.get()), id),
+      now: () => deps.clock.now(),
+      dataDir: paths.data,
+      drafts: () => draftService(ctx), // M8 T7
+    });
+    const waDue = whatsapp.startup();
+    sup.onBridgeGaveUp = () => whatsapp?.report({ event: 'status', status: 'error', errorKind: null });
     supervisor.onStarted = () => {
       // M5 T7 (08-2 §5.9 step 2): an engine that crashed mid-submit left RUNNING behind; main moves it to CHECKING first.
       approvalGate(ctx).recoverSubmitted();
@@ -183,6 +220,7 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
     nativeTheme.themeSource = settings.get().appearance.theme;
     handleAppScheme(paths.data);
     registerIpc(ctx);
+    registerWhatsAppIpc(whatsapp);
     mainWindow = createMainWindow(settings, { hidden });
     if (process.platform === 'win32') {
       mainWindow.setAppDetails({
@@ -194,6 +232,8 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
     }
     // Step 6: +300 ms after first paint, fork the engine.
     mainWindow.once('ready-to-show', () => setTimeout(() => supervisor?.start(), 300));
+    // 08-1 §2.2 step 7 (M8 T3): the wa-bridge at +20 s when a whatsapp row exists.
+    if (waDue) setTimeout(() => supervisor?.startBridge(), BRIDGE_START_DELAY_MS);
     mainWindow.on('query-session-end', () => {
       sessionEnding = true;
       power?.sessionEnding();

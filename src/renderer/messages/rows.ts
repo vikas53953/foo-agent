@@ -16,7 +16,9 @@ export type VRow =
   | { kind: 'status'; key: string; text: string }
   | { kind: 'thinking'; key: string; helperId: string | null }
   | { kind: 'retention'; key: string }
-  | { kind: 'wa'; key: string; wa: WaMessageRow };
+  | { kind: 'wa'; key: string; wa: WaMessageRow }
+  // M8 T7: 04 §10.11 "Draft ready in {agentName}'s chat." under the mirror's messages.
+  | { kind: 'wa_draft'; key: string; draftCardId: string; fooChatId: string };
 
 export interface DateOpts {
   now: number;
@@ -112,10 +114,26 @@ export function buildRows(messages: MessageRow[], o: BuildOpts): VRow[] {
 }
 
 /** 04 §10.11: the mirror's rows: the retention line, date separators, then the mirrored messages (oldest first). */
-export function buildWaRows(rows: WaMessageRow[], o: DateOpts): VRow[] {
+export function buildWaRows(
+  rows: WaMessageRow[],
+  o: DateOpts,
+  drafts: readonly { draftCardId: string; fooChatId: string; at: number }[] = [],
+): VRow[] {
   const out: VRow[] = [{ kind: 'retention', key: 'retention' }];
   let lastDay = '';
+  // M8 T7: each draft marker sits after the mirrored messages that came before it.
+  let d = 0;
+  const marks = (until: number) => {
+    for (; d < drafts.length && drafts[d]!.at <= until; d++)
+      out.push({
+        kind: 'wa_draft',
+        key: `wa-draft-${drafts[d]!.draftCardId}`,
+        draftCardId: drafts[d]!.draftCardId,
+        fooChatId: drafts[d]!.fooChatId,
+      });
+  };
   for (const w of rows) {
+    marks(w.at - 1);
     const k = dayKey(w.at, o.timeZone);
     if (k !== lastDay) {
       out.push({ kind: 'date', key: `date-${k}`, label: dateLabel(w.at, o), dayKey: k });
@@ -123,6 +141,7 @@ export function buildWaRows(rows: WaMessageRow[], o: DateOpts): VRow[] {
     }
     out.push({ kind: 'wa', key: w.id, wa: w });
   }
+  marks(Infinity);
   return out;
 }
 
@@ -152,6 +171,7 @@ export function estimateRow(r: VRow, cardType: (cardId: string) => string | unde
     case 'start':
     case 'unread':
     case 'retention':
+    case 'wa_draft': // M8 T7
     case 'status':
       return 40;
     case 'thinking':

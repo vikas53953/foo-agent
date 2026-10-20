@@ -7,6 +7,7 @@ import {
   BP_M4,
   BP_M5,
   BP_M6,
+  BP_M8,
   CHAPTER_MILESTONE,
   EARLY_STEPS,
   STEP_MILESTONE,
@@ -23,7 +24,7 @@ describe('golden manifest', () => {
       uxChapters: 25,
       uxSteps: 245,
       uxFrames: 490,
-      bp: BP.length + BP_M2.length + BP_M4.length + BP_M5.length + BP_M6.length,
+      bp: BP.length + BP_M2.length + BP_M4.length + BP_M5.length + BP_M6.length + BP_M8.length,
     });
     expect(manifest.ux).toHaveLength(245);
     expect(new Set(manifest.ux.map((e) => e.id)).size).toBe(245);
@@ -44,7 +45,7 @@ describe('golden manifest', () => {
     for (const s of manifest.superseded) expect(manifest.ux.find((e) => e.id === s.id)?.superseded?.decision).toBe(s.decision);
   });
   it('fixes the BP ids for M1 with selectors and spec sections', () => {
-    expect(manifest.bp).toEqual([...BP, ...BP_M2, ...BP_M4, ...BP_M5, ...BP_M6]);
+    expect(manifest.bp).toEqual([...BP, ...BP_M2, ...BP_M4, ...BP_M5, ...BP_M6, ...BP_M8]);
     const ids = manifest.bp.map((b) => b.id);
     for (const id of ['BP-APP-L', 'BP-APP-M', 'BP-APP-R', 'BP-ANAT-L', 'BP-ANAT-M', 'BP-ANAT-S', 'BP-ANAT-XS']) expect(ids).toContain(id);
     for (const b of BP) {
@@ -114,6 +115,11 @@ describe('golden manifest', () => {
   it('CR-0020 runs the Find your AI steps and the Settings "Your AI" step early, labelled M6; M12 and M13 still own them', () => {
     const early = manifest.ux.filter((e) => e.firstTested === 'M6').map((e) => [e.id, e.milestone]);
     expect(early).toEqual([...['01', '02', '03', '04', '05', '06', '07', '09'].map((s) => [`UX-02-${s}`, 'M12']), ['UX-24-02', 'M13']]);
+  });
+  it('CR-0012 adds the M8 Connect card ref and the M8 early UX-04 steps', () => {
+    expect(BP_M8.map((b) => [b.id, b.milestone, b.selector])).toEqual([['BP-CARD-11', 'M8', '#cardgal > .panel:nth-child(11) > .mini']]);
+    const early = manifest.ux.filter((e) => e.firstTested === 'M8').map((e) => [e.id, e.milestone]);
+    expect(early).toEqual(['04', '05', '06', '07', '08', '09'].map((s) => [`UX-04-${s}`, 'M12']));
   });
   it('the selectors exist in the frozen Blueprint', () => {
     const html = readFileSync(manifest.sources.bp, 'utf8');

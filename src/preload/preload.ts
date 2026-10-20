@@ -63,6 +63,16 @@ const INVOKES = new Set([
   'ai:detect',
   'ai:choose',
   'notifications:status',
+  // M8 T3
+  'whatsapp:linkStart',
+  'whatsapp:linkCancel',
+  'whatsapp:unlink',
+  'chat:archive',
+  // M8
+  'connection:list',
+  'connection:connect',
+  'connection:disconnect',
+  'connection:googleInfo',
   'ai:openFinder',
   'ai:askKey',
   'app:openExternal',
@@ -101,6 +111,8 @@ const EVENTS = new Set([
   'settings:changed',
   'net:state',
   'navigate',
+  // M8 T3
+  'whatsapp:qr',
   'memory:changed',
   'data:exportProgress',
 ]);

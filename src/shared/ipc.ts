@@ -2,6 +2,7 @@
 // 08-0 §B.5 (no event shares a name with an invoke). The maps hold the channels built so far (M1: the shell's channels);
 // each later milestone adds its rows from 08-1 §3.2/§3.3 with the same names and shapes.
 import type { Result } from './errors';
+import type { BridgeTestOp } from './waBridge';
 import type {
   AiStatus,
   ApprovalFields,
@@ -76,7 +77,8 @@ export interface Invokes {
   /** M2 builder B: idempotent on `(chatId, clientId)` (AT-225); `SECRET_SUSPECTED` carries the PasteCatch in `error.paste`. */
   'message:send': {
     req: { chatId: string; clientId: string; text: string; replyToId?: string; attachmentIds?: string[]; secretOverride?: boolean };
-    res: { messageId: string; queued: boolean };
+    // M8 T7 (04 §10.11): in a mirrored WhatsApp group the message is a Draft card in foo's chat, not a message here.
+    res: { messageId: string; queued: boolean; mirrorDraft?: { fooChatId: string; draftCardId: string; messageId: string } };
   };
   'composer:checkSecret': { req: { text: string }; res: PasteCatch | null };
   'composer:saveDraft': {
@@ -131,6 +133,24 @@ export interface Invokes {
   'ai:detect': { req: Record<string, never>; res: DetectRow[] };
   'ai:choose': { req: { primary: ProviderId; backup?: ProviderId | null }; res: AiStatus };
   'notifications:status': { req: Record<string, never>; res: { windowsAllowed: boolean; focusAssist: boolean } };
+  // M8 T3: 08-1 §3.2 WhatsApp link and Hide from foo
+  'whatsapp:linkStart': { req: Record<string, never>; res: void };
+  'whatsapp:linkCancel': { req: Record<string, never>; res: void };
+  'whatsapp:unlink': { req: Record<string, never>; res: void };
+  'chat:archive': { req: { chatId: string; on: boolean }; res: ChatRow };
+  // M8 T2 (08-1 §3.2): Google connections. `outlook` only while flags.outlook (X-41), so v1 accepts 'google' alone.
+  'connection:list': { req: Record<string, never>; res: ConnectionRow[] };
+  'connection:connect': {
+    req: { app: 'google'; scopes?: ('gmail' | 'gcal' | 'contacts')[] };
+    res: { connectionId: string; status: 'connecting' };
+  };
+  'connection:disconnect': { req: { connectionId: string; confirm: true }; res: void };
+  /** Not in 08-1 §3.2 (gap, implementation-notes "M8 T2"): whether this build has the Google client file (08-3 §16.1.1
+   * "Gmail isn't available in this build.") and the routines C-10 names (06-3 §14). */
+  'connection:googleInfo': {
+    req: Record<string, never>;
+    res: { available: boolean; routines: { title: string; app: 'gmail' | 'gcal' | 'contacts' }[] };
+  };
   // AI step (CR-0020 (c)): 06-2 §6.1 "Change" / "Add another AI" post the 06-1 §2.2 card in foo's chat; 06-1 §2.2 "I have a key"
   // posts the key's Secret box (05-2 §5.8) with the J2 lead line. `app:openExternal` is 08-1 §3.2's row; only `maker_page` is
   // built here (the other targets answer URL_NOT_ALLOWED until their milestones).
@@ -218,6 +238,8 @@ export interface Events {
   'settings:changed': PublicSettings;
   'net:state': { online: boolean };
   navigate: { view: View; act?: string };
+  // M8 T3: 08-1 §3.3
+  'whatsapp:qr': { png: string; expiresAt: number };
   // M6 (08-1 §3.3)
   'memory:changed': { factIds: string[]; chip?: MemoryChip };
   'data:exportProgress': { pct: number; phase: string; path?: string; error?: ErrorKind };
@@ -288,6 +310,16 @@ export const INVOKE_CHANNELS = [
   'ai:detect',
   'ai:choose',
   'notifications:status',
+  // M8 T3
+  'whatsapp:linkStart',
+  'whatsapp:linkCancel',
+  'whatsapp:unlink',
+  'chat:archive',
+  // M8
+  'connection:list',
+  'connection:connect',
+  'connection:disconnect',
+  'connection:googleInfo',
   'ai:openFinder',
   'ai:askKey',
   'app:openExternal',
@@ -334,6 +366,8 @@ export const EVENT_CHANNELS = [
   'connection:upsert',
   'settings:changed',
   'net:state',
+  // M8 T3
+  'whatsapp:qr',
   'navigate',
   'memory:changed',
   'data:exportProgress',
@@ -343,9 +377,10 @@ export const EVENT_CHANNELS = [
  * 08-3 §22.9 seed sets (`ux-world` is the generator name of `demo`; both load the walkthrough world). `ux-world-ch8-live`
  * (CR-0007): the same world at 8:05 AM, foo's chat ending at the cake line, so a test sends chapter 8's "thanks!" and
  * question live and the frame matches the walkthrough's UX-08-02. `m4-cards` (M4 T5): the ux-world plus one of each M4 job
- * card in two helper chats (Errands, Home help), with no engine.
+ * card in two helper chats (Errands, Home help), with no engine. `ux-world-m8-connect` (M8 T2): the ux-world plus a Google
+ * Connect card in foo's chat and no connections.
  */
-export const SEED_SETS = ['demo', 'perf', 'ux-world', 'ux-world-ch8-live', 'm4-cards'] as const;
+export const SEED_SETS = ['demo', 'perf', 'ux-world', 'ux-world-ch8-live', 'm4-cards', 'ux-world-m8-connect'] as const;
 export type SeedSet = (typeof SEED_SETS)[number];
 
 export interface ClockReply {
@@ -378,6 +413,8 @@ export interface FooTestBridge {
   reset(): Promise<ClockReply>;
   /** Moves a job to a state the way the job runner would (writes the row, re-derives the chat pill, sends the patches). */
   jobState(jobId: string, state: JobRow['state']): Promise<{ chatId: string }>;
+  /** M8 T3: plays the fake phone of the FOO_TEST wa-bridge (scan, a group message, logout). */
+  wa(op: BridgeTestOp): Promise<{ delivered: boolean }>;
   /** M5 (CR-0009): writes one card (and its approvals row when `approval` is given); see main/test/testHooks.ts. */
   cardSeed(arg: CardSeedRequest): Promise<CardSeedResult>;
   /** M6 T7 (CR-0010 G-M6-09): runs the nightly memory tidy now (engine `test.memoryTidy`); the engine's TidyReport result. */

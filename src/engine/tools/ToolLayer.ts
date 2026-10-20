@@ -86,6 +86,9 @@ export interface ToolLayerDeps {
   // M5
   /** T7: 08-2 §11.4 R4, the Redactor's registry + pattern scrub; the pattern scrub alone when absent (unit tests). */
   scrub?(text: string): { text: string };
+  // M8
+  /** T5 (08-4 §27.1 "connected apps"): false hides a tool from the catalogue; every tool is listed when absent. */
+  listed?(tool: string): boolean;
 }
 
 const sha256 = (s: string) => createHash('sha256').update(s).digest('hex');
@@ -140,6 +143,7 @@ export class ToolLayer {
   /** System part 3 (§27.1): the tools a job may use, one line each. */
   catalogue(): string {
     return Object.values(this.d.tools)
+      .filter((t) => this.d.listed?.(t.name) ?? true)
       .map(
         (t) =>
           `- ${t.name}(${t.args}): ${t.description}${t.actionClass === 'read' || t.actionClass === 'prepare' ? '' : ' (asks the user first)'}`,

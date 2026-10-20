@@ -136,6 +136,11 @@ export const settingsSchema = z.object({
     learnFromChats: z.boolean(),
     askBeforeRemembering: z.boolean(),
   }),
+  // CR-0012 (M8): 08-0 §A.1 rows `connections.google` and `connections.whatsapp`; `connections.web` is M9's.
+  connections: z.object({
+    google: z.object({ calendarOn: z.boolean(), contactsOn: z.boolean() }),
+    whatsapp: z.object({ read: z.boolean(), draft: z.boolean(), hiddenJids: z.array(z.string()) }),
+  }),
   flags: z.object({
     screenHands: z.boolean(),
     hub: z.boolean(),
@@ -152,6 +157,9 @@ export const WRITABLE_PATHS = [
   'window.rightShellOpen',
   'window.lastChatId',
   'money.warnAt80',
+  // M8 (06-2 §6.8 Calendar / Contacts Turn off / on, 08-3 §16.1.2)
+  'connections.google.calendarOn',
+  'connections.google.contactsOn',
   'money.aiCapPaise',
   // M5 (CR-0009): the Permissions rows (the page is M13; AT-280 checks the locks through settings:set now).
   'permissions.actions.read',
@@ -171,6 +179,9 @@ export const WRITABLE_PATHS = [
   'permissions.apps.outlook',
   // M6: the Memory page banner's "Turn back on" (06-2 §7.5); the Privacy rows arrive with M13.
   'privacy.rememberOn',
+  // M8 T3: Connections → WhatsApp toggles (06-2 §6.8, 08-3 §16.4).
+  'connections.whatsapp.read',
+  'connections.whatsapp.draft',
 ] as const;
 export type WritablePath = (typeof WRITABLE_PATHS)[number];
 

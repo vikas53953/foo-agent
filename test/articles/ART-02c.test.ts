@@ -31,6 +31,8 @@ const VARS = {
   agentName: 'foo',
   site: 'example.com',
   amount: '₹14,600',
+  app: 'Gmail',
+  calendar: 'calendar',
 };
 
 /**
@@ -40,7 +42,7 @@ const VARS = {
 export const LATER = [
   'J1 / J19.6 disk nearly full [ Open storage settings ] (M11 Windows)',
   'J2 AI sign-in window [ Reopen ] · Try again (M12 onboarding)',
-  'J4 Gmail access denied [ Try again ] · Skip; app connection expired, Google access revoked, Google rate limit (M8 connectors)',
+  'J4 Gmail access denied [ Try again ] · Skip (M8 connectors; connection expired / revoked / rate limit are counted here since M8 T5)',
   'J9 site changed / site timed out (M9 browser; "all blocked" = errors.site_blocked, counted here)',
   'J10 card declined [ Try another card ] · Pay with UPI (M10 payments)',
   'J11 UPI declined [ Try again ] · Pay with card (M10 payments)',

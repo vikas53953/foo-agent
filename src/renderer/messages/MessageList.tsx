@@ -37,7 +37,8 @@ import { MessageView, WaBubble, messageAccessibleName, runRowCommand, senderOf, 
 import { MessageDialogs } from './MessageDialogs';
 import { FlingRow } from './FlingRow';
 import { RowHotCtx } from './bubbleContext';
-import { RetentionLine, StatusLine, ThinkingRow } from './Markers';
+import { MirrorDraftLine, RetentionLine, StatusLine, ThinkingRow } from './Markers';
+import { useMirrorDrafts } from './mirrorDrafts'; // M8 T7
 import { buildRows, buildWaRows, estimateRow, firstUnreadId, type VRow } from './rows';
 import { pacingPlan } from './chunks';
 import { layoutRows, type RowLayout } from './runs';
@@ -86,6 +87,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   const selecting = useStore((s) => s.ui.selection.size > 0);
   const highlightId = useStore((s) => s.messages.highlightId);
   const waRowsData = useStore((s) => s.messages.wa[chat.id]);
+  const mirrorDrafts = useMirrorDrafts(chat.id); // M8 T7
   const fooFace = useStore((s) => {
     const id = s.chats.order.find((x) => s.chats.byId[x]?.kind === 'foo' && !s.chats.byId[x]?.private);
     return (id && s.chats.byId[id]?.face) || '';
@@ -211,7 +213,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   );
 
   const rows = useMemo<VRow[]>(() => {
-    if (isWa) return buildWaRows(waRowsData ?? [], { now, timeZone: tz });
+    if (isWa) return buildWaRows(waRowsData ?? [], { now, timeZone: tz }, mirrorDrafts);
     const r = buildRows(messages, {
       now,
       timeZone: tz,
@@ -226,7 +228,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     });
     if (live) r.push(live);
     return r;
-  }, [isWa, waRowsData, messages, now, tz, slice?.hasMore, unreadFrom, unread.count, chat, agentName, live, paced]);
+  }, [isWa, waRowsData, mirrorDrafts, messages, now, tz, slice?.hasMore, unreadFrom, unread.count, chat, agentName, live, paced]);
   const layouts = useMemo<RowLayout[]>(() => layoutRows(rows, { isGroup }), [rows, isGroup]);
   const latestUserId = useMemo(() => {
     for (let i = messages.length - 1; i >= 0; i--)
@@ -330,6 +332,12 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   );
   const stick = useStickToBottom(scrollRef, rows, target);
   sticking.current = () => stick.wasAtBottom.current;
+  // M8 T7 (04 §1.6: the user's send always jumps to the end): a mirror's Send adds its marker there.
+  const marks = useRef(mirrorDrafts.length);
+  useEffect(() => {
+    if (mirrorDrafts.length > marks.current) requestAnimationFrame(() => target.scrollToEnd());
+    marks.current = mirrorDrafts.length;
+  }, [mirrorDrafts.length, target]);
 
   // Open position: restore this session's scrollTop, else the unread divider 1/3 down, else the end (§3.6.4, §3.6.5).
   const opened = useRef(false);
@@ -823,6 +831,8 @@ function Row({
       return <UnreadDivider label={row.label} />;
     case 'retention':
       return <RetentionLine />;
+    case 'wa_draft':
+      return <MirrorDraftLine agentName={ctx.agentName} fooChatId={row.fooChatId} draftCardId={row.draftCardId} />;
     case 'wa':
       return <WaBubble w={row.wa} gap={layout.gap === 'none' ? 's2' : layout.gap} ctx={ctx} />;
     case 'status':
