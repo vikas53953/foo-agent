@@ -198,9 +198,11 @@ test('UX-23 · When things go wrong: steps UX-23-01 to UX-23-06, UX-23-09 and UX
       HOLD,
     ]);
     await send(page, GOA_ASK);
-    await advance(page, 5_000);
+    // The Windows runner can start the job after a fixed advance has run: move the clock until the card posts.
+    const safe = t('errors.ai_service_down.what_is_safe', { job: 'Goa stay', n: 3 });
+    await untilPosted(page, log, log.getByTestId(TID.cardError).filter({ hasText: safe }));
     const card = log.getByTestId(TID.cardError).last();
-    await expect(card).toContainText(t('errors.ai_service_down.what_is_safe', { job: 'Goa stay', n: 3 }));
+    await expect(card).toContainText(safe);
     await expect(card.getByTestId(TID.cardErrorFix)).toHaveText(t('errors.ai_service_down.button'));
     await shoot(page, 'UX-23-04', `${rowOf(await rowId(card))} ${byTid(TID.cardErrorFix)}`);
     await close(app);
