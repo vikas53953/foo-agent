@@ -16,6 +16,7 @@ import type {} from '../../../src/shared/ipc';
 import { TID } from '../../../src/shared/testids';
 import { intake, launchWithFakeAi } from '../../e2e/fakeAi';
 import { launch } from '../../e2e/launch';
+import { settleSeededJobs } from '../../e2e/m4-start';
 import {
   blueprintBubbles,
   blueprintComposerText,
@@ -74,6 +75,33 @@ async function clearField(page: Page): Promise<void> {
   await page.keyboard.press('Control+A');
   await page.keyboard.press('Delete');
   await expect(field(page)).toHaveText('');
+}
+
+/**
+ * The thread at its newest row with the Goa stay approval in view, so the pending-card strip (BP-COMP-07's state) is gone.
+ * How far the approval sits from the bottom depends on the window (the Windows runner's log is shorter), so when the strip
+ * still shows at the bottom, its Show button brings the card into view, as a user would (04-2 §23.4).
+ */
+async function atNewest(page: Page): Promise<void> {
+  await page.getByTestId(TID.threadLog).evaluate(async (el) => {
+    el.scrollTop = el.scrollHeight;
+    await new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
+    el.scrollTop = el.scrollHeight;
+  });
+  const pending = page.getByTestId(TID.composerPending);
+  await expect(async () => {
+    if (await pending.count()) await page.getByTestId(TID.composerPendingShow).click();
+    // Show does nothing while the card's row is not loaded yet (the log is virtual and pages older rows in): walk up
+    // until the card is half in view, which hides the strip (04-2 §23.4).
+    await page.getByTestId(TID.threadLog).evaluate(async (el) => {
+      for (let i = 0; i < 80 && document.querySelector('[data-testid="composer-pending"]'); i++) {
+        await new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
+        if (!document.querySelector('[data-testid="composer-pending"]')) break;
+        el.scrollTop = Math.max(0, el.scrollTop - el.clientHeight * 0.4);
+      }
+    });
+    await expect(pending).toHaveCount(0, { timeout: 1_500 });
+  }).toPass({ timeout: 30_000 });
 }
 
 /** Holds {talkKey} (Ctrl+Space here) until the timer reads `at`, captures, then Esc cancels: nothing is sent. */
@@ -150,6 +178,7 @@ test('M2 Blueprint captures for Tier R: BP-MSG-01, BP-MSG-03, BP-MSG-04, BP-COMP
   await expect(page.getByTestId(TID.composerChip)).toHaveCount(0);
 
   // BP-COMP-04 Recording (hold {talkKey}): the drawing's timer reads 0:07.
+  await atNewest(page);
   for (const theme of THEMES) {
     await setTheme(page, theme);
     await rest(page);
@@ -167,7 +196,7 @@ test('M2 Blueprint captures for Tier R: BP-MSG-01, BP-MSG-03, BP-MSG-04, BP-COMP
   await expect(page.getByTestId(TID.composerPending)).toBeVisible();
   await rest(page);
   await both(page, 'BP-COMP-07', COMPOSER);
-  await page.getByTestId(TID.threadLog).evaluate((el) => (el.scrollTop = el.scrollHeight));
+  await atNewest(page);
 
   // BP-COMP-08 Offline: after the 10 s grace the banner strip shows and only the placeholder changes.
   await page.evaluate(() => window.__fooTest!.setOnline(false));
@@ -215,7 +244,7 @@ test('M3 Blueprint captures for Tier R: BP-MSG-02, BP-COMP-03, light and dark', 
     intake(more!, 'never shown', { delayMs: 3_600_000 }),
   ]);
   const page = await app.firstWindow();
-  await openWorld(app, page);
+  await settleSeededJobs(page, await openWorld(app, page));
   await openChat(page, 'foo');
 
   await field(page).focus();

@@ -1,0 +1,271 @@
+{
+  "milestone": "M8",
+  "source": "foo-plan §5 M8 (Goal, Constitution, Create, Must pass, Fidelity exit, Demo) and CR-0012 (M8 trace rows, connector seams, picks, close-out addendum)",
+  "rows": [
+    {
+      "group": "M8 Goal",
+      "item": "sign in with Google (PKCE, loopback), read/draft/send Gmail with Undo, Calendar read/add, Google Contacts read and name resolution (X-48), WhatsApp linked device in its own process with read and send-after-tap, X drafts that open X's compose page",
+      "status": "PARTIAL",
+      "evidence": ["test:AT-014", "test:AT-015", "test:AT-018", "test:AT-020", "test:AT-054", "test:AT-145", "test:AT-270"],
+      "covers": "part",
+      "manual": "demo on Vikas's PC with a test Gmail and a spare WhatsApp number (plan §5 M8 Demo); needs his Google OAuth client file resources/google-oauth.json (08-3 §16.1.1); carry items in docs/decisions/M8.tsv and CR-0012 §(h)"
+    },
+    {
+      "group": "M8 Constitution",
+      "item": "08-3 §16 (all), §19.4 · 05 §5.7, §5.11 · 06-screens-2 §6.8 · 08-2 §8.1–§8.2 · Art. 4, 5, 8, 9, 15 · X-18, X-39, X-40, X-41, X-48",
+      "status": "PARTIAL",
+      "evidence": ["test:ART-04a", "test:ART-04b", "test:ART-09", "test:ART-15b"],
+      "covers": "part",
+      "manual": "independent reviewer reads 08-3 §16 and 06-2 §6.8 against the build (two-axis review on the M8 PR); picks and gaps in CR-0012 §(b), (f), (g), (h)"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/contacts.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/gcal.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/gmail.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/gmailDraftTool.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/google-tools.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/google.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/limiter.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/recipients.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/types.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/whatsapp.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/x.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/wa-bridge/index.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/main/windows/oauthLoopback.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/renderer/cards/Connect.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/renderer/cards/Draft.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/renderer/cards/draft/WhatsAppNotice.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/renderer/cards/draft/XCounter.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "test/fakes/connectors/contacts.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "test/fakes/connectors/gcal.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "test/fakes/connectors/gmail-read.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "test/fakes/connectors/gmail.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "test/fakes/connectors/google-oauth.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "test/fakes/connectors/whatsapp-bridge.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-014",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-014",
+      "covers": "whole"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-015",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-015",
+      "covers": "whole"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-018",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-018",
+      "covers": "whole"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-020",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-020",
+      "covers": "whole"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-051",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-051",
+      "covers": "whole"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-052",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-052",
+      "covers": "whole"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-053",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-053",
+      "covers": "whole"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-054",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-054",
+      "covers": "whole"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-055",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-055",
+      "covers": "whole"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-070",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-070",
+      "covers": "whole"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-093",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-093",
+      "covers": "whole"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-145",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-145",
+      "covers": "whole"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "ART-04a",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-04a",
+      "covers": "whole"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "ART-04b",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-04b",
+      "covers": "whole"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "ART-09",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-09",
+      "covers": "whole"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "ART-15b",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-15b",
+      "covers": "whole"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "ART-08c",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-08c",
+      "covers": "part",
+      "manual": "M5's row (CR-0009); M8 extends the test with a Gmail OTP case"
+    },
+    {
+      "group": "M8 Fidelity exit",
+      "item": "Tier R for UX-16 (all 10), UX-04 connection steps (UX-04-04…09) and BP-CARD-11 with no Fail",
+      "status": "PARTIAL",
+      "evidence": ["test:UX-16-01", "test:UX-16-07", "test:UX-04-04", "test:BP-CARD-11"],
+      "covers": "part",
+      "manual": "golden lane fidelity report; drawing-vs-spec gaps disputed under CR-0012 §(h); UX-04-05 and UX-16-09 are Google's and X's own pages (UNVERIFIABLE); UX-11 stays with M10 (G-M8-08); UX-16-02/-04/-06 are M5's (CR-0009)"
+    },
+    {
+      "group": "M8 Fidelity exit",
+      "item": "fidelity report signed by the reviewer and seen by Vikas",
+      "status": "UNVERIFIABLE",
+      "manual": "compare page for Vikas's review (approve-on-his-behalf rule)"
+    }
+  ]
+}

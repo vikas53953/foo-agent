@@ -79,7 +79,7 @@ describe('AT-108 / AT-109 · NEEDS YOU and back', () => {
         step({ kind: 'done', result: 'Done.', unverified: true }),
       ],
     });
-    for (const w of ['first', 'second', 'third', 'fourth']) h.userSays(w);
+    for (const w of ['first', 'second', 'third', 'fourth']) h.userSaysIn(h.chat(w), w);
     await h.settle();
     const states = h.jobs().map((j) => j.state);
     expect(states.filter((s) => s === 'needs_you')).toHaveLength(3);
@@ -103,19 +103,24 @@ describe('AT-108 / AT-109 · NEEDS YOU and back', () => {
         done('epsilon'),
       ],
     });
-    const ids = names.map((n) => h!.userSays(`job ${n}`));
+    const ids = names.map((n) => h!.userSaysIn(h!.chat(n), `job ${n}`));
     const jobOf = (i: number) => h!.jobs().find((j) => j.user_message_id === ids[i])!;
     const poll = async (rounds = 60) => {
       for (let i = 0; i < rounds; i++) await new Promise((r) => setTimeout(r, 2));
     };
+    // Polls until the moves land (a slow Windows runner needs more than a fixed number of rounds), at most ~5 s.
+    const until = async (ok: () => boolean) => {
+      for (let i = 0; i < 2_500 && !ok(); i++) await new Promise((r) => setTimeout(r, 2));
+    };
     await poll();
     h.clock.advance(2_000);
-    await poll();
+    await until(() => jobOf(0).state === 'needs_you' && h!.jobs().filter((j) => j.state === 'working').length === 3);
     expect(jobOf(0).state).toBe('needs_you');
     expect(h.jobs().filter((j) => j.state === 'working')).toHaveLength(3);
     expect(jobOf(4).state).toBe('queued');
 
     h.answer(String(h.cards('choice')[0]!.id), 'o1');
+    await until(() => h!.cards('choice')[0]!.state === 'answered');
     await poll();
     expect(h.cards('choice')[0]!.state).toBe('answered');
     expect(jobOf(0).state).toBe('needs_you');

@@ -1,0 +1,38 @@
+/* Spec: 06 §0.4 Chip (32px, padding 0 12px, --r-full, --t-caption; --bg-sunken / --bg-hover / --bg-pressed; selected
+ * --accent-soft + --accent; focus ring 02 F8). */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s0);
+  min-height: var(--btn-h-sm);
+  padding: 0 var(--s2);
+  border: 0;
+  border-radius: var(--r-full);
+  background: var(--bg-sunken);
+  font: var(--t-caption);
+  color: var(--fg-1);
+  cursor: pointer;
+}
+.chip:hover {
+  background: var(--bg-hover);
+}
+.chip:active {
+  background: var(--bg-pressed);
+}
+.chip:focus-visible {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+.chip:disabled {
+  color: var(--fg-disabled);
+}
+.selected,
+.selected:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+@media (forced-colors: active) {
+  .chip {
+    border: 1px solid ButtonText;
+  }
+}
