@@ -139,7 +139,7 @@ export interface WebToolDeps {
   log: (kind: string, detail?: Record<string, string | number | boolean>) => void;
   /** A used-up key adds one line to the next brief (`cards.brief.line.web_key_quota`, M7). */
   onQuota?: (provider: WebProvider) => void;
-  /** 401/403: main stores `connections.web.refused.{provider}` (08-4 §27.3 item 1). */
+  /** 401/403: main stores `connections.web.refused.{provider}` (08-0 §A, X-127); a re-saved key's check clears it. */
   onRefused?: (provider: WebProvider) => void;
 }
 

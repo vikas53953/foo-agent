@@ -39,7 +39,7 @@ import { filterSay } from './prompt/filters';
 import { PromptBuilder, type ConversationMessage } from './prompt/PromptBuilder';
 import { ReleaseGate } from './prompt/releaseGate';
 import { Redactor } from './redact/Redactor';
-import { createEngineWeb, webToolDefs, type EngineWeb } from './tools/web';
+import { createEngineWeb, vaultWebKeys, webToolDefs, type EngineWeb } from './tools/web';
 import { findBanned } from './prompt/filters';
 import { capRateOf, resolveModel } from './ai/models';
 import { createGate } from './gate/GateLogic';
@@ -135,8 +135,13 @@ export class Engine {
       recordTurn: (row) => void o.link.request('db.tx', { ops: [{ op: 'insert', table: 'ai_turns', row: { ...row } }] }),
       newId: () => newId('t', o.clock.now()),
       log: (kind) => log('web', kind),
-      // No main message stores these yet (connections.web.refused write, brief line): logged until M7/T1 add one.
-      onRefused: (p) => log('web.refused', p),
+      // M5's vault answers the engine only (08-2 §11.3); main registers the value before it is sent.
+      keys: vaultWebKeys(async (req) => {
+        const r = await o.link.request<string>('vault.use', req).catch(() => null);
+        return r?.ok && typeof r.value === 'string' && r.value ? r.value : null;
+      }),
+      // X-127: main writes `connections.web.refused.{p}`. The brief line for a used-up key waits for the brief (M7): logged.
+      onRefused: (provider) => o.link.send('web.refused', { provider }),
       onQuota: (p) => log('web.quota', p),
     });
     const fake = o.testRun && Boolean(o.env.FOO_FAKE_AI);
