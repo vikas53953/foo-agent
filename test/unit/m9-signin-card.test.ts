@@ -150,13 +150,10 @@ describe('sign-in card states (05-3 §5.10.2 States)', () => {
     expect(signInView(card('withdrawn', p), ctx)).toMatchObject({ tone: 'grey', text: 'No longer needed. The job was stopped.' });
   });
 
-  it('timed_out and handed_back: a grey summary of the card, no buttons', () => {
-    for (const state of ['timed_out', 'handed_back'])
-      expect(signInView(card(state, p), ctx)).toEqual({
-        kind: 'summary',
-        tone: 'grey',
-        text: 'irctc.co.in wants you to sign in. Do it here and I’ll carry on.',
-      });
+  it('timed_out and handed_back: a grey summary of the card; timed_out alone offers Start again (05-3 §5.10.3, 2 h)', () => {
+    const text = 'irctc.co.in wants you to sign in. Do it here and I’ll carry on.';
+    expect(signInView(card('handed_back', p), ctx)).toEqual({ kind: 'summary', tone: 'grey', text });
+    expect(signInView(card('timed_out', p), ctx)).toEqual({ kind: 'summary', tone: 'grey', text, startAgain: true });
   });
 
   it('offline: the offline line; I’m done and Take over disabled, Skip stays enabled', () => {

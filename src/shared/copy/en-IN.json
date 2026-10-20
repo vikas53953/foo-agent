@@ -1481,5 +1481,9 @@
   "signin_banner.in_control.text": "You’re in control. {agentName} is paused.",
   "signin_banner.hand_back.label": "Hand back to {agentName}",
   "signin_banner.not_secure.text": "Not secure",
-  "signin_banner.window.title": "{domain}, sign in, {agentName}"
+  "signin_banner.window.title": "{domain}, sign in, {agentName}",
+  "cards.signin.reminder_toast": "{site} is still waiting for you to sign in.",
+  "cards.signin.timed_out_line": "I stopped the {what} because the sign-in wasn’t done. Ask me again any time.",
+  "cards.signin.hand_back_line": "Carrying on from here.",
+  "cards.signin.button.start_again": "Start again"
 }

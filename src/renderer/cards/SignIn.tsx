@@ -51,6 +51,23 @@ export function SignInCard({ card, time }: { card: CardRow; time: CardTime }) {
         <span className={own.summaryText} data-copy="ui">
           {view.text}
         </span>
+        {/* M9 T7: AT-060, a new job from the same ask (08-1 §3.2 job:retry). */}
+        {view.startAgain && card.jobId && (
+          <Button
+            variant="link"
+            size="md"
+            disabled={busy}
+            data-testid={TID.cardSigninStartAgain}
+            onClick={() => {
+              setBusy(true);
+              void invoke('job:retry', { jobId: card.jobId! })
+                .catch(() => undefined)
+                .finally(() => setBusy(false));
+            }}
+          >
+            {t('cards.signin.button.start_again')}
+          </Button>
+        )}
         {/* The signed-in copy carries its own time ("· 9:32 AM"). */}
         {view.tone !== 'ok' && <CardTimeLabel {...time} />}
       </CardFrame>
