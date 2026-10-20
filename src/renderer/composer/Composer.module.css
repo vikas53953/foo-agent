@@ -814,7 +814,7 @@
 }
 .suggestion {
   animation: rise var(--m-spring) var(--ease-spring) backwards;
-  animation-delay: calc(var(--i, 0) * 2 * var(--m-stagger) * var(--motion-move, 1)); /* §21.7 "60ms apart" */
+  animation-delay: calc(var(--i, 0) * 2 * var(--m-stagger) * var(--motion-move, 1)); /* §21.7: two stagger steps apart */
 }
 .suggestions[data-exit] {
   animation: fadeOut var(--m-normal) var(--ease-out) forwards;
