@@ -1,0 +1,26 @@
+{
+  "journey": "test/verify/r1-t2-kit.journey.ts",
+  "label": "before",
+  "appDir": "/home/claude/foo-base",
+  "commit": "7a6775c0fa7756b712a0bf2b28572bd0d2578f0e",
+  "dirty": false,
+  "started": "2026-10-20T11:04:21.239Z",
+  "finished": "2026-10-20T11:05:18.443Z",
+  "platform": "linux x64",
+  "pass": false,
+  "error": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('bubble-foo').filter({ hasText: 'Fares to Goa are falling this week.' }).getByTestId('kit-line-chart').first() to be visible\u001b[22m\n\n    at showUp (/home/claude/foo-agent/test/verify/r1-t2-kit.journey.ts:39:21)\n    at async Object.journey (/home/claude/foo-agent/test/verify/r1-t2-kit.journey.ts:72:3)\n    at async run (/home/claude/foo-agent/scripts/foo-verify.ts:134:5)",
+  "notes": [],
+  "shots": [
+    {
+      "file": "before/01-before.light.png",
+      "name": "before",
+      "theme": "light"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "journey": "test/verify/r1-t2-kit.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "59bbe943f3b6399be9f06009ebf0141432e94390",
+  "dirty": false,
+  "started": "2026-10-20T11:05:19.789Z",
+  "finished": "2026-10-20T11:05:23.813Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "streaming: chart drawn while the bubble is \"streaming\", series 1",
+    "complete: captions 0, code blocks 0",
+    "tap: \"Compare with last month\" shows as the user's message",
+    "kit.action: the AI read action compare_last_month with context {\"route\":\"BOM-GOI\"}; chart now has 2 series, key This week,Last month"
+  ],
+  "shots": [
+    {
+      "file": "after/01-before.light.png",
+      "name": "before",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-chart-streaming.light.png",
+      "name": "chart-streaming",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-after.light.png",
+      "name": "after",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-after-dark.dark.png",
+      "name": "after-dark",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}

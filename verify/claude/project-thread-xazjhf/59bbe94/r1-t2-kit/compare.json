@@ -1,0 +1,30 @@
+{
+  "before": "7a6775c0fa7756b712a0bf2b28572bd0d2578f0e",
+  "after": "59bbe943f3b6399be9f06009ebf0141432e94390",
+  "rows": [
+    {
+      "name": "before.light",
+      "before": "before/01-before.light.png",
+      "after": "after/01-before.light.png",
+      "changed": 0.0000888671875
+    },
+    {
+      "name": "chart-streaming.light",
+      "before": null,
+      "after": "after/02-chart-streaming.light.png",
+      "changed": null
+    },
+    {
+      "name": "after.light",
+      "before": null,
+      "after": "after/03-after.light.png",
+      "changed": null
+    },
+    {
+      "name": "after-dark.dark",
+      "before": null,
+      "after": "after/04-after-dark.dark.png",
+      "changed": null
+    }
+  ]
+}
