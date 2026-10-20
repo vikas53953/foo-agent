@@ -4,6 +4,7 @@
 // after the C-26 dialog), 08-1 §3.2 `page:open` / `page:rpc`, CR-0022 AT-359, AT-360, AT-361, X-180.
 // Main checks; the renderer then does what a passed call asks (resize, fill the composer, the C-26 dialog, send the text
 // as if the user typed it, so the gate sees it like any message).
+import { readFileSync } from 'node:fs';
 import { shell } from 'electron';
 import { systemClock } from '../../shared/clock';
 import { fail, ok, type Result } from '../../shared/errors';
@@ -15,6 +16,7 @@ import { deps } from '../deps';
 import type { AppContext, IpcHandlers } from '../ipc/IpcRouter';
 import { logEvent } from '../log/techLog';
 import { mainRegistry } from '../secrets/registerValue';
+import { keptGet } from '../keep/keep';
 import { messageGet } from '../store/queries';
 import { secretIpc } from '../vault/secretIpc';
 import { pageBodies, pages, type PageRegistry } from './pages';
@@ -101,8 +103,14 @@ export function openPage(
     html = card.payload.html;
     source = `k:${card.id}`;
   } else {
-    // A kept page (`keptId`) is R1 T7's: it reads the `.foopage` blob and serves it through the same registry.
-    return { failed: 'not_found' };
+    const kept = req.keptId ? keptGet(ctx.db, req.keptId) : null;
+    if (!kept || kept.chatId !== req.chatId || kept.kind !== 'page') return { failed: 'not_found' };
+    try {
+      html = readFileSync(kept.bodyPath, 'utf8');
+    } catch {
+      return { failed: 'not_found' };
+    }
+    source = `ki:${kept.id}`;
   }
   if (!html.trim()) return { failed: 'not_found' };
   const page = registry.serve(req.chatId, source, html, now);

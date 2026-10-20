@@ -2,12 +2,15 @@
 // it", Article 6), 04 §13.5 (user actions go renderer → main → engine; any action that would send, book, pay, delete or
 // share is an approval request, never a direct action), CR-0022 AT-355 (the action reaches the engine and the surface
 // updates from the reply), AT-356 (a gated Button opens an approval), AT-349 / AT-350 (a ListPick or TimePick pick is the
-// user's message in the picked words; R1 T3), X-180. R1 T2.
+// user's message in the picked words; R1 T3), X-180. R1 T2. R1 T7: MainToEngine `kit.refresh` (a LiveStamp's Refresh,
+// AT-352, AT-368) is stored the same way, as the user tapping "Refresh", and asks the AI for the surface's data again with
+// a new LiveStamp asOf.
 // The engine never acts on a surface action itself: it stores the tap as the user's message (the Button's own words, or
 // its action name) with the action for the AI beside it (`text_for_ai`), and hands it to the chat lane like a typed
 // message. So an action that would send, book, pay, delete or share meets the same intake, job and gate (08-2 §9.4) as the
 // user typing those words, and the reply that follows can update the surface by naming its surfaceId.
 import type { Clock } from '../../shared/clock';
+import { t } from '../../shared/copy/t';
 import type { KitActionMessage } from '../../shared/kit/catalog';
 import { actionLine, pickWords } from '../../shared/kit/pick';
 import { buttonWords, foldFence, kitMessagesOf, type Surface } from '../../shared/kit/surface';
@@ -52,6 +55,16 @@ export function actionForAi(words: string, a: KitActionMessage): string {
   ].join('\n');
 }
 
+/** The line the AI reads for a LiveStamp's Refresh (08-4 §24 conversation line); not shown to the user. */
+export function refreshForAi(words: string, surfaceId: string): string {
+  return [
+    words,
+    `(I tapped Refresh on your ${surfaceId} surface. Get its data again now. Reply with an \`\`\`a2ui block that sends updateDataModel with the new values and updateComponents with its LiveStamp's new asOf (epoch ms) for surfaceId "${surfaceId}", without createSurface.)`,
+  ].join('\n');
+}
+
+export type KitRefresh = { chatId: string; messageId?: string; cardId?: string; surfaceId: string };
+
 export class KitActions {
   constructor(private readonly d: KitActionDeps) {}
 
@@ -64,7 +77,7 @@ export class KitActions {
    * The surface as the renderer draws it: its host message (or card) and, for a message, the later foo replies of the
    * chat that update the same surfaceId (renderer/kit/model.ts folds the same way), so a relabelled Button keeps its words.
    */
-  private async surface(a: KitActionMessage): Promise<Surface | null> {
+  private async surface(a: KitRefresh): Promise<Surface | null> {
     const fences: string[] = [];
     if (a.messageId !== undefined) {
       const m = await this.query<EngineMessage>('messageById', a.messageId);
@@ -96,6 +109,22 @@ export class KitActions {
       0,
       WORDS_MAX,
     );
+    await this.store(a.chatId, words, actionForAi(words, a));
+  }
+
+  /** R1 T7: a LiveStamp's Refresh. The surface must still exist where the tap says it lives. */
+  async refresh(r: KitRefresh): Promise<void> {
+    const s = await this.surface(r);
+    if (!s) {
+      this.d.log('kit.refresh_unknown_surface', 'NOT_FOUND');
+      return;
+    }
+    const words = t('kit.live.refresh');
+    await this.store(r.chatId, words, refreshForAi(words, r.surfaceId));
+  }
+
+  /** The tap as the user's message, then the chat lane takes it like a typed one. */
+  private async store(chatId: string, words: string, forAi: string): Promise<void> {
     const id = this.d.newId('m');
     const r = await this.d.link.request('db.tx', {
       ops: [
@@ -104,11 +133,11 @@ export class KitActions {
           table: 'messages',
           row: {
             id,
-            chat_id: a.chatId,
+            chat_id: chatId,
             author_kind: 'user',
             kind: 'text',
             text: words,
-            text_for_ai: actionForAi(words, a),
+            text_for_ai: forAi,
             status: 'sent',
             created_at: this.d.clock.now(),
           },
@@ -119,6 +148,6 @@ export class KitActions {
       this.d.log('kit.action_store_failed', r.error.kind);
       return;
     }
-    this.d.enqueue(a.chatId, id);
+    this.d.enqueue(chatId, id);
   }
 }

@@ -7,15 +7,21 @@
 // places and time pieces MapStops, Timeline, WeekCalendar, ListPick, TimePick (AT-341, AT-344, AT-345, AT-349, AT-350).
 // R1 T4: Stepper, Compare, Calculator, GoalRing, TimedChecklist, ShortForm (AT-342, 343, 346, 347, 348, 351) and the
 // Secret box offer after a refused value (AT-370).
+// R1 T7: LiveStamp (AT-352), Keep under the surface (pick 9, AT-369) and `Image` from a chat file (`file:{fileId}`, 04 §13.5).
 // Parts are drawn by plain functions, not components, so one render counts the parts it had to drop (the caption).
-import { useState, type KeyboardEvent, type ReactNode } from 'react';
+import { useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import type { KitActionMessage, KitComponent } from '../../shared/kit/catalog';
+import { surfaceBody, surfaceTitle } from '../../shared/kit/keep';
 import { pickContext, type PickContext } from '../../shared/kit/pick';
 import { absPath, boundPath, getPath, INVALID, resolveContext, resolveField, type Surface } from '../../shared/kit/surface';
 import { TID } from '../../shared/testids';
 import { invoke } from '../ipc/client';
+import { KeepButton } from '../keep/KeepButton';
 import { clockNow } from '../store/apply';
+import { useStore } from '../store/index';
+import { mediaUrl } from '../messages/bubbleContext';
+import { attachmentKind } from '../messages/BubbleParts';
 import { Button } from '../ui/Button';
 import { Icon, type IconName } from '../ui/Icon';
 import { ICONS } from '../ui/icons/registry';
@@ -24,6 +30,7 @@ import { Calculator, type CalcInput } from './Calculator';
 import { Compare } from './Compare';
 import { GoalRing } from './GoalRing';
 import { LineChart, type ChartSeries } from './LineChart';
+import { LiveStamp } from './LiveStamp';
 import { ListPick, useAnswered } from './ListPick';
 import { MapStops } from './MapStops';
 import { firstSecret, SecretRefused, type SecretCatch } from './SecretRefused';
@@ -46,16 +53,20 @@ const MAX_ITEMS = 50;
 
 interface Ctx {
   surface: Surface;
+  host: SurfaceHost;
+  /** R1 T7: a kept copy, drawn for looking only. */
+  keptCopy: boolean;
   data: unknown;
   key: string;
   /** While the reply streams, a bound value may still be on its way: its component waits instead of being dropped. */
   streaming: boolean;
   tally: { dropped: number };
+  /** R1 T7: an image file already in the chat (`file:{fileId}`), as its app://media URL; null when it is not there. */
+  fileUrl(fileId: string): string | null;
   edit(path: string, value: unknown): void;
   act(c: Extract<KitComponent, { component: 'Button' }>, scope: string): void;
   /** R1 T3: a ListPick row or TimePick slot was picked; true once main took the action (05-1 §5.3.4). */
   pick(c: Extract<KitComponent, { component: 'ListPick' | 'TimePick' }>, scope: string, pick: PickContext): Promise<boolean>;
-  host: SurfaceHost;
   /** Sends one user action (R1 T4: a ShortForm submit); a secret-looking value is refused and `clear` drops it. */
   send(c: KitComponent, name: string, context: Record<string, unknown>, clear: (caught: SecretCatch) => void): void;
   agentName: string;
@@ -141,10 +152,11 @@ function part(ctx: Ctx, c: KitComponent, scope: string, depth: number): ReactNod
     case 'Image': {
       const url = field<string>(ctx, c, 'url', scope);
       if (url === INVALID) return INVALID;
-      // 04 §13.5: a chat file (`file:{id}`) needs the chat's files list, which this renderer does not read yet (T7 Keep
-      // brings it); until then its alt text stands in. `data:` images draw.
-      if (!url.startsWith('data:')) return <p className={styles.text_caption}>{c.alt}</p>;
-      return <img className={styles.image} src={url} alt={c.alt} />;
+      // 04 §13.5: `data:` images and image files already in the chat (`file:{fileId}`) draw; anything else (a web image)
+      // never loads, and its alt text stands in.
+      const src = url.startsWith('data:') ? url : url.startsWith('file:') ? ctx.fileUrl(url.slice('file:'.length)) : null;
+      if (!src) return <p className={styles.text_caption}>{c.alt}</p>;
+      return <img className={styles.image} src={src} alt={c.alt} />;
     }
     case 'Icon':
       return isIcon(c.name) ? <Icon name={c.name} size={20} /> : INVALID;
@@ -345,9 +357,18 @@ function part(ctx: Ctx, c: KitComponent, scope: string, depth: number): ReactNod
       return <KitListPick ctx={ctx} c={c} scope={scope} />;
     case 'TimePick':
       return <KitTimePick ctx={ctx} c={c} scope={scope} />;
+    case 'LiveStamp':
+      // Refresh only where a later reply can redraw the surface: a reply's own fence, never a kit card or a kept copy.
+      return (
+        <LiveStamp
+          asOf={c.asOf}
+          refreshable={c.refreshable && !ctx.keptCopy && 'messageId' in ctx.host}
+          host={ctx.host}
+          surfaceId={ctx.surface.id}
+        />
+      );
     default:
-      // The other foo components arrive with T7 (LiveStamp); a valid one draws nothing until then
-      // then and is not counted as dropped.
+      // Every foo piece is built; a valid component this renderer does not know draws nothing and is not dropped.
       return null;
   }
 }
@@ -473,20 +494,28 @@ export function KitSurface({
   agentName,
   streaming = false,
   blockDropped,
+  keep,
+  keptId,
 }: {
   surface: Surface;
   host: SurfaceHost;
   agentName: string;
   streaming?: boolean;
+  /** R1 T7: shows Keep under the surface once it is drawn (absent in a kept copy). `kept`: its card is kept already. */
+  keep?: { kept: boolean };
+  /** R1 T7: drawn as a kept copy: its own state, and taps, picks and Refresh never reach the reply it came from. */
+  keptId?: string;
   /** Messages or components the block's parse dropped; the last surface of a block carries them, so one caption shows. */
   blockDropped: number;
 }) {
-  const key = `${'messageId' in host ? host.messageId : host.cardId}:${surface.id}`;
+  const key = keptId ? `ki:${keptId}:${surface.id}` : `${'messageId' in host ? host.messageId : host.cardId}:${surface.id}`;
   const data = useSurfaceData(key, surface.data);
   const [sent, setSent] = useState<string | null>(null);
   const [refused, setRefused] = useState<{ caught: SecretCatch; clear: (caught: SecretCatch) => void } | null>(null);
   /** Article 8 / 04-2 §22.4: a value that looks like a password, code or card number never leaves the renderer; the Secret
    * box is offered for it instead (R1 T4). True when the context was refused. */
+  const box = useRef<HTMLDivElement>(null);
+  const chatMessages = useStore((st) => st.messages.byChat[host.chatId]);
   const refuse = (context: Record<string, unknown>, clear: (caught: SecretCatch) => void): boolean => {
     const caught = firstSecret(outgoingText(context));
     setRefused(caught ? { caught, clear } : null);
@@ -508,18 +537,28 @@ export function KitSurface({
     );
   };
   const send: Ctx['send'] = (c, name, context, clear) => {
-    if (refuse(context, clear)) return;
+    // A kept copy is for looking only: nothing in it reaches the reply it came from.
+    if (keptId || refuse(context, clear)) return;
     void post(c, name, context).then((ok) => setSent(ok ? c.id : null));
   };
   const ctx: Ctx = {
     surface,
     host,
+    keptCopy: keptId !== undefined,
     data,
     key,
     streaming,
     tally: { dropped: 0 },
+    fileUrl: (fileId) => {
+      for (const id of chatMessages?.ids ?? []) {
+        const a = chatMessages!.byId[id]?.attachments?.find((x) => x.id === fileId);
+        if (a) return attachmentKind(a) === 'image' ? mediaUrl(a.path) : null;
+      }
+      return null;
+    },
     edit: (path, value) => editSurface(key, surface.data, path, value),
-    act: (c, scope) =>
+    act: (c, scope) => {
+      if (keptId) return;
       send(c, c.action.event.name, resolveContext(c.action.event.context, data, scope), (caught) => {
         // The secret leaves the TextField it was typed in (04-2 §22.4: the span is removed from the field).
         for (const f of Object.values(surface.components)) {
@@ -527,8 +566,10 @@ export function KitSurface({
           const path = boundPath(f, 'value', scope) ?? boundPath(f, 'value');
           if (path && getPath(data, path) === caught.text) editSurface(key, surface.data, path, caught.rest);
         }
-      }),
+      });
+    },
     pick: (c, scope, p) => {
+      if (keptId) return Promise.resolve(false);
       const context = pickContext(c, data, scope, p);
       return refuse(context, () => undefined) ? Promise.resolve(false) : post(c, c.action.event.name, context);
     },
@@ -539,6 +580,7 @@ export function KitSurface({
   const dropped = blockDropped + ctx.tally.dropped;
   return (
     <div
+      ref={box}
       className={styles.surface}
       role="group"
       aria-label={t('kit.surface.accessible_name', { agentName })}
@@ -563,6 +605,21 @@ export function KitSurface({
         />
       )}
       {dropped > 0 && <KitDropped />}
+      {keep && !streaming && (
+        <div className={styles.keep}>
+          <KeepButton
+            keepKey={key}
+            kept={keep.kept}
+            target={box}
+            request={() => ({
+              ...host,
+              kind: 'kit',
+              title: surfaceTitle(surface) ?? t('kit.surface.accessible_name', { agentName }),
+              body: surfaceBody(surface, data),
+            })}
+          />
+        </div>
+      )}
     </div>
   );
 }

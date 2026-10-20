@@ -909,6 +909,10 @@ export class Engine {
       case 'kit.action':
         await this.kitActions.handle(msg.payload);
         return undefined;
+      // R1 T7 (CR-0022 AT-352, AT-368): a LiveStamp's Refresh, stored and answered the same way.
+      case 'kit.refresh':
+        await this.kitActions.refresh(msg.payload);
+        return undefined;
       default:
         return undefined;
     }

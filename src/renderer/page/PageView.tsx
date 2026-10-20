@@ -6,12 +6,15 @@
 // building, ready, failed, kept), CR-0022 AT-357..AT-362 and pick 13 (requestAction and openLink only while the user's tap
 // is live; one C-26 dialog at a time, its URL fixed when it opens), X-180. Used by the reply's PageBlock and the `ai_page`
 // card. A remount (the message list scrolling the row away and back) reloads the page from scratch: accepted for v1.
+// R1 T7 (CR-0022 pick 9, AT-369): a ready page offers Keep; a kept page (source `keptId`) opens only here, in this box.
 import { useEffect, useRef, useState } from 'react';
 import { t } from '../../shared/copy/t';
 import { PAGE_SANDBOX, PAGE_SCHEME, type PageRpcCall, type PageRpcResult } from '../../shared/kit/page';
+import { pageTitle } from '../../shared/kit/keep';
 import { TID } from '../../shared/testids';
 import { newClientId, sendOutgoing } from '../composer/send';
 import { invoke } from '../ipc/client';
+import { KeepButton } from '../keep/KeepButton';
 import { clockNow } from '../store/apply';
 import { useStore } from '../store/index';
 import { requestComposer } from '../store/messages';
@@ -20,7 +23,7 @@ import { Dialog } from '../ui/Dialog';
 import { asJson, callId, floodGate, frameHeight, linkDomain, rpcReply } from './bridge';
 import styles from './PageView.module.css';
 
-export type PageSource = { messageId: string; index: number } | { cardId: string };
+export type PageSource = { messageId: string; index: number } | { cardId: string } | { keptId: string };
 export type PageState = 'building' | 'ready' | 'failed' | 'kept';
 
 /** The first height before the page reports its own. */
@@ -52,11 +55,14 @@ export function PageView({
   source,
   state,
   tooLarge,
+  keepHtml,
 }: {
   chatId: string;
   source: PageSource;
   state: PageState;
   tooLarge?: boolean;
+  /** R1 T7: the page's HTML, to offer Keep once the page is open (absent for a kept page). */
+  keepHtml?: string;
 }) {
   const agentName = useStore(selectAgentName);
   const frame = useRef<HTMLIFrameElement>(null);
@@ -67,7 +73,9 @@ export function PageView({
   const [link, setLink] = useState<string | null>(null);
   // The link the open C-26 dialog names, read synchronously: while it is set, another openLink is declined.
   const asking = useRef<string | null>(null);
-  const key = 'cardId' in source ? `k:${source.cardId}` : `m:${source.messageId}:${source.index}`;
+  const box = useRef<HTMLDivElement>(null);
+  const key =
+    'cardId' in source ? `k:${source.cardId}` : 'keptId' in source ? `ki:${source.keptId}` : `m:${source.messageId}:${source.index}`;
   const wanted = (state === 'ready' || state === 'kept') && !tooLarge;
   const opened = answer?.key === key ? answer.value : null;
 
@@ -145,7 +153,7 @@ export function PageView({
       : null;
 
   return (
-    <div className={styles.page} data-testid={TID.aiPage} data-state={shown} data-page-id={pageId ?? undefined}>
+    <div ref={box} className={styles.page} data-testid={TID.aiPage} data-state={shown} data-page-id={pageId ?? undefined}>
       {status !== null && (
         <p className={failed ? styles.failed : styles.status} data-testid={TID.aiPageStatus} role="status">
           {status}
@@ -161,6 +169,22 @@ export function PageView({
           src={`${PAGE_SCHEME}://${pageId}/`}
           style={{ height: heights.get(pageId) ?? height }}
         />
+      )}
+      {keepHtml !== undefined && pageId && !failed && !('keptId' in source) && (
+        <div className={styles.keep}>
+          <KeepButton
+            keepKey={key}
+            kept={state === 'kept'}
+            target={box}
+            request={() => ({
+              chatId,
+              ...('cardId' in source ? { cardId: source.cardId } : { messageId: source.messageId }),
+              kind: 'page',
+              title: pageTitle(keepHtml) ?? t('page.frame.accessible_name', { agentName }),
+              body: keepHtml,
+            })}
+          />
+        </div>
       )}
       {refused && (
         <p className={styles.refused} role="status">

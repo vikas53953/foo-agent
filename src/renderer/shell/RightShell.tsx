@@ -1,12 +1,14 @@
 // Spec: 03-shell-2 §3.7.1 (frame: --panel-w, --bg-app, 1px --line left edge; L pushes, M/S overlay with --shadow-28 and no
 // scrim, XS full page; slide 340 at --m-slow --ease-in / --m-normal --ease-out, instant with reduced motion; closed by the
 // toggle, Ctrl+Shift+D, Esc inside it, an outside click in overlay modes, its Dismiss; <aside aria-label="Details for {name}">),
-// §3.7.2 (header), §3.7.3 (sections), §3.7.4 (per-chat differences: group shows "In this group" and no spend).
+// §3.7.2 (header), §3.7.3 (sections), §3.7.4 (per-chat differences: group shows "In this group" and no spend). R1 T7
+// (CR-0022 pick 9): the chat's kept items close the panel.
 import { useEffect, useRef } from 'react';
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
 import type { ChatRow } from '../../shared/types';
 import { registerFocusTarget } from '../a11y/focusTargets';
+import { KeptList } from '../keep/KeptList';
 import { IconButton } from '../ui/IconButton';
 import { DoingNow } from './DoingNow';
 import { GroupMembers } from './GroupMembers';
@@ -84,6 +86,7 @@ export function RightShell({ chat }: { chat: ChatRow }) {
         <UsingChips chat={chat} />
         {group ? <GroupMembers chat={chat} /> : <KnowList chat={chat} />}
         {!group && <SpentMeters />}
+        <KeptList chat={chat} />
       </div>
     </aside>
   );

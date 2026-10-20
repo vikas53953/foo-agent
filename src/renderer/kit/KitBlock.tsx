@@ -2,6 +2,7 @@
 // an invalid or unknown component is dropped with a quiet "Couldn't show part of this" caption and the words still show; a
 // later reply that names the same surfaceId updates it), CR-0022 AT-353, AT-354, AT-355, X-180. R1 T2 replaces T1's
 // placeholder: the block draws its surfaces with KitSurface (renderer/kit/model.ts folds the chat's later fences in).
+// R1 T7: each surface offers Keep once the reply ends (CR-0022 pick 9).
 import { useBubble } from '../messages/bubbleContext';
 import { useStreamFade } from '../messages/streamFade';
 import { KitDropped, KitSurface } from './KitSurface';
@@ -25,6 +26,7 @@ export function KitBlock({ body }: { body: string; closed: boolean }) {
           agentName={bubble.agentName}
           streaming={streaming}
           blockDropped={i === surfaces.length - 1 ? dropped : 0}
+          keep={{ kept: false }}
         />
       ))}
       {surfaces.length === 0 && dropped > 0 && <KitDropped />}

@@ -5,6 +5,8 @@
 // X-124 (one IPC call = exactly one engine message), CR-0022 AT-355, AT-356, X-180. R1 T2. R1 T3: a keycap reaction on foo's
 // message picks that row of its ListPick, through the same handler as a tap (05-1 §5.3.4, AT-349); a ListPick or TimePick
 // answers once, like a Choice card (05-1 §5.3.5): a second pick, tap or reaction, is refused here.
+// R1 T7: `kit:refresh` (`{ chatId; messageId?; cardId?; surfaceId }` → one MainToEngine `kit.refresh`, VALIDATION;
+// AT-352, AT-368).
 import { fail, ok, type Result } from '../../shared/errors';
 import type { KitActionMessage } from '../../shared/kit/catalog';
 import {
@@ -54,6 +56,23 @@ export function kitActionHandler(d: KitDeps): (req: KitActionMessage) => Result<
     if (!d.engine()?.send('kit.action', req)) return fail('UNKNOWN', 'engine not running');
     // Tech log: the action's name only, never its values (08-1 §0.6).
     d.log(`kit: action ${req.name}`);
+    return ok(undefined);
+  };
+}
+
+export type KitRefresh = { chatId: string; messageId?: string; cardId?: string; surfaceId: string };
+
+/** `kit:refresh`: the same host check as an action, then exactly one `kit.refresh` (the engine asks the AI again). */
+export function kitRefreshHandler(d: KitDeps): (req: KitRefresh) => Result<void> {
+  return (req) => {
+    if ((req.messageId === undefined) === (req.cardId === undefined)) return fail('VALIDATION');
+    const host = req.messageId !== undefined ? { messageId: req.messageId } : { cardId: req.cardId! };
+    const text = d.hostText(req.chatId, host);
+    if (text === null) return fail('NOT_FOUND');
+    const created = kitMessagesOf(text).messages.some((m) => 'createSurface' in m && m.createSurface.surfaceId === req.surfaceId);
+    if (!created) return fail('NOT_FOUND');
+    if (!d.engine()?.send('kit.refresh', req)) return fail('UNKNOWN', 'engine not running');
+    d.log('kit: refresh');
     return ok(undefined);
   };
 }
@@ -139,5 +158,7 @@ export function kitReaction(ctx: AppContext, messageId: string, emoji: string, n
 
 /** IpcRouter's one line. */
 export function registerKitIpc(ctx: AppContext, handle: typeof Handle): void {
-  handle('kit:action', kitActionHandler({ ...kitDbReads(ctx.db), engine: () => ctx.engine, log: (line) => console.info(line) }));
+  const d: KitDeps = { ...kitDbReads(ctx.db), engine: () => ctx.engine, log: (line) => console.info(line) };
+  handle('kit:action', kitActionHandler(d));
+  handle('kit:refresh', kitRefreshHandler(d));
 }

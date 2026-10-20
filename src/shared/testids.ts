@@ -552,6 +552,8 @@ export const TID = {
   bubbleActionChip: 'bubble-action-chip',
   settingsRowAppearanceVisuals: 'settings-row-appearance-visuals',
   filesKeptItem: 'files-kept-item',
+  // R1 T7 (lead ok): the dialog a kept item reopens in.
+  dialogKeptItem: 'dialog-kept-item',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

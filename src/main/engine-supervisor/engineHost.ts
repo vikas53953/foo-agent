@@ -202,7 +202,7 @@ const UPDATE_COLUMNS: Record<string, readonly string[]> = {
 };
 /** JSON columns: an object or array is stored as JSON text; `redactRow` then scrubs the §4.6 rule 2 ones leaf by leaf. */
 const JSON_COLUMNS: Record<string, readonly string[]> = {
-  messages: ['why', 'suggestions'], // P1 T6 (04-2 §21.7)
+  messages: ['why', 'suggestions', 'actions'], // P1 T6, R1 T7 (04-2 §21.7 action chips)
   jobs: ['do_verbs', 'proof'],
   steps: ['slots'],
   tool_calls: ['args', 'result'],

@@ -12,6 +12,7 @@
 // voice bar back into the mic; offline dims the field.
 // R1 T6 (X-180, CR-0022 picks 6, 7): the side-question strip (04 §17.5, sent with `side`), three paste bands (§22.5: inline,
 // "Pasted text" chip, `pasted-{time}.txt` file chip over 10,000 characters; the catcher runs on the whole text first).
+// R1 T7 (X-180, CR-0022, 04-2 §21.7): the latest reply's action chips beside the reply chips (AT-367).
 import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 // P1 T6
 import { motion } from '../../shared/tokens';
@@ -79,7 +80,8 @@ import { ASK_QUOTE_MAX } from '../messages/AskPill'; // R1 T6
 import { roundButtonState, roundTooltip, talkKeyLabel, isTalkChord } from './roundState';
 import { newClientId, sendOutgoing, stageFile } from './send';
 import { SuggestionChips } from './SuggestionChips';
-import { suggestionsFor } from './suggestions';
+import { actionsFor, suggestionsFor } from './suggestions';
+import { ActionChips } from './ActionChips';
 import { useVoice } from './useVoice';
 import { RecordCancel, VoiceRecorder, type RecordingView } from './VoiceRecorder';
 import styles from './Composer.module.css';
@@ -378,6 +380,22 @@ export function Composer({ chat }: { chat: ChatRow }) {
     () =>
       slice
         ? suggestionsFor({
+            kind: chat.kind,
+            private: chat.private,
+            messages: slice.ids.flatMap((id) => (slice.byId[id] ? [slice.byId[id]] : [])),
+            cards: cardsById,
+            recording: recording !== null,
+            disabled: notSetUp,
+            typed: !empty || chips.length > 0,
+          })
+        : null,
+    [slice, chat.kind, chat.private, cardsById, recording, notSetUp, empty, chips.length],
+  );
+  // R1 T7 (04-2 §21.7): the same reply's action chips, beside the follow-ups.
+  const actionView = useMemo(
+    () =>
+      slice
+        ? actionsFor({
             kind: chat.kind,
             private: chat.private,
             messages: slice.ids.flatMap((id) => (slice.byId[id] ? [slice.byId[id]] : [])),
@@ -1142,7 +1160,10 @@ export function Composer({ chat }: { chat: ChatRow }) {
             )}
           </div>
         )}
-        <SuggestionChips view={suggestView} onPick={pickSuggestion} />
+        <div className={styles.chipRow}>
+          <SuggestionChips view={suggestView} onPick={pickSuggestion} />
+          <ActionChips chatId={chatId} view={actionView} />
+        </div>
         <div className={styles.row}>
           <span className={styles.slot}>
             {voice.rec ? (

@@ -1,9 +1,10 @@
 // Spec: 04-2 §21.7 (suggestion chips: 3 starters in an empty chat, foo's or a helper's; up to 3 follow-ups only from the
 // latest foo or helper reply's own `suggestions`; hidden on the first keystroke, while recording, in groups, WhatsApp mirrors
 // and private chats, and when the latest reply holds an Approval, Payment, Draft or Secret card or its job touched money),
-// CR-0021 pick 10, AT-307, AT-308. Pure; unit-tested (test/unit/p1-suggestions.test.ts).
+// CR-0021 pick 10, AT-307, AT-308. Pure; unit-tested (test/unit/p1-suggestions.test.ts). R1 T7 (X-180, CR-0022, AT-367): the
+// action chips beside them come from the same latest reply's `actions`, never after an Approval or Payment card.
 import { t } from '../../shared/copy/t';
-import type { CardRow, CardType, ChatKind, MessageRow } from '../../shared/types';
+import type { ActionChip, CardRow, CardType, ChatKind, MessageRow } from '../../shared/types';
 
 export interface SuggestFacts {
   kind: ChatKind;
@@ -43,4 +44,27 @@ export function suggestionsFor(f: SuggestFacts): SuggestView {
   if (last.jobId && Object.values(f.cards).some((c) => c?.jobId === last.jobId && MONEY_CARDS.has(c.type))) return null;
   const items = (last.suggestions ?? []).slice(0, 3);
   return items.length ? { kind: 'followup', items } : null;
+}
+
+export type ActionView = { messageId: string; items: ActionChip[] } | null;
+
+export type ActionFacts = Omit<SuggestFacts, 'messages'> & {
+  messages: readonly Pick<MessageRow, 'id' | 'authorKind' | 'kind' | 'cardId' | 'jobId' | 'actions' | 'deletedAt'>[];
+};
+
+/**
+ * §21.7 action chips: up to 3 from the latest foo or helper reply's own `actions`, hidden with the reply chips (first
+ * keystroke, recording, groups, mirrors, private chats) and never after an Approval or Payment card or a money job.
+ */
+export function actionsFor(f: ActionFacts): ActionView {
+  if (f.typed || f.recording || f.private || f.disabled) return null;
+  if (f.kind !== 'foo' && f.kind !== 'helper') return null;
+  const shown = f.messages.filter((m) => m.kind !== 'marker');
+  const last = shown[shown.length - 1];
+  if (!last || (last.authorKind !== 'foo' && last.authorKind !== 'helper') || last.deletedAt !== null) return null;
+  const card = last.cardId ? f.cards[last.cardId] : undefined;
+  if (card && STOP_CARDS.has(card.type)) return null;
+  if (last.jobId && Object.values(f.cards).some((c) => c?.jobId === last.jobId && MONEY_CARDS.has(c.type))) return null;
+  const items = (last.actions ?? []).slice(0, 3);
+  return items.length ? { messageId: last.id, items } : null;
 }

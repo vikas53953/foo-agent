@@ -355,7 +355,7 @@ R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-1
 ,,AT-349,,,10-acceptance-2 §C.9; 04 §13.5; 05 §5.3.4; CR-0022,test/e2e/r1-places-time.spec.ts,M9,live
 ,,AT-350,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-places-time.spec.ts,M9,live
 ,,AT-351,,,10-acceptance-2 §C.9; 04 §13.5; Art. 8; CR-0022,test/e2e/r1-numbers-forms.spec.ts,M9,live
-,,AT-352,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-output.spec.ts,M9,pending
+,,AT-352,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-output.spec.ts,M9,live
 ,,AT-353,,,10-acceptance-2 §C.9; 04 §13.5; 04 §14.4; CR-0022,test/e2e/r1-kit.spec.ts,M9,live
 ,,AT-354,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/unit/r1-contracts.test.ts,M9,live
 ,,AT-354,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-kit.spec.ts,M9,live
@@ -370,9 +370,9 @@ R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-1
 ,,AT-363,,,10-acceptance-2 §C.9; 04 §6.5; 08-2 §11.4; CR-0022,test/e2e/r1-input.spec.ts,M9,live
 ,,AT-364,,,10-acceptance-2 §C.9; 04 §9.2; 04 §17; CR-0022 pick 6; CR-0022,test/e2e/r1-input.spec.ts,M9,live
 ,,AT-365,,,10-acceptance-2 §C.9; 04-2 §22.4; 04-2 §22.5; CR-0022 pick 7; CR-0022,test/e2e/r1-input.spec.ts,M9,live
-,,AT-366,,,10-acceptance-2 §C.9; 06-2 §6.2; CR-0022 pick 8; CR-0022,test/e2e/r1-output.spec.ts,M9,pending
-,,AT-367,,,10-acceptance-2 §C.9; 04-2 §21.7; CR-0022,test/e2e/r1-output.spec.ts,M9,pending
-,,AT-368,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-output.spec.ts,M9,pending
-,,AT-369,,,10-acceptance-2 §C.9; CR-0022 pick 9; CR-0022,test/e2e/r1-output.spec.ts,M9,pending
+,,AT-366,,,10-acceptance-2 §C.9; 06-2 §6.2; CR-0022 pick 8; CR-0022,test/e2e/r1-output.spec.ts,M9,live
+,,AT-367,,,10-acceptance-2 §C.9; 04-2 §21.7; CR-0022,test/e2e/r1-output.spec.ts,M9,live
+,,AT-368,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-output.spec.ts,M9,live
+,,AT-369,,,10-acceptance-2 §C.9; CR-0022 pick 9; CR-0022,test/e2e/r1-output.spec.ts,M9,live
 ,,AT-370,,,10-acceptance-2 §C.9; 04 §13.5; Art. 8; CR-0022,test/unit/r1-kit-safety.test.ts,M9,live
 ,,AT-371,,,10-acceptance-2 §C.9; CR-0022 pick 5; CR-0022,test/unit/r1-kit-safety.test.ts,M9,live

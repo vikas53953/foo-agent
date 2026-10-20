@@ -227,6 +227,8 @@
   "app.panel.know.edit": "Edit",
   "app.panel.know.see_all": "See all ({count})",
   "app.panel.know.empty": "Nothing yet. Tell me things like “I’m vegetarian” and I’ll remember.",
+  "app.panel.kept.label": "Kept",
+  "app.panel.kept.empty": "Things you keep from replies show here.",
   "app.panel.members.title": "In this group",
   "app.panel.members.you": "You",
   "app.panel.members.private_note": "Private things stay in your own chats.",
