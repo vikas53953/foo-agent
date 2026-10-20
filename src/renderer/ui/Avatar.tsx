@@ -2,10 +2,14 @@
 // helper fill = its `--h-*` colour, letter `--on-helper`; letter = first letter of the name in `--t-title`; group = up to
 // 3 member avatars of 26 clustered top-left, top-right, bottom-centre, each with a 2px `--bg-sidebar` ring), §3.4.5.1
 // (WhatsApp mirror: fill `--bg-sunken`, letter `--fg-1`), §3.4.11 (the user: `--h-slate`), 08-0 §E.7 FaceRef grammar.
-// The living face (02-2 §F15.9) arrives with its milestone: `living:*` draws the letter face of the name until then.
+// 02-2 §F15.5 type 4 / §F15.9.9: a `living:*` face on foo or a helper renders the living `Face` (it replaces the letter face;
+// no letter mark is drawn for foo); inside a group cluster living faces are still and ringless (§F15.9.3d, §F15.6);
+// §F15.9.4 picture, glyph and emoji faces keep their look and show the mood around them (CR-0021 pick 6, P1 T2).
 import type { CSSProperties } from 'react';
+import type { FaceSize } from '../../shared/face';
 import type { FaceRef, Mood } from '../../shared/types';
 import { cx } from './cx';
+import { Face as LivingFace, OtherFaceMood } from './Face';
 import styles from './Avatar.module.css';
 
 export type AvatarKind = 'foo' | 'helper' | 'group' | 'wa_mirror' | 'user';
@@ -28,6 +32,8 @@ export interface AvatarProps {
   /** Group chats: the members drawn in the cluster (first 3). */
   members?: AvatarMember[];
   mood?: Mood;
+  /** §F15.9.9: groups pass false (§F15.9.3d: still Resting, only the Working and Needs you rings). */
+  animate?: boolean;
   className?: string;
   'data-testid'?: string;
 }
@@ -51,21 +57,58 @@ function fillStyle(kind: AvatarKind, color: string | null | undefined): CSSPrope
   return undefined;
 }
 
-export function Avatar({ face, name, kind, color, size = 'list', members, mood, className, ...rest }: AvatarProps) {
+const FACE_SIZE: Record<AvatarSize, FaceSize> = { list: 48, header: 40, inline: 26 };
+
+/** §F15.5 type 4: foo and helpers wear the living face unless the user picked a picture, glyph, emoji or letter. */
+export const isLiving = (face: FaceRef, kind: AvatarKind) => face.startsWith('living:') && (kind === 'foo' || kind === 'helper');
+
+/** §F15.9.4: a picture, glyph or emoji face the user picked for foo or a helper shows its mood around the face, never on it. */
+const showsOtherMood = (face: FaceRef, kind: AvatarKind) =>
+  (face.startsWith('glyph:') || face.startsWith('file:')) && (kind === 'foo' || kind === 'helper');
+
+export function Avatar({ face, name, kind, color, size = 'list', members, mood, animate = true, className, ...rest }: AvatarProps) {
   if (kind === 'group' && members && members.length > 0) {
     return (
       <span className={cx(styles.avatar, styles[size], styles.cluster, className)} data-mood={mood} aria-hidden="true" {...rest}>
-        {members.slice(0, 3).map((m, i) => (
-          <span key={i} className={cx(styles.member, styles[`m${i}`], styles[m.kind])} style={fillStyle(m.kind, m.color)}>
-            {faceGlyph(m.face, m.name, m.kind)}
-          </span>
-        ))}
+        {members.slice(0, 3).map((m, i) =>
+          isLiving(m.face, m.kind) ? (
+            <span key={i} className={cx(styles.member, styles.living, styles[`m${i}`])}>
+              <LivingFace
+                faceRef={m.face}
+                size={26}
+                tone={m.kind === 'helper' ? 'helper' : 'foo'}
+                color={m.color}
+                ring={false}
+                animate={false}
+              />
+            </span>
+          ) : (
+            <span key={i} className={cx(styles.member, styles[`m${i}`], styles[m.kind])} style={fillStyle(m.kind, m.color)}>
+              {faceGlyph(m.face, m.name, m.kind)}
+            </span>
+          ),
+        )}
       </span>
     );
   }
-  return (
+  if (isLiving(face, kind)) {
+    return (
+      <LivingFace
+        faceRef={face}
+        size={FACE_SIZE[size]}
+        mood={mood}
+        animate={animate}
+        tone={kind === 'helper' ? 'helper' : 'foo'}
+        color={color}
+        className={cx(styles.livingRoot, className)}
+        {...rest}
+      />
+    );
+  }
+  const wrapped = !!mood && showsOtherMood(face, kind) && (animate || mood === 'working' || mood === 'needs_you');
+  const letter = (
     <span
-      className={cx(styles.avatar, styles[size], styles[kind], className)}
+      className={cx(styles.avatar, styles[size], styles[kind], !wrapped && className)}
       style={fillStyle(kind, color)}
       data-mood={mood}
       aria-hidden="true"
@@ -74,9 +117,16 @@ export function Avatar({ face, name, kind, color, size = 'list', members, mood, 
       {faceGlyph(face, name, kind)}
     </span>
   );
+  if (!wrapped) return letter;
+  return (
+    <span className={cx(styles.moodRoot, className)} data-other-mood={mood}>
+      {letter}
+      <OtherFaceMood mood={mood} size={FACE_SIZE[size]} />
+    </span>
+  );
 }
 
-/** The face for a chat (02-2 §F15.9.9): today the letter face with its mood in data-mood for the living face to read. */
+/** The face for a sender label or the Thinking row (02-2 §F15.9.9): the avatar with its mood (living faces move). */
 export function Face(props: AvatarProps) {
   return <Avatar {...props} />;
 }

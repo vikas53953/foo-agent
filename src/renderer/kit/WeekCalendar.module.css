@@ -1,0 +1,90 @@
+/* Spec: 04 §13.5 (kit pieces: 02 tokens only), 02-2 §F19.1 (tabular figures), 02 §F11.1. R1 T3: a column per day on one
+ * hour scale (--s5 per hour); busy = --accent-soft fill with an --accent edge, free = a dashed --fg-3 edge on --bg-raised; the
+ * day label and start times --t-caption; the key under the week --t-caption --fg-2. */
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  min-width: 0;
+}
+.week {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: var(--s0);
+}
+.day {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s0);
+  min-width: 0;
+}
+.label {
+  overflow: hidden;
+  font: var(--t-caption-strong);
+  color: var(--fg-2);
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.track {
+  position: relative;
+  height: calc(var(--s5) * var(--hours));
+  margin: 0;
+  padding: 0;
+  border-radius: var(--r-sm);
+  background: var(--bg-sunken);
+  list-style: none;
+}
+.slot {
+  position: absolute;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  border-radius: var(--r-xs);
+}
+.busy {
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+}
+.free {
+  border: 1px dashed var(--fg-3);
+  background: var(--bg-raised);
+}
+.time {
+  display: block;
+  padding: 0 var(--s0);
+  overflow: hidden;
+  font: var(--t-caption);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-1);
+  text-overflow: clip;
+  white-space: nowrap;
+}
+.key {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  margin: 0;
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
+.swatch {
+  display: inline-block;
+  width: var(--s3);
+  height: var(--s2);
+  border-radius: var(--r-xs);
+}
+
+@media (forced-colors: active) {
+  .busy {
+    border-color: Highlight;
+    background: Highlight;
+  }
+  .busy .time {
+    color: HighlightText;
+  }
+  .free {
+    border-color: CanvasText;
+  }
+}

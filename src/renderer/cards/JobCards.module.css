@@ -108,6 +108,18 @@
   display: flex;
   gap: var(--s1);
 }
+/* 02 §F7.1 Cards (CR-0021): a fresh Plan card's steps fade up one by one, 2 × --m-stagger apart (0 at Basic / Off, where
+ * the rise is gone too). Only a new message (data-new), never when scrolling back. */
+:global([data-new]) .planStep {
+  animation: plan-reveal var(--m-slow) var(--ease-spring-soft) both;
+  animation-delay: calc(var(--i, 0) * 2 * var(--m-stagger));
+}
+@keyframes plan-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--s0) * var(--motion-move)));
+  }
+}
 .planNum {
   flex: none;
   width: var(--icon-md);

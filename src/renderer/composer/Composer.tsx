@@ -10,13 +10,15 @@
 // --dur-confirm after delivery, the hold flood and the live level ring; "Add details…" while a job of this chat works; the
 // field grows smoothly; a dropped file's chip flies in from the drop point; a caught secret shows the lock; Esc shrinks the
 // voice bar back into the mic; offline dims the field.
+// R1 T6 (X-180, CR-0022 picks 6, 7): the side-question strip (04 §17.5, sent with `side`), three paste bands (§22.5: inline,
+// "Pasted text" chip, `pasted-{time}.txt` file chip over 10,000 characters; the catcher runs on the whole text first).
 import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 // P1 T6
 import { motion } from '../../shared/tokens';
 import { Icon } from '../ui/Icon';
 import { Presence } from '../ui/Presence';
 import { createPortal } from 'react-dom';
-import { COUNTER_FROM, ACCEPT, isLongPaste, TEXT_LIMIT } from '../../shared/attachmentRules';
+import { COUNTER_FROM, ACCEPT, MAX_FILES, pasteBand, pastedFileName, TEXT_LIMIT } from '../../shared/attachmentRules';
 import { t } from '../../shared/copy/t';
 import { askedForCode, findSecrets, secretOnly, suggestedNameSlot, type CheckContext } from '../../shared/redactor';
 // M5 T2
@@ -35,7 +37,7 @@ import { loadHelpersReducer, selectHelpers } from '../store/helpers';
 import { setComposerHint, update, useStore } from '../store/index';
 import { selectAi, selectNow } from '../store/live';
 import { editMessage, selectChatMessages, takeComposerRequest, type StoredMessage } from '../store/messages';
-import { selectAgentName } from '../store/settings';
+import { selectAgentName, selectTimeZone } from '../store/settings';
 import { selectDialog } from '../store/ui';
 import { AttachMenu } from './AttachMenu';
 import { AttachmentChips, type ChipsHandle } from './AttachmentChips';
@@ -44,7 +46,7 @@ import { ComposerBanner } from './ComposerBanner';
 import { ComposerNotice, NOTICE_MS, type Notice } from './ComposerNotice';
 import { ComposerNoticeStack } from './ComposerNoticeStack';
 import { composerKeyAction, isPrintable, WRAP } from './composerKeys';
-import { cacheDraft, cachedDraft, cancelDraftSave, saveDraftLater, saveDraftNow, type DraftPayload } from './drafts';
+import { cacheDraft, cachedDraft, cancelDraftSave, saveDraftLater, saveDraftNow, type DraftPayload, type DraftState } from './drafts';
 import { DropOverlay, type DropLook } from './DropOverlay';
 import { EditStrip } from './EditStrip';
 import { caretOffset, caretX, domToSegments, segmentsToDom, selectionOffsets, setCaret, textBeforeCaret } from './fieldDom';
@@ -73,6 +75,7 @@ import { PendingStrip } from './PendingStrip';
 import { stripView, waitingCards } from './pending';
 import { NARROW_PILL_PX, planChangePending, placeholderText } from './placeholder';
 import { ReplyStrip, type ReplyQuote } from './ReplyStrip';
+import { ASK_QUOTE_MAX } from '../messages/AskPill'; // R1 T6
 import { roundButtonState, roundTooltip, talkKeyLabel, isTalkChord } from './roundState';
 import { newClientId, sendOutgoing, stageFile } from './send';
 import { SuggestionChips } from './SuggestionChips';
@@ -86,7 +89,12 @@ export const TYPED_CHECK_MS = 800;
 /** 08-0 §G.10 `live.lastKeystrokeAt` is written at most this often. */
 const KEYSTROKE_EVERY_MS = 1_000;
 
-type Strip = { kind: 'reply'; messageId: string } | { kind: 'edit'; messageId: string; saved: Saved } | null;
+type Strip =
+  | { kind: 'reply'; messageId: string }
+  // R1 T6 (04 §17.5): the reply strip quoting the words a side question asks about.
+  | { kind: 'side'; messageId: string; quote: string }
+  | { kind: 'edit'; messageId: string; saved: Saved }
+  | null;
 interface Saved {
   segs: Segment[];
   chips: Chip[];
@@ -111,6 +119,7 @@ const secretPart = (m: MaskValue) => secretOnly(m.hit, m.value);
 export function Composer({ chat }: { chat: ChatRow }) {
   const chatId = chat.id;
   const agentName = useStore(selectAgentName);
+  const timeZone = useStore(selectTimeZone); // R1 T6: `pasted-{time}.txt`
   const ai = useStore(selectAi);
   const banner = useStore((s) => s.ui.banner);
   const helpersById = useStore(selectHelpers);
@@ -217,7 +226,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
     return { askedForCode: askedForCode(rows, clockNow()) };
   }, [slice]);
 
-  const pastedMasked = (list: readonly Chip[]) => list.some((c) => c.kind === 'pasted' && (c.text ?? '').includes(MASK_CHAR));
+  const pastedMasked = (list: readonly Chip[]) => list.some((c) => heldText(c) && (c.text ?? '').includes(MASK_CHAR));
 
   /** Masks every caught span in the field (and in "Pasted text" chips); true when anything is caught or still masked. */
   const runCheck = useCallback((): boolean => {
@@ -230,9 +239,9 @@ export function Composer({ chat }: { chat: ChatRow }) {
       writeField(masked.segs);
       caught = true;
     }
-    const chipHits = chipsRefState.current.some((c) => c.kind === 'pasted' && findSecrets(c.text ?? '', {}).length);
+    const chipHits = chipsRefState.current.some((c) => heldText(c) && findSecrets(c.text ?? '', {}).length);
     if (chipHits) {
-      setChips((list) => list.map((c) => (c.kind === 'pasted' ? { ...c, text: maskText(c.text ?? '') } : c)));
+      setChips((list) => list.map((c) => (heldText(c) ? { ...c, text: maskText(c.text ?? '') } : c)));
       caught = true;
     }
     return caught;
@@ -256,7 +265,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
   }, [chatId, strip, linkPreviewRemoved]);
 
   const latestPayload = useRef(draftPayload);
-  const latestCache = useRef(() => ({
+  const latestCache = useRef<() => DraftState>(() => ({
     segs: segsRef.current,
     attachments: [] as ReturnType<typeof chipAttachment>[],
     replyToId: null as string | null,
@@ -271,6 +280,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
       ),
       replyToId: strip?.kind === 'reply' ? strip.messageId : strip?.kind === 'edit' ? strip.saved.reply : null,
       linkPreviewRemoved,
+      ...(strip?.kind === 'side' ? { side: { messageId: strip.messageId, quote: strip.quote } } : {}),
     });
   });
 
@@ -300,7 +310,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
       window.removeEventListener('beforeunload', flush);
       flush();
       const c = latestCache.current();
-      cacheDraft(chatId, hasText(c.segs) || c.attachments.length || c.replyToId ? c : null);
+      cacheDraft(chatId, hasText(c.segs) || c.attachments.length || c.replyToId || c.side ? c : null);
     };
   }, [chatId]);
 
@@ -337,7 +347,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
         staged: Promise.resolve(a.id),
       })),
     );
-    if (d.replyToId) setStrip({ kind: 'reply', messageId: d.replyToId });
+    if (cached?.side) setStrip({ kind: 'side', ...cached.side });
+    else if (d.replyToId) setStrip({ kind: 'reply', messageId: d.replyToId });
     setLinkPreviewRemoved(d.linkPreviewRemoved);
   }, [chatId, draftRow, helpersById, setChips, writeField]);
 
@@ -540,9 +551,11 @@ export function Composer({ chat }: { chat: ChatRow }) {
     const req = takeComposerRequest(chatId);
     if (!req || notSetUp) return;
     touched.current = true;
-    if (req.kind === 'reply') {
+    if (req.kind === 'reply' || req.kind === 'side') {
       if (strip?.kind === 'edit') closeStrip();
-      setStrip({ kind: 'reply', messageId: req.messageId });
+      setStrip(
+        req.kind === 'side' ? { kind: 'side', messageId: req.messageId, quote: req.quote } : { kind: 'reply', messageId: req.messageId },
+      );
       focusField();
     } else if (req.kind === 'edit') {
       const m = slice?.byId[req.messageId];
@@ -556,7 +569,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
   /* eslint-enable react-hooks/set-state-in-effect */
 
   const quote = useMemo((): ReplyQuote | null => {
-    if (strip?.kind !== 'reply') return null;
+    if (strip?.kind !== 'reply' && strip?.kind !== 'side') return null;
     const q = slice?.byId[strip.messageId];
     if (!q) return null;
     const s = senderOf(q, { agentName, fooFace: '', helpers: helpersById });
@@ -566,7 +579,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
       sender: s.name,
       color,
       helper: q.authorKind === 'helper',
-      text: messagePlainText(q, cardsById),
+      text: strip.kind === 'side' ? strip.quote : messagePlainText(q, cardsById),
       deleted: q.deletedAt !== null,
       thumb: image ? mediaUrl(image.path) : null,
     };
@@ -592,7 +605,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
   );
 
   const addFiles = useCallback(
-    (files: readonly File[], from?: { x: number; y: number }) => {
+    (files: readonly File[], from?: { x: number; y: number }, enter: 'fly' | 'fold' = 'fly') => {
       if (notSetUp || strip?.kind === 'edit' || !files.length) return;
       touched.current = true;
       const plan = planFiles(files, chipsRefState.current.length);
@@ -620,7 +633,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
           url: kind === 'image' ? URL.createObjectURL(f) : undefined,
           state: 'preparing',
           staged,
-          enter: 'fly',
+          enter,
           ...(from ? { from } : {}),
         };
       });
@@ -656,7 +669,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
         })
         .catch(() => undefined);
     writeField(dropMasks(segsRef.current));
-    setChips((list) => list.map((c) => (c.kind === 'pasted' ? { ...c, text: (c.text ?? '').split(MASK_CHAR).join('') } : c)));
+    setChips((list) => list.map((c) => (heldText(c) ? { ...c, text: (c.text ?? '').split(MASK_CHAR).join('') } : c)));
     setCatchOpen(false);
     touched.current = true;
     focusField();
@@ -709,7 +722,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
       const text = trimBlankLines(serialise(segsRef.current, 'send', hidden));
       const ready = Promise.all(
         list.map((c) => {
-          if (c.kind !== 'pasted') return c.staged ?? Promise.reject(new Error('not staged'));
+          if (!heldText(c)) return c.staged ?? Promise.reject(new Error('not staged'));
           const body = (c.text ?? '').split(MASK_CHAR).join(hidden);
           return stageFile(c.name, new TextEncoder().encode(body).buffer).then((r) => {
             if (!r.ok) throw new Error(r.kind);
@@ -718,12 +731,13 @@ export function Composer({ chat }: { chat: ChatRow }) {
         }),
       );
       ready.catch(() => undefined);
-      const replyToId = strip?.kind === 'reply' ? strip.messageId : undefined;
+      const replyToId = strip?.kind === 'reply' || strip?.kind === 'side' ? strip.messageId : undefined;
       const outgoing = {
         chatId,
         clientId: newClientId(),
         text,
         ...(replyToId ? { replyToId } : {}),
+        ...(strip?.kind === 'side' ? { side: true, ...(strip.quote.trim() ? { quote: strip.quote.slice(0, ASK_QUOTE_MAX) } : {}) } : {}),
         attachments: list.map((c) => ({ ...chipAttachment(c), path: c.url ?? '' })),
         ready,
         ...(override ? { secretOverride: true } : {}),
@@ -827,7 +841,39 @@ export function Composer({ chat }: { chat: ChatRow }) {
       const text = e.clipboardData.getData('text/plain').replace(/\r\n?/g, '\n');
       if (!text) return;
       setNotice(null);
-      if (isLongPaste(text)) {
+      const band = pasteBand(text);
+      if (band === 'file') {
+        // R1 T6 (§22.5, pick 7): over 10,000 characters the paste is saved as `pasted-{time}.txt` and shows as a file chip
+        // counted under §22.6. The catcher looks at the whole text first: with a catch, the chip holds the masked text and
+        // the file is written only on Send, so a secret never reaches disk.
+        if (strip?.kind === 'edit') return;
+        const name = pastedFileName(clockNow(), timeZone);
+        if (!findSecrets(text, {}).length) {
+          addFiles([new File([text], name, { type: 'text/plain' })], undefined, 'fold');
+          announce(t('composer.paste.saved_file'));
+          return;
+        }
+        if (chipsRefState.current.length >= MAX_FILES) {
+          showNotice(noticeFor('too_many_files', name));
+          return;
+        }
+        setChips((list) => [
+          ...list,
+          {
+            key: chipKey(),
+            kind: 'file',
+            name,
+            bytes: new TextEncoder().encode(text).byteLength,
+            text: maskText(text),
+            state: 'ready',
+            enter: 'fold',
+          },
+        ]);
+        announce(t('composer.paste.saved_file'));
+        setCatchOpen(true);
+        return;
+      }
+      if (band === 'chip') {
         if (strip?.kind === 'edit') return;
         const caught = findSecrets(text, {}).length > 0;
         setChips((list) => [
@@ -863,7 +909,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
       writeField(tidy([...head, ...b]), checkText(head).length);
       setCatchOpen(true);
     },
-    [addFiles, checkCtx, notSetUp, setChips, strip, writeField],
+    [addFiles, checkCtx, noticeFor, notSetUp, setChips, showNotice, strip, timeZone, writeField],
   );
 
   const wrap = useCallback(
@@ -1128,6 +1174,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
             >
               {strip?.kind === 'edit' && <EditStrip onClose={closeStrip} />}
               {strip?.kind === 'reply' && quote && <ReplyStrip quote={quote} onClose={closeStrip} />}
+              {strip?.kind === 'side' && quote && <ReplyStrip quote={quote} side onClose={closeStrip} />}
               {chips.length > 0 && <AttachmentChips ref={chipsRef} chips={chips} onRemove={removeChip} onExit={() => focusField()} />}
               <div className={styles.fieldWrap} data-locked={hasMask(segs) || undefined}>
                 {/* P1 T6 (02 §F7.1): a caught secret blurs and a lock slides in. */}
@@ -1218,6 +1265,11 @@ export function Composer({ chat }: { chat: ChatRow }) {
       {drag && createPortal(<DropOverlay look={drag.look} agentName={agentName} />, drag.host)}
     </div>
   );
+}
+
+/** R1 T6: a chip whose words live in the composer until Send ("Pasted text", or a `pasted-{time}.txt` with a catch). */
+function heldText(c: Chip): boolean {
+  return c.text !== undefined;
 }
 
 /** A "Pasted text" chip's text with every caught span replaced by the mask character (§22.5 + §22.4). */

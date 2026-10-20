@@ -15,6 +15,8 @@ export interface DraftState {
   attachments: Attachment[];
   replyToId: string | null;
   linkPreviewRemoved: boolean;
+  /** R1 T6 (04 §17.5): an open side-question strip stays one across a chat switch (this session only; not in main's row). */
+  side?: { messageId: string; quote: string };
 }
 
 export interface DraftPayload {

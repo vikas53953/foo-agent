@@ -26,6 +26,7 @@ import { logEvent, setAppTechLog, TechLog } from './log/techLog';
 import { createMainWindow } from './windows/mainWindow';
 import { handleAppScheme, registerAppScheme } from './windows/protocol';
 import { claimSingleInstance } from './windows/singleInstance';
+import { denyPageRequests, handlePageScheme } from './page/pageScheme'; // R1 T5
 // M8
 import { memoryWaSession } from './vault/waSessionMemory';
 import { registerWhatsAppIpc } from './whatsapp/waIpc';
@@ -226,6 +227,9 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
     registerIpc(ctx);
     registerWhatsAppIpc(whatsapp);
     mainWindow = createMainWindow(settings, { hidden });
+    // R1 T5 (04 §13.6): AI pages are served from foo-page:// and their frames may load nothing else.
+    handlePageScheme();
+    denyPageRequests(mainWindow.webContents);
     if (process.platform === 'win32') {
       mainWindow.setAppDetails({
         appId: AUMID,

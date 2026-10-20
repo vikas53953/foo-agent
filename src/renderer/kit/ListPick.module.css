@@ -1,0 +1,129 @@
+/* Spec: 04 §13.5 (kit pieces in foo's look: 02 tokens only), 05-1 §5.3 (Choice rows: numbered, --bg-raised with a 1px
+ * --line edge, --r-md; picked row --accent-soft + --accent with a Checkmark; the others fade once answered), 02 F5 (rows
+ * ≥ 40px), 02 F8 (focus ring). R1 T3: ListPick and TimePick. */
+.pick {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  min-width: 0;
+}
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s0);
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: var(--btn-h);
+  padding: var(--s1) var(--s2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-raised);
+  color: var(--fg-1);
+  text-align: start;
+  cursor: pointer;
+}
+.row:hover:not(:disabled) {
+  background: var(--bg-hover);
+}
+.row:active:not(:disabled) {
+  background: var(--bg-pressed);
+}
+.row:disabled {
+  color: var(--fg-disabled);
+  cursor: default;
+}
+.row:focus-visible,
+.slot:focus-visible {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+.on,
+.on:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.num {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  border-radius: var(--r-full);
+  background: var(--bg-sunken);
+  font: var(--t-caption-strong);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-2);
+}
+.on .num {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.words {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.title {
+  font: var(--t-body);
+}
+.sub {
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
+.row:disabled .sub {
+  color: var(--fg-disabled);
+}
+.chosen {
+  margin: 0;
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
+.date {
+  margin: 0;
+  font: var(--t-body-strong);
+  color: var(--fg-1);
+}
+.slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+}
+.slot {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s0);
+  min-height: var(--btn-h-sm);
+  padding: 0 var(--s2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  background: var(--bg-raised);
+  font: var(--t-caption);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-1);
+  cursor: pointer;
+}
+.slot:hover:not(:disabled) {
+  background: var(--bg-hover);
+}
+.slot:disabled {
+  color: var(--fg-disabled);
+  cursor: default;
+}
+.slot.on,
+.slot.on:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+@media (forced-colors: active) {
+  .on,
+  .on .num {
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+}

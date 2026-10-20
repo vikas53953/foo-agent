@@ -23,6 +23,10 @@ export interface Outgoing {
   attachments: Attachment[];
   ready: Promise<string[]>;
   secretOverride?: boolean;
+  /** R1 T6 (04 §17.5): a side question (needs replyToId). */
+  side?: boolean;
+  /** The words the side question asks about (message:send `quote`). */
+  quote?: string;
 }
 
 export type SendOutcome = { ok: true; messageId: string } | { ok: false; paste?: PasteCatch };
@@ -62,8 +66,9 @@ function optimisticRow(o: Outgoing): MessageRow {
     pinned: false,
     providerNote: null,
     suggestions: null,
-    side: false,
+    side: !!o.side,
     understood: null,
+    kitPick: null,
     actions: null,
     rev: 0,
     createdAt: now,
@@ -88,6 +93,7 @@ async function deliver(o: Outgoing): Promise<SendOutcome> {
     ...(o.replyToId ? { replyToId: o.replyToId } : {}),
     ...(attachmentIds.length ? { attachmentIds } : {}),
     ...(o.secretOverride ? { secretOverride: true } : {}),
+    ...(o.side && o.replyToId ? { side: true, ...(o.quote ? { quote: o.quote } : {}) } : {}),
   };
   for (let attempt = 0; attempt < 2; attempt++) {
     try {

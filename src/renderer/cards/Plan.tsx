@@ -7,7 +7,7 @@
 // cap." + "Raise cap" (C-21)). §5.12.3: Ctrl+Enter = Go; label "Plan: {title}, {n} steps, about {n} minutes, about ₹{x}"; steps
 // an ordered list. 05-1 §0.2 data rule: the words come from the runner's fields, never AI free text. `costLine` is the cost
 // value the runner formatted (a ₹ amount); plan billing or no estimate drops the AI part — implementation-notes "M4 T5".
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { t } from '../../shared/copy/t';
 import { formatTime } from '../../shared/format';
 import { TID } from '../../shared/testids';
@@ -89,7 +89,8 @@ export function Plan({ card, time }: { card: CardRow; time: CardTime }) {
       </div>
       <ol className={styles.planSteps}>
         {shown.map((s, i) => (
-          <li key={i} className={styles.planStep} data-testid={TID.cardPlanStep} data-index={i}>
+          // 02 §F7.1 Cards: a new plan's steps reveal one by one (`--i` sets the step's delay).
+          <li key={i} className={styles.planStep} data-testid={TID.cardPlanStep} data-index={i} style={{ '--i': i } as CSSProperties}>
             <span className={styles.planNum}>{i + 1}</span>
             <span>{s}</span>
           </li>

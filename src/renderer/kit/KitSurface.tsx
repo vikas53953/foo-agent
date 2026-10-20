@@ -3,13 +3,15 @@
 // with the "Couldn't show part of this" caption; two-way controls write the surface's data model; user actions go
 // renderer → main `kit:action` → engine `kit.action`; every TextField value passes the 04-2 §22.4 secret patterns before it
 // leaves the renderer and a match is refused, Article 8; `Image` only `data:` images or a chat file, web images never
-// load), 02 §F19.9 (charts), CR-0022 §(c) (catalog), AT-340, AT-353, AT-354, AT-355, AT-356, X-180. R1 T2.
+// load), 02 §F19.9 (charts), CR-0022 §(c) (catalog), AT-340, AT-353, AT-354, AT-355, AT-356, X-180. R1 T2. R1 T3: the
+// places and time pieces MapStops, Timeline, WeekCalendar, ListPick, TimePick (AT-341, AT-344, AT-345, AT-349, AT-350).
 // R1 T4: Stepper, Compare, Calculator, GoalRing, TimedChecklist, ShortForm (AT-342, 343, 346, 347, 348, 351) and the
 // Secret box offer after a refused value (AT-370).
 // Parts are drawn by plain functions, not components, so one render counts the parts it had to drop (the caption).
 import { useState, type KeyboardEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import type { KitActionMessage, KitComponent } from '../../shared/kit/catalog';
+import { pickContext, type PickContext } from '../../shared/kit/pick';
 import { absPath, boundPath, getPath, INVALID, resolveContext, resolveField, type Surface } from '../../shared/kit/surface';
 import { TID } from '../../shared/testids';
 import { invoke } from '../ipc/client';
@@ -22,10 +24,15 @@ import { Calculator, type CalcInput } from './Calculator';
 import { Compare } from './Compare';
 import { GoalRing } from './GoalRing';
 import { LineChart, type ChartSeries } from './LineChart';
+import { ListPick, useAnswered } from './ListPick';
+import { MapStops } from './MapStops';
 import { firstSecret, SecretRefused, type SecretCatch } from './SecretRefused';
 import { ShortForm, formValues } from './ShortForm';
 import { Stepper } from './Stepper';
 import { TimedChecklist } from './TimedChecklist';
+import { Timeline } from './Timeline';
+import { TimePick } from './TimePick';
+import { WeekCalendar, weekLayout } from './WeekCalendar';
 import { editSurface, useSurfaceData } from './model';
 import styles from './KitSurface.module.css';
 
@@ -46,8 +53,11 @@ interface Ctx {
   tally: { dropped: number };
   edit(path: string, value: unknown): void;
   act(c: Extract<KitComponent, { component: 'Button' }>, scope: string): void;
+  /** R1 T3: a ListPick row or TimePick slot was picked; true once main took the action (05-1 §5.3.4). */
+  pick(c: Extract<KitComponent, { component: 'ListPick' | 'TimePick' }>, scope: string, pick: PickContext): Promise<boolean>;
+  host: SurfaceHost;
   /** Sends one user action (R1 T4: a ShortForm submit); a secret-looking value is refused and `clear` drops it. */
-  send(sourceId: string, name: string, context: Record<string, unknown>, clear: (caught: SecretCatch) => void): void;
+  send(c: KitComponent, name: string, context: Record<string, unknown>, clear: (caught: SecretCatch) => void): void;
   agentName: string;
 }
 
@@ -306,7 +316,7 @@ function part(ctx: Ctx, c: KitComponent, scope: string, depth: number): ReactNod
           onChange={(name, v) => ctx.edit(`${base}/${name}`, v)}
           onSubmit={() =>
             ctx.send(
-              c.id,
+              c,
               c.action.event.name,
               { ...resolveContext(c.action.event.context, ctx.data, scope), ...formValues(c.fields, values) },
               (caught) => {
@@ -320,11 +330,36 @@ function part(ctx: Ctx, c: KitComponent, scope: string, depth: number): ReactNod
         />
       );
     }
+    case 'MapStops':
+      return <MapStops stops={c.stops} />;
+    case 'Timeline':
+      return <Timeline items={c.items} />;
+    case 'WeekCalendar': {
+      const layout = weekLayout(c.days, c.slots);
+      return layout ? <WeekCalendar layout={layout} /> : INVALID;
+    }
+    case 'ListPick':
+      return <KitListPick ctx={ctx} c={c} scope={scope} />;
+    case 'TimePick':
+      return <KitTimePick ctx={ctx} c={c} scope={scope} />;
     default:
-      // The other foo components arrive with R1 T3 (places and time) and T7 (LiveStamp); a valid one draws nothing until
+      // The other foo components arrive with T7 (LiveStamp); a valid one draws nothing until then
       // then and is not counted as dropped.
       return null;
   }
+}
+
+/** Components, so the answer they read from the chat in the store is a hook (05-1 §5.3.5: a pick stays answered). */
+function KitListPick({ ctx, c, scope }: { ctx: Ctx; c: Extract<KitComponent, { component: 'ListPick' }>; scope: string }) {
+  const answered = useAnswered(ctx.host, ctx.surface.id, c.id);
+  return <ListPick rows={c.rows} answered={answered} onPick={(row) => ctx.pick(c, scope, { choice: c.rows[row - 1]!.title, row })} />;
+}
+
+function KitTimePick({ ctx, c, scope }: { ctx: Ctx; c: Extract<KitComponent, { component: 'TimePick' }>; scope: string }) {
+  const answered = useAnswered(ctx.host, ctx.surface.id, c.id);
+  return (
+    <TimePick date={c.date} slots={c.slots} answered={answered} onPick={(slot) => ctx.pick(c, scope, { choice: slot, date: c.date })} />
+  );
 }
 
 /** Arrow keys, Home and End move the selection and focus with it (WAI-ARIA tabs, automatic activation). */
@@ -447,38 +482,42 @@ export function KitSurface({
   const data = useSurfaceData(key, surface.data);
   const [sent, setSent] = useState<string | null>(null);
   const [refused, setRefused] = useState<{ caught: SecretCatch; clear: (caught: SecretCatch) => void } | null>(null);
-  const send: Ctx['send'] = (sourceId, name, context, clear) => {
-    // Article 8 / 04-2 §22.4: a value that looks like a password, code or card number never leaves the renderer; the
-    // Secret box is offered for it instead (R1 T4).
+  /** Article 8 / 04-2 §22.4: a value that looks like a password, code or card number never leaves the renderer; the Secret
+   * box is offered for it instead (R1 T4). True when the context was refused. */
+  const refuse = (context: Record<string, unknown>, clear: (caught: SecretCatch) => void): boolean => {
     const caught = firstSecret(outgoingText(context));
-    if (caught) {
-      setRefused({ caught, clear });
-      setSent(null);
-      return;
-    }
-    setRefused(null);
+    setRefused(caught ? { caught, clear } : null);
+    if (caught) setSent(null);
+    return caught !== null;
+  };
+  const post = (c: KitComponent, name: string, context: Record<string, unknown>): Promise<boolean> => {
     const msg: KitActionMessage = {
       ...host,
       surfaceId: surface.id,
       name,
-      sourceComponentId: sourceId,
+      sourceComponentId: c.id,
       context,
       timestamp: new Date(clockNow()).toISOString(),
     };
-    void invoke('kit:action', msg).then(
-      (r) => setSent(r.ok ? sourceId : null),
-      () => setSent(null),
+    return invoke('kit:action', msg).then(
+      (r) => r.ok,
+      () => false,
     );
+  };
+  const send: Ctx['send'] = (c, name, context, clear) => {
+    if (refuse(context, clear)) return;
+    void post(c, name, context).then((ok) => setSent(ok ? c.id : null));
   };
   const ctx: Ctx = {
     surface,
+    host,
     data,
     key,
     streaming,
     tally: { dropped: 0 },
     edit: (path, value) => editSurface(key, surface.data, path, value),
     act: (c, scope) =>
-      send(c.id, c.action.event.name, resolveContext(c.action.event.context, data, scope), (caught) => {
+      send(c, c.action.event.name, resolveContext(c.action.event.context, data, scope), (caught) => {
         // The secret leaves the TextField it was typed in (04-2 §22.4: the span is removed from the field).
         for (const f of Object.values(surface.components)) {
           if (f.component !== 'TextField') continue;
@@ -486,6 +525,10 @@ export function KitSurface({
           if (path && getPath(data, path) === caught.text) editSurface(key, surface.data, path, caught.rest);
         }
       }),
+    pick: (c, scope, p) => {
+      const context = pickContext(c, data, scope, p);
+      return refuse(context, () => undefined) ? Promise.resolve(false) : post(c, c.action.event.name, context);
+    },
     send,
     agentName,
   };

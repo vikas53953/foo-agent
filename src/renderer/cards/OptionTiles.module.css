@@ -152,3 +152,16 @@
     aspect-ratio: 4 / 3;
   }
 }
+/* 02 §F7.1 Cards (CR-0021): while a pick is submitting, the picked tile grows (scale ≤ 1.02 with --ease-spring, Full
+ * only) and the other tiles dim; Basic and Off keep the dim as a --m-basic / 83ms fade. */
+.grid[data-picking] .tile {
+  transition:
+    opacity var(--m-normal) var(--ease-standard),
+    transform var(--m-spring) var(--ease-spring);
+}
+.grid[data-picking] .tile:not([data-picked]) {
+  opacity: 0.5; /* local: §F7.1 "the others dim" (no opacity token) */
+}
+.grid[data-picking] .tile[data-picked] {
+  transform: scale(calc(1 + 0.02 * var(--motion-move)));
+}

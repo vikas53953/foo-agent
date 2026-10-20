@@ -1,0 +1,369 @@
+/* Spec: 02-2 §F15.9.1 colours and ring, §F15.9.2 motion tokens, §F15.9.5 reduced motion, §F15.9.7 forced colours,
+   §F15.9.8 (transform / opacity keyframes only; paused off screen and while the window is hidden), 04 §14.3 (the Thinking
+   row's face), CR-0021 picks 6–8 (X-179: the bob, empty-state poses, "Show foo's eyes"). The SVG draws in a
+   100-unit disc, so lengths inside it are in disc units. */
+.face {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  line-height: 0;
+  user-select: none;
+  --disc: var(--fg-1);
+  --eye: var(--bg-app);
+}
+.foo {
+  --disc: var(--fg-1);
+  --eye: var(--bg-app);
+}
+.helper {
+  --disc: var(--face-disc, var(--h-slate));
+  --eye: var(--on-helper);
+}
+.svg {
+  display: block;
+  overflow: visible;
+}
+/* §F15.9.2: every mood change cross-fades (the eyes and ring re-mount per mood; the disc stays). */
+.fade {
+  animation: cross var(--m-face-cross) linear;
+}
+.disc {
+  fill: var(--disc);
+}
+.discOffline {
+  fill: var(--bg-sunken);
+  stroke: var(--fg-3);
+  stroke-dasharray: 5 3.3;
+}
+.eye {
+  fill: var(--eye);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.arc {
+  fill: none;
+  stroke: var(--eye);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.eyeOffline {
+  fill: none;
+  stroke: var(--fg-3);
+}
+.eyes {
+  transform-box: view-box;
+  transform-origin: center;
+}
+
+/* CR-0021 pick 7: idle life, Resting at 40px and larger bobs 1px every 4 s (the ring stays put). The body is its own <svg>, so the
+   bob is an HTML transform the compositor runs, with no repaint per frame. */
+.ringLayer {
+  position: absolute;
+  inset: 0;
+}
+.body {
+  position: relative;
+}
+.bob {
+  animation: bob 4000ms ease-in-out infinite; /* local: CR-0021 pick 7, 1px every 4 s */
+}
+
+/* Mood ring: outside the disc; arcs start at the top. */
+.ring {
+  fill: none;
+  stroke-linecap: round;
+  transform-box: view-box;
+  transform-origin: center;
+  transform: rotate(-90deg);
+}
+.ring_arc_turning {
+  animation: orbit var(--m-face-orbit) linear infinite;
+}
+.ring_full_fade {
+  animation: ringFade var(--m-face-happy) linear forwards;
+}
+
+/* Eye motion (§F15.9.2). */
+/* Resting, Listening and Waiting on you blink once per cycle (`data-blinking`, set by a timer): the closing is the last 5% of
+   the cycle, as before, and an idle face draws no frames between blinks. */
+.face[data-blinking] .m_blink .eye {
+  animation: blinkOnce calc(var(--face-blink) * 0.05) linear;
+}
+.face[data-blinking] .m_blink_slow .eye {
+  animation: blinkOnce calc(var(--m-face-blink-slow) * 0.05) linear;
+}
+.m_drift {
+  animation: drift var(--m-face-drift) ease-in-out infinite alternate;
+}
+.m_drift .eye {
+  animation: blink var(--m-face-blink-slow) linear infinite;
+}
+.m_scan {
+  animation: scan var(--m-face-scan) ease-in-out infinite;
+}
+.m_pop {
+  animation: pop var(--m-face-once) var(--ease-standard);
+}
+.m_nod {
+  animation: nod var(--m-face-once) var(--ease-standard);
+}
+.m_wake .eye {
+  animation: wake var(--m-face-wake) var(--ease-standard);
+}
+
+.spark {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0);
+  /* Each spark plays 1360 of the 1600ms, started 0 / 120 / 240ms in (§F15.9.2 --m-face-party). */
+  animation: spark calc(var(--m-face-party) * 0.85) var(--ease-standard) forwards;
+}
+/* A face that mounts part-way through a one-time mood joins it there; each one-time motion ends just before its mood. */
+.m_pop,
+.m_nod,
+.m_wake .eye,
+.ring_full_fade,
+.badge,
+.spark {
+  animation-delay: var(--face-once-at);
+}
+.spark1 {
+  animation-delay: calc(var(--face-once-at) + var(--m-face-party) * 0.075);
+}
+.spark2 {
+  animation-delay: calc(var(--face-once-at) + var(--m-face-party) * 0.15);
+}
+.z {
+  fill: var(--eye);
+  opacity: 0.55;
+  font-weight: 600;
+  animation: zFade 4000ms ease-in-out infinite; /* local: §F15.9.3 #18 the 4000ms fade loop of the "z" */
+}
+.badge {
+  position: absolute;
+  right: -8%;
+  bottom: -8%;
+  width: 36%;
+  height: 36%;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+  animation: badgePop var(--m-face-react) var(--ease-standard) forwards;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(calc(-1 * var(--face-bob)));
+  }
+}
+@keyframes cross {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes orbit {
+  from {
+    transform: rotate(-90deg);
+  }
+  to {
+    transform: rotate(270deg);
+  }
+}
+@keyframes ringFade {
+  0% {
+    opacity: 0;
+  }
+  7.5%,
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes blink {
+  0%,
+  95%,
+  100% {
+    transform: scaleY(1);
+  }
+  97.5% {
+    transform: scaleY(0.08);
+  }
+}
+@keyframes blinkOnce {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.08);
+  }
+}
+@keyframes drift {
+  from {
+    transform: translateX(-5px); /* local: ±5% of the 100-unit disc (§F15.9.2) */
+  }
+  to {
+    transform: translateX(5px); /* local: ±5% of the 100-unit disc (§F15.9.2) */
+  }
+}
+@keyframes scan {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px); /* local: ±5% of the 100-unit disc (§F15.9.2) */
+  }
+  75% {
+    transform: translateX(5px); /* local: ±5% of the 100-unit disc (§F15.9.2) */
+  }
+}
+@keyframes pop {
+  50% {
+    transform: scale(1.1);
+  }
+}
+@keyframes nod {
+  50% {
+    transform: translateY(5px); /* local: ±5% of the 100-unit disc (§F15.9.2) */
+  }
+}
+@keyframes wake {
+  from {
+    transform: scaleY(0.08);
+  }
+}
+@keyframes spark {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes zFade {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+/* The badge pops 0 → 1.15 → 1 in the first 430 of the 900ms (§F15.9.2 --m-face-react). */
+@keyframes badgePop {
+  0% {
+    transform: scale(0);
+  }
+  33% {
+    transform: scale(1.15);
+  }
+  48%,
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* §F15.9.5 reduced motion (also foo's Animations "Off" and "Basic", 02 §F7: faces cross-fade between static poses; FE-24's one root key, and "Show foo's eyes" off, CR-0021 pick 8)
+   and §F15.9.3d still faces: static poses; the Working ring stays as a still quarter-arc. */
+.reduced *,
+.still *,
+:global(:root[data-motion='off']) .face *,
+:global(:root[data-motion='basic']) .face * {
+  animation: none !important;
+}
+.reduced .spark,
+:global(:root[data-motion='off']) .spark,
+:global(:root[data-motion='basic']) .spark {
+  transform: scale(1);
+}
+.reduced .ring_full_fade,
+:global(:root[data-motion='off']) .ring_full_fade,
+:global(:root[data-motion='basic']) .ring_full_fade {
+  opacity: 1;
+}
+.still .ring_arc_turning {
+  animation: orbit var(--m-face-orbit) linear infinite !important;
+}
+.reduced .ring_arc_turning,
+:global(:root[data-motion='off']) .ring_arc_turning,
+:global(:root[data-motion='basic']) .ring_arc_turning {
+  animation: none !important;
+}
+.reduced .fade,
+:global(:root[data-motion='off']) .fade,
+:global(:root[data-motion='basic']) .fade {
+  animation: cross var(--m-face-cross) linear !important;
+}
+
+/* §F15.9.8, CR-0021 pick 7: the loops pause off screen and while the window is hidden or minimised. One-time moods and
+   the cross-fade run out (they are short, and a paused one would never end). */
+.face[data-offscreen] :is(.bob, .ring_arc_turning, .m_drift, .m_drift .eye, .m_scan, .z, .ring_dotted),
+:global(:root[data-face-paused]) .face :is(.bob, .ring_arc_turning, .m_drift, .m_drift .eye, .m_scan, .z, .ring_dotted) {
+  animation-play-state: paused !important;
+}
+
+/* §F15.9.7 forced colours. */
+@media (forced-colors: active) {
+  .face {
+    forced-color-adjust: none;
+    --disc: Canvas;
+    --eye: CanvasText;
+  }
+  .disc {
+    stroke: CanvasText;
+    stroke-width: 4;
+  }
+  .ring {
+    stroke: Highlight;
+  }
+  .eyeOffline,
+  .discOffline {
+    stroke: CanvasText;
+  }
+  .badge {
+    background: Canvas;
+    color: CanvasText;
+  }
+}
+
+/* §F15.9.4 picture, glyph and emoji faces: the overlay rings around an untouched face. */
+.overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.ring_soft {
+  opacity: 0.55;
+}
+.ring_dotted {
+  animation: orbit 3200ms linear infinite; /* local: §F15.9.4 Thinking ring, one turn in 3200ms */
+}
+.ring_flash {
+  animation: ringFade var(--m-face-sorry) linear forwards;
+}
+.overlayZ {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font: var(--t-caption-strong);
+  color: var(--fg-2);
+}
+:global(:root[data-motion='off']) .ring_dotted,
+:global(:root[data-motion='basic']) .ring_dotted,
+:global(:root[data-motion='off']) .ring_flash,
+:global(:root[data-motion='basic']) .ring_flash {
+  animation: none;
+}

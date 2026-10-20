@@ -583,6 +583,11 @@ export interface MessageRow {
   understood: string[] | null;
   /** 04-2 §21.7: ≤ 3 action chips on a foo reply (never after an approval or payment card); null when none. */
   actions: ActionChip[] | null;
+  /**
+   * R1 T3 (05-1 §5.3.5 parity): the ListPick or TimePick answer this user message gave, derived by main from its AI text
+   * (shared/kit/pick.ts `kitPickOf`); null otherwise. A pick with an answer in the chat stays answered.
+   */
+  kitPick: { surfaceId: string; componentId: string; choice: string } | null;
   rev: number;
   createdAt: number;
   editedAt: number | null;

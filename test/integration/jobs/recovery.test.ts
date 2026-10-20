@@ -17,6 +17,10 @@ afterEach(() => {
 const poll = async (rounds = 40) => {
   for (let i = 0; i < rounds; i++) await new Promise((r) => setTimeout(r, 2));
 };
+/** Waits (real time, up to 10 s) until `ready()` holds: a loaded runner can take longer than a fixed poll. */
+const until = async (ready: () => boolean) => {
+  for (let i = 0; i < 5000 && !ready(); i++) await new Promise((r) => setTimeout(r, 2));
+};
 const payloadOf = (card: Record<string, unknown>) => JSON.parse(String(card.payload)) as Record<string, unknown>;
 
 /** A job killed mid-step 2 (step 1 done, a 20 s turn in flight). */
@@ -90,11 +94,12 @@ describe('AT-118 · killed mid-job → recovery card on restart', () => {
       for (const w of ['one', 'two', 'three', 'four']) h.userSaysIn(h.chat(w), w);
       await poll();
       h.clock.advance(2_000);
-      await poll();
+      await until(() => h!.jobs().some((j) => j.state === 'queued'));
       const queued = h.jobs().find((j) => j.state === 'queued')!;
       if (cleanStart) await h.bridge.request('jobs.pauseAll', { reason: 'app_quit' });
       restartEngine(h, [{ match: { purpose: 'step' }, reply: '', delayMs: 60_000, once: false }], { safeMode: false, cleanStart });
-      await poll(80);
+      const want = (state: unknown) => (cleanStart ? ['queued', 'working'].includes(String(state)) : state === 'needs_you');
+      await until(() => want(h!.job(String(queued.id))?.state));
       const after = h.job(String(queued.id));
       if (cleanStart) expect(['queued', 'working']).toContain(after.state);
       else expect(after.state).toBe('needs_you');

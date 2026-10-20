@@ -90,6 +90,7 @@ function Tile({
       className={cx(ts.tile, bestFit && ts.best)}
       data-testid={TID.cardTilesOption}
       data-index={index + 1}
+      data-picked={busy || undefined}
       onClick={disabled || !onPick ? undefined : onPick}
     >
       <span className={ts.media}>
@@ -186,7 +187,12 @@ function AskingTiles({ card, time }: { card: CardRow; time: CardTime }) {
           {q.question}
         </span>
       </div>
-      <div className={cx(ts.grid, ts[`n${q.options.length}`])} role="radiogroup" aria-label={q.question}>
+      <div
+        className={cx(ts.grid, ts[`n${q.options.length}`])}
+        role="radiogroup"
+        aria-label={q.question}
+        data-picking={busy !== null || undefined}
+      >
         {q.options.map((o, i) => (
           <Tile
             key={o.id}

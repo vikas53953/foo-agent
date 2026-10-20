@@ -10,13 +10,7 @@
   min-height: 0;
   background: var(--bg-app);
   outline: none;
-  animation: page-in var(--m-normal) var(--ease-in);
   container-type: inline-size;
-}
-@keyframes page-in {
-  from {
-    opacity: 0;
-  }
 }
 .scroll {
   flex: 1;
@@ -70,6 +64,64 @@
   min-height: var(--s9);
   padding: var(--s2) var(--s3);
   outline: none;
+  interpolate-size: allow-keywords;
+}
+/* CR-0021 §F7.1: a new fact glows once (--accent-soft fading over --dur-confirm); Forget folds the row closed in
+ * --m-normal; Undo unfolds it back in --m-slow with the soft spring. Off / reduced motion: no glow, no fold (tokens.css). */
+.row[data-appear='fresh'] {
+  border-radius: var(--r-sm);
+  animation: fact-glow var(--dur-confirm) var(--ease-out);
+}
+.row[data-appear='back'] {
+  overflow: hidden;
+  animation: fact-unfold var(--m-slow) var(--ease-spring-soft);
+}
+.row[data-exit] {
+  overflow: hidden;
+  pointer-events: none;
+  animation: fact-fold var(--m-normal) var(--ease-out) forwards;
+}
+/* Basic: fades only (CR-0021 pick 3), no height change. */
+:global(:root[data-motion='basic']) .row[data-appear='back'] {
+  animation-name: fact-fade-in;
+}
+:global(:root[data-motion='basic']) .row[data-exit] {
+  animation-name: fact-fade-out;
+}
+@keyframes fact-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes fact-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+:global(:root[data-motion='off']) .row[data-appear],
+:global(:root[data-motion='off']) .row[data-exit] {
+  animation: none;
+}
+@keyframes fact-glow {
+  from {
+    background: var(--accent-soft);
+  }
+}
+@keyframes fact-unfold {
+  from {
+    height: 0;
+    min-height: 0;
+    padding-block: 0;
+    opacity: 0;
+  }
+}
+@keyframes fact-fold {
+  to {
+    height: 0;
+    min-height: 0;
+    padding-block: 0;
+    opacity: 0;
+  }
 }
 .row:focus-visible {
   outline: var(--focus-outer-w) solid var(--focus-outer);

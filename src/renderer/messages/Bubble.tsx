@@ -6,7 +6,8 @@
 // own bubble), §6 (reply, edit, delete with C-24, reply quote), §7 (Not sent), §8 (reaction chips), §9 (hover toolbar, menu,
 // picker), §10 (attachments, deleted state, Read more, emoji-only, WhatsApp formatting, the WhatsApp mirror bubble), §13
 // (markdown), §14.4 (streaming: held-back markdown, no meta until done), §15, §17, §19.4, §19.6, §19.7 (cards sit as rows
-// aligned like foo's bubbles).
+// aligned like foo's bubbles). R1 T6 (X-180): §6.5 "foo read:" line under the last user bubble, §1.9 Ask about this
+// (`data-ask-about` marks a foo / helper text bubble for the selection pill; §17.4 menu item).
 // 02 §F7.1 "Chat" (CR-0021, X-179): the user bubble grows from the send button, the error bubble shakes once, a picked reaction bounces once, the retry spinner turns into ✓, "Read more" grows, streamed words fade.
 import { memo, useContext, useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
@@ -70,6 +71,7 @@ import { tailCorners, type RowLayout } from './runs';
 import { emojiOnly, scriptLang } from './textRules';
 import { copyText } from './linkActions';
 import { VoicePlayer } from './VoicePlayer';
+import { ReadLine, showsReadLine } from './ReadLine'; // R1 T6
 import styles from './Bubble.module.css';
 
 export interface RowCtx {
@@ -212,7 +214,14 @@ function SenderLabel({ sender, tid }: { sender: Sender; tid: 'bubbleSender' | 'c
   const style = sender.color ? ({ ['--sender' as string]: `var(${sender.color})` } as CSSProperties) : undefined;
   return (
     <div className={styles.sender} data-testid={TID[tid]} aria-hidden="true">
-      <Face face={sender.face} name={sender.name} kind={sender.kind === 'user' ? 'foo' : sender.kind} color={sender.color} size="inline" />
+      <Face
+        face={sender.face}
+        name={sender.name}
+        kind={sender.kind === 'user' ? 'foo' : sender.kind}
+        color={sender.color}
+        size="inline"
+        animate={false}
+      />
       <span className={styles.senderName} style={style}>
         {sender.name}
       </span>
@@ -296,6 +305,8 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
         return setPicker(true);
       case 'copy':
         return void copyText(text).then((ok) => ok && setCopied(true));
+      case 'ask':
+        return requestComposer(m.chatId, { kind: 'side', messageId: m.id, quote: text, at: clockNow() });
       case 'copyTable': {
         const table = blocks?.find((b) => b.t === 'table');
         return table?.t === 'table' ? void copyText(table.plain.map((r) => r.join('\t')).join('\n')) : undefined;
@@ -404,7 +415,12 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
         {layout.senderLabel && <SenderLabel sender={sender} tid={isCard ? 'cardSender' : 'bubbleSender'} />}
         <div className={styles.line} data-shake={shake || undefined}>
           {notSent && <NotSentIcon />}
-          <div className={styles.hold} ref={bubbleRef} onContextMenu={onContextMenu}>
+          <div
+            className={styles.hold}
+            ref={bubbleRef}
+            onContextMenu={onContextMenu}
+            data-ask-about={(side === 'them' && !isCard && !deleted && m.kind === 'text' && m.id) || undefined}
+          >
             {body}
             {parsedSlot && !isCard && (
               <BadgeSlotView
@@ -453,6 +469,11 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
           </div>
         </div>
         {(notSent || resend.phase !== 'idle') && <NotSentLine phase={resend.phase} onRetry={resend.retry} />}
+        {side === 'me' &&
+          m.understood &&
+          showsReadLine({ understood: m.understood, isLatestUser: ctx.latestUserId === m.id, chatKind: ctx.chat.kind, deleted }) && (
+            <ReadLine items={m.understood} agentName={ctx.agentName} />
+          )}
         {/* 05-3 §5.15–§5.16 (M4 T5): proof chip or "Not checked live" chip + receipt footer under a job's result. */}
         {job && job.resultMessageId === m.id && !deleted && <ResultProof job={job} />}
         {layout.latestAnswer && !deleted && m.kind === 'text' && (

@@ -121,6 +121,11 @@ export interface EngineMessage {
   // M6 T5
   /** 08-1 §4.3.2 `why` (JSON); a memory chip marker keeps its chip fields here (`{ memoryChip }`). */
   why: Record<string, unknown> | null;
+  // R1 T6 (X-180)
+  /** 04 §6.4 the message this one replies to; a side question's quoted message (04 §17.5). */
+  replyToId?: string | null;
+  /** 04 §17.5 a side question ("Ask about this") or its answer. */
+  side?: boolean;
 }
 export interface EngineHelper {
   id: string;
@@ -159,6 +164,8 @@ function message(r: DbRow): EngineMessage {
     transcript: (r.transcript as string | null) ?? null,
     attachments: atts.length,
     why: r.why ? (JSON.parse(String(r.why)) as Record<string, unknown>) : null,
+    replyToId: (r.reply_to_id as string | null) ?? null,
+    side: r.side === 1,
   };
 }
 

@@ -59,6 +59,7 @@ function msg(p: Partial<MessageRow>): MessageRow {
     suggestions: null,
     side: false,
     understood: null,
+    kitPick: null,
     actions: null,
     rev: 1,
     createdAt: T0,

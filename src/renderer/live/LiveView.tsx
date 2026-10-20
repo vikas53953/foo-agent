@@ -113,7 +113,7 @@ export function LiveView({ jobId }: { jobId: string }) {
     >
       <TitleBar />
       <header className={styles.bar} data-testid={TID.liveBar}>
-        <Avatar face={`letter:${m.agentName.slice(0, 1)}`} name={m.agentName} kind="foo" size="inline" className={styles.avatar} />
+        <Avatar face="living:default" name={m.agentName} kind="foo" size="inline" animate={false} className={styles.avatar} />
         <span className={styles.title}>{barTitle}</span>
         {view.pill && (
           <span className={styles.pill} data-testid={TID.livePill} data-state={m.shown} data-tone={view.pill.tone}>

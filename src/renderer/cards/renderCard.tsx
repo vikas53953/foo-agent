@@ -28,6 +28,8 @@ import { TableCard } from './TableCard';
 import { ConnectCard } from './Connect';
 // R1 T2 (CR-0022)
 import { KitCard } from '../kit/KitCard';
+// R1 T5
+import { AiPageCard } from '../page/AiPageCard';
 
 type CardComponent = ComponentType<{ card: CardRow; time: CardTime }>;
 
@@ -57,6 +59,8 @@ export const CARD_VIEWS: Partial<Record<CardType, CardComponent>> = {
   signin: SignInCard,
   // R1 T2 (CR-0022, 04 §13.5): a kit surface the engine posts as its own card.
   kit: KitCard,
+  // R1 T5 (CR-0022): the AI page card (04 §13.6).
+  ai_page: AiPageCard,
 };
 
 /** G-M4-10: the purchase variant of the Spend-cap card is M10's; until then it keeps the placeholder. */

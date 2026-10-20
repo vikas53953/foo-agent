@@ -70,7 +70,7 @@ import { FIX_ACTION_KINDS, JOB_CHANNELS, jobIpc } from '../jobs/jobIpc';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
 import { registerSigninIpc } from '../jobs/signinIpc';
-import { registerKitIpc } from '../kit/kitIpc';
+import { kitReaction, registerKitIpc } from '../kit/kitIpc';
 import { isTrustedUrl } from '../windows/protocol';
 import { registerConnectionIpc } from '../connections/connectionIpc';
 import { logEvent } from '../log/techLog';
@@ -78,6 +78,7 @@ import { answerIpc, cardReaction } from '../cards/answerIpc';
 import { approvalIpc } from '../approvals/approvalIpc';
 import { draftFromMirror, draftIpc } from '../drafts/draftIpc';
 import { secretIpc } from '../vault/secretIpc';
+import { pageIpc } from '../page/pageIpc'; // R1 T5
 import { ensureFinder, finderChosen, finderWanted } from '../setup/aiFinder';
 import { aiFinderIpc, emitFinderWrite } from '../setup/aiFinderIpc';
 
@@ -505,6 +506,8 @@ export function registerIpc(ctx: AppContext): void {
     const r = asVoid(written(reactMessage(db, id, e, on, now())));
     // M5 (T5): a reaction on a card's bubble may answer a Choice card or get the G16 line (08-4 §26.6 rule 4, 08-2 §5.2.2).
     if (r.ok && on) cardReaction(ctx, id, e);
+    // R1 T3: a keycap reaction on a foo message picks a row of its ListPick, like a tap (05-1 §5.3.4, AT-349).
+    if (r.ok && on) kitReaction(ctx, id, e, now());
     return r;
   });
   handle('message:pin', ({ messageId: id, on }) => asVoid(written(pinMessage(db, id, on))));
@@ -585,7 +588,8 @@ export function registerIpc(ctx: AppContext): void {
     if (r.created) {
       // 08-1 §2.4 `user.message`: after main stored it, the engine's chat lane takes it (08-2 §5.2). While the engine is
       // starting or restarting it waits to send (04 §3.3) and goes when the engine drains its queue.
-      const taken = ctx.engine?.send('user.message', { messageId: r.messageId, chatId: req.chatId }) ?? false;
+      // R1 T6 (04 §17.5): a side question goes to the engine as `side.question`, answered without touching a running job.
+      const taken = ctx.engine?.send(req.side ? 'side.question' : 'user.message', { messageId: r.messageId, chatId: req.chatId }) ?? false;
       // EngineSupervisor.wanted(): a FOO_TEST run without the fake AI never has an engine, and its sends stay as M2 left them.
       if (!taken && !r.queued && (process.env.FOO_TEST !== '1' || !!process.env.FOO_FAKE_AI)) {
         queued = true;
@@ -786,4 +790,6 @@ export function registerIpc(ctx: AppContext): void {
   handleAll(approvalIpc(ctx));
   handleAll(draftIpc(ctx));
   handleAll(secretIpc(ctx));
+  // R1 T5 (CR-0022, 04 §13.6): the sealed AI page's open and bridge calls.
+  handleAll(pageIpc(ctx));
 }
