@@ -44,7 +44,8 @@ function tokens(src: string): Token[] | null {
 
 /** pmt(rate, periods, principal): the even payment that pays a loan back (an EMI), as a positive amount. */
 function pmt(rate: number, periods: number, principal: number): number {
-  if (periods <= 0) return NaN;
+  // A rate of −100% or less has no repayment (1 + rate is 0 or negative).
+  if (periods <= 0 || rate <= -1) return NaN;
   if (rate === 0) return principal / periods;
   return (principal * rate) / (1 - (1 + rate) ** -periods);
 }

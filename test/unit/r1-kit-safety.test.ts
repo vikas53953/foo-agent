@@ -21,7 +21,7 @@ const sources = () =>
 const FAKE_KEY = 'sk-proj-EXAMPLEexample0123456789abcd';
 
 describe('kit safety (04 §13.5, Article 8)', () => {
-  it('AT-370 · ShortForm and TextField refuse values that match 04-2 §22.4 and offer the Secret box', () => {
+  it('AT-370 · ShortForm and TextField values that match 04-2 §22.4 are caught with what the Secret box offer moves, and a ShortForm never draws a field that asks for a secret', () => {
     // A labelled password: only what follows the label moves into the Secret box, named "Password".
     expect(firstSecret(['Asha', 'password: Tiger#2026'])).toEqual({
       text: 'password: Tiger#2026',

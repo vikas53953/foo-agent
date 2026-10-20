@@ -29,7 +29,7 @@ import { MapStops } from './MapStops';
 import { firstSecret, SecretRefused, type SecretCatch } from './SecretRefused';
 import { ShortForm, formValues } from './ShortForm';
 import { Stepper } from './Stepper';
-import { TimedChecklist } from './TimedChecklist';
+import { asTimer, TimedChecklist } from './TimedChecklist';
 import { Timeline } from './Timeline';
 import { TimePick } from './TimePick';
 import { WeekCalendar, weekLayout } from './WeekCalendar';
@@ -288,6 +288,7 @@ function part(ctx: Ctx, c: KitComponent, scope: string, depth: number): ReactNod
     }
     case 'TimedChecklist': {
       const path = `${ownPath(c, scope)}/ticks`;
+      const timerPath = `${ownPath(c, scope)}/timer`;
       const saved = getPath(ctx.data, path);
       const ticks = Array.isArray(saved) ? saved.map((v) => v === true) : [];
       return (
@@ -298,6 +299,8 @@ function part(ctx: Ctx, c: KitComponent, scope: string, depth: number): ReactNod
             const next = c.steps.map((_, k) => (k === i ? on : ticks[k] === true));
             ctx.edit(path, next);
           }}
+          timer={asTimer(getPath(ctx.data, timerPath))}
+          onTimer={(timer) => ctx.edit(timerPath, timer)}
         />
       );
     }

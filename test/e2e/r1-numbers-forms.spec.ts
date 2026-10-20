@@ -235,6 +235,8 @@ test('AT-346 · TimedChecklist runs a timer in the renderer and keeps ticks in t
     await showUp(page, again);
     await expect(again.getByRole('checkbox', { name: 'Rinse the dal' })).toBeChecked();
     await expect(again.getByRole('checkbox', { name: 'Pressure cook' })).not.toBeChecked();
+    // The paused timer is kept in the data model too, so it comes back where it stopped.
+    await expect(again.locator('[data-step="1"] [data-left-ms]')).toHaveAttribute('data-left-ms', paused!);
     await expect(page.getByTestId(TID.bubbleMe).filter({ hasText: 'Rinse' })).toHaveCount(0);
   } finally {
     await app.close();

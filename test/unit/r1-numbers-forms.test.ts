@@ -13,7 +13,7 @@ import { Compare } from '../../src/renderer/kit/Compare';
 import { GoalRing, goalShare } from '../../src/renderer/kit/GoalRing';
 import { ShortForm } from '../../src/renderer/kit/ShortForm';
 import { stepValue } from '../../src/renderer/kit/Stepper';
-import { pauseTimer, startTimer, timerLeft } from '../../src/renderer/kit/TimedChecklist';
+import { asTimer, pauseTimer, startTimer, timerLeft } from '../../src/renderer/kit/TimedChecklist';
 
 describe('the safe evaluator (CR-0022 pick 5)', () => {
   const v = { bill: 2400, people: 4, tip: 10, loan: 500000, rate: 9, months: 60 };
@@ -31,6 +31,9 @@ describe('the safe evaluator (CR-0022 pick 5)', () => {
     // EMI on ₹5 lakh at 9% a year for 60 months.
     expect(evaluate('round(pmt(rate / 1200, months, loan), 2)', v)).toBe(10379.18);
     expect(evaluate('pmt(0, 10, 1000)', v)).toBe(100);
+    // A rate of −100% or less has no repayment.
+    expect(evaluate('pmt(-1, 10, 1000)', v)).toBeNull();
+    expect(evaluate('pmt(-2, 10, 1000)', v)).toBeNull();
   });
   it('a bad formula, an unknown name or a result that is not a number is null', () => {
     for (const f of ['bill +', '2 3', 'unknown * 2', 'min()', 'round(1, 2, 3)', 'pmt(1, 2)', 'bill / 0', '10 ^ 999', 'round(1, 0.5)', ')'])
@@ -101,6 +104,14 @@ describe('TimedChecklist', () => {
     // Starting another step starts that step fresh.
     expect(timerLeft(startTimer(paused, 1, 90, 0), 0)).toBe(90_000);
     expect(timerLeft(run, 999_000)).toBe(0);
+    // A finished timer starts again from the step's seconds; a paused one at 0 too.
+    expect(timerLeft(startTimer(run, 0, 60, 999_000), 999_000)).toBe(60_000);
+    expect(timerLeft(startTimer({ step: 0, leftMs: 0 }, 0, 60, 0), 0)).toBe(60_000);
+    // Read back from the data model: only a real timer shape counts.
+    expect(asTimer({ step: 1, endsAt: 5 })).toEqual({ step: 1, endsAt: 5 });
+    expect(asTimer({ step: 1, leftMs: 30 })).toEqual({ step: 1, leftMs: 30 });
+    for (const bad of [null, 3, 'x', { step: -1, leftMs: 1 }, { step: 1.5, endsAt: 1 }, { step: 0 }, { step: 0, leftMs: -5 }])
+      expect(asTimer(bad)).toBeNull();
   });
 });
 
