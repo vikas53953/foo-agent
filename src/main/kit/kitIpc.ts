@@ -2,10 +2,12 @@
 // (user actions in a surface go renderer → main → engine; any action that would send, book, pay, delete or share is an
 // approval request, never a direct action, Article 6: main forwards and the engine handles it as if the user typed it),
 // Article 8 / 04-2 §22.4 (a value that looks like a secret never leaves for the AI: refused again here after the renderer),
-// X-124 (one IPC call = exactly one engine message), CR-0022 AT-355, AT-356, X-180. R1 T2.
+// X-124 (one IPC call = exactly one engine message), CR-0022 AT-355, AT-356, X-180. R1 T2. R1 T3: a keycap reaction on foo's
+// message picks that row of its ListPick, through the same handler as a tap (05-1 §5.3.4, AT-349).
 import { fail, ok, type Result } from '../../shared/errors';
 import type { KitActionMessage } from '../../shared/kit/catalog';
-import { kitMessagesOf } from '../../shared/kit/surface';
+import { keycapRow, pickContext, reactionListPick } from '../../shared/kit/pick';
+import { foldFence, kitMessagesOf } from '../../shared/kit/surface';
 import { checkSecret } from '../../shared/redactor';
 import type { EngineBridge } from '../engine-supervisor/EngineBridge';
 import type { AppContext, handle as Handle } from '../ipc/IpcRouter';
@@ -57,6 +59,43 @@ export function kitDbReads(db: Db): Pick<KitDeps, 'hostText'> {
       }
     },
   };
+}
+
+/**
+ * 05-1 §5.3.4 for kit: a reaction 1️⃣–🔟 on a foo message answers the first ListPick its surfaces draw, exactly as a tap on
+ * that row would (one `kit.action`). Any other emoji, a row past the end, or a message with no ListPick does nothing.
+ */
+export function kitReactionAction(
+  hostText: KitDeps['hostText'],
+  chatId: string,
+  messageId: string,
+  emoji: string,
+  now: number,
+): KitActionMessage | null {
+  const n = keycapRow(emoji);
+  const text = n === null ? null : hostText(chatId, { messageId });
+  if (n === null || text === null) return null;
+  const found = reactionListPick(foldFence([kitMessagesOf(text).messages], 0).surfaces);
+  const row = found?.pick.rows[n - 1];
+  if (!found || !row) return null;
+  return {
+    chatId,
+    messageId,
+    surfaceId: found.surface.id,
+    name: found.pick.action.event.name,
+    sourceComponentId: found.pick.id,
+    context: pickContext(found.pick, found.surface.data, '', { choice: row.title, row: n }),
+    timestamp: new Date(now).toISOString(),
+  };
+}
+
+/** IpcRouter's message:react line: a keycap reaction on a foo message with a ListPick sends its pick (R1 T3). */
+export function kitReaction(ctx: AppContext, messageId: string, emoji: string, now: number): void {
+  const reads = kitDbReads(ctx.db);
+  const row = ctx.db.prepare("SELECT chat_id FROM messages WHERE id = ? AND author_kind = 'foo'").get(messageId) as
+    { chat_id: string } | undefined;
+  const action = row ? kitReactionAction(reads.hostText, row.chat_id, messageId, emoji, now) : null;
+  if (action) kitActionHandler({ ...reads, engine: () => ctx.engine, log: (line) => console.info(line) })(action);
 }
 
 /** IpcRouter's one line. */

@@ -1,13 +1,15 @@
 // Spec: 08-1 §2.4 MainToEngine `kit.action` ("the A2UI client `action`; a gated action is handled as if the user typed
 // it", Article 6), 04 §13.5 (user actions go renderer → main → engine; any action that would send, book, pay, delete or
 // share is an approval request, never a direct action), CR-0022 AT-355 (the action reaches the engine and the surface
-// updates from the reply), AT-356 (a gated Button opens an approval), X-180. R1 T2.
+// updates from the reply), AT-356 (a gated Button opens an approval), AT-349 / AT-350 (a ListPick or TimePick pick is the
+// user's message in the picked words; R1 T3), X-180. R1 T2.
 // The engine never acts on a surface action itself: it stores the tap as the user's message (the Button's own words, or
 // its action name) with the action for the AI beside it (`text_for_ai`), and hands it to the chat lane like a typed
 // message. So an action that would send, book, pay, delete or share meets the same intake, job and gate (08-2 §9.4) as the
 // user typing those words, and the reply that follows can update the surface by naming its surfaceId.
 import type { Clock } from '../../shared/clock';
 import type { KitActionMessage } from '../../shared/kit/catalog';
+import { pickWords } from '../../shared/kit/pick';
 import { buttonWords, foldFence, kitMessagesOf, type Surface } from '../../shared/kit/surface';
 import type { CardRow } from '../../shared/types';
 import type { EngineMessage } from '../../main/db/queries';
@@ -88,7 +90,11 @@ export class KitActions {
       this.d.log('kit.action_unknown_surface', 'NOT_FOUND');
       return;
     }
-    const words = (buttonWords(s, a.sourceComponentId) ?? actionWords(a.name)).slice(0, WORDS_MAX);
+    // A ListPick or TimePick tap (or keycap reaction, R1 T3) is the picked row's or slot's words, like a Choice answer.
+    const words = (buttonWords(s, a.sourceComponentId) ?? pickWords(s, a.sourceComponentId, a.context) ?? actionWords(a.name)).slice(
+      0,
+      WORDS_MAX,
+    );
     const id = this.d.newId('m');
     const r = await this.d.link.request('db.tx', {
       ops: [

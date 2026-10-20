@@ -3,11 +3,13 @@
 // with the "Couldn't show part of this" caption; two-way controls write the surface's data model; user actions go
 // renderer → main `kit:action` → engine `kit.action`; every TextField value passes the 04-2 §22.4 secret patterns before it
 // leaves the renderer and a match is refused, Article 8; `Image` only `data:` images or a chat file, web images never
-// load), 02 §F19.9 (charts), CR-0022 §(c) (catalog), AT-340, AT-353, AT-354, AT-355, AT-356, X-180. R1 T2.
+// load), 02 §F19.9 (charts), CR-0022 §(c) (catalog), AT-340, AT-353, AT-354, AT-355, AT-356, X-180. R1 T2. R1 T3: the
+// places and time pieces MapStops, Timeline, WeekCalendar, ListPick, TimePick (AT-341, AT-344, AT-345, AT-349, AT-350).
 // Parts are drawn by plain functions, not components, so one render counts the parts it had to drop (the caption).
 import { useState, type KeyboardEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import type { KitActionMessage, KitComponent } from '../../shared/kit/catalog';
+import { pickContext, type PickContext } from '../../shared/kit/pick';
 import { checkSecret } from '../../shared/redactor';
 import { absPath, boundPath, getPath, INVALID, resolveContext, resolveField, type Surface } from '../../shared/kit/surface';
 import { TID } from '../../shared/testids';
@@ -18,6 +20,11 @@ import { Icon, type IconName } from '../ui/Icon';
 import { ICONS } from '../ui/icons/registry';
 import { cx } from '../ui/cx';
 import { LineChart, type ChartSeries } from './LineChart';
+import { ListPick, useReactionRow } from './ListPick';
+import { MapStops } from './MapStops';
+import { TimePick } from './TimePick';
+import { Timeline } from './Timeline';
+import { WeekCalendar, weekLayout } from './WeekCalendar';
 import { editSurface, useSurfaceData } from './model';
 import styles from './KitSurface.module.css';
 
@@ -38,6 +45,9 @@ interface Ctx {
   tally: { dropped: number };
   edit(path: string, value: unknown): void;
   act(c: Extract<KitComponent, { component: 'Button' }>, scope: string): void;
+  /** R1 T3: a ListPick row or TimePick slot was picked; true once main took the action (05-1 §5.3.4). */
+  pick(c: Extract<KitComponent, { component: 'ListPick' | 'TimePick' }>, scope: string, pick: PickContext): Promise<boolean>;
+  host: SurfaceHost;
 }
 
 const isIcon = (name: string): name is IconName => Object.prototype.hasOwnProperty.call(ICONS, name);
@@ -223,11 +233,43 @@ function part(ctx: Ctx, c: KitComponent, scope: string, depth: number): ReactNod
       if (series === INVALID) return INVALID;
       return <LineChart variant={c.variant} series={series} title={c.title} unit={c.unit} />;
     }
+    case 'MapStops':
+      return <MapStops stops={c.stops} />;
+    case 'Timeline':
+      return <Timeline items={c.items} />;
+    case 'WeekCalendar': {
+      const layout = weekLayout(c.days, c.slots);
+      return layout ? <WeekCalendar layout={layout} /> : INVALID;
+    }
+    case 'ListPick':
+      return <KitListPick ctx={ctx} c={c} scope={scope} />;
+    case 'TimePick':
+      return (
+        <TimePick
+          date={c.date}
+          slots={c.slots}
+          pickKey={`${ctx.key}:${c.id}:${scope}`}
+          onPick={(slot) => ctx.pick(c, scope, { choice: slot, date: c.date })}
+        />
+      );
     default:
-      // The other foo components arrive with R1 T3 (places and time), T4 (numbers and forms) and T7 (LiveStamp); a valid
-      // one draws nothing until then and is not counted as dropped.
+      // The other foo components arrive with R1 T4 (numbers and forms) and T7 (LiveStamp); a valid one draws nothing until
+      // then and is not counted as dropped.
       return null;
   }
+}
+
+/** A component, so the reaction it reads from the store is a hook (05-1 §5.3.4: a keycap reaction picks a row). */
+function KitListPick({ ctx, c, scope }: { ctx: Ctx; c: Extract<KitComponent, { component: 'ListPick' }>; scope: string }) {
+  const reactionRow = useReactionRow(ctx.host, c.id);
+  return (
+    <ListPick
+      rows={c.rows}
+      pickKey={`${ctx.key}:${c.id}:${scope}`}
+      reactionRow={reactionRow}
+      onPick={(row) => ctx.pick(c, scope, { choice: c.rows[row - 1]!.title, row })}
+    />
+  );
 }
 
 /** Arrow keys, Home and End move the selection and focus with it (WAI-ARIA tabs, automatic activation). */
@@ -339,8 +381,23 @@ export function KitSurface({
   const data = useSurfaceData(key, surface.data);
   const [sent, setSent] = useState<string | null>(null);
   const [refused, setRefused] = useState<string | null>(null);
+  const send = (c: KitComponent, name: string, context: Record<string, unknown>): Promise<boolean> => {
+    const msg: KitActionMessage = {
+      ...host,
+      surfaceId: surface.id,
+      name,
+      sourceComponentId: c.id,
+      context,
+      timestamp: new Date(clockNow()).toISOString(),
+    };
+    return invoke('kit:action', msg).then(
+      (r) => r.ok,
+      () => false,
+    );
+  };
   const ctx: Ctx = {
     surface,
+    host,
     data,
     key,
     streaming,
@@ -355,18 +412,16 @@ export function KitSurface({
         return;
       }
       setRefused(null);
-      const msg: KitActionMessage = {
-        ...host,
-        surfaceId: surface.id,
-        name: c.action.event.name,
-        sourceComponentId: c.id,
-        context,
-        timestamp: new Date(clockNow()).toISOString(),
-      };
-      void invoke('kit:action', msg).then(
-        (r) => setSent(r.ok ? c.id : null),
-        () => setSent(null),
-      );
+      void send(c, c.action.event.name, context).then((ok) => setSent(ok ? c.id : null));
+    },
+    pick: (c, scope, p) => {
+      const context = pickContext(c, data, scope, p);
+      if (outgoingText(context).some((s) => checkSecret(s) !== null)) {
+        setRefused(c.id);
+        return Promise.resolve(false);
+      }
+      setRefused(null);
+      return send(c, c.action.event.name, context);
     },
   };
   const root = node(ctx, 'root', '', 0);

@@ -70,7 +70,7 @@ import { FIX_ACTION_KINDS, JOB_CHANNELS, jobIpc } from '../jobs/jobIpc';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
 import { registerSigninIpc } from '../jobs/signinIpc';
-import { registerKitIpc } from '../kit/kitIpc';
+import { kitReaction, registerKitIpc } from '../kit/kitIpc';
 import { isTrustedUrl } from '../windows/protocol';
 import { registerConnectionIpc } from '../connections/connectionIpc';
 import { logEvent } from '../log/techLog';
@@ -505,6 +505,8 @@ export function registerIpc(ctx: AppContext): void {
     const r = asVoid(written(reactMessage(db, id, e, on, now())));
     // M5 (T5): a reaction on a card's bubble may answer a Choice card or get the G16 line (08-4 §26.6 rule 4, 08-2 §5.2.2).
     if (r.ok && on) cardReaction(ctx, id, e);
+    // R1 T3: a keycap reaction on a foo message picks a row of its ListPick, like a tap (05-1 §5.3.4, AT-349).
+    if (r.ok && on) kitReaction(ctx, id, e, now());
     return r;
   });
   handle('message:pin', ({ messageId: id, on }) => asVoid(written(pinMessage(db, id, on))));
