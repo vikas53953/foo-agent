@@ -1,0 +1,572 @@
+{
+  "milestone": "R1",
+  "source": "CR-0022 (Rich Replies: kit, AI pages, input and output extras; tickets in docs/tickets/R1.md)",
+  "rows": [
+    {
+      "group": "R1 Goal",
+      "item": "foo answers with rich pieces and takes richer input: a kit of 13 pieces in A2UI drawn by foo, AI-made pages in a sealed box, foo read line, Ask about this, big paste to file, Visuals setting, action chips, LiveStamp and Keep",
+      "status": "PARTIAL",
+      "evidence": ["test:AT-340", "test:AT-355", "test:AT-357", "test:AT-363", "test:AT-369"],
+      "covers": "part",
+      "manual": "Keep's PNG snapshot (AT-369) needs a look on Windows 11; carry items in CR-0022 (h) and docs/decisions/R1.tsv"
+    },
+    {
+      "group": "R1 Constitution",
+      "item": "02-2 §F19.9 · 04 §1.9, §6.5, §13.5, §13.6, §17.5 · 04-2 §21.7, §22.4, §22.5 · 05 §0.1 · 05-1 §5.3.4 · 06-2 §6.2 · 08-0 §E.4, §G.1 · 08-1 §2.4, §3.2, §4.2 · 08-4 §24.15, §25.5 · 10-acceptance-2 §C.9 · X-180",
+      "status": "PARTIAL",
+      "evidence": ["test:AT-354", "test:AT-356", "test:AT-361", "test:AT-370"],
+      "covers": "part",
+      "manual": "two-axis review on the R1 PR; picks in CR-0022 (f) (1-10 approved with the CR, 11-18 added during the build)"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/engine/chat/understood.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/engine/kit/kitAction.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/engine/prompt/actions.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/main/keep/keep.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/main/keep/keepIpc.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/main/kit/actionChipOpen.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/main/kit/kitIpc.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/main/page/pageIpc.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/main/page/pageScheme.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/main/page/pages.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/main/store/migrations/0004_rich_replies.sql",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/composer/ActionChips.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/keep/KeepButton.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/keep/KeptList.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/keep/KeptList.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/keep/KeptView.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/keep/kept.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/Calculator.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/Compare.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/GoalRing.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/KitBlock.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/KitBlock.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/KitCard.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/KitSurface.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/KitSurface.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/LineChart.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/LineChart.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/ListPick.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/ListPick.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/LiveStamp.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/MapStops.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/MapStops.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/NumbersForms.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/SecretRefused.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/ShortForm.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/Stepper.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/TimePick.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/TimedChecklist.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/Timeline.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/Timeline.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/WeekCalendar.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/WeekCalendar.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/fooOnly.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/kit/model.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/messages/AskPill.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/messages/AskPill.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/messages/ReadLine.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/messages/ReadLine.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/page/AiPageCard.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/page/PageBlock.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/page/PageView.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/page/PageView.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/page/bridge.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/renderer/pages/lazyKit.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/shared/kit/actionChips.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/shared/kit/catalog.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/shared/kit/evaluate.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/shared/kit/keep.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/shared/kit/page.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/shared/kit/parse.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/shared/kit/pick.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/shared/kit/prompt.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/shared/kit/surface.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Create",
+      "item": "src/shared/sideQuestion.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-340",
+      "status": "DONE",
+      "evidence": ["test:AT-340"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-341",
+      "status": "DONE",
+      "evidence": ["test:AT-341"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-342",
+      "status": "DONE",
+      "evidence": ["test:AT-342"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-343",
+      "status": "DONE",
+      "evidence": ["test:AT-343"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-344",
+      "status": "DONE",
+      "evidence": ["test:AT-344"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-345",
+      "status": "DONE",
+      "evidence": ["test:AT-345"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-346",
+      "status": "DONE",
+      "evidence": ["test:AT-346"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-347",
+      "status": "DONE",
+      "evidence": ["test:AT-347"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-348",
+      "status": "DONE",
+      "evidence": ["test:AT-348"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-349",
+      "status": "DONE",
+      "evidence": ["test:AT-349"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-350",
+      "status": "DONE",
+      "evidence": ["test:AT-350"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-351",
+      "status": "DONE",
+      "evidence": ["test:AT-351"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-352",
+      "status": "DONE",
+      "evidence": ["test:AT-352"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-353",
+      "status": "DONE",
+      "evidence": ["test:AT-353"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-354",
+      "status": "DONE",
+      "evidence": ["test:AT-354"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-355",
+      "status": "DONE",
+      "evidence": ["test:AT-355"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-356",
+      "status": "DONE",
+      "evidence": ["test:AT-356"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-357",
+      "status": "DONE",
+      "evidence": ["test:AT-357"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-358",
+      "status": "DONE",
+      "evidence": ["test:AT-358"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-359",
+      "status": "DONE",
+      "evidence": ["test:AT-359"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-360",
+      "status": "DONE",
+      "evidence": ["test:AT-360"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-361",
+      "status": "DONE",
+      "evidence": ["test:AT-361"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-362",
+      "status": "DONE",
+      "evidence": ["test:AT-362"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-363",
+      "status": "DONE",
+      "evidence": ["test:AT-363"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-364",
+      "status": "DONE",
+      "evidence": ["test:AT-364"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-365",
+      "status": "DONE",
+      "evidence": ["test:AT-365"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-366",
+      "status": "DONE",
+      "evidence": ["test:AT-366"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-367",
+      "status": "DONE",
+      "evidence": ["test:AT-367"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-368",
+      "status": "DONE",
+      "evidence": ["test:AT-368"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-369",
+      "status": "DONE",
+      "evidence": ["test:AT-369"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-370",
+      "status": "DONE",
+      "evidence": ["test:AT-370"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Must pass",
+      "item": "AT-371",
+      "status": "DONE",
+      "evidence": ["test:AT-371"],
+      "covers": "full"
+    },
+    {
+      "group": "R1 Fidelity exit",
+      "item": "fidelity report signed by the reviewer and seen by Vikas",
+      "status": "UNVERIFIABLE",
+      "manual": "compare page for Vikas's review (approve-on-his-behalf rule)"
+    }
+  ]
+}

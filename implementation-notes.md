@@ -1294,3 +1294,23 @@ in_control.text,hand_back.label,not_secure.text,window.title}`.
   the AI before (AT-074 flaked on it).
 - Golden lane unchanged: `FIDELITY_MILESTONE: M9` (P1 rows carry the M9 label, CR-0021 (a)).
 - Moved on: the carry list in CR-0021 (h) and `docs/decisions/P1.tsv`.
+
+## R1 · close-out (lead, CR-0022)
+
+- Built: contracts, catalog, parser and migration 0004 (T1); the kit renderer with standard parts, data model, actions,
+  gated buttons and LineChart (T2); places and time pieces: MapStops with no basemap, Timeline, WeekCalendar, ListPick
+  with keycap answers, TimePick (T3); numbers and forms pieces: Stepper, Compare, Calculator on a safe evaluator, GoalRing,
+  TimedChecklist, ShortForm with the secret guard (T4); AI pages in a sealed box on the `foo-page:` scheme with a checked
+  bridge (T5); input extras: the "foo read:" line, Ask about this, big paste to a file (T6); output extras: the Visuals
+  setting, action chips, LiveStamp with Refresh, Keep (T7).
+- Picks added during the build, in CR-0022 (f): 11 a line break ends a sentence inside a fence; 12 kit and page fences
+  draw only in foo's own text; 13 pages act only on a live user tap; 14 fenced text skips the word filter; 15 the
+  `ai_page` payload is `{ html }`; 16 action chips come on one `Actions:` line; 17 Keep snapshots come from main; 18 kept
+  items sit in the chat details panel until the Files page is built.
+- Lazy kit: the kit and page renderers, the `kit` and `ai_page` cards and the Kept view load through
+  `src/renderer/pages/lazyKit.tsx` and are preloaded at idle, so the first script keeps P1's AT-322 budget and holds no zod.
+- Golden lane unchanged: `FIDELITY_MILESTONE: M9` (R1 rows carry the M9 label, CR-0022 pick 1).
+- Moved on: kept state is not seeded again after a restart; page user activation is window-wide (about 5 s), so a tap
+  anywhere in foo counts (openLink still shows C-26); two keycaps inside the async store window could both pass; AT-369's
+  PNG capture needs a look on Windows; a virtual-list remount reloads an AI page from scratch. Logged in
+  `docs/decisions/R1.tsv` and CR-0022 (h).

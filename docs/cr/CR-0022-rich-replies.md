@@ -195,3 +195,18 @@ on every bridge call and on `TextField`; `openLink` always shows C-26; three pas
 shared-file owners and T1's proof (ticket map). Considers applied: extra CSP directives and `webRequest` deny, `kit` card
 to T2, `ai_page` name, "foo read:" in 04 §6, Image sources, `kit_action` named, pick 1 default, migration 0004.
 ```
+
+## (h) Close-out (lead, 2026-10-20)
+
+- `spec/trace.csv`: the R1 rows AT-340..AT-371 (tests in `test/e2e/r1-*.spec.ts`, `test/unit/r1-contracts.test.ts` and
+  `test/unit/r1-kit-safety.test.ts`) are live under the M9 label (pick 1); the spec manifest is regenerated with
+  `scripts/spec-verify.ts --write` under this CR.
+- Picks added during the build: 11 (a line break ends a sentence inside a fence), 12 (fences draw only in foo's own text),
+  13 (pages act only on a live user tap), 14 (fenced text skips the word filter), 15 (`ai_page` payload), 16 (action
+  chips on one `Actions:` line), 17 (Keep snapshots from main), 18 (kept items in the chat details panel). Each is in
+  `docs/decisions/R1.tsv`.
+- Also logged there: the kit and page renderers load lazily (`src/renderer/pages/lazyKit.tsx`) so P1's AT-322 budget
+  holds; a call chip's C-26 has its own words (`bubble.actions.call_confirm`).
+- Ships later, logged in `docs/decisions/R1.tsv`: kept state is not seeded again after a restart; page user activation is
+  window-wide; two keycaps inside the async store window could both pass; a virtual-list remount reloads an AI page.
+- Needs Vikas's eyes on Windows 11: Keep's PNG snapshot (AT-369 may loosen if Windows capture comes back empty).
