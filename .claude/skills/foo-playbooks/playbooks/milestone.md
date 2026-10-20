@@ -15,24 +15,30 @@ Who does what:
 3. **Review the map** with one independent reviewer against the pack and the spec. It looks for missing requirements, wrong blocking edges, overlapping owned files, and tickets that are horizontal layers. Fix what it finds, then log the verdict as `approved on Vikas's behalf`.
 4. **Push the milestone branch** `claude/foo-m<n>-…` from `origin/main`, with the map's prefactor or CR ticket if you do that one yourself. Open the milestone PR to main as a **draft** (ci.yml runs the Windows lanes only on non-draft PRs).
 5. **Hand out the frontier.** Send the coordinator (`send_message`) the list of tickets that are ready now, each with its section of the map and its base branch. The coordinator starts one thread per ticket. Every ready ticket runs at once; the only limit is that two running tickets never own the same file. Shared files (`src/shared/testids.ts`, `en-IN.json`, `types.ts`, `ipc.ts`, `spec/trace.csv`, `PROJECT-MAP.md`) belong to one ticket at a time, as the map says.
-6. **Review and merge each ticket PR** when its agent says it is green:
+6. **Check-ins start from GitHub, not from messages.** Ticket "ready" messages reached the P1 and R1 leads 6 to 34 minutes late, and R1 T4's never arrived. Each check-in first lists open PRs into the milestone branch: head SHA, the last `Ready: <sha>` comment, check state, mergeable. Keep one `send_later` armed (45 to 60 min; arm the next one first) and `subscribe_pr_activity` on each ticket PR once. At each check-in also read your used tokens (`get_session`); at about 180k write `/mnt/project-files/handoff/<M>-lead.md` (branch, open PRs, pending asks, lessons) and ask the coordinator for a fresh lead.
+7. **Keep a known-failures list** in the ticket map (test id, symptom, first SHA, owner, fix PR) and update it after each merge. Tickets compare against it instead of each rebuilding the base to prove a red test is not theirs (P1 tickets spent 15 to 25 minutes each on that). PERF-04 is always red in the cloud container (software renderer).
+8. **Review and merge each ticket PR** when its agent says it is green:
    - `foo-review` (Opus + Sonnet on the ticket diff, findings bucketed);
    - check that its foo-verify proof block is in the PR and shows the ticket working;
    - check that the fast checks are green on it.
 
-   Act-on findings go back to the ticket agent. When it is clean, merge into the milestone branch with a merge commit (no rebase), then update the ticket's **Status** in the map.
-7. **Report newly unblocked tickets** to the coordinator after each merge, so their threads start at once. Tell running ticket agents to merge the milestone branch into their own branch when a ticket they depend on, or share a neighbour file with, has landed.
-8. **Close-out** (`foo-review` milestone mode), once every ticket is merged:
+   Act-on findings go back to the ticket agent. When it is clean, merge **the exact SHA the ticket reported** into the milestone branch with `git merge --no-ff` (never fast-forward and amend: GitHub then never marks the PR merged, as with R1 #72), then update the ticket's **Status** in the map. Before merging, probe for conflicts (`git merge --no-ff --no-commit …; git diff --name-only --diff-filter=U; git merge --abort`). Never `git stash` while `.git/MERGE_HEAD` exists (it drops the merge). Regenerate `spec/SPEC-MANIFEST.json` with `pnpm spec:verify --write`; combine `spec/trace.csv` and `docs/decisions/*.tsv` row by row.
+9. **Report newly unblocked tickets** to the coordinator after each merge, so their threads start at once. Tell running ticket agents to merge the milestone branch into their own branch when a ticket they depend on, or share a hot file with, has landed. Send a 3-line IST status to Vikas's thread at each wave boundary: done, waiting on, needs from you.
+10. **Close-out** (`foo-review` milestone mode), once every ticket is merged, **before** the milestone PR leaves draft (every push to a non-draft PR restarts the Windows shards and the golden lane, about 40 minutes each):
+   - the PERF specs on the merged branch against `origin/main` (P1's chat-switch slowdown, PERF-03, was found only after the PR opened and cost about 90 minutes);
    - two-axis review (Standards, Spec) beside the fidelity checker;
+   - a scan for leaked timers (`setTimeout`, `addEventListener`, `requestAnimationFrame` without cleanup), unused exports, casts and raw values;
    - a `typescript-best-practices` pass and comment clean-up on the whole diff;
    - act on the findings, then mark the milestone PR ready for full CI.
-9. **Milestone PR body:**
+
+   If a sibling milestone must land on main first, do all of this while it closes out, and merge its final main once rather than after each of its pushes.
+11. **Milestone PR body:**
    - Before/After;
    - the ticket list with each proof block;
    - the review verdicts;
    - the decision log link;
    - the side-by-side compare page and the installer for Vikas, as every milestone has had.
-10. **Merge** when CI and the checker are green (Vikas's standing rule), log it, and update the mission board.
+12. **Merge** when CI and the checker are green (Vikas's standing rule), log it, and update the mission board.
 
 Ticket brief (the lead writes it into the map; the coordinator pastes it into the ticket thread). Fill every field; a field you cannot fill means the ticket isn't ready yet.
 
@@ -46,7 +52,8 @@ VERIFY      pnpm spec:verify && pnpm check:copy && pnpm lint && pnpm format:chec
             then xvfb-run -a pnpm tsx scripts/foo-verify.ts test/verify/<NN-slug>.journey.ts
 FORBIDDEN   merging its own PR; rebase or force-push of shared branches; files outside OWNS; spec/ or golden/ edits
             without the ticket's CR; new screens, words or flows the spec does not have
-DONE        PR green with the proof block pasted; message the lead (send_message) with the PR link and head SHA
+DONE        local checks + proof green at head, milestone branch merged in, PR mergeable; `Ready: <sha>` PR comment
+            and a message to the lead (send_message) with the PR link and head SHA
 STANDING    CLAUDE.md, docs/build-method.md, .claude/skills/foo-playbooks/playbooks/ticket.md
 ```
 

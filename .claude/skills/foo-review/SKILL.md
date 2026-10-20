@@ -22,6 +22,10 @@ Adapted for foo-agent from pstack `interrogate` (two-model adversarial review) a
    - **Noted**: valid, not actionable now.
    - **Dismissed**: wrong, nitpicky or missing context, with the reason.
 5. Fix the Act-on items, re-run the proof, and paste the bucket table into the PR under **Review**.
+6. **Re-check the fix commit, not the PR.** Each Act-on fix ships with a test that fails without it, and one Sonnet reviewer checks only the fix commit ("does each fix work, and did it break anything next to it?"). In P1 three of three fix rounds introduced a new defect (a bubbling `animationend`, a ResizeObserver reset), and only this re-check caught them.
+7. **Verdict line.** The PR body carries `Review: <verdict word as given> | act fixed n/n | consider: a fixed, b deferred (why)`. Write "approved on Vikas's behalf" only after that line exists; "pass" must not hide an open consider.
+
+**Host-callable surfaces** (sealed AI pages, kit actions, anything a page or the AI can call): the reviewer fills a capability table, one row per method: tap-gated?, how many calls per tap?, rate cap?, can it overwrite what the user is typing?, can it send or spend?, which secret check applies? In R1 two ticket reviews missed three of these (`draftMessage` not tap-gated, one tap firing about 50 actions, a fenced `Actions:` line parsed as chips); the close-out review found them.
 
 Cheaper path: for a small ticket (one seam, under ~150 lines) one Sonnet reviewer is enough; say so in the PR.
 

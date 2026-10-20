@@ -24,6 +24,9 @@ xvfb-run -a pnpm tsx scripts/foo-verify.ts test/verify/<name>.journey.ts
 - Ready means usable: the journey waits for `TID.titlebarStrip`, then seeds. Every app it launched is closed at the end and its temp folders deleted.
 - `better-sqlite3` ships an N-API prebuild that loads in Electron. **Do not run `pnpm rebuild:electron` in the cloud container**: the proxy blocks the Electron headers download (403) and the prebuild already works.
 - No AI or network is reached: replies come from the fake AI (`v.launch({ fakeAi: [...] })`, lines built with `intake()` / `envelope()` from `test/e2e/fakeAi.ts`).
+- To get a reply in a seeded world, first settle the seeded jobs (`settleSeededJobs(page, refs)` from `test/e2e/m4-start.ts`), then send. Without it the journey waits 30 s for `bubble-foo` and times out (P1 T5 lost three runs to this).
+- A test id must exist in `TID` before you use it; `TID.someTypo` is `undefined` and the locator becomes `[data-testid="undefined"]`, which only fails after the 30 s timeout.
+- Journey code that needs Electron internals (holding or failing a protocol response, patching IPC handlers) belongs in one shared helper file (start `test/e2e/helpers/` if none exists), not inline in each journey.
 
 ## 2. Doctor (run first, and whenever anything looks off)
 
@@ -75,6 +78,8 @@ bash scripts/push-verify-evidence.sh qa-evidence/verify/<name>
 ```
 
 It pushes the folder to the `evidence` branch at `verify/<branch>/<sha7>/<name>/` (the repo is public, so the pictures render) and prints the proof block: verdict, commit, every `v.note`, console errors, and a before | after picture table. Paste it into the PR body under **Proof**. `qa-evidence/verify/` itself is not committed.
+
+The proof must be from the head being merged. After review fixes that touch `src/renderer/`, re-run the journey and replace the block; check that `run.json`'s commit equals `git rev-parse HEAD`.
 
 ## 6. Fidelity is a separate, stricter check
 
