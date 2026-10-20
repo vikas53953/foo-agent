@@ -1,0 +1,20 @@
+{
+  "journey": "test/verify/m8-t6-email.journey.ts",
+  "label": "before",
+  "appDir": "/home/claude/foo-base",
+  "commit": "6cc2d288543b2ec8ef48420a56c5d8f4f16a2c6a",
+  "dirty": false,
+  "started": "2026-10-19T23:58:02.069Z",
+  "finished": "2026-10-19T23:58:14.701Z",
+  "platform": "linux x64",
+  "pass": false,
+  "error": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('thread-log').locator('[data-testid=\"card-draft\"]').first() to be visible\u001b[22m\n\n    at waitForDraft (/home/claude/foo-agent/test/e2e/m8-drafts-world.ts:141:14)\n    at async Object.journey (/home/claude/foo-agent/test/verify/m8-t6-email.journey.ts:26:20)\n    at async run (/home/claude/foo-agent/scripts/foo-verify.ts:133:5)",
+  "notes": [],
+  "shots": [],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}

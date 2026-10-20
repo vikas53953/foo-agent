@@ -1,0 +1,72 @@
+{
+  "journey": "test/verify/m8-t6-email.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "15fa3546587b574eaa2d451c02403ea77b276678",
+  "dirty": false,
+  "started": "2026-10-20T00:26:20.633Z",
+  "finished": "2026-10-20T00:26:35.909Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "\"reply to my landlord saying I’ll pay rent on Monday\" → a Draft card to Rakesh Sharma <r.sharma@example.com>, \"Re: October rent\", in his Gmail thread; a minute later Gmail has sent nothing (AT-051)",
+    "Change → Save changes: the card reads \"Email · edited\" and Gmail got drafts.update on the same draft",
+    "Send → \"Sending in 5…\" + Undo; Undo after 2 s → \"Not sent. The draft is still here.\" and Gmail has no sent message (AT-053)",
+    "second Send, 5 s later → \"✓ Sent\" with the proof chip; Gmail saw drafts.send once (never messages.send)",
+    "Send on a draft to someone new → \"Waiting for your OK below ›\" and a full Approval card \"Will send to priya.new@example.com from your Gmail. You haven’t emailed them before. Can’t be unsent.\" with no scope chips; its tap sent it once, with no undo window (AT-052)"
+  ],
+  "shots": [
+    {
+      "file": "after/01-draft-pending.light.png",
+      "name": "draft-pending",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-draft-edited.light.png",
+      "name": "draft-edited",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-undo-window.light.png",
+      "name": "undo-window",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-undone.light.png",
+      "name": "undone",
+      "theme": "light"
+    },
+    {
+      "file": "after/05-sent.light.png",
+      "name": "sent",
+      "theme": "light"
+    },
+    {
+      "file": "after/06-sent.dark.png",
+      "name": "sent",
+      "theme": "dark"
+    },
+    {
+      "file": "after/07-someone-new.light.png",
+      "name": "someone-new",
+      "theme": "light"
+    },
+    {
+      "file": "after/08-someone-new.dark.png",
+      "name": "someone-new",
+      "theme": "dark"
+    },
+    {
+      "file": "after/09-someone-new-sent.light.png",
+      "name": "someone-new-sent",
+      "theme": "light"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}
