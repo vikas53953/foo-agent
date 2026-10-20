@@ -20,6 +20,8 @@ import { axisRange, formatValue, geometry, xLabelIndexes } from '../../src/rende
 import { kitActionHandler } from '../../src/main/kit/kitIpc';
 import { actionForAi, actionWords, KitActions } from '../../src/engine/kit/kitAction';
 import { plainLine } from '../../src/main/store/queries';
+import { ReleaseGate } from '../../src/engine/prompt/releaseGate';
+import { FakeClock } from '../../src/shared/clock';
 
 const create = (s = 's1') => `{"createSurface":{"surfaceId":"${s}","catalogId":"foo.kit.v1"}}`;
 const comps = (components: unknown[], s = 's1') => JSON.stringify({ updateComponents: { surfaceId: s, components } });
@@ -106,16 +108,28 @@ describe('LineChart helpers (02-2 §F19.9, §F19.1, §F19.2)', () => {
   it('categories follow first appearance across series; x labels never exceed 6', () => {
     const g = geometry(
       [
-        { label: 'This month', points: [{ x: 'Mon', y: 1 }, { x: 'Tue', y: 2 }] },
-        { label: 'Last month', points: [{ x: 'Tue', y: 3 }, { x: 'Wed', y: 1 }] },
+        {
+          label: 'This month',
+          points: [
+            { x: 'Mon', y: 1 },
+            { x: 'Tue', y: 2 },
+          ],
+        },
+        {
+          label: 'Last month',
+          points: [
+            { x: 'Tue', y: 3 },
+            { x: 'Wed', y: 1 },
+          ],
+        },
       ],
       'line',
     );
     expect(g.categories).toEqual(['Mon', 'Tue', 'Wed']);
     expect(g.y(g.range.max)).toBeLessThan(g.y(g.range.min));
     expect(xLabelIndexes(4)).toEqual([0, 1, 2, 3]);
-    expect(xLabelIndexes(30)).toHaveLength(6);
-    expect(xLabelIndexes(30).at(-1)).toBe(29);
+    expect(xLabelIndexes(7)).toEqual([0, 2, 4, 6]);
+    expect(xLabelIndexes(30)).toEqual([0, 5, 10, 15, 20, 25]);
   });
 });
 
@@ -170,7 +184,7 @@ describe("the engine's kit.action (08-1 §2.4: as if the user typed it)", () => 
         request: async (kind: string, p: { q?: string; ops?: unknown[] }) => {
           if (kind === 'db.query' && p.q === 'messageById')
             return { ok: true, value: { id: 'm_1', chatId: 'c_1', authorKind: 'foo', text: fence(create(), comps(button)) } };
-          if (kind === 'db.tx') return txs.push(p.ops), { ok: true, value: { ids: [], revs: [] } };
+          if (kind === 'db.tx') return (txs.push(p.ops), { ok: true, value: { ids: [], revs: [] } });
           return { ok: true, value: null };
         },
       } as never,
@@ -204,5 +218,22 @@ describe("the engine's kit.action (08-1 §2.4: as if the user typed it)", () => 
 describe('previews (03-shell-1 §3.4.6)', () => {
   it('a reply that is only a kit block leaves no JSON in the chat-list line', () => {
     expect(plainLine(fence(create(), comps(button)))).toBe('Here you go.');
+  });
+});
+
+describe('release gate inside a fence (08-4 §25.5 item 2, 04 §13.5 streaming)', () => {
+  it('each line of an a2ui fence releases on its own; prose lines still need whitespace after the break', async () => {
+    const clock = new FakeClock();
+    const out: string[] = [];
+    const gate = new ReleaseGate({ clock, rewrite: async (x) => x, onRelease: (x) => out.push(x), onSayClosed: () => undefined });
+    clock.advance(1_500);
+    gate.feed('<say>Fares are falling.\n\n```a2ui\n{"a":1}\n{"b"');
+    await Promise.resolve();
+    expect(out.join('')).toBe('Fares are falling.\n\n```a2ui\n{"a":1}\n');
+    gate.feed(':2}\n```\nDone\nok</say>');
+    await gate.done;
+    expect(out.join('')).toBe('Fares are falling.\n\n```a2ui\n{"a":1}\n{"b":2}\n```\nDone\nok');
+    // From the closing fence on, a bare line break is no boundary again: "Done\nok" stays one sentence, as before.
+    expect(out.at(-1)).toBe('```\nDone\nok');
   });
 });

@@ -33,6 +33,8 @@ interface Ctx {
   surface: Surface;
   data: unknown;
   key: string;
+  /** While the reply streams, a bound value may still be on its way: its component waits instead of being dropped. */
+  streaming: boolean;
   tally: { dropped: number };
   edit(path: string, value: unknown): void;
   act(c: Extract<KitComponent, { component: 'Button' }>, scope: string): void;
@@ -49,7 +51,7 @@ function kids(ctx: Ctx, children: Extract<KitComponent, { component: 'Row' }>['c
   const base = absPath(children.path, scope);
   const list = getPath(ctx.data, base);
   if (!Array.isArray(list)) {
-    ctx.tally.dropped++;
+    if (!ctx.streaming) ctx.tally.dropped++;
     return [];
   }
   return list.slice(0, MAX_ITEMS).map((_, i) => node(ctx, children.componentId, `${base}/${i}`, depth + 1, `${base}/${i}`));
@@ -65,7 +67,7 @@ function node(ctx: Ctx, id: string, scope: string, depth: number, key: string = 
   }
   const out = part(ctx, c, scope, depth);
   if (out === INVALID) {
-    ctx.tally.dropped++;
+    if (!ctx.streaming) ctx.tally.dropped++;
     return null;
   }
   return (
@@ -177,7 +179,13 @@ function part(ctx: Ctx, c: KitComponent, scope: string, depth: number): ReactNod
       return (
         <label className={styles.field}>
           {c.label && <span data-copy="ai">{c.label}</span>}
-          <input className={styles.input} type={type} value={value} readOnly={!path} onChange={(e) => path && ctx.edit(path, e.target.value)} />
+          <input
+            className={styles.input}
+            type={type}
+            value={value}
+            readOnly={!path}
+            onChange={(e) => path && ctx.edit(path, e.target.value)}
+          />
         </label>
       );
     }
@@ -201,8 +209,7 @@ function part(ctx: Ctx, c: KitComponent, scope: string, depth: number): ReactNod
                 checked={value.includes(o.value)}
                 readOnly={!path}
                 onChange={(e) =>
-                  path &&
-                  ctx.edit(path, multi ? (e.target.checked ? [...value, o.value] : value.filter((v) => v !== o.value)) : [o.value])
+                  path && ctx.edit(path, multi ? (e.target.checked ? [...value, o.value] : value.filter((v) => v !== o.value)) : [o.value])
                 }
               />
               <span data-copy="ai">{o.label}</span>
@@ -302,11 +309,13 @@ export function KitSurface({
   surface,
   host,
   agentName,
+  streaming = false,
   blockDropped,
 }: {
   surface: Surface;
   host: SurfaceHost;
   agentName: string;
+  streaming?: boolean;
   /** Messages or components the block's parse dropped; the last surface of a block carries them, so one caption shows. */
   blockDropped: number;
 }) {
@@ -318,6 +327,7 @@ export function KitSurface({
     surface,
     data,
     key,
+    streaming,
     tally: { dropped: 0 },
     edit: (path, value) => editSurface(key, surface.data, path, value),
     act: (c, scope) => {

@@ -23,6 +23,7 @@ export function KitBlock({ body }: { body: string; closed: boolean }) {
           surface={s}
           host={host}
           agentName={bubble.agentName}
+          streaming={streaming}
           blockDropped={i === surfaces.length - 1 ? dropped : 0}
         />
       ))}

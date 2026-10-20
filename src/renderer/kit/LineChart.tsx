@@ -65,19 +65,17 @@ export function geometry(series: ChartSeries[], variant: ChartVariant): Geometry
   const plotH = VIEW.h - VIEW.top - VIEW.bottom;
   const n = categories.length;
   const band = plotW / Math.max(n, 1);
-  const x =
-    variant === 'bar' || n === 1 ? (i: number) => VIEW.left + band * (i + 0.5) : (i: number) => VIEW.left + (plotW * i) / (n - 1);
+  const x = variant === 'bar' || n === 1 ? (i: number) => VIEW.left + band * (i + 0.5) : (i: number) => VIEW.left + (plotW * i) / (n - 1);
   const y = (v: number) => VIEW.top + plotH * (1 - (v - range.min) / (range.max - range.min));
   const barW = (band * 0.7) / Math.max(series.length, 1);
   return { categories, range, x, y, bar: { w: barW, offset: (s) => (s - (series.length - 1) / 2) * barW } };
 }
 
-/** At most this many x labels, evenly picked (one-line labels must not collide). */
+/** At most this many x labels, every k-th category from the first, evenly spaced (one-line labels must not collide). */
 const MAX_X_LABELS = 6;
 export function xLabelIndexes(n: number): number[] {
-  if (n <= MAX_X_LABELS) return Array.from({ length: n }, (_, i) => i);
-  const step = (n - 1) / (MAX_X_LABELS - 1);
-  return Array.from({ length: MAX_X_LABELS }, (_, i) => Math.round(i * step));
+  const step = Math.ceil(n / MAX_X_LABELS);
+  return Array.from({ length: n }, (_, i) => i).filter((i) => i % step === 0);
 }
 
 export function LineChart({
@@ -143,7 +141,10 @@ export function LineChart({
           return (
             <g key={si} opacity={look.opacity} data-series-index={si}>
               {variant === 'area' && (
-                <path className={styles.area} d={`${d} L${last.x.toFixed(1)},${base.toFixed(1)} L${pts[0]!.x.toFixed(1)},${base.toFixed(1)} Z`} />
+                <path
+                  className={styles.area}
+                  d={`${d} L${last.x.toFixed(1)},${base.toFixed(1)} L${pts[0]!.x.toFixed(1)},${base.toFixed(1)} Z`}
+                />
               )}
               <path className={styles.line} d={d} strokeDasharray={look.dash} />
               {pts.length === 1 && <circle className={styles.dot} cx={last.x} cy={last.y} r={3} />}

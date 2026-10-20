@@ -63,7 +63,8 @@ export class KitActions {
       if (m && m.chatId === a.chatId && m.authorKind !== 'user') text = m.text;
     } else if (a.cardId !== undefined) {
       const c = await this.query<CardRow>('cardById', a.cardId);
-      if (c && c.chatId === a.chatId && c.type === 'kit' && typeof c.payload.body === 'string') text = `\`\`\`a2ui\n${c.payload.body}\n\`\`\``;
+      if (c && c.chatId === a.chatId && c.type === 'kit' && typeof c.payload.body === 'string')
+        text = `\`\`\`a2ui\n${c.payload.body}\n\`\`\``;
     }
     if (text === null) return null;
     const { surfaces } = foldFence([kitMessagesOf(text).messages], 0);
