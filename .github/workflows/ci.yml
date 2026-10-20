@@ -4,14 +4,18 @@ name: CI
 on:
   push:
     branches: [main]
-  # Windows minutes count double against the Actions quota: on a draft PR only the fast lane runs; the two Windows lanes
-  # run when the PR is marked ready (and on every push after that), on main, and by hand (workflow_dispatch).
+  # Windows minutes count double against the Actions quota (Vikas, 2026-10-19, docs/build-method.md §1a): a ticket PR into a
+  # milestone branch runs the fast lane, plus the golden lane when it is ready and touches the screen; the full Windows
+  # suite runs on PRs into main (milestone close-out), on main, and by hand (workflow_dispatch). A draft PR runs only the
+  # fast lane.
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
 
+# The PR action is in the group: marking a PR ready right after a push must not let the push's run (draft payload, no
+# golden lane) cancel the ready run.
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.ref }}-${{ github.event.action }}
   cancel-in-progress: true
 
 permissions:
@@ -44,10 +48,37 @@ jobs:
       - run: pnpm test
       - run: pnpm build
 
+  # Does this PR change what the screen draws? Then a ticket PR also runs the golden lane (its picture checks).
+  screen:
+    name: Screen change check
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.diff.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: diff
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ -z "$BASE_SHA" ]; then echo "changed=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          if git diff --name-only "$BASE_SHA"...HEAD | grep -qE '^(src/renderer/|src/shared/copy/|design/|golden/|test/fidelity/|index\.html)'; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
   windows:
-    name: Full suite (windows-latest)
-    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    # Split into 4 parallel shards (Vikas, option A, 2026-10-19 06:53Z): same tests, a quarter of the wall time each.
+    # Shard 1 also typechecks, packages and uploads the app for manual testing.
+    name: Full suite (windows-latest, shard ${{ matrix.shard }}/4)
+    if: github.event_name != 'pull_request' || (!github.event.pull_request.draft && github.event.pull_request.base.ref == 'main')
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -63,16 +94,19 @@ jobs:
       - name: Build better-sqlite3 for Node (unit tests)
         run: pnpm rebuild:node
       - run: pnpm typecheck
+        if: matrix.shard == 1
       - name: Unit, article and fidelity tests
-        run: pnpm test
+        run: pnpm test --shard=${{ matrix.shard }}/4
       - run: pnpm build
       - name: Rebuild native modules for Electron
         run: pnpm rebuild:electron
       - name: E2E (Playwright for Electron)
-        run: pnpm test:e2e
+        run: pnpm test:e2e --shard=${{ matrix.shard }}/4
       - name: Package (unpacked)
+        if: matrix.shard == 1
         run: pnpm package:dir
       - name: No test hooks in the production build (08-3 §22.1)
+        if: matrix.shard == 1
         shell: bash
         run: |
           for needle in "__fooTest" "test:clock" "test:seed"; do
@@ -82,7 +116,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: m0-evidence-windows
+          name: m0-evidence-windows-${{ matrix.shard }}
           path: |
             qa-evidence/
             playwright-report/
@@ -90,6 +124,7 @@ jobs:
           if-no-files-found: ignore
       # A ready-to-run copy for manual testing on Vikas's PC: unzip, open foo.exe (unsigned for testers).
       - name: Upload the app for manual testing
+        if: matrix.shard == 1
         uses: actions/upload-artifact@v4
         with:
           name: foo-windows-app
@@ -103,13 +138,14 @@ jobs:
   # for each capture (M1's Blueprint captures keep running until they are blessed into Tier B).
   golden:
     name: Golden lane (windows-latest)
-    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    needs: screen
+    if: github.event_name != 'pull_request' || (!github.event.pull_request.draft && (github.event.pull_request.base.ref == 'main' || needs.screen.outputs.changed == 'true'))
     runs-on: windows-latest
     permissions:
       contents: write
     env:
-      FIDELITY_MILESTONE: M3
-      FIDELITY_REFS: M1,M2,M3
+      FIDELITY_MILESTONE: M8
+      FIDELITY_REFS: M1,M2,M3,M4,M5,M6,M8
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4

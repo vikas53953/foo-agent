@@ -8,6 +8,8 @@ import { invoke, IpcTimeoutError } from '../ipc/client';
 import { clockNow } from '../store/apply';
 import { update } from '../store/index';
 import { confirmSent, failSend, insertOptimistic, localId } from '../store/messages';
+import { noteSendError } from './ComposerNotices';
+import { noteMirrorDraft } from '../messages/mirrorDrafts'; // M8 T7
 
 // GAP: GAPS.md 2026-10-17 "files:stage has no chunking"
 export const STAGE_TIMEOUT_MS = 60_000;
@@ -88,9 +90,16 @@ async function deliver(o: Outgoing): Promise<SendOutcome> {
       const r = await invoke('message:send', req);
       if (r.ok) {
         outgoing.delete(o.clientId);
+        // M8 T7 (04 §10.11): a mirror's Send made a Draft card in foo's chat; the mirror keeps no bubble, only the marker.
+        if (r.value.mirrorDraft) {
+          dropOptimistic(o.chatId, o.clientId);
+          noteMirrorDraft(o.chatId, { ...r.value.mirrorDraft, at: clockNow() });
+          return { ok: true, messageId: r.value.messageId };
+        }
         confirmSent(o.chatId, o.clientId, r.value.messageId, r.value.queued);
         return { ok: true, messageId: r.value.messageId };
       }
+      noteSendError(localId(o.clientId), r.error.kind);
       failSend(o.chatId, o.clientId);
       return r.error.paste ? { ok: false, paste: r.error.paste } : { ok: false };
     } catch (e) {
@@ -103,6 +112,17 @@ async function deliver(o: Outgoing): Promise<SendOutcome> {
   }
   failSend(o.chatId, o.clientId);
   return { ok: false };
+}
+
+// M8 T7
+function dropOptimistic(chatId: string, clientId: string): void {
+  update((d) => {
+    const c = d.messages.byChat[chatId];
+    if (!c) return;
+    const id = localId(clientId);
+    delete c.byId[id];
+    c.ids = c.ids.filter((x) => x !== id);
+  });
 }
 
 /** Shows the bubble at once and sends it. */

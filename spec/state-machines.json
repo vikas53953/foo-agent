@@ -9,7 +9,11 @@
     "08-4 §26.10",
     "08-1 §2.3",
     "DECISIONS X-17, X-61, X-80, X-124",
-    "CR-0008"
+    "CR-0008",
+    "07-journeys-2 §5 (approval machine and state table), SM-A4…A9",
+    "08-2 §9.1, §9.4.2, §9.6, §10.4–§10.5; 08-4 §26.5, §28.3–§28.4, §29.1; 08-0 §G.7",
+    "DECISIONS X-65, X-125",
+    "CR-0009"
   ],
   "machines": {
     "job": {
@@ -678,6 +682,700 @@
         "the bubble badge always equals badgeOf[the runner's state]",
         "only the job runner moves jobs.state (db.tx transition); AI text never does (ART-12a)",
         "at most 3 jobs working at once"
+      ]
+    },
+    "approval": {
+      "states": [
+        "PENDING",
+        "APPROVED",
+        "RUNNING",
+        "COMPLETED",
+        "HELD",
+        "CHECKING",
+        "DECLINED",
+        "EXPIRED",
+        "SUPERSEDED",
+        "WITHDRAWN",
+        "FAILED"
+      ],
+      "initial": "PENDING",
+      "terminal": [
+        "COMPLETED",
+        "DECLINED",
+        "EXPIRED",
+        "SUPERSEDED",
+        "WITHDRAWN",
+        "FAILED"
+      ],
+      "events": [
+        "approve",
+        "decline",
+        "expire",
+        "terms_changed",
+        "steer",
+        "withdraw",
+        "second_look_held",
+        "held_pick_action",
+        "held_pick_own",
+        "submit",
+        "draft_undo",
+        "proof_ok",
+        "checkout_changed",
+        "submit_failed",
+        "result_unknown",
+        "proof_found",
+        "no_proof"
+      ],
+      "transitions": [
+        {
+          "from": "PENDING",
+          "event": "approve",
+          "to": "APPROVED",
+          "card": "cards.approval.body.approved (\"Approved by you at {time}. Doing it now…\", SM-A6 absolute time)",
+          "effects": [
+            "tap or keyboard on the card only (never typed words, a reaction or a notification; Ctrl+Enter never approves)",
+            "approved_at, approved_via card|rule, scope (once unless use_app/calendar_write, else SCOPE_NOT_ALLOWED)",
+            "a Draft card Send = approve once, approved_via card, undo_until = now + 5 s (X-65)",
+            "big pay: Windows Hello or the typed amount first (SM-A9, M10)"
+          ],
+          "source": "07-2 §5 Approve tap; SM-A6, SM-A8, SM-A9; 08-1 §3.2 card:approve, draft:send"
+        },
+        {
+          "from": "PENDING",
+          "event": "decline",
+          "to": "DECLINED",
+          "card": "cards.approval.body.declined (\"You said no. Nothing was {sent|booked|…}.\")",
+          "effects": [
+            "never auto-retried",
+            "job → cancelled (stop_reason approval_declined), or working when another route exists",
+            "reply \"Okay, I won't. {next step}\""
+          ],
+          "source": "07-2 §5 No / Not now; 08-2 §5.2; AT-110, AT-126"
+        },
+        {
+          "from": "PENDING",
+          "event": "expire",
+          "to": "EXPIRED",
+          "card": "cards.approval.body.expired (\"This expired at {time}. Nothing was {sent|booked}.\") + [ Ask me again ]",
+          "effects": [
+            "expires_at reached (1 s timer in main, runs with the window closed; or found expired at start, 08-2 §5.9 step 2)",
+            "job: pay/buy/book → cancelled (stop_reason approval_expired); every other verb stays needs_you",
+            "never auto-retried; Ask me again re-checks live terms first and builds a fresh card"
+          ],
+          "source": "07-2 §5 timer ends; 08-2 §9.1, §5.9 step 2; AT-111, AT-121, AT-127"
+        },
+        {
+          "from": "PENDING",
+          "event": "terms_changed",
+          "to": "SUPERSEDED",
+          "card": "cards.approval.body.superseded (\"The {price|time|recipient|fee} changed, so I stopped. See the new card below.\") with the old value struck",
+          "effects": [
+            "new PENDING card in the same transaction (supersedes_id / superseded_by)",
+            "job stays needs_you"
+          ],
+          "source": "07-2 §5 terms changed before Approve; 08-2 §9.4.2; AT-124"
+        },
+        {
+          "from": "PENDING",
+          "event": "steer",
+          "to": "SUPERSEDED",
+          "card": "cards.approval.line.superseded_steer (\"You changed something, so I stopped. See the new card below.\")",
+          "effects": [
+            "superseded_by stays NULL until the new card exists",
+            "job → working"
+          ],
+          "source": "08-4 §26.5; AT-077b"
+        },
+        {
+          "from": "PENDING",
+          "event": "withdraw",
+          "to": "WITHDRAWN",
+          "card": "cards.approval.body.withdrawn (\"No longer needed. The job was stopped.\")",
+          "effects": [
+            "the job was cancelled elsewhere (Stop, Stop all, a deleted chat or helper)"
+          ],
+          "source": "07-2 §5 job cancelled elsewhere; AT-128"
+        },
+        {
+          "from": "HELD",
+          "event": "withdraw",
+          "to": "WITHDRAWN",
+          "card": "cards.approval.body.withdrawn (\"No longer needed. The job was stopped.\")",
+          "effects": [
+            "the job was cancelled while the held card waited on the user; nothing ran"
+          ],
+          "source": "CR-0009 G-M5-18 (a held card waits on the user like a pending one)"
+        },
+        {
+          "from": "APPROVED",
+          "event": "withdraw",
+          "to": "WITHDRAWN",
+          "card": "cards.approval.body.withdrawn (\"No longer needed. The job was stopped.\")",
+          "effects": [
+            "the job was stopped during the undo window, the second look or the fresh-terms check; nothing was submitted"
+          ],
+          "source": "08-2 §5.7 step 3 (open approvals of the job → WITHDRAWN); CR-0009 G-M5-18"
+        },
+        {
+          "from": "APPROVED",
+          "event": "second_look_held",
+          "to": "HELD",
+          "card": "cards.approval.held.mismatch | held.cannot_check | held.no_user_words (--warn-soft strip, Warning icon, word \"Check\", SM-A4)",
+          "effects": [
+            "second look found a mismatch, could not check (AI away, invalid twice, 20 s), or found no user words (08-4 §28.3)",
+            "no main ack of the RUNNING write-ahead in 2 s → the engine treats the approval as HELD(cannot_check)",
+            "approvals.second_look = SecondLookResult; nothing ran"
+          ],
+          "source": "07-2 §5 second look fails; SM-A4; 08-2 §9.6; 08-4 §28.4, §29.1; AT-123"
+        },
+        {
+          "from": "HELD",
+          "event": "held_pick_action",
+          "to": "APPROVED",
+          "card": "cards.approval.body.approved",
+          "effects": [
+            "card:heldPick on the action's value; then second look and live terms again before RUNNING"
+          ],
+          "source": "07-2 §5 HELD → user picks → APPROVED; 08-1 §3.2 card:heldPick"
+        },
+        {
+          "from": "HELD",
+          "event": "held_pick_own",
+          "to": "DECLINED",
+          "card": "cards.approval.body.declined",
+          "effects": [
+            "card:heldPick on the user's own value; the job re-prepares and posts a fresh PENDING card"
+          ],
+          "source": "07-2 §5 HELD → user picks → DECLINED; CR-0009 G-M5-03 (08-2 §9.6 aligned); AT-123"
+        },
+        {
+          "from": "HELD",
+          "event": "expire",
+          "to": "EXPIRED",
+          "card": "cards.approval.body.expired",
+          "effects": [
+            "expires_at reached while held (or found expired at start); nothing executes (fail closed)"
+          ],
+          "source": "08-2 §5.9 step 2; CR-0009 G-M5-04"
+        },
+        {
+          "from": "APPROVED",
+          "event": "submit",
+          "to": "RUNNING",
+          "card": "buttons replaced by the spinner line (cards.approval.body.approved stays)",
+          "effects": [
+            "second look passed and live terms unchanged (X-125 order)",
+            "write-ahead submitted_at via approval.transition before the one irreversible call; main acks"
+          ],
+          "source": "07-2 §5 APPROVED → RUNNING; 08-2 §9.6, §10.4; 08-4 §29.1; X-125"
+        },
+        {
+          "from": "APPROVED",
+          "event": "terms_changed",
+          "to": "SUPERSEDED",
+          "card": "cards.approval.body.superseded",
+          "effects": [
+            "live terms re-read immediately before executing differ from fields → new PENDING card; nothing ran"
+          ],
+          "source": "08-2 §9.4.2 (\"again immediately before executing\"); X-125 (second look → liveTermsCheck → RUNNING)"
+        },
+        {
+          "from": "APPROVED",
+          "event": "draft_undo",
+          "to": "PENDING",
+          "card": "the Draft card is back to pending with \"Not sent. The draft is still here.\"",
+          "effects": [
+            "draft:undo before undo_until and before submitted_at; same approvals row (approvals.card_id is UNIQUE)",
+            "approved_at, approved_via and undo_until cleared; new card nonce; expires_at = now + 60 min",
+            "after undo_until: TOO_LATE, no move"
+          ],
+          "source": "05-2 §5.7 Undo tapped (\"a fresh PENDING approval, expiry reset to 60 min\"); 08-0 §G.7; CR-0009 G-M5-19"
+        },
+        {
+          "from": "RUNNING",
+          "event": "proof_ok",
+          "to": "COMPLETED",
+          "card": "\"✓ {Sent|Booked|Deleted|Shared|Allowed} · {time}\" + proof chip; --ok CheckmarkCircle + word (SM-A5)",
+          "effects": [
+            "completed_at, proof; activity row with approvedHow and proof_kind/ref"
+          ],
+          "source": "07-2 §5 proof ok; SM-A5"
+        },
+        {
+          "from": "RUNNING",
+          "event": "checkout_changed",
+          "to": "SUPERSEDED",
+          "card": "cards.approval.superseded.price_changed (\"The price changed from {a} to {b} at checkout, so I stopped. Nothing was paid.\")",
+          "effects": [
+            "new PENDING card; nothing was paid"
+          ],
+          "source": "07-2 §5 checkout total ≠ approved total; 08-2 §9.4.2"
+        },
+        {
+          "from": "RUNNING",
+          "event": "submit_failed",
+          "to": "FAILED",
+          "card": "FAILED copy (bank said no / \"{Site} didn't accept it.\") with 1.5px --bad edge + ErrorCircle (SM-A5) and one fix button",
+          "effects": [
+            "failure_kind"
+          ],
+          "source": "07-2 §5 declined by bank / site error; SM-A5"
+        },
+        {
+          "from": "RUNNING",
+          "event": "result_unknown",
+          "to": "CHECKING",
+          "card": "\"Checking whether this went through… Don't tap again.\" --warn Clock + word (SM-A5)",
+          "effects": [
+            "never re-submits"
+          ],
+          "source": "07-2 §5 submit result unknown; SM-A5; 08-2 §10.5"
+        },
+        {
+          "from": "CHECKING",
+          "event": "proof_found",
+          "to": "COMPLETED",
+          "card": "COMPLETED copy",
+          "effects": [
+            "proof found within 15 min (pay) / the booking email look (10 min)"
+          ],
+          "source": "07-2 §5 CHECKING → COMPLETED; 08-2 §10.5"
+        },
+        {
+          "from": "CHECKING",
+          "event": "no_proof",
+          "to": "FAILED",
+          "card": "\"I couldn't confirm it. Check your bank app before trying again.\" + [ It went through ] [ It didn't ]",
+          "effects": [
+            "outcome kept on the activity row only"
+          ],
+          "source": "07-2 §5 CHECKING → FAILED and rules"
+        }
+      ],
+      "forbidden": [
+        {
+          "from": "PENDING",
+          "to": "PENDING"
+        },
+        {
+          "from": "PENDING",
+          "to": "RUNNING"
+        },
+        {
+          "from": "PENDING",
+          "to": "COMPLETED"
+        },
+        {
+          "from": "PENDING",
+          "to": "HELD"
+        },
+        {
+          "from": "PENDING",
+          "to": "CHECKING"
+        },
+        {
+          "from": "PENDING",
+          "to": "FAILED"
+        },
+        {
+          "from": "APPROVED",
+          "to": "APPROVED"
+        },
+        {
+          "from": "APPROVED",
+          "to": "COMPLETED"
+        },
+        {
+          "from": "APPROVED",
+          "to": "CHECKING"
+        },
+        {
+          "from": "APPROVED",
+          "to": "DECLINED"
+        },
+        {
+          "from": "APPROVED",
+          "to": "EXPIRED"
+        },
+        {
+          "from": "APPROVED",
+          "to": "FAILED"
+        },
+        {
+          "from": "RUNNING",
+          "to": "PENDING"
+        },
+        {
+          "from": "RUNNING",
+          "to": "APPROVED"
+        },
+        {
+          "from": "RUNNING",
+          "to": "RUNNING"
+        },
+        {
+          "from": "RUNNING",
+          "to": "HELD"
+        },
+        {
+          "from": "RUNNING",
+          "to": "DECLINED"
+        },
+        {
+          "from": "RUNNING",
+          "to": "EXPIRED"
+        },
+        {
+          "from": "RUNNING",
+          "to": "WITHDRAWN"
+        },
+        {
+          "from": "COMPLETED",
+          "to": "PENDING"
+        },
+        {
+          "from": "COMPLETED",
+          "to": "APPROVED"
+        },
+        {
+          "from": "COMPLETED",
+          "to": "RUNNING"
+        },
+        {
+          "from": "COMPLETED",
+          "to": "COMPLETED"
+        },
+        {
+          "from": "COMPLETED",
+          "to": "HELD"
+        },
+        {
+          "from": "COMPLETED",
+          "to": "CHECKING"
+        },
+        {
+          "from": "COMPLETED",
+          "to": "DECLINED"
+        },
+        {
+          "from": "COMPLETED",
+          "to": "EXPIRED"
+        },
+        {
+          "from": "COMPLETED",
+          "to": "SUPERSEDED"
+        },
+        {
+          "from": "COMPLETED",
+          "to": "WITHDRAWN"
+        },
+        {
+          "from": "COMPLETED",
+          "to": "FAILED"
+        },
+        {
+          "from": "HELD",
+          "to": "PENDING"
+        },
+        {
+          "from": "HELD",
+          "to": "RUNNING"
+        },
+        {
+          "from": "HELD",
+          "to": "COMPLETED"
+        },
+        {
+          "from": "HELD",
+          "to": "HELD"
+        },
+        {
+          "from": "HELD",
+          "to": "CHECKING"
+        },
+        {
+          "from": "HELD",
+          "to": "SUPERSEDED"
+        },
+        {
+          "from": "HELD",
+          "to": "FAILED"
+        },
+        {
+          "from": "CHECKING",
+          "to": "PENDING"
+        },
+        {
+          "from": "CHECKING",
+          "to": "APPROVED"
+        },
+        {
+          "from": "CHECKING",
+          "to": "RUNNING"
+        },
+        {
+          "from": "CHECKING",
+          "to": "HELD"
+        },
+        {
+          "from": "CHECKING",
+          "to": "CHECKING"
+        },
+        {
+          "from": "CHECKING",
+          "to": "DECLINED"
+        },
+        {
+          "from": "CHECKING",
+          "to": "EXPIRED"
+        },
+        {
+          "from": "CHECKING",
+          "to": "SUPERSEDED"
+        },
+        {
+          "from": "CHECKING",
+          "to": "WITHDRAWN"
+        },
+        {
+          "from": "DECLINED",
+          "to": "PENDING"
+        },
+        {
+          "from": "DECLINED",
+          "to": "APPROVED"
+        },
+        {
+          "from": "DECLINED",
+          "to": "RUNNING"
+        },
+        {
+          "from": "DECLINED",
+          "to": "COMPLETED"
+        },
+        {
+          "from": "DECLINED",
+          "to": "HELD"
+        },
+        {
+          "from": "DECLINED",
+          "to": "CHECKING"
+        },
+        {
+          "from": "DECLINED",
+          "to": "DECLINED"
+        },
+        {
+          "from": "DECLINED",
+          "to": "EXPIRED"
+        },
+        {
+          "from": "DECLINED",
+          "to": "SUPERSEDED"
+        },
+        {
+          "from": "DECLINED",
+          "to": "WITHDRAWN"
+        },
+        {
+          "from": "DECLINED",
+          "to": "FAILED"
+        },
+        {
+          "from": "EXPIRED",
+          "to": "PENDING"
+        },
+        {
+          "from": "EXPIRED",
+          "to": "APPROVED"
+        },
+        {
+          "from": "EXPIRED",
+          "to": "RUNNING"
+        },
+        {
+          "from": "EXPIRED",
+          "to": "COMPLETED"
+        },
+        {
+          "from": "EXPIRED",
+          "to": "HELD"
+        },
+        {
+          "from": "EXPIRED",
+          "to": "CHECKING"
+        },
+        {
+          "from": "EXPIRED",
+          "to": "DECLINED"
+        },
+        {
+          "from": "EXPIRED",
+          "to": "EXPIRED"
+        },
+        {
+          "from": "EXPIRED",
+          "to": "SUPERSEDED"
+        },
+        {
+          "from": "EXPIRED",
+          "to": "WITHDRAWN"
+        },
+        {
+          "from": "EXPIRED",
+          "to": "FAILED"
+        },
+        {
+          "from": "SUPERSEDED",
+          "to": "PENDING"
+        },
+        {
+          "from": "SUPERSEDED",
+          "to": "APPROVED"
+        },
+        {
+          "from": "SUPERSEDED",
+          "to": "RUNNING"
+        },
+        {
+          "from": "SUPERSEDED",
+          "to": "COMPLETED"
+        },
+        {
+          "from": "SUPERSEDED",
+          "to": "HELD"
+        },
+        {
+          "from": "SUPERSEDED",
+          "to": "CHECKING"
+        },
+        {
+          "from": "SUPERSEDED",
+          "to": "DECLINED"
+        },
+        {
+          "from": "SUPERSEDED",
+          "to": "EXPIRED"
+        },
+        {
+          "from": "SUPERSEDED",
+          "to": "SUPERSEDED"
+        },
+        {
+          "from": "SUPERSEDED",
+          "to": "WITHDRAWN"
+        },
+        {
+          "from": "SUPERSEDED",
+          "to": "FAILED"
+        },
+        {
+          "from": "WITHDRAWN",
+          "to": "PENDING"
+        },
+        {
+          "from": "WITHDRAWN",
+          "to": "APPROVED"
+        },
+        {
+          "from": "WITHDRAWN",
+          "to": "RUNNING"
+        },
+        {
+          "from": "WITHDRAWN",
+          "to": "COMPLETED"
+        },
+        {
+          "from": "WITHDRAWN",
+          "to": "HELD"
+        },
+        {
+          "from": "WITHDRAWN",
+          "to": "CHECKING"
+        },
+        {
+          "from": "WITHDRAWN",
+          "to": "DECLINED"
+        },
+        {
+          "from": "WITHDRAWN",
+          "to": "EXPIRED"
+        },
+        {
+          "from": "WITHDRAWN",
+          "to": "SUPERSEDED"
+        },
+        {
+          "from": "WITHDRAWN",
+          "to": "WITHDRAWN"
+        },
+        {
+          "from": "WITHDRAWN",
+          "to": "FAILED"
+        },
+        {
+          "from": "FAILED",
+          "to": "PENDING"
+        },
+        {
+          "from": "FAILED",
+          "to": "APPROVED"
+        },
+        {
+          "from": "FAILED",
+          "to": "RUNNING"
+        },
+        {
+          "from": "FAILED",
+          "to": "COMPLETED"
+        },
+        {
+          "from": "FAILED",
+          "to": "HELD"
+        },
+        {
+          "from": "FAILED",
+          "to": "CHECKING"
+        },
+        {
+          "from": "FAILED",
+          "to": "DECLINED"
+        },
+        {
+          "from": "FAILED",
+          "to": "EXPIRED"
+        },
+        {
+          "from": "FAILED",
+          "to": "SUPERSEDED"
+        },
+        {
+          "from": "FAILED",
+          "to": "WITHDRAWN"
+        },
+        {
+          "from": "FAILED",
+          "to": "FAILED"
+        }
+      ],
+      "expiryMinutes": {
+        "pay": 10,
+        "buy": 10,
+        "book": 15,
+        "send": 60,
+        "post": 60,
+        "delete": 60,
+        "share": 60,
+        "switch": 60,
+        "use_app": 60,
+        "calendar_write": 60
+      },
+      "invariants": [
+        "only main's ApprovalGate writes approvals.state; any other move is APPROVAL_BAD_TRANSITION, logged (08-2 §9.1)",
+        "no approval leaves PENDING without a tap or keyboard event on the card (Art. 3, 6; FID-17)",
+        "at most one irreversible call per approval id: RUNNING is written ahead of it and never re-entered (FID-17)",
+        "cards.state of an approval card equals approvals.state, written in the same transaction (08-1 §4.5.1)",
+        "a final state is never left; EXPIRED and DECLINED never auto-retry"
       ]
     }
   }

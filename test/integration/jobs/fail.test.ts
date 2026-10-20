@@ -40,7 +40,7 @@ describe('AT-117 · FAILED with one alternative', () => {
     expect(badgeSets(h!, userId)).toEqual(['seen', 'working', 'failed']);
     const cards = h!.cards('error');
     expect(cards).toHaveLength(1);
-    expect(cards[0]!.state).toBe('shown');
+    expect(cards[0]!.state).toBe('asking'); // 05-3 §5.20: a card with a fix button is `asking`
     expect(JSON.parse(String(cards[0]!.payload))).toEqual({
       variant: 'error',
       kind: 'SITE_BLOCKED',

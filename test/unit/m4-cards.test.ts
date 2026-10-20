@@ -229,7 +229,7 @@ describe('registry and words (05-1 §0.1, §0.4)', () => {
     const pending = JSON.parse(readFileSync(join(__dirname, '../../scripts/copy-pending.json'), 'utf8')) as {
       keys: Record<string, string>;
     };
-    expect(Object.entries(pending.keys).filter(([, who]) => who.includes('T5'))).toEqual([]);
+    expect(Object.entries(pending.keys).filter(([, who]) => who.startsWith('M4-T5'))).toEqual([]);
   });
 });
 

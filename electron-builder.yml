@@ -13,6 +13,7 @@ files:
   - package.json
 asarUnpack:
   - node_modules/better-sqlite3/**
+  - node_modules/@napi-rs/keyring*/**
 win:
   target: nsis
   icon: resources/icons/foo.ico

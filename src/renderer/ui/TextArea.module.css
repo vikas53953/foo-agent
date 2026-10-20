@@ -1,0 +1,30 @@
+/* Spec: 06 §0.4 Text field (md 40 min height, padding 0 12px, --r-sm, --t-body, --bg-sunken, 1px --line-input, placeholder
+ * --fg-3, focus 1px --accent + ring). */
+.area {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--btn-h);
+  padding: var(--s1) var(--s2);
+  border: 1px solid var(--line-input);
+  border-radius: var(--r-sm);
+  background: var(--bg-sunken);
+  font: var(--t-body);
+  color: var(--fg-1);
+  resize: none;
+  overflow-y: auto;
+}
+.area:hover {
+  border-color: var(--fg-3);
+}
+.area:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+.area:focus-visible {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+.area::placeholder {
+  color: var(--fg-3);
+}

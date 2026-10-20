@@ -1,0 +1,157 @@
+/* Spec: 06-2 §6.0 Settings frame (page header: screens/shared/PageHeader; nav
+ * --settings-nav-w 240 on --bg-app with 1px --line right border, items 40 tall, padding 0 12px, --r-sm, 4px gap, icon 20 +
+ * --t-body; selected --bg-selected, 600, Filled icon --fg-1; unselected icon --fg-2; hover --bg-hover; content max
+ * --column-max 760 centred, pad 24, page title --t-title, 48 bottom), 06 §0.4 section label (--t-caption-strong, uppercase,
+ * +0.08em, --fg-3; 24 above, 8 below), rows 56 inside the screens/shared Row group, Secondary
+ * 32px controls, Link (--accent), Menu button (value + ChevronDown 16), 06-2 §6.1 status line --t-small with icon 16. */
+.page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--bg-app);
+  outline: none;
+}
+.body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+.nav {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: var(--s0);
+  width: var(--settings-nav-w);
+  padding: var(--s2);
+  overflow-y: auto;
+  border-right: 1px solid var(--line);
+  background: var(--bg-app);
+}
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: var(--btn-h);
+  padding: 0 var(--s2);
+  border: none;
+  border-radius: var(--r-sm);
+  background: none;
+  color: var(--fg-1);
+  font: var(--t-body);
+  text-align: start;
+}
+.navItem:hover {
+  background: var(--bg-hover);
+}
+.navIcon {
+  color: var(--fg-2);
+}
+.navSelected,
+.navSelected:hover {
+  background: var(--bg-selected);
+  font-weight: 600;
+}
+.navSelected .navIcon {
+  color: var(--fg-1);
+}
+.content {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+}
+.column {
+  max-width: var(--column-max);
+  margin: 0 auto;
+  padding: var(--s5) var(--s5) var(--s8);
+}
+.pageTitle {
+  margin: 0;
+  font: var(--t-title);
+  color: var(--fg-1);
+}
+.sectionLabel {
+  margin: var(--s5) 0 var(--s1);
+  font: var(--t-caption-strong);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  width: 100%;
+  min-height: calc(var(--s8) + var(--s1)); /* 56 */
+  padding: var(--s1) var(--s3);
+  border: none;
+  background: none;
+  color: var(--fg-1);
+  font: var(--t-body);
+  text-align: start;
+}
+button.row:hover {
+  background: var(--bg-hover);
+}
+.rowItem {
+  display: block;
+}
+.rowText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+.rowLabel {
+  font: var(--t-body);
+  color: var(--fg-1);
+}
+.rowSecond {
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s0);
+  font: var(--t-small);
+}
+.status[data-tone='ok'] {
+  color: var(--ok);
+}
+.status[data-tone='dim'] {
+  color: var(--fg-3);
+}
+.status[data-tone='warn'] {
+  color: var(--warn);
+}
+.status[data-tone='bad'] {
+  color: var(--bad);
+}
+.link {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font: var(--t-small);
+  text-decoration: underline;
+}
+.menuButton {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--s0);
+  height: var(--btn-h-sm);
+  padding: 0 var(--s2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-full);
+  background: var(--bg-raised);
+  color: var(--fg-1);
+  font: var(--t-body);
+}
+.menuButton:hover {
+  background: var(--bg-hover);
+}
+.chevron {
+  color: var(--fg-3);
+}

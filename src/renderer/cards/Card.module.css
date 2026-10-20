@@ -1,14 +1,18 @@
 /* Spec: 05-1 §0.2 card frame and header row, §0.3 buttons (40 tall pills, Link buttons --t-small --accent), §0.5 hover
  * for whole-surface cards; 05-3 §5.22 (table: header --t-caption-strong uppercase +0.08em --fg-2 on --bg-sunken; body
  * --t-small, first column 600; rows only), §5.23 (file 56 high, 40 tile --bg-sunken, Document 24 --fg-2; link preview
- * info block --bg-sunken, image 1.91:1 with top corners --r-lg), §5.24 (place: Location 20, two Secondary buttons). */
+ * info block --bg-sunken, image 1.91:1 with top corners --r-lg), §5.24 (place: Location 20, two Secondary buttons).
+ * M5 (CR-0009): the gated status edge (1.5px --accent top, 05-1 §0.5) and the folded summary row. */
 .card {
   container-type: inline-size;
   position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--s1);
-  width: min(var(--card-w), 100%);
+  /* A definite width, capped by max-width: with inline-size containment the card has no content width, so a percentage
+   * against the shrink-wrapped bubble column collapsed it to its padding (M5 T1 proof). */
+  width: var(--card-w);
+  max-width: 100%;
   padding: var(--s2) calc(var(--s2) + var(--s-1));
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
@@ -16,8 +20,12 @@
   color: var(--fg-1);
   user-select: text;
 }
+.summary {
+  font: var(--t-small);
+  color: var(--fg-2);
+}
 .wide {
-  width: min(var(--card-w-wide), 100%);
+  width: var(--card-w-wide);
 }
 /* §0.5 status edge (top only, 1.5px) and the muted look of declined / expired / superseded / withdrawn cards; §0.8 + SV-31
  * (G-M4-15): a card's state change animates with --m-card (83ms cross-fade in reduced motion, no height animation). */
@@ -31,6 +39,9 @@
   display: inline-flex;
   align-items: center;
   gap: var(--s0);
+}
+.edge_accent {
+  border-top: 1.5px solid var(--accent);
 }
 .edge_warn {
   border-top: 1.5px solid var(--warn);

@@ -1,0 +1,174 @@
+/* Spec: 06 §0.1 Page (fills the area, --bg-app; content column max --column-max 760, centred, side padding 24 at ≥ 900px
+ * else 16), 06-2 §7.2 layout (16 above the chips, 32px chips, 48 at the bottom), §7.3 fact row (min-height 64, padding
+ * 12 16; line 1 --t-body --fg-1 wraps; line 2 --t-small --fg-2; Link buttons "Edit" "Forget" --t-small always visible,
+ * then ⋯; LockClosed 16 --fg-2), search marks --accent-soft, helpers' notes rows (avatar 26), 06 §0.5 loading skeleton. */
+.page {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--bg-app);
+  outline: none;
+  animation: page-in var(--m-normal) var(--ease-in);
+  container-type: inline-size;
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+  }
+}
+.scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+.column {
+  box-sizing: border-box;
+  max-width: calc(var(--column-max) + 2 * var(--s3));
+  margin: 0 auto;
+  padding: var(--s3) var(--s3) var(--s8);
+}
+@container (min-width: 900px) /* local: 06 §0.1 page side padding 24 at ≥ 900px (no token) */ {
+  .column {
+    max-width: calc(var(--column-max) + 2 * var(--s5));
+    padding-right: var(--s5);
+    padding-left: var(--s5);
+  }
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+  margin-bottom: var(--s3);
+}
+.learned {
+  margin-bottom: var(--s0);
+}
+.status {
+  margin: 0 0 var(--s3);
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.addRow {
+  margin-bottom: var(--s3);
+}
+.editor {
+  display: grid;
+  gap: var(--s1);
+  width: 100%;
+}
+.editorButtons {
+  display: flex;
+  gap: var(--s1);
+}
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s2);
+  box-sizing: border-box;
+  min-height: var(--s9);
+  padding: var(--s2) var(--s3);
+  outline: none;
+}
+.row:focus-visible {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: calc(-1 * var(--focus-outer-w));
+  border-radius: var(--r-sm);
+}
+.rowText {
+  display: grid;
+  flex: 1;
+  gap: var(--s-1);
+  min-width: 0;
+}
+.fact {
+  font: var(--t-body);
+  color: var(--fg-1);
+  overflow-wrap: anywhere;
+}
+.lock {
+  margin-right: var(--s0);
+  color: var(--fg-2);
+  vertical-align: -0.125em;
+}
+.source {
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.mark {
+  border-radius: var(--r-xs);
+  background: var(--accent-soft);
+  color: inherit;
+}
+.rowActions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--s0);
+}
+.link {
+  min-height: var(--btn-h);
+  padding: 0 var(--s0);
+  border: 0;
+  background: none;
+  font: var(--t-small);
+  color: var(--accent);
+  cursor: pointer;
+}
+.link:hover {
+  text-decoration: underline;
+}
+.link:focus-visible {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  border-radius: var(--r-sm);
+}
+.dot {
+  font: var(--t-small);
+  color: var(--fg-3);
+}
+.helpers {
+  display: grid;
+  gap: var(--s1);
+}
+.helperBlock {
+  display: grid;
+  gap: var(--s1);
+}
+.helper {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: var(--s9);
+  padding: var(--s2) var(--s3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg-app);
+  font: var(--t-body);
+  color: var(--fg-1);
+  text-align: left;
+  cursor: pointer;
+}
+.helper:hover {
+  background: var(--bg-hover);
+}
+.helper:focus-visible {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+.helperText {
+  flex: 1;
+}
+.loading {
+  display: grid;
+  gap: var(--s3);
+  margin-top: var(--s5);
+}
+.loadingRow {
+  display: grid;
+  gap: var(--s1);
+}
+.errorText {
+  margin: 0 0 var(--s2);
+  font: var(--t-body);
+}
