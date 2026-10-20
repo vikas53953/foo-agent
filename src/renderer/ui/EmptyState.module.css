@@ -1,5 +1,5 @@
 /* Spec: 06 §0.5 empty-state block (48px above, centred; icon 24 --fg-3; title --t-subtitle --fg-1; body --t-small --fg-2,
- * max 360px). */
+ * max 360px); 02-2 §F16.2 Block face (`--face-pose` 64px, CR-0021 pick 6). */
 .empty {
   display: grid;
   justify-items: center;
@@ -9,6 +9,11 @@
 }
 .icon {
   color: var(--fg-3);
+}
+/* §F16.2 Block face: the 64px pose takes the icon slot; spacing as the Block. */
+.pose {
+  width: var(--face-pose);
+  height: var(--face-pose);
 }
 .title {
   margin: 0;

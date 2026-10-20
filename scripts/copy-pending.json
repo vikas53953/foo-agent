@@ -108,6 +108,7 @@
     "bubble.actions.call": "R1 T7 (CR-0022)",
     "bubble.actions.map": "R1 T7 (CR-0022)",
     "bubble.actions.calendar": "R1 T7 (CR-0022)",
-    "bubble.actions.link": "R1 T7 (CR-0022)"
+    "bubble.actions.link": "R1 T7 (CR-0022)",
+    "app.splash.starting": "P1 T8 (CR-0021)"
   }
 }

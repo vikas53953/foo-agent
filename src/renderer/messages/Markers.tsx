@@ -90,7 +90,7 @@ export function ThinkingRow({
         </div>
       )}
       <div className={styles.thinkingRow} data-testid={TID.threadThinking}>
-        <Face face={face} name={name} kind={kind} color={color} size="inline" mood="thinking" />
+        <Face face={face} name={name} kind={kind} color={color} size="inline" mood="thinking" animate={!label} />
       </div>
     </div>
   );
