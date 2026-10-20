@@ -61,7 +61,8 @@ export interface ActionDeps {
   timing?: { idleMs?: number; settleMaxMs?: number; actionableMs?: number };
 }
 
-const ENTER_KEYS = /^(Enter|NumpadEnter|Space| )$/;
+/** Enter and Space, with or without modifiers ("Control+Enter" submits many forms too). */
+const ENTER_KEYS = /(^|\+)(Enter|NumpadEnter|Space| )$/;
 
 const sha256 = (s: string) => createHash('sha256').update(s).digest('hex');
 
@@ -209,6 +210,7 @@ export class Actions {
     if (classify(f) === 'commit') return refused('USE_SUBMIT');
     const w = this.d.watchdogs.state(jobId);
     const confirmsBefore = w.confirms;
+    const popupsBefore = w.popups;
     try {
       const r = await this.withExpectedChange(
         jobId,
@@ -217,7 +219,8 @@ export class Actions {
           await at.loc.click({ timeout: this.actionableMs });
           if (w.confirms > confirmsBefore) throw new ConfirmRaised();
         },
-        async (b, a) => b !== a,
+        // A target=_blank link leaves this page as it was: the pop-up it opened is the change, so it is never clicked twice.
+        async (b, a) => b !== a || w.popups > popupsBefore,
       );
       return w.confirms > confirmsBefore ? refused('USE_SUBMIT', 'confirm_dialog') : r;
     } catch (e) {
@@ -305,7 +308,10 @@ export class Actions {
     if (!at) return refused('VALIDATION', 'unknown_ref');
     if (ENTER_KEYS.test(key)) {
       const k = (await at.frame.evaluate(walkerCall({ cmd: 'keyTarget', ref })).catch(() => null)) as KeyTargetResult | null;
-      if (!k) return refused('USE_SUBMIT', 'unknown_target');
+      // Focus inside a child frame (a payment gateway's form): what the key reaches is unseen, so it is refused.
+      if (!k || k.inFrame) return refused('USE_SUBMIT', 'unknown_target');
+      // Enter in a field of a form with a password or payment field submits it implicitly, submit button or not.
+      if (k.target?.inForm && k.target.formHasSensitive) return refused('USE_SUBMIT');
       if ((k.target && classify(k.target) === 'commit') || k.formControls.some((c) => classify(c) === 'commit'))
         return refused('USE_SUBMIT');
     }

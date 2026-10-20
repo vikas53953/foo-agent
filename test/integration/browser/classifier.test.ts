@@ -52,10 +52,13 @@ describe('08-2 §8.2.1 commit clicks are refused', { timeout: 60_000 }, () => {
     expect(await submits()).toBe(1);
   });
 
-  it('"Book now" outside any form is a read click (it only opens a page)', async () => {
+  it('"Book now" outside any form is still refused: a commit name is enough (the safe side of §8.2.1)', async () => {
     okResult(await h.run('browser.open', { url: `${h.origin}/c` }));
-    const r = okResult(await h.run('browser.click', { ref: await refOf(/\[(e\d+)\] link "Book now"/) }));
-    expect(r.url).toBe(`${h.origin}/menu`);
+    expect(await h.run('browser.click', { ref: await refOf(/\[(e\d+)\] link "Book now"/) })).toMatchObject({
+      kind: 'error',
+      errorKind: 'USE_SUBMIT',
+    });
+    expect((await h.page()).url()).toBe(`${h.origin}/c`);
   });
 
   it('the click class is read in the catalogue; the commit decision is made per element', () => {

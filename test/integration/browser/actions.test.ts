@@ -9,6 +9,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { browserHarness, html, okResult, type BrowserHarness } from './harness';
 
 let h: BrowserHarness;
+let offersOpened = 0;
 const refOf = async (pattern: RegExp) => {
   h.runtime.stepStarted('job_1');
   const text = okResult(await h.run('browser.snapshot')).snapshot as string;
@@ -27,15 +28,28 @@ beforeAll(async () => {
       <button id="ask" onclick="window.asked=confirm('Sure?')?'yes':'no'">Remove item</button>
       <button id="al" onclick="alert('Hi'); window.alerted=1">Hello</button>
       <a id="pop" href="/menu" target="_blank">Open menu</a>
+      <a id="pop2" href="/offers" target="_blank">See offers</a>
       <a id="dl" href="/file.txt" download>Get file</a>
       <input id="city" name="city" placeholder="City">
       <input id="pw" type="password" placeholder="Password">
       <select id="sel"><option>Lunch</option><option>Dinner</option></select>
       <label><input id="veg" type="checkbox"> Veg only</label>
       <form id="search" onsubmit="event.preventDefault(); window.searched=(window.searched||0)+1"><input id="q" placeholder="Search"><button>Search</button></form>
+      <form id="loginf" onsubmit="event.preventDefault(); window.signed=(window.signed||0)+1"><input id="user" placeholder="User id"><input id="pin" type="password" placeholder="PIN"></form>
       <form id="payf" onsubmit="event.preventDefault(); window.paid=(window.paid||0)+1"><input id="amt" placeholder="Amount"><button>Pay now</button></form>`),
   );
   h.route('/menu', html(`<h1>Menu</h1>`));
+  h.route('/offers', (_q, res) => {
+    offersOpened += 1;
+    res.writeHead(200, { 'content-type': 'text/html' }).end('<h1>Offers</h1>');
+  });
+  h.route('/framed', html(`<h1>Checkout</h1><iframe id="gw" src="/gateway"></iframe>`));
+  h.route(
+    '/gateway',
+    html(
+      `<form onsubmit="event.preventDefault(); parent.window.gwPaid=(parent.window.gwPaid||0)+1"><input id="upi" placeholder="UPI id"><button>Go</button></form>`,
+    ),
+  );
   h.route('/file.txt', (_q, res) => {
     res.writeHead(200, { 'content-type': 'text/plain', 'content-disposition': 'attachment; filename="menu.txt"' }).end('dal, roti');
   });
@@ -69,6 +83,12 @@ describe('08-2 §8.2 browser.open', { timeout: 60_000 }, () => {
   it('403 → SITE_BLOCKED; a bot-check page → SITE_CAPTCHA (never solved)', async () => {
     expect(await h.run('browser.open', { url: `${h.origin}/forbidden` })).toMatchObject({ kind: 'error', errorKind: 'SITE_BLOCKED' });
     expect(await h.run('browser.open', { url: `${h.origin}/captcha` })).toEqual({ kind: 'error', errorKind: 'SITE_CAPTCHA' });
+  });
+  it('a page that never arrives (connection refused) is an error on a blank page, never ok on the old one', async () => {
+    const dead = h.origin.replace(/:\d+$/, ':1');
+    expect(await h.run('browser.open', { url: `${dead}/home` }, 'job_dead')).toEqual({ kind: 'error', errorKind: 'SITE_TIMEOUT' });
+    expect((await h.page('job_dead')).url()).toBe('about:blank');
+    await h.runtime.jobEnded('job_dead');
   });
   it('two load misses in a row → SITE_TIMEOUT', async () => {
     const first = await h.run('browser.open', { url: `${h.origin}/slow` }, 'job_slow');
@@ -131,11 +151,37 @@ describe('08-2 §8.3.5 actions', { timeout: 60_000 }, () => {
     });
     expect(await counter('paid')()).toBe(0);
   });
+  it('Control+Enter in the pay form, and Enter in a field of a form with a password, are refused too', async () => {
+    expect(await h.run('browser.press', { key: 'Control+Enter', ref: await refOf(/\[(e\d+)\] textbox "Amount"/) })).toMatchObject({
+      kind: 'error',
+      errorKind: 'USE_SUBMIT',
+    });
+    expect(await h.run('browser.press', { key: 'Enter', ref: await refOf(/\[(e\d+)\] textbox "User id"/) })).toMatchObject({
+      kind: 'error',
+      errorKind: 'USE_SUBMIT',
+    });
+    expect(await counter('paid')()).toBe(0);
+    expect(await counter('signed')()).toBe(0);
+  });
   it('a pop-up is adopted into the job: the next action runs on it', async () => {
     okResult(await h.run('browser.click', { ref: await refOf(/\[(e\d+)\] link "Open menu"/) }));
     await expect.poll(async () => (await h.page()).url()).toBe(`${h.origin}/menu`);
     await (await h.page()).close();
     expect((await h.page()).url()).toBe(`${h.origin}/home`);
+  });
+  it('a link that opens a pop-up is clicked once: the pop-up is the change, so there is no retry', async () => {
+    okResult(await h.run('browser.click', { ref: await refOf(/\[(e\d+)\] link "See offers"/) }));
+    await expect.poll(async () => (await h.page()).url()).toBe(`${h.origin}/offers`);
+    await (await h.page()).close();
+    expect(offersOpened).toBe(1);
+  });
+  it('Enter with focus inside a child frame is refused: what it would submit is unseen', async () => {
+    okResult(await h.run('browser.open', { url: `${h.origin}/framed` }, 'job_frame'));
+    const page = await h.page('job_frame');
+    await page.frameLocator('#gw').locator('#upi').fill('someone@example');
+    expect(await h.run('browser.press', { key: 'Enter' }, 'job_frame')).toMatchObject({ kind: 'error', errorKind: 'USE_SUBMIT' });
+    expect(await page.evaluate('window.gwPaid || 0')).toBe(0);
+    await h.runtime.jobEnded('job_frame');
   });
   it('download saves into {DATA}/jobs/{id}/downloads/', async () => {
     const r = okResult(await h.run('browser.download', { ref: await refOf(/\[(e\d+)\] link "Get file"/) }));

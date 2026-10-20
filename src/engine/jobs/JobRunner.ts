@@ -109,6 +109,9 @@ export interface RunnerHooks {
   // M8
   /** T5: a tool failed; true when the connection-trouble handler took the job over (08-3 §21.2–§21.3) and the loop ends. */
   onToolError?(job: JobRow, tool: string, kind: ErrorKind, stepId: string | null): Promise<boolean>;
+  // M9
+  /** T3: the job reached a terminal state; its browser window closes and frees a slot (08-4 §26.8 item 5). */
+  onEnded?(jobId: string): void;
 }
 
 /** What T3's modules (stopFlow, steer, watchdog, costMeter) may use of the runner. */
@@ -1199,6 +1202,7 @@ export class JobRunner {
     this.steering.forget(jobId);
     this.watchdog.forget(jobId);
     this.gating.forget(jobId);
+    this.d.hooks?.onEnded?.(jobId); // M9 T3
     // A slot may have freed for a job paused at the AI cap.
     void this.cost.resumeCapped();
   }

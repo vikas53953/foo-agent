@@ -169,10 +169,20 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       const rule = checkUrl(a.url, { handback: m().handback, allowHosts });
       if (!rule.ok) return { kind: 'error', errorKind: rule.error.kind };
       let status = 0;
+      let failed: string | null = null;
       const miss = await actions.settled(ctx.jobId, page, async () => {
-        const res = await page.goto(a.url, { waitUntil: 'commit', timeout: 15_000 }).catch(() => null);
+        const res = await page.goto(a.url, { waitUntil: 'commit', timeout: 15_000 }).catch((e: unknown) => {
+          failed = e instanceof Error ? e.message : String(e);
+          return null;
+        });
         status = res?.status() ?? 0;
       });
+      // The page never arrived (offline, no such host, refused, 15 s): never an `ok` on the old page, never URL_NOT_ALLOWED for
+      // Chromium's own error page.
+      if (failed !== null) {
+        await page.goto('about:blank').catch(() => null);
+        return { kind: 'error', errorKind: /ERR_INTERNET_DISCONNECTED|ERR_NETWORK_CHANGED/.test(failed) ? 'NET_OFFLINE' : 'SITE_TIMEOUT' };
+      }
       // Redirects are checked again where they landed: a hand-back or private address is left at once.
       const landed = checkUrl(page.url(), { handback: m().handback, allowHosts });
       if (!landed.ok) {
@@ -282,7 +292,7 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
   return { registry: Object.fromEntries(defs.map((t) => [t.name, t])), runtime };
 }
 
-/** The one registration line in Engine.ts: the browser tools over the engine's options and Redactor. */
+/** Engine.ts: the browser tools over the engine's options and Redactor, and the runtime the Engine ends jobs and quits through. */
 export function engineBrowserTools(o: {
   dataDir: string;
   resourcesDir: string;
@@ -292,7 +302,7 @@ export function engineBrowserTools(o: {
   redactor: { scrub(text: string): { text: string }; registry: { forms(): { form: string }[] } };
   settings(): Settings;
   log(evt: string, kind?: string): void;
-}): ToolRegistry {
+}): { registry: ToolRegistry; runtime: BrowserRuntime } {
   return createBrowserTools({
     dataDir: o.dataDir,
     resourcesDir: o.resourcesDir,
@@ -304,5 +314,5 @@ export function engineBrowserTools(o: {
     settings: o.settings,
     now: () => o.clock.now(),
     log: o.log,
-  }).registry;
+  });
 }

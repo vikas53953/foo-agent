@@ -15,6 +15,8 @@ const CHALLENGE_FRAMES = /recaptcha|hcaptcha|challenges\.cloudflare\.com|turnsti
 export interface WatchState {
   /** `confirm()` dialogs seen (and dismissed) on the job's pages; a click that raised one is a commit click. */
   confirms: number;
+  /** Pop-ups opened from the job's pages; a click that opened one changed something (no retry). */
+  popups: number;
   downloads: { suggestedFilename: string; path: string | null; failed: boolean }[];
   crashes: number;
 }
@@ -33,7 +35,7 @@ export class Watchdogs {
 
   state(jobId: string): WatchState {
     let s = this.states.get(jobId);
-    if (!s) this.states.set(jobId, (s = { confirms: 0, downloads: [], crashes: 0 }));
+    if (!s) this.states.set(jobId, (s = { confirms: 0, popups: 0, downloads: [], crashes: 0 }));
     return s;
   }
 
@@ -61,6 +63,7 @@ export class Watchdogs {
       void dlg.dismiss().catch(() => undefined);
     });
     page.on('popup', (popup: Page) => {
+      s.popups += 1;
       win.adopt(popup);
       this.hook(win, popup);
       this.d.log('browser.popup_adopted');

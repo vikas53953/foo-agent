@@ -60,6 +60,8 @@ export interface VerifyResult {
 export interface KeyTargetResult {
   target: WalkedFacts | null;
   formControls: WalkedFacts[];
+  /** Focus is inside a child frame: the engine cannot see what the key would reach. */
+  inFrame?: boolean;
 }
 export interface ProbeResult {
   /** A password or OTP field is on the page (08-2 §8.3.3 sign-in poll; §11.6). */
@@ -304,6 +306,7 @@ export const WALKER_SOURCE = String.raw`function fooWalker(c) {
   function keyTarget(ref) {
     var el = ref ? byRef(ref) : document.activeElement;
     if (!el || el === document.body || el === document.documentElement) return { target: null, formControls: [] };
+    if (el.tagName === 'IFRAME' || el.tagName === 'FRAME') return { target: null, formControls: [], inFrame: true };
     var f = formOf(el), controls = [];
     if (f) {
       var l = f.querySelectorAll('button, input[type=submit], input[type=image], input[type=button], [role=button]');

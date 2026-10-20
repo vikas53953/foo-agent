@@ -39,17 +39,26 @@ export function isCommitText(text: string): boolean {
 const CONTROL_ROLES = new Set(['button', 'link', 'menuitem', 'option', 'tab', 'checkbox', 'radio', 'switch']);
 const INPUT_CONTROLS = new Set(['submit', 'button', 'image', 'reset']);
 
-/** "a button/link/input": the elements a click can commit through. */
+/**
+ * "a button/link/input": the elements a click can commit through. A clicked element with no role (a `div` with a click handler:
+ * the walker only gives refs to interactive elements) counts too; fields (textbox, combobox) do not.
+ */
 function isControl(f: ElementFacts): boolean {
   if (f.tag === 'button' || f.tag === 'a') return true;
   if (f.tag === 'input') return INPUT_CONTROLS.has(f.type);
-  return CONTROL_ROLES.has(f.role);
+  return CONTROL_ROLES.has(f.role) || f.role === '' || f.role === 'generic';
 }
 
 export type ClickClass = 'read' | 'commit';
 
+/**
+ * §8.2.1's purpose is that no irreversible click is reachable except through `browser.submit`, so the safe side wins: a commit
+ * word in the accessible name refuses any clicked element (a form-less "Place order" button, a clickable div "Pay now"); the
+ * weaker signals (nearby text, a form holding a password or payment field) count for a control inside a form.
+ */
 export function classify(f: ElementFacts): ClickClass {
+  if (isCommitText(f.name)) return 'commit';
   if (!isControl(f) || !f.inForm) return 'read';
   if (f.formHasSensitive) return 'commit';
-  return isCommitText(f.name) || isCommitText(f.nearbyText) ? 'commit' : 'read';
+  return isCommitText(f.nearbyText) ? 'commit' : 'read';
 }

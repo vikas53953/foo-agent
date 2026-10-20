@@ -55,8 +55,13 @@ describe('08-2 §8.2.1 classify', () => {
   it('a "Pay" button inside a form is a commit control', () => {
     expect(classify(el({ name: 'Pay' }))).toBe('commit');
   });
-  it('the same button outside a form is a read click (the rule is "inside a form")', () => {
-    expect(classify(el({ name: 'Pay', inForm: false }))).toBe('read');
+  it('a commit name refuses the click outside a form too (a form-less "Place order" button)', () => {
+    expect(classify(el({ name: 'Pay', inForm: false }))).toBe('commit');
+    expect(classify(el({ name: 'Place order', inForm: false }))).toBe('commit');
+  });
+  it('outside a form, nearby text and a plain name are read clicks', () => {
+    expect(classify(el({ name: 'Go', nearbyText: 'Confirm your table', inForm: false }))).toBe('read');
+    expect(classify(el({ name: 'Next', formHasSensitive: true, inForm: false }))).toBe('read');
   });
   it('commit words in the nearby text count', () => {
     expect(classify(el({ name: 'Go', nearbyText: 'Confirm your table for 4' }))).toBe('commit');
@@ -65,10 +70,15 @@ describe('08-2 §8.2.1 classify', () => {
     expect(classify(el({ name: 'Next', formHasSensitive: true }))).toBe('commit');
     expect(classify(el({ tag: 'input', type: 'submit', role: 'button', name: 'Go', formHasSensitive: true }))).toBe('commit');
   });
-  it('links and inputs count as controls; plain text does not', () => {
+  it('links, inputs and clickable non-role elements with a commit name are commit clicks', () => {
     expect(classify(el({ tag: 'a', role: 'link', name: 'Book now' }))).toBe('commit');
     expect(classify(el({ tag: 'input', type: 'submit', role: 'button', name: 'Submit' }))).toBe('commit');
-    expect(classify(el({ tag: 'div', role: '', name: 'Book now' }))).toBe('read');
+    expect(classify(el({ tag: 'div', role: '', name: 'Pay now' }))).toBe('commit');
+  });
+  it('a clickable non-role element counts as a control in a sensitive form; a field does not', () => {
+    expect(classify(el({ tag: 'div', role: '', name: 'Continue', formHasSensitive: true }))).toBe('commit');
+    expect(classify(el({ tag: 'div', role: '', name: 'Show details' }))).toBe('read');
+    expect(classify(el({ tag: 'input', type: 'text', role: 'textbox', name: 'Card number', formHasSensitive: true }))).toBe('read');
   });
   it('a search button in a search form is a read click', () => {
     expect(classify(el({ name: 'Search', nearbyText: 'Find restaurants near you' }))).toBe('read');
