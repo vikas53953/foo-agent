@@ -50,6 +50,31 @@
   white-space: nowrap;
   min-width: 0;
 }
+/* 02 §F7.1: the status words cross-fade (both in one grid cell; the old ones leave faster, --ease-out). */
+.statusStack {
+  display: grid;
+  min-width: 0;
+}
+.statusStack > * {
+  grid-area: 1 / 1;
+}
+.statusNew {
+  animation: status-in var(--m-normal) var(--ease-in);
+}
+.statusOld {
+  opacity: 0;
+  animation: status-out var(--m-normal) var(--ease-out);
+}
+@keyframes status-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes status-out {
+  from {
+    opacity: 1;
+  }
+}
 .privateMark {
   display: inline-flex;
   color: var(--fg-2);
