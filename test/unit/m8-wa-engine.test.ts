@@ -2,7 +2,7 @@
 // the QR goes to the renderer as `whatsapp:qr { png, expiresAt }` with expiresAt = linkStartAt + 60_000 and a 200 px PNG;
 // 60 s with no scan → linkCancel; the third failed link → WA_LINK_FAILED (status disconnected); ingest writes wa_messages
 // through db.tx; `connections.whatsapp.read=false` and `hiddenJids` stop ingest; each wa.creds goes to vault.encrypt.
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PNG } from 'pngjs';
 import { WhatsAppConnector } from '../../src/engine/tools/connectors/whatsapp';
 import type { DbOp, MainLink } from '../../src/engine/protocol';
@@ -72,7 +72,8 @@ describe('link and QR (08-3 §16.4.4)', () => {
     await wa.attach(port);
     wa.command('linkStart');
     port.emit('wa.qr', { qr: 'code-1', expiresAt: TEST_EPOCH_MS + 60_000 });
-    await flush();
+    // Drawing the PNG takes real time, more than flush's 50 ms on a loaded runner.
+    await vi.waitFor(() => expect(qrPatches()).toHaveLength(1), { timeout: 5_000 });
     const [p] = qrPatches();
     expect(p?.expiresAt).toBe(TEST_EPOCH_MS + 60_000);
     expect(p?.png.startsWith('data:image/png;base64,')).toBe(true);
