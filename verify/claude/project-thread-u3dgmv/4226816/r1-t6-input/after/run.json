@@ -1,0 +1,58 @@
+{
+  "journey": "test/verify/r1-t6-input.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "4226816d5ab824931d612f28a787c5d73048aff1",
+  "dirty": false,
+  "started": "2026-10-20T11:22:32.799Z",
+  "finished": "2026-10-20T11:22:40.873Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "read line: \"foo read: 4 people · Toit · Fri 16 Oct, 7:00 PM\"",
+    "read line Narrator: \"foo understood: 4 people · Toit · Fri 16 Oct, 7:00 PM\"",
+    "side strip: \"Side question EMI\"",
+    "side question answered: \"EMI means equated monthly instalment.\"; intake turns 4, step turns 1; the AI got the picked words \"> EMI\"",
+    "job badge after the side question: working",
+    "14,200-character paste → chip \"pasted-2026-10-16-0941.txt TXT · 14 KB\""
+  ],
+  "shots": [
+    {
+      "file": "after/01-read-line.light.png",
+      "name": "read-line",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-read-line.dark.png",
+      "name": "read-line",
+      "theme": "dark"
+    },
+    {
+      "file": "after/03-ask-pill.light.png",
+      "name": "ask-pill",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-side-strip.light.png",
+      "name": "side-strip",
+      "theme": "light"
+    },
+    {
+      "file": "after/05-side-answer.light.png",
+      "name": "side-answer",
+      "theme": "light"
+    },
+    {
+      "file": "after/06-paste-file-chip.light.png",
+      "name": "paste-file-chip",
+      "theme": "light"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}
