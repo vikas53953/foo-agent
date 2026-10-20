@@ -1,0 +1,29 @@
+/* Spec: 04 §13.6 (the AI page frame: full bubble width, 600px height cap with the page scrolling inside; the status line
+ * and the refused caption are `--t-caption`, the 04 §6.5 caption style). */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  width: 100%;
+}
+
+.frame {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-raised);
+}
+
+.status,
+.refused {
+  margin: 0;
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+
+.failed {
+  margin: 0;
+  font: var(--t-caption);
+  color: var(--bad);
+}

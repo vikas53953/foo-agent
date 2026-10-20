@@ -14,6 +14,7 @@ import { emit, listContext, type AppContext, type IpcHandlers } from '../ipc/Ipc
 import { loadMakerPages, makerPageUrl, openFinder, postKeyBox, type FinderWrite, type MakerPages } from './aiFinder';
 import { draftService } from '../drafts/draftIpc'; // M8 T7
 import { loadHandback, openExternalHandback } from '../ipc/openExternalHandback'; // M9 T8
+import { openPageLink } from '../page/pageIpc'; // R1 T5
 import type { HostMatcher } from '../../shared/handback';
 
 /** Pushes the cards, messages and chat a finder write touched to the windows. */
@@ -64,6 +65,8 @@ export function aiFinderIpc(ctx: AppContext): IpcHandlers<'ai:openFinder' | 'ai:
           else await shell.openExternal(u);
         });
       }
+      // R1 T5 (04 §13.6): an AI page's link, only after its openLink passed main's checks and the C-26 Open.
+      if (target === 'ai_page') return openPageLink(askedUrl, openedForTest);
       if (target !== 'maker_page') return fail('URL_NOT_ALLOWED');
       pages ??= loadMakerPages(resourcesDir());
       const url = makerPageUrl(pages, providerId);

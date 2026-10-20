@@ -4,13 +4,20 @@
 // sentence with an unmapped banned word is held until the rewrite turn, then released or dropped; a partial sentence is never
 // shown; at </say> the remainder is a sentence), item 1 (no <say> tag → the text before <act> is the say), item 5
 // (PROTOCOL_SAY_LEAK is decided by the caller from what was released), 08-3 §22.2 (injected Clock), 04-2 §21.7 (the
-// `Suggestions:` line never reaches the bubble: it is held from its first character and stripped at </say>; P1 T6).
+// `Suggestions:` line never reaches the bubble: it is held from its first character and stripped at </say>; P1 T6), CR-0022
+// pick 14 (inside any fence, ```page, ```a2ui or plain code, only the Redactor step runs: no word map, rewrite or drop).
 import type { Clock, TimerId } from '../../shared/clock';
 import type { Redactor } from '../redact/Redactor';
 import { dropBannedSentences, filterSay, type FilterResult } from './filters';
 import { splitSuggestions, suggestionsLineStart } from './suggestions';
 
 export type ReleaseMode = 'whole' | 'sentence';
+
+/** A run of one queued release that is all inside a fence (fence lines included) or all outside. */
+interface Part {
+  text: string;
+  fenced: boolean;
+}
 
 export interface ReleaseGateOptions {
   clock: Clock;
@@ -33,7 +40,7 @@ const SAY_CLOSE = '</say>';
 const ACT_OPEN = '<act>';
 const BOUNDARY = /[.?!।\n]\s+|\n/gu;
 /** A ``` fence line start (the bubble's fence rule, renderer/messages/markdownParse.ts). */
-const FENCE_LINE = /^\s*```/gmu;
+const FENCE_LINE = /^[ \t]*```/gmu; // [ \t] not \s: \s would swallow blank lines before a fence (lead re-check)
 /**
  * R1 T2 (04 §13.5 / §14.4, AT-353): inside a code fence every line break ends a "sentence", so an ```a2ui block's messages
  * (one JSON object per line) release one by one and each complete message draws while the reply streams. Outside a fence a
@@ -55,10 +62,12 @@ export class ReleaseGate {
   /** Index in `body` up to which fence lines have been counted, and whether a fence is open there. */
   private fenceAt = 0;
   private fenceOpen = false;
+  /** Whether a fence is open where the next queued release starts (releases are queued back to back). */
+  private partFence = false;
   private sayClosed = false;
   private streaming = false;
   private timer: TimerId | null;
-  private readonly queue: { text: string; mode: ReleaseMode }[] = [];
+  private readonly queue: { parts: Part[]; mode: ReleaseMode }[] = [];
   private busy = false;
   private signalled = false;
   private released = '';
@@ -155,7 +164,7 @@ export class ReleaseGate {
     while ((m = BOUNDARY.exec(avail))) {
       if (m[0] === '\n' && !this.inFence(avail, m.index)) continue;
       const end = m.index + m[0].length;
-      this.queue.push({ text: avail.slice(this.consumed, end), mode: 'sentence' });
+      this.enqueue(this.consumed, end, 'sentence');
       this.consumed = end;
     }
     if (pump) this.pump();
@@ -169,14 +178,37 @@ export class ReleaseGate {
     }
     if (this.streaming) {
       this.queueSentences(this.body.length, false);
-      const rest = this.body.slice(this.consumed);
-      if (rest) this.queue.push({ text: rest, mode: 'sentence' });
+      if (this.consumed < this.body.length) this.enqueue(this.consumed, this.body.length, 'sentence');
       this.consumed = this.body.length;
     } else {
-      this.queue.push({ text: this.body, mode: 'whole' });
+      this.enqueue(0, this.body.length, 'whole');
     }
     this.sayClosed = true;
     this.pump();
+  }
+
+  /** Queues `body[start, end)` cut into fenced and unfenced parts (a fence's own ``` lines count as fenced). */
+  private enqueue(start: number, end: number, mode: ReleaseMode): void {
+    const parts: Part[] = [];
+    let at = start;
+    const cut = (to: number, fenced: boolean) => {
+      if (to > at) parts.push({ text: this.body.slice(at, to), fenced });
+      at = to;
+    };
+    FENCE_LINE.lastIndex = start;
+    let f: RegExpExecArray | null;
+    while ((f = FENCE_LINE.exec(this.body)) && f.index + f[0].length <= end) {
+      if (!this.partFence) {
+        cut(f.index, false);
+        this.partFence = true;
+      } else {
+        const lineEnd = this.body.indexOf('\n', f.index);
+        cut(lineEnd === -1 || lineEnd + 1 > end ? end : lineEnd + 1, true);
+        this.partFence = false;
+      }
+    }
+    cut(end, this.partFence);
+    this.queue.push({ parts, mode });
   }
 
   private onHoldOver(): void {
@@ -184,6 +216,18 @@ export class ReleaseGate {
     if (this.sayClosed) return;
     this.streaming = true;
     if (this.phase === 'say') this.queueSentences(this.safeLength());
+  }
+
+  private scrubOnly(text: string): FilterResult {
+    return { text: this.opts.redactor ? this.opts.redactor.scrub(text).text : text, needsRewrite: false, unmapped: [] };
+  }
+
+  /** A held sentence after its rewrite turn: filtered again, and dropped while a banned word is left (or the turn failed). */
+  private rewritten(text: string): Promise<string> {
+    return this.opts.rewrite(text).then(
+      (r) => (r === null ? dropBannedSentences(text) : dropBannedSentences(this.filter(r).text)),
+      () => dropBannedSentences(text),
+    );
   }
 
   private emit(text: string, mode: ReleaseMode): void {
@@ -195,23 +239,18 @@ export class ReleaseGate {
   private pump(): void {
     while (!this.busy && this.queue.length) {
       const item = this.queue.shift()!;
-      const f = this.filter(item.text);
-      if (!f.needsRewrite) {
-        this.emit(f.text, item.mode);
+      // Fenced text is shown verbatim (a page's script, A2UI keys), so it only passes the Redactor (CR-0022 pick 14).
+      const parts = item.parts.map((p): FilterResult => (p.fenced ? this.scrubOnly(p.text) : this.filter(p.text)));
+      if (!parts.some((p) => p.needsRewrite)) {
+        this.emit(parts.map((p) => p.text).join(''), item.mode);
         continue;
       }
       this.busy = true;
-      this.opts
-        .rewrite(f.text)
-        .then(
-          (r) => (r === null ? dropBannedSentences(f.text) : dropBannedSentences(this.filter(r).text)),
-          () => dropBannedSentences(f.text),
-        )
-        .then((text) => {
-          this.emit(text, item.mode);
-          this.busy = false;
-          this.pump();
-        });
+      void Promise.all(parts.map((p) => (p.needsRewrite ? this.rewritten(p.text) : p.text))).then((texts) => {
+        this.emit(texts.join(''), item.mode);
+        this.busy = false;
+        this.pump();
+      });
       return;
     }
     if (!this.busy && this.sayClosed && !this.signalled) {
