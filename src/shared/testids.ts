@@ -321,6 +321,15 @@ export const TID = {
   composerErrorsClear: 'composer-errors-clear',
   dialogC21: 'dialog-c-21',
   dialogConfirmField: 'dialog-confirm-field',
+  // M9 T5: the live window (06-3 §11.2 list, 08-0 §C.3, X-121)
+  liveRoot: 'live-root',
+  liveBar: 'live-bar',
+  livePill: 'live-pill',
+  livePicture: 'live-picture',
+  liveTakeOver: 'live-take-over',
+  liveControlBar: 'live-control-bar',
+  liveHandBack: 'live-hand-back',
+  liveStop: 'live-stop',
   // M8 T2: Connect card (05-3 §5.11.3), Settings → Connections Google + X rows (06-2 §6.8), C-10
   cardConnect: 'card-connect',
   cardConnectConnect: 'card-connect-connect',
@@ -475,6 +484,19 @@ export const TID = {
   dialogLinkWhatsapp: 'dialog-link-whatsapp',
   dialogC08: 'dialog-c-08',
   dialogC11: 'dialog-c-11',
+  cardSignin: 'card-signin',
+  cardSigninDone: 'card-signin-done',
+  cardSigninTakeOver: 'card-signin-take-over',
+  cardSigninSkip: 'card-signin-skip',
+  cardSigninUseCodeBox: 'card-signin-use-code-box',
+  cardSigninLive: 'card-signin-live',
+  signinBanner: 'signin-banner',
+  signinBannerAddress: 'signin-banner-address',
+  signinBannerDone: 'signin-banner-done',
+  signinBannerSuccess: 'signin-banner-success',
+  signinBannerHandBack: 'signin-banner-hand-back',
+  // M9 T7
+  cardSigninStartAgain: 'card-signin-start-again',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

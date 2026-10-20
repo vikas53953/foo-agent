@@ -17,6 +17,7 @@ import type { Result } from '../shared/errors';
 import type { EventChannel, EventPayload } from '../shared/ipc';
 import type { ProviderId, AiStatus, ErrorKind, ResolvedBy, StopReason, CardAnswer, ActivityRow } from '../shared/types';
 import type { Settings } from '../shared/settings';
+import { WebProviderSchema } from '../shared/schemas';
 
 export interface Envelope<K extends string = string, P = unknown> {
   id: string;
@@ -151,6 +152,14 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
     kind: z.literal('jobs.pauseAll'),
     payload: z.object({ reason: z.enum(['app_quit', 'windows_shutdown']) }).strict(),
   }),
+  // M9 (08-1 §2.4; X-124, X-135: `job.handBack` has no `mode`): live view, sign-in and take over, saved web keys.
+  z.object({ id: z.string(), kind: z.literal('job.watch'), payload: z.object({ jobId: z.string(), on: z.boolean() }).strict() }),
+  z.object({ id: z.string(), kind: z.literal('job.takeOver'), payload: z.object({ jobId: z.string(), on: z.boolean() }).strict() }),
+  z.object({ id: z.string(), kind: z.literal('job.handBack'), payload: z.object({ jobId: z.string() }).strict() }),
+  z.object({ id: z.string(), kind: z.literal('signin.done'), payload: z.object({ jobId: z.string() }).strict() }),
+  z.object({ id: z.string(), kind: z.literal('signin.skip'), payload: z.object({ jobId: z.string() }).strict() }),
+  /** Reply `{ result: 'ok' | 'refused' | 'unknown' }` (08-4 §27.3 item 1, X-127). */
+  z.object({ id: z.string(), kind: z.literal('webkey.check'), payload: z.object({ provider: WebProviderSchema }).strict() }),
   /** Not in 08-1 §2.4 (gap, implementation-notes "M3"): 04 §19.4 "Try again" on a cut-off foo reply re-runs its turn. */
   z.object({ id: z.string(), kind: z.literal('reply.retry'), payload: z.object({ messageId: z.string() }).strict() }),
   z.object({ id: z.string(), kind: z.literal('reply.stop'), payload: z.object({ chatId: z.string() }).strict() }),
@@ -250,6 +259,9 @@ export const WRITABLE_TABLES = [
   // M6 T7 (08-1 §2.4.1 lists both): the budget's held items (08-3 §15.6) and the never-offer-twice keys (§15.7).
   'held_items',
   'suggestions',
+  // M9 T8 (08-1 §2.4.1 lists both; 08-2 §8.3.9 site notes, §8.3.11 site recipes): upserts by domain / (domain, goal).
+  'site_notes',
+  'site_recipes',
 ] as const;
 /** Tables the `delete` op takes, with the id each uses: reactions `{messageId}|{by}`, memory_index the fact id,
  * memory_tombstones `{hash}|{originKind}`, memory_group_grants `{factId}|{chatId}`. */
@@ -404,6 +416,9 @@ export const NAMED_QUERY_NAMES = [
   'wa.byName',
   'wa.groupByName',
   'wa.lastChats',
+  // M9 T8: 08-1 §2.4.1 `siteNotes` (flags for the domains in play, 08-2 §8.3.9) and `siteRecipe` (one domain + goal, §8.3.11).
+  'siteNotes',
+  'siteRecipe',
 ] as const;
 export type NamedQuery = (typeof NAMED_QUERY_NAMES)[number];
 
@@ -431,6 +446,29 @@ export const waReportSchema = z.discriminatedUnion('event', [
   z.object({ event: z.literal('sent'), waMessageId: z.string().min(1) }).strict(),
 ]);
 export type WaReport = z.infer<typeof waReportSchema>;
+
+// M9 T7: one docked banner per job (main's SigninBanners). `bounds` is Edge's outer rectangle and toolbar height (wintrack's
+// EdgeBounds); null when the window is gone.
+const edgeBoundsSchema = z
+  .object({
+    x: z.number(),
+    y: z.number(),
+    width: z.number(),
+    height: z.number(),
+    chromeTop: z.number(),
+    minimised: z.boolean(),
+  })
+  .strict();
+export const signinBannerSchema = z
+  .object({
+    jobId: z.string(),
+    op: z.enum(['open', 'url', 'bounds', 'signed_in', 'close']),
+    mode: z.enum(['sign_in_here', 'take_over']).optional(),
+    url: z.string().max(4096).optional(),
+    bounds: edgeBoundsSchema.nullable().optional(),
+  })
+  .strict();
+export type SigninBannerMsg = z.infer<typeof signinBannerSchema>;
 
 export const engineToMainSchema = z.discriminatedUnion('kind', [
   z.object({ id: z.string(), kind: z.literal('db.tx'), payload: z.object({ ops: z.array(dbOpSchema).min(1) }).strict() }),
@@ -561,6 +599,8 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
               .strict()
               .optional(),
             superseded: z.enum(['price', 'time', 'recipient', 'fee', 'steer']).optional(),
+            // M9 T8 (G-M9-07): a booking the site's history page never confirmed (CHECKING → FAILED) says so on its card.
+            unconfirmed: z.literal(true).optional(),
           })
           .strict()
           .optional(),
@@ -654,6 +694,12 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
   }),
   z.object({ id: z.string(), kind: z.literal('vault.decrypt'), payload: z.object({ blobRef: z.literal('wa-session') }).strict() }),
   z.object({ id: z.string(), kind: z.literal('wa.report'), payload: waReportSchema }),
+  // M9 T4 (gap pick, like wa.report): main owns settings.json (08-0 §A), so the engine reports a web key refused on a call
+  // (CLOUD_AUTH) and main writes `connections.web.refused.{provider} = true` (X-127). The key check on save clears it.
+  z.object({ id: z.string(), kind: z.literal('web.refused'), payload: z.object({ provider: WebProviderSchema }).strict() }),
+  // M9 T7 (gap pick, like web.refused): the docked sign-in banner is main's window (09 §9.27.3) and Edge is the engine's, so
+  // the engine says when it opens, follows Edge (bounds every 500 ms, the page URL every 1 s), shows success and closes.
+  z.object({ id: z.string(), kind: z.literal('signin.banner'), payload: signinBannerSchema }),
 ]);
 export type EngineToMain = z.infer<typeof engineToMainSchema>;
 export type DbTxReply = { ids: string[]; revs: number[] };
@@ -675,7 +721,10 @@ export interface MainLink {
       | 'draft.openX',
     payload: unknown,
   ): Promise<Result<T>>;
-  send(kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify' | 'wa.report', payload: unknown): void;
+  send(
+    kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify' | 'wa.report' | 'web.refused' | 'signin.banner',
+    payload: unknown,
+  ): void;
 }
 
 export interface EngineSettingsView {

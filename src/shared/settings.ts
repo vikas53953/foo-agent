@@ -135,11 +135,21 @@ export const settingsSchema = z.object({
     rememberOn: z.boolean(),
     learnFromChats: z.boolean(),
     askBeforeRemembering: z.boolean(),
+    // M9 (CR-0013, 08-0 §A): screenshot keep days and the sites foo may read sign-in codes for from Gmail.
+    screenshotDays: z.union([z.literal(0), z.literal(1), z.literal(7), z.literal(30)]),
+    readCodesFromGmail: z.array(z.string().max(253)).max(50),
   }),
   // CR-0012 (M8): 08-0 §A.1 rows `connections.google` and `connections.whatsapp`; `connections.web` is M9's.
   connections: z.object({
     google: z.object({ calendarOn: z.boolean(), contactsOn: z.boolean() }),
     whatsapp: z.object({ read: z.boolean(), draft: z.boolean(), hiddenJids: z.array(z.string()) }),
+    // M9 (CR-0013, 08-4 §27.3): web tools on the user's own keys.
+    web: z.object({
+      search: z.enum(['exa', 'tavily', 'this_pc']),
+      read: z.enum(['firecrawl', 'this_pc']),
+      cloudBrowser: z.boolean(),
+      refused: z.object({ exa: z.boolean(), tavily: z.boolean(), firecrawl: z.boolean(), browseruse: z.boolean() }),
+    }),
   }),
   flags: z.object({
     screenHands: z.boolean(),

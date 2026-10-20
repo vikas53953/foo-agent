@@ -20,11 +20,14 @@ import type { ExecResult, ToolLayer } from '../tools/ToolLayer';
 import { approvalText } from './approvalText';
 import { classOfVerb, untrustedSource, type PermRow } from './classes';
 import type { ActionClass, GateJob, GateLogic } from './GateLogic';
-import { EVIDENCE_RETRY_LINE, verifyRequestApproval, type ApprovalSnapshot } from './requestApproval';
+import { EVIDENCE_RETRY_LINE, registrableDomain, verifyRequestApproval, type ApprovalSnapshot } from './requestApproval';
 import type { ApprovalPayload, SecondLookResult } from '../../shared/types';
 import { askSecondLook, readLiveTerms, userWordsFor } from './afterApproved';
 import { checkLiveTerms } from './liveTerms';
 import { secondLook as runSecondLook, verbingOf } from './secondLook';
+import type { LiveRead } from '../tools/browser/readLiveTerms'; // M9 T8
+import { HISTORY_MAX_MS, HISTORY_POLL_MS, findBookingInHistory } from '../tools/browser/outcome';
+import { isFlightBooking } from '../jobs/flights';
 
 /** M5 T8: what `approval.transition` may carry (08-4 §29.1; the second look; the card's HELD / SUPERSEDED copy). */
 interface TransitionData {
@@ -32,6 +35,7 @@ interface TransitionData {
   secondLook?: SecondLookResult;
   held?: ApprovalPayload['held'];
   superseded?: ApprovalPayload['superseded'];
+  unconfirmed?: true; // M9 T8
 }
 
 /** 08-4 §29.1 item 2: the write-ahead must be acknowledged within 2 s, else nothing is clicked. */
@@ -107,6 +111,11 @@ export interface RunnerGateDeps {
   countFailure(job: JobRow): Promise<boolean>;
   /** T8 fills it (08-2 §9.6); until then the second look passes. */
   secondLook?(a: OpenApproval, job: JobRow): Promise<{ pass: boolean }>;
+  // M9
+  /** T8: the live terms read from the job's browser page (`readLiveTerms.ts`), used when the money evidence came from it. */
+  browserLive?(jobId: string, draft: ApprovalDraft): Promise<LiveRead>;
+  /** T8: the address of the job's browser page (08-4 §28.1 item 5: `siteDomain` is the current page's registrable domain). */
+  browserUrl?(jobId: string): string | null;
 }
 
 const APP_NAME = (app: PermissionApp): string =>
@@ -339,6 +348,13 @@ export class RunnerGate {
   async requestApproval(job: JobRow, decision: Extract<StepDecision, { kind: 'request_approval' }>, asked: string): Promise<boolean> {
     const core = this.d.core;
     const x = this.st(job.id);
+    // M9 T8 (08-2 §5.3.4, X-81): a flight is compare-and-open only: no booking or Payment card, whatever the AI asks.
+    const verb = (decision.draft as { verb?: unknown }).verb;
+    if (isFlightBooking(asked) && (verb === 'book' || verb === 'buy' || verb === 'pay')) {
+      core.d.log('gate.flight_scope', String(verb), { jobId: job.id });
+      await core.tx([core.textOp(job, t('thread.flight_scope.body'))]);
+      return !(await this.countFailure(job));
+    }
     const calls =
       (await core.query<{ id: string; tool: string; result: unknown; outcome: string | null }[]>('toolCallsForJob', job.id)) ?? [];
     const ok = calls.filter((c) => c.outcome === 'ok');
@@ -348,6 +364,8 @@ export class RunnerGate {
       timeZone: this.d.timeZone(),
       userWords: [asked],
       untrustedResults: ok.filter((c) => untrustedSource(c.tool)).map((c) => JSON.stringify(c.result ?? null)),
+      // M9 T8: the job's page decides siteDomain (08-4 §28.1 item 5).
+      ...(this.d.browserUrl ? { currentDomain: () => hostOf(this.d.browserUrl!(job.id)) } : {}),
     };
     const v = verifyRequestApproval(decision.draft, snap);
     if (!v.ok && v.reason === 'APPROVAL_EVIDENCE') {
@@ -468,25 +486,35 @@ export class RunnerGate {
         timeZone: this.d.timeZone(),
         now: core.d.clock.now(),
         untrusted: a.untrusted,
+        // M9 close-out (08-2 §8.1, §9.6 A, Art. 9): acting on a site other than the card's is a mismatch, so a new site
+        // inside an approved job always comes back to the person on the card first.
+        ...(this.d.browserUrl && ACTS_ON_SITE.has(a.draft.verb) ? { live: { siteDomain: pageDomain(this.d.browserUrl(job.id)) } } : {}),
         askAi: (p) => askSecondLook(core, job, p, signal),
       });
       if (!out.pass) return this.hold(job, a, { secondLook: out.result, held: out.held });
       look = out.result;
     }
     const steps0 = await core.steps(job.id);
-    const live = await readLiveTerms(
-      core,
-      this.d.tools,
-      { id: job.id, stepId: steps0.find((s) => s.state === 'running')?.id ?? null, turnId: null, gate: await this.gateJob(job) },
-      a.draft,
-      signal,
-    );
+    // M9 T8: money evidence read on foo's browser is read again from the job's page (the whole page, not a snapshot diff).
+    const browserRead = (await this.fromBrowser(job.id, a.draft)) ? await this.d.browserLive!(job.id, a.draft) : null;
+    const live =
+      browserRead === null
+        ? await readLiveTerms(
+            core,
+            this.d.tools,
+            { id: job.id, stepId: steps0.find((s) => s.state === 'running')?.id ?? null, turnId: null, gate: await this.gateJob(job) },
+            a.draft,
+            signal,
+          )
+        : typeof browserRead === 'string'
+          ? browserRead
+          : browserRead.live;
     if (live === 'unreadable') {
       core.d.log('gate.live_terms_unreadable', 'cannot_check', { jobId: job.id });
       return this.hold(job, a, { held: { reason: 'cannot_check', verbing: verbingOf(a.draft.verb) } });
     }
     if (live !== 'none') {
-      const c = checkLiveTerms(a.draft.fields, live);
+      const c = browserRead !== null && typeof browserRead !== 'string' ? browserRead.check : checkLiveTerms(a.draft.fields, live);
       if (!c.same) return this.supersedeTerms(job, a, live, c.changed[0]!);
     }
     let timer: ReturnType<typeof core.d.clock.setTimeout> | null = null;
@@ -518,10 +546,49 @@ export class RunnerGate {
       a.approvalId,
       signal,
     );
-    const to = outcomeState(r);
+    let to = outcomeState(r);
     await this.transition(a.approvalId, to);
+    // M9 T8 (08-4 §28.1 item 8, G-M9-07): an unclear booking is checked on the site's history page only, never re-submitted.
+    if (to === 'CHECKING' && a.draft.verb === 'book') to = await this.checkBooking(job, a, r, signal);
     if (to === 'COMPLETED') this.st(job.id).approved.push(approvedLine(a.draft, this.d.timeZone(), core.d.clock.now()));
     return true;
+  }
+
+  /**
+   * M9 T8 (G-M9-07): the site's history page (linked from the result page) every 60 s for 10 min, never Gmail, never a second
+   * submit. A row naming the approved place with a code → COMPLETED (the snapshot is this job's tool call, so the AI's proof can
+   * name it); nothing by 10 min → FAILED with "I couldn't confirm the booking…". A stop ends the wait and leaves it CHECKING.
+   */
+  private async checkBooking(job: JobRow, a: OpenApproval, r: ExecResult, signal: AbortSignal): Promise<ApprovalState> {
+    const core = this.d.core;
+    const url = (r.result as { historyUrl?: unknown } | null)?.historyUrl;
+    const place = a.draft.fields.payee ?? '';
+    const steps = await core.steps(job.id);
+    const tj = { id: job.id, stepId: steps.find((s) => s.state === 'running')?.id ?? null, turnId: null, gate: await this.gateJob(job) };
+    const start = core.d.clock.now();
+    for (;;) {
+      if (typeof url === 'string' && place) {
+        const opened = await this.d.tools.reread(tj, { tool: 'browser.open', args: { url } }, signal);
+        const snap = opened.outcome === 'ok' ? await this.d.tools.reread(tj, { tool: 'browser.snapshot', args: {} }, signal) : null;
+        if (snap?.outcome === 'ok' && findBookingInHistory(snapshotTextOf(snap.result), place)) {
+          if (await this.transition(a.approvalId, 'COMPLETED')) return 'COMPLETED';
+        }
+      }
+      if (signal.aborted) return 'CHECKING';
+      if (core.d.clock.now() - start + HISTORY_POLL_MS > HISTORY_MAX_MS) break;
+      await new Promise<void>((done) => core.d.clock.setTimeout(done, HISTORY_POLL_MS));
+    }
+    core.d.log('gate.booking_unconfirmed', 'no_proof', { jobId: job.id });
+    return (await this.transition(a.approvalId, 'FAILED', { unconfirmed: true })) ? 'FAILED' : 'CHECKING';
+  }
+
+  /** M9 T8: true when every money evidence of the draft was read by a `browser.*` tool of this job. */
+  private async fromBrowser(jobId: string, draft: ApprovalDraft): Promise<boolean> {
+    if (!this.d.browserLive) return false;
+    const ids = draft.evidence.filter((e) => e.field === 'amountPaise' || e.field === 'cancelTerms').map((e) => e.toolCallId);
+    if (!ids.length) return false;
+    const calls = (await this.d.core.query<{ id: string; tool: string }[]>('toolCallsForJob', jobId)) ?? [];
+    return ids.every((id) => calls.find((c) => c.id === id)?.tool.startsWith('browser.') ?? false);
   }
 
   // ---- M5 T8 ----
@@ -668,6 +735,32 @@ function approvedLine(d: ApprovalDraft, timeZone: string, now: number): string {
 }
 
 /** `{args summary}` of the RECOVERY list: compact JSON, cut to 120 chars (args are stored redacted). */
+/** M9 T8: the page text of a `browser.snapshot` result (the redacted copy; booking codes survive redaction, 08-4 §26.11). */
+function snapshotTextOf(result: unknown): string {
+  const s = (result as { snapshot?: unknown } | null)?.snapshot;
+  return typeof s === 'string' ? s : '';
+}
+
+/** 08-2 §8.1: the verbs that act on a site (`book`/`buy`/`pay`); reading other sites never needs a card. */
+const ACTS_ON_SITE: ReadonlySet<string> = new Set(['book', 'buy', 'pay']);
+
+/** The registrable domain of the job's page, as the card's `siteDomain` was made (08-4 §28.1 item 5), or null. */
+function pageDomain(url: string | null): string | null {
+  const host = hostOf(url);
+  return host ? registrableDomain(host) : null;
+}
+
+/** M9 T8: the host of a page address, or null (no page, about:blank, not a URL). */
+function hostOf(url: string | null): string | null {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    return u.protocol === 'https:' || u.protocol === 'http:' ? u.hostname : null;
+  } catch {
+    return null;
+  }
+}
+
 function summary(args: unknown): string {
   const s = JSON.stringify(args ?? {});
   return s.length > 120 ? `${s.slice(0, 117)}...` : s;

@@ -41,7 +41,7 @@ export function ShellKeys(): null {
         const job = watchTarget(Object.values(s.jobs.byId), chatId);
         if (!job) return;
         e.preventDefault();
-        void invoke('job:watch', { jobId: job.id, on: true }).catch(() => undefined);
+        void invoke('job:openWindow', { jobId: job.id }).catch(() => undefined);
       }
     };
     window.addEventListener('keydown', onKey);

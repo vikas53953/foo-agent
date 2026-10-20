@@ -61,11 +61,13 @@ import { draftAttachments, pauseHelper, saveDraft, sendMessage, submitVoice } fr
 import { helperRow } from '../db/rows';
 import type { DbRow } from '../db/rows';
 import { ChannelGuard } from './guard';
+import { registerLiveIpc, routeLive } from '../jobs/liveIpc';
 import type { EngineBridge } from '../engine-supervisor/EngineBridge';
 import { applyDbOps } from '../engine-supervisor/engineHost';
 import { FIX_ACTION_KINDS, JOB_CHANNELS, jobIpc } from '../jobs/jobIpc';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
+import { registerSigninIpc } from '../jobs/signinIpc';
 import { isTrustedUrl } from '../windows/protocol';
 import { registerConnectionIpc } from '../connections/connectionIpc';
 import { logEvent } from '../log/techLog';
@@ -96,6 +98,7 @@ export function channels(): ChannelGuard {
 
 /** Sends an event (08-1 §3.3) to foo's windows. */
 export function emit<E extends EventChannel>(event: E, payload: EventPayload[E]): void {
+  if (routeLive(event, payload)) return; // live:* go to their job's live window only (M9 T5, 08-0 §G.8)
   for (const w of BrowserWindow.getAllWindows()) if (!w.isDestroyed()) w.webContents.send(event, payload);
 }
 
@@ -215,6 +218,12 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'app:showEmojiPanel': empty as z.ZodType<Record<string, never>>,
   'job:stop': z.object({ jobId: z.string().min(1).max(80) }).strict(),
   'job:watch': z.object({ jobId: z.string().min(1).max(80), on: z.boolean() }).strict(),
+  // M9 (CR-0013, 08-1 §3.2). Handlers below are stubs until T6 (sign-in, take over) and T8 (hand-back sites); T5's live ones are real.
+  'job:openWindow': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'job:takeOver': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'job:handBack': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'signin:done': z.object({ jobId: z.string().min(1).max(80) }).strict(),
+  'signin:skip': z.object({ jobId: z.string().min(1).max(80) }).strict(),
   'memory:list': z
     .object({
       filter: z
@@ -640,8 +649,8 @@ export function registerIpc(ctx: AppContext): void {
     },
   });
   for (const c of JOB_CHANNELS) handle(c, jobs[c] as Handler<typeof c>);
-  // The Live window (09 §9.27) arrives with the browser milestone; until then the shell shows no live view.
-  handle('job:watch', () => fail('LIVE_UNAVAILABLE'));
+  registerLiveIpc(ctx, handle); // job:openWindow, job:watch (M9 T5, 09 §9.27.2)
+  registerSigninIpc(ctx, handle);
   handle('memory:list', ({ filter, q }) => ok(memoryList(db, filter, q, now())));
   // M6 (CR-0010 G-M6-01): the engine owns files, the classify turn and the sensitive rule; main forwards one message each.
   const memoryCmd = <T>(cmd: MemoryCmdPayload): Promise<Result<T>> =>

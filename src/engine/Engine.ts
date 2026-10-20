@@ -39,13 +39,19 @@ import { filterSay } from './prompt/filters';
 import { PromptBuilder, type ConversationMessage } from './prompt/PromptBuilder';
 import { ReleaseGate } from './prompt/releaseGate';
 import { Redactor } from './redact/Redactor';
+import { createEngineWeb, vaultWebKeys, webToolDefs, type EngineWeb } from './tools/web';
 import { findBanned } from './prompt/filters';
 import { capRateOf, resolveModel } from './ai/models';
 import { createGate } from './gate/GateLogic';
 import { JobRunner } from './jobs/JobRunner';
+import { engineScreencast, type Screencast } from './tools/browser/screencast';
 import { JobRecovery } from './jobs/recovery';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
 import type { SecondLookAct, StepAct } from '../shared/schemas';
+// M9 T3
+import { engineBrowserTools, liveTermsReader, type BrowserRuntime } from './tools/browser/tools';
+import { SigninLanes, type LaneDeps } from './tools/browser/signinLanes'; // M9 T7
+import { TakeOver } from './tools/browser/takeover'; // M9 T7
 // M8
 import { WhatsAppConnector, type WaPortLike } from './tools/connectors/whatsapp';
 import { linkWaRecipients, whatsappDraftTool } from './tools/connectors/recipients'; // M8 T7
@@ -77,6 +83,9 @@ export interface EngineOptions {
   google?: GoogleOptions;
   /** T5: tests only. Main holds the token (as in production) and Google is the test's fake fetch on these bases. */
   googleViaMain?: { http: HttpFetch; bases?: Partial<GoogleBases> };
+  // M9
+  /** T8: tests only. foo's browser tools over a test launcher (the sandbox sites), beside injected fake tools. */
+  browser?: { registry: ToolRegistry; runtime: BrowserRuntime };
 }
 
 export class Engine {
@@ -85,6 +94,7 @@ export class Engine {
   readonly ai: AiService;
   readonly lane: ChatLane;
   readonly redactor: Redactor;
+  readonly web: EngineWeb;
   readonly tools: ToolLayer;
   readonly jobs: JobRunner;
   readonly recovery: JobRecovery;
@@ -98,6 +108,11 @@ export class Engine {
   readonly tidy: MemoryTidy;
   readonly share: MemoryShare;
   private readonly style: StyleStatsRunner;
+  // M9 T3: foo's browser (none when a test injects its tools).
+  private readonly browser: BrowserRuntime | null;
+  // M9 T7: sign-in lanes and take over (08-2 §8.4, 06-3 §11.2); null without foo's browser.
+  readonly signin: SigninLanes | null;
+  readonly takeOver: TakeOver | null;
   // M6 T5
   readonly memoryChips: MemoryChips;
   readonly memoryReview: MemoryReview;
@@ -110,7 +125,10 @@ export class Engine {
     return new Engine(o);
   }
 
+  private readonly screencast: Screencast; // M9 T5: Watch live frames (08-2 §8.3.7)
+
   private constructor(private o: EngineOptions) {
+    this.screencast = engineScreencast({ ...o, runtime: () => this.browser });
     const newId = (p: IdPrefix, now: number) => (o.newId ? o.newId(p) : mintId(p, now));
     const log = (evt: string, kind?: string) =>
       o.link.send('log', { t: o.clock.now(), lvl: 'info', mod: 'engine', evt, ...(kind ? { kind } : {}) });
@@ -122,6 +140,26 @@ export class Engine {
       promptsDir: join(o.resourcesDir, 'prompts'),
     });
     const pricing = loadPricing(JSON.parse(readFileSync(join(o.resourcesDir, 'pricing.json'), 'utf8')));
+    // M9 T4: web tools (08-2 §8.2); each cloud call writes its ai_turns row (08-4 §27.3 item 5).
+    this.web = createEngineWeb({
+      ...o,
+      fetch: o.fetch ?? fetch,
+      settings: () => this.settings,
+      online: () => this.online,
+      scrub: (t) => this.redactor.scrub(t),
+      pricing,
+      recordTurn: (row) => void o.link.request('db.tx', { ops: [{ op: 'insert', table: 'ai_turns', row: { ...row } }] }),
+      newId: () => newId('t', o.clock.now()),
+      log: (kind) => log('web', kind),
+      // M5's vault answers the engine only (08-2 §11.3); main registers the value before it is sent.
+      keys: vaultWebKeys(async (req) => {
+        const r = await o.link.request<string>('vault.use', req).catch(() => null);
+        return r?.ok && typeof r.value === 'string' && r.value ? r.value : null;
+      }),
+      // X-127: main writes `connections.web.refused.{p}`. The brief line for a used-up key waits for the brief (M7): logged.
+      onRefused: (provider) => o.link.send('web.refused', { provider }),
+      onQuota: (p) => log('web.quota', p),
+    });
     const fake = o.testRun && Boolean(o.env.FOO_FAKE_AI);
     // CR-0020: keys come from main's vault; a FOO_TEST run may stand in a fake home for the J2 ladder (ai/vaultKeys.ts).
     const testHome = o.testRun ? o.env.FOO_TEST_AI_HOME : undefined;
@@ -186,6 +224,34 @@ export class Engine {
       : null;
     // M5 T7: the real gate (08-2 §9.4) replaces the M4 stub; R4 results go through Redactor.scrub (08-2 §11.4).
     const gate = createGate({ settings: () => this.settings, now: () => o.clock.now() });
+    // M9 T7: the lanes are the browser's capture guard (08-2 §8.3.3), so they exist before it and read it lazily.
+    const laneDeps: LaneDeps = {
+      clock: o.clock,
+      link: o.link,
+      window: (jobId) => this.browser?.browser.window(jobId),
+      openWindow: async (jobId) => (await this.browser?.browser.openWindow(jobId))?.ok ?? false,
+      masker: { apply: (p) => this.browser!.masker.apply(p), remove: (p) => this.browser!.masker.remove(p) },
+      reread: (jobId) => this.browser?.stepStarted(jobId),
+      secret: (handle) => this.redactor.registry.valueOf(handle),
+      forget: (handle) => this.redactor.registry.remove([handle]),
+      agentName: () => this.settings.identity.agentName,
+      log,
+    };
+    const lanes = o.tools ? null : new SigninLanes(laneDeps);
+    const browser =
+      o.browser ??
+      (o.tools
+        ? null
+        : engineBrowserTools({
+            ...o,
+            redactor: this.redactor,
+            settings: () => this.settings,
+            log,
+            ...(lanes ? { captureGuard: lanes } : {}),
+          }));
+    this.browser = browser?.runtime ?? null;
+    this.signin = lanes;
+    this.takeOver = lanes ? new TakeOver(laneDeps, lanes) : null;
     this.tools = new ToolLayer({
       link: o.link,
       clock: o.clock,
@@ -193,9 +259,13 @@ export class Engine {
       // M6 T5: the memory step tools (08-2 §8.2) beside the injected ones (M8 connectors, M9 browser, fakes in tests).
       // M8 T7: whatsapp.draft and the X hand-back tools; the WhatsApp check is read through `this.whatsapp` when called.
       tools: {
+        ...webToolDefs(this.web),
         ...this.memoryToolRegistry(newId),
         ...this.draftToolRegistry(),
-        ...(o.tools ?? {}),
+        // M9 T3: foo's browser tools unless a test injects its own (M9 T8: a test may inject both).
+        ...(o.tools ?? browser?.registry ?? {}),
+        ...(o.tools && o.browser ? o.browser.registry : {}),
+        ...(lanes ? { 'job.needSignIn': lanes.tool() } : {}), // M9 T7
         ...(this.google?.tools ?? {}),
       },
       gate,
@@ -226,14 +296,39 @@ export class Engine {
       log: (evt, kind) => log(evt, kind),
       gate,
       scrub: (text) => this.redactor.scrub(text),
+      // M9 T8: the live terms right before a booking, read from the job's page (08-2 §9.4.2).
+      ...(this.browser
+        ? {
+            browserLive: liveTermsReader(this.browser),
+            browserUrl: (id: string) => this.browser?.page(id)?.url() ?? null,
+            recipes: this.browser.recipes,
+          }
+        : {}),
       hooks: {
         onAiError: (job, kind) => this.recovery.onAiError(job, kind),
         onCannotStart: (job, kind) => this.recovery.onCannotStart(job, kind),
         // M8 T5: jobs waiting on a lost Google connection resume after recovery's, in the same slots.
         beforeSchedule: async () => (await this.recovery.beforeSchedule()) && (await this.trouble.beforeSchedule()),
-        onToolError: (job, tool, kind, stepId) => this.trouble.onToolError(job, tool, kind, stepId),
+        // M9 T7: a challenge page is the CAPTCHA lane (Take over), never solved and never a failure (08-2 §8.4).
+        onToolError: (job, tool, kind, stepId) =>
+          kind === 'SITE_CAPTCHA' && this.signin ? this.signin.challenge(job) : this.trouble.onToolError(job, tool, kind, stepId),
         // M5 T10: messages that waited at the AI cap go when it is raised or the month turns.
         onCapLifted: () => void this.drainQueued(),
+        // M9 T3: a finished job's browser window closes, so the next browser job gets its slot.
+        onEnded: (jobId) => {
+          this.signin?.jobEnded(jobId); // M9 T7
+          this.takeOver?.jobEnded(jobId);
+          void this.browser?.jobEnded(jobId);
+        },
+        // M9 T7: a Sign-in card starts its lane.
+        onNeedsYou: (job, cardId, card) => void this.signin?.begin(job, cardId, card),
+        reintake: (chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }), // M9 T8
+        // M9 T8 (T3 seams): one masked picture after each step (08-2 §8.3.8); the next step's first snapshot is whole (§8.3.4).
+        onStepDone: async (jobId, idx, next) => {
+          const page = this.browser?.page(jobId);
+          if (page) await this.browser!.shots.capture(jobId, page, idx).catch(() => null);
+          if (next !== null) this.browser?.stepStarted(jobId);
+        },
       },
       // M6 T5: "Used:" chips under a step's card or result, and the post-turn review after DONE (08-3 §12.4, §12.5).
       memory: {
@@ -251,6 +346,15 @@ export class Engine {
       log: (evt, kind) => log(evt, kind),
     });
     this.recovery.attach(this.jobs);
+    // M9 T7
+    const laneRunner = {
+      core: this.jobs.core,
+      onCardAnswered: (a: { cardId: string; answer?: unknown; resolvedBy: string }) => this.jobs.onCardAnswered(a),
+      stop: (jobId: string, reason: 'window_closed' | 'signin_timeout', report: boolean) =>
+        this.jobs.track(this.jobs.stopper.stopJob(jobId, reason, { report })),
+    };
+    this.signin?.attach(laneRunner, (jobId) => this.takeOver?.has(jobId) ?? false);
+    this.takeOver?.attach(laneRunner);
     this.trouble.attach(this.jobs, this.google);
     this.lane = new ChatLane({
       link: o.link,
@@ -684,6 +788,8 @@ export class Engine {
         if (msg.payload.cmd === 'choose' && id) return this.ai.choose(id, (msg.payload.backup as ProviderId | null | undefined) ?? null);
         return { ok: false, error: { kind: 'AI_CLI_INCOMPATIBLE' } };
       }
+      case 'webkey.check':
+        return ok({ result: await this.web.checkKey(msg.payload.provider) });
       case 'test.reset':
         this.lane.cancelAll();
         this.memoryReview.cancelAll();
@@ -710,10 +816,29 @@ export class Engine {
       }
       case 'job.stopAll':
         return ok(await this.jobs.stopAll());
+      // M9 T7 (X-124, X-135): the sign-in card, the banner and the live window's buttons.
+      case 'signin.done':
+        await this.signin?.done(msg.payload.jobId);
+        return undefined;
+      case 'signin.skip':
+        await this.signin?.skip(msg.payload.jobId);
+        return undefined;
+      case 'job.takeOver':
+        if (msg.payload.on) await this.takeOver?.on(msg.payload.jobId);
+        else await this.takeOver?.handBack(msg.payload.jobId);
+        return undefined;
+      case 'job.handBack':
+        await this.takeOver?.handBack(msg.payload.jobId);
+        return undefined;
+      case 'code.submit':
+        await this.signin?.codeSubmitted(msg.payload.requestId, msg.payload.codeRef);
+        return undefined;
       case 'job.retry':
         return this.jobs.retry(msg.payload.jobId, msg.payload.newJobId);
       case 'test.clock':
         return undefined;
+      case 'job.watch':
+        return this.screencast.watch(msg.payload.jobId, msg.payload.on);
       // M5 T2 (08-0 §G.6, X-93): main's registry of record, mirrored here; `ttlMs: 0` = until the app quits. Never logged.
       case 'registry:add':
         this.redactor.registry.add({
@@ -727,8 +852,12 @@ export class Engine {
         this.redactor.registry.remove(msg.payload.handles);
         return undefined;
       // G-M4-04: a request; main waits for the ack before it exits.
-      case 'jobs.pauseAll':
-        return ok({ paused: await this.recovery.pauseAll(msg.payload.reason) });
+      case 'jobs.pauseAll': {
+        const paused = await this.recovery.pauseAll(msg.payload.reason);
+        // M9 T3: foo's browser closes with the app (08-1 §2.3 step 4), never delaying the ack main waits on.
+        void this.browser?.browser.shutdown();
+        return ok({ paused });
+      }
       // M8 (T3): Google's commands are T2's.
       case 'connection.cmd':
         if (msg.payload.target === 'whatsapp' && ['linkStart', 'linkCancel', 'unlink'].includes(msg.payload.cmd))

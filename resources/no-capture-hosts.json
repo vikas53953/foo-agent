@@ -1,0 +1,15 @@
+{
+  "version": "2026.10",
+  "hosts": [
+    "cardinalcommerce.com",
+    "arcot.com",
+    "netsafe.hdfcbank.com",
+    "acs.axisbank.com",
+    "acs.icicibank.com",
+    "secure.icicibank.com/acs",
+    "sbicard.com/acs",
+    "acs.sbi",
+    "acs2.onlinesbi.sbi"
+  ],
+  "patterns": ["^acs\\d*\\.", "\\.acs\\d*\\.", "3ds", "3dsecure", "securecode", "verifiedbyvisa", "safekey", "idcheck"]
+}

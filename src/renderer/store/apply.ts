@@ -73,6 +73,9 @@ export const REDUCERS: Reducers = {
   'memory:changed': () => undefined,
   // The export status line lives on the page that started it (06-2 §7.4).
   'data:exportProgress': () => undefined,
+  // `live:*` go to the live window only (08-0 §G.8); M9 T5 adds its `live` slice there. The main window ignores them.
+  'live:frame': () => undefined,
+  'live:state': () => undefined,
 };
 
 export function applyEvent<E extends EventChannel>(event: E, payload: EventPayload[E]): void {

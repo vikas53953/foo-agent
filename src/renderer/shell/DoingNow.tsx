@@ -70,7 +70,7 @@ export function DoingNow({ chat }: { chat: ChatRow }) {
             iconSize={16}
             label={t('app.panel.doing.open.label')}
             data-testid={TID.appPanelDoingOpen}
-            onClick={() => void invoke('job:watch', { jobId: openTarget.id, on: true }).catch(() => undefined)}
+            onClick={() => void invoke('job:openWindow', { jobId: openTarget.id }).catch(() => undefined)}
           />
         )}
       </h2>
@@ -218,7 +218,7 @@ function JobList({
                 label={t('app.panel.doing.watch_live.label', { title: j.title })}
                 tooltip={t('app.panel.doing.watch_live.tooltip')}
                 data-testid={TID.appPanelDoingWatchLive}
-                onClick={() => void invoke('job:watch', { jobId: j.id, on: true }).catch(() => undefined)}
+                onClick={() => void invoke('job:openWindow', { jobId: j.id }).catch(() => undefined)}
               />
             )}
             {canStop(j) && (

@@ -318,6 +318,13 @@ export class SecretRegistry {
     return out.sort((a, b) => b.form.length - a.form.length);
   }
 
+  // M9 T7
+  /** The value behind a handle (a typed code, `code.submit`, 08-2 §8.4) for the engine filler only; null once gone. */
+  valueOf(handle: string): string | null {
+    this.purge();
+    return this.entries.get(handle)?.value ?? null;
+  }
+
   /** Marks a handle used (LRU). */
   touch(handle: string): void {
     const e = this.entries.get(handle);

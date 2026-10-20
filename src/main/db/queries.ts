@@ -571,4 +571,41 @@ export const NAMED_QUERIES = {
         )
         .all() as { jid: string; name: string | null }[]
     ).map((r) => (r.name === maskWaNumber(r.jid) ? { ...r, name: null } : r)), // M8 T7: a masked number is no name.
+  // M9 T8: 08-2 §8.3.9 the cached flags of each domain asked for ({ domain: { flags, updatedAt } }; a domain with no row is absent).
+  siteNotes: ({ db }: QueryCtx, domains: unknown): Record<string, { flags: Record<string, unknown>; updatedAt: number }> => {
+    const out: Record<string, { flags: Record<string, unknown>; updatedAt: number }> = {};
+    const want = Array.isArray(domains) ? domains.map(String).slice(0, 50) : [];
+    const get = db.prepare('SELECT flags, updated_at FROM site_notes WHERE domain = ?');
+    for (const d of want) {
+      const r = get.get(d) as { flags: string; updated_at: number } | undefined;
+      if (r) out[d] = { flags: JSON.parse(r.flags) as Record<string, unknown>, updatedAt: r.updated_at };
+    }
+    return out;
+  },
+  // M9 T8: 08-2 §8.3.11 the one recipe for a domain + goal (UNIQUE), steps parsed.
+  siteRecipe: ({ db }: QueryCtx, domain: unknown, goal: unknown): SiteRecipeRow | null => {
+    const r = db.prepare('SELECT * FROM site_recipes WHERE domain = ? AND goal = ?').get(String(domain), String(goal)) as DbRow | undefined;
+    if (!r) return null;
+    return {
+      id: String(r.id),
+      domain: String(r.domain),
+      goal: String(r.goal),
+      urlPattern: String(r.url_pattern),
+      steps: JSON.parse(String(r.steps_json)) as unknown[],
+      successCount: Number(r.success_count),
+      lastOkAt: (r.last_ok_at as number | null) ?? null,
+      lastFailAt: (r.last_fail_at as number | null) ?? null,
+    };
+  },
 } as const;
+
+export interface SiteRecipeRow {
+  id: string;
+  domain: string;
+  goal: string;
+  urlPattern: string;
+  steps: unknown[];
+  successCount: number;
+  lastOkAt: number | null;
+  lastFailAt: number | null;
+}

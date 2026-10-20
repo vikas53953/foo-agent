@@ -6,14 +6,24 @@
 // step 5 (M6 T7: an engine db.tx's unprompted messages pass the budget first). Electron-free so unit tests drive it with an
 // in-process engine.
 // M8 T3: `wa.report` and the WhatsApp session's vault.encrypt / vault.decrypt (08-3 §16.4).
-import { engineToMainSchema, type DbOp, type EngineToMain, type MainToEngine, type NamedQuery, type WaReport } from '../../engine/protocol';
+// M9 T4: `web.refused` → `connections.web.refused.{provider}` (08-0 §A, X-127).
+import {
+  engineToMainSchema,
+  type DbOp,
+  type EngineToMain,
+  type MainToEngine,
+  type NamedQuery,
+  type SigninBannerMsg,
+  type WaReport,
+} from '../../engine/protocol';
 import { fail, type Result } from '../../shared/errors';
 import type { EventChannel, EventPayload } from '../../shared/ipc';
 import type { Settings } from '../../shared/settings';
 import type { AiStatus, ProviderId } from '../../shared/types';
 import type { Db } from '../store/db';
 import { cardRow, type DbRow } from '../db/rows';
-import { jobRows, spendSummary } from '../store/queries';
+import { jobRows, publicSettings, spendSummary } from '../store/queries';
+import { writeWeb } from '../settings/webKeySettings';
 import { postCapWarning } from '../jobs/capWarning';
 import { gateUnprompted } from '../notify/budget';
 import { applyDbOps, runNamedQuery, writeDataFile } from './engineHost';
@@ -53,6 +63,9 @@ export interface BridgeContext {
   // M8 T6
   /** Main's DraftService for engine `draft.create` (08-2 §8.2 `gmail.draft`); its answer is posted when Gmail has answered. */
   drafts?(): Pick<DraftService, 'create' | 'openX'>;
+  // M9 T7
+  /** The engine's sign-in banner reports (signinBannerBridge.ts → SigninBanners, 09 §9.27.3). */
+  signinBanner?(m: SigninBannerMsg): void;
 }
 
 type AiStatePayload = Extract<EngineToMain, { kind: 'ai.state' }>['payload'];
@@ -188,6 +201,17 @@ export class EngineBridge {
       case 'wa.report':
         this.ctx.whatsapp?.report(msg.payload);
         return null;
+      // M9 T4 (X-127): a web key refused on a call; main writes the setting and tells the renderer.
+      // M9 T7: the docked banner follows the engine's Edge window.
+      case 'signin.banner':
+        this.ctx.signinBanner?.(msg.payload);
+        return null;
+      case 'web.refused': {
+        const { provider } = msg.payload;
+        if (writeWeb(this.ctx.settings, (w) => ({ ...w, refused: { ...w.refused, [provider]: true } })))
+          this.ctx.emit('settings:changed', publicSettings(this.ctx.settings.get()));
+        return null;
+      }
       case 'vault.encrypt':
         return { re: msg.id, result: this.ctx.whatsapp?.vault({ kind: 'vault.encrypt', bytes: msg.payload.bytes }) ?? fail('UNKNOWN') };
       case 'vault.decrypt':

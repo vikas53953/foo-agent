@@ -43,6 +43,12 @@ const INVOKES = new Set([
   'stuck:choose',
   'recovery:choose',
   'error:fix',
+  // M9 (CR-0013).
+  'job:openWindow',
+  'job:takeOver',
+  'job:handBack',
+  'signin:done',
+  'signin:skip',
   'memory:list',
   'memory:add',
   'memory:edit',

@@ -150,6 +150,8 @@ export interface TransitionData {
   secondLook?: SecondLookResult;
   held?: ApprovalPayload['held'];
   superseded?: ApprovalPayload['superseded'];
+  // M9 T8 (G-M9-07): the booking's history page never showed it; the card reads "I couldn't confirm the booking…".
+  unconfirmed?: true;
 }
 
 export interface Created {
@@ -665,6 +667,11 @@ export class ApprovalGate {
       card = {
         payload: { ...payload, ...(data.held ? { held: data.held } : {}), ...(data.superseded ? { superseded: data.superseded } : {}) },
       };
+    }
+    // M9 T8 (G-M9-07): CHECKING → FAILED with no confirmation keeps the "can't tell" card (no Try again), in the booking words.
+    if (data.unconfirmed && to === 'FAILED') {
+      const payload = this.card(a.cardId)?.payload ?? {};
+      card = { resolved_by: 'system', resolved_at: now, payload: { ...payload, unknownResult: { unconfirmed: true } } };
     }
     if (to === 'HELD') card = { ...card, resolved_by: null, resolved_at: null, answer: null };
     if (to === 'SUPERSEDED') card = { ...card, resolved_by: 'system', resolved_at: now };
