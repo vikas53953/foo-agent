@@ -26,11 +26,6 @@
 :global(:root[data-theme='dark']) .panel[data-mode='overlay'] {
   box-shadow: none;
 }
-@media (prefers-reduced-motion: reduce) {
-  .panel[data-mode='overlay'] {
-    animation: none;
-  }
-}
 :global(:root[data-motion='off']) .panel[data-mode='overlay'] {
   animation: none;
 }

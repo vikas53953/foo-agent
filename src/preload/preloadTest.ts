@@ -136,6 +136,9 @@ const bridge: FooBridge = {
     ipcRenderer.on(event, listener);
     return () => ipcRenderer.removeListener(event, listener);
   },
+  send: (event, payload) => {
+    if (event === 'face:raster') ipcRenderer.send(event, payload);
+  },
 };
 contextBridge.exposeInMainWorld('foo', bridge);
 

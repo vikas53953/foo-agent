@@ -61,6 +61,7 @@ function optimisticRow(o: Outgoing): MessageRow {
     why: null,
     pinned: false,
     providerNote: null,
+    suggestions: null,
     rev: 0,
     createdAt: now,
     editedAt: null,

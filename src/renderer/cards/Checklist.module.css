@@ -155,8 +155,6 @@
     transform: scale(1);
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .mark > svg {
-    animation: none;
-  }
+:global(:root[data-motion='off']) .mark > svg {
+  animation: none;
 }

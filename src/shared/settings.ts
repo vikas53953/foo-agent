@@ -1,4 +1,5 @@
-// Spec: 08-0 §A (settings.json schema, X-53), §A.1 (ranges), X-150 (appearance.animations).
+// Spec: 08-0 §A (settings.json schema, X-53), §A.1 (ranges), X-150 (appearance.animations), X-179 / CR-0021 (appearance.sounds,
+// appearance.mica, appearance.faceMotion).
 // Holds the keys the milestones built so far read (M0: window shell; M1: setup, identity, user, locale, ai, money,
 // notifications.mutedChats for the chat list, footer and banners); later milestones add their keys with their defaults.
 import { z } from 'zod';
@@ -77,6 +78,9 @@ export const settingsSchema = z.object({
     theme: z.enum(['system', 'light', 'dark']),
     useWindowsAccent: z.boolean(),
     animations: z.enum(['full', 'basic', 'off']),
+    sounds: z.boolean(),
+    mica: z.boolean(),
+    faceMotion: z.boolean(),
   }),
   window: z.object({
     bounds: z

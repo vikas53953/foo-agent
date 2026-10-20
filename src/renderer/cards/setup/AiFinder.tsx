@@ -107,7 +107,10 @@ export function AiFinder({ card, time }: { card: CardRow; time: CardTime }) {
     >
       <div className={styles.summary}>
         {using ? (
-          <span className={styles.summaryText}>{t('setup.ai_finder.chosen', { AI: AI_NAME[using] })}</span>
+          <span className={styles.summaryText}>
+            <Icon name="Checkmark" size={16} />
+            {t('setup.ai_finder.chosen', { AI: AI_NAME[using] })}
+          </span>
         ) : (
           <span className={styles.summaryText}>{t('setup.ai_finder.lead')}</span>
         )}

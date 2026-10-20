@@ -45,6 +45,7 @@ export function JobLink({ card }: { card: CardRow; time: CardTime }) {
       <span className={styles.head}>
         {helper && <Avatar face={helper.faceRef} name={helper.name} kind="helper" color={helper.colorToken} size="inline" />}
         <span className={styles.title} data-copy="ai">
+          {done && <Icon name="Checkmark" size={16} />}
           {title}
         </span>
         {helper && <span className={styles.openLabel}>{t('cards.job_link.open', { helper: name })}</span>}

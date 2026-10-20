@@ -552,6 +552,8 @@ export interface MessageRow {
   why: Record<string, unknown> | null;
   pinned: boolean;
   providerNote: string | null;
+  /** CR-0021 pick 10: ≤ 3 follow-up suggestions the AI gave with this reply (composer chips); null when none. */
+  suggestions: string[] | null;
   rev: number;
   createdAt: number;
   editedAt: number | null;

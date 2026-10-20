@@ -45,11 +45,6 @@
 :global([data-bp='XS']) .text {
   white-space: normal;
 }
-@media (prefers-reduced-motion: reduce) {
-  .strip {
-    animation: none;
-  }
-}
 :root[data-motion='off'] .strip {
   animation: none;
 }

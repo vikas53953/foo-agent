@@ -5,6 +5,7 @@
 // WhatsApp linked ({+91 98••• ••210})"; failed 3×: "WhatsApp didn't link. You can try later in Settings → Connections."
 // [ Skip for now ]), §5.11.3 (QR `alt`; linked announced politely; test ids `card-connect-qr`, `card-connect-new-code`,
 // `card-connect-skip`). Shared by the WhatsApp Connect card and `dialog-link-whatsapp` (06-2 §6.8).
+import { Icon } from '../../ui/Icon';
 import { t } from '../../../shared/copy/t';
 import { TID } from '../../../shared/testids';
 import { Button } from '../../ui/Button';
@@ -24,6 +25,7 @@ export function QrPanel({ phase, png, account, onNewCode, onSkip }: QrPanelProps
   if (phase === 'linked')
     return (
       <p className={styles.linked} role="status" aria-live="polite">
+        <Icon name="Checkmark" size={16} />
         {t('cards.connect.whatsapp.linked', { account })}
       </p>
     );

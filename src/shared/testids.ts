@@ -495,6 +495,22 @@ export const TID = {
   signinBannerDone: 'signin-banner-done',
   signinBannerSuccess: 'signin-banner-success',
   signinBannerHandBack: 'signin-banner-hand-back',
+  // P1 Polish (CR-0021, X-179)
+  settingsRowAppearanceTheme: 'settings-row-appearance-theme',
+  settingsRowAppearanceAccent: 'settings-row-appearance-accent',
+  settingsRowAppearanceZoom: 'settings-row-appearance-zoom',
+  settingsRowAppearanceAnimations: 'settings-row-appearance-animations',
+  settingsRowAppearancePreview: 'settings-row-appearance-preview',
+  settingsRowAppearanceSounds: 'settings-row-appearance-sounds',
+  settingsRowAppearanceMica: 'settings-row-appearance-mica',
+  settingsRowAppearanceFaceMotion: 'settings-row-appearance-face-motion',
+  composerSuggestions: 'composer-suggestions',
+  composerSuggestionChip: 'composer-suggestion-chip',
+  emptyStateFace: 'empty-state-face',
+  cardChecklistSources: 'card-checklist-sources',
+  cardDoneSaved: 'card-done-saved',
+  splash: 'splash',
+  splashFace: 'splash-face',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

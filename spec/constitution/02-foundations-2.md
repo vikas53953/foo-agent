@@ -438,7 +438,7 @@ Owner's choice (2026-10-16): **Direction A · Two eyes** [X-35]. Two tall, soft 
 | Ring colours and shapes | Working `--accent`, 28% arc, turning; Stuck `--warn`, 28% arc, still; Needs you `--warn`, full circle; Waiting on you `--warn`, dashed 5 / 3.3 on a 100-unit path, still; Happy and Celebrating `--ok`, full, fades out; Offline `--fg-3`, dashed (picture and emoji faces only, §F15.9.4). No other ring colours. |
 | Sizes | The §F15.4 ladder only: 26, 40, 48, 72, 96. The tray uses the hand-tuned 16/20/24/32 assets of §F15.9.6. |
 | 26px legibility | At 26px the eyes are 3.1 × 6.2px; both eyes, the ring and every pose in §F15.9.3 must stay distinguishable at 26px at 100% scale (acceptance C.7). No pose relies on a detail smaller than 1px at 26px except the Asleep "z", which is not drawn below 40px. |
-| Brand mark | The logo (§F15.1, X-143) is this same face in its static Resting pose: app icon, taskbar button, installer, About and splash lockup (§F15.3). It never animates. The living face is how foo looks inside conversations, rows, toasts and the tray. Welcome card (06-1 §2.1): the still logo face comes alive once and plays *Waking up* (no cross-fade; it is already the same face). |
+| Brand mark | The logo (§F15.1, X-143) is this same face in its static Resting pose: app icon, taskbar button, installer, About and splash lockup (§F15.3). It never animates. The living face is how foo looks inside conversations, rows, toasts and the tray. Welcome card (06-1 §2.1): the still logo face comes alive once and plays *Waking up* (no cross-fade; it is already the same face). [X-179] The splash (06-1 §1.3) shows the living face above the wordmark and its eyes open once (*Waking up*); the still lockup is not used there. |
 | Rename | Renaming foo ("Sunny") changes the name only. The face stays the eyes unless the user picks another face. |
 
 #### F15.9.1a Pose geometry (binding) [UX-01; owner Q5 default (a)]
@@ -587,7 +587,7 @@ Copied into §F25.4.
 
 | Rule | Value |
 |---|---|
-| Illustrations | **A few line drawings in v1** [settled: X-51, Vikas chose "A few line drawings"]. Exactly three, each replacing the 24px icon in one first-time Block empty state: **L-1** Memory first time (E-10), **L-2** Routines first time (E-13), **L-3** Activity log first time (E-14). Every other empty state, the chat, cards, the left shell and the right shell keep one 24px Fluent icon or no picture. No mascots, 3D blobs, stock photos, gradients or AI-made art anywhere. |
+| Illustrations | **A few line drawings in v1** [settled: X-51, Vikas chose "A few line drawings"]. Exactly three, each replacing the 24px icon in one first-time Block empty state: **L-1** Memory first time (E-10), **L-2** Routines first time (E-13), **L-3** Activity log first time (E-14). Every other empty state, the chat, cards, the left shell and the right shell keep one 24px Fluent icon or no picture. No mascots, 3D blobs, stock photos, gradients or AI-made art anywhere. [X-179] **Exception: foo's own two-eyes face is the one mascot.** It may appear in a pose on the splash, in onboarding and in empty states (§F16.2); these poses are decorative (no ring, `aria-hidden`), never moods (§F15.9.3a holds). |
 | Why | Windows-native apps (Settings, Outlook, WhatsApp Desktop) use icons, not art, for empty states; art goes stale and looks like "an AI startup". The only pictures with personality are the faces the user picks. `[foo decision; WAD and Windows Settings reported]` |
 | Onboarding imagery | First run (06-1 §2) uses: the foo mark at `--avatar-hero` 96px on Welcome, the face tiles, app logos on Connect rows/cards (§F17.6) and the QR code. Nothing else. |
 | Splash | the lockup (§F15.3) on `--bg-app`, nothing else (06-1 §1 owns timing). |
@@ -602,6 +602,7 @@ Two shapes only:
 | Shape | Use | Spec |
 |---|---|---|
 | **Block** | a whole page, list or panel is empty | 06 §0.5: 48px above (32px in the left shell list, 03 §3.4.10), centred, max width 360px (260 in the left shell): icon 24px `--fg-3` → 12px → title `--t-subtitle` `--fg-1` (optional) → 4px → body `--t-small` `--fg-2` → 16px → one button (Secondary unless stated) or one Link button. `role="status"`. |
+| **Block face** [X-179] | a Block may put foo's face (`--face-pose` 64px, a still or idle pose, no ring, `aria-hidden`) in the icon slot instead of the 24px icon (CR-0021 pick 6) | spacing as Block |
 | **Line** | a section inside a page or the right shell is empty | one line `--t-small` `--fg-2` (or `--t-caption` `--fg-3` in the right shell), no icon, no button unless stated. |
 
 Copy rules: say what will appear here and how to make it appear, in one or two short sentences; give an example in quotes when the action is "ask me"; never "No data", "Empty", "Nothing to show", "0 results". `[F10; FLU empty-state guidance reported]`

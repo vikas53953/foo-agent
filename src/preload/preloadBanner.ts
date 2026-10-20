@@ -15,5 +15,6 @@ const bridge: FooBridge = {
     return ipcRenderer.invoke(channel, payload);
   },
   on: () => () => undefined,
+  send: () => undefined, // the banner window draws no faces (face:raster is the main window's)
 };
 contextBridge.exposeInMainWorld('foo', bridge);

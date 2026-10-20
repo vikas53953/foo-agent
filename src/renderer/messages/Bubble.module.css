@@ -1018,15 +1018,8 @@
     background-position: -100% 0;
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .shimmer {
-    animation: none;
-    background: none;
-    color: var(--fg-2);
-  }
-  :global([data-new]) > .row {
-    animation-duration: var(--m-fast);
-  }
+:global(:root[data-motion='off']) :global([data-new]) > .row {
+  animation-duration: var(--m-fast);
 }
 :global(:root[data-motion='off']) .shimmer {
   animation: none;

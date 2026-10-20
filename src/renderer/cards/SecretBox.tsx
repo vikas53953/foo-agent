@@ -419,7 +419,10 @@ export function SecretBox({ card, time }: { card: CardRow; time: CardTime }) {
   } else if (state === 'saved' && !isCode(p.secretKind)) {
     body = (
       <>
-        <span className={box.done}>✓ {savedLine}</span>
+        <span className={box.done}>
+          <Icon name="Checkmark" size={16} />
+          {savedLine}
+        </span>
         <div className={box.saved} data-testid={TID.cardSecretSaved}>
           <span className={box.savedName}>
             <Icon name="Key" size={16} />

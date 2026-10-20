@@ -78,6 +78,7 @@ Generalises 06-2 §7.4.
 | Accessibility | sound is never the only signal: everything audible also has a toast, badge or visible change | F9 |
 | Haptics | not applicable (desktop). Pen and touch screens get the same visuals as mouse. | — |
 | Future custom sounds | require a DECISIONS row first. | |
+| Optional Sounds [X-179] | Settings → Appearance "Sounds" (`appearance.sounds`, default **off**). On: two soft Web Audio tones made in the renderer (no files): Approve (the user's tap turns an Approval or Payment card APPROVED) and Done (a job of the open chat turns DONE with proof). Never in quiet hours, never while the window is hidden, never the only signal. Off: every rule above is unchanged. | CR-0021 pick 20 |
 
 ---
 
@@ -515,6 +516,8 @@ Note: a red or orange system accent makes primary buttons look like `--bad`/`--w
 ### F28.4 Materials
 
 No Mica, Mica Alt, Acrylic, blur or window transparency anywhere (`backgroundMaterial: 'none'`), on Windows 10 and 11, in every theme. Solid surfaces only. Windows "Transparency effects" therefore changes nothing in foo. `[03 §3.13 conflict 1; F0 solid surfaces]`
+
+**[X-179] Two exceptions.** (1) **Optional Mica**: Settings → Appearance "See-through sidebar" (`appearance.mica`, default on). On Windows 11 (build ≥ 22000) with Windows "Transparency effects" on, the main window uses `backgroundMaterial: 'mica'` and the left shell and title bar fill with `--bg-sidebar-surface` (`--bg-sidebar` at 82 %); the chat column and right shell stay solid. Solid everywhere else, in high contrast, on Windows 10 and in FOO_TEST runs. (2) **Dialog backdrop**: while a dialog is open, the shell behind it scales to 0.96 with a 2px blur under `--scrim`; none at Basic / Off or in high contrast (CR-0021 picks 5, 21).
 
 ---
 

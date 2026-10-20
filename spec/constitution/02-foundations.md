@@ -35,7 +35,7 @@ Type scale (size / line-height / weight / letter-spacing). Use these roles only.
 | `--t-small` | 13/18 | 400 | 0 | chat-row preview, secondary lines in cards, subtitles | MSG row preview 14 → 13 to fit 72px row with 2 lines [foo decision] |
 | `--t-body` | 15/22 | 400 | 0 | **message text (input and output)**, card body, settings rows | between WhatsApp 14.2/19 (MSG) and AI apps 16/26 (AIC); 15 reads well at chat density [foo decision] |
 | `--t-body-strong` | 15/22 | 600 | 0 | names in chat rows, card titles, button labels in cards | |
-| `--t-subtitle` | 16/22 | 600 | −0.01em | chat header name, panel titles, dialog titles | MSG header title 16 w500 → 600 for BP1 crispness |
+| `--t-subtitle` | 17/24 | 600 | −0.01em | chat header name, panel titles, dialog titles | MSG header title 16 w500 → 600 for BP1 crispness; [X-179] 17/24 (was 16/22) so body 15 and subtitle differ by 2px (CR-0021 pick 16) |
 | `--t-title` | 20/28 | 600 | −0.015em | page titles in Settings / Memory / Routines, markdown H1–H2 inside messages | WIN subtitle 20/28 |
 | `--t-title-large` | 28/36 | 700 | −0.02em | onboarding questions, empty-state greeting | WIN title 28/36 |
 | `--t-display` | 40/48 | 800 | −0.04em | wordmark on splash / first run only | BP1 |
@@ -49,6 +49,7 @@ Rules:
 - Max line length inside a bubble: 72 characters (enforced by bubble max width, F5).
 - Text colours come only from `--fg-1/2/3` and status tokens.
 - Use `text-wrap: pretty` on message text and `balance` on titles.
+- Money weight [X-179]: `--weight-money` 700 with `font-variant-numeric: tabular-nums`, used only for money amounts (Approval, Payment, Spend); every other text stays 400 / 600 (and the 800 wordmark) (CR-0021 pick 15).
 - Nirmala UI has no 600 or 800 weight, so Indic text in a 600/800 role renders Bold (700); accepted. Base styles set `font-synthesis: none` so no fake bold or italic is drawn (§F24) [X-31].
 
 ## F2. Colour tokens
@@ -164,6 +165,7 @@ Shadows (Fluent-based) `[exact: WIN §13 Fluent 2 shadows]`:
 - `--shadow-4`: `0 2px 8px rgba(11,11,16,.08)` — composer, cards on hover
 - `--shadow-16`: `0 8px 24px rgba(11,11,16,.14)` — menus, toasts, popovers
 - `--shadow-28`: `0 16px 48px rgba(11,11,16,.22)` — dialogs, live window
+- Dark depth [X-179]: in dark, `--shadow-4`, `--shadow-16` and `--shadow-28` are a 1px edge ring `rgba(255,255,255,.06)` plus two black layers (values in `design/tokens.json`); light values unchanged (CR-0021 pick 17).
 Dark mode uses the same offsets with `rgba(0,0,0,.5)` and adds a 1px `--line` border instead of relying on shadow.
 
 ## F5. Sizes (shared)
@@ -224,10 +226,13 @@ All sizes above are the same in light and dark themes. `[requested by 05 §5.26 
 | `--delay-sticky-hide` | 1500ms | floating date chip stays this long after scrolling stops |
 | `--m-shimmer` | 1500ms linear infinite | status-line shimmer (off under reduced motion) |
 | `--ease-standard` | `cubic-bezier(0.33, 1, 0.68, 1)` | everything else |
+| `--ease-spring` [X-179] | CSS `linear()` spring, 2.6 % overshoot (value in `design/tokens.json`) | things that land: dialogs, the Approve card, chips, badges |
+| `--ease-spring-soft` [X-179] | CSS `linear()` spring, no overshoot | things that slide: chat and page changes, panels |
+| `--m-spring` [X-179] | 400ms | with either spring; Basic → `--m-basic` fade, Off → 83ms fade |
 | `--m-card` | = `--m-normal` (167ms) with `--ease-standard` | card state change: content cross-fade + height (05 §0.8, motion M-1); reduced motion: cross-fade ≤ 83ms, no height animation `[requested by 05 §5.26]` |
 | `--m-face-*` (blink, blink-slow, look, drift, orbit, scan, once, wake, happy, party, react, sorry, stopped, level, cross) | values in §F15.9.2 (`02-foundations-2.md`) | living face moods [X-35] |
 
-What animates (and nothing else):
+What animates (and nothing else; X-179 adds the §F7.1 list, which wins where they differ):
 - New message: fade in + rise 8px, `--m-slow` `--ease-in`.
 - Living face moods (§F15.9.2 tokens). Typing dots next to foo's bubble are replaced by the 26px Thinking face (§F15.9.3 #5) [X-36].
 - Checklist step: the spinner ring rotates 1s linear; a step turning done swaps ring → ✓ with a 167ms scale 0.6→1.
@@ -244,6 +249,17 @@ What animates (and nothing else):
 - Mount and unmount transitions use one wrapper, `src/renderer/ui/Presence.tsx`: `<Presence show={boolean} exitMs={number}>` keeps the child mounted for `exitMs` after `show` turns false and sets `data-exit` on it during that time; CSS keys the exit animation on `[data-exit]`. `exitMs` is always a token value from `tokens.ts` (`motion.normal` = 167 unless the component's row in this table says otherwise).
 - Reduced motion is applied in one place: `tokens.css` contains `@media (prefers-reduced-motion: reduce) { :root { … } }`, which sets every movement/scale keyframe to none and every fade duration to 83ms per the table in 02-3 §F25.4. Components never write their own `prefers-reduced-motion` rules.
 - JavaScript that needs the flag (face controller, programmatic scroll behaviour, streaming fade) uses `useReducedMotion()` from `src/renderer/a11y/useReducedMotion.ts`. It starts from `window.foo.platform.reducedMotion` (08-1 §3.1, the value at launch) and then follows `matchMedia('(prefers-reduced-motion: reduce)')` `change` events, so turning Windows "Animation effects" on or off applies without a restart [FE-31]. **Animation level (X-150, replaces "no foo setting"):** Settings → Appearance → "Animations": "Full" / "Basic" / "Off" (`settings.appearance.animations: 'full' | 'basic' | 'off'`). Default "Full"; on first run main sets "Basic" when the PC has ≤ 4 logical CPUs or < 8 GB RAM (`os.cpus()`, `os.totalmem()`). Windows "Animation effects" off forces "Off" (the picker shows "Off · set by Windows", disabled). Applied as `<html data-motion="full|basic|off">`; `tokens.css` maps "Off" to the reduced-motion table (02-3 §F25.4), and "Basic" to fades only: no movement, scale, rotation, height animation or shimmer, every fade `--m-basic` 200ms `cubic-bezier(.4,0,.2,1)`, faces cross-fade between static poses. `useReducedMotion()` returns true for "basic" and "off".
+
+### F7.1 Quiet premium: the 104 details [X-179, CR-0021]
+
+Level "Quiet premium" (Vikas, 2026-10-20): overshoot ≤ 4 % scale or 2px, nothing bounces twice, no confetti, nothing playful on money cards, exits faster than entrances (`--ease-out` ≤ `--m-normal`), springs only through `--ease-spring` / `--ease-spring-soft`. Basic: every item is a `--m-basic` fade. Off and Windows "Animation effects" off: the §F25.4 table, nothing moves. The playable list is the plan's details gallery (`foo/polish/details-gallery.js`). An item whose surface is not built yet ships with that surface's milestone (CR-0021 picks 23–24).
+
+- **Chat list (15):** row hover lifts 1px with a soft shadow; unread badge springs in; a new chat slides in at the top while others glide down; a working row's face ring turns and its preview shimmers once; Needs-you pill pulses once then rests; the filter highlight slides between tabs; a pinned chat drops in with a tiny bounce; the search box widens 8px on focus; results stagger 30ms; no results shows the face scanning; the row's "typing…" preview word breathes (no dots, X-36); the muted icon fades in; archive folds the row's height closed; dragging a pin lifts the row and tilts it 1°; the footer "ready" dot breathes when idle.
+- **Chat (20):** chat switch slides 18px with the soft spring; a new message rises 8px with the spring; your bubble grows from the send button; ticks draw in when read; the date chip floats then fades after 1.5s; jump to message glows then fades; the "1 new message" line slides in from the left; streaming words fade in 150ms; code copy icon turns into ✓; a link preview fades up after the text; images blur up, never a blank box; the reaction picker springs from the bubble; a picked reaction bounces once; the reply strip slides up from the composer; scroll-to-bottom bounces in with a count; "Show more" grows smoothly; Thinking is the 26px face with drifting eyes; an error bubble shakes 2px once, no red flash; a retry spinner turns into ✓; the header status cross-fades.
+- **Composer (15):** suggestion chips rise in 60ms apart; chips fade on the first keystroke; holding the mic floods the button dark; a live level ring circles the mic; send ↔ mic swap with a small rotation; send turns into ✓ on delivery and into Stop while foo works; the field grows in height smoothly; an attachment chip flies in from the drop point; the drop-zone border breathes while dragging; the mention menu springs up from the @; the placeholder says "Add details…" while working; a caught secret blurs and a lock slides in; a long paste folds into a chip; Esc shrinks the voice bar back into the mic; offline dims the field and the cloud icon nods once.
+- **Cards (18):** checklist steps are named with their icon; the live step shimmers; a done step's ring turns into ✓ with a small overshoot; sources drop in as chips then fold into a pile; the Approve card springs up with a real shadow; money in `--weight-money` with even-width digits; the Approve button presses flat (lip); a declined card folds into a one-line summary; the picked choice tile grows and the others dim; plan steps reveal one by one; a stuck card's face scans; the Watch live red dot breathes; a collapsing card cross-fades and shrinks; a proof photo zooms open from its thumbnail; the undo bar slides up and its timer line drains; the end card says what was done, time saved and one next step; the first DONE of the day plays Celebrating (3 sparks, §F15.9.3 #11); a finished card tilts 1° on hover.
+- **Pages and panels (15):** pages slide in from the right and back slides left; the details panel slides in and its sections stagger; a new memory fact glows once; Forget folds the row and Undo brings it back; the Settings selection pill slides; toggle knobs spring; the segmented highlight slides; spend meters fill from zero; a meter turns amber with a soft colour fade; skeletons shimmer; empty states show the face in a pose plus one action; tooltips fade in after 500ms and leave at once; dialogs blur and step the background back to 0.96; menus scale from the button that opened them; exits are always faster than entrances.
+- **First run and Windows (21):** splash eyes open from a blink; Welcome's face says "Hi, I'm foo." in a bubble (M12); a striped progress pill for the 4 steps; AI rows test live (shimmer, then ✓ works); real app logos on white tiles; the name step's face reacts as you type (M12); the finish "See you tomorrow at 8" waves (M12); the tray icon shows the face's mood (M11); taskbar overlay badge for Needs you (M11); taskbar progress for long jobs (M11); toasts with the face and one button (M11); jump list New message, Needs you, Stop all (M11); window restore fades content up 4px; snap resize reflows without jumping; Focus mode: the face sleeps and toasts go quiet (M11); Windows "Animation effects" off: everything goes still; foo's Animations Full / Basic / Off respected; the face pauses when the window is in the background; an optional Sounds setting, off by default (§F22); theme switch cross-fades with no white flash; an accent colour change sweeps across the app.
 
 ## F8. Focus and interaction states
 

@@ -90,6 +90,9 @@ Common controls in the tables below: **Toggle**, **Segmented**, **Field** (text/
 | `accent` | "Use my Windows accent colour" | "Changes buttons and highlights to your Windows colour." + a 20px swatch of the current accent at the end of the line | Toggle | off (02 F0) | `appearance.useWindowsAccent` | `settings-row-appearance-accent` |
 | `zoom` | "Zoom" | "Makes everything in foo bigger or smaller. Windows text size also applies (Settings → Accessibility → Text size)." | Menu of the 09 §9.14.3 steps: 80% · 90% · 100% · 110% · 125% · 150% · 175% · 200% | 100% | `zoom` (same value as Ctrl+= / Ctrl+- / Ctrl+0) | `settings-row-appearance-zoom` |
 | `animations` | "Animations" | "Basic uses gentle fades only, for slower PCs." When Windows animation effects are off: "Off · set by Windows" | Segmented: "Full" · "Basic" · "Off"; disabled while Windows animation effects are off | Full (first run on a PC with ≤ 4 logical CPUs or < 8 GB RAM: Basic; 02 F7) | `appearance.animations` | `settings-row-appearance-animations` |
+| `sounds` [X-179] | "Sounds" | "A soft sound when you approve something and when a job is done." | Toggle | off | `appearance.sounds` | `settings-row-appearance-sounds` |
+| `mica` [X-179] | "See-through sidebar" | "Lets your Windows 11 wallpaper tint the sidebar." Hidden on Windows 10; disabled while Windows "Transparency effects" or high contrast is on | Toggle | on | `appearance.mica` | `settings-row-appearance-mica` |
+| `face-motion` [X-179] | "Show {agentName}'s eyes" | "Faces blink and look around. Off keeps them still." | Toggle | on | `appearance.faceMotion` | `settings-row-appearance-face-motion` |
 | `preview` | (no label) | — | Preview tile: a foo bubble and a user bubble (04 styles) at the chosen theme and size, saying "This is how messages will look." / "Looks good" | — | — | `settings-row-appearance-preview` |
 
 - Ctrl+= / Ctrl+- / Ctrl+0 change the same `zoom` value (09 §9.14.3); this row updates live.

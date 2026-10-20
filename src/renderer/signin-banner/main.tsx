@@ -4,10 +4,11 @@ import '../styles/tokens.css';
 import '../styles/global.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { watchMotion } from '../a11y/motion';
 import { Announcer } from '../a11y/Announcer';
 import { SigninBanner } from './SigninBanner';
 
-document.documentElement.dataset.motion = window.foo?.platform.animations ?? 'full';
+watchMotion(window.foo?.platform.animations);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

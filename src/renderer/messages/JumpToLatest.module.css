@@ -36,8 +36,6 @@
 .count {
   color: var(--fg-1);
 }
-@media (prefers-reduced-motion: reduce) {
-  .button {
-    transition: none;
-  }
+:global(:root[data-motion='off']) .button {
+  transition: none;
 }

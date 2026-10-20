@@ -26,15 +26,7 @@
 @keyframes undo-in {
   from {
     opacity: 0;
-    transform: translate(-50%, var(--s1));
-  }
-}
-/* Reduced motion: --m-normal is already 83ms (tokens); the bar only fades, no rise. */
-@media (prefers-reduced-motion: reduce) {
-  @keyframes undo-in {
-    from {
-      opacity: 0;
-    }
+    transform: translate(-50%, calc(var(--s1) * var(--motion-move, 1)));
   }
 }
 .text {

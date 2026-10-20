@@ -21,5 +21,6 @@ const bridge: FooBridge = {
     ipcRenderer.on(event, listener);
     return () => ipcRenderer.removeListener(event, listener);
   },
+  send: () => undefined, // the live window draws no faces (face:raster is the main window's)
 };
 contextBridge.exposeInMainWorld('foo', bridge);

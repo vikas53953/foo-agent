@@ -95,6 +95,7 @@ function StepList({
     <>
       {view.folded > 0 && (
         <button type="button" className={styles.foldLink} data-testid={TID.cardChecklistShowDone} onClick={onShowAll}>
+          <Icon name="Checkmark" size={16} />
           {t('cards.checklist.show_done', { n: view.folded })}
         </button>
       )}

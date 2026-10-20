@@ -118,6 +118,7 @@ export function LiveView({ jobId }: { jobId: string }) {
         {view.pill && (
           <span className={styles.pill} data-testid={TID.livePill} data-state={m.shown} data-tone={view.pill.tone}>
             {view.pill.tone === 'live' && <span className={styles.dot} aria-hidden />}
+            {m.shown === 'done' && <Icon name="Checkmark" size={16} />}
             {view.pill.text}
           </span>
         )}

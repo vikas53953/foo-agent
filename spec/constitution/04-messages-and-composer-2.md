@@ -170,6 +170,18 @@ Test ids: `composer-preview`, its remove button `composer-preview-remove`.
 
 ---
 
+### 21.7 Suggestion chips [X-179, CR-0021 pick 10]
+
+One row of `Chip`s (06 §0.4) above the pill, `role="group"` named "Suggestions" (`composer.suggest.label`), test id `composer-suggestions`, each chip `composer-suggestion-chip`.
+
+| Rule | Value |
+|---|---|
+| Starters | An empty chat (no messages yet) shows 3: foo's chat "Plan my day", "What needs me?", "Pay a bill"; a helper's chat "What can you do?", "Show what you're working on", "Help me with something" (`composer.suggest.starter.{foo,helper}.{1,2,3}`). |
+| Follow-ups | Up to 3, only from the latest foo or helper reply's own `suggestions` (the AI ends its reply with `Suggestions: a \| b \| c`; the engine strips that line from the bubble, keeps ≤ 3 of ≤ 40 characters that pass Article 2's word filter, and stores them in `messages.suggestions`). The app never invents one. |
+| Click | Fills the field with the chip's text and focuses it. **Never sends.** |
+| Hidden | on the first keystroke; while recording; in groups, WhatsApp mirrors and private chats; when the latest reply holds an Approval, Payment, Draft or Secret card or its job touched money. |
+| Motion | chips rise in 60ms apart with `--ease-spring`; fade on the first keystroke (§F7.1). |
+
 ## §22. Input methods and guards
 
 ### 22.1 Voice notes (recording UI)

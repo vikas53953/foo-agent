@@ -53,7 +53,7 @@ describe('live window words (06-3 §11.2)', () => {
     expect(view('needs_you').pill).toEqual({ tone: 'warn', text: 'Needs you' });
     expect(view('in_control').pill).toEqual({ tone: 'warn', text: 'YOU’RE IN CONTROL' });
     expect(view('paused').pill).toEqual({ tone: 'muted', text: 'PAUSED' });
-    expect(view('done').pill).toEqual({ tone: 'ok', text: '✓ Done' });
+    expect(view('done').pill).toEqual({ tone: 'ok', text: 'Done' }); // Checkmark icon drawn beside it (CR-0021 pick 19)
   });
 
   it('Now line, paused reason, final screen, starting and can’t-show lines', () => {

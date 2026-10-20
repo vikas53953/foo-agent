@@ -28,6 +28,10 @@ export const tokens = { colors: {
     "light": "#FFFFFF",
     "dark": "#1F1F27"
   },
+  "--bg-sidebar-surface": {
+    "light": "#F5F5F8",
+    "dark": "#F5F5F8"
+  },
   "--line": {
     "light": "#E8E8EE",
     "dark": "#26262E"
@@ -294,7 +298,8 @@ export const tokens = { colors: {
   "spinner-lg": 24,
   "tooltip-max": 320,
   "undo-h": 48,
-  "kbd-h": 24
+  "kbd-h": 24,
+  "face-pose": 64
 } } as const;
 export const motion = {
   "fast": 83,
@@ -316,6 +321,7 @@ export const motion = {
   "face-sorry": 3000,
   "face-stopped": 1500,
   "face-cross": 167,
+  "spring": 400,
   "delay-sticky-hide": 1500,
   "delay-loading": 150,
   "delay-skeleton-chat": 300,
@@ -327,7 +333,9 @@ export const motion = {
   "ease-in": "cubic-bezier(0, 0, 0, 1)",
   "ease-out": "cubic-bezier(1, 0, 1, 1)",
   "ease-standard": "cubic-bezier(0.33, 1, 0.68, 1)",
-  "ease-basic": "cubic-bezier(0.4, 0, 0.2, 1)"
+  "ease-basic": "cubic-bezier(0.4, 0, 0.2, 1)",
+  "ease-spring": "linear(0, 0.081, 0.253, 0.447, 0.627, 0.771, 0.876, 0.948, 0.992, 1.015, 1.025, 1.026, 1.023, 1.018, 1.013, 1.009, 1.005, 1.003, 1.001, 1, 1)",
+  "ease-spring-soft": "linear(0, 0.063, 0.19, 0.332, 0.466, 0.58, 0.674, 0.749, 0.809, 0.855, 0.89, 0.917, 0.937, 0.953, 0.965, 0.974, 0.98, 0.985, 0.989, 0.992, 1)"
 } as const;
 export const bp = {
   "s": 640,
