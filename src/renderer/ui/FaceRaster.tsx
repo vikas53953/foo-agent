@@ -285,14 +285,18 @@ export function FaceRaster() {
     let woke = false;
     let wasOnline = true;
     let wasQuiet = false;
+    let wasSettings: unknown = null;
     const wake = (s: RootState) => {
       if (!s.live.loaded) return;
       const online = s.live.connection === 'online';
       const quiet = isQuietNow(s);
-      const due = !woke || (online && !wasOnline) || (!quiet && wasQuiet);
+      // Quiet hours end by the clock passing their end, not by new settings (a quiet window edited away, a world reload).
+      const quietEnded = !quiet && wasQuiet && s.settings.value === wasSettings;
+      const due = !woke || (online && !wasOnline) || quietEnded;
       woke = true;
       wasOnline = online;
       wasQuiet = quiet;
+      wasSettings = s.settings.value;
       if (due) queueMicrotask(() => update((d) => wakeReducer(d, clockNow())));
     };
 
