@@ -232,7 +232,7 @@ R21 · R23 · R5,J21,,UX-24-02,,06-2 §6.0; 06-2 §6.1,test/fidelity/ux/UX-24.se
 ,J16,AT-070,,,10-acceptance-1 §B; 08-3 §16.4.2,test/integration/m8-whatsapp-send.test.ts,M8,pending
 ,J21,AT-093,,,10-acceptance-1 §B; 08-1 §3.2,test/e2e/m8-connectors.spec.ts,M8,live
 ,,AT-145,,,10-acceptance-1 §B; 08-3 §16.7; X-48,test/integration/m8-contacts.test.ts,M8,live
-,J19,AT-220,,,10-acceptance-1 §B; 08-3 §21.2,test/integration/m8-expiry.test.ts,M8,pending
+,J19,AT-220,,,10-acceptance-1 §B; 08-3 §21.2,test/integration/m8-expiry.test.ts,M8,live
 ,J16,AT-269,,,10-acceptance-1 §B.10; 08-3 §16.4.3; CR-0012 G-M8-12,test/e2e/m8-whatsapp.spec.ts,M8,pending
 ,J16,AT-270,,,10-acceptance-1 §B.10; 04 §10.11; 08-3 §16.4.3,test/e2e/m8-whatsapp.spec.ts,M8,pending
 ,,ART-04a,,,01-articles Art. 4; 10-acceptance-2 §D,test/articles/ART-04.test.ts,M8,live

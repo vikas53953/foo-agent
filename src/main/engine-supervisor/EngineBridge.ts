@@ -5,8 +5,9 @@
 // writes an `ai_turns` row emits `spend:update`, and the 80 % line of §5.10 item 4; M5 T10, CR-0008 (j) rows 1–2), 08-3 §15.2
 // step 5 (M6 T7: an engine db.tx's unprompted messages pass the budget first). Electron-free so unit tests drive it with an
 // in-process engine.
-import { engineToMainSchema, type DbOp, type EngineToMain, type MainToEngine, type NamedQuery } from '../../engine/protocol';
-import type { Result } from '../../shared/errors';
+// M8 T3: `wa.report` and the WhatsApp session's vault.encrypt / vault.decrypt (08-3 §16.4).
+import { engineToMainSchema, type DbOp, type EngineToMain, type MainToEngine, type NamedQuery, type WaReport } from '../../engine/protocol';
+import { fail, type Result } from '../../shared/errors';
 import type { EventChannel, EventPayload } from '../../shared/ipc';
 import type { Settings } from '../../shared/settings';
 import type { AiStatus, ProviderId } from '../../shared/types';
@@ -20,6 +21,7 @@ import { vaultRuntime } from '../vault/vaultRuntime';
 import type { ApprovalGate } from '../approvals/ApprovalGate';
 import { logEvent } from '../log/techLog';
 import type { DraftService } from '../drafts/DraftService';
+import type { GoogleConnections } from '../connections/GoogleConnections';
 
 export interface BridgeContext {
   db: Db;
@@ -37,9 +39,17 @@ export interface BridgeContext {
   keepAwake?(on: boolean, jobCount: number): void;
   /** 08-3 §15: a toast request. Stub until M11 (logged only). */
   notify?(req: unknown): void;
+  // M8 (T3): `wa.report` and the WhatsApp session's `vault.encrypt` / `vault.decrypt` (src/main/whatsapp/waMain.ts).
+  whatsapp?: {
+    report(r: WaReport): void;
+    vault(req: { kind: 'vault.encrypt'; bytes: Uint8Array } | { kind: 'vault.decrypt' }): Result<unknown>;
+  };
   // M5
   /** T7: main's ApprovalGate for engine `approval.open` / `approval.transition` (08-2 §9.1, §9.7); lazy, it needs this bridge. */
   approvals?(): Pick<ApprovalGate, 'openFromEngine' | 'transition'>;
+  // M8
+  /** T5: main's GoogleConnections for engine `connection.google` requests (gap pick T5-01); lazy, it registers after the bridge. */
+  google?(): Pick<GoogleConnections, 'forEngine'> | null;
   // M8 T6
   /** Main's DraftService for engine `draft.create` (08-2 §8.2 `gmail.draft`); its answer is posted when Gmail has answered. */
   drafts?(): Pick<DraftService, 'create'>;
@@ -94,6 +104,11 @@ export class EngineBridge {
       });
       this.post({ id, kind, payload } as MainToEngine);
     });
+  }
+
+  /** M8 T5: a reply `receive` could not give at once (it returned null), posted on the same port when it is ready. */
+  private reply(re: string, result: Result<unknown>): void {
+    (this.post as (msg: unknown) => void)({ re, result });
   }
 
   /** The engine is gone (crash, quit): every open request fails at once. */
@@ -169,6 +184,14 @@ export class EngineBridge {
       case 'ai.state':
         this.applyAiState(msg.payload);
         return null;
+      // M8 (T3)
+      case 'wa.report':
+        this.ctx.whatsapp?.report(msg.payload);
+        return null;
+      case 'vault.encrypt':
+        return { re: msg.id, result: this.ctx.whatsapp?.vault({ kind: 'vault.encrypt', bytes: msg.payload.bytes }) ?? fail('UNKNOWN') };
+      case 'vault.decrypt':
+        return { re: msg.id, result: this.ctx.whatsapp?.vault({ kind: 'vault.decrypt' }) ?? fail('UNKNOWN') };
       // M5 T7 (08-2 §9.1, §9.7; 08-4 §28.1 item 8, §29.1): only main's ApprovalGate writes approvals.state. A verified draft
       // opens its card; the engine's moves are checked against the table (APPROVAL_BAD_TRANSITION, logged).
       case 'approval.open': {
@@ -187,15 +210,27 @@ export class EngineBridge {
         const vault = vaultRuntime()?.vault;
         return { re: msg.id, result: vault ? vault.use(msg.payload) : { ok: false, error: { kind: 'VAULT_MISSING' } } };
       }
+      // M8 T5: answered when main's Google call is done (a refresh is an HTTP call), so the reply is posted later.
+      case 'connection.google': {
+        const google = this.ctx.google?.();
+        if (!google) return { re: msg.id, result: { ok: false, error: { kind: 'VALIDATION', message: 'not_connected' } } };
+        const id = msg.id;
+        void google
+          .forEngine(msg.payload)
+          .catch((): Result<unknown> => ({ ok: false, error: { kind: 'UNKNOWN' } }))
+          .then((result) => this.reply(id, result));
+        return null;
+      }
       // M8 T6: the Gmail call is async, so the answer is posted later on the same port; nothing is returned now.
       case 'draft.create': {
         const drafts = this.ctx.drafts?.();
         if (!drafts) return { re: msg.id, result: { ok: false, error: { kind: 'VALIDATION', message: 'not_implemented' } } };
         const { threadId, ...rest } = msg.payload;
+        const id = msg.id;
         void drafts
           .create({ ...rest, ...(threadId ? { threadId } : {}) })
           .catch((): Result<unknown> => ({ ok: false, error: { kind: 'UNKNOWN' } }))
-          .then((result) => this.post({ re: msg.id, result } as unknown as MainToEngine));
+          .then((result) => this.reply(id, result));
         return null;
       }
     }

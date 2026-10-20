@@ -63,6 +63,11 @@ const INVOKES = new Set([
   'ai:detect',
   'ai:choose',
   'notifications:status',
+  // M8 T3
+  'whatsapp:linkStart',
+  'whatsapp:linkCancel',
+  'whatsapp:unlink',
+  'chat:archive',
   // M8
   'connection:list',
   'connection:connect',
@@ -106,6 +111,8 @@ const EVENTS = new Set([
   'settings:changed',
   'net:state',
   'navigate',
+  // M8 T3
+  'whatsapp:qr',
   'memory:changed',
   'data:exportProgress',
 ]);
@@ -138,6 +145,7 @@ const testBridge: FooTestBridge = {
   theme: (theme) => call('test:theme', { theme }),
   reset: () => call('test:reset'),
   jobState: (jobId, state) => call('test:jobState', { jobId, state }),
+  wa: (op) => call('test:wa', op),
   cardSeed: (arg) => call('test:card.seed', arg),
   memoryTidy: () => call('test:memoryTidy'),
 };

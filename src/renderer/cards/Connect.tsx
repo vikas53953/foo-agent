@@ -19,6 +19,7 @@ import { Spinner } from '../ui/Spinner';
 import { CardFrame, CardTimeLabel, type CardTime } from './CardFrame';
 import { cardScopes, connectLook, type LocalPhase } from './connect/googleState';
 import { useGoogleInfo } from './connect/useGoogleInfo';
+import { WhatsAppConnect } from './connect/WhatsAppConnect';
 import styles from './Card.module.css';
 import own from './Connect.module.css';
 
@@ -58,7 +59,8 @@ function linesOf(p: ConnectPayload): string[] {
 
 export function ConnectCard({ card, time }: { card: CardRow; time: CardTime }) {
   const p = card.payload as unknown as ConnectPayload;
-  if (p.variant === 'outlook' || p.variant === 'whatsapp') return null;
+  if (p.variant === 'whatsapp') return <WhatsAppConnect card={card} time={time} />;
+  if (p.variant === 'outlook') return null;
   return <GoogleConnect card={card} p={p} time={time} />;
 }
 

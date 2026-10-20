@@ -89,10 +89,10 @@ describe('08-3 §16.1 Tokens · 401 and 403', () => {
     expect(g.requests.map((r) => r.auth)).toEqual(['Bearer tok_0', 'Bearer tok_1']);
   });
 
-  it('401 twice → CONN_EXPIRED, refreshed only once', async () => {
+  it('401 twice → CONN_REVOKED (§21.2: refused right after a successful refresh), refreshed only once', async () => {
     const { clock, g, a, deps } = setup();
     g.failNext('/gmail/v1/users/me/profile', { status: 401 }, { status: 401 });
-    expect(await drive(kindOf(googleCall(deps, { url: PROFILE, flag: 'read' })), clock)).toBe('CONN_EXPIRED');
+    expect(await drive(kindOf(googleCall(deps, { url: PROFILE, flag: 'read' })), clock)).toBe('CONN_REVOKED');
     expect(a.refreshes).toBe(1);
     expect(g.requests).toHaveLength(2);
   });

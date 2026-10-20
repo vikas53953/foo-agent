@@ -3,6 +3,7 @@
   "keys": {
     "thread.stop.in_flight": "M10 payments (stop during payment submit; copy names the payment)",
     "thread.queued.ai_back": "M4-T2 runner",
+    "errors.conn_scope_missing.button": "M8 T5: the in-job line has no button until the message-button contract (CR-0009 G-M5-32d); Settings → Connections shows Allow",
     "cards.not_live_chip.job_title.text": "M4-T2 runner",
     "errors.net_offline.what_happened": "M4-T4 waiting/recovery",
     "errors.net_offline.what_is_safe": "M4-T4 waiting/recovery",

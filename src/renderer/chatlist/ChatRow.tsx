@@ -239,10 +239,11 @@ export const ChatRow = memo(function ChatRow({ row, index, focusable, onOpen, on
   );
 });
 
-/** 03-shell-1 §3.4.5.1: the bundled 16px WhatsApp mark on a `--logo` tile with a 2px inset. */
-function WhatsAppMark() {
+/** 03-shell-1 §3.4.5.1: the bundled 16px WhatsApp mark on a `--logo` tile with a 2px inset (M8 T3: the Connect card's 32px
+ * logo, 05-3 §5.11.1, draws the same mark). */
+export function WhatsAppMark({ size = 16 }: { size?: number }) {
   return (
-    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">
+    <svg viewBox="0 0 16 16" width={size} height={size} aria-hidden="true" focusable="false">
       <path
         className={styles.waMark}
         d="M8 2.25a5.75 5.75 0 0 0-4.98 8.62l-.77 2.88 2.95-.77A5.75 5.75 0 1 0 8 2.25Zm0 10.5a4.73 4.73 0 0 1-2.42-.66l-.17-.1-1.75.46.47-1.7-.11-.18A4.75 4.75 0 1 1 8 12.75Zm2.6-3.55c-.14-.07-.84-.41-.97-.46-.13-.05-.22-.07-.32.07-.1.14-.37.46-.45.55-.08.1-.17.1-.31.04-.14-.07-.6-.22-1.14-.7a4.3 4.3 0 0 1-.79-.98c-.08-.14 0-.22.06-.29l.21-.25c.07-.08.1-.14.14-.24.05-.1.03-.18-.01-.25-.04-.07-.32-.76-.43-1.04-.11-.27-.23-.24-.32-.24h-.27a.52.52 0 0 0-.38.18c-.13.14-.5.48-.5 1.18 s.51 1.37.58 1.47c.07.1 1 1.53 2.43 2.15.34.15.6.23.81.3.34.1.65.1.9.06.27-.04.84-.34.96-.68.12-.33.12-.62.08-.68-.03-.06-.13-.1-.27-.17Z"

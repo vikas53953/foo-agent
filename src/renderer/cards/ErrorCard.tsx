@@ -37,6 +37,12 @@ export function errorLook(kind: ErrorKind, variant: ErrorPayload['variant']): Lo
     case 'AI_SIGNED_OUT':
     case 'AI_KEY_INVALID':
       return { icon: 'Key', tone: 'warn', edge: 'warn' };
+    // M8 T5 (G-M8-10): 🔌 is drawn as the plug icon; the jobs are paused, not failed, so the edge is --warn. ⏳ is Clock.
+    case 'CONN_EXPIRED':
+    case 'CONN_REVOKED':
+      return { icon: 'PlugConnected', tone: 'warn', edge: 'warn' };
+    case 'CONN_RATE_LIMITED':
+      return { icon: 'Clock', tone: 'warn', edge: 'warn' };
     default:
       return { icon: 'ErrorCircle', tone: 'bad', edge: 'bad' };
   }
@@ -64,6 +70,8 @@ export function ErrorCard({ card, time }: { card: CardRow; time: CardTime }) {
       return undefined;
     }
     if (action.kind === 'open_url') return invoke('link:open', { url: action.url });
+    // M8 T5 (08-3 §21.2): Reconnect runs the one Google sign-in; the card is edited in place when the jobs resume.
+    if (action.kind === 'reconnect' && action.app === 'google') return invoke('connection:connect', { app: 'google' });
     return invoke('error:fix', { ...answer, action });
   };
 

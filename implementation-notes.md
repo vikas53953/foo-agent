@@ -994,6 +994,31 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
   vault (`foo/conn_token/google`).
 - `oauthLoopback.ts` lives in `src/main/windows/` per the plan; 08-0 §E names no file for it.
 
+## M8 · WhatsApp link, QR and group mirrors (ticket T3, CR-0012)
+
+- Hosts (G-M8-01/06): on the pinned Baileys 7.0.0-rc14 the bridge opens one host, `wss://web.whatsapp.com/ws/chat`.
+  `fetchLatestBaileysVersion` fetches from GitHub, a non-WhatsApp host, so it is dropped: the bridge uses the version Baileys ships.
+  No media is requested (§16.4.1); there is no send path until T7.
+- `wa.report` (engine → main) is a gap pick: main alone writes the `connections` and `chats` rows (08-1 §4.6 rule 1), so the
+  engine reports link status, linked account, groups and unlinked to main, which writes them. The lead logs it at merge.
+- The link's placeholder row (`account_hash 'pending'` while connecting) becomes the linked row in place (same id, rev up), so the
+  renderer's `connection:upsert` replaces it; the renderer reads the newest whatsapp row by `connectedAt` (an Unlink leaves a
+  `disconnected` row in the window's store).
+- The QR panel's phase comes from the whatsapp row and the newest `whatsapp:qr`, never the renderer's clock: the engine's 60 s
+  timer and failed-link count report `disconnected` (third time with `WA_LINK_FAILED`) → "This code expired." / failed.
+- `dialog-link-whatsapp` has no button row (06-2 §6.8 names none): the panel's New code / Skip for now and ✕ are its actions;
+  closing it before a scan sends `whatsapp:linkCancel`; it closes itself 2 s after linked.
+- C-8 is reached from the mirror's header menu "Hide from foo" (04 §10.11 menu); the group profile variant (06-1 §4) is not built
+  yet. Hidden groups are listed in "Groups I read" while the window knows them (`connections.hiddenMirrors`, filled by every
+  `chat:archive` reply): no read lists archived chats, so after a restart a group hidden earlier is not listed until a CR adds one.
+- A WhatsApp `error` row (the bridge gave up after 4 failures) reads like "WhatsApp unlinked foo." with Link again; the
+  `WA_UNLINKED` error card (08-3 §21.2) is not built here (the row status only).
+- The Connect card `whatsapp` variant (`cards/connect/WhatsAppConnect.tsx`) is drawn by T2's `Connect.tsx`; "Not now" lives
+  in the window like T2's. T2's `ConnectionsPage` draws the WhatsApp rows between Contacts and X (06-2 §6.8 order).
+- The WhatsApp session is held in memory (`src/main/vault/waSessionMemory.ts`) until the M5 vault swap to
+  `{DATA}\vault\wa-session.bin` (engine `vault.encrypt` / `vault.decrypt` already go through main).
+- The fake phone's groups are the ux-world's two mirrors (same jids and titles), so a seeded world and a link agree.
+
 ## M8 · Gmail, Calendar and Contacts reading (ticket T4)
 
 - Files: `src/engine/tools/connectors/{limiter,gmail,gcal,contacts}.ts`, `src/engine/connectors/hooks.ts`, plus
@@ -1046,6 +1071,32 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
   routine list is a heuristic until M11 routines; "Not now" is kept in the window only (M5's `card:answer` answers Choice and
   tiles cards, not Connect); official Google logos are not bundled (a Fluent icon stands in). BP-CARD-11's Blueprint mini has a
   shorter line and no icon; the app follows the 05-3 §5.11 words, so Tier R R1 may report word differences.
+
+## M8 · connection trouble, poller and Contacts sync start / stop (ticket T5)
+
+- T5-01 (gap, 08-1 §2.4 has no row): main keeps the Google refresh token and the rows (T2), so the engine's Gmail, Calendar and
+  People calls ask main for a live access token with `connection.google { op }` (`token`, `refresh`, `scopeMissing`, `lost`,
+  `history`, `saveHistory`, `state`), and main pushes `connection.state { status, contactsConnectionId }` whenever the gmail row's
+  status or the Contacts permission changes. The refresh token never leaves main; the engine never writes `connections`
+  (`history_id` is written by main). Production now builds the Google tools on this path; FOO_TEST runs still need a fake
+  (`FOO_FAKE_GOOGLE`; with `FOO_TEST_GOOGLE_BASE` too they go through main like production).
+- T5-02: jobs waiting on a lost connection keep `waiting_reason` NULL (08-0 §B.2 `WaitingReason` has no connection member and
+  the DDL CHECK allows NULL); they are found by their open `CONN_EXPIRED` / `CONN_REVOKED` error card and resume in the runner's
+  schedule pass after recovery's, inside the 3 WORKING slots, when main says Google is connected again.
+- T5-03: `CONN_RATE_LIMITED` keeps the job WORKING (08-3 §21.2 "the tool call fails"): one card, the loop pauses, the step runs
+  once more after 60 s (or at once on [ Try again ]), the card is edited to "Back on it"; a second limit on the same step counts
+  toward STUCK and posts no second card. A 401 right after a successful refresh is now `CONN_REVOKED` (limiter; §21.2 row).
+- T5-04: `CONN_SCOPE_MISSING` in a job posts the line `errors.conn_scope_missing.line` once per job and app, with `{calendar}` =
+  Gmail / calendar / contacts; the job goes on (the AI sees the tool error). The [ Open Connections ] button waits for the
+  message-button contract (CR-0009 G-M5-32d), so `errors.conn_scope_missing.button` is in `scripts/copy-pending.json`; Settings
+  → Connections already shows "Not allowed yet" + Allow.
+- T5-05: line 2 of both connection cards is "Bills and drafts are on hold." for every app (05-3 §5.20.2 and AT-220 give only this
+  value for `{Bills and drafts}`). Icons (G-M8-10): 🔌 → `PlugConnected` with the `--warn` edge (jobs are paused, not failed),
+  ⏳ → `Clock`. [ Reconnect ] on the card calls `connection:connect { app: 'google' }` (T2 makes it select_account + login_hint).
+- 08-4 §27.1: the step catalogue lists Google tools only while a Google connection exists (connected or needing sign-in) when the
+  tools go through main; other tools and T4's fixed-token FOO_TEST path are unchanged.
+- Not done here: the "with no job, Google" card (a routine or the poller losing the token) belongs to the routines that M7 wires
+  to the poller; T2's `CONN_REVOKED` test on the refresh reply (`/revoked/` in `error_description`) is kept as T2 left it.
 
 ## M8 · Email drafts and sending (ticket T6, CR-0012)
 

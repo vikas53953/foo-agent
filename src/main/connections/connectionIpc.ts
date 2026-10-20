@@ -49,6 +49,8 @@ export function registerConnectionIpc(ctx: AppContext): void {
     },
     emit: (row) => emit('connection:upsert', row),
     engineCmd: (cmd) => void ctx.engine?.send('connection.cmd', cmd),
+    // M8 T5
+    engineState: (state) => void ctx.engine?.send('connection.state', state),
     dataDir: ctx.dataDir,
     log: (evt, kind) => console.warn(evt, kind ?? ''),
   });

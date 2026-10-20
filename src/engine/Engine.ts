@@ -47,7 +47,11 @@ import { JobRecovery } from './jobs/recovery';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
 import type { SecondLookAct, StepAct } from '../shared/schemas';
 // M8
+import { WhatsAppConnector, type WaPortLike } from './tools/connectors/whatsapp';
 import { googleTools, testGoogleAccess, type GoogleConnectors, type GoogleOptions } from './tools/connectors/google-tools';
+import { ConnTrouble } from './connections/trouble';
+import type { GoogleBases } from './tools/connectors/limiter';
+import type { HttpFetch } from './tools/connectors/types';
 
 export interface EngineOptions {
   link: MainLink;
@@ -69,6 +73,8 @@ export interface EngineOptions {
   // M8: Google (T2's GoogleAccess) → the Gmail, Calendar and Contacts tools (08-2 §8.2). FOO_TEST runs may set
   // FOO_FAKE_GOOGLE={base url} instead (a fake Google on 127.0.0.1, test/fakes/connectors).
   google?: GoogleOptions;
+  /** T5: tests only. Main holds the token (as in production) and Google is the test's fake fetch on these bases. */
+  googleViaMain?: { http: HttpFetch; bases?: Partial<GoogleBases> };
 }
 
 export class Engine {
@@ -81,6 +87,8 @@ export class Engine {
   readonly jobs: JobRunner;
   readonly recovery: JobRecovery;
   private prompts: PromptBuilder;
+  // M8 (T3): the WhatsApp side of the wa-bridge port (08-3 §16.4).
+  readonly whatsapp: WhatsAppConnector;
   /** M6 slot (CR-0010): T3's MemoryService (the `memory:*` commands, learn, the watcher); T7 fills its tidy. */
   readonly memory: MemoryService;
   private memoryWatcher: MemoryWatcher | null = null;
@@ -94,6 +102,7 @@ export class Engine {
   private memoryIntake: IntakeMemory;
   // M8
   readonly google: GoogleConnectors | null;
+  readonly trouble: ConnTrouble;
 
   static create(o: EngineOptions): Engine {
     return new Engine(o);
@@ -149,7 +158,27 @@ export class Engine {
       retestTimers: !o.testRun,
     });
     // M8
-    const google = o.google ?? (o.testRun && o.env.FOO_FAKE_GOOGLE ? testGoogleAccess(o.env.FOO_FAKE_GOOGLE) : null);
+    // T5: connection trouble, and the poller / Contacts sync with the rows. Main holds the Google token (gap pick T5-01): the
+    // Google tools take main's access unless a test injects its own, or a FOO_TEST run serves only a fake Gmail
+    // (FOO_FAKE_GOOGLE without FOO_TEST_GOOGLE_BASE: T4's fixed fake token). FOO_TEST runs without a fake reach no Google.
+    this.trouble = new ConnTrouble({ link: o.link, clock: o.clock, newId: (p) => newId(p, o.clock.now()), log });
+    const viaMain = (bases?: Partial<GoogleBases>) =>
+      this.trouble.linkOptions({
+        ...(bases ? { bases } : {}),
+        contactsOn: () => this.settings.connections.google.contactsOn,
+        online: () => this.online,
+      });
+    const fakeBase = o.testRun ? o.env.FOO_FAKE_GOOGLE : undefined;
+    const google =
+      o.google ??
+      (o.googleViaMain ? { ...viaMain(o.googleViaMain.bases), http: o.googleViaMain.http } : null) ??
+      (o.testRun
+        ? fakeBase
+          ? o.env.FOO_TEST_GOOGLE_BASE
+            ? viaMain({ gmail: fakeBase, calendar: fakeBase, people: fakeBase })
+            : testGoogleAccess(fakeBase)
+          : null
+        : viaMain());
     this.google = google
       ? googleTools({ ...google, link: o.link, clock: o.clock, timeZone: () => this.settings.locale.timeZone, log })
       : null;
@@ -164,6 +193,8 @@ export class Engine {
       gate,
       log: (evt, kind) => log(evt, kind),
       scrub: (text) => this.redactor.scrub(text),
+      // M8 T5
+      listed: (tool) => this.trouble.listed(tool),
     });
     this.recovery = new JobRecovery({
       link: o.link,
@@ -190,7 +221,9 @@ export class Engine {
       hooks: {
         onAiError: (job, kind) => this.recovery.onAiError(job, kind),
         onCannotStart: (job, kind) => this.recovery.onCannotStart(job, kind),
-        beforeSchedule: () => this.recovery.beforeSchedule(),
+        // M8 T5: jobs waiting on a lost Google connection resume after recovery's, in the same slots.
+        beforeSchedule: async () => (await this.recovery.beforeSchedule()) && (await this.trouble.beforeSchedule()),
+        onToolError: (job, tool, kind, stepId) => this.trouble.onToolError(job, tool, kind, stepId),
         // M5 T10: messages that waited at the AI cap go when it is raised or the month turns.
         onCapLifted: () => void this.drainQueued(),
       },
@@ -203,7 +236,14 @@ export class Engine {
         jobDone: (chatId) => this.memoryReview.after(chatId),
       },
     });
+    this.whatsapp = new WhatsAppConnector({
+      link: o.link,
+      clock: o.clock,
+      settings: () => this.settings,
+      log: (evt, kind) => log(evt, kind),
+    });
     this.recovery.attach(this.jobs);
+    this.trouble.attach(this.jobs, this.google);
     this.lane = new ChatLane({
       link: o.link,
       clock: o.clock,
@@ -593,6 +633,8 @@ export class Engine {
           if (first || (!usableBefore && this.ai.pick())) void this.drainQueued();
           if (first && !this.o.testRun) this.scheduleHealthCheck();
           if (first) void this.startMemory().catch(() => undefined);
+          // M8 T5: the Google rows as main has them (a restart while connected starts the poller after the login delay).
+          if (first && this.google) void this.jobs.track(this.trouble.boot());
           // 08-2 §5.9 (G-M4-13): main decided safe mode and whether the last exit was clean; recovery runs once per start.
           if (first) void this.jobs.track(this.recovery.recoverAll(msg.payload.launch ?? { safeMode: false, cleanStart: true }));
         }
@@ -630,6 +672,7 @@ export class Engine {
         if (await this.memoryIntake.onCardAnswered(msg.payload)) return undefined;
         if ((await this.tidy.onCardAnswered(msg.payload)) || (await this.share.onCardAnswered(msg.payload))) return undefined;
         if (await this.settleMemoryConfirm(msg.payload)) return undefined;
+        if (await this.trouble.onCardAnswered(msg.payload)) return undefined; // M8 T5
         if (!(await this.recovery.onCardAnswered(msg.payload))) await this.jobs.onCardAnswered(msg.payload);
         return undefined;
       // M5 T7: main moved an approval (08-1 §2.4); an expired payment / booking card ends its job (AT-111).
@@ -664,8 +707,18 @@ export class Engine {
       // G-M4-04: a request; main waits for the ack before it exits.
       case 'jobs.pauseAll':
         return ok({ paused: await this.recovery.pauseAll(msg.payload.reason) });
+      // M8 (T3): Google's commands are T2's.
+      case 'connection.cmd':
+        if (msg.payload.target === 'whatsapp' && ['linkStart', 'linkCancel', 'unlink'].includes(msg.payload.cmd))
+          this.whatsapp.command(msg.payload.cmd as 'linkStart' | 'linkCancel' | 'unlink');
+        return undefined;
       case 'power':
+        this.trouble.power(msg.payload.event);
         await this.recovery.power(msg.payload.event);
+        return undefined;
+      // M8 T5
+      case 'connection.state':
+        await this.trouble.onState(msg.payload);
         return undefined;
       // M6 (CR-0010 G-M6-01): the Memory page's invokes, answered with the invoke's result.
       case 'memory.cmd': {
@@ -683,6 +736,11 @@ export class Engine {
       default:
         return undefined;
     }
+  }
+
+  /** M8 (T3): `bridge.port` hands over the engine end of a (re)started wa-bridge (08-1 §2.4.2). */
+  attachBridge(port: WaPortLike): void {
+    void this.whatsapp.attach(port);
   }
   private firstSettings = true;
 }

@@ -27,6 +27,7 @@ import { writeSeedMemory } from './seed/writer';
 import { seedPerf } from './seed/perf';
 import { seedM4Cards } from './seed/m4Cards';
 import { seedUxWorld, uxWorldSettings } from './seed/uxWorld';
+import { bridgeTestSchema } from '../../shared/waBridge';
 import { seedM8Connect } from './seed/m8Connect';
 // M5
 import { installGmailDrafts, memoryGmailDrafts } from '../drafts/gmailDrafts';
@@ -57,6 +58,8 @@ const seedArg = z.object({ set: z.enum(SEED_SETS) }).strict();
 const onlineArg = z.object({ online: z.boolean() }).strict();
 const themeArg = z.object({ theme: z.enum(['light', 'dark', 'system']) }).strict();
 const jobStateArg = z.object({ jobId: z.string().min(1), state: z.enum(JOB_STATES) }).strict();
+// M8 T3
+const waArg = bridgeTestSchema;
 const CARD_TYPES = [
   'brief',
   'checklist',
@@ -295,6 +298,7 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
     if (arg?.set !== undefined) clock.set(typeof arg.set === 'string' ? Date.parse(arg.set) : arg.set);
     if (arg?.advance !== undefined) clock.advance(arg.advance);
     ctx.engine?.send('test.clock', { now: clock.now() });
+    ctx.bridgeTest?.({ kind: 'test.clock', now: clock.now() });
     return reply();
   });
   guard.handle('test:seed', (raw: unknown) => {
@@ -324,6 +328,8 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
     if (chat) emit('chat:upsert', chat);
     return { chatId: row.chat_id };
   });
+  // M8 T3: the fake phone behind the FOO_TEST wa-bridge (scan, a group message, logout).
+  guard.handle('test:wa', (raw: unknown) => ({ delivered: ctx.bridgeTest?.({ kind: 'test.wa', op: waArg.parse(raw) }) ?? false }));
   guard.handle('test:card.seed', (raw: unknown) => {
     const now = clock.now();
     const out = seedCard(ctx.db, cardSeedArg.parse(raw), now);
@@ -354,6 +360,7 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
     clock.reset(TEST_EPOCH_MS);
     ctx.engine?.send('test.reset', {});
     ctx.engine?.send('test.clock', { now: clock.now() });
+    ctx.bridgeTest?.({ kind: 'test.clock', now: clock.now() });
     deps.net.online = true;
     ctx.net.report(true);
     nativeTheme.themeSource = ctx.settings.get().appearance.theme;
