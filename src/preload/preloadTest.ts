@@ -121,8 +121,6 @@ const EVENTS = new Set([
   'whatsapp:qr',
   'memory:changed',
   'data:exportProgress',
-  'live:frame',
-  'live:state',
 ]);
 
 const platform = ipcRenderer.sendSync('app:platform') as PlatformInfo;

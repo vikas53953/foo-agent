@@ -280,7 +280,7 @@ R21 · R23 · R5,J21,,UX-24-02,,06-2 §6.0; 06-2 §6.1,test/fidelity/ux/UX-24.se
 ,J8,AT-157,,,10-acceptance-1 §B; 08-2 §9.2; DECISIONS X-46,test/e2e/m9-flights.spec.ts,M9,pending
 ,J9,AT-207,,,10-acceptance-1 §B; 05-2 §5.5.2,test/integration/browser/reminder.test.ts,M9,pending
 ,J13,AT-211,,,10-acceptance-1 §B; 05-3 §5.10.2,test/e2e/m9-signin.spec.ts,M9,live
-,J18,AT-272,,,10-acceptance-1 §B; 06-3 §11.2; DECISIONS X-121 · X-135,test/e2e/m9-live.spec.ts,M9,pending
+,J18,AT-272,,,10-acceptance-1 §B; 06-3 §11.2; DECISIONS X-121 · X-135,test/e2e/m9-live.spec.ts,M9,live
 ,,ART-03,,,01-articles Art. 3 (the browser rung); 10-acceptance-2 §D,test/articles/ART-03.browser.test.ts,M9,pending
 R5 · R10 · R14,J9,,UX-12-01,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,pending
 R5 · R10 · R14,J9,,UX-12-02,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,pending

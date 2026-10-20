@@ -198,11 +198,10 @@ test('UX-23 · When things go wrong: steps UX-23-01 to UX-23-06, UX-23-09 and UX
       HOLD,
     ]);
     await send(page, GOA_ASK);
-    // The Windows runner can start the job after a fixed advance has run: move the clock until the card posts.
-    const safe = t('errors.ai_service_down.what_is_safe', { job: 'Goa stay', n: 3 });
-    await untilPosted(page, log, log.getByTestId(TID.cardError).filter({ hasText: safe }));
+    // The Windows runner can start the job after a fixed advance has run: keep the fake clock moving until the card posts.
+    await untilPosted(page, log, log.getByTestId(TID.cardError));
     const card = log.getByTestId(TID.cardError).last();
-    await expect(card).toContainText(safe);
+    await expect(card).toContainText(t('errors.ai_service_down.what_is_safe', { job: 'Goa stay', n: 3 }));
     await expect(card.getByTestId(TID.cardErrorFix)).toHaveText(t('errors.ai_service_down.button'));
     await shoot(page, 'UX-23-04', `${rowOf(await rowId(card))} ${byTid(TID.cardErrorFix)}`);
     await close(app);
@@ -216,7 +215,8 @@ test('UX-23 · When things go wrong: steps UX-23-01 to UX-23-06, UX-23-09 and UX
       HOLD,
     ]);
     await send(page, GOA_ASK);
-    await advance(page, 4_000);
+    // The Windows runner can start the job after a fixed advance has run: keep the fake clock moving until the card posts.
+    await untilPosted(page, log, log.getByTestId(TID.cardError));
     const card = log.getByTestId(TID.cardError).last();
     await expect(card).toContainText(t('errors.ai_limit.what_is_safe.no_reset'));
     await expect(card.getByTestId(TID.cardErrorFix)).toHaveText(t('errors.ai_limit.button.no_reset'));
@@ -238,7 +238,8 @@ test('UX-23 · When things go wrong: steps UX-23-01 to UX-23-06, UX-23-09 and UX
       { match: { purpose: 'step' }, reply: 'I am not sure what to do next.', delayMs: 500, once: false },
     ]);
     await send(page, GOA_ASK);
-    await advance(page, 6_000);
+    // The Windows runner can start the job after a fixed advance has run: keep the fake clock moving until the card posts.
+    await untilPosted(page, log, log.getByTestId(TID.cardStuck));
     const card = log.getByTestId(TID.cardStuck).last();
     await expect(card).toBeVisible();
     await expect(card.getByTestId(TID.cardStuckOtherWay)).toBeVisible();
@@ -329,7 +330,8 @@ test('UX-23 · When things go wrong: steps UX-23-01 to UX-23-06, UX-23-09 and UX
       stepLine({ kind: 'fail', reason: 'The hotel site would not open.' }),
     ]);
     await send(page, GOA_ASK);
-    await advance(page, 4_000);
+    // The Windows runner can start the job after a fixed advance has run: keep the fake clock moving until the card posts.
+    await untilPosted(page, log, log.getByTestId(TID.cardError));
     const card = log.getByTestId(TID.cardError).last();
     await expect(card).toContainText(t('errors.unknown.what_happened'));
     await expect(card).toContainText(t('errors.unknown.what_is_safe'));

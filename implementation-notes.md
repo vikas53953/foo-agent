@@ -665,6 +665,49 @@ CR-0010 §(b). Where the code stands for the ticket threads:
   tagged "M4-T7 close-out": `cards.checklist.footer_text.plan`, `cards.plan.change_placeholder`,
   `cards.proof_chip.popover.file_missing`, `cards.not_live_chip.still_failed.text`, `cards.error.still_failing`.
 
+## M9 T5 · Watch live window (claude/foo-m9-t5-live-hyvr7p)
+
+- T5-01 · G-M9-14 slot names: `live.window.{title,name,bar_title,starting,now,done,cant_show,picture_tooltip,take_over,stop,
+control_bar,hand_back,back_in_control,step_announce}`, `live.window.pill.{live,needs_you,in_control,paused,done}`,
+  `live.window.paused.{ai_down,spend_cap,asleep,net_offline}`. Paused reasons reuse the 05 §5.2 checklist captions plus the
+  06-3 full stop; ai_offline / ai_signed_out / ai_limit read "your AI isn't answering"; asleep / app_quit / windows_shutdown
+  read "your PC went to sleep"; opens_at has no line. The control bar and Narrator lines use `{agentName}` (AT-272).
+- T5-02 · G-M9-08 map in `src/renderer/live/liveState.ts`. Spec silent, conservative picks: `starting` and `cant_show` show no
+  pill; a cancelled or failed job keeps the shown state while main closes the window after 1 s (06-3 has words for neither;
+  failed closes like Stop); in control hides the foo bar's Take over and Stop so the control bar's Hand back + Stop are the
+  only buttons (AT-272); `done` shows "Final screen · {result}" only when a step phrase came with the last frame.
+- T5-03 · `in_control` comes from `live:state taken_over`, which T6/T7 send; `job:takeOver` / `job:handBack` handlers stay the
+  T1 stubs (T6/T7 own them). The e2e and journey seed `live:state` the way main sends it.
+- T5-04 · The live window's state is its own reducer (`src/renderer/live/liveStore.ts`); `src/renderer/store/live.ts` is the
+  main window's 08-0 §G.10 D-11 slice and is unchanged. The window reads its job row and settings from the `job:upsert` /
+  `settings:changed` events main sends on load (it may not call the read channels, 08-1 §3.1.1).
+- T5-05 · 08-1 §3.1.1 allow-list in `ChannelGuard` (`windowChannelAllowed`, `src/main/ipc/guard.ts`), by sender page path,
+  for live, signin-banner (T6 needs nothing more) and viewer. `emit()` routes `live:*` to their job's live window only
+  (`routeLive`, one line in IpcRouter); other events still go to every window.
+- T5-06 · Main's frame pass (`liveMask.ts`): the engine adds `pageUrl` to the frame; main blanks the picture (empty JPEG) on a
+  `no-capture-hosts.json` host or an unreadable URL and strips `pageUrl` before the renderer sees it.
+- T5-07 · Until T3: the engine has no BrowserHandle, so `job:watch` answers LIVE_UNAVAILABLE (window shows `cant_show`) and the
+  verifier refuses every frame. FOO_TEST runs may set `FOO_FAKE_BROWSER` = a folder of masked JPEGs
+  (`src/engine/tools/browser/fakeBrowser.ts`, `test/fixtures/live-frames/`). T3 replaces `browser` and `verifier` in
+  `engineScreencast`, T7 the `guard`.
+- T5-08 · Job avatar 26 in the foo bar is foo's letter face (the window has no helper rows); helper jobs get their face when
+  the living face lands. The Now line falls back to the job row's `nowLine` when a frame carries none.
+- T5-09 · Files beyond OWNS: `src/main/ipc/guard.ts` (allow-list), `src/renderer/shell/{ChatHeader,DoingNow,ShellKeys}.tsx`
+  (Watch live / Open the window / Ctrl+Shift+L now call `job:openWindow`), `src/engine/tools/browser/fakeBrowser.ts`,
+  `test/fixtures/live-frames/*`, `scripts/foo-verify.ts` (`shot(name, selector, target)` for a second window).
+- T5-10 · Review fixes (2026-10-20): the live window has its own preload (`src/preload/preloadLive.ts`, its 4 invokes plus
+  `live:*`, `job:upsert`, `settings:changed`); the main and test preloads no longer hear `live:*`. `windowChannelAllowed`
+  fails closed: only `/` and `/index.html` get every channel, an unlisted page path gets none; the live window never
+  navigates. A watch off during `win.cdp()` wins and a double on starts one cast. Done and Needs you show the job row's
+  line; Done hides Take over and Stop; a window opened on a finished job still closes 5 s later; a refused `job:watch`
+  shows `cant_show`; focus moves to Hand back / Take over when the control bar swaps. Left for T7: the sign-in guard stub
+  (`paused: () => false`) and checking that a live window's calls name its own job. The checklist card's Watch live
+  now opens the window too (06-3 §11.1). Left for T3: when the job's Edge window closes mid-watch the cast stops but the
+  window is not told (`cant_show`); `Screencast.stopAll()` is not yet called on engine shutdown.
+- T5-11 · With T3 on the milestone branch, `engineScreencast` runs on T3's `PlaywrightBrowser` with T3's `Masker` as the
+  frame verifier (read lazily: the engine builds the browser after the screencast). `FOO_FAKE_BROWSER` still wins in
+  FOO_TEST runs. AT-079 stays pending until a real-browser proof of masked frames exists.
+
 ### M6 T4 · memory in replies
 
 - `src/engine/memory/retrieval.ts` `buildMemoryParts(query, {chatId, text, timeZone, now})` picks parts 5/5b per turn:

@@ -210,7 +210,7 @@ export function Checklist({ card, time }: { card: CardRow; time: CardTime }) {
                 kind="secondary"
                 disabled={busy !== null}
                 busy={busy === 'watch'}
-                onClick={() => run('watch', () => invoke('job:watch', { jobId: row.id, on: true }))}
+                onClick={() => run('watch', () => invoke('job:openWindow', { jobId: row.id }))}
               >
                 <Icon name="Window" size={16} />
                 {t('cards.checklist.watch_live')}
