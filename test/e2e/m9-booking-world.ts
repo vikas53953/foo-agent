@@ -88,8 +88,11 @@ export interface BookingApp {
   close(): Promise<void>;
 }
 
-/** Starts the sandbox, writes the script and launches the app at Fri 16 Oct 2026 11:01 AM IST in the Home chat. */
-export async function startBooking(lines: (sb: Sandbox) => FakeLine[]): Promise<BookingApp> {
+/**
+ * Starts the sandbox, writes the script and launches the app at Fri 16 Oct 2026 11:01 AM IST in the Home chat (`opts` moves
+ * the start time and the chat, e.g. the walkthrough's foo chat at 9:05 AM in test/fidelity/ux/UX-12.restaurant.spec.ts).
+ */
+export async function startBooking(lines: (sb: Sandbox) => FakeLine[], opts: { at?: string; chat?: string } = {}): Promise<BookingApp> {
   const sb = await startSandbox();
   const dirs = testDirs();
   const script = join(dirname(dirs.FOO_DATA_DIR), 'fake-ai.jsonl');
@@ -108,8 +111,8 @@ export async function startBooking(lines: (sb: Sandbox) => FakeLine[]): Promise<
     FOO_TEST_TOOL_IDS: 'counting',
   });
   const page = await app.firstWindow();
-  await settleSeededJobs(page, await openWorld(app, page, '2026-10-16T11:01:00+05:30'));
-  await openChat(page, 'Home');
+  await settleSeededJobs(page, await openWorld(app, page, opts.at ?? '2026-10-16T11:01:00+05:30'));
+  await openChat(page, opts.chat ?? 'Home');
   let db: Database.Database | null = null;
   return {
     app,

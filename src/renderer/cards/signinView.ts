@@ -82,7 +82,8 @@ export type SignInView =
       offlineLine: string | null;
       buttons: SignInButton[];
     }
-  | { kind: 'summary'; tone: 'ok' | 'grey'; text: string };
+  // M9 T7: AT-060 the 2 h cancel offers Start again (05-3 §5.10.2 "No answer 2 h").
+  | { kind: 'summary'; tone: 'ok' | 'grey'; text: string; startAgain?: true };
 
 /** What the card shows for its row: an open card while it waits, else its summary row. Null = not drawable. */
 export function signInView(card: CardRow, o: { offline: boolean; timeZone: string }): SignInView | null {
@@ -123,8 +124,10 @@ export function signInView(card: CardRow, o: { offline: boolean; timeZone: strin
       return { kind: 'summary', tone: 'grey', text: t('cards.signin.state.skipped') };
     case 'withdrawn':
       return { kind: 'summary', tone: 'grey', text: t('cards.signin.state.withdrawn') };
+    case 'timed_out':
+      return { kind: 'summary', tone: 'grey', text: head, startAgain: true };
     default:
-      // timed_out, handed_back: §5.10.2 gives no summary words ("summary grey"); the card's own title, read-only.
+      // handed_back (and timed_out above): §5.10.2 gives no summary words ("summary grey"); the card's own title, read-only.
       return { kind: 'summary', tone: 'grey', text: head };
   }
 }

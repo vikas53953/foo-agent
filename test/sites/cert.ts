@@ -50,7 +50,8 @@ export function makeSandboxCert(hosts: readonly string[], now = new Date()): San
     ),
   );
   const serial = createHash('sha256').update(String(now.getTime())).digest().subarray(0, 8);
-  serial[0]! &= 0x7f;
+  // DER INTEGER: positive and minimal (a leading 0x00 byte would be illegal padding).
+  serial[0] = (serial[0]! & 0x7f) | 0x40;
   const tbs = seq(
     tlv(0xa0, tlv(0x02, Buffer.from([2]))),
     tlv(0x02, serial),
