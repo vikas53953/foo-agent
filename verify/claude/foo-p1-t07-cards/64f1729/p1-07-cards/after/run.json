@@ -1,0 +1,57 @@
+{
+  "journey": "test/verify/p1-07-cards.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "64f17296d61de9f6ce787f170e699a1ce92633e1",
+  "dirty": false,
+  "started": "2026-10-20T09:52:48.699Z",
+  "finished": "2026-10-20T09:52:56.937Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "Plan: 1 Look on the web / 2 Check Coastline, Saffron Table and Bay Leaf / 3 Show you before booking / 4 Book a table for 4",
+    "Checklist step icons Search, Document, Clock, Wallet; source pile Coastline, Saffron Table, Bay Leaf (3 tiles, no \"+n\")",
+    "Approve card: box-shadow \"rgba(11, 11, 16, 0.22) 0px 16px 48px 0px\"; amounts ₹0, ₹1,000 at 700 tabular; title 600; no spark",
+    "DONE with proof: \"Booking a table for 4 · saved you about 10 min.\" (search 2 + read 3 + wait 0 + book 5 = 10, the pick 14 table)",
+    "Finished steps: done:Looked on the web / done:Checked Coastline, Saffron Table and Bay LeafCSB / done:Showed you before booking / done:Booked a table for 4"
+  ],
+  "shots": [
+    {
+      "file": "after/01-checklist-live.light.png",
+      "name": "checklist-live",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-checklist-live.dark.png",
+      "name": "checklist-live",
+      "theme": "dark"
+    },
+    {
+      "file": "after/03-approval.light.png",
+      "name": "approval",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-approval.dark.png",
+      "name": "approval",
+      "theme": "dark"
+    },
+    {
+      "file": "after/05-done.light.png",
+      "name": "done",
+      "theme": "light"
+    },
+    {
+      "file": "after/06-done.dark.png",
+      "name": "done",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}
