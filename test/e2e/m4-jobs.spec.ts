@@ -72,14 +72,17 @@ async function start(o: { intakeDelayMs?: number } = {}) {
       }
     });
   /** The run's ask badge, looked at with the log pinned to the newest row each time (the row may be out of the DOM). */
-  const expectBadge = (tag: string, state: string) =>
+  const expectBadge = (tag: string, state: string, timeout?: number) =>
     expect
-      .poll(async () => {
-        await toNewest();
-        return badgeOf(ask(tag))
-          .getAttribute('data-state', { timeout: 500 })
-          .catch(() => null);
-      })
+      .poll(
+        async () => {
+          await toNewest();
+          return badgeOf(ask(tag))
+            .getAttribute('data-state', { timeout: 500 })
+            .catch(() => null);
+        },
+        timeout ? { timeout } : {},
+      )
       .toBe(state);
   const type = async (text: string) => {
     await page.getByTestId(TID.composerField).focus();
@@ -93,7 +96,8 @@ async function start(o: { intakeDelayMs?: number } = {}) {
   const stopJob = async (tag: string) => {
     await send('stop');
     try {
-      await expectBadge(tag, 'stopped');
+      // Clean-up between runs, not a timed step: a busy Windows runner can take longer than the default 5 s to stop a job.
+      await expectBadge(tag, 'stopped', 15_000);
     } catch (e) {
       // What foo's chat shows when the stop word did not stop the run's job (the newest rows), for the failure report.
       await toNewest();
