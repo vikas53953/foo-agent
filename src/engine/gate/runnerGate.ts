@@ -27,6 +27,7 @@ import { checkLiveTerms } from './liveTerms';
 import { secondLook as runSecondLook, verbingOf } from './secondLook';
 import type { LiveRead } from '../tools/browser/readLiveTerms'; // M9 T8
 import { HISTORY_MAX_MS, HISTORY_POLL_MS, findBookingInHistory } from '../tools/browser/outcome';
+import { isFlightBooking } from '../jobs/flights';
 
 /** M5 T8: what `approval.transition` may carry (08-4 §29.1; the second look; the card's HELD / SUPERSEDED copy). */
 interface TransitionData {
@@ -347,6 +348,13 @@ export class RunnerGate {
   async requestApproval(job: JobRow, decision: Extract<StepDecision, { kind: 'request_approval' }>, asked: string): Promise<boolean> {
     const core = this.d.core;
     const x = this.st(job.id);
+    // M9 T8 (08-2 §5.3.4, X-81): a flight is compare-and-open only: no booking or Payment card, whatever the AI asks.
+    const verb = (decision.draft as { verb?: unknown }).verb;
+    if (isFlightBooking(asked) && (verb === 'book' || verb === 'buy' || verb === 'pay')) {
+      core.d.log('gate.flight_scope', String(verb), { jobId: job.id });
+      await core.tx([core.textOp(job, t('thread.flight_scope.body'))]);
+      return !(await this.countFailure(job));
+    }
     const calls =
       (await core.query<{ id: string; tool: string; result: unknown; outcome: string | null }[]>('toolCallsForJob', job.id)) ?? [];
     const ok = calls.filter((c) => c.outcome === 'ok');

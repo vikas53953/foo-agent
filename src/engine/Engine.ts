@@ -279,6 +279,7 @@ export class Engine {
         onCapLifted: () => void this.drainQueued(),
         // M9 T3: a finished job's browser window closes, so the next browser job gets its slot.
         onEnded: (jobId) => void this.browser?.jobEnded(jobId),
+        reintake: (chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }), // M9 T8
       },
       // M6 T5: "Used:" chips under a step's card or result, and the post-turn review after DONE (08-3 §12.4, §12.5).
       memory: {

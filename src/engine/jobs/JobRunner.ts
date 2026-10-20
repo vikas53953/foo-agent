@@ -64,6 +64,7 @@ import { draftSecondLook, type DraftLookAnswer, type DraftLookReq } from '../gat
 import type { LiveRead } from '../tools/browser/readLiveTerms';
 import { handbackCopy, handbackUrl } from '../tools/browser/handbackGuard';
 import { SiteNotes, domainOf as siteDomainOf } from '../tools/browser/siteNotes';
+import { compareOnlyVerbs } from './flights';
 import { RecipeBook } from '../tools/browser/recipes/book';
 import type { RecipeRecorder } from '../tools/browser/recipes/recipe';
 import { newId as freshId } from '../../shared/ids';
@@ -120,6 +121,8 @@ export interface RunnerHooks {
   // M9
   /** T3: the job reached a terminal state; its browser window closes and frees a slot (08-4 §26.8 item 5). */
   onEnded?(jobId: string): void;
+  /** T8: the user's message goes to an intake turn again, past the typed and steer hooks (Compare flights, 08-2 §5.3.4). */
+  reintake?(chatId: string, messageId: string): void;
 }
 
 /** What T3's modules (stopFlow, steer, watchdog, costMeter) may use of the runner. */
@@ -571,7 +574,7 @@ export class JobRunner {
     const s = this.d.settings();
     const pick = this.d.ai.pick();
     const billing = pick?.billing ?? 'plan';
-    const doVerbs = extractDoVerbs(input.askedText);
+    const doVerbs = compareOnlyVerbs(input.askedText, extractDoVerbs(input.askedText)); // M9 T8: flights compare only
     const intent = doVerbs.length ? 'do' : 'read_only';
     const isBanned = (x: string) => this.d.prompts.isBanned(x);
     const plan = insertShowBefore(
@@ -1007,6 +1010,8 @@ export class JobRunner {
     if (card?.type === 'choice' && card.payload.purpose === 'stop_which') return this.stopper.answerStopWhich(card, a.choice, a.resolvedBy);
     if (card?.type === 'choice' && card.payload.purpose === 'fold_which')
       return this.steering.answerFoldWhich(card, a.choice, a.resolvedBy);
+    // M9 T8 (08-2 §5.3.4): Compare flights runs the ask as a compare job (no book, buy or pay verb); Not now ends it.
+    if (card?.type === 'choice' && card.payload.flightScope) return this.answerFlightScope(card, a.choice, a.resolvedBy);
     // M5 T7: main's ApprovalGate resolves an approval card itself before it tells the runner (08-2 §9.1).
     if (!card || (card.resolvedAt !== null && !APPROVAL_CARDS.has(card.type)) || !card.jobId) return;
     const job = await this.job(card.jobId);
@@ -1132,6 +1137,21 @@ export class JobRunner {
     if (!r.ok) return;
     await this.ended(job.id, this.ctx(job.id));
     await this.startNext();
+  }
+
+  private async answerFlightScope(card: CardRow, choice: string | undefined, resolvedBy: string): Promise<void> {
+    if (card.resolvedAt !== null || (choice !== 'o1' && choice !== 'o2')) return;
+    const messageId = String((card.payload.flightScope as { messageId?: unknown }).messageId ?? '');
+    const now = this.d.clock.now();
+    const r = await this.tx([
+      {
+        op: 'update',
+        table: 'cards',
+        id: card.id,
+        set: { state: 'answered', resolved_by: resolvedBy, resolved_at: now, answer: { optionId: choice } },
+      },
+    ]);
+    if (r.ok && choice === 'o1' && messageId) this.d.hooks?.reintake?.(card.chatId, messageId);
   }
 
   // ---- 08-2 §5.8 finish ----
