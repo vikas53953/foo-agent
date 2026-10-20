@@ -570,6 +570,8 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
               .strict()
               .optional(),
             superseded: z.enum(['price', 'time', 'recipient', 'fee', 'steer']).optional(),
+            // M9 T8 (G-M9-07): a booking the site's history page never confirmed (CHECKING → FAILED) says so on its card.
+            unconfirmed: z.literal(true).optional(),
           })
           .strict()
           .optional(),

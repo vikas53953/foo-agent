@@ -76,6 +76,9 @@ describe('history page (G-M9-07)', () => {
     expect(findBookingInHistory(text, 'Coastline Kitchen')).toBe('TJ8821');
     expect(findBookingInHistory(text, 'Saffron Table')).toBeNull();
     expect(findBookingInHistory('No bookings yet.', 'Coastline Kitchen')).toBeNull();
+    // A table run into one line: the code nearest the place wins.
+    const flat = 'Code Place Time People Status AB1234 Saffron Table 7:00 PM 2 Confirmed TJ8821 Coastline Kitchen 8:00 PM 4 Confirmed';
+    expect(findBookingInHistory(flat, 'Coastline Kitchen')).toBe('TJ8821');
   });
   it('knows a history link by its words', () => {
     expect(isHistoryLink('Your bookings')).toBe(true);

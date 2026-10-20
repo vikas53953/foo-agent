@@ -113,15 +113,78 @@ describe('AT-037 · Book table submits once and carries proof', () => {
     expect(t('cards.approval.body.failed.booked', { site: 'tablejoy.test' })).toBe('tablejoy.test didn’t accept it. Nothing was booked.');
   }, 60_000);
 
-  it('AT-037 the page never says → CHECKING, one POST, never submitted again', async () => {
+  it('AT-037 the page never says → CHECKING, one POST; the site’s "Your bookings" page shows it → COMPLETED, never submitted again', async () => {
     const x = await world();
     await w!.toggles({ confirmation: 'none' });
     x.approvals.approve(tap(approvalCards(x)[0]!));
     await x.settle(20);
     expect((await w!.control()).counters.submits).toBe(1);
-    expect(['CHECKING', 'COMPLETED', 'FAILED']).toContain(approvals(x)[0]!.state);
+    expect(submitCall(x)!.outcome).toBe('error');
+    expect(JSON.parse(String(submitCall(x)!.result))).toMatchObject({
+      outcome: 'unknown',
+      historyUrl: w!.sb.url('restaurant', '/bookings'),
+    });
+    // G-M9-07: the history page, read by this job's own tools (never Gmail), shows the booking.
+    expect(approvals(x)[0]!.state).toBe('COMPLETED');
+    const tools = x.toolCalls().map((c) => c.tool);
+    expect(tools.slice(tools.indexOf('browser.submit'))).toEqual(['browser.submit', 'browser.open', 'browser.snapshot']);
     expect(x.toolCalls().filter((c) => c.tool === 'browser.submit')).toHaveLength(1);
   }, 60_000);
+});
+
+describe('G-M9-07 · a booking the site never confirms', () => {
+  it('the history page never shows it → checked every 60 s for 10 min, then FAILED "I couldn’t confirm the booking…", one POST', async () => {
+    w = await bookingWorld();
+    await w.toggles({ confirmation: 'none' });
+    // The card is for a place the history page never lists, so no row ever confirms it.
+    const other = step({
+      kind: 'request_approval',
+      draft: {
+        verb: 'book',
+        fields: {
+          verb: 'book',
+          payee: 'Bay Leaf Pizzeria',
+          partySize: 4,
+          cancelTerms: { refundable: true, feePaise: 1 },
+          irreversible: false,
+        },
+        evidence: [{ field: 'cancelTerms', toolCallId: 'tc_000002', quote: FEE_QUOTE, ref: 'e3' }],
+      },
+      submitRef: 'e3',
+    });
+    h = jobHarness({
+      script: [
+        jobIntake([{ phraseKey: 'check_site', slots: { site: 'tablejoy.test' }, route: 'browser' }], { title: 'Book a table' }),
+        tool('browser.open', { url: w.sb.url('restaurant', BOOK_PAGE) }),
+        tool('browser.snapshot', {}),
+        other,
+        secondLookOk(),
+        step({ kind: 'done', result: 'Booked.', unverified: true }),
+      ],
+      browser: w.browser,
+    });
+    h.userSays('Book a table for 4 at Bay Leaf Pizzeria on Sunday');
+    await h.settle(20);
+    const card = approvalCards(h)[0]!;
+    const t0 = h.clock.now();
+    h.approvals.approve(tap(card));
+    await h.settle(2_000);
+    expect((await w.control()).counters.submits).toBe(1);
+    expect(approvals(h)[0]!.state).toBe('FAILED');
+    expect(h.clock.now() - t0).toBeGreaterThanOrEqual(10 * 60_000);
+    const history = h.toolCalls().filter((c) => c.tool === 'browser.open' && String(c.args).includes('/bookings'));
+    // Every 60 s (fake clock; each look also takes real time here, so fewer than 11 fit) and none after 10 min.
+    expect(history.length).toBeGreaterThanOrEqual(2);
+    expect(history.length).toBeLessThanOrEqual(11);
+    const at = history.map((c) => Number(c.started_at));
+    for (let i = 1; i < at.length; i++) expect(at[i]! - at[i - 1]!).toBeGreaterThanOrEqual(60_000);
+    expect(at.at(-1)! - at[0]!).toBeLessThanOrEqual(10 * 60_000);
+    const after = approvalCards(h)[0]!;
+    expect(JSON.parse(String(after.payload)).unknownResult).toEqual({ unconfirmed: true });
+    expect(t('cards.approval.failed.unconfirmed', { site: 'tablejoy.test' })).toBe(
+      'I couldn’t confirm the booking. Check tablejoy.test before trying again.',
+    );
+  }, 120_000);
 });
 
 describe('AT-038 · the fee changed before submit', () => {

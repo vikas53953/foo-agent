@@ -267,7 +267,7 @@ R21 · R23 · R5,J21,,UX-24-02,,06-2 §6.0; 06-2 §6.1,test/fidelity/ux/UX-24.se
 ,J18,AT-078,,,10-acceptance-1 §B; 09 §9.27.3; 08-2 §5.7,test/e2e/m9-takeover.spec.ts,M9,pending
 ,J18,AT-079,,,10-acceptance-1 §B; 08-2 §8.3.6–§8.3.7; 06-3 §11.2,test/e2e/m9-live.spec.ts,M9,pending
 ,J18,AT-080,,,10-acceptance-1 §B; 08-2 §5.7; 08-4 §26.9,test/e2e/m9-stop.spec.ts,M9,pending
-,J9,AT-114a,,,10-acceptance-1 §B; 08-4 §26.11,test/integration/browser/proof.test.ts,M9,pending
+,J9,AT-114a,,,10-acceptance-1 §B; 08-4 §26.11,test/integration/browser/proof.test.ts,M9,live
 ,J10,AT-137,,,10-acceptance-1 §B; 08-2 §8.3.12; 08-4 §27.3,test/articles/ART-net-web.test.ts,M9,live
 ,J10,AT-138,,,10-acceptance-1 §B; 08-4 §27.3 (search and fallback part),test/integration/web/search.test.ts,M9,live
 ,J10,AT-138,,,10-acceptance-1 §B; 08-3 §14 (used-up key brief line),test/integration/brief/AT-138-brief.test.ts,M7,pending

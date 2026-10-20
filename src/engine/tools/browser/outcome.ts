@@ -127,18 +127,24 @@ export function isHistoryLink(name: string): boolean {
 }
 
 /**
- * G-M9-07 on the site's history page: the row that names the approved place, and the code on that row (a table row of
- * "TJ8821 · Coastline Kitchen · 8:00 PM · 4 · Confirmed"). Null when no row names the place or the row carries no code.
+ * G-M9-07 on the site's history page: the code nearest to where the approved place is named ("TJ8821 · Coastline Kitchen ·
+ * 8:00 PM · 4 · Confirmed"; the page text may run a whole table into one line). Null when the place is not named or no code is
+ * on its line.
  */
 export function findBookingInHistory(text: string, place: string): string | null {
   const want = place.trim().toLowerCase();
   if (!want) return null;
   for (const line of text.split(/\r?\n/u)) {
-    if (!line.toLowerCase().includes(want)) continue;
-    const near = findConfirmationCode(line);
-    if (near) return near;
-    const m = /\b([A-Z]{1,4}\d{3,8}|\d{5,10})\b/u.exec(line);
-    if (m) return m[1]!;
+    const at = line.toLowerCase().indexOf(want);
+    if (at < 0) continue;
+    let best: { code: string; d: number } | null = null;
+    for (const m of line.matchAll(/\b([A-Z]{1,4}\d{3,8}|\d{5,10})\b/gu)) {
+      const start = m.index;
+      const end = start + m[1]!.length;
+      const d = end <= at ? at - end : start >= at + want.length ? start - (at + want.length) : 0;
+      if (!best || d < best.d) best = { code: m[1]!, d };
+    }
+    if (best) return best.code;
   }
   return null;
 }

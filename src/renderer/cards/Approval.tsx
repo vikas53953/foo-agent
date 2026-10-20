@@ -295,7 +295,7 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
   );
 
   // M5 T14 (05-2 §5.5.4 CHECKING → FAILED): foo can't tell, so it never says "Nothing was booked." and never offers Try again.
-  const unknownResult = (phone: string | undefined) => {
+  const unknownResult = (phone: string | undefined, unconfirmed = false) => {
     const said = (card.answer as { optionId?: unknown } | null)?.optionId;
     if (said === 'went_through') return summary('ErrorCircle', styles.badIcon, t('cards.approval.body.said_went_through'));
     if (said === 'did_not') return summary('ErrorCircle', styles.badIcon, t('cards.approval.body.said_did_not'));
@@ -312,7 +312,12 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
         </div>
         <div className={styles.impact}>
           {/* G-M5-32 (b): with no verified phone the call clause is left out with its words. */}
-          {phone ? t('cards.approval.body.checking_failed', { site, phone }) : t('cards.approval.body.checking_failed_no_phone', { site })}
+          {/* M9 T8 (G-M9-07): a booking its site's history page never showed. */}
+          {unconfirmed
+            ? t('cards.approval.failed.unconfirmed', { site })
+            : phone
+              ? t('cards.approval.body.checking_failed', { site, phone })
+              : t('cards.approval.body.checking_failed_no_phone', { site })}
         </div>
         <div className={styles.buttons}>
           <CardButton
@@ -365,7 +370,7 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
     case 'WITHDRAWN':
       return summary('Dismiss', styles.dimIcon, t('cards.common.withdrawn'));
     case 'FAILED':
-      if (p.unknownResult) return unknownResult(p.unknownResult.phone);
+      if (p.unknownResult) return unknownResult(p.unknownResult.phone, p.unknownResult.unconfirmed === true);
       return summary(
         'ErrorCircle',
         styles.badIcon,

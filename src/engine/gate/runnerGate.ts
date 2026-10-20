@@ -26,6 +26,7 @@ import { askSecondLook, readLiveTerms, userWordsFor } from './afterApproved';
 import { checkLiveTerms } from './liveTerms';
 import { secondLook as runSecondLook, verbingOf } from './secondLook';
 import type { LiveRead } from '../tools/browser/readLiveTerms'; // M9 T8
+import { HISTORY_MAX_MS, HISTORY_POLL_MS, findBookingInHistory } from '../tools/browser/outcome';
 
 /** M5 T8: what `approval.transition` may carry (08-4 §29.1; the second look; the card's HELD / SUPERSEDED copy). */
 interface TransitionData {
@@ -33,6 +34,7 @@ interface TransitionData {
   secondLook?: SecondLookResult;
   held?: ApprovalPayload['held'];
   superseded?: ApprovalPayload['superseded'];
+  unconfirmed?: true; // M9 T8
 }
 
 /** 08-4 §29.1 item 2: the write-ahead must be acknowledged within 2 s, else nothing is clicked. */
@@ -533,10 +535,40 @@ export class RunnerGate {
       a.approvalId,
       signal,
     );
-    const to = outcomeState(r);
+    let to = outcomeState(r);
     await this.transition(a.approvalId, to);
+    // M9 T8 (08-4 §28.1 item 8, G-M9-07): an unclear booking is checked on the site's history page only, never re-submitted.
+    if (to === 'CHECKING' && a.draft.verb === 'book') to = await this.checkBooking(job, a, r, signal);
     if (to === 'COMPLETED') this.st(job.id).approved.push(approvedLine(a.draft, this.d.timeZone(), core.d.clock.now()));
     return true;
+  }
+
+  /**
+   * M9 T8 (G-M9-07): the site's history page (linked from the result page) every 60 s for 10 min, never Gmail, never a second
+   * submit. A row naming the approved place with a code → COMPLETED (the snapshot is this job's tool call, so the AI's proof can
+   * name it); nothing by 10 min → FAILED with "I couldn't confirm the booking…". A stop ends the wait and leaves it CHECKING.
+   */
+  private async checkBooking(job: JobRow, a: OpenApproval, r: ExecResult, signal: AbortSignal): Promise<ApprovalState> {
+    const core = this.d.core;
+    const url = (r.result as { historyUrl?: unknown } | null)?.historyUrl;
+    const place = a.draft.fields.payee ?? '';
+    const steps = await core.steps(job.id);
+    const tj = { id: job.id, stepId: steps.find((s) => s.state === 'running')?.id ?? null, turnId: null, gate: await this.gateJob(job) };
+    const start = core.d.clock.now();
+    for (;;) {
+      if (typeof url === 'string' && place) {
+        const opened = await this.d.tools.reread(tj, { tool: 'browser.open', args: { url } }, signal);
+        const snap = opened.outcome === 'ok' ? await this.d.tools.reread(tj, { tool: 'browser.snapshot', args: {} }, signal) : null;
+        if (snap?.outcome === 'ok' && findBookingInHistory(snapshotTextOf(snap.result), place)) {
+          if (await this.transition(a.approvalId, 'COMPLETED')) return 'COMPLETED';
+        }
+      }
+      if (signal.aborted) return 'CHECKING';
+      if (core.d.clock.now() - start + HISTORY_POLL_MS > HISTORY_MAX_MS) break;
+      await new Promise<void>((done) => core.d.clock.setTimeout(done, HISTORY_POLL_MS));
+    }
+    core.d.log('gate.booking_unconfirmed', 'no_proof', { jobId: job.id });
+    return (await this.transition(a.approvalId, 'FAILED', { unconfirmed: true })) ? 'FAILED' : 'CHECKING';
   }
 
   /** M9 T8: true when every money evidence of the draft was read by a `browser.*` tool of this job. */
@@ -692,6 +724,12 @@ function approvedLine(d: ApprovalDraft, timeZone: string, now: number): string {
 }
 
 /** `{args summary}` of the RECOVERY list: compact JSON, cut to 120 chars (args are stored redacted). */
+/** M9 T8: the page text of a `browser.snapshot` result (the redacted copy; booking codes survive redaction, 08-4 §26.11). */
+function snapshotTextOf(result: unknown): string {
+  const s = (result as { snapshot?: unknown } | null)?.snapshot;
+  return typeof s === 'string' ? s : '';
+}
+
 /** M9 T8: the host of a page address, or null (no page, about:blank, not a URL). */
 function hostOf(url: string | null): string | null {
   if (!url) return null;

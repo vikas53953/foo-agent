@@ -1251,6 +1251,7 @@
   "cards.approval.body.checking": "Checking whether this went through… Don’t tap again.",
   "cards.approval.body.checking_failed": "I can’t tell if {site} did it. Call them on {phone} or check {site} before trying again.",
   "cards.approval.body.checking_failed_no_phone": "I can’t tell if {site} did it. Check {site} before trying again.",
+  "cards.approval.failed.unconfirmed": "I couldn’t confirm the booking. Check {site} before trying again.",
   "cards.approval.body.said_went_through": "You said it went through.",
   "cards.approval.body.said_did_not": "You said it didn’t go through.",
   "cards.approval.body.offline": "You’re offline. Approve when you’re back.",

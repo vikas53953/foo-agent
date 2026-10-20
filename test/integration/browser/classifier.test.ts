@@ -2,6 +2,7 @@
 // with payment / password fields, + the 5.3.1 Hindi forms) is refused with USE_SUBMIT and nothing is clicked; it must go through
 // `browser.submit` with an approval id), §8.3.5 (`confirm()` is a commit control), 10-2 ART-03 (read-only work never submits).
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { ENGINE_ONLY } from '../../../src/engine/gate/classes';
 import { browserHarness, html, okResult, type BrowserHarness } from './harness';
 
 let h: BrowserHarness;
@@ -63,7 +64,8 @@ describe('08-2 §8.2.1 commit clicks are refused', { timeout: 60_000 }, () => {
 
   it('the click class is read in the catalogue; the commit decision is made per element', () => {
     expect(h.tools['browser.click']?.actionClass).toBe('read');
-    expect(h.tools['browser.submit']).toBeUndefined();
+    // M9 T8: browser.submit is registered but engine-only: ToolLayer never lists it and refuses it from the AI (USE_SUBMIT).
+    expect(ENGINE_ONLY.has('browser.submit')).toBe(true);
     expect(h.tools['browser.fillCard']).toBeUndefined();
   });
 });
