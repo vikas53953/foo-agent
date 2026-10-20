@@ -1,0 +1,63 @@
+{
+  "journey": "test/verify/m9-t5-live.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "d2bcb1a9d6f87407be62efeba170bf638ac91f71",
+  "dirty": false,
+  "started": "2026-10-20T03:40:24.347Z",
+  "finished": "2026-10-20T03:40:32.911Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "Watch live (chat header) → a separate foo window titled \"Goa stay · foo\"",
+    "frames arrive through the engine screencast → main frame pass: data-state=\"live\", LIVE pill, picture data-masked=\"true\"",
+    "a click on the picture only shows \"This is a picture of foo’s browser. Take over to use the page yourself.\"",
+    "in control (live:state taken_over): pill \"YOU’RE IN CONTROL\", control bar, buttons Hand back to foo + Stop only",
+    "handed back (live:state running) → live again",
+    "✕ closed the live window; Goa stay is still working (X-95)"
+  ],
+  "shots": [
+    {
+      "file": "after/01-foo-chat-watch-live.light.png",
+      "name": "foo-chat-watch-live",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-live-window.light.png",
+      "name": "live-window",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-live-window.dark.png",
+      "name": "live-window",
+      "theme": "dark"
+    },
+    {
+      "file": "after/04-live-picture-click.light.png",
+      "name": "live-picture-click",
+      "theme": "light"
+    },
+    {
+      "file": "after/05-live-in-control.light.png",
+      "name": "live-in-control",
+      "theme": "light"
+    },
+    {
+      "file": "after/06-live-in-control.dark.png",
+      "name": "live-in-control",
+      "theme": "dark"
+    },
+    {
+      "file": "after/07-after-close.light.png",
+      "name": "after-close",
+      "theme": "light"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}
