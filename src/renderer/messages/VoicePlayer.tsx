@@ -32,29 +32,41 @@ function speak(messageId: string, a: HTMLAudioElement): () => void {
     s.live.speaking[chatId] = true;
   });
   let stopMeter: () => void = () => undefined;
+  let stopped = false;
+  const meter = (stream: MediaStream) => {
+    const ctx = new AudioContext();
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 512;
+    ctx.createMediaStreamSource(stream).connect(analyser);
+    const buf = new Uint8Array(analyser.fftSize);
+    const id = setInterval(() => {
+      analyser.getByteTimeDomainData(buf);
+      let sum = 0;
+      for (const v of buf) sum += ((v - 128) / 128) ** 2;
+      setSpeakingLevel(Math.min(1, Math.sqrt(sum / buf.length) * 4));
+    }, LEVEL_MS);
+    stopMeter = () => {
+      clearInterval(id);
+      void ctx.close();
+    };
+  };
   try {
     const stream = (a as HTMLAudioElement & { captureStream?: () => MediaStream }).captureStream?.();
-    if (stream && stream.getAudioTracks().length > 0) {
-      const ctx = new AudioContext();
-      const analyser = ctx.createAnalyser();
-      analyser.fftSize = 512;
-      ctx.createMediaStreamSource(stream).connect(analyser);
-      const buf = new Uint8Array(analyser.fftSize);
-      const id = setInterval(() => {
-        analyser.getByteTimeDomainData(buf);
-        let sum = 0;
-        for (const v of buf) sum += ((v - 128) / 128) ** 2;
-        setSpeakingLevel(Math.min(1, Math.sqrt(sum / buf.length) * 4));
-      }, LEVEL_MS);
-      stopMeter = () => {
-        clearInterval(id);
-        void ctx.close();
+    if (stream && stream.getAudioTracks().length > 0) meter(stream);
+    else if (stream) {
+      // With preload="none" the track arrives once the note starts flowing.
+      const onTrack = () => {
+        stream.removeEventListener('addtrack', onTrack);
+        if (!stopped) meter(stream);
       };
+      stream.addEventListener('addtrack', onTrack);
+      stopMeter = () => stream.removeEventListener('addtrack', onTrack);
     }
   } catch {
     // No level to read: the bars stay at rest while the note plays.
   }
   return () => {
+    stopped = true;
     stopMeter();
     setSpeakingLevel(0);
     update((s) => {

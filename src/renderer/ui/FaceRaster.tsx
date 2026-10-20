@@ -3,15 +3,15 @@
 // PNG (`canvas.toBlob`, the one canvas exception to §F15.9.8; it never animates), and sends
 // `face:raster { faceRef, size, mood, png }` through `window.foo.send` (08-1 §3.3.1). Main writes the files and never draws
 // a face. The frames are the §F15.9.1a poses held still (sparks at full size, the Happy ring shown, bars at rest).
-// It also keeps the face clock (one-time moods and Listening end on time) and pauses face motion while the window is
-// hidden (§F15.9.8).
+// It also keeps the face clock (one-time moods and Listening end on time), pauses face motion while the window is hidden
+// (§F15.9.8), plays Waking up (§F15.9.3 #2) and writes `live.cardSeenAt` (a card half in view for 1 s is seen, #8 / #9).
 import { useEffect } from 'react';
 import { RASTER_SIZES, type RasterSize } from '../../shared/face';
 import type { FaceRef, Mood } from '../../shared/types';
 import { sendFooEvent } from '../ipc/client';
 import { clockNow } from '../store/apply';
 import { update, useStore, type RootState } from '../store/index';
-import { nextFaceDue, selectChatMood } from '../store/live';
+import { isQuietNow, nextFaceDue, selectChatMood, wakeReducer } from '../store/live';
 import { facePose, ringMetrics, type EyeShape, type Ring } from './Face';
 
 export interface RasterColors {
@@ -25,6 +25,8 @@ export interface RasterColors {
 }
 
 export const RASTER_DEBOUNCE_MS = 1000;
+/** A raster waits at most this long for idle time. */
+const IDLE_TIMEOUT_MS = 5000;
 
 const esc = (s: string) => s.replace(/[<>&"]/g, (c) => `&#${c.charCodeAt(0)};`);
 
@@ -134,15 +136,97 @@ function resolveColors(t: RasterTarget): RasterColors {
 
 const sent = new Set<string>();
 
+const idle = (): Promise<void> =>
+  new Promise((resolve) => {
+    if (typeof requestIdleCallback === 'function') requestIdleCallback(() => resolve(), { timeout: IDLE_TIMEOUT_MS });
+    else setTimeout(resolve, 0);
+  });
+
 async function draw(t: RasterTarget): Promise<void> {
   const colors = resolveColors(t);
   const key = `${t.faceRef}|${t.mood}|${colors.disc}|${colors.eye}`;
   if (sent.has(key)) return;
   sent.add(key);
   for (const size of RASTER_SIZES) {
+    // Each size is drawn in idle time, never inside a frame the user is waiting on (typing, scrolling: PERF-02).
+    await idle();
     const png = await toPng(faceSvg(t.mood, size, colors, size === 48), size).catch(() => null);
     if (png) sendFooEvent('face:raster', { faceRef: t.faceRef, size, mood: t.mood, png });
   }
+}
+
+/** §F15.9.3 #8 / #9: a card counts as seen after it has been at least half in view for this long, in a visible window. */
+export const CARD_SEEN_MS = 1000;
+const SCAN_DELAY_MS = 100;
+
+/**
+ * The card an element draws: its `data-card-id`, or for a card type still on the M1 placeholder (no id on the frame, e.g. a
+ * payment before M10) the card of the message row it sits in.
+ */
+function cardIdOf(el: HTMLElement): string | undefined {
+  if (el.dataset.cardId) return el.dataset.cardId;
+  const messageId = el.closest<HTMLElement>('[data-message-id]')?.dataset.messageId;
+  if (!messageId) return undefined;
+  return Object.values(useStore.getState().cards.byId).find((c) => c?.messageId === messageId)?.id;
+}
+
+/**
+ * Writes `live.cardSeenAt` (08-0 §G.10): a PENDING card shown at least half on screen for `CARD_SEEN_MS` while the window is
+ * visible turns Needs you into Waiting on you (or Stuck). Returns the stop function.
+ */
+export function watchCardsSeen(root: ParentNode = document): () => void {
+  if (typeof IntersectionObserver === 'undefined') return () => undefined;
+  const timers = new Map<string, ReturnType<typeof setTimeout>>();
+  const mark = (id: string) => {
+    timers.delete(id);
+    if (document.hidden) return;
+    update((s) => {
+      s.live.cardSeenAt[id] ??= clockNow();
+    });
+  };
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        const id = cardIdOf(e.target as HTMLElement);
+        if (!id) continue;
+        if (e.isIntersecting && useStore.getState().live.cardSeenAt[id] == null) {
+          if (!timers.has(id))
+            timers.set(
+              id,
+              setTimeout(() => mark(id), CARD_SEEN_MS),
+            );
+        } else {
+          clearTimeout(timers.get(id));
+          timers.delete(id);
+        }
+      }
+    },
+    { threshold: 0.5 },
+  );
+  const seen = new WeakSet<Element>();
+  const scan = () => {
+    for (const el of root.querySelectorAll('[data-card-id], [data-message-id] [data-card-type]'))
+      if (!seen.has(el)) {
+        seen.add(el);
+        io.observe(el);
+      }
+  };
+  scan();
+  // New cards are looked for after the DOM settles, never inside a keystroke's frame (PERF-02); seeing takes 1 s anyway.
+  let pending: ReturnType<typeof setTimeout> | undefined;
+  const mo = new MutationObserver(() => {
+    pending ??= setTimeout(() => {
+      pending = undefined;
+      scan();
+    }, SCAN_DELAY_MS);
+  });
+  mo.observe(root === document ? document.body : (root as Node), { childList: true, subtree: true });
+  return () => {
+    clearTimeout(pending);
+    mo.disconnect();
+    io.disconnect();
+    for (const t of timers.values()) clearTimeout(t);
+  };
 }
 
 /** The hidden raster writer (§F15.9.9). Mounted once, beside the shell. */
@@ -150,7 +234,23 @@ export function FaceRaster() {
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | undefined;
     let last = '';
+    // Only the slices a mood reads; streaming text and other changes skip the raster pass.
+    let seenSlices: unknown[] = [];
     const schedule = (s: RootState) => {
+      const slices = [
+        s.chats,
+        s.jobs,
+        s.cards,
+        s.settings,
+        s.live.faceQueue,
+        s.live.connection,
+        s.live.speaking,
+        s.live.typingChatId,
+        s.live.now,
+        s.live.faceTick,
+      ];
+      if (slices.every((x, i) => x === seenSlices[i])) return;
+      seenSlices = slices;
       const targets = rasterTargets(s);
       const sig = JSON.stringify(targets);
       if (sig === last) return;
@@ -161,7 +261,7 @@ export function FaceRaster() {
       }, RASTER_DEBOUNCE_MS);
     };
 
-    // The face clock: tick `now` when the next one-time mood or Listening ends.
+    // The face clock: tick `faceTick` (not `now`, which every row time reads) when the next one-time mood or Listening ends.
     let tickTimer: ReturnType<typeof setTimeout> | undefined;
     let tickAt: number | null = null;
     const clock = (s: RootState) => {
@@ -174,22 +274,43 @@ export function FaceRaster() {
         () => {
           tickAt = null;
           update((d) => {
-            d.live.now = clockNow();
+            d.live.faceTick = clockNow();
           });
         },
         Math.max(0, due - clockNow()),
       );
     };
 
+    // §F15.9.3 #2 Waking up: first paint after the list loads, the offline line clearing, quiet hours ending.
+    let woke = false;
+    let wasOnline = true;
+    let wasQuiet = false;
+    const wake = (s: RootState) => {
+      if (!s.live.loaded) return;
+      const online = s.live.connection === 'online';
+      const quiet = isQuietNow(s);
+      const due = !woke || (online && !wasOnline) || (!quiet && wasQuiet);
+      woke = true;
+      wasOnline = online;
+      wasQuiet = quiet;
+      if (due) queueMicrotask(() => update((d) => wakeReducer(d, clockNow())));
+    };
+
+    // §F15.9.8: paused while the window is hidden or minimised, including a window that starts hidden.
     const onVisibility = () => document.documentElement.toggleAttribute('data-face-paused', document.hidden);
+    onVisibility();
     document.addEventListener('visibilitychange', onVisibility);
+    const stopSeen = watchCardsSeen();
     const unsub = useStore.subscribe((s) => {
       schedule(s);
       clock(s);
+      wake(s);
     });
     schedule(useStore.getState());
+    wake(useStore.getState());
     return () => {
       unsub();
+      stopSeen();
       clearTimeout(timer);
       clearTimeout(tickTimer);
       document.removeEventListener('visibilitychange', onVisibility);

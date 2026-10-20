@@ -79,3 +79,5 @@ export const BLINK_MIN_MS = 2000;
 export const BLINK_MAX_MS = 6000;
 /** CR-0021 pick 7: faces of 40px and larger bob 1px every 4 s. */
 export const BOB_MIN_SIZE = 40;
+/** CR-0021 pick 7: the bob's height, in screen pixels. */
+export const BOB_PX = 1;

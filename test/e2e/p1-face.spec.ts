@@ -38,9 +38,9 @@ async function start(): Promise<{ app: ElectronApplication; page: Page; refs: Re
 }
 
 test('AT-304 foo\'s face is the living two-eyes face, not a letter; it blinks every 2–6 s, bobs at 40px+, pauses when hidden, and holds still with "Show foo\'s eyes" off', async () => {
-  const { app, page } = await start();
+  const { app, page, refs } = await start();
   const face = rowFace(page, 'foo');
-  await expect(face.locator('svg')).toHaveCount(1);
+  await expect(face.locator('[data-part="body"]')).toHaveCount(1);
   await expect(face).toHaveAttribute('data-face', /^living:/);
   await expect(face).not.toHaveText(/f/);
   await row(page, 'foo').click();
@@ -48,11 +48,17 @@ test('AT-304 foo\'s face is the living two-eyes face, not a letter; it blinks ev
   await expect(header).toHaveAttribute('data-size', '40');
   await expect(face).toHaveAttribute('data-size', '48');
 
-  // Resting blinks on its own random 2–6 s cycle (CR-0021 pick 7); the 48 and 40 faces bob, the ring does not.
+  // Resting blinks on its own random 2–6 s cycle (CR-0021 pick 7); at 48 and 40 it bobs, the ring does not. Only Resting
+  // bobs: a face with something to show holds its place.
   const blinkMs = await face.evaluate((el) => parseFloat((el as HTMLElement).style.getPropertyValue('--face-blink')));
   expect(blinkMs).toBeGreaterThanOrEqual(2000);
   expect(blinkMs).toBeLessThanOrEqual(6000);
-  const bob = (loc: typeof face) => loc.evaluate((el) => getComputedStyle(el.querySelector('svg > g')!).animationName);
+  const bob = (loc: typeof face) => loc.evaluate((el) => getComputedStyle(el.querySelector('[data-part="body"]')!).animationName);
+  await expect(face).toHaveAttribute('data-state', /^(needs_you|waiting)$/);
+  expect(await bob(face)).toBe('none');
+  await page.evaluate((id) => window.__fooTest!.jobState(id, 'done'), refs.goaJob!);
+  await expect(face).toHaveAttribute('data-state', 'resting');
+  await expect(header).toHaveAttribute('data-state', 'resting');
   expect(await bob(face)).toMatch(/bob/);
   expect(await bob(header)).toMatch(/bob/);
 
@@ -62,7 +68,7 @@ test('AT-304 foo\'s face is the living two-eyes face, not a letter; it blinks ev
     document.dispatchEvent(new Event('visibilitychange'));
   });
   await expect(page.locator('html')).toHaveAttribute('data-face-paused', '');
-  expect(await face.evaluate((el) => getComputedStyle(el.querySelector('svg > g')!).animationPlayState)).toBe('paused');
+  expect(await face.evaluate((el) => getComputedStyle(el.querySelector('[data-part="body"]')!).animationPlayState)).toBe('paused');
   await page.evaluate(() => {
     Object.defineProperty(document, 'hidden', { configurable: true, get: () => false });
     document.dispatchEvent(new Event('visibilitychange'));
@@ -74,8 +80,9 @@ test('AT-304 foo\'s face is the living two-eyes face, not a letter; it blinks ev
   await expect(face).toHaveAttribute('data-motion-face', 'off');
   await expect(header).toHaveAttribute('data-motion-face', 'off');
   expect(await bob(face)).toBe('none');
-  await expect(face).toHaveAttribute('data-state', 'needs_you');
-  await expect(face.locator('[data-ring]')).toHaveAttribute('data-ring', 'full');
+  await page.evaluate((id) => window.__fooTest!.jobState(id, 'working'), refs.goaJob!);
+  await expect(face).toHaveAttribute('data-state', 'working');
+  await expect(face.locator('[data-ring]')).toHaveAttribute('data-ring', 'arc_turning');
   await page.evaluate(() => window.foo.invoke('settings:set', { path: 'appearance.faceMotion', value: true }));
   await expect(face).toHaveAttribute('data-motion-face', 'on');
   await app.close();
@@ -137,7 +144,7 @@ test('AT-306 Memory empty states show the 64px face in its pose, aria-hidden, wi
   await expect(scan).toHaveAttribute('data-size', '64');
   await expect(scan).not.toHaveAttribute('data-state', /.+/);
   await expect(scan.locator('[data-ring]')).toHaveCount(0);
-  expect(await scan.evaluate((el) => getComputedStyle(el.querySelector('svg g g')!).animationName)).toMatch(/scan/);
+  expect(await scan.evaluate((el) => getComputedStyle(el.querySelector('[data-part="eyes"]')!).animationName)).toMatch(/scan/);
   await page.getByRole('button', { name: t('screen.memory.no_match.clear') }).click();
 
   // A forgotten list: the Noticed eyes.
@@ -168,15 +175,33 @@ test('Memory: a new fact glows once; Forget folds the row and Undo brings it bac
   const first = rows.first();
   const id = (await first.getAttribute('data-row-id'))!;
   const row = page.locator(`[data-testid="${TID.memoryRow}"][data-row-id="${id}"]`);
+  // Record every look the row takes (the fold lasts 167 ms, the unfold 250 ms: too short to poll for).
+  await page.evaluate((rowId) => {
+    const w = window as unknown as { __looks: string[] };
+    w.__looks = [];
+    new MutationObserver((ms) => {
+      const look = (el: HTMLElement) => {
+        if (el.dataset?.rowId !== rowId) return;
+        if (el.hasAttribute('data-exit')) w.__looks.push(`exit:${getComputedStyle(el).animationName}`);
+        if (el.dataset.appear) w.__looks.push(`appear:${el.dataset.appear}`);
+      };
+      for (const m of ms) {
+        look(m.target as HTMLElement);
+        for (const n of m.addedNodes) if (n instanceof HTMLElement) [n, ...n.querySelectorAll<HTMLElement>('[data-row-id]')].forEach(look);
+      }
+    }).observe(document.body, { attributes: true, childList: true, subtree: true, attributeFilter: ['data-exit', 'data-appear'] });
+  }, id);
+  const looks = () => page.evaluate(() => (window as unknown as { __looks: string[] }).__looks);
   await first.getByTestId(TID.memoryRowForget).click();
-  // It folds closed (data-exit, the fold keyframes), then leaves.
-  await expect(row).toHaveAttribute('data-exit', '');
-  expect(await row.evaluate((el) => getComputedStyle(el).animationName)).toMatch(/fact-fold/);
+  // It folds closed (data-exit, the fold keyframes; a fade under Animations "Basic", CR-0021 pick 3), then leaves.
   await expect(row).toHaveCount(0);
+  const basic = (await page.evaluate(() => document.documentElement.dataset.motion)) === 'basic';
+  expect(await looks()).toContainEqual(expect.stringMatching(basic ? /^exit:.*fact-fade-out/ : /^exit:.*fact-fold/));
   await page.getByTestId(TID.appUndo).getByTestId(TID.appUndoAction).click();
   await expect(rows).toHaveCount(all);
-  await expect(row).toHaveAttribute('data-appear', 'back');
+  // The undone row unfolds back, then rests (the mark clears when its animation ends).
   await expect(row).not.toHaveAttribute('data-appear', /.+/);
+  expect(await looks()).toContain('appear:back');
 
   // A fact added now glows once, then rests.
   await page.getByTestId(TID.memoryAdd).click();
@@ -188,19 +213,23 @@ test('Memory: a new fact glows once; Forget folds the row and Undo brings it bac
   await app.close();
 });
 
-test('Working and Needs you rings come from real job rows, the same on the row and the header', async () => {
+test('Needs you until the card is seen, then Waiting on you; Working from real job rows; row and header agree', async () => {
   const { app, page, refs } = await start();
-  await row(page, 'foo').click();
-  const header = page.getByTestId(TID.chatHeaderAvatar).locator('[data-state]');
-  // The seeded Goa stay is NEEDS YOU with an unseen payment card.
+  // The seeded Goa stay is NEEDS YOU with a payment card nobody has seen yet (§F15.9.3 #8).
   await expect(rowFace(page, 'foo')).toHaveAttribute('data-state', 'needs_you');
   await expect(rowFace(page, 'foo').locator('[data-ring]')).toHaveAttribute('data-ring', 'full');
+  await row(page, 'foo').click();
+  const header = page.getByTestId(TID.chatHeaderAvatar).locator('[data-state]');
+  // The card shows in the open chat; after 1 s in view it counts as seen: Waiting on you, dashed ring (#9, C.7.1).
+  await expect(rowFace(page, 'foo')).toHaveAttribute('data-state', 'waiting');
+  await expect(header).toHaveAttribute('data-state', 'waiting');
+  await expect(rowFace(page, 'foo').locator('[data-ring]')).toHaveAttribute('data-ring', 'dashed');
   await page.evaluate((id) => window.__fooTest!.jobState(id, 'working'), refs.goaJob!);
   await expect(rowFace(page, 'foo')).toHaveAttribute('data-state', 'working');
   await expect(header).toHaveAttribute('data-state', 'working');
   await expect(rowFace(page, 'foo').locator('[data-ring]')).toHaveAttribute('data-ring', 'arc_turning');
   await page.evaluate((id) => window.__fooTest!.jobState(id, 'needs_you'), refs.goaJob!);
-  await expect(header).toHaveAttribute('data-state', 'needs_you');
+  await expect(header).toHaveAttribute('data-state', 'waiting');
   await page.evaluate((id) => window.__fooTest!.jobState(id, 'done'), refs.goaJob!);
   await expect(rowFace(page, 'foo')).toHaveAttribute('data-state', 'resting');
   await expect(header).toHaveAttribute('data-state', 'resting');
@@ -236,7 +265,8 @@ test('it blinks normally and holds a static pose under reduced motion', async ()
   await page.evaluate((id) => window.__fooTest!.jobState(id, 'done'), refs.goaJob!);
   const eye = rowFace(page, 'foo').locator('rect').first();
   await expect(rowFace(page, 'foo')).toHaveAttribute('data-state', 'resting');
-  expect(await eye.evaluate((el) => getComputedStyle(el).animationName)).toMatch(/blink/);
+  // One blink per random 2–6 s cycle; between blinks the eyes draw nothing.
+  await expect.poll(() => eye.evaluate((el) => getComputedStyle(el).animationName), { timeout: 8_000 }).toMatch(/blink/);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect.poll(() => eye.evaluate((el) => getComputedStyle(el).animationName)).toBe('none');
   await app.close();

@@ -11,9 +11,12 @@ import {
   noteMessageForFace,
   playOnceReducer,
   resetFaceGuard,
+  selectOnceStart,
   selectChatMood,
   type MoodInput,
+  wakeReducer,
 } from '../../../src/renderer/store/live';
+import { REDUCERS } from '../../../src/renderer/store/apply';
 import { settingsDefaults } from '../../../src/shared/settingsDefaults';
 
 // Fri 16 Oct 2026, 9:00 AM IST.
@@ -250,5 +253,48 @@ describe('who calls playOnce (§F15.9.9)', () => {
     const u = world();
     noteMessageForFace(u, [], { ...m, reactions: [{ emoji: '👍', by: 'me' }] }, NOW);
     expect(head(u)).toBeUndefined();
+  });
+});
+
+describe('P1 T2 callers: Waking up, Noticed (§F15.9.3 #2, #3)', () => {
+  beforeEach(() => resetFaceGuard());
+
+  it('wakeReducer plays Waking up on foo and helper chats, never a group', () => {
+    const s = world();
+    s.chats.byId.g1 = { id: 'g1', kind: 'group', face: 'living:default', pill: null, lastActivityAt: NOW } as unknown as ChatRow;
+    s.chats.order = ['c1', 'g1'];
+    wakeReducer(s, NOW);
+    expect(s.live.faceQueue.c1?.[0]?.mood).toBe('waking');
+    expect(s.live.faceQueue.g1).toBeUndefined();
+  });
+  it('wakeReducer skips a helper with a letter face (no eyes to open, §F15.9.4)', () => {
+    const s = world();
+    s.chats.byId.h1 = { id: 'h1', kind: 'helper', face: 'letter:T', pill: null, lastActivityAt: NOW } as unknown as ChatRow;
+    s.chats.order = ['c1', 'h1'];
+    wakeReducer(s, NOW);
+    expect(s.live.faceQueue.h1).toBeUndefined();
+  });
+  it('👀 (message badge "seen") plays Noticed in a 1:1 chat, not in a group', () => {
+    const s = world();
+    s.messages.byChat.c1 = {
+      byId: { m1: { id: 'm1', chatId: 'c1', reactions: [] } },
+    } as unknown as RootState['messages']['byChat'][string];
+    REDUCERS['message:badge'](s, { messageId: 'm1', badge: 'seen' } as Parameters<(typeof REDUCERS)['message:badge']>[1]);
+    expect(s.live.faceQueue.c1?.[0]?.mood).toBe('noticed');
+    const g = world();
+    g.chats.byId.c1!.kind = 'group';
+    g.messages.byChat.c1 = s.messages.byChat.c1!;
+    REDUCERS['message:badge'](g, { messageId: 'm1', badge: 'seen' } as Parameters<(typeof REDUCERS)['message:badge']>[1]);
+    expect(g.live.faceQueue.c1).toBeUndefined();
+  });
+  it('selectOnceStart: when the one-time mood now playing began, so a face that mounts part-way joins it there', () => {
+    const s = world();
+    playOnceReducer(s.live, 'c1', 'waking', NOW);
+    playOnceReducer(s.live, 'c1', 'noticed', NOW);
+    expect(selectOnceStart('waking')(s)).toBe(NOW);
+    expect(selectOnceStart('noticed')(s)).toBeUndefined();
+    s.live.now = NOW + ONE_TIME_MS.waking + 100;
+    expect(selectOnceStart('noticed')(s)).toBe(NOW + ONE_TIME_MS.waking);
+    expect(selectOnceStart('resting')(s)).toBeUndefined();
   });
 });

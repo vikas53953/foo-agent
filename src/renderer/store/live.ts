@@ -4,7 +4,7 @@
 // The face: 02-2 §F15.9.3 (moods from real state only, priority order, one-time moods on top, #11 once a day), §F15.9.3c
 // (10 s repeat guard), §F15.9.9 (`selectChatMood`, `playOnce`, `faceQueue` max 3). Quiet hours read
 // `settings.notifications.quiet` directly until M7 exposes `quietHours.isQuiet` (M11 ticket map, LF stub).
-import { FACE_QUEUE_MAX, LISTEN_MS, MOOD_PRIORITY, ONE_TIME_MS, REPEAT_GUARD_MS, type OneTimeMood } from '../../shared/face';
+import { FACE_QUEUE_MAX, isOneTime, LISTEN_MS, MOOD_PRIORITY, ONE_TIME_MS, REPEAT_GUARD_MS, type OneTimeMood } from '../../shared/face';
 import type { AiStatus, CardRow, JobRow, MessageRow, Mood } from '../../shared/types';
 import { effectivePill } from '../chatlist/rules';
 import { quietUntil } from '../shell/statusLine';
@@ -28,6 +28,8 @@ export interface LiveState {
   updateReady: boolean;
   /** Ticks every 30 s and on focus (row times, the 24 h "Done" fade). */
   now: number;
+  /** The face's own tick (a one-time mood or Listening ending), so it re-renders the faces only, not every row time. */
+  faceTick: number;
   /** "Mark as unread" with no count (03-shell-1 §3.4.9; there is no invoke for it in M1, so it lasts for the session). */
   markedUnread: Record<string, true>;
   /** Bootstrap is in; the list shows skeleton rows before. */
@@ -48,6 +50,7 @@ export function initialLive(now: number): LiveState {
     notificationsAllowed: true,
     updateReady: false,
     now,
+    faceTick: 0,
     markedUnread: {},
     loaded: false,
     loadFailed: false,
@@ -107,11 +110,28 @@ export function chatMood(i: MoodInput): Mood {
 
 const NO_JOBS: JobRow[] = [];
 
+let quietMemo: { quiet: unknown; tz: string; now: number; on: boolean } | null = null;
+
+/** Quiet hours are on now (`settings.notifications.quiet`, the renderer clock). Computed once per clock tick, not per row. */
+export function isQuietNow(s: RootState): boolean {
+  const settings = s.settings.value;
+  if (!settings) return false;
+  const { quiet } = settings.notifications;
+  const tz = settings.locale.timeZone;
+  const now = s.live.now;
+  if (quietMemo && quietMemo.quiet === quiet && quietMemo.tz === tz && quietMemo.now === now) return quietMemo.on;
+  const on = quietUntil(quiet, now, tz) != null;
+  quietMemo = { quiet, tz, now, on };
+  return on;
+}
+
+/** The face's clock: the later of the app's tick and the face's own. */
+const faceNow = (s: RootState) => Math.max(s.live.now, s.live.faceTick);
+
 function moodInput(s: RootState, chatId: string): MoodInput {
   const row = s.chats.byId[chatId];
   const ids = s.jobs.byChat[chatId];
-  const settings = s.settings.value;
-  const quiet = settings ? quietUntil(settings.notifications.quiet, s.live.now, settings.locale.timeZone) != null : false;
+  const quiet = isQuietNow(s);
   return {
     connection: s.live.connection,
     jobs: ids ? ids.map((id) => s.jobs.byId[id]).filter((j): j is JobRow => j != null) : row ? null : NO_JOBS,
@@ -121,7 +141,7 @@ function moodInput(s: RootState, chatId: string): MoodInput {
     replyInFlight: s.live.replyInFlight[chatId] === true || s.live.typingChatId === chatId,
     keystrokeAt: s.chats.selectedId === chatId ? s.live.lastKeystrokeAt : null,
     quiet,
-    now: s.live.now,
+    now: faceNow(s),
   };
 }
 
@@ -129,10 +149,28 @@ function moodInput(s: RootState, chatId: string): MoodInput {
 export const selectChatMood =
   (chatId: string) =>
   (s: RootState): Mood => {
-    const queued = s.live.faceQueue[chatId]?.find((q) => q.until > s.live.now);
+    const queued = s.live.faceQueue[chatId]?.find((q) => q.until > faceNow(s));
     if (queued) return queued.mood;
     if (s.live.speaking[chatId]) return 'speaking';
     return chatMood(moodInput(s, chatId));
+  };
+
+/**
+ * When the one-time `mood` now playing began (the latest, if several chats play it), so a face that mounts part-way through
+ * it (the header on opening a chat, a row scrolled in) joins it there instead of starting over and being cut off.
+ */
+export const selectOnceStart =
+  (mood: Mood) =>
+  (s: RootState): number | undefined => {
+    if (!isOneTime(mood)) return undefined;
+    let start: number | undefined;
+    for (const q of Object.values(s.live.faceQueue)) {
+      const head = q.find((e) => e.until > faceNow(s));
+      if (head?.mood !== mood) continue;
+      const t = head.until - ONE_TIME_MS[mood];
+      if (start == null || t > start) start = t;
+    }
+    return start;
   };
 
 const lastPlayed = new Map<string, number>();
@@ -190,6 +228,18 @@ export function noteJobForFace(s: RootState, prev: JobRow['state'] | undefined, 
   }
 }
 
+/**
+ * §F15.9.3 #2 Waking up: on shell first paint, when the offline line clears and when quiet hours end, every foo and helper
+ * chat (never a group, §F15.9.3d) plays the eyes opening once. Only a living face has eyes to open: a letter, glyph or
+ * picture face shows nothing for it (§F15.9.4), so those chats are skipped and their rows do not re-render twice.
+ */
+export function wakeReducer(s: RootState, now: number): void {
+  for (const id of s.chats.order) {
+    const c = s.chats.byId[id];
+    if (c && (c.kind === 'foo' || c.kind === 'helper') && c.face.startsWith('living:')) playOnceReducer(s.live, id, 'waking', now);
+  }
+}
+
 /** The message store's and reaction handler's calls (§F15.9.9): 👀 → Noticed; foo's or a helper's 👍 / ❤️ → Thumbs up / Heart. */
 export function noteMessageForFace(s: RootState, prev: MessageRow['reactions'] | undefined, row: MessageRow, now: number): void {
   if (!prev || row.authorKind !== 'user' || s.chats.byId[row.chatId]?.kind === 'group') return;
@@ -204,7 +254,7 @@ export function noteMessageForFace(s: RootState, prev: MessageRow['reactions'] |
 /** When the next face change is due (a queued mood ends, Listening runs out), so the clock ticks then. */
 export function nextFaceDue(s: RootState): number | null {
   let due: number | null = null;
-  const now = s.live.now;
+  const now = faceNow(s);
   const take = (t: number) => {
     if (t > now && (due == null || t < due)) due = t;
   };

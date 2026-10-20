@@ -4,11 +4,14 @@
 // motion, §F15.9.7 Narrator (`aria-hidden`) and forced colours, §F15.9.8 (inline SVG + CSS keyframes on transform / opacity;
 // paused when hidden or scrolled away; blink randomised per face), §F15.9.9 component contract (`data-state` = the mood);
 // CR-0021 picks 6–8 (X-179): decorative empty-state poses, the 2–6 s blink and 1px bob at 40px+, "Show foo's eyes".
-import { useEffect, useMemo, useRef, useSyncExternalStore, type CSSProperties } from 'react';
-import { BLINK_MAX_MS, BLINK_MIN_MS, BOB_MIN_SIZE, type FacePoseName, type FaceSize } from '../../shared/face';
+import { memo, useEffect, useMemo, useRef, useSyncExternalStore, type CSSProperties } from 'react';
+import { BLINK_MAX_MS, BLINK_MIN_MS, BOB_MIN_SIZE, BOB_PX, type FacePoseName, type FaceSize } from '../../shared/face';
+import { motion } from '../../shared/tokens';
 import type { FaceRef, Mood } from '../../shared/types';
 import { useReducedMotion } from '../a11y/useReducedMotion';
+import { clockNow } from '../store/apply';
 import { useStore, type RootState } from '../store/index';
+import { selectOnceStart } from '../store/live';
 import { cx } from './cx';
 import styles from './Face.module.css';
 
@@ -163,6 +166,28 @@ function watchVisibility(el: Element): () => void {
   return () => observer?.unobserve(el);
 }
 
+/**
+ * The blink of Resting, Listening and Waiting on you (§F15.9.2): one blink every cycle, as a one-off animation (`data-blinking`, cleared when it ends), so an
+ * idle face draws no frames between blinks. No blink while off screen or while the window is hidden (§F15.9.8).
+ */
+function blinkEvery(el: HTMLElement, cycleMs: number): () => void {
+  const timer = setInterval(() => {
+    if (document.hidden || el.hasAttribute('data-offscreen')) return;
+    el.setAttribute('data-blinking', '');
+  }, cycleMs);
+  const done = (e: AnimationEvent) => {
+    if (/blink/.test(e.animationName)) el.removeAttribute('data-blinking');
+  };
+  el.addEventListener('animationend', done);
+  el.addEventListener('animationcancel', done);
+  return () => {
+    clearInterval(timer);
+    el.removeEventListener('animationend', done);
+    el.removeEventListener('animationcancel', done);
+    el.removeAttribute('data-blinking');
+  };
+}
+
 // ---------------------------------------------------------------- component
 
 export interface FaceProps {
@@ -236,19 +261,33 @@ interface ArtProps {
   tone: 'foo' | 'helper';
   color?: string | null | undefined;
   className?: string | undefined;
+  /** When the one-time mood shown began (`selectOnceStart`). */
+  onceStart?: number | undefined;
   rest: Record<string, unknown>;
 }
 
+/** Two frames: every one-time motion ends this much before its mood does (`ONE_TIME_MS`), so it finishes, never cut. */
+const ONCE_LEAD_MS = 34;
+
 /** Draws one pose; the living face and the empty-state poses share it. */
-function FaceArt({ pose, size, mood, ring, reduced, still, tone, color, className, rest }: ArtProps) {
+function FaceArt({ pose, size, mood, ring, reduced, still, tone, color, className, onceStart, rest }: ArtProps) {
   const lvl = useSpeakingLevel(pose.bars === true);
   const blink = useMemo(() => blinkCycleMs(), []);
+  // A one-time mood's motion starts where the mood is now and ends just before it does (ONCE_LEAD_MS), so it is never cut.
+  const onceAt = useMemo(() => (onceStart == null ? undefined : Math.min(0, onceStart - clockNow()) - ONCE_LEAD_MS), [onceStart]);
   const root = useRef<HTMLSpanElement>(null);
   useEffect(() => (root.current ? watchVisibility(root.current) : undefined), []);
+  const cycle = reduced || still ? null : pose.motion === 'blink' ? blink : pose.motion === 'blink_slow' ? motion['face-blink-slow'] : null;
+  useEffect(() => (cycle && root.current ? blinkEvery(root.current, cycle) : undefined), [cycle]);
 
   const unit = 100 / size;
   const helperFill = tone === 'helper' && color && /^--h-[a-z]+$/.test(color) ? `var(${color})` : undefined;
-  const style = { '--face-blink': `${blink}ms`, '--face-disc': helperFill, '--face-bob': `${unit}px` } as CSSProperties;
+  const style = {
+    '--face-blink': `${blink}ms`,
+    '--face-disc': helperFill,
+    '--face-bob': `${BOB_PX}px`,
+    '--face-once-at': `${onceAt ?? 0}ms`,
+  } as CSSProperties;
   const eyeClass = cx(styles.eye, pose.offline && styles.eyeOffline);
   const bars = pose.bars ? barHeights(lvl) : null;
   const key = mood ?? 'pose';
@@ -265,18 +304,33 @@ function FaceArt({ pose, size, mood, ring, reduced, still, tone, color, classNam
       aria-hidden="true"
       {...rest}
     >
-      <svg key={key} className={styles.svg} viewBox="0 0 100 100" width={size} height={size} overflow="visible">
-        {ring && pose.ring && <RingMark ring={pose.ring} size={size} />}
-        <g className={cx(styles.body, size >= BOB_MIN_SIZE && !still && styles.bob)}>
-          <circle
-            className={cx(styles.disc, pose.offline && styles.discOffline)}
-            cx={50}
-            cy={50}
-            r={50}
-            pathLength={pose.offline ? 100 : undefined}
-            strokeWidth={pose.offline ? 1.5 * unit : undefined}
-          />
-          <g className={cx(styles.eyes, styles[`m_${pose.motion}`])} strokeWidth={pose.offline ? 1.5 * unit : undefined}>
+      {/* The ring and the body are separate layers, so the bob moves the body on the compositor and the ring stays put. */}
+      {ring && pose.ring && (
+        <svg className={cx(styles.svg, styles.ringLayer)} viewBox="0 0 100 100" width={size} height={size} overflow="visible">
+          <g key={key} className={styles.fade}>
+            <RingMark ring={pose.ring} size={size} />
+          </g>
+        </svg>
+      )}
+      <svg
+        className={cx(styles.svg, styles.body, mood === 'resting' && size >= BOB_MIN_SIZE && !still && styles.bob)}
+        data-part="body"
+        viewBox="0 0 100 100"
+        width={size}
+        height={size}
+        overflow="visible"
+      >
+        <circle
+          className={cx(styles.disc, pose.offline && styles.discOffline)}
+          cx={50}
+          cy={50}
+          r={50}
+          pathLength={pose.offline ? 100 : undefined}
+          strokeWidth={pose.offline ? 1.5 * unit : undefined}
+        />
+        {/* §F15.9.2 --m-face-cross: a mood change cross-fades the eyes; the disc stays put. */}
+        <g key={key} className={styles.fade}>
+          <g data-part="eyes" className={cx(styles.eyes, styles[`m_${pose.motion}`])} strokeWidth={pose.offline ? 1.5 * unit : undefined}>
             <Eye shape={pose.left} className={eyeClass} />
             {pose.right === 'mirror' ? (
               <g transform="translate(100 0) scale(-1 1)">
@@ -316,13 +370,28 @@ function FaceArt({ pose, size, mood, ring, reduced, still, tone, color, classNam
   );
 }
 
-/** The living face (§F15.9.9): the only place a mood is drawn. */
-export function Face({ faceRef, size, mood = 'resting', ring = true, animate = true, tone = 'foo', color, className, ...rest }: FaceProps) {
+/**
+ * The living face (§F15.9.9): the only place a mood is drawn. Memoised: a chat row or header that re-renders per keystroke
+ * (its draft line) does not redraw the face (PERF-02).
+ */
+export const Face = memo(function Face({
+  faceRef,
+  size,
+  mood = 'resting',
+  ring = true,
+  animate = true,
+  tone = 'foo',
+  color,
+  className,
+  ...rest
+}: FaceProps) {
   const reduced = useReducedMotion();
   const faceMotion = useStore(selectFaceMotion);
+  const onceStart = useStore(selectOnceStart(mood));
   return (
     <FaceArt
       pose={facePose(mood, animate)}
+      onceStart={onceStart}
       size={size}
       mood={mood}
       ring={ring}
@@ -334,7 +403,7 @@ export function Face({ faceRef, size, mood = 'resting', ring = true, animate = t
       rest={{ ...rest, 'data-face': faceRef }}
     />
   );
-}
+});
 
 /** CR-0021 pick 6: the decorative poses (eyes only, no ring, never a mood). */
 export function emptyPose(name: FacePoseName): Pose {

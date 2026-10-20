@@ -22,6 +22,9 @@
 .svg {
   display: block;
   overflow: visible;
+}
+/* §F15.9.2: every mood change cross-fades (the eyes and ring re-mount per mood; the disc stays). */
+.fade {
   animation: cross var(--m-face-cross) linear;
 }
 .disc {
@@ -52,9 +55,14 @@
   transform-origin: center;
 }
 
-/* CR-0021 pick 7: idle life at 40px and larger, a 1px bob every 4 s (the ring stays put). */
+/* CR-0021 pick 7: idle life, Resting at 40px and larger bobs 1px every 4 s (the ring stays put). The body is its own <svg>, so the
+   bob is an HTML transform the compositor runs, with no repaint per frame. */
+.ringLayer {
+  position: absolute;
+  inset: 0;
+}
 .body {
-  transform-box: view-box;
+  position: relative;
 }
 .bob {
   animation: bob 4000ms ease-in-out infinite; /* local: CR-0021 pick 7, 1px every 4 s */
@@ -76,11 +84,13 @@
 }
 
 /* Eye motion (§F15.9.2). */
-.m_blink .eye {
-  animation: blink var(--face-blink) linear infinite;
+/* Resting, Listening and Waiting on you blink once per cycle (`data-blinking`, set by a timer): the closing is the last 5% of
+   the cycle, as before, and an idle face draws no frames between blinks. */
+.face[data-blinking] .m_blink .eye {
+  animation: blinkOnce calc(var(--face-blink) * 0.05) linear;
 }
-.m_blink_slow .eye {
-  animation: blink var(--m-face-blink-slow) linear infinite;
+.face[data-blinking] .m_blink_slow .eye {
+  animation: blinkOnce calc(var(--m-face-blink-slow) * 0.05) linear;
 }
 .m_drift {
   animation: drift var(--m-face-drift) ease-in-out infinite alternate;
@@ -108,11 +118,20 @@
   /* Each spark plays 1360 of the 1600ms, started 0 / 120 / 240ms in (§F15.9.2 --m-face-party). */
   animation: spark calc(var(--m-face-party) * 0.85) var(--ease-standard) forwards;
 }
+/* A face that mounts part-way through a one-time mood joins it there; each one-time motion ends just before its mood. */
+.m_pop,
+.m_nod,
+.m_wake .eye,
+.ring_full_fade,
+.badge,
+.spark {
+  animation-delay: var(--face-once-at);
+}
 .spark1 {
-  animation-delay: calc(var(--m-face-party) * 0.075);
+  animation-delay: calc(var(--face-once-at) + var(--m-face-party) * 0.075);
 }
 .spark2 {
-  animation-delay: calc(var(--m-face-party) * 0.15);
+  animation-delay: calc(var(--face-once-at) + var(--m-face-party) * 0.15);
 }
 .z {
   fill: var(--eye);
@@ -173,6 +192,15 @@
     transform: scaleY(1);
   }
   97.5% {
+    transform: scaleY(0.08);
+  }
+}
+@keyframes blinkOnce {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
     transform: scaleY(0.08);
   }
 }
@@ -267,14 +295,15 @@
 :global(:root[data-motion='off']) .ring_arc_turning {
   animation: none !important;
 }
-.reduced .svg,
-:global(:root[data-motion='off']) .svg {
+.reduced .fade,
+:global(:root[data-motion='off']) .fade {
   animation: cross var(--m-face-cross) linear !important;
 }
 
-/* §F15.9.8, CR-0021 pick 7: paused off screen and while the window is hidden or minimised. */
-.face[data-offscreen] *,
-:global(:root[data-face-paused]) .face * {
+/* §F15.9.8, CR-0021 pick 7: the loops pause off screen and while the window is hidden or minimised. One-time moods and
+   the cross-fade run out (they are short, and a paused one would never end). */
+.face[data-offscreen] :is(.bob, .ring_arc_turning, .m_drift, .m_drift .eye, .m_scan, .z, .ring_dotted),
+:global(:root[data-face-paused]) .face :is(.bob, .ring_arc_turning, .m_drift, .m_drift .eye, .m_scan, .z, .ring_dotted) {
   animation-play-state: paused !important;
 }
 

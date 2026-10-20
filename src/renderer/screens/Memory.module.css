@@ -87,6 +87,23 @@
   pointer-events: none;
   animation: fact-fold var(--m-normal) var(--ease-out) forwards;
 }
+/* Basic: fades only (CR-0021 pick 3), no height change. */
+:global(:root[data-motion='basic']) .row[data-appear='back'] {
+  animation-name: fact-fade-in;
+}
+:global(:root[data-motion='basic']) .row[data-exit] {
+  animation-name: fact-fade-out;
+}
+@keyframes fact-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes fact-fade-out {
+  to {
+    opacity: 0;
+  }
+}
 :global(:root[data-motion='off']) .row[data-appear],
 :global(:root[data-motion='off']) .row[data-exit] {
   animation: none;

@@ -466,23 +466,23 @@ export function MemoryPage({ view }: { view: Extract<View, { kind: 'screen' }> }
     forget: (f) => {
       // §F7.1: the row folds closed (`--m-normal`, exits are faster than entrances), then leaves the list.
       const exitMs = reducedMotionNow() ? 0 : motion.normal;
+      const without = (s: Set<string>) => {
+        const n = new Set(s);
+        n.delete(f.id);
+        return n;
+      };
+      let failed = false;
       setFolding((s) => new Set(s).add(f.id));
       window.setTimeout(() => {
-        setGone((s) => new Set(s).add(f.id));
-        setFolding((s) => {
-          const n = new Set(s);
-          n.delete(f.id);
-          return n;
-        });
+        setFolding(without);
+        if (!failed) setGone((s) => new Set(s).add(f.id));
       }, exitMs);
       void memoryActions.forget(f.id).then((r) => {
-        if (r.ok) setUndo({ fact: f, token: r.value.undoToken });
-        else
-          setGone((s) => {
-            const n = new Set(s);
-            n.delete(f.id);
-            return n;
-          });
+        if (r.ok) return setUndo({ fact: f, token: r.value.undoToken });
+        // Not forgotten: the row stays (or comes back).
+        failed = true;
+        setFolding(without);
+        setGone(without);
       });
     },
     openRowMenu: (f, el) => {

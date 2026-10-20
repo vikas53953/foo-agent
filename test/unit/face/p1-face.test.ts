@@ -64,13 +64,16 @@ describe('empty-state poses (CR-0021 pick 6, §F16.2 Block face)', () => {
 });
 
 describe('idle life and "Show foo\'s eyes" (CR-0021 picks 7, 8)', () => {
-  it(`bobs at ${BOB_MIN_SIZE}px and larger only`, () => {
+  it(`Resting bobs at ${BOB_MIN_SIZE}px and larger only`, () => {
     expect(face({ size: 48 })).toContain('--face-bob:');
     const small = renderToStaticMarkup(createElement(Face, { faceRef: 'living:default', size: 26, mood: 'resting' }));
     const large = renderToStaticMarkup(createElement(Face, { faceRef: 'living:default', size: 40, mood: 'resting' }));
     // The bob class sits on the disc group only when the face is large enough.
     expect(small.match(/class="[^"]*bob[^"]*"/)).toBeNull();
     expect(large.match(/class="[^"]*bob[^"]*"/)).not.toBeNull();
+  });
+  it('only Resting bobs (pick 7: idle life)', () => {
+    expect(face({ size: 48, mood: 'working' }).match(/class="[^"]*bob[^"]*"/)).toBeNull();
   });
   it('on by default: the face moves', () => {
     expect(face()).toContain('data-motion-face="on"');

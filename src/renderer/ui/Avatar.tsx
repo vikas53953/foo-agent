@@ -105,9 +105,10 @@ export function Avatar({ face, name, kind, color, size = 'list', members, mood, 
       />
     );
   }
+  const wrapped = !!mood && showsOtherMood(face, kind) && (animate || mood === 'working' || mood === 'needs_you');
   const letter = (
     <span
-      className={cx(styles.avatar, styles[size], styles[kind], className)}
+      className={cx(styles.avatar, styles[size], styles[kind], !wrapped && className)}
       style={fillStyle(kind, color)}
       data-mood={mood}
       aria-hidden="true"
@@ -116,9 +117,9 @@ export function Avatar({ face, name, kind, color, size = 'list', members, mood, 
       {faceGlyph(face, name, kind)}
     </span>
   );
-  if (!mood || !showsOtherMood(face, kind) || (!animate && mood !== 'working' && mood !== 'needs_you')) return letter;
+  if (!wrapped) return letter;
   return (
-    <span className={styles.moodRoot} data-other-mood={mood}>
+    <span className={cx(styles.moodRoot, className)} data-other-mood={mood}>
       {letter}
       <OtherFaceMood mood={mood} size={FACE_SIZE[size]} />
     </span>
