@@ -64,6 +64,9 @@ import { draftSecondLook, type DraftLookAnswer, type DraftLookReq } from '../gat
 import type { LiveRead } from '../tools/browser/readLiveTerms';
 import { handbackCopy, handbackUrl } from '../tools/browser/handbackGuard';
 import { SiteNotes, domainOf as siteDomainOf } from '../tools/browser/siteNotes';
+import { RecipeBook } from '../tools/browser/recipes/book';
+import type { RecipeRecorder } from '../tools/browser/recipes/recipe';
+import { newId as freshId } from '../../shared/ids';
 
 export const CHECKLIST_AFTER_MS = 1_500;
 const OBSERVATION_CAP = 4_000;
@@ -191,6 +194,8 @@ export interface JobRunnerDeps {
   browserLive?(jobId: string, draft: ApprovalDraft): Promise<LiveRead>;
   /** T8: the address of the job's browser page (`siteDomain`, 08-4 §28.1 item 5). */
   browserUrl?(jobId: string): string | null;
+  /** 08-2 §8.3.11: the browser's recipe recorder (saved after DONE with proof, replayed by role + name). */
+  recipes?: RecipeRecorder;
 }
 
 export interface CreateJobInput {
@@ -287,6 +292,7 @@ export class JobRunner {
   readonly gating: RunnerGate;
   // M9 T8: 08-2 §8.3.9 site notes (flags + sites/{domain}.md; the step turn reads them).
   private readonly siteNotes: SiteNotes;
+  private readonly recipes: RecipeBook | null;
 
   constructor(private d: JobRunnerDeps) {
     this.siteNotes = new SiteNotes({
@@ -296,6 +302,17 @@ export class JobRunner {
       timeZone: () => d.settings().locale.timeZone,
       log: (e, k) => d.log(e, k),
     });
+    this.recipes = d.recipes
+      ? new RecipeBook({
+          recorder: d.recipes,
+          query: (q, ...args) => this.query(q, ...args),
+          tx: (ops) => this.tx(ops),
+          newId: () => freshId('rcp', d.clock.now()),
+          now: () => d.clock.now(),
+          pageUrl: (id) => d.browserUrl?.(id) ?? null,
+          log: (e, k) => d.log(e, k),
+        })
+      : null;
     const core: RunnerCore = {
       d,
       get cost() {
@@ -1182,7 +1199,11 @@ export class JobRunner {
     ];
     // A refused move (the job left WORKING meanwhile, e.g. a stop) rolls the whole write back: nothing to end here.
     if ((await this.tx(ops)).ok) {
-      if (to === 'done') await this.siteNotes.onDone(job.id, booked); // M9 T8
+      if (to === 'done') {
+        // M9 T8: 08-2 §8.3.9 site notes, §8.3.11 the recipe (DONE with proof only).
+        await this.siteNotes.onDone(job.id, booked);
+        await this.recipes?.saveOnDone(job.id, job.doVerbs);
+      }
       await this.ended(job.id, c);
     }
     return false;
@@ -1370,7 +1391,8 @@ export class JobRunner {
     });
     // M9 T8 (08-2 §8.3.9): the flags of every domain in play close the job block.
     const sites = await this.siteNotes.linesFor(job.id);
-    const block = [this.jobBlock(job, steps, c), ...sites].join('\n');
+    const replay = (await this.recipes?.lines(job.id, job.doVerbs)) ?? []; // §8.3.11 the light step turn's saved steps
+    const block = [this.jobBlock(job, steps, c), ...sites, ...replay].join('\n');
     const built = this.d.prompts.buildStep(block, this.d.tools.catalogue(), memory, steer);
     const maxOut = this.d.ai.turnParams(pick.providerId, 'step').maxOutputTokens;
     if (!(await this.cost.allowStep(job, built.system.length + built.prompt.length, maxOut))) {

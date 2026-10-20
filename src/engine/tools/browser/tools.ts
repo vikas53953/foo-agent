@@ -23,6 +23,7 @@ import { readLiveTerms, type LiveRead } from './readLiveTerms'; // M9 T8
 import type { ApprovalDraft } from '../../../shared/types';
 import type { CaptureGuard } from './types';
 import { Watchdogs, isChallengePage } from './watchdogs';
+import { RecipeRecorder } from './recipes/recipe'; // M9 T8
 
 export interface BrowserToolsDeps {
   dataDir: string;
@@ -63,6 +64,8 @@ export interface BrowserRuntime {
   // M9 T8
   /** `handback.check(url)` over the shipped list (08-4 §27.4). */
   handback(url: string): boolean;
+  /** 08-2 §8.3.11: what the job did on the page by role + name (saved as a recipe after DONE with proof) and the replay match. */
+  recipes: RecipeRecorder;
 }
 
 const BLOCKED_STATUS = new Set([403, 429]);
@@ -122,6 +125,12 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       void masker.apply(win.page()).catch(() => undefined);
     },
   });
+  // M9 T8 (08-2 §8.3.11): a successful click, type, select or check is written down by role + name, never its value.
+  const recipes = new RecipeRecorder();
+  const acted = (jobId: string, tool: string, ref: string, r: ActionResult): ToolOutcome => {
+    if (r.ok) recipes.act(jobId, tool, ref);
+    return out(r);
+  };
   const actions = new Actions({
     router,
     watchdogs,
@@ -240,6 +249,7 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
         if (paused(ctx.jobId)) return { kind: 'error', errorKind: 'VALIDATION', result: { reason: 'sign_in_in_front' } };
         if (page.url() !== 'about:blank' && handback(page.url())) return { kind: 'error', errorKind: 'SITE_HANDBACK' };
         const s = await takeSnapshot(page, router);
+        recipes.seen(ctx.jobId, s.url, s.elements); // M9 T8
         const view = differ.view(ctx.jobId, s);
         snapSeq += 1;
         const text = snapshotText(s, view, { scrub: d.scrub, ref: `snap-${snapSeq}`, ...(a.scope ? { scope: a.scope } : {}) });
@@ -253,7 +263,7 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       'ref: string',
       'Click a control by its [ref]. Buttons that pay, book, send or confirm are refused; use request_approval for those.',
       ARGS.click,
-      async (a, page, ctx) => out(await actions.click(ctx.jobId, page, a.ref)),
+      async (a, page, ctx) => acted(ctx.jobId, 'browser.click', a.ref, await actions.click(ctx.jobId, page, a.ref)),
     ),
     tool(
       'browser.type',
@@ -261,7 +271,7 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       'ref: string, text: string',
       'Type text into a field by [ref]. Never passwords, card numbers or codes.',
       ARGS.type,
-      async (a, page, ctx) => out(await actions.type(ctx.jobId, page, a.ref, a.text)),
+      async (a, page, ctx) => acted(ctx.jobId, 'browser.type', a.ref, await actions.type(ctx.jobId, page, a.ref, a.text)),
     ),
     tool(
       'browser.select',
@@ -269,10 +279,10 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       'ref: string, value: string',
       'Choose an option in a list by [ref].',
       ARGS.select,
-      async (a, page, ctx) => out(await actions.select(ctx.jobId, page, a.ref, a.value)),
+      async (a, page, ctx) => acted(ctx.jobId, 'browser.select', a.ref, await actions.select(ctx.jobId, page, a.ref, a.value)),
     ),
     tool('browser.check', 'prepare', 'ref: string, value?: boolean', 'Tick or untick a box by [ref].', ARGS.check, async (a, page, ctx) =>
-      out(await actions.check(ctx.jobId, page, a.ref, a.value ?? true)),
+      acted(ctx.jobId, 'browser.check', a.ref, await actions.check(ctx.jobId, page, a.ref, a.value ?? true)),
     ),
     tool('browser.press', 'prepare', 'key: string, ref?: string', 'Press a key on the page.', ARGS.press, async (a, page, ctx) =>
       out(await actions.press(ctx.jobId, page, a.key, a.ref ?? null)),
@@ -318,6 +328,7 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
   ];
 
   const runtime: BrowserRuntime = {
+    recipes, // M9 T8
     browser,
     masker,
     shots,
@@ -326,6 +337,7 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
     stepStarted: (jobId) => differ.reset(jobId),
     async jobEnded(jobId) {
       differ.reset(jobId);
+      recipes.forget(jobId); // M9 T8
       actions.forget(jobId);
       watchdogs.forget(jobId);
       await browser.closeWindow(jobId);

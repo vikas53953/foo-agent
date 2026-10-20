@@ -263,7 +263,11 @@ export class Engine {
       scrub: (text) => this.redactor.scrub(text),
       // M9 T8: the live terms right before a booking, read from the job's page (08-2 §9.4.2).
       ...(this.browser
-        ? { browserLive: liveTermsReader(this.browser), browserUrl: (id: string) => this.browser?.page(id)?.url() ?? null }
+        ? {
+            browserLive: liveTermsReader(this.browser),
+            browserUrl: (id: string) => this.browser?.page(id)?.url() ?? null,
+            recipes: this.browser.recipes,
+          }
         : {}),
       hooks: {
         onAiError: (job, kind) => this.recovery.onAiError(job, kind),
