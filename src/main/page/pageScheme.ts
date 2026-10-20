@@ -62,6 +62,15 @@ export function handlePageScheme(registry: PageRegistry = pages): void {
   });
 }
 
+/** A frame's URL; a frame Electron already disposed throws on read, and counts as no frame. */
+function frameUrlOf(frame: { url: string } | null | undefined): string | undefined {
+  try {
+    return frame?.url;
+  } catch {
+    return undefined;
+  }
+}
+
 /** One denied request, logged without its URL (it may carry page text). */
 function logDenied(how: string, url: string): void {
   let scheme = 'unknown';
@@ -83,25 +92,23 @@ const CSP_REFUSED = /violates the following Content Security Policy directive|^R
  */
 export function denyPageRequests(contents: WebContents, registry: PageRegistry = pages): void {
   contents.session.webRequest.onBeforeRequest((details, callback) => {
-    const verdict = pageRequestVerdict({ url: details.url, resourceType: details.resourceType, frameUrl: details.frame?.url }, registry);
+    const verdict = pageRequestVerdict(
+      { url: details.url, resourceType: details.resourceType, frameUrl: frameUrlOf(details.frame) },
+      registry,
+    );
     if (verdict === 'deny') logDenied(`request ${details.resourceType}`, details.url);
     callback({ cancel: verdict === 'deny' });
   });
   contents.on('will-frame-navigate', (details) => {
     if (details.isMainFrame) return;
-    const verdict = pageRequestVerdict({ url: details.url, resourceType: 'subFrame', frameUrl: details.frame?.url }, registry);
+    const verdict = pageRequestVerdict({ url: details.url, resourceType: 'subFrame', frameUrl: frameUrlOf(details.frame) }, registry);
     if (verdict === 'allow') return;
     details.preventDefault();
     logDenied('navigation', details.url);
   });
   contents.on('console-message', (details) => {
     if (!CSP_REFUSED.test(details.message)) return;
-    let frameUrl: string;
-    try {
-      frameUrl = details.frame?.url ?? '';
-    } catch {
-      return;
-    }
+    const frameUrl = frameUrlOf(details.frame) ?? '';
     const fromPage = frameUrl.startsWith(`${PAGE_SCHEME}:`) || details.sourceId.startsWith(`${PAGE_SCHEME}:`);
     if (fromPage || /frame-src/.test(details.message)) logDenied('csp', frameUrl || details.sourceId);
   });

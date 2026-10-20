@@ -23,6 +23,8 @@ export type PageState = 'building' | 'ready' | 'failed' | 'kept';
 
 /** The first height before the page reports its own. */
 const START_HEIGHT = 160;
+/** The last height each page reported, so a row the message list mounts again keeps its size. */
+const heights = new Map<string, number>();
 
 /** What a call main passed does in foo (main already checked the page, the rate and the text). */
 function act(chatId: string, call: PageRpcCall, setHeight: (h: number) => void, askLink: (url: string) => void): void {
@@ -83,18 +85,28 @@ export function PageView({
       const win = frame.current?.contentWindow;
       // Only this frame's own messages; anything else on the window is not the page's to send.
       if (!win || e.source !== win) return;
-      if (!allow(performance.now())) return;
       const data = asJson(e.data);
       const id = callId(data);
       const answer = (r: PageRpcResult) => {
-        if (!r.ok) setRefused(true);
+        setRefused(!r.ok);
         if (id !== null) win.postMessage(rpcReply(id, r), '*');
       };
+      // A flood never reaches main (main's own limit is 10 a second); the page still gets its answer.
+      if (!allow(performance.now())) return answer({ ok: false, refused: 'rate' });
       // Main checks and logs every call: its zod schema refuses a bad one (IPC_REJECTED, logged), then the rate and the text.
       void invoke('page:rpc', { chatId, pageId, call: data as PageRpcCall }).then(
         (r) => {
           const result: PageRpcResult = r.ok ? r.value : { ok: false, refused: 'schema' };
-          if (result.ok) act(chatId, data as PageRpcCall, setHeight, setLink);
+          if (result.ok)
+            act(
+              chatId,
+              data as PageRpcCall,
+              (h) => {
+                heights.set(pageId, h);
+                setHeight(h);
+              },
+              setLink,
+            );
           answer(result);
         },
         () => answer({ ok: false, refused: 'declined' }),
@@ -129,7 +141,7 @@ export function PageView({
           title={t('page.frame.accessible_name', { agentName })}
           sandbox={PAGE_SANDBOX}
           src={`${PAGE_SCHEME}://${pageId}/`}
-          style={{ height }}
+          style={{ height: heights.get(pageId) ?? height }}
         />
       )}
       {refused && (

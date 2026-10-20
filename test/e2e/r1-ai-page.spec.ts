@@ -29,7 +29,8 @@ const TOOL = [
   '  });',
   '}',
   'window.fooCall = fooCall;',
-  'fooCall("reportSize", { height: document.body.scrollHeight + 16 });',
+  // Report the height whenever layout changes (the first report can come before the frame has its width).
+  'new ResizeObserver(function () { fooCall("reportSize", { height: document.documentElement.scrollHeight }); }).observe(document.body);',
   '</script></body></html>',
 ].join('\n');
 
@@ -163,20 +164,13 @@ test('AT-358 AI page sandbox: allow-scripts only; no same-origin, popups or form
   expect(page.frames().some((x) => x.url().includes('example.com'))).toBe(false);
 });
 
-test('AT-359 AI page caps: over 512 KB shows "This page is too big to open"; height stops at 600px and scrolls inside', async () => {
+test('AT-359 AI page caps: height stops at 600px and the page scrolls inside', async () => {
   const f = await toolFrame();
   const frameEl = page.getByTestId(TID.aiPageFrame).first();
   await expect.poll(async () => (await frameEl.boundingBox())?.height ?? 0).toBeGreaterThan(590);
   expect((await frameEl.boundingBox())!.height).toBeLessThanOrEqual(602);
   const scroll = await f.evaluate(() => ({ full: document.documentElement.scrollHeight, view: window.innerHeight }));
   expect(scroll.full).toBeGreaterThan(scroll.view);
-
-  await send(BIG_PROMPT);
-  const big = page.getByTestId(TID.bubbleFoo).filter({ hasText: 'This one is too big.' }).getByTestId(TID.aiPage);
-  await until(big);
-  await expect(big).toHaveAttribute('data-state', 'failed');
-  await expect(big.getByTestId(TID.aiPageStatus)).toHaveText(t('page.state.too_large'));
-  await expect(big.getByTestId(TID.aiPageFrame)).toHaveCount(0);
 });
 
 test('AT-360 AI page bridge: other sources, bad schema and more than 10 calls per second are refused; every call is logged', async () => {
@@ -264,4 +258,14 @@ test('AT-357 AI page sealed: a fetch, an image URL and a navigation inside the p
   });
   await expect.poll(denied, { timeout: 10_000 }).toBeGreaterThan(before);
   expect(page.frames().some((x) => x.url().includes('example.com'))).toBe(false);
+});
+
+// After the tool tests: the new reply pushes the tool's bubble out of the message list's window.
+test('AT-359 AI page caps: a page over 512 KB shows "This page is too big to open"', async () => {
+  await send(BIG_PROMPT);
+  const big = page.getByTestId(TID.bubbleFoo).filter({ hasText: 'This one is too big.' }).getByTestId(TID.aiPage);
+  await until(big);
+  await expect(big).toHaveAttribute('data-state', 'failed');
+  await expect(big.getByTestId(TID.aiPageStatus)).toHaveText(t('page.state.too_large'));
+  await expect(big.getByTestId(TID.aiPageFrame)).toHaveCount(0);
 });
