@@ -218,7 +218,6 @@
         "15",
         "minutes.",
         "1",
-        "f",
         "9:41",
         "Payment:",
         "Pay",
@@ -250,6 +249,7 @@
         "17",
         "Oct",
         "4",
+        "4",
         "M",
         "8:02",
         "AM",
@@ -262,7 +262,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -844,8 +843,8 @@
     "total": 12768
   },
   "r5": {
-    "ratio": 0.1272353515625,
-    "diffPixels": 130289,
+    "ratio": 0.1273896484375,
+    "diffPixels": 130447,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-05.dark.diff.png"

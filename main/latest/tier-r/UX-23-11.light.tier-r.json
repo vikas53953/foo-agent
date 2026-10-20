@@ -142,7 +142,6 @@
         "₹0"
       ],
       "extra": [
-        "f",
         "9:41",
         "Payment:",
         "Pay",
@@ -176,6 +175,7 @@
         "17",
         "Oct",
         "4",
+        "4",
         "M",
         "8:02",
         "AM",
@@ -188,7 +188,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -590,8 +589,8 @@
     "total": 2324
   },
   "r5": {
-    "ratio": 0.0920498046875,
-    "diffPixels": 94259,
+    "ratio": 0.0920654296875,
+    "diffPixels": 94275,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-11.light.diff.png"

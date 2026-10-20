@@ -125,6 +125,7 @@
         "▾",
         "Your",
         "Using:",
+        "✓",
         "2",
         "min",
         "ago",
@@ -136,7 +137,7 @@
         "Cost"
       ],
       "extra": [
-        "f",
+        "z",
         "3:30",
         "Setting",
         "up…",
@@ -218,8 +219,8 @@
     "total": 2072
   },
   "r5": {
-    "ratio": 0.0275458984375,
-    "diffPixels": 28207,
+    "ratio": 0.0275361328125,
+    "diffPixels": 28197,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-24-02.light.diff.png"

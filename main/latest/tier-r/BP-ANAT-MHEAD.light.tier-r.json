@@ -12,6 +12,7 @@
     "verdict": "fail",
     "frame": {
       "missing": [
+        "f",
         "▣",
         "⌕",
         "▯",
@@ -67,8 +68,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.0346711259754738,
-    "diffPixels": 1244,
+    "ratio": 0.046432552954292085,
+    "diffPixels": 1666,
     "total": 35880,
     "sizeMismatch": {
       "a": [

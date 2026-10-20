@@ -159,7 +159,6 @@
       "extra": [
         "1",
         "1",
-        "f",
         "9:41",
         "AM",
         "Needs",
@@ -216,7 +215,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -262,7 +260,6 @@
         "AI",
         "this",
         "month",
-        "f",
         "Needs",
         "you:",
         "Pay",
@@ -581,8 +578,8 @@
     "total": 3024
   },
   "r5": {
-    "ratio": 0.0774189453125,
-    "diffPixels": 79277,
+    "ratio": 0.0778544921875,
+    "diffPixels": 79723,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-04-07.light.diff.png"

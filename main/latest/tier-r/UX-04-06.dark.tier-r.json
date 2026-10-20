@@ -106,6 +106,7 @@
         "trips?",
         "7:46",
         "PM",
+        "✓",
         "v••••@gmail.com",
         "＋",
         "🎙",
@@ -131,7 +132,6 @@
       "extra": [
         "1",
         "1",
-        "f",
         "9:41",
         "AM",
         "Needs",
@@ -187,7 +187,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -233,7 +232,6 @@
         "AI",
         "this",
         "month",
-        "f",
         "foo",
         "Needs",
         "you:",
@@ -577,8 +575,8 @@
     "total": 28815
   },
   "r5": {
-    "ratio": 0.0891220703125,
-    "diffPixels": 91261,
+    "ratio": 0.0894013671875,
+    "diffPixels": 91547,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-04-06.dark.diff.png"

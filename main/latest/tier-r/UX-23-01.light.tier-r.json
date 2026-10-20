@@ -134,7 +134,6 @@
         "I’ll",
         "you’re",
         "1",
-        "f",
         "9:41",
         "Payment:",
         "Pay",
@@ -166,6 +165,8 @@
         "17",
         "Oct",
         "4",
+        "4",
+        "4",
         "M",
         "8:02",
         "AM",
@@ -178,7 +179,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -422,6 +422,7 @@
         "3",
         "hotel",
         "sites",
+        "3",
         "Kept",
         "3",
         "hotels",
@@ -567,8 +568,8 @@
     "total": 51200
   },
   "r5": {
-    "ratio": 0.094892578125,
-    "diffPixels": 97170,
+    "ratio": 0.093796875,
+    "diffPixels": 96048,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-01.light.diff.png"

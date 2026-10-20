@@ -25,7 +25,6 @@
         "blurred."
       ],
       "extra": [
-        "f",
         "Goa",
         "stay",
         "·",
@@ -83,8 +82,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.24861707306279596,
-    "diffPixels": 22472,
+    "ratio": 0.24820772668938354,
+    "diffPixels": 22435,
     "total": 90388,
     "sizeMismatch": {
       "a": [

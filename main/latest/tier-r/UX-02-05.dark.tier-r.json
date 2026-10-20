@@ -41,6 +41,7 @@
         "→",
         "Let's",
         "go",
+        "✓",
         "＋",
         "🎙",
         "✕",
@@ -57,7 +58,7 @@
         "₹1,000"
       ],
       "extra": [
-        "f",
+        "z",
         "3:30",
         "AM",
         "up…",
@@ -65,7 +66,7 @@
         "your",
         "Claude",
         "plan",
-        "f",
+        "z",
         "foo",
         "Setting",
         "up",
@@ -125,7 +126,6 @@
     "hl": {
       "missing": [],
       "extra": [
-        "✓",
         "3:30",
         "AM"
       ]
@@ -169,13 +169,13 @@
   "r4": {
     "verdict": "pass",
     "skipped": null,
-    "ratio": 0.01950373069581815,
-    "diffPixels": 562,
+    "ratio": 0.01985077216727399,
+    "diffPixels": 572,
     "total": 28815
   },
   "r5": {
-    "ratio": 0.0260673828125,
-    "diffPixels": 26693,
+    "ratio": 0.0261396484375,
+    "diffPixels": 26767,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-02-05.dark.diff.png"

@@ -186,7 +186,6 @@
       ],
       "extra": [
         "1",
-        "f",
         "9:41",
         "Working",
         "on",
@@ -225,6 +224,7 @@
         "17",
         "Oct",
         "4",
+        "4",
         "M",
         "8:02",
         "AM",
@@ -237,7 +237,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -637,8 +636,8 @@
     "total": 12654
   },
   "r5": {
-    "ratio": 0.1067880859375,
-    "diffPixels": 109351,
+    "ratio": 0.1069150390625,
+    "diffPixels": 109481,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-15-06.dark.diff.png"

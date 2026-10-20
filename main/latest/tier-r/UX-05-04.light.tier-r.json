@@ -123,7 +123,6 @@
         "₹0"
       ],
       "extra": [
-        "f",
         "9:41",
         "AM",
         "Found",
@@ -198,7 +197,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Thu",
@@ -241,7 +239,6 @@
         "AI",
         "this",
         "month",
-        "f",
         "Awake",
         "on",
         "your",
@@ -577,8 +574,8 @@
     "total": 3900
   },
   "r5": {
-    "ratio": 0.0610830078125,
-    "diffPixels": 62549,
+    "ratio": 0.061328125,
+    "diffPixels": 62800,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-05-04.light.diff.png"

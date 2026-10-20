@@ -122,6 +122,7 @@
         "Connected",
         "as",
         "v••••@gmail.com",
+        "✓",
         "＋",
         "🎙",
         "✕",
@@ -146,7 +147,6 @@
       ],
       "extra": [
         "2",
-        "f",
         "9:41",
         "AM",
         "Needs",
@@ -198,7 +198,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Thu",
@@ -241,7 +240,6 @@
         "AI",
         "this",
         "month",
-        "f",
         "foo",
         "Needs",
         "you:",
@@ -596,8 +594,8 @@
     "total": 23256
   },
   "r5": {
-    "ratio": 0.0702265625,
-    "diffPixels": 71912,
+    "ratio": 0.0704189453125,
+    "diffPixels": 72109,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-04-09.light.diff.png"

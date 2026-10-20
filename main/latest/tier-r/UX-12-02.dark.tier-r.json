@@ -178,7 +178,6 @@
       ],
       "extra": [
         "1",
-        "f",
         "9:05",
         "Pick",
         "one:",
@@ -229,7 +228,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -258,7 +256,6 @@
         "Done",
         "Mon",
         "Mon",
-        "f",
         "Needs",
         "you:",
         "Which",
@@ -411,6 +408,9 @@
         "table",
         "live",
         "checklist",
+        "Z",
+        "E",
+        "R",
         "that",
         "fit",
         "›",
@@ -569,6 +569,9 @@
         "table",
         "live",
         "checklist",
+        "Z",
+        "E",
+        "R",
         "that",
         "fit",
         "›",
@@ -607,12 +610,12 @@
         },
         "app": {
           "x": 356,
-          "y": 387,
+          "y": 367,
           "width": 440,
-          "height": 278
+          "height": 298
         },
-        "dPos": 144,
-        "dSize": 90,
+        "dPos": 164,
+        "dSize": 110,
         "verdict": "fail"
       }
     ]
@@ -632,13 +635,13 @@
   "r4": {
     "verdict": "review",
     "skipped": null,
-    "ratio": 0.09109042553191489,
-    "diffPixels": 7535,
+    "ratio": 0.085178916827853,
+    "diffPixels": 7046,
     "total": 82720
   },
   "r5": {
-    "ratio": 0.1183828125,
-    "diffPixels": 121224,
+    "ratio": 0.1191298828125,
+    "diffPixels": 121989,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-02.dark.diff.png"

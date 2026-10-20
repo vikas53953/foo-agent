@@ -219,7 +219,6 @@
       "extra": [
         "1",
         "1",
-        "f",
         "9:41",
         "AM",
         "Needs",
@@ -275,7 +274,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -321,7 +319,6 @@
         "AI",
         "this",
         "month",
-        "f",
         "foo",
         "Needs",
         "you:",
@@ -705,13 +702,13 @@
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.9473938849387025,
-    "diffPixels": 219316,
+    "ratio": 0.9474068442378636,
+    "diffPixels": 219319,
     "total": 231494
   },
   "r5": {
-    "ratio": 0.55262109375,
-    "diffPixels": 565884,
+    "ratio": 0.5529052734375,
+    "diffPixels": 566175,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-04-05.dark.diff.png"

@@ -139,7 +139,6 @@
         "18",
         "Dec?",
         "3",
-        "f",
         "foo",
         "9:41",
         "AM",
@@ -170,6 +169,7 @@
         "17",
         "Oct",
         "4",
+        "4",
         "M",
         "8:02",
         "AM",
@@ -182,7 +182,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -352,6 +351,7 @@
         "checklist",
         "4",
         "airlines",
+        "4",
         "flights",
         "your",
         "times",
@@ -539,6 +539,7 @@
         "checklist",
         "4",
         "airlines",
+        "4",
         "flights",
         "your",
         "times",
@@ -576,12 +577,12 @@
         },
         "app": {
           "x": 356,
-          "y": 61,
+          "y": 41,
           "width": 440,
-          "height": 224
+          "height": 244
         },
-        "dPos": 506,
-        "dSize": 72,
+        "dPos": 526,
+        "dSize": 92,
         "verdict": "fail"
       }
     ]
@@ -601,13 +602,13 @@
   "r4": {
     "verdict": "review",
     "skipped": null,
-    "ratio": 0.07965011961722487,
-    "diffPixels": 5327,
+    "ratio": 0.08476375598086125,
+    "diffPixels": 5669,
     "total": 66880
   },
   "r5": {
-    "ratio": 0.0600439453125,
-    "diffPixels": 61485,
+    "ratio": 0.060453125,
+    "diffPixels": 61904,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-01.light.diff.png"

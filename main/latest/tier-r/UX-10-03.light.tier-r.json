@@ -140,7 +140,6 @@
         "Fri",
         "18",
         "Dec?",
-        "f",
         "foo",
         "9:41",
         "AM",
@@ -171,6 +170,7 @@
         "17",
         "Oct",
         "4",
+        "4",
         "M",
         "8:02",
         "AM",
@@ -183,7 +183,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -353,6 +352,7 @@
         "checklist",
         "4",
         "airlines",
+        "4",
         "flights",
         "your",
         "times",
@@ -519,8 +519,8 @@
     "total": 1296
   },
   "r5": {
-    "ratio": 0.0592197265625,
-    "diffPixels": 60641,
+    "ratio": 0.059607421875,
+    "diffPixels": 61038,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-03.light.diff.png"

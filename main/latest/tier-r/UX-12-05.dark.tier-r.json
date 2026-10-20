@@ -210,7 +210,6 @@
         "₹0"
       ],
       "extra": [
-        "f",
         "9:05",
         "this",
         "table?",
@@ -255,7 +254,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -284,7 +282,6 @@
         "Done",
         "Mon",
         "Mon",
-        "f",
         "this",
         "table?",
         "ਕੇਕ",
@@ -396,6 +393,9 @@
         "table",
         "live",
         "checklist",
+        "Z",
+        "E",
+        "R",
         "Kept",
         "3",
         "Italian",
@@ -548,13 +548,13 @@
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.20546218487394957,
-    "diffPixels": 489,
+    "ratio": 0.2042016806722689,
+    "diffPixels": 486,
     "total": 2380
   },
   "r5": {
-    "ratio": 0.1025849609375,
-    "diffPixels": 105047,
+    "ratio": 0.10384375,
+    "diffPixels": 106336,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-05.dark.diff.png"

@@ -144,7 +144,7 @@
         "₹1,000"
       ],
       "extra": [
-        "f",
+        "z",
         "3:30",
         "AM",
         "up…",
@@ -152,7 +152,7 @@
         "Uses",
         "your",
         "plan",
-        "f",
+        "z",
         "Setting",
         "up",
         "·",
@@ -181,29 +181,23 @@
         "the",
         "already",
         "use…",
-        "C",
         "not",
         "found",
-        "C",
         "ChatGPT",
         "not",
         "found",
-        "G",
         "not",
         "found",
-        "O",
         "OpenAI",
         "found",
         "on",
         "this",
         "PC",
         "works",
-        "Y",
         "Your",
         "key",
         "Add",
         "secret",
-        "A",
         "AI",
         "on",
         "this",
@@ -225,7 +219,6 @@
         "Use",
         "I’ll",
         "OpenAI",
-        "✓",
         "Saved",
         "securely.",
         "foo’s",
@@ -293,7 +286,6 @@
         "cap"
       ],
       "extra": [
-        "O",
         "OpenAI",
         "key",
         "found",
@@ -317,11 +309,11 @@
         },
         "app": {
           "x": 372,
-          "y": 227,
+          "y": 211,
           "width": 488,
           "height": 56
         },
-        "dPos": 333,
+        "dPos": 349,
         "dSize": 396.9375,
         "verdict": "fail"
       }
@@ -342,13 +334,13 @@
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.12205651491365777,
-    "diffPixels": 311,
+    "ratio": 0.14913657770800628,
+    "diffPixels": 380,
     "total": 2548
   },
   "r5": {
-    "ratio": 0.0422294921875,
-    "diffPixels": 43243,
+    "ratio": 0.042427734375,
+    "diffPixels": 43446,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-02-09.light.diff.png"

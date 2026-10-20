@@ -13,6 +13,7 @@
     "verdict": "fail",
     "frame": {
       "missing": [
+        "f",
         "typing…",
         "F",
         "Family",
@@ -59,7 +60,6 @@
         "17",
         "Oct",
         "4",
-        "f",
         "T",
         "Family",
         "group",
@@ -134,8 +134,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.10063060662581046,
-    "diffPixels": 18128,
+    "ratio": 0.1015687450039968,
+    "diffPixels": 18297,
     "total": 180144,
     "sizeMismatch": {
       "a": [

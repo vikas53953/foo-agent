@@ -207,7 +207,6 @@
       ],
       "extra": [
         "1",
-        "f",
         "9:05",
         "Pick",
         "one:",
@@ -258,7 +257,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -287,7 +285,6 @@
         "Done",
         "Mon",
         "Mon",
-        "f",
         "Needs",
         "you:",
         "Which",
@@ -404,6 +401,9 @@
         "table",
         "live",
         "checklist",
+        "Z",
+        "E",
+        "R",
         "that",
         "fit",
         "›",
@@ -583,8 +583,8 @@
     "total": 19650
   },
   "r5": {
-    "ratio": 0.094486328125,
-    "diffPixels": 96754,
+    "ratio": 0.09436328125,
+    "diffPixels": 96628,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-03.light.diff.png"

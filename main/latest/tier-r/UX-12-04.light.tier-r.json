@@ -167,6 +167,13 @@
         "8:00",
         "PM",
         "＋",
+        "Message",
+        "foo,",
+        "or",
+        "hold",
+        "Ctrl+Space",
+        "to",
+        "talk",
         "🎙",
         "✕",
         "Table",
@@ -185,7 +192,6 @@
       ],
       "extra": [
         "1",
-        "f",
         "9:05",
         "Working",
         "on",
@@ -234,7 +240,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -263,7 +268,6 @@
         "Done",
         "Mon",
         "Mon",
-        "f",
         "Booking",
         "the",
         "of",
@@ -414,6 +418,9 @@
         "table",
         "live",
         "checklist",
+        "Z",
+        "E",
+        "R",
         "Kept",
         "3",
         "Italian",
@@ -448,6 +455,8 @@
         "Kitchen",
         "9:05",
         "AM",
+        "Add",
+        "details…",
         "In",
         "progress",
         "Scheduled",
@@ -538,6 +547,9 @@
         "table",
         "live",
         "checklist",
+        "Z",
+        "E",
+        "R",
         "Kept",
         "3",
         "Italian",
@@ -580,12 +592,12 @@
         },
         "app": {
           "x": 356,
-          "y": 435,
+          "y": 415,
           "width": 440,
-          "height": 278
+          "height": 298
         },
-        "dPos": 36,
-        "dSize": 90,
+        "dPos": 56,
+        "dSize": 110,
         "verdict": "fail"
       }
     ]
@@ -605,13 +617,13 @@
   "r4": {
     "verdict": "review",
     "skipped": null,
-    "ratio": 0.07537475822050291,
-    "diffPixels": 6235,
+    "ratio": 0.07243713733075435,
+    "diffPixels": 5992,
     "total": 82720
   },
   "r5": {
-    "ratio": 0.08690625,
-    "diffPixels": 88992,
+    "ratio": 0.09921875,
+    "diffPixels": 101600,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-04.light.diff.png"

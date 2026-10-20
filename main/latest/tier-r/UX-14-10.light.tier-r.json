@@ -1,12 +1,13 @@
 {
   "id": "UX-14-10",
   "theme": "light",
-  "verdict": "review",
+  "verdict": "disputed",
   "disputed": {
     "cr": "CR-0013",
     "checks": [
       "r1",
-      "r2"
+      "r2",
+      "r4"
     ]
   },
   "r1": {
@@ -145,7 +146,6 @@
         "Needs",
         "you",
         "1",
-        "f",
         "9:41",
         "Payment:",
         "Pay",
@@ -190,6 +190,8 @@
         "17",
         "Oct",
         "4",
+        "4",
+        "4",
         "M",
         "8:02",
         "AM",
@@ -201,7 +203,6 @@
         "Fri",
         "23",
         "2",
-        "f",
         "H",
         "T",
         "foo:",
@@ -354,6 +355,7 @@
         "trains",
         "on",
         "RailPass",
+        "R",
         "Signed",
         "to",
         "127.0.0.1",
@@ -502,15 +504,15 @@
     ]
   },
   "r4": {
-    "verdict": "review",
+    "verdict": "fail",
     "skipped": null,
-    "ratio": 0.0989504617968094,
-    "diffPixels": 2357,
+    "ratio": 0.10075566750629723,
+    "diffPixels": 2400,
     "total": 23820
   },
   "r5": {
-    "ratio": 0.090490234375,
-    "diffPixels": 92662,
+    "ratio": 0.0906435546875,
+    "diffPixels": 92819,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-10.light.diff.png"

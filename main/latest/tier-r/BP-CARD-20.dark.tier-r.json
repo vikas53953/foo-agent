@@ -34,7 +34,9 @@
         "this",
         "month’s",
         "AI",
-        "(₹1,000).",
+        "(",
+        "₹1,000",
+        ").",
         "I’ve",
         "paused",
         "1",
@@ -102,8 +104,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.15438882105548773,
-    "diffPixels": 6828,
+    "ratio": 0.1557907113462669,
+    "diffPixels": 6890,
     "total": 44226,
     "sizeMismatch": {
       "a": [

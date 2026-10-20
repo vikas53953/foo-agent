@@ -108,7 +108,6 @@
         "everything"
       ],
       "extra": [
-        "f",
         "12:00",
         "PM",
         "Allergic",
@@ -142,6 +141,17 @@
         "17",
         "Oct",
         "4",
+        "4",
+        "4",
+        "4",
+        "4",
+        "4",
+        "4",
+        "4",
+        "4",
+        "4",
+        "4",
+        "4",
         "M",
         "8:02",
         "AM",
@@ -154,7 +164,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -678,13 +687,13 @@
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.8921875,
-    "diffPixels": 2284,
+    "ratio": 0.892578125,
+    "diffPixels": 2285,
     "total": 2560
   },
   "r5": {
-    "ratio": 0.042396484375,
-    "diffPixels": 43414,
+    "ratio": 0.0438740234375,
+    "diffPixels": 44927,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-18-05.light.diff.png"

@@ -126,7 +126,6 @@
         "I’m",
         "stay",
         "1",
-        "f",
         "foo",
         "9:41",
         "AM",
@@ -157,6 +156,7 @@
         "17",
         "Oct",
         "4",
+        "4",
         "M",
         "8:02",
         "AM",
@@ -169,7 +169,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -363,6 +362,7 @@
         "3",
         "hotel",
         "sites",
+        "3",
         "Picking",
         "the",
         "best",
@@ -516,8 +516,8 @@
     "total": 3248
   },
   "r5": {
-    "ratio": 0.1103544921875,
-    "diffPixels": 113003,
+    "ratio": 0.1106552734375,
+    "diffPixels": 113311,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-06.dark.diff.png"

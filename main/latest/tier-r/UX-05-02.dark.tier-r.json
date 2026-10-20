@@ -93,7 +93,6 @@
         "₹0"
       ],
       "extra": [
-        "f",
         "9:41",
         "AM",
         "typing…",
@@ -141,7 +140,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Thu",
@@ -184,7 +182,6 @@
         "AI",
         "this",
         "month",
-        "f",
         "typing…",
         "No,",
         "Mon",
@@ -362,7 +359,6 @@
         "Village",
         "9:41",
         "AM",
-        "f",
         "In",
         "progress",
         "Scheduled",
@@ -478,8 +474,8 @@
     "total": 9576
   },
   "r5": {
-    "ratio": 0.0997763671875,
-    "diffPixels": 102171,
+    "ratio": 0.0997314453125,
+    "diffPixels": 102125,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-05-02.dark.diff.png"

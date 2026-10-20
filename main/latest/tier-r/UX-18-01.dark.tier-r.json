@@ -102,7 +102,6 @@
         "₹0"
       ],
       "extra": [
-        "f",
         "12:00",
         "PM",
         "Allergic",
@@ -136,6 +135,14 @@
         "17",
         "Oct",
         "4",
+        "4",
+        "4",
+        "4",
+        "4",
+        "4",
+        "4",
+        "4",
+        "4",
         "M",
         "8:02",
         "AM",
@@ -148,7 +155,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -177,7 +183,6 @@
         "Done",
         "Mon",
         "Mon",
-        "f",
         "No,",
         "Mon",
         "2",
@@ -440,13 +445,13 @@
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.28429365311494587,
-    "diffPixels": 1944,
+    "ratio": 0.2845861362971629,
+    "diffPixels": 1946,
     "total": 6838
   },
   "r5": {
-    "ratio": 0.0985078125,
-    "diffPixels": 100872,
+    "ratio": 0.0984765625,
+    "diffPixels": 100840,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-18-01.dark.diff.png"

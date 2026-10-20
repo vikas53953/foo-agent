@@ -94,13 +94,6 @@
         "Trips",
         "Working",
         "on",
-        "Goa",
-        "stay",
-        "·",
-        "step",
-        "3",
-        "of",
-        "4",
         "▣",
         "Watch",
         "live",
@@ -211,6 +204,13 @@
         "—",
         "☐",
         "✕",
+        "Goa",
+        "stay",
+        "·",
+        "step",
+        "3",
+        "of",
+        "4",
         "You're",
         "makemytrip.com",
         "makemytrip.com",
@@ -251,7 +251,6 @@
         "16-10-2026"
       ],
       "extra": [
-        "f",
         "YOU’RE",
         "IN",
         "CONTROL",
@@ -315,8 +314,8 @@
     "total": 4448
   },
   "r5": {
-    "ratio": 0.4222509765625,
-    "diffPixels": 432385,
+    "ratio": 0.422240234375,
+    "diffPixels": 432374,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-15-04.light.diff.png"

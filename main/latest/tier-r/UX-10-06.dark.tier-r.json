@@ -136,7 +136,6 @@
         "Needs",
         "you",
         "3",
-        "f",
         "foo",
         "9:41",
         "AM",
@@ -167,7 +166,9 @@
         "17",
         "Oct",
         "4",
-        "f",
+        "4",
+        "4",
+        "4",
         "H",
         "T",
         "Family",
@@ -399,8 +400,8 @@
     "total": 1512
   },
   "r5": {
-    "ratio": 0.0821376953125,
-    "diffPixels": 84109,
+    "ratio": 0.08241796875,
+    "diffPixels": 84396,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-06.dark.diff.png"

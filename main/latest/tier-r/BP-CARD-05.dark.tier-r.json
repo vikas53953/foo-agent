@@ -25,7 +25,7 @@
       ],
       "extra": [
         "in",
-        "60:00",
+        "59:52",
         "Will",
         "send",
         "r.sharma@example.com",
@@ -120,8 +120,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.16142523193805244,
-    "diffPixels": 8839,
+    "ratio": 0.16137044342172546,
+    "diffPixels": 8836,
     "total": 54756,
     "sizeMismatch": {
       "a": [

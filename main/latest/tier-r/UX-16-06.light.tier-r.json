@@ -151,7 +151,6 @@
       "extra": [
         "1",
         "1",
-        "f",
         "11:15",
         "Needs",
         "OK:",
@@ -206,7 +205,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -235,7 +233,6 @@
         "Done",
         "Mon",
         "Mon",
-        "f",
         "Needs",
         "you:",
         "3",
@@ -519,18 +516,18 @@
         "·",
         "Edit",
         "₹15,779",
-        "foo",
-        "sent",
-        "Approval",
-        "needed:",
+        "Waiting",
+        "for",
+        "your",
+        "OK:",
         "Send",
         "this",
         "email",
         "to",
         "Priya",
-        "Nair?,",
-        "needs",
-        "you"
+        "Nair?.",
+        "Show",
+        "button."
       ]
     },
     "hl": {
@@ -645,8 +642,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.1036201171875,
-    "diffPixels": 106107,
+    "ratio": 0.10731640625,
+    "diffPixels": 109892,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-06.light.diff.png"

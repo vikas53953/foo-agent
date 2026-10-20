@@ -148,7 +148,6 @@
         "₹0"
       ],
       "extra": [
-        "f",
         "9:05",
         "typing…",
         "Done",
@@ -192,7 +191,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -221,7 +219,6 @@
         "Done",
         "Mon",
         "Mon",
-        "f",
         "typing…",
         "No,",
         "Mon",
@@ -387,7 +384,6 @@
         "Village",
         "book",
         "a",
-        "f",
         "In",
         "progress",
         "Scheduled",
@@ -476,8 +472,8 @@
     "total": 23820
   },
   "r5": {
-    "ratio": 0.1058798828125,
-    "diffPixels": 108421,
+    "ratio": 0.10589453125,
+    "diffPixels": 108436,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-01.light.diff.png"

@@ -5,13 +5,16 @@
   "disputed": {
     "cr": "CR-0002",
     "checks": [
+      "r1",
       "r2"
     ]
   },
   "r1": {
-    "verdict": "pass",
+    "verdict": "fail",
     "frame": {
-      "missing": [],
+      "missing": [
+        "f"
+      ],
       "extra": []
     },
     "hl": {
@@ -62,8 +65,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.037698412698412696,
-    "diffPixels": 836,
+    "ratio": 0.047979797979797977,
+    "diffPixels": 1064,
     "total": 22176,
     "sizeMismatch": {
       "a": [

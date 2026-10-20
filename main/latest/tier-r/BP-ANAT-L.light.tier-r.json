@@ -21,6 +21,7 @@
         "⌕",
         "Search",
         "chats",
+        "f",
         "typing…",
         "F",
         "Family",
@@ -39,6 +40,7 @@
         "to",
         "see",
         "⚙",
+        "f",
         "▣",
         "⌕",
         "▯",
@@ -191,7 +193,6 @@
         "17",
         "Oct",
         "4",
-        "f",
         "T",
         "Family",
         "group",
@@ -439,8 +440,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.068677734375,
-    "diffPixels": 70326,
+    "ratio": 0.0691669921875,
+    "diffPixels": 70827,
     "total": 1024000,
     "sizeMismatch": {
       "a": [

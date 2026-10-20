@@ -181,7 +181,6 @@
         "Needs",
         "you",
         "1",
-        "f",
         "9:41",
         "Payment:",
         "Pay",
@@ -220,6 +219,8 @@
         "17",
         "Oct",
         "4",
+        "4",
+        "4",
         "M",
         "8:02",
         "AM",
@@ -231,7 +232,6 @@
         "Fri",
         "23",
         "2",
-        "f",
         "H",
         "T",
         "foo:",
@@ -513,8 +513,8 @@
     "total": 6292
   },
   "r5": {
-    "ratio": 0.1001943359375,
-    "diffPixels": 102599,
+    "ratio": 0.1002509765625,
+    "diffPixels": 102657,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-05.light.diff.png"

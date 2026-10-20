@@ -64,8 +64,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.0072271386430678465,
-    "diffPixels": 147,
+    "ratio": 0.017404129793510324,
+    "diffPixels": 354,
     "total": 20340,
     "sizeMismatch": null,
     "heatmap": "BP-ANAT-RHEAD.light.diff.png"

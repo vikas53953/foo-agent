@@ -234,10 +234,10 @@
       ],
       "extra": [
         "2",
-        "f",
         "11:01",
         "Needs",
         "OK:",
+        "Working",
         "Needs",
         "you",
         "T",
@@ -266,6 +266,8 @@
         "17",
         "Oct",
         "4",
+        "4",
+        "4",
         "M",
         "8:02",
         "AM",
@@ -278,7 +280,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -307,7 +308,6 @@
         "Done",
         "Mon",
         "Mon",
-        "f",
         "compare",
         "Goa",
         "flights",
@@ -619,8 +619,8 @@
     "total": 44000
   },
   "r5": {
-    "ratio": 0.104189453125,
-    "diffPixels": 106690,
+    "ratio": 0.104375,
+    "diffPixels": 106880,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-10.dark.diff.png"

@@ -92,7 +92,6 @@
         "₹0"
       ],
       "extra": [
-        "f",
         "9:05",
         "Yes,",
         "8:00",
@@ -149,7 +148,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -178,7 +176,6 @@
         "Done",
         "Mon",
         "Mon",
-        "f",
         "The",
         "next",
         "holiday",
@@ -344,7 +341,7 @@
         "open.",
         "Worked",
         "for",
-        "6s",
+        "4s",
         "9:05",
         "Proof:",
         "screenshot",
@@ -420,7 +417,7 @@
         "open.",
         "Worked",
         "for",
-        "6s",
+        "4s",
         "9:05"
       ]
     }
@@ -468,8 +465,8 @@
     "total": 23820
   },
   "r5": {
-    "ratio": 0.1106875,
-    "diffPixels": 113344,
+    "ratio": 0.1112451171875,
+    "diffPixels": 113915,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-12.light.diff.png"

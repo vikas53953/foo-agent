@@ -83,14 +83,14 @@
         "₹1,000"
       ],
       "extra": [
-        "f",
+        "z",
         "3:30",
         "AM",
         "up…",
         "Uses",
         "your",
         "plan",
-        "f",
+        "z",
         "Setting",
         "up",
         "·",
@@ -110,17 +110,12 @@
         "new",
         "message",
         "I’m",
-        "C",
         "signed",
         "in",
-        "C",
         "signed",
         "in",
-        "G",
-        "Y",
         "Your",
         "own",
-        "A",
         "I’ll",
         "Claude.",
         "it’s",
@@ -160,7 +155,9 @@
         "remember.",
         "Uses",
         "your",
-        "plan"
+        "plan",
+        "ChatGPT",
+        "works"
       ]
     },
     "hl": {
@@ -181,11 +178,11 @@
         },
         "app": {
           "x": 371,
-          "y": 633,
+          "y": 636,
           "width": 107.9375,
           "height": 40
         },
-        "dPos": 45,
+        "dPos": 42,
         "dSize": 20.125,
         "verdict": "fail"
       }
@@ -206,13 +203,13 @@
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.21550324675324675,
-    "diffPixels": 531,
+    "ratio": 0.21469155844155843,
+    "diffPixels": 529,
     "total": 2464
   },
   "r5": {
-    "ratio": 0.031001953125,
-    "diffPixels": 31746,
+    "ratio": 0.03758203125,
+    "diffPixels": 38484,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-02-04.light.diff.png"

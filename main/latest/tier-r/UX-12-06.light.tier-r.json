@@ -216,7 +216,6 @@
         "₹0"
       ],
       "extra": [
-        "f",
         "9:05",
         "this",
         "table?",
@@ -261,7 +260,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -290,7 +288,6 @@
         "Done",
         "Mon",
         "Mon",
-        "f",
         "this",
         "table?",
         "ਕੇਕ",
@@ -402,6 +399,9 @@
         "table",
         "live",
         "checklist",
+        "Z",
+        "E",
+        "R",
         "Kept",
         "3",
         "Italian",
@@ -570,13 +570,13 @@
   "r4": {
     "verdict": "review",
     "skipped": null,
-    "ratio": 0.06409679740913998,
-    "diffPixels": 1425,
+    "ratio": 0.0654911838790932,
+    "diffPixels": 1456,
     "total": 22232
   },
   "r5": {
-    "ratio": 0.073275390625,
-    "diffPixels": 75034,
+    "ratio": 0.0784501953125,
+    "diffPixels": 80333,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-06.light.diff.png"

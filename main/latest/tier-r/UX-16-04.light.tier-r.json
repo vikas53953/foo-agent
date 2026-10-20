@@ -123,7 +123,6 @@
       "extra": [
         "1",
         "1",
-        "f",
         "11:01",
         "Needs",
         "you",
@@ -168,7 +167,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -197,7 +195,6 @@
         "Done",
         "Mon",
         "Mon",
-        "f",
         "Needs",
         "you:",
         "2",
@@ -478,8 +475,8 @@
     "total": 6854
   },
   "r5": {
-    "ratio": 0.0869599609375,
-    "diffPixels": 89047,
+    "ratio": 0.0873544921875,
+    "diffPixels": 89451,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-04.light.diff.png"

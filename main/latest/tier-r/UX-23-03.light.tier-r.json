@@ -91,6 +91,13 @@
         "Watch",
         "🕓",
         "＋",
+        "Message",
+        "Trips,",
+        "or",
+        "hold",
+        "Ctrl+Space",
+        "to",
+        "talk",
         "🎙",
         "✕",
         "Nothing",
@@ -130,7 +137,6 @@
         "₹0"
       ],
       "extra": [
-        "f",
         "9:41",
         "Payment:",
         "Pay",
@@ -166,6 +172,11 @@
         "17",
         "Oct",
         "4",
+        "4",
+        "4",
+        "4",
+        "4",
+        "4",
         "M",
         "8:02",
         "AM",
@@ -178,7 +189,6 @@
         "23",
         "Oct",
         "2",
-        "f",
         "H",
         "T",
         "Family",
@@ -369,6 +379,7 @@
         "3",
         "hotel",
         "sites",
+        "3",
         "Kept",
         "3",
         "hotels",
@@ -412,6 +423,8 @@
         "sent.",
         "Copy",
         "code",
+        "Add",
+        "details…",
         "In",
         "progress",
         "Scheduled",
@@ -512,6 +525,7 @@
         "live",
         "checklist",
         "3",
+        "3",
         "hotels",
         "that",
         "fit",
@@ -555,12 +569,12 @@
         },
         "app": {
           "x": 356,
-          "y": 285,
+          "y": 265,
           "width": 440,
-          "height": 224
+          "height": 244
         },
-        "dPos": 196,
-        "dSize": 36,
+        "dPos": 216,
+        "dSize": 56,
         "verdict": "fail"
       }
     ]
@@ -580,13 +594,13 @@
   "r4": {
     "verdict": "review",
     "skipped": null,
-    "ratio": 0.070176499032882,
-    "diffPixels": 5805,
+    "ratio": 0.07105899419729207,
+    "diffPixels": 5878,
     "total": 82720
   },
   "r5": {
-    "ratio": 0.0809609375,
-    "diffPixels": 82904,
+    "ratio": 0.080748046875,
+    "diffPixels": 82686,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-03.light.diff.png"

@@ -136,7 +136,6 @@
         "Needs",
         "you",
         "3",
-        "f",
         "foo",
         "9:41",
         "AM",
@@ -167,7 +166,9 @@
         "17",
         "Oct",
         "4",
-        "f",
+        "4",
+        "4",
+        "4",
         "H",
         "T",
         "Family",
@@ -394,13 +395,13 @@
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.19246031746031747,
-    "diffPixels": 291,
+    "ratio": 0.19113756613756613,
+    "diffPixels": 289,
     "total": 1512
   },
   "r5": {
-    "ratio": 0.049365234375,
-    "diffPixels": 50550,
+    "ratio": 0.04953125,
+    "diffPixels": 50720,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-06.light.diff.png"

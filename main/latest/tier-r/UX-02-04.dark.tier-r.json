@@ -83,14 +83,14 @@
         "₹1,000"
       ],
       "extra": [
-        "f",
+        "z",
         "3:30",
         "AM",
         "up…",
         "Uses",
         "your",
         "plan",
-        "f",
+        "z",
         "Setting",
         "up",
         "·",
@@ -110,17 +110,12 @@
         "new",
         "message",
         "I’m",
-        "C",
         "signed",
         "in",
-        "C",
         "signed",
         "in",
-        "G",
-        "Y",
         "Your",
         "own",
-        "A",
         "I’ll",
         "Claude.",
         "it’s",
@@ -183,11 +178,11 @@
         },
         "app": {
           "x": 371,
-          "y": 633,
+          "y": 636,
           "width": 107.9375,
           "height": 40
         },
-        "dPos": 45,
+        "dPos": 42,
         "dSize": 20.125,
         "verdict": "fail"
       }
@@ -213,8 +208,8 @@
     "total": 2464
   },
   "r5": {
-    "ratio": 0.039353515625,
-    "diffPixels": 40298,
+    "ratio": 0.051904296875,
+    "diffPixels": 53150,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-02-04.dark.diff.png"
