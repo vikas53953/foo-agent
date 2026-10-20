@@ -165,7 +165,11 @@ test('UX-04 · Connections: steps UX-04-04, UX-04-05, UX-04-06, UX-04-07, UX-04-
       const s = step('UX-04-09');
       await expect.poll(async () => (await page.evaluate(() => window.__fooTest!.wa({ op: 'scan' }))).delivered).toBe(true);
       await expect(card).toHaveAttribute('data-state', 'connected', { timeout: 10_000 });
-      await expect(card).toContainText(quoted(s.s)[0]!);
+      // The drawing's leading "✓" is the Checkmark icon since CR-0021 pick 19 (X-179, AT-315): the words match, the glyph is an icon.
+      const [linked] = quoted(s.s);
+      expect(linked).toMatch(/^✓ /);
+      await expect(card).toContainText(linked!.replace(/^✓ /, ''));
+      await expect(card.locator('[data-icon="Checkmark"]')).toBeVisible();
       const row = listRow(page, MIRROR.name);
       await expect(row).toHaveAttribute('data-chat-kind', 'wa_mirror');
       await expect(row.getByTestId(TID.chatlistRowSource)).toHaveAttribute('data-state', 'whatsapp');

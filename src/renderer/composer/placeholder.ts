@@ -3,7 +3,8 @@
 // AI states keep the composer usable and change only the placeholder), §23.2 (the composer never adds a bar for them).
 // "Starting {agentName}…" needs the engine's start signal (M3) and is not shown yet. 05-3 §5.12.2 (after "Change plan" the
 // composer reads "Tell me what to change" until the user answers; M5 T10, CR-0008 (j) row 3), 06-1 §2.0 (first run: the long
-// "Connect your AI first, then we can talk."; 04-2's short line stays for the send tooltip and drop overlay, CR-0020). Pure.
+// "Connect your AI first, then we can talk."; 04-2's short line stays for the send tooltip and drop overlay, CR-0020),
+// CR-0021 pick 11 ("Add details…" while a job of this chat is WORKING; P1 T6). Pure.
 // GAP: GAPS.md 2026-10-17 "no engine start signal"
 import { t } from '../../shared/copy/t';
 import type { BannerType, CardRow, ChatKind, MessageRow } from '../../shared/types';
@@ -26,6 +27,9 @@ export interface PlaceholderFacts {
   // M5
   /** T10: the newest Plan card of this chat was changed and the user has not written since (05-3 §5.12.2). */
   planChange?: boolean;
+  // P1 T6
+  /** A job of this chat is WORKING (CR-0021 pick 11). */
+  working?: boolean;
 }
 
 /** 05-3 §5.12.2: true while the newest Plan card is `changed` and no user message came after it. */
@@ -64,6 +68,7 @@ export function placeholderText(f: PlaceholderFacts): string {
   }
   if (f.planChange) return t('cards.plan.change_placeholder');
   if (f.hasAttachments && !f.hasText) return t('composer.placeholder.attachments');
+  if (f.working) return t('composer.placeholder.working');
   if (f.narrow) return t('composer.placeholder.narrow', { name: f.title });
   if (f.kind === 'foo' && f.private) return t('composer.placeholder.private');
   if (f.kind === 'wa_mirror') return t('composer.placeholder.wa_mirror', { group: f.title });

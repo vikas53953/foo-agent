@@ -3,7 +3,8 @@
 // remove button 24 on the top-right corner, "Remove {file name}", `composer-chip-remove`; preparing scrim + spinner 20; failed
 // --bad edge + ErrorCircle 16 with the reason as tooltip; one Tab stop, ←/→ between chips, Delete or Backspace removes the
 // focused chip; Narrator "Photo, {name}" / "File, {name}, {type}, {size}"), §22.9 (Backspace in an empty field focuses the
-// last chip, a second press removes it). Enter's attachment viewer (06 §13) arrives with that screen.
+// last chip, a second press removes it). Enter's attachment viewer (06 §13) arrives with that screen. 02 §F7.1 "Composer"
+// (P1 T6): a new chip flies in from the drop point; a long paste folds into its chip.
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { t } from '../../shared/copy/t';
 import { formatBytes } from '../../shared/format';
@@ -73,6 +74,8 @@ export const AttachmentChips = forwardRef<ChipsHandle, { chips: Chip[]; onRemove
             data-index={i}
             data-focused={current === i || undefined}
             data-failed={c.state === 'failed' || undefined}
+            data-enter={c.enter}
+            ref={c.from ? (el) => flyFrom(el, c.from!) : undefined}
           >
             {c.kind === 'image' ? (
               <img className={styles.imageChip} src={c.url} alt="" />
@@ -119,6 +122,14 @@ export const AttachmentChips = forwardRef<ChipsHandle, { chips: Chip[]; onRemove
     );
   },
 );
+
+/** The drop point relative to the chip's centre, for the fly-in keyframe (`--fly-x`, `--fly-y`). */
+function flyFrom(el: HTMLDivElement | null, from: { x: number; y: number }): void {
+  if (!el || el.style.getPropertyValue('--fly-x')) return;
+  const r = el.getBoundingClientRect();
+  el.style.setProperty('--fly-x', `${Math.round(from.x - (r.left + r.width / 2))}px`);
+  el.style.setProperty('--fly-y', `${Math.round(from.y - (r.top + r.height / 2))}px`);
+}
 
 function problemText(c: Chip): string {
   switch (c.problem) {
