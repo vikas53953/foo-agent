@@ -285,7 +285,7 @@ Test id: `bubble-quote`.
 
 Test id: `bubble-read-line`.
 
-- Under the last user bubble only, 4px below it, aligned with the bubble's right edge: "{agentName} read:" then the people, places, dates, times and amounts foo understood from that message, joined by " · ", `--t-caption` `--fg-3`, one line with ellipsis; a tooltip shows the full list. Narrator: "{agentName} understood: {items}".
+- Under the last user bubble only, 4px below it, aligned with the bubble's right edge: "{agentName} read:" then the people, places, dates, times and amounts foo understood from that message (a party size reads "{n} people", `bubble.read.people`), joined by " · ", `--t-caption` `--fg-3`, one line with ellipsis; a tooltip shows the full list. Narrator: "{agentName} understood: {items}".
 - Built by the engine from the redacted text (08-2 §11.4) only, so it never shows a secret; stored as JSON `string[]` in `messages.understood` (08-1 §4.2 item 6); hidden when nothing was found, in groups and in WhatsApp mirrors. It is not part of the bubble and is not copied.
 
 ## §7. Not sent (failed to send)

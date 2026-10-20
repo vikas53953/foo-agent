@@ -140,6 +140,7 @@
     "page.bridge.refused": "R1 T5 (CR-0022)",
     "bubble.read.label": "R1 T6 (CR-0022)",
     "bubble.read.accessible_name": "R1 T6 (CR-0022)",
+    "bubble.read.people": "R1 T6 (CR-0022)",
     "bubble.ask.pill": "R1 T6 (CR-0022)",
     "bubble.menu.ask": "R1 T6 (CR-0022)",
     "composer.side.label": "R1 T6 (CR-0022)",
