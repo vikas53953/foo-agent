@@ -389,7 +389,18 @@
         "your",
         "chats",
         "·",
-        "Edit"
+        "Edit",
+        "Waiting",
+        "for",
+        "your",
+        "OK:",
+        "₹14,600",
+        "to",
+        "Taj",
+        "Holiday",
+        "Village.",
+        "Show",
+        "button."
       ]
     },
     "hl": {
@@ -440,8 +451,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.0691669921875,
-    "diffPixels": 70827,
+    "ratio": 0.0691318359375,
+    "diffPixels": 70791,
     "total": 1024000,
     "sizeMismatch": {
       "a": [

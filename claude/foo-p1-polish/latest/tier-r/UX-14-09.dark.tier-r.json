@@ -434,13 +434,8 @@
         "I’ll",
         "remember.",
         "₹15,779",
-        "Waiting",
-        "for",
-        "your",
-        "answer:",
-        "localhost.",
-        "Show",
-        "button."
+        "Home:",
+        "localhost"
       ]
     },
     "hl": {
@@ -491,8 +486,8 @@
     "total": 2184
   },
   "r5": {
-    "ratio": 0.0896669921875,
-    "diffPixels": 91819,
+    "ratio": 0.0896796875,
+    "diffPixels": 91832,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-09.dark.diff.png"
