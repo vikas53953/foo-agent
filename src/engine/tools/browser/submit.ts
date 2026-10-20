@@ -27,6 +27,8 @@ export interface SubmitDeps {
   /** Waits between looks; tests pass a short one. */
   sleep?(ms: number): Promise<void>;
   now(): number;
+  /** `handback.check(url)` (08-4 §27.4): a result page on a hand-back site is never read (§8.3.10). */
+  handback(url: string): boolean;
 }
 
 /** What the page shows now: visible text and whether a one-time-code field is on it. Null when the page is gone. */
@@ -85,8 +87,10 @@ export function createSubmitTool(d: SubmitDeps): ToolDef {
       const click = await d.actions.submitClick(ctx.jobId, page, a.data.ref);
       if (!click.ok && !click.clicked)
         return { kind: 'error', errorKind: click.kind, ...(click.detail ? { result: { reason: click.detail } } : {}) };
-      const outcome = await watchOutcome(() => pageFacts(page), sleep, d.now, timing, ctx.signal);
-      const facts = await pageFacts(page);
+      // A click that lands on a hand-back site (netbanking) is never read: unknown → CHECKING on the site's history page.
+      const look = () => (page.isClosed() || d.handback(page.url()) ? Promise.resolve(null) : pageFacts(page));
+      const outcome = await watchOutcome(look, sleep, d.now, timing, ctx.signal);
+      const facts = await look();
       const screenshot = await d.shots.capture(ctx.jobId, page, 'shot').catch(() => null);
       const base = {
         url: page.isClosed() ? null : page.url(),
@@ -101,7 +105,7 @@ export function createSubmitTool(d: SubmitDeps): ToolDef {
         case 'timeout':
           return { kind: 'error', errorKind: 'UNKNOWN', result: { outcome: `${outcome.during}_timeout`, refused: true, ...base } };
         case 'unknown': {
-          const history = page.isClosed() ? null : await historyUrl(page);
+          const history = page.isClosed() || d.handback(page.url()) ? null : await historyUrl(page);
           return {
             kind: 'error',
             errorKind: 'UNKNOWN',

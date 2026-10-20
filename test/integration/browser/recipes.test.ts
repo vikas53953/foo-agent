@@ -119,7 +119,18 @@ describe('AT-144 · site recipes', () => {
       steps_json: string;
     };
     const steps = JSON.parse(recipe.steps_json) as { role: string; name: string }[];
-    const matched = w.browser.runtime.recipes.match('job_other', { urlPattern: recipe.url_pattern, steps: steps as never });
-    expect(matched).toEqual([]);
+    expect(steps.length).toBeGreaterThan(0);
+    const recipes = w.browser.runtime.recipes;
+    // The same page with the saved controls renamed: a miss on every step. With the names kept, each step matches (control).
+    const page = (rename: boolean) =>
+      steps.map((st, i) => {
+        const name = rename ? `${st.name} (new)` : st.name;
+        const facts = { tag: 'input', type: 'text', role: st.role, name, nearbyText: '', inForm: true, formHasSensitive: false };
+        return { ref: `e${i + 1}`, role: st.role, name, value: '', masked: false, frame: 'main', facts };
+      });
+    recipes.seen('job_other', recipe.url_pattern, page(false) as never);
+    expect(recipes.match('job_other', { urlPattern: recipe.url_pattern, steps: steps as never })).toHaveLength(steps.length);
+    recipes.seen('job_other', recipe.url_pattern, page(true) as never);
+    expect(recipes.match('job_other', { urlPattern: recipe.url_pattern, steps: steps as never })).toEqual([]);
   }, 90_000);
 });

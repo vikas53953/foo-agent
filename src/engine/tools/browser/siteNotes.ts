@@ -82,6 +82,8 @@ export interface SiteNotesDeps {
 /** Per job: the domains in play, what happened on them, and the notes the step turn reads. */
 export class SiteNotes {
   private readonly inPlay = new Map<string, Set<string>>();
+  /** Domains that blocked foo or showed a CAPTCHA in this job: the job finishing elsewhere says nothing good about them. */
+  private readonly troubled = new Map<string, Set<string>>();
 
   constructor(private readonly d: SiteNotesDeps) {}
 
@@ -97,17 +99,28 @@ export class SiteNotes {
     this.inPlay.set(jobId, set);
     const where = asked ?? [...set].at(-1) ?? null;
     if (!where) return;
-    if (errorKind === 'SITE_BLOCKED') await this.record(where, 'blocked');
-    else if (errorKind === 'SITE_CAPTCHA') await this.record(where, 'captcha');
+    if (errorKind !== 'SITE_BLOCKED' && errorKind !== 'SITE_CAPTCHA') return;
+    const bad = this.troubled.get(jobId) ?? new Set<string>();
+    bad.add(where);
+    this.troubled.set(jobId, bad);
+    await this.record(where, errorKind === 'SITE_BLOCKED' ? 'blocked' : 'captcha');
   }
 
-  /** A job reached DONE with proof: each domain in play worked; `booked` are the pages a `browser.submit` succeeded on. */
+  /**
+   * A job reached DONE with proof: `booked` are the pages a `browser.submit` succeeded on; every other domain in play worked,
+   * except one that blocked foo or showed a CAPTCHA in this job (J9: Zomato blocked, the table was booked elsewhere).
+   */
   async onDone(jobId: string, booked: readonly string[]): Promise<void> {
-    for (const domain of this.inPlay.get(jobId) ?? []) await this.record(domain, booked.includes(domain) ? 'booked' : 'done');
+    const bad = this.troubled.get(jobId);
+    for (const domain of this.inPlay.get(jobId) ?? []) {
+      if (booked.includes(domain)) await this.record(domain, 'booked');
+      else if (!bad?.has(domain)) await this.record(domain, 'done');
+    }
   }
 
   forget(jobId: string): void {
     this.inPlay.delete(jobId);
+    this.troubled.delete(jobId);
   }
 
   async linesFor(jobId: string): Promise<string[]> {

@@ -325,6 +325,7 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       shots,
       page: (jobId) => browser.window(jobId)?.page() ?? null,
       now: () => Date.now(),
+      handback: (url) => url !== 'about:blank' && handback(url),
       ...(d.submitTiming ? { timing: d.submitTiming } : {}),
     }),
   ];

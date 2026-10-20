@@ -8,7 +8,7 @@ import { t } from '../../shared/copy/t';
 
 const FILLER = String.raw`(?:\s+(?:me|us|him|her|them|a|an|the|my|our|one|two|three|four|cheap|cheapest|return|one-way|round-trip|\d+))*`;
 const FLIGHT_BOOKING = new RegExp(
-  String.raw`\b(?:book|reserve|buy|purchase|pay for|get)\b${FILLER}\s+(?:flights?|plane tickets?|air tickets?|air fare)\b`,
+  String.raw`\b(?:book|reserve|buy|purchase|pay for)\b${FILLER}\s+(?:flights?|plane tickets?|air tickets?|air fare)\b`,
   'iu',
 );
 const VERBS = new Set(['book', 'buy', 'pay']);

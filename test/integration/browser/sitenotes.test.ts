@@ -5,7 +5,14 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { applyEvent, BLOCK_SKIP_MS, blockedRecently, promptLines } from '../../../src/engine/tools/browser/siteNotes';
+import {
+  applyEvent,
+  BLOCK_SKIP_MS,
+  blockedRecently,
+  promptLines,
+  SiteNotes,
+  type SiteFlags,
+} from '../../../src/engine/tools/browser/siteNotes';
 import { jobHarness, jobIntake, step, tool, type JobHarness } from '../jobs/jobHarness';
 import { bookingWorld, type BookingWorld } from './booking';
 
@@ -57,6 +64,32 @@ describe('08-2 §8.3.9 site notes', () => {
       '- b.test: shows a CAPTCHA, booking worked before.',
     ]);
     expect(promptLines({ 'a.test': blocked }, at + BLOCK_SKIP_MS, iso)).toEqual([]);
+  });
+
+  it('a job that is blocked on one site and books on another keeps the block (J9) and notes the booking', async () => {
+    const rows: Record<string, { flags: SiteFlags }> = {};
+    const link = {
+      request: (kind: string, body: { args?: [string[]]; ops?: { row: { domain: string; flags: SiteFlags } }[] }) => {
+        if (kind === 'db.query') {
+          const value = Object.fromEntries(body.args![0].filter((d) => rows[d]).map((d) => [d, rows[d]!]));
+          return Promise.resolve({ ok: true, value });
+        }
+        for (const op of body.ops ?? []) rows[op.row.domain] = { flags: op.row.flags };
+        return Promise.resolve({ ok: true, value: null });
+      },
+    };
+    const notes = new SiteNotes({
+      link: link as unknown as ConstructorParameters<typeof SiteNotes>[0]['link'],
+      dataDir: '/nonexistent',
+      now: () => Date.UTC(2026, 9, 18),
+      timeZone: () => 'Asia/Kolkata',
+      log: () => undefined,
+    });
+    await notes.onTool('job_1', 'browser.open', { url: 'https://blocked.example.com/' }, 'SITE_BLOCKED');
+    await notes.onTool('job_1', 'browser.open', { url: 'https://tables.example.com/' }, null);
+    await notes.onDone('job_1', ['tables.example.com']);
+    expect(typeof rows['blocked.example.com']!.flags.blocksAutomation).toBe('number');
+    expect(rows['tables.example.com']!.flags).toEqual({ bookingWorks: true });
   });
 });
 
