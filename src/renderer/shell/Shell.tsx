@@ -9,7 +9,9 @@
 // old view fades out over it in `--m-normal` (the cross-fade); the first view of a launch does not slide. While a dialog
 // is open the shell steps back (Dialog sets `data-dialog-open` on the root); a restored window fades up 4px.
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { motion as motionMs } from '../../shared/tokens';
 import { reducedMotionNow } from '../a11y/useReducedMotion';
+import { tokenMs } from '../ui/tokens';
 import { BannerStrip } from '../banner/BannerStrip';
 import { LeftShell } from '../chatlist/LeftShell';
 import { PlaceholderPage } from '../pages/PlaceholderPage';
@@ -108,12 +110,19 @@ function ViewFrame({ dir, children }: { dir: ViewDir; children: ReactNode }) {
       });
       ghost.className = styles.leaving!;
       ghost.removeAttribute('data-dir');
+      ghost.removeAttribute('id');
+      ghost.removeAttribute('data-testid');
       ghost.setAttribute('aria-hidden', 'true');
       ghost.inert = true;
       parent.append(ghost);
       for (const restore of scrolled) restore();
-      ghost.addEventListener('animationend', () => ghost.remove());
-      ghost.addEventListener('animationcancel', () => ghost.remove());
+      // Removed when its own fade ends, or at the latest a beat after it should have (a hidden window runs no frames).
+      const done = (e?: AnimationEvent) => {
+        if (!e || e.target === ghost) ghost.remove();
+      };
+      ghost.addEventListener('animationend', done);
+      ghost.addEventListener('animationcancel', done);
+      setTimeout(done, tokenMs('--m-normal', motionMs.normal) + motionMs.fast);
     };
   }, []);
   return (

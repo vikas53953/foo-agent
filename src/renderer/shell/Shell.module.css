@@ -82,6 +82,13 @@
   min-width: 0;
   min-height: 0;
 }
+/* The copy is a still picture: its parts' own entrances do not replay. */
+.leaving *,
+.leaving *::before,
+.leaving *::after {
+  animation: none !important;
+  transition: none !important;
+}
 @keyframes view-out {
   to {
     opacity: 0;
