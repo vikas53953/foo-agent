@@ -135,4 +135,19 @@ export default async function journey(v: Verify): Promise<void> {
   await rest(page);
   await settle(page);
   await v.shot('list-dark-off', list);
+
+  // no results: foo's face scans in the icon slot (Full), light and dark
+  await level('full');
+  await box.locator('input').fill('zzqx');
+  const pose = page.getByTestId(TID.chatlistEmpty).locator('[data-pose="scan"]');
+  await pose.waitFor();
+  v.note(
+    `no results for "zzqx" → face pose "${await pose.getAttribute('data-pose')}", ${Math.round((await pose.boundingBox())!.width)}px, aria-hidden`,
+  );
+  await rest(page);
+  await settle(page);
+  await v.shot('no-results', list);
+  await setTheme(page, 'light');
+  await settle(page);
+  await v.shot('no-results', list);
 }

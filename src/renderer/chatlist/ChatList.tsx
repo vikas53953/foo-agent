@@ -5,7 +5,8 @@
 // tabindex), §3.9.2 (F6 lands on the selected row or the first), §3.9.3 (↑/↓, Home/End, Enter/Space opens and moves focus
 // to the composer, Shift+F10 / Menu key, type-ahead by name), §3.9.5 (`listbox` "Chat list"). Test id `chatlist`.
 // 02 §F7.1 "Chat list" [X-179]: a new chat slides in at the top while the others glide down (FLIP from row tops, CSS
-// transitions only, FE-24); a newly pinned chat drops in with the overshooting spring; search results stagger 30ms.
+// transitions only, FE-24); a newly pinned chat drops in with the overshooting spring; search results stagger 30ms; no
+// results shows foo's 64px face scanning in the icon slot (02-2 §F16.2 Block face, CR-0021 pick 6: decorative, no ring).
 import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode, type RefObject } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { t } from '../../shared/copy/t';
@@ -22,6 +23,7 @@ import { selectLoaded, selectLoadFailed } from '../store/live';
 import { selectAgentName } from '../store/settings';
 import { selectChatFilter, selectChatQuery } from '../store/ui';
 import { Button } from '../ui/Button';
+import { FacePose } from '../ui/Face';
 import { Icon, type IconName } from '../ui/Icon';
 import { Menu } from '../ui/Menu';
 import { Skeleton } from '../ui/Skeleton';
@@ -46,21 +48,28 @@ const EMPTY: Record<Exclude<ChatFilter, 'all'>, { icon: IconName; key: () => str
 function EmptyBlock({
   state,
   icon,
+  scan,
   bad,
   body,
   action,
 }: {
   state: string;
   icon: IconName;
+  /** Show foo's scanning face instead of the icon (no results). */
+  scan?: boolean;
   bad?: boolean;
   body: string;
   action?: { label: string; run: () => void };
 }) {
   return (
     <div className={styles.empty} role="status" data-testid={TID.chatlistEmpty} data-state={state}>
-      <span className={bad ? styles.emptyIconBad : styles.emptyIcon}>
-        <Icon name={icon} size={24} />
-      </span>
+      {scan ? (
+        <FacePose pose="scan" className={styles.emptyPose} />
+      ) : (
+        <span className={bad ? styles.emptyIconBad : styles.emptyIcon}>
+          <Icon name={icon} size={24} />
+        </span>
+      )}
       <p className={styles.emptyBody}>{body}</p>
       {action && (
         <Button variant={state === 'search' ? 'link' : 'outline'} size="sm" data-testid={TID.chatlistEmptyAction} onClick={action.run}>
@@ -316,6 +325,7 @@ export function ChatList() {
       <EmptyBlock
         state="search"
         icon="Search"
+        scan
         body={t('chatlist.empty.body.search', { query })}
         action={{ label: t('chatlist.empty.action.search'), run: () => setMenu(SEARCH_ALL_MENU_ID) }}
       />
