@@ -1,0 +1,340 @@
+{
+  "id": "UX-23-05",
+  "family": "ux",
+  "selector": "#frame",
+  "box": {
+    "x": 0,
+    "y": 0,
+    "width": 1280,
+    "height": 800
+  },
+  "files": {
+    "light": {
+      "png": "UX-23-05.light.png",
+      "sha256": "2a0fad2a9b790f56ee4acc28674222ade5ef9483d86c948627c42ce9e2e8243d"
+    },
+    "dark": {
+      "png": "UX-23-05.dark.png",
+      "sha256": "9719f47bbcb1b4fa23a926d71a1b973eedf9212c19fd16e02548d540dd527bd9"
+    }
+  },
+  "texts": [
+    "—",
+    "☐",
+    "✕",
+    "⚠",
+    "Claude plan limit until Fri 16 Oct, 3:00 PM. Your jobs are paused, not lost.",
+    "foo",
+    "＋ New helper",
+    "⋯",
+    "⌕",
+    "Search chats",
+    "All",
+    "Needs you",
+    "Working",
+    "Done",
+    "foo",
+    "8:00 AM",
+    "Good morning, Vikas. 4 things today",
+    "Trips",
+    "9:38 AM",
+    "Paused: waiting for your AI",
+    "Paused",
+    "Money",
+    "Thu",
+    "Hi, I'm Money. I'll look after bills and payments.",
+    "Home",
+    "Thu",
+    "Gas cylinder booked for Mon 19 Oct",
+    "Done",
+    "F",
+    "Family group",
+    "WhatsApp",
+    "Thu",
+    "Mom: Sunday lunch at 1? 🙂",
+    "V",
+    "Vikas ·",
+    "Claude isn't answering",
+    "₹212 of ₹1,000 AI this month",
+    "⚙",
+    "Trips",
+    "Paused until 3:00 PM",
+    "⌕",
+    "▯",
+    "⋯",
+    "Today, Fri 16 Oct",
+    "Booking your Goa stay",
+    "Step 3 of 4",
+    "✓",
+    "Checked Booking.com, MakeMyTrip and hotel sites",
+    "✓",
+    "Kept 3 under ₹8,000 a night, beach within 5 min",
+    "✓",
+    "You picked Taj Holiday Village",
+    "Back on it. Picking up from step 3.",
+    "Watch live",
+    "Stop",
+    "also check W Goa",
+    "9:41 AM 🕓",
+    "You've hit your Claude plan's limit until Fri 16 Oct, 3:00 PM",
+    "Your jobs are paused, not lost.",
+    "Remind me at 3:00 PM",
+    "what time is checkout at the Taj?",
+    "10:02 AM ✓",
+    "✓",
+    "Check-out is 11:00 AM on Mon 14 Dec.",
+    "10:02 AM",
+    "answered with ChatGPT while Claude rests",
+    "＋",
+    "Message Trips, or hold Ctrl+Space to talk",
+    "🎙",
+    "Details",
+    "✕",
+    "Doing now",
+    "Nothing running right now.",
+    "Using",
+    "Claude (your AI)",
+    "Gmail",
+    "Calendar",
+    "WhatsApp",
+    "Browser",
+    "What I know about you",
+    "Likes beach stays, hates early flights",
+    "You said · Sat 3 Oct · Edit",
+    "Budget trips under ₹40,000",
+    "I guessed · from 2 trips · Edit",
+    "See all (24)",
+    "Spent this month",
+    "Your AI",
+    "₹212 of ₹1,000",
+    "Purchases",
+    "₹0 of ₹25,000",
+    "Change caps"
+  ],
+  "hlTexts": [
+    "Check-out is 11:00 AM on Mon 14 Dec.",
+    "10:02 AM"
+  ],
+  "hl": {
+    "id": "rested",
+    "box": {
+      "x": 364,
+      "y": 653,
+      "width": 335.6875,
+      "height": 38
+    }
+  },
+  "anchors": {
+    "hl": {
+      "x": 364,
+      "y": 653,
+      "width": 335.6875,
+      "height": 38
+    }
+  },
+  "masks": [
+    {
+      "x": 1136,
+      "y": 0,
+      "width": 144,
+      "height": 32,
+      "reason": "caption-buttons"
+    }
+  ],
+  "capture": null,
+  "milestone": null,
+  "engine": "electron",
+  "chromium": "152.0.7977.167",
+  "ux": {
+    "chapter": 23,
+    "step": 5,
+    "anchor": "errors-5",
+    "title": "When things go wrong",
+    "part": "Living with foo",
+    "j": "J19",
+    "r": "R20",
+    "c": "Plan limit reached? Paused until it resets. Plain chat can still get a short answer.",
+    "s": "\"You've hit your Claude plan's limit until Fri 16 Oct, 3:00 PM. Your jobs are paused, not lost.\" · Remind me at 3:00 PM. A reply marked \"answered with ChatGPT while Claude rests\".",
+    "f": "Never uses the backup AI for jobs that send, buy or book.",
+    "state": {
+      "view": "app",
+      "a": {
+        "sel": "trips",
+        "filter": "All",
+        "q": "",
+        "rows": [
+          {
+            "id": "foo",
+            "name": "foo",
+            "time": "8:00 AM",
+            "prev": "Good morning, Vikas. 4 things today"
+          },
+          {
+            "id": "trips",
+            "name": "Trips",
+            "time": "9:38 AM",
+            "prev": "Paused: waiting for your AI",
+            "st": "pause"
+          },
+          {
+            "id": "money",
+            "name": "Money",
+            "time": "Thu",
+            "prev": "Hi, I'm Money. I'll look after bills and payments."
+          },
+          {
+            "id": "home",
+            "name": "Home",
+            "time": "Thu",
+            "prev": "Gas cylinder booked for Mon 19 Oct",
+            "st": "done"
+          },
+          {
+            "id": "family",
+            "name": "Family group",
+            "time": "Thu",
+            "prev": "Mom: Sunday lunch at 1? 🙂",
+            "wa": 1
+          }
+        ],
+        "th": {
+          "foo": [
+            {
+              "h": "<span class=\"date\">Today, Fri 16 Oct</span>",
+              "g": 4
+            },
+            {
+              "id": "brief",
+              "h": "<div class=\"card wide\" data-hl=\"brief\"><div class=\"hd\">☀ Good morning, Vikas<span class=\"lbl\">Morning brief</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Mom's birthday is Sun 18 Oct. Cake ordered?</span><span class=\"pillbtn sm \">Yes, from Theobroma</span><span class=\"pillbtn sm \" data-hl=\"notyet\">Not yet</span><span style=\"white-space:nowrap\" data-hl=\"th-cake\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Airtel bill ₹1,179 due Fri 23 Oct. Sent to Money.</span><span class=\"pillbtn sm \">Open Money</span><span style=\"white-space:nowrap\" data-hl=\"th-airtel\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Goa stays for Sat 12 Dec dropped 18%.</span><span class=\"pillbtn sm \" data-hl=\"showme\">Show me</span><span style=\"white-space:nowrap\" data-hl=\"th-goa\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Mumbai today: 31°, light rain after 4:00 PM.</span><span style=\"white-space:nowrap\" data-hl=\"th-weather\">👍 👎</span></div><div class=\"row2 sm\">That's all for today · 👍 · 👎 · <span class=\"lnk\">Tomorrow, more of / less of…</span></div></div>",
+              "g": 12
+            }
+          ],
+          "trips": [
+            {
+              "h": "<span class=\"date\">Today, Fri 16 Oct</span>",
+              "g": 4
+            },
+            {
+              "id": "c",
+              "h": "<div class=\"card\" data-hl=\"chk\"><div class=\"hd\">Booking your Goa stay<span class=\"lbl\">Step 3 of 4</span></div><div class=\"li\"><span class=\"tk d\">✓</span><span>Checked Booking.com, MakeMyTrip and hotel sites</span></div><div class=\"li\"><span class=\"tk d\">✓</span><span>Kept 3 under ₹8,000 a night, beach within 5 min</span></div><div class=\"li\"><span class=\"tk d\">✓</span><span>You picked Taj Holiday Village</span></div><div class=\"li\"><span class=\"tk w\"></span><span>Back on it. Picking up from step 3.</span></div><div class=\"row2\"><span class=\"pillbtn sm \" data-hl=\"watch2\">Watch live</span><span class=\"pillbtn sm bad\" data-hl=\"stop\">Stop</span></div></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b me\" data-hl=\"q1\">also check W Goa<span class=\"meta\">9:41 AM 🕓</span></div>",
+              "g": 12
+            },
+            {
+              "id": "e2",
+              "h": "<div class=\"card err\"><div class=\"hd\">You've hit your Claude plan's limit until Fri 16 Oct, 3:00 PM</div><div class=\"sm\">Your jobs are paused, not lost.</div><div class=\"row2\"><span class=\"pillbtn sm dark\">Remind me at 3:00 PM</span></div></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b me\">what time is checkout at the Taj?<span class=\"meta\">10:02 AM ✓<span class=\"rd\">✓</span></span></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b foo\" data-hl=\"rested\">Check-out is 11:00 AM on Mon 14 Dec.<span class=\"meta\">10:02 AM</span></div>",
+              "g": 12
+            },
+            {
+              "h": "<span class=\"under\">answered with ChatGPT while Claude rests</span>",
+              "g": 2
+            }
+          ],
+          "money": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\">Hi, I'm Money. I'll look after bills and payments. I never pay without your tap.<span class=\"meta\">8:14 PM</span></div>",
+              "g": 12
+            }
+          ],
+          "home": [],
+          "family": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\"><b style=\"color:#B8326B;display:block;font-size:13px\">Mom</b>Sunday lunch at 1? 🙂<span class=\"meta\">6:40 PM</span></div>",
+              "g": 12
+            }
+          ]
+        },
+        "hdr": {
+          "status": "Paused until 3:00 PM",
+          "tone": "warn"
+        },
+        "right": "details",
+        "det": {
+          "doing": [],
+          "using": [
+            "Claude (your AI)",
+            "Gmail",
+            "Calendar",
+            "WhatsApp",
+            "Browser"
+          ],
+          "mem": [
+            [
+              "Likes beach stays, hates early flights",
+              "You said · Sat 3 Oct · Edit"
+            ],
+            [
+              "Budget trips under ₹40,000",
+              "I guessed · from 2 trips · Edit"
+            ]
+          ],
+          "memn": 24,
+          "ai": 212,
+          "buy": 0
+        },
+        "comp": {
+          "m": "rest"
+        },
+        "banner": {
+          "tone": "warn",
+          "icon": "⚠",
+          "text": "Claude plan limit until Fri 16 Oct, 3:00 PM. Your jobs are paused, not lost."
+        },
+        "page": null,
+        "ov": null,
+        "find": null,
+        "undo": null,
+        "ai": "Claude isn't answering",
+        "aiTone": "warn"
+      },
+      "d": {
+        "app": true,
+        "wins": [],
+        "toast": null,
+        "menu": null,
+        "tip": null,
+        "tb": null,
+        "time": "9:40 AM",
+        "date": "16-10-2026"
+      },
+      "mo": {
+        "m": {
+          "foo": "rest",
+          "trips": "rest",
+          "money": "rest",
+          "home": "rest"
+        },
+        "still": {
+          "foo": false,
+          "trips": false,
+          "money": false,
+          "home": false
+        },
+        "tray": "rest",
+        "toast": null,
+        "sel": "trips"
+      }
+    },
+    "clockShown": "9:40 AM",
+    "superseded": null
+  }
+}
