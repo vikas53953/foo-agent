@@ -1,0 +1,63 @@
+{
+  "journey": "test/verify/r1-t4-numbers-forms.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "a322a5bb923f9eb51758dd68c37d910ceb2e4938",
+  "dirty": false,
+  "started": "2026-10-20T12:00:12.951Z",
+  "finished": "2026-10-20T12:00:20.278Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "bill splitter: 4 people at 10% ₹660 each; + makes 5 → ₹528; tip slider to 15% → ₹552; Stepper, Slider and Calculator share the path",
+    "EMI: ₹5,00,000 at 9% for 60 months → ₹10,379.18; loan changed to ₹8,00,000 → ₹16,606.68 (shared/kit/evaluate.ts pmt)",
+    "compare: best column \"Akasa QP 1101\"; goal ring 15,000 of 20,000, share 0.750",
+    "checklist: \"Book the flight\" ticked; airport timer running, 14:59 left",
+    "form: Password field not drawn; \"password: …\" in Name refused, Secret box \"Password\" posted, Name now \"Asha\"",
+    "form: one kit.action plan_visit with {\"place\":\"Lalbagh\",\"who\":\"Asha\",\"guests\":4,\"day\":\"Saturday\"}; the password never reached the AI"
+  ],
+  "shots": [
+    {
+      "file": "after/01-before.light.png",
+      "name": "before",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-bill-split.light.png",
+      "name": "bill-split",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-emi.light.png",
+      "name": "emi",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-trip.light.png",
+      "name": "trip",
+      "theme": "light"
+    },
+    {
+      "file": "after/05-form-refused.light.png",
+      "name": "form-refused",
+      "theme": "light"
+    },
+    {
+      "file": "after/06-form-sent.light.png",
+      "name": "form-sent",
+      "theme": "light"
+    },
+    {
+      "file": "after/07-form-sent-dark.dark.png",
+      "name": "form-sent-dark",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}
