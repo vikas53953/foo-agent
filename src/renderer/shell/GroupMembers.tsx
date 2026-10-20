@@ -30,12 +30,13 @@ export function GroupMembers({ chat }: { chat: ChatRow }) {
             name={firstName ?? you}
             kind="user"
             size="inline"
+            animate={false}
           />
           <span className={styles.name}>{you}</span>
         </li>
         {members.map((h) => (
           <li key={h.id} className={styles.row} data-row-id={h.id}>
-            <Avatar face={h.faceRef} name={h.name} kind="helper" size="inline" color={h.colorToken} />
+            <Avatar face={h.faceRef} name={h.name} kind="helper" size="inline" color={h.colorToken} animate={false} />
             <span className={styles.name}>{h.name}</span>
           </li>
         ))}
