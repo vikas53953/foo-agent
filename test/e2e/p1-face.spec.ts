@@ -19,6 +19,9 @@ const row = (page: Page, name: string) =>
   page.getByTestId(TID.chatlistRow).filter({ has: page.getByTestId(TID.chatlistRowName).getByText(name, { exact: true }) });
 const rowFace = (page: Page, name: string) => row(page, name).getByTestId(TID.chatlistRowAvatar);
 
+/** Animations "Full" (`<html data-motion>`, FE-24's one root key): a small test machine may start on "Basic". */
+const fullMotion = (page: Page) => page.evaluate(() => (document.documentElement.dataset.motion = 'full'));
+
 async function start(): Promise<{ app: ElectronApplication; page: Page; refs: Record<string, string> }> {
   const app = await launch();
   // Collect the renderer → main face rasters before the shell paints.
@@ -32,6 +35,7 @@ async function start(): Promise<{ app: ElectronApplication; page: Page; refs: Re
   });
   const page = await app.firstWindow();
   await page.getByTestId(TID.titlebarStrip).waitFor();
+  await fullMotion(page);
   const reply = await page.evaluate(() => window.__fooTest!.seed('ux-world'));
   await expect(page.getByTestId(TID.chatlistRow).first()).toBeVisible();
   return { app, page, refs: reply.refs ?? {} };
@@ -128,6 +132,7 @@ test('AT-306 Memory empty states show the 64px face in its pose, aria-hidden, wi
   const { app } = await launchWithFakeAi([VERIFY_OK]);
   const page = await app.firstWindow();
   await openWorld(app, page);
+  await fullMotion(page);
   await windowSize(app, page, 1440, 900);
   await page.getByTestId(TID.sidebarMore).click();
   await page.getByTestId(TID.sidebarMenuMemory).click();
@@ -266,13 +271,20 @@ test('it blinks normally and holds a static pose under reduced motion', async ()
   const eye = rowFace(page, 'foo').locator('rect').first();
   await expect(rowFace(page, 'foo')).toHaveAttribute('data-state', 'resting');
   // One blink per random 2–6 s cycle; between blinks the eyes draw nothing.
-  await expect.poll(() => eye.evaluate((el) => getComputedStyle(el).animationName), { timeout: 8_000 }).toMatch(/blink/);
+  const blinked = await rowFace(page, 'foo').evaluate(
+    (el) =>
+      new Promise<string>((resolve) => {
+        el.addEventListener('animationstart', (e) => resolve((e as AnimationEvent).animationName));
+        setTimeout(() => resolve('none'), 8_000);
+      }),
+  );
+  expect(blinked).toMatch(/blink/);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect.poll(() => eye.evaluate((el) => getComputedStyle(el).animationName)).toBe('none');
   await app.close();
 });
 
-test('Animations "Basic": faces hold static poses and only cross-fade between moods (02 §F7, AT-301)', async () => {
+test('Animations "Basic": faces hold static poses and only cross-fade between moods (02 §F7)', async () => {
   const { app, page, refs } = await start();
   await page.evaluate((id) => window.__fooTest!.jobState(id, 'done'), refs.goaJob!);
   const face = rowFace(page, 'foo');
@@ -283,7 +295,12 @@ test('Animations "Basic": faces hold static poses and only cross-fade between mo
   await page.evaluate(() => (document.documentElement.dataset.motion = 'basic'));
   await expect(face).toHaveAttribute('data-motion-face', 'off');
   const names = () =>
-    face.evaluate((el) => [...el.querySelectorAll('*')].map((n) => getComputedStyle(n).animationName).filter((n) => n !== 'none'));
+    face.evaluate((el) =>
+      el
+        .getAnimations({ subtree: true })
+        .filter((a) => a.playState === 'running')
+        .map((a) => (a as CSSAnimation).animationName),
+    );
   // No blink, bob or ring motion; a mood change still cross-fades.
   await expect.poll(names, { timeout: 8_000 }).toEqual([]);
   await page.evaluate((id) => window.__fooTest!.jobState(id, 'working'), refs.goaJob!);
