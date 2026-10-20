@@ -237,6 +237,28 @@ describe('08-2 §8.2 · whatsapp.draft', () => {
     expect(s.created[0]).toMatchObject({ waJid: MOM2, to: { name: 'Mom' } });
   });
 
+  it('the answer may come back as the option id, or the name when only one option has it; the picks end with the draft', async () => {
+    const s = setup();
+    for (let i = 0; i < 2; i++) s.message(`91980000002${i}@s.whatsapp.net`, NOW - (10 - i) * 60_000, `Friend ${i}`);
+    await s.tool.run({ to: 'Mom', text: 'Hi' }, s.ctx);
+    await s.tool.run({ to: 'o2', text: 'Hi' }, s.ctx);
+    expect(s.created.at(-1)).toMatchObject({ waJid: '919800000020@s.whatsapp.net' });
+    // A drafted job asks again; a unique name part answers it.
+    await s.tool.run({ to: 'Mom', text: 'Hi' }, s.ctx);
+    expect(s.created).toHaveLength(1);
+    await s.tool.run({ to: 'Friend 1', text: 'Hi' }, s.ctx);
+    expect(s.created.at(-1)).toMatchObject({ waJid: '919800000021@s.whatsapp.net' });
+  });
+
+  it('a name two options share is not an answer: "Mom" asks again', async () => {
+    const s = setup();
+    s.contact(MOM, 'Mom');
+    s.googleContact('people/c8', 'Mom', ['+919800000012']);
+    await s.tool.run({ to: 'Mom', text: 'Call me' }, s.ctx);
+    expect(await s.tool.run({ to: 'Mom', text: 'Call me' }, s.ctx)).toMatchObject({ kind: 'needs_user' });
+    expect(s.created).toEqual([]);
+  });
+
   it('no one to send to is NOT_FOUND; drafts off is VALIDATION; nothing reaches main', async () => {
     const s = setup();
     expect(await s.tool.run({ to: 'Mom', text: 'x' }, s.ctx)).toEqual({ kind: 'error', errorKind: 'NOT_FOUND' });

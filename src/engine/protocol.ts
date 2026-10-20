@@ -427,6 +427,8 @@ export const waReportSchema = z.discriminatedUnion('event', [
   // the Draft cards whose number could not be checked, 08-3 §16.4.2).
   z.object({ event: z.literal('delivered'), waMessageId: z.string().min(1) }).strict(),
   z.object({ event: z.literal('open') }).strict(),
+  // M8 T7: the server acked a send after its wait ran out (08-2 §10.5: main completes the CHECKING row, never resends).
+  z.object({ event: z.literal('sent'), waMessageId: z.string().min(1) }).strict(),
 ]);
 export type WaReport = z.infer<typeof waReportSchema>;
 

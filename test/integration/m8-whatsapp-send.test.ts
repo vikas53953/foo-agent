@@ -10,6 +10,7 @@ import { DraftService, UNDO_MS, type WaSendPort } from '../../src/main/drafts/Dr
 import { localMidnight } from '../../src/main/drafts/channels';
 import { mirrorDraft } from '../../src/main/drafts/mirrorDraft';
 import { fail, ok } from '../../src/shared/errors';
+import { WA_NO_ACK, waMessageId, waSendKeyId } from '../../src/shared/waBridge';
 import type { DraftPayload } from '../../src/shared/types';
 import { gateHarness } from '../unit/approvals/gateHarness';
 
@@ -21,8 +22,9 @@ function service() {
   const h = gateHarness();
   const sends: { jid: string; text: string; draftCardId: string }[] = [];
   const checks: string[] = [];
-  const port: WaSendPort & { failNext: boolean; checkAnswer: boolean | null } = {
+  const port: WaSendPort & { failNext: boolean; noAckNext: boolean; checkAnswer: boolean | null } = {
     failNext: false,
+    noAckNext: false,
     checkAnswer: true as boolean | null,
     send: async (req: { jid: string; text: string; draftCardId: string }) => {
       if (port.failNext) {
@@ -30,13 +32,17 @@ function service() {
         return fail<{ waMessageId: string }>('SEND_FAILED');
       }
       sends.push(req);
+      if (port.noAckNext) {
+        port.noAckNext = false;
+        return fail<{ waMessageId: string }>('SEND_FAILED', WA_NO_ACK);
+      }
       return ok({ waMessageId: `wa_${req.jid}:FOO${sends.length}` });
     },
     check: async (jid: string) => {
       checks.push(jid);
       return port.checkAnswer;
     },
-  } satisfies WaSendPort & { failNext: boolean; checkAnswer: boolean | null };
+  } satisfies WaSendPort & { failNext: boolean; noAckNext: boolean; checkAnswer: boolean | null };
   let wired: WaSendPort | null = port;
   const drafts = new DraftService({
     db: h.db,
@@ -136,6 +142,29 @@ describe('AT-018 · a WhatsApp message goes out only after the Draft card and a 
     expect(s.sends).toEqual([]);
   });
 
+  it('no answer from the bridge is not "nothing went out": CHECKING with Sending…, and a late server ack completes it once', async () => {
+    const s = service();
+    const d = await s.make();
+    s.port.noAckNext = true;
+    s.sendTap(d);
+    await s.passWindow();
+    expect(s.h.card(d.cardId).state).toBe('sending');
+    expect(s.h.approval(d.approvalId).state).toBe('CHECKING');
+    expect(s.h.db.prepare("SELECT COUNT(*) FROM activity WHERE event = 'sent_whatsapp'").pluck().get()).toBe(0);
+    // Never resent by the tick.
+    await s.passWindow();
+    expect(s.sends).toHaveLength(1);
+    expect(s.drafts.waSent('wa_someone_else:ABC')).toBe(false);
+    const id = waMessageId(MOM.jid, waSendKeyId(d.cardId));
+    expect(s.drafts.waSent(id)).toBe(true);
+    expect(s.h.card(d.cardId).state).toBe('sent');
+    expect(s.payload(d.cardId).sentMessageId).toBe(id);
+    expect(s.h.approval(d.approvalId).state).toBe('COMPLETED');
+    expect(s.h.db.prepare("SELECT COUNT(*) FROM activity WHERE event = 'sent_whatsapp'").pluck().get()).toBe(1);
+    expect(s.drafts.waSent(id)).toBe(false);
+    expect(s.drafts.waDelivered(id)).toBe(true);
+  });
+
   it('no engine (no WhatsApp port) fails the send closed: Failed, never a silent send later', async () => {
     const s = service();
     s.unwire();
@@ -219,6 +248,23 @@ describe('08-3 §16.4 · limits and the number check', () => {
     expect(s.sendTap({ ...d, nonce: String(s.h.card(d.cardId).nonce) }).ok).toBe(true);
   });
 
+  it('the limit is checked again when the 5 s close: reached meanwhile, the Draft goes back to pending with the limit line', async () => {
+    const s = service();
+    const d = await s.make();
+    expect(s.sendTap(d).ok).toBe(true);
+    const insert = s.h.db.prepare(
+      "INSERT INTO activity (id, at, kind, event, actor, summary, outcome) VALUES (?, ?, 'sent', 'sent_whatsapp', 'foo', 'x', 'done')",
+    );
+    for (let i = 0; i < 30; i++) insert.run(`act_${i}`, s.h.clock.now - i * 1000);
+    await s.passWindow();
+    expect(s.sends).toEqual([]);
+    expect(s.h.card(d.cardId).state).toBe('pending');
+    expect(s.h.approval(d.approvalId).state).toBe('PENDING');
+    expect(s.payload(d.cardId).waLimitUntil).toBe(localMidnight(s.h.clock.now, TZ, 1));
+    // The old nonce is stale: a fresh tap is needed once the limit lifts.
+    expect(s.sendTap(d).ok).toBe(false);
+  });
+
   it('29 sends today still lets the 30th go', async () => {
     const s = service();
     const insert = s.h.db.prepare(
@@ -249,6 +295,25 @@ describe('08-3 §16.4 · limits and the number check', () => {
 });
 
 // M8 T7
+describe('AT-070 · a group is what its jid says', () => {
+  it('a group jid is a group draft whatever the caller says; a flag that contradicts the jid is refused', async () => {
+    const s = service();
+    const g = await s.make({ to: { name: FAMILY.name, address: FAMILY.name }, waJid: FAMILY.jid });
+    expect(s.payload(g.cardId).isGroup).toBe(true);
+    expect(s.h.approval(g.approvalId).hard_limit).toBe(1);
+    for (const bad of [
+      { to: { name: FAMILY.name, address: FAMILY.name }, waJid: FAMILY.jid, isGroup: false },
+      { waJid: MOM.jid, isGroup: true },
+    ])
+      expect(await s.drafts.create({ jobId: s.h.jobId, channel: 'whatsapp', to: { name: 'x', address: 'x' }, body: 'hi', ...bad })).toEqual(
+        {
+          ok: false,
+          error: { kind: 'VALIDATION' },
+        },
+      );
+  });
+});
+
 describe("04 §10.11 · the mirror composer drafts into foo's chat", () => {
   it("Send in a mirrored group makes a group Draft card in foo's chat (a full-Approval draft), nothing in the mirror, no send", async () => {
     const s = service();
@@ -278,8 +343,23 @@ describe("04 §10.11 · the mirror composer drafts into foo's chat", () => {
       body: 'Water is off 10 to 12.',
     });
     const job = s.h.db.prepare('SELECT * FROM jobs WHERE id = ?').get(card.job_id) as Record<string, unknown>;
-    expect(job).toMatchObject({ chat_id: s.h.chatId, state: 'done', origin_ref: 'c_wa', title: `Draft a message for ${FAMILY.name}` });
+    expect(job).toMatchObject({
+      chat_id: s.h.chatId,
+      origin_chat_id: s.h.chatId,
+      state: 'done',
+      origin_ref: 'c_wa',
+      title: `Draft a message for ${FAMILY.name}`,
+    });
+    // The typed words are the user's own in foo's chat (the second look reads only those); the mirror's messages stay empty.
     expect(s.h.db.prepare("SELECT COUNT(*) FROM messages WHERE chat_id = 'c_wa'").pluck().get()).toBe(0);
+    expect(s.h.db.prepare("SELECT last_message_id, unread_count, last_activity_at FROM chats WHERE id = 'c_wa'").get()).toEqual({
+      last_message_id: null,
+      unread_count: 0,
+      last_activity_at: 1,
+    });
+    expect(s.h.db.prepare("SELECT author_kind, text FROM messages WHERE job_id = ? AND author_kind = 'user'").all(card.job_id)).toEqual([
+      { author_kind: 'user', text: 'Water is off 10 to 12.' },
+    ]);
     // A group draft's Send opens the full Approval card; nothing goes out from the tap.
     expect(s.sendTap({ cardId: r.value.draftCardId, nonce: String(card.nonce) }).ok).toBe(true);
     await s.passWindow();
@@ -289,5 +369,26 @@ describe("04 §10.11 · the mirror composer drafts into foo's chat", () => {
       error: { kind: 'VALIDATION', message: 'drafts_off' },
     });
     expect(await mirrorDraft(deps, { chatId: 'c_wa', text: '   ' })).toMatchObject({ ok: false });
+  });
+
+  it('a secret typed in the mirror is caught as on any send (R1); "Send anyway" goes on', async () => {
+    const s = service();
+    s.h.db
+      .prepare(
+        "INSERT INTO chats (id, kind, title, wa_jid, archived, last_activity_at, created_at) VALUES ('c_wa', 'wa_mirror', ?, ?, 0, 1, 1)",
+      )
+      .run(FAMILY.name, FAMILY.jid);
+    const deps = {
+      db: s.h.db,
+      now: () => s.h.clock.now,
+      draftsOn: () => true,
+      create: (input: Parameters<DraftService['create']>[0]) => s.drafts.create(input),
+      changed: (e: unknown) => void s.h.changed.push(e as never),
+    };
+    const text = 'wifi key sk-proj-AbCdEfGhIjKlMnOpQrStUvWxYz0123456789';
+    const caught = await mirrorDraft(deps, { chatId: 'c_wa', text });
+    expect(caught).toMatchObject({ ok: false, error: { kind: 'SECRET_SUSPECTED', paste: { kind: expect.any(String) } } });
+    expect(s.h.db.prepare("SELECT COUNT(*) FROM cards WHERE type = 'draft'").pluck().get()).toBe(0);
+    expect((await mirrorDraft(deps, { chatId: 'c_wa', text, secretOverride: true }))?.ok).toBe(true);
   });
 });

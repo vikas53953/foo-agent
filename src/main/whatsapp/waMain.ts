@@ -35,7 +35,7 @@ export interface WaMainContext {
   unlinkGraceMs?: number;
   // M8 T7
   /** Main's Draft service: delivery proof and the number re-check when the bridge is open again. */
-  drafts?(): { waDelivered(waMessageId: string): boolean; waOpen(): Promise<void> } | null;
+  drafts?(): { waDelivered(waMessageId: string): boolean; waSent(waMessageId: string): boolean; waOpen(): Promise<void> } | null;
 }
 
 /** 08-1 §2.2 step 7: the bridge is forked +20 s after start when a whatsapp row exists. */
@@ -72,6 +72,10 @@ export class WhatsAppMain {
     // M8 T7
     if (r.event === 'delivered') {
       this.c.drafts?.()?.waDelivered(r.waMessageId);
+      return;
+    }
+    if (r.event === 'sent') {
+      this.c.drafts?.()?.waSent(r.waMessageId);
       return;
     }
     if (r.event === 'open') {

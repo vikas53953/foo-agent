@@ -186,4 +186,13 @@ export default async function journey(v: Verify): Promise<void> {
   v.note(
     `typing in "${GROUP.name}" → "Draft ready in foo's chat." with Open → foo's chat at the group draft; its Send waits on the full Approval card "${t('cards.approval.send_whatsapp.title', { name: GROUP.name })}" and the fake phone still has only Mom's message (AT-269, AT-070)`,
   );
+
+  // 5 · only the full card's tap sends the group message (no 5 s undo), and the group draft reads "✓ Sent".
+  await full.getByTestId(TID.cardApprovalApprove).click();
+  await g.and(page.locator('[data-card-state="sent"]')).waitFor({ timeout: 15_000 });
+  const both2 = await outbound();
+  check(both2.length === 2 && both2[1]!.jid === GROUP.jid, `the fake phone sent ${JSON.stringify(both2)}`);
+  await g.scrollIntoViewIfNeeded();
+  await both(v, page, 'group-sent', `${byTid(TID.cardDraft)}[data-card-id="${groupCard}"]`);
+  v.note(`Approve on the full card → the group draft "✓ Sent"; the fake phone now has 2 messages, the second to "${GROUP.name}" (AT-070)`);
 }

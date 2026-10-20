@@ -87,11 +87,22 @@ describe('08-3 §16.4 Send · the engine queue', () => {
     expect(sends()).toEqual([]);
   });
 
-  it('no answer from the bridge in 30 s is SEND_FAILED (the card says nothing went out only if the bridge said so: logged)', async () => {
+  it('no answer from the bridge in 30 s is SEND_FAILED no_ack (it may have gone out); a late server ack is reported as sent', async () => {
     const a = wa.send({ jid: MOM, text: 'one', draftCardId: 'k_1' });
     await flush();
     clock.advance(30_000);
-    expect(await a).toEqual({ ok: false, error: { kind: 'SEND_FAILED' } });
+    expect(await a).toEqual({ ok: false, error: { kind: 'SEND_FAILED', message: 'no_ack' } });
+    port.emit('wa.ack', { waMessageId: idOf(MOM, 'k_1'), level: 1 });
+    port.emit('wa.ack', { waMessageId: idOf(MOM, 'k_1'), level: 2 });
+    await flush();
+    expect(reports().filter((r) => r.event === 'sent' || r.event === 'delivered')).toEqual([
+      { event: 'sent', waMessageId: idOf(MOM, 'k_1') },
+      { event: 'delivered', waMessageId: idOf(MOM, 'k_1') },
+    ]);
+    // Once only, and never for a send that answered in time.
+    port.emit('wa.ack', { waMessageId: idOf(MOM, 'k_1'), level: 1 });
+    await flush();
+    expect(reports().filter((r) => r.event === 'sent')).toHaveLength(1);
   });
 
   it('a delivery ack (level ≥ 2) is reported to main as delivered; level 1 alone is not', async () => {

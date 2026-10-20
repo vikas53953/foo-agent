@@ -51,7 +51,8 @@ describe('AT-054 · foo never posts to X', () => {
     expect(s.payload(d.cardId)).toMatchObject({ channel: 'x', xRemaining: 280 - 54, edited: false });
     expect(s.h.card(d.cardId).expires_at).toBeNull();
     expect(s.drafts.send(s.tap(d))).toEqual({ ok: false, error: { kind: 'VALIDATION' } });
-    expect(await s.drafts.openInApp({ cardId: d.cardId })).toEqual({ ok: true, value: undefined });
+    expect(await s.drafts.openInApp({ cardId: d.cardId })).toEqual({ ok: false, error: { kind: 'VALIDATION' } });
+    expect(await s.drafts.openX({ cardId: d.cardId, nonce: d.nonce })).toEqual({ ok: true, value: undefined });
     expect(s.opened).toEqual([xIntentUrl('Lights out in Indiranagar again. Third time this week.')]);
     expect(s.h.card(d.cardId).state).toBe('opened_in_app');
     // foo's line, and Activity opened_x_draft with no proof.
@@ -61,7 +62,7 @@ describe('AT-054 · foo never posts to X', () => {
     expect(act).toHaveLength(1);
     expect(act[0]).toMatchObject({ kind: 'sent', summary: 'Opened an X post for you to send', proof_kind: null });
     // A second tap only opens the page again.
-    await s.drafts.openInApp({ cardId: d.cardId });
+    await s.drafts.openX({ cardId: d.cardId, nonce: d.nonce });
     expect(s.opened).toHaveLength(2);
     expect(s.h.db.prepare("SELECT COUNT(*) FROM activity WHERE event = 'opened_x_draft'").pluck().get()).toBe(1);
   });
@@ -70,14 +71,14 @@ describe('AT-054 · foo never posts to X', () => {
     const s = service();
     const d = await s.make('x'.repeat(314));
     expect(s.payload(d.cardId).xRemaining).toBe(-34);
-    expect(await s.drafts.openInApp({ cardId: d.cardId })).toEqual({ ok: false, error: { kind: 'VALIDATION' } });
+    expect(await s.drafts.openX({ cardId: d.cardId, nonce: d.nonce })).toEqual({ ok: false, error: { kind: 'VALIDATION' } });
     expect(s.opened).toEqual([]);
     const changed = await s.drafts.update({ cardId: d.cardId, nonce: d.nonce, fields: { body: 'Short now.' } });
     expect(changed.ok).toBe(true);
     expect(s.payload(d.cardId)).toMatchObject({ body: 'Short now.', edited: true, xRemaining: 270 });
     // The old nonce is stale after a change.
     expect((await s.drafts.update({ cardId: d.cardId, nonce: d.nonce, fields: { body: 'again' } })).ok).toBe(false);
-    expect((await s.drafts.openInApp({ cardId: d.cardId })).ok).toBe(true);
+    expect((await s.drafts.openX({ cardId: d.cardId, nonce: String(s.h.card(d.cardId).nonce) })).ok).toBe(true);
     expect(s.opened).toEqual([xIntentUrl('Short now.')]);
   });
 
@@ -86,7 +87,7 @@ describe('AT-054 · foo never posts to X', () => {
     const d = await s.make('bye');
     expect((await s.drafts.discard(s.tap(d))).ok).toBe(true);
     expect(s.h.card(d.cardId).state).toBe('discarded');
-    expect((await s.drafts.openInApp({ cardId: d.cardId })).ok).toBe(false);
+    expect((await s.drafts.openX({ cardId: d.cardId, nonce: d.nonce })).ok).toBe(false);
     expect(s.opened).toEqual([]);
   });
 
@@ -96,6 +97,8 @@ describe('AT-054 · foo never posts to X', () => {
     expect(await s.drafts.openX({ cardId: d.cardId, jobId: 'j_other' })).toEqual({ ok: false, error: { kind: 'URL_NOT_ALLOWED' } });
     expect(await s.drafts.openX({ cardId: d.cardId, nonce: 'stale' })).toEqual({ ok: false, error: { kind: 'CARD_STALE' } });
     expect(await s.drafts.openX({ cardId: 'k_missing', jobId: s.h.jobId })).toEqual({ ok: false, error: { kind: 'URL_NOT_ALLOWED' } });
+    // Neither the job nor the card's nonce: nothing opens.
+    expect(await s.drafts.openX({ cardId: d.cardId })).toEqual({ ok: false, error: { kind: 'URL_NOT_ALLOWED' } });
     expect(s.opened).toEqual([]);
     expect(await s.drafts.openX({ cardId: d.cardId, jobId: s.h.jobId })).toEqual({ ok: true, value: undefined });
     expect(await s.drafts.openX({ cardId: d.cardId, nonce: d.nonce })).toEqual({ ok: true, value: undefined });

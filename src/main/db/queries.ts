@@ -23,6 +23,7 @@ import type {
 } from '../../shared/types';
 import { cardRow, parseJson, stepRow, type DbRow } from './rows';
 import { fooChatId, jobRows } from '../store/queries';
+import { maskWaNumber } from '../../shared/waBridge'; // M8 T7
 
 /** What every named query gets: the database and the injected clock's now (JobRow.slow is derived from it). */
 export interface QueryCtx {
@@ -548,23 +549,26 @@ export const NAMED_QUERIES = {
   'wa.groupByName': ({ db }: QueryCtx, name: unknown): { jid: string; name: string }[] => {
     const q = String(name).trim();
     if (!q) return [];
-    const sql = (op: string) =>
-      `SELECT wa_jid AS jid, title AS name FROM chats WHERE kind = 'wa_mirror' AND deleted_at IS NULL AND wa_jid IS NOT NULL AND ${op.replace(/name/g, 'title')}
-       UNION SELECT jid, name FROM wa_contacts WHERE jid LIKE '%@g.us' AND name IS NOT NULL AND ${op} ORDER BY 2, 1 LIMIT 10`;
-    const exact = db.prepare(sql('lower(name) = lower(?)')).all(q, q) as { jid: string; name: string }[];
+    const sql = (chatOp: string, contactOp: string) =>
+      `SELECT wa_jid AS jid, title AS name FROM chats WHERE kind = 'wa_mirror' AND deleted_at IS NULL AND wa_jid IS NOT NULL AND ${chatOp}
+       UNION SELECT jid, name FROM wa_contacts WHERE jid LIKE '%@g.us' AND name IS NOT NULL AND ${contactOp} ORDER BY 2, 1 LIMIT 10`;
+    const exact = db.prepare(sql('lower(title) = lower(?)', 'lower(name) = lower(?)')).all(q, q) as { jid: string; name: string }[];
     if (exact.length) return exact;
     const like = q.replace(/[\\%_]/g, (c) => `\\${c}`);
-    return db.prepare(sql("lower(name) LIKE lower(?) || '%' ESCAPE '\\'")).all(like, like) as { jid: string; name: string }[];
+    const prefix = (col: string) => `lower(${col}) LIKE lower(?) || '%' ESCAPE '\\'`;
+    return db.prepare(sql(prefix('title'), prefix('name'))).all(like, like) as { jid: string; name: string }[];
   },
   // The last 5 one-to-one chats (newest first) with the name foo would show for each ("Who is {Mom} on WhatsApp?").
   'wa.lastChats': ({ db }: QueryCtx): { jid: string; name: string | null }[] =>
-    db
-      .prepare(
-        `SELECT m.chat_jid AS jid, COALESCE(c.name,
+    (
+      db
+        .prepare(
+          `SELECT m.chat_jid AS jid, COALESCE(c.name,
             (SELECT sender_label FROM wa_messages x WHERE x.chat_jid = m.chat_jid AND x.from_me = 0 ORDER BY x.at DESC LIMIT 1)) AS name
            FROM wa_messages m LEFT JOIN wa_contacts c ON c.jid = m.chat_jid
           WHERE m.chat_jid NOT LIKE '%@g.us'
           GROUP BY m.chat_jid ORDER BY MAX(m.at) DESC LIMIT 5`,
-      )
-      .all() as { jid: string; name: string | null }[],
+        )
+        .all() as { jid: string; name: string | null }[]
+    ).map((r) => (r.name === maskWaNumber(r.jid) ? { ...r, name: null } : r)), // M8 T7: a masked number is no name.
 } as const;

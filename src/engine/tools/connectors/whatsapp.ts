@@ -22,6 +22,7 @@ import {
   type BridgeToEngine,
   type EngineToBridge,
   WA_ACK_DELIVERED,
+  WA_NO_ACK,
   waMessageId,
   waSendKeyId,
   type WaState,
@@ -71,6 +72,8 @@ export class WhatsAppConnector {
   private inFlight: { id: string; done(r: Result<{ waMessageId: string }>): void } | null = null;
   private checks: { jid: string; done(exists: boolean | null): void }[] = [];
   private delivered = new Set<string>();
+  /** Sends whose wait ran out: a late server ack for one is reported as `sent` (it did go out). */
+  private lost = new Set<string>();
 
   constructor(
     private o: {
@@ -186,6 +189,7 @@ export class WhatsAppConnector {
       // M8 T7
       case 'wa.ack':
         if (this.inFlight?.id === m.payload.waMessageId) this.inFlight.done(ok({ waMessageId: m.payload.waMessageId }));
+        else if (this.lost.delete(m.payload.waMessageId)) this.report({ event: 'sent', waMessageId: m.payload.waMessageId });
         if (m.payload.level >= WA_ACK_DELIVERED && !this.delivered.has(m.payload.waMessageId)) {
           // Delivered then read: one proof. The set only needs this session's sends.
           if (this.delivered.size > 500) this.delivered.clear();
@@ -228,7 +232,12 @@ export class WhatsAppConnector {
     const id = waMessageId(req.jid, waSendKeyId(req.draftCardId));
     this.lastSendAt = this.o.clock.now();
     const r = await new Promise<Result<{ waMessageId: string }>>((resolve) => {
-      const timer = this.o.clock.setTimeout(() => finish(fail('SEND_FAILED')), SEND_WAIT_MS);
+      // No answer is not "nothing went out": main keeps the row CHECKING and a late ack still completes it.
+      const timer = this.o.clock.setTimeout(() => {
+        if (this.lost.size > 500) this.lost.clear();
+        this.lost.add(id);
+        finish(fail('SEND_FAILED', WA_NO_ACK));
+      }, SEND_WAIT_MS);
       const finish = (x: Result<{ waMessageId: string }>) => {
         this.o.clock.clearTimeout(timer);
         if (this.inFlight?.id === id) this.inFlight = null;

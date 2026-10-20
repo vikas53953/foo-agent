@@ -5,10 +5,13 @@
 // M8 T7: main's deterministic intake for the mirror composer. No AI picks anything: the user typed in the group, so the
 // group is the recipient and the typed text is the body; nothing is stored in the mirror itself (it shows only WhatsApp's
 // own messages, 08-3 §16.4.3). The draft needs a job (its approvals row hangs on one), so a finished job in foo's chat
-// carries it.
+// carries it. 08-2 §11.4 R1: the paste catcher's secret check runs here as on any send ("Send anyway" goes on as typed).
+// 08-2 §9.6: the second look reads ONLY the user's own words, so the typed text is kept as the user's message in foo's
+// chat, above the Draft (08-3 §16.4.3: nothing is copied into the mirror's `messages`).
 import { fail, ok, type Result } from '../../shared/errors';
 import { newId } from '../../shared/ids';
 import { t } from '../../shared/copy/t';
+import { checkSecret } from '../../shared/redactor';
 import type { Db } from '../store/db';
 import { applyDbOps, type TxEffects } from '../engine-supervisor/engineHost';
 import { fooChatId } from '../store/queries';
@@ -34,7 +37,10 @@ export interface MirrorDrafted {
 }
 
 /** The mirror composer's Send: a WhatsApp group Draft card in foo's chat. Answers null when the chat is not a mirror. */
-export async function mirrorDraft(d: MirrorDraftDeps, req: { chatId: string; text: string }): Promise<Result<MirrorDrafted> | null> {
+export async function mirrorDraft(
+  d: MirrorDraftDeps,
+  req: { chatId: string; text: string; secretOverride?: boolean },
+): Promise<Result<MirrorDrafted> | null> {
   const chat = d.db
     .prepare("SELECT title, wa_jid FROM chats WHERE id = ? AND kind = 'wa_mirror' AND deleted_at IS NULL")
     .get(req.chatId) as { title: string | null; wa_jid: string | null } | undefined;
@@ -42,6 +48,8 @@ export async function mirrorDraft(d: MirrorDraftDeps, req: { chatId: string; tex
   const body = req.text.trim();
   if (!body || !chat.wa_jid || !chat.wa_jid.endsWith('@g.us')) return fail('VALIDATION');
   if (!d.draftsOn()) return fail('VALIDATION', 'drafts_off');
+  const paste = req.secretOverride ? null : checkSecret(body);
+  if (paste) return { ok: false, error: { kind: 'SECRET_SUSPECTED', paste } };
   const foo = fooChatId(d.db);
   if (!foo) return fail('NOT_FOUND');
   const group = chat.title ?? '';
@@ -70,6 +78,21 @@ export async function mirrorDraft(d: MirrorDraftDeps, req: { chatId: string; tex
           started_at: now,
           finished_at: now,
         },
+      },
+      {
+        op: 'insert',
+        table: 'messages',
+        row: {
+          id: newId('m', now),
+          chat_id: foo,
+          author_kind: 'user',
+          kind: 'text',
+          text: body,
+          status: 'sent',
+          job_id: jobId,
+          created_at: now,
+        },
+        redact: ['text'],
       },
     ],
     { now },

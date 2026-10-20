@@ -147,7 +147,10 @@ export function draftIpc(ctx: AppContext): IpcHandlers<'draft:update' | 'draft:s
 
 // M8 T7
 /** 04 §10.11: Send in a mirrored WhatsApp group drafts into foo's chat; null when the chat is not a mirror. */
-export function draftFromMirror(ctx: AppContext, req: { chatId: string; text: string }): Promise<Result<MirrorDrafted> | null> | null {
+export function draftFromMirror(
+  ctx: AppContext,
+  req: { chatId: string; text: string; secretOverride?: boolean },
+): Promise<Result<MirrorDrafted> | null> | null {
   const mirror = ctx.db.prepare("SELECT 1 FROM chats WHERE id = ? AND kind = 'wa_mirror'").pluck().get(req.chatId);
   if (!mirror) return null;
   const drafts = draftService(ctx);

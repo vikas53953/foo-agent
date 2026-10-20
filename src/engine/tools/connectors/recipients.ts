@@ -184,8 +184,10 @@ export function linkWaRecipients(link: MainLink, more: Pick<WaRecipientDeps, 'ch
 
 /** `whatsapp.draft`: who it goes to (the ladder), then main's `draft.create`. */
 export function whatsappDraftTool(d: { link: MainLink; recipients: WaRecipientDeps; draftsOn(): boolean }): ToolDef {
-  // A Choice answer comes back to the AI as its option label (Part 8 "Decisions:"); the next call names it.
+  // A Choice answer comes back to the AI as its option label (Part 8 "Decisions:"); the next call names it by that label,
+  // its option id, or the name before " · " when only one option has that name. Kept per job until its draft is made.
   const picks = new Map<string, Map<string, WaRecipient>>();
+  const PICKS_JOBS = 50;
   return {
     name: 'whatsapp.draft',
     actionClass: 'prepare',
@@ -203,7 +205,13 @@ export function whatsappDraftTool(d: { link: MainLink; recipients: WaRecipientDe
           if (r.kind === 'none') return { kind: 'error', errorKind: 'NOT_FOUND' };
           if (r.kind === 'ask') {
             const mine = picks.get(ctx.jobId) ?? new Map<string, WaRecipient>();
-            for (const o of r.options) mine.set(o.label.toLowerCase(), o.to);
+            const names = r.options.map((o) => o.label.split(' · ')[0]!.trim().toLowerCase());
+            r.options.forEach((o, i) => {
+              mine.set(o.label.toLowerCase(), o.to);
+              mine.set(OPTION_IDS[i]!, o.to);
+              if (names.filter((n) => n === names[i]).length === 1) mine.set(names[i]!, o.to);
+            });
+            if (!picks.has(ctx.jobId) && picks.size >= PICKS_JOBS) picks.delete(picks.keys().next().value!);
             picks.set(ctx.jobId, mine);
             return {
               kind: 'needs_user',
@@ -233,6 +241,7 @@ export function whatsappDraftTool(d: { link: MainLink; recipients: WaRecipientDe
             body: a.text,
           });
           if (!made.ok) return { kind: 'error', errorKind: made.error.kind };
+          picks.delete(ctx.jobId);
           // What the AI sees: the draft waits on the user's tap; it never learns a number it did not give.
           return { kind: 'ok', result: { drafted: true, cardId: made.value.cardId, to: to.name, waitingForSend: true } };
         },

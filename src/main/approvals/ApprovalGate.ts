@@ -625,7 +625,10 @@ export class ApprovalGate {
       // M5 T14: the second look on a Draft send (HELD) and its two picks.
       | 'second_look_held'
       | 'held_pick_action'
-      | 'held_pick_own',
+      | 'held_pick_own'
+      // M8 T7: a WhatsApp send the bridge never answered (CHECKING), and its late server ack.
+      | 'result_unknown'
+      | 'proof_found',
     w: { approval?: Record<string, unknown>; card: Record<string, unknown>; extra?: DbOp[] },
   ): Result<ApprovalState> {
     const a = this.get(approvalId);

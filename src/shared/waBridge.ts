@@ -17,6 +17,10 @@ export const WA_RETENTION_MS = 7 * 86_400_000;
 export const WA_MEDIA_TEXT = '[photo]';
 
 /** The wa_messages row id (0001_init: ingest is INSERT OR IGNORE on it, X-129). */
+// M8 T7
+/** The engine's failure message for a send whose wait for the bridge ran out: it may have gone out (08-2 §10.5). */
+export const WA_NO_ACK = 'no_ack';
+
 export const waMessageId = (chatJid: string, keyId: string): string => `wa_${chatJid}:${keyId}`;
 
 // M8 T7
