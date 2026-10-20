@@ -191,3 +191,18 @@ with `cr: "CR-0021"` and a row in this table; an app that is simply wrong is fix
   shell back (AT-303 covers the shared dialog); archive and pin-drag motion; the cloud-icon nod (the composer has no cloud
   icon yet); proof photo zoom (no surface yet); splash Upgrading and Disk-full states (M12); one icon chunk per page.
 - Needs Vikas's eyes on Windows 11: real Mica and the Windows accent colour (tests run with Mica off).
+
+### Close-out review (two axes, 2026-10-20)
+
+Standards and Spec reviewers (Sonnet, read-only) on `origin/main...HEAD`, beside the fidelity checker.
+
+- Carried: §F15.9.3 #11's second trigger, "or foo's first-ever DONE job", is not built. The renderer sees jobs only
+  through `job:upsert`, so knowing "first ever" needs a main-side fact and a channel, which (d) rules out for P1. Today
+  only the approved-card trigger celebrates; a first-ever DONE without one plays Happy.
+- Kept, logged as a pick: a page chunk that fails to load shows "I couldn’t open this page. Your chats are fine." and
+  "Reload {agentName}" (`screen.load_error.*`) instead of a blank pane. AT-322 names only the skeleton; a blank screen
+  would break Article 1 (never leave the user stuck).
+- Spec-keeper items in (e) stay open; the spec text is not edited under this CR.
+- Dismissed: one `AudioContext` per playing note (only one note plays at a time; it closes on stop);
+  `watchMotion`'s listener (called once per window by design); the `captureStream` cast (the DOM types lack the
+  member).
