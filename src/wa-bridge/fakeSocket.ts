@@ -1,6 +1,8 @@
 // Spec: 08-3 §22 (FOO_TEST runs never reach a real service: connectors are faked through the same seams), §22.4 (fake
 // connectors), 08-3 §16.4.4 (a new QR about every 20 s). The socket a FOO_TEST bridge uses instead of Baileys: main's
 // test channel plays the phone (scan, an incoming group message, logout). Fake numbers only (public repo).
+// M8 T7: it records every outbound message (so a test can count that nothing was sent) and answers delivered for each;
+// `notOnWhatsApp` is the one number `wa.onWhatsApp` says has no WhatsApp.
 import type { Clock, TimerId } from '../shared/clock';
 import type { BridgeTestOp } from '../shared/waBridge';
 import type { SocketFactory, WaSocketEvents } from './core';
@@ -12,6 +14,8 @@ export const FAKE_WA = {
     { jid: '120363000000000001@g.us', name: 'Building society' },
     { jid: '120363000000000002@g.us', name: 'School friends' },
   ],
+  // M8 T7
+  notOnWhatsApp: '919800000099@s.whatsapp.net',
 } as const;
 
 const QR_EVERY_MS = 20_000;
@@ -21,6 +25,9 @@ export class FakePhone {
   private pairing = false;
   private timer: TimerId | null = null;
   private codes = 0;
+  // M8 T7
+  /** Every message the bridge sent through this phone, in order. */
+  readonly outbound: { jid: string; text: string; keyId: string }[] = [];
 
   constructor(private clock: Clock) {}
 
@@ -35,6 +42,13 @@ export class FakePhone {
       end: () => {
         if (this.events === events) this.stop();
       },
+      // M8 T7: the server takes it at once; the phone answers delivered (ack 2) right after.
+      sendText: async (jid, text, keyId) => {
+        if (this.events !== events) throw new Error('closed');
+        this.outbound.push({ jid, text, keyId });
+        setTimeout(() => this.events === events && events.acks([{ chatJid: jid, keyId, level: 2 }]), 0);
+      },
+      onWhatsApp: async (jids) => jids.map((jid) => ({ jid, exists: jid !== FAKE_WA.notOnWhatsApp })),
     };
   };
 

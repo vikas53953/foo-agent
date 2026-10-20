@@ -5,6 +5,9 @@
 // CR-0012 pick 6 / G-M8-06 (on 7.0.0-rc14 `fetchLatestBaileysVersion()` reads raw.githubusercontent.com, a non-WhatsApp
 // host, so it is never called: the version pinned in the package is used). The only host this opens is
 // wss://web.whatsapp.com/ws/chat (implementation-notes "M8 T3"). Never loaded in FOO_TEST runs (fakeSocket.ts is).
+// M8 T7: `sendMessage(jid, { text }, { messageId })` (text only; the key id is the Draft card's), `onWhatsApp`, and the
+// status of this device's own messages from `messages.update` as ack levels (SERVER_ACK 2 → 1, DELIVERY_ACK 3 → 2, READ /
+// PLAYED → 3).
 import type { AuthenticationCreds, SignalDataTypeMap, WAMessage } from '@whiskeysockets/baileys';
 import type { IncomingWaMessage, SocketFactory, WaContact, WaSocket, WaSocketEvents } from './core';
 
@@ -134,6 +137,14 @@ export function baileysSocket(appVersion: string): SocketFactory {
         contacts(list.map((c) => ({ jid: c.id, ...(c.name || c.notify ? { name: c.name ?? c.notify! } : {}) }))),
       );
       s.ev.on('groups.upsert', (list) => contacts(list.map((g) => ({ jid: g.id, name: g.subject }))));
+      // M8 T7
+      s.ev.on('messages.update', (list) => {
+        const acks = list
+          .filter((u) => u.key.fromMe && u.key.remoteJid && u.key.id && typeof u.update.status === 'number')
+          .map((u) => ({ chatJid: u.key.remoteJid!, keyId: u.key.id!, level: Math.min(Number(u.update.status) - 1, 3) }))
+          .filter((a) => a.level >= 1);
+        if (acks.length) events.acks(acks);
+      });
     };
     start();
 
@@ -142,6 +153,17 @@ export function baileysSocket(appVersion: string): SocketFactory {
         await sock?.logout();
       },
       end: () => sock?.end(undefined),
+      // M8 T7
+      sendText: async (jid, text, keyId) => {
+        if (!sock) throw new Error('closed');
+        const sent = await sock.sendMessage(jid, { text }, { messageId: keyId });
+        if (!sent) throw new Error('not sent');
+      },
+      onWhatsApp: async (jids) => {
+        if (!sock) return [];
+        const found = (await sock.onWhatsApp(...jids)) ?? [];
+        return jids.map((jid) => ({ jid, exists: found.some((f) => f.exists && b.jidNormalizedUser(f.jid) === jid) }));
+      },
     };
     return socket;
   };

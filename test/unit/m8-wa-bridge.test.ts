@@ -25,6 +25,8 @@ function rig() {
       return {
         logout: async () => void calls.push('logout'),
         end: () => void calls.push('end'),
+        sendText: async () => void calls.push('sendText'),
+        onWhatsApp: async () => [],
       };
     },
   });
@@ -33,10 +35,14 @@ function rig() {
 }
 
 describe('wa-bridge protocol (08-1 §2.4.2)', () => {
-  it('rejects a send: this bridge has no send path (T7 adds it)', () => {
+  it('accepts a send since M8 T7 (08-1 §2.4.2 `wa.send { jid; text; draftCardId }`), and nothing looser', () => {
     expect(engineToBridgeSchema.safeParse({ id: '1', kind: 'wa.send', payload: { jid: ME, text: 'hi', draftCardId: 'k_1' } }).success).toBe(
-      false,
+      true,
     );
+    expect(engineToBridgeSchema.safeParse({ id: '1', kind: 'wa.send', payload: { jid: ME, text: 'hi' } }).success).toBe(false);
+    expect(
+      engineToBridgeSchema.safeParse({ id: '1', kind: 'wa.send', payload: { jid: ME, text: 'hi', draftCardId: 'k_1', media: true } }).success,
+    ).toBe(false);
   });
 
   it('round-trips every T3 message through zod', () => {
