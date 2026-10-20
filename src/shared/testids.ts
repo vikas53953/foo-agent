@@ -511,6 +511,8 @@ export const TID = {
   cardDoneSaved: 'card-done-saved',
   splash: 'splash',
   splashFace: 'splash-face',
+  // M9 T7
+  cardSigninStartAgain: 'card-signin-start-again',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

@@ -3,6 +3,7 @@
 // "5:00 max" at the limit (`composer-recording-timer`); live level bars (2px, 2px gaps, 4–24 tall, newest at the right,
 // --fg-2; they keep updating under reduced motion); hint per mode ("Release to send · slide left to cancel", "Release to
 // send · Esc to cancel", "Press Enter to send · Esc to cancel"; "Let go to cancel" in --bad with the dot --fg-3 while armed).
+// 02 §F7.1 "Composer" (P1 T6): when it ends (Esc included) the bar shrinks back into the mic (`<Presence>` sets data-exit).
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
 import { Icon } from '../ui/Icon';
@@ -34,7 +35,7 @@ export function RecordCancel({ onCancel }: { onCancel: () => void }) {
   );
 }
 
-export function VoiceRecorder({ rec }: { rec: RecordingView }) {
+export function VoiceRecorder({ rec, 'data-exit': exit }: { rec: RecordingView; 'data-exit'?: '' }) {
   const hint = rec.cancelArmed
     ? t('composer.recording.hint_let_go')
     : rec.mode === 'locked'
@@ -44,7 +45,7 @@ export function VoiceRecorder({ rec }: { rec: RecordingView }) {
         : t('composer.recording.hint_mouse');
   const atMax = rec.elapsedMs >= MAX_VOICE_MS;
   return (
-    <div className={`${styles.pill} ${styles.recPill}`} data-testid={TID.composerRecording} data-state={rec.mode}>
+    <div className={`${styles.pill} ${styles.recPill}`} data-testid={TID.composerRecording} data-state={rec.mode} data-exit={exit}>
       <span className={styles.dot} data-cancel={rec.cancelArmed || undefined} />
       <span className={styles.timer} data-testid={TID.composerRecordingTimer} data-warn={rec.elapsedMs >= WARN_AT_MS || undefined}>
         {atMax ? t('composer.recording.max', { time: timerText(MAX_VOICE_MS) }) : timerText(rec.elapsedMs)}

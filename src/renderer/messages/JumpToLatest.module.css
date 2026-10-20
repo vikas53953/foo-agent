@@ -17,7 +17,10 @@
   box-shadow: var(--shadow-4);
   color: var(--fg-2);
   font: var(--t-body-strong);
-  transition: opacity var(--m-normal) var(--ease-standard);
+  /* §F7.1: it bounces in with the spring and leaves faster, with --ease-out (CR-0021 pick 2). */
+  transition:
+    opacity var(--m-normal) var(--ease-standard),
+    transform var(--m-spring) var(--ease-spring);
 }
 .button[data-count] {
   padding: 0 var(--s3);
@@ -32,9 +35,22 @@
 .button[data-state='hidden'] {
   opacity: 0;
   pointer-events: none;
+  transform: translateY(calc(var(--s1) * var(--motion-move, 1))) scale(calc(1 - 0.08 * var(--motion-move, 1)));
+  transition:
+    opacity var(--m-normal) var(--ease-out),
+    transform var(--m-normal) var(--ease-out);
 }
+/* A new count pops in once each time it changes (the span is keyed by the count). */
 .count {
+  display: inline-block;
   color: var(--fg-1);
+  animation: count-in var(--m-spring) var(--ease-spring);
+}
+@keyframes count-in {
+  from {
+    opacity: 0;
+    transform: scale(calc(1 - 0.3 * var(--motion-move, 1)));
+  }
 }
 :global(:root[data-motion='off']) .button {
   transition: none;

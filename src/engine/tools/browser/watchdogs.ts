@@ -9,7 +9,7 @@ import type { DriverWindow } from './browser';
 
 /** Words and frames that mark a bot check or CAPTCHA page (never solved; 08-2 §8.4). */
 const CHALLENGE_TEXT =
-  /verify (that )?you are (a )?human|are you a robot|i'?m not a robot|checking your browser|attention required|press (and|&) hold|complete the security check|captcha/i;
+  /(verify|check) (that )?you( are|'re|’re) (a )?human|are you a robot|i'?m not a robot|checking your browser|attention required|press (and|&) hold|complete the security check|captcha/i;
 const CHALLENGE_FRAMES = /recaptcha|hcaptcha|challenges\.cloudflare\.com|turnstile|arkoselabs|funcaptcha|geo\.captcha-delivery/i;
 
 export interface WatchState {

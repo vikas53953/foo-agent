@@ -26,7 +26,7 @@ test('UX-24 · Settings: Account & your AI (UX-24-02), light and dark', async ()
     await expect(page.getByTestId(TID.settingsNavAccount)).toHaveAttribute('aria-current', 'page');
     const using = page.getByTestId(TID.settingsRowAccountAiUsing);
     await expect(using).toContainText(t('settings.account.ai_using.value', { AI: 'Claude' }));
-    await expect(using).toContainText('✓ works');
+    await expect(using).toContainText('works');
     await expect(using.getByRole('button', { name: t('settings.account.ai_using.test_now') })).toBeEnabled();
     await expect(using.getByRole('button', { name: t('settings.account.ai_using.change') })).toBeVisible();
     await expect(page.getByTestId(TID.settingsRowAccountAiBackup)).toContainText('ChatGPT');

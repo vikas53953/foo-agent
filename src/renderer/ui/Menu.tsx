@@ -2,7 +2,8 @@
 // `--s0`; items min-height 40, padding 0 `--s2`, `--r-sm`, `--t-body`, shortcut hint right in `--t-caption` `--fg-3`;
 // separators; destructive items `--bad`; opens with `--m-normal` `--ease-in` (fade + 4px drop), instant under reduced
 // motion. Keys: ↑/↓ move, Home/End, Enter/Space choose, → opens a submenu, ←/Esc closes, Tab closes. `role="menu"` /
-// `menuitem`. Test ids come from TID by key (lint foo/testid-from-registry).
+// `menuitem`. Test ids come from TID by key (lint foo/testid-from-registry). P1 T3 (CR-0021 pick 5, AT-303): menus scale
+// in from the button that opened them (transform-origin at the anchor).
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { TID } from '../../shared/testids';
@@ -25,7 +26,10 @@ export interface MenuProps {
   level?: number;
 }
 
-function place(anchor: MenuAnchor, menu: DOMRect): { x: number; y: number } {
+/** A placed box's untransformed size: the entrance animation scales the element, so its client rect is smaller. */
+export const layoutSize = (el: HTMLElement) => ({ width: el.offsetWidth, height: el.offsetHeight });
+
+function place(anchor: MenuAnchor, menu: { width: number; height: number }): { x: number; y: number } {
   const gap = 4;
   let x: number;
   let y: number;
@@ -43,6 +47,20 @@ function place(anchor: MenuAnchor, menu: DOMRect): { x: number; y: number } {
   return { x, y };
 }
 
+/** The point inside a placed menu or popover (at `x`, `y`, size `box`) nearest the anchor's centre, as a CSS origin. */
+export function originFrom(
+  anchor: DOMRect | { x: number; y: number },
+  x: number,
+  y: number,
+  box: { width: number; height: number },
+): string {
+  const cx = 'width' in anchor ? anchor.left + anchor.width / 2 : anchor.x;
+  const cy = 'height' in anchor ? anchor.top + anchor.height / 2 : anchor.y;
+  const ox = Math.min(Math.max(0, cx - x), box.width);
+  const oy = Math.min(Math.max(0, cy - y), box.height);
+  return `${Math.round(ox)}px ${Math.round(oy)}px`;
+}
+
 export function Menu({ entries, anchor, onClose, label, tid, autoFocus = true, level = 0 }: MenuProps) {
   const ref = useRef<HTMLDivElement>(null);
   // Placed once, where it opened (a re-render of the opener must not move it or steal focus).
@@ -53,9 +71,12 @@ export function Menu({ entries, anchor, onClose, label, tid, autoFocus = true, l
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const { x, y } = place(opened.current.anchor, el.getBoundingClientRect());
+    const box = layoutSize(el);
+    const { x, y } = place(opened.current.anchor, box);
+    const a = opened.current.anchor;
     el.style.left = `${x}px`;
     el.style.top = `${y}px`;
+    el.style.transformOrigin = originFrom('el' in a ? a.el.getBoundingClientRect() : a, x, y, box);
     el.style.visibility = 'visible';
     if (opened.current.autoFocus) el.querySelector<HTMLButtonElement>(':scope > [role="menuitem"]')?.focus();
   }, []);

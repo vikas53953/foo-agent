@@ -20,7 +20,7 @@ import type { ExecResult, ToolLayer } from '../tools/ToolLayer';
 import { approvalText } from './approvalText';
 import { classOfVerb, untrustedSource, type PermRow } from './classes';
 import type { ActionClass, GateJob, GateLogic } from './GateLogic';
-import { EVIDENCE_RETRY_LINE, verifyRequestApproval, type ApprovalSnapshot } from './requestApproval';
+import { EVIDENCE_RETRY_LINE, registrableDomain, verifyRequestApproval, type ApprovalSnapshot } from './requestApproval';
 import type { ApprovalPayload, SecondLookResult } from '../../shared/types';
 import { askSecondLook, readLiveTerms, userWordsFor } from './afterApproved';
 import { checkLiveTerms } from './liveTerms';
@@ -486,6 +486,9 @@ export class RunnerGate {
         timeZone: this.d.timeZone(),
         now: core.d.clock.now(),
         untrusted: a.untrusted,
+        // M9 close-out (08-2 §8.1, §9.6 A, Art. 9): acting on a site other than the card's is a mismatch, so a new site
+        // inside an approved job always comes back to the person on the card first.
+        ...(this.d.browserUrl && ACTS_ON_SITE.has(a.draft.verb) ? { live: { siteDomain: pageDomain(this.d.browserUrl(job.id)) } } : {}),
         askAi: (p) => askSecondLook(core, job, p, signal),
       });
       if (!out.pass) return this.hold(job, a, { secondLook: out.result, held: out.held });
@@ -736,6 +739,15 @@ function approvedLine(d: ApprovalDraft, timeZone: string, now: number): string {
 function snapshotTextOf(result: unknown): string {
   const s = (result as { snapshot?: unknown } | null)?.snapshot;
   return typeof s === 'string' ? s : '';
+}
+
+/** 08-2 §8.1: the verbs that act on a site (`book`/`buy`/`pay`); reading other sites never needs a card. */
+const ACTS_ON_SITE: ReadonlySet<string> = new Set(['book', 'buy', 'pay']);
+
+/** The registrable domain of the job's page, as the card's `siteDomain` was made (08-4 §28.1 item 5), or null. */
+function pageDomain(url: string | null): string | null {
+  const host = hostOf(url);
+  return host ? registrableDomain(host) : null;
 }
 
 /** M9 T8: the host of a page address, or null (no page, about:blank, not a URL). */

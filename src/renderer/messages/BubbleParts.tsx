@@ -7,7 +7,8 @@
 // middle ellipsis keeping the extension, "{TYPE} · {size}", click opens, right-click Open / Show in folder), §10.4 (deleted
 // state), §10.6 (link preview block), §12.5 (backup-AI mark). Meta strings are exempt from the ART-21a weekday rule
 // (10-2 ART-21a "except bubble meta"); the meta carries `data-meta` so scans can tell.
-import { useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
+// 02 §F7.1 "Chat" (CR-0021, X-179): ticks draw in when read, the picked reaction bounces once, images blur up, the retry spinner turns into ✓.
+import { useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { BADGE_GLYPH } from '../../shared/badges';
 import { t } from '../../shared/copy/t';
 import { formatBytes, formatDate, formatTime } from '../../shared/format';
@@ -21,7 +22,9 @@ import { Spinner } from '../ui/Spinner';
 import { Tooltip } from '../ui/Tooltip';
 import { cx } from '../ui/cx';
 import { BADGE_DEBOUNCE_MS, tickLabel, type BadgeSlot } from './bubbleState';
-import { mediaUrl } from './bubbleContext';
+import { mediaUrl, useBubble } from './bubbleContext';
+import { useOneShot } from './oneShot';
+import type { RetryPhase } from './retry';
 import { openUrl } from './linkActions';
 import styles from './Bubble.module.css';
 import { needsReadMore } from './textRules';
@@ -29,11 +32,13 @@ import { needsReadMore } from './textRules';
 // ---------------------------------------------------------------- meta (§3)
 
 export function Tick({ state, agentName }: { state: TickState; agentName: string }) {
+  // §F7.1: the ticks draw in when they turn read in view (not when a read message mounts).
+  const draw = useOneShot(`read:${useBubble().messageId}`, state === 'read');
   if (state === 'not_sent') return null;
   const glyph = state === 'waiting' ? <Icon name="Clock" size={16} /> : state === 'sent' ? <TickSingle /> : <TicksDouble />;
   return (
     <Tooltip text={tickLabel(state, agentName)} className={styles.tickTip}>
-      <span className={styles.tick} data-testid={TID.bubbleTick} data-state={state} aria-hidden="true">
+      <span className={styles.tick} data-testid={TID.bubbleTick} data-state={state} data-draw={draw || undefined} aria-hidden="true">
         {glyph}
       </span>
     </Tooltip>
@@ -131,7 +136,16 @@ export function BadgeSlotView({ slot, tooltip, onActivate }: { slot: Exclude<Bad
 
 // ---------------------------------------------------------------- reaction chips (§8)
 
-export function ReactionChips({ reactions, onToggle }: { reactions: MessageRow['reactions']; onToggle: (emoji: string) => void }) {
+export function ReactionChips({
+  reactions,
+  shownAtMount,
+  onToggle,
+}: {
+  reactions: MessageRow['reactions'];
+  /** The emojis the bubble already carried when it mounted; only reactions added after that bounce (§F7.1). */
+  shownAtMount: ReadonlySet<string>;
+  onToggle: (emoji: string) => void;
+}) {
   const groups: { emoji: string; count: number; mine: boolean }[] = [];
   for (const r of reactions) {
     const g = groups.find((x) => x.emoji === r.emoji);
@@ -144,20 +158,37 @@ export function ReactionChips({ reactions, onToggle }: { reactions: MessageRow['
   return (
     <span className={styles.chips}>
       {groups.map((g, i) => (
-        <button
-          key={g.emoji}
-          type="button"
-          className={cx(styles.chip, g.mine && styles.chipMine)}
-          data-testid={TID.bubbleReaction}
-          data-index={i}
-          aria-pressed={g.mine}
-          onClick={() => onToggle(g.emoji)}
-        >
-          <span className={styles.chipEmoji}>{g.emoji}</span>
-          {g.count > 1 && <span className={styles.chipCount}>{g.count}</span>}
-        </button>
+        <ReactionChip key={g.emoji} g={g} index={i} fresh={!shownAtMount.has(g.emoji)} onToggle={onToggle} />
       ))}
     </span>
+  );
+}
+
+function ReactionChip({
+  g,
+  index,
+  fresh,
+  onToggle,
+}: {
+  g: { emoji: string; count: number; mine: boolean };
+  index: number;
+  fresh: boolean;
+  onToggle: (emoji: string) => void;
+}) {
+  const pop = useOneShot(`react:${useBubble().messageId}:${g.emoji}`, true, fresh);
+  return (
+    <button
+      type="button"
+      className={cx(styles.chip, g.mine && styles.chipMine)}
+      data-testid={TID.bubbleReaction}
+      data-index={index}
+      data-pop={pop || undefined}
+      aria-pressed={g.mine}
+      onClick={() => onToggle(g.emoji)}
+    >
+      <span className={styles.chipEmoji}>{g.emoji}</span>
+      {g.count > 1 && <span className={styles.chipCount}>{g.count}</span>}
+    </button>
   );
 }
 
@@ -198,14 +229,37 @@ export function Quote({ q, onJump }: { q: QuoteInfo; onJump: () => void }) {
 // ---------------------------------------------------------------- Not sent (§7)
 
 // GAP: GAPS.md 2026-10-17 "Not sent reasons have no field"
-export function NotSentLine({ onRetry }: { onRetry: () => void }) {
+export function NotSentLine({ phase, onRetry }: { phase: RetryPhase; onRetry: () => void }) {
   return (
-    <div className={styles.notSent} data-testid={TID.bubbleNotSent}>
+    <div className={styles.notSent} data-testid={TID.bubbleNotSent} data-retry={phase}>
       <span>{t('bubble.not_sent.text')}</span>
-      <button type="button" className={styles.linkButton} data-testid={TID.bubbleNotSentRetry} onClick={onRetry}>
-        {t('bubble.not_sent.retry')}
-      </button>
+      <RetryControl phase={phase} label={t('bubble.not_sent.retry')} tid="bubbleNotSentRetry" onRetry={onRetry} />
     </div>
+  );
+}
+
+/** §F7.1: "Try again", then a spinner while it runs, then ✓ when it went through (`retry.ts` keeps the phase). */
+export function RetryControl({
+  phase,
+  label,
+  tid,
+  onRetry,
+}: {
+  phase: RetryPhase;
+  label: string;
+  tid: 'bubbleNotSentRetry' | 'bubbleErrorRetry';
+  onRetry: () => void;
+}) {
+  if (phase === 'idle')
+    return (
+      <button type="button" className={styles.linkButton} data-testid={TID[tid]} onClick={onRetry}>
+        {label}
+      </button>
+    );
+  return (
+    <span className={styles.retryState} data-testid={TID[tid]} data-state={phase} role="status" aria-label={label}>
+      {phase === 'busy' ? <Spinner size={16} /> : <Icon name="Checkmark" size={16} className={styles.retryDone} />}
+    </span>
   );
 }
 
@@ -302,6 +356,10 @@ export function FileChip({ a, index, onSide }: { a: Attachment; index: number; o
 function ImageTile({ a, i, n, more, cls }: { a: Attachment; i: number; n: number; more: number; cls: string }) {
   const url = mediaUrl(a.path);
   const [state, setState] = useState<'loading' | 'ready' | 'broken'>(url ? 'loading' : 'broken');
+  // §F7.1 blur-up plays while a picture loads; one the page already has (scroll-back) shows at once.
+  const cached = useCallback((img: HTMLImageElement | null) => {
+    if (img?.complete && img.naturalWidth > 0) setState('ready');
+  }, []);
   return (
     <button
       type="button"
@@ -313,7 +371,7 @@ function ImageTile({ a, i, n, more, cls }: { a: Attachment; i: number; n: number
       onClick={() => void invoke('files:open', { path: a.path })}
     >
       {url && state !== 'broken' && (
-        <img src={url} alt="" className={styles.tileImg} onLoad={() => setState('ready')} onError={() => setState('broken')} />
+        <img ref={cached} src={url} alt="" className={styles.tileImg} onLoad={() => setState('ready')} onError={() => setState('broken')} />
       )}
       {state === 'loading' && (
         <span className={styles.tileCover}>

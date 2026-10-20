@@ -23,7 +23,13 @@ export interface BookingWorld {
   close(): Promise<void>;
 }
 
-export async function bookingWorld(o: { submit?: { maxMs?: number; pollMs?: number; waitMaxMs?: number } } = {}): Promise<BookingWorld> {
+export async function bookingWorld(
+  o: {
+    submit?: { maxMs?: number; pollMs?: number; waitMaxMs?: number };
+    /** A script every page runs on load: the person's own typing on the page (ART-08a), never foo's. */
+    initScript?: string;
+  } = {},
+): Promise<BookingWorld> {
   const sb = await startSandbox();
   const dataDir = mkdtempSync(join(tmpdir(), 'foo-booking-'));
   const redactor = new Redactor({ clock: new FakeClock(), log: () => undefined });
@@ -40,8 +46,8 @@ export async function bookingWorld(o: { submit?: { maxMs?: number; pollMs?: numb
     now: () => Date.now(),
     log: () => undefined,
     headless: true,
-    launch: (dir, options) =>
-      chromium.launchPersistentContext(dir, {
+    launch: async (dir, options) => {
+      const ctx = await chromium.launchPersistentContext(dir, {
         ...options,
         args: [
           ...options.args,
@@ -49,7 +55,10 @@ export async function bookingWorld(o: { submit?: { maxMs?: number; pollMs?: numb
           `--host-resolver-rules=${sb.resolverRules}`,
           `--ignore-certificate-errors-spki-list=${sb.cert.spkiSha256}`,
         ],
-      }),
+      });
+      if (o.initScript) await ctx.addInitScript(o.initScript);
+      return ctx;
+    },
     timing: { idleMs: 150, settleMaxMs: 5_000, actionableMs: 2_000 },
     submitTiming: { maxMs: 1_500, pollMs: 100, waitMaxMs: 1_500, ...o.submit },
   });
