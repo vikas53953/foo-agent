@@ -217,7 +217,7 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'app:showEmojiPanel': empty as z.ZodType<Record<string, never>>,
   'job:stop': z.object({ jobId: z.string().min(1).max(80) }).strict(),
   'job:watch': z.object({ jobId: z.string().min(1).max(80), on: z.boolean() }).strict(),
-  // M9 (CR-0013, 08-1 §3.2). Handlers below are stubs until T5 (live), T6 (sign-in, take over), T8 (hand-back sites).
+  // M9 (CR-0013, 08-1 §3.2). Handlers below are stubs until T6 (sign-in, take over) and T8 (hand-back sites); T5's live ones are real.
   'job:openWindow': z.object({ jobId: z.string().min(1).max(80) }).strict(),
   'job:takeOver': z.object({ jobId: z.string().min(1).max(80) }).strict(),
   'job:handBack': z.object({ jobId: z.string().min(1).max(80) }).strict(),

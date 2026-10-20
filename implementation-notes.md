@@ -701,7 +701,9 @@ control_bar,hand_back,back_in_control,step_announce}`, `live.window.pill.{live,n
   navigates. A watch off during `win.cdp()` wins and a double on starts one cast. Done and Needs you show the job row's
   line; Done hides Take over and Stop; a window opened on a finished job still closes 5 s later; a refused `job:watch`
   shows `cant_show`; focus moves to Hand back / Take over when the control bar swaps. Left for T7: the sign-in guard stub
-  (`paused: () => false`) and checking that a live window's calls name its own job.
+  (`paused: () => false`) and checking that a live window's calls name its own job. The checklist card's Watch live
+  now opens the window too (06-3 §11.1). Left for T3: when the job's Edge window closes mid-watch the cast stops but the
+  window is not told (`cant_show`); `Screencast.stopAll()` is not yet called on engine shutdown.
 
 ### M6 T4 · memory in replies
 
