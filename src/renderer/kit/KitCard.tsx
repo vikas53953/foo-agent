@@ -25,6 +25,7 @@ export function KitCard({ card }: { card: CardRow; time: CardTime }) {
       data-card-type={card.type}
       data-card-state={card.state}
       data-state={card.state}
+      role="group"
       aria-label={t('kit.surface.accessible_name', { agentName })}
     >
       {surfaces.map((s, i) => (

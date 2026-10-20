@@ -26,6 +26,8 @@ export interface KitActionDeps {
 const WORDS_MAX = 120;
 /** The action context the AI reads, cut to stay inside the prompt budget (08-4 §24 part 7 caps one message at 2,000). */
 const CONTEXT_MAX = 1_500;
+/** How many of the chat's newest messages are read for later replies that update the surface. */
+const LATER_REPLIES = 50;
 
 /** "compare_last_month" → "Compare last month": the words when a Button has no Text child. */
 export function actionWords(name: string): string {
@@ -55,19 +57,28 @@ export class KitActions {
     return r.ok ? r.value : null;
   }
 
-  /** The surface as its host message or card created it (main checked it exists before forwarding). */
+  /**
+   * The surface as the renderer draws it: its host message (or card) and, for a message, the later foo replies of the
+   * chat that update the same surfaceId (renderer/kit/model.ts folds the same way), so a relabelled Button keeps its words.
+   */
   private async surface(a: KitActionMessage): Promise<Surface | null> {
-    let text: string | null = null;
+    const fences: string[] = [];
     if (a.messageId !== undefined) {
       const m = await this.query<EngineMessage>('messageById', a.messageId);
-      if (m && m.chatId === a.chatId && m.authorKind !== 'user') text = m.text;
+      if (!m || m.chatId !== a.chatId || m.authorKind !== 'foo') return null;
+      fences.push(m.text);
+      const recent = (await this.query<EngineMessage[]>('messagesBefore', a.chatId, null, LATER_REPLIES)) ?? [];
+      for (const r of recent) if (r.seq > m.seq && r.authorKind === 'foo' && r.text.includes('```')) fences.push(r.text);
     } else if (a.cardId !== undefined) {
       const c = await this.query<CardRow>('cardById', a.cardId);
-      if (c && c.chatId === a.chatId && c.type === 'kit' && typeof c.payload.body === 'string')
-        text = `\`\`\`a2ui\n${c.payload.body}\n\`\`\``;
+      if (!c || c.chatId !== a.chatId || c.type !== 'kit' || typeof c.payload.body !== 'string') return null;
+      fences.push(`\`\`\`a2ui\n${c.payload.body}\n\`\`\``);
     }
-    if (text === null) return null;
-    const { surfaces } = foldFence([kitMessagesOf(text).messages], 0);
+    if (!fences.length) return null;
+    const { surfaces } = foldFence(
+      fences.map((t) => kitMessagesOf(t).messages),
+      0,
+    );
     return surfaces.find((s) => s.id === a.surfaceId) ?? null;
   }
 

@@ -4,6 +4,7 @@
 // chart library (CR-0022 pick 10); one hue: a second and third series use `--accent` at lower opacity with a different
 // dash, never helper colours; a legend only with 2 or more series; forced colours draw in `CanvasText` / `Highlight`.
 // CR-0022 AT-340 (the three variants from one series and from 3), X-180. R1 T2.
+import { useId } from 'react';
 import { t } from '../../shared/copy/t';
 import { formatInrWords } from '../../shared/format';
 import { TID } from '../../shared/testids';
@@ -14,6 +15,11 @@ export type ChartUnit = 'number' | 'rupees' | 'percent';
 export interface ChartSeries {
   label: string;
   points: { x: string | number; y: number }[];
+}
+
+/** Every value as Narrator reads it (the SVG's `<desc>`): "This week: Mon ₹4,200, Tue ₹3,900; Last month: …". */
+export function chartValues(series: ChartSeries[], unit?: ChartUnit): string {
+  return series.map((s) => `${s.label}: ${s.points.map((p) => `${p.x} ${formatValue(p.y, unit)}`).join(', ')}`).join('; ');
 }
 
 /** The plot box in viewBox units; the SVG scales to the surface width and keeps this shape. */
@@ -94,6 +100,7 @@ export function LineChart({
   const base = g.y(Math.max(g.range.min, 0));
   const ticks = [g.range.min, (g.range.min + g.range.max) / 2, g.range.max];
   const name = t('kit.chart.accessible_name', { title: title ?? series[0]?.label ?? '', n: series.length });
+  const descId = useId();
   return (
     <figure className={styles.chart} data-testid={TID.kitLineChart} data-variant={variant} data-series={series.length}>
       {title && (
@@ -101,7 +108,10 @@ export function LineChart({
           {title}
         </figcaption>
       )}
-      <svg className={styles.svg} viewBox={`0 0 ${VIEW.w} ${VIEW.h}`} role="img" aria-label={name}>
+      <svg className={styles.svg} viewBox={`0 0 ${VIEW.w} ${VIEW.h}`} role="img" aria-label={name} aria-describedby={descId}>
+        <desc id={descId} data-copy="ai">
+          {chartValues(series, unit)}
+        </desc>
         <g className={styles.axis} aria-hidden="true">
           {ticks.map((v) => (
             <g key={v}>
