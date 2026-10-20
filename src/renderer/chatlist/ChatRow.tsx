@@ -2,7 +2,9 @@
 // mute), §3.4.5.1 WhatsApp mirror row (WhatsApp mark, never a pill, muted badge), §3.4.6 preview, §3.4.7 row states
 // (selected bar, unread time in `--accent`, folded 44px line, first-run disabled foo row), 03-shell-2 §3.9.5 (`option`,
 // aria-selected, name "{name}, {pill}, {n} unread messages, pinned, muted, {preview}, {full time}"), 02-3 §F26
-// (state in data-* and ARIA). Test ids per §3.4.5.
+// (state in data-* and ARIA). Test ids per §3.4.5. 02 §F7.1 "Chat list" [X-179]: the unread badge springs in when the count
+// grows, the Needs-you pill pulses once when it turns on, a working preview shimmers once, the "typing…" word breathes,
+// the muted icon fades in; each one-shot is keyed to the state change (`useSteps`), never to a re-render.
 import { memo, useMemo, type KeyboardEvent, type MouseEvent } from 'react';
 import { t } from '../../shared/copy/t';
 import { formatDate, formatRowTime, formatWeekday } from '../../shared/format';
@@ -18,6 +20,7 @@ import { cx } from '../ui/cx';
 import { Icon } from '../ui/Icon';
 import { TickSingle, TicksDouble } from '../ui/icons/Ticks';
 import { Pill } from '../ui/Pill';
+import { becameTrue, grew, useSteps } from './motion';
 import { effectivePill, isUserPinned, unreadText } from './rules';
 import { previewParts, previewText } from './preview';
 import styles from './ChatRow.module.css';
@@ -92,6 +95,10 @@ export const ChatRow = memo(function ChatRow({ row, index, focusable, onOpen, on
   const unread = row.unreadCount > 0 || markedUnread;
   const pinned = isUserPinned(row);
   const preview = previewParts(row, { typing, isOpen: open, setupComplete });
+  const badgePops = useSteps(row.unreadCount, grew);
+  const pillPulses = useSteps(pill === 'needs_you', becameTrue);
+  const shimmers = useSteps(preview.rule === 'working', becameTrue);
+  const muteFades = useSteps(muted, becameTrue);
   const time = formatRowTime(row.lastTime, { timeZone: tz, now });
   const fullTime = formatDate(row.lastTime, 'full', { timeZone: tz, now });
   const name = row.kind === 'foo' && !row.private ? agentName : row.title;
@@ -207,13 +214,26 @@ export const ChatRow = memo(function ChatRow({ row, index, focusable, onOpen, on
                 <Icon name={preview.icon.name} size={16} />
               </span>
             )}
-            <span className={styles.previewText}>{preview.text}</span>
+            <span
+              key={shimmers}
+              className={styles.previewText}
+              data-shimmer={shimmers > 0 && preview.rule === 'working' ? '' : undefined}
+              data-breathe={preview.rule === 'typing' ? '' : undefined}
+            >
+              {preview.text}
+            </span>
           </span>
           <span className={styles.slot}>
-            {pill && <Pill state={pill} label={pillWord ?? ''} data-testid={TID.chatlistRowPill} />}
+            {pill && (
+              <span key={pillPulses} className={styles.pillBox} data-pulse={pillPulses > 0 && pill === 'needs_you' ? '' : undefined}>
+                <Pill state={pill} label={pillWord ?? ''} data-testid={TID.chatlistRowPill} />
+              </span>
+            )}
             {row.unreadCount > 0 ? (
               <span
+                key={badgePops}
                 className={cx(styles.badge, muted && styles.badgeMuted)}
+                data-pop={badgePops > 0 ? '' : undefined}
                 data-testid={TID.chatlistRowUnread}
                 data-state={muted ? 'muted' : 'count'}
               >
@@ -228,7 +248,12 @@ export const ChatRow = memo(function ChatRow({ row, index, focusable, onOpen, on
               </span>
             )}
             {muted && (
-              <span className={styles.slotIcon} data-testid={TID.chatlistRowMute}>
+              <span
+                key={muteFades}
+                className={styles.slotIcon}
+                data-testid={TID.chatlistRowMute}
+                data-fade={muteFades > 0 ? '' : undefined}
+              >
                 <Icon name="AlertOff" size={16} />
               </span>
             )}

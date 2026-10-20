@@ -1,8 +1,12 @@
 /* Spec: 03-shell-1 §3.4.4 chips row (4 top, 16 sides, 8 bottom; gap 8; wraps only under large text), chip 32 high,
    padding 0 12, `--r-full`, `--t-caption`; unselected `--bg-app` + 1px `--line` + `--fg-2`, hover `--bg-hover`, pressed
    `--bg-pressed`; selected `--fg-1` fill, `--bg-app` text; the count after the label with `--s0`, tabular; the Checkmark
-   shows in high contrast only. U-5: each chip's box is a 40 hit area around the 32 visual (row 44 = 40 + 4). */
+   shows in high contrast only. U-5: each chip's box is a 40 hit area around the 32 visual (row 44 = 40 + 4).
+   02 §F7.1 [X-179]: at Full one `.highlight` fill slides to the selected chip with `--ease-spring-soft` and the chip's own
+   fill goes clear; Basic, Off and high contrast keep the chip's own fill (nothing slides). */
 .row {
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex: none;
   flex-wrap: wrap;
@@ -59,10 +63,42 @@
   outline: var(--focus-outer-w) solid var(--focus-outer);
   outline-offset: var(--focus-inner-w);
 }
+.highlight {
+  display: none;
+}
+:global(:root[data-motion='full']) .highlight {
+  position: absolute;
+  z-index: 0;
+  top: calc(var(--hl-y) + (var(--s7) - var(--btn-h-sm)) / 2);
+  left: 0;
+  display: block;
+  width: var(--hl-w);
+  height: var(--btn-h-sm);
+  border-radius: var(--r-full);
+  background: var(--fg-1);
+  transform: translateX(var(--hl-x));
+  pointer-events: none;
+}
+:global(:root[data-motion='full']) .highlight[data-ready] {
+  transition:
+    transform var(--m-spring) var(--ease-spring-soft),
+    width var(--m-spring) var(--ease-spring-soft);
+}
+:global(:root[data-motion='full']) .chip {
+  z-index: 1;
+  transition: color var(--m-normal) var(--ease-standard);
+}
+:global(:root[data-motion='full']) .chip.on {
+  --chip-fill: transparent;
+  --chip-edge: transparent;
+}
 .hcCheck {
   display: none;
 }
 @media (forced-colors: active) {
+  :global(:root[data-motion='full']) .highlight {
+    display: none;
+  }
   .chip::before {
     border: 1px solid CanvasText;
     box-shadow: none;
