@@ -90,7 +90,10 @@ export const CHECKING_MS = 15 * 60_000;
 
 /** Engine-side job states after which nothing of the job may still run (07-2 §4). */
 const JOB_ENDED: readonly JobState[] = ['done', 'done_unverified', 'failed', 'cancelled'];
-/** Approval states a stopped job withdraws (07-2 §5 PENDING; G-M5-18 HELD, APPROVED). */
+/**
+ * Approval states a stopped job withdraws (07-2 §5 PENDING; G-M5-18 HELD, APPROVED). M8 T6: a send (only ever a Draft
+ * card's, X-125) outlives a job that finished well: drafting was the job, and the Draft waits its own 60 min for Send.
+ */
 const WITHDRAWABLE: readonly ApprovalState[] = ['PENDING', 'HELD', 'APPROVED'];
 /**
  * Moves only the user makes, by a tap or a key on the card (Art. 3, 6; X-04): approve, decline, the HELD picks, and a
@@ -531,6 +534,8 @@ export class ApprovalGate {
     payload: Omit<DraftPayload, 'approvalId'>;
     /** The expired Draft card an "Ask me again" replaces. */
     supersedesCardId?: string;
+    /** M8 T6 (08-0 §G.7): someone new or a switch of channel; Send then opens the full Approval card. */
+    hardLimit?: boolean;
   }): Result<Created> {
     const fields = ApprovalFieldsSchema.safeParse(input.fields);
     if (!fields.success || fields.data.verb !== 'send') return fail('VALIDATION');
@@ -583,13 +588,14 @@ export class ApprovalGate {
       this.d.db
         .prepare(
           `INSERT INTO approvals (id, card_id, job_id, chat_id, verb, hard_limit, fields, fields_hash, state, expires_at, created_at)
-           VALUES (?, ?, ?, ?, 'send', 0, ?, ?, 'PENDING', ?, ?)`,
+           VALUES (?, ?, ?, ?, 'send', ?, ?, ?, 'PENDING', ?, ?)`,
         )
         .run(
           approvalId,
           cardId,
           input.jobId,
           job.chat_id,
+          input.hardLimit ? 1 : 0,
           JSON.stringify(fields.data),
           fieldsHash(fields.data as ApprovalFields),
           expiresAt,
@@ -692,7 +698,8 @@ export class ApprovalGate {
     const ended = this.d.db
       .prepare(
         `SELECT a.* FROM approvals a JOIN jobs j ON j.id = a.job_id
-         WHERE a.state IN (${WITHDRAWABLE.map(() => '?').join(',')}) AND j.state IN (${JOB_ENDED.map(() => '?').join(',')})`,
+         WHERE a.state IN (${WITHDRAWABLE.map(() => '?').join(',')}) AND j.state IN (${JOB_ENDED.map(() => '?').join(',')})
+           AND NOT (a.verb = 'send' AND j.state IN ('done', 'done_unverified'))`,
       )
       .all(...WITHDRAWABLE, ...JOB_ENDED) as DbRow[];
     for (const r of ended)

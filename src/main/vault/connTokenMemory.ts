@@ -1,7 +1,6 @@
 // Spec: 08-2 §11.2 (vault row `foo/conn_token/google`, JSON `{refresh_token, scope, issued_at}`), 08-0 §E.8, X-73;
-// CR-0012 (M8 T1 seam `ConnTokenStore`). Until M5's SecretVault lands, the Google refresh token is held in memory only and is
-// never written to disk; a restart forgets it (the rows then show "Your Gmail connection expired.", 06-2 §6.8). Needs M5:
-// T6 swaps in the vault behind the same interface.
+// CR-0012 (M8 T1 seam `ConnTokenStore`). An in-memory store behind the seam, never written to disk. Since M8 T6 the app
+// uses the vault (connTokenVault.ts); this one stays as the unit tests' store.
 import type { ConnTokenStore } from '../../engine/tools/connectors/types';
 
 type Stored = { refresh_token: string; scope: string; issued_at: number };

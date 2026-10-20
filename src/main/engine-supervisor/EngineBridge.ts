@@ -20,6 +20,7 @@ import { applyDbOps, runNamedQuery, writeDataFile } from './engineHost';
 import { vaultRuntime } from '../vault/vaultRuntime';
 import type { ApprovalGate } from '../approvals/ApprovalGate';
 import { logEvent } from '../log/techLog';
+import type { DraftService } from '../drafts/DraftService';
 import type { GoogleConnections } from '../connections/GoogleConnections';
 
 export interface BridgeContext {
@@ -49,6 +50,9 @@ export interface BridgeContext {
   // M8
   /** T5: main's GoogleConnections for engine `connection.google` requests (gap pick T5-01); lazy, it registers after the bridge. */
   google?(): Pick<GoogleConnections, 'forEngine'> | null;
+  // M8 T6
+  /** Main's DraftService for engine `draft.create` (08-2 §8.2 `gmail.draft`); its answer is posted when Gmail has answered. */
+  drafts?(): Pick<DraftService, 'create'>;
 }
 
 type AiStatePayload = Extract<EngineToMain, { kind: 'ai.state' }>['payload'];
@@ -213,6 +217,18 @@ export class EngineBridge {
         const id = msg.id;
         void google
           .forEngine(msg.payload)
+          .catch((): Result<unknown> => ({ ok: false, error: { kind: 'UNKNOWN' } }))
+          .then((result) => this.reply(id, result));
+        return null;
+      }
+      // M8 T6: the Gmail call is async, so the answer is posted later on the same port; nothing is returned now.
+      case 'draft.create': {
+        const drafts = this.ctx.drafts?.();
+        if (!drafts) return { re: msg.id, result: { ok: false, error: { kind: 'VALIDATION', message: 'not_implemented' } } };
+        const { threadId, ...rest } = msg.payload;
+        const id = msg.id;
+        void drafts
+          .create({ ...rest, ...(threadId ? { threadId } : {}) })
           .catch((): Result<unknown> => ({ ok: false, error: { kind: 'UNKNOWN' } }))
           .then((result) => this.reply(id, result));
         return null;

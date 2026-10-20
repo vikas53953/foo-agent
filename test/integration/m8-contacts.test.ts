@@ -2,6 +2,8 @@
 // new), 08-3 §16.7 (contacts sync replaces contacts_index wholesale; contacts_fts finds names; searchContacts on a miss),
 // 08-0 §G.12 (contacts_index + contacts_fts DDL, tokenchars '@._-+'), 08-1 §2.4.1 (the engine writes through db.tx and reads
 // through a named query). Real SQLite through main's EngineBridge; fake People API.
+// M8 T6: AT-145 Choice part through `gmail.draft` (08-2 §8.2; 08-3 §16.7 Use): two "Priya" → Choice card "Which Priya?" with
+// masked addresses and the pick drafts to that person; one → the draft uses it; none → someone new (the full Approval).
 import { afterEach, describe, expect, it } from 'vitest';
 import { FakeClock } from '../../src/shared/clock';
 import type { MainLink } from '../../src/engine/protocol';
@@ -11,6 +13,9 @@ import { ContactsSync, createPeople, findPerson, linkContactsStore } from '../..
 import { makeHarness, type Harness } from '../unit/m3-engine-helpers';
 import { drive, fakeAccess, fakeGoogle } from '../fakes/connectors/gmail-read';
 import { fakePeople, peopleState, type FakePeopleState } from '../fakes/connectors/contacts';
+import { createGmail } from '../../src/engine/tools/connectors/gmail';
+import { gmailDraftTool } from '../../src/engine/tools/connectors/gmailDraftTool';
+import { fakeGmailRead, gmailState } from '../fakes/connectors/gmail-read';
 
 let h: Harness | null = null;
 afterEach(() => {
@@ -96,5 +101,102 @@ describe('AT-145 · engine part', () => {
     const t = setup();
     await drive(t.sync.syncNow(), t.clock);
     expect(await drive(findPerson('"Priya" OR *', t.deps), t.clock)).toMatchObject({ match: 'none' });
+  });
+});
+
+// M8 T6
+describe('AT-145 · Choice part (gmail.draft resolves the person)', () => {
+  function tool(t: ReturnType<typeof setup>) {
+    const made: unknown[] = [];
+    const mail = gmailState();
+    const g = fakeGoogle([fakeGmailRead(mail)], () => t.clock.now());
+    const gmail = createGmail({ http: g.fetch, access: fakeAccess().access, clock: t.clock, limiter: new RateLimiter(t.clock) });
+    const link: MainLink = {
+      async request<T>(kind: string, payload: unknown): Promise<Result<T>> {
+        if (kind !== 'draft.create') throw new Error(kind);
+        made.push(payload);
+        return { ok: true, value: { approvalId: 'ap_1', cardId: 'cd_1', nonce: 'n' } as T };
+      },
+      send: () => undefined,
+    };
+    const def = gmailDraftTool({ link, gmail, find: t.deps });
+    const ctx = { jobId: 'job_1', signal: new AbortController().signal, now: 0 };
+    const run = (to: string) => drive(def.run({ to: [to], subject: 'Photos', body: 'Here they are.' }, ctx), t.clock);
+    return { def, made, run };
+  }
+
+  it('two "Priya" → a Choice card "Which Priya?" with masked addresses; the pick drafts to that Priya', async () => {
+    const t = setup();
+    await drive(t.sync.syncNow(), t.clock);
+    const x = tool(t);
+    expect(x.def).toMatchObject({
+      actionClass: 'prepare',
+      description: 'Write an email draft for the user to review. Nothing is sent until the user taps Send.',
+    });
+    const asked = await x.run('Priya');
+    if (asked.kind !== 'needs_user') throw new Error(`expected needs_user, got ${asked.kind}`);
+    expect(asked.card).toMatchObject({ type: 'choice', state: 'asking', payload: { purpose: 'job', question: 'Which Priya?' } });
+    const options = asked.card.payload.options as { id: string; label: string }[];
+    expect(options.map((o) => o.label).sort()).toEqual(['Priya Nair · p•••@example.com', 'Priya Sharma · p•••@example.com']);
+    expect(JSON.stringify(asked.card.payload)).not.toContain('priya.nair@');
+    expect(x.made).toEqual([]);
+    // The answer reaches the AI as its label ("Decisions: Q: Which Priya? → A: …"); the next call names it.
+    expect(await x.run('Priya Nair · p•••@example.com')).toMatchObject({ kind: 'ok', result: { drafted: true, to: 'Priya Nair' } });
+    expect(x.made).toEqual([
+      { jobId: 'job_1', to: { name: 'Priya Nair', address: 'priya.nair@example.com' }, subject: 'Photos', body: 'Here they are.' },
+    ]);
+  });
+
+  it('one match → the draft uses that person (not someone new)', async () => {
+    const t = setup();
+    await drive(t.sync.syncNow(), t.clock);
+    const x = tool(t);
+    await x.run('Rakesh');
+    expect(x.made).toEqual([
+      { jobId: 'job_1', to: { name: 'Rakesh Kumar', address: 'rakesh@example.com' }, subject: 'Photos', body: 'Here they are.' },
+    ]);
+  });
+
+  it('an address the AI gives that only looks like a contact’s is someone new, never that contact', async () => {
+    const t = setup();
+    await drive(t.sync.syncNow(), t.clock);
+    expect(await drive(findPerson('rakesh@example.co', t.deps), t.clock)).toMatchObject({ match: 'one', hits: [{ id: 'people/c3' }] });
+    const x = tool(t);
+    await x.run('rakesh@example.co');
+    expect(x.made).toEqual([
+      {
+        jobId: 'job_1',
+        to: { name: 'rakesh@example.co', address: 'rakesh@example.co' },
+        isNew: true,
+        subject: 'Photos',
+        body: 'Here they are.',
+      },
+    ]);
+    // The contact's own address, in any case, is that contact.
+    await x.run('Rakesh@Example.com');
+    expect(x.made[1]).toEqual({
+      jobId: 'job_1',
+      to: { name: 'Rakesh Kumar', address: 'rakesh@example.com' },
+      subject: 'Photos',
+      body: 'Here they are.',
+    });
+  });
+
+  it('no match and no sent mail or chat → someone new (the draft opens the full Approval); a bare name with no address is NOT_FOUND', async () => {
+    const t = setup();
+    await drive(t.sync.syncNow(), t.clock);
+    const x = tool(t);
+    await x.run('zoya@example.com');
+    expect(x.made).toEqual([
+      {
+        jobId: 'job_1',
+        to: { name: 'zoya@example.com', address: 'zoya@example.com' },
+        isNew: true,
+        subject: 'Photos',
+        body: 'Here they are.',
+      },
+    ]);
+    expect(await x.run('Zoya')).toEqual({ kind: 'error', errorKind: 'NOT_FOUND' });
+    expect(x.made).toHaveLength(1);
   });
 });

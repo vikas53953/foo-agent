@@ -37,6 +37,7 @@ import { memoryKeyring, memorySafeStore, napiKeyring } from './vault/keyring';
 import { registryMirror } from './vault/registryMirror';
 import { findOpenApproval } from './approvals/ApprovalGate'; // M5 T4 (review fix 4)
 import { approvalGate } from './approvals/approvalIpc'; // M5 T7
+import { draftService } from './drafts/draftIpc'; // M8 T6
 import { SecretVault } from './vault/SecretVault';
 import { installVault } from './vault/vaultRuntime';
 import { google } from './connections/connectionIpc'; // M8 T5
@@ -129,6 +130,8 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
       approvals: () => approvalGate(ctx),
       // M8 T5: the engine's Google calls (connection.google) go to main's one GoogleConnections.
       google: () => google(),
+      // M8 T6: engine `gmail.draft` → main's DraftService (08-0 §G.7).
+      drafts: () => draftService(ctx),
     });
     const launchLog = launches;
     power = new PowerService({

@@ -31,6 +31,9 @@ import { bridgeTestSchema } from '../../shared/waBridge';
 import { seedM8Connect } from './seed/m8Connect';
 // M5
 import { installGmailDrafts, memoryGmailDrafts } from '../drafts/gmailDrafts';
+// M8 T6
+import { googleGmailDrafts, nodeFetch } from '../drafts/gmailDraftsGoogle';
+import { testGoogleAccess } from '../../engine/tools/connectors/google-tools';
 
 const JOB_STATES = [
   'queued',
@@ -276,7 +279,19 @@ export function registerTestHooks(ctx: AppContext, clock: FakeClock): string[] {
   const reply = (): ClockReply => ({ now: clock.now(), iso: new Date(clock.now()).toISOString() });
   const registry = seeds(ctx, clock);
   // M5 T6 (08-3 §22.2, G-M5-12): the in-memory Gmail drafts behind the Draft card until the M8 connector.
-  installGmailDrafts(memoryGmailDrafts({ adoptUnknown: true }));
+  // M8 T6: with FOO_FAKE_GOOGLE (a fake Google on 127.0.0.1, 08-3 §22.3) the real Gmail drafts port talks to it instead.
+  const fakeGoogle = process.env.FOO_FAKE_GOOGLE;
+  installGmailDrafts(
+    fakeGoogle
+      ? googleGmailDrafts({
+          http: nodeFetch,
+          access: testGoogleAccess(fakeGoogle).access,
+          clock,
+          connectionId: () => 'conn_gmail_fake',
+          base: fakeGoogle,
+        })
+      : memoryGmailDrafts({ adoptUnknown: true }),
+  );
 
   guard.handle('test:clock', (raw: unknown) => {
     const arg = clockArg.parse(raw);

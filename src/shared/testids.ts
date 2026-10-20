@@ -385,6 +385,8 @@ export const TID = {
   cardDraftKeepDraft: 'card-draft-keep-draft',
   cardDraftCancelQueued: 'card-draft-cancel-queued',
   cardDraftAskAgain: 'card-draft-ask-again',
+  // M8 T6: 05-2 §5.7.2 "Waiting for your OK below ›" (the Link that focuses the full Approval card).
+  cardDraftWaiting: 'card-draft-waiting',
   cardDraftBody: 'card-draft-body',
   cardDraftSubject: 'card-draft-subject',
   cardDraftCountdown: 'card-draft-countdown',

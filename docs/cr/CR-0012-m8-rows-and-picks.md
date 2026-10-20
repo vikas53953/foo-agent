@@ -77,3 +77,19 @@ Fable reviewer, 2026-10-18 ~18:16Z, read-only, against pack `prep/M8.md` §4–�
 
 Recorded as approved on Vikas's behalf under his standing rule (his message 2026-10-18 14:56Z: "take care of it on my
 behalf and then keep on working"); listed for his later review.
+
+## (f) Addendum: M8 T6 email drafts (2026-10-20)
+
+Two forks the T6 review found the spec does not settle. Each was put to an independent Fable check before it was recorded.
+
+16. **G-M8-13** `opened_in_app` for Gmail is a summary row (05-2 §5.7.3 "Sent / Discarded / Opened in X / Queued"): `Mail`
+    icon, muted, "Opened in Gmail · not sent by {agentName}" (new key `cards.draft.summary.opened_in_gmail`, worded after
+    `cards.draft.summary.opened_in_x`), and the Link "Open in Gmail" opens the compose page again. The spec has no words for
+    the Gmail case because 05-2 §5.7.2 "No send permission" assumed a Gmail draft exists, which G-M8-04 rules out. One new
+    word string; no new screen or flow.
+17. **G-M8-14** Art. 9 "switch how" in M8 (05-2 §5.5.2 Switch how row, verb `switch`, `Globe`, activity `switched_route`):
+    M8 has no website route yet, so the trigger is an email drafted inside a job whose `book`/`buy`/`pay` approval was
+    approved but did not complete (APPROVED, RUNNING, CHECKING or FAILED). A finished booking followed by an email to a
+    known person is a plain Draft. The M9 browser ticket narrows this to the rung change itself (X-125 `rungOf`) and adds
+    the "new site" switch (ART-09 row for M9, pending). The card's primary reads "Send email" as M5's Approval card already
+    draws for `switch`; "{Email them}" has no copy key yet and stays with the spec-keeper.

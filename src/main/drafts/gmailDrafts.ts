@@ -8,15 +8,24 @@ export interface DraftMessage {
   to: string;
   subject?: string;
   body: string;
+  // M8 T6 (08-3 §16.1.4 "the full edited message and the same thread headers")
+  /** The Gmail thread a reply stays in, and the message it answers. */
+  threadId?: string;
+  inReplyTo?: string;
 }
 
 /** The four Gmail draft calls the Draft card makes (08-3 §16.6). */
 export interface GmailDrafts {
   /** The connection the Sent-folder proof names (08-0 §B.3 Proof `sent_folder`). */
   readonly connectionId: string;
-  create(msg: DraftMessage): Promise<Result<{ gmailDraftId: string }>>;
+  /** M8 T6 (G-M8-03): Gmail also answers the draft's message id and thread. */
+  create(msg: DraftMessage): Promise<Result<{ gmailDraftId: string; gmailMessageId?: string; threadId?: string }>>;
   update(gmailDraftId: string, msg: DraftMessage): Promise<Result<void>>;
-  send(gmailDraftId: string): Promise<Result<{ messageId: string }>>;
+  /**
+   * M8 T6: `to` lets a port that lost Gmail's answer look for the message in the Sent folder before it says nothing went
+   * out (05-2 §5.7.2 Failed reads "Nothing went out").
+   */
+  send(gmailDraftId: string, to?: string): Promise<Result<{ messageId: string }>>;
   delete(gmailDraftId: string): Promise<Result<void>>;
 }
 

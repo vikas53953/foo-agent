@@ -2,6 +2,7 @@
 // 08-3 §16.1 (one Google sign-in serves Gmail, Calendar and Contacts; one rate limit for all calls), §16.1.3 (poller),
 // §16.7 (contacts sync), §22.3 (FOO_TEST runs never reach a real service: the FOO_FAKE_GOOGLE base replaces every Google
 // host and the token is a fixed fake), CR-0012 (T2 supplies GoogleAccess; T4 only consumes it).
+// M8 T6: `gmail.draft` (08-2 §8.2; gmailDraftTool.ts) joins the catalogue.
 // The engine builds these once; the poller and the sync are started by whoever owns the connection rows (T2 / close-out).
 import type { Clock } from '../../../shared/clock';
 import { ConnectorHooks } from '../../connectors/hooks';
@@ -10,6 +11,7 @@ import type { ToolRegistry } from '../ToolLayer';
 import { ContactsSync, contactsTools, createPeople, linkContactsStore, type People } from './contacts';
 import { createCalendar, gcalTools, type Calendar } from './gcal';
 import { GmailPoller, createGmail, gmailTools, type Gmail } from './gmail';
+import { gmailDraftTool } from './gmailDraftTool'; // M8 T6
 import { GOOGLE_BASES, RateLimiter, type GoogleBases } from './limiter';
 import type { ContactHit } from '../../../shared/types';
 import type { GoogleAccess, HttpFetch } from './types';
@@ -77,7 +79,7 @@ export function googleTools(
     whatsappKnows: o.whatsappKnows ?? (async () => null),
     ...(o.log ? { log: o.log } : {}),
   };
-  const defs = [...gmailTools(gmail), ...gcalTools(calendar), ...contactsTools(find)];
+  const defs = [...gmailTools(gmail), ...gcalTools(calendar), ...contactsTools(find), gmailDraftTool({ link: o.link, gmail, find })];
   let saved: string | null = null;
   return {
     tools: Object.fromEntries(defs.map((d) => [d.name, d])),

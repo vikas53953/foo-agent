@@ -1,8 +1,8 @@
 // Spec: 08-1 §3.2 rows `connection:list`, `connection:connect` (returns at once; outlook only while flags.outlook, X-41),
 // `connection:disconnect` (Google: revoke + three rows + contacts_index), §3.3 `connection:upsert`, §2.4 `connection.cmd`,
 // app:openExternal `google_signin` rule (a URL main built, host accounts.google.com); 08-3 §16.1, §16.1.1 (client file),
-// §16.1.2 (Turn off / on writes activity), C-10 (revoke now, or when back online). Main owns the sign-in and the rows; the
-// Google refresh token is held in memory until M5's vault (connTokenMemory.ts).
+// §16.1.2 (Turn off / on writes activity), C-10 (revoke now, or when back online). Main owns the sign-in and the rows.
+// M8 T6: the Google refresh token lives in M5's vault (`foo/conn_token/google`, 08-2 §11.2; connTokenVault.ts).
 import { shell } from 'electron';
 import { ok } from '../../shared/errors';
 import type { Settings } from '../../shared/settings';
@@ -11,7 +11,8 @@ import type { HttpFetch } from '../../engine/tools/connectors/types';
 import { resourcesDir } from '../engine-supervisor/EngineSupervisor';
 import { deps } from '../deps';
 import { emit, handle, type AppContext } from '../ipc/IpcRouter';
-import { MemoryConnTokenStore } from '../vault/connTokenMemory';
+import { VaultConnTokenStore } from '../vault/connTokenVault';
+import { vaultRuntime } from '../vault/vaultRuntime';
 import { openLoopback } from '../windows/oauthLoopback';
 import { GoogleConnections } from './GoogleConnections';
 import { googleClientPath, loadGoogleClient } from './googleClient';
@@ -34,7 +35,10 @@ export function registerConnectionIpc(ctx: AppContext): void {
     now: () => deps.clock.now(),
     http: httpFetch,
     endpoints: googleEndpoints(env),
-    tokens: new MemoryConnTokenStore(),
+    tokens: new VaultConnTokenStore(
+      () => vaultRuntime()?.vault ?? null,
+      (v) => void vaultRuntime()?.register(v, { kind: 'conn_token' }),
+    ),
     client: () => client,
     online: () => !ctx.net.offline,
     openLoopback: (state) => openLoopback({ state, log: (evt) => console.warn(evt) }),
