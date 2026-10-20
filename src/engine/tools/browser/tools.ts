@@ -4,7 +4,8 @@
 // `browser.submit`, `browser.fillCard` are engine-only and never listed), §8.3 (Edge window per job, masked snapshot, checked
 // actions, watchdogs, step screenshots), §8.3.10 (hand-back sites), 08-4 §27.6 (FOO_TEST_ALLOW_HOSTS). CR-0008 G-M4-05: M9's
 // browser plugs into M4's ToolLayer here. Not here: `browser.fillSecret` (needs the M5 vault; T7), `browser.fillPersonal` (needs
-// M6 memory), `browser.submit` (T8 adds its line after T3 merges), `screen.open` (screen/screen.ts; needs a main opener).
+// M6 memory), `screen.open` (screen/screen.ts; needs a main opener).
+// M9 T8: `browser.submit` (submit.ts; engine-only, reached through ToolLayer.executeApproved, never listed to the AI).
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { Page } from 'playwright-core';
@@ -17,6 +18,9 @@ import { PlaywrightBrowser, allowHostsFrom, checkUrl, type DriverWindow, type La
 import { Masker } from './masker';
 import { RefRouter, SnapshotDiffer, needsScreenshot, snapshotText, takeSnapshot } from './snapshot';
 import { StepShots } from './stepShots';
+import { createSubmitTool } from './submit'; // M9 T8
+import { readLiveTerms, type LiveRead } from './readLiveTerms'; // M9 T8
+import type { ApprovalDraft } from '../../../shared/types';
 import type { CaptureGuard } from './types';
 import { Watchdogs, isChallengePage } from './watchdogs';
 
@@ -37,6 +41,8 @@ export interface BrowserToolsDeps {
   captureGuard?: CaptureGuard;
   /** Tests: headless, a launcher, shorter idle waits. */
   headless?: boolean;
+  /** M9 T8: tests shorten the outcome watch after `browser.submit` (08-2 §10.4: 120 s, every 2 s, waits 5 min). */
+  submitTiming?: { maxMs?: number; pollMs?: number; waitMaxMs?: number };
   launch?(userDataDir: string, options: LaunchOptions): Promise<import('playwright-core').BrowserContext>;
   timing?: { idleMs?: number; settleMaxMs?: number; actionableMs?: number };
 }
@@ -54,6 +60,9 @@ export interface BrowserRuntime {
   jobEnded(jobId: string): Promise<void>;
   /** The job's page, when it has a window. */
   page(jobId: string): Page | null;
+  // M9 T8
+  /** `handback.check(url)` over the shipped list (08-4 §27.4). */
+  handback(url: string): boolean;
 }
 
 const BLOCKED_STATUS = new Set([403, 429]);
@@ -272,6 +281,14 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
     tool('browser.download', 'read', 'ref: string', 'Download the file behind a link.', ARGS.download, async (a, page, ctx) =>
       out(await actions.download(ctx.jobId, page, a.ref)),
     ),
+    // M9 T8
+    createSubmitTool({
+      actions,
+      shots,
+      page: (jobId) => browser.window(jobId)?.page() ?? null,
+      now: () => Date.now(),
+      ...(d.submitTiming ? { timing: d.submitTiming } : {}),
+    }),
   ];
 
   const runtime: BrowserRuntime = {
@@ -288,8 +305,14 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       await browser.closeWindow(jobId);
     },
     page: (jobId) => browser.window(jobId)?.page() ?? null,
+    handback, // M9 T8
   };
   return { registry: Object.fromEntries(defs.map((t) => [t.name, t])), runtime };
+}
+
+/** M9 T8: the runner's live-terms read (08-2 §9.4.2) on the job's page. */
+export function liveTermsReader(rt: BrowserRuntime): (jobId: string, draft: ApprovalDraft) => Promise<LiveRead> {
+  return (jobId, draft) => readLiveTerms(rt.page(jobId), draft, { handback: (url) => rt.handback(url) });
 }
 
 /** Engine.ts: the browser tools over the engine's options and Redactor, and the runtime the Engine ends jobs and quits through. */

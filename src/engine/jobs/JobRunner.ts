@@ -27,6 +27,7 @@ import type { Settings } from '../../shared/settings';
 import { buildMemoryParts, stepQueryText, memoryUseOps, type MemoryParts } from '../memory/retrieval';
 import { usedFacts } from '../memory/chips';
 import type {
+  ApprovalDraft,
   ApprovalState,
   CardRow,
   ErrorKind,
@@ -59,6 +60,8 @@ import type { GateLogic } from '../gate/GateLogic';
 import { RunnerGate } from '../gate/runnerGate';
 // M5 T14
 import { draftSecondLook, type DraftLookAnswer, type DraftLookReq } from '../gate/draftSecondLook';
+// M9 T8
+import type { LiveRead } from '../tools/browser/readLiveTerms';
 
 export const CHECKLIST_AFTER_MS = 1_500;
 const OBSERVATION_CAP = 4_000;
@@ -181,6 +184,11 @@ export interface JobRunnerDeps {
   // M6
   /** T5: the "Used: {fact}" chips after a step that asks or finishes (08-3 §12.5), and the review after DONE (§12.4). */
   memory?: { used(chatId: string, facts: EngineFact[]): Promise<void>; jobDone(chatId: string): void };
+  // M9
+  /** T8: the live terms read from the job's browser page right before a booking (08-2 §9.4.2, `readLiveTerms.ts`). */
+  browserLive?(jobId: string, draft: ApprovalDraft): Promise<LiveRead>;
+  /** T8: the address of the job's browser page (`siteDomain`, 08-4 §28.1 item 5). */
+  browserUrl?(jobId: string): string | null;
 }
 
 export interface CreateJobInput {
@@ -331,6 +339,8 @@ export class JobRunner {
       tools: d.tools,
       timeZone: () => d.settings().locale.timeZone,
       countFailure: (j) => this.countFailure(j),
+      ...(d.browserLive ? { browserLive: d.browserLive } : {}), // M9 T8
+      ...(d.browserUrl ? { browserUrl: d.browserUrl } : {}),
     });
     // M5 T14
     this.draftLook = (req) => draftSecondLook(core, d.settings().locale.timeZone, req);

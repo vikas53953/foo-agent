@@ -255,8 +255,8 @@ R21 · R23 · R5,J21,,UX-24-02,,06-2 §6.0; 06-2 §6.1,test/fidelity/ux/UX-24.se
 ,J4,,UX-04-09,,05-3 §5.11; 08-3 §16.1; 08-3 §16.4,test/fidelity/ux/UX-04.connect.spec.ts,M8,live
 ,,,,BP-CARD-11,05-3 §5.11,test/fidelity/bp/BP-cards-m8.spec.ts,M8,live
 ,J9,AT-036,,,10-acceptance-1 §B; 08-2 §9.4; 05-2 §5.5.2,test/e2e/m9-booking.spec.ts,M9,pending
-,J9,AT-037,,,10-acceptance-1 §B; 08-4 §28.1; 08-2 §8.2.1,test/integration/browser/submit.test.ts,M9,pending
-,J9,AT-038,,,10-acceptance-1 §B; 08-4 §28.1; 07-2 §7.4,test/integration/browser/submit.test.ts,M9,pending
+,J9,AT-037,,,10-acceptance-1 §B; 08-4 §28.1; 08-2 §8.2.1,test/integration/browser/submit.test.ts,M9,live
+,J9,AT-038,,,10-acceptance-1 §B; 08-4 §28.1; 07-2 §7.4,test/integration/browser/submit.test.ts,M9,live
 ,J9,AT-039,,,10-acceptance-1 §B; 08-2 §8.3.9; 08-3 §21.2,test/e2e/m9-booking.spec.ts,M9,pending
 ,J9,AT-040,,,10-acceptance-1 §B; 05-2 §5.5.2; 07-2 §7.6,test/integration/browser/reminder.test.ts,M9,pending
 ,J13,AT-056,,,10-acceptance-1 §B; 08-2 §8.3.3; 05-3 §5.10,test/e2e/m9-signin.spec.ts,M9,pending
