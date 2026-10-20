@@ -10,8 +10,8 @@
   merged. This CR relaxes those rules just enough for "quiet premium" and lists the 104 small details as the new §F7 list.
 - **Spec sections:** 02 §F1, §F4, §F7; 02-2 §F15.9.1 (brand-mark row), §F15.9, §F16.1–§F16.3; 02-3 §F22, §F25.4, §F28.4; 04 composer (§19, §21, §22);
   05 checklist and Approval (05-1, 05-2); 06-1 §1.3, §2.2; 06-2 §6.2; 09 §9.14.3; 10-acceptance-2 §C.7, §C.8 (new), §E.
-- **Status:** Approved by Vikas's approve-on-my-behalf rule (his messages 2026-10-18 14:56Z and 14:59Z) after the independent
-  review in §(f); the direction itself is Vikas's own approval (2026-10-20 07:42Z). DECISIONS X-179.
+- **Status:** Approved by Vikas's approve-on-my-behalf rule (his messages 2026-10-18 14:56Z and 14:59Z), after the independent review in §(f), DECISIONS X-179
+  (the direction itself is Vikas's own approval, 2026-10-20 07:42Z).
 - **Change:** `spec/constitution/DECISIONS.md` (row X-179); `02-foundations.md` (§F1 subtitle and money rows, §F4 dark
   shadows, §F7 springs and the new §F7.1 list); `02-foundations-2.md` (§F15.9.1 brand-mark row: the splash shows the living face; §F16.1 the face is the one
   mascot; §F16.2 a face pose may take the icon slot);
