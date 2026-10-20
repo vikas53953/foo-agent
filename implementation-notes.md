@@ -1191,3 +1191,39 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
   (C12; M8 added `google_signin` and `x_intent`), and the ART-09 new-site row. Noted: no fallback resume for a WAITING job
   with `waiting_reason` NULL whose CONN card closes another way.
 - Before the real demo, Vikas's setup item: the Google OAuth client file `resources/google-oauth.json` (08-3 §16.1.1).
+
+## M9 · Sign-in card, sign-in banner, handoff marker (ticket T6)
+
+- T6-01 · Copy slots (G-M9-14): `cards.signin.title.{sign_in,captcha,passkey,bank_3ds,saved_login_failed}`,
+  `cards.signin.known_puzzle_site` (spec-named), `cards.signin.button.{done,take_over,skip,use_code_box}`,
+  `cards.signin.live.{pill,accessible_name}`, `cards.signin.accessible_name`, `cards.signin.state.{signed_in,skipped,withdrawn}`,
+  `cards.common.offline_line` (05-1 §0.4 names it); `signin_banner.{waiting.text,done.label,success.text,success.announce,
+in_control.text,hand_back.label,not_secure.text,window.title}`.
+- T6-02 · Gap: the `signin` payload (08-1 §4.5) has one `site` field, but §5.10.2 titles use a name ("IRCTC") and the line a
+  domain ("irctc.co.in"). The card shows `site` as given in both places (the engine, T7, decides what goes in it).
+- T6-03 · Gap: the bank-check title needs a masked phone ("+91 98••• ••210") the payload does not carry. The card reads an
+  optional `phone` when sent and draws no bank-check card without it (never an empty slot); a CR adds the field with T7.
+- T6-04 · "Use the code box" (§5.8 Code box) goes through M5: the link calls `secret:offer { chatId, slot: 'otp' }`, which
+  hands back the code box already asking in that chat (or posts one), and the chat scrolls to it; the box's "Use code" sends
+  `code:submit` (SecretRegistry handle, never stored). Seam for T7: the bank-check lane should post its own asking otp box
+  with the engine's `requestId` (and `sentTo`) before the card, so the offer returns that box and `code.submit` names a
+  request the engine knows; a box the offer posts itself answers with its own card id.
+  The offer's tech-log line reads "paste catcher shown … otp" on this path too (M5's `secretIpc.ts`, not changed here).
+- T6-05 · Spec silent → conservative: `timed_out` and `handed_back` have no summary words ("summary grey"), so their summary
+  row is the card's own title in grey; the known-puzzle lane uses the CAPTCHA title plus its `known_puzzle_site` line (it is
+  a CAPTCHA lane whose card adds the line); the signed-in copy keeps its "✓" and its own time, so that row has no extra icon
+  or time label; offline keeps Skip enabled (05-1 §0.5 names Skip).
+- T6-06 · Remind me in 1 hour / Stop / Start again / Save / Don't save are buttons on lines foo posts (routine M7, vault M5,
+  engine T7), not on the card's own states; their test ids are not added here.
+- T6-07 · Banner page state travels in the URL hash (`#job=…&state=…&url=…&agent=…`, same-document navigation, no new IPC
+  channel). The address row shows domain and path only, never the query or fragment (they can carry one-time tokens).
+- T6-08 · wintrack JS fallback polls the bounds every 500 ms through a `readBounds` the sign-in lanes (T7) supply (CDP lives in
+  the engine); without `foo-native` the banner cannot know which app is in the foreground, so the "hide when another app
+  is in front" stacking rule (09 §9.27.3) waits for `wintrack.cc`.
+- T6-09 · The banner window has its own preload (`src/preload/preloadBanner.ts`, 08-1 §3.1.1): it exposes only
+  `signin:done`, `signin:skip`, `job:handBack` and no events. ChannelGuard's window→channels table in main stays T5's.
+- T6-10 · The handoff marker moved from `Markers.tsx` to `HandoffMarker.tsx` and now links every helper named in the line
+  (whole word, as written), with `data-index` in reading order, so "Trips told Money …" has two links (§5.18.1).
+- T6-11 · Card width: the message row's holder shrinks to fit, so `min(--card-w, 100%)` squeezed the sign-in card to its
+  longest word; the card uses `width: --card-w; max-width: 100%`. The M2 cards may want the same (not changed here).
+- T6-12 · Test seed `m9-signin` (one SEED_SETS entry, own world, no ux-world golden moves).
