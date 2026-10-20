@@ -224,8 +224,8 @@
     "total": 109120
   },
   "r5": {
-    "ratio": 0.0255908203125,
-    "diffPixels": 26205,
+    "ratio": 0.02558984375,
+    "diffPixels": 26204,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-02-02.light.diff.png"

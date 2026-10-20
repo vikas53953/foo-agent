@@ -259,9 +259,9 @@
         "after",
         "the",
         "house.",
-        "Yesterday,",
-        "Thu",
-        "15",
+        "Today,",
+        "Fri",
+        "16",
         "Oct",
         "I’ll",
         "remind",
@@ -528,8 +528,8 @@
     "total": 30966
   },
   "r5": {
-    "ratio": 0.0779755859375,
-    "diffPixels": 79847,
+    "ratio": 0.077912109375,
+    "diffPixels": 79782,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-15-07.light.diff.png"
