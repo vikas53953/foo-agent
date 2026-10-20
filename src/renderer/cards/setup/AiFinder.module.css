@@ -1,6 +1,6 @@
 /* Spec: 06-1 §2.0 setup cards (05 card frame; max width 520 inside the message column, left-aligned), §2.2 (lead line
  * --t-body-strong, 8 below; rows 56 high, padding 0 12px, 26px disc --avatar-inline on --bg-sunken with the first letter
- * --t-caption-strong --fg-1, name --t-body-strong, detail --t-small --fg-2, status right with a 16px spinner ring or icon, tones
+ * --t-caption-strong --fg-1 [X-179: replaced by the §F17.6 logo tile, 32 `--logo`, `--r-sm`, `--logo-bg`, 1px `--line`], name --t-body-strong, detail --t-small --fg-2, status right with a 16px spinner ring or icon, tones
  * --fg-3 / --ok / --warn / --bad, Secondary 32px row controls; 12 between rows and the choice line, 8 between the line, the
  * buttons and the note; note --t-caption --fg-3; offline strip in the Warn banner style, 40 high, inside the card), 06 §0.4
  * Row group (1px --line, --r-lg, --bg-app, 1px --line dividers inset 16px left). The width 520 is the --dialog-md token. */
@@ -39,17 +39,28 @@
 .row:focus-visible {
   border-radius: var(--r-sm);
 }
-.disc {
+.logo {
   display: inline-flex;
   flex: none;
   align-items: center;
   justify-content: center;
-  width: var(--avatar-inline);
-  height: var(--avatar-inline);
-  border-radius: var(--r-full);
+  box-sizing: border-box;
+  width: var(--logo);
+  height: var(--logo);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--logo-bg);
+}
+/* "Your own key" has no maker: the key icon on the theme's sunken tile, so it reads in both themes. */
+.logo[data-logo='key'] {
   background: var(--bg-sunken);
-  color: var(--fg-1);
-  font: var(--t-caption-strong);
+  color: var(--fg-2);
+}
+/* §F17.6: the logo inset 4px inside the 32px tile */
+.logoImg {
+  width: calc(var(--logo) - 2 * var(--s0));
+  height: calc(var(--logo) - 2 * var(--s0));
+  pointer-events: none;
 }
 .text {
   display: flex;
@@ -88,6 +99,62 @@
 }
 .statusText {
   min-width: 0;
+}
+/* §F7.1 First run: a row under test shimmers its "Testing…" word (`--m-shimmer`; none at Basic / Off, where the gradient
+ * rests on its plain `--fg-3` part), then "✓ works" lands: the icon springs in, the word fades in. */
+.statusText[data-shimmer] {
+  background: linear-gradient(90deg, var(--fg-3) 40%, var(--fg-1) 50%, var(--fg-3) 60%) 100% 0 / 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: row-shimmer var(--m-shimmer) linear infinite;
+}
+@keyframes row-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+.status[data-state='works'] .worksIcon {
+  animation: works-in var(--m-spring) var(--ease-spring) both;
+}
+.status[data-state='works'] .statusText {
+  animation: works-fade var(--m-normal) var(--ease-out) both;
+}
+@keyframes works-in {
+  from {
+    opacity: 0;
+    transform: scale(calc(1 - 0.5 * var(--motion-move)));
+  }
+}
+@keyframes works-fade {
+  from {
+    opacity: 0;
+  }
+}
+/* §F7.1 "a striped progress pill for the 4 steps": track `--bg-sunken`, fill `--accent` striped with `--accent-hover`, one
+ * quarter for step 1; the fill grows from zero once on `--ease-spring-soft` (Basic / Off: already full, --motion-move 0). */
+.progress {
+  height: var(--s1);
+  border-radius: var(--r-full);
+  background: var(--bg-sunken);
+  overflow: hidden;
+}
+.progressFill {
+  display: block;
+  width: 25%;
+  height: 100%;
+  border-radius: inherit;
+  background: repeating-linear-gradient(45deg, var(--accent) 0 var(--s1), var(--accent-hover) var(--s1) var(--s3));
+  transform-origin: left center;
+  animation: progress-fill var(--m-slow) var(--ease-spring-soft) both;
+}
+@keyframes progress-fill {
+  from {
+    transform: scaleX(calc(1 - var(--motion-move)));
+  }
 }
 /* 06 §0.4 Secondary 32px (--btn-h-sm) inside a 40px hit area. */
 .action {
