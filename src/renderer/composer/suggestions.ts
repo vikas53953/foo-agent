@@ -12,6 +12,8 @@ export interface SuggestFacts {
   messages: readonly Pick<MessageRow, 'authorKind' | 'kind' | 'cardId' | 'jobId' | 'suggestions' | 'deletedAt'>[];
   cards: Readonly<Record<string, Pick<CardRow, 'type' | 'jobId'> | undefined>>;
   recording: boolean;
+  /** The composer is disabled (§23.3): a chip could not fill the field. */
+  disabled?: boolean;
   /** The field holds text or a chip (the row goes on the first keystroke). */
   typed: boolean;
 }
@@ -24,16 +26,16 @@ const STOP_CARDS: ReadonlySet<CardType> = new Set(['approval', 'payment', 'draft
 const MONEY_CARDS: ReadonlySet<CardType> = new Set(['approval', 'payment', 'bill']);
 
 const STARTERS = {
-  foo: ['composer.suggest.starter.foo.1', 'composer.suggest.starter.foo.2', 'composer.suggest.starter.foo.3'],
-  helper: ['composer.suggest.starter.helper.1', 'composer.suggest.starter.helper.2', 'composer.suggest.starter.helper.3'],
-} as const;
+  foo: () => [t('composer.suggest.starter.foo.1'), t('composer.suggest.starter.foo.2'), t('composer.suggest.starter.foo.3')],
+  helper: () => [t('composer.suggest.starter.helper.1'), t('composer.suggest.starter.helper.2'), t('composer.suggest.starter.helper.3')],
+};
 
 /** The chip row for this chat now, or null when it is hidden. */
 export function suggestionsFor(f: SuggestFacts): SuggestView {
-  if (f.typed || f.recording || f.private) return null;
+  if (f.typed || f.recording || f.private || f.disabled) return null;
   if (f.kind !== 'foo' && f.kind !== 'helper') return null;
   const shown = f.messages.filter((m) => m.kind !== 'marker');
-  if (!shown.length) return { kind: 'starter', items: STARTERS[f.kind].map((k) => t(k)) };
+  if (!shown.length) return { kind: 'starter', items: STARTERS[f.kind]() };
   const last = shown[shown.length - 1]!;
   if ((last.authorKind !== 'foo' && last.authorKind !== 'helper') || last.deletedAt !== null) return null;
   const card = last.cardId ? f.cards[last.cardId] : undefined;
