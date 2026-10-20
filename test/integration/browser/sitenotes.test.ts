@@ -85,7 +85,10 @@ describe('08-2 §8.3.8 / §8.3.4 runner seams', () => {
     await h.settle(20);
     const job = String(h.job().id);
     expect(readdirSync(join(w.dataDir, 'jobs', job, 'steps')).filter((f) => f.startsWith('0-'))).toEqual(['0-1.jpg']);
-    const snaps = h.toolCalls(job).filter((c) => c.tool === 'browser.snapshot').map((c) => String(c.result));
+    const snaps = h
+      .toolCalls(job)
+      .filter((c) => c.tool === 'browser.snapshot')
+      .map((c) => String(c.result));
     // Same page: the second snapshot in step 1 is a diff; the first one in step 2 lists every control again.
     expect(snaps[1]).not.toContain('[e1] textbox');
     expect(snaps[2]).toContain('[e1] textbox');
