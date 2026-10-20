@@ -1,0 +1,75 @@
+{
+  "journey": "test/verify/m9-t7-lanes.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "06202e65a15bd36e42c5653fbcf5fae39bb8d131",
+  "dirty": false,
+  "started": "2026-10-20T05:57:48.660Z",
+  "finished": "2026-10-20T05:57:59.962Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "the job paused on the sign-in page: the Sign-in card is live and reads \"127.0.0.1 wants you to sign in. Do it here and I’ll carry on.\"",
+    "the person typed the password and the code on the page in foo’s browser; foo typed nothing",
+    "AT-057: the page moved on and the card ended \"✓ Signed in to 127.0.0.1 · 9:41 AM\" with no tap",
+    "no AI step ran while the sign-in was in front; the next step prompt says \"- Sign-in on 127.0.0.1 → done\"",
+    "AT-056: the password and the code are in none of the 4 recorded AI turns",
+    "the challenge page posted the CAPTCHA card: \"This page wants to check you’re a person. You do this bit, then hand it back.\"",
+    "AT-058: after Take over the person solved the puzzle (1 submit, theirs); foo took no step and clicked nothing",
+    "the take-over banner window is open over foo's browser: signin-banner.html#job=j_01a142e7-f420-76b0-b0c9-1eaad3226473&state=in_control&url=http%3A%2F%2Flocalhost%3A37167%2Fverify&agent=foo",
+    "Hand back from the banner: the card ended handed_back, foo said \"Carrying on from here.\" and the job finished"
+  ],
+  "shots": [
+    {
+      "file": "after/01-signin-live.light.png",
+      "name": "signin-live",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-signin-live.dark.png",
+      "name": "signin-live",
+      "theme": "dark"
+    },
+    {
+      "file": "after/03-signin-done.light.png",
+      "name": "signin-done",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-signin-done.dark.png",
+      "name": "signin-done",
+      "theme": "dark"
+    },
+    {
+      "file": "after/05-captcha-waiting.light.png",
+      "name": "captcha-waiting",
+      "theme": "light"
+    },
+    {
+      "file": "after/06-captcha-waiting.dark.png",
+      "name": "captcha-waiting",
+      "theme": "dark"
+    },
+    {
+      "file": "after/07-captcha-handed-back.light.png",
+      "name": "captcha-handed-back",
+      "theme": "light"
+    },
+    {
+      "file": "after/08-captcha-handed-back.dark.png",
+      "name": "captcha-handed-back",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}
