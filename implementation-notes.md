@@ -1270,3 +1270,17 @@ in_control.text,hand_back.label,not_secure.text,window.title}`.
 - T6-11 · Card width: the message row's holder shrinks to fit, so `min(--card-w, 100%)` squeezed the sign-in card to its
   longest word; the card uses `width: --card-w; max-width: 100%`. The M2 cards may want the same (not changed here).
 - T6-12 · Test seed `m9-signin` (one SEED_SETS entry, own world, no ux-world golden moves).
+
+## M9 · close-out (lead, CR-0013)
+
+- Built: the sandbox HTTPS sites and test hosts (T2), foo's Edge window, masked snapshot and actions (T3), web tools on the
+  user's own keys (T4), the Watch live window (T5), the Sign-in card, banner and handoff marker (T6), the sign-in lanes, take
+  over and hand back (T7), booking: submit, outcome, site notes, hand-back and recipes (T8). T1 (contracts, CR-0013) first.
+- Close-out: the browser articles (`test/articles/ART-03.browser.test.ts`, `ART-09.site.test.ts`, `ART-injection.test.ts`,
+  `ART-08a.browser.test.ts`); the golden specs `UX-12.restaurant.spec.ts`, `UX-14.signin.spec.ts`, `UX-15.live.spec.ts`,
+  `BP-cards-m9.spec.ts`, `BP-screens-m9.spec.ts`; Tier R disputes in the CR-0013 close-out addendum.
+- Fix: the second look now compares the job page's domain with the card's `siteDomain` for book / buy / pay (08-2 §8.1,
+  §9.6 A); before, an approved booking would have run on any site the page had moved to.
+- Golden lane: `FIDELITY_MILESTONE: M9`, `FIDELITY_REFS: M1,…,M6,M8,M9`.
+- Moved on: UX-15-05 / -08 / -09, AT-039 email rung, AT-040, AT-207, UX-12-08 / -10 / -11, AT-079 stay pending; the carry list
+  (T5, T7, T8 and the golden-spec gaps) is in `docs/decisions/M9.tsv` "note" rows.
