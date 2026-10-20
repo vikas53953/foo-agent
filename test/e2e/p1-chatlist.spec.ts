@@ -250,3 +250,23 @@ test("AT-323: a hovered row lifts 1px with a soft shadow at Full; Basic keeps it
   }
   await app.close();
 });
+
+test('AT-323: a search with no results shows foo scanning (64px, decorative) instead of the search icon', async () => {
+  const { app, page } = await startWorld();
+  await page.getByTestId(TID.sidebarSearchField).locator('input').fill('zzqx');
+  const empty = page.getByTestId(TID.chatlistEmpty);
+  await expect(empty).toHaveAttribute('data-state', 'search');
+  const face = empty.locator('[data-pose="scan"]');
+  await expect(face).toHaveCount(1);
+  expect(
+    await face.evaluate((n) => ({ w: Math.round(n.getBoundingClientRect().width), hidden: n.closest('[aria-hidden="true"]') !== null })),
+  ).toEqual({
+    w: 64,
+    hidden: true,
+  });
+  // the chip filters keep their 24px icons
+  await page.getByTestId(TID.sidebarSearchField).locator('input').fill('');
+  await page.getByTestId(TID.chatlistFilterDone).click();
+  await expect(page.locator('[data-pose]')).toHaveCount(0);
+  await app.close();
+});
