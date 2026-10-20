@@ -83,7 +83,11 @@ test('AT-366 · Visuals = Mostly words: the same question answers without kit pi
   await say(page, 'how are goa fares');
   await showUp(fooBubble(WORDS));
   await expect(fooBubble(WORDS).getByTestId(TID.kitSurface)).toHaveCount(0);
-  const wordsTurn = system(fakeTurns(dirs).filter((x) => x.purpose === 'intake').at(-1)!);
+  const wordsTurn = system(
+    fakeTurns(dirs)
+      .filter((x) => x.purpose === 'intake')
+      .at(-1)!,
+  );
   expect(wordsTurn).toContain('The user chose "Mostly words"');
   expect(wordsTurn).toContain('Do not write ```a2ui or ```page blocks unless the user asks');
   expect(wordsTurn).not.toContain('Components:');
@@ -92,14 +96,17 @@ test('AT-366 · Visuals = Mostly words: the same question answers without kit pi
   await setVisuals(t('settings.appearance.visuals.balanced'));
   await say(page, 'how are goa fares');
   await showUp(fooBubble('Goa fares this week.').getByTestId(TID.kitLineChart));
-  const balanced = system(fakeTurns(dirs).filter((x) => x.purpose === 'intake').at(-1)!);
+  const balanced = system(
+    fakeTurns(dirs)
+      .filter((x) => x.purpose === 'intake')
+      .at(-1)!,
+  );
   expect(balanced).toContain('Components:');
   expect(balanced).not.toContain('The user chose "Mostly words"');
 });
 
 /** The system prompt the fake recorded beside the prompt (08-3 §22.3 turns.jsonl). */
 const system = (turn: object) => String((turn as { system?: unknown }).system ?? '');
-
 
 test('AT-352 · LiveStamp shows "Data as of {time}" and Refresh sends kit:refresh', async () => {
   await start([intake('show goa fares', CHART_REPLY), intake('I tapped Refresh on your s1 surface', REFRESHED)]);
