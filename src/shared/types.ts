@@ -392,6 +392,12 @@ export interface DraftPayload {
   isGroup?: boolean;
   /** M8 T6: the full Approval card a Send opened for someone new or a switch (05-2 §5.7.2 "Waiting for your OK below ›"). */
   approvalCardId?: string;
+  // M8 T7 (08-3 §16.4.2, §16.4 Send): the number check ("That number isn't on WhatsApp." → no Send; "I can't check that
+  // number right now." → Send disabled until the bridge is open), the daily limit (Send disabled until that local midnight),
+  // and the delivery ack (Proof: Delivered). An X draft has no approvals row: `approvalId` is ''.
+  waCheck?: 'not_on' | 'cant_check';
+  waLimitUntil?: number;
+  delivered?: boolean;
 }
 /** 08-1 §4.5 secret payload (never a value). */
 export interface SecretPayload {

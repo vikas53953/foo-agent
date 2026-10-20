@@ -217,6 +217,15 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
   // M8 T5 (gap pick T5-01, 08-1 §2.4 has no row for it): main tells the engine the Google rows' state on every change, so
   // the Gmail poller and Contacts sync start and stop with the rows and jobs waiting on a lost connection resume.
   z.object({ id: z.string(), kind: z.literal('connection.state'), payload: googleConnStateSchema }),
+  // M8 T7 (08-2 §8.2 `whatsapp.send`, engine-only; 08-3 §16.4.2): main's Draft service asks the engine to send a tapped
+  // WhatsApp Draft through its queue (answers `{ waMessageId }` or SEND_FAILED) and to check a number again when the bridge
+  // is open (answers `{ exists: boolean | null }`). Requests, like draft.secondLook.
+  z.object({
+    id: z.string(),
+    kind: z.literal('wa.send'),
+    payload: z.object({ jid: z.string().min(1).max(100), text: z.string().min(1).max(65_536), draftCardId: z.string().min(1) }).strict(),
+  }),
+  z.object({ id: z.string(), kind: z.literal('wa.check'), payload: z.object({ jid: z.string().min(1).max(100) }).strict() }),
 ]);
 export type MainToEngine = z.infer<typeof mainToEngineSchema>;
 
@@ -390,6 +399,11 @@ export const NAMED_QUERY_NAMES = [
   'messages.userTexts',
   // M8
   'contacts.search',
+  // M8 T7: the WhatsApp recipient ladder's reads (08-3 §16.4.2).
+  'wa.recipient',
+  'wa.byName',
+  'wa.groupByName',
+  'wa.lastChats',
 ] as const;
 export type NamedQuery = (typeof NAMED_QUERY_NAMES)[number];
 
@@ -409,6 +423,12 @@ export const waReportSchema = z.discriminatedUnion('event', [
     })
     .strict(),
   z.object({ event: z.literal('groups'), groups: z.array(z.object({ jid: z.string().min(1), title: z.string() }).strict()) }).strict(),
+  // M8 T7: a sent message reached the phone (ack ≥ 2, the `wa_delivered` proof), and the bridge is open again (main re-checks
+  // the Draft cards whose number could not be checked, 08-3 §16.4.2).
+  z.object({ event: z.literal('delivered'), waMessageId: z.string().min(1) }).strict(),
+  z.object({ event: z.literal('open') }).strict(),
+  // M8 T7: the server acked a send after its wait ran out (08-2 §10.5: main completes the CHECKING row, never resends).
+  z.object({ event: z.literal('sent'), waMessageId: z.string().min(1) }).strict(),
 ]);
 export type WaReport = z.infer<typeof waReportSchema>;
 
@@ -567,22 +587,44 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
     payload: z
       .object({
         jobId: z.string(),
-        to: z
-          .object({
-            name: z.string().min(1).max(200),
-            address: z
-              .string()
-              .max(320)
-              // One plain address: no spaces, commas, angle brackets or line breaks reach the To line (M8 T6).
-              .regex(/^[^\s@<>",;]+@[^\s@<>",;]+\.[^\s@<>",;]+$/),
-          })
-          .strict(),
+        // M8 T7: email unless said; WhatsApp `to.address` is what the card shows (masked number or group name), X has no To.
+        channel: z.enum(['email', 'whatsapp', 'x']).optional(),
+        to: z.object({ name: z.string().max(200), address: z.string().max(320) }).strict(),
+        waJid: z
+          .string()
+          .regex(/^\d{6,20}@s\.whatsapp\.net$|^\d{6,30}(-\d+)?@g\.us$/)
+          .optional(),
+        isGroup: z.boolean().optional(),
+        waCheck: z.enum(['not_on', 'cant_check']).optional(),
         isNew: z.boolean().optional(),
         subject: z.string().max(998).optional(),
         body: z.string().max(100_000),
         threadId: z.string().max(200).optional(),
       })
-      .strict(),
+      .strict()
+      .superRefine((p, ctx) => {
+        const channel = p.channel ?? 'email';
+        const bad = (message: string) => ctx.addIssue({ code: 'custom', message });
+        if (channel === 'email') {
+          if (!p.to.name) bad('to.name');
+          // One plain address: no spaces, commas, angle brackets or line breaks reach the To line (M8 T6).
+          if (!/^[^\s@<>",;]+@[^\s@<>",;]+\.[^\s@<>",;]+$/.test(p.to.address)) bad('to.address');
+          if (p.waJid || p.isGroup !== undefined || p.waCheck) bad('whatsapp fields on an email');
+        } else if (channel === 'whatsapp') {
+          if (!p.to.name || !p.to.address || !p.waJid) bad('whatsapp needs to and waJid');
+          if (p.subject !== undefined || p.threadId !== undefined) bad('email fields on a WhatsApp message');
+          if (p.isGroup !== undefined && p.isGroup !== p.waJid?.endsWith('@g.us')) bad('isGroup');
+        } else if (p.to.name || p.to.address || p.waJid || p.subject !== undefined || p.threadId !== undefined || p.isNew) {
+          bad('an X post has only a body');
+        }
+      }),
+  }),
+  // M8 T7: `x.openCompose` (08-2 §8.2) opens an X Draft card of this job in X's compose page, exactly as its button does; main
+  // builds the URL from the card (never from the AI) and answers `void`.
+  z.object({
+    id: z.string(),
+    kind: z.literal('draft.openX'),
+    payload: z.object({ jobId: z.string(), cardId: z.string().min(1).max(100) }).strict(),
   }),
   /** The engine's answer to `ai.cmd`: main stores the chosen/verified provider in settings.json (main owns settings). */
   z.object({
@@ -629,7 +671,8 @@ export interface MainLink {
       | 'vault.encrypt'
       | 'vault.decrypt'
       | 'connection.google'
-      | 'draft.create',
+      | 'draft.create'
+      | 'draft.openX',
     payload: unknown,
   ): Promise<Result<T>>;
   send(kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify' | 'wa.report', payload: unknown): void;

@@ -3,10 +3,21 @@
 // pushName ?? masked number, "You" for from_me; `loggedOut` → `WA_UNLINKED`; transient disconnects reconnect with back-off
 // and are never shown), §16.4.1 (contact names and group names are kept in the bridge's memory and sent as `wa.contacts`),
 // §16.4.4 (a new QR about every 20 s by Baileys; expiresAt = linkStartAt + 60_000 on every code; linkCancel closes the
-// socket). The protocol side of the bridge, free of Baileys so tests drive it with a fake socket. No send path (M8 T7).
+// socket). The protocol side of the bridge, free of Baileys so tests drive it with a fake socket.
+// M8 T7: 08-1 §2.4.2 `wa.send` (only on an open socket; the key id comes from the Draft card, `waSendKeyId`; the server's
+// ack answers level 1, later phone acks follow as `wa.ack`; anything else is `wa.error SEND_FAILED`), `wa.onWhatsApp` (answered
+// only while open). The bridge never retries a send: the engine's queue and the Draft card decide what happens next.
 import { createHash } from 'node:crypto';
 import type { Clock, TimerId } from '../shared/clock';
-import { maskWaNumber, QR_LIFETIME_MS, WA_MEDIA_TEXT, waMessageId, type BridgeToEngine, type EngineToBridge } from '../shared/waBridge';
+import {
+  maskWaNumber,
+  QR_LIFETIME_MS,
+  WA_MEDIA_TEXT,
+  waMessageId,
+  waSendKeyId,
+  type BridgeToEngine,
+  type EngineToBridge,
+} from '../shared/waBridge';
 import type { WaMessageRow } from '../shared/types';
 
 /** One incoming message as the socket adapter hands it over (Baileys `messages.upsert`, already unwrapped). */
@@ -37,11 +48,18 @@ export interface WaSocketEvents {
   messages(list: IncomingWaMessage[]): void;
   contacts(list: WaContact[]): void;
   creds(bytes: Uint8Array): void;
+  // M8 T7
+  /** Acks for messages this device sent (Baileys `messages.update` status, as a `wa.ack` level 1–3). */
+  acks(list: { chatJid: string; keyId: string; level: number }[]): void;
 }
 
 export interface WaSocket {
   logout(): Promise<void>;
   end(): void;
+  // M8 T7
+  /** Sends one text message with this key id; resolves once the WhatsApp server has it, throws otherwise. */
+  sendText(jid: string, text: string, keyId: string): Promise<void>;
+  onWhatsApp(jids: string[]): Promise<{ jid: string; exists: boolean }[]>;
 }
 
 /** Opens a socket: `session` null pairs a new device (QR codes follow), otherwise it resumes the saved one. */
@@ -85,6 +103,8 @@ export class BridgeCore {
   private reconnect: TimerId | null = null;
   /** Bumped whenever a socket is replaced, so events from an old one are dropped. */
   private generation = 0;
+  // M8 T7: true between the socket's `open` and its `close`.
+  private isOpen = false;
 
   constructor(
     private o: {
@@ -127,11 +147,38 @@ export class BridgeCore {
           this.names.clear();
         }
         return;
+      // M8 T7
+      case 'wa.send':
+        return this.sendText(msg.payload);
+      case 'wa.onWhatsApp': {
+        if (!this.isOpen || !this.socket) return;
+        const results = await this.socket.onWhatsApp(msg.payload.jids).catch(() => null);
+        if (results) this.emit({ kind: 'wa.onWhatsApp.result', payload: { results } });
+        return;
+      }
     }
+  }
+
+  /** One send, tried once. */
+  private async sendText(p: { jid: string; text: string; draftCardId: string }): Promise<void> {
+    const socket = this.isOpen ? this.socket : null;
+    if (!socket) {
+      this.emit({ kind: 'wa.error', payload: { kind: 'SEND_FAILED' } });
+      return;
+    }
+    const keyId = waSendKeyId(p.draftCardId);
+    try {
+      await socket.sendText(p.jid, p.text, keyId);
+    } catch {
+      this.emit({ kind: 'wa.error', payload: { kind: 'SEND_FAILED' } });
+      return;
+    }
+    this.emit({ kind: 'wa.ack', payload: { waMessageId: waMessageId(p.jid, keyId), level: 1 } });
   }
 
   private close(): void {
     this.generation += 1;
+    this.isOpen = false;
     if (this.reconnect !== null) this.o.clock.clearTimeout(this.reconnect);
     this.reconnect = null;
     this.socket?.end();
@@ -158,11 +205,13 @@ export class BridgeCore {
             const accountHash = createHash('sha256').update(number).digest('hex');
             this.emit({ kind: 'wa.linked', payload: { jidMasked: maskWaNumber(jid), accountHash } });
           }
+          this.isOpen = true;
           this.emit({ kind: 'wa.state', payload: { state: 'open' } });
         },
         close: ({ loggedOut }) => {
           if (!live()) return;
           this.socket = null;
+          this.isOpen = false;
           if (loggedOut) {
             this.session = null;
             this.emit({ kind: 'wa.state', payload: { state: 'logged_out' } });
@@ -193,6 +242,13 @@ export class BridgeCore {
           if (!live()) return;
           this.session = bytes;
           this.emit({ kind: 'wa.creds', payload: { bytes } });
+        },
+        // M8 T7
+        acks: (list) => {
+          if (!live()) return;
+          for (const a of list)
+            if (a.level >= 1 && a.level <= 3)
+              this.emit({ kind: 'wa.ack', payload: { waMessageId: waMessageId(a.chatJid, a.keyId), level: a.level } });
         },
       },
     });

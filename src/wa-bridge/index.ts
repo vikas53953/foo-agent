@@ -15,12 +15,14 @@ interface PortLike {
 }
 interface ParentPort {
   on(event: 'message', fn: (e: { data: unknown; ports: PortLike[] }) => void): void;
+  postMessage(msg: unknown): void;
 }
 
 const parentPort = (process as unknown as { parentPort?: ParentPort }).parentPort;
 const testRun = process.env.FOO_TEST === '1';
 const clock = testRun ? new FakeClock(TEST_EPOCH_MS) : systemClock;
-const phone = testRun ? new FakePhone(clock) : null;
+// M8 T7: a test run tells main what the fake phone sent (`test.outbound`), so an e2e can count it.
+const phone = testRun ? new FakePhone(clock, (m) => parentPort?.postMessage({ kind: 'test.outbound', ...m })) : null;
 let core: BridgeCore | null = null;
 
 function connect(port: PortLike): void {

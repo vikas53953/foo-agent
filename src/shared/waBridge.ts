@@ -1,8 +1,10 @@
 // Spec: 08-1 §2.4.2 (engine ⇄ wa-bridge messages `{ id; kind; payload }`, zod-validated on receipt: the EngineToBridge /
 // BridgeToEngine unions), 08-3 §16.4 (read: text only, media as "[photo]"; sender_label = wa_contacts.name ?? pushName ??
 // masked number, "You" for from_me; X-129), §16.4.4 (expiresAt = linkStartAt + 60_000 on every code), 0001 `wa_messages.id`
-// = 'wa_' + chat_jid + ':' + Baileys key.id. M8 T3 carries the link and read rows; `wa.send`, `wa.readRecent` and
-// `wa.onWhatsApp` are added with the send path (M8 T7), so this bridge cannot send.
+// = 'wa_' + chat_jid + ':' + Baileys key.id. M8 T3 carries the link and read rows.
+// M8 T7: the send rows `wa.send { jid; text; draftCardId }`, `wa.onWhatsApp { jids }` → `wa.onWhatsApp.result`, and
+// `wa.ack { waMessageId; level }` (08-3 §16.4 proof: delivery ack ≥ 2 → `wa_delivered`). `wa.readRecent` stays out (no
+// ticket reads through the live bridge yet).
 import { z } from 'zod';
 
 /** 08-3 §16.4.4: a link attempt's codes all expire 60 s after Show QR code. */
@@ -15,7 +17,31 @@ export const WA_RETENTION_MS = 7 * 86_400_000;
 export const WA_MEDIA_TEXT = '[photo]';
 
 /** The wa_messages row id (0001_init: ingest is INSERT OR IGNORE on it, X-129). */
+// M8 T7
+/** The engine's failure message for a send whose wait for the bridge ran out: it may have gone out (08-2 §10.5). */
+export const WA_NO_ACK = 'no_ack';
+
 export const waMessageId = (chatJid: string, keyId: string): string => `wa_${chatJid}:${keyId}`;
+
+// M8 T7
+/**
+ * The WhatsApp message key id a Draft card's send uses (Baileys `sendMessage(…, { messageId })`), so the engine knows the
+ * `wa_messages` id of what it asked for before the bridge answers, and a second ask for the same card names the same message.
+ */
+export function waSendKeyId(draftCardId: string): string {
+  // Two FNV-1a passes (no node:crypto here: the renderer builds this file too); card ids are unique, so is this.
+  const fnv = (seed: number) => {
+    let h = seed >>> 0;
+    for (let i = 0; i < draftCardId.length; i++) h = Math.imul(h ^ draftCardId.charCodeAt(i), 0x01000193) >>> 0;
+    return h.toString(16).toUpperCase().padStart(8, '0');
+  };
+  return `FOO${fnv(0x811c9dc5)}${fnv(0x01000193)}`;
+}
+/**
+ * `wa.ack` levels (08-3 §16.4 "delivery ack ≥ 2"): 1 the WhatsApp server has it, 2 delivered to the phone, 3 read or played
+ * (Baileys WAMessageStatus SERVER_ACK / DELIVERY_ACK / READ / PLAYED, each minus one).
+ */
+export const WA_ACK_DELIVERED = 2;
 
 /** Group chats end in `@g.us`; only they become wa_mirror chats (08-3 §16.4.3). */
 export const isGroupJid = (jid: string): boolean => jid.endsWith('@g.us');
@@ -52,6 +78,12 @@ export const engineToBridgeSchema = z.discriminatedUnion('kind', [
   msg('wa.linkCancel', none),
   msg('wa.unlink', none),
   msg('wa.session', z.object({ bytes: bytes.nullable() }).strict()),
+  // M8 T7
+  msg(
+    'wa.send',
+    z.object({ jid: z.string().min(1).max(100), text: z.string().min(1).max(65_536), draftCardId: z.string().min(1) }).strict(),
+  ),
+  msg('wa.onWhatsApp', z.object({ jids: z.array(z.string().min(1).max(100)).min(1).max(20) }).strict()),
 ]);
 export type EngineToBridge = z.infer<typeof engineToBridgeSchema>;
 
@@ -73,6 +105,9 @@ export const bridgeToEngineSchema = z.discriminatedUnion('kind', [
       })
       .strict(),
   ),
+  // M8 T7
+  msg('wa.ack', z.object({ waMessageId: z.string().min(1), level: z.number().int().min(1).max(3) }).strict()),
+  msg('wa.onWhatsApp.result', z.object({ results: z.array(z.object({ jid: z.string().min(1), exists: z.boolean() }).strict()) }).strict()),
 ]);
 export type BridgeToEngine = z.infer<typeof bridgeToEngineSchema>;
 

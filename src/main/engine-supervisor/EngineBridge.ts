@@ -52,7 +52,7 @@ export interface BridgeContext {
   google?(): Pick<GoogleConnections, 'forEngine'> | null;
   // M8 T6
   /** Main's DraftService for engine `draft.create` (08-2 §8.2 `gmail.draft`); its answer is posted when Gmail has answered. */
-  drafts?(): Pick<DraftService, 'create'>;
+  drafts?(): Pick<DraftService, 'create' | 'openX'>;
 }
 
 type AiStatePayload = Extract<EngineToMain, { kind: 'ai.state' }>['payload'];
@@ -229,6 +229,17 @@ export class EngineBridge {
         const id = msg.id;
         void drafts
           .create({ ...rest, ...(threadId ? { threadId } : {}) })
+          .catch((): Result<unknown> => ({ ok: false, error: { kind: 'UNKNOWN' } }))
+          .then((result) => this.reply(id, result));
+        return null;
+      }
+      // M8 T7: `x.openCompose`; only an X Draft card of the asking job opens.
+      case 'draft.openX': {
+        const drafts = this.ctx.drafts?.();
+        if (!drafts) return { re: msg.id, result: { ok: false, error: { kind: 'VALIDATION', message: 'not_implemented' } } };
+        const id = msg.id;
+        void drafts
+          .openX(msg.payload)
           .catch((): Result<unknown> => ({ ok: false, error: { kind: 'UNKNOWN' } }))
           .then((result) => this.reply(id, result));
         return null;

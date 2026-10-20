@@ -5,6 +5,9 @@
 // FOO_TEST fake phone scans, the row reads "Linked · {+91 98••• ••210}", every group becomes a muted `wa_mirror` chat, group
 // messages flow into the mirror thread (08-3 §16.4.3); Unlink → 06-3 C-11 removes the mirrors; C-8 "Hide from foo" and the
 // "Groups I read" toggle (08-1 §3.2 chat:archive). Fake numbers only; no real WhatsApp, no send path.
+// M8 T7: AT-269 part 2 (04 §10.11): Send in the mirror makes a `whatsapp.draft` Draft card for that group in foo's chat, the
+// mirror shows "Draft ready in {agentName}'s chat." with Link "Open", Open shows foo's chat at that card, and the fake phone
+// records 0 outbound messages (a group draft is a hard limit: its Send opens the full Approval card, never a send).
 import { expect, test, type Page } from '@playwright/test';
 import { t } from '../../src/shared/copy/t';
 import { TID } from '../../src/shared/testids';
@@ -190,5 +193,42 @@ test('Hide from foo (C-8) archives the mirror; Groups I read shows it again', as
   await expect(toggle).toHaveAttribute('aria-checked', 'true');
   await page.keyboard.press('Escape');
   await expect(listRow(page, FAMILY.name)).toHaveCount(1);
+  await app.close();
+});
+
+// M8 T7
+test("AT-269 (part 2): Send in a mirror drafts into foo's chat; the mirror shows the marker and Open; nothing goes out", async () => {
+  const { app, page } = await startWorld();
+  await openConnections(page);
+  await link(page, t('settings.connections.whatsapp.link'));
+  await page.keyboard.press('Escape');
+
+  await openChat(page, FAMILY.name);
+  await page.getByTestId(TID.composerField).fill('Water is off from 10 to 12 tomorrow.');
+  await page.keyboard.press('Enter');
+  const marker = page.getByTestId(TID.threadMarker).filter({ hasText: t('thread.wa_mirror.draft_made', { agentName: 'foo' }) });
+  await expect(marker).toBeVisible({ timeout: 10_000 });
+  // The mirror keeps only WhatsApp's messages: no bubble of the typed text.
+  await expect(page.getByTestId(TID.threadLog)).not.toContainText('Water is off from 10 to 12 tomorrow.');
+  const cardId = await marker.getAttribute('data-card-id');
+  expect(cardId).toBeTruthy();
+
+  await marker.getByTestId(TID.threadMarkerLink).click();
+  await expect(page.getByTestId(TID.chatHeaderName)).toHaveText('foo');
+  const draft = page.locator(`[data-testid="${TID.cardDraft}"][data-card-id="${cardId}"]`);
+  await expect(draft).toBeInViewport({ timeout: 10_000 });
+  await expect(draft).toHaveAttribute('data-card-state', 'pending');
+  await expect(draft).toContainText(t('cards.draft.to_whatsapp', { name: FAMILY.name }));
+  await expect(draft).toContainText(t('cards.draft.right_label.whatsapp'));
+  await expect(draft.getByTestId(TID.cardDraftSend)).toHaveText(t('cards.draft.button.send_message'));
+
+  // A group is always the full Approval card: Send waits for it and nothing goes out.
+  await draft.getByTestId(TID.cardDraftSend).click();
+  await expect(draft.getByTestId(TID.cardDraftWaiting)).toBeVisible();
+  await expect(page.getByTestId(TID.threadLog).getByTestId(TID.cardApproval).last()).toContainText(
+    t('cards.approval.send_whatsapp.title', { name: FAMILY.name }),
+  );
+  const outbound = () => app.evaluate(() => (globalThis as { __fooWaOutbound?: unknown[] }).__fooWaOutbound ?? null);
+  expect(await outbound()).toEqual([]);
   await app.close();
 });

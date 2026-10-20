@@ -14,6 +14,7 @@ import { navigate } from '../store/index';
 import { Face } from '../ui/Avatar';
 import { Spinner } from '../ui/Spinner';
 import styles from './Bubble.module.css';
+import { requestRevealCard } from './reveal'; // M8 T7
 import { MemoryChip } from './MemoryChip';
 
 export function SystemLine({ m }: { m: MessageRow }) {
@@ -53,6 +54,26 @@ export function RetentionLine() {
   return (
     <div className={styles.marker} data-testid={TID.threadMarker} data-state="system_line">
       {t('thread.wa_mirror.retention')}
+    </div>
+  );
+}
+
+/** M8 T7 (04 §10.11): the mirror's "Draft ready in {agentName}'s chat." and Link "Open" → foo's chat at that Draft card. */
+export function MirrorDraftLine({ agentName, fooChatId, draftCardId }: { agentName: string; fooChatId: string; draftCardId: string }) {
+  return (
+    <div className={styles.marker} data-testid={TID.threadMarker} data-state="system_line" data-card-id={draftCardId}>
+      {t('thread.wa_mirror.draft_made', { agentName })}{' '}
+      <button
+        type="button"
+        className={styles.markerLink}
+        data-testid={TID.threadMarkerLink}
+        onClick={() => {
+          navigate({ kind: 'chat', chatId: fooChatId });
+          requestRevealCard(fooChatId, draftCardId);
+        }}
+      >
+        {t('thread.wa_mirror.open')}
+      </button>
     </div>
   );
 }

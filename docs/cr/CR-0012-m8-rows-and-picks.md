@@ -93,3 +93,39 @@ Two forks the T6 review found the spec does not settle. Each was put to an indep
     known person is a plain Draft. The M9 browser ticket narrows this to the rung change itself (X-125 `rungOf`) and adds
     the "new site" switch (ART-09 row for M9, pending). The card's primary reads "Send email" as M5's Approval card already
     draws for `switch`; "{Email them}" has no copy key yet and stays with the spec-keeper.
+
+## (g) Addendum: M8 T7 WhatsApp and X drafts (2026-10-20)
+
+Forks the T7 build and its review found the spec does not settle. Each was put to an independent Fable check before it was
+recorded (docs/decisions/M8.tsv, T7 rows).
+
+18. **G-M8-15** WhatsApp send correlation and no answer. The bridge sends with key id `waSendKeyId(draftCardId)`, so the
+    server's ack names the Draft it answers; one send in flight, FIFO, ≥ 3 s apart (08-3 §16.4 Send). "✓ Sent" on the
+    server ack (level 1); "Proof: Delivered" and the `wa_delivered` approvals proof on ack ≥ 2. The bridge's SEND_FAILED is
+    "WhatsApp didn't send it. Nothing went out." (`cards.draft.line.wa_failed`, worded after 08-3 §21.2 SEND_FAILED with
+    the app named). No answer in 30 s is not "nothing went out": the row goes CHECKING (08-2 §10.5) and the card keeps
+    "Sending…"; a late server ack (engine `wa.report { event: 'sent' }`) completes it with `sent_whatsapp`, never a resend.
+    Fifteen minutes with no ack is M5's CHECKING → FAILED (G-M5-33); the Draft card's words for that case are the open M5
+    gap shared with email crash recovery, not new here.
+19. **G-M8-16** Recipient Choice (08-3 §16.4.2 "Who is {Mom} on WhatsApp?" over "the last 5 chats"): the Choice card holds
+    at most 4 options (05-1 §5.3, `ChoiceCardSpec`), so it lists the last 4. Dispute for the close-out CR. The answer comes
+    back to the AI as its label (Part 8 "Decisions:"); the next call may name the label, the option id, or the name before
+    " · " when only one option has it. The AI never picks a recipient.
+20. **G-M8-17** A group is what its jid says (`@g.us`): main derives `isGroup` from the jid and refuses a caller's flag
+    that says otherwise (AT-070 cannot be skipped by a wrong flag).
+21. **G-M8-18** X drafts (08-3 §16.3, X-34): no approvals row, no expiry, no footer (nothing is ever sent from the card).
+    The label is `cards.draft.label_post` "Draft, not sent: {channel}" (05-2 §5.7.4's label assumes a recipient). "Shorten
+    it" opens Change. The page opens only through the card: `app:openExternal` `x_intent` with the card's nonce, or
+    `x.openCompose` with the job's id (`draft.openX`); `draft:openInApp` refuses X.
+22. **G-M8-19** The mirror composer (04 §10.11): main makes a finished job in foo's chat (origin `user`) that carries the
+    group Draft card. (a) The typed text is kept as the user's own message in foo's chat, just above the Draft, so the
+    second look reads the user's words (08-2 §9.6); nothing is copied into the mirror's `messages` (08-3 §16.4.3). (b) The
+    job's title reuses `composer.placeholder.wa_mirror` "Draft a message for {group}" (no job-title key exists for it).
+    (c) The job is `done` at once, so it shows the usual 24 h "Done" pill. (d) The "Draft ready in {agentName}'s chat."
+    marker is the renderer's until restart; the draft itself stays in foo's chat. (e) The paste catcher's secret check
+    runs as on any send (08-2 §11.4 R1); "Send anyway" goes on.
+23. **G-M8-20** Port rows the spec names only in words: main → engine requests `wa.send` and `wa.check`, engine → main
+    request `draft.openX`, and `wa.report` events `delivered`, `sent` and `open` (08-1 §2.4 table rows for the close-out CR).
+24. **G-M8-21** New copy keys: `cards.choice.question.who_on_whatsapp`, `cards.draft.line.wa_not_on`,
+    `cards.draft.line.wa_failed`, `cards.draft.label_post`, `thread.wa_mirror.draft_made`, `thread.wa_mirror.open`
+    (the words are the spec's own where it has them: 04 §10.11, 08-3 §16.4.2).

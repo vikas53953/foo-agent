@@ -48,6 +48,8 @@ import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
 import type { SecondLookAct, StepAct } from '../shared/schemas';
 // M8
 import { WhatsAppConnector, type WaPortLike } from './tools/connectors/whatsapp';
+import { linkWaRecipients, whatsappDraftTool } from './tools/connectors/recipients'; // M8 T7
+import { xTools } from './tools/connectors/x'; // M8 T7
 import { googleTools, testGoogleAccess, type GoogleConnectors, type GoogleOptions } from './tools/connectors/google-tools';
 import { ConnTrouble } from './connections/trouble';
 import type { GoogleBases } from './tools/connectors/limiter';
@@ -189,7 +191,13 @@ export class Engine {
       clock: o.clock,
       newId: (p) => newId(p, o.clock.now()),
       // M6 T5: the memory step tools (08-2 §8.2) beside the injected ones (M8 connectors, M9 browser, fakes in tests).
-      tools: { ...this.memoryToolRegistry(newId), ...(o.tools ?? {}), ...(this.google?.tools ?? {}) },
+      // M8 T7: whatsapp.draft and the X hand-back tools; the WhatsApp check is read through `this.whatsapp` when called.
+      tools: {
+        ...this.memoryToolRegistry(newId),
+        ...this.draftToolRegistry(),
+        ...(o.tools ?? {}),
+        ...(this.google?.tools ?? {}),
+      },
       gate,
       log: (evt, kind) => log(evt, kind),
       scrub: (text) => this.redactor.scrub(text),
@@ -358,6 +366,20 @@ export class Engine {
   private async query<T>(q: string, ...args: unknown[]): Promise<T | null> {
     const r = await this.o.link.request<T>('db.query', { q, args });
     return r.ok ? r.value : null;
+  }
+
+  /** M8 T7: `whatsapp.draft` (the §16.4.2 ladder) and `x.draft` / `x.openCompose`. */
+  private draftToolRegistry(): ToolRegistry {
+    const recipients = linkWaRecipients(this.o.link, {
+      check: (jid) => this.whatsapp.check(jid),
+      now: () => this.o.clock.now(),
+    });
+    const whatsapp = whatsappDraftTool({
+      link: this.o.link,
+      recipients,
+      draftsOn: () => this.settings.connections.whatsapp.draft,
+    });
+    return { 'whatsapp.draft': whatsapp, ...xTools({ link: this.o.link }) };
   }
 
   /** M6 T5: the two memory step tools; their seams are read when a job calls them. */
@@ -733,6 +755,11 @@ export class Engine {
       }
       case 'test.memoryTidy':
         return this.memory.tidy();
+      // M8 T7
+      case 'wa.send':
+        return this.whatsapp.send(msg.payload);
+      case 'wa.check':
+        return ok({ exists: await this.whatsapp.check(msg.payload.jid) });
       default:
         return undefined;
     }

@@ -26,6 +26,10 @@ export function resourcesDir(): string {
   return join(app.getAppPath(), 'resources');
 }
 
+/** M8 T7: FOO_TEST only, every message the fake phone sent (read by e2e through `globalThis.__fooWaOutbound`). */
+export const waOutboundForTest: { jid: string; keyId: string }[] = [];
+if (process.env.FOO_TEST === '1') (globalThis as { __fooWaOutbound?: unknown }).__fooWaOutbound = waOutboundForTest;
+
 export class EngineSupervisor {
   private child: UtilityProcess | null = null;
   private port: MessagePortMain | null = null;
@@ -67,6 +71,11 @@ export class EngineSupervisor {
     for (const [k, v] of Object.entries(process.env)) if (v !== undefined) env[k] = v;
     env.FOO_APP_VERSION = app.getVersion();
     const utility = utilityProcess.fork(entry, [], { serviceName: 'foo wa-bridge', env, stdio: 'inherit' });
+    // M8 T7: a FOO_TEST run keeps what the fake phone sent, for e2e counts (AT-269: a mirror sends nothing).
+    if (process.env.FOO_TEST === '1')
+      utility.on('message', (m: { kind?: string; jid?: string; keyId?: string }) => {
+        if (m?.kind === 'test.outbound') waOutboundForTest.push({ jid: String(m.jid), keyId: String(m.keyId) });
+      });
     return {
       utility,
       kill: () => void utility.kill(),

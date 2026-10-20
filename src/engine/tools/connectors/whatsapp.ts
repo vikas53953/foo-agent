@@ -3,9 +3,14 @@
 // `wa.creds` → `vault.encrypt` → `{DATA}\vault\wa-session.bin`), §16.4.3 (only groups become mirrors, all on link),
 // §16.4.4 (the engine renders the PNG, `qrcode` 1.5.x, 200 px, margin 2, and forwards `whatsapp:qr { png, expiresAt }`;
 // 60 s after linkStart with no scan → linkCancel; 3 failed links → WA_LINK_FAILED), 08-1 §2.4 (`connection.cmd`,
-// `bridge.port`, `vault.decrypt` at bridge start), §2.4.2 (zod on receipt). No send path: M8 T7 adds `whatsapp.send`.
+// `bridge.port`, `vault.decrypt` at bridge start), §2.4.2 (zod on receipt).
+// M8 T7: the send path (`whatsapp.send` is engine-only, 08-2 §8.2: main asks after the Draft card's tap): one FIFO queue,
+// ≥ 3 s between sends (08-3 §16.4 Send; the wait is never an error), each send waits for the server's ack or the bridge's
+// SEND_FAILED; delivery acks ≥ 2 go to main as the `wa_delivered` proof; `wa.onWhatsApp` for the recipient check (§16.4.2,
+// null while the bridge is not open: "I can't check that number right now.").
 import QRCode from 'qrcode';
 import type { Clock, TimerId } from '../../../shared/clock';
+import { fail, ok, type Result } from '../../../shared/errors';
 import type { Settings } from '../../../shared/settings';
 import type { WaMessageRow } from '../../../shared/types';
 import {
@@ -16,6 +21,11 @@ import {
   type BridgePayload,
   type BridgeToEngine,
   type EngineToBridge,
+  WA_ACK_DELIVERED,
+  WA_NO_ACK,
+  waMessageId,
+  waSendKeyId,
+  type WaState,
 } from '../../../shared/waBridge';
 import type { DbOp, MainLink, WaReport } from '../../protocol';
 
@@ -32,6 +42,20 @@ type Cmd = { [K in EngineToBridge['kind']]: { kind: K; payload: Extract<EngineTo
 /** 05-3 §5.11.1: `--qr-size` 200px; 08-3 §16.4.4 margin 2. */
 const QR_OPTS = { width: 200, margin: 2, errorCorrectionLevel: 'M' } as const;
 
+// M8 T7
+/** 08-3 §16.4 Send: at least 3 s between two sends `[foo decision: lower ban risk on an unofficial link]`. */
+export const WA_SEND_GAP_MS = 3_000;
+/** How long one send waits for the bridge's ack or SEND_FAILED before it counts as failed. */
+const SEND_WAIT_MS = 30_000;
+/** How long a number check waits for `wa.onWhatsApp.result`. */
+const CHECK_WAIT_MS = 10_000;
+
+export interface WaSendRequest {
+  jid: string;
+  text: string;
+  draftCardId: string;
+}
+
 export class WhatsAppConnector {
   private port: WaPortLike | null = null;
   private queued: WaCommand[] = [];
@@ -39,6 +63,17 @@ export class WhatsAppConnector {
   private expiry: TimerId | null = null;
   private failedLinks = 0;
   private unlinking = false;
+  // M8 T7
+  private state: WaState | null = null;
+  /** The send queue's tail; each send starts after the one before it ended and the 3 s gap. */
+  private queue: Promise<unknown> = Promise.resolve();
+  private lastSendAt: number | null = null;
+  /** The send in flight: the message id it waits for. */
+  private inFlight: { id: string; done(r: Result<{ waMessageId: string }>): void } | null = null;
+  private checks: { jid: string; done(exists: boolean | null): void }[] = [];
+  private delivered = new Set<string>();
+  /** Sends whose wait ran out: a late server ack for one is reported as `sent` (it did go out). */
+  private lost = new Set<string>();
 
   constructor(
     private o: {
@@ -138,17 +173,103 @@ export class WhatsAppConnector {
         await this.o.link.request('vault.encrypt', { blobRef: 'wa-session', bytes: m.payload.bytes });
         return;
       case 'wa.error':
+        // M8 T7: the send in flight did not go out.
+        if (m.payload.kind === 'SEND_FAILED') this.inFlight?.done(fail('SEND_FAILED'));
         if (m.payload.kind === 'WA_UNLINKED' && !this.unlinking)
           this.report({ event: 'status', status: 'unlinked', errorKind: 'WA_UNLINKED' });
         if (m.payload.kind === 'WA_LINK_FAILED' && this.expiry !== null) this.linkFailed();
         return;
-      case 'wa.state':
+      case 'wa.state': {
+        const was = this.state;
+        this.state = m.payload.state;
+        if (m.payload.state === 'open' && was !== 'open') this.report({ event: 'open' });
+        if (m.payload.state !== 'open') for (const c of this.checks.splice(0)) c.done(null);
+        return;
+      }
+      // M8 T7
+      case 'wa.ack':
+        if (this.inFlight?.id === m.payload.waMessageId) this.inFlight.done(ok({ waMessageId: m.payload.waMessageId }));
+        else if (this.lost.delete(m.payload.waMessageId)) this.report({ event: 'sent', waMessageId: m.payload.waMessageId });
+        if (m.payload.level >= WA_ACK_DELIVERED && !this.delivered.has(m.payload.waMessageId)) {
+          // Delivered then read: one proof. The set only needs this session's sends.
+          if (this.delivered.size > 500) this.delivered.clear();
+          this.delivered.add(m.payload.waMessageId);
+          this.report({ event: 'delivered', waMessageId: m.payload.waMessageId });
+        }
+        return;
+      case 'wa.onWhatsApp.result':
+        for (const r of m.payload.results) {
+          const i = this.checks.findIndex((c) => c.jid === r.jid);
+          if (i >= 0) this.checks.splice(i, 1)[0]!.done(r.exists);
+        }
         return;
       case 'wa.contacts':
         return this.contacts(m.payload.contacts);
       case 'wa.message':
         return this.ingest(m.payload);
     }
+  }
+
+  // M8 T7
+  /** True while the bridge's socket is open (08-3 §16.4.2). */
+  isOpen(): boolean {
+    return this.port !== null && this.state === 'open';
+  }
+
+  /** `whatsapp.send` (engine-only): queued behind earlier sends and the 3 s gap; never retried here. */
+  send(req: WaSendRequest): Promise<Result<{ waMessageId: string }>> {
+    const run = this.queue.then(() => this.sendNow(req));
+    this.queue = run.catch(() => undefined);
+    return run;
+  }
+
+  private async sendNow(req: WaSendRequest): Promise<Result<{ waMessageId: string }>> {
+    if (this.lastSendAt !== null) {
+      const wait = this.lastSendAt + WA_SEND_GAP_MS - this.o.clock.now();
+      if (wait > 0) await new Promise<void>((res) => this.o.clock.setTimeout(res, wait));
+    }
+    if (!this.isOpen()) return fail('SEND_FAILED');
+    const id = waMessageId(req.jid, waSendKeyId(req.draftCardId));
+    this.lastSendAt = this.o.clock.now();
+    const r = await new Promise<Result<{ waMessageId: string }>>((resolve) => {
+      // No answer is not "nothing went out": main keeps the row CHECKING and a late ack still completes it.
+      const timer = this.o.clock.setTimeout(() => {
+        if (this.lost.size > 500) this.lost.clear();
+        this.lost.add(id);
+        finish(fail('SEND_FAILED', WA_NO_ACK));
+      }, SEND_WAIT_MS);
+      const finish = (x: Result<{ waMessageId: string }>) => {
+        this.o.clock.clearTimeout(timer);
+        if (this.inFlight?.id === id) this.inFlight = null;
+        resolve(x);
+      };
+      this.inFlight = { id, done: finish };
+      this.post({ kind: 'wa.send', payload: { jid: req.jid, text: req.text, draftCardId: req.draftCardId } });
+    });
+    this.lastSendAt = this.o.clock.now();
+    if (!r.ok) this.o.log?.('wa.send_failed', r.error.kind);
+    return r;
+  }
+
+  /** Is this jid on WhatsApp? null while the bridge is not open or does not answer (08-3 §16.4.2). */
+  check(jid: string): Promise<boolean | null> {
+    if (!this.isOpen()) return Promise.resolve(null);
+    return new Promise((resolve) => {
+      const entry = {
+        jid,
+        done: (exists: boolean | null) => {
+          this.o.clock.clearTimeout(timer);
+          resolve(exists);
+        },
+      };
+      const timer = this.o.clock.setTimeout(() => {
+        const i = this.checks.indexOf(entry);
+        if (i >= 0) this.checks.splice(i, 1);
+        resolve(null);
+      }, CHECK_WAIT_MS);
+      this.checks.push(entry);
+      this.post({ kind: 'wa.onWhatsApp', payload: { jids: [jid] } });
+    });
   }
 
   private reading(): boolean {
