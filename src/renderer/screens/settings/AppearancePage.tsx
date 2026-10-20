@@ -5,7 +5,8 @@
 // moves at Off), CR-0021 picks 20–22, AT-320, AT-321.
 import { useEffect, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { t } from '../../../shared/copy/t';
-import { ZOOM_STEPS, type WritablePath } from '../../../shared/settings';
+import type { WritablePath } from '../../../shared/settings';
+import { ZOOM_STEPS } from '../../../shared/settingsLists';
 import { TID } from '../../../shared/testids';
 import type { PublicSettings } from '../../../shared/types';
 import { setMotionLevel } from '../../a11y/motion';

@@ -1,0 +1,36 @@
+/* Spec: 06 §0.1 Page (fills the area, --bg-app; content column max --column-max, centred, side padding 16, 24 at ≥ 900px),
+ * §0.5 Loading (static skeleton rows of --bg-sunken, --r-xs, heights matching real rows) and Error (the C16 card in the
+ * content column). */
+.page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--bg-app);
+  outline: none;
+  container-type: inline-size;
+}
+.column {
+  box-sizing: border-box;
+  display: grid;
+  gap: var(--s3);
+  width: 100%;
+  max-width: calc(var(--column-max) + 2 * var(--s3));
+  margin: 0 auto;
+  padding: var(--s5) var(--s3);
+}
+@container (min-width: 900px) /* local: 06 §0.1 page side padding 24 at ≥ 900px (no token) */ {
+  .column {
+    max-width: calc(var(--column-max) + 2 * var(--s5));
+    padding-right: var(--s5);
+    padding-left: var(--s5);
+  }
+}
+.row {
+  display: grid;
+  gap: var(--s1);
+}
+.errorText {
+  margin: 0 0 var(--s2);
+  font: var(--t-body);
+}

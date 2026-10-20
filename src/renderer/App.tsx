@@ -1,8 +1,10 @@
 // Spec: 08-0 §G.10 (no router: `ui.view` decides), 03-shell-1 §3.1.3.4 (the shell frame), 03-shell-2 §3.9.6 (the store
 // is filled from app:getBootstrap and kept current by events), 02-3 §F25.2 (one announcer), §3.9.2 / §3.9.4 (F6 and the Esc
-// ladder: one root handler, ShellKeys), 02-2 §F15.9.9 (one hidden `<FaceRaster>`). The chat view (`main`) and the details panel (`right`) mount into the shell here.
+// ladder: one root handler, ShellKeys), 02-2 §F15.9.9 (one hidden `<FaceRaster>`), AT-322 (pages load lazily; P1 T10 fetches
+// their scripts once the window is idle after launch). The chat view (`main`) and the details panel (`right`) mount into the shell here.
 import { useEffect } from 'react';
 import { Announcer } from './a11y/Announcer';
+import { preloadPages } from './pages/lazyPages';
 import { MainShell } from './shell/MainShell';
 import { RightShell } from './shell/RightShell';
 import { Shell } from './shell/Shell';
@@ -18,9 +20,11 @@ export function App() {
     const off = wireEvents();
     const stop = startClock();
     void loadBootstrap();
+    const idle = window.requestIdleCallback(preloadPages, { timeout: 2_000 });
     return () => {
       off();
       stop();
+      window.cancelIdleCallback(idle);
     };
   }, []);
   const openChatId = useStore(selectOpenChatId);
