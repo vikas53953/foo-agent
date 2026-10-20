@@ -284,6 +284,16 @@
       "status": "DONE"
     },
     {
+      "group": "M9 Create",
+      "item": "src/engine/tools/browser/signinLanes.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "M9 Create",
+      "item": "src/engine/tools/browser/takeover.ts",
+      "status": "DONE"
+    },
+    {
       "group": "M9 Must pass",
       "item": "AT-036",
       "status": "UNVERIFIABLE",
