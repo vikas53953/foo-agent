@@ -9,10 +9,11 @@
 // keys Enter / Shift+F10 / Menu, Ctrl+Shift+R, Ctrl+Shift+E, Ctrl+C; new foo rows are announced once (streaming: when done;
 // a card row as 05-1 §0.7 "{sender} sent {card name}: {title}[, needs you]");
 // §6.4 a quote click jumps and highlights 1600 ms; §14.2 / §14.3 status line and Thinking row; §10.11 the WhatsApp mirror.
+// 02 §F7.1 "Chat" (CR-0021, X-179): a new message rises once per message (keyed by clientId, never again on scroll-back), the "new messages" line slides in.
 import { observeElementOffset, useVirtualizer } from '@tanstack/react-virtual';
 import { batchScrollAdjustments } from './scrollAdjust';
 import { flushSync } from 'react-dom';
-import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
 import { t } from '../../shared/copy/t';
 import { bp, motion } from '../../shared/tokens';
 import { TID } from '../../shared/testids';
@@ -36,7 +37,8 @@ import { REVEAL_EVENT, takeReveal } from './reveal';
 import { MessageView, WaBubble, messageAccessibleName, runRowCommand, senderOf, type RowCtx } from './Bubble';
 import { MessageDialogs } from './MessageDialogs';
 import { FlingRow } from './FlingRow';
-import { RowHotCtx } from './bubbleContext';
+import { RowFreshCtx, RowHotCtx } from './bubbleContext';
+import { sinceStart, useOneShot } from './oneShot';
 import { MirrorDraftLine, RetentionLine, StatusLine, ThinkingRow } from './Markers';
 import { useMirrorDrafts } from './mirrorDrafts'; // M8 T7
 import { buildRows, buildWaRows, estimateRow, firstUnreadId, type VRow } from './rows';
@@ -413,6 +415,13 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     prevLast.current = slice?.lastSeq ?? 0;
   }, [rows]); // eslint-disable-line react-hooks/exhaustive-deps
   const prevLast = useRef<number | null>(slice?.lastSeq ?? null);
+  // §F7.1: a row is new on the very render it arrives in (the effect above records it after the paint), so its rise starts
+  // with its first frame instead of on the list's next render.
+  const arrivedNow = (r: VRow) =>
+    r.kind === 'message' &&
+    known.current !== null &&
+    !known.current.has(r.key) &&
+    (r.key.startsWith('local:') || r.message.seq > (prevLast.current ?? 0));
   const announced = useRef<Set<string>>(new Set());
   // A card message can land before its card row; it is announced once the row is in the store.
   const waitingCard = useRef<Map<string, MessageRow>>(new Map());
@@ -746,7 +755,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
                 cards={cards}
                 layout={layouts[item.index]!}
                 ctx={ctx}
-                isNew={fresh.current.has(r.key)}
+                isNew={fresh.current.has(r.key) || arrivedNow(r)}
                 flash={r.kind === 'message' && r.message.id === flashId}
               />
             );
@@ -785,6 +794,13 @@ const RowFrame = memo(function RowFrame({
 }) {
   const m = row.kind === 'message' ? row.message : null;
   const name = useMemo(() => (m ? messageAccessibleName(m, ctx) : undefined), [m, ctx]);
+  // 02 §F7.1: the rise plays once per message, keyed by the composer's clientId so the row re-keyed by main's stored id
+  // does not rise twice, and not again when the virtual list mounts the row on scroll-back.
+  const shot = `new:${m?.clientId ?? row.key}`;
+  const fresh = useOneShot(shot, isNew, true, motion.spring);
+  // Re-keyed when main stores it, the row mounts again mid-rise; the rise carries on from where it was.
+  const [carried] = useState(() => (fresh ? Math.min(sinceStart(shot), motion.spring) : Infinity));
+  const carrying = fresh && carried > 0 && carried < motion.spring;
   const [hot, setHot] = useState(false);
   const warm = () => {
     if (!hot) setHot(true);
@@ -798,11 +814,15 @@ const RowFrame = memo(function RowFrame({
       className={styles.row}
       role="listitem"
       {...(m ? { 'data-message-id': m.id, tabIndex: -1, 'aria-label': name } : {})}
-      data-new={isNew ? '' : undefined}
+      data-new={fresh ? '' : undefined}
+      data-carry={carrying || undefined}
+      style={carrying ? ({ '--new-at': `-${Math.round(carried)}ms` } as CSSProperties) : undefined}
       data-flash={flash || undefined}
     >
       <RowHotCtx.Provider value={hot}>
-        <Row row={row} index={index} cards={cards} layout={layout} ctx={ctx} />
+        <RowFreshCtx.Provider value={fresh}>
+          <Row row={row} index={index} cards={cards} layout={layout} ctx={ctx} />
+        </RowFreshCtx.Provider>
       </RowHotCtx.Provider>
     </div>
   );
@@ -828,7 +848,7 @@ function Row({
     case 'date':
       return <DateSeparator label={row.label} index={index} />;
     case 'unread':
-      return <UnreadDivider label={row.label} />;
+      return <UnreadDivider label={row.label} playKey={`unread:${ctx.chat.id}:${row.label}`} />;
     case 'retention':
       return <RetentionLine />;
     case 'wa_draft':

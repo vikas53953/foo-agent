@@ -2,9 +2,11 @@
 // §3.6.2.2 (actions in X-128 order: Watch live · Private toggle · Find · Panel toggle · Options; the Chat options menu),
 // §3.6.2.3 (the selection bar takes this box), §3.9.5 (Narrator), 12-2 §12.30.4 (private chat), 03-shell-1 §3.0.2.
 // 06-1 §2.0 step pill (first run, CR-0020).
+// 02 §F7.1 "Chat" (CR-0021, X-179): the header status cross-fades.
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { t } from '../../shared/copy/t';
+import { motion } from '../../shared/tokens';
 import { TID } from '../../shared/testids';
 import type { ChatRow, JobRow, View } from '../../shared/types';
 import { invoke } from '../ipc/client';
@@ -18,6 +20,7 @@ import { Button } from '../ui/Button';
 import { Icon } from '../ui/Icon';
 import { IconButton } from '../ui/IconButton';
 import { Menu, type MenuEntry } from '../ui/Menu';
+import { cx } from '../ui/cx';
 // M8 T3
 import { C08 } from '../screens/confirms/C08';
 import { archiveMirror } from '../screens/settings/connections/archiveMirror';
@@ -303,7 +306,7 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
         )}
         <div role="status" className={styles.status} data-testid={TID.chatHeaderStatus} data-state={status.tone} data-row={status.row}>
           {status.dot && <span className={styles.dot} aria-hidden />}
-          <span className={styles.statusText}>{status.text}</span>
+          <StatusText text={status.text} chatId={chat.id} />
         </div>
       </div>
       <div className={styles.actions}>
@@ -396,5 +399,31 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
         />
       )}
     </div>
+  );
+}
+
+/**
+ * 02 §F7.1 (CR-0021): the status line cross-fades: the new words fade in over the old ones, which leave in `motion.normal`
+ * with --ease-out. Opening another chat swaps the line at once (the chat switch has its own motion).
+ */
+function StatusText({ text, chatId }: { text: string; chatId: string }) {
+  const [shown, setShown] = useState<{ text: string; chatId: string; prev: string | null }>({ text, chatId, prev: null });
+  if (shown.text !== text || shown.chatId !== chatId) setShown({ text, chatId, prev: shown.chatId === chatId ? shown.text : null });
+  useEffect(() => {
+    if (shown.prev === null) return;
+    const id = setTimeout(() => setShown((s) => ({ ...s, prev: null })), motion.normal);
+    return () => clearTimeout(id);
+  }, [shown.prev]);
+  return (
+    <span className={styles.statusStack}>
+      {shown.prev !== null && (
+        <span className={cx(styles.statusText, styles.statusOld)} aria-hidden>
+          {shown.prev}
+        </span>
+      )}
+      <span key={text} className={cx(styles.statusText, shown.prev !== null && styles.statusNew)}>
+        {text}
+      </span>
+    </span>
   );
 }

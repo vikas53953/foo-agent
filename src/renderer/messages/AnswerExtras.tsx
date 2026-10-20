@@ -4,6 +4,7 @@
 // ("Worked for 12s ›" link that expands into the step list, ChevronRight → ChevronDown, `aria-expanded`), §19.4 (inline error
 // row "That reply got cut off." + "Try again"), §19.6 ("Why am I getting this?" footer and popover: reason by source, "Stop
 // these" / "Keep them", caption for 4 s).
+// 02 §F7.1 "Chat" (CR-0021, X-179): the cut-off row's retry spinner turns into ✓.
 import { useEffect, useState } from 'react';
 import { t } from '../../shared/copy/t';
 import { formatDate } from '../../shared/format';
@@ -20,6 +21,8 @@ import { Popover } from '../ui/Popover';
 import { cx } from '../ui/cx';
 import { workedAccessible, workedLabel } from './bubbleState';
 import { copyText } from './linkActions';
+import { RetryControl } from './BubbleParts';
+import type { RetryPhase } from './retry';
 import styles from './Bubble.module.css';
 
 /** 04 §17.2 and §19.6 captions stay for 4 s. */
@@ -243,14 +246,12 @@ export function WorkedLine({ messageId, jobId, ms }: { messageId: string; jobId:
 
 // ---------------------------------------------------------------- §19.4 inline error
 
-export function CutOffRow({ onRetry }: { onRetry: () => void }) {
+export function CutOffRow({ phase, onRetry }: { phase: RetryPhase; onRetry: () => void }) {
   return (
-    <div className={styles.cutOff}>
+    <div className={styles.cutOff} data-retry={phase}>
       <Icon name="ErrorCircle" size={16} className={styles.bad} />
       <span>{t('bubble.error.cut_off')}</span>
-      <button type="button" className={styles.linkButton} data-testid={TID.bubbleErrorRetry} onClick={onRetry}>
-        {t('bubble.error.retry')}
-      </button>
+      <RetryControl phase={phase} label={t('bubble.error.retry')} tid="bubbleErrorRetry" onRetry={onRetry} />
     </div>
   );
 }
