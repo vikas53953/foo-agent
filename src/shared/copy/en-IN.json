@@ -183,6 +183,8 @@
   "app.panel.title": "Details",
   "app.panel.close": "Close details",
   "app.panel.back": "Back to chat",
+  "app.panel.kept.label": "Kept",
+  "app.panel.kept.empty": "Things you keep from replies show here.",
   "app.panel.label": "Details for {name}",
   "app.panel.doing.title": "Doing now",
   "app.panel.doing.tabs.label": "Jobs",
