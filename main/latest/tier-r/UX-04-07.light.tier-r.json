@@ -527,6 +527,14 @@
         "(24)",
         "₹212",
         "₹15,779",
+        "Kept",
+        "Things",
+        "you",
+        "keep",
+        "from",
+        "replies",
+        "show",
+        "here.",
         "foo:"
       ]
     },
@@ -578,8 +586,8 @@
     "total": 3024
   },
   "r5": {
-    "ratio": 0.0778544921875,
-    "diffPixels": 79723,
+    "ratio": 0.077353515625,
+    "diffPixels": 79210,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-04-07.light.diff.png"

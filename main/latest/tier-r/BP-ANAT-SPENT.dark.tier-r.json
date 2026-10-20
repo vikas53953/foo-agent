@@ -34,10 +34,10 @@
           "x": 0,
           "y": 0,
           "width": 324,
-          "height": 166
+          "height": 167
         },
         "dPos": 0,
-        "dSize": 20,
+        "dSize": 21,
         "verdict": "fail"
       }
     ]
@@ -72,7 +72,7 @@
       ],
       "b": [
         324,
-        166
+        167
       ]
     },
     "heatmap": "BP-ANAT-SPENT.dark.diff.png"

@@ -520,6 +520,14 @@
         "·",
         "Edit",
         "₹15,779",
+        "Kept",
+        "Things",
+        "you",
+        "keep",
+        "from",
+        "replies",
+        "show",
+        "here.",
         "foo:",
         "Booked.",
         "Coastline",
@@ -619,8 +627,8 @@
     "total": 252252
   },
   "r5": {
-    "ratio": 0.3930693359375,
-    "diffPixels": 402503,
+    "ratio": 0.393080078125,
+    "diffPixels": 402514,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-09.dark.diff.png"

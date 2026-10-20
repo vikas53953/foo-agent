@@ -276,6 +276,14 @@
         "Uses",
         "your",
         "plan",
+        "Kept",
+        "Things",
+        "you",
+        "keep",
+        "from",
+        "replies",
+        "show",
+        "here.",
         "Saved",
         "securely."
       ]
@@ -339,8 +347,8 @@
     "total": 2548
   },
   "r5": {
-    "ratio": 0.042427734375,
-    "diffPixels": 43446,
+    "ratio": 0.042966796875,
+    "diffPixels": 43998,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-02-09.light.diff.png"

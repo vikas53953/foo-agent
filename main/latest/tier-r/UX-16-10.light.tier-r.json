@@ -536,6 +536,14 @@
         "·",
         "Edit",
         "₹15,779",
+        "Kept",
+        "Things",
+        "you",
+        "keep",
+        "from",
+        "replies",
+        "show",
+        "here.",
         "foo:",
         "It’s",
         "ready",
@@ -619,8 +627,8 @@
     "total": 44000
   },
   "r5": {
-    "ratio": 0.0766298828125,
-    "diffPixels": 78469,
+    "ratio": 0.076146484375,
+    "diffPixels": 77974,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-10.light.diff.png"

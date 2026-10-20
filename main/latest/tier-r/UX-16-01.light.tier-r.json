@@ -363,6 +363,11 @@
         "AI",
         "I’ll",
         "11:01",
+        "foo",
+        "read:",
+        "Mon",
+        "19",
+        "Oct",
         "Writing",
         "the",
         "email",
@@ -402,6 +407,14 @@
         "I’ll",
         "remember.",
         "₹15,779",
+        "Kept",
+        "Things",
+        "you",
+        "keep",
+        "from",
+        "replies",
+        "show",
+        "here.",
         "Writing",
         "the",
         "email"
@@ -416,7 +429,12 @@
       ],
       "extra": [
         "I’ll",
-        "11:01"
+        "11:01",
+        "foo",
+        "read:",
+        "Mon",
+        "19",
+        "Oct"
       ]
     }
   },
@@ -433,9 +451,9 @@
         },
         "app": {
           "x": 356,
-          "y": 631,
+          "y": 611,
           "width": 553,
-          "height": 60
+          "height": 80
         },
         "dPos": 162.5625,
         "dSize": 155.5625,
@@ -463,8 +481,8 @@
     "total": 22232
   },
   "r5": {
-    "ratio": 0.0865791015625,
-    "diffPixels": 88657,
+    "ratio": 0.09546484375,
+    "diffPixels": 97756,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-01.light.diff.png"

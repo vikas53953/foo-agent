@@ -396,6 +396,9 @@
         "9:41",
         "AM",
         "🛠",
+        "foo",
+        "read:",
+        "₹8,000",
         "Goa",
         "stay",
         "Paused",
@@ -501,6 +504,14 @@
         "15",
         "Oct",
         "₹15,779",
+        "Kept",
+        "Things",
+        "you",
+        "keep",
+        "from",
+        "replies",
+        "show",
+        "here.",
         "Trips:",
         "Not",
         "sent."
@@ -531,7 +542,7 @@
         },
         "app": {
           "x": 371,
-          "y": 640,
+          "y": 617,
           "width": 93.703125,
           "height": 40
         },
@@ -561,8 +572,8 @@
     "total": 2618
   },
   "r5": {
-    "ratio": 0.1081259765625,
-    "diffPixels": 110721,
+    "ratio": 0.1219033203125,
+    "diffPixels": 124829,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-04.dark.diff.png"

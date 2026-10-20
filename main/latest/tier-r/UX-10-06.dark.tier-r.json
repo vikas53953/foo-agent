@@ -337,6 +337,14 @@
         "I’ll",
         "remember.",
         "₹15,779",
+        "Kept",
+        "Things",
+        "you",
+        "keep",
+        "from",
+        "replies",
+        "show",
+        "here.",
         "foo",
         "sent",
         "Question:",
@@ -400,8 +408,8 @@
     "total": 1512
   },
   "r5": {
-    "ratio": 0.08241796875,
-    "diffPixels": 84396,
+    "ratio": 0.083015625,
+    "diffPixels": 85008,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-06.dark.diff.png"

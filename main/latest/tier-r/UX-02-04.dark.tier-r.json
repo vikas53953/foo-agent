@@ -156,6 +156,14 @@
         "Uses",
         "your",
         "plan",
+        "Kept",
+        "Things",
+        "you",
+        "keep",
+        "from",
+        "replies",
+        "show",
+        "here.",
         "ChatGPT",
         "works"
       ]
@@ -208,8 +216,8 @@
     "total": 2464
   },
   "r5": {
-    "ratio": 0.051904296875,
-    "diffPixels": 53150,
+    "ratio": 0.052501953125,
+    "diffPixels": 53762,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-02-04.dark.diff.png"

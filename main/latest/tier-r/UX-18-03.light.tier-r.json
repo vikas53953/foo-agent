@@ -111,7 +111,6 @@
         "window",
         "seats",
         "Done",
-        "1",
         "B",
         "Building",
         "society",
@@ -389,6 +388,14 @@
         "·",
         "Edit",
         "₹15,779",
+        "Kept",
+        "Things",
+        "you",
+        "keep",
+        "from",
+        "replies",
+        "show",
+        "here.",
         "Sent.",
         "Not",
         "sent."
@@ -466,8 +473,8 @@
     "total": 87801
   },
   "r5": {
-    "ratio": 0.0751083984375,
-    "diffPixels": 76911,
+    "ratio": 0.07437109375,
+    "diffPixels": 76156,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-18-03.light.diff.png"

@@ -354,6 +354,9 @@
         "the",
         "beach",
         "9:41",
+        "foo",
+        "read:",
+        "₹8,000",
         "Goa",
         "stay",
         "live",
@@ -463,6 +466,14 @@
         "15",
         "Oct",
         "₹15,779",
+        "Kept",
+        "Things",
+        "you",
+        "keep",
+        "from",
+        "replies",
+        "show",
+        "here.",
         "Trips:",
         "Not",
         "sent."
@@ -516,8 +527,8 @@
     "total": 3248
   },
   "r5": {
-    "ratio": 0.1106552734375,
-    "diffPixels": 113311,
+    "ratio": 0.1210810546875,
+    "diffPixels": 123987,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-06.dark.diff.png"

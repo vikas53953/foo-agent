@@ -385,6 +385,19 @@
         "Village",
         "book",
         "a",
+        "foo",
+        "read:",
+        "4",
+        "people",
+        "·",
+        "South",
+        "Mumbai",
+        "·",
+        "Sat",
+        "17",
+        "Oct,",
+        "8:00",
+        "PM",
         "In",
         "progress",
         "Scheduled",
@@ -420,6 +433,14 @@
         "·",
         "Edit",
         "₹15,779",
+        "Kept",
+        "Things",
+        "you",
+        "keep",
+        "from",
+        "replies",
+        "show",
+        "here.",
         "Sent."
       ]
     },
@@ -427,7 +448,21 @@
       "missing": [
         "✓✓"
       ],
-      "extra": []
+      "extra": [
+        "foo",
+        "read:",
+        "4",
+        "people",
+        "·",
+        "South",
+        "Mumbai",
+        "·",
+        "Sat",
+        "17",
+        "Oct,",
+        "8:00",
+        "PM"
+      ]
     }
   },
   "r2": {
@@ -443,9 +478,9 @@
         },
         "app": {
           "x": 356,
-          "y": 595,
+          "y": 575,
           "width": 553,
-          "height": 72
+          "height": 92
         },
         "dPos": 162.5625,
         "dSize": 155.5625,
@@ -473,8 +508,8 @@
     "total": 23820
   },
   "r5": {
-    "ratio": 0.12771875,
-    "diffPixels": 130784,
+    "ratio": 0.130251953125,
+    "diffPixels": 133378,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-01.dark.diff.png"

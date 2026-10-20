@@ -47,7 +47,15 @@
         "your",
         "chats",
         "·",
-        "Edit"
+        "Edit",
+        "Kept",
+        "Things",
+        "you",
+        "keep",
+        "from",
+        "replies",
+        "show",
+        "here."
       ]
     },
     "hl": {
@@ -98,8 +106,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.0909390318627451,
-    "diffPixels": 23746,
+    "ratio": 0.0909313725490196,
+    "diffPixels": 23744,
     "total": 261120,
     "sizeMismatch": {
       "a": [

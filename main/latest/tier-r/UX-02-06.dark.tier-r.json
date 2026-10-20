@@ -147,7 +147,15 @@
         "remember.",
         "Uses",
         "your",
-        "plan"
+        "plan",
+        "Kept",
+        "Things",
+        "you",
+        "keep",
+        "from",
+        "replies",
+        "show",
+        "here."
       ]
     },
     "hl": {
@@ -237,8 +245,8 @@
     "total": 16400
   },
   "r5": {
-    "ratio": 0.0583232421875,
-    "diffPixels": 59723,
+    "ratio": 0.0589208984375,
+    "diffPixels": 60335,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-02-06.dark.diff.png"

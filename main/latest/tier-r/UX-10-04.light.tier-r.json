@@ -479,6 +479,14 @@
         "15",
         "Oct",
         "₹15,779",
+        "Kept",
+        "Things",
+        "you",
+        "keep",
+        "from",
+        "replies",
+        "show",
+        "here.",
         "Sent.",
         "Not",
         "sent."
@@ -537,8 +545,8 @@
     "total": 21120
   },
   "r5": {
-    "ratio": 0.083666015625,
-    "diffPixels": 85674,
+    "ratio": 0.089294921875,
+    "diffPixels": 91438,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-04.light.diff.png"

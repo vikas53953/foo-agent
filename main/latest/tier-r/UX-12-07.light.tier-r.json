@@ -275,7 +275,6 @@
         "the",
         "table…",
         "Working",
-        "1",
         "T",
         "9:38",
         "AM",
@@ -590,6 +589,14 @@
         "·",
         "Edit",
         "₹15,779",
+        "Kept",
+        "Things",
+        "you",
+        "keep",
+        "from",
+        "replies",
+        "show",
+        "here.",
         "foo:",
         "Tap",
         "Approve",
@@ -733,8 +740,8 @@
     "total": 80520
   },
   "r5": {
-    "ratio": 0.0866650390625,
-    "diffPixels": 88745,
+    "ratio": 0.0860126953125,
+    "diffPixels": 88077,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-07.light.diff.png"
