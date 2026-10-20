@@ -187,9 +187,11 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
       attachmentIds: z.array(z.string().min(1).max(80)).max(6).optional(),
       secretOverride: z.boolean().optional(),
       side: z.boolean().optional(),
+      quote: z.string().min(1).max(2000).optional(),
     })
     .strict()
-    .refine((m) => !m.side || m.replyToId !== undefined, { message: 'a side question replies to a message' }),
+    .refine((m) => !m.side || m.replyToId !== undefined, { message: 'a side question replies to a message' })
+    .refine((m) => m.quote === undefined || m.side === true, { message: 'a quote belongs to a side question' }),
   'composer:checkSecret': z.object({ text: z.string().max(200_000) }).strict(),
   'composer:saveDraft': z
     .object({
