@@ -8,16 +8,26 @@ import { TID } from '../../shared/testids';
 import { Skeleton } from '../ui/Skeleton';
 import styles from './PageLoading.module.css';
 
-const loadMemory = () => import('../screens/Memory');
-const loadSettings = () => import('../screens/settings/SettingsPage');
+type MemoryModule = typeof import('../screens/Memory');
+type SettingsModule = typeof import('../screens/settings/SettingsPage');
+
+// A loaded page module is kept here, so once its script has arrived (the idle preload, or an earlier open) the page renders
+// in the same commit as the view change, with no fallback frame between (the shell's cross-fade starts with it).
+let memoryModule: MemoryModule | null = null;
+let settingsModule: SettingsModule | null = null;
+const loadMemory = () => import('../screens/Memory').then((m) => (memoryModule = m));
+const loadSettings = () => import('../screens/settings/SettingsPage').then((m) => (settingsModule = m));
 
 const LazyMemory = lazy(() => loadMemory().then((m) => ({ default: m.MemoryPage })));
 const LazySettings = lazy(() => loadSettings().then((m) => ({ default: m.SettingsPage })));
 
-type MemoryProps = ComponentProps<typeof import('../screens/Memory').MemoryPage>;
-type SettingsProps = ComponentProps<typeof import('../screens/settings/SettingsPage').SettingsPage>;
+type MemoryProps = ComponentProps<MemoryModule['MemoryPage']>;
+type SettingsProps = ComponentProps<SettingsModule['SettingsPage']>;
 
 export function MemoryPage(props: MemoryProps) {
+  // Chosen once per mount: a page that mounted behind Suspense stays there when its script arrives (no remount).
+  const [loaded] = useState(() => memoryModule);
+  if (loaded) return <loaded.MemoryPage {...props} />;
   return (
     <Suspense fallback={<PageLoading />}>
       <LazyMemory {...props} />
@@ -26,6 +36,8 @@ export function MemoryPage(props: MemoryProps) {
 }
 
 export function SettingsPage(props: SettingsProps) {
+  const [loaded] = useState(() => settingsModule);
+  if (loaded) return <loaded.SettingsPage {...props} />;
   return (
     <Suspense fallback={<PageLoading />}>
       <LazySettings {...props} />
