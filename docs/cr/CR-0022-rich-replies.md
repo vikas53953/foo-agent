@@ -163,6 +163,11 @@ R1 starts after P1 is on main. T1 re-reads CR-0021's merged text before editing 
    plus a PNG snapshot. AI pages are stored as a `.foopage` blob plus a PNG; "Open" always reopens a kept page in the
    sealed box, never with `shell.openPath`. "Show in folder" is allowed. No plain `.html` file is ever written.
 10. **Charts library:** none. The pieces are SVG drawn by foo (02 §F19 rules), so no chart or map dependency is added.
+11. **Streaming inside a fence** (implementation note on 08-4 §25.5 item 2, found in T2): inside a `a2ui or `page
+    fence a bare line break ends a "sentence" for the release gate, so each A2UI line is released on its own (AT-353).
+    Prose outside fences keeps the §25.5 rule unchanged.
+12. **Kit and page fences draw only in foo's own text** (04 §13.5): a helper's, a system line's or the user's fence stays
+    a code block, and `kit:action` accepts only a surface hosted by a foo message.
 
 ## (g) Review
 

@@ -162,6 +162,8 @@ describe('R1 contracts: bridge, engine messages, channels, settings, store', () 
     const send = { chatId: 'c_1', clientId: '0b5d1f9e-4a63-4c1e-9d6e-1f2a3b4c5d6e', text: 'what is this?' };
     expect(SCHEMAS['message:send'].safeParse({ ...send, side: true, replyToId: 'm_1' }).success).toBe(true);
     expect(SCHEMAS['message:send'].safeParse({ ...send, side: true }).success).toBe(false);
+    expect(SCHEMAS['message:send'].safeParse({ ...send, side: true, replyToId: 'm_1', quote: 'Goa fares' }).success).toBe(true);
+    expect(SCHEMAS['message:send'].safeParse({ ...send, replyToId: 'm_1', quote: 'Goa fares' }).success).toBe(false);
     expect(SCHEMAS['page:open'].safeParse({ chatId: 'c_1', messageId: 'm_1', index: 0 }).success).toBe(true);
     expect(SCHEMAS['page:open'].safeParse({ chatId: 'c_1', messageId: 'm_1', keptId: 'ki_1' }).success).toBe(false);
     expect(SCHEMAS['page:open'].safeParse({ chatId: 'c_1' }).success).toBe(false);

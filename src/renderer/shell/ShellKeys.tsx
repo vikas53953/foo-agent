@@ -2,6 +2,9 @@
 // (Ctrl+Shift+D toggles the right shell; Ctrl+Shift+L opens the Live window of this chat's live browser job), §3.9.2 (F6),
 // §3.9.4 (Esc ladder); 05-1 §0 / 09 §9.17.1 [X-09, X-21] (Ctrl+J focuses the oldest card in this chat that needs you, else
 // Narrator "Nothing needs you here."). Renders nothing; App mounts it once at the root (the list keys are shell/shortcuts.ts).
+// P1 T9 (CR-0021 picks 20, 21): the optional Sounds (02-3 §F22 as amended) and the Mica sheet (02-3 §F28.4 as amended)
+// hang off the same root mount.
+import '../styles/mica.css';
 import { useEffect } from 'react';
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
@@ -10,6 +13,7 @@ import { useEscLadder } from '../a11y/useEscLadder';
 import { useF6Ladder } from '../a11y/useF6Ladder';
 import { invoke } from '../ipc/client';
 import { requestRevealCard } from '../messages/reveal';
+import { useSounds } from '../sound/useSounds';
 import { setFindOpen, useStore } from '../store/index';
 import { watchTarget } from './ChatHeader';
 import { oldestNeedsYouCard } from './jumpToCard';
@@ -18,6 +22,7 @@ import { rightShellOpenNow, setRightShell } from './useRightShell';
 export function ShellKeys(): null {
   useEscLadder();
   useF6Ladder();
+  useSounds();
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.defaultPrevented || !e.ctrlKey || e.altKey || e.metaKey) return;

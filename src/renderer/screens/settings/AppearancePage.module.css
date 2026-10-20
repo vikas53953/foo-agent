@@ -1,0 +1,66 @@
+/* Spec: 06-2 §6.2 Appearance (rows 56, second line `--t-small` `--fg-2`, accent swatch 20px at the end of the second line,
+   the preview tile: a foo bubble and a user bubble in 04 styles), 02 §F7.1 as amended by X-179 (theme switch cross-fades
+   with no white flash; an accent colour change sweeps across the app; Basic fades; Off: AppearancePage skips the
+   transition). The View Transition pseudo-elements live on <html>, so they are global. */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+}
+.row[aria-disabled='true'] > span:first-child {
+  color: var(--fg-disabled);
+}
+.fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+.fieldset:disabled {
+  opacity: 0.5;
+}
+.swatch {
+  display: inline-block;
+  width: var(--icon-md);
+  height: var(--icon-md);
+  margin-inline-start: var(--s1);
+  vertical-align: middle;
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  background: var(--accent);
+}
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  padding: var(--s3);
+  background: var(--bg-app);
+}
+.previewThem {
+  align-self: flex-start;
+}
+.previewMe {
+  align-self: flex-end;
+}
+
+/* Theme (and accent at Basic): a cross-fade of the whole window, the old picture over the new one. */
+:global(html[data-vt='theme'])::view-transition-old(root),
+:global(html[data-vt='theme'])::view-transition-new(root) {
+  animation-duration: var(--m-slow);
+  animation-timing-function: var(--ease-standard);
+}
+/* Accent at Full: the new colours sweep in from the start edge. */
+:global(html[data-vt='accent'])::view-transition-old(root) {
+  animation: none;
+}
+:global(html[data-vt='accent'])::view-transition-new(root) {
+  animation: accentSweep var(--m-spring) var(--ease-standard) both;
+}
+@keyframes accentSweep {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
