@@ -25,12 +25,14 @@ export interface MicaInputs {
 }
 
 const WIN11_BUILD = 22000;
+/** Electron draws `setBackgroundMaterial` only on Windows 11 22H2 and up; on 21H2 the window would lose its fill. */
+const MICA_MIN_BUILD = 22621;
 
 /** AT-319: Mica only on Windows 11 + transparency on + setting on, not high contrast, not FOO_TEST; solid otherwise. */
 export function micaDecision(i: MicaInputs): MicaState {
   const win10 = i.platform === 'win32' && i.osBuild < WIN11_BUILD;
   const row = win10 ? 'hidden' : !i.transparency || i.highContrast ? 'disabled' : 'enabled';
-  const on = i.platform === 'win32' && !win10 && i.transparency && !i.highContrast && i.setting && !i.test;
+  const on = i.platform === 'win32' && i.osBuild >= MICA_MIN_BUILD && i.transparency && !i.highContrast && i.setting && !i.test;
   return { row, on };
 }
 

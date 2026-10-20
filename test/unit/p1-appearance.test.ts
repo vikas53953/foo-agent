@@ -65,6 +65,7 @@ describe('micaDecision', () => {
     ['transparency off', { transparency: false }, { row: 'disabled', on: false }],
     ['high contrast', { highContrast: true }, { row: 'disabled', on: false }],
     ['Windows 10', { osBuild: 19045 }, { row: 'hidden', on: false }],
+    ['Windows 11 21H2 (Electron draws Mica from 22H2)', { osBuild: 22000 }, { row: 'enabled', on: false }],
     ['a FOO_TEST run', { test: true }, { row: 'enabled', on: false }],
     ['not Windows', { platform: 'linux', osBuild: 0 }, { row: 'enabled', on: false }],
   ])('solid with %s', (_name, change, want) => {
