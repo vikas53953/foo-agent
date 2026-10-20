@@ -16,7 +16,9 @@ export function bannerReports(banners: () => SigninBanners | null): (m: SigninBa
     if (!b) return;
     switch (m.op) {
       case 'open':
-        if (m.bounds !== undefined) last.set(m.jobId, m.bounds);
+        // A failed first read (null) is not "Edge is gone": the banner waits for the next bounds.
+        if (m.bounds) last.set(m.jobId, m.bounds);
+        else last.delete(m.jobId);
         b.open({
           jobId: m.jobId,
           mode: m.mode ?? 'sign_in_here',

@@ -126,6 +126,8 @@ interface Pause {
   url: string;
   /** A password / code field was on the page when the sign-in started. */
   field: boolean;
+  /** Polls in a row that saw the page moved on with no sign-in field (a page mid-navigation reads empty once). */
+  gone: number;
   /** Edge is in front with the banner (card `live`). */
   front: boolean;
   /** The user tapped Take over on the card: the mask is off and the banner is the control bar. */
@@ -415,14 +417,17 @@ export class SigninLanes implements CaptureGuard {
       reason: p.reason,
       mode: p.mode,
       url: win?.url() ?? '',
-      field: win ? await hasSigninField(win.page()) : false,
+      field: false,
+      gone: 0,
       front: false,
       taken: false,
       requestId: null,
       timers: [],
     };
+    // The pause holds from the moment the card is posted: nothing is captured or clicked while the page is read.
     this.end(job.id);
     this.pauses.set(job.id, pause);
+    if (win) pause.field = await hasSigninField(win.page());
     await this.windows.noCapture(win?.page(), true);
     this.d.log('signin.requested', p.reason);
     pause.timers.push(
@@ -468,7 +473,8 @@ export class SigninLanes implements CaptureGuard {
       (url, field) => {
         // AT-057: on the plain sign-in lanes the page leaving the form (URL and field both changed) is the success.
         if (pause.taken || pause.mode !== 'sign_in_here' || this.pauses.get(pause.jobId) !== pause) return;
-        if (url !== pause.url && pause.field && !field) void this.success(pause, 'auto');
+        pause.gone = url !== pause.url && pause.field && !field ? pause.gone + 1 : 0;
+        if (pause.gone === 2) void this.success(pause, 'auto');
       },
       () => void this.closed(pause),
     );
@@ -500,7 +506,7 @@ export class SigninLanes implements CaptureGuard {
   /** `signin.done`: "I'm done" on the card or the banner (Alt+D). With Edge closed it opens it again at the sign-in page. */
   async done(jobId: string): Promise<void> {
     const pause = this.pauses.get(jobId);
-    if (!pause) return;
+    if (!pause) return this.orphan(jobId, { end: 'signed_in' });
     if (!this.d.window(jobId) || (!pause.front && WAITS_FOR_TAP.has(pause.reason))) {
       await this.bringUp(pause, false);
       return;
@@ -511,10 +517,20 @@ export class SigninLanes implements CaptureGuard {
   /** `signin.skip`: the card reads "Skipped. I'll try another way."; the job carries on without the sign-in. */
   async skip(jobId: string): Promise<void> {
     const pause = this.pauses.get(jobId);
-    if (!pause) return;
+    if (!pause) return this.orphan(jobId, { skip: true });
     this.d.log('signin.skipped', pause.reason);
     await this.release(pause, false);
     await this.r.onCardAnswered({ cardId: pause.cardId, answer: { skip: true }, resolvedBy: 'tap' });
+  }
+
+  /** After an engine restart the pauses are gone but the job still waits on its Sign-in card: the tap answers that card. */
+  private async orphan(jobId: string, answer: { end: 'signed_in' } | { skip: true }): Promise<void> {
+    const job = await this.r.core.job(jobId);
+    if (job?.state !== 'needs_you' || !job.needsYouCardId) return;
+    const card = await this.r.core.query<{ type: string }>('cardById', job.needsYouCardId);
+    if (card?.type !== 'signin') return;
+    this.d.log('signin.resumed_after_restart');
+    await this.r.onCardAnswered({ cardId: job.needsYouCardId, answer, resolvedBy: 'tap' });
   }
 
   /** Take over on the Sign-in card (`job.takeOver` while the card asks): the banner becomes the control bar. */
@@ -548,8 +564,14 @@ export class SigninLanes implements CaptureGuard {
   async codeSubmitted(requestId: string, codeRef: string): Promise<boolean> {
     const pause = [...this.pauses.values()].find((p) => p.requestId === requestId);
     const code = this.d.secret(codeRef);
-    this.d.forget(codeRef);
-    if (!pause || !code) return false;
+    try {
+      return pause && code ? await this.fillCode(pause, code) : false;
+    } finally {
+      this.d.forget(codeRef);
+    }
+  }
+
+  private async fillCode(pause: Pause, code: string): Promise<boolean> {
     const page = this.d.window(pause.jobId)?.page();
     const field = page?.locator(OTP_FIELD).first();
     if (!page || !field || (await field.count()) === 0) return false;

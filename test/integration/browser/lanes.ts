@@ -48,11 +48,15 @@ export interface LaneHarness {
   /** The saved login `vault.use('fill_login')` returns (null → VAULT_MISSING). */
   login: { u: string; p: string } | null;
   vaultCalls: Record<string, unknown>[];
+  /** Cards main would return for `cardById` (id → type), for a lanes object that lost its pauses (restart). */
+  cards: Record<string, string>;
   job: JobRow;
   run(tool: string, args?: Record<string, unknown>): Promise<ToolOutcome>;
   page(): Promise<Page>;
   /** Posts the card the way the runner does (NEEDS_YOU, then the hook). */
   post(card: NeedsUserCard): Promise<string>;
+  /** Waits for the lanes to finish taking up the last card (the hook runs after NEEDS_YOU). */
+  begun(): Promise<void>;
   /** Advances the fake clock in 500 ms steps, letting each poll tick reach the browser. */
   pump(ms: number): Promise<void>;
   /** Pumps until `cond` holds (at most `ms` of fake time); false when it never did. */
@@ -143,6 +147,7 @@ export async function laneHarness(): Promise<LaneHarness> {
       begun = lanes.begin(job, cardId, card);
       return cardId;
     },
+    query: async (q: string, id: string) => (q === 'cardById' && h.cards[id] ? { id, type: h.cards[id] } : null),
     halt: (id: string) => void halted.push(id),
     launch: (id: string) => void launched.push(id),
   } as unknown as RunnerCore;
@@ -197,6 +202,7 @@ export async function laneHarness(): Promise<LaneHarness> {
     launched,
     login: null,
     vaultCalls,
+    cards: {},
     job,
     async run(tool: string, args: Record<string, unknown> = {}) {
       const def = registry[tool];
@@ -212,6 +218,9 @@ export async function laneHarness(): Promise<LaneHarness> {
       const cardId = (await core.needsYou(job, card)) as string;
       await begun;
       return cardId;
+    },
+    async begun() {
+      await begun;
     },
     async pump(ms: number) {
       for (let t = 0; t < ms; t += 500) {

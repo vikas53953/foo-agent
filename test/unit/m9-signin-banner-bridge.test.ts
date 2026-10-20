@@ -44,6 +44,15 @@ describe('09 §9.27.3 signin.banner reports', () => {
     expect(await f.read()).toBeNull();
   });
 
+  it('a failed first read (open with null bounds) waits for the next bounds instead of closing the banner', async () => {
+    const f = fakeBanners();
+    const report = bannerReports(() => f.banners);
+    report({ jobId: 'j1', op: 'open', mode: 'sign_in_here', url: 'https://example.com/', bounds: null });
+    expect((await f.read())?.minimised).toBe(true);
+    report({ jobId: 'j1', op: 'bounds', bounds: EDGE });
+    expect(await f.read()).toEqual(EDGE);
+  });
+
   it('signed_in and close reach the banner; with no banner host (no window yet) a report does nothing', () => {
     const f = fakeBanners();
     const report = bannerReports(() => f.banners);

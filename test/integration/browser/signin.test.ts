@@ -227,7 +227,7 @@ describe('07-2 §7.6 sign-in timers', { timeout: 90_000 }, () => {
     const before = h.counts.logins ?? 0;
     const cardId = await needSignIn('password');
     h.clock.advance(CANCEL_MS);
-    await new Promise((r) => setTimeout(r, 50));
+    for (let i = 0; i < 50 && h.stops.length === 0; i++) await new Promise((r) => setTimeout(r, 20));
     expect(cardStates(h.ops, cardId).at(-1)).toBe('timed_out');
     expect(h.stops).toEqual([{ jobId: 'job_1', reason: 'signin_timeout', report: false }]);
     const line = h.ops.find((o) => o.op === 'insert' && o.table === 'messages' && o.row.kind === 'text');
@@ -235,5 +235,30 @@ describe('07-2 §7.6 sign-in timers', { timeout: 90_000 }, () => {
     expect(h.lanes.paused(h.job.id)).toBe(false);
     // Nothing was booked: no click ever reached the site's form while it waited.
     expect(h.counts.logins ?? 0).toBe(before);
+  });
+});
+
+describe('08-2 §8.4 after an engine restart', { timeout: 60_000 }, () => {
+  it("I'm done and Skip still answer the job's Sign-in card when the pause was lost", async () => {
+    const job = h.job as unknown as { state: string; needsYouCardId: string | null };
+    Object.assign(job, { state: 'needs_you', needsYouCardId: 'k_restart' });
+    h.cards.k_restart = 'signin';
+    try {
+      expect(h.lanes.paused(h.job.id)).toBe(false);
+      await h.lanes.done(h.job.id);
+      await h.lanes.skip(h.job.id);
+      expect(h.answers).toEqual([
+        { cardId: 'k_restart', answer: { end: 'signed_in' }, resolvedBy: 'tap' },
+        { cardId: 'k_restart', answer: { skip: true }, resolvedBy: 'tap' },
+      ]);
+      // Any other card the job waits on is not the Sign-in card's to answer.
+      h.answers.length = 0;
+      h.cards.k_restart = 'approval';
+      await h.lanes.done(h.job.id);
+      expect(h.answers).toEqual([]);
+    } finally {
+      Object.assign(job, { state: 'working', needsYouCardId: null });
+      delete h.cards.k_restart;
+    }
   });
 });

@@ -64,7 +64,7 @@ describe('05-3 §5.10.2 CAPTCHA lane: Take over on the Sign-in card', { timeout:
     expect(opened).toEqual({ kind: 'error', errorKind: 'SITE_CAPTCHA' });
     expect(await h.lanes.challenge(h.job)).toBe(true);
     expect(h.needsYou[0]).toMatchObject({ type: 'signin', payload: { reason: 'captcha', mode: 'take_over', site: 'localhost' } });
-    await new Promise((r) => setTimeout(r, 50));
+    expect(h.lanes.paused(h.job.id)).toBe(true);
     const cardId = (h.lanes.pause(h.job.id) ?? { cardId: '' }).cardId;
     expect(await h.run('browser.click', { ref: 'e1' })).toMatchObject({ kind: 'error', result: { reason: 'sign_in_in_front' } });
     expect(await h.takeOver.on(h.job.id)).toBe(true);
@@ -84,7 +84,7 @@ describe('05-3 §5.10.2 CAPTCHA lane: Take over on the Sign-in card', { timeout:
   it('closing Edge during the CAPTCHA take-over is Stop', async () => {
     await h.run('browser.open', { url: h.captcha() });
     await h.lanes.challenge(h.job);
-    await new Promise((r) => setTimeout(r, 50));
+    await h.begun();
     await h.takeOver.on(h.job.id);
     await h.pump(500);
     await (await h.page()).close();
