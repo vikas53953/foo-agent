@@ -144,20 +144,20 @@ site}, this is {page's site}. Which one?" before anything is pressed. The test f
 
 **Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`, CR-0013).** The app follows the cited spec line each time:
 
-| Ids | Checks | Why the app is right |
-| --- | --- | --- |
-| UX-12-01…04, -07, -09, -12 | r1, r2, r4 (r3 on -01 dark, -03, -09) | fixtures are the sandbox TableJoy / Coastline Kitchen / Sun 18 Oct / ₹1,000 / TJ8821 (08-3 §22.5, public repo), not the drawn Pizza by the Bay / ₹500 / #PB-4471 |
-| UX-12-02, -04 | r1, r4 | checklist rows are 08-4 §26.1 phrase words; "Checking the 8:00 PM table…" is the Tiles card's `cards.tiles.checking`, not a row |
-| UX-12-03 | r1, r3, r4 | an AI ask is a ChoiceCardSpec (08-4 §25: label + detail, no photo), so a Choice card, best fit on the accent-soft fill (05-2 §5.4) |
-| UX-12-07 | r1, r4 | after the tap: 05-2 §5.5.4's "Approved by you at {time}. Doing it now…"; the drawn "checked again" strip is not in 05-2 |
-| UX-12-09 | r1, r3, r4 | a confirmation number opens 05-3 §5.15.2's popover; the full-window viewer is 06-3 §13 (M13) |
-| UX-12-12 | r1, r4 | the done answer carries the Proof chip (05-3 §5.15) |
-| UX-12-01 dark | r3 | the dark "me" bubble uses the dark-theme accent token, the drawing a light fill |
-| UX-15-03, -04 | r1…r4 | the drawing is a Windows desktop with foo behind; the capture is the live window alone (09 §9.27.1); the control bar copy is X-121's |
-| UX-15-06 | r1, r2, r4 | the stop report is 08-2 §5.7's "Stopped. Nothing was booked, paid or sent." |
-| UX-15-07 | r1, r2, r4 | 08-2 §5.7 puts `activity.summary` in as written (06-3 §9.4 "Sent an email to {name}"), so the report reads "I'd already Sent an email…"; **spec gap** for the spec keeper (casing when the summary is quoted mid-sentence) |
-| BP-SCR-13 | r1, r2, r3 | the drawing is a gallery mini; the app is the full live window with 06-3 §11.2's "{job} · step n of m" bar |
-| BP-SCR-14 | r1, r2, r3 | the drawing is the withdrawn 720×640 "Chromium view" (X-66); the app is 05-3 §5.10.3's docked banner |
+| Ids                        | Checks                                | Why the app is right                                                                                                                                                                                                       |
+| -------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| UX-12-01…04, -07, -09, -12 | r1, r2, r4 (r3 on -01 dark, -03, -09) | fixtures are the sandbox TableJoy / Coastline Kitchen / Sun 18 Oct / ₹1,000 / TJ8821 (08-3 §22.5, public repo), not the drawn Pizza by the Bay / ₹500 / #PB-4471                                                           |
+| UX-12-02, -04              | r1, r4                                | checklist rows are 08-4 §26.1 phrase words; "Checking the 8:00 PM table…" is the Tiles card's `cards.tiles.checking`, not a row                                                                                            |
+| UX-12-03                   | r1, r3, r4                            | an AI ask is a ChoiceCardSpec (08-4 §25: label + detail, no photo), so a Choice card, best fit on the accent-soft fill (05-2 §5.4)                                                                                         |
+| UX-12-07                   | r1, r4                                | after the tap: 05-2 §5.5.4's "Approved by you at {time}. Doing it now…"; the drawn "checked again" strip is not in 05-2                                                                                                    |
+| UX-12-09                   | r1, r3, r4                            | a confirmation number opens 05-3 §5.15.2's popover; the full-window viewer is 06-3 §13 (M13)                                                                                                                               |
+| UX-12-12                   | r1, r4                                | the done answer carries the Proof chip (05-3 §5.15)                                                                                                                                                                        |
+| UX-12-01 dark              | r3                                    | the dark "me" bubble uses the dark-theme accent token, the drawing a light fill                                                                                                                                            |
+| UX-15-03, -04              | r1…r4                                 | the drawing is a Windows desktop with foo behind; the capture is the live window alone (09 §9.27.1); the control bar copy is X-121's                                                                                       |
+| UX-15-06                   | r1, r2, r4                            | the stop report is 08-2 §5.7's "Stopped. Nothing was booked, paid or sent."                                                                                                                                                |
+| UX-15-07                   | r1, r2, r4                            | 08-2 §5.7 puts `activity.summary` in as written (06-3 §9.4 "Sent an email to {name}"), so the report reads "I'd already Sent an email…"; **spec gap** for the spec keeper (casing when the summary is quoted mid-sentence) |
+| BP-SCR-13                  | r1, r2, r3                            | the drawing is a gallery mini; the app is the full live window with 06-3 §11.2's "{job} · step n of m" bar                                                                                                                 |
+| BP-SCR-14                  | r1, r2, r3                            | the drawing is the withdrawn 720×640 "Chromium view" (X-66); the app is 05-3 §5.10.3's docked banner                                                                                                                       |
 
 UX-12-05 stays under CR-0009's dispute and UX-12-06 under its review row.
 
