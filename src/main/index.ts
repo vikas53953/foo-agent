@@ -196,6 +196,7 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
       chatRow: (id) => chatRowById(store, listContext(settings.get()), id),
       now: () => deps.clock.now(),
       dataDir: paths.data,
+      drafts: () => draftService(ctx), // M8 T7
     });
     const waDue = whatsapp.startup();
     sup.onBridgeGaveUp = () => whatsapp?.report({ event: 'status', status: 'error', errorKind: null });

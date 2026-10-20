@@ -149,6 +149,10 @@ export function applyWaReport(db: Db, settings: SettingsLike, r: WaReport, now: 
       );
       return fx;
     }
+    // M8 T7: the Draft service's (WhatsAppMain.report hands these over); nothing here.
+    case 'delivered':
+    case 'open':
+      return fx;
     case 'groups': {
       const hidden = new Set(settings.get().connections.whatsapp.hiddenJids);
       const created: string[] = [];

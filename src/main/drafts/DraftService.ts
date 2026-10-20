@@ -17,6 +17,14 @@
 // waits "Waiting for your OK below ›"; that card's tap sends with no 5 s undo, 08-0 §G.7), "Offline at Send" (NET_OFFLINE;
 // [ Yes, send when online ] queues it, sent with the undo window once back), Art. 9 (a switch of channel inside an approved
 // job asks again).
+// M8 T7: WhatsApp and X (05-2 §5.7 variants). WhatsApp: the draft's approvals row as for email; a group or someone new is a
+// hard-limit draft whose Send opens the full Approval card "Send this message to {name}?" (§5.5.2, 08-3 §16.4.2); the send
+// goes through the engine's queue (≥ 3 s gap) to the bridge, "✓ Sent" on the server's ack, "Proof: Delivered" on the
+// delivery ack (`wa_delivered`); ≤ 30 a day (the Send button off with the daily-limit line until local midnight); "That
+// number isn't on WhatsApp." (no Send) / "I can't check that number right now." (Send off until the bridge is open again);
+// Activity `sent_whatsapp`. X (08-3 §16.3, X-34): no account and no approvals row (posting is a hand-back, foo never posts):
+// the weighted length, Change / Discard on the card alone, and "Open in X to post" opens x.com's compose page prefilled
+// (`opened_in_app` "Opened in X · not posted by {agentName}", foo's line "It's ready in X…", Activity `opened_x_draft`).
 import { t } from '../../shared/copy/t';
 import { newId } from '../../shared/ids';
 import { newNonce } from '../../shared/canon';
@@ -33,6 +41,7 @@ import type { Db } from '../store/db';
 import { errCode } from '../store/rebuild';
 import type { ApprovalGate, ApprovalRow, Created } from '../approvals/ApprovalGate';
 import type { DraftMessage, GmailDrafts } from './gmailDrafts';
+import { localMidnight, WA_DAILY_LIMIT, waSentToday, xIntentUrl, xRemaining } from './channels'; // M8 T7
 
 /** 05-2 §5.7.2 / 08-0 §G.7: the local undo window after Send. */
 export const UNDO_MS = 5_000;
@@ -88,6 +97,18 @@ export interface DraftDeps {
   email?(): string | null;
   /** False while foo is offline (05-2 §5.7.2 Offline at Send). */
   online?(): boolean;
+  // M8 T7
+  /** The engine's WhatsApp send queue and number check (main asks over the engine port), or null with no engine. */
+  whatsapp?(): WaSendPort | null;
+  /** settings.locale.timeZone: the daily WhatsApp limit counts from local midnight. */
+  timeZone?(): string;
+}
+
+// M8 T7
+/** What main asks the engine for WhatsApp (08-2 §8.2 `whatsapp.send`, engine-only; 08-3 §16.4.2 the number check). */
+export interface WaSendPort {
+  send(req: { jid: string; text: string; draftCardId: string }): Promise<Result<{ waMessageId: string }>>;
+  check(jid: string): Promise<boolean | null>;
 }
 
 export interface DraftInput {
@@ -106,6 +127,13 @@ export interface DraftInput {
   /** A reply stays in its Gmail thread (08-3 §16.1.4 "the same thread headers"). */
   threadId?: string;
   inReplyTo?: string;
+  // M8 T7
+  /** Email unless said: a WhatsApp message (`to.address` is what the card shows: the masked number or the group) or an X post. */
+  channel?: DraftPayload['channel'];
+  waJid?: string;
+  isGroup?: boolean;
+  /** The engine's number check said no, or could not ask (08-3 §16.4.2). */
+  waCheck?: DraftPayload['waCheck'];
 }
 
 interface Tap {
@@ -143,6 +171,9 @@ export class DraftService {
 
   /** A Draft (08-0 §G.7): the Gmail draft first, then the card and its PENDING approvals row. */
   async create(input: DraftInput): Promise<Result<Created>> {
+    // M8 T7
+    if (input.channel === 'x') return this.createX(input);
+    if (input.channel === 'whatsapp') return this.createWhatsApp(input);
     const granted = this.d.granted?.() ?? { draft: true, send: true };
     const isNew = input.isNew ?? false;
     const hardLimit = isNew || (input.switched ?? this.switched(input.jobId));
@@ -174,6 +205,172 @@ export class DraftService {
     // No card, no approval: the Gmail draft would be left behind with nothing pointing at it.
     if (!made.ok) await gmail.delete(g.value.gmailDraftId);
     return made;
+  }
+
+  // M8 T7
+  /** A WhatsApp Draft: its PENDING approvals row as for email; a group or someone new makes it a hard-limit draft. */
+  private createWhatsApp(input: DraftInput): Result<Created> {
+    const isNew = input.isNew ?? false;
+    const isGroup = input.isGroup ?? false;
+    if (!input.waJid) return fail('VALIDATION');
+    const limit = this.waLimitUntil();
+    return this.d.gate.createDraft({
+      jobId: input.jobId,
+      fields: {
+        verb: 'send',
+        channel: 'whatsapp',
+        recipients: [{ name: input.to.name, address: input.to.address, isNew, isGroup }],
+        contentSummary: summaryOf(undefined, input.body),
+        irreversible: true,
+      },
+      ...(isNew || isGroup ? { hardLimit: true } : {}),
+      payload: {
+        channel: 'whatsapp',
+        to: { ...input.to, isNew },
+        body: input.body,
+        edited: false,
+        sendAllowed: true,
+        waJid: input.waJid,
+        isGroup,
+        ...(input.waCheck ? { waCheck: input.waCheck } : {}),
+        ...(limit !== null ? { waLimitUntil: limit } : {}),
+      },
+    });
+  }
+
+  /** 08-0 §H.2: at 30 `sent_whatsapp` rows since local midnight, the next local midnight; else null. */
+  private waLimitUntil(): number | null {
+    const now = this.d.now();
+    const tz = this.d.timeZone?.() ?? 'Asia/Kolkata';
+    return waSentToday(this.d.db, now, tz) >= WA_DAILY_LIMIT ? localMidnight(now, tz, 1) : null;
+  }
+
+  /** An X Draft (08-3 §16.3): a card only. Nothing is ever sent from it, so it has no approvals row and no expiry. */
+  private createX(input: DraftInput): Result<Created> {
+    const job = this.d.db.prepare('SELECT chat_id FROM jobs WHERE id = ?').get(input.jobId) as { chat_id: string } | undefined;
+    if (!job) return fail('JOB_GONE');
+    const now = this.d.now();
+    const cardId = newId('k', now);
+    const messageId = newId('m', now);
+    const nonce = newNonce();
+    const payload: DraftPayload = {
+      approvalId: '',
+      channel: 'x',
+      body: input.body,
+      edited: false,
+      sendAllowed: true,
+      xRemaining: xRemaining(input.body),
+    };
+    const w = applyDbOps(
+      this.d.db,
+      [
+        {
+          op: 'insert',
+          table: 'messages',
+          row: {
+            id: messageId,
+            chat_id: job.chat_id,
+            author_kind: 'foo',
+            kind: 'card',
+            card_id: cardId,
+            status: 'complete',
+            job_id: input.jobId,
+            created_at: now,
+          },
+        },
+        {
+          op: 'insert',
+          table: 'cards',
+          row: { id: cardId, chat_id: job.chat_id, message_id: messageId, job_id: input.jobId, type: 'draft', state: 'pending', payload, nonce, created_at: now },
+        },
+      ],
+      this.opts(now),
+    );
+    if (!w.result.ok) return w.result;
+    this.d.changed(w.effects);
+    return ok({ approvalId: '', cardId, nonce });
+  }
+
+  private opts(now: number) {
+    return { now, ...(this.d.dataDir ? { dataDir: this.d.dataDir } : {}) };
+  }
+
+  /** Writes a Draft card's payload (and its state when given) outside any approval move. */
+  private setCard(cardId: string, set: { payload: DraftPayload; state?: string; resolved_by?: string; resolved_at?: number }): boolean {
+    const w = applyDbOps(this.d.db, [{ op: 'update', table: 'cards', id: cardId, set }], this.opts(this.d.now()));
+    if (w.result.ok) this.d.changed(w.effects);
+    return w.result.ok;
+  }
+
+  /** The X Draft the renderer holds, still `pending` (X has no approval, so the nonce and the state decide). */
+  private xPending(req: { cardId: string; nonce: string }): Result<{ card: CardRow; p: DraftPayload }> | null {
+    const card = this.card(req.cardId);
+    const p = card ? draftPayloadOf(card) : null;
+    if (!card || p?.channel !== 'x') return null;
+    if (card.nonce !== req.nonce || card.state !== 'pending') return fail('CARD_STALE');
+    return ok({ card, p });
+  }
+
+  /**
+   * WhatsApp: delivery ack ≥ 2 for a sent Draft (08-3 §16.4 proof `wa_delivered`): the card shows "Proof: Delivered" and the
+   * approvals row (and the full Approval card's, when one was opened) keeps the proof. Returns false when no Draft sent it.
+   */
+  waDelivered(waMessageId: string): boolean {
+    const r = this.d.db
+      .prepare(`SELECT * FROM cards WHERE type = 'draft' AND json_extract(payload, '$.sentMessageId') = ? LIMIT 1`)
+      .get(waMessageId) as DbRow | undefined;
+    const card = r ? cardRow(r) : null;
+    const p = card ? draftPayloadOf(card) : null;
+    if (!card || !p || p.channel !== 'whatsapp' || p.delivered) return false;
+    const proof = JSON.stringify({ kind: 'wa_delivered', waMessageId });
+    const full = p.approvalCardId ? this.d.gate.byCard(p.approvalCardId) : null;
+    this.d.db.transaction(() => {
+      this.d.db.prepare('UPDATE approvals SET proof = ? WHERE id = ?').run(proof, p.approvalId);
+      if (full) this.d.db.prepare('UPDATE approvals SET proof = ? WHERE id = ?').run(proof, full.id);
+      this.setCard(card.id, { payload: { ...p, delivered: true } });
+    })();
+    return true;
+  }
+
+  /** The bridge is open again: the WhatsApp Drafts whose number could not be checked are checked now (08-3 §16.4.2). */
+  async waOpen(): Promise<void> {
+    const port = this.d.whatsapp?.() ?? null;
+    if (!port) return;
+    const rows = this.d.db
+      .prepare(
+        `SELECT * FROM cards WHERE type = 'draft' AND state = 'pending' AND deleted_at IS NULL
+           AND json_extract(payload, '$.waCheck') = 'cant_check'`,
+      )
+      .all() as DbRow[];
+    for (const r of rows) {
+      const p0 = draftPayloadOf(cardRow(r));
+      if (!p0?.waJid) continue;
+      const exists = await port.check(p0.waJid);
+      if (exists === null) return;
+      const card = this.card(String(r.id));
+      const p = card ? draftPayloadOf(card) : null;
+      if (!card || !p || card.state !== 'pending') continue;
+      const { waCheck: _gone, ...rest } = p;
+      void _gone;
+      this.setCard(card.id, { payload: exists ? rest : { ...rest, waCheck: 'not_on' } });
+    }
+  }
+
+  /** Local midnight came: Drafts held by the daily limit may send again. */
+  private liftWaLimit(): void {
+    const rows = this.d.db
+      .prepare(
+        `SELECT * FROM cards WHERE type = 'draft' AND state = 'pending' AND deleted_at IS NULL
+           AND json_extract(payload, '$.waLimitUntil') <= ?`,
+      )
+      .all(this.d.now()) as DbRow[];
+    for (const r of rows) {
+      const p = draftPayloadOf(cardRow(r));
+      if (!p) continue;
+      const { waLimitUntil: _gone, ...rest } = p;
+      void _gone;
+      this.setCard(String(r.id), { payload: rest });
+    }
   }
 
   // M8 T6
@@ -294,10 +491,22 @@ export class DraftService {
 
   /** `draft:send`: approve once (`approved_via='card'`, X-65) and open the 5 s undo window. */
   send(req: Tap): Result<{ approvalId: string; undoUntil: number }> {
+    // M8 T7: an X draft is never sent by foo (AT-054); its Primary is "Open in X to post".
+    if (this.xPending(req)) return fail('VALIDATION');
     const t = this.pending(req);
     if (!t.ok) return t;
     const { p, a } = t.value;
     if (!p.sendAllowed) return fail('CONN_SCOPE_MISSING');
+    // M8 T7 (08-3 §16.4.2, §16.4 Send): no Send for a number that isn't on WhatsApp or can't be checked; at the daily limit
+    // the card says so and stays pending (no ErrorKind, no toast).
+    if (p.channel === 'whatsapp') {
+      if (p.waCheck) return fail('VALIDATION');
+      const until = this.waLimitUntil();
+      if (until !== null) {
+        if (p.waLimitUntil !== until) this.setCard(t.value.card.id, { payload: { ...p, waLimitUntil: until } });
+        return fail('VALIDATION');
+      }
+    }
     // M8 T6 (05-2 §5.7.2 Offline at Send): nothing moves; the card asks "Send it as soon as you're back?".
     if (this.d.online && !this.d.online()) return fail('NET_OFFLINE');
     // M8 T6 (08-0 §G.7): someone new or a switch → the full Approval card is the one tap, with no 5 s undo.
@@ -379,6 +588,7 @@ export class DraftService {
     if (this.d.online && !this.d.online()) return [];
     this.resumeQueued();
     this.unlinkDeadFull();
+    this.liftWaLimit(); // M8 T7
     const now = this.d.now();
     const due = this.d.db
       .prepare(
@@ -442,6 +652,7 @@ export class DraftService {
       card: { state: 'sending', payload: { ...p, undoUntil: undefined } },
     });
     if (!running.ok) return false;
+    if (p.channel === 'whatsapp') return this.sendWhatsApp(a, card.id, p); // M8 T7
     const r = gmail && p.gmailDraftId ? await gmail.send(p.gmailDraftId, p.to?.address) : fail<{ messageId: string }>('CONN_EXPIRED');
     const at = this.d.now();
     if (!r.ok) {
@@ -478,6 +689,54 @@ export class DraftService {
             proofRef: r.value.messageId,
             outcome: 'done',
             fields: { subject: p.subject ?? null, proof },
+          },
+        },
+      ],
+    });
+    return done.ok;
+  }
+
+  // M8 T7
+  /** The one WhatsApp send (engine queue → bridge), after the write-ahead; "✓ Sent" on the server's ack. */
+  private async sendWhatsApp(a: ApprovalRow, cardId: string, p: DraftPayload): Promise<boolean> {
+    const port = this.d.whatsapp?.() ?? null;
+    const r =
+      port && p.waJid ? await port.send({ jid: p.waJid, text: p.body, draftCardId: cardId }) : fail<{ waMessageId: string }>('SEND_FAILED');
+    const at = this.d.now();
+    if (!r.ok) {
+      this.d.gate.draftMove(a.id, 'submit_failed', { approval: { failure_kind: r.error.kind }, card: { state: 'failed' } });
+      this.d.log?.({ lvl: 'warn', mod: 'drafts', evt: r.error.kind, ids: { approvalId: a.id } });
+      return false;
+    }
+    const chatTitle = this.d.db.prepare('SELECT title FROM chats WHERE id = ?').pluck().get(a.chatId) as string | null | undefined;
+    const to = p.to ?? { name: '', address: '' };
+    const done = this.d.gate.draftMove(a.id, 'proof_ok', {
+      approval: { completed_at: at },
+      card: { state: 'sent', payload: { ...p, undoUntil: undefined, sentAt: at, sentMessageId: r.value.waMessageId } },
+      extra: [
+        {
+          op: 'activity',
+          row: {
+            kind: 'sent',
+            event: 'sent_whatsapp',
+            actor: 'foo',
+            chatId: a.chatId,
+            chatTitle: chatTitle ?? null,
+            jobId: a.jobId,
+            approvalId: a.id,
+            paymentId: null,
+            routineId: null,
+            // 06-3 §9.4 "Sent a WhatsApp message to {Family group}"; the number stays masked (`to.address` is the mask).
+            summary: `Sent a WhatsApp message to ${to.name}`,
+            toLabel: to.address,
+            fromLabel: null,
+            amountPaise: null,
+            approvedHow: 'card_once',
+            ruleText: null,
+            proofKind: null,
+            proofRef: r.value.waMessageId,
+            outcome: 'done',
+            fields: { isGroup: p.isGroup ?? false },
           },
         },
       ],
@@ -600,7 +859,10 @@ export class DraftService {
     if (open?.state === 'PENDING') return ok({ approvalId: open.id, undoUntil: now });
     const to = p.to ?? { name: '', address: '', isNew: true };
     const app = t('cards.approval.app.gmail');
-    const text = to.isNew
+    // M8 T7 (05-2 §5.5.2 "Send WhatsApp, new number or group"): "Send this message to {name}?"
+    const text = p.channel === 'whatsapp'
+      ? { title: t('cards.approval.send_whatsapp.title', { name: to.name }), impact: t('cards.approval.send_whatsapp.impact', { to: to.address }) }
+      : to.isNew
       ? {
           title: t('cards.approval.send_email.title', { name: to.name }),
           impact: t('cards.approval.send_email.impact', { address: to.address, app, them: t('cards.approval.them') }),
@@ -610,7 +872,7 @@ export class DraftService {
           impact: t('cards.approval.switch_how.impact', { name: to.name, address: to.address }),
         };
     // 05-2 §5.5.2: someone new is a `send` card; a switch is the "Switch how" row (verb `switch`, Globe).
-    const verb = to.isNew ? 'send' : 'switch';
+    const verb = to.isNew || p.channel === 'whatsapp' ? 'send' : 'switch';
     const made = this.d.gate.create({
       jobId: a.jobId,
       verb,
@@ -848,6 +1110,16 @@ export class DraftService {
 
   /** `draft:update` (Change → Save changes): Gmail drafts.update, the same PENDING approval re-hashed, a new nonce. */
   async update(req: { cardId: string; nonce: string; fields: DraftFields }): Promise<Result<CardRow>> {
+    // M8 T7: an X draft changes on the card alone (no approval to re-hash), with its weighted length again.
+    const x = this.xPending(req);
+    if (x) {
+      if (!x.ok) return x;
+      const { card, p } = x.value;
+      const body = req.fields.body;
+      this.rotateNonce(card.id);
+      if (!this.setCard(card.id, { payload: { ...p, body, edited: true, xRemaining: xRemaining(body) } })) return fail('CARD_STALE');
+      return ok(this.card(card.id)!);
+    }
     // M8 T6: one save at a time per card; a second one while Gmail answers the first is stale.
     if (this.updating.has(req.cardId)) return fail('CARD_STALE');
     this.updating.add(req.cardId);
@@ -870,7 +1142,8 @@ export class DraftService {
     const gmail = this.d.gmail();
     const to = p.to?.address ?? '';
     // M8 T6 (G-M8-04): a draft kept in foo (no Gmail draft without `gmail.compose`) changes in foo only.
-    const local = !p.gmailDraftId && !p.sendAllowed;
+    // M8 T7: WhatsApp has no draft elsewhere either.
+    const local = p.channel !== 'email' || (!p.gmailDraftId && !p.sendAllowed);
     if (!local && (!gmail || !p.gmailDraftId)) return fail('CONN_EXPIRED');
     if (!local) {
       const g = await gmail!.update(p.gmailDraftId!, this.message(to, subject, req.fields.body, p.signature, p));
@@ -913,6 +1186,13 @@ export class DraftService {
 
   /** `draft:discard`: Gmail drafts.delete, the approval WITHDRAWN, the card "Draft discarded". */
   async discard(req: Tap): Promise<Result<CardRow>> {
+    // M8 T7: an X draft is the card alone.
+    const x = this.xPending(req);
+    if (x) {
+      if (!x.ok) return x;
+      const set = { payload: x.value.p, state: 'discarded', resolved_by: req.resolvedBy, resolved_at: this.d.now() };
+      return this.setCard(x.value.card.id, set) ? ok(this.card(x.value.card.id)!) : fail('CARD_STALE');
+    }
     const t = this.pending(req);
     if (!t.ok) return t;
     const { card, p, a } = t.value;
@@ -936,6 +1216,7 @@ export class DraftService {
     const card = this.card(req.cardId);
     if (!card) return fail('NOT_FOUND');
     if (card.type !== 'draft') return fail('VALIDATION');
+    if (draftPayloadOf(card)?.channel === 'x') return this.openX(card); // M8 T7
     const a = this.d.gate.byCard(card.id);
     if (!a) return fail('NOT_FOUND');
     const p = draftPayloadOf(card);
@@ -950,6 +1231,74 @@ export class DraftService {
     const moved = this.d.gate.draftMove(a.id, 'withdraw', { card: { state: 'opened_in_app', resolved_by: 'tap', resolved_at: now } });
     if (!moved.ok) return moved;
     await this.d.openExternal?.(gmailUrl(p, this.d.email?.() ?? null));
+    return ok(undefined);
+  }
+
+  // M8 T7
+  /**
+   * "Open in X to post" (`x.openCompose`): X's compose page opens with the text; foo never posts (AT-054). The first tap
+   * moves the card to "Opened in X · not posted by {agentName}" with foo's line and Activity `opened_x_draft`; a later tap
+   * only opens the page again. A post over 280 weighted characters does not open.
+   */
+  private async openX(card: CardRow): Promise<Result<void>> {
+    const p = draftPayloadOf(card)!;
+    if (card.state === 'opened_in_app') {
+      await this.d.openExternal?.(xIntentUrl(p.body));
+      return ok(undefined);
+    }
+    if (card.state !== 'pending') return fail('CARD_STALE');
+    if (xRemaining(p.body) < 0) return fail('VALIDATION');
+    const now = this.d.now();
+    const chat = this.d.db.prepare('SELECT title FROM chats WHERE id = ?').pluck().get(card.chatId) as string | null | undefined;
+    const w = applyDbOps(
+      this.d.db,
+      [
+        { op: 'update', table: 'cards', id: card.id, set: { state: 'opened_in_app', resolved_by: 'tap', resolved_at: now } },
+        {
+          op: 'insert',
+          table: 'messages',
+          row: {
+            id: newId('m', now),
+            chat_id: card.chatId,
+            author_kind: 'foo',
+            kind: 'text',
+            text: t('cards.draft.x_opened_line'),
+            status: 'complete',
+            job_id: card.jobId,
+            created_at: now,
+          },
+        },
+        {
+          op: 'activity',
+          row: {
+            kind: 'sent',
+            event: 'opened_x_draft',
+            actor: 'foo',
+            chatId: card.chatId,
+            chatTitle: chat ?? null,
+            jobId: card.jobId,
+            approvalId: null,
+            paymentId: null,
+            routineId: null,
+            // 06-3 §9.4: "Opened an X post for you to send" · "foo · you".
+            summary: 'Opened an X post for you to send',
+            toLabel: null,
+            fromLabel: null,
+            amountPaise: null,
+            approvedHow: 'user',
+            ruleText: null,
+            proofKind: null,
+            proofRef: null,
+            outcome: 'done',
+            fields: {},
+          },
+        },
+      ],
+      this.opts(now),
+    );
+    if (!w.result.ok) return w.result;
+    this.d.changed(w.effects);
+    await this.d.openExternal?.(xIntentUrl(p.body));
     return ok(undefined);
   }
 

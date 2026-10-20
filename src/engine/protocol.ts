@@ -217,6 +217,15 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
   // M8 T5 (gap pick T5-01, 08-1 §2.4 has no row for it): main tells the engine the Google rows' state on every change, so
   // the Gmail poller and Contacts sync start and stop with the rows and jobs waiting on a lost connection resume.
   z.object({ id: z.string(), kind: z.literal('connection.state'), payload: googleConnStateSchema }),
+  // M8 T7 (08-2 §8.2 `whatsapp.send`, engine-only; 08-3 §16.4.2): main's Draft service asks the engine to send a tapped
+  // WhatsApp Draft through its queue (answers `{ waMessageId }` or SEND_FAILED) and to check a number again when the bridge
+  // is open (answers `{ exists: boolean | null }`). Requests, like draft.secondLook.
+  z.object({
+    id: z.string(),
+    kind: z.literal('wa.send'),
+    payload: z.object({ jid: z.string().min(1).max(100), text: z.string().min(1).max(65_536), draftCardId: z.string().min(1) }).strict(),
+  }),
+  z.object({ id: z.string(), kind: z.literal('wa.check'), payload: z.object({ jid: z.string().min(1).max(100) }).strict() }),
 ]);
 export type MainToEngine = z.infer<typeof mainToEngineSchema>;
 
@@ -409,6 +418,10 @@ export const waReportSchema = z.discriminatedUnion('event', [
     })
     .strict(),
   z.object({ event: z.literal('groups'), groups: z.array(z.object({ jid: z.string().min(1), title: z.string() }).strict()) }).strict(),
+  // M8 T7: a sent message reached the phone (ack ≥ 2, the `wa_delivered` proof), and the bridge is open again (main re-checks
+  // the Draft cards whose number could not be checked, 08-3 §16.4.2).
+  z.object({ event: z.literal('delivered'), waMessageId: z.string().min(1) }).strict(),
+  z.object({ event: z.literal('open') }).strict(),
 ]);
 export type WaReport = z.infer<typeof waReportSchema>;
 

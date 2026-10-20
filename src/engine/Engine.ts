@@ -733,6 +733,11 @@ export class Engine {
       }
       case 'test.memoryTidy':
         return this.memory.tidy();
+      // M8 T7
+      case 'wa.send':
+        return this.whatsapp.send(msg.payload);
+      case 'wa.check':
+        return ok({ exists: await this.whatsapp.check(msg.payload.jid) });
       default:
         return undefined;
     }

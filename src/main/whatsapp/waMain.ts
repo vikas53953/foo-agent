@@ -33,6 +33,9 @@ export interface WaMainContext {
   dataDir?: string;
   /** Real-time delay before the bridge is stopped after Unlink, so the logout reaches WhatsApp. */
   unlinkGraceMs?: number;
+  // M8 T7
+  /** Main's Draft service: delivery proof and the number re-check when the bridge is open again. */
+  drafts?(): { waDelivered(waMessageId: string): boolean; waOpen(): Promise<void> } | null;
 }
 
 /** 08-1 §2.2 step 7: the bridge is forked +20 s after start when a whatsapp row exists. */
@@ -66,6 +69,15 @@ export class WhatsAppMain {
 
   /** `wa.report` from the engine. */
   report(r: WaReport): void {
+    // M8 T7
+    if (r.event === 'delivered') {
+      this.c.drafts?.()?.waDelivered(r.waMessageId);
+      return;
+    }
+    if (r.event === 'open') {
+      void this.c.drafts?.()?.waOpen();
+      return;
+    }
     const before = JSON.stringify(this.c.settings.get().notifications.mutedChats);
     this.apply(applyWaReport(this.c.db, this.c.settings, r, this.c.now(), this.c.dataDir));
     if (JSON.stringify(this.c.settings.get().notifications.mutedChats) !== before) this.c.emitSettings();

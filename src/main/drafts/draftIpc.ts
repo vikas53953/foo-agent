@@ -2,7 +2,8 @@
 // router line in src/main/ipc/IpcRouter.ts stays T1's. Main's 1 s draft tick (like the approval expiry tick) sends each
 // Draft whose 5 s undo window has closed, so a send happens with the window closed too. M5 T14: its second look goes to the
 // engine (`draft.secondLook`, 08-2 §9.6, CR-0009 G-M5-39 (b)). M8 T6: the real Gmail drafts port once Gmail is connected
-// (08-3 §16.1.4), the signature, the granted map and the online state (05-2 §5.7.2 Offline at Send, Queued).
+// (08-3 §16.1.4), the signature, the granted map and the online state (05-2 §5.7.2 Offline at Send, Queued). M8 T7: the
+// engine's WhatsApp queue (`wa.send` / `wa.check` requests) and the time zone of the daily WhatsApp limit.
 import { logEvent } from '../log/techLog';
 import { shell } from 'electron';
 import { deps } from '../deps';
@@ -14,6 +15,25 @@ import { gmailDrafts, type GmailDrafts } from './gmailDrafts';
 // M8 T6
 import { google } from '../connections/connectionIpc';
 import { googleGmailDrafts, nodeFetch, type GoogleGmailDrafts } from './gmailDraftsGoogle';
+// M8 T7
+import type { WaSendPort } from './DraftService';
+import type { Result } from '../../shared/errors';
+
+/** Sends wait in the engine's queue behind earlier ones (3 s apart) and up to 30 s for the bridge each. */
+const WA_SEND_TIMEOUT_MS = 180_000;
+/** The engine's WhatsApp send queue and number check, over the engine port (08-2 §8.2 `whatsapp.send`, engine-only). */
+function engineWhatsApp(ctx: AppContext): WaSendPort {
+  return {
+    send: async (req) => {
+      const r = await ctx.engine!.request<{ waMessageId: string }>('wa.send', req, WA_SEND_TIMEOUT_MS);
+      return r as Result<{ waMessageId: string }>;
+    },
+    check: async (jid) => {
+      const r = await ctx.engine!.request<{ exists: boolean | null }>('wa.check', { jid }, 15_000);
+      return r.ok ? r.value.exists : null;
+    },
+  };
+}
 
 const services = new WeakMap<AppContext['db'], DraftService>();
 
@@ -90,6 +110,9 @@ export function draftService(ctx: AppContext): DraftService {
     granted: () => granted(ctx),
     email: () => google()?.access().email() ?? null,
     online: () => !ctx.net.offline,
+    // M8 T7
+    whatsapp: () => (ctx.engine?.live ? engineWhatsApp(ctx) : null),
+    timeZone: () => ctx.settings.get().locale.timeZone,
   });
   services.set(ctx.db, s);
   const service = s;
