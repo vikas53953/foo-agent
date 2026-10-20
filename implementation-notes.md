@@ -1141,3 +1141,37 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
   after a restart), and one failing draft never stops the others. One Change → Save at a time per card. While the full card
   waits, Change and Discard are refused; a full card that ends unanswered gives the draft back, and a draft that ends takes its
   full card with it. An address the AI gives is a known person only when it is that contact's own address.
+
+## M8 · WhatsApp and X drafts and sending (ticket T7, CR-0012)
+
+- (a) Send path: main's DraftService → engine request `wa.send` (MainToEngine) → the engine's FIFO queue (≥ 3 s between sends,
+  one in flight) → bridge `wa.send` → Baileys `sendMessage` with the key id `waSendKeyId(draftCardId)` (FNV-1a, `FOO`+16 hex), so
+  the bridge's ack names the draft it answers. No bridge answer in 30 s, a bridge `SEND_FAILED`, or a bridge that is not open
+  → Failed ("WhatsApp didn't send it. Nothing went out.", 08-3 §16.5's `{Gmail} didn't send it.` row with the app named).
+- (b) Sent vs proof: the card is "✓ Sent" on the server ack (level 1); "Proof: Delivered" and the approvals row's
+  `{kind:'wa_delivered'}` proof follow the first ack ≥ 2 (`wa.report {event:'delivered'}`, once per message). CHECKING is not
+  used: its 15 min timeout would fail a message the phone has not yet confirmed. Activity `sent_whatsapp` is written at send
+  (recipient masked, `approvedHow='card_once'`, proofRef = the message id).
+- (c) Daily limit: `waSentToday` counts `sent_whatsapp` rows since local midnight (settings time zone); at 30 a new draft and a
+  Send both get `waLimitUntil` (next local midnight) and Send is off; the tick lifts it after midnight.
+- (d) Recipients (`src/engine/tools/connectors/recipients.ts`, 08-3 §16.4.2): the ladder runs in the engine over main's
+  named queries `wa.recipient`, `wa.byName`, `wa.groupByName`, `wa.lastChats` and `contacts.search` (Contacts phones are looked
+  up as `+{E.164}`, the 10 national digits and `0{national}`, one FTS token each). The AI never sees a number it did not give:
+  the tool answers the name only. Choice cards hold 4 options (05-1 §5.3 reactions 1️⃣–4️⃣, ChoiceCardSpec max 4), so "Who is
+  {Mom} on WhatsApp?" lists the last 4 chats, not 5 (pick, logged). A number check that cannot run is `cant_check`; main
+  re-checks those drafts when the bridge reports `open`.
+- (e) X: `x.draft` makes a card only (no approvals row, no expiry, no footer; label "Draft, not sent: X post", new key
+  `cards.draft.label_post`). Open in X is `app:openExternal` `x_intent` with the card and nonce (main builds the URL from
+  the card, 08-1 §3.2); `x.openCompose` is engine → main `draft.openX` for a card of the same job. First open: state
+  `opened_in_app`, foo's line, Activity `opened_x_draft`; later opens only reopen the page. "Shorten it" opens Change mode (no AI).
+- (f) Mirror composer (04 §10.11): `message:send` in a `wa_mirror` chat stores nothing there; main makes a finished job in
+  foo's chat (title "Draft a message for {group}", ≤ 40) and a group Draft card (a hard limit: the full Approval card). The
+  reply carries `mirrorDraft {fooChatId, draftCardId, messageId}`; the renderer drops its optimistic bubble and shows the
+  marker "Draft ready in {agentName}'s chat." + Open (renderer state, `src/renderer/messages/mirrorDrafts.ts`; it lasts until
+  the app restarts). No app_use Choice: the user typed in the group themselves.
+- (g) FOO_TEST: the fake phone knows "Mom" (`FAKE_WA.people`) and records every send; the bridge tells main
+  (`test.outbound`) and e2e read `globalThis.__fooWaOutbound`. A test run also records opened pages in `__fooOpenedExternal`
+  instead of opening a browser (X and Gmail).
+- (h) Copy added: `cards.choice.question.who_on_whatsapp`, `cards.draft.line.wa_not_on`, `cards.draft.line.wa_failed`,
+  `cards.draft.label_post`, `thread.wa_mirror.draft_made`, `thread.wa_mirror.open` (all spec text except `label_post` and
+  the WhatsApp failed line's app name).
