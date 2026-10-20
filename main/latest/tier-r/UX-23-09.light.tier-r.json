@@ -363,7 +363,8 @@
         "9:38",
         "AM",
         "book",
-        "flights",
+        "a",
+        "trip",
         "to",
         "Delhi",
         "for",
@@ -516,8 +517,8 @@
     "total": 4340
   },
   "r5": {
-    "ratio": 0.068943359375,
-    "diffPixels": 70598,
+    "ratio": 0.0687587890625,
+    "diffPixels": 70409,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-09.light.diff.png"

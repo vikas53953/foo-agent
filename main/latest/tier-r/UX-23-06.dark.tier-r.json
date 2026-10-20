@@ -125,6 +125,7 @@
         "9:41",
         "I’m",
         "stay",
+        "1",
         "f",
         "foo",
         "9:41",
@@ -515,8 +516,8 @@
     "total": 3248
   },
   "r5": {
-    "ratio": 0.110359375,
-    "diffPixels": 113008,
+    "ratio": 0.1103544921875,
+    "diffPixels": 113003,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-06.dark.diff.png"
