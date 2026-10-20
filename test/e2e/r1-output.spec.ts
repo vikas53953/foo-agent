@@ -249,6 +249,9 @@ test('AT-369 · Keep saves a kept_items row listed in the chat Files tab; a kept
   // The kept surface reopens in foo's own renderer.
   await rows.nth(1).locator('[data-action="open"]').click();
   await expect(page.getByTestId(TID.dialogKeptItem).getByTestId(TID.kitLineChart)).toBeVisible();
+  // A kept copy is for looking: its stamp shows, but nothing in it reaches the reply it came from.
+  await expect(page.getByTestId(TID.dialogKeptItem).getByTestId(TID.kitLiveStamp)).toBeVisible();
+  await expect(page.getByTestId(TID.dialogKeptItem).getByTestId(TID.kitLiveRefresh)).toHaveCount(0);
   await page.getByTestId(TID.dialogKeptItem).getByTestId(TID.dialogPrimary).click();
   await expect
     .poll(() => app.evaluate(() => (globalThis as { __fooShownInFolder?: string[] }).__fooShownInFolder ?? []))

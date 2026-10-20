@@ -59,6 +59,8 @@ describe('R1 T7 · action chips from the reply (04-2 §21.7)', () => {
 
   it('bad JSON, unknown kinds, a link as a place and an unparseable date give no chips', () => {
     expect(splitActions('Ok.\nActions: [oops').actions).toBeNull();
+    // Prose that opens with "Actions:" is not a chip line: it stays in the reply.
+    expect(splitActions('Ok.\nActions: none needed today.')).toEqual({ text: 'Ok.\nActions: none needed today.', actions: null });
     expect(cleanActions([{ kind: 'pay', label: 'Pay', value: '100' }])).toBeNull();
     expect(cleanActions([{ kind: 'map', label: 'Map', value: 'javascript:alert(1)' }])).toBeNull();
     expect(cleanActions([{ kind: 'calendar', label: 'Cal', value: '2026-13-45' }])).toBeNull();
@@ -242,6 +244,14 @@ describe('R1 T7 · Keep (pick 9, pick 15)', () => {
     expect((await keepSave(d, { chatId: chat, messageId: kitMsg, kind: 'kit', title: 'x', body: other })).ok).toBe(false);
     expect((await keepSave(d, { chatId: chat, messageId: pageMsg, kind: 'page', title: 'x', body: '<p>evil</p>' })).ok).toBe(false);
     expect((await keepSave(d, { chatId: 'c_other', messageId: pageMsg, kind: 'page', title: 'x', body: PAGE })).ok).toBe(false);
+    expect(keepList(db, chat)).toEqual([]);
+  });
+
+  it('a page card that is still building or failed cannot be kept', async () => {
+    const { db, chat, pageCard } = seeded();
+    db.prepare("UPDATE cards SET state = 'failed' WHERE id = ?").run(pageCard);
+    const r = await keepSave(keepDeps(db, new Map()), { chatId: chat, cardId: pageCard, kind: 'page', title: 'x', body: PAGE });
+    expect(r.ok).toBe(false);
     expect(keepList(db, chat)).toEqual([]);
   });
 

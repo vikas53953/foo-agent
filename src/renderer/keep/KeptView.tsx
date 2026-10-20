@@ -14,13 +14,20 @@ import { Dialog } from '../ui/Dialog';
 
 function KeptKit({ item, body }: { item: KeptItem; body: string }) {
   const agentName = useStore(selectAgentName);
-  // The kept copy draws alone, under its own id, so edits in it never touch the reply it came from.
+  // The kept copy draws alone under its own key (`keptId`): edits stay in it, and its taps never reach the reply.
   const { surfaces, dropped } = useFenceSurfaces('', item.id, body, false);
   const host = item.cardId ? { chatId: item.chatId, cardId: item.cardId } : { chatId: item.chatId, messageId: item.messageId ?? '' };
   return (
     <>
       {surfaces.map((s, i) => (
-        <KitSurface key={s.id} surface={s} host={host} agentName={agentName} blockDropped={i === surfaces.length - 1 ? dropped : 0} />
+        <KitSurface
+          key={s.id}
+          keptId={item.id}
+          surface={s}
+          host={host}
+          agentName={agentName}
+          blockDropped={i === surfaces.length - 1 ? dropped : 0}
+        />
       ))}
       {surfaces.length === 0 && dropped > 0 && <KitDropped />}
     </>

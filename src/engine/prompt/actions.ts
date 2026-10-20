@@ -78,6 +78,9 @@ export function splitActions(say: string): { text: string; actions: ActionChip[]
   const nl = say.indexOf('\n', start);
   const end = nl === -1 ? say.length : nl;
   const line = say.slice(start, end);
+  const payload = jsonOrNull(line.slice(line.indexOf(':') + 1));
+  // Prose that happens to open with "Actions:" is not a chip line: it stays in the reply.
+  if (!Array.isArray(payload)) return { text: say, actions: null };
   const text = say.slice(0, start) + (nl === -1 ? '' : say.slice(nl + 1));
-  return { text, actions: cleanActions(jsonOrNull(line.slice(line.indexOf(':') + 1))) };
+  return { text, actions: cleanActions(payload) };
 }

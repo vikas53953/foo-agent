@@ -2,7 +2,7 @@
 // (`{ chatId; messageId?; cardId?; surfaceId }` → one MainToEngine `kit.refresh`), 02 F19.3 (times "9:41 AM"), CR-0022
 // AT-352, AT-368 (Refresh updates the surface's data model and "Data as of"), X-180. R1 T7.
 // The new data arrives as a later foo reply naming the same surfaceId, so this piece only asks; it never fetches.
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { t } from '../../shared/copy/t';
 import { formatDate, formatTime } from '../../shared/format';
 import { TID } from '../../shared/testids';
@@ -13,6 +13,9 @@ import { selectTimeZone } from '../store/settings';
 import { Button } from '../ui/Button';
 import type { SurfaceHost } from './KitSurface';
 import styles from './KitSurface.module.css';
+
+/** How long Refresh rests after a tap when no newer stamp arrives. */
+const REFRESH_REST_MS = 30_000;
 
 export function LiveStamp({
   asOf,
@@ -29,6 +32,12 @@ export function LiveStamp({
   // The asOf the last Refresh was asked from: the button rests until a reply brings a newer stamp.
   const [asked, setAsked] = useState<number | null>(null);
   const waiting = asked === asOf;
+  // A reply that brings no newer stamp (or a turn that failed) frees the button again after a while.
+  useEffect(() => {
+    if (!waiting) return;
+    const id = setTimeout(() => setAsked(null), REFRESH_REST_MS);
+    return () => clearTimeout(id);
+  }, [waiting]);
   const refresh = () => {
     setAsked(asOf);
     void invoke('kit:refresh', { ...host, surfaceId }).then(

@@ -34,6 +34,10 @@ async function capture(rect: Rect | undefined): Promise<Uint8Array | null> {
   return img.isEmpty() ? null : img.toPNG();
 }
 
+/** Bytes the renderer sends are written as `.png` only when they are a PNG (its 8-byte signature). */
+const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
+const pngOrNull = (b: Uint8Array): Uint8Array | null => (PNG_SIGNATURE.every((x, i) => b[i] === x) ? b : null);
+
 async function write(path: string, data: string | Uint8Array): Promise<void> {
   await mkdir(dirname(path), { recursive: true });
   await writeFile(path, data);
@@ -51,7 +55,7 @@ export function keepIpc(ctx: AppContext): IpcHandlers<'keep:save' | 'keep:list' 
           now: () => deps.clock.now(),
           writeFile: write,
           ...files,
-          snapshot: async () => (png ? new Uint8Array(png instanceof ArrayBuffer ? png : png.buffer) : capture(rect)),
+          snapshot: async () => (png ? pngOrNull(new Uint8Array(png instanceof ArrayBuffer ? png : png.buffer)) : capture(rect)),
         },
         save,
       );

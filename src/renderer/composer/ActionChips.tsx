@@ -40,8 +40,11 @@ export function ActionChips({ chatId, view }: { chatId: string; view: ActionView
     if (chip.kind !== 'calendar') return setAsking({ messageId: view.messageId, index, chip });
     // A date-time with no zone is the user's own wall time: read it as UTC and show it in UTC, so it never shifts.
     const zoned = /(Z|[+-]\d{2}:\d{2})$/.test(chip.value);
-    const at = Date.parse(zoned ? chip.value : `${chip.value}${chip.value.includes('T') ? '' : 'T00:00'}Z`);
-    const when = Number.isNaN(at) ? chip.value : formatDate(at, 'full', { timeZone: zoned ? timeZone : 'UTC', now: clockNow() });
+    const dated = chip.value.includes('T');
+    const at = Date.parse(zoned ? chip.value : `${chip.value}${dated ? '' : 'T00:00'}Z`);
+    // A date with no time is a whole day: it shows without a time.
+    const form = dated ? 'full' : 'date';
+    const when = Number.isNaN(at) ? chip.value : formatDate(at, form, { timeZone: zoned ? timeZone : 'UTC', now: clockNow() });
     void sendOutgoing({ chatId, clientId: newClientId(), text: `${chip.label}, ${when}`, attachments: [], ready: Promise.resolve([]) });
   };
   return (

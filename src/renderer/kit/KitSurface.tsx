@@ -46,6 +46,8 @@ const MAX_ITEMS = 50;
 interface Ctx {
   surface: Surface;
   host: SurfaceHost;
+  /** R1 T7: a kept copy, drawn for looking only. */
+  keptCopy: boolean;
   data: unknown;
   key: string;
   /** While the reply streams, a bound value may still be on its way: its component waits instead of being dropped. */
@@ -256,7 +258,15 @@ function part(ctx: Ctx, c: KitComponent, scope: string, depth: number): ReactNod
     case 'TimePick':
       return <KitTimePick ctx={ctx} c={c} scope={scope} />;
     case 'LiveStamp':
-      return <LiveStamp asOf={c.asOf} refreshable={c.refreshable} host={ctx.host} surfaceId={ctx.surface.id} />;
+      // Refresh only where a later reply can redraw the surface: a reply's own fence, never a kit card or a kept copy.
+      return (
+        <LiveStamp
+          asOf={c.asOf}
+          refreshable={c.refreshable && !ctx.keptCopy && 'messageId' in ctx.host}
+          host={ctx.host}
+          surfaceId={ctx.surface.id}
+        />
+      );
     default:
       // The other foo components arrive with R1 T4 (numbers and forms); a valid one draws nothing until then and is
       // not counted as dropped.
@@ -375,6 +385,7 @@ export function KitSurface({
   streaming = false,
   blockDropped,
   keep,
+  keptId,
 }: {
   surface: Surface;
   host: SurfaceHost;
@@ -382,10 +393,12 @@ export function KitSurface({
   streaming?: boolean;
   /** R1 T7: shows Keep under the surface once it is drawn (absent in a kept copy). `kept`: its card is kept already. */
   keep?: { kept: boolean };
+  /** R1 T7: drawn as a kept copy: its own state, and taps, picks and Refresh never reach the reply it came from. */
+  keptId?: string;
   /** Messages or components the block's parse dropped; the last surface of a block carries them, so one caption shows. */
   blockDropped: number;
 }) {
-  const key = `${'messageId' in host ? host.messageId : host.cardId}:${surface.id}`;
+  const key = keptId ? `ki:${keptId}:${surface.id}` : `${'messageId' in host ? host.messageId : host.cardId}:${surface.id}`;
   const data = useSurfaceData(key, surface.data);
   const [sent, setSent] = useState<string | null>(null);
   const [refused, setRefused] = useState<string | null>(null);
@@ -408,6 +421,7 @@ export function KitSurface({
   const ctx: Ctx = {
     surface,
     host,
+    keptCopy: keptId !== undefined,
     data,
     key,
     streaming,
@@ -421,6 +435,7 @@ export function KitSurface({
     },
     edit: (path, value) => editSurface(key, surface.data, path, value),
     act: (c, scope) => {
+      if (keptId) return;
       const context = resolveContext(c.action.event.context, data, scope);
       // Article 8 / 04-2 §22.4: a value that looks like a password, code or card number never leaves the renderer.
       if (outgoingText(context).some((s) => checkSecret(s) !== null)) {
@@ -432,6 +447,7 @@ export function KitSurface({
       void send(c, c.action.event.name, context).then((ok) => setSent(ok ? c.id : null));
     },
     pick: (c, scope, p) => {
+      if (keptId) return Promise.resolve(false);
       const context = pickContext(c, data, scope, p);
       if (outgoingText(context).some((s) => checkSecret(s) !== null)) {
         setRefused(c.id);

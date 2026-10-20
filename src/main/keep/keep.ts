@@ -57,6 +57,9 @@ export function keepList(db: Db, chatId: string): KeptItem[] {
   return (db.prepare('SELECT * FROM kept_items WHERE chat_id = ? ORDER BY created_at DESC, id DESC').all(chatId) as DbRow[]).map(keptRow);
 }
 
+/** States a kept card moves from (08-0 §G.2): a shown surface, a ready page. */
+const KEEPABLE: Record<string, string> = { kit: 'shown', ai_page: 'ready' };
+
 /**
  * The body is what the host really holds: a kit body creates one surface that the host's own fences create; a page body is
  * one of the host's closed ```page blocks or its `ai_page` card's html. Only foo's own live text hosts either (pick 12).
@@ -79,6 +82,8 @@ function hostHolds(db: Db, req: KeepSave): { card: CardRow | null } | null {
     .get(req.cardId, req.chatId, req.kind === 'kit' ? 'kit' : 'ai_page') as DbRow | undefined;
   if (!r) return null;
   const card = cardRow(r);
+  // Only a drawn surface or an open page can be kept (08-0 §G.2): not a building or failed one.
+  if (card.state !== KEEPABLE[card.type] && card.state !== 'kept') return null;
   if (req.kind === 'page') return card.payload.html === req.body ? { card } : null;
   const body = card.payload.body;
   const id = keptSurfaceId(req.body);
@@ -87,9 +92,6 @@ function hostHolds(db: Db, req: KeepSave): { card: CardRow | null } | null {
     kitMessagesOf(`\`\`\`a2ui\n${body}\n\`\`\``).messages.some((x) => 'createSurface' in x && x.createSurface.surfaceId === id);
   return id !== null && created ? { card } : null;
 }
-
-/** States a kept card moves from (08-0 §G.2): a shown surface, a ready page. */
-const KEEPABLE: Record<string, string> = { kit: 'shown', ai_page: 'ready' };
 
 /**
  * `keep:save`: writes the body (`.json` or `.foopage`, never `.html`) and its PNG under {DATA}\kept\, then the row. A kept
@@ -114,8 +116,8 @@ export async function keepSave(d: KeepDeps, req: KeepSave): Promise<Result<{ ite
   const pngPath = join(d.dataDir, 'kept', `${id}.png`);
   try {
     await d.writeFile(bodyPath, req.body);
-  } catch {
-    return fail('DISK_FULL');
+  } catch (e) {
+    return (e as NodeJS.ErrnoException).code === 'ENOSPC' ? fail('DISK_FULL') : fail('UNKNOWN', 'kept body not written');
   }
   const png = await d.snapshot().catch(() => null);
   const wrote = png
