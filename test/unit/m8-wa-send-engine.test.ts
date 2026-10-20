@@ -133,4 +133,3 @@ describe('08-3 §16.4.2 · the number check', () => {
     expect(reports().filter((r) => r.event === 'open')).toHaveLength(2);
   });
 });
-

@@ -8,6 +8,7 @@
 import { describe, expect, it } from 'vitest';
 import { DraftService, UNDO_MS, type WaSendPort } from '../../src/main/drafts/DraftService';
 import { localMidnight } from '../../src/main/drafts/channels';
+import { mirrorDraft } from '../../src/main/drafts/mirrorDraft';
 import { fail, ok } from '../../src/shared/errors';
 import type { DraftPayload } from '../../src/shared/types';
 import { gateHarness } from '../unit/approvals/gateHarness';
@@ -244,5 +245,49 @@ describe('08-3 §16.4 · limits and the number check', () => {
     expect(s.checks).toEqual([MOM.jid, MOM.jid]);
     const fresh = s.h.card(cant.cardId);
     expect(s.sendTap({ cardId: cant.cardId, nonce: String(fresh.nonce) }).ok).toBe(true);
+  });
+});
+
+// M8 T7
+describe("04 §10.11 · the mirror composer drafts into foo's chat", () => {
+  it("Send in a mirrored group makes a group Draft card in foo's chat (a full-Approval draft), nothing in the mirror, no send", async () => {
+    const s = service();
+    s.h.db
+      .prepare(
+        `INSERT INTO chats (id, kind, title, wa_jid, archived, last_activity_at, created_at) VALUES ('c_wa', 'wa_mirror', ?, ?, 0, 1, 1)`,
+      )
+      .run(FAMILY.name, FAMILY.jid);
+    const deps = {
+      db: s.h.db,
+      now: () => s.h.clock.now,
+      draftsOn: () => true,
+      create: (input: Parameters<DraftService['create']>[0]) => s.drafts.create(input),
+      changed: (e: unknown) => void s.h.changed.push(e as never),
+    };
+    expect(await mirrorDraft(deps, { chatId: s.h.chatId, text: 'not a mirror' })).toBeNull();
+    const r = await mirrorDraft(deps, { chatId: 'c_wa', text: '  Water is off 10 to 12.  ' });
+    if (!r?.ok) throw new Error('no draft');
+    const card = s.h.card(r.value.draftCardId);
+    expect(card.chat_id).toBe(s.h.chatId);
+    expect(r.value.fooChatId).toBe(s.h.chatId);
+    expect(s.payload(r.value.draftCardId)).toMatchObject({
+      channel: 'whatsapp',
+      to: { name: FAMILY.name, address: FAMILY.name },
+      waJid: FAMILY.jid,
+      isGroup: true,
+      body: 'Water is off 10 to 12.',
+    });
+    const job = s.h.db.prepare('SELECT * FROM jobs WHERE id = ?').get(card.job_id) as Record<string, unknown>;
+    expect(job).toMatchObject({ chat_id: s.h.chatId, state: 'done', origin_ref: 'c_wa', title: `Draft a message for ${FAMILY.name}` });
+    expect(s.h.db.prepare("SELECT COUNT(*) FROM messages WHERE chat_id = 'c_wa'").pluck().get()).toBe(0);
+    // A group draft's Send opens the full Approval card; nothing goes out from the tap.
+    expect(s.sendTap({ cardId: r.value.draftCardId, nonce: String(card.nonce) }).ok).toBe(true);
+    await s.passWindow();
+    expect(s.sends).toEqual([]);
+    expect(await mirrorDraft({ ...deps, draftsOn: () => false }, { chatId: 'c_wa', text: 'x' })).toEqual({
+      ok: false,
+      error: { kind: 'VALIDATION', message: 'drafts_off' },
+    });
+    expect(await mirrorDraft(deps, { chatId: 'c_wa', text: '   ' })).toMatchObject({ ok: false });
   });
 });

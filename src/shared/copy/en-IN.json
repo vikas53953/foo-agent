@@ -1272,6 +1272,7 @@
   "thread.injection.button.show_email": "Show me the email",
   "cards.draft.card_name": "Draft, not sent",
   "cards.draft.label": "Draft, not sent: {channel} to {name}",
+  "cards.draft.label_post": "Draft, not sent: {channel}",
   "cards.draft.description": "Subject {subject}. {preview}",
   "cards.draft.send_label": "{primary} to {name}",
   "cards.draft.title": "Draft · not sent",

@@ -77,7 +77,8 @@ export interface Invokes {
   /** M2 builder B: idempotent on `(chatId, clientId)` (AT-225); `SECRET_SUSPECTED` carries the PasteCatch in `error.paste`. */
   'message:send': {
     req: { chatId: string; clientId: string; text: string; replyToId?: string; attachmentIds?: string[]; secretOverride?: boolean };
-    res: { messageId: string; queued: boolean };
+    // M8 T7 (04 §10.11): in a mirrored WhatsApp group the message is a Draft card in foo's chat, not a message here.
+    res: { messageId: string; queued: boolean; mirrorDraft?: { fooChatId: string; draftCardId: string; messageId: string } };
   };
   'composer:checkSecret': { req: { text: string }; res: PasteCatch | null };
   'composer:saveDraft': {

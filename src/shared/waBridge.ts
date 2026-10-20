@@ -75,7 +75,10 @@ export const engineToBridgeSchema = z.discriminatedUnion('kind', [
   msg('wa.unlink', none),
   msg('wa.session', z.object({ bytes: bytes.nullable() }).strict()),
   // M8 T7
-  msg('wa.send', z.object({ jid: z.string().min(1).max(100), text: z.string().min(1).max(65_536), draftCardId: z.string().min(1) }).strict()),
+  msg(
+    'wa.send',
+    z.object({ jid: z.string().min(1).max(100), text: z.string().min(1).max(65_536), draftCardId: z.string().min(1) }).strict(),
+  ),
   msg('wa.onWhatsApp', z.object({ jids: z.array(z.string().min(1).max(100)).min(1).max(20) }).strict()),
 ]);
 export type EngineToBridge = z.infer<typeof engineToBridgeSchema>;

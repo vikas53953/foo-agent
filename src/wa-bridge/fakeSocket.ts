@@ -16,6 +16,8 @@ export const FAKE_WA = {
   ],
   // M8 T7
   notOnWhatsApp: '919800000099@s.whatsapp.net',
+  /** One person in the phone's address book, so a draft "to Mom" finds her (08-3 §16.4.2 (3)). */
+  people: [{ jid: '919800000011@s.whatsapp.net', name: 'Mom' }],
 } as const;
 
 const QR_EVERY_MS = 20_000;
@@ -29,7 +31,11 @@ export class FakePhone {
   /** Every message the bridge sent through this phone, in order. */
   readonly outbound: { jid: string; text: string; keyId: string }[] = [];
 
-  constructor(private clock: Clock) {}
+  /** `sent` tells a FOO_TEST main about each one, so an e2e can count what went out (AT-269: nothing from a mirror). */
+  constructor(
+    private clock: Clock,
+    private sent: (m: { jid: string; keyId: string }) => void = () => undefined,
+  ) {}
 
   readonly factory: SocketFactory = async ({ session, events }) => {
     this.stop();
@@ -46,6 +52,7 @@ export class FakePhone {
       sendText: async (jid, text, keyId) => {
         if (this.events !== events) throw new Error('closed');
         this.outbound.push({ jid, text, keyId });
+        this.sent({ jid, keyId });
         setTimeout(() => this.events === events && events.acks([{ chatJid: jid, keyId, level: 2 }]), 0);
       },
       onWhatsApp: async (jids) => jids.map((jid) => ({ jid, exists: jid !== FAKE_WA.notOnWhatsApp })),
@@ -67,7 +74,7 @@ export class FakePhone {
 
   private online(): void {
     this.events?.open({ jid: FAKE_WA.me });
-    this.events?.contacts(FAKE_WA.groups.map((g) => ({ ...g })));
+    this.events?.contacts([...FAKE_WA.groups, ...FAKE_WA.people].map((g) => ({ ...g })));
   }
 
   /** One phone action from the test channel. */

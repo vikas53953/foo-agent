@@ -41,7 +41,8 @@ describe('wa-bridge protocol (08-1 §2.4.2)', () => {
     );
     expect(engineToBridgeSchema.safeParse({ id: '1', kind: 'wa.send', payload: { jid: ME, text: 'hi' } }).success).toBe(false);
     expect(
-      engineToBridgeSchema.safeParse({ id: '1', kind: 'wa.send', payload: { jid: ME, text: 'hi', draftCardId: 'k_1', media: true } }).success,
+      engineToBridgeSchema.safeParse({ id: '1', kind: 'wa.send', payload: { jid: ME, text: 'hi', draftCardId: 'k_1', media: true } })
+        .success,
     ).toBe(false);
   });
 

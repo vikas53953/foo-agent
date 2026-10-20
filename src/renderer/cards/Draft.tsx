@@ -18,6 +18,11 @@
 // Draft that needs its own Send), 08-3 §16.1.4 ("That didn't save. Try again." keeps Change mode), CR-0012 G-M8-04 (no send
 // permission: Primary "Open in Gmail" and no "saved as a draft there" line; after it the card stays readable, muted, and Open
 // in Gmail opens it again). The channel's words come from `channelWords` (T7 adds WhatsApp and X there).
+// M8 T7: 05-2 §5.7.1 WhatsApp variant ("To  Mom (WhatsApp)", Primary "Send message"; Sent → "Proof: Delivered" once the phone
+// says so) and X variant (no To / Subject / pending line / footer: an X draft has no approval; the counter under the body;
+// Primary "Open in X to post" through `app:openExternal` `x_intent`; X too long → Primary disabled and "Shorten it" first,
+// which opens Change; X opened → "Opened in X · not posted by {agentName}", no proof chip), 08-3 §16.4.2 (WhatsApp number
+// lines, draft/WhatsAppNotice.tsx), §16.4 Send (daily limit), 08-3 §16.5 SEND_FAILED ("{WhatsApp} didn't send it.").
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import { formatDate, formatTime } from '../../shared/format';
@@ -32,6 +37,8 @@ import { selectAgentName } from '../store/settings';
 import { Icon, type IconName } from '../ui/Icon';
 import { CardButton } from './CardButton';
 import { CardFrame, CardTimeLabel, type CardTime } from './CardFrame';
+import { whatsAppNotice } from './draft/WhatsAppNotice';
+import { XCounter } from './draft/XCounter';
 import { HeldStrip } from './parts/HeldStrip';
 import { useSummaryToggle } from './parts/useSummaryToggle';
 import { useCardAction } from './useCardAction';
@@ -44,9 +51,18 @@ const MUTED: ReadonlySet<string> = new Set(['discarded', 'expired', 'superseded'
 const UNDO_MS = 5_000;
 
 // M8 T6
-/** The words that change with the draft's channel (05-2 §5.7.2 Right label, Buttons). Email only until T7. */
+/** The words that change with the draft's channel (05-2 §5.7.2 Right label, Buttons). */
 function channelWords(channel: DraftPayload['channel']): { label: string; primary: string; app: string } {
   switch (channel) {
+    // M8 T7
+    case 'whatsapp':
+      return {
+        label: t('cards.draft.right_label.whatsapp'),
+        primary: t('cards.draft.button.send_message'),
+        app: t('cards.approval.app.whatsapp'),
+      };
+    case 'x':
+      return { label: t('cards.draft.right_label.x_post'), primary: t('cards.draft.button.open_in_x'), app: '' };
     default:
       return { label: t('cards.draft.right_label.email'), primary: t('cards.draft.button.send_email'), app: t('cards.approval.app.gmail') };
   }
@@ -121,6 +137,9 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
   const name = p.to?.name ?? '';
   const words = channelWords(p.channel);
   const channel = words.label;
+  // M8 T7
+  const isX = p.channel === 'x';
+  const isWa = p.channel === 'whatsapp';
   const { busy, run } = useCardAction<'send' | 'save' | 'discard' | 'undo' | 'open' | 'again' | 'held' | 'queue' | 'cancel'>();
   const agentName = useStore(selectAgentName);
   const [editing, setEditing] = useState(false);
@@ -152,9 +171,10 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
     tid: 'cardDraft' as const,
     card,
     state,
-    label: t('cards.draft.label', { channel, name }),
-    // §5.7.4: "Subject {subject}. {first 200 characters of body}".
-    description: t('cards.draft.description', { subject: p.subject ?? '', preview: p.body.slice(0, 200) }),
+    label: isX ? t('cards.draft.label_post', { channel }) : t('cards.draft.label', { channel, name }),
+    // §5.7.4: "Subject {subject}. {first 200 characters of body}"; a WhatsApp message or X post has no subject (M8 T7).
+    description:
+      p.subject !== undefined ? t('cards.draft.description', { subject: p.subject, preview: p.body.slice(0, 200) }) : p.body.slice(0, 200),
   };
 
   const summary = (icon: IconName, iconClass: string | undefined, text: string, extra?: ReactNode) => (
@@ -169,11 +189,11 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
     </CardFrame>
   );
 
-  const rows = (
+  const rows = isX ? null : (
     <dl className={styles.rows}>
       <div className={styles.row}>
         <dt>{t('cards.draft.row_label.to')}</dt>
-        <dd data-copy="external">{p.to ? `${p.to.name} <${p.to.address}>` : ''}</dd>
+        <dd data-copy="external">{isWa ? t('cards.draft.to_whatsapp', { name }) : p.to ? `${p.to.name} <${p.to.address}>` : ''}</dd>
       </div>
       {p.subject !== undefined && (
         <div className={styles.row}>
@@ -209,7 +229,13 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
             <span className={styles.sentText}>{t('cards.draft.summary.sent', { time: sentAt })}</span>
             <CardTimeLabel {...time} />
           </div>
-          {p.sentMessageId && <ProofChip proof={{ kind: 'sent_folder', connectionId: '', messageId: p.sentMessageId }} />}
+          {p.sentMessageId &&
+            (isWa ? (
+              // M8 T7: "Proof: Delivered" once the phone reports delivery (ack ≥ 2); until then no chip.
+              p.delivered && <ProofChip proof={{ kind: 'wa_delivered', waMessageId: p.sentMessageId }} />
+            ) : (
+              <ProofChip proof={{ kind: 'sent_folder', connectionId: '', messageId: p.sentMessageId }} />
+            ))}
           {/* 05-2 §5.7.3 read-only in history: the final sent text and "Sent by you at {time}". */}
           {folded.open && (
             <>
@@ -244,6 +270,8 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
       return summary('Dismiss', styles.dimIcon, t('cards.common.withdrawn'));
     // M8 T6 (CR-0012 G-M8-13): Gmail's compose page took it over; a summary row, and a second tap opens it again.
     case 'opened_in_app':
+      // M8 T7: X opened; foo's line under it says the rest, and there is no proof chip.
+      if (isX) return summary('Globe', styles.dimIcon, t('cards.draft.summary.opened_in_x', { agentName }));
       return summary(
         'Mail',
         styles.dimIcon,
@@ -278,9 +306,10 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
   }
 
   const rightLabel = <span className={styles.right}>{p.edited ? t('cards.draft.right_label.edited', { channel }) : channel}</span>;
+  // M8 T7: an X draft never expires and needs no answer, so it has no footer words.
   const footer = (
     <div className={styles.footRow}>
-      <span className={styles.footer}>{t('cards.draft.footer', { time: at(card.expiresAt ?? card.updatedAt) })}</span>
+      <span className={styles.footer}>{isX ? '' : t('cards.draft.footer', { time: at(card.expiresAt ?? card.updatedAt) })}</span>
       <CardTimeLabel {...time} />
     </div>
   );
@@ -358,6 +387,10 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
       }),
     );
   const openGmail = () => run('open', () => invoke('draft:openInApp', { cardId: card.id }));
+  // M8 T7: main builds X's compose URL from this card (08-1 §3.2 `x_intent`); foo never posts.
+  const openX = () => run('open', () => invoke('app:openExternal', { target: 'x_intent', cardId: card.id, nonce: card.nonce }));
+  const tooLong = isX && (p.xRemaining ?? 0) < 0;
+  const wa = state === 'pending' ? whatsAppNotice(p, at) : null;
   const discard = () => run('discard', () => invoke('draft:discard', tap));
   const change = () => {
     setSubject(p.subject ?? '');
@@ -470,15 +503,35 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
         </CardButton>
       </div>
     );
+  } else if (isX) {
+    // 05-2 §5.7.2 X too long: "Shorten it" (Change mode, no AI) comes first and the Primary waits until it fits.
+    buttons = (
+      <div className={styles.buttons}>
+        {tooLong && (
+          <CardButton tid="cardDraftShorten" kind="secondary" disabled={busy !== null} onClick={change}>
+            {t('cards.draft.button.shorten')}
+          </CardButton>
+        )}
+        <CardButton tid="cardDraftSend" kind="primary" busy={busy === 'open'} disabled={busy !== null || tooLong} onClick={openX}>
+          {primary}
+        </CardButton>
+        <CardButton tid="cardDraftChange" kind="secondary" disabled={busy !== null} onClick={change}>
+          {t('cards.draft.button.change')}
+        </CardButton>
+        <CardButton tid="cardDraftDiscard" kind="secondary" busy={busy === 'discard'} disabled={busy !== null} onClick={discard}>
+          {t('cards.draft.button.discard')}
+        </CardButton>
+      </div>
+    );
   } else {
     buttons = (
       <div className={styles.buttons}>
-        {p.sendAllowed ? (
+        {wa?.send === 'hidden' ? null : p.sendAllowed ? (
           <CardButton
             tid="cardDraftSend"
             kind="primary"
             busy={busy === 'send'}
-            disabled={busy !== null}
+            disabled={busy !== null || wa?.send === 'disabled'}
             label={t('cards.draft.send_label', { primary, name })}
             onClick={send}
           >
@@ -501,17 +554,20 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
 
   // The pending look (X-65) says where it goes while the card waits; after an Undo it also says nothing went out.
   // CR-0012 G-M8-04: with no send permission there is no Gmail draft, so the "saved as a draft there" line is never shown.
+  // M8 T7: an X draft has no pending line (it is not an approval); a WhatsApp check or the daily limit replaces it.
   const lines =
     state === 'failed'
-      ? [t('cards.draft.line.failed')]
-      : !p.sendAllowed
+      ? [isWa ? t('cards.draft.line.wa_failed') : t('cards.draft.line.failed')]
+      : !p.sendAllowed || isX
         ? []
-        : offline && state === 'pending'
-          ? [t('cards.draft.line.offline')]
-          : [
-              ...(p.undone && state === 'pending' && !held ? [t('cards.draft.line.undone')] : []),
-              t('cards.draft.line.pending', { address: p.to?.address ?? '', app: words.app }),
-            ];
+        : wa
+          ? [wa.line]
+          : offline && state === 'pending'
+            ? [t('cards.draft.line.offline')]
+            : [
+                ...(p.undone && state === 'pending' && !held ? [t('cards.draft.line.undone')] : []),
+                t('cards.draft.line.pending', { address: p.to?.address ?? '', app: words.app }),
+              ];
 
   return (
     <CardFrame
@@ -525,6 +581,7 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
       {rows}
       <hr className={styles.rule} />
       <Body text={p.body} signature={p.signature} />
+      {isX && <XCounter remaining={p.xRemaining ?? 0} />}
       {lines.map((l) => (
         <div key={l} className={state === 'failed' ? styles.badLine : styles.line}>
           {l}

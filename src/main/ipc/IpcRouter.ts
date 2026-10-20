@@ -71,7 +71,7 @@ import { registerConnectionIpc } from '../connections/connectionIpc';
 import { logEvent } from '../log/techLog';
 import { answerIpc, cardReaction } from '../cards/answerIpc';
 import { approvalIpc } from '../approvals/approvalIpc';
-import { draftIpc } from '../drafts/draftIpc';
+import { draftFromMirror, draftIpc } from '../drafts/draftIpc';
 import { secretIpc } from '../vault/secretIpc';
 import { ensureFinder, finderChosen, finderWanted } from '../setup/aiFinder';
 import { aiFinderIpc, emitFinderWrite } from '../setup/aiFinderIpc';
@@ -515,6 +515,13 @@ export function registerIpc(ctx: AppContext): void {
   };
   const recent = (id: string) => messageList(db, id, 20);
   handle('message:send', (req) => {
+    // M8 T7 (04 §10.11, AT-269): a mirrored WhatsApp group's Send makes a group Draft card in foo's chat; nothing is stored
+    // in the mirror and nothing is sent.
+    const mirrored = draftFromMirror(ctx, req);
+    if (mirrored)
+      return mirrored.then((r) =>
+        !r || !r.ok ? (r ?? fail('VALIDATION')) : ok({ messageId: r.value.messageId, queued: false, mirrorDraft: r.value }),
+      );
     const fromDraft = draftAttachments(db, req.chatId);
     const r = sendMessage(db, req, {
       now: now(),

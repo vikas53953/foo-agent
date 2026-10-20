@@ -173,3 +173,12 @@
   font: var(--t-small);
   color: var(--fg-2);
 }
+/* M8 T7: 05-2 §5.7.1 X counter under the body; §5.7.2 too long in --bad. */
+.xCount {
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+.xCountBad {
+  font: var(--t-caption);
+  color: var(--bad);
+}

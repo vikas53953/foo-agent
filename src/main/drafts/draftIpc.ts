@@ -19,6 +19,7 @@ import { googleGmailDrafts, nodeFetch, type GoogleGmailDrafts } from './gmailDra
 import type { WaSendPort } from './DraftService';
 import type { Result } from '../../shared/errors';
 import { openedForTest } from '../setup/aiFinderIpc'; // M8 T7
+import { mirrorDraft, type MirrorDrafted } from './mirrorDraft'; // M8 T7
 
 /** Sends wait in the engine's queue behind earlier ones (3 s apart) and up to 30 s for the bridge each. */
 const WA_SEND_TIMEOUT_MS = 180_000;
@@ -142,4 +143,22 @@ export function draftIpc(ctx: AppContext): IpcHandlers<'draft:update' | 'draft:s
     'draft:discard': (req) => drafts.discard(req),
     'draft:openInApp': (req) => drafts.openInApp(req),
   };
+}
+
+// M8 T7
+/** 04 §10.11: Send in a mirrored WhatsApp group drafts into foo's chat; null when the chat is not a mirror. */
+export function draftFromMirror(ctx: AppContext, req: { chatId: string; text: string }): Promise<Result<MirrorDrafted> | null> | null {
+  const mirror = ctx.db.prepare("SELECT 1 FROM chats WHERE id = ? AND kind = 'wa_mirror'").pluck().get(req.chatId);
+  if (!mirror) return null;
+  const drafts = draftService(ctx);
+  return mirrorDraft(
+    {
+      db: ctx.db,
+      now: () => deps.clock.now(),
+      draftsOn: () => ctx.settings.get().connections.whatsapp.draft,
+      create: (input) => drafts.create(input),
+      changed: (effects) => publish(ctx, effects),
+    },
+    req,
+  );
 }
