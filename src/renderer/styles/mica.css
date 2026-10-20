@@ -1,0 +1,17 @@
+/* Spec: 02-3 §F28.4 as amended by X-179 (optional Mica: the left shell and title bar fill with `--bg-sidebar-surface`,
+   `--bg-sidebar` at 82 %, so the Windows 11 wallpaper tints them; the chat column and right shell stay solid; solid in high
+   contrast), CR-0021 pick 21. Main sets `<html data-mica>` only while the window really draws Mica (settings/appearance.ts). */
+html[data-mica] {
+  --bg-sidebar-surface: color-mix(in srgb, var(--bg-sidebar) 82%, transparent);
+}
+/* The page itself must let the material through; the chat column (MainShell, .main) and the right shell keep their fill. */
+html[data-mica],
+html[data-mica] body,
+html[data-mica] #root > [data-bp] {
+  background: transparent;
+}
+@media (forced-colors: active) {
+  html[data-mica] {
+    --bg-sidebar-surface: Canvas;
+  }
+}

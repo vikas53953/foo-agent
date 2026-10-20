@@ -4,7 +4,8 @@
 // Enter opens; `role="navigation"` "Settings pages"; test ids `settings-nav-{page}`), content max 760 centred, pad 24, page
 // title `--t-title` heading level 2, 48 bottom. 06 §0 page root `screen-settings`. CR-0020 (b): this step builds the frame
 // and the AI rows of Account & your AI (06-2 §6.1); "Search settings", the narrow (< 720px) drill-in layout and the other
-// pages' rows arrive with the Settings milestone (M13), so those pages show their title only.
+// pages' rows arrive with the Settings milestone (M13), so those pages show their title only. P1 T9 (CR-0021 pick 22):
+// Appearance (06-2 §6.2) is built whole.
 import { useRef, type KeyboardEvent } from 'react';
 import { t } from '../../../shared/copy/t';
 import { TID } from '../../../shared/testids';
@@ -14,6 +15,7 @@ import { Icon, type IconName } from '../../ui/Icon';
 import { cx } from '../../ui/cx';
 import { PageHeader } from '../shared/PageHeader';
 import { AccountAi } from './AccountAi';
+import { AppearancePage } from './AppearancePage';
 // M8 T2: Connections (06-2 §6.8; Google + X rows, the rest per CR-0012 G-M8-05)
 import { ConnectionsPage } from './ConnectionsPage';
 import styles from './SettingsPage.module.css';
@@ -92,6 +94,7 @@ export function SettingsPage({ page }: { page: PageId }) {
           <div className={styles.column}>
             <h2 className={styles.pageTitle}>{current.label()}</h2>
             {current.id === 'account' && <AccountAi />}
+            {current.id === 'appearance' && <AppearancePage />}
             {current.id === 'connections' && <ConnectionsPage />}
           </div>
         </main>
