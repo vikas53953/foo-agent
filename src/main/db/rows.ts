@@ -14,6 +14,7 @@ import type {
   StepRow,
   WaMessageRow,
 } from '../../shared/types';
+import { kitPickOf } from '../../shared/kit/pick';
 
 export type DbRow = Record<string, unknown>;
 
@@ -89,6 +90,7 @@ export function messageRow(r: DbRow, reactions: MessageRow['reactions'] = []): M
     side: flag(r.side),
     understood: parseJson<string[] | null>(r.understood, null),
     actions: parseJson<ActionChip[] | null>(r.actions, null),
+    kitPick: r.author_kind === 'user' ? kitPickOf(str(r.text_for_ai)) : null,
     rev: Number(r.rev),
     createdAt: Number(r.created_at),
     editedAt: num(r.edited_at),
