@@ -1,0 +1,118 @@
+{
+  "id": "BP-APP-R",
+  "theme": "light",
+  "verdict": "review",
+  "disputed": {
+    "cr": "CR-0002",
+    "checks": [
+      "r1",
+      "r2"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "✕",
+        "!",
+        "Comparing",
+        "fares",
+        "✓",
+        "Mom's",
+        "See",
+        "all",
+        "(6)",
+        "Gmail",
+        "Calendar",
+        "Sat"
+      ],
+      "extra": [
+        "In",
+        "progress",
+        "Scheduled",
+        "Done",
+        "Working",
+        "on",
+        "it",
+        "Mom’s",
+        "Wakes",
+        "up",
+        "around",
+        "6:30",
+        "AM",
+        "I",
+        "guessed",
+        "·",
+        "from",
+        "your",
+        "chats",
+        "·",
+        "Edit"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-APP-R",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 340,
+          "height": 786
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 340,
+          "height": 768
+        },
+        "dPos": 0,
+        "dSize": 18,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "review",
+    "anchors": [
+      {
+        "name": "BP-APP-R",
+        "ref": "#FFFFFF",
+        "app": "#F0F0F4",
+        "deltaE": 3.65,
+        "verdict": "review"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.06579733455882353,
+    "diffPixels": 17181,
+    "total": 261120,
+    "sizeMismatch": {
+      "a": [
+        340,
+        786
+      ],
+      "b": [
+        340,
+        768
+      ]
+    },
+    "heatmap": "BP-APP-R.light.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-APP-R.light.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-APP-R.light.png"
+}
