@@ -182,11 +182,14 @@ export interface Invokes {
   'ai:askKey': { req: { providerId: KeyProviderId }; res: CardRow };
   'app:openExternal': {
     req: {
-      target: 'google_signin' | 'x_intent' | 'google_account' | 'maker_page' | 'handback_site' | 'ai_page';
+      target: 'google_signin' | 'x_intent' | 'google_account' | 'maker_page' | 'handback_site' | 'ai_page' | 'action_chip';
       url?: string;
       providerId?: ProviderId;
       cardId?: string;
       nonce?: string;
+      /** R1 T7 (lead ok, 04-2 §21.7): target `action_chip` names the reply and the chip's place; main builds the URL. */
+      messageId?: string;
+      index?: number;
     };
     res: void;
   };
@@ -224,6 +227,8 @@ export interface Invokes {
       title: string;
       body: string;
       png?: ArrayBuffer | Uint8Array;
+      /** R1 T7 (lead ok): the kept thing's box in the window (CSS px); main takes the PNG snapshot of it. */
+      rect?: { x: number; y: number; width: number; height: number };
     };
     res: KeptItem;
   };

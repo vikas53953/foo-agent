@@ -92,22 +92,6 @@
     "kit.timeline.accessible_name": "R1 T3 (CR-0022)",
     "kit.calendar.free": "R1 T3 (CR-0022)",
     "kit.calendar.busy": "R1 T3 (CR-0022)",
-    "kit.pick.chosen": "R1 T3 (CR-0022)",
-    "kit.live.as_of": "R1 T7 (CR-0022)",
-    "kit.live.refresh": "R1 T7 (CR-0022)",
-    "kit.keep.button": "R1 T7 (CR-0022)",
-    "kit.keep.done": "R1 T7 (CR-0022)",
-    "kit.keep.open": "R1 T7 (CR-0022)",
-    "kit.keep.show_in_folder": "R1 T7 (CR-0022)",
-    "settings.appearance.visuals.label": "R1 T7 (CR-0022)",
-    "settings.appearance.visuals.second": "R1 T7 (CR-0022)",
-    "settings.appearance.visuals.words": "R1 T7 (CR-0022)",
-    "settings.appearance.visuals.balanced": "R1 T7 (CR-0022)",
-    "settings.appearance.visuals.visuals": "R1 T7 (CR-0022)",
-    "bubble.actions.label": "R1 T7 (CR-0022)",
-    "bubble.actions.call": "R1 T7 (CR-0022)",
-    "bubble.actions.map": "R1 T7 (CR-0022)",
-    "bubble.actions.calendar": "R1 T7 (CR-0022)",
-    "bubble.actions.link": "R1 T7 (CR-0022)"
+    "kit.pick.chosen": "R1 T3 (CR-0022)"
   }
 }

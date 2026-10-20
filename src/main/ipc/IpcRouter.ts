@@ -79,6 +79,7 @@ import { approvalIpc } from '../approvals/approvalIpc';
 import { draftFromMirror, draftIpc } from '../drafts/draftIpc';
 import { secretIpc } from '../vault/secretIpc';
 import { pageIpc } from '../page/pageIpc'; // R1 T5
+import { keepIpc } from '../keep/keepIpc'; // R1 T7
 import { ensureFinder, finderChosen, finderWanted } from '../setup/aiFinder';
 import { aiFinderIpc, emitFinderWrite } from '../setup/aiFinderIpc';
 
@@ -293,11 +294,14 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'ai:askKey': z.object({ providerId: z.enum(['openai-key', 'anthropic-key', 'google-key']) }).strict(),
   'app:openExternal': z
     .object({
-      target: z.enum(['google_signin', 'x_intent', 'google_account', 'maker_page', 'handback_site', 'ai_page']),
+      target: z.enum(['google_signin', 'x_intent', 'google_account', 'maker_page', 'handback_site', 'ai_page', 'action_chip']),
       url: z.string().max(2048).optional(),
       providerId: z.enum(PROVIDER_IDS).optional(),
       cardId: z.string().max(80).optional(),
       nonce: z.string().max(80).optional(),
+      // R1 T7 (lead ok): target action_chip names the reply and the chip's place (04-2 §21.7).
+      messageId: messageId.optional(),
+      index: z.number().int().min(0).max(2).optional(),
     })
     .strict(),
   // M4 T5 (08-1 §3.2; G-M4-09 error:fix). Main re-checks every card answer against the stored card (src/main/jobs/jobIpc.ts).
@@ -360,6 +364,16 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
       title: z.string().min(1).max(80),
       body: z.string().min(1).max(600_000),
       png: z.union([z.instanceof(ArrayBuffer), z.instanceof(Uint8Array)]).optional(),
+      // R1 T7 (lead ok): the snapshot's box (CSS px).
+      rect: z
+        .object({
+          x: z.number().int().min(0).max(10_000),
+          y: z.number().int().min(0).max(10_000),
+          width: z.number().int().min(0).max(10_000),
+          height: z.number().int().min(0).max(10_000),
+        })
+        .strict()
+        .optional(),
     })
     .strict(),
   'keep:list': z.object({ chatId }).strict(),
@@ -691,7 +705,7 @@ export function registerIpc(ctx: AppContext): void {
   for (const c of JOB_CHANNELS) handle(c, jobs[c] as Handler<typeof c>);
   registerLiveIpc(ctx, handle); // job:openWindow, job:watch (M9 T5, 09 §9.27.2)
   registerSigninIpc(ctx, handle);
-  registerKitIpc(ctx, handle); // kit:action (R1 T2, 04 §13.5)
+  registerKitIpc(ctx, handle); // kit:action (R1 T2), kit:refresh (R1 T7), 04 §13.5
   handle('memory:list', ({ filter, q }) => ok(memoryList(db, filter, q, now())));
   // M6 (CR-0010 G-M6-01): the engine owns files, the classify turn and the sensitive rule; main forwards one message each.
   const memoryCmd = <T>(cmd: MemoryCmdPayload): Promise<Result<T>> =>
@@ -790,4 +804,6 @@ export function registerIpc(ctx: AppContext): void {
   handleAll(secretIpc(ctx));
   // R1 T5 (CR-0022, 04 §13.6): the sealed AI page's open and bridge calls.
   handleAll(pageIpc(ctx));
+  // R1 T7 (CR-0022 pick 9): Keep for kit surfaces and AI pages.
+  handleAll(keepIpc(ctx));
 }

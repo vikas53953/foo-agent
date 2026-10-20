@@ -32,6 +32,10 @@ import type { Visuals } from '../../shared/settings';
 /** 04-2 §21.7: the reply may end with up to 3 follow-ups the composer shows as chips (P1 T6). */
 export const SUGGESTIONS_ASK =
   'For "reply" you may end <say> with one last line "Suggestions: a | b | c": up to 3 short next things the user might ask, each under 40 characters, in their words. Leave the line out when nothing fits or when money is involved.';
+/** R1 T7 (lead ok, 04-2 §21.7 action chips): the reply's own `Actions:` line (engine/prompt/actions.ts checks it). It rides
+ * with the kit section, so a tight local budget leaves it out with the kit (part `4k`). */
+export const ACTIONS_ASK =
+  'You may add one line "Actions: [{"kind":"call|map|calendar|link","label":"…","value":"…"}]": ≤ 3 taps (a phone number, a place, an ISO date-time or an https link); never for money.';
 
 /** One memory fact as offered in part 5 / 5b (08-4 §24.16 item 5). */
 export interface MemoryLine {
@@ -291,7 +295,7 @@ export class PromptBuilder {
     const helperList = input.helpers.length ? input.helpers.map((h) => `${h.id}: ${h.name}, ${h.jobText}`).join('\n') : 'none';
     const protocolWith = (kit: string) =>
       gate(`${this.protocolThen(IntakeActSchema, 'intake.md', { helperList })}\n${SUGGESTIONS_ASK}${kit ? `\n${kit}` : ''}`, '4');
-    let kit = kitPromptSection(input.visuals ?? 'balanced');
+    let kit = `${ACTIONS_ASK}\n${kitPromptSection(input.visuals ?? 'balanced')}`;
     let fixed = [gate(identity, '1'), gate(rules, '2'), protocolWith(kit)];
 
     // Part 5: identity facts outside the cap, then pinned facts while the total stays ≤ 4,000 chars.
