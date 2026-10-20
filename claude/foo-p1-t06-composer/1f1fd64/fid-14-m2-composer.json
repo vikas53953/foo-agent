@@ -1,0 +1,39 @@
+[
+  {
+    "id": "SV-10",
+    "ok": true,
+    "expected": "height 46 (±0.5)",
+    "measured": "639.9999389648438×46"
+  },
+  {
+    "id": "SV-11",
+    "ok": true,
+    "expected": "border-top-left-radius: 24px; border-top-right-radius: 24px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px",
+    "measured": "all equal"
+  },
+  {
+    "id": "SV-12",
+    "ok": true,
+    "expected": "width 36 × height 36 (±0.5)",
+    "measured": "36×36, 36×36"
+  },
+  {
+    "id": "SV-26",
+    "ok": true,
+    "expected": "color: rgb(105, 105, 117)",
+    "measured": "all equal"
+  },
+  {
+    "id": "SV-30",
+    "ok": true,
+    "expected": "transition-duration: 0.083s (background-color)",
+    "measured": "background-color, transform 0.083s, 0.083s; background-color, transform 0.083s, 0.083s"
+  },
+  {
+    "id": "SV-26",
+    "ok": true,
+    "expected": "color: rgb(142, 142, 154)",
+    "measured": "all equal",
+    "note": "dark"
+  }
+]
