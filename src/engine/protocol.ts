@@ -259,6 +259,9 @@ export const WRITABLE_TABLES = [
   // M6 T7 (08-1 §2.4.1 lists both): the budget's held items (08-3 §15.6) and the never-offer-twice keys (§15.7).
   'held_items',
   'suggestions',
+  // M9 T8 (08-1 §2.4.1 lists both; 08-2 §8.3.9 site notes, §8.3.11 site recipes): upserts by domain / (domain, goal).
+  'site_notes',
+  'site_recipes',
 ] as const;
 /** Tables the `delete` op takes, with the id each uses: reactions `{messageId}|{by}`, memory_index the fact id,
  * memory_tombstones `{hash}|{originKind}`, memory_group_grants `{factId}|{chatId}`. */
@@ -413,6 +416,9 @@ export const NAMED_QUERY_NAMES = [
   'wa.byName',
   'wa.groupByName',
   'wa.lastChats',
+  // M9 T8: 08-1 §2.4.1 `siteNotes` (flags for the domains in play, 08-2 §8.3.9) and `siteRecipe` (one domain + goal, §8.3.11).
+  'siteNotes',
+  'siteRecipe',
 ] as const;
 export type NamedQuery = (typeof NAMED_QUERY_NAMES)[number];
 

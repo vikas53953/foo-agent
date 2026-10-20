@@ -63,6 +63,7 @@ import { draftSecondLook, type DraftLookAnswer, type DraftLookReq } from '../gat
 // M9 T8
 import type { LiveRead } from '../tools/browser/readLiveTerms';
 import { handbackCopy, handbackUrl } from '../tools/browser/handbackGuard';
+import { SiteNotes, domainOf as siteDomainOf } from '../tools/browser/siteNotes';
 
 export const CHECKLIST_AFTER_MS = 1_500;
 const OBSERVATION_CAP = 4_000;
@@ -284,8 +285,17 @@ export class JobRunner {
   private ticker: RunnerTick;
   /** T7: the gate's job side (08-2 §9.4). */
   readonly gating: RunnerGate;
+  // M9 T8: 08-2 §8.3.9 site notes (flags + sites/{domain}.md; the step turn reads them).
+  private readonly siteNotes: SiteNotes;
 
   constructor(private d: JobRunnerDeps) {
+    this.siteNotes = new SiteNotes({
+      link: d.link,
+      dataDir: d.dataDir,
+      now: () => d.clock.now(),
+      timeZone: () => d.settings().locale.timeZone,
+      log: (e, k) => d.log(e, k),
+    });
     const core: RunnerCore = {
       d,
       get cost() {
@@ -857,6 +867,7 @@ export class JobRunner {
     // M5 T7: a call the gate held (a refusal line, a hand-back, an app_use / offer Choice) is not a failed tool.
     if (r.gate) return this.gating.onToolGate(job, r);
     c.lastObservation = { toolCallId: r.toolCallId, tool: r.tool, text: JSON.stringify(r.result ?? null).slice(0, OBSERVATION_CAP) };
+    await this.siteNotes.onTool(job.id, r.tool, decision.call.args, r.outcome === 'error' ? (r.errorKind ?? 'UNKNOWN') : null); // M9 T8
     if (r.needsUser) {
       await this.needsYou(job, r.needsUser);
       return false;
@@ -1112,8 +1123,16 @@ export class JobRunner {
       return !(await this.countFailure(job));
     }
     const stored = new Map<string, string>();
-    for (const tc of (await this.query<{ id: string; result: unknown; outcome: string | null }[]>('toolCallsForJob', job.id)) ?? [])
-      if (tc.outcome === 'ok') stored.set(tc.id, JSON.stringify(tc.result ?? null));
+    const booked: string[] = []; // M9 T8: the pages a browser.submit went through on (site notes `bookingWorks`)
+    for (const tc of (await this.query<{ id: string; tool: string; result: unknown; outcome: string | null }[]>(
+      'toolCallsForJob',
+      job.id,
+    )) ?? []) {
+      if (tc.outcome !== 'ok') continue;
+      stored.set(tc.id, JSON.stringify(tc.result ?? null));
+      const landed = tc.tool === 'browser.submit' ? siteDomainOf((tc.result as { url?: unknown } | null)?.url) : null;
+      if (landed) booked.push(landed);
+    }
     const check = checkProof(d.proof, {
       raw: this.d.tools.rawResults(job.id),
       stored: (id) => stored.get(id) ?? null,
@@ -1162,7 +1181,10 @@ export class JobRunner {
       ...(await this.editChecklistOps(job, to)),
     ];
     // A refused move (the job left WORKING meanwhile, e.g. a stop) rolls the whole write back: nothing to end here.
-    if ((await this.tx(ops)).ok) await this.ended(job.id, c);
+    if ((await this.tx(ops)).ok) {
+      if (to === 'done') await this.siteNotes.onDone(job.id, booked); // M9 T8
+      await this.ended(job.id, c);
+    }
     return false;
   }
 
@@ -1226,6 +1248,7 @@ export class JobRunner {
     this.steering.forget(jobId);
     this.watchdog.forget(jobId);
     this.gating.forget(jobId);
+    this.siteNotes.forget(jobId); // M9 T8
     this.d.hooks?.onEnded?.(jobId); // M9 T3
     // A slot may have freed for a job paused at the AI cap.
     void this.cost.resumeCapped();
@@ -1345,7 +1368,10 @@ export class JobRunner {
       timeZone: this.d.settings().locale.timeZone,
       now: this.d.clock.now(),
     });
-    const built = this.d.prompts.buildStep(this.jobBlock(job, steps, c), this.d.tools.catalogue(), memory, steer);
+    // M9 T8 (08-2 §8.3.9): the flags of every domain in play close the job block.
+    const sites = await this.siteNotes.linesFor(job.id);
+    const block = [this.jobBlock(job, steps, c), ...sites].join('\n');
+    const built = this.d.prompts.buildStep(block, this.d.tools.catalogue(), memory, steer);
     const maxOut = this.d.ai.turnParams(pick.providerId, 'step').maxOutputTokens;
     if (!(await this.cost.allowStep(job, built.system.length + built.prompt.length, maxOut))) {
       await this.steering.settle(job, null, '');

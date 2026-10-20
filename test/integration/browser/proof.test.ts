@@ -65,6 +65,9 @@ describe('AT-114a · the booking code is proof', () => {
     // The OTP rule does not catch a confirmation-shaped code: the stored (redacted) result still shows it.
     expect(String(x.toolCalls().find((c) => c.id === 'tc_000003')!.result)).toContain('Booking code TJ8821');
     expect(redactSecrets('Booking code TJ8821').hits).toBe(0);
+    // 08-2 §8.3.9: the success is a site note (the booking went through on tablejoy.test).
+    const notes = x.db.prepare("SELECT flags FROM site_notes WHERE domain = 'tablejoy.test'").get() as { flags: string };
+    expect(JSON.parse(notes.flags)).toEqual({ bookingWorks: true });
   }, 60_000);
 
   it('AT-114a a code the page never showed → done_unverified, nothing stored as proof', async () => {
