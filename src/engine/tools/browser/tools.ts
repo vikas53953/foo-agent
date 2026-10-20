@@ -165,6 +165,16 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
     };
   }
 
+  // M9 T7: the left page's own load can still fail after the first `about:blank` (its error page commits over it), so
+  // try once more until the window really is blank.
+  const blank = async (page: Page) => {
+    for (let i = 0; i < 3; i++) {
+      await page.goto('about:blank').catch(() => null);
+      await page.waitForTimeout(50).catch(() => null);
+      if (page.url() === 'about:blank') return;
+    }
+  };
+
   const defs: ToolDef[] = [
     tool('browser.open', 'read', 'url: string', "Open a web page in foo's own browser.", ARGS.open, async (a, page, ctx) => {
       const rule = checkUrl(a.url, { handback: m().handback, allowHosts });
@@ -181,13 +191,13 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       // The page never arrived (offline, no such host, refused, 15 s): never an `ok` on the old page, never URL_NOT_ALLOWED for
       // Chromium's own error page.
       if (failed !== null) {
-        await page.goto('about:blank').catch(() => null);
+        await blank(page);
         return { kind: 'error', errorKind: /ERR_INTERNET_DISCONNECTED|ERR_NETWORK_CHANGED/.test(failed) ? 'NET_OFFLINE' : 'SITE_TIMEOUT' };
       }
       // Redirects are checked again where they landed: a hand-back or private address is left at once.
       const landed = checkUrl(page.url(), { handback: m().handback, allowHosts });
       if (!landed.ok) {
-        await page.goto('about:blank').catch(() => null);
+        await blank(page);
         return { kind: 'error', errorKind: landed.error.kind };
       }
       if (miss) return err(miss);
