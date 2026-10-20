@@ -3,28 +3,35 @@
 // copy), §5.10.4 (card label "Sign-in needed: {title}"), 05-1 §0.3 (order Primary, Secondary, then links), §0.5 (summary
 // row for terminal states; offline: the offline line, "Skip" stays enabled), 08-1 §4.5 (`signin` payload), CR-0013
 // G-M9-10 (`reason` is the lane), G-M9-11 (no Watch button). The card's words and buttons as data, so they are unit-tested.
-import { z } from 'zod';
 import { t } from '../../shared/copy/t';
 import { formatTime } from '../../shared/format';
-import { SignInReasonSchema } from '../../shared/schemas';
 import type { CardRow, SignInReason } from '../../shared/types';
 
 export type SignInAction = 'done' | 'take_over' | 'skip' | 'use_code_box';
 
 // 08-1 §4.5 + G-M9-10. `phone` (the masked number of the bank-check lane) is not in the 08-1 payload: implementation-notes
 // "M9 T6", flagged to the lead. The renderer reads it when the engine sends it and draws no bank-check card without it.
-const payloadSchema = z.object({
-  mode: z.enum(['sign_in_here', 'take_over']),
-  jobId: z.string().min(1),
-  site: z.string().min(1),
-  reason: SignInReasonSchema,
-  phone: z.string().min(1).optional(),
-});
-export type SignInPayload = z.infer<typeof payloadSchema>;
+// Checked by hand, the same rules as the engine's `SignInReasonSchema`: zod stays out of the renderer's first script
+// (AT-322, P1 T10).
+export interface SignInPayload {
+  mode: 'sign_in_here' | 'take_over';
+  jobId: string;
+  site: string;
+  reason: SignInReason;
+  phone?: string;
+}
+
+const MODES: readonly SignInPayload['mode'][] = ['sign_in_here', 'take_over'];
+const REASONS: readonly SignInReason[] = ['sign_in', 'captcha', 'passkey', 'bank_3ds', 'known_puzzle', 'saved_login_failed'];
+const filled = (v: unknown): v is string => typeof v === 'string' && v.length > 0;
+const oneOf = <T extends string>(list: readonly T[], v: unknown): v is T =>
+  typeof v === 'string' && (list as readonly string[]).includes(v);
 
 export const parseSignIn = (payload: Record<string, unknown>): SignInPayload | null => {
-  const r = payloadSchema.safeParse(payload);
-  return r.success ? r.data : null;
+  const { mode, jobId, site, reason, phone } = payload;
+  if (!oneOf(MODES, mode) || !filled(jobId) || !filled(site) || !oneOf(REASONS, reason)) return null;
+  if (phone !== undefined && !filled(phone)) return null;
+  return phone === undefined ? { mode, jobId, site, reason } : { mode, jobId, site, reason, phone };
 };
 
 /** §5.10.2 Buttons column, in the §0.3 order (the first one is the Primary). */

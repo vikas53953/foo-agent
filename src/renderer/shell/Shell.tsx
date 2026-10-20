@@ -15,7 +15,7 @@ import { tokenMs } from '../ui/tokens';
 import { BannerStrip } from '../banner/BannerStrip';
 import { LeftShell } from '../chatlist/LeftShell';
 import { PlaceholderPage } from '../pages/PlaceholderPage';
-import { MemoryPage } from '../screens/Memory';
+import { MemoryPage } from '../pages/lazyPages';
 import { useStore } from '../store/index';
 import { selectRightShellOpen, selectSidebarWidth } from '../store/settings';
 import { selectRightShellOpenOverlay, selectView, selectXsPane } from '../store/ui';

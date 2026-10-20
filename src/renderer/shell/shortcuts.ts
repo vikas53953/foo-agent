@@ -6,7 +6,7 @@
 // reset, Ctrl+wheel the same; one `zoom` value shared with Settings → Appearance, AT-321, CR-0021 pick 22). Chat-view keys
 // (Ctrl+F, Ctrl+Shift+D, F6, Esc) belong to the main shell.
 import { useEffect } from 'react';
-import { ZOOM_STEPS } from '../../shared/settings';
+import { ZOOM_STEPS } from '../../shared/settingsLists';
 import { focusPane } from '../a11y/focusTargets';
 import { togglePin, toggleUnread } from '../chatlist/actions';
 import { effectivePill } from '../chatlist/rules';
