@@ -70,6 +70,7 @@ import { FIX_ACTION_KINDS, JOB_CHANNELS, jobIpc } from '../jobs/jobIpc';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
 import { registerSigninIpc } from '../jobs/signinIpc';
+import { registerKitIpc } from '../kit/kitIpc';
 import { isTrustedUrl } from '../windows/protocol';
 import { registerConnectionIpc } from '../connections/connectionIpc';
 import { logEvent } from '../log/techLog';
@@ -686,6 +687,7 @@ export function registerIpc(ctx: AppContext): void {
   for (const c of JOB_CHANNELS) handle(c, jobs[c] as Handler<typeof c>);
   registerLiveIpc(ctx, handle); // job:openWindow, job:watch (M9 T5, 09 §9.27.2)
   registerSigninIpc(ctx, handle);
+  registerKitIpc(ctx, handle); // kit:action (R1 T2, 04 §13.5)
   handle('memory:list', ({ filter, q }) => ok(memoryList(db, filter, q, now())));
   // M6 (CR-0010 G-M6-01): the engine owns files, the classify turn and the sensitive rule; main forwards one message each.
   const memoryCmd = <T>(cmd: MemoryCmdPayload): Promise<Result<T>> =>

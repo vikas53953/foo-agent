@@ -1,16 +1,10 @@
-/* Spec: 04 §13.5 (kit surface placeholder until R1 T2; the dropped caption is `--t-caption` in `--fg-3`, 04 §6.5 style). */
+/* Spec: 04 §13.5 (the kit block in a reply: its surfaces stacked 8px apart, 02 §F11.1 related lines). R1 T2. */
 .block {
   display: flex;
   flex-direction: column;
   gap: var(--s1);
+  min-width: 0;
 }
-
-.surface:empty {
+.block:empty {
   display: none;
-}
-
-.dropped {
-  margin: 0;
-  font: var(--t-caption);
-  color: var(--fg-3);
 }

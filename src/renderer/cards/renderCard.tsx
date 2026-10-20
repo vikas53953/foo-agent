@@ -3,7 +3,7 @@
 // 05-3 §5.22–§5.24 are the M2 cards, M4 adds the job cards (05-1 §5.2, 05-3 §5.12, §5.18.2, §5.19–§5.21). Every other type
 // keeps the M1 placeholder (its title in the card frame) until its milestone (05: M5 and later). The height estimates stay in
 // registry.ts; this map is the component half of the registry (implementation-notes "M4 T5"). M5 (CR-0009): choice, tiles,
-// approval, draft and secret (stubs from T1; T2, T4, T5, T6 fill them). M9: §5.10 Sign-in.
+// approval, draft and secret (stubs from T1; T2, T4, T5, T6 fill them). M9: §5.10 Sign-in. R1 (CR-0022): `kit`.
 import type { ComponentType } from 'react';
 import type { CardRow, CardType } from '../../shared/types';
 import type { CardTime } from './CardFrame';
@@ -26,6 +26,8 @@ import { Stuck } from './Stuck';
 import { TableCard } from './TableCard';
 // M8
 import { ConnectCard } from './Connect';
+// R1 T2 (CR-0022)
+import { KitCard } from '../kit/KitCard';
 
 type CardComponent = ComponentType<{ card: CardRow; time: CardTime }>;
 
@@ -53,6 +55,8 @@ export const CARD_VIEWS: Partial<Record<CardType, CardComponent>> = {
   connect: ConnectCard,
   // M9 T6: the Sign-in card (05-3 §5.10).
   signin: SignInCard,
+  // R1 T2 (CR-0022, 04 §13.5): a kit surface the engine posts as its own card.
+  kit: KitCard,
 };
 
 /** G-M4-10: the purchase variant of the Spend-cap card is M10's; until then it keeps the placeholder. */
