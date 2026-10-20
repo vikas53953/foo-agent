@@ -1,0 +1,109 @@
+{
+  "journey": "test/verify/r1-t7-output.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "99a453ddd2a82d86803fe07c641d9be16f1598e7",
+  "dirty": true,
+  "started": "2026-10-20T13:05:15.217Z",
+  "finished": "2026-10-20T13:05:32.466Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "Visuals row: [\"Mostly words\",\"Balanced\",\"Show me visuals\"], default \"Balanced\"",
+    "LiveStamp: \"Data as of 6:00 PMRefresh\" → Refresh → \"Data as of 6:25 PMRefresh\"",
+    "action chips: [\"Call the restaurant\",\"See the menu\",\"Add dinner to calendar\"]; the \"Actions:\" line stays out of the bubble",
+    "link chip asks first: \"This opens example.com. Open it?\"",
+    "after Open, main opened [\"https://example.com/menu\"] (the stored chip's URL)",
+    "Kept list, newest first: kinds [\"page\",\"kit\"], rows [\"Food budgetFri 16 OctOpenShow in folder\",\"Goa faresFri 16 OctOpenShow in folder\"]",
+    "kept page reopens in the sealed box: src foo-page://pg_…/, sandbox \"allow-scripts\""
+  ],
+  "shots": [
+    {
+      "file": "after/01-visuals-setting.light.png",
+      "name": "visuals-setting",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-visuals-setting-dark.dark.png",
+      "name": "visuals-setting-dark",
+      "theme": "dark"
+    },
+    {
+      "file": "after/03-live-stamp.light.png",
+      "name": "live-stamp",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-live-stamp-dark.dark.png",
+      "name": "live-stamp-dark",
+      "theme": "dark"
+    },
+    {
+      "file": "after/05-live-refreshed.light.png",
+      "name": "live-refreshed",
+      "theme": "light"
+    },
+    {
+      "file": "after/06-live-refreshed-dark.dark.png",
+      "name": "live-refreshed-dark",
+      "theme": "dark"
+    },
+    {
+      "file": "after/07-action-chips.light.png",
+      "name": "action-chips",
+      "theme": "light"
+    },
+    {
+      "file": "after/08-action-chips-dark.dark.png",
+      "name": "action-chips-dark",
+      "theme": "dark"
+    },
+    {
+      "file": "after/09-action-link-dialog.light.png",
+      "name": "action-link-dialog",
+      "theme": "light"
+    },
+    {
+      "file": "after/10-action-link-dialog-dark.dark.png",
+      "name": "action-link-dialog-dark",
+      "theme": "dark"
+    },
+    {
+      "file": "after/11-kept-buttons.light.png",
+      "name": "kept-buttons",
+      "theme": "light"
+    },
+    {
+      "file": "after/12-kept-buttons-dark.dark.png",
+      "name": "kept-buttons-dark",
+      "theme": "dark"
+    },
+    {
+      "file": "after/13-kept-list.light.png",
+      "name": "kept-list",
+      "theme": "light"
+    },
+    {
+      "file": "after/14-kept-list-dark.dark.png",
+      "name": "kept-list-dark",
+      "theme": "dark"
+    },
+    {
+      "file": "after/15-kept-page-open.light.png",
+      "name": "kept-page-open",
+      "theme": "light"
+    },
+    {
+      "file": "after/16-kept-page-open-dark.dark.png",
+      "name": "kept-page-open-dark",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}
