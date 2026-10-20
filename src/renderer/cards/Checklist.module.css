@@ -165,6 +165,7 @@
 
 .kind {
   flex: none;
+  width: var(--icon-sm);
   height: var(--t-body-lh);
   color: var(--fg-3);
 }
@@ -218,6 +219,10 @@
   color: var(--fg-2);
   font: var(--t-caption-strong);
   font-variant-numeric: tabular-nums;
+}
+/* The drop and fold play once, on a card that arrived in this session (the row's data-new), never on scroll-back. */
+:global([data-new]) .source,
+:global([data-new]) .more {
   animation:
     source-drop var(--m-spring) var(--ease-spring) both,
     source-fold var(--m-spring) var(--ease-spring-soft) both;
@@ -241,7 +246,7 @@
     margin-inline-start: calc(var(--s0) * var(--motion-move) + var(--pile-overlap) * (1 - var(--motion-move)));
   }
 }
-.source:first-child {
+:global([data-new]) .source:first-child {
   animation-name: source-drop;
 }
 .saved {
@@ -249,7 +254,10 @@
   color: var(--fg-2);
 }
 .finished {
-  transition: transform var(--m-fast) var(--ease-standard);
+  /* Keeps the card's own --m-card transitions (Card.module.css) beside the hover tilt. */
+  transition-property: transform, height, background-color, color;
+  transition-duration: var(--m-fast), var(--m-card), var(--m-card), var(--m-card);
+  transition-timing-function: var(--ease-standard);
 }
 .finished:hover {
   transform: rotate(calc(1deg * var(--motion-move)));

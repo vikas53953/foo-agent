@@ -26,7 +26,7 @@ const KIND_OF_PHRASE: Readonly<Record<PhraseKey, StepKind | null>> = {
   wait_pick: 'wait',
   wait_approve: 'wait',
   show_before: 'wait',
-  wait_signin: 'sign_in',
+  wait_signin: 'wait', // the user signs in, so foo saved nothing here
   fill_details: 'fill',
   book: 'pay',
   book_calendar: 'pay',

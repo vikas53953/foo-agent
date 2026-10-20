@@ -31,8 +31,46 @@ describe('AT-312 time saved is a fixed table (CR-0021 pick 14)', () => {
     expect(stepKind('not_a_phrase')).toBeNull();
   });
 
-  it('AT-312 every phrase in the catalogue has a decided kind', () => {
-    for (const k of Object.keys(PHRASES) as PhraseKey[]) expect(stepKind(k) === null || STEP_KINDS.includes(stepKind(k)!)).toBe(true);
+  it('AT-312 every phrase in the catalogue has its decided kind', () => {
+    const kinds = Object.fromEntries((Object.keys(PHRASES) as PhraseKey[]).map((k) => [k, stepKind(k)]));
+    expect(kinds).toEqual({
+      read_app: 'read',
+      read_email: 'read',
+      check_calendar: 'read',
+      look_web: 'search',
+      check_sites: 'read',
+      check_site: 'read',
+      wait_site: 'wait',
+      look_for: 'search',
+      compare: 'read',
+      shortlist: 'read',
+      wait_pick: 'wait',
+      wait_approve: 'wait',
+      show_before: 'wait',
+      wait_signin: 'wait',
+      fill_details: 'fill',
+      book: 'pay',
+      book_calendar: 'pay',
+      pay: 'pay',
+      add_calendar: 'fill',
+      draft: 'fill',
+      writing: 'fill',
+      send: 'send',
+      make_file: 'fill',
+      use_pc: null,
+      find_proof: 'read',
+      blocked_try_next: null,
+      took_over: null,
+      stopped: null,
+      find_trains: 'search',
+      sign_in: 'sign_in',
+      fill_passengers: 'fill',
+      get_fare: 'read',
+      wait_opens: 'wait',
+      read_plans: 'read',
+      read_bill: 'read',
+      generic_working: null,
+    });
   });
 
   it('AT-312 sums finished steps and rounds to the nearest 5', () => {

@@ -8,6 +8,8 @@ import { expect, test, type Locator } from '@playwright/test';
 import { t } from '../../src/shared/copy/t';
 import { TID } from '../../src/shared/testids';
 import { CARDS_ASK, CARDS_JOB_TITLE, CARDS_SAVED_MIN, cardsLines } from './p1-cards-world';
+import { openWorld, windowSize } from '../fidelity/capture';
+import { launchWithFakeAi, VERIFY_OK } from './fakeAi';
 import { advanceUntil, lastCard, say, startBooking } from './m9-booking-world';
 
 const css = (el: Locator, prop: string) => el.evaluate((n, p) => getComputedStyle(n).getPropertyValue(p), prop);
@@ -30,7 +32,16 @@ test('AT-310 AT-311 AT-312 a booking job: step icons, the source pile, the Appro
 
     // AT-311: the waiting Approve card sits on --shadow-28 and lands on --ease-spring; amounts in the money weight only.
     const shadow = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--shadow-28').trim());
-    expect(await css(approval, 'box-shadow')).not.toBe('none');
+    const probe = await page.evaluate(() => {
+      const d = document.createElement('div');
+      d.style.boxShadow = 'var(--shadow-28)';
+      document.body.append(d);
+      const v = getComputedStyle(d).boxShadow;
+      d.remove();
+      return v;
+    });
+    expect(await css(approval, 'box-shadow')).toBe(probe);
+    expect(await css(approval, 'animation-name')).toContain('approval-land');
     expect(shadow.length).toBeGreaterThan(0);
     const money = approval.locator('[data-money]');
     expect(await money.count()).toBeGreaterThan(0);
@@ -103,5 +114,31 @@ test('AT-312 DONE "⚠ Not checked live" shows no end-card line and no tilt', as
     expect(await css(unverified, 'transform')).toBe('none');
   } finally {
     await w.close();
+  }
+});
+
+test('§F7.1 Cards: the undo bar slides up on the spring and its timer line drains over --dur-undo, paused on hover', async () => {
+  const { app } = await launchWithFakeAi([VERIFY_OK]);
+  const page = await app.firstWindow();
+  try {
+    await openWorld(app, page);
+    await windowSize(app, page, 1440, 900);
+    await page.evaluate(() => (document.documentElement.dataset.motion = 'full'));
+    await page.getByTestId(TID.sidebarMore).click();
+    await page.getByTestId(TID.sidebarMenuMemory).click();
+    await page.getByTestId(TID.memoryRow).first().getByTestId(TID.memoryRowForget).click();
+    const bar = page.getByTestId(TID.appUndo);
+    await expect(bar).toBeVisible();
+    expect(await css(bar, 'animation-timing-function')).toContain('linear(');
+    const line = bar.locator('[aria-hidden="true"]').last();
+    expect(await css(line, 'animation-name')).toContain('undo-drain');
+    expect(await css(line, 'animation-duration')).toBe('5s'); // --dur-undo 5000ms (02-3 §F21.3)
+    await bar.hover();
+    await expect.poll(() => css(line, 'animation-play-state')).toBe('paused');
+    // Basic: no drain (fades only).
+    await page.evaluate(() => (document.documentElement.dataset.motion = 'basic'));
+    await expect(line).toBeHidden();
+  } finally {
+    await app.close();
   }
 });

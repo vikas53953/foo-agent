@@ -58,7 +58,7 @@ export const PILE_MAX = 5;
 export const PILE_FOLDED = 3;
 const PILE_KINDS: readonly StepKind[] = ['read', 'search'];
 
-/** The sites a started read or search step names in its `site` / `sites` slot ("A, B and C"). */
+/** The sites a started read or search step names in its `site` / `sites` slot, split like the watchdog ("A, B and C"). */
 export function stepSources(step: Pick<StepRow, 'phraseKey' | 'slots' | 'state'> | undefined): string[] {
   if (!step || step.state === 'pending') return [];
   const kind = stepKind(step.phraseKey);
@@ -180,7 +180,12 @@ function StepList({
               <span className={styles.mark}>
                 <StepMark state={l.state} />
               </span>
-              {kind && <Icon name={KIND_ICON[kind]} size={16} className={styles.kind} />}
+              {kind ? (
+                <Icon name={KIND_ICON[kind]} size={16} className={styles.kind} />
+              ) : (
+                // A row with no kind keeps the icon column so every row's words line up.
+                <span className={styles.kind} aria-hidden="true" />
+              )}
               <span className={styles.stepText}>
                 {l.state === 'waiting' ? (
                   <button type="button" className={styles.waitLink} data-testid={TID.cardChecklistWaitingLink} onClick={focusNeed}>
