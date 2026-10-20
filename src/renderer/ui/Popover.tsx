@@ -1,4 +1,4 @@
-// Spec: 04 §13.4 (citation popover: `--bg-raised`, `--r-md`, `--shadow-16`, width 320, padding 12), §17.2 (feedback
+// Spec: CR-0021 pick 5 (scales in from its anchor: transform-origin from originFrom), 04 §13.4 (citation popover: `--bg-raised`, `--r-md`, `--shadow-16`, width 320, padding 12), §17.2 (feedback
 // popover: `--r-lg`, padding 16, anchored above the 👎 button), §19.6 (why popover: `--r-lg`, padding 16); 02-3 §F27 / 03-shell-2
 // §3.9.4 (a popover handles its own Esc and returns focus to its opener). Placed above the anchor, or below when there is
 // no room; never leaves the window.
@@ -6,6 +6,7 @@ import { useEffect, useLayoutEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { TID } from '../../shared/testids';
 import { cx } from './cx';
+import { originFrom } from './Menu';
 import styles from './Popover.module.css';
 
 export interface PopoverProps {
@@ -52,6 +53,7 @@ export function Popover({
     const x = Math.min(Math.max(GAP, a.left), window.innerWidth - r.width - GAP);
     el.style.left = `${x}px`;
     el.style.top = `${y}px`;
+    el.style.transformOrigin = originFrom(a, x, y, r);
     el.style.visibility = 'visible';
     if (opened.current.autoFocus) el.querySelector<HTMLElement>('button, [href], input, textarea, [tabindex="0"]')?.focus();
   }, []);

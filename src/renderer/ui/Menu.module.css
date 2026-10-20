@@ -11,12 +11,19 @@
   border-radius: var(--r-md);
   background: var(--bg-raised);
   box-shadow: var(--shadow-16);
-  animation: menu-in var(--m-normal) var(--ease-in);
+  animation:
+    menu-in var(--m-slow) var(--ease-spring),
+    menu-fade var(--m-normal) var(--ease-in);
 }
+/* CR-0021 pick 5: scales in from the opening button (origin set by the component); fade only at Basic and Off. */
 @keyframes menu-in {
   from {
+    transform: scale(calc(1 - 0.06 * var(--motion-move)));
+  }
+}
+@keyframes menu-fade {
+  from {
     opacity: 0;
-    transform: translateY(calc(-1 * var(--s0) * var(--motion-move, 1)));
   }
 }
 .item {

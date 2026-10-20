@@ -1,11 +1,31 @@
 /* Spec: 03-shell-2 §3.7.3 (sections padded --s3 on all sides, 1px --line between; label --t-caption-strong, uppercase,
    tracking +0.08em, --fg-3, --s1 below; text links --accent --t-small), shared by DoingNow, UsingChips, KnowList,
-   GroupMembers and SpentMeters. */
+   GroupMembers and SpentMeters. 02 §F7.1 "the details panel slides in and its sections stagger": each section rises --s1
+   and fades in, the next one half an `--m-fast` later (fade only, no stagger, at Basic and Off). */
 .section {
   display: grid;
   gap: var(--s1);
   padding: var(--s3);
   border-bottom: 1px solid var(--line);
+  animation: section-in var(--m-slow) var(--ease-spring-soft) backwards;
+}
+.section:nth-child(2) {
+  animation-delay: calc(var(--m-fast) * 0.5 * var(--motion-move));
+}
+.section:nth-child(3) {
+  animation-delay: calc(var(--m-fast) * var(--motion-move));
+}
+.section:nth-child(4) {
+  animation-delay: calc(var(--m-fast) * 1.5 * var(--motion-move));
+}
+.section:nth-child(n + 5) {
+  animation-delay: calc(var(--m-fast) * 2 * var(--motion-move));
+}
+@keyframes section-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--s1) * var(--motion-move)));
+  }
 }
 .section:last-child {
   border-bottom: 0;

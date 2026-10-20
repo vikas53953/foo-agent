@@ -1,5 +1,6 @@
 /* Spec: 04 §13.4 citation popover (--bg-raised, --r-md, --shadow-16, width 320, padding 12), §17.2 and §19.6 popovers
- * (--r-lg, padding 16, width 320); 03-shell-1 §3.4.2 menu motion (fade + 4px, --m-normal --ease-in). */
+ * (--r-lg, padding 16, width 320); 03-shell-1 §3.4.2 menu motion (fade + 4px, --m-normal --ease-in), replaced
+ * by CR-0021 pick 5: scale in from the opening button. */
 .popover {
   position: fixed;
   z-index: var(--z-menu);
@@ -9,7 +10,9 @@
   background: var(--bg-raised);
   box-shadow: var(--shadow-16);
   color: var(--fg-1);
-  animation: pop-in var(--m-normal) var(--ease-in);
+  animation:
+    pop-in var(--m-slow) var(--ease-spring),
+    menu-fade var(--m-normal) var(--ease-in);
 }
 .md {
   padding: var(--s2);
@@ -19,9 +22,14 @@
   padding: var(--s3);
   border-radius: var(--r-lg);
 }
+/* CR-0021 pick 5: scales in from the opening button (origin set by the component); fade only at Basic and Off. */
 @keyframes pop-in {
   from {
+    transform: scale(calc(1 - 0.06 * var(--motion-move)));
+  }
+}
+@keyframes menu-fade {
+  from {
     opacity: 0;
-    transform: translateY(calc(var(--s0) * var(--motion-move, 1)));
   }
 }
