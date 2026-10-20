@@ -41,6 +41,8 @@ describe('"foo read:" items (04 §6.5)', () => {
     expect(read('I sat down and ate')).toEqual([]);
     expect(read('book a cab for 20 Oct')).toEqual(['Tue 20 Oct']);
     expect(read('a loan for 3 lakhs')).toEqual([]);
+    expect(read('walk for 3 kms')).toEqual([]);
+    expect(read('a cake for 4 kids')).toEqual([t('bubble.read.people', { n: 4 })]);
   });
 
   it('a capitalised run stops at words that are not names; "Sun Pharma" is a place, not a Sunday', () => {

@@ -21,7 +21,7 @@ const MONTH_RE = String.raw`(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|
 const PROPER = String.raw`(\p{Lu}[\p{L}'’&.-]*(?:\s+\p{Lu}[\p{L}'’&.-]*){0,2})`;
 /** Words after "for {n}" that make it a length, a date or an amount, not a party size. */
 const NOT_PEOPLE = new RegExp(
-  String.raw`^(?:(?:hours?|hrs?|days?|nights?|mins?|minutes?|weeks?|months?|years?|yrs?|rupees?|rs|inr|kg|km|am|pm|k|thousand|hundred|lakhs?|lacs?|crores?|${MONTH_RE})\b|%|:)`,
+  String.raw`^(?:(?:hours?|hrs?|days?|nights?|mins?|minutes?|weeks?|months?|years?|yrs?|rupees?|rs|inr|kgs?|kms?|kilos?|kilometres?|kilometers?|am|pm|k|thousand|hundred|lakhs?|lacs?|crores?|${MONTH_RE})\b|%|:)`,
   'iu',
 );
 /** Capitalised words that end a name run: pronouns, day words and small words a sentence in title case carries. */

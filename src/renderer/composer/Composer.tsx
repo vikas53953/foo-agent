@@ -46,7 +46,7 @@ import { ComposerBanner } from './ComposerBanner';
 import { ComposerNotice, NOTICE_MS, type Notice } from './ComposerNotice';
 import { ComposerNoticeStack } from './ComposerNoticeStack';
 import { composerKeyAction, isPrintable, WRAP } from './composerKeys';
-import { cacheDraft, cachedDraft, cancelDraftSave, saveDraftLater, saveDraftNow, type DraftPayload } from './drafts';
+import { cacheDraft, cachedDraft, cancelDraftSave, saveDraftLater, saveDraftNow, type DraftPayload, type DraftState } from './drafts';
 import { DropOverlay, type DropLook } from './DropOverlay';
 import { EditStrip } from './EditStrip';
 import { caretOffset, caretX, domToSegments, segmentsToDom, selectionOffsets, setCaret, textBeforeCaret } from './fieldDom';
@@ -267,7 +267,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
   }, [chatId, strip, linkPreviewRemoved]);
 
   const latestPayload = useRef(draftPayload);
-  const latestCache = useRef(() => ({
+  const latestCache = useRef<() => DraftState>(() => ({
     segs: segsRef.current,
     attachments: [] as ReturnType<typeof chipAttachment>[],
     replyToId: null as string | null,
@@ -312,7 +312,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
       window.removeEventListener('beforeunload', flush);
       flush();
       const c = latestCache.current();
-      cacheDraft(chatId, hasText(c.segs) || c.attachments.length || c.replyToId ? c : null);
+      cacheDraft(chatId, hasText(c.segs) || c.attachments.length || c.replyToId || c.side ? c : null);
     };
   }, [chatId]);
 
