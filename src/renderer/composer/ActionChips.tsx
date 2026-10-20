@@ -71,8 +71,12 @@ export function ActionChips({ chatId, view }: { chatId: string; view: ActionView
       {asking && (
         <Dialog
           tid="aiPageOpenLink"
-          title={t('page.open_link.title', { domain: chipDomain(asking.chip) })}
-          primary={t('page.open_link.open')}
+          title={
+            asking.chip.kind === 'call'
+              ? t('bubble.actions.call_confirm', { number: chipDomain(asking.chip) })
+              : t('page.open_link.title', { domain: chipDomain(asking.chip) })
+          }
+          primary={asking.chip.kind === 'call' ? t('bubble.actions.call') : t('page.open_link.open')}
           secondary={t('page.open_link.cancel')}
           onClose={() => setAsking(null)}
           onPrimary={() => {

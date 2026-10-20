@@ -1580,5 +1580,6 @@
   "bubble.actions.call": "Call",
   "bubble.actions.map": "Open map",
   "bubble.actions.calendar": "Add to calendar",
-  "bubble.actions.link": "Open link"
+  "bubble.actions.link": "Open link",
+  "bubble.actions.call_confirm": "This calls {number}. Call?"
 }
