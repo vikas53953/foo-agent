@@ -268,13 +268,13 @@ R21 · R23 · R5,J21,,UX-24-02,,06-2 §6.0; 06-2 §6.1,test/fidelity/ux/UX-24.se
 ,J18,AT-079,,,10-acceptance-1 §B; 08-2 §8.3.6–§8.3.7; 06-3 §11.2,test/e2e/m9-live.spec.ts,M9,pending
 ,J18,AT-080,,,10-acceptance-1 §B; 08-2 §5.7; 08-4 §26.9,test/e2e/m9-stop.spec.ts,M9,pending
 ,J9,AT-114a,,,10-acceptance-1 §B; 08-4 §26.11,test/integration/browser/proof.test.ts,M9,pending
-,J10,AT-137,,,10-acceptance-1 §B; 08-2 §8.3.12; 08-4 §27.3,test/articles/ART-net-web.test.ts,M9,pending
-,J10,AT-138,,,10-acceptance-1 §B; 08-4 §27.3,test/integration/web/search.test.ts,M9,pending
-,J10,AT-139,,,10-acceptance-1 §B; 08-2 §8.2; 08-4 §27.3,test/integration/web/fetch.test.ts,M9,pending
-,J10,AT-140,,,10-acceptance-1 §B; 08-2 §8.3.12,test/integration/web/outbound.test.ts,M9,pending
-,J10,AT-141,,,10-acceptance-1 §B; 08-2 §8.3.12; 08-4 §27.3,test/integration/web/cloud.test.ts,M9,pending
+,J10,AT-137,,,10-acceptance-1 §B; 08-2 §8.3.12; 08-4 §27.3,test/articles/ART-net-web.test.ts,M9,live
+,J10,AT-138,,,10-acceptance-1 §B; 08-4 §27.3,test/integration/web/search.test.ts,M9,live
+,J10,AT-139,,,10-acceptance-1 §B; 08-2 §8.2; 08-4 §27.3,test/integration/web/fetch.test.ts,M9,live
+,J10,AT-140,,,10-acceptance-1 §B; 08-2 §8.3.12,test/integration/web/outbound.test.ts,M9,live
+,J10,AT-141,,,10-acceptance-1 §B; 08-2 §8.3.12; 08-4 §27.3,test/integration/web/cloud.test.ts,M9,live
 ,J9,AT-142,,,10-acceptance-1 §B; 08-2 §8.3.10; 08-4 §27.4,test/e2e/m9-handback.spec.ts,M9,pending
-,J10,AT-143,,,10-acceptance-1 §B; 08-4 §27.3 item 5; 08-2 §5.10,test/integration/web/cost.test.ts,M9,pending
+,J10,AT-143,,,10-acceptance-1 §B; 08-4 §27.3 item 5; 08-2 §5.10,test/integration/web/cost.test.ts,M9,live
 ,J9,AT-144,,,10-acceptance-1 §B; 08-2 §8.3.11,test/integration/browser/recipes.test.ts,M9,pending
 ,J8,AT-157,,,10-acceptance-1 §B; 08-2 §9.2; DECISIONS X-46,test/e2e/m9-flights.spec.ts,M9,pending
 ,J9,AT-207,,,10-acceptance-1 §B; 05-2 §5.5.2,test/integration/browser/reminder.test.ts,M9,pending

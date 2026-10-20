@@ -6,6 +6,7 @@
 // step 5 (M6 T7: an engine db.tx's unprompted messages pass the budget first). Electron-free so unit tests drive it with an
 // in-process engine.
 // M8 T3: `wa.report` and the WhatsApp session's vault.encrypt / vault.decrypt (08-3 §16.4).
+// M9 T4: `web.refused` → `connections.web.refused.{provider}` (08-0 §A, X-127).
 import { engineToMainSchema, type DbOp, type EngineToMain, type MainToEngine, type NamedQuery, type WaReport } from '../../engine/protocol';
 import { fail, type Result } from '../../shared/errors';
 import type { EventChannel, EventPayload } from '../../shared/ipc';
@@ -13,7 +14,8 @@ import type { Settings } from '../../shared/settings';
 import type { AiStatus, ProviderId } from '../../shared/types';
 import type { Db } from '../store/db';
 import { cardRow, type DbRow } from '../db/rows';
-import { jobRows, spendSummary } from '../store/queries';
+import { jobRows, publicSettings, spendSummary } from '../store/queries';
+import { writeWeb } from '../settings/webKeySettings';
 import { postCapWarning } from '../jobs/capWarning';
 import { gateUnprompted } from '../notify/budget';
 import { applyDbOps, runNamedQuery, writeDataFile } from './engineHost';
@@ -188,6 +190,13 @@ export class EngineBridge {
       case 'wa.report':
         this.ctx.whatsapp?.report(msg.payload);
         return null;
+      // M9 T4 (X-127): a web key refused on a call; main writes the setting and tells the renderer.
+      case 'web.refused': {
+        const { provider } = msg.payload;
+        if (writeWeb(this.ctx.settings, (w) => ({ ...w, refused: { ...w.refused, [provider]: true } })))
+          this.ctx.emit('settings:changed', publicSettings(this.ctx.settings.get()));
+        return null;
+      }
       case 'vault.encrypt':
         return { re: msg.id, result: this.ctx.whatsapp?.vault({ kind: 'vault.encrypt', bytes: msg.payload.bytes }) ?? fail('UNKNOWN') };
       case 'vault.decrypt':
