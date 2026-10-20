@@ -281,7 +281,17 @@ export class DraftService {
         {
           op: 'insert',
           table: 'cards',
-          row: { id: cardId, chat_id: job.chat_id, message_id: messageId, job_id: input.jobId, type: 'draft', state: 'pending', payload, nonce, created_at: now },
+          row: {
+            id: cardId,
+            chat_id: job.chat_id,
+            message_id: messageId,
+            job_id: input.jobId,
+            type: 'draft',
+            state: 'pending',
+            payload,
+            nonce,
+            created_at: now,
+          },
         },
       ],
       this.opts(now),
@@ -860,17 +870,21 @@ export class DraftService {
     const to = p.to ?? { name: '', address: '', isNew: true };
     const app = t('cards.approval.app.gmail');
     // M8 T7 (05-2 §5.5.2 "Send WhatsApp, new number or group"): "Send this message to {name}?"
-    const text = p.channel === 'whatsapp'
-      ? { title: t('cards.approval.send_whatsapp.title', { name: to.name }), impact: t('cards.approval.send_whatsapp.impact', { to: to.address }) }
-      : to.isNew
-      ? {
-          title: t('cards.approval.send_email.title', { name: to.name }),
-          impact: t('cards.approval.send_email.impact', { address: to.address, app, them: t('cards.approval.them') }),
-        }
-      : {
-          title: t('cards.approval.switch_how.title', { route: t('cards.approval.send_email.primary') }),
-          impact: t('cards.approval.switch_how.impact', { name: to.name, address: to.address }),
-        };
+    const text =
+      p.channel === 'whatsapp'
+        ? {
+            title: t('cards.approval.send_whatsapp.title', { name: to.name }),
+            impact: t('cards.approval.send_whatsapp.impact', { to: to.address }),
+          }
+        : to.isNew
+          ? {
+              title: t('cards.approval.send_email.title', { name: to.name }),
+              impact: t('cards.approval.send_email.impact', { address: to.address, app, them: t('cards.approval.them') }),
+            }
+          : {
+              title: t('cards.approval.switch_how.title', { route: t('cards.approval.send_email.primary') }),
+              impact: t('cards.approval.switch_how.impact', { name: to.name, address: to.address }),
+            };
     // 05-2 §5.5.2: someone new is a `send` card; a switch is the "Switch how" row (verb `switch`, Globe).
     const verb = to.isNew || p.channel === 'whatsapp' ? 'send' : 'switch';
     const made = this.d.gate.create({
@@ -1216,7 +1230,7 @@ export class DraftService {
     const card = this.card(req.cardId);
     if (!card) return fail('NOT_FOUND');
     if (card.type !== 'draft') return fail('VALIDATION');
-    if (draftPayloadOf(card)?.channel === 'x') return this.openX(card); // M8 T7
+    if (draftPayloadOf(card)?.channel === 'x') return this.openXCard(card); // M8 T7
     const a = this.d.gate.byCard(card.id);
     if (!a) return fail('NOT_FOUND');
     const p = draftPayloadOf(card);
@@ -1240,7 +1254,19 @@ export class DraftService {
    * moves the card to "Opened in X · not posted by {agentName}" with foo's line and Activity `opened_x_draft`; a later tap
    * only opens the page again. A post over 280 weighted characters does not open.
    */
-  private async openX(card: CardRow): Promise<Result<void>> {
+  /**
+   * M8 T7: the two other ways an X draft opens: `x.openCompose` from the job (`jobId`, 08-2 §8.2) and `app:openExternal`
+   * `x_intent` from the card (`nonce`, 08-1 §3.2). Both reach X's compose page through the card only; the URL is built here.
+   */
+  async openX(req: { cardId: string; jobId?: string; nonce?: string }): Promise<Result<void>> {
+    const card = this.card(req.cardId);
+    if (!card || card.type !== 'draft' || draftPayloadOf(card)?.channel !== 'x') return fail('URL_NOT_ALLOWED');
+    if (req.jobId !== undefined && card.jobId !== req.jobId) return fail('URL_NOT_ALLOWED');
+    if (req.nonce !== undefined && card.nonce !== req.nonce) return fail('CARD_STALE');
+    return this.openXCard(card);
+  }
+
+  private async openXCard(card: CardRow): Promise<Result<void>> {
     const p = draftPayloadOf(card)!;
     if (card.state === 'opened_in_app') {
       await this.d.openExternal?.(xIntentUrl(p.body));

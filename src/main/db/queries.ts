@@ -521,4 +521,50 @@ export const NAMED_QUERIES = {
       source: 'google' as const,
     }));
   },
+  // M8 T7 (08-3 §16.4.2): what foo knows of a WhatsApp jid: the newest wa_messages row (the someone-new check looks back
+  // 365 days, the store keeps 7), its wa_contacts name, and whether a chat row has it.
+  'wa.recipient': ({ db }: QueryCtx, jid: unknown): { lastAt: number | null; name: string | null; inChats: boolean } => {
+    const j = String(jid);
+    return {
+      lastAt: (db.prepare('SELECT MAX(at) FROM wa_messages WHERE chat_jid = ?').pluck().get(j) as number | null) ?? null,
+      name: (db.prepare('SELECT name FROM wa_contacts WHERE jid = ?').pluck().get(j) as string | null | undefined) ?? null,
+      inChats: !!db.prepare('SELECT 1 FROM chats WHERE wa_jid = ? AND deleted_at IS NULL').pluck().get(j),
+    };
+  },
+  // People in wa_contacts by name: exact (any case) first, else prefix; never groups.
+  'wa.byName': ({ db }: QueryCtx, name: unknown): { jid: string; name: string }[] => {
+    const q = String(name).trim();
+    if (!q) return [];
+    const sql = (op: string) =>
+      `SELECT jid, name FROM wa_contacts WHERE name IS NOT NULL AND jid NOT LIKE '%@g.us' AND ${op} ORDER BY name, jid LIMIT 10`;
+    const exact = db.prepare(sql('lower(name) = lower(?)')).all(q) as { jid: string; name: string }[];
+    if (exact.length) return exact;
+    return db.prepare(sql("lower(name) LIKE lower(?) || '%' ESCAPE '\\'")).all(q.replace(/[\\%_]/g, (c) => `\\${c}`)) as {
+      jid: string;
+      name: string;
+    }[];
+  },
+  // Groups by name: the mirrors (shown or hidden) and wa_contacts group names; exact first, else prefix.
+  'wa.groupByName': ({ db }: QueryCtx, name: unknown): { jid: string; name: string }[] => {
+    const q = String(name).trim();
+    if (!q) return [];
+    const sql = (op: string) =>
+      `SELECT wa_jid AS jid, title AS name FROM chats WHERE kind = 'wa_mirror' AND deleted_at IS NULL AND wa_jid IS NOT NULL AND ${op.replace(/name/g, 'title')}
+       UNION SELECT jid, name FROM wa_contacts WHERE jid LIKE '%@g.us' AND name IS NOT NULL AND ${op} ORDER BY 2, 1 LIMIT 10`;
+    const exact = db.prepare(sql('lower(name) = lower(?)')).all(q, q) as { jid: string; name: string }[];
+    if (exact.length) return exact;
+    const like = q.replace(/[\\%_]/g, (c) => `\\${c}`);
+    return db.prepare(sql("lower(name) LIKE lower(?) || '%' ESCAPE '\\'")).all(like, like) as { jid: string; name: string }[];
+  },
+  // The last 5 one-to-one chats (newest first) with the name foo would show for each ("Who is {Mom} on WhatsApp?").
+  'wa.lastChats': ({ db }: QueryCtx): { jid: string; name: string | null }[] =>
+    db
+      .prepare(
+        `SELECT m.chat_jid AS jid, COALESCE(c.name,
+            (SELECT sender_label FROM wa_messages x WHERE x.chat_jid = m.chat_jid AND x.from_me = 0 ORDER BY x.at DESC LIMIT 1)) AS name
+           FROM wa_messages m LEFT JOIN wa_contacts c ON c.jid = m.chat_jid
+          WHERE m.chat_jid NOT LIKE '%@g.us'
+          GROUP BY m.chat_jid ORDER BY MAX(m.at) DESC LIMIT 5`,
+      )
+      .all() as { jid: string; name: string | null }[],
 } as const;

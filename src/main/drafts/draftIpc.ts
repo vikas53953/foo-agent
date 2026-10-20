@@ -18,6 +18,7 @@ import { googleGmailDrafts, nodeFetch, type GoogleGmailDrafts } from './gmailDra
 // M8 T7
 import type { WaSendPort } from './DraftService';
 import type { Result } from '../../shared/errors';
+import { openedForTest } from '../setup/aiFinderIpc'; // M8 T7
 
 /** Sends wait in the engine's queue behind earlier ones (3 s apart) and up to 30 s for the bridge each. */
 const WA_SEND_TIMEOUT_MS = 180_000;
@@ -96,7 +97,8 @@ export function draftService(ctx: AppContext): DraftService {
     now: () => deps.clock.now(),
     gmail: () => port(ctx),
     changed: (effects) => publish(ctx, effects),
-    openExternal: (url) => shell.openExternal(url),
+    // M8 T7: a test run records the page instead of opening a browser (X's compose page, Gmail's).
+    openExternal: (url) => (process.env.FOO_TEST === '1' ? void openedForTest.push(url) : shell.openExternal(url)),
     // M5 T14 (08-2 §9.6, G-M5-39 (b)): the engine runs the look (the AI and the job's words are there); no engine → the
     // look can't run, so the draft is held (fail closed).
     secondLook: (a, out) => askEngine(ctx, a.id, out),

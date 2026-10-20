@@ -20,7 +20,7 @@ function service() {
   const h = gateHarness();
   const sends: { jid: string; text: string; draftCardId: string }[] = [];
   const checks: string[] = [];
-  const port = {
+  const port: WaSendPort & { failNext: boolean; checkAnswer: boolean | null } = {
     failNext: false,
     checkAnswer: true as boolean | null,
     send: async (req: { jid: string; text: string; draftCardId: string }) => {
@@ -91,7 +91,12 @@ describe('AT-018 · a WhatsApp message goes out only after the Draft card and a 
     expect(s.h.approval(d.approvalId)).toMatchObject({ state: 'COMPLETED', approved_via: 'card' });
     const act = s.h.db.prepare("SELECT * FROM activity WHERE event = 'sent_whatsapp'").all() as Record<string, unknown>[];
     expect(act).toHaveLength(1);
-    expect(act[0]).toMatchObject({ kind: 'sent', summary: 'Sent a WhatsApp message to Mom', to_label: MOM.label, approved_how: 'card_once' });
+    expect(act[0]).toMatchObject({
+      kind: 'sent',
+      summary: 'Sent a WhatsApp message to Mom',
+      to_label: MOM.label,
+      approved_how: 'card_once',
+    });
     // The message text never goes to the activity log.
     expect(JSON.stringify(act[0])).not.toContain('Reached safely');
     expect(s.drafts.waDelivered(`wa_${MOM.jid}:FOO1`)).toBe(true);
@@ -157,7 +162,10 @@ describe('AT-070 · a group (or someone new) needs the full Approval card and it
     expect(s.sends).toEqual([]);
     // The user approves the full card (card:approve moves it; the Draft service follows).
     const fullApproval = s.h.gate.byCard(p.approvalCardId!)!;
-    expect(s.h.gate.approve({ cardId: p.approvalCardId!, nonce: String(s.h.card(p.approvalCardId!).nonce), scope: 'once', resolvedBy: 'tap' }).ok).toBe(true);
+    expect(
+      s.h.gate.approve({ cardId: p.approvalCardId!, nonce: String(s.h.card(p.approvalCardId!).nonce), scope: 'once', resolvedBy: 'tap' })
+        .ok,
+    ).toBe(true);
     expect(await s.drafts.fullApproved(fullApproval.id, 'tap')).toBe(true);
     expect(s.sends.map((x) => x.jid)).toEqual([FAMILY.jid]);
     expect(s.h.card(d.cardId).state).toBe('sent');

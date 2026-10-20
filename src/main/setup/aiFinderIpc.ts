@@ -2,6 +2,7 @@
 // `resources/maker-pages.json`; any other target or provider → URL_NOT_ALLOWED until its milestone), 06-1 §2.2, 06-2 §6.1.
 // CR-0020 (c): `ai:openFinder` and `ai:askKey` post the J2 card and the key's Secret box in foo's chat. The writes are in
 // aiFinder.ts (no Electron, unit-tested); this file only emits what they wrote.
+// M8 T7: target `x_intent` (08-1 §3.2 rule: `https://x.com/intent/…`) opens an X Draft card through DraftService.openX.
 import { shell } from 'electron';
 import { fail, ok } from '../../shared/errors';
 import { deps } from '../deps';
@@ -10,6 +11,7 @@ import { cardRow, type DbRow } from '../db/rows';
 import { chatRowById, messageGet } from '../store/queries';
 import { emit, listContext, type AppContext, type IpcHandlers } from '../ipc/IpcRouter';
 import { loadMakerPages, makerPageUrl, openFinder, postKeyBox, type FinderWrite, type MakerPages } from './aiFinder';
+import { draftService } from '../drafts/draftIpc'; // M8 T7
 
 /** Pushes the cards, messages and chat a finder write touched to the windows. */
 export function emitFinderWrite(ctx: AppContext, w: FinderWrite | null): void {
@@ -47,7 +49,9 @@ export function aiFinderIpc(ctx: AppContext): IpcHandlers<'ai:openFinder' | 'ai:
       emitFinderWrite(ctx, r.write);
       return ok(r.card);
     },
-    'app:openExternal': async ({ target, providerId }) => {
+    'app:openExternal': async ({ target, providerId, cardId, nonce }) => {
+      // M8 T7: `x_intent` opens an X Draft card's own text in X's compose page (main builds the URL from the card, AT-054).
+      if (target === 'x_intent') return cardId && nonce ? draftService(ctx).openX({ cardId, nonce }) : fail('URL_NOT_ALLOWED');
       if (target !== 'maker_page') return fail('URL_NOT_ALLOWED');
       pages ??= loadMakerPages(resourcesDir());
       const url = makerPageUrl(pages, providerId);

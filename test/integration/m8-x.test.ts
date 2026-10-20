@@ -89,4 +89,16 @@ describe('AT-054 · foo never posts to X', () => {
     expect((await s.drafts.openInApp({ cardId: d.cardId })).ok).toBe(false);
     expect(s.opened).toEqual([]);
   });
+
+  it("AT-054 x.openCompose and the x_intent button open only this job's X card, with the card's own text", async () => {
+    const s = service();
+    const d = await s.make('From the AI');
+    expect(await s.drafts.openX({ cardId: d.cardId, jobId: 'j_other' })).toEqual({ ok: false, error: { kind: 'URL_NOT_ALLOWED' } });
+    expect(await s.drafts.openX({ cardId: d.cardId, nonce: 'stale' })).toEqual({ ok: false, error: { kind: 'CARD_STALE' } });
+    expect(await s.drafts.openX({ cardId: 'k_missing', jobId: s.h.jobId })).toEqual({ ok: false, error: { kind: 'URL_NOT_ALLOWED' } });
+    expect(s.opened).toEqual([]);
+    expect(await s.drafts.openX({ cardId: d.cardId, jobId: s.h.jobId })).toEqual({ ok: true, value: undefined });
+    expect(await s.drafts.openX({ cardId: d.cardId, nonce: d.nonce })).toEqual({ ok: true, value: undefined });
+    expect(s.opened).toEqual([xIntentUrl('From the AI'), xIntentUrl('From the AI')]);
+  });
 });
