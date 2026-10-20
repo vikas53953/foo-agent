@@ -66,6 +66,7 @@ import { applyDbOps } from '../engine-supervisor/engineHost';
 import { FIX_ACTION_KINDS, JOB_CHANNELS, jobIpc } from '../jobs/jobIpc';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
+import { registerSigninIpc } from '../jobs/signinIpc';
 import { isTrustedUrl } from '../windows/protocol';
 import { registerConnectionIpc } from '../connections/connectionIpc';
 import { logEvent } from '../log/techLog';
@@ -649,10 +650,7 @@ export function registerIpc(ctx: AppContext): void {
   // The Live window (09 §9.27) arrives with the browser milestone; until then the shell shows no live view.
   handle('job:watch', () => fail('LIVE_UNAVAILABLE'));
   handle('job:openWindow', () => fail('BROWSER_MISSING'));
-  handle('job:takeOver', () => fail('JOB_GONE'));
-  handle('job:handBack', () => fail('JOB_GONE'));
-  handle('signin:done', () => fail('JOB_GONE'));
-  handle('signin:skip', () => fail('JOB_GONE'));
+  registerSigninIpc(ctx, handle);
   handle('memory:list', ({ filter, q }) => ok(memoryList(db, filter, q, now())));
   // M6 (CR-0010 G-M6-01): the engine owns files, the classify turn and the sensitive rule; main forwards one message each.
   const memoryCmd = <T>(cmd: MemoryCmdPayload): Promise<Result<T>> =>

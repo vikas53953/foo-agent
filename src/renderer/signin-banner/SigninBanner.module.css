@@ -1,0 +1,82 @@
+/* Spec: 05-3 §5.10.3 (window 72 = address row 32 + banner 40 `--banner-h`; address row bg --bg-sidebar, LockClosed 16 --fg-2
+ * for https, "Not secure" in --bad for http, domain --t-small --fg-1 600, path --fg-3; banner 06 §0.6 Warn tone (bg
+ * --warn-soft, Warning --warn, text --fg-1) with a 32px (--btn-h-sm) Secondary "I'm done"; success bg --ok-soft,
+ * CheckmarkCircle 16 --ok, text --fg-1; take-over bar Control tone: bg --warn, text --on-warn). */
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-sidebar);
+  color: var(--fg-1);
+  user-select: none;
+}
+.address {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--s0);
+  height: var(--s6);
+  padding: 0 var(--s2);
+  font: var(--t-small);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.lock {
+  flex: none;
+  color: var(--fg-2);
+}
+.notSecure {
+  flex: none;
+  margin-inline-end: var(--s0);
+  color: var(--bad);
+}
+.domain {
+  color: var(--fg-1);
+  font-weight: 600;
+}
+.path {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--fg-3);
+}
+.band {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--s1);
+  height: var(--banner-h);
+  padding: 0 var(--s1) 0 var(--s2);
+  font: var(--t-small);
+}
+.text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.warn {
+  background: var(--warn-soft);
+  color: var(--fg-1);
+}
+.warn > svg {
+  flex: none;
+  color: var(--warn);
+}
+.control {
+  background: var(--warn);
+  color: var(--on-warn);
+}
+.control > svg {
+  flex: none;
+}
+.success {
+  background: var(--ok-soft);
+  color: var(--fg-1);
+}
+.success > svg {
+  flex: none;
+  color: var(--ok);
+}

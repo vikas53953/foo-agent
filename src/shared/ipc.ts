@@ -397,7 +397,7 @@ export const EVENT_CHANNELS = [
  * card in two helper chats (Errands, Home help), with no engine. `ux-world-m8-connect` (M8 T2): the ux-world plus a Google
  * Connect card in foo's chat and no connections.
  */
-export const SEED_SETS = ['demo', 'perf', 'ux-world', 'ux-world-ch8-live', 'm4-cards', 'ux-world-m8-connect'] as const;
+export const SEED_SETS = ['demo', 'perf', 'ux-world', 'ux-world-ch8-live', 'm4-cards', 'ux-world-m8-connect', 'm9-signin'] as const;
 export type SeedSet = (typeof SEED_SETS)[number];
 
 export interface ClockReply {
