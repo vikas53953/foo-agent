@@ -56,8 +56,12 @@ async function openChat(page: Page, name: string) {
 const setLevel = (page: Page, level: Level) => page.evaluate((l) => (document.documentElement.dataset.motion = l), level);
 
 async function send(page: Page, text: string): Promise<Locator> {
-  await page.getByTestId(TID.composerField).focus();
+  const field = page.getByTestId(TID.composerField);
+  // The field takes text only once the AI has passed its test (AT-006); a slow runner can still be testing it here.
+  await expect(field).toHaveAttribute('contenteditable', 'true', { timeout: 15_000 });
+  await field.focus();
   await page.keyboard.type(text);
+  await expect(field).toContainText(text);
   await page.keyboard.press('Enter');
   const bubble = page.getByTestId(TID.bubbleMe).filter({ hasText: text });
   await expect(bubble).toBeVisible();
