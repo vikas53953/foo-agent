@@ -248,7 +248,6 @@
         "17",
         "Oct",
         "4",
-        "4",
         "M",
         "8:02",
         "AM",
@@ -577,8 +576,8 @@
     "total": 22232
   },
   "r5": {
-    "ratio": 0.092310546875,
-    "diffPixels": 94526,
+    "ratio": 0.09235546875,
+    "diffPixels": 94572,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-06.dark.diff.png"

@@ -126,6 +126,7 @@
         "9:00",
         "Needs",
         "you",
+        "1",
         "foo",
         "9:41",
         "AM",
@@ -354,7 +355,7 @@
         "Dec",
         "9:41",
         "AM",
-        "⏳",
+        "🛠",
         "Delhi",
         "flights",
         "live",
@@ -499,8 +500,8 @@
     "total": 4340
   },
   "r5": {
-    "ratio": 0.0667666015625,
-    "diffPixels": 68369,
+    "ratio": 0.06694921875,
+    "diffPixels": 68556,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-09.light.diff.png"
