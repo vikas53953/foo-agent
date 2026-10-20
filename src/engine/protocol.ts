@@ -567,7 +567,16 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
     payload: z
       .object({
         jobId: z.string(),
-        to: z.object({ name: z.string().min(1).max(200), address: z.string().min(3).max(320) }).strict(),
+        to: z
+          .object({
+            name: z.string().min(1).max(200),
+            address: z
+              .string()
+              .max(320)
+              // One plain address: no spaces, commas, angle brackets or line breaks reach the To line (M8 T6).
+              .regex(/^[^\s@<>",;]+@[^\s@<>",;]+\.[^\s@<>",;]+$/),
+          })
+          .strict(),
         isNew: z.boolean().optional(),
         subject: z.string().max(998).optional(),
         body: z.string().max(100_000),

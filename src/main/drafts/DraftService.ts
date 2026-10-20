@@ -131,6 +131,8 @@ function sendFields(to: DraftInput['to'], subject: string | undefined, body: str
 export class DraftService {
   /** Sends in flight (the RUNNING write-ahead already guards a second send; this keeps one tick from overlapping the next). */
   private sending = new Set<string>();
+  // M8 T6: cards whose Change → Save is waiting on Gmail.
+  private updating = new Set<string>();
 
   constructor(private readonly d: DraftDeps) {}
 
@@ -175,12 +177,15 @@ export class DraftService {
   }
 
   // M8 T6
-  /** Art. 9: an email inside a job with an approved booking or payment switches the channel, so it asks again. */
+  /**
+   * Art. 9: an email inside a job whose approved booking or payment did not go through switches how, so it asks again. A
+   * finished booking is not a switch (a follow-up email to a known person is a plain Draft).
+   */
   private switched(jobId: string): boolean {
     return !!this.d.db
       .prepare(
         `SELECT 1 FROM approvals WHERE job_id = ? AND verb IN ('book', 'buy', 'pay')
-           AND state IN ('APPROVED', 'RUNNING', 'CHECKING', 'COMPLETED') LIMIT 1`,
+           AND state IN ('APPROVED', 'RUNNING', 'CHECKING', 'FAILED') LIMIT 1`,
       )
       .pluck()
       .get(jobId);
@@ -369,6 +374,11 @@ export class DraftService {
    * (APPROVED → RUNNING, `submitted_at`), and the one Gmail send. Returns the approvals it sent.
    */
   async tick(): Promise<string[]> {
+    // M8 T6: offline, nothing is handed to Gmail (the window waits, then sends once back); online, Drafts queued while
+    // offline open their window, including ones queued before a restart (the online event may never come again).
+    if (this.d.online && !this.d.online()) return [];
+    this.resumeQueued();
+    this.unlinkDeadFull();
     const now = this.d.now();
     const due = this.d.db
       .prepare(
@@ -385,6 +395,15 @@ export class DraftService {
       try {
         if (await this.sendOne(id, this.pickedAction(id))) out.push(id);
         this.followFull(id);
+      } catch (e) {
+        // One Draft's failure never stops the others due on this tick.
+        this.d.log?.({
+          lvl: 'error',
+          mod: 'drafts',
+          evt: 'DRAFT_SEND_THREW',
+          kind: e instanceof Error ? e.name : typeof e,
+          ids: { approvalId: id },
+        });
       } finally {
         this.sending.delete(id);
       }
@@ -423,7 +442,7 @@ export class DraftService {
       card: { state: 'sending', payload: { ...p, undoUntil: undefined } },
     });
     if (!running.ok) return false;
-    const r = gmail && p.gmailDraftId ? await gmail.send(p.gmailDraftId) : fail<{ messageId: string }>('CONN_EXPIRED');
+    const r = gmail && p.gmailDraftId ? await gmail.send(p.gmailDraftId, p.to?.address) : fail<{ messageId: string }>('CONN_EXPIRED');
     const at = this.d.now();
     if (!r.ok) {
       this.d.gate.draftMove(a.id, 'submit_failed', { approval: { failure_kind: r.error.kind }, card: { state: 'failed' } });
@@ -520,14 +539,22 @@ export class DraftService {
       void this.sendConfirmed(a.id);
       return ok(this.card(card.id)!);
     }
-    const { approvalId: _old, undoUntil: _u, undone: _d, ...fresh } = p;
+    const { approvalId: _old, undoUntil: _u, undone: _d, approvalCardId: _f, ...fresh } = p;
     void _old;
     void _u;
     void _d;
+    void _f;
     const moved = this.d.db.transaction(() => {
       const m = this.d.gate.draftMove(a.id, 'held_pick_own', { card: { state: 'superseded', payload: p, ...answered } });
       if (!m.ok) throw new DraftAbort(m);
-      const made = this.d.gate.createDraft({ jobId: a.jobId, fields: a.fields, payload: fresh, supersedesCardId: card.id });
+      // M8 T6: a hard-limit draft (someone new, a switch) stays one; its Send opens a fresh full Approval card.
+      const made = this.d.gate.createDraft({
+        jobId: a.jobId,
+        fields: a.fields,
+        payload: fresh,
+        supersedesCardId: card.id,
+        ...(a.hardLimit ? { hardLimit: true } : {}),
+      });
       if (!made.ok) throw new DraftAbort(made);
     });
     try {
@@ -551,6 +578,8 @@ export class DraftService {
     this.sending.add(approvalId);
     try {
       await this.sendOne(approvalId, true);
+      // M8 T6: a draft held after its full Approval card was approved closes that card too.
+      this.followFull(approvalId);
     } catch (e) {
       this.d.log?.({ lvl: 'error', mod: 'drafts', evt: 'send.failed', ids: { approvalId }, kind: errCode(e) });
     } finally {
@@ -580,10 +609,12 @@ export class DraftService {
           title: t('cards.approval.switch_how.title', { route: t('cards.approval.send_email.primary') }),
           impact: t('cards.approval.switch_how.impact', { name: to.name, address: to.address }),
         };
+    // 05-2 §5.5.2: someone new is a `send` card; a switch is the "Switch how" row (verb `switch`, Globe).
+    const verb = to.isNew ? 'send' : 'switch';
     const made = this.d.gate.create({
       jobId: a.jobId,
-      verb: 'send',
-      fields: a.fields,
+      verb,
+      fields: { ...a.fields, verb },
       hardLimit: true,
       ...text,
     });
@@ -624,7 +655,13 @@ export class DraftService {
     const full = this.d.gate.get(approvalId);
     if (!full || full.state !== 'APPROVED') return false;
     const d = this.draftFor(full);
-    if (!d || d.a.state !== 'PENDING') return false;
+    if (!d) return false;
+    if (d.a.state !== 'PENDING') {
+      // The draft ended first (it expired, or a stopped job withdrew it): nothing is sent, and the card says so.
+      this.d.gate.transition(full.id, 'WITHDRAWN');
+      this.d.log?.({ lvl: 'warn', mod: 'drafts', evt: 'card.full_without_draft', ids: { approvalId: full.id } });
+      return true;
+    }
     const now = this.d.now();
     // `undo_until = now` keeps it on the tick's due list, so a crash before the send still resumes it.
     const m = this.d.gate.draftMove(d.a.id, 'approve', {
@@ -636,10 +673,13 @@ export class DraftService {
     this.sending.add(d.a.id);
     try {
       await this.sendOne(d.a.id);
+      this.followFull(d.a.id);
+    } catch (e) {
+      // The row stays APPROVED with `undo_until = now`, so the tick picks the send up again.
+      this.d.log?.({ lvl: 'error', mod: 'drafts', evt: 'send.failed', ids: { approvalId: d.a.id }, kind: errCode(e) });
     } finally {
       this.sending.delete(d.a.id);
     }
-    this.followFull(d.a.id);
     return true;
   }
 
@@ -659,6 +699,72 @@ export class DraftService {
     this.d.gate.transition(fullId, draft.state);
     const proof = this.d.db.prepare('SELECT proof FROM approvals WHERE id = ?').pluck().get(draftApprovalId) as string | null;
     if (draft.state === 'COMPLETED' && proof) this.d.db.prepare('UPDATE approvals SET proof = ? WHERE id = ?').run(proof, fullId);
+    // 05-2 §5.5 Logged: switch how → `switched_route`, one row when it runs (beside the draft's own `sent_email`).
+    if (draft.state === 'COMPLETED' && full.verb === 'switch') this.logSwitch(full, p!);
+  }
+
+  private logSwitch(full: ApprovalRow, p: DraftPayload): void {
+    const chatTitle = this.d.db.prepare('SELECT title FROM chats WHERE id = ?').pluck().get(full.chatId) as string | null | undefined;
+    const w = applyDbOps(
+      this.d.db,
+      [
+        {
+          op: 'activity',
+          row: {
+            kind: 'changed',
+            event: 'switched_route',
+            actor: 'foo',
+            chatId: full.chatId,
+            chatTitle: chatTitle ?? null,
+            jobId: full.jobId,
+            approvalId: full.id,
+            paymentId: null,
+            routineId: null,
+            summary: 'Switched to email',
+            toLabel: p.to ? maskEmail(p.to.address) : null,
+            fromLabel: null,
+            amountPaise: null,
+            approvedHow: 'card_once',
+            ruleText: null,
+            proofKind: null,
+            proofRef: null,
+            outcome: 'done',
+            fields: {},
+          },
+        },
+      ],
+      { now: this.d.now(), ...(this.d.dataDir ? { dataDir: this.d.dataDir } : {}) },
+    );
+    if (w.result.ok) this.d.changed(w.effects);
+  }
+
+  /** True while the full Approval card this draft waits on is still open. */
+  private fullOpen(p: DraftPayload): boolean {
+    return !!p.approvalCardId && this.d.gate.byCard(p.approvalCardId)?.state === 'PENDING';
+  }
+
+  /**
+   * A full Approval card that ended unanswered (expired, or withdrawn by a stopped job) gives its draft back, as "Not now"
+   * does, so the draft never waits on a card that is gone.
+   */
+  private unlinkDeadFull(): void {
+    const ids = this.d.db
+      .prepare(
+        `SELECT f.id FROM cards c JOIN approvals f ON f.card_id = json_extract(c.payload, '$.approvalCardId')
+          WHERE c.type = 'draft' AND c.state = 'pending' AND c.deleted_at IS NULL AND f.state IN ('EXPIRED', 'WITHDRAWN', 'DECLINED', 'SUPERSEDED')`,
+      )
+      .pluck()
+      .all() as string[];
+    for (const id of ids) this.fullDeclined(id);
+    // The other way round: a draft that ended while its full card waits takes that card with it.
+    const orphans = this.d.db
+      .prepare(
+        `SELECT f.id FROM cards c JOIN approvals f ON f.card_id = json_extract(c.payload, '$.approvalCardId')
+          WHERE c.type = 'draft' AND c.state IN ('expired', 'withdrawn', 'discarded', 'superseded') AND f.state = 'PENDING'`,
+      )
+      .pluck()
+      .all() as string[];
+    for (const id of orphans) this.d.gate.transition(id, 'WITHDRAWN');
   }
 
   /** "Not now" on the full card: the draft is a plain pending draft again (Send asks again, Discard still works). */
@@ -742,9 +848,22 @@ export class DraftService {
 
   /** `draft:update` (Change → Save changes): Gmail drafts.update, the same PENDING approval re-hashed, a new nonce. */
   async update(req: { cardId: string; nonce: string; fields: DraftFields }): Promise<Result<CardRow>> {
+    // M8 T6: one save at a time per card; a second one while Gmail answers the first is stale.
+    if (this.updating.has(req.cardId)) return fail('CARD_STALE');
+    this.updating.add(req.cardId);
+    try {
+      return await this.updateOnce(req);
+    } finally {
+      this.updating.delete(req.cardId);
+    }
+  }
+
+  private async updateOnce(req: { cardId: string; nonce: string; fields: DraftFields }): Promise<Result<CardRow>> {
     const t = this.pending(req);
     if (!t.ok) return t;
     const { card, p, a } = t.value;
+    // M8 T6: the full Approval card shows these words; they stay as they are while it waits.
+    if (this.fullOpen(p)) return fail('CARD_STALE');
     // 05-2 §5.7.1: To is not editable in the card; a recipient change goes through chat and makes a new card.
     if (req.fields.to !== undefined && req.fields.to !== p.to?.address) return fail('VALIDATION');
     const subject = p.subject === undefined ? undefined : (req.fields.subject ?? p.subject);
@@ -797,6 +916,8 @@ export class DraftService {
     const t = this.pending(req);
     if (!t.ok) return t;
     const { card, p, a } = t.value;
+    // M8 T6: while the full Approval card waits, it is the one way on ("Not now" there gives the draft back).
+    if (this.fullOpen(p)) return fail('CARD_STALE');
     const gmail = this.d.gmail();
     if (gmail && p.gmailDraftId) {
       const g = await gmail.delete(p.gmailDraftId);

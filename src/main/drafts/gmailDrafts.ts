@@ -21,7 +21,11 @@ export interface GmailDrafts {
   /** M8 T6 (G-M8-03): Gmail also answers the draft's message id and thread. */
   create(msg: DraftMessage): Promise<Result<{ gmailDraftId: string; gmailMessageId?: string; threadId?: string }>>;
   update(gmailDraftId: string, msg: DraftMessage): Promise<Result<void>>;
-  send(gmailDraftId: string): Promise<Result<{ messageId: string }>>;
+  /**
+   * M8 T6: `to` lets a port that lost Gmail's answer look for the message in the Sent folder before it says nothing went
+   * out (05-2 §5.7.2 Failed reads "Nothing went out").
+   */
+  send(gmailDraftId: string, to?: string): Promise<Result<{ messageId: string }>>;
   delete(gmailDraftId: string): Promise<Result<void>>;
 }
 

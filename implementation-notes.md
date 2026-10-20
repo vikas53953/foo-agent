@@ -1110,9 +1110,10 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
   masked labels); the answer comes back to the AI as its label ("Decisions:" line) and the next call naming it is resolved from
   the job's remembered picks. A bare name with no match is NOT_FOUND (the AI asks for an address); an address with no match is
   someone new.
-- (c) Someone new and a switch of channel (Art. 9: an email inside a job with an APPROVED/RUNNING/CHECKING/COMPLETED book, buy
-  or pay approval) are hard-limit drafts: Send opens the full Approval card (`cards.approval.send_email.*` /
-  `cards.approval.switch_how.*` with route "Send email"); the draft shows "Waiting for your OK below ›"; the full card's tap
+- (c) Someone new and a switch of channel (Art. 9: an email inside a job whose book, buy or pay approval was approved but did not
+  complete, APPROVED/RUNNING/CHECKING/FAILED; CR-0012 G-M8-14) are hard-limit drafts: Send opens the full Approval card
+  (`send` with `cards.approval.send_email.*`, or the Switch how row, verb `switch`, with `cards.approval.switch_how.*` and
+  `switched_route` logged when it runs); the draft shows "Waiting for your OK below ›"; the full card's tap
   approves the draft's row and sends with no 5 s undo; the full card follows the outcome (COMPLETED with the same proof /
   FAILED). The two are linked by the Draft payload's `approvalCardId` (a bare id: card payloads are redacted leaf by leaf and
   only a whole foo id passes; `draft:{id}` in `submitRef` was sometimes hidden).
@@ -1123,7 +1124,8 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
   undo) and the tick sends; Cancel is `draft:undo`. [ No, keep the draft ] is renderer-only.
 - (f) G-M8-04: with no `gmail.compose` the draft is kept in foo (no Gmail call), "Open in Gmail" opens the prefilled compose page,
   the `allow_send` Connect card is offered once per chat; the 05-2 "saved as a draft there" line is never shown (key listed in
-  `scripts/copy-pending.json`). After Open in Gmail the card stays readable, muted, and the button opens it again (no new words).
+  `scripts/copy-pending.json`). After Open in Gmail the card is a summary row "Opened in Gmail · not sent by {agentName}" with the Link "Open in Gmail" (CR-0012
+  G-M8-13, one new string).
 - (g) Failed → [ Try again ] is `card:askAgain` (now also for FAILED): a fresh pending Draft on the same Gmail draft that needs
   its own Send (never a silent resend; a hard-limit draft stays one).
 - (h) Sends outlive their job: `ApprovalGate.expireTick` no longer withdraws `send` approvals of a done job (the drafting job
@@ -1132,4 +1134,10 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
   close-out CR.
 - (j) The Google refresh token moved to the vault (`foo/conn_token/google`, `VaultConnTokenStore`); the bare token is also
   registered with the SecretRegistry. `connTokenMemory.ts` stays as the unit tests' store.
-- (k) ART-09's "new site" switch is the browser rung (M9); this ticket covers email and a new person.
+- (k) ART-09's "new site" switch is the browser rung (M9, its own pending trace row); this ticket covers email and a new person.
+- (l) Review fixes: a send whose answer was lost (no reply, a 5xx, the 30 s fetch limit) checks `drafts.get` (still there →
+  nothing went out) and then the Sent folder (gone → Sent with that message as proof), so "Nothing went out" is never said of
+  an email that went. The tick hands nothing to Gmail while offline, opens the window for queued drafts whenever online (also
+  after a restart), and one failing draft never stops the others. One Change → Save at a time per card. While the full card
+  waits, Change and Discard are refused; a full card that ends unanswered gives the draft back, and a draft that ends takes its
+  full card with it. An address the AI gives is a known person only when it is that contact's own address.

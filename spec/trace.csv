@@ -238,6 +238,7 @@ R21 · R23 · R5,J21,,UX-24-02,,06-2 §6.0; 06-2 §6.1,test/fidelity/ux/UX-24.se
 ,,ART-04a,,,01-articles Art. 4; 10-acceptance-2 §D,test/articles/ART-04.test.ts,M8,live
 ,,ART-04b,,,01-articles Art. 4; 10-acceptance-2 §D,test/articles/ART-04.test.ts,M8,live
 ,,ART-09,,,01-articles Art. 9; 10-acceptance-2 §D,test/articles/ART-09.test.ts,M8,live
+,,ART-09,,,01-articles Art. 9 (a new site: the browser rung); 10-acceptance-2 §D,test/articles/ART-09.site.test.ts,M9,pending
 ,,ART-15b,,,01-articles Art. 15; 10-acceptance-2 §D; CR-0012 G-M8-01,test/articles/ART-15b.test.ts,M8,pending
 ,J12,,UX-16-01,,05-2 §5.7; 08-3 §16,test/fidelity/ux/UX-16.drafts.spec.ts,M8,live
 ,J12,,UX-16-03,,05-2 §5.7; 08-3 §16,test/fidelity/ux/UX-16.drafts.spec.ts,M8,live

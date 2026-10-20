@@ -157,6 +157,31 @@ describe('AT-145 · Choice part (gmail.draft resolves the person)', () => {
     ]);
   });
 
+  it('an address the AI gives that only looks like a contact’s is someone new, never that contact', async () => {
+    const t = setup();
+    await drive(t.sync.syncNow(), t.clock);
+    expect(await drive(findPerson('rakesh@example.co', t.deps), t.clock)).toMatchObject({ match: 'one', hits: [{ id: 'people/c3' }] });
+    const x = tool(t);
+    await x.run('rakesh@example.co');
+    expect(x.made).toEqual([
+      {
+        jobId: 'job_1',
+        to: { name: 'rakesh@example.co', address: 'rakesh@example.co' },
+        isNew: true,
+        subject: 'Photos',
+        body: 'Here they are.',
+      },
+    ]);
+    // The contact's own address, in any case, is that contact.
+    await x.run('Rakesh@Example.com');
+    expect(x.made[1]).toEqual({
+      jobId: 'job_1',
+      to: { name: 'Rakesh Kumar', address: 'rakesh@example.com' },
+      subject: 'Photos',
+      body: 'Here they are.',
+    });
+  });
+
   it('no match and no sent mail or chat → someone new (the draft opens the full Approval); a bare name with no address is NOT_FOUND', async () => {
     const t = setup();
     await drive(t.sync.syncNow(), t.clock);

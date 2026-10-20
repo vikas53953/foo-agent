@@ -13,6 +13,7 @@ import {
   GOOGLE_BASES,
   RateLimiter,
   googleCall,
+  qs,
   type ConnErrorKind,
   type GoogleCallDeps,
 } from '../../engine/tools/connectors/limiter';
@@ -53,17 +54,24 @@ export function rawMessage(msg: DraftMessage): string {
   return Buffer.from(`${lines.join('\r\n')}\r\n\r\n${body}`, 'utf8').toString('base64url');
 }
 
+/** A Google call that never answers is given up after this long, so a Draft never waits in "Sending…" for ever. */
+const FETCH_TIMEOUT_MS = 30_000;
+
 /** Node's fetch as the connector seam (main's real Google calls). */
 export const nodeFetch: HttpFetch = async (url, init) => {
   const res = await fetch(url, {
     method: init?.method ?? 'GET',
     ...(init?.headers ? { headers: init.headers } : {}),
     ...(init?.body ? { body: init.body } : {}),
+    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
   });
   return { status: res.status, json: () => res.json() as Promise<unknown>, text: () => res.text() };
 };
 
 const kindOf = (e: unknown): ConnErrorKind => (e instanceof ConnError ? e.kind : 'UNKNOWN');
+
+/** A send whose answer was lost (no reply, or a 5xx) may still have gone out; a 4xx answer means Gmail refused it. */
+const unsure = (e: unknown) => !(e instanceof ConnError) || e.kind === 'NET_OFFLINE' || (e.kind === 'UNKNOWN' && (e.status ?? 500) >= 500);
 
 export interface GoogleGmailDrafts extends GmailDrafts {
   /** The default send-as signature as plain text, or null when Gmail has none (08-3 §16.1 Signature). */
@@ -84,6 +92,29 @@ export function googleGmailDrafts(d: GoogleDraftsDeps): GoogleGmailDrafts {
     const kind = kindOf(e);
     d.log?.(evt, kind);
     return fail(kind);
+  };
+  /**
+   * After a lost answer: drafts.send removes the draft it sends, so a draft still there never went out. A draft gone went
+   * out; its proof is the newest message to `to` in the Sent folder. Null when it stayed, or when that can't be told.
+   */
+  const sentAnyway = async (id: string, to: string | undefined): Promise<string | null> => {
+    try {
+      await googleCall(call, { url: `${base}/drafts/${encodeURIComponent(id)}${qs({ format: 'minimal' })}`, flag: 'draft' });
+      return null;
+    } catch (e) {
+      if (kindOf(e) !== 'NOT_FOUND' || !to) return null;
+    }
+    try {
+      const q = `in:sent to:${bareAddress(to)} newer_than:1d`;
+      const r = (await googleCall(call, { url: `${base}/messages${qs({ q, maxResults: 1 })}`, flag: 'read' })) as {
+        messages?: { id?: string }[];
+      } | null;
+      const found = r?.messages?.[0]?.id ?? null;
+      d.log?.('gmail.drafts.send', found ? 'SENT_ANYWAY' : 'SEND_UNSURE');
+      return found;
+    } catch {
+      return null;
+    }
   };
   return {
     get connectionId() {
@@ -118,7 +149,7 @@ export function googleGmailDrafts(d: GoogleDraftsDeps): GoogleGmailDrafts {
         return failed('gmail.drafts.update', e);
       }
     },
-    async send(id) {
+    async send(id, to) {
       try {
         // One try only, whatever the answer: a retried send could go out twice (08-3 §16.1 Calls).
         const r = (await googleCall(call, { url: `${base}/drafts/send`, method: 'POST', body: { id }, flag: 'send', noRetry: true })) as {
@@ -128,6 +159,8 @@ export function googleGmailDrafts(d: GoogleDraftsDeps): GoogleGmailDrafts {
       } catch (e) {
         const kind = kindOf(e);
         d.log?.('gmail.drafts.send', kind);
+        const went = unsure(e) ? await sentAnyway(id, to) : null;
+        if (went) return ok({ messageId: went });
         // §16.6: a connection problem keeps its kind (the card offers Reconnect); anything else is SEND_FAILED.
         return fail(kind === 'UNKNOWN' || kind === 'NOT_FOUND' ? 'SEND_FAILED' : kind);
       }

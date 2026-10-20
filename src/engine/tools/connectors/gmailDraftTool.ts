@@ -47,7 +47,12 @@ export function gmailDraftTool(d: GmailDraftDeps): ToolDef {
     const m = await findPerson(query, d.find);
     if (m.match === 'one') {
       const hit = m.hits[0];
-      const address = isAddress(query) ? query : hit.emails[0];
+      // An address the AI gave counts as known only when it is this person's own; otherwise it is someone new (Art. 5).
+      if (isAddress(query)) {
+        const own = hit.emails.find((e) => e.toLowerCase() === query.toLowerCase());
+        return own ? { name: hit.name || own, address: own, isNew: false } : { name: query, address: query, isNew: true };
+      }
+      const address = hit.emails[0];
       if (!address) return { kind: 'error', errorKind: 'NOT_FOUND' };
       return { name: hit.name || address, address, isNew: false };
     }
@@ -83,7 +88,7 @@ export function gmailDraftTool(d: GmailDraftDeps): ToolDef {
   return {
     name: 'gmail.draft',
     actionClass: 'prepare',
-    args: 'to: string[], subject?: string, body: string, replyToMessageId?: string',
+    args: 'to: string[] (exactly one person), subject?: string, body: string, replyToMessageId?: string',
     description: 'Write an email draft for the user to review. Nothing is sent until the user taps Send.',
     run: (args, ctx) =>
       connOutcome(

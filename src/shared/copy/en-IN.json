@@ -1315,6 +1315,7 @@
   "cards.draft.summary.discarded": "Draft discarded",
   "cards.draft.summary.opened_in_x": "Opened in X · not posted by {agentName}",
   "cards.draft.x_opened_line": "It’s ready in X. Press Post there when you’re happy.",
+  "cards.draft.summary.opened_in_gmail": "Opened in Gmail · not sent by {agentName}",
   "cards.draft.summary.queued": "Will send when you’re back online",
   "cards.draft.summary.expired": "This expired at {time}. Nothing was sent.",
   "cards.draft.decision_line": "Sent by you at {time}",

@@ -42,6 +42,8 @@ export class VaultConnTokenStore implements ConnTokenStore {
   }
 
   async delete(): Promise<void> {
-    this.vault()?.delete(vaultTarget('conn_token', 'google'));
+    const r = this.vault()?.delete(vaultTarget('conn_token', 'google'));
+    // A refresh token the vault failed to remove is not a clean disconnect.
+    if (r && !r.ok) throw refused(r.error.kind);
   }
 }

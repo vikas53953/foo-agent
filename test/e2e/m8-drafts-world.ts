@@ -1,4 +1,4 @@
-// Shared start for the M8 T6 email specs (m8-drafts e2e, the UX-16 M8 steps, the foo-verify journey): a fake Google on
+// Spec: 08-3 §22.3 (fakes only). Shared start for the M8 T6 email specs (m8-drafts e2e, the UX-16 M8 steps, the foo-verify journey): a fake Google on
 // 127.0.0.1 (FOO_FAKE_GOOGLE: Gmail read + drafts, People) and a fake AI script that turns "reply to my landlord…" into a job
 // whose step calls `gmail.draft` (08-2 §8.2), so the Draft card is made by the real engine tool, main's DraftService and the
 // real Gmail drafts port. Made-up people and addresses only (example.com).

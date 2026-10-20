@@ -27,6 +27,8 @@ import type { Result } from '../../shared/errors';
 import { invoke } from '../ipc/client';
 import { ProofChip } from '../messages/ProofChip';
 import { clockNow } from '../store/apply';
+import { useStore } from '../store/index';
+import { selectAgentName } from '../store/settings';
 import { Icon, type IconName } from '../ui/Icon';
 import { CardButton } from './CardButton';
 import { CardFrame, CardTimeLabel, type CardTime } from './CardFrame';
@@ -120,6 +122,7 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
   const words = channelWords(p.channel);
   const channel = words.label;
   const { busy, run } = useCardAction<'send' | 'save' | 'discard' | 'undo' | 'open' | 'again' | 'held' | 'queue' | 'cancel'>();
+  const agentName = useStore(selectAgentName);
   const [editing, setEditing] = useState(false);
   // M8 T6: what the last tap answered that only this card shows (05-2 §5.7.2 Offline at Send; a Change that didn't save).
   const [offline, setOffline] = useState(false);
@@ -239,6 +242,22 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
       return summary('Dismiss', styles.dimIcon, t('cards.common.superseded'));
     case 'withdrawn':
       return summary('Dismiss', styles.dimIcon, t('cards.common.withdrawn'));
+    // M8 T6 (CR-0012 G-M8-13): Gmail's compose page took it over; a summary row, and a second tap opens it again.
+    case 'opened_in_app':
+      return summary(
+        'Mail',
+        styles.dimIcon,
+        t('cards.draft.summary.opened_in_gmail', { agentName }),
+        <CardButton
+          tid="cardDraftOpenGmail"
+          kind="link"
+          busy={busy === 'open'}
+          disabled={busy !== null}
+          onClick={() => run('open', () => invoke('draft:openInApp', { cardId: card.id }))}
+        >
+          {t('cards.draft.button.open_gmail')}
+        </CardButton>,
+      );
     case 'queued_offline':
       return summary(
         'CloudOff',
@@ -416,14 +435,6 @@ export function Draft({ card, time }: { card: CardRow; time: CardTime }) {
           onClick={() => run('again', () => invoke('card:askAgain', { cardId: card.id }))}
         >
           {t('cards.draft.button.try_again')}
-        </CardButton>
-      </div>
-    );
-  } else if (state === 'opened_in_app') {
-    buttons = (
-      <div className={styles.buttons}>
-        <CardButton tid="cardDraftOpenGmail" kind="secondary" busy={busy === 'open'} disabled={busy !== null} onClick={openGmail}>
-          {t('cards.draft.button.open_gmail')}
         </CardButton>
       </div>
     );

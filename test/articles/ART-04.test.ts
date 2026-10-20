@@ -1,4 +1,4 @@
-// ART-04a (10-2 §D, Article 4): every Activity row with kind='sent' (`sent_email`) has a Draft card and an `approvals` row
+// Spec: ART-04a (10-2 §D, Article 4): every Activity row with kind='sent' (`sent_email`) has a Draft card and an `approvals` row
 // created before it (08-0 §G.4, §G.7). ART-04b: approve email 1, then email 2 to the same person in the same chat waits for
 // its own tap (AT-055). M8 T6: main's DraftService over the real Gmail port and the fake Google; Gmail calls run under the
 // port's fake clock (5 requests/s), so each is driven on it. Made-up addresses only.

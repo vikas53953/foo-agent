@@ -53,6 +53,18 @@ describe('08-3 §16.1.4 · the real Gmail drafts port', () => {
     expect(x.drafts.calls).toEqual(['create']);
     expect(x.g.requests.filter((r) => r.path.endsWith('/drafts/send'))).toHaveLength(1);
     expect(x.drafts.sent).toEqual([]);
+    // The draft is still there, so it never went out: "Nothing went out" holds.
+    expect(x.g.requests.map((r) => `${r.method} ${r.path}`).at(-1)).toBe('GET /gmail/v1/users/me/drafts/r_1');
+  });
+
+  it('a send whose answer was lost but went out is found in the Sent folder, never "Nothing went out"', async () => {
+    const x = port();
+    await x.p.create({ to: TO.address, body: 'hello' });
+    x.drafts.loseNextSendReply = true;
+    const r = await drive(x.p.send('r_1', TO.address), x.clock);
+    expect(x.drafts.sent).toHaveLength(1);
+    expect(r).toEqual({ ok: true, value: { messageId: x.drafts.sent[0]!.messageId } });
+    expect(x.g.requests.filter((q) => q.path.endsWith('/drafts/send'))).toHaveLength(1);
   });
 
   it('a missing compose scope (403) flips the granted flag and answers CONN_SCOPE_MISSING', async () => {
@@ -347,5 +359,169 @@ describe('05-2 §5.7.2 · Failed and Open in Gmail again', () => {
     expect(s.opened).toHaveLength(2);
     expect(s.opened[0]).toBe(s.opened[1]);
     expect(s.h.card(d.value.cardId)).toMatchObject({ state: 'opened_in_app' });
+  });
+});
+
+describe('M8 T6 · the full Approval card and the draft stay in step', () => {
+  const NEW = { name: 'Priya New', address: 'priya.new@example.com' };
+  async function waitingDraft(s: ReturnType<typeof service>) {
+    const d = await s.drafts.create({ jobId: s.h.jobId, to: NEW, subject: 'Goa', body: 'Hi Priya.', isNew: true });
+    if (!d.ok) throw new Error(d.error.kind);
+    const r = s.drafts.send(tap(d.value));
+    if (!r.ok) throw new Error(r.error.kind);
+    const full = s.h.db.prepare("SELECT id, nonce FROM cards WHERE type = 'approval'").get() as { id: string; nonce: string };
+    return { d: d.value, fullApproval: r.value.approvalId, full };
+  }
+
+  it('while the full card waits, Change and Discard are refused, so the card shows the words that go out', async () => {
+    const s = service();
+    const { d } = await waitingDraft(s);
+    expect(await s.drafts.update({ cardId: d.cardId, nonce: d.nonce, fields: { body: 'Other words.' } })).toEqual({
+      ok: false,
+      error: { kind: 'CARD_STALE' },
+    });
+    expect(await s.drafts.discard(tap(d))).toEqual({ ok: false, error: { kind: 'CARD_STALE' } });
+    expect(s.payload(d.cardId).body).toBe('Hi Priya.');
+    expect(s.store.calls).toEqual(['create']);
+  });
+
+  it('a full card that expires gives the draft back (no "Waiting" link to a card that is gone)', async () => {
+    const s = service();
+    const { d, fullApproval } = await waitingDraft(s);
+    // Only the full card ended (the draft's own approval has its own 60 min).
+    s.h.db.prepare("UPDATE approvals SET state = 'EXPIRED' WHERE id = ?").run(fullApproval);
+    await s.drafts.tick();
+    expect(s.payload(d.cardId).approvalCardId).toBeUndefined();
+  });
+
+  it('a full card tapped after its draft expired sends nothing and is withdrawn', async () => {
+    const s = service();
+    const { d, fullApproval, full } = await waitingDraft(s);
+    // The draft's own 60 min ran from its creation; the full card's from the Send tap, a little later.
+    s.h.db.prepare("UPDATE approvals SET state = 'EXPIRED' WHERE id = ?").run(d.approvalId);
+    expect(s.h.gate.approve({ cardId: full.id, nonce: full.nonce, scope: 'once', resolvedBy: 'tap' }).ok).toBe(true);
+    expect(await s.drafts.fullApproved(fullApproval, 'tap')).toBe(true);
+    expect(s.h.approval(fullApproval)).toMatchObject({ state: 'WITHDRAWN' });
+    expect(s.store.sent).toEqual([]);
+  });
+
+  it('a draft that ends while its full card waits takes that card with it', async () => {
+    const s = service();
+    const { d, fullApproval } = await waitingDraft(s);
+    s.h.db.prepare("UPDATE cards SET state = 'expired' WHERE id = ?").run(d.cardId);
+    await s.drafts.tick();
+    expect(s.h.approval(fullApproval)).toMatchObject({ state: 'WITHDRAWN' });
+  });
+
+  it('held after the full card, the user’s own value keeps the hard limit; the draft’s value closes the full card', async () => {
+    for (const pick of ['own', 'action'] as const) {
+      const s = service();
+      let pass = false;
+      const drafts = new DraftService({
+        db: s.h.db,
+        gate: s.h.gate,
+        now: () => s.h.clock.now,
+        gmail: () => s.p,
+        changed: () => undefined,
+        secondLook: () =>
+          Promise.resolve(pass ? { pass: true } : { pass: false, held: { reason: 'mismatch' as const, verbing: 'sending' as const } }),
+      });
+      const d = await drafts.create({ jobId: s.h.jobId, to: NEW, subject: 'Goa', body: 'Hi Priya.', isNew: true });
+      if (!d.ok) throw new Error(d.error.kind);
+      const r = drafts.send(tap(d.value));
+      if (!r.ok) throw new Error(r.error.kind);
+      const full = s.h.db.prepare("SELECT id, nonce FROM cards WHERE type = 'approval'").get() as { id: string; nonce: string };
+      expect(s.h.gate.approve({ cardId: full.id, nonce: full.nonce, scope: 'once', resolvedBy: 'tap' }).ok).toBe(true);
+      await drafts.fullApproved(r.value.approvalId, 'tap');
+      expect(s.h.approval(d.value.approvalId)).toMatchObject({ state: 'HELD' });
+      const nonce = String(s.h.card(d.value.cardId).nonce);
+      pass = true;
+      expect(drafts.heldPick({ cardId: d.value.cardId, nonce, optionId: pick, resolvedBy: 'tap' }).ok).toBe(true);
+      if (pick === 'own') {
+        const fresh = s.h.db.prepare('SELECT id FROM cards WHERE supersedes_id = ?').pluck().get(d.value.cardId) as string;
+        const fp = s.payload(fresh);
+        expect(fp.approvalCardId).toBeUndefined();
+        expect(s.h.approval(fp.approvalId)).toMatchObject({ hard_limit: 1, state: 'PENDING' });
+      } else {
+        await new Promise((ok) => setTimeout(ok, 0));
+        await drafts.tick();
+        expect(s.store.sent).toHaveLength(1);
+        expect(s.h.approval(r.value.approvalId)).toMatchObject({ state: 'COMPLETED' });
+      }
+    }
+  });
+});
+
+describe('M8 T6 · Change, restart and offline', () => {
+  it('two saves at once: the second is stale, and Gmail keeps the words the card shows', async () => {
+    const s = service();
+    const d = await s.drafts.create({ jobId: s.h.jobId, to: TO, subject: 'Hi', body: 'Hello.' });
+    if (!d.ok) throw new Error(d.error.kind);
+    const one = s.drafts.update({ cardId: d.value.cardId, nonce: d.value.nonce, fields: { body: 'A' } });
+    const two = s.drafts.update({ cardId: d.value.cardId, nonce: d.value.nonce, fields: { body: 'B' } });
+    expect(await two).toEqual({ ok: false, error: { kind: 'CARD_STALE' } });
+    expect((await one).ok).toBe(true);
+    expect(s.payload(d.value.cardId).body).toBe('A');
+    expect(parseRaw(s.store.drafts.get('r_1')!.raw).body.split('\r\n')[0]).toBe('A');
+  });
+
+  it('a draft queued before a restart sends once foo is online, with no online event', async () => {
+    const s = service();
+    const make = (online: boolean) =>
+      new DraftService({
+        db: s.h.db,
+        gate: s.h.gate,
+        now: () => s.h.clock.now,
+        gmail: () => s.p,
+        changed: () => undefined,
+        secondLook: () => Promise.resolve({ pass: true }),
+        online: () => online,
+      });
+    const before = make(false);
+    const d = await before.create({ jobId: s.h.jobId, to: TO, subject: 'Hi', body: 'Hello.' });
+    if (!d.ok) throw new Error(d.error.kind);
+    expect(before.queueOffline(tap(d.value)).ok).toBe(true);
+    // A new app run, online from the start.
+    const after = make(true);
+    expect(await after.tick()).toEqual([]);
+    expect(s.h.card(d.value.cardId)).toMatchObject({ state: 'undo_window' });
+    s.h.clock.now += 5_000;
+    expect(await after.tick()).toEqual([d.value.approvalId]);
+    expect(s.store.sent).toHaveLength(1);
+  });
+
+  it('offline when the 5 s close: nothing is handed to Gmail until foo is back', async () => {
+    const s = service();
+    let online = true;
+    const drafts = new DraftService({
+      db: s.h.db,
+      gate: s.h.gate,
+      now: () => s.h.clock.now,
+      gmail: () => s.p,
+      changed: () => undefined,
+      secondLook: () => Promise.resolve({ pass: true }),
+      online: () => online,
+    });
+    const d = await drafts.create({ jobId: s.h.jobId, to: TO, subject: 'Hi', body: 'Hello.' });
+    if (!d.ok) throw new Error(d.error.kind);
+    expect(drafts.send(tap(d.value)).ok).toBe(true);
+    online = false;
+    s.h.clock.now += 5_000;
+    expect(await drafts.tick()).toEqual([]);
+    expect(s.h.card(d.value.cardId)).toMatchObject({ state: 'undo_window' });
+    online = true;
+    expect(await drafts.tick()).toEqual([d.value.approvalId]);
+  });
+
+  it('a lost answer to drafts.send that went out shows Sent with its proof, not Failed', async () => {
+    const s = service();
+    const d = await drive(s.drafts.create({ jobId: s.h.jobId, to: TO, subject: 'Hi', body: 'Hello.' }), s.clock);
+    if (!d.ok) throw new Error(d.error.kind);
+    expect(s.drafts.send(tap(d.value)).ok).toBe(true);
+    s.h.clock.now += 5_000;
+    s.store.loseNextSendReply = true;
+    expect(await drive(s.drafts.tick(), s.clock)).toEqual([d.value.approvalId]);
+    expect(s.h.card(d.value.cardId)).toMatchObject({ state: 'sent' });
+    expect(s.store.sent).toHaveLength(1);
   });
 });

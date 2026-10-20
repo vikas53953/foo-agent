@@ -70,16 +70,17 @@ export function approvalIpc(
   return {
     'card:approve': (req) => {
       const r = gate.approve(req);
-      // M8 T6 (05-2 §5.7.2, 08-0 §G.7): the full Approval card a Draft's Send opened; its tap sends the draft now.
+      // M8 T6 (05-2 §5.7.2, 08-0 §G.7): the full Approval card a Draft's Send opened (someone new, or a switch); its tap
+      // sends the draft now. Any other card is not a Draft's, and DraftService leaves it alone.
       const a = r.ok ? gate.byCard(req.cardId) : null;
-      if (a?.verb === 'send') void draftService(ctx).fullApproved(a.id, req.resolvedBy);
+      if (a) void draftService(ctx).fullApproved(a.id, req.resolvedBy);
       return r;
     },
     'card:decline': (req) => {
       const r = gate.decline(req);
       // M8 T6: "Not now" on that card leaves the draft as it was.
       const a = r.ok ? gate.byCard(req.cardId) : null;
-      if (a?.verb === 'send') draftService(ctx).fullDeclined(a.id);
+      if (a) draftService(ctx).fullDeclined(a.id);
       return r;
     },
     // M5 T6 (05-2 §5.7.2): an expired Draft's "Ask me again" makes a fresh Draft card on the same Gmail draft.

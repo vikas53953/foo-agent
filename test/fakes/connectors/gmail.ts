@@ -16,6 +16,8 @@ export interface FakeDraftsState {
   /** Every drafts call, in order (`create`, `update:<id>`, `send:<id>`, `delete:<id>`). */
   calls: string[];
   n: number;
+  /** The next drafts.send goes out, but its answer is a 503 (the reply was lost on the way back). */
+  loseNextSendReply?: boolean;
 }
 
 export const draftsState = (): FakeDraftsState => ({ drafts: new Map(), sent: [], calls: [], n: 0 });
@@ -65,15 +67,26 @@ export function fakeGmailDrafts(drafts: FakeDraftsState, mail?: FakeGmailState):
           from: mail.email,
           to: m.to,
           subject: m.subject,
-          internalDate: 0,
+          // The newest message in the box (the Sent-folder proof is the newest one to that person).
+          internalDate: Math.max(0, ...mail.messages.map((x) => x.internalDate)) + 1,
           snippet: m.body.slice(0, 100),
           text: m.body,
           labels: ['SENT'],
         });
       }
+      if (drafts.loseNextSendReply) {
+        drafts.loseNextSendReply = false;
+        return { status: 503, body: { error: { code: 503 } } };
+      }
       return { status: 200, body: { id: messageId, threadId: d.threadId ?? messageId, labelIds: ['SENT'] } };
     }
     const id = decodeURIComponent(rest.slice(1));
+    if (method === 'GET') {
+      const d = drafts.drafts.get(id);
+      return d
+        ? { status: 200, body: { id, message: { id: `dm_${id}`, threadId: d.threadId } } }
+        : { status: 404, body: { error: { code: 404 } } };
+    }
     if (method === 'PUT') {
       drafts.calls.push(`update:${id}`);
       if (!drafts.drafts.has(id)) return { status: 404, body: { error: { code: 404 } } };
