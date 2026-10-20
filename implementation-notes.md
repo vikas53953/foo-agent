@@ -1208,6 +1208,7 @@ in_control.text,hand_back.label,not_secure.text,window.title}`.
   `code:submit` (SecretRegistry handle, never stored). Seam for T7: the bank-check lane should post its own asking otp box
   with the engine's `requestId` (and `sentTo`) before the card, so the offer returns that box and `code.submit` names a
   request the engine knows; a box the offer posts itself answers with its own card id.
+  The offer's tech-log line reads "paste catcher shown … otp" on this path too (M5's `secretIpc.ts`, not changed here).
 - T6-05 · Spec silent → conservative: `timed_out` and `handed_back` have no summary words ("summary grey"), so their summary
   row is the card's own title in grey; the known-puzzle lane uses the CAPTCHA title plus its `known_puzzle_site` line (it is
   a CAPTCHA lane whose card adds the line); the signed-in copy keeps its "✓" and its own time, so that row has no extra icon
