@@ -44,7 +44,13 @@ export function FilterChips() {
       fill.dataset.ready = '';
     });
     // a resize or a wrap moves the fill at once; only a chip change slides it
+    // (an observer reports once on observe(); that first report must not cancel a chip change's slide)
+    let first = true;
     const sizes = new ResizeObserver(() => {
+      if (first) {
+        first = false;
+        return;
+      }
       delete fill.dataset.ready;
       place();
       requestAnimationFrame(() => {

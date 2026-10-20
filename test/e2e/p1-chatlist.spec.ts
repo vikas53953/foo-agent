@@ -201,8 +201,20 @@ test('AT-323: search widens 8px on focus and its results stagger 30ms; the filte
       );
     }
     await input.fill('');
-    await page.getByTestId(TID.chatlistFilterNeedsYou).click();
     const highlight = page.getByTestId(TID.chatlistFilters).locator('span[aria-hidden="true"]').first();
+    // the click slides the fill to the chip at Full, run to the end, never cut short (none at Basic / Off: it is hidden)
+    const slid = page.evaluate(
+      (tid) =>
+        new Promise<boolean>((done) => {
+          const fill = document.querySelector(`[data-testid="${tid}"] > span[aria-hidden="true"]`)!;
+          fill.addEventListener('transitionend', () => done(true), { once: true });
+          fill.addEventListener('transitioncancel', () => done(false), { once: true });
+          setTimeout(() => done(false), 1000);
+        }),
+      TID.chatlistFilters,
+    );
+    await page.getByTestId(TID.chatlistFilterNeedsYou).click();
+    expect(await slid).toBe(level === 'full');
     const shown = await highlight.evaluate((n) => getComputedStyle(n).display);
     expect(shown).toBe(level === 'full' ? 'block' : 'none');
     if (level === 'full') {
