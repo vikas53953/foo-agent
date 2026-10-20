@@ -1002,6 +1002,11 @@
     "light": "2400ms",
     "dark": "2400ms"
   },
+  "--m-word": {
+    "type": "duration",
+    "light": "150ms",
+    "dark": "150ms"
+  },
   "--delay-sticky-hide": {
     "type": "duration",
     "light": "1500ms",

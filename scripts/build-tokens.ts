@@ -90,6 +90,7 @@ export function buildCss(tree: Record<string, unknown>): string {
     '--m-shimmer: 0ms;',
     '--m-face-cross: 83ms;',
     '--m-spring: 83ms;',
+    '--m-word: 0ms;',
     '--m-stagger: 0ms;',
     '--m-breathe: 0ms;',
     '--ease-spring: var(--ease-in);',

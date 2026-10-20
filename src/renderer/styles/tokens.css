@@ -226,6 +226,7 @@
   --m-spring: 400ms;
   --m-stagger: 30ms;
   --m-breathe: 2400ms;
+  --m-word: 150ms;
   --delay-sticky-hide: 1500ms;
   --delay-loading: 150ms;
   --delay-skeleton-chat: 300ms;
@@ -316,6 +317,7 @@
     --m-shimmer: 0ms;
     --m-face-cross: 83ms;
     --m-spring: 83ms;
+    --m-word: 0ms;
     --m-stagger: 0ms;
     --m-breathe: 0ms;
     --ease-spring: var(--ease-in);
@@ -331,6 +333,7 @@
   --m-shimmer: 0ms;
   --m-face-cross: 83ms;
   --m-spring: 83ms;
+  --m-word: 0ms;
   --m-stagger: 0ms;
   --m-breathe: 0ms;
   --ease-spring: var(--ease-in);

@@ -324,6 +324,7 @@ export const motion = {
   "spring": 400,
   "stagger": 30,
   "breathe": 2400,
+  "word": 150,
   "delay-sticky-hide": 1500,
   "delay-loading": 150,
   "delay-skeleton-chat": 300,
