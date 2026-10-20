@@ -6,7 +6,8 @@
 // bubbles, cards and markers (Bubble.tsx) with the run layout of runs.ts; §1.5 new rows fade and rise (history rows do
 // not); §1.6 a streaming answer is followed until its top is 16px below the header; X-152 the chat is marked read after the
 // newest message was visible for 1 s with the window focused; §1.8 each row is named "{sender}, {time}: {text}. {state}",
-// keys Enter / Shift+F10 / Menu, Ctrl+Shift+R, Ctrl+Shift+E, Ctrl+C; new foo rows are announced once (streaming: when done);
+// keys Enter / Shift+F10 / Menu, Ctrl+Shift+R, Ctrl+Shift+E, Ctrl+C; new foo rows are announced once (streaming: when done;
+// a card row as 05-1 §0.7 "{sender} sent {card name}: {title}[, needs you]");
 // §6.4 a quote click jumps and highlights 1600 ms; §14.2 / §14.3 status line and Thinking row; §10.11 the WhatsApp mirror.
 import { observeElementOffset, useVirtualizer } from '@tanstack/react-virtual';
 import { batchScrollAdjustments } from './scrollAdjust';
@@ -19,6 +20,7 @@ import type { CardRow, ChatRow, MessageRow } from '../../shared/types';
 import { announce } from '../a11y/announce';
 import { registerFocusTarget } from '../a11y/focusTargets';
 import { useReducedMotion } from '../a11y/useReducedMotion';
+import { cardArrival } from '../cards/announce';
 import { CARD_ESTIMATE, titleOfCard } from '../cards/registry';
 import { invoke } from '../ipc/client';
 import { saveScroll, useStore } from '../store/index';
@@ -35,7 +37,8 @@ import { MessageView, WaBubble, messageAccessibleName, runRowCommand, senderOf, 
 import { MessageDialogs } from './MessageDialogs';
 import { FlingRow } from './FlingRow';
 import { RowHotCtx } from './bubbleContext';
-import { RetentionLine, StatusLine, ThinkingRow } from './Markers';
+import { MirrorDraftLine, RetentionLine, StatusLine, ThinkingRow } from './Markers';
+import { useMirrorDrafts } from './mirrorDrafts'; // M8 T7
 import { buildRows, buildWaRows, estimateRow, firstUnreadId, type VRow } from './rows';
 import { pacingPlan } from './chunks';
 import { layoutRows, type RowLayout } from './runs';
@@ -84,6 +87,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   const selecting = useStore((s) => s.ui.selection.size > 0);
   const highlightId = useStore((s) => s.messages.highlightId);
   const waRowsData = useStore((s) => s.messages.wa[chat.id]);
+  const mirrorDrafts = useMirrorDrafts(chat.id); // M8 T7
   const fooFace = useStore((s) => {
     const id = s.chats.order.find((x) => s.chats.byId[x]?.kind === 'foo' && !s.chats.byId[x]?.private);
     return (id && s.chats.byId[id]?.face) || '';
@@ -209,7 +213,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   );
 
   const rows = useMemo<VRow[]>(() => {
-    if (isWa) return buildWaRows(waRowsData ?? [], { now, timeZone: tz });
+    if (isWa) return buildWaRows(waRowsData ?? [], { now, timeZone: tz }, mirrorDrafts);
     const r = buildRows(messages, {
       now,
       timeZone: tz,
@@ -224,7 +228,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     });
     if (live) r.push(live);
     return r;
-  }, [isWa, waRowsData, messages, now, tz, slice?.hasMore, unreadFrom, unread.count, chat, agentName, live, paced]);
+  }, [isWa, waRowsData, mirrorDrafts, messages, now, tz, slice?.hasMore, unreadFrom, unread.count, chat, agentName, live, paced]);
   const layouts = useMemo<RowLayout[]>(() => layoutRows(rows, { isGroup }), [rows, isGroup]);
   const latestUserId = useMemo(() => {
     for (let i = messages.length - 1; i >= 0; i--)
@@ -328,6 +332,12 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   );
   const stick = useStickToBottom(scrollRef, rows, target);
   sticking.current = () => stick.wasAtBottom.current;
+  // M8 T7 (04 §1.6: the user's send always jumps to the end): a mirror's Send adds its marker there.
+  const marks = useRef(mirrorDrafts.length);
+  useEffect(() => {
+    if (mirrorDrafts.length > marks.current) requestAnimationFrame(() => target.scrollToEnd());
+    marks.current = mirrorDrafts.length;
+  }, [mirrorDrafts.length, target]);
 
   // Open position: restore this session's scrollTop, else the unread divider 1/3 down, else the end (§3.6.4, §3.6.5).
   const opened = useRef(false);
@@ -404,12 +414,28 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   }, [rows]); // eslint-disable-line react-hooks/exhaustive-deps
   const prevLast = useRef<number | null>(slice?.lastSeq ?? null);
   const announced = useRef<Set<string>>(new Set());
+  // A card message can land before its card row; it is announced once the row is in the store.
+  const waitingCard = useRef<Map<string, MessageRow>>(new Map());
   const announceRow = (m: MessageRow) => {
     if (m.authorKind === 'user' || m.kind === 'marker' || m.status === 'streaming' || announced.current.has(m.id)) return;
+    const card = m.kind === 'card' ? cards[m.cardId ?? ''] : undefined;
+    if (m.kind === 'card' && !card) {
+      waitingCard.current.set(m.id, m);
+      return;
+    }
+    waitingCard.current.delete(m.id);
     announced.current.add(m.id);
-    const text = m.kind === 'card' ? (titleOfCard(cards[m.cardId ?? '']) ?? '') : m.text;
-    announce(t('bubble.row.announce_new', { sender: senderOf(m, ctx).name, text: text.slice(0, ANNOUNCE_CHARS) }), 'polite');
+    const sender = senderOf(m, ctx).name;
+    // 05-1 §0.7: "{sender} sent {card name}: {title}[, needs you]".
+    const arrival = card ? cardArrival(card, sender) : null;
+    const text = card ? (titleOfCard(card) ?? '') : m.text;
+    announce(arrival ?? t('bubble.row.announce_new', { sender, text: text.slice(0, ANNOUNCE_CHARS) }), 'polite');
   };
+  useEffect(() => {
+    for (const m of [...waitingCard.current.values()]) if (cards[m.cardId ?? '']) announceRow(m);
+  }, [cards]); // eslint-disable-line react-hooks/exhaustive-deps
+  // A card still waiting for its row is never announced in another chat.
+  useEffect(() => () => waitingCard.current.clear(), [chat.id]);
   // Streaming text is announced once, when it finishes (§1.8).
   const streamingIds = useRef<Set<string>>(new Set());
   useEffect(() => {
@@ -805,6 +831,8 @@ function Row({
       return <UnreadDivider label={row.label} />;
     case 'retention':
       return <RetentionLine />;
+    case 'wa_draft':
+      return <MirrorDraftLine agentName={ctx.agentName} fooChatId={row.fooChatId} draftCardId={row.draftCardId} />;
     case 'wa':
       return <WaBubble w={row.wa} gap={layout.gap === 'none' ? 's2' : layout.gap} ctx={ctx} />;
     case 'status':

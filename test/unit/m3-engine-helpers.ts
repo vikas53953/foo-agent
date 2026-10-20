@@ -6,8 +6,10 @@ import { mkdtempSync, readFileSync, rmSync, writeFileSync, existsSync } from 'no
 import os from 'node:os';
 import path from 'node:path';
 import { Engine } from '../../src/engine/Engine';
-import type { DbOp, MainLink, MainToEngine } from '../../src/engine/protocol';
+import type { DbOp, GoogleEngineReq, MainLink, MainToEngine } from '../../src/engine/protocol';
+import type { HttpFetch } from '../../src/engine/tools/connectors/types';
 import { EngineBridge } from '../../src/main/engine-supervisor/EngineBridge';
+import { ApprovalGate } from '../../src/main/approvals/ApprovalGate';
 import { migrate, type Db } from '../../src/main/store/db';
 import { sendMessage } from '../../src/main/store/composerQueries';
 import { ensureFooChat } from '../../src/main/store/queries';
@@ -53,6 +55,8 @@ export interface UiPatch {
 export interface Harness {
   engine: Engine;
   bridge: EngineBridge;
+  /** M5 T7: main's ApprovalGate behind the bridge (approval.open / approval.transition; taps from tests). */
+  approvals: ApprovalGate;
   db: Db;
   clock: FakeClock;
   dir: string;
@@ -84,6 +88,9 @@ export interface HarnessOptions {
   noInitialSettings?: boolean;
   /** M4: the tools the engine's ToolLayer offers (fake tools); also gives the bridge the data folder and the fake clock. */
   tools?: ToolRegistry;
+  // M8
+  /** T5: main's Google connections over this harness's db: `connection.google` goes to `forEngine`, Google is `http`. */
+  google?: (db: Db) => { forEngine(req: GoogleEngineReq): Promise<Result<unknown>>; http: HttpFetch };
 }
 
 /** M4: per-prefix counters (`tc_000001` is the first tool call), so a fake AI line can name an id in a proof. */
@@ -140,7 +147,7 @@ export function makeHarness(o: HarnessOptions): Harness {
   const logs: Record<string, unknown>[] = [];
   const aiStates: Record<string, unknown>[] = [];
 
-  const bridge = new EngineBridge({
+  const bridge: EngineBridge = new EngineBridge({
     db,
     settings: {
       get: () => current,
@@ -154,12 +161,27 @@ export function makeHarness(o: HarnessOptions): Harness {
     emitChat: () => undefined,
     log: (line) => logs.push(line as Record<string, unknown>),
     ...(o.tools ? { dataDir, now: () => clock.now() } : {}),
+    approvals: (): ApprovalGate => approvals,
+  });
+  // M5 T7: main's ApprovalGate, told nothing of the engine until the bridge is live.
+  const approvals: ApprovalGate = new ApprovalGate({
+    db,
+    now: () => clock.now(),
+    timeZone: () => current.locale.timeZone,
+    rules: { get: () => current.rules, set: (rules) => (current = { ...current, rules }) },
+    changed: () => undefined,
+    engine: { send: (kind, payload): boolean => bridge.send(kind, payload as never) },
+    ...(o.tools ? { dataDir } : {}),
   });
 
+  // M8 T5: main's Google side, when the test gives one.
+  const google = o.google?.(db);
+  const notConnected = { ok: false, error: { kind: 'VALIDATION', message: 'not_connected' } } as const;
   let seq = 0;
   // The engine side of the port: every message goes through the bridge exactly as the MessagePort would carry it.
   const link: MainLink = {
-    async request<T>(kind: 'db.tx' | 'db.query', payload: unknown): Promise<Result<T>> {
+    async request<T>(kind: 'db.tx' | 'db.query' | 'connection.google', payload: unknown): Promise<Result<T>> {
+      if (kind === 'connection.google') return google ? ((await google.forEngine(payload as GoogleEngineReq)) as Result<T>) : notConnected;
       seq += 1;
       const reply = bridge.receive({ id: `e${seq}`, kind, payload });
       if (!reply) throw new Error(`no reply for ${kind}`);
@@ -185,6 +207,7 @@ export function makeHarness(o: HarnessOptions): Harness {
     testRun: true,
     fetch: (() => Promise.reject(new Error('network is not allowed in tests'))) as typeof fetch,
     ...(o.tools ? { tools: o.tools, newId: countingIds() } : {}),
+    ...(google ? { googleViaMain: { http: google.http } } : {}),
   });
   bridge.live = true;
   bridge.post = (msg) => {
@@ -198,6 +221,7 @@ export function makeHarness(o: HarnessOptions): Harness {
   const h: Harness = {
     engine,
     bridge,
+    approvals,
     db,
     clock,
     dir,

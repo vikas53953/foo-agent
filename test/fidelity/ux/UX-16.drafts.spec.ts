@@ -1,0 +1,379 @@
+// Spec: 11-fidelity §11.2.3 (one spec per chapter, one test.step per walkthrough step named with its id; the s and f facts by
+// hand, then the Tier R capture), 05-2 §5.7 Draft card (pending look of X-65, Change mode, Send → "Sending in {5}…" + Undo),
+// §5.5 Approval card (send to someone new: a hard limit, "I'll always ask for this one."), X-79 ("Change", never "Edit"),
+// 08-0 §G.7, CR-0009 (UX-16-02, -04, -06 first tested in M5; the rest of chapter 16 is M8's Gmail, WhatsApp and X).
+// The frames are drawn in the foo chat on Fri 16 Oct from 11:00 AM. M5 has no Gmail connector, so the cards are seeded rows
+// (test:card.seed) with their approvals rows; Change, Send and Undo are real taps on the Draft card.
+// Drawing-vs-app gaps (R1/R2 disputes go to a CR, never into code; CR-0009 row UX-16):
+// - fixtures use example.com addresses (public repo), not the drawn gmail.com / company.com ones;
+// - the drawn Draft has [ Not now ]; 05-2 §5.7.2 names it [ Discard ]; the drawing puts the pending line in a grey box and the
+//   app follows §5.7.1 (a --t-small line); the M8 chat bubbles ("reply to my landlord…", the ⏳ badge) are not drawn by M5;
+// - UX-16-04 draws a dark "Sending… Undo" bar over the chat; 05-2 §5.7.2 puts the countdown and Undo in the card's button
+//   row ("Sending in {5}…", then "Sending…" when the window closes);
+// - UX-16-06 is superseded by X-79 ("Change", not "Edit") and draws a compact header countdown.
+// M8 T6 (CR-0012): UX-16-01, -03 and -05 run the real flow: the ask, the engine's `gmail.draft` on the fake AI, main's real
+// Gmail drafts port on a fake Google (FOO_FAKE_GOOGLE), Change → "Email · edited", Send → "✓ Sent" with the Sent-folder proof
+// and the ✅ badge. Gaps: the drawn Gmail search for "landlord" is the contacts ladder here (08-3 §16.7 resolves Rakesh, the AI
+// names him); the drawn "✓ Sent · Fri 16 Oct, 11:06 AM" is the card's §5.7.2 "Sent · {time}" with the ✓ icon; the drawn ✅
+// badge is `done_unverified` here, because 08-2 §5.8 has no proof kind for "draft made" (the job ends when the draft is made;
+// the send's proof is on the Draft card). Logged in docs/decisions/M8.tsv for the close-out CR.
+// M8 close-out (CR-0012): UX-16-07…10 run T7's real WhatsApp and X flow on the fake phone and the fake AI. Gaps: the drawn
+// "Draft · not sent · WhatsApp" / "X post" labels are 05-2 §5.7.2's "Draft, not sent: {channel} to {name}" and right labels;
+// the drawn "212 characters left" is the weighted count of 08-3 §16.3 (the 🌴 counts 2, so 218 left); UX-16-09 is x.com's own
+// compose page (UNVERIFIABLE, it is X's, not foo's), so the step checks the compose URL main opened and the picture is foo's
+// card at that moment; the drawn ✅ "draft made" badge is `done_unverified` (no proof kind for a draft, as UX-16-05).
+import { expect, test, type Page } from '@playwright/test';
+import { FAKE_WA } from '../../../src/wa-bridge/fakeSocket';
+import { launchWithFakeAi, type FakeLine } from '../../e2e/fakeAi';
+import type { CardSeedRequest } from '../../../src/shared/ipc';
+import { t } from '../../../src/shared/copy/t';
+import { TID } from '../../../src/shared/testids';
+import type { ApprovalFields } from '../../../src/shared/types';
+import { launch } from '../../e2e/launch';
+import { ASK_LANDLORD, advance, draftsGoogle, draftsScript, launchDrafts, waitForDraft } from '../../e2e/m8-drafts-world';
+import { byTid, captureUx, openChat, openWorld, quoted, rest, setTheme, settle, step, THEMES, windowSize } from '../capture';
+
+/** The walkthrough types straight apostrophes; the copy file has the typographic one. */
+const curly = (s: string) => s.replace(/'/g, '’');
+
+const AT = (hhmm: string) => Date.parse(`2026-10-16T${hhmm}:00+05:30`);
+const RAKESH = { name: 'Rakesh Sharma', address: 'r.sharma@example.com' };
+const BODY = 'Hi Rakesh, I’ll pay October’s rent on Mon 19 Oct. Thanks for your patience. Vikas';
+const FORMAL =
+  'Dear Rakesh, I wanted to let you know that I will pay October’s rent on Monday, 19 October. Thank you for your patience. Regards, Vikas Sharma';
+
+const draftSeed = (expiresAt: number): CardSeedRequest => {
+  const fields: ApprovalFields = {
+    verb: 'send',
+    channel: 'email',
+    recipients: [{ ...RAKESH, isNew: false, isGroup: false }],
+    contentSummary: `Re: October rent\n${BODY}`,
+    irreversible: true,
+  };
+  return {
+    type: 'draft',
+    state: 'pending',
+    payload: {
+      approvalId: '',
+      channel: 'email',
+      to: { ...RAKESH, isNew: false },
+      subject: 'Re: October rent',
+      body: BODY,
+      edited: false,
+      sendAllowed: true,
+      gmailDraftId: 'gd_ux16',
+    },
+    approval: { fields, expiresAt },
+  };
+};
+
+const PRIYA_TEXT = 'Hi Priya, we’re in Goa Sat 12 – Mon 14 Dec at the Taj Holiday Village. Vikas';
+const priyaSeed = (expiresAt: number): CardSeedRequest => {
+  const fields: ApprovalFields = {
+    verb: 'send',
+    channel: 'email',
+    recipients: [{ name: 'Priya Nair', address: 'priya.n@example.com', isNew: true, isGroup: false }],
+    contentSummary: PRIYA_TEXT,
+    irreversible: true,
+  };
+  return {
+    type: 'approval',
+    state: 'PENDING',
+    payload: {
+      variant: 'standard',
+      approvalId: '',
+      verb: 'send',
+      title: t('cards.approval.send_email.title', { name: 'Priya Nair' }),
+      impact: t('cards.approval.send_email.impact', { address: 'priya.n@example.com', app: 'Gmail', them: 'her' }),
+      fields,
+      scopes: ['once'],
+      hardLimit: true,
+      expiresAt,
+    },
+    approval: { fields, hardLimit: true, expiresAt },
+  };
+};
+
+async function shoot(page: Page, id: string, sel: string): Promise<void> {
+  await page.getByTestId(TID.threadLog).evaluate((el) => (el.scrollTop = el.scrollHeight));
+  await rest(page);
+  for (const theme of THEMES) {
+    await setTheme(page, theme);
+    await settle(page);
+    await captureUx(page, id, sel, theme);
+  }
+  await setTheme(page, 'light');
+}
+
+test('UX-16 · Drafts and sends: steps UX-16-02, UX-16-04 and UX-16-06, light and dark', async () => {
+  test.setTimeout(180_000);
+  const app = await launch();
+  const page = await app.firstWindow();
+  await openWorld(app, page, '2026-10-16T11:01:00+05:30');
+  await windowSize(app, page, 1280, 800);
+  await openChat(page, 'foo');
+  const r = await page.evaluate((s) => window.__fooTest!.cardSeed(s), draftSeed(AT('12:01')));
+  const sel = `${byTid(TID.cardDraft)}[data-card-id="${r.cardId}"]`;
+  const draft = page.locator(sel);
+
+  await test.step('UX-16-02 · a Draft card that is also the approval; it is not sent', async () => {
+    const s = step('UX-16-02');
+    expect(s.s).toContain('Draft · not sent');
+    await draft.scrollIntoViewIfNeeded();
+    await expect(draft).toHaveAttribute('data-card-state', 'pending');
+    await expect(draft).toContainText(t('cards.draft.title'));
+    await expect(draft).toContainText(`${RAKESH.name} <${RAKESH.address}>`);
+    await expect(draft.getByTestId(TID.cardDraftSubject)).toHaveText('Re: October rent');
+    await expect(draft).toContainText(t('cards.draft.line.pending', { address: RAKESH.address, app: 'Gmail' }));
+    await expect(draft.getByTestId(TID.cardDraftSend)).toHaveText(t('cards.draft.button.send_email'));
+    await expect(draft.getByTestId(TID.cardDraftChange)).toHaveText(t('cards.draft.button.change'));
+    // f: "this draft is also the approval. Expires in 60 minutes."
+    expect(s.f).toContain('Expires in 60 minutes');
+    await expect(draft).toContainText(t('cards.draft.footer', { time: 'Fri 16 Oct, 12:01 PM' }));
+    await shoot(page, 'UX-16-02', sel);
+  });
+
+  await test.step('UX-16-04 · Send email: 5 seconds to undo before it leaves', async () => {
+    const s = step('UX-16-04');
+    expect(s.s).toContain('Undo');
+    // UX-16-03's edit first (the drawn card reads "Email · edited"), made with Change (X-79).
+    await draft.getByTestId(TID.cardDraftChange).click();
+    await draft.locator(`textarea[data-testid="${TID.cardDraftBody}"]`).fill(FORMAL);
+    await draft.getByTestId(TID.cardDraftSave).click();
+    await expect(draft).toContainText(t('cards.draft.right_label.edited', { channel: 'Email' }));
+    await draft.getByTestId(TID.cardDraftSend).click();
+    await expect(draft).toHaveAttribute('data-card-state', 'undo_window');
+    await expect(draft.getByTestId(TID.cardDraftCountdown)).toHaveText(/^Sending in [45]…$/);
+    await expect(draft.getByTestId(TID.cardDraftUndo)).toBeFocused();
+    // f: held on the PC; main's clock has not moved, so nothing leaves. The words settle on "Sending…" when the 5 s pass.
+    await expect(draft.getByTestId(TID.cardDraftCountdown)).toHaveText(t('cards.draft.sending'), { timeout: 10_000 });
+    await expect(draft).toHaveAttribute('data-card-state', 'undo_window');
+    await shoot(page, 'UX-16-04', `${sel} div:has(> ${byTid(TID.cardDraftCountdown)})`);
+  });
+
+  await test.step('UX-16-06 · someone you have never emailed gets a full Approval card that says so', async () => {
+    const s = step('UX-16-06');
+    expect(s.f).toContain('always asks');
+    await page.evaluate(() => window.__fooTest!.clock.set('2026-10-16T11:15:00+05:30'));
+    const p = await page.evaluate((x) => window.__fooTest!.cardSeed(x), priyaSeed(AT('12:15')));
+    const card = page.locator(`${byTid(TID.cardApproval)}[data-card-id="${p.cardId}"]`);
+    await card.scrollIntoViewIfNeeded();
+    await expect(card).toHaveAttribute('data-card-state', 'PENDING');
+    await expect(card).toContainText('Send this email to Priya Nair?');
+    await expect(card.getByTestId(TID.cardApprovalImpact)).toHaveText(
+      'Will send to priya.n@example.com from your Gmail. You haven’t emailed her before. Can’t be unsent.',
+    );
+    await expect(card.getByTestId(TID.cardApprovalApprove)).toHaveText(t('cards.approval.send_email.primary'));
+    await expect(card.getByTestId(TID.cardApprovalChange)).toHaveText(t('cards.approval.button.change'));
+    await expect(card.getByTestId(TID.cardApprovalNotNow)).toHaveText(t('cards.approval.button.not_now'));
+    // f: a new recipient is a hard limit: no scope choice, and the card says it always asks.
+    await expect(card.getByTestId(TID.cardApprovalScope)).toHaveCount(0);
+    await expect(card).toContainText(t('cards.approval.hard_limit_line'));
+    await shoot(page, 'UX-16-06', `${byTid(TID.cardApproval)}[data-card-id="${p.cardId}"]`);
+  });
+  await app.close();
+});
+
+// M8 T6
+test('UX-16 · Drafts and sends (M8): steps UX-16-01, UX-16-03 and UX-16-05 on the real Gmail draft, light and dark', async () => {
+  test.setTimeout(240_000);
+  const google = await draftsGoogle();
+  const app = await launchDrafts(google, draftsScript(['landlord'], 2_000));
+  try {
+    const page = await app.firstWindow();
+    await openWorld(app, page, '2026-10-16T11:01:00+05:30');
+    await windowSize(app, page, 1280, 800);
+    await openChat(page, 'Home');
+    const log = page.getByTestId(TID.threadLog);
+
+    let mineSel = '';
+    await test.step('UX-16-01 · the ask, with the working badge; foo resolves the person before drafting', async () => {
+      const s = step('UX-16-01');
+      expect(s.s).toContain('reply to my landlord');
+      await page.getByTestId(TID.composerField).focus();
+      await page.keyboard.type(ASK_LANDLORD);
+      await page.keyboard.press('Enter');
+      const mine = log.locator(byTid(TID.bubbleMe), { hasText: ASK_LANDLORD }).last();
+      await mine.waitFor();
+      const row = mine.locator('xpath=ancestor-or-self::*[@data-message-id][1]');
+      mineSel = `${byTid(TID.threadLog)} [data-message-id="${await row.getAttribute('data-message-id')}"]`;
+      await advance(page, 1_000);
+      await expect(page.locator(mineSel).getByTestId(TID.bubbleBadge)).toHaveAttribute('data-state', 'working', { timeout: 10_000 });
+      await shoot(page, 'UX-16-01', mineSel);
+    });
+
+    const cardId = await waitForDraft(page, 0);
+    const sel = `${byTid(TID.cardDraft)}[data-card-id="${cardId}"]`;
+    const draft = page.locator(sel);
+
+    await test.step('UX-16-03 · Change edits the one card and shows "edited"; nothing is sent', async () => {
+      const s = step('UX-16-03');
+      expect(s.s).toContain('edited');
+      await draft.scrollIntoViewIfNeeded();
+      await draft.getByTestId(TID.cardDraftChange).click();
+      await draft.locator(`textarea[data-testid="${TID.cardDraftBody}"]`).fill(FORMAL);
+      await draft.getByTestId(TID.cardDraftSave).click();
+      await expect(draft).toContainText(t('cards.draft.right_label.edited', { channel: 'Email' }));
+      await expect(draft.getByTestId(TID.cardDraftBody)).toHaveText(FORMAL);
+      // f: one card, edited in place; Gmail's draft was updated, nothing sent.
+      await expect(log.locator(byTid(TID.cardDraft))).toHaveCount(1);
+      expect(google.drafts.calls).toEqual(['create', 'update:r_1']);
+      expect(google.drafts.sent).toEqual([]);
+      await shoot(page, 'UX-16-03', sel);
+    });
+
+    await test.step('UX-16-05 · Sent, with the Gmail Sent-folder proof and the ✅ badge', async () => {
+      const s = step('UX-16-05');
+      expect(s.s).toContain('Proof: in your Gmail Sent folder');
+      await draft.getByTestId(TID.cardDraftSend).click();
+      await expect(draft).toHaveAttribute('data-card-state', 'undo_window');
+      await advance(page, 6_000);
+      await expect(draft).toHaveAttribute('data-card-state', 'sent', { timeout: 10_000 });
+      await expect(draft).toContainText(/Sent · \d{1,2}:\d{2} [AP]M/);
+      await expect(draft.getByTestId(TID.threadProofChip)).toBeVisible();
+      await advance(page, 10_000);
+      await expect(page.locator(mineSel).getByTestId(TID.bubbleBadge)).toHaveAttribute('data-state', 'done_unverified', {
+        timeout: 15_000,
+      });
+      // f: it is in the Activity log, and approving this send approved nothing else.
+      expect(google.drafts.calls).toEqual(['create', 'update:r_1', 'send:r_1']);
+      await shoot(page, 'UX-16-05', sel);
+    });
+  } finally {
+    await app.close();
+    await google.close();
+  }
+});
+
+// M8 close-out: the T7 WhatsApp and X drafts on the fake phone (FOO_TEST) and the fake AI.
+const MOM = FAKE_WA.people[0];
+const ASK_MOM = 'message Mom on WhatsApp about the cake';
+const ASK_POST = 'write a post for X about Goa';
+const act = (decision: Record<string, unknown>) => `<say></say><act>${JSON.stringify({ decision, usedMemoryIds: [] })}</act>`;
+const tool = (name: string, args: Record<string, unknown>) => act({ kind: 'tool', call: { tool: name, args }, why: 'next' });
+const draftJob = (ask: string, title: string, channel: string, call: string, args: Record<string, unknown>, ask2: boolean): FakeLine[] => [
+  {
+    match: { purpose: 'intake', promptIncludes: ask },
+    reply: act({
+      kind: 'job',
+      title,
+      plan: [{ phraseKey: 'draft', slots: { channel }, route: 'api' }],
+      estimate: { minutes: 1 },
+      routeHint: ['api'],
+      needsApps: [],
+    }),
+  },
+  // WhatsApp's first call meets "Can I use WhatsApp for this?" (08-2 §9.4); after Yes the step asks again and the call runs.
+  ...(ask2 ? [{ match: { purpose: 'step' }, reply: tool(call, args) }] : []),
+  { match: { purpose: 'step' }, reply: tool(call, args) },
+  { match: { purpose: 'step' }, reply: act({ kind: 'step_done', idx: 0 }) },
+  { match: { purpose: 'step' }, reply: act({ kind: 'done', result: 'It is ready for you below.', unverified: true }) },
+];
+
+test('UX-16 · Drafts and sends (M8): steps UX-16-07, UX-16-08, UX-16-09 and UX-16-10 on WhatsApp and X, light and dark', async () => {
+  test.setTimeout(240_000);
+  const momText = quoted(step('UX-16-07').s)[1]!;
+  const post = quoted(step('UX-16-08').s)[1]!;
+  const { app } = await launchWithFakeAi([
+    { match: { purpose: 'verify' }, reply: 'ready', once: false },
+    { match: { purpose: 'second_look' }, reply: `<say></say><act>${JSON.stringify({ match: true })}</act>`, once: false },
+    ...draftJob(ASK_MOM, 'Message Mom', 'message', 'whatsapp.draft', { to: MOM.name, text: momText }, true),
+    ...draftJob(ASK_POST, 'Post about Goa', 'post', 'x.draft', { text: post }, false),
+  ]);
+  try {
+    const page = await app.firstWindow();
+    await openWorld(app, page, '2026-10-16T11:01:00+05:30');
+    await windowSize(app, page, 1280, 800);
+    const outbound = () => app.evaluate(() => (globalThis as { __fooWaOutbound?: { jid: string }[] }).__fooWaOutbound ?? []);
+    const opened = () => app.evaluate(() => (globalThis as { __fooOpenedExternal?: string[] }).__fooOpenedExternal ?? []);
+
+    // the fake phone links from Settings → Connections (it knows Mom), as UX-04-08
+    await page.keyboard.press('Control+,');
+    await page.getByTestId(TID.settingsNavConnections).click();
+    const row = page.getByTestId(TID.settingsRowConnectionsWhatsapp);
+    await row.getByRole('button', { name: t('settings.connections.whatsapp.link') }).click();
+    const dialog = page.getByTestId(TID.dialogLinkWhatsapp);
+    await expect(dialog.getByTestId(TID.cardConnectQr)).toBeVisible({ timeout: 15_000 });
+    await expect.poll(async () => (await page.evaluate(() => window.__fooTest!.wa({ op: 'scan' }))).delivered).toBe(true);
+    await expect(dialog).toBeHidden({ timeout: 15_000 });
+    await expect(row).toHaveAttribute('data-state', 'linked');
+    await page.keyboard.press('Escape');
+
+    await openChat(page, 'foo');
+    const log = page.getByTestId(TID.threadLog);
+    const ask = async (text: string) => {
+      await page.getByTestId(TID.composerField).focus();
+      await page.keyboard.type(text);
+      await page.keyboard.press('Enter');
+    };
+
+    await test.step('UX-16-07 · WhatsApp works the same way: a draft, and your tap sends it from your own WhatsApp', async () => {
+      const s = step('UX-16-07');
+      expect(s.s).toContain('To: Mom');
+      const before = await log.locator(byTid(TID.cardDraft)).count();
+      await ask(ASK_MOM);
+      const choice = log.locator(byTid(TID.cardChoice)).filter({ hasText: t('cards.choice.question.app_use', { app: 'WhatsApp' }) });
+      for (let i = 0; i < 80 && !(await choice.count()); i++) await advance(page, 500);
+      await choice.last().getByText(t('cards.choice.option.yes'), { exact: true }).click();
+      const id = await waitForDraft(page, before);
+      const sel = `${byTid(TID.cardDraft)}[data-card-id="${id}"]`;
+      const card = page.locator(sel);
+      await expect(card).toContainText(t('cards.draft.title'));
+      await expect(card).toContainText(t('cards.draft.right_label.whatsapp'));
+      await expect(card).toContainText(t('cards.draft.to_whatsapp', { name: MOM.name }));
+      await expect(card).toContainText(momText);
+      await expect(card.getByTestId(TID.cardDraftSend)).toHaveText(t('cards.draft.button.send_message'));
+      // f: nothing leaves without the tap; the proof is WhatsApp's own delivered ticks (after Send, T7's m8-whatsapp-send).
+      await advance(page, 10_000);
+      expect(await outbound()).toEqual([]);
+      // the drawn hl is the Send message button
+      await shoot(page, 'UX-16-07', `${sel} ${byTid(TID.cardDraftSend)}`);
+    });
+
+    let xSel = '';
+    await test.step('UX-16-08 · X posts are drafts only; foo never posts', async () => {
+      const s = step('UX-16-08');
+      expect(s.s).toContain('Open in X to post');
+      const before = await log.locator(byTid(TID.cardDraft)).count();
+      await ask(ASK_POST);
+      const id = await waitForDraft(page, before);
+      xSel = `${byTid(TID.cardDraft)}[data-card-id="${id}"]`;
+      const card = page.locator(xSel);
+      await expect(card).toContainText(t('cards.draft.title'));
+      await expect(card).toContainText(post);
+      await expect(card).toContainText(t('cards.draft.right_label.x_post'));
+      await expect(card).toContainText(t('cards.draft.x_chars_left', { n: 218 }));
+      await expect(card.getByTestId(TID.cardDraftSend)).toHaveText(t('cards.draft.button.open_in_x'));
+      await expect(card).not.toContainText(t('cards.draft.row_label.to'));
+      expect(await opened()).toEqual([]);
+      // the drawn hl is the Open in X button
+      await shoot(page, 'UX-16-08', `${xSel} ${byTid(TID.cardDraftSend)}`);
+    });
+
+    await test.step("UX-16-09 · X opens in your normal browser with the text filled in; you press Post (x.com's page)", async () => {
+      const s = step('UX-16-09');
+      expect(s.s).toContain("x.com's compose box");
+      const card = page.locator(xSel);
+      await card.getByTestId(TID.cardDraftSend).click();
+      await expect(card).toHaveAttribute('data-card-state', 'opened_in_app', { timeout: 10_000 });
+      // f: the compose page is X's; foo hands over the text and watches nothing there.
+      expect(await opened()).toEqual([`https://x.com/intent/post?text=${encodeURIComponent(post)}`]);
+      await shoot(page, 'UX-16-09', xSel);
+    });
+
+    await test.step('UX-16-10 · back in foo, the card says exactly what happened', async () => {
+      const s = step('UX-16-10');
+      const [line, said] = quoted(s.s);
+      const card = page.locator(xSel);
+      expect(line).toBe(t('cards.draft.summary.opened_in_x', { agentName: 'foo' }));
+      await expect(card).toContainText(line!);
+      await expect(log.getByText(t('cards.draft.x_opened_line'))).toBeVisible();
+      expect(curly(said!)).toBe(t('cards.draft.x_opened_line'));
+      // f: no proof chip for X (nothing was posted by foo).
+      await expect(card.getByTestId(TID.threadProofChip)).toHaveCount(0);
+      await shoot(page, 'UX-16-10', xSel);
+    });
+  } finally {
+    await app.close();
+  }
+});

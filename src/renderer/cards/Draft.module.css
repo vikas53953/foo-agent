@@ -1,0 +1,184 @@
+/* Spec: 05-2 §5.7.1 Draft card anatomy (header 22: Document 20 --fg-2, title --t-body-strong, right label --t-caption
+ * --fg-3; rows: label --t-small --fg-2, value --t-body; a 1px --line rule; body --t-body pre-wrap, max 10 lines then "Show
+ * all"; Gmail signature --t-small --fg-2, 8px above; pending line --t-small --fg-1; footer --t-caption --fg-3), Change mode
+ * (body textarea in the Text field style of 06 §0.4, auto-growing to 10 lines then scrolling; Subject a Text field),
+ * §5.7.2 ("Sending in {n}…" --t-small; Sent summary --ok; Failed line --bad), 05-1 §0.5 folded summary row. */
+.head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s1);
+  min-height: var(--t-body-strong-lh);
+}
+.headIcon {
+  flex: none;
+  color: var(--fg-2);
+}
+.title {
+  flex: 1;
+  min-width: 0;
+  font: var(--t-body-strong);
+}
+.right {
+  flex: none;
+  font: var(--t-caption);
+  color: var(--fg-3);
+  white-space: nowrap;
+}
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s0);
+  margin: 0;
+}
+.row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+}
+.row dt {
+  flex: none;
+  width: var(--s9);
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.row dd {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font: var(--t-body);
+  overflow-wrap: anywhere;
+}
+.rule {
+  width: 100%;
+  height: 0;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+.body {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 10;
+  font: var(--t-body);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.body[data-expanded] {
+  display: block;
+}
+.showAll {
+  align-self: flex-end;
+}
+.signature {
+  margin-top: var(--s1);
+  font: var(--t-small);
+  color: var(--fg-2);
+  white-space: pre-wrap;
+}
+.subjectField,
+.bodyField {
+  width: 100%;
+  padding: var(--s0) var(--s2);
+  border: 1px solid var(--line-input);
+  border-radius: var(--r-sm);
+  outline: 0;
+  background: var(--bg-raised);
+  color: var(--fg-1);
+  font: var(--t-body);
+}
+.subjectField {
+  min-height: var(--field-h);
+}
+.bodyField {
+  field-sizing: content;
+  min-height: var(--btn-h);
+  /* 10 lines plus the padding (2 × --s0) and the 1px borders. */
+  max-height: calc(var(--t-body-lh) * 10 + var(--s2));
+  overflow-y: auto;
+  resize: none;
+}
+.subjectField:focus,
+.bodyField:focus {
+  border-color: var(--accent);
+}
+.subjectField:focus-visible,
+.bodyField:focus-visible {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+.line {
+  font: var(--t-small);
+  color: var(--fg-1);
+}
+.badLine {
+  font: var(--t-small);
+  color: var(--bad);
+}
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s1);
+}
+.countdown {
+  font: var(--t-small);
+  color: var(--fg-1);
+  font-variant-numeric: tabular-nums;
+}
+.footRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+.footer {
+  flex: 1;
+  min-width: 0;
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+.footRow > :last-child {
+  flex: none;
+  white-space: nowrap;
+}
+.summary {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--s7);
+}
+.summary > * {
+  flex: none;
+  white-space: nowrap;
+}
+.summary > .summaryText,
+.summary > .sentText {
+  flex: 1;
+  min-width: 0;
+  font: var(--t-small);
+  white-space: normal;
+}
+.sentText {
+  color: var(--ok);
+}
+.dimIcon {
+  color: var(--fg-2);
+}
+.okIcon {
+  color: var(--ok);
+}
+/* 05-1 §0.5: the decision line at the bottom of a folded card's read-only expanded view. */
+.decisionLine {
+  margin-top: var(--s1);
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+/* M8 T7: 05-2 §5.7.1 X counter under the body; §5.7.2 too long in --bad. */
+.xCount {
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+.xCountBad {
+  font: var(--t-caption);
+  color: var(--bad);
+}

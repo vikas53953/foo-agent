@@ -35,12 +35,15 @@ const SCRIPT: FakeLine[] = [
 export default async function journey(v: Verify): Promise<void> {
   const { app, page } = await v.launch({ fakeAi: SCRIPT });
   await openWorld(app, page);
-  await openChat(page, 'foo');
+  // Home has no live job: in foo's chat the seeded "Goa stay" (NEEDS YOU) would take the message as a steer (08-2 §5.2).
+  await openChat(page, 'Home');
   await setTheme(page, 'light');
   await rest(page);
   await settle(page);
 
   const log = page.getByTestId(TID.threadLog);
+  // A helper chat's replies are helper bubbles.
+  const REPLY = `${byTid(TID.bubbleFoo)}, ${byTid(TID.bubbleHelper)}`;
   const mine = log.locator(byTid(TID.bubbleMe), { hasText: ASK }).last();
   // The badge sits next to the bubble (Bubble.tsx `.hold`), not inside it: the innermost block holding both.
   const badge = log
@@ -82,12 +85,12 @@ export default async function journey(v: Verify): Promise<void> {
   await v.shot('job-working');
 
   await advance(10_000);
-  await log.locator(byTid(TID.bubbleFoo), { hasText: RESULT }).first().waitFor({ timeout: 10_000 });
+  await log.locator(REPLY, { hasText: RESULT }).first().waitFor({ timeout: 10_000 });
   await waitBadge('done_unverified');
   v.note(`the AI's result is posted once as a foo bubble: "${RESULT}"`);
   v.note('my bubble ends ✅ with badge data-state="done_unverified" (no proof given, AT-115)');
 
-  const results = await log.locator(byTid(TID.bubbleFoo), { hasText: RESULT }).count();
+  const results = await log.locator(REPLY, { hasText: RESULT }).count();
   if (results !== 1) throw new Error(`result bubble count ${results}, expected 1`);
   const turns = v.fakeTurns() as { purpose: string }[];
   const purposes = turns.map((t) => t.purpose).filter((p) => p !== 'verify');

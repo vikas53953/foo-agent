@@ -1,0 +1,23 @@
+/* Spec: 06 §0.5 empty-state block (48px above, centred; icon 24 --fg-3; title --t-subtitle --fg-1; body --t-small --fg-2,
+ * max 360px). */
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--s1);
+  margin-top: var(--s8);
+  text-align: center;
+}
+.icon {
+  color: var(--fg-3);
+}
+.title {
+  margin: 0;
+  font: var(--t-subtitle);
+  color: var(--fg-1);
+}
+.body {
+  max-width: 360px; /* local: 06 §0.5 empty-state body max 360px (no token) */
+  margin: 0 0 var(--s1);
+  font: var(--t-small);
+  color: var(--fg-2);
+}

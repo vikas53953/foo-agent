@@ -77,8 +77,8 @@ take_over,control_bar,hand_back,stop,title}`, `signin_banner.{waiting,success,in
     `cards.signin.{title.<lane>,state.*,button.*}`) and listed in implementation-notes, as M1 did.
 
 Contract shapes T1 lands (08-1 is followed as written; no shape changes): MainToEngine `job.watch`, `job.takeOver`,
-`job.handBack` (no `mode`), `signin.done`, `signin.skip`, `code.submit { requestId, codeRef }`, `webkey.check { provider }`;
-invokes `job:openWindow`, `job:takeOver`, `job:handBack`, `signin:done`, `signin:skip`, `code:submit`, `app:openExternal`
+`job.handBack` (no `mode`), `signin.done`, `signin.skip`, `webkey.check { provider }`;
+invokes `job:openWindow`, `job:takeOver`, `job:handBack`, `signin:done`, `signin:skip`, `app:openExternal`
 (handlers stubbed until their ticket); events `live:frame`, `live:state`; settings `privacy.screenshotDays`,
 `privacy.readCodesFromGmail`, `connections.web` (08-0 §A defaults); the M9 error kinds of 08-3 §21.2 / 08-2 §8 / 08-4 §27.3;
 the vite inputs `windows/live.html` and `windows/signin-banner.html` (08-1 §1.2.1); `resources/web-tools.json` (08-4 §27.3);
@@ -104,7 +104,8 @@ said approved) is fixed by this text.
 
 - G-M9-01…14 are the pack's recommended options and stay inside the cited lines; MainToEngine kinds, the M9 invokes and events,
   the resource seeds, the `handback.check` rule, the settings defaults, the trace rows and the manifest changes match.
-- Considered and applied: `code:submit` caps `code` at 64 characters (08-1 gives only `string`); the `playwright-core` 1.64.1
+- Considered and applied: `code:submit` / `code.submit` are left to M5 (M5 T1/T2 own the secret channels; the Sign-in card's
+  use-code box invokes it once M5 lands); the `playwright-core` 1.64.1
   runtime dependency (`package.json`, lock file) is named under (b). Noted: `privacy` / `connections` hold only the M9 keys;
   M6/M8 extend those objects (merge check at each milestone merge).
 
