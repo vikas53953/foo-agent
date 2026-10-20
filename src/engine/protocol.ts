@@ -441,6 +441,29 @@ export const waReportSchema = z.discriminatedUnion('event', [
 ]);
 export type WaReport = z.infer<typeof waReportSchema>;
 
+// M9 T7: one docked banner per job (main's SigninBanners). `bounds` is Edge's outer rectangle and toolbar height (wintrack's
+// EdgeBounds); null when the window is gone.
+const edgeBoundsSchema = z
+  .object({
+    x: z.number(),
+    y: z.number(),
+    width: z.number(),
+    height: z.number(),
+    chromeTop: z.number(),
+    minimised: z.boolean(),
+  })
+  .strict();
+export const signinBannerSchema = z
+  .object({
+    jobId: z.string(),
+    op: z.enum(['open', 'url', 'bounds', 'signed_in', 'close']),
+    mode: z.enum(['sign_in_here', 'take_over']).optional(),
+    url: z.string().max(4096).optional(),
+    bounds: edgeBoundsSchema.nullable().optional(),
+  })
+  .strict();
+export type SigninBannerMsg = z.infer<typeof signinBannerSchema>;
+
 export const engineToMainSchema = z.discriminatedUnion('kind', [
   z.object({ id: z.string(), kind: z.literal('db.tx'), payload: z.object({ ops: z.array(dbOpSchema).min(1) }).strict() }),
   z.object({
@@ -666,6 +689,9 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
   // M9 T4 (gap pick, like wa.report): main owns settings.json (08-0 §A), so the engine reports a web key refused on a call
   // (CLOUD_AUTH) and main writes `connections.web.refused.{provider} = true` (X-127). The key check on save clears it.
   z.object({ id: z.string(), kind: z.literal('web.refused'), payload: z.object({ provider: WebProviderSchema }).strict() }),
+  // M9 T7 (gap pick, like web.refused): the docked sign-in banner is main's window (09 §9.27.3) and Edge is the engine's, so
+  // the engine says when it opens, follows Edge (bounds every 500 ms, the page URL every 1 s), shows success and closes.
+  z.object({ id: z.string(), kind: z.literal('signin.banner'), payload: signinBannerSchema }),
 ]);
 export type EngineToMain = z.infer<typeof engineToMainSchema>;
 export type DbTxReply = { ids: string[]; revs: number[] };
@@ -687,7 +713,10 @@ export interface MainLink {
       | 'draft.openX',
     payload: unknown,
   ): Promise<Result<T>>;
-  send(kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify' | 'wa.report' | 'web.refused', payload: unknown): void;
+  send(
+    kind: 'ui.patch' | 'log' | 'ai.state' | 'power.keepAwake' | 'notify' | 'wa.report' | 'web.refused' | 'signin.banner',
+    payload: unknown,
+  ): void;
 }
 
 export interface EngineSettingsView {

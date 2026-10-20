@@ -7,7 +7,15 @@
 // in-process engine.
 // M8 T3: `wa.report` and the WhatsApp session's vault.encrypt / vault.decrypt (08-3 §16.4).
 // M9 T4: `web.refused` → `connections.web.refused.{provider}` (08-0 §A, X-127).
-import { engineToMainSchema, type DbOp, type EngineToMain, type MainToEngine, type NamedQuery, type WaReport } from '../../engine/protocol';
+import {
+  engineToMainSchema,
+  type DbOp,
+  type EngineToMain,
+  type MainToEngine,
+  type NamedQuery,
+  type SigninBannerMsg,
+  type WaReport,
+} from '../../engine/protocol';
 import { fail, type Result } from '../../shared/errors';
 import type { EventChannel, EventPayload } from '../../shared/ipc';
 import type { Settings } from '../../shared/settings';
@@ -55,6 +63,9 @@ export interface BridgeContext {
   // M8 T6
   /** Main's DraftService for engine `draft.create` (08-2 §8.2 `gmail.draft`); its answer is posted when Gmail has answered. */
   drafts?(): Pick<DraftService, 'create' | 'openX'>;
+  // M9 T7
+  /** The engine's sign-in banner reports (signinBannerBridge.ts → SigninBanners, 09 §9.27.3). */
+  signinBanner?(m: SigninBannerMsg): void;
 }
 
 type AiStatePayload = Extract<EngineToMain, { kind: 'ai.state' }>['payload'];
@@ -191,6 +202,10 @@ export class EngineBridge {
         this.ctx.whatsapp?.report(msg.payload);
         return null;
       // M9 T4 (X-127): a web key refused on a call; main writes the setting and tells the renderer.
+      // M9 T7: the docked banner follows the engine's Edge window.
+      case 'signin.banner':
+        this.ctx.signinBanner?.(msg.payload);
+        return null;
       case 'web.refused': {
         const { provider } = msg.payload;
         if (writeWeb(this.ctx.settings, (w) => ({ ...w, refused: { ...w.refused, [provider]: true } })))

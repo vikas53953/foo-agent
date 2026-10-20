@@ -49,6 +49,8 @@ import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
 import type { SecondLookAct, StepAct } from '../shared/schemas';
 // M9 T3
 import { engineBrowserTools, type BrowserRuntime } from './tools/browser/tools';
+import { SigninLanes, type LaneDeps } from './tools/browser/signinLanes'; // M9 T7
+import { TakeOver } from './tools/browser/takeover'; // M9 T7
 // M8
 import { WhatsAppConnector, type WaPortLike } from './tools/connectors/whatsapp';
 import { linkWaRecipients, whatsappDraftTool } from './tools/connectors/recipients'; // M8 T7
@@ -104,6 +106,9 @@ export class Engine {
   private readonly style: StyleStatsRunner;
   // M9 T3: foo's browser (none when a test injects its tools).
   private readonly browser: BrowserRuntime | null;
+  // M9 T7: sign-in lanes and take over (08-2 §8.4, 06-3 §11.2); null without foo's browser.
+  readonly signin: SigninLanes | null;
+  readonly takeOver: TakeOver | null;
   // M6 T5
   readonly memoryChips: MemoryChips;
   readonly memoryReview: MemoryReview;
@@ -212,8 +217,32 @@ export class Engine {
       : null;
     // M5 T7: the real gate (08-2 §9.4) replaces the M4 stub; R4 results go through Redactor.scrub (08-2 §11.4).
     const gate = createGate({ settings: () => this.settings, now: () => o.clock.now() });
-    const browser = o.tools ? null : engineBrowserTools({ ...o, redactor: this.redactor, settings: () => this.settings, log });
+    // M9 T7: the lanes are the browser's capture guard (08-2 §8.3.3), so they exist before it and read it lazily.
+    const laneDeps: LaneDeps = {
+      clock: o.clock,
+      link: o.link,
+      window: (jobId) => this.browser?.browser.window(jobId),
+      openWindow: async (jobId) => (await this.browser?.browser.openWindow(jobId))?.ok ?? false,
+      masker: { apply: (p) => this.browser!.masker.apply(p), remove: (p) => this.browser!.masker.remove(p) },
+      reread: (jobId) => this.browser?.stepStarted(jobId),
+      secret: (handle) => this.redactor.registry.valueOf(handle),
+      forget: (handle) => this.redactor.registry.remove([handle]),
+      agentName: () => this.settings.identity.agentName,
+      log,
+    };
+    const lanes = o.tools ? null : new SigninLanes(laneDeps);
+    const browser = o.tools
+      ? null
+      : engineBrowserTools({
+          ...o,
+          redactor: this.redactor,
+          settings: () => this.settings,
+          log,
+          ...(lanes ? { captureGuard: lanes } : {}),
+        });
     this.browser = browser?.runtime ?? null;
+    this.signin = lanes;
+    this.takeOver = lanes ? new TakeOver(laneDeps, lanes) : null;
     this.tools = new ToolLayer({
       link: o.link,
       clock: o.clock,
@@ -226,6 +255,7 @@ export class Engine {
         ...this.draftToolRegistry(),
         // M9 T3: foo's browser tools unless a test injects its own.
         ...(o.tools ?? browser?.registry ?? {}),
+        ...(lanes ? { 'job.needSignIn': lanes.tool() } : {}), // M9 T7
         ...(this.google?.tools ?? {}),
       },
       gate,
@@ -261,11 +291,19 @@ export class Engine {
         onCannotStart: (job, kind) => this.recovery.onCannotStart(job, kind),
         // M8 T5: jobs waiting on a lost Google connection resume after recovery's, in the same slots.
         beforeSchedule: async () => (await this.recovery.beforeSchedule()) && (await this.trouble.beforeSchedule()),
-        onToolError: (job, tool, kind, stepId) => this.trouble.onToolError(job, tool, kind, stepId),
+        // M9 T7: a challenge page is the CAPTCHA lane (Take over), never solved and never a failure (08-2 §8.4).
+        onToolError: (job, tool, kind, stepId) =>
+          kind === 'SITE_CAPTCHA' && this.signin ? this.signin.challenge(job) : this.trouble.onToolError(job, tool, kind, stepId),
         // M5 T10: messages that waited at the AI cap go when it is raised or the month turns.
         onCapLifted: () => void this.drainQueued(),
         // M9 T3: a finished job's browser window closes, so the next browser job gets its slot.
-        onEnded: (jobId) => void this.browser?.jobEnded(jobId),
+        onEnded: (jobId) => {
+          this.signin?.jobEnded(jobId); // M9 T7
+          this.takeOver?.jobEnded(jobId);
+          void this.browser?.jobEnded(jobId);
+        },
+        // M9 T7: a Sign-in card starts its lane.
+        onNeedsYou: (job, cardId, card) => void this.signin?.begin(job, cardId, card),
       },
       // M6 T5: "Used:" chips under a step's card or result, and the post-turn review after DONE (08-3 §12.4, §12.5).
       memory: {
@@ -283,6 +321,15 @@ export class Engine {
       log: (evt, kind) => log(evt, kind),
     });
     this.recovery.attach(this.jobs);
+    // M9 T7
+    const laneRunner = {
+      core: this.jobs.core,
+      onCardAnswered: (a: { cardId: string; answer?: unknown; resolvedBy: string }) => this.jobs.onCardAnswered(a),
+      stop: (jobId: string, reason: 'window_closed' | 'signin_timeout', report: boolean) =>
+        this.jobs.track(this.jobs.stopper.stopJob(jobId, reason, { report })),
+    };
+    this.signin?.attach(laneRunner, (jobId) => this.takeOver?.has(jobId) ?? false);
+    this.takeOver?.attach(laneRunner);
     this.trouble.attach(this.jobs, this.google);
     this.lane = new ChatLane({
       link: o.link,
@@ -744,6 +791,23 @@ export class Engine {
       }
       case 'job.stopAll':
         return ok(await this.jobs.stopAll());
+      // M9 T7 (X-124, X-135): the sign-in card, the banner and the live window's buttons.
+      case 'signin.done':
+        await this.signin?.done(msg.payload.jobId);
+        return undefined;
+      case 'signin.skip':
+        await this.signin?.skip(msg.payload.jobId);
+        return undefined;
+      case 'job.takeOver':
+        if (msg.payload.on) await this.takeOver?.on(msg.payload.jobId);
+        else await this.takeOver?.handBack(msg.payload.jobId);
+        return undefined;
+      case 'job.handBack':
+        await this.takeOver?.handBack(msg.payload.jobId);
+        return undefined;
+      case 'code.submit':
+        await this.signin?.codeSubmitted(msg.payload.requestId, msg.payload.codeRef);
+        return undefined;
       case 'job.retry':
         return this.jobs.retry(msg.payload.jobId, msg.payload.newJobId);
       case 'test.clock':

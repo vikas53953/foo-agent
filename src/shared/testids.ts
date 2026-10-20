@@ -486,6 +486,8 @@ export const TID = {
   signinBannerDone: 'signin-banner-done',
   signinBannerSuccess: 'signin-banner-success',
   signinBannerHandBack: 'signin-banner-hand-back',
+  // M9 T7
+  cardSigninStartAgain: 'card-signin-start-again',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

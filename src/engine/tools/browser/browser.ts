@@ -47,8 +47,12 @@ export function launchPlan(o: {
   dataDir: string;
   exists(path: string): boolean;
   headless?: boolean;
+  /** M9 T7: FOO_TEST runs with FOO_TEST_BROWSER_DEBUG=1 only, so an e2e test can stand in for the person in foo's browser
+   * (sign in by hand, close the window). Chromium writes the port to `{profile}/DevToolsActivePort`. */
+  testDebug?: boolean;
 }): LaunchStep[] {
-  const base = { headless: o.headless ?? false, viewport: null, acceptDownloads: true as const, args: [...EDGE_ARGS] };
+  const args: string[] = [...EDGE_ARGS, ...(o.testDebug ? ['--remote-debugging-port=0'] : [])];
+  const base = { headless: o.headless ?? false, viewport: null, acceptDownloads: true as const, args };
   const edge: LaunchStep = {
     channel: 'msedge',
     userDataDir: join(o.dataDir, 'browser', 'profile'),
@@ -189,6 +193,7 @@ export interface PlaywrightBrowserDeps {
   platform: NodeJS.Platform;
   exists(path: string): boolean;
   headless?: boolean;
+  testDebug?: boolean; // M9 T7
   /** playwright-core's `chromium.launchPersistentContext` (injected so the module loads without a browser). */
   launch(userDataDir: string, options: LaunchOptions): Promise<BrowserContext>;
   log(evt: string, kind?: string): void;

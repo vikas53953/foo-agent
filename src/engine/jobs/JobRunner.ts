@@ -112,6 +112,8 @@ export interface RunnerHooks {
   // M9
   /** T3: the job reached a terminal state; its browser window closes and frees a slot (08-4 §26.8 item 5). */
   onEnded?(jobId: string): void;
+  /** T7: the job went NEEDS_YOU with this card; a Sign-in card starts its lane (pause, Edge to the front, timers). */
+  onNeedsYou?(job: JobRow, cardId: string, card: NeedsUserCard): void;
 }
 
 /** What T3's modules (stopFlow, steer, watchdog, costMeter) may use of the runner. */
@@ -258,6 +260,8 @@ function errorCopy(kind: 'SITE_BLOCKED' | 'UNKNOWN', site: string) {
 
 export class JobRunner {
   private ctxs = new Map<string, JobCtx>();
+  // M9 T7: the sign-in lanes and take-over use the same core as the stop flow.
+  readonly core: RunnerCore;
   private loops = new Map<string, Promise<void>>();
   /** Jobs that became WORKING again while their old loop was still finishing; they relaunch when it ends. */
   private relaunch = new Set<string>();
@@ -307,6 +311,7 @@ export class JobRunner {
     };
     const cost = new CostMeter(core);
     this.cost = cost;
+    this.core = core;
     this.stopper = new StopFlow(core);
     // M5 T8: a steer supersedes the open approval through main's gate and the next card names it (08-4 §26.5).
     this.steering = new Steer(core, this.stopper, (jobId, approvalId) => this.gating.onSteerSuperseded(jobId, approvalId));
@@ -943,6 +948,7 @@ export class JobRunner {
       ...(await this.editChecklistOps(job)),
     ]);
     await this.writeMirrors(job.id);
+    if (r.ok) this.d.hooks?.onNeedsYou?.(job, cardId, card); // M9 T7
     return r.ok ? cardId : null;
   }
 
@@ -1011,11 +1017,13 @@ export class JobRunner {
       await this.gating.onApproved(job, card.id);
     }
     // M5 (T5): a Skip is stored `skipped` so the card reads "Skipped. I'll go with {Best fit}." (05-1 §5.3.2).
+    // M9 T7: a Sign-in card ends signed_in or handed_back as the lane says (08-0 §G.2).
+    const signinEnd = card.type === 'signin' ? (answer as { end?: 'signed_in' | 'handed_back' } | null)?.end : undefined;
     const answered = APPROVAL_CARDS.has(card.type)
       ? 'APPROVED'
       : (answer as { skip?: true } | null)?.skip
         ? 'skipped'
-        : ANSWERED_STATE[card.type];
+        : (signinEnd ?? ANSWERED_STATE[card.type]);
     // The answer is kept on the card; the job stays NEEDS_YOU until a slot is free (max 3 WORKING), then resumes.
     const r = await this.tx([
       {
@@ -1034,6 +1042,11 @@ export class JobRunner {
       await this.gating.onChoiceAnswered(job, card, a.choice);
       await this.writeMirrors(job.id);
     }
+    // M9 T7: the next step knows how the sign-in ended (never what was typed).
+    if (card.type === 'signin')
+      this.ctx(job.id).decisions.push(
+        `- Sign-in on ${String(card.payload.site ?? '')} → ${answered === 'skipped' ? 'skipped by the user' : 'done'}`,
+      );
     await this.startNext();
   }
 

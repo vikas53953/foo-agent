@@ -101,6 +101,7 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
     platform: d.platform,
     exists: existsSync,
     ...(d.headless === undefined ? {} : { headless: d.headless }),
+    testDebug: d.testRun && d.env.FOO_TEST_BROWSER_DEBUG === '1', // M9 T7
     launch:
       d.launch ??
       (async (dir, options) => {
@@ -302,6 +303,8 @@ export function engineBrowserTools(o: {
   redactor: { scrub(text: string): { text: string }; registry: { forms(): { form: string }[] } };
   settings(): Settings;
   log(evt: string, kind?: string): void;
+  /** M9 T7: the sign-in lanes' pause (08-2 §8.3.3). */
+  captureGuard?: CaptureGuard;
 }): { registry: ToolRegistry; runtime: BrowserRuntime } {
   return createBrowserTools({
     dataDir: o.dataDir,
@@ -314,5 +317,6 @@ export function engineBrowserTools(o: {
     settings: o.settings,
     now: () => o.clock.now(),
     log: o.log,
+    ...(o.captureGuard ? { captureGuard: o.captureGuard } : {}),
   });
 }
