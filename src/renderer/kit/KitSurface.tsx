@@ -5,12 +5,13 @@
 // leaves the renderer and a match is refused, Article 8; `Image` only `data:` images or a chat file, web images never
 // load), 02 §F19.9 (charts), CR-0022 §(c) (catalog), AT-340, AT-353, AT-354, AT-355, AT-356, X-180. R1 T2. R1 T3: the
 // places and time pieces MapStops, Timeline, WeekCalendar, ListPick, TimePick (AT-341, AT-344, AT-345, AT-349, AT-350).
+// R1 T4: Stepper, Compare, Calculator, GoalRing, TimedChecklist, ShortForm (AT-342, 343, 346, 347, 348, 351) and the
+// Secret box offer after a refused value (AT-370).
 // Parts are drawn by plain functions, not components, so one render counts the parts it had to drop (the caption).
 import { useState, type KeyboardEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import type { KitActionMessage, KitComponent } from '../../shared/kit/catalog';
 import { pickContext, type PickContext } from '../../shared/kit/pick';
-import { checkSecret } from '../../shared/redactor';
 import { absPath, boundPath, getPath, INVALID, resolveContext, resolveField, type Surface } from '../../shared/kit/surface';
 import { TID } from '../../shared/testids';
 import { invoke } from '../ipc/client';
@@ -19,11 +20,18 @@ import { Button } from '../ui/Button';
 import { Icon, type IconName } from '../ui/Icon';
 import { ICONS } from '../ui/icons/registry';
 import { cx } from '../ui/cx';
+import { Calculator, type CalcInput } from './Calculator';
+import { Compare } from './Compare';
+import { GoalRing } from './GoalRing';
 import { LineChart, type ChartSeries } from './LineChart';
 import { ListPick, useAnswered } from './ListPick';
 import { MapStops } from './MapStops';
-import { TimePick } from './TimePick';
+import { firstSecret, SecretRefused, type SecretCatch } from './SecretRefused';
+import { ShortForm, formValues } from './ShortForm';
+import { Stepper } from './Stepper';
+import { asTimer, TimedChecklist } from './TimedChecklist';
 import { Timeline } from './Timeline';
+import { TimePick } from './TimePick';
 import { WeekCalendar, weekLayout } from './WeekCalendar';
 import { editSurface, useSurfaceData } from './model';
 import styles from './KitSurface.module.css';
@@ -48,6 +56,27 @@ interface Ctx {
   /** R1 T3: a ListPick row or TimePick slot was picked; true once main took the action (05-1 §5.3.4). */
   pick(c: Extract<KitComponent, { component: 'ListPick' | 'TimePick' }>, scope: string, pick: PickContext): Promise<boolean>;
   host: SurfaceHost;
+  /** Sends one user action (R1 T4: a ShortForm submit); a secret-looking value is refused and `clear` drops it. */
+  send(c: KitComponent, name: string, context: Record<string, unknown>, clear: (caught: SecretCatch) => void): void;
+  agentName: string;
+}
+
+/**
+ * Where a piece keeps its own state in the surface's data model (R1 T4: ShortForm values, TimedChecklist ticks): under
+ * `/_kit/{component id}` and the list item it is drawn for, so the AI's own paths are never touched.
+ */
+const ownPath = (c: KitComponent, scope: string) => `/_kit/${c.id}${scope}`;
+
+const isNumber = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
+
+/** A Calculator's inputs by name: the data model's number at the input's name (relative to the item), else its own value. */
+function calcValues(ctx: Ctx, inputs: readonly CalcInput[], scope: string): Record<string, number> {
+  const out: Record<string, number> = {};
+  for (const i of inputs) {
+    const v = getPath(ctx.data, absPath(i.name, scope));
+    out[i.name] = isNumber(v) ? v : i.value;
+  }
+  return out;
 }
 
 const isIcon = (name: string): name is IconName => Object.prototype.hasOwnProperty.call(ICONS, name);
@@ -233,6 +262,77 @@ function part(ctx: Ctx, c: KitComponent, scope: string, depth: number): ReactNod
       if (series === INVALID) return INVALID;
       return <LineChart variant={c.variant} series={series} title={c.title} unit={c.unit} />;
     }
+    case 'Stepper': {
+      const value = field<number>(ctx, c, 'value', scope);
+      if (value === INVALID || c.max <= c.min) return INVALID;
+      const path = boundPath(c, 'value', scope);
+      return (
+        <Stepper label={c.label} value={value} min={c.min} max={c.max} step={c.step} onChange={path ? (v) => ctx.edit(path, v) : null} />
+      );
+    }
+    case 'Compare':
+      return <Compare columns={c.columns} highlight={c.highlight} why={c.why} />;
+    case 'Calculator':
+      return (
+        <Calculator
+          inputs={c.inputs}
+          outputs={c.outputs}
+          values={calcValues(ctx, c.inputs, scope)}
+          onInput={(name, v) => ctx.edit(absPath(name, scope), v)}
+        />
+      );
+    case 'GoalRing': {
+      const value = field<number>(ctx, c, 'value', scope);
+      if (value === INVALID) return INVALID;
+      return <GoalRing value={value} target={c.target} label={c.label} />;
+    }
+    case 'TimedChecklist': {
+      const path = `${ownPath(c, scope)}/ticks`;
+      const timerPath = `${ownPath(c, scope)}/timer`;
+      const saved = getPath(ctx.data, path);
+      const ticks = Array.isArray(saved) ? saved.map((v) => v === true) : [];
+      return (
+        <TimedChecklist
+          steps={c.steps}
+          ticks={ticks}
+          onTick={(i, on) => {
+            const next = c.steps.map((_, k) => (k === i ? on : ticks[k] === true));
+            ctx.edit(path, next);
+          }}
+          timer={asTimer(getPath(ctx.data, timerPath))}
+          onTimer={(timer) => ctx.edit(timerPath, timer)}
+        />
+      );
+    }
+    case 'ShortForm': {
+      const base = ownPath(c, scope);
+      const values: Record<string, string> = {};
+      for (const f of c.fields) {
+        const v = getPath(ctx.data, `${base}/${f.name}`);
+        if (typeof v === 'string') values[f.name] = v;
+      }
+      return (
+        <ShortForm
+          fields={c.fields}
+          values={values}
+          agentName={ctx.agentName}
+          onChange={(name, v) => ctx.edit(`${base}/${name}`, v)}
+          onSubmit={() =>
+            ctx.send(
+              c,
+              c.action.event.name,
+              { ...resolveContext(c.action.event.context, ctx.data, scope), ...formValues(c.fields, values) },
+              (caught) => {
+                for (const f of c.fields) {
+                  const typed = (values[f.name] ?? '').trim();
+                  if (typed === caught.text || String(Number(typed)) === caught.text) ctx.edit(`${base}/${f.name}`, caught.rest);
+                }
+              },
+            )
+          }
+        />
+      );
+    }
     case 'MapStops':
       return <MapStops stops={c.stops} />;
     case 'Timeline':
@@ -246,7 +346,7 @@ function part(ctx: Ctx, c: KitComponent, scope: string, depth: number): ReactNod
     case 'TimePick':
       return <KitTimePick ctx={ctx} c={c} scope={scope} />;
     default:
-      // The other foo components arrive with R1 T4 (numbers and forms) and T7 (LiveStamp); a valid one draws nothing until
+      // The other foo components arrive with T7 (LiveStamp); a valid one draws nothing until then
       // then and is not counted as dropped.
       return null;
   }
@@ -344,11 +444,22 @@ function KitTextField({
   );
 }
 
+/** Keys a control inside the surface uses for itself (a Slider, Stepper, field or picker); they must not reach the
+ * message list, which moves focus between rows on the arrow keys (04 §1.8). R1 T4. */
+const CONTROL_KEYS = new Set(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown']);
+function keepControlKeys(e: KeyboardEvent<HTMLDivElement>) {
+  const el = e.target as HTMLElement;
+  if (CONTROL_KEYS.has(e.key) && el !== e.currentTarget && el.matches('input, select, textarea, [role="spinbutton"], [role="tab"]'))
+    e.stopPropagation();
+}
+
 /** Every string value that would leave the renderer with an action (context values and the surface's TextField values). */
 function outgoingText(context: Record<string, unknown>): string[] {
   const out: string[] = [];
   const walk = (v: unknown): void => {
     if (typeof v === 'string') out.push(v);
+    // A card number typed into a number field travels as a number (R1 T4: ShortForm); it is checked as its digits.
+    else if (typeof v === 'number') out.push(String(v));
     else if (Array.isArray(v)) v.forEach(walk);
     else if (v && typeof v === 'object') Object.values(v).forEach(walk);
   };
@@ -373,8 +484,16 @@ export function KitSurface({
   const key = `${'messageId' in host ? host.messageId : host.cardId}:${surface.id}`;
   const data = useSurfaceData(key, surface.data);
   const [sent, setSent] = useState<string | null>(null);
-  const [refused, setRefused] = useState<string | null>(null);
-  const send = (c: KitComponent, name: string, context: Record<string, unknown>): Promise<boolean> => {
+  const [refused, setRefused] = useState<{ caught: SecretCatch; clear: (caught: SecretCatch) => void } | null>(null);
+  /** Article 8 / 04-2 §22.4: a value that looks like a password, code or card number never leaves the renderer; the Secret
+   * box is offered for it instead (R1 T4). True when the context was refused. */
+  const refuse = (context: Record<string, unknown>, clear: (caught: SecretCatch) => void): boolean => {
+    const caught = firstSecret(outgoingText(context));
+    setRefused(caught ? { caught, clear } : null);
+    if (caught) setSent(null);
+    return caught !== null;
+  };
+  const post = (c: KitComponent, name: string, context: Record<string, unknown>): Promise<boolean> => {
     const msg: KitActionMessage = {
       ...host,
       surfaceId: surface.id,
@@ -388,6 +507,10 @@ export function KitSurface({
       () => false,
     );
   };
+  const send: Ctx['send'] = (c, name, context, clear) => {
+    if (refuse(context, clear)) return;
+    void post(c, name, context).then((ok) => setSent(ok ? c.id : null));
+  };
   const ctx: Ctx = {
     surface,
     host,
@@ -396,26 +519,21 @@ export function KitSurface({
     streaming,
     tally: { dropped: 0 },
     edit: (path, value) => editSurface(key, surface.data, path, value),
-    act: (c, scope) => {
-      const context = resolveContext(c.action.event.context, data, scope);
-      // Article 8 / 04-2 §22.4: a value that looks like a password, code or card number never leaves the renderer.
-      if (outgoingText(context).some((s) => checkSecret(s) !== null)) {
-        setRefused(c.id);
-        setSent(null);
-        return;
-      }
-      setRefused(null);
-      void send(c, c.action.event.name, context).then((ok) => setSent(ok ? c.id : null));
-    },
+    act: (c, scope) =>
+      send(c, c.action.event.name, resolveContext(c.action.event.context, data, scope), (caught) => {
+        // The secret leaves the TextField it was typed in (04-2 §22.4: the span is removed from the field).
+        for (const f of Object.values(surface.components)) {
+          if (f.component !== 'TextField') continue;
+          const path = boundPath(f, 'value', scope) ?? boundPath(f, 'value');
+          if (path && getPath(data, path) === caught.text) editSurface(key, surface.data, path, caught.rest);
+        }
+      }),
     pick: (c, scope, p) => {
       const context = pickContext(c, data, scope, p);
-      if (outgoingText(context).some((s) => checkSecret(s) !== null)) {
-        setRefused(c.id);
-        return Promise.resolve(false);
-      }
-      setRefused(null);
-      return send(c, c.action.event.name, context);
+      return refuse(context, () => undefined) ? Promise.resolve(false) : post(c, c.action.event.name, context);
     },
+    send,
+    agentName,
   };
   const root = node(ctx, 'root', '', 0);
   const dropped = blockDropped + ctx.tally.dropped;
@@ -426,6 +544,7 @@ export function KitSurface({
       aria-label={t('kit.surface.accessible_name', { agentName })}
       data-testid={TID.kitSurface}
       data-surface-id={surface.id}
+      onKeyDown={keepControlKeys}
     >
       {root}
       {sent && (
@@ -434,9 +553,14 @@ export function KitSurface({
         </p>
       )}
       {refused && (
-        <p className={styles.text_caption} role="alert">
-          {t('kit.form.secret_refused')}
-        </p>
+        <SecretRefused
+          chatId={host.chatId}
+          caught={refused.caught}
+          onMoved={() => {
+            refused.clear(refused.caught);
+            setRefused(null);
+          }}
+        />
       )}
       {dropped > 0 && <KitDropped />}
     </div>
