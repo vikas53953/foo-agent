@@ -20,6 +20,7 @@ import { settingsSchema, type Settings } from '../../src/shared/settings';
 import { settingsDefaults } from '../../src/shared/settingsDefaults';
 import type { ProviderId } from '../../src/shared/types';
 import type { ToolRegistry } from '../../src/engine/tools/ToolLayer';
+import type { BrowserRuntime } from '../../src/engine/tools/browser/tools';
 
 export const ROOT = path.resolve(__dirname, '../..');
 export const RESOURCES = path.join(ROOT, 'resources');
@@ -91,6 +92,9 @@ export interface HarnessOptions {
   // M8
   /** T5: main's Google connections over this harness's db: `connection.google` goes to `forEngine`, Google is `http`. */
   google?: (db: Db) => { forEngine(req: GoogleEngineReq): Promise<Result<unknown>>; http: HttpFetch };
+  // M9
+  /** T8: foo's real browser tools over a test launcher (the sandbox sites), beside the fake tools. */
+  browser?: { registry: ToolRegistry; runtime: BrowserRuntime };
 }
 
 /** M4: per-prefix counters (`tc_000001` is the first tool call), so a fake AI line can name an id in a proof. */
@@ -208,6 +212,7 @@ export function makeHarness(o: HarnessOptions): Harness {
     fetch: (() => Promise.reject(new Error('network is not allowed in tests'))) as typeof fetch,
     ...(o.tools ? { tools: o.tools, newId: countingIds() } : {}),
     ...(google ? { googleViaMain: { http: google.http } } : {}),
+    ...(o.browser ? { browser: o.browser } : {}),
   });
   bridge.live = true;
   bridge.post = (msg) => {

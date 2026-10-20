@@ -179,10 +179,13 @@ const INSERT_COLUMNS: Record<string, readonly string[]> = {
   // M6 T7: 08-3 §15.6 held items (written by the budget gate) and §15.7 suggestions (UNIQUE key).
   held_items: ['id', 'kind', 'chat_id', 'payload', 'created_at'],
   suggestions: ['id', 'key', 'kind', 'text', 'state', 'offered_at', 'decided_at'],
+  // M9 T8: 08-2 §8.3.9 site notes (row per domain) and §8.3.11 site recipes (row per domain + goal; never values).
+  site_notes: ['domain', 'flags', 'updated_at'],
+  site_recipes: ['id', 'domain', 'goal', 'url_pattern', 'steps_json', 'success_count', 'last_ok_at', 'last_fail_at'],
 };
 /** Re-learning or re-granting replaces the row (PK hash+origin_kind / fact_id+chat_id); a suggestion key's row is replaced
  * when its state moves (UNIQUE key). */
-const UPSERT_TABLES = new Set(['memory_tombstones', 'memory_group_grants', 'suggestions']);
+const UPSERT_TABLES = new Set(['memory_tombstones', 'memory_group_grants', 'suggestions', 'site_notes', 'site_recipes']); // M9 T8: site rows
 /** Columns the engine may change with `update` (ids, owners and creation times never move; `jobs.state` only by transition). */
 const UPDATE_COLUMNS: Record<string, readonly string[]> = {
   messages: ['text', 'status', 'badge', 'provider_note', 'job_id', 'why'], // M6 T5: a memory chip's state (why.memoryChip)
@@ -202,6 +205,8 @@ const JSON_COLUMNS: Record<string, readonly string[]> = {
   steps: ['slots'],
   tool_calls: ['args', 'result'],
   cards: ['payload', 'answer'],
+  site_notes: ['flags'], // M9 T8
+  site_recipes: ['steps_json'],
 };
 /** Tables whose rows carry `rev` (08-0 §B.1: every UPDATE bumps it). */
 const HAS_REV = new Set(['messages', 'jobs', 'steps', 'cards']);
@@ -305,6 +310,7 @@ function insertRow(db: Db, op: Extract<DbOp, { op: 'insert' }>, fx: TxEffects, n
   if (op.table === 'memory_tombstones') return { id: `${String(row.hash)}|${String(row.origin_kind)}`, rev: 0 };
   if (op.table === 'memory_group_grants') return { id: `${String(row.fact_id)}|${String(row.chat_id)}`, rev: 0 };
   if (op.table === 'memory_uses') return { id: String(row.fact_id), rev: 0 };
+  if (op.table === 'site_notes') return { id: String(row.domain), rev: 0 }; // M9 T8
   if (op.table === 'reactions') {
     const messageId = String(row.message_id);
     db.prepare('UPDATE messages SET rev = rev + 1 WHERE id = ?').run(messageId);
@@ -510,7 +516,7 @@ function deleteRow(db: Db, op: Extract<DbOp, { op: 'delete' }>, fx: TxEffects): 
 
 /** 08-3 §12.2 / §12.7 / X-112: the only files `file.write` may touch, relative to `{DATA}` with forward slashes. */
 const WRITABLE_FILE =
-  /^(memory\/(?:(?:people|preferences)\/)?[^/\\:*?"<>|]+\.md|memory\/\.tombstones|memory\/\.tidy-log\.md|helpers\/h_[A-Za-z0-9_-]+\/notes\.md)$/u;
+  /^(memory\/(?:(?:people|preferences)\/)?[^/\\:*?"<>|]+\.md|memory\/\.tombstones|memory\/\.tidy-log\.md|helpers\/h_[A-Za-z0-9_-]+\/notes\.md|sites\/[a-z0-9][a-z0-9.-]*\.md)$/u; // M9 T8: sites/{domain}.md (08-2 §8.3.9)
 
 export function isWritableDataFile(relPath: string): boolean {
   return WRITABLE_FILE.test(relPath) && !relPath.split('/').some((seg) => seg === '..' || seg === '.' || seg === '');

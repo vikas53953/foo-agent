@@ -73,11 +73,16 @@ describe('08-2 §8.2 browser.open', { timeout: 60_000 }, () => {
   it('refuses blocked addresses and hand-back sites before any navigation', async () => {
     expect(await h.run('browser.open', { url: 'file:///etc/passwd' })).toEqual({ kind: 'error', errorKind: 'URL_NOT_ALLOWED' });
     expect(await h.run('browser.open', { url: 'http://192.168.1.1/' })).toEqual({ kind: 'error', errorKind: 'URL_NOT_ALLOWED' });
-    expect(await h.run('browser.open', { url: 'https://netbanking.hdfcbank.com/' })).toEqual({ kind: 'error', errorKind: 'SITE_HANDBACK' });
+    // M9 T8: the hand-back result names the page, for the card's Open {site} (08-2 §8.3.10).
+    expect(await h.run('browser.open', { url: 'https://netbanking.hdfcbank.com/' })).toEqual({
+      kind: 'error',
+      errorKind: 'SITE_HANDBACK',
+      result: { url: 'https://netbanking.hdfcbank.com/' },
+    });
     expect((await h.page()).url()).toBe(`${h.origin}/home`);
   });
   it('a redirect onto a hand-back site is left at once', async () => {
-    expect(await h.run('browser.open', { url: `${h.origin}/to-bank` })).toEqual({ kind: 'error', errorKind: 'SITE_HANDBACK' });
+    expect(await h.run('browser.open', { url: `${h.origin}/to-bank` })).toMatchObject({ kind: 'error', errorKind: 'SITE_HANDBACK' });
     expect((await h.page()).url()).toBe('about:blank');
   });
   it('403 → SITE_BLOCKED; a bot-check page → SITE_CAPTCHA (never solved)', async () => {

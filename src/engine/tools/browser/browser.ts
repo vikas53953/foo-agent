@@ -131,6 +131,20 @@ export function allowHostsFrom(env: Record<string, string | undefined>, testRun:
     .filter(Boolean);
 }
 
+/**
+ * M9 T8: FOO_TEST_BROWSER_HOST_RULES / FOO_TEST_BROWSER_SPKI (test runs only, beside FOO_TEST_ALLOW_HOSTS 08-4 §27.6): the
+ * sandbox's `.test` names mapped onto 127.0.0.1 and its one key trusted, so the real app can book on the 08-3 §22.5 sites.
+ * Outside test runs nothing is added.
+ */
+export function testBrowserArgs(env: Record<string, string | undefined>, testRun: boolean): string[] {
+  if (!testRun) return [];
+  const args: string[] = [];
+  // The sandbox is on this machine: no proxy from the environment sits between (Chromium on Linux reads https_proxy).
+  if (env.FOO_TEST_BROWSER_HOST_RULES) args.push('--no-proxy-server', `--host-resolver-rules=${env.FOO_TEST_BROWSER_HOST_RULES}`);
+  if (env.FOO_TEST_BROWSER_SPKI) args.push(`--ignore-certificate-errors-spki-list=${env.FOO_TEST_BROWSER_SPKI}`);
+  return args;
+}
+
 /** A job window as the engine drives it: the BrowserHandle `JobWindow` plus the page the actions use. */
 export interface DriverWindow extends JobWindow {
   /** The page foo acts on now: the job's own page, or a pop-up adopted into the job (§8.3.5 watchdogs) until it closes. */

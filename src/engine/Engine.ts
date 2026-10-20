@@ -49,7 +49,7 @@ import { JobRecovery } from './jobs/recovery';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
 import type { SecondLookAct, StepAct } from '../shared/schemas';
 // M9 T3
-import { engineBrowserTools, type BrowserRuntime } from './tools/browser/tools';
+import { engineBrowserTools, liveTermsReader, type BrowserRuntime } from './tools/browser/tools';
 import { SigninLanes, type LaneDeps } from './tools/browser/signinLanes'; // M9 T7
 import { TakeOver } from './tools/browser/takeover'; // M9 T7
 // M8
@@ -83,6 +83,9 @@ export interface EngineOptions {
   google?: GoogleOptions;
   /** T5: tests only. Main holds the token (as in production) and Google is the test's fake fetch on these bases. */
   googleViaMain?: { http: HttpFetch; bases?: Partial<GoogleBases> };
+  // M9
+  /** T8: tests only. foo's browser tools over a test launcher (the sandbox sites), beside injected fake tools. */
+  browser?: { registry: ToolRegistry; runtime: BrowserRuntime };
 }
 
 export class Engine {
@@ -235,15 +238,17 @@ export class Engine {
       log,
     };
     const lanes = o.tools ? null : new SigninLanes(laneDeps);
-    const browser = o.tools
-      ? null
-      : engineBrowserTools({
-          ...o,
-          redactor: this.redactor,
-          settings: () => this.settings,
-          log,
-          ...(lanes ? { captureGuard: lanes } : {}),
-        });
+    const browser =
+      o.browser ??
+      (o.tools
+        ? null
+        : engineBrowserTools({
+            ...o,
+            redactor: this.redactor,
+            settings: () => this.settings,
+            log,
+            ...(lanes ? { captureGuard: lanes } : {}),
+          }));
     this.browser = browser?.runtime ?? null;
     this.signin = lanes;
     this.takeOver = lanes ? new TakeOver(laneDeps, lanes) : null;
@@ -257,8 +262,9 @@ export class Engine {
         ...webToolDefs(this.web),
         ...this.memoryToolRegistry(newId),
         ...this.draftToolRegistry(),
-        // M9 T3: foo's browser tools unless a test injects its own.
+        // M9 T3: foo's browser tools unless a test injects its own (M9 T8: a test may inject both).
         ...(o.tools ?? browser?.registry ?? {}),
+        ...(o.tools && o.browser ? o.browser.registry : {}),
         ...(lanes ? { 'job.needSignIn': lanes.tool() } : {}), // M9 T7
         ...(this.google?.tools ?? {}),
       },
@@ -290,6 +296,14 @@ export class Engine {
       log: (evt, kind) => log(evt, kind),
       gate,
       scrub: (text) => this.redactor.scrub(text),
+      // M9 T8: the live terms right before a booking, read from the job's page (08-2 §9.4.2).
+      ...(this.browser
+        ? {
+            browserLive: liveTermsReader(this.browser),
+            browserUrl: (id: string) => this.browser?.page(id)?.url() ?? null,
+            recipes: this.browser.recipes,
+          }
+        : {}),
       hooks: {
         onAiError: (job, kind) => this.recovery.onAiError(job, kind),
         onCannotStart: (job, kind) => this.recovery.onCannotStart(job, kind),
@@ -308,6 +322,13 @@ export class Engine {
         },
         // M9 T7: a Sign-in card starts its lane.
         onNeedsYou: (job, cardId, card) => void this.signin?.begin(job, cardId, card),
+        reintake: (chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }), // M9 T8
+        // M9 T8 (T3 seams): one masked picture after each step (08-2 §8.3.8); the next step's first snapshot is whole (§8.3.4).
+        onStepDone: async (jobId, idx, next) => {
+          const page = this.browser?.page(jobId);
+          if (page) await this.browser!.shots.capture(jobId, page, idx).catch(() => null);
+          if (next !== null) this.browser?.stepStarted(jobId);
+        },
       },
       // M6 T5: "Used:" chips under a step's card or result, and the post-turn review after DONE (08-3 §12.4, §12.5).
       memory: {

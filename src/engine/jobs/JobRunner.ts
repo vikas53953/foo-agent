@@ -27,6 +27,7 @@ import type { Settings } from '../../shared/settings';
 import { buildMemoryParts, stepQueryText, memoryUseOps, type MemoryParts } from '../memory/retrieval';
 import { usedFacts } from '../memory/chips';
 import type {
+  ApprovalDraft,
   ApprovalState,
   CardRow,
   ErrorKind,
@@ -59,6 +60,14 @@ import type { GateLogic } from '../gate/GateLogic';
 import { RunnerGate } from '../gate/runnerGate';
 // M5 T14
 import { draftSecondLook, type DraftLookAnswer, type DraftLookReq } from '../gate/draftSecondLook';
+// M9 T8
+import type { LiveRead } from '../tools/browser/readLiveTerms';
+import { handbackCopy, handbackUrl } from '../tools/browser/handbackGuard';
+import { SiteNotes, domainOf as siteDomainOf } from '../tools/browser/siteNotes';
+import { compareOnlyVerbs } from './flights';
+import { RecipeBook } from '../tools/browser/recipes/book';
+import type { RecipeRecorder } from '../tools/browser/recipes/recipe';
+import { newId as freshId } from '../../shared/ids';
 
 export const CHECKLIST_AFTER_MS = 1_500;
 const OBSERVATION_CAP = 4_000;
@@ -114,6 +123,10 @@ export interface RunnerHooks {
   onEnded?(jobId: string): void;
   /** T7: the job went NEEDS_YOU with this card; a Sign-in card starts its lane (pause, Edge to the front, timers). */
   onNeedsYou?(job: JobRow, cardId: string, card: NeedsUserCard): void;
+  /** T8: the user's message goes to an intake turn again, past the typed and steer hooks (Compare flights, 08-2 §5.3.4). */
+  reintake?(chatId: string, messageId: string): void;
+  /** T8 (T3 runner seam, 08-2 §8.3.4 / §8.3.8): step `idx` finished (its masked step picture) and `next` starts (whole snapshot). */
+  onStepDone?(jobId: string, idx: number, next: number | null): Promise<void>;
 }
 
 /** What T3's modules (stopFlow, steer, watchdog, costMeter) may use of the runner. */
@@ -183,6 +196,13 @@ export interface JobRunnerDeps {
   // M6
   /** T5: the "Used: {fact}" chips after a step that asks or finishes (08-3 §12.5), and the review after DONE (§12.4). */
   memory?: { used(chatId: string, facts: EngineFact[]): Promise<void>; jobDone(chatId: string): void };
+  // M9
+  /** T8: the live terms read from the job's browser page right before a booking (08-2 §9.4.2, `readLiveTerms.ts`). */
+  browserLive?(jobId: string, draft: ApprovalDraft): Promise<LiveRead>;
+  /** T8: the address of the job's browser page (`siteDomain`, 08-4 §28.1 item 5). */
+  browserUrl?(jobId: string): string | null;
+  /** 08-2 §8.3.11: the browser's recipe recorder (saved after DONE with proof, replayed by role + name). */
+  recipes?: RecipeRecorder;
 }
 
 export interface CreateJobInput {
@@ -279,8 +299,29 @@ export class JobRunner {
   private ticker: RunnerTick;
   /** T7: the gate's job side (08-2 §9.4). */
   readonly gating: RunnerGate;
+  // M9 T8: 08-2 §8.3.9 site notes (flags + sites/{domain}.md; the step turn reads them).
+  private readonly siteNotes: SiteNotes;
+  private readonly recipes: RecipeBook | null;
 
   constructor(private d: JobRunnerDeps) {
+    this.siteNotes = new SiteNotes({
+      link: d.link,
+      dataDir: d.dataDir,
+      now: () => d.clock.now(),
+      timeZone: () => d.settings().locale.timeZone,
+      log: (e, k) => d.log(e, k),
+    });
+    this.recipes = d.recipes
+      ? new RecipeBook({
+          recorder: d.recipes,
+          query: (q, ...args) => this.query(q, ...args),
+          tx: (ops) => this.tx(ops),
+          newId: () => freshId('rcp', d.clock.now()),
+          now: () => d.clock.now(),
+          pageUrl: (id) => d.browserUrl?.(id) ?? null,
+          log: (e, k) => d.log(e, k),
+        })
+      : null;
     const core: RunnerCore = {
       d,
       get cost() {
@@ -336,6 +377,8 @@ export class JobRunner {
       tools: d.tools,
       timeZone: () => d.settings().locale.timeZone,
       countFailure: (j) => this.countFailure(j),
+      ...(d.browserLive ? { browserLive: d.browserLive } : {}), // M9 T8
+      ...(d.browserUrl ? { browserUrl: d.browserUrl } : {}),
     });
     // M5 T14
     this.draftLook = (req) => draftSecondLook(core, d.settings().locale.timeZone, req);
@@ -538,7 +581,7 @@ export class JobRunner {
     const s = this.d.settings();
     const pick = this.d.ai.pick();
     const billing = pick?.billing ?? 'plan';
-    const doVerbs = extractDoVerbs(input.askedText);
+    const doVerbs = compareOnlyVerbs(input.askedText, extractDoVerbs(input.askedText)); // M9 T8: flights compare only
     const intent = doVerbs.length ? 'do' : 'read_only';
     const isBanned = (x: string) => this.d.prompts.isBanned(x);
     const plan = insertShowBefore(
@@ -850,12 +893,22 @@ export class JobRunner {
     if (r.outcome === 'cancelled') return false;
     // M5 T7: a call the gate held (a refusal line, a hand-back, an app_use / offer Choice) is not a failed tool.
     if (r.gate) return this.gating.onToolGate(job, r);
-    c.lastObservation = { toolCallId: r.toolCallId, tool: r.tool, text: JSON.stringify(r.result ?? null).slice(0, OBSERVATION_CAP) };
+    // M9 T8 (T3 runner seam, 08-2 §7.2 part 8): a failed call shows its error kind, so the AI can re-plan around it.
+    const seen =
+      r.outcome === 'error' ? { error: r.errorKind ?? 'UNKNOWN', ...(r.result ? { result: r.result } : {}) } : (r.result ?? null);
+    c.lastObservation = { toolCallId: r.toolCallId, tool: r.tool, text: JSON.stringify(seen).slice(0, OBSERVATION_CAP) };
+    await this.siteNotes.onTool(job.id, r.tool, decision.call.args, r.outcome === 'error' ? (r.errorKind ?? 'UNKNOWN') : null); // M9 T8
     if (r.needsUser) {
       await this.needsYou(job, r.needsUser);
       return false;
     }
     if (r.outcome === 'error') {
+      // M9 T8 (08-2 §8.3.10): a hand-back site is never driven: the step is handed back with the Open {site} card.
+      const back = r.errorKind === 'SITE_HANDBACK' ? handbackUrl(r.result, decision.call.args) : null;
+      if (back) {
+        await this.fail(job, 'SITE_HANDBACK', { kind: 'open_url', url: back });
+        return false;
+      }
       const site = (r.result as { site?: unknown } | null)?.site;
       c.lastError = { kind: r.errorKind ?? 'UNKNOWN', site: typeof site === 'string' ? site : null };
       if (current) await this.tx([{ op: 'update', table: 'steps', id: current.id, set: { attempts: current.attempts + 1 } }]);
@@ -886,6 +939,7 @@ export class JobRunner {
       ...(await this.editChecklistOps(job)),
     ]);
     await this.writeMirrors(job.id);
+    await this.d.hooks?.onStepDone?.(job.id, idx, next?.idx ?? null); // M9 T8
   }
 
   /** Done steps never change; the remaining ones are replaced (show-before inserted), plan_version + 1. */
@@ -965,6 +1019,8 @@ export class JobRunner {
     if (card?.type === 'choice' && card.payload.purpose === 'stop_which') return this.stopper.answerStopWhich(card, a.choice, a.resolvedBy);
     if (card?.type === 'choice' && card.payload.purpose === 'fold_which')
       return this.steering.answerFoldWhich(card, a.choice, a.resolvedBy);
+    // M9 T8 (08-2 §5.3.4): Compare flights runs the ask as a compare job (no book, buy or pay verb); Not now ends it.
+    if (card?.type === 'choice' && card.payload.flightScope) return this.answerFlightScope(card, a.choice, a.resolvedBy);
     // M5 T7: main's ApprovalGate resolves an approval card itself before it tells the runner (08-2 §9.1).
     if (!card || (card.resolvedAt !== null && !APPROVAL_CARDS.has(card.type)) || !card.jobId) return;
     const job = await this.job(card.jobId);
@@ -1099,6 +1155,21 @@ export class JobRunner {
     await this.startNext();
   }
 
+  private async answerFlightScope(card: CardRow, choice: string | undefined, resolvedBy: string): Promise<void> {
+    if (card.resolvedAt !== null || (choice !== 'o1' && choice !== 'o2')) return;
+    const messageId = String((card.payload.flightScope as { messageId?: unknown }).messageId ?? '');
+    const now = this.d.clock.now();
+    const r = await this.tx([
+      {
+        op: 'update',
+        table: 'cards',
+        id: card.id,
+        set: { state: 'answered', resolved_by: resolvedBy, resolved_at: now, answer: { optionId: choice } },
+      },
+    ]);
+    if (r.ok && choice === 'o1' && messageId) this.d.hooks?.reintake?.(card.chatId, messageId);
+  }
+
   // ---- 08-2 §5.8 finish ----
 
   private async finish(job: JobRow, c: JobCtx, d: Extract<StepDecision, { kind: 'done' }>): Promise<boolean> {
@@ -1108,8 +1179,16 @@ export class JobRunner {
       return !(await this.countFailure(job));
     }
     const stored = new Map<string, string>();
-    for (const tc of (await this.query<{ id: string; result: unknown; outcome: string | null }[]>('toolCallsForJob', job.id)) ?? [])
-      if (tc.outcome === 'ok') stored.set(tc.id, JSON.stringify(tc.result ?? null));
+    const booked: string[] = []; // M9 T8: the pages a browser.submit went through on (site notes `bookingWorks`)
+    for (const tc of (await this.query<{ id: string; tool: string; result: unknown; outcome: string | null }[]>(
+      'toolCallsForJob',
+      job.id,
+    )) ?? []) {
+      if (tc.outcome !== 'ok') continue;
+      stored.set(tc.id, JSON.stringify(tc.result ?? null));
+      const landed = tc.tool === 'browser.submit' ? siteDomainOf((tc.result as { url?: unknown } | null)?.url) : null;
+      if (landed) booked.push(landed);
+    }
     const check = checkProof(d.proof, {
       raw: this.d.tools.rawResults(job.id),
       stored: (id) => stored.get(id) ?? null,
@@ -1158,17 +1237,31 @@ export class JobRunner {
       ...(await this.editChecklistOps(job, to)),
     ];
     // A refused move (the job left WORKING meanwhile, e.g. a stop) rolls the whole write back: nothing to end here.
-    if ((await this.tx(ops)).ok) await this.ended(job.id, c);
+    if ((await this.tx(ops)).ok) {
+      if (to === 'done') {
+        // M9 T8: 08-2 §8.3.9 site notes, §8.3.11 the recipe (DONE with proof only).
+        await this.siteNotes.onDone(job.id, booked);
+        await this.recipes?.saveOnDone(job.id, job.doVerbs);
+      }
+      await this.ended(job.id, c);
+    }
     return false;
   }
 
   // ---- FAILED + error card with one alternative (AT-117) ----
 
-  async fail(job: JobRow, kind: 'SITE_BLOCKED' | 'UNKNOWN', alternative?: { kind: string; [k: string]: unknown }): Promise<void> {
+  async fail(
+    job: JobRow,
+    kind: 'SITE_BLOCKED' | 'UNKNOWN' | 'SITE_HANDBACK',
+    alternative?: { kind: string; [k: string]: unknown },
+  ): Promise<void> {
     const c = this.ctx(job.id);
     const site = c.lastError?.site ?? job.siteDomain ?? '';
     let action: FixAction;
-    if (alternative?.kind === 'retry' || alternative?.kind === 'dismiss') action = { kind: alternative.kind };
+    // M9 T8 (08-2 §8.3.10): the hand-back card opens the bank's own page in the user's browser; its words are fixed.
+    const handback = kind === 'SITE_HANDBACK' && typeof alternative?.url === 'string' ? handbackCopy(alternative.url) : null;
+    if (handback) action = handback.action;
+    else if (alternative?.kind === 'retry' || alternative?.kind === 'dismiss') action = { kind: alternative.kind };
     else if (alternative?.kind === 'open_url' && typeof alternative.url === 'string' && /^https:\/\//.test(alternative.url))
       action = { kind: 'open_url', url: alternative.url };
     else {
@@ -1182,7 +1275,7 @@ export class JobRunner {
             ? { kind: 'retry' }
             : { kind: 'dismiss' };
     }
-    const words = errorCopy(kind, site);
+    const words = handback ?? errorCopy(kind === 'SITE_HANDBACK' ? 'UNKNOWN' : kind, site);
     const payload = {
       variant: 'error',
       kind,
@@ -1215,6 +1308,7 @@ export class JobRunner {
     this.steering.forget(jobId);
     this.watchdog.forget(jobId);
     this.gating.forget(jobId);
+    this.siteNotes.forget(jobId); // M9 T8
     this.d.hooks?.onEnded?.(jobId); // M9 T3
     // A slot may have freed for a job paused at the AI cap.
     void this.cost.resumeCapped();
@@ -1334,7 +1428,11 @@ export class JobRunner {
       timeZone: this.d.settings().locale.timeZone,
       now: this.d.clock.now(),
     });
-    const built = this.d.prompts.buildStep(this.jobBlock(job, steps, c), this.d.tools.catalogue(), memory, steer);
+    // M9 T8 (08-2 §8.3.9): the flags of every domain in play close the job block.
+    const sites = await this.siteNotes.linesFor(job.id);
+    const replay = (await this.recipes?.lines(job.id, job.doVerbs)) ?? []; // §8.3.11 the light step turn's saved steps
+    const block = [this.jobBlock(job, steps, c), ...sites, ...replay].join('\n');
+    const built = this.d.prompts.buildStep(block, this.d.tools.catalogue(), memory, steer);
     const maxOut = this.d.ai.turnParams(pick.providerId, 'step').maxOutputTokens;
     if (!(await this.cost.allowStep(job, built.system.length + built.prompt.length, maxOut))) {
       await this.steering.settle(job, null, '');

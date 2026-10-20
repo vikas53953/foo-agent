@@ -378,6 +378,31 @@ export class Actions {
     }
   }
 
+  /**
+   * M9 T8 `browser.submit` (08-2 §10.4, X-125): the one approved click on a commit control. No expected-change retry and no
+   * second click on any error or timeout; `clicked` says whether the click may have reached the page (a refusal before it
+   * never did). The caller classifies what the page shows.
+   */
+  async submitClick(jobId: string, page: Page, ref: string): Promise<ActionResult & { clicked: boolean }> {
+    const g = this.guard(jobId, page);
+    if (g) return { ...(g as ActionRefusal), clicked: false };
+    const at = this.locate(page, ref);
+    if (!at) return { ...refused('VALIDATION', 'unknown_ref'), clicked: false };
+    const f = await this.facts(at.frame, ref);
+    if (!f) return { ...refused('VALIDATION', 'not_found'), clicked: false };
+    // The approved ref must still be the commit control the card was made for (§8.2.1); anything else is not clicked.
+    if (classify(f) !== 'commit') return { ...refused('VALIDATION', 'not_commit'), clicked: false };
+    try {
+      const miss = await this.settled(jobId, page, () => at.loc.click({ timeout: this.actionableMs }));
+      return miss ? { ...miss, clicked: true } : { ...done({ url: page.url() }), clicked: true };
+    } catch (e) {
+      return {
+        ...refused('SITE_CHANGED', e instanceof Error && /timeout/i.test(e.message) ? 'not_actionable' : 'click_failed'),
+        clicked: true,
+      };
+    }
+  }
+
   async wait(page: Page, ms: number): Promise<ActionResult> {
     await page.waitForTimeout(Math.max(0, Math.min(ms, WAIT_MAX_MS)));
     return done({ url: page.url() });

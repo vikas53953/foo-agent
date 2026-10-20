@@ -30,6 +30,7 @@ export function errorLook(kind: ErrorKind, variant: ErrorPayload['variant']): Lo
   switch (kind) {
     case 'NET_OFFLINE':
     case 'SITE_BLOCKED':
+    case 'SITE_HANDBACK': // M9 T8: a site foo hands back, not a failure (05-3 §5.20.1 "Globe --warn (offline, site)")
       return { icon: 'Globe', tone: 'warn', edge: 'warn' };
     case 'AI_LIMIT':
     case 'SPEND_CAP':
@@ -69,6 +70,9 @@ export function ErrorCard({ card, time }: { card: CardRow; time: CardTime }) {
       setCapDialog(true);
       return undefined;
     }
+    // M9 T8 (08-2 §8.3.10, 08-1 §3.2): the hand-back card opens the bank's page through main's checked channel.
+    if (action.kind === 'open_url' && p.kind === 'SITE_HANDBACK')
+      return invoke('app:openExternal', { target: 'handback_site', url: action.url, cardId: card.id, nonce: card.nonce });
     if (action.kind === 'open_url') return invoke('link:open', { url: action.url });
     // M8 T5 (08-3 §21.2): Reconnect runs the one Google sign-in; the card is edited in place when the jobs resume.
     if (action.kind === 'reconnect' && action.app === 'google') return invoke('connection:connect', { app: 'google' });
@@ -107,7 +111,8 @@ export function ErrorCard({ card, time }: { card: CardRow; time: CardTime }) {
         <Icon name={look.icon} size={20} className={styles[`${look.tone}Icon`]} />
         <span className={styles.title}>{p.whatHappened}</span>
       </div>
-      <div className={styles.body}>{p.whatIsSafe}</div>
+      {/* M9 T8: the hand-back card has no "what is safe" line (08-2 §8.3.10). */}
+      {p.whatIsSafe && <div className={styles.body}>{p.whatIsSafe}</div>}
       {p.doneLines?.map((l, i) => (
         <div key={i} className={styles.body}>
           {l}
