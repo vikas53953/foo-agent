@@ -2,54 +2,33 @@
 // answer counts like a Choice card answer: a tap or Enter on a row, 1–9 on the keyboard, or a keycap reaction on foo's
 // message), §5.3.5 (keyboard and Narrator: a radiogroup, ↑/↓ move, Enter picks; "You chose …" once answered), CR-0022
 // §(c) (rows ≤ 10 {title, sub}), AT-349, X-180. R1 T3.
-import { useMemo, useState, useSyncExternalStore, type KeyboardEvent } from 'react';
+import { useMemo, useState, type KeyboardEvent } from 'react';
 import { t } from '../../shared/copy/t';
-import { keycapRow, reactionListPick } from '../../shared/kit/pick';
-import { foldFence, kitMessagesOf } from '../../shared/kit/surface';
+import { answeredChoice } from '../../shared/kit/pick';
 import { TID } from '../../shared/testids';
 import { useStore } from '../store/index';
 import { cx } from '../ui/cx';
 import { Icon } from '../ui/Icon';
 import styles from './ListPick.module.css';
 
-// ---- what was picked, kept per piece so a row mounted again (the virtual list) still shows it ----
-
-const picks = new Map<string, string>();
-const listeners = new Set<() => void>();
-const subscribe = (fn: () => void) => {
-  listeners.add(fn);
-  return () => listeners.delete(fn);
-};
-
-/** The choice picked in this piece (`key` = surface key + component id + scope), and the setter once main took it. */
-export function usePicked(key: string): [string | null, (choice: string) => void] {
-  const picked = useSyncExternalStore(subscribe, () => picks.get(key) ?? null);
-  return [
-    picked,
-    (choice) => {
-      picks.set(key, choice);
-      listeners.forEach((fn) => fn());
-    },
-  ];
-}
-
-/** For unit tests. */
-export function resetPicks(): void {
-  picks.clear();
-  listeners.forEach((fn) => fn());
-}
+// ---- the answer: a later user message in the chat whose kitPick names this piece (05-1 §5.3.5: it stays answered) ----
 
 /**
- * The row the user's keycap reaction on the host message picked (1-based), when this ListPick is the one a reaction
- * answers (main's `kitReaction` takes the same first ListPick of the message); null otherwise.
+ * The choice already given for this piece, read from the chat in the store (main derives each user message's kitPick), so
+ * the answer survives a restart and an un-react; null while it is unanswered.
  */
-export function useReactionRow(host: { chatId: string; messageId?: string }, componentId: string): number | null {
-  const m = useStore((s) => (host.messageId ? s.messages.byChat[host.chatId]?.byId[host.messageId] : undefined));
-  const text = m?.text;
-  const target = useMemo(() => (text ? reactionListPick(foldFence([kitMessagesOf(text).messages], 0).surfaces) : null), [text]);
-  if (!m || target?.pick.id !== componentId) return null;
-  const mine = m.reactions.find((r) => r.by === 'me');
-  return mine ? keycapRow(mine.emoji) : null;
+export function useAnswered(host: { chatId: string; messageId?: string; cardId?: string }, surfaceId: string, componentId: string) {
+  const chat = useStore((s) => s.messages.byChat[host.chatId]);
+  return useMemo(() => {
+    if (!chat) return null;
+    const at = chat.ids.findIndex((id) => (host.messageId ? id === host.messageId : chat.byId[id]?.cardId === host.cardId));
+    if (at < 0) return null;
+    const after = chat.ids.slice(at + 1).flatMap((id) => {
+      const m = chat.byId[id];
+      return m && m.deletedAt === null ? [{ authorKind: m.authorKind, text: m.text, kitPick: m.kitPick }] : [];
+    });
+    return answeredChoice(after, surfaceId, componentId);
+  }, [chat, host.messageId, host.cardId, surfaceId, componentId]);
 }
 
 /** ↑/↓ (and ←/→) move between options, Home and End jump; the focused option is picked with Enter or Space. */
@@ -72,26 +51,25 @@ export function moveFocus(e: KeyboardEvent<HTMLElement>, selector: string): void
 
 export function ListPick({
   rows,
-  pickKey,
-  reactionRow,
+  answered,
   onPick,
 }: {
   rows: { title: string; sub?: string | undefined }[];
-  pickKey: string;
-  reactionRow: number | null;
+  /** The choice the chat already holds for this piece (`useAnswered`). */
+  answered: string | null;
   /** Sends the pick; resolves true once main took it. */
   onPick: (row: number) => Promise<boolean>;
 }) {
-  const [tapped, setTapped] = usePicked(pickKey);
+  // Between main taking the pick and the user's message reaching the store, the tapped row shows as picked.
+  const [sent, setSent] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const fromReaction = reactionRow !== null ? rows[reactionRow - 1]?.title : undefined;
-  const picked = tapped ?? fromReaction ?? null;
+  const picked = answered ?? sent;
   const pick = (i: number) => {
     if (picked !== null || busy || !rows[i]) return;
     setBusy(true);
     void onPick(i + 1).then((ok) => {
       setBusy(false);
-      if (ok) setTapped(rows[i]!.title);
+      if (ok) setSent(rows[i]!.title);
     });
   };
   const onKey = (e: KeyboardEvent<HTMLDivElement>) => {

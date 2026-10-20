@@ -20,7 +20,7 @@ import { Icon, type IconName } from '../ui/Icon';
 import { ICONS } from '../ui/icons/registry';
 import { cx } from '../ui/cx';
 import { LineChart, type ChartSeries } from './LineChart';
-import { ListPick, useReactionRow } from './ListPick';
+import { ListPick, useAnswered } from './ListPick';
 import { MapStops } from './MapStops';
 import { TimePick } from './TimePick';
 import { Timeline } from './Timeline';
@@ -244,14 +244,7 @@ function part(ctx: Ctx, c: KitComponent, scope: string, depth: number): ReactNod
     case 'ListPick':
       return <KitListPick ctx={ctx} c={c} scope={scope} />;
     case 'TimePick':
-      return (
-        <TimePick
-          date={c.date}
-          slots={c.slots}
-          pickKey={`${ctx.key}:${c.id}:${scope}`}
-          onPick={(slot) => ctx.pick(c, scope, { choice: slot, date: c.date })}
-        />
-      );
+      return <KitTimePick ctx={ctx} c={c} scope={scope} />;
     default:
       // The other foo components arrive with R1 T4 (numbers and forms) and T7 (LiveStamp); a valid one draws nothing until
       // then and is not counted as dropped.
@@ -259,16 +252,16 @@ function part(ctx: Ctx, c: KitComponent, scope: string, depth: number): ReactNod
   }
 }
 
-/** A component, so the reaction it reads from the store is a hook (05-1 §5.3.4: a keycap reaction picks a row). */
+/** Components, so the answer they read from the chat in the store is a hook (05-1 §5.3.5: a pick stays answered). */
 function KitListPick({ ctx, c, scope }: { ctx: Ctx; c: Extract<KitComponent, { component: 'ListPick' }>; scope: string }) {
-  const reactionRow = useReactionRow(ctx.host, c.id);
+  const answered = useAnswered(ctx.host, ctx.surface.id, c.id);
+  return <ListPick rows={c.rows} answered={answered} onPick={(row) => ctx.pick(c, scope, { choice: c.rows[row - 1]!.title, row })} />;
+}
+
+function KitTimePick({ ctx, c, scope }: { ctx: Ctx; c: Extract<KitComponent, { component: 'TimePick' }>; scope: string }) {
+  const answered = useAnswered(ctx.host, ctx.surface.id, c.id);
   return (
-    <ListPick
-      rows={c.rows}
-      pickKey={`${ctx.key}:${c.id}:${scope}`}
-      reactionRow={reactionRow}
-      onPick={(row) => ctx.pick(c, scope, { choice: c.rows[row - 1]!.title, row })}
-    />
+    <TimePick date={c.date} slots={c.slots} answered={answered} onPick={(slot) => ctx.pick(c, scope, { choice: slot, date: c.date })} />
   );
 }
 

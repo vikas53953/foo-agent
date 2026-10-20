@@ -9,7 +9,7 @@
 // user typing those words, and the reply that follows can update the surface by naming its surfaceId.
 import type { Clock } from '../../shared/clock';
 import type { KitActionMessage } from '../../shared/kit/catalog';
-import { pickWords } from '../../shared/kit/pick';
+import { actionLine, pickWords } from '../../shared/kit/pick';
 import { buttonWords, foldFence, kitMessagesOf, type Surface } from '../../shared/kit/surface';
 import type { CardRow } from '../../shared/types';
 import type { EngineMessage } from '../../main/db/queries';
@@ -46,7 +46,8 @@ export function actionForAi(words: string, a: KitActionMessage): string {
   const context = JSON.stringify(a.context);
   return [
     `${words}`,
-    `(I tapped "${words}" in your ${a.surfaceId} surface: action ${a.name}, context ${context.length > CONTEXT_MAX ? `${context.slice(0, CONTEXT_MAX)}…` : context}.`,
+    // R1 T3: shared/kit/pick.ts writes this line and reads a pick back from it (MessageRow.kitPick).
+    actionLine(words, a, context.length > CONTEXT_MAX ? `${context.slice(0, CONTEXT_MAX)}…` : context),
     `To change that surface, reply with an \`\`\`a2ui block that sends updateDataModel or updateComponents for surfaceId "${a.surfaceId}" without createSurface.)`,
   ].join('\n');
 }

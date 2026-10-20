@@ -1,8 +1,8 @@
 // Spec: 10-acceptance-2 §C.9 AT-341 (MapStops: numbered stops to scale on a plain panel with a dashed route and the stops
 // list; "Open in Maps" is an action chip; no network request leaves the PC while it draws), AT-344 (Timeline: items in date
 // order, amounts in money format), AT-345 (WeekCalendar: busy and free slots for 7 days; Narrator reads each slot), AT-349
-// (ListPick: the pick counts as a Choice answer; a reaction counts too, 05-1 §5.3.4), AT-350 (TimePick: the picked slot goes
-// back to foo, who confirms it); 04 §13.5, CR-0022 pick 4, X-180. R1 T3: the real app on the fake AI, sample data only.
+// (ListPick: the pick counts as a Choice answer; a reaction counts too, 05-1 §5.3.4; it answers once and stays, §5.3.5),
+// AT-350 (TimePick: the picked slot goes back to foo, who confirms it); 04 §13.5, CR-0022 pick 4, X-180. R1 T3: the real app on the fake AI, sample data only.
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { t } from '../../src/shared/copy/t';
 import { TID } from '../../src/shared/testids';
@@ -191,6 +191,20 @@ test('AT-349 · a ListPick pick counts as the answer, and a keycap reaction coun
     await expect(second).toHaveAttribute('data-state', 'answered');
     await expect(second.getByRole('radio', { name: /Kothrud branch/ })).toHaveAttribute('aria-checked', 'true');
     await showUp(page, fooBubble(page, 'Kothrud branch has the ATM.'));
+    // It answers once (05-1 §5.3.5): taking the reaction off, or a 2️⃣ after it, changes nothing.
+    const react = (emoji: string, on: boolean) =>
+      page.evaluate(([id, e, o]) => window.foo.invoke('message:react', { messageId: id!, emoji: e, on: o }), [
+        messageId,
+        emoji,
+        on,
+      ] as const);
+    await react('1️⃣', false);
+    await react('2️⃣', true);
+    await advance(page, HOLD_MS + 100);
+    await expect(second.getByRole('radio', { name: /Kothrud branch/ })).toHaveAttribute('aria-checked', 'true');
+    // No second answer: the newest user message is still the 1️⃣ pick.
+    await expect(page.getByTestId(TID.bubbleMe).last()).toContainText('Kothrud branch');
+    await expect(page.getByTestId(TID.bubbleMe).filter({ hasText: 'Baner branch' })).toHaveCount(1);
   } finally {
     await app.close();
   }
@@ -214,10 +228,16 @@ test('AT-350 · a TimePick slot goes back to foo, who confirms it', async () => 
     await showUp(page, pick);
     await expect(pick.getByRole('radiogroup', { name: 'Thursday 23 Oct' }).getByRole('radio')).toHaveText(slots);
     await pick.getByRole('radio', { name: '11:15' }).click();
-    await expect(meBubble(page, '11:15')).toBeVisible();
+    await expect(meBubble(page, '11:15, Thursday 23 Oct')).toBeVisible();
     await expect(pick).toHaveAttribute('data-state', 'answered');
     await expect(pick.getByRole('radio', { name: '10:30' })).toBeDisabled();
     await showUp(page, fooBubble(page, 'You are down for 11:15'));
+    // A reload drops everything the window held; the answer comes back from the chat (05-1 §5.3.5).
+    await page.reload();
+    await openChat(page, 'foo');
+    const again = fooBubble(page, 'Dr. Rao').getByTestId(TID.kitTimePick);
+    await expect(again).toHaveAttribute('data-state', 'answered');
+    await expect(again.getByRole('radio', { name: '11:15' })).toHaveAttribute('aria-checked', 'true');
     const turn = fakeTurns(dirs).find((x) => x.purpose === 'intake' && x.prompt.includes('action pick_slot'));
     expect(turn?.prompt).toContain('"choice":"11:15"');
     expect(turn?.prompt).toContain('"date":"Thursday 23 Oct"');
