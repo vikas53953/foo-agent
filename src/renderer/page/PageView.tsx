@@ -35,6 +35,11 @@ const NEEDS_TAP = new Set(['requestAction', 'openLink']);
 
 /** True while a tap or key press is live in foo's window (a tap inside the page's frame counts for its parent too). */
 const tapIsLive = () => navigator.userActivation?.isActive === true;
+/**
+ * How long one tap's act stays spent: the browser keeps a tap live for about this long, so a page gets one requestAction
+ * or openLink per tap, not one per call in that window. A tap or key press in foo itself frees it sooner.
+ */
+const TAP_SPENT_MS = 5_000;
 
 /** What a call main passed does in foo (main already checked the page, the rate and the text). */
 function act(chatId: string, call: PageRpcCall, setHeight: (h: number) => void, askLink: (url: string) => void): void {
@@ -42,7 +47,7 @@ function act(chatId: string, call: PageRpcCall, setHeight: (h: number) => void, 
     case 'reportSize':
       return setHeight(frameHeight(call.params.height));
     case 'draftMessage':
-      return requestComposer(chatId, { kind: 'prefill', text: call.params.text, at: clockNow() });
+      return requestComposer(chatId, { kind: 'prefill', text: call.params.text, at: clockNow(), keep: true });
     case 'openLink':
       return askLink(call.params.url);
     case 'requestAction':
@@ -98,6 +103,9 @@ export function PageView({
   useEffect(() => {
     if (!pageId) return;
     const allow = floodGate();
+    // When this page last spent a tap on an act (CR-0022 pick 13: one tap, one act).
+    let spentAt: number | null = null;
+    const freeTap = () => (spentAt = null);
     const onMessage = (e: MessageEvent) => {
       const win = frame.current?.contentWindow;
       // Only this frame's own messages; anything else on the window is not the page's to send.
@@ -112,8 +120,12 @@ export function PageView({
       if (!allow(performance.now())) return answer({ ok: false, refused: 'rate' });
       const method = (data as { method?: unknown } | null)?.method;
       // A page acts only on the user's tap, and one C-26 dialog shows at a time (CR-0022 pick 13).
-      if (typeof method === 'string' && NEEDS_TAP.has(method) && !tapIsLive()) return answer({ ok: false, refused: 'declined' });
-      if (method === 'openLink' && asking.current !== null) return answer({ ok: false, refused: 'declined' });
+      if (typeof method === 'string' && NEEDS_TAP.has(method)) {
+        const now = performance.now();
+        if (!tapIsLive() || (spentAt !== null && now - spentAt < TAP_SPENT_MS)) return answer({ ok: false, refused: 'declined' });
+        if (method === 'openLink' && asking.current !== null) return answer({ ok: false, refused: 'declined' });
+        spentAt = now;
+      }
       // Main checks and logs every call: its zod schema refuses a bad one (IPC_REJECTED, logged), then the rate and the text.
       void invoke('page:rpc', { chatId, pageId, call: data as PageRpcCall }).then(
         (r) => {
@@ -139,7 +151,13 @@ export function PageView({
       );
     };
     window.addEventListener('message', onMessage);
-    return () => window.removeEventListener('message', onMessage);
+    window.addEventListener('pointerdown', freeTap, true);
+    window.addEventListener('keydown', freeTap, true);
+    return () => {
+      window.removeEventListener('message', onMessage);
+      window.removeEventListener('pointerdown', freeTap, true);
+      window.removeEventListener('keydown', freeTap, true);
+    };
   }, [chatId, pageId]);
 
   const failed = state === 'failed' || tooLarge || (opened !== null && 'failed' in opened);

@@ -9,12 +9,27 @@ export const SUGGESTIONS_MAX = 3;
 export const SUGGESTION_MAX_CHARS = 40;
 
 /** A line that starts with `Suggestions:` (any case, leading spaces allowed). */
-const LINE = /(^|\n)[ \t]*suggestions[ \t]*:/iu;
+const LINE = /(^|\n)[ \t]*suggestions[ \t]*:/giu;
+/** A ``` fence line start (the bubble's fence rule, as the release gate's FENCE_LINE). */
+const FENCE_LINE = /^[ \t]*```/gmu;
+
+/**
+ * Where the first line `line` (a /g pattern whose group 1 is the line break) matches outside a code fence starts, or -1.
+ * Fenced text is verbatim (CR-0022 pick 14): a page script's `actions: [ … ]` line is the page's, never chips.
+ */
+export function lineStartOutsideFence(line: RegExp, text: string): number {
+  line.lastIndex = 0;
+  let m: RegExpExecArray | null;
+  while ((m = line.exec(text))) {
+    const at = m.index + m[1]!.length;
+    if ((text.slice(0, at).match(FENCE_LINE)?.length ?? 0) % 2 === 0) return at;
+  }
+  return -1;
+}
 
 /** Index where the `Suggestions:` line starts in `text` (just after its line break), or -1. */
 export function suggestionsLineStart(text: string): number {
-  const m = LINE.exec(text);
-  return m ? m.index + m[1]!.length : -1;
+  return lineStartOutsideFence(LINE, text);
 }
 
 /** The reply text without its `Suggestions:` line, and the follow-ups that line held (null when none passed). */

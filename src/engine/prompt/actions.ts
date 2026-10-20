@@ -5,13 +5,14 @@
 // (R1.tsv: fork logged by the lead). The app never invents one.
 import type { ActionChip } from '../../shared/types';
 import { findBanned } from './filters';
+import { lineStartOutsideFence } from './suggestions';
 
 /** 04-2 §21.7: at most this many action chips. */
 export const ACTIONS_MAX = 3;
 /** A chip label is as short as a follow-up chip (04-2 §21.7: ≤ 40 characters); longer is dropped, never cut. */
 export const ACTION_LABEL_MAX = 40;
 
-const LINE = /(^|\n)[ \t]*actions[ \t]*:/iu;
+const LINE = /(^|\n)[ \t]*actions[ \t]*:/giu;
 const KINDS = new Set<ActionChip['kind']>(['call', 'map', 'calendar', 'link']);
 /** A phone number: digits with spaces, brackets and dashes, an optional leading +. */
 const PHONE = /^\+?[0-9][0-9 ()-]{5,19}$/;
@@ -20,8 +21,7 @@ const ISO = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2})?(\.\d+)?(Z|[+-]\d{2}:\d{2})
 
 /** Index where the `Actions:` line starts in `text` (just after its line break), or -1. */
 export function actionsLineStart(text: string): number {
-  const m = LINE.exec(text);
-  return m ? m.index + m[1]!.length : -1;
+  return lineStartOutsideFence(LINE, text);
 }
 
 /** Whether a chip's value is what its kind acts on. */

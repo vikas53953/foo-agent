@@ -40,14 +40,14 @@ export interface ReleaseGateOptions {
 const SAY_OPEN = '<say>';
 const SAY_CLOSE = '</say>';
 const ACT_OPEN = '<act>';
-const BOUNDARY = /[.?!।\n]\s+|\n/gu;
-/** A ``` fence line start (the bubble's fence rule, renderer/messages/markdownParse.ts). */
-const FENCE_LINE = /^[ \t]*```/gmu; // [ \t] not \s: \s would swallow blank lines before a fence (lead re-check)
 /**
  * R1 T2 (04 §13.5 / §14.4, AT-353): inside a code fence every line break ends a "sentence", so an ```a2ui block's messages
  * (one JSON object per line) release one by one and each complete message draws while the reply streams. Outside a fence a
  * line break still needs whitespace after it, as before. The gate keeps a running fence state ({@link ReleaseGate.inFence}).
  */
+const BOUNDARY = /[.?!।\n]\s+|\n/gu;
+/** A ``` fence line start (the bubble's fence rule, renderer/messages/markdownParse.ts). */
+const FENCE_LINE = /^[ \t]*```/gmu; // [ \t] not \s: \s would swallow blank lines before a fence
 
 /**
  * Streaming release gate for one chat-lane turn. Feed every raw delta of the reply with {@link feed}; call {@link end} when

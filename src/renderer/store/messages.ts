@@ -29,7 +29,8 @@ export interface ChatMessages {
 export type ComposerRequest =
   | { kind: 'reply'; messageId: string; at: number }
   | { kind: 'edit'; messageId: string; at: number }
-  | { kind: 'prefill'; text: string; at: number }
+  // `keep`: an AI page's draftMessage (CR-0022 (h)) never replaces words the user has typed.
+  | { kind: 'prefill'; text: string; at: number; keep?: true }
   // R1 T6 (04 §17.5): Ask about this; `quote` is the selected words, or the whole message from the menu.
   | { kind: 'side'; messageId: string; quote: string; at: number };
 

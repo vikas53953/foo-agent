@@ -210,3 +210,6 @@ to T2, `ai_page` name, "foo read:" in 04 §6, Image sources, `kit_action` named,
 - Ships later, logged in `docs/decisions/R1.tsv`: kept state is not seeded again after a restart; page user activation is
   window-wide; two keycaps inside the async store window could both pass; a virtual-list remount reloads an AI page.
 - Needs Vikas's eyes on Windows 11: Keep's PNG snapshot (AT-369 may loosen if Windows capture comes back empty).
+- Close-out review fixes (pick 13 and 14 intent, logged in `docs/decisions/R1.tsv`): a page's `draftMessage` fills the
+  composer only when it is empty, so it never replaces the user's words; one tap gives a page one `requestAction` or
+  `openLink`; an `Actions:` or `Suggestions:` line inside a code fence stays verbatim and makes no chips.

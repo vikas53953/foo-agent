@@ -264,6 +264,10 @@ test('AT-361 AI page actions: requestAction goes through the gate; openLink alwa
   expect((await call(f, 'draftMessage', { text: 'Groceries 6000' })).result).toEqual({});
   await expect(page.getByTestId(TID.composerField)).toContainText('Groceries 6000');
   await expect(page.getByTestId(TID.bubbleMe).filter({ hasText: 'Groceries 6000' })).toHaveCount(0);
+  // A page never replaces words already in the composer.
+  expect((await call(f, 'draftMessage', { text: 'Rent 9000' })).result).toEqual({});
+  await expect(page.getByTestId(TID.composerField)).toContainText('Groceries 6000');
+  await expect(page.getByTestId(TID.composerField)).not.toContainText('Rent 9000');
   await page.getByTestId(TID.composerField).focus();
   await page.keyboard.press('Control+A');
   await page.keyboard.press('Delete');
@@ -271,6 +275,8 @@ test('AT-361 AI page actions: requestAction goes through the gate; openLink alwa
   // requestAction: sent as if typed, so foo's turn (and its gate) sees it like any message.
   expect((await tap(f, 'requestAction', { text: ACTION })).result).toEqual({});
   await page.getByTestId(TID.bubbleMe).filter({ hasText: ACTION }).waitFor();
+  // One tap, one act: a second call on the same tap is declined and nothing more is sent.
+  expect((await tap(f, 'requestAction', { text: 'Send it again' })).error?.data.reason).toBe('declined');
   await until(page.getByTestId(TID.bubbleFoo).filter({ hasText: 'I will save that budget once you say so.' }));
   expect(fakeTurns(dirs).some((x) => x.purpose === 'intake' && x.prompt.includes(ACTION))).toBe(true);
 });

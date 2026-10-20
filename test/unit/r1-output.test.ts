@@ -7,6 +7,7 @@ import Database from 'better-sqlite3';
 import { describe, expect, it } from 'vitest';
 import { actionsLineStart, cleanActions, splitActions } from '../../src/engine/prompt/actions';
 import { ReleaseGate } from '../../src/engine/prompt/releaseGate';
+import { splitSuggestions } from '../../src/engine/prompt/suggestions';
 import { refreshForAi } from '../../src/engine/kit/kitAction';
 import { actionChipUrl } from '../../src/main/kit/actionChipOpen';
 import { kitRefreshHandler, type KitDeps } from '../../src/main/kit/kitIpc';
@@ -65,6 +66,16 @@ describe('R1 T7 · action chips from the reply (04-2 §21.7)', () => {
     expect(cleanActions([{ kind: 'map', label: 'Map', value: 'javascript:alert(1)' }])).toBeNull();
     expect(cleanActions([{ kind: 'calendar', label: 'Cal', value: '2026-13-45' }])).toBeNull();
     expect(cleanActions([{ kind: 'call', label: 'x'.repeat(41), value: '+91 80 0000 0000' }])).toBeNull();
+  });
+
+  it("an Actions or Suggestions line inside a fence is the fence's own: kept verbatim, never chips (pick 14)", () => {
+    const page = '```page\n<script>\nconst cfg = {\n  actions: ["add","remove"]\n}\n</script>\n```';
+    expect(splitActions(`Your planner.\n\n${page}`)).toEqual({ text: `Your planner.\n\n${page}`, actions: null });
+    expect(splitSuggestions(`Here.\n\n\`\`\`\nSuggestions: a | b\n\`\`\``).suggestions).toBeNull();
+    // The reply's own line after the fence still counts.
+    const after = splitActions(`${page}\nActions: [{"kind":"map","label":"Map","value":"Toit, Indiranagar"}]`);
+    expect(after.text).toBe(`${page}\n`);
+    expect(after.actions).toEqual([{ kind: 'map', label: 'Map', value: 'Toit, Indiranagar' }]);
   });
 
   it('the release gate never shows the Actions line, even while it streams', async () => {

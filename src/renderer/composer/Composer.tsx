@@ -579,6 +579,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
       const m = slice?.byId[req.messageId];
       if (m) startEdit(m);
     } else {
+      if (req.keep && (hasText(segsRef.current) || hasMask(segsRef.current))) return;
       writeField(tidy([{ kind: 'text', text: req.text }]));
       focusField();
     }
