@@ -776,6 +776,11 @@ export class Engine {
         this.lane.enqueue(msg.payload.chatId, msg.payload.messageId);
         void this.style.onUserMessage(msg.payload.chatId).catch(() => undefined);
         return undefined;
+      // R1 T6 (04 §17.5, pick 6): main stored a side question (`messages.side`); the chat lane answers it from context and
+      // never hands it to the runner, so a running job keeps running.
+      case 'side.question':
+        this.lane.enqueue(msg.payload.chatId, msg.payload.messageId);
+        return undefined;
       case 'reply.stop':
         this.lane.stop(msg.payload.chatId);
         return undefined;

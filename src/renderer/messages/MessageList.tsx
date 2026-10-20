@@ -10,6 +10,7 @@
 // a card row as 05-1 §0.7 "{sender} sent {card name}: {title}[, needs you]");
 // §6.4 a quote click jumps and highlights 1600 ms; §14.2 / §14.3 status line and Thinking row; §10.11 the WhatsApp mirror.
 // 02 §F7.1 "Chat" (CR-0021, X-179): a new message rises once per message (keyed by clientId, never again on scroll-back), the "new messages" line slides in.
+// R1 T6 (X-180): the 04 §1.9 "Ask about this" pill over a selection in a foo or helper bubble (AskPill).
 import { observeElementOffset, useVirtualizer } from '@tanstack/react-virtual';
 import { batchScrollAdjustments } from './scrollAdjust';
 import { flushSync } from 'react-dom';
@@ -35,6 +36,7 @@ import { LoadOlder, StartOfChat } from './LoadOlder';
 import styles from './MessageList.module.css';
 import { REVEAL_EVENT, takeReveal } from './reveal';
 import { MessageView, WaBubble, messageAccessibleName, runRowCommand, senderOf, type RowCtx } from './Bubble';
+import { AskPill } from './AskPill'; // R1 T6
 import { MessageDialogs } from './MessageDialogs';
 import { FlingRow } from './FlingRow';
 import { RowFreshCtx, RowHotCtx } from './bubbleContext';
@@ -764,6 +766,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
       </div>
       <JumpToLatest shown={jumpShown} count={stick.newCount} onJump={jump} />
       <MessageDialogs chatId={chat.id} />
+      <AskPill chatId={chat.id} scrollRef={scrollRef} />
     </div>
   );
 }

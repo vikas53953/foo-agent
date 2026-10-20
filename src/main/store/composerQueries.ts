@@ -9,6 +9,7 @@
 // 08-2 §11.5, AT-225. No AI turn is started here (M3). M5 T3: the stored text and the AI text go through
 // `Store.writeRedacted` (R2); a value main itself hides on "Send anyway" is registered in the SecretRegistry (§11.5); what
 // the composer already masked never leaves the renderer, so "the real value is not kept anywhere" (04-2 §22.4).
+// R1 T6 (X-180): `side` stores a side question (04 §17.5, `messages.side = 1`, replying to a foo or helper message); its `quote` goes into `text_for_ai` only.
 import type { Db } from './db';
 import { draftRow, type DbRow } from '../db/rows';
 import { messageGet } from './queries';
@@ -16,6 +17,7 @@ import { t } from '../../shared/copy/t';
 import { checkSecret, findSecrets } from '../../shared/redactor';
 import { registerSecretValue } from '../secrets/registerValue';
 import { writeRedacted } from './writeRedacted';
+import { sideAiText } from '../../shared/sideQuestion';
 import type { Attachment, DraftRow, MessageRow, PasteCatch } from '../../shared/types';
 
 /** 04-2 §22.4 / 08-2 §11.5: what the AI receives in place of a hidden secret (a prompt string, not copy; 08-0 §D). */
@@ -36,6 +38,10 @@ export interface SendRequest {
   replyToId?: string;
   attachmentIds?: string[];
   secretOverride?: boolean;
+  /** R1 T6 (04 §17.5): a side question; needs replyToId. */
+  side?: boolean;
+  /** R1 T6: the words the side question asks about; folded into the AI text, not stored on its own. */
+  quote?: string;
 }
 
 export type SendResult =
@@ -100,13 +106,14 @@ function insertUserMessage(
     voicePath: string | null;
     voiceMs: number | null;
     now: number;
+    side?: boolean;
   },
 ): void {
   const seq = nextSeq(db, m.chatId);
   db.prepare(
     `INSERT INTO messages (id, chat_id, seq, author_kind, kind, client_id, text, text_for_ai, status, reply_to_id, lang,
-       voice_path, voice_ms, attachments, created_at)
-     VALUES (?, ?, ?, 'user', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       voice_path, voice_ms, attachments, created_at, side)
+     VALUES (?, ?, ?, 'user', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
   ).run(
     m.id,
     m.chatId,
@@ -122,6 +129,7 @@ function insertUserMessage(
     m.voiceMs,
     m.attachments?.length ? JSON.stringify(m.attachments) : null,
     m.now,
+    m.side ? 1 : 0,
   );
   db.prepare('UPDATE chats SET next_seq = ?, last_message_id = ?, last_activity_at = ?, unread_count = 0, rev = rev + 1 WHERE id = ?').run(
     seq + 1,
@@ -168,9 +176,13 @@ export function sendMessage(db: Db, req: SendRequest, ctx: SendContext): SendRes
     if (paste) return { ok: false, reason: 'secret', paste };
   }
   if (req.replyToId) {
-    const target = db.prepare('SELECT chat_id FROM messages WHERE id = ?').get(req.replyToId) as DbRow | undefined;
+    const target = db.prepare('SELECT chat_id, author_kind FROM messages WHERE id = ?').get(req.replyToId) as DbRow | undefined;
     if (!target || target.chat_id !== req.chatId) return { ok: false, reason: 'not_found' };
+    // R1 T6 (04 §17.5): a side question asks about a foo or helper message.
+    if (req.side && target.author_kind !== 'foo' && target.author_kind !== 'helper') return { ok: false, reason: 'not_found' };
   }
+  const side = !!req.side && !!req.replyToId;
+  if (side && req.quote?.trim()) forAi = sideAiText(req.quote, forAi ?? stored);
   const id = ctx.newId();
   const status = ctx.waiting ? 'queued' : 'sent';
   db.transaction(() => {
@@ -187,6 +199,7 @@ export function sendMessage(db: Db, req: SendRequest, ctx: SendContext): SendRes
       voicePath: null,
       voiceMs: null,
       now: ctx.now,
+      side,
     });
     deleteDraftRow(db, req.chatId);
   })();

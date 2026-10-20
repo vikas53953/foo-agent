@@ -29,7 +29,9 @@ export interface ChatMessages {
 export type ComposerRequest =
   | { kind: 'reply'; messageId: string; at: number }
   | { kind: 'edit'; messageId: string; at: number }
-  | { kind: 'prefill'; text: string; at: number };
+  | { kind: 'prefill'; text: string; at: number }
+  // R1 T6 (04 §17.5): Ask about this; `quote` is the selected words, or the whole message from the menu.
+  | { kind: 'side'; messageId: string; quote: string; at: number };
 
 export interface MessagesState {
   byChat: Record<string, ChatMessages>;

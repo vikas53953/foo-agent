@@ -113,5 +113,32 @@ export function isLongPaste(text: string): boolean {
   return false;
 }
 
+// R1 T6 (04-2 §22.5, CR-0022 pick 7, AT-365): the three paste bands. The paste catcher runs on the whole text first in each.
+/** A paste longer than this is saved as `pasted-{time}.txt` and shown as a file chip. */
+export const PASTE_FILE_FROM = 10_000;
+export type PasteBand = 'inline' | 'chip' | 'file';
+export function pasteBand(text: string): PasteBand {
+  if (text.length > PASTE_FILE_FROM) return 'file';
+  return isLongPaste(text) ? 'chip' : 'inline';
+}
+
+/** `pasted-{time}.txt` in the user's zone, a name Windows accepts: "pasted-2026-10-20-1615.txt". */
+export function pastedFileName(epochMs: number, timeZone: string): string {
+  const p = Object.fromEntries(
+    new Intl.DateTimeFormat('en-GB', {
+      timeZone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle: 'h23',
+    })
+      .formatToParts(epochMs)
+      .map((x) => [x.type, x.value]),
+  ) as Record<string, string>;
+  return `pasted-${p.year}-${p.month}-${p.day}-${p.hour}${p.minute}.txt`;
+}
+
 /** The Windows file picker filter (§21.1 "filter = allowed types"). */
 export const ACCEPT = [...IMAGE_EXT, ...DOC_EXT, ...MEDIA_EXT].map((e) => `.${e}`).join(',');

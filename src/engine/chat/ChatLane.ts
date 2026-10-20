@@ -12,6 +12,10 @@
 // (08-4 §25.2, §25.5 item 5; memory/intakeMemory.ts), "don't remember this" before the turn (J17), the "Used: {fact}" chips
 // under a reply (08-3 §12.5) and the post-turn review trigger after every answered turn (08-3 §12.4). P1 T6 (04-2 §21.7,
 // CR-0021 pick 10): a reply's `Suggestions:` line is stored on the reply as `messages.suggestions`, never shown as text.
+// R1 T6 (X-180, CR-0022): the "foo read:" items of the user's message go on it when the lane takes it (04 §6.5, rule-based,
+// from the redacted text; not in groups or WhatsApp mirrors); a side question (04 §17.5, pick 6, AT-364) skips the stop,
+// steer and typed-answer branches and the plan change, is answered as a reply only (never a job, never memory) and its
+// answer carries `side = 1`, so a running job keeps running unchanged.
 import { t } from '../../shared/copy/t';
 import type { Clock } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
@@ -29,6 +33,9 @@ import type { CardAnswer } from '../../shared/types';
 import { answerTyped, type TypedHookDeps } from '../cards/typedHook';
 // P1 T6
 import { splitSuggestions } from '../prompt/suggestions';
+// R1 T6
+import { understoodItems } from './understood';
+import { isSideAiText, sideAiText } from '../../shared/sideQuestion';
 
 /** The your-AI service the lane talks to (Engine wires AiService). */
 export interface LaneAi {
@@ -169,6 +176,8 @@ export class ChatLane {
   private chatTurns = new Map<string, { abort: AbortController; stopped: boolean }>();
   /** foo reply id → the user message it answered (04 §19.4 Try again). */
   private answered = new Map<string, string>();
+  /** R1 T6: user messages that are side questions; every foo row answering one carries `side = 1` (04 §17.5). */
+  private sideTurns = new Set<string>();
   /** Resolves when every queued turn has finished (tests). */
   private idleWaiters: (() => void)[] = [];
 
@@ -272,8 +281,12 @@ export class ChatLane {
     const fromDrain = this.drained.delete(messageId);
     if (!message || message.authorKind !== 'user') return;
     if (fromDrain && message.status !== 'queued') return;
-    // M4 T3: stop, steer and the G16 reply come before the intake turn and need no AI (08-2 §5.2).
-    const intakeOnly = this.intakeOnly.delete(messageId);
+    // M4 T3: stop, steer and the G16 reply come before the intake turn and need no AI (08-2 §5.2). R1 T6: a side question
+    // never reaches the runner's branches (04 §17.5: it never cancels or re-plans a running job).
+    const side = message.side === true;
+    if (side) this.sideTurns.add(messageId);
+    else this.sideTurns.delete(messageId);
+    const intakeOnly = this.intakeOnly.delete(messageId) || side;
     // M5 (T5): a typed answer to an open Choice or tiles card comes after the stop word and before the G16 reply (08-2 §5.2).
     if (!intakeOnly && message.kind === 'text' && (await answerTyped(this.typedDeps, { chatId, messageId, text: message.text }))) return;
     if (!intakeOnly && message.kind === 'text' && (await this.d.jobs?.onUserMessage?.({ chatId, messageId, text: message.text }))) return;
@@ -303,13 +316,13 @@ export class ChatLane {
     });
     let built: { system: string; prompt: string; factIds?: string[] } | null;
     try {
-      const oldPlan = this.d.jobs?.planChange?.(chatId) ?? null;
+      const oldPlan = side ? null : (this.d.jobs?.planChange?.(chatId) ?? null);
       built = this.d.protocol.buildIntake({
         settings,
         chat,
         helper,
         conversation,
-        message,
+        message: side ? await this.sideMessage(message) : message,
         local: pick.billing === 'local',
         memory,
         ...(oldPlan ? { oldPlan } : {}),
@@ -326,7 +339,18 @@ export class ChatLane {
 
     // ✓✓ Delivered: the lane accepted it (04 §3.3). 👀 shows now, within 1 s of send, while foo thinks (04 §4.2, §14.1;
     // UX-08-02 draws it beside the Thinking row).
-    await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { status: 'complete', badge: 'seen' } }]);
+    const understood =
+      chat.kind === 'group' || chat.kind === 'wa_mirror' || message.kind !== 'text'
+        ? []
+        : understoodItems(message.textForAi ?? message.text, { now: this.d.clock.now(), timeZone: settings.locale.timeZone });
+    await this.tx([
+      {
+        op: 'update',
+        table: 'messages',
+        id: messageId,
+        set: { status: 'complete', badge: 'seen', ...(understood.length ? { understood: JSON.stringify(understood) } : {}) },
+      },
+    ]);
     this.typing(chatId, true, who);
 
     const turnId = this.d.newId('t');
@@ -381,6 +405,7 @@ export class ChatLane {
                 status: mode === 'whole' ? 'complete' : 'streaming',
                 provider_note: providerNote,
                 created_at: this.d.clock.now(),
+                ...(side ? { side: 1 } : {}),
               },
             },
             // 04 §4.1 rule 4: the plain answer's 👀 goes when the first word appears.
@@ -443,7 +468,7 @@ export class ChatLane {
     }
     this.d.ai.reportOk(pick.providerId);
     // M5 T10: the changed plan went with a turn that answered; the next message is a fresh one.
-    this.d.jobs?.planChange?.(chatId, true);
+    if (!side) this.d.jobs?.planChange?.(chatId, true);
     await gate.end();
     await pending;
 
@@ -480,6 +505,8 @@ export class ChatLane {
       // A valid <say> with a broken <act> is still posted as a plain reply (08-2 §7.5).
       if (!act && parsed.say.trim()) act = { kind: 'reply' };
     }
+    // R1 T6: a side question is answered, never turned into a job, a memory change or a setting (04 §17.5).
+    if (side && act && act.kind !== 'react') act = { kind: 'reply' };
     const kind = act?.kind ?? 'reply';
     const released = gate.released().trimEnd();
     if (kind !== 'reply' && released.trim()) this.d.log('chat.say_leak', 'PROTOCOL_SAY_LEAK', { chatId });
@@ -535,6 +562,20 @@ export class ChatLane {
     this.d.memory?.answered(chatId);
   }
 
+  /**
+   * 04 §17.5: the side question as the AI reads it: the words it asks about above the question. Main already folded the
+   * picked words in (message:send `quote`); without them the whole replied-to message is the quote. The user's bubble shows
+   * only the question.
+   */
+  private async sideMessage(message: EngineMessage): Promise<EngineMessage> {
+    if (isSideAiText(message.textForAi)) return message;
+    const quoted = message.replyToId ? await this.messageById(message.replyToId) : null;
+    const about = quoted ? (quoted.textForAi ?? quoted.text).trim() : '';
+    if (!about) return message;
+    const asked = message.textForAi ?? message.text;
+    return { ...message, textForAi: sideAiText(about, asked) };
+  }
+
   /** 08-4 §24.16 item 6: each offered id the AI names gets `last_used_at`, `use_count` + 1 and one `memory_uses` row. */
   private async recordUses(chatId: string, named: string[], offered: string[], memory: MemoryParts): Promise<void> {
     const ops = memoryUseOps(named, offered, memory, this.d.clock.now(), { chatId, jobId: null });
@@ -581,6 +622,7 @@ export class ChatLane {
           status: 'complete',
           provider_note: note,
           created_at: this.d.clock.now(),
+          ...(this.sideTurns.has(messageId) ? { side: 1 } : {}),
         },
       },
       { op: 'update', table: 'messages', id: messageId, set: { badge: null } },
@@ -621,6 +663,7 @@ export class ChatLane {
           status: 'failed',
           provider_note: note,
           created_at: this.d.clock.now(),
+          ...(this.sideTurns.has(messageId) ? { side: 1 } : {}),
         },
       },
       { op: 'update', table: 'messages', id: messageId, set: { badge: null } },
