@@ -5,7 +5,8 @@
 // foo's real browser; made-up name and number.
 import { afterEach, describe, expect, it } from 'vitest';
 import { secondLookOk } from '../approvals/gateFlow';
-import { jobHarness, jobIntake, step, tool, type FakeLineIn, type JobHarness } from '../jobs/jobHarness';
+import type { FakeLineIn } from '../../unit/m3-engine-helpers';
+import { jobHarness, jobIntake, step, tool, type JobHarness } from '../jobs/jobHarness';
 import { bookingWorld, type BookingWorld } from './booking';
 
 let h: JobHarness | null = null;

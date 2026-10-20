@@ -6,6 +6,7 @@ import { FakeClock, systemClock, TEST_EPOCH_MS } from '../shared/clock';
 import { Engine } from './Engine';
 import { mainToEngineSchema, type MainLink } from './protocol';
 import type { Result } from '../shared/errors';
+import { newId as mintId, type IdPrefix } from '../shared/ids'; // M9 T8
 
 interface PortLike {
   postMessage(msg: unknown): void;
@@ -46,6 +47,9 @@ function connect(port: PortLike): void {
     resourcesDir: process.env.FOO_RESOURCES ?? '',
     execPath: process.env.FOO_ELECTRON_EXEC ?? process.execPath,
     testRun,
+    // M9 T8 (08-3 §22.3): a FOO_TEST run may number tool calls tc_000001…, so a fake AI script can cite its own evidence and
+    // proof ids (FOO_TEST_TOOL_IDS=counting); every other id is minted as usual.
+    ...(testRun && process.env.FOO_TEST_TOOL_IDS === 'counting' ? { newId: countingToolIds(clock) } : {}),
   });
   port.on('message', (e) => {
     const raw = e.data as { re?: string; id?: string } | null;
@@ -82,3 +86,9 @@ parentPort?.on('message', (e) => {
   const port = e.ports[0];
   if (port) connect(port);
 });
+
+/** M9 T8: tool-call ids counted per run (test runs only); the rest from the clock and crypto. */
+function countingToolIds(clock: { now(): number }): (prefix: IdPrefix) => string {
+  let n = 0;
+  return (p) => (p === 'tc' ? `tc_${String(++n).padStart(6, '0')}` : mintId(p, clock.now()));
+}

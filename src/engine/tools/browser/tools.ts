@@ -14,7 +14,7 @@ import { createHandback, createNoCapture, handbackSitesSchema, hostListSchema, t
 import type { Settings } from '../../../shared/settings';
 import type { ToolContext, ToolDef, ToolOutcome, ToolRegistry } from '../ToolLayer';
 import { Actions, type ActionRefusal, type ActionResult } from './actions';
-import { PlaywrightBrowser, allowHostsFrom, checkUrl, type DriverWindow, type LaunchOptions } from './browser';
+import { PlaywrightBrowser, allowHostsFrom, checkUrl, testBrowserArgs, type DriverWindow, type LaunchOptions } from './browser';
 import { Masker } from './masker';
 import { RefRouter, SnapshotDiffer, needsScreenshot, snapshotText, takeSnapshot } from './snapshot';
 import { StepShots } from './stepShots';
@@ -117,7 +117,9 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       d.launch ??
       (async (dir, options) => {
         const { chromium } = await import('playwright-core');
-        return chromium.launchPersistentContext(dir, options);
+        // M9 T8: test runs only, the sandbox's names and key (empty otherwise).
+        const extra = testBrowserArgs(d.env, d.testRun);
+        return chromium.launchPersistentContext(dir, extra.length ? { ...options, args: [...options.args, ...extra] } : options);
       }),
     log: d.log,
     onWindow: (win: DriverWindow) => {

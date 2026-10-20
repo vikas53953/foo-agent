@@ -883,7 +883,10 @@ export class JobRunner {
     if (r.outcome === 'cancelled') return false;
     // M5 T7: a call the gate held (a refusal line, a hand-back, an app_use / offer Choice) is not a failed tool.
     if (r.gate) return this.gating.onToolGate(job, r);
-    c.lastObservation = { toolCallId: r.toolCallId, tool: r.tool, text: JSON.stringify(r.result ?? null).slice(0, OBSERVATION_CAP) };
+    // M9 T8 (T3 runner seam, 08-2 §7.2 part 8): a failed call shows its error kind, so the AI can re-plan around it.
+    const seen =
+      r.outcome === 'error' ? { error: r.errorKind ?? 'UNKNOWN', ...(r.result ? { result: r.result } : {}) } : (r.result ?? null);
+    c.lastObservation = { toolCallId: r.toolCallId, tool: r.tool, text: JSON.stringify(seen).slice(0, OBSERVATION_CAP) };
     await this.siteNotes.onTool(job.id, r.tool, decision.call.args, r.outcome === 'error' ? (r.errorKind ?? 'UNKNOWN') : null); // M9 T8
     if (r.needsUser) {
       await this.needsYou(job, r.needsUser);
