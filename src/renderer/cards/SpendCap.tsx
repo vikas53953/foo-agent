@@ -16,6 +16,7 @@ import { Icon } from '../ui/Icon';
 import { CardButton } from './CardButton';
 import { CardFrame, CardTimeLabel, type CardTime } from './CardFrame';
 import { nextMonthStart } from './jobCards';
+import { Money } from './parts/Money';
 import { RaiseCapDialog } from './RaiseCapDialog';
 import { ctrlEnter, useCardAction } from './useCardAction';
 import styles from './JobCards.module.css';
@@ -40,12 +41,16 @@ export function SpendCap({ card, time }: { card: CardRow; time: CardTime }) {
         <div className={styles.summary}>
           <Icon name={raised ? 'CheckmarkCircle' : 'Clock'} size={16} className={raised ? styles.ok : styles.dim} />
           <span className={styles.summaryText}>
-            {raised
-              ? t('cards.spend_cap.summary.raised', {
+            {raised ? (
+              <Money
+                text={t('cards.spend_cap.summary.raised', {
                   cap: formatInr(settings?.money.aiCapPaise ?? p.capPaise),
                   time: formatDate(card.resolvedAt ?? card.updatedAt, 'full', o),
-                })
-              : t('cards.spend_cap.summary.dismissed', { date: until })}
+                })}
+              />
+            ) : (
+              t('cards.spend_cap.summary.dismissed', { date: until })
+            )}
           </span>
           <span className={styles.spacer} />
           <CardTimeLabel {...time} />
@@ -67,7 +72,9 @@ export function SpendCap({ card, time }: { card: CardRow; time: CardTime }) {
     >
       <div className={styles.head}>
         <Icon name="Money" size={20} className={styles.warnIcon} />
-        <span className={styles.title}>{line1}</span>
+        <span className={styles.title}>
+          <Money text={line1} />
+        </span>
       </div>
       <div className={styles.body}>{t('cards.spend_cap.line2.ai', { jobs: pausedJobs, routines: 0 })}</div>
       <div className={styles.foot}>

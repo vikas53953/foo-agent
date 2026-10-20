@@ -77,8 +77,6 @@
     "cards.common.private_things.their_address": "M13 groups (private line)",
     "cards.common.private_things.password": "M13 groups (private line)",
     "cards.common.private_things.signin": "M13 groups (private line)",
-    "cards.done.saved": "P1 T7 (CR-0021)",
-    "cards.checklist.sources_more": "P1 T7 (CR-0021)",
     "app.splash.loading": "P1 T8 (CR-0021)"
   }
 }
