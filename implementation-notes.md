@@ -1175,3 +1175,19 @@ nonce, outcome, resolvedBy }` (08-1 §3.2 has no channel): the card keeps FAILED
 - (h) Copy added: `cards.choice.question.who_on_whatsapp`, `cards.draft.line.wa_not_on`, `cards.draft.line.wa_failed`,
   `cards.draft.label_post`, `thread.wa_mirror.draft_made`, `thread.wa_mirror.open` (all spec text except `label_post` and
   the WhatsApp failed line's app name).
+
+## M8 · close-out (lead, CR-0012)
+
+- Built: Google sign-in, the Connect card and the Connections page (T2), the WhatsApp link, QR and group mirrors (T3), Gmail,
+  Calendar and Contacts reading (T4), connection trouble, the poller and the Contacts sync (T5), email drafts and sending
+  (T6), WhatsApp and X drafts and sending (T7), the UX-04 golden spec (T8a). T1 (contracts) landed first.
+- Close-out: UX-16-07…10 written on T7's real WhatsApp and X flow (`test/fidelity/ux/UX-16.drafts.spec.ts`); AT-020, AT-270,
+  ART-15b, UX-04-04…09 and UX-16-07…10 live; the Google and X Connections rows use the 06 §0.4 `RowGroup` like WhatsApp
+  (06-2 §6.8 "Each connection is a row group"); Tier R disputes for M8's 15 ids in CR-0012 §(h).
+- Golden lane: `FIDELITY_MILESTONE: M8`, `FIDELITY_REFS: M1,…,M6,M8`; captures in `test/fidelity/ux/UX-04.connect.spec.ts`,
+  `test/fidelity/ux/UX-16.drafts.spec.ts` and `test/fidelity/bp/BP-cards-m8.spec.ts` (BP-CARD-11).
+- Moved on (CR-0012 §(h) 30): to M7, wiring `routines.onEmail` and `BriefSource` to the Gmail poller (M7 is not on main);
+  to M9, folding its keys into M8's `settings.connections` object (C9) and extending main's one `app:openExternal` handler
+  (C12; M8 added `google_signin` and `x_intent`), and the ART-09 new-site row. Noted: no fallback resume for a WAITING job
+  with `waiting_reason` NULL whose CONN card closes another way.
+- Before the real demo, Vikas's setup item: the Google OAuth client file `resources/google-oauth.json` (08-3 §16.1.1).

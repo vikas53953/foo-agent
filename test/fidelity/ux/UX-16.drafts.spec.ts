@@ -17,14 +17,24 @@
 // names him); the drawn "✓ Sent · Fri 16 Oct, 11:06 AM" is the card's §5.7.2 "Sent · {time}" with the ✓ icon; the drawn ✅
 // badge is `done_unverified` here, because 08-2 §5.8 has no proof kind for "draft made" (the job ends when the draft is made;
 // the send's proof is on the Draft card). Logged in docs/decisions/M8.tsv for the close-out CR.
+// M8 close-out (CR-0012): UX-16-07…10 run T7's real WhatsApp and X flow on the fake phone and the fake AI. Gaps: the drawn
+// "Draft · not sent · WhatsApp" / "X post" labels are 05-2 §5.7.2's "Draft, not sent: {channel} to {name}" and right labels;
+// the drawn "212 characters left" is the weighted count of 08-3 §16.3 (the 🌴 counts 2, so 218 left); UX-16-09 is x.com's own
+// compose page (UNVERIFIABLE, it is X's, not foo's), so the step checks the compose URL main opened and the picture is foo's
+// card at that moment; the drawn ✅ "draft made" badge is `done_unverified` (no proof kind for a draft, as UX-16-05).
 import { expect, test, type Page } from '@playwright/test';
+import { FAKE_WA } from '../../../src/wa-bridge/fakeSocket';
+import { launchWithFakeAi, type FakeLine } from '../../e2e/fakeAi';
 import type { CardSeedRequest } from '../../../src/shared/ipc';
 import { t } from '../../../src/shared/copy/t';
 import { TID } from '../../../src/shared/testids';
 import type { ApprovalFields } from '../../../src/shared/types';
 import { launch } from '../../e2e/launch';
 import { ASK_LANDLORD, advance, draftsGoogle, draftsScript, launchDrafts, waitForDraft } from '../../e2e/m8-drafts-world';
-import { byTid, captureUx, openChat, openWorld, rest, setTheme, settle, step, THEMES, windowSize } from '../capture';
+import { byTid, captureUx, openChat, openWorld, quoted, rest, setTheme, settle, step, THEMES, windowSize } from '../capture';
+
+/** The walkthrough types straight apostrophes; the copy file has the typographic one. */
+const curly = (s: string) => s.replace(/'/g, '’');
 
 const AT = (hhmm: string) => Date.parse(`2026-10-16T${hhmm}:00+05:30`);
 const RAKESH = { name: 'Rakesh Sharma', address: 'r.sharma@example.com' };
@@ -232,5 +242,138 @@ test('UX-16 · Drafts and sends (M8): steps UX-16-01, UX-16-03 and UX-16-05 on t
   } finally {
     await app.close();
     await google.close();
+  }
+});
+
+// M8 close-out: the T7 WhatsApp and X drafts on the fake phone (FOO_TEST) and the fake AI.
+const MOM = FAKE_WA.people[0];
+const ASK_MOM = 'message Mom on WhatsApp about the cake';
+const ASK_POST = 'write a post for X about Goa';
+const act = (decision: Record<string, unknown>) => `<say></say><act>${JSON.stringify({ decision, usedMemoryIds: [] })}</act>`;
+const tool = (name: string, args: Record<string, unknown>) => act({ kind: 'tool', call: { tool: name, args }, why: 'next' });
+const draftJob = (ask: string, title: string, channel: string, call: string, args: Record<string, unknown>, ask2: boolean): FakeLine[] => [
+  {
+    match: { purpose: 'intake', promptIncludes: ask },
+    reply: act({
+      kind: 'job',
+      title,
+      plan: [{ phraseKey: 'draft', slots: { channel }, route: 'api' }],
+      estimate: { minutes: 1 },
+      routeHint: ['api'],
+      needsApps: [],
+    }),
+  },
+  // WhatsApp's first call meets "Can I use WhatsApp for this?" (08-2 §9.4); after Yes the step asks again and the call runs.
+  ...(ask2 ? [{ match: { purpose: 'step' }, reply: tool(call, args) }] : []),
+  { match: { purpose: 'step' }, reply: tool(call, args) },
+  { match: { purpose: 'step' }, reply: act({ kind: 'step_done', idx: 0 }) },
+  { match: { purpose: 'step' }, reply: act({ kind: 'done', result: 'It is ready for you below.', unverified: true }) },
+];
+
+test('UX-16 · Drafts and sends (M8): steps UX-16-07, UX-16-08, UX-16-09 and UX-16-10 on WhatsApp and X, light and dark', async () => {
+  test.setTimeout(240_000);
+  const momText = quoted(step('UX-16-07').s)[1]!;
+  const post = quoted(step('UX-16-08').s)[1]!;
+  const { app } = await launchWithFakeAi([
+    { match: { purpose: 'verify' }, reply: 'ready', once: false },
+    { match: { purpose: 'second_look' }, reply: `<say></say><act>${JSON.stringify({ match: true })}</act>`, once: false },
+    ...draftJob(ASK_MOM, 'Message Mom', 'message', 'whatsapp.draft', { to: MOM.name, text: momText }, true),
+    ...draftJob(ASK_POST, 'Post about Goa', 'post', 'x.draft', { text: post }, false),
+  ]);
+  try {
+    const page = await app.firstWindow();
+    await openWorld(app, page, '2026-10-16T11:01:00+05:30');
+    await windowSize(app, page, 1280, 800);
+    const outbound = () => app.evaluate(() => (globalThis as { __fooWaOutbound?: { jid: string }[] }).__fooWaOutbound ?? []);
+    const opened = () => app.evaluate(() => (globalThis as { __fooOpenedExternal?: string[] }).__fooOpenedExternal ?? []);
+
+    // the fake phone links from Settings → Connections (it knows Mom), as UX-04-08
+    await page.keyboard.press('Control+,');
+    await page.getByTestId(TID.settingsNavConnections).click();
+    const row = page.getByTestId(TID.settingsRowConnectionsWhatsapp);
+    await row.getByRole('button', { name: t('settings.connections.whatsapp.link') }).click();
+    const dialog = page.getByTestId(TID.dialogLinkWhatsapp);
+    await expect(dialog.getByTestId(TID.cardConnectQr)).toBeVisible({ timeout: 15_000 });
+    await expect.poll(async () => (await page.evaluate(() => window.__fooTest!.wa({ op: 'scan' }))).delivered).toBe(true);
+    await expect(dialog).toBeHidden({ timeout: 15_000 });
+    await expect(row).toHaveAttribute('data-state', 'linked');
+    await page.keyboard.press('Escape');
+
+    await openChat(page, 'foo');
+    const log = page.getByTestId(TID.threadLog);
+    const ask = async (text: string) => {
+      await page.getByTestId(TID.composerField).focus();
+      await page.keyboard.type(text);
+      await page.keyboard.press('Enter');
+    };
+
+    await test.step('UX-16-07 · WhatsApp works the same way: a draft, and your tap sends it from your own WhatsApp', async () => {
+      const s = step('UX-16-07');
+      expect(s.s).toContain('To: Mom');
+      const before = await log.locator(byTid(TID.cardDraft)).count();
+      await ask(ASK_MOM);
+      const choice = log.locator(byTid(TID.cardChoice)).filter({ hasText: t('cards.choice.question.app_use', { app: 'WhatsApp' }) });
+      for (let i = 0; i < 80 && !(await choice.count()); i++) await advance(page, 500);
+      await choice.last().getByText(t('cards.choice.option.yes'), { exact: true }).click();
+      const id = await waitForDraft(page, before);
+      const sel = `${byTid(TID.cardDraft)}[data-card-id="${id}"]`;
+      const card = page.locator(sel);
+      await expect(card).toContainText(t('cards.draft.title'));
+      await expect(card).toContainText(t('cards.draft.right_label.whatsapp'));
+      await expect(card).toContainText(t('cards.draft.to_whatsapp', { name: MOM.name }));
+      await expect(card).toContainText(momText);
+      await expect(card.getByTestId(TID.cardDraftSend)).toHaveText(t('cards.draft.button.send_message'));
+      // f: nothing leaves without the tap; the proof is WhatsApp's own delivered ticks (after Send, T7's m8-whatsapp-send).
+      await advance(page, 10_000);
+      expect(await outbound()).toEqual([]);
+      // the drawn hl is the Send message button
+      await shoot(page, 'UX-16-07', `${sel} ${byTid(TID.cardDraftSend)}`);
+    });
+
+    let xSel = '';
+    await test.step('UX-16-08 · X posts are drafts only; foo never posts', async () => {
+      const s = step('UX-16-08');
+      expect(s.s).toContain('Open in X to post');
+      const before = await log.locator(byTid(TID.cardDraft)).count();
+      await ask(ASK_POST);
+      const id = await waitForDraft(page, before);
+      xSel = `${byTid(TID.cardDraft)}[data-card-id="${id}"]`;
+      const card = page.locator(xSel);
+      await expect(card).toContainText(t('cards.draft.title'));
+      await expect(card).toContainText(post);
+      await expect(card).toContainText(t('cards.draft.right_label.x_post'));
+      await expect(card).toContainText(t('cards.draft.x_chars_left', { n: 218 }));
+      await expect(card.getByTestId(TID.cardDraftSend)).toHaveText(t('cards.draft.button.open_in_x'));
+      await expect(card).not.toContainText(t('cards.draft.row_label.to'));
+      expect(await opened()).toEqual([]);
+      // the drawn hl is the Open in X button
+      await shoot(page, 'UX-16-08', `${xSel} ${byTid(TID.cardDraftSend)}`);
+    });
+
+    await test.step("UX-16-09 · X opens in your normal browser with the text filled in; you press Post (x.com's page)", async () => {
+      const s = step('UX-16-09');
+      expect(s.s).toContain("x.com's compose box");
+      const card = page.locator(xSel);
+      await card.getByTestId(TID.cardDraftSend).click();
+      await expect(card).toHaveAttribute('data-card-state', 'opened_in_app', { timeout: 10_000 });
+      // f: the compose page is X's; foo hands over the text and watches nothing there.
+      expect(await opened()).toEqual([`https://x.com/intent/post?text=${encodeURIComponent(post)}`]);
+      await shoot(page, 'UX-16-09', xSel);
+    });
+
+    await test.step('UX-16-10 · back in foo, the card says exactly what happened', async () => {
+      const s = step('UX-16-10');
+      const [line, said] = quoted(s.s);
+      const card = page.locator(xSel);
+      expect(line).toBe(t('cards.draft.summary.opened_in_x', { agentName: 'foo' }));
+      await expect(card).toContainText(line!);
+      await expect(log.getByText(t('cards.draft.x_opened_line'))).toBeVisible();
+      expect(curly(said!)).toBe(t('cards.draft.x_opened_line'));
+      // f: no proof chip for X (nothing was posted by foo).
+      await expect(card.getByTestId(TID.threadProofChip)).toHaveCount(0);
+      await shoot(page, 'UX-16-10', xSel);
+    });
+  } finally {
+    await app.close();
   }
 });

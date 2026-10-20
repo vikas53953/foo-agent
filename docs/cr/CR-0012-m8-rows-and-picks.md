@@ -129,3 +129,51 @@ recorded (docs/decisions/M8.tsv, T7 rows).
 24. **G-M8-21** New copy keys: `cards.choice.question.who_on_whatsapp`, `cards.draft.line.wa_not_on`,
     `cards.draft.line.wa_failed`, `cards.draft.label_post`, `thread.wa_mirror.draft_made`, `thread.wa_mirror.open`
     (the words are the spec's own where it has them: 04 §10.11, 08-3 §16.4.2).
+
+## (h) Addendum: M8 close-out (2026-10-20)
+
+The rows, gaps and disputes the close-out found that §(a)–(g) do not yet name. Each was put to an independent Fable check
+before it was recorded (docs/decisions/M8.tsv, close-out rows).
+
+25. **Trace rows live.** AT-020, AT-270, ART-15b, UX-04-04…09 and UX-16-07…10 move from `pending` to `live` (their tests carry
+    the ids in their titles; `pnpm trace:check` green). UX-16-07…10 are new steps in `test/fidelity/ux/UX-16.drafts.spec.ts`
+    on T7's real WhatsApp and X flow (fake phone, fake AI); UX-16-09 is X's own compose page (UNVERIFIABLE, as UX-04-05 is
+    Google's), so the step checks the compose URL main opened and the picture is foo's card at that moment.
+26. **Protocol rows the spec names only in words** (08-1 §2.4 table, beside G-M8-20): EngineToMain request
+    `connection.google { op: state | token | refresh | scopeMissing | lost | history | saveHistory }` and MainToEngine event
+    `connection.state` (T5-01: the refresh token stays in main, the engine never writes `connections`); EngineToMain event
+    `wa.report` (`linked`, `status`, and T7's `delivered`, `sent`, `open`, T3). Gap channel `connection:googleInfo` (08-1 §3.2
+    has none): whether this build has the Google client file (08-3 §16.1.1 "Gmail isn't available in this build.") and the
+    routines C-10 names (T2 (b)).
+27. **Shapes and storage.** `contacts.search` returns `PersonMatch` `{ match, hits, choices?, someoneNew? }` with `hits` the
+    08-5 §3.3 `ContactHit[]` inside (T4-07); the engine's People sync writes `contacts_index` through one `contacts_replace`
+    db.tx op (T4-10; 08-1 lists the table as main-rebuilt, and main holds no Google access token).
+28. **Words.** The new-person Approval line keeps `{them}` (`cards.approval.them`, "them"): AT-052 / UX-16-06 draw "her", and
+    foo has no gender for a contact and must not guess (T6 fork, Fable PASS 2026-10-20). AT-014's account mask is the
+    08-2 §11.4 form `v***@example.com` everywhere (T2 (c)); the drawn "v••••@gmail.com" is a dispute below.
+29. **Connections page, one look.** 06-2 §6.8 "Each connection is a row group": the Gmail, Calendar, Contacts and X groups now
+    use the 06 §0.4 `RowGroup` box as WhatsApp's already did (they were flat rows with a bottom rule). No new word or row.
+30. **Noted, not built (carry).** A WAITING job with `waiting_reason` NULL whose CONN_EXPIRED / REVOKED card closes some other
+    way (not through Reconnect) has no fallback resume (T5 review, noted); it stays WAITING until the user asks again (a carry row
+    in docs/decisions/M8.tsv). Spec clash for the spec-keeper (T2 (e)): 08-3 §16.1.1 gives a reply with no `refresh_token`
+    its own Connect card line "Google didn't let me stay connected. Try again." [ Try again ], while the §21.2 table maps
+    OAUTH_DENIED (the kind §16.1.1 itself names) to the Denied copy; the app shows the Denied line for both and the §16.1.1
+    line has no copy key yet. 05-3 §5.11.1 asks for each app's official mark bundled as a local SVG; the Google marks are not
+    bundled yet (a Fluent glyph stands in, T2 notes), carried to the asset owner. M7 (not on main) wires `routines.onEmail` and `BriefSource` to M8's Gmail reader.
+
+### Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`)
+
+| Ids                          | Checks            | Why the app is right                                                                                                                                                                                                                                                                              |
+| ---------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| BP-CARD-11                   | R1, R2            | R1: the Blueprint mini has one shorter line; the card follows the 05-3 §5.11.2 words (three lines, G-M8 contacts pick). R2: the mini has no icon row; the official Google mark is not bundled yet (05-3 §5.11.1), a Fluent glyph stands in: a carry (item 30), not a claim that the app is right. |
+| UX-04-04                     | R1–R4             | 05-3 §5.11.2 gives the `google` variant a third contacts line; the frame is the ux-world, not the drawn first-run interview; the primary is the indigo `--accent` (the drawing's near-black); straight vs typographic apostrophes.                                                                |
+| UX-04-05                     | R1–R4             | Google's own consent page (UNVERIFIABLE); the picture is foo's waiting card meanwhile.                                                                                                                                                                                                            |
+| UX-04-06                     | R1–R4             | `v***@example.com` (08-2 §11.4 mask, fake account); no Gmail / Calendar Using chips (03-shell-2 §3.7.3.2: connecting is not a use).                                                                                                                                                               |
+| UX-04-07, UX-04-08           | R1–R4             | The risk note sits in the QR panel (05-3 §5.11.1), not under the offered card; the Link button is the indigo `--accent`; the QR is a fresh pairing code each run.                                                                                                                                 |
+| UX-04-09                     | R1, R2, R4        | The fake phone's groups are the ux-world mirrors ("Building society"), not the drawn "Family group" (a foo group chat in the ux-world, 08-3 §22.9).                                                                                                                                               |
+| UX-16-01, UX-16-05; UX-16-03 | R1–R4; R1, R2, R4 | example.com fixtures; the person is resolved by the contacts ladder (08-3 §16.7), not a drawn Gmail search; "Sent · {time}" with the ✓ icon (05-2 §5.7.2); `done_unverified` badge (08-2 §5.8 has no proof kind for "draft made").                                                                |
+| UX-16-08; UX-16-07           | R1–R4; R1, R2, R4 | The title "Draft · not sent" and the right label "WhatsApp" / "X post" (05-2 §5.7.2) sit at the two ends of the header; the drawing joins them into one line; the X count is 08-3 §16.3's weighted length (the 🌴 counts 2: 218 left, drawn 212); the card sits where the thread puts it.         |
+| UX-16-09                     | R1–R4             | x.com's compose page is X's (UNVERIFIABLE); the picture is foo's card after Open.                                                                                                                                                                                                                 |
+| UX-16-10                     | R1–R4             | The card and foo's line are the spec's words ("Opened in X · not posted by foo", "It's ready in X…"); the frame is the ux-world thread.                                                                                                                                                           |
+
+Earlier milestones' pictures (M1–M6 refs) all pass or stay under their own CRs; only M8's 15 ids above are disputed.

@@ -1,4 +1,4 @@
-/* Spec: 06-2 §6.8 (each connection is a row group: header row with the `--t-body-strong` name, status line and buttons,
+/* Spec: 06-2 §6.8 (each connection is a 06 §0.4 row group, `RowGroup`, as WhatsApp's: header row with the `--t-body-strong` name, status line and buttons,
  * then detail rows; "Not allowed yet" and "expired" lines `--warn`; notes `--t-small` `--fg-2`), 06 §0 page frame. The
  * Settings frame (06-2 §6.0, SettingsPage) pads and scrolls the column; this is the Connections page body. */
 .page {
@@ -10,8 +10,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--s1);
-  padding: var(--s2) 0;
-  border-bottom: 1px solid var(--line);
+  padding: var(--s2) var(--s3);
 }
 .header {
   display: flex;

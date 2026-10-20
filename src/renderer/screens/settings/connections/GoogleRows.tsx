@@ -15,6 +15,7 @@ import { selectConnection } from '../../../store/live';
 import { selectSettings } from '../../../store/settings';
 import { Button } from '../../../ui/Button';
 import { Spinner } from '../../../ui/Spinner';
+import { RowGroup } from '../../shared/RowGroup';
 import type { GoogleApp } from '../../../cards/connect/googleState';
 import styles from '../ConnectionsPage.module.css';
 
@@ -81,40 +82,42 @@ export function GoogleRows({ available }: { available: boolean }) {
 
   return (
     <>
-      <div className={styles.group} data-testid={TID.settingsRowConnectionsGmail} data-state={gmailState}>
-        <div className={styles.header}>
-          <div className={styles.text}>
-            <span className={styles.name}>{NAME.gmail()}</span>
-            {inline('gmail', gmail) ?? gmailStatus}
+      <RowGroup>
+        <li className={styles.group} data-testid={TID.settingsRowConnectionsGmail} data-state={gmailState}>
+          <div className={styles.header}>
+            <div className={styles.text}>
+              <span className={styles.name}>{NAME.gmail()}</span>
+              {inline('gmail', gmail) ?? gmailStatus}
+            </div>
+            <div className={styles.buttons}>
+              {gmailState === 'connected' && (
+                <Button variant="secondary" size="md" onClick={() => openDialog('c-10')}>
+                  {t('settings.connections.button.disconnect_google')}
+                </Button>
+              )}
+              {gmailState === 'needs_signin' && (
+                <Button variant="primary" size="md" disabled={blocked} onClick={() => connect('gmail')}>
+                  {t('settings.connections.button.reconnect')}
+                </Button>
+              )}
+              {gmailState !== 'connected' && gmailState !== 'needs_signin' && gmailState !== 'connecting' && (
+                <Button variant="primary" size="md" disabled={blocked} onClick={() => connect('gmail')}>
+                  {t('settings.connections.button.connect')}
+                </Button>
+              )}
+            </div>
           </div>
-          <div className={styles.buttons}>
-            {gmailState === 'connected' && (
-              <Button variant="secondary" size="md" onClick={() => openDialog('c-10')}>
-                {t('settings.connections.button.disconnect_google')}
-              </Button>
-            )}
-            {gmailState === 'needs_signin' && (
-              <Button variant="primary" size="md" disabled={blocked} onClick={() => connect('gmail')}>
-                {t('settings.connections.button.reconnect')}
-              </Button>
-            )}
-            {gmailState !== 'connected' && gmailState !== 'needs_signin' && gmailState !== 'connecting' && (
-              <Button variant="primary" size="md" disabled={blocked} onClick={() => connect('gmail')}>
-                {t('settings.connections.button.connect')}
-              </Button>
-            )}
-          </div>
-        </div>
-        {gmailState === 'connected' && !gmail!.granted.send && (
-          <div className={styles.detail}>
-            <span>{t('settings.connections.gmail.allow_send_line')}</span>
-            <button type="button" className={styles.link} disabled={blocked} onClick={() => connect('gmail', ['gmail'])}>
-              {t('settings.connections.button.allow_sending')}
-            </button>
-          </div>
-        )}
-        {!available && gmailState !== 'connected' && <p className={styles.note}>{t('cards.connect.line.unavailable')}</p>}
-      </div>
+          {gmailState === 'connected' && !gmail!.granted.send && (
+            <div className={styles.detail}>
+              <span>{t('settings.connections.gmail.allow_send_line')}</span>
+              <button type="button" className={styles.link} disabled={blocked} onClick={() => connect('gmail', ['gmail'])}>
+                {t('settings.connections.button.allow_sending')}
+              </button>
+            </div>
+          )}
+          {!available && gmailState !== 'connected' && <p className={styles.note}>{t('cards.connect.line.unavailable')}</p>}
+        </li>
+      </RowGroup>
       <SubRow
         app="gcal"
         tid="settingsRowConnectionsCalendar"
@@ -160,41 +163,43 @@ function SubRow(p: {
   const state = notAllowed ? 'not_allowed' : connected ? (p.on ? 'on' : 'off') : (p.row?.status ?? 'disconnected');
   const path = p.app === 'gcal' ? 'connections.google.calendarOn' : 'connections.google.contactsOn';
   return (
-    <div className={styles.group} data-testid={TID[p.tid]} data-state={state}>
-      <div className={styles.header}>
-        <div className={styles.text}>
-          <span className={styles.name}>{NAME[p.app]()}</span>
-          {p.inline ??
-            (notAllowed ? (
-              <span className={styles.warn}>{t('settings.connections.row.not_allowed_yet')}</span>
-            ) : connected ? (
-              <span className={styles.status}>{p.on ? p.okLine : t('settings.connections.row.turned_off')}</span>
-            ) : (
-              <span className={styles.status}>{t('settings.connections.row.not_connected')}</span>
-            ))}
+    <RowGroup>
+      <li className={styles.group} data-testid={TID[p.tid]} data-state={state}>
+        <div className={styles.header}>
+          <div className={styles.text}>
+            <span className={styles.name}>{NAME[p.app]()}</span>
+            {p.inline ??
+              (notAllowed ? (
+                <span className={styles.warn}>{t('settings.connections.row.not_allowed_yet')}</span>
+              ) : connected ? (
+                <span className={styles.status}>{p.on ? p.okLine : t('settings.connections.row.turned_off')}</span>
+              ) : (
+                <span className={styles.status}>{t('settings.connections.row.not_connected')}</span>
+              ))}
+          </div>
+          <div className={styles.buttons}>
+            {notAllowed && (
+              <Button variant="primary" size="md" disabled={p.blocked} onClick={() => p.connect(p.app, [p.app])}>
+                {t('settings.connections.button.allow')}
+              </Button>
+            )}
+            {!notAllowed && connected && (
+              <Button
+                variant="secondary"
+                size="md"
+                onClick={() => void invoke('settings:set', { path, value: !p.on }).catch(() => undefined)}
+              >
+                {p.on ? t('settings.connections.button.turn_off') : t('settings.connections.button.turn_on')}
+              </Button>
+            )}
+            {!p.googleOn && p.row?.status !== 'connecting' && (
+              <Button variant="primary" size="md" disabled={p.blocked} onClick={() => p.connect(p.app)}>
+                {t('settings.connections.button.connect')}
+              </Button>
+            )}
+          </div>
         </div>
-        <div className={styles.buttons}>
-          {notAllowed && (
-            <Button variant="primary" size="md" disabled={p.blocked} onClick={() => p.connect(p.app, [p.app])}>
-              {t('settings.connections.button.allow')}
-            </Button>
-          )}
-          {!notAllowed && connected && (
-            <Button
-              variant="secondary"
-              size="md"
-              onClick={() => void invoke('settings:set', { path, value: !p.on }).catch(() => undefined)}
-            >
-              {p.on ? t('settings.connections.button.turn_off') : t('settings.connections.button.turn_on')}
-            </Button>
-          )}
-          {!p.googleOn && p.row?.status !== 'connecting' && (
-            <Button variant="primary" size="md" disabled={p.blocked} onClick={() => p.connect(p.app)}>
-              {t('settings.connections.button.connect')}
-            </Button>
-          )}
-        </div>
-      </div>
-    </div>
+      </li>
+    </RowGroup>
   );
 }
