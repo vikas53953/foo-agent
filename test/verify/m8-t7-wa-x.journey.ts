@@ -167,8 +167,9 @@ export default async function journey(v: Verify): Promise<void> {
   const marker = page.getByTestId(TID.threadMarker).filter({ hasText: t('thread.wa_mirror.draft_made', { agentName: 'foo' }) });
   await marker.waitFor({ timeout: 10_000 });
   await both(v, page, 'mirror-marker');
+  const groupCard = await marker.getAttribute('data-card-id');
   await marker.getByTestId(TID.threadMarkerLink).click();
-  const g = page.locator(`${byTid(TID.cardDraft)}[data-card-id="${await marker.getAttribute('data-card-id')}"]`);
+  const g = page.locator(`${byTid(TID.cardDraft)}[data-card-id="${groupCard}"]`);
   await g.waitFor();
   await g.getByTestId(TID.cardDraftSend).click();
   await g.getByTestId(TID.cardDraftWaiting).waitFor();
