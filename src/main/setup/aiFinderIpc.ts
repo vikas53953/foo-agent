@@ -3,6 +3,7 @@
 // CR-0020 (c): `ai:openFinder` and `ai:askKey` post the J2 card and the key's Secret box in foo's chat. The writes are in
 // aiFinder.ts (no Electron, unit-tested); this file only emits what they wrote.
 // M8 T7: target `x_intent` (08-1 §3.2 rule: `https://x.com/intent/…`) opens an X Draft card through DraftService.openX.
+// M9 T8: target `handback_site` (08-1 §3.2 rule, 08-2 §8.3.10) through openExternalHandback.ts.
 import { shell } from 'electron';
 import { fail, ok } from '../../shared/errors';
 import { deps } from '../deps';
@@ -12,6 +13,8 @@ import { chatRowById, messageGet } from '../store/queries';
 import { emit, listContext, type AppContext, type IpcHandlers } from '../ipc/IpcRouter';
 import { loadMakerPages, makerPageUrl, openFinder, postKeyBox, type FinderWrite, type MakerPages } from './aiFinder';
 import { draftService } from '../drafts/draftIpc'; // M8 T7
+import { loadHandback, openExternalHandback } from '../ipc/openExternalHandback'; // M9 T8
+import type { HostMatcher } from '../../shared/handback';
 
 /** Pushes the cards, messages and chat a finder write touched to the windows. */
 export function emitFinderWrite(ctx: AppContext, w: FinderWrite | null): void {
@@ -29,6 +32,7 @@ export function emitFinderWrite(ctx: AppContext, w: FinderWrite | null): void {
 }
 
 let pages: MakerPages | null = null;
+let handback: HostMatcher | null = null; // M9 T8
 
 /** FOO_TEST runs never open a browser: the pages foo would have opened are kept here for the E2E (08-3 §22.3). */
 export const openedForTest: string[] = [];
@@ -49,9 +53,17 @@ export function aiFinderIpc(ctx: AppContext): IpcHandlers<'ai:openFinder' | 'ai:
       emitFinderWrite(ctx, r.write);
       return ok(r.card);
     },
-    'app:openExternal': async ({ target, providerId, cardId, nonce }) => {
+    'app:openExternal': async ({ target, providerId, cardId, nonce, url: askedUrl }) => {
       // M8 T7: `x_intent` opens an X Draft card's own text in X's compose page (main builds the URL from the card, AT-054).
       if (target === 'x_intent') return cardId && nonce ? draftService(ctx).openX({ cardId, nonce }) : fail('URL_NOT_ALLOWED');
+      // M9 T8: the hand-back card's Open {site}, checked against the card and the one hand-back matcher.
+      if (target === 'handback_site') {
+        handback ??= loadHandback(resourcesDir());
+        return openExternalHandback(ctx.db, handback, { url: askedUrl, cardId, nonce }, async (u) => {
+          if (process.env.FOO_TEST === '1') openedForTest.push(u);
+          else await shell.openExternal(u);
+        });
+      }
       if (target !== 'maker_page') return fail('URL_NOT_ALLOWED');
       pages ??= loadMakerPages(resourcesDir());
       const url = makerPageUrl(pages, providerId);

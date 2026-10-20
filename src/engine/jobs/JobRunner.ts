@@ -62,6 +62,7 @@ import { RunnerGate } from '../gate/runnerGate';
 import { draftSecondLook, type DraftLookAnswer, type DraftLookReq } from '../gate/draftSecondLook';
 // M9 T8
 import type { LiveRead } from '../tools/browser/readLiveTerms';
+import { handbackCopy, handbackUrl } from '../tools/browser/handbackGuard';
 
 export const CHECKLIST_AFTER_MS = 1_500;
 const OBSERVATION_CAP = 4_000;
@@ -861,6 +862,12 @@ export class JobRunner {
       return false;
     }
     if (r.outcome === 'error') {
+      // M9 T8 (08-2 §8.3.10): a hand-back site is never driven: the step is handed back with the Open {site} card.
+      const back = r.errorKind === 'SITE_HANDBACK' ? handbackUrl(r.result, decision.call.args) : null;
+      if (back) {
+        await this.fail(job, 'SITE_HANDBACK', { kind: 'open_url', url: back });
+        return false;
+      }
       const site = (r.result as { site?: unknown } | null)?.site;
       c.lastError = { kind: r.errorKind ?? 'UNKNOWN', site: typeof site === 'string' ? site : null };
       if (current) await this.tx([{ op: 'update', table: 'steps', id: current.id, set: { attempts: current.attempts + 1 } }]);
@@ -1161,11 +1168,18 @@ export class JobRunner {
 
   // ---- FAILED + error card with one alternative (AT-117) ----
 
-  async fail(job: JobRow, kind: 'SITE_BLOCKED' | 'UNKNOWN', alternative?: { kind: string; [k: string]: unknown }): Promise<void> {
+  async fail(
+    job: JobRow,
+    kind: 'SITE_BLOCKED' | 'UNKNOWN' | 'SITE_HANDBACK',
+    alternative?: { kind: string; [k: string]: unknown },
+  ): Promise<void> {
     const c = this.ctx(job.id);
     const site = c.lastError?.site ?? job.siteDomain ?? '';
     let action: FixAction;
-    if (alternative?.kind === 'retry' || alternative?.kind === 'dismiss') action = { kind: alternative.kind };
+    // M9 T8 (08-2 §8.3.10): the hand-back card opens the bank's own page in the user's browser; its words are fixed.
+    const handback = kind === 'SITE_HANDBACK' && typeof alternative?.url === 'string' ? handbackCopy(alternative.url) : null;
+    if (handback) action = handback.action;
+    else if (alternative?.kind === 'retry' || alternative?.kind === 'dismiss') action = { kind: alternative.kind };
     else if (alternative?.kind === 'open_url' && typeof alternative.url === 'string' && /^https:\/\//.test(alternative.url))
       action = { kind: 'open_url', url: alternative.url };
     else {
@@ -1179,7 +1193,7 @@ export class JobRunner {
             ? { kind: 'retry' }
             : { kind: 'dismiss' };
     }
-    const words = errorCopy(kind, site);
+    const words = handback ?? errorCopy(kind === 'SITE_HANDBACK' ? 'UNKNOWN' : kind, site);
     const payload = {
       variant: 'error',
       kind,

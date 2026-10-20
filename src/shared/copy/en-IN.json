@@ -890,6 +890,8 @@
   "errors.site_blocked.what_happened": "{site} won’t let me in.",
   "errors.site_blocked.what_is_safe": "Nothing was booked.",
   "errors.site_blocked.button": "Open the page myself",
+  "errors.site_handback.body": "This is your bank’s site. I’ll open it for you, and you do this part.",
+  "errors.site_handback.button": "Open {site}",
   "errors.site_changed.what_happened": "{site} looks different from last time.",
   "errors.site_changed.what_is_safe": "I stopped before doing anything there. Nothing was booked or paid.",
   "errors.site_changed.button": "Try again",

@@ -158,6 +158,7 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
     description: string,
     schema: S,
     run: (a: z.infer<S>, page: Page, ctx: ToolContext) => Promise<ToolOutcome>,
+    before?: (a: z.infer<S>) => ToolOutcome | null,
   ): ToolDef {
     return {
       name,
@@ -167,6 +168,9 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       async run(raw, ctx) {
         const a = schema.safeParse(raw ?? {});
         if (!a.success) return { kind: 'error', errorKind: 'VALIDATION' };
+        // M9 T8: an address the policy refuses never opens a window.
+        const refusedEarly = before?.(a.data as z.infer<S>);
+        if (refusedEarly) return refusedEarly;
         const p = await pageFor(ctx);
         return 'refused' in p ? p.refused : run(a.data as z.infer<S>, p.page, ctx);
       },
@@ -174,36 +178,58 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
   }
 
   const defs: ToolDef[] = [
-    tool('browser.open', 'read', 'url: string', "Open a web page in foo's own browser.", ARGS.open, async (a, page, ctx) => {
-      const rule = checkUrl(a.url, { handback: m().handback, allowHosts });
-      if (!rule.ok) return { kind: 'error', errorKind: rule.error.kind };
-      let status = 0;
-      let failed: string | null = null;
-      const miss = await actions.settled(ctx.jobId, page, async () => {
-        const res = await page.goto(a.url, { waitUntil: 'commit', timeout: 15_000 }).catch((e: unknown) => {
-          failed = e instanceof Error ? e.message : String(e);
-          return null;
+    tool(
+      'browser.open',
+      'read',
+      'url: string',
+      "Open a web page in foo's own browser.",
+      ARGS.open,
+      async (a, page, ctx) => {
+        const rule = checkUrl(a.url, { handback: m().handback, allowHosts });
+        if (!rule.ok) return { kind: 'error', errorKind: rule.error.kind };
+        let status = 0;
+        let failed: string | null = null;
+        const miss = await actions.settled(ctx.jobId, page, async () => {
+          const res = await page.goto(a.url, { waitUntil: 'commit', timeout: 15_000 }).catch((e: unknown) => {
+            failed = e instanceof Error ? e.message : String(e);
+            return null;
+          });
+          status = res?.status() ?? 0;
         });
-        status = res?.status() ?? 0;
-      });
-      // The page never arrived (offline, no such host, refused, 15 s): never an `ok` on the old page, never URL_NOT_ALLOWED for
-      // Chromium's own error page.
-      if (failed !== null) {
-        await page.goto('about:blank').catch(() => null);
-        return { kind: 'error', errorKind: /ERR_INTERNET_DISCONNECTED|ERR_NETWORK_CHANGED/.test(failed) ? 'NET_OFFLINE' : 'SITE_TIMEOUT' };
-      }
-      // Redirects are checked again where they landed: a hand-back or private address is left at once.
-      const landed = checkUrl(page.url(), { handback: m().handback, allowHosts });
-      if (!landed.ok) {
-        await page.goto('about:blank').catch(() => null);
-        return { kind: 'error', errorKind: landed.error.kind };
-      }
-      if (miss) return err(miss);
-      if (BLOCKED_STATUS.has(status)) return { kind: 'error', errorKind: 'SITE_BLOCKED', result: { status } };
-      if (await isChallengePage(page)) return { kind: 'error', errorKind: 'SITE_CAPTCHA' };
-      differ.reset(ctx.jobId);
-      return { kind: 'ok', result: { url: page.url(), title: await page.title().catch(() => '') } };
-    }),
+        // The page never arrived (offline, no such host, refused, 15 s): never an `ok` on the old page, never URL_NOT_ALLOWED for
+        // Chromium's own error page.
+        if (failed !== null) {
+          await page.goto('about:blank').catch(() => null);
+          return {
+            kind: 'error',
+            errorKind: /ERR_INTERNET_DISCONNECTED|ERR_NETWORK_CHANGED/.test(failed) ? 'NET_OFFLINE' : 'SITE_TIMEOUT',
+          };
+        }
+        // Redirects are checked again where they landed: a hand-back or private address is left at once.
+        const landedUrl = page.url();
+        const landed = checkUrl(landedUrl, { handback: m().handback, allowHosts });
+        if (!landed.ok) {
+          await page.goto('about:blank').catch(() => null);
+          // M9 T8: the hand-back card names the page foo was sent to (08-2 §8.3.10).
+          return landed.error.kind === 'SITE_HANDBACK'
+            ? { kind: 'error', errorKind: 'SITE_HANDBACK', result: { url: landedUrl } }
+            : { kind: 'error', errorKind: landed.error.kind };
+        }
+        if (miss) return err(miss);
+        if (BLOCKED_STATUS.has(status)) return { kind: 'error', errorKind: 'SITE_BLOCKED', result: { status } };
+        if (await isChallengePage(page)) return { kind: 'error', errorKind: 'SITE_CAPTCHA' };
+        differ.reset(ctx.jobId);
+        return { kind: 'ok', result: { url: page.url(), title: await page.title().catch(() => '') } };
+      },
+      // M9 T8 (08-2 §8.3.10): a hand-back or refused address is answered before any window opens.
+      (a) => {
+        const rule = checkUrl(a.url, { handback: m().handback, allowHosts });
+        if (rule.ok) return null;
+        return rule.error.kind === 'SITE_HANDBACK'
+          ? { kind: 'error', errorKind: 'SITE_HANDBACK', result: { url: a.url } }
+          : { kind: 'error', errorKind: rule.error.kind };
+      },
+    ),
     tool(
       'browser.snapshot',
       'read',
