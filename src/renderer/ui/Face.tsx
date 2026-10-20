@@ -188,6 +188,25 @@ function blinkEvery(el: HTMLElement, cycleMs: number): () => void {
   };
 }
 
+/** Animations "Basic" (`<html data-motion="basic">`, 02 §F7): faces cross-fade between static poses, like reduced motion. */
+function motionBasic(): boolean {
+  return typeof document !== 'undefined' && document.documentElement.dataset.motion === 'basic';
+}
+
+function watchMotionKey(cb: () => void): () => void {
+  if (typeof MutationObserver === 'undefined') return () => undefined;
+  const mo = new MutationObserver(cb);
+  mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-motion'] });
+  return () => mo.disconnect();
+}
+
+/** The §F15.9.5 reduced column: the OS setting or Animations "Off" (`useReducedMotion`), or Animations "Basic". */
+function useFaceReduced(): boolean {
+  const reduced = useReducedMotion();
+  const basic = useSyncExternalStore(watchMotionKey, motionBasic, () => false);
+  return reduced || basic;
+}
+
 // ---------------------------------------------------------------- component
 
 export interface FaceProps {
@@ -385,7 +404,7 @@ export const Face = memo(function Face({
   className,
   ...rest
 }: FaceProps) {
-  const reduced = useReducedMotion();
+  const reduced = useFaceReduced();
   const faceMotion = useStore(selectFaceMotion);
   const onceStart = useStore(selectOnceStart(mood));
   return (
@@ -419,7 +438,7 @@ export function emptyPose(name: FacePoseName): Pose {
 
 /** foo's face in an empty state's icon slot (§F16.2 Block face, `--face-pose` 64px): decorative, `aria-hidden`, no ring. */
 export function FacePose({ pose, className, ...rest }: { pose: FacePoseName; className?: string; 'data-testid'?: string }) {
-  const reduced = useReducedMotion();
+  const reduced = useFaceReduced();
   const faceMotion = useStore(selectFaceMotion);
   return (
     <FaceArt

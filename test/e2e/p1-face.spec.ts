@@ -272,6 +272,27 @@ test('it blinks normally and holds a static pose under reduced motion', async ()
   await app.close();
 });
 
+test('Animations "Basic": faces hold static poses and only cross-fade between moods (02 §F7, AT-301)', async () => {
+  const { app, page, refs } = await start();
+  await page.evaluate((id) => window.__fooTest!.jobState(id, 'done'), refs.goaJob!);
+  const face = rowFace(page, 'foo');
+  await expect(face).toHaveAttribute('data-state', 'resting');
+  // The one root key the Appearance page's Animations row sets (FE-24).
+  await page.evaluate(() => (document.documentElement.dataset.motion = 'full'));
+  await expect(face).toHaveAttribute('data-motion-face', 'on');
+  await page.evaluate(() => (document.documentElement.dataset.motion = 'basic'));
+  await expect(face).toHaveAttribute('data-motion-face', 'off');
+  const names = () =>
+    face.evaluate((el) => [...el.querySelectorAll('*')].map((n) => getComputedStyle(n).animationName).filter((n) => n !== 'none'));
+  // No blink, bob or ring motion; a mood change still cross-fades.
+  await expect.poll(names, { timeout: 8_000 }).toEqual([]);
+  await page.evaluate((id) => window.__fooTest!.jobState(id, 'working'), refs.goaJob!);
+  await expect(face).toHaveAttribute('data-state', 'working');
+  expect((await names()).every((n) => /cross/.test(n))).toBe(true);
+  expect(await face.locator('[data-ring]').evaluate((el) => getComputedStyle(el).animationName)).toBe('none');
+  await app.close();
+});
+
 test('forced colours draw the disc in Canvas with CanvasText eyes', async () => {
   const { app, page } = await start();
   await page.emulateMedia({ forcedColors: 'active' });

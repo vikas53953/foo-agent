@@ -273,30 +273,35 @@
   }
 }
 
-/* §F15.9.5 reduced motion (also foo's Animations "Off", FE-24's one root key, and "Show foo's eyes" off, CR-0021 pick 8)
+/* §F15.9.5 reduced motion (also foo's Animations "Off" and "Basic", 02 §F7: faces cross-fade between static poses; FE-24's one root key, and "Show foo's eyes" off, CR-0021 pick 8)
    and §F15.9.3d still faces: static poses; the Working ring stays as a still quarter-arc. */
 .reduced *,
 .still *,
-:global(:root[data-motion='off']) .face * {
+:global(:root[data-motion='off']) .face *,
+:global(:root[data-motion='basic']) .face * {
   animation: none !important;
 }
 .reduced .spark,
-:global(:root[data-motion='off']) .spark {
+:global(:root[data-motion='off']) .spark,
+:global(:root[data-motion='basic']) .spark {
   transform: scale(1);
 }
 .reduced .ring_full_fade,
-:global(:root[data-motion='off']) .ring_full_fade {
+:global(:root[data-motion='off']) .ring_full_fade,
+:global(:root[data-motion='basic']) .ring_full_fade {
   opacity: 1;
 }
 .still .ring_arc_turning {
   animation: orbit var(--m-face-orbit) linear infinite !important;
 }
 .reduced .ring_arc_turning,
-:global(:root[data-motion='off']) .ring_arc_turning {
+:global(:root[data-motion='off']) .ring_arc_turning,
+:global(:root[data-motion='basic']) .ring_arc_turning {
   animation: none !important;
 }
 .reduced .fade,
-:global(:root[data-motion='off']) .fade {
+:global(:root[data-motion='off']) .fade,
+:global(:root[data-motion='basic']) .fade {
   animation: cross var(--m-face-cross) linear !important;
 }
 
@@ -357,6 +362,8 @@
   color: var(--fg-2);
 }
 :global(:root[data-motion='off']) .ring_dotted,
-:global(:root[data-motion='off']) .ring_flash {
+:global(:root[data-motion='basic']) .ring_dotted,
+:global(:root[data-motion='off']) .ring_flash,
+:global(:root[data-motion='basic']) .ring_flash {
   animation: none;
 }

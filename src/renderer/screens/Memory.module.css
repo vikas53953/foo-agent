@@ -10,13 +10,7 @@
   min-height: 0;
   background: var(--bg-app);
   outline: none;
-  animation: page-in var(--m-normal) var(--ease-in);
   container-type: inline-size;
-}
-@keyframes page-in {
-  from {
-    opacity: 0;
-  }
 }
 .scroll {
   flex: 1;
