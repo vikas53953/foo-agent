@@ -344,16 +344,16 @@ R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-1
 ,,AT-321,,,10-acceptance-2 §C.8; 09 §9.14.3,test/e2e/p1-appearance.spec.ts,M9,pending
 ,,AT-322,,,10-acceptance-2 §C.8; 10-2 §E; CR-0021,test/unit/p1-bundle.test.ts,M9,pending
 ,,AT-340,,,10-acceptance-2 §C.9; 02-2 §F19.9; 04 §13.5; CR-0022,test/e2e/r1-kit.spec.ts,M9,live
-,,AT-341,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022 pick 4; CR-0022,test/e2e/r1-places-time.spec.ts,M9,pending
+,,AT-341,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022 pick 4; CR-0022,test/e2e/r1-places-time.spec.ts,M9,live
 ,,AT-342,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-numbers-forms.spec.ts,M9,pending
 ,,AT-343,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-numbers-forms.spec.ts,M9,pending
-,,AT-344,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-places-time.spec.ts,M9,pending
-,,AT-345,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-places-time.spec.ts,M9,pending
+,,AT-344,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-places-time.spec.ts,M9,live
+,,AT-345,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-places-time.spec.ts,M9,live
 ,,AT-346,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-numbers-forms.spec.ts,M9,pending
 ,,AT-347,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022 pick 5; CR-0022,test/e2e/r1-numbers-forms.spec.ts,M9,pending
 ,,AT-348,,,10-acceptance-2 §C.9; 02-2 §F19.9; 04 §13.5; CR-0022,test/e2e/r1-numbers-forms.spec.ts,M9,pending
-,,AT-349,,,10-acceptance-2 §C.9; 04 §13.5; 05 §5.3.4; CR-0022,test/e2e/r1-places-time.spec.ts,M9,pending
-,,AT-350,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-places-time.spec.ts,M9,pending
+,,AT-349,,,10-acceptance-2 §C.9; 04 §13.5; 05 §5.3.4; CR-0022,test/e2e/r1-places-time.spec.ts,M9,live
+,,AT-350,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-places-time.spec.ts,M9,live
 ,,AT-351,,,10-acceptance-2 §C.9; 04 §13.5; Art. 8; CR-0022,test/e2e/r1-numbers-forms.spec.ts,M9,pending
 ,,AT-352,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-output.spec.ts,M9,live
 ,,AT-353,,,10-acceptance-2 §C.9; 04 §13.5; 04 §14.4; CR-0022,test/e2e/r1-kit.spec.ts,M9,live

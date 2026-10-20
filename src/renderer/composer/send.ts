@@ -68,6 +68,7 @@ function optimisticRow(o: Outgoing): MessageRow {
     suggestions: null,
     side: !!o.side,
     understood: null,
+    kitPick: null,
     actions: null,
     rev: 0,
     createdAt: now,

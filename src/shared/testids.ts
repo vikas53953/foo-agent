@@ -509,7 +509,10 @@ export const TID = {
   emptyStateFace: 'empty-state-face',
   cardChecklistSources: 'card-checklist-sources',
   cardDoneSaved: 'card-done-saved',
-  splash: 'splash',
+  screenSplash: 'screen-splash',
+  screenSplashWordmark: 'screen-splash-wordmark',
+  screenSplashStatus: 'screen-splash-status',
+  setupProgress: 'setup-progress',
   splashFace: 'splash-face',
   // M9 T7
   cardSigninStartAgain: 'card-signin-start-again',

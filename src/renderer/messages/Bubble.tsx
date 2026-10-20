@@ -214,7 +214,14 @@ function SenderLabel({ sender, tid }: { sender: Sender; tid: 'bubbleSender' | 'c
   const style = sender.color ? ({ ['--sender' as string]: `var(${sender.color})` } as CSSProperties) : undefined;
   return (
     <div className={styles.sender} data-testid={TID[tid]} aria-hidden="true">
-      <Face face={sender.face} name={sender.name} kind={sender.kind === 'user' ? 'foo' : sender.kind} color={sender.color} size="inline" />
+      <Face
+        face={sender.face}
+        name={sender.name}
+        kind={sender.kind === 'user' ? 'foo' : sender.kind}
+        color={sender.color}
+        size="inline"
+        animate={false}
+      />
       <span className={styles.senderName} style={style}>
         {sender.name}
       </span>

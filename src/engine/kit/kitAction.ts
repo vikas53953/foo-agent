@@ -1,9 +1,10 @@
 // Spec: 08-1 §2.4 MainToEngine `kit.action` ("the A2UI client `action`; a gated action is handled as if the user typed
 // it", Article 6), 04 §13.5 (user actions go renderer → main → engine; any action that would send, book, pay, delete or
 // share is an approval request, never a direct action), CR-0022 AT-355 (the action reaches the engine and the surface
-// updates from the reply), AT-356 (a gated Button opens an approval), X-180. R1 T2. R1 T7: MainToEngine `kit.refresh`
-// (a LiveStamp's Refresh, AT-352, AT-368) is stored the same way, as the user tapping "Refresh", and asks the AI for the
-// surface's data again with a new LiveStamp asOf.
+// updates from the reply), AT-356 (a gated Button opens an approval), AT-349 / AT-350 (a ListPick or TimePick pick is the
+// user's message in the picked words; R1 T3), X-180. R1 T2. R1 T7: MainToEngine `kit.refresh` (a LiveStamp's Refresh,
+// AT-352, AT-368) is stored the same way, as the user tapping "Refresh", and asks the AI for the surface's data again with
+// a new LiveStamp asOf.
 // The engine never acts on a surface action itself: it stores the tap as the user's message (the Button's own words, or
 // its action name) with the action for the AI beside it (`text_for_ai`), and hands it to the chat lane like a typed
 // message. So an action that would send, book, pay, delete or share meets the same intake, job and gate (08-2 §9.4) as the
@@ -11,6 +12,7 @@
 import type { Clock } from '../../shared/clock';
 import { t } from '../../shared/copy/t';
 import type { KitActionMessage } from '../../shared/kit/catalog';
+import { actionLine, pickWords } from '../../shared/kit/pick';
 import { buttonWords, foldFence, kitMessagesOf, type Surface } from '../../shared/kit/surface';
 import type { CardRow } from '../../shared/types';
 import type { EngineMessage } from '../../main/db/queries';
@@ -47,7 +49,8 @@ export function actionForAi(words: string, a: KitActionMessage): string {
   const context = JSON.stringify(a.context);
   return [
     `${words}`,
-    `(I tapped "${words}" in your ${a.surfaceId} surface: action ${a.name}, context ${context.length > CONTEXT_MAX ? `${context.slice(0, CONTEXT_MAX)}…` : context}.`,
+    // R1 T3: shared/kit/pick.ts writes this line and reads a pick back from it (MessageRow.kitPick).
+    actionLine(words, a, context.length > CONTEXT_MAX ? `${context.slice(0, CONTEXT_MAX)}…` : context),
     `To change that surface, reply with an \`\`\`a2ui block that sends updateDataModel or updateComponents for surfaceId "${a.surfaceId}" without createSurface.)`,
   ].join('\n');
 }
@@ -101,7 +104,11 @@ export class KitActions {
       this.d.log('kit.action_unknown_surface', 'NOT_FOUND');
       return;
     }
-    const words = (buttonWords(s, a.sourceComponentId) ?? actionWords(a.name)).slice(0, WORDS_MAX);
+    // A ListPick or TimePick tap (or keycap reaction, R1 T3) is the picked row's or slot's words, like a Choice answer.
+    const words = (buttonWords(s, a.sourceComponentId) ?? pickWords(s, a.sourceComponentId, a.context) ?? actionWords(a.name)).slice(
+      0,
+      WORDS_MAX,
+    );
     await this.store(a.chatId, words, actionForAi(words, a));
   }
 

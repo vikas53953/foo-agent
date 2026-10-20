@@ -1,0 +1,114 @@
+/* Spec: 04 §13.5 (kit pieces: 02 tokens only), CR-0022 pick 4 (a plain panel, no basemap: --bg-sunken, the route a dashed
+ * --accent line on --bg-raised with a 1px --line edge, numbered stops --accent with --on-accent numbers; the stops list beside it, wrapping under it when the
+ * bubble is narrow), 06 §0.4 (the action chip). R1 T3. */
+.map {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s1);
+  margin: 0;
+  min-width: 0;
+}
+.body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  width: 100%;
+}
+.panel {
+  display: block;
+  flex: 3 1 calc(var(--s9) * 3);
+  min-width: 0;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-raised);
+}
+.route {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-dasharray: 6 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.stop circle {
+  fill: var(--accent);
+  stroke: var(--bg-raised);
+  stroke-width: 2;
+}
+.stop text {
+  font: var(--t-caption-strong);
+  font-variant-numeric: tabular-nums;
+  fill: var(--on-accent);
+}
+.list {
+  display: flex;
+  flex: 2 1 calc(var(--s9) * 2);
+  flex-direction: column;
+  gap: var(--s1);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s1);
+}
+.num {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--s4);
+  height: var(--s4);
+  border-radius: var(--r-full);
+  background: var(--accent);
+  font: var(--t-caption-strong);
+  font-variant-numeric: tabular-nums;
+  color: var(--on-accent);
+}
+.words {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.name {
+  font: var(--t-body);
+  color: var(--fg-1);
+}
+.note {
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
+.open {
+  flex: none;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-raised);
+}
+.open > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s0);
+}
+
+@media (forced-colors: active) {
+  .panel {
+    border: 1px solid CanvasText;
+  }
+  .route {
+    stroke: CanvasText;
+  }
+  .stop circle,
+  .num {
+    fill: Highlight;
+    background: Highlight;
+  }
+  .stop text,
+  .num {
+    fill: HighlightText;
+    color: HighlightText;
+  }
+}

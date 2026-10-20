@@ -177,6 +177,14 @@ R1 starts after P1 is on main. T1 re-reads CR-0021's merged text before editing 
 rewrite or drop Article 2 words, so page scripts and A2UI keys stay valid. Prose outside fences is unchanged.
 15. **`ai_page` card payload** is `{ html: string }` (≤ 512 KB); a kept page is served from its `.foopage` blob through
 the same `pages.serve()` path.
+16. **Action chips** (T7): the AI may add one line `Actions: [{"kind":"call"|"map"|"calendar"|"link","label":"…","value":"…"}]`
+   (≤ 3, never when money is involved) before its Suggestions line (08-4 intake `ACTIONS_ASK`, held in the release gate
+   like Suggestions). Call, Open map and Open link open through `app:openExternal` target `action_chip` after C-26, main
+   building the URL from the stored chip; Add to calendar is sent as the user's message, so the gate handles it.
+17. **Keep snapshots** come from main (`keep:save` `rect`, `webContents.capturePage`): the renderer cannot paint a sealed
+   frame.
+18. **Kept items live in the chat's details panel** (a "Kept" section, `files-kept-item`), because the 06-1 §4.1 Files
+   page is not built yet; kit items reopen in a dialog, pages in the sealed box (`page:open` with `keptId`).
 
 ## (g) Review
 
