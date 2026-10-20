@@ -1,5 +1,5 @@
 // Spec: 08-2 §8.2 (web tools are class `read`; `web.fetch` returns `ReadResult | needsBrowser`), 08-4 §27.1 (descriptions shown
-// to the AI, exact), G-M9-13 / 08-0 §E.8 (`vault.use({ purpose: 'web_tool', name: 'foo/web_key/{provider}' })`).
+// to the AI, exact), G-M9-13 / 08-0 §E.8 (`vault.use({ purpose: 'web_tool', name: '{provider}' })`; main builds the target `foo/web_key/{provider}`).
 import { describe, expect, it } from 'vitest';
 import { memoryVault, vaultWebKeys, webToolDefs, type EngineWeb } from '../../../src/engine/tools/web';
 import { WebTools } from '../../../src/engine/tools/web/WebTools';
