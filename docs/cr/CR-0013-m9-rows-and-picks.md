@@ -110,3 +110,14 @@ said approved) is fixed by this text.
   M6/M8 extend those objects (merge check at each milestone merge).
 
 Recorded as approved on Vikas's behalf under his standing rule (his message 2026-10-18 14:56Z); listed for his later review.
+
+## Addendum (2026-10-20, M9 lead, T3 merge)
+
+- **Page snapshot source.** The masked snapshot (08-2 §8.3) is built by foo's own DOM walker (`src/engine/tools/browser/walker.ts`),
+  never by Playwright's AI snapshot, which prints field values before masking. Masking happens at source, so no value reaches a
+  turn. Logged in `docs/decisions/M9.tsv`.
+- **Open seams carried to T7, T8 and T9:** `screen.open` is built but not registered until main has an opener and a protocol
+  kind; the runner should put a tool's `errorKind` in the step observation, call `runtime.stepStarted` per step and
+  `shots.capture` after each step (PR #59 "Seams").
+- **Merge on main:** `settings.privacy` and `settings.connections` now hold M6's, M8's and M9's keys in one object each;
+  `app:openExternal` keeps main's single handler (`src/main/setup/aiFinderIpc.ts`), and T8 adds `handback_site` there.
