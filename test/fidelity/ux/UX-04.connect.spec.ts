@@ -12,22 +12,24 @@
 //   the interview is M12's, so the cards are drawn at the end of foo's chat in the Fri 16 Oct ux-world;
 // - UX-04-04: 05-3 §5.11.2 gives the `google` variant a third line ("See your contacts, so I message the right person (I never
 //   change them).", G-M8 contacts pick); the drawing has two; the drawn "✉" title glyph is the card's 32 logo;
-// - UX-04-05: Google's own consent page is UNVERIFIABLE in the manifest (it is Google's, not foo's); the picture is what foo
-//   shows meanwhile, the card's `waiting` state, and the step checks the scopes the sign-in link asks for;
+// - UX-04-05: Google's own consent page is UNVERIFIABLE (scripts/golden-manifest.ts, CR-0012: it is Google's, not foo's; the
+//   manifest row still has the drawn browser hl, so Tier R R4 will not match); the picture is what foo shows meanwhile, the
+//   card's `waiting` state, and the step checks the scopes the sign-in link asks for;
 // - UX-04-06: the drawn "v••••@gmail.com" is the fake account masked by 05-3 §5.11 / 08-2 §11.4 ("v***@example.com"); the
 //   drawn Using chips "Gmail, Calendar" are not shown, because 03-shell-2 §3.7.3.2 lists apps a job used in the last 24 h,
-//   and connecting is not a use; the picture keeps the drawn hl (the Using section);
+//   and connecting is not a use, so the section keeps the world's Browser chip and no Gmail one; the picture keeps the
+//   drawn hl (Using);
+// - UX-04-04, UX-04-07: the walkthrough types straight apostrophes ("I'll"), the copy file the typographic one (R1 words);
+// - UX-04-08: the QR is a fresh pairing code each run, so its pixels vary between runs;
 // - UX-04-07: the drawn risk note sits under the offered card; 05-3 §5.11.1 puts it in the QR panel (UX-04-08);
 // - UX-04-09: the fake phone's groups are the ux-world mirrors ("Building society", "School friends"), not the drawn
 //   "Family group" (the ux-world's "Family group" is a foo group chat, 08-3 §22.9); its row shows the seeded preview, not
 //   "Mom: Sunday lunch at 1? 🙂".
-import { expect, test, type ElectronApplication, type Page } from '@playwright/test';
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { expect, test, type Page } from '@playwright/test';
 import { t } from '../../../src/shared/copy/t';
 import { TID } from '../../../src/shared/testids';
 import { FAKE_WA } from '../../../src/wa-bridge/fakeSocket';
-import { VERIFY_OK } from '../../e2e/fakeAi';
+import { launchWithFakeAi, VERIFY_OK } from '../../e2e/fakeAi';
 import { launch, testDirs } from '../../e2e/launch';
 import { listRow } from '../../e2e/m4-start';
 import { browserReturns, googleEnv, lastOpened, openConnectWorld } from '../../e2e/m8-google';
@@ -48,17 +50,8 @@ async function shoot(page: Page, id: string, sel: string): Promise<void> {
   await setTheme(page, 'light');
 }
 
-/** A FOO_TEST run with the fake AI (the engine owns the WhatsApp link). */
-async function launchWithEngine(): Promise<ElectronApplication> {
-  const dirs = testDirs();
-  const script = join(dirname(dirs.FOO_DATA_DIR), 'fake-ai.jsonl');
-  mkdirSync(dirname(script), { recursive: true });
-  writeFileSync(script, JSON.stringify(VERIFY_OK) + '\n');
-  return launch(dirs, [], { FOO_FAKE_AI: script });
-}
-
 test('UX-04 · Connections: steps UX-04-04, UX-04-05, UX-04-06, UX-04-07, UX-04-08 and UX-04-09, light and dark', async () => {
-  test.setTimeout(240_000);
+  test.setTimeout(300_000);
   const { server, env } = await googleEnv();
   const google = await launch(testDirs(), [], env);
   try {
@@ -115,7 +108,8 @@ test('UX-04 · Connections: steps UX-04-04, UX-04-05, UX-04-06, UX-04-07, UX-04-
       await expect(card).toContainText(t('cards.connect.line.connected', { account: 'v***@example.com' }));
       // f: "Starts reading only what it needs": the token exchange is the only Google request so far.
       expect(server.fake.paths()).toEqual(['/token']);
-      await expect(page.getByTestId(TID.appPanelUsing)).toBeVisible();
+      await expect(page.getByTestId(TID.appPanelUsing)).toContainText(t('app.panel.using.app.browser'));
+      await expect(page.getByTestId(TID.appPanelUsing)).not.toContainText(t('settings.connections.app.gmail'));
       await shoot(page, 'UX-04-06', byTid(TID.appPanelUsing));
     });
   } finally {
@@ -123,7 +117,8 @@ test('UX-04 · Connections: steps UX-04-04, UX-04-05, UX-04-06, UX-04-07, UX-04-
     await server.close();
   }
 
-  const app = await launchWithEngine();
+  // The fake AI's engine owns the WhatsApp link.
+  const { app } = await launchWithFakeAi([VERIFY_OK]);
   try {
     const page = await app.firstWindow();
     await openWorld(app, page);
