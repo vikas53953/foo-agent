@@ -68,7 +68,7 @@ export function aiFinderIpc(ctx: AppContext): IpcHandlers<'ai:openFinder' | 'ai:
       }
       // R1 T5 (04 §13.6): an AI page's link, only after its openLink passed main's checks and the C-26 Open.
       if (target === 'ai_page') return openPageLink(askedUrl, openedForTest);
-      // R1 T7 (04-2 §21.7): an action chip's call, map or link, after the C-26 Open; main opens the stored chip's own URL.
+      // R1 T7 (lead ok, 04-2 §21.7): an action chip's call, map or link, after the C-26 Open; main opens the stored chip's own URL.
       if (target === 'action_chip')
         return openActionChip(ctx.db, { messageId, index }, async (u) => {
           if (process.env.FOO_TEST === '1') openedForTest.push(u);
