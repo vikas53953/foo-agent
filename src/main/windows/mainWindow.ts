@@ -1,10 +1,13 @@
-// Spec: 03-shell-1 §3.1 (size, restore), §3.2 (title bar); 09-windows §9.6, §9.12, §9.15; 02-3 §F28.1, §F28.4.
+// Spec: 03-shell-1 §3.1 (size, restore), §3.2 (title bar); 09-windows §9.6, §9.12, §9.14.3 (zoom), §9.15; 02-3 §F28.1,
+// §F28.4 as amended by X-179 (optional Mica, CR-0021 pick 21).
 import { app, BrowserWindow, nativeTheme, screen, systemPreferences, type Rectangle } from 'electron';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { tokens } from '../../shared/tokens';
 import { t } from '../../shared/copy/t';
 import { testHooksEnabled } from '../ipc/guard';
+import { applyAccentEverywhere } from '../theme/applyAccent';
+import { applyAppearance, initialMica, overlayHeight } from '../settings/appearance';
 import type { SettingsStore } from '../settings/Settings';
 import { isTrustedUrl, startUrl } from './protocol';
 
@@ -59,24 +62,26 @@ export function createMainWindow(settings: SettingsStore, opts: { hidden: boolea
     screen.getAllDisplays().map((d) => d.workArea),
     screen.getPrimaryDisplay().workArea,
   );
+  const mica = initialMica(s);
   const win = new BrowserWindow({
     ...bounds,
     minWidth: MIN.width,
     minHeight: MIN.height,
     show: false,
     title: t('app.window.title'),
-    backgroundColor: sidebarBg(currentTheme()),
-    backgroundMaterial: 'none',
+    backgroundColor: mica.on ? '#00000000' : sidebarBg(currentTheme()),
+    backgroundMaterial: mica.on ? 'mica' : 'none',
     icon: join(app.getAppPath(), 'resources', 'icons', 'foo.ico'),
     thickFrame: true,
     titleBarStyle: 'hidden',
-    titleBarOverlay: { ...overlayColours(), height: tokens.size['titlebar-h'] },
+    titleBarOverlay: { ...overlayColours(), height: overlayHeight(s.zoom) },
     webPreferences: {
       preload: preloadPath(),
       contextIsolation: true,
       sandbox: true,
       nodeIntegration: false,
       spellcheck: true,
+      zoomFactor: s.zoom / 100,
     },
   });
 
@@ -118,13 +123,9 @@ export function createMainWindow(settings: SettingsStore, opts: { hidden: boolea
     save();
   });
 
-  // §9.12 live switch: overlay and background follow the theme.
-  const onTheme = () => {
-    if (win.isDestroyed()) return;
-    win.setTitleBarOverlay({ ...overlayColours(), height: tokens.size['titlebar-h'] });
-    win.setBackgroundColor(sidebarBg(currentTheme()));
-  };
-  nativeTheme.on('updated', onTheme);
+  // §9.12 live switch (overlay and background follow the theme), zoom, Mica and theme source: settings/appearance.ts.
+  const offAppearance = applyAppearance(win, settings, overlayColours, () => sidebarBg(currentTheme()));
+  applyAccentEverywhere(settings);
 
   // §3.1.2 rule 1: when a display goes away, a window left less than 50 % on screen returns to the default place.
   const onDisplayRemoved = () => {
@@ -135,7 +136,7 @@ export function createMainWindow(settings: SettingsStore, opts: { hidden: boolea
   };
   screen.on('display-removed', onDisplayRemoved);
   win.on('closed', () => {
-    nativeTheme.off('updated', onTheme);
+    offAppearance();
     screen.off('display-removed', onDisplayRemoved);
   });
 

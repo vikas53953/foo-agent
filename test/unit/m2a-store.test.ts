@@ -56,6 +56,7 @@ function msg(p: Partial<MessageRow>): MessageRow {
     why: null,
     pinned: false,
     providerNote: null,
+    suggestions: null,
     rev: 1,
     createdAt: T0,
     editedAt: null,

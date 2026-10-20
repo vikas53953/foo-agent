@@ -13,7 +13,14 @@ describe('settings repair', () => {
       zoom: 125,
       stray: 1,
     });
-    expect(settings.appearance).toEqual({ theme: 'dark', useWindowsAccent: false, animations: 'basic' });
+    expect(settings.appearance).toEqual({
+      theme: 'dark',
+      useWindowsAccent: false,
+      animations: 'basic',
+      sounds: false,
+      mica: true,
+      faceMotion: true,
+    });
     expect(settings.window.sidebarWidth).toBe(340);
     expect(settings.window.maximized).toBe(true);
     expect(settings.zoom).toBe(125);

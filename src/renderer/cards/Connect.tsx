@@ -121,6 +121,7 @@ function GoogleConnect({ card, p, time }: { card: CardRow; p: ConnectPayload; ti
         )}
         {(look.state === 'connected' || look.state === 'partial') && (
           <p className={own.ok} role="status" aria-live="polite">
+            {look.state === 'connected' && <Icon name="Checkmark" size={16} />}
             {look.state === 'connected'
               ? t('cards.connect.line.connected', { account: look.account })
               : look.missing === 'send'

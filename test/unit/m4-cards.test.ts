@@ -98,7 +98,7 @@ describe('Checklist rows (05-1 §5.2.2–§5.2.3)', () => {
     expect(v.folded).toBe(3);
     expect(v.lines).toHaveLength(5); // + the fold row = 6
     expect(v.lines[0]!.index).toBe(3);
-    expect(t('cards.checklist.show_done', { n: v.folded })).toBe('✓ 3 steps done · Show');
+    expect(t('cards.checklist.show_done', { n: v.folded })).toBe('3 steps done · Show'); // the ✓ is the Fluent Checkmark icon beside it (CR-0021 pick 19);
     expect(checklistView({ state: 'working', stopReason: null }, steps, true).lines).toHaveLength(8);
   });
 

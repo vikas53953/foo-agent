@@ -36,6 +36,8 @@ Show something calm the instant foo's window appears, and hand over to the real 
   bg --bg-app; block vertically centred at 45% of content height
 ```
 
+[X-179] Above the wordmark (16px gap) sits foo's face at `--avatar-hero` 96px (test id `splash-face`); its eyes open from a line once (*Waking up*, `--m-face-wake` 600ms), then rest. Reduced motion / Off: the eyes are already open. The app icon, taskbar button and installer logo never animate (X-143, AT-277). CR-0021 pick 9.
+
 | Element | Spec | Copy | Test id |
 |---|---|---|---|
 | Wordmark | "foo", `--font-display`, `--t-display` size/line (40/48), weight 800, letter-spacing −0.05em, lowercase, `--fg-1` (02 F0 wordmark) | "foo" | `screen-splash-wordmark` |

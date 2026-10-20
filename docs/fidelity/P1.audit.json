@@ -1,0 +1,389 @@
+{
+  "milestone": "P1",
+  "source": "CR-0021 (P1 polish: picks, trace rows, tickets in prep/P1-tickets.md)",
+  "rows": [
+    {
+      "group": "P1 Goal",
+      "item": "foo looks and feels finished: living face, splash, motion levels, sounds, suggestion chips, Appearance page with accent and Mica, card polish, faster first paint",
+      "status": "PARTIAL",
+      "evidence": ["test:AT-300", "test:AT-310", "test:AT-318", "test:AT-322"],
+      "covers": "part",
+      "manual": "real Mica and Windows accent need a look on Windows 11 build 22621+; carry items in docs/decisions/P1.tsv"
+    },
+    {
+      "group": "P1 Constitution",
+      "item": "02 §F1–§F7.1 · 02-2 §F15.9, §F16.2 · 02-3 §F22, §F28.4 · 04-2 §21 · 06-1 §1.3, §2.2 · 06-2 §6.2 · 09 §9.14.3 · X-179",
+      "status": "PARTIAL",
+      "evidence": ["test:AT-301", "test:AT-303", "test:AT-313"],
+      "covers": "part",
+      "manual": "two-axis review on the P1 PR; picks and supersedes in CR-0021 §(b) and §(e)"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/engine/prompt/suggestions.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/main/settings/appearance.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/main/store/migrations/0003_message_suggestions.sql",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/main/theme/applyAccent.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/a11y/motion.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/cards/parts/Money.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/cards/setup/aiLogos.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/chatlist/motion.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/composer/SuggestionChips.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/composer/suggestions.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/icons/custom/FooMark.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/messages/oneShot.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/messages/retry.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/messages/streamFade.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/pages/PageLoading.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/pages/lazyPages.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/screens/settings/AppearancePage.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/screens/settings/AppearancePage.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/sound/gate.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/sound/tones.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/sound/useSounds.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/splash/Splash.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/splash/Splash.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/splash/boot.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/styles/mica.css",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/ui/Face.module.css",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/ui/Face.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/ui/FaceRaster.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/renderer/ui/Presence.tsx",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/shared/accent.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/shared/face.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/shared/settingsLists.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Create",
+      "item": "src/shared/timeSaved.ts",
+      "status": "DONE"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-300",
+      "status": "DONE",
+      "evidence": ["test:AT-300"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-315",
+      "status": "DONE",
+      "evidence": ["test:AT-315"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-316",
+      "status": "DONE",
+      "evidence": ["test:AT-316"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-317",
+      "status": "DONE",
+      "evidence": ["test:AT-317"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-301",
+      "status": "DONE",
+      "evidence": ["test:AT-301"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-302",
+      "status": "DONE",
+      "evidence": ["test:AT-302"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-303",
+      "status": "DONE",
+      "evidence": ["test:AT-303"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-326",
+      "status": "DONE",
+      "evidence": ["test:AT-326"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-327",
+      "status": "DONE",
+      "evidence": ["test:AT-327"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-304",
+      "status": "DONE",
+      "evidence": ["test:AT-304"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-305",
+      "status": "DONE",
+      "evidence": ["test:AT-305"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-306",
+      "status": "DONE",
+      "evidence": ["test:AT-306"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-323",
+      "status": "DONE",
+      "evidence": ["test:AT-323"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-324",
+      "status": "DONE",
+      "evidence": ["test:AT-324"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-307",
+      "status": "DONE",
+      "evidence": ["test:AT-307"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-308",
+      "status": "DONE",
+      "evidence": ["test:AT-308"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-309",
+      "status": "DONE",
+      "evidence": ["test:AT-309"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-325",
+      "status": "DONE",
+      "evidence": ["test:AT-325"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-310",
+      "status": "DONE",
+      "evidence": ["test:AT-310"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-311",
+      "status": "DONE",
+      "evidence": ["test:AT-311"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-312",
+      "status": "DONE",
+      "evidence": ["test:AT-312"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-313",
+      "status": "DONE",
+      "evidence": ["test:AT-313"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-314",
+      "status": "DONE",
+      "evidence": ["test:AT-314"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-318",
+      "status": "DONE",
+      "evidence": ["test:AT-318"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-319",
+      "status": "DONE",
+      "evidence": ["test:AT-319"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-320",
+      "status": "DONE",
+      "evidence": ["test:AT-320"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-321",
+      "status": "DONE",
+      "evidence": ["test:AT-321"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Must pass",
+      "item": "AT-322",
+      "status": "DONE",
+      "evidence": ["test:AT-322"],
+      "covers": "full"
+    },
+    {
+      "group": "P1 Fidelity exit",
+      "item": "fidelity report signed by the reviewer and seen by Vikas",
+      "status": "UNVERIFIABLE",
+      "manual": "compare page for Vikas's review (approve-on-his-behalf rule)"
+    }
+  ]
+}

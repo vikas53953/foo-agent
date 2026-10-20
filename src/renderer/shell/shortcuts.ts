@@ -2,11 +2,15 @@
 // current list; Alt+↓ / Alt+↑ and Ctrl+Tab / Ctrl+Shift+Tab open the next / previous chat; Alt+Shift+↓ opens the next
 // chat that needs you), 09 §9.17 shell shortcuts (Ctrl+N New helper, Ctrl+Shift+N New group, Ctrl+, Settings, Ctrl+/
 // Keyboard shortcuts, Ctrl+Shift+F search chats, Ctrl+Shift+P pin, Ctrl+Shift+U unread, Ctrl+M Memory), 03-shell-1 §3.4.2 / §3.4.9
-// (the hints shown in menus and tooltips). Chat-view keys (Ctrl+F, Ctrl+Shift+D, F6, Esc) belong to the main shell.
+// (the hints shown in menus and tooltips), 09 §9.14.3 app zoom (Ctrl+= / Ctrl+Numpad + in, Ctrl+- / Ctrl+Numpad - out, Ctrl+0
+// reset, Ctrl+wheel the same; one `zoom` value shared with Settings → Appearance, AT-321, CR-0021 pick 22). Chat-view keys
+// (Ctrl+F, Ctrl+Shift+D, F6, Esc) belong to the main shell.
 import { useEffect } from 'react';
+import { ZOOM_STEPS } from '../../shared/settingsLists';
 import { focusPane } from '../a11y/focusTargets';
 import { togglePin, toggleUnread } from '../chatlist/actions';
 import { effectivePill } from '../chatlist/rules';
+import { invoke } from '../ipc/client';
 import { navigate, openDialog, useStore } from '../store/index';
 import { selectOrderedChatIds, selectVisibleChatIds } from '../store/chats';
 import { openChat } from './actions';
@@ -31,14 +35,69 @@ export function nextNeedsYou(ids: string[], openId: string | null, needsYou: (id
   return null;
 }
 
+type Zoom = (typeof ZOOM_STEPS)[number];
+
+/** 09 §9.14.3: the next step on the ladder (clamped at 80 and 200 %); a value off the ladder snaps to the nearest step. */
+export function zoomStep(current: number, dir: 1 | -1 | 0): Zoom {
+  if (dir === 0) return 100;
+  const i = ZOOM_STEPS.findIndex((z) => z >= current);
+  const at = i < 0 ? ZOOM_STEPS.length - 1 : ZOOM_STEPS[i] === current ? i : dir === 1 ? i - 1 : i;
+  return ZOOM_STEPS[Math.min(ZOOM_STEPS.length - 1, Math.max(0, at + dir))]!;
+}
+
+/** The zoom the keys last asked for, so two quick presses step twice before settings:changed comes back. */
+let pendingZoom: number | null = null;
+
+function setZoom(dir: 1 | -1 | 0): void {
+  const current = pendingZoom ?? useStore.getState().settings.value?.zoom ?? 100;
+  const next = zoomStep(current, dir);
+  if (next === current) return;
+  pendingZoom = next;
+  void invoke('settings:set', { path: 'zoom', value: next })
+    .catch(() => undefined)
+    .finally(() => {
+      if (pendingZoom === next) pendingZoom = null;
+    });
+}
+
+/** Ctrl+= / Ctrl+- / Ctrl+0 (and the numpad keys); true when the key was a zoom key. */
+function zoomKey(e: KeyboardEvent): boolean {
+  if (!e.ctrlKey || e.altKey || e.metaKey) return false;
+  const dir = e.key === '=' || e.key === '+' ? 1 : e.key === '-' ? -1 : e.key === '0' && !e.shiftKey ? 0 : null;
+  if (dir === null) return false;
+  e.preventDefault();
+  setZoom(dir);
+  return true;
+}
+
+/** A wheel notch is 100 (Windows reports 100 per notch at 100 %); trackpads send smaller deltas that add up. */
+const WHEEL_NOTCH = 100;
+/** Small deltas further apart than this are separate gestures, not one notch. */
+const WHEEL_IDLE_MS = 300;
+let wheelSum = 0;
+let wheelAt = 0;
+
+function onWheel(e: WheelEvent): void {
+  if (!e.ctrlKey) return;
+  e.preventDefault();
+  if (e.timeStamp - wheelAt > WHEEL_IDLE_MS) wheelSum = 0;
+  wheelAt = e.timeStamp;
+  wheelSum += e.deltaY;
+  if (Math.abs(wheelSum) < WHEEL_NOTCH / 2) return;
+  const dir = wheelSum < 0 ? 1 : -1;
+  wheelSum = 0;
+  setZoom(dir);
+}
+
 function openId(): string | null {
   const v = useStore.getState().ui.view;
   return v.kind === 'chat' && v.chatId ? v.chatId : null;
 }
 
 function onKeyDown(e: KeyboardEvent): void {
+  if (e.defaultPrevented || zoomKey(e)) return;
   const s = useStore.getState();
-  if (s.ui.dialog !== null || e.defaultPrevented) return;
+  if (s.ui.dialog !== null) return;
   const ctrl = e.ctrlKey && !e.metaKey;
   const setup = s.settings.value?.setup.complete ?? false;
   const run = (fn: () => void) => {
@@ -95,6 +154,10 @@ function onKeyDown(e: KeyboardEvent): void {
 export function useShellShortcuts(): void {
   useEffect(() => {
     window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
+    window.addEventListener('wheel', onWheel, { passive: false });
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('wheel', onWheel);
+    };
   }, []);
 }

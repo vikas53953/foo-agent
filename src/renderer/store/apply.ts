@@ -10,8 +10,9 @@ import { upsertConnectionReducer } from './connections';
 import { loadHelpersReducer } from './helpers';
 import { navigate, update, type RootState } from './index';
 import { upsertJobReducer } from './jobs';
-import { updateSpendReducer } from './spend';
+import { noteJobForFace, noteMessageForFace, playOnceReducer } from './live';
 import { applyDeltaReducer, loadMessagesReducer, resyncMessage, setBadgeReducer, upsertMessageReducer } from './messages';
+import { updateSpendReducer } from './spend';
 
 export const FIRST_PAGE = 50;
 export const NOW_TICK_MS = 30_000;
@@ -41,14 +42,26 @@ export const REDUCERS: Reducers = {
     if (on) s.live.typingChatId = chatId;
     else if (s.live.typingChatId === chatId) delete s.live.typingChatId;
   },
-  'message:upsert': (s, row) => upsertMessageReducer(s.messages, row),
+  'message:upsert': (s, row) => {
+    const prev = s.messages.byChat[row.chatId]?.byId[row.id]?.reactions.map((r) => ({ ...r }));
+    upsertMessageReducer(s.messages, row);
+    noteMessageForFace(s, prev, row, clockNow());
+  },
   // 08-5 §5 rule 4 (X-117): a seq gap fetches the whole row with message:get.
   'message:delta': (s, d) => {
     if (!applyDeltaReducer(s.messages, d)) queueMicrotask(() => void resyncMessage(d.messageId));
   },
-  'message:badge': (s, d) => setBadgeReducer(s.messages, d),
+  'message:badge': (s, d) => {
+    setBadgeReducer(s.messages, d);
+    const chatId = Object.entries(s.messages.byChat).find(([, c]) => c.byId[d.messageId])?.[0];
+    if (d.badge === 'seen' && chatId && s.chats.byId[chatId]?.kind !== 'group') playOnceReducer(s.live, chatId, 'noticed', clockNow());
+  },
   'card:upsert': (s, row) => upsertCardReducer(s.cards, row),
-  'job:upsert': (s, row) => upsertJobReducer(s.jobs, row),
+  'job:upsert': (s, row) => {
+    const prev = s.jobs.byId[row.id]?.state;
+    upsertJobReducer(s.jobs, row);
+    noteJobForFace(s, prev, row, clockNow());
+  },
   'ai:status': (s, ai) => {
     s.live.ai = ai;
     s.live.connection = ai.state === 'offline' ? 'offline' : ai.state === 'down' ? 'ai_down' : 'online';

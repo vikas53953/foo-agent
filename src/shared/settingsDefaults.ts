@@ -17,7 +17,7 @@ export const settingsDefaults: Settings = {
   locale: { timeZone: pcTimeZone(), region: 'IN', currency: 'INR' },
   app: { closeToTray: true, hardwareAcceleration: true, closeDialogShown: false },
   zoom: 100,
-  appearance: { theme: 'system', useWindowsAccent: false, animations: 'full' },
+  appearance: { theme: 'system', useWindowsAccent: false, animations: 'full', sounds: false, mica: true, faceMotion: true },
   window: { maximized: false, sidebarWidth: 340, rightShellOpen: true },
   ai: { primary: null, backup: null, providers: {}, plainChatFallback: true },
   permissions: {

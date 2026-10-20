@@ -84,6 +84,7 @@ export function messageRow(r: DbRow, reactions: MessageRow['reactions'] = []): M
     why: parseJson<Record<string, unknown> | null>(r.why, null),
     pinned: flag(r.pinned),
     providerNote: str(r.provider_note),
+    suggestions: parseJson<string[] | null>(r.suggestions, null),
     rev: Number(r.rev),
     createdAt: Number(r.created_at),
     editedAt: num(r.edited_at),

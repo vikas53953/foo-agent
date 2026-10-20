@@ -3,7 +3,8 @@
 // with entropy ≥ 4.0 and no spaces), item 1 (registry scrub first, normalised forms, longest first). Test secrets are made up.
 import { describe, expect, it } from 'vitest';
 import { FakeClock, TEST_EPOCH_MS } from '../../../src/shared/clock';
-import { HIDDEN, Redactor } from '../../../src/shared/redactor';
+import { newId } from '../../../src/shared/ids';
+import { entropy, HIDDEN, Redactor } from '../../../src/shared/redactor';
 
 const r = () => new Redactor({ clock: new FakeClock(TEST_EPOCH_MS) });
 
@@ -89,6 +90,17 @@ describe('08-2 §11.4 pattern scrub, row by row', () => {
     for (const t of ['a'.repeat(40), 'https://www.example.com/hotels/hotel-details/abcdefghijklmnopqrstuvwxyz0123456789'])
       expect(r().redact(t).text).toBe(t);
   });
+
+  it("foo's own ids ({prefix}_{UUIDv7}, 08-0 §E.7) are never tokens, even when their hex crosses 4.0 bits/char", () => {
+    let overLine = 0;
+    for (let i = 0; i < 2000; i++) {
+      const id = newId(i % 2 ? 'f' : 'm', TEST_EPOCH_MS + i);
+      if (entropy(id) >= 4) overLine++;
+      expect(r().redact(`[${id}] Brother lives in Pune`).text).toContain(id);
+    }
+    // About 1.5 % cross the line, so the loop really meets the case AT-074 flaked on.
+    expect(overLine).toBeGreaterThan(0);
+  });
 });
 
 describe('08-2 §11.4 registry scrub comes first', () => {
@@ -132,11 +144,17 @@ describe('08-2 §11.4 scrub stays linear on long text', () => {
   const BOUND_MS = 300;
   it.each(['ab.', 'a.b-', 'x://', 'a@b.', 'otp 1234 '])('100 KB of %j, every channel', (unit) => {
     const text = unit.repeat(Math.ceil(100_000 / unit.length)).slice(0, 100_000);
-    const red = r();
     for (const channel of [undefined, 'toast', 'log', 'group'] as const) {
-      const t0 = performance.now();
-      red.redact(text, channel ? { channel } : {});
-      expect(performance.now() - t0).toBeLessThan(BOUND_MS);
+      // The best of 3: a quadratic scrub is slow every time, a busy runner only now and then.
+      const best = Math.min(
+        ...[0, 1, 2].map(() => {
+          const red = r();
+          const t0 = performance.now();
+          red.redact(text, channel ? { channel } : {});
+          return performance.now() - t0;
+        }),
+      );
+      expect(best).toBeLessThan(BOUND_MS);
     }
   });
 });

@@ -4,12 +4,17 @@
 // → 12 → body `--t-small` `--fg-2` → 16 → one button; `role="status"`), 03-shell-2 §3.9.1 (one Tab stop, roving
 // tabindex), §3.9.2 (F6 lands on the selected row or the first), §3.9.3 (↑/↓, Home/End, Enter/Space opens and moves focus
 // to the composer, Shift+F10 / Menu key, type-ahead by name), §3.9.5 (`listbox` "Chat list"). Test id `chatlist`.
-import { memo, useCallback, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
+// 02 §F7.1 "Chat list" [X-179]: a new chat slides in at the top while the others glide down (FLIP from row tops, CSS
+// transitions only, FE-24); a newly pinned chat drops in with the overshooting spring; search results stagger 30ms; no
+// results shows foo's 64px face scanning in the icon slot (02-2 §F16.2 Block face, CR-0021 pick 6: decorative, no ring).
+import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode, type RefObject } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
 import type { ChatFilter, ChatRow as Row } from '../../shared/types';
 import { focusPane, registerFocusTarget } from '../a11y/focusTargets';
+import { reducedMotionNow } from '../a11y/useReducedMotion';
+import { motion } from '../../shared/tokens';
 import { openChat } from '../shell/actions';
 import { loadBootstrap } from '../store/apply';
 import { setMenu, useStore } from '../store/index';
@@ -18,12 +23,15 @@ import { selectLoaded, selectLoadFailed } from '../store/live';
 import { selectAgentName } from '../store/settings';
 import { selectChatFilter, selectChatQuery } from '../store/ui';
 import { Button } from '../ui/Button';
+import { FacePose } from '../ui/Face';
 import { Icon, type IconName } from '../ui/Icon';
 import { Menu } from '../ui/Menu';
 import { Skeleton } from '../ui/Skeleton';
 import { ChatRow } from './ChatRow';
 import { CHATLIST_DOM_ID } from './ChatSearch';
 import { rowMenuEntries, typeAheadTarget } from './menu';
+import { flipPlan, staggerIndex, STAGGER_CAP } from './motion';
+import { isUserPinned } from './rules';
 import styles from './ChatList.module.css';
 
 export const SKELETON_ROWS = 6;
@@ -40,21 +48,28 @@ const EMPTY: Record<Exclude<ChatFilter, 'all'>, { icon: IconName; key: () => str
 function EmptyBlock({
   state,
   icon,
+  scan,
   bad,
   body,
   action,
 }: {
   state: string;
   icon: IconName;
+  /** Show foo's scanning face instead of the icon (no results). */
+  scan?: boolean;
   bad?: boolean;
   body: string;
   action?: { label: string; run: () => void };
 }) {
   return (
     <div className={styles.empty} role="status" data-testid={TID.chatlistEmpty} data-state={state}>
-      <span className={bad ? styles.emptyIconBad : styles.emptyIcon}>
-        <Icon name={icon} size={24} />
-      </span>
+      {scan ? (
+        <FacePose pose="scan" className={styles.emptyPose} />
+      ) : (
+        <span className={bad ? styles.emptyIconBad : styles.emptyIcon}>
+          <Icon name={icon} size={24} />
+        </span>
+      )}
       <p className={styles.emptyBody}>{body}</p>
       {action && (
         <Button variant={state === 'search' ? 'link' : 'outline'} size="sm" data-testid={TID.chatlistEmptyAction} onClick={action.run}>
@@ -76,6 +91,97 @@ const SkeletonRow = memo(function SkeletonRow() {
     </div>
   );
 });
+
+/** Longest a FLIP, arrival or stagger can run; the data-* it set are cleared after this. */
+const SETTLE_MS = motion.spring + STAGGER_CAP * motion.stagger;
+const NO_IDS: string[] = [];
+/** `--ease-spring` overshoots 2.6 % of the distance; past this a "drop" would overshoot more than Quiet premium's 2px. */
+const DROP_MAX_PX = 76;
+/** The latest run that touched each row, so an older run's clean-up never cuts a newer animation short. */
+const runOf = new WeakMap<HTMLElement, number>();
+let runs = 0;
+
+function rowTops(list: HTMLElement): Map<string, number> {
+  const tops = new Map<string, number>();
+  for (const el of list.querySelectorAll<HTMLElement>('[data-chat-id]')) tops.set(el.dataset.chatId ?? '', el.offsetTop);
+  return tops;
+}
+
+/**
+ * Animates list changes after React commits them: rows that moved start at their old top and glide to the new one;
+ * new rows slide in; entering a search staggers every result. A filter switch or a search edit only staggers what
+ * arrives; nothing runs on the first paint or when motion is off.
+ */
+function useListMotion(listRef: RefObject<HTMLDivElement | null>, ids: string[], filter: ChatFilter, query: string): void {
+  const last = useRef<{ tops: Map<string, number>; pinned: Set<string>; filter: ChatFilter; query: string } | null>(null);
+  useLayoutEffect(() => {
+    const list = listRef.current;
+    if (!list) {
+      // the empty state replaced the list: nothing to measure, and the next list starts from nothing
+      last.current = { tops: new Map(), pinned: new Set(), filter, query };
+      return;
+    }
+    const s = useStore.getState();
+    const pinned = new Set(
+      ids.filter((id) => {
+        const r = s.chats.byId[id];
+        return r !== undefined && isUserPinned(r);
+      }),
+    );
+    const tops = rowTops(list);
+    const prev = last.current;
+    last.current = { tops, pinned, filter, query };
+    if (!prev || reducedMotionNow()) return;
+    const els = new Map<string, HTMLElement>();
+    for (const el of list.querySelectorAll<HTMLElement>('[data-chat-id]')) els.set(el.dataset.chatId ?? '', el);
+    const touched: HTMLElement[] = [];
+    const sameView = prev.filter === filter && prev.query === query;
+    const enteringSearch = prev.query === '' && query !== '';
+    const plan = flipPlan(sameView ? prev.tops : new Map(), tops);
+    const drops = new Set<string>();
+    for (const { id, dy } of plan.moves) {
+      const el = els.get(id);
+      if (!el) continue;
+      el.style.setProperty('--flip-y', `${dy}px`);
+      el.dataset.flip = 'from';
+      if (pinned.has(id) && !prev.pinned.has(id) && Math.abs(dy) <= DROP_MAX_PX) drops.add(id);
+      touched.push(el);
+    }
+    if (touched.length > 0) {
+      list.getBoundingClientRect(); // one reflow so the start offsets take before the transition runs
+      for (const el of touched) {
+        el.dataset.flip = drops.has(el.dataset.chatId ?? '') ? 'drop' : 'glide';
+        el.style.removeProperty('--flip-y');
+      }
+    }
+    const arriving = enteringSearch
+      ? ids
+      : query !== '' && prev.query !== ''
+        ? ids.filter((id) => !prev.tops.has(id))
+        : sameView
+          ? plan.arrivals
+          : NO_IDS;
+    for (const id of arriving) {
+      const el = els.get(id);
+      if (!el) continue;
+      el.style.setProperty('--i', String(query !== '' ? staggerIndex(ids.indexOf(id)) : 0));
+      el.dataset.arrive = '';
+      touched.push(el);
+    }
+    if (touched.length === 0) return;
+    const run = ++runs;
+    for (const el of touched) runOf.set(el, run);
+    setTimeout(() => {
+      for (const el of touched) {
+        if (runOf.get(el) !== run) continue;
+        delete el.dataset.flip;
+        delete el.dataset.arrive;
+        el.style.removeProperty('--flip-y');
+        el.style.removeProperty('--i');
+      }
+    }, SETTLE_MS);
+  }, [listRef, ids, filter, query]);
+}
 
 function useRow(id: string): Row | undefined {
   return useStore((s) => s.chats.byId[id]);
@@ -100,6 +206,7 @@ export function ChatList() {
   const [menu, setMenuState] = useState<{ chatId: string; anchor: { x: number; y: number } | HTMLElement } | null>(null);
   const typed = useRef<{ text: string; at: number }>({ text: '', at: 0 });
   const menuRow = useStore((s) => (menu ? s.chats.byId[menu.chatId] : undefined));
+  useListMotion(listRef, loaded ? ids : NO_IDS, filter, query);
 
   const activeId = focusId && ids.includes(focusId) ? focusId : selectedId && ids.includes(selectedId) ? selectedId : (ids[0] ?? null);
   const activeRef = useRef(activeId);
@@ -218,6 +325,7 @@ export function ChatList() {
       <EmptyBlock
         state="search"
         icon="Search"
+        scan
         body={t('chatlist.empty.body.search', { query })}
         action={{ label: t('chatlist.empty.action.search'), run: () => setMenu(SEARCH_ALL_MENU_ID) }}
       />

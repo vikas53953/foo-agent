@@ -7,6 +7,7 @@
 // picker), §10 (attachments, deleted state, Read more, emoji-only, WhatsApp formatting, the WhatsApp mirror bubble), §13
 // (markdown), §14.4 (streaming: held-back markdown, no meta until done), §15, §17, §19.4, §19.6, §19.7 (cards sit as rows
 // aligned like foo's bubbles).
+// 02 §F7.1 "Chat" (CR-0021, X-179): the user bubble grows from the send button, the error bubble shakes once, a picked reaction bounces once, the retry spinner turns into ✓, "Read more" grows, streamed words fade.
 import { memo, useContext, useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import { motion } from '../../shared/tokens';
@@ -34,7 +35,10 @@ import { Menu, type MenuAnchor } from '../ui/Menu';
 import { cx } from '../ui/cx';
 import { ActionRow, CutOffRow, FeedbackMark, WhyFooter, WorkedLine } from './AnswerExtras';
 import { ResultProof } from './ReceiptFooter';
-import { BubbleCtx, RowHotCtx, type BubbleInfo } from './bubbleContext';
+import { BubbleCtx, RowFreshCtx, RowHotCtx, type BubbleInfo } from './bubbleContext';
+import { useOneShot } from './oneShot';
+import { useRetry } from './retry';
+import { StreamFadeCtx, useStreamFadeFor } from './streamFade';
 import {
   BadgeSlotView,
   FileChip,
@@ -207,7 +211,14 @@ function SenderLabel({ sender, tid }: { sender: Sender; tid: 'bubbleSender' | 'c
   const style = sender.color ? ({ ['--sender' as string]: `var(${sender.color})` } as CSSProperties) : undefined;
   return (
     <div className={styles.sender} data-testid={TID[tid]} aria-hidden="true">
-      <Face face={sender.face} name={sender.name} kind={sender.kind === 'user' ? 'foo' : sender.kind} color={sender.color} size="inline" />
+      <Face
+        face={sender.face}
+        name={sender.name}
+        kind={sender.kind === 'user' ? 'foo' : sender.kind}
+        color={sender.color}
+        size="inline"
+        animate={false}
+      />
       <span className={styles.senderName} style={style}>
         {sender.name}
       </span>
@@ -356,6 +367,14 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
   const shownSlot = useDebounced(slot ? JSON.stringify(slot) : '');
   const parsedSlot = shownSlot ? (JSON.parse(shownSlot) as Exclude<typeof slot, null>) : null;
   const notSent = side === 'me' && m.status === 'failed' && !deleted;
+  // §F7.1: the error bubble shakes once (also when it arrives already failed); a picked reaction bounces once; the retry
+  // spinner turns into ✓.
+  const shake = useOneShot(`fail:${m.clientId ?? m.id}`, m.status === 'failed' && !deleted, useContext(RowFreshCtx));
+  const [shownReactions] = useState(() => new Set(m.reactions.map((r) => r.emoji)));
+  const resend = useRetry(`send:${m.clientId ?? m.id}`, () => {
+    if (!m.pending || !m.clientId) return retryMessage(m.id);
+    return retryOutgoing(m.clientId)?.then((r) => r.ok) ?? null;
+  });
   const why = side === 'them' && !m.prompted ? asWhy(m.why) : null;
   const indent = ctx.isGroup && side === 'them';
 
@@ -391,7 +410,7 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
           </button>
         )}
         {layout.senderLabel && <SenderLabel sender={sender} tid={isCard ? 'cardSender' : 'bubbleSender'} />}
-        <div className={styles.line}>
+        <div className={styles.line} data-shake={shake || undefined}>
           {notSent && <NotSentIcon />}
           <div className={styles.hold} ref={bubbleRef} onContextMenu={onContextMenu}>
             {body}
@@ -411,7 +430,7 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
               />
             )}
             {side === 'them' && !isCard && !deleted && m.reactions.length > 0 && (
-              <ReactionChips reactions={m.reactions} onToggle={(e) => void react(m.chatId, m.id, e)} />
+              <ReactionChips reactions={m.reactions} shownAtMount={shownReactions} onToggle={(e) => void react(m.chatId, m.id, e)} />
             )}
             {!ctx.selecting && !isCard && (hot || menu || picker) && (
               <div className={styles.toolbar} data-side={side}>
@@ -441,7 +460,7 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
             )}
           </div>
         </div>
-        {notSent && <NotSentLine onRetry={() => void (m.pending && m.clientId ? retryOutgoing(m.clientId) : retryMessage(m.id))} />}
+        {(notSent || resend.phase !== 'idle') && <NotSentLine phase={resend.phase} onRetry={resend.retry} />}
         {/* 05-3 §5.15–§5.16 (M4 T5): proof chip or "Not checked live" chip + receipt footer under a job's result. */}
         {job && job.resultMessageId === m.id && !deleted && <ResultProof job={job} />}
         {layout.latestAnswer && !deleted && m.kind === 'text' && (
@@ -496,6 +515,8 @@ function quoteOf(m: MessageRow, ctx: RowCtx): QuoteInfo | null {
   };
 }
 
+const NO_BLOCKS: ReturnType<typeof parseBlocks> = [];
+
 function BubbleBody({
   m,
   side,
@@ -531,6 +552,10 @@ function BubbleBody({
   );
   const expanded = useStore(selectExpanded(m.id, 'more'));
   const [readRef, readClamp] = useReadMore(expanded);
+  // §F7.1: "Read more" grows the text from its clamp; it plays when the user expands it, not when it mounts expanded.
+  const grow = useOneShot(`more:${m.id}`, expanded);
+  const again = useRetry(`reply:${m.id}`, () => retryMessage(m.id), { keepDone: true });
+  const fade = useStreamFadeFor(m.id, blocks ?? NO_BLOCKS, side === 'them' && !deleted && m.status === 'streaming');
 
   if (deleted)
     return (
@@ -584,7 +609,13 @@ function BubbleBody({
         ))}
         {m.text.trim() && (
           <>
-            <div ref={readRef} className={cx(styles.text, clamp && styles.clamp15)} data-copy="user" data-side="me">
+            <div
+              ref={readRef}
+              className={cx(styles.text, clamp && styles.clamp15)}
+              data-copy="user"
+              data-side="me"
+              data-grow={(grow && expanded) || undefined}
+            >
               {found ?? <Inlines nodes={waOf(m.text)} />}
               {!clamp && <MetaSpacer wide={m.editedAt !== null} />}
             </div>
@@ -638,7 +669,9 @@ function BubbleBody({
             {spacer}
           </p>
         ) : (
-          <Blocks blocks={bl} tail={spacer} />
+          <StreamFadeCtx.Provider value={fade}>
+            <Blocks blocks={bl} tail={spacer} />
+          </StreamFadeCtx.Provider>
         )}
         {!found && !endsInParagraph(bl) && spacer}
       </div>
@@ -650,7 +683,7 @@ function BubbleBody({
       )}
       {sources.length >= 2 && <SourcesRow sources={sources} />}
       {worked && job && <WorkedLine messageId={m.id} jobId={job.id} ms={job.finishedAt! - job.startedAt!} />}
-      {m.status === 'failed' && <CutOffRow onRetry={() => void retryMessage(m.id)} />}
+      {(m.status === 'failed' || again.phase !== 'idle') && <CutOffRow phase={again.phase} onRetry={again.retry} />}
       {!streaming && meta(backup ? 'row' : 'float', lead)}
     </div>
   );

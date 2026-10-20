@@ -48,6 +48,7 @@ export function SignInCard({ card, time }: { card: CardRow; time: CardTime }) {
     return (
       <CardFrame tid="cardSignin" state={card.state} label={view.text} className={cx(own.frame, own.summary, own[view.tone])}>
         {view.tone === 'grey' && <Icon name="Dismiss" size={16} />}
+        {view.tone === 'ok' && <Icon name="Checkmark" size={16} />}
         <span className={own.summaryText} data-copy="ui">
           {view.text}
         </span>

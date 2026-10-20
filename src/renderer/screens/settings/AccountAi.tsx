@@ -126,6 +126,7 @@ export function AccountAi() {
   const status = text && (
     <span className={styles.status} data-tone={tone} role="status">
       {line.kind === 'testing' ? <Spinner size={16} /> : null}
+      {line.kind === 'works' && <Icon name="Checkmark" size={16} />}
       {line.kind === 'works' && line.at !== null ? (
         <Tooltip text={absoluteTime(line.at, now, timeZone)}>
           <span>{text}</span>

@@ -108,15 +108,15 @@
     "type": "typography",
     "light": {
       "fontFamily": "{font.ui}",
-      "fontSize": "16px",
-      "lineHeight": "22px",
+      "fontSize": "17px",
+      "lineHeight": "24px",
       "fontWeight": 600,
       "letterSpacing": "-0.01em"
     },
     "dark": {
       "fontFamily": "{font.ui}",
-      "fontSize": "16px",
-      "lineHeight": "22px",
+      "fontSize": "17px",
+      "lineHeight": "24px",
       "fontWeight": 600,
       "letterSpacing": "-0.01em"
     }
@@ -291,6 +291,11 @@
     "type": "color",
     "light": "#FFFFFF",
     "dark": "#1F1F27"
+  },
+  "--bg-sidebar-surface": {
+    "type": "color",
+    "light": "{bg.sidebar}",
+    "dark": "{bg.sidebar}"
   },
   "--line": {
     "type": "color",
@@ -640,17 +645,17 @@
   "--shadow-4": {
     "type": "shadow",
     "light": "0 2px 8px rgba(11,11,16,.08)",
-    "dark": "0 2px 8px rgba(0,0,0,.5)"
+    "dark": "0 0 0 1px rgba(255,255,255,.06), 0 1px 2px rgba(0,0,0,.4), 0 2px 8px rgba(0,0,0,.5)"
   },
   "--shadow-16": {
     "type": "shadow",
     "light": "0 8px 24px rgba(11,11,16,.14)",
-    "dark": "0 8px 24px rgba(0,0,0,.5)"
+    "dark": "0 0 0 1px rgba(255,255,255,.06), 0 2px 4px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.5)"
   },
   "--shadow-28": {
     "type": "shadow",
     "light": "0 16px 48px rgba(11,11,16,.22)",
-    "dark": "0 16px 48px rgba(0,0,0,.5)"
+    "dark": "0 0 0 1px rgba(255,255,255,.06), 0 4px 8px rgba(0,0,0,.4), 0 16px 48px rgba(0,0,0,.5)"
   },
   "--avatar-list": {
     "type": "dimension",
@@ -882,6 +887,11 @@
     "light": "24px",
     "dark": "24px"
   },
+  "--face-pose": {
+    "type": "dimension",
+    "light": "64px",
+    "dark": "64px"
+  },
   "--m-fast": {
     "type": "duration",
     "light": "83ms",
@@ -977,6 +987,26 @@
     "light": "167ms",
     "dark": "167ms"
   },
+  "--m-spring": {
+    "type": "duration",
+    "light": "400ms",
+    "dark": "400ms"
+  },
+  "--m-stagger": {
+    "type": "duration",
+    "light": "30ms",
+    "dark": "30ms"
+  },
+  "--m-breathe": {
+    "type": "duration",
+    "light": "2400ms",
+    "dark": "2400ms"
+  },
+  "--m-word": {
+    "type": "duration",
+    "light": "150ms",
+    "dark": "150ms"
+  },
   "--delay-sticky-hide": {
     "type": "duration",
     "light": "1500ms",
@@ -1066,6 +1096,16 @@
       0.2,
       1
     ]
+  },
+  "--ease-spring": {
+    "type": "easing",
+    "light": "linear(0, 0.081, 0.253, 0.447, 0.627, 0.771, 0.876, 0.948, 0.992, 1.015, 1.025, 1.026, 1.023, 1.018, 1.013, 1.009, 1.005, 1.003, 1.001, 1, 1)",
+    "dark": "linear(0, 0.081, 0.253, 0.447, 0.627, 0.771, 0.876, 0.948, 0.992, 1.015, 1.025, 1.026, 1.023, 1.018, 1.013, 1.009, 1.005, 1.003, 1.001, 1, 1)"
+  },
+  "--ease-spring-soft": {
+    "type": "easing",
+    "light": "linear(0, 0.063, 0.19, 0.332, 0.466, 0.58, 0.674, 0.749, 0.809, 0.855, 0.89, 0.917, 0.937, 0.953, 0.965, 0.974, 0.98, 0.985, 0.989, 0.992, 1)",
+    "dark": "linear(0, 0.063, 0.19, 0.332, 0.466, 0.58, 0.674, 0.749, 0.809, 0.855, 0.89, 0.917, 0.937, 0.953, 0.965, 0.974, 0.98, 0.985, 0.989, 0.992, 1)"
   },
   "--bp-s": {
     "type": "dimension",
@@ -1196,5 +1236,10 @@
     "type": "dimension",
     "light": "24%",
     "dark": "24%"
+  },
+  "--weight-money": {
+    "type": "fontWeight",
+    "light": 700,
+    "dark": 700
   }
 }

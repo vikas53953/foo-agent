@@ -1,6 +1,6 @@
 // Spec: 10-acceptance-2 §D ART-26a (accessibility audit: axe-core on every M1 surface, light and dark; 01-articles Art. 26,
 // 03-shell-2 §3.9), ART-29 (offline is one line with one fix button and nothing is lost; Art. 29, 03-shell-1 §3.3), §E PERF-03
-// (chat switch). spec/trace.csv routes these three ids to this file (FID-18); the other M1 specs name behaviours, not ids.
+// (chat switch, p95 < 100 ms over 20 switches; P1 T10 made it a gate). spec/trace.csv routes these three ids to this file (FID-18); the other M1 specs name behaviours, not ids.
 // Runs on the demo and perf seeds (08-3 §22.9) in Electron.
 // Legacy mode: axe's default run opens a blank page for frame results, which Electron does not support (Target.createTarget).
 import AxeBuilder from '@axe-core/playwright';
@@ -114,22 +114,54 @@ test('ART-29: offline is one line with one fix button and nothing is lost', asyn
   await app.close();
 });
 
-test('PERF-03: chat switch on the perf seed paints the header and messages (smoke timing)', async () => {
+/** 10-2 §E PERF-03: click on a chat row → that chat's last messages painted, p95 < 100 ms. */
+const SWITCH_P95_MS = 100;
+const SWITCHES = 20;
+
+test('PERF-03: chat switch on the perf seed paints the header and messages (p95 < 100 ms)', async () => {
+  test.setTimeout(120_000);
   const { app, page, seededMs } = await start('perf');
   console.log(`perf seed to first row: ${seededMs} ms`);
+  await setSize(app, page, 1440, 900);
   const rows = page.getByTestId(TID.chatlistRow);
   expect(await rows.count()).toBeGreaterThan(10);
-  const times: number[] = [];
-  for (let i = 1; i <= 5; i++) {
-    const name = (await rows.nth(i).getByTestId(TID.chatlistRowName).textContent()) ?? '';
-    const t0 = Date.now();
-    await rows.nth(i).click();
-    await expect(rows.nth(i)).toHaveAttribute('aria-selected', 'true');
+  // The probe: the click event starts the clock (the row opens on click); it stops after the first frame that has the new chat's header
+  // name and message rows in the DOM has run (its paint is queued by then).
+  await page.evaluate(
+    ({ header, log }) => {
+      const w = window as unknown as { __switch: number[]; __want: string | null };
+      w.__switch = [];
+      w.__want = null;
+      window.addEventListener(
+        'click',
+        (e) => {
+          const want = w.__want;
+          if (want === null) return;
+          const t0 = e.timeStamp;
+          const ready = () =>
+            (document.querySelector(header)?.textContent ?? '').includes(want) && !!document.querySelector(`${log} [data-message-id]`);
+          const onFrame = () => {
+            if (!ready()) return requestAnimationFrame(onFrame);
+            setTimeout(() => w.__switch.push(performance.now() - t0), 0);
+          };
+          requestAnimationFrame(onFrame);
+        },
+        true,
+      );
+    },
+    { header: byTid(TID.chatHeaderName), log: byTid(TID.threadLog) },
+  );
+  for (let i = 0; i < SWITCHES; i++) {
+    const row = rows.nth(1 + (i % 10));
+    const name = (await row.getByTestId(TID.chatlistRowName).textContent()) ?? '';
+    await page.evaluate((n) => ((window as unknown as { __want: string }).__want = n), name);
+    await row.click();
+    await page.waitForFunction((n) => (window as unknown as { __switch: number[] }).__switch.length >= n, i + 1);
     await expect(page.getByTestId(TID.chatHeaderName)).toContainText(name);
-    await expect(page.getByTestId(TID.threadLog)).toBeVisible();
-    times.push(Date.now() - t0);
   }
-  console.log(`chat switch ms: ${times.join(', ')}`);
-  expect(Math.max(...times)).toBeLessThan(2_000); // smoke only; budgets are measured on the reference laptop (10-2 §E)
+  const times = await page.evaluate(() => (window as unknown as { __switch: number[] }).__switch.slice().sort((a, b) => a - b));
+  const q = (xs: number[], p: number) => xs[Math.ceil(xs.length * p) - 1]!;
+  console.log(`chat switch → painted p95 ${q(times, 0.95).toFixed(1)} ms (p50 ${q(times, 0.5).toFixed(1)}) over ${times.length} switches`);
+  expect(q(times, 0.95)).toBeLessThan(SWITCH_P95_MS);
   await app.close();
 });

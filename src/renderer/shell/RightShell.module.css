@@ -1,6 +1,7 @@
 /* Spec: 03-shell-2 §3.7.1 (width --panel-w; --bg-app; 1px --line left; overlay --shadow-28, dark: border only; motion),
    §3.7.2 (header --header-h as min-height, padding 0 --s3, 1px --line bottom, title --t-subtitle), §3.7.3 (the body scrolls;
-   sections padded --s3 with 1px --line between). The shell's right cell sizes and places it. */
+   sections padded --s3 with 1px --line between). The shell's right cell sizes and places it. 02 §F7.1 (P1 T3): the sheet
+   slides in with the soft spring and its sections rise in one after another (PanelSection.module.css). */
 .panel {
   display: flex;
   flex-direction: column;
@@ -13,7 +14,7 @@
 /* The shell's cell places the overlay (Shell.module.css); the sheet carries the shadow and slides in. */
 .panel[data-mode='overlay'] {
   box-shadow: var(--shadow-28);
-  animation: slide-in var(--m-slow) var(--ease-in);
+  animation: slide-in var(--m-spring) var(--ease-spring-soft);
 }
 @keyframes slide-in {
   from {
@@ -25,11 +26,6 @@
 }
 :global(:root[data-theme='dark']) .panel[data-mode='overlay'] {
   box-shadow: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  .panel[data-mode='overlay'] {
-    animation: none;
-  }
 }
 :global(:root[data-motion='off']) .panel[data-mode='overlay'] {
   animation: none;

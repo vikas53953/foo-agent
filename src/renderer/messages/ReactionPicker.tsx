@@ -2,6 +2,7 @@
 // there is no room); six 36px emoji buttons 👍 ❤️ 😂 😮 🙏 👎 at 20px, then "+" (Add 16, "More emoji") that opens the Windows
 // emoji panel bound to an off-screen one-character input — the first emoji received becomes the reaction, closing the panel
 // with nothing chosen cancels; ←/→ move, Enter picks, Esc closes; focus starts on 👍), §8 (one reaction per person).
+// 02 §F7.1 "Chat" (CR-0021, X-179): the picker springs from the bubble.
 import { useEffect, useLayoutEffect, useRef, type KeyboardEvent, type RefObject } from 'react';
 import { createPortal } from 'react-dom';
 import { t } from '../../shared/copy/t';
@@ -37,6 +38,8 @@ export function ReactionPicker({
     const x = Math.min(Math.max(GAP, a.left), window.innerWidth - r.width - GAP);
     el.style.left = `${x}px`;
     el.style.top = `${y}px`;
+    // §F7.1: the picker springs from the bubble: it grows from the bubble's near corner.
+    el.style.transformOrigin = `${Math.max(0, a.left - x)}px ${y < a.top ? '100%' : '0'}`;
     el.style.visibility = 'visible';
     el.querySelector<HTMLButtonElement>('button')?.focus();
   }, [anchorRef]);

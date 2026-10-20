@@ -1,0 +1,43 @@
+/* Spec: 06-1 §1.3 (below the 32px title bar, `--bg-app`, the block centred at 45% of the content height; face 96, 16 above
+ * the wordmark; wordmark `--t-display` 800 lowercase `--fg-1`; status line `--t-small` `--fg-3`, 16 below the wordmark;
+ * nothing focusable), §1.4 (Normal: cross-fade to the shell `--m-normal`, reduced motion ≤ 83 ms through the tokens). */
+.splash {
+  position: fixed;
+  inset: var(--titlebar-h) 0 0 0;
+  z-index: var(--z-scrim);
+  background: var(--bg-app);
+}
+.splash[data-exit] {
+  pointer-events: none;
+  animation: splash-out var(--m-normal) var(--ease-out) forwards;
+}
+@keyframes splash-out {
+  to {
+    opacity: 0;
+  }
+}
+.block {
+  position: absolute;
+  top: 45%;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s3);
+  transform: translateY(-50%);
+}
+.wordmark {
+  margin: 0;
+  font: var(--t-display);
+  letter-spacing: var(--t-display-tracking);
+  text-transform: lowercase;
+  color: var(--fg-1);
+}
+.status {
+  min-height: var(--t-small-lh);
+  margin: 0;
+  font: var(--t-small);
+  color: var(--fg-3);
+  text-align: center;
+}

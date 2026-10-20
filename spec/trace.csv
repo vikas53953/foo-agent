@@ -6,7 +6,7 @@ R,J,AT / ART / PERF,UX step,BP ref,Spec §,Test file,Milestone,Status
 ,J1,PERF-01,,,10-acceptance-2 §E,test/e2e/m0-window.spec.ts,M0,live
 ,,ART-26a,,,01-articles Art. 26; 10-acceptance-2 §D; 03-shell-2 §3.9,test/e2e/m1-shell.spec.ts,M1,pending
 ,,ART-29,,,01-articles Art. 29; 10-acceptance-2 §D; 03-shell-1 §3.3,test/e2e/m1-shell.spec.ts,M1,pending
-,,PERF-03,,,10-acceptance-2 §E,test/e2e/m1-shell.spec.ts,M1,pending
+,,PERF-03,,,10-acceptance-2 §E,test/e2e/m1-shell.spec.ts,M1,live
 ,,,,BP-APP-L,03-shell-1 §3.4,test/fidelity/bp/BP-shell.spec.ts,M1,pending
 ,,,,BP-APP-M,03-shell-2 §3.6,test/fidelity/bp/BP-shell.spec.ts,M1,pending
 ,,,,BP-APP-R,03-shell-2 §3.7,test/fidelity/bp/BP-shell.spec.ts,M1,pending
@@ -313,3 +313,33 @@ R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-1
 ,,,,BP-CARD-17,05-3 §5.18,test/fidelity/bp/BP-cards-m9.spec.ts,M9,live
 ,,,,BP-SCR-13,06-3 §11.1–§11.2,test/fidelity/bp/BP-screens-m9.spec.ts,M9,live
 ,,,,BP-SCR-14,06-3 §11.3,test/fidelity/bp/BP-screens-m9.spec.ts,M9,live
+,,AT-300,,,10-acceptance-2 §C.8; 02 §F7; CR-0021,test/unit/p1-contracts.test.ts,M9,live
+,,AT-315,,,10-acceptance-2 §C.8; 02 §F6; CR-0021 pick 19,test/unit/p1-contracts.test.ts,M9,live
+,,AT-316,,,10-acceptance-2 §C.8; 02 §F1; CR-0021,test/unit/p1-contracts.test.ts,M9,live
+,,AT-317,,,10-acceptance-2 §C.8; 02 §F4; CR-0021,test/unit/p1-contracts.test.ts,M9,live
+,,AT-301,,,10-acceptance-2 §C.8; 02 §F7.1; 02-3 §F25.4,test/e2e/p1-motion.spec.ts,M9,live
+,,AT-302,,,10-acceptance-2 §C.8; 02 §F7.1,test/e2e/p1-motion.spec.ts,M9,live
+,,AT-303,,,10-acceptance-2 §C.8; 02 §F7.1; 02-3 §F28.4,test/e2e/p1-motion.spec.ts,M9,live
+,,AT-326,,,10-acceptance-2 §C.8; 02 §F7.1,test/e2e/p1-motion.spec.ts,M9,live
+,,AT-327,,,10-acceptance-2 §C.8; 02 §F7.1; CR-0021 pick 18,test/e2e/p1-motion.spec.ts,M9,live
+,,AT-304,,,10-acceptance-2 §C.8; 02-2 §F15.9,test/e2e/p1-face.spec.ts,M9,live
+,,AT-305,,,10-acceptance-2 §C.8; 02-2 §F15.9.3; 04 §14.3,test/e2e/p1-face.spec.ts,M9,live
+,,AT-306,,,10-acceptance-2 §C.8; 02-2 §F16.2,test/e2e/p1-face.spec.ts,M9,live
+,,AT-323,,,10-acceptance-2 §C.8; 02 §F7.1,test/e2e/p1-chatlist.spec.ts,M9,live
+,,AT-324,,,10-acceptance-2 §C.8; 02 §F7.1,test/e2e/p1-messages.spec.ts,M9,live
+,,AT-307,,,10-acceptance-2 §C.8; 04-2 §21.7,test/e2e/p1-composer.spec.ts,M9,live
+,,AT-308,,,10-acceptance-2 §C.8; 04-2 §21.7,test/e2e/p1-composer.spec.ts,M9,live
+,,AT-308,,,10-acceptance-2 §C.8; 04-2 §21.7,test/unit/p1-suggestions.test.ts,M9,live
+,,AT-309,,,10-acceptance-2 §C.8; 04-2 §21.2; CR-0021 pick 11,test/e2e/p1-composer.spec.ts,M9,live
+,,AT-325,,,10-acceptance-2 §C.8; 02 §F7.1,test/e2e/p1-composer.spec.ts,M9,live
+,,AT-310,,,10-acceptance-2 §C.8; 05 checklist; CR-0021 pick 12,test/e2e/p1-cards.spec.ts,M9,live
+,,AT-311,,,10-acceptance-2 §C.8; 05 Approval; CR-0021 pick 15,test/e2e/p1-cards.spec.ts,M9,live
+,,AT-312,,,10-acceptance-2 §C.8; 02-2 §F15.9.3; CR-0021 picks 13-14,test/e2e/p1-cards.spec.ts,M9,live
+,,AT-312,,,10-acceptance-2 §C.8; CR-0021 pick 14,test/unit/p1-time-saved.test.ts,M9,live
+,,AT-313,,,10-acceptance-2 §C.8; 06-1 §1.3,test/e2e/p1-first-run.spec.ts,M9,live
+,,AT-314,,,10-acceptance-2 §C.8; 06-1 §2.2,test/e2e/p1-first-run.spec.ts,M9,live
+,,AT-318,,,10-acceptance-2 §C.8; 02-3 §F22,test/e2e/p1-appearance.spec.ts,M9,live
+,,AT-319,,,10-acceptance-2 §C.8; 02-3 §F28.4,test/e2e/p1-appearance.spec.ts,M9,live
+,,AT-320,,,10-acceptance-2 §C.8; 06-2 §6.2,test/e2e/p1-appearance.spec.ts,M9,live
+,,AT-321,,,10-acceptance-2 §C.8; 09 §9.14.3,test/e2e/p1-appearance.spec.ts,M9,live
+,,AT-322,,,10-acceptance-2 §C.8; 10-2 §E; CR-0021,test/unit/p1-bundle.test.ts,M9,live

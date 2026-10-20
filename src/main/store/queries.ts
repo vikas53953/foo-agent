@@ -471,7 +471,17 @@ function reactionsFor(db: Db, ids: string[]): Map<string, MessageRow['reactions'
 function visibleRow(r: DbRow, reactions: MessageRow['reactions']): MessageRow {
   const m = messageRow(r, reactions);
   if (m.deletedAt === null) return m;
-  return { ...m, text: '', attachments: null, voicePath: null, transcript: null, transcriptConf: null, reactions: [], providerNote: null };
+  return {
+    ...m,
+    text: '',
+    attachments: null,
+    voicePath: null,
+    transcript: null,
+    transcriptConf: null,
+    reactions: [],
+    providerNote: null,
+    suggestions: null,
+  };
 }
 
 /** message:list: newest `limit` (≤ 200) messages before `beforeSeq`, oldest first. Deleted rows come back blanked. */

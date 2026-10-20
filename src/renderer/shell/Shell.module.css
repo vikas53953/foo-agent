@@ -44,3 +44,93 @@
 .right[data-state='page'] {
   grid-column: 1 / -1;
 }
+/* P1 T3 (CR-0021 picks 2–5, 02 §F7.1): a new chat or page slides 18px in with the soft spring and fades in (a page
+   cross-fades with ViewFrame's copy of the old view; chat to chat has no copy, PERF-03); back
+   slides in from the left. Movement scales by --motion-move, so Basic and Off are fades only (tokens.css). The old view
+   is gone at once (≤ --m-normal, pick 2). */
+.view {
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  --view-from: 1;
+  animation: view-in var(--m-spring) var(--ease-spring-soft) both;
+}
+.view > * {
+  min-width: 0;
+  min-height: 0;
+}
+.view[data-dir='back'] {
+  --view-from: -1;
+}
+/* The first view of a launch is simply there. */
+.view[data-dir='first'] {
+  animation: none;
+}
+/* The still copy of the old view (ViewFrame) fades out over the incoming one, faster than it arrives (pick 2). */
+.leaving {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  pointer-events: none;
+  background: var(--bg-app);
+  animation: view-out var(--m-normal) var(--ease-out) forwards;
+}
+.leaving > * {
+  min-width: 0;
+  min-height: 0;
+}
+/* The copy is a still picture: its parts' own entrances do not replay. */
+.leaving *,
+.leaving *::before,
+.leaving *::after {
+  animation: none !important;
+  transition: none !important;
+}
+@keyframes view-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes view-in {
+  from {
+    opacity: 0;
+    transform: translateX(calc((var(--s3) + var(--s0) / 2) * var(--view-from) * var(--motion-move)));
+  }
+}
+/* While a dialog is open the shell steps back. Note: a transformed or filtered .shell is the containing block for any
+   non-portaled `position: fixed` part inside it, so such parts are placed against the shell only while a dialog is open. */
+/* While a dialog is open the shell steps back to 0.96 under a 2px blur (pick 5; §F28.4 amended for this backdrop).
+   Entering uses the spring; leaving is faster (pick 2). None at Basic / Off or in high contrast. */
+.shell {
+  transform-origin: 50% 50%;
+  transition:
+    transform var(--m-normal) var(--ease-out),
+    filter var(--m-normal) var(--ease-out);
+}
+:global(:root[data-dialog-open]) .shell {
+  transform: scale(calc(1 - 0.04 * var(--motion-move)));
+  filter: blur(calc(var(--s0) / 2 * var(--motion-move)));
+  transition:
+    transform var(--m-spring) var(--ease-spring),
+    filter var(--m-spring) var(--ease-spring);
+}
+/* A restored window's content fades up 4px (§F7.1 "First run and Windows"). */
+.shell[data-restored] .content {
+  animation: restore-in var(--m-slow) var(--ease-in);
+}
+@keyframes restore-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--s0) * var(--motion-move)));
+  }
+}
+@media (forced-colors: active) {
+  :global(:root[data-dialog-open]) .shell {
+    transform: none;
+    filter: none;
+  }
+}

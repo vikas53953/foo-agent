@@ -1,4 +1,4 @@
-/* Spec: 03-shell-2 §3.6.5 unread divider. */
+/* Spec: 03-shell-2 §3.6.5 unread divider, 02 §F7.1 (slides in from the left with the soft spring). */
 .row {
   display: flex;
   align-items: center;
@@ -15,4 +15,13 @@
   font: var(--t-caption-strong);
   letter-spacing: var(--t-caption-strong-tracking);
   color: var(--accent);
+}
+.row[data-slide] {
+  animation: slide-in var(--m-spring) var(--ease-spring-soft);
+}
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--s3) * -1 * var(--motion-move, 1)));
+  }
 }

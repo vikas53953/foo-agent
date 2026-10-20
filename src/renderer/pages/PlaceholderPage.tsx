@@ -4,7 +4,7 @@
 // `settings` view draws the Settings frame (06-2 §6.0) with the AI rows of Account & your AI.
 import type { ScreenId, View } from '../../shared/types';
 import { TID } from '../../shared/testids';
-import { SettingsPage } from '../screens/settings/SettingsPage';
+import { SettingsPage } from './lazyPages';
 import styles from './PlaceholderPage.module.css';
 
 const SCREEN_TID: Record<ScreenId, keyof typeof TID> = {

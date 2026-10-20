@@ -138,7 +138,7 @@ describe('sign-in card states (05-3 §5.10.2 States)', () => {
     expect(signInView(card('signed_in', p, { resolvedAt: AT }), ctx)).toEqual({
       kind: 'summary',
       tone: 'ok',
-      text: '✓ Signed in to irctc.co.in · 9:32 AM',
+      text: 'Signed in to irctc.co.in · 9:32 AM', // Checkmark icon beside it (CR-0021 pick 19)
     });
   });
 

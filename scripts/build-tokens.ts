@@ -89,6 +89,12 @@ export function buildCss(tree: Record<string, unknown>): string {
     '--m-basic: 83ms;',
     '--m-shimmer: 0ms;',
     '--m-face-cross: 83ms;',
+    '--m-spring: 83ms;',
+    '--m-word: 0ms;',
+    '--m-stagger: 0ms;',
+    '--m-breathe: 0ms;',
+    '--ease-spring: var(--ease-in);',
+    '--ease-spring-soft: var(--ease-in);',
     '--motion-move: 0;',
   ];
   // F7 X-150 "Basic": fades only, 200ms basic curve, no movement.
@@ -100,6 +106,11 @@ export function buildCss(tree: Record<string, unknown>): string {
     '--ease-in: var(--ease-basic);',
     '--ease-out: var(--ease-basic);',
     '--ease-standard: var(--ease-basic);',
+    '--m-spring: var(--m-basic);',
+    '--m-stagger: 0ms;',
+    '--m-breathe: 0ms;',
+    '--ease-spring: var(--ease-basic);',
+    '--ease-spring-soft: var(--ease-basic);',
     '--m-shimmer: 0ms;',
     '--motion-move: 0;',
   ];
@@ -181,7 +192,13 @@ export function buildTs(tree: Record<string, unknown>): string {
     ...pick('m').map((f) => [f.path.slice(1).join('-'), num(f.token.$value)] as [string, unknown]),
     ...pick('delay').map((f) => [`delay-${f.path.slice(1).join('-')}`, num(f.token.$value)] as [string, unknown]),
     ...pick('dur').map((f) => [`dur-${f.path.slice(1).join('-')}`, num(f.token.$value)] as [string, unknown]),
-    ...pick('ease').map((f) => [`ease-${f.path[1]}`, `cubic-bezier(${(f.token.$value as number[]).join(', ')})`] as [string, unknown]),
+    ...pick('ease').map(
+      (f) =>
+        [
+          `ease-${f.path[1]}`,
+          f.token.$type === 'cubicBezier' ? `cubic-bezier(${(f.token.$value as number[]).join(', ')})` : String(f.token.$value),
+        ] as [string, unknown],
+    ),
   ]);
   const bp = obj(pick('bp').map((f) => [f.path[1]!, num(f.token.$value)]));
   const z = obj(pick('z').map((f) => [f.path[1]!, num(f.token.$value)]));

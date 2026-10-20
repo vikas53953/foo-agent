@@ -8,10 +8,16 @@
 // exist); FAILED and CANCELLED stay expanded with no buttons; Stop → "Stopping…" (§5.2.3). §5.2.4: Tab order, no Primary
 // (Ctrl+Enter does nothing), label "Job checklist: {title}, step {k} of {n}", steps a list read "{state word}, {text}".
 // Steps come from `job:details`, refetched when the runner writes the job (`job:upsert`; `steps:upsert` is not wired, T1).
-import { useCallback, useEffect, useRef, useState } from 'react';
+// P1 (CR-0021 picks 12–14, 02 §F7.1 Cards, AT-310, AT-312): each step keeps its runner words and gets its 16px icon by
+// `StepKind` (`shared/timeSaved.ts`); the running step's words shimmer (`--m-shimmer`); the sites a read or search step
+// read show as letter tiles (§F17.6: no bundled logo, no remote image) that fold into a pile of at most 5, "+{n}" after 3
+// when there are more; a DONE card with proof adds "{job title} · saved you about {n} min." from the fixed table (hidden
+// under 5 min, never on DONE "⚠ Not checked live") and tilts 1° on hover.
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { t } from '../../shared/copy/t';
 import { formatInr } from '../../shared/format';
 import { TID } from '../../shared/testids';
+import { minutesSaved, stepKind, type StepKind } from '../../shared/timeSaved';
 import type { CardRow, ChecklistPayload, JobDetails, JobRow, StepRow } from '../../shared/types';
 import { invoke, useFooEvent } from '../ipc/client';
 import { useStore } from '../store/index';
@@ -37,6 +43,61 @@ const MARK: Record<ChecklistRowState, { icon?: IconName; tone: string } | null> 
   stopped: { icon: 'Stop', tone: styles.dim! },
   took_over: { icon: 'HandRight', tone: styles.dim! },
 };
+/** Pick 12: the step kind's 16px Fluent icon. */
+const KIND_ICON: Record<StepKind, IconName> = {
+  search: 'Search',
+  read: 'Document',
+  fill: 'Edit',
+  send: 'Send',
+  sign_in: 'Key',
+  pay: 'Wallet',
+  wait: 'Clock',
+};
+/** Pick 12: the source pile shows every site up to 5; beyond that the first 3 and "+{n}". */
+export const PILE_MAX = 5;
+export const PILE_FOLDED = 3;
+const PILE_KINDS: readonly StepKind[] = ['read', 'search'];
+
+/** The sites a started read or search step names in its `site` / `sites` slot, split like the watchdog ("A, B and C"). */
+export function stepSources(step: Pick<StepRow, 'phraseKey' | 'slots' | 'state'> | undefined): string[] {
+  if (!step || step.state === 'pending') return [];
+  const kind = stepKind(step.phraseKey);
+  if (!kind || !PILE_KINDS.includes(kind)) return [];
+  const raw = step.slots.sites ?? step.slots.site;
+  if (typeof raw !== 'string') return [];
+  const seen = new Set<string>();
+  return raw
+    .split(/,|\band\b|&/)
+    .map((x) => x.trim())
+    .filter((x) => x && !seen.has(x.toLowerCase()) && seen.add(x.toLowerCase()));
+}
+
+export function pileOf(sites: readonly string[]): { shown: string[]; more: number } {
+  return sites.length <= PILE_MAX
+    ? { shown: [...sites], more: 0 }
+    : { shown: sites.slice(0, PILE_FOLDED), more: sites.length - PILE_FOLDED };
+}
+
+function SourcePile({ sites }: { sites: readonly string[] }) {
+  if (sites.length === 0) return null;
+  const { shown, more } = pileOf(sites);
+  return (
+    // The step's own words already name the sites, so the pile is decoration for Narrator.
+    <span className={styles.pile} data-testid={TID.cardChecklistSources} data-count={sites.length} aria-hidden="true">
+      {shown.map((site, i) => (
+        <span key={site} className={styles.source} title={site} data-site={site} style={{ '--i': i } as CSSProperties}>
+          {site.charAt(0).toUpperCase()}
+        </span>
+      ))}
+      {more > 0 && (
+        <span className={styles.more} style={{ '--i': shown.length } as CSSProperties}>
+          {t('cards.checklist.sources_more', { n: more })}
+        </span>
+      )}
+    </span>
+  );
+}
+
 const word = (state: ChecklistRowState): string | null =>
   state === 'done'
     ? t('cards.checklist.narrator.step_done')
@@ -85,6 +146,7 @@ function StepList({
   onShowAll?: () => void;
 }) {
   const view = checklistView(job, steps, showAll);
+  const byIdx = new Map(steps.map((s) => [s.idx, s]));
   const focusNeed = () => {
     const el = job.needsYouCardId ? document.querySelector<HTMLElement>(`[data-card-id="${job.needsYouCardId}"]`) : null;
     el?.scrollIntoView({ block: 'nearest' });
@@ -95,6 +157,7 @@ function StepList({
     <>
       {view.folded > 0 && (
         <button type="button" className={styles.foldLink} data-testid={TID.cardChecklistShowDone} onClick={onShowAll}>
+          <Icon name="Checkmark" size={16} />
           {t('cards.checklist.show_done', { n: view.folded })}
         </button>
       )}
@@ -103,6 +166,8 @@ function StepList({
           const text = l.text;
           const said = word(l.state);
           const current = l.state === 'current' || l.state === 'waiting';
+          const step = byIdx.get(l.index);
+          const kind = step ? stepKind(step.phraseKey) : null;
           return (
             <li
               key={`${l.state}:${l.index}`}
@@ -115,14 +180,23 @@ function StepList({
               <span className={styles.mark}>
                 <StepMark state={l.state} />
               </span>
+              {kind ? (
+                <Icon name={KIND_ICON[kind]} size={16} className={styles.kind} />
+              ) : (
+                // A row with no kind keeps the icon column so every row's words line up.
+                <span className={styles.kind} aria-hidden="true" />
+              )}
               <span className={styles.stepText}>
                 {l.state === 'waiting' ? (
                   <button type="button" className={styles.waitLink} data-testid={TID.cardChecklistWaitingLink} onClick={focusNeed}>
                     {text}
                   </button>
                 ) : (
-                  <span data-copy="ai">{text}</span>
+                  <span data-copy="ai" className={cx(l.state === 'current' && job.state === 'working' && styles.shimmer)}>
+                    {text}
+                  </span>
                 )}
+                <SourcePile sites={stepSources(step)} />
                 {current && job.slow && job.state === 'working' && <span className={styles.caption}>{t('cards.checklist.slow')}</span>}
                 {l.state === 'current' && paused && <span className={styles.caption}>{paused}</span>}
               </span>
@@ -152,8 +226,11 @@ export function Checklist({ card, time }: { card: CardRow; time: CardTime }) {
 
   if (card.state === 'done' || card.state === 'done_unverified') {
     const m = wholeMinutes(row.startedAt ?? row.createdAt, row.finishedAt ?? time.now);
+    // Pick 13: only a DONE with proof gets the end-card line and the hover tilt; "⚠ Not checked live" gets neither.
+    const proven = card.state === 'done';
+    const saved = proven ? minutesSaved(steps) : null;
     return (
-      <CardFrame tid="cardChecklist" card={card} state={card.state} label={label}>
+      <CardFrame tid="cardChecklist" card={card} state={card.state} label={label} className={proven ? styles.finished : undefined}>
         <div className={styles.summary}>
           <Icon name="CheckmarkCircle" size={16} className={styles.ok} />
           <span className={styles.summaryText}>{t('cards.checklist.summary_done', { n: row.stepCount, m })}</span>
@@ -169,6 +246,11 @@ export function Checklist({ card, time }: { card: CardRow; time: CardTime }) {
           <span className={styles.spacer} />
           <CardTimeLabel {...time} />
         </div>
+        {saved !== null && (
+          <div className={styles.saved} data-testid={TID.cardDoneSaved}>
+            <span data-copy="ai">{t('cards.done.saved', { title: row.title, n: saved })}</span>
+          </div>
+        )}
         {open && (
           <>
             <StepList job={row} steps={steps} showAll />

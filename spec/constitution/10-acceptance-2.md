@@ -138,6 +138,43 @@ Applies to foo's and every helper's default face in rows, headers, the typing in
 
 ---
 
+### C.8 Quiet premium polish (X-179, CR-0021)
+
+Fixture: FOO_TEST world, fake AI, pinned clock; motion checked at `data-motion` "full", "basic" and "off" by computed style (animation name, duration, timing function, transform), never by timed pictures.
+
+| ID | Verify | Pass |
+|---|---|---|
+| AT-300 | Spring tokens | `--ease-spring` / `--ease-spring-soft` are CSS `linear()`; overshoot ≤ 4 %; every exit duration ≤ every entrance duration; no animation library or Web Animations API in the bundle |
+| AT-301 | Basic and Off over every surface | Basic: no transform, scale, rotation or height animation, fades `--m-basic`; Off: §F25.4 table, nothing moves |
+| AT-302 | Chat and page changes | the new view slides 18px with `--ease-spring-soft` and cross-fades; back reverses; the old view leaves in ≤ 167ms |
+| AT-303 | Dialogs and menus | dialog 0.92 → 1 with `--ease-spring` and `--shadow-28`; shell behind 0.96 + 2px blur; menus scale from the opening button |
+| AT-304 | Living face in the app | no letter face for foo or a default helper; Resting blinks every 2–6 s; ≥ 40px bobs; idle stops while the window is hidden; "Show foo's eyes" off → still poses, rings still shown |
+| AT-305 | Thinking row | the 26px Thinking face only while a request is in flight (C.7.4) |
+| AT-306 | Empty-state poses | Memory empty states show the 64px face in its pose, `aria-hidden`, no ring |
+| AT-307 | Starter chips | empty chat: 3 starters; click fills and focuses the field, sends nothing; hidden on the first keystroke |
+| AT-308 | Follow-up chips | ≤ 3, only from the reply's stored suggestions (banned words dropped, line stripped from the bubble); none after Approval / Payment / Draft / Secret or money; none in groups, mirrors or private chats |
+| AT-309 | Composer states | hold mic floods the button; send → ✓ for 2s on delivery; Stop while working; "Add details…" while a job works |
+| AT-310 | Checklist | named steps with their `StepKind` icon; live step shimmers; ✓ overshoot; sources pile (≤ 5, "+n" after 3) |
+| AT-311 | Approve card | springs in with `--shadow-28`; amounts in `--weight-money` tabular digits; primary lip; no sparks or celebration on any money card |
+| AT-312 | Job done | DONE with proof → Happy; first of the day → Celebrating; the card line "{job title} · saved you about {n} min." from the fixed table, hidden under 5 min; DONE "⚠ Not checked live" shows none of it |
+| AT-313 | Splash | the 96px face's eyes open once; logo never animates; Off: eyes already open |
+| AT-314 | AI finder polish | striped 4-step pill; rows test live (shimmer → ✓ works); app logos on white tiles |
+| AT-315 | One icon set | no "✓" text glyph in `en-IN.json` or renderer JSX (comments skipped); Fluent `Checkmark` 16 instead |
+| AT-316 | Type | `--t-subtitle` 17/24; weight 700 only through `--weight-money` |
+| AT-317 | Dark depth | dark `--shadow-4/16/28` = 1px edge ring + two layers; light unchanged |
+| AT-318 | Sounds | default off; on: only Approve and Done tones; never in quiet hours or while hidden |
+| AT-319 | Mica | `backgroundMaterial: 'mica'` only on Windows 11 + transparency on + setting on, not high contrast, not FOO_TEST; otherwise solid |
+| AT-320 | Appearance page | every row of 06-2 §6.2 writes its setting and applies live, without restart |
+| AT-321 | Zoom | Ctrl+= / Ctrl+- / Ctrl+0 / Ctrl+wheel and the Zoom row share `zoom`; overlay height = round(32 × zoom) |
+| AT-322 | First script | the renderer entry chunk ≤ 500 KB minified; a lazily loaded page shows its skeleton within 150ms |
+| AT-323 | Chat list details (§F7.1) | each built detail animates at Full, fades at Basic, is still at Off |
+| AT-324 | Message details (§F7.1) | as AT-323, and no layout jump in the virtual list |
+| AT-325 | Composer details (§F7.1) | as AT-323 |
+| AT-326 | Pages and panels details | skeleton shimmer, tooltip after 500ms, toggle knob spring, segmented and Settings pill slide |
+| AT-327 | Lip | `Button variant="primary"` lip flattens on press in 83ms; other buttons keep the 0.97 press |
+
+---
+
 ## §D Article compliance tests
 
 D.1 Every article has at least one test. **Auto** = runs in CI on every build. **Manual** = run before every release. A failing article test blocks release (A.4).

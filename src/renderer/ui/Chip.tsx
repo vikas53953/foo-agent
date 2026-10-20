@@ -7,13 +7,14 @@ import { Icon } from './Icon';
 import styles from './Chip.module.css';
 
 export interface ChipProps extends Omit<ComponentProps<'button'>, 'onClick'> {
+  /** A filter chip passes `selected` (true or false) and reads as a toggle; an action chip leaves it out (no `aria-pressed`). */
   selected?: boolean;
   /** A removable chip ends with `Dismiss` 16; `removeLabel` is its accessible name. */
   removeLabel?: string;
   onClick: () => void;
 }
 
-export function Chip({ selected = false, removeLabel, className, children, onClick, ...rest }: ChipProps) {
+export function Chip({ selected, removeLabel, className, children, onClick, ...rest }: ChipProps) {
   return (
     <button
       type="button"

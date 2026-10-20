@@ -8,6 +8,8 @@
 // plan-limited "Continue anyway". Keyboard: rows one Tab stop (↑/↓), → into a row's button; Narrator "{Claude}, {signed in},
 // {works}", state changes announced politely at most once per 2 s. 08-2 §6.6 (detect, verify), X-42 (foo installs nothing).
 // CR-0020 (b): sign-in runs in the maker's own app (pick 5: "Sign in in the {Claude} app, then come back.").
+// CR-0021 pick 9 / §F7.1 First run (X-179, AT-314): in setup a striped pill shows step 1 of the 4; rows test live (the
+// "Testing…" word shimmers, then ✓ works lands); app logos on white tiles (§F17.6) replace the letter discs.
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { announce } from '../../a11y/announce';
 import { AI_NAME, isKeyProvider } from '../../../shared/aiNames';
@@ -26,6 +28,7 @@ import { cx } from '../../ui/cx';
 import { CardButton } from '../CardButton';
 import { CardFrame, CardTimeLabel, type CardTime } from '../CardFrame';
 import cardStyles from '../Card.module.css';
+import { logoFor } from './aiLogos';
 import { CapDialog } from './CapDialog';
 import { FinderChoice } from './FinderChoice';
 import {
@@ -107,7 +110,10 @@ export function AiFinder({ card, time }: { card: CardRow; time: CardTime }) {
     >
       <div className={styles.summary}>
         {using ? (
-          <span className={styles.summaryText}>{t('setup.ai_finder.chosen', { AI: AI_NAME[using] })}</span>
+          <span className={styles.summaryText}>
+            <Icon name="Checkmark" size={16} />
+            {t('setup.ai_finder.chosen', { AI: AI_NAME[using] })}
+          </span>
         ) : (
           <span className={styles.summaryText}>{t('setup.ai_finder.lead')}</span>
         )}
@@ -148,6 +154,8 @@ function useThrottledAnnounce(): (text: string) => void {
 
 function LiveFinder({ card, time }: { card: CardRow; time: CardTime }) {
   const settings = useStore(selectSettings);
+  // 06-1 §2.2 Entry: the same card from Settings → "Change" has no step pill, so no progress pill either.
+  const inSetup = settings?.setup.complete === false;
   const offlineNow = useStore(selectConnection) === 'offline';
   const timeZone = settings?.locale.timeZone ?? time.timeZone;
   const capPaise = settings?.money.aiCapPaise ?? 100_000;
@@ -583,6 +591,7 @@ function LiveFinder({ card, time }: { card: CardRow; time: CardTime }) {
           </CardButton>
         </div>
       )}
+      {inSetup && <StepProgress />}
       <p className={styles.lead}>{t('setup.ai_finder.lead')}</p>
       <div ref={listRef} className={styles.rows} role="list" aria-label={t('setup.ai_finder.rows_label')} onKeyDown={rowKeys}>
         {rows.map((row, i) => (
@@ -602,6 +611,24 @@ function LiveFinder({ card, time }: { card: CardRow; time: CardTime }) {
       {renderBlock()}
       {capOpen && <CapDialog capPaise={capPaise} onClose={() => setCapOpen(false)} />}
     </CardFrame>
+  );
+}
+
+/** §F7.1 "a striped progress pill for the 4 steps": this card is step 1 of 4. The header pill carries the words. */
+const SETUP_STEPS = 4;
+function StepProgress() {
+  return (
+    <div
+      className={styles.progress}
+      role="progressbar"
+      aria-label={t('setup.step_pill.1')}
+      aria-valuemin={0}
+      aria-valuemax={SETUP_STEPS}
+      aria-valuenow={1}
+      data-testid={TID.setupProgress}
+    >
+      <span className={styles.progressFill} />
+    </div>
   );
 }
 
@@ -630,6 +657,13 @@ function FinderRowView({
   const action = needsHelper ? null : rowAction(row);
   const tone = rowTone(row);
   const spinning = row.state === 'looking' || row.state === 'testing';
+  // "✓ works" lands only on a live test passing (Testing → works), not when a row mounts already working.
+  const [prev, setPrev] = useState(row.state);
+  const [landed, setLanded] = useState(false);
+  if (row.state !== prev) {
+    setPrev(row.state);
+    setLanded(prev === 'testing' && row.state === 'works');
+  }
   const state = needsHelper ? 'needs_helper' : row.id === 'own-key' ? 'not_found' : row.state;
   return (
     <div
@@ -642,17 +676,19 @@ function FinderRowView({
       data-state={state}
       onFocus={(e) => e.target === e.currentTarget && onFocus()}
     >
-      <span className={styles.disc} aria-hidden="true">
-        {name.charAt(0)}
-      </span>
+      <LogoTile id={row.id} />
       <span className={styles.text}>
         <span className={styles.name}>{name}</span>
         {detail && <span className={styles.detail}>{detail}</span>}
       </span>
-      <span className={styles.status} data-tone={tone}>
+      <span className={styles.status} data-tone={tone} data-state={row.state} data-landed={landed || undefined}>
         {spinning && <Spinner size={16} />}
-        {row.state === 'works' && <Icon name="CheckmarkCircle" size={16} />}
-        {status && <span className={styles.statusText}>{status}</span>}
+        {row.state === 'works' && <Icon name="CheckmarkCircle" size={16} className={styles.worksIcon} />}
+        {status && (
+          <span className={styles.statusText} data-shimmer={row.state === 'testing' || undefined}>
+            {status}
+          </span>
+        )}
         {needsHelper && (
           <CardButton tid="setupAiRowOpenPage" kind="link" disabled={disabled} onClick={onOpenPage}>
             {t('setup.ai_finder.action.open_page')}
@@ -672,5 +708,15 @@ function FinderRowView({
         )}
       </span>
     </div>
+  );
+}
+
+/** §F17.6: the row's logo on a white tile; "Your own key" has no maker and keeps the key icon. */
+function LogoTile({ id }: { id: RowId }) {
+  const logo = logoFor(id);
+  return (
+    <span className={styles.logo} data-logo={logo ? id : 'key'} aria-hidden="true">
+      {logo ? <img className={styles.logoImg} src={logo} alt="" draggable={false} /> : <Icon name="Key" size={20} />}
+    </span>
   );
 }

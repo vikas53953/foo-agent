@@ -7,7 +7,7 @@
   min-width: 0;
   min-height: 0;
   border-right: 1px solid var(--line);
-  background: var(--bg-sidebar);
+  background: var(--bg-sidebar-surface);
 }
 :global([data-bp='XS']) .left {
   border-right: 0;

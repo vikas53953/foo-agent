@@ -3,7 +3,9 @@
  * --t-body; selected --bg-selected, 600, Filled icon --fg-1; unselected icon --fg-2; hover --bg-hover; content max
  * --column-max 760 centred, pad 24, page title --t-title, 48 bottom), 06 §0.4 section label (--t-caption-strong, uppercase,
  * +0.08em, --fg-3; 24 above, 8 below), rows 56 inside the screens/shared Row group, Secondary
- * 32px controls, Link (--accent), Menu button (value + ChevronDown 16), 06-2 §6.1 status line --t-small with icon 16. */
+ * 32px controls, Link (--accent), Menu button (value + ChevronDown 16), 06-2 §6.1 status line --t-small with icon 16.
+ * 02 §F7.1 / AT-326 (P1 T3): the selected fill is one pill under the nav that slides to the chosen item (soft spring; at
+ * once at Basic and Off). Items are 40 tall with a 4px gap, so item n sits at (n − 1) × (40 + 4). */
 .page {
   display: flex;
   flex: 1;
@@ -27,8 +29,59 @@
   overflow-y: auto;
   border-right: 1px solid var(--line);
   background: var(--bg-app);
+  position: relative;
+  --nav-i: 0;
+}
+.nav::before {
+  content: '';
+  position: absolute;
+  top: var(--s2);
+  left: var(--s2);
+  right: var(--s2);
+  height: var(--btn-h);
+  border-radius: var(--r-sm);
+  background: var(--bg-selected);
+  transform: translateY(calc(var(--nav-i) * (var(--btn-h) + var(--s0))));
+  transition: transform calc(var(--m-spring) * var(--motion-move)) var(--ease-spring-soft);
+}
+.nav:has(> .navSelected:nth-child(2)) {
+  --nav-i: 1;
+}
+.nav:has(> .navSelected:nth-child(3)) {
+  --nav-i: 2;
+}
+.nav:has(> .navSelected:nth-child(4)) {
+  --nav-i: 3;
+}
+.nav:has(> .navSelected:nth-child(5)) {
+  --nav-i: 4;
+}
+.nav:has(> .navSelected:nth-child(6)) {
+  --nav-i: 5;
+}
+.nav:has(> .navSelected:nth-child(7)) {
+  --nav-i: 6;
+}
+.nav:has(> .navSelected:nth-child(8)) {
+  --nav-i: 7;
+}
+.nav:has(> .navSelected:nth-child(9)) {
+  --nav-i: 8;
+}
+.nav:has(> .navSelected:nth-child(10)) {
+  --nav-i: 9;
+}
+.nav:has(> .navSelected:nth-child(11)) {
+  --nav-i: 10;
+}
+.nav:has(> .navSelected:nth-child(12)) {
+  --nav-i: 11;
+}
+.nav:not(:has(> .navSelected))::before {
+  display: none;
 }
 .navItem {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--s2);
@@ -49,7 +102,7 @@
 }
 .navSelected,
 .navSelected:hover {
-  background: var(--bg-selected);
+  background: none;
   font-weight: 600;
 }
 .navSelected .navIcon {

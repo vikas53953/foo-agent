@@ -52,6 +52,12 @@ function p95(values: number[]): number {
 
 const tick = (page: Page, ms: number) => page.evaluate((n) => window.__fooTest!.clock.advance(n), ms);
 
+/**
+ * Starting and stopping a run's job is set-up between timed spans, not a timed step: a busy Windows runner can take longer
+ * than the default 5 s for either.
+ */
+const SETUP_MS = 15_000;
+
 async function start(o: { intakeDelayMs?: number } = {}) {
   const { app } = await launchWithFakeAi(script(o));
   const page = await app.firstWindow();
@@ -72,14 +78,17 @@ async function start(o: { intakeDelayMs?: number } = {}) {
       }
     });
   /** The run's ask badge, looked at with the log pinned to the newest row each time (the row may be out of the DOM). */
-  const expectBadge = (tag: string, state: string) =>
+  const expectBadge = (tag: string, state: string, timeout?: number) =>
     expect
-      .poll(async () => {
-        await toNewest();
-        return badgeOf(ask(tag))
-          .getAttribute('data-state', { timeout: 500 })
-          .catch(() => null);
-      })
+      .poll(
+        async () => {
+          await toNewest();
+          return badgeOf(ask(tag))
+            .getAttribute('data-state', { timeout: 500 })
+            .catch(() => null);
+        },
+        timeout ? { timeout } : {},
+      )
       .toBe(state);
   const type = async (text: string) => {
     await page.getByTestId(TID.composerField).focus();
@@ -93,7 +102,7 @@ async function start(o: { intakeDelayMs?: number } = {}) {
   const stopJob = async (tag: string) => {
     await send('stop');
     try {
-      await expectBadge(tag, 'stopped');
+      await expectBadge(tag, 'stopped', SETUP_MS);
     } catch (e) {
       // What foo's chat shows when the stop word did not stop the run's job (the newest rows), for the failure report.
       await toNewest();
@@ -134,7 +143,7 @@ test('PERF-07: send → 👀 painted, p95 ≤ 1 s over 20 runs (job path)', asyn
     ms.push(Math.round(paintedAt - sentAt));
     // The held intake answers: the ask becomes a job (🛠), then the stop word ends it.
     await tick(page, 2_000);
-    await expectBadge(tag, 'working');
+    await expectBadge(tag, 'working', SETUP_MS);
     await stopJob(tag);
   }
   console.log(`PERF-07 runs (ms): ${ms.join(', ')} · p95 ${p95(ms)} ms`);
@@ -164,7 +173,7 @@ test('PERF-08: job start → checklist painted, 1.5 s ≤ p95 ≤ 2 s over 20 ru
     const checklist = log.getByTestId(TID.cardChecklist).filter({ hasText: `bills ${tag}` });
     const before = await arrived();
     await send(ask(tag));
-    await expectBadge(tag, 'working');
+    await expectBadge(tag, 'working', SETUP_MS);
     // The job started at this fake-clock instant; step the clock until its checklist arrives.
     let at = 0;
     while (at < 3_000) {
@@ -201,7 +210,7 @@ test('PERF-11: network cut → WAITING + offline banner strip, 10 s design delay
   const lag: number[] = [];
   for (const tag of TAGS) {
     await send(ask(tag));
-    await expectBadge(tag, 'working');
+    await expectBadge(tag, 'working', SETUP_MS);
     await tick(page, 2_000);
     await expect(offlineBanner).toHaveCount(0);
     await page.evaluate(() => window.__fooTest!.setOnline(false));

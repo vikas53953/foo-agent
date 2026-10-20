@@ -1,20 +1,12 @@
-// Spec: 08-0 §A (settings.json schema, X-53), §A.1 (ranges), X-150 (appearance.animations).
+// Spec: 08-0 §A (settings.json schema, X-53), §A.1 (ranges), X-150 (appearance.animations), X-179 / CR-0021 (appearance.sounds,
+// appearance.mica, appearance.faceMotion).
 // Holds the keys the milestones built so far read (M0: window shell; M1: setup, identity, user, locale, ai, money,
 // notifications.mutedChats for the chat list, footer and banners); later milestones add their keys with their defaults.
 import { z } from 'zod';
 
-export const ZOOM_STEPS = [80, 90, 100, 110, 125, 150, 175, 200] as const;
-
-export const PROVIDER_IDS = [
-  'claude-cli',
-  'codex-cli',
-  'gemini-cli',
-  'openai-key',
-  'anthropic-key',
-  'google-key',
-  'ollama',
-  'fake',
-] as const;
+// The plain lists live in settingsLists.ts so the renderer can read them without zod (AT-322, P1 T10).
+import { PROVIDER_IDS, ZOOM_STEPS } from './settingsLists';
+export { PROVIDER_IDS, ZOOM_STEPS } from './settingsLists';
 
 /** 08-2 §11.2 / 08-0 §E.8: the providers whose key lives in the vault as `foo/ai_key/{providerId}` (M6 T9: the one list). */
 export const KEY_PROVIDER_IDS = ['openai-key', 'anthropic-key', 'google-key'] as const;
@@ -77,6 +69,9 @@ export const settingsSchema = z.object({
     theme: z.enum(['system', 'light', 'dark']),
     useWindowsAccent: z.boolean(),
     animations: z.enum(['full', 'basic', 'off']),
+    sounds: z.boolean(),
+    mica: z.boolean(),
+    faceMotion: z.boolean(),
   }),
   window: z.object({
     bounds: z
@@ -192,6 +187,14 @@ export const WRITABLE_PATHS = [
   // M8 T3: Connections → WhatsApp toggles (06-2 §6.8, 08-3 §16.4).
   'connections.whatsapp.read',
   'connections.whatsapp.draft',
+  // P1 (CR-0021): the Appearance page rows (06-2 §6.2) and "Show foo's eyes"; zoom with Ctrl+= / Ctrl+- / Ctrl+0 (09 §9.14.3).
+  'appearance.theme',
+  'appearance.useWindowsAccent',
+  'appearance.animations',
+  'appearance.sounds',
+  'appearance.mica',
+  'appearance.faceMotion',
+  'zoom',
 ] as const;
 export type WritablePath = (typeof WRITABLE_PATHS)[number];
 

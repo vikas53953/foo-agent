@@ -4,9 +4,10 @@ import '../styles/tokens.css';
 import '../styles/global.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { watchMotion } from '../a11y/motion';
 import { LiveView } from './LiveView';
 
-document.documentElement.dataset.motion = window.foo?.platform.animations ?? 'full';
+watchMotion(window.foo?.platform.animations);
 const jobId = new URLSearchParams(location.search).get('job') ?? '';
 
 createRoot(document.getElementById('root')!).render(
