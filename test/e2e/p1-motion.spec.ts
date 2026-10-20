@@ -64,7 +64,32 @@ function matrix(transform: string): { scale: number; x: number; y: number } {
 /** The main cell's view wrapper (the element that slides) holding `inner`. */
 const viewOf = (inner: Locator) => inner.locator('xpath=..');
 
-async function switchFrames(page: Page): Promise<{ chat: Frame; page: Frame; back: Frame }> {
+interface Ghost {
+  name: string;
+  duration: string;
+  text: string;
+  testIds: number;
+  hidden: string | null;
+}
+
+/** The still copy of the old view that fades out over the main cell (ViewFrame), read while animations are held. */
+const ghostOf = (inner: Locator): Promise<Ghost | null> =>
+  viewOf(inner)
+    .locator('xpath=..')
+    .evaluate((cell) => {
+      const g = cell.querySelector<HTMLElement>(':scope > [inert]');
+      if (!g) return null;
+      const cs = getComputedStyle(g);
+      return {
+        name: cs.animationName,
+        duration: cs.animationDuration,
+        text: g.textContent ?? '',
+        testIds: g.querySelectorAll('[data-testid], [id]').length,
+        hidden: g.getAttribute('aria-hidden'),
+      };
+    });
+
+async function switchFrames(page: Page): Promise<{ chat: Frame; page: Frame; back: Frame; ghost: Ghost | null }> {
   await openChat(page, 'Trips');
   let release = await holdAnimations(page);
   await openChat(page, 'foo');
@@ -75,6 +100,7 @@ async function switchFrames(page: Page): Promise<{ chat: Frame; page: Frame; bac
   await page.keyboard.press('Control+m');
   await expect(page.getByTestId(TID.screenMemory)).toBeVisible();
   const memory = await frameOf(viewOf(page.getByTestId(TID.screenMemory)));
+  const ghost = await ghostOf(page.getByTestId(TID.screenMemory));
   expect(await viewOf(page.getByTestId(TID.screenMemory)).getAttribute('data-dir')).toBe('forward');
   await release();
 
@@ -85,7 +111,7 @@ async function switchFrames(page: Page): Promise<{ chat: Frame; page: Frame; bac
   expect(await viewOf(page.getByTestId(TID.thread)).getAttribute('data-dir')).toBe('back');
   const back = await frameOf(viewOf(page.getByTestId(TID.thread)));
   await release();
-  return { chat, page: memory, back };
+  return { chat, page: memory, back, ghost };
 }
 
 test('AT-302: chat and page changes slide 18px with the soft spring and cross-fade; back slides the other way', async () => {
@@ -105,8 +131,13 @@ test('AT-302: chat and page changes slide 18px with the soft spring and cross-fa
     expect(frame.opacity).toBe('0');
     expect(matrix(frame.transform).x).toBeCloseTo(x, 0);
   }
-  // The old view is gone at once (it unmounts with the key change), well inside --m-normal.
+  // Cross-fade: a still copy of foo's chat (no ids, hidden from readers) fades out over Memory in --m-normal (167ms), faster
+  // than the 400ms entrance; the live old view is already gone and the copy is removed when its fade ends.
+  expect(f.ghost).toMatchObject({ duration: '0.167s', testIds: 0, hidden: 'true' });
+  expect(f.ghost!.name).toContain('view-out');
+  expect(f.ghost!.text.length).toBeGreaterThan(0);
   await expect(page.getByTestId(TID.screenMemory)).toHaveCount(0);
+  await expect(page.locator('[inert][aria-hidden="true"]')).toHaveCount(0);
   await app.close();
 });
 
@@ -183,6 +214,8 @@ test('AT-301: at Basic and Off nothing moves: slides, dialogs, menus and the she
       expect(matrix(frame.transform)).toEqual({ scale: 1, x: 0, y: 0 });
       expect(frame.durations).toBe(level === 'basic' ? '0.2s' : '0.083s');
     }
+    // Basic keeps the cross-fade copy (a fade); Off swaps at once.
+    expect(f.ghost === null).toBe(level === 'off');
     await page.keyboard.press('Control+m');
     const release = await holdAnimations(page);
     await page.getByTestId(TID.memoryMenu).click();
@@ -197,6 +230,26 @@ test('AT-301: at Basic and Off nothing moves: slides, dialogs, menus and the she
     expect(filter).toBe('blur(0px)');
     await dialog.getByTestId(TID.dialogSecondary).click();
     await page.keyboard.press('Escape');
+
+    // The details panel's sections rise with no stagger or movement; the Doing now highlight jumps.
+    const held = await holdAnimations(page);
+    await openChat(page, 'Trips');
+    const panel = page.getByTestId(TID.appPanel);
+    const sections = await panel.evaluate((p) =>
+      Array.from(p.querySelectorAll<HTMLElement>('[class*="_section_"]')).map((s) => {
+        for (const a of s.getAnimations()) a.currentTime = 0;
+        const cs = getComputedStyle(s);
+        return { transform: cs.transform, delay: cs.animationDelay };
+      }),
+    );
+    await held();
+    expect(sections.length).toBeGreaterThan(1);
+    for (const s of sections) {
+      expect(matrix(s.transform)).toEqual({ scale: 1, x: 0, y: 0 });
+      expect(s.delay).toBe('0s');
+    }
+    const seg = panel.getByRole('radiogroup').first();
+    expect(await seg.evaluate((el) => getComputedStyle(el, '::before').transitionDuration)).toBe('0s');
   }
   await app.close();
 });
