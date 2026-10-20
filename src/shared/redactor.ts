@@ -69,6 +69,18 @@ const P16 = /^\s*(\d(?: ?\d){3,7})\s*$/u;
 /** P17: a long run of key-like characters. */
 const P17 = /(?<![A-Za-z0-9+/_=.-])[A-Za-z0-9+/_=-]{32,}(?![A-Za-z0-9+/_=-])/gu;
 /**
+ * foo's own record ids (`{prefix}_{UUIDv7}`, 08-0 §E.7) are not secrets. Their random hex crosses P17's 4.0 bits/char about
+ * 1.5 % of the time, and a dashed digit run inside one can pass P12's Luhn check, so no pattern hit inside an id counts.
+ */
+const FOO_ID = /(?<![A-Za-z0-9_-])[a-z]{1,4}_[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}(?![A-Za-z0-9_-])/gu;
+
+/** Drops spans that lie wholly inside one of foo's own ids in `text`. */
+function outsideFooIds<T extends { start: number; end: number }>(text: string, spans: T[]): T[] {
+  const ids = [...text.matchAll(FOO_ID)].map((m) => [m.index, m.index + m[0].length] as const);
+  if (!ids.length) return spans;
+  return spans.filter((sp) => !ids.some(([a, b]) => sp.start >= a && sp.end <= b));
+}
+/**
  * "Zero-width characters" (04-2 §22.4), read as every invisible character: Unicode default-ignorable code points (soft
  * hyphen U+00AD, U+200B–U+200F, U+2060–U+206F incl. the invisible operators U+2061–U+2064, U+FEFF, variation selectors,
  * tag characters …) and all format characters (`Cf`). Review S5: a key split by a soft hyphen was not caught.
@@ -163,9 +175,9 @@ export function findSecrets(text: string, ctx: CheckContext = {}): SecretHit[] {
     if (ctx.knownRefs?.includes(s)) continue;
     raw.push({ start: m.index, end: m.index + s.length, pattern: 'P17', kind: 'token' });
   }
-  raw.sort((a, b) => a.start - b.start || b.end - a.end);
+  const kept = outsideFooIds(n.text, raw).sort((a, b) => a.start - b.start || b.end - a.end);
   const merged: typeof raw = [];
-  for (const h of raw) {
+  for (const h of kept) {
     const last = merged[merged.length - 1];
     if (last && h.start < last.end) last.end = Math.max(last.end, h.end);
     else merged.push({ ...h });
@@ -472,7 +484,7 @@ export class Redactor {
   private patternScrub(text: string): { text: string; hits: number } {
     const spans = [
       ...findSecrets(text).map((h) => ({ start: h.start, end: h.end, card: h.pattern === 'P12' })),
-      ...extraSpans(text).map((x) => ({ ...x, card: false })),
+      ...outsideFooIds(text, extraSpans(text)).map((x) => ({ ...x, card: false })),
     ].sort((x, y) => x.start - y.start || y.end - x.end);
     const merged: { start: number; end: number; card: boolean }[] = [];
     for (const sp of spans) {
