@@ -122,7 +122,9 @@ export function jobHarness(
   const jh: JobHarness = Object.assign(h, {
     calls: ft.calls,
     async settle(stepMs = 250) {
-      for (let round = 0; round < 800; round++) {
+      // 800 rounds, and at least 30 s of wall time: a cold real Chromium on a busy Windows runner can take longer than 800 rounds.
+      const started = Date.now();
+      for (let round = 0; round < 800 || Date.now() - started < 30_000; round++) {
         await realPause(4);
         let done = false;
         const p = Promise.all([h.engine.lane.idle(), h.engine.jobs.idle()]).then(() => (done = true));

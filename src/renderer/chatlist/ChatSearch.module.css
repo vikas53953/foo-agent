@@ -1,6 +1,8 @@
 /* Spec: 03-shell-1 §3.4.3 search field: margin 0 16 8, `--field-h` 36, `--r-full`, `--bg-sunken`, no border at rest;
    hover `--bg-hover`; focus 1px `--accent` border (+ F8 ring by keyboard); Search 16 `--fg-3` 12 from the left;
-   `--t-small` text; Dismiss 16 clear in a 36 hit area. Row 52 = 36 + 16 (8 top from the header's bottom space). */
+   `--t-small` text; Dismiss 16 clear in a 36 hit area. Row 52 = 36 + 16 (8 top from the header's bottom space).
+   02 §F7.1 [X-179]: on focus the box widens by `--s1` (`--s0` each side) with `--ease-spring-soft`; scaled by `--motion-move`, so
+   Basic and Off keep today's width. */
 .box {
   position: relative;
   display: flex;
@@ -11,12 +13,15 @@
   border: 1px solid transparent;
   border-radius: var(--r-full);
   background: var(--bg-sunken);
-  transition: background-color var(--m-fast) var(--ease-standard);
+  transition:
+    background-color var(--m-fast) var(--ease-standard),
+    margin var(--m-spring) var(--ease-spring-soft);
 }
 .box:hover {
   background: var(--bg-hover);
 }
 .box:focus-within {
+  margin-inline: calc(var(--s3) - var(--s0) * var(--motion-move));
   border-color: var(--accent);
 }
 .box:has(.input:focus-visible) {

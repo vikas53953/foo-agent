@@ -1,5 +1,6 @@
 /* Spec: 02 F5 `--icon-btn` 36 round visual inside a 40 hit box (U-5); the box overlaps its neighbours by 2 each side so
-   layout spacing is measured on the 36 visual. Colour: icon `--fg-2`, hover `--fg-1` + `--bg-hover` (02 F6, F8). */
+   layout spacing is measured on the 36 visual. Colour: icon `--fg-2`, hover `--fg-1` + `--bg-hover` (02 F6, F8); pressed
+   scale 0.97 for `--m-fast` like every button (02 F7, F8; AT-327). */
 .tipAnchor {
   margin: calc((var(--icon-btn) - var(--s7)) / 2);
 }
@@ -19,6 +20,10 @@
   cursor: default;
   isolation: isolate;
   -webkit-app-region: no-drag;
+  transition: transform var(--m-fast) var(--ease-standard);
+}
+.button:active:not([aria-disabled='true']) {
+  transform: scale(calc(1 - 0.03 * var(--motion-move)));
 }
 .tipAnchor .button {
   margin: 0;

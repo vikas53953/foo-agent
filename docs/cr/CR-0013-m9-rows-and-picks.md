@@ -121,3 +121,68 @@ Recorded as approved on Vikas's behalf under his standing rule (his message 2026
   `shots.capture` after each step (PR #59 "Seams").
 - **Merge on main:** `settings.privacy` and `settings.connections` now hold M6's, M8's and M9's keys in one object each;
   `app:openExternal` keeps main's single handler (`src/main/setup/aiFinderIpc.ts`), and T8 adds `handback_site` there.
+
+## Addendum (2026-10-20, M9 close-out lead, T9)
+
+**Rows flipped to live** (each by the test whose title names the id): ART-03 browser rung (`test/articles/ART-03.browser.test.ts`),
+ART-09 new site (`test/articles/ART-09.site.test.ts`), UX-12-01…07, -09, -12 (`UX-12.restaurant.spec.ts`), UX-15-03, -04, -06,
+-07 (`UX-15.live.spec.ts`), BP-SCR-13, BP-SCR-14 (`BP-screens-m9.spec.ts`). **One row added:** ART-08a, the browser part
+(`test/articles/ART-08a.browser.test.ts`: a site password and a card number typed by the person on pages in foo's browser are in
+no snapshot, step picture, stored tool call, AI request or file; OCR of pictures is listed as not covered, the masker test checks
+the pixels). The injection article runs as `test/articles/ART-injection.test.ts` with no row, as (a) says.
+
+**Stay pending, honestly:** UX-15-05 (no "You took over" / "Carrying on from here." checklist rows: no step state maps to
+`took_over`), UX-15-08 (dialogs C-13 / C-13b are not built; the step uses the typed "Stop everything" of 08-4 §26.9), UX-15-09
+(no combined stop report or "Pause all routines" link), plus the G-M9-05 rows and AT-079 named in the handoff. They are carry
+items for the follow-up after M7, in `docs/decisions/M9.tsv`.
+
+**Code fix (ART-09, no spec change).** 08-2 §8.1 says acting with `book`/`buy`/`pay` on a domain other than
+`approval.fields.siteDomain` needs a new Approval card, and §9.6 A checks "siteDomain of the page == fields.siteDomain → else
+HELD(mismatch)". The runner never passed the page's domain to the second look, so an approved booking would have run on whatever
+site the job's page was on. `runnerGate.runApproved` now passes it for those verbs; the HELD card asks "you asked for {card's
+site}, this is {page's site}. Which one?" before anything is pressed. The test fails on the old code (seen) and passes now.
+
+**Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`, CR-0013).** The app follows the cited spec line each time:
+
+| Ids                        | Checks                                | Why the app is right                                                                                                                                                                                                       |
+| -------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| UX-12-01…04, -07, -09, -12 | r1, r2, r4 (r3 on -01 dark, -03, -09) | fixtures are the sandbox TableJoy / Coastline Kitchen / Sun 18 Oct / ₹1,000 / TJ8821 (08-3 §22.5, public repo), not the drawn Pizza by the Bay / ₹500 / #PB-4471                                                           |
+| UX-12-02, -04              | r1, r4                                | checklist rows are 08-4 §26.1 phrase words; "Checking the 8:00 PM table…" is the Tiles card's `cards.tiles.checking`, not a row                                                                                            |
+| UX-12-03                   | r1, r3, r4                            | an AI ask is a ChoiceCardSpec (08-4 §25: label + detail, no photo), so a Choice card, best fit on the accent-soft fill (05-2 §5.4)                                                                                         |
+| UX-12-07                   | r1, r4                                | after the tap: 05-2 §5.5.4's "Approved by you at {time}. Doing it now…"; the drawn "checked again" strip is not in 05-2                                                                                                    |
+| UX-12-09                   | r1, r3, r4                            | a confirmation number opens 05-3 §5.15.2's popover; the full-window viewer is 06-3 §13 (M13)                                                                                                                               |
+| UX-12-12                   | r1, r4                                | the done answer carries the Proof chip (05-3 §5.15)                                                                                                                                                                        |
+| UX-12-01 dark              | r3                                    | the dark "me" bubble uses the dark-theme accent token, the drawing a light fill                                                                                                                                            |
+| UX-15-03, -04              | r1…r4                                 | the drawing is a Windows desktop with foo behind; the capture is the live window alone (09 §9.27.1); the control bar copy is X-121's                                                                                       |
+| UX-15-06                   | r1, r2, r4                            | the stop report is 08-2 §5.7's "Stopped. Nothing was booked, paid or sent."                                                                                                                                                |
+| UX-15-07                   | r1, r2, r4                            | 08-2 §5.7 puts `activity.summary` in as written (06-3 §9.4 "Sent an email to {name}"), so the report reads "I'd already Sent an email…"; **spec gap** for the spec keeper (casing when the summary is quoted mid-sentence) |
+| BP-SCR-13                  | r1, r2, r3                            | the drawing is a gallery mini; the app is the full live window with 06-3 §11.2's "{job} · step n of m" bar                                                                                                                 |
+| BP-SCR-14                  | r1, r2, r3                            | the drawing is the withdrawn 720×640 "Chromium view" (X-66); the app is 05-3 §5.10.3's docked banner                                                                                                                       |
+
+UX-12-05 stays under CR-0009's dispute and UX-12-06 under its review row.
+
+**App gaps found by the golden specs (not disputes; carry list, `docs/decisions/M9.tsv`):** the Approval impact line has no date
+(`requestApproval`'s `parseWhen` port is not wired, G-M5-32); the proof popover lacks the screenshot (05-3 §5.15.2); after a stop,
+steps that never ran show as done (`jobCards.ts` maps `skipped` → done, an M4 mapping); after a stop the ask bubble keeps 🛠 and the
+"stop" bubble gets no ⛔; a typed "yes" / "Stop everything" bubble keeps 👀 after foo answers; no `stopped_all` activity row seen
+within 5 s of "Stop everything".
+
+### T9, second pass: sign-in pictures (UX-14, BP-CARD-10/17)
+
+- Flipped `live`: UX-14-01, UX-14-07, UX-14-09, UX-14-10, BP-CARD-10, BP-CARD-17
+  (`test/fidelity/ux/UX-14.signin.spec.ts` on T7's real lanes; `test/fidelity/bp/BP-cards-m9.spec.ts`).
+- Kept `pending`: UX-14-05 and UX-14-06 (the "Save your {site} login…?" offer after a sign-in is not built; the spec seeds it),
+  UX-14-08 (the bank code box posts, but "Use code" types nothing: the box's `requestId` is stored redacted as `[hidden]`, so
+  `code:submit` matches no pause).
+- Tier R disputes (`docs/fidelity/disputes.json`):
+
+| ids                | checks         | why                                                                                                                                                        |
+| ------------------ | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| BP-CARD-10         | r1, r2         | minis drawn in 350px panels (CR-0003 §b); drawn words are not 05-3 §5.10.2's sign_in lane ("{site} wants you to sign in. Do it here and I'll carry on.")   |
+| BP-CARD-17         | r1, r2, r3     | drawn as a card; 05-3 §5.18.1 makes the handoff a marker row on the thread, so the background is the chat's                                                |
+| UX-14-01, UX-14-09 | r1, r2, r3, r4 | sandbox host 127.0.0.1, not IRCTC (§5.10.1); the app is LIVE at once (X-66), no "Open sign-in"; primary buttons are the accent, not black                  |
+| UX-14-07, UX-14-10 | r1, r2, r4     | same host and words; "Step 3 of 4" sits in the chat header and Details pane; the 10 min reminder is a toast (§5.10.2), the 2 h line is the app's stop line |
+
+- App gaps found (reported, not fixed; carried to the M10 lead): the bank "Use code" bug above; the OTP box does not draw
+  `cards.secret.otp.reason`; after the 2 h sign-in time-out the checklist marks every row done and the chat pill reads Done
+  (J13 fails safe: nothing is booked, but the job should read stopped).

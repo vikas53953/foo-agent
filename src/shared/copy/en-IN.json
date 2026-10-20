@@ -1516,5 +1516,9 @@
   "settings.appearance.mica.second": "Lets your Windows 11 wallpaper tint the sidebar.",
   "settings.appearance.face_motion.label": "Show {agentName}’s eyes",
   "settings.appearance.face_motion.second": "Faces blink and look around. Off keeps them still.",
-  "app.splash.loading": "Getting things ready…"
+  "app.splash.loading": "Getting things ready…",
+  "cards.signin.reminder_toast": "{site} is still waiting for you to sign in.",
+  "cards.signin.timed_out_line": "I stopped the {what} because the sign-in wasn’t done. Ask me again any time.",
+  "cards.signin.hand_back_line": "Carrying on from here.",
+  "cards.signin.button.start_again": "Start again"
 }

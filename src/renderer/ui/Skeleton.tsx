@@ -1,5 +1,5 @@
 // Spec: 03-shell-1 §3.4.7 Loading (48 circle + two bars 60 % / 85 % wide, 12px tall, `--r-xs`, `--bg-sunken`, no
-// shimmer), 02-3 §F26 (loading rows carry data-loading).
+// shimmer, replaced by 02 §F7.1 X-179: the shimmer lives in the CSS), 02-3 §F26 (loading rows carry data-loading).
 import type { CSSProperties } from 'react';
 import { cx } from './cx';
 import styles from './Skeleton.module.css';

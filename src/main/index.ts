@@ -41,6 +41,8 @@ import { draftService } from './drafts/draftIpc'; // M8 T6
 import { SecretVault } from './vault/SecretVault';
 import { installVault } from './vault/vaultRuntime';
 import { google } from './connections/connectionIpc'; // M8 T5
+import { signinBanners } from './jobs/signinIpc'; // M9 T7
+import { bannerReports } from './jobs/signinBannerBridge'; // M9 T7
 
 export const AUMID = 'com.foo.desktop';
 
@@ -132,6 +134,8 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
       google: () => google(),
       // M8 T6: engine `gmail.draft` → main's DraftService (08-0 §G.7).
       drafts: () => draftService(ctx),
+      // M9 T7: the engine's sign-in banner reports drive main's banner windows.
+      signinBanner: bannerReports(signinBanners),
     });
     const launchLog = launches;
     power = new PowerService({
