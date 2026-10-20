@@ -46,6 +46,7 @@ import { pacingPlan } from './chunks';
 import { layoutRows, type RowLayout } from './runs';
 import { followStreaming, MARK_READ_AFTER_MS, nearTop, rowVisible, showJump, unreadOpenTop, type ScrollMetrics } from './stickToBottom';
 import { Marked } from './Marked';
+import { parseBlocks, plainText } from './markdownParse';
 import { UnreadDivider } from './UnreadDivider';
 import { useStickToBottom } from './useStickToBottom';
 
@@ -437,7 +438,8 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     const sender = senderOf(m, ctx).name;
     // 05-1 §0.7: "{sender} sent {card name}: {title}[, needs you]".
     const arrival = card ? cardArrival(card, sender) : null;
-    const text = card ? (titleOfCard(card) ?? '') : m.text;
+    // R1 T2: a reply's kit surface or AI page is not read out as JSON or HTML (04 §1.9: words only).
+    const text = card ? (titleOfCard(card) ?? '') : plainText(parseBlocks(m.text));
     announce(arrival ?? t('bubble.row.announce_new', { sender, text: text.slice(0, ANNOUNCE_CHARS) }), 'polite');
   };
   useEffect(() => {

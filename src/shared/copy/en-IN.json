@@ -1558,6 +1558,7 @@
   "page.bridge.refused": "This page can’t do that",
   "bubble.read.label": "{agentName} read:",
   "bubble.read.accessible_name": "{agentName} understood: {items}",
+  "bubble.read.people": "{n} people",
   "bubble.ask.pill": "Ask about this",
   "bubble.menu.ask": "Ask about this",
   "composer.side.label": "Side question",

@@ -1,0 +1,85 @@
+/* Spec: 02-2 §F19.9 (kit LineChart: axes `--t-caption` `--fg-3`; line 2px `--accent`; area fill `--accent-soft`; bars
+ * `--accent`, `--r-xs`; one hue; forced colours `CanvasText` / `Highlight`), §F19.1 (tabular figures on axis numbers). */
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  margin: 0;
+  min-width: 0;
+}
+.title {
+  font: var(--t-body-strong);
+  color: var(--fg-1);
+}
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.label {
+  font: var(--t-caption);
+  font-variant-numeric: tabular-nums;
+  fill: var(--fg-3);
+}
+.grid {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+.line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.area {
+  fill: var(--accent-soft);
+  stroke: none;
+}
+.bar {
+  fill: var(--accent);
+  rx: var(--r-xs);
+}
+.dot {
+  fill: var(--accent);
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
+.key {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+}
+.swatch {
+  width: var(--s4);
+  height: var(--s1);
+}
+
+@media (forced-colors: active) {
+  .line {
+    stroke: Highlight;
+  }
+  .area {
+    fill: none;
+  }
+  .bar,
+  .dot {
+    fill: Highlight;
+    stroke: CanvasText;
+  }
+  .label {
+    fill: CanvasText;
+  }
+  .grid {
+    stroke: CanvasText;
+  }
+}

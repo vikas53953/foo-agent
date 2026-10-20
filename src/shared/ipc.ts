@@ -92,6 +92,8 @@ export interface Invokes {
       attachmentIds?: string[];
       secretOverride?: boolean;
       side?: boolean;
+      /** X-180 pick 6: the words picked for "Ask about this" (04 §17.5); only with `side`. Folded into the AI text, not stored. */
+      quote?: string;
     };
     // M8 T7 (04 §10.11): in a mirrored WhatsApp group the message is a Draft card in foo's chat, not a message here.
     res: { messageId: string; queued: boolean; mirrorDraft?: { fooChatId: string; draftCardId: string; messageId: string } };
