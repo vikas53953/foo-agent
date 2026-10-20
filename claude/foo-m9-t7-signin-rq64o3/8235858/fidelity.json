@@ -1,0 +1,744 @@
+{
+  "reportId": "M8-8235858-39381884369",
+  "milestone": "M8",
+  "generatedAt": "2026-10-20T06:46:07.417Z",
+  "commit": "aa5b46c006170d663805d7726423cdf68c4ad599",
+  "head": "8235858612bb5ad0e04f8c76ff1e1076fd7e4599",
+  "ci": {
+    "runId": "39381884369",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39381884369"
+  },
+  "spec": {
+    "version": "spec-v1.0",
+    "setSha256": "97dbaa9af449d8cdf78d8dcac5ed07f9da3c0970e697352afd0baa907a0014c7"
+  },
+  "runner": null,
+  "fid04": "UNVERIFIABLE",
+  "builders": [
+    "builder agent"
+  ],
+  "reviewer": {
+    "name": null,
+    "signed": false
+  },
+  "verdict": "FAIL",
+  "verdictReasons": [
+    "missing evidence: unit test results (Vitest JSON); E2E results (Playwright JSON); golden runner identity (golden/runner.json); FID-14 results",
+    "21 audit item(s) not DONE (the milestone is not complete)"
+  ],
+  "missingInputs": [
+    "unit test results (Vitest JSON)",
+    "E2E results (Playwright JSON)",
+    "golden runner identity (golden/runner.json)",
+    "FID-14 results"
+  ],
+  "forVikas": {
+    "tryNow": [
+      "Nothing new to try yet: none of the 17 M8 drawings is built in the app. This run shows that the checking machinery works."
+    ],
+    "changed": [
+      "Nothing differs from the drawings so far."
+    ],
+    "needsYes": []
+  },
+  "audit": [
+    {
+      "group": "M8 Goal",
+      "item": "sign in with Google (PKCE, loopback), read/draft/send Gmail with Undo, Calendar read/add, Google Contacts read and name resolution (X-48), WhatsApp linked device in its own process with read and send-after-tap, X drafts that open X's compose page",
+      "status": "PARTIAL",
+      "evidence": [
+        "test:AT-014",
+        "test:AT-015",
+        "test:AT-018",
+        "test:AT-020",
+        "test:AT-054",
+        "test:AT-145",
+        "test:AT-270"
+      ],
+      "covers": "part",
+      "manual": "demo on Vikas's PC with a test Gmail and a spare WhatsApp number (plan §5 M8 Demo); needs his Google OAuth client file resources/google-oauth.json (08-3 §16.1.1); carry items in docs/decisions/M8.tsv and CR-0012 §(h)",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Constitution",
+      "item": "08-3 §16 (all), §19.4 · 05 §5.7, §5.11 · 06-screens-2 §6.8 · 08-2 §8.1–§8.2 · Art. 4, 5, 8, 9, 15 · X-18, X-39, X-40, X-41, X-48",
+      "status": "PARTIAL",
+      "evidence": [
+        "test:ART-04a",
+        "test:ART-04b",
+        "test:ART-09",
+        "test:ART-15b"
+      ],
+      "covers": "part",
+      "manual": "independent reviewer reads 08-3 §16 and 06-2 §6.8 against the build (two-axis review on the M8 PR); picks and gaps in CR-0012 §(b), (f), (g), (h)",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/contacts.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/gcal.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/gmail.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/gmailDraftTool.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/google-tools.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/google.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/limiter.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/recipients.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/types.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/whatsapp.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/engine/tools/connectors/x.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/wa-bridge/index.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/main/windows/oauthLoopback.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/renderer/cards/Connect.tsx",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/renderer/cards/Draft.tsx",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/renderer/cards/draft/WhatsAppNotice.tsx",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "src/renderer/cards/draft/XCounter.tsx",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "test/fakes/connectors/contacts.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "test/fakes/connectors/gcal.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "test/fakes/connectors/gmail-read.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "test/fakes/connectors/gmail.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "test/fakes/connectors/google-oauth.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Create",
+      "item": "test/fakes/connectors/whatsapp-bridge.ts",
+      "status": "DONE",
+      "resolved": "DONE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-014",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-014",
+      "covers": "whole",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-015",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-015",
+      "covers": "whole",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-018",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-018",
+      "covers": "whole",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-020",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-020",
+      "covers": "whole",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-051",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-051",
+      "covers": "whole",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-052",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-052",
+      "covers": "whole",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-053",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-053",
+      "covers": "whole",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-054",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-054",
+      "covers": "whole",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-055",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-055",
+      "covers": "whole",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-070",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-070",
+      "covers": "whole",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-093",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-093",
+      "covers": "whole",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "AT-145",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:AT-145",
+      "covers": "whole",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "ART-04a",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-04a",
+      "covers": "whole",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "ART-04b",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-04b",
+      "covers": "whole",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "ART-09",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-09",
+      "covers": "whole",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "ART-15b",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-15b",
+      "covers": "whole",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Must pass",
+      "item": "ART-08c",
+      "status": "UNVERIFIABLE",
+      "evidence": "test:ART-08c",
+      "covers": "part",
+      "manual": "M5's row (CR-0009); M8 extends the test with a Gmail OTP case",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Fidelity exit",
+      "item": "Tier R for UX-16 (all 10), UX-04 connection steps (UX-04-04…09) and BP-CARD-11 with no Fail",
+      "status": "PARTIAL",
+      "evidence": [
+        "test:UX-16-01",
+        "test:UX-16-07",
+        "test:UX-04-04",
+        "test:BP-CARD-11"
+      ],
+      "covers": "part",
+      "manual": "golden lane fidelity report; drawing-vs-spec gaps disputed under CR-0012 §(h); UX-04-05 and UX-16-09 are Google's and X's own pages (UNVERIFIABLE); UX-11 stays with M10 (G-M8-08); UX-16-02/-04/-06 are M5's (CR-0009)",
+      "resolved": "UNVERIFIABLE"
+    },
+    {
+      "group": "M8 Fidelity exit",
+      "item": "fidelity report signed by the reviewer and seen by Vikas",
+      "status": "UNVERIFIABLE",
+      "manual": "compare page for Vikas's review (approve-on-his-behalf rule)",
+      "resolved": "UNVERIFIABLE"
+    }
+  ],
+  "copy": {
+    "fid09": "NOT DONE",
+    "fid10": "NOT DONE",
+    "art02a": "NOT RUN"
+  },
+  "tokens": {
+    "eslintErrors": null,
+    "stylelint": "not installed yet (FID-13 Stylelint half; ART-24a scans styles today)",
+    "fid11": "NOT RUN",
+    "fid12": "NOT RUN",
+    "fid14": []
+  },
+  "behaviour": {
+    "totals": {
+      "unit": {
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0
+      },
+      "e2e": {
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    "ids": [],
+    "failed": [],
+    "trace": {
+      "live": 212,
+      "pending": 101,
+      "byMilestone": {
+        "M0": 5,
+        "M1": 23,
+        "M2": 27,
+        "M3": 16,
+        "M4": 57,
+        "M5": 54,
+        "M6": 38,
+        "M13": 1,
+        "M8": 33,
+        "M9": 58,
+        "M7": 1
+      }
+    }
+  },
+  "gaps": {
+    "crs": [
+      {
+        "id": "CR-0001",
+        "title": "Complete the spec-v1.0 freeze with the reference drawings and machine tables",
+        "status": "Approved"
+      },
+      {
+        "id": "CR-0002",
+        "title": "M1 shell, where the Blueprint drawing and the written spec disagree",
+        "status": "Approved: keep the app as built; the drawing is redrawn to the written spec"
+      },
+      {
+        "id": "CR-0003",
+        "title": "M2 trace rows, M2 Blueprint ids, and where the drawings and the M2 app disagree",
+        "status": "Approved by Vikas, DECISIONS X-156 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)"
+      },
+      {
+        "id": "CR-0004",
+        "title": "The dark user bubble is indigo (X-145) everywhere, and the M2 golden-lane differences that follow from the spec",
+        "status": "Approved by Vikas, DECISIONS X-157 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)"
+      },
+      {
+        "id": "CR-0005",
+        "title": "how PERF-02 measures \"keydown → character painted\"",
+        "status": "Approved by Vikas, DECISIONS X-158 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)"
+      },
+      {
+        "id": "CR-0006",
+        "title": "Light message rows while the user flings the list (PERF-04)",
+        "status": "Approved by Vikas, DECISIONS X-159 (built first under the overnight instruction of 2026-10-17 18:52Z/18:59Z)"
+      },
+      {
+        "id": "CR-0007",
+        "title": "M3 trace rows, and the picks the M3 build made where the spec forks",
+        "status": "Approved by Vikas, DECISIONS X-160 (2026-10-18 15:58Z, after the independent review in §(e))"
+      },
+      {
+        "id": "CR-0008",
+        "title": "M4 trace rows, the job machine, and the picks the M4 build makes where the spec forks",
+        "status": "Approved by Vikas's approve-on-my-behalf rule (his message 2026-10-18 14:56Z), after the independent review in §(e), DECISIONS X-161"
+      },
+      {
+        "id": "CR-0009",
+        "title": "M5 trace rows, the approval machine, and the picks the M5 build makes where the spec forks",
+        "status": "Approved by Vikas's approve-on-my-behalf rule (his message 2026-10-18 14:56Z), after the independent review in §(f), DECISIONS X-162"
+      },
+      {
+        "id": "CR-0010",
+        "title": "M6 trace rows, the memory contracts, and the picks the M6 build makes where the spec forks",
+        "status": "Approved by Vikas's approve-on-my-behalf rule (his message 2026-10-18 14:56Z), after the independent review in §(e), DECISIONS X-163"
+      },
+      {
+        "id": "CR-0012",
+        "title": "M8 trace rows, the connector seams, and the picks the M8 build makes where the spec forks",
+        "status": "Approved by Vikas's approve-on-my-behalf rule (his message 2026-10-18 14:56Z), after the independent review in §(e), DECISIONS X-165"
+      },
+      {
+        "id": "CR-0013",
+        "title": "M9 trace rows, Blueprint ids, two superseded/moved UX steps, and the picks the M9 build makes where the spec forks",
+        "status": "Approved by Vikas's approve-on-my-behalf rule (his message 2026-10-18 14:56Z), after the independent review in §(e), DECISIONS X-166"
+      },
+      {
+        "id": "CR-0020",
+        "title": "the AI step: \"Find your AI\" and Settings → Your AI before M12, its trace rows and picks",
+        "status": "Approved by Vikas's approve-on-my-behalf rule (his message 2026-10-18 14:56Z), after the independent review in §(f), DECISIONS X-178"
+      }
+    ],
+    "notes": "Conservative picks and deferrals: implementation-notes.md (the ## M8 sections)."
+  },
+  "deviations": [
+    "Not reviewed yet: the independent reviewer adds what no test caught."
+  ],
+  "golden": {
+    "counts": {
+      "pass": 0,
+      "review": 0,
+      "fail": 0,
+      "disputed": 0,
+      "notBuilt": 17
+    },
+    "refsRendered": [],
+    "determinism": null,
+    "rows": [
+      {
+        "id": "BP-CARD-11",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-04-04",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-04-05",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-04-06",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-04-07",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-04-08",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-04-09",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-16-01",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-16-02",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-16-03",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-16-04",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-16-05",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-16-06",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-16-07",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-16-08",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-16-09",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      },
+      {
+        "id": "UX-16-10",
+        "theme": "light",
+        "verdict": "not built",
+        "r1": "–",
+        "r2": "–",
+        "r3": "–",
+        "r4": "–",
+        "r5": null,
+        "ref": false,
+        "app": false,
+        "diff": false
+      }
+    ],
+    "notBuilt": [
+      "BP-CARD-11",
+      "UX-04-04",
+      "UX-04-05",
+      "UX-04-06",
+      "UX-04-07",
+      "UX-04-08",
+      "UX-04-09",
+      "UX-16-01",
+      "UX-16-02",
+      "UX-16-03",
+      "UX-16-04",
+      "UX-16-05",
+      "UX-16-06",
+      "UX-16-07",
+      "UX-16-08",
+      "UX-16-09",
+      "UX-16-10"
+    ]
+  }
+}
