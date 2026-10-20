@@ -183,9 +183,9 @@ test('AT-324 · the reaction picker springs from the bubble, the picked reaction
 
   const copy = bubble.getByTestId(TID.bubbleCodeCopy);
   await copy.click();
-  const check = await anim(copy, 'svg');
-  expect(check?.name).toMatch(/check-in/);
-  expect(check?.duration).toBe(SPRING);
+  // The ✓ appears once the async clipboard write resolves, which can be a frame or two later on Windows runners.
+  await expect.poll(async () => (await anim(copy, 'svg'))?.name ?? '').toMatch(/check-in/);
+  expect((await anim(copy, 'svg'))?.duration).toBe(SPRING);
 
   const row = page.locator(`${byTid(TID.threadLog)} [data-message-id]`).filter({ has: bubble });
   await bubble.click({ button: 'right' });

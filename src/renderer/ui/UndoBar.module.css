@@ -17,8 +17,10 @@
   border-radius: var(--r-md);
   background: var(--bg-raised);
   box-shadow: var(--shadow-16);
+  overflow: hidden;
   transform: translateX(-50%);
-  animation: undo-in var(--m-normal) var(--ease-in);
+  /* 02 §F7.1 Cards: slides up on --ease-spring (Basic: the --m-basic fade; Off: 83ms fade, --motion-move 0). */
+  animation: undo-in var(--m-spring) var(--ease-spring);
 }
 :global([data-theme='dark']) .bar {
   border: 1px solid var(--line);
@@ -53,4 +55,37 @@
 .action:focus-visible {
   outline: var(--focus-outer-w) solid var(--focus-outer);
   border-radius: var(--r-sm);
+}
+/* 02 §F7.1 Cards: the timer line shrinks toward its left end over --dur-undo and pauses while the bar is hovered or
+ * focused, as the timer does; gone at Basic / Off (no movement) and in high contrast. */
+.timer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: calc(var(--s0) / 2);
+  background: var(--accent);
+  transform-origin: left center;
+  animation: undo-drain var(--dur-undo) linear forwards;
+}
+.bar:hover .timer,
+.bar:focus-within .timer {
+  animation-play-state: paused;
+}
+@keyframes undo-drain {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+:global(:root[data-motion='off']) .timer,
+:global(:root[data-motion='basic']) .timer {
+  display: none;
+}
+@media (forced-colors: active) {
+  .timer {
+    display: none;
+  }
 }
