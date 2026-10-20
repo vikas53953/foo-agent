@@ -206,3 +206,18 @@
   font: var(--t-small);
   color: var(--fg-2);
 }
+/* CR-0021 picks 1, 5 (AT-311): the Approval waiting on the user lands with --ease-spring (scale 0.92 → 1, rise 8px) and
+ * --shadow-28; a fresh card only (the row's data-new), so scrolling back through history never replays it. Basic: a
+ * --m-basic fade (--motion-move 0); Off: the 83ms fade. Nothing else moves on a money card. */
+.pending {
+  box-shadow: var(--shadow-28);
+}
+:global([data-new]) .pending {
+  animation: approval-land var(--m-spring) var(--ease-spring);
+}
+@keyframes approval-land {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--s1) * var(--motion-move))) scale(calc(1 - 0.08 * var(--motion-move)));
+  }
+}

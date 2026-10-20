@@ -3,6 +3,8 @@
 // `--t-body` one line; Link "Undo" 16px after the text; `--z-undo`; life `--dur-undo`, paused while hovered or focused; a
 // second removal replaces the bar and makes the first final; Ctrl+Z (focus not in a text field) = Undo; Esc in the bar
 // closes it; enter fade + rise 8px; `role="status"`, focus does not move to it), SV-34, X-32. 08-0 §E.3 component name.
+// P1 (02 §F7.1 Cards, CR-0021): the bar slides up on the spring and a 2px timer line drains over `--dur-undo`, pausing with
+// the timer while hovered or focused (decorative: the bar's words carry the meaning).
 import { useEffect, useRef } from 'react';
 import { TID } from '../../shared/testids';
 import { motion } from '../../shared/tokens';
@@ -87,6 +89,7 @@ export function UndoBar({ text, actionLabel, onUndo, onFinal }: UndoBarProps) {
       }}
     >
       <span className={styles.text}>{text}</span>
+      <span className={styles.timer} aria-hidden="true" />
       <button type="button" className={styles.action} data-testid={TID.appUndoAction} onClick={onUndo}>
         {actionLabel}
       </button>

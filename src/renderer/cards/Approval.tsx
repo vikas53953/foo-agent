@@ -23,6 +23,7 @@ import { CardButton } from './CardButton';
 import { CardFrame, CardTimeLabel, type CardTime } from './CardFrame';
 import { Countdown } from './parts/Countdown';
 import { HeldStrip } from './parts/HeldStrip';
+import { Money } from './parts/Money';
 import { SCOPE_LABEL, ScopeControl } from './parts/ScopeControl';
 import { useSummaryToggle } from './parts/useSummaryToggle';
 import { useCardAction } from './useCardAction';
@@ -228,12 +229,14 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
   const details = (
     <>
       <div className={styles.impact} data-testid={TID.cardApprovalImpact} data-copy="external">
-        {p.impact}
+        <Money text={p.impact} />
       </div>
       {risks.map((r, i) => (
         <div key={i} className={styles.risk} data-testid={TID.cardApprovalRisk} data-index={i}>
           <Icon name="Warning" size={16} className={styles.warnIcon} />
-          {r}
+          <span>
+            <Money text={r} />
+          </span>
         </div>
       ))}
       {quote && <Quote text={quote} />}
@@ -242,7 +245,9 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
           {rows.map((r) => (
             <div key={r.label} className={styles.row}>
               <dt>{r.label}</dt>
-              <dd className={styles.money}>{r.value}</dd>
+              <dd className={styles.money}>
+                <Money text={r.value} />
+              </dd>
             </div>
           ))}
         </dl>
@@ -425,6 +430,8 @@ export function Approval({ card, time }: { card: CardRow; time: CardTime }) {
       description={[p.impact, ...risks, t('cards.approval.expires', { time: at(expiresAt) })].filter(Boolean).join(' ')}
       edge={APPROVAL_EDGE[state]}
       busy={busy !== null}
+      // CR-0021 pick 5 / AT-311: the card waiting on the user springs in and sits on `--shadow-28`.
+      className={state === 'PENDING' ? styles.pending : undefined}
     >
       <div className={styles.head}>
         <Icon name={KIND_ICON[kind]} size={20} className={styles.headIcon} />
