@@ -1,0 +1,59 @@
+{
+  "journey": "test/verify/m9-t8-booking.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "8ee7f02ccd4ca0f627e98dcac5bcdffde25140f6",
+  "dirty": false,
+  "started": "2026-10-20T06:49:44.694Z",
+  "finished": "2026-10-20T06:49:52.674Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "Three options shown (Coastline Kitchen, Saffron Table, Bay Leaf Pizzeria); no Approval card yet",
+    "Approval card: \"Book this table? · Expires in 15:00 · Coastline Kitchen · 4 people · Charged now\"; submits so far 0",
+    "Booked: job done with proof {\"kind\":\"confirmation\",\"code\":\"TJ8821\",\"site\":\"tablejoy.test\",\"seenInToolCallId\":\"tc_000005\"}; the sandbox counted 1 submit",
+    "Tool calls: browser.open, browser.snapshot, browser.open, browser.snapshot, browser.submit",
+    "Step pictures: shot-1.jpg, snap-1.jpg, snap-2.jpg",
+    "Site note tablejoy.test: {\"bookingWorks\":true}",
+    "The ask's badge in the DB: done"
+  ],
+  "shots": [
+    {
+      "file": "after/01-options.light.png",
+      "name": "options",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-options.dark.png",
+      "name": "options",
+      "theme": "dark"
+    },
+    {
+      "file": "after/03-approval.light.png",
+      "name": "approval",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-approval.dark.png",
+      "name": "approval",
+      "theme": "dark"
+    },
+    {
+      "file": "after/05-booked.light.png",
+      "name": "booked",
+      "theme": "light"
+    },
+    {
+      "file": "after/06-booked.dark.png",
+      "name": "booked",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}
