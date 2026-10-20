@@ -202,6 +202,12 @@ Standards and Spec reviewers (Sonnet, read-only) on `origin/main...HEAD`, beside
 - Kept, logged as a pick: a page chunk that fails to load shows "I couldn’t open this page. Your chats are fine." and
   "Reload {agentName}" (`screen.load_error.*`) instead of a blank pane. AT-322 names only the skeleton; a blank screen
   would break Article 1 (never leave the user stuck).
+- Fixed, logged as a pick: chat switch was about twice as slow as on main (local p95 160 ms vs 88 ms, the same PERF-03
+  test; Windows golden p95 106 ms against the 100 ms budget). About half was pick 4's still copy of the old view: a deep
+  clone of the whole chat laid out a second time inside the switch. Chat to chat, the old view now leaves at once and
+  the new one slides 18px and fades in alone (02 §F7.1 "Chat": "chat switch slides 18px with the soft spring"; AT-302's
+  "the old view leaves in ≤ 167ms" holds at 0). Chat to chat is now a fade-in over the pane background rather than a cross-fade; AT-302's "cross-fades" is met by page changes, which keep the fading copy. Local mean 108 → 77 ms. Article 28
+  (PERF-03 < 100 ms) wins over the motion detail.
 - Spec-keeper items in (e) stay open; the spec text is not edited under this CR.
 - Dismissed: one `AudioContext` per playing note (only one note plays at a time; it closes on stop);
   `watchMotion`'s listener (called once per window by design); the `captureStream` cast (the DOM types lack the

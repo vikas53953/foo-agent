@@ -44,7 +44,8 @@
 .right[data-state='page'] {
   grid-column: 1 / -1;
 }
-/* P1 T3 (CR-0021 picks 2–5, 02 §F7.1): a new chat or page slides 18px in with the soft spring and cross-fades; back
+/* P1 T3 (CR-0021 picks 2–5, 02 §F7.1): a new chat or page slides 18px in with the soft spring and fades in (a page
+   cross-fades with ViewFrame's copy of the old view; chat to chat has no copy, PERF-03); back
    slides in from the left. Movement scales by --motion-move, so Basic and Off are fades only (tokens.css). The old view
    is gone at once (≤ --m-normal, pick 2). */
 .view {

@@ -94,6 +94,8 @@ async function switchFrames(page: Page): Promise<{ chat: Frame; page: Frame; bac
   let release = await holdAnimations(page);
   await openChat(page, 'foo');
   const chat = await frameOf(viewOf(page.getByTestId(TID.thread)));
+  // Chat to chat leaves no copy of the old chat (CR-0021 close-out, PERF-03); only page changes do.
+  expect(await ghostOf(page.getByTestId(TID.thread))).toBeNull();
   await release();
 
   release = await holdAnimations(page);
