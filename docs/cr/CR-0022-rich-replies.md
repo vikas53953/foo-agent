@@ -168,6 +168,15 @@ R1 starts after P1 is on main. T1 re-reads CR-0021's merged text before editing 
     Prose outside fences keeps the §25.5 rule unchanged.
 12. **Kit and page fences draw only in foo's own text** (04 §13.5): a helper's, a system line's or the user's fence stays
     a code block, and `kit:action` accepts only a surface hosted by a foo message.
+13. **Pages need a user tap to act** (T5 review): the host answers `requestAction` and `openLink` only while the user's
+    tap is live (`navigator.userActivation.isActive`), else `refused: 'declined'`; one C-26 dialog at a time, its URL
+    fixed when it opens. A page cannot send messages or open links by itself (Article 6).
+14. **Fenced text skips the word filter** (implementation note on 08-4 §25.5, found in T5): inside any fence (```page,
+
+```a2ui and plain code, which 04 §13.1 shows verbatim) the release gate keeps the Redactor step but does not map,
+rewrite or drop Article 2 words, so page scripts and A2UI keys stay valid. Prose outside fences is unchanged.
+15. **`ai_page` card payload** is `{ html: string }` (≤ 512 KB); a kept page is served from its `.foopage` blob through
+the same `pages.serve()` path.
 
 ## (g) Review
 
@@ -177,3 +186,4 @@ srcdoc CSP inheritance → own `foo-page:` scheme with header CSP (§(b) 04 §13
 on every bridge call and on `TextField`; `openLink` always shows C-26; three paste bands; AT table with tickets (§(d));
 shared-file owners and T1's proof (ticket map). Considers applied: extra CSP directives and `webRequest` deny, `kit` card
 to T2, `ai_page` name, "foo read:" in 04 §6, Image sources, `kit_action` named, pick 1 default, migration 0004.
+```
