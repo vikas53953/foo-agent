@@ -5,11 +5,14 @@
 // first 10 + "Show all {n} rows", focusable box "Table, {rows} rows, {columns} columns", right fade when it scrolls), §13.3
 // images (max-height 360, contain on `--bg-sunken`, alt or "Picture"), §13.4 citation pills (popover on hover 500 ms, focus
 // or click; "Sources ({n}) ›"), §16.1 auto-link menus, §16.2 money spans (tabular), §10.10 the user's WhatsApp set.
-// 02 §F7.1 "Chat" (CR-0021, X-179): the code copy icon turns into ✓, "Show all" grows, streamed words fade.
+// 02 §F7.1 "Chat" (CR-0021, X-179): the code copy icon turns into ✓, "Show all" grows, streamed words fade. §13.5 / §13.6
+// (CR-0022, X-180): kit and page blocks go to renderer/kit and renderer/page.
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import { motion } from '../../shared/tokens';
 import { TID } from '../../shared/testids';
+import { KitBlock } from '../kit/KitBlock';
+import { PageBlock } from '../page/PageBlock';
 import { Icon } from '../ui/Icon';
 import { Menu, type MenuEntry } from '../ui/Menu';
 import { Popover } from '../ui/Popover';
@@ -353,6 +356,10 @@ function BlockNode({ b, index, tail }: { b: Block; index: number; tail?: ReactNo
       return <TableBlock b={b} part={`table${index}`} />;
     case 'img':
       return <AnswerImage alt={b.alt} src={b.src} />;
+    case 'kit':
+      return <KitBlock body={b.body} closed={b.closed} />;
+    case 'page':
+      return <PageBlock body={b.body} closed={b.closed} />;
   }
 }
 

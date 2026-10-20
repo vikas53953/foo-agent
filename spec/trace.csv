@@ -343,3 +343,36 @@ R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-1
 ,,AT-320,,,10-acceptance-2 §C.8; 06-2 §6.2,test/e2e/p1-appearance.spec.ts,M9,pending
 ,,AT-321,,,10-acceptance-2 §C.8; 09 §9.14.3,test/e2e/p1-appearance.spec.ts,M9,pending
 ,,AT-322,,,10-acceptance-2 §C.8; 10-2 §E; CR-0021,test/unit/p1-bundle.test.ts,M9,pending
+,,AT-340,,,10-acceptance-2 §C.9; 02-2 §F19.9; 04 §13.5; CR-0022,test/e2e/r1-kit.spec.ts,M9,pending
+,,AT-341,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022 pick 4; CR-0022,test/e2e/r1-places-time.spec.ts,M9,pending
+,,AT-342,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-numbers-forms.spec.ts,M9,pending
+,,AT-343,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-numbers-forms.spec.ts,M9,pending
+,,AT-344,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-places-time.spec.ts,M9,pending
+,,AT-345,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-places-time.spec.ts,M9,pending
+,,AT-346,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-numbers-forms.spec.ts,M9,pending
+,,AT-347,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022 pick 5; CR-0022,test/e2e/r1-numbers-forms.spec.ts,M9,pending
+,,AT-348,,,10-acceptance-2 §C.9; 02-2 §F19.9; 04 §13.5; CR-0022,test/e2e/r1-numbers-forms.spec.ts,M9,pending
+,,AT-349,,,10-acceptance-2 §C.9; 04 §13.5; 05 §5.3.4; CR-0022,test/e2e/r1-places-time.spec.ts,M9,pending
+,,AT-350,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-places-time.spec.ts,M9,pending
+,,AT-351,,,10-acceptance-2 §C.9; 04 §13.5; Art. 8; CR-0022,test/e2e/r1-numbers-forms.spec.ts,M9,pending
+,,AT-352,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-output.spec.ts,M9,pending
+,,AT-353,,,10-acceptance-2 §C.9; 04 §13.5; 04 §14.4; CR-0022,test/e2e/r1-kit.spec.ts,M9,pending
+,,AT-354,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/unit/r1-contracts.test.ts,M9,live
+,,AT-354,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-kit.spec.ts,M9,pending
+,,AT-355,,,10-acceptance-2 §C.9; 04 §13.5; 08-1 §2.4; CR-0022,test/e2e/r1-kit.spec.ts,M9,pending
+,,AT-356,,,10-acceptance-2 §C.9; 04 §13.5; Art. 6; CR-0022,test/e2e/r1-kit.spec.ts,M9,pending
+,,AT-357,,,10-acceptance-2 §C.9; 04 §13.6; CR-0022,test/e2e/r1-ai-page.spec.ts,M9,pending
+,,AT-358,,,10-acceptance-2 §C.9; 04 §13.6; CR-0022,test/e2e/r1-ai-page.spec.ts,M9,pending
+,,AT-359,,,10-acceptance-2 §C.9; 04 §13.6; CR-0022,test/e2e/r1-ai-page.spec.ts,M9,pending
+,,AT-360,,,10-acceptance-2 §C.9; 04 §13.6; CR-0022,test/e2e/r1-ai-page.spec.ts,M9,pending
+,,AT-361,,,10-acceptance-2 §C.9; 04 §13.6; CR-0022,test/e2e/r1-ai-page.spec.ts,M9,pending
+,,AT-362,,,10-acceptance-2 §C.9; 04 §13.6; CR-0022,test/e2e/r1-ai-page.spec.ts,M9,pending
+,,AT-363,,,10-acceptance-2 §C.9; 04 §6.5; 08-2 §11.4; CR-0022,test/e2e/r1-input.spec.ts,M9,pending
+,,AT-364,,,10-acceptance-2 §C.9; 04 §9.2; 04 §17; CR-0022 pick 6; CR-0022,test/e2e/r1-input.spec.ts,M9,pending
+,,AT-365,,,10-acceptance-2 §C.9; 04-2 §22.4; 04-2 §22.5; CR-0022 pick 7; CR-0022,test/e2e/r1-input.spec.ts,M9,pending
+,,AT-366,,,10-acceptance-2 §C.9; 06-2 §6.2; CR-0022 pick 8; CR-0022,test/e2e/r1-output.spec.ts,M9,pending
+,,AT-367,,,10-acceptance-2 §C.9; 04-2 §21.7; CR-0022,test/e2e/r1-output.spec.ts,M9,pending
+,,AT-368,,,10-acceptance-2 §C.9; 04 §13.5; CR-0022,test/e2e/r1-output.spec.ts,M9,pending
+,,AT-369,,,10-acceptance-2 §C.9; CR-0022 pick 9; CR-0022,test/e2e/r1-output.spec.ts,M9,pending
+,,AT-370,,,10-acceptance-2 §C.9; 04 §13.5; Art. 8; CR-0022,test/unit/r1-kit-safety.test.ts,M9,pending
+,,AT-371,,,10-acceptance-2 §C.9; CR-0022 pick 5; CR-0022,test/unit/r1-kit-safety.test.ts,M9,pending

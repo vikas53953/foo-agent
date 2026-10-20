@@ -32,6 +32,9 @@ export const CARD_ESTIMATE: Record<string, number> = {
   face_explainer: 200,
   catch_up: 240,
   setup: 320,
+  // CR-0022 (X-180): a kit card and an AI page (frame height is capped at 600px, 04 §13.6).
+  kit: 320,
+  ai_page: 420,
 };
 
 /** The line a card is known by in the header status and the right shell ("Needs you: {title}"). */

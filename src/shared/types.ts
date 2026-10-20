@@ -113,7 +113,24 @@ export type CardType =
   | 'place'
   | 'face_explainer'
   | 'catch_up'
-  | 'setup';
+  | 'setup'
+  // CR-0022 (X-180): a kit surface the engine posts as its own card, and an AI page (05 §0.1).
+  | 'kit'
+  | 'ai_page';
+/** CR-0022 pick 9: what a kept item holds. */
+export type KeptKind = 'kit' | 'page';
+/** A `kept_items` row (08-1 §4.3, migration 0004), shown in the chat's Files tab. A kept page reopens only in the sealed box. */
+export interface KeptItem {
+  id: string;
+  chatId: string;
+  messageId: string | null;
+  cardId: string | null;
+  kind: KeptKind;
+  title: string;
+  /** The PNG snapshot under {DATA}, when one was made. */
+  pngPath: string | null;
+  createdAt: number;
+}
 export type JobState = 'queued' | 'working' | 'needs_you' | 'waiting' | 'done' | 'done_unverified' | 'failed' | 'cancelled';
 export type WaitingReason =
   | 'ai_offline'
@@ -554,6 +571,8 @@ export interface MessageRow {
   providerNote: string | null;
   /** CR-0021 pick 10: ≤ 3 follow-up suggestions the AI gave with this reply (composer chips); null when none. */
   suggestions: string[] | null;
+  /** CR-0022 pick 6: a side question ("Ask about this") or foo's answer to one; `replyToId` says what it is about. */
+  side: boolean;
   rev: number;
   createdAt: number;
   editedAt: number | null;

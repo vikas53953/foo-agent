@@ -1,8 +1,12 @@
 // Spec: 08-0 §A (settings.json schema, X-53), §A.1 (ranges), X-150 (appearance.animations), X-179 / CR-0021 (appearance.sounds,
-// appearance.mica, appearance.faceMotion).
+// appearance.mica, appearance.faceMotion), X-180 / CR-0022 (appearance.visuals).
 // Holds the keys the milestones built so far read (M0: window shell; M1: setup, identity, user, locale, ai, money,
 // notifications.mutedChats for the chat list, footer and banners); later milestones add their keys with their defaults.
 import { z } from 'zod';
+
+/** 08-0 §A `appearance.visuals` (CR-0022 pick 8): Mostly words / Balanced (default) / Show me visuals. */
+export const VISUALS = ['words', 'balanced', 'visuals'] as const;
+export type Visuals = (typeof VISUALS)[number];
 
 export const ZOOM_STEPS = [80, 90, 100, 110, 125, 150, 175, 200] as const;
 
@@ -81,6 +85,8 @@ export const settingsSchema = z.object({
     sounds: z.boolean(),
     mica: z.boolean(),
     faceMotion: z.boolean(),
+    /** CR-0022 (X-180) pick 8: how often replies carry kit pieces and AI pages (06-2 §6.2 "Visuals"). */
+    visuals: z.enum(VISUALS),
   }),
   window: z.object({
     bounds: z
@@ -203,6 +209,8 @@ export const WRITABLE_PATHS = [
   'appearance.sounds',
   'appearance.mica',
   'appearance.faceMotion',
+  // CR-0022 (X-180): Appearance → Visuals.
+  'appearance.visuals',
   'zoom',
 ] as const;
 export type WritablePath = (typeof WRITABLE_PATHS)[number];

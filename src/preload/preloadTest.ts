@@ -100,6 +100,12 @@ const INVOKES = new Set([
   'secret:offer',
   // M5 T14
   'approval:report',
+  // CR-0022 (X-180)
+  'kit:action',
+  'kit:refresh',
+  'page:rpc',
+  'keep:save',
+  'keep:list',
 ]);
 const EVENTS = new Set([
   'chat:upsert',

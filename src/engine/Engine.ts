@@ -666,6 +666,7 @@ export class Engine {
           conversation,
           userMessage: i.message.textForAi ?? i.message.text,
           local: i.local,
+          visuals: i.settings.appearance?.visuals ?? 'balanced',
           ...(i.oldPlan ? { oldPlan: i.oldPlan } : {}),
         });
       },

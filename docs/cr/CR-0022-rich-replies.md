@@ -13,9 +13,9 @@
 - **Evidence:** teardown of 11 apps plus WhatsApp Business, Telegram, RCS, Apple Messages and Slack, every claim labelled:
   `/mnt/project-files/foo/rich-io/re/` (`patterns.md` is the harvest), library shelf `/mnt/project-files/foo/rich-io/libraries.md`,
   decision page https://claude.ai/artifact/8ezkZVsdsJsoLE18VcUfPM.
-- **Status:** Direction approved by Vikas himself (four cards above); the CR text passed the independent review in §(g)
-  ("PASS WITH FIXES", all act items applied) under his approve-on-my-behalf rule (2026-10-18 14:56Z). T1 adds DECISIONS
-  **X-180** and changes this line to "Approved by Vikas … X-180" in the same commit as the spec edits (fid-guard `crPending`).
+- **Status:** Approved by Vikas: the direction himself (four cards above) and the text by his approve-on-my-behalf rule
+  (2026-10-18 14:56Z) after the independent review in §(g) ("PASS WITH FIXES", all act items applied); DECISIONS
+  **X-180**. Spec edits made in R1 T1 (2026-10-20).
 - **Order:** builds **after P1 Polish (CR-0021) is on main**. P1 owns `composer/**`, `messages/**`, `cards/**` and the
   Appearance page while it runs (§(e)). Vikas places the milestone in the build order.
 - **Milestone label:** trace and fidelity ids take `M<n>` only (CR-0020 §(a)). The milestone is called **R1 Rich Replies**

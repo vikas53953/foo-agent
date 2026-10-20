@@ -12,6 +12,8 @@ import { app, BrowserWindow, dialog, ipcMain, net, shell, systemPreferences, typ
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import type { MemoryCmdPayload } from '../../engine/protocol';
+import { KitActionMessageSchema } from '../../shared/kit/catalog';
+import { PageIdSchema, PageRpcCallSchema } from '../../shared/kit/page';
 import { runMemoryExport } from '../memory/export';
 import { removeForgottenFiles } from '../memory/forgetFiles';
 import { z } from 'zod';
@@ -285,7 +287,7 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'ai:askKey': z.object({ providerId: z.enum(['openai-key', 'anthropic-key', 'google-key']) }).strict(),
   'app:openExternal': z
     .object({
-      target: z.enum(['google_signin', 'x_intent', 'google_account', 'maker_page', 'handback_site']),
+      target: z.enum(['google_signin', 'x_intent', 'google_account', 'maker_page', 'handback_site', 'ai_page']),
       url: z.string().max(2048).optional(),
       providerId: z.enum(PROVIDER_IDS).optional(),
       cardId: z.string().max(80).optional(),
@@ -336,6 +338,25 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'code:submit': z.object({ requestId: z.string().min(1).max(80), code: z.string().min(1).max(64) }).strict(),
   // M5 T2 (G-M5-21)
   'secret:offer': z.object({ chatId, slot: z.enum(SECRET_OFFER_SLOTS) }).strict(),
+  // CR-0022 (X-180): the kit and page channels; handlers arrive with R1 T2 (kit:action), T5 (page:rpc) and T7 (kit:refresh,
+  // keep:*). A kept body is A2UI JSON or a .foopage blob, ≤ the 512 KB page cap plus its JSON wrapping.
+  'kit:action': KitActionMessageSchema,
+  'kit:refresh': z
+    .object({ chatId, messageId: messageId.optional(), cardId: cardId.optional(), surfaceId: z.string().min(1).max(64) })
+    .strict(),
+  'page:rpc': z.object({ chatId, pageId: PageIdSchema, call: PageRpcCallSchema }).strict(),
+  'keep:save': z
+    .object({
+      chatId,
+      messageId: messageId.optional(),
+      cardId: cardId.optional(),
+      kind: z.enum(['kit', 'page']),
+      title: z.string().min(1).max(80),
+      body: z.string().min(1).max(600_000),
+      png: z.instanceof(ArrayBuffer).optional(),
+    })
+    .strict(),
+  'keep:list': z.object({ chatId }).strict(),
 };
 
 export type Handler<C extends InvokeChannel> = (req: InvokeIn[C]) => Result<InvokeOut[C]> | Promise<Result<InvokeOut[C]>>;

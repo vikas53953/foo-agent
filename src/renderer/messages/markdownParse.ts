@@ -2,7 +2,7 @@
 // levels deep, H1–H6, quotes, horizontal rules, inline code, code blocks, tables, images, citation pills; anything else —
 // raw HTML, footnotes, math, task-list boxes, deeper lists — is plain text with its markers removed), §12.1 (rich
 // triggers: a heading, a table, a code block, an image, a list with > 7 items or > 900 characters), §13.4 (citations),
-// §14.4 (streaming: an unclosed `**`, `` ` `` or table row is held back until it closes or the line ends), §16.1–§16.2
+// §13.5 / §13.6 (```a2ui and ```page fences in foo's text become kit and page blocks, CR-0022), §14.4 (streaming: an unclosed `**`, `` ` `` or table row is held back until it closes or the line ends), §16.1–§16.2
 // (auto-links and money in foo's text; none inside code or links), §10.10 (the user's WhatsApp set: *bold* _italic_
 // ~strike~ `inline` ```block```), §1.9 (copy is plain text: markers removed, links as "text (url)", tables tab-separated).
 // Pure: a small parser into a tree that React renders (no HTML strings, so nothing needs sanitising).
@@ -38,7 +38,10 @@ export type Block =
   | { t: 'hr' }
   | { t: 'code'; lang: string; v: string }
   | { t: 'table'; head: Inline[][]; rows: Inline[][][]; numeric: boolean[]; plain: string[][] }
-  | { t: 'img'; alt: string; src: string };
+  | { t: 'img'; alt: string; src: string }
+  // 04 §13.5 / §13.6 (CR-0022, X-180): an ```a2ui or ```page fence in foo's text; `closed` once its closing fence arrived.
+  | { t: 'kit'; body: string; closed: boolean }
+  | { t: 'page'; body: string; closed: boolean };
 
 export interface ParseOptions {
   /** foo's text: auto-links of every kind and money formatting (§16). The user's text links URLs, emails and phones (§10.7). */
@@ -237,8 +240,13 @@ export function parseBlocks(text: string, o: ParseOptions = { side: 'foo' }): Bl
       const body: string[] = [];
       i++;
       while (i < lines.length && !/^\s*```\s*$/.test(lines[i]!)) body.push(lines[i++]!);
+      const closed = i < lines.length;
       i++;
-      blocks.push({ t: 'code', lang: fence[1] ?? '', v: body.join('\n') });
+      const lang = (fence[1] ?? '').toLowerCase();
+      // 04 §13.5 / §13.6: only foo's own replies draw kit surfaces and AI pages; the user's fences stay code.
+      if (o.side === 'foo' && lang === 'a2ui') blocks.push({ t: 'kit', body: body.join('\n'), closed });
+      else if (o.side === 'foo' && lang === 'page') blocks.push({ t: 'page', body: body.join('\n'), closed });
+      else blocks.push({ t: 'code', lang: fence[1] ?? '', v: body.join('\n') });
       continue;
     }
     const h = HEADING.exec(line);
@@ -349,7 +357,15 @@ export function isRich(text: string, blocks: Block[] = parseBlocks(text)): boole
   if (text.length > 900) return true;
   const walk = (bs: Block[]): boolean =>
     bs.some(
-      (b) => b.t === 'h' || b.t === 'table' || b.t === 'code' || b.t === 'img' || countListItems(b) > 7 || (b.t === 'quote' && walk(b.c)),
+      (b) =>
+        b.t === 'h' ||
+        b.t === 'table' ||
+        b.t === 'code' ||
+        b.t === 'img' ||
+        b.t === 'kit' ||
+        b.t === 'page' ||
+        countListItems(b) > 7 ||
+        (b.t === 'quote' && walk(b.c)),
     );
   return walk(blocks);
 }
@@ -429,6 +445,10 @@ export function plainText(blocks: Block[]): string {
           return b.plain.map((r) => r.join('\t')).join('\n');
         case 'img':
           return b.alt;
+        // §1.9: copy carries the words; a kit surface or AI page is not text.
+        case 'kit':
+        case 'page':
+          return '';
       }
     })
     .filter((s) => s !== '')

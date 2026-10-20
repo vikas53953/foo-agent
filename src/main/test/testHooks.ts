@@ -87,6 +87,8 @@ const CARD_TYPES = [
   'face_explainer',
   'catch_up',
   'setup',
+  'kit',
+  'ai_page',
 ] as const satisfies readonly CardType[];
 // M5 (CR-0009)
 /** `test:card.seed`: `approval` adds the card's approvals row (approval, payment and draft cards; 08-0 §G.7). */

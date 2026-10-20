@@ -860,7 +860,7 @@ Every count string has `one` and `other` forms (ICU MessageFormat): "1 thing nee
 | Sorting | tables are not sortable in v1; foo sorts before sending (cheapest first, earliest first) and says which in the title |
 | Zebra stripes, vertical rules | never |
 
-### F19.9 Meters and bars (the only charts in v1)
+### F19.9 Charts [X-180, CR-0022]
 
 | Element | Spec |
 |---|---|
@@ -868,11 +868,14 @@ Every count string has `one` and `other` forms (ICU MessageFormat): "1 thing nee
 | Share bar (spend by chat/routine) | height `--bar-h` 8px, `--r-full`, track `--bg-sunken`, fill `--accent`, length ∝ value / largest value in the list (largest = full width) |
 | Minimum visible | non-zero values draw at least 4px long |
 | Labels | the number is always written next to the bar ("₹71"); bars are `aria-hidden`; meters are `role="meter"` with a full Narrator name (06-3) |
-| Colour | one colour per chart (`--accent`); status colours only for thresholds; never helper colours |
-| Not in v1 | line charts, pie/donut charts, sparklines, axes, legends |
+| Line, area and bar chart (kit `LineChart`, 04 §13.5) | ≤ 3 series; axes with one-line labels (`--t-caption` `--fg-3`), numbers and money formatted by the 02 number and money rules; line 2px, area fill `--accent-soft`, bars `--r-xs`; drawn as SVG by foo, no chart library (CR-0022 pick 10) |
+| Goal ring (kit `GoalRing`) | ring track `--bg-sunken`, arc `--accent`; the value and target written in the middle ("{value} of {target}"); `role="meter"` |
+| Colour | one hue per chart (`--accent`; a second and third series use `--accent` at lower opacity with a different dash, never helper colours); status colours only for thresholds |
+| Legends | only when there are 2 or more series |
+| Not in v1 | pie/donut charts, sparklines |
 | Forced colours | track 1px `CanvasText` border, fill `Highlight` |
 
-`[03, 06-3; dataviz rule "label the value, one hue"; foo decision on no other chart types]`
+`[03, 06-3; dataviz rule "label the value, one hue"; foo decision on no other chart types; X-180 adds line, area and bar charts and the goal ring]`
 
 ---
 

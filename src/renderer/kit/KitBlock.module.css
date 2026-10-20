@@ -1,0 +1,16 @@
+/* Spec: 04 §13.5 (kit surface placeholder until R1 T2; the dropped caption is `--t-caption` in `--fg-3`, 04 §6.5 style). */
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+
+.surface:empty {
+  display: none;
+}
+
+.dropped {
+  margin: 0;
+  font: var(--t-caption);
+  color: var(--fg-3);
+}

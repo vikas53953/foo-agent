@@ -3,9 +3,13 @@
 // each later milestone adds its rows from 08-1 §3.2/§3.3 with the same names and shapes.
 import type { Result } from './errors';
 import type { BridgeTestOp } from './waBridge';
+import type { KitActionMessage } from './kit/catalog';
+import type { PageRpcCall, PageRpcResult } from './kit/page';
 import type {
   AiStatus,
   FaceRef,
+  KeptItem,
+  KeptKind,
   Mood,
   ApprovalFields,
   ApprovalScope,
@@ -167,7 +171,7 @@ export interface Invokes {
   'ai:askKey': { req: { providerId: KeyProviderId }; res: CardRow };
   'app:openExternal': {
     req: {
-      target: 'google_signin' | 'x_intent' | 'google_account' | 'maker_page' | 'handback_site';
+      target: 'google_signin' | 'x_intent' | 'google_account' | 'maker_page' | 'handback_site' | 'ai_page';
       url?: string;
       providerId?: ProviderId;
       cardId?: string;
@@ -195,6 +199,16 @@ export interface Invokes {
     req: { cardId: string; nonce: string; outcome: 'went_through' | 'did_not'; resolvedBy: CardTapBy };
     res: CardRow;
   };
+  // CR-0022 (X-180) 08-1 §3.2. kit:action sends one MainToEngine `kit_action`; kit:refresh asks the engine to rebuild a
+  // LiveStamp surface's data; page:rpc is the sealed page's bridge call, checked and logged in main; keep:* hold kept items.
+  'kit:action': { req: KitActionMessage; res: void };
+  'kit:refresh': { req: { chatId: string; messageId?: string; cardId?: string; surfaceId: string }; res: void };
+  'page:rpc': { req: { chatId: string; pageId: string; call: PageRpcCall }; res: PageRpcResult };
+  'keep:save': {
+    req: { chatId: string; messageId?: string; cardId?: string; kind: KeptKind; title: string; body: string; png?: ArrayBuffer };
+    res: KeptItem;
+  };
+  'keep:list': { req: { chatId: string }; res: KeptItem[] };
   'draft:update': { req: { cardId: string; nonce: string; fields: DraftFields }; res: CardRow };
   'draft:send': { req: { cardId: string; nonce: string; resolvedBy: CardTapBy }; res: { approvalId: string; undoUntil: number } };
   'draft:undo': { req: { approvalId: string }; res: { undone: boolean } };
@@ -375,6 +389,12 @@ export const INVOKE_CHANNELS = [
   'secret:offer',
   // M5 T14
   'approval:report',
+  // CR-0022 (X-180)
+  'kit:action',
+  'kit:refresh',
+  'page:rpc',
+  'keep:save',
+  'keep:list',
 ] as const satisfies readonly InvokeChannel[];
 
 export const EVENT_CHANNELS = [
