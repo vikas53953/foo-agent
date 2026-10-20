@@ -8,7 +8,7 @@ import { suggestionsFor, type SuggestFacts } from '../../src/renderer/composer/s
 import { FakeClock } from '../../src/shared/clock';
 import type { CardType } from '../../src/shared/types';
 
-describe('p1 Suggestions: line (engine)', () => {
+describe('AT-308 Suggestions: line (engine)', () => {
   it('strips the last line and keeps up to 3 trimmed items', () => {
     const r = splitSuggestions('Your train leaves at 9:00 AM.\nSuggestions:  Book a cab |Set a reminder| Show the map | Pack list');
     expect(r.text).toBe('Your train leaves at 9:00 AM.\n');
@@ -37,7 +37,7 @@ describe('p1 Suggestions: line (engine)', () => {
   });
 });
 
-describe('p1 release gate never shows the Suggestions: line', () => {
+describe('AT-308 release gate never shows the Suggestions: line', () => {
   function setup() {
     const clock = new FakeClock();
     const out: string[] = [];
@@ -71,7 +71,7 @@ describe('p1 release gate never shows the Suggestions: line', () => {
   });
 });
 
-describe('p1 chip row hide rules', () => {
+describe('AT-308 chip row hide rules and starter words', () => {
   const reply = (o: Partial<SuggestFacts['messages'][number]> = {}) => ({
     authorKind: 'foo' as const,
     kind: 'text' as const,
@@ -107,6 +107,10 @@ describe('p1 chip row hide rules', () => {
   it('hidden on the first keystroke and while recording', () => {
     expect(suggestionsFor({ ...base, typed: true })).toBeNull();
     expect(suggestionsFor({ ...base, recording: true })).toBeNull();
+  });
+
+  it('hidden while the composer is disabled (§23.3: a chip could not fill the field)', () => {
+    expect(suggestionsFor({ ...base, disabled: true })).toBeNull();
   });
 
   it('hidden in groups, WhatsApp mirrors and private chats', () => {
