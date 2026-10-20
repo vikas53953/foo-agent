@@ -17,9 +17,9 @@
 // - UX-15-06: the drawn "Nothing was booked or paid." is 08-2 §5.7's report "Stopped. Nothing was booked, paid or sent.";
 // - UX-15-07: 08-2 §5.7 puts the activity summary into the report as written, and 06-3 §9.4's summary is "Sent an email to
 //   {name}", so the report reads "I'd already Sent an email to Rakesh Sharma at 11:06 AM" (spec gap for the CR).
-// App gaps (reported, not faked): the engine side of take over / hand back (job.takeOver / job.handBack, T7) is not on this
-// branch, so UX-15-04's in-control state is sent the way main sends it (`live:state taken_over`, as AT-272 does) and UX-15-05
-// has no "You took over" / "Carrying on from here." checklist rows; dialog C-13 (06-3 §14, "Stop all {3} jobs that are
+// App gaps (reported, not faked): this seeded world has no live browser behind the job, so the engine's job.takeOver (T7,
+// src/main/jobs/signinIpc.ts; its own tests drive it) cannot answer here; UX-15-04's in-control state is sent the way main
+// sends it (`live:state taken_over`, as AT-272 does) and UX-15-05 has no "You took over" / "Carrying on from here." rows; dialog C-13 (06-3 §14, "Stop all {3} jobs that are
 // running?") is not built and the header ⋯ has no "Stop everything", so UX-15-08 and UX-15-09 use the typed "Stop everything"
 // (08-4 §26.9, no confirm) and there is no combined report in foo's chat and no "Pause all routines" link.
 import { expect, test, type Page } from '@playwright/test';
@@ -103,7 +103,7 @@ test('UX-15 · Watch live, take over, stop: steps UX-15-03, UX-15-04, UX-15-05, 
       const s = step('UX-15-04');
       expect(s.s).toContain('Hand back to foo · Stop');
       await live.getByTestId(TID.liveTakeOver).click();
-      // main tells the window foo is paused because the user took over (the engine side is T7's; AT-272 seeds it the same way)
+      // main tells the window foo is paused because the user took over (no live browser here for T7's job.takeOver; AT-272 seeds it the same way)
       await sendLiveState(app, goa, 'taken_over');
       await expect(live.getByTestId(TID.liveRoot)).toHaveAttribute('data-state', 'in_control');
       await expect(live.getByTestId(TID.livePill)).toHaveText(t('live.window.pill.in_control'));
