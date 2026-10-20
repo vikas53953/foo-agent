@@ -1,0 +1,29 @@
+/* Spec: 04 §6.5 "foo read:" line: 4px under the last user bubble, right-aligned, --t-caption --fg-3, one line with
+ * ellipsis; never in a selection (it is not part of the bubble and is not copied). */
+.line {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+  max-width: min(72%, var(--bubble-max));
+  margin-top: var(--s0);
+  margin-left: auto;
+  user-select: none;
+}
+.tip {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+}
+.text {
+  display: block;
+  overflow: hidden;
+  font: var(--t-caption);
+  color: var(--fg-3);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.text:focus-visible {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+  border-radius: var(--r-xs);
+}

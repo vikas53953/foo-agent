@@ -12,6 +12,9 @@
 // M6 T5: purpose `memory_review` (§24.1, §24.10, §24.21).
 // P1 T6 (04-2 §21.7, CR-0021 pick 10): intake part 4 ends with SUGGESTIONS_ASK, the line that lets a reply end with
 // `Suggestions: a | b | c` (08-4 §24.5 does not carry it yet: CR-0021 §(e) open item; logged in docs/decisions/P1.tsv).
+// R1 T1 (CR-0022, X-180): intake part 4 then carries the kit section (the catalog generated from src/shared/kit/ and the
+// visuals level; 08-4 §24.5 cites it from X-180); when still over budget before the pinned-facts trim it is left out (part `4k`,
+// logged as PROMPT_TRIMMED).
 // Memory selection (§24.16 items 1–4) is src/engine/memory/retrieval.ts; group intake (§24.1 group rows, group_intake.md)
 // is M13.
 import { readFileSync } from 'node:fs';
@@ -23,10 +26,16 @@ import { IntakeActSchema, RewriteActSchema, SecondLookActSchema, StepActSchema, 
 import { PHRASES, RUNNER_ONLY, type PhraseKey } from '../../shared/phrases';
 import type { LogFn, Redactor } from '../redact/Redactor';
 import { BANNED_LIST } from './filters';
+import { kitPromptSection } from '../../shared/kit/prompt';
+import type { Visuals } from '../../shared/settings';
 
 /** 04-2 §21.7: the reply may end with up to 3 follow-ups the composer shows as chips (P1 T6). */
 export const SUGGESTIONS_ASK =
   'For "reply" you may end <say> with one last line "Suggestions: a | b | c": up to 3 short next things the user might ask, each under 40 characters, in their words. Leave the line out when nothing fits or when money is involved.';
+/** R1 T7 (lead ok, 04-2 §21.7 action chips): the reply's own `Actions:` line (engine/prompt/actions.ts checks it). It rides
+ * with the kit section, so a tight local budget leaves it out with the kit (part `4k`). */
+export const ACTIONS_ASK =
+  'You may add one line "Actions: [{"kind":"call|map|calendar|link","label":"…","value":"…"}]": ≤ 3 taps (a phone number, a place, an ISO date-time or an https link); never for money.';
 
 /** One memory fact as offered in part 5 / 5b (08-4 §24.16 item 5). */
 export interface MemoryLine {
@@ -90,6 +99,8 @@ export interface IntakeInput {
   // M5
   /** T10: after "Change plan" the old plan goes with the turn, in the part 8 form (08-2 §5.3.3; 08-4 §24.22). */
   oldPlan?: { title: string; steps: string[] };
+  /** CR-0022 (X-180): Settings → Appearance → Visuals (08-0 §A `appearance.visuals`); Balanced when not given. */
+  visuals?: Visuals;
 }
 
 /** Purpose `step` (08-4 §24.1 step row). The runner writes part 8 (§24.22) and part 3 (§27.1, ToolLayer.catalogue). */
@@ -282,8 +293,10 @@ export class PromptBuilder {
       : this.fill(identityBlocks[0] ?? '', { agentName: input.agentName, firstName, vibeLine: input.vibeLine, emoji: input.emoji });
     const rules = this.fill(this.file('rules.md'), { today: this.today(tz, input.hour12), tz });
     const helperList = input.helpers.length ? input.helpers.map((h) => `${h.id}: ${h.name}, ${h.jobText}`).join('\n') : 'none';
-    const protocol = `${this.protocolThen(IntakeActSchema, 'intake.md', { helperList })}\n${SUGGESTIONS_ASK}`;
-    const fixed = [gate(identity, '1'), gate(rules, '2'), gate(protocol, '4')];
+    const protocolWith = (kit: string) =>
+      gate(`${this.protocolThen(IntakeActSchema, 'intake.md', { helperList })}\n${SUGGESTIONS_ASK}${kit ? `\n${kit}` : ''}`, '4');
+    let kit = `${ACTIONS_ASK}\n${kitPromptSection(input.visuals ?? 'balanced')}`;
+    let fixed = [gate(identity, '1'), gate(rules, '2'), protocolWith(kit)];
 
     // Part 5: identity facts outside the cap, then pinned facts while the total stays ≤ 4,000 chars.
     const idFacts = input.pinned.filter((f) => f.identity);
@@ -379,6 +392,15 @@ export class PromptBuilder {
       '6',
       () => notes.length > 0,
       () => (notes = notes.includes('\n') ? notes.slice(0, notes.lastIndexOf('\n')) : ''),
+    );
+    // CR-0022 (X-180): before pinned facts, the kit section is left out, so a small local AI answers in words only.
+    trim(
+      '4k',
+      () => kit !== '',
+      () => {
+        kit = '';
+        fixed = [fixed[0]!, fixed[1]!, protocolWith(kit)];
+      },
     );
     trim(
       '5',

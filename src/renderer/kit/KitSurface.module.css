@@ -1,0 +1,176 @@
+/* Spec: 04 §13.5 (kit surface in foo's look: 02 tokens only; the dropped caption `--t-caption` `--fg-3`), 02 §F11.1
+ * (vertical rhythm: 8px between related lines), 06 §0.4 (fields: --field-h, 1px --line-input, focus --accent; tabs),
+ * 05-1 §0.2 (a Card part is framed like a card: 1px --line, --r-lg, --bg-raised). R1 T2. */
+.surface {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  min-width: 0;
+}
+.slot {
+  display: contents;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s1);
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  min-width: 0;
+}
+.justify_start {
+  justify-content: flex-start;
+}
+.justify_center {
+  justify-content: center;
+}
+.justify_end {
+  justify-content: flex-end;
+}
+.justify_spaceBetween {
+  justify-content: space-between;
+}
+.align_start {
+  align-items: flex-start;
+}
+.align_center {
+  align-items: center;
+}
+.align_end {
+  align-items: flex-end;
+}
+.align_stretch {
+  align-items: stretch;
+}
+.text_title {
+  margin: 0;
+  font: var(--t-body-strong);
+  color: var(--fg-1);
+}
+.text_body {
+  margin: 0;
+  font: var(--t-body);
+  color: var(--fg-1);
+}
+.text_caption {
+  margin: 0;
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
+.dropped {
+  margin: 0;
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+.image {
+  display: block;
+  max-width: 100%;
+  border-radius: var(--r-md);
+}
+.divider {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  padding: var(--s2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg-raised);
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s0);
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
+.input {
+  height: var(--field-h);
+  padding: 0 var(--s2);
+  border: 1px solid var(--line-input);
+  border-radius: var(--r-md);
+  background: var(--bg-raised);
+  color: var(--fg-1);
+  font: var(--t-body);
+}
+.input:focus-visible {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+.long {
+  height: auto;
+  min-height: calc(var(--field-h) * 2);
+  padding: var(--s1) var(--s2);
+  resize: vertical;
+}
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  font: var(--t-body);
+  color: var(--fg-1);
+  accent-color: var(--accent);
+}
+.slider {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s0);
+  font: var(--t-caption);
+  color: var(--fg-2);
+  accent-color: var(--accent);
+}
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s0);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.tabs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+.tablist {
+  display: flex;
+  gap: var(--s0);
+  border-bottom: 1px solid var(--line);
+}
+.tab {
+  padding: var(--s0) var(--s2);
+  border: 0;
+  border-bottom: var(--focus-outer-w) solid transparent;
+  background: none;
+  color: var(--fg-2);
+  font: var(--t-small);
+  cursor: pointer;
+}
+.tabOn {
+  border-bottom-color: var(--accent);
+  color: var(--fg-1);
+}
+.tab:focus-visible {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+/* R1 T7 (CR-0022 §(c) LiveStamp): "Data as of {time}" with Refresh on one line under the piece it stamps. */
+.live {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+}
+/* R1 T7 (CR-0022 pick 9): Keep sits at the surface's end, on its own line. */
+.keep {
+  display: flex;
+  justify-content: flex-end;
+}

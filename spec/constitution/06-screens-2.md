@@ -93,12 +93,14 @@ Common controls in the tables below: **Toggle**, **Segmented**, **Field** (text/
 | `sounds` [X-179] | "Sounds" | "A soft sound when you approve something and when a job is done." | Toggle | off | `appearance.sounds` | `settings-row-appearance-sounds` |
 | `mica` [X-179] | "See-through sidebar" | "Lets your Windows 11 wallpaper tint the sidebar." Hidden on Windows 10; disabled while Windows "Transparency effects" or high contrast is on | Toggle | on | `appearance.mica` | `settings-row-appearance-mica` |
 | `face-motion` [X-179] | "Show {agentName}'s eyes" | "Faces blink and look around. Off keeps them still." | Toggle | on | `appearance.faceMotion` | `settings-row-appearance-face-motion` |
+| `visuals` [X-180] | "Visuals" | "How often {agentName} shows charts, maps and small tools in replies." | Segmented: "Mostly words" · "Balanced" · "Show me visuals" | Balanced | `appearance.visuals` | `settings-row-appearance-visuals` |
 | `preview` | (no label) | — | Preview tile: a foo bubble and a user bubble (04 styles) at the chosen theme and size, saying "This is how messages will look." / "Looks good" | — | — | `settings-row-appearance-preview` |
 
 - Ctrl+= / Ctrl+- / Ctrl+0 change the same `zoom` value (09 §9.14.3); this row updates live.
 - Theme and accent apply instantly to every open window (main, live window, sign-in window).
 - Main colour [settled: X-51, Vikas chose "Indigo + option"]: indigo (`--accent`, 02 F0) is the default; the `accent` toggle is the only other choice in v1. Off → indigo everywhere; on → the Windows accent with derived shades, live.
 - Animations [X-150; 02 F7]: applies instantly as `<html data-motion>`, no restart; turning Windows animation effects back on re-enables the picker with the stored value.
+- Visuals [X-180, CR-0022 pick 8]: Mostly words means no kit pieces and no AI pages unless the user asks for one in that message; tables still show (04 §13.2). The engine reads the level for the next reply.
 - High contrast on (`forced-colors: active`): Theme and accent rows are disabled; a page banner (Info) says "Windows high contrast is on, so foo uses your contrast colours." Zoom still works.
 
 ### 6.3 Notifications (`notifications`)

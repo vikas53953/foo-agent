@@ -1,0 +1,13 @@
+/* Spec: 04 §1.9 Ask about this: a Chip (06 §0.4) 8px above the selection's end, raised over the chat. */
+.at {
+  position: fixed;
+  z-index: var(--z-menu);
+  transform: translate(-100%, calc(-100% - var(--s1)));
+}
+.pill {
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-16);
+}
+.pill:hover {
+  background: var(--bg-hover);
+}

@@ -53,6 +53,10 @@ function msg(p: Partial<MessageRow> = {}): MessageRow {
     pinned: false,
     providerNote: null,
     suggestions: null,
+    side: false,
+    understood: null,
+    kitPick: null,
+    actions: null,
     rev: 1,
     createdAt: T0,
     editedAt: null,
@@ -199,6 +203,7 @@ describe('menu items (04 §9.1)', () => {
       'react',
       'copy',
       'copyTable',
+      'ask', // R1 T6 (04 §17.4, X-180)
       'tryAgain',
       'good',
       'bad',

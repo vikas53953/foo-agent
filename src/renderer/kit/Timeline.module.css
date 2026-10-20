@@ -1,0 +1,71 @@
+/* Spec: 04 §13.5 (kit pieces: 02 tokens only), 02-2 §F19.1 (tabular figures; money in --weight-money), 02 §F11.1 (8px
+ * between related lines). R1 T3: a dot per item on one --line rail; date --t-caption --fg-2, title --t-body, amount right. */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.item {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--s3) var(--s9) 1fr auto;
+  align-items: baseline;
+  column-gap: var(--s2);
+  padding: var(--s1) 0;
+}
+.item::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--s3) / 2);
+  border-left: 1px solid var(--line);
+  content: '';
+}
+.item:first-child::before {
+  top: 50%;
+}
+.item:last-child::before {
+  bottom: 50%;
+}
+.item:only-child::before {
+  display: none;
+}
+.dot {
+  position: relative;
+  justify-self: center;
+  align-self: center;
+  width: var(--s1);
+  height: var(--s1);
+  border-radius: var(--r-full);
+  background: var(--accent);
+}
+.date {
+  font: var(--t-caption);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-2);
+  overflow-wrap: anywhere;
+}
+.title {
+  min-width: 0;
+  font: var(--t-body);
+  color: var(--fg-1);
+  overflow-wrap: anywhere;
+}
+.amount {
+  font: var(--t-body);
+  font-weight: var(--weight-money);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-1);
+  white-space: nowrap;
+}
+
+@media (forced-colors: active) {
+  .dot {
+    background: Highlight;
+  }
+  .item::before {
+    border-color: CanvasText;
+  }
+}

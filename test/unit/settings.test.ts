@@ -20,6 +20,7 @@ describe('settings repair', () => {
       sounds: false,
       mica: true,
       faceMotion: true,
+      visuals: 'balanced',
     });
     expect(settings.window.sidebarWidth).toBe(340);
     expect(settings.window.maximized).toBe(true);

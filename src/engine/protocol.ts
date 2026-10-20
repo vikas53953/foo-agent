@@ -11,6 +11,7 @@
 // GAP (GAPS.md 2026-10-18 "reactions not in WritableTable"): foo's reaction (08-4 §25.2 kind 'react', AT-027) needs a row in
 // `reactions`, which 08-1 §2.4.1 lists neither as writable nor as main-only; M3 adds `reactions` to the engine's inserts.
 import { z } from 'zod';
+import { KitActionMessageSchema } from '../shared/kit/catalog';
 import { PROVIDER_IDS } from '../shared/settings';
 import { ApprovalDraftSchema, ApprovalStateSchema } from '../shared/schemas';
 import type { Result } from '../shared/errors';
@@ -235,6 +236,18 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
     payload: z.object({ jid: z.string().min(1).max(100), text: z.string().min(1).max(65_536), draftCardId: z.string().min(1) }).strict(),
   }),
   z.object({ id: z.string(), kind: z.literal('wa.check'), payload: z.object({ jid: z.string().min(1).max(100) }).strict() }),
+  // CR-0022 (X-180) 08-1 §2.4, named in the dotted style of this union (the CR's `kit_action` / `side_question`; R1.tsv):
+  // a user action in a kit surface (the A2UI client `action`; the engine treats a gated one as if the user typed it), a
+  // LiveStamp Refresh, and a side question ("Ask about this", pick 6) answered without cancelling or re-planning a job.
+  z.object({ id: z.string(), kind: z.literal('kit.action'), payload: KitActionMessageSchema }),
+  z.object({
+    id: z.string(),
+    kind: z.literal('kit.refresh'),
+    payload: z
+      .object({ chatId: z.string(), messageId: z.string().optional(), cardId: z.string().optional(), surfaceId: z.string().min(1).max(64) })
+      .strict(),
+  }),
+  z.object({ id: z.string(), kind: z.literal('side.question'), payload: z.object({ messageId: z.string(), chatId: z.string() }).strict() }),
 ]);
 export type MainToEngine = z.infer<typeof mainToEngineSchema>;
 

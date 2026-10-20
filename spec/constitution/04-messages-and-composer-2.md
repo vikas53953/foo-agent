@@ -181,6 +181,7 @@ One row of `Chip`s (06 §0.4) above the pill, `role="group"` named "Suggestions"
 | Click | Fills the field with the chip's text and focuses it. **Never sends.** |
 | Hidden | on the first keystroke; while recording; in groups, WhatsApp mirrors and private chats; when the latest reply holds an Approval, Payment, Draft or Secret card or its job touched money. |
 | Motion | chips rise in 60ms apart with `--ease-spring`; fade on the first keystroke (§F7.1). |
+| Action chips [X-180, CR-0022] | Beside the reply chips, after the same reply: at most 3 action chips (`bubble-action-chips`, each `bubble-action-chip`), each a Fluent icon + label in `--accent` (Call, Open map, Add to calendar, Open link). Stored as JSON `ActionChip[]` (`{ kind: 'call' | 'map' | 'calendar' | 'link'; label; value }`) in the reply's `messages.actions` (08-1 §4.2 item 6). Call, Open map and Open link first show C-26 (a call reads "This calls {number}. Call?" with the button "Call", `bubble.actions.call_confirm`). An action chip that acts for the user goes through the normal gates (Article 6). Never shown after an Approval or Payment card. |
 
 ## §22. Input methods and guards
 
@@ -284,11 +285,12 @@ Not caught (by design): Aadhaar, PAN, phone numbers, addresses (Article 14 handl
 | Pasted thing | Result | Evidence |
 |---|---|---|
 | Plain or rich text ≤ 2,000 characters and ≤ 40 lines | Inserted as plain text (formatting, images inside HTML and links' targets dropped; link text kept) | `[foo decision]` |
-| Text > 2,000 characters **or** > 40 lines | Not inserted; becomes a "Pasted text · {n} characters" chip (§21.4). Your AI gets the full text. Click the chip → attachment viewer shows it read-only | `[OCL chat-attachments.ts:17,175 over 1,000 chars → attachment]` `[foo decision: 2,000 so a pasted email body stays text]` |
+| Text 2,001–10,000 characters **or** > 40 lines | Not inserted; becomes a "Pasted text · {n} characters" chip (§21.4). Your AI gets the full text. Click the chip → attachment viewer shows it read-only | `[OCL chat-attachments.ts:17,175 over 1,000 chars → attachment]` `[foo decision: 2,000 so a pasted email body stays text]` |
+| Text > 10,000 characters [X-180, CR-0022 pick 7] | Saved as `pasted-{time}.txt` in the chat's files and shown as a 04 §10.2 file chip; counts under the §22.6 limits | `[CR-0022: ChatGPT's 10,000-character threshold, docs]` |
 | An image on the clipboard | Image chip | AIC paste image |
 | Files copied in File Explorer | File chips (limits §22.6) | |
 | A URL alone | Inserted as text; preview row per §21.5 | |
-| Anything matching §22.4 | Paste catcher first; insertion waits for the choice | C8 |
+| Anything matching §22.4 | Paste catcher first, over the whole pasted text in every band; insertion waits for the choice | C8 |
 
 ### 22.6 Attachment limits and drag-drop
 

@@ -1,7 +1,7 @@
 // Spec: 05 card payloads (the line a card is known by: a checklist or brief `title`, a choice `question`, a payment or bill
 // `payee`, a sign-in `site`), 03-shell-1 §3.4.6 (list preview), 03-shell-2 §3.6.2.1 row 2 / §3.7.3.1 ("Needs you: {title}");
 // 08-0 §G.2 (card states per type; approval and payment use ApprovalState), 08-1 §4.5.1 (every write validates the state).
-// M5 (CR-0009): the approval states come from the approval machine's table.
+// M5 (CR-0009): the approval states come from the approval machine's table. CR-0022 (X-180): `kit` and `ai_page`.
 import { APPROVAL_STATES } from './approvalMachine';
 import type { CardType } from './types';
 
@@ -50,6 +50,9 @@ export const CARD_STATES: Record<CardType, readonly string[]> = {
   place: ['shown'],
   face_explainer: ['shown'],
   catch_up: ['shown'],
+  // CR-0022 (X-180): a kit card is shown or kept; an AI page is built, then ready or failed, and may be kept (04 §13.6).
+  kit: ['shown', 'kept'],
+  ai_page: ['building', 'ready', 'failed', 'kept'],
 };
 
 /** 08-1 §4.5.1: is `state` one of the type's states? */

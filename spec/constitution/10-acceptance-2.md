@@ -173,6 +173,47 @@ Fixture: FOO_TEST world, fake AI, pinned clock; motion checked at `data-motion` 
 | AT-326 | Pages and panels details | skeleton shimmer, tooltip after 500ms, toggle knob spring, segmented and Settings pill slide |
 | AT-327 | Lip | `Button variant="primary"` lip flattens on press in 83ms; other buttons keep the 0.97 press |
 
+### C.9 Rich replies (X-180, CR-0022)
+
+Fixture: FOO_TEST world, fake AI replies with ```a2ui and ```page blocks, pinned clock, motion off for pictures. Every piece row also covers keyboard, Narrator, and light, dark and high contrast.
+
+| ID | Verify | Pass |
+|---|---|---|
+| AT-340 | LineChart (line, area, bar) | the three variants draw from one series and from 3; one hue; axis labels and values follow 02 number and money rules; legend only with 2+ series |
+| AT-341 | MapStops | numbered stops to scale on a plain panel with a dashed route and the stops list; "Open in Maps" is an action chip; no network request leaves the PC while it draws |
+| AT-342 | Stepper and Slider binding | + / − and arrow keys change the value within min/max; every component bound to the same path updates at once |
+| AT-343 | Compare | 2–3 columns; the highlighted column is outlined with its one-line why |
+| AT-344 | Timeline | items in date order; amounts in money format |
+| AT-345 | WeekCalendar | busy and free slots for 7 days; Narrator reads each slot |
+| AT-346 | TimedChecklist | a timer runs in the renderer; ticks are kept in the surface's data model |
+| AT-347 | Calculator | outputs recompute from the inputs (+ − × ÷ ^, min, max, round, pmt); a bad formula shows "Can't work this out" |
+| AT-348 | GoalRing | arc proportional to value / target, "{value} of {target}" in the middle, `role="meter"` |
+| AT-349 | ListPick | the pick counts as a Choice answer; a reaction counts too (05 §5.3.4) |
+| AT-350 | TimePick | the picked slot goes back to foo, who confirms it |
+| AT-351 | ShortForm | up to 6 fields; submit sends one action with the values |
+| AT-352 | LiveStamp + Refresh | "Data as of {time}" shows; Refresh sends `kit:refresh` |
+| AT-353 | Streaming | each complete A2UI message draws while the reply streams; an incomplete one is held back |
+| AT-354 | Invalid component | an invalid or unknown component is dropped, "Couldn't show part of this" shows, the words stay |
+| AT-355 | Action round trip | a Button action reaches the engine as `kit.action` and the surface updates from the reply |
+| AT-356 | Gated Button | a Button whose action sends, books, pays, deletes or shares opens an approval, never acts directly |
+| AT-357 | AI page sealed | a fetch, an image URL or a navigation inside the page fails; main logs the denied request |
+| AT-358 | AI page sandbox | the frame has `sandbox="allow-scripts"` only: no same-origin, popups or forms |
+| AT-359 | AI page caps | a page over 512 KB shows "This page is too big to open"; height stops at 600px and the page scrolls inside |
+| AT-360 | AI page bridge | messages from other sources, bad schema and more than 10 calls per second are refused; every call is logged through `page:rpc` |
+| AT-361 | AI page actions | `requestAction` goes through the gate; `openLink` always shows C-26; secret text in any call is refused and the Secret box posts |
+| AT-362 | AI page first view | a kit piece or the status line shows before the page is ready |
+| AT-363 | "foo read:" | the line shows the people, places, dates, times and amounts understood, and never a secret |
+| AT-364 | Ask about this | a side question is answered while a running job keeps running (its checklist does not stop or re-plan) |
+| AT-365 | Paste bands | ≤ 2,000 inline; 2,001–10,000 "Pasted text" chip; > 10,000 `pasted-{time}.txt` file chip; the paste catcher runs first in every band |
+| AT-366 | Visuals = Mostly words | the same question answers without kit pieces or AI pages unless the user asks for one |
+| AT-367 | Reply vs action chips | reply chips fill the composer; ≤ 3 action chips act through the gates; none after an approval or payment card |
+| AT-368 | Refresh | Refresh updates the surface's data model and "Data as of" |
+| AT-369 | Keep | Keep saves a `kept_items` row listed in the chat's Files tab; a kept AI page reopens only in the sealed box; no `.html` file is written |
+| AT-370 | Secret-like values | ShortForm and TextField refuse values that match 04-2 §22.4 and offer the Secret box |
+| AT-371 | Calculator never runs code | formulas go through `shared/kit/evaluate.ts`; no `eval`, `Function` or dynamic import in the kit bundle |
+
+AT-372 to AT-379 are reserved for R1.
+
 ---
 
 ## §D Article compliance tests

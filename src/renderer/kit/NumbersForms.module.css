@@ -1,0 +1,262 @@
+/* Spec: 04 §13.5 (kit pieces in foo's look: 02 tokens only; light, dark, high contrast and Animations Off/Basic apply),
+ * 02-2 §F19.9 (goal ring: track `--bg-sunken`, arc `--accent`, "{value} of {target}" in the middle; forced colours: track
+ * 1px `CanvasText`, fill `Highlight`), §F19.1 (tabular figures), 06 §0.4 (fields: --field-h, 1px --line-input), 05-1 §0.2
+ * (a framed group: 1px --line, --r-lg, --bg-raised), 02 §F7 (P1 motion tokens). R1 T4: Stepper, Compare, Calculator,
+ * GoalRing, TimedChecklist, ShortForm. */
+.piece {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  min-width: 0;
+}
+.label {
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
+.title {
+  margin: 0;
+  font: var(--t-body-strong);
+  color: var(--fg-1);
+}
+.caption {
+  margin: 0;
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
+.number {
+  font: var(--t-body-strong);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-1);
+}
+
+/* Stepper */
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+}
+.step {
+  inline-size: var(--field-h);
+  block-size: var(--field-h);
+  border: 1px solid var(--line-input);
+  border-radius: var(--r-full);
+  background: var(--bg-raised);
+  color: var(--fg-1);
+  font: var(--t-body-strong);
+  cursor: pointer;
+  transition: transform var(--m-fast) var(--ease-standard);
+}
+.step:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.step:disabled {
+  color: var(--fg-3);
+  cursor: default;
+}
+.spin {
+  min-inline-size: calc(var(--field-h) * 1.5);
+  text-align: center;
+  border-radius: var(--r-md);
+}
+.step:focus-visible,
+.spin:focus-visible,
+.input:focus-visible {
+  outline: var(--focus-outer-w) solid var(--focus-outer);
+  outline-offset: var(--focus-inner-w);
+}
+
+/* Compare */
+.compare {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: var(--s1);
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  padding: var(--s2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg-raised);
+  min-width: 0;
+}
+.best {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.badge {
+  align-self: flex-start;
+  padding: 0 var(--s1);
+  border-radius: var(--r-full);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font: var(--t-caption-strong);
+}
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s0);
+  margin: 0;
+}
+.rows dt {
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
+.rows dd {
+  margin: 0 0 var(--s0);
+  font: var(--t-body);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-1);
+}
+
+/* Calculator and ShortForm fields */
+.fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--field-h) * 4), 1fr));
+  gap: var(--s1) var(--s2);
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s0);
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
+.input {
+  height: var(--field-h);
+  padding: 0 var(--s2);
+  border: 1px solid var(--line-input);
+  border-radius: var(--r-md);
+  background: var(--bg-raised);
+  color: var(--fg-1);
+  font: var(--t-body);
+  font-variant-numeric: tabular-nums;
+  min-width: 0;
+}
+.wide {
+  grid-column: 1 / -1;
+}
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s0);
+  margin: 0;
+  padding: var(--s2);
+  border-radius: var(--r-lg);
+  background: var(--bg-sunken);
+}
+.result {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s2);
+  font: var(--t-body);
+  color: var(--fg-1);
+}
+.cannot {
+  font: var(--t-body);
+  color: var(--fg-3);
+}
+.actions {
+  display: flex;
+  gap: var(--s1);
+}
+
+/* GoalRing */
+.goal {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s1);
+}
+.ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+  inline-size: calc(var(--field-h) * 3);
+  block-size: calc(var(--field-h) * 3);
+}
+.ring svg {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  transform: rotate(-90deg);
+}
+.track {
+  fill: none;
+  stroke: var(--bg-sunken);
+}
+.arc {
+  fill: none;
+  stroke: var(--accent);
+  stroke-linecap: round;
+  transition: stroke-dashoffset var(--m-normal) var(--ease-standard);
+}
+.middle {
+  position: relative;
+  max-inline-size: 80%;
+  text-align: center;
+  font: var(--t-caption-strong);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-1);
+}
+
+/* TimedChecklist */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.stepRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s1);
+}
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  font: var(--t-body);
+  color: var(--fg-1);
+  accent-color: var(--accent);
+}
+.done {
+  color: var(--fg-3);
+  text-decoration: line-through;
+}
+.timer {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  font: var(--t-caption);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-2);
+}
+
+/* The refusal under a surface (04 §13.5, Article 8) with "Move to secret box" */
+.refused {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s1);
+}
+
+@media (forced-colors: active) {
+  .track {
+    stroke: CanvasText;
+    stroke-width: 1;
+  }
+  .arc {
+    stroke: Highlight;
+  }
+  .best {
+    outline: var(--focus-outer-w) solid Highlight;
+  }
+}

@@ -1,6 +1,7 @@
 // Spec: 08-0 §0 (a DB row maps to its *Row by camelCasing every column; INTEGER flags → boolean; JSON TEXT → parsed),
 // §B.1 (derived fields and drops), 08-1 §3.4 (derivations), 08-5 §2. This file is the only DB row ↔ *Row converter.
 import type {
+  ActionChip,
   Attachment,
   CardRow,
   ConnectionRow,
@@ -13,6 +14,7 @@ import type {
   StepRow,
   WaMessageRow,
 } from '../../shared/types';
+import { kitPickOf } from '../../shared/kit/pick';
 
 export type DbRow = Record<string, unknown>;
 
@@ -85,6 +87,10 @@ export function messageRow(r: DbRow, reactions: MessageRow['reactions'] = []): M
     pinned: flag(r.pinned),
     providerNote: str(r.provider_note),
     suggestions: parseJson<string[] | null>(r.suggestions, null),
+    side: flag(r.side),
+    understood: parseJson<string[] | null>(r.understood, null),
+    actions: parseJson<ActionChip[] | null>(r.actions, null),
+    kitPick: r.author_kind === 'user' ? kitPickOf(str(r.text_for_ai)) : null,
     rev: Number(r.rev),
     createdAt: Number(r.created_at),
     editedAt: num(r.edited_at),

@@ -219,6 +219,11 @@ export function suggestedNameSlot(hit: Pick<SecretHit, 'pattern'>): SecretNameSl
   }
 }
 
+/** 04-2 §22.4: a P11 match carries its label ("password: …"); only what follows the label goes into the Secret box. */
+export function secretOnly(hit: Pick<SecretHit, 'pattern'>, value: string): string {
+  return hit.pattern === 'P11' ? value.replace(/^(?:password|passwd|pwd|passcode|pass|पासवर्ड|ਪਾਸਵਰਡ)\s*(?:is|है|:|=|-)?\s*/iu, '') : value;
+}
+
 /** P16 context: 10 minutes after foo, a helper or a card asked for a code (04-2 §22.4). */
 export const ASKED_FOR_CODE_MS = 10 * 60_000;
 const ASKS_FOR_CODE = /\b(?:otp|one[ -]time (?:password|code)|verification code|login code|code)\b|ओटीपी|ਓਟੀਪੀ/iu;

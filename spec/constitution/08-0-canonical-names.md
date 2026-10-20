@@ -102,6 +102,7 @@ interface Settings {
 | `zoom` | 100 | enum above; Ctrl+= / Ctrl+- step through it |
 | `appearance.theme` | 'system' | — |
 | `appearance.useWindowsAccent` | false | replaces `systemAccent` (X-51) |
+| `appearance.visuals` [X-180] | 'balanced' | 'words' \| 'balanced' \| 'visuals' (06-2 §6.2 Visuals; CR-0022 pick 8) |
 | `appearance.animations` | 'full' | 'full' \| 'basic' \| 'off'; first run sets 'basic' on ≤ 4 logical CPUs or < 8 GB RAM; Windows animation effects off shows 'off' without writing it (X-150, 02 F7) |
 | `window.sidebarWidth` | 340 | 300–460 at L; at M the shell clamps the shown width to ≤ 400 and at S fixes it at 300 without writing the setting (02 F5 `--sidebar-w`, X-91) |
 | `window.rightShellOpen` | true | read at L only (the right shell is open by default at L, Blueprint, X-91); the M/S overlay never reads or writes it (`ui.rightShellOpenOverlay`, closed by default, not persisted) |
@@ -210,7 +211,7 @@ type SettingsPage = 'account' | 'appearance' | 'notifications' | 'permissions' |
 type WindowsSettingsPage = 'notifications' | 'privacy-microphone' | 'startupapps' | 'signin' | 'storagesense' | 'dateandtime';   // → ms-settings:notifications, privacy-microphone, startupapps, signinoptions, storagesense, dateandtime (A-1)
 type BadgeValue = 'seen' | 'working' | 'waiting' | 'done' | 'done_unverified' | 'failed' | 'stopped';   // §F
 type NotificationKind = 'choice' | 'approval' | 'payment' | 'signin' | 'done' | 'routine' | 'brief' | 'stuck' | 'error' | 'reply' | 'reminder' | 'summary';
-type CardType = /* §G.1, 25 values */ string;
+type CardType = /* §G.1, 27 values */ string;
 type ConnectVariant = 'google' | 'whatsapp' | 'outlook' | 'one_app' | 'allow_send' | 'contacts_only';   // ConnectPayload.variant, 08-5 §4.1 (X-127)
 type SetupCard = 'welcome' | 'ai_finder' | 'name' | 'face' | 'apps';   // card type 'setup' (X-119; 'whatsapp_link' withdrawn, Card E is the Connect card, X-139)
 // Phase 3a additions (X-90)
@@ -343,7 +344,7 @@ Card component files: `Brief, Checklist, Choice, OptionTiles, Approval, Payment,
 **Primitive props (X-119; 02-3 §F32.4 is the owner, 05 §0.3 and 06 §0.4 point there):** `IconButton size: 'xs' (24 visual: chip remove, strip close) | 'sm' (32: hover toolbar, action row) | 'md' (36, `--icon-btn`: shell headers, page headers, dialogs, the default) | 'lg' (40: inside cards, 05 §0.3)`; hit area always padded to 40×40; icon 20px except `xs` 16px; hover/pressed shape `--r-full`, `--r-sm` only with the `inField`/`inCell` prop. `TextField size: 'sm' (36 = --field-h: cards, left-shell search, page search and find fields) | 'md' (40: pages and dialogs, the default)` and `shape: 'field' (--r-sm) | 'search' (--r-full, Search 16 icon, no border)`; `size` and `shape` are independent.
 
 ### E.4 Load URL and CSP (FE-22)
-Production loads `app://foo/index.html` (custom protocol registered privileged before ready). Dev loads `http://localhost:5173` only when `FOO_DEV=1`. Vite `base: './'`. The CSP, the same in both modes, is `default-src 'self' app:; img-src 'self' app: data: blob:; style-src 'self' 'unsafe-inline'; connect-src 'none'` (08-1 §1.2.1 is the source; `connect-src` has no remote host).
+Production loads `app://foo/index.html` (custom protocol registered privileged before ready). Dev loads `http://localhost:5173` only when `FOO_DEV=1`. Vite `base: './'`. The CSP, the same in both modes, is `default-src 'self' app:; img-src 'self' app: data: blob:; style-src 'self' 'unsafe-inline'; connect-src 'none'` (08-1 §1.2.1 is the source; `connect-src` has no remote host). X-180 (CR-0022) adds `frame-src foo-page:` for AI pages (04 §13.6); main registers `foo-page` as a privileged scheme beside `app`. Nothing else in the CSP changes.
 
 ### E.5 Resources (`resources/`)
 `pricing.json`, `prompts/*.md`, `handback-sites.json`, `no-capture-hosts.json`, `web-tools.json`, `maker-pages.json`, `google-oauth.json`, `voice-pack.json` (`{ url, sha256, bytes, version }`), `ideas.json`, `billers.json`, `rail-rules.json`, `hub-manifests/{slug}.json` + `hub-manifests/_hub.json` (v1.1, 08-3 §16.8.1). Formats: owning fixer (B for prompts/handback/no-capture/web-tools/pricing/billers/rail-rules, C for voice-pack/google-oauth/hub-manifests, E for maker-pages/ideas). Every file is validated by zod at load; a file that fails is a startup error logged to the tech log and the feature that needs it shows its error state.
@@ -386,7 +387,7 @@ Rules: `slow` and `cancelled` are not values (slow is derived: `jobs.slow` → �
 ## §G Models
 
 ### G.1 Card types (X-56)
-`brief, checklist, choice, tiles, approval, payment, bill, draft, secret, signin, connect, plan, routine, routine_offer, stuck, error, spend_cap, table, file, link_preview, job_link, place, face_explainer, catch_up, setup` (25 types; `catch_up` is J27, 12-2 §12.27; `setup` is the first-run surfaces of 06-1 §2.1–§2.4 that are not Choice/Connect cards, payload `SetupCardPayload` 08-5 §4.1, states `shown | answered | skipped`, X-119).
+`brief, checklist, choice, tiles, approval, payment, bill, draft, secret, signin, connect, plan, routine, routine_offer, stuck, error, spend_cap, table, file, link_preview, job_link, place, face_explainer, catch_up, setup, kit, ai_page` (27 types; `kit` and `ai_page` are X-180, 04 §13.5–§13.6, 05 §0.1, states `kit` shown \| kept and `ai_page` building \| ready \| failed \| kept; `catch_up` is J27, 12-2 §12.27; `setup` is the first-run surfaces of 06-1 §2.1–§2.4 that are not Choice/Connect cards, payload `SetupCardPayload` 08-5 §4.1, states `shown | answered | skipped`, X-119).
 
 Sub-kinds are payload fields, not types: `secret.secretKind` ∈ ai_key \| voice_key \| web_key \| login \| card \| otp \| cvv; `signin.mode` ∈ sign_in_here \| take_over; `choice.purpose` ∈ job \| setup \| memory_confirm \| app_use \| stop_which \| conflict \| file_in \| photo_notice (`file_in`: no Best fit, no Skip, no reminder or auto-pick, no job until answered, 12-2 §12.29.4; `photo_notice`: same rules, §G.18); `routine_offer.source` ∈ habit \| idea \| after_job (§B.3 `RoutineOfferPayload`); `approval.variant` ∈ standard \| deadline_reminder; `error.variant` ∈ error \| recovery; `connect.variant` ∈ `ConnectVariant` (google \| whatsapp \| outlook \| one_app \| allow_send \| contacts_only; `ConnectPayload` 08-5 §4.1, X-127); `bill` payload is `BillPayload` (08-5 §4.1; `duplicate`, `scam`); `table`, `file`, `link_preview`, `place` payloads are 08-5 §4.1; `face_explainer` has an empty payload and only state `shown`; `catch_up` payload is `CatchUpPayload`. Removed types: code, cvv, takeover, recovery, memory_confirm, link, feedback, helper_form, group_form, paste, voice, spendcap (→ spend_cap). Setup interview cards reuse these types with `payload.setupCard: 'A'…'H'`.
 

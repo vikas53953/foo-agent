@@ -1,18 +1,25 @@
 // Spec: 08-0 §E.4 (load URL and CSP, FE-22), 08-1 §1.2.1. Production loads app://foo/index.html. 08-1 §4.1 storage map
 // (attachments `{DATA}\data\inbox\`, draft copies `{DATA}\data\drafts\{chatId}\`, voice notes `{DATA}\data\voice\`): the
-// app://media host serves only those folders (review S2), after resolving links.
+// app://media host serves only those folders (review S2), after resolving links. X-180 (CR-0022, 04 §13.6): the app CSP adds
+// `frame-src foo-page:` and `foo-page` is registered privileged beside `app` (its handler is main/page/pageScheme.ts).
 import { realpathSync } from 'node:fs';
 import { app, net, protocol } from 'electron';
 import { basename, isAbsolute, join, normalize, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { PAGE_SCHEME } from '../../shared/kit/page';
 
-export const CSP = "default-src 'self' app:; img-src 'self' app: data: blob:; style-src 'self' 'unsafe-inline'; connect-src 'none'";
+export const CSP =
+  "default-src 'self' app:; img-src 'self' app: data: blob:; style-src 'self' 'unsafe-inline'; connect-src 'none'; frame-src foo-page:";
 export const APP_URL = 'app://foo/index.html';
 export const DEV_URL = 'http://localhost:5173';
 
 /** Must run before `ready`. */
 export function registerAppScheme(): void {
-  protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { standard: true, secure: true, supportFetchAPI: true } }]);
+  protocol.registerSchemesAsPrivileged([
+    { scheme: 'app', privileges: { standard: true, secure: true, supportFetchAPI: true } },
+    // 04 §13.6: an AI page's own origin; no fetch, CORS or CSP bypass (its documents carry their own header CSP).
+    { scheme: PAGE_SCHEME, privileges: { standard: true, secure: true } },
+  ]);
 }
 
 export function rendererRoot(): string {

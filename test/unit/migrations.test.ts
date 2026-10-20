@@ -1,6 +1,6 @@
 // 08-1 §4.2 item 4: forward-only migration test. (a) every migration on an empty DB → integrity ok, no FK problems,
 // and sqlite_master equals the §4.3 DDL of the vendored spec exactly, with 0002 (CR-0008 G-M4-03) widening only the two route
-// CHECKs to the five Route values. (b) re-opening applies nothing twice. (c) 0002 keeps the rows and foreign keys of a filled
+// CHECKs to the five Route values, 0003 and 0004 applied to the reference as written. (b) re-opening applies nothing twice. (c) 0002 keeps the rows and foreign keys of a filled
 // database.
 import Database from 'better-sqlite3';
 import { copyFileSync, mkdtempSync, readFileSync } from 'node:fs';
@@ -28,10 +28,10 @@ const schema = (db: Database.Database) =>
 describe('migrations', () => {
   it('are numbered from 0001 with no gaps', () => expect(listMigrations(DIR)[0]).toEqual({ version: 1, file: '0001_init.sql' }));
 
-  it('build exactly the spec schema, with only the route CHECKs widened by 0002 and the 0003 suggestions column', () => {
+  it('build exactly the spec schema, with only the route CHECKs widened by 0002, the 0003 suggestions column and the 0004 rich-replies changes', () => {
     const db = new Database(':memory:');
     db.pragma('foreign_keys = ON');
-    expect(migrate(db, DIR)).toEqual([1, 2, 3]);
+    expect(migrate(db, DIR)).toEqual([1, 2, 3, 4]);
     expect(db.pragma('foreign_keys', { simple: true })).toBe(1);
     expect(db.pragma('integrity_check', { simple: true })).toBe('ok');
     expect(db.pragma('foreign_key_check')).toEqual([]);
@@ -39,6 +39,8 @@ describe('migrations', () => {
     ref.exec(specDdl());
     // 0003 (CR-0021 pick 10) adds one nullable column to messages; the reference gets the same ALTER.
     ref.exec(readFileSync(join(DIR, '0003_message_suggestions.sql'), 'utf8'));
+    // 0004 (CR-0022, X-180) rebuilds cards with the 27 card types, adds messages.side and kept_items; the reference too.
+    ref.exec(readFileSync(join(DIR, '0004_rich_replies.sql'), 'utf8'));
     type Obj = { type: string; name: string; tbl_name: string; sql: string | null };
     const mine = schema(db) as Obj[];
     const spec = schema(ref) as Obj[];
@@ -66,7 +68,7 @@ describe('migrations', () => {
       "INSERT INTO steps (id, job_id, idx, phrase_key, state, route) VALUES ('s_1', 'j_1', 0, 'look_web', 'running', 'browser')",
     ).run();
     expect(() => db.prepare("UPDATE steps SET route = 'email' WHERE id = 's_1'").run()).toThrow(/CHECK/);
-    expect(migrate(db, DIR)).toEqual([2, 3]);
+    expect(migrate(db, DIR)).toEqual([2, 3, 4]);
     expect(db.prepare('SELECT id, route FROM jobs').all()).toEqual([{ id: 'j_1', route: 'api' }]);
     db.prepare("UPDATE jobs SET route = 'handback' WHERE id = 'j_1'").run();
     db.prepare("UPDATE steps SET route = 'email' WHERE id = 's_1'").run();
@@ -85,7 +87,7 @@ describe('migrations', () => {
     const file = join(mkdtempSync(join(tmpdir(), 'foo-db-')), 'data', 'foo.db');
     openDb(file, DIR).close();
     const db = openDb(file, DIR);
-    expect(db.prepare('SELECT version FROM schema_migrations').pluck().all()).toEqual([1, 2, 3]);
+    expect(db.prepare('SELECT version FROM schema_migrations').pluck().all()).toEqual([1, 2, 3, 4]);
     expect(db.pragma('journal_mode', { simple: true })).toBe('wal');
     db.close();
   });

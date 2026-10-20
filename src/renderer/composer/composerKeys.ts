@@ -48,7 +48,7 @@ export interface KeyFacts {
   mentionHasMatch: boolean;
   catchOpen: boolean;
   recording: 'hold' | 'locked' | null;
-  strip: 'reply' | 'edit' | null;
+  strip: 'reply' | 'side' | 'edit' | null; // R1 T6: 'side' is the side-question strip (04 §17.5)
   streaming: boolean;
   chips: number;
 }

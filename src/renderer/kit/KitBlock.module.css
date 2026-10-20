@@ -1,0 +1,10 @@
+/* Spec: 04 §13.5 (the kit block in a reply: its surfaces stacked 8px apart, 02 §F11.1 related lines). R1 T2. */
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  min-width: 0;
+}
+.block:empty {
+  display: none;
+}

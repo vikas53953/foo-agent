@@ -1,0 +1,44 @@
+/* Spec: 06-1 §4.1 "Files {Helper} made" file row (32px type icon; name --t-body, ellipsis; date --t-small --fg-2;
+ * [ Open ] [ Show ]), 03-shell-2 §3.7.3 (panel rows 8px apart). R1 T7 (CR-0022 pick 9). */
+.list {
+  display: grid;
+  gap: var(--s1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.row {
+  display: grid;
+  grid-template-columns: var(--s6) minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--s1);
+}
+.icon {
+  display: grid;
+  place-items: center;
+  width: var(--s6);
+  height: var(--s6);
+  border-radius: var(--r-md);
+  background: var(--bg-sunken);
+  color: var(--fg-2);
+}
+.text {
+  display: grid;
+  min-width: 0;
+}
+.name {
+  overflow: hidden;
+  font: var(--t-body);
+  color: var(--fg-1);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.meta {
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.actions {
+  display: flex;
+  grid-column: 2;
+  gap: var(--s0);
+}

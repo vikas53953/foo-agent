@@ -1,5 +1,5 @@
 {
-  "_why": "CR-0008: M4 copy keys landed by T1 before the ticket that renders them. check-copy counts a key listed here as used and fails once a t() call uses it (then delete the line). Empty by M4 close-out (T7). CR-0009 adds the M5 keys (owner = the M5 ticket that renders them); empty by M5 close-out (T9). M6 (CR-0010) adds its keys the same way; empty by M6 close-out (T8). P1 Polish (CR-0021) adds its keys the same way (owner = the P1 ticket that renders them); empty by P1 close-out.",
+  "_why": "CR-0008: M4 copy keys landed by T1 before the ticket that renders them. check-copy counts a key listed here as used and fails once a t() call uses it (then delete the line). Empty by M4 close-out (T7). CR-0009 adds the M5 keys (owner = the M5 ticket that renders them); empty by M5 close-out (T9). M6 (CR-0010) adds its keys the same way; empty by M6 close-out (T8). P1 Polish (CR-0021) adds its keys the same way (owner = the P1 ticket that renders them); empty by P1 close-out. R1 Rich Replies (CR-0022) adds its keys the same way (owner = the R1 ticket that renders them); empty by R1 close-out.",
   "keys": {
     "thread.stop.in_flight": "M10 payments (stop during payment submit; copy names the payment)",
     "thread.queued.ai_back": "M4-T2 runner",

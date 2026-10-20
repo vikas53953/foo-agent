@@ -129,6 +129,7 @@ Owned by 03-shell §3.6.6 (40px circle, count badge, "Go to newest message"). Th
 
 - Text in every bubble is selectable with the mouse (`user-select: text`), including across bubbles. Meta (time, ticks), badges, chips, buttons and avatars are `user-select: none` and never enter a selection.
 - Ctrl+C on a selection copies **plain text only**: bubble texts joined by one blank line, markdown markers removed, links as their visible text followed by " ({url})".
+- Ask about this [X-180, CR-0022 pick 6]: a selection inside one foo or helper bubble shows a pill "Ask about this" (Chip, 06 §0.4, 8px above the selection's end, `bubble-ask-pill`); click opens the side-question strip of §17.5 quoting the selected words. Copy is unchanged.
 - Selection colour: inside the user's bubble, background `--accent`, text `--on-accent`; everywhere else, background `--accent-soft`, text `--fg-1`.
 - Multi-select mode: message menu → "Select". A 20px checkbox (`--r-xs`, 1px `--line-strong`; checked `--accent` + `Checkmark` 16px `--on-accent`) appears 8px left of every row; clicking a row toggles it. The chat header is replaced by the selection bar, which is owned by 03-shell §3.6.2.3 (same 60px header box, not the banner strip) [FE-16]: "{n} selected" + "Copy" + "Delete" (opens **C-25**, `dialog-c-25`, copy keys `dialog.c_25.*`: the §6.3 dialog with title "Delete {count} messages?" and the same body and buttons) + "Cancel" (Esc). Copy uses the plain-text rule above, each message prefixed "{sender}, {time}: ". Selected ids live in `ui.selection`. Test id: checkbox `bubble-select-check` (`aria-checked`; the row carries `data-message-id`).
 
@@ -280,6 +281,13 @@ Test id: `bubble-quote`.
 - 8px (`--s1`) gap between the quote block and the text.
 - Click the quote: scrolls to the original and highlights its row with `--accent-soft` background for 1600ms (fade in and out `--m-normal`; motion request, §26). If the original was deleted: quote text "Deleted message", not clickable.
 
+### 6.5 "foo read:" line [X-180, CR-0022]
+
+Test id: `bubble-read-line`.
+
+- Under the last user bubble only, 4px below it, aligned with the bubble's right edge: "{agentName} read:" then the people, places, dates, times and amounts foo understood from that message (a party size reads "{n} people", `bubble.read.people`), joined by " · ", `--t-caption` `--fg-3`, one line with ellipsis; a tooltip shows the full list. Narrator: "{agentName} understood: {items}".
+- Built by the engine from the redacted text (08-2 §11.4) only, so it never shows a secret; stored as JSON `string[]` in `messages.understood` (08-1 §4.2 item 6); hidden when nothing was found, in groups and in WhatsApp mirrors. It is not part of the bubble and is not copied.
+
 ## §7. Not sent (failed to send)
 
 A user message fails only when foo cannot even queue it: attachment copy failed, the file disappeared before sending, the send queue is full (> 20 messages waiting), or the disk is full. Offline / AI down / spend cap are **not** failures; they are Waiting to send (§3.3).
@@ -326,6 +334,8 @@ Test id: `bubble-reaction` (`data-index`, `aria-pressed` = mine).
 | Hidden when | multi-select mode; the bubble is being edited; Narrator users reach the same items through the menu | same | — |
 
 `[MSG §5 WA: react button floats outside the bubble on the far side; Signal hover fade]` `[foo decision: one ⋯ button outside instead of WA's ⌄ inside the bubble, because a 24px chevron inside a bubble cannot meet the 40px target rule]`
+
+Selecting text inside a foo or helper bubble adds the "Ask about this" pill of §1.9 beside the selection; the toolbar itself is unchanged [X-180].
 
 ### 9.3 Reaction picker
 
@@ -459,7 +469,7 @@ A mirrored WhatsApp group (`chats.kind='wa_mirror'`; row 03-shell-1 §3.4.5.1) r
 
 | | Plain bubble | Rich bubble |
 |---|---|---|
-| Used when | The message has only paragraphs, bold/italic/strike, links, inline code, lists of ≤ 7 items, quotes, citation pills, auto-links | The message contains **any** of: a heading, a table, a code block, an image, a list with > 7 items, or more than **900 characters** of text |
+| Used when | The message has only paragraphs, bold/italic/strike, links, inline code, lists of ≤ 7 items, quotes, citation pills, auto-links | The message contains **any** of: a heading, a table, a code block, an image, a kit surface or AI page (§13.5, §13.6; X-180), a list with > 7 items, or more than **900 characters** of text |
 | Width | shrink-to-fit, max `--bubble-max` (72% of column, ≤ 620px) | fixed width = min(680px, 100% of the column) (02 F5 rich cap) |
 | Padding | 8px 12px (same as the user's bubble) | 12px 16px (`--s2` / `--s3`) |
 | Corners, fill | §1.4; `--bubble-foo` fill, `--on-bubble-foo` text | same |
@@ -506,7 +516,7 @@ The engine's sentence gate holds the first **1.5 s** of every turn (08-4 §25.5,
 
 ## §13. Markdown subset and styles
 
-foo renders **only** these elements. Anything else (raw HTML, footnotes, math, task-list checkboxes, nested lists deeper than 2 levels, definition lists) is shown as plain text with its markers removed. The engine (08) tells your AI to use only this subset.
+foo renders **only** these elements. Anything else (raw HTML outside a `page` block, footnotes, math, task-list checkboxes, nested lists deeper than 2 levels, definition lists) is shown as plain text with its markers removed. The engine (08) tells your AI to use only this subset.
 
 | Element | Style | Evidence | Test id |
 |---|---|---|---|
@@ -526,6 +536,8 @@ foo renders **only** these elements. Anything else (raw HTML, footnotes, math, t
 | Table | §13.2 | | `bubble-table` |
 | Image | §13.3 | | `bubble-image` |
 | Citation / source pill | §13.4 | | `bubble-citation` |
+| Kit surface (fenced block `a2ui`) | §13.5 [X-180] | CR-0022 | `kit-surface` |
+| AI page (fenced block `page`) | §13.6 [X-180] | CR-0022 | `ai-page` |
 
 ### 13.1 Code block
 
@@ -566,6 +578,31 @@ Test ids: pill `bubble-citation` (`data-index`), popover `bubble-citation-popove
 - Click on the pill itself = open the popover (not the page).
 - A message with ≥ 2 sources ends with a row "Sources ({n}) ›" `--t-caption` `--accent`, 8px above the meta; click opens the same popover listing all sources.
 - Narrator: pill name "Source: {name}, {n} more".
+
+### 13.5 Kit surface [X-180, CR-0022]
+
+Test ids: `kit-surface`, the dropped caption `kit-dropped`, one id per foo component (`kit-line-chart` … `kit-live-stamp`, `src/shared/testids.ts`).
+
+- A fenced block with language `a2ui` in foo's text (`side === 'foo'`; a helper's or the user's fence stays a code block) holds A2UI v0.9.1 server messages (`createSurface`, `updateComponents`, `updateDataModel`, `deleteSurface`; one JSON object per message, an outer array and line breaks allowed), restricted to foo's catalog `foo.kit.v1` (CR-0022 §(c): 15 standard parts used as-is, Modal not used, and 13 foo components). The zod schemas in `src/shared/kit/catalog.ts` are the catalog: they check every message and generate the AI's catalog text (08-4 §24.5). A `createSurface` naming another catalog is dropped; unknown keys on it (`theme`, `sendDataModel`) are ignored. A block over 512 KB draws nothing (caption shown); a `data:` image is at most 256 KB of base64.
+- Bound values (`{ "path": "/x" }` into the surface's data model) are re-checked with the field's own schema after they resolve; a value that fails is dropped like an invalid component.
+- Streaming: each complete message renders at once; an incomplete one is held back (same rule as §14.4). When the reply ends, a still-incomplete message is dropped.
+- An invalid or unknown component, or an invalid message, is dropped; the surface shows the rest, a quiet caption "Couldn't show part of this" (`kit.surface.dropped`, `--t-caption` `--fg-3`) sits under it, and the reply's words still show. Copy (§1.9) carries the words only.
+- The user's own fences are never drawn: a user message's `a2ui` block stays a code block.
+- User actions (Button, ListPick, TimePick, ShortForm, control changes that the surface sends) go renderer → main (`kit:action`) → engine as MainToEngine `kit.action` (08-1 §2.4). Any action that would send, book, pay, delete or share is an approval request (Article 6), never a direct action.
+- `Image` sources are only `data:` images or a file already in the chat's files (`file:{fileId}`; 08-1 §3.1.2 path rule); web images are never loaded.
+- Every `TextField` and `ShortForm` value passes the 04-2 §22.4 secret patterns before it leaves the renderer; a match is refused and the Secret box is offered (Article 8).
+- Pieces use the 02 tokens, P1's motion tokens and `Presence` (02 §F7); charts follow 02-2 §F19.9. Light, dark, high contrast and Animations Off/Basic all apply.
+
+### 13.6 AI page [X-180, CR-0022]
+
+Test ids: `ai-page` (`data-state` building | ready | failed | kept), the frame `ai-page-frame`, the status line `ai-page-status`.
+
+- A fenced block with language `page` in foo's text holds one HTML page, ≤ 512 KB (larger: state failed, "This page is too big to open"). A kit piece or the status line "Building your page…" shows first, until the fence closes and the reply ends.
+- Main serves the page from its own privileged scheme `foo-page://{pageId}` (`pg_{UUIDv7}`) with the response header CSP `default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src data:; base-uri 'none'; form-action 'none'; frame-src 'none'; connect-src 'none'`.
+- The renderer loads it in `<iframe sandbox="allow-scripts">`: never `allow-same-origin`, `allow-popups`, `allow-forms`, `allow-top-navigation`, `allow-modals` or `allow-downloads`. Main's `webRequest.onBeforeRequest` denies every request from that frame except the one `foo-page://{pageId}` document, so self-navigation and refresh tricks fail too.
+- Bridge (MCP Apps SEP-1865 style JSON-RPC 2.0 over `postMessage`): the host accepts a message only when `event.source === frame.contentWindow` (a sandboxed frame's origin is `null`, so origin checks are not used), validates every call with zod (`src/shared/kit/page.ts`), allows 10 calls per second, logs every call through `page:rpc`, and never sends HTML or DOM into the page after the first document. Allowed calls: `reportSize` (height capped at 600px; the page scrolls inside), `draftMessage` (fills the composer, never sends), `openLink` (https only; always the C-26 dialog "This opens {domain}. Open it?", then `app:openExternal` with source `ai_page`), `requestAction` (goes through the gate as if the user typed it).
+- Every call's text passes the 04-2 §22.4 patterns and the 08-2 §11.4 Redactor in main first; a secret match refuses the call and posts the Secret box.
+- States: building, ready, failed, kept (CR-0022 pick 9: a kept page reopens only in this sealed box).
 
 ## §14. Before the first word, typing, streaming
 
@@ -685,7 +722,14 @@ Older foo bubbles show only the hover toolbar (§9.2: react + ⋯). Copy, Try ag
 
 Test ids: `bubble-menu-reply`, `bubble-menu-react`, `bubble-menu-copy`, `bubble-menu-try-again`, `bubble-menu-good`, `bubble-menu-bad`, `bubble-menu-select`, `bubble-menu-delete`.
 
-"Reply" · "React" · "Copy" · "Try again" (same rule as §17.1, latest answer only) · "Good answer" / "Not a good answer" · "Select" · "Delete" (same confirm as §6.3, body "It's removed from this chat on your PC.").
+"Reply" · "React" · "Copy" · "Ask about this" (`bubble-menu-ask`, §17.5; X-180) · "Try again" (same rule as §17.1, latest answer only) · "Good answer" / "Not a good answer" · "Select" · "Delete" (same confirm as §6.3, body "It's removed from this chat on your PC.").
+
+### 17.5 Side question (Ask about this) [X-180, CR-0022 pick 6]
+
+Test ids: strip `composer-side-strip`, its close `composer-side-strip-close`.
+
+- Opens from the §1.9 pill or the §17.4 item: the composer's reply strip (§21) quotes the selected words (or the whole message from the menu) and is marked "Side question" (`composer.side.label`).
+- Sent as a normal message with `reply_to_id` set and `messages.side = 1`. The engine answers it from context in the same chat (MainToEngine `side.question`) and never cancels or re-plans a running job; foo's answer carries `side = 1` too.
 
 ## §18. Voice note replies
 

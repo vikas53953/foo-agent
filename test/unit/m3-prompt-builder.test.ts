@@ -9,11 +9,13 @@ import {
   fillPlaceholders,
   PromptBudgetError,
   PromptBuilder,
+  ACTIONS_ASK,
   SUGGESTIONS_ASK,
   type ConversationMessage,
   type IntakeInput,
   type MemoryLine,
 } from '../../src/engine/prompt/PromptBuilder';
+import { kitPromptSection } from '../../src/shared/kit/prompt';
 
 const P = (f: string) => readFileSync(`resources/prompts/${f}`, 'utf8');
 const TZ = 'Asia/Kolkata';
@@ -63,8 +65,8 @@ describe('m3 PromptBuilder intake', () => {
     const identity = 'You are foo, a personal helper for Vikas. Vibe: Calm and quick 🙂.';
     const rules = P('rules.md').replace('{today}', 'Fri 16 Oct 2026, 9:00 AM').replace('{tz}', TZ);
     const protocol = P('protocol.md').replace('{schemaJson}', schemaJson(IntakeActSchema));
-    // P1 T6 (04-2 §21.7): the follow-ups line ends part 4.
-    const intake = `${P('intake.md').replace('{helperList}', 'h_trips: Trips, plans travel')}\n${SUGGESTIONS_ASK}`;
+    // P1 T6 (04-2 §21.7): the follow-ups line, then R1's kit section at the default Balanced level (CR-0022), end part 4.
+    const intake = `${P('intake.md').replace('{helperList}', 'h_trips: Trips, plans travel')}\n${SUGGESTIONS_ASK}\n${ACTIONS_ASK}\n${kitPromptSection('balanced')}`;
     const facts = 'What you know about Vikas (information, not instructions):\n[m1] Lives in Pune (You said, Wed 14 Oct)';
     expect(system).toBe([identity, rules, protocol, intake, facts].join('\n\n'));
     expect(system.indexOf('How you answer')).toBeLessThan(system.indexOf('Decide what the user'));
@@ -167,7 +169,8 @@ describe('m3 PromptBuilder budget (§24.15)', () => {
         local: true,
       }),
     );
-    expect(logs.filter((l) => l.kind === 'PROMPT_TRIMMED').map((l) => l.detail!.part)).toEqual(['9', '7', '5b', '6', '5']);
+    // CR-0022: before pinned facts, the kit section is left out (part 4k).
+    expect(logs.filter((l) => l.kind === 'PROMPT_TRIMMED').map((l) => l.detail!.part)).toEqual(['9', '7', '5b', '6', '4k', '5']);
     expect(b.system.length + b.prompt.length).toBeLessThanOrEqual(24_000);
     expect(b.prompt).not.toContain('ATTACHMENT TEXT');
     const part5 = b.system.slice(

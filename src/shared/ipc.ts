@@ -3,9 +3,13 @@
 // each later milestone adds its rows from 08-1 §3.2/§3.3 with the same names and shapes.
 import type { Result } from './errors';
 import type { BridgeTestOp } from './waBridge';
+import type { KitActionMessage } from './kit/catalog';
+import type { PageRpcCall, PageRpcResult } from './kit/page';
 import type {
   AiStatus,
   FaceRef,
+  KeptItem,
+  KeptKind,
   Mood,
   ApprovalFields,
   ApprovalScope,
@@ -79,7 +83,18 @@ export interface Invokes {
   'message:pin': { req: { messageId: string; on: boolean }; res: void };
   /** M2 builder B: idempotent on `(chatId, clientId)` (AT-225); `SECRET_SUSPECTED` carries the PasteCatch in `error.paste`. */
   'message:send': {
-    req: { chatId: string; clientId: string; text: string; replyToId?: string; attachmentIds?: string[]; secretOverride?: boolean };
+    // R1 (X-180): `side` marks a side question (04 §17.5; needs replyToId).
+    req: {
+      chatId: string;
+      clientId: string;
+      text: string;
+      replyToId?: string;
+      attachmentIds?: string[];
+      secretOverride?: boolean;
+      side?: boolean;
+      /** X-180 pick 6: the words picked for "Ask about this" (04 §17.5); only with `side`. Folded into the AI text, not stored. */
+      quote?: string;
+    };
     // M8 T7 (04 §10.11): in a mirrored WhatsApp group the message is a Draft card in foo's chat, not a message here.
     res: { messageId: string; queued: boolean; mirrorDraft?: { fooChatId: string; draftCardId: string; messageId: string } };
   };
@@ -167,11 +182,14 @@ export interface Invokes {
   'ai:askKey': { req: { providerId: KeyProviderId }; res: CardRow };
   'app:openExternal': {
     req: {
-      target: 'google_signin' | 'x_intent' | 'google_account' | 'maker_page' | 'handback_site';
+      target: 'google_signin' | 'x_intent' | 'google_account' | 'maker_page' | 'handback_site' | 'ai_page' | 'action_chip';
       url?: string;
       providerId?: ProviderId;
       cardId?: string;
       nonce?: string;
+      /** R1 T7 (lead ok, 04-2 §21.7): target `action_chip` names the reply and the chip's place; main builds the URL. */
+      messageId?: string;
+      index?: number;
     };
     res: void;
   };
@@ -195,6 +213,35 @@ export interface Invokes {
     req: { cardId: string; nonce: string; outcome: 'went_through' | 'did_not'; resolvedBy: CardTapBy };
     res: CardRow;
   };
+  // CR-0022 (X-180) 08-1 §3.2. kit:action sends one MainToEngine `kit_action`; kit:refresh asks the engine to rebuild a
+  // LiveStamp surface's data; page:rpc is the sealed page's bridge call, checked and logged in main; keep:* hold kept items.
+  'kit:action': { req: KitActionMessage; res: void };
+  'kit:refresh': { req: { chatId: string; messageId?: string; cardId?: string; surfaceId: string }; res: void };
+  'page:rpc': { req: { chatId: string; pageId: string; call: PageRpcCall }; res: PageRpcResult };
+  'keep:save': {
+    req: {
+      chatId: string;
+      messageId?: string;
+      cardId?: string;
+      kind: KeptKind;
+      title: string;
+      body: string;
+      png?: ArrayBuffer | Uint8Array;
+      /** R1 T7 (lead ok): the kept thing's box in the window (CSS px); main takes the PNG snapshot of it. */
+      rect?: { x: number; y: number; width: number; height: number };
+    };
+    res: KeptItem;
+  };
+  'keep:list': { req: { chatId: string }; res: KeptItem[] };
+  // page:open hands main one ```page block (by message or card and its index among the page blocks, or a kept page) and gets
+  // the id it serves at foo-page://{pageId}; keep:open returns a kept item's body for the sealed box or the kit renderer
+  // (never shell.openPath); keep:showInFolder shows its file.
+  'page:open': {
+    req: { chatId: string; messageId?: string; cardId?: string; index?: number; keptId?: string };
+    res: { pageId: string } | { failed: 'too_large' | 'not_found' };
+  };
+  'keep:open': { req: { id: string }; res: { kind: KeptKind; body: string } };
+  'keep:showInFolder': { req: { id: string }; res: void };
   'draft:update': { req: { cardId: string; nonce: string; fields: DraftFields }; res: CardRow };
   'draft:send': { req: { cardId: string; nonce: string; resolvedBy: CardTapBy }; res: { approvalId: string; undoUntil: number } };
   'draft:undo': { req: { approvalId: string }; res: { undone: boolean } };
@@ -375,6 +422,15 @@ export const INVOKE_CHANNELS = [
   'secret:offer',
   // M5 T14
   'approval:report',
+  // CR-0022 (X-180)
+  'kit:action',
+  'kit:refresh',
+  'page:rpc',
+  'keep:save',
+  'keep:list',
+  'page:open',
+  'keep:open',
+  'keep:showInFolder',
 ] as const satisfies readonly InvokeChannel[];
 
 export const EVENT_CHANNELS = [

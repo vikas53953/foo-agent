@@ -12,6 +12,8 @@ import { app, BrowserWindow, dialog, ipcMain, net, shell, systemPreferences, typ
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import type { MemoryCmdPayload } from '../../engine/protocol';
+import { KitActionMessageSchema } from '../../shared/kit/catalog';
+import { PageIdSchema, PageRpcCallSchema } from '../../shared/kit/page';
 import { runMemoryExport } from '../memory/export';
 import { removeForgottenFiles } from '../memory/forgetFiles';
 import { z } from 'zod';
@@ -68,6 +70,7 @@ import { FIX_ACTION_KINDS, JOB_CHANNELS, jobIpc } from '../jobs/jobIpc';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
 import { registerSigninIpc } from '../jobs/signinIpc';
+import { kitReaction, registerKitIpc } from '../kit/kitIpc';
 import { isTrustedUrl } from '../windows/protocol';
 import { registerConnectionIpc } from '../connections/connectionIpc';
 import { logEvent } from '../log/techLog';
@@ -75,6 +78,8 @@ import { answerIpc, cardReaction } from '../cards/answerIpc';
 import { approvalIpc } from '../approvals/approvalIpc';
 import { draftFromMirror, draftIpc } from '../drafts/draftIpc';
 import { secretIpc } from '../vault/secretIpc';
+import { pageIpc } from '../page/pageIpc'; // R1 T5
+import { keepIpc } from '../keep/keepIpc'; // R1 T7
 import { ensureFinder, finderChosen, finderWanted } from '../setup/aiFinder';
 import { aiFinderIpc, emitFinderWrite } from '../setup/aiFinderIpc';
 
@@ -184,8 +189,12 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
       replyToId: messageId.optional(),
       attachmentIds: z.array(z.string().min(1).max(80)).max(6).optional(),
       secretOverride: z.boolean().optional(),
+      side: z.boolean().optional(),
+      quote: z.string().min(1).max(2000).optional(),
     })
-    .strict(),
+    .strict()
+    .refine((m) => !m.side || m.replyToId !== undefined, { message: 'a side question replies to a message' })
+    .refine((m) => m.quote === undefined || m.side === true, { message: 'a quote belongs to a side question' }),
   'composer:checkSecret': z.object({ text: z.string().max(200_000) }).strict(),
   'composer:saveDraft': z
     .object({
@@ -285,11 +294,14 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'ai:askKey': z.object({ providerId: z.enum(['openai-key', 'anthropic-key', 'google-key']) }).strict(),
   'app:openExternal': z
     .object({
-      target: z.enum(['google_signin', 'x_intent', 'google_account', 'maker_page', 'handback_site']),
+      target: z.enum(['google_signin', 'x_intent', 'google_account', 'maker_page', 'handback_site', 'ai_page', 'action_chip']),
       url: z.string().max(2048).optional(),
       providerId: z.enum(PROVIDER_IDS).optional(),
       cardId: z.string().max(80).optional(),
       nonce: z.string().max(80).optional(),
+      // R1 T7 (lead ok): target action_chip names the reply and the chip's place (04-2 §21.7).
+      messageId: messageId.optional(),
+      index: z.number().int().min(0).max(2).optional(),
     })
     .strict(),
   // M4 T5 (08-1 §3.2; G-M4-09 error:fix). Main re-checks every card answer against the stored card (src/main/jobs/jobIpc.ts).
@@ -336,6 +348,47 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'code:submit': z.object({ requestId: z.string().min(1).max(80), code: z.string().min(1).max(64) }).strict(),
   // M5 T2 (G-M5-21)
   'secret:offer': z.object({ chatId, slot: z.enum(SECRET_OFFER_SLOTS) }).strict(),
+  // CR-0022 (X-180): the kit and page channels; handlers arrive with R1 T2 (kit:action), T5 (page:rpc) and T7 (kit:refresh,
+  // keep:*). A kept body is A2UI JSON or a .foopage blob, ≤ the 512 KB page cap plus its JSON wrapping.
+  'kit:action': KitActionMessageSchema,
+  'kit:refresh': z
+    .object({ chatId, messageId: messageId.optional(), cardId: cardId.optional(), surfaceId: z.string().min(1).max(64) })
+    .strict(),
+  'page:rpc': z.object({ chatId, pageId: PageIdSchema, call: PageRpcCallSchema }).strict(),
+  'keep:save': z
+    .object({
+      chatId,
+      messageId: messageId.optional(),
+      cardId: cardId.optional(),
+      kind: z.enum(['kit', 'page']),
+      title: z.string().min(1).max(80),
+      body: z.string().min(1).max(600_000),
+      png: z.union([z.instanceof(ArrayBuffer), z.instanceof(Uint8Array)]).optional(),
+      // R1 T7 (lead ok): the snapshot's box (CSS px).
+      rect: z
+        .object({
+          x: z.number().int().min(0).max(10_000),
+          y: z.number().int().min(0).max(10_000),
+          width: z.number().int().min(0).max(10_000),
+          height: z.number().int().min(0).max(10_000),
+        })
+        .strict()
+        .optional(),
+    })
+    .strict(),
+  'keep:list': z.object({ chatId }).strict(),
+  'page:open': z
+    .object({
+      chatId,
+      messageId: messageId.optional(),
+      cardId: cardId.optional(),
+      index: z.number().int().min(0).max(20).optional(),
+      keptId: z.string().min(1).max(80).optional(),
+    })
+    .strict()
+    .refine((m) => [m.messageId, m.cardId, m.keptId].filter((x) => x !== undefined).length === 1, { message: 'one source' }),
+  'keep:open': z.object({ id: z.string().min(1).max(80) }).strict(),
+  'keep:showInFolder': z.object({ id: z.string().min(1).max(80) }).strict(),
 };
 
 export type Handler<C extends InvokeChannel> = (req: InvokeIn[C]) => Result<InvokeOut[C]> | Promise<Result<InvokeOut[C]>>;
@@ -467,6 +520,8 @@ export function registerIpc(ctx: AppContext): void {
     const r = asVoid(written(reactMessage(db, id, e, on, now())));
     // M5 (T5): a reaction on a card's bubble may answer a Choice card or get the G16 line (08-4 §26.6 rule 4, 08-2 §5.2.2).
     if (r.ok && on) cardReaction(ctx, id, e);
+    // R1 T3: a keycap reaction on a foo message picks a row of its ListPick, like a tap (05-1 §5.3.4, AT-349).
+    if (r.ok && on) kitReaction(ctx, id, e, now());
     return r;
   });
   handle('message:pin', ({ messageId: id, on }) => asVoid(written(pinMessage(db, id, on))));
@@ -547,7 +602,8 @@ export function registerIpc(ctx: AppContext): void {
     if (r.created) {
       // 08-1 §2.4 `user.message`: after main stored it, the engine's chat lane takes it (08-2 §5.2). While the engine is
       // starting or restarting it waits to send (04 §3.3) and goes when the engine drains its queue.
-      const taken = ctx.engine?.send('user.message', { messageId: r.messageId, chatId: req.chatId }) ?? false;
+      // R1 T6 (04 §17.5): a side question goes to the engine as `side.question`, answered without touching a running job.
+      const taken = ctx.engine?.send(req.side ? 'side.question' : 'user.message', { messageId: r.messageId, chatId: req.chatId }) ?? false;
       // EngineSupervisor.wanted(): a FOO_TEST run without the fake AI never has an engine, and its sends stay as M2 left them.
       if (!taken && !r.queued && (process.env.FOO_TEST !== '1' || !!process.env.FOO_FAKE_AI)) {
         queued = true;
@@ -651,6 +707,7 @@ export function registerIpc(ctx: AppContext): void {
   for (const c of JOB_CHANNELS) handle(c, jobs[c] as Handler<typeof c>);
   registerLiveIpc(ctx, handle); // job:openWindow, job:watch (M9 T5, 09 §9.27.2)
   registerSigninIpc(ctx, handle);
+  registerKitIpc(ctx, handle); // kit:action (R1 T2), kit:refresh (R1 T7), 04 §13.5
   handle('memory:list', ({ filter, q }) => ok(memoryList(db, filter, q, now())));
   // M6 (CR-0010 G-M6-01): the engine owns files, the classify turn and the sensitive rule; main forwards one message each.
   const memoryCmd = <T>(cmd: MemoryCmdPayload): Promise<Result<T>> =>
@@ -747,4 +804,8 @@ export function registerIpc(ctx: AppContext): void {
   handleAll(approvalIpc(ctx));
   handleAll(draftIpc(ctx));
   handleAll(secretIpc(ctx));
+  // R1 T5 (CR-0022, 04 §13.6): the sealed AI page's open and bridge calls.
+  handleAll(pageIpc(ctx));
+  // R1 T7 (CR-0022 pick 9): Keep for kit surfaces and AI pages.
+  handleAll(keepIpc(ctx));
 }

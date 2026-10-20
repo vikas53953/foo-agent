@@ -60,6 +60,7 @@ import { googleTools, testGoogleAccess, type GoogleConnectors, type GoogleOption
 import { ConnTrouble } from './connections/trouble';
 import type { GoogleBases } from './tools/connectors/limiter';
 import type { HttpFetch } from './tools/connectors/types';
+import { KitActions } from './kit/kitAction';
 
 export interface EngineOptions {
   link: MainLink;
@@ -93,6 +94,7 @@ export class Engine {
   private online = true;
   readonly ai: AiService;
   readonly lane: ChatLane;
+  private readonly kitActions: KitActions;
   readonly redactor: Redactor;
   readonly web: EngineWeb;
   readonly tools: ToolLayer;
@@ -377,6 +379,13 @@ export class Engine {
       },
     });
     this.jobs.setIntake((chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }));
+    this.kitActions = new KitActions({
+      link: o.link,
+      clock: o.clock,
+      newId: (p) => newId(p, o.clock.now()),
+      enqueue: (chatId, messageId) => this.lane.enqueue(chatId, messageId),
+      log: (evt, kind) => log(evt, kind),
+    });
     let parser: ParseWorker | null = null;
     this.memory = new MemoryService({
       link: o.link,
@@ -666,6 +675,7 @@ export class Engine {
           conversation,
           userMessage: i.message.textForAi ?? i.message.text,
           local: i.local,
+          visuals: i.settings.appearance?.visuals ?? 'balanced',
           ...(i.oldPlan ? { oldPlan: i.oldPlan } : {}),
         });
       },
@@ -774,6 +784,11 @@ export class Engine {
       case 'user.message':
         this.lane.enqueue(msg.payload.chatId, msg.payload.messageId);
         void this.style.onUserMessage(msg.payload.chatId).catch(() => undefined);
+        return undefined;
+      // R1 T6 (04 §17.5, pick 6): main stored a side question (`messages.side`); the chat lane answers it from context and
+      // never hands it to the runner, so a running job keeps running.
+      case 'side.question':
+        this.lane.enqueue(msg.payload.chatId, msg.payload.messageId);
         return undefined;
       case 'reply.stop':
         this.lane.stop(msg.payload.chatId);
@@ -889,6 +904,15 @@ export class Engine {
         return this.whatsapp.send(msg.payload);
       case 'wa.check':
         return ok({ exists: await this.whatsapp.check(msg.payload.jid) });
+      // R1 T2 (CR-0022, 08-1 §2.4): a kit surface action is stored as the user's tap and goes through the lane like a typed
+      // message, so a gated one meets the normal gate (Article 6).
+      case 'kit.action':
+        await this.kitActions.handle(msg.payload);
+        return undefined;
+      // R1 T7 (CR-0022 AT-352, AT-368): a LiveStamp's Refresh, stored and answered the same way.
+      case 'kit.refresh':
+        await this.kitActions.refresh(msg.payload);
+        return undefined;
       default:
         return undefined;
     }

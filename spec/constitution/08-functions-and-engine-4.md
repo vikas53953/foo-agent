@@ -100,6 +100,8 @@ Helpers you can hand off to: {helperList}
 ```
 `{helperList}` = one line per helper the user has, `{helperId}: {name}, {jobText}`, or `none`.
 
+**Kit section [X-180, CR-0022 pick 2].** Part 4 of intake ends with the kit section after the suggestions line: generated in code by `kitPromptSection(appearance.visuals)` (`src/shared/kit/prompt.ts`) from the zod catalog `foo.kit.v1`, never hand-written. Balanced and Show me visuals carry how to write ```a2ui and ```page blocks and one line per catalog component; Mostly words carries only the line that says not to use them unless the user asks.
+
 ### 24.6 `step.md`
 ```
 You are working on one job. Each reply is one decision:
@@ -193,7 +195,7 @@ Section headers (exact, each on its own line before its part):
 1. **System** (stable for one AI session; sent once and reused with `--resume`, sent every turn when the provider cannot resume): parts 1, 2, 3 (job lane only), 4 (protocol + purpose file), 5 pinned facts (≤ 4,000 chars), 6 helper notes (≤ 2,000 chars). A change to any system part (a fact added, a helper note added, the tool list changing) starts a new session on the next turn (no resume).
 2. **Prompt** (every turn): 5b turn facts (≤ 8 facts), 7 conversation (delta after the last synced message on resume; else the last 20 completed messages, each ≤ 1,400 chars), 8 job state, 9 untrusted content, 10 steer, then the user's message or the line `Next decision?`.
 3. **Last observation** in part 8: a browser snapshot as 08-2 §8.3.4 (≤ 300 elements, ≤ 8,000 chars of visible text) or a connector result ≤ 8,000 chars. One number for both: 8,000.
-4. **Budget** (system + prompt, after redaction): ≤ 48,000 chars for CLI and HTTP providers; ≤ 24,000 chars for `ollama` and LM Studio. Over budget → trim in this order until it fits: (1) untrusted content other than the latest observation; (2) conversation, oldest first, keeping at least the last 6 messages; (3) snapshot visible text (the interactive element list is kept); (4) turn facts; (5) helper notes; (6) pinned facts down to 2,000 chars. Never trimmed: parts 1–4, the span of part 8 from `Title:` through `Decisions:` (§24.22: title, `do_verbs`, plan and step states, approved card fields, decisions), and part 10. Each trim writes `PROMPT_TRIMMED {part}` to the tech log. Still over after all trims → the turn is not sent and fails with `PROTOCOL_INVALID` (counts toward `fail_streak`).
+4. **Budget** (system + prompt, after redaction): ≤ 48,000 chars for CLI and HTTP providers; ≤ 24,000 chars for `ollama` and LM Studio. Over budget → trim in this order until it fits: (1) untrusted content other than the latest observation; (2) conversation, oldest first, keeping at least the last 6 messages; (3) snapshot visible text (the interactive element list is kept); (4) turn facts; (5) helper notes; (5a, X-180) the kit section of part 4 is left out; (6) pinned facts down to 2,000 chars. Never trimmed: parts 1–4 (except that kit section), the span of part 8 from `Title:` through `Decisions:` (§24.22: title, `do_verbs`, plan and step states, approved card fields, decisions), and part 10. Each trim writes `PROMPT_TRIMMED {part}` to the tech log. Still over after all trims → the turn is not sent and fails with `PROTOCOL_INVALID` (counts toward `fail_streak`).
 
 ### 24.16 Memory retrieval for parts 5 and 5b (F-078)
 `MemoryScope` is one of 08-0 §B.2's three values (`global | chat | helper`); the file path lives only in `memory_index.file` (relative to `{DATA}`, forward slashes, 08-0 §0) (X-112).

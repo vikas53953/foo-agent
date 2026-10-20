@@ -27,7 +27,10 @@ export type IdPrefix =
   // M5 T4: `Rule.id` (08-1 §0.6).
   | 'rule'
   // M9 T8: `site_recipes.id` (08-1 §4.3.13 `rcp_`).
-  | 'rcp';
+  | 'rcp'
+  // CR-0022 (X-180): an AI page (`foo-page://pg_…`) and a kept item (`kept_items.id`).
+  | 'pg'
+  | 'ki';
 
 /** A new id on the system clock and crypto randomness (works in main, engine and renderer without imports). */
 export function newId(prefix: IdPrefix, now: number = Date.now()): string {
