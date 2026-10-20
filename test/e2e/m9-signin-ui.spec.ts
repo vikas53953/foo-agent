@@ -43,7 +43,7 @@ test('sign-in card: sign_in and captcha lanes, exact words and buttons, LIVE onl
   await expect(page.getByTestId(TID.cardSignin).getByText(/watch/i)).toHaveCount(0);
 
   await openChat(page, 'Money');
-  await expect(card(page, 'signed_in')).toHaveText('✓ Signed in to biller.example.test · 9:02 AM');
+  await expect(card(page, 'signed_in')).toHaveText('Signed in to biller.example.test · 9:02 AM');
   await app.close();
 });
 

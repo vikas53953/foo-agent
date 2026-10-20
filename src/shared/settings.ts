@@ -196,6 +196,14 @@ export const WRITABLE_PATHS = [
   // M8 T3: Connections → WhatsApp toggles (06-2 §6.8, 08-3 §16.4).
   'connections.whatsapp.read',
   'connections.whatsapp.draft',
+  // P1 (CR-0021): the Appearance page rows (06-2 §6.2) and "Show foo's eyes"; zoom with Ctrl+= / Ctrl+- / Ctrl+0 (09 §9.14.3).
+  'appearance.theme',
+  'appearance.useWindowsAccent',
+  'appearance.animations',
+  'appearance.sounds',
+  'appearance.mica',
+  'appearance.faceMotion',
+  'zoom',
 ] as const;
 export type WritablePath = (typeof WRITABLE_PATHS)[number];
 

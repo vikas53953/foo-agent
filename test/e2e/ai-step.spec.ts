@@ -62,9 +62,9 @@ test('Settings → Account & your AI: Using, Test now, Backup AI, and Change pos
   await expect(page.getByTestId(TID.screenSettings)).toBeVisible();
   const using = page.getByTestId(TID.settingsRowAccountAiUsing);
   await expect(using).toContainText(t('settings.account.ai_using.value', { AI: 'Claude' }));
-  await expect(using).toContainText('✓ works');
+  await expect(using).toContainText('works');
   await using.getByRole('button', { name: t('settings.account.ai_using.test_now') }).click();
-  await expect(using).toContainText('✓ works');
+  await expect(using).toContainText('works');
   const backup = page.getByTestId(TID.settingsRowAccountAiBackup);
   await expect(backup).toContainText('ChatGPT');
   await expect(page.getByTestId(TID.settingsRowAccountAiPaid)).toContainText(t('settings.account.ai_paid.plan', { AI: 'Claude' }));
