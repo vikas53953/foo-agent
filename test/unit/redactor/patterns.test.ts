@@ -144,11 +144,17 @@ describe('08-2 §11.4 scrub stays linear on long text', () => {
   const BOUND_MS = 300;
   it.each(['ab.', 'a.b-', 'x://', 'a@b.', 'otp 1234 '])('100 KB of %j, every channel', (unit) => {
     const text = unit.repeat(Math.ceil(100_000 / unit.length)).slice(0, 100_000);
-    const red = r();
     for (const channel of [undefined, 'toast', 'log', 'group'] as const) {
-      const t0 = performance.now();
-      red.redact(text, channel ? { channel } : {});
-      expect(performance.now() - t0).toBeLessThan(BOUND_MS);
+      // The best of 3: a quadratic scrub is slow every time, a busy runner only now and then.
+      const best = Math.min(
+        ...[0, 1, 2].map(() => {
+          const red = r();
+          const t0 = performance.now();
+          red.redact(text, channel ? { channel } : {});
+          return performance.now() - t0;
+        }),
+      );
+      expect(best).toBeLessThan(BOUND_MS);
     }
   });
 });

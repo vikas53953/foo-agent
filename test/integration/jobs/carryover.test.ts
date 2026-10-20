@@ -13,7 +13,7 @@ import type { Settings } from '../../../src/shared/settings';
 import { envelope, intake } from '../../unit/m3-engine-helpers';
 import { BILLS_PLAN, jobHarness, jobIntake, step, stepDone, tool, type JobHarness } from './jobHarness';
 import { restartEngine } from './restart';
-import { keyBilling, seedSpend, until } from './t3Helpers';
+import { flush, keyBilling, seedSpend, until } from './t3Helpers';
 
 let h: JobHarness | null = null;
 afterEach(() => {
@@ -237,6 +237,16 @@ describe('CR-0008 (j) row 4 · an unanswered Plan card withdraws after 24 h', ()
   });
 });
 
+/**
+ * Moves the clock until the tick wakes the job, then lets its step run in real time. The clock stops at the wake: racing it
+ * on would let step timers fire on a slow runner before the step's own turn lands.
+ */
+async function wakeThenFinish(jobId: string): Promise<void> {
+  await until(h!, () => h!.job(jobId).state !== 'waiting', 5_000);
+  for (let i = 0; i < 2_000 && h!.job(jobId).state !== 'done_unverified'; i++) await flush(5);
+  expect(h!.job(jobId).state).toBe('done_unverified');
+}
+
 describe('CR-0008 (j) row 8 · the opens_at tick', () => {
   it('a job that opens later waits with no AI turn, and the 15 s tick starts it at wake_at', async () => {
     h = jobHarness({ script: [step({ kind: 'done', result: 'Ready.', unverified: true })] });
@@ -263,7 +273,7 @@ describe('CR-0008 (j) row 8 · the opens_at tick', () => {
     await h.settle();
     expect(h.job(jobId!).state).toBe('waiting');
     expect(h.turnsJsonl().filter((r) => r.purpose === 'step')).toHaveLength(0);
-    await until(h, () => h!.job(jobId!).state === 'done_unverified', 5_000);
+    await wakeThenFinish(jobId!);
     expect(h.turnsJsonl().filter((r) => r.purpose === 'step')).toHaveLength(1);
     expect(h.job(jobId!).wake_at).toBeNull();
   });
@@ -295,6 +305,6 @@ describe('CR-0008 (j) row 8 · the opens_at tick', () => {
     expect(h.turnsJsonl().filter((r) => r.purpose === 'step')).toHaveLength(0);
     const safe = h.cards('error').find((c) => JSON.parse(String(c.payload)).kind === 'SAFE_MODE')!;
     h.answer(String(safe.id), 'start_normally');
-    await until(h, () => h!.job(jobId!).state === 'done_unverified', 5_000);
+    await wakeThenFinish(jobId!);
   });
 });
