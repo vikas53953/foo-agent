@@ -280,6 +280,12 @@ export class Engine {
         // M9 T3: a finished job's browser window closes, so the next browser job gets its slot.
         onEnded: (jobId) => void this.browser?.jobEnded(jobId),
         reintake: (chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }), // M9 T8
+        // M9 T8 (T3 seams): one masked picture after each step (08-2 §8.3.8); the next step's first snapshot is whole (§8.3.4).
+        onStepDone: async (jobId, idx, next) => {
+          const page = this.browser?.page(jobId);
+          if (page) await this.browser!.shots.capture(jobId, page, idx).catch(() => null);
+          if (next !== null) this.browser?.stepStarted(jobId);
+        },
       },
       // M6 T5: "Used:" chips under a step's card or result, and the post-turn review after DONE (08-3 §12.4, §12.5).
       memory: {

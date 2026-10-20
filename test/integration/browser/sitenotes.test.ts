@@ -2,7 +2,7 @@
 // `sites\{domain}.md`; step turns receive the flags for every domain in play; `blocksAutomation` seen within 14 days → the AI
 // is told to skip that site, J9 "Zomato blocked me"), 08-1 §4.3.13 (`site_notes`). Driven on the sandbox bot-check site with
 // foo's real browser.
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { applyEvent, BLOCK_SKIP_MS, blockedRecently, promptLines } from '../../../src/engine/tools/browser/siteNotes';
@@ -58,4 +58,36 @@ describe('08-2 §8.3.9 site notes', () => {
     ]);
     expect(promptLines({ 'a.test': blocked }, at + BLOCK_SKIP_MS, iso)).toEqual([]);
   });
+});
+
+describe('08-2 §8.3.8 / §8.3.4 runner seams', () => {
+  it('a finished step leaves one masked step picture, and the next step’s first snapshot is whole again', async () => {
+    w = await bookingWorld();
+    h = jobHarness({
+      script: [
+        jobIntake(
+          [
+            { phraseKey: 'check_site', slots: { site: 'tablejoy.test' }, route: 'browser' },
+            { phraseKey: 'compare', slots: { what: 'tables' }, route: 'browser' },
+          ],
+          { title: 'Look at tables' },
+        ),
+        tool('browser.open', { url: w.sb.url('restaurant', '/book/coastline?party=4&time=8:00 PM') }),
+        tool('browser.snapshot', {}),
+        tool('browser.snapshot', {}),
+        step({ kind: 'step_done', idx: 0 }),
+        tool('browser.snapshot', {}),
+        step({ kind: 'done', result: 'Tables are free at 8 PM.', unverified: true }),
+      ],
+      browser: w.browser,
+    });
+    h.userSays('Are there tables at Coastline Kitchen on Sunday?');
+    await h.settle(20);
+    const job = String(h.job().id);
+    expect(readdirSync(join(w.dataDir, 'jobs', job, 'steps')).filter((f) => f.startsWith('0-'))).toEqual(['0-1.jpg']);
+    const snaps = h.toolCalls(job).filter((c) => c.tool === 'browser.snapshot').map((c) => String(c.result));
+    // Same page: the second snapshot in step 1 is a diff; the first one in step 2 lists every control again.
+    expect(snaps[1]).not.toContain('[e1] textbox');
+    expect(snaps[2]).toContain('[e1] textbox');
+  }, 60_000);
 });

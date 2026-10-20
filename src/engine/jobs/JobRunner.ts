@@ -123,6 +123,8 @@ export interface RunnerHooks {
   onEnded?(jobId: string): void;
   /** T8: the user's message goes to an intake turn again, past the typed and steer hooks (Compare flights, 08-2 §5.3.4). */
   reintake?(chatId: string, messageId: string): void;
+  /** T8 (T3 runner seam, 08-2 §8.3.4 / §8.3.8): step `idx` finished (its masked step picture) and `next` starts (whole snapshot). */
+  onStepDone?(jobId: string, idx: number, next: number | null): Promise<void>;
 }
 
 /** What T3's modules (stopFlow, steer, watchdog, costMeter) may use of the runner. */
@@ -932,6 +934,7 @@ export class JobRunner {
       ...(await this.editChecklistOps(job)),
     ]);
     await this.writeMirrors(job.id);
+    await this.d.hooks?.onStepDone?.(job.id, idx, next?.idx ?? null); // M9 T8
   }
 
   /** Done steps never change; the remaining ones are replaced (show-before inserted), plan_version + 1. */
