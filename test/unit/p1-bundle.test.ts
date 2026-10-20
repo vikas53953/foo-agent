@@ -6,6 +6,9 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { build, type Rollup } from 'vite';
 import { beforeAll, describe, expect, it } from 'vitest';
+import { z } from 'zod';
+import { parseSignIn } from '../../src/renderer/cards/signinView';
+import { SignInReasonSchema } from '../../src/shared/schemas';
 import { motion } from '../../src/shared/tokens';
 
 const ROOT = join(__dirname, '..', '..');
@@ -55,7 +58,10 @@ describe('AT-322 first script', () => {
     const total = first.reduce((n, c) => n + size(c), 0);
     console.log(`entry ${kb(size(entry()))}; first script ${kb(total)}: ${first.map((c) => `${c.fileName} ${kb(size(c))}`).join(', ')}`);
     expect(size(entry())).toBeLessThanOrEqual(ENTRY_MAX);
-    expect(total).toBeLessThanOrEqual(FIRST_SCRIPT_MAX);
+    expect(
+      total,
+      'first script over budget: put weight the first chat does not need behind a lazy import (pages/lazyPages.tsx shows the pattern)',
+    ).toBeLessThanOrEqual(FIRST_SCRIPT_MAX);
   });
 
   it('AT-322: Settings and Memory load lazily, and zod is not in the first script', () => {
@@ -72,5 +78,37 @@ describe('AT-322 first script', () => {
     const src = readFileSync(join(ROOT, 'src/renderer/pages/lazyPages.tsx'), 'utf8');
     expect(src).toContain("motion['delay-loading']");
     expect(src).toContain('TID.screenLoading');
+  });
+});
+
+describe('AT-322 the sign-in card reads its payload without zod', () => {
+  // The schema the card used before P1 T10 (08-1 §4.5 + G-M9-10): the hand check must accept and refuse the same payloads.
+  const schema = z.object({
+    mode: z.enum(['sign_in_here', 'take_over']),
+    jobId: z.string().min(1),
+    site: z.string().min(1),
+    reason: SignInReasonSchema,
+    phone: z.string().min(1).optional(),
+  });
+  const base = { mode: 'take_over', jobId: 'job-1', site: 'bank.example.com', reason: 'bank_3ds' };
+  const payloads: Record<string, unknown>[] = [
+    ...SignInReasonSchema.options.map((reason) => ({ ...base, reason })),
+    { ...base, phone: '•••• 1234' },
+    { ...base, phone: '' },
+    { ...base, phone: null },
+    { ...base, jobId: '' },
+    { ...base, site: 7 },
+    { ...base, mode: 'watch' },
+    { ...base, reason: 'wifi' },
+    { ...base, reason: 'toString' },
+    { ...base, extra: 'dropped' },
+    {},
+  ];
+
+  it('AT-322: parseSignIn agrees with the zod schema it replaced, on every lane and edge', () => {
+    for (const p of payloads) {
+      const want = schema.safeParse(p);
+      expect(parseSignIn(p), JSON.stringify(p)).toEqual(want.success ? want.data : null);
+    }
   });
 });

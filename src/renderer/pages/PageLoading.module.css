@@ -1,5 +1,6 @@
 /* Spec: 06 §0.1 Page (fills the area, --bg-app; content column max --column-max, centred, side padding 16, 24 at ≥ 900px),
- * §0.5 Loading (static skeleton rows of --bg-sunken, --r-xs, heights matching real rows). */
+ * §0.5 Loading (static skeleton rows of --bg-sunken, --r-xs, heights matching real rows) and Error (the C16 card in the
+ * content column). */
 .page {
   display: flex;
   flex: 1;
@@ -28,4 +29,8 @@
 .row {
   display: grid;
   gap: var(--s1);
+}
+.errorText {
+  margin: 0 0 var(--s2);
+  font: var(--t-body);
 }

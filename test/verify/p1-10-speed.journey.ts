@@ -2,11 +2,12 @@
 // (chat switch), 06 §0.5 Loading, CR-0021 (P1 T10). foo-verify journey for P1 T10: launch to the title bar, the scripts
 // index.html loads and the page scripts the idle preload fetches, 20 chat switches on the perf seed timed click → messages
 // painted, Settings from its preloaded script, and last Memory opened while its script is held back (the page frame turns
-// into the §0.5 skeleton, then the page). Run:
+// into the §0.5 skeleton, then the page), and Settings with its script answering 404 (the §0.5 Error card). Run:
 //   xvfb-run -a pnpm tsx scripts/foo-verify.ts test/verify/p1-10-speed.journey.ts
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { Verify } from '../../scripts/foo-verify';
+import { t } from '../../src/shared/copy/t';
 import { TID } from '../../src/shared/testids';
 import { byTid, rest, settle, windowSize } from '../fidelity/capture';
 
@@ -18,7 +19,7 @@ declare global {
   }
 }
 
-type Hook = { __log: string[]; __hold: boolean; __release: (() => void) | null };
+type Hook = { __log: string[]; __hold: boolean; __fail: boolean; __release: (() => void) | null };
 const q = (xs: number[], p: number) => xs.slice().sort((a, b) => a - b)[Math.ceil(xs.length * p) - 1]!;
 
 export default async function journey(v: Verify): Promise<void> {
@@ -32,6 +33,7 @@ export default async function journey(v: Verify): Promise<void> {
       const start = Date.now();
       g.__log = [];
       g.__hold = false;
+      g.__fail = false;
       g.__release = null;
       const { handleAppScheme } = process.mainModule!.require(modulePath) as { handleAppScheme: (dir: string) => void };
       let original: ((r: Request) => Promise<Response>) | null = null;
@@ -44,6 +46,7 @@ export default async function journey(v: Verify): Promise<void> {
       protocol.handle('app', async (request) => {
         const name = new URL(request.url).pathname.split('/').pop()!;
         if (name.endsWith('.js')) g.__log.push(`${name} +${Date.now() - start}ms`);
+        if (g.__fail && /^SettingsPage-.+\.js$/.test(name)) return new Response('Not found', { status: 404 });
         if (g.__hold && /^Memory-.+\.js$/.test(name)) {
           gate ??= new Promise<void>((resolve) => (g.__release = resolve));
           await gate;
@@ -139,6 +142,8 @@ export default async function journey(v: Verify): Promise<void> {
   await page.getByTestId(TID.sidebarMenuMemory).click();
   await page.getByTestId(TID.screenLoading).waitFor({ timeout: 2_000 });
   if ((await page.getByTestId(TID.screenMemory).count()) !== 0) throw new Error('Memory drew before its script loaded');
+  if ((await page.locator('[data-page-loading] [data-testid]').count()) === 0)
+    throw new Error('the skeleton is not the page-loading frame');
   const skeletonMs = await page.evaluate(() => window.__skeleton!);
   if (skeletonMs > 150 + 50) throw new Error(`skeleton after ${skeletonMs.toFixed(0)} ms`);
   await v.shot('memory-loading-skeleton');
@@ -152,9 +157,25 @@ export default async function journey(v: Verify): Promise<void> {
   });
   if (!released) throw new Error('the Memory script was never requested');
   await page.getByTestId(TID.screenMemory).waitFor();
-  if ((await page.getByTestId(TID.screenLoading).count()) > 1) throw new Error('the loading frame stayed after the page');
+  if ((await page.locator('[data-page-loading]').count()) !== 0) throw new Error('the loading frame stayed after the page');
   v.note('released the script: the Memory page took the skeleton’s place');
   await rest(page);
   await settle(page);
   await v.shot('memory-page');
+
+  // A page script that does not load (a chunk missing after an update): the §0.5 Error card in the page, not a blank window.
+  await app.evaluate(() => ((globalThis as unknown as Hook).__fail = true));
+  await page.reload();
+  await page.getByTestId(TID.chatlistRow).first().waitFor();
+  await page.getByTestId(TID.sidebarFooterSettings).click();
+  const error = page.getByTestId(TID.screenError);
+  await error.waitFor();
+  const words = await error.innerText();
+  if (!words.includes(t('screen.load_error.text')) || !words.includes(t('screen.load_error.action', { agentName: 'foo' })))
+    throw new Error(`load error block: ${words}`);
+  if ((await page.getByTestId(TID.chatlistRow).count()) === 0) throw new Error('the window went blank');
+  v.note(`Settings script answered 404: the page shows "${words.replace(/\n+/g, ' / ')}" and the chat list stays`);
+  await rest(page);
+  await settle(page);
+  await v.shot('settings-load-error');
 }

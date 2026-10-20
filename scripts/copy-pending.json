@@ -78,8 +78,6 @@
     "cards.common.private_things.password": "M13 groups (private line)",
     "cards.common.private_things.signin": "M13 groups (private line)",
     "app.splash.loading": "P1 T8 (CR-0021)",
-    "app.splash.starting": "P1 T8 (CR-0021)",
-    "screen.load_error.text": "P1 T10 (CR-0021)",
-    "screen.load_error.action": "P1 T10 (CR-0021)"
+    "app.splash.starting": "P1 T8 (CR-0021)"
   }
 }

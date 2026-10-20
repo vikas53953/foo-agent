@@ -2,9 +2,14 @@
 // within 150ms), 06 §0.5 Loading (static skeleton rows once data is not ready within 150ms), CR-0021 (P1 T10). Settings and
 // Memory leave the first script: each loads on first open (or earlier, when the window is idle after launch) behind a
 // page frame that turns into the §0.5 skeleton at `delay-loading`.
-import { lazy, Suspense, useEffect, useState, type ComponentProps } from 'react';
+import { Component, lazy, Suspense, useEffect, useState, type ComponentProps, type ReactNode } from 'react';
+import { t } from '../../shared/copy/t';
 import { motion } from '../../shared/tokens';
 import { TID } from '../../shared/testids';
+import { CardFrame } from '../cards/CardFrame';
+import { useStore } from '../store/index';
+import { selectAgentName } from '../store/settings';
+import { Button } from '../ui/Button';
 import { Skeleton } from '../ui/Skeleton';
 import styles from './PageLoading.module.css';
 
@@ -29,9 +34,11 @@ export function MemoryPage(props: MemoryProps) {
   const [loaded] = useState(() => memoryModule);
   if (loaded) return <loaded.MemoryPage {...props} />;
   return (
-    <Suspense fallback={<PageLoading />}>
-      <LazyMemory {...props} />
-    </Suspense>
+    <PageLoadError>
+      <Suspense fallback={<PageLoading />}>
+        <LazyMemory {...props} />
+      </Suspense>
+    </PageLoadError>
   );
 }
 
@@ -39,13 +46,16 @@ export function SettingsPage(props: SettingsProps) {
   const [loaded] = useState(() => settingsModule);
   if (loaded) return <loaded.SettingsPage {...props} />;
   return (
-    <Suspense fallback={<PageLoading />}>
-      <LazySettings {...props} />
-    </Suspense>
+    <PageLoadError>
+      <Suspense fallback={<PageLoading />}>
+        <LazySettings {...props} />
+      </Suspense>
+    </PageLoadError>
   );
 }
 
-/** Fetches the page scripts ahead of the first open, once launch work is done; a failed fetch retries on open. */
+/** Fetches the page scripts ahead of the first open, once launch work is done. A failed fetch is not retried: Chromium
+ * keeps the failed module, so opening the page shows PageLoadError, whose button reloads the window. */
 export function preloadPages(): void {
   void loadMemory().catch(() => undefined);
   void loadSettings().catch(() => undefined);
@@ -59,7 +69,7 @@ export function PageLoading() {
     return () => window.clearTimeout(timer);
   }, []);
   return (
-    <div className={styles.page} aria-busy="true">
+    <div className={styles.page} aria-busy="true" data-page-loading="">
       {slow && (
         <div data-testid={TID.screenLoading} className={styles.column} aria-hidden="true">
           {[0, 1, 2, 3].map((i) => (
@@ -70,6 +80,39 @@ export function PageLoading() {
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * 06 §0.5 Error for a page whose script did not load (e.g. a chunk missing after an update): the C16-shaped card in the
+ * page, instead of the error reaching the root and blanking the window. Only the script load is caught here; the page's
+ * own data errors are its own §0.5 Error state.
+ */
+class PageLoadError extends Component<{ children: ReactNode }, { failed: boolean }> {
+  override state = { failed: false };
+
+  static getDerivedStateFromError(): { failed: boolean } {
+    return { failed: true };
+  }
+
+  override render() {
+    return this.state.failed ? <LoadErrorBlock /> : this.props.children;
+  }
+}
+
+function LoadErrorBlock() {
+  const agentName = useStore(selectAgentName);
+  return (
+    <div className={styles.page}>
+      <div className={styles.column} data-testid={TID.screenError}>
+        <CardFrame tid="cardError" label={t('screen.load_error.text')} state="shown">
+          <p className={styles.errorText}>{t('screen.load_error.text')}</p>
+          <Button variant="secondary" size="md" onClick={() => window.location.reload()}>
+            {t('screen.load_error.action', { agentName })}
+          </Button>
+        </CardFrame>
+      </div>
     </div>
   );
 }

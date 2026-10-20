@@ -22,14 +22,15 @@ export interface SignInPayload {
 }
 
 const MODES: readonly SignInPayload['mode'][] = ['sign_in_here', 'take_over'];
-const REASONS: readonly SignInReason[] = ['sign_in', 'captcha', 'passkey', 'bank_3ds', 'known_puzzle', 'saved_login_failed'];
+/** The lanes are the keys of LANE_ACTIONS (a Record over SignInReason, so a new lane cannot be left out). */
+const isReason = (v: unknown): v is SignInReason => typeof v === 'string' && Object.hasOwn(LANE_ACTIONS, v);
 const filled = (v: unknown): v is string => typeof v === 'string' && v.length > 0;
 const oneOf = <T extends string>(list: readonly T[], v: unknown): v is T =>
   typeof v === 'string' && (list as readonly string[]).includes(v);
 
 export const parseSignIn = (payload: Record<string, unknown>): SignInPayload | null => {
   const { mode, jobId, site, reason, phone } = payload;
-  if (!oneOf(MODES, mode) || !filled(jobId) || !filled(site) || !oneOf(REASONS, reason)) return null;
+  if (!oneOf(MODES, mode) || !filled(jobId) || !filled(site) || !isReason(reason)) return null;
   if (phone !== undefined && !filled(phone)) return null;
   return phone === undefined ? { mode, jobId, site, reason } : { mode, jobId, site, reason, phone };
 };
