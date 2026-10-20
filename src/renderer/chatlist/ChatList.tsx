@@ -86,6 +86,8 @@ const SkeletonRow = memo(function SkeletonRow() {
 /** Longest a FLIP, arrival or stagger can run; the data-* it set are cleared after this. */
 const SETTLE_MS = motion.spring + STAGGER_CAP * motion.stagger;
 const NO_IDS: string[] = [];
+/** `--ease-spring` overshoots 2.6 % of the distance; past this a "drop" would overshoot more than Quiet premium's 2px. */
+const DROP_MAX_PX = 76;
 /** The latest run that touched each row, so an older run's clean-up never cuts a newer animation short. */
 const runOf = new WeakMap<HTMLElement, number>();
 let runs = 0;
@@ -105,7 +107,11 @@ function useListMotion(listRef: RefObject<HTMLDivElement | null>, ids: string[],
   const last = useRef<{ tops: Map<string, number>; pinned: Set<string>; filter: ChatFilter; query: string } | null>(null);
   useLayoutEffect(() => {
     const list = listRef.current;
-    if (!list) return;
+    if (!list) {
+      // the empty state replaced the list: nothing to measure, and the next list starts from nothing
+      last.current = { tops: new Map(), pinned: new Set(), filter, query };
+      return;
+    }
     const s = useStore.getState();
     const pinned = new Set(
       ids.filter((id) => {
@@ -123,18 +129,19 @@ function useListMotion(listRef: RefObject<HTMLDivElement | null>, ids: string[],
     const sameView = prev.filter === filter && prev.query === query;
     const enteringSearch = prev.query === '' && query !== '';
     const plan = flipPlan(sameView ? prev.tops : new Map(), tops);
+    const drops = new Set<string>();
     for (const { id, dy } of plan.moves) {
       const el = els.get(id);
       if (!el) continue;
       el.style.setProperty('--flip-y', `${dy}px`);
       el.dataset.flip = 'from';
+      if (pinned.has(id) && !prev.pinned.has(id) && Math.abs(dy) <= DROP_MAX_PX) drops.add(id);
       touched.push(el);
     }
     if (touched.length > 0) {
       list.getBoundingClientRect(); // one reflow so the start offsets take before the transition runs
       for (const el of touched) {
-        const id = el.dataset.chatId ?? '';
-        el.dataset.flip = pinned.has(id) && !prev.pinned.has(id) ? 'drop' : 'glide';
+        el.dataset.flip = drops.has(el.dataset.chatId ?? '') ? 'drop' : 'glide';
         el.style.removeProperty('--flip-y');
       }
     }

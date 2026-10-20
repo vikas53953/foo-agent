@@ -3,8 +3,8 @@
    a 2 line gap), §3.4.5.1 WhatsApp mark (16, `--logo` tile, 2 inset, bottom-right of the 48 box), §3.4.7 row states
    (hover, pressed, selected fill + 3×24 accent bar, inset focus ring, unread time in `--accent`, folded 44 line, disabled,
    high contrast). 02 §F7.1 "Chat list" [X-179]: hover lifts 1px with `--shadow-4`; rows glide (FLIP) and arrive with
-   `--ease-spring-soft`, a newly pinned row with `--ease-spring`; search results stagger by `--m-stagger`; the badge
-   springs in, the Needs-you pill pulses once (≤ 4 %), a working preview shimmers once, "typing…" breathes, the muted
+   `--ease-spring-soft`, a newly pinned row with `--ease-spring` when it moves one row or less (the overshoot cap); search results stagger by `--m-stagger`; the badge
+   springs in, the Needs-you pill pulses once (≤ 4 %, an opacity dip at Basic), a working preview shimmers once, "typing…" breathes, the muted
    icon fades in. Movement is scaled by `--motion-move` (0 at Basic and Off); Off keeps the hover look of today. */
 .row {
   position: relative;
@@ -36,7 +36,8 @@
 }
 
 /* FLIP: ChatList sets `--flip-y` (old top − new top) with data-flip="from", then "glide" or "drop" with it back at 0 */
-.row[data-flip] {
+.row[data-flip],
+.row[data-flip]:not(.disabled):hover {
   transform: translateY(calc(var(--flip-y) * var(--motion-move)));
 }
 .row[data-flip='from'] {
@@ -223,6 +224,7 @@
 }
 @keyframes pulse {
   50% {
+    opacity: 0.8;
     transform: scale(calc(1 + 0.04 * var(--motion-move)));
   }
 }

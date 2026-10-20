@@ -42,7 +42,10 @@ const animationOf = (el: Locator) =>
     return { name: cs.animationName, ms: Math.round(parseFloat(cs.animationDuration) * 1000) };
   });
 
-/** Records every data-flip / data-arrive the list sets, with the row and its stagger index. */
+/**
+ * Records every data-flip / data-arrive the list sets (the value at callback time, so a FLIP reads as its landing
+ * "drop" or "glide"), with the row and its stagger index, and every FLIP start offset as `flip-y=<px>|<row>`.
+ */
 async function recordList(page: Page): Promise<void> {
   await page.evaluate(() => {
     const seen: string[] = [];
@@ -50,10 +53,20 @@ async function recordList(page: Page): Promise<void> {
     new MutationObserver((ms) => {
       for (const m of ms) {
         const el = m.target as HTMLElement;
+        if (m.attributeName === 'style') {
+          const dy = /--flip-y:\s*(-?[\d.]+)px/.exec(m.oldValue ?? '')?.[1];
+          if (dy) seen.push(`flip-y=${dy}|${el.dataset.chatId ?? ''}`);
+          continue;
+        }
         const v = el.getAttribute(m.attributeName ?? '');
         if (v !== null) seen.push(`${m.attributeName}=${v}|${el.dataset.chatId ?? ''}|${el.style.getPropertyValue('--i')}`);
       }
-    }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['data-flip', 'data-arrive'] });
+    }).observe(document.body, {
+      subtree: true,
+      attributes: true,
+      attributeOldValue: true,
+      attributeFilter: ['data-flip', 'data-arrive', 'style'],
+    });
   });
 }
 const takeRecord = (page: Page) =>
@@ -117,25 +130,38 @@ test('AT-323: muting fades the muted icon in, never pops it', async () => {
   await app.close();
 });
 
-test('AT-323: a newly pinned chat moves to the top with the overshooting spring and the rows it passes glide', async () => {
+test('AT-323: a newly pinned chat moves up, dropping with the spring only when the overshoot stays within 2px', async () => {
   const { app, page } = await startWorld();
   await recordList(page);
   const chats: Record<Level, string> = { full: 'News & X', basic: 'Family group', off: 'Home' };
   for (const level of LEVELS) {
     await setLevel(page, level);
     const row = listRow(page, chats[level]);
-    const id = await row.getAttribute('data-chat-id');
+    const id = (await row.getAttribute('data-chat-id'))!;
     await row.click({ button: 'right' });
     await page.getByTestId(TID.chatlistMenuPin).click();
     await expect(row.getByTestId(TID.chatlistRowPin)).toBeVisible();
-    await expect
-      .poll(async () => (await takeRecord(page)).join('\n'), { timeout: 2000 })
-      .toMatch(level === 'off' ? /^$/ : new RegExp(`data-flip=drop\\|${id}`));
-    if (level !== 'off') {
-      // glides are the other rows, never the pinned one; at Basic `--motion-move` 0 keeps every offset at 0
-      const glide = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--motion-move'));
-      expect(Number(glide)).toBe(level === 'full' ? 1 : 0);
+    if (level === 'off') {
+      await page.waitForTimeout(SPRING.full);
+      expect(await takeRecord(page)).toEqual([]);
+      continue;
     }
+    let seen: string[] = [];
+    await expect
+      .poll(async () => {
+        seen = seen.concat(await takeRecord(page));
+        const started = seen.some((r) => r.startsWith('flip-y=') && r.endsWith(`|${id}`));
+        const landed = seen.some((r) => /^data-flip=(drop|glide)\|/.test(r) && r.includes(id));
+        return started && landed ? 'ok' : seen.join(' ; ');
+      })
+      .toBe('ok');
+    // the pinned row starts at its old top; `--ease-spring` overshoots 2.6 % of that distance, so it drops only within
+    // 76px (≤ 2px overshoot) and glides further; the rows it passes glide
+    const start = Math.abs(parseFloat(seen.find((r) => r.startsWith('flip-y=') && r.endsWith(`|${id}`))!.slice(7)));
+    const landed = seen.find((r) => /^data-flip=(drop|glide)\|/.test(r) && r.includes(id))!;
+    expect(landed.startsWith(start <= 76 ? 'data-flip=drop' : 'data-flip=glide')).toBe(true);
+    expect(seen.filter((r) => r.startsWith('data-flip=glide') && !r.includes(id)).length).toBeGreaterThan(0);
+    expect(await move(page)).toBe(level === 'full' ? 1 : 0);
     await expect(row).not.toHaveAttribute('data-flip', /.*/, { timeout: 2000 });
   }
   await app.close();

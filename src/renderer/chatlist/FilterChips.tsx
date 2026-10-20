@@ -43,7 +43,14 @@ export function FilterChips() {
     const raf = requestAnimationFrame(() => {
       fill.dataset.ready = '';
     });
-    const sizes = new ResizeObserver(place);
+    // a resize or a wrap moves the fill at once; only a chip change slides it
+    const sizes = new ResizeObserver(() => {
+      delete fill.dataset.ready;
+      place();
+      requestAnimationFrame(() => {
+        fill.dataset.ready = '';
+      });
+    });
     sizes.observe(row);
     sizes.observe(chip);
     return () => {
