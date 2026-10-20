@@ -7,7 +7,7 @@
 // 02 §F7.1 Cards): a card that changes state while shown cross-fades its content and grows or shrinks to its new height
 // over `--m-card` (05 §0.8 motion M-1); Basic, Off and reduced motion keep the cross-fade only, no height animation.
 import { useEffect, useLayoutEffect, useRef, type KeyboardEvent, type ReactNode } from 'react';
-import { useReducedMotion } from '../a11y/useReducedMotion';
+import { reducedMotionNow } from '../a11y/useReducedMotion';
 import type { CardRow } from '../../shared/types';
 import { formatDate, formatTime } from '../../shared/format';
 import { TID } from '../../shared/testids';
@@ -96,7 +96,6 @@ function useCardMorph(state: string) {
   const root = useRef<HTMLDivElement>(null);
   const height = useRef<number | null>(null);
   const shown = useRef(state);
-  const reduced = useReducedMotion();
   // The height just before a state change: kept current by a ResizeObserver (steps loading, Show all, window width).
   useEffect(() => {
     const el = root.current;
@@ -119,7 +118,9 @@ function useCardMorph(state: string) {
       return;
     }
     el.dataset.morph = '';
-    const grow = !reduced && Math.abs(from - to) >= 1;
+    // Basic, Off and reduced motion: no height animation (02 §F7 X-150), read at the moment of the change.
+    const still = reducedMotionNow() || document.documentElement.dataset.motion === 'basic';
+    const grow = !still && Math.abs(from - to) >= 1;
     if (grow) {
       el.style.height = `${from}px`;
       void el.offsetHeight; // apply the old height before the transition starts
@@ -137,7 +138,7 @@ function useCardMorph(state: string) {
     el.addEventListener(grow ? 'transitionend' : 'animationend', end);
     el.addEventListener('transitioncancel', end);
     return () => end();
-  }, [state, reduced]);
+  }, [state]);
   return root;
 }
 
