@@ -22,8 +22,8 @@ import type { FakeLine } from '../test/e2e/fakeAi';
 export interface Verify {
   /** Starts the app from --app-dir with FOO_TEST=1 and fresh data folders; closed for you at the end. */
   launch(o?: { fakeAi?: FakeLine[]; args?: string[]; env?: Record<string, string> }): Promise<{ app: ElectronApplication; page: Page }>;
-  /** Saves a picture of the window (or of `selector`) as NN-<name>.<theme>.png. */
-  shot(name: string, selector?: string): Promise<string>;
+  /** Saves a picture of the window (or of `selector`) as NN-<name>.<theme>.png; `target` = another of foo's windows (M9 live). */
+  shot(name: string, selector?: string, target?: Page): Promise<string>;
   /** One line of what the journey checked, kept in run.json and printed. */
   note(text: string): void;
   /** Every request the fake AI recorded in the newest launch (purpose, prompt, matched line). */
@@ -102,13 +102,14 @@ async function run(journeyPath: string, label: string, appDir: string, out: stri
       page.on('pageerror', (e) => consoleErrors.push(String(e)));
       return { app, page };
     },
-    async shot(name, selector) {
-      if (!page) throw new Error('shot() before launch()');
-      const theme = (await page.evaluate(() => document.documentElement.dataset.theme ?? 'unknown')) as string;
+    async shot(name, selector, target) {
+      const p = target ?? page;
+      if (!p) throw new Error('shot() before launch()');
+      const theme = (await p.evaluate(() => document.documentElement.dataset.theme ?? 'unknown')) as string;
       const file = join(dir, `${String(shots.length + 1).padStart(2, '0')}-${name}.${theme}.png`);
       const opts = { path: file, animations: 'disabled', caret: 'hide', scale: 'css' } as const;
-      if (selector) await page.locator(selector).first().screenshot(opts);
-      else await page.screenshot(opts);
+      if (selector) await p.locator(selector).first().screenshot(opts);
+      else await p.screenshot(opts);
       shots.push({ file: relative(out, file), name, theme });
       return file;
     },

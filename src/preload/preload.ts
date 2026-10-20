@@ -1,6 +1,7 @@
 // Spec: 08-1 §3.1 (window.foo: invoke, on, platform; channels allow-listed here, zod-checked in main), 08-1 §3.3 (events).
 // A sandboxed preload cannot require local files, so the allow-lists are written out; test/unit/preload.test.ts checks
-// they equal INVOKE_CHANNELS and EVENT_CHANNELS in src/shared/ipc.ts.
+// they equal INVOKE_CHANNELS and EVENT_CHANNELS in src/shared/ipc.ts, less `live:frame` and `live:state`, which only the live
+// window's preload (preloadLive.ts) carries (08-1 §3.3).
 import { contextBridge, ipcRenderer, type IpcRendererEvent } from 'electron';
 import type { FooBridge, PlatformInfo } from '../shared/ipc';
 
@@ -121,8 +122,6 @@ const EVENTS = new Set([
   'whatsapp:qr',
   'memory:changed',
   'data:exportProgress',
-  'live:frame',
-  'live:state',
 ]);
 
 const platform = ipcRenderer.sendSync('app:platform') as PlatformInfo;
