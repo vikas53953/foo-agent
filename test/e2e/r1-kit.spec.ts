@@ -214,19 +214,22 @@ test('AT-356 · a Button that would book opens an approval and books nothing', a
       { id: 'book-t', component: 'Text', text: 'Book Coastline Kitchen for 4' },
     ]),
   )}`;
-  const w = await startBooking((sb) => [
-    ...SETUP_LINES,
-    intake(ASK, offer),
-    bookingIntake('action book_table', 'Book Coastline Kitchen'),
-    toolLine('browser.open', { url: sb.url('restaurant', '/book/coastline?party=4&time=8:00 PM') }),
-    toolLine('browser.snapshot', {}),
-    requestBooking(2),
-  ]);
+  const w = await startBooking(
+    (sb) => [
+      ...SETUP_LINES,
+      intake(ASK, offer),
+      bookingIntake('action book_table', 'Book Coastline Kitchen'),
+      toolLine('browser.open', { url: sb.url('restaurant', '/book/coastline?party=4&time=8:00 PM') }),
+      toolLine('browser.snapshot', {}),
+      requestBooking(2),
+    ],
+    { chat: 'foo' },
+  );
   const { page } = w;
   try {
     await say(page, ASK);
-    // Home is a helper's chat: the reply is the helper's bubble.
-    const button = page.getByTestId(TID.threadLog).getByTestId(TID.kitButton);
+    // Kit surfaces draw only in foo's own text, so the offer is asked in foo's chat.
+    const button = fooBubble(page, 'Coastline Kitchen has a table').getByTestId(TID.kitButton);
     await advanceUntil(page, button);
     await button.click();
     const approval = lastCard(page, TID.cardApproval);

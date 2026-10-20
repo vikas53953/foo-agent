@@ -5,7 +5,7 @@
 // leaves the renderer and a match is refused, Article 8; `Image` only `data:` images or a chat file, web images never
 // load), 02 §F19.9 (charts), CR-0022 §(c) (catalog), AT-340, AT-353, AT-354, AT-355, AT-356, X-180. R1 T2.
 // Parts are drawn by plain functions, not components, so one render counts the parts it had to drop (the caption).
-import { useState, type ReactNode } from 'react';
+import { useState, type KeyboardEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import type { KitActionMessage, KitComponent } from '../../shared/kit/catalog';
 import { checkSecret } from '../../shared/redactor';
@@ -230,11 +230,27 @@ function part(ctx: Ctx, c: KitComponent, scope: string, depth: number): ReactNod
   }
 }
 
+/** Arrow keys, Home and End move the selection and focus with it (WAI-ARIA tabs, automatic activation). */
+const TAB_KEYS: Record<string, (i: number, n: number) => number> = {
+  ArrowRight: (i, n) => (i + 1) % n,
+  ArrowLeft: (i, n) => (i - 1 + n) % n,
+  Home: () => 0,
+  End: (_, n) => n - 1,
+};
+
 function KitTabs({ tabs }: { tabs: { title: string; body: ReactNode }[] }) {
   const [on, setOn] = useState(0);
+  const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
+    const move = TAB_KEYS[e.key];
+    if (!move) return;
+    e.preventDefault();
+    const next = move(on, tabs.length);
+    setOn(next);
+    e.currentTarget.querySelectorAll<HTMLElement>('[role="tab"]')[next]?.focus();
+  };
   return (
     <div className={styles.tabs}>
-      <div role="tablist" className={styles.tablist}>
+      <div role="tablist" className={styles.tablist} onKeyDown={onKey}>
         {tabs.map((tab, i) => (
           <button
             key={i}

@@ -39,9 +39,7 @@ export function kitActionHandler(d: KitDeps): (req: KitActionMessage) => Result<
 
 /** Reads for the handler from foo.db: a live foo or helper message, or a live `kit` card (its payload body as a fence). */
 export function kitDbReads(db: Db): Pick<KitDeps, 'hostText'> {
-  const message = db.prepare(
-    "SELECT text FROM messages WHERE id = ? AND chat_id = ? AND author_kind IN ('foo','helper') AND deleted_at IS NULL",
-  );
+  const message = db.prepare("SELECT text FROM messages WHERE id = ? AND chat_id = ? AND author_kind = 'foo' AND deleted_at IS NULL");
   const card = db.prepare("SELECT payload FROM cards WHERE id = ? AND chat_id = ? AND type = 'kit' AND deleted_at IS NULL");
   return {
     hostText: (chatId, host) => {

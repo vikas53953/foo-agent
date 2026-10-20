@@ -40,7 +40,7 @@ function useChatFences(chatId: string): ChatFence[] {
     const out: ChatFence[] = [];
     for (const id of chat?.ids ?? []) {
       const m = chat!.byId[id];
-      if (!m || m.authorKind === 'user' || !hasFence(m.text)) continue;
+      if (!m || m.authorKind !== 'foo' || !hasFence(m.text)) continue;
       for (const f of kitFences(m.text)) out.push({ messageId: m.id, body: f.body, streaming: m.status === 'streaming' });
     }
     return out;

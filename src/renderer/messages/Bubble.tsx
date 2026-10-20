@@ -59,6 +59,7 @@ import { backupNames, badgeSlot, bubbleName, canEdit, slotTooltip, tickLabel, ti
 import { Blocks, endsInParagraph, Inlines, SourcesRow } from './Markdown';
 import { HandoffMarker } from './HandoffMarker';
 import { SystemLine } from './Markers';
+import { fooOnlyBlocks } from '../kit/fooOnly';
 import { allSources, inlineText, isRich, parseBlocks, parseWhatsApp, plainText, streamSafe } from './markdownParse';
 import { menuEntries, type MenuAction, type MenuFacts } from './messageMenu';
 import { ReactionPicker } from './ReactionPicker';
@@ -263,11 +264,9 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
   const blocks = useMemo(
     () =>
       side === 'them' && m.kind === 'text' && !deleted
-        ? m.status === 'streaming'
-          ? parseBlocks(streamSafe(m.text))
-          : blocksOf(m.text)
+        ? fooOnlyBlocks(m.status === 'streaming' ? parseBlocks(streamSafe(m.text)) : blocksOf(m.text), m.authorKind)
         : null,
-    [side, m.kind, m.text, m.status, deleted],
+    [side, m.kind, m.text, m.status, deleted, m.authorKind],
   );
   const hasTable = !!blocks?.some((b) => b.t === 'table');
   const canTryAgain = layout.latestAnswer && (!job || (job.intent === 'read_only' && job.doVerbs.length === 0));

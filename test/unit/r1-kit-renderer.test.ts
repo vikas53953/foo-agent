@@ -16,7 +16,8 @@ import {
   resolveField,
   setPath,
 } from '../../src/shared/kit/surface';
-import { axisRange, formatValue, geometry, xLabelIndexes } from '../../src/renderer/kit/LineChart';
+import { axisRange, chartValues, formatValue, geometry, xLabelIndexes } from '../../src/renderer/kit/LineChart';
+import { fooOnlyBlocks } from '../../src/renderer/kit/fooOnly';
 import { kitActionHandler } from '../../src/main/kit/kitIpc';
 import { actionForAi, actionWords, KitActions } from '../../src/engine/kit/kitAction';
 import { plainLine } from '../../src/main/store/queries';
@@ -131,6 +132,36 @@ describe('LineChart helpers (02-2 §F19.9, §F19.1, §F19.2)', () => {
     expect(xLabelIndexes(7)).toEqual([0, 2, 4, 6]);
     expect(xLabelIndexes(30)).toEqual([0, 5, 10, 15, 20, 25]);
   });
+
+  it('every value is in the text Narrator reads', () => {
+    const s = [
+      {
+        label: 'This week',
+        points: [
+          { x: 'Mon', y: 4200 },
+          { x: 'Tue', y: 3900 },
+        ],
+      },
+      { label: 'Last month', points: [{ x: 'Mon', y: 5100 }] },
+    ];
+    expect(chartValues(s, 'rupees')).toBe('This week: Mon ₹4,200, Tue ₹3,900; Last month: Mon ₹5,100');
+  });
+});
+
+describe("only foo's own text draws a surface (04 §13.5)", () => {
+  it("a user's or helper's a2ui or page fence stays a code block", () => {
+    const blocks = [
+      { t: 'p', v: [] },
+      { t: 'kit', body: create() },
+      { t: 'page', body: '<p>x</p>' },
+    ] as never[];
+    expect(fooOnlyBlocks(blocks, 'foo')).toBe(blocks);
+    expect(fooOnlyBlocks(blocks, 'helper')).toEqual([
+      { t: 'p', v: [] },
+      { t: 'code', lang: 'a2ui', v: create() },
+      { t: 'code', lang: 'page', v: '<p>x</p>' },
+    ]);
+  });
 });
 
 const action = (o: Partial<KitActionMessage> = {}): KitActionMessage => ({
@@ -175,7 +206,50 @@ describe("main's kit:action (08-1 §3.2)", () => {
   });
 });
 
+const engine = (host: { authorKind: string; text: string }, later: { seq: number; authorKind: string; text: string }[] = []) => {
+  const txs: unknown[] = [];
+  const queued: string[][] = [];
+  const k = new KitActions({
+    link: {
+      request: async (kind: string, p: { q?: string; ops?: unknown[] }) => {
+        if (kind === 'db.query' && p.q === 'messageById') return { ok: true, value: { id: 'm_1', chatId: 'c_1', seq: 5, ...host } };
+        if (kind === 'db.query' && p.q === 'messagesBefore')
+          return { ok: true, value: later.map((l, i) => ({ id: `m_l${i}`, chatId: 'c_1', ...l })) };
+        if (kind === 'db.tx') return (txs.push(p.ops), { ok: true, value: { ids: [], revs: [] } });
+        return { ok: true, value: null };
+      },
+    } as never,
+    clock: { now: () => 1_000 } as never,
+    newId: () => 'm_2',
+    enqueue: (chatId, messageId) => queued.push([chatId, messageId]),
+    log: () => undefined,
+  });
+  return { k, txs, queued };
+};
+
 describe("the engine's kit.action (08-1 §2.4: as if the user typed it)", () => {
+  it("refuses a surface outside foo's own text", async () => {
+    const { k, txs, queued } = engine({ authorKind: 'helper', text: fence(create(), comps(button)) });
+    await k.handle(action());
+    expect(txs).toEqual([]);
+    expect(queued).toEqual([]);
+  });
+
+  it("a later foo reply that relabels the Button gives the tap its new words; a helper's does not", async () => {
+    const relabel = (by: string, seq: number) => ({
+      seq,
+      authorKind: by,
+      text: fence(comps([{ id: 'go-t', component: 'Text', text: `By ${by}` }])),
+    });
+    const { k, txs } = engine({ authorKind: 'foo', text: fence(create(), comps(button)) }, [
+      relabel('foo', 7),
+      relabel('helper', 9),
+      relabel('foo', 3),
+    ]);
+    await k.handle(action());
+    expect((txs[0] as { row: { text: string } }[])[0]!.row.text).toBe('By foo');
+  });
+
   it("stores the tap as the user's message in the Button's words, with the action for the AI, then hands it to the lane", async () => {
     const txs: unknown[] = [];
     const queued: string[][] = [];

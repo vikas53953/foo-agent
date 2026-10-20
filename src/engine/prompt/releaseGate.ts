@@ -37,9 +37,8 @@ const FENCE_LINE = /^\s*```/gmu;
 /**
  * R1 T2 (04 §13.5 / §14.4, AT-353): inside a code fence every line break ends a "sentence", so an ```a2ui block's messages
  * (one JSON object per line) release one by one and each complete message draws while the reply streams. Outside a fence a
- * line break still needs whitespace after it, as before.
+ * line break still needs whitespace after it, as before. The gate keeps a running fence state ({@link ReleaseGate.inFence}).
  */
-const inFence = (text: string, at: number): boolean => (text.slice(0, at).match(FENCE_LINE)?.length ?? 0) % 2 === 1;
 
 /**
  * Streaming release gate for one chat-lane turn. Feed every raw delta of the reply with {@link feed}; call {@link end} when
@@ -53,6 +52,9 @@ export class ReleaseGate {
   private body = '';
   /** Index in `body` up to which sentences have been queued. */
   private consumed = 0;
+  /** Index in `body` up to which fence lines have been counted, and whether a fence is open there. */
+  private fenceAt = 0;
+  private fenceOpen = false;
   private sayClosed = false;
   private streaming = false;
   private timer: TimerId | null;
@@ -135,12 +137,23 @@ export class ReleaseGate {
     return SAY_CLOSE.startsWith(tail) || ACT_OPEN.startsWith(tail) ? lt : this.body.length;
   }
 
+  /** Whether `at` lies inside a code fence: counts only the fence lines after the last call's point, so a reply stays O(n). */
+  private inFence(text: string, at: number): boolean {
+    FENCE_LINE.lastIndex = this.fenceAt;
+    let f: RegExpExecArray | null;
+    while ((f = FENCE_LINE.exec(text)) && f.index + f[0].length <= at) {
+      this.fenceOpen = !this.fenceOpen;
+      this.fenceAt = f.index + f[0].length;
+    }
+    return this.fenceOpen;
+  }
+
   private queueSentences(limit: number, pump = true): void {
     const avail = this.body.slice(0, limit);
     BOUNDARY.lastIndex = this.consumed;
     let m: RegExpExecArray | null;
     while ((m = BOUNDARY.exec(avail))) {
-      if (m[0] === '\n' && !inFence(avail, m.index)) continue;
+      if (m[0] === '\n' && !this.inFence(avail, m.index)) continue;
       const end = m.index + m[0].length;
       this.queue.push({ text: avail.slice(this.consumed, end), mode: 'sentence' });
       this.consumed = end;
