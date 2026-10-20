@@ -7,55 +7,17 @@
 import { expect, test, type Locator } from '@playwright/test';
 import { t } from '../../src/shared/copy/t';
 import { TID } from '../../src/shared/testids';
-import { SETUP_LINES, advanceUntil, bookedLine, lastCard, requestBooking, say, startBooking, stepLine, toolLine } from './m9-booking-world';
-
-const ASK = 'book a table for 4 at an Italian place in Bandra on Sunday';
-const TITLE = 'Table for 4 on Sunday';
-// 08-4 §26.1: a slot is at most 40 characters.
-const SITES = 'Coastline, Saffron Table and Bay Leaf';
-// 08-2 §5.3: the runner names the job from its booking verb ("Booking {what}"); the intake title is the AI's proposal.
-const JOB_TITLE = 'Booking a table for 4';
-
-const intake = {
-  match: { purpose: 'intake' as const, promptIncludes: ASK },
-  reply: `<say></say><act>${JSON.stringify({
-    decision: {
-      kind: 'job',
-      title: TITLE,
-      plan: [
-        { phraseKey: 'look_web', slots: {}, route: 'browser' },
-        { phraseKey: 'check_sites', slots: { sites: SITES }, route: 'browser' },
-        { phraseKey: 'book', slots: { what: 'a table for 4' }, route: 'browser' },
-      ],
-      estimate: { minutes: 3 },
-      routeHint: ['browser'],
-      needsApps: [],
-    },
-    usedMemoryIds: [],
-  })}</act>`,
-};
+import { CARDS_ASK, CARDS_JOB_TITLE, CARDS_SAVED_MIN, cardsLines } from './p1-cards-world';
+import { advanceUntil, lastCard, say, startBooking } from './m9-booking-world';
 
 const css = (el: Locator, prop: string) => el.evaluate((n, p) => getComputedStyle(n).getPropertyValue(p), prop);
 
 test('AT-310 AT-311 AT-312 a booking job: step icons, the source pile, the Approve card on a money weight, the end-card line', async () => {
   test.setTimeout(240_000);
-  const w = await startBooking((sb) => [
-    ...SETUP_LINES,
-    intake,
-    toolLine('browser.open', { url: sb.url('restaurant', '/') }),
-    toolLine('browser.snapshot', {}),
-    // 08-2 §5.4: the AI ticks its steps off (look on the web, check the three places); `step_done` is not a tool call.
-    stepLine({ kind: 'step_done', idx: 0 }),
-    stepLine({ kind: 'step_done', idx: 1 }),
-    toolLine('browser.open', { url: sb.url('restaurant', '/book/coastline?party=4&time=8:00 PM') }),
-    toolLine('browser.snapshot', {}),
-    requestBooking(4),
-    stepLine({ kind: 'step_done', idx: 2 }),
-    bookedLine(5),
-  ]);
+  const w = await startBooking((sb) => cardsLines(sb));
   const { page } = w;
   try {
-    await say(page, ASK);
+    await say(page, CARDS_ASK);
     // Four steps (the runner adds "Show you before booking"), so foo shows its plan first (05-3 §5.12).
     const plan = lastCard(page, TID.cardPlan);
     await advanceUntil(page, plan);
@@ -90,7 +52,7 @@ test('AT-310 AT-311 AT-312 a booking job: step icons, the source pile, the Appro
     const done = page.getByTestId(TID.threadLog).locator(`[data-testid="${TID.cardChecklist}"][data-card-state="done"]`).last();
     await advanceUntil(page, done);
     const saved = done.getByTestId(TID.cardDoneSaved);
-    await expect(saved).toHaveText(t('cards.done.saved', { title: JOB_TITLE, n: 10 }));
+    await expect(saved).toHaveText(t('cards.done.saved', { title: CARDS_JOB_TITLE, n: CARDS_SAVED_MIN }));
 
     // AT-310 on the finished list (Details): the runner marks the steps done as the job finishes.
     await done.getByTestId(TID.cardChecklistDetails).click();
@@ -120,27 +82,10 @@ test('AT-310 AT-311 AT-312 a booking job: step icons, the source pile, the Appro
 
 test('AT-312 DONE "⚠ Not checked live" shows no end-card line and no tilt', async () => {
   test.setTimeout(240_000);
-  const w = await startBooking((sb) => [
-    ...SETUP_LINES,
-    intake,
-    toolLine('browser.open', { url: sb.url('restaurant', '/') }),
-    toolLine('browser.snapshot', {}),
-    stepLine({ kind: 'step_done', idx: 0 }),
-    stepLine({ kind: 'step_done', idx: 1 }),
-    toolLine('browser.open', { url: sb.url('restaurant', '/book/coastline?party=4&time=8:00 PM') }),
-    toolLine('browser.snapshot', {}),
-    requestBooking(4),
-    stepLine({ kind: 'step_done', idx: 2 }),
-    // A code the site never showed: the proof check fails, so the job ends DONE "⚠ Not checked live" (08-2 §6).
-    stepLine({
-      kind: 'done',
-      result: 'Booked. Coastline Kitchen, Sun 18 Oct at 8:00 PM for 4. Your code is ZZ0000.',
-      proof: { kind: 'confirmation', code: 'ZZ0000', site: 'tablejoy.test', seenInToolCallId: 'tc_000005' },
-    }),
-  ]);
+  const w = await startBooking((sb) => cardsLines(sb, false));
   const { page } = w;
   try {
-    await say(page, ASK);
+    await say(page, CARDS_ASK);
     const plan = lastCard(page, TID.cardPlan);
     await advanceUntil(page, plan);
     await plan.getByTestId(TID.cardPlanGo).click();
