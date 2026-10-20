@@ -78,15 +78,8 @@
     "cards.common.private_things.password": "M13 groups (private line)",
     "cards.common.private_things.signin": "M13 groups (private line)",
     "app.splash.loading": "P1 T8 (CR-0021)",
-    "kit.stepper.increase": "R1 T4 (CR-0022)",
-    "kit.stepper.decrease": "R1 T4 (CR-0022)",
-    "kit.compare.best": "R1 T4 (CR-0022)",
-    "kit.calculator.cannot": "R1 T4 (CR-0022)",
-    "kit.goal.of": "R1 T4 (CR-0022)",
-    "kit.checklist.start": "R1 T4 (CR-0022)",
-    "kit.checklist.pause": "R1 T4 (CR-0022)",
-    "kit.checklist.left": "R1 T4 (CR-0022)",
-    "kit.form.submit": "R1 T4 (CR-0022)",
-    "app.splash.starting": "P1 T8 (CR-0021)"
+    "app.splash.starting": "P1 T8 (CR-0021)",
+    "screen.load_error.text": "P1 T10 (CR-0021)",
+    "screen.load_error.action": "P1 T10 (CR-0021)"
   }
 }

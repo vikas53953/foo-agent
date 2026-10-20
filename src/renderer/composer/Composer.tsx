@@ -21,7 +21,7 @@ import { Presence } from '../ui/Presence';
 import { createPortal } from 'react-dom';
 import { COUNTER_FROM, ACCEPT, MAX_FILES, pasteBand, pastedFileName, TEXT_LIMIT } from '../../shared/attachmentRules';
 import { t } from '../../shared/copy/t';
-import { askedForCode, findSecrets, suggestedNameSlot, type CheckContext } from '../../shared/redactor';
+import { askedForCode, findSecrets, secretOnly, suggestedNameSlot, type CheckContext } from '../../shared/redactor';
 // M5 T2
 import { clearSecretPrefill, prefillSecret } from '../cards/secretPrefill';
 import { TID } from '../../shared/testids';
@@ -116,9 +116,7 @@ const maskSeq = { n: 0 };
 const newMaskId = () => `m${++maskSeq.n}`;
 
 const trimBlankLines = (s: string) => s.replace(/^(?:[^\S\n]*\n)+/, '').replace(/(?:\n[^\S\n]*)+$/, '');
-// M5 T2: a P11 match carries its label ("password: …"); only what follows the label goes into the Secret box (04-2 §22.4).
-const secretPart = (m: MaskValue) =>
-  m.hit.pattern === 'P11' ? m.value.replace(/^(?:password|passwd|pwd|passcode|pass|पासवर्ड|ਪਾਸਵਰਡ)\s*(?:is|है|:|=|-)?\s*/iu, '') : m.value;
+const secretPart = (m: MaskValue) => secretOnly(m.hit, m.value);
 
 export function Composer({ chat }: { chat: ChatRow }) {
   const chatId = chat.id;
