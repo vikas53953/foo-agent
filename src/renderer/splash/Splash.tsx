@@ -10,7 +10,7 @@
 import { useEffect, useState } from 'react';
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
-import { announce } from '../a11y/announce';
+import a11y from '../a11y/a11y.module.css';
 import { useStore } from '../store/index';
 import { selectLoaded } from '../store/live';
 import { selectAgentName } from '../store/settings';
@@ -22,8 +22,6 @@ import styles from './Splash.module.css';
 export const SLOW_AFTER_MS = 3_000;
 /** foo's face before settings load: the default living face (08-0 §E.7). */
 const FOO_FACE = 'living:default';
-/** One "{agentName} is starting" per app start, also under StrictMode's doubled dev effects. */
-let announced = false;
 
 export function Splash() {
   const loaded = useStore(selectLoaded);
@@ -36,14 +34,16 @@ export function Splash() {
 
 function SplashView(props: { 'data-exit'?: '' }) {
   const [slow, setSlow] = useState(false);
+  const [starting, setStarting] = useState('');
   useEffect(() => {
-    if (!announced) {
-      announced = true;
-      // Read once at mount: the name is foo's own until settings load (they rarely beat the splash).
-      announce(t('app.splash.starting', { agentName: selectAgentName(useStore.getState()) }));
-    }
+    // The splash's own live region (the app's announcer sits in the inert shell): filled after mount so it is read once.
+    // The name is foo's own until settings load (they rarely beat the splash).
+    const say = window.setTimeout(() => setStarting(t('app.splash.starting', { agentName: selectAgentName(useStore.getState()) })));
     const late = window.setTimeout(() => setSlow(true), SLOW_AFTER_MS);
-    return () => window.clearTimeout(late);
+    return () => {
+      window.clearTimeout(say);
+      window.clearTimeout(late);
+    };
   }, []);
   // §1.5: nothing under the splash is focusable or read while it covers the shell; the shell wakes as the fade starts.
   const leaving = props['data-exit'] === '';
@@ -57,6 +57,9 @@ function SplashView(props: { 'data-exit'?: '' }) {
   }, [leaving]);
   return (
     <div className={styles.splash} data-testid={TID.screenSplash} aria-hidden={leaving || undefined} {...props}>
+      <p className={a11y.visuallyHidden} role="status">
+        {starting}
+      </p>
       <div className={styles.block}>
         <Face faceRef={FOO_FACE} size={96} mood="waking" ring={false} data-testid={TID.splashFace} />
         <p className={styles.wordmark} data-testid={TID.screenSplashWordmark}>

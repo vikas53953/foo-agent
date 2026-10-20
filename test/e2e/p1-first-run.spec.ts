@@ -54,7 +54,8 @@ test('AT-313 splash: the 96px face wakes once (eyes open from a line) then rests
   }
   await expect(page.getByTestId(TID.screenSplashWordmark)).toHaveText(t('app.window.title'));
   await expect(page.getByTestId(TID.screenSplashStatus)).toHaveText('');
-  await expect(page.getByTestId(TID.appAnnouncer).first()).toContainText(t('app.splash.starting', { agentName: 'foo' }));
+  // Narrator: the splash's own polite region outside the inert shell says it once.
+  await expect(splash.getByRole('status').filter({ hasText: t('app.splash.starting', { agentName: 'foo' }) })).toHaveCount(1);
   // After the wake the eyes rest open: nothing in the splash is still running (no loop, no second wake), and the
   // wordmark and status line never moved. The shell underneath is out of reach (§1.5).
   await page.waitForTimeout(800);
@@ -85,7 +86,6 @@ test('AT-313 Off: with reduced motion the eyes are already open and nothing in t
   const face = page.getByTestId(TID.splashFace);
   await expect(face).toBeVisible();
   await expect(face).toHaveAttribute('data-motion-face', 'off');
-
   // Only the face's own cross-fade may run (opacity, ≤ 83 ms at Off, §F15.9.5); no wake, blink or movement.
   expect((await splashAnimations(page)).filter((a) => !a.name.includes('cross'))).toEqual([]);
   // Eyes open: full height (24 of the 100-unit disc, §F15.9.1a), not a line.
