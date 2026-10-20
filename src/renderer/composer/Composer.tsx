@@ -6,7 +6,15 @@
 // and drag-drop, notice, @ mention, keys), §23 (states, banners, pending strip, drafts, character limit, Narrator), 05-2 §5.9
 // (the catcher dock is 04-2 §22.4's panel), 03-shell-2 §3.9.2 (F6 `composer` pane), 08-0 §G.10 (`live.lastKeystrokeAt`).
 // Component `Pill` of §20.3 is the field region below (one component owns the field and its stacks).
+// P1 T6 (CR-0021 picks 10, 11; 02 §F7.1 "Composer"): suggestion chips (§21.7) above the row; the round button's ✓ for
+// --dur-confirm after delivery, the hold flood and the live level ring; "Add details…" while a job of this chat works; the
+// field grows smoothly; a dropped file's chip flies in from the drop point; a caught secret shows the lock; Esc shrinks the
+// voice bar back into the mic; offline dims the field.
 import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+// P1 T6
+import { motion } from '../../shared/tokens';
+import { Icon } from '../ui/Icon';
+import { Presence } from '../ui/Presence';
 import { createPortal } from 'react-dom';
 import { COUNTER_FROM, ACCEPT, isLongPaste, TEXT_LIMIT } from '../../shared/attachmentRules';
 import { t } from '../../shared/copy/t';
@@ -67,8 +75,10 @@ import { NARROW_PILL_PX, planChangePending, placeholderText } from './placeholde
 import { ReplyStrip, type ReplyQuote } from './ReplyStrip';
 import { roundButtonState, roundTooltip, talkKeyLabel, isTalkChord } from './roundState';
 import { newClientId, sendOutgoing, stageFile } from './send';
+import { SuggestionChips } from './SuggestionChips';
+import { suggestionsFor } from './suggestions';
 import { useVoice } from './useVoice';
-import { RecordCancel, VoiceRecorder } from './VoiceRecorder';
+import { RecordCancel, VoiceRecorder, type RecordingView } from './VoiceRecorder';
 import styles from './Composer.module.css';
 
 /** §22.4: the typed check runs this long after typing stops. */
@@ -146,6 +156,15 @@ export function Composer({ chat }: { chat: ChatRow }) {
   const [pendingInView, setPendingInView] = useState(true);
   const [linkPreviewRemoved, setLinkPreviewRemoved] = useState(false);
   const touched = useRef(false);
+  // P1 T6 (CR-0021 pick 11): the round button shows ✓ for --dur-confirm once main has the message.
+  const [confirmed, setConfirmed] = useState(false);
+  const confirmTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const confirmSent = useCallback(() => {
+    clearTimeout(confirmTimer.current);
+    setConfirmed(true);
+    confirmTimer.current = setTimeout(() => setConfirmed(false), motion['dur-confirm']);
+  }, []);
+  useEffect(() => () => clearTimeout(confirmTimer.current), []);
   // M5 T2: the caught values behind the masks still in the field, in memory only, for "Move to secret box" (04-2 §22.4);
   // a value goes as soon as its mask leaves the field (setSegs), on Send and on a chat switch.
   const maskValues = useRef(new Map<string, MaskValue>());
@@ -327,6 +346,9 @@ export function Composer({ chat }: { chat: ChatRow }) {
   // ---------------------------------------------------------------- voice (§22.1)
   const voice = useVoice({ chatId, enabled: !notSetUp, onBanner: setMicProblem });
   const recording = voice.rec?.mode ?? null;
+  // P1 T6 (02 §F7.1): the bar shrinks back into the mic after it ends, so it keeps its last look while it leaves.
+  const [lastRec, setLastRec] = useState<RecordingView | null>(null);
+  if (voice.rec && voice.rec !== lastRec) setLastRec(voice.rec);
 
   // ---------------------------------------------------------------- derived state
   const empty = checkText(segs) === '';
@@ -340,6 +362,24 @@ export function Composer({ chat }: { chat: ChatRow }) {
   const tooltip = roundTooltip(round, roundFacts, talkKey);
   const counter = length >= COUNTER_FROM ? { n: tooLong ? length - TEXT_LIMIT : TEXT_LIMIT - length, over: tooLong } : null;
   const composerBanner: ComposerBannerType | null = micProblem ?? (pausedHelper?.paused ? 'helper_paused' : null);
+  // P1 T6 (CR-0021 pick 11): a job of this chat is WORKING → "Add details…".
+  const working = useStore((s) => (s.jobs.byChat[chatId] ?? []).some((id) => s.jobs.byId[id]?.state === 'working'));
+  // P1 T6 (04-2 §21.7): starters in an empty chat, else the latest reply's own follow-ups; nothing before the chat loads.
+  const suggestView = useMemo(
+    () =>
+      slice
+        ? suggestionsFor({
+            kind: chat.kind,
+            private: chat.private,
+            messages: slice.ids.flatMap((id) => (slice.byId[id] ? [slice.byId[id]] : [])),
+            cards: cardsById,
+            recording: recording !== null,
+            disabled: notSetUp,
+            typed: !empty || chips.length > 0,
+          })
+        : null,
+    [slice, chat.kind, chat.private, cardsById, recording, notSetUp, empty, chips.length],
+  );
 
   // M5 (T5): a Choice card's "Something else…" hint, while the box is still empty (05-1 §5.3.2).
   const hint = useStore((s) => (s.ui.composerHint?.chatId === chatId ? s.ui.composerHint.text : null));
@@ -363,6 +403,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
           agentName,
           talkKey,
           planChange: slice ? planChangePending(slice.ids, slice.byId, cardsById) : false,
+          working,
         });
 
   // Pill width → the short placeholder under 360 px (§20.4).
@@ -373,6 +414,20 @@ export function Composer({ chat }: { chat: ChatRow }) {
     ro.observe(el);
     return () => ro.disconnect();
   }, [recording]);
+
+  // P1 T6 (02 §F7.1): the field grows and shrinks smoothly. Its height is set to what the text needs (max-height still caps
+  // it at 6 lines) and CSS animates between the two; at Basic and Off the change is instant.
+  useLayoutEffect(() => {
+    const el = field.current;
+    if (!el) return;
+    const before = el.style.height;
+    el.style.height = 'auto';
+    const next = `${el.scrollHeight}px`;
+    el.style.height = before;
+    if (before === next) return;
+    if (before) void el.offsetHeight; // the transition starts from the old height
+    el.style.height = next;
+  }, [segs, recording]);
 
   // The notice goes after 8 s (§22.7).
   useEffect(() => {
@@ -395,6 +450,16 @@ export function Composer({ chat }: { chat: ChatRow }) {
     [notSetUp],
   );
   useEffect(() => registerFocusTarget('composer', () => focusField()), [focusField]);
+
+  // P1 T6 (04-2 §21.7): a chip fills the field with its words and focuses it; it never sends.
+  const pickSuggestion = useCallback(
+    (text: string) => {
+      touched.current = true;
+      writeField(tidy([{ kind: 'text', text }]));
+      focusField();
+    },
+    [focusField, writeField],
+  );
 
   // Shift+Esc anywhere focuses the field; a printable key typed in the message list moves to the field (§22.9); {talkKey}.
   useEffect(() => {
@@ -529,7 +594,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
   );
 
   const addFiles = useCallback(
-    (files: readonly File[]) => {
+    (files: readonly File[], from?: { x: number; y: number }) => {
       if (notSetUp || strip?.kind === 'edit' || !files.length) return;
       touched.current = true;
       const plan = planFiles(files, chipsRefState.current.length);
@@ -557,6 +622,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
           url: kind === 'image' ? URL.createObjectURL(f) : undefined,
           state: 'preparing',
           staged,
+          enter: 'fly',
+          ...(from ? { from } : {}),
         };
       });
       setChips((list) => [...list, ...added]);
@@ -676,9 +743,9 @@ export function Composer({ chat }: { chat: ChatRow }) {
       touched.current = false;
       focusField();
       announce(t('composer.announce.sent'));
-      await sendOutgoing(outgoing);
+      if ((await sendOutgoing(outgoing)).ok) confirmSent();
     },
-    [notSetUp, catchOpen, strip, chatId, runCheck, noticeFor, showNotice, writeField, setChips, focusField],
+    [notSetUp, catchOpen, strip, chatId, runCheck, noticeFor, showNotice, writeField, setChips, focusField, confirmSent],
   );
 
   const activateRound = useCallback(() => {
@@ -774,6 +841,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
             bytes: text.length,
             text: caught ? maskText(text) : text,
             state: 'ready',
+            enter: 'fold',
           },
         ]);
         if (caught) setCatchOpen(true);
@@ -941,7 +1009,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
       depth = 0;
       setDrag(null);
       if (blocked() || notSetUp) return;
-      addFiles(Array.from(e.dataTransfer?.files ?? []));
+      addFiles(Array.from(e.dataTransfer?.files ?? []), { x: e.clientX, y: e.clientY });
     };
     window.addEventListener('dragenter', enter);
     window.addEventListener('dragover', over);
@@ -1030,6 +1098,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
             )}
           </div>
         )}
+        <SuggestionChips view={suggestView} onPick={pickSuggestion} />
         <div className={styles.row}>
           <span className={styles.slot}>
             {voice.rec ? (
@@ -1047,19 +1116,28 @@ export function Composer({ chat }: { chat: ChatRow }) {
               />
             )}
           </span>
-          {voice.rec ? (
-            <VoiceRecorder rec={voice.rec} />
-          ) : (
+          {/* P1 T6: when recording ends the bar leaves over the pill (absolute while [data-exit]), shrinking into the mic. */}
+          <Presence show={!!voice.rec}>
+            <VoiceRecorder rec={voice.rec ?? lastRec!} />
+          </Presence>
+          {!voice.rec && (
             <div
               ref={pill}
               className={styles.pill}
               data-disabled={disabled || undefined}
               data-stacked={!!(strip || chips.length) || undefined}
+              data-offline={banner === 'offline' || undefined}
             >
               {strip?.kind === 'edit' && <EditStrip onClose={closeStrip} />}
               {strip?.kind === 'reply' && quote && <ReplyStrip quote={quote} onClose={closeStrip} />}
               {chips.length > 0 && <AttachmentChips ref={chipsRef} chips={chips} onRemove={removeChip} onExit={() => focusField()} />}
-              <div className={styles.fieldWrap}>
+              <div className={styles.fieldWrap} data-locked={hasMask(segs) || undefined}>
+                {/* P1 T6 (02 §F7.1): a caught secret blurs and a lock slides in. */}
+                {hasMask(segs) && (
+                  <span className={styles.lock} aria-hidden>
+                    <Icon name="LockClosed" size={16} />
+                  </span>
+                )}
                 {empty && (
                   <span className={styles.placeholder} id={placeholderId} aria-hidden>
                     {placeholder}
@@ -1102,6 +1180,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
               disabledIcon={recording ? 'Mic' : hasContent ? 'Send' : 'Mic'}
               tooltip={tooltip}
               tooShort={voice.tooShort}
+              confirmed={confirmed}
+              level={voice.rec?.levels.at(-1) ?? 0}
               onActivate={activateRound}
               onMicDown={voice.micDown}
               onMicKey={voice.micKey}

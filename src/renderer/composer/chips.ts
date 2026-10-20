@@ -2,7 +2,8 @@
 // preparing while the file is copied into foo's data folder — Send is allowed and the message waits; failed blocks Send until
 // removed), §22.6 (6 files per message: "I added the first 6."; 25 MB; blocked programs and zipped folders; one composer
 // notice for the blocked files), §22.5 (a long paste becomes a "Pasted text" chip; the catcher also runs on it), 08-5 §3.4.
-// Pure planning; unit-tested.
+// Pure planning; unit-tested. P1 T6 (02 §F7.1): `enter` says how a chip added now arrives (flies in from the drop point,
+// or a long paste folds into it); chips restored from a draft have none.
 import { extOf, fileProblem, kindOf, MAX_FILES, mimeOf, type FileProblem } from '../../shared/attachmentRules';
 import type { Attachment } from '../../shared/types';
 
@@ -22,6 +23,10 @@ export interface Chip {
   /** The copy (or a promise of it) for files and images. */
   staged?: Promise<string>;
   problem?: FileProblem;
+  // P1 T6
+  enter?: 'fly' | 'fold';
+  /** Where a dropped file left the pointer (client px): its chip flies in from there. */
+  from?: { x: number; y: number };
 }
 
 export interface FileLike {

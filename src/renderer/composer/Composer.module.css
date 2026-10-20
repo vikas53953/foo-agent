@@ -8,7 +8,9 @@
  * --t-small --fg-3), §22.4 (catch panel: --bg-raised, 1px --warn, --r-lg, 12/14, --shadow-16; the mask in --fg-2), §22.6
  * (drop overlay: inset 16, 1.5px dashed --accent, --r-lg, --accent-soft; Bad style), §22.7 (notice 24 tall), §22.8 (mention
  * popover 280, rows 40, 26 avatar), §23.2 (banner --banner-h, 0 12), §23.3 (disabled look), §23.4 (pending strip 40, 1.5px
- * --accent, --r-md, --shadow-4), §23.6 (counter --t-caption tabular). 05-2 §5.9.3 motion (fade + rise 8 --m-slow). */
+ * --accent, --r-md, --shadow-4), §23.6 (counter --t-caption tabular). 05-2 §5.9.3 motion (fade + rise 8 --m-slow).
+ * P1 T6: §21.7 suggestion chips, CR-0021 pick 11 and the 02 §F7.1 "Composer" details (end of file). Every movement is
+ * multiplied by --motion-move, so Basic and Off keep only the fades (pick 3). */
 .bar {
   container-type: inline-size;
   background: var(--bg-app);
@@ -35,6 +37,7 @@
   margin-bottom: var(--s1);
 }
 .row {
+  position: relative;
   display: flex;
   align-items: flex-end;
   gap: var(--s1);
@@ -283,6 +286,7 @@
 /* ---- strips inside the pill ---- */
 .reply {
   position: relative;
+  animation: rise var(--m-spring) var(--ease-spring-soft); /* P1 T6: §F7.1 the reply strip slides up from the composer */
   display: flex;
   align-items: center;
   gap: var(--s1);
@@ -698,6 +702,9 @@
 /* ---- mention popover ---- */
 .mentionMenu {
   position: fixed;
+  /* P1 T6: §F7.1 the mention menu springs up from the @ (the menu's left edge sits at the caret). */
+  transform-origin: left bottom;
+  animation: springUp var(--m-spring) var(--ease-spring);
   z-index: var(--z-menu);
   width: calc(7 * var(--s7));
   max-height: calc(6 * var(--s7) + 2 * var(--s0));
@@ -757,7 +764,10 @@
   background: var(--accent-soft);
   text-align: center;
   pointer-events: none;
-  animation: fade var(--m-normal) var(--ease-standard);
+  /* P1 T6: §F7.1 the drop-zone border breathes while dragging (stops at Basic and Off, where --m-breathe is 0). */
+  animation:
+    fade var(--m-normal) var(--ease-standard),
+    breathe var(--m-breathe) var(--ease-standard) var(--m-normal) infinite alternate;
 }
 @keyframes fade {
   from {
@@ -792,4 +802,152 @@
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+/* ---- P1 T6 (02 §F7.1 "Composer", CR-0021 picks 10, 11) ---- */
+/* §21.7: one row of chips above the pill; they rise in 60ms apart with the spring and the row fades on the first keystroke. */
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+  margin-bottom: var(--s1);
+}
+.suggestion {
+  animation: rise var(--m-spring) var(--ease-spring) backwards;
+  animation-delay: calc(var(--i, 0) * 2 * var(--m-stagger) * var(--motion-move, 1)); /* §21.7: two stagger steps apart */
+}
+.suggestions[data-exit] {
+  animation: fadeOut var(--m-normal) var(--ease-out) forwards;
+}
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+/* Pick 11: holding the mic floods the button dark (--bubble-me) outward from its centre. */
+.flood {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--bubble-me);
+  pointer-events: none;
+  animation: flood var(--m-slow) var(--ease-spring) both;
+}
+@keyframes flood {
+  from {
+    opacity: 0;
+    transform: scale(calc(1 - 0.9 * var(--motion-move, 1)));
+  }
+}
+/* A live level ring circles the button while recording; it follows the latest level (none at Basic and Off). */
+.levelRing {
+  position: absolute;
+  inset: calc(-1 * var(--s-1));
+  border: var(--s-1) solid var(--bad);
+  border-radius: var(--r-full);
+  pointer-events: none;
+  opacity: calc(0.35 + 0.65 * var(--level, 0));
+  transform: scale(calc(1 + 0.15 * var(--level, 0) * var(--motion-move, 1)));
+  transition:
+    transform var(--m-fast) linear,
+    opacity var(--m-fast) linear;
+}
+/* Send ↔ mic swap with a small turn. */
+.icon[data-turn] {
+  animation: iconTurn var(--m-normal) var(--ease-spring);
+}
+@keyframes iconTurn {
+  from {
+    opacity: 0;
+    transform: rotate(calc(-30deg * var(--motion-move, 1)));
+  }
+}
+/* The field grows in height smoothly (Composer sets its height; no height animation at Basic and Off). */
+.field {
+  transition:
+    height calc(var(--m-normal) * var(--motion-move, 1)) var(--ease-spring-soft),
+    opacity var(--m-normal) var(--ease-standard);
+}
+/* An attachment chip flies in from the drop point (--fly-x/--fly-y, set by AttachmentChips); a long paste folds into its chip. */
+.chip[data-enter='fly'] {
+  animation: chipFly var(--m-spring) var(--ease-spring);
+}
+@keyframes chipFly {
+  from {
+    opacity: 0;
+    transform: translate(calc(var(--fly-x, 0px) * var(--motion-move, 1)), calc(var(--fly-y, var(--s1)) * var(--motion-move, 1)))
+      scale(calc(1 - 0.5 * var(--motion-move, 1)));
+  }
+}
+.chip[data-enter='fold'] {
+  transform-origin: left bottom;
+  animation: chipFold var(--m-spring) var(--ease-spring-soft);
+}
+@keyframes chipFold {
+  from {
+    opacity: 0;
+    transform: scaleY(calc(1 + 0.6 * var(--motion-move, 1)));
+  }
+}
+@keyframes breathe {
+  to {
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+}
+@keyframes springUp {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--s1) * var(--motion-move, 1))) scale(calc(1 - 0.08 * var(--motion-move, 1)));
+  }
+}
+/* A caught secret blurs into its mask and a lock slides in at the end of the field. */
+.mask {
+  animation: maskBlur var(--m-slow) var(--ease-standard);
+}
+@keyframes maskBlur {
+  from {
+    opacity: 0.4;
+    filter: blur(calc(var(--s0) * var(--motion-move, 1)));
+  }
+}
+.fieldWrap[data-locked] .field {
+  padding-inline-end: var(--s5);
+}
+.lock {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  height: var(--t-body-lh);
+  color: var(--fg-2);
+  pointer-events: none;
+  animation: lockIn var(--m-spring) var(--ease-spring);
+}
+@keyframes lockIn {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--s2) * var(--motion-move, 1)));
+  }
+}
+/* Esc (or any end) shrinks the voice bar back into the mic; it lies over the pill while it leaves. */
+.recPill[data-exit] {
+  position: absolute;
+  left: calc(var(--btn-round) + var(--s1));
+  right: calc(var(--btn-round) + var(--s1));
+  bottom: 0;
+  transform-origin: right center;
+  pointer-events: none;
+  animation: shrinkToMic var(--m-normal) var(--ease-out) forwards;
+}
+@keyframes shrinkToMic {
+  to {
+    opacity: 0;
+    transform: scaleX(calc(1 - 0.9 * var(--motion-move, 1)));
+  }
+}
+/* Offline dims the field (§23.1 keeps it usable). */
+.pill[data-offline] .field,
+.pill[data-offline] .placeholder {
+  opacity: 0.6;
 }

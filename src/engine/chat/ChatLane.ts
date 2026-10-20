@@ -10,7 +10,8 @@
 // (GAPS.md 2026-10-18 "intake kinds before their milestone"). M6: memory parts 5/5b per turn (08-4 §24.16, retrieval.ts)
 // and the uses of the offered facts the AI names in `usedMemoryIds` (§24.16 item 6, 08-3 §12.5). M6 T5: intake kind `memory`
 // (08-4 §25.2, §25.5 item 5; memory/intakeMemory.ts), "don't remember this" before the turn (J17), the "Used: {fact}" chips
-// under a reply (08-3 §12.5) and the post-turn review trigger after every answered turn (08-3 §12.4).
+// under a reply (08-3 §12.5) and the post-turn review trigger after every answered turn (08-3 §12.4). P1 T6 (04-2 §21.7,
+// CR-0021 pick 10): a reply's `Suggestions:` line is stored on the reply as `messages.suggestions`, never shown as text.
 import { t } from '../../shared/copy/t';
 import type { Clock } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
@@ -26,6 +27,8 @@ import { usedFacts } from '../memory/chips';
 // M5 (T5)
 import type { CardAnswer } from '../../shared/types';
 import { answerTyped, type TypedHookDeps } from '../cards/typedHook';
+// P1 T6
+import { splitSuggestions } from '../prompt/suggestions';
 
 /** The your-AI service the lane talks to (Engine wires AiService). */
 export interface LaneAi {
@@ -484,7 +487,16 @@ export class ChatLane {
     const memoryKind = act?.kind === 'memory' && this.d.memory ? act : null;
     if (kind === 'reply' || (kind !== 'react' && !(kind === 'job' && this.d.jobs) && !memoryKind && released.trim())) {
       if (fooId) {
-        await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
+        // P1 T6: the follow-ups the reply's own `Suggestions:` line held (the gate kept the line out of the bubble).
+        const suggestions = kind === 'reply' ? splitSuggestions(parsed.say).suggestions : null;
+        await this.tx([
+          {
+            op: 'update',
+            table: 'messages',
+            id: fooId,
+            set: { text: released, status: 'complete', ...(suggestions ? { suggestions } : {}) },
+          },
+        ]);
       } else {
         // Nothing passed the filters: 08-4 §25.5 item 6 (F-092).
         await this.emptyReply(chatId, messageId, message, helper, who, providerNote);
