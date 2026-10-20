@@ -587,7 +587,8 @@ export function registerIpc(ctx: AppContext): void {
     if (r.created) {
       // 08-1 §2.4 `user.message`: after main stored it, the engine's chat lane takes it (08-2 §5.2). While the engine is
       // starting or restarting it waits to send (04 §3.3) and goes when the engine drains its queue.
-      const taken = ctx.engine?.send('user.message', { messageId: r.messageId, chatId: req.chatId }) ?? false;
+      // R1 T6 (04 §17.5): a side question goes to the engine as `side.question`, answered without touching a running job.
+      const taken = ctx.engine?.send(req.side ? 'side.question' : 'user.message', { messageId: r.messageId, chatId: req.chatId }) ?? false;
       // EngineSupervisor.wanted(): a FOO_TEST run without the fake AI never has an engine, and its sends stay as M2 left them.
       if (!taken && !r.queued && (process.env.FOO_TEST !== '1' || !!process.env.FOO_FAKE_AI)) {
         queued = true;

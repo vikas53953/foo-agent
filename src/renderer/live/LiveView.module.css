@@ -166,3 +166,12 @@
     border: 1px solid ButtonText;
   }
 }
+/* 02 §F7.1 Cards (CR-0021): the LIVE dot breathes (--m-breathe, 0ms and still at Basic / Off / reduced motion). */
+.pill[data-tone='live'] .dot {
+  animation: live-breathe var(--m-breathe) var(--ease-standard) infinite;
+}
+@keyframes live-breathe {
+  50% {
+    opacity: 0.4; /* local: §F7.1 breathe low point (no opacity token) */
+  }
+}

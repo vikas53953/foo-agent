@@ -202,6 +202,7 @@ describe('menu items (04 §9.1)', () => {
       'react',
       'copy',
       'copyTable',
+      'ask', // R1 T6 (04 §17.4, X-180)
       'tryAgain',
       'good',
       'bad',
