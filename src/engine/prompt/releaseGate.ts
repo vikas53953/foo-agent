@@ -4,11 +4,13 @@
 // sentence with an unmapped banned word is held until the rewrite turn, then released or dropped; a partial sentence is never
 // shown; at </say> the remainder is a sentence), item 1 (no <say> tag → the text before <act> is the say), item 5
 // (PROTOCOL_SAY_LEAK is decided by the caller from what was released), 08-3 §22.2 (injected Clock), 04-2 §21.7 (the
-// `Suggestions:` line never reaches the bubble: it is held from its first character and stripped at </say>; P1 T6), CR-0022
+// `Suggestions:` line never reaches the bubble: it is held from its first character and stripped at </say>; P1 T6; R1 T7:
+// the `Actions:` line too), CR-0022
 // pick 14 (inside any fence, ```page, ```a2ui or plain code, only the Redactor step runs: no word map, rewrite or drop).
 import type { Clock, TimerId } from '../../shared/clock';
 import type { Redactor } from '../redact/Redactor';
 import { dropBannedSentences, filterSay, type FilterResult } from './filters';
+import { actionsLineStart, splitActions } from './actions';
 import { splitSuggestions, suggestionsLineStart } from './suggestions';
 
 export type ReleaseMode = 'whole' | 'sentence';
@@ -128,7 +130,7 @@ export class ReleaseGate {
       this.body = ends.length ? raw.slice(0, Math.min(...ends)) : raw;
       if (!this.tagged) this.body = this.body.trimStart();
       // Everything before the line is unchanged, so what was already queued still lines up with `consumed`.
-      this.body = splitSuggestions(this.body).text;
+      this.body = splitActions(splitSuggestions(this.body).text).text;
       this.close();
       return;
     }
@@ -136,10 +138,11 @@ export class ReleaseGate {
     if (this.streaming) this.queueSentences(this.safeLength());
   }
 
-  /** Length of `body` that cannot still turn into a closing marker or belong to the `Suggestions:` line. */
+  /** Length of `body` that cannot still turn into a closing marker or belong to the `Suggestions:` or `Actions:` line. */
   private safeLength(): number {
-    const held = suggestionsLineStart(this.body);
-    if (held !== -1) return held;
+    // R1 T7: the `Actions:` line is held back the same way (04-2 §21.7 action chips).
+    const starts = [suggestionsLineStart(this.body), actionsLineStart(this.body)].filter((i) => i !== -1);
+    if (starts.length) return Math.min(...starts);
     const lt = this.body.lastIndexOf('<');
     if (lt === -1) return this.body.length;
     const tail = this.body.slice(lt);

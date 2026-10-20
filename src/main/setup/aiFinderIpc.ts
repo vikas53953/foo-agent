@@ -15,6 +15,7 @@ import { loadMakerPages, makerPageUrl, openFinder, postKeyBox, type FinderWrite,
 import { draftService } from '../drafts/draftIpc'; // M8 T7
 import { loadHandback, openExternalHandback } from '../ipc/openExternalHandback'; // M9 T8
 import { openPageLink } from '../page/pageIpc'; // R1 T5
+import { openActionChip } from '../kit/actionChipOpen'; // R1 T7
 import type { HostMatcher } from '../../shared/handback';
 
 /** Pushes the cards, messages and chat a finder write touched to the windows. */
@@ -54,7 +55,7 @@ export function aiFinderIpc(ctx: AppContext): IpcHandlers<'ai:openFinder' | 'ai:
       emitFinderWrite(ctx, r.write);
       return ok(r.card);
     },
-    'app:openExternal': async ({ target, providerId, cardId, nonce, url: askedUrl }) => {
+    'app:openExternal': async ({ target, providerId, cardId, nonce, url: askedUrl, messageId, index }) => {
       // M8 T7: `x_intent` opens an X Draft card's own text in X's compose page (main builds the URL from the card, AT-054).
       if (target === 'x_intent') return cardId && nonce ? draftService(ctx).openX({ cardId, nonce }) : fail('URL_NOT_ALLOWED');
       // M9 T8: the hand-back card's Open {site}, checked against the card and the one hand-back matcher.
@@ -67,6 +68,12 @@ export function aiFinderIpc(ctx: AppContext): IpcHandlers<'ai:openFinder' | 'ai:
       }
       // R1 T5 (04 §13.6): an AI page's link, only after its openLink passed main's checks and the C-26 Open.
       if (target === 'ai_page') return openPageLink(askedUrl, openedForTest);
+      // R1 T7 (04-2 §21.7): an action chip's call, map or link, after the C-26 Open; main opens the stored chip's own URL.
+      if (target === 'action_chip')
+        return openActionChip(ctx.db, { messageId, index }, async (u) => {
+          if (process.env.FOO_TEST === '1') openedForTest.push(u);
+          else await shell.openExternal(u);
+        });
       if (target !== 'maker_page') return fail('URL_NOT_ALLOWED');
       pages ??= loadMakerPages(resourcesDir());
       const url = makerPageUrl(pages, providerId);

@@ -27,3 +27,8 @@
   font: var(--t-caption);
   color: var(--bad);
 }
+/* R1 T7 (CR-0022 pick 9): Keep under a ready page, at its end. */
+.keep {
+  display: flex;
+  justify-content: flex-end;
+}

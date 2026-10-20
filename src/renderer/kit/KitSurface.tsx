@@ -3,21 +3,28 @@
 // with the "Couldn't show part of this" caption; two-way controls write the surface's data model; user actions go
 // renderer → main `kit:action` → engine `kit.action`; every TextField value passes the 04-2 §22.4 secret patterns before it
 // leaves the renderer and a match is refused, Article 8; `Image` only `data:` images or a chat file, web images never
-// load), 02 §F19.9 (charts), CR-0022 §(c) (catalog), AT-340, AT-353, AT-354, AT-355, AT-356, X-180. R1 T2.
+// load), 02 §F19.9 (charts), CR-0022 §(c) (catalog), AT-340, AT-353, AT-354, AT-355, AT-356, X-180. R1 T2. R1 T7: LiveStamp
+// (AT-352), Keep under the surface (pick 9, AT-369) and `Image` from a chat file (`file:{fileId}`, 04 §13.5).
 // Parts are drawn by plain functions, not components, so one render counts the parts it had to drop (the caption).
-import { useState, type KeyboardEvent, type ReactNode } from 'react';
+import { useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import type { KitActionMessage, KitComponent } from '../../shared/kit/catalog';
+import { surfaceBody, surfaceTitle } from '../../shared/kit/keep';
 import { checkSecret } from '../../shared/redactor';
 import { absPath, boundPath, getPath, INVALID, resolveContext, resolveField, type Surface } from '../../shared/kit/surface';
 import { TID } from '../../shared/testids';
 import { invoke } from '../ipc/client';
+import { KeepButton } from '../keep/KeepButton';
 import { clockNow } from '../store/apply';
+import { useStore } from '../store/index';
+import { mediaUrl } from '../messages/bubbleContext';
+import { attachmentKind } from '../messages/BubbleParts';
 import { Button } from '../ui/Button';
 import { Icon, type IconName } from '../ui/Icon';
 import { ICONS } from '../ui/icons/registry';
 import { cx } from '../ui/cx';
 import { LineChart, type ChartSeries } from './LineChart';
+import { LiveStamp } from './LiveStamp';
 import { editSurface, useSurfaceData } from './model';
 import styles from './KitSurface.module.css';
 
@@ -31,11 +38,14 @@ const MAX_ITEMS = 50;
 
 interface Ctx {
   surface: Surface;
+  host: SurfaceHost;
   data: unknown;
   key: string;
   /** While the reply streams, a bound value may still be on its way: its component waits instead of being dropped. */
   streaming: boolean;
   tally: { dropped: number };
+  /** R1 T7: an image file already in the chat (`file:{fileId}`), as its app://media URL; null when it is not there. */
+  fileUrl(fileId: string): string | null;
   edit(path: string, value: unknown): void;
   act(c: Extract<KitComponent, { component: 'Button' }>, scope: string): void;
 }
@@ -102,10 +112,11 @@ function part(ctx: Ctx, c: KitComponent, scope: string, depth: number): ReactNod
     case 'Image': {
       const url = field<string>(ctx, c, 'url', scope);
       if (url === INVALID) return INVALID;
-      // 04 §13.5: a chat file (`file:{id}`) needs the chat's files list, which this renderer does not read yet (T7 Keep
-      // brings it); until then its alt text stands in. `data:` images draw.
-      if (!url.startsWith('data:')) return <p className={styles.text_caption}>{c.alt}</p>;
-      return <img className={styles.image} src={url} alt={c.alt} />;
+      // 04 §13.5: `data:` images and image files already in the chat (`file:{fileId}`) draw; anything else (a web image)
+      // never loads, and its alt text stands in.
+      const src = url.startsWith('data:') ? url : url.startsWith('file:') ? ctx.fileUrl(url.slice('file:'.length)) : null;
+      if (!src) return <p className={styles.text_caption}>{c.alt}</p>;
+      return <img className={styles.image} src={src} alt={c.alt} />;
     }
     case 'Icon':
       return isIcon(c.name) ? <Icon name={c.name} size={20} /> : INVALID;
@@ -223,8 +234,10 @@ function part(ctx: Ctx, c: KitComponent, scope: string, depth: number): ReactNod
       if (series === INVALID) return INVALID;
       return <LineChart variant={c.variant} series={series} title={c.title} unit={c.unit} />;
     }
+    case 'LiveStamp':
+      return <LiveStamp asOf={c.asOf} refreshable={c.refreshable} host={ctx.host} surfaceId={ctx.surface.id} />;
     default:
-      // The other foo components arrive with R1 T3 (places and time), T4 (numbers and forms) and T7 (LiveStamp); a valid
+      // The other foo components arrive with R1 T3 (places and time) and T4 (numbers and forms); a valid
       // one draws nothing until then and is not counted as dropped.
       return null;
   }
@@ -327,11 +340,14 @@ export function KitSurface({
   agentName,
   streaming = false,
   blockDropped,
+  keep,
 }: {
   surface: Surface;
   host: SurfaceHost;
   agentName: string;
   streaming?: boolean;
+  /** R1 T7: shows Keep under the surface once it is drawn (absent in a kept copy). `kept`: its card is kept already. */
+  keep?: { kept: boolean };
   /** Messages or components the block's parse dropped; the last surface of a block carries them, so one caption shows. */
   blockDropped: number;
 }) {
@@ -339,12 +355,22 @@ export function KitSurface({
   const data = useSurfaceData(key, surface.data);
   const [sent, setSent] = useState<string | null>(null);
   const [refused, setRefused] = useState<string | null>(null);
+  const box = useRef<HTMLDivElement>(null);
+  const chatMessages = useStore((st) => st.messages.byChat[host.chatId]);
   const ctx: Ctx = {
     surface,
+    host,
     data,
     key,
     streaming,
     tally: { dropped: 0 },
+    fileUrl: (fileId) => {
+      for (const id of chatMessages?.ids ?? []) {
+        const a = chatMessages!.byId[id]?.attachments?.find((x) => x.id === fileId);
+        if (a) return attachmentKind(a) === 'image' ? mediaUrl(a.path) : null;
+      }
+      return null;
+    },
     edit: (path, value) => editSurface(key, surface.data, path, value),
     act: (c, scope) => {
       const context = resolveContext(c.action.event.context, data, scope);
@@ -373,6 +399,7 @@ export function KitSurface({
   const dropped = blockDropped + ctx.tally.dropped;
   return (
     <div
+      ref={box}
       className={styles.surface}
       role="group"
       aria-label={t('kit.surface.accessible_name', { agentName })}
@@ -391,6 +418,21 @@ export function KitSurface({
         </p>
       )}
       {dropped > 0 && <KitDropped />}
+      {keep && !streaming && (
+        <div className={styles.keep}>
+          <KeepButton
+            keepKey={key}
+            kept={keep.kept}
+            target={box}
+            request={() => ({
+              ...host,
+              kind: 'kit',
+              title: surfaceTitle(surface) ?? t('kit.surface.accessible_name', { agentName }),
+              body: surfaceBody(surface, data),
+            })}
+          />
+        </div>
+      )}
     </div>
   );
 }

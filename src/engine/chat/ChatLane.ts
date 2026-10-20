@@ -32,6 +32,7 @@ import { usedFacts } from '../memory/chips';
 import type { CardAnswer } from '../../shared/types';
 import { answerTyped, type TypedHookDeps } from '../cards/typedHook';
 // P1 T6
+import { splitActions } from '../prompt/actions';
 import { splitSuggestions } from '../prompt/suggestions';
 // R1 T6
 import { understoodItems } from './understood';
@@ -520,13 +521,16 @@ export class ChatLane {
     if (kind === 'reply' || (kind !== 'react' && !(kind === 'job' && this.d.jobs) && !memoryKind && released.trim())) {
       if (fooId) {
         // P1 T6: the follow-ups the reply's own `Suggestions:` line held (the gate kept the line out of the bubble).
-        const suggestions = kind === 'reply' ? splitSuggestions(parsed.say).suggestions : null;
+        const trailer = kind === 'reply' ? splitSuggestions(parsed.say) : null;
+        const suggestions = trailer?.suggestions ?? null;
+        // R1 T7: the action chips the reply's own `Actions:` line held (04-2 §21.7; the gate kept it out of the bubble too).
+        const actions = trailer ? splitActions(trailer.text).actions : null;
         await this.tx([
           {
             op: 'update',
             table: 'messages',
             id: fooId,
-            set: { text: released, status: 'complete', ...(suggestions ? { suggestions } : {}) },
+            set: { text: released, status: 'complete', ...(suggestions ? { suggestions } : {}), ...(actions ? { actions } : {}) },
           },
         ]);
       } else {

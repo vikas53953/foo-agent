@@ -951,3 +951,14 @@
 .pill[data-offline] .placeholder {
   opacity: 0.6;
 }
+/* R1 T7 (04-2 §21.7 action chips): the accent label and icon set them apart from the grey reply chips; they rise the same. */
+.suggestions > .actionChip {
+  color: var(--accent);
+  animation: rise var(--m-spring) var(--ease-spring) backwards;
+  animation-delay: calc(var(--i, 0) * 2 * var(--m-stagger) * var(--motion-move, 1));
+}
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--s1);
+}

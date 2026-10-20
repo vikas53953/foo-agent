@@ -163,3 +163,14 @@
   outline: var(--focus-outer-w) solid var(--focus-outer);
   outline-offset: var(--focus-inner-w);
 }
+/* R1 T7 (CR-0022 §(c) LiveStamp): "Data as of {time}" with Refresh on one line under the piece it stamps. */
+.live {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+}
+/* R1 T7 (CR-0022 pick 9): Keep sits at the surface's end, on its own line. */
+.keep {
+  display: flex;
+  justify-content: flex-end;
+}

@@ -1,6 +1,7 @@
 // Spec: 04 §13.6 (an AI page in foo's reply: HTML only, ≤ 512 KB, shown in the sealed frame; the status line shows first
 // until the fence closes and the reply ends; states building, ready, failed, kept), CR-0022 AT-359, AT-362, X-180.
 // The n-th ```page fence of the reply is page `index` n, the same count main's page:open makes over the stored text.
+// R1 T7: the block's HTML goes to Keep (CR-0022 pick 9).
 import { useMemo } from 'react';
 import { parsePageBlock } from '../../shared/kit/parse';
 import { useStore } from '../store/index';
@@ -19,5 +20,5 @@ export function PageBlock({ body, closed }: { body: string; closed: boolean }) {
     return Math.max(0, bodies.indexOf(body));
   }, [text, body]);
   const state = page.tooLarge ? 'failed' : page.complete ? 'ready' : 'building';
-  return <PageView chatId={chatId} source={{ messageId, index }} state={state} tooLarge={page.tooLarge} />;
+  return <PageView chatId={chatId} source={{ messageId, index }} state={state} tooLarge={page.tooLarge} keepHtml={body} />;
 }

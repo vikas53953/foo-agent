@@ -2,7 +2,8 @@
 // (user actions in a surface go renderer → main → engine; any action that would send, book, pay, delete or share is an
 // approval request, never a direct action, Article 6: main forwards and the engine handles it as if the user typed it),
 // Article 8 / 04-2 §22.4 (a value that looks like a secret never leaves for the AI: refused again here after the renderer),
-// X-124 (one IPC call = exactly one engine message), CR-0022 AT-355, AT-356, X-180. R1 T2.
+// X-124 (one IPC call = exactly one engine message), CR-0022 AT-355, AT-356, X-180. R1 T2. R1 T7: `kit:refresh`
+// (`{ chatId; messageId?; cardId?; surfaceId }` → one MainToEngine `kit.refresh`, VALIDATION; AT-352, AT-368).
 import { fail, ok, type Result } from '../../shared/errors';
 import type { KitActionMessage } from '../../shared/kit/catalog';
 import { kitMessagesOf } from '../../shared/kit/surface';
@@ -37,6 +38,23 @@ export function kitActionHandler(d: KitDeps): (req: KitActionMessage) => Result<
   };
 }
 
+export type KitRefresh = { chatId: string; messageId?: string; cardId?: string; surfaceId: string };
+
+/** `kit:refresh`: the same host check as an action, then exactly one `kit.refresh` (the engine asks the AI again). */
+export function kitRefreshHandler(d: KitDeps): (req: KitRefresh) => Result<void> {
+  return (req) => {
+    if ((req.messageId === undefined) === (req.cardId === undefined)) return fail('VALIDATION');
+    const host = req.messageId !== undefined ? { messageId: req.messageId } : { cardId: req.cardId! };
+    const text = d.hostText(req.chatId, host);
+    if (text === null) return fail('NOT_FOUND');
+    const created = kitMessagesOf(text).messages.some((m) => 'createSurface' in m && m.createSurface.surfaceId === req.surfaceId);
+    if (!created) return fail('NOT_FOUND');
+    if (!d.engine()?.send('kit.refresh', req)) return fail('UNKNOWN', 'engine not running');
+    d.log('kit: refresh');
+    return ok(undefined);
+  };
+}
+
 /** Reads for the handler from foo.db: a live foo or helper message, or a live `kit` card (its payload body as a fence). */
 export function kitDbReads(db: Db): Pick<KitDeps, 'hostText'> {
   const message = db.prepare("SELECT text FROM messages WHERE id = ? AND chat_id = ? AND author_kind = 'foo' AND deleted_at IS NULL");
@@ -61,5 +79,7 @@ export function kitDbReads(db: Db): Pick<KitDeps, 'hostText'> {
 
 /** IpcRouter's one line. */
 export function registerKitIpc(ctx: AppContext, handle: typeof Handle): void {
-  handle('kit:action', kitActionHandler({ ...kitDbReads(ctx.db), engine: () => ctx.engine, log: (line) => console.info(line) }));
+  const d: KitDeps = { ...kitDbReads(ctx.db), engine: () => ctx.engine, log: (line) => console.info(line) };
+  handle('kit:action', kitActionHandler(d));
+  handle('kit:refresh', kitRefreshHandler(d));
 }

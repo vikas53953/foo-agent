@@ -2,10 +2,11 @@
 // the preview tile; every row writes its setting and applies live; high contrast disables Theme and accent and shows the
 // Info banner; Animations disabled and "Off · set by Windows" while Windows animation effects are off), 09 §9.14.3 (the
 // Zoom menu and Ctrl+= / Ctrl+- / Ctrl+0 share `zoom`), 02 §F7.1 (theme switch cross-fades, accent change sweeps; nothing
-// moves at Off), CR-0021 picks 20–22, AT-320, AT-321.
+// moves at Off), CR-0021 picks 20–22, AT-320, AT-321. R1 T7 (X-180, CR-0022 pick 8, AT-366): the Visuals row after
+// face-motion (Mostly words / Balanced / Show me visuals → `appearance.visuals`; the engine reads it for the next reply).
 import { useEffect, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { t } from '../../../shared/copy/t';
-import { ZOOM_STEPS, type WritablePath } from '../../../shared/settings';
+import { ZOOM_STEPS, type Visuals, type WritablePath } from '../../../shared/settings';
 import { TID } from '../../../shared/testids';
 import type { PublicSettings } from '../../../shared/types';
 import { setMotionLevel } from '../../a11y/motion';
@@ -252,6 +253,22 @@ export function AppearancePage() {
             checked={a.faceMotion}
             label={t('settings.appearance.face_motion.label', { agentName })}
             onChange={(on) => void write('appearance.faceMotion', on)}
+          />
+        </Row>
+        <Row
+          tid="settingsRowAppearanceVisuals"
+          label={t('settings.appearance.visuals.label')}
+          second={t('settings.appearance.visuals.second', { agentName })}
+        >
+          <Segmented<Visuals>
+            label={t('settings.appearance.visuals.label')}
+            value={a.visuals}
+            options={[
+              { value: 'words', label: t('settings.appearance.visuals.words') },
+              { value: 'balanced', label: t('settings.appearance.visuals.balanced') },
+              { value: 'visuals', label: t('settings.appearance.visuals.visuals') },
+            ]}
+            onChange={(v) => void write('appearance.visuals', v)}
           />
         </Row>
         <li className={own.preview} data-testid={TID.settingsRowAppearancePreview} aria-hidden="true">
