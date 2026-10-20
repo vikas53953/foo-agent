@@ -339,10 +339,9 @@
         "I’ll",
         "remember.",
         "₹15,779",
-        "Waiting",
-        "for",
-        "your",
-        "answer:",
+        "foo",
+        "sent",
+        "Question:",
         "Which",
         "of",
         "these",
@@ -350,9 +349,7 @@
         "do",
         "you",
         "still",
-        "use?.",
-        "Show",
-        "button.",
+        "use?",
         "Not",
         "sent."
       ]
@@ -405,8 +402,8 @@
     "total": 1512
   },
   "r5": {
-    "ratio": 0.0496142578125,
-    "diffPixels": 50805,
+    "ratio": 0.049615234375,
+    "diffPixels": 50806,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-06.light.diff.png"

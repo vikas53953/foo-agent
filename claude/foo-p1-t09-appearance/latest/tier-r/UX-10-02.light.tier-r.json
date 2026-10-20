@@ -141,7 +141,6 @@
         "Fri",
         "18",
         "Dec?",
-        "3",
         "f",
         "foo",
         "9:41",
@@ -522,8 +521,8 @@
     "total": 4238
   },
   "r5": {
-    "ratio": 0.0612998046875,
-    "diffPixels": 62771,
+    "ratio": 0.0611787109375,
+    "diffPixels": 62647,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-02.light.diff.png"
