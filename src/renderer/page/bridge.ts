@@ -4,8 +4,8 @@
 // HTML or DOM into the page after the first document, only JSON-RPC results), CR-0022 AT-360, X-180.
 import { PAGE_MAX_HEIGHT, type PageRpcResult } from '../../shared/kit/page';
 
-/** Calls past this many in one second are dropped here without reaching main (main's own limit is 10). */
-export const HOST_FLOOD_PER_SECOND = 50;
+/** Calls past this many in one second are dropped here without reaching main (main's own limit is 10); a call main's schema refuses still counts here, so bad calls cannot flood the bridge. */
+export const HOST_FLOOD_PER_SECOND = 12;
 /** The largest message (as JSON) the host forwards to main. */
 export const HOST_MAX_CALL_CHARS = 16_000;
 

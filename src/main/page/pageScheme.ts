@@ -14,6 +14,7 @@ export const PAGE_HEADERS: Readonly<Record<string, string>> = {
   'Cache-Control': 'no-store',
   'X-Content-Type-Options': 'nosniff',
   'Referrer-Policy': 'no-referrer',
+  'X-DNS-Prefetch-Control': 'off',
 };
 
 /** The page id a `foo-page://` URL names when it is exactly a page's document (`foo-page://{pageId}/`), else null. */
@@ -91,6 +92,8 @@ const CSP_REFUSED = /violates the following Content Security Policy directive|^R
  * those as the frame's CSP console line and logs them too, so every denied request leaves a line.
  */
 export function denyPageRequests(contents: WebContents, registry: PageRegistry = pages): void {
+  // Electron keeps ONE onBeforeRequest listener per session: a second call anywhere replaces this one and the deny
+  // rule silently goes. Keep this the only caller (test/unit/r1-page.test.ts checks the source tree).
   contents.session.webRequest.onBeforeRequest((details, callback) => {
     const verdict = pageRequestVerdict(
       { url: details.url, resourceType: details.resourceType, frameUrl: frameUrlOf(details.frame) },

@@ -3,7 +3,9 @@
 // from `foo-page://{pageId}`; height capped at 600px and the page scrolls inside; the bridge calls reportSize,
 // draftMessage (fills the composer, never sends), openLink (always the C-26 dialog "This opens {domain}. Open it?", then
 // `app:openExternal` with source `ai_page`), requestAction (sent as if the user typed it, so the gate sees it); states
-// building, ready, failed, kept), CR-0022 AT-357..AT-362, X-180. Used by the reply's PageBlock and the `ai_page` card.
+// building, ready, failed, kept), CR-0022 AT-357..AT-362 and pick 13 (requestAction and openLink only while the user's tap
+// is live; one C-26 dialog at a time, its URL fixed when it opens), X-180. Used by the reply's PageBlock and the `ai_page`
+// card. A remount (the message list scrolling the row away and back) reloads the page from scratch: accepted for v1.
 import { useEffect, useRef, useState } from 'react';
 import { t } from '../../shared/copy/t';
 import { PAGE_SANDBOX, PAGE_SCHEME, type PageRpcCall, type PageRpcResult } from '../../shared/kit/page';
@@ -25,6 +27,11 @@ export type PageState = 'building' | 'ready' | 'failed' | 'kept';
 const START_HEIGHT = 160;
 /** The last height each page reported, so a row the message list mounts again keeps its size. */
 const heights = new Map<string, number>();
+/** Calls a page may make only from the user's own tap (CR-0022 pick 13, Article 6): never by itself. */
+const NEEDS_TAP = new Set(['requestAction', 'openLink']);
+
+/** True while a tap or key press is live in foo's window (a tap inside the page's frame counts for its parent too). */
+const tapIsLive = () => navigator.userActivation?.isActive === true;
 
 /** What a call main passed does in foo (main already checked the page, the rate and the text). */
 function act(chatId: string, call: PageRpcCall, setHeight: (h: number) => void, askLink: (url: string) => void): void {
@@ -58,6 +65,8 @@ export function PageView({
   const [height, setHeight] = useState(START_HEIGHT);
   const [refused, setRefused] = useState(false);
   const [link, setLink] = useState<string | null>(null);
+  // The link the open C-26 dialog names, read synchronously: while it is set, another openLink is declined.
+  const asking = useRef<string | null>(null);
   const key = 'cardId' in source ? `k:${source.cardId}` : `m:${source.messageId}:${source.index}`;
   const wanted = (state === 'ready' || state === 'kept') && !tooLarge;
   const opened = answer?.key === key ? answer.value : null;
@@ -93,10 +102,16 @@ export function PageView({
       };
       // A flood never reaches main (main's own limit is 10 a second); the page still gets its answer.
       if (!allow(performance.now())) return answer({ ok: false, refused: 'rate' });
+      const method = (data as { method?: unknown } | null)?.method;
+      // A page acts only on the user's tap, and one C-26 dialog shows at a time (CR-0022 pick 13).
+      if (typeof method === 'string' && NEEDS_TAP.has(method) && !tapIsLive()) return answer({ ok: false, refused: 'declined' });
+      if (method === 'openLink' && asking.current !== null) return answer({ ok: false, refused: 'declined' });
       // Main checks and logs every call: its zod schema refuses a bad one (IPC_REJECTED, logged), then the rate and the text.
       void invoke('page:rpc', { chatId, pageId, call: data as PageRpcCall }).then(
         (r) => {
-          const result: PageRpcResult = r.ok ? r.value : { ok: false, refused: 'schema' };
+          let result: PageRpcResult = r.ok ? r.value : { ok: false, refused: 'schema' };
+          // Two openLink calls in flight together: the first to come back owns the dialog.
+          if (result.ok && method === 'openLink' && asking.current !== null) result = { ok: false, refused: 'declined' };
           if (result.ok)
             act(
               chatId,
@@ -105,7 +120,10 @@ export function PageView({
                 heights.set(pageId, h);
                 setHeight(h);
               },
-              setLink,
+              (url) => {
+                asking.current = url;
+                setLink(url);
+              },
             );
           answer(result);
         },
@@ -155,9 +173,13 @@ export function PageView({
           title={t('page.open_link.title', { domain: linkDomain(link) })}
           primary={t('page.open_link.open')}
           secondary={t('page.open_link.cancel')}
-          onClose={() => setLink(null)}
+          onClose={() => {
+            asking.current = null;
+            setLink(null);
+          }}
           onPrimary={() => {
             const url = link;
+            asking.current = null;
             setLink(null);
             void invoke('app:openExternal', { target: 'ai_page', url });
           }}

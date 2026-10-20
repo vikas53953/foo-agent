@@ -1,18 +1,29 @@
 // Spec: 04 §13.6 (AI page: the `foo-page://{pageId}` document is the only request its frame may make; ≤ 512 KB; the
 // bridge allows 10 calls per second, logs every call, refuses secret text and posts the Secret box; openLink only after
-// main passed it), CR-0022 AT-357, AT-359, AT-360, AT-361, X-180. Main's page modules and the host bridge helpers.
+// main passed it), CR-0022 AT-357, AT-359, AT-360, AT-361, picks 12-14, X-180. Main's page modules, the host bridge
+// helpers, and the release gate's fenced text (pick 14).
+import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
+import type { MessageRow } from '../../src/shared/types';
 
 vi.mock('electron', () => ({ protocol: {}, shell: { openExternal: vi.fn() }, BrowserWindow: class {} }));
+const stored = vi.hoisted(() => ({ message: null as unknown }));
+vi.mock('../../src/main/store/queries', async (real) => ({
+  ...(await real<object>()),
+  messageGet: () => stored.message,
+}));
 
 import { PAGE_MAX_HEIGHT, PAGE_RPC_PER_SECOND, PageRpcCallSchema } from '../../src/shared/kit/page';
 import { PAGE_MAX_BYTES } from '../../src/shared/kit/parse';
 import { newId } from '../../src/shared/ids';
-import { pageBodies, PageRegistry, pageUrl } from '../../src/main/page/pages';
+import { LINK_TTL_MS, MAX_PAGES, pageBodies, PageRegistry, pageUrl } from '../../src/main/page/pages';
 import { pageIdOf, pageRequestVerdict, PAGE_HEADERS } from '../../src/main/page/pageScheme';
-import { callText, openPageLink, pageRpc, secretSlot } from '../../src/main/page/pageIpc';
+import { callText, openPage, openPageLink, pageRpc, secretSlot } from '../../src/main/page/pageIpc';
 import { asJson, callId, floodGate, frameHeight, linkDomain, rpcReply } from '../../src/renderer/page/bridge';
 import { CSP } from '../../src/main/windows/protocol';
+import { ReleaseGate } from '../../src/engine/prompt/releaseGate';
+import { FakeClock } from '../../src/shared/clock';
 
 const HTML = '<!doctype html><p>Food budget</p>';
 const serve = (r = new PageRegistry(), html = HTML) => ({ r, page: r.serve('c_1', 'm:m_1:0', html, 1_000)! });
@@ -56,6 +67,57 @@ describe('the page registry', () => {
     expect(r.takeLink('https://example.com/a', 10)).toBe(false);
     expect(r.takeLink('https://example.com/b', 10)).toBe(false);
   });
+
+  it('keeps an offered link for 60 s only, and sweeps old offers', () => {
+    const r = new PageRegistry();
+    expect(LINK_TTL_MS).toBe(60_000);
+    r.offerLink('https://example.com/a', 0);
+    expect(r.takeLink('https://example.com/a', LINK_TTL_MS + 1)).toBe(false);
+    r.offerLink('https://example.com/b', 0);
+    r.offerLink('https://example.com/c', LINK_TTL_MS + 1); // sweeps b
+    r.offerLink('https://example.com/b', LINK_TTL_MS + 2);
+    expect(r.takeLink('https://example.com/b', LINK_TTL_MS + 3)).toBe(true);
+  });
+
+  it('forgets the old page when a block is served with new HTML: its id, its calls', () => {
+    const { r, page } = serve();
+    r.allowCall(page.pageId, 1_000);
+    const next = r.serve('c_1', 'm:m_1:0', '<p>edited</p>', 2_000)!;
+    expect(next.pageId).not.toBe(page.pageId);
+    expect(r.get(page.pageId)).toBeUndefined();
+    expect(r.size).toBe(1);
+  });
+
+  it(`keeps at most ${MAX_PAGES} pages, dropping the least recently used`, () => {
+    const r = new PageRegistry();
+    const ids = Array.from({ length: MAX_PAGES }, (_, i) => r.serve('c_1', `m:m_${i}:0`, `<p>${i}</p>`, i)!.pageId);
+    r.get(ids[0]!); // used again: now the newest
+    const extra = r.serve('c_1', 'm:m_new:0', '<p>new</p>', 100)!;
+    expect(r.size).toBe(MAX_PAGES);
+    expect(r.get(ids[0]!)).toBeDefined();
+    expect(r.get(ids[1]!)).toBeUndefined();
+    expect(r.get(extra.pageId)).toBeDefined();
+    // The dropped block gets a fresh id when it is opened again.
+    expect(r.serve('c_1', 'm:m_1:0', '<p>1</p>', 200)!.pageId).not.toBe(ids[1]);
+  });
+});
+
+describe('page:open', () => {
+  const PAGE_TEXT = 'Here.\n\n```page\n<p>Food budget</p>\n```';
+  const row = (over: Partial<MessageRow>) =>
+    ({ id: 'm_1', chatId: 'c_1', authorKind: 'foo', status: 'complete', deletedAt: null, text: PAGE_TEXT, ...over }) as MessageRow;
+  const open = (over: Partial<MessageRow>) => {
+    stored.message = row(over);
+    return openPage({ db: {} as never }, new PageRegistry(), { chatId: 'c_1', messageId: 'm_1', index: 0 }, 0);
+  };
+
+  it("serves a page only from foo's own live reply (CR-0022 pick 12)", () => {
+    expect(open({})).toHaveProperty('pageId');
+    for (const authorKind of ['user', 'helper', 'system'] as const) expect(open({ authorKind })).toEqual({ failed: 'not_found' });
+    expect(open({ deletedAt: 5 })).toEqual({ failed: 'not_found' });
+    expect(open({ status: 'streaming' })).toEqual({ failed: 'not_found' });
+    expect(open({ chatId: 'c_2' })).toEqual({ failed: 'not_found' });
+  });
 });
 
 describe('the foo-page scheme and the request rule', () => {
@@ -64,6 +126,23 @@ describe('the foo-page scheme and the request rule', () => {
     expect(pageIdOf(`foo-page://${id}/`)).toBe(id);
     for (const bad of [`foo-page://${id}/x`, `foo-page://${id}/?a=1`, `app://${id}/`, 'foo-page://pg_nope/', 'nonsense'])
       expect(pageIdOf(bad)).toBeNull();
+  });
+
+  it('turns DNS prefetch off for page documents', () => {
+    expect(PAGE_HEADERS['X-DNS-Prefetch-Control']).toBe('off');
+  });
+
+  it('keeps one onBeforeRequest listener: only the page deny rule sets it (a second one would replace it)', () => {
+    const callers: string[] = [];
+    const walk = (dir: string) => {
+      for (const name of readdirSync(dir)) {
+        const path = join(dir, name);
+        if (statSync(path).isDirectory()) walk(path);
+        else if (/\.tsx?$/.test(name) && /\.onBeforeRequest\(/.test(readFileSync(path, 'utf8'))) callers.push(path);
+      }
+    };
+    walk('src');
+    expect(callers).toEqual([join('src', 'main', 'page', 'pageScheme.ts')]);
   });
 
   it('serves pages with the 04 §13.6 header CSP, and the app CSP allows only foo-page frames', () => {
@@ -186,5 +265,54 @@ describe('the host bridge helpers', () => {
     const gate = floodGate(2);
     expect([gate(0), gate(1), gate(2), gate(1_500)]).toEqual([true, true, false, true]);
     expect(linkDomain('https://www.example.com/a')).toBe('example.com');
+  });
+});
+
+describe('fenced text in the release gate (CR-0022 pick 14)', () => {
+  const PAGE = '```page\n<script>var plan = JSON.parse("{}");</script>\n```';
+  const A2UI = '```a2ui\n{"token":"t1"}\n```';
+
+  const run = async (chunks: string[], streaming: boolean, redactor?: { scrub: (t: string) => { text: string; hits: number } }) => {
+    const clock = new FakeClock();
+    const out: string[] = [];
+    const rewrites: string[] = [];
+    const gate = new ReleaseGate({
+      clock,
+      ...(redactor ? { redactor } : {}),
+      rewrite: async (x) => (rewrites.push(x), null),
+      onRelease: (x) => out.push(x),
+      onSayClosed: () => undefined,
+    });
+    if (streaming) clock.advance(1_500);
+    for (const c of chunks) {
+      gate.feed(c);
+      await Promise.resolve();
+    }
+    gate.end();
+    await gate.done;
+    return { text: out.join(''), out, rewrites };
+  };
+
+  it('streams a page script with "JSON" and an a2ui line with "token" unchanged; prose outside is still filtered', async () => {
+    const say = `Your token is ready.\n\n${PAGE}\n\n${A2UI}\n\nThe JSON is gone. Done.`;
+    const r = await run(['<say>', say.slice(0, 40), say.slice(40, 90), say.slice(90), '</say>'], true);
+    expect(r.text).toContain(PAGE);
+    expect(r.text).toContain(A2UI);
+    expect(r.text.startsWith('Your key is ready.')).toBe(true);
+    expect(r.text).not.toMatch(/The JSON is gone/);
+    expect(r.text.endsWith('Done.')).toBe(true);
+    expect(r.rewrites).toEqual(['The JSON is gone. ']);
+  });
+
+  it('does the same when the whole reply comes at once', async () => {
+    const r = await run([`<say>A token.\n\n${PAGE}\n\n${A2UI}</say>`], false);
+    expect(r.out).toEqual([`A key.\n\n${PAGE}\n\n${A2UI}`]);
+    expect(r.rewrites).toEqual([]);
+  });
+
+  it('still runs the Redactor inside a fence', async () => {
+    const scrub = (t: string) => ({ text: t.replace(/sk-[\w-]+/g, '[hidden]'), hits: 1 });
+    const r = await run([`<say>Here.\n\n\`\`\`page\n<p>sk-proj-Abc123</p>\n\`\`\`</say>`], false, { scrub });
+    expect(r.text).toBe('Here.\n\n```page\n<p>[hidden]</p>\n```');
   });
 });

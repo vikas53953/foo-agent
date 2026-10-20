@@ -40,10 +40,13 @@ export const pageBytes = (html: string) => Buffer.byteLength(html, 'utf8');
 export const pageUrl = (pageId: string) => `${PAGE_SCHEME}://${pageId}/`;
 
 /** How long a link a page asked to open stays openable through `app:openExternal` (the C-26 dialog is answered in it). */
-export const LINK_TTL_MS = 5 * 60_000;
+export const LINK_TTL_MS = 60_000;
+/** The most pages main keeps serving; past it the least recently used goes (its frame reopens it through `page:open`). */
+export const MAX_PAGES = 32;
 
 export class PageRegistry {
-  private readonly byId = new Map<string, ServedPage>();
+  /** In least-recently-used order: a page that is served or read again moves to the end. */
+  private readonly byId = new Map<string, ServedPage & { source: string }>();
   private readonly bySource = new Map<string, string>();
   private readonly calls = new Map<string, number[]>();
   private readonly links = new Map<string, number>();
@@ -53,15 +56,25 @@ export class PageRegistry {
     if (pageBytes(html) > PAGE_MAX_BYTES) return null;
     const known = this.bySource.get(source);
     const page = known ? this.byId.get(known) : undefined;
-    if (page && page.chatId === chatId && page.html === html) return page;
-    const fresh: ServedPage = { pageId: newId('pg', now), chatId, html };
+    if (page && page.chatId === chatId && page.html === html) return this.touch(page);
+    if (known) this.drop(known);
+    const fresh = { pageId: newId('pg', now), chatId, html, source };
     this.byId.set(fresh.pageId, fresh);
     this.bySource.set(source, fresh.pageId);
+    for (const oldest of this.byId.keys()) {
+      if (this.byId.size <= MAX_PAGES) break;
+      this.drop(oldest);
+    }
     return fresh;
   }
 
   get(pageId: string): ServedPage | undefined {
-    return this.byId.get(pageId);
+    const page = this.byId.get(pageId);
+    return page && this.touch(page);
+  }
+
+  get size(): number {
+    return this.byId.size;
   }
 
   /** 04 §13.6: at most {@link PAGE_RPC_PER_SECOND} calls in any one second per page; a refused call still counts. */
@@ -74,6 +87,7 @@ export class PageRegistry {
 
   /** An `openLink` call that passed every check: its URL may open once the user says Open in the C-26 dialog. */
   offerLink(url: string, now: number): void {
+    for (const [known, until] of this.links) if (now > until) this.links.delete(known);
     this.links.set(url, now + LINK_TTL_MS);
   }
 
@@ -82,6 +96,19 @@ export class PageRegistry {
     const until = this.links.get(url);
     this.links.delete(url);
     return until !== undefined && now <= until;
+  }
+
+  private touch<P extends ServedPage & { source: string }>(page: P): P {
+    this.byId.delete(page.pageId);
+    this.byId.set(page.pageId, page);
+    return page;
+  }
+
+  private drop(pageId: string): void {
+    const page = this.byId.get(pageId);
+    this.byId.delete(pageId);
+    this.calls.delete(pageId);
+    if (page && this.bySource.get(page.source) === pageId) this.bySource.delete(page.source);
   }
 }
 

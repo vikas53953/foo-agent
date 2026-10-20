@@ -86,7 +86,9 @@ export function openPage(
   let source: string;
   if (req.messageId) {
     const m = messageGet(ctx.db, req.messageId);
-    if (!m || m.chatId !== req.chatId || m.authorKind === 'user' || m.status === 'streaming') return { failed: 'not_found' };
+    // Only foo's own live reply holds a page (CR-0022 pick 12, as kit:action reads it).
+    if (!m || m.chatId !== req.chatId || m.authorKind !== 'foo' || m.deletedAt !== null || m.status === 'streaming')
+      return { failed: 'not_found' };
     const block = pageBodies(m.text)[req.index ?? 0];
     if (!block?.closed) return { failed: 'not_found' };
     html = block.body;
