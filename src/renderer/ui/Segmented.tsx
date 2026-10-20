@@ -1,6 +1,7 @@
 // Spec: 06 §0.4 (Segmented: a radiogroup of options, 32 visual inside a 40 hit row, --bg-sunken track, the chosen option
-// --bg-raised with --shadow-1; ←/→ move and choose), 02-3 §F25.3 (one Tab stop: the chosen option), §F26 (data-state).
-import type { KeyboardEvent } from 'react';
+// --bg-raised with --shadow-1; ←/→ move and choose), 02-3 §F25.3 (one Tab stop: the chosen option), §F26 (data-state);
+// 02 §F7.1 / AT-326: one highlight slides to the chosen option (`--seg-i` of `--seg-n`).
+import type { CSSProperties, KeyboardEvent } from 'react';
 import { TID } from '../../shared/testids';
 import styles from './Segmented.module.css';
 
@@ -29,6 +30,15 @@ export function Segmented<V extends string>({ label, value, options, onChange, t
       className={styles.segmented}
       {...(tid ? { 'data-testid': TID[tid] } : {})}
       data-state={value}
+      style={
+        {
+          '--seg-i': Math.max(
+            0,
+            options.findIndex((o) => o.value === value),
+          ),
+          '--seg-n': options.length,
+        } as CSSProperties
+      }
       onKeyDown={onKeyDown}
     >
       {options.map((o) => (

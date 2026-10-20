@@ -4,6 +4,8 @@
 // focused; focus trapped; focus returns to the opener; ids `dialog-close` / `dialog-primary` / `dialog-secondary`), 03-shell-2
 // §3.9.4 (Esc closes the dialog through the ladder: closeDialog). M6 T6: `--dialog-md` 520, extra body content (06-3 §14
 // typed confirm field, the X-118 unreadable-lines list) and a Primary that stays disabled until the field matches.
+// P1 T3 (CR-0021 pick 5, AT-303): the dialog lands 0.92 → 1 with `--ease-spring`; while any dialog is open the root
+// carries `data-dialog-open` so the shell behind steps back (Shell.module.css).
 import { useEffect, useId, useRef, type KeyboardEvent, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { t } from '../../shared/copy/t';
@@ -11,6 +13,8 @@ import { TID } from '../../shared/testids';
 import { Button } from './Button';
 import { IconButton } from './IconButton';
 import styles from './Dialog.module.css';
+
+let openDialogs = 0;
 
 export interface DialogProps {
   tid: keyof typeof TID;
@@ -55,6 +59,15 @@ export function Dialog({
       if (back instanceof HTMLElement && back.isConnected) back.focus();
     };
   }, [destructive]);
+
+  useEffect(() => {
+    openDialogs += 1;
+    document.documentElement.dataset.dialogOpen = '';
+    return () => {
+      openDialogs -= 1;
+      if (openDialogs === 0) delete document.documentElement.dataset.dialogOpen;
+    };
+  }, []);
 
   const trap = (e: KeyboardEvent) => {
     if (e.key !== 'Tab') return;
