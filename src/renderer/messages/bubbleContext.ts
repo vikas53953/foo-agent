@@ -19,6 +19,9 @@ export const useBubble = () => useContext(BubbleCtx);
  */
 export const RowHotCtx = createContext(true);
 
+/** 02 §F7.1: the row arrived while the chat was open (it rises in); one-shot details on it may play at mount. */
+export const RowFreshCtx = createContext(false);
+
 /** A file under {DATA} (relative or absolute) as the URL the CSP allows (img-src app:). Web images are not loaded. */
 // GAP: GAPS.md 2026-10-17 "no media URL for files under {DATA}"
 export function mediaUrl(path: string): string | null {

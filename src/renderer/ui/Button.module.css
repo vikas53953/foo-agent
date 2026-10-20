@@ -82,6 +82,25 @@
 .primary:active::before {
   background: var(--accent-pressed);
 }
+/* CR-0021 pick 18 / AT-327: the primary pill has a 2px `--accent-pressed` lip at its bottom that flattens on press in
+   `--m-fast`; the primary button skips the 0.97 press scale (every other button keeps it). */
+.primary::before {
+  box-shadow:
+    inset 0 0 0 1px var(--btn-edge),
+    inset 0 calc(-1 * var(--s0) / 2) 0 var(--accent-pressed);
+  transition:
+    background-color var(--m-fast) var(--ease-standard),
+    box-shadow var(--m-fast) var(--ease-standard);
+}
+.primary:active::before,
+.primary[aria-disabled='true']::before {
+  box-shadow:
+    inset 0 0 0 1px var(--btn-edge),
+    inset 0 0 0 var(--accent-pressed);
+}
+.primary:active {
+  transform: none;
+}
 .destructive {
   --btn-fill: var(--bad);
   --btn-edge: var(--bad);

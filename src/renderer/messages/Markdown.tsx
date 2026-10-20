@@ -5,6 +5,7 @@
 // first 10 + "Show all {n} rows", focusable box "Table, {rows} rows, {columns} columns", right fade when it scrolls), §13.3
 // images (max-height 360, contain on `--bg-sunken`, alt or "Picture"), §13.4 citation pills (popover on hover 500 ms, focus
 // or click; "Sources ({n}) ›"), §16.1 auto-link menus, §16.2 money spans (tabular), §10.10 the user's WhatsApp set.
+// 02 §F7.1 "Chat" (CR-0021, X-179): the code copy icon turns into ✓, "Show all" grows, streamed words fade.
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import { motion } from '../../shared/tokens';
@@ -17,6 +18,8 @@ import { cx } from '../ui/cx';
 import { expand, selectExpanded } from '../store/messages';
 import { useStore } from '../store/index';
 import { mediaUrl, useBubble } from './bubbleContext';
+import { useOneShot } from './oneShot';
+import { fadePieces, useStreamFade } from './streamFade';
 import { copyText, mapsUrl, openLink, openUrl, prefillCalendar, prefillWriteEmail } from './linkActions';
 import { domainOf, headingRanks, inlineText, type Block, type Inline, type Source } from './markdownParse';
 import type { AutoKind } from './textRules';
@@ -39,9 +42,18 @@ export function Inlines({ nodes }: { nodes: Inline[] }) {
 }
 
 function InlineNode({ n }: { n: Inline }): ReactNode {
+  const fade = useStreamFade();
   switch (n.t) {
-    case 'text':
-      return n.v;
+    case 'text': {
+      const start = fade?.starts.get(n);
+      if (!fade || start === undefined) return n.v;
+      // 04 §14.4: the words that came in since the last paint fade in.
+      return fadePieces(n.v, start, fade.seen).map((p) => (
+        <span key={p.key} className={p.fading ? styles.wordIn : undefined}>
+          {p.text}
+        </span>
+      ));
+    }
     case 'strong':
       return (
         <strong className={styles.strong}>
@@ -366,6 +378,8 @@ function CodeBlock({ lang, code, part }: { lang: string; code: string; part: str
   }, [copied]);
   const lines = code.split('\n');
   const clamped = lines.length > CODE_CLAMP && !expanded;
+  // §F7.1: "Show all" grows the block from its 15 lines when the user expands it.
+  const grow = useOneShot(`code:${b.messageId}:${part}`, expanded);
   const language = languageLabel(lang);
   return (
     <div
@@ -387,7 +401,7 @@ function CodeBlock({ lang, code, part }: { lang: string; code: string; part: str
           {copied ? t('bubble.code.copied') : t('bubble.code.copy')}
         </button>
       </div>
-      <pre className={cx(styles.codeBody, clamped && styles.clamped)} tabIndex={0}>
+      <pre className={cx(styles.codeBody, clamped && styles.clamped)} tabIndex={0} data-grow={(grow && expanded) || undefined}>
         {clamped ? lines.slice(0, CODE_CLAMP).join('\n') : code}
       </pre>
       {clamped && (

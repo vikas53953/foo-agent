@@ -1,5 +1,5 @@
 /* Spec: 06 §0.3 Dialog anatomy (--dialog-sm, --r-lg, --bg-raised, --shadow-28, padding 24; title --t-subtitle; ✕ 12px
- * inset; body --t-body; buttons right-aligned, gap 8; scrim --scrim, layer --z-dialog). */
+ * inset; body --t-body; buttons right-aligned, gap 8; scrim --scrim, layer --z-dialog); CR-0021 pick 5 (spring entrance). */
 .scrim {
   position: fixed;
   inset: 0;
@@ -17,12 +17,23 @@
   background: var(--bg-raised);
   box-shadow: var(--shadow-28);
   color: var(--fg-1);
-  animation: dialog-in var(--m-normal) var(--ease-in);
+  animation:
+    dialog-in var(--m-spring) var(--ease-spring),
+    dialog-fade var(--m-normal) var(--ease-in);
 }
+/* CR-0021 pick 5: lands 0.92 → 1 with the spring (≤ 2.6 % overshoot); Basic and Off keep only the fade (--motion-move 0). */
 @keyframes dialog-in {
+  from {
+    transform: scale(calc(1 - 0.08 * var(--motion-move)));
+  }
+}
+@keyframes dialog-fade {
   from {
     opacity: 0;
   }
+}
+.scrim {
+  animation: dialog-fade var(--m-normal) var(--ease-in);
 }
 .md {
   width: min(var(--dialog-md), 100%);

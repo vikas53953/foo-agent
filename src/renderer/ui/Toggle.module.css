@@ -1,6 +1,7 @@
 /* Spec: 06 §0.4 Toggle (40×20 track, --r-full; off --bg-sunken + 1px --line-input, knob 12 --fg-2 at 4px; on --accent, knob 14
  * --on-accent at 3px from the right; hover --fg-3 / --accent-hover border; pressed knob +4px; ring 02 F8; disabled
- * --fg-disabled knob). The button is 40px tall around the 20px track (02 F5 hit area). */
+ * --fg-disabled knob). The button is 40px tall around the 20px track (02 F5 hit area). 02 §F7.1 / AT-326: the knob springs
+ * across (`--ease-spring`); at Basic and Off it moves at once (--motion-move 0) and only colours fade. */
 .toggle {
   position: relative;
   display: inline-flex;
@@ -35,18 +36,20 @@
 .knob {
   position: absolute;
   top: 50%;
+  --knob-w: var(--s2);
   left: var(--s0);
-  width: var(--s2);
+  width: var(--knob-w);
   height: var(--s2);
   border-radius: var(--r-full);
   background: var(--fg-2);
   transform: translateY(-50%);
   transition:
-    left var(--m-fast) var(--ease-standard),
-    width var(--m-fast) var(--ease-standard);
+    left calc(var(--m-spring) * var(--motion-move)) var(--ease-spring),
+    width calc(var(--m-fast) * var(--motion-move)) var(--ease-standard),
+    background-color var(--m-fast) var(--ease-standard);
 }
 .toggle:active .knob {
-  width: var(--s3);
+  --knob-w: var(--s3);
 }
 .on::before {
   background: var(--accent);
@@ -56,14 +59,14 @@
   box-shadow: inset 0 0 0 1px var(--accent-hover);
 }
 .on .knob {
-  left: auto;
-  right: calc(var(--s0) - 1px);
-  width: calc(var(--s2) + var(--s-1));
+  --knob-w: calc(var(--s2) + var(--s-1));
+  /* Right edge 3px in from the track's end, written as `left` so the knob can glide. */
+  left: calc(var(--toggle-w) - var(--s0) + 1px - var(--knob-w));
   height: calc(var(--s2) + var(--s-1));
   background: var(--on-accent);
 }
 .on:active .knob {
-  width: calc(var(--s3) + var(--s-1));
+  --knob-w: calc(var(--s3) + var(--s-1));
 }
 .toggle:disabled .knob {
   background: var(--fg-disabled);
