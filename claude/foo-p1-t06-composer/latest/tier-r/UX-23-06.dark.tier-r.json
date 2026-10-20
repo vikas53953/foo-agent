@@ -64,6 +64,7 @@
         "9:36",
         "✓",
         "✓",
+        "⏳",
         "⚠",
         "I'm",
         "What's",
@@ -356,6 +357,7 @@
         "the",
         "beach",
         "9:41",
+        "🛠",
         "Goa",
         "stay",
         "live",
@@ -517,8 +519,8 @@
     "total": 3248
   },
   "r5": {
-    "ratio": 0.1106611328125,
-    "diffPixels": 113317,
+    "ratio": 0.1106689453125,
+    "diffPixels": 113325,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-06.dark.diff.png"
