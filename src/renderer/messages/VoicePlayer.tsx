@@ -3,14 +3,16 @@
 // playing), transcript 2 lines + "more", working / failed states, Narrator "Voice note, 0:14", Space / Enter toggles,
 // ←/→ seek 5 s, never auto-plays), §18 (foo's notes: recoloured; speed chip 1× → 1.5× → 2× → 1×; playing one note pauses any
 // other), 05-3 §5.25 (a voice note is a message, not a card). Audio comes from {DATA} through the app://media host.
+// 02-2 §F15.9.3 #14: while foo's or a helper's note plays, its chat's face is Speaking and its bars follow the audio level.
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react';
 import { t } from '../../shared/copy/t';
 import { formatDuration } from '../../shared/format';
 import { TID } from '../../shared/testids';
-import { useStore } from '../store/index';
+import { update, useStore } from '../store/index';
 import { expand, selectExpanded } from '../store/messages';
 import { Icon } from '../ui/Icon';
 import { cx } from '../ui/cx';
+import { setSpeakingLevel } from '../ui/Face';
 import { mediaUrl } from './bubbleContext';
 import { BARS, nextSpeed, waveform } from './voiceRules';
 import styles from './Bubble.module.css';
@@ -18,6 +20,48 @@ import styles from './Bubble.module.css';
 const SEEK_MS = 5000;
 
 let playing: HTMLAudioElement | null = null;
+
+/** §F15.9.2 `--m-face-level`: the level is sampled every 100 ms, like the live mic level. */
+const LEVEL_MS = 100;
+
+/** Marks the note's chat as Speaking and feeds the face the playing audio's level; returns the stop function. */
+function speak(messageId: string, a: HTMLAudioElement): () => void {
+  const chatId = Object.entries(useStore.getState().messages.byChat).find(([, c]) => c.byId[messageId])?.[0];
+  if (!chatId) return () => undefined;
+  update((s) => {
+    s.live.speaking[chatId] = true;
+  });
+  let stopMeter: () => void = () => undefined;
+  try {
+    const stream = (a as HTMLAudioElement & { captureStream?: () => MediaStream }).captureStream?.();
+    if (stream && stream.getAudioTracks().length > 0) {
+      const ctx = new AudioContext();
+      const analyser = ctx.createAnalyser();
+      analyser.fftSize = 512;
+      ctx.createMediaStreamSource(stream).connect(analyser);
+      const buf = new Uint8Array(analyser.fftSize);
+      const id = setInterval(() => {
+        analyser.getByteTimeDomainData(buf);
+        let sum = 0;
+        for (const v of buf) sum += ((v - 128) / 128) ** 2;
+        setSpeakingLevel(Math.min(1, Math.sqrt(sum / buf.length) * 4));
+      }, LEVEL_MS);
+      stopMeter = () => {
+        clearInterval(id);
+        void ctx.close();
+      };
+    }
+  } catch {
+    // No level to read: the bars stay at rest while the note plays.
+  }
+  return () => {
+    stopMeter();
+    setSpeakingLevel(0);
+    update((s) => {
+      delete s.live.speaking[chatId];
+    });
+  };
+}
 
 export interface VoiceProps {
   messageId: string;
@@ -31,6 +75,7 @@ export interface VoiceProps {
 
 export function VoicePlayer({ messageId, path, ms, transcript, transcriptState, side }: VoiceProps) {
   const audio = useRef<HTMLAudioElement>(null);
+  const stopSpeaking = useRef<(() => void) | null>(null);
   const [isPlaying, setPlaying] = useState(false);
   const [at, setAt] = useState(0);
   const [speed, setSpeed] = useState<number>(1);
@@ -45,6 +90,7 @@ export function VoicePlayer({ messageId, path, ms, transcript, transcriptState, 
     return () => {
       if (a && playing === a) playing = null;
       a?.pause();
+      stopSpeaking.current?.();
     };
   }, []);
 
@@ -129,11 +175,23 @@ export function VoicePlayer({ messageId, path, ms, transcript, transcriptState, 
           ref={audio}
           src={url}
           preload="none"
-          onPlay={() => setPlaying(true)}
-          onPause={() => setPlaying(false)}
+          onPlay={(e) => {
+            setPlaying(true);
+            if (side === 'foo') {
+              stopSpeaking.current?.();
+              stopSpeaking.current = speak(messageId, e.currentTarget);
+            }
+          }}
+          onPause={() => {
+            setPlaying(false);
+            stopSpeaking.current?.();
+            stopSpeaking.current = null;
+          }}
           onEnded={() => {
             setPlaying(false);
             setAt(0);
+            stopSpeaking.current?.();
+            stopSpeaking.current = null;
           }}
           onTimeUpdate={(e) => setAt(e.currentTarget.currentTime * 1000)}
         />

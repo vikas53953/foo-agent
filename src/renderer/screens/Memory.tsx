@@ -2,13 +2,15 @@
 // `helperId` filters to a helper's notes), §7.2 layout (header with search 240, "+ Add something", ⋯; chips; learned strip;
 // groups; helpers' notes), §7.3 elements, §7.4 actions and their results, §7.5 states, §7.6 keyboard and Narrator, §7.7 test
 // ids; 06 §0.1 Page (content column `--column-max`), §0.5 common states, §0.8 Narrator; 06-3 §14 C-3 / C-4; 02-3 §F21.3 undo
-// bar; CR-0010 G-M6-08 (no store slice: the page keeps its own state and reloads on `memory:changed`).
+// bar; CR-0010 G-M6-08 (no store slice: the page keeps its own state and reloads on `memory:changed`); CR-0021 (X-179)
+// §F7.1 "a new memory fact glows once; Forget folds the row and Undo brings it back", pick 6 (empty-state poses).
 import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
 import { motion } from '../../shared/tokens';
 import type { MemoryFactView, MemoryKind, View } from '../../shared/types';
 import { announce } from '../a11y/announce';
+import { reducedMotionNow } from '../a11y/useReducedMotion';
 import { useRovingTabIndex } from '../a11y/useRovingTabIndex';
 import { CardFrame } from '../cards/CardFrame';
 import { useFooEvent } from '../ipc/client';
@@ -104,7 +106,13 @@ interface RowCtx {
   cancelEdit: () => void;
   forget: (f: MemoryFactView) => void;
   openRowMenu: (f: MemoryFactView, el: HTMLElement) => void;
+  /** CR-0021 §F7.1: a new fact glows once ('fresh'); an undone Forget unfolds back ('back'). */
+  appear: Record<string, Appear>;
+  /** Rows folding closed after Forget (`data-exit`, `--m-normal`). */
+  folding: Set<string>;
+  appeared: (id: string) => void;
 }
+type Appear = 'fresh' | 'back';
 
 function Marked({ text, q }: { text: string; q: string }) {
   return (
@@ -219,8 +227,13 @@ function FactRow({ f, ctx, rowProps }: { f: MemoryFactView; ctx: RowCtx; rowProp
       data-testid={TID.memoryRow}
       data-row-id={f.id}
       data-private={f.private || undefined}
+      data-appear={ctx.appear[f.id]}
+      data-exit={ctx.folding.has(f.id) ? '' : undefined}
       aria-label={rowName(f, ctx.now, ctx.timeZone)}
       onKeyDown={onKeyDown}
+      onAnimationEnd={(e) => {
+        if (e.target === e.currentTarget && ctx.appear[f.id]) ctx.appeared(f.id);
+      }}
     >
       <div className={styles.rowText}>
         <span className={styles.fact}>
@@ -346,6 +359,18 @@ export function MemoryPage({ view }: { view: Extract<View, { kind: 'screen' }> }
   const [adding, setAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(params.mode === 'edit' ? (params.factId ?? null) : null);
   const [gone, setGone] = useState<Set<string>>(new Set());
+  const [appear, setAppear] = useState<Record<string, Appear>>({});
+  const [folding, setFolding] = useState<Set<string>>(new Set());
+  // A fact that was not in the last list glows once (not on the first list; an undone Forget unfolds instead).
+  const [prevFacts, setPrevFacts] = useState(facts);
+  if (facts !== prevFacts) {
+    setPrevFacts(facts);
+    if (prevFacts && facts && !reducedMotionNow()) {
+      const before = new Set(prevFacts.map((f) => f.id));
+      const fresh = facts.filter((f) => !before.has(f.id) && !appear[f.id]).map((f) => f.id);
+      if (fresh.length) setAppear((a) => ({ ...a, ...Object.fromEntries(fresh.map((id) => [id, 'fresh' as const])) }));
+    }
+  }
   const [undo, setUndo] = useState<Undo | null>(null);
   const [status, setStatus] = useState<Status | null>(null);
   const [forgotAll, setForgotAll] = useState(false);
@@ -430,8 +455,26 @@ export function MemoryPage({ view }: { view: Extract<View, { kind: 'screen' }> }
         } else load();
       });
     },
+    appear,
+    folding,
+    appeared: (id) =>
+      setAppear((a) => {
+        const next = { ...a };
+        delete next[id];
+        return next;
+      }),
     forget: (f) => {
-      setGone((s) => new Set(s).add(f.id));
+      // §F7.1: the row folds closed (`--m-normal`, exits are faster than entrances), then leaves the list.
+      const exitMs = reducedMotionNow() ? 0 : motion.normal;
+      setFolding((s) => new Set(s).add(f.id));
+      window.setTimeout(() => {
+        setGone((s) => new Set(s).add(f.id));
+        setFolding((s) => {
+          const n = new Set(s);
+          n.delete(f.id);
+          return n;
+        });
+      }, exitMs);
       void memoryActions.forget(f.id).then((r) => {
         if (r.ok) setUndo({ fact: f, token: r.value.undoToken });
         else
@@ -455,6 +498,7 @@ export function MemoryPage({ view }: { view: Extract<View, { kind: 'screen' }> }
     setUndo(null);
     void memoryActions.undo(token).then((r) => {
       if (r.ok) {
+        if (!reducedMotionNow()) setAppear((a) => ({ ...a, [r.value.id]: 'back' }));
         setFacts((list) => (list ? [...list.filter((x) => x.id !== r.value.id), r.value] : list));
         setGone((s) => {
           const n = new Set(s);
@@ -572,6 +616,8 @@ export function MemoryPage({ view }: { view: Extract<View, { kind: 'screen' }> }
       <EmptyState
         state={state}
         icon="Brain"
+        // CR-0021 pick 6: a forgotten list shows the Noticed pose; first time keeps E-10's slot (the L-1 drawing, §F16.1).
+        {...(state === 'empty' ? { pose: 'noticed' as const } : {})}
         title={state === 'first_time' ? t('screen.memory.empty.title') : t('screen.memory.forgotten.title')}
         body={state === 'first_time' ? t('screen.memory.empty.body') : t('screen.memory.forgotten.body')}
         {...(state === 'first_time' && !adding ? { action: { label: t('screen.memory.add.button'), onClick: () => setAdding(true) } } : {})}
@@ -581,6 +627,7 @@ export function MemoryPage({ view }: { view: Extract<View, { kind: 'screen' }> }
     body = (
       <EmptyState
         state="filter_empty"
+        pose="scan"
         body={t('screen.memory.no_match.text', { query: filter.q.trim() || chipLabel(filter.chip) })}
         action={{ label: t('screen.memory.no_match.clear'), onClick: clearFilters, variant: 'link' }}
       />
@@ -660,7 +707,10 @@ export function MemoryPage({ view }: { view: Extract<View, { kind: 'screen' }> }
                 onSave={(text) => {
                   setAdding(false);
                   setForgotAll(false);
-                  void memoryActions.add(text).then((r) => r.ok && setFacts((list) => [r.value, ...(list ?? [])]));
+                  // memory:changed may have reloaded the list first; keep one row per fact.
+                  void memoryActions
+                    .add(text)
+                    .then((r) => r.ok && setFacts((list) => [r.value, ...(list ?? []).filter((x) => x.id !== r.value.id)]));
                 }}
               />
             </div>
