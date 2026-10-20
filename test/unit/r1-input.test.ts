@@ -36,9 +36,18 @@ describe('"foo read:" items (04 §6.5)', () => {
     expect(read('budget Rs 1,20,000 for Goa')).toEqual(['₹1,20,000']);
   });
 
-  it('a length is not a party size, and a lowercase "sat" is not a Saturday', () => {
+  it('a length, a date or a sum is not a party size, and a lowercase "sat" is not a Saturday', () => {
     expect(read('park for 2 hours')).toEqual([]);
     expect(read('I sat down and ate')).toEqual([]);
+    expect(read('book a cab for 20 Oct')).toEqual(['Tue 20 Oct']);
+    expect(read('a loan for 3 lakhs')).toEqual([]);
+  });
+
+  it('a capitalised run stops at words that are not names; "Sun Pharma" is a place, not a Sunday', () => {
+    expect(read('Call Riya Tomorrow at 5 pm')).toEqual(['Riya', 'Sat 17 Oct, 5:00 PM']);
+    expect(read('Email Rahul About The Report')).toEqual(['Rahul']);
+    expect(read('Remind Me at 9 am')).toEqual(['9:00 AM']);
+    expect(read('meet at Sun Pharma office')).toEqual(['Sun Pharma']);
   });
 
   it('never shows a secret: the text is redacted first and a masked item is dropped', () => {

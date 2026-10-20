@@ -282,6 +282,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
       ),
       replyToId: strip?.kind === 'reply' ? strip.messageId : strip?.kind === 'edit' ? strip.saved.reply : null,
       linkPreviewRemoved,
+      ...(strip?.kind === 'side' ? { side: { messageId: strip.messageId, quote: strip.quote } } : {}),
     });
   });
 
@@ -348,7 +349,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
         staged: Promise.resolve(a.id),
       })),
     );
-    if (d.replyToId) setStrip({ kind: 'reply', messageId: d.replyToId });
+    if (cached?.side) setStrip({ kind: 'side', ...cached.side });
+    else if (d.replyToId) setStrip({ kind: 'reply', messageId: d.replyToId });
     setLinkPreviewRemoved(d.linkPreviewRemoved);
   }, [chatId, draftRow, helpersById, setChips, writeField]);
 

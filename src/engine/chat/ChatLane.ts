@@ -253,6 +253,7 @@ export class ChatLane {
         this.busy.delete(chatId);
         this.running -= 1;
         this.inflight.delete(messageId);
+        this.sideTurns.delete(messageId);
         this.pump(chatId);
         const next = this.waitingChats.shift();
         if (next) this.pump(next);
@@ -342,13 +343,17 @@ export class ChatLane {
     const understood =
       chat.kind === 'group' || chat.kind === 'wa_mirror' || message.kind !== 'text'
         ? []
-        : understoodItems(message.textForAi ?? message.text, { now: this.d.clock.now(), timeZone: settings.locale.timeZone });
+        : // A side question's AI text carries foo's quoted words; the line reads only the user's own (redacted again inside).
+          understoodItems(side ? message.text : (message.textForAi ?? message.text), {
+            now: this.d.clock.now(),
+            timeZone: settings.locale.timeZone,
+          });
     await this.tx([
       {
         op: 'update',
         table: 'messages',
         id: messageId,
-        set: { status: 'complete', badge: 'seen', ...(understood.length ? { understood: JSON.stringify(understood) } : {}) },
+        set: { status: 'complete', badge: 'seen', understood: understood.length ? JSON.stringify(understood) : null },
       },
     ]);
     this.typing(chatId, true, who);

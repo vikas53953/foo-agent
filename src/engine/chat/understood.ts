@@ -15,14 +15,22 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as const;
 const DAY_MS = 86_400_000;
 
-const WEEKDAY_WORD = /^(sun|mon|tue|wed|thu|fri|sat)/i;
-const MONTH_WORD = /^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i;
 const WEEKDAY_RE = String.raw`(?:mon(?:day)?|tue(?:s|sday)?|wed(?:nesday)?|thu(?:r|rs|rsday)?|fri(?:day)?|sat(?:urday)?|sun(?:day)?)`;
 const MONTH_RE = String.raw`(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sep(?:t|tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)`;
 /** One to three capitalised words: a name or a place ("Toit", "MG Road", "Riya"). Used without the `i` flag. */
 const PROPER = String.raw`(\p{Lu}[\p{L}'’&.-]*(?:\s+\p{Lu}[\p{L}'’&.-]*){0,2})`;
-/** Words after "for {n}" that make it a length or an amount, not a party size. */
-const NOT_PEOPLE = /^(?:hours?|hrs?|days?|nights?|mins?|minutes?|weeks?|months?|years?|yrs?|rupees?|rs|inr|kg|km|%|am|pm|:)/i;
+/** Words after "for {n}" that make it a length, a date or an amount, not a party size. */
+const NOT_PEOPLE = new RegExp(
+  String.raw`^(?:(?:hours?|hrs?|days?|nights?|mins?|minutes?|weeks?|months?|years?|yrs?|rupees?|rs|inr|kg|km|am|pm|k|thousand|hundred|lakhs?|lacs?|crores?|${MONTH_RE})\b|%|:)`,
+  'iu',
+);
+/** Capitalised words that end a name run: pronouns, day words and small words a sentence in title case carries. */
+const NOT_NAME =
+  /^(?:I|Me|My|Him|Her|Them|Us|It|You|AM|PM|OK|Today|Tomorrow|Tonight|About|The|A|An|And|Or|For|At|On|In|To|Please|Book|Buy|Pay|Send)$/u;
+const WEEKDAY_ONLY = new RegExp(String.raw`^${WEEKDAY_RE}$`, 'iu');
+const MONTH_ONLY = new RegExp(String.raw`^${MONTH_RE}$`, 'iu');
+/** A three-letter weekday that starts a longer name ("Sun Pharma"). */
+const SHORT_WEEKDAY = /^(?:Sun|Mon|Tue|Wed|Thu|Fri|Sat)$/u;
 
 interface Hit {
   at: number;
@@ -67,9 +75,19 @@ export function understoodItems(raw: string, ctx: UnderstoodContext): string[] {
   return out;
 }
 
-function properName(s: string): boolean {
-  const first = s.split(/\s+/u)[0] ?? '';
-  return !WEEKDAY_WORD.test(first) && !MONTH_WORD.test(first) && !/^(?:I|AM|PM|OK|Today|Tomorrow|Tonight)$/u.test(first);
+/**
+ * The leading name words of a capitalised run, or '' when it opens with a word that is not a name. A place may open with a
+ * short weekday when another name word follows ("Sun Pharma"); otherwise a weekday or a month ends the run.
+ */
+function nameRun(run: string, place: boolean): string {
+  const words = run.split(/\s+/u);
+  const named = (w: string) => !NOT_NAME.test(w) && !WEEKDAY_ONLY.test(w) && !MONTH_ONLY.test(w);
+  if (place && words.length > 1 && SHORT_WEEKDAY.test(words[0]!) && named(words[1]!)) {
+    const rest = words.slice(1).findIndex((w) => !named(w));
+    return words.slice(0, rest < 0 ? words.length : rest + 1).join(' ');
+  }
+  const end = words.findIndex((w) => !named(w));
+  return words.slice(0, end < 0 ? words.length : end).join(' ');
 }
 
 function people(text: string): Hit[] {
@@ -83,7 +101,8 @@ function people(text: string): Hit[] {
   for (const m of text.matchAll(
     new RegExp(String.raw`\b(?:[Ww]ith|[Cc]all|[Tt]ext|[Ee]mail|[Mm]essage|[Rr]emind|[Tt]ell|[Aa]sk)\s+${PROPER}`, 'gu'),
   )) {
-    if (properName(m[1]!)) out.push({ at: m.index + m[0].length - m[1]!.length, text: m[1]! });
+    const name = nameRun(m[1]!, false);
+    if (name) out.push({ at: m.index + m[0].length - m[1]!.length, text: name });
   }
   return out;
 }
@@ -91,7 +110,8 @@ function people(text: string): Hit[] {
 function places(text: string): Hit[] {
   const out: Hit[] = [];
   for (const m of text.matchAll(new RegExp(String.raw`\b(?:[Aa]t|[Ii]n|[Tt]o|[Nn]ear|[Ff]rom)\s+${PROPER}`, 'gu'))) {
-    if (properName(m[1]!)) out.push({ at: m.index + m[0].length - m[1]!.length, text: m[1]! });
+    const name = nameRun(m[1]!, true);
+    if (name) out.push({ at: m.index + m[0].length - m[1]!.length, text: name });
   }
   return out;
 }
@@ -126,6 +146,8 @@ function days(text: string, ctx: UnderstoodContext): Day[] {
   for (const m of text.matchAll(new RegExp(String.raw`\b(?:(on|next|this|by|until|till|coming)\s+)?(${WEEKDAY_RE})\b`, 'giu'))) {
     // "I sat down" is not a Saturday: a weekday is capitalised or follows a word that names a day.
     if (!m[1] && !/^\p{Lu}/u.test(m[2]!)) continue;
+    // "Sun Pharma" is a name: a bare short weekday followed by a capitalised word is not a day.
+    if (!m[1] && SHORT_WEEKDAY.test(m[2]!) && /^\s+\p{Lu}/u.test(text.slice(m.index + m[0].length))) continue;
     const wd = WEEKDAYS.findIndex((w) => m[2]!.toLowerCase().startsWith(w.toLowerCase()));
     const todayWd = new Date(now.n * DAY_MS).getUTCDay();
     let ahead = (wd - todayWd + 7) % 7;
