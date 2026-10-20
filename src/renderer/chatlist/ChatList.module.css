@@ -1,6 +1,7 @@
 /* Spec: 03-shell-1 §3.4.1 (only the list scrolls; native overlay scrollbars, never restyled), §3.4.5 (no gap between
    rows), §3.4.7 loading rows (48 circle + 60 % / 85 % bars 12 tall), §3.4.10 / 02-2 §F16.2 Block (32 top, centred, max
-   260, icon 24 `--fg-3` or `--bad` → 12 → body `--t-small` `--fg-2` → 16 → the button). */
+   260, icon 24 `--fg-3` or `--bad` → 12 → body `--t-small` `--fg-2` → 16 → the button); no results puts the
+   `--face-pose` face in the icon slot (§F16.2 Block face, CR-0021 pick 6). */
 .scroll {
   flex: 1;
   min-height: 0;
@@ -46,6 +47,10 @@
 }
 .emptyIconBad {
   color: var(--bad);
+}
+.emptyPose {
+  width: var(--face-pose);
+  height: var(--face-pose);
 }
 .emptyBody {
   margin: var(--s2) 0 var(--s3);
