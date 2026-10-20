@@ -258,3 +258,28 @@
     border-color: CanvasText;
   }
 }
+/* CR-0021 pick 15: money amounts only (parts/Money.tsx). */
+.money {
+  font-weight: var(--weight-money);
+  font-variant-numeric: tabular-nums;
+}
+/* 02 §F7.1 Cards / 05 §0.8: a card changing state while shown cross-fades its content and moves to its new height over
+ * --m-card (CardFrame useCardMorph); reduced motion keeps the cross-fade and skips the height (no style.height is set). */
+.card[data-morph] {
+  overflow: hidden;
+  transition-property: height, background-color, color;
+  animation: card-morph var(--m-card) var(--ease-standard);
+}
+.card[data-morph] > * {
+  animation: card-fade var(--m-card) var(--ease-standard);
+}
+@keyframes card-morph {
+  from {
+    opacity: 1;
+  }
+}
+@keyframes card-fade {
+  from {
+    opacity: 0;
+  }
+}

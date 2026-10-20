@@ -48,7 +48,12 @@ describe('AT-312 time saved is a fixed table (CR-0021 pick 14)', () => {
 
   it('AT-312 counts only finished steps', () => {
     expect(minutesSaved([done('fill_details'), { phraseKey: 'pay', state: 'running' }, { phraseKey: 'send', state: 'pending' }])).toBe(5);
-    expect(minutesSaved([{ phraseKey: 'fill_details', state: 'failed' }, { phraseKey: 'fill_details', state: 'skipped' }])).toBeNull();
+    expect(
+      minutesSaved([
+        { phraseKey: 'fill_details', state: 'failed' },
+        { phraseKey: 'fill_details', state: 'skipped' },
+      ]),
+    ).toBeNull();
   });
 
   it('AT-312 hides anything under 5 min', () => {
