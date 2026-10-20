@@ -1284,3 +1284,13 @@ in_control.text,hand_back.label,not_secure.text,window.title}`.
 - Golden lane: `FIDELITY_MILESTONE: M9`, `FIDELITY_REFS: M1,…,M6,M8,M9`.
 - Moved on: UX-15-05 / -08 / -09, AT-039 email rung, AT-040, AT-207, UX-12-08 / -10 / -11, AT-079 stay pending; the carry list
   (T5, T7, T8 and the golden-spec gaps) is in `docs/decisions/M9.tsv` "note" rows.
+
+## P1 · close-out (lead, CR-0021)
+
+- Built: living face, splash and presence (T2, T8), motion levels and chat-list moves (T3, T4), sounds (T5), suggestion
+  chips (T6), card polish and money lines (T7), Appearance page with accent and Mica (T9), lazy pages and a faster first
+  paint (T10). T1 (contracts, CR-0021) first.
+- Fix: the redactor ignores pattern hits inside foo's own ids (`{prefix}_{UUIDv7}`); about 1.5 % of ids were hidden from
+  the AI before (AT-074 flaked on it).
+- Golden lane unchanged: `FIDELITY_MILESTONE: M9` (P1 rows carry the M9 label, CR-0021 (a)).
+- Moved on: the carry list in CR-0021 (h) and `docs/decisions/P1.tsv`.

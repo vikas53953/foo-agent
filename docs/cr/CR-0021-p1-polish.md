@@ -177,5 +177,17 @@ lips, the face instead of letters, chips above the composer, Mica off in tests) 
 Tier R check fail because the app now follows this CR adds the step and the failing checks to `docs/fidelity/disputes.json`
 with `cr: "CR-0021"` and a row in this table; an app that is simply wrong is fixed instead.
 
-| Steps | Checks | Drawing vs app |
-| ----- | ------ | -------------- |
+| Steps | Checks | Drawing vs app                                                                  |
+| ----- | ------ | ------------------------------------------------------------------------------- |
+| none  | none   | No P1 ticket saw a Tier R check fail; every ticket golden run was Tier R green. |
+
+## (h) Close-out (lead, 2026-10-20)
+
+- `spec/trace.csv`: the 30 P1 rows (tests in `test/e2e/p1-*.spec.ts`) and PERF-03 move from `pending` to `live`; the
+  spec manifest is regenerated with `scripts/spec-verify.ts --write` under this CR. Other M9-labelled rows stay as M9 left
+  them.
+- Ships later, logged in `docs/decisions/P1.tsv`: reduced motion treats Basic like Off only for faces
+  (`useReducedMotion` checks Off); dialogs on their own portals (Raise cap, Cap, Link WhatsApp, Replace key) do not step the
+  shell back (AT-303 covers the shared dialog); archive and pin-drag motion; the cloud-icon nod (the composer has no cloud
+  icon yet); proof photo zoom (no surface yet); splash Upgrading and Disk-full states (M12); one icon chunk per page.
+- Needs Vikas's eyes on Windows 11: real Mica and the Windows accent colour (tests run with Mica off).
