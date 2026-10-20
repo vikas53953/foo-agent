@@ -12,18 +12,22 @@ export function soundAllowed(g: { setting: boolean; quiet: boolean; hidden: bool
 const APPROVE_CARDS: ReadonlySet<string> = new Set(['approval', 'payment']);
 const USER_TAP: ReadonlySet<string> = new Set(['tap', 'keyboard']);
 
-/** Approve: the user's own tap (or Enter) turned an Approval or Payment card APPROVED just now. */
+/**
+ * Approve: the user's own tap (or Enter) turned an Approval or Payment card APPROVED just now. A card this window had not
+ * seen before (opening a chat loads its old cards) is history, not a tap.
+ */
 export function approvedByUser(prev: CardRow | undefined, next: CardRow): boolean {
   return (
+    prev !== undefined &&
     APPROVE_CARDS.has(next.type) &&
     next.state === 'APPROVED' &&
-    prev?.state !== 'APPROVED' &&
+    prev.state !== 'APPROVED' &&
     next.resolvedBy !== null &&
     USER_TAP.has(next.resolvedBy)
   );
 }
 
-/** Done: a job of the open chat turned DONE with proof (not "done, not checked"). */
+/** Done: a job of the open chat turned DONE with proof (not "done, not checked"); a job first seen already done is history. */
 export function doneWithProof(prev: JobRow | undefined, next: JobRow, openChatId: string | null): boolean {
-  return next.chatId === openChatId && next.state === 'done' && prev?.state !== 'done' && next.proof != null;
+  return prev !== undefined && next.chatId === openChatId && next.state === 'done' && prev.state !== 'done' && next.proof != null;
 }

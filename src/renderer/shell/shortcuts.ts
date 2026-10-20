@@ -72,11 +72,16 @@ function zoomKey(e: KeyboardEvent): boolean {
 
 /** A wheel notch is 100 (Windows reports 100 per notch at 100 %); trackpads send smaller deltas that add up. */
 const WHEEL_NOTCH = 100;
+/** Small deltas further apart than this are separate gestures, not one notch. */
+const WHEEL_IDLE_MS = 300;
 let wheelSum = 0;
+let wheelAt = 0;
 
 function onWheel(e: WheelEvent): void {
   if (!e.ctrlKey) return;
   e.preventDefault();
+  if (e.timeStamp - wheelAt > WHEEL_IDLE_MS) wheelSum = 0;
+  wheelAt = e.timeStamp;
   wheelSum += e.deltaY;
   if (Math.abs(wheelSum) < WHEEL_NOTCH / 2) return;
   const dir = wheelSum < 0 ? 1 : -1;

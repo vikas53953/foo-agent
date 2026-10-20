@@ -8,6 +8,8 @@ import type { SettingsStore } from '../settings/Settings';
 import { isTrustedUrl } from '../windows/protocol';
 
 const inserted = new WeakMap<WebContents, string>();
+/** One apply at a time per window, so a quick on → off never orphans a sheet. */
+const queue = new WeakMap<WebContents, Promise<void>>();
 let wired = false;
 
 /** The sheet for the current setting and Windows accent, or null for the brand values. */
@@ -23,7 +25,13 @@ function sheet(settings: SettingsStore): string | null {
   return derived ? accentCss(derived) : null;
 }
 
-async function applyTo(wc: WebContents, css: string | null): Promise<void> {
+function applyTo(wc: WebContents, css: string | null): Promise<void> {
+  const next = (queue.get(wc) ?? Promise.resolve()).then(() => swap(wc, css)).catch(() => undefined);
+  queue.set(wc, next);
+  return next;
+}
+
+async function swap(wc: WebContents, css: string | null): Promise<void> {
   if (wc.isDestroyed() || !isTrustedUrl(wc.getURL())) return;
   const prev = inserted.get(wc);
   inserted.delete(wc);

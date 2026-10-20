@@ -108,6 +108,8 @@ describe('sound gate', () => {
     expect(approvedByUser(card({}), card({ state: 'APPROVED', resolvedBy: 'tap' }))).toBe(true);
     expect(approvedByUser(card({ type: 'payment' }), card({ type: 'payment', state: 'APPROVED', resolvedBy: 'keyboard' }))).toBe(true);
     expect(approvedByUser(card({}), card({ state: 'APPROVED', resolvedBy: 'auto' }))).toBe(false);
+    // Opening a chat loads its old approved cards: no tone.
+    expect(approvedByUser(undefined, card({ state: 'APPROVED', resolvedBy: 'tap' }))).toBe(false);
     expect(approvedByUser(card({ type: 'choice' }), card({ type: 'choice', state: 'APPROVED', resolvedBy: 'tap' }))).toBe(false);
     expect(approvedByUser(card({ state: 'APPROVED', resolvedBy: 'tap' }), card({ state: 'APPROVED', resolvedBy: 'tap' }))).toBe(false);
   });
@@ -117,5 +119,6 @@ describe('sound gate', () => {
     expect(doneWithProof(job({}), job({ state: 'done', proof: { kind: 'receipt' } }), 'c2')).toBe(false);
     expect(doneWithProof(job({}), job({ state: 'done_unverified', proof: null }), 'c1')).toBe(false);
     expect(doneWithProof(job({}), job({ state: 'done', proof: null }), 'c1')).toBe(false);
+    expect(doneWithProof(undefined, job({ state: 'done', proof: { kind: 'receipt' } }), 'c1')).toBe(false);
   });
 });

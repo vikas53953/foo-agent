@@ -78,9 +78,10 @@ const SETTLE_MS = 250;
  * 02 §F7.1: Theme cross-fades and accent sweeps, as a View Transition (CSS keyframes in AppearancePage.module.css). Off: the
  * change lands at once; Basic: a gentle fade for both.
  */
-function withTransition(kind: 'theme' | 'accent', change: () => Promise<void>): void {
+function withTransition(kind: 'theme' | 'accent', change: () => Promise<void>, willMove: boolean): void {
   const motion = root().dataset.motion;
-  if (motion === 'off' || typeof document.startViewTransition !== 'function') {
+  // Nothing to animate (Light while the window is already light, accent where Windows gives none): skip the frozen wait.
+  if (!willMove || motion === 'off' || typeof document.startViewTransition !== 'function') {
     void change();
     return;
   }
@@ -131,8 +132,10 @@ export function AppearancePage() {
   const agentName = settings.identity.agentName;
   const zoomLabel = (n: number) => t('settings.appearance.zoom.value', { n });
 
-  const setTheme = (v: Theme) => withTransition('theme', () => write('appearance.theme', v));
-  const setAccent = (on: boolean) => withTransition('accent', () => write('appearance.useWindowsAccent', on));
+  const setTheme = (v: Theme) => withTransition('theme', () => write('appearance.theme', v), v === 'system' || v !== root().dataset.theme);
+  // Main reads the Windows accent (02-3 §F28.3); other platforms keep the brand values, so nothing sweeps there.
+  const setAccent = (on: boolean) =>
+    withTransition('accent', () => write('appearance.useWindowsAccent', on), window.foo?.platform.os === 'win32');
   const setAnimations = (v: Animations) =>
     void write('appearance.animations', v).then(() => setMotionLevel(useStore.getState().settings.value?.appearance.animations ?? v));
 
