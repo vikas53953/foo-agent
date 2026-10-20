@@ -1,4 +1,5 @@
-/* Spec: 02 F7 ring spinner (16 / 20 / 24; --accent arc), 02-3 §F25.4 (still under reduced motion or animations off). */
+/* Spec: 02 F7 ring spinner (16 / 20 / 24; --accent arc), 02-3 §F25.4 (still under reduced motion or animations off);
+   02 §F7 X-150 / AT-301: Basic has no rotation either. */
 .spinner {
   display: inline-block;
   flex: none;
@@ -24,6 +25,7 @@
     transform: rotate(1turn);
   }
 }
-:global(:root[data-motion='off']) .spinner {
+:global(:root[data-motion='off']) .spinner,
+:global(:root[data-motion='basic']) .spinner {
   animation: none;
 }

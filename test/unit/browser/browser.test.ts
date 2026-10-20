@@ -36,6 +36,12 @@ describe('08-2 §8.3.1 launch plan', () => {
     const plan = launchPlan({ platform: 'win32', dataDir: DATA, exists: () => false, headless: true });
     expect(plan[0]?.options.headless).toBe(true);
   });
+  it('FOO_TEST_BROWSER_DEBUG runs add a debugging port (an e2e test stands in for the person); the app never does', () => {
+    const plain = launchPlan({ platform: 'win32', dataDir: DATA, exists: () => false });
+    const debug = launchPlan({ platform: 'win32', dataDir: DATA, exists: () => false, testDebug: true });
+    expect(plain[0]?.options.args).toEqual([...EDGE_ARGS]);
+    expect(debug[0]?.options.args).toEqual([...EDGE_ARGS, '--remote-debugging-port=0']);
+  });
 });
 
 describe('08-2 §8.2 browser.open URL rule', () => {

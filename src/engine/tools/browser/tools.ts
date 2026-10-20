@@ -113,6 +113,7 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
     platform: d.platform,
     exists: existsSync,
     ...(d.headless === undefined ? {} : { headless: d.headless }),
+    testDebug: d.testRun && d.env.FOO_TEST_BROWSER_DEBUG === '1', // M9 T7
     launch:
       d.launch ??
       (async (dir, options) => {
@@ -188,6 +189,16 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
     };
   }
 
+  // M9 T7: the left page's own load can still fail after the first `about:blank` (its error page commits over it), so
+  // try once more until the window really is blank.
+  const blank = async (page: Page) => {
+    for (let i = 0; i < 3; i++) {
+      await page.goto('about:blank').catch(() => null);
+      await page.waitForTimeout(50).catch(() => null);
+      if (page.url() === 'about:blank') return;
+    }
+  };
+
   const defs: ToolDef[] = [
     tool(
       'browser.open',
@@ -210,7 +221,7 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
         // The page never arrived (offline, no such host, refused, 15 s): never an `ok` on the old page, never URL_NOT_ALLOWED for
         // Chromium's own error page.
         if (failed !== null) {
-          await page.goto('about:blank').catch(() => null);
+          await blank(page);
           return {
             kind: 'error',
             errorKind: /ERR_INTERNET_DISCONNECTED|ERR_NETWORK_CHANGED/.test(failed) ? 'NET_OFFLINE' : 'SITE_TIMEOUT',
@@ -220,7 +231,7 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
         const landedUrl = page.url();
         const landed = checkUrl(landedUrl, { handback: m().handback, allowHosts });
         if (!landed.ok) {
-          await page.goto('about:blank').catch(() => null);
+          await blank(page);
           // M9 T8: the hand-back card names the page foo was sent to (08-2 §8.3.10).
           return landed.error.kind === 'SITE_HANDBACK'
             ? { kind: 'error', errorKind: 'SITE_HANDBACK', result: { url: landedUrl } }
@@ -366,6 +377,8 @@ export function engineBrowserTools(o: {
   redactor: { scrub(text: string): { text: string }; registry: { forms(): { form: string }[] } };
   settings(): Settings;
   log(evt: string, kind?: string): void;
+  /** M9 T7: the sign-in lanes' pause (08-2 §8.3.3). */
+  captureGuard?: CaptureGuard;
 }): { registry: ToolRegistry; runtime: BrowserRuntime } {
   return createBrowserTools({
     dataDir: o.dataDir,
@@ -378,5 +391,6 @@ export function engineBrowserTools(o: {
     settings: o.settings,
     now: () => o.clock.now(),
     log: o.log,
+    ...(o.captureGuard ? { captureGuard: o.captureGuard } : {}),
   });
 }

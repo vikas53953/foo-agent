@@ -169,7 +169,17 @@ export async function boxOf(loc: Locator): Promise<Box> {
   return b;
 }
 
+/** A step whose trace rows are all `pending` is not built yet, so Tier R has nothing to judge: its capture is not written. */
+const pendingOnly = (id: string): boolean => {
+  const rows = readFileSync(join('spec', 'trace.csv'), 'utf8')
+    .split(/\r?\n/)
+    .map((l) => l.split(','))
+    .filter((f) => f.includes(id));
+  return rows.length > 0 && rows.every((f) => f.at(-1) === 'pending');
+};
+
 const write = (name: string, capture: object, png: Buffer) => {
+  if (pendingOnly(name.slice(0, name.lastIndexOf('.')))) return;
   mkdirSync(OUT, { recursive: true });
   writeFileSync(join(OUT, `${name}.png`), png);
   writeFileSync(join(OUT, `${name}.json`), JSON.stringify(capture, null, 2) + '\n');

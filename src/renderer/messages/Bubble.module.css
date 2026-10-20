@@ -38,18 +38,56 @@
 .row[data-selecting] {
   padding-left: calc(var(--s4) + var(--s1));
 }
+.row {
+  transition:
+    background var(--m-slow) var(--ease-out),
+    box-shadow var(--m-slow) var(--ease-out);
+}
+/* §F7.1 jump to message: the row glows in --m-normal, holds (HIGHLIGHT_MS), then fades out --m-slow (exits faster
+ * than they arrive is not asked of a glow: 02 §F7 gives 167 in, 250 out). */
 .row[data-highlight] {
   border-radius: var(--r-sm);
   background: var(--accent-soft);
-  transition: background var(--m-normal) var(--ease-standard);
+  box-shadow: 0 0 0 var(--s0) var(--accent-soft);
+  transition:
+    background var(--m-normal) var(--ease-in),
+    box-shadow var(--m-normal) var(--ease-in);
 }
+/* §F7.1: a new message rises 8px with the spring; the user's own bubble grows from the send button (bottom right). */
 :global([data-new]) > .row {
-  animation: row-in var(--m-slow) var(--ease-in);
+  animation: row-in var(--m-spring) var(--ease-spring);
+}
+/* A row re-keyed by main mid-rise carries on from where it was (MessageList sets --new-at). */
+:global([data-new][data-carry]) > .row {
+  animation-delay: var(--new-at);
+}
+:global([data-new]) > .row[data-side='me'] {
+  transform-origin: 100% 100%;
+  animation-name: row-grow;
 }
 @keyframes row-in {
   from {
     opacity: 0;
     transform: translateY(calc(var(--s1) * var(--motion-move, 1)));
+  }
+}
+@keyframes row-grow {
+  from {
+    opacity: 0;
+    transform: translate(calc(var(--s3) * var(--motion-move, 1)), calc(var(--s1) * var(--motion-move, 1)))
+      scale(calc(1 - 0.08 * var(--motion-move, 1)));
+  }
+}
+/* §F7.1: an error bubble shakes 2px once; its colours never change (no red flash). */
+.line[data-shake] {
+  animation: shake var(--m-slow) var(--ease-standard);
+}
+@keyframes shake {
+  33% {
+    transform: translateX(calc(var(--s0) / -2 * var(--motion-move, 1)));
+  }
+  67% {
+    transform: translateX(calc(var(--s0) / 2 * var(--motion-move, 1)));
   }
 }
 .check {
@@ -183,6 +221,21 @@
 .me > * + .file {
   margin-top: var(--s1);
 }
+.text[data-grow] {
+  /* §F7.1 "Show more" grows smoothly from the clamp to the full text. */
+  interpolate-size: allow-keywords;
+  overflow: hidden;
+  animation: grow var(--m-slow) var(--ease-standard);
+}
+@keyframes grow {
+  from {
+    height: calc(var(--t-body-lh) * 15);
+  }
+}
+/* Basic and Off: no height animation (02 §F7), the text fades in instead. */
+:global(:root:not([data-motion='full'])) .text[data-grow] {
+  animation-name: fade-in;
+}
 .clamp15 {
   max-height: calc(var(--t-body-lh) * 15);
   overflow: hidden;
@@ -313,6 +366,16 @@
   display: inline-flex;
   transition: color var(--m-normal) var(--ease-standard);
 }
+/* §F7.1: the ticks draw in, left to right, when they turn read. */
+.tick[data-draw] {
+  animation: draw var(--m-slow) var(--ease-standard);
+}
+@keyframes draw {
+  from {
+    opacity: 0;
+    clip-path: inset(0 calc(100% * var(--motion-move, 1)) 0 0);
+  }
+}
 .me .tick[data-state='read'] {
   color: var(--tick-read-on-me);
 }
@@ -379,6 +442,16 @@
   background: var(--bg-raised);
   user-select: none;
   animation: fade-in var(--m-normal) var(--ease-standard);
+}
+.chip[data-pop] {
+  /* §F7.1: a picked reaction bounces once (the spring's one 2.6 % overshoot). */
+  animation: pop var(--m-spring) var(--ease-spring);
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(calc(1 - 0.4 * var(--motion-move, 1)));
+  }
 }
 .chipMine {
   border-color: var(--accent);
@@ -494,6 +567,21 @@
   font: var(--t-small);
   text-decoration: underline;
 }
+.retryState {
+  /* §F7.1: the retry spinner turns into ✓ (the ✓ scales in with the spring). */
+  display: inline-grid;
+  place-items: center;
+  min-width: var(--s5);
+  min-height: var(--s7);
+  margin: calc((var(--s6) - var(--s7)) / 2) 0;
+}
+.retryDone {
+  color: var(--ok);
+  animation: pop var(--m-spring) var(--ease-spring);
+}
+.me .retryDone {
+  color: var(--on-bubble-me);
+}
 .me .linkButton {
   color: var(--on-bubble-me);
 }
@@ -598,6 +686,16 @@
   height: 100%;
   object-fit: cover;
 }
+/* §F7.1: images blur up over the sunken tile, never a blank box. */
+.tile[data-state='loading'] .tileImg {
+  opacity: 0;
+  filter: blur(calc(var(--s1) * var(--motion-move, 1)));
+}
+.tile[data-state='ready'] .tileImg {
+  transition:
+    opacity var(--m-slow) var(--ease-standard),
+    filter var(--m-slow) var(--ease-standard);
+}
 .tileCover {
   position: absolute;
   inset: 0;
@@ -633,7 +731,16 @@
   pointer-events: none;
 }
 
-/* ---- link preview (§10.6) */
+/* ---- link preview (§10.6); §F7.1: on a new row it fades up just after the text. */
+:global([data-new]) .preview {
+  animation: preview-up var(--m-slow) var(--ease-in) var(--m-normal) both;
+}
+@keyframes preview-up {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--s0) * var(--motion-move, 1)));
+  }
+}
 .preview {
   display: flex;
   flex-direction: column;
@@ -783,7 +890,14 @@
   border-radius: var(--r-full);
   background: var(--bg-raised);
   box-shadow: var(--shadow-16);
-  animation: fade-in var(--m-normal) var(--ease-in);
+  /* §F7.1: the picker springs from the bubble (ReactionPicker sets transform-origin at the bubble's edge). */
+  animation: picker-in var(--m-spring) var(--ease-spring);
+}
+@keyframes picker-in {
+  from {
+    opacity: 0;
+    transform: scale(calc(1 - 0.08 * var(--motion-move, 1)));
+  }
 }
 :global([data-theme='dark']) .picker {
   border: 1px solid var(--line);
@@ -891,6 +1005,9 @@
 }
 .actionOk {
   color: var(--ok);
+}
+.actionOk svg {
+  animation: pop var(--m-spring) var(--ease-spring);
 }
 .caption {
   margin-top: var(--s0);

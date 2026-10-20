@@ -24,10 +24,17 @@
   justify-content: center;
   pointer-events: none;
   z-index: var(--z-sticky);
-  transition: opacity var(--m-normal) var(--ease-standard);
+  /* §F7.1: the date chip floats down into place, then fades after --delay-sticky-hide (exit faster, --ease-out). */
+  transition:
+    opacity var(--m-normal) var(--ease-standard),
+    transform var(--m-spring) var(--ease-spring-soft);
 }
 .sticky[data-state='hidden'] {
   opacity: 0;
+  transform: translateY(calc(var(--s0) * -1 * var(--motion-move, 1)));
+  transition:
+    opacity var(--m-normal) var(--ease-out),
+    transform var(--m-normal) var(--ease-out);
 }
 .stickyChip {
   background: var(--bg-raised);

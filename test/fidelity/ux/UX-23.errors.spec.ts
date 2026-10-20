@@ -259,8 +259,9 @@ test('UX-23 · When things go wrong: steps UX-23-01 to UX-23-06, UX-23-09 and UX
       { phraseKey: 'shortlist', slots: { n: '3', what: 'flights', rule: 'your times' }, route: 'api' },
       { phraseKey: 'wait_pick', slots: {}, route: 'api' },
     ];
-    // A do-ask whose plan has no acting step, so the engine keeps the AI's title hint (08-4 §26.2 items 1–3).
-    const ask = 'book flights to Delhi for Fri 18 Dec';
+    // A do-ask whose plan has no acting step, so the engine keeps the AI's title hint (08-4 §26.2 items 1–3). Not "book
+    // flights": since M9 that is the flights compare-only reply (08-2 §5.3.4, X-81), which starts no job.
+    const ask = 'book a trip to Delhi for Fri 18 Dec';
     const first = await startTrips([jobLine(ask, title, flights), stepLine({ kind: 'step_done', idx: 0 }, 60_000), HOLD]);
     await send(first.page, ask);
     await advance(first.page, 61_000); // step 1 done at 9:42 AM, step 2 running
