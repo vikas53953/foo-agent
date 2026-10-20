@@ -764,10 +764,10 @@
   background: var(--accent-soft);
   text-align: center;
   pointer-events: none;
-  /* P1 T6: §F7.1 the drop-zone border breathes while dragging (stops at Basic and Off, where --m-shimmer is 0). */
+  /* P1 T6: §F7.1 the drop-zone border breathes while dragging (stops at Basic and Off, where --m-breathe is 0). */
   animation:
     fade var(--m-normal) var(--ease-standard),
-    breathe var(--m-shimmer) var(--ease-standard) var(--m-normal) infinite alternate;
+    breathe var(--m-breathe) var(--ease-standard) var(--m-normal) infinite alternate;
 }
 @keyframes fade {
   from {
@@ -814,7 +814,7 @@
 }
 .suggestion {
   animation: rise var(--m-spring) var(--ease-spring) backwards;
-  animation-delay: calc(var(--i, 0) * 60ms * var(--motion-move, 1)); /* local: §21.7 "60ms apart" (no token) */
+  animation-delay: calc(var(--i, 0) * 2 * var(--m-stagger) * var(--motion-move, 1)); /* §21.7 "60ms apart" */
 }
 .suggestions[data-exit] {
   animation: fadeOut var(--m-normal) var(--ease-out) forwards;
