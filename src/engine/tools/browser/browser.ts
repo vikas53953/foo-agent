@@ -42,9 +42,18 @@ export interface LaunchStep {
  * The launch attempts in order. Windows: Edge with the foo profile, then Chrome with `profile-chrome`. Linux (only the container
  * and CI run there): Playwright's Chromium when present, then an installed Chrome. `headless` is for tests; the app never sets it.
  */
-export function launchPlan(o: { platform: NodeJS.Platform; dataDir: string; exists(path: string): boolean; headless?: boolean }): LaunchStep[] {
+export function launchPlan(o: {
+  platform: NodeJS.Platform;
+  dataDir: string;
+  exists(path: string): boolean;
+  headless?: boolean;
+}): LaunchStep[] {
   const base = { headless: o.headless ?? false, viewport: null, acceptDownloads: true as const, args: [...EDGE_ARGS] };
-  const edge: LaunchStep = { channel: 'msedge', userDataDir: join(o.dataDir, 'browser', 'profile'), options: { ...base, channel: 'msedge' } };
+  const edge: LaunchStep = {
+    channel: 'msedge',
+    userDataDir: join(o.dataDir, 'browser', 'profile'),
+    options: { ...base, channel: 'msedge' },
+  };
   const chrome: LaunchStep = {
     channel: 'chrome',
     userDataDir: join(o.dataDir, 'browser', 'profile-chrome'),
@@ -53,7 +62,11 @@ export function launchPlan(o: { platform: NodeJS.Platform; dataDir: string; exis
   if (o.platform === 'win32') return [edge, chrome];
   const steps: LaunchStep[] = [];
   if (o.exists(LINUX_CHROMIUM))
-    steps.push({ channel: 'chromium', userDataDir: join(o.dataDir, 'browser', 'profile'), options: { ...base, executablePath: LINUX_CHROMIUM } });
+    steps.push({
+      channel: 'chromium',
+      userDataDir: join(o.dataDir, 'browser', 'profile'),
+      options: { ...base, executablePath: LINUX_CHROMIUM },
+    });
   steps.push(chrome);
   return steps;
 }

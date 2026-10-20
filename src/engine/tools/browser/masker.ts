@@ -30,8 +30,22 @@ export class Masker implements FrameVerifier {
         if (this.on.has(page)) void f.evaluate(walkerCall({ cmd: 'inject', css: MASK_CSS, id: MASK_STYLE_ID })).catch(() => undefined);
       };
       page.on('domcontentloaded', () => void this.eachFrame(page, async (f) => again(f)));
-      page.on('frameattached', (f) => void f.waitForLoadState('domcontentloaded').then(() => again(f), () => undefined));
-      page.on('framenavigated', (f) => void f.waitForLoadState('domcontentloaded').then(() => again(f), () => undefined));
+      page.on(
+        'frameattached',
+        (f) =>
+          void f.waitForLoadState('domcontentloaded').then(
+            () => again(f),
+            () => undefined,
+          ),
+      );
+      page.on(
+        'framenavigated',
+        (f) =>
+          void f.waitForLoadState('domcontentloaded').then(
+            () => again(f),
+            () => undefined,
+          ),
+      );
     }
     await this.eachFrame(page, (f) => f.evaluate(walkerCall({ cmd: 'inject', css: MASK_CSS, id: MASK_STYLE_ID })).catch(() => false));
   }

@@ -63,7 +63,8 @@ export default async function journey(v: Verify): Promise<void> {
     ];
     const { app, page } = await v.launch({ fakeAi: SCRIPT, env: { FOO_TEST_ALLOW_HOSTS: '127.0.0.1' } });
     await openWorld(app, page);
-    await openChat(page, 'foo');
+    // Home has no live job: in foo's chat the seeded "Goa stay" (NEEDS YOU) would take the message as a steer (08-2 §5.2).
+    await openChat(page, 'Home');
     await setTheme(page, 'light');
     await rest(page);
     await settle(page);
@@ -72,14 +73,26 @@ export default async function journey(v: Verify): Promise<void> {
     await page.keyboard.type(ASK);
     await page.keyboard.press('Enter');
     const log = page.getByTestId(TID.threadLog);
-    await log.locator(byTid(TID.bubbleFoo), { hasText: RESULT }).first().waitFor({ timeout: 90_000 });
+    // A helper chat's replies are helper bubbles. The fake clock moves in small steps until the result posts (UX-23 untilPosted).
+    const reply = log.locator(`${byTid(TID.bubbleFoo)}, ${byTid(TID.bubbleHelper)}`, { hasText: RESULT }).first();
+    for (let i = 0; i < 600 && !(await reply.isVisible()); i++) {
+      await page.evaluate(() => window.__fooTest!.clock.advance(500));
+      await page.waitForTimeout(100);
+    }
+    if (!(await reply.isVisible())) {
+      const seen = (v.fakeTurns() as { purpose: string; matchedLine: number | null }[]).map((t) => `${t.purpose}:${t.matchedLine}`);
+      throw new Error(`the job never posted its result (fake AI turns ${seen.join()})`);
+    }
     v.note(`the job ran to its result in the real app: "${RESULT}"`);
 
     const dataDir = (await app.evaluate(() => process.env.FOO_DATA_DIR)) as string;
     const db = new Database(join(dataDir, 'data', 'foo.db'), { readonly: true, fileMustExist: true });
-    const calls = db
-      .prepare(`SELECT tool, outcome, error_kind AS kind, result FROM tool_calls ORDER BY started_at, rowid`)
-      .all() as { tool: string; outcome: string; kind: string | null; result: string | null }[];
+    const calls = db.prepare(`SELECT tool, outcome, error_kind AS kind, result FROM tool_calls ORDER BY started_at, rowid`).all() as {
+      tool: string;
+      outcome: string;
+      kind: string | null;
+      result: string | null;
+    }[];
     db.close();
     const row = (tool: string) => calls.find((c) => c.tool === tool);
     const summary = calls.map((c) => `${c.tool}=${c.outcome}${c.kind ? `/${c.kind}` : ''}`).join(', ');
@@ -91,7 +104,9 @@ export default async function journey(v: Verify): Promise<void> {
     if (snap?.outcome !== 'ok' || !/\[e1\] textbox "Password" \[hidden\]/.test(snapText) || !/\[e2\] button "Pay ₹1,240"/.test(snapText))
       throw new Error(`snapshot not masked as expected (${summary}):\n${snapText}`);
     if (snapText.includes(CANARY)) throw new Error('the password value is in the stored snapshot');
-    v.note('browser.snapshot → ok: `[e1] textbox "Password" [hidden]` and `[e2] button "Pay ₹1,240"` (refs present, password masked at source)');
+    v.note(
+      'browser.snapshot → ok: `[e1] textbox "Password" [hidden]` and `[e2] button "Pay ₹1,240"` (refs present, password masked at source)',
+    );
 
     if (row('browser.click')?.kind !== 'USE_SUBMIT') throw new Error(`Pay click not refused: ${summary}`);
     if (paid !== 0) throw new Error(`the form was submitted ${paid} time(s)`);
@@ -100,9 +115,12 @@ export default async function journey(v: Verify): Promise<void> {
     v.note('browser.type into the password field (e1) → SECRET_IN_TYPE; nothing typed');
 
     const turns = v.fakeTurns() as Turn[];
-    const afterSnap = turns.filter((t) => t.purpose === 'step').find((t) => (t.prompt ?? '').includes('[e2] button "Pay ₹1,240"'));
+    // The observation is the tool result as JSON, so the snapshot's quotes arrive escaped.
+    const afterSnap = turns.filter((t) => t.purpose === 'step').find((t) => (t.prompt ?? '').includes('[e2] button \\"Pay ₹1,240\\"'));
     if (!afterSnap || !(afterSnap.prompt ?? '').includes('[e1] textbox \\"Password\\" [hidden]'))
-      throw new Error('the AI never saw the masked snapshot');
+      throw new Error(
+        `the AI never saw the masked snapshot:\n${turns.map((t) => `${t.purpose}: ${(t.prompt ?? '').slice(-600)}`).join('\n---\n')}`,
+      );
     v.note('the next step prompt the AI received carried the masked snapshot');
     if (turns.some((t) => JSON.stringify(t).includes(CANARY))) throw new Error('the password value reached the AI');
     v.note(`the password value is in none of the ${turns.length} recorded AI turns (ART-08a canary)`);
@@ -115,6 +133,8 @@ export default async function journey(v: Verify): Promise<void> {
     await settle(page);
     await v.shot('job-done');
   } finally {
+    // foo's browser keeps its connection alive: drop it, or close() waits for it.
+    server.closeAllConnections();
     await new Promise<void>((ok) => server.close(() => ok()));
   }
 }

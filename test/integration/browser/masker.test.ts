@@ -26,7 +26,10 @@ beforeAll(async () => {
       <div id="host"></div><script>host.attachShadow({mode:'open'}).innerHTML='<input type="password" id="spw">'</script>`),
   );
   h.route('/frame', html(`<input id="fcvv" name="cvv">`));
-  h.route('/outer', html(`<iframe id="ifr"></iframe><script>ifr.src=location.href.replace('127.0.0.1','localhost').replace('/outer','/frame')</script>`));
+  h.route(
+    '/outer',
+    html(`<iframe id="ifr"></iframe><script>ifr.src=location.href.replace('127.0.0.1','localhost').replace('/outer','/frame')</script>`),
+  );
   h.route('/otp', html(`<p>Enter the code we sent</p><input autocomplete="one-time-code">`));
   h.route('/3ds', html(`<h2>Verified by Visa</h2><p>Approve the payment in your bank app.</p>`));
   h.route('/plain', html(`<p>Menu for today</p><input type="password" id="p2">`));

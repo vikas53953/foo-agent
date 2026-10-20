@@ -38,7 +38,8 @@ export interface BrowserHarness {
   close(): Promise<void>;
 }
 
-export const html = (body: string, head = '') => `<!doctype html><html><head><meta charset="utf-8">${head}</head><body>${body}</body></html>`;
+export const html = (body: string, head = '') =>
+  `<!doctype html><html><head><meta charset="utf-8">${head}</head><body>${body}</body></html>`;
 
 export async function browserHarness(o: { settleMaxMs?: number } = {}): Promise<BrowserHarness> {
   const routes = new Map<string, Route>();

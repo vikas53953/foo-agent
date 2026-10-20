@@ -141,7 +141,11 @@ export class Actions {
       await act();
       const deadline = Date.now() + this.settleMaxMs;
       let loaded = true;
-      if (navigated) loaded = await page.waitForLoadState('load', { timeout: this.settleMaxMs }).then(() => true, () => false);
+      if (navigated)
+        loaded = await page.waitForLoadState('load', { timeout: this.settleMaxMs }).then(
+          () => true,
+          () => false,
+        );
       else if (!(await idle.wait(this.idleMs, deadline)))
         loaded = ((await page.evaluate('document.readyState').catch(() => 'loading')) as string) === 'complete';
       if (loaded) {
@@ -308,7 +312,9 @@ export class Actions {
     const w = this.d.watchdogs.state(jobId);
     const confirmsBefore = w.confirms;
     try {
-      const miss = await this.settled(jobId, page, () => (at.loc ? at.loc.press(key, { timeout: this.actionableMs }) : page.keyboard.press(key)));
+      const miss = await this.settled(jobId, page, () =>
+        at.loc ? at.loc.press(key, { timeout: this.actionableMs }) : page.keyboard.press(key),
+      );
       if (w.confirms > confirmsBefore) return refused('USE_SUBMIT', 'confirm_dialog');
       return miss ?? done({ url: page.url() });
     } catch (e) {

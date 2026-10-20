@@ -107,9 +107,7 @@ export async function takeSnapshot(page: Page, router: RefRouter): Promise<Snaps
   };
 }
 
-export type SnapshotView =
-  | { mode: 'full'; lines: string[] }
-  | { mode: 'diff'; changed: string[]; removed: string[]; unchanged: number };
+export type SnapshotView = { mode: 'full'; lines: string[] } | { mode: 'diff'; changed: string[]; removed: string[]; unchanged: number };
 
 /** §8.3.4: the first snapshot in a step (or on a new address) is sent whole; later ones as a diff by ref. */
 export class SnapshotDiffer {
@@ -146,7 +144,11 @@ export function snapshotText(
   const body =
     view.mode === 'full'
       ? ['Controls:', ...pick(view.lines)]
-      : [`Changed controls (${view.unchanged} unchanged):`, ...pick(view.changed), ...(view.removed.length ? [`Gone: ${view.removed.join(', ')}`] : [])];
+      : [
+          `Changed controls (${view.unchanged} unchanged):`,
+          ...pick(view.changed),
+          ...(view.removed.length ? [`Gone: ${view.removed.join(', ')}`] : []),
+        ];
   const text = keep ? [] : ['Text:', s.text];
   return PromptBuilder.untrusted('web', o.ref, o.scrub([...head, ...body, ...text].join('\n')));
 }

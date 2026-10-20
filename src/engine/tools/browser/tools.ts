@@ -218,8 +218,13 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       ARGS.type,
       async (a, page, ctx) => out(await actions.type(ctx.jobId, page, a.ref, a.text)),
     ),
-    tool('browser.select', 'prepare', 'ref: string, value: string', 'Choose an option in a list by [ref].', ARGS.select, async (a, page, ctx) =>
-      out(await actions.select(ctx.jobId, page, a.ref, a.value)),
+    tool(
+      'browser.select',
+      'prepare',
+      'ref: string, value: string',
+      'Choose an option in a list by [ref].',
+      ARGS.select,
+      async (a, page, ctx) => out(await actions.select(ctx.jobId, page, a.ref, a.value)),
     ),
     tool('browser.check', 'prepare', 'ref: string, value?: boolean', 'Tick or untick a box by [ref].', ARGS.check, async (a, page, ctx) =>
       out(await actions.check(ctx.jobId, page, a.ref, a.value ?? true)),
@@ -249,7 +254,9 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       ARGS.screenshot,
       async (_a, page, ctx) => {
         const path = await shots.capture(ctx.jobId, page, 'shot');
-        return path ? { kind: 'ok', result: { screenshot: path } } : { kind: 'ok', result: { screenshot: null, reason: 'not_allowed_here' } };
+        return path
+          ? { kind: 'ok', result: { screenshot: path } }
+          : { kind: 'ok', result: { screenshot: null, reason: 'not_allowed_here' } };
       },
     ),
     tool('browser.download', 'read', 'ref: string', 'Download the file behind a link.', ARGS.download, async (a, page, ctx) =>

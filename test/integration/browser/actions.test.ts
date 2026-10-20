@@ -88,7 +88,7 @@ describe('08-2 §8.3.5 actions', { timeout: 60_000 }, () => {
     okResult(await h.run('browser.open', { url: `${h.origin}/home` }));
     const r = okResult(await h.run('browser.click', { ref: await refOf(/\[(e\d+)\] button "Nothing"/) }));
     expect(r.changed).toBe(false);
-    expect(await counter("clicks")()).toBe(2);
+    expect(await counter('clicks')()).toBe(2);
   });
   it('a click that raises confirm() is a commit click: the dialog is answered no and USE_SUBMIT returned', async () => {
     const r = await h.run('browser.click', { ref: await refOf(/\[(e\d+)\] button "Remove item"/) });

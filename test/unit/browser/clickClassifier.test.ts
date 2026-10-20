@@ -16,14 +16,38 @@ const el = (o: Partial<ElementFacts>): ElementFacts => ({
 });
 
 describe('08-2 §8.2.1 commit regex', () => {
-  it.each(['Pay ₹1,240', 'Place order', 'Book table', 'Confirm', 'Reserve now', 'Purchase', 'Buy now', 'Send', 'Post', 'Submit', 'Delete', 'Cancel booking', 'Cancel reservation', 'Complete', 'Checkout now'])(
-    'matches %s',
-    (s) => expect(isCommitText(s)).toBe(true),
-  );
-  it.each(['बुक करें', 'ਬੁੱਕ ਕਰੋ', 'खरीदें', 'ਖਰੀਦੋ', 'भुगतान करें', 'ਭੁਗਤਾਨ', 'भेजें', 'ਭੇਜੋ', 'हटाओ', 'ਮਿਟਾਓ', 'book karo', 'bhej do', 'hata do'])(
-    'matches the 5.3.1 Hindi / Punjabi form %s',
-    (s) => expect(isCommitText(s)).toBe(true),
-  );
+  it.each([
+    'Pay ₹1,240',
+    'Place order',
+    'Book table',
+    'Confirm',
+    'Reserve now',
+    'Purchase',
+    'Buy now',
+    'Send',
+    'Post',
+    'Submit',
+    'Delete',
+    'Cancel booking',
+    'Cancel reservation',
+    'Complete',
+    'Checkout now',
+  ])('matches %s', (s) => expect(isCommitText(s)).toBe(true));
+  it.each([
+    'बुक करें',
+    'ਬੁੱਕ ਕਰੋ',
+    'खरीदें',
+    'ਖਰੀਦੋ',
+    'भुगतान करें',
+    'ਭੁਗਤਾਨ',
+    'भेजें',
+    'ਭੇਜੋ',
+    'हटाओ',
+    'ਮਿਟਾਓ',
+    'book karo',
+    'bhej do',
+    'hata do',
+  ])('matches the 5.3.1 Hindi / Punjabi form %s', (s) => expect(isCommitText(s)).toBe(true));
   it.each(['Search', 'Next', 'Show more', 'Cancel', 'Menu', 'Filters'])('does not match %s', (s) => expect(isCommitText(s)).toBe(false));
 });
 

@@ -16,14 +16,17 @@ export interface ScreenOpener {
 
 const PROGRAM = /\.(exe|com|bat|cmd|ps1|psm1|vbs|vbe|js|jse|wsf|wsh|msi|msp|scr|lnk|url|reg|cpl|hta|jar|appref-ms)$/i;
 
-export type ScreenTarget = { kind: 'url'; url: string } | { kind: 'path'; path: string } | { kind: 'refused'; reason: 'URL_NOT_ALLOWED' | 'PATH_NOT_ALLOWED' };
+export type ScreenTarget =
+  { kind: 'url'; url: string } | { kind: 'path'; path: string } | { kind: 'refused'; reason: 'URL_NOT_ALLOWED' | 'PATH_NOT_ALLOWED' };
 
 export function screenTarget(target: string): ScreenTarget {
   const drive = /^[a-z]:[\\/]/i.test(target);
   if (!drive && /^[a-z][a-z0-9+.-]*:/i.test(target)) {
     try {
       const u = new URL(target);
-      return u.protocol === 'http:' || u.protocol === 'https:' ? { kind: 'url', url: u.toString() } : { kind: 'refused', reason: 'URL_NOT_ALLOWED' };
+      return u.protocol === 'http:' || u.protocol === 'https:'
+        ? { kind: 'url', url: u.toString() }
+        : { kind: 'refused', reason: 'URL_NOT_ALLOWED' };
     } catch {
       return { kind: 'refused', reason: 'URL_NOT_ALLOWED' };
     }

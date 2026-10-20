@@ -31,10 +31,7 @@ let h: BrowserHarness;
 beforeAll(async () => {
   h = await browserHarness();
   h.route('/form', FORM);
-  h.route(
-    '/many',
-    html(Array.from({ length: 400 }, (_, i) => `<button>b${i}</button>`).join('') + `<p>${'word '.repeat(4000)}</p>`),
-  );
+  h.route('/many', html(Array.from({ length: 400 }, (_, i) => `<button>b${i}</button>`).join('') + `<p>${'word '.repeat(4000)}</p>`));
   h.route(
     '/shadow',
     html(
@@ -42,7 +39,12 @@ beforeAll(async () => {
     ),
   );
   h.route('/frame', html(`<form><input name="cvv" placeholder="CVV"><button>Next</button></form>`));
-  h.route('/outer', html(`<p>Outer page</p><iframe id="ifr" style="width:400px;height:200px"></iframe><script>ifr.src=location.href.replace('127.0.0.1','localhost').replace('/outer','/frame')</script>`));
+  h.route(
+    '/outer',
+    html(
+      `<p>Outer page</p><iframe id="ifr" style="width:400px;height:200px"></iframe><script>ifr.src=location.href.replace('127.0.0.1','localhost').replace('/outer','/frame')</script>`,
+    ),
+  );
 }, 60_000);
 afterAll(() => h.close());
 
@@ -53,7 +55,7 @@ async function fillAll() {
 }
 
 describe('08-2 §8.3.4 masked snapshot', { timeout: 60_000 }, () => {
-  it('AT-056 data part: every masked-at-source field reads [hidden]; the value is in no result', async () => {
+  it('data part of the sign-in check: every masked-at-source field reads [hidden]; the value is in no result', async () => {
     okResult(await h.run('browser.open', { url: `${h.origin}/form` }));
     await fillAll();
     const r = okResult(await h.run('browser.snapshot'));

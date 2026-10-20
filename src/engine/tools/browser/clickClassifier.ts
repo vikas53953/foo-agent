@@ -21,7 +21,8 @@ export interface ElementFacts {
 }
 
 /** 08-2 §8.2.1, exactly as written (no word boundaries: "Book table" and "Facebook" both match; refusing more is the safe side). */
-const COMMIT_LATIN = /(pay|place order|book|confirm|reserve|purchase|buy|send|post|submit|delete|cancel (booking|reservation)|complete|checkout now)/i;
+const COMMIT_LATIN =
+  /(pay|place order|book|confirm|reserve|purchase|buy|send|post|submit|delete|cancel (booking|reservation)|complete|checkout now)/i;
 /** The 5.3.1 lexicon's romanised forms of the commit verbs (book, buy, pay, send, post, delete), as whole words. */
 const COMMIT_ROMAN =
   /\b(?:book karo|book kar do|buk|kharid\w*|khareed\w*|mangwa\w*|order karo|pay karo|pay kar do|bhar do|bharo|bhej|bhejo|bhej do|post karo|hata do|mita do|delete karo)\b/iu;
