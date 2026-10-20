@@ -519,18 +519,18 @@
         "·",
         "Edit",
         "₹15,779",
-        "Waiting",
-        "for",
-        "your",
-        "OK:",
+        "foo",
+        "sent",
+        "Approval",
+        "needed:",
         "Send",
         "this",
         "email",
         "to",
         "Priya",
-        "Nair?.",
-        "Show",
-        "button."
+        "Nair?,",
+        "needs",
+        "you"
       ]
     },
     "hl": {
@@ -645,8 +645,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.103619140625,
-    "diffPixels": 106106,
+    "ratio": 0.1036201171875,
+    "diffPixels": 106107,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-06.light.diff.png"
