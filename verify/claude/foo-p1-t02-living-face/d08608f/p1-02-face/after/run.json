@@ -1,0 +1,56 @@
+{
+  "journey": "test/verify/p1-02-face.journey.ts",
+  "label": "after",
+  "appDir": "/home/claude/foo-agent",
+  "commit": "d08608f5c1bc30438d5fa82e3c98ea276203007e",
+  "dirty": false,
+  "started": "2026-10-20T11:01:57.896Z",
+  "finished": "2026-10-20T11:02:05.471Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "foo's row face living:default at 48px, header at 40px, no letter; mood resting",
+    "while the request is in flight the Thinking row shows the 26px Thinking face (no dots, no letter)",
+    "the reply bubble takes the Thinking row’s place; the row is gone",
+    "job WORKING → row and header both \"working\", ring arc_turning",
+    "\"Show foo's eyes\" off → faces hold still (data-motion-face=off), ring still arc_turning",
+    "Memory \"zzqx\" → empty state shows the 64px \"scan\" pose, aria-hidden, no ring"
+  ],
+  "shots": [
+    {
+      "file": "after/01-foo-chat-face.light.png",
+      "name": "foo-chat-face",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-thinking-face.light.png",
+      "name": "thinking-face",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-working-ring.light.png",
+      "name": "working-ring",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-working-ring.dark.png",
+      "name": "working-ring",
+      "theme": "dark"
+    },
+    {
+      "file": "after/05-memory-no-match-pose.light.png",
+      "name": "memory-no-match-pose",
+      "theme": "light"
+    },
+    {
+      "file": "after/06-memory-no-match-pose.dark.png",
+      "name": "memory-no-match-pose",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}
