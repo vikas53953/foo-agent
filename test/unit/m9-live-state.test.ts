@@ -3,7 +3,7 @@
 import { describe, expect, it } from 'vitest';
 import { t } from '../../src/shared/copy/t';
 import type { JobState } from '../../src/shared/types';
-import { liveView, liveWindowState, type LiveInputs } from '../../src/renderer/live/liveState';
+import { liveNowLine, liveView, liveWindowState, type LiveInputs } from '../../src/renderer/live/liveState';
 
 const base: LiveInputs = { jobState: 'working', engine: null, hasFrame: false, unavailable: false, prev: 'starting' };
 const at = (o: Partial<LiveInputs>) => liveWindowState({ ...base, ...o });
@@ -73,12 +73,27 @@ describe('live window words (06-3 §11.2)', () => {
     expect(c.takeOver).toBe(false);
     for (const s of ['starting', 'live', 'needs_you', 'paused', 'done', 'cant_show'] as const) {
       expect(view(s).controlBar).toBeNull();
-      expect(view(s).takeOver).toBe(true);
+      expect(view(s).takeOver).toBe(s !== 'done');
     }
   });
 
   it('title and Narrator name (G-M9-09: 06-3 words)', () => {
     expect(t('live.window.title', { job: 'Goa stay' })).toBe('Goa stay · foo');
     expect(t('live.window.name', { job: 'Goa stay' })).toBe('Goa stay, picture of foo’s browser');
+  });
+});
+
+describe('live window Now line and buttons', () => {
+  it('needs you and done take the job row’s line, not the step the last frame carried', () => {
+    expect(liveNowLine('needs_you', 'Filling guest details', 'IRCTC wants you to sign in.')).toBe('IRCTC wants you to sign in.');
+    expect(liveNowLine('done', 'Paying on makemytrip.com', 'Booked, #HP82731')).toBe('Booked, #HP82731');
+    expect(liveNowLine('live', 'Filling guest details', 'Searching hotels')).toBe('Filling guest details');
+    expect(liveNowLine('live', '', 'Searching hotels')).toBe('Searching hotels');
+    expect(liveNowLine('done', 'Paying', '')).toBe('Paying');
+  });
+
+  it('done shows neither Take over nor Stop', () => {
+    expect(liveView({ state: 'done', nowLine: 'Booked', waitingReason: null, agentName: 'foo' }).takeOver).toBe(false);
+    expect(liveView({ state: 'live', nowLine: '', waitingReason: null, agentName: 'foo' }).takeOver).toBe(true);
   });
 });

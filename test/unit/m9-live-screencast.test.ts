@@ -103,6 +103,25 @@ describe('screencast (08-2 §8.3.7)', () => {
     expect(w.sent.filter((s) => s.method === 'Page.startScreencast')).toHaveLength(1);
   });
 
+  it('two watches sent together start one screencast', async () => {
+    const { w, cast } = setup();
+    await Promise.all([cast.watch('j1', true), cast.watch('j1', true)]);
+    expect(w.sent.filter((s) => s.method === 'Page.startScreencast')).toHaveLength(1);
+  });
+
+  it('an unwatch that arrives while the session is opening wins: nothing starts', async () => {
+    const { w, cast } = setup();
+    const on = cast.watch('j1', true);
+    await cast.watch('j1', false);
+    expect(await on).toEqual({ ok: true, value: undefined });
+    expect(w.sent.filter((s) => s.method === 'Page.startScreencast')).toHaveLength(0);
+    expect(cast.watching('j1')).toBe(false);
+    expect(w.detached()).toBe(1);
+    // a later watch starts normally
+    await cast.watch('j1', true);
+    expect(w.sent.filter((s) => s.method === 'Page.startScreencast')).toHaveLength(1);
+  });
+
   it('a job with no browser window answers LIVE_UNAVAILABLE', async () => {
     const { cast } = setup({ noBrowser: true });
     expect(await cast.watch('j1', true)).toMatchObject({ ok: false, error: { kind: 'LIVE_UNAVAILABLE' } });

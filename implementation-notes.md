@@ -664,6 +664,7 @@ CR-0010 §(b). Where the code stands for the ticket threads:
   SV-19 has no machine form; `trace.csv` BP-CARD rows say `pending` (integrator at close-out). Copy keys still unused, now
   tagged "M4-T7 close-out": `cards.checklist.footer_text.plan`, `cards.plan.change_placeholder`,
   `cards.proof_chip.popover.file_missing`, `cards.not_live_chip.still_failed.text`, `cards.error.still_failing`.
+
 ## M9 T5 · Watch live window (claude/foo-m9-t5-live-hyvr7p)
 
 - T5-01 · G-M9-14 slot names: `live.window.{title,name,bar_title,starting,now,done,cant_show,picture_tooltip,take_over,stop,
@@ -694,6 +695,13 @@ control_bar,hand_back,back_in_control,step_announce}`, `live.window.pill.{live,n
 - T5-09 · Files beyond OWNS: `src/main/ipc/guard.ts` (allow-list), `src/renderer/shell/{ChatHeader,DoingNow,ShellKeys}.tsx`
   (Watch live / Open the window / Ctrl+Shift+L now call `job:openWindow`), `src/engine/tools/browser/fakeBrowser.ts`,
   `test/fixtures/live-frames/*`, `scripts/foo-verify.ts` (`shot(name, selector, target)` for a second window).
+- T5-10 · Review fixes (2026-10-20): the live window has its own preload (`src/preload/preloadLive.ts`, its 4 invokes plus
+  `live:*`, `job:upsert`, `settings:changed`); the main and test preloads no longer hear `live:*`. `windowChannelAllowed`
+  fails closed: only `/` and `/index.html` get every channel, an unlisted page path gets none; the live window never
+  navigates. A watch off during `win.cdp()` wins and a double on starts one cast. Done and Needs you show the job row's
+  line; Done hides Take over and Stop; a window opened on a finished job still closes 5 s later; a refused `job:watch`
+  shows `cant_show`; focus moves to Hand back / Take over when the control bar swaps. Left for T7: the sign-in guard stub
+  (`paused: () => false`) and checking that a live window's calls name its own job.
 
 ### M6 T4 · memory in replies
 

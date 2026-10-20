@@ -15,7 +15,7 @@ import { Button } from '../ui/Button';
 import { cx } from '../ui/cx';
 import { Icon } from '../ui/Icon';
 import { Spinner } from '../ui/Spinner';
-import { liveView } from './liveState';
+import { liveNowLine, liveView } from './liveState';
 import { initialLiveWindow, liveReducer } from './liveStore';
 import styles from './LiveView.module.css';
 
@@ -48,7 +48,9 @@ export function LiveView({ jobId }: { jobId: string }) {
         (r) => {
           if (on && !r.ok) dispatch({ type: 'unavailable' });
         },
-        () => undefined,
+        () => {
+          if (on) dispatch({ type: 'unavailable' });
+        },
       );
     };
     sync();
@@ -76,7 +78,7 @@ export function LiveView({ jobId }: { jobId: string }) {
   const title = job?.title ?? '';
   const view = liveView({
     state: m.shown,
-    nowLine: m.nowLine || job?.nowLine || '',
+    nowLine: liveNowLine(m.shown, m.nowLine, job?.nowLine ?? ''),
     waitingReason: job?.waitingReason ?? null,
     agentName: m.agentName,
   });
@@ -85,6 +87,15 @@ export function LiveView({ jobId }: { jobId: string }) {
       ? t('live.window.bar_title', { job: title, n: Math.min((step ?? job.stepsDone) + 1, job.stepCount), total: job.stepCount })
       : title;
   const inControl = m.shown === 'in_control';
+
+  // When the control bar swaps in or out, focus goes to its first button so a keyboard user is never left on a removed one.
+  const takeOverRef = useRef<HTMLButtonElement>(null);
+  const handBackRef = useRef<HTMLButtonElement>(null);
+  const wasInControl = useRef(inControl);
+  useEffect(() => {
+    if (inControl !== wasInControl.current) (inControl ? handBackRef : takeOverRef).current?.focus();
+    wasInControl.current = inControl;
+  }, [inControl]);
 
   const onPicture = (e: MouseEvent) => {
     // The picture is never the page: a click only explains that (06-3 §11.2).
@@ -111,9 +122,10 @@ export function LiveView({ jobId }: { jobId: string }) {
           </span>
         )}
         <span className={styles.site}>{job?.siteDomain ?? ''}</span>
-        {!inControl && (
+        {view.takeOver && (
           <span className={styles.actions}>
             <Button
+              ref={takeOverRef}
               variant={m.shown === 'needs_you' ? 'primary' : 'outline'}
               data-testid={TID.liveTakeOver}
               onClick={() => quiet(invoke('job:takeOver', { jobId }))}
@@ -153,6 +165,7 @@ export function LiveView({ jobId }: { jobId: string }) {
           <span className={styles.controlText}>{view.controlBar}</span>
           <button
             type="button"
+            ref={handBackRef}
             className={styles.handBack}
             data-testid={TID.liveHandBack}
             onClick={() => quiet(invoke('job:handBack', { jobId }))}

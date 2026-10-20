@@ -93,12 +93,22 @@ function line(state: LiveWindowState, nowLine: string, reason: WaitingReason | n
   }
 }
 
+/**
+ * The phrase under the picture. Live: the step the last frame carried. Needs you and Done: the job row's line (the card's
+ * question, the result), since the last frame still carries the step that was running before.
+ */
+export function liveNowLine(state: LiveWindowState, frameLine: string, jobLine: string): string {
+  if (state === 'done' || state === 'needs_you') return jobLine || frameLine;
+  return frameLine || jobLine;
+}
+
 export function liveView(o: { state: LiveWindowState; nowLine: string; waitingReason: WaitingReason | null; agentName: string }): LiveView {
   const inControl = o.state === 'in_control';
   return {
     pill: pill(o.state),
     line: line(o.state, o.nowLine, o.waitingReason),
-    takeOver: !inControl,
+    // Done: nothing is left to take over or stop.
+    takeOver: !inControl && o.state !== 'done',
     controlBar: inControl ? t('live.window.control_bar', { agentName: o.agentName }) : null,
     handBack: inControl ? t('live.window.hand_back', { agentName: o.agentName }) : null,
   };

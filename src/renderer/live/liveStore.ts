@@ -62,7 +62,14 @@ export function liveReducer(m: LiveWindowModel, a: LiveAction): LiveWindowModel 
     case 'frame': {
       if (a.frame.jobId !== m.jobId || FROZEN.includes(m.shown)) return m;
       const blank = a.frame.jpeg.byteLength === 0;
-      return settle({ ...m, frame: blank ? null : a.frame.jpeg, blank, nowLine: a.frame.nowLine || m.nowLine, unavailable: false });
+      return settle({
+        ...m,
+        frame: blank ? null : a.frame.jpeg,
+        blank,
+        nowLine: a.frame.nowLine || m.nowLine,
+        unavailable: false,
+        engine: m.engine === 'unavailable' ? null : m.engine,
+      });
     }
     case 'state':
       if (a.jobId !== m.jobId) return m;

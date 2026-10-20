@@ -16,7 +16,7 @@ import type { JobRow, JobState } from '../../shared/types';
 import { tokens } from '../../shared/tokens';
 import { maskFrame, type EngineFrame } from './liveMask';
 import { overlayColours, preloadPath } from './mainWindow';
-import { DEV_URL, isDev, isTrustedUrl } from './protocol';
+import { DEV_URL, isDev } from './protocol';
 
 /** The part of a BrowserWindow the manager uses. */
 export interface LiveWin {
@@ -77,6 +77,8 @@ export class LiveWindows {
       // X-95: closing the picture never stops the job; the engine only stops sending frames.
       this.d.watch(jobId, false);
     });
+    // A job that already finished starts its close timer now; no later job row would start it.
+    this.jobChanged(row);
     return ok(undefined);
   }
 
@@ -155,13 +157,18 @@ export function electronLiveWindow(job: JobRow, o: { main: BrowserWindow | null;
     backgroundColor: tokens.colors['--bg-sidebar'][th],
     titleBarStyle: 'hidden',
     titleBarOverlay: { ...overlayColours(), height: tokens.size['titlebar-h'] },
-    webPreferences: { preload: join(dirname(preloadPath()), 'preloadLive.js'), contextIsolation: true, sandbox: true, nodeIntegration: false, spellcheck: false },
+    webPreferences: {
+      preload: join(dirname(preloadPath()), 'preloadLive.js'),
+      contextIsolation: true,
+      sandbox: true,
+      nodeIntegration: false,
+      spellcheck: false,
+    },
   });
   win.on('page-title-updated', (e) => e.preventDefault());
   win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
-  win.webContents.on('will-navigate', (e, url) => {
-    if (!isTrustedUrl(url)) e.preventDefault();
-  });
+  // The window shows one page only; nothing in it navigates (08-1 §3.1.1).
+  win.webContents.on('will-navigate', (e) => e.preventDefault());
   win.on('resize', () => {
     if (!win.isMaximized() && !win.isMinimized()) {
       const [w, h] = win.getSize();

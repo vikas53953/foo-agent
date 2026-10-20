@@ -18,7 +18,10 @@ export function channelAllowed(channel: string, env: Env = process.env): boolean
 /**
  * 08-1 §3.1.1: the channels each of foo's windows may call; `main` calls every channel. The window is told by the page path
  * of the sender (09 §9.27: `windows/live.html`, `windows/signin-banner.html`; the viewer arrives with its milestone).
+ * Any other page path is refused outright, so a new window gets no channels until it is listed here.
  */
+const MAIN_PAGE_PATHS = new Set(['/', '/index.html']);
+
 export const WINDOW_CHANNELS: Record<string, readonly string[]> = {
   '/windows/live.html': ['job:stop', 'job:takeOver', 'job:handBack', 'job:watch'],
   '/windows/signin-banner.html': ['signin:done', 'signin:skip', 'job:handBack'],
@@ -32,8 +35,8 @@ export function windowChannelAllowed(url: string, channel: string): boolean {
   } catch {
     return false;
   }
-  const allowed = WINDOW_CHANNELS[path];
-  return !allowed || allowed.includes(channel);
+  if (MAIN_PAGE_PATHS.has(path)) return true;
+  return WINDOW_CHANNELS[path]?.includes(channel) ?? false;
 }
 
 export interface SenderEvent {

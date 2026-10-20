@@ -72,4 +72,10 @@ describe('live window store', () => {
     expect(s.shown).toBe('cant_show');
     expect(s.agentName).toBe('Mitra');
   });
+
+  it('a frame after live:state unavailable brings the picture back', () => {
+    const s = run({ type: 'job', job: row() }, frame(), { type: 'state', jobId: 'j1', state: 'unavailable' });
+    expect(s.shown).toBe('cant_show');
+    expect(run({ type: 'job', job: row() }, frame(), { type: 'state', jobId: 'j1', state: 'unavailable' }, frame()).shown).toBe('live');
+  });
 });

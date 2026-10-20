@@ -86,7 +86,8 @@ test('AT-079: Watch live opens foo’s live window with masked frames; the pictu
   await expect(live.getByTestId(TID.liveRoot)).toHaveAttribute('data-state', 'live');
   const refused = await live.evaluate(() =>
     window.foo.invoke('message:send', { chatId: 'x', text: 'hi', clientId: 'c1' } as never).then(
-      () => 'answered',
+      // the live preload answers an unlisted channel with IPC_REJECTED; main would throw if it got that far
+      (r) => (r.ok ? 'answered' : 'refused'),
       () => 'refused',
     ),
   );

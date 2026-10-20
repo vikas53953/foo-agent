@@ -43,6 +43,8 @@ interface Cast {
 
 export class Screencast {
   private casts = new Map<string, Cast>();
+  /** A watch still waiting for its CDP session; an off (or a second on) in that gap finds it here. */
+  private pending = new Map<string, symbol>();
 
   constructor(private d: ScreencastDeps) {}
 
@@ -52,18 +54,29 @@ export class Screencast {
 
   async watch(jobId: string, on: boolean): Promise<Result<void>> {
     if (!on) {
+      this.pending.delete(jobId);
       await this.stop(jobId);
       return ok(undefined);
     }
-    if (this.casts.has(jobId)) return ok(undefined);
+    if (this.casts.has(jobId) || this.pending.has(jobId)) return ok(undefined);
     const win = this.d.browser()?.window(jobId);
     if (!win) return fail('LIVE_UNAVAILABLE');
+    const token = Symbol(jobId);
+    this.pending.set(jobId, token);
+    const stillWanted = () => this.pending.get(jobId) === token;
     let session: CdpSession;
     try {
       session = await win.cdp();
     } catch {
+      if (stillWanted()) this.pending.delete(jobId);
       return fail('LIVE_UNAVAILABLE');
     }
+    if (!stillWanted()) {
+      // Unwatched while the session was opening: nothing starts.
+      await session.detach().catch(() => undefined);
+      return ok(undefined);
+    }
+    this.pending.delete(jobId);
     const cast: Cast = { win, session, off: [], lastSentAt: Number.NEGATIVE_INFINITY, busy: false };
     this.casts.set(jobId, cast);
     cast.off.push(session.on('Page.screencastFrame', (p) => void this.onFrame(jobId, cast, p as CdpFrame)));
@@ -71,13 +84,14 @@ export class Screencast {
     try {
       await session.send('Page.startScreencast', { ...SCREENCAST_PARAMS });
     } catch {
-      await this.stop(jobId);
+      if (this.casts.get(jobId) === cast) await this.stop(jobId);
       return fail('LIVE_UNAVAILABLE');
     }
     return ok(undefined);
   }
 
   async stopAll(): Promise<void> {
+    this.pending.clear();
     await Promise.all([...this.casts.keys()].map((id) => this.stop(id)));
   }
 

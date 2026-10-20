@@ -189,6 +189,13 @@ describe('live windows (09 §9.27.2)', () => {
     expect(wins[0]!.destroyed).toBe(true);
   });
 
+  it('a window opened on a job that already finished still closes 5 s later', () => {
+    const { live, wins, clock } = setup({ j1: job('j1', 'done') });
+    live.open('j1');
+    clock.advance(5_000);
+    expect(wins[0]!.destroyed).toBe(true);
+  });
+
   it('a repeated DONE row does not restart the 5 s timer', () => {
     const { live, wins, clock } = setup();
     live.open('j1');
@@ -217,6 +224,14 @@ describe('window channel allow-list (08-1 §3.1.1)', () => {
   });
 
   it('the main window keeps every channel', () => {
-    for (const c of ['message:send', 'job:openWindow', 'job:watch', 'test:seed']) expect(windowChannelAllowed(MAIN, c)).toBe(true);
+    for (const c of ['message:send', 'job:openWindow', 'job:watch', 'test:seed']) {
+      expect(windowChannelAllowed(MAIN, c)).toBe(true);
+      expect(windowChannelAllowed('http://localhost:5173/', c)).toBe(true);
+    }
+  });
+
+  it('a page that is not listed gets no channels', () => {
+    for (const url of ['app://foo/windows/other.html', 'app://foo/evil/index.html.x', 'not a url'])
+      for (const c of ['message:send', 'job:stop']) expect(windowChannelAllowed(url, c)).toBe(false);
   });
 });
