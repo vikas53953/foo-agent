@@ -166,3 +166,23 @@ UX-12-05 stays under CR-0009's dispute and UX-12-06 under its review row.
 steps that never ran show as done (`jobCards.ts` maps `skipped` → done, an M4 mapping); after a stop the ask bubble keeps 🛠 and the
 "stop" bubble gets no ⛔; a typed "yes" / "Stop everything" bubble keeps 👀 after foo answers; no `stopped_all` activity row seen
 within 5 s of "Stop everything".
+
+### T9, second pass: sign-in pictures (UX-14, BP-CARD-10/17)
+
+- Flipped `live`: UX-14-01, UX-14-07, UX-14-09, UX-14-10, BP-CARD-10, BP-CARD-17
+  (`test/fidelity/ux/UX-14.signin.spec.ts` on T7's real lanes; `test/fidelity/bp/BP-cards-m9.spec.ts`).
+- Kept `pending`: UX-14-05 and UX-14-06 (the "Save your {site} login…?" offer after a sign-in is not built; the spec seeds it),
+  UX-14-08 (the bank code box posts, but "Use code" types nothing: the box's `requestId` is stored redacted as `[hidden]`, so
+  `code:submit` matches no pause).
+- Tier R disputes (`docs/fidelity/disputes.json`):
+
+| ids                | checks         | why                                                                                                                                                        |
+| ------------------ | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| BP-CARD-10         | r1, r2         | minis drawn in 350px panels (CR-0003 §b); drawn words are not 05-3 §5.10.2's sign_in lane ("{site} wants you to sign in. Do it here and I'll carry on.")   |
+| BP-CARD-17         | r1, r2, r3     | drawn as a card; 05-3 §5.18.1 makes the handoff a marker row on the thread, so the background is the chat's                                                |
+| UX-14-01, UX-14-09 | r1, r2, r3, r4 | sandbox host 127.0.0.1, not IRCTC (§5.10.1); the app is LIVE at once (X-66), no "Open sign-in"; primary buttons are the accent, not black                  |
+| UX-14-07, UX-14-10 | r1, r2, r4     | same host and words; "Step 3 of 4" sits in the chat header and Details pane; the 10 min reminder is a toast (§5.10.2), the 2 h line is the app's stop line |
+
+- App gaps found (reported, not fixed; carried to the M10 lead): the bank "Use code" bug above; the OTP box does not draw
+  `cards.secret.otp.reason`; after the 2 h sign-in time-out the checklist marks every row done and the chat pill reads Done
+  (J13 fails safe: nothing is booked, but the job should read stopped).
