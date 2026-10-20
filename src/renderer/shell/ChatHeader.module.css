@@ -59,7 +59,7 @@
   grid-area: 1 / 1;
 }
 .statusNew {
-  animation: status-in var(--m-normal) var(--ease-in);
+  animation: status-in var(--m-slow) var(--ease-in);
 }
 .statusOld {
   opacity: 0;

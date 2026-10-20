@@ -83,14 +83,11 @@
   animation: shake var(--m-slow) var(--ease-standard);
 }
 @keyframes shake {
-  25% {
+  33% {
     transform: translateX(calc(var(--s0) / -2 * var(--motion-move, 1)));
   }
-  50% {
+  67% {
     transform: translateX(calc(var(--s0) / 2 * var(--motion-move, 1)));
-  }
-  75% {
-    transform: translateX(calc(var(--s0) / -4 * var(--motion-move, 1)));
   }
 }
 .check {

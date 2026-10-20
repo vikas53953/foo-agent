@@ -360,7 +360,7 @@
 
 /* §F7.1, 04 §14.4: streamed words fade in (linear, no movement; reduced motion: none, `--m-word` is 0 there). */
 .wordIn {
-  animation: word-in var(--m-word, var(--delay-loading)) linear;
+  animation: word-in var(--m-word) linear;
 }
 @keyframes word-in {
   from {

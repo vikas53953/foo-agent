@@ -8,7 +8,7 @@
 // state), §10.6 (link preview block), §12.5 (backup-AI mark). Meta strings are exempt from the ART-21a weekday rule
 // (10-2 ART-21a "except bubble meta"); the meta carries `data-meta` so scans can tell.
 // 02 §F7.1 "Chat" (CR-0021, X-179): ticks draw in when read, the picked reaction bounces once, images blur up, the retry spinner turns into ✓.
-import { useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { BADGE_GLYPH } from '../../shared/badges';
 import { t } from '../../shared/copy/t';
 import { formatBytes, formatDate, formatTime } from '../../shared/format';
@@ -357,9 +357,9 @@ function ImageTile({ a, i, n, more, cls }: { a: Attachment; i: number; n: number
   const url = mediaUrl(a.path);
   const [state, setState] = useState<'loading' | 'ready' | 'broken'>(url ? 'loading' : 'broken');
   // §F7.1 blur-up plays while a picture loads; one the page already has (scroll-back) shows at once.
-  const cached = (img: HTMLImageElement | null) => {
+  const cached = useCallback((img: HTMLImageElement | null) => {
     if (img?.complete && img.naturalWidth > 0) setState('ready');
-  };
+  }, []);
   return (
     <button
       type="button"
