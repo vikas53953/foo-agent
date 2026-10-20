@@ -27,9 +27,8 @@ import { TableCard } from './TableCard';
 // M8
 import { ConnectCard } from './Connect';
 // R1 T2 (CR-0022)
-import { KitCard } from '../kit/KitCard';
+import { AiPageCard, KitCard } from '../pages/lazyKit';
 // R1 T5
-import { AiPageCard } from '../page/AiPageCard';
 
 type CardComponent = ComponentType<{ card: CardRow; time: CardTime }>;
 

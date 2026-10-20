@@ -11,8 +11,7 @@ import { createContext, useContext, useEffect, useMemo, useRef, useState, type R
 import { t } from '../../shared/copy/t';
 import { motion } from '../../shared/tokens';
 import { TID } from '../../shared/testids';
-import { KitBlock } from '../kit/KitBlock';
-import { PageBlock } from '../page/PageBlock';
+import { KitBlock, PageBlock } from '../pages/lazyKit';
 import { Icon } from '../ui/Icon';
 import { Menu, type MenuEntry } from '../ui/Menu';
 import { Popover } from '../ui/Popover';

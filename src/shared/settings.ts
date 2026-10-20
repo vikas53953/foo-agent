@@ -8,18 +8,9 @@ import { z } from 'zod';
 export const VISUALS = ['words', 'balanced', 'visuals'] as const;
 export type Visuals = (typeof VISUALS)[number];
 
-export const ZOOM_STEPS = [80, 90, 100, 110, 125, 150, 175, 200] as const;
-
-export const PROVIDER_IDS = [
-  'claude-cli',
-  'codex-cli',
-  'gemini-cli',
-  'openai-key',
-  'anthropic-key',
-  'google-key',
-  'ollama',
-  'fake',
-] as const;
+// The plain lists live in settingsLists.ts so the renderer can read them without zod (AT-322, P1 T10).
+import { PROVIDER_IDS, ZOOM_STEPS } from './settingsLists';
+export { PROVIDER_IDS, ZOOM_STEPS } from './settingsLists';
 
 /** 08-2 §11.2 / 08-0 §E.8: the providers whose key lives in the vault as `foo/ai_key/{providerId}` (M6 T9: the one list). */
 export const KEY_PROVIDER_IDS = ['openai-key', 'anthropic-key', 'google-key'] as const;

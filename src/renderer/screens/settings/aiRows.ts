@@ -3,7 +3,8 @@
 // Replace key, Offline; tones --ok / --fg-3 / --bad / --warn), "Backup AI" (each other AI that passed a test, and None),
 // "How it's paid" (plan / key with the saved date). Pure: the AccountAi component holds the state and calls these.
 import { isKeyProvider } from '../../../shared/aiNames';
-import { PROVIDER_IDS, type Settings } from '../../../shared/settings';
+import type { Settings } from '../../../shared/settings';
+import { PROVIDER_IDS } from '../../../shared/settingsLists';
 import type { AiStatus, ProviderId } from '../../../shared/types';
 
 export type UsingLine =

@@ -6,7 +6,8 @@
 // face-motion (Mostly words / Balanced / Show me visuals → `appearance.visuals`; the engine reads it for the next reply).
 import { useEffect, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { t } from '../../../shared/copy/t';
-import { ZOOM_STEPS, type Visuals, type WritablePath } from '../../../shared/settings';
+import type { Visuals, WritablePath } from '../../../shared/settings';
+import { ZOOM_STEPS } from '../../../shared/settingsLists';
 import { TID } from '../../../shared/testids';
 import type { PublicSettings } from '../../../shared/types';
 import { setMotionLevel } from '../../a11y/motion';

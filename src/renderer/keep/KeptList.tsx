@@ -17,7 +17,7 @@ import { selectTimeZone } from '../store/settings';
 import { Button } from '../ui/Button';
 import { Icon } from '../ui/Icon';
 import { useKeptList } from './kept';
-import { KeptView } from './KeptView';
+import { KeptView } from '../pages/lazyKit';
 import styles from './KeptList.module.css';
 
 export function KeptList({ chat }: { chat: ChatRow }) {
