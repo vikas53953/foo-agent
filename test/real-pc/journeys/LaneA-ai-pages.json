@@ -1,0 +1,60 @@
+{
+  "id": "LaneA-ai-pages",
+  "title": "AI pages: blocked protocol and persistence coverage manifest",
+  "spec": "09-AI pages; missing real_ai cells AT-352..AT-369",
+  "covers": [
+    "AT-352",
+    "AT-353",
+    "AT-354",
+    "AT-355",
+    "AT-356",
+    "AT-357",
+    "AT-359",
+    "AT-360",
+    "AT-361",
+    "AT-362",
+    "AT-363",
+    "AT-364",
+    "AT-366",
+    "AT-367",
+    "AT-368",
+    "AT-369"
+  ],
+  "blockedPrerequisites": [
+    "AT-352, AT-353, AT-354, AT-355, AT-356, AT-357, AT-359, AT-360, AT-361, AT-362, AT-363, AT-364, AT-366, AT-367, AT-368, AT-369: foo-drive cannot inject A2UI/schema faults, stream chunks, generated action IDs, page RPC calls, network/IPC failures, secret fixtures, size limits, job event logs, database rows, or filesystem probes. These ATs are manifest-only until controlled page fixtures and renderer/engine instrumentation exist; do not mark a natural-language page request pass."
+  ],
+  "blockedVariants": [
+    {
+      "atIds": ["AT-352", "AT-355"],
+      "kind": "messy-wrong",
+      "text": "make a small page with a button, then send a broken action id and show the error"
+    },
+    {
+      "atIds": ["AT-356", "AT-360"],
+      "kind": "hinglish",
+      "text": "ek chhota AI page banao, stream toot jaaye to safe error dikhao aur secret mat dikhana"
+    },
+    {
+      "atIds": ["AT-361", "AT-364"],
+      "kind": "hindi",
+      "text": "एक छोटा एआई पेज बनाएँ, स्ट्रीम टूटने पर सुरक्षित त्रुटि दिखाएँ और रहस्य न दिखाएँ"
+    },
+    {
+      "atIds": ["AT-366", "AT-369"],
+      "kind": "punjabi",
+      "text": "ਇੱਕ ਛੋਟਾ ਏਆਈ ਪੰਨਾ ਬਣਾਓ, ਸਟ੍ਰੀਮ ਟੁੱਟੇ ਤਾਂ ਸੁਰੱਖਿਅਤ ਗਲਤੀ ਵਿਖਾਓ ਅਤੇ ਰਾਜ਼ ਨਾ ਵਿਖਾਓ"
+    }
+  ],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true,
+      "note": "AT-352, AT-353, AT-354, AT-355, AT-356, AT-357, AT-359, AT-360, AT-361, AT-362, AT-363, AT-364, AT-366, AT-367, AT-368, AT-369: establish the isolated chat only; no AI-page protocol verdict is made."
+    },
+    {
+      "do": "dump",
+      "note": "AT-352, AT-353, AT-354, AT-355, AT-356, AT-357, AT-359, AT-360, AT-361, AT-362, AT-363, AT-364, AT-366, AT-367, AT-368, AT-369: preserve baseline evidence for the blocked page manifest."
+    }
+  ]
+}

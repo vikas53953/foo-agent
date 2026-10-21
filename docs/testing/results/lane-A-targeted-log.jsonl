@@ -1,0 +1,27 @@
+{"t":"2026-10-21T19:54:50.997Z","journey":"LaneA-targeted-setup-long-thanks","title":"Lane A targeted setup, long reply and thanks probe","spec":"AT-005, AT-027, AT-030","exe":"ELECTRON_EXE_REDACTED"}
+{"t":"2026-10-21T19:54:58.253Z","step":"launch","ok":true}
+{"t":"2026-10-21T19:54:58.300Z","i":0,"do":"waitFor","expect":"setup welcome","ok":true,"ms":9}
+{"t":"2026-10-21T19:54:58.735Z","shot":"01-welcome.png"}
+{"t":"2026-10-21T19:54:59.294Z","i":1,"do":"click","note":"start Find your AI","ok":true,"ms":558}
+{"t":"2026-10-21T19:54:59.385Z","i":2,"do":"waitFor","expect":"Find your AI","ok":true,"ms":90}
+{"t":"2026-10-21T19:54:59.880Z","shot":"02-finder.png"}
+{"t":"2026-10-21T19:55:29.893Z","i":3,"do":"wait","expect":"AI test result","ok":true,"ms":30012}
+{"t":"2026-10-21T19:55:30.214Z","shot":"03-finder-tested.png"}
+{"t":"2026-10-21T19:55:30.219Z","i":4,"do":"click","note":"choose tested AI","skipped":"setup-ai-use already showing","ok":true,"ms":4}
+{"t":"2026-10-21T19:55:30.225Z","i":5,"do":"waitFor","expect":"Use button","ok":true,"ms":6}
+{"t":"2026-10-21T19:55:30.487Z","shot":"04-ai-use.png"}
+{"t":"2026-10-21T19:55:30.688Z","i":6,"do":"click","expect":"name and face setup","ok":true,"ms":200}
+{"t":"2026-10-21T19:55:30.947Z","shot":"05-name-face.png"}
+{"t":"2026-10-21T19:55:31.170Z","i":7,"do":"clickIf","note":"accept defaults","found":1,"ok":true,"ms":223}
+{"t":"2026-10-21T19:55:41.172Z","i":8,"do":"wait","expect":"first chat and enabled composer","ok":true,"ms":10002}
+{"t":"2026-10-21T19:55:41.417Z","shot":"06-first-chat.png"}
+{"t":"2026-10-21T19:55:41.875Z","i":9,"do":"send","note":"AT-030: request more than the 200-word precondition","sentAt":1792612541769,"before":0,"ok":true,"ms":458}
+{"t":"2026-10-21T19:56:12.722Z","i":10,"do":"waitReply","expect":"AT-030: at most 3 bubbles and intact list","firstReplyMs":21277,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"People in India are switching to UPI because it makes paying anyone as quick and free as sending a text. Launched in 2016 by the National Payments Corporation of India, UPI links your bank account directly to your phone, so you can pay a shopkeeper, split a dinner bill or send money home in seconds, any hour of the day, including Sundays and holidays. There is no card to carry, no change to hunt for and, for most everyday payments, no fee for either side.\n\nThe QR code did the rest. A printed sticker costs a small seller almost nothing, so chaiwalas, vegetable vendors and auto drivers began accepting digital payments without buying a card machine. The 2016 note ban pushed many people to try it, and the pandemic made contactless paying feel safer, turning a trial into a habit. Popular choices such as Google Pay, PhonePe and Paytm made the experience simple, with familiar screens in many Indian languages.\n\nTrust grew alongside convenience. Money moves straight between bank accounts, every payment needs your UPI PIN, and you get an instant message confirming it. Features like UPI Lite for small amounts, credit cards linked to UPI and autopay for bills keep widening what it can do, while the government continues to promote it as part of a less cash-dependent economy. For millions of families, shops and small businesses, UPI is now the default way to pay, even for tiny amounts.\n\nSpeed and ease: Pay anyone in seconds from your phone, any time.\nAlmost no cost: Free for most everyday ","ms":30846}
+{"t":"2026-10-21T19:56:13.236Z","shot":"07-long.png"}
+{"t":"2026-10-21T19:56:13.524Z","i":11,"do":"send","note":"AT-027: require a quiet thumbs-up with no foo message","sentAt":1792612573472,"before":0,"ok":true,"ms":287}
+{"t":"2026-10-21T19:56:28.541Z","i":12,"do":"wait","expect":"AT-027: thumbs-up and no new foo message","ok":true,"ms":15012}
+{"t":"2026-10-21T19:56:28.978Z","shot":"08-thanks.png"}
+{"t":"2026-10-21T19:56:28.995Z","i":13,"do":"dump","note":"AT-005, AT-027, AT-030: preserve targeted evidence","ok":true,"ms":16}
+
+
+\n

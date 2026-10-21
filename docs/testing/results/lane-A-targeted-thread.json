@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n1:24 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:24 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n1:24 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:24 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n1:25 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:25 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n1:25 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n1:25 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain why people in India are switching to UPI. Give me 240 words, then a short list of exactly 3 reasons. Keep the complete list together.\n1:25 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it makes paying anyone as quick and free as sending a text. Launched in 2016 by the National Payments Corporation of India, UPI links your bank account directly to your phone, so you can pay a shopkeeper, split a dinner bill or send money home in seconds, any hour of the day, including Sundays and holidays. There is no card to carry, no change to hunt for and, for most everyday payments, no fee for either side.\n\nThe QR code did the rest. A printed sticker costs a small seller almost nothing, so chaiwalas, vegetable vendors and auto drivers began accepting digital payments without buying a card machine. The 2016 note ban pushed many people to try it, and the pandemic made contactless paying feel safer, turning a trial into a habit. Popular choices such as Google Pay, PhonePe and Paytm made the experience simple, with familiar screens in many Indian languages.\n\nTrust grew alongside convenience. Money moves straight between bank accounts, every payment needs your UPI PIN, and you get an instant message confirming it. Features like UPI Lite for small amounts, credit cards linked to UPI and autopay for bills keep widening what it can do, while the government continues to promote it as part of a less cash-dependent economy. For millions of families, shops and small businesses, UPI is now the default way to pay, even for tiny amounts.\n\nSpeed and ease: Pay anyone in seconds from your phone, any time.\nAlmost no cost: Free for most everyday "
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n1:26 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Glad it helped. The list got cut off last time, so here are the 3 reasons together:\n\nFast and free: Pay anyone in seconds, any hour, with no fee on most everyday payments.\nWorks everywhere: A cheap QR sticker lets even the smallest seller accept digital payments.\nSafe and trusted: Every payment needs your UPI PIN and sends an instant confirmation.\n1:26 AM"
+  }
+]

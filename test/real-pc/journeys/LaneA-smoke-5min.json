@@ -1,0 +1,67 @@
+{
+  "id": "LaneA-smoke-5min",
+  "title": "Five-minute real-AI smoke: start, find AI, first chat, job and card",
+  "spec": "07-1 J1-J3; smoke set proposed by Lane A",
+  "covers": ["AT-005", "AT-006", "AT-027", "AT-032", "AT-106"],
+  "required": true,
+  "blockedPrerequisites": [
+    "AT-106: this smoke only records a visible plan/checklist; stale-check provenance and pre-run AI verification need engine/provider instrumentation outside foo-drive, so do not mark AT-106 pass from the card alone."
+  ],
+  "steps": [
+    {
+      "do": "waitFor",
+      "tid": "setup-welcome-start",
+      "timeoutMs": 60000,
+      "shot": "smoke-start",
+      "expect": "AT-005: fresh profile starts on the Welcome card with Let's go"
+    },
+    { "do": "click", "tid": "setup-welcome-start", "note": "AT-005: start Find your AI from the welcome card" },
+    {
+      "do": "waitFor",
+      "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
+      "timeoutMs": 60000,
+      "shot": "smoke-find-ai",
+      "expect": "AT-005: Find your AI rows test live and show a usable selection"
+    },
+    {
+      "do": "waitFor",
+      "tid": "setup-ai-use",
+      "timeoutMs": 90000,
+      "shot": "smoke-ai-ready",
+      "expect": "AT-006: a passing AI exposes Use and no later step is reachable when none passes"
+    },
+    { "do": "click", "tid": "setup-ai-use", "note": "AT-006: choose the passing AI and enter the name-and-face step" },
+    { "do": "clickIf", "tid": "setup-skip-rest", "note": "AT-005: accept the default name and face so the first chat is genuinely ready" },
+    { "do": "wait", "ms": 10000, "shot": "smoke-first-chat", "expect": "AT-005: first chat opens with a welcome after setup completion" },
+    {
+      "do": "eval",
+      "js": "(()=>{const f=document.querySelector('[data-testid=\"composer-field\"]');if(!f||f.disabled||f.getAttribute('aria-disabled')==='true')throw new Error('composer is not enabled after setup');return {enabled:true}})()",
+      "note": "AT-005: direct DOM check confirms the composer is enabled before any smoke send"
+    },
+    {
+      "do": "send",
+      "text": "Hi foo, please start one harmless tiny job and show me its plan before doing anything.",
+      "note": "AT-106: first smoke job asks for a queued plan and checklist"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "smoke-one-job",
+      "expect": "AT-106: one harmless job produces a visible plan or checklist with a safe state"
+    },
+    {
+      "do": "send",
+      "text": "Ask me one simple preference before continuing, please.",
+      "note": "AT-032: smoke card is a Choice that waits for the user"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "smoke-one-card",
+      "expect": "AT-032: one card is visible with clear options and no irreversible action"
+    },
+    { "do": "send", "text": "thanks!", "note": "AT-027: thanks receives a quiet thumbs-up reaction rather than a filler reply" },
+    { "do": "wait", "ms": 15000, "shot": "smoke-thanks", "expect": "AT-027: a thumbs-up reaction appears with no new foo message" },
+    { "do": "dump", "name": "thread", "note": "AT-005, AT-006, AT-027, AT-032, AT-106: preserve five-minute smoke evidence" }
+  ]
+}

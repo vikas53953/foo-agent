@@ -1,0 +1,47 @@
+{
+  "id": "LaneA-jobs-core",
+  "title": "Real AI jobs: blocked state-machine coverage manifest",
+  "spec": "07-journeys-2 job machine; missing real_ai cells AT-081..AT-282",
+  "covers": [
+    "AT-081",
+    "AT-083",
+    "AT-084",
+    "AT-106",
+    "AT-109",
+    "AT-112",
+    "AT-113",
+    "AT-114",
+    "AT-115",
+    "AT-116",
+    "AT-117",
+    "AT-118a",
+    "AT-119",
+    "AT-120",
+    "AT-282"
+  ],
+  "blockedPrerequisites": [
+    "AT-081, AT-083, AT-084, AT-106, AT-109, AT-112, AT-113, AT-114, AT-115, AT-116, AT-117, AT-118a, AT-119, AT-120, AT-282: foo-drive cannot induce network loss, spend or plan caps, repeated provider failures, stale-check fixtures, sleep, engine state, proof provenance, fake-AI claims, database corruption, or two independent chat notices. These ATs are manifest-only until a fault-fixture driver and engine/database logs exist; do not infer a pass from an AI prompt or idle chat."
+  ],
+  "blockedVariants": [
+    {
+      "atIds": ["AT-081", "AT-106"],
+      "kind": "messy-wrong",
+      "text": "pls start the tiny job??? first show me the plan, dont actually send anything"
+    },
+    { "atIds": ["AT-112", "AT-114"], "kind": "hinglish", "text": "pehle plan dikhao, phir job chalaana; network down ho to ruk jana" },
+    { "atIds": ["AT-117", "AT-119"], "kind": "hindi", "text": "कृपया काम शुरू करने से पहले योजना दिखाइए और रुकने की स्थिति बताइए" },
+    { "atIds": ["AT-083", "AT-120"], "kind": "punjabi", "text": "ਪਹਿਲਾਂ ਯੋਜਨਾ ਵਿਖਾਓ, ਫਿਰ ਕੰਮ ਚਲਾਓ; ਗਲਤੀ ਆਵੇ ਤਾਂ ਰੁਕੋ" }
+  ],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true,
+      "note": "AT-081, AT-083, AT-084, AT-106, AT-109, AT-112, AT-113, AT-114, AT-115, AT-116, AT-117, AT-118a, AT-119, AT-120, AT-282: establish the isolated chat only; this is setup for the blocked manifest and produces no feature verdict."
+    },
+    {
+      "do": "dump",
+      "note": "AT-081, AT-083, AT-084, AT-106, AT-109, AT-112, AT-113, AT-114, AT-115, AT-116, AT-117, AT-118a, AT-119, AT-120, AT-282: preserve baseline evidence without claiming unsupported job state, fault, proof, or persistence behavior."
+    }
+  ]
+}

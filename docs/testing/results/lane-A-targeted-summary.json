@@ -1,0 +1,117 @@
+{
+  "journey": "LaneA-targeted-setup-long-thanks",
+  "title": "Lane A targeted setup, long reply and thanks probe",
+  "steps": 14,
+  "failed": 0,
+  "out": "LANE_A_TARGETED_RUN",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "expect": "setup welcome",
+      "ok": true,
+      "ms": 9
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "note": "start Find your AI",
+      "ok": true,
+      "ms": 558
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "expect": "Find your AI",
+      "ok": true,
+      "ms": 90
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "AI test result",
+      "ok": true,
+      "ms": 30012
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "note": "choose tested AI",
+      "skipped": "setup-ai-use already showing",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 5,
+      "do": "waitFor",
+      "expect": "Use button",
+      "ok": true,
+      "ms": 6
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "expect": "name and face setup",
+      "ok": true,
+      "ms": 200
+    },
+    {
+      "i": 7,
+      "do": "clickIf",
+      "note": "accept defaults",
+      "found": 1,
+      "ok": true,
+      "ms": 223
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "first chat and enabled composer",
+      "ok": true,
+      "ms": 10002
+    },
+    {
+      "i": 9,
+      "do": "send",
+      "note": "AT-030: request more than the 200-word precondition",
+      "sentAt": 1792612541769,
+      "before": 0,
+      "ok": true,
+      "ms": 458
+    },
+    {
+      "i": 10,
+      "do": "waitReply",
+      "expect": "AT-030: at most 3 bubbles and intact list",
+      "firstReplyMs": 21277,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "People in India are switching to UPI because it makes paying anyone as quick and free as sending a text. Launched in 2016 by the National Payments Corporation of India, UPI links your bank account directly to your phone, so you can pay a shopkeeper, split a dinner bill or send money home in seconds, any hour of the day, including Sundays and holidays. There is no card to carry, no change to hunt for and, for most everyday payments, no fee for either side.\n\nThe QR code did the rest. A printed sticker costs a small seller almost nothing, so chaiwalas, vegetable vendors and auto drivers began accepting digital payments without buying a card machine. The 2016 note ban pushed many people to try it, and the pandemic made contactless paying feel safer, turning a trial into a habit. Popular choices such as Google Pay, PhonePe and Paytm made the experience simple, with familiar screens in many Indian languages.\n\nTrust grew alongside convenience. Money moves straight between bank accounts, every payment needs your UPI PIN, and you get an instant message confirming it. Features like UPI Lite for small amounts, credit cards linked to UPI and autopay for bills keep widening what it can do, while the government continues to promote it as part of a less cash-dependent economy. For millions of families, shops and small businesses, UPI is now the default way to pay, even for tiny amounts.\n\nSpeed and ease: Pay anyone in seconds from your phone, any time.\nAlmost no cost: Free for most everyday ",
+      "ms": 30846
+    },
+    {
+      "i": 11,
+      "do": "send",
+      "note": "AT-027: require a quiet thumbs-up with no foo message",
+      "sentAt": 1792612573472,
+      "before": 0,
+      "ok": true,
+      "ms": 287
+    },
+    {
+      "i": 12,
+      "do": "wait",
+      "expect": "AT-027: thumbs-up and no new foo message",
+      "ok": true,
+      "ms": 15012
+    },
+    {
+      "i": 13,
+      "do": "dump",
+      "note": "AT-005, AT-027, AT-030: preserve targeted evidence",
+      "ok": true,
+      "ms": 16
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n1:09 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:09 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n1:09 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:09 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "shown",
+    "text": "What should I call myself?\n\nThat's it\nKeep \"foo\"\n🎲 Surprise me"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Hi foo, please start one harmless tiny job and show me its plan before doing anything.\n1:09 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nShowing you before a quick look at today's weather\nShow you before doing anything\nLook on the web\nLook for today's weather forecast\nWatch live\nStop\nunder 1 min\n1:09 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Ask me one simple preference before continuing, please.\n1:09 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "superseded",
+    "text": "Which city should I check today's weather for? → you changed the plan\n1:09 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n1:10 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Which city should I check the weather for?\n\n1:10 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n1:10 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which city should I check today's weather for?\n1\nDelhi\nBEST FIT\n2\nMumbai\n3\nBengaluru\n4\nAnother city\nType the name\nSomething else…\nSkip\n1:10 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:10 AM"
+  }
+]
