@@ -468,10 +468,9 @@
         "replies",
         "show",
         "here.",
-        "Waiting",
-        "for",
-        "your",
-        "answer:",
+        "Trips",
+        "sent",
+        "Question:",
         "Which",
         "flight",
         "time",
@@ -481,9 +480,7 @@
         "on",
         "Fri",
         "18",
-        "Dec?.",
-        "Show",
-        "button.",
+        "Dec?",
         "Not",
         "sent."
       ]
@@ -538,8 +535,8 @@
     "total": 4238
   },
   "r5": {
-    "ratio": 0.066802734375,
-    "diffPixels": 68406,
+    "ratio": 0.0668017578125,
+    "diffPixels": 68405,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-02.light.diff.png"

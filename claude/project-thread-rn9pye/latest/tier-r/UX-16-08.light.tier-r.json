@@ -420,7 +420,7 @@
         "below.",
         "Worked",
         "for",
-        "1s",
+        "2s",
         "11:01",
         "AM",
         "checked",
@@ -591,8 +591,8 @@
     "total": 3528
   },
   "r5": {
-    "ratio": 0.0964755859375,
-    "diffPixels": 98791,
+    "ratio": 0.096466796875,
+    "diffPixels": 98782,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-08.light.diff.png"
