@@ -1,0 +1,40 @@
+{
+  "id": "B06-booking-options",
+  "title": "Restaurant options without booking",
+  "spec": "AT-036, J9, AT-108, AT-310, AT-311",
+  "steps": [
+    {
+      "do": "send",
+      "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "shot": "italian"
+    },
+    {
+      "do": "clickIf",
+      "tid": "card-plan-go"
+    },
+    {
+      "do": "wait",
+      "ms": 180000,
+      "shot": "italian-later",
+      "expect": "options shown; no booking Approval card until I say book"
+    },
+    {
+      "do": "check",
+      "tid": "card-approval",
+      "count": 0
+    },
+    {
+      "do": "check",
+      "tid": "card-choice",
+      "soft": true
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

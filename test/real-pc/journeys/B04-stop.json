@@ -1,0 +1,39 @@
+{
+  "id": "B04-stop",
+  "title": "Start a job then stop it by typing stop",
+  "spec": "AT-077, AT-107, AT-080, J18",
+  "steps": [
+    {
+      "do": "send",
+      "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "flight-plan"
+    },
+    {
+      "do": "clickIf",
+      "tid": "card-plan-go"
+    },
+    {
+      "do": "wait",
+      "ms": 40000,
+      "shot": "flight-working"
+    },
+    {
+      "do": "send",
+      "text": "stop"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 60000,
+      "shot": "after-stop",
+      "expect": "AT-077: stops within 1 s; reply lists exactly what was done; badge \u26d4"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}
