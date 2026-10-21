@@ -1,0 +1,24 @@
+{
+ "id": "J21-J22-settings-search",
+ "title": "Settings and search",
+ "spec": "07-2 J21, J22",
+ "steps": [
+  {
+   "do": "click",
+   "tid": "sidebar-footer-settings",
+   "shot": "settings",
+   "expect": "settings page, Account & your AI shows Claude"
+  },
+  {
+   "do": "key",
+   "key": "Escape"
+  },
+  {
+   "do": "fill",
+   "tid": "sidebar-search-field",
+   "value": "VPN",
+   "shot": "search",
+   "expect": "matching chat and message hits"
+  }
+ ]
+}

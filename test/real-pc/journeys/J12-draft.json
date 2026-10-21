@@ -1,0 +1,25 @@
+{
+ "id": "J12-draft",
+ "title": "Draft an email (never sends)",
+ "spec": "07-1 J12; M8 drafts",
+ "steps": [
+  {
+   "do": "send",
+   "text": "Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting"
+  },
+  {
+   "do": "waitReply",
+   "timeoutMs": 180000,
+   "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+   "shot": "draft"
+  },
+  {
+   "do": "check",
+   "tid": "card-draft"
+  },
+  {
+   "do": "dump",
+   "name": "thread"
+  }
+ ]
+}

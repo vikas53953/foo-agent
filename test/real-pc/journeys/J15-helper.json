@@ -1,0 +1,18 @@
+{
+ "id": "J15-helper",
+ "title": "Create a helper",
+ "spec": "07-1 J15; 06 helper",
+ "steps": [
+  {
+   "do": "click",
+   "tid": "sidebar-new-helper",
+   "shot": "new-helper",
+   "expect": "helper create flow per walkthrough"
+  },
+  {
+   "do": "wait",
+   "ms": 3000,
+   "shot": "new-helper-2"
+  }
+ ]
+}

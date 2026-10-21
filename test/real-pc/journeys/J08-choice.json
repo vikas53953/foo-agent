@@ -1,0 +1,29 @@
+{
+ "id": "J08-choice",
+ "title": "Question with choice chips",
+ "spec": "07-1 J8; 05 choice card",
+ "steps": [
+  {
+   "do": "send",
+   "text": "Help me pick a laptop under 80,000 rupees for programming"
+  },
+  {
+   "do": "waitReply",
+   "timeoutMs": 180000,
+   "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+   "shot": "laptop"
+  },
+  {
+   "do": "check",
+   "tid": "card-choice"
+  },
+  {
+   "do": "check",
+   "tid": "card-choice-option"
+  },
+  {
+   "do": "dump",
+   "name": "thread"
+  }
+ ]
+}

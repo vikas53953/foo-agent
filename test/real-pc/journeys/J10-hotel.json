@@ -1,0 +1,30 @@
+{
+ "id": "J10-hotel",
+ "title": "Hotel search with payment approval (never approves)",
+ "spec": "07-1 J10; 05 approval card",
+ "steps": [
+  {
+   "do": "send",
+   "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night"
+  },
+  {
+   "do": "waitReply",
+   "timeoutMs": 300000,
+   "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+   "shot": "hotel"
+  },
+  {
+   "do": "wait",
+   "ms": 60000,
+   "shot": "hotel-later"
+  },
+  {
+   "do": "check",
+   "tid": "card-approval"
+  },
+  {
+   "do": "dump",
+   "name": "thread"
+  }
+ ]
+}
