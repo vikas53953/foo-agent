@@ -1,0 +1,121 @@
+{
+  "journey": "U10-plan-change-stop",
+  "title": "Plan card: Change plan, then Stop a running job from the checklist",
+  "steps": 15,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T20-49-36-443Z-U10-plan-change-stop",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1020
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792615782685,
+      "before": 0,
+      "ok": true,
+      "ms": 118
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "plan card",
+      "firstReplyMs": 7076,
+      "newBubbles": 8,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking for weekend treks near Pune\n1\nLook for weekend treks near Pune\n2\nLook on the web\n3\nKeep 5 weekend treks near Pune that fit difficulty and cost listed\n4\nCompare difficulty and cost\nAbout 3 minutes\nGo\nChange plan\n8:49 PM\n---\n1\nLook for weekend treks near Pune\n---\n2\nLook on the web\n---\n3\nKeep 5 weekend treks near Pune that fit difficulty and cost listed\n---\n4\nCompare difficulty and cost\n---\nAbout 3 minutes\n---\nGo\n---\nChange plan",
+      "ms": 13144
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 82
+    },
+    {
+      "i": 4,
+      "do": "wait",
+      "expect": "composer prompts for the change",
+      "ok": true,
+      "ms": 800
+    },
+    {
+      "i": 5,
+      "do": "send",
+      "sentAt": 1792615796917,
+      "before": 0,
+      "ok": true,
+      "ms": 87
+    },
+    {
+      "i": 6,
+      "do": "waitReply",
+      "expect": "a changed plan, the old one marked changed",
+      "firstReplyMs": 5088,
+      "newBubbles": 8,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking for easy weekend treks near Pune\n1\nLook for easy weekend treks near Pune\n2\nLook on the web\n3\nKeep 5 weekend treks near Pune that fit easy difficulty only, with cost listed\n4\nCompare difficulty and cost\nAbout 3 minutes\nGo\nChange plan\n8:50 PM\n---\n1\nLook for easy weekend treks near Pune\n---\n2\nLook on the web\n---\n3\nKeep 5 weekend treks near Pune that fit easy difficulty only, with cost listed\n---\n4\nCompare difficulty and cost\n---\nAbout 3 minutes\n---\nGo\n---\nChange plan",
+      "ms": 11209
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "checklist running; Doing now shows the job; chat pill Working",
+      "ok": true,
+      "ms": 8013
+    },
+    {
+      "i": 9,
+      "do": "key",
+      "ok": true,
+      "ms": 19
+    },
+    {
+      "i": 10,
+      "do": "wait",
+      "expect": "right panel Doing now row with Stop",
+      "ok": true,
+      "ms": 801
+    },
+    {
+      "i": 11,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 58
+    },
+    {
+      "i": 12,
+      "do": "wait",
+      "expect": "job stopped ⛔, checklist says stopped, no further steps",
+      "ok": true,
+      "ms": 5015
+    },
+    {
+      "i": 13,
+      "do": "key",
+      "ok": true,
+      "ms": 14
+    },
+    {
+      "i": 14,
+      "do": "dump",
+      "ok": true,
+      "ms": 4
+    }
+  ]
+}

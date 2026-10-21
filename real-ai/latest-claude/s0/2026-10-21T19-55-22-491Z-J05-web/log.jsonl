@@ -1,9 +1,0 @@
-{"t":"2026-10-21T19:55:22.491Z","journey":"J05-web","title":"First real task with the internet (news + sources)","spec":"07-1 J5; R1 sources/citations","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
-{"t":"2026-10-21T19:55:28.054Z","step":"launch","ok":true}
-{"t":"2026-10-21T19:55:36.162Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8102}
-{"t":"2026-10-21T19:55:36.287Z","i":0,"do":"send","sentAt":1792612536246,"before":0,"ok":true,"ms":125}
-{"t":"2026-10-21T19:55:50.949Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":7080,"newBubbles":7,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nSlow here, trying another way\nLook for ISRO news from 15 to 21 Oct 2026, with\nCompare reports across sources to confirm each\nWrite it\nWatch live\nStop\nunder 1 min\n7:55 PM\n---\nLooking on the web\nSlow here, trying another way\n---\nLook for ISRO news from 15 to 21 Oct 2026, with\n---\nCompare reports across sources to confirm each\n---\nWrite it\n---\nWatch live\n---\nStop","ms":14661}
-{"t":"2026-10-21T19:55:51.028Z","shot":"01-news.png"}
-{"t":"2026-10-21T19:55:51.031Z","i":2,"do":"check","found":0,"ok":false,"ms":2}
-{"t":"2026-10-21T19:55:51.032Z","i":3,"do":"check","found":0,"ok":false,"ms":1}
-{"t":"2026-10-21T19:55:51.036Z","i":4,"do":"dump","ok":true,"ms":4}
