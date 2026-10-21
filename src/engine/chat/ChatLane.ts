@@ -23,6 +23,7 @@
 // CR-0040 (X-198): a `job` that needs a Google app while Google is not connected posts the Connect card (05-3 §5.11, variant
 // `one_app`) instead of starting; once Google connects the message goes back to its intake turn (real-AI run 8: the job's
 // first step, with no Gmail tools listed, asked "Which email do you want me to read?").
+// CR-0042 (X-200): routine, catch_up and handoff, not built yet, each say so in one line instead of "I didn't get that".
 // Restart fix (real-PC J19 bug): the queue lives in memory, so after a restart cutOffTurns/answerCutOff give the messages
 // whose turn never finished their one intake turn (08-2 §5.2), and a reply left streaming is cut off with Try again (§19.4).
 import { t } from '../../shared/copy/t';
@@ -191,6 +192,20 @@ const CONVERSATION = 20; // 08-2 §7.2 part 7
 function isIntakeAsk(payload: Record<string, unknown>): payload is Record<string, unknown> & { intakeAsk: { messageId: string } } {
   const v = payload.intakeAsk as { messageId?: unknown } | undefined;
   return typeof v?.messageId === 'string' && v.messageId.length > 0;
+}
+
+/** CR-0042 (08-4 §25.5 item 5a): what foo says for an intake kind whose milestone is not built yet. */
+function notBuiltLine(kind: string | undefined): string {
+  switch (kind) {
+    case 'routine':
+      return t('thread.not_built.routine');
+    case 'catch_up':
+      return t('thread.not_built.catch_up');
+    case 'handoff':
+      return t('thread.not_built.handoff');
+    default:
+      return t('thread.reply.empty');
+  }
 }
 
 export class ChatLane {
@@ -664,9 +679,9 @@ export class ChatLane {
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
       await this.react(messageId, act.emoji, helper);
     } else {
-      // Kinds built in later milestones (see the header).
+      // Kinds built in later milestones (see the header). CR-0042 (08-4 §25.5 item 5a): one honest line per kind.
       this.d.log('chat.kind_not_built', undefined, { chatId });
-      await this.post(chatId, messageId, t('thread.reply.empty'), helper, providerNote);
+      await this.post(chatId, messageId, notBuiltLine(act?.kind), helper, providerNote);
     }
     // CR-0041: a retried turn keeps the Thinking row and records no uses of the answer it threw away.
     if (!retryEmpty) {
