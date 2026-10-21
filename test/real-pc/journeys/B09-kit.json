@@ -73,7 +73,7 @@
       "shot": "ai-page",
       "expect": "AT-358..362 sealed page, status line first",
       "expectTid": "ai-page",
-      "expectJs": "['ready', 'kept'].includes([...document.querySelectorAll('[data-testid=\"ai-page\"]')].pop()?.dataset.state)"
+      "expectJs": "['ready', 'kept'].includes([...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"ai-page\"]')].pop()?.dataset.state)"
     },
     {
       "do": "dump",

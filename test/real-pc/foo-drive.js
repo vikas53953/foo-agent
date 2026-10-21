@@ -495,6 +495,20 @@ async function main() {
     log(rec);
     if (s.shot) await shot(s.shot).catch(() => {});
   }
+  // Closing foo mid-reply cuts that reply off, and the next journey (same profile) would find "That reply got cut off".
+  // Let any reply still streaming, or page still building, finish first, for up to 3 minutes.
+  const busy =
+    '[data-testid="thread-log"] :is([data-testid="bubble-foo"][data-state="streaming"], [data-testid="ai-page"][data-state="building"])';
+  const t1 = Date.now();
+  while (
+    Date.now() - t1 < 180_000 &&
+    (await page
+      .locator(busy)
+      .count()
+      .catch(() => 0))
+  )
+    await page.waitForTimeout(1_000);
+  if (Date.now() - t1 > 1_000) log({ step: 'drain', ms: Date.now() - t1 });
   // Some outcomes land after the step gave up (a saved fact, an AI page that opens late). Before calling a step failed,
   // look again at the end state it names; a late pass is kept as ok with late: true.
   for (const r of results) {
@@ -509,20 +523,6 @@ async function main() {
       log({ step: 'recheck', i: r.i, do: r.do, late: true });
     }
   }
-  // Closing foo mid-reply cuts that reply off, and the next journey (same profile) would find "That reply got cut off".
-  // Let any reply still streaming, or page still building, finish first, for up to 3 minutes.
-  const busy =
-    '[data-testid="thread-log"] [data-testid="bubble-foo"][data-state="streaming"], [data-testid="ai-page"][data-state="building"]';
-  const t1 = Date.now();
-  while (
-    Date.now() - t1 < 180_000 &&
-    (await page
-      .locator(busy)
-      .count()
-      .catch(() => 0))
-  )
-    await page.waitForTimeout(1_000);
-  if (Date.now() - t1 > 1_000) log({ step: 'drain', ms: Date.now() - t1 });
   await app.close().catch(() => {});
   try {
     log({ step: 'appLog', ...copyTechLog(journeyStart, out) });
