@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "नमस्ते! आप कैसे हैं?\n\n11:31 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n11:31 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n11:31 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n11:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n11:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a table for 2 at a vegetarian restaurant in Connaught Place, Delhi this Saturday 8 PM\n11:32 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 11:32 PM\n11:32 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:32 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Booking table for 2, Sat 24 Oct, 8:00 PM\nlive checklist\nLooking for vegetarian restaurants in Connaught\nKeep 3 vegetarian restaurants that fit open and free on Sat 24 Oct, 8:00 PM\nWait for you to pick one\nShow you before booking a table for 2 on Sat 24 Oct\nShow you before doing anything\nBook table for 2, Sat 24 Oct, 8:00 PM\nWatch live\nStop\n5 min\n11:32 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:32 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Booking table for 2, Sat 24 Oct, 8:00 PM job\nWhat’s wrong\nEvery web search fails with SEARCH_BUSY and returns no results\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n11:32 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n11:37 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Looking for vegetarian restaurants in…\n1\nLook for vegetarian restaurants in Connaught\n2\nKeep 3 restaurants that fit pure vegetarian, good ratings, table\n3\nWait for you to pick one\n4\nShow you before the booking for 2 on Sat 24 Oct, 8:00 PM\n5\nShow you before doing anything\n6\nBook table for 2, Sat 24 Oct, 8:00 PM\nAbout 6 minutes\nGo\nChange plan\n11:37 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:37 PM"
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb search keeps failing with SEARCH_BUSY errors every time\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n11:20 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n11:22 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's an easy-paced Jaipur plan for your parents, with mornings for sightseeing and rest in the afternoon.\n\nDay 1, Old city: Hawa Mahal photo stop, then City Palace and Jantar Mantar. Evening stroll and snacks at Johari Bazaar.\nDay 2, Forts: Amer Fort early, before the crowds, with a jeep ride up if the steps are tiring. Stop at Jal Mahal on the way back. Sunset at Nahargarh Fort.\nDay 3, Slow day: Albert Hall Museum, then block-print shopping at Bapu Bazaar. Dinner at Chokhi Dhani for folk music and Rajasthani food.\n\nStay near MI Road or the old city so everything is a short ride away. Book a cab for the day instead of using autos, as it's easier on the knees. October to March is the best weather.\n\nWhere will they travel from, and on which dates? I can then look at trains and hotels.\n\n11:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n11:22 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n11:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n11:23 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 11:23 PM\n11:23 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:23 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking for well-rated Italian…\nlive checklist\nLooked for well-rated Italian restaurants in\nChecked restaurant booking sites\nR\nKept 3 Italian places with a table for 2 on Sat that fit best rated and open at that time\nYou picked\nStopped by you\n11:23 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:23 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "withdrawn",
+    "text": "No longer needed. The job was stopped.\n11:23 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:23 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n11:26 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n11:26 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n11:26 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking nationalmuseumindia.gov.in\nlive checklist\nChecked nationalmuseumindia.gov.in\nN\nLooked for opening hours and ticket price\nWatch live\nStop\n2 min\n11:26 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:26 PM"
+  }
+]

@@ -1,0 +1,16 @@
+{"t":"2026-10-21T23:19:43.834Z","journey":"R1-rich","title":"Rich replies: table, steps, numbers","spec":"CR-0022 R1","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T23:19:48.993Z","step":"launch","ok":true}
+{"t":"2026-10-21T23:19:49.092Z","i":0,"do":"send","sentAt":1792624789064,"sent":true,"before":0,"ok":true,"ms":97}
+{"t":"2026-10-21T23:20:01.742Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":6555,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nKeep 3 budget phones that fit price under ₹20,000\n3\nCompare price, battery, camera, screen and\nAbout 3 minutes\nGo\nChange plan\n11:19 PM","ms":12650}
+{"t":"2026-10-21T23:20:01.826Z","shot":"01-table.png"}
+{"t":"2026-10-21T23:20:01.868Z","i":2,"do":"clickIf","note":"press Go on the plan (starts the job; spending still needs Approve, which is never tapped)","found":1,"ok":true,"ms":42}
+{"t":"2026-10-21T23:22:31.870Z","i":3,"do":"wait","ok":true,"ms":150002}
+{"t":"2026-10-21T23:22:31.931Z","shot":"02-table-after-go.png"}
+{"t":"2026-10-21T23:22:31.933Z","i":4,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-21T23:22:31.937Z","i":5,"do":"dump","ok":true,"ms":3}
+{"t":"2026-10-21T23:22:32.010Z","i":6,"do":"send","sentAt":1792624951996,"sent":true,"before":0,"ok":true,"ms":73}
+{"t":"2026-10-21T23:22:47.210Z","i":7,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":5559,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's an easy-paced Jaipur plan for your parents, with mornings for sightseeing and rest in the afternoon.\n\nDay 1, Old city: Hawa Mahal photo stop, then City Palace and Jantar Mantar. Evening stroll and snacks at Johari Bazaar.\nDay 2, Forts: Amer Fort early, before the crowds, with a jeep ride up if the steps are tiring. Stop at Jal Mahal on the way back. Sunset at Nahargarh Fort.\nDay 3, Slow day: Albert Hall Museum, then block-print shopping at Bapu Bazaar. Dinner at Chokhi Dhani for folk music and Rajasthani food.\n\nStay near MI Road or the old city so everything is a short ride away. Book a cab for the day instead of using autos, as it's easier on the knees. October to March is the best weather.\n\nWhere will they travel from, and on which dates? I can then look at trains and hotels.\n\n11:22 PM","ms":15200}
+{"t":"2026-10-21T23:22:47.264Z","shot":"03-trip.png"}
+{"t":"2026-10-21T23:22:47.266Z","i":8,"do":"dump","ok":true,"ms":2}
+{"t":"2026-10-21T23:22:47.362Z","step":"appLog","lines":17,"dropped":0}
+{"t":"2026-10-21T23:22:47.371Z","step":"aiTurns","turns":7}
