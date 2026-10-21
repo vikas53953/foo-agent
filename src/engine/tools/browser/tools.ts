@@ -323,11 +323,13 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       // 08-2 §8.3.5: a page that settles into a challenge after the wait is the watchdog's, never the AI's.
       if (a.ms !== undefined) {
         const r = await actions.wait(page, a.ms);
-        return (await isChallengePage(page)) ? { kind: 'error', errorKind: 'SITE_CAPTCHA' } : out(r);
+        return !paused(ctx.jobId) && (await isChallengePage(page)) ? { kind: 'error', errorKind: 'SITE_CAPTCHA' } : out(r);
       }
       const miss = await actions.settled(ctx.jobId, page, async () => undefined);
       if (miss) return err(miss);
-      return (await isChallengePage(page)) ? { kind: 'error', errorKind: 'SITE_CAPTCHA' } : { kind: 'ok', result: { url: page.url() } };
+      return !paused(ctx.jobId) && (await isChallengePage(page))
+        ? { kind: 'error', errorKind: 'SITE_CAPTCHA' }
+        : { kind: 'ok', result: { url: page.url() } };
     }),
     tool(
       'browser.screenshot',
@@ -336,7 +338,8 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       'Get a picture of the page. Sensitive fields are hidden.',
       ARGS.screenshot,
       async (_a, page, ctx) => {
-        if (await isChallengePage(page)) return { kind: 'error', errorKind: 'SITE_CAPTCHA' };
+        // Not while a sign-in page is in front (§8.3.3): the page is the person's then.
+        if (!paused(ctx.jobId) && (await isChallengePage(page))) return { kind: 'error', errorKind: 'SITE_CAPTCHA' };
         const path = await shots.capture(ctx.jobId, page, 'shot');
         return path
           ? { kind: 'ok', result: { screenshot: path } }
