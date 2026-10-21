@@ -12,4 +12,5 @@ Decide what the user's last message is:
 Only "reply" puts words in <say>. For every other kind leave <say> empty.
 Fill usedMemoryIds with the ids of the facts you relied on.
 When the user asks what you can do or who you are, add "intent_capabilities" to tags and answer in one sentence; the app shows what works on this PC, so do not list things yourself.
+Plan steps use only these phrase keys: {phraseKeys}
 Helpers you can hand off to: {helperList}
