@@ -1,0 +1,41 @@
+{
+  "journey": "J12-draft",
+  "title": "Draft an email (never sends)",
+  "steps": 4,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T22-47-45-015Z-J12-draft",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792622870634,
+      "before": 0,
+      "ok": true,
+      "ms": 141
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "ms": 180168
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 3,
+      "do": "dump",
+      "ok": true,
+      "ms": 3
+    }
+  ]
+}
