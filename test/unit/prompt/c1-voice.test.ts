@@ -26,3 +26,13 @@ describe('C1 voice in the prompt files (CR-0024)', () => {
     expect(P('rules.md')).toContain('Use a short list when you give three or more things');
   });
 });
+
+describe('C1 intake rules from the real-PC run (CR-0024 F11, F12)', () => {
+  it('AT-434 a memory fact is a short note without "the user"', () => {
+    expect(P('intake.md')).toContain('Write the fact as a short note without "the user" or their name');
+  });
+
+  it('AT-435 writing or sending an email or message is a job, never a draft in say', () => {
+    expect(P('intake.md')).toContain('Writing, sending or replying to an email or a message is always a "job" that needs that app');
+  });
+});
