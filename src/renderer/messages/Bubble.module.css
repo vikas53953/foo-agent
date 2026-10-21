@@ -36,7 +36,7 @@
 .row[data-gap='s5'] {
   padding-top: var(--s5);
 }
-.row[data-chips] > .line:not(:last-child) {
+.row[data-chips] > .line:not(:last-child):not(:has(+ [data-older])) {
   /* §8: whatever sits under a bubble with chips (action row 4 + 20 = 24, proof chip, why line) starts below the chip. */
   margin-bottom: var(--s4);
 }
@@ -1003,6 +1003,10 @@
 /* ---- action row (§17.1) */
 .actionsWrap {
   margin-top: var(--s0);
+}
+.row[data-chips] > .actionsWrap[data-older] {
+  /* An older row floats below the bubble: under a reaction chip it starts below the chip (§8, as in flow). */
+  margin-top: var(--s5);
 }
 
 .actions {
