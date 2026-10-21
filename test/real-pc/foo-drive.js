@@ -77,6 +77,7 @@ const stamp = () => new Date().toISOString().replace(/[:.]/g, '-');
 // foo's own tech log (08-3 §19.1) from the test profile, only the lines written during this journey. The app already keeps
 // message text out and redacts; the repo is public, so keep only the allowed fields and drop any line that still holds
 // something value-like (an email, a long number, an API key).
+const DIDNT_GET = /didn[’']t get that/i;
 const LOG_KEYS = ['t', 'lvl', 'mod', 'evt', 'ids', 'kind', 'ms'];
 const LEAK = /@|\d{10,}|sk-[A-Za-z0-9_-]{6,}/;
 function copyTechLog(from, out) {
@@ -195,6 +196,17 @@ async function main() {
         );
       return { n: after.length, texts: after.map((el) => (el.innerText || '').trim().slice(0, 1500)) };
     });
+
+  // The end state a step names: expectTid / tid / css on screen (count if given), and expectJs true in the page.
+  const endState = async (s) => {
+    const q = s.expectTid ? `[data-testid="${s.expectTid}"]` : s.tid || s.css ? sel(s) : null;
+    if (q) {
+      const n = await page.locator(q).count();
+      if (s.count !== undefined ? n !== s.count : n === 0) return false;
+    }
+    if (s.expectJs && !(await page.evaluate(s.expectJs))) return false;
+    return true;
+  };
 
   try {
     await launch();
@@ -389,6 +401,16 @@ async function main() {
           const texts = cur.texts.slice(before);
           rec.duplicates = texts.filter((x, k) => x && texts.indexOf(x) !== k).length;
           rec.lastReply = texts.join('\n---\n').slice(0, 2000);
+          // A reply is not the outcome: "I didn't get that" fails unless the journey expects it, and a step that names an end
+          // state (a card on screen, the theme changed) needs that state too.
+          if (DIDNT_GET.test(rec.lastReply) && !s.allowDidntGet) {
+            rec.didntGetThat = true;
+            rec.ok = false;
+          }
+          if (rec.ok && (s.expectTid || s.expectJs)) {
+            rec.endState = await endState(s);
+            rec.ok = rec.endState;
+          }
           break;
         }
         case 'dump':
@@ -458,6 +480,20 @@ async function main() {
     results.push(rec);
     log(rec);
     if (s.shot) await shot(s.shot).catch(() => {});
+  }
+  // Some outcomes land after the step gave up (a saved fact, an AI page that opens late). Before calling a step failed,
+  // look again at the end state it names; a late pass is kept as ok with late: true.
+  for (const r of results) {
+    const s = journey.steps[r.i];
+    if (r.ok !== false || r.didntGetThat || r.refused) continue;
+    const named = s.do === 'check' || s.do === 'waitFor' ? { tid: s.tid, css: s.css, count: s.count } : s;
+    if (!(named.tid || named.css || named.expectTid || named.expectJs)) continue;
+    const now = await endState(named).catch(() => false);
+    if (now) {
+      r.ok = true;
+      r.late = true;
+      log({ step: 'recheck', i: r.i, do: r.do, late: true });
+    }
   }
   await app.close().catch(() => {});
   try {
