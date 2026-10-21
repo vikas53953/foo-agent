@@ -1,6 +1,6 @@
 // Spec: 08-4 §26.1 (step phrase catalogue, F-061: the only phrase list; each entry { next, running, done, slots }; copy keys
-// `cards.checklist.{key}.next|running|done`; slots match `^[\p{L}\p{N}₹ .,:'&()/<>+-]{1,40}$`u and pass the banned-word
-// filter; an unknown key or a failing slot → `generic_working`; keys with "—" are runner-only), 08-2 §5.3.3, §5.4.3, 05-1 §5.2.2
+// `cards.checklist.{key}.next|running|done`; slots match `^[\p{L}\p{M}\p{N}₹ .,:'&()/<>+-]{1,40}$`u (\p{M} from X-185) and pass the banned-word
+// filter after cleaning (X-185); an unknown key or a failing slot → `generic_working`; keys with "—" are runner-only), 08-2 §5.3.3, §5.4.3, 05-1 §5.2.2
 // (next for rows not started, running for the current row, done for finished rows). Builders add a key only by a
 // constitution change. The texts are the table's, word for word; en-IN.json holds the same texts under the copy keys (test).
 import type { CopyKey } from './copy/t';
@@ -83,8 +83,30 @@ export type PhraseKey = keyof typeof PHRASES;
 export type PhraseForm = 'next' | 'running' | 'done';
 export type PhraseSlots = Record<string, string>;
 
-/** 08-4 §26.1 slot rule. */
-export const SLOT_RE = /^[\p{L}\p{N}₹ .,:'&()/<>+-]{1,40}$/u;
+/** 08-4 §26.1 slot rule; `\p{M}` (X-185) keeps Hindi and Punjabi vowel signs, so Indic details are not split into letters. */
+export const SLOT_RE = /^[\p{L}\p{M}\p{N}₹ .,:'&()/<>+-]{1,40}$/u;
+
+/**
+ * 08-4 §26.1 slot cleaning (X-185, CR-0027 §(d)): a real AI writes "Delhi–Mumbai", "phones?" or 50-character details. Curly
+ * quotes → `'`, dashes → `-`, `;` → `, `, other characters outside the slot rule → a space; spaces collapsed; over 40 characters → cut at
+ * the last word break that fits; trailing joiners dropped. Idempotent; "" when nothing is left.
+ */
+export function cleanSlot(v: string): string {
+  let s = v
+    .replace(/[\u2018\u2019\u201B\u2032]/g, "'")
+    .replace(/[\u2010-\u2015\u2212]/g, '-')
+    .replace(/ *; */g, ', ')
+    .replace(/[^\p{L}\p{M}\p{N}₹ .,:'&()/<>+-]/gu, ' ')
+    .replace(/ +/g, ' ')
+    .trim();
+  // The rule counts code points, so the cut does too (an astral letter is never split).
+  const cps = Array.from(s);
+  if (cps.length > 40) {
+    const cut = cps.slice(0, 41).lastIndexOf(' ');
+    s = cps.slice(0, cut > 0 ? cut : 40).join('');
+  }
+  return s.replace(/[ .,:&/(<+-]+$/, '');
+}
 
 export const isPhraseKey = (k: string): k is PhraseKey => Object.prototype.hasOwnProperty.call(PHRASES, k);
 
@@ -97,8 +119,9 @@ export function phraseCopyKey(key: PhraseKey, form: PhraseForm): CopyKey | null 
 }
 
 /**
- * 08-2 §5.3.3 / 08-4 §26.1: the key and slots a step is stored with. An unknown key, a runner-only key in a plan, a missing
- * slot, or a slot that fails the slot rule or the banned-word filter (`isBanned`, the engine's filter) → `generic_working`.
+ * 08-2 §5.3.3 / 08-4 §26.1: the key and slots a step is stored with. Each slot is cleaned first (`cleanSlot`). An unknown
+ * key, a runner-only key in a plan, a missing slot, or a slot that is empty after cleaning or fails the banned-word filter
+ * (`isBanned`, the engine's filter) → `generic_working`.
  */
 export function resolvePhrase(
   key: string,
@@ -111,8 +134,8 @@ export function resolvePhrase(
   const out: PhraseSlots = {};
   for (const name of PHRASES[key].slots) {
     const v = slots[name];
-    const s = typeof v === 'number' ? String(v) : v;
-    if (typeof s !== 'string' || !SLOT_RE.test(s) || opts.isBanned?.(s)) return fallback;
+    const s = typeof v === 'number' ? String(v) : typeof v === 'string' ? cleanSlot(v) : null;
+    if (s === null || !SLOT_RE.test(s) || opts.isBanned?.(s)) return fallback;
     out[name] = s;
   }
   return { key, slots: out };

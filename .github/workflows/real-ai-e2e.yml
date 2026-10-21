@@ -89,7 +89,8 @@ jobs:
         run: |
           git fetch -q --depth 1 origin "$KIT_REF"
           rm -rf "$RUNNER_TEMP/kit" && mkdir -p "$RUNNER_TEMP/kit"
-          git archive FETCH_HEAD test/real-pc | tar -x -C "$RUNNER_TEMP/kit"
+          # Extract from inside the folder: Windows tar reads "D:" in a -C path as a remote host.
+          git archive FETCH_HEAD test/real-pc | (cd "$RUNNER_TEMP/kit" && tar -x)
           echo "head $(git rev-parse HEAD) kit $KIT_REF"
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
