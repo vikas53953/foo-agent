@@ -154,12 +154,15 @@ export class EngineBridge {
         const { ops } = gateUnprompted(this.ctx.db, this.ctx.settings.get(), now, msg.payload.ops as DbOp[]);
         const { result, effects } = applyDbOps(this.ctx.db, ops, { now, dataDir: this.ctx.dataDir });
         for (const id of effects.messageIds) this.ctx.emitMessage(id);
+        const jobIds = new Set(effects.jobIds);
         for (const id of effects.cardIds) {
           const r = this.ctx.db.prepare('SELECT * FROM cards WHERE id = ?').get(id) as DbRow | undefined;
           if (r) this.ctx.emit('card:upsert', cardRow(r));
+          // CR-0028: a Plan card's Go moves its job's `awaitingGo` even while the job stays queued.
+          if (r && r.type === 'plan' && r.job_id) jobIds.add(String(r.job_id));
         }
-        if (effects.jobIds.size) {
-          const ids = [...effects.jobIds];
+        if (jobIds.size) {
+          const ids = [...jobIds];
           for (const job of jobRows(this.ctx.db, `id IN (${ids.map(() => '?').join(', ')})`, ids, now)) this.ctx.emit('job:upsert', job);
         }
         for (const id of effects.chatIds) this.ctx.emitChat(id);

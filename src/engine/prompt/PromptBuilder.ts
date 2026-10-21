@@ -101,6 +101,8 @@ export interface IntakeInput {
   // M5
   /** T10: after "Change plan" the old plan goes with the turn, in the part 8 form (08-2 §5.3.3; 08-4 §24.22). */
   oldPlan?: { title: string; steps: string[] };
+  /** CR-0028: the intake questions this message already got answers to ("- Q: … → A: …"), part 8 form (08-4 §24.22). */
+  answers?: string[];
   /** CR-0022 (X-180): Settings → Appearance → Visuals (08-0 §A `appearance.visuals`); Balanced when not given. */
   visuals?: Visuals;
 }
@@ -346,6 +348,7 @@ export class PromptBuilder {
           '8',
         )
       : '';
+    const answers = input.answers?.length ? gate(['Decisions:', ...input.answers].join('\n'), '8') : '';
     let pages = (input.attachmentText ?? []).map((p) =>
       gate(
         `ATTACHMENT TEXT (page ${p.page}, from the user's file)\n${PromptBuilder.untrusted('file', `${p.fileId}-${p.page}`, p.text)}`,
@@ -362,6 +365,7 @@ export class PromptBuilder {
       if (turnFacts.length) pr.push(['Facts that may matter now:', ...turnFacts].join('\n'));
       if (conversation.length) pr.push(['Conversation so far:', ...conversation].join('\n'));
       if (oldPlan) pr.push(oldPlan);
+      if (answers) pr.push(answers);
       pr.push(user);
       if (pages.length) pr.push([preface, ...pages].join('\n\n'));
       const factIds = [...idFacts.map((f) => f.id), ...pinnedIds, ...turnFactIds.slice(0, turnFacts.length)];

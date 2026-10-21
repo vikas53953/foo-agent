@@ -117,36 +117,43 @@ test('PERF-07: send → 👀 painted, p95 ≤ 1 s over 20 runs (job path)', asyn
   test.setTimeout(300_000);
   const { app, page, expectBadge, type, stopJob } = await start({ intakeDelayMs: 2_000 });
   const ms: number[] = [];
+  const split: string[] = [];
   for (const tag of TAGS) {
     await type(ask(tag));
     // Timed inside the window: Enter's keydown → the first frame after the new bubble's badge shows 👀. No Playwright polling
     // in the measured span.
     await page.evaluate((sel) => {
-      const w = window as unknown as { __perf07: { sentAt?: number; paintedAt?: number } };
+      const w = window as unknown as { __perf07: { sentAt?: number; bubbleAt?: number; paintedAt?: number } };
       w.__perf07 = {};
       addEventListener('keydown', (e) => e.key === 'Enter' && (w.__perf07.sentAt ??= performance.now()), { capture: true, once: true });
       const before = new Set(Array.from(document.querySelectorAll(sel)));
-      const seen = () => Array.from(document.querySelectorAll(sel)).some((b) => !before.has(b) && b.getAttribute('data-state') === 'seen');
+      const fresh = () => Array.from(document.querySelectorAll(sel)).filter((b) => !before.has(b));
+      const seen = () => fresh().some((b) => b.getAttribute('data-state') === 'seen');
       new MutationObserver((_, obs) => {
-        if (w.__perf07.sentAt === undefined || !seen()) return;
+        if (w.__perf07.sentAt === undefined) return;
+        // When the new bubble first shows (main has stored it), to split the span: window + main, then the engine's turn.
+        if (w.__perf07.bubbleAt === undefined && fresh().length) w.__perf07.bubbleAt = performance.now();
+        if (!seen()) return;
         obs.disconnect();
         requestAnimationFrame(() => (w.__perf07.paintedAt = performance.now()));
       }).observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['data-state'] });
     }, byTid(TID.bubbleBadge));
     await page.keyboard.press('Enter');
-    const { sentAt, paintedAt } = await page
+    const { sentAt, bubbleAt, paintedAt } = await page
       .waitForFunction(() => {
-        const p = (window as unknown as { __perf07: { sentAt?: number; paintedAt?: number } }).__perf07;
+        const p = (window as unknown as { __perf07: { sentAt?: number; bubbleAt?: number; paintedAt?: number } }).__perf07;
         return p.paintedAt !== undefined && p;
       })
-      .then((h) => h.jsonValue() as Promise<{ sentAt: number; paintedAt: number }>);
+      .then((h) => h.jsonValue() as Promise<{ sentAt: number; bubbleAt?: number; paintedAt: number }>);
     ms.push(Math.round(paintedAt - sentAt));
+    split.push(bubbleAt === undefined ? '?' : `${Math.round(bubbleAt - sentAt)}+${Math.round(paintedAt - bubbleAt)}`);
     // The held intake answers: the ask becomes a job (🛠), then the stop word ends it.
     await tick(page, 2_000);
     await expectBadge(tag, 'working', SETUP_MS);
     await stopJob(tag);
   }
   console.log(`PERF-07 runs (ms): ${ms.join(', ')} · p95 ${p95(ms)} ms`);
+  console.log(`PERF-07 split (keydown → bubble + bubble → 👀, ms): ${split.join(', ')}`);
   expect(ms).toHaveLength(RUNS);
   expect(p95(ms)).toBeLessThanOrEqual(1_000);
   await app.close();

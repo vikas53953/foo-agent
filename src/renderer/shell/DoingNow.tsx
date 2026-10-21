@@ -21,7 +21,17 @@ import { Spinner } from '../ui/Spinner';
 import { openChat } from './actions';
 import { requestReveal } from '../messages/reveal';
 import styles from './DoingNow.module.css';
-import { canStop, doingGlyph, doingLine, doingRows, doneRows, hasLiveBrowser, jobsInScope, scheduledRows } from './doingNowRows';
+import {
+  canStop,
+  doingGlyph,
+  doingLine,
+  doingRows,
+  doneRows,
+  hasLiveBrowser,
+  jobsInScope,
+  scheduledRows,
+  shownState,
+} from './doingNowRows';
 import section from './PanelSection.module.css';
 
 type Tab = 'progress' | 'scheduled' | 'done';
@@ -174,7 +184,8 @@ function JobList({
   return (
     <ul className={styles.list} onKeyDown={roving.onKeyDown}>
       {rows.map((j, i) => {
-        const glyph = doingGlyph(j.state);
+        const state = shownState(j);
+        const glyph = doingGlyph(state);
         const other = prefixOthers && j.chatId !== chat.id ? chats[j.chatId] : undefined;
         const onKey = (e: KeyboardEvent<HTMLLIElement>) => {
           if ((e.key === 'Enter' || e.key === ' ') && e.target === e.currentTarget) {
@@ -189,7 +200,7 @@ function JobList({
             data-testid={TID.appPanelDoingRow}
             data-row-id={j.id}
             data-index={i}
-            data-state={j.state}
+            data-state={state}
             aria-label={`${other ? t('app.panel.doing.chat_prefix', { chat: other.title }) : ''}${j.title}, ${line(j)}`}
             {...roving.itemProps(i)}
             onClick={(e) => {
@@ -205,7 +216,7 @@ function JobList({
                 {other && <span className={styles.prefix}>{t('app.panel.doing.chat_prefix', { chat: other.title })}</span>}
                 {j.title}
               </span>
-              <span className={styles.line2} data-tone={j.state === 'needs_you' ? 'warn' : undefined}>
+              <span className={styles.line2} data-tone={state === 'needs_you' ? 'warn' : undefined}>
                 {line(j)}
               </span>
             </span>
