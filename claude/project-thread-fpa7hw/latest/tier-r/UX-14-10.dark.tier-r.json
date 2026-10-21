@@ -167,6 +167,7 @@
         "any",
         "time.",
         "Done",
+        "2",
         "B",
         "Building",
         "society",
@@ -515,8 +516,8 @@
     "total": 23820
   },
   "r5": {
-    "ratio": 0.1033818359375,
-    "diffPixels": 105863,
+    "ratio": 0.103466796875,
+    "diffPixels": 105950,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-10.dark.diff.png"
