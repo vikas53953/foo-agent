@@ -1,0 +1,10 @@
+{"t":"2026-10-21T18:36:09.581Z","journey":"J21-J22-settings-search","title":"Settings and search","spec":"07-2 J21, J22","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T18:36:15.186Z","step":"launch","ok":true}
+{"t":"2026-10-21T18:36:15.309Z","i":0,"do":"click","ok":true,"ms":120}
+{"t":"2026-10-21T18:36:17.310Z","i":1,"do":"wait","expect":"settings page, Account & your AI shows Claude","ok":true,"ms":2001}
+{"t":"2026-10-21T18:36:17.369Z","shot":"01-settings.png"}
+{"t":"2026-10-21T18:36:17.408Z","i":2,"do":"key","ok":true,"ms":39}
+{"t":"2026-10-21T18:36:18.909Z","i":3,"do":"wait","ok":true,"ms":1501}
+{"t":"2026-10-21T18:36:18.925Z","i":4,"do":"fill","ok":true,"ms":16}
+{"t":"2026-10-21T18:36:20.937Z","i":5,"do":"wait","expect":"matching chat and message hits","ok":true,"ms":2012}
+{"t":"2026-10-21T18:36:21.046Z","shot":"02-search.png"}

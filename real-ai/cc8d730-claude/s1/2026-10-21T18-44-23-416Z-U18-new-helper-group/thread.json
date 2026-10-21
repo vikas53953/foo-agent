@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent mid-range processor. That matters more than a fancy graphics card.\n\nRAM: 16 GB is the minimum for code editors, browsers and Docker together. 32 GB is only worth it for heavy work like big builds or running AI locally.\nProcessor: A recent Ryzen 5 or 7, Intel Core i5 or Ultra 5, or an Apple M-series chip all run code tools well.\nScreen and keyboard: Pick a 14 to 16 inch screen at 1920×1200 or better, with a comfortable keyboard. You'll look at both all day.\nBattery: Look for 8+ hours of real use if you work away from a socket.\nGraphics card: Skip it unless you do game development or train AI AI.\n\nDo you want me to look up current laptops in your budget and compare the top three?\n\n6:35 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n6:36 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n6:36 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n6:36 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me 5 weekend trek options near Pune with difficulty and cost\n6:37 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n6:38 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Only easy treks please\n6:38 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:38 PM\n6:38 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:38 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for easy treks near Pune with cost\nKept 5 treks that fit easy difficulty only\nCompared difficulty and cost\nStopped by you\n6:38 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:38 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n6:39 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember that I am vegetarian on Tuesdays\n6:39 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember my favourite cricket team is Punjab Kings\n6:41 PM"
+  }
+]

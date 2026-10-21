@@ -1,9 +1,0 @@
-{"t":"2026-10-21T17:55:58.114Z","journey":"J08-choice","title":"Question with choice chips","spec":"07-1 J8; 05 choice card","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
-{"t":"2026-10-21T17:56:03.736Z","step":"launch","ok":true}
-{"t":"2026-10-21T17:56:11.844Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8102}
-{"t":"2026-10-21T17:56:11.990Z","i":0,"do":"send","sentAt":1792605371928,"before":0,"ok":true,"ms":146}
-{"t":"2026-10-21T17:56:24.206Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":6102,"newBubbles":7,"ok":true,"duplicates":0,"lastReply":"What matters most in your programming laptop?\n1\nLight and long battery\nBEST FIT\nWeb, apps, college or office use\n2\nStrong performance\nDocker, big projects, AI or ML work\n3\nBest all-rounder\nBalance of speed, weight and price\n4\nGood screen and keyboard\nLong coding hours every day\nSomething else…\nSkip\n5:56 PM\n---\n1\nLight and long battery\nBEST FIT\nWeb, apps, college or office use\n---\n2\nStrong performance\nDocker, big projects, AI or ML work\n---\n3\nBest all-rounder\nBalance of speed, weight and price\n---\n4\nGood screen and keyboard\nLong coding hours every day\n---\nSomething else…\n---\nSkip","ms":12215}
-{"t":"2026-10-21T17:56:24.283Z","shot":"01-laptop.png"}
-{"t":"2026-10-21T17:56:24.285Z","i":2,"do":"check","found":2,"ok":true,"ms":2}
-{"t":"2026-10-21T17:56:24.287Z","i":3,"do":"check","found":6,"ok":true,"ms":2}
-{"t":"2026-10-21T17:56:24.290Z","i":4,"do":"dump","ok":true,"ms":3}

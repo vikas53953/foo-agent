@@ -1,0 +1,18 @@
+{"t":"2026-10-21T18:44:31.827Z","journey":"U22-face-polish","title":"Living face: thinking while working, resting; motion off in settings","spec":"02 §F15.9 living face, 10-2 §C.7, §C.8","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T18:44:37.559Z","step":"launch","ok":true}
+{"t":"2026-10-21T18:44:38.604Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1041}
+{"t":"2026-10-21T18:44:38.769Z","i":1,"do":"send","sentAt":1792608278717,"before":0,"ok":true,"ms":165}
+{"t":"2026-10-21T18:44:40.272Z","i":2,"do":"wait","expect":"26px Thinking face only while the request is in flight (C.7.4)","ok":true,"ms":1503}
+{"t":"2026-10-21T18:44:40.374Z","shot":"01-thinking.png"}
+{"t":"2026-10-21T18:44:52.012Z","i":3,"do":"waitReply","expect":"poem; face back to resting, blinks","firstReplyMs":4057,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's your monsoon poem:\n\nGrey clouds roll in over Marine Drive's bay,\nWaves crash high as the sky turns to spray.\nChai steams in hands on a crowded local train,\nAnd Mumbai dances, alive in the rain.\n\n6:44 PM","ms":11637}
+{"t":"2026-10-21T18:44:52.086Z","shot":"02-poem.png"}
+{"t":"2026-10-21T18:44:52.163Z","i":4,"do":"shotEl","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-21T18:44:52.221Z","i":5,"do":"key","ok":true,"ms":58}
+{"t":"2026-10-21T18:44:52.320Z","i":6,"do":"click","soft":true,"ok":true,"ms":98}
+{"t":"2026-10-21T18:44:52.404Z","i":7,"do":"click","soft":true,"ok":true,"ms":84}
+{"t":"2026-10-21T18:44:53.008Z","i":8,"do":"wait","expect":"face motion setting","ok":true,"ms":604}
+{"t":"2026-10-21T18:44:53.092Z","shot":"04-face-motion.png"}
+{"t":"2026-10-21T18:44:53.146Z","i":9,"do":"key","ok":true,"ms":54}
+{"t":"2026-10-21T18:45:16.241Z","shot":"05-error-step10.png"}
+{"t":"2026-10-21T18:45:16.241Z","i":10,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23095}
+{"t":"2026-10-21T18:45:16.244Z","i":11,"do":"dump","ok":true,"ms":2}
