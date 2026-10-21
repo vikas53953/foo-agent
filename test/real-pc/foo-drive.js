@@ -173,6 +173,21 @@ async function main() {
           text: (el.innerText || '').trim().slice(0, 1500),
         })),
     );
+  // CR-0046: foo's replies that hold a fence (```a2ui, ```page), as the AI wrote them, so a kit piece that drew only
+  // "Couldn't show part of this" can become a cassette (test/fixtures/kit-replies). The drawn thread keeps only the words.
+  const rawFences = () =>
+    page.evaluate(async () => {
+      const out = [];
+      const chats = await window.foo.invoke('chat:list', {});
+      for (const c of chats.ok ? chats.value : []) {
+        const list = await window.foo.invoke('message:list', { chatId: c.id, limit: 50 });
+        for (const m of list.ok ? list.value : []) {
+          if (m.authorKind === 'foo' && m.text.includes('```'))
+            out.push({ chatId: c.id, messageId: m.id, status: m.status, text: m.text.slice(0, 20_000) });
+        }
+      }
+      return out;
+    });
   // What counts as foo answering: a foo text bubble or any card foo posts, below the user's newest bubble. The thread is a
   // virtual list (only the rows near the bottom are in the page), so counting all bubbles stops working in a long chat;
   // counting what sits after the newest bubble-me does not. A memory chip ("I'll remember: … · Undo", 05-3 §5.17.1) is
@@ -415,6 +430,10 @@ async function main() {
         }
         case 'dump':
           fs.writeFileSync(path.join(out, `${s.name}.json`), JSON.stringify(await threadDump(), null, 2));
+          fs.writeFileSync(
+            path.join(out, `${s.name}-raw.json`),
+            JSON.stringify(await rawFences().catch((e) => [{ error: String(e).slice(0, 300) }]), null, 2),
+          );
           break;
         case 'shot':
           await shot(s.name);

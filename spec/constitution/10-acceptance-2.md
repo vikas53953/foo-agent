@@ -246,6 +246,13 @@ AT-436 to AT-439 are reserved for this patch.
 |---|---|---|
 | AT-440 | Empty answer, asked again | an intake answer with no words left gets one more intake turn with nothing shown; if that one plans a job its card follows, and if it is empty too foo posts "I didn't get that. Say it another way?"; a short real ask ("Order me a pizza from Dominos") never gets a 👍; an ack still does (AT-027) |
 
+**Kit replies from real AIs (CR-0046, X-204; 04 §13.5, 08-4 §24.3, §24.5).**
+
+| ID | Verify | Pass |
+|---|---|---|
+| AT-441 | Small slips mended | a real AI's kit reply with an unknown key, a `null`, a number written as text or text as a plain number, or an over-long label draws with no "Couldn't show part of this"; an unknown component, a missing key, a value outside its list, too few items, a bad input name, `composer.fill` or a web image is still dropped (AT-354) |
+| AT-442 | The prompt teaches the limits | each catalog line names its text lengths, item counts and the Calculator input-name pattern, the kit section says to use only the keys shown and to leave an unused optional key out |
+
 ---
 
 ## §D Article compliance tests

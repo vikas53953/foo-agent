@@ -1,6 +1,8 @@
 // Spec: 08 engine (CR-0022 §(b) "08 engine": the system prompt carries the catalog generated from the zod schemas and the
 // visuals level), pick 2 (generated, never hand-written), pick 8 (Balanced is the default; Mostly words = no kit pieces and
-// no AI pages unless the user asks), 06-2 §6.2 "Visuals", 08-0 §A `appearance.visuals`, X-180.
+// no AI pages unless the user asks), 06-2 §6.2 "Visuals", 08-0 §A `appearance.visuals`, X-180. CR-0046 AT-442, X-204: each
+// line names the limits the checker uses (text length, list counts, the input-name pattern), and the section says to use
+// only the keys shown.
 // Prompt text is for the AI, not UI words, so it is not in en-IN.json (08-4 §24.0 keeps prompts out of copy too).
 import { z } from 'zod';
 import type { Visuals } from '../settings';
@@ -8,15 +10,23 @@ import { CATALOG_ID, FOO_PARTS, STANDARD_PARTS } from './catalog';
 
 type Json = { [k: string]: unknown };
 
-/** A JSON Schema node as one short type line: `{a, b?: "x"|"y", c: [{…}] ≤3}`. */
+/** A list's item count: `2–3`, `≤12` or `≥1`. */
+function count(s: Json): string {
+  const min = typeof s.minItems === 'number' && s.minItems > 0 ? s.minItems : undefined;
+  const max = typeof s.maxItems === 'number' ? s.maxItems : undefined;
+  if (min !== undefined && max !== undefined) return ` ${min}–${max}`;
+  if (max !== undefined) return ` ≤${max}`;
+  return min !== undefined ? ` ≥${min}` : '';
+}
+
+/** A JSON Schema node as one short type line: `{a: string ≤80, b?: "x"|"y", c: [{…}] 1–3}`. */
 function typeLine(s: Json): string {
   if ('const' in s) return JSON.stringify(s.const);
   if (Array.isArray(s.enum)) return (s.enum as unknown[]).map((v) => JSON.stringify(v)).join('|');
   const any = (s.anyOf ?? s.oneOf) as Json[] | undefined;
   if (any) return any.map(typeLine).join(' or ');
   if (s.type === 'array') {
-    const max = typeof s.maxItems === 'number' ? ` ≤${s.maxItems}` : '';
-    return `[${typeLine((s.items ?? {}) as Json)}]${max}`;
+    return `[${typeLine((s.items ?? {}) as Json)}]${count(s)}`;
   }
   if (s.type === 'object' && s.properties) {
     const req = new Set((s.required as string[] | undefined) ?? []);
@@ -24,6 +34,13 @@ function typeLine(s: Json): string {
     return `{${props.join(', ')}}`;
   }
   if (s.type === 'object') return '{…}';
+  if ((s.type === 'integer' || s.type === 'number') && typeof s.minimum === 'number' && typeof s.maximum === 'number' && s.maximum < 1e6) {
+    return `${s.type} ${s.minimum}–${s.maximum}`;
+  }
+  if (s.type === 'string') {
+    const pattern = typeof s.pattern === 'string' && !s.pattern.startsWith('^(data:') ? ` matching ${s.pattern}` : '';
+    return `string${pattern}${typeof s.maxLength === 'number' ? ` ≤${s.maxLength}` : ''}`;
+  }
   return typeof s.type === 'string' ? s.type : 'any';
 }
 
@@ -63,7 +80,8 @@ export function kitPromptSection(level: Visuals): string {
     '- A ```page block: one small HTML page (no network, no forms, no links that open by themselves; under 512 KB). Only when no piece fits or the user asks for a tool.',
     'Words still come first and must make sense alone. Buttons that send, book, pay, delete or share ask the user first, as everything else does. Never ask for passwords, codes, card numbers or keys in a form.',
     LEVEL[level],
-    'Components:',
+    'Components (≤N is the most characters or items, N–M how many items):',
+    'Use only the keys shown (? marks optional ones); leave an optional key out instead of writing null.',
     catalogText(),
   ].join('\n');
 }
