@@ -3,17 +3,13 @@
 // (the app-wide banner shows the offline line, X-13), 05-3 §5.20 (offline shows no C16 card). The ≤ 10 s detection is
 // main's NetMonitor (M1); the engine reacts to `net { online }` at once. The banner itself: test/e2e/m4-offline.spec.ts.
 import { afterEach, describe, expect, it } from 'vitest';
-import { BILLS_PLAN, jobHarness, jobIntake, step, stepDone, tool, type JobHarness } from './jobHarness';
+import { BILLS_PLAN, jobHarness, jobIntake, step, stepDone, tool, type JobHarness, untilStill } from './jobHarness';
 
 let h: JobHarness | null = null;
 afterEach(() => {
   h?.close();
   h = null;
 });
-
-const poll = async (rounds = 40) => {
-  for (let i = 0; i < rounds; i++) await new Promise((r) => setTimeout(r, 2));
-};
 
 describe('NET_OFFLINE mid-job, engine side (the app test is test/e2e/m4-offline.spec.ts)', () => {
   it('net offline → WAITING net_offline (no card); online → resumes from the same step, finished steps untouched', async () => {
@@ -27,15 +23,19 @@ describe('NET_OFFLINE mid-job, engine side (the app test is test/e2e/m4-offline.
       ],
     });
     h.userSays('Find bills due this week');
-    await poll();
+    const run = h;
+    await untilStill(() => !!run.job(), 'the job is made');
     h.clock.advance(1_000);
-    await poll();
+    await untilStill(
+      () => run.job().state === 'working' && run.turnsJsonl().filter((t) => t.purpose === 'step').length === 2,
+      'step 2 turn in flight',
+    );
     expect(h.job().state).toBe('working');
     const step0 = h.steps()[0]!;
     expect(step0.state).toBe('done');
 
     h.send('net', { online: false });
-    await poll();
+    await untilStill(() => run.job().state === 'waiting', 'the job waits');
     expect(h.job().state).toBe('waiting');
     expect(h.job().waiting_reason).toBe('net_offline');
     expect(h.cards('error')).toHaveLength(0);

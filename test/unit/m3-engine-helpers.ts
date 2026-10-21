@@ -258,10 +258,14 @@ export function makeHarness(o: HarnessOptions): Harness {
       let done = false;
       // Let queued work start (db requests, the drain after settings or verify) before waiting on the lane.
       for (let i = 0; i < 5; i++) await realSleep(1);
-      for (let round = 0; round < 400 && !done; round++) {
+      // 400 rounds move the fake clock (100 s at 250 ms). They pass in about 1 s of real time, and a turn's real file
+      // work (the fake AI's script read, turns.jsonl, the memory worker) can take longer on a loaded Windows runner: the
+      // lane then waits on the disk, not on the clock. So after the clock rounds, keep waiting (clock still) up to 15 s.
+      const realDeadline = Date.now() + 15_000;
+      for (let round = 0; (round < 400 || Date.now() < realDeadline) && !done; round++) {
         const p = engine.lane.idle().then(() => (done = true));
         await Promise.race([p, realSleep(2)]);
-        if (!done) clock.advance(stepMs);
+        if (!done && round < 400) clock.advance(stepMs);
         else {
           // Idle may be momentary (a drain enqueues after its query): settle once more and re-check.
           for (let i = 0; i < 5; i++) await realSleep(1);

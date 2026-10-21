@@ -4,7 +4,18 @@
 // cards are test stubs here (M5, M9, M10 build them), opened through the fake.needsUser tool.
 import { afterEach, describe, expect, it } from 'vitest';
 import type { DbOp } from '../../../src/engine/protocol';
-import { BILLS_PLAN, jobHarness, jobIntake, step, tool, badgeSets, type JobHarness, type PlanStepIn } from './jobHarness';
+import {
+  BILLS_PLAN,
+  jobHarness,
+  jobIntake,
+  step,
+  tool,
+  badgeSets,
+  type JobHarness,
+  type PlanStepIn,
+  realPause,
+  untilStill,
+} from './jobHarness';
 
 let h: JobHarness | null = null;
 afterEach(() => {
@@ -105,23 +116,20 @@ describe('AT-108 / AT-109 · NEEDS YOU and back', () => {
     });
     const ids = names.map((n) => h!.userSaysIn(h!.chat(n), `job ${n}`));
     const jobOf = (i: number) => h!.jobs().find((j) => j.user_message_id === ids[i])!;
-    const poll = async (rounds = 60) => {
-      for (let i = 0; i < rounds; i++) await new Promise((r) => setTimeout(r, 2));
-    };
-    // Polls until the moves land (a slow Windows runner needs more than a fixed number of rounds), at most ~5 s.
-    const until = async (ok: () => boolean) => {
-      for (let i = 0; i < 2_500 && !ok(); i++) await new Promise((r) => setTimeout(r, 2));
-    };
-    await poll();
+    await untilStill(() => h!.jobs().length === names.length, 'every job is made');
     h.clock.advance(2_000);
-    await until(() => jobOf(0).state === 'needs_you' && h!.jobs().filter((j) => j.state === 'working').length === 3);
+    await untilStill(
+      () => jobOf(0).state === 'needs_you' && h!.jobs().filter((j) => j.state === 'working').length === 3,
+      'job one needs you, three work',
+    );
     expect(jobOf(0).state).toBe('needs_you');
     expect(h.jobs().filter((j) => j.state === 'working')).toHaveLength(3);
     expect(jobOf(4).state).toBe('queued');
 
     h.answer(String(h.cards('choice')[0]!.id), 'o1');
-    await until(() => h!.cards('choice')[0]!.state === 'answered');
-    await poll();
+    await untilStill(() => h!.cards('choice')[0]!.state === 'answered', 'the card is answered');
+    // Nothing should move after the answer, so this one is a short look, not a wait for a change.
+    await realPause(80);
     expect(h.cards('choice')[0]!.state).toBe('answered');
     expect(jobOf(0).state).toBe('needs_you');
     expect(h.jobs().filter((j) => j.state === 'working')).toHaveLength(3);
@@ -204,7 +212,8 @@ describe('AT-108 / AT-109 · NEEDS YOU and back', () => {
     await h.settle();
     const card = h.cards('choice')[0]!;
     h.bridge.send('card.answered', { cardId: String(card.id), text: `use ${secret}`, resolvedBy: 'tap' });
-    for (let i = 0; i < 40; i++) await new Promise((r) => setTimeout(r, 2));
+    const run = h;
+    await untilStill(() => (run.mirror(String(run.job().id), 'plan.md') ?? '').includes('Q: Which key?'), 'the answer reaches plan.md');
     const plan = h.mirror(String(h.job().id), 'plan.md') ?? '';
     expect(plan).toContain('Q: Which key?');
     expect(plan).not.toContain(secret);

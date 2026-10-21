@@ -9,7 +9,7 @@ import { t } from '../../../src/shared/copy/t';
 import { openDb } from '../../../src/main/store/db';
 import { openDbOrRebuild } from '../../../src/main/store/rebuild';
 import { TEST_EPOCH_MS } from '../../../src/shared/clock';
-import { BILLS_PLAN, jobHarness, jobIntake, stepDone, tool, type JobHarness } from '../jobs/jobHarness';
+import { BILLS_PLAN, jobHarness, jobIntake, stepDone, tool, type JobHarness, untilStill } from '../jobs/jobHarness';
 
 let h: JobHarness | null = null;
 let dir: string | null = null;
@@ -20,17 +20,17 @@ afterEach(() => {
   dir = null;
 });
 
-const poll = async (rounds = 40) => {
-  for (let i = 0; i < rounds; i++) await new Promise((r) => setTimeout(r, 2));
-};
-
 /** A real job's mirrors (one step done, one running), copied to a fresh {DATA} folder. */
 async function mirrorsOfARunningJob(): Promise<{ data: string; jobId: string; steps: string[] }> {
   h = jobHarness({ script: [jobIntake(BILLS_PLAN), stepDone(0), tool('gmail.search', { query: 'bill' }, { delayMs: 60_000 })] });
   h.userSays('Find bills due this week');
-  await poll();
+  const run = h;
+  await untilStill(() => !!run.job(), 'the job is made');
   h.clock.advance(2_000);
-  await poll();
+  await untilStill(
+    () => run.job()?.state === 'working' && run.turnsJsonl().filter((t) => t.purpose === 'step').length === 2,
+    'step 2 turn in flight',
+  );
   const jobId = String(h.job().id);
   const steps = h.steps().map((s) => String(s.state));
   dir = mkdtempSync(path.join(os.tmpdir(), 'foo-rebuild-'));
