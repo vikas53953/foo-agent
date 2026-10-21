@@ -1,0 +1,12 @@
+{"t":"2026-10-21T17:04:53.481Z","journey":"J07-chat","title":"Casual chat","spec":"07-1 J7; 04 §12; 08-4 rules","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T17:04:58.645Z","step":"launch","ok":true}
+{"t":"2026-10-21T17:04:58.773Z","i":0,"do":"send","sentAt":1792602298731,"before":0,"ok":true,"ms":123}
+{"t":"2026-10-21T17:05:09.950Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3545,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Hi! What would you like to get done today?\n\n5:05 PM","ms":11176}
+{"t":"2026-10-21T17:05:10.000Z","shot":"01-hi.png"}
+{"t":"2026-10-21T17:05:10.077Z","i":2,"do":"send","sentAt":1792602310054,"before":0,"ok":true,"ms":77}
+{"t":"2026-10-21T17:05:19.182Z","i":3,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":2012,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I'm foo, your personal helper. I can check things, keep an eye on them for you and get tasks done for you.\n\n5:05 PM","ms":9105}
+{"t":"2026-10-21T17:05:19.234Z","shot":"02-what-can-you-do.png"}
+{"t":"2026-10-21T17:05:19.330Z","i":4,"do":"send","sentAt":1792602319299,"before":0,"ok":true,"ms":96}
+{"t":"2026-10-21T17:05:31.025Z","i":5,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3543,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"A VPN is a private tunnel between your phone or laptop and another computer, which then talks to the internet for you.\n\nNormally, websites see your real location and your internet provider can see where you browse. With a VPN, your traffic is locked (scrambled) before it leaves your device, travels through the tunnel, and comes out at the VPN's computer. Websites see that computer's location, not yours, and your provider only sees scrambled data going to the VPN.\n\nIt helps on public Wi-Fi and keeps your browsing private from your provider. It does not make you anonymous, because the VPN company can still see your activity, so pick one you trust.\n\n5:05 PM","ms":11695}
+{"t":"2026-10-21T17:05:31.082Z","shot":"03-vpn.png"}
+{"t":"2026-10-21T17:05:31.084Z","i":6,"do":"dump","ok":true,"ms":2}
