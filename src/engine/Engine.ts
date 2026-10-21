@@ -705,6 +705,7 @@ export class Engine {
           local: i.local,
           visuals: i.settings.appearance?.visuals ?? 'balanced',
           ...(i.oldPlan ? { oldPlan: i.oldPlan } : {}),
+          ...(i.answers ? { answers: i.answers } : {}),
         });
       },
       buildRepair: (issues) => this.prompts.buildRepair(issues).prompt,
@@ -849,6 +850,7 @@ export class Engine {
         if ((await this.tidy.onCardAnswered(msg.payload)) || (await this.share.onCardAnswered(msg.payload))) return undefined;
         if (await this.settleMemoryConfirm(msg.payload)) return undefined;
         if (await this.trouble.onCardAnswered(msg.payload)) return undefined; // M8 T5
+        if (await this.lane.onCardAnswered(msg.payload)) return undefined; // CR-0028: an intake question
         if (!(await this.recovery.onCardAnswered(msg.payload))) await this.jobs.onCardAnswered(msg.payload);
         return undefined;
       // M5 T7: main moved an approval (08-1 §2.4); an expired payment / booking card ends its job (AT-111).
