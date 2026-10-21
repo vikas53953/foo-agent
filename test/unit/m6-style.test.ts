@@ -131,14 +131,20 @@ describe('08-3 §12.9 StyleStatsRunner', () => {
     ).not.toMatch(/emoji/u);
   });
 
-  it('CR-0037: no style lines from fewer than 20 user text messages (voice notes and blanks count for the turn, not the sample)', async () => {
+  it('CR-0037: no style lines from fewer than 20 non-blank user text messages (an attachment-only send is a blank text)', async () => {
+    const { h, say, style } = runner();
+    for (let i = 0; i < 20; i++) say('c_foo', i < 15 ? '' : 'Hello there, please book');
+    expect(await style.onUserMessage('c_foo')).toEqual({ ok: true, value: { written: 0 } });
+    expect(h.rows()).toEqual([]);
+  });
+
+  it('CR-0037: blanks among the last 20 texts are skipped, not a reason to stop: the sample is the last 20 non-blank', async () => {
     const { h, say, style } = runner();
     for (let i = 0; i < 20; i++) say('c_foo', 'ok sounds good');
     await style.onUserMessage('c_foo');
-    const before = h.rows().map((r) => r.text);
-    for (let i = 0; i < 20; i++) say('c_foo', i < 15 ? '' : 'Hello there, please book');
-    expect(await style.onUserMessage('c_foo')).toEqual({ ok: true, value: { written: 0 } });
-    expect(h.rows().map((r) => r.text)).toEqual(before);
+    for (let i = 0; i < 20; i++) say('c_foo', i % 10 === 0 ? '' : 'Hello there, please book');
+    expect(await style.onUserMessage('c_foo')).toEqual({ ok: true, value: { written: 3 } });
+    expect(h.rows().map((r) => r.text)).toContain('Starts messages with a capital letter');
   });
 
   it('never in a group or any other chat, and never while memory is off', async () => {

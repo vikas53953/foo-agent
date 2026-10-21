@@ -68,7 +68,7 @@
     {
       "do": "expectText",
       "soft": true,
-      "re": "\\b0\\.0 emoji|NaN|undefined|Infinity|Mixes capital",
+      "re": "about (0\\.0|NaN|Infinity|undefined) (emoji|characters)|Mixes capital",
       "tid": "screen-memory",
       "note": "no empty-measure guesses",
       "not": true

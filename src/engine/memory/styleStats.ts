@@ -6,7 +6,7 @@
 // (style.md), §12.8 `memory.styleStats`, 08-2 §7.2 (they are ordinary pinned facts of part 5). CR-0010 G-M6-06
 // (`privacy.rememberOn=false` blocks style stats). The line words are this ticket's copy keys `memory.style.*`.
 // CR-0037 (X-195): a line is written only when its measure found something: no emoji line at 0.0, no casing line for
-// `mixed`; no lines at all from fewer than 20 non-blank user text messages (the previous lines stay).
+// `mixed`; the sample is the last 20 non-blank user text messages, and no lines are written before there are 20.
 import type { EngineFact } from '../../main/db/queries';
 import { t } from '../../shared/copy/t';
 import { ok, type Result } from '../../shared/errors';
@@ -76,7 +76,7 @@ export function styleLines(s: StyleStats): string[] {
   const lines = [t('memory.style.length', { chars: s.avgChars })];
   if (s.casing === 'lower') lines.push(t('memory.style.casing.lower'));
   else if (s.casing === 'sentence') lines.push(t('memory.style.casing.sentence'));
-  if (s.emojiRate >= 0.1) lines.push(t('memory.style.emoji', { rate: s.emojiRate.toFixed(1) }));
+  if (s.emojiRate.toFixed(1) !== '0.0') lines.push(t('memory.style.emoji', { rate: s.emojiRate.toFixed(1) }));
   if (s.greeting && s.signoff) lines.push(t('memory.style.greeting_signoff', { greeting: s.greeting, signoff: s.signoff }));
   else if (s.greeting) lines.push(t('memory.style.greeting', { greeting: s.greeting }));
   else if (s.signoff) lines.push(t('memory.style.signoff', { signoff: s.signoff }));
@@ -100,7 +100,7 @@ export class StyleStatsRunner {
     if (!foo || foo !== chatId) return ok({ written: 0 });
     const recent = await this.query<{ total: number; texts: string[] }>('messages.userTexts', [chatId, STYLE_EVERY]);
     if (!recent || recent.total === 0 || recent.total % STYLE_EVERY !== 0) return ok({ written: 0 });
-    // CR-0037: a full sample of 20 non-blank texts or nothing; the previous lines stay until one is there.
+    // CR-0037: the query returns the last 20 non-blank texts; fewer than 20 ever means no lines yet.
     if (recent.texts.filter((s) => s.trim() !== '').length < STYLE_EVERY) return ok({ written: 0 });
     return this.write(chatId, styleLines(computeStyle(recent.texts)));
   }
