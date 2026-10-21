@@ -70,6 +70,11 @@ describe('CR-0046 what is mended and what is still dropped (AT-441)', () => {
       { id: 's', component: 'Stepper', label: 'Guests', value: 12, min: 0, max: 50 },
     ],
     [
+      'an emoji label over 80 characters, cut by whole emoji',
+      { id: 'c', component: 'CheckBox', label: '😀'.repeat(81), value: true },
+      { id: 'c', component: 'CheckBox', label: `${'😀'.repeat(79)}…`, value: true },
+    ],
+    [
       'a label over 80 characters',
       { id: 'c', component: 'CheckBox', label: 'x'.repeat(95), value: true },
       { id: 'c', component: 'CheckBox', label: `${'x'.repeat(79)}…`, value: true },
@@ -109,6 +114,11 @@ describe('CR-0046 what is mended and what is still dropped (AT-441)', () => {
         outputs: [{ label: 'x', formula: `a${'+a'.repeat(100)}` }],
       },
     ],
+    ['a number as an id or action name (never read as text)', { id: 'b', component: 'Button', child: 't', action: { event: { name: 5 } } }],
+    [
+      'a number as a formula',
+      { id: 'k', component: 'Calculator', inputs: [{ name: 'a', label: 'A', value: 1 }], outputs: [{ label: 'x', formula: 42 }] },
+    ],
     ['a number that is not plain', { id: 's', component: 'Stepper', label: 'Loan', value: '50,00,000', min: 0, max: 1 }],
   ];
   it.each(dropped)('AT-354 still drops %s', (_why, raw) => {
@@ -124,6 +134,10 @@ describe('CR-0046 what is mended and what is still dropped (AT-441)', () => {
       messages: [{}, { updateComponents: { surfaceId: 's1' } }],
     });
     expect(parseKitBlock('{"createSurface":{"surfaceId":"s","catalogId":"https://a2ui.org/basic"}}', false).dropped).toBe(1);
+  });
+
+  it('a data-model update with a null path is still refused, never read as the root', () => {
+    expect(parseKitBlock(`${create}\n{"updateDataModel":{"surfaceId":"s1","path":null,"value":{"x":1}}}`, false).dropped).toBe(1);
   });
 
   it('every component that is already valid comes back unchanged', () => {

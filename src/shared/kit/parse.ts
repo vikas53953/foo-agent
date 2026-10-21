@@ -54,6 +54,8 @@ function splitObjects(body: string): { objects: string[]; rest: string } {
 
 /** Words a person reads, so an over-long one can be cut with "…" without changing what the piece does. */
 const CUTTABLE = new Set(['label', 'title', 'text', 'sub', 'note', 'why', 'alt']);
+/** Keys that name or wire things (ids, input names, formulas, sources, bindings): a number there is never read as text. */
+const NOT_WORDS = new Set(['id', 'component', 'child', 'children', 'componentId', 'name', 'formula', 'url', 'path', 'action']);
 /** A number written as text: digits, one optional point and sign. "50,00,000" or "8.5%" stays text (and fails). */
 const PLAIN_NUMBER = /^-?\d+(\.\d+)?$/;
 /** Each round mends every issue zod reports; mending can uncover a deeper one, so a few rounds, never a loop. */
@@ -97,7 +99,8 @@ function mendIssue(root: unknown, issue: z.core.$ZodIssue): boolean {
     delete parent[key as string];
     return true;
   }
-  if (issue.code === 'invalid_type' && issue.expected === 'string' && typeof v === 'number' && Number.isFinite(v)) {
+  const words = !issue.path.some((k) => NOT_WORDS.has(String(k)));
+  if (issue.code === 'invalid_type' && issue.expected === 'string' && words && typeof v === 'number' && Number.isFinite(v)) {
     parent[key as string] = String(v);
     return true;
   }
@@ -106,7 +109,8 @@ function mendIssue(root: unknown, issue: z.core.$ZodIssue): boolean {
     return true;
   }
   if (issue.code === 'too_big' && issue.origin === 'string' && typeof v === 'string' && CUTTABLE.has(String(key))) {
-    parent[key as string] = `${v.slice(0, Number(issue.maximum) - 1)}…`;
+    // zod counts code points, so the cut does too (an emoji is never split into half a pair).
+    parent[key as string] = `${[...v].slice(0, Number(issue.maximum) - 1).join('')}…`;
     return true;
   }
   return false;
@@ -143,7 +147,10 @@ const MESSAGE_KEYS: Record<string, readonly string[]> = {
   deleteSurface: ['surfaceId'],
 };
 
-/** CR-0046: a message with an extra key (`type`, a `catalogId` on an update) or a null `version` keeps only its own keys. */
+/**
+ * CR-0046: a message with an extra key (`type`, a `catalogId` on an update) or a null `version` keeps only its own keys. A
+ * `null` inside the message stays (an `updateDataModel` with `path: null` is still refused, never read as the root).
+ */
 function tidyMessage(json: unknown): unknown {
   if (!isObj(json) || Array.isArray(json)) return json;
   const kinds = Object.keys(MESSAGE_KEYS).filter((k) => own(json, k));
@@ -155,9 +162,7 @@ function tidyMessage(json: unknown): unknown {
   if (!isObj(body) || Array.isArray(body)) return json;
   // createSurface's own extra keys (`theme`, `sendDataModel`) are already ignored by its schema (04 §13.5).
   out[kind] =
-    kind === 'createSurface'
-      ? body
-      : Object.fromEntries(MESSAGE_KEYS[kind]!.filter((k) => own(body, k) && body[k] !== null).map((k) => [k, body[k]]));
+    kind === 'createSurface' ? body : Object.fromEntries(MESSAGE_KEYS[kind]!.filter((k) => own(body, k)).map((k) => [k, body[k]]));
   return out;
 }
 

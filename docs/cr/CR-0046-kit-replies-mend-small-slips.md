@@ -55,3 +55,9 @@ cassettes.
 
 Two independent Fable reviews of this CR and its diff (AI output handling is a high-risk path), recorded in the PR and in
 `docs/decisions/real-pc.tsv` ("approved on Vikas's behalf" on pass).
+
+Both passed (mend safety: PASS WITH FIXES, no act items, no way found to widen what a surface may do; spec and prompt:
+PASS). Considers applied: the cut counts code points like zod (an emoji is never split); a number is read as text only
+where words go, never in an id, input name, formula, image source, binding or action; a `null` inside a message stays, so
+an `updateDataModel` with `path: null` is still refused; X-204 wording; the prompt says `N–M` is also a number range.
+Part 1 approved on Vikas's behalf; part 2 (the table rule) waits for Vikas.

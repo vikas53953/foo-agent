@@ -80,7 +80,7 @@ export function kitPromptSection(level: Visuals): string {
     '- A ```page block: one small HTML page (no network, no forms, no links that open by themselves; under 512 KB). Only when no piece fits or the user asks for a tool.',
     'Words still come first and must make sense alone. Buttons that send, book, pay, delete or share ask the user first, as everything else does. Never ask for passwords, codes, card numbers or keys in a form.',
     LEVEL[level],
-    'Components (≤N is the most characters or items, N–M how many items):',
+    'Components (≤N is the most characters or items; N–M is how many items, or the range of a number):',
     'Use only the keys shown (? marks optional ones); leave an optional key out instead of writing null.',
     catalogText(),
   ].join('\n');
