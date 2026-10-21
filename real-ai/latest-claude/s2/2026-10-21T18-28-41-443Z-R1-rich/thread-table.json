@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n6:27 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:27 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n6:27 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:27 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n6:27 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n6:28 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n6:28 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because paying now takes a few seconds and works almost everywhere, from big shops to the chai stall at the corner. You link your bank account once, and after that a scan and a PIN is all it takes. There are no cards to carry and no cash to count out.\n\nIt is instant and usually free. Money moves from your bank to theirs right away, at any hour, including Sundays and holidays. Everyday payments between people and to most shops carry no charge.\nIt works across apps and banks. Whether you use PhonePe, Google Pay, Paytm or your bank's own app, you can pay anyone. A shop needs just one QR code to accept all of them.\nIt suits small payments. Paying ₹20 is as easy as paying ₹5,000 so street vendors, auto drivers and tiny shops accept it, and nobody hunts for change.\n\nAdd a PIN for every payment and the fact that friends and family already use it, and cash starts to feel like the slower option. Once a few people around you switch, the rest tend to follow quickly.\n\n6:28 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n6:28 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:28 PM\n6:28 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:28 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nKeep 3 phones that fit price under ₹20,000, best value\nCompare price, battery, camera, screen and\nWatch live\nStop\n2 min\n6:29 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:29 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb search keeps failing with SEARCH_BUSY errors\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n6:29 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:29 PM"
+  }
+]
