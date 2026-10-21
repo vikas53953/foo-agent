@@ -3,7 +3,7 @@
 // FOO_TEST_BROWSER_DEBUG=1 only) so the test can stand in for the person: type on the sign-in page, solve the puzzle, close
 // the window. The test never types through foo, and foo's AI never sees what the person types.
 import { chromium, expect, type Browser, type ElectronApplication, type Page } from '@playwright/test';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { TID } from '../../src/shared/testids';
 import { byTid, openChat, openWorld, rest, settle } from '../fidelity/capture';
@@ -94,7 +94,14 @@ export async function laneRun(script: (sites: LaneSites) => FakeLine[]): Promise
       const observed = turns
         .filter((t) => t.purpose === 'step' && t.prompt.includes('Last observation'))
         .map((t) => t.prompt.slice(t.prompt.indexOf('Last observation')).split('\n').slice(0, 2).join(' ').slice(0, 300));
-      throw new Error(`never: ${what} (fake AI turns ${seen.join()})${observed.map((o) => `\n  ${o}`).join('')}`);
+      // And the engine's browser and sign-in log lines (codes only, never an address).
+      const logDir = join(dirs.FOO_DATA_DIR, 'logs');
+      const engine = existsSync(logDir)
+        ? readdirSync(logDir)
+            .flatMap((f) => readFileSync(join(logDir, f), 'utf8').split('\n'))
+            .filter((l) => /"evt":"(browser|signin)\./.test(l))
+        : [];
+      throw new Error(`never: ${what} (fake AI turns ${seen.join()})${[...observed, ...engine].map((o) => `\n  ${o}`).join('')}`);
     },
     async person(host) {
       if (!cdp) {

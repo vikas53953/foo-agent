@@ -199,6 +199,11 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
     }
   };
 
+  /** A failed `goto` as a short code for the tech log: `net::ERR_…`, `timeout`, `interrupted`, or `other`. */
+  const openFailure = (message: string): string =>
+    /net::ERR_[A-Z_]+/.exec(message)?.[0] ??
+    (/Timeout \d+ms/.test(message) ? 'timeout' : /interrupted by another navigation/.test(message) ? 'interrupted' : 'other');
+
   const defs: ToolDef[] = [
     tool(
       'browser.open',
@@ -221,6 +226,8 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
         // The page never arrived (offline, no such host, refused, 15 s): never an `ok` on the old page, never URL_NOT_ALLOWED for
         // Chromium's own error page.
         if (failed !== null) {
+          // The reason without the address (08-3 logging carries no URLs): Chromium's net error code, or the 15 s timeout.
+          d.log('browser.open_failed', openFailure(failed));
           await blank(page);
           return {
             kind: 'error',

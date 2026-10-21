@@ -92,7 +92,9 @@ describe('08-2 §8.2 browser.open', { timeout: 60_000 }, () => {
     for (const tool of ['browser.snapshot', 'browser.screenshot', 'browser.wait'] as const) {
       const job = `job_late_${tool.split('.')[1]}`;
       expect(await h.run('browser.open', { url: `${h.origin}/menu` }, job)).toMatchObject({ kind: 'ok' });
-      await (await h.page(job)).evaluate(() => {
+      await (
+        await h.page(job)
+      ).evaluate(() => {
         document.title = 'Just a moment...';
         document.body.innerHTML = '<h1>Please verify you are human</h1>';
       });
@@ -105,6 +107,11 @@ describe('08-2 §8.2 browser.open', { timeout: 60_000 }, () => {
     const dead = h.origin.replace(/:\d+$/, ':1');
     expect(await h.run('browser.open', { url: `${dead}/home` }, 'job_dead')).toEqual({ kind: 'error', errorKind: 'SITE_TIMEOUT' });
     expect((await h.page('job_dead')).url()).toBe('about:blank');
+    // The tech log says why, as Chromium's code and never the address (08-3 logging).
+    expect(h.logs.filter((l) => l.startsWith('browser.open_failed'))).toEqual([
+      expect.stringMatching(/^browser\.open_failed net::ERR_[A-Z_]+$/),
+    ]);
+    expect(h.logs.join('\n')).not.toContain(dead);
     await h.runtime.jobEnded('job_dead');
   });
   it('two load misses in a row → SITE_TIMEOUT', async () => {
