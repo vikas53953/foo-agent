@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n4:07 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n4:07 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n4:07 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n4:08 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n4:10 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n4:10 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n4:13 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from Wed 14 Oct to Wed 21 Oct\nWrite it\nWatch live\nStop\n20 min\n4:13 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n4:13 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nEvery web search fails with SEARCH_BUSY and returns nothing\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n4:13 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n4:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n4:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n4:31 PM"
+  }
+]

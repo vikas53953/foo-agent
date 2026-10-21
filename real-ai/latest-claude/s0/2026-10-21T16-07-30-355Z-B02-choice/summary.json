@@ -1,0 +1,74 @@
+{
+  "journey": "B02-choice",
+  "title": "Choice card: options, Best fit, typed answer",
+  "steps": 8,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T16-07-30-355Z-B02-choice",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792598855896,
+      "before": 0,
+      "ok": true,
+      "ms": 157
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 5575,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I didn’t get that. Say it another way?\n\n4:07 PM",
+      "ms": 11622
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 4,
+      "do": "text",
+      "soft": true,
+      "ok": false,
+      "error": "locator.innerText: Timeout 10000ms exceeded.",
+      "ms": 10071
+    },
+    {
+      "i": 5,
+      "do": "send",
+      "sentAt": 1792598877816,
+      "before": 0,
+      "ok": true,
+      "ms": 118
+    },
+    {
+      "i": 6,
+      "do": "waitReply",
+      "expect": "AT-035: card collapses as if option 2 was tapped",
+      "firstReplyMs": 6110,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I didn’t get that. Say it another way?\n\n4:08 PM",
+      "ms": 12191
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 3
+    }
+  ]
+}

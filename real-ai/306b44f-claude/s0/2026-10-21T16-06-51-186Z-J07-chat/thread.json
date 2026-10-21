@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n4:06 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:06 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n4:06 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n4:06 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n4:06 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! What do you need today?\n\n4:06 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n4:07 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can read your email and calendar, and catch you up on a WhatsApp group or your inbox.\n\n4:07 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can look things up on the web, compare options, and fill in forms for you. I'll show you before anything gets sent, booked or paid, and only do it when you say so.\n\n4:07 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can also set up routines like \"tell me when a price drops\", and remember things about you. You can change how I behave in Settings.\n\n4:07 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n4:07 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Think of a VPN as a private tunnel between your phone or laptop and the internet.\n\nNormally, anyone along the way, like your Wi-Fi owner or your internet company, can see which sites you visit. With a VPN, everything you send is locked first, then travels through the tunnel to a VPN company's computer. That computer opens it and talks to the website for you.\n\nSo the website sees the VPN's address instead of yours, and the Wi-Fi owner only sees scrambled data. It helps on public Wi-Fi and hides your location a bit. It doesn't make you fully anonymous, since the VPN company can still see your activity.\n\n4:07 PM"
+  }
+]

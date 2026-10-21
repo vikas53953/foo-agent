@@ -1,0 +1,48 @@
+{
+  "journey": "J05-web",
+  "title": "First real task with the internet (news + sources)",
+  "steps": 5,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T16-13-20-285Z-J05-web",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792599205857,
+      "before": 0,
+      "ok": true,
+      "ms": 135
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 7611,
+      "newBubbles": 6,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from Wed 14 Oct to Wed 21 Oct\nWrite it\nWatch live\nStop\nunder 1 min\n4:13 PM\n---\nLooking on the web\n---\nLook for ISRO news from Wed 14 Oct to Wed 21 Oct\n---\nWrite it\n---\nWatch live\n---\nStop",
+      "ms": 13752
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 4,
+      "do": "dump",
+      "ok": true,
+      "ms": 4
+    }
+  ]
+}

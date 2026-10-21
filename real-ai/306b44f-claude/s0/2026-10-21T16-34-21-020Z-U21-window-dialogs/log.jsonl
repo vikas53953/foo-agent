@@ -1,0 +1,12 @@
+{"t":"2026-10-21T16:34:21.020Z","journey":"U21-window-dialogs","title":"Close to tray dialog, quit with a running job","spec":"09 §9.2 close to tray, 06 dialogs, 10-2 §C.5 Dialogs / §C.6","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T16:34:26.561Z","step":"launch","ok":true}
+{"t":"2026-10-21T16:34:27.607Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1046}
+{"t":"2026-10-21T16:34:27.726Z","i":1,"do":"send","sentAt":1792600467685,"before":0,"ok":true,"ms":119}
+{"t":"2026-10-21T16:34:31.728Z","i":2,"do":"wait","ok":true,"ms":4002}
+{"t":"2026-10-21T16:34:31.732Z","i":3,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-21T16:34:33.233Z","i":4,"do":"wait","expect":"first-close dialog: foo keeps running in the tray","ok":true,"ms":1501}
+{"t":"2026-10-21T16:34:33.308Z","shot":"01-first-close.png"}
+{"t":"2026-10-21T16:34:33.310Z","i":5,"do":"key","ok":true,"ms":2}
+{"t":"2026-10-21T16:37:33.344Z","i":6,"do":"waitReply","expect":"job still finishes after the dialog","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","ms":180033}
+{"t":"2026-10-21T16:37:33.414Z","shot":"02-news.png"}
+{"t":"2026-10-21T16:37:33.418Z","i":7,"do":"dump","ok":true,"ms":3}
