@@ -1,0 +1,47 @@
+{
+  "journey": "test/verify/c1-t3-bubbles.journey.ts",
+  "label": "before",
+  "appDir": "/home/user/foo-base",
+  "commit": "0c0182eedf1066a3f89426fa3c19e4e18383750e",
+  "dirty": true,
+  "started": "2026-10-21T07:03:50.424Z",
+  "finished": "2026-10-21T07:03:58.800Z",
+  "platform": "linux x64",
+  "pass": false,
+  "error": "Error: expected one bubble with one time, got 3 / 3; paragraph gap 18px, spec 8px; no sender label above foo’s reply; light: chip 1 / 10px / next 16px; dark: chip 1 / 10px / next 16px\n    at Object.journey (/home/user/foo-agent/test/verify/c1-t3-bubbles.journey.ts:134:30)\n    at async run (/home/user/foo-agent/scripts/foo-verify.ts:134:5)",
+  "notes": [
+    "AT-427: the reply shows as 3 bubble(s) with 3 time(s)",
+    "AT-427: 3 paragraphs inside, 18px apart",
+    "AT-428: label above the reply reads \"\"; my bubble has 0 labels",
+    "AT-421 (light): chip covers 1 line(s) of words; hangs 10px below the bubble; next row 16px below",
+    "AT-429 (light): my bubble is rgb(11, 11, 16)",
+    "AT-421 (dark): chip covers 1 line(s) of words; hangs 10px below the bubble; next row 16px below",
+    "AT-429 (dark): my bubble is rgb(44, 53, 154)"
+  ],
+  "shots": [
+    {
+      "file": "before/01-foo-chat-open.light.png",
+      "name": "foo-chat-open",
+      "theme": "light"
+    },
+    {
+      "file": "before/02-three-paragraph-reply.light.png",
+      "name": "three-paragraph-reply",
+      "theme": "light"
+    },
+    {
+      "file": "before/03-reply-with-thumbs-down.light.png",
+      "name": "reply-with-thumbs-down",
+      "theme": "light"
+    },
+    {
+      "file": "before/04-reply-with-thumbs-down.dark.png",
+      "name": "reply-with-thumbs-down",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}

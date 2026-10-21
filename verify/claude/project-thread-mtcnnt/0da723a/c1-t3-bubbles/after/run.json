@@ -1,0 +1,49 @@
+{
+  "journey": "test/verify/c1-t3-bubbles.journey.ts",
+  "label": "after",
+  "appDir": "/home/user/foo-agent",
+  "commit": "0da723a71253e053fe8135dc0d04f32fc04dfa00",
+  "dirty": false,
+  "started": "2026-10-21T07:09:19.886Z",
+  "finished": "2026-10-21T07:09:28.604Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "AT-427: the reply shows as 1 bubble(s) with 1 time(s)",
+    "AT-427: 3 paragraphs inside, 8px apart",
+    "AT-428: label above the reply reads \"foo\"; my bubble has 0 labels",
+    "AT-421 (light): chip covers 0 line(s) of words; hangs 18px below the bubble; next row 24px below",
+    "AT-429 (light): my bubble is rgb(11, 11, 16)",
+    "AT-421 (dark): chip covers 0 line(s) of words; hangs 18px below the bubble; next row 24px below",
+    "AT-429 (dark): my bubble is rgb(44, 53, 154)"
+  ],
+  "shots": [
+    {
+      "file": "after/01-foo-chat-open.light.png",
+      "name": "foo-chat-open",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-three-paragraph-reply.light.png",
+      "name": "three-paragraph-reply",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-reply-with-thumbs-down.light.png",
+      "name": "reply-with-thumbs-down",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-reply-with-thumbs-down.dark.png",
+      "name": "reply-with-thumbs-down",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}
