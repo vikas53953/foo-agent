@@ -240,6 +240,12 @@ Fixture: FOO_TEST world, fake AI, pinned clock, motion off for pictures.
 
 AT-436 to AT-439 are reserved for this patch.
 
+**Empty intake answers (CR-0041, X-199; 08-4 §25.5 item 6).**
+
+| ID | Verify | Pass |
+|---|---|---|
+| AT-440 | Empty answer, asked again | an intake answer with no words left gets one more intake turn with nothing shown; if that one plans a job its card follows, and if it is empty too foo posts "I didn't get that. Say it another way?"; a short real ask ("Order me a pizza from Dominos") never gets a 👍; an ack still does (AT-027) |
+
 ---
 
 ## §D Article compliance tests
