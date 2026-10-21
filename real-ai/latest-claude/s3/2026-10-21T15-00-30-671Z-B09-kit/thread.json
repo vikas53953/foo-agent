@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For a home loan of ₹50,00,000 (50 lakh) at 8.5% for 20 years, the monthly EMI comes to about ₹43,391. Change any number below and the results update.\n\nCouldn’t show part of this\n\nKeep\n\nTotal interest over 20 years is a little over ₹54 lakh, so the bank takes back more than the loan itself. Try 15 years to see how much that saves.\n\n3:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show the 5 places to visit in Jaipur on a map\n3:03 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are 5 places worth seeing in Jaipur, numbered in a sensible order for one day: start at Amber Fort in the morning while it's cooler, then come down into the old city.\n\nCouldn’t show part of this\n\nKeep\n\nCity Palace, Jantar Mantar and Hawa Mahal are close together, so you can walk between them.\n\nWant me to plan this as a one-day trip with timings?\n\n3:03 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show a chart of India's GDP growth for the last 5 years\n3:05 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's GDP growth for the last 5 full years (April to March), from official figures as I know them. The numbers may have been revised since, and I can't confirm the newest year from here.\n\nCouldn’t show part of this\n\nKeep\n\nThe economy shrank in FY21 (April 2020 to March 2021) because of the pandemic, then bounced back strongly. Growth has cooled a little since the FY24 peak.\n\n3:05 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n3:08 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are the three side by side. Galaxy S25 looks like the best value, mainly for the 256 GB storage and the extra zoom camera at nearly the same launch price.\n\nCouldn’t show part of this\n\nKeep\n\nThese are launch prices as I know them. Today's shop prices and offers can be quite different, and I can't see them from here.\n\nWant me to check current prices on a few shopping sites?\n\n3:08 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n3:10 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your 2 minute tea timer. Tap start when the water is hot and the tea is in.\n\nLet the tea steep\n2:00 left\nStart timer\nKeep\n\nThe timer runs while this chat is open, so keep the app on screen.\n\n3:10 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n3:12 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for the party plan. Fill it in and send.\n\nCouldn’t show part of this\n\nKeep\n\nOnce I have these, I can suggest a cake, food and a simple plan that fits.\n\n3:12 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n3:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "streaming",
+    "text": "Here's an expense tracker you can use right here. Add an item, pick a category, and the total and category bars update as you go.\n\nSet a monthly budget at the top to see how much is left. Entries stay only while this page is open, so note down your totals before you close it.\n\nBuilding your page…"
+  }
+]

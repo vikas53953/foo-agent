@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n3:46 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dal chawal it is. Simple, warm and hard to beat on a weeknight.\n\n3:46 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A spoon of ghee on top and some papad or pickle on the side make it feel like a proper meal.\n\n3:46 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n3:48 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n3:49 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n3:49 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Paying Domino's\n1\nCheck dominos.co.in\n2\nSign in to Domino's\n3\nLook for pizzas and offers near you\n4\nKeep 3 pizzas that fit popular and good value\n5\nWait for you to pick one\n…and 4 more · Show\nAbout 8 minutes\nGo\nChange plan\n3:49 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:49 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n3:52 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which email do you want me to read?\n1\nGmail\nBEST FIT\n2\nOutlook\n3\nYahoo Mail\n4\nSomething else\nSomething else…\nSkip\n3:52 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:52 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "book me a flight to Goa on Sat 12 Dec\n3:55 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "I can find and compare flights, and open the booking page for you. Filling in passengers and paying for flights comes in a later version.\n1\nCompare flights\nBEST FIT\n2\nNot now\nSomething else…\nSkip\n3:55 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:55 PM"
+  }
+]
