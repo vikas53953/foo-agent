@@ -4,7 +4,7 @@
 # Codex CLI signed in with the OPENAI_API_KEY secret. "auto" runs every AI whose secret exists, Claude first, one at a
 # time. Evidence (screenshots, logs, thread dumps) goes to the `evidence` branch under real-ai/<short-sha>-<ai>/ and
 # real-ai/latest-<ai>/, since agents cannot read CI artifacts.
-# Spend guards: manual runs by the repo owner only, one run at a time, a journey cap, a Sonnet-class model for Claude,
+# Spend guards: owner-started runs only (a tap or a merge into main), one run at a time, a journey cap, a Sonnet-class model for Claude,
 # --max-turns 1 per foo turn (foo's own setting), and a hard job timeout. The driver never clicks Approve, Pay, Book or
 # Send. A key reaches only the steps that need it, through env; it is never echoed, and the evidence is scanned for it
 # before anything is pushed.
@@ -34,6 +34,9 @@ on:
         description: Model the Claude CLI uses for foo's turns (Claude only)
         default: claude-sonnet-5-5
         required: true
+  # Vikas picked "On every merge to main" (2026-10-21): each merge runs the defaults on that commit, no tap needed.
+  push:
+    branches: [main]
 
 concurrency:
   group: real-ai-e2e
@@ -46,7 +49,7 @@ jobs:
   # Which AIs to run: the asked one, or with "auto" every AI whose secret exists. Fails fast when none can run.
   plan:
     name: Pick the AIs
-    # Only the owner may spend the keys. workflow_dispatch has no fork trigger, and fork PRs never see secrets.
+    # Only the owner may spend the keys. Neither trigger fires for forks, and fork PRs never see secrets.
     if: github.actor == github.repository_owner && github.repository == 'vikas53953/foo-agent'
     runs-on: ubuntu-latest
     outputs:
@@ -54,7 +57,7 @@ jobs:
     steps:
       - id: pick
         env:
-          AI: ${{ inputs.ai }}
+          AI: ${{ inputs.ai || 'auto' }}
           HAS_ANTHROPIC: ${{ secrets.ANTHROPIC_API_KEY != '' }}
           HAS_OPENAI: ${{ secrets.OPENAI_API_KEY != '' }}
         run: |
@@ -80,7 +83,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.ref }}
+          ref: ${{ inputs.ref || github.sha }}
       # The journey kit always comes from this workflow's branch, so an older ref can still be tested with today's kit.
       - name: Take the journey kit from the workflow's branch
         shell: bash
@@ -125,11 +128,11 @@ jobs:
         env:
           # Only Claude's run sees its key; the Codex run is signed in through its own auth file.
           ANTHROPIC_API_KEY: ${{ matrix.ai == 'claude' && secrets.ANTHROPIC_API_KEY || '' }}
-          ANTHROPIC_MODEL: ${{ inputs.model }}
+          ANTHROPIC_MODEL: ${{ inputs.model || 'claude-sonnet-5-5' }}
           FOO_AI_ROW: ${{ matrix.ai == 'claude' && 'claude-cli' || 'codex-cli' }}
           ELECTRON_RUN_AS_NODE: '1'
-          JOURNEYS: ${{ inputs.journeys }}
-          MAX_JOURNEYS: ${{ inputs.max_journeys }}
+          JOURNEYS: ${{ inputs.journeys || 'all' }}
+          MAX_JOURNEYS: ${{ inputs.max_journeys || '25' }}
         run: |
           export FOO_EXE="$GITHUB_WORKSPACE/dist/win-unpacked/foo.exe"
           export FOO_REAL_TEST_DIR="$RUNNER_TEMP/foo-real-test"
@@ -157,7 +160,7 @@ jobs:
         shell: bash
         run: |
           {
-            echo "### Real-AI journeys on ${{ inputs.ref }} ($(git rev-parse --short HEAD)), AI ${{ matrix.ai }}, model ${{ matrix.ai == 'claude' && inputs.model || 'Codex default' }}"
+            echo "### Real-AI journeys on ${{ inputs.ref || github.sha }} ($(git rev-parse --short HEAD)), AI ${{ matrix.ai }}, model ${{ matrix.ai == 'claude' && (inputs.model || 'claude-sonnet-5-5') || 'Codex default' }}"
             echo "| Journey | Steps | Failed |"; echo "|---|---|---|"
             for f in "$RUNNER_TEMP"/foo-real-test/runs/*/summary.json; do
               [ -f "$f" ] || continue
@@ -192,7 +195,7 @@ jobs:
           runs="$RUNNER_TEMP/foo-real-test/runs"
           [ -d "$runs" ] || { echo "no runs"; exit 0; }
           short="$(git rev-parse --short=7 HEAD)-$AI"
-          printf 'run %s · ref %s · commit %s · AI %s\n' "$GITHUB_RUN_ID" "${{ inputs.ref }}" "$(git rev-parse HEAD)" "$AI" > "$runs/RUN.txt"
+          printf 'run %s · ref %s · commit %s · AI %s\n' "$GITHUB_RUN_ID" "${{ inputs.ref || github.sha }}" "$(git rev-parse HEAD)" "$AI" > "$runs/RUN.txt"
           work="$RUNNER_TEMP/evidence" && rm -rf "$work" && mkdir -p "$work" && cd "$work"
           git init -q && git config core.autocrlf false
           git config user.name "github-actions[bot]"
