@@ -51,7 +51,8 @@
    `needs_update`), not "slow to answer". At or above the floor, or with no floor (gemini), nothing changes; a working old
    helper still works. **Cold start:** no new timer. CR-0025 already gives helper tests 60 s and runs them one after another;
    the slowest real cold start measured was 18 s with two helpers starting at once. A second timer would have no evidence
-   behind it.
+   behind it. Trade-off: an old helper that still works but fails one test for another reason (a network drop) also
+   reads "needs an update" until [ Test again ] passes.
 6. **Real Windows Credential Manager in CI:** already on main (`test/integration/vault/windows-keyring.test.ts`, X-183,
    CR-0025 pick 8): save, read back, delete and `vault.use(ai_call)` through the real `@napi-rs/keyring` on the Windows
    shards. Nothing added.
@@ -63,8 +64,24 @@ the keys), the finder's timers, the trace matrix itself. No migration, channel, 
 
 ## (c) Mutation baseline
 
-Filled from the first full run (see the PR): score per file and the surviving mutants worth a test.
+First full run, 2026-10-21 (Linux, 631 mutants, ~25 min): **72.1%** killed overall. `phrases.ts` 86.3%, `classify.ts`
+76.2%, `envelope.ts` 72.5%, `probe.ts` 57.8% (most survivors are `parseCapabilities` help-text branches). `break` is set
+to 70; raise it as tests close the survivors, never lower it (FID-22 locks the config through the CR rule).
 
 ## (d) Independent review
 
-Pending.
+Fable reviewer, 2026-10-21 ~13:25Z, read-only, against 08-2 §5.3.3, §7.5, 08-4 §26.1, 11-fidelity §11.5.3, §11.7.1,
+§11.10, DECISIONS X-183/X-185 and the diff; ran typecheck, spec:coverage, trace:check, fid:guard and the affected tests.
+**Verdict: PASS WITH FIXES.** Applied:
+
+- Act: a commented-out test (`// it(`) no longer counts as an added test case (it bypassed FID-22); the hook strips an
+  absolute path to the repo path, so a CR naming `test/…` exempts it.
+- Consider, applied: no plan-key repair on a side question (its act becomes a reply anyway); the hook reads only the
+  arguments of `rm`, `mv`, `unlink`, `git rm`, `git mv` (no longer blocks `rm -rf dist && vitest run test/a.test.ts`); the
+  pick 5 trade-off and the close-out note below are written down; the mutation `break` is set from the first run (§(c)).
+- Consider, kept: editing a listed gap's reason text needs a CR too (rare; it keeps the list honest).
+- Noted: the hook is a speed bump (`sed -i` or `git checkout` get past it); CI's FID-22 is the lock. A close-out that
+  writes a new `<M>.audit.json` (M7, M10…) turns that milestone's pending rows into FID-21 failures; that close-out's CR
+  lists them as gaps or builds them.
+
+Recorded as approved on Vikas's behalf under his standing rule; listed for his later review.

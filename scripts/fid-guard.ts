@@ -110,9 +110,13 @@ const TEST_FILE = /^test\/.*\.(?:test|spec)\.tsx?$/;
 /** One test case: `it(`, `test(` and their `.each`/`.concurrent`… forms, not `describe` or `test.step`. */
 const TEST_CASE = /(?:^|[^.\w])(?:it|test)(?:\.(?:each|concurrent|sequential|for|fails|only|skip|skipIf|runIf)\b(?:\([^)]*\))?)*\(\s*['"`]/;
 
+/** A commented-out line: commenting a test out removes it (review of CR-0031). */
+const COMMENT = /^\s*(?:\/\/|\/\*|\*)/;
+
 /** FID-22: test cases removed minus added across the PR's test files (a moved test cancels out). */
 export function testCasesLost(added: readonly Added[], removed: readonly Added[]): number {
-  const count = (xs: readonly Added[]) => xs.filter((x) => TEST_FILE.test(x.file) && TEST_CASE.test(x.line)).length;
+  const count = (xs: readonly Added[]) =>
+    xs.filter((x) => TEST_FILE.test(x.file) && !COMMENT.test(x.line) && TEST_CASE.test(x.line)).length;
   return count(removed) - count(added);
 }
 const GOLDEN_APP = /^golden\/app\//;

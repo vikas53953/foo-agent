@@ -38,6 +38,9 @@ describe('FID-22 locked checks', () => {
     expect(testCasesLost([], at('test/a.test.ts', "describe('x', () => {", "  await test.step('y', async () => {"))).toBe(0);
     expect(testCasesLost([], at('src/a.test.ts', "it('x', () => {})"))).toBe(0);
     expect(testCasesLost([], at('test/e2e/a.spec.ts', "  test('opens the app', async () => {"))).toBe(1);
+    // Commenting a test out removes it.
+    const live = at('test/a.test.ts', "  it('x', () => {");
+    expect(testCasesLost(at('test/a.test.ts', "  // it('x', () => {", "  /* it('y', () => {"), live)).toBe(1);
   });
 
   it('a PR that removes test cases needs a CR; with one cited it passes', () => {
@@ -71,6 +74,10 @@ describe('FID-22 locked checks', () => {
     expect(hook.verdict('Write', { file_path: '/repo/test/unit/a.test.ts' }, root, '')).toBeNull();
     expect(hook.verdict('Bash', { command: 'git rm test/unit/a.test.ts' }, root, '')).toMatch(/test\/unit\/a\.test\.ts/);
     expect(hook.verdict('Bash', { command: 'rm -rf node_modules && pnpm test' }, root, '')).toBeNull();
+    expect(hook.verdict('Bash', { command: 'rm -rf dist && pnpm exec vitest run test/unit/a.test.ts' }, root, '')).toBeNull();
+    expect(hook.verdict('Bash', { command: 'rm /repo/test/unit/a.test.ts' }, root, '')).toMatch(/moving test\/unit\/a\.test\.ts /);
+    expect(hook.verdict('Bash', { command: 'rm /repo/test/unit/a.test.ts' }, root, 'CR names test/unit/a.test.ts')).toBeNull();
+    expect(hook.verdict('Bash', { command: 'mv vitest.config.ts x.ts' }, root, '')).toMatch(/vitest\.config\.ts/);
     expect(hook.verdict('Bash', { command: 'pnpm exec vitest run test/unit/a.test.ts' }, root, '')).toBeNull();
   });
 });

@@ -567,7 +567,7 @@ export class ChatLane {
       if (!act) this.d.log('chat.protocol_invalid', 'PROTOCOL_INVALID', { chatId });
       // A valid <say> with a broken <act> is still posted as a plain reply (08-2 §7.5).
       if (!act && parsed.say.trim()) act = { kind: 'reply' };
-    } else if (act.kind === 'job') {
+    } else if (act.kind === 'job' && !side) {
       // X-189 (CR-0031): a plan whose keys are not in the catalogue gets the same one repair turn; if the repaired plan is
       // still not clean, the first plan stands and each bad step falls back to `generic_working` (08-2 §5.3.3).
       const issues = planKeyIssues(act.plan);

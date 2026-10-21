@@ -18,8 +18,8 @@ export const LOCKED = [
   '.claude/settings.json',
   '.claude/hooks/locked-checks.mjs',
 ];
-const TEST_FILE = /(?:^|[\s'"/])test\/\S*\.(?:test|spec)\.tsx?\b/;
-const DELETE = /(?:^|[\s;&|(])(?:rm|unlink|git\s+rm|git\s+mv|mv)\s/;
+const TEST_FILE = /^test\/\S*\.(?:test|spec)\.tsx?$/;
+const DELETE_VERBS = ['rm', 'unlink', 'mv'];
 
 /** The verdict for one tool call: null to allow, or why it is blocked. `crText` = the text of the branch's CRs. */
 export function verdict(tool, input, root, crText) {
@@ -32,12 +32,21 @@ export function verdict(tool, input, root, crText) {
     return null;
   }
   if (tool === 'Bash') {
-    const cmd = String(input.command ?? '');
-    if (!DELETE.test(cmd)) return null;
-    const hits = [
-      ...LOCKED.filter((p) => cmd.includes(p)),
-      ...(cmd.match(new RegExp(TEST_FILE, 'g')) ?? []).map((m) => m.trim().replace(/^['"]/, '')),
-    ];
+    // Only the arguments of a delete or move verb count: `rm -rf dist && vitest run test/a.test.ts` deletes no test.
+    const hits = [];
+    for (const part of String(input.command ?? '').split(/&&|\|\||[;|\n]/)) {
+      const words = part.trim().split(/\s+/);
+      const at = words[0] === 'git' && (words[1] === 'rm' || words[1] === 'mv') ? 2 : DELETE_VERBS.includes(words[0]) ? 1 : -1;
+      if (at < 0) continue;
+      for (const w of words.slice(at)) {
+        const raw = w
+          .replace(/^['"]|['"]$/g, '')
+          .split('\\')
+          .join('/');
+        const rel = raw.startsWith('/') || /^[A-Za-z]:\//.test(raw) ? relative(root, raw).split('\\').join('/') : raw.replace(/^\.\//, '');
+        if (LOCKED.includes(rel) || TEST_FILE.test(rel)) hits.push(rel);
+      }
+    }
     const blocked = hits.filter((p) => !named(p));
     if (blocked.length) return `deleting or moving ${blocked.join(', ')} removes a check (FID-22).`;
   }
