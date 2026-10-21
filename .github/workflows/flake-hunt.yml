@@ -4,9 +4,6 @@
 name: Flake hunt
 
 on:
-  # TEMPORARY (remove before merge): run on pushes to this branch with the defaults below.
-  push:
-    branches: [claude/project-thread-rbb2rg]
   workflow_dispatch:
     inputs:
       unit:
@@ -14,10 +11,10 @@ on:
         default: ''
       e2e:
         description: Playwright spec files, space separated (empty = none)
-        default: 'test/e2e/zz-reload-hunt.spec.ts test/fidelity/ux/UX-14.signin.spec.ts:316'
+        default: ''
       repeat:
         description: runs of each test per job
-        default: '40'
+        default: '3'
       debug:
         description: Playwright DEBUG value for the e2e step, e.g. pw:api (empty = off)
         default: ''
@@ -36,8 +33,8 @@ jobs:
         job: [1, 2, 3]
     env:
       UNIT: ${{ inputs.unit }}
-      E2E: ${{ inputs.e2e || 'test/e2e/zz-reload-hunt.spec.ts test/fidelity/ux/UX-14.signin.spec.ts:316' }}
-      REPEAT: ${{ inputs.repeat || '40' }}
+      E2E: ${{ inputs.e2e }}
+      REPEAT: ${{ inputs.repeat }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
