@@ -28,6 +28,9 @@ async function start(lines: FakeLine[]) {
   const { refs } = await page.evaluate(() => window.__fooTest!.seed('ux-world'));
   await expect(page.getByTestId(TID.chatlistRow).first()).toBeVisible();
   await settleSeededJobs(page, refs);
+  // The helpers slice loads with the bootstrap (store/apply.ts loadHelpers), before the seed: reload so names are known.
+  await page.reload();
+  await expect(page.getByTestId(TID.chatlistRow).first()).toBeVisible();
   await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0]!.setContentSize(1280, 800));
   await page.waitForFunction(() => window.innerWidth === 1280);
   return { app, page };
@@ -52,10 +55,14 @@ async function ask(page: Page, text: string, answer: string): Promise<{ me: Loca
   await field.focus();
   await page.keyboard.type(text);
   await page.keyboard.press('Enter');
-  const me = page.locator(`${byTid(TID.threadLog)} [data-message-id]`).filter({ has: page.getByTestId(TID.bubbleMe).filter({ hasText: text }) });
+  const me = page
+    .locator(`${byTid(TID.threadLog)} [data-message-id]`)
+    .filter({ has: page.getByTestId(TID.bubbleMe).filter({ hasText: text }) });
   await expect(me).toBeVisible();
   const first = answer.split('\n')[0]!;
-  const reply = page.locator(`${byTid(TID.threadLog)} [data-message-id]`).filter({ has: page.getByTestId(TID.bubbleFoo).filter({ hasText: first }) });
+  const reply = page
+    .locator(`${byTid(TID.threadLog)} [data-message-id]`)
+    .filter({ has: page.getByTestId(TID.bubbleFoo).filter({ hasText: first }) });
   await expect
     .poll(async () => {
       await advance(page, HOLD_MS + 100);
@@ -111,18 +118,21 @@ test('AT-428 · foo’s chat and a helper’s chat show the face and name above 
   await expect(labels.first()).toBeVisible();
   await expect(labels.first()).toContainText('Trips');
   // One label per output run: never on a bubble that continues a run (data-pos middle / last).
-  const counts = await log.locator('[data-message-id]').evaluateAll((rows, ids) => {
-    let labelled = 0;
-    let firsts = 0;
-    for (const r of rows) {
-      const helper = r.querySelector(`[data-testid="${ids.helper}"]`);
-      if (!helper) continue;
-      const pos = helper.getAttribute('data-pos');
-      if (pos === 'first' || pos === 'single') firsts++;
-      if (r.querySelector(`[data-testid="${ids.sender}"]`)) labelled++;
-    }
-    return { labelled, firsts };
-  }, { helper: TID.bubbleHelper, sender: TID.bubbleSender });
+  const counts = await log.locator('[data-message-id]').evaluateAll(
+    (rows, ids) => {
+      let labelled = 0;
+      let firsts = 0;
+      for (const r of rows) {
+        const helper = r.querySelector(`[data-testid="${ids.helper}"]`);
+        if (!helper) continue;
+        const pos = helper.getAttribute('data-pos');
+        if (pos === 'first' || pos === 'single') firsts++;
+        if (r.querySelector(`[data-testid="${ids.sender}"]`)) labelled++;
+      }
+      return { labelled, firsts };
+    },
+    { helper: TID.bubbleHelper, sender: TID.bubbleSender },
+  );
   expect(counts.firsts).toBeGreaterThan(0);
   expect(counts.labelled).toBe(counts.firsts);
   await app.close();

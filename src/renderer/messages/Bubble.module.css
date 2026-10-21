@@ -1,7 +1,8 @@
-/* Spec: 04 §1.2 rhythm (data-gap → --s-1 2 / --s0 4 / --s2 12 / --s3 16), §1.4 corners (--r-bubble with the 6px tail corner;
+/* Spec: 04 §1.2 rhythm (data-gap → --s-1 2 / --s0 4 / --s2 12 / --s3 16 / --s5 24 under a reaction chip, CR-0024 B2), §1.4 corners (--r-bubble with the 6px tail corner;
  * data-tl/tr/br/bl), §1.5 new-row motion (fade + 8px rise, --m-slow --ease-in; history rows still), §1.8 focus ring on the
  * bubble, §1.9 selection colours and the 20px checkbox 8px left of the row, §2 the user's bubble, §3 meta (right 12, bottom 6,
- * --t-caption, tabular), §4.3 badge (24 circle, left −8, bottom −10, --z-raised), §6.4 quote, §7 Not sent, §8 chips, §9.2
+ * --t-caption, tabular), §4.3 badge (24 circle, left −8, bottom −10, --z-raised), §6.4 quote, §7 Not sent, §8 chips (left −8,
+ * bottom −18 so they never cover words, CR-0024 B2; the action row starts 24 below a bubble that carries them), §9.2
  * toolbar (32 visual, 40 hit, outside the bubble on the far side, fades in --m-fast on hover / focus-within), §9.3 picker
  * (44 pill, 36 options, emoji 20), §10.1–§10.9 attachments, deleted, Read more (15 × 22 with a 22px fade), Hindi / Punjabi
  * --t-body-indic, emoji-only sizes, §12 output bubble (rich: min(680, column), padding 12/16), §12.4 sender label (26 face,
@@ -31,6 +32,9 @@
 }
 .row[data-gap='s3'] {
   padding-top: var(--s3);
+}
+.row[data-gap='s5'] {
+  padding-top: var(--s5);
 }
 .row[data-indent] > :not(.sender) {
   margin-left: var(--indent);
@@ -407,6 +411,9 @@
   left: calc(-1 * var(--s1));
   bottom: calc(-1 * (var(--s1) + var(--s-1)));
   z-index: var(--z-raised);
+}
+.chips {
+  bottom: calc(-1 * (var(--s3) + var(--s-1)));
 }
 .badge {
   display: grid;
@@ -992,6 +999,9 @@
 /* ---- action row (§17.1) */
 .actionsWrap {
   margin-top: var(--s0);
+}
+.row[data-chips] .actionsWrap {
+  margin-top: var(--s5);
 }
 .actions {
   display: flex;
