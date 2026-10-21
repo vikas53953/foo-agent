@@ -133,7 +133,6 @@
         "of…",
         "✓",
         "✓",
-        "🛠",
         "Table",
         "for",
         "Step",
@@ -409,7 +408,6 @@
         "Village",
         "book",
         "a",
-        "⏳",
         "foo",
         "read:",
         "people",
@@ -633,8 +631,8 @@
     "total": 82720
   },
   "r5": {
-    "ratio": 0.099921875,
-    "diffPixels": 102320,
+    "ratio": 0.0999248046875,
+    "diffPixels": 102323,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-04.light.diff.png"
