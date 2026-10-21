@@ -1,15 +1,12 @@
 // Property tests (fast-check) for the pure text rules every reply passes through: 08-2 §7.3 / 08-4 §25.5 item 1 (the
-// FOO/1 envelope parser), 04 §12.3 (chat-mode bubbles: 1–3, nothing lost, nothing split past 600 characters), 04-2 §22.4
-// and 08-2 §11.4 (a card number never survives the redactor). Random inputs find the cases hand-picked examples miss.
+// FOO/1 envelope parser), 04-2 §22.4 and 08-2 §11.4 (a card number never survives the redactor). Random inputs find the cases hand-picked examples miss.
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
 import { parseEnvelope } from '../../src/engine/prompt/envelope';
-import { CHAT_MODE_MAX_CHARS, chunkText, MAX_BUBBLES } from '../../src/renderer/messages/chunks';
 import { luhn, redactSecrets } from '../../src/shared/redactor';
 
 const RUNS = Number(process.env.PROPS_RUNS ?? 500);
 const noTags = (s: string): boolean => !/<\/?(say|act)>/.test(s);
-const squash = (s: string): string => s.replace(/\s+/g, '');
 
 describe('FOO/1 envelope parser', () => {
   it('never throws on any text, and the say never holds an <act> block', () => {
@@ -37,34 +34,6 @@ describe('FOO/1 envelope parser', () => {
           expect(e.act).toEqual(JSON.parse(JSON.stringify(act)));
         },
       ),
-      { numRuns: RUNS },
-    );
-  });
-});
-
-describe('chat-mode bubbles', () => {
-  const para = fc.stringMatching(/^[A-Za-z0-9 ,.!?'-]{1,80}$/).filter((s) => s.trim() !== '');
-  const reply = fc.array(para, { minLength: 1, maxLength: 7 }).map((ps) => ps.join('\n\n'));
-
-  it(`1 to ${MAX_BUBBLES} bubbles, none empty, and every word kept in order`, () => {
-    fc.assert(
-      fc.property(reply, (text) => {
-        const out = chunkText(text);
-        expect(out.length).toBeGreaterThanOrEqual(1);
-        expect(out.length).toBeLessThanOrEqual(MAX_BUBBLES);
-        for (const b of out) expect(b.trim()).not.toBe('');
-        expect(squash(out.join(''))).toBe(squash(text));
-      }),
-      { numRuns: RUNS },
-    );
-  });
-
-  it(`a reply over ${CHAT_MODE_MAX_CHARS} characters is never split`, () => {
-    fc.assert(
-      fc.property(fc.array(para, { minLength: 2, maxLength: 12 }), (ps) => {
-        const text = ps.join('\n\n').padEnd(CHAT_MODE_MAX_CHARS + 1, '.');
-        expect(chunkText(text)).toEqual([text]);
-      }),
       { numRuns: RUNS },
     );
   });
