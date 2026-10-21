@@ -2,7 +2,7 @@
 // toasts, crash reports, screenshots, the export zip: "0 canary hits outside Credential Manager"), §G.8 (scan reports: JSON +
 // summary). Files are searched as bytes, in UTF-8 and UTF-16LE (how Windows writes wide strings), so a SQLite page, a
 // write-ahead log or a crash dump is searched whole. Texts (DOM snapshots, process output) are searched as strings.
-import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, lstatSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { forms, type Canary } from './canaries';
 
@@ -53,7 +53,9 @@ export function listFiles(dir: string): string[] {
   if (!existsSync(dir)) return [];
   return readdirSync(dir).flatMap((n) => {
     const p = join(dir, n);
-    return statSync(p).isDirectory() ? listFiles(p) : [p];
+    // lstat: a running Chromium's Singleton* links and socket are not files (and SingletonCookie points nowhere).
+    const s = lstatSync(p);
+    return s.isDirectory() ? listFiles(p) : s.isFile() ? [p] : [];
   });
 }
 

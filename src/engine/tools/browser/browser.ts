@@ -11,6 +11,7 @@ import type { BrowserContext, CDPSession, Page } from 'playwright-core';
 import { fail, ok, type Result } from '../../../shared/errors';
 import type { HostMatcher } from '../../../shared/handback';
 import type { BrowserHandle, CdpSession, JobWindow } from './types';
+import { prepareProfile, scrubProfile } from './profileHygiene';
 import { WindowPool } from './windows';
 
 export const EDGE_ARGS = [
@@ -213,11 +214,14 @@ export interface PlaywrightBrowserDeps {
   log(evt: string, kind?: string): void;
   /** Called for every new job window (watchdogs, masker). */
   onWindow?(win: DriverWindow): void;
+  /** CR-0034: profile hygiene before launch and after close (tests may swap it). */
+  profile?: { prepare(userDataDir: string): void; scrub(userDataDir: string): void };
 }
 
 /** `browser.ensure` and the job windows over playwright-core (08-2 §8.3.1–§8.3.2). */
 export class PlaywrightBrowser implements BrowserHandle {
   private ctx: BrowserContext | null = null;
+  private profileDir: string | null = null;
   private starting: Promise<Result<void>> | null = null;
   private readonly wins = new Map<string, PwJobWindow>();
   private readonly opening = new Map<string, Promise<Result<JobWindow>>>();
@@ -231,15 +235,32 @@ export class PlaywrightBrowser implements BrowserHandle {
     return this.starting;
   }
 
+  private get profile(): NonNullable<PlaywrightBrowserDeps['profile']> {
+    return this.d.profile ?? { prepare: prepareProfile, scrub: scrubProfile };
+  }
+
+  /** CR-0034: a failed scrub is logged and the browser still opens; ART-08a is what proves the profile clean. */
+  private hygiene(kind: 'prepare' | 'scrub', userDataDir: string): void {
+    try {
+      this.profile[kind](userDataDir);
+    } catch {
+      this.d.log('browser.profile_hygiene_failed', kind);
+    }
+  }
+
   private async start(): Promise<Result<void>> {
     for (const step of launchPlan(this.d)) {
       try {
+        this.hygiene('prepare', step.userDataDir);
         const ctx = await this.d.launch(step.userDataDir, step.options);
         ctx.on('close', () => {
           this.ctx = null;
           for (const id of [...this.wins.keys()]) this.forget(id);
+          // The person closed the browser, or it crashed: the same wipe as an engine shutdown.
+          if (this.profileDir === step.userDataDir) this.hygiene('scrub', step.userDataDir);
         });
         this.ctx = ctx;
+        this.profileDir = step.userDataDir;
         this.d.log('browser.ensure', step.channel);
         return ok(undefined);
       } catch {
@@ -332,10 +353,11 @@ export class PlaywrightBrowser implements BrowserHandle {
     if (this.wins.delete(jobId)) this.pool.release(jobId);
   }
 
-  /** Engine shutdown: closes the browser process. */
+  /** Engine shutdown: closes the browser process, then wipes what Chromium may have saved (CR-0034). */
   async shutdown(): Promise<void> {
     const ctx = this.ctx;
     this.ctx = null;
     await ctx?.close().catch(() => undefined);
+    if (this.profileDir) this.hygiene('scrub', this.profileDir);
   }
 }
