@@ -160,6 +160,25 @@ export const rowOf = (messageId: string) => `${byTid(TID.threadLog)} [data-messa
  */
 export async function frameAt(page: Page, rowSel: string): Promise<void> {
   const log = byTid(TID.threadLog);
+  // While rows are still being measured the log follows its bottom (useStickToBottom), which undoes each placement below:
+  // first wait until its height holds for 4 checks in a row (UX-23-05, framed right after its card posted on a busy runner).
+  // A log that never holds still is left to the placement loop below, as before.
+  await page.evaluate(() => delete (window as unknown as { __fooLogHeights?: number[] }).__fooLogHeights);
+  await page
+    .waitForFunction(
+      (l) => {
+        const w = window as unknown as { __fooLogHeights?: number[] };
+        const h = (w.__fooLogHeights ??= []);
+        h.push(document.querySelector<HTMLElement>(l)!.scrollHeight);
+        if (h.length > 4) h.shift();
+        const still = h.length === 4 && h.every((x) => x === h[0]);
+        if (still) delete w.__fooLogHeights;
+        return still;
+      },
+      log,
+      { polling: 100, timeout: 15_000 },
+    )
+    .catch(() => undefined);
   const gap = await page.evaluate(async (l) => {
     const el = document.querySelector<HTMLElement>(l)!;
     el.scrollTop = el.scrollHeight;
