@@ -59,6 +59,12 @@ export async function serveLaneSites(): Promise<LaneSites> {
     counts,
     signin: (p = '/login') => `http://127.0.0.1:${port}${p}`,
     captcha: (p = '/') => `http://localhost:${port}${p}`,
-    close: () => new Promise<void>((ok) => server.close(() => ok())),
+    // server.close() waits for every open keep-alive socket, and foo's browser may still hold some; close them first so a
+    // test's clean-up can never hang on them (as test/sites/server.ts does).
+    close: () =>
+      new Promise<void>((ok) => {
+        server.closeAllConnections();
+        server.close(() => ok());
+      }),
   };
 }

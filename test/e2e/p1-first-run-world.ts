@@ -13,7 +13,9 @@ export async function holdBootstrap(app: ElectronApplication, page: Page): Promi
     g.__fooRelease = [];
     handlers.set('app:getBootstrap', (...a: unknown[]) => new Promise((done) => g.__fooRelease!.push(() => done(g.__fooBoot!(...a)))));
   });
-  await page.reload();
+  // Only until the new document commits: the splash checks wait for what they need. Waiting for `load` while the bootstrap is
+  // held timed out on a busy runner (AT-313 Off, page.reload 30 s; before that a bare test timeout).
+  await page.reload({ waitUntil: 'commit' });
   return () =>
     app.evaluate(({ ipcMain }) => {
       const g = globalThis as { __fooBoot?: unknown; __fooRelease?: (() => void)[] };

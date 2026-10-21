@@ -32,6 +32,8 @@ async function startWorld() {
 
 async function openConnections(page: Page): Promise<void> {
   await page.keyboard.press('Control+,');
+  // The key opened Settings (it was lost once when pressed before the shell was live; openWorld now waits for that).
+  await expect(page.getByTestId(TID.screenSettings)).toBeVisible();
   await page.getByTestId(TID.settingsNavConnections).click();
   await expect(page.getByTestId(TID.settingsRowConnectionsWhatsapp)).toBeVisible();
 }
