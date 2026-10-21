@@ -19,7 +19,7 @@ import card_ from '../cards/Card.module.css';
 export function KitCard({ card }: { card: CardRow; time: CardTime }) {
   const agentName = useStore(selectAgentName);
   const capabilities = capabilitiesOf(card.payload);
-  if (capabilities) return <CapabilitiesCard card={card} surface={capabilities} agentName={agentName} />;
+  if (capabilities) return <CapabilitiesCard card={card} surface={capabilities} />;
   return <SurfaceCard card={card} agentName={agentName} />;
 }
 

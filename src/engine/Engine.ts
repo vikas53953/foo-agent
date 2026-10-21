@@ -377,9 +377,9 @@ export class Engine {
         answered: (chatId) => this.memoryReview.after(chatId),
         onCardAnswered: (a) => this.memoryIntake.onCardAnswered(a),
       },
-      // C1 T2 (04 §13.7): Gmail counts as connected while its tools are listed (08-4 §27.1); WhatsApp while the bridge is open.
+      // C1 T2 (04 §13.7): Gmail counts as connected only in status `connected`; WhatsApp while the bridge is open.
       capabilityState: () => ({
-        gmailConnected: this.google !== null && this.trouble.listed('gmail.search'),
+        gmailConnected: this.google !== null && this.trouble.gmailConnected(),
         whatsappLinked: this.whatsapp.isOpen(),
       }),
     });
