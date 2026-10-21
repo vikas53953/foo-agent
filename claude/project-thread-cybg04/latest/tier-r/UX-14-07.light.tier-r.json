@@ -177,6 +177,7 @@
         "train…",
         "Needs",
         "you",
+        "2",
         "B",
         "Building",
         "society",
@@ -525,8 +526,8 @@
     "total": 82720
   },
   "r5": {
-    "ratio": 0.0701318359375,
-    "diffPixels": 71815,
+    "ratio": 0.070248046875,
+    "diffPixels": 71934,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-07.light.diff.png"
