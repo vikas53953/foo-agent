@@ -166,7 +166,16 @@ jobs:
             echo "=== $j ==="
             if ! "$FOO_EXE" foo-drive.js "journeys/$j.json" >> "$FOO_REAL_TEST_DIR/runs/console.txt" 2>&1; then
               status=1
-              if [ "$j" = "J01-J02-first-run" ]; then echo "::error::First run failed; later journeys need an AI, stopping."; break; fi
+              if [ "$j" = "J01-J02-first-run" ]; then
+                # One retry on a fresh profile, so one slow AI test does not cost the whole part. The failed attempt
+                # stays in the evidence and the part still ends red, so the first-run failure is never hidden.
+                echo "::warning::First run failed; retrying once on a fresh profile."
+                taskkill //IM foo.exe //F > /dev/null 2>&1 || true
+                rm -rf "$FOO_REAL_TEST_DIR/profile"
+                if ! "$FOO_EXE" foo-drive.js "journeys/$j.json" >> "$FOO_REAL_TEST_DIR/runs/console.txt" 2>&1; then
+                  echo "::error::First run failed twice; later journeys need an AI, stopping."; break
+                fi
+              fi
             fi
             taskkill //IM foo.exe //F > /dev/null 2>&1 || true
           done
