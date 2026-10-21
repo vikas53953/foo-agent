@@ -10,6 +10,7 @@ import { byTid, openChat, openWorld, rest, settle } from '../fidelity/capture';
 import { serveLaneSites, type LaneSites } from '../integration/browser/laneSites';
 import { fakeTurns, type FakeLine } from './fakeAi';
 import { launch, testDirs } from './launch';
+import { typeInComposer } from './typeInComposer';
 
 export const act = (decision: Record<string, unknown>) => `<say></say><act>${JSON.stringify({ decision, usedMemoryIds: [] })}</act>`;
 export const tool = (name: string, args: Record<string, unknown>): FakeLine => ({
@@ -78,8 +79,7 @@ export async function laneRun(script: (sites: LaneSites) => FakeLine[]): Promise
     sites,
     dirs,
     async ask(text) {
-      await page.getByTestId(TID.composerField).focus();
-      await page.keyboard.type(text);
+      await typeInComposer(page, text);
       await page.keyboard.press('Enter');
     },
     async until(cond, what, steps = 400) {

@@ -1,9 +1,13 @@
 // Spec: 08-2 §5.5 items 1–2 (steers queue in order; the STEER block is part 10 of the next step turn), §7.2 part 10 +
 // 08-4 §24.14 (header `New messages from {firstName} while you work (answer or fold in each one):`), 08-4 §26.5 item 3 (a
 // withdrawn card adds the first line `A card was waiting; it has been withdrawn. Re-check the terms before asking again.`),
-// 08-4 §25.3 (one steer effect per queued message).
+// 08-4 §25.3 (one steer effect per queued message), CR-0024 B1 (one turn's answer is posted once).
 import { describe, expect, it } from 'vitest';
-import { SteerQueue, steerBlock, effectsFor } from '../../../src/engine/jobs/steer';
+import { SteerQueue, steerBlock, effectsFor, Steer, type SteerEffect } from '../../../src/engine/jobs/steer';
+import type { RunnerCore } from '../../../src/engine/jobs/JobRunner';
+import type { StopFlow } from '../../../src/engine/jobs/stopFlow';
+import type { JobRow } from '../../../src/shared/types';
+import { t } from '../../../src/shared/copy/t';
 
 describe('08-2 §5.5 the steer queue', () => {
   it('keeps messages in order; drain hands them over once; a failed turn puts them back first', () => {
@@ -60,5 +64,47 @@ describe('effectsFor (08-4 §25.3)', () => {
       ],
       missing: ['m1'],
     });
+  });
+});
+
+describe('AT-420 settle posts one answer per turn (CR-0024 B1)', () => {
+  const job = { id: 'j1', chatId: 'c1', ownerId: null, state: 'working', doVerbs: [] } as unknown as JobRow;
+  function harness() {
+    const posted: string[] = [];
+    const core = {
+      d: {
+        log: () => {},
+        prompts: { filter: (s: string) => s },
+        settings: () => ({ user: { firstName: 'Vikas' } }),
+      },
+      query: async (_q: string, id: string) => ({ id, chatId: 'c1', text: `text of ${id}`, authorKind: 'user' }),
+      tx: async (ops: { text?: string }[]) => {
+        for (const op of ops) if (op.text) posted.push(op.text);
+        return { ok: true };
+      },
+      textOp: (_job: unknown, text: string) => ({ text }),
+      writeMirrors: async () => {},
+      intake: () => {},
+    } as unknown as RunnerCore;
+    const steer = new Steer(core, {} as StopFlow);
+    return { steer, posted };
+  }
+  async function settleWith(ids: string[], effects: SteerEffect[], say: string) {
+    const { steer, posted } = harness();
+    for (const id of ids) steer.queue.push(job.id, id);
+    await steer.drain(job);
+    await steer.settle(job, { steer: ids.map((messageId, i) => ({ messageId, effect: effects[i]! })) }, say);
+    return posted;
+  }
+
+  it('two answered steers post the reply once, not twice', async () => {
+    const say = "The news search is slow, so I'm reading a news site instead.";
+    expect(await settleWith(['m1', 'm2'], ['answered', 'answered'], say)).toEqual([say]);
+  });
+  it('two folded steers post "Got it" once', async () => {
+    expect(await settleWith(['m1', 'm2'], ['folded', 'folded'], '')).toEqual([t('thread.steer.folded')]);
+  });
+  it('an answered and a folded steer post the answer and one "Got it", in their order', async () => {
+    expect(await settleWith(['m1', 'm2'], ['answered', 'folded'], 'Claude.')).toEqual(['Claude.', t('thread.steer.folded')]);
   });
 });

@@ -25,7 +25,9 @@ function shots(dataDir: string): number {
 const steps = (run: LaneRun) => run.turns().filter((x) => x.purpose === 'step').length;
 const state = (run: LaneRun) =>
   signinCard(run.page)
-    .getAttribute('data-state')
+    // A bounded read: with no timeout, getAttribute waits for a card that only comes once `until` moves the clock, and the
+    // catch swallowed the test timeout's error, so AT-058 hung 3 min with nothing named (as m4-jobs already does).
+    .getAttribute('data-state', { timeout: 500 })
     .catch(() => null);
 
 test.describe.configure({ timeout: 180_000 });

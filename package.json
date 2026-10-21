@@ -32,7 +32,8 @@
     "fid:guard": "tsx scripts/fid-guard.ts",
     "trace:check": "tsx scripts/trace-check.ts",
     "fidelity:report": "tsx scripts/fidelity-report.ts",
-    "closeout": "tsx scripts/closeout.ts"
+    "closeout": "tsx scripts/closeout.ts",
+    "review:tier": "tsx scripts/review-tier.ts"
   },
   "dependencies": {
     "@fluentui/react-icons": "2.0.343",

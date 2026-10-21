@@ -12,6 +12,7 @@ import { TID } from '../../src/shared/testids';
 import { intake, launchWithFakeAi, type FakeLine } from './fakeAi';
 import { testDirs } from './launch';
 import { settleSeededJobs } from './m4-start';
+import { typeInComposer } from './typeInComposer';
 
 const byTid = (id: string) => `[data-testid="${id}"]`;
 /** 02 §F7: `--m-spring` 400ms, `--m-basic` 200ms, Off fades 83ms; the spring is a CSS `linear()` curve (CR-0021 pick 1). */
@@ -59,9 +60,7 @@ async function send(page: Page, text: string): Promise<Locator> {
   const field = page.getByTestId(TID.composerField);
   // The field takes text only once the AI has passed its test (AT-006); a slow runner can still be testing it here.
   await expect(field).toHaveAttribute('contenteditable', 'true', { timeout: 15_000 });
-  await field.focus();
-  await page.keyboard.type(text);
-  await expect(field).toContainText(text);
+  await typeInComposer(page, text);
   await page.keyboard.press('Enter');
   const bubble = page.getByTestId(TID.bubbleMe).filter({ hasText: text });
   await expect(bubble).toBeVisible();
@@ -134,9 +133,17 @@ test('AT-324 · the rise plays once per message: not again on scroll-back, and t
   const gap = await log.evaluate((el) => el.scrollHeight - el.scrollTop - el.clientHeight);
   expect(gap).toBeLessThanOrEqual(1);
 
-  // Fling to the top: the row leaves the DOM; back to the bottom: it mounts again, with no rise.
-  await log.evaluate((el) => el.scrollTo({ top: 0 }));
-  await expect(page.locator(`${byTid(TID.threadLog)} [data-message-id="${id}"]`)).toHaveCount(0);
+  // Fling to the top: the row leaves the DOM; back to the bottom: it mounts again, with no rise. A scrollTo is not the user's
+  // input, so while rows are still being measured the list keeps following the bottom by design (useStickToBottom); on a
+  // busy runner one scrollTo landed in that window. Fling again until the row has left: this test checks the rise on remount.
+  const row0 = page.locator(`${byTid(TID.threadLog)} [data-message-id="${id}"]`);
+  await expect
+    .poll(async () => {
+      await log.evaluate((el) => el.scrollTo({ top: 0 }));
+      await page.waitForTimeout(200);
+      return row0.count();
+    })
+    .toBe(0);
   await log.evaluate((el) => el.scrollTo({ top: el.scrollHeight }));
   const again = page.locator(`${byTid(TID.threadLog)} [data-message-id="${id}"]`);
   await expect(again).toBeVisible();

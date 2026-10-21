@@ -265,6 +265,11 @@ async function markSigninForm(page: Page | undefined): Promise<void> {
     .catch(() => undefined);
 }
 
+/** How long `job.needSignIn` waits for a loading page's address before the card names no site. */
+export const HOST_WAIT_MS = 5_000;
+/** The site a sign-in card names when the page has no address yet: never the AI's or the page's own words. */
+export const NO_HOST = 'this site';
+
 const hostOf = (url: string): string | null => {
   try {
     const u = new URL(url);
@@ -334,15 +339,25 @@ export class SigninLanes implements CaptureGuard {
   /** `job.needSignIn`: the lane for this page; a saved login is filled here, every other lane ends the step NEEDS_YOU. */
   async need(jobId: string, a: z.infer<typeof needArgs>): Promise<ToolOutcome> {
     const win = this.d.window(jobId);
-    // The site is the page's own host (what the banner's address row shows), never a name from the page or the AI.
-    const host = (win && hostOf(win.url())) ?? a.site.toLowerCase();
-    let lane = chooseSignInLane(host, a.kind, { savedLogin: a.kind === 'password' && !!win });
+    // The site is the page's own host (what the banner's address row shows), never a name from the page or the AI. A call
+    // that lands while the page is still loading waits, at most HOST_WAIT_MS, for its address; with none, the card says
+    // NO_HOST. Before, the AI's own name was shown when the call won the race (CR-0024 close-out, PR #85).
+    if (win && !hostOf(win.url()))
+      await win
+        .page()
+        .waitForURL((u) => hostOf(u.toString()) !== null, { timeout: HOST_WAIT_MS })
+        .catch(() => undefined);
+    const pageHost = win ? hostOf(win.url()) : null;
+    const host = pageHost ?? NO_HOST;
+    // With no address, the AI's name only picks the lane (an app account is Connect); the card never shows it.
+    const laneHost = pageHost ?? a.site.toLowerCase();
+    let lane = chooseSignInLane(laneHost, a.kind, { savedLogin: a.kind === 'password' && !!win });
     if (lane.lane === 'connect') return { kind: 'error', errorKind: 'ROUTE_ORDER' };
     if (lane.lane === 'saved_login') {
       const filled = win ? await this.savedLogin(jobId, host, win) : 'missing';
       // AT-059: the AI learns only that "your {site} login" worked; no field, value or page text.
       if (filled === 'signed_in') return { kind: 'ok', result: { signedIn: true, login: `your ${host} login`, url: win!.url() } };
-      lane = chooseSignInLane(host, a.kind, { savedFailed: filled === 'failed' });
+      lane = chooseSignInLane(laneHost, a.kind, { savedFailed: filled === 'failed' });
     }
     return { kind: 'needs_user', card: this.card(jobId, host, lane.reason!, a.sentTo), result: { needsUser: 'signin', site: host } };
   }
@@ -350,7 +365,7 @@ export class SigninLanes implements CaptureGuard {
   /** SITE_CAPTCHA (the watchdog's challenge page, 08-2 §8.3.5): the CAPTCHA lane, never solved by foo (§8.4). */
   async challenge(job: JobRow): Promise<boolean> {
     const win = this.d.window(job.id);
-    const host = (win && hostOf(win.url())) ?? 'this site';
+    const host = (win && hostOf(win.url())) ?? NO_HOST;
     const card = this.card(job.id, host, chooseSignInLane(host, 'captcha').reason!);
     return (await this.r.core.needsYou(job, card)) !== null;
   }

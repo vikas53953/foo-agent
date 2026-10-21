@@ -4,7 +4,7 @@
 // 09 §9.27.3 (closing Edge during sign-in leaves the card `waiting`), 10-1 AT-060 (2 h → cancelled, nothing booked, Start again).
 // M9 T7, on the T2 sign-in site.
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
-import { CANCEL_MS, REMIND_MS, chooseSignInLane, maskPhone } from '../../../src/engine/tools/browser/signinLanes';
+import { CANCEL_MS, NO_HOST, REMIND_MS, chooseSignInLane, maskPhone } from '../../../src/engine/tools/browser/signinLanes';
 import { t } from '../../../src/shared/copy/t';
 import { bannerOps, cardStates, laneHarness, liveStates, type LaneHarness } from './lanes';
 
@@ -53,6 +53,29 @@ describe('08-2 §8.6 chooseSignInLane', () => {
     expect(maskPhone('+91 98765 43210')).toBe('+91 98••• ••210');
     expect(maskPhone('9876543210')).toBe('98••• ••210');
     expect(maskPhone('12345')).toBeNull();
+  });
+});
+
+describe('08-2 §8.4 the card names the page host, never the AI', { timeout: 90_000 }, () => {
+  it('a call that lands while the page is still loading waits for its address (PR #85 race)', async () => {
+    const page = await h.page();
+    await page.goto('about:blank');
+    // The AI's call is in flight before the page has an address; the sign-in page then loads.
+    const pending = h.run('job.needSignIn', { site: 'RailPass', kind: 'password' });
+    await page.goto(h.signin());
+    const r = await pending;
+    if (r.kind !== 'needs_user') throw new Error(`expected needs_user, got ${r.kind}`);
+    expect(r.card.payload).toMatchObject({ site: '127.0.0.1' });
+    expect(JSON.stringify(r.card)).not.toContain('railpass');
+  });
+
+  it('with no address at all the card says "this site", never the name the AI gave', async () => {
+    const page = await h.page();
+    await page.goto('about:blank');
+    const r = await h.run('job.needSignIn', { site: 'RailPass', kind: 'password' });
+    if (r.kind !== 'needs_user') throw new Error(`expected needs_user, got ${r.kind}`);
+    expect(r.card.payload).toMatchObject({ site: NO_HOST });
+    expect(JSON.stringify(r.card).toLowerCase()).not.toContain('railpass');
   });
 });
 

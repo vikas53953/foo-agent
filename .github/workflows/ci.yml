@@ -102,6 +102,11 @@ jobs:
         run: pnpm rebuild:electron
       - name: E2E (Playwright for Electron)
         run: pnpm test:e2e --shard=${{ matrix.shard }}/4
+      # Agents cannot download CI artifacts, so a failed e2e test's page state goes in the log, where they can read it.
+      - name: Page state at each failed e2e test
+        if: failure()
+        shell: bash
+        run: bash scripts/print-error-context.sh
       - name: Package (unpacked)
         if: matrix.shard == 1
         run: pnpm package:dir
@@ -180,6 +185,10 @@ jobs:
         id: e2e
         continue-on-error: true
         run: pnpm test:e2e
+      - name: Page state at each failed e2e test
+        if: steps.e2e.outcome == 'failure'
+        shell: bash
+        run: bash scripts/print-error-context.sh
       - name: Tier R for the steps built so far
         id: tierr
         continue-on-error: true

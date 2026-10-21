@@ -5,7 +5,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { t } from '../../src/shared/copy/t';
 import { TID } from '../../src/shared/testids';
-import { openWorld, windowSize } from '../fidelity/capture';
+import { openMemory, openWorld, windowSize } from '../fidelity/capture';
 import { launchWithFakeAi, VERIFY_OK } from './fakeAi';
 import { openPanelChat, startWorld } from './m4-start';
 
@@ -83,8 +83,7 @@ test('AT-073: Forget everything from chats opens C-3 with the count and "stays c
 
 test('C-4: Forget everything stays disabled until FORGET is typed exactly; Ctrl+M opens the page', async () => {
   const { app, page } = await startWorld();
-  await page.keyboard.press('Control+m');
-  await expect(page.getByTestId(TID.screenMemory)).toHaveAttribute('data-state', 'list');
+  await openMemory(page);
   await page.getByTestId(TID.memoryMenu).click();
   await page.getByRole('menuitem', { name: t('screen.memory.menu.forget_all'), exact: true }).click();
   const c4 = page.getByTestId(TID.dialogC04);

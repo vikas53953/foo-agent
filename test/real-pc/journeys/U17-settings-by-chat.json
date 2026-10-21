@@ -1,0 +1,69 @@
+{
+  "id": "U17-settings-by-chat",
+  "title": "Change a setting by chat: mini line with Undo; theme and accent rows",
+  "spec": "06 Settings changed-by-chat, settings:undo, 10-2 §C.5 Settings",
+  "covers": ["C.5 Settings", "C.8 Quiet premium polish"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "send",
+      "text": "Switch to dark mode"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "dark",
+      "expect": "foo switches to dark and shows \"Changed: Theme → Dark. [Undo]\"",
+      "ref": "UX-12-02"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "app-undo-action",
+      "last": true
+    },
+    {
+      "do": "wait",
+      "ms": 1500,
+      "shot": "undo",
+      "expect": "back to light"
+    },
+    {
+      "do": "key",
+      "key": "Control+,"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "settings-nav-appearance"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "settings-row-appearance-theme"
+    },
+    {
+      "do": "wait",
+      "ms": 600,
+      "shot": "theme-row",
+      "expect": "theme options"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "screen-back"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

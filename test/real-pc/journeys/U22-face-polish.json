@@ -1,0 +1,68 @@
+{
+  "id": "U22-face-polish",
+  "title": "Living face: thinking while working, resting; motion off in settings",
+  "spec": "02 §F15.9 living face, 10-2 §C.7, §C.8",
+  "covers": ["C.7.1", "C.7.4", "C.8 Quiet premium polish"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "send",
+      "text": "Write a 4-line poem about monsoon in Mumbai"
+    },
+    {
+      "do": "wait",
+      "ms": 1500,
+      "shot": "thinking",
+      "expect": "26px Thinking face only while the request is in flight (C.7.4)"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "poem",
+      "expect": "poem; face back to resting, blinks"
+    },
+    {
+      "do": "shotEl",
+      "tid": "chat-header-avatar",
+      "name": "face",
+      "soft": true
+    },
+    {
+      "do": "key",
+      "key": "Control+,"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "settings-nav-appearance"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "settings-row-appearance-face-motion"
+    },
+    {
+      "do": "wait",
+      "ms": 600,
+      "shot": "face-motion",
+      "expect": "face motion setting"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "screen-back"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

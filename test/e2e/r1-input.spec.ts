@@ -12,6 +12,7 @@ import { openChat, openWorld, windowSize } from '../fidelity/capture';
 import { envelope, fakeTurns, intake, launchWithFakeAi, VERIFY_OK, type FakeLine } from './fakeAi';
 import type { testDirs } from './launch';
 import { settleSeededJobs } from './m4-start';
+import { typeInComposer } from './typeInComposer';
 
 const BOOK = 'Book a table for 4 at Toit on Fri 7 pm';
 const SECRET_ASK = 'my password is hunter2xyz, meet at Toit tomorrow';
@@ -76,8 +77,7 @@ const toNewest = () =>
   });
 
 async function send(text: string) {
-  await field().focus();
-  await page.keyboard.type(text);
+  await typeInComposer(page, text);
   await page.keyboard.press('Enter');
 }
 
