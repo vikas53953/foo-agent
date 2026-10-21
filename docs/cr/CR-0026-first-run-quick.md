@@ -48,6 +48,9 @@
 9. **Using chip:** before an AI is chosen, the Details panel's Using list shows no AI chip (it showed an empty "(your AI)").
 10. **New IPC channels** `setup:welcome`, `setup:name {name}`, `setup:face {face}`, `setup:skipRest`. The vibe uses
     `card:answer`.
+11. **The sticky date follows scrolling only** (03-shell-2 §3.6.5): a tap on a card inside the thread, or a key typed into
+    its field, no longer counts as scrolling, so the follow-scroll after an answer does not float a second "Today" pill over
+    the inline one (real-PC test bug 13).
 
 ## (b) Not changed
 

@@ -14,6 +14,13 @@ test('CR-0026: Welcome → your AI → name → face → vibe → a warm hello; 
   const { app, page } = await firstRun(aiHome(['claude']), undefined, { stayOnWelcome: true });
   await expect(page.getByTestId(TID.setupWelcomeTitle)).toHaveText(t('setup.welcome.title'));
   await expect(page.getByTestId(TID.setupStepPill)).toHaveCount(0);
+  await page.getByTestId(TID.threadDateSticky).evaluate((el) => {
+    const w = window as { stickyShown?: boolean };
+    w.stickyShown = false;
+    new MutationObserver(() => {
+      if (el.getAttribute('data-state') === 'shown') w.stickyShown = true;
+    }).observe(el, { attributes: true });
+  });
   await page.getByTestId(TID.setupWelcomeStart).click();
 
   await expect(page.getByTestId(TID.setupStepPill)).toHaveText(t('setup.step_pill.1'));
@@ -42,6 +49,8 @@ test('CR-0026: Welcome → your AI → name → face → vibe → a warm hello; 
   await expect(page.getByTestId(TID.thread).getByText(t('setup.vibe.line.calm_funny'))).toBeVisible();
   await expect(page.getByTestId(TID.thread).getByText(t('setup.hello.line', { name: 'Sunny' }))).toBeVisible();
   await expect(page.getByTestId(TID.composerSuggestions)).toContainText(t('setup.hello.try_1'));
+  // Taps are not scrolling: the list following each answer never floats a date over the inline one (03-shell-2 §3.6.5).
+  expect(await page.evaluate(() => (window as { stickyShown?: boolean }).stickyShown)).toBe(false);
 
   await expect(page.getByTestId(TID.setupStepPill)).toHaveCount(0);
   await expect(page.getByTestId(TID.sidebarNewHelper)).toBeEnabled();
