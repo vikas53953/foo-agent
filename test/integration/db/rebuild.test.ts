@@ -20,17 +20,20 @@ afterEach(() => {
   dir = null;
 });
 
-const poll = async (rounds = 40) => {
-  for (let i = 0; i < rounds; i++) await new Promise((r) => setTimeout(r, 2));
+/** Lets the engine run until `ready` holds (at most 10 s): a fixed 80 ms was too short on a busy Windows runner. */
+const until = async (ready: () => boolean, what: string) => {
+  for (const end = Date.now() + 10_000; !ready(); await new Promise((r) => setTimeout(r, 2)))
+    if (Date.now() > end) throw new Error(`never: ${what}`);
 };
 
 /** A real job's mirrors (one step done, one running), copied to a fresh {DATA} folder. */
 async function mirrorsOfARunningJob(): Promise<{ data: string; jobId: string; steps: string[] }> {
   h = jobHarness({ script: [jobIntake(BILLS_PLAN), stepDone(0), tool('gmail.search', { query: 'bill' }, { delayMs: 60_000 })] });
   h.userSays('Find bills due this week');
-  await poll();
+  const run = h;
+  await until(() => !!run.job(), 'the job is made');
   h.clock.advance(2_000);
-  await poll();
+  await until(() => run.job()?.state === 'working' && run.steps().some((s) => s.state === 'done'), 'step 1 done, the job working');
   const jobId = String(h.job().id);
   const steps = h.steps().map((s) => String(s.state));
   dir = mkdtempSync(path.join(os.tmpdir(), 'foo-rebuild-'));
