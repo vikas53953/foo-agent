@@ -6,6 +6,7 @@ import { RUN_WINDOW_MS, hangsBelow, joinsRun, layoutRows, tailCorners } from '..
 import {
   BADGE_DEBOUNCE_MS,
   EDIT_WINDOW_MS,
+  badgeDelay,
   backupNames,
   badgeSlot,
   badgeTooltip,
@@ -160,6 +161,13 @@ describe('ticks and the badge slot (04 §3.3, §4, 08-0 §F)', () => {
     expect(badgeTooltip('waiting', { aiDown: true })).not.toBe(badgeTooltip('waiting'));
     expect(slotTooltip({ kind: 'reaction', emoji: '👍' }, { agentName: 'foo' })).toContain('foo');
     expect(BADGE_DEBOUNCE_MS).toBe(700);
+  });
+  it('§4.2 debounce: the first badge on an empty slot shows at once (👀 ≤ 1 s after send); later changes wait 700 ms', () => {
+    const seen = JSON.stringify({ kind: 'badge', value: 'seen' });
+    const working = JSON.stringify({ kind: 'badge', value: 'working' });
+    expect(badgeDelay('')).toBe(0);
+    expect(badgeDelay(seen)).toBe(BADGE_DEBOUNCE_MS);
+    expect(badgeDelay(working)).toBe(BADGE_DEBOUNCE_MS);
   });
   it('accessible name: sender, time, text and state', () => {
     const name = bubbleName({ sender: 'You', at: T0, timeZone: 'Asia/Kolkata', now: T0, text: 'thanks!', state: ['Read by foo'] });

@@ -36,8 +36,8 @@ jobs:
         job: [1, 2, 3]
     env:
       UNIT: ${{ inputs.unit }}
-      E2E: ${{ inputs.e2e || 'test/e2e/m4-jobs.spec.ts -g PERF-07' }}
-      REPEAT: ${{ inputs.repeat || '2' }}
+      E2E: ${{ inputs.e2e || 'test/e2e/m4-jobs.spec.ts test/e2e/m2-messages.spec.ts test/e2e/m3-replies.spec.ts' }}
+      REPEAT: ${{ inputs.repeat || '1' }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
