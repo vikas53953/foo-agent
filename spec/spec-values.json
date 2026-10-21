@@ -48,15 +48,15 @@
       "component": "user bubble",
       "testid": "bubble-me",
       "property": "background (light / dark)",
-      "expected": "#0B0B10 / #2B3FD6",
-      "source": "02 F2 `--bubble-me` (dark indigo, X-145; CR-0004)",
+      "expected": "#0B0B10 / #2C359A",
+      "source": "02 F2 `--bubble-me` (dark deep indigo, X-145; CR-0004; CR-0024 F6)",
       "pending": "M2",
       "expect": {
         "kind": "css",
         "props": {
           "background-color": {
             "light": "rgb(11, 11, 16)",
-            "dark": "rgb(43, 63, 214)"
+            "dark": "rgb(44, 53, 154)"
           }
         },
         "themed": true

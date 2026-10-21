@@ -178,6 +178,7 @@ One row of `Chip`s (06 §0.4) above the pill, `role="group"` named "Suggestions"
 |---|---|
 | Starters | An empty chat (no messages yet) shows 3: foo's chat "Plan my day", "What needs me?", "Pay a bill"; a helper's chat "What can you do?", "Show what you're working on", "Help me with something" (`composer.suggest.starter.{foo,helper}.{1,2,3}`). |
 | Follow-ups | Up to 3, only from the latest foo or helper reply's own `suggestions` (the AI ends its reply with `Suggestions: a \| b \| c`; the engine strips that line from the bubble, keeps ≤ 3 of ≤ 40 characters that pass Article 2's word filter, and stores them in `messages.suggestions`). The app never invents one. |
+| Look (CR-0024 F8) | Each chip: 32px tall, a 16px Fluent icon `--s1` (8px) before the words, words `--t-small` `--fg-1`, 1px `--line-strong` outline on `--bg-app`, hover `--bg-hover`. The icon comes from a fixed word map, first match wins: mail/email/inbox → `Mail`; calendar/day/meeting → `CalendarLtr`; price/pay/bill/₹ → `Money`; compare/find/search/look → `Search`; remind/later/tomorrow → `Clock`; WhatsApp/group/family → `People`; else `Edit`. Every icon is in the 02 F6 list. |
 | Click | Fills the field with the chip's text and focuses it. **Never sends.** |
 | Hidden | on the first keystroke; while recording; in groups, WhatsApp mirrors and private chats; when the latest reply holds an Approval, Payment, Draft or Secret card or its job touched money. |
 | Motion | chips rise in 60ms apart with `--ease-spring`; fade on the first keystroke (§F7.1). |
@@ -478,7 +479,7 @@ x: 0 (content left)                                                            7
 │ │ Pick one below.                    10:42 PM    │  meta: time only, --fg-3
 │ └────────────────────────────────────────────────┘  corners 18/18/18, BL 6 (tail)
 │  ↕ 4
-│ [⧉] [↻] [👍] [👎]   action row: 32 visual / 40 hit, gap 4, latest answer only
+│ [⧉] [↻] [👍] [👎]   action row: 32 visual / 40 hit, gap 4, latest answer (older on hover)
 │  ↕ 4 (bubble → card, same sender)
 │ ┌──────────────────── card (05-cards) ────────────────┐
 ```
@@ -745,8 +746,8 @@ Bar content width 712: "+" 36 · gap 8 · pill 624 · gap 8 · round 36. Bar pad
 
 | Token | Light | Dark | Used for | Why |
 |---|---|---|---|---|
-| `--tick-read-on-me` | `#8C9BFF` | `#FFFFFF` | "Read by foo" ✓✓ inside the user's bubble | On `--bubble-me`: #8C9BFF on #0B0B10 ≈ 7.6:1; dark (X-145, CR-0004): #FFFFFF on the indigo #2B3FD6 bubble ≥ 3:1. `--tick-read` fails there (§25 #4) |
-| `--on-bubble-me-soft` | `#26262C` | `#2334B8` | Fill of quote blocks, file chips, link previews and inline code **inside** the user's bubble | A step lighter/darker than `--bubble-me` (dark `#2334B8` on the indigo bubble, X-145, CR-0004); `--on-bubble-me` text on it ≈ 15:1 (light) / ≈ 13:1 (dark); `--on-bubble-me-2` on it ≈ 8.6:1 / 6.3:1 |
+| `--tick-read-on-me` | `#8C9BFF` | `#FFFFFF` | "Read by foo" ✓✓ inside the user's bubble | On `--bubble-me`: #8C9BFF on #0B0B10 ≈ 7.6:1; dark (X-145, CR-0004, CR-0024): #FFFFFF on the deep indigo #2C359A bubble ≈ 10:1. `--tick-read` fails there (§25 #4) |
+| `--on-bubble-me-soft` | `#26262C` | `#232B7E` | Fill of quote blocks, file chips, link previews and inline code **inside** the user's bubble | A step lighter/darker than `--bubble-me` (dark `#232B7E` on the deep indigo `#2C359A` bubble, X-145, CR-0004, CR-0024); `--on-bubble-me` text on it ≈ 15:1 (light) / ≈ 13:1 (dark); `--on-bubble-me-2` on it ≈ 8.6:1 / 6.3:1 |
 | `--t-body-indic` | 15/24, 400, 0 | same | Message and composer text tagged `lang="hi"` / `lang="pa"` | Devanagari and Gurmukhi matras clip at 22px line height in Nirmala UI |
 | `--media-scrim` | `linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,0))`, 32px tall | same | Behind the time on image-only bubbles; behind "+{n}" on the 4th grid tile (with `--scrim`) | White time text needs ≥ 4.5:1 on any photo |
 | `--on-media` | `#FFFFFF` | `#FFFFFF` | Time, ticks and "+{n}" over photos | Photos are not themed |
