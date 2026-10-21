@@ -503,9 +503,10 @@
         "replies",
         "show",
         "here.",
-        "Trips",
-        "sent",
-        "Question:",
+        "Waiting",
+        "for",
+        "your",
+        "answer:",
         "Which",
         "flight",
         "time",
@@ -515,7 +516,9 @@
         "on",
         "Fri",
         "18",
-        "Dec?",
+        "Dec?.",
+        "Show",
+        "button.",
         "Not",
         "sent."
       ]
@@ -617,8 +620,8 @@
   "r4": {
     "verdict": "review",
     "skipped": null,
-    "ratio": 0.08477870813397129,
-    "diffPixels": 5670,
+    "ratio": 0.08479366028708134,
+    "diffPixels": 5671,
     "total": 66880
   },
   "r5": {
