@@ -60,7 +60,13 @@ test('UX-02 · Find your AI: Claude and ChatGPT found, tested and chosen (UX-02-
   await test.step('UX-02-03 · two green ✓ works; the message box reads "Connect your AI first, then we can talk."', async () => {
     await page.evaluate((n) => window.__fooTest!.clock.advance(n), HOLD_MS);
     await expect(finderRow(page, 'claude-cli')).toHaveAttribute('data-state', 'works');
-    await expect(finderRow(page, 'codex-cli')).toHaveAttribute('data-state', 'works');
+    // CR-0025 pick 3: helper apps are tested one after another, so ChatGPT's held test starts once Claude's ends.
+    await expect
+      .poll(async () => {
+        await page.evaluate((n) => window.__fooTest!.clock.advance(n), HOLD_MS);
+        return finderRow(page, 'codex-cli').getAttribute('data-state');
+      })
+      .toBe('works');
     // The drawn words, from the walkthrough: "✓ works" and the locked composer line.
     const [worksWord, locked] = quoted(step('UX-02-03').s);
     await expect(finderRow(page, 'claude-cli')).toContainText(worksWord!.replace('✓ ', ''));

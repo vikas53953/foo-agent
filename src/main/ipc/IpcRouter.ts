@@ -774,7 +774,7 @@ export function registerIpc(ctx: AppContext): void {
     // "Try again" re-tests the network now, then the engine sends `Reply with the word ready` (08-2 §6.6).
     ctx.net.report(ctx.probe());
     const r = ctx.engine?.live
-      ? await ctx.engine.request<VerifyResult>('ai.cmd', { cmd: 'verify', providerId }, 60_000)
+      ? await ctx.engine.request<VerifyResult>('ai.cmd', { cmd: 'verify', providerId }, 150_000) // CR-0025: probe 3 × 20 s + 60 s
       : ok<VerifyResult>({ ok: false, providerId, kind: ctx.net.rawOnline ? 'UNKNOWN' : 'NET_OFFLINE' });
     emit('ai:status', aiStatus(settings.get(), ctx.net.offline, ctx.engine?.aiStatus ?? null));
     emit('spend:update', spendSummary(db, settings.get(), now()));

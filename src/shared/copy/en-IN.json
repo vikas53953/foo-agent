@@ -526,6 +526,7 @@
   "setup.ai_finder.status.plan_limit": "signed in, but your plan’s limit is used up until {time}.",
   "setup.ai_finder.status.plan_limit_no_time": "signed in, but your plan’s limit is used up for now.",
   "setup.ai_finder.status.slow": "slow to answer.",
+  "setup.ai_finder.status.needs_update": "needs an update. Update it, then test again.",
   "setup.ai_finder.status.offline": "Waiting for internet",
   "setup.ai_finder.action.sign_in": "Sign in",
   "setup.ai_finder.action.try_again": "Try again",

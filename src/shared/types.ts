@@ -816,6 +816,7 @@ export interface DetectRow {
     | 'key_failed'
     | 'plan_limit'
     | 'slow'
+    | 'needs_update' // CR-0025: the maker's service refuses this CLI version
     | 'offline'
     | 'needs_helper'
     | 'waiting_helper';

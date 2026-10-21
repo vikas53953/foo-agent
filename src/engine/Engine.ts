@@ -171,7 +171,7 @@ export class Engine {
       paths: { LOCAL: o.localDir, DATA: o.dataDir },
       env: testHome ? testHomeEnv(o.env, testHome) : o.env,
       platform: process.platform,
-      getKey: vaultKeyReader(o.link),
+      getKey: vaultKeyReader(o.link, (id, why) => log('ai.key_read_failed', `${id}:${why}`)), // CR-0025
       which: o.which ?? (testHome ? testHomeWhich(testHome, nodeAiFs) : nodeWhich()),
       fs: nodeAiFs,
       pricing,
@@ -198,6 +198,7 @@ export class Engine {
       },
       detectRow: (row) => o.link.send('ui.patch', { event: 'ai:detectRow', payload: row }),
       retestTimers: !o.testRun,
+      log: (evt, kind, ms) => o.link.send('log', { t: o.clock.now(), lvl: 'info', mod: 'engine', evt, kind, ms }), // CR-0025
     });
     // M8
     // T5: connection trouble, and the poller / Contacts sync with the rows. Main holds the Google token (gap pick T5-01): the
