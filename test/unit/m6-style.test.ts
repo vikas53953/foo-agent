@@ -32,7 +32,23 @@ describe('08-3 §12.9 computeStyle', () => {
       'Uses about 0.3 emoji per message',
       'Often starts with “ok” and ends with “good”',
     ]);
-    expect(styleLines({ avgChars: 5, casing: 'mixed', emojiRate: 0, greeting: null, signoff: null })).toHaveLength(3);
+  });
+
+  // CR-0037 (X-195), found by real-AI e2e run 8: the Memory page showed "Uses about 0.0 emoji per message". A measure that
+  // found nothing is not a fact about the person, so it is not written.
+  it('no emoji line when the rate rounds to 0.0, no casing line for `mixed`; only the length line is left', () => {
+    expect(styleLines({ avgChars: 5, casing: 'mixed', emojiRate: 0, greeting: null, signoff: null })).toEqual([
+      'Writes about 5 characters per message',
+    ]);
+    const lines = styleLines(computeStyle(twenty((i) => (i % 2 ? 'Ok then' : 'what now'))));
+    expect(lines.join('\n')).not.toMatch(/0\.0|NaN|undefined|Infinity|Mixes capital/u);
+    expect(styleLines({ avgChars: 9, casing: 'lower', emojiRate: 0.1, greeting: null, signoff: null })).toContain(
+      'Uses about 0.1 emoji per message',
+    );
+  });
+
+  it('blank texts are not counted (they would pull the length and the shares down)', () => {
+    expect(computeStyle(['', '  ', 'hello there'])).toMatchObject({ avgChars: 11, casing: 'lower' });
   });
 });
 
@@ -66,9 +82,11 @@ describe('08-3 §12.9 StyleStatsRunner', () => {
     for (let i = 0; i < 19; i++) say('c_foo', 'ok sounds good');
     expect(await style.onUserMessage('c_foo')).toEqual({ ok: true, value: { written: 0 } });
     say('c_foo', 'ok sounds good');
-    expect(await style.onUserMessage('c_foo')).toEqual({ ok: true, value: { written: 4 } });
+    // 'ok sounds good' × 20: length, small letters, greeting and sign-off; no emoji, so no emoji line (CR-0037).
+    expect(await style.onUserMessage('c_foo')).toEqual({ ok: true, value: { written: 3 } });
     const rows = h.rows();
-    expect(rows.map((r) => r.file)).toEqual(Array(4).fill('memory/preferences/style.md'));
+    expect(rows.map((r) => r.file)).toEqual(Array(3).fill('memory/preferences/style.md'));
+    expect(rows.map((r) => r.text).join('\n')).not.toMatch(/emoji/u);
     expect(rows.every((r) => r.provenance === 'guessed' && r.reason === 'from your last 20 messages')).toBe(true);
     expect(h.read('memory/preferences/style.md')).toContain(
       '- Writes about 14 characters per message  {I guessed · 2026-10-16 · chat · from your last 20 messages · ',
@@ -92,10 +110,35 @@ describe('08-3 §12.9 StyleStatsRunner', () => {
     for (let i = 0; i < 20; i++) say('c_foo', 'Hello there, please book');
     await style.onUserMessage('c_foo');
     const texts = h.rows().map((r) => r.text);
-    expect(texts).toHaveLength(5);
+    expect(texts).toHaveLength(4);
     expect(texts).toContain('Likes short replies');
     expect(texts).toContain('Starts messages with a capital letter');
     expect(texts).not.toContain('Writes in small letters');
+  });
+
+  it('CR-0037: a later run that finds no emoji drops the earlier emoji line (supersede covers lines that are left out)', async () => {
+    const { h, say, style } = runner();
+    for (let i = 0; i < 20; i++) say('c_foo', 'ok sounds good 🙂');
+    await style.onUserMessage('c_foo');
+    expect(h.rows().map((r) => r.text)).toContain('Uses about 1.0 emoji per message');
+    for (let i = 0; i < 20; i++) say('c_foo', 'ok sounds good');
+    await style.onUserMessage('c_foo');
+    expect(
+      h
+        .rows()
+        .map((r) => r.text)
+        .join('\n'),
+    ).not.toMatch(/emoji/u);
+  });
+
+  it('CR-0037: no style lines from fewer than 20 user text messages (voice notes and blanks count for the turn, not the sample)', async () => {
+    const { h, say, style } = runner();
+    for (let i = 0; i < 20; i++) say('c_foo', 'ok sounds good');
+    await style.onUserMessage('c_foo');
+    const before = h.rows().map((r) => r.text);
+    for (let i = 0; i < 20; i++) say('c_foo', i < 15 ? '' : 'Hello there, please book');
+    expect(await style.onUserMessage('c_foo')).toEqual({ ok: true, value: { written: 0 } });
+    expect(h.rows().map((r) => r.text)).toEqual(before);
   });
 
   it('never in a group or any other chat, and never while memory is off', async () => {
@@ -116,7 +159,7 @@ describe('08-3 §12.9 StyleStatsRunner', () => {
       const r = runNamedQuery(h.db, 'memoryByScope', [chatId], h.clock.now()) as Result<{ file: string }[]>;
       return r.ok ? r.value : [];
     };
-    expect(inChat('c_foo').filter((f) => f.file === 'memory/preferences/style.md')).toHaveLength(4);
+    expect(inChat('c_foo').filter((f) => f.file === 'memory/preferences/style.md')).toHaveLength(3);
     expect(inChat('c_g').filter((f) => f.file === 'memory/preferences/style.md')).toEqual([]);
   });
 });

@@ -5,6 +5,8 @@
 // `guessed`, reason "from your last 20 messages", replacing the previous ones; never chips, never groups), §12.1 row
 // (style.md), §12.8 `memory.styleStats`, 08-2 §7.2 (they are ordinary pinned facts of part 5). CR-0010 G-M6-06
 // (`privacy.rememberOn=false` blocks style stats). The line words are this ticket's copy keys `memory.style.*`.
+// CR-0037 (X-195): a line is written only when its measure found something: no emoji line at 0.0, no casing line for
+// `mixed`; no lines at all from fewer than 20 non-blank user text messages (the previous lines stay).
 import type { EngineFact } from '../../main/db/queries';
 import { t } from '../../shared/copy/t';
 import { ok, type Result } from '../../shared/errors';
@@ -47,8 +49,9 @@ function words(text: string): string[] {
     .filter(Boolean);
 }
 
-/** §12.9 over the given texts (the last 20 user text messages). */
-export function computeStyle(texts: readonly string[]): StyleStats {
+/** §12.9 over the given texts (the last 20 user text messages); blank texts are left out. */
+export function computeStyle(all: readonly string[]): StyleStats {
+  const texts = all.filter((s) => s.trim() !== '');
   const n = texts.length || 1;
   const avgChars = Math.round(texts.reduce((a, s) => a + cps(s), 0) / n);
   const noCapital = texts.filter((s) => !/\p{Lu}/u.test(s)).length / n;
@@ -65,13 +68,15 @@ export function computeStyle(texts: readonly string[]): StyleStats {
   };
 }
 
-/** The style.md lines (the greeting and sign-off share one line; it is left out when neither reaches 5 of 20). */
+/**
+ * The style.md lines (the greeting and sign-off share one line; it is left out when neither reaches 5 of 20). CR-0037: a
+ * measure that found nothing says nothing about the person, so `mixed` casing and a 0.0 emoji rate give no line.
+ */
 export function styleLines(s: StyleStats): string[] {
-  const lines = [
-    t('memory.style.length', { chars: s.avgChars }),
-    { lower: t('memory.style.casing.lower'), sentence: t('memory.style.casing.sentence'), mixed: t('memory.style.casing.mixed') }[s.casing],
-    t('memory.style.emoji', { rate: s.emojiRate.toFixed(1) }),
-  ];
+  const lines = [t('memory.style.length', { chars: s.avgChars })];
+  if (s.casing === 'lower') lines.push(t('memory.style.casing.lower'));
+  else if (s.casing === 'sentence') lines.push(t('memory.style.casing.sentence'));
+  if (s.emojiRate >= 0.1) lines.push(t('memory.style.emoji', { rate: s.emojiRate.toFixed(1) }));
   if (s.greeting && s.signoff) lines.push(t('memory.style.greeting_signoff', { greeting: s.greeting, signoff: s.signoff }));
   else if (s.greeting) lines.push(t('memory.style.greeting', { greeting: s.greeting }));
   else if (s.signoff) lines.push(t('memory.style.signoff', { signoff: s.signoff }));
@@ -94,7 +99,9 @@ export class StyleStatsRunner {
     const foo = await this.query<string | null>('chats.foo', []);
     if (!foo || foo !== chatId) return ok({ written: 0 });
     const recent = await this.query<{ total: number; texts: string[] }>('messages.userTexts', [chatId, STYLE_EVERY]);
-    if (!recent || recent.total === 0 || recent.total % STYLE_EVERY !== 0 || recent.texts.length === 0) return ok({ written: 0 });
+    if (!recent || recent.total === 0 || recent.total % STYLE_EVERY !== 0) return ok({ written: 0 });
+    // CR-0037: a full sample of 20 non-blank texts or nothing; the previous lines stay until one is there.
+    if (recent.texts.filter((s) => s.trim() !== '').length < STYLE_EVERY) return ok({ written: 0 });
     return this.write(chatId, styleLines(computeStyle(recent.texts)));
   }
 

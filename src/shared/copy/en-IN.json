@@ -1068,7 +1068,6 @@
   "memory.style.length": "Writes about {chars} characters per message",
   "memory.style.casing.lower": "Writes in small letters",
   "memory.style.casing.sentence": "Starts messages with a capital letter",
-  "memory.style.casing.mixed": "Mixes capital and small letters",
   "memory.style.emoji": "Uses about {rate} emoji per message",
   "memory.style.greeting_signoff": "Often starts with “{greeting}” and ends with “{signoff}”",
   "memory.style.greeting": "Often starts with “{greeting}”",

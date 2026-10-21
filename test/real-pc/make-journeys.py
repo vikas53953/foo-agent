@@ -465,6 +465,8 @@ journey(
         click('sidebar-more'),
         click('sidebar-menu-memory'),
         wait(1200, 'memory-page', 'Memory page: rows with source and date, search, filters', 'UX-16-01'),
+        # CR-0037 (run 8 showed "Uses about 0.0 emoji per message"): no guessed line built on an empty measure or a broken number.
+        expect_text(r'\b0\.0 emoji|NaN|undefined|Infinity|Mixes capital', tid='screen-memory', not_=True, note='no empty-measure guesses'),
         fill('memory-search', 'vegetarian'),
         wait(800, 'memory-search', 'row found'),
         click('memory-row-edit'),
