@@ -284,6 +284,7 @@
         "Done",
         "Mon",
         "Mon",
+        "foo",
         "Cake",
         "Theobroma",
         "se",
@@ -308,6 +309,7 @@
         "ਮਿਲੇਗਾ?",
         "8:13",
         "AM",
+        "foo",
         "ਕੇਕ",
         "ਆਰਡਰ",
         "ਹੋ",
@@ -345,6 +347,7 @@
         "12",
         "Dec",
         "8:20",
+        "foo",
         "flights,",
         "Airline",
         "Leaves",
@@ -449,6 +452,7 @@
         "it.",
         "11:01",
         "AM",
+        "foo",
         "It",
         "is",
         "ready",
@@ -555,11 +559,11 @@
         },
         "app": {
           "x": 371,
-          "y": 436,
+          "y": 406,
           "width": 129.078125,
           "height": 40
         },
-        "dPos": 242,
+        "dPos": 272,
         "dSize": 22.9375,
         "verdict": "fail"
       }
@@ -585,8 +589,8 @@
     "total": 2968
   },
   "r5": {
-    "ratio": 0.0921494140625,
-    "diffPixels": 94361,
+    "ratio": 0.10468359375,
+    "diffPixels": 107196,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-07.light.diff.png"

@@ -244,6 +244,7 @@
         "Working",
         "Needs",
         "you",
+        "3",
         "T",
         "Trips",
         "11:01",
@@ -319,6 +320,7 @@
         "12",
         "Dec",
         "8:20",
+        "foo",
         "Goa",
         "flights,",
         "Sat",
@@ -419,6 +421,7 @@
         "it.",
         "11:01",
         "AM",
+        "foo",
         "It",
         "is",
         "ready",
@@ -459,6 +462,7 @@
         "sent",
         "11:01",
         "AM",
+        "foo",
         "It",
         "is",
         "ready",
@@ -601,11 +605,11 @@
         },
         "app": {
           "x": 356,
-          "y": 309,
+          "y": 279,
           "width": 440,
           "height": 96
         },
-        "dPos": 242,
+        "dPos": 272,
         "dSize": 4,
         "verdict": "fail"
       }
@@ -631,8 +635,8 @@
     "total": 44000
   },
   "r5": {
-    "ratio": 0.075927734375,
-    "diffPixels": 77750,
+    "ratio": 0.0895498046875,
+    "diffPixels": 91699,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-10.light.diff.png"
