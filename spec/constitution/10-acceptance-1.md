@@ -86,7 +86,7 @@ B.1 Source: every Given/When/Then in J1–J23 (`research/journeys-1..4.md`), ded
 | AT-027 | J7 | **Given** the user sends "thanks!", **then** foo adds a 👍 reaction and posts no message. | 23 | P1 |
 | AT-028 | J7 | **Given** the user holds Ctrl+Space for 4 s and releases, **then** a voice bubble and its transcript appear, and foo's reply is a voice bubble plus text (default setting). | 23 | P1 |
 | AT-029 | J7 | **Given** Windows blocks the microphone, **then** the card has one button that opens the exact Windows microphone privacy page. | 2, 27 | P1 |
-| AT-030 | J7 | **Given** a 200-word answer, **then** it arrives as at most 3 bubbles, with no bubble splitting a list. | 23 | P1 |
+| AT-030 | J7 | **Given** a 200-word answer, **then** it arrives as one bubble (CR-0024 F2), with no list split. | 23 | P1 |
 | AT-031 | J7 | **Given** any foo reply, **then** it contains none of the filler phrases ("Great question", "How can I help you", "I apologize for the confusion"). | 23 | P1 |
 | AT-032 | J8 | **Given** foo has 3 options, **then** the card shows exactly 3 options plus "Something else…" and Skip, with option 1 tagged "Best fit". | 3 | P0 |
 | AT-033 | J8 | **Given** a reversible-preference question with no answer for 15 min, **then** foo picks Best fit and says so in one line. | 22 | P1 |
