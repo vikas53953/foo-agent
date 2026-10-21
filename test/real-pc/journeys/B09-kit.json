@@ -71,7 +71,9 @@
       "do": "waitReply",
       "timeoutMs": 200000,
       "shot": "ai-page",
-      "expect": "AT-358..362 sealed page, status line first"
+      "expect": "AT-358..362 sealed page, status line first",
+      "expectTid": "ai-page",
+      "expectJs": "['ready', 'kept'].includes([...document.querySelectorAll('[data-testid=\"ai-page\"]')].pop()?.dataset.state)"
     },
     {
       "do": "dump",

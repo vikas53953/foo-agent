@@ -12,6 +12,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { stillWorking, settled } = require('./settle');
 
 const EXE = process.env.FOO_EXE || path.join(process.env.LOCALAPPDATA || '', 'Programs', 'foo', 'foo.exe');
 const ROOT = process.env.FOO_REAL_TEST_DIR || path.join(process.env.USERPROFILE || '.', 'foo-real-test');
@@ -194,7 +195,15 @@ async function main() {
             memoryChip(el) ||
             (/^(bubble-foo|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) && el.getAttribute('data-testid') !== 'card-time'),
         );
-      return { n: after.length, texts: after.map((el) => (el.innerText || '').trim().slice(0, 1500)) };
+      return {
+        n: after.length,
+        texts: after.map((el) => (el.innerText || '').trim().slice(0, 1500)),
+        // foo still at work: a bubble streaming, or an AI page inside it still building (see settle.js).
+        items: after.map((el) => ({
+          state: el.getAttribute('data-state'),
+          pageState: el.querySelector('[data-testid="ai-page"]')?.getAttribute('data-state') ?? null,
+        })),
+      };
     });
 
   // The end state a step names: expectTid / tid / css on screen (count if given), and expectJs true in the page.
@@ -393,11 +402,16 @@ async function main() {
             if (now.n > before && first === null) first = Date.now() - start;
             if (now.n !== cur.n || now.texts.join() !== cur.texts.join()) lastChange = Date.now();
             cur = now;
-            if (now.n > before && Date.now() - lastChange >= quiet) break;
+            if (settled({ n: now.n, before, items: now.items.slice(before), quietFor: Date.now() - lastChange, quietMs: quiet })) break;
           }
           rec.firstReplyMs = first;
           rec.newBubbles = cur.n - before;
           rec.ok = cur.n > before;
+          // Timed out with foo still writing: not an answer (and closing now would cut the reply off).
+          if (stillWorking(cur.items.slice(before))) {
+            rec.stillWorking = true;
+            rec.ok = false;
+          }
           const texts = cur.texts.slice(before);
           rec.duplicates = texts.filter((x, k) => x && texts.indexOf(x) !== k).length;
           rec.lastReply = texts.join('\n---\n').slice(0, 2000);
@@ -495,6 +509,20 @@ async function main() {
       log({ step: 'recheck', i: r.i, do: r.do, late: true });
     }
   }
+  // Closing foo mid-reply cuts that reply off, and the next journey (same profile) would find "That reply got cut off".
+  // Let any reply still streaming, or page still building, finish first, for up to 3 minutes.
+  const busy =
+    '[data-testid="thread-log"] [data-testid="bubble-foo"][data-state="streaming"], [data-testid="ai-page"][data-state="building"]';
+  const t1 = Date.now();
+  while (
+    Date.now() - t1 < 180_000 &&
+    (await page
+      .locator(busy)
+      .count()
+      .catch(() => 0))
+  )
+    await page.waitForTimeout(1_000);
+  if (Date.now() - t1 > 1_000) log({ step: 'drain', ms: Date.now() - t1 });
   await app.close().catch(() => {});
   try {
     log({ step: 'appLog', ...copyTechLog(journeyStart, out) });
