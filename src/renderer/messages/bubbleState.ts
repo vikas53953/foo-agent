@@ -9,6 +9,14 @@ import type { BadgeValue, MessageRow, TickState } from '../../shared/types';
 
 /** 04 §4.2: a badge value that would last less than this is skipped (OCL status-reactions.ts). */
 export const BADGE_DEBOUNCE_MS = 700;
+
+/**
+ * How long the badge slot waits before replacing what it shows (`shown`) with a new value (04 §4.2). An empty slot is not a
+ * value, so the first badge after it shows at once: 👀 must be on screen ≤ 1 s after send (§4.2 `seen`, PERF-07); every
+ * later change waits the debounce, so a value that would last less than that is skipped.
+ */
+export const badgeDelay = (shown: string): number => (shown === '' ? 0 : BADGE_DEBOUNCE_MS);
+
 /** 04 §6.2: edits are allowed this long after sending. */
 export const EDIT_WINDOW_MS = 15 * 60_000;
 

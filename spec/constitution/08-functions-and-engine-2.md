@@ -22,7 +22,8 @@ onUserMessage(m):                                             # main stored m (s
   if isStopCommand(m.text):        → stopFlow(m) (08-4 §26.9)                                   # Art. 18
   if openChoiceCard(chat) && answersCard(m): → card.answered (rule: 08-4 §26.6)  # J8
   if openApprovalOrPaymentCard(chat) && looksLikeYes(m): reply "Tap Approve on the card so I know it's really you." (G16 copy, `thread.approval_typed.approve`; for drafts "Tap Send on the draft so I know it's really you.", `thread.approval_typed.send`) ; return   # Art. 6
-  running = liveJobs(chat)                                     # jobs in WORKING or NEEDS_YOU (steer while NEEDS_YOU: 08-4 §26.5)
+  running = liveJobs(chat)                                     # jobs in WORKING or NEEDS_YOU (steer while NEEDS_YOU: 08-4 §26.5),
+                                                               # minus a job whose NEEDS_YOU card is an unanswered Stuck or Secret box card (CR-0035, X-193)
   if running.length == 1: → steer(running[0], m) (§5.5) ; return
   if running.length > 1:  → Choice card (purpose 'job') "Fold this into which job?" (cards.choice.question.fold_which), options = job titles   [foo decision]
   → intakeTurn(m) (§5.3)
@@ -50,7 +51,7 @@ The result is stored on the job as `do_verbs`. If empty, `jobs.intent = 'read_on
 
 5.3.2 **Intake AI call** (`purpose:'intake'`, chat lane, `<say>` streamed through the release gate): the AI returns an `IntakeAct` whose exact schema is 08-4 §25.2 (kinds `reply`, `react`, `ask`, `handoff`, `job`, `routine`, `memory`, `setting`; prompt `intake.md`, 08-4 §24.5). A `setting` decision is checked by the engine against the 08-0 §A.3 allow-list (08-4 §25.6). What is posted for each kind is 08-4 §25.5 items 5–6 (only `reply` posts its `<say>`).
 
-5.3.3 **Job creation.** For `kind:'job'`: insert `jobs` row (`queued`), insert `steps` from `plan` (each step's `phraseKey` MUST exist in the catalogue of 08-4 §26.1, else the runner replaces it with `generic_working`), write `plan.md` + `state.json`. `jobs.title` is built by the engine (08-4 §26.2); `est_minutes`, `est_tokens`, `est_cost_paise` are the engine values of 08-4 §26.3, never the AI's raw estimate. Then:
+5.3.3 **Job creation.** For `kind:'job'`: **first (CR-0040, X-198)**, if `needsApps` names `gmail`, `gcal` or `contacts` while Google is not connected (no Google rows, or all `disconnected`; a connection that needs sign-in is §21.2's), no job is created: the engine posts the Connect card (05-3 §5.11, `job_id` NULL; one app → variant `one_app` with that app's fixed line, more → variant `google` with those `scopes`), sets the user's bubble badge to NEEDS_YOU, and when Google connects within 24 h sends the same message to a new intake turn (engine RAM only; after a restart the user asks again). Otherwise: insert `jobs` row (`queued`), insert `steps` from `plan` (each step's `phraseKey` MUST exist in the catalogue of 08-4 §26.1, else the runner replaces it with `generic_working`), write `plan.md` + `state.json`. `jobs.title` is built by the engine (08-4 §26.2); `est_minutes`, `est_tokens`, `est_cost_paise` are the engine values of 08-4 §26.3, never the AI's raw estimate. Then:
 - If `est_minutes > 2` or `est_cost_paise > 500` (₹5) → Plan card C11; job stays `queued` until "Go" (`plan:go`); it holds no WORKING slot while it waits, and every surface shows it as waiting on the user (NEEDS YOU in Doing now, the "Needs you" chip and pill; `JobRow.awaitingGo`, CR-0028, X-186). "Change plan" → the text goes back to an intake turn with the old plan attached. `[J C11 foo decision]`
 - If key billing and `est_cost_paise > 0.2 × money.aiCapPaise` → the Plan card shows "This is a big one." (J19.3 step 5).
 - Else → `enqueue(job)`.
