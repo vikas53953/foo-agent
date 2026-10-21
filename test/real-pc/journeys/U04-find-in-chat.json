@@ -1,0 +1,74 @@
+{
+  "id": "U04-find-in-chat",
+  "title": "Find in chat: Ctrl+F, count, next, previous, close",
+  "spec": "06 §9 find in chat, 10-2 §C.5 Search palette + find in chat",
+  "covers": ["C.5 Search palette + find in chat"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "send",
+      "text": "List three Indian rivers"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "rivers",
+      "expect": "a short list"
+    },
+    {
+      "do": "key",
+      "key": "Control+F",
+      "shot": "find-open",
+      "expect": "find bar in the chat header with a field and count"
+    },
+    {
+      "do": "fill",
+      "tid": "thread-find-field",
+      "value": "river",
+      "soft": true
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "find-results",
+      "expect": "matches highlighted; count \"1 of n\""
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "thread-find-next"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "thread-find-prev"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "thread-find-close"
+    },
+    {
+      "do": "key",
+      "key": "Control+K"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "ctrl-k",
+      "expect": "Ctrl+K search overlay (J22) if built; else nothing happens"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}
