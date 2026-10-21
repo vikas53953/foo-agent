@@ -1,0 +1,13 @@
+{"t":1792617783124,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1792617787765,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792617787766,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792617794069,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792617794070,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792617798636,"lvl":"info","mod":"engine","evt":"web","kind":"web.no_window"}
+{"t":1792617798650,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792617798650,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792617805004,"lvl":"info","mod":"engine","evt":"web","kind":"web.no_window"}
+{"t":1792617805017,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792617805018,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792617805154,"lvl":"info","mod":"engine","evt":"job.waiting","kind":"app_quit"}
+{"t":1792617805222,"lvl":"error","mod":"approvals","evt":"EXPIRE_TICK_FAILED","kind":"UNKNOWN"}

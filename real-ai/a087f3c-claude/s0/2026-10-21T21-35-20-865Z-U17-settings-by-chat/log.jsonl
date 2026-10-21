@@ -1,0 +1,21 @@
+{"t":"2026-10-21T21:35:20.865Z","journey":"U17-settings-by-chat","title":"Change a setting by chat: mini line with Undo; theme and accent rows","spec":"06 Settings changed-by-chat, settings:undo, 10-2 §C.5 Settings","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T21:35:26.256Z","step":"launch","ok":true}
+{"t":"2026-10-21T21:35:34.347Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8087}
+{"t":"2026-10-21T21:35:35.387Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1039}
+{"t":"2026-10-21T21:35:35.488Z","i":1,"do":"send","sentAt":1792618535454,"before":0,"ok":true,"ms":101}
+{"t":"2026-10-21T21:35:45.628Z","i":2,"do":"waitReply","expect":"foo switches to dark and shows \"Changed: Theme → Dark. [Undo]\"","firstReplyMs":4053,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"I didn’t get that. Say it another way?\n\n9:35 PM","didntGetThat":true,"ms":10140}
+{"t":"2026-10-21T21:35:45.687Z","shot":"01-dark.png"}
+{"t":"2026-10-21T21:36:08.748Z","shot":"02-error-step3.png"}
+{"t":"2026-10-21T21:36:08.748Z","i":3,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23060}
+{"t":"2026-10-21T21:36:10.249Z","i":4,"do":"wait","expect":"back to light","ok":true,"ms":1501}
+{"t":"2026-10-21T21:36:10.311Z","shot":"03-undo.png"}
+{"t":"2026-10-21T21:36:10.358Z","i":5,"do":"key","ok":true,"ms":47}
+{"t":"2026-10-21T21:36:10.443Z","i":6,"do":"click","soft":true,"ok":true,"ms":84}
+{"t":"2026-10-21T21:36:10.532Z","i":7,"do":"click","soft":true,"ok":true,"ms":88}
+{"t":"2026-10-21T21:36:11.134Z","i":8,"do":"wait","expect":"theme options","ok":true,"ms":602}
+{"t":"2026-10-21T21:36:11.206Z","shot":"04-theme-row.png"}
+{"t":"2026-10-21T21:36:11.257Z","i":9,"do":"key","ok":true,"ms":51}
+{"t":"2026-10-21T21:36:34.329Z","shot":"05-error-step10.png"}
+{"t":"2026-10-21T21:36:34.329Z","i":10,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23072}
+{"t":"2026-10-21T21:36:34.334Z","i":11,"do":"dump","ok":true,"ms":4}
+{"t":"2026-10-21T21:36:34.466Z","step":"appLog","lines":4,"dropped":0}

@@ -1,0 +1,13 @@
+{"t":"2026-10-21T21:17:25.033Z","journey":"B02-choice","title":"Choice card: options, Best fit, typed answer","spec":"AT-032, AT-035, AT-288","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T21:17:30.383Z","step":"launch","ok":true}
+{"t":"2026-10-21T21:17:30.565Z","i":0,"do":"send","sentAt":1792617450476,"before":0,"ok":true,"ms":175}
+{"t":"2026-10-21T21:17:42.772Z","i":1,"do":"waitReply","firstReplyMs":6123,"newBubbles":7,"ok":true,"duplicates":0,"lastReply":"Where will you mostly run in these shoes?\n1\nRoads and pavements\nBEST FIT\nCushioned, everyday road shoes\n2\nTrails or rough ground\nMore grip and sturdier build\n3\nGym or treadmill\nLight and breathable\n4\nMix of everything\nAll-rounder pair\nSomething else…\nSkip\n9:17 PM\n---\n1\nRoads and pavements\nBEST FIT\nCushioned, everyday road shoes\n---\n2\nTrails or rough ground\nMore grip and sturdier build\n---\n3\nGym or treadmill\nLight and breathable\n---\n4\nMix of everything\nAll-rounder pair\n---\nSomething else…\n---\nSkip","ms":12207}
+{"t":"2026-10-21T21:17:42.840Z","shot":"01-choice.png"}
+{"t":"2026-10-21T21:17:42.843Z","i":2,"do":"check","found":1,"ok":true,"ms":3}
+{"t":"2026-10-21T21:17:42.845Z","i":3,"do":"check","found":4,"ok":true,"ms":2}
+{"t":"2026-10-21T21:17:42.848Z","i":4,"do":"text","soft":true,"text":"Where will you mostly run in these shoes?\n1\nRoads and pavements\nBEST FIT\nCushioned, everyday road shoes\n2\nTrails or rough ground\nMore grip and sturdier build\n3\nGym or treadmill\nLight and breathable\n4\nMix of everything\nAll-rounder pair\nSomething else…\nSkip\n9:17 PM","ok":true,"ms":3}
+{"t":"2026-10-21T21:17:42.950Z","i":5,"do":"send","sentAt":1792617462907,"before":0,"ok":true,"ms":102}
+{"t":"2026-10-21T21:17:54.639Z","i":6,"do":"waitReply","expect":"AT-035: card collapses as if option 2 was tapped","firstReplyMs":5596,"newBubbles":7,"ok":true,"duplicates":0,"lastReply":"What is your shoe size (UK/India)?\n1\nUK 6 or smaller\nBEST FIT\n2\nUK 7 to 8\n3\nUK 9 to 10\n4\nUK 11 or larger\nSomething else…\nSkip\n9:17 PM\n---\n1\nUK 6 or smaller\nBEST FIT\n---\n2\nUK 7 to 8\n---\n3\nUK 9 to 10\n---\n4\nUK 11 or larger\n---\nSomething else…\n---\nSkip","ms":11688}
+{"t":"2026-10-21T21:17:54.703Z","shot":"02-typed-2.png"}
+{"t":"2026-10-21T21:17:54.706Z","i":7,"do":"dump","ok":true,"ms":3}
+{"t":"2026-10-21T21:17:54.830Z","step":"appLog","lines":5,"dropped":0}

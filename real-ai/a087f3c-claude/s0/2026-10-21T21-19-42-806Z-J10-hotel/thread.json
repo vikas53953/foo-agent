@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can read your email, calendar and apps, set up routines, and help with bookings and bills, and the app shows what works on this PC.\n\n9:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n9:17 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet, and everything you send goes through it scrambled.\n\nWithout a VPN, websites see your device's address, and your internet provider or a public Wi-Fi owner can see where your traffic goes. With a VPN, your data is locked before it leaves your device and travels to the VPN company's computer. That computer unlocks it and sends it on to the website, so the site sees the VPN's address, not yours.\n\nThat's why people use it on public Wi-Fi, to keep snoopers out, or to appear to be in another city or country. It doesn't make you invisible, though. The VPN company can still see your traffic, so pick one you trust.\n\n9:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n9:17 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Trails or rough ground\n9:17 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n9:17 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What is your shoe size (UK/India)?\n1\nUK 6 or smaller\nBEST FIT\n2\nUK 7 to 8\n3\nUK 9 to 10\n4\nUK 11 or larger\nSomething else…\nSkip\n9:17 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n9:19 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which 2 nights do you mean by next weekend?\n1\nFri 30 Oct to Sun 1 Nov\nBEST FIT\nNext week's weekend\n2\nSat 31 Oct to Mon 2 Nov\nSaturday and Sunday nights\n3\nFri 23 Oct to Sun 25 Oct\nThis coming weekend\nSomething else…\nSkip\n9:19 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:19 PM"
+  }
+]
