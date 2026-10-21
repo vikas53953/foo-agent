@@ -1,5 +1,7 @@
 {
   "app.window.title": "foo",
+  "app.start_blocked.title": "foo is still closing",
+  "app.start_blocked.body": "foo didn’t close properly last time and is still finishing. Wait a few seconds, then open foo again.",
   "banner.offline.text": "You’re offline. Your jobs are saved and I’ll carry on when you’re back.",
   "banner.offline.action": "Try again",
   "banner.ai_not_answering.text": "{AI} isn’t answering right now. Your jobs are paused, not lost.",
