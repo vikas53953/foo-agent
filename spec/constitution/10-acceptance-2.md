@@ -235,7 +235,10 @@ Fixture: FOO_TEST world, fake AI, pinned clock, motion off for pictures.
 | AT-432 | Answered steer tick | a message answered while a job runs shows ✓✓ read, not ⏳, once its answer posts |
 | AT-433 | Trying another way | a failed tool call with the job carrying on shows "Slow here, trying another way" under the current step until the next successful call |
 
-AT-434 to AT-439 are reserved for this patch.
+| AT-434 | Memory note wording | the intake rules ask for a memory fact as a short note without "the user" or their name |
+| AT-435 | Drafts are jobs | the intake rules make writing, sending or replying to an email or a message a job that needs that app, never a draft in `<say>` |
+
+AT-436 to AT-439 are reserved for this patch.
 
 ---
 

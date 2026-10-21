@@ -37,6 +37,14 @@ and owned by tickets T2–T4 (`/mnt/project-files/foo/prep/C1-tickets.md`).
 | F9  | ⏳ on his question for minutes                           | 08-2 §5.5 item 4: badge follows the job                                         | An `answered` steer shows ✓✓ read at once; folded ones still follow the job                                                                                                                |
 | F10 | Slow news search, silence until he asked                 | 05 §5.2.2 had only the 60 s "Still working" line                                | After a failed tool call the job carries on: "Slow here, trying another way" under the current step, cleared on the next good call                                                         |
 
+### Added from the real-PC run (2026-10-21 07:16Z, main 501aa1a on Vikas's laptop with the Claude CLI)
+
+| #   | What the run saw                                                                                | Spec after                                                                                                                                                                                           |
+| --- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| F11 | Memory saved as "The user's favourite food is South Indian." in the chip, panel and Memory page | 08-4 §24.5 memory line: "Write the fact as a short note without "the user" or their name, like "Favourite food: South Indian"." (AT-434; 08-3 already asks for a "third person-free plain sentence") |
+| F12 | "Draft an email" → two plain bubbles, no Draft card, no offer to connect Gmail                  | 08-4 §24.5 job line: writing, sending or replying to an email or a message is always a job that needs that app; never a draft in `<say>` (AT-435). The job runner's app ask (J15) then offers Gmail  |
+| B3  | After a reply, the list did not scroll to the newest bubble (it sat under the suggestion chips) | No spec change (04 §1.6 stick-to-bottom already says follow the newest); T3 fixes it in the renderer                                                                                                 |
+
 ## (c) Contracts T1 lands
 
 - `steer.ts` B1 fix + AT-420 tests (red on the old code, green now).
