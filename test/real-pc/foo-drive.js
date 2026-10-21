@@ -132,19 +132,24 @@ async function main() {
     );
   // What counts as foo answering: a foo text bubble or any card foo posts, below the user's newest bubble. The thread is a
   // virtual list (only the rows near the bottom are in the page), so counting all bubbles stops working in a long chat;
-  // counting what sits after the newest bubble-me does not.
+  // counting what sits after the newest bubble-me does not. A memory chip ("I'll remember: … · Undo", 05-3 §5.17.1) is
+  // foo's whole answer to "remember that …", so it counts too.
   const afterMe = () =>
     page.evaluate(() => {
       const log = document.querySelector('[data-testid="thread-log"]');
       if (!log) return { n: 0, texts: [] };
-      const all = [...log.querySelectorAll('[data-testid^="bubble-"], [data-testid^="card-"]')].filter((el) =>
-        /^(bubble-(me|foo|helper|wa)|card-[a-z-]+)$/.test(el.getAttribute('data-testid')),
+      const memoryChip = (el) =>
+        el.getAttribute('data-testid') === 'thread-marker' && !!el.querySelector('[data-testid="thread-memory-undo"]');
+      const all = [...log.querySelectorAll('[data-testid^="bubble-"], [data-testid^="card-"], [data-testid="thread-marker"]')].filter(
+        (el) => /^(bubble-(me|foo|helper|wa)|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) || memoryChip(el),
       );
       const kinds = all.map((el) => el.getAttribute('data-testid'));
       const after = all
         .slice(kinds.lastIndexOf('bubble-me') + 1)
         .filter(
-          (el) => /^(bubble-foo|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) && el.getAttribute('data-testid') !== 'card-time',
+          (el) =>
+            memoryChip(el) ||
+            (/^(bubble-foo|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) && el.getAttribute('data-testid') !== 'card-time'),
         );
       return { n: after.length, texts: after.map((el) => (el.innerText || '').trim().slice(0, 1500)) };
     });
@@ -382,7 +387,12 @@ async function main() {
             process.kill(app.process().pid, 'SIGKILL');
           } catch {
             await new Promise((r) => setTimeout(r, 10_000)); // let the last crash's helpers exit first
-            await launch().catch(() => {});
+            rec.fooProcsBefore = fooProcs();
+            const err = await launch().then(
+              () => null,
+              (e) => String(e && e.message ? e.message : e).split('\n')[0],
+            );
+            if (err) throw new Error(`fresh launch 10 s after the last crash failed (${rec.fooProcsBefore} foo.exe left): ${err}`);
             process.kill(app.process().pid, 'SIGKILL');
           }
           if (s.gapMs) await new Promise((r) => setTimeout(r, s.gapMs));
