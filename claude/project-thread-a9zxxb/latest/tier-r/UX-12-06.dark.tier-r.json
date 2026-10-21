@@ -437,7 +437,7 @@
         "9:05",
         "AM",
         "in",
-        "15:14",
+        "15:11",
         "Coastline",
         "Kitchen",
         "₹1,000",
@@ -461,7 +461,6 @@
         "9:05",
         "AM",
         "9:05",
-        "👀",
         "Approve",
         "it’s",
         "9:05",
@@ -584,8 +583,8 @@
     "total": 22232
   },
   "r5": {
-    "ratio": 0.0923544921875,
-    "diffPixels": 94571,
+    "ratio": 0.0923486328125,
+    "diffPixels": 94565,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-06.dark.diff.png"

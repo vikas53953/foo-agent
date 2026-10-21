@@ -138,6 +138,7 @@
         "Fri",
         "18",
         "Dec?",
+        "3",
         "foo",
         "9:41",
         "AM",
@@ -466,10 +467,9 @@
         "replies",
         "show",
         "here.",
-        "Waiting",
-        "for",
-        "your",
-        "answer:",
+        "Trips",
+        "sent",
+        "Question:",
         "Which",
         "flight",
         "time",
@@ -479,9 +479,7 @@
         "on",
         "Fri",
         "18",
-        "Dec?.",
-        "Show",
-        "button.",
+        "Dec?",
         "Not",
         "sent."
       ]
@@ -536,8 +534,8 @@
     "total": 4238
   },
   "r5": {
-    "ratio": 0.0668291015625,
-    "diffPixels": 68433,
+    "ratio": 0.0669501953125,
+    "diffPixels": 68557,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-02.light.diff.png"
