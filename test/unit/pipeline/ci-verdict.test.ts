@@ -17,6 +17,12 @@ describe('known-red.tsv', () => {
     expect(rows).toEqual([{ match: 'AT-074', reason: 'redactor flake', owner: 'thread X', until: '2026-10-30', line: 4 }]);
   });
 
+  it('refuses a row whose until date is more than 14 days out', () => {
+    const row = (until: string) => `${HEAD}\nAT-074\tflake\tme\t${until}\n`;
+    expect(() => parseKnownRed(row('2026-11-04'), '2026-10-21')).not.toThrow();
+    expect(() => parseKnownRed(row('2026-11-05'), '2026-10-21')).toThrow(/14 days/);
+  });
+
   it('refuses a row with no owner or no until date', () => {
     expect(() => parseKnownRed(`${HEAD}\nAT-074\tflake\t\t2026-10-30\n`)).toThrow(/owner/);
     expect(() => parseKnownRed(`${HEAD}\nAT-074\tflake\tme\tsoon\n`)).toThrow(/until/);
@@ -91,6 +97,12 @@ describe('the verdict', () => {
     expect(r!.why).toContain('expired 2026-10-01');
   });
 
+  it('a test the PR changes is mine even when it is red on the base branch or listed as known', () => {
+    const f = fail('test/unit/mine.test.ts', 'test/unit/mine.test.ts > AT-074 works');
+    const [r] = classify([f], { ...ctx, baseFailures: [f] });
+    expect(r!.verdict).toBe('mine');
+  });
+
   it('anything else is new', () => {
     const [r] = classify([fail('test/unit/y.test.ts', 'test/unit/y.test.ts > z')], { ...ctx, baseFailures: [] });
     expect(r).toMatchObject({ verdict: 'new', why: 'not in known-red.tsv and green on main' });
@@ -113,6 +125,8 @@ describe('the verdict', () => {
     expect(lines.findIndex((l) => l.startsWith('| mine'))).toBeLessThan(lines.findIndex((l) => l.startsWith('| new')));
     expect(text).toContain('a \\| b');
     expect(text).toContain('Golden: step "Build" failed without a test annotation');
+    const cut = digest(rows, { label: '#12', sha: 'abc' }, { jobOnly: [], knownRows: 0, expiredRows: 0, truncated: ['Shard 2'] });
+    expect(cut).toContain('Shard 2: GitHub keeps 10 annotations per step');
     expect(digest([], { label: '#1', sha: 'abc' }, { jobOnly: [], knownRows: 0, expiredRows: 0 })).toContain('No failing tests.');
   });
 });

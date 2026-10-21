@@ -15,7 +15,8 @@ export type Merged = { ok: true; text: string } | { ok: false; clashes: string[]
 /**
  * Rows of a header + rows file. Kept: every row both sides kept, and every row one side added. Dropped: a base row
  * either side removed or changed (a change is a removal plus an addition). Order: ours, then theirs' new rows.
- * `keyOf` names the row's identity; two different rows with one key that neither side had alone is a clash.
+ * `keyOf` names the row's identity. A clash: a base row both sides changed differently, or one side changed while the
+ * other removed it.
  */
 export function mergeRows(base: string, ours: string, theirs: string, keyOf: (row: string) => string = (r) => r): Merged {
   const b = lines(base);
@@ -38,11 +39,20 @@ export function mergeRows(base: string, ours: string, theirs: string, keyOf: (ro
       outSet.add(r);
     }
 
-  const count = (rows: string[]) => rows.reduce((m, r) => m.set(keyOf(r), (m.get(keyOf(r)) ?? 0) + 1), new Map<string, number>());
-  const oc = count(oRows);
-  const tc = count(tRows);
-  const rc = count(out);
-  const clashes = [...rc].filter(([k, n]) => n > Math.max(oc.get(k) ?? 0, tc.get(k) ?? 0)).map(([k]) => `row ${k} changed on both sides`);
+  // A base row gone from both sides was changed (or removed) on each: fine when both did the same, a clash otherwise.
+  const added = (rows: string[], k: string) =>
+    rows
+      .filter((r) => !bSet.has(r) && keyOf(r) === k)
+      .sort()
+      .join('\n');
+  const clashes: string[] = [];
+  for (const r of bSet) {
+    if (oSet.has(r) || tSet.has(r)) continue;
+    const k = keyOf(r);
+    const [oa, ta] = [added(oRows, k), added(tRows, k)];
+    if (oa && ta && oa !== ta) clashes.push(`row ${k} changed on both sides`);
+    else if (!oa !== !ta) clashes.push(`row ${k} changed on one side, removed on the other`);
+  }
   if (clashes.length) return { ok: false, clashes };
   return { ok: true, text: [header ?? '', ...out].join('\n') + '\n' };
 }
@@ -60,6 +70,9 @@ export function mergeJson(
   if (same(ours, theirs)) return { value: ours, clashes: [] };
   if (same(base, ours)) return { value: theirs, clashes: [] };
   if (same(base, theirs)) return { value: ours, clashes: [] };
+  // Note keys ("_why") are prose each change appends to: both appends land, ours first.
+  if (path.split('.').pop()!.startsWith('_') && typeof base === 'string' && typeof ours === 'string' && typeof theirs === 'string')
+    if (ours.startsWith(base) && theirs.startsWith(base)) return { value: ours + theirs.slice(base.length), clashes: [] };
   if (isObject(ours) && isObject(theirs)) {
     const b = isObject(base) ? base : {};
     const value: { [k: string]: Json } = {};
@@ -84,6 +97,11 @@ function lines(s: string): string[] {
   return l;
 }
 
+/** docs/decisions/*.tsv: a row is its time and phase (the log is append-only; an edited decision keeps both). */
+export function decisionKey(row: string): string {
+  return row.split('\t').slice(0, 2).join('\t');
+}
+
 /** spec/trace.csv: one row per link, so the row's identity is everything but its test file and status. */
 export function traceKey(row: string): string {
   return JSON.stringify((parseCsv(row)[0] ?? []).slice(0, 6));
@@ -95,7 +113,7 @@ export function mergeText(kind: Kind, base: string, ours: string, theirs: string
     const r = mergeJson(parse(base), parse(ours), parse(theirs));
     return r.clashes.length ? { ok: false, clashes: r.clashes } : { ok: true, text: JSON.stringify(r.value, null, 2) + '\n' };
   }
-  return mergeRows(base, ours, theirs, kind === 'csv' && file.endsWith('trace.csv') ? traceKey : undefined);
+  return mergeRows(base, ours, theirs, kind === 'tsv' ? decisionKey : file.endsWith('trace.csv') ? traceKey : undefined);
 }
 
 /** A stage of the conflicted file: 1 base, 2 ours, 3 theirs. A missing stage (added on both sides) reads as empty. */

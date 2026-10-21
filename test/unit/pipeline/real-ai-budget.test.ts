@@ -120,18 +120,21 @@ describe('pass^k', () => {
   const r = (round: number, journey: string, passed: boolean) => ({ ai: 'claude', round, journey, passed });
 
   it('a journey passes only when it passed every round; a missed round is a fail', () => {
-    const { rows, ok } = passK([
-      r(1, 'J07', true),
-      r(2, 'J07', true),
-      r(3, 'J07', true),
-      r(1, 'B04', true),
-      r(2, 'B04', false),
-      r(1, 'B05', true),
-    ]);
+    const { rows, ok } = passK(
+      [r(1, 'J07', true), r(2, 'J07', true), r(3, 'J07', true), r(1, 'B04', true), r(2, 'B04', false), r(1, 'B05', true)],
+      3,
+    );
     expect(ok).toBe(false);
     expect(rows.map((x) => `${x.journey} ${x.passes}/${x.rounds}`)).toEqual(['B04 1/3', 'B05 1/3', 'J07 3/3']);
     expect(table(rows)).toContain('| claude | B04 | 1/3 | **no** |');
-    expect(passK([r(1, 'J07', true), r(2, 'J07', true)]).ok).toBe(true);
+    expect(passK([r(1, 'J07', true), r(2, 'J07', true)], 2).ok).toBe(true);
+  });
+
+  it('k comes from the caller: a round that never reported, or an expected journey with no result, is a fail', () => {
+    expect(passK([r(1, 'J07', true), r(2, 'J07', true)], 3).ok).toBe(false);
+    const { rows, ok } = passK([r(1, 'J07', true)], 1, ['J07', 'B04']);
+    expect(ok).toBe(false);
+    expect(rows.map((x) => `${x.journey} ${x.passes}/${x.rounds}`)).toEqual(['B04 0/1', 'J07 1/1']);
   });
 
   it('reads each round from the artifact folder names, and a journey run in two parts passes only if both did', () => {

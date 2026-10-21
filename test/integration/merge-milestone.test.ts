@@ -96,6 +96,39 @@ describe('merge-milestone.sh', () => {
     git('merge', '--abort');
   }, 120_000);
 
+  it('a trace row two tickets changed differently stops the merge and leaves the manifest for later', () => {
+    const flip = (name: string, file: string) => {
+      git('checkout', '-q', '-b', name, 't2');
+      put('spec/trace.csv', read('spec/trace.csv').replace('test/x1.test.ts', file));
+      execFileSync('pnpm', ['exec', 'tsx', 'scripts/spec-verify.ts', '--write'], { cwd: dir });
+      git('commit', '-q', '-am', name);
+    };
+    flip('f1', 'test/y1.test.ts');
+    flip('f2', 'test/z1.test.ts');
+    const r = merge('f1');
+    expect(r.status).toBe(1);
+    expect(r.stderr).toContain('changed on both sides');
+    expect(r.stderr).toContain('spec/trace.csv');
+    expect(r.stderr).toContain('regenerate once the spec/ clash');
+    expect(r.stdout).not.toContain('regenerated');
+    git('merge', '--abort');
+  }, 120_000);
+
+  it('--no-commit stages the merge and leaves it open', () => {
+    git('checkout', '-q', '-b', 'n1', 't2');
+    put('docs/decisions/M9.tsv', read('docs/decisions/M9.tsv') + '2026-10-22\tn1\n');
+    git('commit', '-q', '-am', 'n1');
+    git('checkout', '-q', '-b', 'n2', 't2');
+    put('docs/decisions/M9.tsv', read('docs/decisions/M9.tsv') + '2026-10-22\tn2\n');
+    git('commit', '-q', '-am', 'n2');
+    const r = spawnSync('bash', ['scripts/merge-milestone.sh', 'n1', '--no-commit'], { cwd: dir, encoding: 'utf8' });
+    expect(r.status, r.stderr).toBe(0);
+    expect(r.stdout).toContain('merge staged, not committed');
+    expect(git('rev-parse', '-q', '--verify', 'MERGE_HEAD')).not.toBe('');
+    expect(read('docs/decisions/M9.tsv').endsWith('2026-10-22\tn2\n2026-10-22\tn1\n')).toBe(true);
+    git('merge', '--abort');
+  }, 120_000);
+
   it('refuses to start on a dirty tree', () => {
     put('src/a.ts', 'dirty\n');
     const r = merge('t2');

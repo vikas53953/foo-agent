@@ -1,7 +1,9 @@
 // Spec: project testing rule §6 and Test-First Pipeline G4 (pass^3: the top real-AI journeys pass in every one of 3
 // rounds, so a journey that passes only sometimes counts as failing). Reads the summary.json files of each round's
 // parts (artifact folders named real-ai-<ai>-r<round>-s<part>) and prints a table; exit 1 when any journey missed a round.
-// Runs under plain Node: node --experimental-strip-types scripts/real-ai-pass-k.ts <downloaded-artifacts-dir>
+// k and the journey list come from the caller, so a round that never reported, or a journey that never wrote a
+// summary, counts as failed rather than shrinking the bar.
+// Runs under plain Node: node --experimental-strip-types scripts/real-ai-pass-k.ts <artifacts-dir> --rounds 3 [--expect top10.txt]
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -9,16 +11,17 @@ export type Result = { ai: string; round: number; journey: string; passed: boole
 export type Row = { ai: string; journey: string; passes: number; rounds: number };
 
 /** A journey passed a round when its summary has no failed step; a journey absent from a round failed it. */
-export function passK(results: Result[]): { rows: Row[]; ok: boolean } {
-  const rounds = new Map<string, Set<number>>();
-  for (const r of results) rounds.set(r.ai, (rounds.get(r.ai) ?? new Set()).add(r.round));
+export function passK(results: Result[], k: number, expected: string[] = []): { rows: Row[]; ok: boolean } {
   const rows = new Map<string, Row>();
-  for (const r of results) {
-    const key = `${r.ai}\t${r.journey}`;
-    const row = rows.get(key) ?? { ai: r.ai, journey: r.journey, passes: 0, rounds: rounds.get(r.ai)!.size };
-    if (r.passed) row.passes++;
-    rows.set(key, row);
-  }
+  const row = (ai: string, journey: string) => {
+    const key = `${ai}\t${journey}`;
+    const r = rows.get(key) ?? { ai, journey, passes: 0, rounds: k };
+    rows.set(key, r);
+    return r;
+  };
+  for (const r of results) if (r.passed && r.round <= k) row(r.ai, r.journey).passes++;
+  for (const r of results) row(r.ai, r.journey);
+  for (const ai of new Set(results.map((r) => r.ai))) for (const j of expected) row(ai, j);
   const list = [...rows.values()].sort((a, b) => a.ai.localeCompare(b.ai) || a.passes - b.passes || a.journey.localeCompare(b.journey));
   return { rows: list, ok: list.every((r) => r.passes === r.rounds) };
 }
@@ -62,8 +65,19 @@ if (process.argv[1]?.endsWith('real-ai-pass-k.ts')) {
     console.error('usage: real-ai-pass-k.ts <artifacts-dir>');
     process.exit(2);
   }
+  const arg = (name: string) => {
+    const i = process.argv.indexOf(name);
+    return i >= 0 ? process.argv[i + 1] : undefined;
+  };
+  const k = Number(arg('--rounds'));
+  if (!(k >= 1)) {
+    console.error('usage: real-ai-pass-k.ts <artifacts-dir> --rounds <k> [--expect <journey list file>]');
+    process.exit(2);
+  }
+  const listFile = arg('--expect');
+  const expected = listFile ? readFileSync(listFile, 'utf8').split(/\r?\n/).filter(Boolean) : [];
   const results = readResults(root);
-  const { rows, ok } = passK(results);
+  const { rows, ok } = passK(results, k, expected);
   console.log(results.length ? table(rows) : 'No journey results were found.');
   process.exit(results.length && ok ? 0 : 1);
 }

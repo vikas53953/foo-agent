@@ -1,6 +1,6 @@
 {
   "_why": "Real-AI spend cap (Test-First Pipeline G5). Each real-AI CI part prices its AI CLI transcripts with these rates and adds a row to real-ai/spend/<YYYY-MM>.tsv on the evidence branch (UTC month). At alertAtPercent of the cap the workflow opens one GitHub issue for the month; at the cap it stops starting new real-AI runs until the month ends or the cap is raised here. Unknown models use the '*' row (the dearest), and a part with no transcripts counts fallbackUsdPerJourney per journey, so spend is never under-counted. Rates are USD per million tokens (Anthropic list prices, 2026-10).",
-  "monthlyCapInr": 5000,
+  "monthlyCapInr": 25000,
   "alertAtPercent": 80,
   "usdToInr": 88,
   "fallbackUsdPerJourney": 0.5,

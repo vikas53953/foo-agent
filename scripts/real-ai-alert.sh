@@ -10,7 +10,9 @@ field() { node -e "process.stdout.write(String(JSON.parse(process.argv[1])[proce
 state=$(field state)
 [ "$state" = "ok" ] && { echo "spend ok: ₹$(field spentInr) of ₹$(field capInr)"; exit 0; }
 tag="[real-ai-spend $month $state]"
-if [ -n "$(gh issue list --repo "$GITHUB_REPOSITORY" --state all --search "\"$tag\" in:title" --json number --jq '.[].number')" ]; then
+# Titles from the issue list itself (the search index lags, so a just-opened issue could be missed).
+titles=$(gh issue list --repo "$GITHUB_REPOSITORY" --state all --limit 300 --json title --jq '.[].title')
+if grep -qF -- "$tag" <<< "$titles"; then
   echo "already raised: $tag"
   exit 0
 fi

@@ -38,12 +38,21 @@ while IFS= read -r f; do
     spec/SPEC-MANIFEST.json) regen=1; continue ;;
     *) real+=("$f"); continue ;;
   esac
-  if tsx scripts/merge-rows.ts "$kind" "$f"; then git add -- "$f"; else real+=("$f"); fi
+  if tsx scripts/merge-rows.ts "$kind" "$f"; then
+    git add -- "$f"
+    case "$f" in spec/*) regen=1 ;; esac # the manifest pins every spec/ file, trace.csv too
+  else
+    real+=("$f")
+  fi
 done < <(git diff --name-only --diff-filter=U)
 
 if [ "$regen" = 1 ]; then
-  if [ ${#real[@]} -eq 0 ] || ! printf '%s\n' "${real[@]}" | grep -q '^spec/'; then
-    git checkout --theirs -- spec/SPEC-MANIFEST.json
+  case " ${real[*]:-} " in
+    *" spec/"*) spec_clash=1 ;;
+    *) spec_clash=0 ;;
+  esac
+  if [ "$spec_clash" = 0 ]; then
+    git diff --name-only --diff-filter=U -- spec/SPEC-MANIFEST.json | grep -q . && git checkout --theirs -- spec/SPEC-MANIFEST.json
     tsx scripts/spec-verify.ts --write > /dev/null
     git add -- spec/SPEC-MANIFEST.json
     echo "spec/SPEC-MANIFEST.json: regenerated from the merged spec/"

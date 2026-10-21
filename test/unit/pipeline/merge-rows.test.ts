@@ -65,7 +65,30 @@ describe('trace.csv', () => {
   });
 });
 
+describe('decision logs', () => {
+  const H2 = 'ts\tphase\tdecision';
+  it('two tickets logging at the same time and phase both land', () => {
+    const r = mergeText('tsv', `${H2}\n`, `${H2}\nt1\tfix\ta\n`, `${H2}\nt1\tfix\tb\n`);
+    expect(r).toEqual({ ok: true, text: `${H2}\nt1\tfix\ta\nt1\tfix\tb\n` });
+  });
+
+  it('an existing row edited differently on both sides is a clash, not two rows', () => {
+    const r = mergeText('tsv', `${H2}\nt1\tfix\ta\n`, `${H2}\nt1\tfix\ta (fixed)\n`, `${H2}\nt1\tfix\ta (typo)\n`);
+    expect(r).toEqual({ ok: false, clashes: ['row t1\tfix changed on both sides'] });
+  });
+
+  it('a row changed on one side and removed on the other is a clash', () => {
+    const r = mergeText('tsv', `${H2}\nt1\tfix\ta\n`, `${H2}\nt1\tfix\ta2\n`, `${H2}\n`);
+    expect(r).toEqual({ ok: false, clashes: ['row t1\tfix changed on one side, removed on the other'] });
+  });
+});
+
 describe('JSON merge', () => {
+  it('a note key both sides appended to keeps both appends', () => {
+    const r = mergeJson({ _why: 'A.', k: 1 }, { _why: 'A. B.', k: 1 }, { _why: 'A. C.', k: 1 });
+    expect(r).toEqual({ value: { _why: 'A. B. C.', k: 1 }, clashes: [] });
+  });
+
   it('keys added on both sides land; a key one side deleted goes', () => {
     const base = { keys: { a: 'T1', b: 'T2' } };
     const r = mergeJson(base, { keys: { a: 'T1', b: 'T2', c: 'T3' } }, { keys: { b: 'T2', d: 'T4' } });
