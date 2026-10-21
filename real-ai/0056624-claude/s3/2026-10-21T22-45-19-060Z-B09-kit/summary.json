@@ -1,0 +1,148 @@
+{
+  "journey": "B09-kit",
+  "title": "Rich reply pieces: calculator, map, chart, compare, timer, form",
+  "steps": 15,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T22-45-19-060Z-B09-kit",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792622724691,
+      "before": 0,
+      "ok": true,
+      "ms": 178
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "AT-347 calculator recomputes",
+      "firstReplyMs": 7601,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The EMI on ₹50,00,000 at 8.5% for 20 years comes to about ₹43,391 a month. You'd pay roughly ₹1,04,13,840 in total, of which about ₹54,13,840 is interest. Change the amount, rate or years below to see new figures.\n\nCouldn’t show part of this\n\nKeep\n10:45 PM",
+      "ms": 16734
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792622741658,
+      "before": 0,
+      "ok": true,
+      "ms": 116
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "AT-341 numbered stops, dashed route, Open in Maps chip",
+      "firstReplyMs": 4102,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here are 5 top places to visit in Jaipur, in an easy route order starting with the Amber Fort side and ending in the old city. Spots are approximate.\n\nAmber Fort: the big hilltop fort, best in the morning\nJal Mahal: lake palace, a quick photo stop on the way back\nHawa Mahal: the pink palace with the honeycomb front\nCity Palace: royal rooms and courtyards in the old city\nJantar Mantar: old stone sun clocks, right next to City Palace\n\nCouldn’t show part of this\n\nKeep\n\nWant me to plan this as a one-day trip with timings?\n\n10:45 PM",
+      "ms": 13715
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792622755582,
+      "before": 0,
+      "ok": true,
+      "ms": 153
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "AT-340 one hue, number rules",
+      "firstReplyMs": 6115,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "India's real GDP growth over the last 5 financial years went from a COVID dip of -5.8% in FY21 to a rebound of 9.7% in FY22, then 7.6%, 9.2% and 6.5% in FY25. These are rounded figures from official estimates, which get revised. I don't have the latest FY26 number, so check the Ministry of Statistics for that.\n\nCouldn’t show part of this\n\nKeep\n10:46 PM",
+      "ms": 14213
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792622770018,
+      "before": 0,
+      "ok": true,
+      "ms": 133
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "AT-343 highlighted column with why",
+      "firstReplyMs": 8576,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Galaxy S25 is the best value of the three. It has the fastest processor, a 120Hz screen and a 3x zoom camera at about the same launch price as the others. Launch prices were close, and current shop prices vary a lot, so check before buying. Specs are rounded.\n\niPhone 16\nLaunch price\n₹79,900\nScreen\n6.1 inch, 60Hz\nProcessor\nApple A18\nCameras\n48MP main + 12MP wide\nBattery\nAbout 3,600 mAh\nUpdates\nAround 6 to 7 years\nPixel 9\nLaunch price\n₹79,999\nScreen\n6.3 inch, 120Hz\nProcessor\nGoogle Tensor G4\nCameras\n50MP main + 48MP wide\nBattery\nAbout 4,700 mAh\nUpdates\n7 years\nBest pick\nGalaxy S25\nLaunch price\n₹80,999\nScreen\n6.2 inch, 120Hz\nProcessor\nSnapdragon 8 Elite\nCameras\n50MP main + wide + 3x zoom\nBattery\nAbout 4,000 mAh\nUpdates\n7 years\n\nFastest processor, 120Hz screen and a zoom camera for about the same price.\n\nKeep\n\nPixel 9 is the pick if battery life and clean software matter more, and iPhone 16 if you already use Apple things. Want me to compare current prices on a few shopping sites?\n\n10:46 PM",
+      "ms": 19758
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "sentAt": 1792622790005,
+      "before": 0,
+      "ok": true,
+      "ms": 173
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "expect": "AT-346 timer runs",
+      "firstReplyMs": 8591,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your 2 minute tea timer is below. Start it when the tea goes in. It only runs while this chat is open, so it won't ring if you close the app.\n\nLet the tea steep\n2:00 left\nStart timer\nKeep\n10:46 PM",
+      "ms": 15685
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792622805909,
+      "before": 0,
+      "ok": true,
+      "ms": 145
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "AT-351 up to 6 fields, submit one action",
+      "firstReplyMs": 2526,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's a short form for your party plan. Fill in the date, guest count and budget, then send it.\n\nCouldn’t show part of this\n\nKeep\n10:46 PM",
+      "ms": 10139
+    },
+    {
+      "i": 12,
+      "do": "send",
+      "sentAt": 1792622816269,
+      "before": 0,
+      "ok": true,
+      "ms": 137
+    },
+    {
+      "i": 13,
+      "do": "waitReply",
+      "expect": "AT-358..362 sealed page, status line first",
+      "firstReplyMs": 5618,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your expense tracker is below. Add an item, amount and category, set a monthly budget, and it shows your total, what's left and a split by category. It saves in this chat on this device if your app allows it, otherwise it clears when you close the chat.\n\nBuilding your page…",
+      "ms": 12270
+    },
+    {
+      "i": 14,
+      "do": "dump",
+      "ok": true,
+      "ms": 5
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n10:46 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Galaxy S25 is the best value of the three. It has the fastest processor, a 120Hz screen and a 3x zoom camera at about the same launch price as the others. Launch prices were close, and current shop prices vary a lot, so check before buying. Specs are rounded.\n\niPhone 16\nLaunch price\n₹79,900\nScreen\n6.1 inch, 60Hz\nProcessor\nApple A18\nCameras\n48MP main + 12MP wide\nBattery\nAbout 3,600 mAh\nUpdates\nAround 6 to 7 years\nPixel 9\nLaunch price\n₹79,999\nScreen\n6.3 inch, 120Hz\nProcessor\nGoogle Tensor G4\nCameras\n50MP main + 48MP wide\nBattery\nAbout 4,700 mAh\nUpdates\n7 years\nBest pick\nGalaxy S25\nLaunch price\n₹80,999\nScreen\n6.2 inch, 120Hz\nProcessor\nSnapdragon 8 Elite\nCameras\n50MP main + wide + 3x zoom\nBattery\nAbout 4,000 mAh\nUpdates\n7 years\n\nFastest processor, 120Hz screen and a zoom camera for about the same price.\n\nKeep\n\nPixel 9 is the pick if battery life and clean software matter more, and iPhone 16 if you already use Apple things. Want me to compare current prices on a few shopping sites?\n\n10:46 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n10:46 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Start it when the tea goes in. It only runs while this chat is open, so it won't ring if you close the app.\n\nLet the tea steep\n2:00 left\nStart timer\nKeep\n10:46 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n10:46 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for your party plan. Fill in the date, guest count and budget, then send it.\n\nCouldn’t show part of this\n\nKeep\n10:46 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n10:46 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "failed",
+    "text": "That reply got cut off.\nTry again\n10:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi\n10:47 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below. Add an item, amount and category, and it keeps a running total for the month. It clears when you close the chat.\n\nKeep\n\nFor the table, I need to pick a place first. Want me to find three vegetarian options near Connaught Place for 2 people on Thu 22 Oct, 8:00 PM?\n\n10:47 PM"
+  }
+]

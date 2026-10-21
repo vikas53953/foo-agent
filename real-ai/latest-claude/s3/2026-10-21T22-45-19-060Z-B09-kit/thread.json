@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The EMI on ₹50,00,000 at 8.5% for 20 years comes to about ₹43,391 a month. You'd pay roughly ₹1,04,13,840 in total, of which about ₹54,13,840 is interest. Change the amount, rate or years below to see new figures.\n\nCouldn’t show part of this\n\nKeep\n10:45 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show the 5 places to visit in Jaipur on a map\n10:45 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are 5 top places to visit in Jaipur, in an easy route order starting with the Amber Fort side and ending in the old city. Spots are approximate.\n\nAmber Fort: the big hilltop fort, best in the morning\nJal Mahal: lake palace, a quick photo stop on the way back\nHawa Mahal: the pink palace with the honeycomb front\nCity Palace: royal rooms and courtyards in the old city\nJantar Mantar: old stone sun clocks, right next to City Palace\n\nCouldn’t show part of this\n\nKeep\n\nWant me to plan this as a one-day trip with timings?\n\n10:45 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show a chart of India's GDP growth for the last 5 years\n10:45 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's real GDP growth over the last 5 financial years went from a COVID dip of -5.8% in FY21 to a rebound of 9.7% in FY22, then 7.6%, 9.2% and 6.5% in FY25. These are rounded figures from official estimates, which get revised. I don't have the latest FY26 number, so check the Ministry of Statistics for that.\n\nCouldn’t show part of this\n\nKeep\n10:46 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n10:46 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Galaxy S25 is the best value of the three. It has the fastest processor, a 120Hz screen and a 3x zoom camera at about the same launch price as the others. Launch prices were close, and current shop prices vary a lot, so check before buying. Specs are rounded.\n\niPhone 16\nLaunch price\n₹79,900\nScreen\n6.1 inch, 60Hz\nProcessor\nApple A18\nCameras\n48MP main + 12MP wide\nBattery\nAbout 3,600 mAh\nUpdates\nAround 6 to 7 years\nPixel 9\nLaunch price\n₹79,999\nScreen\n6.3 inch, 120Hz\nProcessor\nGoogle Tensor G4\nCameras\n50MP main + 48MP wide\nBattery\nAbout 4,700 mAh\nUpdates\n7 years\nBest pick\nGalaxy S25\nLaunch price\n₹80,999\nScreen\n6.2 inch, 120Hz\nProcessor\nSnapdragon 8 Elite\nCameras\n50MP main + wide + 3x zoom\nBattery\nAbout 4,000 mAh\nUpdates\n7 years\n\nFastest processor, 120Hz screen and a zoom camera for about the same price.\n\nKeep\n\nPixel 9 is the pick if battery life and clean software matter more, and iPhone 16 if you already use Apple things. Want me to compare current prices on a few shopping sites?\n\n10:46 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n10:46 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Start it when the tea goes in. It only runs while this chat is open, so it won't ring if you close the app.\n\nLet the tea steep\n2:00 left\nStart timer\nKeep\n10:46 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n10:46 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for your party plan. Fill in the date, guest count and budget, then send it.\n\nCouldn’t show part of this\n\nKeep\n10:46 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n10:46 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "streaming",
+    "text": "Your expense tracker is below. Add an item, amount and category, set a monthly budget, and it shows your total, what's left and a split by category. It saves in this chat on this device if your app allows it, otherwise it clears when you close the chat.\n\nBuilding your page…"
+  }
+]

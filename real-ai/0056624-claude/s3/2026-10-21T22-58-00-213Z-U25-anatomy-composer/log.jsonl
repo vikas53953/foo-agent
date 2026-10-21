@@ -1,0 +1,47 @@
+{"t":"2026-10-21T22:58:00.213Z","journey":"U25-anatomy-composer","title":"Shell anatomy at every width, composer states, honest flights reply","spec":"03-shell-1 §3.1-§3.5, 03-shell-2 §3.6-§3.7, 04-2 §20-§23, AT-157","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T22:58:05.949Z","step":"launch","ok":true}
+{"t":"2026-10-21T22:58:07.002Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1046}
+{"t":"2026-10-21T22:58:07.811Z","i":1,"do":"resize","soft":true,"ok":true,"ms":808}
+{"t":"2026-10-21T22:58:07.915Z","shot":"01-L-1280.png"}
+{"t":"2026-10-21T22:58:07.915Z","i":2,"do":"shot","expect":"window at 1280x800","ok":true,"ms":104}
+{"t":"2026-10-21T22:58:08.015Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":100}
+{"t":"2026-10-21T22:58:08.104Z","i":4,"do":"shotEl","soft":true,"ok":true,"ms":88}
+{"t":"2026-10-21T22:58:08.186Z","i":5,"do":"shotEl","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-21T22:58:08.266Z","i":6,"do":"shotEl","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-21T22:58:08.344Z","i":7,"do":"shotEl","soft":true,"ok":true,"ms":78}
+{"t":"2026-10-21T22:58:08.421Z","i":8,"do":"shotEl","soft":true,"ok":true,"ms":76}
+{"t":"2026-10-21T22:58:08.500Z","i":9,"do":"shotEl","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-21T22:58:08.590Z","i":10,"do":"shotEl","soft":true,"ok":true,"ms":90}
+{"t":"2026-10-21T22:58:08.674Z","i":11,"do":"shotEl","soft":true,"ok":true,"ms":84}
+{"t":"2026-10-21T22:58:08.751Z","i":12,"do":"shotEl","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-21T22:58:08.828Z","i":13,"do":"shotEl","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-21T22:58:08.906Z","i":14,"do":"shotEl","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-21T22:58:08.986Z","i":15,"do":"shotEl","soft":true,"ok":true,"ms":80}
+{"t":"2026-10-21T22:58:09.008Z","i":16,"do":"fill","soft":true,"ok":true,"ms":22}
+{"t":"2026-10-21T22:58:09.114Z","i":17,"do":"shotEl","soft":true,"ok":true,"ms":105}
+{"t":"2026-10-21T22:58:09.149Z","i":18,"do":"fill","soft":true,"ok":true,"ms":35}
+{"t":"2026-10-21T22:58:09.241Z","i":19,"do":"shotEl","soft":true,"ok":true,"ms":91}
+{"t":"2026-10-21T22:58:09.270Z","i":20,"do":"fill","soft":true,"ok":true,"ms":29}
+{"t":"2026-10-21T22:58:09.357Z","i":21,"do":"click","soft":true,"ok":true,"ms":87}
+{"t":"2026-10-21T22:58:09.860Z","i":22,"do":"wait","expect":"attach menu","ok":true,"ms":503}
+{"t":"2026-10-21T22:58:09.974Z","shot":"17-comp-attach-menu.png"}
+{"t":"2026-10-21T22:58:09.980Z","i":23,"do":"key","ok":true,"ms":6}
+{"t":"2026-10-21T22:58:10.785Z","i":24,"do":"resize","soft":true,"ok":true,"ms":805}
+{"t":"2026-10-21T22:58:10.865Z","shot":"18-M-1000.png"}
+{"t":"2026-10-21T22:58:10.865Z","i":25,"do":"shot","expect":"window at 1000x760","ok":true,"ms":80}
+{"t":"2026-10-21T22:58:11.670Z","i":26,"do":"resize","soft":true,"ok":true,"ms":805}
+{"t":"2026-10-21T22:58:11.731Z","shot":"19-S-760.png"}
+{"t":"2026-10-21T22:58:11.732Z","i":27,"do":"shot","expect":"window at 760x700","ok":true,"ms":61}
+{"t":"2026-10-21T22:58:12.537Z","i":28,"do":"resize","soft":true,"ok":true,"ms":805}
+{"t":"2026-10-21T22:58:12.594Z","shot":"20-XS-520.png"}
+{"t":"2026-10-21T22:58:12.594Z","i":29,"do":"shot","expect":"window at 520x640","ok":true,"ms":56}
+{"t":"2026-10-21T22:58:13.399Z","i":30,"do":"resize","soft":true,"ok":true,"ms":804}
+{"t":"2026-10-21T22:58:13.484Z","shot":"21-L-again.png"}
+{"t":"2026-10-21T22:58:13.485Z","i":31,"do":"shot","expect":"window at 1280x800","ok":true,"ms":86}
+{"t":"2026-10-21T22:58:13.627Z","i":32,"do":"send","sentAt":1792623493570,"before":5,"ok":true,"ms":142}
+{"t":"2026-10-21T23:00:44.071Z","i":33,"do":"waitReply","expect":"AT-157: says it can find and compare flights and open the booking page; filling passengers and paying comes later","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","ms":150444}
+{"t":"2026-10-21T23:00:44.157Z","shot":"22-flights.png"}
+{"t":"2026-10-21T23:00:44.160Z","i":34,"do":"expectText","note":"AT-157 honest flights scope","soft":true,"text":"Dal chawal is a good call for a late Wednesday night. Want a quick 20-minute recipe?\n\n10:56 PM","ok":false,"ms":3}
+{"t":"2026-10-21T23:00:44.164Z","i":35,"do":"dump","ok":true,"ms":4}
+{"t":"2026-10-21T23:00:44.166Z","step":"recheck","i":34,"do":"expectText","late":true}
+{"t":"2026-10-21T23:00:44.302Z","step":"appLog","lines":1,"dropped":0}
