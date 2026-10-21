@@ -66,6 +66,9 @@ import type { CardRow } from '../../shared/types';
 import { choiceFields } from '../cards/choiceFields';
 // Restart fix
 import { isStopCommand } from '../jobs/stopFlow';
+// CR-0044
+import { cutTitle } from '../jobs/title';
+import { phraseText } from '../../shared/phrases';
 
 /** The your-AI service the lane talks to (Engine wires AiService). */
 export interface LaneAi {
@@ -203,6 +206,11 @@ export const CONNECT_WAIT_MS = 24 * 60 * 60 * 1000;
 const MAX_TOTAL = 2; // 08-2 §6.9 chat lane
 const CONVERSATION = 20; // 08-2 §7.2 part 7
 
+function isIntakeConnect(payload: Record<string, unknown>): boolean {
+  const v = payload.intakeConnect as { messageId?: unknown } | undefined;
+  return typeof v?.messageId === 'string' && v.messageId.length > 0;
+}
+
 function isIntakeAsk(payload: Record<string, unknown>): payload is Record<string, unknown> & { intakeAsk: { messageId: string } } {
   const v = payload.intakeAsk as { messageId?: unknown } | undefined;
   return typeof v?.messageId === 'string' && v.messageId.length > 0;
@@ -246,6 +254,8 @@ export class ChatLane {
   private askAnswers = new Map<string, string[]>();
   /** CR-0040: user message id → its chat and when its Connect card was posted, until Google connects. */
   private awaitingConnect = new Map<string, { chatId: string; at: number }>();
+  /** CR-0044: messages whose Connect card got Not now (engine RAM, like askAnswers). */
+  private connectDeclined = new Set<string>();
   /** User messages this engine has started a turn for (a restart's cut-off list may name one of them). */
   private taken = new Set<string>();
   /** Cut-off bubbles that already had their one Try again. */
@@ -641,6 +651,8 @@ export class ChatLane {
     let retryEmpty = false;
     const released = gate.released().trimEnd();
     if (kind !== 'reply' && released.trim()) this.d.log('chat.say_leak', 'PROTOCOL_SAY_LEAK', { chatId });
+    // CR-0044: the decided kind goes to the tech log (an enum, no words), so a real-AI run shows why a message got its answer.
+    this.d.log('chat.intake_kind', act ? kind : 'none', { chatId });
 
     const memoryKind = act?.kind === 'memory' && this.d.memory ? act : null;
     const notBuilt = kind === 'routine' || kind === 'catch_up' || kind === 'handoff';
@@ -681,8 +693,9 @@ export class ChatLane {
     } else if (act && act.kind === 'job' && this.d.jobs) {
       // 08-2 §5.3.3: the runner takes over; its checklist and result are what the user sees next (ART-22).
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
-      const connect = this.d.appsToConnect?.(act.needsApps) ?? [];
-      if (connect.length) await this.connectFirst(chatId, messageId, connect, helper);
+      // CR-0044: after Not now on its Connect card, the message's job runs without those apps.
+      const connect = this.connectDeclined.has(messageId) ? [] : (this.d.appsToConnect?.(act.needsApps) ?? []);
+      if (connect.length) await this.connectFirst(chatId, messageId, connect, act.title, helper);
       else
         await this.d.jobs.createJob({
           chatId,
@@ -832,15 +845,28 @@ export class ChatLane {
    * CR-0040 (05-3 §5.11.2): the Connect card for the Google apps a job needs, with no job; ⏳ on the user's bubble until Google
    * connects (`connected`). One app → `one_app` with its fixed line; more → the Google card for those apps.
    */
-  private async connectFirst(chatId: string, messageId: string, apps: GoogleApp[], helper: EngineHelper | null): Promise<void> {
+  private async connectFirst(
+    chatId: string,
+    messageId: string,
+    apps: GoogleApp[],
+    jobTitle: string,
+    helper: EngineHelper | null,
+  ): Promise<void> {
     const app = apps[0]!;
+    // CR-0044: the line names the job and says Not now works too.
+    // The AI's title hint, filtered and cut as a job title is (08-4 §26.2 item 4); none → the generic phrase.
+    const title = cutTitle(this.d.protocol.filter(jobTitle).trim()) || phraseText('generic_working', 'running')!;
     const why =
       app === 'gmail'
-        ? t('cards.connect.one_app.why.gmail')
+        ? t('cards.connect.one_app.why_job.gmail', { title })
         : app === 'gcal'
-          ? t('cards.connect.one_app.why.gcal')
-          : t('cards.connect.one_app.why.contacts');
-    const payload = apps.length === 1 ? { variant: 'one_app', app, scopes: apps, why } : { variant: 'google', app, scopes: apps };
+          ? t('cards.connect.one_app.why_job.gcal', { title })
+          : t('cards.connect.one_app.why_job.contacts', { title });
+    const intakeConnect = { messageId };
+    const payload =
+      apps.length === 1
+        ? { variant: 'one_app', app, scopes: apps, why, intakeConnect }
+        : { variant: 'google', app, scopes: apps, intakeConnect };
     const cardId = this.d.newId('k');
     const cardMessageId = this.d.newId('m');
     const now = this.d.clock.now();
@@ -897,6 +923,7 @@ export class ChatLane {
   /** CR-0028: a tap on an intake question (Engine's card.answered); true when the card was one. */
   async onCardAnswered(a: { cardId: string; choice?: string; text?: string; answer?: unknown; resolvedBy: string }): Promise<boolean> {
     const card = await this.query<CardRow>('cardById', a.cardId);
+    if (card?.type === 'connect' && card.jobId === null && isIntakeConnect(card.payload)) return this.connectNotNow(card, a.resolvedBy);
     if (!card || card.type !== 'choice' || card.jobId !== null || !isIntakeAsk(card.payload)) return false;
     if (card.resolvedAt !== null) return true;
     const answer = (a.answer as CardAnswer | undefined) ?? (a.choice ? { optionId: a.choice } : a.text ? { text: a.text } : null);
@@ -915,6 +942,29 @@ export class ChatLane {
       },
     ]);
     if (r.ok) await this.reintake(card, answer);
+    return true;
+  }
+
+  /**
+   * CR-0044 (08-2 §5.3.3 as amended): Not now on an intake Connect card. The card is `skipped`, and the message goes back to
+   * intake once with no Connect card, so its job runs without the app (its steps ask for what they lack). Main sends only an
+   * `offered` card here; a card already moved on is left alone.
+   */
+  private async connectNotNow(card: CardRow, resolvedBy: string): Promise<boolean> {
+    if (card.state !== 'offered' || card.resolvedAt !== null) return true;
+    const { messageId } = (card.payload as { intakeConnect: { messageId: string } }).intakeConnect;
+    const r = await this.tx([
+      {
+        op: 'update',
+        table: 'cards',
+        id: card.id,
+        set: { state: 'skipped', answer: { skip: true }, resolved_by: resolvedBy, resolved_at: this.d.clock.now() },
+      },
+    ]);
+    if (!r.ok) return true;
+    this.awaitingConnect.delete(messageId);
+    this.connectDeclined.add(messageId);
+    this.enqueue(card.chatId, messageId, { intakeOnly: true });
     return true;
   }
 

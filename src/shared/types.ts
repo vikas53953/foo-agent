@@ -1059,6 +1059,8 @@ export interface ConnectPayload {
   why?: string;
   scopes?: ('gmail' | 'gcal' | 'contacts')[];
   setupCard?: 'D' | 'E';
+  /** CR-0040/0044: a card from intake, for this user message (Not now runs it without the app). */
+  intakeConnect?: { messageId: string };
 }
 
 // ---- M9 (CR-0013): live view and sign-in ----
