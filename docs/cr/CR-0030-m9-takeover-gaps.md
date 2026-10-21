@@ -71,3 +71,16 @@ FIXES**; applied:
   code box line uses the engine-masked number; nothing from M7 or M10–M15 is pulled in.
 
 Recorded as approved on Vikas's behalf under his standing rule; listed for his later review.
+
+## (d) Drawing vs app (Tier R disputes, `docs/fidelity/disputes.json`)
+
+The golden lane's Tier R compares each new capture with the walkthrough drawing; the app follows the cited spec line each time
+(same causes as CR-0013's M9 rows):
+
+| Ids                          | Checks         | Why the app is right                                                                                                                                                                                   |
+| ---------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| UX-14-05, UX-14-06, UX-14-08 | r1, r2, r4     | sandbox host 127.0.0.1 and the seeded world, not IRCTC (08-3 §22.5, public repo); the offer is a Choice card (pick 4) with "Best fit" on Save; the box is 05-2 §5.8.4's Login / Code box               |
+| UX-14-05, UX-14-08           | r3             | Save is the Choice card's best-fit option (accent soft, 05-2 §5.4), not the drawn yellow highlight; the code box's primary is the accent, not black                                                    |
+| UX-15-05                     | r1, r2, r4     | a real browser job on the sandbox site ("Checking the stay site", 08-4 §26.1 phrase words), not the drawn MakeMyTrip "Booking your Goa stay"; the row reads "You took over" (pick 3)                   |
+| UX-15-08                     | r1, r2, r3, r4 | the capture is dialog C-13 alone with 06-3 §14's [ Stop all ] [ Cancel ]; the drawing's orange "Keep them running" is the walkthrough's wording, and the table wins (pick 2)                           |
+| UX-15-09                     | r1, r2, r4     | the seeded world's three jobs (Airtel bill, Gas cylinder, Goa stay) and pick 1's line; "Pause all routines" is M7 / M11 and the per-job "Stopped 11:10" rows are not in 05-1, so neither is drawn here |
