@@ -10,8 +10,7 @@
 - **Spec sections:** 02 F2 (`--bubble-me`, `--on-bubble-me-soft`); 04 §1.2 rhythm row, §8 anchor, §12.3, §12.4, §13.7 (new),
   §17.1; 04-2 §21.7, §26; 05 §5.2.2; 08-2 §5.5 items 3–4; 08-4 §24.2, §24.3, intake rule line, §25.2 tag note; 10-2 §C.10
   (new); `spec/spec-values.json` SV-04; DECISIONS X-182.
-- **Status:** Approved by Vikas's approve-on-my-behalf rule (his messages 2026-10-18 14:56Z and 14:59Z) for the text, after the
-  independent review in §(f); the direction is his own pick (06:16Z card). DECISIONS X-182.
+- **Status:** Approved by Vikas's approve-on-my-behalf rule (his messages 2026-10-18 14:56Z and 14:59Z) after the independent review in §(f); the direction is his own pick (06:16Z card). DECISIONS X-182
 - **Change:** the sections above, as listed in §(b).
 - **Manifest:** `pnpm tsx scripts/spec-verify.ts --write` run in the same commit.
 
