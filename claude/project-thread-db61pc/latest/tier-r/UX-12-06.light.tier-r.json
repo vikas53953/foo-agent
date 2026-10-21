@@ -294,6 +294,7 @@
         "Mon",
         "this",
         "table?",
+        "foo",
         "ਕੇਕ",
         "ਆਰਡਰ",
         "ਹੋ",
@@ -329,6 +330,7 @@
         "on",
         "8:20",
         "AM",
+        "foo",
         "Goa",
         "flights,",
         "Sat",
@@ -441,7 +443,7 @@
         "9:05",
         "AM",
         "in",
-        "15:08",
+        "15:07",
         "Coastline",
         "Kitchen",
         "₹1,000",
@@ -465,6 +467,7 @@
         "9:05",
         "AM",
         "9:05",
+        "foo",
         "Approve",
         "it’s",
         "9:05",
@@ -587,8 +590,8 @@
     "total": 22232
   },
   "r5": {
-    "ratio": 0.077984375,
-    "diffPixels": 79856,
+    "ratio": 0.078154296875,
+    "diffPixels": 80030,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-06.light.diff.png"

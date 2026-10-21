@@ -241,6 +241,8 @@
         "10:22",
         "PM",
         "✅",
+        "T",
+        "Trips",
         "Window",
         "seats",
         "are",
@@ -275,6 +277,8 @@
         "42s",
         "10:24",
         "PM",
+        "T",
+        "Trips",
         "Goa",
         "is",
         "sunny",
@@ -424,6 +428,8 @@
         "9:30",
         "AM",
         "🛠",
+        "T",
+        "Trips",
         "On",
         "it.",
         "Comparing",
@@ -600,8 +606,8 @@
     "total": 2324
   },
   "r5": {
-    "ratio": 0.1688828125,
-    "diffPixels": 172936,
+    "ratio": 0.168390625,
+    "diffPixels": 172432,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-11.dark.diff.png"

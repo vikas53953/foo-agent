@@ -203,6 +203,7 @@
         "Done",
         "Mon",
         "Mon",
+        "foo",
         "No,",
         "Mon",
         "2",
@@ -238,6 +239,7 @@
         "hua?",
         "8:12",
         "AM",
+        "foo",
         "Cake",
         "Theobroma",
         "se",
@@ -264,6 +266,7 @@
         "ਮਿਲੇਗਾ?",
         "8:13",
         "AM",
+        "foo",
         "ਕੇਕ",
         "ਆਰਡਰ",
         "ਹੋ",
@@ -308,6 +311,7 @@
         "Dec",
         "8:20",
         "AM",
+        "foo",
         "Goa",
         "flights,",
         "Sat",
@@ -495,8 +499,8 @@
     "total": 7852
   },
   "r5": {
-    "ratio": 0.08762109375,
-    "diffPixels": 89724,
+    "ratio": 0.0875595703125,
+    "diffPixels": 89661,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-18-06.light.diff.png"

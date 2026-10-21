@@ -243,6 +243,7 @@
         "things",
         "Watch",
         "live",
+        "foo",
         "Cake",
         "Theobroma",
         "se",
@@ -267,6 +268,7 @@
         "ਮਿਲੇਗਾ?",
         "8:13",
         "AM",
+        "foo",
         "ਕੇਕ",
         "ਆਰਡਰ",
         "ਹੋ",
@@ -309,6 +311,7 @@
         "Dec",
         "8:20",
         "AM",
+        "foo",
         "Goa",
         "flights,",
         "Sat",
@@ -654,8 +657,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.1069208984375,
-    "diffPixels": 109487,
+    "ratio": 0.1068681640625,
+    "diffPixels": 109433,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-06.light.diff.png"

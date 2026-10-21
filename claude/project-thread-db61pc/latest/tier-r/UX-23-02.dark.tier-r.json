@@ -351,6 +351,8 @@
         "9:30",
         "AM",
         "🛠",
+        "T",
+        "Trips",
         "On",
         "it.",
         "Comparing",
@@ -512,8 +514,8 @@
       {
         "name": "hl",
         "ref": "#F1F1F5",
-        "app": "#2B3FD6",
-        "deltaE": 55.97,
+        "app": "#2C359A",
+        "deltaE": 62.89,
         "verdict": "fail"
       }
     ]
@@ -526,8 +528,8 @@
     "total": 8170
   },
   "r5": {
-    "ratio": 0.1181259765625,
-    "diffPixels": 120961,
+    "ratio": 0.1182041015625,
+    "diffPixels": 121041,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-02.dark.diff.png"
