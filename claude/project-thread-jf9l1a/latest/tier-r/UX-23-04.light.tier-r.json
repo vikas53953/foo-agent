@@ -173,6 +173,7 @@
         "Done",
         "T",
         "9:41",
+        "1",
         "B",
         "Building",
         "society",
@@ -541,7 +542,7 @@
         },
         "app": {
           "x": 371,
-          "y": 612,
+          "y": 641,
           "width": 93.703125,
           "height": 40
         },
@@ -571,8 +572,8 @@
     "total": 2618
   },
   "r5": {
-    "ratio": 0.085443359375,
-    "diffPixels": 87494,
+    "ratio": 0.085849609375,
+    "diffPixels": 87910,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-04.light.diff.png"
