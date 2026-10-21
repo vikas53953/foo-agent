@@ -33,8 +33,8 @@ jobs:
         job: [1, 2, 3]
     env:
       UNIT: ${{ inputs.unit }}
-      E2E: ${{ inputs.e2e || 'test/e2e/p1-first-run.spec.ts test/e2e/m9-takeover.spec.ts test/e2e/m9-signin.spec.ts test/e2e/m8-whatsapp.spec.ts test/e2e/p1-motion.spec.ts test/fidelity/bp/BP-m6.spec.ts' }}
-      REPEAT: ${{ inputs.repeat || '4' }}
+      E2E: ${{ inputs.e2e || 'test/e2e/p1-first-run.spec.ts test/fidelity/ux/UX-15.live.spec.ts test/fidelity/ux/UX-23.errors.spec.ts' }}
+      REPEAT: ${{ inputs.repeat || '6' }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
