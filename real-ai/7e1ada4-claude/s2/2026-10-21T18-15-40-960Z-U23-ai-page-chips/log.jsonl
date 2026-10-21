@@ -1,0 +1,15 @@
+{"t":"2026-10-21T18:15:40.961Z","journey":"U23-ai-page-chips","title":"AI page, action chips, reply chips","spec":"10-2 §C.9 Rich replies (X-180)","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T18:15:46.555Z","step":"launch","ok":true}
+{"t":"2026-10-21T18:15:54.677Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8119}
+{"t":"2026-10-21T18:15:55.706Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1029}
+{"t":"2026-10-21T18:15:55.853Z","i":1,"do":"send","sentAt":1792606555797,"before":0,"ok":true,"ms":147}
+{"t":"2026-10-21T18:16:08.066Z","i":2,"do":"waitReply","expect":"an AI page / kit card opens with the tracker","firstReplyMs":6083,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's your water tracker, with a goal of 8 glasses a day. It starts fresh each day and remembers your count if your device allows it.\n\nBuilding your page…","ms":12212}
+{"t":"2026-10-21T18:16:08.144Z","shot":"01-ai-page.png"}
+{"t":"2026-10-21T18:16:08.146Z","i":3,"do":"check","note":"AI page card","soft":true,"found":0,"ok":false,"ms":2}
+{"t":"2026-10-21T18:16:08.149Z","i":4,"do":"check","note":"action chips under the reply","soft":true,"found":0,"ok":false,"ms":2}
+{"t":"2026-10-21T18:16:31.236Z","shot":"02-error-step5.png"}
+{"t":"2026-10-21T18:16:31.236Z","i":5,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23087}
+{"t":"2026-10-21T18:16:32.049Z","i":6,"do":"wait","expect":"reply chip fills the composer","ok":true,"ms":813}
+{"t":"2026-10-21T18:16:32.110Z","shot":"03-chip-fills.png"}
+{"t":"2026-10-21T18:16:32.119Z","i":7,"do":"fill","soft":true,"ok":true,"ms":8}
+{"t":"2026-10-21T18:16:32.122Z","i":8,"do":"dump","ok":true,"ms":3}

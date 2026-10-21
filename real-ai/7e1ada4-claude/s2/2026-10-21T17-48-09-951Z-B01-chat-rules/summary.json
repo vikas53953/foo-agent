@@ -1,0 +1,75 @@
+{
+  "journey": "B01-chat-rules",
+  "title": "Chat rules: thanks, long answer, filler, reactions",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T17-48-09-951Z-B01-chat-rules",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792604895518,
+      "before": 0,
+      "ok": true,
+      "ms": 297
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "expect": "AT-027: 👍 reaction on my message, no foo message",
+      "ok": true,
+      "ms": 20002
+    },
+    {
+      "i": 2,
+      "do": "eval",
+      "value": {
+        "reaction": true,
+        "lastKind": "bubble-me"
+      },
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "sentAt": 1792604915880,
+      "before": 0,
+      "ok": true,
+      "ms": 112
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler",
+      "firstReplyMs": 12157,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "People in India are switching to UPI because it makes paying as easy as sending a message. NPCI launched it in 2016, and it moves money straight from your bank account to anyone using a phone number, a UPI ID or a QR scan. You don't need a card, cash or a slow bank transfer.\n\nThe shift picked up speed once small shops, vegetable sellers and auto drivers began showing a QR code. When almost everyone you pay accepts it, carrying cash feels like extra work. Apps like PhonePe, Google Pay and Paytm also made sign-up quick, often just a few minutes.\n\nThe three main reasons:\n\nSpeed and simplicity: Payments go through in seconds, at any hour, including holidays.\nLow or no cost: Paying friends and most shops is free for users, so there's little reason to avoid it.\nWorks everywhere: One app links all major banks and works from big malls to roadside stalls, even on basic smartphones.\n\nTogether, these make UPI the easy default, and habits follow convenience.\n\n5:48 PM",
+      "ms": 20262
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "AT-308 suggestion chips (≤3)",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "eval",
+      "value": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 3
+    }
+  ]
+}

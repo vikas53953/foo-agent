@@ -1,0 +1,15 @@
+{"t":"2026-10-21T17:59:25.966Z","journey":"B05-restart","title":"Quit mid-job and reopen: job resumes","spec":"AT-089, AT-118, J19/J20","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T17:59:31.455Z","step":"launch","ok":true}
+{"t":"2026-10-21T17:59:39.552Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8092}
+{"t":"2026-10-21T17:59:39.693Z","i":0,"do":"send","sentAt":1792605579621,"before":0,"ok":true,"ms":141}
+{"t":"2026-10-21T18:00:03.555Z","i":1,"do":"waitReply","firstReplyMs":10176,"newBubbles":5,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for National Museum Delhi opening hours and\nWatch live\nStop\nunder 1 min\n5:59 PM\n---\nLooking on the web\n---\nLook for National Museum Delhi opening hours and\n---\nWatch live\n---\nStop","ms":23862}
+{"t":"2026-10-21T18:00:03.626Z","shot":"01-museum-start.png"}
+{"t":"2026-10-21T18:00:03.629Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":3}
+{"t":"2026-10-21T18:00:11.631Z","i":3,"do":"wait","ok":true,"ms":8002}
+{"t":"2026-10-21T18:00:16.886Z","step":"launch","ok":true}
+{"t":"2026-10-21T18:00:16.886Z","i":4,"do":"relaunch","ok":true,"ms":5255}
+{"t":"2026-10-21T18:00:24.894Z","i":5,"do":"wait","expect":"AT-118: recovery card; job resumes (WAITING → WORKING)","ok":true,"ms":8008}
+{"t":"2026-10-21T18:00:24.967Z","shot":"02-after-reopen.png"}
+{"t":"2026-10-21T18:02:54.972Z","i":6,"do":"wait","ok":true,"ms":150005}
+{"t":"2026-10-21T18:02:55.044Z","shot":"03-after-reopen-later.png"}
+{"t":"2026-10-21T18:02:55.050Z","i":7,"do":"dump","ok":true,"ms":5}
