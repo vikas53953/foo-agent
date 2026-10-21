@@ -2,11 +2,10 @@
 // "Yesterday, Thu 15 Oct" / "Wed 14 Oct" / "Tue 14 Oct 2025"; unread divider before the first unread), §3.6.7 + 04 §19.5
 // (start-of-chat line first, 24 above the first separator), 02-2 §F13.3 (per-kind height estimates); 04 §14.2 / §14.3 (the
 // status line or the Thinking row sits where foo's next bubble will appear), §10.11 (a WhatsApp mirror shows the retention
-// line and its mirrored rows). Pure.
+// line and its mirrored rows), §12.3 (one message is one row: a reply is never split into several bubbles, CR-0024 F2). Pure.
 import { formatDate } from '../../shared/format';
 import { t } from '../../shared/copy/t';
 import type { MessageRow, WaMessageRow } from '../../shared/types';
-import { messageParts } from './chunks';
 
 export type VRow =
   | { kind: 'start'; key: string; label: string; messageId?: string }
@@ -79,8 +78,6 @@ export interface BuildOpts extends DateOpts {
   chatCreatedAt: number;
   isFoo: boolean;
   agentName: string;
-  /** 04 §12.3 pacing: how many parts of a chunked reply show yet (absent = all). */
-  shownParts?: (messageId: string) => number | undefined;
 }
 
 export function startLabel(o: Pick<BuildOpts, 'chatTitle' | 'chatCreatedAt' | 'isFoo' | 'agentName' | 'timeZone'>): string {
@@ -105,10 +102,7 @@ export function buildRows(messages: MessageRow[], o: BuildOpts): VRow[] {
     }
     if (m.id === o.unreadFromId)
       rows.push({ kind: 'unread', key: 'unread', label: t('thread.unread_divider.text', { count: o.unreadCount }) });
-    // 04 §12.3: a chat-mode reply shows as 1–3 bubbles; the last part keeps the message's key.
-    const parts = messageParts(m);
-    const shown = Math.min(parts.length, o.shownParts?.(m.id) ?? parts.length);
-    for (let i = 0; i < shown; i++) rows.push({ kind: 'message', key: i === parts.length - 1 ? m.id : `${m.id}~${i}`, message: parts[i]! });
+    rows.push({ kind: 'message', key: m.id, message: m });
   }
   return rows;
 }

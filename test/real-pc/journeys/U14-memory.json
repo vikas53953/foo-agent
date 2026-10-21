@@ -1,0 +1,128 @@
+{
+  "id": "U14-memory",
+  "title": "Memory: chip with Undo, memory page search, edit, forget with Undo",
+  "spec": "05-3 §5.17 Memory chip, 06 Memory page, 10-2 §C.4 / §C.5",
+  "covers": ["C.4 Memory chip (C14)", "C.5 Memory page"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "send",
+      "text": "Remember that I am vegetarian on Tuesdays"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "chip",
+      "expect": "memory chip \"I'll remember · Undo\"",
+      "ref": "BP-CARD-15"
+    },
+    {
+      "do": "check",
+      "soft": true,
+      "tid": "thread-memory-undo",
+      "note": "Undo on the chip"
+    },
+    {
+      "do": "send",
+      "text": "Remember my favourite cricket team is Punjab Kings"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "chip-2",
+      "expect": "second memory chip"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "thread-memory-undo",
+      "last": true
+    },
+    {
+      "do": "wait",
+      "ms": 1500,
+      "shot": "undone",
+      "expect": "chip says forgotten / undone"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "sidebar-more"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "sidebar-menu-memory"
+    },
+    {
+      "do": "wait",
+      "ms": 1200,
+      "shot": "memory-page",
+      "expect": "Memory page: rows with source and date, search, filters",
+      "ref": "UX-16-01"
+    },
+    {
+      "do": "fill",
+      "tid": "memory-search",
+      "value": "vegetarian",
+      "soft": true
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "memory-search",
+      "expect": "row found"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "memory-row-edit"
+    },
+    {
+      "do": "wait",
+      "ms": 600,
+      "shot": "memory-edit",
+      "expect": "inline edit"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "memory-row-forget"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "forgot",
+      "expect": "row gone, 5 s Undo bar",
+      "ref": "UX-16-04"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "app-undo-action"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "undo",
+      "expect": "row back"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "screen-back"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

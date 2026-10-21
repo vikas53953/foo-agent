@@ -1,0 +1,46 @@
+{
+  "id": "U21-window-dialogs",
+  "title": "Close to tray dialog, quit with a running job",
+  "spec": "09 §9.2 close to tray, 06 dialogs, 10-2 §C.5 Dialogs / §C.6",
+  "covers": ["C.5 Dialogs", "C.6 Start at login, close to tray"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "send",
+      "text": "Find the top 3 news headlines in India today"
+    },
+    {
+      "do": "wait",
+      "ms": 4000
+    },
+    {
+      "do": "key",
+      "key": "Alt+F4"
+    },
+    {
+      "do": "wait",
+      "ms": 1500,
+      "shot": "first-close",
+      "expect": "first-close dialog: foo keeps running in the tray",
+      "ref": "UX-23-02"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "shot": "news",
+      "expect": "job still finishes after the dialog"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

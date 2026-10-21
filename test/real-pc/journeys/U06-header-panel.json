@@ -1,0 +1,94 @@
+{
+  "id": "U06-header-panel",
+  "title": "Chat header, ⋮ menu, details panel (Doing, Using, What I know, Spent)",
+  "spec": "03-2 §3.6, 10-2 §C.2 Headers / Right shell",
+  "covers": ["C.2 Headers (left + main)", "C.2 Right shell", "C.2 Main shell + banner strip"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "shot",
+      "name": "header",
+      "expect": "header 60px: face, name, status line, find, details toggle, ⋮",
+      "ref": "BP-ANAT-MHEAD"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chat-header-more"
+    },
+    {
+      "do": "wait",
+      "ms": 500,
+      "shot": "more-menu",
+      "expect": "header ⋮ menu items"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "key",
+      "key": "Control+Shift+D",
+      "shot": "panel-toggle",
+      "expect": "details panel toggles (Ctrl+Shift+D)"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "panel",
+      "expect": "right panel: Doing now, Using, What I know, Spent this month (AI ₹1,000 / purchases ₹25,000)",
+      "ref": "BP-APP-R"
+    },
+    {
+      "do": "shotEl",
+      "tid": "app-panel-spent",
+      "name": "spent",
+      "soft": true,
+      "ref": "BP-ANAT-SPENT"
+    },
+    {
+      "do": "shotEl",
+      "tid": "app-panel-using",
+      "name": "using",
+      "soft": true,
+      "ref": "BP-ANAT-USING"
+    },
+    {
+      "do": "shotEl",
+      "tid": "app-panel-know",
+      "name": "know",
+      "soft": true,
+      "ref": "BP-ANAT-KNOW"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "app-panel-know-see-all"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "know-all",
+      "expect": "memory page opens"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "screen-back"
+    },
+    {
+      "do": "key",
+      "key": "Control+Shift+D",
+      "shot": "panel-hidden",
+      "expect": "panel hidden again"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

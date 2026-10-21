@@ -1,6 +1,6 @@
 // Spec: 04 §2 (the user's bubble: right, `--bubble-me`, padding 8/12, max `--bubble-max`, min width meta + 24, `lang` by
-// script), §12 (output bubble: left, `--bubble-foo`; plain vs rich (fixed min(680, column)), §12.4 group sender label with a
-// 26px face and the 34px indent, §12.5 backup-AI mark), §1.2–§1.4 (rhythm and corners from runs.ts), §1.8 (accessible name;
+// script), §12 (output bubble: left, `--bubble-foo`; plain vs rich (fixed min(680, column)), §12.4 sender label with a
+// 26px face above each output run (groups, and foo's and helpers' own chats, CR-0024 F2; the 34px indent in groups), §12.5 backup-AI mark), §1.2–§1.4 (rhythm and corners from runs.ts), §1.8 (accessible name;
 // Enter / Shift+F10 / Menu opens the menu, Ctrl+Shift+R reply, Ctrl+Shift+E react, Ctrl+C copy; focus ring on the bubble),
 // §1.9 (selection checkbox `bubble-select-check`; clicking a row toggles it), §4 (badge slot), §5 (no reacting to the user's
 // own bubble), §6 (reply, edit, delete with C-24, reply quote), §7 (Not sent), §8 (reaction chips), §9 (hover toolbar, menu,
@@ -278,7 +278,7 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
     [side, m.kind, m.text, m.status, deleted, m.authorKind],
   );
   const hasTable = !!blocks?.some((b) => b.t === 'table');
-  const canTryAgain = layout.latestAnswer && (!job || (job.intent === 'read_only' && job.doVerbs.length === 0));
+  const canTryAgain = !job || (job.intent === 'read_only' && job.doVerbs.length === 0);
   const approvedFromIt = Object.values(ctx.cards).some(
     (c) => c.jobId !== null && c.jobId === m.jobId && (c.type === 'approval' || c.type === 'payment') && c.state === 'approved',
   );
@@ -380,6 +380,7 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
   });
   const why = side === 'them' && !m.prompted ? asWhy(m.why) : null;
   const indent = ctx.isGroup && side === 'them';
+  const chips = side === 'them' && !isCard && !deleted && m.reactions.length > 0;
 
   let body: ReactNode;
   if (isCard) body = <CardBody m={m} card={card} ctx={ctx} />;
@@ -392,6 +393,7 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
         data-gap={layout.gap}
         data-side={side}
         data-indent={indent || undefined}
+        data-chips={chips || undefined}
         data-selecting={ctx.selecting || undefined}
         data-highlight={ctx.highlightId === m.id || undefined}
         onClick={ctx.selecting ? () => toggleSelect(m.id) : undefined}
@@ -437,7 +439,7 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
                 }
               />
             )}
-            {side === 'them' && !isCard && !deleted && m.reactions.length > 0 && (
+            {chips && (
               <ReactionChips reactions={m.reactions} shownAtMount={shownReactions} onToggle={(e) => void react(m.chatId, m.id, e)} />
             )}
             {!ctx.selecting && !isCard && (hot || menu || picker) && (
@@ -476,8 +478,14 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
           )}
         {/* 05-3 §5.15–§5.16 (M4 T5): proof chip or "Not checked live" chip + receipt footer under a job's result. */}
         {job && job.resultMessageId === m.id && !deleted && <ResultProof job={job} />}
-        {layout.latestAnswer && !deleted && m.kind === 'text' && (
-          <ActionRow messageId={m.id} text={text} canTryAgain={canTryAgain} onTryAgain={() => void retryMessage(m.id)} />
+        {side === 'them' && !isCard && !deleted && m.kind === 'text' && m.status === 'complete' && (
+          <ActionRow
+            messageId={m.id}
+            text={text}
+            canTryAgain={canTryAgain}
+            onTryAgain={() => void retryMessage(m.id)}
+            older={!layout.latestAnswer}
+          />
         )}
         {why && <WhyFooter why={why} timeZone={ctx.timeZone} now={ctx.now} />}
       </div>

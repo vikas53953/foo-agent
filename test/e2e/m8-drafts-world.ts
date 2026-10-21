@@ -132,9 +132,14 @@ export async function askForDraft(page: Page, ask: string): Promise<string> {
 /** Moves the fake clock until the chat holds more than `before` Draft cards; the new card's id. */
 export async function waitForDraft(page: Page, before: number): Promise<string> {
   const log = page.getByTestId(TID.threadLog);
-  for (let i = 0; i < 80; i++) {
+  // Up to 40 s of fake time as before, but given 30 s of real time: on a busy runner 80 quick steps (4 s) were not enough.
+  const until = Date.now() + 30_000;
+  for (let moved = 0; Date.now() < until;) {
     if ((await log.locator(byTid(TID.cardDraft)).count()) > before) break;
-    await page.evaluate(() => window.__fooTest!.clock.advance(500));
+    if (moved < 40_000) {
+      await page.evaluate(() => window.__fooTest!.clock.advance(500));
+      moved += 500;
+    }
     await page.waitForTimeout(50);
   }
   const card = log.locator(byTid(TID.cardDraft)).nth(before);
