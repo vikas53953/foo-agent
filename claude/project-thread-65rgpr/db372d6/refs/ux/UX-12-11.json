@@ -1,0 +1,400 @@
+{
+  "id": "UX-12-11",
+  "family": "ux",
+  "selector": "#frame",
+  "box": {
+    "x": 0,
+    "y": 0,
+    "width": 1280,
+    "height": 800
+  },
+  "files": {
+    "light": {
+      "png": "UX-12-11.light.png",
+      "sha256": "86d15ca886fb4dc6a14e4564f07c891cae3e66371f08725ada367d5e6bdfd03b"
+    },
+    "dark": {
+      "png": "UX-12-11.dark.png",
+      "sha256": "29a707c2329c8b13ca012b3f05bec4f4436ac78afa5bab8e5ab9b7ff52a0cced"
+    }
+  },
+  "texts": [
+    "—",
+    "☐",
+    "✕",
+    "foo",
+    "＋ New helper",
+    "⋯",
+    "⌕",
+    "Search chats",
+    "All",
+    "Needs you",
+    "Working",
+    "Done",
+    "foo",
+    "8:00 AM",
+    "Booked. Pizza by the Bay, Sat 17 Oct…",
+    "Done",
+    "Trips",
+    "Thu",
+    "I already see your Goa trip on Sat 12–Mon 14 Dec",
+    "Money",
+    "Thu",
+    "Hi, I'm Money. I'll look after bills and payments.",
+    "Home",
+    "Thu",
+    "Gas cylinder booked for Mon 19 Oct",
+    "Done",
+    "F",
+    "Family group",
+    "WhatsApp",
+    "Thu",
+    "Mom: Sunday lunch at 1? 🙂",
+    "V",
+    "Vikas ·",
+    "Claude ready",
+    "₹212 of ₹1,000 AI this month",
+    "⚙",
+    "foo",
+    "Awake on your PC",
+    "⌕",
+    "▯",
+    "⋯",
+    "Today, Fri 16 Oct",
+    "☀ Good morning, Vikas",
+    "Morning brief",
+    "Mom's birthday is Sun 18 Oct. Cake ordered?",
+    "Yes, from Theobroma",
+    "Not yet",
+    "👍 👎",
+    "Airtel bill ₹1,179 due Fri 23 Oct. Sent to Money.",
+    "Open Money",
+    "👍 👎",
+    "Goa stays for Sat 12 Dec dropped 18%.",
+    "Show me",
+    "👍",
+    "👎",
+    "Mumbai today: 31°, light rain after 4:00 PM.",
+    "👍 👎",
+    "That's all for today · 👍 · 👎 ·",
+    "Tomorrow, more of / less of…",
+    "book a table for 4 at a good Italian place in South Mumbai, Saturday 8pm",
+    "9:05 AM ✓",
+    "✓",
+    "✅",
+    "Pick a table →",
+    "Pizza by the Bay · 8:00 PM",
+    "✓ Booked · Fri 16 Oct, 9:13 AM",
+    "Pizza by the Bay, Marine Drive · Sat 17 Oct, 8:00 PM · 4 people",
+    "Booked under: Vikas Sharma · +91 98••• ••210",
+    "yes",
+    "9:09 AM ✓",
+    "✓",
+    "Tap Book table on the card so I know it's really you.",
+    "9:09 AM",
+    "Booked. Pizza by the Bay, Sat 17 Oct, 8:00 PM, table for 4. Added to your calendar.",
+    "9:13 AM",
+    "✓ Proof: confirmation #PB-4471 · screenshot",
+    "Tell the Family group",
+    "Cancel booking",
+    "Draft · not sent",
+    "WhatsApp",
+    "To: Family group (WhatsApp)",
+    "Dinner Saturday 8 PM at Pizza by the Bay, Marine Drive 🍕",
+    "Will send to Family group (8 people) from your WhatsApp. Can't be unsent.",
+    "Send message",
+    "Change",
+    "Not now",
+    "Expires Fri 16 Oct, 10:14 AM",
+    "Sat 17 Oct",
+    "Dinner at Pizza by the Bay tonight at 8:00 PM. Free to cancel until 6:00 PM.",
+    "4:00 PM",
+    "Keep it",
+    "Cancel booking",
+    "＋",
+    "Message foo, or hold Ctrl+Space to talk",
+    "🎙",
+    "Details",
+    "✕",
+    "Doing now",
+    "✓",
+    "Table for 4",
+    "Done 9:13 AM",
+    "Using",
+    "Claude (your AI)",
+    "Gmail",
+    "Calendar",
+    "WhatsApp",
+    "Browser",
+    "What I know about you",
+    "Likes beach stays, hates early flights",
+    "You said · Sat 3 Oct · Edit",
+    "Budget trips under ₹40,000",
+    "I guessed · from 2 trips · Edit",
+    "See all (24)",
+    "Spent this month",
+    "Your AI",
+    "₹212 of ₹1,000",
+    "Purchases",
+    "₹0 of ₹25,000",
+    "Change caps"
+  ],
+  "hlTexts": [
+    "Keep it"
+  ],
+  "hl": {
+    "id": "keepit",
+    "box": {
+      "x": 379,
+      "y": 678,
+      "width": 63.09375,
+      "height": 28
+    }
+  },
+  "anchors": {
+    "hl": {
+      "x": 379,
+      "y": 678,
+      "width": 63.09375,
+      "height": 28
+    }
+  },
+  "masks": [
+    {
+      "x": 1136,
+      "y": 0,
+      "width": 144,
+      "height": 32,
+      "reason": "caption-buttons"
+    }
+  ],
+  "capture": null,
+  "milestone": "M9",
+  "engine": "electron",
+  "chromium": "152.0.7977.167",
+  "ux": {
+    "chapter": 12,
+    "step": 11,
+    "anchor": "restaurant-11",
+    "title": "Booking a restaurant",
+    "part": "Every day · Fri 16 Oct",
+    "j": "J9",
+    "r": "R5 · R10 · R14",
+    "c": "On Saturday, a reminder 2 hours before the free-cancel time.",
+    "s": "\"Dinner at Pizza by the Bay tonight at 8:00 PM. Free to cancel until 6:00 PM.\" Keep it · Cancel booking.",
+    "f": "Cancelling would be its own Approval card.",
+    "state": {
+      "view": "app",
+      "a": {
+        "sel": "foo",
+        "filter": "All",
+        "q": "",
+        "rows": [
+          {
+            "id": "foo",
+            "name": "foo",
+            "time": "8:00 AM",
+            "prev": "Booked. Pizza by the Bay, Sat 17 Oct…",
+            "st": "done"
+          },
+          {
+            "id": "trips",
+            "name": "Trips",
+            "time": "Thu",
+            "prev": "I already see your Goa trip on Sat 12–Mon 14 Dec"
+          },
+          {
+            "id": "money",
+            "name": "Money",
+            "time": "Thu",
+            "prev": "Hi, I'm Money. I'll look after bills and payments."
+          },
+          {
+            "id": "home",
+            "name": "Home",
+            "time": "Thu",
+            "prev": "Gas cylinder booked for Mon 19 Oct",
+            "st": "done"
+          },
+          {
+            "id": "family",
+            "name": "Family group",
+            "time": "Thu",
+            "prev": "Mom: Sunday lunch at 1? 🙂",
+            "wa": 1
+          }
+        ],
+        "th": {
+          "foo": [
+            {
+              "h": "<span class=\"date\">Today, Fri 16 Oct</span>",
+              "g": 4
+            },
+            {
+              "id": "brief",
+              "h": "<div class=\"card wide\" data-hl=\"brief\"><div class=\"hd\">☀ Good morning, Vikas<span class=\"lbl\">Morning brief</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Mom's birthday is Sun 18 Oct. Cake ordered?</span><span class=\"pillbtn sm \">Yes, from Theobroma</span><span class=\"pillbtn sm \" data-hl=\"notyet\">Not yet</span><span style=\"white-space:nowrap\" data-hl=\"th-cake\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Airtel bill ₹1,179 due Fri 23 Oct. Sent to Money.</span><span class=\"pillbtn sm \">Open Money</span><span style=\"white-space:nowrap\" data-hl=\"th-airtel\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Goa stays for Sat 12 Dec dropped 18%.</span><span class=\"pillbtn sm \" data-hl=\"showme\">Show me</span><span style=\"white-space:nowrap\" data-hl=\"th-goa\"><b style=\"color:var(--accent)\">👍</b> 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Mumbai today: 31°, light rain after 4:00 PM.</span><span style=\"white-space:nowrap\" data-hl=\"th-weather\">👍 👎</span></div><div class=\"row2 sm\">That's all for today · 👍 · 👎 · <span class=\"lnk\">Tomorrow, more of / less of…</span></div></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b me\">book a table for 4 at a good Italian place in South Mumbai, Saturday 8pm<span class=\"meta\">9:05 AM ✓<span class=\"rd\">✓</span></span><span class=\"sbadge\">✅</span></div>",
+              "g": 12,
+              "id": "ask"
+            },
+            {
+              "id": "t",
+              "h": "<div class=\"card\"><div class=\"ans\">Pick a table → <b>Pizza by the Bay · 8:00 PM</b></div></div>",
+              "g": 12
+            },
+            {
+              "id": "bk",
+              "h": "<div class=\"card\" data-hl=\"bookcard\"><div class=\"hd\">✓ Booked · Fri 16 Oct, 9:13 AM</div><div>Pizza by the Bay, Marine Drive · Sat 17 Oct, 8:00 PM · 4 people</div><div class=\"sm\">Booked under: Vikas Sharma · +91 98••• ••210</div></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b me\">yes<span class=\"meta\">9:09 AM ✓<span class=\"rd\">✓</span></span></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b foo\" data-hl=\"tapit\">Tap Book table on the card so I know it's really you.<span class=\"meta\">9:09 AM</span></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b foo\">Booked. Pizza by the Bay, Sat 17 Oct, 8:00 PM, table for 4. Added to your calendar.<span class=\"meta\">9:13 AM</span></div>",
+              "g": 12
+            },
+            {
+              "h": "<span class=\"chipok\" data-hl=\"proof\">✓ Proof: confirmation #PB-4471 · screenshot</span>",
+              "g": 4
+            },
+            {
+              "id": "tf",
+              "h": "<div class=\"card\"><div class=\"row2\"><span class=\"pillbtn sm \" data-hl=\"tellfam\">Tell the Family group</span><span class=\"pillbtn sm \">Cancel booking</span></div></div>",
+              "g": 4
+            },
+            {
+              "id": "dr",
+              "h": "<div class=\"card pend\"><div class=\"hd\">Draft · not sent<span class=\"lbl\">WhatsApp</span></div><div class=\"sm\">To: Family group (WhatsApp)</div><div>Dinner Saturday 8 PM at Pizza by the Bay, Marine Drive 🍕</div><div class=\"imp\">Will send to Family group (8 people) from your WhatsApp. Can't be unsent.</div><div class=\"row2\"><span class=\"pillbtn sm acc\" data-hl=\"sendmsg\">Send message</span><span class=\"pillbtn sm \">Change</span><span class=\"pillbtn sm \">Not now</span></div><div class=\"sm\">Expires Fri 16 Oct, 10:14 AM</div></div>",
+              "g": 12
+            },
+            {
+              "h": "<span class=\"date\">Sat 17 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\">Dinner at Pizza by the Bay tonight at 8:00 PM. Free to cancel until 6:00 PM.<span class=\"meta\">4:00 PM</span></div>",
+              "g": 12
+            },
+            {
+              "id": "rm",
+              "h": "<div class=\"card\"><div class=\"row2\"><span class=\"pillbtn sm dark\" data-hl=\"keepit\">Keep it</span><span class=\"pillbtn sm \">Cancel booking</span></div></div>",
+              "g": 4
+            }
+          ],
+          "trips": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\">Hi, I'm Trips. I'll look after your travel. I already see your Goa trip on Sat 12–Mon 14 Dec. Anything to sort for it?<span class=\"meta\">8:12 PM</span></div>",
+              "g": 12
+            }
+          ],
+          "money": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\">Hi, I'm Money. I'll look after bills and payments. I never pay without your tap.<span class=\"meta\">8:14 PM</span></div>",
+              "g": 12
+            }
+          ],
+          "home": [],
+          "family": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\"><b style=\"color:#B8326B;display:block;font-size:13px\">Mom</b>Sunday lunch at 1? 🙂<span class=\"meta\">6:40 PM</span></div>",
+              "g": 12
+            }
+          ]
+        },
+        "hdr": {
+          "status": "Awake on your PC",
+          "watch": 0,
+          "tone": null
+        },
+        "right": "details",
+        "det": {
+          "doing": [
+            {
+              "k": "d",
+              "t": "Table for 4",
+              "s": "Done 9:13 AM"
+            }
+          ],
+          "using": [
+            "Claude (your AI)",
+            "Gmail",
+            "Calendar",
+            "WhatsApp",
+            "Browser"
+          ],
+          "mem": [
+            [
+              "Likes beach stays, hates early flights",
+              "You said · Sat 3 Oct · Edit"
+            ],
+            [
+              "Budget trips under ₹40,000",
+              "I guessed · from 2 trips · Edit"
+            ]
+          ],
+          "memn": 24,
+          "ai": 212,
+          "buy": 0
+        },
+        "comp": {
+          "m": "rest"
+        },
+        "banner": null,
+        "page": null,
+        "ov": null,
+        "find": null,
+        "undo": null
+      },
+      "d": {
+        "app": true,
+        "wins": [],
+        "toast": null,
+        "menu": null,
+        "tip": null,
+        "tb": null,
+        "time": "9:05 AM",
+        "date": "16-10-2026"
+      },
+      "mo": {
+        "m": {
+          "foo": "wait",
+          "trips": "rest",
+          "money": "rest",
+          "home": "rest"
+        },
+        "still": {
+          "foo": false,
+          "trips": true,
+          "money": true,
+          "home": true
+        },
+        "tray": "need",
+        "toast": null,
+        "sel": "foo"
+      }
+    },
+    "clockShown": "9:05 AM",
+    "superseded": null
+  }
+}
