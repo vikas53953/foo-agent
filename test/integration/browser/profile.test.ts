@@ -73,8 +73,11 @@ describe('foo’s browser profile keeps no value the person typed (CR-0034)', ()
     const closed = profileScan('after close');
     expect(closed.hits, closed.text).toEqual([]);
     // Sign-ins stay: the cookie store is kept; the session and cache folders are the blocking files.
-    const profile = join(h.dataDir, 'browser', 'profile', 'Default');
-    expect(existsSync(join(profile, 'Cookies'))).toBe(true);
+    // The profile folder is the launch plan's: `profile` (Edge, Playwright's Chromium) or `profile-chrome` (Chrome on ubuntu CI);
+    // newer builds keep cookies under Network/.
+    const profile = ['profile', 'profile-chrome'].map((d) => join(h.dataDir, 'browser', d, 'Default')).find((d) => existsSync(d));
+    if (!profile) throw new Error('no browser profile');
+    expect(existsSync(join(profile, 'Cookies')) || existsSync(join(profile, 'Network', 'Cookies'))).toBe(true);
     expect(statSync(join(profile, 'Sessions')).isFile()).toBe(true);
     expect(statSync(join(profile, 'Cache')).isFile()).toBe(true);
 
