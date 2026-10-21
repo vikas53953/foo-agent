@@ -30,6 +30,8 @@ export type PageState = 'building' | 'ready' | 'failed' | 'kept';
 const START_HEIGHT = 160;
 /** The last height each page reported, so a row the message list mounts again keeps its size. */
 const heights = new Map<string, number>();
+/** When each page last spent a tap on an act, by source, so a row the message list mounts again keeps it. */
+const spent = new Map<string, number>();
 /** Calls a page may make only from the user's own tap (CR-0022 pick 13, Article 6): never by itself. */
 const NEEDS_TAP = new Set(['requestAction', 'openLink']);
 
@@ -103,12 +105,11 @@ export function PageView({
   useEffect(() => {
     if (!pageId) return;
     const allow = floodGate();
-    // When this page last spent a tap on an act (CR-0022 pick 13: one tap, one act).
-    let spentAt: number | null = null;
-    // Only a tap in foo itself: a pointerdown the window sees on the page's own frame (a tap landing while the row moves) is
-    // the page's tap, and freeing on it would give the page a second act.
+    // When this page last spent a tap on an act (CR-0022 pick 13: one tap, one act); kept by source across a remount.
+    // Only a tap in foo itself frees it: a pointerdown the window sees on or inside this page's block (a tap landing while
+    // the row moves) is the page's tap, and freeing on it would give the page a second act.
     const freeTap = (e: Event) => {
-      if (e.target !== frame.current) spentAt = null;
+      if (!(e.target instanceof Node && box.current?.contains(e.target))) spent.delete(key);
     };
     const onMessage = (e: MessageEvent) => {
       const win = frame.current?.contentWindow;
@@ -126,9 +127,10 @@ export function PageView({
       // A page acts only on the user's tap, and one C-26 dialog shows at a time (CR-0022 pick 13).
       if (typeof method === 'string' && NEEDS_TAP.has(method)) {
         const now = performance.now();
-        if (!tapIsLive() || (spentAt !== null && now - spentAt < TAP_SPENT_MS)) return answer({ ok: false, refused: 'declined' });
+        const spentAt = spent.get(key);
+        if (!tapIsLive() || (spentAt !== undefined && now - spentAt < TAP_SPENT_MS)) return answer({ ok: false, refused: 'declined' });
         if (method === 'openLink' && asking.current !== null) return answer({ ok: false, refused: 'declined' });
-        spentAt = now;
+        spent.set(key, now);
       }
       // Main checks and logs every call: its zod schema refuses a bad one (IPC_REJECTED, logged), then the rate and the text.
       void invoke('page:rpc', { chatId, pageId, call: data as PageRpcCall }).then(
@@ -162,7 +164,7 @@ export function PageView({
       window.removeEventListener('pointerdown', freeTap, true);
       window.removeEventListener('keydown', freeTap, true);
     };
-  }, [chatId, pageId]);
+  }, [chatId, pageId, key]);
 
   const failed = state === 'failed' || tooLarge || (opened !== null && 'failed' in opened);
   const shown: PageState = failed ? 'failed' : state;
