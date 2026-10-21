@@ -36,7 +36,7 @@ One milestone at a time; inside it, T1 contracts first, then up to 5 truly indep
 
 - **CI per ticket.** A ticket PR into the milestone branch runs the fast Linux lane. If it changes the screen (`src/renderer/`, copy, `design/`, `golden/`, `test/fidelity/`) it also runs the golden lane (picture checks) once marked ready. The full Windows suite runs only on the milestone PR into main. Nothing reaches main without every lane green. Enforced by `.github/workflows/ci.yml` (`screen` job and the lane `if:` lines).
 - **Windows in 4 shards (Vikas, option A, 2026-10-19 06:53Z).** The full Windows suite runs as 4 parallel jobs on the free runners (`vitest --shard`, `playwright --shard`), so the close-out run takes about a quarter of the wall time. Same tests, nothing skipped; shard 1 also typechecks, packages and uploads the `foo-windows-app` installer. The golden lane stays its own job beside them.
-- **Review.** Fable does the main independent review of each ticket and each CR. Sonnet only re-checks the small fixes Fable asked for.
+- **Review.** Fable does the main independent review of each ticket and each CR at the depth §4's risk tier sets. Sonnet only re-checks the small fixes Fable asked for.
 - **Close-out is one command:** `pnpm closeout <M>` (`scripts/closeout.ts`) runs the recipe's mechanical steps and prints what is left to fix.
 
 ## 2. Proof
@@ -53,12 +53,18 @@ One milestone at a time; inside it, T1 contracts first, then up to 5 truly indep
 
 ## 4. Review
 
-- Per ticket: the same diff to **Opus and Sonnet**; every finding sorted **act on / consider / noted / dismissed** with a reason. Never accept every comment; never dismiss without a reason.
+Updated 2026-10-21 from Anthropic's "How the Claude Code team does code review" (Vikas asked to adopt it). Details: `.claude/skills/foo-review`.
+
+- **Fresh-eyes self-check:** before a ticket PR opens, a read-only Sonnet with no build memory reads the diff against the ticket once.
+- **Depth by risk tier:** `pnpm review:tier` reads the changed paths. Low (docs, skills): one Sonnet. Normal (app and test code): Fable. High (CI workflows, spec, golden, fidelity gates, installer, dependencies, vault, spend approvals, AI engine and finder): Fable + Opus.
+- **Verify before acting:** every act-on finding goes to a separate verifier that tries to refute it; only confirmed findings block. Findings both hunters raised skip it.
+- **Buckets and outcomes:** every finding sorted **act on / consider / noted / dismissed** with a reason, then given an outcome (fixed / wrong / intentional / no-matter) so the reviewer's false-alarm rate is counted in the decision log.
+- **Stop the loop:** later rounds review only the new diff, never repeat a finding, name the bug class; at most 3 rounds, then rethink the approach.
 - Milestone close-out: **two axes** (Standards, Spec) as separate Sonnet reviewers, reported side by side, beside the unchanged fidelity checker.
 
 ## 5. Decisions on Vikas's behalf
 
-Vikas's standing rule (2026-10-18 14:56Z and 14:59Z): he is often away and builds must not wait for his review. For build work in this repo an **independent reviewer** checks each fork or CR against the approved spec; if it passes, the builder records **"approved on Vikas's behalf"** in the decision log citing his rule, merges PRs once CI and the checker are green, and keeps going. Not covered, still his: real-world actions outside the repo (payments, messages to other people, production) and his own setup items (for example the Google OAuth client).
+Vikas's standing rule (2026-10-18 14:56Z and 14:59Z): he is often away and builds must not wait for his review. For build work in this repo an **independent reviewer** checks each fork or CR against the approved spec; if it passes, the builder records **"approved on Vikas's behalf @<sha>"** (the exact commit reviewed; a later push needs a re-review of the new diff) in the decision log citing his rule, merges PRs once CI and the checker are green, and keeps going. Not covered, still his: real-world actions outside the repo (payments, messages to other people, production) and his own setup items (for example the Google OAuth client).
 
 ## 6. Decision log
 

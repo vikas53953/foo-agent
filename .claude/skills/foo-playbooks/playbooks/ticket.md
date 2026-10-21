@@ -16,7 +16,8 @@
 6. **Prove it in the real app** (`foo-verify`): write `test/verify/<NN-slug>.journey.ts` and run it. Keep before and after shots when the ticket changes something visible. Paste the proof block into the PR.
 7. Commit in small ordered units: the test, then the code. Log any fork in the milestone's decision log.
 8. When a ticket you depend on lands, or the lead asks, merge the milestone branch into yours (a merge commit, no rebase) and re-run the checks.
-9. When the fast checks and the proof are green, **message the lead** (`send_message`) with the PR link and head SHA. Fix what the lead's review sends back. Never merge your own PR.
+9. Before opening the PR, run the **fresh-eyes self-check** (`foo-review` §0) and `pnpm review:tier`; paste the tier line in the PR.
+10. When the fast checks and the proof are green, **message the lead** (`send_message`) with the PR link and head SHA. Fix what the lead's review sends back. Never merge your own PR.
 
 If the spec is silent or contradicts itself, take the most conservative option, write it in `implementation-notes.md`, log it, and flag it to the lead. Never invent a screen, word or flow.
 

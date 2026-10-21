@@ -16,7 +16,7 @@ Who does what:
 4. **Push the milestone branch** `claude/foo-m<n>-…` from `origin/main`, with the map's prefactor or CR ticket if you do that one yourself. Open the milestone PR to main as a **draft** (ci.yml runs the Windows lanes only on non-draft PRs).
 5. **Hand out the frontier.** Send the coordinator (`send_message`) the list of tickets that are ready now, each with its section of the map and its base branch. The coordinator starts one thread per ticket. Every ready ticket runs at once; the only limit is that two running tickets never own the same file. Shared files (`src/shared/testids.ts`, `en-IN.json`, `types.ts`, `ipc.ts`, `spec/trace.csv`, `PROJECT-MAP.md`) belong to one ticket at a time, as the map says.
 6. **Review and merge each ticket PR** when its agent says it is green:
-   - `foo-review` (Opus + Sonnet on the ticket diff, findings bucketed);
+   - `foo-review` at the ticket's risk tier (`pnpm review:tier`), act-on findings verified, findings bucketed with outcomes, at most 3 rounds, approval pinned to the head SHA;
    - check that its foo-verify proof block is in the PR and shows the ticket working;
    - check that the fast checks are green on it.
 
