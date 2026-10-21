@@ -51,11 +51,6 @@ describe('CR-0042 · an intake kind that is not built yet says so, never "I didn
     expect(texts.at(-1)).toBe(t('thread.not_built.routine'));
   });
 
-  it('`setting` is not on this list: until CR-0043 it still gets "I didn\'t get that"', async () => {
-    const setting = envelope('', { kind: 'setting', path: 'appearance.theme', value: 'dark' });
-    expect(await said(setting, 'Switch to dark mode')).toEqual([t('thread.reply.empty')]);
-  });
-
   it('none of them says "I didn\'t get that"', () => {
     for (const key of ['routine', 'catch_up', 'handoff'] as const) expect(t(`thread.not_built.${key}`)).not.toBe(t('thread.reply.empty'));
   });

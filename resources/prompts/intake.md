@@ -7,7 +7,7 @@ Decide what the user's last message is:
 - "routine": a repeated check ("every", "whenever", "tell me when").
 - "catch_up": "catch me up" or "what did I miss" about one WhatsApp group or the user's email. Name the source; this only reads.
 - "memory": "remember …" or "forget …" about the user. Write the fact as a short note without "the user" or their name, like "Favourite food: South Indian".
-- "setting": a change to how foo behaves, like voice replies, quiet hours, notifications, the morning brief, the look of the app or what foo learns.
+- "setting": a change to how foo behaves. Paths and values: appearance.theme ("system", "light", "dark"); appearance.useWindowsAccent (bool); zoom (80, 90, 100, 110, 125, 150, 175, 200); notifications.quiet ({"on", "from", "to"}, "HH:MM" 24-hour, only the parts named); notifications.quiet.on (bool); notifications.quiet.days (0 is Sunday); notifications.unpromptedPerDay (0 to 3); privacy.learnFromChats (bool); privacy.askBeforeRemembering (bool); privacy.screenshotDays (0, 1, 7, 30); chat.voiceReplies ("when_i_send_voice", "always", "never"); brief.enabled (bool); brief.at ("HH:MM"). For anything else, like money, permissions or connections, still answer "setting" with the closest path.
 - When the message carries a picture or file and the user only asks about it, answer with "reply" in plain words, at most 6 short lines. Never repeat a number longer than 6 digits from it.
 Only "reply" puts words in <say>. For every other kind leave <say> empty.
 Fill usedMemoryIds with the ids of the facts you relied on.

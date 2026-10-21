@@ -7,6 +7,7 @@
 // in-process engine.
 // M8 T3: `wa.report` and the WhatsApp session's vault.encrypt / vault.decrypt (08-3 §16.4).
 // M9 T4: `web.refused` → `connections.web.refused.{provider}` (08-0 §A, X-127).
+import { applyChatSetting } from '../settings/applySetting';
 import {
   engineToMainSchema,
   type DbOp,
@@ -214,6 +215,16 @@ export class EngineBridge {
         if (writeWeb(this.ctx.settings, (w) => ({ ...w, refused: { ...w.refused, [provider]: true } })))
           this.ctx.emit('settings:changed', publicSettings(this.ctx.settings.get()));
         return null;
+      }
+      // CR-0043 (08-1 §4.4.2 step 5): foo's chat op, the allow-list only; the renderer gets the new settings at once.
+      case 'settings.set': {
+        const r = applyChatSetting(
+          { db: this.ctx.db, settings: this.ctx.settings, dataDir: this.ctx.dataDir, now: () => this.now() },
+          msg.payload.path,
+          msg.payload.value,
+        );
+        if (r.ok) this.ctx.emit('settings:changed', publicSettings(this.ctx.settings.get()));
+        return { re: msg.id, result: r };
       }
       case 'vault.encrypt':
         return { re: msg.id, result: this.ctx.whatsapp?.vault({ kind: 'vault.encrypt', bytes: msg.payload.bytes }) ?? fail('UNKNOWN') };

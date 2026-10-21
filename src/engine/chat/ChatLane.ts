@@ -24,12 +24,22 @@
 // `one_app`) instead of starting; once Google connects the message goes back to its intake turn (real-AI run 8: the job's
 // first step, with no Gmail tools listed, asked "Which email do you want me to read?").
 // CR-0042 (X-200): routine, catch_up and handoff, not built yet, each say so in one line instead of "I didn't get that".
+// CR-0043 (X-201): intake kind `setting` is built (08-4 §25.6): the 08-0 §A.3 paths change through main with a "Changed: …
+// [ Undo ]" line; anything else gets "That's one for you to change. [ Open Settings ]".
 // Restart fix (real-PC J19 bug): the queue lives in memory, so after a restart cutOffTurns/answerCutOff give the messages
 // whose turn never finished their one intake turn (08-2 §5.2), and a reply left streaming is cut off with Try again (§19.4).
 import { t } from '../../shared/copy/t';
 import type { Clock } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
 import type { Settings } from '../../shared/settings';
+import {
+  chatSettingNotBuilt,
+  isChatSettingPath,
+  settingRowLabel,
+  settingsPageFor,
+  settingValueLabel,
+  type SettingLineData,
+} from '../../shared/settingsByChat';
 import type { ConnectorApp, ProviderId } from '../../shared/types';
 import type { IntakeDecision } from '../../shared/schemas';
 import type { EngineChat, EngineHelper, EngineMessage } from '../../main/db/queries';
@@ -119,7 +129,8 @@ export type IntakeDecisionView =
   | Extract<IntakeDecision, { kind: 'job' }>
   | Extract<IntakeDecision, { kind: 'memory' }>
   | Extract<IntakeDecision, { kind: 'ask' }>
-  | { kind: 'handoff' | 'routine' | 'setting' | 'catch_up' };
+  | Extract<IntakeDecision, { kind: 'setting' }>
+  | { kind: 'handoff' | 'routine' | 'catch_up' };
 
 /** M6 T5: the memory seam of the lane (Engine wires IntakeMemory, MemoryChips and MemoryReview). */
 export interface LaneMemory {
@@ -180,6 +191,9 @@ export interface LaneDeps {
   // CR-0040
   /** The Google apps of `needs` that must be connected first (Google not connected); empty when none or no Google build. */
   appsToConnect?(needs: ConnectorApp[]): GoogleApp[];
+  // CR-0043
+  /** Main's `settings.set` (08-1 §4.4.2 step 5): the allow-list only; the reply carries the change record's id. */
+  setSetting?(path: string, value: unknown, chatId: string): Promise<Result<{ changeId: string | null; value: unknown }>>;
 }
 
 type GoogleApp = 'gmail' | 'gcal' | 'contacts';
@@ -630,9 +644,16 @@ export class ChatLane {
 
     const memoryKind = act?.kind === 'memory' && this.d.memory ? act : null;
     const notBuilt = kind === 'routine' || kind === 'catch_up' || kind === 'handoff';
+    const settingKind = act?.kind === 'setting' && this.d.setSetting ? act : null;
     if (
       kind === 'reply' ||
-      (kind !== 'react' && kind !== 'ask' && !(kind === 'job' && this.d.jobs) && !memoryKind && !notBuilt && released.trim())
+      (kind !== 'react' &&
+        kind !== 'ask' &&
+        !(kind === 'job' && this.d.jobs) &&
+        !memoryKind &&
+        !settingKind &&
+        !notBuilt &&
+        released.trim())
     ) {
       if (fooId) {
         // P1 T6: the follow-ups the reply's own `Suggestions:` line held (the gate kept the line out of the bubble).
@@ -678,6 +699,10 @@ export class ChatLane {
       // M6 T5 (08-4 §25.5 item 5): text already released stands; the reaction, chip or card follows it.
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
       await this.d.memory.decide(chat, helper, message, memoryKind);
+    } else if (settingKind) {
+      // CR-0043 (08-4 §25.6): text already released stands; the setting line follows it.
+      if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
+      await this.settingLine(chatId, messageId, settingKind);
     } else if (act && act.kind === 'react') {
       // Words that already showed past the hold stay as a finished bubble (they cannot be taken back); the 👍 still goes on.
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
@@ -962,6 +987,44 @@ export class ChatLane {
       },
     ]);
     if (!r.ok) this.d.log('chat.capabilities_failed', r.error.kind, { chatId });
+  }
+
+  /**
+   * CR-0043 (08-4 §25.6, 08-0 §A.3): a change on the allow-list goes through main and posts "Changed: {row} → {value}." with
+   * [ Undo ]; a path not in this build yet says so; anything else, or a value main refuses, gets "That's one for you to
+   * change." with [ Open Settings ] at the page. A system line (`marker_kind='system_line'`, `why.settingLine`).
+   */
+  private async settingLine(chatId: string, messageId: string, act: { path: string; value: unknown }): Promise<void> {
+    let line: SettingLineData = { kind: 'refused', page: settingsPageFor(act.path) };
+    let text = t('thread.setting.refused');
+    if (chatSettingNotBuilt(act.path)) {
+      line = { kind: 'not_built' };
+      text = t('thread.setting.not_built');
+    } else if (isChatSettingPath(act.path)) {
+      const r = await this.d.setSetting!(act.path, act.value, chatId).catch(() => null);
+      if (r?.ok) {
+        line = { kind: 'changed', path: act.path, ...(r.value.changeId ? { changeId: r.value.changeId } : {}) };
+        text = t('thread.setting.changed', { row: settingRowLabel(act.path), value: settingValueLabel(act.path, r.value.value) });
+      } else this.d.log('chat.setting_refused', r?.ok === false ? r.error.kind : 'UNKNOWN', { chatId });
+    }
+    await this.tx([
+      {
+        op: 'insert',
+        table: 'messages',
+        row: {
+          id: this.d.newId('m'),
+          chat_id: chatId,
+          author_kind: 'system',
+          kind: 'marker',
+          marker_kind: 'system_line',
+          text,
+          status: 'complete',
+          why: { settingLine: line },
+          created_at: this.d.clock.now(),
+        },
+      },
+      { op: 'update', table: 'messages', id: messageId, set: { badge: null } },
+    ]);
   }
 
   async post(chatId: string, messageId: string, text: string, helper: EngineHelper | null, note: string | null): Promise<void> {
