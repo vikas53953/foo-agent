@@ -63,6 +63,10 @@
         "⌕",
         "▯",
         "⋯",
+        "Today,",
+        "Fri",
+        "16",
+        "Oct",
         "reply",
         "to",
         "my",
@@ -691,13 +695,13 @@
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.9583315530362374,
-    "diffPixels": 403724,
+    "ratio": 0.9584003911906153,
+    "diffPixels": 403753,
     "total": 421278
   },
   "r5": {
-    "ratio": 0.580626953125,
-    "diffPixels": 594562,
+    "ratio": 0.580470703125,
+    "diffPixels": 594402,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-09.dark.diff.png"

@@ -177,7 +177,6 @@
         "train…",
         "Needs",
         "you",
-        "2",
         "B",
         "Building",
         "society",
@@ -302,10 +301,6 @@
         "of",
         "your",
         "AI",
-        "Today,",
-        "Fri",
-        "16",
-        "Oct",
         "9:41",
         "🛠",
         "foo",
@@ -525,13 +520,13 @@
   "r4": {
     "verdict": "review",
     "skipped": null,
-    "ratio": 0.0639990328820116,
-    "diffPixels": 5294,
+    "ratio": 0.061955996131528045,
+    "diffPixels": 5125,
     "total": 82720
   },
   "r5": {
-    "ratio": 0.0704130859375,
-    "diffPixels": 72103,
+    "ratio": 0.0701318359375,
+    "diffPixels": 71815,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-07.light.diff.png"
