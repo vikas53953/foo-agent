@@ -19,7 +19,7 @@
      `Current/Last Session/Tabs` files are wiped. `Default/Preferences` gets, merged over what is there:
      `credentials_enable_service: false`, `profile.password_manager_enabled: false`,
      `autofill.{enabled, profile_enabled, credit_card_enabled}: false`, `history.saving_disabled: true`.
-  2. After engine shutdown, and when the browser closes by itself (the person closed it, or it crashed): the same wipe.
+  2. After engine shutdown (when the engine waits for it; otherwise step 1 at the next launch), and when the browser closes by itself (the person closed it, or it crashed): the same wipe.
      A failed wipe is logged (`browser.profile_hygiene_failed`) and the browser still opens.
 
 ## (a) Not changed
@@ -43,4 +43,18 @@
 
 ## (c) Independent review
 
-Pending.
+Fable reviewer, 2026-10-21 ~15:10Z, read-only, against 08-2 §8.3.1, 01 Art. 8, 10-2 ART-08a and the diff; ran both tests,
+lint, format and fid:guard. **Verdict: PASS WITH FIXES**; applied:
+
+- Act: the "while running" scan would fail on Windows, where Edge holds its lock files open: `scan` takes `skipLocked`
+  (EBUSY/EPERM files are listed in `locked`, at most a quarter of the files; ART-08a does not set it).
+- Act: a late `close` of an earlier browser no longer nulls or scrubs a browser launched since over the same profile; the
+  shutdown scrub skips a launch in progress.
+- Consider: the test serves a favicon, so a GET form value in a page URL would show in `Favicons`: 0 hits.
+- Consider: at app exit the engine does not wait for the browser to close, so the after-close wipe may not run then; the
+  next launch's wipe covers it (before Chromium opens the profile).
+- Consider: Windows proof (Edge with the blocked `Cache` and `Sessions`) comes from the windows-latest lanes before merge.
+- Noted, no issue: the merged preference keys are not tracked by Secure Preferences, so Chromium does not reset them;
+  double scrub is harmless; the five launch arguments are unchanged.
+
+Recorded as approved on Vikas's behalf under his standing rule; listed for his later review.

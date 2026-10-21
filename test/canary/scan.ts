@@ -64,6 +64,9 @@ export interface ScanInput {
   roots: Record<string, string>;
   texts: TextSource[];
   canaries: readonly Canary[];
+  /** A scan of a running browser's profile: files Windows holds locked (EBUSY, EPERM: `lockfile`, leveldb `LOCK`) are
+   * listed in `locked` instead of failing the scan. ART-08a never sets it (it scans after the browser has closed). */
+  skipLocked?: boolean;
 }
 
 export interface ScanReport {
@@ -77,6 +80,8 @@ export interface ScanReport {
   /** Where the canaries are allowed to be: the vault (an in-memory Credential Manager in FOO_TEST, 08-3 §22.2). */
   allowed: string;
   hits: CanaryHit[];
+  /** With `skipLocked`: the files that could not be read. */
+  locked: string[];
 }
 
 export function scan(input: ScanInput, notCovered: ScanReport['notCovered'] = []): ScanReport {
@@ -85,12 +90,21 @@ export function scan(input: ScanInput, notCovered: ScanReport['notCovered'] = []
   const searched: string[] = [];
   let files = 0;
   let bytes = 0;
+  const locked: string[] = [];
   for (const [name, root] of Object.entries(input.roots)) {
     const list = listFiles(root);
     byRoot[name] = list.length;
     for (const f of list) {
-      const buf = readFileSync(f);
       const where = `${name}/${relative(root, f).split('\\').join('/')}`;
+      let buf: Buffer;
+      try {
+        buf = readFileSync(f);
+      } catch (e) {
+        const code = (e as NodeJS.ErrnoException).code;
+        if (!input.skipLocked || (code !== 'EBUSY' && code !== 'EPERM')) throw e;
+        locked.push(where);
+        continue;
+      }
       files++;
       bytes += buf.length;
       searched.push(where);
@@ -110,6 +124,7 @@ export function scan(input: ScanInput, notCovered: ScanReport['notCovered'] = []
     notCovered,
     allowed: 'the vault only (FOO_TEST: in-memory Credential Manager stand-in, 08-3 §22.2)',
     hits,
+    locked,
   };
 }
 

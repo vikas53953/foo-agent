@@ -254,10 +254,12 @@ export class PlaywrightBrowser implements BrowserHandle {
         this.hygiene('prepare', step.userDataDir);
         const ctx = await this.d.launch(step.userDataDir, step.options);
         ctx.on('close', () => {
+          // A late close of an earlier browser must not touch the one launched since (nor scrub its live profile).
+          if (this.ctx !== ctx) return;
           this.ctx = null;
           for (const id of [...this.wins.keys()]) this.forget(id);
           // The person closed the browser, or it crashed: the same wipe as an engine shutdown.
-          if (this.profileDir === step.userDataDir) this.hygiene('scrub', step.userDataDir);
+          this.hygiene('scrub', step.userDataDir);
         });
         this.ctx = ctx;
         this.profileDir = step.userDataDir;
@@ -358,6 +360,7 @@ export class PlaywrightBrowser implements BrowserHandle {
     const ctx = this.ctx;
     this.ctx = null;
     await ctx?.close().catch(() => undefined);
-    if (this.profileDir) this.hygiene('scrub', this.profileDir);
+    // Not while a new launch has started over the same profile.
+    if (this.profileDir && !this.ctx && !this.starting) this.hygiene('scrub', this.profileDir);
   }
 }

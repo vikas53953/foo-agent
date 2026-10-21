@@ -18,9 +18,9 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 describe('foo’s browser profile keeps no value the person typed (CR-0034)', () => {
   let h: BrowserHarness;
-  const profileScan = (label: string) => {
-    const report = scan({ roots: { BROWSER: join(h.dataDir, 'browser') }, texts: [], canaries: TYPED });
-    return { files: report.scanned.files, hits: report.hits, text: `${label}: ${summary(report)}` };
+  const profileScan = (label: string, running = false) => {
+    const report = scan({ roots: { BROWSER: join(h.dataDir, 'browser') }, texts: [], canaries: TYPED, skipLocked: running });
+    return { files: report.scanned.files, locked: report.locked, hits: report.hits, text: `${label}: ${summary(report)}` };
   };
 
   beforeAll(async () => {
@@ -35,6 +35,11 @@ describe('foo’s browser profile keeps no value the person typed (CR-0034)', ()
         <input name="code" aria-label="Code from SMS"><button id="pay">Pay</button></form>`),
     );
     h.route('/thanks', html('<p>Thanks</p>'));
+    // A real icon, so Chromium records the page URL (with the GET form's values) in its Favicons store if it records it at all.
+    const icon = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYPj/HwADAgH/oS2+NwAAAABJRU5ErkJggg==', 'base64');
+    h.route('/favicon.ico', (_q, res) => {
+      res.writeHead(200, { 'content-type': 'image/png' }).end(icon);
+    });
     h.route('/find', html('<form method="get" action="/thanks"><input name="ref" aria-label="Ref"><button id="go">Find</button></form>'));
   });
   afterAll(() => h.close());
@@ -56,8 +61,10 @@ describe('foo’s browser profile keeps no value the person typed (CR-0034)', ()
     await page.waitForURL(/ref=/);
     await sleep(SESSION_SAVE_WAIT_MS);
 
-    const running = profileScan('while running');
+    // On Windows, Edge holds its lock files open: those few are skipped while it runs, and searched after it closes.
+    const running = profileScan('while running', true);
     expect(running.files).toBeGreaterThan(20);
+    expect(running.locked.length, running.locked.join(', ')).toBeLessThan(running.files / 4);
     expect(running.hits, running.text).toEqual([]);
 
     await h.runtime.jobEnded('job_1');
