@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n9:57 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! What would you like to get done tonight?\n\n9:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n9:57 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can check your email, calendar and websites, book and pay when you say so, and keep an eye on things for you with routines.\n\n9:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n9:57 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet, and everything you send goes through it, scrambled so no one in between can read it.\n\nWithout a VPN, websites see your real address, and the Wi-Fi owner or your internet company can see where your traffic goes. With one, your data is locked before it leaves your phone or PC and travels to the VPN company's computer. That computer unlocks it and talks to the website for you, so the site sees the VPN's address, not yours.\n\nIt helps on public Wi-Fi and hides your location from websites. It doesn't make you anonymous, though, because the VPN company can still see your traffic, so pick one you trust.\n\n9:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n9:57 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Treadmill or gym\n9:57 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n9:57 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What's your shoe size?\n1\nUK 6 or smaller\nBEST FIT\n2\nUK 7 to 8\n3\nUK 9 to 10\n4\nUK 11 or bigger\nSomething else…\nSkip\n9:57 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:57 PM"
+  }
+]

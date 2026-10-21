@@ -1,0 +1,13 @@
+{"t":"2026-10-21T21:58:06.405Z","journey":"B10-paste-secret","title":"Paste bands and secret guard","spec":"AT-365, AT-370, AT-008","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T21:58:11.872Z","step":"launch","ok":true}
+{"t":"2026-10-21T21:58:11.921Z","i":0,"do":"paste","ok":true,"ms":44}
+{"t":"2026-10-21T21:58:13.423Z","i":1,"do":"wait","expect":"AT-365: 2,001–10,000 chars → 'Pasted text' chip","ok":true,"ms":1502}
+{"t":"2026-10-21T21:58:13.486Z","shot":"01-paste-6000.png"}
+{"t":"2026-10-21T21:58:13.488Z","i":2,"do":"check","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-21T21:58:13.492Z","i":3,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-21T21:58:13.496Z","i":4,"do":"eval","value":0,"ok":true,"ms":3}
+{"t":"2026-10-21T21:58:23.572Z","i":5,"do":"send","sentAt":1792619893568,"before":7,"ok":true,"ms":10076}
+{"t":"2026-10-21T21:59:53.872Z","i":6,"do":"waitReply","expect":"Secret box offered; password never stored as text","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","ms":90300}
+{"t":"2026-10-21T21:59:53.947Z","shot":"02-secret.png"}
+{"t":"2026-10-21T21:59:53.951Z","i":7,"do":"dump","ok":true,"ms":3}
+{"t":"2026-10-21T21:59:54.087Z","step":"appLog","lines":1,"dropped":0}

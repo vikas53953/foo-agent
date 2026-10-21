@@ -1,0 +1,102 @@
+{
+  "journey": "U09-plan-checklist",
+  "title": "Plan card: pending, Change plan, Go, checklist steps, details, done with proof",
+  "steps": 12,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T22-09-15-477Z-U09-plan-checklist",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1042
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792620570226,
+      "before": 0,
+      "ok": true,
+      "ms": 192
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "a Plan card with real step names (never \"Work on it\"), estimate, Go and Change plan",
+      "firstReplyMs": 6636,
+      "newBubbles": 8,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nLook for laptops under ₹50,000 in India with\n3\nKeep 3 budget laptops that fit best value, price under ₹50,000\n4\nCompare the 3 laptops on price, processor, RAM\nAbout 4 minutes\nGo\nChange plan\n10:09 PM\n---\n1\nLook on the web\n---\n2\nLook for laptops under ₹50,000 in India with\n---\n3\nKeep 3 budget laptops that fit best value, price under ₹50,000\n---\n4\nCompare the 3 laptops on price, processor, RAM\n---\nAbout 4 minutes\n---\nGo\n---\nChange plan",
+      "ms": 12713
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 78
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "checklist appears with the current step spinning",
+      "ok": true,
+      "ms": 5001
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23078
+    },
+    {
+      "i": 7,
+      "do": "wait",
+      "expect": "details expanded",
+      "ok": true,
+      "ms": 1000
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "job done: checklist collapsed \"Done · n steps · m min\", answer, sources/proof footer",
+      "ok": true,
+      "ms": 150009
+    },
+    {
+      "i": 9,
+      "do": "check",
+      "note": "receipt footer",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 10,
+      "do": "check",
+      "note": "sources",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 11,
+      "do": "dump",
+      "ok": true,
+      "ms": 3
+    }
+  ]
+}

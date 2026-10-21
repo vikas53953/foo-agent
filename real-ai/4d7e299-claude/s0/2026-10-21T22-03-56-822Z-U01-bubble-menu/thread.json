@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Treadmill or gym\n9:57 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n9:57 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What's your shoe size?\n1\nUK 6 or smaller\nBEST FIT\n2\nUK 7 to 8\n3\nUK 9 to 10\n4\nUK 11 or bigger\nSomething else…\nSkip\n9:57 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n10:00 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dates for your 2 nights in Goa?\n1\nFri 30 Oct to Sun 1 Nov\nBEST FIT\nNext week's Friday and Saturday nights\n2\nSat 31 Oct to Mon 2 Nov\nNext week's Saturday and Sunday nights\n3\nSat 24 Oct to Mon 26 Oct\nThis coming weekend\nSomething else…\nSkip\n10:00 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n10:03 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from the past week, with\nCompare reports across sources\nWatch live\nStop\n3 min\n10:03 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:03 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n10:04 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb search keeps failing with SEARCH_BUSY errors and returns nothing\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n10:04 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:04 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nWhat's the latest news about ISRO this week? Give me sources.\nAnd one about Ludhiana\nEdited\n10:04 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has more than 1,000 historic monuments, and the city is home to three UNESCO World Heritage Sites.\n\nAmritsar's Golden Temple runs one of the world's largest free kitchens, serving meals to tens of thousands of people every day.\n\n10:04 PM"
+  }
+]
