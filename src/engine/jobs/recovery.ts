@@ -7,6 +7,8 @@
 // asking / fixed / resumed / stopped; recovery variant), 08-4 §26.10 (resume after a clean pause: checklist edit only),
 // 09 §9.22 (sleep → WAITING asleep; resume re-tests the AI), 07-2 §4 + SM-A10 (WAITING → WORKING edits the error card in
 // place, never a new message), CR-0008 G-M4-02, G-M4-04, G-M4-13 (main decides safe mode and tells the engine).
+// Restart fix (real-PC J19 bug, 07-2 §4 "restored from state.json", 08-2 §5.2): a job's unsettled steers come back from its
+// state.json `steerQueue`, and the chat turns the restart cut off are answered once recovery is done (held in safe mode).
 // The runner (JobRunner.ts) owns the loop; this file fills its T4 hooks and moves jobs in and out of WAITING / recovery.
 import { newNonce } from '../../shared/canon';
 import { t } from '../../shared/copy/t';
@@ -30,6 +32,7 @@ import type { AiErrorKind } from '../ai/types';
 import type { DbOp, DbTxReply, MainLink } from '../protocol';
 import type { Result } from '../../shared/errors';
 import { MAX_WORKING, needsVerify } from './queue';
+import type { Steer } from './steer';
 import { activityRow, stopReportText } from './stopFlow';
 
 /** Waiting reasons a clean pause writes; their resume is a checklist edit only (08-4 §26.10, G-M4-02). */
@@ -69,6 +72,8 @@ export interface RecoveryRunner {
   halt(jobId: string): void;
   // M5 T10: the foo (or helper) text message tied to the job, as every runner message is written.
   textOp(job: Pick<JobRow, 'chatId' | 'ownerId'> & { id: string | null }, text: string): DbOp;
+  // Restart fix: the runner's steer queue, refilled from state.json and whose messages' badges follow the job.
+  readonly steering: Pick<Steer, 'restore' | 'badgeOps' | 'forget'>;
 }
 
 export interface RecoveryAi {
@@ -84,6 +89,19 @@ export interface RecoveryDeps {
   settings(): Settings;
   ai: RecoveryAi;
   log(evt: string, kind?: string, ids?: { chatId?: string; jobId?: string }): void;
+  /** The `steerQueue` of the job's state.json (08-1 §4.1.2), or [] when there is none. */
+  steerQueueOf?(jobId: string): string[];
+  /** The chat lane's turns a restart cut off: read before any card is posted, answered once recovery is done. */
+  chat?: {
+    cutOff(): Promise<CutOffTurn[]>;
+    answer(turns: CutOffTurn[]): void;
+  };
+}
+
+/** A user message whose intake turn never finished (ChatLane.cutOff). */
+export interface CutOffTurn {
+  id: string;
+  chatId: string;
 }
 
 export interface LaunchInfo {
@@ -98,6 +116,8 @@ export class JobRecovery {
   private runner: RecoveryRunner | null = null;
   private holds = new Set<Hold>();
   private online = true;
+  /** Cut-off chat turns found while safe mode holds: answered after "Start normally". */
+  private heldTurns: CutOffTurn[] = [];
 
   constructor(private d: RecoveryDeps) {}
 
@@ -132,8 +152,12 @@ export class JobRecovery {
   private async steps(jobId: string): Promise<StepRow[]> {
     return (await this.query<StepRow[]>('stepsForJob', jobId)) ?? [];
   }
+  /** The job's bubble and its steer messages follow the machine (08-0 §F, 08-2 §5.5 item 4). */
   private badgeOp(job: JobRow, to: JobState): DbOp[] {
-    return job.userMessageId ? [{ op: 'update', table: 'messages', id: job.userMessageId, set: { badge: BADGE_OF_STATE[to] } }] : [];
+    const own: DbOp[] = job.userMessageId
+      ? [{ op: 'update', table: 'messages', id: job.userMessageId, set: { badge: BADGE_OF_STATE[to] } }]
+      : [];
+    return [...own, ...this.r.steering.badgeOps(job.id, BADGE_OF_STATE[to])];
   }
   private async cardsOf(job: JobRow, type: string): Promise<CardRow[]> {
     const open = (await this.query<CardRow[]>('cards.openForChat', job.chatId, type)) ?? [];
@@ -447,6 +471,10 @@ export class JobRecovery {
   }
 
   private async recoverInner(launch: LaunchInfo): Promise<void> {
+    // 08-2 §5.2: every user message gets one intake turn, also when foo closed during it. Read before this pass posts any
+    // card (a card after a message reads as its answer).
+    const turns = [...this.heldTurns];
+    for (const turn of (await this.d.chat?.cutOff()) ?? []) if (!turns.some((x) => x.id === turn.id)) turns.push(turn);
     if (launch.safeMode) {
       this.holds.add('safe_mode');
       await this.postSafeMode();
@@ -457,14 +485,42 @@ export class JobRecovery {
       .filter((c) => c.outcome === null)
       .map((c): DbOp => ({ op: 'update', table: 'tool_calls', id: c.id, set: { outcome: 'unknown' } }));
     if (marks.length) await this.tx(marks);
+    // 07-2 §4 "restored from state.json": the steers a job had not settled go back on its queue before anything else runs,
+    // so "Pick up where I left off" (or a silent resume) reads them in its next step turn.
+    const steers = await this.restoreSteers();
     // Step 3: WORKING (always an unclean exit: a clean quit pauses them) and, after an unclean exit, QUEUED. In safe mode too
     // (M5 T10, CR-0009 G-M5-22): a recovery card starts nothing, so a job that was working shows it is waiting on the user
     // instead of a working job with nothing running; the hold keeps every start back until "Start normally".
     const found = await this.jobsIn(launch.cleanStart ? ['working'] : ['working', 'queued']);
     for (const job of found) await this.recoveryCard(job);
-    if (launch.safeMode) return;
+    // A steer goes back to its job, never to its own intake turn. In safe mode a message that crashed the engine must not
+    // run again until "Start normally".
+    const chatTurns = turns.filter((x) => !steers.has(x.id));
+    if (launch.safeMode) {
+      this.heldTurns = chatTurns;
+      return;
+    }
+    this.heldTurns = [];
+    this.d.chat?.answer(chatTurns);
     // Step 4: WAITING jobs are re-evaluated by the next schedule pass (beforeSchedule).
     await this.r.startNext();
+  }
+
+  private async restoreSteers(): Promise<Set<string>> {
+    const restored = new Set<string>();
+    if (!this.d.steerQueueOf) return restored;
+    for (const job of await this.jobsIn(['working', 'queued', 'needs_you', 'waiting'])) {
+      const ids: string[] = [];
+      for (const id of this.d.steerQueueOf(job.id)) {
+        const m = await this.query<{ chatId: string; authorKind: string }>('messageById', id);
+        if (m && m.authorKind === 'user' && m.chatId === job.chatId) ids.push(id);
+      }
+      if (!ids.length) continue;
+      this.r.steering.restore(job.id, ids);
+      for (const id of ids) restored.add(id);
+      this.d.log('job.steers_restored', undefined, { jobId: job.id, chatId: job.chatId });
+    }
+    return restored;
   }
 
   private async recoveryCard(job: JobRow): Promise<void> {
@@ -588,6 +644,8 @@ export class JobRecovery {
       },
       this.r.textOp(job, report),
     ]);
-    if (res.ok) await this.r.writeMirrors(job.id);
+    if (!res.ok) return;
+    this.r.steering.forget(job.id);
+    await this.r.writeMirrors(job.id);
   }
 }
