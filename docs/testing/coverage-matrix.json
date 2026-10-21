@@ -1,12 +1,12 @@
 {
  "meta": {
-  "main_sha": "dfe22cf",
+  "main_sha": "cc8d730",
   "main_ci": {
    "key": "main_ci",
    "state": "in progress",
-   "sha": "dfe22cf",
-   "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335",
-   "note": "Every main CI run since 12:55Z was cancelled by the next merge; the last green full run on main was 8eddee7 (run 426)."
+   "sha": "cc8d730",
+   "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314",
+   "note": "Every main CI run since 12:55Z was cancelled by the next merge (last green full run: 8eddee7, run 426). Merges now wait for this run. Known red since 3a35be0: test/integration/browser/profile.test.ts (fix in #94)."
   },
   "real_proven": 0,
   "all_proven": 0,
@@ -76,16 +76,16 @@
    {
     "key": "main_ci",
     "state": "in progress",
-    "sha": "dfe22cf",
-    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335",
-    "note": "Every main CI run since 12:55Z was cancelled by the next merge; the last green full run on main was 8eddee7 (run 426)."
+    "sha": "cc8d730",
+    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314",
+    "note": "Every main CI run since 12:55Z was cancelled by the next merge (last green full run: 8eddee7, run 426). Merges now wait for this run. Known red since 3a35be0: test/integration/browser/profile.test.ts (fix in #94)."
    },
    {
     "key": "real_ai_main",
     "state": "queued",
-    "sha": "dfe22cf",
-    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605645",
-    "note": "Latest finished real-AI run is 3a35be0; its logs still show the stuck web job silencing chats (CR-0035, PR #113)."
+    "sha": "cc8d730",
+    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682359",
+    "note": "Latest finished real-AI run is 3a35be0; its logs still show the stuck web job silencing chats (CR-0035; fix #113 is in cc8d730, so this run is the first to test it)."
    },
    {
     "key": "judge_97",
@@ -202,7 +202,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/AT-225.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/AT-225.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/AT-225.test.ts"
     },
     "integration": {
@@ -273,7 +273,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -285,12 +285,12 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/m3-engine.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/m3-engine.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/m3-engine.test.ts"
     },
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/ai-step.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/ai-step.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/ai-step.spec.ts"
     },
     "integration": {
@@ -356,7 +356,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -368,12 +368,12 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/m3-engine.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/m3-engine.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/m3-engine.test.ts"
     },
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/ai-step.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/ai-step.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/ai-step.spec.ts"
     },
     "integration": {
@@ -439,7 +439,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -451,7 +451,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/m3-engine.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/m3-engine.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/m3-engine.test.ts"
     },
     "e2e": {
@@ -522,7 +522,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -534,7 +534,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/m3-engine.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/m3-engine.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/m3-engine.test.ts"
     },
     "integration": {
@@ -605,7 +605,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -700,7 +700,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/AT-019.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/AT-019.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/AT-019.test.ts"
     },
     "unit": {
@@ -771,7 +771,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -783,7 +783,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/stop.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/stop.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/stop.test.ts"
     },
     "unit": {
@@ -854,7 +854,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -866,7 +866,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m4-offline.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m4-offline.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m4-offline.spec.ts"
     },
     "unit": {
@@ -937,7 +937,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -949,7 +949,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/cap.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/cap.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/cap.test.ts"
     },
     "unit": {
@@ -1020,7 +1020,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -1032,7 +1032,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/stuck.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/stuck.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/stuck.test.ts"
     },
     "unit": {
@@ -1103,7 +1103,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -1115,7 +1115,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/quit.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/quit.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/quit.test.ts"
     },
     "unit": {
@@ -1186,7 +1186,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -1198,7 +1198,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/jobs/queue.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/jobs/queue.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/jobs/queue.test.ts"
     },
     "integration": {
@@ -1269,7 +1269,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -1281,7 +1281,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/start.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/start.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/start.test.ts"
     },
     "unit": {
@@ -1352,7 +1352,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -1364,7 +1364,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/stop.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/stop.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/stop.test.ts"
     },
     "unit": {
@@ -1435,7 +1435,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -1447,7 +1447,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/needs-you.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/needs-you.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/needs-you.test.ts"
     },
     "unit": {
@@ -1518,7 +1518,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -1530,7 +1530,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/needs-you.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/needs-you.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/needs-you.test.ts"
     },
     "unit": {
@@ -1601,7 +1601,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -1613,7 +1613,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/waiting.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/waiting.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/waiting.test.ts"
     },
     "unit": {
@@ -1684,7 +1684,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -1696,7 +1696,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/waiting.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/waiting.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/waiting.test.ts"
     },
     "unit": {
@@ -1767,7 +1767,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -1779,7 +1779,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/finish.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/finish.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/finish.test.ts"
     },
     "unit": {
@@ -1850,7 +1850,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -1862,7 +1862,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/finish.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/finish.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/finish.test.ts"
     },
     "unit": {
@@ -1933,7 +1933,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -1945,7 +1945,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/stuck.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/stuck.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/stuck.test.ts"
     },
     "unit": {
@@ -2016,7 +2016,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -2028,7 +2028,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/jobs/watchdog.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/jobs/watchdog.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/jobs/watchdog.test.ts"
     },
     "integration": {
@@ -2099,7 +2099,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -2111,7 +2111,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/fail.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/fail.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/fail.test.ts"
     },
     "unit": {
@@ -2182,7 +2182,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -2194,7 +2194,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/recovery.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/recovery.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/recovery.test.ts"
     },
     "unit": {
@@ -2265,7 +2265,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -2277,7 +2277,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/db/rebuild.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/db/rebuild.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/db/rebuild.test.ts"
     },
     "unit": {
@@ -2348,7 +2348,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -2360,7 +2360,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/ai-words.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/ai-words.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/ai-words.test.ts"
     },
     "unit": {
@@ -2431,7 +2431,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -2443,7 +2443,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/retry.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/retry.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/retry.test.ts"
     },
     "unit": {
@@ -2514,7 +2514,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -2526,7 +2526,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m4-panel.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m4-panel.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m4-panel.spec.ts"
     },
     "unit": {
@@ -2597,7 +2597,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -2609,7 +2609,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m4-notices.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m4-notices.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m4-notices.spec.ts"
     },
     "unit": {
@@ -2680,7 +2680,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -2692,7 +2692,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m4-list.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m4-list.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m4-list.spec.ts"
     },
     "unit": {
@@ -2763,7 +2763,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -2775,7 +2775,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m4-list.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m4-list.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m4-list.spec.ts"
     },
     "unit": {
@@ -2846,7 +2846,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -2858,7 +2858,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/vault/AT-008.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/vault/AT-008.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/vault/AT-008.test.ts"
     },
     "unit": {
@@ -2929,7 +2929,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -2941,7 +2941,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m5-secret.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m5-secret.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-secret.spec.ts"
     },
     "unit": {
@@ -3012,7 +3012,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -3024,7 +3024,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/choice/typed.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/choice/typed.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/choice/typed.test.ts"
     },
     "integration": {
@@ -3095,7 +3095,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -3107,7 +3107,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m5-choice.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m5-choice.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-choice.spec.ts"
     },
     "unit": {
@@ -3178,7 +3178,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -3190,7 +3190,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/choice/timeouts.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/choice/timeouts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/choice/timeouts.test.ts"
     },
     "unit": {
@@ -3261,7 +3261,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -3273,7 +3273,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/choice/timeouts.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/choice/timeouts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/choice/timeouts.test.ts"
     },
     "unit": {
@@ -3344,7 +3344,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -3356,12 +3356,12 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/choice/typed.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/choice/typed.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/choice/typed.test.ts"
     },
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m5-choice.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m5-choice.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-choice.spec.ts"
     },
     "integration": {
@@ -3427,7 +3427,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -3439,7 +3439,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/choice/typed.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/choice/typed.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/choice/typed.test.ts"
     },
     "integration": {
@@ -3510,7 +3510,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -3522,7 +3522,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/jobs/stop-which.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/jobs/stop-which.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/stop-which.test.ts"
     },
     "unit": {
@@ -3593,7 +3593,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -3605,7 +3605,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/approvals/steer.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/approvals/steer.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/steer.test.ts"
     },
     "unit": {
@@ -3676,7 +3676,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -3688,7 +3688,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/articles/ART-02c.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/articles/ART-02c.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/articles/ART-02c.test.ts"
     },
     "integration": {
@@ -3759,7 +3759,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -3771,7 +3771,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/approvals/decline.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/approvals/decline.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/decline.test.ts"
     },
     "unit": {
@@ -3842,7 +3842,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -3854,7 +3854,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/approvals/expiry.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/approvals/expiry.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/expiry.test.ts"
     },
     "unit": {
@@ -3925,7 +3925,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -3937,7 +3937,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/approvals/expiry.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/approvals/expiry.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/approvals/expiry.test.ts"
     },
     "integration": {
@@ -4008,7 +4008,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -4020,7 +4020,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m5-approval.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m5-approval.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-approval.spec.ts"
     },
     "unit": {
@@ -4091,7 +4091,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -4103,7 +4103,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/approvals/second-look.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/approvals/second-look.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/second-look.test.ts"
     },
     "unit": {
@@ -4174,7 +4174,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -4186,7 +4186,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/approvals/fresh-terms.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/approvals/fresh-terms.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/fresh-terms.test.ts"
     },
     "unit": {
@@ -4257,7 +4257,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -4269,7 +4269,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m5-approval.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m5-approval.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-approval.spec.ts"
     },
     "unit": {
@@ -4340,7 +4340,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -4352,12 +4352,12 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/approvals/expiry.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/approvals/expiry.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/expiry.test.ts"
     },
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m5-approval.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m5-approval.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-approval.spec.ts"
     },
     "unit": {
@@ -4423,7 +4423,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -4435,7 +4435,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/approvals/withdraw.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/approvals/withdraw.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/withdraw.test.ts"
     },
     "unit": {
@@ -4506,7 +4506,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -4518,7 +4518,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/approvals/rules.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/approvals/rules.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/approvals/rules.test.ts"
     },
     "integration": {
@@ -4589,7 +4589,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -4601,7 +4601,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/approvals/draft.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/approvals/draft.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/draft.test.ts"
     },
     "unit": {
@@ -4672,7 +4672,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -4684,7 +4684,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m5-approval.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m5-approval.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-approval.spec.ts"
     },
     "unit": {
@@ -4755,7 +4755,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -4767,7 +4767,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m5-choice.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m5-choice.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-choice.spec.ts"
     },
     "unit": {
@@ -4838,7 +4838,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -4850,7 +4850,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m6-page.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m6-page.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m6-page.spec.ts"
     },
     "unit": {
@@ -4921,7 +4921,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -4933,12 +4933,12 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/m6-forget.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/m6-forget.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m6-forget.test.ts"
     },
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m6-page.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m6-page.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m6-page.spec.ts"
     },
     "unit": {
@@ -5004,7 +5004,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -5016,7 +5016,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/m6-tombstone.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/m6-tombstone.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m6-tombstone.test.ts"
     },
     "unit": {
@@ -5087,7 +5087,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -5099,7 +5099,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/m6-watcher.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/m6-watcher.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m6-watcher.test.ts"
     },
     "unit": {
@@ -5170,7 +5170,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -5182,12 +5182,12 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/m6-sensitive.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/m6-sensitive.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/m6-sensitive.test.ts"
     },
     "integration": {
      "s": "partial",
-     "why": "test/integration/m6-review.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/m6-review.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m6-review.test.ts"
     },
     "e2e": {
@@ -5253,7 +5253,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -5265,7 +5265,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/m6-tidy.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/m6-tidy.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m6-tidy.test.ts"
     },
     "unit": {
@@ -5336,7 +5336,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -5348,7 +5348,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/ai-step.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/ai-step.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/ai-step.spec.ts"
     },
     "unit": {
@@ -5419,7 +5419,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -5431,12 +5431,12 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/ai-step.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/ai-step.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/ai-step.test.ts"
     },
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/ai-step.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/ai-step.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/ai-step.spec.ts"
     },
     "integration": {
@@ -5502,7 +5502,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -5514,7 +5514,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m8-connectors.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m8-connectors.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-connectors.spec.ts"
     },
     "unit": {
@@ -5585,7 +5585,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -5597,7 +5597,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/m8-gmail-drafts.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/m8-gmail-drafts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-gmail-drafts.test.ts"
     },
     "unit": {
@@ -5668,7 +5668,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -5680,7 +5680,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/m8-whatsapp-send.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/m8-whatsapp-send.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-whatsapp-send.test.ts"
     },
     "unit": {
@@ -5751,7 +5751,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -5763,7 +5763,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/m8-gmail-read.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/m8-gmail-read.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-gmail-read.test.ts"
     },
     "unit": {
@@ -5834,7 +5834,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -5846,7 +5846,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m8-drafts.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m8-drafts.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-drafts.spec.ts"
     },
     "unit": {
@@ -5917,7 +5917,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -5929,7 +5929,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m8-drafts.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m8-drafts.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-drafts.spec.ts"
     },
     "unit": {
@@ -6000,7 +6000,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -6012,7 +6012,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/m8-gmail-drafts.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/m8-gmail-drafts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-gmail-drafts.test.ts"
     },
     "unit": {
@@ -6083,7 +6083,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -6095,7 +6095,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/m8-x.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/m8-x.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-x.test.ts"
     },
     "unit": {
@@ -6166,7 +6166,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -6178,7 +6178,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/m8-gmail-drafts.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/m8-gmail-drafts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-gmail-drafts.test.ts"
     },
     "unit": {
@@ -6249,7 +6249,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -6261,7 +6261,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/m8-whatsapp-send.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/m8-whatsapp-send.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-whatsapp-send.test.ts"
     },
     "unit": {
@@ -6332,7 +6332,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -6344,7 +6344,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m8-connectors.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m8-connectors.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-connectors.spec.ts"
     },
     "unit": {
@@ -6415,7 +6415,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -6427,7 +6427,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/m8-contacts.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/m8-contacts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-contacts.test.ts"
     },
     "unit": {
@@ -6498,7 +6498,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -6510,7 +6510,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/m8-expiry.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/m8-expiry.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-expiry.test.ts"
     },
     "unit": {
@@ -6581,7 +6581,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -6593,7 +6593,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m8-whatsapp.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m8-whatsapp.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-whatsapp.spec.ts"
     },
     "unit": {
@@ -6664,7 +6664,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -6676,7 +6676,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m8-whatsapp.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m8-whatsapp.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-whatsapp.spec.ts"
     },
     "unit": {
@@ -6747,7 +6747,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -6759,7 +6759,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m9-booking.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m9-booking.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-booking.spec.ts"
     },
     "unit": {
@@ -6830,7 +6830,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -6842,7 +6842,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/browser/submit.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/browser/submit.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/submit.test.ts"
     },
     "unit": {
@@ -6913,7 +6913,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -6925,7 +6925,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/browser/submit.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/browser/submit.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/submit.test.ts"
     },
     "unit": {
@@ -6996,7 +6996,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -7008,7 +7008,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m9-signin.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m9-signin.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-signin.spec.ts"
     },
     "unit": {
@@ -7079,7 +7079,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -7091,7 +7091,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m9-signin.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m9-signin.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-signin.spec.ts"
     },
     "unit": {
@@ -7162,7 +7162,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -7174,7 +7174,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m9-takeover.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m9-takeover.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-takeover.spec.ts"
     },
     "unit": {
@@ -7245,7 +7245,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -7257,7 +7257,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/browser/login.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/browser/login.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/login.test.ts"
     },
     "unit": {
@@ -7328,7 +7328,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -7340,7 +7340,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/browser/signin.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/browser/signin.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/signin.test.ts"
     },
     "unit": {
@@ -7411,7 +7411,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -7423,7 +7423,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m9-takeover.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m9-takeover.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-takeover.spec.ts"
     },
     "unit": {
@@ -7494,7 +7494,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -7506,7 +7506,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m9-stop.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m9-stop.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-stop.spec.ts"
     },
     "unit": {
@@ -7577,7 +7577,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -7589,7 +7589,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/browser/proof.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/browser/proof.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/proof.test.ts"
     },
     "unit": {
@@ -7660,7 +7660,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -7672,7 +7672,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/articles/ART-net-web.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/articles/ART-net-web.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/articles/ART-net-web.test.ts"
     },
     "integration": {
@@ -7743,7 +7743,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -7755,7 +7755,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/web/search.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/web/search.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/web/search.test.ts"
     },
     "unit": {
@@ -7826,7 +7826,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -7838,7 +7838,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/web/fetch.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/web/fetch.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/web/fetch.test.ts"
     },
     "unit": {
@@ -7909,7 +7909,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -7921,7 +7921,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/web/outbound.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/web/outbound.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/web/outbound.test.ts"
     },
     "unit": {
@@ -7992,7 +7992,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -8004,7 +8004,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/web/cloud.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/web/cloud.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/web/cloud.test.ts"
     },
     "unit": {
@@ -8075,7 +8075,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -8087,7 +8087,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m9-handback.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m9-handback.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-handback.spec.ts"
     },
     "unit": {
@@ -8158,7 +8158,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -8170,7 +8170,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/web/cost.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/web/cost.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/web/cost.test.ts"
     },
     "unit": {
@@ -8241,7 +8241,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -8253,7 +8253,7 @@
    "cells": {
     "integration": {
      "s": "partial",
-     "why": "test/integration/browser/recipes.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/integration/browser/recipes.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/recipes.test.ts"
     },
     "unit": {
@@ -8324,7 +8324,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -8336,7 +8336,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m9-signin.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m9-signin.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-signin.spec.ts"
     },
     "unit": {
@@ -8407,7 +8407,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -8419,7 +8419,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/m9-live.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/m9-live.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-live.spec.ts"
     },
     "unit": {
@@ -8490,7 +8490,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -8502,7 +8502,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/p1-contracts.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/p1-contracts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-contracts.test.ts"
     },
     "integration": {
@@ -8573,7 +8573,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -8585,7 +8585,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/p1-contracts.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/p1-contracts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-contracts.test.ts"
     },
     "integration": {
@@ -8656,7 +8656,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -8668,7 +8668,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/p1-contracts.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/p1-contracts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-contracts.test.ts"
     },
     "integration": {
@@ -8739,7 +8739,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -8751,7 +8751,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/p1-contracts.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/p1-contracts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-contracts.test.ts"
     },
     "integration": {
@@ -8822,7 +8822,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -8834,7 +8834,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-motion.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-motion.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
     },
     "unit": {
@@ -8905,7 +8905,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -8917,7 +8917,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-motion.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-motion.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
     },
     "unit": {
@@ -8988,7 +8988,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -9000,7 +9000,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-motion.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-motion.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
     },
     "unit": {
@@ -9071,7 +9071,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -9083,7 +9083,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-motion.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-motion.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
     },
     "unit": {
@@ -9154,7 +9154,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -9166,7 +9166,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-motion.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-motion.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
     },
     "unit": {
@@ -9237,7 +9237,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -9249,7 +9249,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-face.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-face.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-face.spec.ts"
     },
     "unit": {
@@ -9320,7 +9320,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -9332,7 +9332,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-face.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-face.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-face.spec.ts"
     },
     "unit": {
@@ -9403,7 +9403,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -9415,7 +9415,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-face.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-face.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-face.spec.ts"
     },
     "unit": {
@@ -9486,7 +9486,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -9498,7 +9498,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-chatlist.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-chatlist.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-chatlist.spec.ts"
     },
     "unit": {
@@ -9569,7 +9569,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -9581,7 +9581,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-messages.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-messages.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-messages.spec.ts"
     },
     "unit": {
@@ -9652,7 +9652,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -9664,7 +9664,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-composer.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-composer.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-composer.spec.ts"
     },
     "unit": {
@@ -9735,7 +9735,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -9747,12 +9747,12 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/p1-suggestions.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/p1-suggestions.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-suggestions.test.ts"
     },
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-composer.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-composer.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-composer.spec.ts"
     },
     "integration": {
@@ -9818,7 +9818,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -9830,7 +9830,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-composer.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-composer.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-composer.spec.ts"
     },
     "unit": {
@@ -9901,7 +9901,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -9913,7 +9913,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-composer.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-composer.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-composer.spec.ts"
     },
     "unit": {
@@ -9984,7 +9984,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -9996,7 +9996,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-cards.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-cards.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-cards.spec.ts"
     },
     "unit": {
@@ -10067,7 +10067,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -10079,7 +10079,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-cards.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-cards.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-cards.spec.ts"
     },
     "unit": {
@@ -10150,7 +10150,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -10162,12 +10162,12 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/p1-time-saved.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/p1-time-saved.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-time-saved.test.ts"
     },
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-cards.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-cards.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-cards.spec.ts"
     },
     "integration": {
@@ -10233,7 +10233,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -10245,7 +10245,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-first-run.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-first-run.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-first-run.spec.ts"
     },
     "unit": {
@@ -10316,7 +10316,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -10328,7 +10328,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-first-run.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-first-run.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-first-run.spec.ts"
     },
     "unit": {
@@ -10399,7 +10399,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -10411,7 +10411,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-appearance.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-appearance.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-appearance.spec.ts"
     },
     "unit": {
@@ -10482,7 +10482,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -10494,7 +10494,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-appearance.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-appearance.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-appearance.spec.ts"
     },
     "unit": {
@@ -10565,7 +10565,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -10577,7 +10577,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-appearance.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-appearance.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-appearance.spec.ts"
     },
     "unit": {
@@ -10648,7 +10648,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -10660,7 +10660,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/p1-appearance.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/p1-appearance.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-appearance.spec.ts"
     },
     "unit": {
@@ -10731,7 +10731,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -10743,7 +10743,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/p1-bundle.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/p1-bundle.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-bundle.test.ts"
     },
     "integration": {
@@ -10814,7 +10814,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -10826,7 +10826,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-kit.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-kit.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-kit.spec.ts"
     },
     "unit": {
@@ -10897,7 +10897,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -10909,7 +10909,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-places-time.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-places-time.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-places-time.spec.ts"
     },
     "unit": {
@@ -10980,7 +10980,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -10992,7 +10992,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
     },
     "unit": {
@@ -11063,7 +11063,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -11075,7 +11075,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
     },
     "unit": {
@@ -11146,7 +11146,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -11158,7 +11158,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-places-time.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-places-time.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-places-time.spec.ts"
     },
     "unit": {
@@ -11229,7 +11229,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -11241,7 +11241,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-places-time.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-places-time.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-places-time.spec.ts"
     },
     "unit": {
@@ -11312,7 +11312,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -11324,7 +11324,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
     },
     "unit": {
@@ -11395,7 +11395,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -11407,7 +11407,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
     },
     "unit": {
@@ -11478,7 +11478,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -11490,7 +11490,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
     },
     "unit": {
@@ -11561,7 +11561,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -11573,7 +11573,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-places-time.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-places-time.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-places-time.spec.ts"
     },
     "unit": {
@@ -11644,7 +11644,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -11656,7 +11656,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-places-time.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-places-time.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-places-time.spec.ts"
     },
     "unit": {
@@ -11727,7 +11727,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -11739,7 +11739,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
     },
     "unit": {
@@ -11810,7 +11810,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -11822,7 +11822,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-output.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-output.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-output.spec.ts"
     },
     "unit": {
@@ -11893,7 +11893,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -11905,7 +11905,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-kit.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-kit.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-kit.spec.ts"
     },
     "unit": {
@@ -11976,7 +11976,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -11988,12 +11988,12 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/r1-contracts.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/r1-contracts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/r1-contracts.test.ts"
     },
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-kit.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-kit.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-kit.spec.ts"
     },
     "integration": {
@@ -12059,7 +12059,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -12071,7 +12071,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-kit.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-kit.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-kit.spec.ts"
     },
     "unit": {
@@ -12142,7 +12142,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -12154,7 +12154,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-kit.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-kit.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-kit.spec.ts"
     },
     "unit": {
@@ -12225,7 +12225,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -12237,7 +12237,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
     },
     "unit": {
@@ -12308,7 +12308,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -12320,7 +12320,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
     },
     "unit": {
@@ -12391,7 +12391,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -12403,7 +12403,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
     },
     "unit": {
@@ -12474,7 +12474,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -12486,7 +12486,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
     },
     "unit": {
@@ -12557,7 +12557,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -12569,7 +12569,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
     },
     "unit": {
@@ -12640,7 +12640,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -12652,7 +12652,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
     },
     "unit": {
@@ -12723,7 +12723,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -12735,7 +12735,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-input.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-input.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-input.spec.ts"
     },
     "unit": {
@@ -12806,7 +12806,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -12818,7 +12818,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-input.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-input.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-input.spec.ts"
     },
     "unit": {
@@ -12889,7 +12889,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -12901,7 +12901,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-input.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-input.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-input.spec.ts"
     },
     "unit": {
@@ -12972,7 +12972,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -12984,7 +12984,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-output.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-output.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-output.spec.ts"
     },
     "unit": {
@@ -13055,7 +13055,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -13067,7 +13067,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-output.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-output.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-output.spec.ts"
     },
     "unit": {
@@ -13138,7 +13138,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -13150,7 +13150,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-output.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-output.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-output.spec.ts"
     },
     "unit": {
@@ -13221,7 +13221,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -13233,7 +13233,7 @@
    "cells": {
     "e2e": {
      "s": "partial",
-     "why": "test/e2e/r1-output.spec.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/e2e/r1-output.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-output.spec.ts"
     },
     "unit": {
@@ -13304,7 +13304,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -13316,7 +13316,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/r1-kit-safety.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/r1-kit-safety.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/r1-kit-safety.test.ts"
     },
     "integration": {
@@ -13387,7 +13387,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   },
@@ -13399,7 +13399,7 @@
    "cells": {
     "unit": {
      "s": "partial",
-     "why": "test/unit/r1-kit-safety.test.ts passed on its PR before merge; main CI on dfe22cf not finished green yet",
+     "why": "test/unit/r1-kit-safety.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
      "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/r1-kit-safety.test.ts"
     },
     "integration": {
@@ -13470,7 +13470,7 @@
     "regression": {
      "s": "partial",
      "why": "its tests run on every PR and every main merge; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39648605335"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
   }

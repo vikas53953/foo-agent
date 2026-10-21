@@ -54,7 +54,9 @@ for path in glob.glob(P('test/real-pc/journeys/*.json')):
     for m in re.findall(r'J(\d\d)', name.split('-')[0] + '-' + '-'.join(name.split('-')[1:2])):
         spec_j['J' + str(int(m))].add(name)
 
-MAIN_OK = suite['main_ci']['state'] == 'green'
+MAIN_OK = suite['main_ci']['state'] in ('green', 'green except')
+# 'green except': the run finished and only the files listed in main_ci_failing failed.
+FAILING = set(filter(None, suite.get('main_ci_failing', {}).get('note', '').split()))
 MAIN_LINK = suite['main_ci']['link']
 MAIN_SHA = suite['main_ci']['sha']
 
@@ -101,6 +103,8 @@ def build(f):
         link = f'{GH}/blob/main/{file}'
         if not live:
             return cell('missing', f'{file} is listed but still pending (not written or skipped)', link)
+        if MAIN_OK and file in FAILING:
+            return cell('fail', f'{file} fails in main CI {MAIN_SHA}', MAIN_LINK)
         if MAIN_OK:
             return cell('proven', f'{file} passes in main CI {MAIN_SHA}', MAIN_LINK)
         return cell('partial', f'{file} passed on its PR before merge; main CI on {MAIN_SHA} not finished green yet', link)
