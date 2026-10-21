@@ -103,8 +103,9 @@ def build(f):
         link = f'{GH}/blob/main/{file}'
         if not live:
             return cell('missing', f'{file} is listed but still pending (not written or skipped)', link)
-        if MAIN_OK and file in FAILING:
-            return cell('fail', f'{file} fails in main CI {MAIN_SHA}', MAIN_LINK)
+        bad = [r['Test file'] for r in live if r['Test file'] in FAILING]
+        if MAIN_OK and bad:
+            return cell('fail', f'{bad[0]} fails on Windows in main CI {MAIN_SHA}', suite['main_ci_failing']['link'])
         if MAIN_OK:
             return cell('proven', f'{file} passes in main CI {MAIN_SHA}', MAIN_LINK)
         return cell('partial', f'{file} passed on its PR before merge; main CI on {MAIN_SHA} not finished green yet', link)
@@ -191,7 +192,9 @@ def build(f):
     else:
         c['smoke'] = cell('na', 'not part of the smoke set')
 
-    if any_code:
+    if any(c[k]['s'] == 'fail' for k in ('unit', 'integration', 'e2e')):
+        c['regression'] = cell('fail', 'one of its tests fails in main CI', suite['main_ci_failing']['link'])
+    elif any_code:
         c['regression'] = cell('proven' if MAIN_OK else 'partial',
                                'its tests run on every PR and every main merge' + ('' if MAIN_OK else '; main run not green yet'),
                                MAIN_LINK)

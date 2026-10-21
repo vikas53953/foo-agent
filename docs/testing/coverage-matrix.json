@@ -6,7 +6,7 @@
    "state": "green except",
    "sha": "cc8d730",
    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314",
-   "note": "Finished 19:13Z. Linux fast lane: all unit and integration tests pass. Windows golden lane: all 238 e2e tests pass; its unit step has one failure, the known-red test/integration/browser/profile.test.ts (fix in #94; no feature maps to it). Windows shard 4/4 died while building better-sqlite3, before any test ran (setup, not a test failure)."
+   "note": "Finished 19:13Z. Linux fast lane: all unit and integration tests pass. Windows golden lane (the full suite on the target OS): 238 of 238 e2e pass; 6,396 unit/integration tests pass, 3 fail, 2 skipped. The 3 failures: m6-review.test.ts \"ask before remembering\" (AT-076, memory) and two in browser/actions.test.ts (a pop-up link clicked once; back and wait within 15 s). NOT the profile.test.ts file named in the #113 merge note. Shard 4/4 died during setup, before any test ran; the golden lane covers its tests."
   },
   "real_proven": 0,
   "all_proven": 0,
@@ -78,14 +78,14 @@
     "state": "green except",
     "sha": "cc8d730",
     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314",
-    "note": "Finished 19:13Z. Linux fast lane: all unit and integration tests pass. Windows golden lane: all 238 e2e tests pass; its unit step has one failure, the known-red test/integration/browser/profile.test.ts (fix in #94; no feature maps to it). Windows shard 4/4 died while building better-sqlite3, before any test ran (setup, not a test failure)."
+    "note": "Finished 19:13Z. Linux fast lane: all unit and integration tests pass. Windows golden lane (the full suite on the target OS): 238 of 238 e2e pass; 6,396 unit/integration tests pass, 3 fail, 2 skipped. The 3 failures: m6-review.test.ts \"ask before remembering\" (AT-076, memory) and two in browser/actions.test.ts (a pop-up link clicked once; back and wait within 15 s). NOT the profile.test.ts file named in the #113 merge note. Shard 4/4 died during setup, before any test ran; the golden lane covers its tests."
    },
    {
     "key": "main_ci_failing",
-    "state": "known red",
+    "state": "3 failing tests",
     "sha": "cc8d730",
-    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314/job/119404555230",
-    "note": "test/integration/browser/profile.test.ts"
+    "link": "https://github.com/vikas53953/foo-agent/blob/evidence/main/cc8d730/fidelity.json",
+    "note": "test/integration/m6-review.test.ts test/integration/browser/actions.test.ts"
    },
    {
     "key": "real_ai_main",
@@ -128,6 +128,13 @@
     "sha": "",
     "link": "",
     "note": "No real-person sessions."
+   },
+   {
+    "key": "visual_golden",
+    "state": "1 of 36 match",
+    "sha": "cc8d730",
+    "link": "https://github.com/vikas53953/foo-agent/blob/evidence/main/cc8d730/fidelity.html",
+    "note": "Golden picture report on cc8d730: 1 drawing matches, 65 differ a little and need a look, 142 disputed by a CR, 15 not built. Visual regression is not proven."
    }
   ]
  },
@@ -140,7 +147,8 @@
   "integration": {
    "na": 103,
    "missing": 1,
-   "proven": 56
+   "proven": 55,
+   "fail": 1
   },
   "e2e": {
    "na": 71,
@@ -192,8 +200,9 @@
    "partial": 6
   },
   "regression": {
-   "proven": 159,
-   "missing": 1
+   "proven": 158,
+   "missing": 1,
+   "fail": 1
   },
   "ux": {
    "na": 30,
@@ -5193,9 +5202,9 @@
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
-     "s": "proven",
-     "why": "test/integration/m6-review.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "s": "fail",
+     "why": "test/integration/m6-review.test.ts fails on Windows in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/blob/evidence/main/cc8d730/fidelity.json"
     },
     "e2e": {
      "s": "na",
@@ -5258,9 +5267,9 @@
      "link": ""
     },
     "regression": {
-     "s": "proven",
-     "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "s": "fail",
+     "why": "one of its tests fails in main CI",
+     "link": "https://github.com/vikas53953/foo-agent/blob/evidence/main/cc8d730/fidelity.json"
     }
    }
   },

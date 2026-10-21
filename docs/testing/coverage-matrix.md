@@ -10,7 +10,7 @@ Rule: **proven** = a passing run on current main is linked. Older builds, PR bra
 | Test type | proven | partial | fails | missing | not applicable |
 |---|---|---|---|---|---|
 | Unit | 26 | 0 | 0 | 1 | 133 |
-| Integration | 56 | 0 | 0 | 1 | 103 |
+| Integration | 55 | 0 | 1 | 1 | 103 |
 | E2E (pretend AI) | 87 | 0 | 0 | 2 | 71 |
 | Real-AI journey | 0 | 76 | 11 | 73 | 0 |
 | BDD spec | 0 | 0 | 0 | 160 | 0 |
@@ -22,7 +22,7 @@ Rule: **proven** = a passing run on current main is linked. Older builds, PR bra
 | Install / upgrade | 0 | 8 | 0 | 0 | 152 |
 | Mutation | 0 | 8 | 0 | 152 | 0 |
 | Smoke | 0 | 6 | 2 | 0 | 152 |
-| Regression | 159 | 0 | 0 | 1 | 0 |
+| Regression | 158 | 0 | 1 | 1 | 0 |
 | Usability / UX | 0 | 0 | 0 | 130 | 30 |
 
 Key: P proven, ~ partial, X fails, - missing, . not applicable. Reasons and links per cell: coverage-matrix.json.
@@ -89,7 +89,7 @@ Key: P proven, ~ partial, X fails, - missing, . not applicable. Reasons and link
 | AT-073 | M6 | . | P | P | ~ | - | . | . | . | . | . | . | - | . | P | . |
 | AT-074 | M6 | . | P | . | ~ | - | - | . | . | . | . | . | - | . | P | . |
 | AT-075 | M6 | . | P | . | ~ | - | . | . | . | . | . | ~ | - | . | P | . |
-| AT-076 | M6 | P | P | . | ~ | - | ~ | . | . | . | . | . | - | . | P | . |
+| AT-076 | M6 | P | X | . | ~ | - | ~ | . | . | . | . | . | - | . | X | . |
 | AT-219 | M6 | . | P | . | ~ | - | - | . | . | . | . | . | - | . | P | . |
 | AT-155 | M6 | . | . | P | X | - | . | ~ | . | ~ | . | ~ | ~ | X | P | - |
 | AT-155a | M6 | P | . | P | ~ | - | . | . | . | . | . | . | ~ | ~ | P | . |
