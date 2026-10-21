@@ -22,6 +22,13 @@
       "tid": "bubble-citation"
     },
     {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "SEARCH_BUSY|search(es)? (is|are) busy|every web search fails",
+      "not": true
+    },
+    {
       "do": "dump",
       "name": "thread"
     }
