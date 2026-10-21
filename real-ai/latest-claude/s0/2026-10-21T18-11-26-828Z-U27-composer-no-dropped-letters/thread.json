@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n6:08 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the top 3 news headlines in India today\n6:08 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:11 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n6:11 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Please just reply OK. Testing fast typing: The quick brown fox jumps over the lazy dog 1234567890, then Priya said \"meet at 7:45 PM near Bandra station?\" & Rahul replied (maybe) - ok! Mera naam Asha hai, kal Pune jaana hai; sat sri akal ji. Ending with symbols: @#%=+ [brackets] {braces} ~ done.\n6:11 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "OK.\n\n6:11 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Please just reply OK. Testing fast typing: The quick brown fox jumps over the lazy dog 1234567890, then Priya said \"meet at 7:45 PM near Bandra station?\" & Rahul replied (maybe) - ok! Mera naam Asha hai, kal Pune jaana hai; sat sri akal ji. Ending with symbols: @#%=+ [brackets] {braces} ~ done.\n6:11 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "OK.\n\n6:12 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Line 01: Please just reply OK. Paste check row 1 with numbers 37 and words alpha beta gamma delta.\nLine 02: Please just reply OK. Paste check row 2 with numbers 74 and words alpha beta gamma delta.\nLine 03: Please just reply OK. Paste check row 3 with numbers 111 and words alpha beta gamma delta.\nLine 04: Please just reply OK. Paste check row 4 with numbers 148 and words alpha beta gamma delta.\nLine 05: Please just reply OK. Paste check row 5 with numbers 185 and words alpha beta gamma delta.\nLine 06: Please just reply OK. Paste check row 6 with numbers 222 and words alpha beta gamma delta.\nLine 07: Please just reply OK. Paste check row 7 with numbers 259 and words alpha beta gamma delta.\nLine 08: Please just reply OK. Paste check row 8 with numbers 296 and words alpha beta gamma delta.\nLine 09: Please just reply OK. Paste check row 9 with numbers 333 and words alpha beta gamma delta.\nLine 10: Please just reply OK. Paste check row 10 with numbers 370 and words alpha beta gamma delta.\nLine 11: Please just reply OK. Paste check row 11 with numbers 407 and words alpha beta gamma delta.\nLine 12: Please just reply OK. Paste check row 12 with numbers 444 and words alpha beta gamma delta.\nLine 13: Please just reply OK. Paste check row 13 with numbers 481 and words alpha beta gamma delta.\nLine 14: Please just reply OK. Paste check row 14 with numbers 518 and words alpha beta gamma delta.\nLine 15: Please just reply OK. Paste check row 15 with numbers 555 and words alpha beta gamma del"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "OK.\n\n6:14 PM"
+  }
+]
