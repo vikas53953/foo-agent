@@ -1,0 +1,11 @@
+{"t":"2026-10-21T23:24:05.124Z","journey":"J05-web","title":"First real task with the internet (news + sources)","spec":"07-1 J5; R1 sources/citations","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T23:24:10.617Z","step":"launch","ok":true}
+{"t":"2026-10-21T23:24:18.695Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8073}
+{"t":"2026-10-21T23:24:18.807Z","i":0,"do":"send","sentAt":1792625058756,"sent":true,"before":0,"ok":true,"ms":112}
+{"t":"2026-10-21T23:24:34.056Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":7606,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nSlow here, trying another way\nCheck ISRO, PIB, The Hindu, Indian Express\nLook for ISRO news from Wed 14 Oct to Wed 21 Oct\nWrite it\nWatch live\nStop\nunder 1 min\n11:24 PM","ms":15248}
+{"t":"2026-10-21T23:24:34.114Z","shot":"01-news.png"}
+{"t":"2026-10-21T23:24:34.116Z","i":2,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-21T23:24:34.118Z","i":3,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-21T23:24:34.121Z","i":4,"do":"dump","ok":true,"ms":3}
+{"t":"2026-10-21T23:24:34.292Z","step":"appLog","lines":14,"dropped":0}
+{"t":"2026-10-21T23:24:34.302Z","step":"aiTurns","turns":3}
