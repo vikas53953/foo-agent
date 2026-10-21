@@ -17,6 +17,7 @@
         "·"
       ],
       "extra": [
+        "foo",
         "12:00",
         "PM",
         "I’ll"
@@ -42,7 +43,7 @@
           "x": 0,
           "y": 0,
           "width": 600,
-          "height": 122
+          "height": 152
         },
         "dPos": 0,
         "dSize": 248.671875,
@@ -70,8 +71,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.211994301994302,
-    "diffPixels": 7441,
+    "ratio": 0.1544159544159544,
+    "diffPixels": 5420,
     "total": 35100,
     "sizeMismatch": {
       "a": [
@@ -80,7 +81,7 @@
       ],
       "b": [
         600,
-        122
+        152
       ]
     },
     "heatmap": "BP-CARD-16.dark.diff.png"
