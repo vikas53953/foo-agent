@@ -229,8 +229,8 @@ async function main() {
           // Type fast (no retry) or paste, send, then read back what was sent through the bubble's own Copy and require
           // the exact text: a dropped or doubled letter fails the step.
           const field = page.locator('[data-testid="composer-field"]');
-          const mine = page.locator('[data-testid="thread-log"] [data-testid="bubble-me"]');
-          const n = await mine.count();
+          const ME = '[data-testid="thread-log"] [data-testid="bubble-me"]';
+          const mine = page.locator(ME);
           await field.click();
           if (s.do === 'typeSend') await page.keyboard.type(s.text, { delay: s.delay ?? 0 });
           else {
@@ -239,10 +239,19 @@ async function main() {
           }
           await page.waitForTimeout(300);
           rec.inField = norm(await field.innerText());
+          // The thread is a virtual list, so the bubble count stops growing in long chats.
+          // Mark the newest bubble-me before sending and wait for a newer, unmarked one.
+          await page.evaluate((q) => {
+            const b = [...document.querySelectorAll(q)].pop();
+            if (b) b.setAttribute('data-drv-seen', '1');
+          }, ME);
           await page.keyboard.press('Enter');
           await page.waitForFunction(
-            ([q, c]) => document.querySelectorAll(q).length > c,
-            ['[data-testid="thread-log"] [data-testid="bubble-me"]', n],
+            (q) => {
+              const b = [...document.querySelectorAll(q)].pop();
+              return b && !b.hasAttribute('data-drv-seen');
+            },
+            ME,
             { timeout: 15_000 },
           );
           await app.evaluate(({ clipboard }) => clipboard.writeText(''));
