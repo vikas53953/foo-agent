@@ -89,10 +89,10 @@
    },
    {
     "key": "real_ai_main",
-    "state": "queued",
+    "state": "finished, not judged",
     "sha": "cc8d730",
     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682359",
-    "note": "Latest finished real-AI run is 3a35be0; its logs still show the stuck web job silencing chats (CR-0035; fix #113 is in cc8d730, so this run is the first to test it)."
+    "note": "First real-AI run on current main, and the first with the stuck-job fix (#113). Finished 19:02Z. A green workflow only means it ran: each feature still has to be judged from its screenshot and reply (Codex lane A)."
    },
    {
     "key": "judge_97",
