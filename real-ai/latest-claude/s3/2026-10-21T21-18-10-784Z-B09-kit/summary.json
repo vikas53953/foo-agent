@@ -1,0 +1,148 @@
+{
+  "journey": "B09-kit",
+  "title": "Rich reply pieces: calculator, map, chart, compare, timer, form",
+  "steps": 15,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T21-18-10-784Z-B09-kit",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792617496381,
+      "before": 0,
+      "ok": true,
+      "ms": 147
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "AT-347 calculator recomputes",
+      "firstReplyMs": 9636,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "For ₹50,00,000 at 8.5% over 20 years, your EMI comes to about ₹43,391 a month. You'd pay about ₹1,04,13,840 in total, of which about ₹54,13,840 is interest. Change the amount, rate or years below to see new figures.\n\nCouldn’t show part of this\n\nKeep\n9:18 PM",
+      "ms": 18217
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792617514805,
+      "before": 0,
+      "ok": true,
+      "ms": 130
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "AT-341 numbered stops, dashed route, Open in Maps chip",
+      "firstReplyMs": 2537,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here are five must-see places in Jaipur, in an easy order for one day. The map shows them numbered, on a plain panel without map tiles.\n\nCouldn’t show part of this\n\nKeep\n\nWant me to turn this into a day plan with timings?\n\n9:18 PM",
+      "ms": 11676
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792617526679,
+      "before": 0,
+      "ok": true,
+      "ms": 113
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "AT-340 one hue, number rules",
+      "firstReplyMs": 5572,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "India's economy shrank 5.8% in FY21 and has grown 6.5% to 9.7% a year since. The latest year, FY25, was 6.5%. These are real GDP growth figures from my memory of the official numbers, which get revised. Treat them as approximate. Each year runs April to March.\n\nCouldn’t show part of this\n\nKeep\n9:18 PM",
+      "ms": 14169
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792617541019,
+      "before": 0,
+      "ok": true,
+      "ms": 112
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "AT-343 highlighted column with why",
+      "firstReplyMs": 9128,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The Galaxy S25 is the best value of the three: launch prices are about the same, but it gives you a 120Hz screen, a zoom camera and the fastest processor. The prices below are approximate Indian launch prices for the base version from my memory, so check current prices before you buy.\n\niPhone 16\nLaunch price\nAbout ₹79,900\nScreen\n6.1 inch, 60Hz\nProcessor\nApple A18\nCameras\n48MP main + ultrawide\nZoom camera\nNo\nSoftware updates\nAround 6 to 7 years\nPixel 9\nLaunch price\nAbout ₹79,999\nScreen\n6.3 inch, 120Hz\nProcessor\nGoogle Tensor G4\nCameras\n50MP main + ultrawide\nZoom camera\nNo\nSoftware updates\n7 years\nBest pick\nGalaxy S25\nLaunch price\nAbout ₹80,999\nScreen\n6.2 inch, 120Hz\nProcessor\nSnapdragon 8 Elite\nCameras\n50MP main + ultrawide\nZoom camera\nYes, 3x\nSoftware updates\n7 years\n\nSame price range, but you get a 120Hz screen, a 3x zoom camera and the fastest processor.\n\nKeep\n\nIf you mostly use WhatsApp and Instagram and want the simplest phone, the iPhone 16 is still a good pick.\n\n9:19 PM",
+      "ms": 19266
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "sentAt": 1792617560456,
+      "before": 0,
+      "ok": true,
+      "ms": 123
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "expect": "AT-346 timer runs",
+      "firstReplyMs": 5537,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your 2 minute tea timer is below. Start it when the tea goes in. It only counts down while this chat is open, so it won't ring if you leave the app.\n\nLet the tea steep\n2:00 left\nStart timer\nKeep\n9:19 PM",
+      "ms": 13106
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792617573749,
+      "before": 0,
+      "ok": true,
+      "ms": 131
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "AT-351 up to 6 fields, submit one action",
+      "firstReplyMs": 3026,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's a short form for your party plan. Fill in the date, guests and budget, then submit.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n9:19 PM",
+      "ms": 10670
+    },
+    {
+      "i": 12,
+      "do": "send",
+      "sentAt": 1792617584603,
+      "before": 0,
+      "ok": true,
+      "ms": 120
+    },
+    {
+      "i": 13,
+      "do": "waitReply",
+      "expect": "AT-358..362 sealed page, status line first",
+      "firstReplyMs": 4537,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your expense tracker is below. Add an amount, pick a category and tap Add. It shows your total, what's left of your budget and a split by category. It keeps entries only while this page is open, so nothing is saved if you close the chat.\n\nBuilding your page…",
+      "ms": 11177
+    },
+    {
+      "i": 14,
+      "do": "dump",
+      "ok": true,
+      "ms": 3
+    }
+  ]
+}

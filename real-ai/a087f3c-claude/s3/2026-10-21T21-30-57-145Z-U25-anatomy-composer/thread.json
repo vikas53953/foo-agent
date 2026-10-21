@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n9:29 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds good tonight?\n1\nSouth Indian tiffin\nBEST FIT\nDosa, idli and filter coffee\n2\nNorth Indian thali\nDal, sabzi, roti and rice\n3\nBiryani and raita\nHearty and easy to order in\nSomething else…\nSkip\n9:29 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:29 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n9:29 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds good tonight?\n1\nDal chawal\nBEST FIT\nSimple, home-cooked comfort\n2\nPaneer butter masala and roti\nRich and creamy\n3\nVeg biryani with raita\nOne-pot and filling\nSomething else…\nSkip\n9:29 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:29 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n9:30 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nSo I can read your email for this.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n9:30 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:30 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n9:30 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Booking pizza order\n1\nCheck Domino's\n2\nLook for pizza options near you\n3\nWait for you to pick one\n4\nSign in to Domino's\n5\nFill in your details on Domino's\n…and 3 more · Show\nAbout 6 minutes\nGo\nChange plan\n9:30 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:30 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n9:30 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nSo I can read your email for this.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n9:30 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:30 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "book me a flight to Goa on Sat 12 Dec\n9:31 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "I can find and compare flights, and open the booking page for you. Filling in passengers and paying for flights comes in a later version.\n1\nCompare flights\nBEST FIT\n2\nNot now\nSomething else…\nSkip\n9:31 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:31 PM"
+  }
+]

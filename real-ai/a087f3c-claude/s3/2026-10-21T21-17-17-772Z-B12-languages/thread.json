@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n9:16 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:16 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n9:16 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:16 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n9:17 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:17 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n9:17 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n9:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n9:17 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Parso Fri 23 Oct ke liye kal subah tak order kar do, taaki bakery ko time mile. Ye options mummy ke liye achhe rahenge:\n\nChocolate truffle: rich aur sabko pasand aane wala.\nPineapple ya fresh fruit cake: halka aur fresh, tyohaar jaisa feel.\nButterscotch: crunchy aur classic, kabhi galat nahi jaata.\nPhoto cake: mummy ki pasandida photo ke saath, dil jeet lega.\n\nMummy ko eggless chahiye ya kam meetha? Bata do, main usi hisaab se aur seedha chun dunga.\n\n9:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n9:17 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Mummy ke cake mein kya chahiye?\nEggless\nBEST FIT\nBina ande ka cake\nKam meetha\nHalka, fruit ya pineapple jaisa\nPhoto cake\nMummy ki photo ke saath\nKoi bhi chalega\nChocolate truffle ya butterscotch\nSomething else…\nDone\nSkip\n9:17 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n9:17 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, Mon 2 Nov 2026 isn't a public holiday in Mumbai as far as I know. The nearby festival days are Diwali, around Sun 8 Nov, and Guru Nanak Jayanti, around Tue 24 Nov. I can't see the official Maharashtra holiday list from here, so schools or banks may follow their own calendar. Want me to check a school or bank calendar for you?\n\n9:18 PM"
+  }
+]

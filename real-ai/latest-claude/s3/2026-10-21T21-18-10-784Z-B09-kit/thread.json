@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are five must-see places in Jaipur, in an easy order for one day. The map shows them numbered, on a plain panel without map tiles.\n\nCouldn’t show part of this\n\nKeep\n\nWant me to turn this into a day plan with timings?\n\n9:18 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show a chart of India's GDP growth for the last 5 years\n9:18 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's economy shrank 5.8% in FY21 and has grown 6.5% to 9.7% a year since. The latest year, FY25, was 6.5%. These are real GDP growth figures from my memory of the official numbers, which get revised. Treat them as approximate. Each year runs April to March.\n\nCouldn’t show part of this\n\nKeep\n9:18 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n9:19 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Galaxy S25 is the best value of the three: launch prices are about the same, but it gives you a 120Hz screen, a zoom camera and the fastest processor. The prices below are approximate Indian launch prices for the base version from my memory, so check current prices before you buy.\n\niPhone 16\nLaunch price\nAbout ₹79,900\nScreen\n6.1 inch, 60Hz\nProcessor\nApple A18\nCameras\n48MP main + ultrawide\nZoom camera\nNo\nSoftware updates\nAround 6 to 7 years\nPixel 9\nLaunch price\nAbout ₹79,999\nScreen\n6.3 inch, 120Hz\nProcessor\nGoogle Tensor G4\nCameras\n50MP main + ultrawide\nZoom camera\nNo\nSoftware updates\n7 years\nBest pick\nGalaxy S25\nLaunch price\nAbout ₹80,999\nScreen\n6.2 inch, 120Hz\nProcessor\nSnapdragon 8 Elite\nCameras\n50MP main + ultrawide\nZoom camera\nYes, 3x\nSoftware updates\n7 years\n\nSame price range, but you get a 120Hz screen, a 3x zoom camera and the fastest processor.\n\nKeep\n\nIf you mostly use WhatsApp and Instagram and want the simplest phone, the iPhone 16 is still a good pick.\n\n9:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n9:19 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Start it when the tea goes in. It only counts down while this chat is open, so it won't ring if you leave the app.\n\nLet the tea steep\n2:00 left\nStart timer\nKeep\n9:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n9:19 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for your party plan. Fill in the date, guests and budget, then submit.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n9:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n9:19 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "streaming",
+    "text": "Your expense tracker is below. Add an amount, pick a category and tap Add. It shows your total, what's left of your budget and a split by category. It keeps entries only while this page is open, so nothing is saved if you close the chat.\n\nBuilding your page…"
+  }
+]
