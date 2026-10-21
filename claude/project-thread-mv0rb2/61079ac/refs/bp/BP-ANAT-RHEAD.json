@@ -1,0 +1,45 @@
+{
+  "id": "BP-ANAT-RHEAD",
+  "family": "bp",
+  "selector": "#win .rhead",
+  "box": {
+    "x": 1050.5,
+    "y": 1191.0625,
+    "width": 339,
+    "height": 60
+  },
+  "files": {
+    "light": {
+      "png": "BP-ANAT-RHEAD.light.png",
+      "sha256": "74b2326e4cb0ffa0234b76e7524a6b4e4042afbf7725bcbd0daeb1f2925f0b4a"
+    },
+    "dark": {
+      "png": "BP-ANAT-RHEAD.dark.png",
+      "sha256": "16c039622fdf046957b9e136dd1141625840d201dd87413f70911282d700d685"
+    }
+  },
+  "texts": [
+    "Details",
+    "✕"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-ANAT-RHEAD": {
+      "x": 0,
+      "y": 0,
+      "width": 339,
+      "height": 60
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M1",
+  "spec": "03-shell-2 §3.7",
+  "size": {
+    "width": null,
+    "height": 60
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}
