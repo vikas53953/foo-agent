@@ -816,6 +816,26 @@
   animation: rise var(--m-spring) var(--ease-spring) backwards;
   animation-delay: calc(var(--i, 0) * 2 * var(--m-stagger) * var(--motion-move, 1)); /* §21.7: two stagger steps apart */
 }
+/* CR-0024 F8 (§21.7 Look): 32px, a 16px icon --s1 before the words, --t-small --fg-1, 1px --line-strong outline on
+ * --bg-app, hover --bg-hover. Two classes so the look wins over the shared Chip's single-class rest style. */
+.suggestions > .suggestion {
+  min-height: var(--btn-h-sm);
+  border: 1px solid var(--line-strong);
+  background: var(--bg-app);
+  font: var(--t-small);
+  color: var(--fg-1);
+}
+.suggestions > .suggestion:hover {
+  background: var(--bg-hover);
+}
+.suggestions > .suggestion:active {
+  background: var(--bg-pressed);
+}
+.suggestion > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+}
 .suggestions[data-exit] {
   animation: fadeOut var(--m-normal) var(--ease-out) forwards;
 }

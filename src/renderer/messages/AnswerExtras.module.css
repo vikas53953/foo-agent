@@ -1,0 +1,15 @@
+/* Spec: 04 §17.1 and §17.3 (CR-0024 F7): under an older answer the action row shows only while the pointer is over the
+ * answer's row or focus is inside it, fading in over 120ms (--ease-out). The row is a direct child of the bubble's row, so
+ * `:hover >` reaches it without Bubble's class names. No duration token holds 120ms: it is four --m-stagger steps, and
+ * never less than --m-fast, so Basic / Off (stagger 0) keep the 83ms fade. */
+.older {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity max(var(--m-fast), calc(4 * var(--m-stagger))) var(--ease-out);
+}
+:hover > .older,
+:focus-within > .older,
+:global([data-index]:focus-visible) .older {
+  opacity: 1;
+  pointer-events: auto;
+}

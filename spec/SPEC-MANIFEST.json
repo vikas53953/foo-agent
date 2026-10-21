@@ -28,7 +28,7 @@
     "constitution/08-functions-and-engine-3.md": "5fa2ac14a24c355e0b549b1e9e0435743e3013fe05790cba6205ea1597c78c7e",
     "constitution/08-functions-and-engine-4.md": "db6c809721d0627cd0f053bd2b7cbfd598d6183ee1fda3f984b7fd578976916f",
     "constitution/09-windows.md": "14a391fd50e03373dc40b5f8243b0de57576ebbc21a2e92df32c8c9a849c15f6",
-    "constitution/10-acceptance-1.md": "cf4e4e32f5645c46c03f85cd74531a1bd51c509a0a02c65e5ea201d3b3d5b5d9",
+    "constitution/10-acceptance-1.md": "85328dec86eb54d04f2501792915758f89e376df404efbf7b34fcfa14d835dc9",
     "constitution/10-acceptance-2.md": "698c2ec2f32d497b624e097157743a17d5732f769c28e25e521743f2ab4c81ba",
     "constitution/11-fidelity.md": "e2933c5638dcd7c7e779c32bb94c518b541c042e048c777c2dad1168a0e9b348",
     "constitution/12-features-r25-r31-1.md": "245851c058fb1c996c6a009b63b8d78fbc67584d2de67e2c869ad53e97a5deee",
@@ -56,6 +56,6 @@
     "refs/ux/foo-ux-walkthrough.html": "d5eb3d4a42bce526548be701afaf4585a843e3098af2200d8f0a2c7535778f87",
     "spec-values.json": "143ed27b171b0fb2910065e79de1af36bb8507d6987e21285664a17f0542b286",
     "state-machines.json": "ab7b48b785a63dc92b13a4ce60f1aefcd80411bdb7f27551de680451787b28b4",
-    "trace.csv": "85b7889078845385828cdc25a0fb8bb91c1ebe1ff137481f43d0e79ad37e6bb6"
+    "trace.csv": "6778d33edfa0ace4bf321c51b5c24640f4f27a5ebfd269e09b7bccfcbfb110f7"
   }
 }

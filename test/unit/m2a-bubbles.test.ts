@@ -149,7 +149,8 @@ describe('ticks and the badge slot (04 §3.3, §4, 08-0 §F)', () => {
     expect(tickState({ status: 'failed', badge: null })).toBe('not_sent');
     expect(tickState({ status: 'queued', badge: null })).toBe('waiting');
     expect(tickState({ status: 'sent', badge: null })).toBe('sent');
-    expect(tickState({ status: 'complete', badge: null })).toBe('delivered');
+    // CR-0024 F9: once foo started on it (`complete`), it stays read after the badge clears.
+    expect(tickState({ status: 'complete', badge: null })).toBe('read');
     expect(tickState({ status: 'sent', badge: 'seen' })).toBe('read');
     expect(tickLabel('read', 'foo')).toContain('foo');
   });

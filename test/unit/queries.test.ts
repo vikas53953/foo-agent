@@ -75,6 +75,7 @@ describe('preview helpers (03-shell-1 §3.4.6)', () => {
     expect(tickOf({ status: 'queued', badge: null } as never)).toBe('waiting');
     expect(tickOf({ status: 'failed', badge: null } as never)).toBe('not_sent');
     expect(tickOf({ status: 'sent', badge: 'done' } as never)).toBe('read');
+    expect(tickOf({ status: 'complete', badge: null } as never)).toBe('read');
   });
   it('rule order: working › waiting card › failed › mine', () => {
     const working = { state: 'working', title: 'Flights for 12 Dec', createdAt: 1 };
