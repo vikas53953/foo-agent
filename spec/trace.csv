@@ -386,9 +386,9 @@ R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-1
 ,,AT-427,,,10-acceptance-2 §C.10; 04 §12.3; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,pending
 ,,AT-428,,,10-acceptance-2 §C.10; 04 §12.4; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,pending
 ,,AT-429,,,10-acceptance-2 §C.10; 02 F2; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,pending
-,,AT-430,,,10-acceptance-2 §C.10; 04 §17.1; CR-0024,test/e2e/c1-actions-chips.spec.ts,M9,pending
-,,AT-431,,,10-acceptance-2 §C.10; 04-2 §21.7; CR-0024,test/e2e/c1-actions-chips.spec.ts,M9,pending
-,,AT-432,,,10-acceptance-2 §C.10; 08-2 §5.5; CR-0024,test/integration/jobs/c1-steer-signs.test.ts,M9,pending
-,,AT-433,,,10-acceptance-2 §C.10; 05 §5.2.2; CR-0024,test/integration/jobs/c1-steer-signs.test.ts,M9,pending
+,,AT-430,,,10-acceptance-2 §C.10; 04 §17.1; CR-0024,test/e2e/c1-actions-chips.spec.ts,M9,live
+,,AT-431,,,10-acceptance-2 §C.10; 04-2 §21.7; CR-0024,test/e2e/c1-actions-chips.spec.ts,M9,live
+,,AT-432,,,10-acceptance-2 §C.10; 08-2 §5.5; CR-0024,test/integration/jobs/c1-steer-signs.test.ts,M9,live
+,,AT-433,,,10-acceptance-2 §C.10; 05 §5.2.2; CR-0024,test/integration/jobs/c1-steer-signs.test.ts,M9,live
 ,,AT-434,,,10-acceptance-2 §C.10; 08-4 §24.5; CR-0024,test/unit/prompt/c1-voice.test.ts,M9,live
 ,,AT-435,,,10-acceptance-2 §C.10; 08-4 §24.5; CR-0024,test/unit/prompt/c1-voice.test.ts,M9,live

@@ -273,7 +273,8 @@ test('AT-006 · a message sent while the AI fails its test waits to send, then g
   const up = await page.evaluate(() => window.foo.invoke('ai:verify', { providerId: 'claude-cli' }));
   expect(up.ok && up.value.ok).toBe(true);
   await expect(page.getByTestId(TID.bubbleFoo).filter({ hasText: 'Yes, I’m here.' })).toBeVisible();
-  await expect(row.getByTestId(TID.bubbleTick)).toHaveAttribute('data-state', 'delivered');
+  // CR-0024 F9: foo answered it, so it stays ✓✓ read after the 👀 clears.
+  await expect(row.getByTestId(TID.bubbleTick)).toHaveAttribute('data-state', 'read');
   expect(fakeTurns(dirs).filter((x) => x.purpose === 'intake')).toHaveLength(1);
   await app.close();
 });
