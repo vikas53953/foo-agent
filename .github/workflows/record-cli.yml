@@ -1,0 +1,97 @@
+# Spec: 08-2 §6.5, 08-4 §30.3 (captured CLI fixtures are binding; refresh them from the real CLIs).
+# Records cassettes of the current Claude Code CLI (ANTHROPIC_API_KEY secret) and, when OPENAI_API_KEY exists, the
+# current Codex CLI, driven by foo's own adapters (test/record/record-cli.ts) on ubuntu-latest. The cassettes are
+# redacted, scanned for the keys and pushed to the `evidence` branch under cassettes/<short-sha>/ and
+# cassettes/latest/; a builder copies them into test/fixtures/cli-captures/recorded/ in a PR, where
+# test/unit/cli-cassettes.test.ts replays them. Spend guard: owner-only manual runs, about 10 tiny turns on a
+# Haiku-class model.
+name: Record CLI cassettes
+
+on:
+  workflow_dispatch:
+    inputs:
+      claude_model:
+        description: Model for the Claude turns
+        default: claude-haiku-5-5
+        required: true
+
+concurrency:
+  group: record-cli
+  cancel-in-progress: false
+
+permissions:
+  contents: write # pushes the evidence branch only
+
+jobs:
+  record:
+    name: Record the real CLIs (ubuntu-latest)
+    # Only the owner may spend the keys. workflow_dispatch has no fork trigger, and fork PRs never see secrets.
+    if: github.actor == github.repository_owner && github.repository == 'vikas53953/foo-agent'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      OUT: ${{ github.workspace }}/../cassettes
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Install the CLIs
+        env:
+          HAS_OPENAI: ${{ secrets.OPENAI_API_KEY != '' }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          npm install -g @anthropic-ai/claude-code
+          claude --version
+          if [ "$HAS_OPENAI" = "true" ]; then
+            npm install -g @openai/codex@latest
+            printenv OPENAI_API_KEY | codex login --with-api-key > /dev/null
+            codex --version
+          fi
+      - name: Record
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RECORD_CLAUDE_MODEL: ${{ inputs.claude_model }}
+        run: pnpm exec tsx test/record/record-cli.ts "$OUT"
+      - name: Scan the cassettes for the keys
+        if: always()
+        env:
+          KEY_A: ${{ secrets.ANTHROPIC_API_KEY }}
+          KEY_O: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          rm -f "$HOME/.codex/auth.json" # the signed-in Codex file holds the key; nothing reads it after the run
+          [ -d "$OUT" ] || exit 0
+          : > "$RUNNER_TEMP/leak.txt"
+          for k in "$KEY_A" "$KEY_O"; do if [ -n "$k" ]; then grep -rlF -- "$k" "$OUT" >> "$RUNNER_TEMP/leak.txt" || true; fi; done
+          if [ -s "$RUNNER_TEMP/leak.txt" ]; then
+            echo "::error::A key appeared in $(wc -l < "$RUNNER_TEMP/leak.txt") cassette file(s); nothing is pushed."
+            rm -rf "$OUT"
+          fi
+      - name: Push the cassettes to the evidence branch
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          [ -f "$OUT/manifest.json" ] || { echo "no cassettes"; exit 0; }
+          short="$(git rev-parse --short=7 HEAD)"
+          work="$RUNNER_TEMP/evidence" && rm -rf "$work" && mkdir -p "$work" && cd "$work"
+          git init -q && git config core.autocrlf false
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 | tr -d '\n')"
+          git remote add origin "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git"
+          g() { git -c "http.extraheader=$auth" "$@"; }
+          for attempt in 1 2 3 4 5; do
+            if g fetch -q --depth 1 origin evidence 2>/dev/null; then git checkout -q -B evidence FETCH_HEAD; else git checkout -q --orphan evidence; fi
+            rm -rf "cassettes/$short" "cassettes/latest" && mkdir -p "cassettes/$short" "cassettes/latest"
+            cp -R "$OUT/." "cassettes/$short/" && cp -R "$OUT/." "cassettes/latest/"
+            git add -A -- cassettes
+            git diff --cached --quiet && { echo "cassettes unchanged"; exit 0; }
+            git commit -q -m "Evidence: CLI cassettes on $short (run $GITHUB_RUN_ID)"
+            g push -q origin HEAD:refs/heads/evidence && { echo "cassettes pushed to evidence:cassettes/$short"; exit 0; }
+            sleep $((attempt * 3))
+          done
+          exit 1

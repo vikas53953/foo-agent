@@ -1,0 +1,67 @@
+# Spec: 09-windows §9.2, §9.3, §9.5, §9.18, §9.23 (real Windows checks on the packaged installer).
+# Builds the NSIS installer on windows-latest and runs test/windows/run-checks.ps1: silent install and uninstall, what
+# the install leaves on the PC, the installed app under UI Automation (pywinauto), single instance, the toast identity,
+# foo:// registration and a Credential Manager round trip through foo's own keyring code. No secrets are used. The
+# results table goes to the run page; "gap" rows are Windows features foo has not built yet (tray, its own toasts).
+name: Windows checks
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'test/windows/**'
+      - '.github/workflows/windows-checks.yml'
+      - 'electron-builder.yml'
+      - 'src/main/index.ts'
+      - 'src/main/windows/**'
+      - 'src/main/vault/**'
+
+concurrency:
+  group: windows-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Installer, window and Credential Manager (windows-latest)
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pywinauto==0.6.9
+      # Same native build recipe as ci.yml: install without scripts, compile with the pinned node-gyp.
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Download the Electron binary
+        run: node node_modules/electron/install.js
+      - run: pnpm build
+      - name: Rebuild native modules for Electron
+        run: pnpm rebuild:electron
+      - name: Build the installer
+        run: pnpm exec electron-builder --win nsis
+      - name: Run the Windows checks
+        shell: powershell
+        run: |
+          $installer = Get-ChildItem dist -Filter '*Setup*.exe' | Select-Object -First 1
+          if (-not $installer) { Get-ChildItem dist; throw 'no installer in dist' }
+          & test/windows/run-checks.ps1 -Installer $installer.FullName -Out "$env:RUNNER_TEMP\windows-checks"
+          exit $LASTEXITCODE
+      - name: Summary
+        if: always()
+        shell: powershell
+        run: |
+          $f = "$env:RUNNER_TEMP\windows-checks\SUMMARY.md"
+          if (Test-Path $f) { "### Windows checks ($env:GITHUB_SHA)" | Out-File -Append -Encoding utf8 $env:GITHUB_STEP_SUMMARY; Get-Content $f | Out-File -Append -Encoding utf8 $env:GITHUB_STEP_SUMMARY }
