@@ -29,6 +29,7 @@ Everything else (`coverage-matrix.md/.tsv/.json`, `coverage-cells.tsv`) is gener
 - **missing** = nothing tests it.
 - A driver step that says `"ok": true` is not a pass. The real-AI driver marks a step ok when a reply arrives, even if the reply is the stuck-job card. Look at the reply text and the screenshot.
 - **Not built is not broken.** Asks that need an intake kind that is not built yet get "I didn't get that" today: setting ("Switch to dark mode", M13; CR-0043 in progress), routine (M7), catch_up (12-2 §12.27) and handoff (M13). Score these "not built", never "fail". CR-0042 makes routine, catch_up and handoff reply with one honest "I can't … yet" line.
+- Two more spec features are **not built** (checked against code on main a087f3c, 2026-10-21): **Try again on a finished answer** (04 §17.1: `message:retry` only re-runs a _failed_ foo reply; `retryMessage` refuses a finished one) and **an edit reaching the engine** (04 §6.2: `message:edit` updates the bubble but never sends the correction to the engine). Neither is in the 160 in `features.tsv`. Score them "not built".
 - Never round up. If unsure, write partial and say why in the note.
 
 ## The 15 test types and how each runs
@@ -99,6 +100,7 @@ Also add your judged real-AI rows to `real-ai-results.tsv` and re-run `build_mat
 
 ## Log
 
-| When (IST)       | Who    | What changed                                                                                                                      |
-| ---------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-10-21 23:50 | Claude | Matrix, generator, results ledger and this handoff created. Main CI on dfe22cf still running; no real-AI run on current main yet. |
+| When (IST)       | Who    | What changed                                                                                                                                                                                                                                                              |
+| ---------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-10-21 23:50 | Claude | Matrix, generator, results ledger and this handoff created. Main CI on dfe22cf still running; no real-AI run on current main yet.                                                                                                                                         |
+| 2026-10-22 03:30 | Claude | Main CI green on a087f3c (batch 1). Real-AI run 21 judged (`/mnt/project-files/foo/real-test/score/run21-a087f3c-findings.md`); B04, B10, U25 "no reply" are driver bugs, U01 and U23 real (CR-0045). Try again on a finished answer and edit-to-engine marked not built. |
