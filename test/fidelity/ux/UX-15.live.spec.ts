@@ -17,18 +17,22 @@
 // - UX-15-06: the drawn "Nothing was booked or paid." is 08-2 §5.7's report "Stopped. Nothing was booked, paid or sent.";
 // - UX-15-07: 08-2 §5.7 puts the activity summary into the report as written, and 06-3 §9.4's summary is "Sent an email to
 //   {name}", so the report reads "I'd already Sent an email to Rakesh Sharma at 11:06 AM" (spec gap for the CR).
-// App gaps (reported, not faked): this seeded world has no live browser behind the job, so the engine's job.takeOver (T7,
-// src/main/jobs/signinIpc.ts; its own tests drive it) cannot answer here; UX-15-04's in-control state is sent the way main
-// sends it (`live:state taken_over`, as AT-272 does) and UX-15-05 has no "You took over" / "Carrying on from here." rows; dialog C-13 (06-3 §14, "Stop all {3} jobs that are
-// running?") is not built and the header ⋯ has no "Stop everything", so UX-15-08 and UX-15-09 use the typed "Stop everything"
-// (08-4 §26.9, no confirm) and there is no combined report in foo's chat and no "Pause all routines" link.
+// This seeded world has no live browser behind the job, so the engine's job.takeOver cannot answer here: UX-15-04's in-control
+// state is sent the way main sends it (`live:state taken_over`, as AT-272 does), and UX-15-05 runs in its own test on a real
+// browser job (test/e2e/m9-lanes.ts) where Take over adds the checklist row "You took over" and Hand back posts "Carrying on
+// from here." (CR-0030 pick 3). UX-15-08 is foo's chat ⋯ → "Stop everything…" → dialog C-13 (06-3 §14, CR-0030 pick 2);
+// UX-15-09 is the combined report in foo's chat (CR-0030 pick 1). App gap (reported): no "Pause all routines" link under the
+// report, because `routine:pauseAll` (08-1 §3.2, J14 / J20) belongs to the paused M7 / M11.
 import { expect, test, type Page } from '@playwright/test';
+import Database from 'better-sqlite3';
+import { join } from 'node:path';
 import { t } from '../../../src/shared/copy/t';
 import { TID } from '../../../src/shared/testids';
 import type { FakeLine } from '../../e2e/fakeAi';
 import { advance, jobState } from '../../e2e/m4-start';
 import { ASK_LANDLORD, draftsGoogle, LANDLORD, LANDLORD_BODY, waitForDraft } from '../../e2e/m8-drafts-world';
 import { say } from '../../e2e/m9-booking-world';
+import { fooSaid, laneRun, tool } from '../../e2e/m9-lanes';
 import { openLive, sendLiveState, setThemeBoth, sizeWindow, startLive } from '../../e2e/m9-live-world';
 import { byTid, captureUx, openChat, quoted, rest, setTheme, settle, step, THEMES } from '../capture';
 
@@ -59,7 +63,7 @@ async function shootLive(page: Page, live: Page, id: string, sel: string): Promi
 
 const lastText = (page: Page, text: string) => page.getByTestId(TID.threadLog).getByText(text, { exact: true }).last();
 
-test('UX-15 · Watch live, take over, stop: steps UX-15-03, UX-15-04, UX-15-05, UX-15-06, UX-15-08 and UX-15-09, light and dark', async () => {
+test('UX-15 · Watch live, take over, stop: steps UX-15-03, UX-15-04, UX-15-06, UX-15-08 and UX-15-09, light and dark', async () => {
   test.setTimeout(240_000);
   const w = await startLive();
   const { app, page, refs } = w;
@@ -116,26 +120,11 @@ test('UX-15 · Watch live, take over, stop: steps UX-15-03, UX-15-04, UX-15-05, 
       await shootLive(page, live, 'UX-15-04', byTid(TID.liveHandBack));
     });
 
-    await test.step('UX-15-05 · Hand back: foo carries on from the page; the checklist is the one card, edited in place', async () => {
-      const s = step('UX-15-05');
-      expect(s.s).toContain('Carrying on from here.');
-      await live.getByTestId(TID.liveHandBack).click();
-      await sendLiveState(app, goa, 'running');
-      await expect(live.getByTestId(TID.liveRoot)).toHaveAttribute('data-state', 'live');
-      await expect(live.getByTestId(TID.liveTakeOver)).toBeVisible();
-      // back in foo's chat: the job keeps working and its checklist is still the one card (no new message).
-      await page.bringToFront();
-      await openChat(page, 'foo');
-      const checklist = page.getByTestId(TID.threadLog).locator(byTid(TID.cardChecklist)).filter({ hasText: 'Goa stay' });
-      await expect(checklist).toHaveCount(1);
-      expect(w.db().prepare('SELECT state FROM jobs WHERE id = ?').pluck().get(goa)).toBe('working');
-      const row = checklist.locator('xpath=ancestor-or-self::*[@data-message-id][1]');
-      await shoot(
-        page,
-        'UX-15-05',
-        `${byTid(TID.threadLog)} [data-message-id="${await row.getAttribute('data-message-id')}"] ${byTid(TID.cardChecklist)}`,
-      );
-    });
+    // UX-15-05 runs on a real browser job below (the seeded Goa stay has no browser behind it for job.takeOver).
+    await live.getByTestId(TID.liveHandBack).click();
+    await sendLiveState(app, goa, 'running');
+    await expect(live.getByTestId(TID.liveRoot)).toHaveAttribute('data-state', 'live');
+    await page.bringToFront();
 
     await test.step('UX-15-06 · typing "stop" in a job’s chat: ⛔ and "Stopped. Nothing was booked, paid or sent."', async () => {
       const s = step('UX-15-06');
@@ -161,8 +150,7 @@ test('UX-15 · Watch live, take over, stop: steps UX-15-03, UX-15-04, UX-15-05, 
 
     const routine = () => w.db().prepare("SELECT state, next_run_at, schedule FROM routines WHERE title = 'Morning brief'").get();
     const before = routine();
-    let stopAllSel = '';
-    await test.step('UX-15-08 · "Stop everything" stops only jobs; routines keep their schedule', async () => {
+    await test.step('UX-15-08 · "Stop everything" (header ⋯) asks once: Stop all · Cancel; only jobs stop, routines keep their schedule', async () => {
       const s = step('UX-15-08');
       expect(s.f).toContain('Routines carry on');
       expect(before).toBeTruthy();
@@ -170,11 +158,24 @@ test('UX-15 · Watch live, take over, stop: steps UX-15-03, UX-15-04, UX-15-05, 
       await jobState(page, refs.moneyJob!, 'working');
       await jobState(page, refs.homeJob!, 'working');
       await openChat(page, 'foo');
-      await say(page, 'Stop everything');
-      const mine = page.getByTestId(TID.threadLog).locator(byTid(TID.bubbleMe), { hasText: 'Stop everything' }).last();
-      await mine.waitFor();
-      const row = mine.locator('xpath=ancestor-or-self::*[@data-message-id][1]');
-      stopAllSel = `${byTid(TID.threadLog)} [data-message-id="${await row.getAttribute('data-message-id')}"]`;
+      const running = w
+        .db()
+        .prepare("SELECT COUNT(*) FROM jobs WHERE state IN ('queued', 'working', 'needs_you', 'waiting')")
+        .pluck()
+        .get() as number;
+      expect(running).toBeGreaterThanOrEqual(3);
+      // CR-0030 pick 2: foo's chat ⋯ → "Stop everything…" → C-13 (06-3 §14).
+      await page.getByTestId(TID.chatHeaderMore).click();
+      await page.getByTestId(TID.chatHeaderMenuStopEverything).click();
+      const dialog = page.getByTestId(TID.dialogC13);
+      await expect(dialog).toContainText(t('dialog.c_13.title', { count: running }));
+      await expect(dialog).toContainText(t('dialog.c_13.body'));
+      await expect(dialog.getByTestId(TID.dialogPrimary)).toHaveText(t('dialog.c_13.primary'));
+      await expect(dialog.getByTestId(TID.dialogSecondary)).toHaveText(t('dialog.c_13.secondary'));
+      // f: asking stops nothing.
+      expect(w.db().prepare('SELECT state FROM jobs WHERE id = ?').pluck().get(goa)).toBe('working');
+      await shoot(page, 'UX-15-08', byTid(TID.dialogC13));
+      await dialog.getByTestId(TID.dialogPrimary).click();
       await expect
         .poll(
           () =>
@@ -186,20 +187,38 @@ test('UX-15 · Watch live, take over, stop: steps UX-15-03, UX-15-04, UX-15-05, 
         )
         .toBe(3);
       expect(routine()).toEqual(before);
-      await shoot(page, 'UX-15-08', stopAllSel);
     });
 
-    await test.step('UX-15-09 · the report of what stopped; the approvals of those jobs are withdrawn', async () => {
+    await test.step('UX-15-09 · one plain report in foo’s chat of what stopped; the approvals of those jobs are withdrawn', async () => {
       const s = step('UX-15-09');
       expect(s.f).toContain('Approvals for those jobs are withdrawn');
       // Goa stay's Payment approval (₹14,600) is WITHDRAWN, never left open.
       await expect
         .poll(() => w.db().prepare('SELECT state FROM approvals WHERE job_id = ? ORDER BY created_at DESC LIMIT 1').pluck().get(goa))
         .toBe('WITHDRAWN');
-      // the report in foo's chat comes from the activity log: nothing was done by these jobs
-      await expect(lastText(page, t('thread.stop.report.nothing'))).toBeVisible({ timeout: 15_000 });
+      // The combined report (J18, C-13; CR-0030 pick 1) from the stopped jobs' activity rows: nothing was done by them.
+      const titles = w.db().prepare("SELECT title FROM jobs WHERE stop_reason = 'stop_all'").pluck().all() as string[];
+      // First the database: the line is written in foo's chat (the engine's last write of the stop), then the thread shows it.
+      const lead = `Stopped ${titles.length} jobs:`;
+      const written = () =>
+        w
+          .db()
+          .prepare(
+            "SELECT m.text FROM messages m JOIN chats c ON c.id = m.chat_id WHERE c.kind = 'foo' AND c.private = 0 AND m.text LIKE ? ORDER BY m.seq DESC LIMIT 1",
+          )
+          .pluck()
+          .get(`${lead}%`) as string | undefined;
+      await expect.poll(written, { timeout: 15_000, message: 'the combined report is written in foo’s chat' }).toBeTruthy();
+      await openChat(page, 'foo');
+      const report = page.getByTestId(TID.threadLog).locator(byTid(TID.bubbleFoo), { hasText: lead }).last();
+      await expect(report).toBeVisible({ timeout: 15_000 });
+      await expect(report).toContainText(lead);
+      for (const title of titles) await expect(report).toContainText(title);
+      await expect(report).toContainText(t('thread.stop.all.nothing'));
+      expect(w.db().prepare("SELECT COUNT(*) FROM activity WHERE event = 'stopped_all'").pluck().get()).toBe(1);
       expect(routine()).toEqual(before);
-      await shoot(page, 'UX-15-09', stopAllSel);
+      const row = report.locator('xpath=ancestor-or-self::*[@data-message-id][1]');
+      await shoot(page, 'UX-15-09', `${byTid(TID.threadLog)} [data-message-id="${await row.getAttribute('data-message-id')}"]`);
     });
   } finally {
     await w.close();
@@ -283,5 +302,99 @@ test('UX-15 · Watch live, take over, stop: step UX-15-07 (stop after a real sen
   } finally {
     await w.close();
     await google.close();
+  }
+});
+
+const STAY_ASK = 'find a beach stay for 2 nights and fill in my details';
+const stepDone = (idx: number): FakeLine => ({ match: { purpose: 'step' }, reply: act({ kind: 'step_done', idx }) });
+/** A step turn held on the fake clock, so the job stays WORKING at its second step (until the turn's own timeout: the waits
+ * below move the clock only until the hold starts). */
+const hold: FakeLine = { ...tool('browser.snapshot', {}), delayMs: 6 * 60 * 60_000 };
+
+test('UX-15 · Watch live, take over, stop: step UX-15-05 (take over and hand back on a real browser job), light and dark', async () => {
+  test.setTimeout(240_000);
+  const run = await laneRun((sites) => [
+    { match: { purpose: 'verify' }, reply: 'ready', once: false },
+    {
+      match: { purpose: 'intake', promptIncludes: STAY_ASK },
+      reply: act({
+        kind: 'job',
+        title: 'Beach stay',
+        plan: [
+          { phraseKey: 'check_site', slots: { site: 'the stay site' }, route: 'browser' },
+          { phraseKey: 'fill_details', slots: { site: '127.0.0.1' }, route: 'browser' },
+          { phraseKey: 'look_for', slots: { what: '2 nights by the beach' }, route: 'browser' },
+          { phraseKey: 'show_before', slots: { acting: 'booking' }, route: 'browser' },
+        ],
+        estimate: { minutes: 5 },
+        routeHint: ['browser'],
+        needsApps: [],
+      }),
+    },
+    tool('browser.open', { url: sites.signin() }),
+    stepDone(0),
+    hold,
+    hold,
+  ]);
+  const { page } = run;
+  const db = new Database(join(run.dirs.FOO_DATA_DIR, 'data', 'foo.db'), { readonly: true, fileMustExist: true });
+  try {
+    const steps = () => run.turns().filter((x) => x.purpose === 'step').length;
+    const go = page.getByTestId(TID.cardPlanGo);
+    await run.ask(STAY_ASK);
+    await run.until(async () => steps() >= 1 || (await go.count()) > 0, 'the job starts or its plan asks for Go');
+    if ((await go.count()) > 0 && steps() === 0) await go.last().click();
+    // The clock moves only until the held turn starts (the third step turn); from here the waits are wall-clock only, so the
+    // hold never reaches its timeout.
+    await run.until(async () => steps() >= 3, 'the job is at its second step');
+    // The engine builds the title from the plan (08-4 §26.2; the AI's title is only a hint): the newest job is this one.
+    const job = db.prepare('SELECT id, title, state FROM jobs ORDER BY created_at DESC LIMIT 1').get() as {
+      id: string;
+      title: string;
+      state: string;
+    };
+    const jobId = job.id;
+    const seen = () =>
+      JSON.stringify({
+        job: db.prepare('SELECT title, state, chat_id FROM jobs WHERE id = ?').get(jobId),
+        cards: db.prepare('SELECT type, state FROM cards WHERE job_id = ?').all(jobId),
+      });
+    expect(job.state, seen()).toBe('working');
+    const checklist = page.getByTestId(TID.threadLog).locator(byTid(TID.cardChecklist)).filter({ hasText: job.title });
+    await expect(checklist, `the checklist is up: ${seen()}`).toHaveCount(1, { timeout: 15_000 });
+
+    await test.step('UX-15-05 · Take over, then hand back: the checklist says "You took over", foo says "Carrying on from here."', async () => {
+      const s = step('UX-15-05');
+      expect(s.s).toContain('You took over');
+      expect(s.s).toContain('Carrying on from here.');
+      // Take over from the live window's button (main forwards job:takeOver to the engine, 06-3 §11.2).
+      expect(await page.evaluate((id) => window.foo.invoke('job:takeOver', { jobId: id }).then((r) => r.ok), jobId)).toBe(true);
+      const took = checklist.locator(`${byTid(TID.cardChecklistStep)}[data-state="took_over"]`);
+      await expect(took, `the checklist row "You took over": ${seen()}`).toHaveCount(1, { timeout: 15_000 });
+      await expect(took).toHaveText(t('cards.checklist.took_over.done'));
+      const stepsInControl = steps();
+      for (let i = 0; i < 10; i++) await page.evaluate(() => window.__fooTest!.clock.advance(1_000));
+      expect(steps()).toBe(stepsInControl);
+
+      expect(await page.evaluate((id) => window.foo.invoke('job:handBack', { jobId: id }).then((r) => r.ok), jobId)).toBe(true);
+      await expect(fooSaid(page, t('cards.signin.hand_back_line')), `foo says it is carrying on: ${seen()}`).toBeVisible({
+        timeout: 15_000,
+      });
+      // f: never repeats a step you already did: the first row stays done, the row you took over at is the current one again.
+      expect(s.f).toContain('Never repeats');
+      const rows = checklist.getByTestId(TID.cardChecklistStep);
+      await expect(rows.nth(0)).toHaveAttribute('data-state', 'done');
+      await expect(rows.nth(1)).toHaveAttribute('data-state', 'took_over');
+      await expect(rows.nth(2)).toHaveAttribute('data-state', 'current');
+      const row = checklist.locator('xpath=ancestor-or-self::*[@data-message-id][1]');
+      await shoot(
+        page,
+        'UX-15-05',
+        `${byTid(TID.threadLog)} [data-message-id="${await row.getAttribute('data-message-id')}"] ${byTid(TID.cardChecklist)}`,
+      );
+    });
+  } finally {
+    db.close();
+    await run.close();
   }
 });

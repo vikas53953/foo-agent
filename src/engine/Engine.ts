@@ -400,6 +400,11 @@ export class Engine {
         gmailConnected: this.google !== null && this.trouble.gmailConnected(),
         whatsappLinked: this.whatsapp.isOpen(),
       }),
+      // CR-0040 (05-3 §5.11 Trigger): the Google apps a job needs while Google is not connected.
+      appsToConnect: (needs) =>
+        this.google !== null && this.trouble.googleMissing()
+          ? needs.filter((a): a is 'gmail' | 'gcal' | 'contacts' => a === 'gmail' || a === 'gcal' || a === 'contacts')
+          : [],
     });
     this.jobs.setIntake((chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }));
     this.kitActions = new KitActions({
@@ -920,6 +925,8 @@ export class Engine {
       // M8 T5
       case 'connection.state':
         await this.trouble.onState(msg.payload);
+        // CR-0040: messages waiting on a Connect card go back to intake.
+        if (msg.payload.status === 'connected') this.lane.connected();
         return undefined;
       // M6 (CR-0010 G-M6-01): the Memory page's invokes, answered with the invoke's result.
       case 'memory.cmd': {

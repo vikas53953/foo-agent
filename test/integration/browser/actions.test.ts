@@ -11,6 +11,7 @@ import { browserHarness, html, okResult, type BrowserHarness } from './harness';
 
 let h: BrowserHarness;
 let offersOpened = 0;
+let lateOpened = 0;
 const refOf = async (pattern: RegExp) => {
   h.runtime.stepStarted('job_1');
   const text = okResult(await h.run('browser.snapshot')).snapshot as string;
@@ -30,6 +31,7 @@ beforeAll(async () => {
       <button id="al" onclick="alert('Hi'); window.alerted=1">Hello</button>
       <a id="pop" href="/menu" target="_blank">Open menu</a>
       <a id="pop2" href="/offers" target="_blank">See offers</a>
+      <a id="pop3" href="/late" target="_blank" onclick="event.preventDefault(); setTimeout(() => window.open('/late', '_blank'), 400)">Late deals</a>
       <input id="city" name="city" placeholder="City">
       <input id="pw" type="password" placeholder="Password">
       <select id="sel"><option>Lunch</option><option>Dinner</option></select>
@@ -42,6 +44,10 @@ beforeAll(async () => {
   h.route('/offers', (_q, res) => {
     offersOpened += 1;
     res.writeHead(200, { 'content-type': 'text/html' }).end('<h1>Offers</h1>');
+  });
+  h.route('/late', (_q, res) => {
+    lateOpened += 1;
+    res.writeHead(200, { 'content-type': 'text/html' }).end('<h1>Late deals</h1>');
   });
   h.route('/framed', html(`<h1>Checkout</h1><iframe id="gw" src="/gateway"></iframe>`));
   h.route(
@@ -198,6 +204,15 @@ describe('08-2 §8.3.5 actions', { timeout: 60_000 }, () => {
     await expect.poll(async () => (await h.page()).url()).toBe(`${h.origin}/offers`);
     await (await h.page()).close();
     expect(offersOpened).toBe(1);
+  });
+  it('a new-tab link whose pop-up comes after the page went idle (a slow PC) is still clicked once', async () => {
+    okResult(await h.run('browser.click', { ref: await refOf(/\[(e\d+)\] link "Late deals"/) }));
+    await expect.poll(async () => (await h.page()).url()).toBe(`${h.origin}/late`);
+    await (await h.page()).close();
+    // A second click would open its pop-up 400 ms later: wait past that before counting.
+    await new Promise((r) => setTimeout(r, 800));
+    expect(lateOpened).toBe(1);
+    expect((await h.page()).url()).toBe(`${h.origin}/home`);
   });
   it('Enter with focus inside a child frame is refused: what it would submit is unseen', async () => {
     okResult(await h.run('browser.open', { url: `${h.origin}/framed` }, 'job_frame'));

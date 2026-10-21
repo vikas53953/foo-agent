@@ -14,19 +14,17 @@
 // - UX-14-01 draws [ Open sign-in ] [ Take over ] [ Skip ] and "I can't see what you type."; 05-3 §5.10.2's sign_in lane is
 //   [ I'm done ] [ Take over ] [ Skip ] with "{site} wants you to sign in. Do it here and I'll carry on.", and the card goes
 //   LIVE at once (Edge is brought to the front, X-66), so the frame is the live card;
-// - UX-14-05 / -06: the "save this login?" offer after a sign-in is not built by T7 (docs/decisions/M9.tsv, T7 follow-ups),
-//   so the offer question (a Choice card with 05-2 §5.8.4's words) and the Login Secret box are seeded rows in the job's chat;
-//   the Login box's save is real (secret:save into the vault);
+// - UX-14-05 / -06: the offer after a sign-in and the Login box are the app's own (CR-0030 pick 4); the Login box's save goes
+//   into FOO_TEST's in-memory vault with the sandbox's fake login;
 // - UX-14-07 draws a "Step 3 of 4" sub-line under the checklist title; the app's checklist (05-1 §5.2) has none: the third
 //   of four rows is the current one;
 // - UX-14-08 draws the code box after the sign-in; the app's bank_3ds lane posts the Sign-in card ("Your bank sent a code to
 //   {phone}. Type it on the bank's page." [ I'm done ] [ Use the code box ]) and the code box together; the code box draws
-//   no "Your bank sent a code to {phone}." line (app gap, reported);
+//   05-2 §5.8.4's "Your bank sent a code to {phone}." line (CR-0030 pick 5);
 // - UX-14-10 draws "Still need you to sign in to IRCTC." in the chat at 10 min; 05-3 §5.10.2 makes the 10 min reminder a
 //   toast, and the 2 h line is "I stopped the {job} because the sign-in wasn't done. Ask me again any time.".
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { t } from '../../../src/shared/copy/t';
-import type { CardSeedRequest } from '../../../src/shared/ipc';
 import { TID } from '../../../src/shared/testids';
 import type { FakeLine } from '../../e2e/fakeAi';
 import { act, done, fooSaid, laneRun, signinCard, tool, type LaneRun } from '../../e2e/m9-lanes';
@@ -96,14 +94,6 @@ async function shoot(page: Page, id: string, sel: string): Promise<void> {
   await setTheme(page, 'light');
 }
 
-/** The open chat's id (the chat list row carries it). */
-const chatIdOf = (page: Page, name: string) =>
-  page
-    .getByTestId(TID.chatlistRow)
-    .filter({ has: page.getByTestId(TID.chatlistRowName).getByText(name, { exact: true }) })
-    .first()
-    .getAttribute('data-chat-id');
-
 /** The ask's own bubble row, and its badge. */
 async function askRow(page: Page): Promise<{ sel: string; badge: Locator }> {
   const mine = page.getByTestId(TID.threadLog).locator(byTid(TID.bubbleMe), { hasText: ASK }).last();
@@ -164,35 +154,17 @@ test('UX-14 · Sign in here (M9): steps UX-14-01, UX-14-05, UX-14-06 and UX-14-0
     await site.waitForURL(/\/account$/);
     await run.until(async () => (await state(run)) === 'signed_in', 'the card reads signed in');
     await run.until(async () => steps(run) >= stepsAtPause + 2, 'the job carries on to its next step');
-    const chatId = (await chatIdOf(page, 'Home'))!;
     await test.step('UX-14-05 · once per site, foo offers to save the login (Save · Don’t save)', async () => {
       const s = step('UX-14-05');
       const [offer] = quoted(s.s);
       expect(curly(offer!).replace('IRCTC', SITE)).toBe(t('cards.secret.login.offer', { site: SITE }));
       expect(s.s).toContain("Save · Don't save");
       await expect(card).toContainText(`Signed in to ${SITE}`);
-      // Seeded: T7 does not post the offer yet (M9.tsv T7 follow-ups); 05-2 §5.8.4's question words and buttons.
-      const seed: CardSeedRequest = {
-        chatId,
-        type: 'choice',
-        state: 'asking',
-        payload: {
-          multi: false,
-          aiReversible: false,
-          reversible: false,
-          livePrices: false,
-          purpose: 'job',
-          question: t('cards.secret.login.offer', { site: SITE }),
-          options: [
-            { id: 'o1', label: t('cards.secret.login.save') },
-            { id: 'o2', label: t('cards.secret.login.dont_save') },
-          ],
-        },
-      };
-      const r = await page.evaluate((x) => window.__fooTest!.cardSeed(x), seed);
-      const sel = `${byTid(TID.cardChoice)}[data-card-id="${r.cardId}"]`;
-      const offerCard = page.locator(sel);
-      await expect(offerCard).toContainText(t('cards.secret.login.offer', { site: SITE }));
+      // The real offer (CR-0030 pick 4): after the sign-in the lanes post 05-2 §5.8.4's question once for this site.
+      const offerCard = page.locator(byTid(TID.cardChoice)).filter({ hasText: t('cards.secret.login.offer', { site: SITE }) });
+      await run.until(async () => (await offerCard.count()) === 1, 'the save-login offer posts');
+      const offerId = await offerCard.getAttribute('data-card-id');
+      const sel = `${byTid(TID.cardChoice)}[data-card-id="${offerId}"]`;
       await expect(offerCard.getByTestId(TID.cardChoiceOption)).toHaveText([
         new RegExp(t('cards.secret.login.save')),
         new RegExp(t('cards.secret.login.dont_save')),
@@ -208,13 +180,14 @@ test('UX-14 · Sign in here (M9): steps UX-14-01, UX-14-05, UX-14-06 and UX-14-0
     await test.step('UX-14-06 · Save opens the Login Secret box; the login is typed once more, into the safe store', async () => {
       const s = step('UX-14-06');
       expect(s.s).toContain('IRCTC login');
-      // Seeded: the Login variant the offer's Save opens (05-2 §5.8.4); typing and Save securely are real.
-      const r = await page.evaluate((x) => window.__fooTest!.cardSeed(x), {
-        chatId,
-        type: 'secret',
-        state: 'asking',
-        payload: { secretKind: 'login', name: t('cards.secret.title.login', { site: SITE }), why: '', fields: [], vaultName: SITE },
-      } satisfies CardSeedRequest);
+      // Save on the offer opens the Login variant (05-2 §5.8.4); typing and Save securely are real (FOO_TEST's in-memory vault).
+      const offerCard = page.locator(byTid(TID.cardChoice)).filter({ hasText: t('cards.secret.login.offer', { site: SITE }) });
+      await offerCard.getByTestId(TID.cardChoiceOption).first().click();
+      const loginBox = page
+        .locator(`${byTid(TID.cardSecret)}[data-state="asking"]`)
+        .filter({ hasText: t('cards.secret.title.login', { site: SITE }) });
+      await run.until(async () => (await loginBox.count()) === 1, 'the Login box posts');
+      const r = { cardId: await loginBox.getAttribute('data-card-id') };
       const sel = `${byTid(TID.cardSecret)}[data-card-id="${r.cardId}"]`;
       const box = page.locator(sel);
       await expect(box).toContainText(t('cards.secret.title.login', { site: SITE }));
@@ -280,8 +253,7 @@ test('UX-14 · Sign in here (M9): step UX-14-08, the bank code box on the real b
       const s = step('UX-14-08');
       const [line] = quoted(s.s);
       expect(line).toBe(t('cards.secret.otp.reason', { phone: '+91 98••• ••210' }));
-      // The bank card carries the masked number; the code box under it asks for the code (app gap: the box does not draw
-      // 05-2 §5.8.4's "Your bank sent a code to {phone}." line, cards.secret.otp.reason; reported for the close-out audit).
+      // The bank card carries the masked number; the code box under it says where the code went (CR-0030 pick 5).
       await expect(bank).toContainText('+91 98••• ••210');
       await expect(bank).not.toContainText('9876543210');
       const boxId = await page
@@ -290,6 +262,8 @@ test('UX-14 · Sign in here (M9): step UX-14-08, the bank code box on the real b
         .getAttribute('data-card-id');
       const sel = `${byTid(TID.cardSecret)}[data-card-id="${boxId}"]`;
       const box = page.locator(sel);
+      await expect(box).toContainText(t('cards.secret.otp.reason', { phone: '+91 98••• ••210' }));
+      await expect(box).not.toContainText('9876543210');
       await expect(box.getByTestId(TID.cardSecretField)).toHaveAttribute('placeholder', t('cards.secret.otp.placeholder'));
       await expect(box.getByTestId(TID.cardSecretUseCode)).toHaveText(t('cards.secret.button.use_code'));
       await expect(box.getByTestId(TID.cardSecretTypeOnPage)).toHaveText(t('cards.secret.button.type_on_page'));
