@@ -1,0 +1,45 @@
+{
+  "journey": "test/verify/c1-t4-signs.journey.ts",
+  "label": "after",
+  "appDir": "/home/user/foo-agent",
+  "commit": "dcd3bad39f6a56f596db513db5dcf4eabc327257",
+  "dirty": true,
+  "started": "2026-10-21T06:59:01.071Z",
+  "finished": "2026-10-21T06:59:15.130Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "a failed tool call with the job still working → \"Slow here, trying another way\" under the current step",
+    "two messages sent during the slow job; they wait for the held step turn (AT-432 proves the answered one turns ✓✓ read)",
+    "a plain answered message keeps ✓✓ read after the 👀 clears (was \"Delivered\")",
+    "chips \"Check my inbox\" / \"Plan my day\" / \"Help me write it\" → Mail / CalendarLtr / Edit",
+    "older answer: action row hidden, shows on hover (latest answer keeps its row)"
+  ],
+  "shots": [
+    {
+      "file": "after/01-retry-line-and-steers.light.png",
+      "name": "retry-line-and-steers",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-chips-with-icons.light.png",
+      "name": "chips-with-icons",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-older-answer-hover.light.png",
+      "name": "older-answer-hover",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-older-answer-hover.dark.png",
+      "name": "older-answer-hover",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}
