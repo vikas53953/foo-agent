@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n2:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n2:58 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n2:58 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are moving to UPI because it makes paying feel as easy as sending a text. You open any payment app, scan a code or type a phone number, enter your PIN, and the money moves in seconds. There are no cards to carry, no cash to count and no change to hunt for.\n\nIt also works everywhere. The same code is on a street tea stall, a vegetable cart, a big mall and an online shop. Small sellers like it too, since they only need a printed code and a phone, with no costly machine.\n\nCost matters a lot. For most people, sending money through UPI is free, so there is little reason to go back to cash or cards. Banks across the country support it, so you are not tied to one app or one bank. Many people also trust it because every payment is confirmed on your own phone with your own PIN.\n\nOver time, habit has done the rest. Once friends, family and shopkeepers all use it, you almost have to use it too.\n\nThree reasons:\n\nFast and simple: pay in seconds with a scan or a phone number.\nFree for most people: no fees for everyday payments.\nAccepted everywhere: from tiny stalls to large stores, on any bank.\n2:58 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n2:58 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 2:59 PM\n2:58 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:58 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nKeep 3 phones that fit price under ₹20,000, best value\nCompare price, battery, camera, screen\nWatch live\nStop\n33 min\n2:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:59 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb searches keep failing with SEARCH_BUSY and return no results\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n2:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n3:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n3:05 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n3:11 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning\n3:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Say hello in Hindi\n3:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a table for 2 at a vegetarian restaurant in Connaught Place, Delhi this Saturday 8 PM\n3:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n3:31 PM"
+  }
+]

@@ -1,0 +1,12 @@
+{"t":"2026-10-21T14:58:08.374Z","journey":"B01-chat-rules","title":"Chat rules: thanks, long answer, filler, reactions","spec":"AT-027, AT-030, AT-031, AT-308, AT-307","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T14:58:13.324Z","step":"launch","ok":true}
+{"t":"2026-10-21T14:58:13.386Z","i":0,"do":"send","before":2,"sentAt":1792594693386,"ok":true,"ms":61}
+{"t":"2026-10-21T14:58:33.387Z","i":1,"do":"wait","expect":"AT-027: 👍 reaction on my message, no foo message","ok":true,"ms":20001}
+{"t":"2026-10-21T14:58:33.442Z","shot":"01-thanks.png"}
+{"t":"2026-10-21T14:58:33.446Z","i":2,"do":"eval","value":{"reaction":true,"lastKind":"bubble-me"},"ok":true,"ms":3}
+{"t":"2026-10-21T14:58:33.501Z","i":3,"do":"send","before":2,"sentAt":1792594713501,"ok":true,"ms":55}
+{"t":"2026-10-21T14:58:42.115Z","i":4,"do":"waitReply","expect":"AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler","firstReplyMs":2544,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"People in India are moving to UPI because it makes paying feel as easy as sending a text. You open any payment app, scan a code or type a phone number, enter your PIN, and the money moves in seconds. There are no cards to carry, no cash to count and no change to hunt for.\n\nIt also works everywhere. The same code is on a street tea stall, a vegetable cart, a big mall and an online shop. Small sellers like it too, since they only need a printed code and a phone, with no costly machine.\n\nCost matters a lot. For most people, sending money through UPI is free, so there is little reason to go back to cash or cards. Banks across the country support it, so you are not tied to one app or one bank. Many people also trust it because every payment is confirmed on your own phone with your own PIN.\n\nOver time, habit has done the rest. Once friends, family and shopkeepers all use it, you almost have to use it too.\n\nThree reasons:\n\nFast and simple: pay in seconds with a scan or a phone number.\nFree for most people: no fees for everyday payments.\nAccepted everywhere: from tiny stalls to large stores, on any bank.\n2:58 PM","ms":8613}
+{"t":"2026-10-21T14:58:42.167Z","shot":"02-long.png"}
+{"t":"2026-10-21T14:58:42.168Z","i":5,"do":"check","note":"AT-308 suggestion chips (≤3)","soft":true,"found":0,"ok":false,"ms":1}
+{"t":"2026-10-21T14:58:42.170Z","i":6,"do":"eval","value":0,"ok":true,"ms":2}
+{"t":"2026-10-21T14:58:42.172Z","i":7,"do":"dump","ok":true,"ms":2}

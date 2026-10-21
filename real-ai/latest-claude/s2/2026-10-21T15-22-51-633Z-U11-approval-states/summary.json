@@ -1,0 +1,132 @@
+{
+  "journey": "U11-approval-states",
+  "title": "Approval card: pending, Not now (declined), Change (never Approve)",
+  "steps": 16,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T15-22-51-633Z-U11-approval-states",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1028
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "before": 5,
+      "sentAt": 1792596177721,
+      "ok": true,
+      "ms": 67
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "options or a plan; never books without an Approval card",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb searches keep failing with SEARCH_BUSY and return no results\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n2:59 PM",
+      "ms": 240349
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23059
+    },
+    {
+      "i": 4,
+      "do": "wait",
+      "expect": "restaurant options as a Choice/tiles card",
+      "ok": true,
+      "ms": 120002
+    },
+    {
+      "i": 5,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23063
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23078
+    },
+    {
+      "i": 7,
+      "do": "wait",
+      "expect": "Approval card PENDING: accent top edge, lock, impact line, Book table / Change / Not now",
+      "ok": true,
+      "ms": 90003
+    },
+    {
+      "i": 8,
+      "do": "shotEl",
+      "soft": true,
+      "ok": false,
+      "error": "locator.screenshot: Timeout 10000ms exceeded.",
+      "ms": 10060
+    },
+    {
+      "i": 9,
+      "do": "send",
+      "before": 5,
+      "sentAt": 1792596707570,
+      "ok": true,
+      "ms": 60
+    },
+    {
+      "i": 10,
+      "do": "wait",
+      "expect": "typed \"yes\" never approves (ART-06a): card still pending",
+      "ok": true,
+      "ms": 8009
+    },
+    {
+      "i": 11,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23062
+    },
+    {
+      "i": 12,
+      "do": "wait",
+      "expect": "card DECLINED; nothing booked",
+      "ok": true,
+      "ms": 3008
+    },
+    {
+      "i": 13,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23079
+    },
+    {
+      "i": 14,
+      "do": "wait",
+      "expect": "Ask me again shows a fresh pending card or note",
+      "ok": true,
+      "ms": 2000
+    },
+    {
+      "i": 15,
+      "do": "dump",
+      "ok": true,
+      "ms": 4
+    }
+  ]
+}
