@@ -45,18 +45,18 @@
     "id": "SV-01",
     "ok": true,
     "expected": "18px non-tail corners (tail corners 6px)",
-    "measured": "11 bubbles, all equal"
+    "measured": "15 bubbles, all equal"
   },
   {
     "id": "SV-08",
     "ok": true,
     "expected": "≤ 72 % of the column and ≤ 620px (rich ≤ 680px)",
-    "measured": "11 bubbles within"
+    "measured": "15 bubbles within"
   },
   {
     "id": "SV-04",
     "ok": true,
-    "expected": "background-color: rgb(43, 63, 214)",
+    "expected": "background-color: rgb(44, 53, 154)",
     "measured": "all equal",
     "note": "dark"
   },
@@ -84,14 +84,14 @@
     "id": "SV-01",
     "ok": true,
     "expected": "18px non-tail corners (tail corners 6px)",
-    "measured": "13 bubbles, all equal",
+    "measured": "14 bubbles, all equal",
     "note": "Trips"
   },
   {
     "id": "SV-08",
     "ok": true,
     "expected": "≤ 72 % of the column and ≤ 620px (rich ≤ 680px)",
-    "measured": "13 bubbles within",
+    "measured": "14 bubbles within",
     "note": "Trips"
   }
 ]

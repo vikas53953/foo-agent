@@ -259,6 +259,8 @@
         "after",
         "the",
         "house.",
+        "H",
+        "Home",
         "I’ll",
         "remind",
         "you",
@@ -278,6 +280,8 @@
         "6:35",
         "AM",
         "✅",
+        "H",
+        "Home",
         "I",
         "checked.",
         "It",
@@ -297,6 +301,8 @@
         "10:03",
         "AM",
         "✅",
+        "H",
+        "Home",
         "Done.",
         "I’ll",
         "keep",
@@ -311,6 +317,8 @@
         "1:31",
         "PM",
         "✅",
+        "H",
+        "Home",
         "Here’s",
         "what",
         "I",
@@ -324,6 +332,8 @@
         "value.",
         "3:15",
         "PM",
+        "H",
+        "Home",
         "Gas",
         "cylinder",
         "booked",
@@ -398,6 +408,8 @@
         "11:06",
         "AM",
         "11:06",
+        "H",
+        "Home",
         "I’d",
         "Sent",
         "an",
@@ -480,6 +492,8 @@
         "11:07"
       ],
       "extra": [
+        "H",
+        "Home",
         "I’d",
         "Sent",
         "an",
@@ -502,11 +516,11 @@
         },
         "app": {
           "x": 356,
-          "y": 575,
+          "y": 545,
           "width": 553,
-          "height": 138
+          "height": 168
         },
-        "dPos": 66,
+        "dPos": 96,
         "dSize": 155.5625,
         "verdict": "fail"
       }
@@ -527,13 +541,13 @@
   "r4": {
     "verdict": "review",
     "skipped": null,
-    "ratio": 0.0961699928954337,
-    "diffPixels": 2978,
+    "ratio": 0.08841955693341083,
+    "diffPixels": 2738,
     "total": 30966
   },
   "r5": {
-    "ratio": 0.078421875,
-    "diffPixels": 80304,
+    "ratio": 0.07862109375,
+    "diffPixels": 80508,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-15-07.light.diff.png"

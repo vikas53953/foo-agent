@@ -198,6 +198,7 @@
         "hua?",
         "8:12",
         "AM",
+        "foo",
         "Cake",
         "Theobroma",
         "se",
@@ -224,6 +225,7 @@
         "ਮਿਲੇਗਾ?",
         "8:13",
         "AM",
+        "foo",
         "ਕੇਕ",
         "ਆਰਡਰ",
         "ਹੋ",
@@ -268,6 +270,7 @@
         "Dec",
         "8:20",
         "AM",
+        "foo",
         "Goa",
         "flights,",
         "Sat",
@@ -345,6 +348,7 @@
         "Sat",
         "17",
         "Oct",
+        "foo",
         "open.",
         "Worked",
         "for",
@@ -480,8 +484,8 @@
     "total": 23820
   },
   "r5": {
-    "ratio": 0.1048203125,
-    "diffPixels": 107336,
+    "ratio": 0.095279296875,
+    "diffPixels": 97566,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-12.light.diff.png"

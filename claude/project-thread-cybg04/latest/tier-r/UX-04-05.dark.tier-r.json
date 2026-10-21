@@ -328,6 +328,7 @@
         "Village",
         "Watch",
         "live",
+        "foo",
         "No,",
         "Mon",
         "2",
@@ -362,6 +363,7 @@
         "hua?",
         "8:12",
         "AM",
+        "foo",
         "Cake",
         "Theobroma",
         "se",
@@ -388,6 +390,7 @@
         "ਮਿਲੇਗਾ?",
         "8:13",
         "AM",
+        "foo",
         "ਕੇਕ",
         "ਆਰਡਰ",
         "ਹੋ",
@@ -432,6 +435,7 @@
         "Dec",
         "8:20",
         "AM",
+        "foo",
         "Goa",
         "flights,",
         "Sat",
@@ -713,8 +717,8 @@
     "total": 231494
   },
   "r5": {
-    "ratio": 0.5527490234375,
-    "diffPixels": 566015,
+    "ratio": 0.55276171875,
+    "diffPixels": 566028,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-04-05.dark.diff.png"
