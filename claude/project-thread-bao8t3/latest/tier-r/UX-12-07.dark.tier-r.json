@@ -67,6 +67,10 @@
         "⌕",
         "▯",
         "⋯",
+        "Today,",
+        "Fri",
+        "16",
+        "Oct",
         "☀",
         "Good",
         "morning,",
@@ -132,6 +136,7 @@
         "of…",
         "✓",
         "✓",
+        "⏳",
         "Table",
         "for",
         "4",
@@ -483,6 +488,7 @@
         "Village",
         "book",
         "a",
+        "🛠",
         "Booking",
         "the",
         "table",
@@ -741,8 +747,8 @@
     "total": 80520
   },
   "r5": {
-    "ratio": 0.1058046875,
-    "diffPixels": 108344,
+    "ratio": 0.1056650390625,
+    "diffPixels": 108201,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-07.dark.diff.png"
