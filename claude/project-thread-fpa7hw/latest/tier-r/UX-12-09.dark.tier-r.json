@@ -326,6 +326,7 @@
         "ਮਿਲੇਗਾ?",
         "8:13",
         "AM",
+        "foo",
         "ਕੇਕ",
         "ਆਰਡਰ",
         "ਹੋ",
@@ -361,6 +362,7 @@
         "on",
         "8:20",
         "AM",
+        "foo",
         "Goa",
         "flights,",
         "Sat",
@@ -464,6 +466,7 @@
         "AM",
         "9:05",
         "👀",
+        "foo",
         "Approve",
         "it’s",
         "9:05",
@@ -626,13 +629,13 @@
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.38342213342213344,
-    "diffPixels": 96719,
+    "ratio": 0.38344988344988346,
+    "diffPixels": 96726,
     "total": 252252
   },
   "r5": {
-    "ratio": 0.3930634765625,
-    "diffPixels": 402497,
+    "ratio": 0.3842080078125,
+    "diffPixels": 393429,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-09.dark.diff.png"

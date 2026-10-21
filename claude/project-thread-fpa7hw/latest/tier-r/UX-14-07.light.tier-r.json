@@ -246,6 +246,8 @@
         "10:03",
         "AM",
         "✅",
+        "H",
+        "Home",
         "Done.",
         "I’ll",
         "keep",
@@ -260,6 +262,8 @@
         "1:31",
         "PM",
         "✅",
+        "H",
+        "Home",
         "Here’s",
         "what",
         "I",
@@ -273,6 +277,8 @@
         "value.",
         "3:15",
         "PM",
+        "H",
+        "Home",
         "Gas",
         "cylinder",
         "booked",
@@ -526,8 +532,8 @@
     "total": 82720
   },
   "r5": {
-    "ratio": 0.070248046875,
-    "diffPixels": 71934,
+    "ratio": 0.0701162109375,
+    "diffPixels": 71799,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-07.light.diff.png"

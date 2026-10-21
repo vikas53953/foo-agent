@@ -351,6 +351,8 @@
         "9:30",
         "AM",
         "🛠",
+        "T",
+        "Trips",
         "On",
         "it.",
         "Comparing",
@@ -411,6 +413,8 @@
         "9:41",
         "AM",
         "👀",
+        "T",
+        "Trips",
         "That",
         "reply",
         "got",
@@ -578,11 +582,11 @@
         },
         "app": {
           "x": 356,
-          "y": 265,
+          "y": 235,
           "width": 440,
           "height": 244
         },
-        "dPos": 216,
+        "dPos": 246,
         "dSize": 56,
         "verdict": "fail"
       }
@@ -608,8 +612,8 @@
     "total": 82720
   },
   "r5": {
-    "ratio": 0.119044921875,
-    "diffPixels": 121902,
+    "ratio": 0.119595703125,
+    "diffPixels": 122466,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-03.dark.diff.png"
