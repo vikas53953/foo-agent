@@ -147,6 +147,8 @@ export interface RunnerCore {
     helperId: string | null,
   ): { cardId: string; messageId: string; ops: DbOp[] };
   editChecklistOps(job: JobRow, state?: string): Promise<DbOp[]>;
+  /** CR-0030 pick 3: the checklist's "You took over" row, before the step the user took over at (06-3 §11.2, J18). */
+  tookOverOps(job: JobRow): Promise<DbOp[]>;
   /** A foo (or helper) text message in the chat, tied to the job when there is one. */
   textOp(job: Pick<JobRow, 'chatId' | 'ownerId'> & { id: string | null }, text: string): DbOp;
   /** WORKING → NEEDS_YOU with the card; the new card's id, or null when the move was refused. */
@@ -334,6 +336,7 @@ export class JobRunner {
       badgeOps: (job, to) => this.badgeOp(job, to),
       cardOps: (...a) => this.cardOps(...a),
       editChecklistOps: (job, state) => this.editChecklistOps(job, state),
+      tookOverOps: (job) => this.tookOverOps(job),
       textOp: (job, text) => this.textOp(job, text),
       needsYou: (job, card) => this.needsYou(job, card),
       halt: (id) => this.ctxs.get(id)?.abort.abort(),
@@ -793,6 +796,17 @@ export class JobRunner {
   private async editChecklistOps(job: JobRow, state?: string): Promise<DbOp[]> {
     const card = await this.checklistOf(job);
     return card ? [{ op: 'update', table: 'cards', id: card.id, set: state ? { state } : {} }] : [];
+  }
+
+  private async tookOverOps(job: JobRow): Promise<DbOp[]> {
+    const card = await this.checklistOf(job);
+    if (!card) return [];
+    const steps = (await this.steps(job.id)).sort((a, b) => a.idx - b.idx);
+    const open = steps.find((s) => s.state === 'running' || s.state === 'waiting_user' || s.state === 'pending');
+    const at = open?.idx ?? (steps.length ? steps[steps.length - 1]!.idx + 1 : 0);
+    const prev = Array.isArray(card.payload.tookOver) ? (card.payload.tookOver as number[]) : [];
+    if (prev.includes(at)) return [];
+    return [{ op: 'update', table: 'cards', id: card.id, set: { payload: { ...card.payload, tookOver: [...prev, at] } } }];
   }
 
   // ---- 08-2 §5.4.2 the loop ----

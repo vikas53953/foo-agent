@@ -11,6 +11,7 @@
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
 import { newId } from '../../shared/ids';
+import { newNonce } from '../../shared/canon';
 import type { CardAnswer, CardRow, ChatRow, MessageRow } from '../../shared/types';
 import { reactionAnswer, showsSkip, toastAnswer, type AnswerableCard } from '../../engine/cards/typedAnswer';
 import type { DbOp } from '../../engine/protocol';
@@ -116,6 +117,12 @@ export function answerCard(
     c.chatId,
   );
   if (!r.ok) return r;
+  // CR-0030 pick 4: the save-login offer (05-2 §5.8.4) is main's: Save posts the Login box, Don't save never asks again.
+  const saveLogin = c.payload.saveLogin as { site?: unknown } | undefined;
+  if (saveLogin && typeof saveLogin.site === 'string' && 'optionId' in req.answer) {
+    const s = saveLoginOps(d, c, saveLogin.site, req.answer.optionId === 'o1', now);
+    if (s.length) write(d, s, c.chatId);
+  }
   // M6 T7: the engine acts on a memory card's answer (a conflict edits and forgets, a share grants) once main wrote it.
   if (ENGINE_TOLD.has(purpose)) {
     const a = req.answer;
@@ -127,6 +134,59 @@ export function answerCard(
     });
   }
   return ok(card(d.db, 'id = ?', c.id) ?? c);
+}
+
+/** The decided `save_login:{site}` row (08-3 §15: a dismissed key blocks the offer for good) and, on Save, the Login Secret box
+ * (05-2 §5.8.4: "{Site} login", Username + Password typed again here; never in a group, §5.8.6). */
+function saveLoginOps(d: AnswerDeps, c: CardRow, site: string, save: boolean, now: number): DbOp[] {
+  const ops: DbOp[] = [
+    {
+      op: 'insert',
+      table: 'suggestions',
+      row: {
+        id: newId('sg', now),
+        key: `save_login:${site}`,
+        kind: 'save_login',
+        text: String(c.payload.question ?? ''),
+        state: save ? 'accepted' : 'dismissed',
+        offered_at: c.createdAt,
+        decided_at: now,
+      },
+    },
+  ];
+  const chat = d.db.prepare('SELECT kind FROM chats WHERE id = ?').get(c.chatId) as Pick<ChatRow, 'kind'> | undefined;
+  if (!save || !chat || chat.kind === 'group') return ops;
+  const cardId = newId('k', now);
+  const messageId = newId('m', now);
+  ops.push(
+    {
+      op: 'insert',
+      table: 'messages',
+      row: { id: messageId, chat_id: c.chatId, author_kind: 'foo', kind: 'card', card_id: cardId, status: 'complete', created_at: now },
+    },
+    {
+      op: 'insert',
+      table: 'cards',
+      row: {
+        id: cardId,
+        chat_id: c.chatId,
+        message_id: messageId,
+        type: 'secret',
+        state: 'asking',
+        payload: {
+          secretKind: 'login',
+          name: t('cards.secret.title.login', { site }),
+          why: '',
+          fields: [],
+          vaultName: site,
+          afterSignIn: true,
+        },
+        nonce: newNonce(),
+        created_at: now,
+      },
+    },
+  );
+  return ops;
 }
 
 /** 05-2 §5.8.3 Cancelled: an asking (or rejected) Secret box → `withdrawn`; nothing is saved and no value moves. */

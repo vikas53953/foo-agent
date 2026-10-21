@@ -226,6 +226,8 @@ export interface ActivityRow {
 // ---- M4 card payloads (08-1 §4.5) ----
 export interface ChecklistPayload {
   jobId: string;
+  /** CR-0030 pick 3: the step index of each take-over; the checklist draws "You took over" before that step (06-3 §11.2). */
+  tookOver?: number[];
 }
 export interface PlanPayload {
   title: string;
@@ -441,6 +443,8 @@ export interface SecretPayload {
   label?: string;
   /** Set when the card was posted while the vault could not save (05-2 §5.8.3 Disabled shows up front). */
   vaultOff?: 'keyring_unavailable' | 'encryption_unavailable';
+  /** CR-0030 pick 4: a Login box posted by the save-login offer after a sign-in; its Save logs `saved_login` (05-2 §5.8.6). */
+  afterSignIn?: boolean;
 }
 /** 08-5 §3.3 DraftFields (`draft:update`); `body` includes the signature text when the user kept it (X-84). */
 export interface DraftFields {

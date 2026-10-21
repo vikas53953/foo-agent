@@ -23,6 +23,7 @@ import { Menu, type MenuEntry } from '../ui/Menu';
 import { cx } from '../ui/cx';
 // M8 T3
 import { C08 } from '../screens/confirms/C08';
+import { C13 } from '../screens/confirms/C13'; // CR-0030
 import { archiveMirror } from '../screens/settings/connections/archiveMirror';
 import { openChat } from './actions';
 import styles from './ChatHeader.module.css';
@@ -152,7 +153,8 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
   const isFoo = chat.kind === 'foo';
   const name = isFoo && chat.private ? t('chat_header.private.title') : chat.title;
   const live = watchTarget(jobs, chat.id);
-  const liveJobsHere = jobs.filter((j) => j.chatId === chat.id && ['queued', 'working', 'waiting', 'needs_you'].includes(j.state));
+  const liveJobs = jobs.filter((j) => ['queued', 'working', 'waiting', 'needs_you'].includes(j.state));
+  const liveJobsHere = liveJobs.filter((j) => j.chatId === chat.id);
   const privateBusy = chat.private && Object.values(cards).some((c) => c.chatId === chat.id && ['RUNNING', 'CHECKING'].includes(c.state));
   const muted = settings?.notifications.mutedChats[chat.id] !== undefined;
   const panelTooltip = panel.open ? t('chat_header.panel.tooltip.hide') : t('chat_header.panel.tooltip.show');
@@ -210,6 +212,15 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
       tid: 'chatHeaderMenuStopAll',
       onSelect: () => confirm('c-13b'),
     });
+  // CR-0030 pick 2 (J18 "Chat header ⋮ → Stop everything", 06-3 §14 C-13): foo's chat stops every running job.
+  if (isFoo && !chat.private && liveJobs.length)
+    entries.push({
+      kind: 'item',
+      id: 'stop-everything',
+      label: t('chat_header.menu.stop_everything'),
+      tid: 'chatHeaderMenuStopEverything',
+      onSelect: () => confirm('c-13'),
+    });
   if (chat.kind === 'wa_mirror')
     entries.push({
       kind: 'item',
@@ -264,6 +275,7 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
   // 06-1 §2.0 step pill (CR-0020): foo's chat header during first run, after the name; never a "Step 5".
   const pill = isFoo && !chat.private && !setup.complete ? stepPillText(setup.step) : null;
   const hideAsked = dialog === 'c-08' && dialogTarget === chat.id;
+  const stopAllAsked = dialog === 'c-13' && dialogTarget === chat.id;
 
   return (
     <div ref={rootRef} className={styles.header} data-testid={TID.chatHeader} data-compact={compact || undefined}>
@@ -395,6 +407,16 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
             void archiveMirror(chat.id, true)
               .then((r) => r && fooChatId && openChat(fooChatId))
               .catch(() => undefined);
+          }}
+        />
+      )}
+      {stopAllAsked && (
+        <C13
+          count={liveJobs.length}
+          onClose={closeDialog}
+          onConfirm={() => {
+            closeDialog();
+            void invoke('job:stopAll', { confirm: true }).catch(() => undefined);
           }}
         />
       )}

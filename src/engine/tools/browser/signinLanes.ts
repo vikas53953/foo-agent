@@ -16,6 +16,7 @@ import type { Page } from 'playwright-core';
 import { z } from 'zod';
 import type { Clock, TimerId } from '../../../shared/clock';
 import { t } from '../../../shared/copy/t';
+import { newId } from '../../../shared/ids';
 import { signInModeOf } from '../../../shared/schemas';
 import type { JobRow, LiveState, SignInMode, SignInReason } from '../../../shared/types';
 import type { RunnerCore } from '../../jobs/JobRunner';
@@ -458,6 +459,10 @@ export class SigninLanes implements CaptureGuard {
       pause.taken = true;
       // §8.3.6: the mask is removed on take-over so the user sees what they type.
       await this.d.masker.remove(win.page()).catch(() => undefined);
+      // CR-0030 pick 3 (UX-14-09 "Adds ✋ You took over to the checklist"): the same row as a running job's take-over.
+      const job = await this.r.core.job(pause.jobId);
+      const took = job ? await this.r.core.tookOverOps(job) : [];
+      if (took.length) await this.r.core.tx(took);
     }
     await this.windows.front(win);
     const mode: SignInMode = pause.taken ? 'take_over' : 'sign_in_here';
@@ -611,6 +616,46 @@ export class SigninLanes implements CaptureGuard {
         },
       ]);
     await this.r.onCardAnswered({ cardId: pause.cardId, answer: { end: 'signed_in' }, resolvedBy: by === 'auto' ? 'auto' : 'tap' });
+    // 08-2 §8.4 / 05-3 §5.10.2: after a password sign-in (no saved login), foo offers once per site to save it.
+    if (job && pause.reason === 'sign_in') await this.offerSaveLogin(job, pause.site);
+  }
+
+  /** 05-2 §5.8.4 Login variant's question, once per site (08-3 §15 `suggestions` key `save_login:{domain}`, never twice). The
+   * answer is main's (src/main/cards/answerCard.ts): Save posts the Login Secret box, Don't save dismisses the key for good.
+   * The values typed on the page are never read: the person types them again in the box (CR-0030 pick 4). */
+  private async offerSaveLogin(job: JobRow, site: string): Promise<void> {
+    const key = `save_login:${site}`;
+    if ((await this.r.core.query<string>('suggestionState', key)) !== null) return;
+    const now = this.d.clock.now();
+    const question = t('cards.secret.login.offer', { site });
+    const { ops } = this.r.core.cardOps(
+      job.chatId,
+      'choice',
+      'asking',
+      {
+        purpose: 'job',
+        question,
+        options: [
+          { id: 'o1', label: t('cards.secret.login.save') },
+          { id: 'o2', label: t('cards.secret.login.dont_save') },
+        ],
+        multi: false,
+        aiReversible: false,
+        reversible: false,
+        livePrices: false,
+        saveLogin: { site },
+      },
+      null,
+      job.ownerId,
+    );
+    await this.r.core.tx([
+      {
+        op: 'insert',
+        table: 'suggestions',
+        row: { id: newId('sg', now), key, kind: 'save_login', text: question, state: 'offered', offered_at: now },
+      },
+      ...ops,
+    ]);
   }
 
   /** Ends the pause: timers and poll stop, the mask goes back on, the page is captured again and re-read whole. */

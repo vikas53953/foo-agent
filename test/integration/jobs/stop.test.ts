@@ -204,5 +204,33 @@ describe('AT-107 · Stop in each live state', () => {
       ['cancelled', 'stop_all'],
     ]);
     expect(h.db.prepare("SELECT COUNT(*) AS n FROM activity WHERE event = 'stopped_all'").get()).toEqual({ n: 1 });
+    // J18 / 06-3 §14 C-13 (CR-0030 pick 1): one combined report in foo's chat; each job's own chat keeps its report line.
+    const titles = h.jobs().map((j) => String(j.title));
+    expect(fooTexts(h).at(-1)).toBe(
+      `${t('thread.stop.all.lead', { count: 2, titles: titles.join(', ') })} ${t('thread.stop.all.nothing')}`,
+    );
+    for (const c of [h.chat('a'), h.chat('b')]) expect(fooOrHelperTexts(h, c).at(-1)).toBe(t('thread.stop.report.nothing'));
+  });
+
+  it("job.stopAll with a job in foo's chat: no second report line there, the combined one covers it", async () => {
+    h = jobHarness({ script: [jobIntake(BILLS_PLAN, { match: 'one' }), jobIntake(BILLS_PLAN, { match: 'two' }), ...slowTools(10)] });
+    h.userSays('one');
+    h.userSaysIn(h.chat('b'), 'two');
+    await until(h, () => h!.jobs().filter((j) => j.state === 'working').length === 2);
+    const before = fooTexts(h).length;
+    await h.bridge.request<StopReport[], 'job.stopAll'>('job.stopAll', { by: 'user' });
+    const added = fooTexts(h).slice(before);
+    expect(added).toHaveLength(1);
+    expect(added[0]).toMatch(/^Stopped 2 jobs: /);
+    expect(added).not.toContain(t('thread.stop.report.nothing'));
   });
 });
+
+/** The text lines foo or a helper wrote in a chat. */
+function fooOrHelperTexts(h: JobHarness, chatId: string): string[] {
+  return (
+    h.db
+      .prepare("SELECT text FROM messages WHERE chat_id = ? AND author_kind IN ('foo', 'helper') AND kind = 'text' ORDER BY seq")
+      .all(chatId) as { text: string }[]
+  ).map((r) => r.text);
+}

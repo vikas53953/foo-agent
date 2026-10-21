@@ -77,6 +77,8 @@ export const TID = {
   chatHeaderMenuMute: 'chat-header-menu-mute',
   chatHeaderMenuPin: 'chat-header-menu-pin',
   chatHeaderMenuStopAll: 'chat-header-menu-stop-all',
+  // CR-0030 pick 2: foo's chat ⋯ → "Stop everything…" (J18, 06-3 §14 C-13).
+  chatHeaderMenuStopEverything: 'chat-header-menu-stop-everything',
   chatHeaderMenuClear: 'chat-header-menu-clear',
   chatHeaderMenuDelete: 'chat-header-menu-delete',
   chatHeaderSelection: 'chat-header-selection',
@@ -483,6 +485,7 @@ export const TID = {
   settingsRowConnectionsWHidden: 'settings-row-connections-w-hidden',
   dialogLinkWhatsapp: 'dialog-link-whatsapp',
   dialogC08: 'dialog-c-08',
+  dialogC13: 'dialog-c-13',
   dialogC11: 'dialog-c-11',
   cardSignin: 'card-signin',
   cardSigninDone: 'card-signin-done',
