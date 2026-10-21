@@ -15,7 +15,8 @@
 // R1 T6 (X-180, CR-0022): the "foo read:" items of the user's message go on it when the lane takes it (04 §6.5, rule-based,
 // from the redacted text; not in groups or WhatsApp mirrors); a side question (04 §17.5, pick 6, AT-364) skips the stop,
 // steer and typed-answer branches and the plan change, is answered as a reply only (never a job, never memory) and its
-// answer carries `side = 1`, so a running job keeps running unchanged.
+// answer carries `side = 1`, so a running job keeps running unchanged. C1 T2 (04 §13.7, CR-0024 F3): a reply tagged
+// `intent_capabilities` (08-4 §25.2) is followed by the Capabilities card, built from the app's own state (never the AI's).
 // CR-0028 (X-186): intake kind `ask` posts a Choice card with no job (08-4 §25.5 item 5); its answer, tapped or typed, sends
 // the user's message back to an intake turn with the question and answer attached (the part 8 `Decisions:` lines, 08-4 §24.22). Before
 // this, `ask` fell through to the empty-reply line ("I didn't get that"), found on the real-PC run of 2026-10-21.
@@ -42,8 +43,10 @@ import { splitSuggestions } from '../prompt/suggestions';
 // R1 T6
 import { understoodItems } from './understood';
 import { isSideAiText, sideAiText } from '../../shared/sideQuestion';
-// CR-0028
+// C1 T2, CR-0028
 import { newNonce } from '../../shared/canon';
+import { CAPABILITIES_APP, capabilitiesSurface, type CapabilityState } from '../../shared/kit/capabilities';
+// CR-0028
 import { BADGE_OF_STATE } from '../../shared/jobMachine';
 import type { CardRow } from '../../shared/types';
 import { choiceFields } from '../cards/choiceFields';
@@ -90,8 +93,8 @@ export interface LaneProtocol {
   buildIntake(input: IntakeInput): { system: string; prompt: string; factIds?: string[] };
   buildRepair(issues: string): string;
   /** Parse the whole reply: the `<say>` text and the validated IntakeAct, or the zod issues. */
-  parse(text: string): { say: string; act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[] };
-  parseAct(text: string): { act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[] };
+  parse(text: string): { say: string; act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[]; tags?: IntakeTag[] };
+  parseAct(text: string): { act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[]; tags?: IntakeTag[] };
   /** The release gate for one streamed turn (08-4 §25.5 item 2). */
   gate(onRelease: (text: string, mode: 'whole' | 'sentence') => void, signal: AbortSignal): LaneGate;
   /** 08-2 §7.6 over a whole `<say>` (used for repair results and the post-check). */
@@ -104,6 +107,8 @@ export interface LaneGate {
   /** Text released so far. */
   released(): string;
 }
+/** 08-4 §25.2 `IntakeAct.tags`. */
+export type IntakeTag = 'intent_capabilities';
 export type IntakeDecisionView =
   | { kind: 'reply' }
   | { kind: 'react'; emoji: '👍' | '❤️' }
@@ -165,6 +170,9 @@ export interface LaneDeps {
   // M6
   /** T5: memory in the lane (intake remember / forget, chips, review trigger). */
   memory?: LaneMemory;
+  // C1
+  /** T2: what the Capabilities card reads of the app's state (04 §13.7); without it Gmail and WhatsApp count as off. */
+  capabilityState?(): CapabilityState;
 }
 
 const MAX_TOTAL = 2; // 08-2 §6.9 chat lane
@@ -556,6 +564,7 @@ export class ChatLane {
     const parsed = this.d.protocol.parse(result.text);
     let act = parsed.act;
     let usedMemoryIds = act ? (parsed.usedMemoryIds ?? []) : [];
+    let tags = act ? (parsed.tags ?? []) : [];
     if (!act) {
       // 08-2 §7.5: one repair turn (same session); its <say> is ignored after streaming (08-4 §25.5 item 3).
       const repairParams = this.d.ai.turnParams(pick.providerId, 'repair');
@@ -581,7 +590,10 @@ export class ChatLane {
             .catch(() => null);
       const fixed = repaired && repaired.stopReason === 'end' ? this.d.protocol.parseAct(repaired.text) : null;
       act = fixed?.act ?? null;
-      if (act) usedMemoryIds = fixed?.usedMemoryIds ?? [];
+      if (act) {
+        usedMemoryIds = fixed?.usedMemoryIds ?? [];
+        tags = fixed?.tags ?? [];
+      }
       if (!act) this.d.log('chat.protocol_invalid', 'PROTOCOL_INVALID', { chatId });
       // A valid <say> with a broken <act> is still posted as a plain reply (08-2 §7.5).
       if (!act && parsed.say.trim()) act = { kind: 'reply' };
@@ -608,6 +620,8 @@ export class ChatLane {
             set: { text: released, status: 'complete', ...(suggestions ? { suggestions } : {}), ...(actions ? { actions } : {}) },
           },
         ]);
+        // C1 T2 (04 §13.7): the one-sentence reply, then the app-built Capabilities card.
+        if (kind === 'reply' && !side && tags.includes('intent_capabilities')) await this.capabilitiesCard(chatId, helper);
       } else {
         // Nothing passed the filters: 08-4 §25.5 item 6 (F-092).
         await this.emptyReply(chatId, messageId, message, helper, who, providerNote);
@@ -793,6 +807,49 @@ export class ChatLane {
       { op: 'insert', table: 'reactions', row: { message_id: messageId, by: helper?.id ?? 'foo', emoji, created_at: this.d.clock.now() } },
       { op: 'update', table: 'messages', id: messageId, set: { badge: null } },
     ]);
+  }
+
+  /**
+   * 04 §13.7: a kit card (05 §0.1) with the rows the app's state allows now; the words are resolved here, so an older card
+   * keeps its rows when the state changes and asking again posts a fresh card. 08-1 §4.3.3 insert order: message, then card.
+   */
+  private async capabilitiesCard(chatId: string, helper: EngineHelper | null): Promise<void> {
+    const state = this.d.capabilityState?.() ?? { gmailConnected: false, whatsappLinked: false };
+    const cardId = this.d.newId('k');
+    const messageId = this.d.newId('m');
+    const now = this.d.clock.now();
+    const r = await this.tx([
+      {
+        op: 'insert',
+        table: 'messages',
+        row: {
+          id: messageId,
+          chat_id: chatId,
+          author_kind: helper ? 'helper' : 'foo',
+          author_id: helper?.id ?? null,
+          kind: 'card',
+          card_id: cardId,
+          status: 'complete',
+          created_at: now,
+        },
+      },
+      {
+        op: 'insert',
+        table: 'cards',
+        row: {
+          id: cardId,
+          chat_id: chatId,
+          message_id: messageId,
+          job_id: null,
+          type: 'kit',
+          state: 'shown',
+          payload: { app: CAPABILITIES_APP, capabilities: capabilitiesSurface(state) },
+          nonce: newNonce(),
+          created_at: now,
+        },
+      },
+    ]);
+    if (!r.ok) this.d.log('chat.capabilities_failed', r.error.kind, { chatId });
   }
 
   async post(chatId: string, messageId: string, text: string, helper: EngineHelper | null, note: string | null): Promise<void> {
