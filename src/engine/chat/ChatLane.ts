@@ -20,13 +20,16 @@
 // CR-0028 (X-186): intake kind `ask` posts a Choice card with no job (08-4 §25.5 item 5); its answer, tapped or typed, sends
 // the user's message back to an intake turn with the question and answer attached (the part 8 `Decisions:` lines, 08-4 §24.22). Before
 // this, `ask` fell through to the empty-reply line ("I didn't get that"), found on the real-PC run of 2026-10-21.
+// CR-0040 (X-198): a `job` that needs a Google app while Google is not connected posts the Connect card (05-3 §5.11, variant
+// `one_app`) instead of starting; once Google connects the message goes back to its intake turn (real-AI run 8: the job's
+// first step, with no Gmail tools listed, asked "Which email do you want me to read?").
 // Restart fix (real-PC J19 bug): the queue lives in memory, so after a restart cutOffTurns/answerCutOff give the messages
 // whose turn never finished their one intake turn (08-2 §5.2), and a reply left streaming is cut off with Try again (§19.4).
 import { t } from '../../shared/copy/t';
 import type { Clock } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
 import type { Settings } from '../../shared/settings';
-import type { ProviderId } from '../../shared/types';
+import type { ConnectorApp, ProviderId } from '../../shared/types';
 import type { IntakeDecision } from '../../shared/schemas';
 import type { EngineChat, EngineHelper, EngineMessage } from '../../main/db/queries';
 import type { DbOp, DbTxReply, MainLink } from '../protocol';
@@ -173,7 +176,14 @@ export interface LaneDeps {
   // C1
   /** T2: what the Capabilities card reads of the app's state (04 §13.7); without it Gmail and WhatsApp count as off. */
   capabilityState?(): CapabilityState;
+  // CR-0040
+  /** The Google apps of `needs` that must be connected first (Google not connected); empty when none or no Google build. */
+  appsToConnect?(needs: ConnectorApp[]): GoogleApp[];
 }
+
+type GoogleApp = 'gmail' | 'gcal' | 'contacts';
+/** CR-0040: a message waiting on its Connect card goes back to intake when Google connects within this time (12-1 §12.24.5 step 3). */
+export const CONNECT_WAIT_MS = 24 * 60 * 60 * 1000;
 
 const MAX_TOTAL = 2; // 08-2 §6.9 chat lane
 const CONVERSATION = 20; // 08-2 §7.2 part 7
@@ -207,6 +217,8 @@ export class ChatLane {
   private answered = new Map<string, string>();
   /** CR-0028: user message id → the answers to the intake questions it got, for its next intake turn. */
   private askAnswers = new Map<string, string[]>();
+  /** CR-0040: user message id → its chat and when its Connect card was posted, until Google connects. */
+  private awaitingConnect = new Map<string, { chatId: string; at: number }>();
   /** User messages this engine has started a turn for (a restart's cut-off list may name one of them). */
   private taken = new Set<string>();
   /** Cut-off bubbles that already had their one Try again. */
@@ -629,13 +641,16 @@ export class ChatLane {
     } else if (act && act.kind === 'job' && this.d.jobs) {
       // 08-2 §5.3.3: the runner takes over; its checklist and result are what the user sees next (ART-22).
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
-      await this.d.jobs.createJob({
-        chatId,
-        userMessageId: messageId,
-        decision: act,
-        askedText: message.textForAi ?? message.text,
-        helperId: helper?.id ?? null,
-      });
+      const connect = this.d.appsToConnect?.(act.needsApps) ?? [];
+      if (connect.length) await this.connectFirst(chatId, messageId, connect, helper);
+      else
+        await this.d.jobs.createJob({
+          chatId,
+          userMessageId: messageId,
+          decision: act,
+          askedText: message.textForAi ?? message.text,
+          helperId: helper?.id ?? null,
+        });
     } else if (act && act.kind === 'ask') {
       // CR-0028 (08-4 §25.5 item 5): the question goes on a Choice card with no job; text already released stands.
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
@@ -754,6 +769,72 @@ export class ChatLane {
     if (!r.ok) {
       this.d.log('chat.ask_failed', r.error.kind, { chatId });
       await this.post(chatId, messageId, t('thread.reply.empty'), helper, null);
+    }
+  }
+
+  /**
+   * CR-0040 (05-3 §5.11.2): the Connect card for the Google apps a job needs, with no job; ⏳ on the user's bubble until Google
+   * connects (`connected`). One app → `one_app` with its fixed line; more → the Google card for those apps.
+   */
+  private async connectFirst(chatId: string, messageId: string, apps: GoogleApp[], helper: EngineHelper | null): Promise<void> {
+    const app = apps[0]!;
+    const why =
+      app === 'gmail'
+        ? t('cards.connect.one_app.why.gmail')
+        : app === 'gcal'
+          ? t('cards.connect.one_app.why.gcal')
+          : t('cards.connect.one_app.why.contacts');
+    const payload = apps.length === 1 ? { variant: 'one_app', app, scopes: apps, why } : { variant: 'google', app, scopes: apps };
+    const cardId = this.d.newId('k');
+    const cardMessageId = this.d.newId('m');
+    const now = this.d.clock.now();
+    const r = await this.tx([
+      {
+        op: 'insert',
+        table: 'messages',
+        row: {
+          id: cardMessageId,
+          chat_id: chatId,
+          author_kind: helper ? 'helper' : 'foo',
+          author_id: helper?.id ?? null,
+          kind: 'card',
+          card_id: cardId,
+          job_id: null,
+          status: 'complete',
+          created_at: now,
+        },
+      },
+      {
+        op: 'insert',
+        table: 'cards',
+        row: {
+          id: cardId,
+          chat_id: chatId,
+          message_id: cardMessageId,
+          job_id: null,
+          type: 'connect',
+          state: 'offered',
+          payload,
+          nonce: newNonce(),
+          created_at: now,
+        },
+      },
+      { op: 'update', table: 'messages', id: messageId, set: { badge: BADGE_OF_STATE.needs_you } },
+    ]);
+    if (!r.ok) {
+      this.d.log('chat.connect_failed', r.error.kind, { chatId });
+      await this.post(chatId, messageId, t('thread.reply.empty'), helper, null);
+      return;
+    }
+    this.awaitingConnect.set(messageId, { chatId, at: now });
+  }
+
+  /** CR-0040: Google connected (Engine's connection.state); each message still waiting on its Connect card goes back to intake. */
+  connected(): void {
+    const now = this.d.clock.now();
+    for (const [messageId, w] of this.awaitingConnect) {
+      this.awaitingConnect.delete(messageId);
+      if (now - w.at <= CONNECT_WAIT_MS) this.enqueue(w.chatId, messageId, { intakeOnly: true });
     }
   }
 
