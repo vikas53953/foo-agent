@@ -2,7 +2,7 @@
 // file already in the chat's files; every TextField / ShortForm value passes the 04-2 §22.4 patterns), CR-0022 §(c) (the
 // catalog `foo.kit.v1`: 15 standard A2UI parts used as-is, Modal not used, plus 13 foo components), pick 2 (zod schemas
 // here are the one source of truth: they validate every message and generate the AI prompt section), pick 5 (Calculator
-// formulas are text for shared/kit/evaluate.ts, never code), X-180.
+// formulas are text for shared/kit/evaluate.ts, never code), X-180. C1 T2: `composer.fill` is app-only (04 §13.7, CR-0024).
 import { z } from 'zod';
 
 export const CATALOG_ID = 'foo.kit.v1';
@@ -22,12 +22,22 @@ export const bound = <T extends z.ZodType>(t: T) => z.union([t, z.object({ path:
 /** Static child ids, or a template that repeats `componentId` for every item of the list at `path`. */
 const children = z.union([z.array(id).max(50), z.object({ path: z.string().min(1).max(200), componentId: id }).strict()]);
 
+/**
+ * C1 T2 (04 §13.7, CR-0024 §(e) 2): the Button action that fills the composer. Only the engine-built Capabilities card
+ * carries it; an AI surface naming it is invalid (the Button is dropped), and the generated catalog text never offers it.
+ */
+export const COMPOSER_FILL = 'composer.fill';
+
 /** A2UI `action.event`: the name and context sent back as the client `action` message (08-1 §2.4 `kit_action`). */
 export const KitActionSchema = z
   .object({
     event: z
       .object({
-        name: z.string().min(1).max(60),
+        name: z
+          .string()
+          .min(1)
+          .max(60)
+          .refine((n) => n !== COMPOSER_FILL),
         context: z.record(z.string(), z.unknown()).optional(),
       })
       .strict(),

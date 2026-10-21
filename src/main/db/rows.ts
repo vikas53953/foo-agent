@@ -139,9 +139,9 @@ export function stepProgressAt(steps: DbRow[]): number | null {
 }
 
 /**
- * JobRow drops aiSessionId and adds stepsDone, nowLine and slow (08-0 §B.1, 08-1 §3.4). `slow` = WORKING and no step
- * finished for 60 s (08-2 §5.6): measured from the running step's start or the last finished step, else the job's start;
- * `last_progress_at` is not used because tool progress moves it without a step finishing (G-M4-07).
+ * JobRow drops aiSessionId and adds stepsDone, nowLine, slow and retrying (08-0 §B.1, 08-1 §3.4, CR-0024 F10). `slow` =
+ * WORKING and no step finished for 60 s (08-2 §5.6): measured from the running step's start or the last finished step, else
+ * the job's start; `last_progress_at` is not used because tool progress moves it without a step finishing (G-M4-07).
  */
 export function jobRow(r: DbRow, derived: { stepsDone: number; nowLine: string; progressAt?: number | null }, now: number): JobRow {
   const state = r.state as JobRow['state'];
@@ -190,6 +190,8 @@ export function jobRow(r: DbRow, derived: { stepsDone: number; nowLine: string; 
     stepsDone: derived.stepsDone,
     nowLine: derived.nowLine,
     slow: state === 'working' && slowFrom !== null && now - slowFrom >= SLOW_MS,
+    // CR-0024 F10: fail_streak counts failed calls in a row and goes back to 0 on the next good call or step (08-2 §5.4).
+    retrying: state === 'working' && Number(r.fail_streak ?? 0) > 0,
   };
 }
 

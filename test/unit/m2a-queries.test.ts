@@ -206,7 +206,7 @@ describe('the bubble gallery has a run of the user’s images (SV-02 measures th
     expect(joinsRun(photo, grid)).toBe(true);
     const layout = layoutRows(
       list.map((m) => ({ kind: 'message' as const, key: m.id, message: m })),
-      { isGroup: false },
+      { chatKind: 'helper' },
     );
     expect(layout[i + 1]!.pos).toBe('last');
   });

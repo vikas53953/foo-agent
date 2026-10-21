@@ -13,6 +13,7 @@ import { openChat, openWorld } from '../fidelity/capture';
 import { fakeTurns, intake, launchWithFakeAi, VERIFY_OK, type FakeLine } from './fakeAi';
 import type { testDirs } from './launch';
 import { settleSeededJobs } from './m4-start';
+import { typeInComposer } from './typeInComposer';
 
 /** The sample tool: a tall page whose script exposes `fooCall(method, params)` (JSON-RPC 2.0 over postMessage). */
 const TOOL = [
@@ -77,8 +78,7 @@ async function until(loc: Locator) {
 }
 
 async function send(text: string) {
-  await page.getByTestId(TID.composerField).focus();
-  await page.keyboard.type(text);
+  await typeInComposer(page, text);
   await page.keyboard.press('Enter');
   await page.getByTestId(TID.bubbleMe).filter({ hasText: text }).first().waitFor();
 }

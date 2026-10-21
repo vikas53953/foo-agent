@@ -85,7 +85,8 @@ describe('finish when the job already left WORKING', () => {
       ],
     });
     h.userSays('Check my stay booking');
-    for (let i = 0; i < 40; i++) await new Promise((r) => setTimeout(r, 2));
+    // Wait for intake to open the job (a fixed few ticks was too short on a slow Windows runner, PR #85 run 39590106580).
+    for (let i = 0; i < 1_000 && h.job()?.state !== 'working'; i++) await new Promise((r) => setTimeout(r, 2));
     h.db.prepare("UPDATE jobs SET state = 'cancelled' WHERE id = ?").run(String(h.job().id));
     await h.settle();
     expect(h.job().state).toBe('cancelled');
