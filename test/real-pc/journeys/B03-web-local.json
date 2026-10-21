@@ -1,0 +1,42 @@
+{
+  "id": "B03-web-local",
+  "title": "Web without keys: news read locally, sources",
+  "spec": "AT-139, AT-020, R1 sources, AT-310",
+  "steps": [
+    {
+      "do": "send",
+      "text": "What's the latest news about ISRO this week? Give me sources."
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 240000,
+      "shot": "news"
+    },
+    {
+      "do": "clickIf",
+      "tid": "card-plan-go"
+    },
+    {
+      "do": "wait",
+      "ms": 150000,
+      "shot": "news-later"
+    },
+    {
+      "do": "check",
+      "tid": "bubble-sources"
+    },
+    {
+      "do": "check",
+      "tid": "bubble-citation"
+    },
+    {
+      "do": "check",
+      "tid": "card-checklist",
+      "soft": true
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}
