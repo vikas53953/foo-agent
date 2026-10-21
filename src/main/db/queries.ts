@@ -516,6 +516,7 @@ export const NAMED_QUERIES = {
     return r ? chat(r) : null;
   },
   /** 08-3 §12.9: how many user messages the chat has, and the newest `limit` user text messages' text, oldest first. */
+  // CR-0037: the style sample is the last 20 non-blank texts (an attachment-only send is a blank `text` row).
   'messages.userTexts': ({ db }: QueryCtx, chatId: unknown, limit: unknown): { total: number; texts: string[] } => {
     const total = Number(
       (
@@ -528,7 +529,7 @@ export const NAMED_QUERIES = {
       db
         .prepare(
           `SELECT text FROM messages WHERE chat_id = ? AND author_kind = 'user' AND kind = 'text' AND deleted_at IS NULL
-            ORDER BY seq DESC LIMIT ?`,
+            AND TRIM(text) <> '' ORDER BY seq DESC LIMIT ?`,
         )
         .all(String(chatId), Number(limit) || 20) as DbRow[]
     )
