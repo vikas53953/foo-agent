@@ -410,6 +410,7 @@
         "AI",
         "9:41",
         "AM",
+        "👀",
         "That",
         "reply",
         "got",
@@ -607,8 +608,8 @@
     "total": 82720
   },
   "r5": {
-    "ratio": 0.1190517578125,
-    "diffPixels": 121909,
+    "ratio": 0.119044921875,
+    "diffPixels": 121902,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-03.dark.diff.png"
