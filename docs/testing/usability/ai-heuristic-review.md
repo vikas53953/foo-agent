@@ -88,18 +88,18 @@ These screenshots verified that the high-severity blank-route and blank-settings
 
 ## Sanitized gate summary (2026-10-22)
 
-| Gate                           | Outcome                                                                                                                                                              |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `spec:verify`                  | PASS — `spec verified`                                                                                                                                               |
-| `check:copy`                   | PASS — `copy ok`                                                                                                                                                     |
-| `lint`                         | PASS — two pre-existing renderer warnings                                                                                                                            |
-| `format:check`                 | PASS                                                                                                                                                                 |
-| `typecheck`                    | PASS                                                                                                                                                                 |
-| `build`                        | PASS — existing Vite/script-tag/chunk-size warnings only                                                                                                             |
-| `trace:check`                  | PASS — FID-18 consistent                                                                                                                                             |
-| `fid:guard --base origin/main` | PASS — clean baseline before staging                                                                                                                                 |
-| `test --maxWorkers=2`          | INCOMPLETE/FAILED — exit 1; retained failures in adapter, browser action/submit/recipe/sitenotes, and article suites; lead terminated the stalled lane-owned process |
+| Gate                           | Outcome                                                                                                                                                                                                                                      |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `spec:verify`                  | PASS — `spec verified`                                                                                                                                                                                                                       |
+| `check:copy`                   | PASS — `copy ok`                                                                                                                                                                                                                             |
+| `lint`                         | PASS — two pre-existing renderer warnings                                                                                                                                                                                                    |
+| `format:check`                 | PASS                                                                                                                                                                                                                                         |
+| `typecheck`                    | PASS                                                                                                                                                                                                                                         |
+| `build`                        | PASS — existing Vite/script-tag/chunk-size warnings only                                                                                                                                                                                     |
+| `trace:check`                  | PASS — FID-18 consistent                                                                                                                                                                                                                     |
+| `fid:guard --base origin/main` | PASS — 3 changed files checked; all are documentation files                                                                                                                                                                                  |
+| `test --maxWorkers=2`          | INCOMPLETE/FAILED — bounded rerun exited 1 after showing local failures under contention: a sign-in CAPTCHA failure, an `m6-fileformat` worker timeout, and three browser action failures; the earlier local failure record remains retained |
 
 This summary contains no credentials, personal data, or raw secret-like fixture values. No new AI call or paid tool was used in this documentary lane.
 
-The staged change contained exactly three documentation files. `fid:guard` reported `0 FID-sensitive source files checked` because the staged files are docs; the separate private staged guard scanned all three staged files and found no credential matches.
+The changed set contains exactly three documentation files. `fid:guard` reported `3 changed files checked`; the separate private staged guard scanned all three staged files and found no credential matches.
