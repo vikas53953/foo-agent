@@ -1,0 +1,8 @@
+
+> foo@0.0.1 trace:check <lane-c>
+> tsx scripts/trace-check.ts
+
+AT-357: trace.csv names test/e2e/r1-ai-page.spec.ts, but the test is in test/eval/injection-red-team.test.ts
+AT-361: trace.csv names test/e2e/r1-ai-page.spec.ts, but the test is in test/eval/injection-red-team.test.ts
+AT-140: trace.csv names test/integration/web/outbound.test.ts, but the test is in test/eval/injection-red-team.test.ts
+ ELIFECYCLE  Command failed with exit code 1.

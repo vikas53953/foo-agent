@@ -1,0 +1,8 @@
+.deps/
+.venv/
+.deepeval/
+__pycache__/
+
+# Retain redacted eval and gate receipts with the lane evidence.
+!results/
+!results/**/*.log

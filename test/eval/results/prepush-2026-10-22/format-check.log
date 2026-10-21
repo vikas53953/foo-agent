@@ -1,0 +1,6 @@
+
+> foo@0.0.1 format:check <lane-c>
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
