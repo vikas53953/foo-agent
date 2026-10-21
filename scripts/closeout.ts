@@ -83,6 +83,7 @@ if (!skipChecks) {
     'test',
     'build',
     'trace:check',
+    'spec:coverage',
     'fid:guard --base origin/main',
   ];
   for (const cmd of chain) {

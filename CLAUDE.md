@@ -27,7 +27,7 @@ Sources and licences: `.claude/skills/NOTICE.md`.
 ## Before every push
 
 ```bash
-pnpm spec:verify && pnpm check:copy && pnpm lint && pnpm format:check && pnpm typecheck && pnpm test && pnpm build && pnpm trace:check
+pnpm spec:verify && pnpm check:copy && pnpm lint && pnpm format:check && pnpm typecheck && pnpm test && pnpm build && pnpm trace:check && pnpm spec:coverage
 pnpm fid:guard --base origin/main
 ```
 
@@ -37,16 +37,19 @@ Commit trailer `Fidelity-CR: none|CR-nnnn`. PRs open as drafts (Windows CI runs 
 
 The correction ladder (`foo-correct`) keeps this table: each rule and the strongest thing that enforces it. Prefer moving a rule up a rung over adding words.
 
-| Rule                                                                             | Enforced by                                                                                    |
-| -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| UI words only through `t(key)` from `src/shared/copy/en-IN.json`                 | lint `foo/no-literal-copy`; `pnpm check:copy`                                                  |
-| Test ids only from `TID` (`src/shared/testids.ts`)                               | lint `foo/testid-from-registry`                                                                |
-| Colours, sizes, radii only from tokens (`design/tokens.json`)                    | lint `foo/no-raw-design-values`                                                                |
-| Every source file opens with its spec section                                    | lint `foo/spec-header` (FID-20)                                                                |
-| `spec/` and `golden/` change only with a CR; no skip/only/mask/threshold changes | `pnpm fid:guard` (FID-02, FID-06)                                                              |
-| Every changed path has an owner                                                  | `pnpm fid:guard` (FID-19, `OWNERS.yml`)                                                        |
-| Every traced spec id has a test with that title                                  | `pnpm trace:check` (FID-18)                                                                    |
-| `spec/` equals its manifest                                                      | `pnpm spec:verify` (FID-01)                                                                    |
-| Baselines change only through the bless workflow                                 | `playwright.config.ts` refuses snapshot updates; `golden-bless.ts` needs a CR or signed report |
-| No "done" without proof from the real app                                        | words only (rung 5): foo-verify proof block in the PR, checked by `foo-review`                 |
-| Repeat mistakes become rules                                                     | words only (rung 5): `foo-correct`                                                             |
+| Rule                                                                              | Enforced by                                                                                    |
+| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| UI words only through `t(key)` from `src/shared/copy/en-IN.json`                  | lint `foo/no-literal-copy`; `pnpm check:copy`                                                  |
+| Test ids only from `TID` (`src/shared/testids.ts`)                                | lint `foo/testid-from-registry`                                                                |
+| Colours, sizes, radii only from tokens (`design/tokens.json`)                     | lint `foo/no-raw-design-values`                                                                |
+| Every source file opens with its spec section                                     | lint `foo/spec-header` (FID-20)                                                                |
+| `spec/` and `golden/` change only with a CR; no skip/only/mask/threshold changes  | `pnpm fid:guard` (FID-02, FID-06)                                                              |
+| Every changed path has an owner                                                   | `pnpm fid:guard` (FID-19, `OWNERS.yml`)                                                        |
+| Every traced spec id has a test with that title                                   | `pnpm trace:check` (FID-18)                                                                    |
+| Every screen and row of a built milestone is live, or a listed gap (list shrinks) | `pnpm spec:coverage` (FID-21, `docs/fidelity/coverage-gaps.json`)                              |
+| Check files stay put; tests are not removed without a CR                          | `pnpm fid:guard` (FID-22, `LOCKED`); Claude Code hook `.claude/hooks/locked-checks.mjs`        |
+| The AI's plan uses catalogue keys                                                 | code: `planKeyIssues` + one repair turn (CR-0031)                                              |
+| `spec/` equals its manifest                                                       | `pnpm spec:verify` (FID-01)                                                                    |
+| Baselines change only through the bless workflow                                  | `playwright.config.ts` refuses snapshot updates; `golden-bless.ts` needs a CR or signed report |
+| No "done" without proof from the real app                                         | words only (rung 5): foo-verify proof block in the PR, checked by `foo-review`                 |
+| Repeat mistakes become rules                                                      | words only (rung 5): `foo-correct`                                                             |

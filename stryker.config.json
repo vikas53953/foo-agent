@@ -1,0 +1,25 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "_comment": "CR-0031 (X-189): mutation testing of the planner and parser. A surviving mutant is a change to the code no test notices. Run: pnpm test:mutation. The command runner is used because @stryker-mutator/vitest-runner 10.0.0 ran no test per mutant under vitest 5 (every mutant 'survived' with 0 tests). The break threshold only rises.",
+  "testRunner": "command",
+  "commandRunner": {
+    "command": "pnpm exec vitest run --bail 1 --config test/mutation/vitest.mutation.config.ts"
+  },
+  "mutate": ["src/shared/phrases.ts", "src/engine/prompt/envelope.ts", "src/engine/ai/classify.ts", "src/engine/ai/probe.ts"],
+  "coverageAnalysis": "off",
+  "reporters": ["clear-text", "progress", "html", "json"],
+  "htmlReporter": {
+    "fileName": "reports/mutation/index.html"
+  },
+  "jsonReporter": {
+    "fileName": "reports/mutation/mutation.json"
+  },
+  "thresholds": {
+    "high": 90,
+    "low": 75,
+    "break": 60
+  },
+  "tempDirName": ".stryker-tmp",
+  "concurrency": 4,
+  "timeoutMS": 30000
+}

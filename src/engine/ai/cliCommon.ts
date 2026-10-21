@@ -1,7 +1,8 @@
 // Spec: 08-2 §6.2 (adapter interface), §6.3 (CLI common rules, argv per provider), §6.4 (stream parsing), §6.5 (probe,
 // AI_PROTOCOL_VIOLATION), §6.6 (detect / verify), §6.7 (classification), §6.9 (≤ 4 CLI children), 08-4 §30.1 (cheap-model
 // unknown-model retry), §30.4 (fallbacks), §30.7 (no late text), §30.8 (system file written before spawn, deleted in
-// finally), §30.10 (CLIs vision=false: a turn with image parts is AI_NO_VISION, not sent).
+// finally), §30.10 (CLIs vision=false: a turn with image parts is AI_NO_VISION, not sent), X-189 (CR-0031: a failed test of
+// a helper below its known-good version is AI_CLI_INCOMPATIBLE).
 import type { ProviderId } from '../../shared/types';
 import type { Result } from '../../shared/errors';
 import { fail } from '../../shared/errors';
@@ -18,7 +19,7 @@ import type {
 } from './types';
 import type { AdapterDeps } from './deps';
 import { ProcessHost, safeTurnId, scratchDir } from './ProcessHost';
-import { parseCapabilities, probeCli, type CliId, type CliProbe } from './probe';
+import { belowKnownGood, parseCapabilities, probeCli, type CliId, type CliProbe } from './probe';
 import { NULL_USAGE, type StreamParser } from './parsers';
 import { classifyError, resetAtFor, RE_UNKNOWN_MODEL } from './classify';
 import { approxTokens, isCheapPurpose } from './models';
@@ -113,8 +114,11 @@ export class CliAdapter implements AiAdapter {
     this.probed = null;
   }
 
-  verify(signal: AbortSignal): Promise<VerifyResult> {
-    return verifyWith(this, this.deps, signal);
+  async verify(signal: AbortSignal): Promise<VerifyResult> {
+    const r = await verifyWith(this, this.deps, signal);
+    if (r.ok || (r.kind !== 'AI_TIMEOUT' && r.kind !== 'UNKNOWN')) return r;
+    // X-189 (CR-0031): an old helper that times out or fails without a reason is out of date, not slow.
+    return belowKnownGood(this.spec.id, (await this.probeFull()).version) ? { ...r, kind: 'AI_CLI_INCOMPATIBLE' } : r;
   }
 
   async runTurn(req: TurnRequest, sink: TurnSink, signal: AbortSignal): Promise<TurnResult> {

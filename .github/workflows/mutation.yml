@@ -1,0 +1,45 @@
+# Spec: CR-0031 (X-189): mutation testing of the planner and parser (stryker.config.json). A surviving mutant is a change
+# to the code that no test notices. Runs weekly, by hand, and on PRs that touch the mutated files or their tests.
+name: Mutation tests
+
+on:
+  schedule:
+    - cron: '30 21 * * 0' # Monday 03:00 IST
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - src/shared/phrases.ts
+      - src/engine/prompt/envelope.ts
+      - src/engine/ai/classify.ts
+      - src/engine/ai/probe.ts
+      - stryker.config.json
+      - test/mutation/**
+
+concurrency:
+  group: mutation-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  stryker:
+    name: Stryker (ubuntu-latest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:mutation
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutation-report
+          path: reports/mutation/
+          if-no-files-found: ignore

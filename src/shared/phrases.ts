@@ -1,6 +1,7 @@
 // Spec: 08-4 §26.1 (step phrase catalogue, F-061: the only phrase list; each entry { next, running, done, slots }; copy keys
 // `cards.checklist.{key}.next|running|done`; slots match `^[\p{L}\p{M}\p{N}₹ .,:'&()/<>+-]{1,40}$`u (\p{M} from X-185) and pass the banned-word
 // filter after cleaning (X-185); an unknown key or a failing slot → `generic_working`; keys with "—" are runner-only), 08-2 §5.3.3, §5.4.3, 05-1 §5.2.2
+// (X-189, CR-0031: an intake plan with an unknown key, a runner-only key or a missing slot gets one repair turn first, `planKeyIssues`)
 // (next for rows not started, running for the current row, done for finished rows). Builders add a key only by a
 // constitution change. The texts are the table's, word for word; en-IN.json holds the same texts under the copy keys (test).
 import type { CopyKey } from './copy/t';
@@ -139,6 +140,25 @@ export function resolvePhrase(
     out[name] = s;
   }
   return { key, slots: out };
+}
+
+/**
+ * X-189 (CR-0031, 08-2 §5.3.3): what is wrong with a plan's keys, as one line for repair.md's `{zodIssues}`, or null when
+ * every step names a catalogue key that may go in a plan and fills its slots. Slot text is not judged here: §26.1 cleans
+ * it and the fallback stays.
+ */
+export function planKeyIssues(plan: readonly { phraseKey: string; slots?: Record<string, unknown> }[]): string | null {
+  const issues: string[] = [];
+  plan.forEach((p, i) => {
+    const n = i + 1;
+    if (!isPhraseKey(p.phraseKey)) issues.push(`step ${n}: "${p.phraseKey}" is not one of the listed phrase keys`);
+    else if (RUNNER_ONLY.includes(p.phraseKey)) issues.push(`step ${n}: "${p.phraseKey}" cannot be a plan step`);
+    else {
+      const missing = PHRASES[p.phraseKey].slots.filter((s) => p.slots?.[s] === undefined || p.slots[s] === '');
+      if (missing.length) issues.push(`step ${n}: "${p.phraseKey}" needs ${missing.map((m) => `{${m}}`).join(', ')}`);
+    }
+  });
+  return issues.length ? `${issues.join('; ')}. Plan steps use only the listed phrase keys, with their slots` : null;
 }
 
 /** The phrase text with its slots filled (plan.md, logs, tests; the UI uses t(phraseCopyKey(…), slots)). */

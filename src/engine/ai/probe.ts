@@ -1,6 +1,6 @@
 // Spec: 08-2 §6.5 (capability probe: `<bin> --version` and `<bin> --help`, 8 s, 2 MiB cap; only a missing way to
 // disable the CLI's own tools is fatal → verify returns AI_CLI_INCOMPATIBLE), 08-4 §30.4 (what `--help` must contain and
-// each fallback), §30.10 (CLIs are vision=false in v1).
+// each fallback), §30.10 (CLIs are vision=false in v1), X-189 (CR-0031: the lowest helper-app version seen working).
 import type { ProviderId } from '../../shared/types';
 import type { Capabilities } from './types';
 import type { ProcessHost } from './ProcessHost';
@@ -79,6 +79,31 @@ export function parseCapabilities(providerId: CliId, help: string, version: stri
 export function parseVersion(out: string): string | null {
   const m = /\d+\.\d+(\.\d+)?([-+.][\w.]+)?/.exec(out);
   return m ? m[0] : null;
+}
+
+/**
+ * X-189 (CR-0031): the lowest version of each helper app seen working on a real PC (the 2026-10-18 captures in
+ * `test/fixtures/cli-captures/`). Below it, a test that times out or fails without a reason reads as "needs an update",
+ * not "slow to answer" (Codex 0.144.4 on 2026-10-21). A version at or above it, or no entry, changes nothing.
+ */
+export const KNOWN_GOOD_VERSION: Partial<Record<CliId, string>> = { 'claude-cli': '2.1.282', 'codex-cli': '0.156.1' };
+
+/** Numeric dotted compare of the leading `a.b.c` (pre-release tails ignored): <0, 0, >0. */
+export function compareVersions(a: string, b: string): number {
+  const nums = (v: string) => (/^\d+(\.\d+)*/.exec(v)?.[0] ?? '0').split('.').map(Number);
+  const x = nums(a);
+  const y = nums(b);
+  for (let i = 0; i < Math.max(x.length, y.length); i++) {
+    const d = (x[i] ?? 0) - (y[i] ?? 0);
+    if (d !== 0) return d;
+  }
+  return 0;
+}
+
+/** True only when the version is known and lower than the known-good one. */
+export function belowKnownGood(providerId: CliId, version: string | null): boolean {
+  const floor = KNOWN_GOOD_VERSION[providerId];
+  return floor !== undefined && version !== null && compareVersions(version, floor) < 0;
 }
 
 /** Runs `--version` and `--help` (plus `exec --help` for codex, where `--json` lives). */
