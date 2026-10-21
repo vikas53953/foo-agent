@@ -11,10 +11,22 @@
     },
     {
       "do": "waitFor",
-      "tid": "card-setup",
+      "tid": "setup-welcome-start",
+      "timeoutMs": 60000,
+      "shot": "welcome",
+      "expect": "Welcome card: Hi, I'm foo, Let's go; header says step 1 of 2 (CR-0026 quick first run)"
+    },
+    {
+      "do": "click",
+      "tid": "setup-welcome-start",
+      "note": "Let's go starts Find your AI"
+    },
+    {
+      "do": "waitFor",
+      "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
       "timeoutMs": 60000,
       "shot": "finder-testing",
-      "expect": "Welcome then step pill 1 of 4, rows test live with shimmer"
+      "expect": "Find your AI card, rows test live with shimmer"
     },
     {
       "do": "wait",
@@ -51,6 +63,17 @@
       "tid": "setup-ai-use",
       "shot": "after-use",
       "expect": "chat opens; next setup step (name and face) per J3"
+    },
+    {
+      "do": "wait",
+      "ms": 3000,
+      "shot": "step2",
+      "expect": "step 2 of 2: name card, with Skip the rest in the header"
+    },
+    {
+      "do": "clickIf",
+      "tid": "setup-skip-rest",
+      "note": "take the defaults for name, face and vibe so later journeys start in a ready chat"
     },
     {
       "do": "wait",
