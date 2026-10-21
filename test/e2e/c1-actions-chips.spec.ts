@@ -150,4 +150,15 @@ test('AT-430 Reply actions on older answers: always under the latest, under an o
   await older.getByTestId(TID.bubbleHelper).hover();
   await older.getByTestId(TID.bubbleActionsGood).click();
   await expect(older.getByTestId(TID.bubbleActionsGood)).toHaveAttribute('aria-pressed', 'true');
+
+  // 👎 on the older answer: the row stays while its popover is open and while the thanks caption shows.
+  await older.getByTestId(TID.bubbleActionsBad).click();
+  const pop = page.getByTestId(TID.bubbleFeedback);
+  await expect(pop).toBeVisible();
+  await pop.getByTestId(TID.bubbleFeedbackChip).first().click();
+  await expect.poll(() => opacityOf(actionsOf(older))).toBe('1');
+  await pop.getByTestId(TID.bubbleFeedbackSend).click();
+  await page.getByTestId(TID.composerField).hover();
+  await expect(older.getByText(t('bubble.feedback.thanks'))).toBeVisible();
+  await expect.poll(() => opacityOf(actionsOf(older))).toBe('1');
 });

@@ -130,7 +130,8 @@ export function ActionRow({
   const [bad, setBad] = useState<HTMLDivElement | null>(null);
   const [asking, setAsking] = useState(false);
   return (
-    <div className={cx(styles.actionsWrap, older && own.older)} data-older={older || undefined}>
+    // An older row stays shown while its own popover, ✓ flash or caption is up (they live outside the hover).
+    <div className={cx(styles.actionsWrap, older && !asking && !thanks && !copied && own.older)} data-older={older || undefined}>
       <div className={styles.actions} role="toolbar" aria-label={t('bubble.toolbar.more')}>
         <IconButton
           icon={copied ? 'Checkmark' : 'Copy'}
