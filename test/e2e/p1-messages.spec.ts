@@ -60,7 +60,14 @@ async function send(page: Page, text: string): Promise<Locator> {
   // The field takes text only once the AI has passed its test (AT-006); a slow runner can still be testing it here.
   await expect(field).toHaveAttribute('contenteditable', 'true', { timeout: 15_000 });
   await field.focus();
-  await page.keyboard.type(text);
+  // A key typed while the field re-renders can be lost on a slow Windows runner ("dentit", PR #85 run 39583657155):
+  // type at a human pace, and once more from empty if the words still came out wrong.
+  await page.keyboard.type(text, { delay: 15 });
+  if (!((await field.textContent()) ?? '').includes(text)) {
+    await page.keyboard.press('ControlOrMeta+A');
+    await page.keyboard.press('Backspace');
+    await page.keyboard.type(text, { delay: 30 });
+  }
   await expect(field).toContainText(text);
   await page.keyboard.press('Enter');
   const bubble = page.getByTestId(TID.bubbleMe).filter({ hasText: text });
