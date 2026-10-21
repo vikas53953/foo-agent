@@ -27,6 +27,9 @@ const ASK = 'Read my latest Gmail';
 /** The Claude CLI's real intake answer to ASK on Wed 21 Oct (3 runs of 3 planned a job that needs Gmail). */
 const REAL_JOB =
   '<say></say>\n<act>{"decision":{"kind":"job","title":"Read your latest Gmail","plan":[{"phraseKey":"gmail.fetch_latest","slots":{"count":"1","folder":"inbox"},"route":"api"},{"phraseKey":"gmail.read_message","slots":{"which":"latest"},"route":"api"},{"phraseKey":"summarise.tell_user","slots":{"style":"short"},"route":"handback"}],"estimate":{"minutes":1},"routeHint":["api"],"needsApps":["gmail"]},"usedMemoryIds":[]}</act>';
+/** The Claude CLI's real intake answer to "check my email" (3 runs of 3 needed Gmail; this one routes by `email`). */
+const REAL_CHECK =
+  '<say></say>\n<act>{"decision":{"kind":"job","title":"Check your email","plan":[{"phraseKey":"read_email","slots":{"scope":"latest unread"},"route":"email"},{"phraseKey":"shortlist","slots":{"what":"the ones that need you"},"route":"email"}],"estimate":{"minutes":1},"routeHint":["email"],"needsApps":["gmail"]},"usedMemoryIds":[]}</act>';
 /** What the job's first step said in run 8, with no Gmail tools listed. */
 const WHICH_EMAIL = step({
   kind: 'ask',
@@ -127,6 +130,20 @@ describe('CR-0040 · a job that needs Google while it is not connected shows the
     });
     expect(w.h.message(askId).badge).toBe(BADGE_OF_STATE.needs_you);
     expect(fooTexts(w.h)).not.toContain(t('thread.reply.empty'));
+  });
+
+  it('run 13: "check my email" posts Connect Gmail; no browser job goes to the Google sign-in page', async () => {
+    // Real-AI run 13 (main 3a35be0): the job went to the browser, landed on the Google sign-in page and went stuck.
+    const browseGmail = tool('browser.open', { url: 'https://mail.google.com/' });
+    const w = world([{ match: { purpose: 'intake' }, reply: REAL_CHECK }, browseGmail]);
+    const askId = w.h.userSays('check my email');
+    await w.h.settle();
+
+    expect(w.h.jobs()).toHaveLength(0);
+    expect(w.h.db.prepare('SELECT COUNT(*) FROM tool_calls').pluck().get()).toBe(0);
+    expect(w.h.cards('stuck')).toHaveLength(0);
+    expect(w.h.cards('connect').map((c) => payloadOf(c).variant)).toEqual(['one_app']);
+    expect(w.h.message(askId).badge).toBe(BADGE_OF_STATE.needs_you);
   });
 
   it('once Google connects, the message goes back to intake and the job reads the inbox', async () => {

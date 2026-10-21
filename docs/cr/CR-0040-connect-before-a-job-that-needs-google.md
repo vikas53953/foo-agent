@@ -18,7 +18,9 @@
 
 ## (a) Trace rows
 
-None. The test is `test/integration/connect-first.test.ts`, which replays run 8 with the CLI's real intake answer, titled by CR.
+None. The test is `test/integration/connect-first.test.ts`, titled by CR. It replays run 8 ("Read my latest Gmail") and run 13
+("check my email", main 3a35be0: the job went to the browser, landed on the Google sign-in page and went stuck) with the CLI's
+real intake answers. No job starts, so no browser step can reach the Google sign-in page.
 
 ## (b) Spec before → after
 
