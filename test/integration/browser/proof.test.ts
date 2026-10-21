@@ -5,7 +5,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { redactSecrets } from '../../../src/shared/redactor';
 import { secondLookOk } from '../approvals/gateFlow';
-import { jobHarness, jobIntake, step, tool, type JobHarness } from '../jobs/jobHarness';
+import { jobHarness, jobIntake, realPause, step, tool, type JobHarness } from '../jobs/jobHarness';
 import { bookingWorld, type BookingWorld } from './booking';
 
 let h: JobHarness | null = null;
@@ -47,8 +47,16 @@ async function book(done: Record<string, unknown>): Promise<JobHarness> {
     browser: w.browser,
   });
   h.userSays('Book a table for 4 at Coastline Kitchen on Sunday');
+  // The engine can look idle while foo's real Chromium is still opening the page (a cold browser on a busy Windows runner),
+  // so settle again until the approval card is there: at most 30 s of real time.
+  const approval = () => h!.db.prepare("SELECT * FROM cards WHERE type = 'approval'").get() as Record<string, unknown> | undefined;
   await h.settle(20);
-  const card = h.db.prepare("SELECT * FROM cards WHERE type = 'approval'").get() as Record<string, unknown>;
+  for (const started = Date.now(); !approval() && Date.now() - started < 30_000;) {
+    await realPause(50);
+    await h.settle(20);
+  }
+  const card = approval();
+  if (!card) throw new Error('the approval card never came');
   h.approvals.approve({ cardId: String(card.id), nonce: String(card.nonce), resolvedBy: 'tap', scope: 'once' });
   await h.settle(20);
   return h;
