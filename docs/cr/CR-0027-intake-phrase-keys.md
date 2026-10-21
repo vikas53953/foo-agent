@@ -62,13 +62,12 @@ Recorded as approved on Vikas's behalf under his standing rule; listed for his l
   with nothing left, or one that fails the banned-word filter, still falls back to `generic_working`. Code: `cleanSlot`
   in `src/shared/phrases.ts`, used by `resolvePhrase` (so the runner stores cleaned slots and every later read is the
   same; cleaning is idempotent).
-- **Not changed:** the slot rule itself, the banned-word filter, the title hint (08-4 §26.2, `title.ts`), the catalogue.
+- **Not changed:** the banned-word filter, the catalogue. (The slot rule gains only `\p{M}`, below.)
 - **Tests:** `test/unit/slot-cleaning.test.ts` (eight real-shaped details, idempotence, word-boundary cuts, the
   fallbacks); `test/integration/jobs/plan-phrases.test.ts` (a CLI-shaped plan with long and punctuated details reads its
   own words). Two old checks that a 41-character slot and `x; rm -rf` fall back now check that `?!;` and blanks do.
 - **Pick:** cut at a word break with no `…` (the slot rule has no ellipsis character), so a cut reads as a shorter phrase.
 - **Review:** see §(e).
-
 - **Slot rule widened by `\p{M}`:** the rule had `\p{L}` but not combining marks, so a Hindi or Punjabi detail
   (`दिल्ली मुंबई`) always failed, and with cleaning it would have been split into bare letters. `\p{M}` joins the rule
   (and the cleaner), so Indic details show as written. The title hint (§26.2, `title.ts`) uses the same rule and gains
