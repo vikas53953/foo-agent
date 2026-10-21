@@ -152,6 +152,7 @@
         "Village",
         "Needs",
         "you",
+        "1",
         "T",
         "Trips",
         "9:41",
@@ -540,8 +541,8 @@
     "total": 13680
   },
   "r5": {
-    "ratio": 0.0670947265625,
-    "diffPixels": 68705,
+    "ratio": 0.0672529296875,
+    "diffPixels": 68867,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-04-08.light.diff.png"
