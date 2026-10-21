@@ -88,8 +88,13 @@ export async function laneRun(script: (sites: LaneSites) => FakeLine[]): Promise
         await page.evaluate(() => window.__fooTest!.clock.advance(500));
         await page.waitForTimeout(100);
       }
-      const seen = fakeTurns(dirs).map((t) => `${t.purpose}:${t.matchedLine}`);
-      throw new Error(`never: ${what} (fake AI turns ${seen.join()})`);
+      const turns = fakeTurns(dirs);
+      const seen = turns.map((t) => `${t.purpose}:${t.matchedLine}`);
+      // Each step prompt's "Last observation" is the tool result the AI was shown, so a run that went another way says why.
+      const observed = turns
+        .filter((t) => t.purpose === 'step' && t.prompt.includes('Last observation'))
+        .map((t) => t.prompt.slice(t.prompt.indexOf('Last observation')).split('\n').slice(0, 2).join(' ').slice(0, 300));
+      throw new Error(`never: ${what} (fake AI turns ${seen.join()})${observed.map((o) => `\n  ${o}`).join('')}`);
     },
     async person(host) {
       if (!cdp) {

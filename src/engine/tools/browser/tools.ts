@@ -261,6 +261,9 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       async (a, page, ctx) => {
         if (paused(ctx.jobId)) return { kind: 'error', errorKind: 'VALIDATION', result: { reason: 'sign_in_in_front' } };
         if (page.url() !== 'about:blank' && handback(page.url())) return { kind: 'error', errorKind: 'SITE_HANDBACK' };
+        // 08-2 §8.3.5: the challenge watchdog runs for every job page, also one that turned into a bot check after open (a
+        // slow page, or a site that puts one up later); its text never reaches the AI as something to work on (§8.4).
+        if (await isChallengePage(page)) return { kind: 'error', errorKind: 'SITE_CAPTCHA' };
         const s = await takeSnapshot(page, router);
         recipes.seen(ctx.jobId, s.url, s.elements); // M9 T8
         const view = differ.view(ctx.jobId, s);
@@ -310,9 +313,14 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
     ),
     tool('browser.back', 'prepare', '', 'Go back one page.', ARGS.back, async (_a, page, ctx) => out(await actions.back(ctx.jobId, page))),
     tool('browser.wait', 'prepare', 'ms?: number ≤ 15000', 'Wait up to 15 seconds for the page.', ARGS.wait, async (a, page, ctx) => {
-      if (a.ms !== undefined) return out(await actions.wait(page, a.ms));
+      // 08-2 §8.3.5: a page that settles into a challenge after the wait is the watchdog's, never the AI's.
+      if (a.ms !== undefined) {
+        const r = await actions.wait(page, a.ms);
+        return (await isChallengePage(page)) ? { kind: 'error', errorKind: 'SITE_CAPTCHA' } : out(r);
+      }
       const miss = await actions.settled(ctx.jobId, page, async () => undefined);
-      return miss ? err(miss) : { kind: 'ok', result: { url: page.url() } };
+      if (miss) return err(miss);
+      return (await isChallengePage(page)) ? { kind: 'error', errorKind: 'SITE_CAPTCHA' } : { kind: 'ok', result: { url: page.url() } };
     }),
     tool(
       'browser.screenshot',
@@ -321,6 +329,7 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       'Get a picture of the page. Sensitive fields are hidden.',
       ARGS.screenshot,
       async (_a, page, ctx) => {
+        if (await isChallengePage(page)) return { kind: 'error', errorKind: 'SITE_CAPTCHA' };
         const path = await shots.capture(ctx.jobId, page, 'shot');
         return path
           ? { kind: 'ok', result: { screenshot: path } }

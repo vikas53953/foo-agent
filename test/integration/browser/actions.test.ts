@@ -86,6 +86,21 @@ describe('08-2 §8.2 browser.open', { timeout: 60_000 }, () => {
     expect(await h.run('browser.open', { url: `${h.origin}/forbidden` })).toMatchObject({ kind: 'error', errorKind: 'SITE_BLOCKED' });
     expect(await h.run('browser.open', { url: `${h.origin}/captcha` })).toEqual({ kind: 'error', errorKind: 'SITE_CAPTCHA' });
   });
+  it('a challenge that shows after the page opened is still caught: snapshot, screenshot and wait → SITE_CAPTCHA, never its text', async () => {
+    // 08-2 §8.3.5: the challenge watchdog runs for every job page, not only right after open or an action. A slow page (the
+    // check ran before it painted) or a bot check a site puts up later must never reach the AI as page text to work on.
+    for (const tool of ['browser.snapshot', 'browser.screenshot', 'browser.wait'] as const) {
+      const job = `job_late_${tool.split('.')[1]}`;
+      expect(await h.run('browser.open', { url: `${h.origin}/menu` }, job)).toMatchObject({ kind: 'ok' });
+      await (await h.page(job)).evaluate(() => {
+        document.title = 'Just a moment...';
+        document.body.innerHTML = '<h1>Please verify you are human</h1>';
+      });
+      h.runtime.stepStarted(job);
+      expect(await h.run(tool, {}, job)).toEqual({ kind: 'error', errorKind: 'SITE_CAPTCHA' });
+      await h.runtime.jobEnded(job);
+    }
+  });
   it('a page that never arrives (connection refused) is an error on a blank page, never ok on the old one', async () => {
     const dead = h.origin.replace(/:\d+$/, ':1');
     expect(await h.run('browser.open', { url: `${dead}/home` }, 'job_dead')).toEqual({ kind: 'error', errorKind: 'SITE_TIMEOUT' });
