@@ -28,6 +28,10 @@
 - The code box's `requestId` bug noted in the CR-0013 addendum (the box's stored `requestId` read `[hidden]`) is not in this
   CR; UX-14-08 still does not assert the code reaching the bank page.
 
+- Found by the Windows picture run: writing a stopped job's `plan.md` threw when a stored step's key was not in the phrase
+  catalogue, which ended "Stop everything" before its report (and before later jobs). `phraseText` now gives null for an
+  unknown key (its callers already fall back to the stored key); integration test added.
+
 ## (b) Picks (spec gaps, filled the conservative way)
 
 1. **Combined report** (J18 gives one example, no template): in foo's chat, "Stopped {n} jobs: {titles}." (one job: "Stopped

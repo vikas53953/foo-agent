@@ -6,6 +6,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { t } from '../../../src/shared/copy/t';
 import { formatTime } from '../../../src/shared/format';
+import { seedUxWorld } from '../../../src/main/test/seed/uxWorld';
 import type { StopReport } from '../../../src/shared/types';
 import { jobHarness, jobIntake, step, tool, badgeSets, BILLS_PLAN, type JobHarness, type PlanStepIn } from './jobHarness';
 import { flush, fooTexts, keyBilling, seedActivity, seedSpend, stepTurnsSince, until } from './t3Helpers';
@@ -223,6 +224,22 @@ describe('AT-107 · Stop in each live state', () => {
     expect(added).toHaveLength(1);
     expect(added[0]).toMatch(/^Stopped 2 jobs: /);
     expect(added).not.toContain(t('thread.stop.report.nothing'));
+  });
+
+  it('job.stopAll on jobs whose stored steps are not catalogue phrases (the seeded world) still ends in the combined line', async () => {
+    // A throw while writing plan.md for one job used to abort the loop, so foo's chat never got the report (UX-15-09).
+    h = jobHarness({ script: [] });
+    const { refs } = seedUxWorld(h.db);
+    for (const id of [refs.moneyJob, refs.homeJob]) h.db.prepare("UPDATE jobs SET state = 'working' WHERE id = ?").run(id);
+    const live = h.jobs().filter((j) => ['queued', 'working', 'needs_you', 'waiting'].includes(String(j.state))).length;
+    const r = await h.bridge.request<StopReport[], 'job.stopAll'>('job.stopAll', { by: 'user' });
+    expect(r.ok && r.value.length).toBe(live);
+    const fooChat = h.db
+      .prepare("SELECT id FROM chats WHERE kind = 'foo' AND private = 0 ORDER BY created_at LIMIT 1")
+      .pluck()
+      .get() as string;
+    expect(fooTexts(h, fooChat).at(-1)).toMatch(new RegExp(`^Stopped ${live} jobs: .*${t('thread.stop.all.nothing')}$`));
+    expect(h.db.prepare("SELECT COUNT(*) AS n FROM activity WHERE event = 'stopped_all'").get()).toEqual({ n: 1 });
   });
 });
 

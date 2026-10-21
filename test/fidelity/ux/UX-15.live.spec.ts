@@ -340,25 +340,28 @@ test('UX-15 · Watch live, take over, stop: step UX-15-05 (take over and hand ba
   const db = new Database(join(run.dirs.FOO_DATA_DIR, 'data', 'foo.db'), { readonly: true, fileMustExist: true });
   try {
     const steps = () => run.turns().filter((x) => x.purpose === 'step').length;
-    const checklist = page.getByTestId(TID.threadLog).locator(byTid(TID.cardChecklist)).filter({ hasText: 'Beach stay' });
     const go = page.getByTestId(TID.cardPlanGo);
-    // What the database holds, for a failure message: the job and its cards.
-    const seen = () =>
-      JSON.stringify({
-        jobs: db.prepare("SELECT title, state, chat_id FROM jobs WHERE title = 'Beach stay'").all(),
-        cards: db
-          .prepare("SELECT c.type, c.state, c.chat_id FROM cards c JOIN jobs j ON j.id = c.job_id WHERE j.title = 'Beach stay'")
-          .all(),
-      });
     await run.ask(STAY_ASK);
     await run.until(async () => steps() >= 1 || (await go.count()) > 0, 'the job starts or its plan asks for Go');
     if ((await go.count()) > 0 && steps() === 0) await go.last().click();
     // The clock moves only until the held turn starts (the third step turn); from here the waits are wall-clock only, so the
     // hold never reaches its timeout.
     await run.until(async () => steps() >= 3, 'the job is at its second step');
+    // The engine builds the title from the plan (08-4 §26.2; the AI's title is only a hint): the newest job is this one.
+    const job = db.prepare('SELECT id, title, state FROM jobs ORDER BY created_at DESC LIMIT 1').get() as {
+      id: string;
+      title: string;
+      state: string;
+    };
+    const jobId = job.id;
+    const seen = () =>
+      JSON.stringify({
+        job: db.prepare('SELECT title, state, chat_id FROM jobs WHERE id = ?').get(jobId),
+        cards: db.prepare('SELECT type, state FROM cards WHERE job_id = ?').all(jobId),
+      });
+    expect(job.state, seen()).toBe('working');
+    const checklist = page.getByTestId(TID.threadLog).locator(byTid(TID.cardChecklist)).filter({ hasText: job.title });
     await expect(checklist, `the checklist is up: ${seen()}`).toHaveCount(1, { timeout: 15_000 });
-    const jobId = db.prepare("SELECT id FROM jobs WHERE title = 'Beach stay' ORDER BY created_at DESC LIMIT 1").pluck().get() as string;
-    expect(db.prepare('SELECT state FROM jobs WHERE id = ?').pluck().get(jobId), seen()).toBe('working');
 
     await test.step('UX-15-05 · Take over, then hand back: the checklist says "You took over", foo says "Carrying on from here."', async () => {
       const s = step('UX-15-05');
