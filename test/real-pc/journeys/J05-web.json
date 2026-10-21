@@ -1,0 +1,29 @@
+{
+  "id": "J05-web",
+  "title": "First real task with the internet (news + sources)",
+  "spec": "07-1 J5; R1 sources/citations",
+  "steps": [
+    {
+      "do": "send",
+      "text": "What's the latest news about ISRO this week? Give me sources."
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 240000,
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "shot": "news"
+    },
+    {
+      "do": "check",
+      "tid": "bubble-sources"
+    },
+    {
+      "do": "check",
+      "tid": "bubble-citation"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}
