@@ -1,19 +1,19 @@
 {
-  "reportId": "M9-4038d10-39624570459",
+  "reportId": "M9-a2c9d50-39626464366",
   "milestone": "M9",
-  "generatedAt": "2026-10-21T15:54:28.566Z",
-  "commit": "1a808577f10009c9aebeb5e934227165ad33c912",
-  "head": "4038d1095b330600481c9c2e8fb68dfe994fb4d5",
+  "generatedAt": "2026-10-21T15:59:14.598Z",
+  "commit": "dc09644c0984612602c46dbe17f6d4744a43ab94",
+  "head": "a2c9d500a100f86d8f96e4f238e20c1dd2febad5",
   "ci": {
-    "runId": "39624570459",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39624570459"
+    "runId": "39626464366",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39626464366"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "0e60930746e46561d37d0e3a1a24746a68dd522aae064ec5ca69d21f379568a6"
   },
   "runner": {
-    "recordedAt": "2026-10-21T15:27:38.011Z",
+    "recordedAt": "2026-10-21T15:37:42.590Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -23,13 +23,13 @@
         "productName": "Windows Server 2025 Datacenter",
         "displayVersion": "24H2",
         "currentBuild": "26100",
-        "ubr": "33438"
+        "ubr": "33650"
       }
     },
     "image": {
       "os": "win25-vs2026",
-      "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000004509"
+      "version": "20261018.275.1",
+      "runner": "GitHub Actions 1000004531"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,7 +59,6 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "2 test(s) failed",
     "12 audit item(s) not DONE (the milestone is not complete)"
   ],
   "missingInputs": [],
@@ -808,7 +807,7 @@
         "id": "SV-10",
         "ok": true,
         "expected": "height 46 (±0.5)",
-        "measured": "639.9999389648438×46"
+        "measured": "640×46"
       },
       {
         "id": "SV-11",
@@ -959,13 +958,13 @@
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 6290,
-        "failed": 1,
+        "passed": 6327,
+        "failed": 0,
         "skipped": 2
       },
       "e2e": {
-        "passed": 227,
-        "failed": 1,
+        "passed": 228,
+        "failed": 0,
         "skipped": 0
       }
     },
@@ -28946,26 +28945,6 @@
         "file": "D:/a/foo-agent/foo-agent/test/integration/approvals/withdraw.test.ts"
       },
       {
-        "id": "AT-033",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
-      },
-      {
-        "id": "AT-034",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
-      },
-      {
-        "id": "AT-118a",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts"
-      },
-      {
-        "id": "AT-118a",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts"
-      },
-      {
         "id": "AT-059",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/browser/login.test.ts"
@@ -29014,6 +28993,26 @@
         "id": "AT-038",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
+      },
+      {
+        "id": "AT-033",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
+      },
+      {
+        "id": "AT-034",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
+      },
+      {
+        "id": "AT-118a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts"
+      },
+      {
+        "id": "AT-118a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts"
       },
       {
         "id": "AT-119",
@@ -29401,11 +29400,6 @@
         "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/waiting.test.ts"
       },
       {
-        "id": "AT-008",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/vault/AT-008.test.ts"
-      },
-      {
         "id": "AT-141",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/web/cloud.test.ts"
@@ -29464,6 +29458,11 @@
         "id": "AT-138",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/web/search.test.ts"
+      },
+      {
+        "id": "AT-008",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/vault/AT-008.test.ts"
       },
       {
         "id": "AT-121",
@@ -29942,7 +29941,7 @@
       },
       {
         "id": "AT-324",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/p1-messages.spec.ts"
       },
       {
@@ -30596,20 +30595,7 @@
         "file": "test/fidelity/ux/UX-24.settings.spec.ts"
       }
     ],
-    "failed": [
-      {
-        "suite": "unit",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/profile.test.ts",
-        "title": "foo’s browser profile keeps no value the person typed (CR-0034) typed values reach no profile file while the browser runs, nor after it closes",
-        "status": "failed"
-      },
-      {
-        "suite": "e2e",
-        "file": "test/e2e/p1-messages.spec.ts",
-        "title": "AT-324 · a new message rises with the spring at Full, fades at Basic, is still at Off; your bubble grows from the send button",
-        "status": "failed"
-      }
-    ],
+    "failed": [],
     "trace": {
       "live": 307,
       "pending": 70,
@@ -32285,7 +32271,7 @@
         "r2": "fail (BP-APP-L 0/18 px)",
         "r3": "pass (BP-APP-L ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.09900811887254903,
+        "r5": 0.0990234375,
         "ref": true,
         "app": true,
         "diff": true
@@ -32298,7 +32284,7 @@
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "pass (BP-APP-M ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.11317455755295429,
+        "r5": 0.11317238015607581,
         "ref": true,
         "app": true,
         "diff": true
@@ -32441,7 +32427,7 @@
         "r2": "fail (BP-CARD-05 0/88.671875 px)",
         "r3": "review (BP-CARD-05 ΔE 3.65)",
         "r4": "skipped: no hl element",
-        "r5": 0.14783767988896193,
+        "r5": 0.14962743808897655,
         "ref": true,
         "app": true,
         "diff": true
@@ -32805,7 +32791,7 @@
         "r2": "fail (BP-SCR-13 0/640.671875 px)",
         "r3": "review (BP-SCR-13 ΔE 3.65)",
         "r4": "skipped: no hl element",
-        "r5": 0.24820772668938354,
+        "r5": 0.24822985352037882,
         "ref": true,
         "app": true,
         "diff": true
@@ -32935,7 +32921,7 @@
         "r2": "fail (hl 585/181 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "pass (1.83 %)",
-        "r5": 0.025462890625,
+        "r5": 0.0254619140625,
         "ref": true,
         "app": true,
         "diff": true
@@ -33104,7 +33090,7 @@
         "r2": "fail (hl 26/23.21875 px)",
         "r3": "fail (hl ΔE 30.38)",
         "r4": "fail (82.90 %)",
-        "r5": 0.099751953125,
+        "r5": 0.09984765625,
         "ref": true,
         "app": true,
         "diff": true
@@ -33117,7 +33103,7 @@
         "r2": "fail (hl 26/23.21875 px)",
         "r3": "fail (hl ΔE 35.58)",
         "r4": "fail (84.42 %)",
-        "r5": 0.077353515625,
+        "r5": 0.076888671875,
         "ref": true,
         "app": true,
         "diff": true
@@ -33130,7 +33116,7 @@
         "r2": "fail (hl 114/85.859375 px)",
         "r3": "fail (hl ΔE 100)",
         "r4": "fail (43.20 %)",
-        "r5": 0.1101787109375,
+        "r5": 0.1103291015625,
         "ref": true,
         "app": true,
         "diff": true
@@ -33143,7 +33129,7 @@
         "r2": "fail (hl 114/85.859375 px)",
         "r3": "fail (hl ΔE 100)",
         "r4": "fail (43.06 %)",
-        "r5": 0.0668720703125,
+        "r5": 0.0670283203125,
         "ref": true,
         "app": true,
         "diff": true
@@ -33273,7 +33259,7 @@
         "r2": "fail (hl 526/92 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.47 %)",
-        "r5": 0.0660546875,
+        "r5": 0.0660556640625,
         "ref": true,
         "app": true,
         "diff": true
@@ -33338,7 +33324,7 @@
         "r2": "fail (hl 58/18 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (9.64 %)",
-        "r5": 0.11915234375,
+        "r5": 0.119150390625,
         "ref": true,
         "app": true,
         "diff": true
@@ -33520,7 +33506,7 @@
         "r2": "fail (hl 40/19.75 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (20.42 %)",
-        "r5": 0.10384375,
+        "r5": 0.1038232421875,
         "ref": true,
         "app": true,
         "diff": true
@@ -33533,7 +33519,7 @@
         "r2": "fail (hl 40/19.75 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (23.28 %)",
-        "r5": 0.089078125,
+        "r5": 0.089056640625,
         "ref": true,
         "app": true,
         "diff": true
@@ -33546,7 +33532,7 @@
         "r2": "fail (hl 50/4 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.85 %)",
-        "r5": 0.092359375,
+        "r5": 0.0923486328125,
         "ref": true,
         "app": true,
         "diff": true
@@ -33559,7 +33545,7 @@
         "r2": "fail (hl 50/4 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.55 %)",
-        "r5": 0.077984375,
+        "r5": 0.07796484375,
         "ref": true,
         "app": true,
         "diff": true
@@ -33585,7 +33571,7 @@
         "r2": "fail (hl 268/156 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.29 %)",
-        "r5": 0.0860390625,
+        "r5": 0.08603515625,
         "ref": true,
         "app": true,
         "diff": true
@@ -33598,7 +33584,7 @@
         "r2": "fail (hl 495/960 px)",
         "r3": "fail (hl ΔE 85.3)",
         "r4": "fail (38.34 %)",
-        "r5": 0.3930625,
+        "r5": 0.3930146484375,
         "ref": true,
         "app": true,
         "diff": true
@@ -33611,7 +33597,7 @@
         "r2": "fail (hl 495/960 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (69.94 %)",
-        "r5": 0.637419921875,
+        "r5": 0.6374208984375,
         "ref": true,
         "app": true,
         "diff": true
@@ -33624,7 +33610,7 @@
         "r2": "fail (hl 140/46 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (3.89 %)",
-        "r5": 0.12307421875,
+        "r5": 0.123087890625,
         "ref": true,
         "app": true,
         "diff": true
@@ -33637,7 +33623,7 @@
         "r2": "fail (hl 140/46 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (3.45 %)",
-        "r5": 0.1048095703125,
+        "r5": 0.1048203125,
         "ref": true,
         "app": true,
         "diff": true
@@ -33663,7 +33649,7 @@
         "r2": "fail (hl 18/12 px)",
         "r3": "fail (hl ΔE 59.02)",
         "r4": "fail (87.14 %)",
-        "r5": 0.09139453125,
+        "r5": 0.091576171875,
         "ref": true,
         "app": true,
         "diff": true
@@ -33858,7 +33844,7 @@
         "r2": "fail (hl 162.5625/155.5625 px)",
         "r3": "fail (hl ΔE 55.97)",
         "r4": "fail (89.18 %)",
-        "r5": 0.1129404296875,
+        "r5": 0.11290234375,
         "ref": true,
         "app": true,
         "diff": true
@@ -33897,7 +33883,7 @@
         "r2": "fail (hl 17/11 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (10.06 %)",
-        "r5": 0.086654296875,
+        "r5": 0.0866279296875,
         "ref": true,
         "app": true,
         "diff": true
@@ -33949,7 +33935,7 @@
         "r2": "fail (hl 194.6328125/261.265625 px)",
         "r3": "fail (hl ΔE 96.14)",
         "r4": "fail (68.66 %)",
-        "r5": 0.08691015625,
+        "r5": 0.08690625,
         "ref": true,
         "app": true,
         "diff": true
@@ -33988,7 +33974,7 @@
         "r2": "fail (hl 70/64 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "skipped: superseded (X-79 (\"Change\"))",
-        "r5": 0.125494140625,
+        "r5": 0.133064453125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34001,7 +33987,7 @@
         "r2": "fail (hl 70/64 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "skipped: superseded (X-79 (\"Change\"))",
-        "r5": 0.1069208984375,
+        "r5": 0.108048828125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34105,7 +34091,7 @@
         "r2": "fail (hl 242/4 px)",
         "r3": "review (hl ΔE 3.65)",
         "r4": "review (5.07 %)",
-        "r5": 0.075927734375,
+        "r5": 0.0760283203125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34235,7 +34221,7 @@
         "r2": "fail (hl 16.28125/13.8125 px)",
         "r3": "fail (hl ΔE 88.7)",
         "r4": "fail (89.26 %)",
-        "r5": 0.0438740234375,
+        "r5": 0.04394140625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34378,7 +34364,7 @@
         "r2": "pass (hl 0/1 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.46 %)",
-        "r5": 0.123455078125,
+        "r5": 0.11421484375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34391,7 +34377,7 @@
         "r2": "pass (hl 0/1 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.19 %)",
-        "r5": 0.095453125,
+        "r5": 0.08666796875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34456,7 +34442,7 @@
         "r2": "fail (hl 91.46875/25.609375 px)",
         "r3": "fail (hl ΔE 56.4)",
         "r4": "fail (56.72 %)",
-        "r5": 0.11725,
+        "r5": 0.117015625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34469,7 +34455,7 @@
         "r2": "fail (hl 91.46875/25.609375 px)",
         "r3": "fail (hl ΔE 57.24)",
         "r4": "fail (57.60 %)",
-        "r5": 0.08498828125,
+        "r5": 0.0847392578125,
         "ref": true,
         "app": true,
         "diff": true
