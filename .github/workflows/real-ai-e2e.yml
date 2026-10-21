@@ -4,6 +4,9 @@
 # Codex CLI signed in with the OPENAI_API_KEY secret. "auto" runs every AI whose secret exists, Claude first, one at a
 # time. Evidence (screenshots, logs, thread dumps) goes to the `evidence` branch under real-ai/<short-sha>-<ai>/ and
 # real-ai/latest-<ai>/, since agents cannot read CI artifacts.
+# os=linux (or both) adds the same journeys on a dev build under ubuntu-latest + xvfb: about half the minutes and no
+# packaging, but Windows-only rows (Mica, accent colour, caption buttons) cannot be judged there. Linux evidence goes
+# under real-ai/<short-sha>-<ai>-linux/ and real-ai/latest-<ai>-linux/.
 # Spend guards: manual runs by the repo owner only, one run at a time, a journey cap, a Sonnet-class model for Claude,
 # --max-turns 1 per foo turn (foo's own setting), and a hard job timeout. The driver never clicks Approve, Pay, Book or
 # Send. A key reaches only the steps that need it, through env; it is never echoed, and the evidence is scanned for it
@@ -34,6 +37,11 @@ on:
         description: Model the Claude CLI uses for foo's turns (Claude only)
         default: claude-sonnet-5-5
         required: true
+      os:
+        description: windows = packaged foo.exe (the target); linux = dev build on ubuntu + xvfb (cheaper, no Mica/accent/caption checks); both
+        type: choice
+        options: [windows, linux, both]
+        default: windows
 
 concurrency:
   group: real-ai-e2e
@@ -70,6 +78,7 @@ jobs:
   real-ai:
     name: Real-AI journeys on ${{ matrix.ai }} (windows-latest)
     needs: plan
+    if: inputs.os != 'linux'
     runs-on: windows-latest
     timeout-minutes: 120
     strategy:
@@ -203,6 +212,143 @@ jobs:
             if g fetch -q --depth 1 origin evidence 2>/dev/null; then git checkout -q -B evidence FETCH_HEAD; else git checkout -q --orphan evidence; fi
             rm -rf "real-ai/$short" "real-ai/latest-$AI" && mkdir -p "real-ai/$short" "real-ai/latest-$AI"
             cp -R "$runs/." "real-ai/$short/" && cp -R "$runs/." "real-ai/latest-$AI/"
+            git add -A -- real-ai
+            git diff --cached --quiet && { echo "evidence unchanged"; exit 0; }
+            git commit -q -m "Evidence: real-AI journeys on $short (run $GITHUB_RUN_ID)"
+            g push -q origin HEAD:refs/heads/evidence && { echo "evidence pushed to evidence:real-ai/$short"; exit 0; }
+            sleep $((attempt * 3))
+          done
+          exit 1
+
+  # The same journeys on a dev build under ubuntu-latest + xvfb (os=linux or both). foo finds the CLI with `which` on Linux
+  # (src/engine/ai/detect.ts); Claude counts as signed in through ANTHROPIC_API_KEY, Codex through ~/.codex/auth.json.
+  real-ai-linux:
+    name: Real-AI journeys on ${{ matrix.ai }} (ubuntu-latest + xvfb)
+    needs: plan
+    if: inputs.os != 'windows'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 1 # Claude first, then ChatGPT
+      matrix:
+        ai: ${{ fromJSON(needs.plan.outputs.ais) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - name: Take the journey kit from the workflow's branch
+        env:
+          KIT_REF: ${{ github.sha }}
+        run: |
+          git fetch -q --depth 1 origin "$KIT_REF"
+          rm -rf "$RUNNER_TEMP/kit" && mkdir -p "$RUNNER_TEMP/kit"
+          git archive FETCH_HEAD test/real-pc | (cd "$RUNNER_TEMP/kit" && tar -x)
+          echo "head $(git rev-parse HEAD) kit $KIT_REF"
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      # As ci.yml's ubuntu fast lane: install scripts on (Linux builds better-sqlite3 and fetches Electron itself).
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Rebuild native modules for Electron
+        run: pnpm rebuild:electron
+      - name: Install the Claude Code CLI
+        if: matrix.ai == 'claude'
+        run: npm install -g @anthropic-ai/claude-code && claude --version
+      - name: Install the Codex CLI and sign it in with the key
+        if: matrix.ai == 'chatgpt'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          npm install -g @openai/codex@latest
+          printenv OPENAI_API_KEY | codex login --with-api-key > /dev/null
+          codex --version
+      - name: Run the journeys
+        env:
+          ANTHROPIC_API_KEY: ${{ matrix.ai == 'claude' && secrets.ANTHROPIC_API_KEY || '' }}
+          ANTHROPIC_MODEL: ${{ inputs.model }}
+          FOO_AI_ROW: ${{ matrix.ai == 'claude' && 'claude-cli' || 'codex-cli' }}
+          ELECTRON_RUN_AS_NODE: '1'
+          JOURNEYS: ${{ inputs.journeys }}
+          MAX_JOURNEYS: ${{ inputs.max_journeys }}
+        run: |
+          E="$(readlink -f node_modules/electron)/dist/electron"
+          # A dev build: foo-drive.js starts the electron binary on this checkout and finds playwright-core through NODE_PATH.
+          export FOO_EXE="$E" FOO_ARGS="$GITHUB_WORKSPACE --no-sandbox" NODE_PATH="$GITHUB_WORKSPACE/node_modules"
+          export FOO_REAL_TEST_DIR="$RUNNER_TEMP/foo-real-test"
+          kit="$RUNNER_TEMP/kit/test/real-pc"
+          rm -rf "$FOO_REAL_TEST_DIR" && mkdir -p "$FOO_REAL_TEST_DIR/runs"
+          if [ "$JOURNEYS" = "all" ]; then list=$(tr -d '\r' < "$kit/journeys.txt"); else list="$JOURNEYS"; fi
+          case " $list " in *" J01-J02-first-run "*) ;; *) list="J01-J02-first-run $list" ;; esac
+          n=0; status=0
+          cd "$kit"
+          for j in $list; do
+            n=$((n + 1)); [ "$n" -gt "$MAX_JOURNEYS" ] && { echo "cap of $MAX_JOURNEYS journeys reached"; break; }
+            echo "=== $j ==="
+            if ! xvfb-run -a "$E" foo-drive.js "journeys/$j.json" >> "$FOO_REAL_TEST_DIR/runs/console.txt" 2>&1; then
+              status=1
+              if [ "$j" = "J01-J02-first-run" ]; then echo "::error::First run failed; later journeys need an AI, stopping."; break; fi
+            fi
+            pkill -f -- "$E" > /dev/null 2>&1 || true
+          done
+          tail -n 40 "$FOO_REAL_TEST_DIR/runs/console.txt" || true
+          exit $status
+      - name: Summary
+        if: always()
+        env:
+          REF: ${{ inputs.ref }}
+          AI: ${{ matrix.ai }}
+        run: |
+          {
+            echo "### Real-AI journeys (Linux) on $REF ($(git rev-parse --short HEAD)), AI $AI"
+            echo "| Journey | Steps | Failed |"; echo "|---|---|---|"
+            for f in "$RUNNER_TEMP"/foo-real-test/runs/*/summary.json; do
+              [ -f "$f" ] || continue
+              node -e "const s=require(process.argv[1]);console.log('| '+s.journey+' | '+s.steps+' | '+s.failed+' |')" "$f"
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Scan the evidence for the keys
+        if: always()
+        env:
+          KEY_A: ${{ secrets.ANTHROPIC_API_KEY }}
+          KEY_O: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          rm -f "$HOME/.codex/auth.json" # the signed-in Codex file holds the key; nothing reads it after the run
+          runs="$RUNNER_TEMP/foo-real-test/runs"
+          [ -d "$runs" ] || exit 0
+          : > "$RUNNER_TEMP/leak.txt"
+          for k in "$KEY_A" "$KEY_O"; do if [ -n "$k" ]; then grep -rlF -- "$k" "$runs" >> "$RUNNER_TEMP/leak.txt" || true; fi; done
+          if [ -s "$RUNNER_TEMP/leak.txt" ]; then
+            echo "::error::The key appeared in $(wc -l < "$RUNNER_TEMP/leak.txt") evidence file(s); they are deleted and nothing is pushed."
+            xargs -d '\n' rm -f < "$RUNNER_TEMP/leak.txt"
+            touch "$RUNNER_TEMP/no-push"
+          fi
+      - name: Push evidence to the evidence branch
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AI: ${{ matrix.ai }}
+          REF: ${{ inputs.ref }}
+        run: |
+          [ -f "$RUNNER_TEMP/no-push" ] && { echo "skipped: key found in evidence"; exit 0; }
+          runs="$RUNNER_TEMP/foo-real-test/runs"
+          [ -d "$runs" ] || { echo "no runs"; exit 0; }
+          short="$(git rev-parse --short=7 HEAD)-$AI-linux"
+          printf 'run %s · ref %s · commit %s · AI %s · linux dev build\n' "$GITHUB_RUN_ID" "$REF" "$(git rev-parse HEAD)" "$AI" > "$runs/RUN.txt"
+          work="$RUNNER_TEMP/evidence" && rm -rf "$work" && mkdir -p "$work" && cd "$work"
+          git init -q && git config core.autocrlf false
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 | tr -d '\n')"
+          git remote add origin "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git"
+          g() { git -c "http.extraheader=$auth" "$@"; }
+          for attempt in 1 2 3 4 5; do
+            if g fetch -q --depth 1 origin evidence 2>/dev/null; then git checkout -q -B evidence FETCH_HEAD; else git checkout -q --orphan evidence; fi
+            rm -rf "real-ai/$short" "real-ai/latest-$AI-linux" && mkdir -p "real-ai/$short" "real-ai/latest-$AI-linux"
+            cp -R "$runs/." "real-ai/$short/" && cp -R "$runs/." "real-ai/latest-$AI-linux/"
             git add -A -- real-ai
             git diff --cached --quiet && { echo "evidence unchanged"; exit 0; }
             git commit -q -m "Evidence: real-AI journeys on $short (run $GITHUB_RUN_ID)"
