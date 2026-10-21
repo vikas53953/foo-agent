@@ -1,0 +1,13 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T16-06-12-489Z-J01-J02-first-run"}
+{"journey":"B12-languages","title":"Chat in Hinglish and Punjabi, short answers","steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T16-07-03-184Z-B12-languages"}
+{"journey":"B09-kit","title":"Rich reply pieces: calculator, map, chart, compare, timer, form","steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T16-07-57-776Z-B09-kit"}
+{"journey":"J09-J18-booking","title":"Restaurant booking, watch live and stop (never approves)","steps":13,"failed":3,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T16-09-46-952Z-J09-J18-booking"}
+{"journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","steps":10,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T16-14-10-209Z-B14-restart-mid-reply"}
+{"journey":"B08-bank","title":"Bank site guard","steps":5,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T16-14-53-599Z-B08-bank"}
+{"journey":"B13-no-apps-honesty","title":"Nothing connected: email / WhatsApp asks get a connect offer, no pretending","steps":7,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T16-16-23-721Z-B13-no-apps-honesty"}
+{"journey":"U04-find-in-chat","title":"Find in chat: Ctrl+F, count, next, previous, close","steps":13,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T16-20-30-299Z-U04-find-in-chat"}
+{"journey":"U08-rich-text","title":"foo bubbles: code block copy, table, links, list, sources","steps":12,"failed":3,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T16-23-09-991Z-U08-rich-text"}
+{"journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","steps":13,"failed":4,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T16-31-34-962Z-U12-choice-variants"}
+{"journey":"U16-settings-all","title":"Settings: every section","steps":26,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T16-42-17-430Z-U16-settings-all"}
+{"journey":"U20-errors-honesty","title":"Things foo cannot do: honest error/connect, no fake success","steps":10,"failed":3,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T16-42-33-691Z-U20-errors-honesty"}
+{"journey":"U25-anatomy-composer","title":"Shell anatomy at every width, composer states, honest flights reply","steps":36,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T16-51-35-848Z-U25-anatomy-composer"}

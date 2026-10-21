@@ -1,0 +1,47 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are the three side by side. On features for the money, I'd pick the Galaxy S25: it has the only zoom camera of the three, the fastest chip and long software support.\n\nI haven't checked today's prices, so I left them out. Whichever is cheapest for you in rupees could change the pick. Specs are from memory, so confirm them on the maker's page.\n\niPhone 16\nScreen\n6.1 in OLED, 60 Hz\nChip\nApple A18\nRear cameras\n48 MP main + 12 MP ultrawide\nZoom camera\nNo\nBattery\nAbout 3,600 mAh\nSoftware updates\nApple doesn't state a number\nPixel 9\nScreen\n6.3 in OLED, 120 Hz\nChip\nGoogle Tensor G4\nRear cameras\n50 MP main + 48 MP ultrawide\nZoom camera\nNo\nBattery\nAbout 4,700 mAh\nSoftware updates\n7 years\nBest pick\nGalaxy S25\nScreen\n6.2 in AMOLED, 120 Hz\nChip\nSnapdragon 8 Elite\nRear cameras\n50 MP main + 12 MP ultrawide + 10 MP 3x zoom\nZoom camera\nYes, 3x\nBattery\nAbout 4,000 mAh\nSoftware updates\n7 years\n\nBest spec mix: 3x zoom, fastest chip, smooth 120 Hz screen and 7 years of updates.\n\nKeep\n\nIf battery life matters most, the Pixel 9 is the one to look at.\n\n4:08 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n4:09 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Tap start when the water is on.\n\nSteep your tea\n2:00 left\nStart timer\nKeep\n4:09 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n4:09 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for planning the party. Fill it in and send it, and I'll help with the next step.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n4:09 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n4:09 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "failed",
+    "text": "That reply got cut off.\nTry again\n4:09 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi\n4:09 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your expense tracker. Add an item, an amount and a category, and the total updates. Entries stay only while this page is open.\n\nFor the table, I can look for vegetarian places near Connaught Place for tomorrow, Thu 22 Oct, 8:00 PM, for 2. Say \"go ahead\" and I'll bring you a short list to pick from before anything is booked.\n\nKeep\n4:10 PM"
+  }
+]

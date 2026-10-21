@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n4:18 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "List three Indian rivers\n4:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show me a tiny Python hello world in a code block\n4:23 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n4:26 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n4:28 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from\n4:31 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "the second one\n4:34 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n4:36 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n4:39 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n4:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n4:45 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n4:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "book me a flight to Goa on Sat 12 Dec\n4:51 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "I can find and compare flights, and open the booking page for you. Filling in passengers and paying for flights comes in a later version.\n1\nCompare flights\nBEST FIT\n2\nNot now\nSomething else…\nSkip\n4:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:51 PM"
+  }
+]

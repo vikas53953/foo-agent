@@ -1,0 +1,11 @@
+{"t":"2026-10-21T16:16:23.721Z","journey":"B13-no-apps-honesty","title":"Nothing connected: email / WhatsApp asks get a connect offer, no pretending","spec":"J15 app ask, CR-0024 C1 (PR #85)","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T16:16:29.283Z","step":"launch","ok":true}
+{"t":"2026-10-21T16:16:29.410Z","i":0,"do":"send","sentAt":1792599389371,"before":0,"ok":true,"ms":126}
+{"t":"2026-10-21T16:18:29.426Z","i":1,"do":"waitReply","expect":"foo offers to connect Gmail (connect card or clear offer); does not claim to have read any email","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","ms":120016}
+{"t":"2026-10-21T16:18:29.489Z","shot":"01-email.png"}
+{"t":"2026-10-21T16:18:29.491Z","i":2,"do":"check","note":"connect card present?","soft":true,"found":0,"ok":false,"ms":2}
+{"t":"2026-10-21T16:18:29.608Z","i":3,"do":"send","sentAt":1792599509595,"before":0,"ok":true,"ms":117}
+{"t":"2026-10-21T16:20:29.928Z","i":4,"do":"waitReply","expect":"foo offers to connect WhatsApp; does not invent messages","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","ms":120320}
+{"t":"2026-10-21T16:20:29.987Z","shot":"02-whatsapp.png"}
+{"t":"2026-10-21T16:20:29.988Z","i":5,"do":"check","soft":true,"found":0,"ok":false,"ms":1}
+{"t":"2026-10-21T16:20:29.991Z","i":6,"do":"dump","ok":true,"ms":3}

@@ -1,0 +1,20 @@
+{"t":"2026-10-21T16:09:46.952Z","journey":"J09-J18-booking","title":"Restaurant booking, watch live and stop (never approves)","spec":"07-1 J9, J18; 06 live; M9","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T16:09:52.498Z","step":"launch","ok":true}
+{"t":"2026-10-21T16:09:52.718Z","i":0,"do":"send","sentAt":1792598992621,"before":0,"ok":true,"ms":220}
+{"t":"2026-10-21T16:10:15.502Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":10127,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's your expense tracker. Add an item, an amount and a category, and the total updates. Entries stay only while this page is open.\n\nFor the table, I can look for vegetarian places near Connaught Place for tomorrow, Thu 22 Oct, 8:00 PM, for 2. Say \"go ahead\" and I'll bring you a short list to pick from before anything is booked.\n\nKeep\n4:10 PM","ms":22783}
+{"t":"2026-10-21T16:10:15.579Z","shot":"01-booking-start.png"}
+{"t":"2026-10-21T16:10:15.581Z","i":2,"do":"clickIf","note":"press Go on the plan (starts the job; spending still needs Approve, which is never tapped)","found":0,"ok":true,"ms":2}
+{"t":"2026-10-21T16:11:15.584Z","i":3,"do":"wait","ok":true,"ms":60003}
+{"t":"2026-10-21T16:11:15.659Z","shot":"02-booking-working.png"}
+{"t":"2026-10-21T16:11:15.662Z","i":4,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-21T16:11:15.664Z","i":5,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-21T16:11:19.669Z","i":6,"do":"wait","expect":"live view of the browser, Stop and Take over visible","ok":true,"ms":4005}
+{"t":"2026-10-21T16:11:19.735Z","shot":"03-watch-live.png"}
+{"t":"2026-10-21T16:11:39.746Z","i":7,"do":"wait","ok":true,"ms":20010}
+{"t":"2026-10-21T16:11:39.812Z","shot":"04-live-later.png"}
+{"t":"2026-10-21T16:11:39.816Z","i":8,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-21T16:14:09.827Z","i":9,"do":"wait","expect":"choice card of options, then Approve card; driver never taps Approve","ok":true,"ms":150011}
+{"t":"2026-10-21T16:14:09.907Z","shot":"05-booking-later.png"}
+{"t":"2026-10-21T16:14:09.909Z","i":10,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-21T16:14:09.911Z","i":11,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-21T16:14:09.915Z","i":12,"do":"dump","ok":true,"ms":3}
