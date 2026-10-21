@@ -1,84 +1,115 @@
 {
   "journey": "J01-J02-first-run",
   "title": "Install, first launch and Find your AI (fresh profile)",
-  "steps": 10,
-  "failed": 3,
-  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T11-25-24-597Z-J01-J02-first-run",
+  "steps": 14,
+  "failed": 5,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T12-30-06-358Z-J01-J02-first-run",
   "results": [
     {
       "i": 0,
       "do": "wait",
       "expect": "96px face wakes once, wordmark, no flicker",
       "ok": true,
-      "ms": 415
+      "ms": 404
     },
     {
       "i": 1,
       "do": "waitFor",
-      "expect": "Welcome then step pill 1 of 4, rows test live with shimmer",
-      "ok": true,
-      "ms": 4
+      "expect": "Welcome card: Hi, I'm foo, Let's go; header says step 1 of 2 (CR-0026 quick first run)",
+      "ok": false,
+      "error": "locator.waitFor: Timeout 60000ms exceeded.",
+      "ms": 60063
     },
     {
       "i": 2,
-      "do": "wait",
-      "expect": "the chosen AI shows works and is pre-selected; others show a clear reason, never \"slow to answer\"",
-      "ok": true,
-      "ms": 30010
+      "do": "click",
+      "note": "Let's go starts Find your AI",
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 18064
     },
     {
       "i": 3,
+      "do": "waitFor",
+      "expect": "Find your AI card, rows test live with shimmer",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 4,
+      "do": "wait",
+      "expect": "the chosen AI shows works and is pre-selected; others show a clear reason, never \"slow to answer\"",
+      "ok": true,
+      "ms": 30003
+    },
+    {
+      "i": 5,
       "do": "text",
       "soft": true,
       "ok": false,
       "error": "locator.innerText: Timeout 10000ms exceeded.",
-      "ms": 10063
+      "ms": 10080
     },
     {
-      "i": 4,
+      "i": 6,
       "do": "check",
       "note": "did any AI pass the first test on its own?",
       "soft": true,
       "found": 0,
       "ok": false,
-      "ms": 2
-    },
-    {
-      "i": 5,
-      "do": "click",
-      "note": "retest the chosen AI alone, only if no AI passed the first test",
-      "ok": false,
-      "error": "locator.click: Timeout 15000ms exceeded.",
-      "ms": 18076
-    },
-    {
-      "i": 6,
-      "do": "waitFor",
-      "expect": "the chosen AI works; Use button shows",
-      "ok": false,
-      "error": "locator.waitFor: Timeout 90000ms exceeded.",
-      "ms": 90078
+      "ms": 3
     },
     {
       "i": 7,
       "do": "click",
-      "expect": "chat opens; next setup step (name and face) per J3",
+      "note": "retest the chosen AI alone, only if no AI passed the first test",
       "ok": false,
       "error": "locator.click: Timeout 15000ms exceeded.",
-      "ms": 18079
+      "ms": 18075
     },
     {
       "i": 8,
-      "do": "wait",
-      "expect": "foo texts first with a warm welcome (J3/J4); composer unlocked",
-      "ok": true,
-      "ms": 10014
+      "do": "waitFor",
+      "expect": "the chosen AI works; Use button shows",
+      "ok": false,
+      "error": "locator.waitFor: Timeout 90000ms exceeded.",
+      "ms": 90064
     },
     {
       "i": 9,
+      "do": "click",
+      "expect": "chat opens; next setup step (name and face) per J3",
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 18063
+    },
+    {
+      "i": 10,
+      "do": "wait",
+      "expect": "step 2 of 2: name card, with Skip the rest in the header",
+      "ok": true,
+      "ms": 3000
+    },
+    {
+      "i": 11,
+      "do": "clickIf",
+      "note": "take the defaults for name, face and vibe so later journeys start in a ready chat",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 12,
+      "do": "wait",
+      "expect": "foo texts first with a warm welcome (J3/J4); composer unlocked",
+      "ok": true,
+      "ms": 10003
+    },
+    {
+      "i": 13,
       "do": "dump",
       "ok": true,
-      "ms": 6
+      "ms": 7
     }
   ]
 }
