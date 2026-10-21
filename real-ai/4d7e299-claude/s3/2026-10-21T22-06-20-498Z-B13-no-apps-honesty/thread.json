@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 10:05 PM\n10:05 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:05 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nSigning in to HDFC net banking\nSign in to HDFC net banking\nLook for account balance\n10:05 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:05 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n10:05 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:05 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n10:06 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n10:06 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "check my email\n10:06 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nSo I can read your email for this.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n10:06 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:06 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n10:06 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Reading your WhatsApp\nlive checklist\nReading your WhatsApp\nWork on it\nStop\nunder 1 min\n10:06 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:06 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What should I look for in your WhatsApp?\n1\nSummary of unread chats\nBEST FIT\nWho wrote and what they need\n2\nPlans and dates\nThings you need to show up for\n3\nBills and payments\nAmounts and due dates\n4\nOne person or group\nTell me the name\nSomething else…\nSkip\n10:06 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:06 PM"
+  }
+]

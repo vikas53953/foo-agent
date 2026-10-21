@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n9:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:56 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n9:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:56 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n9:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:56 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n9:56 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n9:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n9:57 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mummy ke birthday (Fri 23 Oct) ke liye main ye teen cake suggest karungi:\n\nRasmalai cake: halka meetha aur desi swaad, jo mummy ko zyada pasand aa sakta hai.\nChocolate truffle: sabko pasand aane wala, hamesha safe choice.\nButterscotch ya Black Forest: classic cake, aur kaafi bakeries mein mil jata hai.\n\nAgar mummy ki photo wala cake ya naam likhwana hai, to aaj ya kal raat tak order kar do, taaki Fri 23 Oct ko time par mil jaye.\n\nMummy ko eggless chahiye ya normal chalega?\n\n9:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n9:57 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਮੰਮੀ ਲਈ ਮੈਂ ਰਸਮਲਾਈ ਕੇਕ ਸੁਝਾਵਾਂਗੀ, ਹਲਕਾ ਮਿੱਠਾ ਅਤੇ ਦੇਸੀ ਸੁਆਦ ਵਾਲਾ।\n\nਰਸਮਲਾਈ ਕੇਕ: ਦੇਸੀ ਸੁਆਦ, ਜੋ ਮੰਮੀ ਨੂੰ ਪਸੰਦ ਆ ਸਕਦਾ ਹੈ।\nਚਾਕਲੇਟ ਟਰਫਲ: ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਣ ਵਾਲਾ, ਹਮੇਸ਼ਾ ਸੁਰੱਖਿਅਤ ਚੋਣ।\nਬਟਰਸਕੌਚ: ਕਲਾਸਿਕ ਕੇਕ, ਲਗਭਗ ਹਰ ਬੇਕਰੀ ਵਿੱਚ ਮਿਲ ਜਾਂਦਾ ਹੈ।\n\nਜਨਮਦਿਨ Fri 23 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਨਾਮ ਜਾਂ ਫੋਟੋ ਵਾਲਾ ਕੇਕ ਹੋਵੇ ਤਾਂ ਕੱਲ੍ਹ ਰਾਤ ਤੱਕ ਆਰਡਰ ਕਰ ਦਿਓ। ਮੰਮੀ ਲਈ ਐੱਗਲੈੱਸ ਚਾਹੀਦਾ ਹੈ ਜਾਂ ਆਮ ਚੱਲੇਗਾ?\n\n9:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n9:57 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I don't know of any public holiday in Mumbai on Mon 2 Nov, so it looks like a normal working day. I haven't checked it against the official Maharashtra holiday list, so confirm there if a bank or office visit depends on it. The big one nearby is Diwali, around Sun 8 Nov.\n\nWant me to look up the official list for you?\n\n9:57 PM"
+  }
+]
