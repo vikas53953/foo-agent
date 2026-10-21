@@ -63,6 +63,8 @@ export interface Harness {
   dir: string;
   chatId: string;
   settings: () => Settings;
+  /** CR-0043: main's settings store (settings:undo from a test, as the renderer's [ Undo ] calls it). */
+  store: { get(): Settings; update(fn: (s: Settings) => Settings): void };
   txs: DbTxCall[];
   patches: UiPatch[];
   logs: Record<string, unknown>[];
@@ -151,15 +153,16 @@ export function makeHarness(o: HarnessOptions): Harness {
   const logs: Record<string, unknown>[] = [];
   const aiStates: Record<string, unknown>[] = [];
 
+  const store = {
+    get: () => current,
+    update: (fn: (s: Settings) => Settings) => {
+      current = settingsSchema.parse(fn(current));
+      for (const l of listeners) l(current);
+    },
+  };
   const bridge: EngineBridge = new EngineBridge({
     db,
-    settings: {
-      get: () => current,
-      update: (fn) => {
-        current = settingsSchema.parse(fn(current));
-        for (const l of listeners) l(current);
-      },
-    },
+    settings: store,
     emit: (event, payload) => patches.push({ event, payload }),
     emitMessage: () => undefined,
     emitChat: () => undefined,
@@ -232,6 +235,7 @@ export function makeHarness(o: HarnessOptions): Harness {
     dir,
     chatId,
     settings: () => current,
+    store,
     txs,
     patches,
     logs,
