@@ -34,7 +34,9 @@ for (const gapMs of [0, 1_500]) {
     const first = await launch(dirs);
     const page = await first.firstWindow();
     await page.getByTestId('titlebar-strip').waitFor();
-    const pid = first.process().pid!;
+    // foo's main process itself: in a dev run Playwright's pid is a launcher whose child is the real main (CI at
+    // 0c78bde showed the reopen meet a live foo), so the pid comes from inside the app.
+    const pid = await first.evaluate(() => process.pid);
     const helpers = childrenOf(pid);
     // Only the main process dies, as in a crash or Task Manager's End task on it: its helpers are left to notice.
     process.kill(pid, 'SIGKILL');

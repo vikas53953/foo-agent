@@ -45,7 +45,9 @@
 ## (c) Review and proof
 
 - Failing first: `test/e2e/crash-reopen.spec.ts` (kill only the main pid, reopen at once and after 1.5 s, expect a window)
-  was pushed alone and ran red on Windows CI before the fix.
+  was pushed alone and ran red on Windows CI. The CI log then showed that in a dev run Playwright's pid is a launcher
+  and the real main is its child (Chromium's log lines carry another pid), so killing it left foo running and the
+  reopen deferred to it. The test (and the real-PC driver) now take the main's pid from inside the app.
 - `test/unit/stale-lock.test.ts`: the rule over fake seams (free lock, live owner, no owner, dead owner taken over, still
   held after the wait, two starts racing after a crash) and the read-only settings peek.
 - Independent review (Fable): PASS WITH FIXES. Acted on: the exe check before ending a dead pid's children, re-reading
