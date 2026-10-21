@@ -1,0 +1,1 @@
+PASS: generator plus repository formatter reproduces all four matrix outputs byte for byte.

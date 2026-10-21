@@ -1,0 +1,8 @@
+key	state	sha	link	note
+main_ci	in progress	a087f3c6c2cde738fef8ece322b578cdbd073c07	https://github.com/vikas53953/foo-agent/actions/runs/39673710431	Main advanced again at closeout. Latest run incomplete; all 0665 passing receipts are now historical and cannot prove this build.
+real_ai_main	pending	a087f3c6c2cde738fef8ece322b578cdbd073c07	https://github.com/vikas53953/foo-agent/actions/runs/39673710219	Main advanced again at closeout. Latest run incomplete; all 0665 passing receipts are now historical and cannot prove this build.
+judge_97	built, not merged		https://github.com/vikas53953/foo-agent/pull/97	promptfoo AI judge (32 asks), axe sweep, chaos reopen, Windows install/keychain checks.
+mutation_101	built, not merged		https://github.com/vikas53953/foo-agent/pull/101	Stryker on 4 files, 72%.
+bdd	partial	09a61163653086898c699fac37d69ef98188e6c3	https://github.com/vikas53953/foo-agent/pull/119	22 authored BDD scenarios; historical focused passes and one strict reaction failure. Full current suite and real-AI mode are not proven.
+upgrade	partial	489ce348ccc39dffc4aed007980fd1b2e57ca1ba	https://github.com/vikas53953/foo-agent/pull/120	Isolated upgrade/performance/soak harnesses authored; NSIS attempt stalled and no previous published release. Eight-hour and native UI acceptance not run.
+usability	partial	028e8567bff988efd8f264390d86238691cf6eef	https://github.com/vikas53953/foo-agent/pull/118	Heuristic review and five-task script; no real-person session and no current-main UX acceptance.

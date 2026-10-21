@@ -1,0 +1,13 @@
+
+> foo@0.0.1 test <user-home>\Downloads\foo\foo-testing
+> vitest run
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v5.0.5 <user-home>/Downloads/foo/foo-testing
+
+[vitest-pool]: Timeout terminating forks worker for test files <user-home>/Downloads/foo/foo-testing/test/unit/m8-wa-main.test.ts.
+[vitest-pool]: Timeout terminating forks worker for test files <user-home>/Downloads/foo/foo-testing/test/unit/r1-places-time.test.ts.
+ ELIFECYCLE  Test failed. See above for more details.

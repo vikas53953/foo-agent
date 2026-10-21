@@ -1,0 +1,18 @@
+
+> foo@0.0.1 test <user-home>\Downloads\foo\foo-testing
+> vitest run "--maxWorkers=2" "--pool=threads"
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v5.0.5 <user-home>/Downloads/foo/foo-testing
+
+ ❯ test/integration/browser/signin.test.ts (16 tests) 85777ms
+ ❯ test/unit/m3-adapters-cli.test.ts (24 tests | 2 failed | 2 skipped) 170943ms
+   ❯ codex-cli (8)
+     × cheap purpose: -m and low effort; resume form keeps the read-only sandbox 20023ms
+   ❯ gemini-cli (3)
+     × no stream-json in --help → plain text mode, NULL usage 37899ms
+
+LEAD NOTE: Ctrl+C requested after more than five minutes without a completed suite; the exact runner PID 22012 was no longer present at verification. Concurrent lane work/shared dependencies may affect timing. Incomplete, not a passing suite or confirmed application cause.

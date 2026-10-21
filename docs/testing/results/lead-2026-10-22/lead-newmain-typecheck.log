@@ -1,0 +1,3 @@
+
+> foo@0.0.1 typecheck <user-home>\Downloads\foo\foo-testing
+> tsc -p tsconfig.main.json --noEmit && tsc -p tsconfig.renderer.json --noEmit && tsc -p tsconfig.node.json --noEmit

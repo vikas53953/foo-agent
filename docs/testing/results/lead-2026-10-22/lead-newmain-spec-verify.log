@@ -1,0 +1,5 @@
+
+> foo@0.0.1 spec:verify <user-home>\Downloads\foo\foo-testing
+> tsx scripts/spec-verify.ts
+
+spec verified

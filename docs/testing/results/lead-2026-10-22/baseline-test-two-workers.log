@@ -1,0 +1,25 @@
+
+> foo@0.0.1 test <user-home>\Downloads\foo\foo-testing
+> vitest run "--maxWorkers=2"
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v5.0.5 <user-home>/Downloads/foo/foo-testing
+
+[vitest-pool]: Timeout terminating forks worker for test files <user-home>/Downloads/foo/foo-testing/test/unit/m3-engine.test.ts.
+ ❯ test/integration/browser/signin.test.ts (16 tests) 79737ms
+ ❯ test/unit/m3-adapters-cli.test.ts (24 tests | 5 failed | 2 skipped) 251953ms
+   ❯ claude-cli (13)
+     × exact argv; prompt only on stdin; system file written before spawn and deleted after; cwd; env scrub 24451ms
+     × resume and model flags; no partial messages when not streaming; no deltas to the sink 20067ms
+     × fallbacks: no --append-system-prompt-file → COMBINED stdin; no --tools → --disallowedTools + plan mode 22400ms
+     × failure envelopes: usage limit with reset time, signed out, overloaded, unknown flag, garbage 20308ms
+     × an outer abort signal cancels too 6099ms
+ ❯ test/integration/browser/actions.test.ts (21 tests | 3 failed) 154984ms
+   ❯ 08-2 §8.3.5 actions (13)
+     × a pop-up is adopted into the job: the next action runs on it 2237ms
+     × a link that opens a pop-up is clicked once: the pop-up is the change, so there is no retry 744ms
+     × back and wait (≤ 15 s) 1282ms
+ ELIFECYCLE  Test failed. See above for more details.

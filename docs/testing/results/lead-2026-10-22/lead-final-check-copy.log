@@ -1,0 +1,7 @@
+
+> foo@0.0.1 check:copy <user-home>\Downloads\foo\foo-testing
+> tsx scripts/check-copy.ts
+
+copy ok
+
+Lead gate outcome: 0; full suite timeout is incomplete, never pass.
