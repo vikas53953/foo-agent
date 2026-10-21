@@ -61,8 +61,14 @@ function phraseLine(step: StepRow, state: ChecklistRowState): ChecklistLine {
   return { index: step.idx, state, text: own ? t(own, slots) : t(phraseCopyKey('generic_working', form)!) };
 }
 
-/** The rows the checklist draws for the job's steps (05-1 §5.2.2–§5.2.3). */
-export function checklistView(job: Pick<JobRow, 'state' | 'stopReason'>, steps: readonly StepRow[], showAll = false): ChecklistView {
+/** The rows the checklist draws for the job's steps (05-1 §5.2.2–§5.2.3). `tookOver` holds the step index the user took over
+ * at (CR-0030 pick 3, `ChecklistPayload.tookOver`): a "You took over" row sits just before that step (06-3 §11.2, J18). */
+export function checklistView(
+  job: Pick<JobRow, 'state' | 'stopReason'>,
+  steps: readonly StepRow[],
+  showAll = false,
+  tookOver: readonly number[] = [],
+): ChecklistView {
   if (job.state === 'queued') return { folded: 0, lines: [{ index: 0, state: 'next', text: t('cards.checklist.caption.queued') }] };
   const ordered = [...steps].sort((a, b) => a.idx - b.idx);
   // CANCELLED (05-1 §5.2 states): nothing runs any more, so a row the runner left running or waiting reads as not started.
@@ -71,7 +77,11 @@ export function checklistView(job: Pick<JobRow, 'state' | 'stopReason'>, steps: 
     const r = ROW_OF_STEP[st];
     return stopped && (r === 'current' || r === 'waiting') ? 'next' : r;
   };
-  const lines = ordered.map((s) => phraseLine(s, rowOf(s.state)));
+  const took = new Set(tookOver);
+  const tookLine = (index: number): ChecklistLine => ({ index, state: 'took_over', text: t(phraseCopyKey('took_over', 'done')!) });
+  const lines = ordered.flatMap((s) => [...(took.has(s.idx) ? [tookLine(s.idx)] : []), phraseLine(s, rowOf(s.state))]);
+  const end = ordered.length ? ordered[ordered.length - 1]!.idx + 1 : 0;
+  if ([...took].some((i) => i >= end)) lines.push(tookLine(end));
   if (job.state === 'cancelled' && USER_STOP_REASONS.includes(job.stopReason as StopReason))
     lines.push({ index: ordered.length, state: 'stopped', text: t(phraseCopyKey('stopped', 'done')!) });
   if (showAll || lines.length <= CHECKLIST_MAX_ROWS) return { folded: 0, lines };

@@ -46,6 +46,9 @@ export class TakeOver {
     await w.front(win);
     w.banner(jobId, 'open', { mode: 'take_over', url: win.url(), bounds: await w.bounds(win) });
     w.live(jobId, 'taken_over');
+    // CR-0030 pick 3: the checklist row "You took over" (06-3 §11.2).
+    const took = await this.r.core.tookOverOps(job);
+    if (took.length) await this.r.core.tx(took);
     w.watch(
       jobId,
       win,
