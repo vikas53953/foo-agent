@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n3:01 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for ISRO news from 15 Oct to 21 Oct 2026\nWrote it\nStopped by you\n3:01 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:01 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb searches keep failing with SEARCH_BUSY and return nothing\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n3:01 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting\n3:04 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n3:07 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n3:09 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n3:09 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n3:11 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "At ₹80,000 aim for 16 GB memory, a 512 GB fast SSD, and a recent Ryzen 5/7 or Intel Core i5/i7 chip. Memory matters most for programming, so don't settle for 8 GB.\n\n3:11 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Also look for a sharp full HD screen, a keyboard you like typing on, and battery that lasts a workday. A gaming graphics card is only worth it if you play games or train AI. Otherwise it adds weight and cost.\n\n3:11 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "What do you mostly build: websites, phone apps, data or AI work, or games? And do you prefer Windows, Mac or Linux? Tell me and I'll narrow it to a shortlist.\n\n3:11 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n3:11 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n3:11 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Whenever you're ready, tell me what you mostly build and which system you prefer, and I'll shortlist laptops under ₹80,000.\n\n3:11 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n3:11 PM"
+  }
+]

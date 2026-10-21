@@ -1,0 +1,173 @@
+{
+  "journey": "U14-memory",
+  "title": "Memory: chip with Undo, memory page search, edit, forget with Undo",
+  "steps": 22,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T15-18-54-897Z-U14-memory",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1027
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "before": 8,
+      "sentAt": 1792595941302,
+      "ok": true,
+      "ms": 73
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "memory chip \"I'll remember · Undo\"",
+      "firstReplyMs": null,
+      "newBubbles": -1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "12 times 12 is 144.\n\n3:11 PM\n---\nWhenever you're ready, tell me what you mostly build and which system you prefer, and I'll shortlist laptops under ₹80,000.\n\n3:11 PM\n---\nPlan changed. See the new one below.\n3:13 PM\n---\nStarted · 3:18 PM\n3:16 PM\n---\nLooking on the web\nlive checklist\nLooked on the web\nLooked for easy trek difficulty and cost near Pune\nKept 5 weekend treks near Pune that fit easy difficulty only, cost shown\nCompared easy treks by cost\nStopped by you\n3:18 PM\n---\nStopped. Nothing was booked, paid or sent.\n\n3:18 PM",
+      "ms": 150237
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "note": "Undo on the chip",
+      "soft": true,
+      "found": 2,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "before": 7,
+      "sentAt": 1792596091703,
+      "ok": true,
+      "ms": 88
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "second memory chip",
+      "firstReplyMs": null,
+      "newBubbles": -1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Whenever you're ready, tell me what you mostly build and which system you prefer, and I'll shortlist laptops under ₹80,000.\n\n3:11 PM\n---\nPlan changed. See the new one below.\n3:13 PM\n---\nStarted · 3:18 PM\n3:16 PM\n---\nLooking on the web\nlive checklist\nLooked on the web\nLooked for easy trek difficulty and cost near Pune\nKept 5 weekend treks near Pune that fit easy difficulty only, cost shown\nCompared easy treks by cost\nStopped by you\n3:18 PM\n---\nStopped. Nothing was booked, paid or sent.\n\n3:18 PM",
+      "ms": 150231
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 93
+    },
+    {
+      "i": 7,
+      "do": "wait",
+      "expect": "chip says forgotten / undone",
+      "ok": true,
+      "ms": 1502
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 60
+    },
+    {
+      "i": 9,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 109
+    },
+    {
+      "i": 10,
+      "do": "wait",
+      "expect": "Memory page: rows with source and date, search, filters",
+      "ok": true,
+      "ms": 1203
+    },
+    {
+      "i": 11,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 9
+    },
+    {
+      "i": 12,
+      "do": "wait",
+      "expect": "row found",
+      "ok": true,
+      "ms": 801
+    },
+    {
+      "i": 13,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 199
+    },
+    {
+      "i": 14,
+      "do": "wait",
+      "expect": "inline edit",
+      "ok": true,
+      "ms": 601
+    },
+    {
+      "i": 15,
+      "do": "key",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 16,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 17,
+      "do": "wait",
+      "expect": "row gone, 5 s Undo bar",
+      "ok": true,
+      "ms": 808
+    },
+    {
+      "i": 18,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 67
+    },
+    {
+      "i": 19,
+      "do": "wait",
+      "expect": "row back",
+      "ok": true,
+      "ms": 802
+    },
+    {
+      "i": 20,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 113
+    },
+    {
+      "i": 21,
+      "do": "dump",
+      "ok": true,
+      "ms": 3
+    }
+  ]
+}

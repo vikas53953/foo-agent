@@ -1,0 +1,65 @@
+{
+  "journey": "B04-stop",
+  "title": "Start a job then stop it by typing stop",
+  "steps": 7,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T15-07-12-874Z-B04-stop",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "before": 4,
+      "sentAt": 1792595238188,
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb searches keep failing with SEARCH_BUSY and return nothing\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n3:01 PM",
+      "ms": 120179
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 40016
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "before": 4,
+      "sentAt": 1792595398563,
+      "ok": true,
+      "ms": 56
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "AT-077: stops within 1 s; reply lists exactly what was done; badge ⛔",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Stopped. Nothing was booked, paid or sent.\n\n3:09 PM",
+      "ms": 60014
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 2
+    }
+  ]
+}

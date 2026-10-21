@@ -1,0 +1,32 @@
+{"t":"2026-10-21T15:18:54.897Z","journey":"U14-memory","title":"Memory: chip with Undo, memory page search, edit, forget with Undo","spec":"05-3 §5.17 Memory chip, 06 Memory page, 10-2 §C.4 / §C.5","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T15:19:00.202Z","step":"launch","ok":true}
+{"t":"2026-10-21T15:19:01.229Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1027}
+{"t":"2026-10-21T15:19:01.302Z","i":1,"do":"send","before":8,"sentAt":1792595941302,"ok":true,"ms":73}
+{"t":"2026-10-21T15:21:31.540Z","i":2,"do":"waitReply","expect":"memory chip \"I'll remember · Undo\"","firstReplyMs":null,"newBubbles":-1,"ok":false,"duplicates":0,"lastReply":"12 times 12 is 144.\n\n3:11 PM\n---\nWhenever you're ready, tell me what you mostly build and which system you prefer, and I'll shortlist laptops under ₹80,000.\n\n3:11 PM\n---\nPlan changed. See the new one below.\n3:13 PM\n---\nStarted · 3:18 PM\n3:16 PM\n---\nLooking on the web\nlive checklist\nLooked on the web\nLooked for easy trek difficulty and cost near Pune\nKept 5 weekend treks near Pune that fit easy difficulty only, cost shown\nCompared easy treks by cost\nStopped by you\n3:18 PM\n---\nStopped. Nothing was booked, paid or sent.\n\n3:18 PM","ms":150237}
+{"t":"2026-10-21T15:21:31.612Z","shot":"01-chip.png"}
+{"t":"2026-10-21T15:21:31.615Z","i":3,"do":"check","note":"Undo on the chip","soft":true,"found":2,"ok":true,"ms":3}
+{"t":"2026-10-21T15:21:31.703Z","i":4,"do":"send","before":7,"sentAt":1792596091703,"ok":true,"ms":88}
+{"t":"2026-10-21T15:24:01.935Z","i":5,"do":"waitReply","expect":"second memory chip","firstReplyMs":null,"newBubbles":-1,"ok":false,"duplicates":0,"lastReply":"Whenever you're ready, tell me what you mostly build and which system you prefer, and I'll shortlist laptops under ₹80,000.\n\n3:11 PM\n---\nPlan changed. See the new one below.\n3:13 PM\n---\nStarted · 3:18 PM\n3:16 PM\n---\nLooking on the web\nlive checklist\nLooked on the web\nLooked for easy trek difficulty and cost near Pune\nKept 5 weekend treks near Pune that fit easy difficulty only, cost shown\nCompared easy treks by cost\nStopped by you\n3:18 PM\n---\nStopped. Nothing was booked, paid or sent.\n\n3:18 PM","ms":150231}
+{"t":"2026-10-21T15:24:01.986Z","shot":"02-chip-2.png"}
+{"t":"2026-10-21T15:24:02.079Z","i":6,"do":"click","soft":true,"ok":true,"ms":93}
+{"t":"2026-10-21T15:24:03.581Z","i":7,"do":"wait","expect":"chip says forgotten / undone","ok":true,"ms":1502}
+{"t":"2026-10-21T15:24:03.644Z","shot":"03-undone.png"}
+{"t":"2026-10-21T15:24:03.704Z","i":8,"do":"click","soft":true,"ok":true,"ms":60}
+{"t":"2026-10-21T15:24:03.813Z","i":9,"do":"click","soft":true,"ok":true,"ms":109}
+{"t":"2026-10-21T15:24:05.017Z","i":10,"do":"wait","expect":"Memory page: rows with source and date, search, filters","ok":true,"ms":1203}
+{"t":"2026-10-21T15:24:05.073Z","shot":"04-memory-page.png"}
+{"t":"2026-10-21T15:24:05.082Z","i":11,"do":"fill","soft":true,"ok":true,"ms":9}
+{"t":"2026-10-21T15:24:05.883Z","i":12,"do":"wait","expect":"row found","ok":true,"ms":801}
+{"t":"2026-10-21T15:24:05.933Z","shot":"05-memory-search.png"}
+{"t":"2026-10-21T15:24:06.132Z","i":13,"do":"click","soft":true,"ok":true,"ms":199}
+{"t":"2026-10-21T15:24:06.733Z","i":14,"do":"wait","expect":"inline edit","ok":true,"ms":601}
+{"t":"2026-10-21T15:24:06.775Z","shot":"06-memory-edit.png"}
+{"t":"2026-10-21T15:24:06.780Z","i":15,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-21T15:24:06.857Z","i":16,"do":"click","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-21T15:24:07.665Z","i":17,"do":"wait","expect":"row gone, 5 s Undo bar","ok":true,"ms":808}
+{"t":"2026-10-21T15:24:07.712Z","shot":"07-forgot.png"}
+{"t":"2026-10-21T15:24:07.779Z","i":18,"do":"click","soft":true,"ok":true,"ms":67}
+{"t":"2026-10-21T15:24:08.581Z","i":19,"do":"wait","expect":"row back","ok":true,"ms":802}
+{"t":"2026-10-21T15:24:08.634Z","shot":"08-undo.png"}
+{"t":"2026-10-21T15:24:08.747Z","i":20,"do":"click","soft":true,"ok":true,"ms":113}
+{"t":"2026-10-21T15:24:08.751Z","i":21,"do":"dump","ok":true,"ms":3}

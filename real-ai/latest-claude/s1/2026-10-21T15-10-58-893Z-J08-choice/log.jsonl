@@ -1,0 +1,8 @@
+{"t":"2026-10-21T15:10:58.893Z","journey":"J08-choice","title":"Question with choice chips","spec":"07-1 J8; 05 choice card","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T15:11:04.159Z","step":"launch","ok":true}
+{"t":"2026-10-21T15:11:04.248Z","i":0,"do":"send","before":4,"sentAt":1792595464248,"ok":true,"ms":89}
+{"t":"2026-10-21T15:11:21.064Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":8726,"newBubbles":2,"ok":true,"duplicates":0,"lastReply":"Also look for a sharp full HD screen, a keyboard you like typing on, and battery that lasts a workday. A gaming graphics card is only worth it if you play games or train AI. Otherwise it adds weight and cost.\n\n3:11 PM\n---\nWhat do you mostly build: websites, phone apps, data or AI work, or games? And do you prefer Windows, Mac or Linux? Tell me and I'll narrow it to a shortlist.\n\n3:11 PM","ms":16816}
+{"t":"2026-10-21T15:11:21.137Z","shot":"01-laptop.png"}
+{"t":"2026-10-21T15:11:21.138Z","i":2,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-21T15:11:21.140Z","i":3,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-21T15:11:21.142Z","i":4,"do":"dump","ok":true,"ms":2}
