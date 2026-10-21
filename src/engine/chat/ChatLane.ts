@@ -166,9 +166,6 @@ export interface LaneDeps {
 const MAX_TOTAL = 2; // 08-2 §6.9 chat lane
 const CONVERSATION = 20; // 08-2 §7.2 part 7
 
-/** CR-0028: what a skipped intake question tells the next turn. */
-const ANSWER_SKIPPED = '(skipped; use your best guess)';
-
 function isIntakeAsk(payload: Record<string, unknown>): payload is Record<string, unknown> & { intakeAsk: { messageId: string } } {
   const v = payload.intakeAsk as { messageId?: unknown } | undefined;
   return typeof v?.messageId === 'string' && v.messageId.length > 0;
@@ -543,7 +540,7 @@ export class ChatLane {
     if (kind !== 'reply' && released.trim()) this.d.log('chat.say_leak', 'PROTOCOL_SAY_LEAK', { chatId });
 
     const memoryKind = act?.kind === 'memory' && this.d.memory ? act : null;
-    if (kind === 'reply' || (kind !== 'react' && !(kind === 'job' && this.d.jobs) && !memoryKind && released.trim())) {
+    if (kind === 'reply' || (kind !== 'react' && kind !== 'ask' && !(kind === 'job' && this.d.jobs) && !memoryKind && released.trim())) {
       if (fooId) {
         // P1 T6: the follow-ups the reply's own `Suggestions:` line held (the gate kept the line out of the bubble).
         const trailer = kind === 'reply' ? splitSuggestions(parsed.say) : null;
@@ -730,7 +727,8 @@ export class ChatLane {
           ? answer.optionIds.map(label).join(', ')
           : 'text' in answer
             ? answer.text
-            : ANSWER_SKIPPED;
+            : // 05-1 §5.3.3: a Skip reads "Skipped. I'll go with {Best fit}." and option 1 is used.
+              label(options[0]?.id ?? '');
     const line = this.d.protocol.filter(`- Q: ${String(card.payload.question ?? '')} → A: ${said}`);
     this.askAnswers.set(messageId, [...(this.askAnswers.get(messageId) ?? []), line]);
     this.enqueue(card.chatId, messageId, { intakeOnly: true });

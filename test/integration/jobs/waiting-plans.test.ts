@@ -10,6 +10,7 @@ import { chatRows, jobRows } from '../../../src/main/store/queries';
 import { doingLine, doingRows, shownState } from '../../../src/renderer/shell/doingNowRows';
 import { chipCounts } from '../../../src/renderer/chatlist/rules';
 import type { JobRow } from '../../../src/shared/types';
+import { answerCard } from '../../../src/main/cards/answerCard';
 import { jobHarness, jobIntake, step, type JobHarness } from './jobHarness';
 
 let h: JobHarness | null = null;
@@ -74,7 +75,20 @@ describe('CR-0028 · an intake question is a Choice card, never "I didn\'t get t
   it('a tap sends the message back to intake with "- Q: … → A: …"; the hotel plan follows', async () => {
     await twoPlansThenHotel();
     const card = h!.cards('choice')[0]!;
-    h!.answer(String(card.id), 'o2');
+    // Through main's card:answer path, as a real tap goes (answerCard forwards it to the engine).
+    const x = h!;
+    const r = answerCard(
+      {
+        db: x.db,
+        now: () => x.clock.now(),
+        engine: x.bridge,
+        emitCard: () => undefined,
+        emitMessage: () => undefined,
+        emitChat: () => undefined,
+      },
+      { cardId: String(card.id), nonce: String(card.nonce), answer: { optionId: 'o2' }, resolvedBy: 'tap' },
+    );
+    expect(r.ok).toBe(true);
     await h!.settle();
     expect(h!.cards('choice')[0]!.state).toBe('answered');
     const intakes = h!.turnsJsonl().filter((x) => x.purpose === 'intake');
@@ -103,6 +117,56 @@ describe('CR-0028 · an intake question is a Choice card, never "I didn\'t get t
     expect(last).toContain('→ A: Sat 31 Oct – Mon 2 Nov');
     expect(h!.jobs()).toHaveLength(3);
     expect(texts(h!)).not.toContain(t('thread.reply.empty'));
+  });
+});
+
+describe('CR-0028 · released words before an ask stay; Skip goes on with the Best fit', () => {
+  it('a streamed sentence then kind ask: the sentence stands and the Choice card is posted', async () => {
+    const act = REAL_ASK.slice(REAL_ASK.indexOf('<act>'));
+    h = jobHarness({
+      script: [
+        {
+          match: { purpose: 'intake' },
+          chunks: [
+            { text: '<say>One quick question first. ' },
+            { text: 'Then I will look.</say>', delayMs: 2_000 },
+            { text: act, delayMs: 10 },
+          ],
+        },
+      ],
+    });
+    h.userSays(HOTEL);
+    await h.settle();
+    expect(h.cards('choice')).toHaveLength(1);
+    expect(texts(h).some((x) => x.startsWith('One quick question first.'))).toBe(true);
+    expect(texts(h)).not.toContain(t('thread.reply.empty'));
+  });
+
+  it('Skip (05-1 §5.3.3) sends option 1 as the answer', async () => {
+    await twoPlansThenHotel();
+    const card = h!.cards('choice')[0]!;
+    const x = h!;
+    const r = answerCard(
+      {
+        db: x.db,
+        now: () => x.clock.now(),
+        engine: x.bridge,
+        emitCard: () => undefined,
+        emitMessage: () => undefined,
+        emitChat: () => undefined,
+      },
+      { cardId: String(card.id), nonce: String(card.nonce), answer: { skip: true }, resolvedBy: 'tap' },
+    );
+    expect(r.ok).toBe(true);
+    await h!.settle();
+    expect(h!.cards('choice')[0]!.state).toBe('skipped');
+    const last = String(
+      h!
+        .turnsJsonl()
+        .filter((y) => y.purpose === 'intake')
+        .at(-1)!.prompt,
+    );
+    expect(last).toContain('→ A: Fri 30 Oct – Sun 1 Nov');
   });
 });
 

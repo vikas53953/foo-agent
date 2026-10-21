@@ -42,13 +42,17 @@ then the hotel message answered with the CLI's real `ask` reply), titled by CR r
 2. **The answer's form** is the part 8 `Decisions:` line the step turns already read (08-4 §24.22), so the AI sees one form for
    every answered question.
 3. **No timeouts.** J8's auto-pick, reminder and 24 h stop end a job; there is no job here, so the card simply waits. The AI's
-   `reversible` is ignored (no job → never reversible, as §26.7 computes it).
-4. **Restart.** The answers live in engine RAM. After a restart an answered card stays answered and the message is not asked again;
+   `reversible` is ignored (no job → never reversible, as §26.7 computes it). A Skip answers with option 1 (the Best fit), as
+   §5.3.3's "Skipped. I'll go with {Best fit}." summary already tells the user.
+4. **Released words.** Words the AI streamed before choosing `ask` stay as a finished reply, and the card follows them (§25.5 item 5).
+5. **Restart.** The answers live in engine RAM. After a restart an answered card stays answered and the message is not asked again;
    the user can ask again. Recovering chat-lane turns after a restart is a separate fix.
-5. **Not built here.** Intake kinds `handoff`, `routine`, `setting`, `catch_up` still post the empty-reply line until their
+6. **Not built here.** Intake kinds `handoff`, `routine`, `setting`, `catch_up` still post the empty-reply line until their
    milestones (M7, M10, M12, M13). The real-PC replay never chose them for these asks.
 
 ## (d) Review
 
 An independent Fable review of this CR and its diff, recorded in the PR and in `docs/decisions/real-pc.tsv` ("approved on
-Vikas's behalf" on pass).
+Vikas's behalf" on pass). Round 1 failed on two defects, both fixed with tests: a tap went through main's `answerCard`, which
+wrote the jobless card itself and never told the engine (now forwarded like `flightScope`), and words released before an
+`ask` posted a reply and dropped the card. It also asked for Skip to follow §5.3.3 (option 1), done.
