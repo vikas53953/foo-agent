@@ -316,6 +316,35 @@ export const NAMED_QUERIES = {
         )
         .all() as DbRow[]
     ).map(message),
+  /**
+   * 08-2 §5.2 after a restart (07-2 §4 "restored on next launch"): user messages whose intake turn never finished. Either
+   * the lane never took them (`sent`) or it took them (👀 `seen`) and foo closed before the first word; no job came of them,
+   * and nothing from foo or a helper follows them in the chat (an answered message always has a later reply, card or text).
+   */
+  messagesUnanswered: ({ db }: QueryCtx): EngineMessage[] =>
+    (
+      db
+        .prepare(
+          `SELECT m.* FROM messages m JOIN chats c ON c.id = m.chat_id
+            WHERE m.author_kind = 'user' AND m.deleted_at IS NULL AND c.deleted_at IS NULL AND c.kind != 'wa_mirror'
+              AND ((m.status = 'sent' AND m.badge IS NULL) OR (m.status = 'complete' AND m.badge = 'seen'))
+              AND NOT EXISTS (SELECT 1 FROM jobs j WHERE j.user_message_id = m.id)
+              AND NOT EXISTS (SELECT 1 FROM messages r WHERE r.chat_id = m.chat_id AND r.seq > m.seq
+                                AND r.author_kind IN ('foo','helper') AND r.deleted_at IS NULL)
+            ORDER BY m.created_at, m.seq`,
+        )
+        .all() as DbRow[]
+    ).map(message),
+  /** 04 §19.4 after a restart: foo or helper replies still `streaming`, whose turn died with the old engine. */
+  messagesStreaming: ({ db }: QueryCtx): EngineMessage[] =>
+    (
+      db
+        .prepare(
+          `SELECT * FROM messages WHERE status = 'streaming' AND author_kind IN ('foo','helper') AND deleted_at IS NULL
+            ORDER BY created_at, seq`,
+        )
+        .all() as DbRow[]
+    ).map(message),
   'helpers.byId': ({ db }: QueryCtx, helperId: unknown): EngineHelper | null => {
     const r = db.prepare('SELECT * FROM helpers WHERE id = ? AND deleted_at IS NULL').get(String(helperId)) as DbRow | undefined;
     return r

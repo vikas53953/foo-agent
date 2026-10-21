@@ -380,8 +380,8 @@ R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-1
 ,,AT-422,,,10-acceptance-2 §C.10; 08-4 §24.3; CR-0024,test/unit/prompt/c1-voice.test.ts,M9,live
 ,,AT-423,,,10-acceptance-2 §C.10; 08-4 §24.2; CR-0024,test/unit/prompt/c1-voice.test.ts,M9,live
 ,,AT-424,,,10-acceptance-2 §C.10; 08-4 §24.3; CR-0024,test/unit/prompt/c1-voice.test.ts,M9,live
-,,AT-425,,,10-acceptance-2 §C.10; 04 §13.7; CR-0024,test/e2e/c1-capabilities.spec.ts,M9,pending
-,,AT-426,,,10-acceptance-2 §C.10; 04 §13.7; X-110; CR-0024,test/e2e/c1-capabilities.spec.ts,M9,pending
+,,AT-425,,,10-acceptance-2 §C.10; 04 §13.7; CR-0024,test/e2e/c1-capabilities.spec.ts,M9,live
+,,AT-426,,,10-acceptance-2 §C.10; 04 §13.7; X-110; CR-0024,test/e2e/c1-capabilities.spec.ts,M9,live
 ,,AT-427,,,10-acceptance-2 §C.10; 04 §12.3; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,pending
 ,,AT-428,,,10-acceptance-2 §C.10; 04 §12.4; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,pending
 ,,AT-429,,,10-acceptance-2 §C.10; 02 F2; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,pending

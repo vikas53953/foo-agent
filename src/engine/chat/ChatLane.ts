@@ -15,7 +15,10 @@
 // R1 T6 (X-180, CR-0022): the "foo read:" items of the user's message go on it when the lane takes it (04 §6.5, rule-based,
 // from the redacted text; not in groups or WhatsApp mirrors); a side question (04 §17.5, pick 6, AT-364) skips the stop,
 // steer and typed-answer branches and the plan change, is answered as a reply only (never a job, never memory) and its
-// answer carries `side = 1`, so a running job keeps running unchanged.
+// answer carries `side = 1`, so a running job keeps running unchanged. C1 T2 (04 §13.7, CR-0024 F3): a reply tagged
+// `intent_capabilities` (08-4 §25.2) is followed by the Capabilities card, built from the app's own state (never the AI's).
+// Restart fix (real-PC J19 bug): the queue lives in memory, so after a restart cutOffTurns/answerCutOff give the messages
+// whose turn never finished their one intake turn (08-2 §5.2), and a reply left streaming is cut off with Try again (§19.4).
 import { t } from '../../shared/copy/t';
 import type { Clock } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
@@ -37,6 +40,11 @@ import { splitSuggestions } from '../prompt/suggestions';
 // R1 T6
 import { understoodItems } from './understood';
 import { isSideAiText, sideAiText } from '../../shared/sideQuestion';
+// C1 T2
+import { newNonce } from '../../shared/canon';
+import { CAPABILITIES_APP, capabilitiesSurface, type CapabilityState } from '../../shared/kit/capabilities';
+// Restart fix
+import { isStopCommand } from '../jobs/stopFlow';
 
 /** The your-AI service the lane talks to (Engine wires AiService). */
 export interface LaneAi {
@@ -76,8 +84,8 @@ export interface LaneProtocol {
   buildIntake(input: IntakeInput): { system: string; prompt: string; factIds?: string[] };
   buildRepair(issues: string): string;
   /** Parse the whole reply: the `<say>` text and the validated IntakeAct, or the zod issues. */
-  parse(text: string): { say: string; act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[] };
-  parseAct(text: string): { act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[] };
+  parse(text: string): { say: string; act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[]; tags?: IntakeTag[] };
+  parseAct(text: string): { act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[]; tags?: IntakeTag[] };
   /** The release gate for one streamed turn (08-4 §25.5 item 2). */
   gate(onRelease: (text: string, mode: 'whole' | 'sentence') => void, signal: AbortSignal): LaneGate;
   /** 08-2 §7.6 over a whole `<say>` (used for repair results and the post-check). */
@@ -90,6 +98,8 @@ export interface LaneGate {
   /** Text released so far. */
   released(): string;
 }
+/** 08-4 §25.2 `IntakeAct.tags`. */
+export type IntakeTag = 'intent_capabilities';
 export type IntakeDecisionView =
   | { kind: 'reply' }
   | { kind: 'react'; emoji: '👍' | '❤️' }
@@ -137,7 +147,7 @@ export interface LaneJobs {
 export interface LaneDeps {
   link: MainLink;
   clock: Clock;
-  newId(prefix: 'm' | 't'): string;
+  newId(prefix: 'm' | 't' | 'k'): string;
   settings(): Settings;
   ai: LaneAi;
   protocol: LaneProtocol;
@@ -150,6 +160,9 @@ export interface LaneDeps {
   // M6
   /** T5: memory in the lane (intake remember / forget, chips, review trigger). */
   memory?: LaneMemory;
+  // C1
+  /** T2: what the Capabilities card reads of the app's state (04 §13.7); without it Gmail and WhatsApp count as off. */
+  capabilityState?(): CapabilityState;
 }
 
 const MAX_TOTAL = 2; // 08-2 §6.9 chat lane
@@ -177,6 +190,10 @@ export class ChatLane {
   private chatTurns = new Map<string, { abort: AbortController; stopped: boolean }>();
   /** foo reply id → the user message it answered (04 §19.4 Try again). */
   private answered = new Map<string, string>();
+  /** User messages this engine has started a turn for (a restart's cut-off list may name one of them). */
+  private taken = new Set<string>();
+  /** Cut-off bubbles that already had their one Try again. */
+  private retried = new Set<string>();
   /** R1 T6: user messages that are side questions; every foo row answering one carries `side = 1` (04 §17.5). */
   private sideTurns = new Set<string>();
   /** Resolves when every queued turn has finished (tests). */
@@ -210,12 +227,56 @@ export class ChatLane {
 
   /** 04 §19.4 "Try again" on a cut-off reply. */
   retry(fooMessageId: string): boolean {
-    const userId = this.answered.get(fooMessageId);
-    if (!userId) return false;
     // One retry per cut-off bubble: repeated clicks do not answer twice.
+    if (this.retried.has(fooMessageId)) return false;
+    this.retried.add(fooMessageId);
+    const userId = this.answered.get(fooMessageId);
+    if (!userId) {
+      // A bubble cut off by a restart (recover below): this engine never saw its turn, so it answers the user message
+      // just before it.
+      void this.askedBefore(fooMessageId).then((m) => m && this.enqueue(m.chatId, m.id));
+      return true;
+    }
     this.answered.delete(fooMessageId);
     void this.messageById(userId).then((m) => m && this.enqueue(m.chatId, m.id));
     return true;
+  }
+
+  private async askedBefore(fooMessageId: string): Promise<EngineMessage | null> {
+    const reply = await this.messageById(fooMessageId);
+    if (!reply || reply.authorKind === 'user' || reply.status !== 'failed') return null;
+    const before = (await this.query<EngineMessage[]>('messagesBefore', reply.chatId, reply.seq, CONVERSATION)) ?? [];
+    return [...before].reverse().find((m) => m.authorKind === 'user') ?? null;
+  }
+
+  /**
+   * After a restart (08-2 §5.2 every user message gets one intake turn; 07-2 §4; 04 §19.4): a reply that was still streaming
+   * when foo closed is cut off (its words went only to the screen, so the stored bubble is empty, with Try again), and the
+   * user messages whose turn never finished are returned, oldest first, for `answerCutOff` once recovery is done. A stop
+   * word is not run again: stopping after a restart would act on jobs the user may have started since.
+   */
+  async cutOffTurns(): Promise<{ id: string; chatId: string }[]> {
+    const streaming = (await this.query<EngineMessage[]>('messagesStreaming')) ?? [];
+    if (streaming.length)
+      await this.tx(streaming.map((m): DbOp => ({ op: 'update', table: 'messages', id: m.id, set: { status: 'failed' } })));
+    const unanswered = (await this.query<EngineMessage[]>('messagesUnanswered')) ?? [];
+    return unanswered.filter((m) => !isStopCommand(m.text.trim())).map((m) => ({ id: m.id, chatId: m.chatId }));
+  }
+
+  answerCutOff(turns: { id: string; chatId: string }[]): void {
+    const byChat = new Map<string, string[]>();
+    for (const m of turns) {
+      // Sent just as foo started: this engine already took it, so its own turn answers it.
+      if (this.taken.has(m.id) || this.inflight.has(m.id)) continue;
+      this.d.log('chat.turn_recovered', undefined, { chatId: m.chatId });
+      byChat.set(m.chatId, [...(byChat.get(m.chatId) ?? []), m.id]);
+    }
+    // Older than anything sent since the start, so they go ahead of it in the chat's queue.
+    for (const [chatId, ids] of byChat) {
+      const q = (this.queues.get(chatId) ?? []).filter((id) => !ids.includes(id));
+      this.queues.set(chatId, [...ids, ...q]);
+      this.pump(chatId);
+    }
   }
 
   /** 04 §14.4 Stop: the reply that is coming in stops; what was shown stays, with "Stopped." under it. */
@@ -245,6 +306,7 @@ export class ChatLane {
       return;
     }
     const messageId = q.shift()!;
+    this.taken.add(messageId);
     this.busy.add(chatId);
     this.running += 1;
     this.inflight.add(messageId);
@@ -481,6 +543,7 @@ export class ChatLane {
     const parsed = this.d.protocol.parse(result.text);
     let act = parsed.act;
     let usedMemoryIds = act ? (parsed.usedMemoryIds ?? []) : [];
+    let tags = act ? (parsed.tags ?? []) : [];
     if (!act) {
       // 08-2 §7.5: one repair turn (same session); its <say> is ignored after streaming (08-4 §25.5 item 3).
       const repairParams = this.d.ai.turnParams(pick.providerId, 'repair');
@@ -506,7 +569,10 @@ export class ChatLane {
             .catch(() => null);
       const fixed = repaired && repaired.stopReason === 'end' ? this.d.protocol.parseAct(repaired.text) : null;
       act = fixed?.act ?? null;
-      if (act) usedMemoryIds = fixed?.usedMemoryIds ?? [];
+      if (act) {
+        usedMemoryIds = fixed?.usedMemoryIds ?? [];
+        tags = fixed?.tags ?? [];
+      }
       if (!act) this.d.log('chat.protocol_invalid', 'PROTOCOL_INVALID', { chatId });
       // A valid <say> with a broken <act> is still posted as a plain reply (08-2 §7.5).
       if (!act && parsed.say.trim()) act = { kind: 'reply' };
@@ -533,6 +599,8 @@ export class ChatLane {
             set: { text: released, status: 'complete', ...(suggestions ? { suggestions } : {}), ...(actions ? { actions } : {}) },
           },
         ]);
+        // C1 T2 (04 §13.7): the one-sentence reply, then the app-built Capabilities card.
+        if (kind === 'reply' && !side && tags.includes('intent_capabilities')) await this.capabilitiesCard(chatId, helper);
       } else {
         // Nothing passed the filters: 08-4 §25.5 item 6 (F-092).
         await this.emptyReply(chatId, messageId, message, helper, who, providerNote);
@@ -612,6 +680,49 @@ export class ChatLane {
       { op: 'insert', table: 'reactions', row: { message_id: messageId, by: helper?.id ?? 'foo', emoji, created_at: this.d.clock.now() } },
       { op: 'update', table: 'messages', id: messageId, set: { badge: null } },
     ]);
+  }
+
+  /**
+   * 04 §13.7: a kit card (05 §0.1) with the rows the app's state allows now; the words are resolved here, so an older card
+   * keeps its rows when the state changes and asking again posts a fresh card. 08-1 §4.3.3 insert order: message, then card.
+   */
+  private async capabilitiesCard(chatId: string, helper: EngineHelper | null): Promise<void> {
+    const state = this.d.capabilityState?.() ?? { gmailConnected: false, whatsappLinked: false };
+    const cardId = this.d.newId('k');
+    const messageId = this.d.newId('m');
+    const now = this.d.clock.now();
+    const r = await this.tx([
+      {
+        op: 'insert',
+        table: 'messages',
+        row: {
+          id: messageId,
+          chat_id: chatId,
+          author_kind: helper ? 'helper' : 'foo',
+          author_id: helper?.id ?? null,
+          kind: 'card',
+          card_id: cardId,
+          status: 'complete',
+          created_at: now,
+        },
+      },
+      {
+        op: 'insert',
+        table: 'cards',
+        row: {
+          id: cardId,
+          chat_id: chatId,
+          message_id: messageId,
+          job_id: null,
+          type: 'kit',
+          state: 'shown',
+          payload: { app: CAPABILITIES_APP, capabilities: capabilitiesSurface(state) },
+          nonce: newNonce(),
+          created_at: now,
+        },
+      },
+    ]);
+    if (!r.ok) this.d.log('chat.capabilities_failed', r.error.kind, { chatId });
   }
 
   async post(chatId: string, messageId: string, text: string, helper: EngineHelper | null, note: string | null): Promise<void> {

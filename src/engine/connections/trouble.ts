@@ -176,6 +176,11 @@ export class ConnTrouble {
     return (this.state?.status ?? 'disconnected') !== 'disconnected';
   }
 
+  /** C1 T2 (04 §13.7): Gmail is connected now (not waiting for sign-in); a test run on the fixed fake token counts as connected. */
+  gmailConnected(): boolean {
+    return !this.viaMain || this.state?.status === 'connected';
+  }
+
   // ---- main's `connection.state` ----
 
   async onState(s: GoogleConnState): Promise<void> {
