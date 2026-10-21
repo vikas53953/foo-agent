@@ -1,5 +1,6 @@
 key	state	sha	link	note
-main_ci	in progress	cc8d730	https://github.com/vikas53953/foo-agent/actions/runs/39651682314	Every main CI run since 12:55Z was cancelled by the next merge (last green full run: 8eddee7, run 426). Merges now wait for this run. Known red since 3a35be0: test/integration/browser/profile.test.ts (fix in #94).
+main_ci	green except	cc8d730	https://github.com/vikas53953/foo-agent/actions/runs/39651682314	Finished 19:13Z. Linux fast lane: all unit and integration tests pass. Windows golden lane: all 238 e2e tests pass; its unit step has one failure, the known-red test/integration/browser/profile.test.ts (fix in #94; no feature maps to it). Windows shard 4/4 died while building better-sqlite3, before any test ran (setup, not a test failure).
+main_ci_failing	known red	cc8d730	https://github.com/vikas53953/foo-agent/actions/runs/39651682314/job/119404555230	test/integration/browser/profile.test.ts
 real_ai_main	queued	cc8d730	https://github.com/vikas53953/foo-agent/actions/runs/39651682359	Latest finished real-AI run is 3a35be0; its logs still show the stuck web job silencing chats (CR-0035; fix #113 is in cc8d730, so this run is the first to test it).
 judge_97	built, not merged		https://github.com/vikas53953/foo-agent/pull/97	promptfoo AI judge (32 asks), axe sweep, chaos reopen, Windows install/keychain checks.
 mutation_101	built, not merged		https://github.com/vikas53953/foo-agent/pull/101	Stryker on 4 files, 72%.

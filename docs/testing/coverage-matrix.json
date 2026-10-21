@@ -3,10 +3,10 @@
   "main_sha": "cc8d730",
   "main_ci": {
    "key": "main_ci",
-   "state": "in progress",
+   "state": "green except",
    "sha": "cc8d730",
    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314",
-   "note": "Every main CI run since 12:55Z was cancelled by the next merge (last green full run: 8eddee7, run 426). Merges now wait for this run. Known red since 3a35be0: test/integration/browser/profile.test.ts (fix in #94)."
+   "note": "Finished 19:13Z. Linux fast lane: all unit and integration tests pass. Windows golden lane: all 238 e2e tests pass; its unit step has one failure, the known-red test/integration/browser/profile.test.ts (fix in #94; no feature maps to it). Windows shard 4/4 died while building better-sqlite3, before any test ran (setup, not a test failure)."
   },
   "real_proven": 0,
   "all_proven": 0,
@@ -75,10 +75,17 @@
   "suite": [
    {
     "key": "main_ci",
-    "state": "in progress",
+    "state": "green except",
     "sha": "cc8d730",
     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314",
-    "note": "Every main CI run since 12:55Z was cancelled by the next merge (last green full run: 8eddee7, run 426). Merges now wait for this run. Known red since 3a35be0: test/integration/browser/profile.test.ts (fix in #94)."
+    "note": "Finished 19:13Z. Linux fast lane: all unit and integration tests pass. Windows golden lane: all 238 e2e tests pass; its unit step has one failure, the known-red test/integration/browser/profile.test.ts (fix in #94; no feature maps to it). Windows shard 4/4 died while building better-sqlite3, before any test ran (setup, not a test failure)."
+   },
+   {
+    "key": "main_ci_failing",
+    "state": "known red",
+    "sha": "cc8d730",
+    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314/job/119404555230",
+    "note": "test/integration/browser/profile.test.ts"
    },
    {
     "key": "real_ai_main",
@@ -126,18 +133,18 @@
  },
  "totals": {
   "unit": {
-   "partial": 26,
+   "proven": 26,
    "missing": 1,
    "na": 133
   },
   "integration": {
    "na": 103,
    "missing": 1,
-   "partial": 56
+   "proven": 56
   },
   "e2e": {
    "na": 71,
-   "partial": 87,
+   "proven": 87,
    "missing": 2
   },
   "real_ai": {
@@ -160,7 +167,7 @@
   "motion": {
    "na": 142,
    "missing": 13,
-   "partial": 5
+   "proven": 5
   },
   "a11y": {
    "na": 30,
@@ -185,7 +192,7 @@
    "partial": 6
   },
   "regression": {
-   "partial": 159,
+   "proven": 159,
    "missing": 1
   },
   "ux": {
@@ -201,9 +208,9 @@
    "text": "Given the composer sends `message:send` twice with the same `clientId` (a retry after a timeout), then exactly one message row exists and both calls return the same `messageId` (idempotent; 08-1 §3 `message:send`).",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/AT-225.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/AT-225.test.ts"
+     "s": "proven",
+     "why": "test/unit/AT-225.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -271,8 +278,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -284,14 +291,14 @@
    "text": "Given Claude and ChatGPT sign-ins exist, when detection runs, then both are tested with a real request and Claude is pre-selected.",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/m3-engine.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/m3-engine.test.ts"
+     "s": "proven",
+     "why": "test/unit/m3-engine.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/ai-step.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/ai-step.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/ai-step.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -354,8 +361,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -367,14 +374,14 @@
    "text": "Given no AI passes a test, then the composer stays disabled with \"Connect your AI first, then we can talk.\" and no step after J2 is reachable.",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/m3-engine.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/m3-engine.test.ts"
+     "s": "proven",
+     "why": "test/unit/m3-engine.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/ai-step.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/ai-step.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/ai-step.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -437,8 +444,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -450,9 +457,9 @@
    "text": "Given the user sends \"thanks!\", then foo adds a 👍 reaction and posts no message.",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/m3-engine.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/m3-engine.test.ts"
+     "s": "proven",
+     "why": "test/unit/m3-engine.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "e2e": {
      "s": "missing",
@@ -520,8 +527,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -533,9 +540,9 @@
    "text": "Given any foo reply, then it contains none of the filler phrases (\"Great question\", \"How can I help you\", \"I apologize for the confusion\").",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/m3-engine.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/m3-engine.test.ts"
+     "s": "proven",
+     "why": "test/unit/m3-engine.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -603,8 +610,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -699,9 +706,9 @@
    "text": "Given Gmail is connected, when the user taps \"Find bills due this week\", then a checklist is visible within 2 s and a first result line within 60 s.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/AT-019.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/AT-019.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/AT-019.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -769,8 +776,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -782,9 +789,9 @@
    "text": "Given a running booking job, when the user types \"stop\", then no further click or AI call for that job happens after 1 s, and the reply lists exactly what was already done, read from the activity log.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/stop.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/stop.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/stop.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -852,8 +859,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -865,9 +872,9 @@
    "text": "Given the internet drops mid-job, then within 10 s the job shows WAITING and the banner strip shows \"You're offline. Your jobs are saved and I'll carry on when you're back.\" with [ Try again ] and there is no extra bar above the c",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m4-offline.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m4-offline.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m4-offline.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -935,8 +942,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -948,9 +955,9 @@
    "text": "Given the AI spend cap is reached, then no further AI call is made for jobs or routines until the cap is raised or the month changes.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/cap.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/cap.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/cap.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -1018,8 +1025,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -1031,9 +1038,9 @@
    "text": "Given the same step fails 3 times, then a stuck card appears with cost so far and three buttons, and the job does not keep trying on its own.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/stuck.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/stuck.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/stuck.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -1101,8 +1108,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -1114,9 +1121,9 @@
    "text": "Given the user quits foo with running jobs, then the jobs are saved as WAITING and resume on next open.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/quit.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/quit.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/quit.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -1184,8 +1191,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -1197,9 +1204,9 @@
    "text": "Given 3 jobs WORKING, when a 4th is created, then it is QUEUED, the badge is 👀 and its checklist reads \"Waiting for another job to finish\"; no 4th job ever runs at once.",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/jobs/queue.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/jobs/queue.test.ts"
+     "s": "proven",
+     "why": "test/unit/jobs/queue.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -1267,8 +1274,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -1280,9 +1287,9 @@
    "text": "Given a QUEUED job and an AI not verified in the last 10 min, when a slot frees, then a one-word test runs first, then the job is WORKING with badge 🛠 and the checklist appears after 1.5 s.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/start.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/start.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/start.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -1350,8 +1357,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -1363,9 +1370,9 @@
    "text": "Given a job in QUEUED, WORKING, NEEDS YOU or WAITING, when the user taps Stop, then it is CANCELLED with the matching `stop_reason` (`user_button` / `user_word`), badge ⛔ (`stopped`), checklist line \"Stopped by you\", and the messa",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/stop.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/stop.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/stop.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -1433,8 +1440,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -1446,9 +1453,9 @@
    "text": "Given a WORKING job, when it needs a choice, approval, payment, sign-in or code, then it is NEEDS YOU, badge ⏳ (SM-A1), chat-row pill \"Needs you\", taskbar overlay, toast if not focused.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/needs-you.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/needs-you.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/needs-you.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -1516,8 +1523,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -1529,9 +1536,9 @@
    "text": "Given NEEDS YOU, when the user answers, approves or taps \"I'm done\", then WORKING, badge 🛠, and the card collapses to its answered state.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/needs-you.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/needs-you.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/needs-you.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -1599,8 +1606,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -1612,9 +1619,9 @@
    "text": "Given WORKING, when the AI stops answering, a plan limit or AI spend cap is hit, or the PC sleeps, then WAITING, one error card, pill \"Paused\".",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/waiting.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/waiting.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/waiting.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -1682,8 +1689,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -1695,9 +1702,9 @@
    "text": "Given WAITING, when the condition clears, then WORKING and the error card is edited in place to \"Back on it. Picking up from step {n}.\" (SM-A10); no new message.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/waiting.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/waiting.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/waiting.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -1765,8 +1772,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -1778,9 +1785,9 @@
    "text": "Given WORKING, when all steps finish with a proof object, then DONE, badge ✅, Proof chip and receipt footer.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/finish.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/finish.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/finish.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -1848,8 +1855,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -1861,9 +1868,9 @@
    "text": "Given WORKING, when all steps finish with no proof possible, then DONE (unverified): badge value `done_unverified` (✅, tooltip \"Done · Not checked live\") and \"⚠ Not checked live\" on the result's proof line; no ⚠ on the bubble (SM-",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/finish.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/finish.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/finish.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -1931,8 +1938,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -1944,9 +1951,9 @@
    "text": "Given WORKING, when no step finishes for 3 min, or a step fails 3 times, or cost passes 2× estimate, then NEEDS YOU with the stuck card and badge ⏳ (SM-A2), ⚠ only in the stuck card header; when Stop is tapped on it, then CANCELLE",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/stuck.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/stuck.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/stuck.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -2014,8 +2021,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -2027,9 +2034,9 @@
    "text": "Given a WORKING job with no progress for 60 s (`JobRow.slow`), then the bubble badge stays 🛠 `working` with the tooltip \"Taking longer than usual\" (08-0 §F); no `slow` badge value and no ⏳ until the stuck card (AT-116).",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/jobs/watchdog.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/jobs/watchdog.test.ts"
+     "s": "proven",
+     "why": "test/unit/jobs/watchdog.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -2097,8 +2104,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -2110,9 +2117,9 @@
    "text": "Given WORKING, when the site blocks foo and no other route exists, then FAILED, badge ❌, error card with one alternative.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/fail.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/fail.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/fail.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -2180,8 +2187,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -2193,9 +2200,9 @@
    "text": "Given any non-final job, when the app is killed or Windows restarts, then on next launch it is restored from `state.json` with a recovery card.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/recovery.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/recovery.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/recovery.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -2263,8 +2270,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -2276,9 +2283,9 @@
    "text": "Given `foo.db` fails `PRAGMA quick_check` at startup, then it is renamed `foo-damaged-{yyyy-mm-dd-HHmm}.db`, a fresh database is rebuilt from the mirrors (08-1 §4.1.1), and one `error` card (`DB_REBUILT`) in the new foo chat reads",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/db/rebuild.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/db/rebuild.test.ts"
+     "s": "proven",
+     "why": "test/integration/db/rebuild.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -2346,8 +2353,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -2359,9 +2366,9 @@
    "text": "Given the fake AI replies \"All done!\" without a proof object or `unverified` flag, then the job is not DONE; the badge and checklist keep showing the runner's real state.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/ai-words.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/ai-words.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/ai-words.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -2429,8 +2436,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -2442,9 +2449,9 @@
    "text": "Given a FAILED or CANCELLED job, when the user taps \"Try again\", then a new linked job \"Trying again: {title}\" is created and the old job never returns to WORKING.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/retry.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/retry.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/retry.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -2512,8 +2519,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -2525,9 +2532,9 @@
    "text": "Given a helper chat with 2 jobs WORKING, 1 routine and 3 jobs finished in the last 7 days (one 8 days ago), when the details panel opens, then \"DOING NOW\" is followed by the 3-segment control \"In progress\" (selected) / \"Scheduled\"",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m4-panel.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m4-panel.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m4-panel.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -2595,8 +2602,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -2608,9 +2615,9 @@
    "text": "Given two chat-specific failures in one chat (a message not sent, then a job failed), then two notices stack above the composer, newest on top, each with `ErrorCircle`, the same sentence as the in-chat error, \"Copy code\" and Dismi",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m4-notices.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m4-notices.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m4-notices.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -2678,8 +2685,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -2691,9 +2698,9 @@
    "text": "Given a helper chat whose last job ended DONE 25 h ago with nothing queued, working, waiting or pending, no unread, not pinned, then its row is one 44px line (26px face, name, \" · Done {Thu}\", time) with `chatlist-row` `data-folde",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m4-list.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m4-list.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m4-list.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -2761,8 +2768,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -2774,9 +2781,9 @@
    "text": "Given a helper chat with a job WORKING and no higher-priority preview (03-1 §3.4.6 rules 1–3), then the row preview reads \"Working on {job title}…\" in `--fg-2` with no animation, and \"Waiting to start {job title}…\" while the job i",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m4-list.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m4-list.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m4-list.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -2844,8 +2851,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -2857,9 +2864,9 @@
    "text": "Given a key saved through the Secret box, then the key value appears in no row of `foo.db`, no log, no screenshot and no AI request body.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/vault/AT-008.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/vault/AT-008.test.ts"
+     "s": "proven",
+     "why": "test/integration/vault/AT-008.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -2927,8 +2934,8 @@
      "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -2940,9 +2947,9 @@
    "text": "Given a key that fails the test, then the row offers \"Replace key\" and the old value is never shown.",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m5-secret.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-secret.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m5-secret.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -3010,8 +3017,8 @@
      "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -3023,9 +3030,9 @@
    "text": "Given any interview card, when the user types an answer, then the card collapses to \"question → answer\" exactly as a tap would.",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/choice/typed.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/choice/typed.test.ts"
+     "s": "proven",
+     "why": "test/unit/choice/typed.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -3093,8 +3100,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -3106,9 +3113,9 @@
    "text": "Given foo has 3 options, then the card shows exactly 3 options plus \"Something else…\" and Skip, with option 1 tagged \"Best fit\".",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m5-choice.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-choice.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m5-choice.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -3176,8 +3183,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -3189,9 +3196,9 @@
    "text": "Given a reversible-preference question with no answer for 15 min, then foo picks Best fit and says so in one line.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/choice/timeouts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/choice/timeouts.test.ts"
+     "s": "proven",
+     "why": "test/integration/choice/timeouts.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -3259,8 +3266,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -3272,9 +3279,9 @@
    "text": "Given a flight-choice question with no answer, then foo never picks for the user and cancels after 24 h with a \"Search again\" button.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/choice/timeouts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/choice/timeouts.test.ts"
+     "s": "proven",
+     "why": "test/integration/choice/timeouts.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -3342,8 +3349,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -3355,14 +3362,14 @@
    "text": "Given a Choice card, when the user types \"2\" (or reacts 2️⃣), then the card collapses exactly as if option 2 had been tapped.",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/choice/typed.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/choice/typed.test.ts"
+     "s": "proven",
+     "why": "test/unit/choice/typed.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m5-choice.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-choice.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m5-choice.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -3425,8 +3432,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -3438,9 +3445,9 @@
    "text": "Given two Choice cards open in one chat and a typed answer that resolves on both, then the answer goes to the newest card and the other stays open; given one card where two options match by words (rule 3), then it is not an answer",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/choice/typed.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/choice/typed.test.ts"
+     "s": "proven",
+     "why": "test/unit/choice/typed.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -3508,8 +3515,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -3521,9 +3528,9 @@
    "text": "Given two jobs running in one chat, when the user types \"stop\", then a Choice card (`purpose: 'stop_which'`) \"Stop which one?\" shows the two job titles plus \"Both\" (\"All of them\" for three) and nothing stops until it is answered; ",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/jobs/stop-which.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/stop-which.test.ts"
+     "s": "proven",
+     "why": "test/integration/jobs/stop-which.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -3591,8 +3598,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -3604,9 +3611,9 @@
    "text": "Given a job in NEEDS YOU with a PENDING Approval card, when the user sends a steer (\"make it 2 rooms\"), then the card becomes SUPERSEDED with the footer \"You changed something, so I stopped. See the new card below.\" (`cards.approv",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/approvals/steer.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/steer.test.ts"
+     "s": "proven",
+     "why": "test/integration/approvals/steer.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -3674,8 +3681,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -3687,9 +3694,9 @@
    "text": "Given any error card, then it has exactly one primary button, at most one secondary link, and no banned word.",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/articles/ART-02c.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/articles/ART-02c.test.ts"
+     "s": "proven",
+     "why": "test/articles/ART-02c.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -3757,8 +3764,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -3770,9 +3777,9 @@
    "text": "Given NEEDS YOU, when the user declines, then CANCELLED (or WORKING if another route exists) with \"Okay, I won't. {next step or 'Nothing else to do here.'}\"",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/approvals/decline.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/decline.test.ts"
+     "s": "proven",
+     "why": "test/integration/approvals/decline.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -3840,8 +3847,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -3853,9 +3860,9 @@
    "text": "Given NEEDS YOU on a payment or booking card, when the card expires, then CANCELLED; on a choice card, it stays NEEDS YOU with one reminder.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/approvals/expiry.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/expiry.test.ts"
+     "s": "proven",
+     "why": "test/integration/approvals/expiry.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -3923,8 +3930,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -3936,9 +3943,9 @@
    "text": "Given a PENDING card, then its timer is 10 min (payment), 15 min (booking, no charge now) or 60 min (send, post, delete, share), keeps running while the window is closed, and the toast shows the same expiry.",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/approvals/expiry.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/approvals/expiry.test.ts"
+     "s": "proven",
+     "why": "test/unit/approvals/expiry.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -4006,8 +4013,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -4019,9 +4026,9 @@
    "text": "Given PENDING, when Approve is tapped (with Hello or typed amount when required), then APPROVED → RUNNING and the card reads \"Approved by you at {Fri 16 Oct, 9:48 AM}. Doing it now…\" (SM-A6).",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m5-approval.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-approval.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m5-approval.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -4089,8 +4096,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -4102,9 +4109,9 @@
    "text": "Given APPROVED, when the second look finds a mismatch, then HELD with the `--warn-soft` strip and \"Before I do this, one check: you asked for {X}, this is {Y}. Which one?\" and choice chips; the pick leads to APPROVED or DECLINED.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/approvals/second-look.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/second-look.test.ts"
+     "s": "proven",
+     "why": "test/integration/approvals/second-look.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -4172,8 +4179,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -4185,9 +4192,9 @@
    "text": "Given PENDING, when price, time or recipient changes before Approve, then SUPERSEDED (grey, struck-through amount, \"The price changed, so I stopped. See the new card below.\") and a new PENDING card.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/approvals/fresh-terms.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/fresh-terms.test.ts"
+     "s": "proven",
+     "why": "test/integration/approvals/fresh-terms.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -4255,8 +4262,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -4268,9 +4275,9 @@
    "text": "Given PENDING, when the user taps \"Not now\", then DECLINED: \"You said no. Nothing was {sent / booked / paid}.\" and no auto-retry.",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m5-approval.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-approval.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m5-approval.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -4338,8 +4345,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -4351,14 +4358,14 @@
    "text": "Given PENDING, when the timer ends, then EXPIRED with the absolute time and [ Ask me again ]; when tapped, then live terms are re-checked before a fresh card.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/approvals/expiry.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/expiry.test.ts"
+     "s": "proven",
+     "why": "test/integration/approvals/expiry.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m5-approval.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-approval.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m5-approval.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -4421,8 +4428,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -4434,9 +4441,9 @@
    "text": "Given PENDING, when the job is stopped elsewhere, then WITHDRAWN: \"No longer needed. The job was stopped.\"",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/approvals/withdraw.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/withdraw.test.ts"
+     "s": "proven",
+     "why": "test/integration/approvals/withdraw.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -4504,8 +4511,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -4517,9 +4524,9 @@
    "text": "Given an approval answered \"Always\" (app-use only, SM-A7; rules exist only for `use_app`, `calendar_write`, `mail_organise`, 08-0 §G.3), then no rule ever skips a Payment card, a hard-limit card, or any send, book, post, delete or",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/approvals/rules.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/approvals/rules.test.ts"
+     "s": "proven",
+     "why": "test/unit/approvals/rules.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -4587,8 +4594,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -4600,9 +4607,9 @@
    "text": "Given a known-recipient Draft card (SM-A8), then an `approvals` row exists from the moment the draft is created (PENDING, expiry 60 min), the card shows the approval frame and the impact line for as long as it is pending, and it m",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/approvals/draft.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/draft.test.ts"
+     "s": "proven",
+     "why": "test/integration/approvals/draft.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -4670,8 +4677,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -4683,9 +4690,9 @@
    "text": "Given Approval cards for sending an email, sending a WhatsApp message, a payment, a booking and a delete, then none shows the scope control `card-approval-scope`, each shows \"I'll always ask for this one.\"; given a calendar-add ca",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m5-approval.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-approval.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m5-approval.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -4753,8 +4760,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -4766,9 +4773,9 @@
    "text": "Given a Choice card with 3 questions, then the header shows \"1 of 3\" (`card-choice-pager`), tapping a row advances after `--m-card` with no Next button, \"Back\" (`card-choice-back`) shows from question 2; when the keys 1–4 are pres",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m5-choice.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-choice.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m5-choice.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -4836,8 +4843,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -4849,9 +4856,9 @@
    "text": "Given any fact, then it shows \"You said\" or \"I guessed\" (with the reason) and a date.",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m6-page.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m6-page.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m6-page.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -4919,8 +4926,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -4932,14 +4939,14 @@
    "text": "Given \"Forget everything from Gmail\", then every fact whose origin is Gmail is deleted from disk and Gmail stays connected.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/m6-forget.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m6-forget.test.ts"
+     "s": "proven",
+     "why": "test/integration/m6-forget.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m6-page.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m6-page.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m6-page.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -5002,8 +5009,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -5015,9 +5022,9 @@
    "text": "Given a forgotten fact, then foo does not use it in any later reply, and does not re-learn it from the same email within 90 days.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/m6-tombstone.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m6-tombstone.test.ts"
+     "s": "proven",
+     "why": "test/integration/m6-tombstone.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -5085,8 +5092,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -5098,9 +5105,9 @@
    "text": "Given the user edits `about-you.md` in Notepad, then the next foo reply uses the edited fact.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/m6-watcher.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m6-watcher.test.ts"
+     "s": "proven",
+     "why": "test/integration/m6-watcher.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -5168,8 +5175,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -5181,14 +5188,14 @@
    "text": "Given a guessed health or money fact, then it is never saved unless the user said it.",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/m6-sensitive.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/m6-sensitive.test.ts"
+     "s": "proven",
+     "why": "test/unit/m6-sensitive.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
-     "s": "partial",
-     "why": "test/integration/m6-review.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m6-review.test.ts"
+     "s": "proven",
+     "why": "test/integration/m6-review.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "e2e": {
      "s": "na",
@@ -5251,8 +5258,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -5264,9 +5271,9 @@
    "text": "Given facts \"Lives in Mumbai\" and a newer \"Lives in Pune\" (both You said), then the nightly tidy keeps the newer one and asks at most once \"Do you live in Pune now, or Mumbai?\" [ Pune ] [ Mumbai ] as a `choice` card (`purpose='mem",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/m6-tidy.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m6-tidy.test.ts"
+     "s": "proven",
+     "why": "test/integration/m6-tidy.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -5334,8 +5341,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -5347,9 +5354,9 @@
    "text": "Given ChatGPT is picked and no ChatGPT helper is installed, then foo opens the maker's page in the default browser, downloads, runs and installs nothing (X-42), and the block shows \"Waiting for the ChatGPT helper… I'll notice when",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/ai-step.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/ai-step.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/ai-step.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -5417,8 +5424,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -5430,14 +5437,14 @@
    "text": "Given the AI picker, then the helper apps foo knows are exactly `claude-cli`, `codex-cli` and `gemini-cli` (`resources/maker-pages.json`, 08-0 §E.5); each one only opens its maker's page; no install, download or run path exists fo",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/ai-step.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/ai-step.test.ts"
+     "s": "proven",
+     "why": "test/unit/ai-step.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/ai-step.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/ai-step.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/ai-step.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -5500,8 +5507,8 @@
      "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -5513,9 +5520,9 @@
    "text": "Given the user ticks Gmail + Calendar and completes Google sign-in, then the card shows \"✓ Connected as\" with a masked address within 3 s of the browser returning.",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m8-connectors.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-connectors.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m8-connectors.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -5583,8 +5590,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -5596,9 +5603,9 @@
    "text": "Given the user declined the send permission on Google's page, then foo never offers \"Send email\" on Gmail drafts and offers \"Open in Gmail\" instead.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/m8-gmail-drafts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-gmail-drafts.test.ts"
+     "s": "proven",
+     "why": "test/integration/m8-gmail-drafts.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -5666,8 +5673,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -5679,9 +5686,9 @@
    "text": "Given WhatsApp is linked, then foo never sends a WhatsApp message without a Draft card and a Send tap.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/m8-whatsapp-send.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-whatsapp-send.test.ts"
+     "s": "proven",
+     "why": "test/integration/m8-whatsapp-send.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -5749,8 +5756,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -5762,9 +5769,9 @@
    "text": "Given the result, then it carries a Proof chip linking to the actual emails, or \"⚠ Not checked live\" if no email was opened.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/m8-gmail-read.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-gmail-read.test.ts"
+     "s": "proven",
+     "why": "test/integration/m8-gmail-read.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -5832,8 +5839,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -5845,9 +5852,9 @@
    "text": "Given \"draft a reply to my landlord\", then a Draft card appears and no email is sent until the user taps \"Send email\".",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m8-drafts.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-drafts.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m8-drafts.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -5915,8 +5922,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -5928,9 +5935,9 @@
    "text": "Given a recipient the user has never emailed, when Send is tapped, then a full Approval card with \"You haven't emailed her before\" appears and there are no scope chips.",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m8-drafts.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-drafts.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m8-drafts.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -5998,8 +6005,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -6011,9 +6018,9 @@
    "text": "Given the user taps Undo within 5 s, then Gmail has no sent message.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/m8-gmail-drafts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-gmail-drafts.test.ts"
+     "s": "proven",
+     "why": "test/integration/m8-gmail-drafts.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -6081,8 +6088,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -6094,9 +6101,9 @@
    "text": "Given an X post draft, then foo never posts to X; it only opens X's compose page with the text.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/m8-x.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-x.test.ts"
+     "s": "proven",
+     "why": "test/integration/m8-x.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -6164,8 +6171,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -6177,9 +6184,9 @@
    "text": "Given approval of one email, then a second email in the same chat still needs its own Send tap, with no per-person exception (R-13).",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/m8-gmail-drafts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-gmail-drafts.test.ts"
+     "s": "proven",
+     "why": "test/integration/m8-gmail-drafts.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -6247,8 +6254,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -6260,9 +6267,9 @@
    "text": "Given a WhatsApp group mirror, then foo cannot send into it without a full Approval card and a tap.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/m8-whatsapp-send.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-whatsapp-send.test.ts"
+     "s": "proven",
+     "why": "test/integration/m8-whatsapp-send.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -6330,8 +6337,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -6343,9 +6350,9 @@
    "text": "Given the user disconnects Gmail, then foo makes no further Gmail requests and the right shell \"Using\" drops Gmail.",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m8-connectors.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-connectors.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m8-connectors.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -6413,8 +6420,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -6426,9 +6433,9 @@
    "text": "Given Contacts connected with two \"Priya\" entries, when the user says \"email Priya the photos\", then a Choice card \"Which Priya?\" with masked addresses appears; given one match, the draft uses it; given no match and no sent mail o",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/m8-contacts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-contacts.test.ts"
+     "s": "proven",
+     "why": "test/integration/m8-contacts.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -6496,8 +6503,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -6509,9 +6516,9 @@
    "text": "Given the Gmail connection expires, then jobs that need Gmail go to WAITING, one `error` card \"Your Gmail connection expired. Bills and drafts are on hold.\" with the single button [ Reconnect ] appears, and Settings → Connections ",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/m8-expiry.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-expiry.test.ts"
+     "s": "proven",
+     "why": "test/integration/m8-expiry.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -6579,8 +6586,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -6592,9 +6599,9 @@
    "text": "Given a mirrored WhatsApp group (`chats.kind='wa_mirror'`), then the composer placeholder is \"Draft a message for {group}\" (`composer.placeholder.wa_mirror`); when text is sent there, then a `whatsapp.draft` Draft card for that gr",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m8-whatsapp.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-whatsapp.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m8-whatsapp.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -6662,8 +6669,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -6675,9 +6682,9 @@
    "text": "Given a mirror chat with 250 stored WhatsApp messages from 3 senders plus the user, when it opens, then only the newest 200 render, the top line reads \"I keep 7 days of WhatsApp messages.\" (`thread.wa_mirror.retention`), the user'",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m8-whatsapp.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-whatsapp.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m8-whatsapp.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -6745,8 +6752,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -6758,9 +6765,9 @@
    "text": "Given \"are there tables at an Italian place in Bandra Saturday\", then foo shows options and never shows a booking Approval card until the user says \"book\" or taps an option and then \"Book table\".",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m9-booking.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-booking.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m9-booking.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -6828,8 +6835,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -6841,9 +6848,9 @@
    "text": "Given the user taps \"Book table\", then the booking is submitted at most once and the result carries a confirmation number or screenshot.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/browser/submit.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/submit.test.ts"
+     "s": "proven",
+     "why": "test/integration/browser/submit.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -6911,8 +6918,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -6924,9 +6931,9 @@
    "text": "Given the no-show fee changes between card and submit, then nothing is booked and a new card shows the new fee.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/browser/submit.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/submit.test.ts"
+     "s": "proven",
+     "why": "test/integration/browser/submit.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -6994,8 +7001,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -7007,9 +7014,9 @@
    "text": "Given a sign-in page, then the AI never receives the typed username or password, and no screenshot or page text is captured while the sign-in window is in front.",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m9-signin.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-signin.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m9-signin.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -7077,8 +7084,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -7090,9 +7097,9 @@
    "text": "Given the user signs in and the page changes, then foo continues without the user tapping \"I'm done\".",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m9-signin.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-signin.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m9-signin.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -7160,8 +7167,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -7173,9 +7180,9 @@
    "text": "Given the user taps \"Take over\" (CAPTCHA or any live job), then foo makes no click until \"Hand back to foo\". *(merges J13 #3 and J18 #3)*",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m9-takeover.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-takeover.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m9-takeover.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -7243,8 +7250,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -7256,9 +7263,9 @@
    "text": "Given a saved login, then it is filled directly into the page and the AI only knows \"your IRCTC login\".",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/browser/login.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/login.test.ts"
+     "s": "proven",
+     "why": "test/integration/browser/login.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -7326,8 +7333,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -7339,9 +7346,9 @@
    "text": "Given no response to a sign-in card for 2 h, then the job is cancelled with nothing booked and a \"Start again\" button.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/browser/signin.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/signin.test.ts"
+     "s": "proven",
+     "why": "test/integration/browser/signin.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -7409,8 +7416,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -7422,9 +7429,9 @@
    "text": "Given the user closes the job's Edge window (08-0 §G.8), then the job is cancelled with the same report.",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m9-takeover.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-takeover.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m9-takeover.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -7492,8 +7499,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -7505,9 +7512,9 @@
    "text": "Given \"Stop everything\", then all running jobs stop, open approval cards become WITHDRAWN, and routines keep their schedules.",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m9-stop.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-stop.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m9-stop.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -7575,8 +7582,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -7588,9 +7595,9 @@
    "text": "Given a restaurant or hotel booking whose confirmation page shows a 6-character booking code next to the word \"code\" (\"Booking code TJ8821\"), then `finish()` finds it in the pre-redaction result, the job is DONE (not `done_unverif",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/browser/proof.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/proof.test.ts"
+     "s": "proven",
+     "why": "test/integration/browser/proof.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -7658,8 +7665,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -7671,9 +7678,9 @@
    "text": "Given a network capture during voice notes and web jobs, then voice audio goes only to `api.openai.com` and only when \"OpenAI\" is selected; search, page and browse traffic goes only to the services whose keys are saved; and Settin",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/articles/ART-net-web.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/articles/ART-net-web.test.ts"
+     "s": "proven",
+     "why": "test/articles/ART-net-web.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -7741,8 +7748,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -7754,9 +7761,9 @@
    "text": "Given an Exa key, when a job searches, then the fake Exa endpoint is called once and results reach the AI wrapped as untrusted; when Exa returns 401, 429 or 5xx, then the same search runs on Bing in foo's window with no message to",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/web/search.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/web/search.test.ts"
+     "s": "proven",
+     "why": "test/integration/web/search.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -7824,8 +7831,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -7837,9 +7844,9 @@
    "text": "Given no web tool keys, when a job searches and reads a news page and a script-heavy results page, then no request goes to any cloud tool host, the news page is read by Readability on this PC, and the script-heavy page is read in ",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/web/fetch.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/web/fetch.test.ts"
+     "s": "proven",
+     "why": "test/integration/web/fetch.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -7907,8 +7914,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -7920,9 +7927,9 @@
    "text": "Given canary secrets in the vault and in the job's text, when cloud search, read and browse calls run, then no canary appears in any outbound payload; a canary in a URL host or path blocks that call (`CLOUD_SECRET_BLOCKED`) and th",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/web/outbound.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/web/outbound.test.ts"
+     "s": "proven",
+     "why": "test/integration/web/outbound.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -7990,8 +7997,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -8003,9 +8010,9 @@
    "text": "Given a Browser Use key, then `web.browseCloud` is refused (`USE_EDGE` / `SITE_HANDBACK`) for a signed-in site, IRCTC, a biller, a hand-back domain and any goal that types, books, buys, pays, sends or posts; and when the cloud res",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/web/cloud.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/web/cloud.test.ts"
+     "s": "proven",
+     "why": "test/integration/web/cloud.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -8073,8 +8080,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -8086,9 +8093,9 @@
    "text": "Given a job that reaches a net-banking, UPI web, trading or password-manager domain, then foo never types, clicks or reads in it and shows \"This is your bank's site. I'll open it for you, and you do this part.\" [ Open {site} ], wh",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m9-handback.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-handback.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m9-handback.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -8156,8 +8163,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -8169,9 +8176,9 @@
    "text": "Given an AI cap of ₹1,000 with ₹999 spent, when a cloud search or read would cross the cap, then it is not called, the local path is used, and the Spent meter includes every earlier cloud call.",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/web/cost.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/web/cost.test.ts"
+     "s": "proven",
+     "why": "test/integration/web/cost.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -8239,8 +8246,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -8252,9 +8259,9 @@
    "text": "Given a saved recipe for a sandbox biller, when the job replays it, then every step is matched by role and name before acting, no value (name, date, card data) is stored in the recipe, and the final pay click is never replayed: it",
    "cells": {
     "integration": {
-     "s": "partial",
-     "why": "test/integration/browser/recipes.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/recipes.test.ts"
+     "s": "proven",
+     "why": "test/integration/browser/recipes.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -8322,8 +8329,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -8335,9 +8342,9 @@
    "text": "Given a site asks for a passkey or a phone approval, then a `signin` card with `mode='take_over'` reads \"{Site} sent an approval to your phone. Approve it there, then tap I'm done.\", foo makes no click until \"I'm done\", and captur",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m9-signin.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-signin.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m9-signin.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -8405,8 +8412,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -8418,9 +8425,9 @@
    "text": "Given a job in the live window in state `in_control`, then the only hand-back control is [ Hand back to {agentName} ] (plus Stop); when it is tapped, then main sends `job.handBack { jobId }` with no `mode` field, foo re-reads the ",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/m9-live.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-live.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/m9-live.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -8488,8 +8495,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -8501,9 +8508,9 @@
    "text": "`--ease-spring` / `--ease-spring-soft` are CSS `linear()`; overshoot ≤ 4 %; every exit duration ≤ every entrance duration; no animation library or Web Animations API in the bundle",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/p1-contracts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-contracts.test.ts"
+     "s": "proven",
+     "why": "test/unit/p1-contracts.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -8571,8 +8578,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -8584,9 +8591,9 @@
    "text": "no \"✓\" text glyph in `en-IN.json` or renderer JSX (comments skipped); Fluent `Checkmark` 16 instead",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/p1-contracts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-contracts.test.ts"
+     "s": "proven",
+     "why": "test/unit/p1-contracts.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -8654,8 +8661,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -8667,9 +8674,9 @@
    "text": "`--t-subtitle` 17/24; weight 700 only through `--weight-money`",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/p1-contracts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-contracts.test.ts"
+     "s": "proven",
+     "why": "test/unit/p1-contracts.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -8737,8 +8744,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -8750,9 +8757,9 @@
    "text": "dark `--shadow-4/16/28` = 1px edge ring + two layers; light unchanged",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/p1-contracts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-contracts.test.ts"
+     "s": "proven",
+     "why": "test/unit/p1-contracts.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -8820,8 +8827,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -8833,9 +8840,9 @@
    "text": "Basic: no transform, scale, rotation or height animation, fades `--m-basic`; Off: §F25.4 table, nothing moves",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-motion.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-motion.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -8878,9 +8885,9 @@
      "link": ""
     },
     "motion": {
-     "s": "partial",
-     "why": "test/e2e/p1-motion.spec.ts passed on its PR; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-motion.spec.ts passes in main CI",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "perf": {
      "s": "na",
@@ -8903,8 +8910,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -8916,9 +8923,9 @@
    "text": "the new view slides 18px with `--ease-spring-soft` and cross-fades; back reverses; the old view leaves in ≤ 167ms",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-motion.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-motion.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -8961,9 +8968,9 @@
      "link": ""
     },
     "motion": {
-     "s": "partial",
-     "why": "test/e2e/p1-motion.spec.ts passed on its PR; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-motion.spec.ts passes in main CI",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "perf": {
      "s": "partial",
@@ -8986,8 +8993,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -8999,9 +9006,9 @@
    "text": "dialog 0.92 → 1 with `--ease-spring` and `--shadow-28`; shell behind 0.96 + 2px blur; menus scale from the opening button",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-motion.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-motion.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -9044,9 +9051,9 @@
      "link": ""
     },
     "motion": {
-     "s": "partial",
-     "why": "test/e2e/p1-motion.spec.ts passed on its PR; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-motion.spec.ts passes in main CI",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "perf": {
      "s": "na",
@@ -9069,8 +9076,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -9082,9 +9089,9 @@
    "text": "skeleton shimmer, tooltip after 500ms, toggle knob spring, segmented and Settings pill slide",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-motion.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-motion.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -9127,9 +9134,9 @@
      "link": ""
     },
     "motion": {
-     "s": "partial",
-     "why": "test/e2e/p1-motion.spec.ts passed on its PR; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-motion.spec.ts passes in main CI",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "perf": {
      "s": "partial",
@@ -9152,8 +9159,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -9165,9 +9172,9 @@
    "text": "`Button variant=\"primary\"` lip flattens on press in 83ms; other buttons keep the 0.97 press",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-motion.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-motion.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -9210,9 +9217,9 @@
      "link": ""
     },
     "motion": {
-     "s": "partial",
-     "why": "test/e2e/p1-motion.spec.ts passed on its PR; main run not green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-motion.spec.ts passes in main CI",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "perf": {
      "s": "partial",
@@ -9235,8 +9242,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -9248,9 +9255,9 @@
    "text": "no letter face for foo or a default helper; Resting blinks every 2–6 s; ≥ 40px bobs; idle stops while the window is hidden; \"Show foo's eyes\" off → still poses, rings still shown",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-face.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-face.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-face.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -9318,8 +9325,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -9331,9 +9338,9 @@
    "text": "the 26px Thinking face only while a request is in flight (C.7.4)",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-face.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-face.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-face.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -9401,8 +9408,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -9414,9 +9421,9 @@
    "text": "Memory empty states show the 64px face in its pose, `aria-hidden`, no ring",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-face.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-face.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-face.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -9484,8 +9491,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -9497,9 +9504,9 @@
    "text": "each built detail animates at Full, fades at Basic, is still at Off",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-chatlist.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-chatlist.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-chatlist.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -9567,8 +9574,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -9580,9 +9587,9 @@
    "text": "as AT-323, and no layout jump in the virtual list",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-messages.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-messages.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-messages.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -9650,8 +9657,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -9663,9 +9670,9 @@
    "text": "empty chat: 3 starters; click fills and focuses the field, sends nothing; hidden on the first keystroke",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-composer.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-composer.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-composer.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -9733,8 +9740,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -9746,14 +9753,14 @@
    "text": "≤ 3, only from the reply's stored suggestions (banned words dropped, line stripped from the bubble); none after Approval / Payment / Draft / Secret or money; none in groups, mirrors or private chats",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/p1-suggestions.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-suggestions.test.ts"
+     "s": "proven",
+     "why": "test/unit/p1-suggestions.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-composer.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-composer.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-composer.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -9816,8 +9823,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -9829,9 +9836,9 @@
    "text": "hold mic floods the button; send → ✓ for 2s on delivery; Stop while working; \"Add details…\" while a job works",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-composer.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-composer.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-composer.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -9899,8 +9906,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -9912,9 +9919,9 @@
    "text": "as AT-323",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-composer.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-composer.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-composer.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -9982,8 +9989,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -9995,9 +10002,9 @@
    "text": "named steps with their `StepKind` icon; live step shimmers; ✓ overshoot; sources pile (≤ 5, \"+n\" after 3)",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-cards.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-cards.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-cards.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -10065,8 +10072,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -10078,9 +10085,9 @@
    "text": "springs in with `--shadow-28`; amounts in `--weight-money` tabular digits; primary lip; no sparks or celebration on any money card",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-cards.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-cards.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-cards.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -10148,8 +10155,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -10161,14 +10168,14 @@
    "text": "DONE with proof → Happy; first of the day → Celebrating; the card line \"{job title} · saved you about {n} min.\" from the fixed table, hidden under 5 min; DONE \"⚠ Not checked live\" shows none of it",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/p1-time-saved.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-time-saved.test.ts"
+     "s": "proven",
+     "why": "test/unit/p1-time-saved.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-cards.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-cards.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-cards.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -10231,8 +10238,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -10244,9 +10251,9 @@
    "text": "the 96px face's eyes open once; logo never animates; Off: eyes already open",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-first-run.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-first-run.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-first-run.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -10314,8 +10321,8 @@
      "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -10327,9 +10334,9 @@
    "text": "striped 4-step pill; rows test live (shimmer → ✓ works); app logos on white tiles",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-first-run.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-first-run.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-first-run.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -10397,8 +10404,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -10410,9 +10417,9 @@
    "text": "default off; on: only Approve and Done tones; never in quiet hours or while hidden",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-appearance.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-appearance.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-appearance.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -10480,8 +10487,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -10493,9 +10500,9 @@
    "text": "`backgroundMaterial: 'mica'` only on Windows 11 + transparency on + setting on, not high contrast, not FOO_TEST; otherwise solid",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-appearance.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-appearance.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-appearance.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -10563,8 +10570,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -10576,9 +10583,9 @@
    "text": "every row of 06-2 §6.2 writes its setting and applies live, without restart",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-appearance.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-appearance.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-appearance.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -10646,8 +10653,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -10659,9 +10666,9 @@
    "text": "Ctrl+= / Ctrl+- / Ctrl+0 / Ctrl+wheel and the Zoom row share `zoom`; overlay height = round(32 × zoom)",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/p1-appearance.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-appearance.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/p1-appearance.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -10729,8 +10736,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -10742,9 +10749,9 @@
    "text": "the renderer entry chunk ≤ 500 KB minified; a lazily loaded page shows its skeleton within 150ms",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/p1-bundle.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-bundle.test.ts"
+     "s": "proven",
+     "why": "test/unit/p1-bundle.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -10812,8 +10819,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -10825,9 +10832,9 @@
    "text": "the three variants draw from one series and from 3; one hue; axis labels and values follow 02 number and money rules; legend only with 2+ series",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-kit.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-kit.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-kit.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -10895,8 +10902,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -10908,9 +10915,9 @@
    "text": "numbered stops to scale on a plain panel with a dashed route and the stops list; \"Open in Maps\" is an action chip; no network request leaves the PC while it draws",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-places-time.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-places-time.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-places-time.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -10978,8 +10985,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -10991,9 +10998,9 @@
    "text": "+ / − and arrow keys change the value within min/max; every component bound to the same path updates at once",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -11061,8 +11068,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -11074,9 +11081,9 @@
    "text": "2–3 columns; the highlighted column is outlined with its one-line why",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -11144,8 +11151,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -11157,9 +11164,9 @@
    "text": "items in date order; amounts in money format",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-places-time.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-places-time.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-places-time.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -11227,8 +11234,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -11240,9 +11247,9 @@
    "text": "busy and free slots for 7 days; Narrator reads each slot",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-places-time.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-places-time.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-places-time.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -11310,8 +11317,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -11323,9 +11330,9 @@
    "text": "a timer runs in the renderer; ticks are kept in the surface's data model",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -11393,8 +11400,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -11406,9 +11413,9 @@
    "text": "outputs recompute from the inputs (+ − × ÷ ^, min, max, round, pmt); a bad formula shows \"Can't work this out\"",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -11476,8 +11483,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -11489,9 +11496,9 @@
    "text": "arc proportional to value / target, \"{value} of {target}\" in the middle, `role=\"meter\"`",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -11559,8 +11566,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -11572,9 +11579,9 @@
    "text": "the pick counts as a Choice answer; a reaction counts too (05 §5.3.4)",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-places-time.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-places-time.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-places-time.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -11642,8 +11649,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -11655,9 +11662,9 @@
    "text": "the picked slot goes back to foo, who confirms it",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-places-time.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-places-time.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-places-time.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -11725,8 +11732,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -11738,9 +11745,9 @@
    "text": "up to 6 fields; submit sends one action with the values",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -11808,8 +11815,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -11821,9 +11828,9 @@
    "text": "Data as of {time} shows; Refresh sends `kit:refresh`",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-output.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-output.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-output.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -11891,8 +11898,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -11904,9 +11911,9 @@
    "text": "each complete A2UI message draws while the reply streams; an incomplete one is held back",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-kit.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-kit.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-kit.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -11974,8 +11981,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -11987,14 +11994,14 @@
    "text": "an invalid or unknown component is dropped, \"Couldn't show part of this\" shows, the words stay",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/r1-contracts.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/r1-contracts.test.ts"
+     "s": "proven",
+     "why": "test/unit/r1-contracts.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-kit.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-kit.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-kit.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -12057,8 +12064,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -12070,9 +12077,9 @@
    "text": "a Button action reaches the engine as `kit.action` and the surface updates from the reply",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-kit.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-kit.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-kit.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -12140,8 +12147,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -12153,9 +12160,9 @@
    "text": "a Button whose action sends, books, pays, deletes or shares opens an approval, never acts directly",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-kit.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-kit.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-kit.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -12223,8 +12230,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -12236,9 +12243,9 @@
    "text": "a fetch, an image URL or a navigation inside the page fails; main logs the denied request",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -12306,8 +12313,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -12319,9 +12326,9 @@
    "text": "the frame has `sandbox=\"allow-scripts\"` only: no same-origin, popups or forms",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -12389,8 +12396,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -12402,9 +12409,9 @@
    "text": "a page over 512 KB shows \"This page is too big to open\"; height stops at 600px and the page scrolls inside",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -12472,8 +12479,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -12485,9 +12492,9 @@
    "text": "messages from other sources, bad schema and more than 10 calls per second are refused; every call is logged through `page:rpc`",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -12555,8 +12562,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -12568,9 +12575,9 @@
    "text": "`requestAction` goes through the gate; `openLink` always shows C-26; secret text in any call is refused and the Secret box posts",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -12638,8 +12645,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -12651,9 +12658,9 @@
    "text": "a kit piece or the status line shows before the page is ready",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-ai-page.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -12721,8 +12728,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -12734,9 +12741,9 @@
    "text": "the line shows the people, places, dates, times and amounts understood, and never a secret",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-input.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-input.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-input.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -12804,8 +12811,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -12817,9 +12824,9 @@
    "text": "a side question is answered while a running job keeps running (its checklist does not stop or re-plan)",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-input.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-input.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-input.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -12887,8 +12894,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -12900,9 +12907,9 @@
    "text": "≤ 2,000 inline; 2,001–10,000 \"Pasted text\" chip; > 10,000 `pasted-{time}.txt` file chip; the paste catcher runs first in every band",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-input.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-input.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-input.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -12970,8 +12977,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -12983,9 +12990,9 @@
    "text": "the same question answers without kit pieces or AI pages unless the user asks for one",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-output.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-output.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-output.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -13053,8 +13060,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -13066,9 +13073,9 @@
    "text": "reply chips fill the composer; ≤ 3 action chips act through the gates; none after an approval or payment card",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-output.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-output.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-output.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -13136,8 +13143,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -13149,9 +13156,9 @@
    "text": "Refresh updates the surface's data model and \"Data as of\"",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-output.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-output.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-output.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -13219,8 +13226,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -13232,9 +13239,9 @@
    "text": "Keep saves a `kept_items` row listed in the chat's Files tab; a kept AI page reopens only in the sealed box; no `.html` file is written",
    "cells": {
     "e2e": {
-     "s": "partial",
-     "why": "test/e2e/r1-output.spec.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-output.spec.ts"
+     "s": "proven",
+     "why": "test/e2e/r1-output.spec.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "unit": {
      "s": "na",
@@ -13302,8 +13309,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -13315,9 +13322,9 @@
    "text": "ShortForm and TextField refuse values that match 04-2 §22.4 and offer the Secret box",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/r1-kit-safety.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/r1-kit-safety.test.ts"
+     "s": "proven",
+     "why": "test/unit/r1-kit-safety.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -13385,8 +13392,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
@@ -13398,9 +13405,9 @@
    "text": "formulas go through `shared/kit/evaluate.ts`; no `eval`, `Function` or dynamic import in the kit bundle",
    "cells": {
     "unit": {
-     "s": "partial",
-     "why": "test/unit/r1-kit-safety.test.ts passed on its PR before merge; main CI on cc8d730 not finished green yet",
-     "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/r1-kit-safety.test.ts"
+     "s": "proven",
+     "why": "test/unit/r1-kit-safety.test.ts passes in main CI cc8d730",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     },
     "integration": {
      "s": "na",
@@ -13468,8 +13475,8 @@
      "link": ""
     },
     "regression": {
-     "s": "partial",
-     "why": "its tests run on every PR and every main merge; main run not green yet",
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
     }
    }
