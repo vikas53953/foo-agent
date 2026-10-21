@@ -640,6 +640,21 @@ journey(
     ],
 )
 
+# --- Crash then instant reopen (Windows single-instance lock held by leftover helpers?) ------------------------------
+journey(
+    'U24-crash-reopen',
+    'foo crashes and is reopened at once: a window must appear',
+    '07 J-crash recovery (CR-0029, X-187); single-instance lock',
+    ['crash recovery', 'single instance'],
+    [
+        check('composer-field', note='foo is open'),
+        {'do': 'crashRelaunch', 'shot': 'after-reopen',
+         'expect': 'kill only the main foo.exe, reopen straight away: a foo window shows (not a silent quit)'},
+        {'do': 'crashRelaunch', 'gapMs': 1500, 'shot': 'after-reopen-1500ms',
+         'expect': 'same, reopening 1.5 s after the crash'},
+    ],
+)
+
 with open(os.path.join(HERE, 'journeys.txt'), encoding='utf-8') as f:
     base = [ln.strip() for ln in f if ln.strip() and not ln.startswith('U')]
 for j in J:

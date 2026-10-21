@@ -58,6 +58,16 @@ const pick = (s) => {
   if (s.has) loc = loc.filter({ hasText: s.has });
   return s.last ? loc.last() : loc.nth(s.nth ?? 0);
 };
+const fooProcs = () => {
+  if (process.platform !== 'win32') return null;
+  try {
+    const name = path.basename(EXE);
+    const out = require('child_process').execSync(`tasklist /FI "IMAGENAME eq ${name}" /NH`, { encoding: 'utf8' });
+    return out.split('\n').filter((l) => l.toLowerCase().startsWith(name.toLowerCase())).length;
+  } catch {
+    return null;
+  }
+};
 const stamp = () => new Date().toISOString().replace(/[:.]/g, '-');
 
 async function main() {
@@ -270,6 +280,17 @@ async function main() {
           await app.close().catch(() => {});
           await launch();
           break;
+        case 'crashRelaunch': {
+          // A crash then an instant reopen: kill only foo's main process (its helpers live on, as after a real crash),
+          // reopen without waiting, and pass only if a window shows. fooProcs counts foo.exe processes left (it includes
+          // this driver, which runs under foo.exe too).
+          process.kill(app.process().pid, 'SIGKILL');
+          if (s.gapMs) await new Promise((r) => setTimeout(r, s.gapMs));
+          rec.fooProcs = fooProcs();
+          await launch();
+          rec.ok = await page.locator('[data-testid="composer-field"], [data-testid="card-setup"]').first().isVisible();
+          break;
+        }
         default:
           throw new Error(`unknown step ${s.do}`);
       }
