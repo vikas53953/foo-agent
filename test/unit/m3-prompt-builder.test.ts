@@ -150,7 +150,7 @@ describe('m3 PromptBuilder intake', () => {
 
 describe('m3 PromptBuilder budget (§24.15)', () => {
   const big = (n: number) => 'w'.repeat(n);
-  // CR-0027: intake.md carries the phrase-key list (~950 chars), so the fixtures leave that much more room.
+  // CR-0027: intake.md carries the phrase-key list (~590 chars), so the fixtures leave that much more room.
   const USER = 1_500;
 
   it('under budget: nothing trimmed', () => {
