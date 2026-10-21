@@ -1,0 +1,12 @@
+{"t":"2026-10-21T18:38:22.350Z","journey":"B13-no-apps-honesty","title":"Nothing connected: email / WhatsApp asks get a connect offer, no pretending","spec":"J15 app ask, CR-0024 C1 (PR #85)","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T18:38:27.989Z","step":"launch","ok":true}
+{"t":"2026-10-21T18:38:36.092Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":0,"ms":8099}
+{"t":"2026-10-21T18:38:36.209Z","i":0,"do":"send","sentAt":1792607916167,"before":0,"ok":true,"ms":117}
+{"t":"2026-10-21T18:38:47.459Z","i":1,"do":"waitReply","expect":"foo offers to connect Gmail (connect card or clear offer); does not claim to have read any email","firstReplyMs":5111,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I didn’t get that. Say it another way?\n\n6:38 PM","ms":11250}
+{"t":"2026-10-21T18:38:47.522Z","shot":"01-email.png"}
+{"t":"2026-10-21T18:38:47.525Z","i":2,"do":"check","note":"connect card present?","soft":true,"found":0,"ok":false,"ms":3}
+{"t":"2026-10-21T18:38:47.650Z","i":3,"do":"send","sentAt":1792607927603,"before":0,"ok":true,"ms":125}
+{"t":"2026-10-21T18:39:00.276Z","i":4,"do":"waitReply","expect":"foo offers to connect WhatsApp; does not invent messages","firstReplyMs":5568,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which WhatsApp group should I catch you up on? Tell me its name and I'll read what you missed.\n\n6:38 PM","ms":12625}
+{"t":"2026-10-21T18:39:00.364Z","shot":"02-whatsapp.png"}
+{"t":"2026-10-21T18:39:00.366Z","i":5,"do":"check","soft":true,"found":0,"ok":false,"ms":2}
+{"t":"2026-10-21T18:39:00.370Z","i":6,"do":"dump","ok":true,"ms":3}

@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n6:28 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:28 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n6:28 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:28 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n6:28 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:28 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n6:28 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:28 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n6:29 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Parso Fri 23 Oct hai, toh kal tak order kar dena sahi rahega, taaki fresh aur time par mile. Mummy ke liye yeh options achhe rahenge:\n\nButterscotch ya pineapple: classic aur sabko pasand aane wale, safe choice.\nRasmalai ya gulab jamun cake: agar mummy ko mithai pasand hai, yeh special lagega.\nFresh fruit cake: halka hai aur kam meetha, agar sugar ka dhyan rakhna ho.\nPhoto cake ya naam likha cake: personal touch ke liye, bas 1 din pehle order karna padega.\n\nAadha ya 1 kg kaafi hoga, kitne log honge us hisaab se. Mummy ko kaunsa flavour sabse zyada pasand hai?\n\n6:29 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n6:29 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਮੰਮੀ ਲਈ ਮੇਰੀ ਪਸੰਦ ਬਟਰਸਕੌਚ ਕੇਕ ਹੈ, ਕਿਉਂਕਿ ਇਹ ਲਗਭਗ ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ। ਜੇ ਮੰਮੀ ਨੂੰ ਮਿੱਠਾ ਪਸੰਦ ਹੈ ਤਾਂ ਰਸਮਲਾਈ ਕੇਕ ਖ਼ਾਸ ਲੱਗੇਗਾ, ਅਤੇ ਘੱਟ ਮਿੱਠਾ ਚਾਹੀਦਾ ਹੋਵੇ ਤਾਂ ਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ।\n\nਜਨਮ ਦਿਨ Fri 23 Oct ਨੂੰ ਹੈ। ਨਾਮ ਜਾਂ ਫੋਟੋ ਵਾਲਾ ਕੇਕ ਚਾਹੀਦਾ ਹੈ ਤਾਂ ਕੱਲ੍ਹ Thu 22 Oct ਤੱਕ ਆਰਡਰ ਕਰ ਦਿਓ।\n\nਕਿੰਨੇ ਲੋਕ ਹੋਣਗੇ, ਅੱਧਾ ਕਿੱਲੋ ਕਾਫ਼ੀ ਰਹੇਗਾ ਜਾਂ ਇੱਕ ਕਿੱਲੋ?\n\n6:29 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n6:29 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I don't know of any public or bank holiday in Mumbai on Mon 2 Nov, so it looks like a normal working day. I can't check the official Maharashtra holiday list from here. Diwali falls around Sun 8 Nov, so the holidays that week are the ones to confirm.\n\n6:29 PM"
+  }
+]
