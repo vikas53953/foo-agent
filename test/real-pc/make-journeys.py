@@ -689,6 +689,32 @@ journey(
     ],
 )
 
+# --- Composer keeps every letter: fast typing with no retry, a long paste (C.4, 04-2 §20-§22) ----------------------
+FAST = ('Please just reply OK. Testing fast typing: The quick brown fox jumps over the lazy dog 1234567890, '
+        'then Priya said "meet at 7:45 PM near Bandra station?" & Rahul replied (maybe) - ok! '
+        'Mera naam Asha hai, kal Pune jaana hai; sat sri akal ji. Ending with symbols: @#%=+ [brackets] {braces} ~ done.')
+PASTE = '\n'.join(
+    f'Line {i:02d}: Please just reply OK. Paste check row {i} with numbers {i * 37} and words alpha beta gamma delta.'
+    for i in range(1, 19)
+)
+journey(
+    'U27-composer-no-dropped-letters',
+    'Fast typing and a long paste reach foo letter for letter',
+    '04-2 §20-§22 composer; AT-365 inline paste band',
+    ['C.4 Composer', 'AT-365'],
+    [
+        {'do': 'typeSend', 'text': FAST, 'shot': 'fast-typed',
+         'expect': 'typed at full speed with no retry: the sent text matches exactly'},
+        reply('fast-reply', 'foo replies'),
+        {'do': 'typeSend', 'text': FAST, 'delay': 5, 'shot': 'fast-typed-5ms',
+         'expect': 'typed with 5 ms between keys: exact match'},
+        reply('fast-reply-2', 'foo replies'),
+        {'do': 'pasteSend', 'text': PASTE, 'shot': 'pasted',
+         'expect': '18-line paste (inline band, under 2,000 chars) is sent exactly, line breaks kept'},
+        reply('paste-reply', 'foo replies'),
+    ],
+)
+
 # --- Crash then instant reopen (Windows single-instance lock held by leftover helpers?) ------------------------------
 journey(
     'U26-crash-reopen',

@@ -68,6 +68,10 @@ const fooProcs = () => {
     return null;
   }
 };
+const norm = (t) =>
+  String(t || '')
+    .replace(/\r\n/g, '\n')
+    .trim();
 const stamp = () => new Date().toISOString().replace(/[:.]/g, '-');
 
 async function main() {
@@ -207,6 +211,43 @@ async function main() {
           await page.locator('[data-testid="composer-field"]').click();
           await page.keyboard.press('Control+V');
           break;
+        case 'typeSend':
+        case 'pasteSend': {
+          // Type fast (no retry) or paste, send, then read back what was sent through the bubble's own Copy and require
+          // the exact text: a dropped or doubled letter fails the step.
+          const field = page.locator('[data-testid="composer-field"]');
+          const mine = page.locator('[data-testid="thread-log"] [data-testid="bubble-me"]');
+          const n = await mine.count();
+          await field.click();
+          if (s.do === 'typeSend') await page.keyboard.type(s.text, { delay: s.delay ?? 0 });
+          else {
+            await app.evaluate(({ clipboard }, t) => clipboard.writeText(t), s.text);
+            await page.keyboard.press('Control+V');
+          }
+          await page.waitForTimeout(300);
+          rec.inField = norm(await field.innerText());
+          await page.keyboard.press('Enter');
+          await page.waitForFunction(
+            ([q, c]) => document.querySelectorAll(q).length > c,
+            ['[data-testid="thread-log"] [data-testid="bubble-me"]', n],
+            { timeout: 15_000 },
+          );
+          await app.evaluate(({ clipboard }) => clipboard.writeText(''));
+          await mine.last().click({ button: 'right' });
+          await page.locator('[data-testid="bubble-menu-copy"]').click();
+          await page.waitForTimeout(400);
+          const got = norm(await app.evaluate(({ clipboard }) => clipboard.readText()));
+          const want = norm(s.text);
+          rec.ok = got === want;
+          if (!rec.ok) {
+            let at = 0;
+            while (at < want.length && got[at] === want[at]) at += 1;
+            rec.mismatch = { wantLen: want.length, gotLen: got.length, at, want: want.slice(at, at + 40), got: got.slice(at, at + 40) };
+            rec.fieldOk = rec.inField === want;
+          }
+          await page.keyboard.press('Escape').catch(() => {});
+          break;
+        }
         case 'eval':
           rec.value = await page.evaluate(s.js);
           break;
