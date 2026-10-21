@@ -68,6 +68,10 @@ test('AT-425 · "what can you do" posts the one-sentence reply and then the Capa
     expect(await rows.evaluateAll((els) => els.map((e) => e.getAttribute('data-key')))).toEqual(['email', 'price', 'compare', 'remind']);
     await expect(rows.nth(0)).toContainText(t('kit.capabilities.email.label'));
     await expect(rows.nth(0)).toContainText(t('kit.capabilities.email.hint_off'));
+    await expect(rows.nth(0)).not.toContainText(t('kit.capabilities.email.hint'));
+    // Nothing connected: no WhatsApp row (it shows only when WhatsApp is linked).
+    await expect(card.locator(`[data-key="whatsapp"]`)).toHaveCount(0);
+    await expect(card).not.toContainText(t('kit.capabilities.whatsapp.label'));
     await expect(rows.nth(1)).toContainText(t('kit.capabilities.price.label'));
     await expect(rows.nth(1)).toContainText(t('kit.capabilities.price.hint'));
     await expect(card.getByTestId(TID.kitCapabilitiesTry)).toHaveText(Array(4).fill(t('kit.capabilities.try')));
