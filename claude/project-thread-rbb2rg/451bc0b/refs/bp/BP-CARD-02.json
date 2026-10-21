@@ -1,0 +1,51 @@
+{
+  "id": "BP-CARD-02",
+  "family": "bp",
+  "selector": "#cardgal > .panel:nth-child(2) > .mini",
+  "box": {
+    "x": 528.828125,
+    "y": 10758.40625,
+    "width": 351.328125,
+    "height": 190
+  },
+  "files": {
+    "light": {
+      "png": "BP-CARD-02.light.png",
+      "sha256": "cc41df87df0ee06a78ed562824365970e0f249a9bb04d7d770f66c96d0359fca"
+    },
+    "dark": {
+      "png": "BP-CARD-02.dark.png",
+      "sha256": "939ea9ad22a1c9674244059025058ff55c8a46e1cf6a235212c12cf5fcd5714d"
+    }
+  },
+  "texts": [
+    "Booking your Goa stay",
+    "Step 3 of 4",
+    "✓",
+    "Checked 3 sites",
+    "Waiting for you",
+    "Book and add to calendar",
+    "Watch live",
+    "Stop"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-CARD-02": {
+      "x": 0,
+      "y": 0,
+      "width": 351.328125,
+      "height": 190
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M4",
+  "spec": "05-1 §5.2",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}
