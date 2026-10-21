@@ -94,8 +94,20 @@ export async function openWorld(
   );
   await page.reload();
   await page.getByTestId(TID.titlebarStrip).waitFor();
+  await shellLive(page);
   await windowSize(app, page, 1280, 800);
   return (reply as SeedReply).refs ?? {};
+}
+
+/**
+ * The shell is live: the splash has left and the shell is no longer inert (06-1 §1.2, §1.5). The title bar paints before the
+ * bootstrap lands, so a shortcut pressed right after it could be lost on a busy runner (Ctrl+M and Ctrl+, opened nothing).
+ */
+export async function shellLive(page: Page): Promise<void> {
+  await page.waitForFunction(
+    (splash) => !document.querySelector(`[data-testid="${splash}"]`) && document.getElementById('root')?.inert === false,
+    TID.screenSplash,
+  );
 }
 
 export async function windowSize(app: ElectronApplication, page: Page, width: number, height: number): Promise<void> {
@@ -118,9 +130,9 @@ export async function openChat(page: Page, name: string): Promise<void> {
 }
 
 /**
- * Ctrl+M → the Memory page in its list state. The page's script loads on first open (CR-0021, P1 T10), so the key is proven
- * by the view changing at once (the page, its loading frame or its load error), and the page itself gets 20 s: with the
- * 5 s default a busy Windows runner sometimes had no page yet on first open (AT-303, BP-m6).
+ * Ctrl+M → the Memory page in its list state. The key is proven by the view changing at once (the page, its loading frame or
+ * an error), so a lost key fails here by name; the page's script loads on first open (CR-0021, P1 T10), so the list itself
+ * gets 20 s rather than the 5 s default.
  */
 export async function openMemory(page: Page): Promise<Locator> {
   await page.keyboard.press('Control+m');

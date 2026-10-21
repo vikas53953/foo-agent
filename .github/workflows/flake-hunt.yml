@@ -33,7 +33,7 @@ jobs:
         job: [1, 2, 3]
     env:
       UNIT: ${{ inputs.unit || 'test/integration/jobs/fail.test.ts test/integration/browser/actions.test.ts' }}
-      E2E: ${{ inputs.e2e || 'test/e2e/m9-takeover.spec.ts test/e2e/p1-first-run.spec.ts test/e2e/p1-motion.spec.ts test/e2e/p1-messages.spec.ts test/e2e/m6-page.spec.ts test/e2e/m1-shell.spec.ts test/fidelity/bp/BP-m6.spec.ts' }}
+      E2E: ${{ inputs.e2e || 'test/e2e/m9-takeover.spec.ts test/e2e/m9-signin.spec.ts test/e2e/m8-whatsapp.spec.ts test/e2e/p1-first-run.spec.ts test/e2e/p1-motion.spec.ts test/e2e/p1-messages.spec.ts test/e2e/m6-page.spec.ts test/e2e/m1-shell.spec.ts test/fidelity/bp/BP-m6.spec.ts' }}
       REPEAT: ${{ inputs.repeat || '3' }}
     steps:
       - uses: actions/checkout@v4
