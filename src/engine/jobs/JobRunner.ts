@@ -1576,7 +1576,7 @@ export class JobRunner {
       steps,
       approvals: [],
       payments: [],
-      steerQueue: this.steering.queue.pending(jobId),
+      steerQueue: this.steering.unsettled(jobId),
       estimate: { minutes: job.estMinutes, tokens: job.estTokens, costPaise: job.estCostPaise },
       actual: { tokens: job.spentTokensIn + job.spentTokensOut, costPaise: job.spentCostPaise },
       workingMs,

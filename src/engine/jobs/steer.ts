@@ -228,6 +228,25 @@ export class Steer {
     this.core.launch(job.id);
   }
 
+  /**
+   * Every steer of the job not yet settled: the one in the turn now, then the queued ones. This is what state.json
+   * `steerQueue` keeps, so a steer the AI was reading when foo closed is not lost (08-1 §4.1.2).
+   */
+  unsettled(jobId: string): string[] {
+    const inflight = this.inflight.get(jobId) ?? [];
+    return [...inflight, ...this.queue.pending(jobId).filter((id) => !inflight.includes(id))];
+  }
+
+  /**
+   * After a restart (08-2 §5.9, 07-2 §4 "restored from state.json"): the job's unsettled steers from its state.json go back
+   * on the queue, in order, and their badges follow the job again. The next step turn reads them (part 10).
+   */
+  restore(jobId: string, ids: string[]): void {
+    for (const id of ids) this.queue.push(jobId, id);
+    const follow = this.followers.get(jobId) ?? [];
+    this.followers.set(jobId, [...follow, ...ids.filter((id) => !follow.includes(id))]);
+  }
+
   /** Message ids whose badge follows this job. */
   followersOf(jobId: string): string[] {
     return this.followers.get(jobId) ?? [];
