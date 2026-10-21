@@ -1,0 +1,104 @@
+{
+  "id": "U07-composer",
+  "title": "Composer: multi-line, attach menu, emoji, Esc, draft kept after restart",
+  "spec": "04 §13–§16, 10-2 §C.3 Composer",
+  "covers": ["C.3 Composer"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "shot",
+      "name": "composer",
+      "expect": "composer: + attach, field \"Message foo, or hold Ctrl+Space to talk\", mic/send 36px",
+      "ref": "BP-COMP-01"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "composer-field"
+    },
+    {
+      "do": "key",
+      "key": "Shift+Enter"
+    },
+    {
+      "do": "fill",
+      "tid": "composer-field",
+      "value": "line one\nline two\nline three",
+      "soft": true
+    },
+    {
+      "do": "wait",
+      "ms": 400,
+      "shot": "multiline",
+      "expect": "composer grows upward for 3 lines",
+      "ref": "BP-COMP-02"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "composer-attach"
+    },
+    {
+      "do": "wait",
+      "ms": 500,
+      "shot": "attach-menu",
+      "expect": "attach menu: Files, Screenshot, Secret, Emoji",
+      "ref": "BP-COMP-05"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "composer-attach-menu-emoji"
+    },
+    {
+      "do": "wait",
+      "ms": 500,
+      "shot": "emoji",
+      "expect": "emoji picker"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "fill",
+      "tid": "composer-field",
+      "value": "a draft I did not send",
+      "soft": true
+    },
+    {
+      "do": "relaunch"
+    },
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "wait",
+      "ms": 1000,
+      "shot": "draft-restored",
+      "expect": "the unsent draft is back in the composer"
+    },
+    {
+      "do": "eval",
+      "soft": true,
+      "note": "draft restored",
+      "js": "(document.querySelector('[data-testid=composer-field]') || {}).value || (document.querySelector('[data-testid=composer-field]') || {}).innerText"
+    },
+    {
+      "do": "fill",
+      "tid": "composer-field",
+      "value": "",
+      "soft": true
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

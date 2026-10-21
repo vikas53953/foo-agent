@@ -1,0 +1,195 @@
+{
+  "id": "U05-chat-list",
+  "title": "Chat list: filters, row menu (pin, mute, mark unread), search chats",
+  "spec": "03-1 §3.4, 10-2 §C.2 Left shell / Filter chips",
+  "covers": ["C.2 Left shell: chat list", "C.2 Filter chips + \"Search chats\" box"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "shot",
+      "name": "list",
+      "expect": "chat list with foo row (and any helpers); filter chips All · Needs you · Working · Done",
+      "ref": "BP-ANAT-LIST"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chatlist-filter-needs-you"
+    },
+    {
+      "do": "wait",
+      "ms": 500,
+      "shot": "filter-needs-you",
+      "expect": "filter selected; empty state if nothing needs me"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chatlist-filter-working"
+    },
+    {
+      "do": "wait",
+      "ms": 500,
+      "shot": "filter-working"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chatlist-filter-done"
+    },
+    {
+      "do": "wait",
+      "ms": 500,
+      "shot": "filter-done"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chatlist-filter-all"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chatlist-row",
+      "button": "right"
+    },
+    {
+      "do": "wait",
+      "ms": 500,
+      "shot": "row-menu",
+      "expect": "row menu: Pin, Mark unread, Mute, Profile, Find, Clear, Delete",
+      "ref": "UX-02-04"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chatlist-menu-pin"
+    },
+    {
+      "do": "wait",
+      "ms": 500,
+      "shot": "pinned",
+      "expect": "pin icon on the row"
+    },
+    {
+      "do": "check",
+      "soft": true,
+      "tid": "chatlist-row-pin",
+      "note": "pinned mark"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chatlist-row",
+      "button": "right"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chatlist-menu-mute"
+    },
+    {
+      "do": "wait",
+      "ms": 400,
+      "shot": "mute-sub",
+      "expect": "mute choices 8 hours, 1 week, Always"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chatlist-menu-mute-8h"
+    },
+    {
+      "do": "check",
+      "soft": true,
+      "tid": "chatlist-row-mute",
+      "note": "muted mark"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chatlist-row",
+      "button": "right"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chatlist-menu-unread"
+    },
+    {
+      "do": "wait",
+      "ms": 500,
+      "shot": "unread",
+      "expect": "unread dot/count on the row"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chatlist-row",
+      "button": "right"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chatlist-menu-pin"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chatlist-row",
+      "button": "right"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chatlist-menu-mute"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chatlist-menu-mute-8h"
+    },
+    {
+      "do": "fill",
+      "tid": "sidebar-search-field",
+      "value": "foo",
+      "soft": true
+    },
+    {
+      "do": "wait",
+      "ms": 600,
+      "shot": "search-chats",
+      "expect": "list filtered to foo"
+    },
+    {
+      "do": "fill",
+      "tid": "sidebar-search-field",
+      "value": "zzzz-nothing",
+      "soft": true
+    },
+    {
+      "do": "wait",
+      "ms": 600,
+      "shot": "search-none",
+      "expect": "empty result message"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "sidebar-search-clear"
+    },
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

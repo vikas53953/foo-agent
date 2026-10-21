@@ -1,0 +1,161 @@
+{
+  "id": "U16-settings-all",
+  "title": "Settings: every section",
+  "spec": "06 Settings, 10-2 §C.5 Settings",
+  "covers": ["C.5 Settings"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "key",
+      "key": "Control+,",
+      "shot": "settings",
+      "expect": "Settings opens (Ctrl+,) on Account",
+      "ref": "UX-12-01"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "settings-nav-account"
+    },
+    {
+      "do": "wait",
+      "ms": 700,
+      "shot": "settings-account",
+      "expect": "Settings · account: rows match the spec section",
+      "ref": "UX-12-01"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "settings-nav-appearance"
+    },
+    {
+      "do": "wait",
+      "ms": 700,
+      "shot": "settings-appearance",
+      "expect": "Settings · appearance: rows match the spec section",
+      "ref": "UX-12-02"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "settings-nav-notifications"
+    },
+    {
+      "do": "wait",
+      "ms": 700,
+      "shot": "settings-notifications",
+      "expect": "Settings · notifications: rows match the spec section",
+      "ref": "UX-12-03"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "settings-nav-permissions"
+    },
+    {
+      "do": "wait",
+      "ms": 700,
+      "shot": "settings-permissions",
+      "expect": "Settings · permissions: rows match the spec section",
+      "ref": "UX-12-04"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "settings-nav-money"
+    },
+    {
+      "do": "wait",
+      "ms": 700,
+      "shot": "settings-money",
+      "expect": "Settings · money: rows match the spec section",
+      "ref": "UX-12-05"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "settings-nav-privacy"
+    },
+    {
+      "do": "wait",
+      "ms": 700,
+      "shot": "settings-privacy",
+      "expect": "Settings · privacy: rows match the spec section",
+      "ref": "UX-12-06"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "settings-nav-routines-settings"
+    },
+    {
+      "do": "wait",
+      "ms": 700,
+      "shot": "settings-routines-settings",
+      "expect": "Settings · routines-settings: rows match the spec section",
+      "ref": "UX-12-07"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "settings-nav-connections"
+    },
+    {
+      "do": "wait",
+      "ms": 700,
+      "shot": "settings-connections",
+      "expect": "Settings · connections: rows match the spec section",
+      "ref": "UX-12-08"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "settings-nav-chat"
+    },
+    {
+      "do": "wait",
+      "ms": 700,
+      "shot": "settings-chat",
+      "expect": "Settings · chat: rows match the spec section",
+      "ref": "UX-12-09"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "settings-nav-shortcuts"
+    },
+    {
+      "do": "wait",
+      "ms": 700,
+      "shot": "settings-shortcuts",
+      "expect": "Settings · shortcuts: rows match the spec section",
+      "ref": "UX-12-10"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "settings-nav-about"
+    },
+    {
+      "do": "wait",
+      "ms": 700,
+      "shot": "settings-about",
+      "expect": "Settings · about: rows match the spec section",
+      "ref": "UX-12-11"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "screen-back"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

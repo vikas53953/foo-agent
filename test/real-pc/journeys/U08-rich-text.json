@@ -1,0 +1,71 @@
+{
+  "id": "U08-rich-text",
+  "title": "foo bubbles: code block copy, table, links, list, sources",
+  "spec": "04 §3–§5, 10-2 §C.3 foo bubble, R1",
+  "covers": ["C.3 foo / helper bubble", "C.9 Rich replies"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "send",
+      "text": "Show me a tiny Python hello world in a code block"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "code",
+      "expect": "code block in mono with a Copy button",
+      "ref": "BP-MSG-03"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-code-copy",
+      "last": true
+    },
+    {
+      "do": "send",
+      "text": "Make a 3-row table of Indian states and capitals"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "table",
+      "expect": "table renders (or label: value lines), not raw pipes"
+    },
+    {
+      "do": "send",
+      "text": "Give me the link to the Indian Railways website"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "link",
+      "expect": "a clickable link; right-click shows open/copy"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-autolink",
+      "last": true,
+      "button": "right"
+    },
+    {
+      "do": "wait",
+      "ms": 500,
+      "shot": "link-menu",
+      "expect": "link menu: Open, Copy"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

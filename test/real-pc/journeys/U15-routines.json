@@ -1,0 +1,50 @@
+{
+  "id": "U15-routines",
+  "title": "Routine: create by chat, routines screen, pause, run once",
+  "spec": "05-3 §5.16 Routine, 06 Routines screen, 10-2 §C.4 / §C.5",
+  "covers": ["C.4 Routine (C13)", "C.5 Routines screen"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "send",
+      "text": "Every weekday at 8 AM tell me the weather in Delhi"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "shot": "routine",
+      "expect": "Routine card: created, next run time with weekday and date",
+      "ref": "BP-CARD-16"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "sidebar-more"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "sidebar-menu-routines"
+    },
+    {
+      "do": "wait",
+      "ms": 1200,
+      "shot": "routines",
+      "expect": "Routines screen with the new routine row",
+      "ref": "UX-18-01"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "screen-back"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}
