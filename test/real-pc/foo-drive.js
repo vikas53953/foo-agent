@@ -74,6 +74,48 @@ const norm = (t) =>
     .trim();
 const stamp = () => new Date().toISOString().replace(/[:.]/g, '-');
 
+// foo's own tech log (08-3 §19.1) from the test profile, only the lines written during this journey. The app already keeps
+// message text out and redacts; the repo is public, so keep only the allowed fields and drop any line that still holds
+// something value-like (an email, a long number, an API key).
+const DIDNT_GET = /didn[’']t get that/i;
+const LOG_KEYS = ['t', 'lvl', 'mod', 'evt', 'ids', 'kind', 'ms'];
+const LEAK = /@|\d{10,}|sk-[A-Za-z0-9_-]{6,}/;
+function copyTechLog(from, out) {
+  const dir = path.join(PROFILE, 'data', 'logs');
+  const secret = process.env.ANTHROPIC_API_KEY || '';
+  const lines = [];
+  let dropped = 0;
+  const files = fs.existsSync(dir)
+    ? fs
+        .readdirSync(dir)
+        .filter((n) => /^app-.*\.log$/.test(n))
+        .sort()
+    : [];
+  for (const f of files) {
+    for (const l of fs.readFileSync(path.join(dir, f), 'utf8').split('\n')) {
+      if (!l.trim()) continue;
+      let o;
+      try {
+        o = JSON.parse(l);
+      } catch {
+        dropped += 1;
+        continue;
+      }
+      if (typeof o.t !== 'number' || o.t < from) continue;
+      const keep = Object.fromEntries(LOG_KEYS.filter((k) => k in o).map((k) => [k, o[k]]));
+      const words = [keep.mod, keep.evt, keep.kind].map((v) => String(v ?? '')).join(' ');
+      const idsOk = Object.values(keep.ids || {}).every((v) => /^[A-Za-z0-9_-]{1,64}$/.test(String(v)));
+      if (LEAK.test(words) || !idsOk || (secret && JSON.stringify(keep).includes(secret))) {
+        dropped += 1;
+        continue;
+      }
+      lines.push(JSON.stringify(keep));
+    }
+  }
+  fs.writeFileSync(path.join(out, 'app-log.jsonl'), lines.length ? lines.join('\n') + '\n' : '');
+  return { lines: lines.length, dropped };
+}
+
 async function main() {
   const file = process.argv[2];
   if (!file) throw new Error('usage: foo-drive.js <journey.json>');
@@ -83,6 +125,7 @@ async function main() {
   fs.mkdirSync(out, { recursive: true });
   const logPath = path.join(out, 'log.jsonl');
   const log = (o) => fs.appendFileSync(logPath, JSON.stringify({ t: new Date().toISOString(), ...o }) + '\n');
+  const journeyStart = Date.now();
   log({ journey: journey.id, title: journey.title, spec: journey.spec, exe: EXE });
 
   const { _electron } = loadPlaywright();
@@ -132,22 +175,38 @@ async function main() {
     );
   // What counts as foo answering: a foo text bubble or any card foo posts, below the user's newest bubble. The thread is a
   // virtual list (only the rows near the bottom are in the page), so counting all bubbles stops working in a long chat;
-  // counting what sits after the newest bubble-me does not.
+  // counting what sits after the newest bubble-me does not. A memory chip ("I'll remember: … · Undo", 05-3 §5.17.1) is
+  // foo's whole answer to "remember that …", so it counts too.
   const afterMe = () =>
     page.evaluate(() => {
       const log = document.querySelector('[data-testid="thread-log"]');
       if (!log) return { n: 0, texts: [] };
-      const all = [...log.querySelectorAll('[data-testid^="bubble-"], [data-testid^="card-"]')].filter((el) =>
-        /^(bubble-(me|foo|helper|wa)|card-[a-z-]+)$/.test(el.getAttribute('data-testid')),
+      const memoryChip = (el) =>
+        el.getAttribute('data-testid') === 'thread-marker' && !!el.querySelector('[data-testid="thread-memory-undo"]');
+      const all = [...log.querySelectorAll('[data-testid^="bubble-"], [data-testid^="card-"], [data-testid="thread-marker"]')].filter(
+        (el) => /^(bubble-(me|foo|helper|wa)|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) || memoryChip(el),
       );
       const kinds = all.map((el) => el.getAttribute('data-testid'));
       const after = all
         .slice(kinds.lastIndexOf('bubble-me') + 1)
         .filter(
-          (el) => /^(bubble-foo|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) && el.getAttribute('data-testid') !== 'card-time',
+          (el) =>
+            memoryChip(el) ||
+            (/^(bubble-foo|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) && el.getAttribute('data-testid') !== 'card-time'),
         );
       return { n: after.length, texts: after.map((el) => (el.innerText || '').trim().slice(0, 1500)) };
     });
+
+  // The end state a step names: expectTid / tid / css on screen (count if given), and expectJs true in the page.
+  const endState = async (s) => {
+    const q = s.expectTid ? `[data-testid="${s.expectTid}"]` : s.tid || s.css ? sel(s) : null;
+    if (q) {
+      const n = await page.locator(q).count();
+      if (s.count !== undefined ? n !== s.count : n === 0) return false;
+    }
+    if (s.expectJs && !(await page.evaluate(s.expectJs))) return false;
+    return true;
+  };
 
   try {
     await launch();
@@ -243,8 +302,8 @@ async function main() {
           // Type fast (no retry) or paste, send, then read back what was sent through the bubble's own Copy and require
           // the exact text: a dropped or doubled letter fails the step.
           const field = page.locator('[data-testid="composer-field"]');
-          const mine = page.locator('[data-testid="thread-log"] [data-testid="bubble-me"]');
-          const n = await mine.count();
+          const ME = '[data-testid="thread-log"] [data-testid="bubble-me"]';
+          const mine = page.locator(ME);
           await field.click();
           if (s.do === 'typeSend') await page.keyboard.type(s.text, { delay: s.delay ?? 0 });
           else {
@@ -253,10 +312,19 @@ async function main() {
           }
           await page.waitForTimeout(300);
           rec.inField = norm(await field.innerText());
+          // The thread is a virtual list, so the bubble count stops growing in long chats.
+          // Mark the newest bubble-me before sending and wait for a newer, unmarked one.
+          await page.evaluate((q) => {
+            const b = [...document.querySelectorAll(q)].pop();
+            if (b) b.setAttribute('data-drv-seen', '1');
+          }, ME);
           await page.keyboard.press('Enter');
           await page.waitForFunction(
-            ([q, c]) => document.querySelectorAll(q).length > c,
-            ['[data-testid="thread-log"] [data-testid="bubble-me"]', n],
+            (q) => {
+              const b = [...document.querySelectorAll(q)].pop();
+              return b && !b.hasAttribute('data-drv-seen');
+            },
+            ME,
             { timeout: 15_000 },
           );
           await app.evaluate(({ clipboard }) => clipboard.writeText(''));
@@ -333,6 +401,16 @@ async function main() {
           const texts = cur.texts.slice(before);
           rec.duplicates = texts.filter((x, k) => x && texts.indexOf(x) !== k).length;
           rec.lastReply = texts.join('\n---\n').slice(0, 2000);
+          // A reply is not the outcome: "I didn't get that" fails unless the journey expects it, and a step that names an end
+          // state (a card on screen, the theme changed) needs that state too.
+          if (DIDNT_GET.test(rec.lastReply) && !s.allowDidntGet) {
+            rec.didntGetThat = true;
+            rec.ok = false;
+          }
+          if (rec.ok && (s.expectTid || s.expectJs)) {
+            rec.endState = await endState(s);
+            rec.ok = rec.endState;
+          }
           break;
         }
         case 'dump':
@@ -373,7 +451,12 @@ async function main() {
             process.kill(app.process().pid, 'SIGKILL');
           } catch {
             await new Promise((r) => setTimeout(r, 10_000)); // let the last crash's helpers exit first
-            await launch().catch(() => {});
+            rec.fooProcsBefore = fooProcs();
+            const err = await launch().then(
+              () => null,
+              (e) => String(e && e.message ? e.message : e).split('\n')[0],
+            );
+            if (err) throw new Error(`fresh launch 10 s after the last crash failed (${rec.fooProcsBefore} foo.exe left): ${err}`);
             process.kill(app.process().pid, 'SIGKILL');
           }
           if (s.gapMs) await new Promise((r) => setTimeout(r, s.gapMs));
@@ -398,7 +481,26 @@ async function main() {
     log(rec);
     if (s.shot) await shot(s.shot).catch(() => {});
   }
+  // Some outcomes land after the step gave up (a saved fact, an AI page that opens late). Before calling a step failed,
+  // look again at the end state it names; a late pass is kept as ok with late: true.
+  for (const r of results) {
+    const s = journey.steps[r.i];
+    if (r.ok !== false || r.didntGetThat || r.refused) continue;
+    const named = s.do === 'check' || s.do === 'waitFor' ? { tid: s.tid, css: s.css, count: s.count } : s;
+    if (!(named.tid || named.css || named.expectTid || named.expectJs)) continue;
+    const now = await endState(named).catch(() => false);
+    if (now) {
+      r.ok = true;
+      r.late = true;
+      log({ step: 'recheck', i: r.i, do: r.do, late: true });
+    }
+  }
   await app.close().catch(() => {});
+  try {
+    log({ step: 'appLog', ...copyTechLog(journeyStart, out) });
+  } catch (e) {
+    log({ step: 'appLog', ok: false, error: String(e).slice(0, 300) });
+  }
   const summary = {
     journey: journey.id,
     title: journey.title,

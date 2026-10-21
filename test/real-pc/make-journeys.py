@@ -512,7 +512,8 @@ journey(
     ['C.5 Settings', 'C.8 Quiet premium polish'],
     [
         send('Switch to dark mode'),
-        reply('dark', 'foo switches to dark and shows "Changed: Theme → Dark. [Undo]"', 'UX-12-02'),
+        dict(reply('dark', 'foo switches to dark and shows "Changed: Theme → Dark. [Undo]"', 'UX-12-02'),
+             expectJs="document.documentElement.dataset.theme === 'dark'"),
         click('app-undo-action', last=True),
         wait(1500, 'undo', 'back to light'),
         key('Control+,'),
@@ -633,7 +634,7 @@ journey(
     ['C.9 Rich replies'],
     [
         send('Make me a simple page that tracks my daily water intake with a goal of 8 glasses'),
-        reply('ai-page', 'an AI page / kit card opens with the tracker', None, 240000),
+        dict(reply('ai-page', 'an AI page / kit card opens with the tracker', None, 240000), expectTid='card-ai-page'),
         check('card-ai-page', note='AI page card'),
         check('bubble-action-chip', note='action chips under the reply'),
         click('composer-suggestion-chip', last=True),
