@@ -21,15 +21,15 @@ trap cleanup EXIT
 git fetch -q origin "${base#origin/}" || true
 cleanup
 git worktree add --detach "$wt" "$base" >/dev/null
-(cd "$wt" && pnpm install --frozen-lockfile --ignore-scripts >/dev/null && node node_modules/electron/install.js >/dev/null && pnpm build >/dev/null)
-pnpm build >/dev/null
+(cd "$wt" && pnpm install --frozen-lockfile --ignore-scripts >/dev/null && node node_modules/electron/install.js >/dev/null && pnpm build >/dev/null 2>&1)
+pnpm build >/dev/null 2>&1
 
 echo "Running $grep_re on $base ($(git -C "$wt" rev-parse --short HEAD)) ..."
 run_perf "$wt" base
 echo "Running $grep_re on HEAD ($(git rev-parse --short HEAD)) ..."
 run_perf "$here" head
 
-pick() { grep -E 'p95|fps|frames|PERF-0[0-9]+ ' "$out/$1.log" | grep -vE '^\s*$' | sed 's/^\s*//' || echo "(no numbers; see $out/$1.log)"; }
+pick() { sed 's/^\s*//' "$out/$1.log" | grep -E '^(✓|✘)|p95|frames' | grep -vE '^(> )?[0-9]+ \|' || echo "(no numbers; see $out/$1.log)"; }
 echo
 echo "## perf:pair ($grep_re)"
 echo
