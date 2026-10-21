@@ -1,0 +1,123 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T23-30-48-223Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1048
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792625455029,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 180
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "firstReplyMs": 9622,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here are three for Sat 24 Oct or Sun 25 Oct:\n\nNandi Hills sunrise: leave very early for cool, misty views, back by late morning.\nLalbagh Botanical Garden: a slow walk, then breakfast at a nearby old Bengaluru café.\nBannerghatta Nature Park: a half-day safari and butterfly park, good with friends or family.\n\nWhich one sounds best? I can look up the details.\n\n11:31 PM",
+      "ms": 15698
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 86
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792625471073,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 130
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "firstReplyMs": 3038,
+      "newBubbles": 2,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which city should I look in for vegetarian places?\n1\nDelhi NCR\nBEST FIT\n2\nMumbai\n3\nBengaluru\n4\nAnother city\nTell me which one\nSomething else…\nSkip\n11:31 PM\n---\nਬਟਰਸਕੌਚ ਕੇਕ ਬਹੁਤ ਵਧੀਆ ਚੋਣ ਹੈ, ਇਹ ਸਾਰਿਆਂ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ ਅਤੇ ਗਲਤ ਹੋਣ ਦਾ ਡਰ ਨਹੀਂ।\n\nਮੰਮੀ ਦਾ ਜਨਮਦਿਨ Fri 23 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਕੱਲ੍ਹ Thu 22 Oct ਦੀ ਸਵੇਰ ਤੱਕ ਆਰਡਰ ਕਰ ਦੇਣਾ ਠੀਕ ਰਹੇਗਾ। ਕੀ ਮੈਂ ਤੁਹਾਡੇ ਲਈ ਆਰਡਰ ਕਰਨ ਦੇ ਕੁਝ ਵਿਕਲਪ ਲੱਭਾਂ?\n\n11:31 PM",
+      "ms": 17244
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792625488528,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 143
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "firstReplyMs": 8130,
+      "newBubbles": 2,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Got it, I’ll fold that in.\n\n11:31 PM\n---\nWhich city should I look in for Thu 22 Oct, 8:00 PM?\n1\nDelhi NCR\nBEST FIT\n2\nMumbai\n3\nBengaluru\n4\nAnother city\nType it in the chat\nSomething else…\nSkip\n11:31 PM",
+      "ms": 14214
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 113
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 609
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792625503765,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 130
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "firstReplyMs": 7112,
+      "newBubbles": 2,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Got it, I’ll fold that in.\n\n11:31 PM\n---\nSomething went wrong on my side.\nNothing was booked, paid or sent.\nTry again\n11:31 PM",
+      "ms": 13205
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 4
+    }
+  ]
+}

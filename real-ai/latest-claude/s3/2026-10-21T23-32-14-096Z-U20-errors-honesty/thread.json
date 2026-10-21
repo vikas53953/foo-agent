@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n11:31 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "superseded",
+    "text": "Which city should I look in for Thu 22 Oct, 8:00 PM? → you changed the plan\n11:31 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:31 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n11:31 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n11:31 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "Something went wrong on my side.\nNothing was booked, paid or sent.\nTry again\n11:31 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:31 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n11:32 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Paying your electricity provider\n1\nSign in to your electricity provider\n2\nRead your your electricity provider bill\n3\nShow you before the payment\n4\nShow you before doing anything\n5\nPay your electricity provider\nAbout 3.75 minutes\nGo\nChange plan\n11:32 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n11:32 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which pizza should I order from Domino's?\n1\nMargherita\nBEST FIT\nPlain cheese, a safe pick\n2\nFarmhouse\nVeg with capsicum, onion, tomato, mushroom\n3\nPeppy Paneer\nPaneer with capsicum and red paprika\n4\nSomething else\nTell me what you'd like\nSomething else…\nSkip\n11:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:33 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n11:33 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "skipped",
+    "text": "Connect Gmail\n\nNot connected. You can do this later in Settings → Connections.\n\n11:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:33 PM"
+  }
+]

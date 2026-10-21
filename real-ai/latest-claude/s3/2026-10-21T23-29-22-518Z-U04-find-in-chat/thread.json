@@ -1,0 +1,102 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Which news story is biggest in India today? One line.\n11:27 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n11:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n11:27 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "superseded",
+    "text": "Which area should I search for vegetarian restaurants? → you changed the plan\n11:27 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:27 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 11:27 PM\n11:27 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:27 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nWaiting for you to sign in ›\nLook for account balance\n11:27 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:27 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n11:27 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "check my email\n11:28 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Check your email”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n11:29 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:29 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n11:29 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "superseded",
+    "text": "Which city or area should I look in for the table? → you changed the plan\n11:29 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:29 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "List three Indian rivers\n11:29 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n11:29 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Three Indian rivers: Ganga, Yamuna and Godavari. Your WhatsApp summary comes right after your email.\n\n11:29 PM"
+  }
+]

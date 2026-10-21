@@ -1,0 +1,75 @@
+{
+  "journey": "B12-languages",
+  "title": "Chat in Hinglish and Punjabi, short answers",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T23-19-37-358Z-B12-languages",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792624782942,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 142
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 4: answers in Hinglish",
+      "firstReplyMs": 10139,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Mummy ke birthday (Fri 23 Oct) ke liye 4 achhe options hain:\n\nRasmalai cake: mithai wala swaad, aur kaafi special lagta hai\nPineapple ya fresh fruit cake: halka aur kam meetha\nChocolate truffle: agar mummy ko chocolate pasand hai\nButterscotch: safe classic, sabko pasand aata hai\n\nParso ke liye aaj raat ya kal subah tak order kar do, taaki delivery time pakka mil jaye. Mummy ko kaunsa swaad zyada pasand hai, aur eggless chahiye?\n\n11:19 PM",
+      "ms": 19776
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792624802922,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 115
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi",
+      "firstReplyMs": 8141,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Mummy ke birthday (Fri 23 Oct) ke liye kaunsa cake?\n1\nRasmalai cake\nBEST FIT\nMithai wala swaad, sabse special\n2\nButterscotch\nSafe classic, sabko pasand\n3\nChocolate truffle\nAgar mummy ko chocolate pasand hai\n4\nPineapple / fruit cake\nHalka aur kam meetha\nSomething else…\nSkip\n11:20 PM",
+      "ms": 14260
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792624817354,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 94
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 3: short 1–3 bubbles, no filler",
+      "firstReplyMs": 6111,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "No, Mon 2 Nov isn't a public holiday in Mumbai as far as I know, so banks and offices should be open. The nearest big one is Diwali, around Sun 8 Nov. Holiday lists can change, so check the official Maharashtra list if it matters for a bank visit.\n\nDo you still want help picking Mummy's cake for Fri 23 Oct?\n\n11:20 PM",
+      "ms": 14340
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 5
+    }
+  ]
+}

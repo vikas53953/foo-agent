@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "the second one\n11:31 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "superseded",
+    "text": "Which city should I look in for vegetarian places? → you changed the plan\n11:31 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:31 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਬਟਰਸਕੌਚ ਕੇਕ ਬਹੁਤ ਵਧੀਆ ਚੋਣ ਹੈ, ਇਹ ਸਾਰਿਆਂ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ ਅਤੇ ਗਲਤ ਹੋਣ ਦਾ ਡਰ ਨਹੀਂ।\n\nਮੰਮੀ ਦਾ ਜਨਮਦਿਨ Fri 23 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਕੱਲ੍ਹ Thu 22 Oct ਦੀ ਸਵੇਰ ਤੱਕ ਆਰਡਰ ਕਰ ਦੇਣਾ ਠੀਕ ਰਹੇਗਾ। ਕੀ ਮੈਂ ਤੁਹਾਡੇ ਲਈ ਆਰਡਰ ਕਰਨ ਦੇ ਕੁਝ ਵਿਕਲਪ ਲੱਭਾਂ?\n\n11:31 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n11:31 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n11:31 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "superseded",
+    "text": "Which city should I look in for Thu 22 Oct, 8:00 PM? → you changed the plan\n11:31 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:31 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n11:31 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n11:31 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "Something went wrong on my side.\nNothing was booked, paid or sent.\nTry again\n11:31 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:31 PM"
+  }
+]

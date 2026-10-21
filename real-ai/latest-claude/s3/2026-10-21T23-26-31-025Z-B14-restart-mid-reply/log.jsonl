@@ -1,0 +1,18 @@
+{"t":"2026-10-21T23:26:31.026Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T23:26:36.681Z","step":"launch","ok":true}
+{"t":"2026-10-21T23:26:36.864Z","i":0,"do":"send","sentAt":1792625196787,"sent":true,"before":0,"ok":true,"ms":180}
+{"t":"2026-10-21T23:26:39.865Z","i":1,"do":"wait","ok":true,"ms":3001}
+{"t":"2026-10-21T23:26:45.289Z","step":"launch","ok":true}
+{"t":"2026-10-21T23:26:45.289Z","i":2,"do":"relaunch","ok":true,"ms":5424}
+{"t":"2026-10-21T23:27:00.510Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":4065,"newBubbles":2,"ok":true,"duplicates":0,"lastReply":"A few good names for a pet tortoise: Turbo, Tortellini, Gandalf or Dhimu. Turbo is my pick because it's funny for such a slow friend.\n\n11:26 PM\n---\nWhich area should I look in for vegetarian restaurants?\n1\nNear where I am now\nBEST FIT\nUse my current location\n2\nNear home\n3\nNear work\n4\nAnother area\nTell me the area in chat\nSomething else…\nSkip\n11:26 PM","ms":15220}
+{"t":"2026-10-21T23:27:00.590Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-21T23:27:00.592Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n11:26 PM","eyes":false},"ok":true,"ms":2}
+{"t":"2026-10-21T23:27:00.752Z","i":5,"do":"send","sentAt":1792625220692,"sent":true,"before":0,"ok":true,"ms":160}
+{"t":"2026-10-21T23:27:02.753Z","i":6,"do":"wait","ok":true,"ms":2001}
+{"t":"2026-10-21T23:27:08.134Z","step":"launch","ok":true}
+{"t":"2026-10-21T23:27:08.134Z","i":7,"do":"relaunch","ok":true,"ms":5381}
+{"t":"2026-10-21T23:27:18.217Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","firstReplyMs":4037,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Got it, I’ll fold that in.\n\n11:27 PM","ms":10083}
+{"t":"2026-10-21T23:27:18.291Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-21T23:27:18.295Z","i":9,"do":"dump","ok":true,"ms":4}
+{"t":"2026-10-21T23:27:18.528Z","step":"appLog","lines":28,"dropped":0}
+{"t":"2026-10-21T23:27:18.541Z","step":"aiTurns","turns":4}

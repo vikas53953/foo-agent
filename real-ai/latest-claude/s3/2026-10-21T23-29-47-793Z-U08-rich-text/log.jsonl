@@ -1,0 +1,20 @@
+{"t":"2026-10-21T23:29:47.793Z","journey":"U08-rich-text","title":"foo bubbles: code block copy, table, links, list, sources","spec":"04 §3–§5, 10-2 §C.3 foo bubble, R1","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T23:29:53.765Z","step":"launch","ok":true}
+{"t":"2026-10-21T23:29:54.809Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1040}
+{"t":"2026-10-21T23:29:54.929Z","i":1,"do":"send","sentAt":1792625394889,"sent":true,"before":0,"ok":true,"ms":120}
+{"t":"2026-10-21T23:30:19.269Z","i":2,"do":"waitReply","expect":"code block in mono with a Copy button","firstReplyMs":12183,"newBubbles":2,"ok":true,"duplicates":0,"lastReply":"Here you go:\n\nPython\nCopy\nprint(\"Hello, world!\")\n11:30 PM\n---\nWhich city should I look for vegetarian restaurants in?\n1\nDelhi NCR\nBEST FIT\n2\nMumbai\n3\nBengaluru\n4\nSomewhere else\nTell me the city or area\nSomething else…\nSkip\n11:30 PM","ms":24339}
+{"t":"2026-10-21T23:30:19.344Z","shot":"01-code.png"}
+{"t":"2026-10-21T23:30:19.458Z","i":3,"do":"click","soft":true,"ok":true,"ms":114}
+{"t":"2026-10-21T23:30:19.573Z","i":4,"do":"send","sentAt":1792625419546,"sent":true,"before":0,"ok":true,"ms":114}
+{"t":"2026-10-21T23:30:32.833Z","i":5,"do":"waitReply","expect":"table renders (or label: value lines), not raw pipes","firstReplyMs":7193,"newBubbles":2,"ok":true,"duplicates":0,"lastReply":"Here are three, as a list:\n\nMaharashtra: Mumbai\nTamil Nadu: Chennai\nPunjab: Chandigarh\n\nBack to your table for Thu 22 Oct, 8:00 PM: which city should I look in?\n\n11:30 PM\n---\nWhich city should I find vegetarian restaurants in?\n1\nDelhi NCR\nBEST FIT\n2\nMumbai\n3\nBengaluru\n4\nAnother city\nTell me which one\nSomething else…\nSkip\n11:30 PM","ms":13259}
+{"t":"2026-10-21T23:30:32.905Z","shot":"02-table.png"}
+{"t":"2026-10-21T23:30:32.996Z","i":6,"do":"send","sentAt":1792625432990,"sent":true,"before":0,"ok":true,"ms":91}
+{"t":"2026-10-21T23:30:47.187Z","i":7,"do":"waitReply","expect":"a clickable link; right-click shows open/copy","firstReplyMs":8114,"newBubbles":2,"ok":true,"duplicates":0,"lastReply":"The Indian Railways ticket site is IRCTC. Its main information site is indianrailways.gov.in.\n\n11:30 PM\n---\nWhich city should I find the vegetarian table for 2 in?\n1\nDelhi NCR\nBEST FIT\n2\nMumbai\n3\nBengaluru\n4\nAnother city\nTell me which one\nSomething else…\nSkip\n11:30 PM","ms":14190}
+{"t":"2026-10-21T23:30:47.245Z","shot":"03-link.png"}
+{"t":"2026-10-21T23:30:47.330Z","i":8,"do":"click","soft":true,"ok":true,"ms":84}
+{"t":"2026-10-21T23:30:47.830Z","i":9,"do":"wait","expect":"link menu: Open, Copy","ok":true,"ms":500}
+{"t":"2026-10-21T23:30:47.904Z","shot":"04-link-menu.png"}
+{"t":"2026-10-21T23:30:47.908Z","i":10,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-21T23:30:47.912Z","i":11,"do":"dump","ok":true,"ms":4}
+{"t":"2026-10-21T23:30:48.053Z","step":"appLog","lines":15,"dropped":0}
+{"t":"2026-10-21T23:30:48.066Z","step":"aiTurns","turns":5}
