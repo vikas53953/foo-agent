@@ -141,6 +141,7 @@
         "3:30",
         "Setting",
         "up…",
+        "1",
         "Setting",
         "up",
         "Uses",
@@ -167,8 +168,7 @@
         "Add",
         "another",
         "AI",
-        "Claude",
-        "Testing…"
+        "foo:"
       ]
     },
     "hl": {
@@ -219,8 +219,8 @@
     "total": 2072
   },
   "r5": {
-    "ratio": 0.0367216796875,
-    "diffPixels": 37603,
+    "ratio": 0.0369443359375,
+    "diffPixels": 37831,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-24-02.dark.diff.png"

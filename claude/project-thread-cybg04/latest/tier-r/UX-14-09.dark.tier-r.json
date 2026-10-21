@@ -274,10 +274,6 @@
         "localhost",
         "Watch",
         "live",
-        "Yesterday,",
-        "Thu",
-        "15",
-        "Oct",
         "I’ll",
         "remind",
         "you",
@@ -445,8 +441,13 @@
         "replies",
         "show",
         "here.",
-        "Home:",
-        "localhost"
+        "Waiting",
+        "for",
+        "your",
+        "answer:",
+        "localhost.",
+        "Show",
+        "button."
       ]
     },
     "hl": {
@@ -497,8 +498,8 @@
     "total": 2184
   },
   "r5": {
-    "ratio": 0.092271484375,
-    "diffPixels": 94486,
+    "ratio": 0.09226953125,
+    "diffPixels": 94484,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-09.dark.diff.png"

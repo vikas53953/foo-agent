@@ -63,6 +63,10 @@
         "⌕",
         "▯",
         "⋯",
+        "Today,",
+        "Fri",
+        "16",
+        "Oct",
         "reply",
         "to",
         "my",
@@ -696,8 +700,8 @@
     "total": 421278
   },
   "r5": {
-    "ratio": 0.580626953125,
-    "diffPixels": 594562,
+    "ratio": 0.5804921875,
+    "diffPixels": 594424,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-09.dark.diff.png"

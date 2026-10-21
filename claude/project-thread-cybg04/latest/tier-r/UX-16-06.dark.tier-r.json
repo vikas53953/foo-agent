@@ -65,6 +65,10 @@
         "⌕",
         "▯",
         "⋯",
+        "Today,",
+        "Fri",
+        "16",
+        "Oct",
         "reply",
         "to",
         "my",
@@ -546,18 +550,18 @@
         "replies",
         "show",
         "here.",
-        "foo",
-        "sent",
-        "Approval",
-        "needed:",
+        "Waiting",
+        "for",
+        "your",
+        "OK:",
         "Send",
         "this",
         "email",
         "to",
         "Priya",
-        "Nair?,",
-        "needs",
-        "you"
+        "Nair?.",
+        "Show",
+        "button."
       ]
     },
     "hl": {
@@ -672,8 +676,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.133072265625,
-    "diffPixels": 136266,
+    "ratio": 0.125494140625,
+    "diffPixels": 128506,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-06.dark.diff.png"

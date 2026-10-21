@@ -1,0 +1,47 @@
+{
+  "id": "BP-CARD-17",
+  "family": "bp",
+  "selector": "#cardgal > .panel:nth-child(17) > .mini",
+  "box": {
+    "x": 528.828125,
+    "y": 12472.40625,
+    "width": 351.328125,
+    "height": 136
+  },
+  "files": {
+    "light": {
+      "png": "BP-CARD-17.light.png",
+      "sha256": "cc6e45413353350f8a00ddc827af1c7d8f9ce60d7a5a7f2f84e905520a326d98"
+    },
+    "dark": {
+      "png": "BP-CARD-17.dark.png",
+      "sha256": "177018b86801c8e09c958372f555494b9a75421ee0bc02f9adebeb6c37e17cf2"
+    }
+  },
+  "texts": [
+    "Handed to Trips",
+    "Goa trip · in Trips",
+    "Working",
+    "Open Trips chat"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-CARD-17": {
+      "x": 0,
+      "y": 0,
+      "width": 351.328125,
+      "height": 136
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M9",
+  "spec": "05-3 §5.18",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}

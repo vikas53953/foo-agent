@@ -67,6 +67,10 @@
         "⌕",
         "▯",
         "⋯",
+        "Today,",
+        "Fri",
+        "16",
+        "Oct",
         "☀",
         "Good",
         "morning,",
@@ -275,6 +279,7 @@
         "the",
         "table…",
         "Working",
+        "1",
         "T",
         "9:38",
         "AM",
@@ -740,8 +745,8 @@
     "total": 80520
   },
   "r5": {
-    "ratio": 0.1056953125,
-    "diffPixels": 108232,
+    "ratio": 0.105654296875,
+    "diffPixels": 108190,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-07.dark.diff.png"
