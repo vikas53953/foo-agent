@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is my favourite food?\n11:20 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your favourite food is South Indian, and I've already got that saved.\n\n11:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n11:20 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 11:20 PM\n11:20 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:20 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nChecked ISRO, The Hindu, Times of India, PIB\nI\nT\nT\nP\nLooked for ISRO news from Mon 19 Oct to Wed 21 Oct\nWrote it\nStopped by you\n11:20 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:20 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb searches keep failing with a SEARCH_BUSY error, no results come back\nSpent so far\n1 minutes\nWhat I’d do\ntry The Hindu instead\n11:21 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n11:23 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n11:23 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting\n11:23 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Email about being 15 minutes late”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n11:23 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:23 PM"
+  }
+]

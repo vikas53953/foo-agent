@@ -1,0 +1,20 @@
+{"t":"2026-10-21T23:28:38.864Z","journey":"U22-face-polish","title":"Living face: thinking while working, resting; motion off in settings","spec":"02 §F15.9 living face, 10-2 §C.7, §C.8","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T23:28:44.489Z","step":"launch","ok":true}
+{"t":"2026-10-21T23:28:45.533Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1041}
+{"t":"2026-10-21T23:28:45.672Z","i":1,"do":"send","sentAt":1792625325633,"sent":true,"before":0,"ok":true,"ms":139}
+{"t":"2026-10-21T23:28:47.173Z","i":2,"do":"wait","expect":"26px Thinking face only while the request is in flight (C.7.4)","ok":true,"ms":1500}
+{"t":"2026-10-21T23:28:47.255Z","shot":"01-thinking.png"}
+{"t":"2026-10-21T23:29:04.006Z","i":3,"do":"waitReply","expect":"poem; face back to resting, blinks","firstReplyMs":9641,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Grey clouds roll in from the Arabian Sea,\nMarine Drive shines as the rain runs free.\nChai steams at the stall, the local trains hum,\nAnd Mumbai sings softly till the monsoon is done.\n\n11:28 PM","ms":16751}
+{"t":"2026-10-21T23:29:04.067Z","shot":"02-poem.png"}
+{"t":"2026-10-21T23:29:04.146Z","i":4,"do":"shotEl","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-21T23:29:04.201Z","i":5,"do":"key","ok":true,"ms":54}
+{"t":"2026-10-21T23:29:04.290Z","i":6,"do":"click","soft":true,"ok":true,"ms":89}
+{"t":"2026-10-21T23:29:04.371Z","i":7,"do":"click","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-21T23:29:04.973Z","i":8,"do":"wait","expect":"face motion setting","ok":true,"ms":602}
+{"t":"2026-10-21T23:29:05.041Z","shot":"04-face-motion.png"}
+{"t":"2026-10-21T23:29:05.090Z","i":9,"do":"key","ok":true,"ms":49}
+{"t":"2026-10-21T23:29:28.161Z","shot":"05-error-step10.png"}
+{"t":"2026-10-21T23:29:28.162Z","i":10,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23072}
+{"t":"2026-10-21T23:29:28.165Z","i":11,"do":"dump","ok":true,"ms":3}
+{"t":"2026-10-21T23:29:28.303Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-10-21T23:29:28.318Z","step":"aiTurns","turns":2}
