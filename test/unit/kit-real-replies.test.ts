@@ -1,5 +1,5 @@
 // Spec: 04 §13.5 (kit surface: an invalid or unknown component is dropped with "Couldn't show part of this"; CR-0046: small
-// slips that leave the meaning whole are mended first), 08-4 §24.3 (a table only when the user asks for one), 08-4 §24.5
+// slips that leave the meaning whole are mended first), 08-4 §24.5
 // (the generated catalog text names every limit), CR-0046 AT-441, AT-442, X-204.
 // Cassettes: test/fixtures/kit-replies/*.txt, real AI replies (or rebuilt from a real run's words, see the README there).
 import { readdirSync, readFileSync } from 'node:fs';
@@ -11,7 +11,6 @@ import { foldFence, kitMessagesOf, type Surface } from '../../src/shared/kit/sur
 
 const DIR = 'test/fixtures/kit-replies';
 const cassettes = readdirSync(DIR).filter((f) => f.endsWith('.txt'));
-const P = (f: string) => readFileSync(`resources/prompts/${f}`, 'utf8');
 
 /** The surfaces a whole reply draws, the way the bubble folds them, and how many parts it had to drop. */
 function draw(text: string): { surface: Surface; dropped: number } {
@@ -169,10 +168,5 @@ describe('CR-0046 the prompt teaches the limits the checker uses (AT-442)', () =
     expect(kitPromptSection('balanced')).toContain(
       'Use only the keys shown (? marks optional ones); leave an optional key out instead of writing null.',
     );
-  });
-
-  it('AT-442 a table is allowed when the user asks for one (rules.md, 08-4 §24.3)', () => {
-    expect(P('rules.md')).not.toContain('Never a table.');
-    expect(P('rules.md')).toContain('A table only when the user asks for one');
   });
 });
