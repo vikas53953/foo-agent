@@ -75,7 +75,6 @@
         "10:04",
         "✓",
         "✓",
-        "⏳",
         "train",
         "24",
         "Step",
@@ -275,10 +274,6 @@
         "localhost",
         "Watch",
         "live",
-        "Yesterday,",
-        "Thu",
-        "15",
-        "Oct",
         "I’ll",
         "remind",
         "you",
@@ -372,7 +367,6 @@
         "your",
         "AI",
         "9:41",
-        "🛠",
         "foo",
         "read:",
         "17",
@@ -504,8 +498,8 @@
     "total": 2184
   },
   "r5": {
-    "ratio": 0.09226953125,
-    "diffPixels": 94484,
+    "ratio": 0.092271484375,
+    "diffPixels": 94486,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-09.dark.diff.png"

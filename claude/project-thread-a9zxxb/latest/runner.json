@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-10-21T09:59:06.645Z",
+  "recordedAt": "2026-10-21T11:23:58.259Z",
   "os": {
     "platform": "win32",
     "release": "10.0.26100",
@@ -15,7 +15,7 @@
   "image": {
     "os": "win25-vs2026",
     "version": "20261018.275.1",
-    "runner": "GitHub Actions 1000004114"
+    "runner": "GitHub Actions 1000004250"
   },
   "fonts": {
     "segoeUIVariable": true,
