@@ -1,0 +1,68 @@
+{
+  "id": "J09-J18-booking",
+  "title": "Restaurant booking, watch live and stop (never approves)",
+  "spec": "07-1 J9, J18; 06 live; M9",
+  "steps": [
+    {
+      "do": "send",
+      "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 300000,
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "shot": "booking-start"
+    },
+    {
+      "do": "clickIf",
+      "tid": "card-plan-go",
+      "note": "press Go on the plan (starts the job; spending still needs Approve, which is never tapped)"
+    },
+    {
+      "do": "wait",
+      "ms": 60000,
+      "shot": "booking-working"
+    },
+    {
+      "do": "check",
+      "tid": "chat-header-watch-live"
+    },
+    {
+      "do": "clickIf",
+      "tid": "chat-header-watch-live"
+    },
+    {
+      "do": "wait",
+      "ms": 4000,
+      "shot": "watch-live",
+      "expect": "live view of the browser, Stop and Take over visible"
+    },
+    {
+      "do": "wait",
+      "ms": 20000,
+      "shot": "live-later"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "wait",
+      "ms": 150000,
+      "shot": "booking-later",
+      "expect": "choice card of options, then Approve card; driver never taps Approve"
+    },
+    {
+      "do": "check",
+      "tid": "card-choice"
+    },
+    {
+      "do": "check",
+      "tid": "card-approval"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

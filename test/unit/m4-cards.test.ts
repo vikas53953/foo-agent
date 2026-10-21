@@ -58,11 +58,12 @@ describe('Checklist rows (05-1 §5.2.2–§5.2.3)', () => {
     expect(v.folded).toBe(0);
   });
 
-  it('a step waiting on the user reads the waiting phrase; an unknown key or bad slot reads generic_working', () => {
+  it('a step waiting on the user reads the waiting phrase; an unknown key or a slot with nothing left reads generic_working', () => {
     const v = checklistView({ state: 'needs_you', stopReason: null }, [
       step(0, 'done', 'made_up_key', {}),
       step(1, 'waiting_user', 'wait_pick', {}),
-      step(2, 'pending', 'check_site', { site: 'x'.repeat(41) }),
+      // CR-0027 §(d): a slot is cleaned before the rule, so only one with nothing left falls back.
+      step(2, 'pending', 'check_site', { site: '???' }),
     ]);
     expect(words(v)).toEqual([
       ['done', 'Done this part'],

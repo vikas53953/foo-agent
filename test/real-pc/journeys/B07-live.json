@@ -1,0 +1,68 @@
+{
+  "id": "B07-live",
+  "title": "Watch live, take over, hand back, stop",
+  "spec": "AT-058, AT-272, AT-078, J18",
+  "steps": [
+    {
+      "do": "send",
+      "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "irctc"
+    },
+    {
+      "do": "clickIf",
+      "tid": "card-plan-go"
+    },
+    {
+      "do": "wait",
+      "ms": 45000
+    },
+    {
+      "do": "clickIf",
+      "tid": "chat-header-watch-live"
+    },
+    {
+      "do": "wait",
+      "ms": 4000,
+      "shot": "live"
+    },
+    {
+      "do": "clickIf",
+      "tid": "live-take-over"
+    },
+    {
+      "do": "wait",
+      "ms": 3000,
+      "shot": "taken-over"
+    },
+    {
+      "do": "clickIf",
+      "tid": "live-hand-back"
+    },
+    {
+      "do": "wait",
+      "ms": 3000,
+      "shot": "handed-back"
+    },
+    {
+      "do": "clickIf",
+      "tid": "live-stop"
+    },
+    {
+      "do": "wait",
+      "ms": 8000,
+      "shot": "stopped"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "B02-choice",
+  "title": "Choice card: options, Best fit, typed answer",
+  "spec": "AT-032, AT-035, AT-288",
+  "steps": [
+    {
+      "do": "send",
+      "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first."
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "choice"
+    },
+    {
+      "do": "check",
+      "tid": "card-choice"
+    },
+    {
+      "do": "check",
+      "tid": "card-choice-option"
+    },
+    {
+      "do": "text",
+      "tid": "card-choice",
+      "soft": true
+    },
+    {
+      "do": "send",
+      "text": "2"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "typed-2",
+      "expect": "AT-035: card collapses as if option 2 was tapped"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

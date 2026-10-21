@@ -1,0 +1,60 @@
+{
+  "id": "B11-zoom-appearance",
+  "title": "Zoom keys, settings rows",
+  "spec": "AT-321, AT-320",
+  "steps": [
+    {
+      "do": "key",
+      "key": "Control+Equal"
+    },
+    {
+      "do": "wait",
+      "ms": 1000,
+      "shot": "zoom-in"
+    },
+    {
+      "do": "key",
+      "key": "Control+0"
+    },
+    {
+      "do": "click",
+      "tid": "sidebar-footer-settings"
+    },
+    {
+      "do": "wait",
+      "ms": 2000,
+      "shot": "settings-account"
+    },
+    {
+      "do": "clickIf",
+      "css": "text=Appearance"
+    },
+    {
+      "do": "wait",
+      "ms": 1500,
+      "shot": "settings-appearance"
+    },
+    {
+      "do": "clickIf",
+      "css": "text=Connections"
+    },
+    {
+      "do": "wait",
+      "ms": 1500,
+      "shot": "settings-connections"
+    },
+    {
+      "do": "clickIf",
+      "css": "text=Money"
+    },
+    {
+      "do": "wait",
+      "ms": 1500,
+      "shot": "settings-money"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    }
+  ]
+}

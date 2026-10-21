@@ -1,0 +1,27 @@
+{
+  "id": "J15-helper",
+  "title": "Create a helper",
+  "spec": "07-1 J15; 06 helper",
+  "steps": [
+    {
+      "do": "shot",
+      "name": "sidebar"
+    },
+    {
+      "do": "check",
+      "css": "[data-testid=\"sidebar-new-helper\"]:disabled",
+      "soft": true,
+      "note": "is New helper disabled?"
+    },
+    {
+      "do": "clickIf",
+      "tid": "sidebar-new-helper"
+    },
+    {
+      "do": "wait",
+      "ms": 2500,
+      "shot": "new-helper",
+      "expect": "helper create flow per walkthrough"
+    }
+  ]
+}

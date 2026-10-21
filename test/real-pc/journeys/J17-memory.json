@@ -1,0 +1,54 @@
+{
+  "id": "J17-memory",
+  "title": "Remember, view and forget",
+  "spec": "07-1 J17; 06 memory page; M6",
+  "steps": [
+    {
+      "do": "send",
+      "text": "Please remember that my favourite food is South Indian."
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "shot": "remember"
+    },
+    {
+      "do": "click",
+      "tid": "sidebar-more"
+    },
+    {
+      "do": "click",
+      "tid": "sidebar-menu-memory",
+      "expect": "fact listed in plain words with source"
+    },
+    {
+      "do": "wait",
+      "ms": 2000,
+      "shot": "memory-page",
+      "expect": "fact listed in plain words with source"
+    },
+    {
+      "do": "check",
+      "tid": "memory-row"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "send",
+      "text": "What is my favourite food?"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "shot": "recall"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

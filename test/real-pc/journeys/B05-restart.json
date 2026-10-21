@@ -1,0 +1,42 @@
+{
+  "id": "B05-restart",
+  "title": "Quit mid-job and reopen: job resumes",
+  "spec": "AT-089, AT-118, J19/J20",
+  "steps": [
+    {
+      "do": "send",
+      "text": "Find the opening hours of the National Museum in Delhi and the ticket price"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 60000,
+      "shot": "museum-start"
+    },
+    {
+      "do": "clickIf",
+      "tid": "card-plan-go"
+    },
+    {
+      "do": "wait",
+      "ms": 8000
+    },
+    {
+      "do": "relaunch"
+    },
+    {
+      "do": "wait",
+      "ms": 8000,
+      "shot": "after-reopen",
+      "expect": "AT-118: recovery card; job resumes (WAITING \u2192 WORKING)"
+    },
+    {
+      "do": "wait",
+      "ms": 150000,
+      "shot": "after-reopen-later"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

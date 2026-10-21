@@ -1,0 +1,81 @@
+{
+  "id": "B09-kit",
+  "title": "Rich reply pieces: calculator, map, chart, compare, timer, form",
+  "spec": "R1 AT-340..AT-371",
+  "steps": [
+    {
+      "do": "send",
+      "text": "Make an EMI calculator for a home loan of 50 lakh at 8.5% for 20 years"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "emi",
+      "expect": "AT-347 calculator recomputes"
+    },
+    {
+      "do": "send",
+      "text": "Show the 5 places to visit in Jaipur on a map"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "map",
+      "expect": "AT-341 numbered stops, dashed route, Open in Maps chip"
+    },
+    {
+      "do": "send",
+      "text": "Show a chart of India's GDP growth for the last 5 years"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "chart",
+      "expect": "AT-340 one hue, number rules"
+    },
+    {
+      "do": "send",
+      "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "compare",
+      "expect": "AT-343 highlighted column with why"
+    },
+    {
+      "do": "send",
+      "text": "Set a 2 minute timer for my tea"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 90000,
+      "shot": "timer",
+      "expect": "AT-346 timer runs"
+    },
+    {
+      "do": "send",
+      "text": "Give me a short form to plan a birthday party: date, guests, budget"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "form",
+      "expect": "AT-351 up to 6 fields, submit one action"
+    },
+    {
+      "do": "send",
+      "text": "Make me an interactive page to track my monthly expenses"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 200000,
+      "shot": "ai-page",
+      "expect": "AT-358..362 sealed page, status line first"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

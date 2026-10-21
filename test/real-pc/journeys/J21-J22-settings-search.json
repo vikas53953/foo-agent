@@ -1,0 +1,36 @@
+{
+  "id": "J21-J22-settings-search",
+  "title": "Settings and search",
+  "spec": "07-2 J21, J22",
+  "steps": [
+    {
+      "do": "click",
+      "tid": "sidebar-footer-settings"
+    },
+    {
+      "do": "wait",
+      "ms": 2000,
+      "shot": "settings",
+      "expect": "settings page, Account & your AI shows Claude"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "wait",
+      "ms": 1500
+    },
+    {
+      "do": "fill",
+      "css": "[data-testid=\"sidebar-search-field\"] input",
+      "value": "VPN"
+    },
+    {
+      "do": "wait",
+      "ms": 2000,
+      "shot": "search",
+      "expect": "matching chat and message hits"
+    }
+  ]
+}
