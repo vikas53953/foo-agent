@@ -20,7 +20,7 @@ import type { EngineChat, EngineMessage } from '../main/db/queries';
 import { AiRegistry, CliLimiter, createAdapters, loadPricing, nodeAiFs, nodeWhich, sweepSystemFiles } from './ai';
 import { AiService } from './AiService';
 import { testHomeEnv, testHomeWhich, vaultKeyReader } from './ai/vaultKeys';
-import { ChatLane, type IntakeDecisionView, type IntakeInput, type LaneProtocol } from './chat/ChatLane';
+import { ChatLane, type IntakeDecisionView, type IntakeInput, type IntakeTag, type LaneProtocol } from './chat/ChatLane';
 import type { DbOp, DbTxReply, MainLink, MainToEngine } from './protocol';
 import { MemoryService, UNDO_MS } from './memory/MemoryService';
 import { MemoryShare } from './memory/askShare';
@@ -395,6 +395,11 @@ export class Engine {
         answered: (chatId) => this.memoryReview.after(chatId),
         onCardAnswered: (a) => this.memoryIntake.onCardAnswered(a),
       },
+      // C1 T2 (04 §13.7): Gmail counts as connected only in status `connected`; WhatsApp while the bridge is open.
+      capabilityState: () => ({
+        gmailConnected: this.google !== null && this.trouble.gmailConnected(),
+        whatsappLinked: this.whatsapp.isOpen(),
+      }),
     });
     this.jobs.setIntake((chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }));
     this.kitActions = new KitActions({
@@ -659,6 +664,11 @@ export class Engine {
       const v = validateAct('intake', act);
       return v.ok ? (v.act as { usedMemoryIds: string[] }).usedMemoryIds : [];
     };
+    // C1 T2: 08-4 §25.2 IntakeAct.tags (`intent_capabilities` → the Capabilities card, 04 §13.7).
+    const tagsOf = (act: unknown): IntakeTag[] => {
+      const v = validateAct('intake', act);
+      return v.ok ? ((v.act as { tags?: IntakeTag[] }).tags ?? []) : [];
+    };
     const issuesOf = (act: unknown, error: string | null) => {
       if (error) return error;
       const v = validateAct('intake', act);
@@ -702,12 +712,17 @@ export class Engine {
         const env = parseEnvelope(text);
         const act = env.act === undefined ? null : decision(env.act);
         const issues = act ? null : (issuesOf(env.act, env.actError) ?? formatIssues([]));
-        return { say: env.say, act, issues, usedMemoryIds: act ? usedIds(env.act) : [] };
+        return { say: env.say, act, issues, usedMemoryIds: act ? usedIds(env.act) : [], tags: act ? tagsOf(env.act) : [] };
       },
       parseAct: (text) => {
         const env = parseEnvelope(text);
         const act = env.act === undefined ? null : decision(env.act);
-        return { act, issues: act ? null : issuesOf(env.act, env.actError), usedMemoryIds: act ? usedIds(env.act) : [] };
+        return {
+          act,
+          issues: act ? null : issuesOf(env.act, env.actError),
+          usedMemoryIds: act ? usedIds(env.act) : [],
+          tags: act ? tagsOf(env.act) : [],
+        };
       },
       gate: (onRelease, signal) => {
         let resolve!: () => void;

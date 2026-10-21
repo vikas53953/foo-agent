@@ -49,7 +49,7 @@ Every surface MUST pass all ten. The rows below list only what is **specific** t
 | Surface | States to verify | Keyboard | Narrator says | Specifics |
 |---|---|---|---|---|
 | Your bubble + status badge | sending, sent, read tick (`--tick-read`), badge values exactly 08-0 §F (`seen` 👀, `working` 🛠 incl. slow tooltip "Taking longer than usual", `waiting` ⏳, `done` ✅, `done_unverified` ✅ "Done · Not checked live", `failed` ❌, `stopped` ⛔; never ⚠), queued offline = Clock tick and no badge (R-01, X-61), reply-quote, edited, voice, attachment | Shift+F10 / menu key opens message menu (Reply, Copy, React) | "You, Fri 16 Oct 9:02 AM: {text}. Status: waiting for you" | badge cross-fade `--m-normal`; RM: no fade > 83ms; HC: badge has text tooltip and is announced |
-| foo / helper bubble | typing line, streaming (words fade 150ms, no cursor), 1–3 bubbles with pacing, list in one bubble, markdown (H1/H2 at 20px max, code block mono), table as "label: value", memory chip, proof chip, "Why am I getting this?" footer, voice-preferred reply, "answered with ChatGPT while Claude rests" label | arrow through messages; Enter on a link opens it | "foo, 9:03 AM: {text}" and once streaming ends, not word by word | 225 %: no line over 72 characters at 100 %; dark: `--bubble-foo` dark value; offline: older messages readable |
+| foo / helper bubble | typing line, streaming (words fade 150ms, no cursor), one bubble per reply (CR-0024), list in one bubble, markdown (H1/H2 at 20px max, code block mono), table as "label: value", memory chip, proof chip, "Why am I getting this?" footer, voice-preferred reply, "answered with ChatGPT while Claude rests" label | arrow through messages; Enter on a link opens it | "foo, 9:03 AM: {text}" and once streaming ends, not word by word | 225 %: no line over 72 characters at 100 %; dark: `--bubble-foo` dark value; offline: older messages readable |
 | Voice-note bubble | recording bar ("Release to send · Esc to cancel"), < 0.5 s discarded ("Hold to record"), 5:00 max, sent, transcript collapsed/expanded, transcript failed, low-confidence "I heard…", foo voice reply with speed chip and word highlight, never autoplay | hold Ctrl+Space to record, Esc cancels; Space play/pause on focused bubble | "Voice note, 0:14, transcript: {text}" | RM: waveform static; HC: waveform drawn with system colour |
 | Reactions | add, remove, foo's 👍 on user's bubble, 1️⃣–4️⃣ answering a Choice card, 👍 on an Approval card (does nothing, Article 6) | reaction picker reachable from message menu | "Reacted thumbs up" | — |
 | System lines | handoff marker, date divider, "Opened in Trips", "Not saving this one" chip, held-items line in brief | not focusable unless it has a link | read as plain text, centred lines read once | HC: grey text becomes CanvasText |
@@ -213,6 +213,32 @@ Fixture: FOO_TEST world, fake AI replies with ```a2ui and ```page blocks, pinned
 | AT-371 | Calculator never runs code | formulas go through `shared/kit/evaluate.ts`; no `eval`, `Function` or dynamic import in the kit bundle |
 
 AT-372 to AT-379 are reserved for R1.
+
+### C.10 Chat feel fast patch (X-182, CR-0024)
+
+Fixture: FOO_TEST world, fake AI, pinned clock, motion off for pictures.
+
+| ID | Verify | Pass |
+|---|---|---|
+| AT-420 | Two messages during a job, one answer | both queued messages marked `answered` by one step turn → foo's answer posts once; two folded → "Got it, I'll fold that in." once |
+| AT-421 | Reaction chip | a 👎 on a reply whose last line ends near the left edge never overlaps the text; the next row sits 24px below |
+| AT-422 | Sentence case | the `rules.md` sent to the AI says "Always write in normal sentence case" and no longer says "Mirror the user's casing" |
+| AT-423 | Voice | the foo and helper identity blocks carry the "How you sound" line; the foo block is one paragraph |
+| AT-424 | Answer first | `rules.md` asks for the answer in the first sentence and allows a short list for three or more things |
+| AT-425 | Capabilities card | a reply tagged `intent_capabilities` posts the one-sentence reply and the card; rows follow 04 §13.7 order and connection state; Try it fills the field and sends nothing |
+| AT-426 | Capabilities footer | the safety line always shows; while the Ideas page is a placeholder no ideas link line shows (once it is built: at most once per chat per local day) |
+| AT-427 | One bubble | a 3-paragraph chat-mode reply of ≤ 600 characters shows as one bubble with one time |
+| AT-428 | Sender label in own chats | foo's chat and a helper's chat show the face and name above the first bubble of each output run |
+| AT-429 | Your bubble colour | dark theme user bubble is `#2C359A`; light stays `#0B0B10` |
+| AT-430 | Reply actions on older answers | the action row shows under the latest answer, and under an older answer on hover or focus only |
+| AT-431 | Chip icons | each suggestion chip shows the icon its words map to (04-2 §21.7 Look); unknown words get `Edit` |
+| AT-432 | Answered steer tick | a message answered while a job runs shows ✓✓ read, not ⏳, once its answer posts |
+| AT-433 | Trying another way | a failed tool call with the job carrying on shows "Slow here, trying another way" under the current step until the next successful call |
+
+| AT-434 | Memory note wording | the intake rules ask for a memory fact as a short note without "the user" or their name |
+| AT-435 | Drafts are jobs | the intake rules make writing, sending or replying to an email or a message a job that needs that app, never a draft in `<say>` |
+
+AT-436 to AT-439 are reserved for this patch.
 
 ---
 

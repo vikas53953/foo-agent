@@ -184,11 +184,12 @@ test('UX-08 · Just chatting, in your language: steps 1 to 5 live with fake-AI r
     await setTheme(page, 'light');
   });
 
-  await test.step('UX-08-03 · a short answer comes as two bubbles, no filler', async () => {
+  await test.step('UX-08-03 · a short answer comes as one bubble (CR-0024 F2; the walkthrough drew two), no filler', async () => {
     await page.evaluate(() => window.__fooTest!.clock.advance(1_000));
     await expect(last(TID.bubbleFoo, no!)).toBeVisible();
-    await expect(last(TID.bubbleFoo, next!)).toBeVisible({ timeout: 5_000 });
-    await expect(last(TID.bubbleFoo, next!)).toHaveAttribute('data-pos', 'last');
+    // CR-0024 F2: both paragraphs in one bubble, a run of its own under foo's label.
+    await expect(last(TID.bubbleFoo, no!)).toContainText(next!);
+    await expect(last(TID.bubbleFoo, next!)).toHaveAttribute('data-pos', 'single');
     await expect(page.getByTestId(TID.threadThinking)).toHaveCount(0);
     await expect(page.getByTestId(TID.composerSend)).toHaveAttribute('data-state', 'mic');
     for (const filler of quoted(step('UX-08-03').f)) await expect(log).not.toContainText(filler);

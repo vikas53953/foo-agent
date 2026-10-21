@@ -102,12 +102,12 @@ describe('layout: positions, gaps, sender label, latest answer (04 §1.2, §1.4,
       msg({ authorKind: 'foo', kind: 'card', cardId: 'k_1', createdAt: T0 + 3 * MIN, status: 'complete' }),
       msg({ authorKind: 'foo', createdAt: T0 + 4 * MIN, status: 'complete' }),
     ].map(row);
-    const L = layoutRows(rows, { isGroup: false });
+    const L = layoutRows(rows, { chatKind: 'foo' });
     expect(L.map((l) => l.pos)).toEqual(['first', 'middle', 'last', 'single', null, 'single']);
     expect(L.map((l) => l.gap)).toEqual(['none', 's-1', 's-1', 's3', 's0', 's2']);
     expect(L.map((l) => l.latestAnswer)).toEqual([false, false, false, false, false, true]);
   });
-  it('markers and separators pad themselves; the group label sits above each output run and on a card after another sender', () => {
+  it('markers and separators pad themselves; the label sits above each output run, and in groups on a card after another sender', () => {
     const rows: VRow[] = [
       row(msg({ authorKind: 'helper', authorId: 'h_1', createdAt: T0, status: 'complete' })),
       row(msg({ authorKind: 'helper', authorId: 'h_1', createdAt: T0 + 20_000, status: 'complete' })),
@@ -115,14 +115,24 @@ describe('layout: positions, gaps, sender label, latest answer (04 §1.2, §1.4,
       row(msg({ authorKind: 'foo', createdAt: T0 + 2 * MIN, status: 'complete' })),
       row(msg({ authorKind: 'helper', authorId: 'h_1', kind: 'card', cardId: 'k_2', createdAt: T0 + 3 * MIN })),
     ];
-    const L = layoutRows(rows, { isGroup: true });
+    const L = layoutRows(rows, { chatKind: 'group' });
     expect(L.map((l) => l.senderLabel)).toEqual([true, false, false, true, true]);
     expect(L.map((l) => l.gap)).toEqual(['none', 's-1', 'none', 'none', 's2']);
-    expect(layoutRows(rows, { isGroup: false }).some((l) => l.senderLabel)).toBe(false);
+    // CR-0024 F2: foo's and helpers' own chats label each output run too; cards there carry no label.
+    expect(layoutRows(rows, { chatKind: 'helper' }).map((l) => l.senderLabel)).toEqual([true, false, false, true, false]);
+  });
+  it('24 below foo’s reaction chips, 16 below the user’s badge slot (04 §1.2, §8; CR-0024 B2)', () => {
+    const chip = { emoji: '👎', by: 'me' };
+    const rows = [
+      msg({ authorKind: 'foo', createdAt: T0, status: 'complete', reactions: [chip] }),
+      msg({ createdAt: T0 + MIN, badge: 'done' }),
+      msg({ authorKind: 'foo', createdAt: T0 + 2 * MIN, status: 'complete' }),
+    ].map(row);
+    expect(layoutRows(rows, { chatKind: 'foo' }).map((l) => l.gap)).toEqual(['none', 's5', 's3']);
   });
   it('no latest answer when foo’s newest text is still streaming or deleted', () => {
     const L = layoutRows([row(msg({ authorKind: 'foo', status: 'streaming' })), row(msg({ authorKind: 'foo', deletedAt: T0 }))], {
-      isGroup: false,
+      chatKind: 'foo',
     });
     expect(L.every((l) => !l.latestAnswer)).toBe(true);
   });
@@ -139,7 +149,8 @@ describe('ticks and the badge slot (04 §3.3, §4, 08-0 §F)', () => {
     expect(tickState({ status: 'failed', badge: null })).toBe('not_sent');
     expect(tickState({ status: 'queued', badge: null })).toBe('waiting');
     expect(tickState({ status: 'sent', badge: null })).toBe('sent');
-    expect(tickState({ status: 'complete', badge: null })).toBe('delivered');
+    // CR-0024 F9: once foo started on it (`complete`), it stays read after the badge clears.
+    expect(tickState({ status: 'complete', badge: null })).toBe('read');
     expect(tickState({ status: 'sent', badge: 'seen' })).toBe('read');
     expect(tickLabel('read', 'foo')).toContain('foo');
   });

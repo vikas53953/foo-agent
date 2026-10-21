@@ -1,0 +1,53 @@
+/* Spec: 04 §13.7 (Capabilities card: rows 1px --line apart inside one framed card; a 24px rounded-square icon tile
+ * --r-sm --accent-soft with a 16px icon, label --t-body --fg-1, hint --t-caption --fg-3, a Link button "Try it ›" at the
+ * right; footer safety line --t-caption --fg-2), 02 F5 (rows ≥ 40px). C1 T2, CR-0024 F3. */
+.rows {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: var(--btn-h);
+  padding: var(--s1) 0;
+}
+.row + .row {
+  border-top: 1px solid var(--line);
+}
+.tile {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  border-radius: var(--r-sm);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.words {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+.label {
+  font: var(--t-body);
+  color: var(--fg-1);
+}
+.hint {
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+.try {
+  flex: none;
+}
+.safety {
+  margin: 0;
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
