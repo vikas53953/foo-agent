@@ -22,8 +22,8 @@ export const signInModeOf = (reason: z.infer<typeof SignInReasonSchema>): 'sign_
 
 /**
  * `PhraseKey` = keyof PHRASES (08-4 §26.1, `src/shared/phrases.ts`, M4). 08-2 §5.3.3: a key missing from the catalogue is
- * replaced by the runner with `generic_working`, so the wire accepts any non-empty string here (an unknown key is not a
- * repair). TODO(M4): narrow once phrases.ts exists, keeping the runner's fallback.
+ * replaced by the runner with `generic_working`, so the wire accepts any non-empty string here (X-189: intake asks once for a
+ * repair first, `planKeyIssues` in ChatLane; the fallback stays). TODO(M4): narrow once phrases.ts exists, keeping the runner's fallback.
  */
 export const PhraseKeySchema = z.string().min(1).max(40);
 

@@ -41,6 +41,7 @@ import { understoodItems } from './understood';
 import { isSideAiText, sideAiText } from '../../shared/sideQuestion';
 // Restart fix
 import { isStopCommand } from '../jobs/stopFlow';
+import { planKeyIssues } from '../../shared/phrases';
 
 /** The your-AI service the lane talks to (Engine wires AiService). */
 export interface LaneAi {
@@ -534,10 +535,10 @@ export class ChatLane {
     const parsed = this.d.protocol.parse(result.text);
     let act = parsed.act;
     let usedMemoryIds = act ? (parsed.usedMemoryIds ?? []) : [];
-    if (!act) {
-      // 08-2 §7.5: one repair turn (same session); its <say> is ignored after streaming (08-4 §25.5 item 3).
+    // 08-2 §7.5: one repair turn (same session); its <say> is ignored after streaming (08-4 §25.5 item 3).
+    const repairTurn = async (issues: string) => {
       const repairParams = this.d.ai.turnParams(pick.providerId, 'repair');
-      const repairPrompt = this.d.protocol.buildRepair(parsed.issues ?? '');
+      const repairPrompt = this.d.protocol.buildRepair(issues);
       // M5 T10 (row 5): the repair turn passes the cap check too; at the cap it is skipped (the <say> rule below still applies).
       const capOk = !this.d.capCheck || (await this.d.capCheck(built.system.length + repairPrompt.length, 'repair'));
       const repaired = !capOk
@@ -557,12 +558,28 @@ export class ChatLane {
               new AbortController().signal,
             )
             .catch(() => null);
-      const fixed = repaired && repaired.stopReason === 'end' ? this.d.protocol.parseAct(repaired.text) : null;
+      return repaired && repaired.stopReason === 'end' ? this.d.protocol.parseAct(repaired.text) : null;
+    };
+    if (!act) {
+      const fixed = await repairTurn(parsed.issues ?? '');
       act = fixed?.act ?? null;
       if (act) usedMemoryIds = fixed?.usedMemoryIds ?? [];
       if (!act) this.d.log('chat.protocol_invalid', 'PROTOCOL_INVALID', { chatId });
       // A valid <say> with a broken <act> is still posted as a plain reply (08-2 §7.5).
       if (!act && parsed.say.trim()) act = { kind: 'reply' };
+    } else if (act.kind === 'job' && !side) {
+      // X-189 (CR-0031): a plan whose keys are not in the catalogue gets the same one repair turn; if the repaired plan is
+      // still not clean, the first plan stands and each bad step falls back to `generic_working` (08-2 §5.3.3).
+      const issues = planKeyIssues(act.plan);
+      if (issues) {
+        const fixed = await repairTurn(issues);
+        const clean = fixed?.act?.kind === 'job' && !planKeyIssues(fixed.act.plan);
+        if (clean) {
+          act = fixed.act;
+          usedMemoryIds = fixed.usedMemoryIds ?? usedMemoryIds;
+        }
+        this.d.log('chat.plan_keys', clean ? 'repaired' : 'fallback', { chatId });
+      }
     }
     // R1 T6: a side question is answered, never turned into a job, a memory change or a setting (04 §17.5).
     if (side && act && act.kind !== 'react') act = { kind: 'reply' };

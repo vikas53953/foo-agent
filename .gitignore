@@ -12,7 +12,13 @@ qa-evidence/*/fidelity.html
 qa-evidence/*/fidelity.json
 .claude/*
 !.claude/skills/
+!.claude/settings.json
+!.claude/hooks/
 qa-evidence/verify/
 
 # M8: the real Google OAuth client is owner-provided and never committed (public repo)
 resources/google-oauth.json
+
+# CR-0031: mutation testing output
+reports/mutation/
+.stryker-tmp/

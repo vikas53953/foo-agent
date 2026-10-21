@@ -1,6 +1,7 @@
 // Spec: 11-fidelity §11.1.3 FID-02 (spec/** and golden/** change only with a CR), §11.2.7 FID-06 (no snapshot update,
 // skip, only, mask or threshold change without a CR), §11.7.1 FID-19 (every changed path has an owner in OWNERS.yml);
-// foo-plan §1 rule 8. Runs on pull_request events (GITHUB_EVENT_PATH); a CR is cited as CR-nnnn in a commit message of the
+// FID-22 (X-189, CR-0031: the checks are locked: a PR that changes a check file, or removes more test cases than it adds,
+// needs a CR, so a coding agent cannot quietly weaken what proves a feature works); foo-plan §1 rule 8. Runs on pull_request events (GITHUB_EVENT_PATH); a CR is cited as CR-nnnn in a commit message of the
 // PR or in the PR body, and must exist as docs/cr/CR-nnnn*.md. golden/app/** baselines may instead cite
 // "Fidelity-Report: <id>" (written by golden-bless). FID-02 also needs the CR file to say `Status: Approved by Vikas` with a
 // DECISIONS row id that exists: a cited CR that does not is listed as PENDING (a warning; CRs wait for Vikas's morning
@@ -22,6 +23,8 @@ export interface Added {
 export interface GuardInput {
   files: string[];
   added: Added[];
+  /** Removed lines (FID-22 counts test cases); empty when not given. */
+  removed?: Added[];
   /** Commit messages of the PR plus its body. */
   text: string;
   owners: string[];
@@ -76,6 +79,8 @@ export const RISKY: { name: string; re: RegExp; only?: RegExp }[] = [
   { name: 'skip/only/fixme', re: /\b(?:test|it|describe)(?:\.\w+)*\.(?:skip|only|fixme|todo)\s*\(|\bxit\s*\(|\bfdescribe\s*\(/ },
   { name: 'snapshot update', re: /--update-snapshots|updateSnapshots|FOO_GOLDEN_BLESS\s*=\s*['"]?1/ },
   { name: 'mask', re: /\bmasks?\s*[:=]|"masks?"\s*:/, only: PICTURE_CODE },
+  // FID-21 (CR-0031): docs/fidelity/coverage-gaps.json only shrinks; a new known gap needs a CR.
+  { name: 'new coverage gap', re: /^\s*"(?:AT|ART|PERF|UX|BP)-[\w-]+"\s*:/, only: /^docs\/fidelity\/coverage-gaps\.json$/ },
   {
     name: 'threshold',
     re: /\b(?:threshold|maxDiffPixelRatio|maxDiffPixels|PIXEL_THRESHOLD|maxChangedShare|R[2-4]_LIMITS)\b/,
@@ -84,9 +89,36 @@ export const RISKY: { name: string; re: RegExp; only?: RegExp }[] = [
 ];
 
 /** Files allowed to spell the patterns (the guard and its tests). */
-const SELF = new Set(['scripts/fid-guard.ts', 'test/fidelity/fid-guard.test.ts']);
+const SELF = new Set(['scripts/fid-guard.ts', 'test/fidelity/fid-guard.test.ts', 'test/fidelity/locked-checks.test.ts']);
 
 export const PROTECTED = /^(spec|golden)\//;
+
+/** FID-22 (CR-0031): the files that decide whether the checks run and what they accept. */
+export const LOCKED = [
+  'scripts/fid-guard.ts',
+  'scripts/trace-check.ts',
+  'scripts/coverage-check.ts',
+  'scripts/spec-verify.ts',
+  'vitest.config.ts',
+  'playwright.config.ts',
+  'OWNERS.yml',
+  '.github/workflows/ci.yml',
+  '.claude/settings.json',
+  '.claude/hooks/locked-checks.mjs',
+];
+const TEST_FILE = /^test\/.*\.(?:test|spec)\.tsx?$/;
+/** One test case: `it(`, `test(` and their `.each`/`.concurrent`… forms, not `describe` or `test.step`. */
+const TEST_CASE = /(?:^|[^.\w])(?:it|test)(?:\.(?:each|concurrent|sequential|for|fails|only|skip|skipIf|runIf)\b(?:\([^)]*\))?)*\(\s*['"`]/;
+
+/** A commented-out line: commenting a test out removes it (review of CR-0031). */
+const COMMENT = /^\s*(?:\/\/|\/\*|\*)/;
+
+/** FID-22: test cases removed minus added across the PR's test files (a moved test cancels out). */
+export function testCasesLost(added: readonly Added[], removed: readonly Added[]): number {
+  const count = (xs: readonly Added[]) =>
+    xs.filter((x) => TEST_FILE.test(x.file) && !COMMENT.test(x.line) && TEST_CASE.test(x.line)).length;
+  return count(removed) - count(added);
+}
 const GOLDEN_APP = /^golden\/app\//;
 
 export function citedCrs(text: string): string[] {
@@ -140,6 +172,11 @@ export function guard(input: GuardInput): string[] {
     );
   if (risky.length && !crs.length) problems.push(`FID-06: added without a CR:\n  ${risky.join('\n  ')}`);
 
+  const locked = input.files.filter((f) => LOCKED.includes(f));
+  if (locked.length && !crs.length) problems.push(`FID-22: locked check files changed without a CR: ${locked.join(', ')}`);
+  const lost = testCasesLost(input.added, input.removed ?? []);
+  if (lost > 0 && !crs.length) problems.push(`FID-22: ${lost} test case(s) removed without a CR (cite CR-nnnn saying why)`);
+
   for (const f of input.files) if (!input.owners.some((p) => ownedBy(f, p))) problems.push(`FID-19: ${f} has no owner in OWNERS.yml`);
   if (input.strict) for (const p of pendingCrs(input)) problems.push(`FID-02 (--strict): ${pendingLine(p)}`);
   return problems;
@@ -149,11 +186,28 @@ const git = (...args: string[]) => execFileSync('git', args, { encoding: 'utf8',
 
 /** Added lines per file from a zero-context diff. */
 export function addedLines(patch: string): Added[] {
+  return diffLines(patch, '+');
+}
+
+/** Removed lines per file (FID-22); a deleted file's lines are attributed to its old path. */
+export function removedLines(patch: string): Added[] {
+  return diffLines(patch, '-');
+}
+
+function diffLines(patch: string, sign: '+' | '-'): Added[] {
   const out: Added[] = [];
+  let from = '';
   let file = '';
+  let inHeader = false;
   for (const line of patch.split('\n')) {
-    if (line.startsWith('+++ ')) file = line.slice(4).replace(/^b\//, '');
-    else if (line.startsWith('+') && !line.startsWith('+++')) out.push({ file, line: line.slice(1) });
+    if (line.startsWith('diff --git ')) inHeader = true;
+    else if (inHeader && line.startsWith('--- ')) from = line.slice(4).replace(/^a\//, '');
+    else if (inHeader && line.startsWith('+++ ')) {
+      const to = line.slice(4).replace(/^b\//, '');
+      file = sign === '-' || to === '/dev/null' ? from : to;
+    } else if (line.startsWith('@@')) inHeader = false;
+    // As before FID-22: a content line that starts with the sign three times is never counted.
+    else if (!inHeader && line.startsWith(sign) && !line.startsWith(sign.repeat(3))) out.push({ file, line: line.slice(1) });
   }
   return out;
 }
@@ -179,12 +233,15 @@ function main() {
   }
   const range = `${base}...${head}`;
   const files = git('diff', '--name-only', '--no-renames', range).split('\n').filter(Boolean);
-  const added = addedLines(git('diff', '-U0', '--no-renames', '--no-color', range));
+  const patch = git('diff', '-U0', '--no-renames', '--no-color', range);
+  const added = addedLines(patch);
+  const removed = removedLines(patch);
   const messages = git('log', '--format=%B', `${base}..${head}`);
   const decisionsMd = join('spec', 'constitution', 'DECISIONS.md');
   const input: GuardInput = {
     files,
     added,
+    removed,
     text: `${messages}\n${body}`,
     owners: parseOwners(readFileSync('OWNERS.yml', 'utf8')),
     crExists: (id) => crFile(id) !== null,
@@ -208,7 +265,7 @@ function main() {
     process.exit(1);
   }
   console.log(
-    `fid-guard: ${files.length} changed files checked (FID-02, FID-06, FID-19)${pending.length ? `; ${pending.length} cited CR(s) PENDING` : ''}`,
+    `fid-guard: ${files.length} changed files checked (FID-02, FID-06, FID-19, FID-22)${pending.length ? `; ${pending.length} cited CR(s) PENDING` : ''}`,
   );
 }
 

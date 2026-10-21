@@ -15,6 +15,8 @@ export default tseslint.config(
       'playwright-report/',
       'src/shared/tokens.ts',
       'src/renderer/public/',
+      'reports/',
+      '.stryker-tmp/',
     ],
   },
   js.configs.recommended,

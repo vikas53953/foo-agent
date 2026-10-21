@@ -36,11 +36,13 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm spec:verify
-      - name: FID-02 / FID-06 / FID-19 guard (pull requests)
+      - name: FID-02 / FID-06 / FID-19 / FID-22 guard (pull requests)
         if: github.event_name == 'pull_request'
         run: pnpm fid:guard
       - name: FID-18 trace matrix
         run: pnpm trace:check
+      - name: FID-21 spec coverage of built milestones (CR-0031)
+        run: pnpm spec:coverage
       - run: pnpm check:copy
       - run: pnpm lint
       - run: pnpm format:check
