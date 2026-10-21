@@ -56,6 +56,10 @@
    Values typed on the page are never read; the person types them again in the box (05-2 §5.8.4).
 5. **Code box line:** the box shows "Your bank sent a code to {phone}." from its masked `sentTo` (the engine already carried
    it); `cards.secret.otp.reason` leaves `scripts/copy-pending.json`.
+6. **Hand-back is not a composer notice** (real-PC run 8: the bank line stayed above the composer after the job ended):
+   04-2 §23.2a posts a notice for "a job that failed", and 08-3 §21.2 gives `SITE_HANDBACK` the state "step handed back",
+   not FAILED. So `chatNotices` skips a job whose error card kind is `SITE_HANDBACK`; the hand-back card in the chat stays
+   the one surface, with its Open {site} button. The job row is unchanged.
 
 ## (c) Independent review
 
