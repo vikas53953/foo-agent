@@ -50,14 +50,26 @@ Everything else (`coverage-matrix.md/.tsv/.json`, `coverage-cells.tsv`) is gener
 | Regression         | the full suite on every PR and main merge                          | `.github/workflows/ci.yml`                                                                                                                                                                                          |
 | Usability / UX     | **not done**                                                       | needs real people; meanwhile AI heuristic review vs the Blueprint                                                                                                                                                   |
 
-## What to test next (in this order)
+## What to test next (all 15 test types, in this order)
 
-1. Judge the latest finished real-AI run on main (`real-ai/<sha>-claude` on `evidence`) feature by feature, and add rows to `real-ai-results.tsv`. Use the screenshot and reply text, not the `ok` flag.
-2. Write BDD feature files for the real-user journeys: one `.feature` per spec journey (J1..J22), every scenario tagged with its AT id, mapped to `features.tsv`.
-3. Extend the AI eval set beyond the 32 promptfoo asks: routing, plan quality, tone, safety, bad or unknown AI output, Hinglish, Hindi and Punjabi inputs. Every case names the AT id it proves.
-4. Motion checks for the 13 motion rules marked missing.
-5. Upgrade test: install the previous release build, create chats, memory and a running job, install the new build over it, check everything is kept.
-6. App-wide mutation testing (beyond the 4 files in #101).
+Every feature gets a score per test type, and an overall score: **works / works but wrong vs design / broken / not built**. "Wrong vs design" is judged against the Blueprint, the UX walkthrough and the golden pictures in `golden/`.
+
+1. **Real-AI journeys, judge.** Judge the latest finished real-AI run on main (`real-ai/<sha>-claude` on branch `evidence`) feature by feature. Use the reply text and the screenshot, not the `ok` flag. Add rows to `real-ai-results.tsv`.
+2. **Real-AI journeys, write the missing ones.** 73 features have no journey at all (filter `real_ai = missing` in `coverage-matrix.tsv`). Add journeys to `test/real-pc/journeys/` the way a non-technical user would use foo: messy typing, typos, wrong inputs, Hinglish, Hindi and Punjabi. Every step names its AT id.
+3. **BDD.** One `.feature` file per spec journey (J1..J22) in Given/When/Then, every scenario tagged with its AT id and taken from `features.tsv`. Run them with playwright-bdd (compare it with cucumber-js first, see the research rule below).
+4. **AI eval.** Go beyond the 32 promptfoo asks in #97. Add a second framework next to promptfoo (DeepEval or similar; compare at least 3 options first). Cover routing, plan quality, tone, honesty about what foo can't do, safety (cards, OTPs, passwords, big payments), bad or unknown AI output, a slow or old AI CLI, and Hinglish, Hindi and Punjabi inputs. Every case names the AT id it proves.
+5. **Visual regression with real AI.** Today's picture checks use the pretend AI. Compare real-AI screenshots from the evidence branch against `golden/` and the Blueprint, and list every difference.
+6. **Animation and motion.** Add checks for the 13 motion rules marked missing (AT-300..327 range: springs, fades, shimmer, face blink and bob, reduced motion at Basic and Off).
+7. **Accessibility.** Beyond the axe sweep in #97: keyboard-only use of every screen, focus order, Narrator labels, high contrast, zoom at 200%.
+8. **Performance.** Every time or size limit in the spec (filter `perf` in the matrix), measured on Windows with real AI as well as the pretend AI: startup, first reply, typing lag, chat switch, a long chat, memory use over an hour.
+9. **Install and upgrade.** Install, first run, uninstall, Credential Manager, tray and notifications on Windows. Upgrade: install the previous release build, create chats, memory, a routine and a running job, install the new build over it, then check that everything is kept and the job resumes.
+10. **Mutation.** App-wide Stryker (beyond the 4 files in #101). Report the score per area and the surviving mutants that matter.
+11. **Smoke.** Keep the first-run smoke journey. Propose a 5-minute smoke set covering start, find AI, first chat, one job and one card.
+12. **Regression.** Every bug found becomes a test that would have caught it (project testing rule 10).
+13. **Usability and UX.** (a) An AI heuristic review of every screen against the Blueprint and Nielsen's 10 heuristics, with screenshots. (b) A short script for real people: 5 tasks, what to watch for, and 3 questions afterwards. Vikas or testers run it; never ask Vikas to run tests.
+14. **Spec map.** Every spec screen and feature maps to a built screen plus a test, or CI fails (the guard in #101). List any gaps you find.
+
+Research rule: before you pick a tool, compare the options with evidence (at least 3), and write the comparison in your results file.
 
 The owners already working on parts of this (do not duplicate): real-AI journeys (journey kit, `test/real-pc/`), the test stack PR #97 (judge, axe, chaos, Windows checks), safety checks PR #101 (mutation, spec-coverage guard), pipeline tools PR #102 (nightly pass^3, spend cap).
 
