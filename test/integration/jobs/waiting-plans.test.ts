@@ -211,3 +211,40 @@ describe('CR-0028 · a plan waiting for Go needs the user; it is not running', (
     expect(shownState(j)).toBe('queued');
   });
 });
+
+/** The Claude CLI's real answer (3 runs in 3) to SHOES, the real-AI run on main d91b5b4 (B02), where it got the empty-reply line. */
+const SHOES = 'I want to buy running shoes under 5000 rupees. Ask me what you need to know first.';
+const REAL_SHOES_ASK =
+  '<say></say>\n<act>{"decision":{"kind":"ask","card":{"question":"What will you mainly use the running shoes for?","options":[{"label":"Road running","detail":"Pavement, park, daily jogs"},{"label":"Gym / treadmill","detail":"Indoor workouts"},{"label":"Trail running","detail":"Mud, grass, uneven paths"},{"label":"Walking and casual","detail":"Comfort first"}],"reversible":true}},"usedMemoryIds":[]}</act>';
+
+describe('CR-0028 · "Ask me what you need to know first" (real-AI B02)', () => {
+  it('posts the question card, and a typed answer goes back to intake, never "I didn\'t get that"', async () => {
+    h = jobHarness({
+      script: [
+        jobIntake([{ phraseKey: 'look_for', slots: { what: 'running shoes' } }], { ...FIVE_MIN, match: 'Decisions:' }),
+        { match: { purpose: 'intake', promptIncludes: 'running shoes' }, reply: REAL_SHOES_ASK },
+      ],
+    });
+    const id = h.userSays(SHOES);
+    await h.settle();
+    expect(texts(h)).not.toContain(t('thread.reply.empty'));
+    const card = h.cards('choice')[0]!;
+    expect(card.state).toBe('asking');
+    expect(JSON.parse(String(card.payload)).question).toBe('What will you mainly use the running shoes for?');
+    expect(h.message(id).badge).toBe('waiting');
+
+    h.userSays('Road running');
+    await h.settle();
+    expect(h.cards('choice')[0]!.state).toBe('answered');
+    const last = String(
+      h
+        .turnsJsonl()
+        .filter((x) => x.purpose === 'intake')
+        .at(-1)!.prompt,
+    );
+    expect(last).toContain('Decisions:\n- Q: What will you mainly use the running shoes for? → A: Road running');
+    expect(last).toContain(SHOES);
+    expect(texts(h)).not.toContain(t('thread.reply.empty'));
+    expect(h.jobs()).toHaveLength(1);
+  });
+});
