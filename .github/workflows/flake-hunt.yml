@@ -14,10 +14,10 @@ on:
         default: ''
       e2e:
         description: Playwright spec files, space separated (empty = none)
-        default: 'test/e2e/zz-reload-hunt.spec.ts test/fidelity/ux/UX-14.signin.spec.ts'
+        default: 'test/e2e/zz-reload-hunt.spec.ts'
       repeat:
         description: runs of each test per job
-        default: '15'
+        default: '30'
       debug:
         description: Playwright DEBUG value for the e2e step, e.g. pw:api (empty = off)
         default: ''
@@ -36,8 +36,8 @@ jobs:
         job: [1, 2, 3]
     env:
       UNIT: ${{ inputs.unit }}
-      E2E: ${{ inputs.e2e || 'test/e2e/zz-reload-hunt.spec.ts test/fidelity/ux/UX-14.signin.spec.ts' }}
-      REPEAT: ${{ inputs.repeat || '15' }}
+      E2E: ${{ inputs.e2e || 'test/e2e/zz-reload-hunt.spec.ts' }}
+      REPEAT: ${{ inputs.repeat || '30' }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -51,6 +51,11 @@ jobs:
         run: node node_modules/electron/install.js
       - name: Build better-sqlite3 for Node (unit tests)
         run: pnpm rebuild:node
+      - name: TEMPORARY probe of [::1] listeners
+        shell: bash
+        run: |
+          netstat -ano -p TCPv6 | grep LISTENING | head -60
+          node test/hunt/zz-v6-probe.mjs 2000
       - name: Unit tests, repeated
         if: env.UNIT != ''
         shell: bash
