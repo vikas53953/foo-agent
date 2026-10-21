@@ -116,6 +116,28 @@ function copyTechLog(from, out) {
   return { lines: lines.length, dropped };
 }
 
+// foo's AI turn log (ai_turns, 0001_init.sql) from the test profile's database, for this journey only. Only ids and enum
+// columns are kept (no text, no tokens of content), so it is safe for the public evidence branch.
+const TURN_COLS = ['started_at', 'purpose', 'outcome', 'error_kind', 'duration_ms', 'chat_id', 'job_id', 'provider_id', 'billing'];
+function copyAiTurns(from, out) {
+  const file = path.join(PROFILE, 'data', 'data', 'foo.db');
+  if (!fs.existsSync(file)) return { turns: 0, note: 'no database' };
+  const Database = require(path.join(path.dirname(EXE), 'resources', 'app.asar.unpacked', 'node_modules', 'better-sqlite3'));
+  const db = new Database(file, { readonly: true, fileMustExist: true });
+  try {
+    const rows = db.prepare(`SELECT ${TURN_COLS.join(', ')} FROM ai_turns WHERE started_at >= ? ORDER BY started_at`).all(from);
+    const safe = rows.map((r) =>
+      Object.fromEntries(
+        Object.entries(r).filter(([, v]) => v === null || typeof v === 'number' || /^[A-Za-z0-9_.:-]{1,64}$/.test(String(v))),
+      ),
+    );
+    fs.writeFileSync(path.join(out, 'ai-turns.jsonl'), safe.map((r) => JSON.stringify(r)).join('\n') + (safe.length ? '\n' : ''));
+    return { turns: safe.length };
+  } finally {
+    db.close();
+  }
+}
+
 async function main() {
   const file = process.argv[2];
   if (!file) throw new Error('usage: foo-drive.js <journey.json>');
@@ -500,6 +522,11 @@ async function main() {
     log({ step: 'appLog', ...copyTechLog(journeyStart, out) });
   } catch (e) {
     log({ step: 'appLog', ok: false, error: String(e).slice(0, 300) });
+  }
+  try {
+    log({ step: 'aiTurns', ...copyAiTurns(journeyStart, out) });
+  } catch (e) {
+    log({ step: 'aiTurns', ok: false, error: String(e).slice(0, 300) });
   }
   const summary = {
     journey: journey.id,
