@@ -145,6 +145,7 @@
         "in",
         "Pune",
         "Done",
+        "1",
         "T",
         "11:58",
         "AM",
@@ -152,6 +153,7 @@
         "window",
         "seats",
         "Done",
+        "1",
         "B",
         "Building",
         "society",
@@ -170,7 +172,6 @@
         "PM",
         "17",
         "Oct",
-        "4",
         "4",
         "4",
         "4",
@@ -897,8 +898,8 @@
     "total": 3332
   },
   "r5": {
-    "ratio": 0.05247265625,
-    "diffPixels": 53732,
+    "ratio": 0.0529853515625,
+    "diffPixels": 54257,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-18-08.dark.diff.png"
