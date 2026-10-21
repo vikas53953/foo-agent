@@ -22,7 +22,8 @@ onUserMessage(m):                                             # main stored m (s
   if isStopCommand(m.text):        → stopFlow(m) (08-4 §26.9)                                   # Art. 18
   if openChoiceCard(chat) && answersCard(m): → card.answered (rule: 08-4 §26.6)  # J8
   if openApprovalOrPaymentCard(chat) && looksLikeYes(m): reply "Tap Approve on the card so I know it's really you." (G16 copy, `thread.approval_typed.approve`; for drafts "Tap Send on the draft so I know it's really you.", `thread.approval_typed.send`) ; return   # Art. 6
-  running = liveJobs(chat)                                     # jobs in WORKING or NEEDS_YOU (steer while NEEDS_YOU: 08-4 §26.5)
+  running = liveJobs(chat)                                     # jobs in WORKING or NEEDS_YOU (steer while NEEDS_YOU: 08-4 §26.5),
+                                                               # minus a job whose NEEDS_YOU card is an unanswered Stuck or Secret box card (CR-0035, X-193)
   if running.length == 1: → steer(running[0], m) (§5.5) ; return
   if running.length > 1:  → Choice card (purpose 'job') "Fold this into which job?" (cards.choice.question.fold_which), options = job titles   [foo decision]
   → intakeTurn(m) (§5.3)
