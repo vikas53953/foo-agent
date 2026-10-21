@@ -96,7 +96,7 @@ The `--signin-w` / `--signin-h` sizes of §5.26 no longer size any window (Edge 
 
 **Purpose.** Ask once, in plain words, to connect an app, saying what foo will and won't do with it `[JRN C10, J4]`.
 
-**Trigger.** Interview step (J4 Cards D, E), a job that needs an app that isn't connected ("Connect Gmail and I can tell you the amount too"), an expired connection, or a new permission (send).
+**Trigger.** Interview step (J4 Cards D, E), a job that needs an app that isn't connected ("Connect Gmail and I can tell you the amount too"), an expired connection, or a new permission (send). A job whose intake `needsApps` names a Google app while Google is not connected gets this card before it starts (08-2 §5.3.3, CR-0040, X-198).
 
 ### 5.11.1 Anatomy (`--card-w` 440px)
 
@@ -130,7 +130,7 @@ WhatsApp, after "Show QR code":
 | Google | `google` | "Connect Gmail and Calendar" | "I'll read emails and your calendar to spot bills, trips and plans." / "I'll write drafts, but I never send without your tap." / "See your contacts, so I message the right person (I never change them)." (X-48, UJ-16; the same Google sign-in asks for Gmail, Calendar and Contacts) | [ Connect ] [ Not now ] |
 | Microsoft (**not rendered in v1**: omitted, not disabled, while `flags.outlook` is false, X-41; no "coming soon" copy) | `outlook` | "Connect Outlook and Calendar" | same lines with "Outlook" | [ Connect ] [ Not now ] |
 | WhatsApp | `whatsapp` | "Link WhatsApp" | "I can read your chats to remind you of things, and draft messages for you to send." / "I never send a WhatsApp message without your tap." | [ Show QR code ] [ Not now ] |
-| One app for a job | `one_app` (`why` = the line) | "Connect {Gmail}" | "{So I can see your bills and trips.}" | [ Connect ] [ Not now ] |
+| One app for a job | `one_app` (`why` = the line) | "Connect {Gmail}" | "{So I can see your bills and trips.}"; for a job from intake (CR-0040) the fixed line per app: Gmail "So I can read your email for this." (`cards.connect.one_app.why.gmail`), Calendar "So I can see your calendar for this." (`…why.gcal`), Contacts "So I can see your contacts for this." (`…why.contacts`) | [ Connect ] [ Not now ] |
 | New permission | `allow_send` (`scopes: ['gmail']`) | "Allow sending from {Gmail}" | "To send emails I need one more permission from Google." | [ Allow sending ] [ Not now ] |
 | Contacts alone (only when Gmail is already connected without Contacts; asked together, it is the third line of the Google card) [X-48] | `contacts_only` (`scopes: ['contacts']`) | "Connect your contacts" | "See your contacts so I message the right person." / "I only read them. I never change or share them." | [ Connect ] [ Not now ] |
 
