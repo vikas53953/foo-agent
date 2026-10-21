@@ -128,6 +128,7 @@
         "of…",
         "✓",
         "✓",
+        "⏳",
         "Table",
         "for",
         "Step",
@@ -210,6 +211,7 @@
         "9:05",
         "this",
         "table?",
+        "1",
         "T",
         "9:38",
         "AM",
@@ -386,6 +388,7 @@
         "Village",
         "book",
         "a",
+        "🛠",
         "foo",
         "read:",
         "people",
@@ -435,7 +438,7 @@
         "9:05",
         "AM",
         "in",
-        "15:05",
+        "15:09",
         "Coastline",
         "Kitchen",
         "₹1,000",
@@ -565,8 +568,8 @@
     "total": 2380
   },
   "r5": {
-    "ratio": 0.0889404296875,
-    "diffPixels": 91075,
+    "ratio": 0.0890341796875,
+    "diffPixels": 91171,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-05.light.diff.png"
