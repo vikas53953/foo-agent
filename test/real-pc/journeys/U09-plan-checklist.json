@@ -1,0 +1,79 @@
+{
+  "id": "U09-plan-checklist",
+  "title": "Plan card: pending, Change plan, Go, checklist steps, details, done with proof",
+  "spec": "05-3 §5.24 Plan, §5.5 Checklist, §5.18 Proof, 10-2 §C.4",
+  "covers": ["C.4 Plan (C11)", "C.4 Checklist (C2) + link card", "C.4 Proof chip + receipt footer (C12)"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "send",
+      "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "shot": "plan",
+      "expect": "a Plan card with real step names (never \"Work on it\"), estimate, Go and Change plan",
+      "ref": "BP-CARD-11"
+    },
+    {
+      "do": "shotEl",
+      "tid": "card-plan",
+      "last": true,
+      "name": "plan-card",
+      "soft": true,
+      "ref": "BP-CARD-11"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "card-plan-go",
+      "last": true
+    },
+    {
+      "do": "wait",
+      "ms": 5000,
+      "shot": "checklist",
+      "expect": "checklist appears with the current step spinning",
+      "ref": "BP-CARD-02"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "card-checklist-details",
+      "last": true
+    },
+    {
+      "do": "wait",
+      "ms": 1000,
+      "shot": "checklist-details",
+      "expect": "details expanded"
+    },
+    {
+      "do": "wait",
+      "ms": 150000,
+      "shot": "done",
+      "expect": "job done: checklist collapsed \"Done · n steps · m min\", answer, sources/proof footer"
+    },
+    {
+      "do": "check",
+      "soft": true,
+      "tid": "thread-receipt-footer",
+      "note": "receipt footer"
+    },
+    {
+      "do": "check",
+      "soft": true,
+      "tid": "card-checklist-sources",
+      "note": "sources"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

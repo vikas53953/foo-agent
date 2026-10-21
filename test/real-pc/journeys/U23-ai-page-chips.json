@@ -1,0 +1,57 @@
+{
+  "id": "U23-ai-page-chips",
+  "title": "AI page, action chips, reply chips",
+  "spec": "10-2 §C.9 Rich replies (X-180)",
+  "covers": ["C.9 Rich replies"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "send",
+      "text": "Make me a simple page that tracks my daily water intake with a goal of 8 glasses"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 240000,
+      "shot": "ai-page",
+      "expect": "an AI page / kit card opens with the tracker"
+    },
+    {
+      "do": "check",
+      "soft": true,
+      "tid": "card-ai-page",
+      "note": "AI page card"
+    },
+    {
+      "do": "check",
+      "soft": true,
+      "tid": "bubble-action-chip",
+      "note": "action chips under the reply"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "composer-suggestion-chip",
+      "last": true
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "chip-fills",
+      "expect": "reply chip fills the composer"
+    },
+    {
+      "do": "fill",
+      "tid": "composer-field",
+      "value": "",
+      "soft": true
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

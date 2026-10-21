@@ -1,0 +1,234 @@
+{
+  "id": "U25-anatomy-composer",
+  "title": "Shell anatomy at every width, composer states, honest flights reply",
+  "spec": "03-shell-1 §3.1-§3.5, 03-shell-2 §3.6-§3.7, 04-2 §20-§23, AT-157",
+  "covers": ["BP-ANAT-*", "BP-APP-*", "BP-COMP-*", "BP-MSG-04", "AT-157"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "resize",
+      "w": 1280,
+      "h": 800,
+      "soft": true
+    },
+    {
+      "do": "shot",
+      "name": "L-1280",
+      "expect": "window at 1280x800",
+      "ref": "BP-ANAT-L"
+    },
+    {
+      "do": "shotEl",
+      "tid": "titlebar-strip",
+      "name": "tbar",
+      "ref": "BP-ANAT-TBAR",
+      "soft": true
+    },
+    {
+      "do": "shotEl",
+      "tid": "sidebar",
+      "name": "left",
+      "ref": "BP-APP-L",
+      "soft": true
+    },
+    {
+      "do": "shotEl",
+      "tid": "sidebar-search-field",
+      "name": "search",
+      "ref": "BP-ANAT-SEARCH",
+      "soft": true
+    },
+    {
+      "do": "shotEl",
+      "tid": "chatlist-filters",
+      "name": "chips",
+      "ref": "BP-ANAT-CHIPS",
+      "soft": true
+    },
+    {
+      "do": "shotEl",
+      "tid": "chatlist",
+      "name": "list",
+      "ref": "BP-ANAT-LIST",
+      "soft": true
+    },
+    {
+      "do": "shotEl",
+      "tid": "sidebar-footer-status",
+      "name": "lfoot",
+      "ref": "BP-ANAT-LFOOT",
+      "soft": true
+    },
+    {
+      "do": "shotEl",
+      "tid": "chat-header",
+      "name": "mhead",
+      "ref": "BP-ANAT-MHEAD",
+      "soft": true
+    },
+    {
+      "do": "shotEl",
+      "tid": "app-panel",
+      "name": "right",
+      "ref": "BP-APP-R",
+      "soft": true
+    },
+    {
+      "do": "shotEl",
+      "tid": "app-panel-doing",
+      "name": "doing",
+      "ref": "BP-ANAT-DOING",
+      "soft": true
+    },
+    {
+      "do": "shotEl",
+      "tid": "app-panel-using",
+      "name": "using",
+      "ref": "BP-ANAT-USING",
+      "soft": true
+    },
+    {
+      "do": "shotEl",
+      "tid": "app-panel-know",
+      "name": "know",
+      "ref": "BP-ANAT-KNOW",
+      "soft": true
+    },
+    {
+      "do": "shotEl",
+      "tid": "app-panel-spent",
+      "name": "spent",
+      "ref": "BP-ANAT-SPENT",
+      "soft": true
+    },
+    {
+      "do": "shotEl",
+      "tid": "composer",
+      "name": "comp-empty",
+      "ref": "BP-COMP-01",
+      "soft": true
+    },
+    {
+      "do": "fill",
+      "tid": "composer-field",
+      "value": "Can you remind me to call the bank tomorrow at 10",
+      "soft": true
+    },
+    {
+      "do": "shotEl",
+      "tid": "composer",
+      "name": "comp-typing",
+      "ref": "BP-COMP-02",
+      "soft": true
+    },
+    {
+      "do": "fill",
+      "tid": "composer-field",
+      "value": "Line one\nLine two\nLine three\nLine four",
+      "soft": true
+    },
+    {
+      "do": "shotEl",
+      "tid": "composer",
+      "name": "comp-multiline",
+      "ref": "BP-COMP-03",
+      "soft": true
+    },
+    {
+      "do": "fill",
+      "tid": "composer-field",
+      "value": "",
+      "soft": true
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "composer-attach"
+    },
+    {
+      "do": "wait",
+      "ms": 500,
+      "shot": "comp-attach-menu",
+      "expect": "attach menu",
+      "ref": "BP-COMP-05"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "resize",
+      "w": 1000,
+      "h": 760,
+      "soft": true
+    },
+    {
+      "do": "shot",
+      "name": "M-1000",
+      "expect": "window at 1000x760",
+      "ref": "BP-ANAT-M"
+    },
+    {
+      "do": "resize",
+      "w": 760,
+      "h": 700,
+      "soft": true
+    },
+    {
+      "do": "shot",
+      "name": "S-760",
+      "expect": "window at 760x700",
+      "ref": "BP-ANAT-S"
+    },
+    {
+      "do": "resize",
+      "w": 520,
+      "h": 640,
+      "soft": true
+    },
+    {
+      "do": "shot",
+      "name": "XS-520",
+      "expect": "window at 520x640",
+      "ref": "BP-ANAT-XS"
+    },
+    {
+      "do": "resize",
+      "w": 1280,
+      "h": 800,
+      "soft": true
+    },
+    {
+      "do": "shot",
+      "name": "L-again",
+      "expect": "window at 1280x800",
+      "ref": "BP-ANAT-L"
+    },
+    {
+      "do": "send",
+      "text": "book me a flight to Goa on Sat 12 Dec"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "flights",
+      "expect": "AT-157: says it can find and compare flights and open the booking page; filling passengers and paying comes later"
+    },
+    {
+      "do": "expectText",
+      "soft": true,
+      "re": "compare",
+      "tid": "bubble-foo",
+      "note": "AT-157 honest flights scope",
+      "last": true
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "id": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "spec": "05-1 §5.4 Choice, 10-2 §C.4 Choice (C3), AT-035",
+  "covers": ["C.4 Choice (C3)", "C.3 Reactions", "AT-035"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "send",
+      "text": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "choice",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "ref": "BP-CARD-03"
+    },
+    {
+      "do": "shotEl",
+      "tid": "card-choice",
+      "last": true,
+      "name": "choice-card",
+      "soft": true,
+      "ref": "BP-CARD-03"
+    },
+    {
+      "do": "send",
+      "text": "the second one"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "typed-pick",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\""
+    },
+    {
+      "do": "send",
+      "text": "Now give me 3 dinner options to choose from"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "choice-2",
+      "expect": "another Choice card"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "card-choice-something-else",
+      "last": true
+    },
+    {
+      "do": "wait",
+      "ms": 600,
+      "shot": "something-else",
+      "expect": "composer hint for my own answer"
+    },
+    {
+      "do": "send",
+      "text": "Actually just a home-cooked dal chawal"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "own-answer",
+      "expect": "foo takes my own answer"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

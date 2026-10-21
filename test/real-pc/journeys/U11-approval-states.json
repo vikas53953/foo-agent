@@ -1,0 +1,100 @@
+{
+  "id": "U11-approval-states",
+  "title": "Approval card: pending, Not now (declined), Change (never Approve)",
+  "spec": "05-1 §5.7 Approval, 10-2 §C.4 Approval (C4), Article 6",
+  "covers": ["C.4 Approval (C4)", "C.4 Choice (C3)"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "send",
+      "text": "Book me a table for 2 at a vegetarian restaurant in Connaught Place, Delhi this Saturday 8 PM"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 240000,
+      "shot": "ask",
+      "expect": "options or a plan; never books without an Approval card"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "card-plan-go",
+      "last": true
+    },
+    {
+      "do": "wait",
+      "ms": 120000,
+      "shot": "options",
+      "expect": "restaurant options as a Choice/tiles card"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "card-tiles-option",
+      "last": true
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "card-choice-option",
+      "last": true
+    },
+    {
+      "do": "wait",
+      "ms": 90000,
+      "shot": "approval",
+      "expect": "Approval card PENDING: accent top edge, lock, impact line, Book table / Change / Not now",
+      "ref": "BP-CARD-04"
+    },
+    {
+      "do": "shotEl",
+      "tid": "card-approval",
+      "last": true,
+      "name": "approval-card",
+      "soft": true,
+      "ref": "BP-CARD-04"
+    },
+    {
+      "do": "send",
+      "text": "yes"
+    },
+    {
+      "do": "wait",
+      "ms": 8000,
+      "shot": "typed-yes",
+      "expect": "typed \"yes\" never approves (ART-06a): card still pending"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "card-approval-not-now",
+      "last": true
+    },
+    {
+      "do": "wait",
+      "ms": 3000,
+      "shot": "declined",
+      "expect": "card DECLINED; nothing booked"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "card-approval-ask-again",
+      "last": true
+    },
+    {
+      "do": "wait",
+      "ms": 2000,
+      "shot": "ask-again",
+      "expect": "Ask me again shows a fresh pending card or note"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}
