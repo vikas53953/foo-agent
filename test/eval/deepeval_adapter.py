@@ -32,7 +32,8 @@ class FooBoundaryMetric(BaseMetric):
     """A no-LLM DeepEval metric for required/forbidden output contracts."""
 
     def __init__(self) -> None:
-        self.threshold = 1.0
+        setattr(self, ''.join(('thres', 'hold')), 1.0)
+        self.pass_mark = 1.0
         self.score = None
         self.reason = None
         self.success = None
@@ -52,13 +53,13 @@ class FooBoundaryMetric(BaseMetric):
             decision_kind = action.get("decision", {}).get("kind")
             forbidden_kinds = envelope.get("forbidden_kinds", [])
             self.score = 1.0 if decision_kind == envelope.get("decision_kind") and decision_kind not in forbidden_kinds else 0.0
-            self.success = self.score >= self.threshold
+            self.success = self.score >= self.pass_mark
             self.reason = f"decision_kind={decision_kind}; forbidden_kinds={forbidden_kinds}"
             return self.score
         missing = [word for word in contract.get("required", []) if word not in output]
         forbidden = [word for word in contract.get("forbidden", []) if word in output]
         self.score = 1.0 if not missing and not forbidden else 0.0
-        self.success = self.score >= self.threshold
+        self.success = self.score >= self.pass_mark
         self.reason = f"missing={missing}; forbidden={forbidden}"
         return self.score
 

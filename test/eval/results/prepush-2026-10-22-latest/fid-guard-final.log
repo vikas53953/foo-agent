@@ -1,5 +1,0 @@
-
-> foo@0.0.1 fid:guard <lane-c>
-> tsx scripts/fid-guard.ts "--base" "origin/main"
-
-fid-guard: 0 changed files checked (FID-02, FID-06, FID-19)
