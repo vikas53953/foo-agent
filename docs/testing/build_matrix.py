@@ -2,7 +2,8 @@
 """Build the test coverage matrix: 160 features x 15 test types.
 
 Inputs (all in the repo):
-  docs/testing/features.tsv        the 160 built features (milestone, id, journey, text)
+  docs/testing/features.tsv        every user-facing feature of the built milestones (milestone, id, journey, text,
+                                   built = built | partial | not built, built_note = code pointer)
   spec/trace.csv                   spec id -> test file + live/pending
   docs/testing/real-ai-results.tsv real-AI results, one row per judged feature
   docs/testing/suite-status.tsv    facts that apply to many features (CI runs, PRs not merged)
@@ -202,9 +203,21 @@ def build(f):
         c['regression'] = cell('missing', 'no automated test, so nothing guards it')
     return c
 
+def build_any(f):
+    # A spec feature with no code is "not built" in every column, never "missing" or "fail".
+    built, note = f.get('built') or 'built', f.get('built_note') or ''
+    if built == 'not built':
+        return {k: cell('notbuilt', 'not built yet: ' + note) for k, _ in TYPES}
+    c = build(f)
+    if built == 'partial':
+        for v in c.values():
+            v['why'] += ' (only part of it is built: ' + note + ')'
+    return c
+
 out = []
 for f in features:
-    out.append({'milestone': f['milestone'], 'id': f['id'], 'journey': f['journey'], 'text': f['text'], 'cells': build(f)})
+    out.append({'milestone': f['milestone'], 'id': f['id'], 'journey': f['journey'], 'text': f['text'],
+                'built': f.get('built') or 'built', 'cells': build_any(f)})
 
 totals = {k: collections.Counter(r['cells'][k]['s'] for r in out) for k, _ in TYPES}
 real_proven = sum(1 for r in out if r['cells']['real_ai']['s'] == 'proven')
@@ -221,18 +234,25 @@ with open(P('docs/testing/coverage-matrix.tsv'), 'w', encoding='utf-8', newline=
         w.writerow([r['milestone'], r['id']] + [r['cells'][k]['s'] for k, _ in TYPES] +
                    [' | '.join(f'{k}: {r["cells"][k]["link"]}' for k, _ in TYPES if r['cells'][k]['link'] and r['cells'][k]['s'] != 'na')])
 
-ICON = {'proven': 'P', 'partial': '~', 'missing': '-', 'fail': 'X', 'na': '.'}
+ICON = {'proven': 'P', 'partial': '~', 'missing': '-', 'fail': 'X', 'na': '.', 'notbuilt': 'NB'}
 with open(P('docs/testing/coverage-matrix.md'), 'w', encoding='utf-8') as f:
     f.write('# Test coverage matrix (generated, do not edit by hand)\n\n')
     f.write(f'Built by `python3 docs/testing/build_matrix.py` against main `{MAIN_SHA}` (main CI: {suite["main_ci"]["state"]}, {MAIN_LINK}).\n\n')
     f.write('Rule: **proven** = a passing run on current main is linked. Older builds, PR branches and real-PC reports without a log count as partial.\n\n')
     f.write(f'- Features proven with real AI on current main: **{real_proven} of {len(out)}**\n')
     f.write(f'- Features proven by every test type that applies: **{all_proven} of {len(out)}**\n\n')
-    f.write('| Test type | proven | partial | fails | missing | not applicable |\n|---|---|---|---|---|---|\n')
+    nb = [r for r in out if r['built'] != 'built']
+    f.write(f'- Features in the spec of built milestones: **{len(out)}**; not built: **{sum(r["built"] == "not built" for r in out)}**, only part built: **{sum(r["built"] == "partial" for r in out)}**\n\n')
+    f.write('| Test type | proven | partial | fails | missing | not applicable | not built |\n|---|---|---|---|---|---|---|\n')
     for k, name in TYPES:
         t = totals[k]
-        f.write(f'| {name} | {t["proven"]} | {t["partial"]} | {t["fail"]} | {t["missing"]} | {t["na"]} |\n')
-    f.write('\nKey: P proven, ~ partial, X fails, - missing, . not applicable. Reasons and links per cell: coverage-matrix.json.\n\n')
+        f.write(f'| {name} | {t["proven"]} | {t["partial"]} | {t["fail"]} | {t["missing"]} | {t["na"]} | {t["notbuilt"]} |\n')
+    if nb:
+        f.write('\n## Not built or only part built\n\n| Id | M | Built | Where the code stops |\n|---|---|---|---|\n')
+        for r in nb:
+            note = next(x for x in features if x['id'] == r['id']).get('built_note', '')
+            f.write(f'| {r["id"]} | {r["milestone"]} | {r["built"]} | {note} |\n')
+    f.write('\nKey: P proven, ~ partial, X fails, - missing, . not applicable, NB not built. Reasons and links per cell: coverage-matrix.json.\n\n')
     f.write('| Id | M | ' + ' | '.join(k for k, _ in TYPES) + ' |\n|' + '---|' * (len(TYPES) + 2) + '\n')
     for r in out:
         f.write(f'| {r["id"]} | {r["milestone"]} | ' + ' | '.join(ICON[r['cells'][k]['s']] for k, _ in TYPES) + ' |\n')
@@ -242,7 +262,7 @@ print(json.dumps({'real_proven': real_proven, 'all_proven': all_proven,
 # Long form for the coverage page: one row per feature x test type.
 AREA = lambda r: ('P1 polish' if r['milestone'] == 'M9' and 'AT-300' <= r['id'][:6] <= 'AT-327' else
                   'Kit and AI pages' if r['milestone'] == 'M9' and r['id'][:6] >= 'AT-340' else
-                  {'M2': 'Messages', 'M3': 'Replies', 'M4': 'Jobs', 'M5': 'Cards and approvals', 'M6': 'Memory',
+                  {'M0': 'Design rules', 'M2': 'Messages', 'M3': 'Replies', 'M4': 'Jobs', 'M5': 'Cards and approvals', 'M6': 'Memory',
                    'M8': 'Connectors', 'M9': 'Web and booking'}[r['milestone']])
 with open(P('docs/testing/coverage-cells.tsv'), 'w', encoding='utf-8', newline='') as f:
     w = csv.writer(f, delimiter='\t')

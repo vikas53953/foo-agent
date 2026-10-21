@@ -4,28 +4,41 @@ Built by `python3 docs/testing/build_matrix.py` against main `a087f3c` (main CI:
 
 Rule: **proven** = a passing run on current main is linked. Older builds, PR branches and real-PC reports without a log count as partial.
 
-- Features proven with real AI on current main: **0 of 160**
-- Features proven by every test type that applies: **0 of 160**
+- Features proven with real AI on current main: **0 of 190**
+- Features proven by every test type that applies: **0 of 190**
 
-| Test type | proven | partial | fails | missing | not applicable |
-|---|---|---|---|---|---|
-| Unit | 26 | 0 | 0 | 1 | 133 |
-| Integration | 56 | 0 | 0 | 1 | 103 |
-| E2E (pretend AI) | 87 | 0 | 0 | 2 | 71 |
-| Real-AI journey | 0 | 76 | 11 | 73 | 0 |
-| BDD spec | 0 | 0 | 0 | 160 | 0 |
-| AI eval | 0 | 15 | 0 | 18 | 127 |
-| Visual regression | 0 | 130 | 0 | 0 | 30 |
-| Animation / motion | 5 | 0 | 0 | 13 | 142 |
-| Accessibility | 0 | 130 | 0 | 0 | 30 |
-| Performance | 0 | 12 | 0 | 2 | 146 |
-| Install / upgrade | 0 | 8 | 0 | 0 | 152 |
-| Mutation | 0 | 8 | 0 | 152 | 0 |
-| Smoke | 0 | 6 | 2 | 0 | 152 |
-| Regression | 159 | 0 | 0 | 1 | 0 |
-| Usability / UX | 0 | 0 | 0 | 130 | 30 |
+- Features in the spec of built milestones: **190**; not built: **3**, only part built: **3**
 
-Key: P proven, ~ partial, X fails, - missing, . not applicable. Reasons and links per cell: coverage-matrix.json.
+| Test type | proven | partial | fails | missing | not applicable | not built |
+|---|---|---|---|---|---|---|
+| Unit | 32 | 0 | 0 | 12 | 143 | 3 |
+| Integration | 58 | 0 | 0 | 12 | 117 | 3 |
+| E2E (pretend AI) | 95 | 0 | 0 | 13 | 79 | 3 |
+| Real-AI journey | 0 | 81 | 11 | 95 | 0 | 3 |
+| BDD spec | 0 | 0 | 0 | 187 | 0 | 3 |
+| AI eval | 0 | 15 | 0 | 18 | 154 | 3 |
+| Visual regression | 0 | 156 | 0 | 1 | 30 | 3 |
+| Animation / motion | 5 | 0 | 0 | 13 | 169 | 3 |
+| Accessibility | 0 | 157 | 0 | 0 | 30 | 3 |
+| Performance | 0 | 12 | 0 | 2 | 173 | 3 |
+| Install / upgrade | 0 | 8 | 0 | 0 | 179 | 3 |
+| Mutation | 0 | 8 | 0 | 179 | 0 | 3 |
+| Smoke | 0 | 6 | 2 | 0 | 179 | 3 |
+| Regression | 175 | 0 | 0 | 12 | 0 | 3 |
+| Usability / UX | 0 | 0 | 0 | 157 | 30 | 3 |
+
+## Not built or only part built
+
+| Id | M | Built | Where the code stops |
+|---|---|---|---|
+| AT-039 | M9 | partial | SITE_BLOCKED error card offers "Open the page myself" (src/engine/jobs/JobRunner.ts:273,1286); no "Email the restaurant" link or copy key anywhere in src |
+| AT-040 | M9 | not built | deadline_reminder variant only rendered (src/renderer/cards/Approval.tsx:358,416); nothing in src/engine or src/main creates or schedules it (git grep deadline_reminder) |
+| AT-207 | M9 | partial | Keep it / Cancel booking buttons render disabled with noop "until T7 wires them" (src/renderer/cards/Approval.tsx:186,476-484); reminder never posted |
+| AT-279 | M0 | partial | ART-24a (test/articles/ART-24a.test.ts) scans raw literals only; no multiple-of-4 size scan with the four exceptions exists (ART-24 runtime audit is M14) |
+| GAP-17.1 | M2 | not built | message:retry re-runs only a failed foo reply; retryMessage refuses a finished one (src/main/ipc/IpcRouter.ts:551, src/main/store/queries.ts:605) |
+| GAP-6.2 | M2 | not built | message:edit saves the new text and redraws the chat but never sends it to the engine (src/main/ipc/IpcRouter.ts:534) |
+
+Key: P proven, ~ partial, X fails, - missing, . not applicable, NB not built. Reasons and links per cell: coverage-matrix.json.
 
 | Id | M | unit | integration | e2e | real_ai | bdd | ai_eval | visual | motion | a11y | perf | install | mutation | smoke | regression | ux |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -189,3 +202,33 @@ Key: P proven, ~ partial, X fails, - missing, . not applicable. Reasons and link
 | AT-369 | M9 | . | . | P | - | - | . | ~ | . | ~ | . | . | - | . | P | - |
 | AT-370 | M9 | P | . | . | ~ | - | ~ | ~ | . | ~ | . | . | - | . | P | - |
 | AT-371 | M9 | P | . | . | ~ | - | . | . | . | . | . | . | - | . | P | . |
+| AT-007 | M2 | - | - | - | ~ | - | . | ~ | . | ~ | . | . | - | . | - | - |
+| AT-039 | M9 | - | - | - | ~ | - | . | ~ | . | ~ | . | . | - | . | - | - |
+| AT-040 | M9 | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB |
+| AT-079 | M9 | - | - | - | ~ | - | . | ~ | . | ~ | . | . | - | . | - | - |
+| AT-157 | M9 | - | - | - | ~ | - | . | ~ | . | ~ | . | . | - | . | - | - |
+| AT-207 | M9 | - | - | - | ~ | - | . | ~ | . | ~ | . | . | - | . | - | - |
+| AT-420 | M9 | P | . | . | - | - | . | ~ | . | ~ | . | . | - | . | P | - |
+| AT-421 | M9 | . | . | P | - | - | . | ~ | . | ~ | . | . | - | . | P | - |
+| AT-422 | M9 | P | . | . | - | - | . | ~ | . | ~ | . | . | - | . | P | - |
+| AT-423 | M9 | P | . | . | - | - | . | ~ | . | ~ | . | . | - | . | P | - |
+| AT-424 | M9 | P | . | . | - | - | . | ~ | . | ~ | . | . | - | . | P | - |
+| AT-425 | M9 | . | . | P | - | - | . | ~ | . | ~ | . | . | - | . | P | - |
+| AT-426 | M9 | . | . | P | - | - | . | ~ | . | ~ | . | . | - | . | P | - |
+| AT-427 | M9 | . | . | P | - | - | . | ~ | . | ~ | . | . | - | . | P | - |
+| AT-428 | M9 | . | . | P | - | - | . | ~ | . | ~ | . | . | - | . | P | - |
+| AT-429 | M9 | . | . | P | - | - | . | ~ | . | ~ | . | . | - | . | P | - |
+| AT-430 | M9 | . | . | P | - | - | . | ~ | . | ~ | . | . | - | . | P | - |
+| AT-431 | M9 | . | . | P | - | - | . | ~ | . | ~ | . | . | - | . | P | - |
+| AT-432 | M9 | . | P | . | - | - | . | ~ | . | ~ | . | . | - | . | P | - |
+| AT-433 | M9 | . | P | . | - | - | . | ~ | . | ~ | . | . | - | . | P | - |
+| AT-434 | M9 | P | . | . | - | - | . | ~ | . | ~ | . | . | - | . | P | - |
+| AT-435 | M9 | P | . | . | - | - | . | ~ | . | ~ | . | . | - | . | P | - |
+| AT-440 | M9 | - | - | - | - | - | . | ~ | . | ~ | . | . | - | . | - | - |
+| AT-273 | M3 | - | - | - | - | - | . | ~ | . | ~ | . | . | - | . | - | - |
+| AT-278 | M2 | - | - | - | - | - | . | ~ | . | ~ | . | . | - | . | - | - |
+| AT-279 | M0 | - | - | - | - | - | . | - | . | ~ | . | . | - | . | - | - |
+| AT-284 | M2 | - | - | - | - | - | . | ~ | . | ~ | . | . | - | . | - | - |
+| AT-285 | M2 | - | - | - | - | - | . | ~ | . | ~ | . | . | - | . | - | - |
+| GAP-17.1 | M2 | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB |
+| GAP-6.2 | M2 | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB | NB |

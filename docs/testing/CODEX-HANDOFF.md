@@ -1,6 +1,6 @@
 # Testing handoff: Claude ↔ Codex
 
-Shared notes for any agent (Claude or Codex) working on proving foo's 160 built features. Read this file first, then `coverage-matrix.md`. Update both before you stop.
+Shared notes for any agent (Claude or Codex) working on proving foo's 190 spec features of the built milestones (184 built, 3 partial, 3 not built). Read this file first, then `coverage-matrix.md`. Update both before you stop.
 
 ## Where things stand
 
@@ -14,7 +14,7 @@ Inputs you may edit by hand:
 
 | File                               | What it holds                                                                                                                    |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `docs/testing/features.tsv`        | the 160 built features (milestone, spec id, spec journey, acceptance text)                                                       |
+| `docs/testing/features.tsv`        | every spec feature of the built milestones (milestone, id, journey, acceptance text, built, built_note)                          |
 | `docs/testing/real-ai-results.tsv` | one row per judged real-AI result: id, result (pass/fail/wrong/partial/blocked/unclear), build sha, journey, evidence link, note |
 | `docs/testing/suite-status.tsv`    | facts that decide many cells: main CI state and sha, unmerged test PRs                                                           |
 | `docs/testing/build_matrix.py`     | the rules that turn evidence into cells (the feature groups at the top)                                                          |
