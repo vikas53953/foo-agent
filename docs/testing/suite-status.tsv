@@ -1,10 +1,10 @@
 key	state	sha	link	note
-main_ci	green	a087f3c	https://github.com/vikas53953/foo-agent/actions/runs/39673710431	All jobs green (finished 21:43Z) after batch 1 (#110, #94, #109). Windows golden lane: 6,457 unit/integration pass, 0 fail, 2 skipped; 239 of 239 e2e pass (evidence:main/a087f3c/fidelity.json). The expected approvals fixed-wait flake did not show up.
-main_ci_failing	none	a087f3c	https://github.com/vikas53953/foo-agent/blob/evidence/main/a087f3c/fidelity.json	
-real_ai_main	running	a087f3c	https://github.com/vikas53953/foo-agent/actions/runs/39673710219	Real-AI run on a087f3c (batch 1: driver judges outcomes, browser gaps, memory guesses) started 20:50Z, still running at 21:46Z. Not judged.
+main_ci	green	9850136	https://github.com/vikas53953/foo-agent/actions/runs/39688590729	All jobs green (finished 23:37Z) after batch 2 (#116, #117, #123). Windows golden lane: 6,537 unit/integration pass, 0 fail, 2 skipped; 239 of 239 e2e pass (evidence:main/9850136/fidelity.json).
+main_ci_failing	none	9850136	https://github.com/vikas53953/foo-agent/blob/evidence/main/9850136/fidelity.json	
+real_ai_main	running	9850136	https://github.com/vikas53953/foo-agent/actions/runs/39688590719	Real-AI run on 9850136 started 22:43Z, still running at 23:40Z. Run 21 on a087f3c judged: /mnt/project-files/foo/real-test/score/run21-a087f3c-findings.md (32 of 54 clean).
 judge_97	built, not merged		https://github.com/vikas53953/foo-agent/pull/97	promptfoo AI judge (32 asks), axe sweep, chaos reopen, Windows install/keychain checks.
 mutation_101	built, not merged		https://github.com/vikas53953/foo-agent/pull/101	Stryker on 4 files, 72%.
 bdd	not started			No Given/When/Then files.
 upgrade	not started			No old-build-to-new-build test.
 usability	not started			No real-person sessions.
-visual_golden	1 of 36 match	a087f3c	https://github.com/vikas53953/foo-agent/blob/evidence/main/a087f3c/fidelity.html	Golden picture report on a087f3c: 1 drawing matches, 68 differ a little and need a look, 151 disputed by a CR, 9 not built, 0 fail. Visual regression is not proven.
+visual_golden	1 of 36 match	9850136	https://github.com/vikas53953/foo-agent/blob/evidence/main/9850136/fidelity.html	Golden picture report on 9850136: 1 drawing matches, 68 differ a little and need a look, 151 disputed by a CR, 9 not built, 0 fail. Visual regression is not proven.
