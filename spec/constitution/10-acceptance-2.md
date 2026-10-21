@@ -226,7 +226,7 @@ Fixture: FOO_TEST world, fake AI, pinned clock, motion off for pictures.
 | AT-423 | Voice | the foo and helper identity blocks carry the "How you sound" line; the foo block is one paragraph |
 | AT-424 | Answer first | `rules.md` asks for the answer in the first sentence and allows a short list for three or more things |
 | AT-425 | Capabilities card | a reply tagged `intent_capabilities` posts the one-sentence reply and the card; rows follow 04 §13.7 order and connection state; Try it fills the field and sends nothing |
-| AT-426 | Capabilities footer | the safety line always shows; the ideas link line shows at most once per chat per local day |
+| AT-426 | Capabilities footer | the safety line always shows; while the Ideas page is a placeholder no ideas link line shows (once it is built: at most once per chat per local day) |
 | AT-427 | One bubble | a 3-paragraph chat-mode reply of ≤ 600 characters shows as one bubble with one time |
 | AT-428 | Sender label in own chats | foo's chat and a helper's chat show the face and name above the first bubble of each output run |
 | AT-429 | Your bubble colour | dark theme user bubble is `#2C359A`; light stays `#0B0B10` |
