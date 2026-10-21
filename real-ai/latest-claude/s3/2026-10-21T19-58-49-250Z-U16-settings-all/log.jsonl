@@ -1,0 +1,40 @@
+{"t":"2026-10-21T19:58:49.251Z","journey":"U16-settings-all","title":"Settings: every section","spec":"06 Settings, 10-2 §C.5 Settings","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T19:58:55.666Z","step":"launch","ok":true}
+{"t":"2026-10-21T19:58:56.714Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1045}
+{"t":"2026-10-21T19:58:56.763Z","i":1,"do":"key","expect":"Settings opens (Ctrl+,) on Account","ok":true,"ms":49}
+{"t":"2026-10-21T19:58:56.881Z","shot":"01-settings.png"}
+{"t":"2026-10-21T19:58:56.982Z","i":2,"do":"click","soft":true,"ok":true,"ms":101}
+{"t":"2026-10-21T19:58:57.683Z","i":3,"do":"wait","expect":"Settings · account: rows match the spec section","ok":true,"ms":701}
+{"t":"2026-10-21T19:58:57.751Z","shot":"02-settings-account.png"}
+{"t":"2026-10-21T19:58:57.833Z","i":4,"do":"click","soft":true,"ok":true,"ms":82}
+{"t":"2026-10-21T19:58:58.540Z","i":5,"do":"wait","expect":"Settings · appearance: rows match the spec section","ok":true,"ms":707}
+{"t":"2026-10-21T19:58:58.622Z","shot":"03-settings-appearance.png"}
+{"t":"2026-10-21T19:58:58.700Z","i":6,"do":"click","soft":true,"ok":true,"ms":78}
+{"t":"2026-10-21T19:58:59.400Z","i":7,"do":"wait","expect":"Settings · notifications: rows match the spec section","ok":true,"ms":700}
+{"t":"2026-10-21T19:58:59.453Z","shot":"04-settings-notifications.png"}
+{"t":"2026-10-21T19:58:59.513Z","i":8,"do":"click","soft":true,"ok":true,"ms":60}
+{"t":"2026-10-21T19:59:00.215Z","i":9,"do":"wait","expect":"Settings · permissions: rows match the spec section","ok":true,"ms":702}
+{"t":"2026-10-21T19:59:00.278Z","shot":"05-settings-permissions.png"}
+{"t":"2026-10-21T19:59:00.340Z","i":10,"do":"click","soft":true,"ok":true,"ms":62}
+{"t":"2026-10-21T19:59:01.043Z","i":11,"do":"wait","expect":"Settings · money: rows match the spec section","ok":true,"ms":702}
+{"t":"2026-10-21T19:59:01.106Z","shot":"06-settings-money.png"}
+{"t":"2026-10-21T19:59:01.169Z","i":12,"do":"click","soft":true,"ok":true,"ms":62}
+{"t":"2026-10-21T19:59:01.871Z","i":13,"do":"wait","expect":"Settings · privacy: rows match the spec section","ok":true,"ms":702}
+{"t":"2026-10-21T19:59:01.937Z","shot":"07-settings-privacy.png"}
+{"t":"2026-10-21T19:59:01.996Z","i":14,"do":"click","soft":true,"ok":true,"ms":59}
+{"t":"2026-10-21T19:59:02.700Z","i":15,"do":"wait","expect":"Settings · routines-settings: rows match the spec section","ok":true,"ms":703}
+{"t":"2026-10-21T19:59:02.762Z","shot":"08-settings-routines-settings.png"}
+{"t":"2026-10-21T19:59:02.843Z","i":16,"do":"click","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-21T19:59:03.546Z","i":17,"do":"wait","expect":"Settings · connections: rows match the spec section","ok":true,"ms":702}
+{"t":"2026-10-21T19:59:03.614Z","shot":"09-settings-connections.png"}
+{"t":"2026-10-21T19:59:03.683Z","i":18,"do":"click","soft":true,"ok":true,"ms":69}
+{"t":"2026-10-21T19:59:04.385Z","i":19,"do":"wait","expect":"Settings · chat: rows match the spec section","ok":true,"ms":701}
+{"t":"2026-10-21T19:59:04.448Z","shot":"10-settings-chat.png"}
+{"t":"2026-10-21T19:59:04.512Z","i":20,"do":"click","soft":true,"ok":true,"ms":63}
+{"t":"2026-10-21T19:59:05.213Z","i":21,"do":"wait","expect":"Settings · shortcuts: rows match the spec section","ok":true,"ms":701}
+{"t":"2026-10-21T19:59:05.278Z","shot":"11-settings-shortcuts.png"}
+{"t":"2026-10-21T19:59:05.339Z","i":22,"do":"click","soft":true,"ok":true,"ms":60}
+{"t":"2026-10-21T19:59:06.040Z","i":23,"do":"wait","expect":"Settings · about: rows match the spec section","ok":true,"ms":700}
+{"t":"2026-10-21T19:59:06.105Z","shot":"12-settings-about.png"}
+{"t":"2026-10-21T19:59:06.279Z","i":24,"do":"click","soft":true,"ok":true,"ms":174}
+{"t":"2026-10-21T19:59:06.285Z","i":25,"do":"dump","ok":true,"ms":6}

@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds good tonight?\n1\nMasala dosa and sambar\nBEST FIT\nLight South Indian classic\n2\nButter chicken with naan\nRich North Indian comfort\n3\nVeg biryani with raita\nFilling one-pot meal\nSomething else…\nSkip\n7:58 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:58 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n7:58 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dal chawal it is, a good call for a Wednesday night. A spoon of ghee and a squeeze of lemon on the dal makes it even better.\n\n7:58 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n7:59 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nSo I can read your email for this.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n7:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n7:59 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Booking your Domino's pizza order\n1\nSign in to Domino's\n2\nLook for pizzas on the Domino's menu\n3\nWait for you to pick one\n4\nFill in your details on Domino's\n5\nShow you before placing your pizza order\n…and 2 more · Show\nAbout 5 minutes\nGo\nChange plan\n7:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n7:59 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nSo I can read your email for this.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n7:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "book me a flight to Goa on Sat 12 Dec\n8:00 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "I can find and compare flights, and open the booking page for you. Filling in passengers and paying for flights comes in a later version.\n1\nCompare flights\nBEST FIT\n2\nNot now\nSomething else…\nSkip\n8:00 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:00 PM"
+  }
+]

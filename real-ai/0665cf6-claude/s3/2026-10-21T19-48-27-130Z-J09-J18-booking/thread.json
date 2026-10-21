@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are 5 places in Jaipur worth visiting, in an easy order for one day: Amber Fort in the morning, the three old-city sights close together, then Nahargarh Fort for sunset. The panel shows them as numbered stops without map tiles, and the positions are approximate.\n\n1\n2\n3\n4\n5\n1\nAmber Fort\nHilltop fort, best in the morning\n2\nHawa Mahal\nPink palace facade, great photos\n3\nCity Palace\nRoyal palace and museum\n4\nJantar Mantar\nOld observatory next to City Palace\n5\nNahargarh Fort\nSunset views over the city\nOpen in Maps\nKeep\n7:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show a chart of India's GDP growth for the last 5 years\n7:47 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's real GDP growth over the last 5 financial years went from a 5.8% fall in FY21 to 6.5% growth in FY25, with a strong rebound in between. These are figures from my own knowledge, rounded and later revised, so I haven't checked them against the official release.\n\nIndia's real GDP growth (% a year, financial years)\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n7:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n7:47 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Galaxy S25 looks like the best value of the three. It costs about the same as the others at launch but gives you the strongest chip, a zoom camera and a 120Hz screen. These specs and launch prices are from my own knowledge and I haven't checked them against current shop prices, which are usually lower.\n\niPhone 16\nLaunch price (128 GB)\n₹79,900\nChip\nApple A18\nRAM\n8 GB\nScreen\n6.1 inch, 60Hz\nCameras\n48 MP main + 12 MP wide\nBattery\nAbout 3,600 mAh\nSoftware updates\nNo fixed promise, usually 6 to 7 years\nPixel 9\nLaunch price (128 GB)\n₹79,999\nChip\nGoogle Tensor G4\nRAM\n12 GB\nScreen\n6.3 inch, 120Hz\nCameras\n50 MP main + 48 MP wide\nBattery\nAbout 4,700 mAh\nSoftware updates\n7 years\nBest pick\nGalaxy S25\nLaunch price (128 GB)\n₹80,999\nChip\nSnapdragon 8 Elite\nRAM\n12 GB\nScreen\n6.2 inch, 120Hz\nCameras\n50 MP main + 12 MP wide + 10 MP zoom\nBattery\nAbout 4,000 mAh\nSoftware updates\n7 years\n\nFastest chip, 12 GB RAM, 120Hz screen and a zoom camera for nearly the same price.\n\nKeep\n7:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n7:47 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is ready below. Tap start when the water is in.\n\nSteep your tea\n2:00 left\nStart timer\nKeep\n7:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n7:48 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for your party plan. Fill in the date, number of guests and budget in rupees, then submit.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n7:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n7:48 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "failed",
+    "text": "That reply got cut off.\nTry again\n7:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi\n7:48 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n7:49 PM"
+  }
+]
