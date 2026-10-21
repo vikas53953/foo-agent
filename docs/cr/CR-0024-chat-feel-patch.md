@@ -63,7 +63,10 @@ and owned by tickets T2–T4 (`/mnt/project-files/foo/prep/C1-tickets.md`).
    compare, remind; at most 4. Why: the first row should be the thing most people try first, and a row that cannot work yet
    still teaches what foo does.
 2. "Try it" is the kit Button action `composer.fill`, handled in the renderer only, so it can never send or reach the gate.
-3. Chip icon word map is fixed (no AI choice), first match wins, `Edit` otherwise (only icons already in the 02 F6 list).
+3. The Ideas link line (X-110) stays out of the card while the Ideas page is a placeholder (`PlaceholderPage.tsx`): a link
+   to an empty page is worse than none. Its copy key lands with the Ideas page's milestone.
+
+4. Chip icon word map is fixed (no AI choice), first match wins, `Edit` otherwise (only icons already in the 02 F6 list).
 
 ## (f) Independent review
 
