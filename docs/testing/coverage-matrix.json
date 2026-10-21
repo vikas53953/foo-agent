@@ -1,12 +1,12 @@
 {
  "meta": {
-  "main_sha": "cc8d730",
+  "main_sha": "0665cf6",
   "main_ci": {
    "key": "main_ci",
-   "state": "green except",
-   "sha": "cc8d730",
-   "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314",
-   "note": "Finished 19:13Z. Linux fast lane: all unit and integration tests pass. Windows golden lane (the full suite on the target OS): 238 of 238 e2e pass; 6,396 unit/integration tests pass, 3 fail, 2 skipped. The 3 failures: m6-review.test.ts \"ask before remembering\" (AT-076, memory) and two in browser/actions.test.ts (a pop-up link clicked once; back and wait within 15 s). NOT the profile.test.ts file named in the #113 merge note. Shard 4/4 died during setup, before any test ran; the golden lane covers its tests."
+   "state": "green",
+   "sha": "0665cf6",
+   "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723",
+   "note": "All 7 jobs green (finished 20:31Z), the first fully green main run since 12:55Z. Windows golden lane: 6,413 unit/integration pass, 0 fail, 2 skipped; 238 of 238 e2e pass (evidence:main/0665cf6/fidelity.json). Last run’s 3 Windows failures (AT-076 memory, 2 browser actions) did not recur."
   },
   "real_proven": 0,
   "all_proven": 0,
@@ -75,24 +75,24 @@
   "suite": [
    {
     "key": "main_ci",
-    "state": "green except",
-    "sha": "cc8d730",
-    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314",
-    "note": "Finished 19:13Z. Linux fast lane: all unit and integration tests pass. Windows golden lane (the full suite on the target OS): 238 of 238 e2e pass; 6,396 unit/integration tests pass, 3 fail, 2 skipped. The 3 failures: m6-review.test.ts \"ask before remembering\" (AT-076, memory) and two in browser/actions.test.ts (a pop-up link clicked once; back and wait within 15 s). NOT the profile.test.ts file named in the #113 merge note. Shard 4/4 died during setup, before any test ran; the golden lane covers its tests."
+    "state": "green",
+    "sha": "0665cf6",
+    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723",
+    "note": "All 7 jobs green (finished 20:31Z), the first fully green main run since 12:55Z. Windows golden lane: 6,413 unit/integration pass, 0 fail, 2 skipped; 238 of 238 e2e pass (evidence:main/0665cf6/fidelity.json). Last run’s 3 Windows failures (AT-076 memory, 2 browser actions) did not recur."
    },
    {
     "key": "main_ci_failing",
-    "state": "3 failing tests",
-    "sha": "cc8d730",
-    "link": "https://github.com/vikas53953/foo-agent/blob/evidence/main/cc8d730/fidelity.json",
-    "note": "test/integration/m6-review.test.ts test/integration/browser/actions.test.ts"
+    "state": "none",
+    "sha": "0665cf6",
+    "link": "https://github.com/vikas53953/foo-agent/blob/evidence/main/0665cf6/fidelity.json",
+    "note": ""
    },
    {
     "key": "real_ai_main",
-    "state": "finished, not judged",
-    "sha": "cc8d730",
-    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682359",
-    "note": "First real-AI run on current main, and the first with the stuck-job fix (#113). Finished 19:02Z. A green workflow only means it ran: each feature still has to be judged from its screenshot and reply (Codex lane A)."
+    "state": "finished red, not judged",
+    "sha": "0665cf6",
+    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772762",
+    "note": "Real-AI run on 0665cf6 (first with the Gmail Connect card and the empty-answer fix) finished 20:24Z with a failure. Each feature still has to be judged from its screenshot and reply (Codex lane A / e2e thread)."
    },
    {
     "key": "judge_97",
@@ -132,9 +132,9 @@
    {
     "key": "visual_golden",
     "state": "1 of 36 match",
-    "sha": "cc8d730",
-    "link": "https://github.com/vikas53953/foo-agent/blob/evidence/main/cc8d730/fidelity.html",
-    "note": "Golden picture report on cc8d730: 1 drawing matches, 65 differ a little and need a look, 142 disputed by a CR, 15 not built. Visual regression is not proven."
+    "sha": "0665cf6",
+    "link": "https://github.com/vikas53953/foo-agent/blob/evidence/main/0665cf6/fidelity.html",
+    "note": "Golden picture report on 0665cf6: 1 drawing matches, 65 differ a little and need a look, 142 disputed by a CR, 15 not built. Visual regression is not proven."
    }
   ]
  },
@@ -147,8 +147,7 @@
   "integration": {
    "na": 103,
    "missing": 1,
-   "proven": 55,
-   "fail": 1
+   "proven": 56
   },
   "e2e": {
    "na": 71,
@@ -200,9 +199,8 @@
    "partial": 6
   },
   "regression": {
-   "proven": 158,
-   "missing": 1,
-   "fail": 1
+   "proven": 159,
+   "missing": 1
   },
   "ux": {
    "na": 30,
@@ -218,8 +216,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/AT-225.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/AT-225.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -289,7 +287,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -301,13 +299,13 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/m3-engine.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/m3-engine.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/ai-step.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/ai-step.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -372,7 +370,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -384,13 +382,13 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/m3-engine.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/m3-engine.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/ai-step.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/ai-step.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -455,7 +453,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -467,8 +465,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/m3-engine.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/m3-engine.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "e2e": {
      "s": "missing",
@@ -538,7 +536,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -550,8 +548,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/m3-engine.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/m3-engine.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -621,7 +619,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -716,8 +714,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/AT-019.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/AT-019.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -787,7 +785,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -799,8 +797,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/stop.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/stop.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -870,7 +868,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -882,8 +880,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m4-offline.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m4-offline.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -953,7 +951,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -965,8 +963,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/cap.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/cap.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -1036,7 +1034,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -1048,8 +1046,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/stuck.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/stuck.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -1119,7 +1117,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -1131,8 +1129,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/quit.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/quit.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -1202,7 +1200,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -1214,8 +1212,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/jobs/queue.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/jobs/queue.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -1285,7 +1283,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -1297,8 +1295,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/start.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/start.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -1368,7 +1366,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -1380,8 +1378,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/stop.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/stop.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -1451,7 +1449,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -1463,8 +1461,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/needs-you.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/needs-you.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -1534,7 +1532,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -1546,8 +1544,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/needs-you.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/needs-you.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -1617,7 +1615,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -1629,8 +1627,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/waiting.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/waiting.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -1700,7 +1698,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -1712,8 +1710,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/waiting.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/waiting.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -1783,7 +1781,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -1795,8 +1793,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/finish.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/finish.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -1866,7 +1864,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -1878,8 +1876,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/finish.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/finish.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -1949,7 +1947,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -1961,8 +1959,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/stuck.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/stuck.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -2032,7 +2030,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -2044,8 +2042,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/jobs/watchdog.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/jobs/watchdog.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -2115,7 +2113,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -2127,8 +2125,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/fail.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/fail.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -2198,7 +2196,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -2210,8 +2208,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/recovery.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/recovery.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -2281,7 +2279,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -2293,8 +2291,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/db/rebuild.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/db/rebuild.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -2364,7 +2362,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -2376,8 +2374,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/ai-words.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/ai-words.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -2447,7 +2445,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -2459,8 +2457,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/retry.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/retry.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -2530,7 +2528,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -2542,8 +2540,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m4-panel.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m4-panel.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -2613,7 +2611,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -2625,8 +2623,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m4-notices.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m4-notices.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -2696,7 +2694,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -2708,8 +2706,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m4-list.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m4-list.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -2779,7 +2777,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -2791,8 +2789,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m4-list.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m4-list.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -2862,7 +2860,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -2874,8 +2872,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/vault/AT-008.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/vault/AT-008.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -2945,7 +2943,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -2957,8 +2955,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m5-secret.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m5-secret.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -3028,7 +3026,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -3040,8 +3038,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/choice/typed.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/choice/typed.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -3111,7 +3109,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -3123,8 +3121,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m5-choice.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m5-choice.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -3194,7 +3192,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -3206,8 +3204,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/choice/timeouts.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/choice/timeouts.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -3277,7 +3275,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -3289,8 +3287,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/choice/timeouts.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/choice/timeouts.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -3360,7 +3358,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -3372,13 +3370,13 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/choice/typed.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/choice/typed.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m5-choice.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m5-choice.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -3443,7 +3441,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -3455,8 +3453,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/choice/typed.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/choice/typed.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -3526,7 +3524,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -3538,8 +3536,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/jobs/stop-which.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/jobs/stop-which.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -3609,7 +3607,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -3621,8 +3619,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/approvals/steer.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/approvals/steer.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -3692,7 +3690,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -3704,8 +3702,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/articles/ART-02c.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/articles/ART-02c.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -3775,7 +3773,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -3787,8 +3785,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/approvals/decline.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/approvals/decline.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -3858,7 +3856,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -3870,8 +3868,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/approvals/expiry.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/approvals/expiry.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -3941,7 +3939,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -3953,8 +3951,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/approvals/expiry.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/approvals/expiry.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -4024,7 +4022,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -4036,8 +4034,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m5-approval.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m5-approval.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -4107,7 +4105,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -4119,8 +4117,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/approvals/second-look.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/approvals/second-look.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -4190,7 +4188,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -4202,8 +4200,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/approvals/fresh-terms.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/approvals/fresh-terms.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -4273,7 +4271,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -4285,8 +4283,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m5-approval.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m5-approval.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -4356,7 +4354,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -4368,13 +4366,13 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/approvals/expiry.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/approvals/expiry.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m5-approval.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m5-approval.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -4439,7 +4437,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -4451,8 +4449,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/approvals/withdraw.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/approvals/withdraw.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -4522,7 +4520,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -4534,8 +4532,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/approvals/rules.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/approvals/rules.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -4605,7 +4603,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -4617,8 +4615,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/approvals/draft.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/approvals/draft.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -4688,7 +4686,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -4700,8 +4698,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m5-approval.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m5-approval.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -4771,7 +4769,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -4783,8 +4781,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m5-choice.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m5-choice.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -4854,7 +4852,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -4866,8 +4864,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m6-page.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m6-page.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -4937,7 +4935,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -4949,13 +4947,13 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/m6-forget.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/m6-forget.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m6-page.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m6-page.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -5020,7 +5018,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -5032,8 +5030,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/m6-tombstone.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/m6-tombstone.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -5103,7 +5101,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -5115,8 +5113,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/m6-watcher.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/m6-watcher.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -5186,7 +5184,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -5198,13 +5196,13 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/m6-sensitive.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/m6-sensitive.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
-     "s": "fail",
-     "why": "test/integration/m6-review.test.ts fails on Windows in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/blob/evidence/main/cc8d730/fidelity.json"
+     "s": "proven",
+     "why": "test/integration/m6-review.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "e2e": {
      "s": "na",
@@ -5267,9 +5265,9 @@
      "link": ""
     },
     "regression": {
-     "s": "fail",
-     "why": "one of its tests fails in main CI",
-     "link": "https://github.com/vikas53953/foo-agent/blob/evidence/main/cc8d730/fidelity.json"
+     "s": "proven",
+     "why": "its tests run on every PR and every main merge",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -5281,8 +5279,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/m6-tidy.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/m6-tidy.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -5352,7 +5350,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -5364,8 +5362,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/ai-step.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/ai-step.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -5435,7 +5433,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -5447,13 +5445,13 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/ai-step.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/ai-step.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/ai-step.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/ai-step.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -5518,7 +5516,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -5530,8 +5528,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m8-connectors.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m8-connectors.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -5601,7 +5599,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -5613,8 +5611,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/m8-gmail-drafts.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/m8-gmail-drafts.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -5684,7 +5682,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -5696,8 +5694,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/m8-whatsapp-send.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/m8-whatsapp-send.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -5767,7 +5765,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -5779,8 +5777,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/m8-gmail-read.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/m8-gmail-read.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -5850,7 +5848,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -5862,8 +5860,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m8-drafts.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m8-drafts.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -5933,7 +5931,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -5945,8 +5943,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m8-drafts.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m8-drafts.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -6016,7 +6014,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -6028,8 +6026,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/m8-gmail-drafts.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/m8-gmail-drafts.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -6099,7 +6097,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -6111,8 +6109,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/m8-x.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/m8-x.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -6182,7 +6180,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -6194,8 +6192,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/m8-gmail-drafts.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/m8-gmail-drafts.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -6265,7 +6263,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -6277,8 +6275,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/m8-whatsapp-send.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/m8-whatsapp-send.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -6348,7 +6346,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -6360,8 +6358,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m8-connectors.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m8-connectors.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -6431,7 +6429,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -6443,8 +6441,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/m8-contacts.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/m8-contacts.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -6514,7 +6512,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -6526,8 +6524,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/m8-expiry.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/m8-expiry.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -6597,7 +6595,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -6609,8 +6607,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m8-whatsapp.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m8-whatsapp.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -6680,7 +6678,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -6692,8 +6690,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m8-whatsapp.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m8-whatsapp.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -6763,7 +6761,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -6775,8 +6773,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m9-booking.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m9-booking.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -6846,7 +6844,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -6858,8 +6856,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/browser/submit.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/browser/submit.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -6929,7 +6927,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -6941,8 +6939,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/browser/submit.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/browser/submit.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -7012,7 +7010,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -7024,8 +7022,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m9-signin.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m9-signin.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -7095,7 +7093,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -7107,8 +7105,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m9-signin.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m9-signin.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -7178,7 +7176,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -7190,8 +7188,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m9-takeover.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m9-takeover.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -7261,7 +7259,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -7273,8 +7271,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/browser/login.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/browser/login.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -7344,7 +7342,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -7356,8 +7354,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/browser/signin.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/browser/signin.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -7427,7 +7425,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -7439,8 +7437,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m9-takeover.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m9-takeover.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -7510,7 +7508,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -7522,8 +7520,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m9-stop.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m9-stop.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -7593,7 +7591,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -7605,8 +7603,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/browser/proof.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/browser/proof.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -7676,7 +7674,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -7688,8 +7686,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/articles/ART-net-web.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/articles/ART-net-web.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -7759,7 +7757,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -7771,8 +7769,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/web/search.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/web/search.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -7842,7 +7840,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -7854,8 +7852,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/web/fetch.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/web/fetch.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -7925,7 +7923,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -7937,8 +7935,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/web/outbound.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/web/outbound.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -8008,7 +8006,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -8020,8 +8018,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/web/cloud.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/web/cloud.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -8091,7 +8089,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -8103,8 +8101,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m9-handback.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m9-handback.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -8174,7 +8172,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -8186,8 +8184,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/web/cost.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/web/cost.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -8257,7 +8255,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -8269,8 +8267,8 @@
    "cells": {
     "integration": {
      "s": "proven",
-     "why": "test/integration/browser/recipes.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/integration/browser/recipes.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -8340,7 +8338,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -8352,8 +8350,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m9-signin.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m9-signin.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -8423,7 +8421,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -8435,8 +8433,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/m9-live.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/m9-live.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -8506,7 +8504,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -8518,8 +8516,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/p1-contracts.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/p1-contracts.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -8589,7 +8587,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -8601,8 +8599,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/p1-contracts.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/p1-contracts.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -8672,7 +8670,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -8684,8 +8682,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/p1-contracts.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/p1-contracts.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -8755,7 +8753,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -8767,8 +8765,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/p1-contracts.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/p1-contracts.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -8838,7 +8836,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -8850,8 +8848,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-motion.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-motion.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -8896,7 +8894,7 @@
     "motion": {
      "s": "proven",
      "why": "test/e2e/p1-motion.spec.ts passes in main CI",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "perf": {
      "s": "na",
@@ -8921,7 +8919,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -8933,8 +8931,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-motion.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-motion.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -8979,7 +8977,7 @@
     "motion": {
      "s": "proven",
      "why": "test/e2e/p1-motion.spec.ts passes in main CI",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "perf": {
      "s": "partial",
@@ -9004,7 +9002,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -9016,8 +9014,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-motion.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-motion.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -9062,7 +9060,7 @@
     "motion": {
      "s": "proven",
      "why": "test/e2e/p1-motion.spec.ts passes in main CI",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "perf": {
      "s": "na",
@@ -9087,7 +9085,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -9099,8 +9097,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-motion.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-motion.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -9145,7 +9143,7 @@
     "motion": {
      "s": "proven",
      "why": "test/e2e/p1-motion.spec.ts passes in main CI",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "perf": {
      "s": "partial",
@@ -9170,7 +9168,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -9182,8 +9180,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-motion.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-motion.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -9228,7 +9226,7 @@
     "motion": {
      "s": "proven",
      "why": "test/e2e/p1-motion.spec.ts passes in main CI",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "perf": {
      "s": "partial",
@@ -9253,7 +9251,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -9265,8 +9263,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-face.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-face.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -9336,7 +9334,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -9348,8 +9346,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-face.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-face.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -9419,7 +9417,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -9431,8 +9429,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-face.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-face.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -9502,7 +9500,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -9514,8 +9512,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-chatlist.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-chatlist.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -9585,7 +9583,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -9597,8 +9595,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-messages.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-messages.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -9668,7 +9666,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -9680,8 +9678,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-composer.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-composer.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -9751,7 +9749,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -9763,13 +9761,13 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/p1-suggestions.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/p1-suggestions.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-composer.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-composer.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -9834,7 +9832,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -9846,8 +9844,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-composer.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-composer.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -9917,7 +9915,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -9929,8 +9927,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-composer.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-composer.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -10000,7 +9998,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -10012,8 +10010,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-cards.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-cards.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -10083,7 +10081,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -10095,8 +10093,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-cards.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-cards.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -10166,7 +10164,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -10178,13 +10176,13 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/p1-time-saved.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/p1-time-saved.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-cards.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-cards.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -10249,7 +10247,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -10261,8 +10259,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-first-run.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-first-run.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -10332,7 +10330,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -10344,8 +10342,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-first-run.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-first-run.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -10415,7 +10413,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -10427,8 +10425,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-appearance.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-appearance.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -10498,7 +10496,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -10510,8 +10508,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-appearance.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-appearance.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -10581,7 +10579,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -10593,8 +10591,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-appearance.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-appearance.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -10664,7 +10662,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -10676,8 +10674,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/p1-appearance.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/p1-appearance.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -10747,7 +10745,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -10759,8 +10757,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/p1-bundle.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/p1-bundle.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -10830,7 +10828,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -10842,8 +10840,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-kit.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-kit.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -10913,7 +10911,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -10925,8 +10923,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-places-time.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-places-time.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -10996,7 +10994,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -11008,8 +11006,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -11079,7 +11077,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -11091,8 +11089,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -11162,7 +11160,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -11174,8 +11172,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-places-time.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-places-time.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -11245,7 +11243,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -11257,8 +11255,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-places-time.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-places-time.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -11328,7 +11326,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -11340,8 +11338,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -11411,7 +11409,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -11423,8 +11421,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -11494,7 +11492,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -11506,8 +11504,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -11577,7 +11575,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -11589,8 +11587,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-places-time.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-places-time.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -11660,7 +11658,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -11672,8 +11670,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-places-time.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-places-time.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -11743,7 +11741,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -11755,8 +11753,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-numbers-forms.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -11826,7 +11824,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -11838,8 +11836,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-output.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-output.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -11909,7 +11907,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -11921,8 +11919,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-kit.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-kit.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -11992,7 +11990,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -12004,13 +12002,13 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/r1-contracts.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/r1-contracts.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-kit.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-kit.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -12075,7 +12073,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -12087,8 +12085,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-kit.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-kit.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -12158,7 +12156,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -12170,8 +12168,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-kit.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-kit.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -12241,7 +12239,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -12253,8 +12251,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -12324,7 +12322,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -12336,8 +12334,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -12407,7 +12405,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -12419,8 +12417,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -12490,7 +12488,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -12502,8 +12500,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -12573,7 +12571,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -12585,8 +12583,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -12656,7 +12654,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -12668,8 +12666,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-ai-page.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -12739,7 +12737,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -12751,8 +12749,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-input.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-input.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -12822,7 +12820,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -12834,8 +12832,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-input.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-input.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -12905,7 +12903,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -12917,8 +12915,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-input.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-input.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -12988,7 +12986,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -13000,8 +12998,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-output.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-output.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -13071,7 +13069,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -13083,8 +13081,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-output.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-output.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -13154,7 +13152,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -13166,8 +13164,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-output.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-output.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -13237,7 +13235,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -13249,8 +13247,8 @@
    "cells": {
     "e2e": {
      "s": "proven",
-     "why": "test/e2e/r1-output.spec.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/e2e/r1-output.spec.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "unit": {
      "s": "na",
@@ -13320,7 +13318,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -13332,8 +13330,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/r1-kit-safety.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/r1-kit-safety.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -13403,7 +13401,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   },
@@ -13415,8 +13413,8 @@
    "cells": {
     "unit": {
      "s": "proven",
-     "why": "test/unit/r1-kit-safety.test.ts passes in main CI cc8d730",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "why": "test/unit/r1-kit-safety.test.ts passes in main CI 0665cf6",
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     },
     "integration": {
      "s": "na",
@@ -13486,7 +13484,7 @@
     "regression": {
      "s": "proven",
      "why": "its tests run on every PR and every main merge",
-     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39651682314"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39663772723"
     }
    }
   }
