@@ -9,6 +9,9 @@ export const RE_LIMIT = /usage limit|rate limit|limit (reached|resets)/i;
 export const RE_DOWN = /overloaded|service unavailable/i;
 /** "unknown flag errors" (08-2 §6.7 AI_CLI_INCOMPATIBLE). The wording is a seed; the M3 spike captures pin it. */
 export const RE_UNKNOWN_FLAG = /unknown (option|flag|argument)|unrecognized (option|argument)|unexpected argument/i;
+/** CR-0025: the maker's service refuses an out-of-date CLI (real capture 2026-10-21, codex 0.144.4: "… requires a newer
+ * version of Codex. Please upgrade to the latest app or CLI …"). Not "Upgrade to Pro", which is a plan limit. */
+export const RE_OUTDATED = /requires a newer version|please (upgrade|update) to the latest/i;
 export const RE_RESET_AT = /resets? (at )?(\d{1,2}(:\d{2})?\s?(am|pm))/i;
 export const RE_TRY_AGAIN = /try again in (\d+) (minutes?|hours?)/i;
 /** 08-4 §30.1 "unknown-model error" (seed wording). */
@@ -29,7 +32,7 @@ export function classifyText(text: string): AiErrorKind | null {
   if (RE_SIGNED_OUT.test(text)) return 'AI_SIGNED_OUT';
   if (RE_LIMIT.test(text)) return 'AI_LIMIT';
   if (RE_DOWN.test(text)) return 'AI_SERVICE_DOWN';
-  if (RE_UNKNOWN_FLAG.test(text)) return 'AI_CLI_INCOMPATIBLE';
+  if (RE_UNKNOWN_FLAG.test(text) || RE_OUTDATED.test(text)) return 'AI_CLI_INCOMPATIBLE';
   return null;
 }
 

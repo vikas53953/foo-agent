@@ -17,7 +17,7 @@ import { t } from '../../../shared/copy/t';
 import { formatInr, formatTime } from '../../../shared/format';
 import type { VerifyResult } from '../../../shared/ipc';
 import { TID } from '../../../shared/testids';
-import type { CardRow, KeyProviderId, ProviderId, SetupCardPayload } from '../../../shared/types';
+import type { CardRow, KeyProviderId, ProviderId, SecretPayload, SetupCardPayload } from '../../../shared/types';
 import { invoke } from '../../ipc/client';
 import { useStore } from '../../store/index';
 import { selectConnection } from '../../store/live';
@@ -51,6 +51,9 @@ import {
   stateAfterVerify,
   upsertRow,
   VERIFY_LIMIT_MS,
+  CLI_VERIFY_LIMIT_MS,
+  isCliRow,
+  dropMissingKeys,
   type FinderRow,
   type RowAction,
   type RowId,
@@ -152,6 +155,8 @@ function useThrottledAnnounce(): (text: string) => void {
   }, []);
 }
 
+const limitFor = (id: ProviderId) => (isCliRow(id) ? CLI_VERIFY_LIMIT_MS : VERIFY_LIMIT_MS);
+
 function LiveFinder({ card, time }: { card: CardRow; time: CardTime }) {
   const settings = useStore(selectSettings);
   // 06-1 §2.2 Entry: the same card from Settings → "Change" has no step pill, so no progress pill either.
@@ -193,16 +198,20 @@ function LiveFinder({ card, time }: { card: CardRow; time: CardTime }) {
     [say, timeZone],
   );
 
-  /** One tiny real request (08-2 §6.6), 20 s limit; a late answer still updates the row. */
+  /** One tiny real request (08-2 §6.6), 20 s limit (60 s for a helper app, CR-0025); a late answer still updates the row. */
   const test = useCallback(
-    (id: ProviderId) => {
+    (id: ProviderId): Promise<void> => {
       const base = rowsRef.current.find((r) => r.id === id) ?? { id, state: 'testing' as const, found: true };
       setRow({ ...base, state: 'testing', found: true });
       let answered = false;
       const slow = window.setTimeout(() => {
         if (!answered) setRow({ ...base, state: 'slow', found: true });
-      }, VERIFY_LIMIT_MS);
-      void invoke('ai:verify', { providerId: id })
+        markSlow();
+      }, limitFor(id));
+      // The returned promise also settles at the slow mark, so a hung helper never holds up the next one in line.
+      let markSlow: () => void = () => undefined;
+      const atSlow = new Promise<void>((done) => (markSlow = done));
+      const answer = invoke('ai:verify', { providerId: id })
         .catch((): null => null)
         .then((r) => {
           answered = true;
@@ -214,6 +223,7 @@ function LiveFinder({ card, time }: { card: CardRow; time: CardTime }) {
           else delete row.resetAt;
           setRow(row);
         });
+      return Promise.race([answer, atSlow]);
     },
     [setRow],
   );
@@ -230,7 +240,11 @@ function LiveFinder({ card, time }: { card: CardRow; time: CardTime }) {
     if (!alive.current) return;
     const next = rowsFromDetect(r?.ok ? r.value : []);
     setRows(next);
-    for (const row of next) if (row.state === 'testing') test(row.id as ProviderId);
+    // CR-0025: helper apps are tested one after another in ladder order (two cold starts at once doubled each one's time on
+    // a real PC); keys and the local AI are tested at once.
+    const ready = next.filter((row) => row.state === 'testing').map((row) => row.id as ProviderId);
+    for (const id of ready) if (!isCliRow(id)) void test(id);
+    for (const id of ready) if (isCliRow(id) && alive.current) await test(id);
   }, [test]);
 
   useEffect(() => {
@@ -294,6 +308,27 @@ function LiveFinder({ card, time }: { card: CardRow; time: CardTime }) {
     });
     return unsubscribe;
   }, [keyWatch, test]);
+
+  // CR-0025: a saved AI key removed from its Secret box (Remove) drops its row; detection is asked again.
+  useEffect(() => {
+    const seen = new Set<string>();
+    const removedKeyBoxes = (s: ReturnType<typeof useStore.getState>) =>
+      Object.values(s.cards.byId).filter((c) => {
+        const p = c.type === 'secret' ? (c.payload as unknown as SecretPayload) : null;
+        return p?.secretKind === 'ai_key' && p.removedAt !== undefined;
+      });
+    for (const c of removedKeyBoxes(useStore.getState())) seen.add(c.id);
+    return useStore.subscribe((s) => {
+      const fresh = removedKeyBoxes(s).filter((c) => !seen.has(c.id));
+      if (!fresh.length) return;
+      for (const c of fresh) seen.add(c.id);
+      void invoke('ai:detect', {})
+        .catch(() => null)
+        .then((r) => {
+          if (r?.ok && r.value.length > 0 && alive.current) setRows((cur) => dropMissingKeys(cur, r.value)); // [] = engine not live
+        });
+    });
+  }, []);
 
   // Offline: rows wait for the internet and are tested again every 30 s.
   const offlineIds = rows.filter((r) => r.state === 'offline').map((r) => r.id as ProviderId);
@@ -614,8 +649,8 @@ function LiveFinder({ card, time }: { card: CardRow; time: CardTime }) {
   );
 }
 
-/** §F7.1 "a striped progress pill for the 4 steps": this card is step 1 of 4. The header pill carries the words. */
-const SETUP_STEPS = 4;
+/** §F7.1 "a striped progress pill for the steps": this card is step 1 (CR-0026 pick 2: of 2). The header pill carries the words. */
+const SETUP_STEPS = 2;
 function StepProgress() {
   return (
     <div

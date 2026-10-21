@@ -68,6 +68,10 @@ const INVOKES = new Set([
   'ai:verify',
   'ai:detect',
   'ai:choose',
+  'setup:welcome',
+  'setup:name',
+  'setup:face',
+  'setup:skipRest',
   'notifications:status',
   // M8 T3
   'whatsapp:linkStart',

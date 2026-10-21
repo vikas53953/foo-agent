@@ -53,7 +53,12 @@ export const settingsSchema = z.object({
     step: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(5)]),
   }),
   identity: z.object({
-    agentName: z.string().min(1).max(20),
+    // 06-1 §2.3: 20 characters as the user sees them (graphemes; checkName in main). An emoji or a Devanagari letter is
+    // several UTF-16 units, so the stored string may be longer (CR-0026).
+    agentName: z.string().min(1).max(80),
+    // 06-1 §2.3 Card 2c (CR-0026): the vibe the user picked and foo's line for it.
+    vibe: z.enum(['calm_funny', 'direct', 'warm', 'custom']).optional(),
+    vibeLine: z.string().max(200).optional(),
   }),
   user: z.object({
     firstName: z.string().min(1).max(40).optional(),
