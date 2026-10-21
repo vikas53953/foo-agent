@@ -280,6 +280,11 @@ async function main() {
           await app.close().catch(() => {});
           await launch();
           break;
+        case 'resize':
+          // The window's content size, for the Blueprint breakpoint shots (03-shell-1 §3.1.3).
+          await app.evaluate(({ BrowserWindow }, [w, h]) => BrowserWindow.getAllWindows()[0].setContentSize(w, h), [s.w, s.h]);
+          await page.waitForTimeout(800);
+          break;
         case 'crashRelaunch': {
           // A crash then an instant reopen: kill only foo's main process (its helpers live on, as after a real crash),
           // reopen without waiting, and pass only if a window shows. fooProcs counts foo.exe processes left (it includes

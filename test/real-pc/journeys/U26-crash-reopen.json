@@ -1,5 +1,5 @@
 {
-  "id": "U24-crash-reopen",
+  "id": "U26-crash-reopen",
   "title": "foo crashes and is reopened at once: a window must appear",
   "spec": "07 J-crash recovery (CR-0029, X-187); single-instance lock",
   "covers": ["crash recovery", "single instance"],

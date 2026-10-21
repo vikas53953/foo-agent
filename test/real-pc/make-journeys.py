@@ -640,9 +640,58 @@ journey(
     ],
 )
 
+# --- Spec-coverage gaps (FID-21, CR-0031): shell anatomy at each breakpoint, composer states, flights honesty ---------
+def el(tid, name, ref):
+    return {'do': 'shotEl', 'tid': tid, 'name': name, 'ref': ref, 'soft': True}
+
+
+def size(w, h, name, ref):
+    return [{'do': 'resize', 'w': w, 'h': h, 'soft': True}, shot(name, f'window at {w}x{h}', ref)]
+
+
+journey(
+    'U25-anatomy-composer',
+    'Shell anatomy at every width, composer states, honest flights reply',
+    '03-shell-1 §3.1-§3.5, 03-shell-2 §3.6-§3.7, 04-2 §20-§23, AT-157',
+    ['BP-ANAT-*', 'BP-APP-*', 'BP-COMP-*', 'BP-MSG-04', 'AT-157'],
+    size(1280, 800, 'L-1280', 'BP-ANAT-L')
+    + [
+        el('titlebar-strip', 'tbar', 'BP-ANAT-TBAR'),
+        el('sidebar', 'left', 'BP-APP-L'),
+        el('sidebar-search-field', 'search', 'BP-ANAT-SEARCH'),
+        el('chatlist-filters', 'chips', 'BP-ANAT-CHIPS'),
+        el('chatlist', 'list', 'BP-ANAT-LIST'),
+        el('sidebar-footer-status', 'lfoot', 'BP-ANAT-LFOOT'),
+        el('chat-header', 'mhead', 'BP-ANAT-MHEAD'),
+        el('app-panel', 'right', 'BP-APP-R'),
+        el('app-panel-doing', 'doing', 'BP-ANAT-DOING'),
+        el('app-panel-using', 'using', 'BP-ANAT-USING'),
+        el('app-panel-know', 'know', 'BP-ANAT-KNOW'),
+        el('app-panel-spent', 'spent', 'BP-ANAT-SPENT'),
+        el('composer', 'comp-empty', 'BP-COMP-01'),
+        type_composer('Can you remind me to call the bank tomorrow at 10'),
+        el('composer', 'comp-typing', 'BP-COMP-02'),
+        type_composer('Line one\nLine two\nLine three\nLine four'),
+        el('composer', 'comp-multiline', 'BP-COMP-03'),
+        type_composer(''),
+        click('composer-attach'),
+        wait(500, 'comp-attach-menu', 'attach menu', 'BP-COMP-05'),
+        esc(),
+    ]
+    + size(1000, 760, 'M-1000', 'BP-ANAT-M')
+    + size(760, 700, 'S-760', 'BP-ANAT-S')
+    + size(520, 640, 'XS-520', 'BP-ANAT-XS')
+    + size(1280, 800, 'L-again', 'BP-ANAT-L')
+    + [
+        send('book me a flight to Goa on Sat 12 Dec'),
+        reply('flights', 'AT-157: says it can find and compare flights and open the booking page; filling passengers and paying comes later'),
+        expect_text('compare', tid=FOO_LAST, last=True, note='AT-157 honest flights scope'),
+    ],
+)
+
 # --- Crash then instant reopen (Windows single-instance lock held by leftover helpers?) ------------------------------
 journey(
-    'U24-crash-reopen',
+    'U26-crash-reopen',
     'foo crashes and is reopened at once: a window must appear',
     '07 J-crash recovery (CR-0029, X-187); single-instance lock',
     ['crash recovery', 'single instance'],
