@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n8:51 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three states and their capitals, as a list since I don't use tables:\n\nMaharashtra: Mumbai\nTamil Nadu: Chennai\nPunjab: Chandigarh\n8:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n8:51 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways ticket site is IRCTC. For train running status and enquiries, try NTES.\n\n8:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from\n8:52 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which weekend activity in Bengaluru sounds best? → Cubbon Park and brunch\n8:52 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:52 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "the second one\n8:52 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Cubbon Park and brunch is a lovely pick. Walk the park early, around Sat 24 Oct, 8:00 AM, while it's cool and quiet, then have brunch nearby on MG Road or Church Street.\n\nWant me to look up brunch places near Cubbon Park?\n\n8:52 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n8:53 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds best tonight?\n1\nDosa and filter coffee\nBEST FIT\nLight South Indian tiffin\n2\nBiryani and raita\nHearty and filling\n3\nPaneer tikka with rotis\nNorth Indian comfort food\nSomething else…\nSkip\n8:53 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:53 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n8:53 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dal chawal it is, a good easy dinner for tonight. A squeeze of lemon and a spoon of ghee on top never hurts.\n\n8:53 PM"
+  }
+]

@@ -1,0 +1,18 @@
+{"t":"2026-10-21T20:48:27.327Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T20:48:32.497Z","step":"launch","ok":true}
+{"t":"2026-10-21T20:48:40.574Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8074}
+{"t":"2026-10-21T20:48:40.678Z","i":0,"do":"send","sentAt":1792615720626,"before":0,"ok":true,"ms":104}
+{"t":"2026-10-21T20:48:43.682Z","i":1,"do":"wait","ok":true,"ms":3003}
+{"t":"2026-10-21T20:48:48.589Z","step":"launch","ok":true}
+{"t":"2026-10-21T20:48:48.589Z","i":2,"do":"relaunch","ok":true,"ms":4907}
+{"t":"2026-10-21T20:48:54.663Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":506,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"That reply got cut off.\nTry again\n8:48 PM","ms":6074}
+{"t":"2026-10-21T20:48:54.715Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-21T20:48:54.716Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n8:48 PM","eyes":false},"ok":true,"ms":1}
+{"t":"2026-10-21T20:48:54.819Z","i":5,"do":"send","sentAt":1792615734793,"before":0,"ok":true,"ms":103}
+{"t":"2026-10-21T20:48:56.821Z","i":6,"do":"wait","ok":true,"ms":2002}
+{"t":"2026-10-21T20:49:01.694Z","step":"launch","ok":true}
+{"t":"2026-10-21T20:49:01.694Z","i":7,"do":"relaunch","ok":true,"ms":4873}
+{"t":"2026-10-21T20:49:10.338Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","firstReplyMs":1531,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"A good tortoise name is Shell-don, or go classic with Dheere (Hindi for \"slowly\"). Turbo and Laddoo also suit a slow, round pet.\n\nI can't see live news from here, so I can't tell you today's biggest story in India. I can look it up for you if you ask.\n\n8:49 PM","ms":8644}
+{"t":"2026-10-21T20:49:10.389Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-21T20:49:10.392Z","i":9,"do":"dump","ok":true,"ms":3}
+{"t":"2026-10-21T20:49:10.498Z","step":"appLog","lines":10,"dropped":0}

@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n8:40 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:40 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n8:40 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:40 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n8:41 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:41 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n8:41 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n8:41 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n8:41 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mummy ke liye ye 4 cakes safe aur pasand aane wale hain:\n\nChocolate truffle: rich aur sabko pasand aata hai.\nButterscotch: crunchy, halka meetha, classic.\nFresh fruit cake: halka hai, agar mummy kam meetha pasand karti hain.\nRasmalai cake: desi twist, birthday ke liye alag lagta hai.\n\nParso ke liye aaj ya kal tak order kar dena theek rahega. Cake eggless chahiye?\n\n8:41 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n8:41 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਮੰਮੀ ਲਈ ਮੈਂ ਚਾਕਲੇਟ ਟਰਫਲ ਸੁਝਾਵਾਂਗਾ, ਇਹ ਲਗਭਗ ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\n\nਜੇ ਉਹ ਘੱਟ ਮਿੱਠਾ ਪਸੰਦ ਕਰਦੇ ਹਨ ਤਾਂ ਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ ਠੀਕ ਰਹੇਗਾ। ਕੁਝ ਵੱਖਰਾ ਚਾਹੀਦਾ ਹੋਵੇ ਤਾਂ ਰਸਮਲਾਈ ਕੇਕ ਲੈ ਲਓ।\n\nਜਨਮ ਦਿਨ Fri 23 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਕੱਲ੍ਹ Thu 22 Oct ਤੱਕ ਆਰਡਰ ਕਰ ਦੇਣਾ ਠੀਕ ਰਹੇਗਾ। ਕੀ ਕੇਕ ਏਗਲੈੱਸ ਚਾਹੀਦਾ ਹੈ?\n\n8:41 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n8:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, Mon 2 Nov isn't a public holiday in Mumbai as far as I know. Diwali falls a week later, on Sun 8 Nov. I can't see the official Maharashtra holiday list from here, so check it if banks or offices matter for your plans.\n\n8:42 PM"
+  }
+]

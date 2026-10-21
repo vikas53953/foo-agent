@@ -1,0 +1,20 @@
+{"t":"2026-10-21T20:51:05.965Z","journey":"U04-find-in-chat","title":"Find in chat: Ctrl+F, count, next, previous, close","spec":"06 §9 find in chat, 10-2 §C.5 Search palette + find in chat","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T20:51:11.182Z","step":"launch","ok":true}
+{"t":"2026-10-21T20:51:12.215Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1028}
+{"t":"2026-10-21T20:51:12.333Z","i":1,"do":"send","sentAt":1792615872279,"before":0,"ok":true,"ms":118}
+{"t":"2026-10-21T20:51:22.983Z","i":2,"do":"waitReply","expect":"a short list","firstReplyMs":4060,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Three Indian rivers: Ganga, Yamuna and Godavari.\n\n8:51 PM","ms":10650}
+{"t":"2026-10-21T20:51:23.032Z","shot":"01-rivers.png"}
+{"t":"2026-10-21T20:51:23.048Z","i":3,"do":"key","expect":"find bar in the chat header with a field and count","ok":true,"ms":15}
+{"t":"2026-10-21T20:51:23.096Z","shot":"02-find-open.png"}
+{"t":"2026-10-21T20:51:23.107Z","i":4,"do":"fill","soft":true,"ok":true,"ms":10}
+{"t":"2026-10-21T20:51:23.909Z","i":5,"do":"wait","expect":"matches highlighted; count \"1 of n\"","ok":true,"ms":802}
+{"t":"2026-10-21T20:51:23.954Z","shot":"03-find-results.png"}
+{"t":"2026-10-21T20:51:24.021Z","i":6,"do":"click","soft":true,"ok":true,"ms":66}
+{"t":"2026-10-21T20:51:24.098Z","i":7,"do":"click","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-21T20:51:24.178Z","i":8,"do":"click","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-21T20:51:24.181Z","i":9,"do":"key","ok":true,"ms":2}
+{"t":"2026-10-21T20:51:24.982Z","i":10,"do":"wait","expect":"Ctrl+K search overlay (J22) if built; else nothing happens","ok":true,"ms":801}
+{"t":"2026-10-21T20:51:25.031Z","shot":"04-ctrl-k.png"}
+{"t":"2026-10-21T20:51:25.034Z","i":11,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-21T20:51:25.037Z","i":12,"do":"dump","ok":true,"ms":3}
+{"t":"2026-10-21T20:51:25.139Z","step":"appLog","lines":3,"dropped":0}

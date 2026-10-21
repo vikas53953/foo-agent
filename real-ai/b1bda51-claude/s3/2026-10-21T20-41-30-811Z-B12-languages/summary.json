@@ -1,0 +1,72 @@
+{
+  "journey": "B12-languages",
+  "title": "Chat in Hinglish and Punjabi, short answers",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T20-41-30-811Z-B12-languages",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792615295933,
+      "before": 0,
+      "ok": true,
+      "ms": 1420
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 4: answers in Hinglish",
+      "firstReplyMs": 5408,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Mummy ke liye ye 4 cakes safe aur pasand aane wale hain:\n\nChocolate truffle: rich aur sabko pasand aata hai.\nButterscotch: crunchy, halka meetha, classic.\nFresh fruit cake: halka hai, agar mummy kam meetha pasand karti hain.\nRasmalai cake: desi twist, birthday ke liye alag lagta hai.\n\nParso ke liye aaj ya kal tak order kar dena theek rahega. Cake eggless chahiye?\n\n8:41 PM",
+      "ms": 14062
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792615311491,
+      "before": 0,
+      "ok": true,
+      "ms": 107
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi",
+      "firstReplyMs": 7604,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "ਮੰਮੀ ਲਈ ਮੈਂ ਚਾਕਲੇਟ ਟਰਫਲ ਸੁਝਾਵਾਂਗਾ, ਇਹ ਲਗਭਗ ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\n\nਜੇ ਉਹ ਘੱਟ ਮਿੱਠਾ ਪਸੰਦ ਕਰਦੇ ਹਨ ਤਾਂ ਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ ਠੀਕ ਰਹੇਗਾ। ਕੁਝ ਵੱਖਰਾ ਚਾਹੀਦਾ ਹੋਵੇ ਤਾਂ ਰਸਮਲਾਈ ਕੇਕ ਲੈ ਲਓ।\n\nਜਨਮ ਦਿਨ Fri 23 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਕੱਲ੍ਹ Thu 22 Oct ਤੱਕ ਆਰਡਰ ਕਰ ਦੇਣਾ ਠੀਕ ਰਹੇਗਾ। ਕੀ ਕੇਕ ਏਗਲੈੱਸ ਚਾਹੀਦਾ ਹੈ?\n\n8:41 PM",
+      "ms": 16171
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792615327795,
+      "before": 0,
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 3: short 1–3 bubbles, no filler",
+      "firstReplyMs": 4556,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "No, Mon 2 Nov isn't a public holiday in Mumbai as far as I know. Diwali falls a week later, on Sun 8 Nov. I can't see the official Maharashtra holiday list from here, so check it if banks or offices matter for your plans.\n\n8:42 PM",
+      "ms": 12155
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 5
+    }
+  ]
+}

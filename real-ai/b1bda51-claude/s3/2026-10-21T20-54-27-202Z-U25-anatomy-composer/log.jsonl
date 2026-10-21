@@ -1,0 +1,47 @@
+{"t":"2026-10-21T20:54:27.203Z","journey":"U25-anatomy-composer","title":"Shell anatomy at every width, composer states, honest flights reply","spec":"03-shell-1 §3.1-§3.5, 03-shell-2 §3.6-§3.7, 04-2 §20-§23, AT-157","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T20:54:32.262Z","step":"launch","ok":true}
+{"t":"2026-10-21T20:54:33.292Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1025}
+{"t":"2026-10-21T20:54:34.100Z","i":1,"do":"resize","soft":true,"ok":true,"ms":808}
+{"t":"2026-10-21T20:54:34.173Z","shot":"01-L-1280.png"}
+{"t":"2026-10-21T20:54:34.173Z","i":2,"do":"shot","expect":"window at 1280x800","ok":true,"ms":73}
+{"t":"2026-10-21T20:54:34.252Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-21T20:54:34.321Z","i":4,"do":"shotEl","soft":true,"ok":true,"ms":68}
+{"t":"2026-10-21T20:54:34.393Z","i":5,"do":"shotEl","soft":true,"ok":true,"ms":72}
+{"t":"2026-10-21T20:54:34.456Z","i":6,"do":"shotEl","soft":true,"ok":true,"ms":63}
+{"t":"2026-10-21T20:54:34.519Z","i":7,"do":"shotEl","soft":true,"ok":true,"ms":63}
+{"t":"2026-10-21T20:54:34.580Z","i":8,"do":"shotEl","soft":true,"ok":true,"ms":60}
+{"t":"2026-10-21T20:54:34.644Z","i":9,"do":"shotEl","soft":true,"ok":true,"ms":64}
+{"t":"2026-10-21T20:54:34.712Z","i":10,"do":"shotEl","soft":true,"ok":true,"ms":68}
+{"t":"2026-10-21T20:54:34.801Z","i":11,"do":"shotEl","soft":true,"ok":true,"ms":89}
+{"t":"2026-10-21T20:54:34.861Z","i":12,"do":"shotEl","soft":true,"ok":true,"ms":59}
+{"t":"2026-10-21T20:54:34.927Z","i":13,"do":"shotEl","soft":true,"ok":true,"ms":65}
+{"t":"2026-10-21T20:54:35.002Z","i":14,"do":"shotEl","soft":true,"ok":true,"ms":75}
+{"t":"2026-10-21T20:54:35.068Z","i":15,"do":"shotEl","soft":true,"ok":true,"ms":65}
+{"t":"2026-10-21T20:54:35.082Z","i":16,"do":"fill","soft":true,"ok":true,"ms":14}
+{"t":"2026-10-21T20:54:35.193Z","i":17,"do":"shotEl","soft":true,"ok":true,"ms":111}
+{"t":"2026-10-21T20:54:35.214Z","i":18,"do":"fill","soft":true,"ok":true,"ms":21}
+{"t":"2026-10-21T20:54:35.306Z","i":19,"do":"shotEl","soft":true,"ok":true,"ms":91}
+{"t":"2026-10-21T20:54:35.323Z","i":20,"do":"fill","soft":true,"ok":true,"ms":17}
+{"t":"2026-10-21T20:54:35.401Z","i":21,"do":"click","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-21T20:54:35.905Z","i":22,"do":"wait","expect":"attach menu","ok":true,"ms":503}
+{"t":"2026-10-21T20:54:35.972Z","shot":"17-comp-attach-menu.png"}
+{"t":"2026-10-21T20:54:35.977Z","i":23,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-21T20:54:36.782Z","i":24,"do":"resize","soft":true,"ok":true,"ms":805}
+{"t":"2026-10-21T20:54:36.835Z","shot":"18-M-1000.png"}
+{"t":"2026-10-21T20:54:36.835Z","i":25,"do":"shot","expect":"window at 1000x760","ok":true,"ms":53}
+{"t":"2026-10-21T20:54:37.639Z","i":26,"do":"resize","soft":true,"ok":true,"ms":804}
+{"t":"2026-10-21T20:54:37.691Z","shot":"19-S-760.png"}
+{"t":"2026-10-21T20:54:37.691Z","i":27,"do":"shot","expect":"window at 760x700","ok":true,"ms":51}
+{"t":"2026-10-21T20:54:38.493Z","i":28,"do":"resize","soft":true,"ok":true,"ms":802}
+{"t":"2026-10-21T20:54:38.543Z","shot":"20-XS-520.png"}
+{"t":"2026-10-21T20:54:38.543Z","i":29,"do":"shot","expect":"window at 520x640","ok":true,"ms":49}
+{"t":"2026-10-21T20:54:39.346Z","i":30,"do":"resize","soft":true,"ok":true,"ms":803}
+{"t":"2026-10-21T20:54:39.405Z","shot":"21-L-again.png"}
+{"t":"2026-10-21T20:54:39.405Z","i":31,"do":"shot","expect":"window at 1280x800","ok":true,"ms":59}
+{"t":"2026-10-21T20:54:39.556Z","i":32,"do":"send","sentAt":1792616079472,"before":5,"ok":true,"ms":151}
+{"t":"2026-10-21T20:57:10.008Z","i":33,"do":"waitReply","expect":"AT-157: says it can find and compare flights and open the booking page; filling passengers and paying comes later","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","ms":150451}
+{"t":"2026-10-21T20:57:10.065Z","shot":"22-flights.png"}
+{"t":"2026-10-21T20:57:10.067Z","i":34,"do":"expectText","note":"AT-157 honest flights scope","soft":true,"text":"Dal chawal it is, a good easy dinner for tonight. A squeeze of lemon and a spoon of ghee on top never hurts.\n\n8:53 PM","ok":false,"ms":2}
+{"t":"2026-10-21T20:57:10.071Z","i":35,"do":"dump","ok":true,"ms":4}
+{"t":"2026-10-21T20:57:10.073Z","step":"recheck","i":34,"do":"expectText","late":true}
+{"t":"2026-10-21T20:57:10.168Z","step":"appLog","lines":1,"dropped":0}

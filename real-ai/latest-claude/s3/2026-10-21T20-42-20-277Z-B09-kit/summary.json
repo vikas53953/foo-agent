@@ -1,0 +1,148 @@
+{
+  "journey": "B09-kit",
+  "title": "Rich reply pieces: calculator, map, chart, compare, timer, form",
+  "steps": 15,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T20-42-20-277Z-B09-kit",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792615345528,
+      "before": 0,
+      "ok": true,
+      "ms": 155
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "AT-347 calculator recomputes",
+      "firstReplyMs": 9120,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your EMI comes to about ₹43,391 a month on ₹50,00,000 (50 lakh) at 8.5% for 20 years. You'd pay about ₹1,04,13,840 in total, of which ₹54,13,840 is interest. Change the amount, rate or years below to see new figures.\n\nCouldn’t show part of this\n\nKeep\n8:42 PM",
+      "ms": 18257
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792615363954,
+      "before": 0,
+      "ok": true,
+      "ms": 83
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "AT-341 numbered stops, dashed route, Open in Maps chip",
+      "firstReplyMs": 4543,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here are 5 places to visit in Jaipur, numbered in a sensible order: start at Amber Fort in the morning, then work your way into the old city.\n\nAmber Fort: hilltop fort, best seen early.\nNahargarh Fort: city views, good at sunset.\nHawa Mahal: the pink \"palace of winds\".\nCity Palace: royal rooms and courtyards.\nJantar Mantar: giant stone sun clocks, right next to the City Palace.\n\nCouldn’t show part of this\n\nKeep\n8:42 PM",
+      "ms": 14154
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792615378247,
+      "before": 0,
+      "ok": true,
+      "ms": 83
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "AT-340 one hue, number rules",
+      "firstReplyMs": 5558,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "India's real GDP growth was strongest in FY2021-22 at about 9.7% and slowed to about 6.5% in FY2024-25. FY2025-26 at about 7.4% is an early estimate. These are from memory and later revisions may change them, so check the official government figures if you need exact numbers.\n\nCouldn’t show part of this\n\nKeep\n8:43 PM",
+      "ms": 14653
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792615393033,
+      "before": 0,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "AT-343 highlighted column with why",
+      "firstReplyMs": 10178,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The Galaxy S25 is the best value of the three. It costs about the same as the others but gives you 256 GB, a 120 Hz screen and 7 years of updates. These are launch prices from memory, so check current offers before you buy.\n\nCouldn’t show part of this\n\nKeep\n8:43 PM",
+      "ms": 19834
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "sentAt": 1792615413017,
+      "before": 0,
+      "ok": true,
+      "ms": 103
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "expect": "AT-346 timer runs",
+      "firstReplyMs": 6080,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your 2 minute tea timer is ready below, so tap it to start.\n\nLet the tea steep\n2:00 left\nStart timer\nKeep\n8:43 PM",
+      "ms": 13173
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792615426331,
+      "before": 0,
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "AT-351 up to 6 fields, submit one action",
+      "firstReplyMs": 2030,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Fill in the three details below and I'll help you plan from there.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n8:43 PM",
+      "ms": 9627
+    },
+    {
+      "i": 12,
+      "do": "send",
+      "sentAt": 1792615436090,
+      "before": 0,
+      "ok": true,
+      "ms": 97
+    },
+    {
+      "i": 13,
+      "do": "waitReply",
+      "expect": "AT-358..362 sealed page, status line first",
+      "firstReplyMs": 8623,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your expense tracker is below: add an item, pick a category, and the total and category split update as you go. Entries are kept only while this page is open, so note down anything you want to keep.\n\nBuilding your page…",
+      "ms": 15202
+    },
+    {
+      "i": 14,
+      "do": "dump",
+      "ok": true,
+      "ms": 3
+    }
+  ]
+}
