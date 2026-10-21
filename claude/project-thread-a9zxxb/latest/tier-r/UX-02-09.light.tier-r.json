@@ -148,6 +148,7 @@
         "3:30",
         "AM",
         "up…",
+        "1",
         "Uses",
         "your",
         "plan",
@@ -346,8 +347,8 @@
     "total": 2548
   },
   "r5": {
-    "ratio": 0.0427421875,
-    "diffPixels": 43768,
+    "ratio": 0.042966796875,
+    "diffPixels": 43998,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-02-09.light.diff.png"
