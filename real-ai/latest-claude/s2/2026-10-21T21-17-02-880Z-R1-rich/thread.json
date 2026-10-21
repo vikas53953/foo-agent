@@ -1,0 +1,47 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n9:16 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n9:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n9:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n9:16 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because paying someone is now as easy as sending a message, and it costs the user nothing. Since it began in 2016, it has become the most common way to pay, from tea stalls to big shops to splitting rent with friends.\n\nThe three main reasons:\n\nIt is fast and simple. Scan a code or enter a phone number, confirm with your PIN, and the money moves in seconds, any time of day, even on holidays.\nIt is free for most people. Everyday payments between bank accounts carry no charge for the user, and small shopkeepers pay little or nothing to accept them. That is why even street vendors now show a QR code.\nIt works across banks and apps. You can use PhonePe, Google Pay, Paytm or your bank's own app and still pay someone on a different one. No card, no swipe machine, no cash needed in your pocket.\n\nTrust helps too. The money comes straight from your bank account, and your PIN keeps it safe. Once friends, family and local shops all use UPI, carrying cash starts to feel like the harder choice.\n\n9:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n9:17 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't draw a plain table here, so here is a side-by-side view of three popular phones in this range. The details are from my memory and prices change often, so I've left them out. Check the current price before you buy.\n\nCouldn’t show part of this\n\nKeep\n\nIf battery matters most, pick the Galaxy M35. For fastest charging and a steadier camera, pick the Narzo 70 Pro.\n\n9:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n9:20 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is an easy three-day plan for Jaipur with two stops in the morning and one in the evening, so your parents are never rushed.\n\nDay 1, the old city: Amber Fort first thing, before the crowds, with a photo stop at Jal Mahal on the way back. After lunch and a rest, see City Palace and Jantar Mantar. End with Hawa Mahal at sunset.\nDay 2, temples and gardens: Govind Dev Ji temple in the morning, then Albert Hall Museum and a slow lunch. Visit Birla Mandir late in the afternoon, then have dinner at a traditional Rajasthani place.\nDay 3, markets and a slow finish: Panna Meena ka Kund and the Patrika Gate for photos. Spend the late morning shopping for block prints and jewellery in Johari Bazaar, then leave in the afternoon.\n\nAmber has steep steps, so book a jeep or ask about the ramp. Keep the afternoons free for rest, as Jaipur gets warm by midday even in the cooler months.\n\nWhich dates are they travelling, and from which city? I can then check train and hotel options for them.\n\n9:20 PM"
+  }
+]

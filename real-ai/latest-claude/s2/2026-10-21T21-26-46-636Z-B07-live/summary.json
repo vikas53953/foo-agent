@@ -1,0 +1,104 @@
+{
+  "journey": "B07-live",
+  "title": "Watch live, take over, hand back, stop",
+  "steps": 14,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T21-26-46-636Z-B07-live",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792618011953,
+      "before": 0,
+      "ok": true,
+      "ms": 150
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 13206,
+      "newBubbles": 14,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which city should I look for Italian places in?\n1\nDelhi NCR\nBEST FIT\n2\nMumbai\n3\nBengaluru\n4\nSomewhere else\nType the city name\nSomething else…\nSkip\n9:27 PM\n---\n1\nDelhi NCR\nBEST FIT\n---\n2\nMumbai\n---\n3\nBengaluru\n---\n4\nSomewhere else\nType the city name\n---\nSomething else…\n---\nSkip\n---\nMy plan · Checking IRCTC\n1\nCheck IRCTC\n2\nFind trains on IRCTC\n3\nLook for morning trains from New Delhi to Agra on\nAbout 3 minutes\nGo\nChange plan\n9:27 PM\n---\n1\nCheck IRCTC\n---\n2\nFind trains on IRCTC\n---\n3\nLook for morning trains from New Delhi to Agra on\n---\nAbout 3 minutes\n---\nGo\n---\nChange plan",
+      "ms": 20807
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 27
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 45014
+    },
+    {
+      "i": 4,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "ok": true,
+      "ms": 4004
+    },
+    {
+      "i": 6,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 7,
+      "do": "wait",
+      "ok": true,
+      "ms": 3002
+    },
+    {
+      "i": 8,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "ok": true,
+      "ms": 3005
+    },
+    {
+      "i": 10,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 11,
+      "do": "wait",
+      "ok": true,
+      "ms": 8002
+    },
+    {
+      "i": 12,
+      "do": "key",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 13,
+      "do": "dump",
+      "ok": true,
+      "ms": 3
+    }
+  ]
+}

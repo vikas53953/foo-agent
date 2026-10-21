@@ -1,0 +1,65 @@
+{
+  "journey": "B05-restart",
+  "title": "Quit mid-job and reopen: job resumes",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T21-23-38-221Z-B05-restart",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792617823502,
+      "before": 0,
+      "ok": true,
+      "ms": 146
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 5563,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Got it, I’ll fold that in.\n\n9:23 PM",
+      "ms": 11648
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 8002
+    },
+    {
+      "i": 4,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 4974
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "AT-118: recovery card; job resumes (WAITING → WORKING)",
+      "ok": true,
+      "ms": 8011
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "ok": true,
+      "ms": 150012
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 5
+    }
+  ]
+}

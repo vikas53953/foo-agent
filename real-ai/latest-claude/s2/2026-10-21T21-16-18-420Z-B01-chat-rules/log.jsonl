@@ -1,0 +1,13 @@
+{"t":"2026-10-21T21:16:18.420Z","journey":"B01-chat-rules","title":"Chat rules: thanks, long answer, filler, reactions","spec":"AT-027, AT-030, AT-031, AT-308, AT-307","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T21:16:23.529Z","step":"launch","ok":true}
+{"t":"2026-10-21T21:16:23.672Z","i":0,"do":"send","sentAt":1792617383593,"before":0,"ok":true,"ms":139}
+{"t":"2026-10-21T21:16:43.676Z","i":1,"do":"wait","expect":"AT-027: 👍 reaction on my message, no foo message","ok":true,"ms":20004}
+{"t":"2026-10-21T21:16:43.728Z","shot":"01-thanks.png"}
+{"t":"2026-10-21T21:16:43.729Z","i":2,"do":"eval","value":{"reaction":true,"lastKind":"bubble-me"},"ok":true,"ms":1}
+{"t":"2026-10-21T21:16:43.826Z","i":3,"do":"send","sentAt":1792617403801,"before":0,"ok":true,"ms":96}
+{"t":"2026-10-21T21:17:02.606Z","i":4,"do":"waitReply","expect":"AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler","firstReplyMs":9647,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"People in India are switching to UPI because paying someone is now as easy as sending a message, and it costs the user nothing. Since it began in 2016, it has become the most common way to pay, from tea stalls to big shops to splitting rent with friends.\n\nThe three main reasons:\n\nIt is fast and simple. Scan a code or enter a phone number, confirm with your PIN, and the money moves in seconds, any time of day, even on holidays.\nIt is free for most people. Everyday payments between bank accounts carry no charge for the user, and small shopkeepers pay little or nothing to accept them. That is why even street vendors now show a QR code.\nIt works across banks and apps. You can use PhonePe, Google Pay, Paytm or your bank's own app and still pay someone on a different one. No card, no swipe machine, no cash needed in your pocket.\n\nTrust helps too. The money comes straight from your bank account, and your PIN keeps it safe. Once friends, family and local shops all use UPI, carrying cash starts to feel like the harder choice.\n\n9:16 PM","ms":18780}
+{"t":"2026-10-21T21:17:02.672Z","shot":"02-long.png"}
+{"t":"2026-10-21T21:17:02.674Z","i":5,"do":"check","note":"AT-308 suggestion chips (≤3)","soft":true,"found":0,"ok":false,"ms":1}
+{"t":"2026-10-21T21:17:02.675Z","i":6,"do":"eval","value":0,"ok":true,"ms":1}
+{"t":"2026-10-21T21:17:02.678Z","i":7,"do":"dump","ok":true,"ms":3}
+{"t":"2026-10-21T21:17:02.764Z","step":"appLog","lines":5,"dropped":0}

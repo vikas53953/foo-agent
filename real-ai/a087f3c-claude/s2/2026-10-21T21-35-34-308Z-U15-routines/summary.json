@@ -1,0 +1,71 @@
+{
+  "journey": "U15-routines",
+  "title": "Routine: create by chat, routines screen, pause, run once",
+  "steps": 8,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T21-35-34-308Z-U15-routines",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1028
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792618540617,
+      "before": 0,
+      "ok": true,
+      "ms": 128
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Routine card: created, next run time with weekday and date",
+      "firstReplyMs": 14665,
+      "newBubbles": 8,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I didn’t get that. Say it another way?\n\n9:35 PM\n---\nWhich city should I look in for the table on Sat 24 Oct, 8:00 PM?\n1\nMumbai\nBEST FIT\n2\nDelhi NCR\n3\nBengaluru\n4\nAnother city\nType it in your reply\nSomething else…\nSkip\n9:35 PM\n---\n1\nMumbai\nBEST FIT\n---\n2\nDelhi NCR\n---\n3\nBengaluru\n---\n4\nAnother city\nType it in your reply\n---\nSomething else…\n---\nSkip",
+      "didntGetThat": true,
+      "ms": 23262
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 87
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "Routines screen with the new routine row",
+      "ok": true,
+      "ms": 1201
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23047
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 2
+    }
+  ]
+}

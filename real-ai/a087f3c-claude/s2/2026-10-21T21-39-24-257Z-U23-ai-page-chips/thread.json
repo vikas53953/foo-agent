@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n9:34 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n9:34 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "superseded",
+    "text": "Which city should I look in for Sat 24 Oct, 8:00 PM? → you changed the plan\n9:34 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:34 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n9:35 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n9:35 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "superseded",
+    "text": "Which city should I look in for the table on Sat 24 Oct, 8:00 PM? → you changed the plan\n9:35 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:35 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me a simple page that tracks my daily water intake with a goal of 8 glasses\n9:39 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which kind of place should I look for on Sat 24 Oct, 8:00 PM?\n1\nVegetarian Italian\nBEST FIT\nWell-rated Italian with good vegetarian food\n2\nItalian, any\nBest-rated Italian, not only vegetarian\n3\nVegetarian, any cuisine\nBest-rated vegetarian restaurants\nSomething else…\nSkip\n9:39 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:39 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "streaming",
+    "text": "Here's a water tracker with a goal of 8 glasses. Tap + after each glass, and it saves per day on this device when your app allows it.\n\nBuilding your page…"
+  }
+]
