@@ -629,7 +629,11 @@ export class ChatLane {
     if (kind !== 'reply' && released.trim()) this.d.log('chat.say_leak', 'PROTOCOL_SAY_LEAK', { chatId });
 
     const memoryKind = act?.kind === 'memory' && this.d.memory ? act : null;
-    if (kind === 'reply' || (kind !== 'react' && kind !== 'ask' && !(kind === 'job' && this.d.jobs) && !memoryKind && released.trim())) {
+    const notBuilt = kind === 'routine' || kind === 'catch_up' || kind === 'handoff';
+    if (
+      kind === 'reply' ||
+      (kind !== 'react' && kind !== 'ask' && !(kind === 'job' && this.d.jobs) && !memoryKind && !notBuilt && released.trim())
+    ) {
       if (fooId) {
         // P1 T6: the follow-ups the reply's own `Suggestions:` line held (the gate kept the line out of the bubble).
         const trailer = kind === 'reply' ? splitSuggestions(parsed.say) : null;
@@ -679,7 +683,9 @@ export class ChatLane {
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
       await this.react(messageId, act.emoji, helper);
     } else {
-      // Kinds built in later milestones (see the header). CR-0042 (08-4 §25.5 item 5a): one honest line per kind.
+      // Kinds built in later milestones (see the header). CR-0042 (08-4 §25.5 item 5a): one honest line per kind, after any
+      // text already released (item 5).
+      if (fooId && notBuilt) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
       this.d.log('chat.kind_not_built', undefined, { chatId });
       await this.post(chatId, messageId, notBuiltLine(act?.kind), helper, providerNote);
     }

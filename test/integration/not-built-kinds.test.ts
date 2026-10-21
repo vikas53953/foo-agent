@@ -40,6 +40,22 @@ describe('CR-0042 · an intake kind that is not built yet says so, never "I didn
     expect(await said(handoff, 'Ask Trips to plan a Goa trip')).toEqual([t('thread.not_built.handoff')]);
   });
 
+  it('a routine whose words already showed still gets the line after them', async () => {
+    // Fable review: a `<say>` that leaked past the gate (PROTOCOL_SAY_LEAK) used to end the turn as a promise and nothing more.
+    const leak = envelope('Sure, every weekday at 8 I will tell you the weather in Delhi.', {
+      kind: 'routine',
+      draft: JSON.parse(REAL_WEATHER_ROUTINE.slice(REAL_WEATHER_ROUTINE.indexOf('{'), REAL_WEATHER_ROUTINE.lastIndexOf('}') + 1)).decision
+        .draft,
+    });
+    const texts = await said(leak, 'Every weekday at 8 AM tell me the weather in Delhi');
+    expect(texts.at(-1)).toBe(t('thread.not_built.routine'));
+  });
+
+  it('`setting` is not on this list: until CR-0043 it still gets "I didn\'t get that"', async () => {
+    const setting = envelope('', { kind: 'setting', path: 'appearance.theme', value: 'dark' });
+    expect(await said(setting, 'Switch to dark mode')).toEqual([t('thread.reply.empty')]);
+  });
+
   it('none of them says "I didn\'t get that"', () => {
     for (const key of ['routine', 'catch_up', 'handoff'] as const) expect(t(`thread.not_built.${key}`)).not.toBe(t('thread.reply.empty'));
   });

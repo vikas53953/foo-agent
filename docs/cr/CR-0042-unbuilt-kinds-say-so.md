@@ -35,3 +35,8 @@ answers.
 
 An independent Fable review of this CR and its diff, recorded in the PR and in `docs/decisions/real-pc.tsv` ("approved on
 Vikas's behalf" on pass).
+
+Result (2026-10-21): PASS with one act item. A routine, catch-up or hand-off answer whose words had already shown past the
+release gate (`PROTOCOL_SAY_LEAK`) ended the turn as a promise with no line after it. Fixed: those words stay as a finished
+bubble and the line follows them (item 5), with a test that fails before the fix. Considers applied: a test that `setting`
+still falls back to `thread.reply.empty` until CR-0043. Approved on Vikas's behalf.
