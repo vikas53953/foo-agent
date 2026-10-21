@@ -205,8 +205,10 @@ async function main() {
       if (!log) return { n: 0, texts: [] };
       const memoryChip = (el) =>
         el.getAttribute('data-testid') === 'thread-marker' && !!el.querySelector('[data-testid="thread-memory-undo"]');
+      // Only top-level rows: a card's own parts (card-connect-allow-send inside card-connect) are not extra replies.
+      const nested = (el) => !!el.parentElement?.closest('[data-testid^="bubble-"], [data-testid^="card-"]');
       const all = [...log.querySelectorAll('[data-testid^="bubble-"], [data-testid^="card-"], [data-testid="thread-marker"]')].filter(
-        (el) => /^(bubble-(me|foo|helper|wa)|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) || memoryChip(el),
+        (el) => (/^(bubble-(me|foo|helper|wa)|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) || memoryChip(el)) && !nested(el),
       );
       const kinds = all.map((el) => el.getAttribute('data-testid'));
       const after = all
@@ -377,25 +379,30 @@ async function main() {
         case 'send': {
           const field = page.locator('[data-testid="composer-field"]');
           await field.waitFor({ state: 'visible', timeout: 30_000 });
-          const mine = page.locator('[data-testid="thread-log"] [data-testid="bubble-me"]');
-          const lastMine = mine.count().then((c) => (c ? mine.last().innerText() : ''));
-          const prev = await lastMine;
+          const ME = '[data-testid="thread-log"] [data-testid="bubble-me"]';
           await field.click();
           await field.fill(s.text);
+          // Mark the newest bubble-me, send, and wait for a newer unmarked one (the same text sent twice still counts).
+          await page.evaluate((q) => {
+            const b = [...document.querySelectorAll(q)].pop();
+            if (b) b.setAttribute('data-drv-seen', '1');
+          }, ME);
           await page.keyboard.press('Enter');
           rec.sentAt = Date.now();
-          // Wait until the sent bubble is the newest bubble-me, then take what is already below it as the baseline.
-          await page
+          rec.sent = await page
             .waitForFunction(
-              (p) => {
-                const b = [...document.querySelectorAll('[data-testid="thread-log"] [data-testid="bubble-me"]')].pop();
-                return b && b.innerText !== p;
+              (q) => {
+                const b = [...document.querySelectorAll(q)].pop();
+                return b && !b.hasAttribute('data-drv-seen');
               },
-              prev,
+              ME,
               { timeout: 10_000 },
             )
-            .catch(() => {});
-          rec.before = (await afterMe()).n;
+            .then(() => true)
+            .catch(() => false);
+          // Everything below the sent bubble is foo's answer, even one that landed before this line ran (B04's instant
+          // "Nothing's running right now."), so the baseline is 0. If no bubble was sent, keep what is below the old one.
+          rec.before = rec.sent ? 0 : (await afterMe()).n;
           break;
         }
         case 'waitReply': {
