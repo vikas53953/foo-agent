@@ -53,7 +53,8 @@
    `saveLogin: { site }`, like M9 T8's `flightScope`), so main answers it: Save → the key `accepted` and a Login Secret box
    ("{site} login", `vaultName` = host, `afterSignIn: true`; never in a group); Don't save → `dismissed` for good. The
    box's Save logs `saved_login` (kind `connected`, "Saved your login for {site}", 06-3 §9.4) instead of `secret_saved`.
-   Values typed on the page are never read; the person types them again in the box (05-2 §5.8.4).
+   Values typed on the page are never read; the person types them again in the box (05-2 §5.8.4). No offer when the card
+   named no site (`NO_HOST`, "this site", from PR #85): there is no host to key it by, and never the AI's name.
 5. **Code box line:** the box shows "Your bank sent a code to {phone}." from its masked `sentTo` (the engine already carried
    it); `cards.secret.otp.reason` leaves `scripts/copy-pending.json`.
 6. **Hand-back is not a composer notice** (real-PC run 8: the bank line stayed above the composer after the job ended):

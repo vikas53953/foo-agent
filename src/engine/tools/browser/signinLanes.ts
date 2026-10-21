@@ -639,6 +639,8 @@ export class SigninLanes implements CaptureGuard {
    * answer is main's (src/main/cards/answerCard.ts): Save posts the Login Secret box, Don't save dismisses the key for good.
    * The values typed on the page are never read: the person types them again in the box (CR-0030 pick 4). */
   private async offerSaveLogin(job: JobRow, site: string): Promise<void> {
+    // No page address (NO_HOST): no site to name or key the login by, and never the AI's own name (PR #85), so no offer.
+    if (site === NO_HOST) return;
     const key = `save_login:${site}`;
     if ((await this.r.core.query<string>('suggestionState', key)) !== null) return;
     // 05-2 §5.8.6 "Groups: never": the Login box can't be posted in a group, so neither is the question that opens it.

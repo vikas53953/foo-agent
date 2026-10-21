@@ -330,6 +330,17 @@ describe('05-3 §5.10.2 / 05-2 §5.8.4 the save-login offer after a sign-in (CR-
     expect(offers()).toEqual([]);
   });
 
+  it('no offer when the card could name no site (NO_HOST): never keyed by "this site" or the AI\'s name', async () => {
+    const page = await h.page();
+    await page.goto('about:blank');
+    const r = await h.run('job.needSignIn', { site: 'RailPass', kind: 'password' });
+    if (r.kind !== 'needs_user') throw new Error(r.kind);
+    await h.post(r.card);
+    await h.lanes.done(h.job.id);
+    expect(offers()).toEqual([]);
+    expect(JSON.stringify(h.ops)).not.toContain('save_login:');
+  });
+
   it('no offer after Skip, a CAPTCHA take-over or a bank check', async () => {
     await needSignIn('password');
     await h.lanes.skip(h.job.id);
