@@ -354,7 +354,14 @@ async function main() {
           // A crash then an instant reopen: kill only foo's main process (its helpers live on, as after a real crash),
           // reopen without waiting, and pass only if a window shows. fooProcs counts foo.exe processes left (it includes
           // this driver, which runs under foo.exe too).
-          process.kill(app.process().pid, 'SIGKILL');
+          // After a failed reopen the last app is already gone; then this case starts from a fresh launch.
+          try {
+            process.kill(app.process().pid, 'SIGKILL');
+          } catch {
+            await new Promise((r) => setTimeout(r, 10_000)); // let the last crash's helpers exit first
+            await launch().catch(() => {});
+            process.kill(app.process().pid, 'SIGKILL');
+          }
           if (s.gapMs) await new Promise((r) => setTimeout(r, s.gapMs));
           rec.fooProcs = fooProcs();
           await launch();
