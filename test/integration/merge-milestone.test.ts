@@ -2,11 +2,15 @@
 // and JSON files merge by themselves, the manifest is rebuilt, and a real source clash stops the merge.
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 
 const ROOT = resolve('.');
+// Windows: pnpm is a .cmd shim that execFile cannot start, and System32 may hold a WSL bash; use node and Git Bash.
+const TSX = [join(ROOT, 'node_modules/tsx/dist/cli.mjs')];
+const GIT_BASH = 'C:\\Program Files\\Git\\bin\\bash.exe';
+const BASH = process.platform === 'win32' && existsSync(GIT_BASH) ? GIT_BASH : 'bash';
 const TRACE_HEAD = 'R,J,AT / ART / PERF,UX step,BP ref,Spec §,Test file,Milestone,Status';
 let dir = '';
 
@@ -16,7 +20,9 @@ const put = (file: string, text: string) => {
   writeFileSync(join(dir, file), text);
 };
 const read = (file: string) => readFileSync(join(dir, file), 'utf8');
-const merge = (ref: string) => spawnSync('bash', ['scripts/merge-milestone.sh', ref], { cwd: dir, encoding: 'utf8' });
+const merge = (ref: string, ...rest: string[]) =>
+  spawnSync(BASH, ['scripts/merge-milestone.sh', ref, ...rest], { cwd: dir, encoding: 'utf8' });
+const specWrite = () => execFileSync(process.execPath, [...TSX, 'scripts/spec-verify.ts', '--write'], { cwd: dir });
 
 /** main → two branches that each append to every shared file; `clash` also edits src/a.ts on both. */
 function branch(name: string, n: number, src?: string) {
@@ -27,7 +33,7 @@ function branch(name: string, n: number, src?: string) {
   pending.keys[`key.${n}`] = `T${n}`;
   put('scripts/copy-pending.json', JSON.stringify(pending, null, 2) + '\n');
   put(`spec/constitution/cr-${n}.md`, `CR ${n}\n`);
-  execFileSync('pnpm', ['exec', 'tsx', 'scripts/spec-verify.ts', '--write'], { cwd: dir });
+  specWrite();
   if (src) put('src/a.ts', src);
   git('add', '-A');
   git('commit', '-q', '-m', name);
@@ -38,11 +44,12 @@ beforeAll(() => {
   git('init', '-q', '-b', 'main');
   git('config', 'user.email', 't@example.com');
   git('config', 'user.name', 't');
+  git('config', 'core.autocrlf', 'false');
   for (const f of ['merge-milestone.sh', 'merge-rows.ts', 'trace-check.ts', 'spec-verify.ts']) {
     mkdirSync(join(dir, 'scripts'), { recursive: true });
     copyFileSync(join(ROOT, 'scripts', f), join(dir, 'scripts', f));
   }
-  symlinkSync(join(ROOT, 'node_modules'), join(dir, 'node_modules'), 'dir');
+  symlinkSync(join(ROOT, 'node_modules'), join(dir, 'node_modules'), 'junction');
   put('.gitignore', 'node_modules\n');
   put('package.json', '{ "name": "t", "private": true, "type": "module" }\n');
   put('.prettierrc', readFileSync(join(ROOT, '.prettierrc'), 'utf8'));
@@ -52,7 +59,7 @@ beforeAll(() => {
   put('scripts/copy-pending.json', '{\n  "_why": "test",\n  "keys": {}\n}\n');
   put('src/a.ts', 'export const a = 1;\n');
   mkdirSync(join(dir, 'test'), { recursive: true });
-  execFileSync('pnpm', ['exec', 'tsx', 'scripts/spec-verify.ts', '--write'], { cwd: dir });
+  specWrite();
   git('add', '-A');
   git('commit', '-q', '-m', 'base');
 }, 60_000);
@@ -100,7 +107,7 @@ describe('merge-milestone.sh', () => {
     const flip = (name: string, file: string) => {
       git('checkout', '-q', '-b', name, 't2');
       put('spec/trace.csv', read('spec/trace.csv').replace('test/x1.test.ts', file));
-      execFileSync('pnpm', ['exec', 'tsx', 'scripts/spec-verify.ts', '--write'], { cwd: dir });
+      specWrite();
       git('commit', '-q', '-am', name);
     };
     flip('f1', 'test/y1.test.ts');
@@ -121,7 +128,7 @@ describe('merge-milestone.sh', () => {
     git('checkout', '-q', '-b', 'n2', 't2');
     put('docs/decisions/M9.tsv', read('docs/decisions/M9.tsv') + '2026-10-22\tn2\n');
     git('commit', '-q', '-am', 'n2');
-    const r = spawnSync('bash', ['scripts/merge-milestone.sh', 'n1', '--no-commit'], { cwd: dir, encoding: 'utf8' });
+    const r = merge('n1', '--no-commit');
     expect(r.status, r.stderr).toBe(0);
     expect(r.stdout).toContain('merge staged, not committed');
     expect(git('rev-parse', '-q', '--verify', 'MERGE_HEAD')).not.toBe('');

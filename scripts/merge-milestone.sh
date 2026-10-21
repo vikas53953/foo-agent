@@ -18,7 +18,8 @@ commit=1
 git rev-parse --verify -q "$ref^{commit}" > /dev/null || { echo "no such ref: $ref" >&2; exit 2; }
 git diff --quiet && git diff --cached --quiet || { echo "the working tree has changes; commit or stash them first" >&2; exit 2; }
 
-tsx() { pnpm exec tsx "$@"; }
+# node + the local packages, not pnpm: the same on Linux and in Git Bash on Windows.
+tsx() { node node_modules/tsx/dist/cli.mjs "$@"; }
 
 if git merge-base --is-ancestor "$ref" HEAD; then
   echo "nothing to merge: $ref is already in $(git branch --show-current)"
@@ -63,7 +64,7 @@ fi
 
 # The JSON merge writes 2-space JSON; prettier owns the final layout.
 json=$(git diff --cached --name-only -- scripts/copy-pending.json src/shared/copy/en-IN.json)
-[ -z "$json" ] || { pnpm exec prettier --write $json > /dev/null && git add -- $json; }
+[ -z "$json" ] || { node node_modules/prettier/bin/prettier.cjs --write $json > /dev/null && git add -- $json; }
 
 if [ ${#real[@]} -gt 0 ]; then
   echo "real clashes, settle these by hand, then commit:" >&2
