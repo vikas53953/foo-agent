@@ -241,6 +241,8 @@
         "127.0.0.1",
         "Watch",
         "live",
+        "H",
+        "Home",
         "I’ll",
         "remind",
         "you",
@@ -261,6 +263,8 @@
         "6:35",
         "AM",
         "✅",
+        "H",
+        "Home",
         "I",
         "checked.",
         "It",
@@ -280,6 +284,8 @@
         "10:03",
         "AM",
         "✅",
+        "H",
+        "Home",
         "Done.",
         "I’ll",
         "keep",
@@ -294,6 +300,8 @@
         "1:31",
         "PM",
         "✅",
+        "H",
+        "Home",
         "Here’s",
         "what",
         "I",
@@ -307,6 +315,8 @@
         "value.",
         "3:15",
         "PM",
+        "H",
+        "Home",
         "Gas",
         "cylinder",
         "booked",
@@ -420,8 +430,13 @@
         "replies",
         "show",
         "here.",
-        "Home:",
-        "127.0.0.1"
+        "Waiting",
+        "for",
+        "your",
+        "answer:",
+        "127.0.0.1.",
+        "Show",
+        "button."
       ]
     },
     "hl": {
@@ -478,8 +493,8 @@
     "total": 2744
   },
   "r5": {
-    "ratio": 0.09139453125,
-    "diffPixels": 93588,
+    "ratio": 0.091236328125,
+    "diffPixels": 93426,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-01.light.diff.png"

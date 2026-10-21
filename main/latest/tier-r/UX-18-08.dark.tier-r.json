@@ -145,7 +145,6 @@
         "in",
         "Pune",
         "Done",
-        "1",
         "T",
         "11:58",
         "AM",
@@ -897,8 +896,8 @@
     "total": 3332
   },
   "r5": {
-    "ratio": 0.0527958984375,
-    "diffPixels": 54063,
+    "ratio": 0.0525693359375,
+    "diffPixels": 53831,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-18-08.dark.diff.png"
