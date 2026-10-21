@@ -514,8 +514,10 @@ journey(
         send('Switch to dark mode'),
         dict(reply('dark', 'foo switches to dark and shows "Changed: Theme → Dark. [Undo]"', 'UX-12-02'),
              expectJs="document.documentElement.dataset.theme === 'dark'"),
-        click('app-undo-action', last=True),
+        # Undo on the chat line itself (CR-0043), not the app toast.
+        click(css='[data-testid="thread-marker-link"][data-action="undo"]', last=True),
         wait(1500, 'undo', 'back to light'),
+        check(css='html:not([data-theme="dark"])', note='Undo put the theme back'),
         key('Control+,'),
         click('settings-nav-appearance'),
         click('settings-row-appearance-theme'),

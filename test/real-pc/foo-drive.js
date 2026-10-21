@@ -203,8 +203,10 @@ async function main() {
     page.evaluate(() => {
       const log = document.querySelector('[data-testid="thread-log"]');
       if (!log) return { n: 0, texts: [] };
+      // A setting line ("Changed: Theme → Dark. Undo", CR-0043) is foo's whole answer to "switch to dark mode", like the chip.
       const memoryChip = (el) =>
-        el.getAttribute('data-testid') === 'thread-marker' && !!el.querySelector('[data-testid="thread-memory-undo"]');
+        el.getAttribute('data-testid') === 'thread-marker' &&
+        (!!el.querySelector('[data-testid="thread-memory-undo"]') || el.hasAttribute('data-setting'));
       // Only top-level rows: a card's own parts (card-connect-allow-send inside card-connect) are not extra replies.
       const nested = (el) => !!el.parentElement?.closest('[data-testid^="bubble-"], [data-testid^="card-"]');
       const all = [...log.querySelectorAll('[data-testid^="bubble-"], [data-testid^="card-"], [data-testid="thread-marker"]')].filter(

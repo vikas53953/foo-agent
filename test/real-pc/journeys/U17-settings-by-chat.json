@@ -24,7 +24,7 @@
     {
       "do": "click",
       "soft": true,
-      "tid": "app-undo-action",
+      "css": "[data-testid=\"thread-marker-link\"][data-action=\"undo\"]",
       "last": true
     },
     {
@@ -32,6 +32,12 @@
       "ms": 1500,
       "shot": "undo",
       "expect": "back to light"
+    },
+    {
+      "do": "check",
+      "soft": true,
+      "css": "html:not([data-theme=\"dark\"])",
+      "note": "Undo put the theme back"
     },
     {
       "do": "key",
