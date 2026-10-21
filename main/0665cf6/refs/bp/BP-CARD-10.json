@@ -1,0 +1,47 @@
+{
+  "id": "BP-CARD-10",
+  "family": "bp",
+  "selector": "#cardgal > .panel:nth-child(10) > .mini",
+  "box": {
+    "x": 127.5,
+    "y": 11869.40625,
+    "width": 351.328125,
+    "height": 138
+  },
+  "files": {
+    "light": {
+      "png": "BP-CARD-10.light.png",
+      "sha256": "21a6da174fbbe24ea6de4a5913863c188463a891b4daed9c8e51684f39c096ec"
+    },
+    "dark": {
+      "png": "BP-CARD-10.dark.png",
+      "sha256": "93cd672ba840a3f195dfe5abb87f02689dd4d44def8c8b5cd8e51a28e1d25cc7"
+    }
+  },
+  "texts": [
+    "IRCTC wants you to sign in",
+    "I'll wait. Sign in on the real page and I'll carry on.",
+    "Open sign-in",
+    "Skip"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-CARD-10": {
+      "x": 0,
+      "y": 0,
+      "width": 351.328125,
+      "height": 138
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M9",
+  "spec": "05-3 §5.10",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}
