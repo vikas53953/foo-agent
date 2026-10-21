@@ -14,6 +14,7 @@ import { byTid, openChat, openWorld } from '../fidelity/capture';
 import type { FakeLine } from './fakeAi';
 import { launch, testDirs } from './launch';
 import { settleSeededJobs } from './m4-start';
+import { typeInComposer } from './typeInComposer';
 
 export const ASK_TABLES = 'are there tables at an Italian place in Bandra Saturday';
 
@@ -147,8 +148,7 @@ export async function startBooking(lines: (sb: Sandbox) => FakeLine[], opts: { a
 }
 
 export async function say(page: Page, text: string): Promise<void> {
-  await page.getByTestId(TID.composerField).focus();
-  await page.keyboard.type(text);
+  await typeInComposer(page, text);
   await page.keyboard.press('Enter');
 }
 

@@ -1,0 +1,244 @@
+{
+  "id": "U01-bubble-menu",
+  "title": "Bubble menu: copy, react, reply, edit, try again, good and bad",
+  "spec": "04 §1–§8, 10-2 §C.3 Your bubble / foo bubble / Reactions",
+  "covers": ["C.3 Your bubble + status badge", "C.3 foo / helper bubble", "C.3 Reactions", "AT-027"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "send",
+      "text": "Give me one fun fact about Delhi in one sentence"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "fact",
+      "expect": "one short reply; my bubble shows a tick and a badge, never ⚠",
+      "ref": "BP-MSG-01"
+    },
+    {
+      "do": "shotEl",
+      "tid": "bubble-me",
+      "last": true,
+      "name": "my-bubble",
+      "soft": true,
+      "ref": "BP-MSG-02"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-foo",
+      "last": true,
+      "button": "right"
+    },
+    {
+      "do": "wait",
+      "ms": 600,
+      "shot": "foo-menu",
+      "expect": "menu on foo bubble: Reply, Copy, React, Try again, Good, Bad, Select",
+      "ref": "UX-04-05"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-menu-copy"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-foo",
+      "last": true,
+      "button": "right"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-menu-react"
+    },
+    {
+      "do": "wait",
+      "ms": 600,
+      "shot": "react-picker",
+      "expect": "reaction picker with emoji options",
+      "ref": "UX-04-06"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-react-option"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "reacted",
+      "expect": "reaction chip under foo bubble"
+    },
+    {
+      "do": "check",
+      "soft": true,
+      "tid": "bubble-reaction",
+      "note": "reaction chip shows"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-reaction",
+      "last": true
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "reaction-removed",
+      "expect": "clicking my reaction again removes it"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-me",
+      "last": true,
+      "button": "right"
+    },
+    {
+      "do": "wait",
+      "ms": 600,
+      "shot": "my-menu",
+      "expect": "menu on my bubble: Reply, Copy, React, Edit, Select, Delete"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-menu-reply"
+    },
+    {
+      "do": "wait",
+      "ms": 500,
+      "shot": "reply-quote",
+      "expect": "reply quote above the composer with a close X",
+      "ref": "BP-COMP-04"
+    },
+    {
+      "do": "send",
+      "text": "And one about Amritsar"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "reply-sent",
+      "expect": "my bubble shows the quoted message; foo answers about Amritsar"
+    },
+    {
+      "do": "check",
+      "soft": true,
+      "tid": "bubble-quote",
+      "note": "quote shows inside my bubble"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-me",
+      "last": true,
+      "button": "right"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-menu-edit"
+    },
+    {
+      "do": "wait",
+      "ms": 500,
+      "shot": "edit-mode",
+      "expect": "composer in edit mode with my text"
+    },
+    {
+      "do": "fill",
+      "tid": "composer-field",
+      "value": "And one about Ludhiana",
+      "soft": true
+    },
+    {
+      "do": "key",
+      "key": "Enter"
+    },
+    {
+      "do": "wait",
+      "ms": 20000,
+      "shot": "edited",
+      "expect": "my bubble says edited; foo answers the edited question"
+    },
+    {
+      "do": "expectText",
+      "soft": true,
+      "re": "edited",
+      "tid": "bubble-me",
+      "note": "edited label",
+      "last": true
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-foo",
+      "last": true,
+      "button": "right"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-menu-good"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "good",
+      "expect": "thumbs up feedback recorded quietly"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-foo",
+      "last": true,
+      "button": "right"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-menu-bad"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "bad-feedback",
+      "expect": "feedback chips / field after thumbs down"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-foo",
+      "last": true,
+      "button": "right"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-menu-try-again"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "try-again",
+      "expect": "a fresh answer replaces or follows; no duplicate bubbles"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

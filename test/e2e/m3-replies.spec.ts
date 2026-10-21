@@ -2,8 +2,8 @@
 // most 3 bubbles, no bubble splitting a list), AT-006 (no AI passes a test → the composer stays disabled with the not-set-up
 // placeholder; 04-2 §20.4 / §23.1 copy "Connect your AI first", implementation-notes M3 item 11), 10-acceptance-2 ART-23a
 // (ack messages get a reaction only). 04 §3.3 (ticks: ✓✓ when the lane accepts it, Clock while it waits to send), §4.1
-// rule 4 / §4.2 (👀 `seen` on the first byte, gone when the first word shows), §12.3 (chat mode: ≤ 600 characters split at
-// blank lines into ≤ 3 bubbles paced `clamp(800 + 12 × chars, 800, 2500)` ms; anything else one bubble), §14.3 (Thinking row
+// rule 4 / §4.2 (👀 `seen` on the first byte, gone when the first word shows), §12.3 (every reply is one bubble, never split,
+// CR-0024 F2), §14.3 (Thinking row
 // while a request is in flight), §14.4 (Stop keeps the text with "Stopped."), §19.4 (cut-off reply: "Try again"), 08-4
 // §25.5 item 2 (the engine's 1.5 s release gate on the injected Clock), 08-3 §22.3 (the fake AI). Every reply comes from the
 // fake AI (FOO_FAKE_AI); no test reaches a real AI or the network. The ux-world seed (08-3 §22.9) supplies a verified AI and
@@ -12,10 +12,10 @@ import { expect, test, type ElectronApplication, type Page } from '@playwright/t
 import type {} from '../../src/shared/ipc';
 import { t } from '../../src/shared/copy/t';
 import { TID } from '../../src/shared/testids';
-import { bubbleDelayMs } from '../../src/renderer/messages/chunks';
 import { fakeTurns, intake, launchWithFakeAi, VERIFY_OK, type FakeLine } from './fakeAi';
 import type { testDirs } from './launch';
 import { settleSeededJobs } from './m4-start';
+import { typeInComposer } from './typeInComposer';
 
 const byTid = (id: string) => `[data-testid="${id}"]`;
 /** The engine's hold before a reply streams (08-4 §25.5 item 2). */
@@ -71,8 +71,7 @@ const round = (page: Page) => page.getByTestId(TID.composerSend);
 /** Types the text and presses Enter; returns the new user message's id and its row (found by id: the list is virtual). */
 async function send(page: Page, text: string) {
   const seen = (await events(page)).length;
-  await field(page).focus();
-  await page.keyboard.type(text);
+  await typeInComposer(page, text);
   await page.keyboard.press('Enter');
   const id = await page.waitForFunction(
     ([from, txt]) =>
@@ -161,7 +160,7 @@ const SEVEN = [
   'Tell me if you want a cab to the airport.',
 ];
 
-test('AT-030 · a 7-paragraph answer arrives as at most 3 bubbles', async () => {
+test('AT-030 · a 7-paragraph answer arrives as one bubble (at most 3), and no bubble splits a list', async () => {
   test.info().annotations.push({
     type: 'AT-030',
     description: '**Given** a 200-word answer, **then** it arrives as at most 3 bubbles, with no bubble splitting a list.',
@@ -176,7 +175,7 @@ test('AT-030 · a 7-paragraph answer arrives as at most 3 bubbles', async () => 
   const { app, page } = await start([intake('Goa plan?', SEVEN.join('\n\n')), intake('whole week', long)]);
   await openChat(page, 'foo');
 
-  // Chat mode: the whole reply came inside the 1.5 s hold (no clock moved), so it is paced into 3 bubbles.
+  // Chat mode: the whole reply came inside the 1.5 s hold (no clock moved); it shows as one bubble (CR-0024 F2).
   await send(page, 'Is the Goa plan? done');
   const reply = await page.waitForFunction(
     () => (window as unknown as { __events: Ev[] }).__events.find((e) => e.ch === 'message:upsert' && e.p.authorKind === 'foo')?.p,
@@ -185,22 +184,10 @@ test('AT-030 · a 7-paragraph answer arrives as at most 3 bubbles', async () => 
   expect(foo.status).toBe('complete');
   expect(foo.text).toBe(SEVEN.join('\n\n'));
   const parts = page.locator(`${byTid(TID.threadLog)} [data-message-id="${foo.id}"] ${byTid(TID.bubbleFoo)}`);
-  const t0 = Date.now();
   await expect(parts).toHaveCount(1);
-  await expect(parts).toHaveCount(2, { timeout: 5_000 });
-  const t1 = Date.now();
-  await expect(parts).toHaveCount(3, { timeout: 5_000 });
-  const t2 = Date.now();
-  // The pacing (real time in the renderer): clamp(800 + 12 × chars(previous bubble), 800, 2500) ms; a little slack for IPC.
-  const d1 = bubbleDelayMs(SEVEN[0]!.length);
-  const d2 = bubbleDelayMs(SEVEN[1]!.length);
-  expect(t1 - t0).toBeGreaterThanOrEqual(d1 - 300);
-  expect(t2 - t1).toBeGreaterThanOrEqual(d2 - 300);
   await page.waitForTimeout(3_000);
-  await expect(parts).toHaveCount(3);
-  await expect(parts.nth(0)).toHaveText(new RegExp(`^${SEVEN[0]}`));
-  await expect(parts.nth(1)).toContainText(SEVEN[1]!);
-  for (const p of SEVEN.slice(2)) await expect(parts.nth(2)).toContainText(p);
+  await expect(parts).toHaveCount(1);
+  for (const p of SEVEN) await expect(parts).toContainText(p);
 
   // The 200-word answer with a list: one bubble, the list whole inside it.
   const { id } = await send(page, 'and the whole week?');
@@ -273,7 +260,8 @@ test('AT-006 · a message sent while the AI fails its test waits to send, then g
   const up = await page.evaluate(() => window.foo.invoke('ai:verify', { providerId: 'claude-cli' }));
   expect(up.ok && up.value.ok).toBe(true);
   await expect(page.getByTestId(TID.bubbleFoo).filter({ hasText: 'Yes, I’m here.' })).toBeVisible();
-  await expect(row.getByTestId(TID.bubbleTick)).toHaveAttribute('data-state', 'delivered');
+  // CR-0024 F9: foo answered it, so it stays ✓✓ read after the 👀 clears.
+  await expect(row.getByTestId(TID.bubbleTick)).toHaveAttribute('data-state', 'read');
   expect(fakeTurns(dirs).filter((x) => x.purpose === 'intake')).toHaveLength(1);
   await app.close();
 });

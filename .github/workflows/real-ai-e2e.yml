@@ -23,7 +23,11 @@ on:
         required: true
       max_journeys:
         description: Stop after this many journeys per AI (cost cap)
-        default: '25'
+        default: '80'
+        required: true
+      shards:
+        description: Windows machines per AI that split the journeys (each one runs the first run first)
+        default: '4'
         required: true
       ai:
         description: auto = every AI whose secret exists (Claude first); claude = ANTHROPIC_API_KEY; chatgpt = OPENAI_API_KEY
@@ -54,10 +58,12 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       ais: ${{ steps.pick.outputs.ais }}
+      shards: ${{ steps.pick.outputs.shards }}
     steps:
       - id: pick
         env:
           AI: ${{ inputs.ai || 'auto' }}
+          SHARDS: ${{ inputs.shards || '4' }}
           HAS_ANTHROPIC: ${{ secrets.ANTHROPIC_API_KEY != '' }}
           HAS_OPENAI: ${{ secrets.OPENAI_API_KEY != '' }}
         run: |
@@ -69,17 +75,19 @@ jobs:
             exit 1
           fi
           echo "ais=[$(IFS=,; echo "${ais[*]}")]" >> "$GITHUB_OUTPUT"
+          echo "shards=[$(seq -s, 0 $((SHARDS - 1)))]" >> "$GITHUB_OUTPUT"
 
   real-ai:
-    name: Real-AI journeys on ${{ matrix.ai }} (windows-latest)
+    name: Real-AI journeys on ${{ matrix.ai }}, part ${{ matrix.shard }} (windows-latest)
     needs: plan
     runs-on: windows-latest
-    timeout-minutes: 180 # ~25 journeys at 2–5 min each, plus a ~4 min build
+    timeout-minutes: 180 # ~20 journeys per part at 2–5 min each, plus a ~4 min build
     strategy:
       fail-fast: false
-      max-parallel: 1 # Claude first, then ChatGPT
+      max-parallel: 4
       matrix:
         ai: ${{ fromJSON(needs.plan.outputs.ais) }}
+        shard: ${{ fromJSON(needs.plan.outputs.shards) }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -132,7 +140,9 @@ jobs:
           FOO_AI_ROW: ${{ matrix.ai == 'claude' && 'claude-cli' || 'codex-cli' }}
           ELECTRON_RUN_AS_NODE: '1'
           JOURNEYS: ${{ inputs.journeys || 'all' }}
-          MAX_JOURNEYS: ${{ inputs.max_journeys || '25' }}
+          MAX_JOURNEYS: ${{ inputs.max_journeys || '80' }}
+          SHARD: ${{ matrix.shard }}
+          SHARDS: ${{ inputs.shards || '4' }}
         run: |
           export FOO_EXE="$GITHUB_WORKSPACE/dist/win-unpacked/foo.exe"
           export FOO_REAL_TEST_DIR="$RUNNER_TEMP/foo-real-test"
@@ -141,15 +151,31 @@ jobs:
           if [ "$JOURNEYS" = "all" ]; then list=$(tr -d '\r' < "$kit/journeys.txt"); else list="$JOURNEYS"; fi
           list=$(echo $list) # one line, single spaces, so the J01 check below sees " J01-J02-first-run "
           # The first run must pick the AI; every other journey needs it, so it always goes first.
-          case " $list " in *" J01-J02-first-run "*) ;; *) list="J01-J02-first-run $list" ;; esac
-          n=0; status=0
+          # Every part needs its own first run (a fresh profile picks the AI); the rest of the list is dealt round-robin.
+          rest=""; i=0
+          for j in $list; do
+            [ "$j" = "J01-J02-first-run" ] && continue
+            i=$((i + 1)); [ "$i" -gt "$MAX_JOURNEYS" ] && { echo "cap of $MAX_JOURNEYS journeys reached"; break; }
+            [ $(((i - 1) % SHARDS)) -eq "$SHARD" ] && rest="$rest $j"
+          done
+          list="J01-J02-first-run$rest"
+          echo "part $SHARD of $SHARDS: $list"
+          status=0
           cd "$kit"
           for j in $list; do
-            n=$((n + 1)); [ "$n" -gt "$MAX_JOURNEYS" ] && { echo "cap of $MAX_JOURNEYS journeys reached"; break; }
             echo "=== $j ==="
             if ! "$FOO_EXE" foo-drive.js "journeys/$j.json" >> "$FOO_REAL_TEST_DIR/runs/console.txt" 2>&1; then
               status=1
-              if [ "$j" = "J01-J02-first-run" ]; then echo "::error::First run failed; later journeys need an AI, stopping."; break; fi
+              if [ "$j" = "J01-J02-first-run" ]; then
+                # One retry on a fresh profile, so one slow AI test does not cost the whole part. The failed attempt
+                # stays in the evidence and the part still ends red, so the first-run failure is never hidden.
+                echo "::warning::First run failed; retrying once on a fresh profile."
+                taskkill //IM foo.exe //F > /dev/null 2>&1 || true
+                rm -rf "$FOO_REAL_TEST_DIR/profile"
+                if ! "$FOO_EXE" foo-drive.js "journeys/$j.json" >> "$FOO_REAL_TEST_DIR/runs/console.txt" 2>&1; then
+                  echo "::error::First run failed twice; later journeys need an AI, stopping."; break
+                fi
+              fi
             fi
             taskkill //IM foo.exe //F > /dev/null 2>&1 || true
           done
@@ -160,7 +186,7 @@ jobs:
         shell: bash
         run: |
           {
-            echo "### Real-AI journeys on ${{ inputs.ref || github.sha }} ($(git rev-parse --short HEAD)), AI ${{ matrix.ai }}, model ${{ matrix.ai == 'claude' && (inputs.model || 'claude-sonnet-5-5') || 'Codex default' }}"
+            echo "### Real-AI journeys on ${{ inputs.ref || github.sha }} ($(git rev-parse --short HEAD)), AI ${{ matrix.ai }}, part ${{ matrix.shard }}, model ${{ matrix.ai == 'claude' && (inputs.model || 'claude-sonnet-5-5') || 'Codex default' }}"
             echo "| Journey | Steps | Failed |"; echo "|---|---|---|"
             for f in "$RUNNER_TEMP"/foo-real-test/runs/*/summary.json; do
               [ -f "$f" ] || continue
@@ -190,11 +216,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AI: ${{ matrix.ai }}
+          SHARD: ${{ matrix.shard }}
         run: |
           [ -f "$RUNNER_TEMP/no-push" ] && { echo "skipped: key found in evidence"; exit 0; }
           runs="$RUNNER_TEMP/foo-real-test/runs"
           [ -d "$runs" ] || { echo "no runs"; exit 0; }
           short="$(git rev-parse --short=7 HEAD)-$AI"
+          part="s$SHARD"
           printf 'run %s · ref %s · commit %s · AI %s\n' "$GITHUB_RUN_ID" "${{ inputs.ref || github.sha }}" "$(git rev-parse HEAD)" "$AI" > "$runs/RUN.txt"
           work="$RUNNER_TEMP/evidence" && rm -rf "$work" && mkdir -p "$work" && cd "$work"
           git init -q && git config core.autocrlf false
@@ -203,14 +231,18 @@ jobs:
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 | tr -d '\n')"
           git remote add origin "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git"
           g() { git -c "http.extraheader=$auth" "$@"; }
-          for attempt in 1 2 3 4 5; do
+          for attempt in 1 2 3 4 5 6 7 8; do
             if g fetch -q --depth 1 origin evidence 2>/dev/null; then git checkout -q -B evidence FETCH_HEAD; else git checkout -q --orphan evidence; fi
-            rm -rf "real-ai/$short" "real-ai/latest-$AI" && mkdir -p "real-ai/$short" "real-ai/latest-$AI"
-            cp -R "$runs/." "real-ai/$short/" && cp -R "$runs/." "real-ai/latest-$AI/"
+            # Each part owns its own folder, so parts pushing at the same time never remove each other's results.
+            # A new commit's first part clears latest-<ai> of parts from an older commit.
+            [ "$(cat "real-ai/latest-$AI/COMMIT.txt" 2>/dev/null)" = "$short" ] || rm -rf "real-ai/latest-$AI"
+            rm -rf "real-ai/$short/$part" "real-ai/latest-$AI/$part" && mkdir -p "real-ai/$short/$part" "real-ai/latest-$AI/$part"
+            cp -R "$runs/." "real-ai/$short/$part/" && cp -R "$runs/." "real-ai/latest-$AI/$part/"
+            echo "$short" > "real-ai/latest-$AI/COMMIT.txt"
             git add -A -- real-ai
             git diff --cached --quiet && { echo "evidence unchanged"; exit 0; }
             git commit -q -m "Evidence: real-AI journeys on $short (run $GITHUB_RUN_ID)"
             g push -q origin HEAD:refs/heads/evidence && { echo "evidence pushed to evidence:real-ai/$short"; exit 0; }
-            sleep $((attempt * 3))
+            sleep $((attempt * 3 + SHARD * 2)) # parts push at about the same time; stagger the retries
           done
           exit 1

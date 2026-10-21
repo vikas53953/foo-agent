@@ -26,7 +26,9 @@ type TickInput = Pick<MessageRow, 'status' | 'badge'>;
 export function tickState(m: TickInput): TickState {
   if (m.status === 'failed') return 'not_sent';
   if (m.status === 'queued') return 'waiting';
-  if (m.badge !== null) return 'read';
+  // Read stays read after the badge clears (CR-0024 F9): the lane marks a user message `complete` in the same write as 👀,
+  // so `complete` means foo started on it, and a plain or answered-steer message keeps ✓✓ read after its answer posts.
+  if (m.badge !== null || m.status === 'complete') return 'read';
   return m.status === 'sent' ? 'sent' : 'delivered';
 }
 

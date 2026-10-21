@@ -2,9 +2,10 @@
 // draft card → the G16 reply; one live job → steer; more than one → Choice card "Fold this into which job?"; else intake),
 // §5.5 (steer: queue in order, never interrupt a running turn; the next step turn carries part 10 and one steerEffect per
 // message; folded/restart → "Got it, I'll fold that in."; answered → the AI's say first; new_job → normal intake; the
-// message's badge follows the job's; do-verbs in a steer join do_verbs), §7.2 part 10 + 08-4 §24.14 (header), 08-4 §25.3
-// (StepAct.steer), §26.5 (steer while NEEDS_YOU: open choice / approval / payment / draft cards superseded, the job → working,
-// drain at once, the withdrawn line; a sign-in in progress is not interrupted), ART-18a/b.
+// message's badge follows the job's, an answered one shows ✓✓ read at once, CR-0024 F9; do-verbs in a steer join
+// do_verbs), §7.2 part 10 + 08-4 §24.14 (header), 08-4 §25.3 (StepAct.steer), §26.5 (steer while NEEDS_YOU: open choice /
+// approval / payment / draft cards superseded, the job → working, drain at once, the withdrawn line; a sign-in in progress
+// is not interrupted), ART-18a/b.
 // M5 T8: §26.5 item 3 for approval and payment cards goes through main's ApprovalGate (`approval.transition` SUPERSEDED,
 // `superseded: 'steer'`, so the approvals row and the card move together; 08-2 §9.1 only main writes approvals.state), and the
 // runner's gate learns which approval the job's next card replaces (superseded_by, AT-077b).
@@ -284,16 +285,27 @@ export class Steer {
     }
     const { effects, missing } = effectsFor(ids, act.steer);
     if (missing.length) this.core.d.log('job.steer_effect_missing', 'PROTOCOL_INVALID', { jobId: job.id });
-    const ops: DbOp[] = [];
+    // CR-0024 B1: one turn has one `say`, so it is posted once however many steers it answered, and the "Got it" line at
+    // most once; each in the order its first effect came (two answered steers used to post the same answer twice).
+    const folded = t('thread.steer.folded');
+    const filtered = this.core.d.prompts.filter(say);
+    const answer = filtered.trim() ? filtered : folded;
+    const lines: string[] = [];
     let restart = false;
     for (const e of effects) {
-      if (e.effect === 'folded' || e.effect === 'restart') ops.push(this.core.textOp(job, t('thread.steer.folded')));
       if (e.effect === 'restart') restart = true;
-      if (e.effect === 'answered') {
-        const text = this.core.d.prompts.filter(say);
-        if (text.trim()) ops.push(this.core.textOp(job, text));
-        else ops.push(this.core.textOp(job, t('thread.steer.folded')));
-      }
+      const line = e.effect === 'answered' ? answer : e.effect === 'new_job' ? null : folded;
+      if (line !== null && !lines.includes(line)) lines.push(line);
+    }
+    const ops: DbOp[] = lines.map((line) => this.core.textOp(job, line));
+    // CR-0024 F9: an answered question has its answer, so it leaves the job's badge and shows ✓✓ read with no badge at once.
+    const answered = effects.filter((e) => e.effect === 'answered').map((e) => e.messageId);
+    if (answered.length) {
+      this.followers.set(
+        job.id,
+        this.followersOf(job.id).filter((id) => !answered.includes(id)),
+      );
+      for (const id of answered) ops.push({ op: 'update', table: 'messages', id, set: { badge: null } });
     }
     if (restart) ops.push(...(await this.restartOps(job)));
     if (ops.length) await this.core.tx(ops);

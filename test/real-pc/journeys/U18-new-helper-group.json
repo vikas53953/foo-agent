@@ -1,0 +1,54 @@
+{
+  "id": "U18-new-helper-group",
+  "title": "New helper and New group dialogs, helper chat, helper profile",
+  "spec": "06 C-24/C-25/C-26 dialogs, 10-2 §C.4 New helper / New group dialogs",
+  "covers": ["C.4 New helper / New group dialogs (06, not cards)", "C.5 Helper profile / group"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "key",
+      "key": "Control+N",
+      "shot": "new-helper",
+      "expect": "New helper dialog: templates, name field",
+      "ref": "UX-10-01"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "sidebar-new-helper"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "new-helper-2",
+      "expect": "same dialog from the button"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "key",
+      "key": "Control+Shift+N",
+      "shot": "new-group",
+      "expect": "New group dialog: pick 2–6 members",
+      "ref": "UX-10-04"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

@@ -14,6 +14,7 @@ import { OFFLINE_CONFIRM_MS } from '../../src/main/net/netMonitor';
 import { byTid, openChat, openWorld, windowSize } from '../fidelity/capture';
 import { settleSeededJobs } from './m4-start';
 import { launchWithFakeAi, VERIFY_OK, type FakeLine } from './fakeAi';
+import { typeInComposer } from './typeInComposer';
 
 const RUNS = 20;
 /** Run tags with no tag inside another, so each run's intake line matches only its own ask (earlier lines are used up). */
@@ -91,8 +92,7 @@ async function start(o: { intakeDelayMs?: number } = {}) {
       )
       .toBe(state);
   const type = async (text: string) => {
-    await page.getByTestId(TID.composerField).focus();
-    await page.keyboard.type(text);
+    await typeInComposer(page, text);
   };
   const send = async (text: string) => {
     await type(text);

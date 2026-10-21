@@ -6,14 +6,14 @@ How we build, from M4 on: **[docs/build-method.md](docs/build-method.md)**. Read
 
 ## Skills
 
-| Skill              | Use it for                                                                                                |
-| ------------------ | --------------------------------------------------------------------------------------------------------- |
-| `foo-playbooks`    | the step list for your task; every brief names one (milestone, ticket, bug fix, visual parity, overnight) |
-| `foo-tickets`      | a milestone pack → 4 to 8 vertical tickets with blocking edges, before any code                           |
-| `foo-verify`       | drive the real app and paste before/after proof; required before "done"                                   |
-| `foo-review`       | Opus + Sonnet review sorted act / consider / noted / dismissed; two-axis close-out                        |
-| `foo-correct`      | a mistake seen twice becomes a lint, type, check or test                                                  |
-| `foo-decision-log` | the committed log Vikas audits, including approvals on his behalf                                         |
+| Skill              | Use it for                                                                                                  |
+| ------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `foo-playbooks`    | the step list for your task; every brief names one (milestone, ticket, bug fix, visual parity, overnight)   |
+| `foo-tickets`      | a milestone pack → 4 to 8 vertical tickets with blocking edges, before any code                             |
+| `foo-verify`       | drive the real app and paste before/after proof; required before "done"                                     |
+| `foo-review`       | review at the risk tier `pnpm review:tier` sets, act-on findings verified, max 3 rounds; two-axis close-out |
+| `foo-correct`      | a mistake seen twice becomes a lint, type, check or test                                                    |
+| `foo-decision-log` | the committed log Vikas audits, including approvals on his behalf                                           |
 
 The principles and helper skills in `.claude/skills/` are not loaded automatically. When a skill or brief names "the **X** principle skill", read `.claude/skills/principle-X/SKILL.md`. Steps in vendored text that need skills foo does not carry (`poteto-mode`, `architect`, `arena`, `how`, `why`, `swarm`, Cursor-only tools) are skipped; foo's playbooks already cover them.
 

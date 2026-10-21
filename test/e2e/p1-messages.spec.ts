@@ -12,6 +12,7 @@ import { TID } from '../../src/shared/testids';
 import { intake, launchWithFakeAi, type FakeLine } from './fakeAi';
 import { testDirs } from './launch';
 import { settleSeededJobs } from './m4-start';
+import { typeInComposer } from './typeInComposer';
 
 const byTid = (id: string) => `[data-testid="${id}"]`;
 /** 02 §F7: `--m-spring` 400ms, `--m-basic` 200ms, Off fades 83ms; the spring is a CSS `linear()` curve (CR-0021 pick 1). */
@@ -59,9 +60,7 @@ async function send(page: Page, text: string): Promise<Locator> {
   const field = page.getByTestId(TID.composerField);
   // The field takes text only once the AI has passed its test (AT-006); a slow runner can still be testing it here.
   await expect(field).toHaveAttribute('contenteditable', 'true', { timeout: 15_000 });
-  await field.focus();
-  await page.keyboard.type(text);
-  await expect(field).toContainText(text);
+  await typeInComposer(page, text);
   await page.keyboard.press('Enter');
   const bubble = page.getByTestId(TID.bubbleMe).filter({ hasText: text });
   await expect(bubble).toBeVisible();

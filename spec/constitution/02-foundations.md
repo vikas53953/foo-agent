@@ -95,14 +95,14 @@ Text pairs pass WCAG AA (4.5:1) and icons and control edges pass 3:1; the comput
 
 | Token | Light | Dark | Used for |
 |---|---|---|---|
-| `--bubble-me` | `#0B0B10` | `#2B3FD6` | the user's own bubble (BP1; dark = indigo, X-145) |
+| `--bubble-me` | `#0B0B10` | `#2C359A` | the user's own bubble (BP1; dark = deep indigo, X-145, CR-0024 F6: a step darker than `--accent` so the user's words stop shouting; buttons keep `--accent`) |
 | `--on-bubble-me` | `#FFFFFF` | `#FFFFFF` | text in the user's bubble (dark 7.54:1, X-145) |
 | `--on-bubble-me-2` | `#B5BDC9` | `#C9D0FF` | time + ticks inside the user's bubble (10.4:1 / 5.01:1; X-145) |
 | `--bubble-foo` | `#F0F0F4` | `#202028` | foo's and helpers' bubbles (BP1) |
 | `--on-bubble-foo` | `#0B0B10` | `#F1F1F5` | text in foo's bubble |
 | `--tick-read` | `#2B3FD6` | `#8C9BFF` | "read by foo" double tick on light surfaces |
 | `--tick-read-on-me` | `#8C9BFF` | `#FFFFFF` | read ticks inside the user's bubble (3:1+; X-145) |
-| `--on-bubble-me-soft` | `#26262C` | `#2334B8` | quote, file-chip and link-preview fill inside the user's bubble |
+| `--on-bubble-me-soft` | `#26262C` | `#232B7E` | quote, file-chip and link-preview fill inside the user's bubble |
 | `--media-scrim` | `linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,0)) 32px` | same | under time/ticks over photos |
 | `--on-media` | `#FFFFFF` | `#FFFFFF` | time, ticks, "+n" over photos |
 

@@ -208,7 +208,7 @@ Every entry in §7.3 has: **Summary** (one paragraph), **Touches** (surface keys
 
 **Strip.**
 ```
-[1 Send · 👀 ≤ 1 s]-->[2 Noise? react 👍, stop]-->[3 typing… then 1–3 bubbles]-->[4 Voice in: hold, release, transcript]
+[1 Send · 👀 ≤ 1 s]-->[2 Noise? react 👍, stop]-->[3 typing… then one bubble]-->[4 Voice in: hold, release, transcript]
 -->[5 Voice out: voice + text, no autoplay]
 ```
 **Full text.** `research/journeys-2.md` → `## J7. Casual chat, including voice notes in and out`
