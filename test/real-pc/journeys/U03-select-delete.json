@@ -1,0 +1,103 @@
+{
+  "id": "U03-select-delete",
+  "title": "Select messages, copy them, delete one (keep)",
+  "spec": "04 §9, 03-2 selection header, 10-2 §C.3",
+  "covers": ["C.3 Your bubble + status badge", "C.2 Headers (left + main)"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "send",
+      "text": "Say hello in Hindi"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "hello",
+      "expect": "short reply"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-me",
+      "last": true,
+      "button": "right"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-menu-select"
+    },
+    {
+      "do": "wait",
+      "ms": 600,
+      "shot": "select-mode",
+      "expect": "selection header with count, Copy, Delete, Cancel; check circles on bubbles"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-select-check",
+      "last": true
+    },
+    {
+      "do": "wait",
+      "ms": 400,
+      "shot": "two-selected",
+      "expect": "count 2"
+    },
+    {
+      "do": "expectText",
+      "soft": true,
+      "re": "2",
+      "tid": "chat-header-selection-count",
+      "note": "count shows 2"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chat-header-selection-copy"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chat-header-selection-cancel"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-me",
+      "last": true,
+      "button": "right"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-menu-delete"
+    },
+    {
+      "do": "wait",
+      "ms": 600,
+      "shot": "delete-dialog",
+      "expect": "confirm dialog; Esc keeps the message",
+      "ref": "UX-23-04"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "check",
+      "soft": true,
+      "tid": "bubble-me",
+      "note": "message kept after Esc"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

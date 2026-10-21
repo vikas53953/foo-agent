@@ -1,0 +1,70 @@
+{
+  "id": "U02-reactions-thanks",
+  "title": "Reactions: foo thumbs-up on thanks, react and un-react",
+  "spec": "04 §12, 10-1 AT-027, 10-2 §C.3 Reactions",
+  "covers": ["C.3 Reactions", "AT-027"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "send",
+      "text": "What is 12 times 12?"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "math",
+      "expect": "answer 144"
+    },
+    {
+      "do": "send",
+      "text": "thanks!"
+    },
+    {
+      "do": "wait",
+      "ms": 15000,
+      "shot": "thanks",
+      "expect": "foo adds a 👍 reaction on my thanks and posts no message (AT-027)"
+    },
+    {
+      "do": "check",
+      "soft": true,
+      "tid": "bubble-reaction",
+      "note": "foo reacted to my thanks"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-foo",
+      "last": true,
+      "button": "right"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-menu-react"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "bubble-react-more"
+    },
+    {
+      "do": "wait",
+      "ms": 700,
+      "shot": "react-more",
+      "expect": "more emoji"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

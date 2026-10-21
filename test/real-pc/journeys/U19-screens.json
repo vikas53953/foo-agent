@@ -1,0 +1,122 @@
+{
+  "id": "U19-screens",
+  "title": "Activity, Ideas, Spend, foo profile, Shortcuts screens",
+  "spec": "06 screens, 10-2 §C.5",
+  "covers": ["C.5 Helper profile / group", "C.2 Main shell + banner strip"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "sidebar-more"
+    },
+    {
+      "do": "wait",
+      "ms": 500,
+      "shot": "more",
+      "expect": "sidebar ⋮ menu: New helper, New group, Memory, Routines, Ideas, Activity, Settings, Shortcuts, Quit"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "sidebar-menu-activity"
+    },
+    {
+      "do": "wait",
+      "ms": 1200,
+      "shot": "activity",
+      "expect": "Activity screen"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "screen-back"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "sidebar-more"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "sidebar-menu-ideas"
+    },
+    {
+      "do": "wait",
+      "ms": 1200,
+      "shot": "ideas",
+      "expect": "Ideas screen"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "screen-back"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "sidebar-more"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "sidebar-menu-shortcuts"
+    },
+    {
+      "do": "wait",
+      "ms": 1200,
+      "shot": "shortcuts",
+      "expect": "keyboard shortcuts list"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chat-header-more"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "chat-header-menu-profile"
+    },
+    {
+      "do": "wait",
+      "ms": 1200,
+      "shot": "foo-profile",
+      "expect": "foo profile: face, name, vibe"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "screen-back"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "app-panel-spent-change"
+    },
+    {
+      "do": "wait",
+      "ms": 1200,
+      "shot": "spend",
+      "expect": "Spend screen / caps"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "screen-back"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

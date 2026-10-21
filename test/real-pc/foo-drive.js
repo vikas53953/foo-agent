@@ -51,6 +51,27 @@ function childEnv() {
 }
 
 const sel = (s) => (s.tid ? `[data-testid="${s.tid}"]` : s.css ? s.css : `text=${s.text}`);
+// The element a step acts on: nth (default first), or the last one with "last": true; "has" keeps matches containing text.
+let pageRef = null;
+const pick = (s) => {
+  let loc = pageRef.locator(sel(s));
+  if (s.has) loc = loc.filter({ hasText: s.has });
+  return s.last ? loc.last() : loc.nth(s.nth ?? 0);
+};
+const fooProcs = () => {
+  if (process.platform !== 'win32') return null;
+  try {
+    const name = path.basename(EXE);
+    const out = require('child_process').execSync(`tasklist /FI "IMAGENAME eq ${name}" /NH`, { encoding: 'utf8' });
+    return out.split('\n').filter((l) => l.toLowerCase().startsWith(name.toLowerCase())).length;
+  } catch {
+    return null;
+  }
+};
+const norm = (t) =>
+  String(t || '')
+    .replace(/\r\n/g, '\n')
+    .trim();
 const stamp = () => new Date().toISOString().replace(/[:.]/g, '-');
 
 async function main() {
@@ -77,6 +98,7 @@ async function main() {
       timeout: 60_000,
     });
     page = await app.firstWindow();
+    pageRef = page;
     // Wait until the window shows the chat or the setup card, then let the thread finish loading its history,
     // so counting foo's bubbles before a send never mistakes old messages for a new reply.
     await page
@@ -147,15 +169,35 @@ async function main() {
             rec.skipped = `${s.unlessTid} already showing`;
             break;
           }
-          const loc = page.locator(sel(s)).nth(s.nth ?? 0);
+          const loc = pick(s);
           const label = ((await loc.innerText({ timeout: 3_000 }).catch(() => '')) || '').trim();
           if ((s.tid && REFUSED_TIDS.has(s.tid)) || REFUSED_WORDS.test(label)) {
             rec.refused = `safety: will not click "${label || s.tid}"`;
             break;
           }
-          await loc.click({ timeout: s.timeoutMs ?? 15_000 });
+          await loc.scrollIntoViewIfNeeded({ timeout: 5_000 }).catch(() => {});
+          await loc.click({ timeout: s.timeoutMs ?? 15_000, button: s.button ?? 'left' });
           break;
         }
+        case 'hover':
+          await pick(s).hover({ timeout: s.timeoutMs ?? 10_000 });
+          break;
+        case 'expectText': {
+          // Soft or hard check that an element's text matches a pattern (case-insensitive).
+          const txt = ((await pick(s).innerText({ timeout: s.timeoutMs ?? 10_000 })) || '').slice(0, 2000);
+          rec.text = txt;
+          rec.ok = new RegExp(s.re, 'i').test(txt) !== !!s.not;
+          break;
+        }
+        case 'shotEl':
+          // A picture of one element, for side-by-side comparison with the design reference.
+          shotN += 1;
+          await pick(s).screenshot({ path: path.join(out, `${String(shotN).padStart(2, '0')}-${s.name}.png`), timeout: 10_000 });
+          break;
+        case 'openChat':
+          await page.locator('[data-testid="chatlist-row"]').filter({ hasText: s.name }).first().click({ timeout: 15_000 });
+          await page.waitForTimeout(1_000);
+          break;
         case 'clickIf': {
           // Clicks only when the control is there (e.g. a plan's Go); never a refused control.
           const loc = page.locator(sel(s)).last();
@@ -169,6 +211,43 @@ async function main() {
           await page.locator('[data-testid="composer-field"]').click();
           await page.keyboard.press('Control+V');
           break;
+        case 'typeSend':
+        case 'pasteSend': {
+          // Type fast (no retry) or paste, send, then read back what was sent through the bubble's own Copy and require
+          // the exact text: a dropped or doubled letter fails the step.
+          const field = page.locator('[data-testid="composer-field"]');
+          const mine = page.locator('[data-testid="thread-log"] [data-testid="bubble-me"]');
+          const n = await mine.count();
+          await field.click();
+          if (s.do === 'typeSend') await page.keyboard.type(s.text, { delay: s.delay ?? 0 });
+          else {
+            await app.evaluate(({ clipboard }, t) => clipboard.writeText(t), s.text);
+            await page.keyboard.press('Control+V');
+          }
+          await page.waitForTimeout(300);
+          rec.inField = norm(await field.innerText());
+          await page.keyboard.press('Enter');
+          await page.waitForFunction(
+            ([q, c]) => document.querySelectorAll(q).length > c,
+            ['[data-testid="thread-log"] [data-testid="bubble-me"]', n],
+            { timeout: 15_000 },
+          );
+          await app.evaluate(({ clipboard }) => clipboard.writeText(''));
+          await mine.last().click({ button: 'right' });
+          await page.locator('[data-testid="bubble-menu-copy"]').click();
+          await page.waitForTimeout(400);
+          const got = norm(await app.evaluate(({ clipboard }) => clipboard.readText()));
+          const want = norm(s.text);
+          rec.ok = got === want;
+          if (!rec.ok) {
+            let at = 0;
+            while (at < want.length && got[at] === want[at]) at += 1;
+            rec.mismatch = { wantLen: want.length, gotLen: got.length, at, want: want.slice(at, at + 40), got: got.slice(at, at + 40) };
+            rec.fieldOk = rec.inField === want;
+          }
+          await page.keyboard.press('Escape').catch(() => {});
+          break;
+        }
         case 'eval':
           rec.value = await page.evaluate(s.js);
           break;
@@ -242,6 +321,22 @@ async function main() {
           await app.close().catch(() => {});
           await launch();
           break;
+        case 'resize':
+          // The window's content size, for the Blueprint breakpoint shots (03-shell-1 §3.1.3).
+          await app.evaluate(({ BrowserWindow }, [w, h]) => BrowserWindow.getAllWindows()[0].setContentSize(w, h), [s.w, s.h]);
+          await page.waitForTimeout(800);
+          break;
+        case 'crashRelaunch': {
+          // A crash then an instant reopen: kill only foo's main process (its helpers live on, as after a real crash),
+          // reopen without waiting, and pass only if a window shows. fooProcs counts foo.exe processes left (it includes
+          // this driver, which runs under foo.exe too).
+          process.kill(app.process().pid, 'SIGKILL');
+          if (s.gapMs) await new Promise((r) => setTimeout(r, s.gapMs));
+          rec.fooProcs = fooProcs();
+          await launch();
+          rec.ok = await page.locator('[data-testid="composer-field"], [data-testid="card-setup"]').first().isVisible();
+          break;
+        }
         default:
           throw new Error(`unknown step ${s.do}`);
       }

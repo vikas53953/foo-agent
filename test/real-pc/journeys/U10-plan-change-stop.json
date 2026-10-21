@@ -1,0 +1,89 @@
+{
+  "id": "U10-plan-change-stop",
+  "title": "Plan card: Change plan, then Stop a running job from the checklist",
+  "spec": "05-3 §5.24, 05 §5.5 Stop, 10-2 §C.4",
+  "covers": ["C.4 Plan (C11)", "C.4 Checklist (C2) + link card", "C.2 Right shell"],
+  "steps": [
+    {
+      "do": "openChat",
+      "name": "foo",
+      "soft": true
+    },
+    {
+      "do": "send",
+      "text": "Find me 5 weekend trek options near Pune with difficulty and cost"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "shot": "plan",
+      "expect": "plan card",
+      "ref": "BP-CARD-11"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "card-plan-change",
+      "last": true
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "change",
+      "expect": "composer prompts for the change"
+    },
+    {
+      "do": "send",
+      "text": "Only easy treks please"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "plan-2",
+      "expect": "a changed plan, the old one marked changed"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "card-plan-go",
+      "last": true
+    },
+    {
+      "do": "wait",
+      "ms": 8000,
+      "shot": "running",
+      "expect": "checklist running; Doing now shows the job; chat pill Working"
+    },
+    {
+      "do": "key",
+      "key": "Control+Shift+D"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "doing-now",
+      "expect": "right panel Doing now row with Stop",
+      "ref": "BP-ANAT-DOING"
+    },
+    {
+      "do": "click",
+      "soft": true,
+      "tid": "card-checklist-stop",
+      "last": true
+    },
+    {
+      "do": "wait",
+      "ms": 5000,
+      "shot": "stopped",
+      "expect": "job stopped ⛔, checklist says stopped, no further steps"
+    },
+    {
+      "do": "key",
+      "key": "Control+Shift+D"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}
