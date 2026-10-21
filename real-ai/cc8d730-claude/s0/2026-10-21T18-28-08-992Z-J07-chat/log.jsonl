@@ -1,0 +1,12 @@
+{"t":"2026-10-21T18:28:08.993Z","journey":"J07-chat","title":"Casual chat","spec":"07-1 J7; 04 §12; 08-4 rules","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T18:28:14.414Z","step":"launch","ok":true}
+{"t":"2026-10-21T18:28:14.549Z","i":0,"do":"send","sentAt":1792607294507,"before":0,"ok":true,"ms":130}
+{"t":"2026-10-21T18:28:24.730Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3092,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Hi! What would you like to get done today?\n\n6:28 PM","ms":10181}
+{"t":"2026-10-21T18:28:24.790Z","shot":"01-hi.png"}
+{"t":"2026-10-21T18:28:24.887Z","i":2,"do":"send","sentAt":1792607304863,"before":0,"ok":true,"ms":97}
+{"t":"2026-10-21T18:28:34.497Z","i":3,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3038,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I'm foo, your personal helper: I can read your email and calendar, check websites, set up repeating checks, and write and send messages once you say go.\n\n6:28 PM","ms":9609}
+{"t":"2026-10-21T18:28:34.555Z","shot":"02-what-can-you-do.png"}
+{"t":"2026-10-21T18:28:34.669Z","i":4,"do":"send","sentAt":1792607314636,"before":0,"ok":true,"ms":114}
+{"t":"2026-10-21T18:28:45.839Z","i":5,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3039,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"A VPN is a private tunnel between your phone or laptop and another computer, and everything you send goes through it in scrambled form.\n\nNormally, your internet provider and the websites you visit can see where your traffic comes from. With a VPN, your device scrambles (encrypts) the data first and sends it to the VPN company's computer. That computer unscrambles it and passes it on to the website. The website sees the VPN's address, not yours.\n\nThis helps on public Wi-Fi, since nobody nearby can read your data, and it hides your location from sites. It does not make you anonymous, though. The VPN company can still see your activity, so pick one you trust.\n\n6:28 PM","ms":11170}
+{"t":"2026-10-21T18:28:45.906Z","shot":"03-vpn.png"}
+{"t":"2026-10-21T18:28:45.909Z","i":6,"do":"dump","ok":true,"ms":3}
