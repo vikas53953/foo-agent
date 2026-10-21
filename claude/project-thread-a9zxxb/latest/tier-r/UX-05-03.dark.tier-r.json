@@ -121,7 +121,6 @@
         "your",
         "Gmail…",
         "Working",
-        "1",
         "T",
         "Trips",
         "9:38",
@@ -575,8 +574,8 @@
     "total": 55440
   },
   "r5": {
-    "ratio": 0.1048525390625,
-    "diffPixels": 107369,
+    "ratio": 0.10465234375,
+    "diffPixels": 107164,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-05-03.dark.diff.png"
