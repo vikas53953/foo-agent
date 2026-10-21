@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n5:03 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:03 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n5:03 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:03 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n5:04 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:04 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n5:04 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n5:04 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n5:04 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n5:04 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because paying becomes as easy as sending a message, and it costs the user nothing.\n\nLaunched by NPCI in 2016, UPI links your bank account to a phone app, so money moves straight from one account to another in seconds. There's no cash to carry, no waiting for change and no card details to hand over. A street vendor selling ₹10 tea can take payment the same way a big shop does, with just a printed QR code.\n\nThe three main reasons:\n\nFree and instant: Most everyday payments carry no fee, and money arrives in seconds, at any hour, even on holidays.\nWorks everywhere: One QR code or phone number works across every bank and payment app, from small stalls to large stores.\nSimple and safe enough: A PIN confirms each payment, and you never share your card or account number with the shop.\n\nCheap smartphones and mobile data helped too. Once most people around you pay this way, it becomes the easy default, and cash starts to feel like the slow option.\n\n5:04 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n5:05 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nKeep 3 phones that fit best value under ₹20,000\nCompare price, screen, camera, battery and speed\nWatch live\nStop\n2 min\n5:05 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:05 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nEvery web search fails with SEARCH_BUSY and returns no results\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n5:05 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:05 PM"
+  }
+]

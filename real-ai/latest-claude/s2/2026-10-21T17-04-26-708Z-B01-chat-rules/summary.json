@@ -1,0 +1,75 @@
+{
+  "journey": "B01-chat-rules",
+  "title": "Chat rules: thanks, long answer, filler, reactions",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T17-04-26-708Z-B01-chat-rules",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792602271910,
+      "before": 0,
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "expect": "AT-027: 👍 reaction on my message, no foo message",
+      "ok": true,
+      "ms": 20007
+    },
+    {
+      "i": 2,
+      "do": "eval",
+      "value": {
+        "reaction": true,
+        "lastKind": "bubble-me"
+      },
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "sentAt": 1792602292051,
+      "before": 0,
+      "ok": true,
+      "ms": 67
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler",
+      "firstReplyMs": 7584,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "People in India are switching to UPI because paying becomes as easy as sending a message, and it costs the user nothing.\n\nLaunched by NPCI in 2016, UPI links your bank account to a phone app, so money moves straight from one account to another in seconds. There's no cash to carry, no waiting for change and no card details to hand over. A street vendor selling ₹10 tea can take payment the same way a big shop does, with just a printed QR code.\n\nThe three main reasons:\n\nFree and instant: Most everyday payments carry no fee, and money arrives in seconds, at any hour, even on holidays.\nWorks everywhere: One QR code or phone number works across every bank and payment app, from small stalls to large stores.\nSimple and safe enough: A PIN confirms each payment, and you never share your card or account number with the shop.\n\nCheap smartphones and mobile data helped too. Once most people around you pay this way, it becomes the easy default, and cash starts to feel like the slow option.\n\n5:04 PM",
+      "ms": 16197
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "AT-308 suggestion chips (≤3)",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "eval",
+      "value": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 3
+    }
+  ]
+}
