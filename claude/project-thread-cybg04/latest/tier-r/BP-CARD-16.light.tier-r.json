@@ -17,6 +17,7 @@
         "·"
       ],
       "extra": [
+        "👀",
         "foo",
         "12:00",
         "PM",
@@ -71,8 +72,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.0401994301994302,
-    "diffPixels": 1411,
+    "ratio": 0.041282051282051285,
+    "diffPixels": 1449,
     "total": 35100,
     "sizeMismatch": {
       "a": [
