@@ -56,7 +56,8 @@ const stamp = () => new Date().toISOString().replace(/[:.]/g, '-');
 async function main() {
   const file = process.argv[2];
   if (!file) throw new Error('usage: foo-drive.js <journey.json>');
-  const journey = JSON.parse(fs.readFileSync(file, 'utf8'));
+  // {AI_ROW} in a journey names the Find-your-AI row to use (FOO_AI_ROW: claude-cli, anthropic-key, openai-key, codex-cli).
+  const journey = JSON.parse(fs.readFileSync(file, 'utf8').replaceAll('{AI_ROW}', process.env.FOO_AI_ROW || 'claude-cli'));
   const out = path.join(ROOT, 'runs', `${stamp()}-${journey.id}`);
   fs.mkdirSync(out, { recursive: true });
   const logPath = path.join(out, 'log.jsonl');
@@ -141,6 +142,11 @@ async function main() {
           break;
         }
         case 'click': {
+          // unlessTid: skip the click when that control is already showing (e.g. no retest needed once Use is offered).
+          if (s.unlessTid && (await page.locator(`[data-testid="${s.unlessTid}"]`).count())) {
+            rec.skipped = `${s.unlessTid} already showing`;
+            break;
+          }
           const loc = page.locator(sel(s)).nth(s.nth ?? 0);
           const label = ((await loc.innerText({ timeout: 3_000 }).catch(() => '')) || '').trim();
           if ((s.tid && REFUSED_TIDS.has(s.tid)) || REFUSED_WORDS.test(label)) {

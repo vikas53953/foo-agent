@@ -1,11 +1,13 @@
 # Spec: 07 journeys, 10 acceptance (real-AI end-to-end check; Vikas 2026-10-21 "e2e test of whatever we built").
-# Packages foo from a ref, signs foo into a real AI with the ANTHROPIC_API_KEY Actions secret, and drives the packaged
-# foo.exe through test/real-pc/journeys with a fresh test profile. Evidence (screenshots, logs, thread dumps) goes to the
-# `evidence` branch under real-ai/<short-sha>/ and real-ai/latest/, since agents cannot read CI artifacts.
-# Spend guards: manual runs by the repo owner only, one run at a time, a journey cap, a Sonnet-class model, --max-turns 1
-# per foo turn (foo's own setting), and a hard job timeout. The driver never clicks Approve, Pay, Book or Send.
-# The key reaches only the journey step, through env; it is never echoed or written to disk, and the evidence is scanned
-# for it before anything is pushed.
+# Packages foo from a ref, signs foo into a real AI and drives the packaged foo.exe through test/real-pc/journeys with a
+# fresh test profile. Claude runs through the Claude Code CLI on the ANTHROPIC_API_KEY secret; ChatGPT through a current
+# Codex CLI signed in with the OPENAI_API_KEY secret. "auto" runs every AI whose secret exists, Claude first, one at a
+# time. Evidence (screenshots, logs, thread dumps) goes to the `evidence` branch under real-ai/<short-sha>-<ai>/ and
+# real-ai/latest-<ai>/, since agents cannot read CI artifacts.
+# Spend guards: manual runs by the repo owner only, one run at a time, a journey cap, a Sonnet-class model for Claude,
+# --max-turns 1 per foo turn (foo's own setting), and a hard job timeout. The driver never clicks Approve, Pay, Book or
+# Send. A key reaches only the steps that need it, through env; it is never echoed, and the evidence is scanned for it
+# before anything is pushed.
 name: Real-AI e2e
 
 on:
@@ -20,11 +22,16 @@ on:
         default: all
         required: true
       max_journeys:
-        description: Stop after this many journeys (cost cap)
+        description: Stop after this many journeys per AI (cost cap)
         default: '25'
         required: true
+      ai:
+        description: auto = every AI whose secret exists (Claude first); claude = ANTHROPIC_API_KEY; chatgpt = OPENAI_API_KEY
+        type: choice
+        options: [auto, claude, chatgpt]
+        default: auto
       model:
-        description: Model the Claude CLI uses for foo's turns
+        description: Model the Claude CLI uses for foo's turns (Claude only)
         default: claude-sonnet-5-5
         required: true
 
@@ -36,22 +43,41 @@ permissions:
   contents: write # pushes the evidence branch only
 
 jobs:
-  real-ai:
-    name: Real-AI journeys (windows-latest)
-    # Only the owner may spend the key. workflow_dispatch has no fork trigger, and fork PRs never see secrets.
+  # Which AIs to run: the asked one, or with "auto" every AI whose secret exists. Fails fast when none can run.
+  plan:
+    name: Pick the AIs
+    # Only the owner may spend the keys. workflow_dispatch has no fork trigger, and fork PRs never see secrets.
     if: github.actor == github.repository_owner && github.repository == 'vikas53953/foo-agent'
-    runs-on: windows-latest
-    timeout-minutes: 120
+    runs-on: ubuntu-latest
+    outputs:
+      ais: ${{ steps.pick.outputs.ais }}
     steps:
-      - name: Check the key is set
-        shell: bash
+      - id: pick
         env:
-          HAS_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+          AI: ${{ inputs.ai }}
+          HAS_ANTHROPIC: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+          HAS_OPENAI: ${{ secrets.OPENAI_API_KEY != '' }}
         run: |
-          if [ "$HAS_KEY" != "true" ]; then
-            echo "::error::Add the ANTHROPIC_API_KEY secret (Settings > Secrets and variables > Actions) first."
+          ais=()
+          if [ "$AI" != "chatgpt" ] && [ "$HAS_ANTHROPIC" = "true" ]; then ais+=('"claude"'); fi
+          if [ "$AI" != "claude" ] && [ "$HAS_OPENAI" = "true" ]; then ais+=('"chatgpt"'); fi
+          if [ ${#ais[@]} -eq 0 ]; then
+            echo "::error::No key for '$AI'. Add ANTHROPIC_API_KEY or OPENAI_API_KEY under Settings > Secrets and variables > Actions."
             exit 1
           fi
+          echo "ais=[$(IFS=,; echo "${ais[*]}")]" >> "$GITHUB_OUTPUT"
+
+  real-ai:
+    name: Real-AI journeys on ${{ matrix.ai }} (windows-latest)
+    needs: plan
+    runs-on: windows-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 1 # Claude first, then ChatGPT
+      matrix:
+        ai: ${{ fromJSON(needs.plan.outputs.ais) }}
+    steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.ref }}
@@ -79,14 +105,27 @@ jobs:
         run: pnpm rebuild:electron
       - name: Package (unpacked)
         run: pnpm package:dir
-      # foo finds the CLI at %APPDATA%\npm\claude.cmd (src/engine/ai/detect.ts) and treats ANTHROPIC_API_KEY as signed in.
+      # foo finds each CLI at %APPDATA%\npm\<name>.cmd (src/engine/ai/detect.ts). Claude counts as signed in through
+      # ANTHROPIC_API_KEY; Codex through ~/.codex/auth.json, which `codex login --with-api-key` writes from stdin.
       - name: Install the Claude Code CLI
+        if: matrix.ai == 'claude'
         run: npm install -g @anthropic-ai/claude-code
+      - name: Install the Codex CLI and sign it in with the key
+        if: matrix.ai == 'chatgpt'
+        shell: bash
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          npm install -g @openai/codex@latest
+          printenv OPENAI_API_KEY | codex login --with-api-key > /dev/null
+          codex --version
       - name: Run the journeys
         shell: bash
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Only Claude's run sees its key; the Codex run is signed in through its own auth file.
+          ANTHROPIC_API_KEY: ${{ matrix.ai == 'claude' && secrets.ANTHROPIC_API_KEY || '' }}
           ANTHROPIC_MODEL: ${{ inputs.model }}
+          FOO_AI_ROW: ${{ matrix.ai == 'claude' && 'claude-cli' || 'codex-cli' }}
           ELECTRON_RUN_AS_NODE: '1'
           JOURNEYS: ${{ inputs.journeys }}
           MAX_JOURNEYS: ${{ inputs.max_journeys }}
@@ -116,22 +155,26 @@ jobs:
         shell: bash
         run: |
           {
-            echo "### Real-AI journeys on ${{ inputs.ref }} ($(git rev-parse --short HEAD)), model ${{ inputs.model }}"
+            echo "### Real-AI journeys on ${{ inputs.ref }} ($(git rev-parse --short HEAD)), AI ${{ matrix.ai }}, model ${{ matrix.ai == 'claude' && inputs.model || 'Codex default' }}"
             echo "| Journey | Steps | Failed |"; echo "|---|---|---|"
             for f in "$RUNNER_TEMP"/foo-real-test/runs/*/summary.json; do
               [ -f "$f" ] || continue
               node -e "const s=require(process.argv[1]);console.log('| '+s.journey+' | '+s.steps+' | '+s.failed+' |')" "$f"
             done
           } >> "$GITHUB_STEP_SUMMARY"
-      - name: Scan the evidence for the key
+      - name: Scan the evidence for the keys
         if: always()
         shell: bash
         env:
-          KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          KEY_A: ${{ secrets.ANTHROPIC_API_KEY }}
+          KEY_O: ${{ secrets.OPENAI_API_KEY }}
         run: |
+          rm -f "$USERPROFILE/.codex/auth.json" # the signed-in Codex file holds the key; nothing reads it after the run
           runs="$RUNNER_TEMP/foo-real-test/runs"
           [ -d "$runs" ] || exit 0
-          if [ -n "$KEY" ] && grep -rlF -- "$KEY" "$runs" > "$RUNNER_TEMP/leak.txt"; then
+          : > "$RUNNER_TEMP/leak.txt"
+          for k in "$KEY_A" "$KEY_O"; do if [ -n "$k" ]; then grep -rlF -- "$k" "$runs" >> "$RUNNER_TEMP/leak.txt" || true; fi; done
+          if [ -s "$RUNNER_TEMP/leak.txt" ]; then
             echo "::error::The key appeared in $(wc -l < "$RUNNER_TEMP/leak.txt") evidence file(s); they are deleted and nothing is pushed."
             xargs -d '\n' rm -f < "$RUNNER_TEMP/leak.txt"
             touch "$RUNNER_TEMP/no-push"
@@ -141,12 +184,13 @@ jobs:
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AI: ${{ matrix.ai }}
         run: |
           [ -f "$RUNNER_TEMP/no-push" ] && { echo "skipped: key found in evidence"; exit 0; }
           runs="$RUNNER_TEMP/foo-real-test/runs"
           [ -d "$runs" ] || { echo "no runs"; exit 0; }
-          short=$(git rev-parse --short=7 HEAD)
-          printf 'run %s · ref %s · commit %s · model %s\n' "$GITHUB_RUN_ID" "${{ inputs.ref }}" "$(git rev-parse HEAD)" "${{ inputs.model }}" > "$runs/RUN.txt"
+          short="$(git rev-parse --short=7 HEAD)-$AI"
+          printf 'run %s · ref %s · commit %s · AI %s\n' "$GITHUB_RUN_ID" "${{ inputs.ref }}" "$(git rev-parse HEAD)" "$AI" > "$runs/RUN.txt"
           work="$RUNNER_TEMP/evidence" && rm -rf "$work" && mkdir -p "$work" && cd "$work"
           git init -q && git config core.autocrlf false
           git config user.name "github-actions[bot]"
@@ -156,8 +200,8 @@ jobs:
           g() { git -c "http.extraheader=$auth" "$@"; }
           for attempt in 1 2 3 4 5; do
             if g fetch -q --depth 1 origin evidence 2>/dev/null; then git checkout -q -B evidence FETCH_HEAD; else git checkout -q --orphan evidence; fi
-            rm -rf "real-ai/$short" real-ai/latest && mkdir -p "real-ai/$short" real-ai/latest
-            cp -R "$runs/." "real-ai/$short/" && cp -R "$runs/." real-ai/latest/
+            rm -rf "real-ai/$short" "real-ai/latest-$AI" && mkdir -p "real-ai/$short" "real-ai/latest-$AI"
+            cp -R "$runs/." "real-ai/$short/" && cp -R "$runs/." "real-ai/latest-$AI/"
             git add -A -- real-ai
             git diff --cached --quiet && { echo "evidence unchanged"; exit 0; }
             git commit -q -m "Evidence: real-AI journeys on $short (run $GITHUB_RUN_ID)"
