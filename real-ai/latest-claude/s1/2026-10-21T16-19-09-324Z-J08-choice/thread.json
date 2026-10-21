@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n4:09 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 4:09 PM\n4:09 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:09 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for original reports and official ISRO posts\nWrote it\nStopped by you\n4:09 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:09 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb search keeps failing with SEARCH_BUSY, no results returned\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n4:10 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:10 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting\n4:12 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n4:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:18 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n4:18 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n4:19 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "At ₹80,000 aim for 16 GB memory, a 512 GB SSD and a recent mid-range processor (Ryzen 5/7 or Core i5/i7, or an Apple chip if the budget stretches). Memory matters most for programming. Avoid 8 GB, since it fills up fast with a browser, editor and a few apps open.\n\nNext, look at the keyboard, the screen (full HD or better, at least 14 inches) and battery life. Skip a gaming graphics card unless you'll train AI or do game work, because it adds weight and cuts battery life.\n\nOne thing changes the shortlist: do you need Windows, Mac or Linux? Tell me that and what you build (web, apps, data work), and I can look up current options and compare them. Nothing gets bought.\n\n4:19 PM"
+  }
+]

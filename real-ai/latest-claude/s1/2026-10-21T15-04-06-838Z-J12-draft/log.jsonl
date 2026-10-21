@@ -1,7 +1,0 @@
-{"t":"2026-10-21T15:04:06.838Z","journey":"J12-draft","title":"Draft an email (never sends)","spec":"07-1 J12; M8 drafts","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
-{"t":"2026-10-21T15:04:12.129Z","step":"launch","ok":true}
-{"t":"2026-10-21T15:04:12.198Z","i":0,"do":"send","before":4,"sentAt":1792595052198,"ok":true,"ms":69}
-{"t":"2026-10-21T15:07:12.563Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb searches keep failing with SEARCH_BUSY and return nothing\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n3:01 PM","ms":180365}
-{"t":"2026-10-21T15:07:12.631Z","shot":"01-draft.png"}
-{"t":"2026-10-21T15:07:12.633Z","i":2,"do":"check","found":0,"ok":false,"ms":1}
-{"t":"2026-10-21T15:07:12.635Z","i":3,"do":"dump","ok":true,"ms":2}

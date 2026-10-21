@@ -1,0 +1,14 @@
+{"t":"2026-10-21T16:27:14.702Z","journey":"U18-new-helper-group","title":"New helper and New group dialogs, helper chat, helper profile","spec":"06 C-24/C-25/C-26 dialogs, 10-2 §C.4 New helper / New group dialogs","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T16:27:20.373Z","step":"launch","ok":true}
+{"t":"2026-10-21T16:27:21.403Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1030}
+{"t":"2026-10-21T16:27:21.410Z","i":1,"do":"key","expect":"New helper dialog: templates, name field","ok":true,"ms":7}
+{"t":"2026-10-21T16:27:21.487Z","shot":"01-new-helper.png"}
+{"t":"2026-10-21T16:27:21.492Z","i":2,"do":"key","ok":true,"ms":5}
+{"t":"2026-10-21T16:27:21.575Z","i":3,"do":"click","soft":true,"ok":true,"ms":83}
+{"t":"2026-10-21T16:27:22.379Z","i":4,"do":"wait","expect":"same dialog from the button","ok":true,"ms":804}
+{"t":"2026-10-21T16:27:22.439Z","shot":"02-new-helper-2.png"}
+{"t":"2026-10-21T16:27:22.444Z","i":5,"do":"key","ok":true,"ms":5}
+{"t":"2026-10-21T16:27:22.451Z","i":6,"do":"key","expect":"New group dialog: pick 2–6 members","ok":true,"ms":7}
+{"t":"2026-10-21T16:27:22.516Z","shot":"03-new-group.png"}
+{"t":"2026-10-21T16:27:22.519Z","i":7,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-21T16:27:22.523Z","i":8,"do":"dump","ok":true,"ms":4}

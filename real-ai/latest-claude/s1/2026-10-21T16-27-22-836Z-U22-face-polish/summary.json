@@ -1,0 +1,96 @@
+{
+  "journey": "U22-face-polish",
+  "title": "Living face: thinking while working, resting; motion off in settings",
+  "steps": 12,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T16-27-22-836Z-U22-face-polish",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1038
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792600049668,
+      "before": 0,
+      "ok": true,
+      "ms": 150
+    },
+    {
+      "i": 2,
+      "do": "wait",
+      "expect": "26px Thinking face only while the request is in flight (C.7.4)",
+      "ok": true,
+      "ms": 1514
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "poem; face back to resting, blinks",
+      "firstReplyMs": 3534,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Grey clouds roll in over the sea,\nMarine Drive hums with rain's first song.\nChai steams on a window ledge,\nand the whole city slows along.\n\n4:27 PM",
+      "ms": 10093
+    },
+    {
+      "i": 4,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 78
+    },
+    {
+      "i": 5,
+      "do": "key",
+      "ok": true,
+      "ms": 58
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 99
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 83
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "face motion setting",
+      "ok": true,
+      "ms": 601
+    },
+    {
+      "i": 9,
+      "do": "key",
+      "ok": true,
+      "ms": 57
+    },
+    {
+      "i": 10,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23094
+    },
+    {
+      "i": 11,
+      "do": "dump",
+      "ok": true,
+      "ms": 4
+    }
+  ]
+}
