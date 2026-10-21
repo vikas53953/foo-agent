@@ -8,22 +8,31 @@ import { parseArgs } from 'node:util';
 
 export type Tier = 'low' | 'normal' | 'high';
 
-/** Paths where a quiet mistake reaches the user's money, keys, AI login, installer or the fidelity gates. */
+/** Paths where a quiet mistake reaches the user's money, keys, AI, messages to other people, or the gates themselves. */
 export const HIGH: { name: string; re: RegExp }[] = [
   { name: 'CI workflows', re: /^\.github\// },
   { name: 'spec or golden', re: /^(?:spec|golden)\// },
+  { name: 'CR files', re: /^docs\/cr\// },
+  {
+    name: 'review and build rules',
+    re: /^(?:CLAUDE\.md|OWNERS\.yml|docs\/build-method\.md|\.claude\/(?!skills\/)|\.claude\/skills\/(?:foo-review|foo-playbooks|foo-verify|foo-decision-log)\/)/,
+  },
   {
     name: 'fidelity gates',
-    re: /^(?:OWNERS\.yml|playwright\.config\.ts|eslint-rules\/|scripts\/(?:fid-guard|golden-bless|trace-check|spec-verify|review-tier)\.ts$)/,
+    re: /^(?:scripts\/|eslint-rules\/|test\/fidelity\/|design\/tokens\.json$|(?:playwright|vitest|vite)\.config\.ts$|eslint\.config\.mjs$|tsconfig[\w.]*\.json$)/,
   },
   { name: 'installer', re: /^(?:electron-builder\.yml|resources\/)/ },
   { name: 'dependencies', re: /^(?:package\.json|pnpm-lock\.yaml)$/ },
-  { name: 'keys and vault', re: /^src\/main\/(?:vault|secrets)\// },
-  { name: 'spend approvals', re: /^src\/main\/approvals\// },
-  { name: 'AI engine and finder', re: /^src\/main\/(?:engine-supervisor|setup)\// },
+  { name: 'AI engine', re: /^src\/engine\/|^src\/main\/(?:engine-supervisor|setup)\// },
+  {
+    name: 'keys, logins and IPC trust',
+    re: /^src\/preload\/|^src\/main\/(?:vault|secrets|connections)\/|^src\/main\/(?:ipc\/guard|windows\/oauthLoopback|settings\/webKeySettings|store\/writeRedacted)\.ts$/,
+  },
+  { name: 'spend approvals and AI cap', re: /^src\/main\/approvals\/|^src\/main\/jobs\/capWarning\.ts$/ },
+  { name: 'messages to other people', re: /^src\/wa-bridge\/|^src\/main\/(?:whatsapp|drafts)\// },
 ];
 
-/** Paths that cannot change what the app does. */
+/** Paths that cannot change what the app does or how it is checked (HIGH is tested first). */
 const LOW = /^(?:docs\/|\.claude\/skills\/|[^/]+\.md$)/;
 
 /** A diff this large gets at least the normal review even if every file is low. */
@@ -49,7 +58,7 @@ export function reviewTier(files: readonly string[], changedLines = 0): TierResu
 
 export const REVIEW: Record<Tier, string> = {
   low: 'one Sonnet reviewer; no verify step',
-  normal: 'Fable reviewer + verify step on every act-on finding',
+  normal: 'one Fable reviewer + verify step on every act-on finding',
   high: 'Fable + Opus reviewers + verify step; Vikas-only items stay his (docs/build-method.md §5)',
 };
 

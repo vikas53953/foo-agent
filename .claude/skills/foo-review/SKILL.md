@@ -5,11 +5,11 @@ description: Review a foo-agent diff at the depth its risk tier asks for, verify
 
 # foo-review
 
-Adapted for foo-agent from pstack `interrogate` (two-model adversarial review) and Matt Pocock's `code-review` (two axes), both MIT (see `.claude/skills/NOTICE.md`). The tier, verify, round-cap, outcome and commit-pin rules (2026-10-21) follow Anthropic's "How the Claude Code team does code review" (claude.dev, 15 Oct 2026). The fidelity checker (`11-fidelity.md`) is unchanged and still required; this sits beside it.
+Adapted for foo-agent from pstack `interrogate` (two-model adversarial review) and Matt Pocock's `code-review` (two axes), both MIT (see `.claude/skills/NOTICE.md`). The tier, verify, round-cap, outcome and commit-pin rules (2026-10-21) follow Anthropic's "How the Claude Code team does code review" (claude.dev, 15 Oct 2026; the post was blocked from the cloud machine, so these rules come from detailed public write-ups of it). The fidelity checker (`11-fidelity.md`) is unchanged and still required; this sits beside it.
 
 ## 0. Fresh-eyes self-check (builder, before the PR opens)
 
-The agent that wrote the code is the worst judge of it. Before opening the ticket PR, the builder spawns one read-only Sonnet subagent (`subagent_type: "Explore"`, "do not edit files, do not call `mcp__hearthbot__` tools") with only the ticket section, the cited spec lines and `git diff <base>...HEAD`. It reports anything that does not match the ticket or looks broken. Fix or answer each point, then open the PR. This is a quick pass, not the review.
+The agent that wrote the code is the worst judge of it. Before marking the ticket PR ready, the builder spawns one read-only Sonnet subagent (`subagent_type: "Explore"`, "do not edit files, do not call `mcp__hearthbot__` tools") with only the ticket section, the cited spec lines and `git diff <base>...HEAD`. It reports anything that does not match the ticket or looks broken. Fix or answer each point, then mark it ready. This is a quick pass, not the review.
 
 ## 1. Pick the depth: risk tier
 
@@ -52,19 +52,18 @@ Sort every finding into one bucket with a one-line reason (`references/lead-judg
 - **Noted**: valid, not actionable now.
 - **Dismissed**: wrong, nitpicky or missing context, with the reason.
 
-Paste the table into the PR under **Review** with an **Outcome** column filled once the round closes: `fixed`, `wrong` (the reviewer was mistaken), `intentional` (the code is right on purpose) or `no-matter` (true but not worth a change). The lead adds one row per review to the milestone decision log: `review	<PR>@<sha>	tier, rounds, act-on n, fixed n, wrong n`. The share of `wrong` is the reviewer's false-alarm rate; when it passes about a third over a milestone, tighten the reviewer prompt (through `foo-correct`).
+Paste the table into the PR under **Review** with an **Outcome** column filled once the round closes: `fixed`, `wrong` (the reviewer was mistaken), `intentional` (the code is right on purpose) or `no-matter` (true but not worth a change). The lead adds one row per review to the milestone decision log in its six columns: ts, phase `review`, decision `<PR>@<sha> <tier>`, why (rounds), evidence (the PR's Review table), result `found N, verified N, fixed N, wrong N` where *found* counts every finding the hunters raised and *wrong* counts those refuted or judged mistaken in any bucket. wrong ÷ found is the reviewer's false-alarm rate; when it passes about a third over a milestone, tighten the reviewer prompt (through `foo-correct`).
 
 ## 5. Later rounds: stop the loop
 
-- **Round 2 and 3 review only the new diff** (`git diff <reviewed-sha>..HEAD`) plus the open Act-on items. Do not re-review settled code.
+- **Round 2 and 3 review only the new commits** (`git log -p --no-merges <reviewed-sha>..HEAD`, plus any file a merge commit resolved by hand) and the open Act-on items. Merged-in milestone work is not part of this ticket's re-review. Do not re-review settled code. The tier is the whole PR's tier.
 - **Never repeat a finding** already bucketed in an earlier round, unless the new diff changed that code.
 - **Cap: 3 rounds.** If round 3 still has confirmed Act-on items, stop reviewing. The builder writes in the PR why the approach keeps failing and proposes a different one; the lead decides (re-ticket, split, or a CR). No round 4 on the same approach.
 
 ## 6. Approval binds to a commit
 
-"Approved on Vikas's behalf" names the exact head SHA reviewed: `approved on Vikas's behalf @<sha>` in the PR and the decision log. Any push after it needs a re-review of just `git diff <sha>..HEAD` before merge (round rules above apply). An agent's approval is recorded as on Vikas's behalf, never as his own.
+"Approved on Vikas's behalf" names the exact head SHA reviewed: `approved on Vikas's behalf @<sha>` in the PR and the decision log. Any push after it needs a re-review of just the new commits (as in §5) before merge. Before merging, the lead checks the PR's current head equals the approved SHA. An agent's approval is recorded as on Vikas's behalf, never as his own.
 
-Cheaper path still holds: a ticket under ~150 lines that the tier script calls low or normal may use one Sonnet hunter; say so in the PR.
 
 ## Milestone close-out (two axes)
 

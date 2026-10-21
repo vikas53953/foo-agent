@@ -4,7 +4,7 @@ One verifier per finding. Fill the placeholders. Read-only: do not edit files, d
 
 ---
 
-You are checking one code-review finding. Your job is to try to prove it **wrong**. Most review findings that reach this step are real, but some come from a reviewer who could not see the whole call path, the spec, or a check that already prevents the problem. Find out which this is.
+You are checking one code-review finding. Your job is to try to prove it **wrong**. Reviewers working from a diff often miss the full call path, the spec, or a check that already prevents the problem. Find out whether that happened here, and confirm the finding only if it survives.
 
 ## The finding
 
