@@ -286,8 +286,13 @@ test('a reply: ✓✓, 👀 on the first byte, the Thinking row while it is in f
   // Past the 1.5 s hold the gate streams sentence by sentence; then the fake's reply comes (all of it at once).
   await advance(page, HOLD_MS + 100);
   await expect(thinking).toBeVisible();
-  await advance(page, 3_000);
+  // The fake AI's 3 s delay and the gate's sentence pacing both run on main's clock, and the engine may start that delay a
+  // beat after the first jump on a busy runner: step the clock (at most 6 s of it) until the bubble is drawn.
   const bubble = page.getByTestId(TID.bubbleFoo).filter({ hasText: 'Diwali is on Sun 8 Nov.' });
+  for (let moved = 0; moved < 6_000 && (await bubble.count()) === 0; moved += 250) {
+    await advance(page, 250);
+    await page.waitForTimeout(50);
+  }
   await expect(bubble).toBeVisible();
   await expect(bubble).toContainText('Shall I add both to your calendar?');
   await expect(bubble).toHaveAttribute('data-state', 'complete');

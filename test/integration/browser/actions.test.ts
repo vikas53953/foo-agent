@@ -6,6 +6,7 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { SETTLE_MAX_MS } from '../../../src/engine/tools/browser/actions';
 import { browserHarness, html, okResult, type BrowserHarness } from './harness';
 
 let h: BrowserHarness;
@@ -29,7 +30,6 @@ beforeAll(async () => {
       <button id="al" onclick="alert('Hi'); window.alerted=1">Hello</button>
       <a id="pop" href="/menu" target="_blank">Open menu</a>
       <a id="pop2" href="/offers" target="_blank">See offers</a>
-      <a id="dl" href="/file.txt" download>Get file</a>
       <input id="city" name="city" placeholder="City">
       <input id="pw" type="password" placeholder="Password">
       <select id="sel"><option>Lunch</option><option>Dinner</option></select>
@@ -50,9 +50,6 @@ beforeAll(async () => {
       `<form onsubmit="event.preventDefault(); parent.window.gwPaid=(parent.window.gwPaid||0)+1"><input id="upi" placeholder="UPI id"><button>Go</button></form>`,
     ),
   );
-  h.route('/file.txt', (_q, res) => {
-    res.writeHead(200, { 'content-type': 'text/plain', 'content-disposition': 'attachment; filename="menu.txt"' }).end('dal, roti');
-  });
   h.route('/slow', (_q, res) => {
     res.writeHead(200, { 'content-type': 'text/html' });
     res.write('<!doctype html><html><body><p>still loading');
@@ -188,11 +185,6 @@ describe('08-2 §8.3.5 actions', { timeout: 60_000 }, () => {
     expect(await page.evaluate('window.gwPaid || 0')).toBe(0);
     await h.runtime.jobEnded('job_frame');
   });
-  it('download saves into {DATA}/jobs/{id}/downloads/', async () => {
-    const r = okResult(await h.run('browser.download', { ref: await refOf(/\[(e\d+)\] link "Get file"/) }));
-    expect(r.file).toBe('menu.txt');
-    expect(existsSync(join(h.dataDir, 'jobs', 'job_1', 'downloads', 'menu.txt'))).toBe(true);
-  });
   it('back and wait (≤ 15 s)', async () => {
     okResult(await h.run('browser.open', { url: `${h.origin}/menu` }));
     expect(okResult(await h.run('browser.back'))).toMatchObject({ url: `${h.origin}/home`, changed: true });
@@ -219,5 +211,30 @@ describe('08-4 §26.8 job windows', { timeout: 60_000 }, () => {
     await p4;
     expect(fourth).toBe(true);
     for (const j of ['w1', 'w3', 'w4']) await h.runtime.jobEnded(j);
+  });
+});
+
+// Its own harness with the real 15 s cap: the 1.5 s cap above keeps the load-miss tests quick, but a busy Windows runner can
+// take longer than that to start and save a download, and a correct download came back SITE_TIMEOUT.
+describe('08-2 §8.3.5 downloads', { timeout: 60_000 }, () => {
+  let d: BrowserHarness;
+  beforeAll(async () => {
+    d = await browserHarness({ settleMaxMs: SETTLE_MAX_MS });
+    d.route('/home', html(`<a id="dl" href="/file.txt" download>Get file</a>`));
+    d.route('/file.txt', (_q, res) => {
+      res.writeHead(200, { 'content-type': 'text/plain', 'content-disposition': 'attachment; filename="menu.txt"' }).end('dal, roti');
+    });
+  }, 60_000);
+  afterAll(() => d?.close());
+
+  it('download saves into {DATA}/jobs/{id}/downloads/', async () => {
+    okResult(await d.run('browser.open', { url: `${d.origin}/home` }));
+    d.runtime.stepStarted('job_1');
+    const text = okResult(await d.run('browser.snapshot')).snapshot as string;
+    const ref = /\[(e\d+)\] link "Get file"/.exec(text)?.[1];
+    expect(ref, text).toBeTruthy();
+    const r = okResult(await d.run('browser.download', { ref }));
+    expect(r.file).toBe('menu.txt');
+    expect(existsSync(join(d.dataDir, 'jobs', 'job_1', 'downloads', 'menu.txt'))).toBe(true);
   });
 });

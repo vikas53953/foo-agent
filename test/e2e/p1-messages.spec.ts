@@ -141,9 +141,17 @@ test('AT-324 · the rise plays once per message: not again on scroll-back, and t
   const gap = await log.evaluate((el) => el.scrollHeight - el.scrollTop - el.clientHeight);
   expect(gap).toBeLessThanOrEqual(1);
 
-  // Fling to the top: the row leaves the DOM; back to the bottom: it mounts again, with no rise.
-  await log.evaluate((el) => el.scrollTo({ top: 0 }));
-  await expect(page.locator(`${byTid(TID.threadLog)} [data-message-id="${id}"]`)).toHaveCount(0);
+  // Fling to the top: the row leaves the DOM; back to the bottom: it mounts again, with no rise. A scrollTo is not the user's
+  // input, so while rows are still being measured the list keeps following the bottom by design (useStickToBottom); on a
+  // busy runner one scrollTo landed in that window. Fling again until the row has left: this test checks the rise on remount.
+  const row0 = page.locator(`${byTid(TID.threadLog)} [data-message-id="${id}"]`);
+  await expect
+    .poll(async () => {
+      await log.evaluate((el) => el.scrollTo({ top: 0 }));
+      await page.waitForTimeout(200);
+      return row0.count();
+    })
+    .toBe(0);
   await log.evaluate((el) => el.scrollTo({ top: el.scrollHeight }));
   const again = page.locator(`${byTid(TID.threadLog)} [data-message-id="${id}"]`);
   await expect(again).toBeVisible();

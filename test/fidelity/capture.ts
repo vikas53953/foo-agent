@@ -94,8 +94,20 @@ export async function openWorld(
   );
   await page.reload();
   await page.getByTestId(TID.titlebarStrip).waitFor();
+  await shellLive(page);
   await windowSize(app, page, 1280, 800);
   return (reply as SeedReply).refs ?? {};
+}
+
+/**
+ * The shell is live: the splash has left and the shell is no longer inert (06-1 §1.2, §1.5). The title bar paints before the
+ * bootstrap lands, so a shortcut pressed right after it could be lost on a busy runner (Ctrl+M and Ctrl+, opened nothing).
+ */
+export async function shellLive(page: Page): Promise<void> {
+  await page.waitForFunction(
+    (splash) => !document.querySelector(`[data-testid="${splash}"]`) && document.getElementById('root')?.inert === false,
+    TID.screenSplash,
+  );
 }
 
 export async function windowSize(app: ElectronApplication, page: Page, width: number, height: number): Promise<void> {
@@ -117,6 +129,22 @@ export async function openChat(page: Page, name: string): Promise<void> {
   ] as const);
 }
 
+/**
+ * Ctrl+M → the Memory page in its list state. The key is proven by the view changing at once (the page, its loading frame or
+ * an error), so a lost key fails here by name; the page's script loads on first open (CR-0021, P1 T10), so the list itself
+ * gets 20 s rather than the 5 s default.
+ */
+export async function openMemory(page: Page): Promise<Locator> {
+  await page.keyboard.press('Control+m');
+  await page
+    .locator(`${byTid(TID.screenMemory)}, [data-page-loading], ${byTid(TID.screenError)}`)
+    .first()
+    .waitFor({ state: 'attached', timeout: 5_000 });
+  if ((await page.getByTestId(TID.screenError).count()) > 0) throw new Error('the Memory page showed an error instead of its list');
+  await page.locator(`${byTid(TID.screenMemory)}[data-state="list"]`).waitFor({ timeout: 20_000 });
+  return page.getByTestId(TID.screenMemory);
+}
+
 /** No hover or focus ring in the picture: the drawings show the resting state. */
 export async function rest(page: Page): Promise<void> {
   await page.mouse.move(640, 16);
@@ -132,6 +160,25 @@ export const rowOf = (messageId: string) => `${byTid(TID.threadLog)} [data-messa
  */
 export async function frameAt(page: Page, rowSel: string): Promise<void> {
   const log = byTid(TID.threadLog);
+  // While rows are still being measured the log follows its bottom (useStickToBottom), which undoes each placement below:
+  // first wait until its height holds for 4 checks in a row (UX-23-05, framed right after its card posted on a busy runner).
+  // A log that never holds still is left to the placement loop below, as before.
+  await page.evaluate(() => delete (window as unknown as { __fooLogHeights?: number[] }).__fooLogHeights);
+  await page
+    .waitForFunction(
+      (l) => {
+        const w = window as unknown as { __fooLogHeights?: number[] };
+        const h = (w.__fooLogHeights ??= []);
+        h.push(document.querySelector<HTMLElement>(l)!.scrollHeight);
+        if (h.length > 4) h.shift();
+        const still = h.length === 4 && h.every((x) => x === h[0]);
+        if (still) delete w.__fooLogHeights;
+        return still;
+      },
+      log,
+      { polling: 100, timeout: 15_000 },
+    )
+    .catch(() => undefined);
   const gap = await page.evaluate(async (l) => {
     const el = document.querySelector<HTMLElement>(l)!;
     el.scrollTop = el.scrollHeight;
