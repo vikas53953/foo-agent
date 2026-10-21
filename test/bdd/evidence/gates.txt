@@ -1,0 +1,12 @@
+Lane B gate evidence
+Base after refresh: 0665cf67d2ab6cf0515f6d3198df6dfc35357e82
+spec:verify PASS
+check:copy PASS
+lint PASS (2 existing warnings, 0 errors)
+format:check PASS
+typecheck PASS
+build PASS
+trace:check PASS
+fid:guard --base origin/main PASS; 0 changed files checked
+Full Vitest: INCOMPLETE; direct `vitest run --maxWorkers=2` was stopped after approximately 17 minutes when browser-heavy workers stalled. No skip or numeric-limit change; no local pass claim.
+Real AI: BLOCKED after bounded private-runner attempt; isolated claude-cli profile was present, but Electron exited with code 2147483651 before first reply. Credential was not read or created by the lane; cost $0.
