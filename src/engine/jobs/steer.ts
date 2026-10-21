@@ -174,16 +174,21 @@ export class Steer {
 
   /**
    * CR-0045 (X-203), 08-4 §26.5 item 2b: before a steer withdraws a NEEDS_YOU job's Choice, tiles, approval, payment or draft
-   * card, one classify turn (steer_check.md) asks whether the message is about the job. "new" → not a steer: the message
+   * card, or waits behind its sign-in card (CR-0048, X-206), one classify turn (steer_check.md) asks whether the message is about the job. "new" → not a steer: the message
    * goes to intake and the card stays. A working job, no such card, or a failed turn → a steer, as before.
    */
   private async aboutJob(job: JobRow, text: string): Promise<boolean> {
     const p = this.core.d.prompts;
     if (job.state !== 'needs_you' || !job.needsYouCardId || !p.buildSteerCheck || !p.parseSteerCheck) return true;
     const card = await this.core.query<CardRow>('cardById', job.needsYouCardId);
-    if (!card || card.resolvedAt !== null || !SUPERSEDE_TO[card.type]) return true;
-    const pl = card.payload as { question?: unknown; title?: unknown };
-    const waitingFor = String(pl.question ?? pl.title ?? `a ${card.type} card`);
+    // CR-0048 (X-206): a sign-in card (a login, a code, "check you're a person") holds a steer until it is done (item 2), so
+    // an unrelated ask is checked too.
+    if (!card || card.resolvedAt !== null || (!SUPERSEDE_TO[card.type] && card.type !== 'signin')) return true;
+    const pl = card.payload as { question?: unknown; title?: unknown; site?: unknown };
+    const waitingFor =
+      card.type === 'signin'
+        ? `the user to sign in or pass a check on ${String(pl.site ?? 'a site')}`
+        : String(pl.question ?? pl.title ?? `a ${card.type} card`);
     const reply = await classifyTurn(this.core, job, p.buildSteerCheck({ title: job.title, waitingFor }, text));
     const about = reply === null ? null : p.parseSteerCheck(reply);
     this.core.d.log('job.steer_check', about ?? 'failed', { jobId: job.id });
