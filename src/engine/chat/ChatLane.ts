@@ -684,12 +684,16 @@ export class ChatLane {
         ]);
         // C1 T2 (04 §13.7): the one-sentence reply, then the app-built Capabilities card.
         if (kind === 'reply' && !side && tags.includes('intent_capabilities')) await this.capabilitiesCard(chatId, helper);
-      } else if (!this.emptyRetried.has(messageId)) {
-        // CR-0041 (08-4 §25.5 item 6, F-092 as amended): nothing passed the filters; the turn runs once more, nothing shown.
-        this.emptyRetried.add(messageId);
-        retryEmpty = true;
       } else {
-        await this.emptyReply(chatId, messageId, helper, who, providerNote);
+        // Run 21 B14: which empty it was (the AI said nothing, or every sentence it said was dropped), never the words.
+        this.d.log(parsed.say.trim() ? 'chat.reply_empty.filtered' : 'chat.reply_empty.no_say', undefined, { chatId });
+        if (!this.emptyRetried.has(messageId)) {
+          // CR-0041 (08-4 §25.5 item 6, F-092 as amended): nothing passed the filters; the turn runs once more, nothing shown.
+          this.emptyRetried.add(messageId);
+          retryEmpty = true;
+        } else {
+          await this.emptyReply(chatId, messageId, helper, who, providerNote);
+        }
       }
     } else if (act && act.kind === 'job' && this.d.jobs) {
       // 08-2 §5.3.3: the runner takes over; its checklist and result are what the user sees next (ART-22).
