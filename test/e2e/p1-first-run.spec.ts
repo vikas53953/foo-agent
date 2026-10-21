@@ -79,11 +79,9 @@ test('AT-313 splash: the 96px face wakes once (eyes open from a line) then rests
 });
 
 test('AT-313 Off: with reduced motion the eyes are already open and nothing in the splash moves', async () => {
-  // Reduced motion from launch, as the OS setting gives it. page.emulateMedia followed by the splash reload left the app
-  // hung on a busy runner (test and worker teardown timed out, 2 of 12 runs).
-  const { app, page } = await firstRun(aiHome(['claude']), undefined, ['--force-prefers-reduced-motion']);
+  const { app, page } = await firstRun(aiHome(['claude']));
   await finder(page).waitFor();
-  expect(await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches)).toBe(true);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   const release = await holdBootstrap(app, page);
   const face = page.getByTestId(TID.splashFace);
   await expect(face).toBeVisible();

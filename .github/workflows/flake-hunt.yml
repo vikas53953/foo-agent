@@ -33,8 +33,8 @@ jobs:
         job: [1, 2, 3]
     env:
       UNIT: ${{ inputs.unit }}
-      E2E: ${{ inputs.e2e || 'test/e2e/p1-first-run.spec.ts test/fidelity/ux/UX-15.live.spec.ts test/fidelity/ux/UX-23.errors.spec.ts' }}
-      REPEAT: ${{ inputs.repeat || '6' }}
+      E2E: ${{ inputs.e2e || 'test/e2e/p1-first-run.spec.ts' }}
+      REPEAT: ${{ inputs.repeat || '10' }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -68,6 +68,9 @@ jobs:
         id: e2e
         if: env.E2E != ''
         shell: bash
+        # TEMPORARY: every Playwright call in the log, to name the call AT-313 Off hangs on.
+        env:
+          DEBUG: pw:api
         run: pnpm exec playwright test $E2E --repeat-each="$REPEAT"
       - name: Page state at each failed e2e test
         if: failure() && steps.e2e.outcome == 'failure'
