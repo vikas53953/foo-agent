@@ -15,7 +15,7 @@
     "id": "SV-12",
     "ok": true,
     "expected": "width 36 × height 36 (±0.5)",
-    "measured": "36×36, 36×36"
+    "measured": "35.999969482421875×36, 36×36"
   },
   {
     "id": "SV-26",
