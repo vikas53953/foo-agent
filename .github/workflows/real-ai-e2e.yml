@@ -136,6 +136,7 @@ jobs:
           kit="$RUNNER_TEMP/kit/test/real-pc"
           rm -rf "$FOO_REAL_TEST_DIR" && mkdir -p "$FOO_REAL_TEST_DIR/runs"
           if [ "$JOURNEYS" = "all" ]; then list=$(tr -d '\r' < "$kit/journeys.txt"); else list="$JOURNEYS"; fi
+          list=$(echo $list) # one line, single spaces, so the J01 check below sees " J01-J02-first-run "
           # The first run must pick the AI; every other journey needs it, so it always goes first.
           case " $list " in *" J01-J02-first-run "*) ;; *) list="J01-J02-first-run $list" ;; esac
           n=0; status=0
