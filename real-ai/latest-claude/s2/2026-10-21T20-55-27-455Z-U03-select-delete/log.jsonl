@@ -1,0 +1,25 @@
+{"t":"2026-10-21T20:55:27.456Z","journey":"U03-select-delete","title":"Select messages, copy them, delete one (keep)","spec":"04 §9, 03-2 selection header, 10-2 §C.3","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T20:55:33.086Z","step":"launch","ok":true}
+{"t":"2026-10-21T20:55:41.193Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":2,"ms":8101}
+{"t":"2026-10-21T20:55:42.230Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1037}
+{"t":"2026-10-21T20:55:42.346Z","i":1,"do":"send","sentAt":1792616142306,"before":0,"ok":true,"ms":115}
+{"t":"2026-10-21T20:55:52.456Z","i":2,"do":"waitReply","expect":"short reply","firstReplyMs":3546,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"नमस्ते! आपका दिन कैसा रहा?\n\n8:55 PM","ms":10110}
+{"t":"2026-10-21T20:55:52.519Z","shot":"01-hello.png"}
+{"t":"2026-10-21T20:55:52.600Z","i":3,"do":"click","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-21T20:55:52.699Z","i":4,"do":"click","soft":true,"ok":true,"ms":99}
+{"t":"2026-10-21T20:55:53.300Z","i":5,"do":"wait","expect":"selection header with count, Copy, Delete, Cancel; check circles on bubbles","ok":true,"ms":601}
+{"t":"2026-10-21T20:55:53.361Z","shot":"02-select-mode.png"}
+{"t":"2026-10-21T20:55:53.434Z","i":6,"do":"click","soft":true,"ok":true,"ms":73}
+{"t":"2026-10-21T20:55:53.834Z","i":7,"do":"wait","expect":"count 2","ok":true,"ms":400}
+{"t":"2026-10-21T20:55:53.906Z","shot":"03-two-selected.png"}
+{"t":"2026-10-21T20:55:53.912Z","i":8,"do":"expectText","note":"count shows 2","soft":true,"text":"2 selected","ok":true,"ms":6}
+{"t":"2026-10-21T20:55:54.000Z","i":9,"do":"click","soft":true,"ok":true,"ms":88}
+{"t":"2026-10-21T20:55:54.105Z","i":10,"do":"click","soft":true,"ok":true,"ms":105}
+{"t":"2026-10-21T20:55:54.190Z","i":11,"do":"click","soft":true,"ok":true,"ms":85}
+{"t":"2026-10-21T20:55:54.292Z","i":12,"do":"click","soft":true,"ok":true,"ms":101}
+{"t":"2026-10-21T20:55:54.894Z","i":13,"do":"wait","expect":"confirm dialog; Esc keeps the message","ok":true,"ms":602}
+{"t":"2026-10-21T20:55:54.962Z","shot":"04-delete-dialog.png"}
+{"t":"2026-10-21T20:55:54.966Z","i":14,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-21T20:55:54.968Z","i":15,"do":"check","note":"message kept after Esc","soft":true,"found":5,"ok":true,"ms":1}
+{"t":"2026-10-21T20:55:54.976Z","i":16,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-21T20:55:55.133Z","step":"appLog","lines":3,"dropped":0}

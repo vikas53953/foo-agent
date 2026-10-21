@@ -1,0 +1,13 @@
+{"t":1792615614288,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1792615627011,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792615627012,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792615640391,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792615640392,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792615643893,"lvl":"info","mod":"engine","evt":"web","kind":"web.no_window"}
+{"t":1792615643914,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792615643915,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792615646622,"lvl":"info","mod":"engine","evt":"web","kind":"web.no_window"}
+{"t":1792615646636,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792615646637,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792615650487,"lvl":"info","mod":"engine","evt":"web","kind":"web.no_window"}
+{"t":1792615650496,"lvl":"info","mod":"engine","evt":"job.stuck.fail_streak","kind":"STUCK"}

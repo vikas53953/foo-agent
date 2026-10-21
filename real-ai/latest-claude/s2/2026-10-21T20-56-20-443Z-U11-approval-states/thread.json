@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "नमस्ते! आपका दिन कैसा रहा?\n\n8:55 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:56 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n8:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:56 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n8:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a table for 2 at a vegetarian restaurant in Connaught Place, Delhi this Saturday 8 PM\n8:56 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:56 PM\n8:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:56 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Booking table for 2, Sat 24 Oct, 8:00 PM\nlive checklist\nLooking for vegetarian restaurants in Connaught\nKeep 3 restaurants that fit pure vegetarian, good reviews, table\nWait for you to pick one\nShow you before booking the table\nShow you before doing anything\nBook table for 2, Sat 24 Oct, 8:00 PM\nWatch live\nStop\n5 min\n8:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:56 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Booking table for 2, Sat 24 Oct, 8:00 PM job\nWhat’s wrong\nWeb search keeps failing with SEARCH_BUSY errors\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n8:57 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n9:01 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Looking for vegetarian restaurants in…\n1\nLook for vegetarian restaurants in Connaught\n2\nKeep 3 restaurants that fit vegetarian, open and free at 8:00 PM\n3\nWait for you to pick one\n4\nShow you before booking the table\n5\nShow you before doing anything\n6\nBook table for 2, Sat 24 Oct, 8:00 PM\nAbout 5 minutes\nGo\nChange plan\n9:01 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:01 PM"
+  }
+]

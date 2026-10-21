@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n8:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n8:50 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:50 PM\n8:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:50 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nChecked National Museum, New Delhi\nN\nN\nCompared hours and ticket prices across sources\nStopped by you\n8:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:50 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nEvery web search fails with a SEARCH_BUSY error and returns nothing\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n8:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:53 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n8:53 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning\n8:53 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:54 PM\n8:53 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:53 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for New Delhi to Agra trains…\nlive checklist\nFinding trains on IRCTC\nI\nLook for New Delhi to Agra trains leaving Thu 22\nCompare departure and arrival times\nWatch live\nStop\nunder 1 min\n8:54 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:54 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking for New Delhi to Agra trains… job\nWhat’s wrong\nTrain search keeps failing: searches are busy and IRCTC blocks access\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n8:54 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:54 PM"
+  }
+]

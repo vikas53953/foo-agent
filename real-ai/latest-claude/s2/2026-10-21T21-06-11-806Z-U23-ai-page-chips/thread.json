@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nLooking for vegetarian restaurants in…\n3\nBoth\nSomething else…\nSkip\n9:02 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:02 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n9:02 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n9:02 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:03 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nLooking for vegetarian restaurants in…\n3\nBoth\nSomething else…\nSkip\n9:03 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:03 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:06 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nLooking for vegetarian restaurants in…\n3\nBoth\nSomething else…\nSkip\n9:06 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:06 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me a simple page that tracks my daily water intake with a goal of 8 glasses\n9:06 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your water tracker. Tap + after each glass, and the ring fills up to your goal of 8.\n\nKeep\n9:06 PM"
+  }
+]

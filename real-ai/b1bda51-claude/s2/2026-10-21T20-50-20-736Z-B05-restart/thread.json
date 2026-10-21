@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n8:46 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n8:47 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:47 PM\n8:47 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:47 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for good Italian restaurants in Bandra\nChecked restaurant booking pages\nR\nKept 3 Italian places with a table for 2 on Sat that fit best rated first\nYou picked\nStopped by you\n8:47 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:47 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb search keeps failing with SEARCH_BUSY errors\nSpent so far\n1 minutes\nWhat I’d do\ntry restaurant booking pages instead\n8:47 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:50 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n8:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n8:50 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:50 PM\n8:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:50 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nCheck National Museum, New Delhi\nCompare hours and ticket prices across sources\nWatch live\nStop\n2 min\n8:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:50 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nEvery web search fails with a SEARCH_BUSY error and returns nothing\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n8:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:51 PM"
+  }
+]
