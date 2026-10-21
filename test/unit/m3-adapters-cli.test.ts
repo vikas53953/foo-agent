@@ -322,6 +322,17 @@ describe('codex-cli', () => {
     expect(r).toMatchObject({ errorKind: 'AI_LIMIT', resetAt: clock.now() + 30 * 60_000 });
   });
 
+  it('CR-0025: an out-of-date codex the service refuses (real capture) → AI_CLI_INCOMPATIBLE, not a slow answer', async () => {
+    const r = await createCodexCli(
+      cliDeps('codex', {
+        FAKE_CLI_FIXTURE: fx('codex/upgrade-required.jsonl'),
+        FAKE_CLI_STDERR: fx('codex/upgrade-required.stderr.txt'),
+        FAKE_CLI_EXIT: '1',
+      }),
+    ).runTurn(req(), sink(), new AbortController().signal);
+    expect(r).toMatchObject({ stopReason: 'error', errorKind: 'AI_CLI_INCOMPATIBLE' });
+  });
+
   it('signed out (stderr) → AI_SIGNED_OUT', async () => {
     const r = await createCodexCli(cliDeps('codex', { FAKE_CLI_STDERR: fx('codex/signed-out.stderr.txt'), FAKE_CLI_EXIT: '1' })).runTurn(
       req(),

@@ -10,11 +10,18 @@ import type { AiFs } from './deps';
 const KEY_IDS: readonly ProviderId[] = ['openai-key', 'anthropic-key', 'google-key'];
 
 /** The adapters' `getKey`: main's vault answers the engine only; a missing key or a refused read is null. */
-export function vaultKeyReader(link: Pick<MainLink, 'request'>): (providerId: ProviderId) => Promise<string | null> {
+export function vaultKeyReader(
+  link: Pick<MainLink, 'request'>,
+  /** CR-0025: why a key could not be read (the vault's error kind, never the value), for the tech log. */
+  onMiss?: (providerId: ProviderId, why: string) => void,
+): (providerId: ProviderId) => Promise<string | null> {
   return async (providerId) => {
     if (!KEY_IDS.includes(providerId)) return null;
     const r = await link.request<string>('vault.use', { purpose: 'ai_call', name: providerId }).catch(() => null);
-    return r?.ok && typeof r.value === 'string' && r.value ? r.value : null;
+    if (r?.ok && typeof r.value === 'string' && r.value) return r.value;
+    const why = r === null ? 'NO_REPLY' : r.ok ? 'EMPTY' : [r.error.kind, r.error.message].filter(Boolean).join(':');
+    if (why !== 'VAULT_MISSING') onMiss?.(providerId, why); // no key saved is the usual case, not news
+    return null;
   };
 }
 
