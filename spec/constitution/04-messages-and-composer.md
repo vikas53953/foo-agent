@@ -60,7 +60,7 @@ Test id: the list is `thread-log` (03 §3.6.4); every row carries `data-index`, 
 | A bubble and a card from the same sender | 4px (`--s0`) | 02 F3 |
 | Any row and a date separator | 16px (`--s3`) above and below | 02 F3 |
 | Any row and an unread divider (03 §3.6.5), handoff marker or system line | 12px (`--s2`) above and below | 03; `[foo decision]` |
-| Below a bubble that carries a badge or a reaction chip | 16px (`--s3`), replacing the 2px or 12px gap (the badge hangs 10px below the bubble, §4.3); 24px (`--s4`) under a reaction chip, which hangs 18px below (§8, CR-0024 B2) | BP1 `.react`; CR-0024 |
+| Below a bubble that carries a badge or a reaction chip | 16px (`--s3`), replacing the 2px or 12px gap (the badge hangs 10px below the bubble, §4.3); 24px (`--s5`) under a reaction chip, which hangs 18px below (§8, CR-0024 B2) | BP1 `.react`; CR-0024 |
 | Below foo's latest answer when its action row shows (§17) | action row 4px below the bubble, then the normal gap below the row | `[foo decision]` |
 
 ### 1.3 Runs (grouping)
@@ -308,7 +308,7 @@ Test id: `bubble-reaction` (`data-index`, `aria-pressed` = mine).
 | Item | Value | Evidence |
 |---|---|---|
 | Chip | height 24px, `--r-full`, `--bg-raised`, 1px `--line`, padding 0 6px; emoji 15px (`--t-body` size, `--font-emoji`); count `--t-caption` `--fg-2` 4px after the emoji, shown only when > 1 (groups) | MSG §5 WA chip 22–24px; OCL grouped.css:252-298 |
-| Anchor | First chip at the bubble's bottom-left, `left: -8px; bottom: -18px`, so it hangs below the bubble edge and never covers text (CR-0024 B2); more chips flow right with 4px gaps. The gap below such a bubble is 24px | BP1 `.react`; CR-0024 |
+| Anchor | First chip at the bubble's bottom-left, `left: -8px; bottom: -18px`, so it hangs below the bubble edge and never covers text (CR-0024 B2); more chips flow right with 4px gaps. The gap below such a bubble is 24px (`--s5`) | BP1 `.react`; CR-0024 |
 | Mine | A chip the user added: fill `--accent-soft`, border `--accent` 1px | OCL pressed `--accent-subtle` |
 | Click a chip | If it is the user's own reaction: removes it. Otherwise: adds the same reaction | MSG WA behaviour |
 | Max | 1 reaction per person per bubble; choosing another replaces it | MSG WA |
@@ -506,7 +506,7 @@ CR-0024 F2: the label row below also sits above the first bubble of each output 
 
 - Above the first bubble of each output run, a label row: 26px avatar (`--avatar-inline`, `--r-full`; default the sender's living face, 02 §F15.9, showing only the Working and Needs you rings, no one-time animations (§F15.9.3d) [X-35]; letter faces: helper colour fill, initial in `--t-caption-strong` `--on-helper` (06 token); foo: `--fg-1` fill with `--bg-app` letter, 02 F2) + 8px gap + name.
 - Name: `--t-caption-strong` (no uppercase). Light theme: the helper's `--h-*` colour (passes 4.96:1 on `--bg-app`). **Dark theme: `--fg-1`**, because several `--h-*` colours fall below 4.5:1 on `--bg-app` dark (e.g. `--h-slate` ≈ 2.6:1); the avatar carries the colour. `[conflict 5, §25]`
-- Bubbles of that sender are indented 34px (26 + 8) so they align with the name; the label row sits 4px above the first bubble.
+- In groups only, bubbles of that sender are indented 34px (26 + 8) so they align with the name (foo's and helpers' own chats keep the bubbles at the column edge, CR-0024 F2); the label row sits 4px above the first bubble.
 - The user's own bubbles in groups have no label.
 - Narrator: the label is not read separately; the sender is already in each bubble's name (§1.8).
 - Thinking row (before the speaker's first word in a run): geometry is §14.3; in groups this label row sits 4px above it [UX-20].
@@ -704,7 +704,7 @@ Auto-links render as links (§13 link style). Clicking opens a small actions men
 
 ### 17.1 Action row (latest answer, and older answers on hover)
 
-- Under foo's **latest text answer** in the chat (not under cards), and under an older answer while the pointer is over it or focus is inside it (CR-0024 F7, as ChatGPT), fading in over 120ms (`--ease-out`), 4px below the bubble, left-aligned with it: four 32×32px icon buttons (hit area padded to 40×40), 4px apart, icon 16px `--fg-2`, `--r-full`, hover `--bg-hover` + `--fg-1`, pressed `--bg-pressed` scale 0.97.
+- Under foo's **latest text answer** in the chat (not under cards), and under an older answer while the pointer is over it or focus is inside it (CR-0024 F7, as ChatGPT), fading in over 120ms (`--ease-out`), 4px below the bubble (below the reaction chip when the bubble carries one, CR-0024 B2), left-aligned with it: four 32×32px icon buttons (hit area padded to 40×40), 4px apart, icon 16px `--fg-2`, `--r-full`, hover `--bg-hover` + `--fg-1`, pressed `--bg-pressed` scale 0.97.
 - Order: **Copy · Try again · 👍 · 👎** `[AIC CL6 Claude 4-icon set; rec #28]`
 - Copy: every string of this row, its tooltips and the §17.2 popover is a plain slot under `bubble.actions.*` / `bubble.feedback.*` (§28); no string holds HTML or markup. Where a line needs emphasis it carries a `{strong}` placeholder that the component renders (02-3 §F30.4, 08-0 §D, X-128).
 
