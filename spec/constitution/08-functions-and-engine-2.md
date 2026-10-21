@@ -51,7 +51,7 @@ The result is stored on the job as `do_verbs`. If empty, `jobs.intent = 'read_on
 5.3.2 **Intake AI call** (`purpose:'intake'`, chat lane, `<say>` streamed through the release gate): the AI returns an `IntakeAct` whose exact schema is 08-4 §25.2 (kinds `reply`, `react`, `ask`, `handoff`, `job`, `routine`, `memory`, `setting`; prompt `intake.md`, 08-4 §24.5). A `setting` decision is checked by the engine against the 08-0 §A.3 allow-list (08-4 §25.6). What is posted for each kind is 08-4 §25.5 items 5–6 (only `reply` posts its `<say>`).
 
 5.3.3 **Job creation.** For `kind:'job'`: insert `jobs` row (`queued`), insert `steps` from `plan` (each step's `phraseKey` MUST exist in the catalogue of 08-4 §26.1, else the runner replaces it with `generic_working`), write `plan.md` + `state.json`. `jobs.title` is built by the engine (08-4 §26.2); `est_minutes`, `est_tokens`, `est_cost_paise` are the engine values of 08-4 §26.3, never the AI's raw estimate. Then:
-- If `est_minutes > 2` or `est_cost_paise > 500` (₹5) → Plan card C11; job stays `queued` until "Go" (`plan:go`). "Change plan" → the text goes back to an intake turn with the old plan attached. `[J C11 foo decision]`
+- If `est_minutes > 2` or `est_cost_paise > 500` (₹5) → Plan card C11; job stays `queued` until "Go" (`plan:go`); it holds no WORKING slot while it waits, and every surface shows it as waiting on the user (NEEDS YOU in Doing now, the "Needs you" chip and pill; `JobRow.awaitingGo`, CR-0028, X-186). "Change plan" → the text goes back to an intake turn with the old plan attached. `[J C11 foo decision]`
 - If key billing and `est_cost_paise > 0.2 × money.aiCapPaise` → the Plan card shows "This is a big one." (J19.3 step 5).
 - Else → `enqueue(job)`.
 
@@ -93,8 +93,8 @@ runJob(job):
 
 1. `steer(job, m)`: append `m.id` to the job's in-memory `steerQueue` (persisted as `state.json.steerQueue`), set badge 👀 on `m`. Do **not** interrupt an in-flight AI turn or tool call (a running turn finishes; cost and side-effect safety). Exception: an in-flight `browser.wait` / page load longer than 5 s is cancelled and retried after the steer.
 2. At the next loop boundary `drainSteer` builds a `STEER` block (§7.2 part 10) containing all queued messages in order, and the step turn's decision MUST include `steerEffect` for each: `"folded"` (applied to the plan) · `"answered"` (a question; `say` holds the answer) · `"restart"` (plan reset to step 1, e.g. new dates in J10) · `"new_job"` (unrelated request → runner creates a separate intake for it).
-3. User-facing result (exact copy, posted by the runner, not written by the AI): `folded`/`restart` → foo posts "Got it, I'll fold that in." (G11, `thread.steer.folded`). `answered` → the AI's `say` text is posted **before** any further progress (Art. 18 "answered before progress notes"). `new_job` → normal intake.
-4. Badge on `m` follows the job's badge from then on.
+3. User-facing result (exact copy, posted by the runner, not written by the AI): `folded`/`restart` → foo posts "Got it, I'll fold that in." (G11, `thread.steer.folded`). `answered` → the AI's `say` text is posted **before** any further progress (Art. 18 "answered before progress notes"). `new_job` → normal intake. One step turn has one `say`: it is posted **once** however many queued messages the turn answered, and "Got it, I'll fold that in." at most once per turn (CR-0024 B1).
+4. Badge on `m` follows the job's badge from then on, except when the turn marks `m` `answered`: then `m` shows ✓✓ read (no badge) at once, because its question has its answer (CR-0024 F9).
 5. Steers that contain a do-verb add it to `do_verbs` (5.3.1).
 6. **Steer while the job is NEEDS_YOU** (a card is open): 08-4 §26.5 — pending approval, payment and draft cards of the job are superseded and the job re-plans at once; a sign-in in progress is not interrupted.
 

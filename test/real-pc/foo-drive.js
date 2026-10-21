@@ -155,6 +155,20 @@ async function main() {
     log({ step: 'launch', ok: false, error: String(e && e.stack ? e.stack : e).slice(0, 3000) });
     throw e;
   }
+  // A web job left stuck by an earlier journey blocks every later reply in the chat
+  // (reported product bug). Clear it with a typed "stop" so this journey can still be judged.
+  const stuck = page.locator('[data-testid="thread-log"] [data-testid="card-stuck"]');
+  if (await stuck.count().catch(() => 0)) {
+    const t0 = Date.now();
+    const field = page.locator('[data-testid="composer-field"]');
+    const ok = await field
+      .fill('stop')
+      .then(() => field.press('Enter'))
+      .then(() => page.waitForTimeout(8_000))
+      .then(() => true)
+      .catch(() => false);
+    log({ step: 'cleanup', stoppedStuckJob: ok, stuckLeft: await stuck.count().catch(() => -1), ms: Date.now() - t0 });
+  }
   const results = [];
   for (const [i, s] of journey.steps.entries()) {
     const t0 = Date.now();
@@ -363,7 +377,14 @@ async function main() {
           // A crash then an instant reopen: kill only foo's main process (its helpers live on, as after a real crash),
           // reopen without waiting, and pass only if a window shows. fooProcs counts foo.exe processes left (it includes
           // this driver, which runs under foo.exe too).
-          process.kill(app.process().pid, 'SIGKILL');
+          // After a failed reopen the last app is already gone; then this case starts from a fresh launch.
+          try {
+            process.kill(app.process().pid, 'SIGKILL');
+          } catch {
+            await new Promise((r) => setTimeout(r, 10_000)); // let the last crash's helpers exit first
+            await launch().catch(() => {});
+            process.kill(app.process().pid, 'SIGKILL');
+          }
           if (s.gapMs) await new Promise((r) => setTimeout(r, s.gapMs));
           rec.fooProcs = fooProcs();
           await launch();

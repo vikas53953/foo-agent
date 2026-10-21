@@ -9,6 +9,14 @@ import type { BadgeValue, MessageRow, TickState } from '../../shared/types';
 
 /** 04 §4.2: a badge value that would last less than this is skipped (OCL status-reactions.ts). */
 export const BADGE_DEBOUNCE_MS = 700;
+
+/**
+ * How long the badge slot waits before replacing what it shows (`shown`) with a new value (04 §4.2). An empty slot is not a
+ * value, so the first badge after it shows at once: 👀 must be on screen ≤ 1 s after send (§4.2 `seen`, PERF-07); every
+ * later change waits the debounce, so a value that would last less than that is skipped.
+ */
+export const badgeDelay = (shown: string): number => (shown === '' ? 0 : BADGE_DEBOUNCE_MS);
+
 /** 04 §6.2: edits are allowed this long after sending. */
 export const EDIT_WINDOW_MS = 15 * 60_000;
 
@@ -18,7 +26,9 @@ type TickInput = Pick<MessageRow, 'status' | 'badge'>;
 export function tickState(m: TickInput): TickState {
   if (m.status === 'failed') return 'not_sent';
   if (m.status === 'queued') return 'waiting';
-  if (m.badge !== null) return 'read';
+  // Read stays read after the badge clears (CR-0024 F9): the lane marks a user message `complete` in the same write as 👀,
+  // so `complete` means foo started on it, and a plain or answered-steer message keeps ✓✓ read after its answer posts.
+  if (m.badge !== null || m.status === 'complete') return 'read';
   return m.status === 'sent' ? 'sent' : 'delivered';
 }
 

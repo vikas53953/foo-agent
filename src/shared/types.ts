@@ -616,7 +616,7 @@ export interface CardRow {
   deletedAt: number | null;
 }
 
-// ---- jobs (08-1 §4.3.4; aiSessionId dropped, doVerbs parsed; stepsDone, nowLine, slow derived) ----
+// ---- jobs (08-1 §4.3.4; aiSessionId dropped, doVerbs parsed; stepsDone, nowLine, slow, retrying derived) ----
 export interface JobRow {
   id: string;
   chatId: string;
@@ -660,6 +660,10 @@ export interface JobRow {
   stepsDone: number;
   nowLine: string;
   slow: boolean;
+  /** CR-0024 F10 (05 §5.2.2): WORKING after a failed tool call, until the next good one ("Slow here, trying another way"). */
+  retrying: boolean;
+  /** CR-0028 (X-186): QUEUED with its Plan card still pending, i.e. waiting for the user's Go (derived by main). */
+  awaitingGo?: boolean;
 }
 
 // ---- helpers (08-1 §4.3.8 camelCased; allowedApps parsed) ----

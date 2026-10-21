@@ -89,13 +89,17 @@ export interface ListContext {
 
 // ---------------------------------------------------------------- pure derivations (unit-tested)
 
-/** A card that waits on the user (03-shell-1 §3.4.4 "PENDING/HELD approval or choice card", §3.4.6 rule 3). */
+/**
+ * A card that waits on the user (03-shell-1 §3.4.4 "PENDING/HELD approval or choice card", §3.4.6 rule 3). CR-0028 (X-186):
+ * a pending Plan card waits on the user's Go, so its chat reads "Needs you", not "Working".
+ */
 export function cardWaitsOnUser(type: CardType, state: string): boolean {
   switch (type) {
     case 'approval':
     case 'payment':
       return state === 'PENDING' || state === 'HELD';
     case 'draft':
+    case 'plan':
       return state === 'pending';
     case 'choice':
     case 'tiles':
@@ -166,7 +170,9 @@ export function previewBody(m: LastMessage): PreviewBody {
 export function tickOf(m: Pick<LastMessage, 'status' | 'badge'>): TickState {
   if (m.status === 'failed') return 'not_sent';
   if (m.status === 'queued') return 'waiting';
-  if (m.badge !== null) return 'read';
+  // Read stays read after the badge clears (CR-0024 F9): the lane marks a user message `complete` in the same write as 👀,
+  // so `complete` means foo started on it, and a plain or answered-steer message keeps ✓✓ read after its answer posts.
+  if (m.badge !== null || m.status === 'complete') return 'read';
   return m.status === 'sent' ? 'sent' : 'delivered';
 }
 
@@ -331,7 +337,7 @@ export function chatRows(db: Db, ctx: ListContext, ids: string[] | null = null):
     (
       db
         .prepare(
-          `SELECT k.id, k.chat_id, k.type, k.state, k.payload, k.expires_at, k.created_at, j.title AS job_title FROM cards k
+          `SELECT k.id, k.chat_id, k.job_id, k.type, k.state, k.payload, k.expires_at, k.created_at, j.title AS job_title FROM cards k
              LEFT JOIN jobs j ON j.id = k.job_id
             WHERE k.deleted_at IS NULL AND k.state IN ('PENDING','HELD','pending','asking','waiting') AND k.chat_id IN ${inIds}
             ORDER BY k.created_at`,
@@ -360,6 +366,7 @@ export function chatRows(db: Db, ctx: ListContext, ids: string[] | null = null):
     const helper = base.helperId ? helpers.get(base.helperId) : undefined;
     const jobs = activeJobs.get(base.id) ?? [];
     const cards = openCards.get(base.id) ?? [];
+    const awaitingGo = new Set(cards.filter((k) => k.type === 'plan').map((k) => String(k.job_id)));
     const lm = last.get(base.id);
     const lf = lastFinished.get(base.id);
     const draft = drafts.get(base.id);
@@ -424,7 +431,8 @@ export function chatRows(db: Db, ctx: ListContext, ids: string[] | null = null):
         draft: draft === undefined ? null : clip(plainLine(draft)),
         pinnedAt,
         needsYou: isNeedsYou ? { expiresAt: expiries.length ? Math.min(...expiries) : null, since: Math.min(...sinces) } : null,
-        running: jobs.some((j) => RUNNING_JOB.includes(j.state as JobState)),
+        // CR-0028: a job waiting on its Plan card's Go is not running (it is in "Needs you").
+        running: jobs.some((j) => RUNNING_JOB.includes(j.state as JobState) && !awaitingGo.has(String(j.id))),
         active: jobs.some((j) => ACTIVE_JOB.includes(j.state as JobState)) || cards.length > 0,
         lastEndedDoneAt: lf && lf.state === 'done' ? Number(lf.fin) : null,
         latestDoneAt: latestDone.get(base.id) ?? null,
@@ -634,6 +642,16 @@ export function jobRows(db: Db, where: string, args: unknown[], now: number): Jo
   const rows = db.prepare(`SELECT * FROM jobs WHERE ${where}`).all(...args) as DbRow[];
   if (!rows.length) return [];
   const ids = rows.map((r) => String(r.id));
+  // CR-0028: a queued job whose Plan card is still pending waits for the user's Go.
+  const awaitingGo = new Set(
+    (
+      db
+        .prepare(
+          `SELECT job_id FROM cards WHERE type = 'plan' AND state = 'pending' AND deleted_at IS NULL AND job_id IN (${ids.map(() => '?').join(',')})`,
+        )
+        .all(...ids) as DbRow[]
+    ).map((r) => String(r.job_id)),
+  );
   const steps = groupBy(
     db
       .prepare(
@@ -646,7 +664,7 @@ export function jobRows(db: Db, where: string, args: unknown[], now: number): Jo
     const s = steps.get(String(r.id)) ?? [];
     const running = s.find((x) => x.state === 'running');
     const slots = running ? parseJson<Record<string, unknown>>(running.slots, {}) : {};
-    return jobRow(
+    const row = jobRow(
       r,
       {
         stepsDone: s.filter((x) => x.state === 'done').length,
@@ -655,6 +673,7 @@ export function jobRows(db: Db, where: string, args: unknown[], now: number): Jo
       },
       now,
     );
+    return row.state === 'queued' && awaitingGo.has(row.id) ? { ...row, awaitingGo: true } : row;
   });
 }
 

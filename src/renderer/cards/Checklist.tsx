@@ -3,8 +3,9 @@
 // finish" (`--bad`); step rows 30 high with a 16px mark (Done CheckmarkCircle `--ok`, Current spinner ring `--accent`, Waiting
 // HandRight `--warn`, Next 16px circle `--fg-3`, Failed ErrorCircle `--bad`, Stopped Stop `--fg-2`, Took over HandRight
 // `--fg-2`); the waiting row is a Link button that focuses the card that needs the user; slow and paused lines under the
-// current row; footer buttons Watch live (only while the job uses the browser) and Stop, text "{n} min · uses about ₹{x} of
-// your AI"; DONE collapses to the summary row "Done · {n} steps · {m} min" + "Details" (read-only list, "Replay" when frames
+// current row, and after a failed tool call "Slow here, trying another way" in the slow line's place (CR-0024 F10);
+// footer buttons Watch live (only while the job uses the browser) and Stop, text "{n} min · uses about ₹{x} of your AI";
+// DONE collapses to the summary row "Done · {n} steps · {m} min" + "Details" (read-only list, "Replay" when frames
 // exist); FAILED and CANCELLED stay expanded with no buttons; Stop → "Stopping…" (§5.2.3). §5.2.4: Tab order, no Primary
 // (Ctrl+Enter does nothing), label "Job checklist: {title}, step {k} of {n}", steps a list read "{state word}, {text}".
 // Steps come from `job:details`, refetched when the runner writes the job (`job:upsert`; `steps:upsert` is not wired, T1).
@@ -197,7 +198,9 @@ function StepList({
                   </span>
                 )}
                 <SourcePile sites={stepSources(step)} />
-                {current && job.slow && job.state === 'working' && <span className={styles.caption}>{t('cards.checklist.slow')}</span>}
+                {current && job.state === 'working' && (job.retrying || job.slow) && (
+                  <span className={styles.caption}>{job.retrying ? t('cards.checklist.retry_other_way') : t('cards.checklist.slow')}</span>
+                )}
                 {l.state === 'current' && paused && <span className={styles.caption}>{paused}</span>}
               </span>
             </li>

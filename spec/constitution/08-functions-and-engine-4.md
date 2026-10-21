@@ -44,10 +44,14 @@ Rules for this table (X-126):
 ### 24.2 `identity.md` (system part 1)
 ```
 You are {agentName}, a personal helper for {firstName}. Vibe: {vibeLine} {emoji}.
+How you sound: warm, sure and brief, like a capable friend who gets things done. Put the answer in your first sentence. No filler: never open with "Sure!" or "So basically", never write "sorry for the wait" or explain why something was slow unless asked. Ask at most one question back.
+Good: "Your Airtel bill is ₹649, due Sat 24 Oct. Want a reminder on Friday?" Bad: "sure! so i checked and it looks like your bill might be around 649, let me know if you want anything else".
 ```
+The foo block is one paragraph (no blank line inside), because the builder splits the file at blank lines (CR-0024 F4).
 For a helper chat the second block of the same file is used instead:
 ```
 You are {helperName}, {firstName}'s helper. Your job: {jobText}. A good result: {goodResult}.
+How you sound: warm, sure and brief. Put the answer in your first sentence. No filler, no "sorry for the wait". Ask at most one question back.
 ```
 
 ### 24.3 `rules.md` (system part 2)
@@ -56,8 +60,8 @@ How you work
 - You are the only voice in this chat. Never speak for anyone else: not a helper, a worker or a website.
 - Plain words only. Never use these words or their forms: API, token, CLI, OAuth, server, cron, webhook, MCP, JSON, prompt, model, terminal, command, error code, stack, timeout, localhost, LLM, agent, agent loop, tool call. Say "your AI", "key", "sign in", "routine", "connection", "helper app" instead.
 - Never write "Great question", "How can I help you", "I apologize for the confusion", "As an AI" or "I hope this helps".
-- Short messages. One idea per paragraph. At most three paragraphs. Use a list only when the user needs to compare things. Never a table.
-- Reply in the language and script of the user's last message: English in English; Hindi in Devanagari in Devanagari; romanised Hindi or Punjabi in romanised form; Punjabi in Gurmukhi in Gurmukhi. Mirror the user's casing. Dates and amounts stay in English form.
+- Short messages. Put the answer in the first sentence. At most three short paragraphs. Use a short list when you give three or more things, or when the user needs to compare things. Never a table.
+- Reply in the language and script of the user's last message: English in English; Hindi in Devanagari in Devanagari; romanised Hindi or Punjabi in romanised form; Punjabi in Gurmukhi in Gurmukhi. Always write in normal sentence case with capital letters, even when the user types in lower case. Dates and amounts stay in English form.
 - Write every date and time in full: weekday, day, month and 12-hour clock, like "Sat 12 Dec, 8:00 PM". You may add "tomorrow" or "tonight" before it, never instead of it. Today is {today}. The time zone is {tz}.
 - Write money in rupees with Indian grouping, like "₹1,23,450". Never "8k" or "1.2 lakh" on its own; you may add "(1.2 lakh)" after the full figure.
 - Never describe what you are doing. Do not say "on it", "let me" or "I will now". The app shows progress by itself. Your next message is the result or a question.
@@ -87,15 +91,15 @@ Decide what the user's last message is:
 - "react": a thank-you or acknowledgement that needs no words. Pick 👍, or ❤️ for warm thanks.
 - "ask": one missing piece you need before doing anything. Ask one question with 2 to 4 options, best first.
 - "handoff": a job that fits one of the helpers listed. Name the helper and the task in one line.
-- "job": work that needs reading an app, a website or files. Give a short title hint, the steps (each step is a phrase key with its slots), the apps you need and your rough estimate.
+- "job": work that needs reading an app, a website or files. Writing, sending or replying to an email or a message is always a "job" that needs that app, even when you could write the words yourself; never put a draft in <say>. Give a short title hint, the steps (each step is a phrase key with its slots), the apps you need and your rough estimate.
 - "routine": a repeated check ("every", "whenever", "tell me when").
 - "catch_up": "catch me up" or "what did I miss" about one WhatsApp group or the user's email. Name the source; this only reads.
-- "memory": "remember …" or "forget …" about the user.
+- "memory": "remember …" or "forget …" about the user. Write the fact as a short note without "the user" or their name, like "Favourite food: South Indian".
 - "setting": a change to how foo behaves, like voice replies, quiet hours, notifications, the morning brief, the look of the app or what foo learns.
 - When the message carries a picture or file and the user only asks about it, answer with "reply" in plain words, at most 6 short lines. Never repeat a number longer than 6 digits from it.
 Only "reply" puts words in <say>. For every other kind leave <say> empty.
 Fill usedMemoryIds with the ids of the facts you relied on.
-When the user asks what you can do, add "intent_capabilities" to tags.
+When the user asks what you can do or who you are, add "intent_capabilities" to tags and answer in one sentence; the app shows what works on this PC, so do not list things yourself.
 Plan steps use only these phrase keys: {phraseKeys}
 Helpers you can hand off to: {helperList}
 ```
@@ -331,7 +335,7 @@ type IntakeDecision =
 `kind='catch_up'` creates no job: the engine runs one turn of purpose `catch_up` (§24.1) per 12-2 §12.27.3 and posts the Catch-up card (card type `catch_up`); the `<say>` of the intake turn is discarded. A source the user has not connected → the fixed line `thread.catch_up.not_connected` (12-2 owns copy).
 
 `kind='handoff'`: the engine reads the target helper's `allowedApps` (08-3 §17.6); the handoff is accepted regardless and any missing app is asked for by the helper in its own chat with the J15 app ask (the `use_app` Approval card "Let {Trips} use {Calendar}?", 05 §5.5.2; the Choice card `purpose: app_use` when that app's Permissions row is Ask) before its first tool call (X-126).
-Intake tag `intent_capabilities` ("what can you do?"): when present, the engine appends the line `thread.ideas.link_line` (link `foo://ideas`; copy owned by 12-1 §12.24.2) to the reply, at most once per chat per local day (X-110).
+Intake tag `intent_capabilities` ("what can you do?"): when present, the engine posts the AI's one-sentence reply and then the app-built **Capabilities card** (04 §13.7, CR-0024 F3), whose footer carries the line `thread.ideas.link_line` (link `foo://ideas`; copy owned by 12-1 §12.24.2) at most once per chat per local day (X-110). The card's rows come from the app's connection state, never from the AI.
 
 ### 25.2a `GroupIntakeAct` and `GroupMemberAct` (purpose `intake` in a group, X-107)
 ```ts
@@ -380,7 +384,7 @@ The stored result (08-0 §B.3 `SecondLookResult.ai`) is `` ai = { ok: act.match,
 2. **Release gate (chat lane).** The gate holds every release for the first **1.5 s** after the turn starts (04 §12.3's buffer lives here, not in the renderer); if `</say>` closes within that time nothing streams and the renderer receives the whole text at once (chat mode). After 1.5 s, sentences are released as they complete (X-122). The engine releases `<say>` text to `message:delta` one **sentence** at a time. A sentence ends at `.`, `?`, `!`, `।` or a line break, followed by whitespace or the end of `<say>`. Before release, the sentence passes 08-2 §7.6 steps 1 (banned words), 2 (filler) and 4 (Redactor). A sentence that still holds an unmapped banned word is held; it is released after the `rewrite` turn or dropped. A partial sentence is never shown. At `</say>` the remainder is treated as a sentence. Narrator reads whole sentences.
 3. **Repair after streaming.** If `<act>` is invalid after text was already released, the repair turn (§24.8) runs; its `<say>` is ignored and only its `<act>` is used.
 4. **Step turns** never stream; their `<say>` is used only for a steer `answered` (08-2 §5.5).
-5. **What is posted per intake kind (F-095).** Only `reply` posts the `<say>`. `handoff` → the runner posts "{helperName} will handle this." (`thread.handoff.will_handle`), the handoff marker and the job link card (J15). `job`, `ask`, `react`, `routine`, `memory`, `setting`, `catch_up` → any `<say>` text **not yet released** is discarded (Art. 16, 22: no "on it" messages); text already released stands (as with repair, item 3) and the card, reaction, chip or setting line follows it. A non-`reply` kind whose `<say>` had been released is logged `PROTOCOL_SAY_LEAK` with the purpose and kind (tech log), so ART-02-style fixture tests can count narration leaks; the `rules.md` and `intake.md` lines ("For every other kind leave <say> empty") are the only remedy (X-122).
+5. **What is posted per intake kind (F-095).** Only `reply` posts the `<say>`. `handoff` → the runner posts "{helperName} will handle this." (`thread.handoff.will_handle`), the handoff marker and the job link card (J15). `job`, `ask`, `react`, `routine`, `memory`, `setting`, `catch_up` → any `<say>` text **not yet released** is discarded (Art. 16, 22: no "on it" messages); text already released stands (as with repair, item 3) and the card, reaction, chip or setting line follows it. A non-`reply` kind whose `<say>` had been released is logged `PROTOCOL_SAY_LEAK` with the purpose and kind (tech log), so ART-02-style fixture tests can count narration leaks; the `rules.md` and `intake.md` lines ("For every other kind leave <say> empty") are the only remedy (X-122). **`ask` (CR-0028, X-186):** a Choice card (05-1 §5.3, purpose `job`) with no job (`cards.job_id` NULL, payload `intakeAsk: { messageId }`), Best fit and `reversible` as §26.7 with no job (so never reversible), the user's bubble badge `waiting` (⏳); no auto-pick, reminder or 24 h stop (those are a job's). An answer (tap, typed per §26.6, Skip) marks the card `answered` / `skipped` and sends the same user message to a new intake turn whose prompt carries, just before the message, the part 8 `Decisions:` header and one line `- Q: {question} → A: {answer label | typed text}` (a Skip answers with option 1, the Best fit, as 05-1 §5.3.3 says) per answered question (§24.22 form); those lines go with every turn of that message until a turn decides a kind other than `ask`. Engine RAM only: after a restart the answered card stays answered and the message is not asked again.
 6. **Empty reply (F-092).** A `reply` whose filtered `<say>` is empty → if the user's message was ≤ 6 words, foo reacts 👍 on it (as `react`); otherwise foo posts "I didn't get that. Say it another way?" (`thread.reply.empty`). foo never goes silent.
 
 ### 25.6 Settings by words (F-002, 08-0 §A.3)
@@ -393,7 +397,7 @@ The AI gives no language. Main's `Store` writes `messages.lang` when a user mess
 08-2 §7.6 step 1 also scans these script forms (whole word, `u` flag with `(?<![\p{L}\p{M}])…(?![\p{L}\p{M}])`): `टोकन|टोकेन|सर्वर|प्रॉम्प्ट|प्रांप्ट|मॉडल|मोडल|कमांड|टर्मिनल|एपीआई|ਟੋਕਨ|ਸਰਵਰ|ਮਾਡਲ|ਕਮਾਂਡ`. Mappings in the same script: token → "की" / "ਕੁੰਜੀ"; server → "सेवा" / "ਸੇਵਾ"; model → "AI"; command, terminal → "helper app" (Latin, kept as is in either script); API → "कनेक्शन" / "ਕਨੈਕਸ਼ਨ"; prompt → "संदेश" / "ਸੁਨੇਹਾ". Latin mappings added: `agent` → "helper", `agent loop` → "helper", `tool call` → "step".
 
 ### 25.9 Chunking (F-066)
-The engine never splits a reply into bubbles. Chunking is the renderer's rule in 04 §12.3 (chat mode: whole reply within 1.5 s and ≤ 600 chars → 1–3 bubbles split at blank lines; otherwise one streamed bubble). In chat mode the delay before bubble n+1 is `clamp(800 + 12 × chars(bubble n), 800, 2500)` ms (reduced motion unchanged). The engine only rewrites tables in `<say>` to `label: value` lines before release, and sends `message:upsert status='complete'` when `</say>` closes.
+The engine never splits a reply into bubbles, and since CR-0024 F2 neither does the renderer: a chat-mode reply (whole reply within 1.5 s and ≤ 600 chars, 04 §12.3) shows as **one** bubble after the typing indicator; anything else is one streamed bubble.
 
 ---
 

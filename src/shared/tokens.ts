@@ -102,7 +102,7 @@ export const tokens = { colors: {
   },
   "--on-bubble-me-soft": {
     "light": "#26262C",
-    "dark": "#2334B8"
+    "dark": "#232B7E"
   },
   "--on-media": {
     "light": "#FFFFFF",
@@ -122,7 +122,7 @@ export const tokens = { colors: {
   },
   "--bubble-me": {
     "light": "#0B0B10",
-    "dark": "#2B3FD6"
+    "dark": "#2C359A"
   },
   "--bubble-foo": {
     "light": "#F0F0F4",

@@ -15,7 +15,11 @@
 // R1 T6 (X-180, CR-0022): the "foo read:" items of the user's message go on it when the lane takes it (04 §6.5, rule-based,
 // from the redacted text; not in groups or WhatsApp mirrors); a side question (04 §17.5, pick 6, AT-364) skips the stop,
 // steer and typed-answer branches and the plan change, is answered as a reply only (never a job, never memory) and its
-// answer carries `side = 1`, so a running job keeps running unchanged.
+// answer carries `side = 1`, so a running job keeps running unchanged. C1 T2 (04 §13.7, CR-0024 F3): a reply tagged
+// `intent_capabilities` (08-4 §25.2) is followed by the Capabilities card, built from the app's own state (never the AI's).
+// CR-0028 (X-186): intake kind `ask` posts a Choice card with no job (08-4 §25.5 item 5); its answer, tapped or typed, sends
+// the user's message back to an intake turn with the question and answer attached (the part 8 `Decisions:` lines, 08-4 §24.22). Before
+// this, `ask` fell through to the empty-reply line ("I didn't get that"), found on the real-PC run of 2026-10-21.
 // Restart fix (real-PC J19 bug): the queue lives in memory, so after a restart cutOffTurns/answerCutOff give the messages
 // whose turn never finished their one intake turn (08-2 §5.2), and a reply left streaming is cut off with Try again (§19.4).
 import { t } from '../../shared/copy/t';
@@ -39,6 +43,13 @@ import { splitSuggestions } from '../prompt/suggestions';
 // R1 T6
 import { understoodItems } from './understood';
 import { isSideAiText, sideAiText } from '../../shared/sideQuestion';
+// C1 T2, CR-0028
+import { newNonce } from '../../shared/canon';
+import { CAPABILITIES_APP, capabilitiesSurface, type CapabilityState } from '../../shared/kit/capabilities';
+// CR-0028
+import { BADGE_OF_STATE } from '../../shared/jobMachine';
+import type { CardRow } from '../../shared/types';
+import { choiceFields } from '../cards/choiceFields';
 // Restart fix
 import { isStopCommand } from '../jobs/stopFlow';
 
@@ -72,6 +83,8 @@ export interface IntakeInput {
   // M5
   /** T10: "Change plan": the old plan goes with this turn (08-2 §5.3.3). */
   oldPlan?: { title: string; steps: string[] };
+  /** CR-0028: the intake questions this message already got answers to, as "- Q: … → A: …" lines. */
+  answers?: string[];
 }
 
 /** The reply protocol (builder B's modules, wired by Engine). */
@@ -80,8 +93,8 @@ export interface LaneProtocol {
   buildIntake(input: IntakeInput): { system: string; prompt: string; factIds?: string[] };
   buildRepair(issues: string): string;
   /** Parse the whole reply: the `<say>` text and the validated IntakeAct, or the zod issues. */
-  parse(text: string): { say: string; act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[] };
-  parseAct(text: string): { act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[] };
+  parse(text: string): { say: string; act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[]; tags?: IntakeTag[] };
+  parseAct(text: string): { act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[]; tags?: IntakeTag[] };
   /** The release gate for one streamed turn (08-4 §25.5 item 2). */
   gate(onRelease: (text: string, mode: 'whole' | 'sentence') => void, signal: AbortSignal): LaneGate;
   /** 08-2 §7.6 over a whole `<say>` (used for repair results and the post-check). */
@@ -94,12 +107,15 @@ export interface LaneGate {
   /** Text released so far. */
   released(): string;
 }
+/** 08-4 §25.2 `IntakeAct.tags`. */
+export type IntakeTag = 'intent_capabilities';
 export type IntakeDecisionView =
   | { kind: 'reply' }
   | { kind: 'react'; emoji: '👍' | '❤️' }
   | Extract<IntakeDecision, { kind: 'job' }>
   | Extract<IntakeDecision, { kind: 'memory' }>
-  | { kind: 'ask' | 'handoff' | 'routine' | 'setting' | 'catch_up' };
+  | Extract<IntakeDecision, { kind: 'ask' }>
+  | { kind: 'handoff' | 'routine' | 'setting' | 'catch_up' };
 
 /** M6 T5: the memory seam of the lane (Engine wires IntakeMemory, MemoryChips and MemoryReview). */
 export interface LaneMemory {
@@ -141,7 +157,7 @@ export interface LaneJobs {
 export interface LaneDeps {
   link: MainLink;
   clock: Clock;
-  newId(prefix: 'm' | 't'): string;
+  newId(prefix: 'm' | 't' | 'k'): string;
   settings(): Settings;
   ai: LaneAi;
   protocol: LaneProtocol;
@@ -154,10 +170,18 @@ export interface LaneDeps {
   // M6
   /** T5: memory in the lane (intake remember / forget, chips, review trigger). */
   memory?: LaneMemory;
+  // C1
+  /** T2: what the Capabilities card reads of the app's state (04 §13.7); without it Gmail and WhatsApp count as off. */
+  capabilityState?(): CapabilityState;
 }
 
 const MAX_TOTAL = 2; // 08-2 §6.9 chat lane
 const CONVERSATION = 20; // 08-2 §7.2 part 7
+
+function isIntakeAsk(payload: Record<string, unknown>): payload is Record<string, unknown> & { intakeAsk: { messageId: string } } {
+  const v = payload.intakeAsk as { messageId?: unknown } | undefined;
+  return typeof v?.messageId === 'string' && v.messageId.length > 0;
+}
 
 function words(text: string): number {
   return text.trim().split(/\s+/u).filter(Boolean).length;
@@ -181,6 +205,8 @@ export class ChatLane {
   private chatTurns = new Map<string, { abort: AbortController; stopped: boolean }>();
   /** foo reply id → the user message it answered (04 §19.4 Try again). */
   private answered = new Map<string, string>();
+  /** CR-0028: user message id → the answers to the intake questions it got, for its next intake turn. */
+  private askAnswers = new Map<string, string[]>();
   /** User messages this engine has started a turn for (a restart's cut-off list may name one of them). */
   private taken = new Set<string>();
   /** Cut-off bubbles that already had their one Try again. */
@@ -203,6 +229,8 @@ export class ChatLane {
       if (await this.d.memory?.onCardAnswered(a)) return;
       await this.d.jobs?.onCardAnswered?.(a);
     },
+    // CR-0028: a typed answer to an intake question (the hook already wrote the card answered).
+    answeredIntakeAsk: (card, answer) => this.reintake(card, answer),
   };
 
   /** A user message main stored (MainToEngine user.message). */
@@ -372,6 +400,7 @@ export class ChatLane {
     let built: { system: string; prompt: string; factIds?: string[] } | null;
     try {
       const oldPlan = side ? null : (this.d.jobs?.planChange?.(chatId) ?? null);
+      const answers = this.askAnswers.get(messageId);
       built = this.d.protocol.buildIntake({
         settings,
         chat,
@@ -381,6 +410,7 @@ export class ChatLane {
         local: pick.billing === 'local',
         memory,
         ...(oldPlan ? { oldPlan } : {}),
+        ...(answers?.length ? { answers } : {}),
       });
     } catch {
       built = null;
@@ -534,6 +564,7 @@ export class ChatLane {
     const parsed = this.d.protocol.parse(result.text);
     let act = parsed.act;
     let usedMemoryIds = act ? (parsed.usedMemoryIds ?? []) : [];
+    let tags = act ? (parsed.tags ?? []) : [];
     if (!act) {
       // 08-2 §7.5: one repair turn (same session); its <say> is ignored after streaming (08-4 §25.5 item 3).
       const repairParams = this.d.ai.turnParams(pick.providerId, 'repair');
@@ -559,7 +590,10 @@ export class ChatLane {
             .catch(() => null);
       const fixed = repaired && repaired.stopReason === 'end' ? this.d.protocol.parseAct(repaired.text) : null;
       act = fixed?.act ?? null;
-      if (act) usedMemoryIds = fixed?.usedMemoryIds ?? [];
+      if (act) {
+        usedMemoryIds = fixed?.usedMemoryIds ?? [];
+        tags = fixed?.tags ?? [];
+      }
       if (!act) this.d.log('chat.protocol_invalid', 'PROTOCOL_INVALID', { chatId });
       // A valid <say> with a broken <act> is still posted as a plain reply (08-2 §7.5).
       if (!act && parsed.say.trim()) act = { kind: 'reply' };
@@ -571,7 +605,7 @@ export class ChatLane {
     if (kind !== 'reply' && released.trim()) this.d.log('chat.say_leak', 'PROTOCOL_SAY_LEAK', { chatId });
 
     const memoryKind = act?.kind === 'memory' && this.d.memory ? act : null;
-    if (kind === 'reply' || (kind !== 'react' && !(kind === 'job' && this.d.jobs) && !memoryKind && released.trim())) {
+    if (kind === 'reply' || (kind !== 'react' && kind !== 'ask' && !(kind === 'job' && this.d.jobs) && !memoryKind && released.trim())) {
       if (fooId) {
         // P1 T6: the follow-ups the reply's own `Suggestions:` line held (the gate kept the line out of the bubble).
         const trailer = kind === 'reply' ? splitSuggestions(parsed.say) : null;
@@ -586,6 +620,8 @@ export class ChatLane {
             set: { text: released, status: 'complete', ...(suggestions ? { suggestions } : {}), ...(actions ? { actions } : {}) },
           },
         ]);
+        // C1 T2 (04 §13.7): the one-sentence reply, then the app-built Capabilities card.
+        if (kind === 'reply' && !side && tags.includes('intent_capabilities')) await this.capabilitiesCard(chatId, helper);
       } else {
         // Nothing passed the filters: 08-4 §25.5 item 6 (F-092).
         await this.emptyReply(chatId, messageId, message, helper, who, providerNote);
@@ -600,6 +636,10 @@ export class ChatLane {
         askedText: message.textForAi ?? message.text,
         helperId: helper?.id ?? null,
       });
+    } else if (act && act.kind === 'ask') {
+      // CR-0028 (08-4 §25.5 item 5): the question goes on a Choice card with no job; text already released stands.
+      if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
+      await this.ask(chatId, messageId, act.card, helper);
     } else if (memoryKind && this.d.memory) {
       // M6 T5 (08-4 §25.5 item 5): text already released stands; the reaction, chip or card follows it.
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
@@ -620,6 +660,8 @@ export class ChatLane {
       const used = usedFacts(usedMemoryIds, built.factIds ?? [], memory);
       if (used.length) await this.d.memory.used(chatId, fooId, used);
     }
+    // CR-0028: the answers went with this turn; a new question keeps them for the turn after its answer.
+    if (kind !== 'ask') this.askAnswers.delete(messageId);
     await this.turnRow(turnId, chatId, pick, startedAt, result, 'ok');
     this.d.memory?.answered(chatId);
   }
@@ -659,12 +701,155 @@ export class ChatLane {
     this.typing(chatId, false, who);
   }
 
+  /**
+   * CR-0028: the intake question as a Choice card with no job (05-1 §5.3, purpose `job`); the user's bubble shows ⏳ while
+   * it waits (05-1 §5.3.3 Asking). No auto-pick and no 24 h stop: those rules are a job's (choiceTimeouts reads NEEDS_YOU jobs).
+   */
+  private async ask(
+    chatId: string,
+    messageId: string,
+    card: Extract<IntakeDecision, { kind: 'ask' }>['card'],
+    helper: EngineHelper | null,
+  ): Promise<void> {
+    const cardId = this.d.newId('k');
+    const cardMessageId = this.d.newId('m');
+    const now = this.d.clock.now();
+    const payload = {
+      ...choiceFields({ ...card, question: this.d.protocol.filter(card.question) }, null),
+      intakeAsk: { messageId },
+    };
+    const r = await this.tx([
+      {
+        op: 'insert',
+        table: 'messages',
+        row: {
+          id: cardMessageId,
+          chat_id: chatId,
+          author_kind: helper ? 'helper' : 'foo',
+          author_id: helper?.id ?? null,
+          kind: 'card',
+          card_id: cardId,
+          job_id: null,
+          status: 'complete',
+          created_at: now,
+        },
+      },
+      {
+        op: 'insert',
+        table: 'cards',
+        row: {
+          id: cardId,
+          chat_id: chatId,
+          message_id: cardMessageId,
+          job_id: null,
+          type: 'choice',
+          state: 'asking',
+          payload,
+          nonce: newNonce(),
+          created_at: now,
+        },
+      },
+      { op: 'update', table: 'messages', id: messageId, set: { badge: BADGE_OF_STATE.needs_you } },
+    ]);
+    if (!r.ok) {
+      this.d.log('chat.ask_failed', r.error.kind, { chatId });
+      await this.post(chatId, messageId, t('thread.reply.empty'), helper, null);
+    }
+  }
+
+  /** CR-0028: a tap on an intake question (Engine's card.answered); true when the card was one. */
+  async onCardAnswered(a: { cardId: string; choice?: string; text?: string; answer?: unknown; resolvedBy: string }): Promise<boolean> {
+    const card = await this.query<CardRow>('cardById', a.cardId);
+    if (!card || card.type !== 'choice' || card.jobId !== null || !isIntakeAsk(card.payload)) return false;
+    if (card.resolvedAt !== null) return true;
+    const answer = (a.answer as CardAnswer | undefined) ?? (a.choice ? { optionId: a.choice } : a.text ? { text: a.text } : null);
+    if (!answer) return true;
+    const r = await this.tx([
+      {
+        op: 'update',
+        table: 'cards',
+        id: card.id,
+        set: {
+          state: 'skip' in answer ? 'skipped' : 'answered',
+          answer,
+          resolved_by: a.resolvedBy,
+          resolved_at: this.d.clock.now(),
+        },
+      },
+    ]);
+    if (r.ok) await this.reintake(card, answer);
+    return true;
+  }
+
+  /** CR-0028: the asked message goes back to an intake turn with "- Q: {question} → A: {answer}" attached. */
+  private async reintake(card: CardRow, answer: CardAnswer): Promise<void> {
+    if (!isIntakeAsk(card.payload)) return;
+    const { messageId } = card.payload.intakeAsk;
+    const options = (card.payload.options as { id: string; label: string }[] | undefined) ?? [];
+    const label = (id: string) => options.find((o) => o.id === id)?.label ?? id;
+    const said =
+      'optionId' in answer
+        ? label(answer.optionId)
+        : 'optionIds' in answer
+          ? answer.optionIds.map(label).join(', ')
+          : 'text' in answer
+            ? answer.text
+            : // 05-1 §5.3.3: a Skip reads "Skipped. I'll go with {Best fit}." and option 1 is used.
+              label(options[0]?.id ?? '');
+    const line = this.d.protocol.filter(`- Q: ${String(card.payload.question ?? '')} → A: ${said}`);
+    this.askAnswers.set(messageId, [...(this.askAnswers.get(messageId) ?? []), line]);
+    this.enqueue(card.chatId, messageId, { intakeOnly: true });
+  }
+
   /** foo's reaction on the user's bubble takes the badge slot (04 §4.1 rule 5); no message is posted (AT-027). */
   async react(messageId: string, emoji: '👍' | '❤️', helper: EngineHelper | null): Promise<void> {
     await this.tx([
       { op: 'insert', table: 'reactions', row: { message_id: messageId, by: helper?.id ?? 'foo', emoji, created_at: this.d.clock.now() } },
       { op: 'update', table: 'messages', id: messageId, set: { badge: null } },
     ]);
+  }
+
+  /**
+   * 04 §13.7: a kit card (05 §0.1) with the rows the app's state allows now; the words are resolved here, so an older card
+   * keeps its rows when the state changes and asking again posts a fresh card. 08-1 §4.3.3 insert order: message, then card.
+   */
+  private async capabilitiesCard(chatId: string, helper: EngineHelper | null): Promise<void> {
+    const state = this.d.capabilityState?.() ?? { gmailConnected: false, whatsappLinked: false };
+    const cardId = this.d.newId('k');
+    const messageId = this.d.newId('m');
+    const now = this.d.clock.now();
+    const r = await this.tx([
+      {
+        op: 'insert',
+        table: 'messages',
+        row: {
+          id: messageId,
+          chat_id: chatId,
+          author_kind: helper ? 'helper' : 'foo',
+          author_id: helper?.id ?? null,
+          kind: 'card',
+          card_id: cardId,
+          status: 'complete',
+          created_at: now,
+        },
+      },
+      {
+        op: 'insert',
+        table: 'cards',
+        row: {
+          id: cardId,
+          chat_id: chatId,
+          message_id: messageId,
+          job_id: null,
+          type: 'kit',
+          state: 'shown',
+          payload: { app: CAPABILITIES_APP, capabilities: capabilitiesSurface(state) },
+          nonce: newNonce(),
+          created_at: now,
+        },
+      },
+    ]);
+    if (!r.ok) this.d.log('chat.capabilities_failed', r.error.kind, { chatId });
   }
 
   async post(chatId: string, messageId: string, text: string, helper: EngineHelper | null, note: string | null): Promise<void> {

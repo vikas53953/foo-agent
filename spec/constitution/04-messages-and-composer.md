@@ -60,7 +60,7 @@ Test id: the list is `thread-log` (03 §3.6.4); every row carries `data-index`, 
 | A bubble and a card from the same sender | 4px (`--s0`) | 02 F3 |
 | Any row and a date separator | 16px (`--s3`) above and below | 02 F3 |
 | Any row and an unread divider (03 §3.6.5), handoff marker or system line | 12px (`--s2`) above and below | 03; `[foo decision]` |
-| Below a bubble that carries a badge or a reaction chip | 16px (`--s3`), replacing the 2px or 12px gap (the chip hangs 10px below the bubble, §4.3, §8) | BP1 `.react` bottom −10px |
+| Below a bubble that carries a badge or a reaction chip | 16px (`--s3`), replacing the 2px or 12px gap (the badge hangs 10px below the bubble, §4.3); 24px (`--s5`) under a reaction chip, which hangs 18px below (§8, CR-0024 B2) | BP1 `.react`; CR-0024 |
 | Below foo's latest answer when its action row shows (§17) | action row 4px below the bubble, then the normal gap below the row | `[foo decision]` |
 
 ### 1.3 Runs (grouping)
@@ -148,7 +148,7 @@ Test id: `bubble-me` (`data-message-id`, `data-index`); meta `bubble-meta`, tick
 | Item | Value | Evidence |
 |---|---|---|
 | Alignment | Right edge of the column. Row is `justify-content: flex-end` | MSG §5 all three apps |
-| Fill | `--bubble-me` (light `#0B0B10`, dark `#2B3FD6` indigo, X-145) | 02 F2; BP1 near-black "me"; X-145 (CR-0004) |
+| Fill | `--bubble-me` (light `#0B0B10`, dark `#2C359A` deep indigo, X-145, CR-0024 F6) | 02 F2; BP1 near-black "me"; X-145 (CR-0004) |
 | Text | `--on-bubble-me`, `--t-body` 15/22 400, `text-wrap: pretty`, `white-space: pre-wrap`, `overflow-wrap: anywhere` | 02 F1; MSG §6 long message |
 | Padding | 8px top, 12px right, 8px bottom, 12px left (`--s1` / `--s2`) | BP1 `.b` padding 8px 12px |
 | Max width | `--bubble-max`: 72% of the column, capped at 620px | 02 F5 |
@@ -308,7 +308,7 @@ Test id: `bubble-reaction` (`data-index`, `aria-pressed` = mine).
 | Item | Value | Evidence |
 |---|---|---|
 | Chip | height 24px, `--r-full`, `--bg-raised`, 1px `--line`, padding 0 6px; emoji 15px (`--t-body` size, `--font-emoji`); count `--t-caption` `--fg-2` 4px after the emoji, shown only when > 1 (groups) | MSG §5 WA chip 22–24px; OCL grouped.css:252-298 |
-| Anchor | First chip at the bubble's bottom-left, `left: -8px; bottom: -10px` (same anchor as the badge, §4.3); more chips flow right with 4px gaps | BP1 `.react` |
+| Anchor | First chip at the bubble's bottom-left, `left: -8px; bottom: -18px`, so it hangs below the bubble edge and never covers text (CR-0024 B2); more chips flow right with 4px gaps. The gap below such a bubble is 24px (`--s5`) | BP1 `.react`; CR-0024 |
 | Mine | A chip the user added: fill `--accent-soft`, border `--accent` 1px | OCL pressed `--accent-subtle` |
 | Click a chip | If it is the user's own reaction: removes it. Otherwise: adds the same reaction | MSG WA behaviour |
 | Max | 1 reaction per person per bubble; choosing another replaces it | MSG WA |
@@ -497,14 +497,16 @@ The engine's sentence gate holds the first **1.5 s** of every turn (08-4 §25.5,
 
 | Case | Shown as | Evidence |
 |---|---|---|
-| The whole reply arrived within 1.5 s **and** is ≤ 600 characters | Chat mode: typing indicator (§14.3) until ready, then 1–3 complete bubbles split at blank lines, in one run; the delay before bubble n+1 is **`clamp(800 + 12 × chars(bubble n), 800, 2500)` ms** (08-4 §25.5; reduced motion unchanged). Lists, quotes and code blocks never split. A 4th+ paragraph joins the 3rd bubble | J7 step 3; OCL streaming.md:178-190 natural pacing |
+| The whole reply arrived within 1.5 s **and** is ≤ 600 characters | Chat mode: typing indicator (§14.3) until ready, then **one** complete bubble; its paragraphs sit 8px apart inside it (§13). A reply is never split into several bubbles (CR-0024 F2: one answer, one bubble, one time, as ChatGPT and Claude do) | J7 step 3; CR-0024 |
 | Anything else | Stream mode: one bubble that fills as words arrive (§14.4); never split | AIC #25 |
 
-### 12.4 Sender label (groups only)
+### 12.4 Sender label (groups, and foo's and helpers' own chats)
+
+CR-0024 F2: the label row below also sits above the first bubble of each output run in foo's chat and in a helper's chat, so every answer starts with the face that wrote it.
 
 - Above the first bubble of each output run, a label row: 26px avatar (`--avatar-inline`, `--r-full`; default the sender's living face, 02 §F15.9, showing only the Working and Needs you rings, no one-time animations (§F15.9.3d) [X-35]; letter faces: helper colour fill, initial in `--t-caption-strong` `--on-helper` (06 token); foo: `--fg-1` fill with `--bg-app` letter, 02 F2) + 8px gap + name.
 - Name: `--t-caption-strong` (no uppercase). Light theme: the helper's `--h-*` colour (passes 4.96:1 on `--bg-app`). **Dark theme: `--fg-1`**, because several `--h-*` colours fall below 4.5:1 on `--bg-app` dark (e.g. `--h-slate` ≈ 2.6:1); the avatar carries the colour. `[conflict 5, §25]`
-- Bubbles of that sender are indented 34px (26 + 8) so they align with the name; the label row sits 4px above the first bubble.
+- In groups only, bubbles of that sender are indented 34px (26 + 8) so they align with the name (foo's and helpers' own chats keep the bubbles at the column edge, CR-0024 F2); the label row sits 4px above the first bubble.
 - The user's own bubbles in groups have no label.
 - Narrator: the label is not read separately; the sender is already in each bubble's name (§1.8).
 - Thinking row (before the speaker's first word in a run): geometry is §14.3; in groups this label row sits 4px above it [UX-20].
@@ -604,6 +606,18 @@ Test ids: `ai-page` (`data-state` building | ready | failed | kept), the frame `
 - Every call's text passes the 04-2 §22.4 patterns and the 08-2 §11.4 Redactor in main first; a secret match refuses the call and posts the Secret box.
 - States: building, ready, failed, kept (CR-0022 pick 9: a kept page reopens only in this sealed box).
 
+### 13.7 Capabilities card [CR-0024 F3]
+
+When an intake turn carries the tag `intent_capabilities` (08-4 §25.2), foo's one-sentence reply is followed by a kit card (05 §0.1 type `kit`) that the **engine builds from the app's own state**; the AI writes none of it. Test ids: card `kit-capabilities`, each row `kit-capabilities-row` (`data-key`), each button `kit-capabilities-try`.
+
+| Rule | Value |
+|---|---|
+| Rows | At most 4, in this order, skipping a row whose condition fails: `email` (always; hint `kit.capabilities.email.hint` "Gmail connected" when Gmail is connected, else `kit.capabilities.email.hint_off` "Connect Gmail to start"), `whatsapp` (only when WhatsApp is linked), `price`, `compare`, `remind`. Copy: `kit.capabilities.{key}.label`, `.hint`, `.fill`. |
+| Row look | 24px rounded-square icon tile (`--r-sm`, `--accent-soft`, 16px Fluent icon from the 02 F6 list: `Mail`, `People`, `Money`, `Search`, `Clock`), label `--t-body` `--fg-1`, hint `--t-caption` `--fg-3`, and a Link button "Try it ›" (`kit.capabilities.try`) at the right; rows 1px `--line` apart, inside one framed card (`--bg-raised`, `--r-lg`). |
+| Try it | Fills the composer with the row's `.fill` sentence and focuses it, exactly like a suggestion chip (04-2 §21.7). **Never sends.** It is the kit Button action `composer.fill` `{ text }`, handled in the renderer and never sent to the engine. The renderer honours `composer.fill` only on this engine-built card; the AI's kit catalogue never offers it (08-4 §24.5). |
+| Footer | `kit.capabilities.safety` "I never send, book or pay until you tap Approve." `--t-caption` `--fg-2`; below it `thread.ideas.link_line` at most once per chat per local day (X-110), **only once the Ideas page is built** (12-1 §12.24.3); while it is a placeholder the footer is the safety line alone, so the card never links to an empty page (CR-0024 §(e) 4). |
+| Repeats | Asking again posts a fresh card with the current state; older cards keep their rows. |
+
 ## §14. Before the first word, typing, streaming
 
 ### 14.1 Order of indicators for one reply
@@ -688,9 +702,9 @@ Auto-links render as links (§13 link style). Clicking opens a small actions men
 
 ## §17. Message actions (foo's and helpers' bubbles)
 
-### 17.1 Action row (latest answer only)
+### 17.1 Action row (latest answer, and older answers on hover)
 
-- Under foo's **latest text answer** in the chat (not under cards, not under older answers), 4px below the bubble, left-aligned with it: four 32×32px icon buttons (hit area padded to 40×40), 4px apart, icon 16px `--fg-2`, `--r-full`, hover `--bg-hover` + `--fg-1`, pressed `--bg-pressed` scale 0.97.
+- Under foo's **latest text answer** in the chat (not under cards), and under an older answer while the pointer is over it or focus is inside it (CR-0024 F7, as ChatGPT), fading in over 120ms (`--ease-out`), 4px below the bubble (below the reaction chip when the bubble carries one, CR-0024 B2), left-aligned with it: four 32×32px icon buttons (hit area padded to 40×40), 4px apart, icon 16px `--fg-2`, `--r-full`, hover `--bg-hover` + `--fg-1`, pressed `--bg-pressed` scale 0.97.
 - Order: **Copy · Try again · 👍 · 👎** `[AIC CL6 Claude 4-icon set; rec #28]`
 - Copy: every string of this row, its tooltips and the §17.2 popover is a plain slot under `bubble.actions.*` / `bubble.feedback.*` (§28); no string holds HTML or markup. Where a line needs emphasis it carries a `{strong}` placeholder that the component renders (02-3 §F30.4, 08-0 §D, X-128).
 
@@ -716,13 +730,13 @@ Test ids: `bubble-feedback`, chips `bubble-feedback-chip` (`data-index`, `aria-p
 
 ### 17.3 Hover on older answers
 
-Older foo bubbles show only the hover toolbar (§9.2: react + ⋯). Copy, Try again and feedback for older answers are in the ⋯ menu.
+Older foo bubbles show the hover toolbar (§9.2: react + ⋯) and, while hovered or focused, the §17.1 action row (CR-0024 F7). Try again on an older answer follows the §17.1 "Shown when" rule; it is also in the ⋯ menu.
 
 ### 17.4 Message menu items (foo / helper bubble)
 
 Test ids: `bubble-menu-reply`, `bubble-menu-react`, `bubble-menu-copy`, `bubble-menu-try-again`, `bubble-menu-good`, `bubble-menu-bad`, `bubble-menu-select`, `bubble-menu-delete`.
 
-"Reply" · "React" · "Copy" · "Ask about this" (`bubble-menu-ask`, §17.5; X-180) · "Try again" (same rule as §17.1, latest answer only) · "Good answer" / "Not a good answer" · "Select" · "Delete" (same confirm as §6.3, body "It's removed from this chat on your PC.").
+"Reply" · "React" · "Copy" · "Ask about this" (`bubble-menu-ask`, §17.5; X-180) · "Try again" (same rule as §17.1) · "Good answer" / "Not a good answer" · "Select" · "Delete" (same confirm as §6.3, body "It's removed from this chat on your PC.").
 
 ### 17.5 Side question (Ask about this) [X-180, CR-0022 pick 6]
 

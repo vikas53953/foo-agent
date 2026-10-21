@@ -2,7 +2,7 @@
 // toasts, crash reports, screenshots, the export zip: "0 canary hits outside Credential Manager"), §G.8 (scan reports: JSON +
 // summary). Files are searched as bytes, in UTF-8 and UTF-16LE (how Windows writes wide strings), so a SQLite page, a
 // write-ahead log or a crash dump is searched whole. Texts (DOM snapshots, process output) are searched as strings.
-import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, lstatSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { forms, type Canary } from './canaries';
 
@@ -49,11 +49,28 @@ export function scanText(s: TextSource, canaries: readonly Canary[]): CanaryHit[
   );
 }
 
+const gone = (e: unknown) => (e as NodeJS.ErrnoException).code === 'ENOENT';
+
 export function listFiles(dir: string): string[] {
   if (!existsSync(dir)) return [];
-  return readdirSync(dir).flatMap((n) => {
+  let names: string[];
+  try {
+    names = readdirSync(dir);
+  } catch (e) {
+    if (gone(e)) return []; // a running browser removed the folder after it was seen
+    throw e;
+  }
+  return names.flatMap((n) => {
     const p = join(dir, n);
-    return statSync(p).isDirectory() ? listFiles(p) : [p];
+    // lstat: a running Chromium's Singleton* links and socket are not files (and SingletonCookie points nowhere).
+    let s;
+    try {
+      s = lstatSync(p);
+    } catch (e) {
+      if (gone(e)) return [];
+      throw e;
+    }
+    return s.isDirectory() ? listFiles(p) : s.isFile() ? [p] : [];
   });
 }
 
@@ -62,6 +79,11 @@ export interface ScanInput {
   roots: Record<string, string>;
   texts: TextSource[];
   canaries: readonly Canary[];
+  /** A scan of a running browser's profile: files Windows holds locked (EBUSY, EPERM: `lockfile`, leveldb `LOCK`) are
+   * listed in `locked` instead of failing the scan. ART-08a never sets it (it scans after the browser has closed). */
+  skipLocked?: boolean;
+  /** Reads one file (tests swap it); `readFileSync` by default. */
+  read?: (path: string) => Buffer;
 }
 
 export interface ScanReport {
@@ -75,6 +97,8 @@ export interface ScanReport {
   /** Where the canaries are allowed to be: the vault (an in-memory Credential Manager in FOO_TEST, 08-3 §22.2). */
   allowed: string;
   hits: CanaryHit[];
+  /** With `skipLocked`: the files that could not be read. */
+  locked: string[];
 }
 
 export function scan(input: ScanInput, notCovered: ScanReport['notCovered'] = []): ScanReport {
@@ -83,12 +107,29 @@ export function scan(input: ScanInput, notCovered: ScanReport['notCovered'] = []
   const searched: string[] = [];
   let files = 0;
   let bytes = 0;
+  const locked: string[] = [];
+  // A file the browser deletes between listing and reading (a temp file) cannot hold a canary any more: it is listed in
+  // notCovered, and every other read error still fails the scan.
+  const vanished: ScanReport['notCovered'] = [];
+  const read = input.read ?? ((p: string) => readFileSync(p));
   for (const [name, root] of Object.entries(input.roots)) {
     const list = listFiles(root);
     byRoot[name] = list.length;
     for (const f of list) {
-      const buf = readFileSync(f);
       const where = `${name}/${relative(root, f).split('\\').join('/')}`;
+      let buf: Buffer;
+      try {
+        buf = read(f);
+      } catch (e) {
+        const code = (e as NodeJS.ErrnoException).code;
+        if (code === 'ENOENT') {
+          vanished.push({ what: where, why: 'deleted while the scan ran (gone before it was read)' });
+          continue;
+        }
+        if (!input.skipLocked || (code !== 'EBUSY' && code !== 'EPERM')) throw e;
+        locked.push(where);
+        continue;
+      }
       files++;
       bytes += buf.length;
       searched.push(where);
@@ -105,9 +146,10 @@ export function scan(input: ScanInput, notCovered: ScanReport['notCovered'] = []
     canaries: input.canaries.map((c) => ({ kind: c.kind, forms: forms(c).length })),
     scanned: { files, bytes, byRoot, texts },
     files: searched,
-    notCovered,
+    notCovered: [...notCovered, ...vanished],
     allowed: 'the vault only (FOO_TEST: in-memory Credential Manager stand-in, 08-3 §22.2)',
     hits,
+    locked,
   };
 }
 

@@ -12,6 +12,8 @@ import { SITE_HOSTS } from '../sites/hosts';
 
 const after = (t: string) => ({ match: { purpose: 'step', promptIncludes: `, ${t})` } });
 const SEEDED = [CANARIES.sitePassword, CANARIES.cardNumber];
+/** Longer than Chromium's session save delay (kSaveDelayMS, 2.5 s). */
+const SESSION_SAVE_WAIT_MS = 4_000;
 
 describe('ART-08a · canaries typed on pages in foo’s browser', () => {
   it('ART-08a a site password and a card number the person typed are in no snapshot, step picture, tool call, AI request or file', async () => {
@@ -37,6 +39,14 @@ describe('ART-08a · canaries typed on pages in foo’s browser', () => {
       ],
       browser: w.browser,
     });
+    // A real job keeps its window open for seconds (real AI turns), long enough for Chromium to save each tab's form state to
+    // Sessions/Session_* on its 2.5 s timer. The fake AI ends the job in well under that, so the window is held open with the
+    // values in the fields before it closes: without this the run only sometimes caught the leak (PR #100 Golden lane).
+    const jobEnded = w.browser.runtime.jobEnded.bind(w.browser.runtime);
+    w.browser.runtime.jobEnded = async (jobId) => {
+      await new Promise((r) => setTimeout(r, SESSION_SAVE_WAIT_MS));
+      await jobEnded(jobId);
+    };
     try {
       h.userSays('Look at my RailPass page and the weekend offers');
       for (let n = 0; n < 5 && !String(h.job()?.state).startsWith('done'); n++) await h.settle(20).catch(() => undefined);
@@ -52,7 +62,10 @@ describe('ART-08a · canaries typed on pages in foo’s browser', () => {
       expect(snaps[1]).toContain('Page: Weekend offers (filled)');
       expect(snaps[1]).toContain('textbox "Card number" [hidden]');
 
-      // The browser profile is searched too, after Edge has closed (its lock files are gone then).
+      // Chromium saves its session files (Sessions/Session_*, Tabs_*: each tab's form state) on a 2.5 s timer, so a run that
+      // shut down at once could miss them. Wait past that timer first, then search the profile after Edge has closed (its lock
+      // files are gone then).
+      await new Promise((r) => setTimeout(r, SESSION_SAVE_WAIT_MS));
       await w.browser.runtime.browser.shutdown();
       const turns = h.turnsJsonl().map((r, i) => ({ source: 'ai-request', label: `turns.jsonl#${i}`, text: JSON.stringify(r) }));
       const report = scan({ roots: { DATA: h.dir, BROWSER: w.dataDir }, texts: turns, canaries: SEEDED }, [
