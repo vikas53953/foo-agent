@@ -15,6 +15,7 @@ import { TID } from '../../src/shared/testids';
 import { fakeTurns, intake, launchWithFakeAi, VERIFY_OK, type FakeLine } from './fakeAi';
 import type { testDirs } from './launch';
 import { settleSeededJobs } from './m4-start';
+import { typeInComposer } from './typeInComposer';
 
 const byTid = (id: string) => `[data-testid="${id}"]`;
 /** The engine's hold before a reply streams (08-4 §25.5 item 2). */
@@ -70,8 +71,7 @@ const round = (page: Page) => page.getByTestId(TID.composerSend);
 /** Types the text and presses Enter; returns the new user message's id and its row (found by id: the list is virtual). */
 async function send(page: Page, text: string) {
   const seen = (await events(page)).length;
-  await field(page).focus();
-  await page.keyboard.type(text);
+  await typeInComposer(page, text);
   await page.keyboard.press('Enter');
   const id = await page.waitForFunction(
     ([from, txt]) =>

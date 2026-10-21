@@ -10,6 +10,7 @@ import type {} from '../../src/shared/ipc';
 import { TID } from '../../src/shared/testids';
 import { intake, launchWithFakeAi, type FakeLine } from './fakeAi';
 import { settleSeededJobs } from './m4-start';
+import { typeInComposer } from './typeInComposer';
 
 const byTid = (id: string) => `[data-testid="${id}"]`;
 /** The engine's hold before a reply streams (08-4 §25.5 item 2). */
@@ -53,8 +54,7 @@ const advance = (page: Page, ms: number) => page.evaluate((n) => window.__fooTes
 async function ask(page: Page, text: string, answer: string): Promise<{ me: Locator; reply: Locator }> {
   const field = page.getByTestId(TID.composerField);
   await expect(field).toHaveAttribute('contenteditable', 'true', { timeout: 15_000 });
-  await field.focus();
-  await page.keyboard.type(text);
+  await typeInComposer(page, text);
   await page.keyboard.press('Enter');
   const me = page
     .locator(`${byTid(TID.threadLog)} [data-message-id]`)
