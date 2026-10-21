@@ -151,6 +151,7 @@ export function world(over: Partial<WebToolDeps> & { net?: FakeNet } = {}): {
       return Promise.resolve();
     },
     fetch: net.fetch,
+    localGet: net.fetch,
     resource: RESOURCE,
     pricing: {
       usdToInr: 88,

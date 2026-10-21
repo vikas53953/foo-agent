@@ -12,8 +12,10 @@ import { settingsDefaults } from '../../../src/shared/settingsDefaults';
 import { Redactor } from '../../../src/engine/redact/Redactor';
 import type { ToolOutcome } from '../../../src/engine/tools/ToolLayer';
 import { createBrowserTools, type BrowserRuntime } from '../../../src/engine/tools/browser/tools';
+import type { LaunchOptions } from '../../../src/engine/tools/browser/browser';
 import type { ToolRegistry } from '../../../src/engine/tools/ToolLayer';
 import type { Settings } from '../../../src/shared/settings';
+import type { Resolve } from '../../../src/engine/tools/net/address';
 
 /** A sandbox host the harness puts on the hand-back list. */
 export const BANK_HOST = 'bank.localhost';
@@ -43,7 +45,9 @@ export interface BrowserHarness {
 export const html = (body: string, head = '') =>
   `<!doctype html><html><head><meta charset="utf-8">${head}</head><body>${body}</body></html>`;
 
-export async function browserHarness(o: { settleMaxMs?: number } = {}): Promise<BrowserHarness> {
+export async function browserHarness(
+  o: { settleMaxMs?: number; hostRules?: string; resolve?: Resolve; allow?: string[]; extraArgs?: string[] } = {},
+): Promise<BrowserHarness> {
   const routes = new Map<string, Route>();
   const server: Server = createServer((req, res) => {
     const r = routes.get((req.url ?? '/').split('?')[0] ?? '/');
@@ -73,7 +77,19 @@ export async function browserHarness(o: { settleMaxMs?: number } = {}): Promise<
     dataDir,
     resourcesDir,
     platform: process.platform,
-    env: { FOO_TEST_ALLOW_HOSTS: `127.0.0.1,localhost,${BANK_HOST}` },
+    env: {
+      FOO_TEST_ALLOW_HOSTS: [`127.0.0.1,localhost,${BANK_HOST}`, ...(o.allow ?? [])].join(','),
+      ...(o.hostRules ? { FOO_TEST_BROWSER_HOST_RULES: o.hostRules } : {}),
+    },
+    ...(o.resolve ? { resolve: o.resolve } : {}),
+    ...(o.extraArgs
+      ? {
+          launch: async (dir: string, options: LaunchOptions) => {
+            const { chromium } = await import('playwright-core');
+            return chromium.launchPersistentContext(dir, { ...options, args: [...options.args, ...o.extraArgs!] });
+          },
+        }
+      : {}),
     testRun: true,
     scrub: (t) => redactor.scrub(t).text,
     registryHit: (t) => redactor.registry.forms().some((f) => t.includes(f.form)),

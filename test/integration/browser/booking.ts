@@ -38,7 +38,8 @@ export async function bookingWorld(
     dataDir,
     resourcesDir: resolve(__dirname, '../../../resources'),
     platform: process.platform,
-    env: { FOO_TEST_ALLOW_HOSTS: sb.allowHosts },
+    // CR-0047: the sandbox names resolve in the engine's egress proxy, which every browser request goes through.
+    env: { FOO_TEST_ALLOW_HOSTS: sb.allowHosts, FOO_TEST_BROWSER_HOST_RULES: sb.resolverRules },
     testRun: true,
     scrub: (t) => redactor.scrub(t).text,
     registryHit: (t) => redactor.registry.forms().some((f) => t.includes(f.form)),
@@ -49,12 +50,7 @@ export async function bookingWorld(
     launch: async (dir, options) => {
       const ctx = await chromium.launchPersistentContext(dir, {
         ...options,
-        args: [
-          ...options.args,
-          '--no-proxy-server',
-          `--host-resolver-rules=${sb.resolverRules}`,
-          `--ignore-certificate-errors-spki-list=${sb.cert.spkiSha256}`,
-        ],
+        args: [...options.args, `--ignore-certificate-errors-spki-list=${sb.cert.spkiSha256}`],
       });
       if (o.initScript) await ctx.addInitScript(o.initScript);
       return ctx;
