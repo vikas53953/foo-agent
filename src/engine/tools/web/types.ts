@@ -88,7 +88,8 @@ export interface LoadedPage {
   html: string;
 }
 export interface PageLoader {
-  load(url: string): Promise<LoadedPage | null>;
+  /** Loads `url` in the job's window; null when there is no job (or no browser) or the page never arrived. */
+  load(url: string, jobId: string | null): Promise<LoadedPage | null>;
 }
 
 /** The subset of `fetch` the web tools use (injected so tests capture every host). */

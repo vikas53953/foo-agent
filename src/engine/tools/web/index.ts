@@ -63,7 +63,8 @@ export interface EngineWebOptions {
   onRefused?: (provider: WebProvider) => void;
   /** A used-up key: one line in the next brief (`cards.brief.line.web_key_quota`). */
   onQuota?: (provider: WebProvider) => void;
-  page?: PageLoader;
+  /** foo's job window for the local search and needsBrowser reads (required: without it every keyless search is SEARCH_BUSY). */
+  page: PageLoader;
 }
 
 export interface EngineWeb {
