@@ -1,0 +1,152 @@
+/* Spec: 06-1 §2.0 setup cards (05 card frame, max width 520 = --dialog-md, left-aligned), §2.1 Welcome (centred, padding 24,
+ * 96px face, 16 below, title --t-title-large, 8, body --t-body --fg-2 two paragraphs 8 apart, 24, Primary 40px, 24; the
+ * privacy line 12 under the card in --t-caption --fg-3), §2.3 Card 2a (question --t-body-strong, 8, 40px field full width,
+ * counter --t-caption --fg-3, 8, buttons) and Card 2b (2 × 104px tiles, 12 gap, --r-md, 1px --line, 72px face, number
+ * --t-caption --fg-3 bottom-left 8; selected: 2px --accent inset border and a 20px --accent disc with a 16 Checkmark in
+ * --on-accent, top-right 6). */
+.setup.setup {
+  width: var(--dialog-md);
+}
+.welcomeWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s6) 0;
+}
+.welcome.welcome {
+  padding: var(--s5);
+  text-align: left;
+}
+.welcomeFace {
+  display: flex;
+}
+.welcomeTitle {
+  margin: var(--s3) 0 0;
+  font: var(--t-title-large);
+  color: var(--fg-1);
+}
+.welcomeBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  margin-top: var(--s1);
+  font: var(--t-body);
+  color: var(--fg-2);
+}
+.welcomeBody p {
+  margin: 0;
+}
+.welcomeActions {
+  margin-top: var(--s5);
+}
+.privacy {
+  margin: 0;
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+.question {
+  margin: 0 0 var(--s1);
+  font: var(--t-body-strong);
+  color: var(--fg-1);
+}
+.fieldRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+}
+.field {
+  flex: 1;
+}
+.counter {
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+.error {
+  margin: var(--s0) 0 0;
+  font: var(--t-caption);
+  color: var(--bad);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+  margin-top: var(--s1);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, calc(var(--avatar-pick) + var(--s6)) /* 104 */);
+  gap: var(--s2);
+}
+.tileCell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s0);
+}
+.tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--avatar-pick) + var(--s6)) /* 104 */;
+  height: calc(var(--avatar-pick) + var(--s6)) /* 104 */;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--bg-app);
+  cursor: pointer;
+}
+.tileOn {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+.glyph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--avatar-pick);
+  height: var(--avatar-pick);
+  border-radius: var(--r-full);
+  color: var(--on-helper);
+  font: 400 var(--s6) / 1 var(--font-display);
+}
+.tileNo {
+  position: absolute;
+  bottom: var(--s1);
+  left: var(--s1);
+  font: var(--t-caption);
+  color: var(--fg-3);
+}
+.check {
+  position: absolute;
+  top: calc(var(--s0) + var(--s-1)); /* 6 */
+  right: calc(var(--s0) + var(--s-1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--s4);
+  height: var(--s4);
+  border-radius: var(--r-full);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.tileLabel {
+  display: flex;
+  flex-direction: column;
+  font: var(--t-caption);
+  color: var(--fg-1);
+}
+.tileSub {
+  color: var(--fg-2);
+}
+.summary {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: var(--s7);
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.spacer {
+  flex: 1;
+}

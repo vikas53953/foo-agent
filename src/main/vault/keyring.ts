@@ -1,8 +1,9 @@
-// Spec: 08-2 §11.2 (Credential Manager through `@napi-rs/keyring` `Entry.withTarget(target, 'foo', name)`, Generic
-// credentials, per-user DPAPI; write-only: a value is never read back to the renderer), 09 §9.18 (Credential Manager for
-// values ≤ 2,560 bytes, Electron safeStorage blobs for larger ones; `isEncryptionAvailable()` false → refuse to save, never a
-// plaintext fallback), 08-3 §22.2 (FOO_TEST runs inject an in-memory Vault with the same API and purpose checks). The two
-// stores behind SecretVault; the real ones exist only on Windows, every other run uses the in-memory pair.
+// Spec: 08-2 §11.2 (Credential Manager through `@napi-rs/keyring`, Generic credentials, per-user DPAPI; write-only: a value
+// is never read back to the renderer; CR-0025 pick 10: `new Entry('foo', target)`, because `Entry.withTarget` reads back an
+// empty value on Windows), 09 §9.18 (Credential Manager for values ≤ 2,560 bytes, Electron safeStorage blobs for larger
+// ones; `isEncryptionAvailable()` false → refuse to save, never a plaintext fallback), 08-3 §22.2 (FOO_TEST runs inject an
+// in-memory Vault with the same API and purpose checks). The two stores behind SecretVault; the real ones exist only on
+// Windows, every other run uses the in-memory pair.
 import { createRequire } from 'node:module';
 
 /** Windows CRED_MAX_CREDENTIAL_BLOB_SIZE (5 × 512 bytes, 09 §9.18). Measured as UTF-16, how Windows stores a password. */
@@ -62,7 +63,7 @@ interface NapiEntry {
   deletePassword(): boolean;
 }
 interface NapiKeyring {
-  Entry: { withTarget(target: string, service: string, user: string): NapiEntry };
+  Entry: { new (service: string, user: string): NapiEntry; withTarget(target: string, service: string, user: string): NapiEntry };
 }
 
 /**
@@ -76,22 +77,29 @@ export function napiKeyring(): Keyring | null {
   } catch {
     return null;
   }
-  const entry = (target: string) => mod.Entry.withTarget(target, 'foo', target.slice(target.lastIndexOf('/') + 1));
+  const entry = (target: string) => new mod.Entry('foo', target);
+  // Entries saved before CR-0025 by `withTarget`; they never read back, so they are only deleted.
+  const legacy = (target: string) => mod.Entry.withTarget(target, 'foo', target.slice(target.lastIndexOf('/') + 1));
+  const del = (e: () => NapiEntry) => {
+    try {
+      return e().deletePassword();
+    } catch {
+      return false;
+    }
+  };
   return {
     set: (target, value) => entry(target).setPassword(value),
     get: (target) => {
       try {
-        return entry(target).getPassword() ?? null;
+        // Windows hands back '' for a missing entry; foo never saves an empty value.
+        return entry(target).getPassword() || null;
       } catch {
         return null;
       }
     },
     delete: (target) => {
-      try {
-        return entry(target).deletePassword();
-      } catch {
-        return false;
-      }
+      const removed = del(() => entry(target));
+      return del(() => legacy(target)) || removed;
     },
   };
 }

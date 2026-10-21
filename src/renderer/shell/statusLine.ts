@@ -51,7 +51,7 @@ export function statusLine(s: StatusInput): StatusResult {
   const ai = s.ai.displayName;
 
   if (!s.setup.complete) {
-    const n = Math.min(4, Math.max(1, s.setup.step));
+    const n = Math.min(2, Math.max(1, s.setup.step));
     return { row: 1, text: t('chat_header.status.setting_up', { n }), tone: 'fg2' };
   }
   const needs = jobs.filter((j) => j.state === 'needs_you');

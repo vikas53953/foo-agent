@@ -22,7 +22,7 @@ import { openDbOrRebuild } from './store/rebuild';
 import { PowerService } from './power/PowerService';
 import { ensureFooChat } from './store/queries';
 import { newId } from '../shared/ids';
-import { logEvent, setAppTechLog, TechLog } from './log/techLog';
+import { logEvent, setAppTechLog, TechLog, type TechLogEntry } from './log/techLog';
 import { createMainWindow } from './windows/mainWindow';
 import { handleAppScheme, registerAppScheme } from './windows/protocol';
 import { claimSingleInstance } from './windows/singleInstance';
@@ -128,6 +128,8 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
       },
       dataDir: paths.data,
       now: () => deps.clock.now(),
+      // CR-0025: the engine's `log` lines reach the tech log (08-3 §19.1); before this they were dropped.
+      log: (line) => logEvent(line as TechLogEntry),
       keepAwake: (on, jobCount) => power?.keepAwake(on, jobCount),
       // M5 T7 (08-1 §2.4): engine `approval.open` / `approval.transition` go to main's one ApprovalGate.
       approvals: () => approvalGate(ctx),

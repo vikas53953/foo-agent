@@ -721,12 +721,18 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
           markUserInput();
           markFlingInput();
         }}
-        onPointerDown={markUserInput}
+        // A press on the scrollbar lands on the list itself; a tap on a card button inside it is not scrolling, and the
+        // follow-scroll its answer causes must not show the sticky date (CR-0026: a first-run tap floated a second pill).
+        onPointerDown={(e) => {
+          if (e.target === e.currentTarget) markUserInput();
+        }}
         onTouchStart={markUserInput}
         onTouchMove={markFlingInput}
         onKeyDown={(e) => {
-          markUserInput();
-          markFlingInput();
+          if (!isTyping(e.target)) {
+            markUserInput();
+            markFlingInput();
+          }
           onKeyDown(e);
         }}
         onFocus={(e) => {
@@ -887,4 +893,9 @@ function Row({
       );
     }
   }
+}
+
+/** Keys typed into a field or pressed on a button inside the list (a name, Enter on a card) are not scrolling the list. */
+function isTyping(target: EventTarget): boolean {
+  return target instanceof HTMLElement && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(target.tagName));
 }

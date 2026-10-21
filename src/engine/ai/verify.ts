@@ -5,6 +5,12 @@ import type { AdapterDeps } from './deps';
 import { paramsFor, resolveModel, temperatureFor } from './models';
 
 export const VERIFY_PROMPT = 'Reply with the word ready';
+/**
+ * CR-0025: a helper app's verify also pays for starting the app. On Vikas's PC (2026-10-21) Claude Code answered in about
+ * 2 s by its own clock but took 10–18 s from spawn to exit, so the 20 s row of 08-4 §30.1 timed out a working CLI.
+ */
+export const CLI_VERIFY_TIMEOUT_MS = 60_000;
+const CLI_IDS = new Set(['claude-cli', 'codex-cli', 'gemini-cli']);
 
 export function verifyRequest(
   adapter: Pick<AiAdapter, 'id'>,
@@ -17,7 +23,7 @@ export function verifyRequest(
     system: '',
     prompt: VERIFY_PROMPT,
     maxOutputTokens: p.maxOutputTokens,
-    timeoutMs: p.timeoutMs,
+    timeoutMs: CLI_IDS.has(adapter.id) ? CLI_VERIFY_TIMEOUT_MS : p.timeoutMs,
     temperature: temperatureFor(adapter.id, p),
     stream: false,
   };

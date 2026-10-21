@@ -60,17 +60,13 @@ export function ChatHeader({ chat, findOpen }: { chat: ChatRow; findOpen: boolea
   return <HeaderBar chat={chat} findOpen={findOpen} />;
 }
 
-/** 06-1 §2.0: "Step {n} of 4 · …" for setup steps 1–4; none for the welcome and closing steps. */
+/** 06-1 §2.0 step pill; CR-0026 pick 2: it counts only the steps first run has today ("Step {n} of 2"). */
 function stepPillText(step: number): string | null {
   switch (step) {
     case 1:
       return t('setup.step_pill.1');
     case 2:
       return t('setup.step_pill.2');
-    case 3:
-      return t('setup.step_pill.3');
-    case 4:
-      return t('setup.step_pill.4');
     default:
       return null;
   }
@@ -310,6 +306,12 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
         </div>
       </div>
       <div className={styles.actions}>
+        {/* 06-1 §2.0 "Skip the rest": hidden in step 1 (an AI is required); CR-0026 shows it in step 2. */}
+        {pill && setup.step >= 2 && (
+          <Button size="sm" variant="link" data-testid={TID.setupSkipRest} onClick={() => void invoke('setup:skipRest', {})}>
+            {t('setup.skip_rest.label')}
+          </Button>
+        )}
         {live && (
           <Button
             size="sm"

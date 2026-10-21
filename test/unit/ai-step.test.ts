@@ -67,6 +67,9 @@ describe('06-1 §2.2 finder rows', () => {
     expect(stateAfterVerify({ ok: false, providerId: 'claude-cli', kind: 'NET_OFFLINE' })).toEqual({ state: 'offline' });
     expect(stateAfterVerify({ ok: false, providerId: 'claude-cli', kind: 'AI_TIMEOUT' })).toEqual({ state: 'slow' });
     expect(rowAction({ id: 'claude-cli', state: 'slow', found: true })).toBe('test_again');
+    // CR-0025: a helper its maker refuses as out of date says so, with [ Test again ] for after the update.
+    expect(stateAfterVerify({ ok: false, providerId: 'codex-cli', kind: 'AI_CLI_INCOMPATIBLE' })).toEqual({ state: 'needs_update' });
+    expect(rowAction({ id: 'codex-cli', state: 'needs_update', found: true })).toBe('test_again');
     expect(rowAction({ id: 'openai-key', state: 'key_failed', found: true })).toBe('replace_key');
   });
 
@@ -82,6 +85,17 @@ describe('06-1 §2.2 step 3: the choice block', () => {
   it('waits while rows are still Looking or Testing, unless time is up', () => {
     expect(choiceBlock(initialRows(), false)).toEqual({ kind: 'pending' });
     expect(choiceBlock(initialRows(), true)).toEqual({ kind: 'nothing' });
+  });
+
+  it('CR-0025: after 25 s, "nothing found" waits while a helper is still being tested; a working AI is offered at once', () => {
+    const testing: FinderRow = { id: 'claude-cli', state: 'testing', found: true };
+    expect(choiceBlock([testing, none('codex-cli'), none('gemini-cli'), none('own-key'), none('ollama')], true)).toEqual({
+      kind: 'pending',
+    });
+    expect(choiceBlock([works('claude-cli'), { ...testing, id: 'codex-cli' }, none('own-key'), none('ollama')], true)).toEqual({
+      kind: 'one',
+      pick: 'claude-cli',
+    });
   });
 
   it('Claude and ChatGPT work → Claude is the pick and ChatGPT the backup', () => {
