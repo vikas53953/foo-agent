@@ -265,17 +265,19 @@ export class Steer {
     }
     const { effects, missing } = effectsFor(ids, act.steer);
     if (missing.length) this.core.d.log('job.steer_effect_missing', 'PROTOCOL_INVALID', { jobId: job.id });
-    const ops: DbOp[] = [];
+    // CR-0024 B1: one turn has one `say`, so it is posted once however many steers it answered, and the "Got it" line at
+    // most once; each in the order its first effect came (two answered steers used to post the same answer twice).
+    const folded = t('thread.steer.folded');
+    const filtered = this.core.d.prompts.filter(say);
+    const answer = filtered.trim() ? filtered : folded;
+    const lines: string[] = [];
     let restart = false;
     for (const e of effects) {
-      if (e.effect === 'folded' || e.effect === 'restart') ops.push(this.core.textOp(job, t('thread.steer.folded')));
       if (e.effect === 'restart') restart = true;
-      if (e.effect === 'answered') {
-        const text = this.core.d.prompts.filter(say);
-        if (text.trim()) ops.push(this.core.textOp(job, text));
-        else ops.push(this.core.textOp(job, t('thread.steer.folded')));
-      }
+      const line = e.effect === 'answered' ? answer : e.effect === 'new_job' ? null : folded;
+      if (line !== null && !lines.includes(line)) lines.push(line);
     }
+    const ops: DbOp[] = lines.map((line) => this.core.textOp(job, line));
     if (restart) ops.push(...(await this.restartOps(job)));
     if (ops.length) await this.core.tx(ops);
     for (const e of effects)

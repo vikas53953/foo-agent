@@ -554,6 +554,10 @@ export const TID = {
   filesKeptItem: 'files-kept-item',
   // R1 T7 (lead ok): the dialog a kept item reopens in.
   dialogKeptItem: 'dialog-kept-item',
+  // C1 Chat patch (CR-0024): the Capabilities card (04 §13.7).
+  kitCapabilities: 'kit-capabilities',
+  kitCapabilitiesRow: 'kit-capabilities-row',
+  kitCapabilitiesTry: 'kit-capabilities-try',
 } as const;
 
 export type TestId = (typeof TID)[keyof typeof TID];

@@ -1,5 +1,5 @@
 {
-  "_why": "CR-0008: M4 copy keys landed by T1 before the ticket that renders them. check-copy counts a key listed here as used and fails once a t() call uses it (then delete the line). Empty by M4 close-out (T7). CR-0009 adds the M5 keys (owner = the M5 ticket that renders them); empty by M5 close-out (T9). M6 (CR-0010) adds its keys the same way; empty by M6 close-out (T8). P1 Polish (CR-0021) adds its keys the same way (owner = the P1 ticket that renders them); empty by P1 close-out. R1 Rich Replies (CR-0022) adds its keys the same way (owner = the R1 ticket that renders them); empty by R1 close-out.",
+  "_why": "CR-0008: M4 copy keys landed by T1 before the ticket that renders them. check-copy counts a key listed here as used and fails once a t() call uses it (then delete the line). Empty by M4 close-out (T7). CR-0009 adds the M5 keys (owner = the M5 ticket that renders them); empty by M5 close-out (T9). M6 (CR-0010) adds its keys the same way; empty by M6 close-out (T8). P1 Polish (CR-0021) adds its keys the same way (owner = the P1 ticket that renders them); empty by P1 close-out. R1 Rich Replies (CR-0022) adds its keys the same way (owner = the R1 ticket that renders them); empty by R1 close-out. C1 Chat patch (CR-0024) adds its keys the same way (owner = the C1 ticket that renders them); empty by C1 close-out.",
   "keys": {
     "thread.stop.in_flight": "M10 payments (stop during payment submit; copy names the payment)",
     "thread.queued.ai_back": "M4-T2 runner",
@@ -76,6 +76,25 @@
     "cards.common.private_things.your_address": "M13 groups (private line)",
     "cards.common.private_things.their_address": "M13 groups (private line)",
     "cards.common.private_things.password": "M13 groups (private line)",
-    "cards.common.private_things.signin": "M13 groups (private line)"
+    "cards.common.private_things.signin": "M13 groups (private line)",
+    "kit.capabilities.try": "C1-T2 capabilities card",
+    "kit.capabilities.safety": "C1-T2 capabilities card",
+    "kit.capabilities.email.label": "C1-T2 capabilities card",
+    "kit.capabilities.email.hint": "C1-T2 capabilities card",
+    "kit.capabilities.email.hint_off": "C1-T2 capabilities card",
+    "kit.capabilities.email.fill": "C1-T2 capabilities card",
+    "kit.capabilities.whatsapp.label": "C1-T2 capabilities card",
+    "kit.capabilities.whatsapp.hint": "C1-T2 capabilities card",
+    "kit.capabilities.whatsapp.fill": "C1-T2 capabilities card",
+    "kit.capabilities.price.label": "C1-T2 capabilities card",
+    "kit.capabilities.price.hint": "C1-T2 capabilities card",
+    "kit.capabilities.price.fill": "C1-T2 capabilities card",
+    "kit.capabilities.compare.label": "C1-T2 capabilities card",
+    "kit.capabilities.compare.hint": "C1-T2 capabilities card",
+    "kit.capabilities.compare.fill": "C1-T2 capabilities card",
+    "kit.capabilities.remind.label": "C1-T2 capabilities card",
+    "kit.capabilities.remind.hint": "C1-T2 capabilities card",
+    "kit.capabilities.remind.fill": "C1-T2 capabilities card",
+    "cards.checklist.retry_other_way": "C1-T4 checklist line"
   }
 }

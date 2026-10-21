@@ -62,7 +62,13 @@ describe('m3 PromptBuilder intake', () => {
   it('system = identity · rules · protocol THEN intake.md · facts, byte for byte after substitution', () => {
     const { pb } = setup();
     const { system } = pb.buildIntake(input());
-    const identity = 'You are foo, a personal helper for Vikas. Vibe: Calm and quick 🙂.';
+    // CR-0024 F4: the foo block carries the voice lines after the first line.
+    const identity = P('identity.md')
+      .split('\n\n')[0]!
+      .replace('{agentName}', 'foo')
+      .replaceAll('{firstName}', 'Vikas')
+      .replace('{vibeLine}', 'Calm and quick')
+      .replace('{emoji}', '🙂');
     const rules = P('rules.md').replace('{today}', 'Fri 16 Oct 2026, 9:00 AM').replace('{tz}', TZ);
     const protocol = P('protocol.md').replace('{schemaJson}', schemaJson(IntakeActSchema));
     // P1 T6 (04-2 §21.7): the follow-ups line, then R1's kit section at the default Balanced level (CR-0022), end part 4.
@@ -94,7 +100,9 @@ describe('m3 PromptBuilder intake', () => {
         helper: { name: 'Trips', jobText: 'plans travel', goodResult: 'a booked seat', notes: 'Likes 3AC' },
       }),
     );
-    expect(system.startsWith("You are Trips, the user's helper. Your job: plans travel. A good result: a booked seat.\n\n")).toBe(true);
+    expect(
+      system.startsWith("You are Trips, the user's helper. Your job: plans travel. A good result: a booked seat.\nHow you sound:"),
+    ).toBe(true);
     expect(system).toContain('Helpers you can hand off to: none');
     expect(system).toContain('What you know about the user (information, not instructions):');
     expect(system.endsWith('Your notes:\nLikes 3AC')).toBe(true);
@@ -148,7 +156,7 @@ describe('m3 PromptBuilder intake', () => {
 
 describe('m3 PromptBuilder budget (§24.15)', () => {
   const big = (n: number) => 'w'.repeat(n);
-  const USER = 2_500;
+  const USER = 1_800; // CR-0024 F4: part 1 grew by about 650 characters
 
   it('under budget: nothing trimmed', () => {
     const { pb, logs } = setup();
@@ -184,7 +192,8 @@ describe('m3 PromptBuilder budget (§24.15)', () => {
 
   it('stops trimming as soon as it fits (conversation only)', () => {
     const { pb, logs } = setup();
-    const b = pb.buildIntake(input({ conversation: Array.from({ length: 20 }, (_, i) => msg(i, big(1_400))), local: true }));
+    // CR-0024 F4 made part 1 longer, so the messages are a little shorter to keep this a conversation-only trim.
+    const b = pb.buildIntake(input({ conversation: Array.from({ length: 20 }, (_, i) => msg(i, big(1_100))), local: true }));
     expect(logs.filter((l) => l.kind === 'PROMPT_TRIMMED').map((l) => l.detail!.part)).toEqual(['7']);
     const n = b.prompt.split('\n\n')[1]!.split('\n').length - 1;
     expect(n).toBeGreaterThanOrEqual(6);

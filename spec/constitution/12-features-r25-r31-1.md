@@ -53,7 +53,7 @@ An **Ideas** page shows 12 ready-made routines for everyday Indian life, filtere
 |---|---|
 | Left shell ⋯ More options menu | item "Ideas" (`sidebar.menu.ideas` "Ideas") directly under "Routines"; opens the Ideas Page. Test id `sidebar-menu-ideas` |
 | Routines page, First time state (06-2 §8.4) | Link button under the empty block: `routines.empty.see_ideas` "See ideas"; opens the Ideas Page. Test id `routines-empty-ideas` |
-| User asks what foo can do ("what can you do?", "kya kar sakte ho", "help") | foo's reply (AI-written, mirrors the user's language) ends with the fixed line `thread.ideas.link_line` "Here are some things I can keep an eye on for you: [See ideas](foo://ideas)". The link opens the Ideas Page (deep link `foo://ideas`, renderer `navigate({ view: { kind: 'screen', id: 'ideas' } })`). The engine appends the line (not the AI) when the AI's turn is tagged `intent_capabilities` by the intake classifier; it is appended at most once per chat per day |
+| User asks what foo can do ("what can you do?", "kya kar sakte ho", "help") | foo's one-sentence reply (AI-written, mirrors the user's language) is followed by the Capabilities card (04 §13.7, CR-0024 F3, X-182), whose footer carries the fixed line `thread.ideas.link_line` "Here are some things I can keep an eye on for you: [See ideas](foo://ideas)". The link opens the Ideas Page (deep link `foo://ideas`, renderer `navigate({ view: { kind: 'screen', id: 'ideas' } })`). The engine appends the line (not the AI) when the AI's turn is tagged `intent_capabilities` by the intake classifier; it is appended at most once per chat per day |
 | Deep link `foo://ideas` | opens the Page (09 jump list does not list it) |
 
 Back / Esc returns to the previous view (08-0 §G.10 back stack).
