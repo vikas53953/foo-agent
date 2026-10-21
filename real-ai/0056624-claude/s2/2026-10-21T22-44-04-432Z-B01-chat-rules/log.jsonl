@@ -1,0 +1,13 @@
+{"t":"2026-10-21T22:44:04.432Z","journey":"B01-chat-rules","title":"Chat rules: thanks, long answer, filler, reactions","spec":"AT-027, AT-030, AT-031, AT-308, AT-307","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T22:44:09.984Z","step":"launch","ok":true}
+{"t":"2026-10-21T22:44:10.190Z","i":0,"do":"send","sentAt":1792622650078,"before":0,"ok":true,"ms":199}
+{"t":"2026-10-21T22:44:30.190Z","i":1,"do":"wait","expect":"AT-027: 👍 reaction on my message, no foo message","ok":true,"ms":20000}
+{"t":"2026-10-21T22:44:30.261Z","shot":"01-thanks.png"}
+{"t":"2026-10-21T22:44:30.263Z","i":2,"do":"eval","value":{"reaction":true,"lastKind":"bubble-me"},"ok":true,"ms":2}
+{"t":"2026-10-21T22:44:30.364Z","i":3,"do":"send","sentAt":1792622670348,"before":0,"ok":true,"ms":100}
+{"t":"2026-10-21T22:44:43.521Z","i":4,"do":"waitReply","expect":"AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler","firstReplyMs":2547,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"People in India are switching to UPI because it makes paying someone as easy as sending a message. You open any payment app, scan a code or type a phone number, enter your PIN, and the money moves from your bank account in seconds. There is no card to carry, no cash to count and no change to wait for.\n\nIt also works everywhere. A tea stall, a vegetable seller, a big shop and a friend splitting dinner can all take UPI, often with just a printed QR code. Because it is built on a shared system, you can pay from one bank's account to another's using whichever app you like.\n\nThe cost matters too. For most everyday payments, people pay nothing extra, and small shops do not need to buy a card machine. That has pulled in millions of small sellers who never used cards before.\n\nFinally, habit has taken over. Once friends, family and local shops all use UPI, carrying cash starts to feel like the harder option. Rewards, bill payments and easy refunds in the same app have made it stick.\n\nHere are the three main reasons:\n\nSpeed and simplicity: Pay in seconds with a QR code or phone number.\nLow or no cost: Free for most users, cheap for small shops.\nWorks everywhere: Accepted from street stalls to large stores, on any bank and any app.\n10:44 PM","ms":13156}
+{"t":"2026-10-21T22:44:43.597Z","shot":"02-long.png"}
+{"t":"2026-10-21T22:44:43.600Z","i":5,"do":"check","note":"AT-308 suggestion chips (≤3)","soft":true,"found":0,"ok":false,"ms":3}
+{"t":"2026-10-21T22:44:43.601Z","i":6,"do":"eval","value":0,"ok":true,"ms":1}
+{"t":"2026-10-21T22:44:43.605Z","i":7,"do":"dump","ok":true,"ms":4}
+{"t":"2026-10-21T22:44:43.748Z","step":"appLog","lines":7,"dropped":0}

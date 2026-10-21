@@ -1,0 +1,62 @@
+{
+  "journey": "B06-booking-options",
+  "title": "Restaurant options without booking",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T22-47-53-829Z-B06-booking-options",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792622887755,
+      "before": 0,
+      "ok": true,
+      "ms": 175
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 6562,
+      "newBubbles": 8,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nCheck restaurant booking sites\n3\nLook for Italian places in Bandra with a table\n4\nKeep 3 Italian places in Bandra that fit well rated with a table free at 8:00 PM\nAbout 3 minutes\nGo\nChange plan\n10:48 PM\n---\n1\nLook on the web\n---\n2\nCheck restaurant booking sites\n---\n3\nLook for Italian places in Bandra with a table\n---\n4\nKeep 3 Italian places in Bandra that fit well rated with a table free at 8:00 PM\n---\nAbout 3 minutes\n---\nGo\n---\nChange plan",
+      "ms": 12676
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 40
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "options shown; no booking Approval card until I say book",
+      "ok": true,
+      "ms": 180006
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 5
+    }
+  ]
+}
