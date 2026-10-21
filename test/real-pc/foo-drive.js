@@ -203,7 +203,7 @@ async function main() {
   const afterMe = () =>
     page.evaluate(() => {
       const log = document.querySelector('[data-testid="thread-log"]');
-      if (!log) return { n: 0, texts: [] };
+      if (!log) return { n: 0, texts: [], items: [] };
       const memoryChip = (el) =>
         el.getAttribute('data-testid') === 'thread-marker' && !!el.querySelector('[data-testid="thread-memory-undo"]');
       // Only top-level rows: a card's own parts (card-connect-allow-send inside card-connect) are not extra replies.
