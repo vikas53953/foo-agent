@@ -302,6 +302,9 @@ export class Steer {
     }
     const { effects, missing } = effectsFor(ids, act.steer);
     if (missing.length) this.core.d.log('job.steer_effect_missing', 'PROTOCOL_INVALID', { jobId: job.id });
+    // CR-0044: each steer's effect (an enum) for the tech log, so a run shows whether the AI or the default said folded.
+    for (const e of effects)
+      this.core.d.log('job.steer_effect', missing.includes(e.messageId) ? 'default_folded' : e.effect, { jobId: job.id });
     // CR-0024 B1: one turn has one `say`, so it is posted once however many steers it answered, and the "Got it" line at
     // most once; each in the order its first effect came (two answered steers used to post the same answer twice).
     const folded = t('thread.steer.folded');
