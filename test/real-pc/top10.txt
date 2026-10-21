@@ -1,0 +1,10 @@
+J01-J02-first-run
+J07-chat
+B12-languages
+B01-chat-rules
+J08-choice
+J12-draft
+J09-J18-booking
+B04-stop
+B05-restart
+B10-paste-secret
