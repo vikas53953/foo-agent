@@ -34,7 +34,7 @@ import { TID } from '../../../src/shared/testids';
 import type { MemoryFactView } from '../../../src/shared/types';
 import { envelope, fakeTurns, launchWithFakeAi, VERIFY_OK, type FakeLine } from '../../e2e/fakeAi';
 import { settleSeededJobs } from '../../e2e/m4-start';
-import { byTid, captureUx, openChat, openWorld, rest, setTheme, settle, step, THEMES, windowSize } from '../capture';
+import { byTid, captureUx, openChat, openMemory, openWorld, rest, setTheme, settle, step, THEMES, windowSize } from '../capture';
 
 const PEANUTS = 'remember I’m allergic to peanuts';
 const PEANUTS_FACT = 'Allergic to peanuts';
@@ -147,13 +147,6 @@ async function shoot(page: Page, id: string, sel: string, scrollLog = true): Pro
     await captureUx(page, id, sel, theme);
   }
   await setTheme(page, 'light');
-}
-
-async function openMemory(page: Page): Promise<Locator> {
-  await page.keyboard.press('Control+m');
-  const screen = page.getByTestId(TID.screenMemory);
-  await expect(screen).toHaveAttribute('data-state', 'list');
-  return screen;
 }
 
 const chipSel = (kind: 'saved' | 'guessed' | 'updated') => `${byTid(TID.threadMarker)}[data-state="memory"][data-kind="${kind}"]`;

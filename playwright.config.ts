@@ -16,7 +16,13 @@ export default defineConfig({
   timeout: 60_000,
   workers: 1,
   retries: 0,
-  reporter: [['list'], ['html', { open: 'never' }], ['json', { outputFile: 'test-results/e2e.json' }]],
+  // On CI the github reporter also files each failure as a check annotation, which the public API serves without a sign-in.
+  reporter: [
+    ['list'],
+    ['html', { open: 'never' }],
+    ['json', { outputFile: 'test-results/e2e.json' }],
+    ...(process.env.CI ? [['github'] as ['github']] : []),
+  ],
   snapshotPathTemplate: 'golden/app/{arg}{ext}',
   updateSnapshots: blessing ? 'all' : 'none',
   expect: {

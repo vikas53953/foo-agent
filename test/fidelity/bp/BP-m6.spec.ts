@@ -15,7 +15,20 @@ import { t } from '../../../src/shared/copy/t';
 import { TID } from '../../../src/shared/testids';
 import { launchWithFakeAi, VERIFY_OK, type FakeLine } from '../../e2e/fakeAi';
 import { settleSeededJobs } from '../../e2e/m4-start';
-import { byTid, captureBp, captureBpRange, openChat, openWorld, rest, rowOf, setTheme, settle, THEMES, windowSize } from '../capture';
+import {
+  byTid,
+  captureBp,
+  captureBpRange,
+  openChat,
+  openMemory,
+  openWorld,
+  rest,
+  rowOf,
+  setTheme,
+  settle,
+  THEMES,
+  windowSize,
+} from '../capture';
 
 const ASK = 'remember I’m vegetarian on Tuesdays';
 const FACT = "you're vegetarian on Tuesdays";
@@ -36,9 +49,7 @@ test('M6 Blueprint captures for Tier R: BP-CARD-16 (memory chip under a reply) a
   await settleSeededJobs(page, await openWorld(app, page, '2026-10-16T12:00:00+05:30'));
   await windowSize(app, page, 1280, 800);
   // BP-SCR-09 first, on the seed as it is
-  await page.keyboard.press('Control+m');
-  const screen = page.getByTestId(TID.screenMemory);
-  await expect(screen).toHaveAttribute('data-state', 'list');
+  const screen = await openMemory(page);
   await expect(screen).toContainText(t('screen.memory.title'));
   await expect(page.getByTestId(TID.memoryRow).first()).toBeVisible();
   for (const theme of THEMES) {
