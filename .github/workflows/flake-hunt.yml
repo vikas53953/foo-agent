@@ -4,6 +4,9 @@
 name: Flake hunt
 
 on:
+  # TEMPORARY (removed before merge): workflow_dispatch is refused to this session, so the branch push runs the hunt.
+  push:
+    branches: [claude/project-thread-fpa7hw]
   workflow_dispatch:
     inputs:
       unit:
@@ -33,8 +36,8 @@ jobs:
         job: [1, 2, 3]
     env:
       UNIT: ${{ inputs.unit }}
-      E2E: ${{ inputs.e2e }}
-      REPEAT: ${{ inputs.repeat }}
+      E2E: ${{ inputs.e2e || 'test/e2e/m4-jobs.spec.ts -g PERF-07' }}
+      REPEAT: ${{ inputs.repeat || '2' }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
