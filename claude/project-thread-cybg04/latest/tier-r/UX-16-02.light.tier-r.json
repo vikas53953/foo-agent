@@ -518,13 +518,13 @@
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.10061327561327561,
-    "diffPixels": 11156,
+    "ratio": 0.1005952380952381,
+    "diffPixels": 11154,
     "total": 110880
   },
   "r5": {
-    "ratio": 0.086654296875,
-    "diffPixels": 88734,
+    "ratio": 0.0868896484375,
+    "diffPixels": 88975,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-02.light.diff.png"
