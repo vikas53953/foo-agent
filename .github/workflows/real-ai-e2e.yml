@@ -71,7 +71,7 @@ jobs:
     name: Real-AI journeys on ${{ matrix.ai }} (windows-latest)
     needs: plan
     runs-on: windows-latest
-    timeout-minutes: 120
+    timeout-minutes: 180 # ~25 journeys at 2–5 min each, plus a ~4 min build
     strategy:
       fail-fast: false
       max-parallel: 1 # Claude first, then ChatGPT
