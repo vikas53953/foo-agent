@@ -1,0 +1,42 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n4:05 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:05 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n4:05 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:05 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n4:05 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:05 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n4:05 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n4:05 PM"
+  }
+]

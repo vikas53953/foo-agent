@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n4:05 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:05 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n4:05 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:05 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n4:05 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:05 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n4:05 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n4:05 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n4:05 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n4:06 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "UPI has turned paying someone into something as easy as sending a message. In a few years it went from a new option to the default way many Indians pay, from big shops to the tea stall on the corner.\n\nIt's instant and usually free. Money moves from one bank account to another in seconds, and everyday payments to people and shops mostly cost nothing. No cash to carry, no change to hunt for.\nOne app, any bank. You link your bank account to a phone app and pay anyone, whichever bank or app they use. A QR code or a phone number is all it takes.\nSmall sellers can take it too. A vendor needs only a printed QR code and a phone. Paying ₹20 for chai became as normal as paying ₹2,000 at a store, so more shops accepted it and more people tried it.\n\nAdd the push from banks and the government, plus the habit that formed when people avoided touching cash, and it became hard to go back. Once you're used to a tap and a PIN, cash starts to feel slow.\n\n4:06 PM"
+  }
+]

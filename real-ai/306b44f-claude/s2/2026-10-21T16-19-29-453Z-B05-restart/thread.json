@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n4:05 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:05 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n4:05 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n4:05 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n4:05 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n4:06 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "UPI has turned paying someone into something as easy as sending a message. In a few years it went from a new option to the default way many Indians pay, from big shops to the tea stall on the corner.\n\nIt's instant and usually free. Money moves from one bank account to another in seconds, and everyday payments to people and shops mostly cost nothing. No cash to carry, no change to hunt for.\nOne app, any bank. You link your bank account to a phone app and pay anyone, whichever bank or app they use. A QR code or a phone number is all it takes.\nSmall sellers can take it too. A vendor needs only a printed QR code and a phone. Paying ₹20 for chai became as normal as paying ₹2,000 at a store, so more shops accepted it and more people tried it.\n\nAdd the push from banks and the government, plus the habit that formed when people avoided touching cash, and it became hard to go back. Once you're used to a tap and a PIN, cash starts to feel slow.\n\n4:06 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n4:06 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 4:06 PM\n4:06 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:06 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nKeep 3 phones that fit current price under ₹20,000, best value\nCompare price, screen, camera, battery and speed\nWatch live\nStop\n16 min\n4:06 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:06 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb search keeps failing with SEARCH_BUSY and returns nothing\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n4:07 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:07 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n4:09 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n4:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n4:19 PM"
+  }
+]
