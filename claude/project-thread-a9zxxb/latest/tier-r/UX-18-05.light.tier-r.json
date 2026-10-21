@@ -121,7 +121,6 @@
         "window",
         "seats",
         "Done",
-        "1",
         "B",
         "Building",
         "society",
@@ -692,8 +691,8 @@
     "total": 2560
   },
   "r5": {
-    "ratio": 0.0438740234375,
-    "diffPixels": 44927,
+    "ratio": 0.043681640625,
+    "diffPixels": 44730,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-18-05.light.diff.png"
