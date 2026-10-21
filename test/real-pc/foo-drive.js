@@ -371,7 +371,12 @@ async function main() {
           // After a failed reopen the last app is already gone; then this case starts from a fresh launch.
           // foo's own main pid, asked from inside the app: Playwright's pid can be a launcher whose child is the real
           // main (seen in dev runs on CI), and killing it leaves foo running.
-          const mainPid = () => app.evaluate(() => process.pid).catch(() => app.process().pid);
+          // Bounded: a hung (not dead) main must not hang the journey.
+          const mainPid = () =>
+            Promise.race([
+              app.evaluate(() => process.pid),
+              new Promise((_, no) => setTimeout(() => no(new Error('no answer')), 10_000)),
+            ]).catch(() => app.process().pid);
           try {
             process.kill(await mainPid(), 'SIGKILL');
           } catch {
