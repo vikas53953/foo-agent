@@ -1,6 +1,6 @@
 # Test coverage matrix (generated, do not edit by hand)
 
-Built by `python3 docs/testing/build_matrix.py` against main `0665cf6` (main CI: green, https://github.com/vikas53953/foo-agent/actions/runs/39663772723).
+Built by `python3 docs/testing/build_matrix.py` against main `a087f3c` (main CI: green, https://github.com/vikas53953/foo-agent/actions/runs/39673710431).
 
 Rule: **proven** = a passing run on current main is linked. Older builds, PR branches and real-PC reports without a log count as partial.
 
