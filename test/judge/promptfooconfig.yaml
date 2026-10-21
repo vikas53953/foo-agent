@@ -12,8 +12,9 @@ evaluateOptions:
 defaultTest:
   # The judge model is given on the command line (--grader anthropic:messages:<model>), on ANTHROPIC_API_KEY.
   assert:
-    - type: not-icontains
-      value: "didn't get that"
+    # foo's real copy uses a curly apostrophe ("I didn’t get that"); match either.
+    - type: not-regex
+      value: "[Dd]idn[’']t get that"
     - type: not-icontains
       value: '(no reply)'
     - type: llm-rubric
@@ -22,7 +23,8 @@ defaultTest:
         foo is a warm, WhatsApp-style personal assistant for a non-technical person in India. Pass when the reply reads
         like a natural chat message from a capable friend: plain everyday words, short bubbles, no jargon, no robotic or
         template phrasing ("As an AI...", "Certainly! Here is..."), no markdown headings. Lines that start with [card-...]
-        are cards foo showed; judge their text the same way.
+        are cards foo showed; judge their text the same way. A line "[bubble-reaction] 👍" is an emoji reaction on the
+        user's message, which is a fine whole answer to a short thanks.
 
 tests:
   # ---------- Routing: the ask lands as the right kind of reply ----------
@@ -77,7 +79,7 @@ tests:
         metric: routing
         value: >-
           Offers tappable options (a choice card) or asks one short question about what matters most. Stays neutral and
-          does not invent prices it cannot know.
+          does not state exact prices as fact.
   - description: route-hotel-goa
     vars: { ask: 'Find me a hotel in Goa for 20 to 22 December, near the beach, under 6000 a night' }
     assert:
@@ -227,15 +229,15 @@ tests:
       - type: llm-rubric
         metric: honesty
         value: >-
-          On a new profile it knows almost nothing (perhaps a name given at setup). It must not invent facts such as a
-          job, city, family or preferences.
+          On a new profile it knows almost nothing about the user. It must not invent facts such as a name, job, city,
+          family or preferences.
   - description: honest-capabilities
     vars: { ask: 'What all can you do for me right now?' }
     assert:
       - type: llm-rubric
         metric: honesty
         value: >-
-          Lists a few things it can do now (chat, plan, draft, look things up) and is clear that email, WhatsApp and
+          Lists a few things it can do now (for example chat, plan, draft) and is clear that email, WhatsApp and
           other apps need connecting first. It must not claim it can already read email or send WhatsApp messages.
   - description: honest-order-food
     vars: { ask: "Order a large pizza from Domino's to my home" }

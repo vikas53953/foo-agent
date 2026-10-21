@@ -11,25 +11,27 @@ const os = require('os');
 const path = require('path');
 const { _electron } = require('playwright-core');
 
-// The top-level things foo can put in a chat: a text bubble or a card (08-0 card names). Sub-parts of cards are skipped.
+// What foo can put in a chat: a text bubble, a card (TID registry names), or a reaction on the user's message (foo
+// answers a short "thanks" with a 👍 and no bubble, 04 §4). Sub-parts of cards are skipped.
 const REPLY_TIDS = new Set([
   'bubble-foo',
+  'bubble-reaction',
   'card-approval',
   'card-checklist',
   'card-choice',
   'card-connect',
-  'card-done',
+  'card-done-saved',
   'card-draft',
   'card-error',
   'card-file',
-  'card-job',
+  'card-job-link',
   'card-kit',
-  'card-link',
+  'card-link-preview',
   'card-place',
   'card-plan',
   'card-secret',
   'card-signin',
-  'card-spend',
+  'card-spend-cap',
   'card-stuck',
   'card-table',
   'card-tiles',
@@ -56,6 +58,22 @@ async function replies(page) {
     );
 }
 
+/** Waits until the welcome and any restart notes have landed (nothing new for 4 s, cap 20 s); returns the count. */
+async function settled(page) {
+  let n = (await replies(page)).length;
+  let since = Date.now();
+  const t0 = Date.now();
+  while (Date.now() - since < 4000 && Date.now() - t0 < 20000) {
+    await page.waitForTimeout(500);
+    const m = (await replies(page)).length;
+    if (m !== n) {
+      n = m;
+      since = Date.now();
+    }
+  }
+  return n;
+}
+
 class FooProvider {
   id() {
     return 'foo-real-ai';
@@ -77,8 +95,9 @@ class FooProvider {
       const page = await app.firstWindow();
       const field = page.locator('[data-testid="composer-field"]');
       await field.waitFor({ timeout: 60000 });
-      await page.waitForTimeout(3000); // the welcome or any restart notes land first
-      const before = (await replies(page)).length;
+      // The rest of first-run setup (name and face) is skipped, so asks run in a plain chat, not beside a setup card.
+      await page.evaluate(() => window.foo.invoke('setup:skipRest', {})).catch(() => {});
+      const before = await settled(page);
       await field.click();
       await field.fill(prompt);
       await page.keyboard.press('Enter');

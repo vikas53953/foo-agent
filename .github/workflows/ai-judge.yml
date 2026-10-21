@@ -113,9 +113,11 @@ jobs:
             NODE_PATH="$GITHUB_WORKSPACE/node_modules" xvfb-run -a promptfoo "${args[@]}"
       - name: Summary
         if: always()
+        env:
+          REF: ${{ inputs.ref }}
         run: |
           [ -f "$OUT/results.json" ] || { echo "no results" >> "$GITHUB_STEP_SUMMARY"; exit 0; }
-          node "$RUNNER_TEMP/kit/test/judge/summary.cjs" "$OUT/results.json" "${{ inputs.ref }} ($(git rev-parse --short HEAD))" | tee "$OUT/SUMMARY.md" >> "$GITHUB_STEP_SUMMARY"
+          node "$RUNNER_TEMP/kit/test/judge/summary.cjs" "$OUT/results.json" "$REF ($(git rev-parse --short HEAD))" | tee "$OUT/SUMMARY.md" >> "$GITHUB_STEP_SUMMARY"
       - name: Scan the evidence for the key
         if: always()
         env:
@@ -133,13 +135,15 @@ jobs:
         if: always()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REF: ${{ inputs.ref }}
+          MODEL: ${{ inputs.model }}
+          JUDGE: ${{ inputs.judge }}
         run: |
           [ -f "$RUNNER_TEMP/no-push" ] && { echo "skipped: key found in evidence"; exit 0; }
           [ -d "$OUT" ] || { echo "no results"; exit 0; }
           rm -rf "$OUT/first-run/profile"
           short="$(git rev-parse --short=7 HEAD)"
-          printf 'run %s · ref %s · commit %s · foo model %s · judge %s\n' "$GITHUB_RUN_ID" "${{ inputs.ref }}" "$(git rev-parse HEAD)" \
-            "${{ inputs.model }}" "${{ inputs.judge }}" > "$OUT/RUN.txt"
+          printf 'run %s · ref %s · commit %s · foo model %s · judge %s\n' "$GITHUB_RUN_ID" "$REF" "$(git rev-parse HEAD)" "$MODEL" "$JUDGE" > "$OUT/RUN.txt"
           work="$RUNNER_TEMP/evidence" && rm -rf "$work" && mkdir -p "$work" && cd "$work"
           git init -q && git config core.autocrlf false
           git config user.name "github-actions[bot]"
