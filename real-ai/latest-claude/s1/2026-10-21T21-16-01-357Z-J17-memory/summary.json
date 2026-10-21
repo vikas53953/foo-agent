@@ -1,0 +1,86 @@
+{
+  "journey": "J17-memory",
+  "title": "Remember, view and forget",
+  "steps": 10,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T21-16-01-357Z-J17-memory",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792617366424,
+      "before": 0,
+      "ok": true,
+      "ms": 146
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3554,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I’ll remember: Favourite food: South Indian\nUndo",
+      "ms": 9628
+    },
+    {
+      "i": 2,
+      "do": "click",
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "expect": "fact listed in plain words with source",
+      "ok": true,
+      "ms": 105
+    },
+    {
+      "i": 4,
+      "do": "wait",
+      "expect": "fact listed in plain words with source",
+      "ok": true,
+      "ms": 2002
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "found": 1,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 6,
+      "do": "key",
+      "ok": true,
+      "ms": 14
+    },
+    {
+      "i": 7,
+      "do": "send",
+      "sentAt": 1792617378557,
+      "before": 0,
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 8,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 4553,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your favourite food is South Indian, and I already have that saved.\n\n9:16 PM",
+      "ms": 11141
+    },
+    {
+      "i": 9,
+      "do": "dump",
+      "ok": true,
+      "ms": 2
+    }
+  ]
+}
