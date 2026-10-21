@@ -57,7 +57,7 @@ Recorded as approved on Vikas's behalf under his standing rule; listed for his l
   real Claude often writes step details over 40 characters or with `?`, `!`, `;`, quotes or an en dash. Under §26.1 each
   such row still read "Work on it". Same topic and decision row (X-185), so it stays in this CR.
 - **Change:** 08-4 §26.1: before the slot rule, each slot is cleaned. Curly quotes become `'`, en and em dashes `-`, `;`
-  becomes `,`, any other character outside the rule a space; spaces collapse and the ends are trimmed; text still over
+  becomes `, `, any other character outside the rule a space; spaces collapse and the ends are trimmed; text still over
   40 characters is cut at the last space within the first 41 (else at 40), and trailing spaces and `.,:&/(<+-` go. A slot
   with nothing left, or one that fails the banned-word filter, still falls back to `generic_working`. Code: `cleanSlot`
   in `src/shared/phrases.ts`, used by `resolvePhrase` (so the runner stores cleaned slots and every later read is the
@@ -69,6 +69,24 @@ Recorded as approved on Vikas's behalf under his standing rule; listed for his l
 - **Pick:** cut at a word break with no `…` (the slot rule has no ellipsis character), so a cut reads as a shorter phrase.
 - **Review:** see §(e).
 
+- **Slot rule widened by `\p{M}`:** the rule had `\p{L}` but not combining marks, so a Hindi or Punjabi detail
+  (`दिल्ली मुंबई`) always failed, and with cleaning it would have been split into bare letters. `\p{M}` joins the rule
+  (and the cleaner), so Indic details show as written. The title hint (§26.2, `title.ts`) uses the same rule and gains
+  the same.
+- **Tool-argument-looking text** (`x; rm -rf`) now shows as words ("Check x, rm -rf"). It is display text inside a `t()`
+  phrase, never run; the banned-word filter still runs on the cleaned text before the runner stores it (08-2 §5.4.3).
+- Lengths count code points, as the rule does.
+
 ## (e) Independent review of part 2
 
-Pending.
+Fable reviewer, 2026-10-21 ~08:25Z, read-only; ran the four test files and typecheck, fuzzed `cleanSlot` on 200k strings
+(no idempotence or rule failures). **Verdict: PASS WITH FIXES**; applied:
+
+- Act: the cut counted UTF-16 units and could split an astral letter at position 40; it now counts code points (test
+  added). Indic vowel signs were turned into spaces; `\p{M}` joins the rule (test added).
+- Consider: the spec says `;` becomes `, ` (as the code does); the tool-argument sentence above.
+- Noted: spec text matches the code; stored slots are the cleaned ones, re-resolved to the same text; tests honest. An
+  unbalanced `(` after a cut is cosmetic and stays.
+
+Recorded as approved on Vikas's behalf under his standing rule (2026-10-18 14:56Z, 2026-10-21 07:14Z); listed for his
+later review.

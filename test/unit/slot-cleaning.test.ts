@@ -52,6 +52,21 @@ describe('slot cleaning (CR-0027 §(d))', () => {
     expect(phraseText(c.key, 'running', c.slots)).toBe('Comparing Delhi-Mumbai flights on Friday');
   });
 
+  it('Hindi and Punjabi details keep their vowel signs (X-185 adds \\p{M} to the rule)', () => {
+    expect(cleanSlot('दिल्ली मुंबई')).toBe('दिल्ली मुंबई');
+    expect(cleanSlot('ਅੰਮ੍ਰਿਤਸਰ ਦੀਆਂ ਟਰੇਨਾਂ?')).toBe('ਅੰਮ੍ਰਿਤਸਰ ਦੀਆਂ ਟਰੇਨਾਂ');
+    const r = resolvePhrase('look_for', { what: 'दिल्ली मुंबई' });
+    expect(r.key).toBe('look_for');
+  });
+
+  it('the cut counts code points, never splitting a letter outside the basic plane', () => {
+    const v = `${'a'.repeat(39)}\u{1D400}b`;
+    const c = cleanSlot(v);
+    expect(Array.from(c)).toHaveLength(40);
+    expect(SLOT_RE.test(c)).toBe(true);
+    expect(cleanSlot(c)).toBe(c);
+  });
+
   it('nothing left, or a banned word, still falls back', () => {
     expect(resolvePhrase('look_for', { what: '???' }).key).toBe('generic_working');
     expect(resolvePhrase('look_for', { what: '“”' }).key).toBe('generic_working');
