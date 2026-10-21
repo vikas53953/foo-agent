@@ -2,7 +2,7 @@
  * data-tl/tr/br/bl), §1.5 new-row motion (fade + 8px rise, --m-slow --ease-in; history rows still), §1.8 focus ring on the
  * bubble, §1.9 selection colours and the 20px checkbox 8px left of the row, §2 the user's bubble, §3 meta (right 12, bottom 6,
  * --t-caption, tabular), §4.3 badge (24 circle, left −8, bottom −10, --z-raised), §6.4 quote, §7 Not sent, §8 chips (left −8,
- * bottom −18 so they never cover words, CR-0024 B2; the action row starts 24 below a bubble that carries them), §9.2
+ * bottom −18 so they never cover words, CR-0024 B2; anything under such a bubble starts below them), §9.2
  * toolbar (32 visual, 40 hit, outside the bubble on the far side, fades in --m-fast on hover / focus-within), §9.3 picker
  * (44 pill, 36 options, emoji 20), §10.1–§10.9 attachments, deleted, Read more (15 × 22 with a 22px fade), Hindi / Punjabi
  * --t-body-indic, emoji-only sizes, §12 output bubble (rich: min(680, column), padding 12/16), §12.4 sender label (26 face,
@@ -35,6 +35,10 @@
 }
 .row[data-gap='s5'] {
   padding-top: var(--s5);
+}
+.row[data-chips] > .line:not(:last-child) {
+  /* §8: whatever sits under a bubble with chips (action row 4 + 20 = 24, proof chip, why line) starts below the chip. */
+  margin-bottom: var(--s4);
 }
 .row[data-indent] > :not(.sender) {
   margin-left: var(--indent);
@@ -1000,9 +1004,7 @@
 .actionsWrap {
   margin-top: var(--s0);
 }
-.row[data-chips] .actionsWrap {
-  margin-top: var(--s5);
-}
+
 .actions {
   display: flex;
   gap: var(--s0);

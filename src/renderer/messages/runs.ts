@@ -39,7 +39,7 @@ export function senderKey(m: Pick<MessageRow, 'authorKind' | 'authorId'>): strin
 /** A bubble row (text or voice); cards and markers are rows of their own kind. */
 export const isBubble = (m: Pick<MessageRow, 'kind'>): boolean => m.kind === 'text' || m.kind === 'voice';
 
-/** Something hangs 10px below the bubble: the user's badge slot (badge or foo's reaction, §4) or reaction chips (§8). */
+/** Something hangs below the bubble: the user's badge slot 10px (badge or foo's reaction, §4) or reaction chips 18px (§8). */
 export function hangsBelow(m: Msg): boolean {
   if (m.deletedAt !== null) return false;
   if (m.authorKind === 'user') return m.status !== 'failed' && (m.badge !== null || m.reactions.some((r) => r.by !== 'me'));

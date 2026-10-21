@@ -121,6 +121,15 @@ describe('layout: positions, gaps, sender label, latest answer (04 §1.2, §1.4,
     // CR-0024 F2: foo's and helpers' own chats label each output run too; cards there carry no label.
     expect(layoutRows(rows, { chatKind: 'helper' }).map((l) => l.senderLabel)).toEqual([true, false, false, true, false]);
   });
+  it('24 below foo’s reaction chips, 16 below the user’s badge slot (04 §1.2, §8; CR-0024 B2)', () => {
+    const chip = { emoji: '👎', by: 'me' };
+    const rows = [
+      msg({ authorKind: 'foo', createdAt: T0, status: 'complete', reactions: [chip] }),
+      msg({ createdAt: T0 + MIN, badge: 'done' }),
+      msg({ authorKind: 'foo', createdAt: T0 + 2 * MIN, status: 'complete' }),
+    ].map(row);
+    expect(layoutRows(rows, { chatKind: 'foo' }).map((l) => l.gap)).toEqual(['none', 's5', 's3']);
+  });
   it('no latest answer when foo’s newest text is still streaming or deleted', () => {
     const L = layoutRows([row(msg({ authorKind: 'foo', status: 'streaming' })), row(msg({ authorKind: 'foo', deletedAt: T0 }))], {
       chatKind: 'foo',

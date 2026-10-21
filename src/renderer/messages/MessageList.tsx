@@ -45,7 +45,16 @@ import { MirrorDraftLine, RetentionLine, StatusLine, ThinkingRow } from './Marke
 import { useMirrorDrafts } from './mirrorDrafts'; // M8 T7
 import { buildRows, buildWaRows, estimateRow, firstUnreadId, type VRow } from './rows';
 import { layoutRows, type RowLayout } from './runs';
-import { followStreaming, MARK_READ_AFTER_MS, nearTop, rowVisible, showJump, unreadOpenTop, type ScrollMetrics } from './stickToBottom';
+import {
+  atBottom,
+  followStreaming,
+  MARK_READ_AFTER_MS,
+  nearTop,
+  rowVisible,
+  showJump,
+  unreadOpenTop,
+  type ScrollMetrics,
+} from './stickToBottom';
 import { Marked } from './Marked';
 import { parseBlocks, plainText } from './markdownParse';
 import { UnreadDivider } from './UnreadDivider';
@@ -314,16 +323,21 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     opened.current = true;
     const el = scrollRef.current;
     const saved = useStore.getState().ui.scroll[chat.id];
+    // B3: a view opened above the end is not "at the bottom", so a shorter list (chips, a restored draft) never pulls it down.
+    const opensAt = (top: number) => {
+      el.scrollTop = top;
+      stick.wasAtBottom.current = atBottom({ scrollHeight: el.scrollHeight, scrollTop: el.scrollTop, clientHeight: el.clientHeight });
+    };
     if (saved !== undefined) {
-      el.scrollTop = saved;
+      opensAt(saved);
       return;
     }
     const idx = rows.findIndex((r) => r.kind === 'unread');
     if (idx >= 0) {
       const top = v.getOffsetForIndex(idx, 'start')?.[0] ?? 0;
-      el.scrollTop = unreadOpenTop({ dividerTop: top, totalHeight: v.getTotalSize(), clientHeight: el.clientHeight });
+      opensAt(unreadOpenTop({ dividerTop: top, totalHeight: v.getTotalSize(), clientHeight: el.clientHeight }));
     } else target.scrollToEnd();
-  }, [rows, chat.id, v, target]);
+  }, [rows, chat.id, v, target, stick.wasAtBottom]);
 
   useEffect(() => {
     const el = scrollRef.current;
