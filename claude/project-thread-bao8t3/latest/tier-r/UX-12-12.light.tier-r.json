@@ -348,7 +348,7 @@
         "open.",
         "Worked",
         "for",
-        "4s",
+        "5s",
         "9:05",
         "Proof:",
         "screenshot",
@@ -432,7 +432,7 @@
         "open.",
         "Worked",
         "for",
-        "4s",
+        "5s",
         "9:05"
       ]
     }
@@ -480,8 +480,8 @@
     "total": 23820
   },
   "r5": {
-    "ratio": 0.1048203125,
-    "diffPixels": 107336,
+    "ratio": 0.1048095703125,
+    "diffPixels": 107325,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-12.light.diff.png"

@@ -1,0 +1,47 @@
+{
+  "id": "BP-CARD-11",
+  "family": "bp",
+  "selector": "#cardgal > .panel:nth-child(11) > .mini",
+  "box": {
+    "x": 528.828125,
+    "y": 11869.40625,
+    "width": 351.328125,
+    "height": 156
+  },
+  "files": {
+    "light": {
+      "png": "BP-CARD-11.light.png",
+      "sha256": "c5ca4572ad3b8a4b53e857d771217798b446515263ad98db474792b1d5922b28"
+    },
+    "dark": {
+      "png": "BP-CARD-11.dark.png",
+      "sha256": "60bf2d2c5eac9fce2b98b702325df1220352e978e9d38e8aec0411b186f9ca55"
+    }
+  },
+  "texts": [
+    "Connect Gmail and Calendar",
+    "So I can find bills, trips and birthdays. I only read until you say send.",
+    "Connect",
+    "Not now"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-CARD-11": {
+      "x": 0,
+      "y": 0,
+      "width": 351.328125,
+      "height": 156
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M8",
+  "spec": "05-3 §5.11",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}
