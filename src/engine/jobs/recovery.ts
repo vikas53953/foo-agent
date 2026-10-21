@@ -9,6 +9,8 @@
 // place, never a new message), CR-0008 G-M4-02, G-M4-04, G-M4-13 (main decides safe mode and tells the engine).
 // Restart fix (real-PC J19 bug, 07-2 §4 "restored from state.json", 08-2 §5.2): a job's unsettled steers come back from its
 // state.json `steerQueue`, and the chat turns the restart cut off are answered once recovery is done (held in safe mode).
+// Known edges: a steer the AI had just marked new_job is re-run as a plain message and may steer the job again; a message
+// sent in the instant between engine start and the first settings can, once answered, hide older cut-off ones in its chat.
 // The runner (JobRunner.ts) owns the loop; this file fills its T4 hooks and moves jobs in and out of WAITING / recovery.
 import { newNonce } from '../../shared/canon';
 import { t } from '../../shared/copy/t';

@@ -72,6 +72,21 @@ describe('J19 · a chat reply cut off by a restart', () => {
     expect(intakes()).toHaveLength(before);
   });
 
+  it('a stop word is never run again after a restart', async () => {
+    h = jobHarness({ script: [] });
+    const stopId = h.userSays('stop everything');
+    await h.settle();
+    h.db.prepare("UPDATE messages SET status = 'complete', badge = 'seen' WHERE id = ?").run(stopId);
+    h.db.prepare("DELETE FROM messages WHERE chat_id = ? AND author_kind = 'foo'").run(h.chatId);
+    const before = h.txs.length;
+    restartEngine(h, [intake(envelope('Should not appear.'), { once: false })], { safeMode: false, cleanStart: true }, undefined, {
+      killed: true,
+    });
+    await h.settle();
+    expect(intakes()).toHaveLength(0);
+    expect(h.txs.slice(before).some((x) => x.ops.some((op) => op.op === 'update' && op.id === stopId))).toBe(false);
+  });
+
   it('safe mode holds the cut-off message until "Start normally"', async () => {
     h = jobHarness({ script: [intake(envelope('Old engine answer.'), { delayMs: 30_000 })] });
     const userId = h.userSays('any news today?');
