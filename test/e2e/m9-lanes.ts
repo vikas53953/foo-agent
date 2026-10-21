@@ -101,7 +101,9 @@ export async function laneRun(script: (sites: LaneSites) => FakeLine[]): Promise
             .flatMap((f) => readFileSync(join(logDir, f), 'utf8').split('\n'))
             .filter((l) => /"evt":"(browser|signin)\./.test(l))
         : [];
-      throw new Error(`never: ${what} (fake AI turns ${seen.join()})${[...observed, ...engine].map((o) => `\n  ${o}`).join('')}`);
+      throw new Error(
+        `never: ${what} (fake AI turns ${seen.join()}; sites on [::1]: ${sites.ipv6}, ports skipped: ${sites.v6Collisions})${[...observed, ...engine].map((o) => `\n  ${o}`).join('')}`,
+      );
     },
     async person(host) {
       if (!cdp) {
