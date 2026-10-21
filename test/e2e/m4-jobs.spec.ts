@@ -141,7 +141,7 @@ test('PERF-07: send → 👀 painted, p95 ≤ 1 s over 20 runs (job path)', asyn
     await page.keyboard.press('Enter');
     const { sentAt, bubbleAt, paintedAt } = await page
       .waitForFunction(() => {
-        const p = (window as unknown as { __perf07: { sentAt?: number; paintedAt?: number } }).__perf07;
+        const p = (window as unknown as { __perf07: { sentAt?: number; bubbleAt?: number; paintedAt?: number } }).__perf07;
         return p.paintedAt !== undefined && p;
       })
       .then((h) => h.jsonValue() as Promise<{ sentAt: number; bubbleAt?: number; paintedAt: number }>);

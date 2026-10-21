@@ -21,7 +21,7 @@ import { Menu } from '../ui/Menu';
 import { Spinner } from '../ui/Spinner';
 import { Tooltip } from '../ui/Tooltip';
 import { cx } from '../ui/cx';
-import { badgeDelay, tickLabel, type BadgeSlot } from './bubbleState';
+import { BADGE_DEBOUNCE_MS, badgeDelay, tickLabel, type BadgeSlot } from './bubbleState';
 import { mediaUrl, useBubble } from './bubbleContext';
 import { useOneShot } from './oneShot';
 import type { RetryPhase } from './retry';
@@ -98,7 +98,7 @@ export function useDebounced(value: string): string {
   if (value !== shown && badgeDelay(shown) === 0) setShown(value);
   useEffect(() => {
     if (value === shown) return;
-    const id = setTimeout(() => setShown(value), badgeDelay(shown));
+    const id = setTimeout(() => setShown(value), BADGE_DEBOUNCE_MS);
     return () => clearTimeout(id);
   }, [value, shown]);
   return shown;
