@@ -393,4 +393,4 @@ R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-1
 ,,AT-435,,,10-acceptance-2 §C.10; 08-4 §24.5; CR-0024,test/unit/prompt/c1-voice.test.ts,M9,live
 ,J7,AT-440,,,10-acceptance-2 §C.10; 08-4 §25.5 item 6; CR-0041,test/integration/empty-reply.test.ts,M9,live
 ,,AT-441,,,10-acceptance-2 §C.10; 04 §13.5; CR-0046,test/unit/kit-real-replies.test.ts,M9,live
-,,AT-442,,,10-acceptance-2 §C.10; 08-4 §24.5; CR-0046,test/unit/kit-real-replies.test.ts,M9,live
+,,AT-442,,,10-acceptance-2 §C.10; 08-4 §24.3; 08-4 §24.5; CR-0046,test/unit/kit-real-replies.test.ts,M9,live

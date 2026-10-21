@@ -21,8 +21,10 @@
   2026-10-21 07:14Z; after the independent review in §(d)).
 - **Change:** the sections above, as listed in §(b).
 - **Manifest:** `pnpm tsx scripts/spec-verify.ts --write` run in the same commit.
-- **Not in this CR:** "Never a table" (08-4 §24.3) is a design rule of Vikas's; allowing a table when the user asks is in
-  its own commit, `CR-0046 part 2`, for his call.
+- **Part 2 (own commit, Vikas's call):** "Never a table" (08-4 §24.3) is his design rule. Part 2 changes it to "A table only
+  when the user asks for one: a small markdown table, at most 4 columns." and adds "a table when the user asks for one" to the
+  formatting list (the Mostly words line already says "words and tables"; the bubble already draws tables, 04 §6). Drop that
+  commit to keep the rule. `resources/prompts/MANIFEST.json` has the new rules.md hash; AT-442 adds the table check.
 
 ## (a) Trace rows
 
