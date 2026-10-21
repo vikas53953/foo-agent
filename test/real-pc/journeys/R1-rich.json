@@ -1,35 +1,49 @@
 {
- "id": "R1-rich",
- "title": "Rich replies: table, steps, numbers",
- "spec": "CR-0022 R1",
- "steps": [
-  {
-   "do": "send",
-   "text": "Make a table comparing 3 budget phones under 20000 rupees"
-  },
-  {
-   "do": "waitReply",
-   "timeoutMs": 180000,
-   "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-   "shot": "table"
-  },
-  {
-   "do": "check",
-   "tid": "bubble-table"
-  },
-  {
-   "do": "send",
-   "text": "Plan a 3 day trip to Jaipur for my parents"
-  },
-  {
-   "do": "waitReply",
-   "timeoutMs": 240000,
-   "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-   "shot": "trip"
-  },
-  {
-   "do": "dump",
-   "name": "thread"
-  }
- ]
+  "id": "R1-rich",
+  "title": "Rich replies: table, steps, numbers",
+  "spec": "CR-0022 R1",
+  "steps": [
+    {
+      "do": "send",
+      "text": "Make a table comparing 3 budget phones under 20000 rupees"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "shot": "table"
+    },
+    {
+      "do": "clickIf",
+      "tid": "card-plan-go",
+      "note": "press Go on the plan (starts the job; spending still needs Approve, which is never tapped)"
+    },
+    {
+      "do": "wait",
+      "ms": 150000,
+      "shot": "table-after-go"
+    },
+    {
+      "do": "check",
+      "tid": "bubble-table"
+    },
+    {
+      "do": "dump",
+      "name": "thread-table"
+    },
+    {
+      "do": "send",
+      "text": "Plan a 3 day trip to Jaipur for my parents"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 240000,
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "shot": "trip"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
 }

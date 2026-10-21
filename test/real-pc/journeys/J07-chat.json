@@ -1,41 +1,41 @@
 {
- "id": "J07-chat",
- "title": "Casual chat",
- "spec": "07-1 J7; 04 \u00a712; 08-4 rules",
- "steps": [
-  {
-   "do": "send",
-   "text": "hi"
-  },
-  {
-   "do": "waitReply",
-   "timeoutMs": 120000,
-   "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-   "shot": "hi"
-  },
-  {
-   "do": "send",
-   "text": "what can you do?"
-  },
-  {
-   "do": "waitReply",
-   "timeoutMs": 120000,
-   "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-   "shot": "what-can-you-do"
-  },
-  {
-   "do": "send",
-   "text": "Explain how a VPN works in simple words"
-  },
-  {
-   "do": "waitReply",
-   "timeoutMs": 120000,
-   "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-   "shot": "vpn"
-  },
-  {
-   "do": "dump",
-   "name": "thread"
-  }
- ]
+  "id": "J07-chat",
+  "title": "Casual chat",
+  "spec": "07-1 J7; 04 \u00a712; 08-4 rules",
+  "steps": [
+    {
+      "do": "send",
+      "text": "hi"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "shot": "hi"
+    },
+    {
+      "do": "send",
+      "text": "what can you do?"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "shot": "what-can-you-do"
+    },
+    {
+      "do": "send",
+      "text": "Explain how a VPN works in simple words"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "shot": "vpn"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
 }

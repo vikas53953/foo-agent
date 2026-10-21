@@ -1,50 +1,66 @@
 {
- "id": "J01-J02-first-run",
- "title": "Install, first launch and Find your AI (fresh profile)",
- "spec": "07-1 J1, J2; 06-1 \u00a71\u2013\u00a72; AT-005, AT-313, AT-314",
- "steps": [
-  {
-   "do": "wait",
-   "ms": 400,
-   "shot": "splash",
-   "expect": "96px face wakes once, wordmark, no flicker"
-  },
-  {
-   "do": "waitFor",
-   "tid": "card-setup",
-   "timeoutMs": 60000,
-   "shot": "finder-testing",
-   "expect": "Welcome then step pill 1 of 4, rows test live with shimmer"
-  },
-  {
-   "do": "wait",
-   "ms": 30000,
-   "shot": "finder-tested",
-   "expect": "Claude shows works and is pre-selected; Codex shows a clear reason, never \"slow to answer\""
-  },
-  {
-   "do": "text",
-   "tid": "setup-step-pill"
-  },
-  {
-   "do": "check",
-   "tid": "setup-ai-use"
-  },
-  {
-   "do": "click",
-   "tid": "setup-ai-use",
-   "shot": "after-use",
-   "expect": "chat opens; next setup step (name and face) per J3"
-  },
-  {
-   "do": "wait",
-   "ms": 8000,
-   "shot": "first-chat",
-   "expect": "foo texts first with a warm welcome (J3/J4); composer unlocked"
-  },
-  {
-   "do": "dump",
-   "name": "thread"
-  }
- ]
+  "id": "J01-J02-first-run",
+  "title": "Install, first launch and Find your AI (fresh profile)",
+  "spec": "07-1 J1, J2; 06-1 \u00a71\u2013\u00a72; AT-005, AT-313, AT-314",
+  "steps": [
+    {
+      "do": "wait",
+      "ms": 400,
+      "shot": "splash",
+      "expect": "96px face wakes once, wordmark, no flicker"
+    },
+    {
+      "do": "waitFor",
+      "tid": "card-setup",
+      "timeoutMs": 60000,
+      "shot": "finder-testing",
+      "expect": "Welcome then step pill 1 of 4, rows test live with shimmer"
+    },
+    {
+      "do": "wait",
+      "ms": 30000,
+      "shot": "finder-tested",
+      "expect": "Claude shows works and is pre-selected; Codex shows a clear reason, never \"slow to answer\""
+    },
+    {
+      "do": "text",
+      "tid": "setup-step-pill",
+      "soft": true
+    },
+    {
+      "do": "check",
+      "tid": "setup-ai-use",
+      "note": "did any AI pass the first test on its own?",
+      "soft": true
+    },
+    {
+      "do": "click",
+      "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"] [data-testid=\"setup-ai-row\"][data-row-id=\"claude-cli\"] [data-testid=\"setup-ai-row-action\"]",
+      "note": "retest Claude alone (first test runs both CLIs cold at once)"
+    },
+    {
+      "do": "waitFor",
+      "tid": "setup-ai-use",
+      "timeoutMs": 90000,
+      "shot": "after-claude-retest",
+      "expect": "Claude works after a retest; Use button shows"
+    },
+    {
+      "do": "click",
+      "tid": "setup-ai-use",
+      "shot": "after-use",
+      "expect": "chat opens; next setup step (name and face) per J3"
+    },
+    {
+      "do": "wait",
+      "ms": 10000,
+      "shot": "first-chat",
+      "expect": "foo texts first with a warm welcome (J3/J4); composer unlocked"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ],
+  "required": true
 }

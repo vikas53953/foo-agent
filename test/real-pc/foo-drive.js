@@ -1,3 +1,5 @@
+// Spec: 07 journeys, 10 acceptance (real-PC / real-AI end-to-end check).
+/* eslint-disable @typescript-eslint/no-require-imports -- plain CommonJS run by foo's own Electron as Node, no bundler */
 // foo real-PC driver. Runs one journey file against the INSTALLED foo.exe with a real AI.
 // Run with foo's own Electron as Node (nothing to install):
 //   set ELECTRON_RUN_AS_NODE=1
@@ -16,7 +18,13 @@ const ROOT = process.env.FOO_REAL_TEST_DIR || path.join(process.env.USERPROFILE 
 const PROFILE = path.join(ROOT, 'profile');
 
 // Never clicked by the driver: real spend, real outbound messages, real bookings.
-const REFUSED_TIDS = new Set(['card-approval-approve', 'card-draft-send', 'card-draft-send-when-online', 'card-connect-allow-send', 'composer-paste-send']);
+const REFUSED_TIDS = new Set([
+  'card-approval-approve',
+  'card-draft-send',
+  'card-draft-send-when-online',
+  'card-connect-allow-send',
+  'composer-paste-send',
+]);
 const REFUSED_WORDS = /^(approve|pay|pay now|book|book now|confirm booking|send email|send now|post|post now)$/i;
 
 function loadPlaywright() {
@@ -33,6 +41,13 @@ function loadPlaywright() {
     }
   }
   throw new Error('playwright-core not found next to foo.exe; run `npm i playwright-core@1.64.1` in this folder');
+}
+
+// foo must start as the app, not as Node: drop the variable this script itself runs under.
+function childEnv() {
+  const env = { ...process.env, FOO_DATA_DIR: path.join(PROFILE, 'data'), FOO_LOCAL_DIR: path.join(PROFILE, 'local') };
+  for (const k of Object.keys(env)) if (k.toUpperCase() === 'ELECTRON_RUN_AS_NODE') delete env[k];
+  return env;
 }
 
 const sel = (s) => (s.tid ? `[data-testid="${s.tid}"]` : s.css ? s.css : `text=${s.text}`);
@@ -57,15 +72,18 @@ async function main() {
       executablePath: EXE,
       args: process.env.FOO_ARGS ? process.env.FOO_ARGS.split(' ') : [],
       colorScheme: null,
-      env: {
-        ...process.env,
-        ELECTRON_RUN_AS_NODE: '',
-        FOO_DATA_DIR: path.join(PROFILE, 'data'),
-        FOO_LOCAL_DIR: path.join(PROFILE, 'local'),
-      },
+      env: childEnv(),
       timeout: 60_000,
     });
     page = await app.firstWindow();
+    // Wait until the window shows the chat or the setup card, then let the thread finish loading its history,
+    // so counting foo's bubbles before a send never mistakes old messages for a new reply.
+    await page
+      .locator('[data-testid="composer-field"], [data-testid="card-setup"]')
+      .first()
+      .waitFor({ state: 'visible', timeout: 60_000 })
+      .catch(() => {});
+    await page.waitForTimeout(4_000);
     page.on('console', (m) => m.type() === 'error' && log({ console: m.text().slice(0, 500) }));
     log({ step: 'launch', ok: true });
   };
@@ -77,24 +95,44 @@ async function main() {
   };
   const threadDump = () =>
     page.evaluate(() =>
-      [...document.querySelectorAll('[data-testid="thread-log"] [data-testid^="bubble-"], [data-testid="thread-log"] [data-testid^="card-"]')]
+      [
+        ...document.querySelectorAll(
+          '[data-testid="thread-log"] [data-testid^="bubble-"], [data-testid="thread-log"] [data-testid^="card-"]',
+        ),
+      ]
         .filter((el) => /^(bubble-(me|foo|helper|wa)|card-[a-z]+)$/.test(el.getAttribute('data-testid')))
-        .map((el) => ({ kind: el.getAttribute('data-testid'), state: el.getAttribute('data-state'), text: (el.innerText || '').trim().slice(0, 1500) })),
+        .map((el) => ({
+          kind: el.getAttribute('data-testid'),
+          state: el.getAttribute('data-state'),
+          text: (el.innerText || '').trim().slice(0, 1500),
+        })),
     );
-  const fooCount = () => page.locator('[data-testid="thread-log"] [data-testid="bubble-foo"]').count();
+  // What counts as foo answering: a text bubble or a card foo posts (plan, choice, approval, draft, checklist, connect, secret).
+  const REPLY = ['bubble-foo', 'card-plan', 'card-choice', 'card-approval', 'card-draft', 'card-checklist', 'card-connect', 'card-secret']
+    .map((t) => `[data-testid="thread-log"] [data-testid="${t}"]`)
+    .join(', ');
+  const fooCount = () => page.locator(REPLY).count();
 
-  await launch();
+  try {
+    await launch();
+  } catch (e) {
+    log({ step: 'launch', ok: false, error: String(e && e.stack ? e.stack : e).slice(0, 3000) });
+    throw e;
+  }
   const results = [];
   for (const [i, s] of journey.steps.entries()) {
     const t0 = Date.now();
-    const rec = { i, do: s.do, note: s.note, expect: s.expect };
+    const rec = { i, do: s.do, note: s.note, expect: s.expect, soft: s.soft };
     try {
       switch (s.do) {
         case 'wait':
           await page.waitForTimeout(s.ms);
           break;
         case 'waitFor':
-          await page.locator(sel(s)).first().waitFor({ state: 'visible', timeout: s.timeoutMs ?? 30_000 });
+          await page
+            .locator(sel(s))
+            .first()
+            .waitFor({ state: 'visible', timeout: s.timeoutMs ?? 30_000 });
           break;
         case 'check': {
           const n = await page.locator(sel(s)).count();
@@ -112,6 +150,22 @@ async function main() {
           await loc.click({ timeout: s.timeoutMs ?? 15_000 });
           break;
         }
+        case 'clickIf': {
+          // Clicks only when the control is there (e.g. a plan's Go); never a refused control.
+          const loc = page.locator(sel(s)).last();
+          rec.found = await loc.count();
+          if (rec.found && !(s.tid && REFUSED_TIDS.has(s.tid))) await loc.click({ timeout: 10_000 });
+          break;
+        }
+        case 'paste':
+          // Puts text on the clipboard and pastes it into the composer, like Ctrl+V.
+          await app.evaluate(({ clipboard }, t) => clipboard.writeText(t), s.repeat ? s.text.repeat(s.repeat) : s.text);
+          await page.locator('[data-testid="composer-field"]').click();
+          await page.keyboard.press('Control+V');
+          break;
+        case 'eval':
+          rec.value = await page.evaluate(s.js);
+          break;
         case 'fill':
           await page.locator(sel(s)).first().fill(s.value);
           break;
@@ -119,8 +173,9 @@ async function main() {
           await page.keyboard.press(s.key);
           break;
         case 'send': {
-          rec.before = await fooCount();
           const field = page.locator('[data-testid="composer-field"]');
+          await field.waitFor({ state: 'visible', timeout: 30_000 });
+          rec.before = await fooCount();
           await field.click();
           await field.fill(s.text);
           await page.keyboard.press('Enter');
@@ -149,7 +204,10 @@ async function main() {
           rec.newBubbles = last - before;
           rec.ok = last > before;
           const dump = await threadDump();
-          const texts = dump.filter((d) => d.kind === 'bubble-foo').slice(-rec.newBubbles || -1).map((d) => d.text);
+          const texts = dump
+            .filter((d) => d.kind === 'bubble-foo' || (d.kind.startsWith('card-') && d.kind !== 'card-time'))
+            .slice(-rec.newBubbles || -1)
+            .map((d) => d.text);
           rec.duplicates = texts.filter((x, k) => x && texts.indexOf(x) !== k).length;
           rec.lastReply = texts.join('\n---\n').slice(0, 2000);
           break;
@@ -161,7 +219,12 @@ async function main() {
           await shot(s.name);
           break;
         case 'text':
-          rec.text = ((await page.locator(sel(s)).first().innerText({ timeout: s.timeoutMs ?? 10_000 })) || '').slice(0, 2000);
+          rec.text = (
+            (await page
+              .locator(sel(s))
+              .first()
+              .innerText({ timeout: s.timeoutMs ?? 10_000 })) || ''
+          ).slice(0, 2000);
           break;
         case 'closeWindow':
           await page.evaluate(() => window.close());
@@ -179,7 +242,9 @@ async function main() {
       if (rec.ok === undefined) rec.ok = !rec.refused;
     } catch (e) {
       rec.ok = false;
-      rec.error = String(e && e.message ? e.message : e).split('\n')[0].slice(0, 400);
+      rec.error = String(e && e.message ? e.message : e)
+        .split('\n')[0]
+        .slice(0, 400);
       await shot(`error-step${i}`).catch(() => {});
     }
     rec.ms = Date.now() - t0;
@@ -188,9 +253,17 @@ async function main() {
     if (s.shot) await shot(s.shot).catch(() => {});
   }
   await app.close().catch(() => {});
-  const summary = { journey: journey.id, title: journey.title, steps: results.length, failed: results.filter((r) => r.ok === false).length, out };
+  const summary = {
+    journey: journey.id,
+    title: journey.title,
+    steps: results.length,
+    failed: results.filter((r) => r.ok === false && !r.soft).length,
+    out,
+  };
   fs.writeFileSync(path.join(out, 'summary.json'), JSON.stringify({ ...summary, results }, null, 2));
   console.log(JSON.stringify(summary));
+  // A required journey (first run: picking the AI) stops the batch, since every later journey needs it.
+  if (journey.required && summary.failed > 0) process.exit(1);
 }
 
 main().catch((e) => {

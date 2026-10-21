@@ -1,0 +1,167 @@
+# Spec: 07 journeys, 10 acceptance (real-AI end-to-end check; Vikas 2026-10-21 "e2e test of whatever we built").
+# Packages foo from a ref, signs foo into a real AI with the ANTHROPIC_API_KEY Actions secret, and drives the packaged
+# foo.exe through test/real-pc/journeys with a fresh test profile. Evidence (screenshots, logs, thread dumps) goes to the
+# `evidence` branch under real-ai/<short-sha>/ and real-ai/latest/, since agents cannot read CI artifacts.
+# Spend guards: manual runs by the repo owner only, one run at a time, a journey cap, a Sonnet-class model, --max-turns 1
+# per foo turn (foo's own setting), and a hard job timeout. The driver never clicks Approve, Pay, Book or Send.
+# The key reaches only the journey step, through env; it is never echoed or written to disk, and the evidence is scanned
+# for it before anything is pushed.
+name: Real-AI e2e
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch, tag or commit to test (main, or a PR head branch)
+        default: main
+        required: true
+      journeys:
+        description: Journeys to run, space-separated ids, or "all" (test/real-pc/journeys.txt)
+        default: all
+        required: true
+      max_journeys:
+        description: Stop after this many journeys (cost cap)
+        default: '25'
+        required: true
+      model:
+        description: Model the Claude CLI uses for foo's turns
+        default: claude-sonnet-5-5
+        required: true
+
+concurrency:
+  group: real-ai-e2e
+  cancel-in-progress: false
+
+permissions:
+  contents: write # pushes the evidence branch only
+
+jobs:
+  real-ai:
+    name: Real-AI journeys (windows-latest)
+    # Only the owner may spend the key. workflow_dispatch has no fork trigger, and fork PRs never see secrets.
+    if: github.actor == github.repository_owner && github.repository == 'vikas53953/foo-agent'
+    runs-on: windows-latest
+    timeout-minutes: 120
+    steps:
+      - name: Check the key is set
+        shell: bash
+        env:
+          HAS_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+        run: |
+          if [ "$HAS_KEY" != "true" ]; then
+            echo "::error::Add the ANTHROPIC_API_KEY secret (Settings > Secrets and variables > Actions) first."
+            exit 1
+          fi
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      # The journey kit always comes from this workflow's branch, so an older ref can still be tested with today's kit.
+      - name: Take the journey kit from the workflow's branch
+        shell: bash
+        env:
+          KIT_REF: ${{ github.sha }}
+        run: |
+          git fetch -q --depth 1 origin "$KIT_REF"
+          rm -rf "$RUNNER_TEMP/kit" && mkdir -p "$RUNNER_TEMP/kit"
+          git archive FETCH_HEAD test/real-pc | tar -x -C "$RUNNER_TEMP/kit"
+          echo "head $(git rev-parse HEAD) kit $KIT_REF"
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      # Same native build recipe as ci.yml: install without scripts, compile with the pinned node-gyp.
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Download the Electron binary
+        run: node node_modules/electron/install.js
+      - run: pnpm build
+      - name: Rebuild native modules for Electron
+        run: pnpm rebuild:electron
+      - name: Package (unpacked)
+        run: pnpm package:dir
+      # foo finds the CLI at %APPDATA%\npm\claude.cmd (src/engine/ai/detect.ts) and treats ANTHROPIC_API_KEY as signed in.
+      - name: Install the Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+      - name: Run the journeys
+        shell: bash
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: ${{ inputs.model }}
+          ELECTRON_RUN_AS_NODE: '1'
+          JOURNEYS: ${{ inputs.journeys }}
+          MAX_JOURNEYS: ${{ inputs.max_journeys }}
+        run: |
+          export FOO_EXE="$GITHUB_WORKSPACE/dist/win-unpacked/foo.exe"
+          export FOO_REAL_TEST_DIR="$RUNNER_TEMP/foo-real-test"
+          kit="$RUNNER_TEMP/kit/test/real-pc"
+          rm -rf "$FOO_REAL_TEST_DIR" && mkdir -p "$FOO_REAL_TEST_DIR/runs"
+          if [ "$JOURNEYS" = "all" ]; then list=$(tr -d '\r' < "$kit/journeys.txt"); else list="$JOURNEYS"; fi
+          # The first run must pick the AI; every other journey needs it, so it always goes first.
+          case " $list " in *" J01-J02-first-run "*) ;; *) list="J01-J02-first-run $list" ;; esac
+          n=0; status=0
+          cd "$kit"
+          for j in $list; do
+            n=$((n + 1)); [ "$n" -gt "$MAX_JOURNEYS" ] && { echo "cap of $MAX_JOURNEYS journeys reached"; break; }
+            echo "=== $j ==="
+            if ! "$FOO_EXE" foo-drive.js "journeys/$j.json" >> "$FOO_REAL_TEST_DIR/runs/console.txt" 2>&1; then
+              status=1
+              if [ "$j" = "J01-J02-first-run" ]; then echo "::error::First run failed; later journeys need an AI, stopping."; break; fi
+            fi
+            taskkill //IM foo.exe //F > /dev/null 2>&1 || true
+          done
+          tail -n 40 "$FOO_REAL_TEST_DIR/runs/console.txt" || true
+          exit $status
+      - name: Summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "### Real-AI journeys on ${{ inputs.ref }} ($(git rev-parse --short HEAD)), model ${{ inputs.model }}"
+            echo "| Journey | Steps | Failed |"; echo "|---|---|---|"
+            for f in "$RUNNER_TEMP"/foo-real-test/runs/*/summary.json; do
+              [ -f "$f" ] || continue
+              node -e "const s=require(process.argv[1]);console.log('| '+s.journey+' | '+s.steps+' | '+s.failed+' |')" "$f"
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Scan the evidence for the key
+        if: always()
+        shell: bash
+        env:
+          KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          runs="$RUNNER_TEMP/foo-real-test/runs"
+          [ -d "$runs" ] || exit 0
+          if [ -n "$KEY" ] && grep -rlF -- "$KEY" "$runs" > "$RUNNER_TEMP/leak.txt"; then
+            echo "::error::The key appeared in $(wc -l < "$RUNNER_TEMP/leak.txt") evidence file(s); they are deleted and nothing is pushed."
+            xargs -d '\n' rm -f < "$RUNNER_TEMP/leak.txt"
+            touch "$RUNNER_TEMP/no-push"
+          fi
+      - name: Push evidence to the evidence branch
+        if: always()
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          [ -f "$RUNNER_TEMP/no-push" ] && { echo "skipped: key found in evidence"; exit 0; }
+          runs="$RUNNER_TEMP/foo-real-test/runs"
+          [ -d "$runs" ] || { echo "no runs"; exit 0; }
+          short=$(git rev-parse --short=7 HEAD)
+          printf 'run %s · ref %s · commit %s · model %s\n' "$GITHUB_RUN_ID" "${{ inputs.ref }}" "$(git rev-parse HEAD)" "${{ inputs.model }}" > "$runs/RUN.txt"
+          work="$RUNNER_TEMP/evidence" && rm -rf "$work" && mkdir -p "$work" && cd "$work"
+          git init -q && git config core.autocrlf false
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 | tr -d '\n')"
+          git remote add origin "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git"
+          g() { git -c "http.extraheader=$auth" "$@"; }
+          for attempt in 1 2 3 4 5; do
+            if g fetch -q --depth 1 origin evidence 2>/dev/null; then git checkout -q -B evidence FETCH_HEAD; else git checkout -q --orphan evidence; fi
+            rm -rf "real-ai/$short" real-ai/latest && mkdir -p "real-ai/$short" real-ai/latest
+            cp -R "$runs/." "real-ai/$short/" && cp -R "$runs/." real-ai/latest/
+            git add -A -- real-ai
+            git diff --cached --quiet && { echo "evidence unchanged"; exit 0; }
+            git commit -q -m "Evidence: real-AI journeys on $short (run $GITHUB_RUN_ID)"
+            g push -q origin HEAD:refs/heads/evidence && { echo "evidence pushed to evidence:real-ai/$short"; exit 0; }
+            sleep $((attempt * 3))
+          done
+          exit 1
