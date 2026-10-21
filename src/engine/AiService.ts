@@ -44,6 +44,8 @@ export interface AiServiceDeps {
   onUsable(): void;
   detectRow(row: DetectRow): void;
   retestTimers: boolean;
+  /** CR-0025: one tech-log line per test (provider, outcome, time taken); never a key or any reply text. */
+  log?(evt: string, kind: string, ms: number): void;
 }
 
 export class AiService implements LaneAi {
@@ -228,8 +230,10 @@ export class AiService implements LaneAi {
   }
 
   async verify(providerId: ProviderId): Promise<WireVerifyResult> {
+    const t0 = this.d.clock.now();
     const r = await this.d.registry.verify(this.adapterId(providerId));
     const at = this.d.clock.now();
+    this.d.log?.('ai.verify', `${providerId}:${r.ok ? 'ok' : (r.kind ?? 'UNKNOWN')}`, at - t0);
     const kind = this.d.settings().ai.providers[providerId]?.kind ?? this.d.registry.adapter(providerId).billing;
     this.d.persist({ providers: { [providerId]: { kind, lastVerifiedAt: at, lastVerifyOk: r.ok } } });
     const x = this.h(providerId);

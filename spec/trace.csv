@@ -376,15 +376,15 @@ R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-1
 ,,AT-370,,,10-acceptance-2 §C.9; 04 §13.5; Art. 8; CR-0022,test/unit/r1-kit-safety.test.ts,M9,live
 ,,AT-371,,,10-acceptance-2 §C.9; CR-0022 pick 5; CR-0022,test/unit/r1-kit-safety.test.ts,M9,live
 ,,AT-420,,,10-acceptance-2 §C.10; 08-2 §5.5; CR-0024,test/unit/jobs/steer.test.ts,M9,live
-,,AT-421,,,10-acceptance-2 §C.10; 04 §8; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,pending
+,,AT-421,,,10-acceptance-2 §C.10; 04 §8; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,live
 ,,AT-422,,,10-acceptance-2 §C.10; 08-4 §24.3; CR-0024,test/unit/prompt/c1-voice.test.ts,M9,live
 ,,AT-423,,,10-acceptance-2 §C.10; 08-4 §24.2; CR-0024,test/unit/prompt/c1-voice.test.ts,M9,live
 ,,AT-424,,,10-acceptance-2 §C.10; 08-4 §24.3; CR-0024,test/unit/prompt/c1-voice.test.ts,M9,live
 ,,AT-425,,,10-acceptance-2 §C.10; 04 §13.7; CR-0024,test/e2e/c1-capabilities.spec.ts,M9,live
 ,,AT-426,,,10-acceptance-2 §C.10; 04 §13.7; X-110; CR-0024,test/e2e/c1-capabilities.spec.ts,M9,live
-,,AT-427,,,10-acceptance-2 §C.10; 04 §12.3; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,pending
-,,AT-428,,,10-acceptance-2 §C.10; 04 §12.4; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,pending
-,,AT-429,,,10-acceptance-2 §C.10; 02 F2; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,pending
+,,AT-427,,,10-acceptance-2 §C.10; 04 §12.3; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,live
+,,AT-428,,,10-acceptance-2 §C.10; 04 §12.4; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,live
+,,AT-429,,,10-acceptance-2 §C.10; 02 F2; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,live
 ,,AT-430,,,10-acceptance-2 §C.10; 04 §17.1; CR-0024,test/e2e/c1-actions-chips.spec.ts,M9,live
 ,,AT-431,,,10-acceptance-2 §C.10; 04-2 §21.7; CR-0024,test/e2e/c1-actions-chips.spec.ts,M9,live
 ,,AT-432,,,10-acceptance-2 §C.10; 08-2 §5.5; CR-0024,test/integration/jobs/c1-steer-signs.test.ts,M9,live

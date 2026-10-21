@@ -80,7 +80,8 @@ import { draftFromMirror, draftIpc } from '../drafts/draftIpc';
 import { secretIpc } from '../vault/secretIpc';
 import { pageIpc } from '../page/pageIpc'; // R1 T5
 import { keepIpc } from '../keep/keepIpc'; // R1 T7
-import { ensureFinder, finderChosen, finderWanted } from '../setup/aiFinder';
+import { finderChosen, finderWanted, type FinderWrite } from '../setup/aiFinder';
+import { ensureSetupCard, faceChosen, nameAnswered, skipRest, welcomeStart } from '../setup/firstRun'; // CR-0026
 import { aiFinderIpc, emitFinderWrite } from '../setup/aiFinderIpc';
 
 const trusted = (e: IpcMainEvent) => !!e.senderFrame && isTrustedUrl(e.senderFrame.url);
@@ -269,6 +270,10 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
     primary: (typeof PROVIDER_IDS)[number];
     backup?: (typeof PROVIDER_IDS)[number] | null;
   }>,
+  'setup:welcome': empty as z.ZodType<Record<string, never>>,
+  'setup:name': z.object({ name: z.string().max(200) }).strict(),
+  'setup:face': z.object({ face: z.string().max(40) }).strict(),
+  'setup:skipRest': empty as z.ZodType<Record<string, never>>,
   'notifications:status': empty as z.ZodType<Record<string, never>>,
   // M8 T3 (handlers in src/main/whatsapp/waMain.ts)
   'whatsapp:linkStart': empty as z.ZodType<Record<string, never>>,
@@ -460,9 +465,10 @@ export function registerIpc(ctx: AppContext): void {
   });
 
   handle('app:getBootstrap', () => {
-    // CR-0020 (b): a first run with no AI opens on the J2 card (FOO_TEST runs only when they ask for a first run).
+    // CR-0026: a first run opens on the card for `setup.step` (welcome, AI finder, name, face, vibe; FOO_TEST runs only when
+    // they ask for a first run).
     if (process.env.FOO_TEST !== '1' || process.env.FOO_TEST_FIRST_RUN === '1')
-      emitFinderWrite(ctx, ensureFinder(db, settings, now(), ctx.dataDir));
+      emitFinderWrite(ctx, ensureSetupCard(db, settings, now(), ctx.dataDir));
     const s = settings.get();
     return ok(bootstrap(db, { ...listContext(s), settings: s, offline: ctx.net.offline, engineAi: ctx.engine?.aiStatus ?? null }));
   });
@@ -774,7 +780,7 @@ export function registerIpc(ctx: AppContext): void {
     // "Try again" re-tests the network now, then the engine sends `Reply with the word ready` (08-2 §6.6).
     ctx.net.report(ctx.probe());
     const r = ctx.engine?.live
-      ? await ctx.engine.request<VerifyResult>('ai.cmd', { cmd: 'verify', providerId }, 60_000)
+      ? await ctx.engine.request<VerifyResult>('ai.cmd', { cmd: 'verify', providerId }, 150_000) // CR-0025: probe 3 × 20 s + 60 s
       : ok<VerifyResult>({ ok: false, providerId, kind: ctx.net.rawOnline ? 'UNKNOWN' : 'NET_OFFLINE' });
     emit('ai:status', aiStatus(settings.get(), ctx.net.offline, ctx.engine?.aiStatus ?? null));
     emit('spend:update', spendSummary(db, settings.get(), now()));
@@ -788,12 +794,31 @@ export function registerIpc(ctx: AppContext): void {
     if (r.ok) {
       // 06-1 §2.2 step 5: open finder cards collapse to "✓ Using {AI} (your AI)"; a first run moves to step 2 (CR-0020). A
       // backup change from Settings (same primary, setup done) leaves an open finder card alone.
-      if (before.ai.primary !== primary || finderWanted(before))
+      if (before.ai.primary !== primary || finderWanted(before)) {
         emitFinderWrite(ctx, finderChosen(db, settings, primary, now(), ctx.dataDir));
+        // CR-0026: a first run goes on to Card 2a.
+        if (!before.setup.complete) emitFinderWrite(ctx, ensureSetupCard(db, settings, now(), ctx.dataDir));
+      }
       emitSettings();
     }
     return r;
   });
+  // CR-0026: first run (06-1 §2.1, §2.3, §2.0 "Skip the rest"); the writes are in setup/firstRun.ts.
+  const setupDone = (w: FinderWrite | null) => {
+    emitFinderWrite(ctx, w);
+    emitSettings();
+    return ok(null);
+  };
+  handle('setup:welcome', () => setupDone(welcomeStart(db, settings, now(), ctx.dataDir)));
+  handle('setup:name', ({ name }) => {
+    const r = nameAnswered(db, settings, name, now(), ctx.dataDir);
+    return r.ok ? setupDone(r.write) : fail(r.error === 'stale' ? 'CARD_STALE' : 'VALIDATION', r.error);
+  });
+  handle('setup:face', ({ face }) => {
+    const w = faceChosen(db, settings, face, now(), ctx.dataDir);
+    return w ? setupDone(w) : fail('VALIDATION');
+  });
+  handle('setup:skipRest', () => setupDone(skipRest(db, settings, now(), ctx.dataDir)));
   handle('notifications:status', () => ok({ windowsAllowed: true, focusAssist: false }));
   // M8
   registerConnectionIpc(ctx);

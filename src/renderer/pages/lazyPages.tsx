@@ -11,6 +11,7 @@ import { useStore } from '../store/index';
 import { selectAgentName } from '../store/settings';
 import { Button } from '../ui/Button';
 import { preloadKit } from './lazyKit'; // R1 (CR-0022): the kit and page scripts warm up with the pages
+import { loadFirstRun } from '../cards/setup/SetupCard'; // CR-0026: the first-run cards too
 import { Skeleton } from '../ui/Skeleton';
 import styles from './PageLoading.module.css';
 
@@ -61,6 +62,7 @@ export function preloadPages(): void {
   void loadMemory().catch(() => undefined);
   void loadSettings().catch(() => undefined);
   preloadKit();
+  void loadFirstRun().catch(() => undefined);
 }
 
 /** The page frame while its script loads: empty at first, the §0.5 skeleton once `delay-loading` (150ms) has passed. */

@@ -5,7 +5,8 @@ import type { ProviderId } from '../../shared/types';
 import type { Capabilities } from './types';
 import type { ProcessHost } from './ProcessHost';
 
-export const PROBE_TIMEOUT_MS = 8000;
+/** CR-0025: 8 s killed `claude --version` on a busy real PC (8.6 s with a second CLI starting); 20 s. */
+export const PROBE_TIMEOUT_MS = 20_000;
 export const PROBE_MAX_BYTES = 2 * 1024 * 1024;
 
 export type CliId = Extract<ProviderId, 'claude-cli' | 'codex-cli' | 'gemini-cli'>;

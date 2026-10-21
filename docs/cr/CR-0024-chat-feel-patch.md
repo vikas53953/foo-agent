@@ -92,3 +92,6 @@ Noted: X-181 is reserved for the P2 Feel draft (CR-0023). Dismissed: "Suggestion
 ## (g) Tier R disputes
 
 Filled by T3 if the golden lane reports the bubble colour (F6) or one-bubble (F2) differences against the drawings.
+
+None needed: the T3 golden lane (run 39577909993, head 960c54b) passed Tier R with the new tokens and one-bubble replies, so no
+`docs/fidelity/disputes.json` entry cites CR-0024. Lead close-out 2026-10-21.

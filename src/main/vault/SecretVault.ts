@@ -290,7 +290,8 @@ export class SecretVault {
     } catch {
       value = null;
     }
-    if (!value) return fail('VAULT_MISSING');
+    // CR-0025: an index row whose value cannot be read back says so (the engine logs it; a plain miss is not logged).
+    if (!value) return fail('VAULT_MISSING', 'value_unreadable');
     // T3's register kinds have no WhatsApp session; it is a connection credential like a refresh token.
     this.d.register(value, { kind: kind === 'wa_session' ? 'conn_token' : kind });
     this.d.db.prepare('UPDATE secrets_index SET last_used_at = ? WHERE target = ?').run(this.d.clock.now(), target);
