@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Tap it to start, and it will count down from 2:00.\n\nSteep your tea\n2:00 left\nStart timer\nKeep\n5:07 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n5:07 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Fill in the form below and I'll use it to plan the party. Budget is in rupees.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n5:07 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n5:07 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "failed",
+    "text": "That reply got cut off.\nTry again\n5:07 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi\n5:08 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n5:08 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is a good name for a pet tortoise?\n5:12 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Kachhu (Kachua) is a lovely pick, and Shelly and Tortilla are fun too. Tortoises live for decades, so a name with character suits them.\n\nTurbo: funny, because they're so slow.\nDadaji: for a calm, wise old soul.\nPickle: small, green and cute.\n5:12 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Which news story is biggest in India today? One line.\n5:12 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nSlow here, trying another way\nCompare top news stories\nWatch live\nStop\nunder 1 min\n5:12 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:12 PM"
+  }
+]

@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nCompared top news stories\nStopped by you\n5:12 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:12 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n5:13 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb search keeps failing with SEARCH_BUSY, returning no results\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n5:13 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n5:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "check my email\n5:14 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Reading your email job\nWhat’s wrong\nEvery browser try lands on the Gmail sign-in page, not my inbox\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n5:16 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n5:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:18 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\nWorked for 4 min\n5:18 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "List three Indian rivers\n5:18 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Three Indian rivers: Ganga, Yamuna and Godavari.\n\nGanga: flows from the Himalayas to the Bay of Bengal.\nYamuna: passes through Delhi and joins the Ganga at Prayagraj.\nGodavari: the longest river in south India.\n5:18 PM"
+  }
+]
