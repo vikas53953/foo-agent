@@ -29,7 +29,11 @@ export async function takeLock(s: LockSeams): Promise<LockResult> {
     return 'ours';
   }
   const owner = s.readOwner();
-  if (owner === null || owner === process.pid || s.alive(owner)) return 'running';
+  if (owner === null || owner === process.pid || s.alive(owner)) {
+    // Logged so a start that quits at once always says why (CR-0036: U26's start quit with no trace).
+    s.log('LOCK_REFUSED', owner === null ? 'NO_OWNER' : 'OWNER_RUNNING');
+    return 'running';
+  }
   s.log('LOCK_STALE');
   await s.endChildren(owner).catch(() => undefined);
   const until = s.now() + STALE_LOCK_WAIT_MS;
@@ -42,7 +46,10 @@ export async function takeLock(s: LockSeams): Promise<LockResult> {
     }
     // Two double-clicks after a crash: the other start won and is a live foo now, so it shows the window.
     const now = s.readOwner();
-    if (now !== null && now !== owner && now !== process.pid && s.alive(now)) return 'running';
+    if (now !== null && now !== owner && now !== process.pid && s.alive(now)) {
+      s.log('LOCK_REFUSED', 'OWNER_RUNNING');
+      return 'running';
+    }
   }
   s.log('LOCK_STALE_HELD', 'TIMEOUT');
   return 'held';

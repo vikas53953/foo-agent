@@ -74,7 +74,7 @@ describe('J19 crash reopen · the single-instance lock (CR-0036)', () => {
     const w = seams({ winnerAt: 500 });
     expect(await takeLock(w.s)).toBe('running');
     expect(w.written).toEqual([]);
-    expect(w.events).toEqual(['LOCK_STALE']);
+    expect(w.events).toEqual(['LOCK_STALE', 'LOCK_REFUSED']);
     expect(w.asks()).toBeLessThan(5);
   });
 

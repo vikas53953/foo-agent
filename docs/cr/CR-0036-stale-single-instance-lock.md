@@ -31,7 +31,10 @@
    start normally (logged `LOCK_TAKEN_OVER`). Another start won it meanwhile (the owner file now names a different live
    pid) → quit at once, as in rule 2. Still refused → error box `app.start_blocked.*`, then quit (`LOCK_STALE_HELD`).
    PowerShell start-up can add 2 to 5 s to this path; it runs only after a crash.
-4. Until the lock is ours a start only reads settings (`SettingsStore.peek`), so a start that quits never writes over a
+4. "Running" on Windows means listed by `tasklist` under this foo's image name. `process.kill(pid, 0)` is not used
+   there: it answers EPERM for an ended process whose handle the helpers still hold, which read as "a live foo" and
+   kept the silent quit (seen on CI at abb45f9). Every refused start logs `LOCK_REFUSED` with why.
+5. Until the lock is ours a start only reads settings (`SettingsStore.peek`), so a start that quits never writes over a
    live foo's `settings.json`. A failed owner-file write removes the file, so a dead pid never stays on record.
 
 ## (b) Not changed

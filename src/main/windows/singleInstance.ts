@@ -3,14 +3,31 @@
 // lock, and a double-click then quit in silence. The owner's pid is kept beside the lock; a new start that cannot get the
 // lock while that pid is dead ends the dead foo's helpers and tries again, so a real user always gets a window.
 import { app, type BrowserWindow } from 'electron';
-import { execFile } from 'node:child_process';
+import { execFile, execFileSync } from 'node:child_process';
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { basename, dirname, join } from 'node:path';
 import { takeLock, type LockResult, type LockSeams } from './staleLock';
 
 export type { LockResult } from './staleLock';
 
+/**
+ * Is `pid` a running foo? On Windows, `process.kill(pid, 0)` answers EPERM for a process that has ended but whose handle
+ * someone still holds (the dead foo's helpers do), so tasklist is asked instead: it lists running processes only, with
+ * their image name, and a pid reused by another program is not a foo.
+ */
 function pidAlive(pid: number): boolean {
+  if (process.platform === 'win32') {
+    try {
+      const out = execFileSync('tasklist', ['/FI', `PID eq ${pid}`, '/NH', '/FO', 'CSV'], {
+        encoding: 'utf8',
+        timeout: 5_000,
+        windowsHide: true,
+      });
+      return out.toLowerCase().includes(`"${basename(process.execPath).toLowerCase()}","${pid}"`);
+    } catch {
+      // tasklist missing or slow: fall through to the plain check
+    }
+  }
   try {
     process.kill(pid, 0);
     return true;
