@@ -367,6 +367,7 @@
         "12",
         "Dec",
         "8:20",
+        "foo",
         "Goa",
         "flights,",
         "Sat",
@@ -467,6 +468,7 @@
         "it.",
         "11:01",
         "AM",
+        "foo",
         "It",
         "is",
         "ready",
@@ -510,6 +512,7 @@
         "foo",
         "11:01",
         "AM",
+        "foo",
         "It",
         "is",
         "ready",
@@ -670,11 +673,11 @@
         },
         "app": {
           "x": 356,
-          "y": 309,
+          "y": 279,
           "width": 440,
           "height": 96
         },
-        "dPos": 182,
+        "dPos": 152,
         "dSize": 418,
         "verdict": "fail"
       }
@@ -695,13 +698,13 @@
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.9583315530362374,
-    "diffPixels": 403724,
-    "total": 421278
+    "ratio": 0.9577197869880797,
+    "diffPixels": 404288,
+    "total": 422136
   },
   "r5": {
-    "ratio": 0.5804921875,
-    "diffPixels": 594424,
+    "ratio": 0.57940625,
+    "diffPixels": 593312,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-09.dark.diff.png"

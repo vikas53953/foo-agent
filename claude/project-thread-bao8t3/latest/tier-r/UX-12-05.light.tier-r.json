@@ -282,6 +282,7 @@
         "Mon",
         "this",
         "table?",
+        "foo",
         "ਕੇਕ",
         "ਆਰਡਰ",
         "ਹੋ",
@@ -317,6 +318,7 @@
         "on",
         "8:20",
         "AM",
+        "foo",
         "Goa",
         "flights,",
         "Sat",
@@ -566,8 +568,8 @@
     "total": 2380
   },
   "r5": {
-    "ratio": 0.0890654296875,
-    "diffPixels": 91203,
+    "ratio": 0.089021484375,
+    "diffPixels": 91158,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-05.light.diff.png"

@@ -335,6 +335,8 @@
         "9:30",
         "AM",
         "🛠",
+        "T",
+        "Trips",
         "On",
         "it.",
         "Comparing",
@@ -529,8 +531,8 @@
     "total": 3248
   },
   "r5": {
-    "ratio": 0.091798828125,
-    "diffPixels": 94002,
+    "ratio": 0.091765625,
+    "diffPixels": 93968,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-06.light.diff.png"

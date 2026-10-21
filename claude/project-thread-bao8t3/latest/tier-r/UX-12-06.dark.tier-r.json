@@ -294,6 +294,7 @@
         "Mon",
         "this",
         "table?",
+        "foo",
         "ਕੇਕ",
         "ਆਰਡਰ",
         "ਹੋ",
@@ -329,6 +330,7 @@
         "on",
         "8:20",
         "AM",
+        "foo",
         "Goa",
         "flights,",
         "Sat",
@@ -466,6 +468,7 @@
         "AM",
         "9:05",
         "👀",
+        "foo",
         "Approve",
         "it’s",
         "9:05",
@@ -583,13 +586,13 @@
   "r4": {
     "verdict": "review",
     "skipped": null,
-    "ratio": 0.06845987765383231,
-    "diffPixels": 1522,
+    "ratio": 0.06886469953220582,
+    "diffPixels": 1531,
     "total": 22232
   },
   "r5": {
-    "ratio": 0.0923623046875,
-    "diffPixels": 94579,
+    "ratio": 0.0918251953125,
+    "diffPixels": 94029,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-06.dark.diff.png"
