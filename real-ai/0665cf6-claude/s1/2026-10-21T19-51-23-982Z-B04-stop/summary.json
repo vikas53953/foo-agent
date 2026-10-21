@@ -1,0 +1,65 @@
+{
+  "journey": "B04-stop",
+  "title": "Start a job then stop it by typing stop",
+  "steps": 7,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T19-51-23-982Z-B04-stop",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792612298759,
+      "before": 0,
+      "ok": true,
+      "ms": 123
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 6590,
+      "newBubbles": 8,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Checking Google Flights, MakeMyTrip,…\n1\nCheck Google Flights, MakeMyTrip, Skyscanner\n2\nLook for Delhi to Mumbai flights on Fri 30 Oct\n3\nKeep 3 flights that fit lowest fare\n4\nCompare fare, departure time, duration and stops\nAbout 3 minutes\nGo\nChange plan\n7:51 PM\n---\n1\nCheck Google Flights, MakeMyTrip, Skyscanner\n---\n2\nLook for Delhi to Mumbai flights on Fri 30 Oct\n---\n3\nKeep 3 flights that fit lowest fare\n---\n4\nCompare fare, departure time, duration and stops\n---\nAbout 3 minutes\n---\nGo\n---\nChange plan",
+      "ms": 12720
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 48
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 40012
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792612351801,
+      "before": 1,
+      "ok": true,
+      "ms": 179
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "AT-077: stops within 1 s; reply lists exactly what was done; badge ⛔",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "ms": 60057
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 3
+    }
+  ]
+}

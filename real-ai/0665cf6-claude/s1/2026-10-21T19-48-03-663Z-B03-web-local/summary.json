@@ -1,0 +1,68 @@
+{
+  "journey": "B03-web-local",
+  "title": "Web without keys: news read locally, sources",
+  "steps": 8,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T19-48-03-663Z-B03-web-local",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792612089261,
+      "before": 0,
+      "ok": true,
+      "ms": 131
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 8113,
+      "newBubbles": 6,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nSlow here, trying another way\nLook for ISRO news from 15 to 21 Oct 2026, with\nWrite it\nWatch live\nStop\nunder 1 min\n7:48 PM\n---\nLooking on the web\nSlow here, trying another way\n---\nLook for ISRO news from 15 to 21 Oct 2026, with\n---\nWrite it\n---\nWatch live\n---\nStop",
+      "ms": 19334
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 150000
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 6,
+      "do": "check",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 3
+    }
+  ]
+}

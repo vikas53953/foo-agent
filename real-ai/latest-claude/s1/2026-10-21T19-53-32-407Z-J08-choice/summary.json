@@ -1,0 +1,48 @@
+{
+  "journey": "J08-choice",
+  "title": "Question with choice chips",
+  "steps": 5,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T19-53-32-407Z-J08-choice",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792612426199,
+      "before": 0,
+      "ok": true,
+      "ms": 159
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 6093,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "For programming under ₹80,000 aim for 16 GB RAM, a recent Ryzen 7 or Core Ultra 5/7 chip, and a 512 GB fast SSD.\n\nMemory: 16 GB is the minimum for coding, browsers and containers together. Pick one that lets you upgrade to 32 GB later.\nScreen and keyboard: Look for a bright, full-HD or better screen (1920x1200 if possible) and a comfortable keyboard, since you'll use them all day.\nBattery and weight: Choose 8+ hours and under 1.7 kg if you carry it around. A graphics card isn't needed unless you do games or machine learning.\nSystem: Windows suits most work. A MacBook Air usually costs more than this budget, unless you find a good offer on an older one.\n\nI can compare real options and prices from shopping sites if you like. What do you mostly build: web and app work, data and AI, or games?\n\n7:53 PM",
+      "ms": 15251
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 4,
+      "do": "dump",
+      "ok": true,
+      "ms": 3
+    }
+  ]
+}

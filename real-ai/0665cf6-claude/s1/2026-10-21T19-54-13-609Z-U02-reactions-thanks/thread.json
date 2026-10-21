@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n7:51 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:51 PM\n7:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:51 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Checking Google Flights, MakeMyTrip,…\nlive checklist\nChecked Google Flights, MakeMyTrip, Skyscanner\nG\nM\nS\nLooked for Delhi to Mumbai flights on Fri 30 Oct\nKept 3 flights that fit lowest fare\nCompared fare, departure time, duration and stops\nStopped by you\n7:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:52 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:52 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:53 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n7:53 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n7:53 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 aim for 16 GB RAM, a recent Ryzen 7 or Core Ultra 5/7 chip, and a 512 GB fast SSD.\n\nMemory: 16 GB is the minimum for coding, browsers and containers together. Pick one that lets you upgrade to 32 GB later.\nScreen and keyboard: Look for a bright, full-HD or better screen (1920x1200 if possible) and a comfortable keyboard, since you'll use them all day.\nBattery and weight: Choose 8+ hours and under 1.7 kg if you carry it around. A graphics card isn't needed unless you do games or machine learning.\nSystem: Windows suits most work. A MacBook Air usually costs more than this budget, unless you find a good offer on an older one.\n\nI can compare real options and prices from shopping sites if you like. What do you mostly build: web and app work, data and AI, or games?\n\n7:53 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n7:54 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n7:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n7:54 PM"
+  }
+]

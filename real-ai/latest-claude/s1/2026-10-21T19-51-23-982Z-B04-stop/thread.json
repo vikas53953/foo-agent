@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb search keeps failing with SEARCH_BUSY and returns no results\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n7:48 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:51 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting\n7:51 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nSo I can read your email for this.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n7:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:51 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n7:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n7:51 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:51 PM\n7:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:51 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Checking Google Flights, MakeMyTrip,…\nlive checklist\nChecked Google Flights, MakeMyTrip, Skyscanner\nG\nM\nS\nLooked for Delhi to Mumbai flights on Fri 30 Oct\nKept 3 flights that fit lowest fare\nCompared fare, departure time, duration and stops\nStopped by you\n7:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:52 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:52 PM"
+  }
+]
