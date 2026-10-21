@@ -22,9 +22,14 @@ export interface Stop {
 /** The panel in viewBox units; the SVG scales to its column and keeps this shape. */
 export const PANEL = { w: 320, h: 200, pad: 24 } as const;
 
+/** A stop's pin: its radius, and how far apart two pin centres must be so neither covers the other's number. */
+export const PIN = { r: 10, apart: 24 } as const;
+
 /**
  * Each stop's point on the panel, to scale: longitude shrinks by cos(latitude) (equirectangular, fine for a town or a
  * city's errands), one scale for both axes so distances stay true, the whole route centred. One stop sits in the middle.
+ * Stops too close to draw apart at that scale (run 10: three sights 200 m apart on an 8 km day trip) are then nudged
+ * apart until every pin's number shows; stops that already sit apart stay where the scale puts them.
  */
 export function placeStops(stops: readonly Stop[]): { x: number; y: number }[] {
   const k = Math.cos((stops.reduce((s, p) => s + p.lat, 0) / Math.max(stops.length, 1)) * (Math.PI / 180));
@@ -36,10 +41,48 @@ export function placeStops(stops: readonly Stop[]): { x: number; y: number }[] {
   const spanY = y1 - y0;
   const room = { w: PANEL.w - 2 * PANEL.pad, h: PANEL.h - 2 * PANEL.pad };
   const scale = spanX === 0 && spanY === 0 ? 0 : Math.min(spanX ? room.w / spanX : Infinity, spanY ? room.h / spanY : Infinity);
-  return raw.map((p) => ({
-    x: PANEL.w / 2 + (p.x - (x0 + x1) / 2) * scale,
-    y: PANEL.h / 2 + (p.y - (y0 + y1) / 2) * scale,
-  }));
+  return keepApart(
+    raw.map((p) => ({
+      x: PANEL.w / 2 + (p.x - (x0 + x1) / 2) * scale,
+      y: PANEL.h / 2 + (p.y - (y0 + y1) / 2) * scale,
+    })),
+  );
+}
+
+/**
+ * Pushes overlapping pins apart, each pair by half the gap they are short, along the line between them (pins on one
+ * spot split along a fixed angle per pair, so the same stops always draw the same way), kept inside the padded panel.
+ * Repeats until no pair is closer than PIN.apart; pins that never clash are never touched.
+ */
+function keepApart(points: { x: number; y: number }[]): { x: number; y: number }[] {
+  const p = points.map((q) => ({ ...q }));
+  const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+  for (let round = 0; round < 500; round++) {
+    let moved = false;
+    for (let i = 0; i < p.length; i++) {
+      for (let j = i + 1; j < p.length; j++) {
+        const a = p[i]!;
+        const b = p[j]!;
+        let dx = b.x - a.x;
+        let dy = b.y - a.y;
+        let d = Math.hypot(dx, dy);
+        if (d >= PIN.apart) continue;
+        if (d < 1e-9) {
+          const turn = (i * 7 + j * 3) * 2.399963; // the golden angle keeps split directions spread out
+          [dx, dy, d] = [Math.cos(turn), Math.sin(turn), 1];
+        }
+        const push = (PIN.apart + 0.1 - d) / 2; // a hair over, so pushes against the panel edge settle
+        const [ux, uy] = [dx / d, dy / d];
+        a.x = clamp(a.x - ux * push, PANEL.pad, PANEL.w - PANEL.pad);
+        a.y = clamp(a.y - uy * push, PANEL.pad, PANEL.h - PANEL.pad);
+        b.x = clamp(b.x + ux * push, PANEL.pad, PANEL.w - PANEL.pad);
+        b.y = clamp(b.y + uy * push, PANEL.pad, PANEL.h - PANEL.pad);
+        moved = true;
+      }
+    }
+    if (!moved) break;
+  }
+  return p;
 }
 
 const at = (p: Stop) => `${p.lat},${p.lng}`;
@@ -77,7 +120,7 @@ export function MapStops({ stops }: { stops: readonly Stop[] }) {
           {points.length > 1 && <path className={styles.route} d={route} />}
           {points.map((p, i) => (
             <g key={i} className={styles.stop}>
-              <circle cx={p.x} cy={p.y} r={10} />
+              <circle cx={p.x} cy={p.y} r={PIN.r} />
               <text x={p.x} y={p.y} textAnchor="middle" dominantBaseline="central">
                 {i + 1}
               </text>

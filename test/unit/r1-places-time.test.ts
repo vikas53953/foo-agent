@@ -14,7 +14,7 @@ import {
   type PickScanRow,
 } from '../../src/shared/kit/pick';
 import { foldFence, kitMessagesOf } from '../../src/shared/kit/surface';
-import { mapsLink, PANEL, placeStops } from '../../src/renderer/kit/MapStops';
+import { mapsLink, PANEL, PIN, placeStops } from '../../src/renderer/kit/MapStops';
 import { inDateOrder, money } from '../../src/renderer/kit/Timeline';
 import { minutes, weekLayout } from '../../src/renderer/kit/WeekCalendar';
 import { kitActionHandler, kitReactionAction } from '../../src/main/kit/kitIpc';
@@ -52,9 +52,60 @@ describe('MapStops (CR-0022 pick 4)', () => {
     expect(p[1]!.y).toBeLessThan(p[0]!.y);
     expect(p[0]!.y - p[1]!.y).toBeCloseTo(p[2]!.y - p[0]!.y, 6);
   });
-  it('one stop, or stops on one spot, sit in the middle', () => {
+  it('one stop sits in the middle; stops on one spot sit around the middle, apart', () => {
     expect(placeStops([STOPS[0]!])).toEqual([{ x: PANEL.w / 2, y: PANEL.h / 2 }]);
-    expect(placeStops([STOPS[0]!, STOPS[0]!])[1]).toEqual({ x: PANEL.w / 2, y: PANEL.h / 2 });
+    const two = placeStops([STOPS[0]!, STOPS[0]!]);
+    expect(Math.hypot(two[0]!.x - two[1]!.x, two[0]!.y - two[1]!.y)).toBeGreaterThanOrEqual(PIN.apart - 1e-6);
+    expect((two[0]!.x + two[1]!.x) / 2).toBeCloseTo(PANEL.w / 2, 6);
+    expect((two[0]!.y + two[1]!.y) / 2).toBeCloseTo(PANEL.h / 2, 6);
+  });
+  // Run 10 (real Claude): a Jaipur day trip put City Palace, Jantar Mantar and Hawa Mahal ~200 m apart and Amber Fort
+  // ~8 km away, so stops 3, 4 and 5 drew on one spot and their numbers could not be read.
+  const JAIPUR = [
+    { name: 'Amber Fort', lat: 26.9855, lng: 75.8513 },
+    { name: 'Nahargarh Fort', lat: 26.9373, lng: 75.8155 },
+    { name: 'City Palace', lat: 26.9258, lng: 75.8237 },
+    { name: 'Jantar Mantar', lat: 26.9248, lng: 75.8246 },
+    { name: 'Hawa Mahal', lat: 26.9239, lng: 75.8267 },
+  ];
+  const apartEnough = (p: { x: number; y: number }[]) => {
+    for (let i = 0; i < p.length; i++)
+      for (let j = i + 1; j < p.length; j++)
+        expect(Math.hypot(p[i]!.x - p[j]!.x, p[i]!.y - p[j]!.y), `stops ${i + 1} and ${j + 1}`).toBeGreaterThanOrEqual(PIN.apart - 1e-6);
+  };
+  const inside = (p: { x: number; y: number }[]) => {
+    for (const q of p) {
+      expect(q.x).toBeGreaterThanOrEqual(PANEL.pad - 1e-9);
+      expect(q.x).toBeLessThanOrEqual(PANEL.w - PANEL.pad + 1e-9);
+      expect(q.y).toBeGreaterThanOrEqual(PANEL.pad - 1e-9);
+      expect(q.y).toBeLessThanOrEqual(PANEL.h - PANEL.pad + 1e-9);
+    }
+  };
+  it('close stops never cover each other: every pin stays apart so its number can be read', () => {
+    const p = placeStops(JAIPUR);
+    apartEnough(p);
+    inside(p);
+    // Far stops stay where the scale puts them: Amber Fort is still highest and the cluster still sits south of Nahargarh.
+    expect(p[0]!.y).toBeLessThan(Math.min(...p.slice(1).map((q) => q.y)));
+    for (const q of p.slice(2)) expect(q.y).toBeGreaterThan(p[1]!.y);
+  });
+  it('stops that are already apart do not move', () => {
+    const far = placeStops(STOPS);
+    const k = Math.cos(((18.52 + 18.53 + 18.51) / 3) * (Math.PI / 180));
+    // Bakery → Post office keeps its true bearing, to scale.
+    expect((far[1]!.x - far[0]!.x) / (far[0]!.y - far[1]!.y)).toBeCloseTo((0.01 * k) / 0.01, 6);
+  });
+  it('a crowd of stops on one block, even many on one spot or at the edge, still keeps every pin apart', () => {
+    const block = Array.from({ length: 8 }, (_, i) => ({ name: `Shop ${i + 1}`, lat: 26.92 + (i % 3) * 0.0001, lng: 75.82 }));
+    const crowd = [
+      { name: 'Far', lat: 27.2, lng: 76.1 },
+      ...block,
+      ...Array.from({ length: 4 }, () => ({ name: 'Same', lat: 26.92, lng: 75.82 })),
+    ];
+    const p = placeStops(crowd);
+    apartEnough(p);
+    inside(p);
+    expect(placeStops(crowd)).toEqual(p); // the same stops always draw the same way
   });
   it('"Open in Maps" searches one stop and routes through several in order', () => {
     expect(mapsLink([STOPS[0]!])).toBe('https://www.google.com/maps/search/?api=1&query=18.52%2C73.85');

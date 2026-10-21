@@ -97,6 +97,47 @@ test('AT-341 · MapStops draws numbered stops to scale with a dashed route and t
   }
 });
 
+// Run 10 (real Claude): a Jaipur day trip drew City Palace, Jantar Mantar and Hawa Mahal on one spot; numbers 3 to 5 hid.
+const JAIPUR = [
+  { name: 'Amber Fort', lat: 26.9855, lng: 75.8513, note: 'Hilltop fort, best in the morning' },
+  { name: 'Nahargarh Fort', lat: 26.9373, lng: 75.8155 },
+  { name: 'City Palace', lat: 26.9258, lng: 75.8237 },
+  { name: 'Jantar Mantar', lat: 26.9248, lng: 75.8246 },
+  { name: 'Hawa Mahal', lat: 26.9239, lng: 75.8267 },
+];
+
+test('AT-341 · MapStops keeps close stops apart on screen so every number can be read', async () => {
+  const reply = `Your Jaipur day, in this order.\n\n${one({ component: 'MapStops', stops: JAIPUR })}`;
+  const { app, page } = await start([intake('jaipur day trip', reply)]);
+  try {
+    await say(page, 'plan a jaipur day trip');
+    const map = fooBubble(page, 'Your Jaipur day').getByTestId(TID.kitMapStops);
+    await showUp(page, map);
+    const panel = map.getByRole('img', { name: t('kit.map.accessible_name', { n: 5 }) });
+    await expect(panel.locator('circle')).toHaveCount(5);
+    // As drawn on screen: no pin's circle touches another's, and each number sits inside its own pin.
+    const pins = await panel.locator('g').evaluateAll((gs) =>
+      gs.map((g) => {
+        const c = g.querySelector('circle')!.getBoundingClientRect();
+        const n = g.querySelector('text')!.getBoundingClientRect();
+        return { c: { x: c.x, y: c.y, w: c.width, h: c.height }, n: { x: n.x + n.width / 2, y: n.y + n.height / 2 } };
+      }),
+    );
+    for (const [i, a] of pins.entries()) {
+      expect(a.n.x).toBeGreaterThan(a.c.x);
+      expect(a.n.x).toBeLessThan(a.c.x + a.c.w);
+      for (const b of pins.slice(i + 1)) {
+        const gap = Math.hypot(a.c.x - b.c.x, a.c.y - b.c.y) - a.c.w;
+        expect(gap, 'two pins overlap').toBeGreaterThan(0);
+        expect(Math.hypot(a.n.x - b.n.x, a.n.y - b.n.y), 'two numbers on one spot').toBeGreaterThan(a.c.w);
+      }
+    }
+    await panel.screenshot({ path: 'test-results/r1-map-pins-apart.png' });
+  } finally {
+    await app.close();
+  }
+});
+
 test('AT-344 · Timeline lists items in date order with amounts in money format', async () => {
   const items = [
     { date: '15 Nov', title: 'Car insurance due', amount: 18450 },
