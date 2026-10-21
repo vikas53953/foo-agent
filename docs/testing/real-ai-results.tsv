@@ -1,0 +1,39 @@
+id	result	build	journey_or_source	evidence	note
+AT-005	fail	real-pc-report	real PC		Claude and ChatGPT both 'slow to answer' on a fresh first run; Claude works only after its own 'Test again'. Fix: AI setup thread.
+AT-006	pass	real-pc-report	real PC		Composer locked with 'Connect your AI first, then we can talk.'
+AT-014	blocked	setup	his setup		Needs resources/google-oauth.json (Google sign-in) before Gmail can be tested.
+AT-015	blocked	setup	his setup		Needs Google sign-in.
+AT-016	fail	real-pc-report	real PC		Interview cards (setup steps 2–4) have no screen; header stuck on 'Step 2 of 4'.
+AT-018	blocked	setup	his phone		Needs his phone to scan the WhatsApp QR.
+AT-019	blocked	setup	his setup		Needs Gmail.
+AT-020	blocked	setup	his setup		Needs Gmail.
+AT-027	pass	306b44f	U02-reactions-thanks	https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude	Reactions work
+AT-030	wrong	real-pc-report	real PC		Long replies split into 3 bubbles, each with its own time; feels choppy (chat-feel thread).
+AT-051	wrong	real-pc-report	real PC		Gmail not connected (setup file missing): draft came as plain bubbles, no Draft card, no offer to connect Gmail.
+AT-052	blocked	setup	his setup		Needs Gmail.
+AT-053	blocked	setup	his setup		Needs Gmail.
+AT-055	blocked	setup	his setup		Needs Gmail.
+AT-070	blocked	setup	his phone		Needs WhatsApp linked.
+AT-072	wrong	real-pc-report	real PC		Shows 'You said · 21 Oct' (pass) but the fact is worded 'The user's favourite food is South Indian.'
+AT-089	fail	real-pc-report	real PC		Two messages sent before foo closed were never answered after reopening; thinking badge stays forever.
+AT-093	blocked	setup	his setup		Needs Gmail.
+AT-105	fail	real-pc-report	real PC		Plans waiting for Go show 'Waiting for another job to finish' while nothing runs; 'Working 1' chip.
+AT-118	fail	real-pc-report	real PC		No recovery card after reopening; unanswered messages left hanging.
+AT-142	pass	306b44f	B08-bank	https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude	Bank page never typed into
+AT-145	blocked	setup	his setup		Needs Google Contacts.
+AT-155	fail	real-pc-report	real PC		Codex 0.144 on his PC is too old; foo shows 'slow to answer' instead of 'needs an update'.
+AT-220	blocked	setup	his setup		Needs Gmail.
+AT-269	blocked	setup	his phone		Needs WhatsApp linked.
+AT-270	blocked	setup	his phone		Needs WhatsApp linked.
+AT-310	fail	real-pc-report	real PC		Plan and checklist steps all read 'Work on it' instead of named steps.
+AT-314	pass	real-pc-report	real PC		Striped 4-step pill; rows test live with spinners.
+AT-319	unclear	setup	his eyes		Mica shows only on the real window frame; screenshots can't capture it. Vikas to check by eye.
+AT-320	pass	306b44f	U16-settings-all	https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude	Settings 26/26 steps
+AT-321	pass	306b44f	B11-zoom-appearance	https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude	Zoom works
+AT-340	pass	306b44f	B09-kit	https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude	Chart card drew in one hue with zero line (run10/chart-ok.png)
+AT-341	wrong	306b44f	B09-kit	https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude	Map card works but stops 3-5 overlap so numbers cannot be read
+AT-343	pass	306b44f	B09-kit	https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude	Phone compare card shown
+AT-346	pass	306b44f	B09-kit	https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude	Tea timer ran
+AT-347	pass	306b44f	B09-kit	https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude	EMI calculator recomputed
+AT-351	pass	306b44f	B09-kit	https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude	Party form shown
+AT-365	partial	306b44f	U27-composer-no-dropped-letters	https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude	330 typed letters arrived exactly; paste and 5 ms checks hit a driver bug (#110)

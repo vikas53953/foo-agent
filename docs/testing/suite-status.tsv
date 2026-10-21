@@ -1,0 +1,8 @@
+key	state	sha	link	note
+main_ci	in progress	dfe22cf	https://github.com/vikas53953/foo-agent/actions/runs/39648605335	Every main CI run since 12:55Z was cancelled by the next merge; the last green full run on main was 8eddee7 (run 426).
+real_ai_main	queued	dfe22cf	https://github.com/vikas53953/foo-agent/actions/runs/39648605645	Latest finished real-AI run is 3a35be0; its logs still show the stuck web job silencing chats (CR-0035, PR #113).
+judge_97	built, not merged		https://github.com/vikas53953/foo-agent/pull/97	promptfoo AI judge (32 asks), axe sweep, chaos reopen, Windows install/keychain checks.
+mutation_101	built, not merged		https://github.com/vikas53953/foo-agent/pull/101	Stryker on 4 files, 72%.
+bdd	not started			No Given/When/Then files.
+upgrade	not started			No old-build-to-new-build test.
+usability	not started			No real-person sessions.
