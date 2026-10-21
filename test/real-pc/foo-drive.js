@@ -155,6 +155,20 @@ async function main() {
     log({ step: 'launch', ok: false, error: String(e && e.stack ? e.stack : e).slice(0, 3000) });
     throw e;
   }
+  // A web job left stuck by an earlier journey blocks every later reply in the chat
+  // (reported product bug). Clear it with a typed "stop" so this journey can still be judged.
+  const stuck = page.locator('[data-testid="thread-log"] [data-testid="card-stuck"]');
+  if (await stuck.count().catch(() => 0)) {
+    const t0 = Date.now();
+    const field = page.locator('[data-testid="composer-field"]');
+    const ok = await field
+      .fill('stop')
+      .then(() => field.press('Enter'))
+      .then(() => page.waitForTimeout(8_000))
+      .then(() => true)
+      .catch(() => false);
+    log({ step: 'cleanup', stoppedStuckJob: ok, stuckLeft: await stuck.count().catch(() => -1), ms: Date.now() - t0 });
+  }
   const results = [];
   for (const [i, s] of journey.steps.entries()) {
     const t0 = Date.now();
