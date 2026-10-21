@@ -7,6 +7,7 @@
     "checks": [
       "r1",
       "r2",
+      "r3",
       "r4"
     ]
   },
@@ -523,27 +524,27 @@
     ]
   },
   "r3": {
-    "verdict": "pass",
+    "verdict": "fail",
     "anchors": [
       {
         "name": "hl",
         "ref": "#FFFFFF",
-        "app": "#FFFFFF",
-        "deltaE": 0,
-        "verdict": "pass"
+        "app": "#000000",
+        "deltaE": 100,
+        "verdict": "fail"
       }
     ]
   },
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.38940058479532164,
-    "diffPixels": 5327,
+    "ratio": 0.43201754385964913,
+    "diffPixels": 5910,
     "total": 13680
   },
   "r5": {
-    "ratio": 0.1093271484375,
-    "diffPixels": 111951,
+    "ratio": 0.1103310546875,
+    "diffPixels": 112979,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-04-08.dark.diff.png"

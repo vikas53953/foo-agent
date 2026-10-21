@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-10-21T07:45:40.593Z",
+  "recordedAt": "2026-10-21T09:41:30.362Z",
   "os": {
     "platform": "win32",
     "release": "10.0.26100",
@@ -9,13 +9,13 @@
       "productName": "Windows Server 2025 Datacenter",
       "displayVersion": "24H2",
       "currentBuild": "26100",
-      "ubr": "33438"
+      "ubr": "33650"
     }
   },
   "image": {
     "os": "win25-vs2026",
-    "version": "20261007.264.1",
-    "runner": "GitHub Actions 1000003942"
+    "version": "20261018.275.1",
+    "runner": "GitHub Actions 1000004100"
   },
   "fonts": {
     "segoeUIVariable": true,

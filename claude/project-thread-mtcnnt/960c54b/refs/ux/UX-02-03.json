@@ -1,0 +1,206 @@
+{
+  "id": "UX-02-03",
+  "family": "ux",
+  "selector": "#frame",
+  "box": {
+    "x": 0,
+    "y": 0,
+    "width": 1280,
+    "height": 800
+  },
+  "files": {
+    "light": {
+      "png": "UX-02-03.light.png",
+      "sha256": "b42c8d87b8d9b3006ae347e68158b80ebc9413d5feeadb68a40a844bb8089810"
+    },
+    "dark": {
+      "png": "UX-02-03.dark.png",
+      "sha256": "8d831ba6295d848d06e6b0f1416ff6a010a2fff33405d5f6d80c8ecfa139f1be"
+    }
+  },
+  "texts": [
+    "—",
+    "☐",
+    "✕",
+    "foo",
+    "＋ New helper",
+    "⋯",
+    "⌕",
+    "Search chats",
+    "All",
+    "Needs you",
+    "Working",
+    "Done",
+    "foo",
+    "V",
+    "Vikas ·",
+    "Setting up",
+    "Setting up foo",
+    "⚙",
+    "foo",
+    "Setting up",
+    "Step 1 of 4 · foo finds your AI",
+    "⌕",
+    "▯",
+    "⋯",
+    "Today, Thu 15 Oct",
+    "Hi, I'm foo. →",
+    "Let's go",
+    "foo is looking for the AI you already use…",
+    "Step 1 of 4",
+    "Claude (signed in)",
+    "✓ works",
+    "ChatGPT (signed in)",
+    "✓ works",
+    "Gemini",
+    "not found",
+    "OpenAI key",
+    "Add in secret box",
+    "AI on this PC",
+    "not found",
+    "＋",
+    "Connect your AI first, then we can talk.",
+    "🎙",
+    "Details",
+    "✕",
+    "Doing now",
+    "Nothing running right now.",
+    "Using",
+    "Nothing yet",
+    "What I know about you",
+    "Nothing yet. Tell me about you any time.",
+    "Spent this month",
+    "Your AI",
+    "₹0 of ₹1,000",
+    "Purchases",
+    "₹0 of ₹25,000",
+    "Change caps"
+  ],
+  "hlTexts": [
+    "Connect your AI first, then we can talk."
+  ],
+  "hl": {
+    "id": "comp",
+    "box": {
+      "x": 408,
+      "y": 740,
+      "width": 464,
+      "height": 48
+    }
+  },
+  "anchors": {
+    "hl": {
+      "x": 408,
+      "y": 740,
+      "width": 464,
+      "height": 48
+    }
+  },
+  "masks": [
+    {
+      "x": 1136,
+      "y": 0,
+      "width": 144,
+      "height": 32,
+      "reason": "caption-buttons"
+    }
+  ],
+  "capture": null,
+  "milestone": "M12",
+  "engine": "electron",
+  "chromium": "152.0.7977.167",
+  "ux": {
+    "chapter": 2,
+    "step": 3,
+    "anchor": "ai-3",
+    "title": "Find your AI",
+    "part": "Day 0 · Thu 15 Oct, evening",
+    "j": "J2",
+    "r": "R3 · R4",
+    "c": "Both answered. Until one AI really works, the message box stays locked.",
+    "s": "Two green \"✓ works\". The message box reads \"Connect your AI first, then we can talk.\"",
+    "f": "Keeps chat locked until a live test passes, so you never talk to a dead end.",
+    "state": {
+      "view": "app",
+      "a": {
+        "sel": "foo",
+        "filter": "All",
+        "q": "",
+        "rows": [
+          {
+            "id": "foo",
+            "name": "foo",
+            "time": "",
+            "prev": "",
+            "grey": 1
+          }
+        ],
+        "th": {
+          "foo": [
+            {
+              "h": "<span class=\"date\">Today, Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "id": "w",
+              "h": "<div class=\"card\"><div class=\"ans\">Hi, I'm foo. → <b>Let's go</b></div></div>",
+              "g": 12
+            },
+            {
+              "id": "finder",
+              "h": "<div class=\"card\" data-hl=\"finder\"><div class=\"hd\">foo is looking for the AI you already use…<span class=\"lbl\">Step 1 of 4</span></div><div class=\"setrow\" style=\"font-size:14px\"><span>Claude (signed in)</span><span style=\"color:var(--ok);font-weight:600\">✓ works</span></div><div class=\"setrow\" style=\"font-size:14px\"><span>ChatGPT (signed in)</span><span style=\"color:var(--ok);font-weight:600\">✓ works</span></div><div class=\"setrow\" style=\"font-size:14px\"><span>Gemini</span><span style=\"color:var(--fg-3)\">not found</span></div><div class=\"setrow\" style=\"font-size:14px\"><span>OpenAI key</span><span class=\"pillbtn sm \">Add in secret box</span></div><div class=\"setrow\" style=\"font-size:14px\"><span>AI on this PC</span><span style=\"color:var(--fg-3)\">not found</span></div></div>",
+              "g": 12
+            }
+          ]
+        },
+        "hdr": {
+          "status": "Setting up",
+          "pill": "Step 1 of 4 · foo finds your AI"
+        },
+        "right": "details",
+        "det": {
+          "doing": [],
+          "using": [],
+          "mem": [],
+          "ai": 0,
+          "buy": 0
+        },
+        "comp": {
+          "m": "lock"
+        },
+        "banner": null,
+        "page": null,
+        "ov": null,
+        "find": null,
+        "undo": null,
+        "setup": 1,
+        "ai": "Setting up",
+        "aiTone": "fg-3",
+        "foot2": "Setting up foo"
+      },
+      "d": {
+        "app": true,
+        "wins": [],
+        "toast": null,
+        "menu": null,
+        "tip": null,
+        "tb": null,
+        "time": "7:41 PM",
+        "date": "15-10-2026"
+      },
+      "mo": {
+        "m": {
+          "foo": "rest"
+        },
+        "still": {
+          "foo": true
+        },
+        "tray": "rest",
+        "toast": null,
+        "sel": "foo"
+      }
+    },
+    "clockShown": "7:41 PM",
+    "superseded": null
+  }
+}

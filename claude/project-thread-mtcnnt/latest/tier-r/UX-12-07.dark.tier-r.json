@@ -132,7 +132,6 @@
         "of…",
         "✓",
         "✓",
-        "⏳",
         "Table",
         "for",
         "4",
@@ -276,6 +275,7 @@
         "the",
         "table…",
         "Working",
+        "1",
         "T",
         "9:38",
         "AM",
@@ -486,7 +486,6 @@
         "Village",
         "book",
         "a",
-        "🛠",
         "Booking",
         "the",
         "table",
@@ -746,8 +745,8 @@
     "total": 80520
   },
   "r5": {
-    "ratio": 0.1056904296875,
-    "diffPixels": 108227,
+    "ratio": 0.1057890625,
+    "diffPixels": 108328,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-07.dark.diff.png"

@@ -7,6 +7,7 @@
     "checks": [
       "r1",
       "r2",
+      "r3",
       "r4"
     ]
   },
@@ -151,6 +152,7 @@
         "Village",
         "Needs",
         "you",
+        "1",
         "T",
         "Trips",
         "9:41",
@@ -523,27 +525,27 @@
     ]
   },
   "r3": {
-    "verdict": "pass",
+    "verdict": "fail",
     "anchors": [
       {
         "name": "hl",
         "ref": "#FFFFFF",
-        "app": "#FFFFFF",
-        "deltaE": 0,
-        "verdict": "pass"
+        "app": "#000000",
+        "deltaE": 100,
+        "verdict": "fail"
       }
     ]
   },
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.387719298245614,
-    "diffPixels": 5304,
+    "ratio": 0.4305555555555556,
+    "diffPixels": 5890,
     "total": 13680
   },
   "r5": {
-    "ratio": 0.066142578125,
-    "diffPixels": 67730,
+    "ratio": 0.06719921875,
+    "diffPixels": 68812,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-04-08.light.diff.png"
