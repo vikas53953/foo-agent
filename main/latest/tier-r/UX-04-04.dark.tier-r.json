@@ -566,8 +566,8 @@
       {
         "name": "hl",
         "ref": "#F1F1F5",
-        "app": "#8C9BE1",
-        "deltaE": 28.47,
+        "app": "#8593F3",
+        "deltaE": 31.78,
         "verdict": "fail"
       }
     ]
@@ -575,13 +575,13 @@
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.8395372233400402,
-    "diffPixels": 1669,
+    "ratio": 0.8375251509054326,
+    "diffPixels": 1665,
     "total": 1988
   },
   "r5": {
-    "ratio": 0.0960791015625,
-    "diffPixels": 98385,
+    "ratio": 0.0957041015625,
+    "diffPixels": 98001,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-04-04.dark.diff.png"
