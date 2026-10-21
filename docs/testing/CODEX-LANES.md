@@ -10,6 +10,7 @@ Repo: https://github.com/vikas53953/foo-agent (public). Use multiple agents in p
 ## RULES (every agent)
 
 - Evidence rule: a result is "proven" only with a linked passing run on current main (CI run, log, screenshot). Never round up. Not sure = "partial" with the reason.
+- **Not built is not broken.** Asks that need an intake kind that is not built yet get "I didn't get that" today: setting ("Switch to dark mode", M13; CR-0043 in progress), routine (M7), catch_up (12-2 §12.27) and handoff (M13). Score these "not built", never "fail". CR-0042 makes routine, catch_up and handoff reply with one honest "I can't … yet" line.
 - A step marked "ok" in the real-AI driver log is NOT a pass: read the reply text and look at the screenshot.
 - Score every feature as: works / works but wrong vs design (Blueprint, UX walkthrough, golden pictures) / broken / not built.
 - Test like a real non-technical user: messy typing, typos, wrong inputs, Hinglish, Hindi and Punjabi.

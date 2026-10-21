@@ -28,6 +28,7 @@ Everything else (`coverage-matrix.md/.tsv/.json`, `coverage-cells.tsv`) is gener
 - **fails** = a real run shows it broken or wrong against the spec.
 - **missing** = nothing tests it.
 - A driver step that says `"ok": true` is not a pass. The real-AI driver marks a step ok when a reply arrives, even if the reply is the stuck-job card. Look at the reply text and the screenshot.
+- **Not built is not broken.** Asks that need an intake kind that is not built yet get "I didn't get that" today: setting ("Switch to dark mode", M13; CR-0043 in progress), routine (M7), catch_up (12-2 §12.27) and handoff (M13). Score these "not built", never "fail". CR-0042 makes routine, catch_up and handoff reply with one honest "I can't … yet" line.
 - Never round up. If unsure, write partial and say why in the note.
 
 ## The 15 test types and how each runs
