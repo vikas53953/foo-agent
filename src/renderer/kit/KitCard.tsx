@@ -2,9 +2,12 @@
 // shown | kept), 04 §13.5 (the surface inside is drawn exactly as in a reply; its actions name the card, not a message),
 // 05-1 §0.2 (card frame), X-180. R1 T2. Payload: `{ body: string }`, the A2UI messages as an ```a2ui fence holds them.
 // R1 T7: Keep under the surface; a kept card (state `kept`) says "Kept" (CR-0022 pick 9).
+// C1 T2 (04 §13.7, CR-0024 F3): a payload `{ app: 'capabilities', capabilities }` is the engine-built Capabilities card.
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
 import type { CardRow } from '../../shared/types';
+import { capabilitiesOf } from '../../shared/kit/capabilities';
+import { CapabilitiesCard } from './CapabilitiesCard';
 import { KitDropped, KitSurface } from './KitSurface';
 import { useFenceSurfaces } from './model';
 import { useStore } from '../store/index';
@@ -15,6 +18,12 @@ import card_ from '../cards/Card.module.css';
 
 export function KitCard({ card }: { card: CardRow; time: CardTime }) {
   const agentName = useStore(selectAgentName);
+  const capabilities = capabilitiesOf(card.payload);
+  if (capabilities) return <CapabilitiesCard card={card} surface={capabilities} agentName={agentName} />;
+  return <SurfaceCard card={card} agentName={agentName} />;
+}
+
+function SurfaceCard({ card, agentName }: { card: CardRow; agentName: string }) {
   const body = typeof card.payload.body === 'string' ? card.payload.body : '';
   // A card's surface draws alone: later replies update surfaces of messages, not of cards (the card id is its host).
   const { surfaces, dropped } = useFenceSurfaces('', card.id, body, false);
