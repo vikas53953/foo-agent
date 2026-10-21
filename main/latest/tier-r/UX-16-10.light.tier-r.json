@@ -240,7 +240,6 @@
         "Working",
         "Needs",
         "you",
-        "3",
         "T",
         "Trips",
         "11:01",
@@ -628,8 +627,8 @@
     "total": 44000
   },
   "r5": {
-    "ratio": 0.0762470703125,
-    "diffPixels": 78077,
+    "ratio": 0.076146484375,
+    "diffPixels": 77974,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-10.light.diff.png"
