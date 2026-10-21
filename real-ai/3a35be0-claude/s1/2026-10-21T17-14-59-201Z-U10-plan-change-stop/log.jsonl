@@ -1,0 +1,23 @@
+{"t":"2026-10-21T17:14:59.201Z","journey":"U10-plan-change-stop","title":"Plan card: Change plan, then Stop a running job from the checklist","spec":"05-3 §5.24, 05 §5.5 Stop, 10-2 §C.4","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T17:15:04.894Z","step":"launch","ok":true}
+{"t":"2026-10-21T17:15:05.946Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1048}
+{"t":"2026-10-21T17:15:06.124Z","i":1,"do":"send","sentAt":1792602906043,"before":0,"ok":true,"ms":178}
+{"t":"2026-10-21T17:15:18.758Z","i":2,"do":"waitReply","expect":"plan card","firstReplyMs":6573,"newBubbles":8,"ok":true,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nLook for weekend treks near Pune with difficulty\n3\nKeep 5 treks that fit doable in a weekend from Pune\n4\nCompare difficulty and cost\nAbout 3 minutes\nGo\nChange plan\n5:15 PM\n---\n1\nLook on the web\n---\n2\nLook for weekend treks near Pune with difficulty\n---\n3\nKeep 5 treks that fit doable in a weekend from Pune\n---\n4\nCompare difficulty and cost\n---\nAbout 3 minutes\n---\nGo\n---\nChange plan","ms":12634}
+{"t":"2026-10-21T17:15:18.831Z","shot":"01-plan.png"}
+{"t":"2026-10-21T17:15:18.926Z","i":3,"do":"click","soft":true,"ok":true,"ms":95}
+{"t":"2026-10-21T17:15:19.727Z","i":4,"do":"wait","expect":"composer prompts for the change","ok":true,"ms":800}
+{"t":"2026-10-21T17:15:19.795Z","shot":"02-change.png"}
+{"t":"2026-10-21T17:15:19.919Z","i":5,"do":"send","sentAt":1792602919876,"before":0,"ok":true,"ms":124}
+{"t":"2026-10-21T17:15:32.644Z","i":6,"do":"waitReply","expect":"a changed plan, the old one marked changed","firstReplyMs":6586,"newBubbles":8,"ok":true,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nLook for easy weekend treks near Pune with\n3\nKeep 5 treks doable in a weekend from Pune that fit easy difficulty only\n4\nCompare difficulty and cost\nAbout 3 minutes\nGo\nChange plan\n5:15 PM\n---\n1\nLook on the web\n---\n2\nLook for easy weekend treks near Pune with\n---\n3\nKeep 5 treks doable in a weekend from Pune that fit easy difficulty only\n---\n4\nCompare difficulty and cost\n---\nAbout 3 minutes\n---\nGo\n---\nChange plan","ms":12724}
+{"t":"2026-10-21T17:15:32.704Z","shot":"03-plan-2.png"}
+{"t":"2026-10-21T17:15:32.779Z","i":7,"do":"click","soft":true,"ok":true,"ms":75}
+{"t":"2026-10-21T17:15:40.786Z","i":8,"do":"wait","expect":"checklist running; Doing now shows the job; chat pill Working","ok":true,"ms":8007}
+{"t":"2026-10-21T17:15:40.865Z","shot":"04-running.png"}
+{"t":"2026-10-21T17:15:40.897Z","i":9,"do":"key","ok":true,"ms":32}
+{"t":"2026-10-21T17:15:41.698Z","i":10,"do":"wait","expect":"right panel Doing now row with Stop","ok":true,"ms":801}
+{"t":"2026-10-21T17:15:41.769Z","shot":"05-doing-now.png"}
+{"t":"2026-10-21T17:15:41.858Z","i":11,"do":"click","soft":true,"ok":true,"ms":89}
+{"t":"2026-10-21T17:15:46.867Z","i":12,"do":"wait","expect":"job stopped ⛔, checklist says stopped, no further steps","ok":true,"ms":5009}
+{"t":"2026-10-21T17:15:46.939Z","shot":"06-stopped.png"}
+{"t":"2026-10-21T17:15:46.955Z","i":13,"do":"key","ok":true,"ms":16}
+{"t":"2026-10-21T17:15:46.960Z","i":14,"do":"dump","ok":true,"ms":4}

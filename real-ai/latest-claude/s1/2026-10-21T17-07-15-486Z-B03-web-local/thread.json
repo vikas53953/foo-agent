@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n5:04 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:04 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n5:04 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n5:04 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Please remember that my favourite food is South Indian.\n5:05 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is my favourite food?\n5:07 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your favourite food is South Indian, and I already have that saved.\n\n5:07 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n5:07 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nCheck isro.gov.in, The Hindu, Times of India\nLook for ISRO news from Mon 19 Oct to Wed 21 Oct\nWrite it\nWatch live\nStop\n2 min\n5:07 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:07 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb search keeps failing as busy, and the ISIRO page needs a browser\nSpent so far\n1 minutes\nWhat I’d do\ntry The Hindu instead\nTry another way\nTake over\nStop\n5:08 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:08 PM"
+  }
+]

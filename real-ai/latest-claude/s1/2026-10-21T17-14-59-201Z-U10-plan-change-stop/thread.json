@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n5:12 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n5:12 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent 6 to 8 core processor. Those matter more than a fancy graphics card.\n\nRAM: 16 GB is the minimum. 8 GB struggles with a browser, editor and Docker open together.\nStorage: 512 GB SSD or more. Avoid anything with a hard disk.\nProcessor: Ryzen 5/7 or Intel Core i5/i7 (recent generation), or an Apple M-series chip if you're open to a Mac.\nScreen and keyboard: Full HD, at least 300 nits, and a comfortable keyboard. You'll stare at it for hours.\nBattery: Look for 8 hours or more of real use if you work away from a plug.\n\nYou only need a graphics card if you'll train AI AI or do game development. Otherwise, put that money into RAM and build quality.\n\nWant me to look up current options in your budget? Tell me whether you prefer Windows or Mac.\n\n5:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n5:13 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n5:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n5:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me 5 weekend trek options near Pune with difficulty and cost\n5:15 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "changed",
+    "text": "Plan changed. See the new one below.\n5:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Only easy treks please\n5:15 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 5:15 PM\n5:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:15 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for easy weekend treks near Pune with\nKept 5 treks doable in a weekend from Pune that fit easy difficulty only\nCompared difficulty and cost\nStopped by you\n5:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n5:15 PM"
+  }
+]
