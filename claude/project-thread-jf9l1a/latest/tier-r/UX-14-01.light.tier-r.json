@@ -177,7 +177,6 @@
         "9:41",
         "AM",
         "127.0.0.1",
-        "1",
         "B",
         "Building",
         "society",
@@ -483,8 +482,8 @@
     "total": 2744
   },
   "r5": {
-    "ratio": 0.091576171875,
-    "diffPixels": 93774,
+    "ratio": 0.09139453125,
+    "diffPixels": 93588,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-01.light.diff.png"
