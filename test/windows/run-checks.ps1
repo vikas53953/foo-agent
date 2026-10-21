@@ -36,8 +36,9 @@ $lnk = Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\foo.lnk'
 Pass-Fail 'Start menu shortcut' (Test-Path $lnk) $lnk
 
 # 2. Toast identity: Windows shows toasts only for an app whose Start menu entry carries its AUMID (09 s.9.2).
-$start = Get-StartApps | Where-Object { $_.AppID -eq 'com.foo.desktop' }
-Pass-Fail 'Start menu entry carries AUMID com.foo.desktop (toasts can show)' ($null -ne $start) "$($start.Name)"
+# The shortcut's own AUMID property is read directly: the Start menu index (Get-StartApps) can lag behind a fresh install.
+$lnkAumid = (New-Object -ComObject Shell.Application).NameSpace((Split-Path $lnk)).ParseName((Split-Path $lnk -Leaf)).ExtendedProperty('System.AppUserModel.ID')
+Pass-Fail 'Start menu shortcut carries AUMID com.foo.desktop (toasts can show)' ($lnkAumid -eq 'com.foo.desktop') "$lnkAumid"
 try {
   [void][Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime]
   [void][Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime]

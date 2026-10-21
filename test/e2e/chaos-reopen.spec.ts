@@ -4,6 +4,7 @@
 // fake AI (FOO_FAKE_AI); no test reaches a real AI or the network.
 import { expect, test, type ElectronApplication, type Page } from '@playwright/test';
 import Database from 'better-sqlite3';
+import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import type {} from '../../src/shared/ipc';
@@ -16,12 +17,22 @@ import { settleSeededJobs } from './m4-start';
 const byTid = (id: string) => `[data-testid="${id}"]`;
 const LATER = '2026-10-16T09:55:00+05:30';
 
-/** Kills foo without letting it shut down, and waits until the process is gone. */
+/**
+ * Kills foo without letting it shut down, and waits until it is gone. On Windows the whole tree goes (taskkill /T /F, as
+ * Task Manager's "End process tree"): Chromium's helper processes outlive a killed main for a moment there, and a reopen
+ * during that moment found the app's single-instance lock still taken.
+ */
 async function hardKill(app: ElectronApplication): Promise<void> {
   const proc = app.process();
   const gone = new Promise<void>((r) => (proc.exitCode !== null || proc.signalCode !== null ? r() : proc.once('exit', () => r())));
-  proc.kill('SIGKILL');
+  if (process.platform === 'win32') execFileSync('taskkill', ['/PID', String(proc.pid), '/T', '/F'], { stdio: 'ignore' });
+  else proc.kill('SIGKILL');
   await gone;
+  if (process.platform === 'win32') {
+    // One worker runs the e2e suite, so any electron.exe left is this app's.
+    const left = () => execFileSync('tasklist', ['/FI', 'IMAGENAME eq electron.exe', '/NH'], { encoding: 'utf8' }).includes('electron.exe');
+    await expect.poll(left, { timeout: 15_000 }).toBe(false);
+  }
 }
 
 async function reopen(lines: FakeLine[], dirs: ReturnType<typeof testDirs>): Promise<{ app: ElectronApplication; page: Page }> {
