@@ -38,3 +38,9 @@ None. The tests are in `test/integration/jobs/steer-check.test.ts` ("CR-0048 · 
 
 An independent Fable review of this CR and its diff, recorded in the PR and in `docs/decisions/real-pc.tsv` ("approved on
 Vikas's behalf" on pass).
+
+Result (2026-10-21): independent Fable review, high tier, **PASS** (codes typed in chat are masked and a code box goes
+through `code.submit`, never a steer; a second job opens a background window). Considers applied: the check runs only while
+the sign-in card is still `waiting` for the user's tap (a `live` or taken-over sign-in keeps item 2, so no new job starts
+while the user types a bank code); the "about: job" test now proves the check ran; the test header names CR-0048. Approved on
+Vikas's behalf.

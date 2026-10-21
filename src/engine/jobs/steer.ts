@@ -181,9 +181,10 @@ export class Steer {
     const p = this.core.d.prompts;
     if (job.state !== 'needs_you' || !job.needsYouCardId || !p.buildSteerCheck || !p.parseSteerCheck) return true;
     const card = await this.core.query<CardRow>('cardById', job.needsYouCardId);
-    // CR-0048 (X-206): a sign-in card (a login, a code, "check you're a person") holds a steer until it is done (item 2), so
-    // an unrelated ask is checked too.
-    if (!card || card.resolvedAt !== null || (!SUPERSEDE_TO[card.type] && card.type !== 'signin')) return true;
+    // CR-0048 (X-206): a sign-in card still waiting for the user's tap holds a steer until it is done (item 2), so an unrelated
+    // ask is checked too. Once the sign-in is live (Edge up, or taken over) every message waits, as item 2 says.
+    if (!card || card.resolvedAt !== null || (!SUPERSEDE_TO[card.type] && !(card.type === 'signin' && card.state === 'waiting')))
+      return true;
     const pl = card.payload as { question?: unknown; title?: unknown; site?: unknown };
     const waitingFor =
       card.type === 'signin'

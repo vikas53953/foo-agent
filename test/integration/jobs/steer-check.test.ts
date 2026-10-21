@@ -1,4 +1,4 @@
-// Spec: CR-0045 (X-203), 08-4 §26.5 item 2b as amended, §24.13a (steer_check.md, purpose `classify`), 08-2 §5.2 (one live
+// Spec: CR-0045 (X-203) and CR-0048 (X-206), 08-4 §26.5 item 2b as amended, §24.13a (steer_check.md, purpose `classify`), 08-2 §5.2 (one live
 // job → steer). Real-AI run 21 (main a087f3c, Claude CLI), U23: a table booking waited on "Which city should I look in…?";
 // "Make me a simple page that tracks my daily water intake" was steered into it, the card was withdrawn ("→ you changed the
 // plan") and the job asked again ("Which kind of place…?") right under the tracker. Every steer_check answer below is the
@@ -144,5 +144,6 @@ describe('CR-0048 · a job waiting on a sign-in or "check you\'re a person" card
     await x.settle();
     expect(x.cards('signin')[0]!.state).toBe('waiting');
     expect(x.message(asked).badge).toBe('seen');
+    expect(x.turnsJsonl().filter((t) => t.purpose === 'classify')).toHaveLength(1);
   });
 });
