@@ -56,7 +56,7 @@ One milestone at a time; inside it, T1 contracts first, then up to 5 truly indep
 Updated 2026-10-21 from Anthropic's "How the Claude Code team does code review" (Vikas asked to adopt it). Details: `.claude/skills/foo-review`.
 
 - **Fresh-eyes self-check:** before a ticket PR opens, a read-only Sonnet with no build memory reads the diff against the ticket once.
-- **Depth by risk tier:** `pnpm review:tier` reads the changed paths. Low (docs, skills): one Sonnet. Normal (app and test code): Fable. High (CI workflows, spec, golden, fidelity gates, installer, dependencies, vault, spend approvals, AI engine and finder): Fable + Opus.
+- **Depth by risk tier:** `pnpm review:tier` reads the changed paths. Low (docs, skills): one Sonnet. Normal (app and test code): Fable. High (the `HIGH` list in `scripts/review-tier.ts`, the one source: CI, spec, golden, CRs, review and build rules, fidelity gates, installer, dependencies, AI engine, keys, logins, IPC trust, spend and AI cap, messages to other people): Fable + Opus.
 - **Verify before acting:** every act-on finding goes to a separate verifier that tries to refute it; only confirmed findings block. Findings both hunters raised skip it.
 - **Buckets and outcomes:** every finding sorted **act on / consider / noted / dismissed** with a reason, then given an outcome (fixed / wrong / intentional / no-matter) so the reviewer's false-alarm rate is counted in the decision log.
 - **Stop the loop:** later rounds review only the new diff, never repeat a finding, name the bug class; at most 3 rounds, then rethink the approach.

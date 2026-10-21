@@ -50,6 +50,8 @@ describe('review-tier', () => {
     ['src/preload/index.ts', 'keys, logins and IPC trust'],
     ['src/main/connections/googleClient.ts', 'keys, logins and IPC trust'],
     ['src/main/ipc/guard.ts', 'keys, logins and IPC trust'],
+    ['src/main/ipc/openExternalHandback.ts', 'keys, logins and IPC trust'],
+    ['.claude/skills/foo-correct/SKILL.md', 'review and build rules'],
     ['src/main/jobs/capWarning.ts', 'spend approvals and AI cap'],
     ['src/wa-bridge/index.ts', 'messages to other people'],
     ['src/main/drafts/x.ts', 'messages to other people'],

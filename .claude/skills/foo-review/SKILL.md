@@ -17,9 +17,9 @@ Run `pnpm review:tier --base <milestone-branch or origin/main>`. The tier comes 
 
 | Tier   | When (see `scripts/review-tier.ts`)                                                                                              | Reviewers                              | Verify step |
 | ------ | --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | ----------- |
-| low    | only `docs/`, `.claude/skills/`, root `*.md`, under 400 changed lines                                                             | one Sonnet                             | no          |
-| normal | app or test code                                                                                                                  | one Fable                              | yes         |
-| high   | CI workflows, `spec/`, `golden/`, fidelity gates, installer, dependencies, vault/secrets, spend approvals, AI engine and AI finder | Fable + Opus, same diff, one message   | yes         |
+| low | only `docs/` (not `docs/cr/` or `build-method.md`), helper skills, root `*.md` other than `CLAUDE.md`, under 400 changed lines | one Sonnet | no |
+| normal | everything else: app and test code | one Fable | yes |
+| high | the `HIGH` list in `scripts/review-tier.ts` (the one source): CI, spec, golden, CRs, review and build rules, fidelity gates, installer, dependencies, AI engine, keys, logins, IPC trust, spend and AI cap, messages to other people | Fable + Opus, same diff, one message | yes |
 
 High tier never widens what approve-on-behalf covers: the items `docs/build-method.md` §5 keeps for Vikas (and CI trigger changes) stay his. Paste the tier line into the PR.
 

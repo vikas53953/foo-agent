@@ -15,7 +15,7 @@ export const HIGH: { name: string; re: RegExp }[] = [
   { name: 'CR files', re: /^docs\/cr\// },
   {
     name: 'review and build rules',
-    re: /^(?:CLAUDE\.md|OWNERS\.yml|docs\/build-method\.md|\.claude\/(?!skills\/)|\.claude\/skills\/(?:foo-review|foo-playbooks|foo-verify|foo-decision-log)\/)/,
+    re: /^(?:CLAUDE\.md|OWNERS\.yml|docs\/build-method\.md|\.claude\/(?!skills\/)|\.claude\/skills\/(?:foo-review|foo-playbooks|foo-verify|foo-decision-log|foo-correct|foo-tickets)\/)/,
   },
   {
     name: 'fidelity gates',
@@ -26,7 +26,7 @@ export const HIGH: { name: string; re: RegExp }[] = [
   { name: 'AI engine', re: /^src\/engine\/|^src\/main\/(?:engine-supervisor|setup)\// },
   {
     name: 'keys, logins and IPC trust',
-    re: /^src\/preload\/|^src\/main\/(?:vault|secrets|connections)\/|^src\/main\/(?:ipc\/guard|windows\/oauthLoopback|settings\/webKeySettings|store\/writeRedacted)\.ts$/,
+    re: /^src\/preload\/|^src\/main\/(?:vault|secrets|connections)\/|^src\/main\/(?:ipc\/(?:guard|IpcRouter|openExternalHandback)|windows\/oauthLoopback|settings\/webKeySettings|store\/writeRedacted)\.ts$/,
   },
   { name: 'spend approvals and AI cap', re: /^src\/main\/approvals\/|^src\/main\/jobs\/capWarning\.ts$/ },
   { name: 'messages to other people', re: /^src\/wa-bridge\/|^src\/main\/(?:whatsapp|drafts)\// },
