@@ -424,8 +424,9 @@ describe('step phrase catalogue (08-4 §26.1)', () => {
     expect(resolvePhrase('open_terminal').key).toBe('generic_working');
     expect(resolvePhrase('stopped', {}, { inPlan: true }).key).toBe('generic_working');
     expect(resolvePhrase('check_site', {}).key).toBe('generic_working');
-    expect(resolvePhrase('check_site', { site: 'a'.repeat(41) }).key).toBe('generic_working');
-    expect(resolvePhrase('check_site', { site: 'x; rm -rf' }).key).toBe('generic_working');
+    // CR-0027 §(d): slots are cleaned first; only a slot with nothing left falls back.
+    expect(resolvePhrase('check_site', { site: '?!;' }).key).toBe('generic_working');
+    expect(resolvePhrase('check_site', { site: '   ' }).key).toBe('generic_working');
     expect(resolvePhrase('check_site', { site: 'Bad' }, { isBanned: (s) => s === 'Bad' }).key).toBe('generic_working');
     expect(phraseText('check_site', 'done', { site: 'IRCTC' })).toBe('Checked IRCTC');
   });
