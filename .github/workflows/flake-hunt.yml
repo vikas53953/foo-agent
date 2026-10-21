@@ -14,10 +14,10 @@ on:
         default: ''
       e2e:
         description: Playwright spec files, space separated (empty = none)
-        default: 'test/e2e/zz-reload-hunt.spec.ts'
+        default: 'test/e2e/zz-reload-hunt.spec.ts test/fidelity/ux/UX-14.signin.spec.ts'
       repeat:
         description: runs of each test per job
-        default: '40'
+        default: '15'
       debug:
         description: Playwright DEBUG value for the e2e step, e.g. pw:api (empty = off)
         default: ''
@@ -36,8 +36,8 @@ jobs:
         job: [1, 2, 3]
     env:
       UNIT: ${{ inputs.unit }}
-      E2E: ${{ inputs.e2e || 'test/e2e/zz-reload-hunt.spec.ts' }}
-      REPEAT: ${{ inputs.repeat || '40' }}
+      E2E: ${{ inputs.e2e || 'test/e2e/zz-reload-hunt.spec.ts test/fidelity/ux/UX-14.signin.spec.ts' }}
+      REPEAT: ${{ inputs.repeat || '15' }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4

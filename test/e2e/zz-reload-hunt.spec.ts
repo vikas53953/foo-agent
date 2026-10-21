@@ -58,18 +58,6 @@ test('reload hunt', async () => {
         ),
       );
     wc.on('console-message', (d: any) => log(`console ${d.level} ${String(d.message).slice(0, 200)}`));
-    try {
-      wc.debugger.attach('1.3');
-      wc.debugger.on('message', (_e, method, p: any) => {
-        if (method === 'Network.requestWillBeSent') log(`net start ${p.requestId} ${p.request.url}`);
-        else if (method === 'Network.responseReceived') log(`net resp ${p.requestId} ${p.response.status}`);
-        else if (method === 'Network.loadingFinished') log(`net done ${p.requestId}`);
-        else if (method === 'Network.loadingFailed') log(`net FAIL ${p.requestId} ${p.errorText}`);
-      });
-      void wc.debugger.sendCommand('Network.enable');
-    } catch (err) {
-      log(`debugger attach failed ${err}`);
-    }
   });
   await fullMotion(page);
   await app.evaluate(() => (globalThis as any).__trace.push('--- reload'));
@@ -104,5 +92,10 @@ test('reload hunt', async () => {
     console.log(`::group::STALL probe=${probe}\n${trace.join('\n')}\n::endgroup::`);
   }
   expect(dcl, 'DOMContentLoaded after reload').toBe(true);
+  // Electron answers an uncaught main-process error with a modal error box on Windows (main's JS stops until it is closed);
+  // the listener above stops that box, so any error it caught is printed and fails the run.
+  const errors = (await app.evaluate(() => (globalThis as any).__trace as string[])).filter((l) => /UNCAUGHT|UNHANDLED|THREW/.test(l));
+  if (errors.length) console.log(`::group::MAIN ERRORS\n${errors.join('\n')}\n::endgroup::`);
+  expect(errors).toEqual([]);
   await app.close();
 });
