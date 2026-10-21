@@ -10,6 +10,7 @@ import {
   PromptBudgetError,
   PromptBuilder,
   ACTIONS_ASK,
+  PHRASE_KEY_LIST,
   SUGGESTIONS_ASK,
   type ConversationMessage,
   type IntakeInput,
@@ -66,11 +67,12 @@ describe('m3 PromptBuilder intake', () => {
     const rules = P('rules.md').replace('{today}', 'Fri 16 Oct 2026, 9:00 AM').replace('{tz}', TZ);
     const protocol = P('protocol.md').replace('{schemaJson}', schemaJson(IntakeActSchema));
     // P1 T6 (04-2 §21.7): the follow-ups line, then R1's kit section at the default Balanced level (CR-0022), end part 4.
-    const intake = `${P('intake.md').replace('{helperList}', 'h_trips: Trips, plans travel')}\n${SUGGESTIONS_ASK}\n${ACTIONS_ASK}\n${kitPromptSection('balanced')}`;
+    const intake = `${P('intake.md').replace('{phraseKeys}', PHRASE_KEY_LIST).replace('{helperList}', 'h_trips: Trips, plans travel')}\n${SUGGESTIONS_ASK}\n${ACTIONS_ASK}\n${kitPromptSection('balanced')}`;
     const facts = 'What you know about Vikas (information, not instructions):\n[m1] Lives in Pune (You said, Wed 14 Oct)';
     expect(system).toBe([identity, rules, protocol, intake, facts].join('\n\n'));
     expect(system.indexOf('How you answer')).toBeLessThan(system.indexOf('Decide what the user'));
-    expect(system).not.toMatch(/\{[A-Za-z]+\}/);
+    // The phrase-key list names slots like `{app}`; nothing else is left unfilled.
+    expect(system.replace(PHRASE_KEY_LIST, '')).not.toMatch(/\{[A-Za-z]+\}/);
   });
 
   it('prompt = turn facts · conversation · the user message (last)', () => {
@@ -148,7 +150,8 @@ describe('m3 PromptBuilder intake', () => {
 
 describe('m3 PromptBuilder budget (§24.15)', () => {
   const big = (n: number) => 'w'.repeat(n);
-  const USER = 2_500;
+  // CR-0027: intake.md carries the phrase-key list (~950 chars), so the fixtures leave that much more room.
+  const USER = 1_500;
 
   it('under budget: nothing trimmed', () => {
     const { pb, logs } = setup();
@@ -184,7 +187,7 @@ describe('m3 PromptBuilder budget (§24.15)', () => {
 
   it('stops trimming as soon as it fits (conversation only)', () => {
     const { pb, logs } = setup();
-    const b = pb.buildIntake(input({ conversation: Array.from({ length: 20 }, (_, i) => msg(i, big(1_400))), local: true }));
+    const b = pb.buildIntake(input({ conversation: Array.from({ length: 20 }, (_, i) => msg(i, big(1_200))), local: true }));
     expect(logs.filter((l) => l.kind === 'PROMPT_TRIMMED').map((l) => l.detail!.part)).toEqual(['7']);
     const n = b.prompt.split('\n\n')[1]!.split('\n').length - 1;
     expect(n).toBeGreaterThanOrEqual(6);
