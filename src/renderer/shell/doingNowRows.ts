@@ -1,5 +1,6 @@
 // Spec: 03-shell-2 §3.7.3.1 (Doing now: order, 5 rows max with ≤ 2 finished, line 2 copy; X-148 In progress / Scheduled / Done
-// tabs), §3.7.4 (per-chat scope). Pure functions; DoingNow.tsx renders them.
+// tabs), §3.7.4 (per-chat scope). Pure functions; DoingNow.tsx renders them. CR-0028 (X-186): a QUEUED job whose Plan card
+// waits for Go shows as NEEDS YOU ("Needs you: {title}", Warning glyph), never "Waiting for another job to finish".
 import { t } from '../../shared/copy/t';
 import type { CardRow, ChatRow, JobRow, RoutineRow } from '../../shared/types';
 import { titleOfCard } from '../cards/registry';
@@ -41,9 +42,14 @@ export interface Rows<T> {
   total: number;
 }
 
+/** CR-0028: the state a Doing now row shows; a job waiting for its Plan card's Go needs the user. */
+export function shownState(j: Pick<JobRow, 'state' | 'awaitingGo'>): JobRow['state'] {
+  return j.state === 'queued' && j.awaitingGo === true ? 'needs_you' : j.state;
+}
+
 /** "In progress": NEEDS YOU, WORKING, QUEUED, WAITING (newest start first in each), then DONE/FAILED finished today. */
 export function doingRows(jobs: JobRow[], now: number, timeZone: string): Rows<JobRow> {
-  const live = LIVE_ORDER.flatMap((st) => jobs.filter((j) => j.state === st).sort((a, b) => startedAt(b) - startedAt(a)));
+  const live = LIVE_ORDER.flatMap((st) => jobs.filter((j) => shownState(j) === st).sort((a, b) => startedAt(b) - startedAt(a)));
   const finished = jobs
     .filter((j) => FINISHED.includes(j.state) && j.finishedAt !== null && sameLocalDay(j.finishedAt, now, timeZone))
     .sort((a, b) => finishedAt(b) - finishedAt(a));
@@ -97,7 +103,7 @@ function waitingReason(j: JobRow, ai: string): string | null {
 
 /** Line 2 of a Doing-now row (§3.7.3.1). */
 export function doingLine(j: JobRow, c: LineCtx): string {
-  switch (j.state) {
+  switch (shownState(j)) {
     case 'working': {
       const n = Math.min(Math.max(j.stepCount, 1), (j.currentStepIdx ?? j.stepsDone) + 1);
       return t('app.panel.doing.line.working', { n, m: j.stepCount, step: j.nowLine });

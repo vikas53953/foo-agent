@@ -16,6 +16,9 @@
 // from the redacted text; not in groups or WhatsApp mirrors); a side question (04 §17.5, pick 6, AT-364) skips the stop,
 // steer and typed-answer branches and the plan change, is answered as a reply only (never a job, never memory) and its
 // answer carries `side = 1`, so a running job keeps running unchanged.
+// CR-0028 (X-186): intake kind `ask` posts a Choice card with no job (08-4 §25.5 item 5); its answer, tapped or typed, sends
+// the user's message back to an intake turn with the question and answer attached (the part 8 `Decisions:` lines, 08-4 §24.22). Before
+// this, `ask` fell through to the empty-reply line ("I didn't get that"), found on the real-PC run of 2026-10-21.
 import { t } from '../../shared/copy/t';
 import type { Clock } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
@@ -37,6 +40,11 @@ import { splitSuggestions } from '../prompt/suggestions';
 // R1 T6
 import { understoodItems } from './understood';
 import { isSideAiText, sideAiText } from '../../shared/sideQuestion';
+// CR-0028
+import { newNonce } from '../../shared/canon';
+import { BADGE_OF_STATE } from '../../shared/jobMachine';
+import type { CardRow } from '../../shared/types';
+import { choiceFields } from '../cards/choiceFields';
 
 /** The your-AI service the lane talks to (Engine wires AiService). */
 export interface LaneAi {
@@ -68,6 +76,8 @@ export interface IntakeInput {
   // M5
   /** T10: "Change plan": the old plan goes with this turn (08-2 §5.3.3). */
   oldPlan?: { title: string; steps: string[] };
+  /** CR-0028: the intake questions this message already got answers to, as "- Q: … → A: …" lines. */
+  answers?: string[];
 }
 
 /** The reply protocol (builder B's modules, wired by Engine). */
@@ -95,7 +105,8 @@ export type IntakeDecisionView =
   | { kind: 'react'; emoji: '👍' | '❤️' }
   | Extract<IntakeDecision, { kind: 'job' }>
   | Extract<IntakeDecision, { kind: 'memory' }>
-  | { kind: 'ask' | 'handoff' | 'routine' | 'setting' | 'catch_up' };
+  | Extract<IntakeDecision, { kind: 'ask' }>
+  | { kind: 'handoff' | 'routine' | 'setting' | 'catch_up' };
 
 /** M6 T5: the memory seam of the lane (Engine wires IntakeMemory, MemoryChips and MemoryReview). */
 export interface LaneMemory {
@@ -137,7 +148,7 @@ export interface LaneJobs {
 export interface LaneDeps {
   link: MainLink;
   clock: Clock;
-  newId(prefix: 'm' | 't'): string;
+  newId(prefix: 'm' | 't' | 'k'): string;
   settings(): Settings;
   ai: LaneAi;
   protocol: LaneProtocol;
@@ -154,6 +165,14 @@ export interface LaneDeps {
 
 const MAX_TOTAL = 2; // 08-2 §6.9 chat lane
 const CONVERSATION = 20; // 08-2 §7.2 part 7
+
+/** CR-0028: what a skipped intake question tells the next turn. */
+const ANSWER_SKIPPED = '(skipped; use your best guess)';
+
+function isIntakeAsk(payload: Record<string, unknown>): payload is Record<string, unknown> & { intakeAsk: { messageId: string } } {
+  const v = payload.intakeAsk as { messageId?: unknown } | undefined;
+  return typeof v?.messageId === 'string' && v.messageId.length > 0;
+}
 
 function words(text: string): number {
   return text.trim().split(/\s+/u).filter(Boolean).length;
@@ -177,6 +196,8 @@ export class ChatLane {
   private chatTurns = new Map<string, { abort: AbortController; stopped: boolean }>();
   /** foo reply id → the user message it answered (04 §19.4 Try again). */
   private answered = new Map<string, string>();
+  /** CR-0028: user message id → the answers to the intake questions it got, for its next intake turn. */
+  private askAnswers = new Map<string, string[]>();
   /** R1 T6: user messages that are side questions; every foo row answering one carries `side = 1` (04 §17.5). */
   private sideTurns = new Set<string>();
   /** Resolves when every queued turn has finished (tests). */
@@ -195,6 +216,8 @@ export class ChatLane {
       if (await this.d.memory?.onCardAnswered(a)) return;
       await this.d.jobs?.onCardAnswered?.(a);
     },
+    // CR-0028: a typed answer to an intake question (the hook already wrote the card answered).
+    answeredIntakeAsk: (card, answer) => this.reintake(card, answer),
   };
 
   /** A user message main stored (MainToEngine user.message). */
@@ -319,6 +342,7 @@ export class ChatLane {
     let built: { system: string; prompt: string; factIds?: string[] } | null;
     try {
       const oldPlan = side ? null : (this.d.jobs?.planChange?.(chatId) ?? null);
+      const answers = this.askAnswers.get(messageId);
       built = this.d.protocol.buildIntake({
         settings,
         chat,
@@ -328,6 +352,7 @@ export class ChatLane {
         local: pick.billing === 'local',
         memory,
         ...(oldPlan ? { oldPlan } : {}),
+        ...(answers?.length ? { answers } : {}),
       });
     } catch {
       built = null;
@@ -547,6 +572,10 @@ export class ChatLane {
         askedText: message.textForAi ?? message.text,
         helperId: helper?.id ?? null,
       });
+    } else if (act && act.kind === 'ask') {
+      // CR-0028 (08-4 §25.5 item 5): the question goes on a Choice card with no job; text already released stands.
+      if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
+      await this.ask(chatId, messageId, act.card, helper);
     } else if (memoryKind && this.d.memory) {
       // M6 T5 (08-4 §25.5 item 5): text already released stands; the reaction, chip or card follows it.
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
@@ -567,6 +596,8 @@ export class ChatLane {
       const used = usedFacts(usedMemoryIds, built.factIds ?? [], memory);
       if (used.length) await this.d.memory.used(chatId, fooId, used);
     }
+    // CR-0028: the answers went with this turn; a new question keeps them for the turn after its answer.
+    if (kind !== 'ask') this.askAnswers.delete(messageId);
     await this.turnRow(turnId, chatId, pick, startedAt, result, 'ok');
     this.d.memory?.answered(chatId);
   }
@@ -604,6 +635,105 @@ export class ChatLane {
     if (words(message.textForAi ?? message.text) <= 6) await this.react(messageId, '👍', helper);
     else await this.post(chatId, messageId, t('thread.reply.empty'), helper, note);
     this.typing(chatId, false, who);
+  }
+
+  /**
+   * CR-0028: the intake question as a Choice card with no job (05-1 §5.3, purpose `job`); the user's bubble shows ⏳ while
+   * it waits (05-1 §5.3.3 Asking). No auto-pick and no 24 h stop: those rules are a job's (choiceTimeouts reads NEEDS_YOU jobs).
+   */
+  private async ask(
+    chatId: string,
+    messageId: string,
+    card: Extract<IntakeDecision, { kind: 'ask' }>['card'],
+    helper: EngineHelper | null,
+  ): Promise<void> {
+    const cardId = this.d.newId('k');
+    const cardMessageId = this.d.newId('m');
+    const now = this.d.clock.now();
+    const payload = {
+      ...choiceFields({ ...card, question: this.d.protocol.filter(card.question) }, null),
+      intakeAsk: { messageId },
+    };
+    const r = await this.tx([
+      {
+        op: 'insert',
+        table: 'messages',
+        row: {
+          id: cardMessageId,
+          chat_id: chatId,
+          author_kind: helper ? 'helper' : 'foo',
+          author_id: helper?.id ?? null,
+          kind: 'card',
+          card_id: cardId,
+          job_id: null,
+          status: 'complete',
+          created_at: now,
+        },
+      },
+      {
+        op: 'insert',
+        table: 'cards',
+        row: {
+          id: cardId,
+          chat_id: chatId,
+          message_id: cardMessageId,
+          job_id: null,
+          type: 'choice',
+          state: 'asking',
+          payload,
+          nonce: newNonce(),
+          created_at: now,
+        },
+      },
+      { op: 'update', table: 'messages', id: messageId, set: { badge: BADGE_OF_STATE.needs_you } },
+    ]);
+    if (!r.ok) {
+      this.d.log('chat.ask_failed', r.error.kind, { chatId });
+      await this.post(chatId, messageId, t('thread.reply.empty'), helper, null);
+    }
+  }
+
+  /** CR-0028: a tap on an intake question (Engine's card.answered); true when the card was one. */
+  async onCardAnswered(a: { cardId: string; choice?: string; text?: string; answer?: unknown; resolvedBy: string }): Promise<boolean> {
+    const card = await this.query<CardRow>('cardById', a.cardId);
+    if (!card || card.type !== 'choice' || card.jobId !== null || !isIntakeAsk(card.payload)) return false;
+    if (card.resolvedAt !== null) return true;
+    const answer = (a.answer as CardAnswer | undefined) ?? (a.choice ? { optionId: a.choice } : a.text ? { text: a.text } : null);
+    if (!answer) return true;
+    const r = await this.tx([
+      {
+        op: 'update',
+        table: 'cards',
+        id: card.id,
+        set: {
+          state: 'skip' in answer ? 'skipped' : 'answered',
+          answer,
+          resolved_by: a.resolvedBy,
+          resolved_at: this.d.clock.now(),
+        },
+      },
+    ]);
+    if (r.ok) await this.reintake(card, answer);
+    return true;
+  }
+
+  /** CR-0028: the asked message goes back to an intake turn with "- Q: {question} → A: {answer}" attached. */
+  private async reintake(card: CardRow, answer: CardAnswer): Promise<void> {
+    if (!isIntakeAsk(card.payload)) return;
+    const { messageId } = card.payload.intakeAsk;
+    const options = (card.payload.options as { id: string; label: string }[] | undefined) ?? [];
+    const label = (id: string) => options.find((o) => o.id === id)?.label ?? id;
+    const said =
+      'optionId' in answer
+        ? label(answer.optionId)
+        : 'optionIds' in answer
+          ? answer.optionIds.map(label).join(', ')
+          : 'text' in answer
+            ? answer.text
+            : ANSWER_SKIPPED;
+    const line = this.d.protocol.filter(`- Q: ${String(card.payload.question ?? '')} → A: ${said}`);
+    this.askAnswers.set(messageId, [...(this.askAnswers.get(messageId) ?? []), line]);
+    this.enqueue(card.chatId, messageId, { intakeOnly: true });
   }
 
   /** foo's reaction on the user's bubble takes the badge slot (04 §4.1 rule 5); no message is posted (AT-027). */
