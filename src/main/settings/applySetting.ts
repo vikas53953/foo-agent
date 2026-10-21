@@ -46,9 +46,11 @@ export function applySetting(
   if (!settingsSchema.safeParse(next).success) return fail('VALIDATION');
   if (settingLocked(path, full)) return fail('SETTING_LOCKED');
   ctx.settings.update(() => next);
-  const row = changeRecordRow(path, old, full, actor);
+  // What was stored (the schema drops unknown keys), so Undo's equality check compares like with like.
+  const stored = getPath(ctx.settings.get(), path);
+  const row = changeRecordRow(path, old, stored, actor);
   const tx = row ? applyDbOps(ctx.db, [{ op: 'activity', row }], { now: ctx.now(), dataDir: ctx.dataDir }).result : null;
-  return ok({ changeId: tx?.ok ? (tx.value.ids[0] ?? null) : null, old, value: full });
+  return ok({ changeId: tx?.ok ? (tx.value.ids[0] ?? null) : null, old, value: stored });
 }
 
 /** The engine's `settings.set` (§4.4.2 step 5): only the chat allow-list, as foo. */
@@ -62,9 +64,13 @@ export function applyChatSetting(ctx: SettingCtx, path: string, value: unknown) 
  * to too_late, and returns its id so main can tell the renderer.
  */
 export function undoSetting(ctx: SettingCtx, changeId: string): Result<{ messageIds: string[] }> {
-  const act = ctx.db.prepare("SELECT fields FROM activity WHERE id = ? AND kind = 'changed'").get(changeId) as
-    { fields: string | null } | undefined;
-  const f = act?.fields ? (JSON.parse(act.fields) as { path?: string; old?: unknown; new?: unknown }) : null;
+  // Review (trust): only a chat change of an allow-list path can be undone here; a row naming any other path (a forged
+  // engine `activity` op, a permission, a cap) is never written back.
+  const act = ctx.db
+    .prepare("SELECT fields FROM activity WHERE id = ? AND kind = 'changed' AND event = 'setting_changed' AND actor = 'foo'")
+    .get(changeId) as { fields: string | null } | undefined;
+  const parsed = act?.fields ? (JSON.parse(act.fields) as { path?: string; old?: unknown; new?: unknown }) : null;
+  const f = parsed?.path && isChatSettingPath(parsed.path) ? parsed : null;
   const lines = ctx.db
     .prepare("SELECT id, why FROM messages WHERE marker_kind = 'system_line' AND json_extract(why, '$.settingLine.changeId') = ?")
     .all(changeId) as { id: string; why: string }[];

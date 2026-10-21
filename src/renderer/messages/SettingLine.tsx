@@ -38,7 +38,7 @@ export function SettingLine({ m, line }: { m: MessageRow; line: SettingLineData 
           </button>
         </>
       ) : null}
-      {line.kind === 'refused' ? (
+      {line.kind === 'refused' || line.kind === 'bad_value' ? (
         <>
           {' '}
           <button

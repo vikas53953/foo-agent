@@ -72,6 +72,8 @@ export interface BridgeContext {
 type AiStatePayload = Extract<EngineToMain, { kind: 'ai.state' }>['payload'];
 
 /** Main's half of the engine port. `post` is set by the transport (MessagePort in production, a function in tests). */
+const SETTING_EVENTS = new Set(['setting_changed', 'cap_changed', 'permission_changed']);
+
 export class EngineBridge {
   post: (msg: MainToEngine) => void = () => {};
   /** True while an engine process is connected (FOO_TEST runs without FOO_FAKE_AI run no engine: rule 5, no real AI). */
@@ -153,6 +155,9 @@ export class EngineBridge {
         const now = this.now();
         // M6 T7 (08-3 §15.2 step 5): unprompted messages pass the interruption budget here, before anything is posted.
         const { ops } = gateUnprompted(this.ctx.db, this.ctx.settings.get(), now, msg.payload.ops as DbOp[]);
+        // CR-0043 review (trust): settings change records are main's own (08-1 §4.4.2 step 3); the engine never writes one.
+        if (ops.some((o) => o.op === 'activity' && SETTING_EVENTS.has(o.row.event)))
+          return { re: msg.id, result: { ok: false, error: { kind: 'IPC_REJECTED' } } };
         const { result, effects } = applyDbOps(this.ctx.db, ops, { now, dataDir: this.ctx.dataDir });
         for (const id of effects.messageIds) this.ctx.emitMessage(id);
         const jobIds = new Set(effects.jobIds);

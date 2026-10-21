@@ -37,7 +37,7 @@ export const isChatSettingPath = (path: string): path is ChatSettingPath => (CHA
 
 /** What the chat line and the marker row carry (`messages.why.settingLine`). */
 export interface SettingLineData {
-  kind: 'changed' | 'refused' | 'not_built';
+  kind: 'changed' | 'refused' | 'not_built' | 'bad_value';
   changeId?: string;
   path?: string;
   /** After [ Undo ]: undone, or too_late when the value changed again since (08-1 §4.4.2 step 4). */
@@ -91,7 +91,7 @@ export function settingValueLabel(path: ChatSettingPath, value: unknown): string
         .map(dayName)
         .join(', ');
     case 'notifications.unpromptedPerDay':
-      return t('thread.setting.value.per_day', { n: String(value) });
+      return value === 0 ? t('thread.setting.value.none') : t('thread.setting.value.per_day', { n: String(value) });
     case 'privacy.screenshotDays':
       return value === 0
         ? t('thread.setting.value.dont_keep')

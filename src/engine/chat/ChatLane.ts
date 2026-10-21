@@ -1005,7 +1005,12 @@ export class ChatLane {
       if (r?.ok) {
         line = { kind: 'changed', path: act.path, ...(r.value.changeId ? { changeId: r.value.changeId } : {}) };
         text = t('thread.setting.changed', { row: settingRowLabel(act.path), value: settingValueLabel(act.path, r.value.value) });
-      } else this.d.log('chat.setting_refused', r?.ok === false ? r.error.kind : 'UNKNOWN', { chatId });
+      } else {
+        // A value main refuses (VALIDATION, SETTING_LOCKED) for a path foo may change: the row exists, the value does not.
+        line = { kind: 'bad_value', page: settingsPageFor(act.path) };
+        text = t('thread.setting.bad_value');
+        this.d.log('chat.setting_refused', r?.ok === false ? r.error.kind : 'UNKNOWN', { chatId });
+      }
     }
     await this.tx([
       {

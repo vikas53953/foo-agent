@@ -4,7 +4,8 @@
 // that". Every intake answer below is the Claude CLI's real answer with the CR-0043 prompt (Wed 21 Oct, 12 of 12 named a path
 // from the list; with the old prompt 3 of 8 did, e.g. `voice.replies`, `purchaseCap`).
 import { afterEach, describe, expect, it } from 'vitest';
-import { undoSetting } from '../../src/main/settings/applySetting';
+import { applySetting, undoSetting } from '../../src/main/settings/applySetting';
+import { changeRecordRow } from '../../src/main/settings/changeRecord';
 import { t } from '../../src/shared/copy/t';
 import type { Settings } from '../../src/shared/settings';
 import { jobHarness, verified, type JobHarness } from './jobs/jobHarness';
@@ -104,6 +105,12 @@ describe('AT-094 · a setting on the allow-list changes by chat, with one line a
     expect(JSON.parse(activity(x)[0]!.fields)).toMatchObject({ path: d.path, new: d.value });
   });
 
+  it('"Don\'t message me on your own" (unprompted 0) reads "None", the Settings row\'s word', async () => {
+    const { h: x } = await ask(real({ kind: 'setting', path: 'notifications.unpromptedPerDay', value: 0 }), "Don't message me on your own");
+    expect(x.settings().notifications.unpromptedPerDay).toBe(0);
+    expect(lines(x).map((l) => l.text)).toEqual(['Changed: Messages I start on my own → None.']);
+  });
+
   it('"raat 10 baje se subah 7 tak quiet rakho": quiet hours take the parts named; days stay', async () => {
     const quiet = real({ kind: 'setting', path: 'notifications.quiet', value: { on: true, from: '22:00', to: '07:00' } });
     const { h: x } = await ask(quiet, 'raat 10 baje se subah 7 tak quiet rakho', (s) => ({
@@ -129,10 +136,12 @@ describe('AT-094 · anything off the allow-list is refused with Open Settings; n
     expect(activity(x)).toEqual([]);
   });
 
-  it('a real path with a value main refuses (zoom 130) gets the refusal line, nothing written', async () => {
+  it('a value main refuses on a path foo may change (zoom 130): "I can’t set it to that.", nothing written', async () => {
     const { h: x } = await ask(real({ kind: 'setting', path: 'zoom', value: 130 }), 'Zoom 130');
     expect(x.settings().zoom).toBe(100);
-    expect(lines(x).map((l) => l.why.settingLine)).toEqual([{ kind: 'refused', page: 'appearance' }]);
+    expect(lines(x).map((l) => [l.text, l.why.settingLine])).toEqual([
+      [t('thread.setting.bad_value'), { kind: 'bad_value', page: 'appearance' }],
+    ]);
   });
 
   it('a permission is never changed by chat, even with a real path', async () => {
@@ -148,5 +157,29 @@ describe('CR-0043 · an allow-list setting not in this build says so', () => {
     expect(lines(x).map((l) => [l.text, l.why.settingLine.kind])).toEqual([[t('thread.setting.not_built'), 'not_built']]);
     expect(activity(x)).toEqual([]);
     expect(fooTexts(x)).not.toContain(t('thread.reply.empty'));
+  });
+});
+
+describe('CR-0043 review · Undo writes back only a chat change of an allow-list path', () => {
+  const forged = changeRecordRow('money.purchaseCapPaise', 100_000_000, 2_500_000, 'foo') ?? {
+    ...changeRecordRow('appearance.theme', 'system', 'dark', 'foo')!,
+    fields: { path: 'money.purchaseCapPaise', old: 100_000_000, new: 2_500_000 },
+  };
+
+  it('the engine cannot write a settings change record (db.tx with a setting_changed activity op is refused)', async () => {
+    const { h: x } = await ask(DARK, 'Switch to dark mode');
+    const before = activity(x).length;
+    const reply = x.bridge.receive({ id: 'forge', kind: 'db.tx', payload: { ops: [{ op: 'activity', row: forged }] } });
+    expect(reply?.result).toMatchObject({ ok: false, error: { kind: 'IPC_REJECTED' } });
+    expect(activity(x)).toHaveLength(before);
+  });
+
+  it('a change id naming any other row (the user raising a cap, a permission) is TOO_LATE and nothing is written', async () => {
+    const { h: x } = await ask(DARK, 'Switch to dark mode');
+    const cap = applySetting({ db: x.db, settings: x.store, now: () => x.clock.now() }, 'money.aiCapPaise', 150_000, 'user');
+    expect(cap.ok && cap.value.changeId).toBeTruthy();
+    const capNow = x.settings().money.aiCapPaise;
+    expect(undo(x, cap.ok ? cap.value.changeId! : '')).toMatchObject({ ok: false, error: { kind: 'TOO_LATE' } });
+    expect(x.settings().money.aiCapPaise).toBe(capNow);
   });
 });

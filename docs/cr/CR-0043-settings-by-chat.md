@@ -44,3 +44,14 @@ pass, and the voice-replies part waits for `chat.voiceReplies` (today foo says "
 
 An independent Fable review of this CR and its diff, recorded in the PR and in `docs/decisions/real-pc.tsv` ("approved on
 Vikas's behalf" on pass).
+
+Result (2026-10-21): two independent Fable reviews (high tier: AI engine and IPC trust). Reviewer A: one act item, found by
+a scratch test: `settings:undo` wrote back `fields.old` from any `changed` activity row, and the engine may write activity
+rows and system lines, so a forged "Changed: … [ Undo ]" line could have raised the purchase cap with one tap. Fixed: Undo
+takes only main's own `setting_changed` rows for foo's chat op on an allow-list path, and the engine's `db.tx` may not carry
+a settings change record; two tests fail before the fix. Considered and applied: the change record holds the value as
+stored. Reviewer B: one act item, "Up to 0 a day" for 0 (the row says "None"), fixed with a test. Considered and applied: a
+value main refuses on a path foo may change says "I can't set it to that. Settings shows the choices." (not "one for you to
+change"); the quiet-hours row labels are recorded in the amendment; the prompt says the days are a list and "for any other
+setting". The CLI replays were re-run on the final prompt: 14 of 14 settings asks named an allowed path or a refused one as
+expected, and 6 of 6 non-settings asks kept their kind (job, job, job, memory, reply, react). Approved on Vikas's behalf.
