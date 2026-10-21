@@ -116,6 +116,28 @@ function copyTechLog(from, out) {
   return { lines: lines.length, dropped };
 }
 
+// foo's AI turn log (ai_turns, 0001_init.sql) from the test profile's database, for this journey only. Only ids and enum
+// columns are kept (no text, no tokens of content), so it is safe for the public evidence branch.
+const TURN_COLS = ['started_at', 'purpose', 'outcome', 'error_kind', 'duration_ms', 'chat_id', 'job_id', 'provider_id', 'billing'];
+function copyAiTurns(from, out) {
+  const file = path.join(PROFILE, 'data', 'data', 'foo.db');
+  if (!fs.existsSync(file)) return { turns: 0, note: 'no database' };
+  const Database = require(path.join(path.dirname(EXE), 'resources', 'app.asar.unpacked', 'node_modules', 'better-sqlite3'));
+  const db = new Database(file, { readonly: true, fileMustExist: true });
+  try {
+    const rows = db.prepare(`SELECT ${TURN_COLS.join(', ')} FROM ai_turns WHERE started_at >= ? ORDER BY started_at`).all(from);
+    const safe = rows.map((r) =>
+      Object.fromEntries(
+        Object.entries(r).filter(([, v]) => v === null || typeof v === 'number' || /^[A-Za-z0-9_.:-]{1,64}$/.test(String(v))),
+      ),
+    );
+    fs.writeFileSync(path.join(out, 'ai-turns.jsonl'), safe.map((r) => JSON.stringify(r)).join('\n') + (safe.length ? '\n' : ''));
+    return { turns: safe.length };
+  } finally {
+    db.close();
+  }
+}
+
 async function main() {
   const file = process.argv[2];
   if (!file) throw new Error('usage: foo-drive.js <journey.json>');
@@ -183,8 +205,10 @@ async function main() {
       if (!log) return { n: 0, texts: [] };
       const memoryChip = (el) =>
         el.getAttribute('data-testid') === 'thread-marker' && !!el.querySelector('[data-testid="thread-memory-undo"]');
+      // Only top-level rows: a card's own parts (card-connect-allow-send inside card-connect) are not extra replies.
+      const nested = (el) => !!el.parentElement?.closest('[data-testid^="bubble-"], [data-testid^="card-"]');
       const all = [...log.querySelectorAll('[data-testid^="bubble-"], [data-testid^="card-"], [data-testid="thread-marker"]')].filter(
-        (el) => /^(bubble-(me|foo|helper|wa)|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) || memoryChip(el),
+        (el) => (/^(bubble-(me|foo|helper|wa)|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) || memoryChip(el)) && !nested(el),
       );
       const kinds = all.map((el) => el.getAttribute('data-testid'));
       const after = all
@@ -355,25 +379,30 @@ async function main() {
         case 'send': {
           const field = page.locator('[data-testid="composer-field"]');
           await field.waitFor({ state: 'visible', timeout: 30_000 });
-          const mine = page.locator('[data-testid="thread-log"] [data-testid="bubble-me"]');
-          const lastMine = mine.count().then((c) => (c ? mine.last().innerText() : ''));
-          const prev = await lastMine;
+          const ME = '[data-testid="thread-log"] [data-testid="bubble-me"]';
           await field.click();
           await field.fill(s.text);
+          // Mark the newest bubble-me, send, and wait for a newer unmarked one (the same text sent twice still counts).
+          await page.evaluate((q) => {
+            const b = [...document.querySelectorAll(q)].pop();
+            if (b) b.setAttribute('data-drv-seen', '1');
+          }, ME);
           await page.keyboard.press('Enter');
           rec.sentAt = Date.now();
-          // Wait until the sent bubble is the newest bubble-me, then take what is already below it as the baseline.
-          await page
+          rec.sent = await page
             .waitForFunction(
-              (p) => {
-                const b = [...document.querySelectorAll('[data-testid="thread-log"] [data-testid="bubble-me"]')].pop();
-                return b && b.innerText !== p;
+              (q) => {
+                const b = [...document.querySelectorAll(q)].pop();
+                return b && !b.hasAttribute('data-drv-seen');
               },
-              prev,
+              ME,
               { timeout: 10_000 },
             )
-            .catch(() => {});
-          rec.before = (await afterMe()).n;
+            .then(() => true)
+            .catch(() => false);
+          // Everything below the sent bubble is foo's answer, even one that landed before this line ran (B04's instant
+          // "Nothing's running right now."), so the baseline is 0. If no bubble was sent, keep what is below the old one.
+          rec.before = rec.sent ? 0 : (await afterMe()).n;
           break;
         }
         case 'waitReply': {
@@ -500,6 +529,11 @@ async function main() {
     log({ step: 'appLog', ...copyTechLog(journeyStart, out) });
   } catch (e) {
     log({ step: 'appLog', ok: false, error: String(e).slice(0, 300) });
+  }
+  try {
+    log({ step: 'aiTurns', ...copyAiTurns(journeyStart, out) });
+  } catch (e) {
+    log({ step: 'aiTurns', ok: false, error: String(e).slice(0, 300) });
   }
   const summary = {
     journey: journey.id,

@@ -91,6 +91,14 @@ export function answerCard(
   const c = card(d.db, 'id = ?', req.cardId);
   if (!c) return fail('NOT_FOUND');
   if (c.type === 'secret') return cancelSecret(d, c, req);
+  // CR-0044: Not now on an intake Connect card (no job yet); the chat lane writes it and runs the message without the app.
+  if (c.type === 'connect' && c.jobId === null && c.payload.intakeConnect !== undefined) {
+    if (!('skip' in req.answer)) return fail('VALIDATION');
+    if (req.nonce !== undefined && c.nonce !== req.nonce) return fail('CARD_STALE');
+    if (c.state !== 'offered' || c.resolvedAt !== null) return fail('CARD_STALE');
+    const sent = d.engine?.send('card.answered', { cardId: c.id, answer: req.answer, resolvedBy: req.resolvedBy });
+    return sent ? ok(c) : fail('UNKNOWN', 'engine not running');
+  }
   if (!ANSWERABLE.has(c.type)) return fail('VALIDATION');
   if (req.nonce !== undefined && c.nonce !== req.nonce) return fail('CARD_STALE');
   const now = d.now();

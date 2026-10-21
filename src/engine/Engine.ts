@@ -408,6 +408,8 @@ export class Engine {
         this.google !== null && this.trouble.googleMissing()
           ? needs.filter((a): a is 'gmail' | 'gcal' | 'contacts' => a === 'gmail' || a === 'gcal' || a === 'contacts')
           : [],
+      // CR-0043 (08-1 §4.4.2 step 5)
+      setSetting: (path, value, chatId) => o.link.request('settings.set', { path, value, chatId }),
     });
     this.jobs.setIntake((chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }));
     this.kitActions = new KitActions({
