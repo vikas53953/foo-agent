@@ -1,0 +1,44 @@
+{
+  "journey": "test/verify/c1-t2-voice.journey.ts",
+  "label": "after",
+  "appDir": "/home/user/foo-agent",
+  "commit": "0c0182eedf1066a3f89426fa3c19e4e18383750e",
+  "dirty": true,
+  "started": "2026-10-21T06:54:06.527Z",
+  "finished": "2026-10-21T06:54:11.488Z",
+  "platform": "linux x64",
+  "pass": true,
+  "error": null,
+  "notes": [
+    "asked \"what can you do\": foo answered in one sentence: \"I take care of the small jobs on your computer, and I ask before I send, book or pay.\"",
+    "the card follows with rows email, price, compare, remind; the email row says \"Connect Gmail to start\"",
+    "footer: \"I never send, book or pay until you tap Approve.\"; no ideas link line (the Ideas page is still a placeholder)",
+    "Try it on \"Watch a price\" filled the field with \"Tell me when this phone drops below ₹50,000\", focused it, and sent nothing (still 6 of my bubbles, 1 intake turn)"
+  ],
+  "shots": [
+    {
+      "file": "after/01-foo-chat-before.light.png",
+      "name": "foo-chat-before",
+      "theme": "light"
+    },
+    {
+      "file": "after/02-capabilities-card.light.png",
+      "name": "capabilities-card",
+      "theme": "light"
+    },
+    {
+      "file": "after/03-try-it-filled.light.png",
+      "name": "try-it-filled",
+      "theme": "light"
+    },
+    {
+      "file": "after/04-try-it-filled.dark.png",
+      "name": "try-it-filled",
+      "theme": "dark"
+    }
+  ],
+  "consoleErrors": [
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.",
+    " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback."
+  ]
+}
