@@ -1,7 +1,7 @@
 // Spec: 08-2 §5.2 (every user message gets one intake turn), §6.9 (chat lane: 1 per chat, 2 in total), §7.2–§7.6 (prompt,
 // FOO/1 envelope, repair once, output filters), 08-4 §24.1 (intake parts), §25.2 (IntakeAct), §25.5 (release gate; what is
-// posted per kind, F-095; empty reply → 👍 or "I didn't get that. Say it another way?", F-092), §30.1 (intake: 60 s, stream),
-// §30.7 (at 60 s the turn is cancelled and no late text is posted), 04 §3.3 (ticks: ✓✓ delivered when the lane accepts the
+// posted per kind, F-095; empty reply → one more turn, then "I didn't get that. Say it another way?", F-092 as amended by
+// CR-0041), §30.1 (intake: 60 s, stream), §30.7 (at 60 s the turn is cancelled and no late text is posted), 04 §3.3 (ticks: ✓✓ delivered when the lane accepts the
 // message, read on the first byte), §4.1 rule 4 (a plain answer's badge is `seen` and goes when the first word appears),
 // §14.3 (Thinking row only while a request is really in flight: chat:typing), §19.4 (cut-off reply: partial text stays,
 // bubble status `failed`), 08-1 §4.3.5 (ai_turns row per turn), Art. 12 (AI words never move a status), Art. 16, 22.
@@ -193,10 +193,6 @@ function isIntakeAsk(payload: Record<string, unknown>): payload is Record<string
   return typeof v?.messageId === 'string' && v.messageId.length > 0;
 }
 
-function words(text: string): number {
-  return text.trim().split(/\s+/u).filter(Boolean).length;
-}
-
 export class ChatLane {
   private queues = new Map<string, string[]>();
   private busy = new Set<string>();
@@ -206,6 +202,8 @@ export class ChatLane {
   private inflight = new Set<string>();
   /** User messages whose turn already ran once more after a tool-use violation. */
   private violationRetried = new Set<string>();
+  /** CR-0041: user messages whose intake turn already ran once more after an empty answer. */
+  private emptyRetried = new Set<string>();
   /** Enqueued by a drain of Waiting-to-send messages: skipped if another turn already answered it. */
   private drained = new Set<string>();
   /** Messages a steer sent back to intake (`new_job`): they skip the runner's branches. */
@@ -568,8 +566,6 @@ export class ChatLane {
       return;
     }
     this.d.ai.reportOk(pick.providerId);
-    // M5 T10: the changed plan went with a turn that answered; the next message is a fresh one.
-    if (!side) this.d.jobs?.planChange?.(chatId, true);
     await gate.end();
     await pending;
 
@@ -613,6 +609,7 @@ export class ChatLane {
     // R1 T6: a side question is answered, never turned into a job, a memory change or a setting (04 §17.5).
     if (side && act && act.kind !== 'react') act = { kind: 'reply' };
     const kind = act?.kind ?? 'reply';
+    let retryEmpty = false;
     const released = gate.released().trimEnd();
     if (kind !== 'reply' && released.trim()) this.d.log('chat.say_leak', 'PROTOCOL_SAY_LEAK', { chatId });
 
@@ -634,9 +631,12 @@ export class ChatLane {
         ]);
         // C1 T2 (04 §13.7): the one-sentence reply, then the app-built Capabilities card.
         if (kind === 'reply' && !side && tags.includes('intent_capabilities')) await this.capabilitiesCard(chatId, helper);
+      } else if (!this.emptyRetried.has(messageId)) {
+        // CR-0041 (08-4 §25.5 item 6, F-092 as amended): nothing passed the filters; the turn runs once more, nothing shown.
+        this.emptyRetried.add(messageId);
+        retryEmpty = true;
       } else {
-        // Nothing passed the filters: 08-4 §25.5 item 6 (F-092).
-        await this.emptyReply(chatId, messageId, message, helper, who, providerNote);
+        await this.emptyReply(chatId, messageId, helper, who, providerNote);
       }
     } else if (act && act.kind === 'job' && this.d.jobs) {
       // 08-2 §5.3.3: the runner takes over; its checklist and result are what the user sees next (ART-22).
@@ -668,13 +668,24 @@ export class ChatLane {
       this.d.log('chat.kind_not_built', undefined, { chatId });
       await this.post(chatId, messageId, t('thread.reply.empty'), helper, providerNote);
     }
-    this.typing(chatId, false, who);
-    await this.recordUses(chatId, usedMemoryIds, built.factIds ?? [], memory);
+    // CR-0041: a retried turn keeps the Thinking row and records no uses of the answer it threw away.
+    if (!retryEmpty) {
+      this.typing(chatId, false, who);
+      await this.recordUses(chatId, usedMemoryIds, built.factIds ?? [], memory);
+    }
     // M6 T5 (08-3 §12.5): "Used: {fact} ✕" under the reply, for the offered facts the AI named.
     if (kind === 'reply' && fooId && this.d.memory) {
       const used = usedFacts(usedMemoryIds, built.factIds ?? [], memory);
       if (used.length) await this.d.memory.used(chatId, fooId, used);
     }
+    // CR-0041: the retried turn takes the same message, with its answers, its changed plan and its intake-only mark.
+    if (retryEmpty) {
+      await this.turnRow(turnId, chatId, pick, startedAt, result, 'ok');
+      if (intakeOnly && !side) this.intakeOnly.add(messageId);
+      return this.turn(chatId, messageId);
+    }
+    // M5 T10: the changed plan went with a turn that answered; the next message is a fresh one.
+    if (!side) this.d.jobs?.planChange?.(chatId, true);
     // CR-0028: the answers went with this turn; a new question keeps them for the turn after its answer.
     if (kind !== 'ask') this.askAnswers.delete(messageId);
     await this.turnRow(turnId, chatId, pick, startedAt, result, 'ok');
@@ -703,16 +714,15 @@ export class ChatLane {
     if (!r.ok) this.d.log('memory.uses_failed', r.error.kind, { chatId });
   }
 
+  /** CR-0041: a 👍 comes only from intake kind `react`; a second empty answer is said out loud, whatever the message's length. */
   private async emptyReply(
     chatId: string,
     messageId: string,
-    message: EngineMessage,
     helper: EngineHelper | null,
     who: string,
     note: string | null,
   ): Promise<void> {
-    if (words(message.textForAi ?? message.text) <= 6) await this.react(messageId, '👍', helper);
-    else await this.post(chatId, messageId, t('thread.reply.empty'), helper, note);
+    await this.post(chatId, messageId, t('thread.reply.empty'), helper, note);
     this.typing(chatId, false, who);
   }
 
