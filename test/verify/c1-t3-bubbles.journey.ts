@@ -3,6 +3,7 @@
 // foo-verify journey for C1 T3, real app on the seeded world with the fake AI: ask foo something, get a 3-paragraph reply
 // whose last line is one short word, react 👎 to it through the picker, send the next message, and check: one bubble with
 // one time, foo's face and name above it, the chip clear of the words and the next row 24px below; light and dark.
+// B3 (real-PC run): suggestion chips under a reply, then a taller composer, and the newest bubble stays in view.
 // Run:
 //   xvfb-run -a pnpm tsx scripts/foo-verify.ts test/verify/c1-t3-bubbles.journey.ts
 import type { Locator, Page } from '@playwright/test';
@@ -21,6 +22,8 @@ const THREE = [
 ];
 const NEXT = 'thanks, and the return';
 const NEXT_ANSWER = 'The return is on Sunday at 18:05.';
+const TABLE = 'a table for Friday';
+const TABLE_ANSWER = 'Toit has a table for 4 on Fri at 7 PM.';
 
 const advance = (page: Page, ms: number) => page.evaluate((n) => window.__fooTest!.clock.advance(n), ms);
 const rowOf = (page: Page, has: Locator) => page.locator(`${byTid(TID.threadLog)} [data-message-id]`).filter({ has });
@@ -47,7 +50,13 @@ export default async function journey(v: Verify): Promise<void> {
   // Every check runs and every picture is taken (the "before" build fails several); the journey fails at the end.
   const problems: string[] = [];
   const check = (ok: boolean, why: string) => ok || problems.push(why);
-  const { app, page } = await v.launch({ fakeAi: [intake(ASK, THREE.join('\n\n')), intake(NEXT, NEXT_ANSWER)] });
+  const { app, page } = await v.launch({
+    fakeAi: [
+      intake(ASK, THREE.join('\n\n')),
+      intake(NEXT, NEXT_ANSWER),
+      intake(TABLE, `${TABLE_ANSWER}\nSuggestions: Book it | Other places`),
+    ],
+  });
   await settleSeededJobs(page, await openWorld(app, page));
   // The helpers slice loads with the bootstrap, before the seed: reload so every name is known.
   await page.reload();
@@ -131,5 +140,29 @@ export default async function journey(v: Verify): Promise<void> {
     check(fill === want, `${theme}: my bubble ${fill}, spec ${want}`);
     await v.shot('reply-with-thumbs-down');
   }
+
+  // 4. B3: a reply with suggestion chips, then a taller composer: the list's viewport shrinks and the newest bubble stays
+  // in view, pinned within 15px of the end (04 §1.6, X-152).
+  await setTheme(page, 'light');
+  await send(page, TABLE);
+  const table = page.getByTestId(TID.bubbleFoo).filter({ hasText: TABLE_ANSWER });
+  await showUp(page, table);
+  await page.getByTestId(TID.composerSuggestionChip).first().waitFor();
+  const log = page.getByTestId(TID.threadLog);
+  for (const step of ['chips shown', 'composer three lines taller'] as const) {
+    if (step === 'composer three lines taller') {
+      await page.getByTestId(TID.composerField).focus();
+      await page.keyboard.type('and');
+      for (let i = 0; i < 3; i++) await page.keyboard.press('Shift+Enter');
+    }
+    await page.waitForTimeout(500);
+    const off = await log.evaluate((el) => Math.round(el.scrollHeight - el.scrollTop - el.clientHeight));
+    const inView = (await box(table)).bottom <= (await box(log)).bottom;
+    v.note(`B3 (${step}): newest bubble in view = ${inView}; ${off}px from the end`);
+    check(inView && off < 15, `B3 ${step}: in view ${inView}, ${off}px from the end`);
+    await settle(page);
+    await v.shot(`b3-${step.split(' ')[0]}`);
+  }
+
   if (problems.length) throw new Error(problems.join('; '));
 }

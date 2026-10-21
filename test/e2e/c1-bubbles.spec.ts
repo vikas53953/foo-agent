@@ -2,7 +2,8 @@
 // the next row sits 24px below), AT-427 (a 3-paragraph chat-mode reply of ≤ 600 characters is one bubble with one time),
 // AT-428 (foo's chat and a helper's chat show the face and name above the first bubble of each output run), AT-429 (dark
 // user bubble #2C359A, light #0B0B10). 04 §8 anchor (`bottom: -18px`), §1.2 rhythm row (24px under a reaction chip), §12.3
-// (chat mode: one bubble, paragraphs 8px apart inside), §12.4 (sender label), 02 F2 `--bubble-me`; CR-0024 B2, F2, F6. Every
+// (chat mode: one bubble, paragraphs 8px apart inside), §12.4 (sender label), 02 F2 `--bubble-me`; CR-0024 B2, F2, F6; B3 from the real-PC run (04 §1.6,
+// 03-shell-2 §3.6.4: a list at the bottom stays pinned within 15px when the chips or a taller composer shrink it). Every
 // reply comes from the fake AI (FOO_FAKE_AI, 08-3 §22.3); no test reaches a real AI or the network.
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import type {} from '../../src/shared/ipc';
@@ -187,5 +188,42 @@ test('AT-429 · the dark theme user bubble is #2C359A; light stays #0B0B10', asy
   if (process.platform !== 'win32') await page.emulateMedia({ colorScheme: 'dark' });
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   expect(await mine.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(44, 53, 154)');
+  await app.close();
+});
+
+test('B3 · when the suggestion chips appear under a reply, the newest bubble stays in view (04 §1.6)', async () => {
+  // A streamed reply (as a real AI answers): the bubble fills, then on completion the Suggestions line leaves it and the
+  // chips appear above the composer, so the list's viewport shrinks after the list followed the reply.
+  const act = `<act>${JSON.stringify({ decision: { kind: 'reply' }, usedMemoryIds: [] })}</act>`;
+  const first = 'Toit has a table for 4 on Fri at 7 PM.';
+  const { app, page } = await start([
+    {
+      match: { purpose: 'intake', promptIncludes: 'table for Friday' },
+      chunks: [
+        { text: `<say>${first} ` },
+        { text: `It is quiet there after 8.\nSuggestions: Book it | Other places</say>\n${act}`, delayMs: 20_000 },
+      ],
+    },
+  ]);
+  await openChat(page, 'foo');
+  const { reply } = await ask(page, 'a table for Friday', first);
+  await advance(page, 20_000);
+  await expect(reply.getByTestId(TID.bubbleFoo)).toContainText('quiet there');
+  await expect(page.getByTestId(TID.composerSuggestionChip).first()).toBeVisible();
+  const log = page.getByTestId(TID.threadLog);
+  // The chips are in; give the list a few frames (it must not need more), then the reply must be fully on screen.
+  const pinned = async () => {
+    await page.waitForTimeout(500);
+    const [l, b] = [await rect(log), await rect(reply.getByTestId(TID.bubbleFoo))];
+    expect(b.bottom).toBeLessThanOrEqual(l.bottom);
+    // Still pinned to the bottom (04 §1.6 / X-152: within 15px).
+    expect(await log.evaluate((el) => el.scrollHeight - el.scrollTop - el.clientHeight)).toBeLessThan(15);
+  };
+  await pinned();
+  // The same cause without the chips: the composer grows by three lines, so the list's viewport shrinks again.
+  await page.getByTestId(TID.composerField).focus();
+  await page.keyboard.type('and');
+  for (let i = 0; i < 3; i++) await page.keyboard.press('Shift+Enter');
+  await pinned();
   await app.close();
 });
