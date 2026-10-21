@@ -1,0 +1,13 @@
+{"t":"2026-10-21T22:45:20.749Z","journey":"B02-choice","title":"Choice card: options, Best fit, typed answer","spec":"AT-032, AT-035, AT-288","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T22:45:26.252Z","step":"launch","ok":true}
+{"t":"2026-10-21T22:45:26.458Z","i":0,"do":"send","sentAt":1792622726362,"before":0,"ok":true,"ms":203}
+{"t":"2026-10-21T22:45:39.693Z","i":1,"do":"waitReply","firstReplyMs":7084,"newBubbles":7,"ok":true,"duplicates":0,"lastReply":"Where will you mostly run in these shoes?\n1\nRoads and pavements\nBEST FIT\nEveryday jogging, cushioned\n2\nTreadmill or gym\nLight and breathable\n3\nTrails or mud\nExtra grip\n4\nA bit of everything\nSomething else…\nSkip\n10:45 PM\n---\n1\nRoads and pavements\nBEST FIT\nEveryday jogging, cushioned\n---\n2\nTreadmill or gym\nLight and breathable\n---\n3\nTrails or mud\nExtra grip\n---\n4\nA bit of everything\n---\nSomething else…\n---\nSkip","ms":13234}
+{"t":"2026-10-21T22:45:39.759Z","shot":"01-choice.png"}
+{"t":"2026-10-21T22:45:39.761Z","i":2,"do":"check","found":1,"ok":true,"ms":2}
+{"t":"2026-10-21T22:45:39.762Z","i":3,"do":"check","found":4,"ok":true,"ms":1}
+{"t":"2026-10-21T22:45:39.764Z","i":4,"do":"text","soft":true,"text":"Where will you mostly run in these shoes?\n1\nRoads and pavements\nBEST FIT\nEveryday jogging, cushioned\n2\nTreadmill or gym\nLight and breathable\n3\nTrails or mud\nExtra grip\n4\nA bit of everything\nSomething else…\nSkip\n10:45 PM","ok":true,"ms":2}
+{"t":"2026-10-21T22:45:39.901Z","i":5,"do":"send","sentAt":1792622739837,"before":0,"ok":true,"ms":137}
+{"t":"2026-10-21T22:45:52.571Z","i":6,"do":"waitReply","expect":"AT-035: card collapses as if option 2 was tapped","firstReplyMs":6573,"newBubbles":7,"ok":true,"duplicates":0,"lastReply":"How should the shoes feel on the treadmill?\n1\nSoft and cushioned\nBEST FIT\nEasy on knees, good for long runs\n2\nBalanced\nA bit of both, good all-rounder\n3\nLight and firm\nQuicker feel, better for speed\n4\nNot sure\nPick what suits gym running\nSomething else…\nSkip\n10:45 PM\n---\n1\nSoft and cushioned\nBEST FIT\nEasy on knees, good for long runs\n---\n2\nBalanced\nA bit of both, good all-rounder\n---\n3\nLight and firm\nQuicker feel, better for speed\n---\n4\nNot sure\nPick what suits gym running\n---\nSomething else…\n---\nSkip","ms":12670}
+{"t":"2026-10-21T22:45:52.639Z","shot":"02-typed-2.png"}
+{"t":"2026-10-21T22:45:52.656Z","i":7,"do":"dump","ok":true,"ms":17}
+{"t":"2026-10-21T22:45:52.778Z","step":"appLog","lines":7,"dropped":0}

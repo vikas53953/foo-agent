@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Treadmill or gym\n10:45 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:45 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n10:45 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "How should the shoes feel on the treadmill?\n1\nSoft and cushioned\nBEST FIT\nEasy on knees, good for long runs\n2\nBalanced\nA bit of both, good all-rounder\n3\nLight and firm\nQuicker feel, better for speed\n4\nNot sure\nPick what suits gym running\nSomething else…\nSkip\n10:45 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:45 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n10:47 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which 2 nights in Goa do you want?\n1\nFri 30 Oct to Sun 1 Nov\nBEST FIT\nNext weekend, check in Friday\n2\nSat 31 Oct to Mon 2 Nov\nNext weekend, check in Saturday\n3\nFri 23 Oct to Sun 25 Oct\nThis coming weekend\nSomething else…\nSkip\n10:48 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n10:51 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nChecked isro.gov.in, pib.gov.in, The Hindu\nI\nP\nT\nLooked for ISRO news from Wed 14 Oct to Wed 21 Oct\nWrote it\nStopped by you\n10:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n10:51 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb search keeps failing as busy, and the ISRO page needs a browser\nSpent so far\n1 minutes\nWhat I’d do\ntry pib.gov.in instead\n10:52 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:52 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nWhat's the latest news about ISRO this week? Give me sources.\nAnd one about Ludhiana\nEdited\n10:52 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Golden Temple's community kitchen in Amritsar serves free meals to around 1 lakh people every day, run almost entirely by volunteers.\n\n10:52 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n10:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n10:55 PM"
+  }
+]

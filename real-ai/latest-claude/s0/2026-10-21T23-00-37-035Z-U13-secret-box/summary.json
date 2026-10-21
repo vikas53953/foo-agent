@@ -1,0 +1,121 @@
+{
+  "journey": "U13-secret-box",
+  "title": "Secret box: type a fake key, show/hide, save, replace",
+  "steps": 15,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T23-00-37-035Z-U13-secret-box",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1025
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 2,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 15099,
+      "late": true
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "Secret box card: masked field, eye toggle, Save",
+      "ok": true,
+      "ms": 1514
+    },
+    {
+      "i": 4,
+      "do": "fill",
+      "soft": true,
+      "ok": false,
+      "error": "locator.fill: Timeout 30000ms exceeded.",
+      "ms": 30065
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "value masked",
+      "ok": true,
+      "ms": 302
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23065
+    },
+    {
+      "i": 7,
+      "do": "wait",
+      "expect": "value shown after eye",
+      "ok": true,
+      "ms": 302
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23079
+    },
+    {
+      "i": 9,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23063
+    },
+    {
+      "i": 10,
+      "do": "wait",
+      "expect": "\"· saved {date}\", only Replace offered; value never shown again",
+      "ok": true,
+      "ms": 2002
+    },
+    {
+      "i": 11,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23077
+    },
+    {
+      "i": 12,
+      "do": "wait",
+      "expect": "empty field to replace",
+      "ok": true,
+      "ms": 800
+    },
+    {
+      "i": 13,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23063
+    },
+    {
+      "i": 14,
+      "do": "dump",
+      "ok": true,
+      "ms": 5
+    }
+  ]
+}

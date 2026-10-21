@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can read your email, calendar and apps, plan and book things, set up routines, and remember what matters to you; the app shows what works on this PC.\n\n10:45 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n10:45 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet. Everything you send goes through it scrambled, so nobody in between can read it.\n\nHere is how it goes:\n\nYour device locks your traffic with a secret code before it leaves.\nThe locked traffic travels to the VPN company's machine, which unlocks it.\nThat machine then talks to the website for you, so the website sees the VPN's address instead of yours.\n\nThis helps on public Wi-Fi, since strangers on the same network can't snoop. It also hides your location from websites and stops your internet provider from seeing which sites you visit. It does not make you anonymous: the VPN company can see your activity, so pick one you trust.\n\n10:45 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n10:45 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Treadmill or gym\n10:45 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:45 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n10:45 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "How should the shoes feel on the treadmill?\n1\nSoft and cushioned\nBEST FIT\nEasy on knees, good for long runs\n2\nBalanced\nA bit of both, good all-rounder\n3\nLight and firm\nQuicker feel, better for speed\n4\nNot sure\nPick what suits gym running\nSomething else…\nSkip\n10:45 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:45 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n10:47 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which 2 nights in Goa do you want?\n1\nFri 30 Oct to Sun 1 Nov\nBEST FIT\nNext weekend, check in Friday\n2\nSat 31 Oct to Mon 2 Nov\nNext weekend, check in Saturday\n3\nFri 23 Oct to Sun 25 Oct\nThis coming weekend\nSomething else…\nSkip\n10:48 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:48 PM"
+  }
+]
