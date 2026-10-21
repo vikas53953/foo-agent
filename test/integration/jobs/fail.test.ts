@@ -4,7 +4,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { t } from '../../../src/shared/copy/t';
 import type { ToolDef } from '../../../src/engine/tools/ToolLayer';
-import { jobHarness, jobIntake, step, tool, badgeSets, type JobHarness, type PlanStepIn } from './jobHarness';
+import { jobHarness, jobIntake, realPause, step, tool, badgeSets, type JobHarness, type PlanStepIn } from './jobHarness';
 
 let h: JobHarness | null = null;
 afterEach(() => {
@@ -124,7 +124,11 @@ describe('a refused move ends nothing', () => {
       ],
     });
     const userId = h.userSays('Find a stay');
-    for (let i = 0; i < 40; i++) await new Promise((r) => setTimeout(r, 2));
+    // Until the site call is done and the fail turn is in flight. Its 5 s delay is on the fake clock, which nothing moves
+    // here, so it cannot land early however slow the runner is (a fixed 40 short sleeps found no job yet on a busy runner).
+    const inFlight = () => h!.jobs().length > 0 && h!.toolCalls().some((c) => c.outcome !== null);
+    for (let i = 0; i < 5_000 && !inFlight(); i++) await realPause(2);
+    expect(inFlight()).toBe(true);
     // Stands in for a stop (T3) landing while the fail turn is in flight.
     h.db.prepare("UPDATE jobs SET state = 'cancelled' WHERE id = ?").run(String(h.job().id));
     await h.settle();

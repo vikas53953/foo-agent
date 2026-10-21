@@ -117,6 +117,22 @@ export async function openChat(page: Page, name: string): Promise<void> {
   ] as const);
 }
 
+/**
+ * Ctrl+M → the Memory page in its list state. The page's script loads on first open (CR-0021, P1 T10), so the key is proven
+ * by the view changing at once (the page, its loading frame or its load error), and the page itself gets 20 s: with the
+ * 5 s default a busy Windows runner sometimes had no page yet on first open (AT-303, BP-m6).
+ */
+export async function openMemory(page: Page): Promise<Locator> {
+  await page.keyboard.press('Control+m');
+  await page
+    .locator(`${byTid(TID.screenMemory)}, [data-page-loading], ${byTid(TID.screenError)}`)
+    .first()
+    .waitFor({ state: 'attached', timeout: 5_000 });
+  if ((await page.getByTestId(TID.screenError).count()) > 0) throw new Error('the Memory page script did not load');
+  await page.locator(`${byTid(TID.screenMemory)}[data-state="list"]`).waitFor({ timeout: 20_000 });
+  return page.getByTestId(TID.screenMemory);
+}
+
 /** No hover or focus ring in the picture: the drawings show the resting state. */
 export async function rest(page: Page): Promise<void> {
   await page.mouse.move(640, 16);

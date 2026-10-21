@@ -97,6 +97,10 @@ test('AT-313 Off: with reduced motion the eyes are already open and nothing in t
   await release();
   // Off: the splash leaves at once (no fade, no data-exit).
   await expect(page.getByTestId(TID.screenSplash)).toHaveCount(0);
+  // As the test above: the shell is live before the app quits. Quitting while the released bootstrap was still loading the
+  // shell left the app unable to close on a busy runner (test and worker both timed out with nothing pending).
+  expect(await page.evaluate(() => document.getElementById('root')!.inert)).toBe(false);
+  await expect(finder(page)).toBeVisible();
   await app.close();
 });
 

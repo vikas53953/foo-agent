@@ -9,7 +9,7 @@ import { t } from '../../src/shared/copy/t';
 import { TID } from '../../src/shared/testids';
 import { launchWithFakeAi, VERIFY_OK } from './fakeAi';
 import { openPanelChat, startWorld } from './m4-start';
-import { openChat, openWorld, windowSize } from '../fidelity/capture';
+import { openChat, openMemory, openWorld, windowSize } from '../fidelity/capture';
 
 type Level = 'full' | 'basic' | 'off';
 
@@ -99,8 +99,7 @@ async function switchFrames(page: Page): Promise<{ chat: Frame; page: Frame; bac
   await release();
 
   release = await holdAnimations(page);
-  await page.keyboard.press('Control+m');
-  await expect(page.getByTestId(TID.screenMemory)).toBeVisible();
+  await openMemory(page);
   const memory = await frameOf(viewOf(page.getByTestId(TID.screenMemory)));
   const ghost = await ghostOf(page.getByTestId(TID.screenMemory));
   expect(await viewOf(page.getByTestId(TID.screenMemory)).getAttribute('data-dir')).toBe('forward');
@@ -147,8 +146,7 @@ test('AT-303: a dialog lands 0.92 → 1 with the spring and --shadow-28; the she
   const { app, page } = await startWorld();
   await setMotion(page, 'full');
   const spring = await easingOf(page, '--ease-spring');
-  await page.keyboard.press('Control+m');
-  await expect(page.getByTestId(TID.screenMemory)).toHaveAttribute('data-state', 'list');
+  await openMemory(page);
 
   // Menu: scales in from the ⋯ button that opened it.
   let release = await holdAnimations(page);
@@ -219,7 +217,7 @@ test('AT-301: at Basic and Off nothing moves: slides, dialogs, menus and the she
     }
     // Basic keeps the cross-fade copy (a fade); Off swaps at once.
     expect(f.ghost === null).toBe(level === 'off');
-    await page.keyboard.press('Control+m');
+    await openMemory(page);
     const release = await holdAnimations(page);
     await page.getByTestId(TID.memoryMenu).click();
     expect(matrix((await frameOf(page.getByRole('menu'))).transform).scale).toBe(1);

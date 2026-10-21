@@ -1,0 +1,72 @@
+# Spec: foo-plan §2 (CI), §4 (test strategy). Repeats chosen tests on windows-latest to prove a flaky test fixed (or find
+# one): 3 parallel jobs, each running the named vitest files and Playwright specs `repeat` times. By hand only
+# (workflow_dispatch); the full suite stays in ci.yml.
+name: Flake hunt
+
+on:
+  workflow_dispatch:
+    inputs:
+      unit:
+        description: vitest files, space separated (empty = none)
+        default: ''
+      e2e:
+        description: Playwright spec files, space separated (empty = none)
+        default: ''
+      repeat:
+        description: runs of each test per job
+        default: '3'
+
+permissions:
+  contents: read
+
+jobs:
+  hunt:
+    name: Repeat on windows-latest (job ${{ matrix.job }}/3)
+    runs-on: windows-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        job: [1, 2, 3]
+    env:
+      UNIT: ${{ inputs.unit }}
+      E2E: ${{ inputs.e2e }}
+      REPEAT: ${{ inputs.repeat }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      # Same native-module steps as ci.yml's windows job.
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Download the Electron binary
+        run: node node_modules/electron/install.js
+      - name: Build better-sqlite3 for Node (unit tests)
+        run: pnpm rebuild:node
+      - name: Unit tests, repeated
+        if: env.UNIT != ''
+        shell: bash
+        run: |
+          status=0
+          for i in $(seq 1 "$REPEAT"); do
+            echo "::group::vitest run $i/$REPEAT"
+            pnpm exec vitest run $UNIT || status=1
+            echo "::endgroup::"
+          done
+          exit $status
+      - run: pnpm build
+        if: env.E2E != ''
+      - name: Rebuild native modules for Electron
+        if: env.E2E != ''
+        run: pnpm rebuild:electron
+      - name: E2E, repeated
+        id: e2e
+        if: env.E2E != ''
+        shell: bash
+        run: pnpm exec playwright test $E2E --repeat-each="$REPEAT"
+      - name: Page state at each failed e2e test
+        if: failure() && steps.e2e.outcome == 'failure'
+        shell: bash
+        run: bash scripts/print-error-context.sh

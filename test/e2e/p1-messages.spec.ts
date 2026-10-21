@@ -134,9 +134,17 @@ test('AT-324 · the rise plays once per message: not again on scroll-back, and t
   const gap = await log.evaluate((el) => el.scrollHeight - el.scrollTop - el.clientHeight);
   expect(gap).toBeLessThanOrEqual(1);
 
-  // Fling to the top: the row leaves the DOM; back to the bottom: it mounts again, with no rise.
-  await log.evaluate((el) => el.scrollTo({ top: 0 }));
-  await expect(page.locator(`${byTid(TID.threadLog)} [data-message-id="${id}"]`)).toHaveCount(0);
+  // Fling to the top: the row leaves the DOM; back to the bottom: it mounts again, with no rise. One fling can land while the
+  // list is still measuring rows that the busy runner drew late, and the list then follows them back down; fling again
+  // until the row has left (what this test checks is the rise on remount, not one fling's aim).
+  const row0 = page.locator(`${byTid(TID.threadLog)} [data-message-id="${id}"]`);
+  await expect
+    .poll(async () => {
+      await log.evaluate((el) => el.scrollTo({ top: 0 }));
+      await page.waitForTimeout(200);
+      return row0.count();
+    })
+    .toBe(0);
   await log.evaluate((el) => el.scrollTo({ top: el.scrollHeight }));
   const again = page.locator(`${byTid(TID.threadLog)} [data-message-id="${id}"]`);
   await expect(again).toBeVisible();
