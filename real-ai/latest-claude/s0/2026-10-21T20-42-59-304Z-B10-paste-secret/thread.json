@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n8:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can check your email, calendar and websites, catch you up on a WhatsApp group, set routines that watch prices or bills, and draft messages for you to approve.\n\n8:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n8:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet. Everything you send goes through it scrambled, so people in between, like café Wi-Fi or your internet company, can't read it.\n\nThe websites you visit then see the VPN's address instead of yours, so your location looks different. Your internet company can see that you use a VPN, but not what you do inside it.\n\nA VPN doesn't make you invisible. The VPN company can still see your traffic, so pick one you trust.\n\n8:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n8:42 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Trails or uneven ground\n8:42 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n8:42 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "For trail running, what matters most to you in the shoe?\nStrong grip\nBEST FIT\nGood for mud, loose soil and rocks\nSoft cushioning\nEasier on knees for longer runs\nLight weight\nFeels quick and less tiring\nLasts long\nTough build for rough ground\nSomething else…\nDone\nSkip\n8:42 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:42 PM"
+  }
+]

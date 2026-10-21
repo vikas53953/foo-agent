@@ -1,0 +1,72 @@
+{
+  "journey": "J07-chat",
+  "title": "Casual chat",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T20-41-52-885Z-J07-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792615318126,
+      "before": 0,
+      "ok": true,
+      "ms": 194
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 2554,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! What do you need today?\n\n8:42 PM",
+      "ms": 10126
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792615328477,
+      "before": 0,
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3044,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I can check your email, calendar and websites, catch you up on a WhatsApp group, set routines that watch prices or bills, and draft messages for you to approve.\n\n8:42 PM",
+      "ms": 10127
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792615338745,
+      "before": 0,
+      "ok": true,
+      "ms": 96
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3039,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN is a private tunnel between your device and another computer on the internet. Everything you send goes through it scrambled, so people in between, like café Wi-Fi or your internet company, can't read it.\n\nThe websites you visit then see the VPN's address instead of yours, so your location looks different. Your internet company can see that you use a VPN, but not what you do inside it.\n\nA VPN doesn't make you invisible. The VPN company can still see your traffic, so pick one you trust.\n\n8:42 PM",
+      "ms": 11149
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 3
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n8:49 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has more than 1,000 historic monuments, including three UNESCO World Heritage Sites: the Red Fort, Humayun's Tomb and the Qutub Minar.\n\n8:49 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n8:49 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Golden Temple's community kitchen in Amritsar serves free meals to around 1,00,000 people every day, run mostly by volunteers.\n\n8:49 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n8:54 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:54 PM\n8:54 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:54 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nChecked Amazon.in, Flipkart, Croma, reviews\nA\nF\nC\nR\nKept 3 laptops that fit under ₹50,000, best value and reviews\nCompared price, processor, RAM, storage, screen\nStopped by you\n8:54 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:54 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb search keeps failing with SEARCH_BUSY errors\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n8:55 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:55 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:57 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n8:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:00 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n9:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n9:01 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n9:01 PM"
+  }
+]
