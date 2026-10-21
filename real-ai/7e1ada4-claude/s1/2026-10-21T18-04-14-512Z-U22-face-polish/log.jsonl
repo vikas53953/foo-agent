@@ -1,0 +1,18 @@
+{"t":"2026-10-21T18:04:14.513Z","journey":"U22-face-polish","title":"Living face: thinking while working, resting; motion off in settings","spec":"02 §F15.9 living face, 10-2 §C.7, §C.8","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T18:04:20.405Z","step":"launch","ok":true}
+{"t":"2026-10-21T18:04:21.444Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1034}
+{"t":"2026-10-21T18:04:21.612Z","i":1,"do":"send","sentAt":1792605861560,"before":0,"ok":true,"ms":168}
+{"t":"2026-10-21T18:04:23.120Z","i":2,"do":"wait","expect":"26px Thinking face only while the request is in flight (C.7.4)","ok":true,"ms":1507}
+{"t":"2026-10-21T18:04:23.208Z","shot":"01-thinking.png"}
+{"t":"2026-10-21T18:04:34.857Z","i":3,"do":"waitReply","expect":"poem; face back to resting, blinks","firstReplyMs":4055,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Rain on the sea wall, the city runs slow,\nChai steams on the corner as the grey clouds flow.\nLocal trains hum through the silver-lined street,\nAnd Marine Drive hums to the monsoon's beat.\n\n6:04 PM","ms":11649}
+{"t":"2026-10-21T18:04:34.931Z","shot":"02-poem.png"}
+{"t":"2026-10-21T18:04:35.010Z","i":4,"do":"shotEl","soft":true,"ok":true,"ms":78}
+{"t":"2026-10-21T18:04:35.062Z","i":5,"do":"key","ok":true,"ms":52}
+{"t":"2026-10-21T18:04:35.152Z","i":6,"do":"click","soft":true,"ok":true,"ms":89}
+{"t":"2026-10-21T18:04:35.235Z","i":7,"do":"click","soft":true,"ok":true,"ms":83}
+{"t":"2026-10-21T18:04:35.838Z","i":8,"do":"wait","expect":"face motion setting","ok":true,"ms":603}
+{"t":"2026-10-21T18:04:35.905Z","shot":"04-face-motion.png"}
+{"t":"2026-10-21T18:04:35.954Z","i":9,"do":"key","ok":true,"ms":49}
+{"t":"2026-10-21T18:04:59.024Z","shot":"05-error-step10.png"}
+{"t":"2026-10-21T18:04:59.025Z","i":10,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23071}
+{"t":"2026-10-21T18:04:59.029Z","i":11,"do":"dump","ok":true,"ms":4}

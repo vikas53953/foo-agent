@@ -1,0 +1,11 @@
+{"t":"2026-10-21T18:04:59.559Z","journey":"U26-crash-reopen","title":"foo crashes and is reopened at once: a window must appear","spec":"07 J-crash recovery (CR-0029, X-187); single-instance lock","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T18:05:05.136Z","step":"launch","ok":true}
+{"t":"2026-10-21T18:05:06.185Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1045}
+{"t":"2026-10-21T18:05:06.188Z","i":1,"do":"check","note":"foo is open","soft":true,"found":1,"ok":true,"ms":3}
+{"t":"2026-10-21T18:05:07.003Z","shot":"01-error-step2.png"}
+{"t":"2026-10-21T18:05:07.003Z","i":2,"do":"crashRelaunch","expect":"kill only the main foo.exe, reopen straight away: a foo window shows (not a silent quit)","fooProcs":6,"ok":false,"error":"electron.launch: WebSocket error: read ECONNRESET","ms":815}
+{"t":"2026-10-21T18:05:07.070Z","shot":"02-after-reopen.png"}
+{"t":"2026-10-21T18:05:17.772Z","shot":"03-error-step3.png"}
+{"t":"2026-10-21T18:05:17.772Z","i":3,"do":"crashRelaunch","expect":"same, reopening 1.5 s after the crash","ok":false,"error":"kill ESRCH","ms":10702}
+{"t":"2026-10-21T18:05:17.841Z","shot":"04-after-reopen-1500ms.png"}
+{"t":"2026-10-21T18:05:17.849Z","i":4,"do":"dump","ok":true,"ms":8}

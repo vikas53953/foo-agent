@@ -1,0 +1,12 @@
+{"t":"2026-10-21T17:50:29.086Z","journey":"B03-web-local","title":"Web without keys: news read locally, sources","spec":"AT-139, AT-020, R1 sources, AT-310","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T17:50:34.699Z","step":"launch","ok":true}
+{"t":"2026-10-21T17:50:34.858Z","i":0,"do":"send","sentAt":1792605034797,"before":0,"ok":true,"ms":153}
+{"t":"2026-10-21T17:50:53.172Z","i":1,"do":"waitReply","firstReplyMs":7089,"newBubbles":7,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nSlow here, trying another way\nCheck isro.gov.in, The Hindu, PIB, Times of\nCompare stories from 15 to 21 Oct\nWrite it\nWatch live\nStop\nunder 1 min\n5:50 PM\n---\nLooking on the web\nSlow here, trying another way\n---\nCheck isro.gov.in, The Hindu, PIB, Times of\n---\nCompare stories from 15 to 21 Oct\n---\nWrite it\n---\nWatch live\n---\nStop","ms":18313}
+{"t":"2026-10-21T17:50:53.246Z","shot":"01-news.png"}
+{"t":"2026-10-21T17:50:53.249Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":3}
+{"t":"2026-10-21T17:53:23.251Z","i":3,"do":"wait","ok":true,"ms":150002}
+{"t":"2026-10-21T17:53:23.329Z","shot":"02-news-later.png"}
+{"t":"2026-10-21T17:53:23.332Z","i":4,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-21T17:53:23.333Z","i":5,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-21T17:53:23.335Z","i":6,"do":"check","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-21T17:53:23.339Z","i":7,"do":"dump","ok":true,"ms":4}
