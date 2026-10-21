@@ -2,8 +2,9 @@
 // and no Article 2 banned word (the Article 2 list lives here, X-140; regex = 10-acceptance-2 ART-02a).
 // Two kinds of keys have no literal t('key') call (CR-0008): the step phrase keys `cards.checklist.{key}.{form}` of 08-4 §26.1,
 // looked up through `phraseCopyKey()` (src/shared/phrases.ts), which must match PHRASES exactly; and the keys a ticket landed
-// before the ticket that renders them (scripts/copy-pending.json), which count as used until a t() call uses them.
-import { readdirSync, readFileSync, statSync } from 'node:fs';
+// before the ticket that renders them (scripts/copy-pending.json and scripts/copy-pending/<ticket>.json), which count as
+// used until a t() call uses them.
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PHRASES, type PhraseForm } from '../src/shared/phrases';
@@ -17,6 +18,25 @@ export function phraseKeys(): Record<string, string> {
       if (text !== null) out[`cards.checklist.${key}.${form}`] = text.replace(/'/g, '’');
     }
   return out;
+}
+
+const PENDING_DIR = 'scripts/copy-pending';
+
+/** Pending keys as [file, key]: the shared scripts/copy-pending.json plus one scripts/copy-pending/<ticket>.json per ticket,
+ *  so parallel tickets never edit the same list (P1 + R1 retro). A ticket deletes its own file once it renders every key. */
+export function pendingKeys(): [string, string][] {
+  const files = [
+    'scripts/copy-pending.json',
+    ...(existsSync(PENDING_DIR)
+      ? readdirSync(PENDING_DIR)
+          .filter((n) => n.endsWith('.json'))
+          .sort()
+          .map((n) => `${PENDING_DIR}/${n}`)
+      : []),
+  ];
+  return files.flatMap((f) =>
+    Object.keys((JSON.parse(readFileSync(f, 'utf8')) as { keys: Record<string, string> }).keys).map((k): [string, string] => [f, k]),
+  );
 }
 
 export const BANNED =
@@ -47,10 +67,9 @@ export function checkCopy(): string[] {
   }
   for (const key of Object.keys(copy))
     if (/^cards\.checklist\.[a-z_]+\.(next|running|done)$/.test(key) && !(key in phrases)) problems.push(`${key}: not a 08-4 §26.1 phrase`);
-  const pending = (JSON.parse(readFileSync('scripts/copy-pending.json', 'utf8')) as { keys: Record<string, string> }).keys;
-  for (const key of Object.keys(pending)) {
-    if (!(key in copy)) problems.push(`copy-pending.json: ${key} is not in en-IN.json`);
-    else if (used.has(key)) problems.push(`copy-pending.json: ${key} is used now; remove it from the list`);
+  for (const [file, key] of pendingKeys()) {
+    if (!(key in copy)) problems.push(`${file}: ${key} is not in en-IN.json`);
+    else if (used.has(key)) problems.push(`${file}: ${key} is used now; remove it from the list`);
     used.add(key);
   }
   for (const [key, text] of Object.entries(copy)) {

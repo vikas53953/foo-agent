@@ -32,7 +32,12 @@
     "fid:guard": "tsx scripts/fid-guard.ts",
     "trace:check": "tsx scripts/trace-check.ts",
     "fidelity:report": "tsx scripts/fidelity-report.ts",
-    "closeout": "tsx scripts/closeout.ts"
+    "closeout": "tsx scripts/closeout.ts",
+    "check:fast": "tsx scripts/trace-check.ts && tsx scripts/check-copy.ts && vitest run test/articles/ART-24a.test.ts",
+    "merge:ticket": "tsx scripts/merge-ticket.ts",
+    "ci:verdict": "tsx scripts/ci-verdict.ts",
+    "trace:flip": "tsx scripts/trace-flip.ts",
+    "perf:pair": "bash scripts/perf-pair.sh"
   },
   "dependencies": {
     "@fluentui/react-icons": "2.0.343",

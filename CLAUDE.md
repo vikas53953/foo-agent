@@ -27,7 +27,7 @@ Sources and licences: `.claude/skills/NOTICE.md`.
 ## Before every push
 
 ```bash
-pnpm spec:verify && pnpm check:copy && pnpm lint && pnpm format:check && pnpm typecheck && pnpm test && pnpm build && pnpm trace:check
+pnpm check:fast && pnpm spec:verify && pnpm check:copy && pnpm lint && pnpm format:check && pnpm typecheck && pnpm test && pnpm build && pnpm trace:check
 pnpm fid:guard --base origin/main
 ```
 
@@ -49,4 +49,8 @@ The correction ladder (`foo-correct`) keeps this table: each rule and the strong
 | `spec/` equals its manifest                                                      | `pnpm spec:verify` (FID-01)                                                                    |
 | Baselines change only through the bless workflow                                 | `playwright.config.ts` refuses snapshot updates; `golden-bless.ts` needs a CR or signed report |
 | No "done" without proof from the real app                                        | words only (rung 5): foo-verify proof block in the PR, checked by `foo-review`                 |
+| Ticket merges combine row files row by row and regenerate the manifest           | `pnpm merge:ticket <sha>`                                                                      |
+| A trace row names the file whose test carries the id                             | `pnpm trace:flip <id>`; `pnpm trace:check`                                                     |
+| Red CI is sorted mine / known / new before anyone re-runs                        | `pnpm ci:verdict <log>` against `docs/known-red.tsv`                                           |
+| Parallel tickets never edit one pending-copy list                                | `scripts/copy-pending/<ticket>.json`, read by `pnpm check:copy`                                |
 | Repeat mistakes become rules                                                     | words only (rung 5): `foo-correct`                                                             |

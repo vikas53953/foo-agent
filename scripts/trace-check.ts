@@ -66,7 +66,7 @@ export function titleIds(source: string): string[] {
   return [...new Set(out)];
 }
 
-function walk(dir: string): string[] {
+export function walk(dir: string): string[] {
   return readdirSync(dir).flatMap((n) => {
     const p = join(dir, n);
     return statSync(p).isDirectory() ? walk(p) : /\.(test|spec)\.ts$/.test(n) ? [p] : [];

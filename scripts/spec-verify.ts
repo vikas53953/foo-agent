@@ -51,10 +51,15 @@ export function verify(): string[] {
   return problems;
 }
 
+/** Regenerates SPEC-MANIFEST.json from spec/ (only with an approved CR, or after merging a reviewed ticket that carries one). */
+export function writeManifest(): void {
+  writeFileSync(MANIFEST, JSON.stringify({ version: 'spec-v1.0', frozenAt: '2026-10-17', files: hashSpec() }, null, 2) + '\n');
+}
+
 const isCli = !!process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
 
 if (isCli && process.argv.includes('--write')) {
-  writeFileSync(MANIFEST, JSON.stringify({ version: 'spec-v1.0', frozenAt: '2026-10-17', files: hashSpec() }, null, 2) + '\n');
+  writeManifest();
   console.log('manifest written');
 } else if (isCli) {
   const problems = verify();

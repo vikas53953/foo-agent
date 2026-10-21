@@ -1,0 +1,7 @@
+match	where	symptom	first_seen	owner	fix
+PERF-02	linux-local	frame timing on the cloud container's software renderer (no GPU); not a real speed reading	2026-10-20 P1	none	run on Windows (CI shards); compare head vs base with pnpm perf:pair
+PERF-03	linux-local	chat-switch timing on the software renderer; not a real speed reading	2026-10-20 P1	none	run on Windows (CI shards); compare head vs base with pnpm perf:pair
+PERF-04	linux-local	fling scroll cannot hold 60 fps on the software renderer	2026-10-19 M9	none	run on Windows (CI shards); compare head vs base with pnpm perf:pair
+PERF-11	windows-ci	timing spec red on a busy Windows runner (PR #64, shard 2/4)	2026-10-20 R1 docs	none	none yet
+PERF-07	windows-ci	golden lane runs every e2e in one sequence and flips this M4 timing spec	2026-10-19 AI step	none	none yet
+ART-12b	windows-ci	golden lane runs every e2e in one sequence and flips this timing check	2026-10-19 AI step	none	none yet
