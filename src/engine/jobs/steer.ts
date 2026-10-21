@@ -86,6 +86,8 @@ const SUPERSEDE_TO: Record<string, string> = {
   approval: 'SUPERSEDED',
   payment: 'SUPERSEDED',
 };
+/** CR-0035: cards a steer cannot withdraw and that only the user ends; a message meanwhile is not a steer of their job. */
+const WAITS_FOR_USER = new Set(['stuck', 'secret']);
 /** M5 T8: cards whose state mirrors an approvals row (main moves both). */
 const GATED = new Set(['approval', 'payment']);
 /** Approval-like cards a typed "yes" never answers (Art. 6). */
@@ -128,9 +130,14 @@ export class Steer {
       await this.core.tx([this.core.textOp({ chatId: m.chatId, id: null, ownerId: null }, words)]);
       return true;
     }
-    const live = ((await this.core.query<JobRow[]>('jobs.liveForChat', m.chatId)) ?? []).filter(
-      (j) => j.state === 'working' || j.state === 'needs_you',
-    );
+    // CR-0035 (X-193): a job waiting on its Stuck or Secret box card takes no steer (the steer would wait for that card, and
+    // every later message with it); the message goes to intake and the card stays for the user.
+    const live: JobRow[] = [];
+    for (const j of (await this.core.query<JobRow[]>('jobs.liveForChat', m.chatId)) ?? []) {
+      if (j.state !== 'working' && j.state !== 'needs_you') continue;
+      if (j.state === 'needs_you' && j.needsYouCardId && (await this.blocksSteer(j.needsYouCardId))) continue;
+      live.push(j);
+    }
     if (live.length === 1) {
       await this.steer(live[0]!, { id: m.messageId, text });
       return true;
@@ -151,6 +158,11 @@ export class Steer {
       return true;
     }
     return false;
+  }
+
+  private async blocksSteer(cardId: string): Promise<boolean> {
+    const card = await this.core.query<CardRow>('cardById', cardId);
+    return !!card && card.resolvedAt === null && WAITS_FOR_USER.has(card.type);
   }
 
   private async seen(messageId: string): Promise<void> {
@@ -176,6 +188,11 @@ export class Steer {
     const job = await this.core.job(jobIds[i]!);
     const m = await this.core.query<MessageView>('messageById', messageId);
     if (!job || !m || TERMINAL.has(job.state)) return;
+    // CR-0035: the picked job went stuck before the tap; the message is not held behind its card.
+    if (job.state === 'needs_you' && job.needsYouCardId && (await this.blocksSteer(job.needsYouCardId))) {
+      this.core.intake(job.chatId, messageId);
+      return;
+    }
     await this.steer(job, { id: messageId, text: m.text });
   }
 
@@ -197,7 +214,7 @@ export class Steer {
     const card = job.needsYouCardId ? await this.core.query<CardRow>('cardById', job.needsYouCardId) : null;
     if (card && card.resolvedAt !== null) return; // answered already: it resumes when a slot frees
     const to = card ? SUPERSEDE_TO[card.type] : undefined;
-    if (card && !to) return; // signin, secret, stuck: the steer waits for that card (§26.5 item 2)
+    if (card && !to) return; // signin (§26.5 item 2); stuck and secret jobs take no new steer (CR-0035, item 2a)
     const now = this.core.d.clock.now();
     // M5 T8: an approval or payment card moves with its approvals row, in main.
     const approvalId = card && GATED.has(card.type) ? String(card.payload.approvalId ?? '') : '';
