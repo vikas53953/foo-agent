@@ -59,8 +59,8 @@ export async function serveLaneSites(): Promise<LaneSites> {
     counts,
     signin: (p = '/login') => `http://127.0.0.1:${port}${p}`,
     captcha: (p = '/') => `http://localhost:${port}${p}`,
-    // foo's browser keeps its keep-alive sockets open after the page is done, and server.close() waits for every one of them:
-    // without closeAllConnections a run whose browser outlived the test hung until the test timeout (AT-058, 3 min).
+    // server.close() waits for every open keep-alive socket, and foo's browser may still hold some; close them first so the
+    // test's clean-up cannot hang on them (AT-058 timed out at 3 min with nothing Playwright was waiting on).
     close: () =>
       new Promise<void>((ok) => {
         server.closeAllConnections();

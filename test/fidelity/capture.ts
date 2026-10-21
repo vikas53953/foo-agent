@@ -128,7 +128,7 @@ export async function openMemory(page: Page): Promise<Locator> {
     .locator(`${byTid(TID.screenMemory)}, [data-page-loading], ${byTid(TID.screenError)}`)
     .first()
     .waitFor({ state: 'attached', timeout: 5_000 });
-  if ((await page.getByTestId(TID.screenError).count()) > 0) throw new Error('the Memory page script did not load');
+  if ((await page.getByTestId(TID.screenError).count()) > 0) throw new Error('the Memory page showed an error instead of its list');
   await page.locator(`${byTid(TID.screenMemory)}[data-state="list"]`).waitFor({ timeout: 20_000 });
   return page.getByTestId(TID.screenMemory);
 }
