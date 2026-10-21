@@ -74,6 +74,47 @@ const norm = (t) =>
     .trim();
 const stamp = () => new Date().toISOString().replace(/[:.]/g, '-');
 
+// foo's own tech log (08-3 §19.1) from the test profile, only the lines written during this journey. The app already keeps
+// message text out and redacts; the repo is public, so keep only the allowed fields and drop any line that still holds
+// something value-like (an email, a long number, an API key).
+const LOG_KEYS = ['t', 'lvl', 'mod', 'evt', 'ids', 'kind', 'ms'];
+const LEAK = /@|\d{10,}|sk-[A-Za-z0-9_-]{6,}/;
+function copyTechLog(from, out) {
+  const dir = path.join(PROFILE, 'data', 'logs');
+  const secret = process.env.ANTHROPIC_API_KEY || '';
+  const lines = [];
+  let dropped = 0;
+  const files = fs.existsSync(dir)
+    ? fs
+        .readdirSync(dir)
+        .filter((n) => /^app-.*\.log$/.test(n))
+        .sort()
+    : [];
+  for (const f of files) {
+    for (const l of fs.readFileSync(path.join(dir, f), 'utf8').split('\n')) {
+      if (!l.trim()) continue;
+      let o;
+      try {
+        o = JSON.parse(l);
+      } catch {
+        dropped += 1;
+        continue;
+      }
+      if (typeof o.t !== 'number' || o.t < from) continue;
+      const keep = Object.fromEntries(LOG_KEYS.filter((k) => k in o).map((k) => [k, o[k]]));
+      const words = [keep.mod, keep.evt, keep.kind].map((v) => String(v ?? '')).join(' ');
+      const idsOk = Object.values(keep.ids || {}).every((v) => /^[A-Za-z0-9_-]{1,64}$/.test(String(v)));
+      if (LEAK.test(words) || !idsOk || (secret && JSON.stringify(keep).includes(secret))) {
+        dropped += 1;
+        continue;
+      }
+      lines.push(JSON.stringify(keep));
+    }
+  }
+  fs.writeFileSync(path.join(out, 'app-log.jsonl'), lines.length ? lines.join('\n') + '\n' : '');
+  return { lines: lines.length, dropped };
+}
+
 async function main() {
   const file = process.argv[2];
   if (!file) throw new Error('usage: foo-drive.js <journey.json>');
@@ -83,6 +124,7 @@ async function main() {
   fs.mkdirSync(out, { recursive: true });
   const logPath = path.join(out, 'log.jsonl');
   const log = (o) => fs.appendFileSync(logPath, JSON.stringify({ t: new Date().toISOString(), ...o }) + '\n');
+  const journeyStart = Date.now();
   log({ journey: journey.id, title: journey.title, spec: journey.spec, exe: EXE });
 
   const { _electron } = loadPlaywright();
@@ -418,6 +460,11 @@ async function main() {
     if (s.shot) await shot(s.shot).catch(() => {});
   }
   await app.close().catch(() => {});
+  try {
+    log({ step: 'appLog', ...copyTechLog(journeyStart, out) });
+  } catch (e) {
+    log({ step: 'appLog', ok: false, error: String(e).slice(0, 300) });
+  }
   const summary = {
     journey: journey.id,
     title: journey.title,
