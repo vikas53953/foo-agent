@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:56 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n5:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n5:56 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 5:56 PM\n5:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:56 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nSigning in to HDFC NetBanking\nSign in to HDFC NetBanking\nLook for account balance\n5:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:56 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n5:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "check my email\n5:57 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Reading your email job\nWhat’s wrong\nGmail keeps stopping at the Google sign-in page instead of my inbox\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n5:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n5:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:01 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\nWorked for 3 min\n6:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "List three Indian rivers\n6:01 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Three Indian rivers: Ganga, Yamuna and Godavari.\n\n6:01 PM"
+  }
+]

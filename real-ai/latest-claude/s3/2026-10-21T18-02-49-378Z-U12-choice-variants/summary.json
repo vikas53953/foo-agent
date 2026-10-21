@@ -1,0 +1,119 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T18-02-49-378Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1037
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792605776099,
+      "before": 0,
+      "ok": true,
+      "ms": 157
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "firstReplyMs": 6575,
+      "newBubbles": 6,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which weekend plan sounds best for Bengaluru?\n1\nNandi Hills sunrise\nBEST FIT\nEarly start, cool views, back by noon\n2\nCubbon Park and Church Street\nEasy walk, then cafés and books\n3\nLalbagh and VV Puram food street\nGardens by day, street food by evening\nSomething else…\nSkip\n6:03 PM\n---\n1\nNandi Hills sunrise\nBEST FIT\nEarly start, cool views, back by noon\n---\n2\nCubbon Park and Church Street\nEasy walk, then cafés and books\n---\n3\nLalbagh and VV Puram food street\nGardens by day, street food by evening\n---\nSomething else…\n---\nSkip",
+      "ms": 12659
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 96
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792605789075,
+      "before": 0,
+      "ok": true,
+      "ms": 160
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "firstReplyMs": 5552,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Good pick: Cubbon Park and Church Street make an easy half day. Start at Cubbon Park around Sat 24 Oct, 8:00 AM while it's cool and quiet, then walk to Church Street for brunch, coffee and browsing the bookshops.\n\nCubbon Park: a slow loop under the trees, about 1 to 2 hours\nChurch Street: a late breakfast or lunch, then a wander\nGetting there: the Metro to MG Road or Cubbon Park station saves you the parking trouble\n6:03 PM",
+      "ms": 13674
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792605803011,
+      "before": 0,
+      "ok": true,
+      "ms": 125
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "firstReplyMs": 6083,
+      "newBubbles": 6,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds best for Sat 24 Oct, tonight or later?\n1\nDosa and filter coffee\nBEST FIT\nLight South Indian classic, quick and easy\n2\nBiryani at a local favourite\nHearty, with raita and kebabs on the side\n3\nWood-fired pizza and pasta\nRelaxed Italian, good for sharing\nSomething else…\nSkip\n6:03 PM\n---\n1\nDosa and filter coffee\nBEST FIT\nLight South Indian classic, quick and easy\n---\n2\nBiryani at a local favourite\nHearty, with raita and kebabs on the side\n---\n3\nWood-fired pizza and pasta\nRelaxed Italian, good for sharing\n---\nSomething else…\n---\nSkip",
+      "ms": 12182
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 100
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 609
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792605816160,
+      "before": 0,
+      "ok": true,
+      "ms": 126
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "firstReplyMs": 14740,
+      "newBubbles": 6,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good tonight?\n1\nHome-cooked dal chawal\nBEST FIT\nSimple, comforting, no wait\n2\nMasala dosa and filter coffee\nLight South Indian classic\n3\nPaneer butter masala with rotis\nRich and filling\nSomething else…\nSkip\n6:03 PM\n---\n1\nHome-cooked dal chawal\nBEST FIT\nSimple, comforting, no wait\n---\n2\nMasala dosa and filter coffee\nLight South Indian classic\n---\n3\nPaneer butter masala with rotis\nRich and filling\n---\nSomething else…\n---\nSkip",
+      "ms": 20859
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 3
+    }
+  ]
+}

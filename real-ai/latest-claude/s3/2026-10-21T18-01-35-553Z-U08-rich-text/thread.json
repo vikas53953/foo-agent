@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\nWorked for 3 min\n6:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "List three Indian rivers\n6:01 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Three Indian rivers: Ganga, Yamuna and Godavari.\n\n6:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:01 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n6:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show me a tiny Python hello world in a code block\n6:01 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is a tiny hello world:\n\nPython\nCopy\nprint(\"Hello, world!\")\n\nSave it as hello.py and run it with python hello.py.\n\n6:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n6:02 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't draw tables here, so here is a list of three states and their capitals:\n\nMaharashtra: Mumbai\nTamil Nadu: Chennai\nPunjab: Chandigarh\n6:02 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n6:02 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways passenger ticket site is IRCTC. For train running status and enquiries, use Indian Railways Enquiry.\n\n6:02 PM"
+  }
+]

@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n5:55 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is a good name for a pet tortoise?\n5:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "failed",
+    "text": "That reply got cut off.\nTry again\n5:55 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Which news story is biggest in India today? One line.\n5:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Try Turbo: a fast name for a very unhurried pet. Other ideas:\n\nDheera, meaning \"patient\"\nGulab Jamun, round, brown and sweet\nKachua Kumar, for a cheerful old-uncle feel\n\nI can't see live headlines from here, so I can't say what's biggest in India today without guessing. I can look it up from the web if you want.\n\n5:55 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:56 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n5:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n5:56 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 5:56 PM\n5:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:56 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nSigning in to HDFC NetBanking\nSign in to HDFC NetBanking\nLook for account balance\n5:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:56 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n5:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:56 PM"
+  }
+]

@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are 5 places worth seeing in Jaipur, in an easy order from the Pink City centre out to the forts. Coordinates are approximate.\n\nCouldn’t show part of this\n\nKeep\n5:49 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show a chart of India's GDP growth for the last 5 years\n5:49 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's GDP growth was about 9.7% in FY22 and 7.6% in FY23, then 9.2% in FY24 and 6.5% in FY25. Those are the last four full years. FY21 was a fall of 5.8% because of Covid, so FY22's jump is a rebound. Figures are rounded and from my own knowledge, not a live source, and FY26 isn't final yet.\n\nCouldn’t show part of this\n\nKeep\n5:49 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n5:49 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Pixel 9 is the best value of the three: similar launch price, but it starts at 256GB and gets 7 years of updates. The iPhone 16 is the pick if you want the Apple ecosystem, and the Galaxy S25 has the strongest chip and the only zoom camera. Prices are approximate India launch prices from my own knowledge, not live, so check today's offers before buying.\n\nCouldn’t show part of this\n\nKeep\n5:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n5:50 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Tap its timer to start, and if you start now it ends at about Wed 21 Oct, 5:52 PM.\n\nSteep the tea\n2:00 left\nStart timer\nKeep\n5:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n5:50 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for your party plan. Fill in the date, guests and budget, and I'll suggest a plan from there.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n5:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n5:50 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "streaming",
+    "text": "Your expense tracker is below: add an expense, set a monthly budget, and see totals by category. It works on this page and may not keep entries once you close it.\n\nBuilding your page…"
+  }
+]
