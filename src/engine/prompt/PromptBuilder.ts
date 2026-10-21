@@ -15,6 +15,8 @@
 // R1 T1 (CR-0022, X-180): intake part 4 then carries the kit section (the catalog generated from src/shared/kit/ and the
 // visuals level; 08-4 §24.5 cites it from X-180); when still over budget before the pinned-facts trim it is left out (part `4k`,
 // logged as PROMPT_TRIMMED).
+// CR-0027 (X-185): intake.md carries {phraseKeys} too (§24.5), the same list as step.md, so a real AI's plan steps are
+// catalogue keys instead of invented ones that all fell back to generic_working ("Work on it").
 // Memory selection (§24.16 items 1–4) is src/engine/memory/retrieval.ts; group intake (§24.1 group rows, group_intake.md)
 // is M13.
 import { readFileSync } from 'node:fs';
@@ -161,6 +163,12 @@ const CONVERSATION_KEEP = 6;
 const MESSAGE_CAP = 1_400;
 export const VERIFY_PROMPT = 'Reply with the word ready';
 
+/** §24.5 / §24.6 `{phraseKeys}`: the §26.1 keys a plan may use (not runner-only), each with its slot names. */
+export const PHRASE_KEY_LIST = (Object.keys(PHRASES) as PhraseKey[])
+  .filter((k) => !RUNNER_ONLY.includes(k))
+  .map((k) => [k, ...PHRASES[k].slots.map((n) => `{${n}}`)].join(' '))
+  .join(', ');
+
 const PLACEHOLDER = /\{([A-Za-z][A-Za-z0-9]*)\}/g;
 
 /**
@@ -294,7 +302,10 @@ export class PromptBuilder {
     const rules = this.fill(this.file('rules.md'), { today: this.today(tz, input.hour12), tz });
     const helperList = input.helpers.length ? input.helpers.map((h) => `${h.id}: ${h.name}, ${h.jobText}`).join('\n') : 'none';
     const protocolWith = (kit: string) =>
-      gate(`${this.protocolThen(IntakeActSchema, 'intake.md', { helperList })}\n${SUGGESTIONS_ASK}${kit ? `\n${kit}` : ''}`, '4');
+      gate(
+        `${this.protocolThen(IntakeActSchema, 'intake.md', { helperList, phraseKeys: PHRASE_KEY_LIST })}\n${SUGGESTIONS_ASK}${kit ? `\n${kit}` : ''}`,
+        '4',
+      );
     let kit = `${ACTIONS_ASK}\n${kitPromptSection(input.visuals ?? 'balanced')}`;
     let fixed = [gate(identity, '1'), gate(rules, '2'), protocolWith(kit)];
 
@@ -428,11 +439,7 @@ export class PromptBuilder {
       emoji: input.emoji,
     });
     const rules = this.fill(this.file('rules.md'), { today: this.today(input.timeZone, input.hour12), tz: input.timeZone });
-    const phraseKeys = (Object.keys(PHRASES) as PhraseKey[])
-      .filter((k) => !RUNNER_ONLY.includes(k))
-      .map((k) => [k, ...PHRASES[k].slots.map((n) => `{${n}}`)].join(' '))
-      .join(', ');
-    const protocol = this.protocolThen(StepActSchema, 'step.md', { phraseKeys });
+    const protocol = this.protocolThen(StepActSchema, 'step.md', { phraseKeys: PHRASE_KEY_LIST });
     const system = [gate(identity, '1'), gate(rules, '2'), gate(`Tools you can use:\n${input.tools || 'none'}`, '3'), gate(protocol, '4')];
     // Parts 5 and 5b as intake builds them (§24.16): identity facts outside the 4,000-char cap, ≤ 8 turn facts.
     const tz = input.timeZone;

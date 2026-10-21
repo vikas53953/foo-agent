@@ -27,7 +27,15 @@ export function restartEngine(
   launch: { safeMode: boolean; cleanStart: boolean },
   // M5 T7: the same extra fake tools as before the restart (the gate tests' browser.submit).
   tools?: FakeToolOptions,
+  // A killed process (power cut, Task Manager, the e2e driver closing foo): the old engine writes nothing more, not even
+  // the cut-off its cancelled turns would post. Without it the old engine's cancelled turns still finish their writes.
+  o: { killed?: boolean } = {},
 ): Engine {
+  if (o.killed) {
+    const old = (h.engine as unknown as { o: { link: MainLink } }).o.link;
+    old.request = () => new Promise<never>(() => {});
+    old.send = () => {};
+  }
   h.engine.jobs.cancelAll();
   h.engine.lane.cancelAll();
   writeFileSync(path.join(h.dir, 'fake-ai.jsonl'), script.map((l) => JSON.stringify(l)).join('\n') + '\n');

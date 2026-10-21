@@ -89,6 +89,20 @@ export interface EngineOptions {
   browser?: { registry: ToolRegistry; runtime: BrowserRuntime };
 }
 
+/** 08-1 §4.1.2: the `steerQueue` of `{DATA}\jobs\{id}\state.json`; [] when the file is missing or not schemaVersion 1. */
+export function steerQueueOf(dataDir: string, jobId: string): string[] {
+  try {
+    const state = JSON.parse(readFileSync(join(dataDir, 'jobs', jobId, 'state.json'), 'utf8')) as {
+      schemaVersion?: unknown;
+      steerQueue?: unknown;
+    };
+    if (state.schemaVersion !== 1 || !Array.isArray(state.steerQueue)) return [];
+    return state.steerQueue.filter((id): id is string => typeof id === 'string');
+  } catch {
+    return [];
+  }
+}
+
 export class Engine {
   private settings: Settings = structuredClone(settingsDefaults);
   private online = true;
@@ -284,6 +298,9 @@ export class Engine {
       settings: () => this.settings,
       ai: this.ai,
       log: (evt, kind) => log(evt, kind),
+      // Restart fix (07-2 §4, 08-1 §4.1.2): steers come back from state.json; cut-off chat turns are answered again.
+      steerQueueOf: (jobId) => steerQueueOf(o.dataDir, jobId),
+      chat: { cutOff: () => this.lane.cutOffTurns(), answer: (turns) => this.lane.answerCutOff(turns) },
     });
     this.jobs = new JobRunner({
       link: o.link,
