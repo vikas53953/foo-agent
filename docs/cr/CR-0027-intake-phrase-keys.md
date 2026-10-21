@@ -85,7 +85,8 @@ Fable reviewer, 2026-10-21 ~08:25Z, read-only; ran the four test files and typec
 - Act: the cut counted UTF-16 units and could split an astral letter at position 40; it now counts code points (test
   added). Indic vowel signs were turned into spaces; `\p{M}` joins the rule (test added).
 - Consider: the spec says `;` becomes `, ` (as the code does); the tool-argument sentence above.
-- Noted: spec text matches the code; stored slots are the cleaned ones, re-resolved to the same text; tests honest. An
+- Noted: the code also maps the prime and the minus sign; §26.1 now names them too, so the spec matches the code
+  exactly; stored slots are the cleaned ones, re-resolved to the same text; tests honest. An
   unbalanced `(` after a cut is cosmetic and stays.
 
 Recorded as approved on Vikas's behalf under his standing rule (2026-10-18 14:56Z, 2026-10-21 07:14Z); listed for his
