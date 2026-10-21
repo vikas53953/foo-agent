@@ -1,0 +1,41 @@
+{
+  "id": "B12-languages",
+  "title": "Chat in Hinglish and Punjabi, short answers",
+  "spec": "07-1 J7; walkthrough ch. 08; AT-031",
+  "steps": [
+    {
+      "do": "send",
+      "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "hinglish",
+      "expect": "walkthrough 08 step 4: answers in Hinglish"
+    },
+    {
+      "do": "send",
+      "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "punjabi",
+      "expect": "walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi"
+    },
+    {
+      "do": "send",
+      "text": "Is Mon 2 Nov a holiday in Mumbai?"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "holiday",
+      "expect": "walkthrough 08 step 3: short 1–3 bubbles, no filler"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

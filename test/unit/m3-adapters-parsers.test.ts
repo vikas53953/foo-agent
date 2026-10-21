@@ -20,6 +20,8 @@ import { CODEX_STDERR_TOOL_ATTEMPT } from '../../src/engine/ai/codexCli';
 import { classifyOllama } from '../../src/engine/ai/ollama';
 import { loadPricing, paramsFor, resolveModel, temperatureFor } from '../../src/engine/ai/models';
 import { parseCapabilities, parseVersion } from '../../src/engine/ai/probe';
+import { verifyRequest } from '../../src/engine/ai/verify';
+import { FakeClock } from '../../src/shared/clock';
 import { LineReader, parseCmdShim, resolveCommand, scrubEnv } from '../../src/engine/ai/ProcessHost';
 import type { AiFs } from '../../src/engine/ai/deps';
 import { fixture, fixtureLines, pricing, cleanupTmp } from './m3-adapters-helpers';
@@ -297,6 +299,13 @@ describe('models and pricing (08-4 §30.1, §30.2)', () => {
     const okCli = JSON.parse(JSON.stringify(pricing));
     okCli.models['claude-cli'].defaultModel = null;
     expect(() => loadPricing(okCli)).not.toThrow();
+  });
+  it('CR-0025: a helper app gets 60 s for its verify (start-up counts); a key or local AI keeps 20 s', () => {
+    const deps = { pricing, clock: new FakeClock() };
+    expect(verifyRequest({ id: 'claude-cli' }, deps).timeoutMs).toBe(60_000);
+    expect(verifyRequest({ id: 'codex-cli' }, deps).timeoutMs).toBe(60_000);
+    expect(verifyRequest({ id: 'anthropic-key' }, deps).timeoutMs).toBe(20_000);
+    expect(verifyRequest({ id: 'ollama' }, deps).timeoutMs).toBe(20_000);
   });
   it('per-purpose parameters', () => {
     expect(paramsFor('verify')).toEqual({ tier: 'default', temperature: 0, maxOutputTokens: 10, timeoutMs: 20_000, stream: false });

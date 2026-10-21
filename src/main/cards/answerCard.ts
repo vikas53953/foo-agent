@@ -31,6 +31,8 @@ export interface AnswerDeps {
   emitCard(row: CardRow): void;
   emitMessage(row: MessageRow): void;
   emitChat(chatId: string): void;
+  /** CR-0026: after a jobless card is written, by any path (tap, keyboard, reaction, toast); first run's vibe card. */
+  onAnswered?(row: CardRow): void;
 }
 
 /** The cards answered here (05-1 §5.3, §5.4). */
@@ -133,7 +135,9 @@ export function answerCard(
       resolvedBy: req.resolvedBy,
     });
   }
-  return ok(card(d.db, 'id = ?', c.id) ?? c);
+  const after = card(d.db, 'id = ?', c.id) ?? c;
+  d.onAnswered?.(after);
+  return ok(after);
 }
 
 /** The decided `save_login:{site}` row (08-3 §15: a dismissed key blocks the offer for good) and, on Save, the Login Secret box

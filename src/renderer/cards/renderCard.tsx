@@ -62,11 +62,17 @@ export const CARD_VIEWS: Partial<Record<CardType, CardComponent>> = {
   ai_page: AiPageCard,
 };
 
+const hasSetupView = (card?: CardRow) => {
+  const which = card?.payload.setupCard;
+  return which === 'ai_finder' || which === 'name' || which === 'face' || which === 'welcome';
+};
+
 /** G-M4-10: the purchase variant of the Spend-cap card is M10's; until then it keeps the placeholder. */
 export const hasCardView = (type: CardType, card?: CardRow) =>
   !!CARD_VIEWS[type] &&
   !(type === 'spend_cap' && card?.payload.which === 'purchase') &&
-  !(type === 'setup' && card?.payload.setupCard !== 'ai_finder');
+  // CR-0026: welcome, name and face (answered ones collapse to one line); `apps` has no view yet.
+  !(type === 'setup' && !hasSetupView(card));
 
 export function CardView({ card, time }: { card: CardRow; time: CardTime }) {
   const View = CARD_VIEWS[card.type];

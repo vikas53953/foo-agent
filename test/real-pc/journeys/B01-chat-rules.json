@@ -1,0 +1,45 @@
+{
+  "id": "B01-chat-rules",
+  "title": "Chat rules: thanks, long answer, filler, reactions",
+  "spec": "AT-027, AT-030, AT-031, AT-308, AT-307",
+  "steps": [
+    {
+      "do": "send",
+      "text": "thanks!"
+    },
+    {
+      "do": "wait",
+      "ms": 20000,
+      "shot": "thanks",
+      "expect": "AT-027: \ud83d\udc4d reaction on my message, no foo message"
+    },
+    {
+      "do": "eval",
+      "js": "(()=>{const m=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-me\"]')].pop();return {reaction:!!m&&!!m.closest('[data-testid]')?.parentElement?.querySelector('[data-testid=\"bubble-reaction\"]'),lastKind:[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid^=\"bubble-\"]')].map(e=>e.dataset.testid).filter(k=>/^bubble-(me|foo)$/.test(k)).pop()}})()"
+    },
+    {
+      "do": "send",
+      "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "long",
+      "expect": "AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler"
+    },
+    {
+      "do": "check",
+      "tid": "composer-chip",
+      "soft": true,
+      "note": "AT-308 suggestion chips (\u22643)"
+    },
+    {
+      "do": "eval",
+      "js": "document.querySelectorAll('[data-testid=\"composer-chip\"]').length"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

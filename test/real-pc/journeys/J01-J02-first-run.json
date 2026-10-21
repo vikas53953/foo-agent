@@ -1,0 +1,67 @@
+{
+  "id": "J01-J02-first-run",
+  "title": "Install, first launch and Find your AI (fresh profile)",
+  "spec": "07-1 J1, J2; 06-1 §1–§2; AT-005, AT-313, AT-314",
+  "steps": [
+    {
+      "do": "wait",
+      "ms": 400,
+      "shot": "splash",
+      "expect": "96px face wakes once, wordmark, no flicker"
+    },
+    {
+      "do": "waitFor",
+      "tid": "card-setup",
+      "timeoutMs": 60000,
+      "shot": "finder-testing",
+      "expect": "Welcome then step pill 1 of 4, rows test live with shimmer"
+    },
+    {
+      "do": "wait",
+      "ms": 30000,
+      "shot": "finder-tested",
+      "expect": "the chosen AI shows works and is pre-selected; others show a clear reason, never \"slow to answer\""
+    },
+    {
+      "do": "text",
+      "tid": "setup-step-pill",
+      "soft": true
+    },
+    {
+      "do": "check",
+      "tid": "setup-ai-use",
+      "note": "did any AI pass the first test on its own?",
+      "soft": true
+    },
+    {
+      "do": "click",
+      "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"] [data-testid=\"setup-ai-row\"][data-row-id=\"{AI_ROW}\"] [data-testid=\"setup-ai-row-action\"]",
+      "note": "retest the chosen AI alone, only if no AI passed the first test",
+      "unlessTid": "setup-ai-use"
+    },
+    {
+      "do": "waitFor",
+      "tid": "setup-ai-use",
+      "timeoutMs": 90000,
+      "shot": "after-claude-retest",
+      "expect": "the chosen AI works; Use button shows"
+    },
+    {
+      "do": "click",
+      "tid": "setup-ai-use",
+      "shot": "after-use",
+      "expect": "chat opens; next setup step (name and face) per J3"
+    },
+    {
+      "do": "wait",
+      "ms": 10000,
+      "shot": "first-chat",
+      "expect": "foo texts first with a warm welcome (J3/J4); composer unlocked"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ],
+  "required": true
+}

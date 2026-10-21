@@ -107,13 +107,14 @@ test('AT-314 AI finder: striped 4-step pill at step 1; rows test live (Testingâ€
   const pill = finder(page).getByTestId(TID.setupProgress);
   await expect(pill).toHaveAttribute('role', 'progressbar');
   await expect(pill).toHaveAttribute('aria-valuenow', '1');
-  await expect(pill).toHaveAttribute('aria-valuemax', '4');
+  // CR-0026 pick 2: first run has two steps today, so the pill fills half.
+  await expect(pill).toHaveAttribute('aria-valuemax', '2');
   await expect(pill).toHaveAttribute('aria-label', t('setup.step_pill.1'));
   const fill = await pill.evaluate((el) => {
     const f = el.firstElementChild as HTMLElement;
     return { ratio: f.offsetWidth / el.clientWidth, bg: getComputedStyle(f).backgroundImage };
   });
-  expect(fill.ratio).toBeCloseTo(0.25, 2);
+  expect(fill.ratio).toBeCloseTo(0.5, 2);
   expect(fill.bg).toContain('repeating-linear-gradient');
 
   const claude = finderRow(page, 'claude-cli');

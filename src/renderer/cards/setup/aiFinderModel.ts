@@ -26,6 +26,12 @@ export interface FinderRow {
 }
 
 export const VERIFY_LIMIT_MS = 20_000;
+/**
+ * CR-0025: a helper app's test also pays for starting the app, which on a busy PC took 10–18 s on its own (real PC,
+ * 2026-10-21). Its row stays Testing up to this limit, the engine's own CLI verify limit, before it reads as slow.
+ */
+export const CLI_VERIFY_LIMIT_MS = 60_000;
+export const isCliRow = (id: RowId): boolean => (CLI_ROWS as RowId[]).includes(id);
 export const SETTLE_LIMIT_MS = 25_000;
 /** While the engine starts, detection is asked again this often. */
 export const DETECT_RETRY_MS = 1_000;
@@ -69,6 +75,8 @@ export function stateAfterVerify(r: VerifyResult): Pick<FinderRow, 'state' | 're
       return { state: 'not_signed_in' };
     case 'NET_OFFLINE':
       return { state: 'offline' };
+    case 'AI_CLI_INCOMPATIBLE':
+      return { state: 'needs_update' }; // CR-0025: an out-of-date helper is not "slow"
     default:
       return { state: 'slow' };
   }
@@ -94,6 +102,8 @@ export type Block =
  */
 export function choiceBlock(rows: readonly FinderRow[], timeUp: boolean): Block {
   if (!timeUp && !isSettled(rows)) return { kind: 'pending' };
+  // CR-0025: "I couldn't find an AI" is never said while an AI is still being tested (each test ends by its slow mark).
+  const testing = rows.some((r) => r.state === 'testing');
   const working = workingIds(rows);
   const strong = working.filter((id) => id !== 'ollama');
   if (strong.length >= 2 || (strong.length === 1 && working.length >= 2)) return { kind: 'many', pick: strong[0]!, working };
@@ -102,7 +112,7 @@ export function choiceBlock(rows: readonly FinderRow[], timeUp: boolean): Block 
   // "Only plan-limited AI": the block names the time it starts working, so a limit with no known reset time reads as nothing.
   const limited = rows.find((r) => r.state === 'plan_limit' && r.resetAt !== undefined && r.id !== 'own-key');
   if (limited) return { kind: 'plan_limited', pick: limited.id as ProviderId, resetAt: limited.resetAt! };
-  return { kind: 'nothing' };
+  return testing ? { kind: 'pending' } : { kind: 'nothing' };
 }
 
 /** 08-0 §A `ai.backup`: the next working AI after the chosen one, else null (06-1 §2.2 Writes). */
@@ -151,6 +161,8 @@ export function rowStatus(r: FinderRow, timeZone: string): string {
         : t('setup.ai_finder.status.plan_limit_no_time');
     case 'slow':
       return t('setup.ai_finder.status.slow');
+    case 'needs_update':
+      return t('setup.ai_finder.status.needs_update');
     case 'offline':
       return t('setup.ai_finder.status.offline');
     default:
@@ -172,6 +184,7 @@ export function rowAction(r: FinderRow): RowAction | null {
     case 'key_failed':
       return 'replace_key';
     case 'slow':
+    case 'needs_update':
       return 'test_again';
     default:
       return null;
@@ -186,6 +199,7 @@ export function rowTone(r: FinderRow): 'ok' | 'warn' | 'bad' | 'dim' {
     case 'signin_unfinished':
     case 'plan_limit':
     case 'slow':
+    case 'needs_update':
       return 'warn';
     case 'key_failed':
       return 'bad';
@@ -207,4 +221,9 @@ export function upsertRow(rows: readonly FinderRow[], row: FinderRow): FinderRow
   const own = at < 0 ? before.length : before.findIndex((r) => r.id === 'own-key');
   const merged = order.map((id) => (id === row.id ? row : keys.find((k) => k.id === id)!));
   return [...before.slice(0, own), ...merged, ...before.slice(own)];
+}
+
+/** CR-0025: after a saved key is removed, a key row whose key detection no longer finds leaves the list. */
+export function dropMissingKeys(rows: readonly FinderRow[], detect: readonly DetectRow[]): FinderRow[] {
+  return rows.filter((r) => !isKeyProvider(r.id) || detect.some((d) => d.providerId === r.id && d.found));
 }

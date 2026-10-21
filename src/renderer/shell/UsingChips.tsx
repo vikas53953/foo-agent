@@ -37,17 +37,20 @@ export function UsingChips({ chat }: { chat: ChatRow }) {
         {t('app.panel.using.title')}
       </h2>
       <ul className={styles.chips}>
-        <li>
-          <button
-            type="button"
-            className={styles.chip}
-            data-testid={TID.appPanelUsingChip}
-            data-index={0}
-            onClick={() => navigate({ kind: 'settings', page: 'account' })}
-          >
-            <span className={styles.name}>{aiLabel}</span>
-          </button>
-        </li>
+        {/* Real-PC finding (CR-0026): before an AI is chosen there is no AI chip, never an empty "(your AI)". */}
+        {aiName !== '' && (
+          <li>
+            <button
+              type="button"
+              className={styles.chip}
+              data-testid={TID.appPanelUsingChip}
+              data-index={0}
+              onClick={() => navigate({ kind: 'settings', page: 'account' })}
+            >
+              <span className={styles.name}>{aiLabel}</span>
+            </button>
+          </li>
+        )}
         {shown.map((c, i) => {
           const name = APP_LABEL[c.app]();
           return (
