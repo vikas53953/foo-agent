@@ -295,19 +295,19 @@ R5 · R10 · R14,J9,,UX-12-10,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.r
 R5 · R10 · R14,J9,,UX-12-11,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,pending
 R5 · R10 · R14,J9,,UX-12-12,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,live
 R11 · R4 · R10,J13,,UX-14-01,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,live
-R11 · R4 · R10,J13,,UX-14-05,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,pending
-R11 · R4 · R10,J13,,UX-14-06,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,pending
+R11 · R4 · R10,J13,,UX-14-05,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,live
+R11 · R4 · R10,J13,,UX-14-06,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,live
 R11 · R4 · R10,J13,,UX-14-07,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,live
-R11 · R4 · R10,J13,,UX-14-08,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,pending
+R11 · R4 · R10,J13,,UX-14-08,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,live
 R11 · R4 · R10,J13,,UX-14-09,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,live
 R11 · R4 · R10,J13,,UX-14-10,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,live
 R11 · R8,J18,,UX-15-03,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,live
 R11 · R8,J18,,UX-15-04,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,live
-R11 · R8,J18,,UX-15-05,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,pending
+R11 · R8,J18,,UX-15-05,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,live
 R11 · R8,J18,,UX-15-06,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,live
 R11 · R8,J18,,UX-15-07,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,live
-R11 · R8,J18,,UX-15-08,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,pending
-R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,pending
+R11 · R8,J18,,UX-15-08,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,live
+R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,live
 ,,,,BP-CARD-10,05-3 §5.10,test/fidelity/bp/BP-cards-m9.spec.ts,M9,live
 ,,,,BP-CARD-17,05-3 §5.18,test/fidelity/bp/BP-cards-m9.spec.ts,M9,live
 ,,,,BP-SCR-13,06-3 §11.1–§11.2,test/fidelity/bp/BP-screens-m9.spec.ts,M9,live

@@ -6,6 +6,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { t } from '../../../src/shared/copy/t';
 import { formatTime } from '../../../src/shared/format';
+import { seedUxWorld } from '../../../src/main/test/seed/uxWorld';
 import type { StopReport } from '../../../src/shared/types';
 import { jobHarness, jobIntake, step, tool, badgeSets, BILLS_PLAN, type JobHarness, type PlanStepIn } from './jobHarness';
 import { flush, fooTexts, keyBilling, seedActivity, seedSpend, stepTurnsSince, until } from './t3Helpers';
@@ -204,5 +205,49 @@ describe('AT-107 · Stop in each live state', () => {
       ['cancelled', 'stop_all'],
     ]);
     expect(h.db.prepare("SELECT COUNT(*) AS n FROM activity WHERE event = 'stopped_all'").get()).toEqual({ n: 1 });
+    // J18 / 06-3 §14 C-13 (CR-0030 pick 1): one combined report in foo's chat; each job's own chat keeps its report line.
+    const titles = h.jobs().map((j) => String(j.title));
+    expect(fooTexts(h).at(-1)).toBe(
+      `${t('thread.stop.all.lead', { count: 2, titles: titles.join(', ') })} ${t('thread.stop.all.nothing')}`,
+    );
+    for (const c of [h.chat('a'), h.chat('b')]) expect(fooOrHelperTexts(h, c).at(-1)).toBe(t('thread.stop.report.nothing'));
+  });
+
+  it("job.stopAll with a job in foo's chat: no second report line there, the combined one covers it", async () => {
+    h = jobHarness({ script: [jobIntake(BILLS_PLAN, { match: 'one' }), jobIntake(BILLS_PLAN, { match: 'two' }), ...slowTools(10)] });
+    h.userSays('one');
+    h.userSaysIn(h.chat('b'), 'two');
+    await until(h, () => h!.jobs().filter((j) => j.state === 'working').length === 2);
+    const before = fooTexts(h).length;
+    await h.bridge.request<StopReport[], 'job.stopAll'>('job.stopAll', { by: 'user' });
+    const added = fooTexts(h).slice(before);
+    expect(added).toHaveLength(1);
+    expect(added[0]).toMatch(/^Stopped 2 jobs: /);
+    expect(added).not.toContain(t('thread.stop.report.nothing'));
+  });
+
+  it('job.stopAll on jobs whose stored steps are not catalogue phrases (the seeded world) still ends in the combined line', async () => {
+    // A throw while writing plan.md for one job used to abort the loop, so foo's chat never got the report (UX-15-09).
+    h = jobHarness({ script: [] });
+    const { refs } = seedUxWorld(h.db);
+    for (const id of [refs.moneyJob, refs.homeJob]) h.db.prepare("UPDATE jobs SET state = 'working' WHERE id = ?").run(id);
+    const live = h.jobs().filter((j) => ['queued', 'working', 'needs_you', 'waiting'].includes(String(j.state))).length;
+    const r = await h.bridge.request<StopReport[], 'job.stopAll'>('job.stopAll', { by: 'user' });
+    expect(r.ok && r.value.length).toBe(live);
+    const fooChat = h.db
+      .prepare("SELECT id FROM chats WHERE kind = 'foo' AND private = 0 ORDER BY created_at LIMIT 1")
+      .pluck()
+      .get() as string;
+    expect(fooTexts(h, fooChat).at(-1)).toMatch(new RegExp(`^Stopped ${live} jobs: .*${t('thread.stop.all.nothing')}$`));
+    expect(h.db.prepare("SELECT COUNT(*) AS n FROM activity WHERE event = 'stopped_all'").get()).toEqual({ n: 1 });
   });
 });
+
+/** The text lines foo or a helper wrote in a chat. */
+function fooOrHelperTexts(h: JobHarness, chatId: string): string[] {
+  return (
+    h.db
+      .prepare("SELECT text FROM messages WHERE chat_id = ? AND author_kind IN ('foo', 'helper') AND kind = 'text' ORDER BY seq")
+      .all(chatId) as { text: string }[]
+  ).map((r) => r.text);
+}

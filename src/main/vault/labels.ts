@@ -34,3 +34,8 @@ export function secretActivityLine(event: SecretEvent, label: string): string {
   if (event === 'secret_replaced') return `Replaced your ${label}`;
   return `Removed your ${label}`;
 }
+
+/** 06-3 §9.4 `saved_login` (kind `connected`): the site only (CR-0030 pick 4). */
+export function savedLoginLine(site: string): string {
+  return `Saved your login for ${site}`;
+}

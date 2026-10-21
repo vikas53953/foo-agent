@@ -141,8 +141,9 @@ export function resolvePhrase(
   return { key, slots: out };
 }
 
-/** The phrase text with its slots filled (plan.md, logs, tests; the UI uses t(phraseCopyKey(…), slots)). */
+/** The phrase text with its slots filled (plan.md, logs, tests; the UI uses t(phraseCopyKey(…), slots)). A stored step whose key
+ * is not in the catalogue gives null, so writing plan.md never throws (a throw there aborted a stop mid-way, CR-0030). */
 export function phraseText(key: PhraseKey, form: PhraseForm, slots: PhraseSlots = {}): string | null {
-  const text = PHRASES[key][form] as string | null;
+  const text = (PHRASES[key]?.[form] ?? null) as string | null;
   return text === null ? null : text.replace(/\{(\w+)\}/g, (_, n: string) => slots[n] ?? `{${n}}`);
 }
