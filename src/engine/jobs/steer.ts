@@ -15,6 +15,7 @@ import type { CardRow, JobRow, StepRow } from '../../shared/types';
 import type { DbOp } from '../protocol';
 import type { RunnerCore } from './JobRunner';
 import { isStopCommand, looksLikeYes, type StopFlow } from './stopFlow';
+import { classifyTurn } from './classifyTurn';
 import { flightScopePayload, isFlightBooking } from './flights'; // M9 T8
 import { extractDoVerbs } from './verbs';
 
@@ -105,6 +106,8 @@ export class Steer {
     private stop: StopFlow,
     // M5 T8
     private onSuperseded?: (jobId: string, approvalId: string) => void,
+    // CR-0045: a job halted for its Stuck card while the card is still being written.
+    private turningStuck?: (jobId: string) => boolean,
   ) {}
 
   /** The runner's branches of 08-2 §5.2. True when the message is handled here (no intake turn). */
@@ -135,9 +138,13 @@ export class Steer {
     const live: JobRow[] = [];
     for (const j of (await this.core.query<JobRow[]>('jobs.liveForChat', m.chatId)) ?? []) {
       if (j.state !== 'working' && j.state !== 'needs_you') continue;
+      // CR-0045: halted for its Stuck card but still WORKING while "What's wrong" is asked; it would never read the steer.
+      if (this.turningStuck?.(j.id)) continue;
       if (j.state === 'needs_you' && j.needsYouCardId && (await this.blocksSteer(j.needsYouCardId))) continue;
       live.push(j);
     }
+    // CR-0045 (X-203): a message to a job waiting on its card is a steer only when it is about that job.
+    if (live.length === 1 && !(await this.aboutJob(live[0]!, text))) return false;
     if (live.length === 1) {
       await this.steer(live[0]!, { id: m.messageId, text });
       return true;
@@ -158,6 +165,24 @@ export class Steer {
       return true;
     }
     return false;
+  }
+
+  /**
+   * CR-0045 (X-203), 08-4 §26.5 item 2b: before a steer withdraws a NEEDS_YOU job's Choice, tiles, approval, payment or draft
+   * card, one classify turn (steer_check.md) asks whether the message is about the job. "new" → not a steer: the message
+   * goes to intake and the card stays. A working job, no such card, or a failed turn → a steer, as before.
+   */
+  private async aboutJob(job: JobRow, text: string): Promise<boolean> {
+    const p = this.core.d.prompts;
+    if (job.state !== 'needs_you' || !job.needsYouCardId || !p.buildSteerCheck || !p.parseSteerCheck) return true;
+    const card = await this.core.query<CardRow>('cardById', job.needsYouCardId);
+    if (!card || card.resolvedAt !== null || !SUPERSEDE_TO[card.type]) return true;
+    const pl = card.payload as { question?: unknown; title?: unknown };
+    const waitingFor = String(pl.question ?? pl.title ?? `a ${card.type} card`);
+    const reply = await classifyTurn(this.core, job, p.buildSteerCheck({ title: job.title, waitingFor }, text));
+    const about = reply === null ? null : p.parseSteerCheck(reply);
+    this.core.d.log('job.steer_check', about ?? 'failed', { jobId: job.id });
+    return about !== 'new';
   }
 
   private async blocksSteer(cardId: string): Promise<boolean> {
