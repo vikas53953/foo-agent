@@ -13,9 +13,9 @@
 - **Spec sections:** 06-3 §14 C-13; 07 J18 + research/journeys-3 J18 "Steps (stop everything)"; 06-3 §11.2 Take over /
   Hand back; 05-1 §5.2.2 "Took over" row; 05-2 §5.8.4 Login and Code box variants, §5.8.6 `saved_login`; 05-3 §5.10.2
   "After first success on a site"; 08-2 §8.4; 08-0 §G.13 / 08-3 §15 `save_login:{domain}`.
-- **Status:** Approved on Vikas's behalf (his rule 2026-10-18 14:56Z and his 2026-10-21 07:14Z message), after the
+- **Status:** Approved by Vikas on his behalf, DECISIONS X-188 (his rule 2026-10-18 14:56Z and his 2026-10-21 07:14Z message), after the
   independent review in §(c).
-- **Change:** no chapter text changes (X-188 stays unused). `spec/trace.csv`: UX-14-05, UX-14-06, UX-14-08, UX-15-05,
+- **Change:** no chapter text changes; `spec/constitution/DECISIONS.md` row X-188 records the picks. `spec/trace.csv`: UX-14-05, UX-14-06, UX-14-08, UX-15-05,
   UX-15-08 and UX-15-09 move `pending` → `live`. Code as in §(b).
 - **Manifest:** `pnpm tsx scripts/spec-verify.ts --write` run in the same commit.
 
@@ -23,6 +23,7 @@
 
 - A typed "Stop everything" still stops at once with no confirm (08-4 §26.9 item 1); only the menu path asks (C-13).
 - "Stop all jobs in this chat…" (C-13b) is untouched; it is a separate follow-up (03 §3.6.2.2), not one of these steps.
+- A typed "Stop everything" now also gets the combined line in foo's chat (instead of a per-job line for a job there).
 - "Carrying on from here." was already posted on Hand back (X-135); only the checklist row was missing.
 - The code box's `requestId` bug noted in the CR-0013 addendum (the box's stored `requestId` read `[hidden]`) is not in this
   CR; UX-14-08 still does not assert the code reaching the bank page.
@@ -43,7 +44,7 @@
    steps row, so step counts, "step n of m" and the runner's plan stay as they were). The checklist draws the row just before
    that step, or at the end. Both a running job's Take over and a Sign-in card's Take over (UX-14-09 f) add it.
 4. **Save-login offer:** posted by the sign-in lanes after a password sign-in that succeeded (`reason: 'sign_in'` only, so
-   not after Skip, a CAPTCHA, passkey or bank check, nor when a saved login failed), once per site: the engine checks and
+   not after Skip, a CAPTCHA, passkey or bank check, nor when a saved login failed, nor in a group chat), once per site: the engine checks and
    writes `suggestions` `save_login:{host}` (`offered`). It is a jobless Choice card (`purpose: 'job'`, marker
    `saveLogin: { site }`, like M9 T8's `flightScope`), so main answers it: Save → the key `accepted` and a Login Secret box
    ("{site} login", `vaultName` = host, `afterSignIn: true`; never in a group); Don't save → `dismissed` for good. The
@@ -54,4 +55,15 @@
 
 ## (c) Independent review
 
-Pending: recorded here before merge.
+Fable reviewer, 2026-10-21 ~09:25Z, read-only, against 06-3 §14 C-13, §11.2, §9.4, 05-1 §5.2.2, 05-2 §5.8.4–§5.8.6, 05-3
+§5.10.2, 08-3 §15, J18 and the diff; ran typecheck, check:copy and five test files (105 tests). **Verdict: PASS WITH
+FIXES**; applied:
+
+- Consider 1 (fixed): no offer in a group chat (its Save could post no box and would still mark the site asked); test added.
+- Consider 4 (fixed, docs): §(a) says the typed "Stop everything" report changed too.
+- Consider 2 (watch on Windows CI): the C-13 count is the renderer's job store; the UX-15-08 spec expects the database's
+  count. Consider 3 (kept): an unanswered offer still counts as asked ("once per site", 08-3 §15 "never twice").
+- Noted, no issue: copy, test ids and icons match the spec; no page value reaches the offer, the AI or the activity row; the
+  code box line uses the engine-masked number; nothing from M7 or M10–M15 is pulled in.
+
+Recorded as approved on Vikas's behalf under his standing rule; listed for his later review.

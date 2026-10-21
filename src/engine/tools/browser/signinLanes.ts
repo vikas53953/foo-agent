@@ -626,6 +626,8 @@ export class SigninLanes implements CaptureGuard {
   private async offerSaveLogin(job: JobRow, site: string): Promise<void> {
     const key = `save_login:${site}`;
     if ((await this.r.core.query<string>('suggestionState', key)) !== null) return;
+    // 05-2 §5.8.6 "Groups: never": the Login box can't be posted in a group, so neither is the question that opens it.
+    if ((await this.r.core.query<{ kind: string }>('chatOpen', job.chatId))?.kind === 'group') return;
     const now = this.d.clock.now();
     const question = t('cards.secret.login.offer', { site });
     const { ops } = this.r.core.cardOps(

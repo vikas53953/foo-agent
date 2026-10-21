@@ -22,6 +22,7 @@ afterEach(() => {
   h.toggles.signin.method = 'otp';
   h.toggles.signin.passkeyApproved = false;
   h.suggestions = {};
+  h.chatKind = 'helper';
 });
 
 /** Opens the sign-in page and runs the AI's `job.needSignIn`, then posts the card it asks for. */
@@ -294,6 +295,13 @@ describe('05-3 §5.10.2 / 05-2 §5.8.4 the save-login offer after a sign-in (CR-
 
   it('a site already offered (or dismissed) is never asked again', async () => {
     h.suggestions['save_login:127.0.0.1'] = 'dismissed';
+    await needSignIn('password');
+    await h.lanes.done(h.job.id);
+    expect(offers()).toEqual([]);
+  });
+
+  it('never in a group chat (05-2 §5.8.6 Groups: never)', async () => {
+    h.chatKind = 'group';
     await needSignIn('password');
     await h.lanes.done(h.job.id);
     expect(offers()).toEqual([]);
