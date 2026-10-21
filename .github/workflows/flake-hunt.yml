@@ -34,7 +34,7 @@ jobs:
     env:
       UNIT: ${{ inputs.unit }}
       E2E: ${{ inputs.e2e || 'test/e2e/p1-first-run.spec.ts' }}
-      REPEAT: ${{ inputs.repeat || '10' }}
+      REPEAT: ${{ inputs.repeat || '15' }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -68,9 +68,9 @@ jobs:
         id: e2e
         if: env.E2E != ''
         shell: bash
-        # TEMPORARY: every Playwright call in the log, to name the call AT-313 Off hangs on.
+        # TEMPORARY: every Playwright call and the app's own output in the log, to see why a reload stalls before DOMContentLoaded.
         env:
-          DEBUG: pw:api
+          DEBUG: pw:api,pw:browser*
         run: pnpm exec playwright test $E2E --repeat-each="$REPEAT"
       - name: Page state at each failed e2e test
         if: failure() && steps.e2e.outcome == 'failure'
