@@ -71,7 +71,7 @@ export class WebTools {
       [ddgUrl(clean), parseDdgHtml],
     ];
     for (const [url, parse] of tries) {
-      const loaded = await page.load(url, ctx.jobId);
+      const loaded = await page.load(url, ctx.jobId, ctx.signal);
       if (!loaded) continue;
       const parsed = parse(loaded.html, max);
       if (parsed.kind === 'results') return this.done(parsed.results, ctx, 'this_pc');
@@ -99,7 +99,7 @@ export class WebTools {
       if (read) via = 'firecrawl';
     }
     if (!read) {
-      const local = await this.localRead(url.toString(), ctx.jobId);
+      const local = await this.localRead(url.toString(), ctx);
       if (local.kind === 'error') return { ok: false, errorKind: local.errorKind };
       read = local.read;
     }
@@ -124,14 +124,14 @@ export class WebTools {
 
   private async localRead(
     url: string,
-    jobId: string | null,
+    ctx: WebCallContext,
   ): Promise<{ kind: 'read'; read: ReadResult } | { kind: 'error'; errorKind: 'URL_NOT_ALLOWED' | 'SITE_HANDBACK' | 'needsBrowser' }> {
     const local = await localFetch({ fetch: this.d.fetch, clock: this.d.clock, check: (u) => this.hopVerdict(u) }, url);
     if (local.kind === 'read') return local;
     if (local.kind === 'blocked') return { kind: 'error', errorKind: local.reason };
     // needsBrowser (or the GET failed): the engine reads it in the job window with the same extractor.
     const target = local.kind === 'needsBrowser' ? local.url : url;
-    const loaded = this.d.page ? await this.d.page.load(target, jobId) : null;
+    const loaded = this.d.page ? await this.d.page.load(target, ctx.jobId, ctx.signal) : null;
     if (!loaded) {
       this.d.log('web.no_window');
       return { kind: 'error', errorKind: 'needsBrowser' };

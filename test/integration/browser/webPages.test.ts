@@ -12,6 +12,10 @@ beforeAll(async () => {
   h = await browserHarness();
   h.route('/plain', html('<h1>Local page</h1><p>Read in the job window.</p>'));
   // Bing's result page, served locally: the test never reaches the real Bing.
+  h.route('/form', html('<h1>Half-filled form</h1>'));
+  // A redirect inside the window onto a hand-back site: foo never reads it.
+  h.route('/to-bank', (_q, res) => res.writeHead(302, { location: `${h.bank}/acct` }).end());
+  h.route('/acct', html('<p>Balance 12,345</p>'));
   h.route('/search', (_q, res) => res.writeHead(200, { 'content-type': 'text/html' }).end(fixture('bing.html')));
 });
 afterAll(() => h.close());
@@ -40,5 +44,36 @@ describe("web tools read through the job's own window", () => {
     expect(r.ok, JSON.stringify(r)).toBe(true);
     if (r.ok) expect(r.data.length).toBeGreaterThan(0);
     await h.runtime.jobEnded('job_search');
+  });
+
+  it('the AI is put back on the page it was on after a web read in its window', async () => {
+    const p = await h.page('job_busy');
+    await p.goto(`${h.origin}/form`);
+    const got = await jobWindowPages(() => h.runtime).load(`${h.origin}/plain`, 'job_busy');
+    expect(got?.html).toContain('Read in the job window.');
+    expect(p.url()).toBe(`${h.origin}/form`);
+    await h.runtime.jobEnded('job_busy');
+  });
+
+  it('a page that lands on a hand-back site is never read (§8.3.10)', async () => {
+    const got = await jobWindowPages(() => h.runtime).load(`${h.origin}/to-bank`, 'job_bank');
+    expect(got).toBeNull();
+    // The window does not stay on the bank page either.
+    expect(h.runtime.page('job_bank')?.url()).toBe('about:blank');
+    await h.runtime.jobEnded('job_bank');
+  });
+
+  it('a stopped job waiting for one of the 3 windows gives up, and never takes a window later', async () => {
+    const held = ['job_a', 'job_b', 'job_c'];
+    for (const j of held) await h.page(j);
+    const ac = new AbortController();
+    const waiting = jobWindowPages(() => h.runtime).load(`${h.origin}/plain`, 'job_late', ac.signal);
+    ac.abort();
+    expect(await waiting).toBeNull();
+    await h.runtime.jobEnded('job_late');
+    await h.runtime.jobEnded('job_a');
+    // The freed slot is not handed to the stopped job.
+    expect(h.runtime.browser.window('job_late')).toBeUndefined();
+    for (const j of held.slice(1)) await h.runtime.jobEnded(j);
   });
 });

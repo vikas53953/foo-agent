@@ -19,7 +19,7 @@ function outcome<T>(r: WebToolResult<T>, url?: string): ToolOutcome {
 
 export function webToolDefs(web: EngineWeb): Record<string, ToolDef> {
   // ToolContext has no tool call id or chat yet: the job id is the wrapper ref; the chat comes with the runner's row.
-  const ctx = (jobId: string) => ({ chatId: null, jobId, toolCallId: jobId });
+  const ctx = (c: { jobId: string; signal: AbortSignal }) => ({ chatId: null, jobId: c.jobId, toolCallId: c.jobId, signal: c.signal });
   return {
     'web.search': {
       name: 'web.search',
@@ -29,7 +29,7 @@ export function webToolDefs(web: EngineWeb): Record<string, ToolDef> {
       run: async (args, c) => {
         const a = searchArgs.safeParse(args);
         if (!a.success) return { kind: 'error', errorKind: 'PROTOCOL_INVALID' };
-        return outcome(await web.tools.search(a.data, ctx(c.jobId)));
+        return outcome(await web.tools.search(a.data, ctx(c)));
       },
     },
     'web.fetch': {
@@ -40,7 +40,7 @@ export function webToolDefs(web: EngineWeb): Record<string, ToolDef> {
       run: async (args, c) => {
         const a = fetchArgs.safeParse(args);
         if (!a.success) return { kind: 'error', errorKind: 'PROTOCOL_INVALID' };
-        return outcome(await web.tools.fetch(a.data, ctx(c.jobId)), a.data.url);
+        return outcome(await web.tools.fetch(a.data, ctx(c)), a.data.url);
       },
     },
     'web.browseCloud': {
@@ -51,7 +51,7 @@ export function webToolDefs(web: EngineWeb): Record<string, ToolDef> {
       run: async (args, c) => {
         const a = browseArgs.safeParse(args);
         if (!a.success) return { kind: 'error', errorKind: 'PROTOCOL_INVALID' };
-        return outcome(await web.tools.browseCloud(a.data, ctx(c.jobId)), a.data.url);
+        return outcome(await web.tools.browseCloud(a.data, ctx(c)), a.data.url);
       },
     },
   };
