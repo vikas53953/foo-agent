@@ -4,9 +4,6 @@
 name: Flake hunt
 
 on:
-  # TEMPORARY (removed before merge): proves the flaky-test fixes on this branch before the workflow exists on main.
-  push:
-    branches: [claude/project-thread-fpa7hw]
   workflow_dispatch:
     inputs:
       unit:
@@ -18,6 +15,9 @@ on:
       repeat:
         description: runs of each test per job
         default: '3'
+      debug:
+        description: Playwright DEBUG value for the e2e step, e.g. pw:api (empty = off)
+        default: ''
 
 permissions:
   contents: read
@@ -33,8 +33,8 @@ jobs:
         job: [1, 2, 3]
     env:
       UNIT: ${{ inputs.unit }}
-      E2E: ${{ inputs.e2e || 'test/e2e/p1-first-run.spec.ts' }}
-      REPEAT: ${{ inputs.repeat || '15' }}
+      E2E: ${{ inputs.e2e }}
+      REPEAT: ${{ inputs.repeat }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -68,9 +68,8 @@ jobs:
         id: e2e
         if: env.E2E != ''
         shell: bash
-        # TEMPORARY: every Playwright call and the app's own output in the log, to see why a reload stalls before DOMContentLoaded.
         env:
-          DEBUG: pw:api,pw:browser*
+          DEBUG: ${{ inputs.debug }}
         run: pnpm exec playwright test $E2E --repeat-each="$REPEAT"
       - name: Page state at each failed e2e test
         if: failure() && steps.e2e.outcome == 'failure'
