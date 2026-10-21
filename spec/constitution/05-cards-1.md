@@ -416,7 +416,7 @@ Card lifecycle words (shown, held, declined, expired, superseded, caught, offere
 
 **Purpose.** Ask one question with 2–4 tappable answers, foo's pick first, so the user taps instead of typing `[JRN C3, J8]`.
 
-**Trigger.** Inside a job, foo lacks one piece of information it cannot fill from memory, or there are 2+ reasonable routes. One question per missing item; up to 3 questions per card as a stepper. foo's text above the card never repeats the options `[HRM §6]`.
+**Trigger.** Inside a job, or at intake before any job (08-4 §25.5 item 5, intake kind `ask`, CR-0028), foo lacks one piece of information it cannot fill from memory, or there are 2+ reasonable routes. One question per missing item; up to 3 questions per card as a stepper. foo's text above the card never repeats the options `[HRM §6]`.
 
 ### 5.3.1 Anatomy (`--card-w` 440px)
 

@@ -277,8 +277,8 @@ Chips (final copy, in order):
 | Chip | Shows | Count shown | Test id |
 |---|---|---|---|
 | "All" | every chat | never | `chatlist-filter-all` |
-| "Needs you" | chats with ≥ 1 job in NEEDS YOU or a PENDING/HELD approval or choice card | when ≥ 1 | `chatlist-filter-needs-you` |
-| "Working" | chats with ≥ 1 job QUEUED, WORKING or WAITING | when ≥ 1 | `chatlist-filter-working` |
+| "Needs you" | chats with ≥ 1 job in NEEDS YOU or a PENDING/HELD approval or choice card, or a Plan card waiting for Go (CR-0028, X-186) | when ≥ 1 | `chatlist-filter-needs-you` |
+| "Working" | chats with ≥ 1 job QUEUED, WORKING or WAITING; a QUEUED job whose Plan card waits for Go does not count (CR-0028, X-186) | when ≥ 1 | `chatlist-filter-working` |
 | "Done" | chats with a job DONE in the last 7 days, newest finish first | never | `chatlist-filter-done` |
 
 `[foo decision]` from BP1 chips `[exact]`; GEM Ready/Needs attention/In progress (J22 step 6 `[reported]`).

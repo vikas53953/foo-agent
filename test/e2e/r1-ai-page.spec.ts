@@ -275,7 +275,10 @@ test('AT-361 AI page actions: requestAction goes through the gate; openLink alwa
   // requestAction: sent as if typed, so foo's turn (and its gate) sees it like any message.
   expect((await tap(f, 'requestAction', { text: ACTION })).result).toEqual({});
   await page.getByTestId(TID.bubbleMe).filter({ hasText: ACTION }).waitFor();
-  // One tap, one act: a second call on the same tap is declined and nothing more is sent.
+  // One tap, one act: a second call on the same tap is declined and nothing more is sent. A pointerdown foo's window sees on
+  // the page's own frame or block (a tap landing while the row moves) is still the page's tap, not one in foo.
+  await page.getByTestId(TID.aiPageFrame).first().dispatchEvent('pointerdown');
+  await page.getByTestId(TID.aiPage).first().dispatchEvent('pointerdown');
   expect((await tap(f, 'requestAction', { text: 'Send it again' })).error?.data.reason).toBe('declined');
   await until(page.getByTestId(TID.bubbleFoo).filter({ hasText: 'I will save that budget once you say so.' }));
   expect(fakeTurns(dirs).some((x) => x.purpose === 'intake' && x.prompt.includes(ACTION))).toBe(true);

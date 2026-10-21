@@ -51,7 +51,7 @@ The result is stored on the job as `do_verbs`. If empty, `jobs.intent = 'read_on
 5.3.2 **Intake AI call** (`purpose:'intake'`, chat lane, `<say>` streamed through the release gate): the AI returns an `IntakeAct` whose exact schema is 08-4 §25.2 (kinds `reply`, `react`, `ask`, `handoff`, `job`, `routine`, `memory`, `setting`; prompt `intake.md`, 08-4 §24.5). A `setting` decision is checked by the engine against the 08-0 §A.3 allow-list (08-4 §25.6). What is posted for each kind is 08-4 §25.5 items 5–6 (only `reply` posts its `<say>`).
 
 5.3.3 **Job creation.** For `kind:'job'`: insert `jobs` row (`queued`), insert `steps` from `plan` (each step's `phraseKey` MUST exist in the catalogue of 08-4 §26.1, else the runner replaces it with `generic_working`), write `plan.md` + `state.json`. `jobs.title` is built by the engine (08-4 §26.2); `est_minutes`, `est_tokens`, `est_cost_paise` are the engine values of 08-4 §26.3, never the AI's raw estimate. Then:
-- If `est_minutes > 2` or `est_cost_paise > 500` (₹5) → Plan card C11; job stays `queued` until "Go" (`plan:go`). "Change plan" → the text goes back to an intake turn with the old plan attached. `[J C11 foo decision]`
+- If `est_minutes > 2` or `est_cost_paise > 500` (₹5) → Plan card C11; job stays `queued` until "Go" (`plan:go`); it holds no WORKING slot while it waits, and every surface shows it as waiting on the user (NEEDS YOU in Doing now, the "Needs you" chip and pill; `JobRow.awaitingGo`, CR-0028, X-186). "Change plan" → the text goes back to an intake turn with the old plan attached. `[J C11 foo decision]`
 - If key billing and `est_cost_paise > 0.2 × money.aiCapPaise` → the Plan card shows "This is a big one." (J19.3 step 5).
 - Else → `enqueue(job)`.
 

@@ -100,7 +100,8 @@ export function answerCard(
 
   const purpose = String(c.payload.purpose ?? '');
   // M9 T8: the flight-scope reply (08-2 §5.3.4) has no job yet; its Compare flights starts one in the runner.
-  if (c.jobId !== null || RUNNER_PURPOSES.has(purpose) || c.payload.flightScope !== undefined) {
+  // CR-0028: an intake question (`intakeAsk`) has no job either; the chat lane writes it and sends the message back to intake.
+  if (c.jobId !== null || RUNNER_PURPOSES.has(purpose) || c.payload.flightScope !== undefined || c.payload.intakeAsk !== undefined) {
     const a = req.answer;
     const sent = d.engine?.send('card.answered', {
       cardId: c.id,
