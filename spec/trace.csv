@@ -63,7 +63,6 @@ R16,J7,,UX-09-08,,04-2 §23.2,test/fidelity/ux/UX-09.voice.spec.ts,M2,pending
 ,J7,AT-031,,,10-acceptance-1 §B; 08-2 §7.6,test/unit/m3-engine.test.ts,M3,live
 ,,ART-12a,,,01-articles Art. 12; 10-acceptance-2 §D,test/unit/m3-engine.test.ts,M3,live
 ,,ART-23a,,,01-articles Art. 23; 10-acceptance-2 §D,test/unit/m3-engine.test.ts,M3,live
-,J7,AT-030,,,10-acceptance-1 §B; 04 §12.3,test/unit/m3-chunks.test.ts,M3,live
 ,J7,AT-031,,,10-acceptance-1 §B; 08-2 §7.6,test/unit/m3-prompt-filters.test.ts,M3,live
 ,,ART-02b,,,01-articles Art. 2; 10-acceptance-2 §D; 08-4 §25.8,test/articles/ART-02b.test.ts,M3,live
 ,J2,AT-006,,,10-acceptance-1 §B; 04-2 §23.1,test/e2e/m3-replies.spec.ts,M3,pending

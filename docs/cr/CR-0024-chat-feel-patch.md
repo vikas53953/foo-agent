@@ -73,8 +73,11 @@ and owned by tickets T2–T4 (`/mnt/project-files/foo/prep/C1-tickets.md`).
 2. "Try it" is the kit Button action `composer.fill`, handled in the renderer only, so it can never send or reach the gate.
 3. The Ideas link line (X-110) stays out of the card while the Ideas page is a placeholder (`PlaceholderPage.tsx`): a link
    to an empty page is worse than none. Its copy key lands with the Ideas page's milestone.
+4. Lead pick (T3): the action row under an older answer is out of flow (absolute, just below the bubble, above the next
+   row) and reserves no space; only the latest answer's row sits in flow. It fades in on hover or focus as F7 says, and
+   nothing in the list moves. 04 §17.1 is silent on space; reserving it broke the §1.2 gaps (AT-421 measured 84px).
 
-4. Chip icon word map is fixed (no AI choice), first match wins, `Edit` otherwise (only icons already in the 02 F6 list).
+5. Chip icon word map is fixed (no AI choice), first match wins, `Edit` otherwise (only icons already in the 02 F6 list).
 
 ## (f) Independent review
 

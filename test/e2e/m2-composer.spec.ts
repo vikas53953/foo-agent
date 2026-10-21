@@ -90,7 +90,10 @@ test('AT-007 · a pasted key, a typed card number and a labelled code are caught
   });
   const { app, page } = await start('ux-world');
   await openChat(page, 'foo');
-  const before = await mine(page).count();
+  // Nothing sent = the newest bubble of mine is still the one from before. Not a DOM count: the paste panel shortens the
+  // list, which stays pinned to its end (CR-0024 B3), so a bubble at the top can unmount.
+  const newest = () => mine(page).last().textContent();
+  const before = await newest();
   const send = page.getByTestId(TID.composerSend);
 
   // A pasted OpenAI key: masked, the panel opens, focus is on "Move to secret box", the button is disabled.
@@ -103,7 +106,7 @@ test('AT-007 · a pasted key, a typed card number and a labelled code are caught
   await expect(send).toHaveAttribute('data-state', 'disabled');
   await field(page).focus();
   await page.keyboard.press('Enter');
-  await expect(mine(page)).toHaveCount(before);
+  await expect.poll(newest).toBe(before);
 
   // Esc: the panel closes, the span stays masked; the next Send runs the check again and the panel reopens.
   await page.keyboard.press('Escape');
@@ -112,7 +115,7 @@ test('AT-007 · a pasted key, a typed card number and a labelled code are caught
   await expect(send).toHaveAttribute('data-state', 'send');
   await page.keyboard.press('Enter');
   await expect(page.getByTestId(TID.composerPaste)).toBeVisible();
-  await expect(mine(page)).toHaveCount(before);
+  await expect.poll(newest).toBe(before);
 
   // Move to secret box removes the span and keeps the rest of the text; M5 T2 posts the Secret box card in the chat.
   await page.getByTestId(TID.composerPasteMove).click();
