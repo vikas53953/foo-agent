@@ -96,9 +96,10 @@ Decide what the user's last message is:
 Only "reply" puts words in <say>. For every other kind leave <say> empty.
 Fill usedMemoryIds with the ids of the facts you relied on.
 When the user asks what you can do, add "intent_capabilities" to tags.
+Plan steps use only these phrase keys: {phraseKeys}
 Helpers you can hand off to: {helperList}
 ```
-`{helperList}` = one line per helper the user has, `{helperId}: {name}, {jobText}`, or `none`.
+`{helperList}` = one line per helper the user has, `{helperId}: {name}, {jobText}`, or `none`. `{phraseKeys}` = the same list as `step.md` (§24.6): the §26.1 keys that are not runner-only, each with its slot names (X-185, CR-0027; without it a real AI invents keys and every plan row falls back to `generic_working`).
 
 **Kit section [X-180, CR-0022 pick 2].** Part 4 of intake ends with the kit section after the suggestions line: generated in code by `kitPromptSection(appearance.visuals)` (`src/shared/kit/prompt.ts`) from the zod catalog `foo.kit.v1`, never hand-written. Balanced and Show me visuals carry how to write ```a2ui and ```page blocks and one line per catalog component; Mostly words carries only the line that says not to use them unless the user asks.
 
