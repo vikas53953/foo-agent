@@ -69,6 +69,10 @@ Every feature gets a score per test type, and an overall score: **works / works 
 13. **Usability and UX.** (a) An AI heuristic review of every screen against the Blueprint and Nielsen's 10 heuristics, with screenshots. (b) A short script for real people: 5 tasks, what to watch for, and 3 questions afterwards. Vikas or testers run it; never ask Vikas to run tests.
 14. **Spec map.** Every spec screen and feature maps to a built screen plus a test, or CI fails (the guard in #101). List any gaps you find.
 
+15. **App-wide checks for an AI-built, AI-using app** (`app-wide.tsv`): prompt-injection red team first (email, paste, files and AI pages, against real Claude; build on `test/articles/ART-injection.test.ts`), then wire-up audit, unused code and dependency check, security scan, cost per journey, privacy capture on real AI, an 8-hour soak, and chaos during real-AI jobs. Do not duplicate PR #97 (chaos), #101 (coverage guard, mutation) or #102 (pass^3, spend cap).
+
+Every angle, every time: UI against the design, the UX of the whole journey, every frontend state (empty, loading, error, each button), the backend and engine (jobs, data, restart and crash recovery, speed), bad AI output (invalid, unknown, slow, an old AI CLI), and Windows (installer, keychain, tray, notifications). Never ask Vikas to tap, click or run anything.
+
 Research rule: before you pick a tool, compare the options with evidence (at least 3), and write the comparison in your results file.
 
 The owners already working on parts of this (do not duplicate): real-AI journeys (journey kit, `test/real-pc/`), the test stack PR #97 (judge, axe, chaos, Windows checks), safety checks PR #101 (mutation, spec-coverage guard), pipeline tools PR #102 (nightly pass^3, spend cap).
