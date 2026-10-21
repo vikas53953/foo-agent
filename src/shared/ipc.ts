@@ -156,6 +156,11 @@ export interface Invokes {
   /** M3 (08-1 §3.2): detection ladder; rows also stream on `ai:detectRow`. The J2 screen that shows them is the AI step (CR-0020). */
   'ai:detect': { req: Record<string, never>; res: DetectRow[] };
   'ai:choose': { req: { primary: ProviderId; backup?: ProviderId | null }; res: AiStatus };
+  /** CR-0026 (06-1 §2.1, §2.3, §2.0): Welcome "Let's go", Card 2a name, Card 2b face, "Skip the rest". */
+  'setup:welcome': { req: Record<string, never>; res: null };
+  'setup:name': { req: { name: string }; res: null };
+  'setup:face': { req: { face: string }; res: null };
+  'setup:skipRest': { req: Record<string, never>; res: null };
   'notifications:status': { req: Record<string, never>; res: { windowsAllowed: boolean; focusAssist: boolean } };
   // M8 T3: 08-1 §3.2 WhatsApp link and Hide from foo
   'whatsapp:linkStart': { req: Record<string, never>; res: void };
@@ -382,6 +387,10 @@ export const INVOKE_CHANNELS = [
   'ai:verify',
   'ai:detect',
   'ai:choose',
+  'setup:welcome',
+  'setup:name',
+  'setup:face',
+  'setup:skipRest',
   'notifications:status',
   // M8 T3
   'whatsapp:linkStart',

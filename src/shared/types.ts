@@ -978,6 +978,8 @@ export type ErrorKind =
 export interface SetupCardPayload {
   setupCard: 'welcome' | 'ai_finder' | 'name' | 'face' | 'apps';
   using?: ProviderId;
+  /** CR-0026: an answered name card keeps the name, a face card the FaceRef, for the collapsed line. */
+  answer?: string;
 }
 export interface TablePayload {
   title: string;

@@ -145,7 +145,7 @@
 }
 .progressFill {
   display: block;
-  width: 25%;
+  width: 50%; /* step 1 of 2 (CR-0026) */
   height: 100%;
   border-radius: inherit;
   background: repeating-linear-gradient(45deg, var(--accent) 0 var(--s1), var(--accent-hover) var(--s1) var(--s3));

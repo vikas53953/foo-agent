@@ -33,7 +33,8 @@ export interface Run {
   page: Page;
 }
 
-export async function firstRun(home: string, lines: FakeLine[] = [VERIFY_OK]): Promise<Run> {
+/** A fresh first run. CR-0026: it opens on the Welcome card; `stayOnWelcome` keeps it there, otherwise "Let's go" is tapped. */
+export async function firstRun(home: string, lines: FakeLine[] = [VERIFY_OK], o: { stayOnWelcome?: boolean } = {}): Promise<Run> {
   const dirs = testDirs();
   const script = join(dirs.FOO_DATA_DIR, '..', 'fake-ai.jsonl');
   mkdirSync(join(dirs.FOO_DATA_DIR, '..'), { recursive: true });
@@ -43,6 +44,7 @@ export async function firstRun(home: string, lines: FakeLine[] = [VERIFY_OK]): P
   await page.getByTestId(TID.titlebarStrip).waitFor();
   await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0]!.setContentSize(1280, 800));
   await page.waitForFunction(() => window.innerWidth === 1280 && window.innerHeight === 800);
+  if (!o.stayOnWelcome) await page.getByTestId(TID.setupWelcomeStart).click();
   return { app, page };
 }
 

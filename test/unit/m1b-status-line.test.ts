@@ -98,7 +98,7 @@ const everything = (): Partial<StatusInput> => ({
 
 describe('status line precedence (first matching row wins)', () => {
   it('row 1 setup beats everything', () => {
-    expect(statusLine(base(everything()))).toMatchObject({ row: 1, text: 'Setting up · step 2 of 4', tone: 'fg2' });
+    expect(statusLine(base(everything()))).toMatchObject({ row: 1, text: 'Setting up · step 2 of 2', tone: 'fg2' });
   });
   it('row 2 needs you (1 card title, 2+ count) beats row 3+', () => {
     const s = base({ ...everything(), setup: { complete: true, step: 5 } });

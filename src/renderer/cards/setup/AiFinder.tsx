@@ -649,8 +649,8 @@ function LiveFinder({ card, time }: { card: CardRow; time: CardTime }) {
   );
 }
 
-/** §F7.1 "a striped progress pill for the 4 steps": this card is step 1 of 4. The header pill carries the words. */
-const SETUP_STEPS = 4;
+/** §F7.1 "a striped progress pill for the steps": this card is step 1 (CR-0026 pick 2: of 2). The header pill carries the words. */
+const SETUP_STEPS = 2;
 function StepProgress() {
   return (
     <div

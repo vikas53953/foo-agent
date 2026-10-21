@@ -2,7 +2,9 @@
 // line in src/main/ipc/IpcRouter.ts stays T1's. The checks and writes are in answerCard.ts (no Electron, unit-tested).
 // M8 T6: on a Draft card the one answer is 05-2 §5.7.2 Offline at Send's [ Yes, send when online ] (DraftService).
 import { deps } from '../deps';
-import { chatRowById } from '../store/queries';
+import { chatRowById, publicSettings } from '../store/queries';
+import { emitFinderWrite } from '../setup/aiFinderIpc'; // CR-0026
+import { vibeAnswered } from '../setup/firstRun'; // CR-0026
 import { emit, listContext, type AppContext, type IpcHandlers } from '../ipc/IpcRouter';
 import { answerCard, onCardReaction, type AnswerDeps } from './answerCard';
 // M8 T6
@@ -19,6 +21,13 @@ export function answerDeps(ctx: AppContext): AnswerDeps {
     emitChat: (chatId) => {
       const row = chatRowById(ctx.db, listContext(ctx.settings.get()), chatId);
       if (row) emit('chat:upsert', row);
+    },
+    // CR-0026: Card 2c (the vibe) is a jobless Choice card; once written, by a tap, a reaction or the toast, first run says
+    // the vibe line and completes.
+    onAnswered: (row) => {
+      if ((row.payload as { setupCard?: string }).setupCard !== 'vibe') return;
+      emitFinderWrite(ctx, vibeAnswered(ctx.db, ctx.settings, row, deps.clock.now(), ctx.dataDir));
+      emit('settings:changed', publicSettings(ctx.settings.get()));
     },
   };
 }
