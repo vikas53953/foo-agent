@@ -105,7 +105,11 @@ export function PageView({
     const allow = floodGate();
     // When this page last spent a tap on an act (CR-0022 pick 13: one tap, one act).
     let spentAt: number | null = null;
-    const freeTap = () => (spentAt = null);
+    // Only a tap in foo itself: a pointerdown the window sees on the page's own frame (a tap landing while the row moves) is
+    // the page's tap, and freeing on it would give the page a second act.
+    const freeTap = (e: Event) => {
+      if (e.target !== frame.current) spentAt = null;
+    };
     const onMessage = (e: MessageEvent) => {
       const win = frame.current?.contentWindow;
       // Only this frame's own messages; anything else on the window is not the page's to send.
