@@ -1,4 +1,4 @@
-// Spec: CR-0027 (X-185): 08-4 §24.5 intake.md carries {phraseKeys}, the §26.1 list step.md already had, so a real AI writes
+// Spec: CR-0027 (X-185), §(d) slot cleaning (08-4 §26.1): 08-4 §24.5 intake.md carries {phraseKeys}, the §26.1 list step.md already had, so a real AI writes
 // plan steps with catalogue keys; 08-2 §5.3.3 (an unknown key → `generic_working`, "Work on it"), 05-3 §5.12.2 (Plan card rows
 // read the `next` form). Real-PC run 2026-10-21: every Plan card row read "Work on it" because intake never listed the keys.
 import { afterEach, describe, expect, it } from 'vitest';
@@ -88,6 +88,27 @@ describe('Plan card rows use the AI step titles (CR-0027)', () => {
     h.userSays('Book a table for 2 near CP tonight');
     await h.settle();
     expect(planSteps(h)).toEqual(['Look for restaurants near CP', 'Check tables.example.com', 'Show you before booking']);
+  });
+
+  it('long or punctuated details are cleaned, not dropped to "Work on it" (CR-0027 §(d))', async () => {
+    h = jobHarness({
+      script: [
+        intake(
+          realCliJob('Budget phones table', [
+            { phraseKey: 'look_for', slots: { what: 'the best budget phones under 15,000 rupees in India' } },
+            { phraseKey: 'compare', slots: { what: 'Redmi vs Realme vs Samsung — camera?' } },
+            { phraseKey: 'make_file', slots: { what: '“a comparison table”' } },
+          ]),
+        ),
+      ],
+    });
+    h.userSays('Make a table comparing 3 budget phones');
+    await h.settle();
+    expect(planSteps(h)).toEqual([
+      'Look for the best budget phones under 15,000',
+      'Compare Redmi vs Realme vs Samsung - camera',
+      'Make a comparison table',
+    ]);
   });
 
   it('keys outside the catalogue (what the AI wrote when intake had no list) still fall back to "Work on it"', async () => {
