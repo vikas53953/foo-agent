@@ -1,3 +1,0 @@
-{"t":1792618019416,"lvl":"info","mod":"main","evt":"APP_STARTED"}
-{"t":1792618020823,"lvl":"info","mod":"engine","evt":"job.steers_restored"}
-{"t":1792618043997,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":3182}

@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n9:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n9:59 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which Friday do you mean for Delhi to Mumbai?\n1\nFri 30 Oct\nBEST FIT\nNext week's Friday\n2\nFri 23 Oct\nThis week, in 2 days\nSomething else…\nSkip\n9:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n10:00 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n10:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n10:01 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n10:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n10:01 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent Ryzen 5/7 or Intel Core i5/i7 chip. Those matter more than a fancy graphics card.\n\nRAM: 16 GB is the floor if you run an editor, a browser and Docker together. Check that it can be upgraded.\nScreen and keyboard: a 14 or 15.6 inch full HD screen (IPS) and a comfortable keyboard, since you'll look at both all day.\nBattery and weight: pick efficient chips (Ryzen U/H series, Intel Core Ultra) if you'll carry it around.\n\nI haven't checked live prices, so I won't name specific laptops yet. Tell me what you mostly code in (web, apps, data or AI work, games) and whether you prefer Windows, Mac or Linux, and I'll narrow it down. I can also look up current options and compare them if you ask.\n\n10:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n10:02 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n10:02 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n10:02 PM"
+  }
+]

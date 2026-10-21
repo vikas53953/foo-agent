@@ -1,0 +1,65 @@
+{
+  "journey": "B04-stop",
+  "title": "Start a job then stop it by typing stop",
+  "steps": 7,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T21-59-26-700Z-B04-stop",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792619980095,
+      "before": 0,
+      "ok": true,
+      "ms": 126
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 6094,
+      "newBubbles": 5,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which Friday do you mean for Delhi to Mumbai?\n1\nFri 30 Oct\nBEST FIT\nNext week's Friday\n2\nFri 23 Oct\nThis week, in 2 days\nSomething else…\nSkip\n9:59 PM\n---\n1\nFri 30 Oct\nBEST FIT\nNext week's Friday\n---\n2\nFri 23 Oct\nThis week, in 2 days\n---\nSomething else…\n---\nSkip",
+      "ms": 12171
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 40002
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792620032506,
+      "before": 1,
+      "ok": true,
+      "ms": 117
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "AT-077: stops within 1 s; reply lists exactly what was done; badge ⛔",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "ms": 60305
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 5
+    }
+  ]
+}

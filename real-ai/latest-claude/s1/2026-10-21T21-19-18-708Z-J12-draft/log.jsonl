@@ -1,9 +1,0 @@
-{"t":"2026-10-21T21:19:18.708Z","journey":"J12-draft","title":"Draft an email (never sends)","spec":"07-1 J12; M8 drafts","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
-{"t":"2026-10-21T21:19:23.714Z","step":"launch","ok":true}
-{"t":"2026-10-21T21:19:31.771Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8053}
-{"t":"2026-10-21T21:19:31.861Z","i":0,"do":"send","sentAt":1792617571816,"before":0,"ok":true,"ms":89}
-{"t":"2026-10-21T21:19:42.037Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":4045,"newBubbles":3,"ok":true,"duplicates":0,"lastReply":"Connect Gmail\n\nSo I can read your email for this.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n9:19 PM\n---\nConnect\n---\nNot now","ms":10176}
-{"t":"2026-10-21T21:19:42.087Z","shot":"01-draft.png"}
-{"t":"2026-10-21T21:19:42.089Z","i":2,"do":"check","found":0,"ok":false,"ms":2}
-{"t":"2026-10-21T21:19:42.091Z","i":3,"do":"dump","ok":true,"ms":2}
-{"t":"2026-10-21T21:19:42.223Z","step":"appLog","lines":3,"dropped":0}
