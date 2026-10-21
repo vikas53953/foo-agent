@@ -278,7 +278,7 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
     [side, m.kind, m.text, m.status, deleted, m.authorKind],
   );
   const hasTable = !!blocks?.some((b) => b.t === 'table');
-  const canTryAgain = layout.latestAnswer && (!job || (job.intent === 'read_only' && job.doVerbs.length === 0));
+  const canTryAgain = !job || (job.intent === 'read_only' && job.doVerbs.length === 0);
   const approvedFromIt = Object.values(ctx.cards).some(
     (c) => c.jobId !== null && c.jobId === m.jobId && (c.type === 'approval' || c.type === 'payment') && c.state === 'approved',
   );
@@ -476,8 +476,14 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
           )}
         {/* 05-3 §5.15–§5.16 (M4 T5): proof chip or "Not checked live" chip + receipt footer under a job's result. */}
         {job && job.resultMessageId === m.id && !deleted && <ResultProof job={job} />}
-        {layout.latestAnswer && !deleted && m.kind === 'text' && (
-          <ActionRow messageId={m.id} text={text} canTryAgain={canTryAgain} onTryAgain={() => void retryMessage(m.id)} />
+        {side === 'them' && !isCard && !deleted && m.kind === 'text' && m.status === 'complete' && (
+          <ActionRow
+            messageId={m.id}
+            text={text}
+            canTryAgain={canTryAgain}
+            onTryAgain={() => void retryMessage(m.id)}
+            older={!layout.latestAnswer}
+          />
         )}
         {why && <WhyFooter why={why} timeZone={ctx.timeZone} now={ctx.now} />}
       </div>
