@@ -107,7 +107,6 @@
         "book",
         "one?",
         "Done",
-        "1",
         "T",
         "9:38",
         "AM",
@@ -348,7 +347,7 @@
         "open.",
         "Worked",
         "for",
-        "6s",
+        "8s",
         "9:05",
         "Proof:",
         "screenshot",
@@ -432,7 +431,7 @@
         "open.",
         "Worked",
         "for",
-        "6s",
+        "8s",
         "9:05"
       ]
     }
@@ -480,8 +479,8 @@
     "total": 23820
   },
   "r5": {
-    "ratio": 0.1048232421875,
-    "diffPixels": 107339,
+    "ratio": 0.104822265625,
+    "diffPixels": 107338,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-12.light.diff.png"
