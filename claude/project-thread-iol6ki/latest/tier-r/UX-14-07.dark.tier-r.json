@@ -314,10 +314,6 @@
         "of",
         "your",
         "AI",
-        "Today,",
-        "Fri",
-        "16",
-        "Oct",
         "9:41",
         "🛠",
         "foo",
@@ -534,8 +530,8 @@
     "total": 82720
   },
   "r5": {
-    "ratio": 0.0844453125,
-    "diffPixels": 86472,
+    "ratio": 0.0842841796875,
+    "diffPixels": 86307,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-07.dark.diff.png"

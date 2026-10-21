@@ -1,8 +1,16 @@
 {
   "id": "UX-14-05",
   "theme": "light",
-  "verdict": "fail",
-  "disputed": null,
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0030",
+    "checks": [
+      "r1",
+      "r2",
+      "r3",
+      "r4"
+    ]
+  },
   "r1": {
     "verdict": "fail",
     "frame": {
@@ -236,10 +244,6 @@
         "Home",
         "Watch",
         "live",
-        "Yesterday,",
-        "Thu",
-        "15",
-        "Oct",
         "ok",
         "thanks",
         "10:03",

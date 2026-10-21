@@ -1,8 +1,16 @@
 {
   "id": "UX-14-08",
   "theme": "light",
-  "verdict": "fail",
-  "disputed": null,
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0030",
+    "checks": [
+      "r1",
+      "r2",
+      "r3",
+      "r4"
+    ]
+  },
   "r1": {
     "verdict": "fail",
     "frame": {
@@ -268,10 +276,6 @@
         "127.0.0.1",
         "Watch",
         "live",
-        "Today,",
-        "Fri",
-        "16",
-        "Oct",
         "ok",
         "thanks",
         "1:31",
@@ -503,8 +507,8 @@
     "total": 2128
   },
   "r5": {
-    "ratio": 0.0772578125,
-    "diffPixels": 79112,
+    "ratio": 0.077595703125,
+    "diffPixels": 79458,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-08.light.diff.png"

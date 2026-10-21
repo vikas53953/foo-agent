@@ -1,8 +1,14 @@
 {
   "id": "UX-15-05",
   "theme": "dark",
-  "verdict": "fail",
-  "disputed": null,
+  "verdict": "review",
+  "disputed": {
+    "cr": "CR-0030",
+    "checks": [
+      "r1",
+      "r2"
+    ]
+  },
   "r1": {
     "verdict": "fail",
     "frame": {
@@ -225,10 +231,6 @@
         "the",
         "site",
         "2",
-        "Yesterday,",
-        "Thu",
-        "15",
-        "Oct",
         "let’s",
         "do",
         "the",

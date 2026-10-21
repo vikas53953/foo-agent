@@ -1,8 +1,14 @@
 {
   "id": "UX-15-09",
   "theme": "light",
-  "verdict": "fail",
-  "disputed": null,
+  "verdict": "review",
+  "disputed": {
+    "cr": "CR-0030",
+    "checks": [
+      "r1",
+      "r2"
+    ]
+  },
   "r1": {
     "verdict": "fail",
     "frame": {
@@ -541,8 +547,8 @@
     "total": 30966
   },
   "r5": {
-    "ratio": 0.079291015625,
-    "diffPixels": 81194,
+    "ratio": 0.0792900390625,
+    "diffPixels": 81193,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-15-09.light.diff.png"
