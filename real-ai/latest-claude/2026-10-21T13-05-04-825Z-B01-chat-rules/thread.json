@@ -1,0 +1,37 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is like a private tunnel between your phone or laptop and another computer somewhere else.\n\nNormally, the websites you visit can see where you are, and your internet provider can see which sites you open. With a VPN, everything you send goes into the tunnel first, scrambled so nobody on the way can read it. It comes out at the other end, and that computer talks to the website for you.\n\nSo the website sees the VPN's location, not yours. It is handy on public Wi-Fi, or when you want more privacy from your internet provider. But the VPN company can see your traffic instead, so pick one you trust.\n\n1:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Please remember that my favourite food is South Indian.\n1:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is my favourite food?\n1:03 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your favourite food is South Indian. I already had that saved from earlier today, so nothing new to add.\n\n1:03 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n1:05 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n1:05 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because paying feels as easy as sending a message. You link your bank account to an app, and money moves from one account to another in seconds, at any hour, with no cash and no card.\n\nHere are the 3 main reasons:\n\nIt is fast and works almost everywhere. Scan a QR code or type a phone number, enter your PIN, and you're done. Tea stalls, vegetable sellers and big shops all accept it, so you rarely need to carry cash.\nIt is free for most people. Paying shops and sending money to friends usually costs nothing. There are no card fees to worry about, so going back to cash has little appeal.\nIt works across banks and apps. Any bank account can pay any other, through whichever app you like, so nobody is locked into one company.\n\nCheap phones and affordable data helped a lot too, and banks and the government pushed it hard. Once your family, friends and local shops use it, it becomes hard not to.\n\n1:05 PM"
+  }
+]

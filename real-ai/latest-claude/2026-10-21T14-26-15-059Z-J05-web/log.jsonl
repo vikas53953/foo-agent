@@ -1,0 +1,8 @@
+{"t":"2026-10-21T14:26:15.060Z","journey":"J05-web","title":"First real task with the internet (news + sources)","spec":"07-1 J5; R1 sources/citations","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T14:26:20.730Z","step":"launch","ok":true}
+{"t":"2026-10-21T14:26:20.829Z","i":0,"do":"send","before":2,"sentAt":1792592780829,"ok":true,"ms":98}
+{"t":"2026-10-21T14:30:20.957Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"I’m stuck on the Looking on the web job\nWhat’s wrong\nSearches fail as busy and the browser tool errors out\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n2:18 PM","ms":240128}
+{"t":"2026-10-21T14:30:21.027Z","shot":"01-news.png"}
+{"t":"2026-10-21T14:30:21.029Z","i":2,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-21T14:30:21.031Z","i":3,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-21T14:30:21.035Z","i":4,"do":"dump","ok":true,"ms":3}

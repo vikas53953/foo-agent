@@ -1,0 +1,12 @@
+{"t":"2026-10-21T14:15:17.306Z","journey":"B04-stop","title":"Start a job then stop it by typing stop","spec":"AT-077, AT-107, AT-080, J18","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T14:15:23.094Z","step":"launch","ok":true}
+{"t":"2026-10-21T14:15:23.200Z","i":0,"do":"send","before":1,"sentAt":1792592123200,"ok":true,"ms":106}
+{"t":"2026-10-21T14:17:23.396Z","i":1,"do":"waitReply","firstReplyMs":null,"newBubbles":-1,"ok":false,"duplicates":0,"lastReply":"","ms":120196}
+{"t":"2026-10-21T14:17:23.472Z","shot":"01-flight-plan.png"}
+{"t":"2026-10-21T14:17:23.475Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-21T14:18:03.475Z","i":3,"do":"wait","ok":true,"ms":40000}
+{"t":"2026-10-21T14:18:03.547Z","shot":"02-flight-working.png"}
+{"t":"2026-10-21T14:18:03.638Z","i":4,"do":"send","before":0,"sentAt":1792592283638,"ok":true,"ms":91}
+{"t":"2026-10-21T14:18:10.244Z","i":5,"do":"waitReply","expect":"AT-077: stops within 1 s; reply lists exactly what was done; badge ⛔","firstReplyMs":539,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Stopped. Nothing was booked, paid or sent.\n\n2:18 PM","ms":6606}
+{"t":"2026-10-21T14:18:10.310Z","shot":"03-after-stop.png"}
+{"t":"2026-10-21T14:18:10.313Z","i":6,"do":"dump","ok":true,"ms":3}

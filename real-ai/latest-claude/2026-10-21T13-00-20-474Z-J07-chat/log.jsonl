@@ -1,0 +1,12 @@
+{"t":"2026-10-21T13:00:20.474Z","journey":"J07-chat","title":"Casual chat","spec":"07-1 J7; 04 §12; 08-4 rules","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T13:00:25.934Z","step":"launch","ok":true}
+{"t":"2026-10-21T13:00:26.022Z","i":0,"do":"send","before":2,"sentAt":1792587626022,"ok":true,"ms":88}
+{"t":"2026-10-21T13:00:35.207Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3088,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Hi! What do you need today?\n\n1:00 PM","ms":9185}
+{"t":"2026-10-21T13:00:35.279Z","shot":"01-hi.png"}
+{"t":"2026-10-21T13:00:35.378Z","i":2,"do":"send","before":3,"sentAt":1792587635378,"ok":true,"ms":99}
+{"t":"2026-10-21T13:00:46.575Z","i":3,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3041,"newBubbles":3,"ok":true,"duplicates":0,"lastReply":"I can read your email, calendar and websites, and tell you what matters.\n\n1:00 PM\n---\nI can also catch you up on a WhatsApp group or your inbox, watch a price or page and tell you when it changes, and set up routines that run on their own.\n\n1:00 PM\n---\nI can draft messages, fill in forms, and book or pay, but only after you say so and approve it. I can also remember things about you.\n\n1:00 PM","ms":11197}
+{"t":"2026-10-21T13:00:46.635Z","shot":"02-what-can-you-do.png"}
+{"t":"2026-10-21T13:00:46.721Z","i":4,"do":"send","before":6,"sentAt":1792587646721,"ok":true,"ms":86}
+{"t":"2026-10-21T13:00:55.379Z","i":5,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":2569,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"A VPN is like a private tunnel between your phone or laptop and another computer somewhere else.\n\nNormally, the websites you visit can see where you are, and your internet provider can see which sites you open. With a VPN, everything you send goes into the tunnel first, scrambled so nobody on the way can read it. It comes out at the other end, and that computer talks to the website for you.\n\nSo the website sees the VPN's location, not yours. It is handy on public Wi-Fi, or when you want more privacy from your internet provider. But the VPN company can see your traffic instead, so pick one you trust.\n\n1:00 PM","ms":8658}
+{"t":"2026-10-21T13:00:55.451Z","shot":"03-vpn.png"}
+{"t":"2026-10-21T13:00:55.454Z","i":6,"do":"dump","ok":true,"ms":3}

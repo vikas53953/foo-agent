@@ -1,0 +1,12 @@
+{"t":"2026-10-21T13:05:04.826Z","journey":"B01-chat-rules","title":"Chat rules: thanks, long answer, filler, reactions","spec":"AT-027, AT-030, AT-031, AT-308, AT-307","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T13:05:10.466Z","step":"launch","ok":true}
+{"t":"2026-10-21T13:05:10.565Z","i":0,"do":"send","before":7,"sentAt":1792587910565,"ok":true,"ms":99}
+{"t":"2026-10-21T13:05:30.572Z","i":1,"do":"wait","expect":"AT-027: 👍 reaction on my message, no foo message","ok":true,"ms":20006}
+{"t":"2026-10-21T13:05:30.636Z","shot":"01-thanks.png"}
+{"t":"2026-10-21T13:05:30.641Z","i":2,"do":"eval","value":{"reaction":true,"lastKind":"bubble-me"},"ok":true,"ms":5}
+{"t":"2026-10-21T13:05:30.736Z","i":3,"do":"send","before":7,"sentAt":1792587930736,"ok":true,"ms":95}
+{"t":"2026-10-21T13:08:01.047Z","i":4,"do":"waitReply","expect":"AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler","firstReplyMs":null,"newBubbles":-4,"ok":false,"duplicates":0,"lastReply":"","ms":150310}
+{"t":"2026-10-21T13:08:01.125Z","shot":"02-long.png"}
+{"t":"2026-10-21T13:08:01.127Z","i":5,"do":"check","note":"AT-308 suggestion chips (≤3)","soft":true,"found":0,"ok":false,"ms":1}
+{"t":"2026-10-21T13:08:01.129Z","i":6,"do":"eval","value":0,"ok":true,"ms":1}
+{"t":"2026-10-21T13:08:01.132Z","i":7,"do":"dump","ok":true,"ms":3}

@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your favourite food is South Indian. I already had that saved from earlier today, so nothing new to add.\n\n1:03 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n1:05 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n1:05 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because paying feels as easy as sending a message. You link your bank account to an app, and money moves from one account to another in seconds, at any hour, with no cash and no card.\n\nHere are the 3 main reasons:\n\nIt is fast and works almost everywhere. Scan a QR code or type a phone number, enter your PIN, and you're done. Tea stalls, vegetable sellers and big shops all accept it, so you rarely need to carry cash.\nIt is free for most people. Paying shops and sending money to friends usually costs nothing. There are no card fees to worry about, so going back to cash has little appeal.\nIt works across banks and apps. Any bank account can pay any other, through whichever app you like, so nobody is locked into one company.\n\nCheap phones and affordable data helped a lot too, and banks and the government pushed it hard. Once your family, friends and local shops use it, it becomes hard not to.\n\n1:05 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n1:08 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "parso Fri 23 Oct ko hai, toh kal tak order kar dena theek rahega, warna custom cake ka slot mushkil se milta hai.\n\nYe kuch safe aur pasand aane wale options hain:\n\nChocolate truffle: sabko pasand aata hai, bachche aur bade dono.\nButterscotch ya pineapple: halka aur classic, jinko zyada meetha nahi chahiye unke liye.\nFresh fruit cake: halka hota hai, aur mummy ke liye healthy choice bhi.\nPhoto cake ya naam likha cake: khaas lagta hai, par thoda pehle order karna padta hai.\n\nMummy ko eggless chahiye ya koi cake pasand hai? Aur kitne log honge, taaki size bata sakun. Bolo toh tumhare paas ki bakeries dekh deta hoon, par order tabhi karunga jab tum kaho.\n\n1:08 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n1:10 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Meri pehli pasand: chocolate truffle. Ye zyada tar logon ko pasand aata hai, aur kal tak order karna aasaan rahega.\n\n1:10 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Agar mummy ko halka cake chahiye, toh fresh fruit cake lo. Bas ye bata do ki eggless chahiye ya nahi, aur kitne log honge.\n\n1:10 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n1:10 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I don't know of any public holiday in Mumbai on Mon 2 Nov. It looks like a normal working day, but I haven't checked an official list, so I can't be sure.\n\n1:10 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Diwali falls the week after, around Sun 8 Nov, so holidays near that date are more likely.\n\n1:10 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can look up the Maharashtra holiday list to confirm, if you like.\n\n1:10 PM"
+  }
+]

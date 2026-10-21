@@ -1,0 +1,72 @@
+{
+  "journey": "B12-languages",
+  "title": "Chat in Hinglish and Punjabi, short answers",
+  "steps": 7,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T13-08-01-452Z-B12-languages",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "before": 3,
+      "sentAt": 1792588087096,
+      "ok": true,
+      "ms": 100
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 4: answers in Hinglish",
+      "firstReplyMs": 8126,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "parso Fri 23 Oct ko hai, toh kal tak order kar dena theek rahega, warna custom cake ka slot mushkil se milta hai.\n\nYe kuch safe aur pasand aane wale options hain:\n\nChocolate truffle: sabko pasand aata hai, bachche aur bade dono.\nButterscotch ya pineapple: halka aur classic, jinko zyada meetha nahi chahiye unke liye.\nFresh fruit cake: halka hota hai, aur mummy ke liye healthy choice bhi.\nPhoto cake ya naam likha cake: khaas lagta hai, par thoda pehle order karna padta hai.\n\nMummy ko eggless chahiye ya koi cake pasand hai? Aur kitne log honge, taaki size bata sakun. Bolo toh tumhare paas ki bakeries dekh deta hoon, par order tabhi karunga jab tum kaho.\n\n1:08 PM",
+      "ms": 120482
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "before": 3,
+      "sentAt": 1792588207799,
+      "ok": true,
+      "ms": 144
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi",
+      "firstReplyMs": 6608,
+      "newBubbles": 2,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Meri pehli pasand: chocolate truffle. Ye zyada tar logon ko pasand aata hai, aur kal tak order karna aasaan rahega.\n\n1:10 PM\n---\nAgar mummy ko halka cake chahiye, toh fresh fruit cake lo. Bas ye bata do ki eggless chahiye ya nahi, aur kitne log honge.\n\n1:10 PM",
+      "ms": 14754
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "before": 5,
+      "sentAt": 1792588222696,
+      "ok": true,
+      "ms": 75
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 3: short 1–3 bubbles, no filler",
+      "firstReplyMs": 7141,
+      "newBubbles": 3,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I don't know of any public holiday in Mumbai on Mon 2 Nov. It looks like a normal working day, but I haven't checked an official list, so I can't be sure.\n\n1:10 PM\n---\nDiwali falls the week after, around Sun 8 Nov, so holidays near that date are more likely.\n\n1:10 PM\n---\nI can look up the Maharashtra holiday list to confirm, if you like.\n\n1:10 PM",
+      "ms": 14741
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 4
+    }
+  ]
+}

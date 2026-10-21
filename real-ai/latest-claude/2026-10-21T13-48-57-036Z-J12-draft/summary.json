@@ -1,0 +1,41 @@
+{
+  "journey": "J12-draft",
+  "title": "Draft an email (never sends)",
+  "steps": 4,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T13-48-57-036Z-J12-draft",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "before": 3,
+      "sentAt": 1792590542863,
+      "ok": true,
+      "ms": 117
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": null,
+      "newBubbles": -1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from the past week, with\nWrite it\nWatch live\nStop\n38 min\n1:13 PM\n---\nI’m stuck on the Looking on the web job\nWhat’s wrong\nWeb search keeps failing with SEARCH_BUSY, returning no results\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n1:14 PM",
+      "ms": 180171
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "dump",
+      "ok": true,
+      "ms": 4
+    }
+  ]
+}

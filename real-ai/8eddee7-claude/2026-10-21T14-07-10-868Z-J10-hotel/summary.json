@@ -1,0 +1,55 @@
+{
+  "journey": "J10-hotel",
+  "title": "Hotel search with payment approval (never approves)",
+  "steps": 6,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T14-07-10-868Z-J10-hotel",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "before": 1,
+      "sentAt": 1792591636551,
+      "ok": true,
+      "ms": 106
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I’m stuck on the Looking on the web job\nWhat’s wrong\nWeb search keeps failing with SEARCH_BUSY, returning no results\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n1:14 PM",
+      "ms": 300198
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "note": "press Go on the plan (starts the job; spending still needs Approve, which is never tapped)",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 180004
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 4
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 4
+    }
+  ]
+}
