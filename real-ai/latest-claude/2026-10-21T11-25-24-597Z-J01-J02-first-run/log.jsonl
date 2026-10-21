@@ -1,0 +1,22 @@
+{"t":"2026-10-21T11:25:24.598Z","journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","spec":"07-1 J1, J2; 06-1 §1–§2; AT-005, AT-313, AT-314","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T11:25:30.396Z","step":"launch","ok":true}
+{"t":"2026-10-21T11:25:30.811Z","i":0,"do":"wait","expect":"96px face wakes once, wordmark, no flicker","ok":true,"ms":415}
+{"t":"2026-10-21T11:25:30.875Z","shot":"01-splash.png"}
+{"t":"2026-10-21T11:25:30.879Z","i":1,"do":"waitFor","expect":"Welcome then step pill 1 of 4, rows test live with shimmer","ok":true,"ms":4}
+{"t":"2026-10-21T11:25:30.934Z","shot":"02-finder-testing.png"}
+{"t":"2026-10-21T11:26:00.945Z","i":2,"do":"wait","expect":"the chosen AI shows works and is pre-selected; others show a clear reason, never \"slow to answer\"","ok":true,"ms":30010}
+{"t":"2026-10-21T11:26:00.998Z","shot":"03-finder-tested.png"}
+{"t":"2026-10-21T11:26:11.061Z","shot":"04-error-step3.png"}
+{"t":"2026-10-21T11:26:11.061Z","i":3,"do":"text","soft":true,"ok":false,"error":"locator.innerText: Timeout 10000ms exceeded.","ms":10063}
+{"t":"2026-10-21T11:26:11.063Z","i":4,"do":"check","note":"did any AI pass the first test on its own?","soft":true,"found":0,"ok":false,"ms":2}
+{"t":"2026-10-21T11:26:29.140Z","shot":"05-error-step5.png"}
+{"t":"2026-10-21T11:26:29.140Z","i":5,"do":"click","note":"retest the chosen AI alone, only if no AI passed the first test","ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":18076}
+{"t":"2026-10-21T11:27:59.218Z","shot":"06-error-step6.png"}
+{"t":"2026-10-21T11:27:59.219Z","i":6,"do":"waitFor","expect":"the chosen AI works; Use button shows","ok":false,"error":"locator.waitFor: Timeout 90000ms exceeded.","ms":90078}
+{"t":"2026-10-21T11:27:59.280Z","shot":"07-after-claude-retest.png"}
+{"t":"2026-10-21T11:28:17.359Z","shot":"08-error-step7.png"}
+{"t":"2026-10-21T11:28:17.359Z","i":7,"do":"click","expect":"chat opens; next setup step (name and face) per J3","ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":18079}
+{"t":"2026-10-21T11:28:17.421Z","shot":"09-after-use.png"}
+{"t":"2026-10-21T11:28:27.435Z","i":8,"do":"wait","expect":"foo texts first with a warm welcome (J3/J4); composer unlocked","ok":true,"ms":10014}
+{"t":"2026-10-21T11:28:27.499Z","shot":"10-first-chat.png"}
+{"t":"2026-10-21T11:28:27.505Z","i":9,"do":"dump","ok":true,"ms":6}
