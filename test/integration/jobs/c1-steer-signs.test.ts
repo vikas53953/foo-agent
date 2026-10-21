@@ -46,6 +46,12 @@ async function spin(): Promise<void> {
   for (let i = 0; i < 40; i++) await new Promise((r) => setTimeout(r, 2));
 }
 
+/** Lets engine work run until `ready` holds (at most 10 s); a fixed spin was too short on a busy Windows runner. */
+async function until(ready: () => boolean, what: string): Promise<void> {
+  for (const end = Date.now() + 10_000; !ready(); await new Promise((r) => setTimeout(r, 2)))
+    if (Date.now() > end) throw new Error(`never: ${what}`);
+}
+
 const view = (x: JobHarness) => jobRows(x.db, 'id = ?', [String(x.job().id)], x.clock.now())[0]!;
 
 describe('AT-432 Answered steer tick', () => {
@@ -66,10 +72,10 @@ describe('AT-432 Answered steer tick', () => {
       ],
     });
     const started = h.userSays('Find bills due this week');
-    await spin();
+    const run = h;
+    await until(() => !!run.job(), 'the job is made');
     h.clock.advance(2_000);
-    await spin();
-    expect(h.job().state).toBe('working');
+    await until(() => run.job().state === 'working', 'the job works');
     sayWithId(h, asked, QUESTION);
     sayWithId(h, folded, FOLD);
     await h.settle();
@@ -111,7 +117,8 @@ describe('AT-433 Trying another way', () => {
       ],
     });
     h.userSays('Find bills due this week');
-    await spin();
+    const run = h;
+    await until(() => !!run.job(), 'the job is made');
     expect(view(h).retrying).toBe(false);
     for (let i = 0; i < 5 && Number(h.job().fail_streak) === 0; i++) {
       h.clock.advance(1_000);
