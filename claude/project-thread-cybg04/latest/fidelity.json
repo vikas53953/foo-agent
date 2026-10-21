@@ -1,19 +1,19 @@
 {
-  "reportId": "M9-5354544-39672888792",
+  "reportId": "M9-3db45c3-39688581428",
   "milestone": "M9",
-  "generatedAt": "2026-10-21T21:22:07.482Z",
-  "commit": "0ff497d7258e3cc9bb51954fe6133c3bba7656ef",
-  "head": "53545440d5d77c55065e964bda14b911f00be2bb",
+  "generatedAt": "2026-10-21T23:23:18.203Z",
+  "commit": "a47560be99d3891515103123a62f1d87c818668a",
+  "head": "3db45c3f6c25de18861ae8b6cf923516354ab60c",
   "ci": {
-    "runId": "39672888792",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39672888792"
+    "runId": "39688581428",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39688581428"
   },
   "spec": {
     "version": "spec-v1.0",
-    "setSha256": "7f01db9042bb30e55da0c9e981aa83f37b9d41ad051c0919656ef8782c784356"
+    "setSha256": "94ebeba298dc514ff7ed3101339f8b82ac556243193bfd755a3cbb0d091ecd97"
   },
   "runner": {
-    "recordedAt": "2026-10-21T20:52:44.515Z",
+    "recordedAt": "2026-10-21T22:53:22.777Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -23,13 +23,13 @@
         "productName": "Windows Server 2025 Datacenter",
         "displayVersion": "24H2",
         "currentBuild": "26100",
-        "ubr": "33650"
+        "ubr": "33438"
       }
     },
     "image": {
       "os": "win25-vs2026",
-      "version": "20261018.275.1",
-      "runner": "GitHub Actions 1000004928"
+      "version": "20261007.264.1",
+      "runner": "GitHub Actions 1000005100"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -812,7 +812,7 @@
         "id": "SV-10",
         "ok": true,
         "expected": "height 46 (±0.5)",
-        "measured": "640.0000610351562×46"
+        "measured": "640×46"
       },
       {
         "id": "SV-11",
@@ -963,7 +963,7 @@
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 6454,
+        "passed": 6537,
         "failed": 0,
         "skipped": 2
       },
@@ -974,6 +974,136 @@
       }
     },
     "ids": [
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
       {
         "id": "ART-02a",
         "status": "passed",
@@ -26815,6 +26945,266 @@
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
       },
       {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
         "id": "ART-22",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-22.test.ts"
@@ -26823,6 +27213,11 @@
         "id": "ART-22",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-22.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
       },
       {
         "id": "ART-24a",
@@ -29023,6 +29418,61 @@
         "id": "AT-054",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/m8-x.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
       },
       {
         "id": "PERF-06",
@@ -31233,7 +31683,7 @@
     "failed": [],
     "trace": {
       "live": 329,
-      "pending": 64,
+      "pending": 65,
       "byMilestone": {
         "M0": 5,
         "M1": 23,
@@ -31242,7 +31692,7 @@
         "M4": 57,
         "M5": 54,
         "M6": 38,
-        "M13": 1,
+        "M13": 2,
         "M8": 33,
         "M9": 139,
         "M7": 1
@@ -31367,6 +31817,11 @@
         "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-193 (his messages 2026-10-18 14:56Z and 14:59Z, and 2026-10-21 07:14Z; after the independent review in §(d))"
       },
       {
+        "id": "CR-0037",
+        "title": "Style stats write only what they found",
+        "status": "approved on Vikas's behalf after the independent review in §(c). DECISIONS X-195."
+      },
+      {
         "id": "CR-0040",
         "title": "a job that needs Google while it is not connected shows the Connect card first",
         "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-198 (his messages 2026-10-18 14:56Z and 14:59Z, and"
@@ -31375,6 +31830,21 @@
         "id": "CR-0041",
         "title": "an empty intake answer is asked again, never a 👍",
         "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-199 (his messages 2026-10-18 14:56Z and 14:59Z, and"
+      },
+      {
+        "id": "CR-0042",
+        "title": "an intake kind that is not built yet says so",
+        "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-200 (his messages 2026-10-18 14:56Z and 14:59Z, and"
+      },
+      {
+        "id": "CR-0043",
+        "title": "change settings by chat",
+        "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-201 (his messages 2026-10-18 14:56Z and 14:59Z,"
+      },
+      {
+        "id": "CR-0044",
+        "title": "Not now on a Connect card from intake runs the job without the app",
+        "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-202 (his messages 2026-10-18 14:56Z and 14:59Z,"
       }
     ],
     "notes": "Conservative picks and deferrals: implementation-notes.md (the ## M9 sections)."
@@ -32962,7 +33432,7 @@
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "pass (BP-APP-M ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.055242736204013376,
+        "r5": 0.05523838141025641,
         "ref": true,
         "app": true,
         "diff": true
@@ -33443,7 +33913,7 @@
         "r2": "fail (BP-SCR-13 0/640.671875 px)",
         "r3": "fail (BP-SCR-13 ΔE 89.41)",
         "r4": "skipped: no hl element",
-        "r5": 0.5039496393326548,
+        "r5": 0.50439217595256,
         "ref": true,
         "app": true,
         "diff": true
@@ -33456,7 +33926,7 @@
         "r2": "fail (BP-SCR-13 0/640.671875 px)",
         "r3": "review (BP-SCR-13 ΔE 3.65)",
         "r4": "skipped: no hl element",
-        "r5": 0.24941363897862548,
+        "r5": 0.24822985352037882,
         "ref": true,
         "app": true,
         "diff": true
@@ -33508,7 +33978,7 @@
         "r2": "fail (hl 89/192 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.09 %)",
-        "r5": 0.0274873046875,
+        "r5": 0.0274892578125,
         "ref": true,
         "app": true,
         "diff": true
@@ -33755,7 +34225,7 @@
         "r2": "fail (hl 26/23.21875 px)",
         "r3": "fail (hl ΔE 30.38)",
         "r4": "fail (82.90 %)",
-        "r5": 0.0997509765625,
+        "r5": 0.0997490234375,
         "ref": true,
         "app": true,
         "diff": true
@@ -33846,7 +34316,7 @@
         "r2": "fail (hl 52/1.9375 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.47 %)",
-        "r5": 0.0796845703125,
+        "r5": 0.07968359375,
         "ref": true,
         "app": true,
         "diff": true
@@ -33924,7 +34394,7 @@
         "r2": "fail (hl 526/92 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.48 %)",
-        "r5": 0.0660283203125,
+        "r5": 0.066029296875,
         "ref": true,
         "app": true,
         "diff": true
@@ -33989,7 +34459,7 @@
         "r2": "fail (hl 58/18 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (9.64 %)",
-        "r5": 0.1191630859375,
+        "r5": 0.1191533203125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34145,7 +34615,7 @@
         "r2": "fail (hl 56/110 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.35 %)",
-        "r5": 0.1188759765625,
+        "r5": 0.11887890625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34171,7 +34641,7 @@
         "r2": "fail (hl 40/19.75 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (20.42 %)",
-        "r5": 0.1038408203125,
+        "r5": 0.10384375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34184,7 +34654,7 @@
         "r2": "fail (hl 40/19.75 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (23.28 %)",
-        "r5": 0.0890322265625,
+        "r5": 0.0890341796875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34197,7 +34667,7 @@
         "r2": "fail (hl 50/4 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.89 %)",
-        "r5": 0.0918115234375,
+        "r5": 0.0918212890625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34210,7 +34680,7 @@
         "r2": "fail (hl 50/4 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.55 %)",
-        "r5": 0.0781396484375,
+        "r5": 0.07815234375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34223,7 +34693,7 @@
         "r2": "fail (hl 268/156 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.75 %)",
-        "r5": 0.1056767578125,
+        "r5": 0.1056494140625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34236,7 +34706,7 @@
         "r2": "fail (hl 268/156 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.29 %)",
-        "r5": 0.085994140625,
+        "r5": 0.0859853515625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34249,7 +34719,7 @@
         "r2": "fail (hl 495/960 px)",
         "r3": "fail (hl ΔE 85.3)",
         "r4": "fail (38.34 %)",
-        "r5": 0.384265625,
+        "r5": 0.3842802734375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34288,7 +34758,7 @@
         "r2": "fail (hl 140/46 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (3.45 %)",
-        "r5": 0.0952880859375,
+        "r5": 0.095279296875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34314,7 +34784,7 @@
         "r2": "fail (hl 18/12 px)",
         "r3": "fail (hl ΔE 59.02)",
         "r4": "fail (87.14 %)",
-        "r5": 0.091236328125,
+        "r5": 0.09141796875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34340,7 +34810,7 @@
         "r2": "fail (hl 194/360.625 px)",
         "r3": "fail (hl ΔE 27.05)",
         "r4": "fail (87.54 %)",
-        "r5": 0.0692060546875,
+        "r5": 0.06920703125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34353,7 +34823,7 @@
         "r2": "fail (hl 16/22.140625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (86.56 %)",
-        "r5": 0.08690234375,
+        "r5": 0.0869013671875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34379,7 +34849,7 @@
         "r2": "fail (hl 180/80 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (5.89 %)",
-        "r5": 0.08444921875,
+        "r5": 0.0844482421875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34444,7 +34914,7 @@
         "r2": "fail (hl 18/18.59375 px)",
         "r3": "fail (hl ΔE 35.58)",
         "r4": "fail (87.96 %)",
-        "r5": 0.065833984375,
+        "r5": 0.0658349609375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34457,7 +34927,7 @@
         "r2": "fail (hl 30/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.60 %)",
-        "r5": 0.1038740234375,
+        "r5": 0.1038251953125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34470,7 +34940,7 @@
         "r2": "fail (hl 30/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (7.67 %)",
-        "r5": 0.09103515625,
+        "r5": 0.0910341796875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34548,7 +35018,7 @@
         "r2": "fail (hl 236/110 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.06 %)",
-        "r5": 0.0736689453125,
+        "r5": 0.07366796875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34600,7 +35070,7 @@
         "r2": "fail (hl 96/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.84 %)",
-        "r5": 0.0785947265625,
+        "r5": 0.078603515625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34652,7 +35122,7 @@
         "r2": "fail (hl 42/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (9.04 %)",
-        "r5": 0.079669921875,
+        "r5": 0.0795166015625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34678,7 +35148,7 @@
         "r2": "fail (hl 162.5625/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (41.76 %)",
-        "r5": 0.090501953125,
+        "r5": 0.090408203125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34769,7 +35239,7 @@
         "r2": "fail (hl 338/198.015625 px)",
         "r3": "fail (hl ΔE 20.45)",
         "r4": "fail (11.36 %)",
-        "r5": 0.1148681640625,
+        "r5": 0.1148671875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34808,7 +35278,7 @@
         "r2": "fail (hl 70/64 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "skipped: superseded (X-79 (\"Change\"))",
-        "r5": 0.10801171875,
+        "r5": 0.1068681640625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34964,7 +35434,7 @@
         "r2": "fail (hl 52/10.890625 px)",
         "r3": "fail (hl ΔE 7.5)",
         "r4": "fail (15.10 %)",
-        "r5": 0.1046884765625,
+        "r5": 0.1046875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34977,7 +35447,7 @@
         "r2": "fail (hl 128/15 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (10.09 %)",
-        "r5": 0.100345703125,
+        "r5": 0.1005361328125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34990,7 +35460,7 @@
         "r2": "fail (hl 128/15 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (7.64 %)",
-        "r5": 0.0743095703125,
+        "r5": 0.074501953125,
         "ref": true,
         "app": true,
         "diff": true
@@ -35003,7 +35473,7 @@
         "r2": "fail (hl 7.5/16.875 px)",
         "r3": "fail (hl ΔE 75.94)",
         "r4": "skipped: superseded (06-2 §7.3 (⋯ menu))",
-        "r5": 0.0806748046875,
+        "r5": 0.080865234375,
         "ref": true,
         "app": true,
         "diff": true
@@ -35016,7 +35486,7 @@
         "r2": "fail (hl 7.5/16.875 px)",
         "r3": "fail (hl ΔE 88.7)",
         "r4": "skipped: superseded (06-2 §7.3 (⋯ menu))",
-        "r5": 0.046251953125,
+        "r5": 0.04651171875,
         "ref": true,
         "app": true,
         "diff": true
@@ -35029,7 +35499,7 @@
         "r2": "fail (hl 16.28125/13.8125 px)",
         "r3": "fail (hl ΔE 75.94)",
         "r4": "fail (90.35 %)",
-        "r5": 0.0771845703125,
+        "r5": 0.077375,
         "ref": true,
         "app": true,
         "diff": true
@@ -35042,7 +35512,7 @@
         "r2": "fail (hl 16.28125/13.8125 px)",
         "r3": "fail (hl ΔE 88.7)",
         "r4": "fail (89.26 %)",
-        "r5": 0.043681640625,
+        "r5": 0.0438740234375,
         "ref": true,
         "app": true,
         "diff": true
@@ -35055,7 +35525,7 @@
         "r2": "review (hl 8/7.078125 px)",
         "r3": "fail (hl ΔE 16.59)",
         "r4": "fail (24.87 %)",
-        "r5": 0.1181357421875,
+        "r5": 0.118326171875,
         "ref": true,
         "app": true,
         "diff": true
@@ -35068,7 +35538,7 @@
         "r2": "review (hl 8/7.078125 px)",
         "r3": "fail (hl ΔE 7.5)",
         "r4": "fail (16.39 %)",
-        "r5": 0.0873671875,
+        "r5": 0.0875595703125,
         "ref": true,
         "app": true,
         "diff": true
@@ -35081,7 +35551,7 @@
         "r2": "fail (hl 157.078125/25.84375 px)",
         "r3": "fail (hl ΔE 83.56)",
         "r4": "fail (79.70 %)",
-        "r5": 0.06845703125,
+        "r5": 0.0686474609375,
         "ref": true,
         "app": true,
         "diff": true
@@ -35094,7 +35564,7 @@
         "r2": "fail (hl 158.078125/23.84375 px)",
         "r3": "fail (hl ΔE 96.14)",
         "r4": "fail (79.63 %)",
-        "r5": 0.0551552734375,
+        "r5": 0.05534765625,
         "ref": true,
         "app": true,
         "diff": true
@@ -35107,7 +35577,7 @@
         "r2": "fail (hl 23/24.890625 px)",
         "r3": "fail (hl ΔE 56.09)",
         "r4": "fail (75.51 %)",
-        "r5": 0.0527958984375,
+        "r5": 0.0529853515625,
         "ref": true,
         "app": true,
         "diff": true
@@ -35120,7 +35590,7 @@
         "r2": "fail (hl 23/24.890625 px)",
         "r3": "fail (hl ΔE 52.78)",
         "r4": "fail (75.84 %)",
-        "r5": 0.1288271484375,
+        "r5": 0.1290205078125,
         "ref": true,
         "app": true,
         "diff": true
@@ -35133,7 +35603,7 @@
         "r2": "fail (hl 41.765625/26.15625 px)",
         "r3": "fail (hl ΔE 56.09)",
         "r4": "fail (74.72 %)",
-        "r5": 0.05535546875,
+        "r5": 0.055544921875,
         "ref": true,
         "app": true,
         "diff": true
@@ -35146,7 +35616,7 @@
         "r2": "fail (hl 41.765625/26.15625 px)",
         "r3": "fail (hl ΔE 52.78)",
         "r4": "fail (75.84 %)",
-        "r5": 0.1486591796875,
+        "r5": 0.1488525390625,
         "ref": true,
         "app": true,
         "diff": true
@@ -35159,7 +35629,7 @@
         "r2": "fail (hl 491/380 px)",
         "r3": "fail (hl ΔE 85.3)",
         "r4": "fail (91.60 %)",
-        "r5": 0.503029296875,
+        "r5": 0.5032177734375,
         "ref": true,
         "app": true,
         "diff": true
@@ -35172,7 +35642,7 @@
         "r2": "fail (hl 491/380 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.04 %)",
-        "r5": 0.367421875,
+        "r5": 0.3676025390625,
         "ref": true,
         "app": true,
         "diff": true
@@ -35198,7 +35668,7 @@
         "r2": "pass (hl 0/1 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.19 %)",
-        "r5": 0.0778369140625,
+        "r5": 0.0778642578125,
         "ref": true,
         "app": true,
         "diff": true
@@ -35250,7 +35720,7 @@
         "r2": "fail (hl 246/56 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (7.11 %)",
-        "r5": 0.0867841796875,
+        "r5": 0.086783203125,
         "ref": true,
         "app": true,
         "diff": true
@@ -35328,7 +35798,7 @@
         "r2": "fail (hl 66/24.46875 px)",
         "r3": "fail (hl ΔE 12.77)",
         "r4": "fail (87.44 %)",
-        "r5": 0.091765625,
+        "r5": 0.091763671875,
         "ref": true,
         "app": true,
         "diff": true
