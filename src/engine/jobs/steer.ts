@@ -144,9 +144,14 @@ export class Steer {
       live.push(j);
     }
     // CR-0045 (X-203): a message to a job waiting on its card is a steer only when it is about that job.
-    if (live.length === 1 && !(await this.aboutJob(live[0]!, text))) return false;
     if (live.length === 1) {
-      await this.steer(live[0]!, { id: m.messageId, text });
+      if (!(await this.aboutJob(live[0]!, text))) return false;
+      // The check can take seconds: the card may be answered, declined or timed out meanwhile. Steer the job as it is now;
+      // one that ended or is waiting on a Stuck or Secret box card no longer takes it, so the message goes to intake.
+      const job = await this.core.job(live[0]!.id);
+      if (!job || (job.state !== 'working' && job.state !== 'needs_you')) return false;
+      if (job.state === 'needs_you' && job.needsYouCardId && (await this.blocksSteer(job.needsYouCardId))) return false;
+      await this.steer(job, { id: m.messageId, text });
       return true;
     }
     if (live.length > 1) {

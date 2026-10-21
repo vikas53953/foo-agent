@@ -5,7 +5,7 @@
 // Claude CLI's real answer to the CR-0045 prompt (20 of 20 replays right, Wed 21 Oct).
 import { afterEach, describe, expect, it } from 'vitest';
 import { envelope, intake } from '../../unit/m3-engine-helpers';
-import { jobHarness, jobIntake, realPause, step, type JobHarness, type PlanStepIn } from './jobHarness';
+import { jobHarness, jobIntake, realPause, step, tool, type JobHarness, type PlanStepIn } from './jobHarness';
 import { fooTexts } from './t3Helpers';
 
 let h: JobHarness | null = null;
@@ -45,6 +45,31 @@ describe('CR-0045 · a message that is not about the waiting job leaves its card
     // The steer check is told the job, what it waits for and the message.
     const turn = x.turnsJsonl().find((t) => t.purpose === 'classify');
     expect(turn).toBeTruthy();
+  });
+
+  it('the job is declined while the check runs: the message goes to intake, never into the ended job', async () => {
+    h = jobHarness({
+      script: [
+        jobIntake(PLAN),
+        tool('fake.needsUser', { card: 'approval' }),
+        { ...check('job', 'add a coke'), delayMs: 5_000 },
+        intake(envelope('Sure, tell me what to order.'), { match: { purpose: 'intake', promptIncludes: 'add a coke' } }),
+      ],
+    });
+    const x = h;
+    x.userSays('Order a pizza from Dominos');
+    await x.settle();
+    expect(x.job().state).toBe('needs_you');
+    const asked = x.userSays('add a coke too');
+    for (let i = 0; i < 20; i++) {
+      await realPause(2);
+      x.clock.advance(100);
+    }
+    x.answer(String(x.cards('approval')[0]!.id), 'decline');
+    await x.settle();
+    expect(x.job().state).toBe('cancelled');
+    expect(fooTexts(x)).toContain('Sure, tell me what to order.');
+    expect(x.message(asked).badge).not.toBe('seen');
   });
 
   it('"Actually make it 9 PM" (about: job) is still a steer: the card is withdrawn and the job works again', async () => {

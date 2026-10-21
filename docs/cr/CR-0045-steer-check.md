@@ -46,3 +46,10 @@ None. The tests are `test/integration/jobs/steer-check.test.ts` ("CR-0045 · …
 
 An independent Fable review of this CR and its diff, recorded in the PR and in `docs/decisions/real-pc.tsv` ("approved on
 Vikas's behalf" on pass).
+
+Result (2026-10-21): independent Fable review, high tier, one act item: the check can take seconds, and a card declined or
+timed out meanwhile left the message steered into an ended job (✓✓ seen, no answer). Fixed: the job is read again after the
+check, and a job that ended or now waits on a Stuck or Secret box card sends the message to intake (test "the job is declined
+while the check runs…", fails without the fix; §26.5 item 2b says so). Considers: the ChatLane comment now names the check
+(applied); with two or more waiting jobs the "Fold this into which job?" card still withdraws the picked job's card with no
+check (left for a later CR; the spec item covers the only-live-job case). Approved on Vikas's behalf.

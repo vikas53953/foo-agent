@@ -413,7 +413,8 @@ export class ChatLane {
     const fromDrain = this.drained.delete(messageId);
     if (!message || message.authorKind !== 'user') return;
     if (fromDrain && message.status !== 'queued') return;
-    // M4 T3: stop, steer and the G16 reply come before the intake turn and need no AI (08-2 §5.2). R1 T6: a side question
+    // M4 T3: stop, steer and the G16 reply come before the intake turn and need no AI (08-2 §5.2; CR-0045: a steer to a job
+    // waiting on its card first asks one classify turn, 08-4 §26.5 item 2b). R1 T6: a side question
     // never reaches the runner's branches (04 §17.5: it never cancels or re-plans a running job).
     const side = message.side === true;
     if (side) this.sideTurns.add(messageId);
