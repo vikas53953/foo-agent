@@ -349,9 +349,10 @@
         "replies",
         "show",
         "here.",
-        "foo",
-        "sent",
-        "Question:",
+        "Waiting",
+        "for",
+        "your",
+        "answer:",
         "Which",
         "of",
         "these",
@@ -359,7 +360,9 @@
         "do",
         "you",
         "still",
-        "use?",
+        "use?.",
+        "Show",
+        "button.",
         "Not",
         "sent."
       ]
@@ -412,8 +415,8 @@
     "total": 1512
   },
   "r5": {
-    "ratio": 0.049818359375,
-    "diffPixels": 51014,
+    "ratio": 0.0498193359375,
+    "diffPixels": 51015,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-06.light.diff.png"
