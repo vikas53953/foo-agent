@@ -1,0 +1,193 @@
+{
+  "id": "UX-02-05",
+  "theme": "light",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0020",
+    "checks": [
+      "r1",
+      "r2"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "—",
+        "☐",
+        "✕",
+        "＋",
+        "⋯",
+        "⌕",
+        "Search",
+        "chats",
+        "V",
+        "Vikas",
+        "·",
+        "Claude",
+        "ready",
+        "up",
+        "foo",
+        "⚙",
+        "foo",
+        "⌕",
+        "▯",
+        "⋯",
+        "Thu",
+        "15",
+        "Hi,",
+        "I'm",
+        "foo.",
+        "→",
+        "Let's",
+        "go",
+        "✓",
+        "＋",
+        "🎙",
+        "✕",
+        "running",
+        "right",
+        "now.",
+        "about",
+        "you",
+        "any",
+        "time.",
+        "Your",
+        "₹0",
+        "of",
+        "₹1,000"
+      ],
+      "extra": [
+        "z",
+        "3:30",
+        "AM",
+        "up…",
+        "Uses",
+        "your",
+        "Claude",
+        "plan",
+        "z",
+        "foo",
+        "Setting",
+        "up",
+        "·",
+        "step",
+        "2",
+        "of",
+        "4",
+        "Start",
+        "of",
+        "your",
+        "chat",
+        "with",
+        "foo",
+        "Fri",
+        "16",
+        "1",
+        "new",
+        "message",
+        "3:30",
+        "AM",
+        "In",
+        "progress",
+        "Scheduled",
+        "Done",
+        "running.",
+        "Ask",
+        "me",
+        "to",
+        "do",
+        "something",
+        "and",
+        "you’ll",
+        "see",
+        "it",
+        "here.",
+        "No",
+        "apps",
+        "used",
+        "here",
+        "yet.",
+        "things",
+        "like",
+        "“I’m",
+        "vegetarian”",
+        "and",
+        "I’ll",
+        "remember.",
+        "Uses",
+        "your",
+        "Claude",
+        "plan",
+        "Kept",
+        "Things",
+        "you",
+        "keep",
+        "from",
+        "replies",
+        "show",
+        "here.",
+        "ChatGPT",
+        "works"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": [
+        "3:30",
+        "AM"
+      ]
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "hl",
+        "ref": {
+          "x": 941,
+          "y": 171,
+          "width": 339,
+          "height": 85
+        },
+        "app": {
+          "x": 356,
+          "y": 244,
+          "width": 520,
+          "height": 66
+        },
+        "dPos": 585,
+        "dSize": 181,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "hl",
+        "ref": "#FFFFFF",
+        "app": "#FFFFFF",
+        "deltaE": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": null,
+    "ratio": 0.018289085545722714,
+    "diffPixels": 527,
+    "total": 28815
+  },
+  "r5": {
+    "ratio": 0.0197099609375,
+    "diffPixels": 20183,
+    "total": 1024000,
+    "sizeMismatch": null,
+    "heatmap": "UX-02-05.light.diff.png"
+  },
+  "ref": "golden\\ref\\ux\\UX-02-05.light.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\UX-02-05.light.png"
+}
