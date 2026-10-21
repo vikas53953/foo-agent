@@ -15,8 +15,7 @@
      waiting plans did not cause it.
 - **Spec sections:** 03-shell-1 §3.4.4 (chips); 03-shell-2 §3.7.3.1 (Doing now Line 2); 05-1 §5.3 (Trigger); 08-2 §5.3.3;
   08-4 §25.5 item 5; DECISIONS X-186.
-- **Status:** Approved by Vikas's approve-on-my-behalf rule (his messages 2026-10-18 14:56Z and 14:59Z, and 2026-10-21 07:14Z)
-  after the independent review in §(d). DECISIONS X-186
+- **Status:** Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-186 (his messages 2026-10-18 14:56Z and 14:59Z, and 2026-10-21 07:14Z; after the independent review in §(d))
 - **Change:** the sections above, as listed in §(b).
 - **Manifest:** `pnpm tsx scripts/spec-verify.ts --write` run in the same commit.
 
