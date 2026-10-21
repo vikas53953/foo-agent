@@ -94,7 +94,6 @@
     "kit.capabilities.compare.fill": "C1-T2 capabilities card",
     "kit.capabilities.remind.label": "C1-T2 capabilities card",
     "kit.capabilities.remind.hint": "C1-T2 capabilities card",
-    "kit.capabilities.remind.fill": "C1-T2 capabilities card",
-    "cards.checklist.retry_other_way": "C1-T4 checklist line"
+    "kit.capabilities.remind.fill": "C1-T2 capabilities card"
   }
 }
