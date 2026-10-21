@@ -241,10 +241,6 @@
         "127.0.0.1",
         "Watch",
         "live",
-        "Yesterday,",
-        "Thu",
-        "15",
-        "Oct",
         "I’ll",
         "remind",
         "you",
@@ -482,8 +478,8 @@
     "total": 2744
   },
   "r5": {
-    "ratio": 0.091576171875,
-    "diffPixels": 93774,
+    "ratio": 0.09139453125,
+    "diffPixels": 93588,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-01.light.diff.png"

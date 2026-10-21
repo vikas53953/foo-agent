@@ -29,6 +29,7 @@
         "⚙",
         "Setting",
         "up",
+        "4",
         "⌕",
         "▯",
         "⋯",
@@ -61,13 +62,14 @@
         "your",
         "plan",
         "z",
+        "2",
         "Setting",
         "up",
         "·",
         "step",
         "1",
         "of",
-        "4",
+        "2",
         "Start",
         "of",
         "your",
@@ -79,6 +81,14 @@
         "1",
         "new",
         "message",
+        "Hi,",
+        "I'm",
+        "foo.",
+        "→",
+        "Let's",
+        "go",
+        "3:30",
+        "AM",
         "I’m",
         "looking",
         "for",
@@ -131,8 +141,6 @@
         "see",
         "it",
         "here.",
-        "(your",
-        "AI)",
         "No",
         "apps",
         "used",
@@ -155,7 +163,8 @@
         "from",
         "replies",
         "show",
-        "here."
+        "here.",
+        "foo:"
       ]
     },
     "hl": {
@@ -245,8 +254,8 @@
     "total": 16400
   },
   "r5": {
-    "ratio": 0.0589208984375,
-    "diffPixels": 60335,
+    "ratio": 0.0587783203125,
+    "diffPixels": 60189,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-02-06.dark.diff.png"

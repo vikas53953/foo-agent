@@ -246,10 +246,6 @@
         "1",
         "of",
         "1",
-        "Yesterday,",
-        "Thu",
-        "15",
-        "Oct",
         "let’s",
         "do",
         "the",
@@ -517,8 +513,8 @@
     "total": 120560
   },
   "r5": {
-    "ratio": 0.1196728515625,
-    "diffPixels": 122545,
+    "ratio": 0.119576171875,
+    "diffPixels": 122446,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-03.dark.diff.png"
