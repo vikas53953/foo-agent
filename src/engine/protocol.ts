@@ -386,6 +386,9 @@ export const NAMED_QUERY_NAMES = [
   'messagesBefore',
   'messageById',
   'messagesQueued',
+  // Restart fix (08-2 §5.2 after a restart, 04 §19.4)
+  'messagesUnanswered',
+  'messagesStreaming',
   'helpers.byId',
   // M4
   'jobById',

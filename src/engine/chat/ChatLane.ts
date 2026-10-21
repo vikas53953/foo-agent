@@ -16,6 +16,8 @@
 // from the redacted text; not in groups or WhatsApp mirrors); a side question (04 §17.5, pick 6, AT-364) skips the stop,
 // steer and typed-answer branches and the plan change, is answered as a reply only (never a job, never memory) and its
 // answer carries `side = 1`, so a running job keeps running unchanged.
+// Restart fix (real-PC J19 bug): the queue lives in memory, so after a restart cutOffTurns/answerCutOff give the messages
+// whose turn never finished their one intake turn (08-2 §5.2), and a reply left streaming is cut off with Try again (§19.4).
 import { t } from '../../shared/copy/t';
 import type { Clock } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
@@ -37,6 +39,8 @@ import { splitSuggestions } from '../prompt/suggestions';
 // R1 T6
 import { understoodItems } from './understood';
 import { isSideAiText, sideAiText } from '../../shared/sideQuestion';
+// Restart fix
+import { isStopCommand } from '../jobs/stopFlow';
 
 /** The your-AI service the lane talks to (Engine wires AiService). */
 export interface LaneAi {
@@ -177,6 +181,10 @@ export class ChatLane {
   private chatTurns = new Map<string, { abort: AbortController; stopped: boolean }>();
   /** foo reply id → the user message it answered (04 §19.4 Try again). */
   private answered = new Map<string, string>();
+  /** User messages this engine has started a turn for (a restart's cut-off list may name one of them). */
+  private taken = new Set<string>();
+  /** Cut-off bubbles that already had their one Try again. */
+  private retried = new Set<string>();
   /** R1 T6: user messages that are side questions; every foo row answering one carries `side = 1` (04 §17.5). */
   private sideTurns = new Set<string>();
   /** Resolves when every queued turn has finished (tests). */
@@ -210,12 +218,56 @@ export class ChatLane {
 
   /** 04 §19.4 "Try again" on a cut-off reply. */
   retry(fooMessageId: string): boolean {
-    const userId = this.answered.get(fooMessageId);
-    if (!userId) return false;
     // One retry per cut-off bubble: repeated clicks do not answer twice.
+    if (this.retried.has(fooMessageId)) return false;
+    this.retried.add(fooMessageId);
+    const userId = this.answered.get(fooMessageId);
+    if (!userId) {
+      // A bubble cut off by a restart (recover below): this engine never saw its turn, so it answers the user message
+      // just before it.
+      void this.askedBefore(fooMessageId).then((m) => m && this.enqueue(m.chatId, m.id));
+      return true;
+    }
     this.answered.delete(fooMessageId);
     void this.messageById(userId).then((m) => m && this.enqueue(m.chatId, m.id));
     return true;
+  }
+
+  private async askedBefore(fooMessageId: string): Promise<EngineMessage | null> {
+    const reply = await this.messageById(fooMessageId);
+    if (!reply || reply.authorKind === 'user' || reply.status !== 'failed') return null;
+    const before = (await this.query<EngineMessage[]>('messagesBefore', reply.chatId, reply.seq, CONVERSATION)) ?? [];
+    return [...before].reverse().find((m) => m.authorKind === 'user') ?? null;
+  }
+
+  /**
+   * After a restart (08-2 §5.2 every user message gets one intake turn; 07-2 §4; 04 §19.4): a reply that was still streaming
+   * when foo closed is cut off (its words went only to the screen, so the stored bubble is empty, with Try again), and the
+   * user messages whose turn never finished are returned, oldest first, for `answerCutOff` once recovery is done. A stop
+   * word is not run again: stopping after a restart would act on jobs the user may have started since.
+   */
+  async cutOffTurns(): Promise<{ id: string; chatId: string }[]> {
+    const streaming = (await this.query<EngineMessage[]>('messagesStreaming')) ?? [];
+    if (streaming.length)
+      await this.tx(streaming.map((m): DbOp => ({ op: 'update', table: 'messages', id: m.id, set: { status: 'failed' } })));
+    const unanswered = (await this.query<EngineMessage[]>('messagesUnanswered')) ?? [];
+    return unanswered.filter((m) => !isStopCommand(m.text.trim())).map((m) => ({ id: m.id, chatId: m.chatId }));
+  }
+
+  answerCutOff(turns: { id: string; chatId: string }[]): void {
+    const byChat = new Map<string, string[]>();
+    for (const m of turns) {
+      // Sent just as foo started: this engine already took it, so its own turn answers it.
+      if (this.taken.has(m.id) || this.inflight.has(m.id)) continue;
+      this.d.log('chat.turn_recovered', undefined, { chatId: m.chatId });
+      byChat.set(m.chatId, [...(byChat.get(m.chatId) ?? []), m.id]);
+    }
+    // Older than anything sent since the start, so they go ahead of it in the chat's queue.
+    for (const [chatId, ids] of byChat) {
+      const q = (this.queues.get(chatId) ?? []).filter((id) => !ids.includes(id));
+      this.queues.set(chatId, [...ids, ...q]);
+      this.pump(chatId);
+    }
   }
 
   /** 04 §14.4 Stop: the reply that is coming in stops; what was shown stays, with "Stopped." under it. */
@@ -245,6 +297,7 @@ export class ChatLane {
       return;
     }
     const messageId = q.shift()!;
+    this.taken.add(messageId);
     this.busy.add(chatId);
     this.running += 1;
     this.inflight.add(messageId);
