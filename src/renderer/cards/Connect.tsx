@@ -79,8 +79,14 @@ function GoogleConnect({ card, p, time }: { card: CardRow; p: ConnectPayload; ti
   // CR-0044: Not now on a card from intake tells the engine, which runs the message's job without the app.
   const notNow = () => {
     setPhase('skipped');
+    // On a failure (engine not running) the buttons come back, so the tap is never lost silently.
     if (p.intakeConnect)
-      void invoke('card:answer', { cardId: card.id, nonce: card.nonce, answer: { skip: true }, resolvedBy: 'tap' }).catch(() => undefined);
+      void invoke('card:answer', { cardId: card.id, nonce: card.nonce, answer: { skip: true }, resolvedBy: 'tap' }).then(
+        (r) => {
+          if (!r.ok && r.error.kind !== 'CARD_STALE') setPhase('idle');
+        },
+        () => setPhase('idle'),
+      );
   };
   const connect = (scopes = cardScopes(p)) => {
     setPhase('opening');

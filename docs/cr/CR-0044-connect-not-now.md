@@ -40,3 +40,9 @@ None. The tests are in `test/integration/connect-first.test.ts` ("CR-0044 · …
 
 An independent Fable review of this CR and its diff, recorded in the PR and in `docs/decisions/real-pc.tsv` ("approved on
 Vikas's behalf" on pass).
+
+Result (2026-10-21): independent Fable review, high tier, **PASS** with one act item: an old intake Connect card could start a
+second job (Not now after Connect, or after the wait ran out). Fixed: Connect marks the card `connected`, the lane keeps the
+waiting message by card, and Not now runs the message again only while it is still waiting (test "a Not now after connecting
+is stale and starts no second job"). Consider applied: the card goes back to its buttons when `card:answer` fails. Approved on
+Vikas's behalf.

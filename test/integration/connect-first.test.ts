@@ -238,3 +238,29 @@ describe('CR-0044 · the Connect card says why, and Not now runs the job without
     expect(w.h.jobs()).toHaveLength(1);
   });
 });
+
+describe('CR-0044 review · a card whose message moved on never starts a second job', () => {
+  it('Google connects, the job runs; a later Not now on the old card is stale and starts nothing', async () => {
+    const w = world([{ match: { purpose: 'intake' }, reply: REAL_JOB, once: false }, ...READ]);
+    w.h.userSays(ASK);
+    await w.h.settle();
+    const id = String(w.h.cards('connect')[0]!.id);
+    await w.signIn(['gmail']);
+    await w.h.settle();
+    expect(w.h.cards('connect').map((c) => c.state)).toEqual(['connected']);
+    const r = answerCard(
+      {
+        db: w.h.db,
+        now: () => w.h.clock.now(),
+        engine: { send: (kind, payload) => w.h.bridge.send(kind, payload as never) },
+        emitCard: () => undefined,
+        emitMessage: () => undefined,
+        emitChat: () => undefined,
+      },
+      { cardId: id, answer: { skip: true }, resolvedBy: 'tap' },
+    );
+    expect(r).toMatchObject({ ok: false, error: { kind: 'CARD_STALE' } });
+    await w.h.settle();
+    expect(w.h.jobs()).toHaveLength(1);
+  });
+});

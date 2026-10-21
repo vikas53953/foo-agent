@@ -253,7 +253,7 @@ export class ChatLane {
   /** CR-0028: user message id → the answers to the intake questions it got, for its next intake turn. */
   private askAnswers = new Map<string, string[]>();
   /** CR-0040: user message id → its chat and when its Connect card was posted, until Google connects. */
-  private awaitingConnect = new Map<string, { chatId: string; at: number }>();
+  private awaitingConnect = new Map<string, { chatId: string; at: number; cardId: string }>();
   /** CR-0044: messages whose Connect card got Not now (engine RAM, like askAnswers). */
   private connectDeclined = new Set<string>();
   /** User messages this engine has started a turn for (a restart's cut-off list may name one of them). */
@@ -908,7 +908,7 @@ export class ChatLane {
       await this.post(chatId, messageId, t('thread.reply.empty'), helper, null);
       return;
     }
-    this.awaitingConnect.set(messageId, { chatId, at: now });
+    this.awaitingConnect.set(messageId, { chatId, at: now, cardId });
   }
 
   /** CR-0040: Google connected (Engine's connection.state); each message still waiting on its Connect card goes back to intake. */
@@ -916,6 +916,8 @@ export class ChatLane {
     const now = this.d.clock.now();
     for (const [messageId, w] of this.awaitingConnect) {
       this.awaitingConnect.delete(messageId);
+      // CR-0044 review: the card is done once Google connects, so a later Not now on it can never start a second job.
+      void this.tx([{ op: 'update', table: 'cards', id: w.cardId, set: { state: 'connected', resolved_by: 'system', resolved_at: now } }]);
       if (now - w.at <= CONNECT_WAIT_MS) this.enqueue(w.chatId, messageId, { intakeOnly: true });
     }
   }
@@ -962,7 +964,11 @@ export class ChatLane {
       },
     ]);
     if (!r.ok) return true;
+    // CR-0044 review: only a message still waiting on this card (this session, within 24 h) goes back to intake; an old card
+    // (after a restart, or past the wait) is just closed.
+    const waiting = this.awaitingConnect.get(messageId);
     this.awaitingConnect.delete(messageId);
+    if (!waiting || this.d.clock.now() - waiting.at > CONNECT_WAIT_MS) return true;
     this.connectDeclined.add(messageId);
     this.enqueue(card.chatId, messageId, { intakeOnly: true });
     return true;
