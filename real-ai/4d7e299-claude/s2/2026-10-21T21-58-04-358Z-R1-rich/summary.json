@@ -1,0 +1,80 @@
+{
+  "journey": "R1-rich",
+  "title": "Rich replies: table, steps, numbers",
+  "steps": 9,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T21-58-04-358Z-R1-rich",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792619890033,
+      "before": 0,
+      "ok": true,
+      "ms": 162
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 7113,
+      "newBubbles": 7,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nKeep 3 phones that fit best value under ₹20,000\n3\nCompare price, battery, camera and display\nAbout 3 minutes\nGo\nChange plan\n9:58 PM\n---\n1\nLook on the web\n---\n2\nKeep 3 phones that fit best value under ₹20,000\n---\n3\nCompare price, battery, camera and display\n---\nAbout 3 minutes\n---\nGo\n---\nChange plan",
+      "ms": 13250
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "note": "press Go on the plan (starts the job; spending still needs Approve, which is never tapped)",
+      "found": 1,
+      "ok": true,
+      "ms": 50
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 150003
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792620053643,
+      "before": 0,
+      "ok": true,
+      "ms": 128
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 7129,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's a relaxed 3 day Jaipur plan for your parents, with short days and rest breaks in the afternoon.\n\nDay 1, old city: Start with City Palace and Jantar Mantar in the morning. Have lunch nearby, then rest. Around 4:00 PM, see Hawa Mahal from outside and walk the Johari Bazaar for sweets and jewellery.\nDay 2, forts: Visit Amber Fort early to beat the crowds and heat. Take a jeep up instead of the steep walk. Stop at Jal Mahal for photos on the way back, rest after lunch, then watch sunset at Nahargarh Fort.\nDay 3, easy day: Visit Albert Hall Museum and Birla Mandir in the morning. Spend the afternoon shopping for block prints and blue pottery. End with a dal baati churma dinner.\n\nLate October to February is the best weather for this. Book a hotel close to the old city so they can get back and rest in the afternoons. Want me to check hotels or train times? Tell me their travel dates and I'll start there.\n\n10:01 PM",
+      "ms": 17280
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 4
+    }
+  ]
+}

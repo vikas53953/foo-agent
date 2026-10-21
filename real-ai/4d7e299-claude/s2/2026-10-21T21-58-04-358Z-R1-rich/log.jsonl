@@ -1,0 +1,15 @@
+{"t":"2026-10-21T21:58:04.358Z","journey":"R1-rich","title":"Rich replies: table, steps, numbers","spec":"CR-0022 R1","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T21:58:09.939Z","step":"launch","ok":true}
+{"t":"2026-10-21T21:58:10.107Z","i":0,"do":"send","sentAt":1792619890033,"before":0,"ok":true,"ms":162}
+{"t":"2026-10-21T21:58:23.357Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":7113,"newBubbles":7,"ok":true,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nKeep 3 phones that fit best value under ₹20,000\n3\nCompare price, battery, camera and display\nAbout 3 minutes\nGo\nChange plan\n9:58 PM\n---\n1\nLook on the web\n---\n2\nKeep 3 phones that fit best value under ₹20,000\n---\n3\nCompare price, battery, camera and display\n---\nAbout 3 minutes\n---\nGo\n---\nChange plan","ms":13250}
+{"t":"2026-10-21T21:58:23.426Z","shot":"01-table.png"}
+{"t":"2026-10-21T21:58:23.476Z","i":2,"do":"clickIf","note":"press Go on the plan (starts the job; spending still needs Approve, which is never tapped)","found":1,"ok":true,"ms":50}
+{"t":"2026-10-21T22:00:53.479Z","i":3,"do":"wait","ok":true,"ms":150003}
+{"t":"2026-10-21T22:00:53.546Z","shot":"02-table-after-go.png"}
+{"t":"2026-10-21T22:00:53.548Z","i":4,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-21T22:00:53.552Z","i":5,"do":"dump","ok":true,"ms":4}
+{"t":"2026-10-21T22:00:53.680Z","i":6,"do":"send","sentAt":1792620053643,"before":0,"ok":true,"ms":128}
+{"t":"2026-10-21T22:01:10.960Z","i":7,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":7129,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's a relaxed 3 day Jaipur plan for your parents, with short days and rest breaks in the afternoon.\n\nDay 1, old city: Start with City Palace and Jantar Mantar in the morning. Have lunch nearby, then rest. Around 4:00 PM, see Hawa Mahal from outside and walk the Johari Bazaar for sweets and jewellery.\nDay 2, forts: Visit Amber Fort early to beat the crowds and heat. Take a jeep up instead of the steep walk. Stop at Jal Mahal for photos on the way back, rest after lunch, then watch sunset at Nahargarh Fort.\nDay 3, easy day: Visit Albert Hall Museum and Birla Mandir in the morning. Spend the afternoon shopping for block prints and blue pottery. End with a dal baati churma dinner.\n\nLate October to February is the best weather for this. Book a hotel close to the old city so they can get back and rest in the afternoons. Want me to check hotels or train times? Tell me their travel dates and I'll start there.\n\n10:01 PM","ms":17280}
+{"t":"2026-10-21T22:01:11.037Z","shot":"03-trip.png"}
+{"t":"2026-10-21T22:01:11.041Z","i":8,"do":"dump","ok":true,"ms":4}
+{"t":"2026-10-21T22:01:11.178Z","step":"appLog","lines":15,"dropped":0}

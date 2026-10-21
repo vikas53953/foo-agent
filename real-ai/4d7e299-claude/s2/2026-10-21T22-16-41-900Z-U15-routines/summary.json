@@ -1,0 +1,71 @@
+{
+  "journey": "U15-routines",
+  "title": "Routine: create by chat, routines screen, pause, run once",
+  "steps": 8,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-21T22-16-41-900Z-U15-routines",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1029
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792621016717,
+      "before": 0,
+      "ok": true,
+      "ms": 127
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Routine card: created, next run time with weekday and date",
+      "firstReplyMs": 7067,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I didn’t get that. Say it another way?\n\n10:17 PM",
+      "didntGetThat": true,
+      "ms": 13179
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 92
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "Routines screen with the new routine row",
+      "ok": true,
+      "ms": 1214
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23063
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 2
+    }
+  ]
+}

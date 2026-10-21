@@ -1,0 +1,15 @@
+{"t":"2026-10-21T22:16:41.901Z","journey":"U15-routines","title":"Routine: create by chat, routines screen, pause, run once","spec":"05-3 §5.16 Routine, 06 Routines screen, 10-2 §C.4 / §C.5","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T22:16:47.521Z","step":"launch","ok":true}
+{"t":"2026-10-21T22:16:55.622Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8098}
+{"t":"2026-10-21T22:16:56.651Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1029}
+{"t":"2026-10-21T22:16:56.778Z","i":1,"do":"send","sentAt":1792621016717,"before":0,"ok":true,"ms":127}
+{"t":"2026-10-21T22:17:09.957Z","i":2,"do":"waitReply","expect":"Routine card: created, next run time with weekday and date","firstReplyMs":7067,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"I didn’t get that. Say it another way?\n\n10:17 PM","didntGetThat":true,"ms":13179}
+{"t":"2026-10-21T22:17:10.026Z","shot":"01-routine.png"}
+{"t":"2026-10-21T22:17:10.103Z","i":3,"do":"click","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-21T22:17:10.196Z","i":4,"do":"click","soft":true,"ok":true,"ms":92}
+{"t":"2026-10-21T22:17:11.410Z","i":5,"do":"wait","expect":"Routines screen with the new routine row","ok":true,"ms":1214}
+{"t":"2026-10-21T22:17:11.468Z","shot":"02-routines.png"}
+{"t":"2026-10-21T22:17:34.531Z","shot":"03-error-step6.png"}
+{"t":"2026-10-21T22:17:34.531Z","i":6,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23063}
+{"t":"2026-10-21T22:17:34.534Z","i":7,"do":"dump","ok":true,"ms":2}
+{"t":"2026-10-21T22:17:34.662Z","step":"appLog","lines":5,"dropped":0}
