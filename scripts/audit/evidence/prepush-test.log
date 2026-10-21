@@ -1,0 +1,1 @@
+corepack.cmd pnpm run test -- --maxWorkers=2\nstatus=timeout; interrupted after bounded run with no test output\n

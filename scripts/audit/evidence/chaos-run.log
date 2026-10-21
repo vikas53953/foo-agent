@@ -1,0 +1,38 @@
+{
+  "lane": "F",
+  "command": "pnpm exec tsx scripts/audit/chaos.ts",
+  "generatedAt": "2026-10-21T20:37:22.728Z",
+  "buildSha": "0665cf67d2ab6cf0515f6d3198df6dfc35357e82",
+  "status": "blocked",
+  "findings": [
+    {
+      "category": "production-job-restart",
+      "status": "pass",
+      "note": "Targeted production recovery test WORKING -> NEEDS_YOU passed in a key-free child process; retained redacted stdout/stderr and testCount=1 in scripts/audit/evidence/chaos-production-job.log."
+    },
+    {
+      "category": "production-random-kill",
+      "status": "blocked",
+      "note": "The production recovery test exercises a persisted killed-mid-step harness, but no safe process-level random-kill seam is exposed for this audit; no toy worker was counted as application coverage."
+    },
+    {
+      "category": "corrupt-db-fixture",
+      "status": "pass",
+      "note": "Corrupt production database fixture invariants: damagedRenamed=true; foreignKeyViolations=0; quickCheck=ok; isolatedFixture=true."
+    },
+    {
+      "category": "production-disk-full",
+      "status": "blocked",
+      "note": "No safe production filesystem fault-injection seam is available; the lane did not fill real disk or claim app coverage from a toy writer."
+    },
+    {
+      "category": "real-ai-chaos",
+      "status": "blocked",
+      "note": "No lane-scoped key was supplied to this audit; zero new provider calls and cost $0."
+    }
+  ],
+  "counts": {
+    "pass": 2,
+    "blocked": 3
+  }
+}

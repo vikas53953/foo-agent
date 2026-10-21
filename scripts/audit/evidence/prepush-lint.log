@@ -1,0 +1,23 @@
+
+> foo@0.0.1 lint C:\Users\vikasmit\Downloads\foo\lane-f
+> eslint .
+
+
+C:\Users\vikasmit\Downloads\foo\lane-f\src\renderer\composer\Composer.tsx
+  1029:5  warning  React Hook useCallback has a missing dependency: 'chatId'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\vikasmit\Downloads\foo\lane-f\src\renderer\messages\MessageList.tsx
+  256:13  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+C:\Users\vikasmit\Downloads\foo\lane-f\src\renderer\messages\MessageList.tsx:256:13
+  254 |   // changes, which was once per scroll render over all 5,000 rows (PERF-04).
+  255 |   const getItemKey = useCallback((i: number) => rows[i]!.key, [rows]);
+> 256 |   const v = useVirtualizer({
+      |             ^^^^^^^^^^^^^^ TanStack Virtual's `useVirtualizer()` API returns functions that cannot be memoized safely
+  257 |     count: rows.length,
+  258 |     getScrollElement: () => scrollRef.current,
+  259 |     estimateSize: (i) => estimateRow(rows[i]!, cardType, CARD_ESTIMATE),  react-hooks/incompatible-library
+
+✖ 2 problems (0 errors, 2 warnings)

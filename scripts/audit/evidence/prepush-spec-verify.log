@@ -1,0 +1,5 @@
+
+> foo@0.0.1 spec:verify C:\Users\vikasmit\Downloads\foo\lane-f
+> tsx scripts/spec-verify.ts
+
+spec verified

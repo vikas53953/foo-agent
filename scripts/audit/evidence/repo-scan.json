@@ -1,0 +1,1781 @@
+{
+  "lane": "F",
+  "command": "pnpm exec tsx scripts/audit/repo-scan.ts",
+  "generatedAt": "2026-10-21T20:36:09.611Z",
+  "buildSha": "0665cf67d2ab6cf0515f6d3198df6dfc35357e82",
+  "status": "candidate",
+  "findings": [
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "scripts/closeout.ts",
+      "line": 27,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "scripts/closeout.ts",
+      "line": 28,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "scripts/closeout.ts",
+      "line": 37,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "scripts/closeout.ts",
+      "line": 64,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "scripts/closeout.ts",
+      "line": 89,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "scripts/golden-bless.ts",
+      "line": 65,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "scripts/golden/browser.ts",
+      "line": 34,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/ai/ProcessHost.ts",
+      "line": 44,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/ai/ProcessHost.ts",
+      "line": 173,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/ai/classify.ts",
+      "line": 88,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/ai/classify.ts",
+      "line": 90,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/ai/classify.ts",
+      "line": 105,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/ai/probe.ts",
+      "line": 80,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/cards/typedAnswer.ts",
+      "line": 63,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/cards/typedAnswer.ts",
+      "line": 64,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/gate/afterApproved.ts",
+      "line": 97,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/gate/requestApproval.ts",
+      "line": 48,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/memory/fileFormat.ts",
+      "line": 182,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/memory/tidy.ts",
+      "line": 117,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/prompt/filters.ts",
+      "line": 163,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/prompt/releaseGate.ts",
+      "line": 156,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/prompt/releaseGate.ts",
+      "line": 167,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/prompt/releaseGate.ts",
+      "line": 203,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/prompt/suggestions.ts",
+      "line": 23,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/tools/browser/browser.ts",
+      "line": 86,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/tools/browser/browser.ts",
+      "line": 97,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/tools/browser/outcome.ts",
+      "line": 38,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/tools/browser/outcome.ts",
+      "line": 38,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/tools/browser/snapshot.ts",
+      "line": 60,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/tools/browser/snapshot.ts",
+      "line": 142,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/tools/connectors/google-tools.ts",
+      "line": 49,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/tools/web/WebTools.ts",
+      "line": 142,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/tools/web/readability.ts",
+      "line": 32,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/engine/tools/web/readability.ts",
+      "line": 34,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/main/drafts/mirrorDraft.ts",
+      "line": 58,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/main/page/pages.ts",
+      "line": 27,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/main/settings/appearance.ts",
+      "line": 41,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/main/settings/webKeySettings.ts",
+      "line": 14,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/main/store/db.ts",
+      "line": 25,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/main/store/db.ts",
+      "line": 36,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/main/store/db.ts",
+      "line": 49,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/main/store/rebuild.ts",
+      "line": 3,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/main/store/rebuild.ts",
+      "line": 125,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/main/test/seed/m8Connect.ts",
+      "line": 10,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/main/test/seed/writer.ts",
+      "line": 177,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/main/test/seed/writer.ts",
+      "line": 178,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/main/vault/SecretVault.ts",
+      "line": 76,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/main/whatsapp/waStore.ts",
+      "line": 127,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/renderer/cards/SecretBox.tsx",
+      "line": 65,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/cards/SecretBox.tsx",
+      "line": 5,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/cards/SecretBox.tsx",
+      "line": 131,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/cards/SecretBox.tsx",
+      "line": 136,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/cards/SecretBox.tsx",
+      "line": 138,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/cards/SecretBox.tsx",
+      "line": 142,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/cards/SecretBox.tsx",
+      "line": 152,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/cards/SecretBox.tsx",
+      "line": 152,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/cards/renderCard.tsx",
+      "line": 4,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/cards/renderCard.tsx",
+      "line": 70,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/cards/setup/FirstRunCards.tsx",
+      "line": 127,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/cards/setup/FirstRunCards.tsx",
+      "line": 127,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/chatlist/ChatSearch.tsx",
+      "line": 2,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/chatlist/ChatSearch.tsx",
+      "line": 94,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/chatlist/ChatSearch.tsx",
+      "line": 94,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/chatlist/ChatSearch.tsx",
+      "line": 95,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/Composer.tsx",
+      "line": 3,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/Composer.tsx",
+      "line": 77,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/Composer.tsx",
+      "line": 416,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/Composer.tsx",
+      "line": 436,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/Composer.tsx",
+      "line": 794,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/Composer.tsx",
+      "line": 1209,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/Composer.tsx",
+      "line": 1210,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/Composer.tsx",
+      "line": 1225,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/DropOverlay.tsx",
+      "line": 17,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/fieldDom.ts",
+      "line": 28,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/renderer/composer/fieldModel.ts",
+      "line": 175,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/placeholder.ts",
+      "line": 1,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/placeholder.ts",
+      "line": 3,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/placeholder.ts",
+      "line": 16,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/placeholder.ts",
+      "line": 51,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/placeholder.ts",
+      "line": 55,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/placeholder.ts",
+      "line": 58,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/placeholder.ts",
+      "line": 61,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/placeholder.ts",
+      "line": 63,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/placeholder.ts",
+      "line": 65,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/placeholder.ts",
+      "line": 70,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/placeholder.ts",
+      "line": 71,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/placeholder.ts",
+      "line": 72,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/placeholder.ts",
+      "line": 73,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/placeholder.ts",
+      "line": 74,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/placeholder.ts",
+      "line": 75,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/placeholder.ts",
+      "line": 76,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/composer/placeholder.ts",
+      "line": 77,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/kit/CapabilitiesCard.tsx",
+      "line": 3,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/kit/KitBlock.tsx",
+      "line": 4,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/renderer/kit/WeekCalendar.tsx",
+      "line": 22,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/messages/AnswerExtras.tsx",
+      "line": 95,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/messages/AnswerExtras.tsx",
+      "line": 95,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/messages/AnswerExtras.tsx",
+      "line": 96,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/messages/Bubble.tsx",
+      "line": 518,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/renderer/messages/BubbleParts.tsx",
+      "line": 290,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/messages/FlingRow.tsx",
+      "line": 4,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/renderer/messages/bubbleState.ts",
+      "line": 129,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/renderer/messages/markdownParse.ts",
+      "line": 123,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/renderer/messages/markdownParse.ts",
+      "line": 131,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/renderer/messages/markdownParse.ts",
+      "line": 144,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/renderer/messages/markdownParse.ts",
+      "line": 237,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/renderer/messages/markdownParse.ts",
+      "line": 252,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/renderer/messages/markdownParse.ts",
+      "line": 286,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/renderer/messages/markdownParse.ts",
+      "line": 300,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/renderer/messages/markdownParse.ts",
+      "line": 307,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/renderer/messages/textRules.ts",
+      "line": 172,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 137,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 144,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 162,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 162,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 163,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 657,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 657,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 703,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 703,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/renderer/screens/memoryActions.ts",
+      "line": 38,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/renderer/screens/memoryView.ts",
+      "line": 49,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/screens/shared/PageSearchField.tsx",
+      "line": 13,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/screens/shared/PageSearchField.tsx",
+      "line": 19,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/screens/shared/PageSearchField.tsx",
+      "line": 29,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/screens/shared/PageSearchField.tsx",
+      "line": 29,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/screens/shared/PageSearchField.tsx",
+      "line": 30,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/shell/FindBar.tsx",
+      "line": 86,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/shell/FindBar.tsx",
+      "line": 86,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/shell/FindBar.tsx",
+      "line": 87,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/store/index.ts",
+      "line": 157,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "fake-or-placeholder-data",
+      "status": "candidate",
+      "path": "src/renderer/ui/FaceRaster.tsx",
+      "line": 163,
+      "note": "Static marker found; this is not live UX proof and needs an owner decision."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/renderer/ui/tokens.ts",
+      "line": 6,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/shared/accent.ts",
+      "line": 18,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/shared/format.ts",
+      "line": 56,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/shared/kit/evaluate.ts",
+      "line": 31,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/shared/kit/evaluate.ts",
+      "line": 37,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/shared/kit/keep.ts",
+      "line": 45,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/shared/kit/pick.ts",
+      "line": 81,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/shared/kit/pick.ts",
+      "line": 82,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/shared/kit/surface.ts",
+      "line": 20,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/shared/redactor.ts",
+      "line": 165,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "shell-exec",
+      "status": "candidate",
+      "path": "src/shared/settings.ts",
+      "line": 223,
+      "note": "Static sink candidate; inspect the call boundary and input validation."
+    },
+    {
+      "category": "fixture-private-key",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 28,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-private-key",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 28,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-private-key",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 29,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-private-key",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 29,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 9,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 9,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 10,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 10,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 12,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 12,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 13,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 13,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-github-token",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 14,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-github-token",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 14,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-github-token",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 15,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-github-token",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 15,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-cloud-token",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 16,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-cloud-token",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 16,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 9,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 10,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 11,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 12,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 13,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 14,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 15,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 16,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 17,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 18,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 19,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 20,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 26,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 28,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 29,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 30,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 31,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 32,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 33,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 34,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 35,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 36,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 38,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 39,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 40,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 41,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 42,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/articles/ART-08b.test.ts",
+      "line": 45,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/articles/ART-08c.test.ts",
+      "line": 15,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/canary/canaries.ts",
+      "line": 19,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/e2e/ai-step.spec.ts",
+      "line": 77,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/e2e/ai-step.spec.ts",
+      "line": 78,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/e2e/m2-composer.spec.ts",
+      "line": 101,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/e2e/m2-composer.spec.ts",
+      "line": 284,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/e2e/m5-secret.spec.ts",
+      "line": 10,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/e2e/m5-secret.spec.ts",
+      "line": 11,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/e2e/r1-ai-page.spec.ts",
+      "line": 44,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/e2e/r1-ai-page.spec.ts",
+      "line": 44,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/e2e/r1-input.spec.ts",
+      "line": 248,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/fakes/web/net.ts",
+      "line": 21,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/fidelity/bp/BP-cards-m5-secret.spec.ts",
+      "line": 14,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/fidelity/ux/UX-02.ai.spec.ts",
+      "line": 26,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/integration/browser/actions.test.ts",
+      "line": 128,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/integration/browser/snapshot.test.ts",
+      "line": 27,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/integration/jobs/needs-you.test.ts",
+      "line": 195,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/integration/jobs/needs-you.test.ts",
+      "line": 195,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/integration/m8-whatsapp-send.test.ts",
+      "line": 388,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/sites/signin/index.ts",
+      "line": 25,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/m2b-composer-main.test.ts",
+      "line": 76,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/m2b-composer-main.test.ts",
+      "line": 88,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/m2b-composer.test.ts",
+      "line": 206,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/m2b-composer.test.ts",
+      "line": 222,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/m2r-edit-secret.test.ts",
+      "line": 15,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/m2r-redactor.test.ts",
+      "line": 7,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/m3-prompt-redactor.test.ts",
+      "line": 23,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/m4-contracts.test.ts",
+      "line": 132,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/m4-contracts.test.ts",
+      "line": 205,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/m4-contracts.test.ts",
+      "line": 266,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/m5-redaction-store.test.ts",
+      "line": 19,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/unit/m9-sites-others.test.ts",
+      "line": 23,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/unit/m9-sites-others.test.ts",
+      "line": 33,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/unit/m9-sites-others.test.ts",
+      "line": 47,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/r1-input.test.ts",
+      "line": 60,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/r1-kit-safety.test.ts",
+      "line": 21,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/r1-page.test.ts",
+      "line": 196,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/redactor/context.test.ts",
+      "line": 37,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-private-key",
+      "status": "candidate",
+      "path": "test/unit/redactor/patterns.test.ts",
+      "line": 32,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-private-key",
+      "status": "candidate",
+      "path": "test/unit/redactor/patterns.test.ts",
+      "line": 35,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/redactor/patterns.test.ts",
+      "line": 13,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/redactor/patterns.test.ts",
+      "line": 14,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/redactor/patterns.test.ts",
+      "line": 15,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-github-token",
+      "status": "candidate",
+      "path": "test/unit/redactor/patterns.test.ts",
+      "line": 16,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-github-token",
+      "status": "candidate",
+      "path": "test/unit/redactor/patterns.test.ts",
+      "line": 17,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-cloud-token",
+      "status": "candidate",
+      "path": "test/unit/redactor/patterns.test.ts",
+      "line": 18,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-cloud-token",
+      "status": "candidate",
+      "path": "test/unit/redactor/patterns.test.ts",
+      "line": 18,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-cloud-token",
+      "status": "candidate",
+      "path": "test/unit/redactor/patterns.test.ts",
+      "line": 19,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-cloud-token",
+      "status": "candidate",
+      "path": "test/unit/redactor/patterns.test.ts",
+      "line": 19,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/redactor/techlog.test.ts",
+      "line": 11,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/tools/ToolLayer.test.ts",
+      "line": 12,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-credential-assignment",
+      "status": "candidate",
+      "path": "test/unit/tools/ToolLayer.test.ts",
+      "line": 12,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/unit/vault/harness.ts",
+      "line": 18,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/verify/m5-t2-secret.journey.ts",
+      "line": 15,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "fixture-provider-key",
+      "status": "candidate",
+      "path": "test/verify/m5-t3-redaction.journey.ts",
+      "line": 15,
+      "note": "Fixture/example pattern; review allowlist. Value redacted."
+    },
+    {
+      "category": "unused-dependency-candidate",
+      "status": "candidate",
+      "note": "Declared package uuid has no import/reference in tracked source; confirm with a full dependency tool."
+    },
+    {
+      "category": "unused-dependency-candidate",
+      "status": "candidate",
+      "note": "Declared package @axe-core/playwright has no import/reference in tracked source; confirm with a full dependency tool."
+    },
+    {
+      "category": "unused-dependency-candidate",
+      "status": "candidate",
+      "note": "Declared package @electron/rebuild has no import/reference in tracked source; confirm with a full dependency tool."
+    },
+    {
+      "category": "unused-dependency-candidate",
+      "status": "candidate",
+      "note": "Declared package @eslint/js has no import/reference in tracked source; confirm with a full dependency tool."
+    },
+    {
+      "category": "unused-dependency-candidate",
+      "status": "candidate",
+      "note": "Declared package @vitejs/plugin-react has no import/reference in tracked source; confirm with a full dependency tool."
+    },
+    {
+      "category": "unused-dependency-candidate",
+      "status": "candidate",
+      "note": "Declared package eslint-plugin-react-hooks has no import/reference in tracked source; confirm with a full dependency tool."
+    },
+    {
+      "category": "unused-dependency-candidate",
+      "status": "candidate",
+      "note": "Declared package fast-check has no import/reference in tracked source; confirm with a full dependency tool."
+    },
+    {
+      "category": "unused-dependency-candidate",
+      "status": "candidate",
+      "note": "Declared package globals has no import/reference in tracked source; confirm with a full dependency tool."
+    },
+    {
+      "category": "unused-dependency-candidate",
+      "status": "candidate",
+      "note": "Declared package node-gyp has no import/reference in tracked source; confirm with a full dependency tool."
+    },
+    {
+      "category": "unused-dependency-candidate",
+      "status": "candidate",
+      "note": "Declared package prettier has no import/reference in tracked source; confirm with a full dependency tool."
+    },
+    {
+      "category": "unused-dependency-candidate",
+      "status": "candidate",
+      "note": "Declared package typescript-eslint has no import/reference in tracked source; confirm with a full dependency tool."
+    },
+    {
+      "category": "history-secret-pattern",
+      "status": "pass",
+      "note": "No secret pattern was found in the bounded git history scan; values were never emitted."
+    }
+  ],
+  "counts": {
+    "candidate": 255,
+    "pass": 1
+  }
+}
