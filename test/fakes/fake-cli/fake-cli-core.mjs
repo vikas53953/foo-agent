@@ -2,6 +2,9 @@
 // env: FAKE_CLI_FIXTURE (stdout lines), FAKE_CLI_DUMP (JSON dump path), FAKE_CLI_HELP / FAKE_CLI_VERSION (text files for
 // --help / --version; FAKE_CLI_EXEC_HELP for `exec --help`), FAKE_CLI_STDERR (file copied to stderr), FAKE_CLI_EXIT (exit code), FAKE_CLI_LINE_DELAY_MS,
 // FAKE_CLI_FIXTURE_NO_MODEL / FAKE_CLI_EXIT_NO_MODEL (used when argv has no -m/--model), FAKE_CLI_HANG=1 (never exit after printing), FAKE_CLI_GRANDCHILD=1 (spawn a sleeping grandchild; its pid goes in the dump).
+// "Bad day" switches (a real CLI on a slow or broken PC): FAKE_CLI_START_DELAY_MS (cold start: silence before the first
+// line), FAKE_CLI_CRASH_AFTER_LINES (print that many lines, then die without a result line, as a crash or a kill does),
+// FAKE_CLI_FAIL_FIRST + FAKE_CLI_STATE (the first N runs, counted in the STATE file, die at once; later runs behave).
 import { spawn } from 'node:child_process';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
@@ -40,16 +43,32 @@ export async function runFakeCli(name) {
   dump.pid = process.pid;
   if (env.FAKE_CLI_DUMP) writeFileSync(env.FAKE_CLI_DUMP, JSON.stringify(dump, null, 2));
 
+  if (env.FAKE_CLI_FAIL_FIRST && env.FAKE_CLI_STATE) {
+    const runs = existsSync(env.FAKE_CLI_STATE) ? Number(readFileSync(env.FAKE_CLI_STATE, 'utf8')) : 0;
+    writeFileSync(env.FAKE_CLI_STATE, String(runs + 1));
+    if (runs < Number(env.FAKE_CLI_FAIL_FIRST)) crash();
+  }
+  const startDelay = Number(env.FAKE_CLI_START_DELAY_MS ?? 0);
+  if (startDelay > 0) await new Promise((r) => setTimeout(r, startDelay));
   if (env.FAKE_CLI_STDERR && existsSync(env.FAKE_CLI_STDERR)) process.stderr.write(readFileSync(env.FAKE_CLI_STDERR, 'utf8'));
   const delay = Number(env.FAKE_CLI_LINE_DELAY_MS ?? 0);
   const noModel = !argv.includes('-m') && !argv.includes('--model');
   const fixture = noModel && env.FAKE_CLI_FIXTURE_NO_MODEL ? env.FAKE_CLI_FIXTURE_NO_MODEL : env.FAKE_CLI_FIXTURE;
   const lines = textOf(fixture, '').split('\n');
   if (lines.length && lines[lines.length - 1] === '') lines.pop();
-  for (const l of lines) {
+  const crashAfter = env.FAKE_CLI_CRASH_AFTER_LINES === undefined ? Infinity : Number(env.FAKE_CLI_CRASH_AFTER_LINES);
+  for (const [i, l] of lines.entries()) {
+    if (i >= crashAfter) await new Promise((r) => process.stdout.write('', r)).then(crash);
     process.stdout.write(l + '\n');
     if (delay > 0) await new Promise((r) => setTimeout(r, delay));
   }
   if (env.FAKE_CLI_HANG === '1') await new Promise(() => setInterval(() => {}, 1000));
   return Number((noModel ? env.FAKE_CLI_EXIT_NO_MODEL : undefined) ?? env.FAKE_CLI_EXIT ?? 0);
+}
+
+// Dies the way a crashed or killed CLI does: no result line, a non-zero end (a signal on POSIX, an access-violation
+// code on Windows).
+function crash() {
+  if (process.platform === 'win32') process.exit(3221225477);
+  process.kill(process.pid, 'SIGKILL');
 }
