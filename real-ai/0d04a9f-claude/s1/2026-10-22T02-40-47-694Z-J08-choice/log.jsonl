@@ -1,0 +1,11 @@
+{"t":"2026-10-22T02:40:47.694Z","journey":"J08-choice","title":"Question with choice chips","spec":"07-1 J8; 05 choice card","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T02:40:53.242Z","step":"launch","ok":true}
+{"t":"2026-10-22T02:41:01.336Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":0,"ms":8091}
+{"t":"2026-10-22T02:41:01.450Z","i":0,"do":"send","sentAt":1792636861412,"sent":true,"before":0,"ok":true,"ms":113}
+{"t":"2026-10-22T02:41:21.259Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":11201,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"For ₹80,000 look for 16 GB RAM, a 512 GB SSD, a recent Ryzen 5/7 or Core i5/Ultra 5 chip, a 1080p IPS screen and a keyboard you like typing on.\n\nSkip a dedicated graphics card unless you do games or train AI AI. It adds cost and weight and cuts battery life.\nBattery: aim for 8+ hours of real use if you code away from a desk.\nUpgradeable RAM and SSD keep it useful for longer.\nA Mac or a Windows laptop with Linux support both work, so it depends on your tools.\n\nWhich kind of programming do you mostly do: web and apps, data and AI, or games? Then I can look up current options and compare them.\n\n2:41 AM","kit":[],"ms":19809}
+{"t":"2026-10-22T02:41:21.325Z","shot":"01-laptop.png"}
+{"t":"2026-10-22T02:41:21.327Z","i":2,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-22T02:41:21.328Z","i":3,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-22T02:41:21.338Z","i":4,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-22T02:41:21.470Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-10-22T02:41:21.483Z","step":"aiTurns","turns":1}
