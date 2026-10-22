@@ -1,0 +1,6 @@
+
+> foo@0.0.1 format:check <user-home>\Downloads\foo\foo-testing
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!

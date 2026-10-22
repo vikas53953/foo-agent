@@ -1,6 +1,6 @@
 key	state	sha	link	note
-main_ci	in progress	a087f3c6c2cde738fef8ece322b578cdbd073c07	https://github.com/vikas53953/foo-agent/actions/runs/39673710431	Main advanced again at closeout. Latest run incomplete; all 0665 passing receipts are now historical and cannot prove this build.
-real_ai_main	pending	a087f3c6c2cde738fef8ece322b578cdbd073c07	https://github.com/vikas53953/foo-agent/actions/runs/39673710219	Main advanced again at closeout. Latest run incomplete; all 0665 passing receipts are now historical and cannot prove this build.
+main_ci	in progress	0d04a9f9105e42aef0b4a22238285a9007635c3e	https://github.com/vikas53953/foo-agent/actions/runs/39710797031	07:54 IST publication snapshot: main advanced again. Latest results incomplete; no old passing receipt is promoted.
+real_ai_main	pending	0d04a9f9105e42aef0b4a22238285a9007635c3e	https://github.com/vikas53953/foo-agent/actions/runs/39710797010	07:54 IST publication snapshot: main advanced again. Latest results incomplete; no old passing receipt is promoted.
 judge_97	built, not merged		https://github.com/vikas53953/foo-agent/pull/97	promptfoo AI judge (32 asks), axe sweep, chaos reopen, Windows install/keychain checks.
 mutation_101	built, not merged		https://github.com/vikas53953/foo-agent/pull/101	Stryker on 4 files, 72%.
 bdd	partial	09a61163653086898c699fac37d69ef98188e6c3	https://github.com/vikas53953/foo-agent/pull/119	22 authored BDD scenarios; historical focused passes and one strict reaction failure. Full current suite and real-AI mode are not proven.

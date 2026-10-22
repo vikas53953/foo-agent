@@ -1,0 +1,7 @@
+
+> foo@0.0.1 spec:verify <user-home>\Downloads\foo\foo-testing
+> tsx scripts/spec-verify.ts
+
+spec verified
+
+Lead gate outcome: 0; full suite timeout is incomplete, never pass.

@@ -1,12 +1,12 @@
 {
   "meta": {
-    "main_sha": "a087f3c6c2cde738fef8ece322b578cdbd073c07",
+    "main_sha": "0d04a9f9105e42aef0b4a22238285a9007635c3e",
     "main_ci": {
       "key": "main_ci",
       "state": "in progress",
-      "sha": "a087f3c6c2cde738fef8ece322b578cdbd073c07",
-      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431",
-      "note": "Main advanced again at closeout. Latest run incomplete; all 0665 passing receipts are now historical and cannot prove this build."
+      "sha": "0d04a9f9105e42aef0b4a22238285a9007635c3e",
+      "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031",
+      "note": "07:54 IST publication snapshot: main advanced again. Latest results incomplete; no old passing receipt is promoted."
     },
     "real_proven": 0,
     "all_proven": 0,
@@ -31,16 +31,16 @@
       {
         "key": "main_ci",
         "state": "in progress",
-        "sha": "a087f3c6c2cde738fef8ece322b578cdbd073c07",
-        "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431",
-        "note": "Main advanced again at closeout. Latest run incomplete; all 0665 passing receipts are now historical and cannot prove this build."
+        "sha": "0d04a9f9105e42aef0b4a22238285a9007635c3e",
+        "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031",
+        "note": "07:54 IST publication snapshot: main advanced again. Latest results incomplete; no old passing receipt is promoted."
       },
       {
         "key": "real_ai_main",
         "state": "pending",
-        "sha": "a087f3c6c2cde738fef8ece322b578cdbd073c07",
-        "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710219",
-        "note": "Main advanced again at closeout. Latest run incomplete; all 0665 passing receipts are now historical and cannot prove this build."
+        "sha": "0d04a9f9105e42aef0b4a22238285a9007635c3e",
+        "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797010",
+        "note": "07:54 IST publication snapshot: main advanced again. Latest results incomplete; no old passing receipt is promoted."
       },
       {
         "key": "judge_97",
@@ -157,7 +157,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/AT-225.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/AT-225.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/AT-225.test.ts"
         },
         "integration": {
@@ -228,7 +228,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -240,12 +240,12 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/m3-engine.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/m3-engine.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/m3-engine.test.ts"
         },
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/ai-step.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/ai-step.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/ai-step.spec.ts"
         },
         "integration": {
@@ -311,7 +311,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -323,12 +323,12 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/m3-engine.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/m3-engine.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/m3-engine.test.ts"
         },
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/ai-step.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/ai-step.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/ai-step.spec.ts"
         },
         "integration": {
@@ -394,7 +394,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -406,7 +406,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/m3-engine.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/m3-engine.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/m3-engine.test.ts"
         },
         "e2e": {
@@ -477,7 +477,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -489,7 +489,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/m3-engine.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/m3-engine.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/m3-engine.test.ts"
         },
         "integration": {
@@ -560,7 +560,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -655,7 +655,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/AT-019.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/AT-019.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/AT-019.test.ts"
         },
         "unit": {
@@ -726,7 +726,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -738,7 +738,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/stop.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/stop.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/stop.test.ts"
         },
         "unit": {
@@ -809,7 +809,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -821,7 +821,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m4-offline.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m4-offline.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m4-offline.spec.ts"
         },
         "unit": {
@@ -892,7 +892,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -904,7 +904,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/cap.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/cap.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/cap.test.ts"
         },
         "unit": {
@@ -975,7 +975,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -987,7 +987,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/stuck.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/stuck.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/stuck.test.ts"
         },
         "unit": {
@@ -1058,7 +1058,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -1070,7 +1070,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/quit.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/quit.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/quit.test.ts"
         },
         "unit": {
@@ -1141,7 +1141,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -1153,7 +1153,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/jobs/queue.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/jobs/queue.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/jobs/queue.test.ts"
         },
         "integration": {
@@ -1224,7 +1224,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -1236,7 +1236,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/start.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/start.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/start.test.ts"
         },
         "unit": {
@@ -1307,7 +1307,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -1319,7 +1319,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/stop.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/stop.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/stop.test.ts"
         },
         "unit": {
@@ -1390,7 +1390,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -1402,7 +1402,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/needs-you.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/needs-you.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/needs-you.test.ts"
         },
         "unit": {
@@ -1473,7 +1473,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -1485,7 +1485,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/needs-you.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/needs-you.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/needs-you.test.ts"
         },
         "unit": {
@@ -1556,7 +1556,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -1568,7 +1568,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/waiting.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/waiting.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/waiting.test.ts"
         },
         "unit": {
@@ -1639,7 +1639,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -1651,7 +1651,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/waiting.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/waiting.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/waiting.test.ts"
         },
         "unit": {
@@ -1722,7 +1722,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -1734,7 +1734,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/finish.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/finish.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/finish.test.ts"
         },
         "unit": {
@@ -1805,7 +1805,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -1817,7 +1817,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/finish.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/finish.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/finish.test.ts"
         },
         "unit": {
@@ -1888,7 +1888,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -1900,7 +1900,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/stuck.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/stuck.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/stuck.test.ts"
         },
         "unit": {
@@ -1971,7 +1971,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -1983,7 +1983,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/jobs/watchdog.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/jobs/watchdog.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/jobs/watchdog.test.ts"
         },
         "integration": {
@@ -2054,7 +2054,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -2066,7 +2066,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/fail.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/fail.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/fail.test.ts"
         },
         "unit": {
@@ -2137,7 +2137,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -2149,7 +2149,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/recovery.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/recovery.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/recovery.test.ts"
         },
         "unit": {
@@ -2220,7 +2220,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -2232,7 +2232,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/db/rebuild.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/db/rebuild.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/db/rebuild.test.ts"
         },
         "unit": {
@@ -2303,7 +2303,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -2315,7 +2315,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/ai-words.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/ai-words.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/ai-words.test.ts"
         },
         "unit": {
@@ -2386,7 +2386,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -2398,7 +2398,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/retry.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/retry.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/retry.test.ts"
         },
         "unit": {
@@ -2469,7 +2469,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -2481,7 +2481,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m4-panel.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m4-panel.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m4-panel.spec.ts"
         },
         "unit": {
@@ -2552,7 +2552,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -2564,7 +2564,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m4-notices.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m4-notices.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m4-notices.spec.ts"
         },
         "unit": {
@@ -2635,7 +2635,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -2647,7 +2647,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m4-list.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m4-list.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m4-list.spec.ts"
         },
         "unit": {
@@ -2718,7 +2718,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -2730,7 +2730,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m4-list.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m4-list.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m4-list.spec.ts"
         },
         "unit": {
@@ -2801,7 +2801,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -2813,7 +2813,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/vault/AT-008.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/vault/AT-008.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/vault/AT-008.test.ts"
         },
         "unit": {
@@ -2884,7 +2884,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -2896,7 +2896,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m5-secret.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m5-secret.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-secret.spec.ts"
         },
         "unit": {
@@ -2967,7 +2967,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -2979,7 +2979,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/choice/typed.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/choice/typed.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/choice/typed.test.ts"
         },
         "integration": {
@@ -3050,7 +3050,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -3062,7 +3062,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m5-choice.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m5-choice.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-choice.spec.ts"
         },
         "unit": {
@@ -3133,7 +3133,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -3145,7 +3145,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/choice/timeouts.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/choice/timeouts.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/choice/timeouts.test.ts"
         },
         "unit": {
@@ -3216,7 +3216,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -3228,7 +3228,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/choice/timeouts.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/choice/timeouts.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/choice/timeouts.test.ts"
         },
         "unit": {
@@ -3299,7 +3299,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -3311,12 +3311,12 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/choice/typed.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/choice/typed.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/choice/typed.test.ts"
         },
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m5-choice.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m5-choice.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-choice.spec.ts"
         },
         "integration": {
@@ -3382,7 +3382,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -3394,7 +3394,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/choice/typed.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/choice/typed.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/choice/typed.test.ts"
         },
         "integration": {
@@ -3465,7 +3465,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -3477,7 +3477,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/jobs/stop-which.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/jobs/stop-which.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/jobs/stop-which.test.ts"
         },
         "unit": {
@@ -3548,7 +3548,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -3560,7 +3560,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/approvals/steer.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/approvals/steer.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/steer.test.ts"
         },
         "unit": {
@@ -3631,7 +3631,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -3643,7 +3643,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/articles/ART-02c.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/articles/ART-02c.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/articles/ART-02c.test.ts"
         },
         "integration": {
@@ -3714,7 +3714,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -3726,7 +3726,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/approvals/decline.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/approvals/decline.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/decline.test.ts"
         },
         "unit": {
@@ -3797,7 +3797,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -3809,7 +3809,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/approvals/expiry.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/approvals/expiry.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/expiry.test.ts"
         },
         "unit": {
@@ -3880,7 +3880,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -3892,7 +3892,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/approvals/expiry.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/approvals/expiry.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/approvals/expiry.test.ts"
         },
         "integration": {
@@ -3963,7 +3963,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -3975,7 +3975,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m5-approval.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m5-approval.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-approval.spec.ts"
         },
         "unit": {
@@ -4046,7 +4046,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -4058,7 +4058,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/approvals/second-look.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/approvals/second-look.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/second-look.test.ts"
         },
         "unit": {
@@ -4129,7 +4129,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -4141,7 +4141,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/approvals/fresh-terms.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/approvals/fresh-terms.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/fresh-terms.test.ts"
         },
         "unit": {
@@ -4212,7 +4212,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -4224,7 +4224,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m5-approval.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m5-approval.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-approval.spec.ts"
         },
         "unit": {
@@ -4295,7 +4295,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -4307,12 +4307,12 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/approvals/expiry.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/approvals/expiry.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/expiry.test.ts"
         },
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m5-approval.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m5-approval.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-approval.spec.ts"
         },
         "unit": {
@@ -4378,7 +4378,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -4390,7 +4390,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/approvals/withdraw.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/approvals/withdraw.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/withdraw.test.ts"
         },
         "unit": {
@@ -4461,7 +4461,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -4473,7 +4473,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/approvals/rules.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/approvals/rules.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/approvals/rules.test.ts"
         },
         "integration": {
@@ -4544,7 +4544,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -4556,7 +4556,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/approvals/draft.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/approvals/draft.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/approvals/draft.test.ts"
         },
         "unit": {
@@ -4627,7 +4627,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -4639,7 +4639,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m5-approval.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m5-approval.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-approval.spec.ts"
         },
         "unit": {
@@ -4710,7 +4710,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -4722,7 +4722,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m5-choice.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m5-choice.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m5-choice.spec.ts"
         },
         "unit": {
@@ -4793,7 +4793,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -4805,7 +4805,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m6-page.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m6-page.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m6-page.spec.ts"
         },
         "unit": {
@@ -4876,7 +4876,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -4888,12 +4888,12 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/m6-forget.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/m6-forget.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m6-forget.test.ts"
         },
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m6-page.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m6-page.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m6-page.spec.ts"
         },
         "unit": {
@@ -4959,7 +4959,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -4971,7 +4971,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/m6-tombstone.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/m6-tombstone.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m6-tombstone.test.ts"
         },
         "unit": {
@@ -5042,7 +5042,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -5054,7 +5054,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/m6-watcher.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/m6-watcher.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m6-watcher.test.ts"
         },
         "unit": {
@@ -5125,7 +5125,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -5137,12 +5137,12 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/m6-sensitive.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/m6-sensitive.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/m6-sensitive.test.ts"
         },
         "integration": {
           "s": "partial",
-          "why": "test/integration/m6-review.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/m6-review.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m6-review.test.ts"
         },
         "e2e": {
@@ -5208,7 +5208,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -5220,7 +5220,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/m6-tidy.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/m6-tidy.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m6-tidy.test.ts"
         },
         "unit": {
@@ -5291,7 +5291,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -5303,7 +5303,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/ai-step.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/ai-step.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/ai-step.spec.ts"
         },
         "unit": {
@@ -5374,7 +5374,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -5386,12 +5386,12 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/ai-step.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/ai-step.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/ai-step.test.ts"
         },
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/ai-step.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/ai-step.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/ai-step.spec.ts"
         },
         "integration": {
@@ -5457,7 +5457,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -5469,7 +5469,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m8-connectors.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m8-connectors.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-connectors.spec.ts"
         },
         "unit": {
@@ -5540,7 +5540,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -5552,7 +5552,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/m8-gmail-drafts.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/m8-gmail-drafts.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-gmail-drafts.test.ts"
         },
         "unit": {
@@ -5623,7 +5623,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -5635,7 +5635,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/m8-whatsapp-send.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/m8-whatsapp-send.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-whatsapp-send.test.ts"
         },
         "unit": {
@@ -5706,7 +5706,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -5718,7 +5718,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/m8-gmail-read.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/m8-gmail-read.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-gmail-read.test.ts"
         },
         "unit": {
@@ -5789,7 +5789,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -5801,7 +5801,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m8-drafts.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m8-drafts.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-drafts.spec.ts"
         },
         "unit": {
@@ -5872,7 +5872,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -5884,7 +5884,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m8-drafts.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m8-drafts.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-drafts.spec.ts"
         },
         "unit": {
@@ -5955,7 +5955,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -5967,7 +5967,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/m8-gmail-drafts.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/m8-gmail-drafts.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-gmail-drafts.test.ts"
         },
         "unit": {
@@ -6038,7 +6038,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -6050,7 +6050,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/m8-x.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/m8-x.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-x.test.ts"
         },
         "unit": {
@@ -6121,7 +6121,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -6133,7 +6133,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/m8-gmail-drafts.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/m8-gmail-drafts.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-gmail-drafts.test.ts"
         },
         "unit": {
@@ -6204,7 +6204,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -6216,7 +6216,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/m8-whatsapp-send.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/m8-whatsapp-send.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-whatsapp-send.test.ts"
         },
         "unit": {
@@ -6287,7 +6287,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -6299,7 +6299,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m8-connectors.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m8-connectors.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-connectors.spec.ts"
         },
         "unit": {
@@ -6370,7 +6370,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -6382,7 +6382,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/m8-contacts.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/m8-contacts.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-contacts.test.ts"
         },
         "unit": {
@@ -6453,7 +6453,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -6465,7 +6465,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/m8-expiry.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/m8-expiry.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/m8-expiry.test.ts"
         },
         "unit": {
@@ -6536,7 +6536,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -6548,7 +6548,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m8-whatsapp.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m8-whatsapp.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-whatsapp.spec.ts"
         },
         "unit": {
@@ -6619,7 +6619,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -6631,7 +6631,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m8-whatsapp.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m8-whatsapp.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m8-whatsapp.spec.ts"
         },
         "unit": {
@@ -6702,7 +6702,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -6714,7 +6714,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m9-booking.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m9-booking.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-booking.spec.ts"
         },
         "unit": {
@@ -6785,7 +6785,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -6797,7 +6797,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/browser/submit.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/browser/submit.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/submit.test.ts"
         },
         "unit": {
@@ -6868,7 +6868,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -6880,7 +6880,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/browser/submit.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/browser/submit.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/submit.test.ts"
         },
         "unit": {
@@ -6951,7 +6951,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -6963,7 +6963,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m9-signin.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m9-signin.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-signin.spec.ts"
         },
         "unit": {
@@ -7034,7 +7034,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -7046,7 +7046,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m9-signin.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m9-signin.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-signin.spec.ts"
         },
         "unit": {
@@ -7117,7 +7117,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -7129,7 +7129,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m9-takeover.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m9-takeover.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-takeover.spec.ts"
         },
         "unit": {
@@ -7200,7 +7200,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -7212,7 +7212,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/browser/login.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/browser/login.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/login.test.ts"
         },
         "unit": {
@@ -7283,7 +7283,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -7295,7 +7295,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/browser/signin.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/browser/signin.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/signin.test.ts"
         },
         "unit": {
@@ -7366,7 +7366,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -7378,7 +7378,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m9-takeover.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m9-takeover.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-takeover.spec.ts"
         },
         "unit": {
@@ -7449,7 +7449,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -7461,7 +7461,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m9-stop.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m9-stop.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-stop.spec.ts"
         },
         "unit": {
@@ -7532,7 +7532,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -7544,7 +7544,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/browser/proof.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/browser/proof.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/proof.test.ts"
         },
         "unit": {
@@ -7615,7 +7615,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -7627,7 +7627,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/articles/ART-net-web.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/articles/ART-net-web.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/articles/ART-net-web.test.ts"
         },
         "integration": {
@@ -7698,7 +7698,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -7710,7 +7710,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/web/search.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/web/search.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/web/search.test.ts"
         },
         "unit": {
@@ -7781,7 +7781,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -7793,7 +7793,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/web/fetch.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/web/fetch.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/web/fetch.test.ts"
         },
         "unit": {
@@ -7864,7 +7864,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -7876,7 +7876,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/web/outbound.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/web/outbound.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/web/outbound.test.ts"
         },
         "unit": {
@@ -7947,7 +7947,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -7959,7 +7959,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/web/cloud.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/web/cloud.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/web/cloud.test.ts"
         },
         "unit": {
@@ -8030,7 +8030,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -8042,7 +8042,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m9-handback.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m9-handback.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-handback.spec.ts"
         },
         "unit": {
@@ -8113,7 +8113,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -8125,7 +8125,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/web/cost.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/web/cost.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/web/cost.test.ts"
         },
         "unit": {
@@ -8196,7 +8196,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -8208,7 +8208,7 @@
       "cells": {
         "integration": {
           "s": "partial",
-          "why": "test/integration/browser/recipes.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/integration/browser/recipes.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/integration/browser/recipes.test.ts"
         },
         "unit": {
@@ -8279,7 +8279,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -8291,7 +8291,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m9-signin.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m9-signin.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-signin.spec.ts"
         },
         "unit": {
@@ -8362,7 +8362,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -8374,7 +8374,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/m9-live.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/m9-live.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/m9-live.spec.ts"
         },
         "unit": {
@@ -8445,7 +8445,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -8457,7 +8457,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/p1-contracts.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/p1-contracts.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-contracts.test.ts"
         },
         "integration": {
@@ -8528,7 +8528,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -8540,7 +8540,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/p1-contracts.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/p1-contracts.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-contracts.test.ts"
         },
         "integration": {
@@ -8611,7 +8611,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -8623,7 +8623,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/p1-contracts.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/p1-contracts.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-contracts.test.ts"
         },
         "integration": {
@@ -8694,7 +8694,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -8706,7 +8706,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/p1-contracts.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/p1-contracts.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-contracts.test.ts"
         },
         "integration": {
@@ -8777,7 +8777,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -8789,7 +8789,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-motion.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-motion.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
         },
         "unit": {
@@ -8860,7 +8860,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -8872,7 +8872,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-motion.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-motion.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
         },
         "unit": {
@@ -8943,7 +8943,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -8955,7 +8955,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-motion.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-motion.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
         },
         "unit": {
@@ -9026,7 +9026,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -9038,7 +9038,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-motion.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-motion.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
         },
         "unit": {
@@ -9109,7 +9109,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -9121,7 +9121,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-motion.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-motion.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-motion.spec.ts"
         },
         "unit": {
@@ -9192,7 +9192,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -9204,7 +9204,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-face.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-face.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-face.spec.ts"
         },
         "unit": {
@@ -9275,7 +9275,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -9287,7 +9287,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-face.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-face.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-face.spec.ts"
         },
         "unit": {
@@ -9358,7 +9358,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -9370,7 +9370,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-face.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-face.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-face.spec.ts"
         },
         "unit": {
@@ -9441,7 +9441,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -9453,7 +9453,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-chatlist.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-chatlist.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-chatlist.spec.ts"
         },
         "unit": {
@@ -9524,7 +9524,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -9536,7 +9536,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-messages.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-messages.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-messages.spec.ts"
         },
         "unit": {
@@ -9607,7 +9607,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -9619,7 +9619,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-composer.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-composer.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-composer.spec.ts"
         },
         "unit": {
@@ -9690,7 +9690,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -9702,12 +9702,12 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/p1-suggestions.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/p1-suggestions.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-suggestions.test.ts"
         },
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-composer.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-composer.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-composer.spec.ts"
         },
         "integration": {
@@ -9773,7 +9773,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -9785,7 +9785,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-composer.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-composer.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-composer.spec.ts"
         },
         "unit": {
@@ -9856,7 +9856,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -9868,7 +9868,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-composer.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-composer.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-composer.spec.ts"
         },
         "unit": {
@@ -9939,7 +9939,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -9951,7 +9951,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-cards.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-cards.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-cards.spec.ts"
         },
         "unit": {
@@ -10022,7 +10022,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -10034,7 +10034,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-cards.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-cards.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-cards.spec.ts"
         },
         "unit": {
@@ -10105,7 +10105,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -10117,12 +10117,12 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/p1-time-saved.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/p1-time-saved.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-time-saved.test.ts"
         },
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-cards.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-cards.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-cards.spec.ts"
         },
         "integration": {
@@ -10188,7 +10188,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -10200,7 +10200,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-first-run.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-first-run.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-first-run.spec.ts"
         },
         "unit": {
@@ -10271,7 +10271,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -10283,7 +10283,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-first-run.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-first-run.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-first-run.spec.ts"
         },
         "unit": {
@@ -10354,7 +10354,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -10366,7 +10366,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-appearance.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-appearance.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-appearance.spec.ts"
         },
         "unit": {
@@ -10437,7 +10437,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -10449,7 +10449,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-appearance.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-appearance.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-appearance.spec.ts"
         },
         "unit": {
@@ -10520,7 +10520,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -10532,7 +10532,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-appearance.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-appearance.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-appearance.spec.ts"
         },
         "unit": {
@@ -10603,7 +10603,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -10615,7 +10615,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/p1-appearance.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/p1-appearance.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/p1-appearance.spec.ts"
         },
         "unit": {
@@ -10686,7 +10686,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -10698,7 +10698,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/p1-bundle.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/p1-bundle.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/p1-bundle.test.ts"
         },
         "integration": {
@@ -10769,7 +10769,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -10781,7 +10781,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-kit.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-kit.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-kit.spec.ts"
         },
         "unit": {
@@ -10852,7 +10852,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -10864,7 +10864,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-places-time.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-places-time.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-places-time.spec.ts"
         },
         "unit": {
@@ -10935,7 +10935,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -10947,7 +10947,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-numbers-forms.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-numbers-forms.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
         },
         "unit": {
@@ -11018,7 +11018,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -11030,7 +11030,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-numbers-forms.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-numbers-forms.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
         },
         "unit": {
@@ -11101,7 +11101,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -11113,7 +11113,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-places-time.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-places-time.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-places-time.spec.ts"
         },
         "unit": {
@@ -11184,7 +11184,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -11196,7 +11196,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-places-time.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-places-time.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-places-time.spec.ts"
         },
         "unit": {
@@ -11267,7 +11267,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -11279,7 +11279,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-numbers-forms.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-numbers-forms.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
         },
         "unit": {
@@ -11350,7 +11350,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -11362,7 +11362,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-numbers-forms.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-numbers-forms.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
         },
         "unit": {
@@ -11433,7 +11433,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -11445,7 +11445,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-numbers-forms.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-numbers-forms.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
         },
         "unit": {
@@ -11516,7 +11516,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -11528,7 +11528,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-places-time.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-places-time.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-places-time.spec.ts"
         },
         "unit": {
@@ -11599,7 +11599,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -11611,7 +11611,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-places-time.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-places-time.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-places-time.spec.ts"
         },
         "unit": {
@@ -11682,7 +11682,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -11694,7 +11694,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-numbers-forms.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-numbers-forms.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-numbers-forms.spec.ts"
         },
         "unit": {
@@ -11765,7 +11765,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -11777,7 +11777,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-output.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-output.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-output.spec.ts"
         },
         "unit": {
@@ -11848,7 +11848,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -11860,7 +11860,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-kit.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-kit.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-kit.spec.ts"
         },
         "unit": {
@@ -11931,7 +11931,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -11943,12 +11943,12 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/r1-contracts.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/r1-contracts.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/r1-contracts.test.ts"
         },
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-kit.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-kit.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-kit.spec.ts"
         },
         "integration": {
@@ -12014,7 +12014,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -12026,7 +12026,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-kit.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-kit.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-kit.spec.ts"
         },
         "unit": {
@@ -12097,7 +12097,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -12109,7 +12109,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-kit.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-kit.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-kit.spec.ts"
         },
         "unit": {
@@ -12180,7 +12180,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -12192,7 +12192,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-ai-page.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-ai-page.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
         },
         "unit": {
@@ -12263,7 +12263,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -12275,7 +12275,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-ai-page.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-ai-page.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
         },
         "unit": {
@@ -12346,7 +12346,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -12358,7 +12358,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-ai-page.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-ai-page.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
         },
         "unit": {
@@ -12429,7 +12429,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -12441,7 +12441,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-ai-page.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-ai-page.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
         },
         "unit": {
@@ -12512,7 +12512,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -12524,7 +12524,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-ai-page.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-ai-page.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
         },
         "unit": {
@@ -12595,7 +12595,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -12607,7 +12607,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-ai-page.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-ai-page.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-ai-page.spec.ts"
         },
         "unit": {
@@ -12678,7 +12678,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -12690,7 +12690,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-input.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-input.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-input.spec.ts"
         },
         "unit": {
@@ -12761,7 +12761,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -12773,7 +12773,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-input.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-input.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-input.spec.ts"
         },
         "unit": {
@@ -12844,7 +12844,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -12856,7 +12856,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-input.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-input.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-input.spec.ts"
         },
         "unit": {
@@ -12927,7 +12927,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -12939,7 +12939,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-output.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-output.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-output.spec.ts"
         },
         "unit": {
@@ -13010,7 +13010,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -13022,7 +13022,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-output.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-output.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-output.spec.ts"
         },
         "unit": {
@@ -13093,7 +13093,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -13105,7 +13105,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-output.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-output.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-output.spec.ts"
         },
         "unit": {
@@ -13176,7 +13176,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -13188,7 +13188,7 @@
       "cells": {
         "e2e": {
           "s": "partial",
-          "why": "test/e2e/r1-output.spec.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/e2e/r1-output.spec.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/r1-output.spec.ts"
         },
         "unit": {
@@ -13259,7 +13259,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -13271,7 +13271,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/r1-kit-safety.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/r1-kit-safety.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/r1-kit-safety.test.ts"
         },
         "integration": {
@@ -13342,7 +13342,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     },
@@ -13354,7 +13354,7 @@
       "cells": {
         "unit": {
           "s": "partial",
-          "why": "test/unit/r1-kit-safety.test.ts is live in the trace; no linked fully green main CI on a087f3c6c2cde738fef8ece322b578cdbd073c07",
+          "why": "test/unit/r1-kit-safety.test.ts is live in the trace; no linked fully green main CI on 0d04a9f9105e42aef0b4a22238285a9007635c3e",
           "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/r1-kit-safety.test.ts"
         },
         "integration": {
@@ -13425,7 +13425,7 @@
         "regression": {
           "s": "partial",
           "why": "its tests run on every PR and every main merge; main run not green yet",
-          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39673710431"
+          "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031"
         }
       }
     }
