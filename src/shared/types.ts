@@ -226,6 +226,8 @@ export interface ActivityRow {
 // ---- M4 card payloads (08-1 §4.5) ----
 export interface ChecklistPayload {
   jobId: string;
+  /** CR-0030 pick 3: the step index of each take-over; the checklist draws "You took over" before that step (06-3 §11.2). */
+  tookOver?: number[];
 }
 export interface PlanPayload {
   title: string;
@@ -441,6 +443,8 @@ export interface SecretPayload {
   label?: string;
   /** Set when the card was posted while the vault could not save (05-2 §5.8.3 Disabled shows up front). */
   vaultOff?: 'keyring_unavailable' | 'encryption_unavailable';
+  /** CR-0030 pick 4: a Login box posted by the save-login offer after a sign-in; its Save logs `saved_login` (05-2 §5.8.6). */
+  afterSignIn?: boolean;
 }
 /** 08-5 §3.3 DraftFields (`draft:update`); `body` includes the signature text when the user kept it (X-84). */
 export interface DraftFields {
@@ -662,6 +666,8 @@ export interface JobRow {
   slow: boolean;
   /** CR-0024 F10 (05 §5.2.2): WORKING after a failed tool call, until the next good one ("Slow here, trying another way"). */
   retrying: boolean;
+  /** CR-0028 (X-186): QUEUED with its Plan card still pending, i.e. waiting for the user's Go (derived by main). */
+  awaitingGo?: boolean;
 }
 
 // ---- helpers (08-1 §4.3.8 camelCased; allowedApps parsed) ----
@@ -1057,6 +1063,8 @@ export interface ConnectPayload {
   why?: string;
   scopes?: ('gmail' | 'gcal' | 'contacts')[];
   setupCard?: 'D' | 'E';
+  /** CR-0040/0044: a card from intake, for this user message (Not now runs it without the app). */
+  intakeConnect?: { messageId: string };
 }
 
 // ---- M9 (CR-0013): live view and sign-in ----

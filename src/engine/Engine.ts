@@ -47,11 +47,12 @@ import { JobRunner } from './jobs/JobRunner';
 import { engineScreencast, type Screencast } from './tools/browser/screencast';
 import { JobRecovery } from './jobs/recovery';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
-import type { SecondLookAct, StepAct } from '../shared/schemas';
+import { SteerCheckActSchema, type SecondLookAct, type StepAct } from '../shared/schemas';
 // M9 T3
 import { engineBrowserTools, liveTermsReader, type BrowserRuntime } from './tools/browser/tools';
 import { SigninLanes, type LaneDeps } from './tools/browser/signinLanes'; // M9 T7
 import { TakeOver } from './tools/browser/takeover'; // M9 T7
+import { jobWindowPages } from './tools/browser/webPages';
 // M8
 import { WhatsAppConnector, type WaPortLike } from './tools/connectors/whatsapp';
 import { linkWaRecipients, whatsappDraftTool } from './tools/connectors/recipients'; // M8 T7
@@ -175,6 +176,8 @@ export class Engine {
       // X-127: main writes `connections.web.refused.{p}`. The brief line for a used-up key waits for the brief (M7): logged.
       onRefused: (provider) => o.link.send('web.refused', { provider }),
       onQuota: (p) => log('web.quota', p),
+      // 08-2 §8.2: the keyless search and needsBrowser reads run in the job's window; the browser is made below, read lazily.
+      page: jobWindowPages(() => this.browser),
     });
     const fake = o.testRun && Boolean(o.env.FOO_FAKE_AI);
     // CR-0020: keys come from main's vault; a FOO_TEST run may stand in a fake home for the J2 ladder (ai/vaultKeys.ts).
@@ -400,6 +403,13 @@ export class Engine {
         gmailConnected: this.google !== null && this.trouble.gmailConnected(),
         whatsappLinked: this.whatsapp.isOpen(),
       }),
+      // CR-0040 (05-3 §5.11 Trigger): the Google apps a job needs while Google is not connected.
+      appsToConnect: (needs) =>
+        this.google !== null && this.trouble.googleMissing()
+          ? needs.filter((a): a is 'gmail' | 'gcal' | 'contacts' => a === 'gmail' || a === 'gcal' || a === 'contacts')
+          : [],
+      // CR-0043 (08-1 §4.4.2 step 5)
+      setSetting: (path, value, chatId) => o.link.request('settings.set', { path, value, chatId }),
     });
     this.jobs.setIntake((chatId, messageId) => this.lane.enqueue(chatId, messageId, { intakeOnly: true }));
     this.kitActions = new KitActions({
@@ -640,6 +650,13 @@ export class Engine {
         const v = env.act === undefined ? null : validateAct('classify', env.act);
         return v?.ok ? (v.act as { whatsWrong: string }).whatsWrong : null;
       },
+      // CR-0045
+      buildSteerCheck: (job, message) => this.prompts.buildSteerCheck(job, message),
+      parseSteerCheck: (text) => {
+        const env = parseEnvelope(text);
+        const v = SteerCheckActSchema.safeParse(env.act);
+        return v.success ? v.data.about : null;
+      },
       filter: (text) => filterSay(text, { redactor }).text,
       isBanned: (text) => findBanned(text).length > 0,
       // M5 T8 (08-4 §24.7, §25.4)
@@ -705,6 +722,7 @@ export class Engine {
           local: i.local,
           visuals: i.settings.appearance?.visuals ?? 'balanced',
           ...(i.oldPlan ? { oldPlan: i.oldPlan } : {}),
+          ...(i.answers ? { answers: i.answers } : {}),
         });
       },
       buildRepair: (issues) => this.prompts.buildRepair(issues).prompt,
@@ -849,6 +867,7 @@ export class Engine {
         if ((await this.tidy.onCardAnswered(msg.payload)) || (await this.share.onCardAnswered(msg.payload))) return undefined;
         if (await this.settleMemoryConfirm(msg.payload)) return undefined;
         if (await this.trouble.onCardAnswered(msg.payload)) return undefined; // M8 T5
+        if (await this.lane.onCardAnswered(msg.payload)) return undefined; // CR-0028: an intake question
         if (!(await this.recovery.onCardAnswered(msg.payload))) await this.jobs.onCardAnswered(msg.payload);
         return undefined;
       // M5 T7: main moved an approval (08-1 §2.4); an expired payment / booking card ends its job (AT-111).
@@ -918,6 +937,8 @@ export class Engine {
       // M8 T5
       case 'connection.state':
         await this.trouble.onState(msg.payload);
+        // CR-0040: messages waiting on a Connect card go back to intake.
+        if (msg.payload.status === 'connected') this.lane.connected();
         return undefined;
       // M6 (CR-0010 G-M6-01): the Memory page's invokes, answered with the invoke's result.
       case 'memory.cmd': {

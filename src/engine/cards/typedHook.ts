@@ -18,6 +18,8 @@ export interface TypedHookDeps {
   tx(ops: DbOp[]): Promise<Result<DbTxReply>>;
   /** The runner's card.answered (JobRunner.onCardAnswered). */
   answerJobCard?(a: { cardId: string; answer: CardAnswer; choice?: string; resolvedBy: 'typed' }): Promise<void>;
+  /** CR-0028: an intake question (no job) answered here; the lane sends the asked message back to intake. */
+  answeredIntakeAsk?(card: CardRow, answer: CardAnswer): Promise<void>;
 }
 
 // M6 T5: a `memory_confirm` card's answer is the engine's (08-3 §12.4.2; G-M6-04).
@@ -84,5 +86,6 @@ export async function answerTyped(d: TypedHookDeps, m: { chatId: string; message
       set: { state: 'skip' in answer ? 'skipped' : 'answered', answer, resolved_by: 'typed', resolved_at: now },
     },
   ]);
+  if (card.payload.intakeAsk) await d.answeredIntakeAsk?.(card, answer);
   return true;
 }

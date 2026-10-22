@@ -12,6 +12,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { stillWorking, settled } = require('./settle');
 
 const EXE = process.env.FOO_EXE || path.join(process.env.LOCALAPPDATA || '', 'Programs', 'foo', 'foo.exe');
 const ROOT = process.env.FOO_REAL_TEST_DIR || path.join(process.env.USERPROFILE || '.', 'foo-real-test');
@@ -74,6 +75,70 @@ const norm = (t) =>
     .trim();
 const stamp = () => new Date().toISOString().replace(/[:.]/g, '-');
 
+// foo's own tech log (08-3 §19.1) from the test profile, only the lines written during this journey. The app already keeps
+// message text out and redacts; the repo is public, so keep only the allowed fields and drop any line that still holds
+// something value-like (an email, a long number, an API key).
+const DIDNT_GET = /didn[’']t get that/i;
+const LOG_KEYS = ['t', 'lvl', 'mod', 'evt', 'ids', 'kind', 'ms'];
+const LEAK = /@|\d{10,}|sk-[A-Za-z0-9_-]{6,}/;
+function copyTechLog(from, out) {
+  const dir = path.join(PROFILE, 'data', 'logs');
+  const secret = process.env.ANTHROPIC_API_KEY || '';
+  const lines = [];
+  let dropped = 0;
+  const files = fs.existsSync(dir)
+    ? fs
+        .readdirSync(dir)
+        .filter((n) => /^app-.*\.log$/.test(n))
+        .sort()
+    : [];
+  for (const f of files) {
+    for (const l of fs.readFileSync(path.join(dir, f), 'utf8').split('\n')) {
+      if (!l.trim()) continue;
+      let o;
+      try {
+        o = JSON.parse(l);
+      } catch {
+        dropped += 1;
+        continue;
+      }
+      if (typeof o.t !== 'number' || o.t < from) continue;
+      const keep = Object.fromEntries(LOG_KEYS.filter((k) => k in o).map((k) => [k, o[k]]));
+      const words = [keep.mod, keep.evt, keep.kind].map((v) => String(v ?? '')).join(' ');
+      const idsOk = Object.values(keep.ids || {}).every((v) => /^[A-Za-z0-9_-]{1,64}$/.test(String(v)));
+      if (LEAK.test(words) || !idsOk || (secret && JSON.stringify(keep).includes(secret))) {
+        dropped += 1;
+        continue;
+      }
+      lines.push(JSON.stringify(keep));
+    }
+  }
+  fs.writeFileSync(path.join(out, 'app-log.jsonl'), lines.length ? lines.join('\n') + '\n' : '');
+  return { lines: lines.length, dropped };
+}
+
+// foo's AI turn log (ai_turns, 0001_init.sql) from the test profile's database, for this journey only. Only ids and enum
+// columns are kept (no text, no tokens of content), so it is safe for the public evidence branch.
+const TURN_COLS = ['started_at', 'purpose', 'outcome', 'error_kind', 'duration_ms', 'chat_id', 'job_id', 'provider_id', 'billing'];
+function copyAiTurns(from, out) {
+  const file = path.join(PROFILE, 'data', 'data', 'foo.db');
+  if (!fs.existsSync(file)) return { turns: 0, note: 'no database' };
+  const Database = require(path.join(path.dirname(EXE), 'resources', 'app.asar.unpacked', 'node_modules', 'better-sqlite3'));
+  const db = new Database(file, { readonly: true, fileMustExist: true });
+  try {
+    const rows = db.prepare(`SELECT ${TURN_COLS.join(', ')} FROM ai_turns WHERE started_at >= ? ORDER BY started_at`).all(from);
+    const safe = rows.map((r) =>
+      Object.fromEntries(
+        Object.entries(r).filter(([, v]) => v === null || typeof v === 'number' || /^[A-Za-z0-9_.:-]{1,64}$/.test(String(v))),
+      ),
+    );
+    fs.writeFileSync(path.join(out, 'ai-turns.jsonl'), safe.map((r) => JSON.stringify(r)).join('\n') + (safe.length ? '\n' : ''));
+    return { turns: safe.length };
+  } finally {
+    db.close();
+  }
+}
+
 async function main() {
   const file = process.argv[2];
   if (!file) throw new Error('usage: foo-drive.js <journey.json>');
@@ -83,6 +148,7 @@ async function main() {
   fs.mkdirSync(out, { recursive: true });
   const logPath = path.join(out, 'log.jsonl');
   const log = (o) => fs.appendFileSync(logPath, JSON.stringify({ t: new Date().toISOString(), ...o }) + '\n');
+  const journeyStart = Date.now();
   log({ journey: journey.id, title: journey.title, spec: journey.spec, exe: EXE });
 
   const { _electron } = loadPlaywright();
@@ -130,24 +196,69 @@ async function main() {
           text: (el.innerText || '').trim().slice(0, 1500),
         })),
     );
+  // CR-0046: foo's replies that hold a fence (```a2ui, ```page), as the AI wrote them, so a kit piece that drew only
+  // "Couldn't show part of this" can become a cassette (test/fixtures/kit-replies). The drawn thread keeps only the words.
+  const rawFences = () =>
+    page.evaluate(async () => {
+      const out = [];
+      const chats = await window.foo.invoke('chat:list', {});
+      for (const c of chats.ok ? chats.value : []) {
+        const list = await window.foo.invoke('message:list', { chatId: c.id, limit: 50 });
+        for (const m of list.ok ? list.value : []) {
+          if (m.authorKind === 'foo' && m.text.includes('```'))
+            out.push({ chatId: c.id, messageId: m.id, status: m.status, text: m.text.slice(0, 20_000) });
+        }
+      }
+      return out;
+    });
   // What counts as foo answering: a foo text bubble or any card foo posts, below the user's newest bubble. The thread is a
   // virtual list (only the rows near the bottom are in the page), so counting all bubbles stops working in a long chat;
-  // counting what sits after the newest bubble-me does not.
+  // counting what sits after the newest bubble-me does not. A memory chip ("I'll remember: … · Undo", 05-3 §5.17.1) is
+  // foo's whole answer to "remember that …", so it counts too.
   const afterMe = () =>
     page.evaluate(() => {
       const log = document.querySelector('[data-testid="thread-log"]');
-      if (!log) return { n: 0, texts: [] };
-      const all = [...log.querySelectorAll('[data-testid^="bubble-"], [data-testid^="card-"]')].filter((el) =>
-        /^(bubble-(me|foo|helper|wa)|card-[a-z-]+)$/.test(el.getAttribute('data-testid')),
+      if (!log) return { n: 0, texts: [], items: [] };
+      const memoryChip = (el) =>
+        el.getAttribute('data-testid') === 'thread-marker' && !!el.querySelector('[data-testid="thread-memory-undo"]');
+      // Only top-level rows: a card's own parts (card-connect-allow-send inside card-connect) are not extra replies.
+      const nested = (el) => !!el.parentElement?.closest('[data-testid^="bubble-"], [data-testid^="card-"]');
+      const all = [...log.querySelectorAll('[data-testid^="bubble-"], [data-testid^="card-"], [data-testid="thread-marker"]')].filter(
+        (el) => (/^(bubble-(me|foo|helper|wa)|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) || memoryChip(el)) && !nested(el),
       );
       const kinds = all.map((el) => el.getAttribute('data-testid'));
       const after = all
         .slice(kinds.lastIndexOf('bubble-me') + 1)
         .filter(
-          (el) => /^(bubble-foo|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) && el.getAttribute('data-testid') !== 'card-time',
+          (el) =>
+            memoryChip(el) ||
+            (/^(bubble-foo|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) && el.getAttribute('data-testid') !== 'card-time'),
         );
-      return { n: after.length, texts: after.map((el) => (el.innerText || '').trim().slice(0, 1500)) };
+      return {
+        n: after.length,
+        texts: after.map((el) => (el.innerText || '').trim().slice(0, 1500)),
+        // foo still at work: a bubble streaming, or an AI page inside it still building (see settle.js).
+        items: after.map((el) => ({
+          state: el.getAttribute('data-state'),
+          pageState: el.querySelector('[data-testid="ai-page"]')?.getAttribute('data-state') ?? null,
+          // The kit pieces this reply drew (kit-calculator, kit-dropped ...), so a step is judged on its own reply only.
+          kit: [...new Set([...el.querySelectorAll('[data-testid^="kit-"]')].map((k) => k.getAttribute('data-testid')))],
+        })),
+      };
     });
+
+  // The end state a step names: expectTid / tid / css on screen (count if given), and expectJs true in the page. Kit pieces
+  // are judged in waitReply on the new reply only: expectKit names the kit-* test id it must draw, and a "Couldn't show part
+  // of this" (kit-dropped) fails the step unless it sets allowKitDropped.
+  const endState = async (s) => {
+    const q = s.expectTid ? `[data-testid="${s.expectTid}"]` : s.tid || s.css ? sel(s) : null;
+    if (q) {
+      const n = await page.locator(q).count();
+      if (s.count !== undefined ? n !== s.count : n === 0) return false;
+    }
+    if (s.expectJs && !(await page.evaluate(s.expectJs))) return false;
+    return true;
+  };
 
   try {
     await launch();
@@ -243,8 +354,8 @@ async function main() {
           // Type fast (no retry) or paste, send, then read back what was sent through the bubble's own Copy and require
           // the exact text: a dropped or doubled letter fails the step.
           const field = page.locator('[data-testid="composer-field"]');
-          const mine = page.locator('[data-testid="thread-log"] [data-testid="bubble-me"]');
-          const n = await mine.count();
+          const ME = '[data-testid="thread-log"] [data-testid="bubble-me"]';
+          const mine = page.locator(ME);
           await field.click();
           if (s.do === 'typeSend') await page.keyboard.type(s.text, { delay: s.delay ?? 0 });
           else {
@@ -253,10 +364,19 @@ async function main() {
           }
           await page.waitForTimeout(300);
           rec.inField = norm(await field.innerText());
+          // The thread is a virtual list, so the bubble count stops growing in long chats.
+          // Mark the newest bubble-me before sending and wait for a newer, unmarked one.
+          await page.evaluate((q) => {
+            const b = [...document.querySelectorAll(q)].pop();
+            if (b) b.setAttribute('data-drv-seen', '1');
+          }, ME);
           await page.keyboard.press('Enter');
           await page.waitForFunction(
-            ([q, c]) => document.querySelectorAll(q).length > c,
-            ['[data-testid="thread-log"] [data-testid="bubble-me"]', n],
+            (q) => {
+              const b = [...document.querySelectorAll(q)].pop();
+              return b && !b.hasAttribute('data-drv-seen');
+            },
+            ME,
             { timeout: 15_000 },
           );
           await app.evaluate(({ clipboard }) => clipboard.writeText(''));
@@ -287,25 +407,30 @@ async function main() {
         case 'send': {
           const field = page.locator('[data-testid="composer-field"]');
           await field.waitFor({ state: 'visible', timeout: 30_000 });
-          const mine = page.locator('[data-testid="thread-log"] [data-testid="bubble-me"]');
-          const lastMine = mine.count().then((c) => (c ? mine.last().innerText() : ''));
-          const prev = await lastMine;
+          const ME = '[data-testid="thread-log"] [data-testid="bubble-me"]';
           await field.click();
           await field.fill(s.text);
+          // Mark the newest bubble-me, send, and wait for a newer unmarked one (the same text sent twice still counts).
+          await page.evaluate((q) => {
+            const b = [...document.querySelectorAll(q)].pop();
+            if (b) b.setAttribute('data-drv-seen', '1');
+          }, ME);
           await page.keyboard.press('Enter');
           rec.sentAt = Date.now();
-          // Wait until the sent bubble is the newest bubble-me, then take what is already below it as the baseline.
-          await page
+          rec.sent = await page
             .waitForFunction(
-              (p) => {
-                const b = [...document.querySelectorAll('[data-testid="thread-log"] [data-testid="bubble-me"]')].pop();
-                return b && b.innerText !== p;
+              (q) => {
+                const b = [...document.querySelectorAll(q)].pop();
+                return b && !b.hasAttribute('data-drv-seen');
               },
-              prev,
+              ME,
               { timeout: 10_000 },
             )
-            .catch(() => {});
-          rec.before = (await afterMe()).n;
+            .then(() => true)
+            .catch(() => false);
+          // Everything below the sent bubble is foo's answer, even one that landed before this line ran (B04's instant
+          // "Nothing's running right now."), so the baseline is 0. If no bubble was sent, keep what is below the old one.
+          rec.before = rec.sent ? 0 : (await afterMe()).n;
           break;
         }
         case 'waitReply': {
@@ -325,18 +450,49 @@ async function main() {
             if (now.n > before && first === null) first = Date.now() - start;
             if (now.n !== cur.n || now.texts.join() !== cur.texts.join()) lastChange = Date.now();
             cur = now;
-            if (now.n > before && Date.now() - lastChange >= quiet) break;
+            if (settled({ n: now.n, before, items: now.items.slice(before), quietFor: Date.now() - lastChange, quietMs: quiet })) break;
           }
           rec.firstReplyMs = first;
           rec.newBubbles = cur.n - before;
           rec.ok = cur.n > before;
+          // Timed out with foo still writing: not an answer (and closing now would cut the reply off).
+          if (stillWorking(cur.items.slice(before))) {
+            rec.stillWorking = true;
+            rec.ok = false;
+          }
           const texts = cur.texts.slice(before);
           rec.duplicates = texts.filter((x, k) => x && texts.indexOf(x) !== k).length;
           rec.lastReply = texts.join('\n---\n').slice(0, 2000);
+          // A reply is not the outcome: "I didn't get that" fails unless the journey expects it, and a step that names an end
+          // state (a card on screen, the theme changed) needs that state too.
+          if (DIDNT_GET.test(rec.lastReply) && !s.allowDidntGet) {
+            rec.didntGetThat = true;
+            rec.ok = false;
+          }
+          // A kit piece dropped as "Couldn't show part of this" fails the step (CR-0050): the words alone passed run 30
+          // while the calculator, map and chart were never drawn. expectKit names the piece this reply must draw.
+          const kit = [...new Set(cur.items.slice(before).flatMap((x) => x.kit || []))];
+          rec.kit = kit;
+          if (kit.includes('kit-dropped') && !s.allowKitDropped) {
+            rec.kitDropped = true;
+            rec.ok = false;
+          }
+          if (s.expectKit && !kit.includes(s.expectKit)) {
+            rec.kitMissing = s.expectKit;
+            rec.ok = false;
+          }
+          if (rec.ok && (s.expectTid || s.expectJs)) {
+            rec.endState = await endState(s);
+            rec.ok = rec.endState;
+          }
           break;
         }
         case 'dump':
           fs.writeFileSync(path.join(out, `${s.name}.json`), JSON.stringify(await threadDump(), null, 2));
+          fs.writeFileSync(
+            path.join(out, `${s.name}-raw.json`),
+            JSON.stringify(await rawFences().catch((e) => [{ error: String(e).slice(0, 300) }]), null, 2),
+          );
           break;
         case 'shot':
           await shot(s.name);
@@ -369,12 +525,25 @@ async function main() {
           // reopen without waiting, and pass only if a window shows. fooProcs counts foo.exe processes left (it includes
           // this driver, which runs under foo.exe too).
           // After a failed reopen the last app is already gone; then this case starts from a fresh launch.
+          // foo's own main pid, asked from inside the app: Playwright's pid can be a launcher whose child is the real
+          // main (seen in dev runs on CI), and killing it leaves foo running.
+          // Bounded: a hung (not dead) main must not hang the journey.
+          const mainPid = () =>
+            Promise.race([
+              app.evaluate(() => process.pid),
+              new Promise((_, no) => setTimeout(() => no(new Error('no answer')), 10_000)),
+            ]).catch(() => app.process().pid);
           try {
-            process.kill(app.process().pid, 'SIGKILL');
+            process.kill(await mainPid(), 'SIGKILL');
           } catch {
             await new Promise((r) => setTimeout(r, 10_000)); // let the last crash's helpers exit first
-            await launch().catch(() => {});
-            process.kill(app.process().pid, 'SIGKILL');
+            rec.fooProcsBefore = fooProcs();
+            const err = await launch().then(
+              () => null,
+              (e) => String(e && e.message ? e.message : e).split('\n')[0],
+            );
+            if (err) throw new Error(`fresh launch 10 s after the last crash failed (${rec.fooProcsBefore} foo.exe left): ${err}`);
+            process.kill(await mainPid(), 'SIGKILL');
           }
           if (s.gapMs) await new Promise((r) => setTimeout(r, s.gapMs));
           rec.fooProcs = fooProcs();
@@ -398,7 +567,45 @@ async function main() {
     log(rec);
     if (s.shot) await shot(s.shot).catch(() => {});
   }
+  // Closing foo mid-reply cuts that reply off, and the next journey (same profile) would find "That reply got cut off".
+  // Let any reply still streaming, or page still building, finish first, for up to 3 minutes.
+  const busy =
+    '[data-testid="thread-log"] :is([data-testid="bubble-foo"][data-state="streaming"], [data-testid="ai-page"][data-state="building"])';
+  const t1 = Date.now();
+  while (
+    Date.now() - t1 < 180_000 &&
+    (await page
+      .locator(busy)
+      .count()
+      .catch(() => 0))
+  )
+    await page.waitForTimeout(1_000);
+  if (Date.now() - t1 > 1_000) log({ step: 'drain', ms: Date.now() - t1 });
+  // Some outcomes land after the step gave up (a saved fact, an AI page that opens late). Before calling a step failed,
+  // look again at the end state it names; a late pass is kept as ok with late: true.
+  for (const r of results) {
+    const s = journey.steps[r.i];
+    if (r.ok !== false || r.didntGetThat || r.refused) continue;
+    const named = s.do === 'check' || s.do === 'waitFor' ? { tid: s.tid, css: s.css, count: s.count } : s;
+    if (!(named.tid || named.css || named.expectTid || named.expectJs)) continue;
+    const now = await endState(named).catch(() => false);
+    if (now) {
+      r.ok = true;
+      r.late = true;
+      log({ step: 'recheck', i: r.i, do: r.do, late: true });
+    }
+  }
   await app.close().catch(() => {});
+  try {
+    log({ step: 'appLog', ...copyTechLog(journeyStart, out) });
+  } catch (e) {
+    log({ step: 'appLog', ok: false, error: String(e).slice(0, 300) });
+  }
+  try {
+    log({ step: 'aiTurns', ...copyAiTurns(journeyStart, out) });
+  } catch (e) {
+    log({ step: 'aiTurns', ok: false, error: String(e).slice(0, 300) });
+  }
   const summary = {
     journey: journey.id,
     title: journey.title,
