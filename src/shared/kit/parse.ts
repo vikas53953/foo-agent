@@ -17,39 +17,82 @@ export interface KitParse {
   pending: boolean;
 }
 
+/** A line that starts a new A2UI message: the message before it is over, whatever its brackets say (CR-0050). */
+const MESSAGE_START = /^[ \t]*\{[ \t]*"(?:createSurface|updateComponents|updateDataModel|deleteSurface)"[ \t]*:[ \t]*\{/;
+
+interface Split {
+  objects: string[];
+  /** The last object, still open at the end of the body (its brackets as read so far); '' when none. */
+  rest: string;
+  /** The closers `rest` still needs, innermost first. */
+  restClosers: string;
+  /** `rest` ends inside a text value, so it cannot be closed. */
+  restInString: boolean;
+}
+
 /**
  * Splits the body into top-level JSON objects by bracket depth, outside strings. A2UI streams one message per line, but an
  * AI may pretty-print or wrap them in an array, so line breaks, commas and an outer `[ ]` are all accepted.
+ * CR-0050: real AIs drop or swap a closing bracket when a component ends in a list (run 30: `}]}}]}` for `}]}]}}`; the map left two out). Inside
+ * an object a closer is always read as the one that is due (`]` where `}` is due, and the other way round), and a line that
+ * starts a new message ends the one before it. Valid JSON reads the same as before; the result is still checked by zod.
  */
-function splitObjects(body: string): { objects: string[]; rest: string } {
+function splitObjects(body: string): Split {
   const objects: string[] = [];
-  let depth = 0;
-  let start = -1;
+  const due: string[] = [];
+  let buf = '';
   let inString = false;
   let escaped = false;
   let junk = false;
   for (let i = 0; i < body.length; i++) {
     const c = body[i]!;
+    if (due.length === 0) {
+      // Between messages: only white space, commas, an outer [ ] and a surplus `}` (as before CR-0050) belong here.
+      if (inString) {
+        if (escaped) escaped = false;
+        else if (c === '\\') escaped = true;
+        else if (c === '"') inString = false;
+      } else if (c === '"') {
+        junk = true;
+        inString = true;
+      } else if (c === '{') {
+        buf = '{';
+        due.push('}');
+      } else if (!/[\s,[\]}]/.test(c)) junk = true;
+      continue;
+    }
     if (inString) {
+      buf += c;
       if (escaped) escaped = false;
       else if (c === '\\') escaped = true;
       else if (c === '"') inString = false;
       continue;
     }
-    if (c === '"') {
-      if (depth === 0) junk = true;
-      inString = true;
-    } else if (c === '{') {
-      if (depth === 0) start = i;
-      depth++;
-    } else if (c === '}') {
-      if (depth > 0 && --depth === 0) {
-        objects.push(body.slice(start, i + 1));
-        start = -1;
+    if (c === '\n' && MESSAGE_START.test(body.slice(i + 1, i + 120))) {
+      objects.push(buf + due.reverse().join(''));
+      due.length = 0;
+      buf = '';
+      continue;
+    }
+    if (c === '"') inString = true;
+    if (c === '{') due.push('}');
+    if (c === '[') due.push(']');
+    if (c === '}' || c === ']') {
+      buf += due.pop()!;
+      if (due.length === 0) {
+        objects.push(buf);
+        buf = '';
       }
-    } else if (depth === 0 && !/[\s,[\]]/.test(c)) junk = true;
+      continue;
+    }
+    buf += c;
   }
-  return { objects: junk ? [...objects, '<junk>'] : objects, rest: depth > 0 ? body.slice(start) : '' };
+  return {
+    objects: junk ? [...objects, '<junk>'] : objects,
+    rest: due.length > 0 ? buf : '',
+    restClosers: [...due].reverse().join(''),
+    restInString: inString,
+  };
 }
 
 /** Words a person reads, so an over-long one can be cut with "…" without changing what the piece does. */
@@ -195,7 +238,7 @@ function checkMessage(raw: string): { msg: KitMessage; dropped: number } | null 
 export function parseKitBlock(body: string, streaming: boolean): KitParse {
   // Over the block cap nothing draws; the words of the reply still show with the caption.
   if (new TextEncoder().encode(body).length > KIT_BLOCK_MAX_BYTES) return { messages: [], dropped: 1, pending: false };
-  const { objects, rest } = splitObjects(body);
+  const { objects, rest, restClosers, restInString } = splitObjects(body);
   const messages: KitMessage[] = [];
   let dropped = 0;
   for (const raw of objects) {
@@ -208,7 +251,15 @@ export function parseKitBlock(body: string, streaming: boolean): KitParse {
     dropped += checked.dropped;
   }
   const pending = rest.trim() !== '';
-  if (pending && !streaming) dropped++;
+  if (pending && !streaming) {
+    // CR-0050: the reply ended with the last message still open. Closed as written (never inside a text value), it is
+    // checked like any other message; otherwise it is dropped.
+    const closed = restInString ? null : checkMessage(rest + restClosers);
+    if (closed) {
+      messages.push(closed.msg);
+      dropped += closed.dropped;
+    } else dropped++;
+  }
   return { messages, dropped, pending: pending && streaming };
 }
 
