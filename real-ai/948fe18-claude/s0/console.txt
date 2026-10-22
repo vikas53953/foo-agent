@@ -1,0 +1,4 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T06-21-21-952Z-J01-J02-first-run"}
+{"journey":"B03-web-local","title":"Web without keys: news read locally, sources","steps":12,"failed":4,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T06-22-13-052Z-B03-web-local"}
+{"journey":"B08-bank","title":"Bank site guard","steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T06-25-03-071Z-B08-bank"}
+{"journey":"U27-composer-no-dropped-letters","title":"Fast typing and a long paste reach foo letter for letter","steps":10,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T06-26-41-900Z-U27-composer-no-dropped-letters"}
