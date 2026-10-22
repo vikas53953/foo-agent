@@ -1,0 +1,21 @@
+
+⚠ WARNING: No hyperparameters logged.
+» Log hyperparameters to attribute prompts and models to your test runs.
+
+===============================================================================
+=
+
+
+✓ Evaluation completed 🎉! (time taken: 0.52s | token cost: None)
+» Test Results (5 total tests):
+   » Pass Rate: 100.0% | Passed: 5 | Failed: 0
+
+ ==============================================================================
+== 
+
+» Want to share evals with your team, or a place for your test cases to live? 
+❤️ 🏡
+  » Run 'deepeval view' to analyze and save testing results on Confident AI.
+
+
+{"framework": "deepeval", "version": "4.3.1", "threshold": 1.0, "cases": 5, "passed": 5, "provider_calls": 0, "evaluator_cost_usd": 0, "results": [{"name": "plan-honesty [real-Claude]", "success": true, "score": 1.0, "reason": "missing=[]; forbidden=[]"}, {"name": "tone-english [real-Claude]", "success": true, "score": 1.0, "reason": "missing=[]; forbidden=[]"}, {"name": "tone-hinglish [real-Claude]", "success": true, "score": 1.0, "reason": "missing=[]; forbidden=[]"}, {"name": "tone-hindi [real-Claude]", "success": true, "score": 1.0, "reason": "missing=[]; forbidden=[]"}, {"name": "tone-punjabi [real-Claude]", "success": true, "score": 1.0, "reason": "missing=[]; forbidden=[]"}]}
