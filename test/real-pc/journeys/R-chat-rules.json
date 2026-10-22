@@ -2,20 +2,21 @@
   "id": "R-chat-rules",
   "title": "Group R one-bubble plain VPN answers",
   "spec": "07 §11.5 Group R; AT-427",
-  "covers": [
-    "AT-427"
-  ],
+  "covers": ["AT-427"],
   "steps": [
     {
       "do": "send",
-      "text": "Explain what a VPN is in 3 short paragraphs",
-      "note": "AT-427: clean ask"
+      "text": "Explain what a VPN is in 3 short paragraphs. Keep the answer under 600 characters.",
+      "note": "AT-427: clean ask with an explicit short-output fixture"
     },
     {
       "do": "waitReply",
       "timeoutMs": 120000,
       "expectTid": "bubble-foo",
-      "note": "AT-427: clean",
+      "exactNewBubbles": 1,
+      "replyFixtureMaxChars": 600,
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);const body=b?.querySelector('[data-copy=\"ai\"]');if(!b||!body)return false;const paragraphs=[...body.children].filter((e)=>e.tagName==='P'&&(e.textContent||'').trim());return paragraphs.length<=3&&b.querySelectorAll('[data-testid=\"bubble-meta\"]').length===1;})()",
+      "note": "AT-427: clean; one new bubble, one timestamp and at most 3 rendered paragraphs",
       "shot": "at-427-clean"
     },
     {
@@ -27,14 +28,17 @@
     },
     {
       "do": "send",
-      "text": "Explain wat a VPN is in 3 short paragaphs",
-      "note": "AT-427: messy typo ask"
+      "text": "Explain wat a VPN is in 3 short paragaphs. Keep the answer under 600 characters.",
+      "note": "AT-427: messy typo ask with an explicit short-output fixture"
     },
     {
       "do": "waitReply",
       "timeoutMs": 120000,
       "expectTid": "bubble-foo",
-      "note": "AT-427: messy typo",
+      "exactNewBubbles": 1,
+      "replyFixtureMaxChars": 600,
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);const body=b?.querySelector('[data-copy=\"ai\"]');if(!b||!body)return false;const paragraphs=[...body.children].filter((e)=>e.tagName==='P'&&(e.textContent||'').trim());return paragraphs.length<=3&&b.querySelectorAll('[data-testid=\"bubble-meta\"]').length===1;})()",
+      "note": "AT-427: messy typo; one new bubble, one timestamp and at most 3 rendered paragraphs",
       "shot": "at-427-messy-typo"
     },
     {
@@ -46,14 +50,17 @@
     },
     {
       "do": "send",
-      "text": "VPN kya hota hai, 3 chhote paragraphs mein samjhao",
-      "note": "AT-427: Hinglish ask"
+      "text": "VPN kya hota hai, 3 chhote paragraphs mein samjhao. Pura jawab 600 characters ke andar rakho.",
+      "note": "AT-427: Hinglish ask with an explicit short-output fixture"
     },
     {
       "do": "waitReply",
       "timeoutMs": 120000,
       "expectTid": "bubble-foo",
-      "note": "AT-427: Hinglish",
+      "exactNewBubbles": 1,
+      "replyFixtureMaxChars": 600,
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);const body=b?.querySelector('[data-copy=\"ai\"]');if(!b||!body)return false;const paragraphs=[...body.children].filter((e)=>e.tagName==='P'&&(e.textContent||'').trim());return paragraphs.length<=3&&b.querySelectorAll('[data-testid=\"bubble-meta\"]').length===1;})()",
+      "note": "AT-427: Hinglish; one new bubble, one timestamp and at most 3 rendered paragraphs",
       "shot": "at-427-Hinglish"
     },
     {
@@ -65,14 +72,17 @@
     },
     {
       "do": "send",
-      "text": "वीपीएन क्या होता है, 3 छोटे पैराग्राफ में समझाइए",
-      "note": "AT-427: Hindi ask"
+      "text": "वीपीएन क्या होता है, 3 छोटे पैराग्राफ में समझाइए। पूरा जवाब 600 characters के अंदर रखें।",
+      "note": "AT-427: Hindi ask with an explicit short-output fixture"
     },
     {
       "do": "waitReply",
       "timeoutMs": 120000,
       "expectTid": "bubble-foo",
-      "note": "AT-427: Hindi",
+      "exactNewBubbles": 1,
+      "replyFixtureMaxChars": 600,
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);const body=b?.querySelector('[data-copy=\"ai\"]');if(!b||!body)return false;const paragraphs=[...body.children].filter((e)=>e.tagName==='P'&&(e.textContent||'').trim());return paragraphs.length<=3&&b.querySelectorAll('[data-testid=\"bubble-meta\"]').length===1;})()",
+      "note": "AT-427: Hindi; one new bubble, one timestamp and at most 3 rendered paragraphs",
       "shot": "at-427-Hindi"
     },
     {
@@ -84,14 +94,17 @@
     },
     {
       "do": "send",
-      "text": "VPN ਕੀ ਹੁੰਦਾ ਹੈ, 3 ਛੋਟੇ ਪੈਰਿਆਂ ਵਿੱਚ ਸਮਝਾਓ",
-      "note": "AT-427: Punjabi ask"
+      "text": "VPN ਕੀ ਹੁੰਦਾ ਹੈ, 3 ਛੋਟੇ ਪੈਰਿਆਂ ਵਿੱਚ ਸਮਝਾਓ। ਪੂਰਾ ਜਵਾਬ 600 characters ਦੇ ਅੰਦਰ ਰੱਖੋ।",
+      "note": "AT-427: Punjabi ask with an explicit short-output fixture"
     },
     {
       "do": "waitReply",
       "timeoutMs": 120000,
       "expectTid": "bubble-foo",
-      "note": "AT-427: Punjabi",
+      "exactNewBubbles": 1,
+      "replyFixtureMaxChars": 600,
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);const body=b?.querySelector('[data-copy=\"ai\"]');if(!b||!body)return false;const paragraphs=[...body.children].filter((e)=>e.tagName==='P'&&(e.textContent||'').trim());return paragraphs.length<=3&&b.querySelectorAll('[data-testid=\"bubble-meta\"]').length===1;})()",
+      "note": "AT-427: Punjabi; one new bubble, one timestamp and at most 3 rendered paragraphs",
       "shot": "at-427-Punjabi"
     },
     {
@@ -103,6 +116,6 @@
     }
   ],
   "blocked": [
-    "AT-427: the runner exposes newBubbles in its wait summary but the journey DSL cannot assert exactly newBubbles=1 per send; the content check remains scoped to the latest bubble."
+    "AT-427: if a provider exceeds the explicit 600-character fixture, the step is recorded as blocked precondition; this is not a universal product maximum claim."
   ]
 }

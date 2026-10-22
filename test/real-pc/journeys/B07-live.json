@@ -19,8 +19,10 @@
       "tid": "card-plan-go"
     },
     {
-      "do": "wait",
-      "ms": 45000
+      "do": "waitFor",
+      "tid": "chat-header-watch-live",
+      "timeoutMs": 30000,
+      "note": "AT-058/AT-079/AT-272: synchronize on the active browser job before opening its live viewer"
     },
     {
       "do": "clickIf",

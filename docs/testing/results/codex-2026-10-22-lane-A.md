@@ -98,7 +98,7 @@ No baseline files were changed to make this pass. The lead must resolve these ou
 - `R-kit-1.json` now clicks the real scoped Stepper increase button and the latest ListPick radio control. The removed `kit-button` clicks were invalid for Stepper/ListPick.
 - `R-kit-2.json` now clicks a real latest TimePick radio and waits for foo's confirmation; the refresh path waits for a new `kit-live-stamp` reply; `do:eval` assertions were removed. AT-355 calculator recomputation remains blocked because the DSL has no fresh-surface input mutation assertion. AT-369 uses the supported Files presence check, but fresh-row identity remains unavailable.
 - `R-ai-pages.json` uses the supported composer-field text assertion for AT-425.
-- `R-chat-rules.json` records AT-427's exact `newBubbles=1` limitation: the runner reports `newBubbles`, but the journey DSL cannot assert the per-send exact count.
+- `R-chat-rules.json` now asks for an explicit <=600-character answer fixture in English, typo, Hinglish, Hindi, and Punjabi. Each reply checks exactly one new bubble, one `bubble-meta` timestamp, and at most three rendered paragraphs. A provider reply above 600 characters is recorded as a blocked precondition, not as a universal product maximum failure.
 - `R-reply-area.json` scopes sender and copy-action checks to the latest answer bubble.
 - `R-jobs.json` keeps each AT-420 follow-up adjacent to its required checked wait, scopes the reply to the latest checklist bubble, requires exactly one `fold that in` line, and checks the latest user bubble tick for AT-432. The strict validator reports no owned R-jobs send gaps after this repair.
 - `R-approvals.json` adds the safe choice-option step before starred approval cards. These approval-dependent journeys are authored only; the separate driver-choice lane is pending and no run is claimed.
@@ -107,16 +107,16 @@ No baseline files were changed to make this pass. The lead must resolve these ou
 
 Run `39727432127` completed with four successful Windows jobs. Each part also ran the required `J01-J02-first-run` setup (14 steps, 0 failures). The eight owned R summaries are:
 
-| Journey | Steps | Failed | Evidence |
-|---|---:|---:|---|
-| R-ai-pages | 74 | 10 | [s0](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s0) |
-| R-approvals | 102 | 38 | [s1](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s1) |
-| R-chat-rules | 15 | 0 | [s2](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s2) |
-| R-dark | 15 | 0 | [s3](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s3) |
-| R-jobs | 79 | 36 | [s0](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s0) |
-| R-kit-1 | 48 | 9 | [s1](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s1) |
-| R-kit-2 | 63 | 20 | [s2](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s2) |
-| R-reply-area | 24 | 6 | [s3](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s3) |
+| Journey      | Steps | Failed | Evidence                                                                              |
+| ------------ | ----: | -----: | ------------------------------------------------------------------------------------- |
+| R-ai-pages   |    74 |     10 | [s0](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s0) |
+| R-approvals  |   102 |     38 | [s1](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s1) |
+| R-chat-rules |    15 |      0 | [s2](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s2) |
+| R-dark       |    15 |      0 | [s3](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s3) |
+| R-jobs       |    79 |     36 | [s0](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s0) |
+| R-kit-1      |    48 |      9 | [s1](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s1) |
+| R-kit-2      |    63 |     20 | [s2](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s2) |
+| R-reply-area |    24 |      6 | [s3](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s3) |
 
 Totals: **420 steps, 119 failed**. I inspected **203 PNG files** across every shard: `s0` 71, `s1` 67, `s2` 39, and `s3` 26. `R-chat-rules` and `R-dark` are readable clean/messy/Hinglish (plus Hindi/Punjabi where authored) replies with zero journey failures. The failures are concrete:
 
@@ -135,9 +135,9 @@ Totals: **420 steps, 119 failed**. I inspected **203 PNG files** across every sh
 
 ## Post-run B07 live-window routing follow-up
 
-After the immutable R evidence above, commit `006e91dc` added bounded live-window routing for B07. The driver pre-arms the Electron window event before clicking `chat-header-watch-live`, routes generic live checks and screenshots to the active live page, keeps sends/waits/thread dumps on `mainPage`, and pre-arms the live-page close event before Stop restores the main page. B07 now waits for the actual live and masked states, exercises Take over and Hand Back, and checks the main-thread stopped badge after the viewer closes.
+After the immutable R evidence above, commit `006e91dc` added bounded live-window routing for B07. The driver pre-arms the Electron window event before clicking `chat-header-watch-live`, routes generic live checks and screenshots to the active live page, keeps sends/waits/thread dumps on `mainPage`, and pre-arms the live-page close event before Stop restores the main page. The current follow-up removes B07's blind 45-second delay after Go, waits for the active `chat-header-watch-live` control, and records a redacted live-page route/title/DOM snapshot plus console, pageerror, and failed-request diagnostics.
 
-Focused evidence: `corepack.cmd pnpm vitest run test/unit/real-pc-driver.test.ts --maxWorkers=1 --pool=threads` passed 4/4; `node --check` passed for the driver and helper; B07 JSON and `expectJs` syntax, targeted Prettier, and `git diff --check` passed. The strict all-file validator remains 2 passed / 2 failed on unchanged legacy baseline send end-state and covered-proof gaps. No live desktop run is claimed here. AT-058 no-click telemetry remains unverified, and AT-078 remains blocked because the driver cannot close the external Edge job window; closing Foo's live viewer is not used as AT-078 proof.
+Focused evidence before this follow-up: `corepack.cmd pnpm vitest run test/unit/real-pc-driver.test.ts --maxWorkers=1 --pool=threads` passed 7/7; `node --check` passed for the driver and helper; B07/R-chat JSON, `expectJs` syntax, targeted Prettier, and `git diff --check` passed. The strict all-file validator remains 2 passed / 2 failed on unchanged legacy baseline send end-state and covered-proof gaps; B07 is no longer in that legacy list. No live desktop run is claimed here. AT-058 no-click telemetry remains unverified, and AT-078 remains blocked because the driver cannot close the external Edge job window; closing Foo's live viewer is not used as AT-078 proof.
 
 B07 workflow command: `$FOO_EXE foo-drive.js journeys/B07-live.json` from `test/real-pc` (direct PowerShell: `$env:ELECTRON_RUN_AS_NODE='1'; & "$env:LOCALAPPDATA\Programs\foo\foo.exe" test/real-pc/foo-drive.js test/real-pc/journeys/B07-live.json`).
 
@@ -145,6 +145,6 @@ B07 workflow command: `$FOO_EXE foo-drive.js journeys/B07-live.json` from `test/
 
 Run `39735003572` completed successfully at tested head `4fd0d51c0516efb239123704dd1deb3af16dc219`; the immutable evidence commit is `72e4b8bb6ea050ad32bb4e6e5d4b34d67567e176`, under [`real-ai/4fd0d51-claude/s0`](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/4fd0d51-claude/s0). The setup journey passed 14/14 with 8 PNGs. B07 produced 12 PNGs and 25 steps with 12 failed steps.
 
-The plan reply and plan start passed, and the driver observed the live BrowserWindow opening. Every subsequent live-root/live-picture wait timed out. All 12 B07 screenshots show the same blank live window header, `Checking IRCTC · step 3 of 3 · Done`, with no live root, picture, takeover, hand-back, or stop controls visible. The B07 log records timeout failures at steps 5, 6, 10, 12, 17, and 22; the evidence scan passed with 21 retained app-log lines and 0 dropped lines. This is a journey/runtime failure, not a masking pass.
+The plan reply and plan start passed, and the driver observed the live BrowserWindow opening. The live-root readiness callback also passed at step 4; later selectors for `data-state="live"` and the masked picture timed out. All 12 B07 screenshots show the live window's header, `Checking IRCTC · step 3 of 3 · Done`, with an empty lower picture area. `thread.json` records the job as `done_unverified`, and the renderer maps that state to `data-state="done"`, so the run opened the viewer after the job had finished. The B07 log records timeout failures at steps 5, 6, 10, 12, 17, and 22; the evidence scan passed with 21 retained app-log lines and 0 dropped lines. App-log has no renderer error; the prior driver did not record the exact live URL or live-page console/pageerror events. This is a timing/state mismatch, not evidence of a missing live renderer or a masking pass.
 
 AT-079 sensitive-field masking is unverified because no live picture rendered. AT-058 no-click telemetry remains unverified, and AT-078 external Edge closure remains blocked; no Foo live-viewer close was treated as Edge-window evidence.

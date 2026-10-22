@@ -82,6 +82,19 @@ const stamp = () => new Date().toISOString().replace(/[:.]/g, '-');
 const DIDNT_GET = /didn[’']t get that/i;
 const LOG_KEYS = ['t', 'lvl', 'mod', 'evt', 'ids', 'kind', 'ms'];
 const LEAK = /@|\d{10,}|sk-[A-Za-z0-9_-]{6,}/;
+const DIAGNOSTIC_SECRET = /(?:https?:\/\/|app:\/\/)[^\s'"<>]+|[A-Za-z0-9_-]{32,}|\b\d{6,}\b|\b(?:sk|key|token|bearer)[-_=:A-Za-z0-9]+/gi;
+const safeDiagnosticText = (value) =>
+  String(value || '')
+    .replace(DIAGNOSTIC_SECRET, '[redacted]')
+    .slice(0, 500);
+const safeLiveRoute = (value) => {
+  try {
+    const u = new URL(String(value));
+    return `${u.protocol}//${u.host}${u.pathname}`;
+  } catch {
+    return '[invalid-route]';
+  }
+};
 function copyTechLog(from, out) {
   const dir = path.join(PROFILE, 'data', 'logs');
   const secret = process.env.ANTHROPIC_API_KEY || '';
@@ -159,6 +172,35 @@ async function main() {
   let shotN = 0;
   const setActivePage = (next) => {
     pageRef = next;
+  };
+  const attachLiveDiagnostics = (page) => {
+    log({ step: 'liveWindowOpened', url: safeLiveRoute(page.url()) });
+    page.on('console', (m) => log({ step: 'liveConsole', type: m.type(), text: safeDiagnosticText(m.text()) }));
+    page.on('pageerror', (e) => log({ step: 'livePageError', message: safeDiagnosticText(e?.message || e) }));
+    page.on('requestfailed', (request) =>
+      log({
+        step: 'liveRequestFailed',
+        url: safeLiveRoute(request.url()),
+        error: safeDiagnosticText(request.failure()?.errorText || 'request failed'),
+      }),
+    );
+  };
+  const snapshotLiveDiagnostics = async (page) => {
+    const dom = await page
+      .evaluate(() => {
+        const root = document.querySelector('[data-testid="live-root"]');
+        return {
+          readyState: document.readyState,
+          rootCount: document.querySelectorAll('[data-testid="live-root"]').length,
+          state: root?.getAttribute('data-state') ?? null,
+          pictureCount: document.querySelectorAll('[data-testid="live-picture"]').length,
+          maskedCount: document.querySelectorAll('[data-testid="live-picture"][data-masked="true"]').length,
+          takeoverCount: document.querySelectorAll('[data-testid="live-take-over"]').length,
+          handBackCount: document.querySelectorAll('[data-testid="live-hand-back"]').length,
+        };
+      })
+      .catch((e) => ({ error: safeDiagnosticText(e?.message || e) }));
+    log({ step: 'liveDiagnostics', url: safeLiveRoute(page.url()), title: safeDiagnosticText(await page.title().catch(() => '')), dom });
   };
   const launch = async () => {
     app = await _electron.launch({
@@ -356,10 +398,12 @@ async function main() {
                 app,
                 click: () => loc.click({ timeout: s.timeoutMs ?? 15_000 }),
                 predicate: isLiveWindow,
+                observe: attachLiveDiagnostics,
                 ready: (opened) =>
                   opened.locator('[data-testid="live-root"]').waitFor({ state: 'visible', timeout: s.timeoutMs ?? 30_000 }),
               });
               setActivePage(livePage);
+              await snapshotLiveDiagnostics(livePage);
               rec.window = 'live';
             } else {
               const close = s.awaitClose && livePage ? waitForPageClose(livePage, s.timeoutMs ?? 30_000) : null;
@@ -489,6 +533,10 @@ async function main() {
           rec.firstReplyMs = first;
           rec.newBubbles = cur.n - before;
           rec.ok = cur.n > before;
+          if (s.exactNewBubbles !== undefined && rec.newBubbles !== s.exactNewBubbles) {
+            rec.exactNewBubblesExpected = s.exactNewBubbles;
+            rec.ok = false;
+          }
           // Timed out with foo still writing: not an answer (and closing now would cut the reply off).
           if (stillWorking(cur.items.slice(before))) {
             rec.stillWorking = true;
@@ -514,6 +562,25 @@ async function main() {
           if (s.expectKit && !kit.includes(s.expectKit)) {
             rec.kitMissing = s.expectKit;
             rec.ok = false;
+          }
+          if (s.replyFixtureMaxChars !== undefined && rec.newBubbles > 0) {
+            const fixture = await mainPage.evaluate(() => {
+              const bubble = [...document.querySelectorAll('[data-testid="thread-log"] [data-testid="bubble-foo"]')].at(-1);
+              const body = bubble?.querySelector('[data-copy="ai"]');
+              const text = (body?.innerText || '').trim();
+              const paragraphs = body ? [...body.children].filter((e) => e.tagName === 'P' && (e.textContent || '').trim()).length : 0;
+              return {
+                chars: text.length,
+                paragraphs,
+                timestamps: bubble?.querySelectorAll('[data-testid="bubble-meta"]').length ?? 0,
+              };
+            });
+            rec.replyFixture = fixture;
+            if (fixture.chars > s.replyFixtureMaxChars) {
+              rec.blocked = 'precondition';
+              rec.blockedReason = `provider reply exceeded the ${s.replyFixtureMaxChars}-character fixture`;
+              rec.ok = false;
+            }
           }
           if (rec.ok && (s.expectTid || s.expectJs)) {
             rec.endState = await endState(s);
@@ -619,7 +686,7 @@ async function main() {
   // look again at the end state it names; a late pass is kept as ok with late: true.
   for (const r of results) {
     const s = journey.steps[r.i];
-    if (r.ok !== false || r.didntGetThat || r.refused) continue;
+    if (r.ok !== false || r.didntGetThat || r.refused || r.blocked) continue;
     const named = s.do === 'check' || s.do === 'waitFor' ? { tid: s.tid, css: s.css, count: s.count } : s;
     if (!(named.tid || named.css || named.expectTid || named.expectJs)) continue;
     const now = await endState(named).catch(() => false);
@@ -644,7 +711,8 @@ async function main() {
     journey: journey.id,
     title: journey.title,
     steps: results.length,
-    failed: results.filter((r) => r.ok === false && !r.soft).length,
+    failed: results.filter((r) => r.ok === false && !r.soft && !r.blocked).length,
+    blocked: results.filter((r) => r.blocked).length,
     out,
   };
   fs.writeFileSync(path.join(out, 'summary.json'), JSON.stringify({ ...summary, results }, null, 2));

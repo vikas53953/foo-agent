@@ -10,6 +10,7 @@ type DriverHelpers = {
     app: { waitForEvent: (name: string, predicate: (page: { url: () => string }) => boolean) => Promise<unknown> };
     click: () => Promise<void>;
     ready?: (page: unknown) => Promise<void>;
+    observe?: (page: unknown) => Promise<void> | void;
     predicate?: (page: { url: () => string }) => boolean;
   }) => Promise<unknown>;
   waitForPageClose: (
@@ -35,6 +36,9 @@ const b07 = JSON.parse(b07Text) as {
     ms?: number;
   }>;
 };
+const r427 = JSON.parse(readFileSync(join(process.cwd(), 'test', 'real-pc', 'journeys', 'R-chat-rules.json'), 'utf8')) as {
+  steps: Array<Record<string, unknown>>;
+};
 
 describe('real-PC live-window driver', () => {
   it('matches the live path without exposing query-string values', () => {
@@ -58,12 +62,15 @@ describe('real-PC live-window driver', () => {
       click: async () => {
         events.push('click');
       },
+      observe: async () => {
+        events.push('observe');
+      },
       ready: async () => {
         events.push('ready');
       },
     });
     expect(opened).toBe(page);
-    expect(events).toEqual(['armed', 'click', 'ready']);
+    expect(events).toEqual(['armed', 'click', 'observe', 'ready']);
   });
 
   it('preserves a failed click without leaking a rejected window wait', async () => {
@@ -86,6 +93,8 @@ describe('real-PC live-window driver', () => {
   });
 
   it('keeps B07 takeover and hand-back checks state-bounded', () => {
+    expect(b07.steps.some((step) => step.do === 'waitFor' && step.tid === 'chat-header-watch-live')).toBe(true);
+    expect(b07.steps.some((step) => step.do === 'wait' && step.ms === 45_000)).toBe(false);
     expect(b07.steps.some((step) => step.do === 'waitFor' && step.css?.includes('data-state="in_control"'))).toBe(true);
     expect(
       b07.steps.some((step) => step.do === 'waitFor' && step.css?.includes('data-state="live"') && step.note?.includes('hand-back')),
@@ -93,6 +102,13 @@ describe('real-PC live-window driver', () => {
     expect(b07.steps.some((step) => step.do === 'check' && step.css?.endsWith('button') && step.count === 2)).toBe(true);
     expect(b07.steps.some((step) => step.do === 'check' && step.tid === 'live-take-over' && step.count === 0)).toBe(true);
     expect(b07.steps.some((step) => step.do === 'wait' && step.ms === 3_000)).toBe(false);
+  });
+
+  it('keeps AT-427 bounded to one short rendered reply per locale fixture', () => {
+    const waits = r427.steps.filter((step) => step.do === 'waitReply');
+    expect(waits).toHaveLength(5);
+    expect(waits.every((step) => step.exactNewBubbles === 1 && step.replyFixtureMaxChars === 600)).toBe(true);
+    expect(waits.every((step) => String(step.expectJs).includes('bubble-meta'))).toBe(true);
   });
 
   it('arms a bounded close listener for the live window', async () => {

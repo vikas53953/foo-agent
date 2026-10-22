@@ -18,7 +18,7 @@ function isLiveWindow(pageOrUrl) {
 // The event subscription must be created before the click.  Electron can
 // create and paint a BrowserWindow synchronously, so subscribing afterwards
 // loses the only reliable routing signal.
-async function waitForWindowAfterClick({ app, click, ready, predicate = isLiveWindow }) {
+async function waitForWindowAfterClick({ app, click, ready, observe, predicate = isLiveWindow }) {
   const opened = app.waitForEvent('window', predicate);
   // A failed click can leave the BrowserWindow wait pending until its timeout.
   // Attach a handler immediately so that later rejection cannot become an
@@ -26,6 +26,7 @@ async function waitForWindowAfterClick({ app, click, ready, predicate = isLiveWi
   void opened.catch(() => {});
   await click();
   const page = await opened;
+  if (observe) await observe(page);
   if (ready) await ready(page);
   return page;
 }
