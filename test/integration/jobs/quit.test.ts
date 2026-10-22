@@ -2,7 +2,7 @@
 // app_quit / windows_shutdown, acked before main exits; G-M4-04), 08-4 §26.10 (a clean pause resumes with a checklist edit
 // only: no message, no recovery card), 08-2 §5.9 step 4.
 import { afterEach, describe, expect, it } from 'vitest';
-import { BILLS_PLAN, jobHarness, jobIntake, step, stepDone, tool, type JobHarness } from './jobHarness';
+import { BILLS_PLAN, jobHarness, jobIntake, step, stepDone, tool, type JobHarness, untilStill } from './jobHarness';
 import { restartEngine } from './restart';
 
 let h: JobHarness | null = null;
@@ -11,9 +11,6 @@ afterEach(() => {
   h = null;
 });
 
-const poll = async (rounds = 40) => {
-  for (let i = 0; i < rounds; i++) await new Promise((r) => setTimeout(r, 2));
-};
 const finish = () => [stepDone(0), stepDone(1), step({ kind: 'done', result: 'Two bills due.', unverified: true })];
 
 describe('AT-089 · quit with a running job', () => {
@@ -21,9 +18,13 @@ describe('AT-089 · quit with a running job', () => {
     it(`jobs.pauseAll ${reason} → WAITING ${reason}, acked with the job ids; next open resumes silently`, async () => {
       h = jobHarness({ script: [jobIntake(BILLS_PLAN), tool('gmail.search', { query: 'bill' }, { delayMs: 20_000 })] });
       h.userSays('Find bills due this week');
-      await poll();
+      const run = h;
+      await untilStill(() => !!run.job(), 'the job is made');
       h.clock.advance(2_000);
-      await poll();
+      await untilStill(
+        () => run.job().state === 'working' && run.turnsJsonl().some((t) => t.purpose === 'step'),
+        'the first turn in flight',
+      );
       const jobId = String(h.job().id);
       expect(h.job().state).toBe('working');
       const ack = await h.bridge.request<{ paused: string[] }, 'jobs.pauseAll'>('jobs.pauseAll', { reason });
@@ -61,9 +62,10 @@ describe('AT-089 · quit with a running job', () => {
       ],
     });
     for (const w of ['one', 'two', 'three', 'four']) h.userSaysIn(h.chat(w), w);
-    await poll();
+    const run = h;
+    await untilStill(() => run.jobs().length === 4, 'four jobs are made');
     h.clock.advance(2_000);
-    await poll();
+    await untilStill(() => run.jobs().filter((j) => j.state === 'working').length === 3, 'three jobs work');
     await h.bridge.request('jobs.pauseAll', { reason: 'app_quit' });
     await h.settle(1_000);
     const states = h.jobs().map((j) => j.state);

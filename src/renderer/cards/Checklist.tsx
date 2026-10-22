@@ -139,14 +139,16 @@ function StepList({
   job,
   steps,
   showAll,
+  tookOver,
   onShowAll,
 }: {
   job: JobRow;
   steps: readonly StepRow[];
   showAll: boolean;
+  tookOver?: readonly number[];
   onShowAll?: () => void;
 }) {
-  const view = checklistView(job, steps, showAll);
+  const view = checklistView(job, steps, showAll, tookOver);
   const byIdx = new Map(steps.map((s) => [s.idx, s]));
   const focusNeed = () => {
     const el = job.needsYouCardId ? document.querySelector<HTMLElement>(`[data-card-id="${job.needsYouCardId}"]`) : null;
@@ -167,7 +169,7 @@ function StepList({
           const text = l.text;
           const said = word(l.state);
           const current = l.state === 'current' || l.state === 'waiting';
-          const step = byIdx.get(l.index);
+          const step = l.state === 'took_over' ? undefined : byIdx.get(l.index);
           const kind = step ? stepKind(step.phraseKey) : null;
           return (
             <li
@@ -224,6 +226,7 @@ export function Checklist({ card, time }: { card: CardRow; time: CardTime }) {
   const row = details?.job && (!job || details.job.rev > job.rev) ? details.job : job;
   if (!row) return null;
   const steps = details?.steps ?? [];
+  const tookOver = (card.payload as Partial<ChecklistPayload>).tookOver;
   const { k, n } = stepOf(row);
   const label = t('cards.checklist.label', { title: row.title, k, n });
 
@@ -256,7 +259,7 @@ export function Checklist({ card, time }: { card: CardRow; time: CardTime }) {
         )}
         {open && (
           <>
-            <StepList job={row} steps={steps} showAll />
+            <StepList job={row} steps={steps} showAll tookOver={tookOver} />
           </>
         )}
       </CardFrame>
@@ -285,7 +288,7 @@ export function Checklist({ card, time }: { card: CardRow; time: CardTime }) {
           <span className={cx(styles.right, row.state === 'failed' && styles.bad)}>{right}</span>
         )}
       </div>
-      <StepList job={row} steps={steps} showAll={showAll} onShowAll={() => setShowAll(true)} />
+      <StepList job={row} steps={steps} showAll={showAll} tookOver={tookOver} onShowAll={() => setShowAll(true)} />
       <div className={styles.foot}>
         {live && (
           <div className={styles.buttons}>

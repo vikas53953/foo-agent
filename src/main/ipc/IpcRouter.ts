@@ -21,11 +21,11 @@ import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
 import type { EventChannel, EventPayload, InvokeChannel, InvokeIn, InvokeOut, PlatformInfo, VerifyResult } from '../../shared/ipc';
 import { SECRET_OFFER_SLOTS } from '../../shared/ipc'; // M5 T2
-import { PROVIDER_IDS, settingLocked, settingsSchema, WRITABLE_PATHS, type Settings } from '../../shared/settings';
+import { PROVIDER_IDS, WRITABLE_PATHS, type Settings } from '../../shared/settings';
 import type { FixAction, MessageRow, WindowsSettingsPage } from '../../shared/types';
 import { deps } from '../deps';
 import type { NetMonitor } from '../net/netMonitor';
-import { changeRecordRow } from '../settings/changeRecord';
+import { applySetting, undoSetting } from '../settings/applySetting';
 import type { SettingsStore } from '../settings/Settings';
 import type { Db } from '../store/db';
 import {
@@ -65,7 +65,6 @@ import type { DbRow } from '../db/rows';
 import { ChannelGuard } from './guard';
 import { registerLiveIpc, routeLive } from '../jobs/liveIpc';
 import type { EngineBridge } from '../engine-supervisor/EngineBridge';
-import { applyDbOps } from '../engine-supervisor/engineHost';
 import { FIX_ACTION_KINDS, JOB_CHANNELS, jobIpc } from '../jobs/jobIpc';
 import type { AiStatus, DetectRow } from '../../shared/types';
 import { insideDir } from '../windows/protocol';
@@ -264,6 +263,7 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'helper:list': empty as z.ZodType<Record<string, never>>,
   'settings:get': empty as z.ZodType<Record<string, never>>,
   'settings:set': z.object({ path: z.enum(WRITABLE_PATHS), value: z.unknown() }).strict() as z.ZodType<{ path: string; value: unknown }>,
+  'settings:undo': z.object({ changeId: z.string().min(1).max(80) }).strict(),
   'ai:verify': z.object({ providerId: z.enum(PROVIDER_IDS) }).strict(),
   'ai:detect': empty as z.ZodType<Record<string, never>>,
   'ai:choose': z.object({ primary: z.enum(PROVIDER_IDS), backup: z.enum(PROVIDER_IDS).nullable().optional() }).strict() as z.ZodType<{
@@ -420,19 +420,6 @@ export function handle<C extends InvokeChannel>(channel: C, fn: Handler<C>): voi
       return fail('UNKNOWN');
     }
   });
-}
-
-function getPath(s: Settings, path: string): unknown {
-  return path.split('.').reduce<unknown>((o, k) => (o as Record<string, unknown> | undefined)?.[k], s);
-}
-
-/** Copies each object on the path (M5: three-level paths such as `permissions.actions.send`). */
-function setPath(s: Settings, path: string, value: unknown): Settings {
-  const set = (o: Record<string, unknown>, [k, ...rest]: string[]): Record<string, unknown> => ({
-    ...o,
-    [k!]: rest.length ? set(o[k!] as Record<string, unknown>, rest) : value,
-  });
-  return set(s as unknown as Record<string, unknown>, path.split('.')) as unknown as Settings;
 }
 
 export function registerIpc(ctx: AppContext): void {
@@ -764,17 +751,25 @@ export function registerIpc(ctx: AppContext): void {
   handle('helper:list', () => ok(helperList(db)));
   handle('settings:get', () => ok(publicSettings(settings.get())));
   handle('settings:set', ({ path, value }) => {
-    const before = settings.get();
-    const next = setPath(before, path, value);
-    if (!settingsSchema.safeParse(next).success) return fail('VALIDATION');
-    // M5 (CR-0009; 08-1 §4.4.2 step 1, 08-0 §A.2): a locked value is refused and nothing is written.
-    if (settingLocked(path, value)) return fail('SETTING_LOCKED');
-    settings.update(() => next);
-    // 08-1 §4.4.2 step 3: the change record (M4: the AI cap only).
-    const row = changeRecordRow(path, getPath(before, path), value);
-    const tx = row ? applyDbOps(db, [{ op: 'activity', row }], { dataDir: ctx.dataDir }).result : null;
+    // 08-1 §4.4.2 steps 1–3 (CR-0043: one apply for this channel, foo's chat op and undo).
+    const r = applySetting({ db, settings, dataDir: ctx.dataDir, now }, path, value, 'user');
+    if (!r.ok) return r;
     emitSettings();
-    return ok({ settings: publicSettings(settings.get()), changeId: tx?.ok ? (tx.value.ids[0] ?? null) : null });
+    return ok({ settings: publicSettings(settings.get()), changeId: r.value.changeId });
+  });
+  // CR-0043 (08-1 §4.4.2 step 4): the chat line's [ Undo ]; the line moves to "Changed back: …" or too_late.
+  handle('settings:undo', ({ changeId }) => {
+    const r = undoSetting({ db, settings, dataDir: ctx.dataDir, now }, changeId);
+    const ids = r.ok
+      ? r.value.messageIds
+      : (db.prepare("SELECT id FROM messages WHERE json_extract(why, '$.settingLine.changeId') = ?").pluck().all(changeId) as string[]);
+    for (const id of ids) {
+      const row = messageGet(db, id);
+      if (row) emit('message:upsert', row);
+    }
+    if (!r.ok) return r;
+    emitSettings();
+    return ok({ settings: publicSettings(settings.get()) });
   });
   handle('ai:verify', async ({ providerId }) => {
     // "Try again" re-tests the network now, then the engine sends `Reply with the word ready` (08-2 §6.6).
