@@ -135,7 +135,6 @@
         "use?",
         "Needs",
         "you",
-        "3",
         "foo",
         "9:41",
         "AM",
@@ -412,8 +411,8 @@
     "total": 1512
   },
   "r5": {
-    "ratio": 0.0828994140625,
-    "diffPixels": 84889,
+    "ratio": 0.082828125,
+    "diffPixels": 84816,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-06.dark.diff.png"
