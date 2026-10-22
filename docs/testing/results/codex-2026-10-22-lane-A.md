@@ -2,7 +2,9 @@
 
 Status: **BLOCKED**. The strict all-files validator is intentionally red because unchanged baseline journeys violate §11.3.7. This branch is not GREEN or ready.
 
-Base: `7b5f435` (merge of `origin/main 0d04a9f`). No real-AI workflow run, cost, or current-main real-AI result is claimed.
+Base: `7b5f435` (merge of `origin/main 0d04a9f`). The tested journey SHA is `a7a04fac`; no real-AI result, screenshot verdict, or cost is claimed yet. Workflow dispatch `39726084968` is queued behind the root run because the existing workflow uses a shared `real-ai-e2e` concurrency group.
+
+Dispatch inputs: `ref=codex/lane-a-2026-10-22`, `journeys=R-ai-pages R-approvals R-chat-rules R-dark R-jobs R-kit-1 R-kit-2 R-reply-area`, `max_journeys=1000`, `shards=4`, `ai=claude`, `model=claude-sonnet-5-5`.
 
 ## Changes in scope
 
@@ -11,6 +13,7 @@ Base: `7b5f435` (merge of `origin/main 0d04a9f`). No real-AI workflow run, cost,
 - `6dbefcfa`: validator correction: strict all-file send/end-state checks, following regex `expectText`, current `expectKit` validation, and checked-step coverage for every covered ID.
 - Repair pass (this commit): corrected real controls and fresh-reply assertions in the eight owned R manifests, including immediate checked waits for all three AT-420 follow-ups in `R-jobs.json`. The repair does not claim a run or GREEN status.
 - Registered the eight owned R IDs in `test/real-pc/journeys.txt`; no baseline B/J/U/R1 journey, source/spec/golden/workflow/secret, or driver file was edited.
+- `a7a04fac`: repaired the owned R-jobs send/end-state gaps and registered the eight R IDs.
 
 ## Focused validator evidence
 
@@ -102,6 +105,6 @@ No baseline files were changed to make this pass. The lead must resolve these ou
 
 ## Remaining blockers
 
-- Way 1 real-AI run: not started; driver-choice work is a separate pending lane. Approval journeys are authored only.
+- Way 1 real-AI run: dispatch `39726084968` is queued; no screenshot or journey verdict exists yet. Driver-choice work is a separate pending lane, so approval journeys are authored only.
 - Cost/paid run: unavailable; no cost is claimed (this is not a `$0` result).
 - `test/real-pc/journeys.txt`: the eight R IDs are now registered; the real-AI workflow still needs a validated pushed branch run.
