@@ -12,6 +12,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { stillWorking, settled } = require('./settle');
 
 const EXE = process.env.FOO_EXE || path.join(process.env.LOCALAPPDATA || '', 'Programs', 'foo', 'foo.exe');
 const ROOT = process.env.FOO_REAL_TEST_DIR || path.join(process.env.USERPROFILE || '.', 'foo-real-test');
@@ -116,6 +117,28 @@ function copyTechLog(from, out) {
   return { lines: lines.length, dropped };
 }
 
+// foo's AI turn log (ai_turns, 0001_init.sql) from the test profile's database, for this journey only. Only ids and enum
+// columns are kept (no text, no tokens of content), so it is safe for the public evidence branch.
+const TURN_COLS = ['started_at', 'purpose', 'outcome', 'error_kind', 'duration_ms', 'chat_id', 'job_id', 'provider_id', 'billing'];
+function copyAiTurns(from, out) {
+  const file = path.join(PROFILE, 'data', 'data', 'foo.db');
+  if (!fs.existsSync(file)) return { turns: 0, note: 'no database' };
+  const Database = require(path.join(path.dirname(EXE), 'resources', 'app.asar.unpacked', 'node_modules', 'better-sqlite3'));
+  const db = new Database(file, { readonly: true, fileMustExist: true });
+  try {
+    const rows = db.prepare(`SELECT ${TURN_COLS.join(', ')} FROM ai_turns WHERE started_at >= ? ORDER BY started_at`).all(from);
+    const safe = rows.map((r) =>
+      Object.fromEntries(
+        Object.entries(r).filter(([, v]) => v === null || typeof v === 'number' || /^[A-Za-z0-9_.:-]{1,64}$/.test(String(v))),
+      ),
+    );
+    fs.writeFileSync(path.join(out, 'ai-turns.jsonl'), safe.map((r) => JSON.stringify(r)).join('\n') + (safe.length ? '\n' : ''));
+    return { turns: safe.length };
+  } finally {
+    db.close();
+  }
+}
+
 async function main() {
   const file = process.argv[2];
   if (!file) throw new Error('usage: foo-drive.js <journey.json>');
@@ -173,6 +196,21 @@ async function main() {
           text: (el.innerText || '').trim().slice(0, 1500),
         })),
     );
+  // CR-0046: foo's replies that hold a fence (```a2ui, ```page), as the AI wrote them, so a kit piece that drew only
+  // "Couldn't show part of this" can become a cassette (test/fixtures/kit-replies). The drawn thread keeps only the words.
+  const rawFences = () =>
+    page.evaluate(async () => {
+      const out = [];
+      const chats = await window.foo.invoke('chat:list', {});
+      for (const c of chats.ok ? chats.value : []) {
+        const list = await window.foo.invoke('message:list', { chatId: c.id, limit: 50 });
+        for (const m of list.ok ? list.value : []) {
+          if (m.authorKind === 'foo' && m.text.includes('```'))
+            out.push({ chatId: c.id, messageId: m.id, status: m.status, text: m.text.slice(0, 20_000) });
+        }
+      }
+      return out;
+    });
   // What counts as foo answering: a foo text bubble or any card foo posts, below the user's newest bubble. The thread is a
   // virtual list (only the rows near the bottom are in the page), so counting all bubbles stops working in a long chat;
   // counting what sits after the newest bubble-me does not. A memory chip ("I'll remember: … · Undo", 05-3 §5.17.1) is
@@ -180,11 +218,13 @@ async function main() {
   const afterMe = () =>
     page.evaluate(() => {
       const log = document.querySelector('[data-testid="thread-log"]');
-      if (!log) return { n: 0, texts: [] };
+      if (!log) return { n: 0, texts: [], items: [] };
       const memoryChip = (el) =>
         el.getAttribute('data-testid') === 'thread-marker' && !!el.querySelector('[data-testid="thread-memory-undo"]');
+      // Only top-level rows: a card's own parts (card-connect-allow-send inside card-connect) are not extra replies.
+      const nested = (el) => !!el.parentElement?.closest('[data-testid^="bubble-"], [data-testid^="card-"]');
       const all = [...log.querySelectorAll('[data-testid^="bubble-"], [data-testid^="card-"], [data-testid="thread-marker"]')].filter(
-        (el) => /^(bubble-(me|foo|helper|wa)|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) || memoryChip(el),
+        (el) => (/^(bubble-(me|foo|helper|wa)|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) || memoryChip(el)) && !nested(el),
       );
       const kinds = all.map((el) => el.getAttribute('data-testid'));
       const after = all
@@ -194,7 +234,15 @@ async function main() {
             memoryChip(el) ||
             (/^(bubble-foo|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) && el.getAttribute('data-testid') !== 'card-time'),
         );
-      return { n: after.length, texts: after.map((el) => (el.innerText || '').trim().slice(0, 1500)) };
+      return {
+        n: after.length,
+        texts: after.map((el) => (el.innerText || '').trim().slice(0, 1500)),
+        // foo still at work: a bubble streaming, or an AI page inside it still building (see settle.js).
+        items: after.map((el) => ({
+          state: el.getAttribute('data-state'),
+          pageState: el.querySelector('[data-testid="ai-page"]')?.getAttribute('data-state') ?? null,
+        })),
+      };
     });
 
   // The end state a step names: expectTid / tid / css on screen (count if given), and expectJs true in the page.
@@ -355,25 +403,30 @@ async function main() {
         case 'send': {
           const field = page.locator('[data-testid="composer-field"]');
           await field.waitFor({ state: 'visible', timeout: 30_000 });
-          const mine = page.locator('[data-testid="thread-log"] [data-testid="bubble-me"]');
-          const lastMine = mine.count().then((c) => (c ? mine.last().innerText() : ''));
-          const prev = await lastMine;
+          const ME = '[data-testid="thread-log"] [data-testid="bubble-me"]';
           await field.click();
           await field.fill(s.text);
+          // Mark the newest bubble-me, send, and wait for a newer unmarked one (the same text sent twice still counts).
+          await page.evaluate((q) => {
+            const b = [...document.querySelectorAll(q)].pop();
+            if (b) b.setAttribute('data-drv-seen', '1');
+          }, ME);
           await page.keyboard.press('Enter');
           rec.sentAt = Date.now();
-          // Wait until the sent bubble is the newest bubble-me, then take what is already below it as the baseline.
-          await page
+          rec.sent = await page
             .waitForFunction(
-              (p) => {
-                const b = [...document.querySelectorAll('[data-testid="thread-log"] [data-testid="bubble-me"]')].pop();
-                return b && b.innerText !== p;
+              (q) => {
+                const b = [...document.querySelectorAll(q)].pop();
+                return b && !b.hasAttribute('data-drv-seen');
               },
-              prev,
+              ME,
               { timeout: 10_000 },
             )
-            .catch(() => {});
-          rec.before = (await afterMe()).n;
+            .then(() => true)
+            .catch(() => false);
+          // Everything below the sent bubble is foo's answer, even one that landed before this line ran (B04's instant
+          // "Nothing's running right now."), so the baseline is 0. If no bubble was sent, keep what is below the old one.
+          rec.before = rec.sent ? 0 : (await afterMe()).n;
           break;
         }
         case 'waitReply': {
@@ -393,11 +446,16 @@ async function main() {
             if (now.n > before && first === null) first = Date.now() - start;
             if (now.n !== cur.n || now.texts.join() !== cur.texts.join()) lastChange = Date.now();
             cur = now;
-            if (now.n > before && Date.now() - lastChange >= quiet) break;
+            if (settled({ n: now.n, before, items: now.items.slice(before), quietFor: Date.now() - lastChange, quietMs: quiet })) break;
           }
           rec.firstReplyMs = first;
           rec.newBubbles = cur.n - before;
           rec.ok = cur.n > before;
+          // Timed out with foo still writing: not an answer (and closing now would cut the reply off).
+          if (stillWorking(cur.items.slice(before))) {
+            rec.stillWorking = true;
+            rec.ok = false;
+          }
           const texts = cur.texts.slice(before);
           rec.duplicates = texts.filter((x, k) => x && texts.indexOf(x) !== k).length;
           rec.lastReply = texts.join('\n---\n').slice(0, 2000);
@@ -415,6 +473,10 @@ async function main() {
         }
         case 'dump':
           fs.writeFileSync(path.join(out, `${s.name}.json`), JSON.stringify(await threadDump(), null, 2));
+          fs.writeFileSync(
+            path.join(out, `${s.name}-raw.json`),
+            JSON.stringify(await rawFences().catch((e) => [{ error: String(e).slice(0, 300) }]), null, 2),
+          );
           break;
         case 'shot':
           await shot(s.name);
@@ -489,6 +551,20 @@ async function main() {
     log(rec);
     if (s.shot) await shot(s.shot).catch(() => {});
   }
+  // Closing foo mid-reply cuts that reply off, and the next journey (same profile) would find "That reply got cut off".
+  // Let any reply still streaming, or page still building, finish first, for up to 3 minutes.
+  const busy =
+    '[data-testid="thread-log"] :is([data-testid="bubble-foo"][data-state="streaming"], [data-testid="ai-page"][data-state="building"])';
+  const t1 = Date.now();
+  while (
+    Date.now() - t1 < 180_000 &&
+    (await page
+      .locator(busy)
+      .count()
+      .catch(() => 0))
+  )
+    await page.waitForTimeout(1_000);
+  if (Date.now() - t1 > 1_000) log({ step: 'drain', ms: Date.now() - t1 });
   // Some outcomes land after the step gave up (a saved fact, an AI page that opens late). Before calling a step failed,
   // look again at the end state it names; a late pass is kept as ok with late: true.
   for (const r of results) {
@@ -508,6 +584,11 @@ async function main() {
     log({ step: 'appLog', ...copyTechLog(journeyStart, out) });
   } catch (e) {
     log({ step: 'appLog', ok: false, error: String(e).slice(0, 300) });
+  }
+  try {
+    log({ step: 'aiTurns', ...copyAiTurns(journeyStart, out) });
+  } catch (e) {
+    log({ step: 'aiTurns', ok: false, error: String(e).slice(0, 300) });
   }
   const summary = {
     journey: journey.id,

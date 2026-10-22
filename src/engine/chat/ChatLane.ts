@@ -23,12 +23,23 @@
 // CR-0040 (X-198): a `job` that needs a Google app while Google is not connected posts the Connect card (05-3 §5.11, variant
 // `one_app`) instead of starting; once Google connects the message goes back to its intake turn (real-AI run 8: the job's
 // first step, with no Gmail tools listed, asked "Which email do you want me to read?").
+// CR-0042 (X-200): routine, catch_up and handoff, not built yet, each say so in one line instead of "I didn't get that".
+// CR-0043 (X-201): intake kind `setting` is built (08-4 §25.6): the 08-0 §A.3 paths change through main with a "Changed: …
+// [ Undo ]" line; anything else gets "That's one for you to change. [ Open Settings ]".
 // Restart fix (real-PC J19 bug): the queue lives in memory, so after a restart cutOffTurns/answerCutOff give the messages
 // whose turn never finished their one intake turn (08-2 §5.2), and a reply left streaming is cut off with Try again (§19.4).
 import { t } from '../../shared/copy/t';
 import type { Clock } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
 import type { Settings } from '../../shared/settings';
+import {
+  chatSettingNotBuilt,
+  isChatSettingPath,
+  settingRowLabel,
+  settingsPageFor,
+  settingValueLabel,
+  type SettingLineData,
+} from '../../shared/settingsByChat';
 import type { ConnectorApp, ProviderId } from '../../shared/types';
 import type { IntakeDecision } from '../../shared/schemas';
 import type { EngineChat, EngineHelper, EngineMessage } from '../../main/db/queries';
@@ -55,6 +66,9 @@ import type { CardRow } from '../../shared/types';
 import { choiceFields } from '../cards/choiceFields';
 // Restart fix
 import { isStopCommand } from '../jobs/stopFlow';
+// CR-0044
+import { cutTitle } from '../jobs/title';
+import { phraseText } from '../../shared/phrases';
 
 /** The your-AI service the lane talks to (Engine wires AiService). */
 export interface LaneAi {
@@ -118,7 +132,8 @@ export type IntakeDecisionView =
   | Extract<IntakeDecision, { kind: 'job' }>
   | Extract<IntakeDecision, { kind: 'memory' }>
   | Extract<IntakeDecision, { kind: 'ask' }>
-  | { kind: 'handoff' | 'routine' | 'setting' | 'catch_up' };
+  | Extract<IntakeDecision, { kind: 'setting' }>
+  | { kind: 'handoff' | 'routine' | 'catch_up' };
 
 /** M6 T5: the memory seam of the lane (Engine wires IntakeMemory, MemoryChips and MemoryReview). */
 export interface LaneMemory {
@@ -179,6 +194,9 @@ export interface LaneDeps {
   // CR-0040
   /** The Google apps of `needs` that must be connected first (Google not connected); empty when none or no Google build. */
   appsToConnect?(needs: ConnectorApp[]): GoogleApp[];
+  // CR-0043
+  /** Main's `settings.set` (08-1 §4.4.2 step 5): the allow-list only; the reply carries the change record's id. */
+  setSetting?(path: string, value: unknown, chatId: string): Promise<Result<{ changeId: string | null; value: unknown }>>;
 }
 
 type GoogleApp = 'gmail' | 'gcal' | 'contacts';
@@ -188,9 +206,28 @@ export const CONNECT_WAIT_MS = 24 * 60 * 60 * 1000;
 const MAX_TOTAL = 2; // 08-2 §6.9 chat lane
 const CONVERSATION = 20; // 08-2 §7.2 part 7
 
+function isIntakeConnect(payload: Record<string, unknown>): boolean {
+  const v = payload.intakeConnect as { messageId?: unknown } | undefined;
+  return typeof v?.messageId === 'string' && v.messageId.length > 0;
+}
+
 function isIntakeAsk(payload: Record<string, unknown>): payload is Record<string, unknown> & { intakeAsk: { messageId: string } } {
   const v = payload.intakeAsk as { messageId?: unknown } | undefined;
   return typeof v?.messageId === 'string' && v.messageId.length > 0;
+}
+
+/** CR-0042 (08-4 §25.5 item 5a): what foo says for an intake kind whose milestone is not built yet. */
+function notBuiltLine(kind: string | undefined): string {
+  switch (kind) {
+    case 'routine':
+      return t('thread.not_built.routine');
+    case 'catch_up':
+      return t('thread.not_built.catch_up');
+    case 'handoff':
+      return t('thread.not_built.handoff');
+    default:
+      return t('thread.reply.empty');
+  }
 }
 
 export class ChatLane {
@@ -216,7 +253,9 @@ export class ChatLane {
   /** CR-0028: user message id → the answers to the intake questions it got, for its next intake turn. */
   private askAnswers = new Map<string, string[]>();
   /** CR-0040: user message id → its chat and when its Connect card was posted, until Google connects. */
-  private awaitingConnect = new Map<string, { chatId: string; at: number }>();
+  private awaitingConnect = new Map<string, { chatId: string; at: number; cardId: string }>();
+  /** CR-0044: messages whose Connect card got Not now (engine RAM, like askAnswers). */
+  private connectDeclined = new Set<string>();
   /** User messages this engine has started a turn for (a restart's cut-off list may name one of them). */
   private taken = new Set<string>();
   /** Cut-off bubbles that already had their one Try again. */
@@ -374,7 +413,8 @@ export class ChatLane {
     const fromDrain = this.drained.delete(messageId);
     if (!message || message.authorKind !== 'user') return;
     if (fromDrain && message.status !== 'queued') return;
-    // M4 T3: stop, steer and the G16 reply come before the intake turn and need no AI (08-2 §5.2). R1 T6: a side question
+    // M4 T3: stop, steer and the G16 reply come before the intake turn and need no AI (08-2 §5.2; CR-0045: a steer to a job
+    // waiting on its card first asks one classify turn, 08-4 §26.5 item 2b). R1 T6: a side question
     // never reaches the runner's branches (04 §17.5: it never cancels or re-plans a running job).
     const side = message.side === true;
     if (side) this.sideTurns.add(messageId);
@@ -612,9 +652,22 @@ export class ChatLane {
     let retryEmpty = false;
     const released = gate.released().trimEnd();
     if (kind !== 'reply' && released.trim()) this.d.log('chat.say_leak', 'PROTOCOL_SAY_LEAK', { chatId });
+    // CR-0044: the decided kind goes to the tech log (an enum, no words), so a real-AI run shows why a message got its answer.
+    this.d.log('chat.intake_kind', act ? kind : 'none', { chatId });
 
     const memoryKind = act?.kind === 'memory' && this.d.memory ? act : null;
-    if (kind === 'reply' || (kind !== 'react' && kind !== 'ask' && !(kind === 'job' && this.d.jobs) && !memoryKind && released.trim())) {
+    const notBuilt = kind === 'routine' || kind === 'catch_up' || kind === 'handoff';
+    const settingKind = act?.kind === 'setting' && this.d.setSetting ? act : null;
+    if (
+      kind === 'reply' ||
+      (kind !== 'react' &&
+        kind !== 'ask' &&
+        !(kind === 'job' && this.d.jobs) &&
+        !memoryKind &&
+        !settingKind &&
+        !notBuilt &&
+        released.trim())
+    ) {
       if (fooId) {
         // P1 T6: the follow-ups the reply's own `Suggestions:` line held (the gate kept the line out of the bubble).
         const trailer = kind === 'reply' ? splitSuggestions(parsed.say) : null;
@@ -641,8 +694,9 @@ export class ChatLane {
     } else if (act && act.kind === 'job' && this.d.jobs) {
       // 08-2 §5.3.3: the runner takes over; its checklist and result are what the user sees next (ART-22).
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
-      const connect = this.d.appsToConnect?.(act.needsApps) ?? [];
-      if (connect.length) await this.connectFirst(chatId, messageId, connect, helper);
+      // CR-0044: after Not now on its Connect card, the message's job runs without those apps.
+      const connect = this.connectDeclined.has(messageId) ? [] : (this.d.appsToConnect?.(act.needsApps) ?? []);
+      if (connect.length) await this.connectFirst(chatId, messageId, connect, act.title, helper);
       else
         await this.d.jobs.createJob({
           chatId,
@@ -659,14 +713,20 @@ export class ChatLane {
       // M6 T5 (08-4 §25.5 item 5): text already released stands; the reaction, chip or card follows it.
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
       await this.d.memory.decide(chat, helper, message, memoryKind);
+    } else if (settingKind) {
+      // CR-0043 (08-4 §25.6): text already released stands; the setting line follows it.
+      if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
+      await this.settingLine(chatId, messageId, settingKind);
     } else if (act && act.kind === 'react') {
       // Words that already showed past the hold stay as a finished bubble (they cannot be taken back); the 👍 still goes on.
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
       await this.react(messageId, act.emoji, helper);
     } else {
-      // Kinds built in later milestones (see the header).
+      // Kinds built in later milestones (see the header). CR-0042 (08-4 §25.5 item 5a): one honest line per kind, after any
+      // text already released (item 5).
+      if (fooId && notBuilt) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
       this.d.log('chat.kind_not_built', undefined, { chatId });
-      await this.post(chatId, messageId, t('thread.reply.empty'), helper, providerNote);
+      await this.post(chatId, messageId, notBuiltLine(act?.kind), helper, providerNote);
     }
     // CR-0041: a retried turn keeps the Thinking row and records no uses of the answer it threw away.
     if (!retryEmpty) {
@@ -786,15 +846,28 @@ export class ChatLane {
    * CR-0040 (05-3 §5.11.2): the Connect card for the Google apps a job needs, with no job; ⏳ on the user's bubble until Google
    * connects (`connected`). One app → `one_app` with its fixed line; more → the Google card for those apps.
    */
-  private async connectFirst(chatId: string, messageId: string, apps: GoogleApp[], helper: EngineHelper | null): Promise<void> {
+  private async connectFirst(
+    chatId: string,
+    messageId: string,
+    apps: GoogleApp[],
+    jobTitle: string,
+    helper: EngineHelper | null,
+  ): Promise<void> {
     const app = apps[0]!;
+    // CR-0044: the line names the job and says Not now works too.
+    // The AI's title hint, filtered and cut as a job title is (08-4 §26.2 item 4); none → the generic phrase.
+    const title = cutTitle(this.d.protocol.filter(jobTitle).trim()) || phraseText('generic_working', 'running')!;
     const why =
       app === 'gmail'
-        ? t('cards.connect.one_app.why.gmail')
+        ? t('cards.connect.one_app.why_job.gmail', { title })
         : app === 'gcal'
-          ? t('cards.connect.one_app.why.gcal')
-          : t('cards.connect.one_app.why.contacts');
-    const payload = apps.length === 1 ? { variant: 'one_app', app, scopes: apps, why } : { variant: 'google', app, scopes: apps };
+          ? t('cards.connect.one_app.why_job.gcal', { title })
+          : t('cards.connect.one_app.why_job.contacts', { title });
+    const intakeConnect = { messageId };
+    const payload =
+      apps.length === 1
+        ? { variant: 'one_app', app, scopes: apps, why, intakeConnect }
+        : { variant: 'google', app, scopes: apps, intakeConnect };
     const cardId = this.d.newId('k');
     const cardMessageId = this.d.newId('m');
     const now = this.d.clock.now();
@@ -836,7 +909,7 @@ export class ChatLane {
       await this.post(chatId, messageId, t('thread.reply.empty'), helper, null);
       return;
     }
-    this.awaitingConnect.set(messageId, { chatId, at: now });
+    this.awaitingConnect.set(messageId, { chatId, at: now, cardId });
   }
 
   /** CR-0040: Google connected (Engine's connection.state); each message still waiting on its Connect card goes back to intake. */
@@ -844,6 +917,8 @@ export class ChatLane {
     const now = this.d.clock.now();
     for (const [messageId, w] of this.awaitingConnect) {
       this.awaitingConnect.delete(messageId);
+      // CR-0044 review: the card is done once Google connects, so a later Not now on it can never start a second job.
+      void this.tx([{ op: 'update', table: 'cards', id: w.cardId, set: { state: 'connected', resolved_by: 'system', resolved_at: now } }]);
       if (now - w.at <= CONNECT_WAIT_MS) this.enqueue(w.chatId, messageId, { intakeOnly: true });
     }
   }
@@ -851,6 +926,7 @@ export class ChatLane {
   /** CR-0028: a tap on an intake question (Engine's card.answered); true when the card was one. */
   async onCardAnswered(a: { cardId: string; choice?: string; text?: string; answer?: unknown; resolvedBy: string }): Promise<boolean> {
     const card = await this.query<CardRow>('cardById', a.cardId);
+    if (card?.type === 'connect' && card.jobId === null && isIntakeConnect(card.payload)) return this.connectNotNow(card, a.resolvedBy);
     if (!card || card.type !== 'choice' || card.jobId !== null || !isIntakeAsk(card.payload)) return false;
     if (card.resolvedAt !== null) return true;
     const answer = (a.answer as CardAnswer | undefined) ?? (a.choice ? { optionId: a.choice } : a.text ? { text: a.text } : null);
@@ -869,6 +945,33 @@ export class ChatLane {
       },
     ]);
     if (r.ok) await this.reintake(card, answer);
+    return true;
+  }
+
+  /**
+   * CR-0044 (08-2 §5.3.3 as amended): Not now on an intake Connect card. The card is `skipped`, and the message goes back to
+   * intake once with no Connect card, so its job runs without the app (its steps ask for what they lack). Main sends only an
+   * `offered` card here; a card already moved on is left alone.
+   */
+  private async connectNotNow(card: CardRow, resolvedBy: string): Promise<boolean> {
+    if (card.state !== 'offered' || card.resolvedAt !== null) return true;
+    const { messageId } = (card.payload as { intakeConnect: { messageId: string } }).intakeConnect;
+    const r = await this.tx([
+      {
+        op: 'update',
+        table: 'cards',
+        id: card.id,
+        set: { state: 'skipped', answer: { skip: true }, resolved_by: resolvedBy, resolved_at: this.d.clock.now() },
+      },
+    ]);
+    if (!r.ok) return true;
+    // CR-0044 review: only a message still waiting on this card (this session, within 24 h) goes back to intake; an old card
+    // (after a restart, or past the wait) is just closed.
+    const waiting = this.awaitingConnect.get(messageId);
+    this.awaitingConnect.delete(messageId);
+    if (!waiting || this.d.clock.now() - waiting.at > CONNECT_WAIT_MS) return true;
+    this.connectDeclined.add(messageId);
+    this.enqueue(card.chatId, messageId, { intakeOnly: true });
     return true;
   }
 
@@ -941,6 +1044,49 @@ export class ChatLane {
       },
     ]);
     if (!r.ok) this.d.log('chat.capabilities_failed', r.error.kind, { chatId });
+  }
+
+  /**
+   * CR-0043 (08-4 §25.6, 08-0 §A.3): a change on the allow-list goes through main and posts "Changed: {row} → {value}." with
+   * [ Undo ]; a path not in this build yet says so; anything else, or a value main refuses, gets "That's one for you to
+   * change." with [ Open Settings ] at the page. A system line (`marker_kind='system_line'`, `why.settingLine`).
+   */
+  private async settingLine(chatId: string, messageId: string, act: { path: string; value: unknown }): Promise<void> {
+    let line: SettingLineData = { kind: 'refused', page: settingsPageFor(act.path) };
+    let text = t('thread.setting.refused');
+    if (chatSettingNotBuilt(act.path)) {
+      line = { kind: 'not_built' };
+      text = t('thread.setting.not_built');
+    } else if (isChatSettingPath(act.path)) {
+      const r = await this.d.setSetting!(act.path, act.value, chatId).catch(() => null);
+      if (r?.ok) {
+        line = { kind: 'changed', path: act.path, ...(r.value.changeId ? { changeId: r.value.changeId } : {}) };
+        text = t('thread.setting.changed', { row: settingRowLabel(act.path), value: settingValueLabel(act.path, r.value.value) });
+      } else {
+        // A value main refuses (VALIDATION, SETTING_LOCKED) for a path foo may change: the row exists, the value does not.
+        line = { kind: 'bad_value', page: settingsPageFor(act.path) };
+        text = t('thread.setting.bad_value');
+        this.d.log('chat.setting_refused', r?.ok === false ? r.error.kind : 'UNKNOWN', { chatId });
+      }
+    }
+    await this.tx([
+      {
+        op: 'insert',
+        table: 'messages',
+        row: {
+          id: this.d.newId('m'),
+          chat_id: chatId,
+          author_kind: 'system',
+          kind: 'marker',
+          marker_kind: 'system_line',
+          text,
+          status: 'complete',
+          why: { settingLine: line },
+          created_at: this.d.clock.now(),
+        },
+      },
+      { op: 'update', table: 'messages', id: messageId, set: { badge: null } },
+    ]);
   }
 
   async post(chatId: string, messageId: string, text: string, helper: EngineHelper | null, note: string | null): Promise<void> {

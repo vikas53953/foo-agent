@@ -7,6 +7,7 @@
 // in-process engine.
 // M8 T3: `wa.report` and the WhatsApp session's vault.encrypt / vault.decrypt (08-3 §16.4).
 // M9 T4: `web.refused` → `connections.web.refused.{provider}` (08-0 §A, X-127).
+import { applyChatSetting } from '../settings/applySetting';
 import {
   engineToMainSchema,
   type DbOp,
@@ -71,6 +72,8 @@ export interface BridgeContext {
 type AiStatePayload = Extract<EngineToMain, { kind: 'ai.state' }>['payload'];
 
 /** Main's half of the engine port. `post` is set by the transport (MessagePort in production, a function in tests). */
+const SETTING_EVENTS = new Set(['setting_changed', 'cap_changed', 'permission_changed']);
+
 export class EngineBridge {
   post: (msg: MainToEngine) => void = () => {};
   /** True while an engine process is connected (FOO_TEST runs without FOO_FAKE_AI run no engine: rule 5, no real AI). */
@@ -152,6 +155,9 @@ export class EngineBridge {
         const now = this.now();
         // M6 T7 (08-3 §15.2 step 5): unprompted messages pass the interruption budget here, before anything is posted.
         const { ops } = gateUnprompted(this.ctx.db, this.ctx.settings.get(), now, msg.payload.ops as DbOp[]);
+        // CR-0043 review (trust): settings change records are main's own (08-1 §4.4.2 step 3); the engine never writes one.
+        if (ops.some((o) => o.op === 'activity' && SETTING_EVENTS.has(o.row.event)))
+          return { re: msg.id, result: { ok: false, error: { kind: 'IPC_REJECTED' } } };
         const { result, effects } = applyDbOps(this.ctx.db, ops, { now, dataDir: this.ctx.dataDir });
         for (const id of effects.messageIds) this.ctx.emitMessage(id);
         const jobIds = new Set(effects.jobIds);
@@ -214,6 +220,16 @@ export class EngineBridge {
         if (writeWeb(this.ctx.settings, (w) => ({ ...w, refused: { ...w.refused, [provider]: true } })))
           this.ctx.emit('settings:changed', publicSettings(this.ctx.settings.get()));
         return null;
+      }
+      // CR-0043 (08-1 §4.4.2 step 5): foo's chat op, the allow-list only; the renderer gets the new settings at once.
+      case 'settings.set': {
+        const r = applyChatSetting(
+          { db: this.ctx.db, settings: this.ctx.settings, dataDir: this.ctx.dataDir, now: () => this.now() },
+          msg.payload.path,
+          msg.payload.value,
+        );
+        if (r.ok) this.ctx.emit('settings:changed', publicSettings(this.ctx.settings.get()));
+        return { re: msg.id, result: r };
       }
       case 'vault.encrypt':
         return { re: msg.id, result: this.ctx.whatsapp?.vault({ kind: 'vault.encrypt', bytes: msg.payload.bytes }) ?? fail('UNKNOWN') };

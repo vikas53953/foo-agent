@@ -6,6 +6,7 @@
 import { request } from 'node:http';
 import { afterEach, describe, expect, it } from 'vitest';
 import { googleEndpoints } from '../../src/engine/tools/connectors/google';
+import { answerCard } from '../../src/main/cards/answerCard'; // CR-0044
 import type { HttpFetch } from '../../src/engine/tools/connectors/types';
 import { GoogleConnections } from '../../src/main/connections/GoogleConnections';
 import type { Db } from '../../src/main/store/db';
@@ -37,6 +38,14 @@ const WHICH_EMAIL = step({
     question: 'Which email do you want me to read?',
     options: [{ label: 'Gmail' }, { label: 'Outlook' }, { label: 'Yahoo Mail' }],
   },
+});
+/** CR-0044: the Claude CLI's real answer to "Pay my electricity bill now" that wanted Gmail (1 of 4 replays; the run on 0665cf6). */
+const REAL_BILL =
+  '<say></say>\n<act>{"decision":{"kind":"job","title":"Pay electricity bill","plan":[{"phraseKey":"read_bill","slots":{"what":"electricity bill"},"route":"email"},{"phraseKey":"wait_signin","slots":{"site":"electricity provider"},"route":"browser"},{"phraseKey":"show_before","slots":{"what":"bill amount and due date"},"route":"browser"},{"phraseKey":"wait_approve","slots":{"what":"payment"},"route":"handback"},{"phraseKey":"pay","slots":{"what":"electricity bill"},"route":"browser"}],"routeHint":["email","browser","handback"],"needsApps":["gmail"]},"usedMemoryIds":[]}</act>';
+/** What the job's first step asks with no Gmail tools (run 15). */
+const WHICH_PROVIDER = step({
+  kind: 'ask',
+  card: { question: 'Which electricity provider should I pay?', options: [{ label: 'BSES Rajdhani' }, { label: 'Tata Power-DDL' }] },
 });
 const RESULT = 'Your latest email is the electricity bill: ₹1,240 due Tue 20 Oct.';
 const READ = [
@@ -126,7 +135,8 @@ describe('CR-0040 · a job that needs Google while it is not connected shows the
       variant: 'one_app',
       app: 'gmail',
       scopes: ['gmail'],
-      why: t('cards.connect.one_app.why.gmail'),
+      why: t('cards.connect.one_app.why_job.gmail', { title: 'Read your latest Gmail' }),
+      intakeConnect: { messageId: askId },
     });
     expect(w.h.message(askId).badge).toBe(BADGE_OF_STATE.needs_you);
     expect(fooTexts(w.h)).not.toContain(t('thread.reply.empty'));
@@ -173,5 +183,84 @@ describe('CR-0040 · a job that needs Google while it is not connected shows the
     await w.h.settle();
     expect(w.h.cards('connect')).toHaveLength(0);
     expect(w.h.jobs().map((j) => j.state)).toEqual(['done']);
+  });
+});
+
+describe('CR-0044 · the Connect card says why, and Not now runs the job without the app', () => {
+  /** Main's card:answer for the card's Not now (the renderer sends { skip: true }). */
+  const notNow = (x: JobHarness, cardId: string) =>
+    answerCard(
+      {
+        db: x.db,
+        now: () => x.clock.now(),
+        engine: { send: (kind, payload) => x.bridge.send(kind, payload as never) },
+        emitCard: () => undefined,
+        emitMessage: () => undefined,
+        emitChat: () => undefined,
+      },
+      { cardId, answer: { skip: true }, resolvedBy: 'tap' },
+    );
+
+  it('"Pay my electricity bill now": the card names the job; Not now starts it without Gmail and it asks which provider', async () => {
+    const w = world([{ match: { purpose: 'intake' }, reply: REAL_BILL, once: false }, WHICH_PROVIDER]);
+    const askId = w.h.userSays('Pay my electricity bill now');
+    await w.h.settle();
+    const [card] = w.h.cards('connect');
+    expect(payloadOf(card!).why).toBe(t('cards.connect.one_app.why_job.gmail', { title: 'Pay electricity bill' }));
+    expect(w.h.jobs()).toHaveLength(0);
+    // The decided kind is in the tech log (an enum, no words).
+    expect(w.h.logs.some((l) => l.evt === 'chat.intake_kind' && l.kind === 'job')).toBe(true);
+
+    expect(notNow(w.h, String(card!.id)).ok).toBe(true);
+    await w.h.settle();
+    expect(w.h.cards('connect').map((c) => c.state)).toEqual(['skipped']);
+    // The message went back to intake once, and this time no Connect card: the job runs and asks (no dead end).
+    expect(w.h.cards('connect')).toHaveLength(1);
+    expect(w.h.jobs()).toHaveLength(1);
+    // A payment job shows its plan first; after Go, the first step asks which provider (run 15), with no Gmail tools.
+    const plan = w.h.cards('plan');
+    expect(plan.map((c) => c.state)).toEqual(['pending']);
+    w.h.answer(String(plan[0]!.id), 'go');
+    await w.h.settle();
+    expect(w.h.cards('choice').map((c) => payloadOf(c).question)).toEqual(['Which electricity provider should I pay?']);
+    expect(w.h.message(askId).badge).toBe(BADGE_OF_STATE.needs_you);
+  });
+
+  it('Not now on a card that was already answered is stale; a second tap starts nothing', async () => {
+    const w = world([{ match: { purpose: 'intake' }, reply: REAL_BILL, once: false }, WHICH_PROVIDER]);
+    w.h.userSays('Pay my electricity bill now');
+    await w.h.settle();
+    const id = String(w.h.cards('connect')[0]!.id);
+    expect(notNow(w.h, id).ok).toBe(true);
+    await w.h.settle();
+    expect(notNow(w.h, id)).toMatchObject({ ok: false, error: { kind: 'CARD_STALE' } });
+    await w.h.settle();
+    expect(w.h.jobs()).toHaveLength(1);
+  });
+});
+
+describe('CR-0044 review · a card whose message moved on never starts a second job', () => {
+  it('Google connects, the job runs; a later Not now on the old card is stale and starts nothing', async () => {
+    const w = world([{ match: { purpose: 'intake' }, reply: REAL_JOB, once: false }, ...READ]);
+    w.h.userSays(ASK);
+    await w.h.settle();
+    const id = String(w.h.cards('connect')[0]!.id);
+    await w.signIn(['gmail']);
+    await w.h.settle();
+    expect(w.h.cards('connect').map((c) => c.state)).toEqual(['connected']);
+    const r = answerCard(
+      {
+        db: w.h.db,
+        now: () => w.h.clock.now(),
+        engine: { send: (kind, payload) => w.h.bridge.send(kind, payload as never) },
+        emitCard: () => undefined,
+        emitMessage: () => undefined,
+        emitChat: () => undefined,
+      },
+      { cardId: id, answer: { skip: true }, resolvedBy: 'tap' },
+    );
+    expect(r).toMatchObject({ ok: false, error: { kind: 'CARD_STALE' } });
+    await w.h.settle();
+    expect(w.h.jobs()).toHaveLength(1);
   });
 });

@@ -64,6 +64,8 @@ export interface BrowserRuntime {
   // M9 T8
   /** `handback.check(url)` over the shipped list (08-4 §27.4). */
   handback(url: string): boolean;
+  /** A sign-in is in front of the job's window (T7): foo does not drive or navigate it. */
+  paused(jobId: string): boolean;
   /** 08-2 §8.3.11: what the job did on the page by role + name (saved as a recipe after DONE with proof) and the replay match. */
   recipes: RecipeRecorder;
 }
@@ -377,6 +379,7 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
     },
     page: (jobId) => browser.window(jobId)?.page() ?? null,
     handback, // M9 T8
+    paused,
   };
   return { registry: Object.fromEntries(defs.map((t) => [t.name, t])), runtime };
 }
