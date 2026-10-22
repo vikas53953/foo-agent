@@ -1,19 +1,19 @@
 {
-  "reportId": "M9-1d0c4d6-39682838427",
+  "reportId": "M9-0132bd9-39698449035",
   "milestone": "M9",
-  "generatedAt": "2026-10-21T22:42:15.254Z",
-  "commit": "53d7a48b7d5bc6a5948db732df5c3a52d9c80811",
-  "head": "1d0c4d66680073e25f12b9e3e1055a9d27a29cc6",
+  "generatedAt": "2026-10-22T00:55:01.196Z",
+  "commit": "c859ef1d65c850a9163e1f80d0b11b3c42df7142",
+  "head": "0132bd9c0ce28bc18e14c0e1a644229eac0d0800",
   "ci": {
-    "runId": "39682838427",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39682838427"
+    "runId": "39698449035",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39698449035"
   },
   "spec": {
     "version": "spec-v1.0",
-    "setSha256": "f46247b5e0a98aa16f51111564e4802967ba05567c69352a5da212933cbf3de0"
+    "setSha256": "fc22a4a20b68f00030bd126c464eb27161b89d900c0cc2f6289dee7e30e1fa8e"
   },
   "runner": {
-    "recordedAt": "2026-10-21T22:10:58.316Z",
+    "recordedAt": "2026-10-22T00:23:40.476Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -23,13 +23,13 @@
         "productName": "Windows Server 2025 Datacenter",
         "displayVersion": "24H2",
         "currentBuild": "26100",
-        "ubr": "33650"
+        "ubr": "33438"
       }
     },
     "image": {
       "os": "win25-vs2026",
-      "version": "20261018.275.1",
-      "runner": "GitHub Actions 1000005031"
+      "version": "20261007.264.1",
+      "runner": "GitHub Actions 1000005229"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -963,9 +963,9 @@
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 6471,
+        "passed": 6592,
         "failed": 0,
-        "skipped": 2
+        "skipped": 4
       },
       "e2e": {
         "passed": 241,
@@ -974,6 +974,141 @@
       }
     },
     "ids": [
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
       {
         "id": "ART-02a",
         "status": "passed",
@@ -26830,6 +26965,276 @@
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
       },
       {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
         "id": "ART-22",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-22.test.ts"
@@ -26838,6 +27243,11 @@
         "id": "ART-22",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-22.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
       },
       {
         "id": "ART-24a",
@@ -29040,6 +29450,61 @@
         "file": "D:/a/foo-agent/foo-agent/test/integration/m8-x.test.ts"
       },
       {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
         "id": "PERF-06",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/perf/PERF-06.test.ts"
@@ -29063,6 +29528,196 @@
         "id": "AT-225",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/unit/AT-225.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-354",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-354",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-354",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-354",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-354",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-354",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-354",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-354",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-354",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-354",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-354",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-442",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-442",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
       },
       {
         "id": "AT-005",
@@ -31247,8 +31902,8 @@
     ],
     "failed": [],
     "trace": {
-      "live": 329,
-      "pending": 64,
+      "live": 331,
+      "pending": 65,
       "byMilestone": {
         "M0": 5,
         "M1": 23,
@@ -31257,9 +31912,9 @@
         "M4": 57,
         "M5": 54,
         "M6": 38,
-        "M13": 1,
+        "M13": 2,
         "M8": 33,
-        "M9": 139,
+        "M9": 141,
         "M7": 1
       }
     }
@@ -31400,6 +32055,31 @@
         "id": "CR-0041",
         "title": "an empty intake answer is asked again, never a 👍",
         "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-199 (his messages 2026-10-18 14:56Z and 14:59Z, and"
+      },
+      {
+        "id": "CR-0042",
+        "title": "an intake kind that is not built yet says so",
+        "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-200 (his messages 2026-10-18 14:56Z and 14:59Z, and"
+      },
+      {
+        "id": "CR-0043",
+        "title": "change settings by chat",
+        "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-201 (his messages 2026-10-18 14:56Z and 14:59Z,"
+      },
+      {
+        "id": "CR-0044",
+        "title": "Not now on a Connect card from intake runs the job without the app",
+        "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-202 (his messages 2026-10-18 14:56Z and 14:59Z,"
+      },
+      {
+        "id": "CR-0045",
+        "title": "A message that is not about a waiting job leaves its card alone; a message sent while a job turns stuck is not lost",
+        "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-203 (his messages 2026-10-18 14:56Z and 14:59Z,"
+      },
+      {
+        "id": "CR-0046",
+        "title": "kit replies mend small slips, the prompt teaches the limits",
+        "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-204 (his messages 2026-10-18 14:56Z and 14:59Z, and"
       }
     ],
     "notes": "Conservative picks and deferrals: implementation-notes.md (the ## M9 sections)."
@@ -32987,7 +33667,7 @@
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "pass (BP-APP-M ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05577402104236343,
+        "r5": 0.05523838141025641,
         "ref": true,
         "app": true,
         "diff": true
@@ -33247,7 +33927,7 @@
         "r2": "fail (BP-CARD-11 0/88.671875 px)",
         "r3": "pass (BP-CARD-11 ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.10612535612535613,
+        "r5": 0.1067645554825042,
         "ref": true,
         "app": true,
         "diff": true
@@ -33533,7 +34213,7 @@
         "r2": "fail (hl 89/192 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.09 %)",
-        "r5": 0.0274873046875,
+        "r5": 0.0274892578125,
         "ref": true,
         "app": true,
         "diff": true
@@ -33624,7 +34304,7 @@
         "r2": "fail (hl 244/238 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (9.13 %)",
-        "r5": 0.0587783203125,
+        "r5": 0.05877734375,
         "ref": true,
         "app": true,
         "diff": true
@@ -33637,7 +34317,7 @@
         "r2": "fail (hl 244/238 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.02 %)",
-        "r5": 0.0297353515625,
+        "r5": 0.029962890625,
         "ref": true,
         "app": true,
         "diff": true
@@ -33676,7 +34356,7 @@
         "r2": "fail (hl 349/396.9375 px)",
         "r3": "fail (hl ΔE 86.26)",
         "r4": "fail (22.02 %)",
-        "r5": 0.070662109375,
+        "r5": 0.0704443359375,
         "ref": true,
         "app": true,
         "diff": true
@@ -33689,7 +34369,7 @@
         "r2": "fail (hl 349/396.9375 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (14.91 %)",
-        "r5": 0.0423349609375,
+        "r5": 0.0421103515625,
         "ref": true,
         "app": true,
         "diff": true
@@ -33700,9 +34380,9 @@
         "verdict": "disputed",
         "r1": "fail",
         "r2": "fail (hl 78/17.5 px)",
-        "r3": "fail (hl ΔE 31.78)",
-        "r4": "fail (83.75 %)",
-        "r5": 0.0957041015625,
+        "r3": "fail (hl ΔE 28.47)",
+        "r4": "fail (83.95 %)",
+        "r5": 0.0959833984375,
         "ref": true,
         "app": true,
         "diff": true
@@ -33819,7 +34499,7 @@
         "r2": "fail (hl 114/85.859375 px)",
         "r3": "fail (hl ΔE 100)",
         "r4": "fail (43.06 %)",
-        "r5": 0.0668271484375,
+        "r5": 0.066828125,
         "ref": true,
         "app": true,
         "diff": true
@@ -33871,7 +34551,7 @@
         "r2": "fail (hl 52/1.9375 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.47 %)",
-        "r5": 0.0796845703125,
+        "r5": 0.07968359375,
         "ref": true,
         "app": true,
         "diff": true
@@ -33949,7 +34629,7 @@
         "r2": "fail (hl 526/92 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.48 %)",
-        "r5": 0.066029296875,
+        "r5": 0.0660283203125,
         "ref": true,
         "app": true,
         "diff": true
@@ -33975,7 +34655,7 @@
         "r2": "fail (hl 52/18.546875 px)",
         "r3": "fail (hl ΔE 7.5)",
         "r4": "fail (15.74 %)",
-        "r5": 0.066802734375,
+        "r5": 0.0668017578125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34014,7 +34694,7 @@
         "r2": "fail (hl 58/18 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (9.64 %)",
-        "r5": 0.1191533203125,
+        "r5": 0.1191630859375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34079,7 +34759,7 @@
         "r2": "fail (hl 66/14.859375 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (19.11 %)",
-        "r5": 0.0498193359375,
+        "r5": 0.049818359375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34196,7 +34876,7 @@
         "r2": "fail (hl 40/19.75 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (20.42 %)",
-        "r5": 0.10384375,
+        "r5": 0.1038408203125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34209,7 +34889,7 @@
         "r2": "fail (hl 40/19.75 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (23.28 %)",
-        "r5": 0.0890341796875,
+        "r5": 0.0890322265625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34222,7 +34902,7 @@
         "r2": "fail (hl 50/4 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.89 %)",
-        "r5": 0.0918212890625,
+        "r5": 0.0918115234375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34235,7 +34915,7 @@
         "r2": "fail (hl 50/4 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.55 %)",
-        "r5": 0.07815234375,
+        "r5": 0.078138671875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34248,7 +34928,7 @@
         "r2": "fail (hl 268/156 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.75 %)",
-        "r5": 0.1056494140625,
+        "r5": 0.1055673828125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34261,7 +34941,7 @@
         "r2": "fail (hl 268/156 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.29 %)",
-        "r5": 0.085994140625,
+        "r5": 0.0858076171875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34300,7 +34980,7 @@
         "r2": "fail (hl 140/46 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (3.89 %)",
-        "r5": 0.1130283203125,
+        "r5": 0.1130419921875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34313,7 +34993,7 @@
         "r2": "fail (hl 140/46 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (3.45 %)",
-        "r5": 0.09527734375,
+        "r5": 0.0952880859375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34378,7 +35058,7 @@
         "r2": "fail (hl 16/22.140625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (86.56 %)",
-        "r5": 0.08690234375,
+        "r5": 0.0869013671875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34391,7 +35071,7 @@
         "r2": "fail (hl 16/22.140625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (88.19 %)",
-        "r5": 0.0754453125,
+        "r5": 0.075447265625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34404,7 +35084,7 @@
         "r2": "fail (hl 180/80 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (5.89 %)",
-        "r5": 0.08444921875,
+        "r5": 0.0842841796875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34417,7 +35097,7 @@
         "r2": "fail (hl 180/80 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (5.12 %)",
-        "r5": 0.071576171875,
+        "r5": 0.071421875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34469,7 +35149,7 @@
         "r2": "fail (hl 18/18.59375 px)",
         "r3": "fail (hl ΔE 35.58)",
         "r4": "fail (87.96 %)",
-        "r5": 0.0658349609375,
+        "r5": 0.065833984375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34482,7 +35162,7 @@
         "r2": "fail (hl 30/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.60 %)",
-        "r5": 0.1013681640625,
+        "r5": 0.103873046875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34495,7 +35175,7 @@
         "r2": "fail (hl 30/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (7.67 %)",
-        "r5": 0.0884130859375,
+        "r5": 0.091080078125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34625,7 +35305,7 @@
         "r2": "fail (hl 96/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.84 %)",
-        "r5": 0.078603515625,
+        "r5": 0.0785947265625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34664,7 +35344,7 @@
         "r2": "fail (hl 42/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (10.26 %)",
-        "r5": 0.096703125,
+        "r5": 0.096759765625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34690,7 +35370,7 @@
         "r2": "fail (hl 162.5625/155.5625 px)",
         "r3": "fail (hl ΔE 62.89)",
         "r4": "fail (89.22 %)",
-        "r5": 0.107916015625,
+        "r5": 0.107890625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34833,7 +35513,7 @@
         "r2": "fail (hl 70/64 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "skipped: superseded (X-79 (\"Change\"))",
-        "r5": 0.108017578125,
+        "r5": 0.10801171875,
         "ref": true,
         "app": true,
         "diff": true
@@ -35223,7 +35903,7 @@
         "r2": "pass (hl 0/1 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.19 %)",
-        "r5": 0.0778095703125,
+        "r5": 0.07785546875,
         "ref": true,
         "app": true,
         "diff": true
@@ -35353,7 +36033,7 @@
         "r2": "fail (hl 66/24.46875 px)",
         "r3": "fail (hl ΔE 12.77)",
         "r4": "fail (87.44 %)",
-        "r5": 0.0917646484375,
+        "r5": 0.091763671875,
         "ref": true,
         "app": true,
         "diff": true
