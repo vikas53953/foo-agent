@@ -8,7 +8,7 @@
    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39698459632",
    "note": "All jobs green (finished 00:51Z) after batch 3 (#130, #128, #129, #127, #126, #108). Windows golden lane: 6,592 unit/integration pass, 0 fail, 4 skipped; 241 of 241 e2e pass (evidence:main/04f01dd/fidelity.json)."
   },
-  "real_proven": 0,
+  "real_proven": 34,
   "all_proven": 0,
   "types": [
    [
@@ -92,7 +92,7 @@
     "state": "finished, judged: 45 of 54 journeys clean",
     "sha": "04f01dd",
     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39698459634",
-    "note": "Run 30 on 04f01dd judged by journey (/mnt/project-files/foo/real-test/score/run30-04f01dd-findings.md): crash-reopen and web search fixed; news with sources still stuck; IRCTC ask got \"I didn't get that\". Per-feature rows not yet in real-ai-results.tsv, so feature cells stay partial."
+    "note": "Run 30 on 04f01dd judged by journey (/mnt/project-files/foo/real-test/score/run30-04f01dd-findings.md): crash-reopen and web search fixed; news with sources still stuck; IRCTC ask got \"I didn't get that\". 40 feature ids named by the journeys added to real-ai-results.tsv: 34 pass (proven on current main), 2 fail, 1 partial, 3 blocked."
    },
    {
     "key": "judge_97",
@@ -158,9 +158,10 @@
    "notbuilt": 3
   },
   "real_ai": {
-   "partial": 81,
-   "fail": 11,
+   "partial": 51,
+   "proven": 34,
    "missing": 95,
+   "fail": 7,
    "notbuilt": 3
   },
   "bdd": {
@@ -208,8 +209,9 @@
   },
   "smoke": {
    "na": 179,
-   "fail": 2,
-   "partial": 6,
+   "proven": 4,
+   "partial": 3,
+   "fail": 1,
    "notbuilt": 3
   },
   "regression": {
@@ -331,9 +333,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "fail",
-     "why": "FAILS on Vikas's PC (report, no log): Claude and ChatGPT both 'slow to answer' on a fresh first run; Claude works only after its own 'Test again'. Fix: AI setup thread.",
-     "link": ""
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey J01-J02-first-run, J01-J02-first-run, J01-J02-first-run, J01-J02-first-run passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s0/2026-10-22T00-29-34-662Z-J01-J02-first-run"
     },
     "bdd": {
      "s": "missing",
@@ -381,9 +383,9 @@
      "link": "https://github.com/vikas53953/foo-agent/pull/101"
     },
     "smoke": {
-     "s": "fail",
-     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): FAILS on Vikas's PC (report, no log): Claude and ChatGPT both 'slow to answer' on a fresh first run; Claude works only after its own 'Test again'. Fix: AI setup thread.",
-     "link": ""
+     "s": "proven",
+     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey J01-J02-first-run, J01-J02-first-run, J01-J02-first-run, J01-J02-first-run passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s0/2026-10-22T00-29-34-662Z-J01-J02-first-run"
     },
     "regression": {
      "s": "proven",
@@ -499,9 +501,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "passed real Claude, build 306b44f (not current main): Reactions work",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B01-chat-rules, U02-reactions-thanks passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s2/2026-10-22T00-31-15-325Z-B01-chat-rules"
     },
     "bdd": {
      "s": "missing",
@@ -583,9 +585,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey B01-chat-rules, B12-languages, J07-chat runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B12-languages, B01-chat-rules passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s3/2026-10-22T00-29-43-545Z-B12-languages"
     },
     "bdd": {
      "s": "missing",
@@ -667,9 +669,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "fail",
-     "why": "works but wrong on Vikas's PC (report, no log): Long replies split into 3 bubbles, each with its own time; feels choppy (chat-feel thread).",
-     "link": ""
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B01-chat-rules passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s2/2026-10-22T00-31-15-325Z-B01-chat-rules"
     },
     "bdd": {
      "s": "missing",
@@ -835,9 +837,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey B04-stop, J09-J18-booking runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B04-stop passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s1/2026-10-22T00-35-57-072Z-B04-stop"
     },
     "bdd": {
      "s": "missing",
@@ -1171,9 +1173,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "fail",
-     "why": "FAILS on Vikas's PC (report, no log): Two messages sent before foo closed were never answered after reopening; thinking badge stays forever.",
-     "link": ""
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B05-restart passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s2/2026-10-22T00-38-21-507Z-B05-restart"
     },
     "bdd": {
      "s": "missing",
@@ -1423,9 +1425,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey B04-stop runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B04-stop passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s1/2026-10-22T00-35-57-072Z-B04-stop"
     },
     "bdd": {
      "s": "missing",
@@ -1507,9 +1509,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey B06-booking-options runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B06-booking-options passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s2/2026-10-22T00-35-02-217Z-B06-booking-options"
     },
     "bdd": {
      "s": "missing",
@@ -2263,9 +2265,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "fail",
-     "why": "FAILS on Vikas's PC (report, no log): No recovery card after reopening; unanswered messages left hanging.",
-     "link": ""
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B05-restart, B14-restart-mid-reply passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s2/2026-10-22T00-38-21-507Z-B05-restart"
     },
     "bdd": {
      "s": "missing",
@@ -2935,9 +2937,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey B10-paste-secret, J01-J02-first-run runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B10-paste-secret passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s0/2026-10-22T00-31-35-472Z-B10-paste-secret"
     },
     "bdd": {
      "s": "missing",
@@ -2985,9 +2987,9 @@
      "link": ""
     },
     "smoke": {
-     "s": "partial",
-     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): journey B10-paste-secret, J01-J02-first-run runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B10-paste-secret passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s0/2026-10-22T00-31-35-472Z-B10-paste-secret"
     },
     "regression": {
      "s": "proven",
@@ -3187,9 +3189,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey B02-choice, J08-choice runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B02-choice passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s0/2026-10-22T00-31-05-901Z-B02-choice"
     },
     "bdd": {
      "s": "missing",
@@ -3439,9 +3441,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey B02-choice, J08-choice, U12-choice-variants runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B02-choice, U12-choice-variants passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s0/2026-10-22T00-31-05-901Z-B02-choice"
     },
     "bdd": {
      "s": "missing",
@@ -4867,9 +4869,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey B02-choice, J08-choice runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B02-choice passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s0/2026-10-22T00-31-05-901Z-B02-choice"
     },
     "bdd": {
      "s": "missing",
@@ -5875,9 +5877,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "blocked by setup needs setup: Needs Gmail.",
-     "link": ""
+     "s": "fail",
+     "why": "FAILS real Claude, build 04f01dd (not current main): ISRO news job (B03) went stuck after 2 min (\"taking longer than I planned\"); no result, no Proof chip",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s1/2026-10-22T00-32-44-247Z-B03-web-local"
     },
     "bdd": {
      "s": "missing",
@@ -6883,9 +6885,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey B06-booking-options, J09-J18-booking runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B06-booking-options passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s2/2026-10-22T00-35-02-217Z-B06-booking-options"
     },
     "bdd": {
      "s": "missing",
@@ -7304,8 +7306,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "journey B07-live runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "why": "blocked by setup real Claude, build 04f01dd (not current main): B07: the IRCTC ask got \"I didn't get that\", so no live job to take over",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s2/2026-10-22T00-41-35-429Z-B07-live"
     },
     "bdd": {
      "s": "missing",
@@ -7556,8 +7558,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "journey B07-live, J09-J18-booking runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "why": "blocked by setup real Claude, build 04f01dd (not current main): B07: the IRCTC ask got \"I didn't get that\", so no live job",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s2/2026-10-22T00-41-35-429Z-B07-live"
     },
     "bdd": {
      "s": "missing",
@@ -7639,9 +7641,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey B04-stop, J09-J18-booking runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B04-stop passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s1/2026-10-22T00-35-57-072Z-B04-stop"
     },
     "bdd": {
      "s": "missing",
@@ -7975,9 +7977,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey B03-web-local, J10-hotel runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "fail",
+     "why": "FAILS real Claude, build 04f01dd (not current main): ISRO news job (B03) never read a page to the end; stuck after 2 min",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s1/2026-10-22T00-32-44-247Z-B03-web-local"
     },
     "bdd": {
      "s": "missing",
@@ -8227,9 +8229,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "passed real Claude, build 306b44f (not current main): Bank page never typed into",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B08-bank passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s3/2026-10-22T00-37-23-352Z-B08-bank"
     },
     "bdd": {
      "s": "missing",
@@ -8564,8 +8566,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "journey B07-live, J09-J18-booking runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "why": "blocked by setup real Claude, build 04f01dd (not current main): B07: the IRCTC ask got \"I didn't get that\", so no live window",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s2/2026-10-22T00-41-35-429Z-B07-live"
     },
     "bdd": {
      "s": "missing",
@@ -9823,9 +9825,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey B01-chat-rules runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B01-chat-rules passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s2/2026-10-22T00-31-15-325Z-B01-chat-rules"
     },
     "bdd": {
      "s": "missing",
@@ -9907,9 +9909,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey B01-chat-rules runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B01-chat-rules passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s2/2026-10-22T00-31-15-325Z-B01-chat-rules"
     },
     "bdd": {
      "s": "missing",
@@ -10159,9 +10161,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "fail",
-     "why": "FAILS on Vikas's PC (report, no log): Plan and checklist steps all read 'Work on it' instead of named steps.",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 04f01dd (not current main): checklist steps shown and live (B03, B06 clean) but the sources pile never appeared because the news job stuck",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s1/2026-10-22T00-32-44-247Z-B03-web-local"
     },
     "bdd": {
      "s": "missing",
@@ -10243,9 +10245,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey B06-booking-options runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B06-booking-options passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s2/2026-10-22T00-35-02-217Z-B06-booking-options"
     },
     "bdd": {
      "s": "missing",
@@ -10411,9 +10413,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey J01-J02-first-run runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey J01-J02-first-run, J01-J02-first-run, J01-J02-first-run, J01-J02-first-run passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s0/2026-10-22T00-29-34-662Z-J01-J02-first-run"
     },
     "bdd": {
      "s": "missing",
@@ -10461,9 +10463,9 @@
      "link": ""
     },
     "smoke": {
-     "s": "partial",
-     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): journey J01-J02-first-run runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey J01-J02-first-run, J01-J02-first-run, J01-J02-first-run, J01-J02-first-run passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s0/2026-10-22T00-29-34-662Z-J01-J02-first-run"
     },
     "regression": {
      "s": "proven",
@@ -10495,9 +10497,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "passed on Vikas's PC (report, no log): Striped 4-step pill; rows test live with spinners.",
-     "link": ""
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey J01-J02-first-run, J01-J02-first-run, J01-J02-first-run, J01-J02-first-run passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s0/2026-10-22T00-29-34-662Z-J01-J02-first-run"
     },
     "bdd": {
      "s": "missing",
@@ -10545,9 +10547,9 @@
      "link": ""
     },
     "smoke": {
-     "s": "partial",
-     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): passed on Vikas's PC (report, no log): Striped 4-step pill; rows test live with spinners.",
-     "link": ""
+     "s": "proven",
+     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey J01-J02-first-run, J01-J02-first-run, J01-J02-first-run, J01-J02-first-run passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s0/2026-10-22T00-29-34-662Z-J01-J02-first-run"
     },
     "regression": {
      "s": "proven",
@@ -10747,9 +10749,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "passed real Claude, build 306b44f (not current main): Settings 26/26 steps",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B11-zoom-appearance passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s2/2026-10-22T00-43-20-116Z-B11-zoom-appearance"
     },
     "bdd": {
      "s": "missing",
@@ -10831,9 +10833,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "passed real Claude, build 306b44f (not current main): Zoom works",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B11-zoom-appearance passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s2/2026-10-22T00-43-20-116Z-B11-zoom-appearance"
     },
     "bdd": {
      "s": "missing",
@@ -10999,9 +11001,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "passed real Claude, build 306b44f (not current main): Chart card drew in one hue with zero line (run10/chart-ok.png)",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B09-kit passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s3/2026-10-22T00-30-31-763Z-B09-kit"
     },
     "bdd": {
      "s": "missing",
@@ -11083,9 +11085,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "fail",
-     "why": "works but wrong real Claude, build 306b44f (not current main): Map card works but stops 3-5 overlap so numbers cannot be read",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B09-kit passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s3/2026-10-22T00-30-31-763Z-B09-kit"
     },
     "bdd": {
      "s": "missing",
@@ -11251,9 +11253,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "passed real Claude, build 306b44f (not current main): Phone compare card shown",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B09-kit passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s3/2026-10-22T00-30-31-763Z-B09-kit"
     },
     "bdd": {
      "s": "missing",
@@ -11503,9 +11505,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "passed real Claude, build 306b44f (not current main): Tea timer ran",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B09-kit passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s3/2026-10-22T00-30-31-763Z-B09-kit"
     },
     "bdd": {
      "s": "missing",
@@ -11587,9 +11589,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "passed real Claude, build 306b44f (not current main): EMI calculator recomputed",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B09-kit passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s3/2026-10-22T00-30-31-763Z-B09-kit"
     },
     "bdd": {
      "s": "missing",
@@ -11923,9 +11925,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "passed real Claude, build 306b44f (not current main): Party form shown",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B09-kit passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s3/2026-10-22T00-30-31-763Z-B09-kit"
     },
     "bdd": {
      "s": "missing",
@@ -12511,9 +12513,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey B09-kit runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B09-kit passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s3/2026-10-22T00-30-31-763Z-B09-kit"
     },
     "bdd": {
      "s": "missing",
@@ -13099,9 +13101,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "partly passed real Claude, build 306b44f (not current main): 330 typed letters arrived exactly; paste and 5 ms checks hit a driver bug (#110)",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/306b44f-claude"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey U27-composer-no-dropped-letters, B10-paste-secret passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s0/2026-10-22T00-49-56-072Z-U27-composer-no-dropped-letters"
     },
     "bdd": {
      "s": "missing",
@@ -13519,9 +13521,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey B10-paste-secret runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B10-paste-secret passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s0/2026-10-22T00-31-35-472Z-B10-paste-secret"
     },
     "bdd": {
      "s": "missing",
@@ -13603,9 +13605,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey B09-kit runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey B09-kit passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s3/2026-10-22T00-30-31-763Z-B09-kit"
     },
     "bdd": {
      "s": "missing",
@@ -14023,9 +14025,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "partial",
-     "why": "journey J08-choice, J10-hotel, U25-anatomy-composer runs with real Claude but no judged result for this feature yet",
-     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai"
+     "s": "proven",
+     "why": "passed real Claude, build 04f01dd (not current main): run 30 strict driver: journey U25-anatomy-composer passed every hard step and check (judged from summary.json and thread.json; screenshots not reviewed)",
+     "link": "https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/04f01dd-claude/s3/2026-10-22T00-43-00-856Z-U25-anatomy-composer"
     },
     "bdd": {
      "s": "missing",
