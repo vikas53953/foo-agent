@@ -5,7 +5,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { join } from 'node:path';
 import { t } from '../../src/shared/copy/t';
 import { TID } from '../../src/shared/testids';
-import { openChat, openMemory, openWorld, windowSize } from '../fidelity/capture';
+import { frameAt, openChat, openMemory, openWorld, rowOf, windowSize } from '../fidelity/capture';
 import { launch, testDirs } from './launch';
 
 test.describe.configure({ timeout: 180_000 });
@@ -23,6 +23,25 @@ async function startWorld(): Promise<{ app: Awaited<ReturnType<typeof launch>>; 
   await windowSize(app, page, 1440, 900);
   return { app, page };
 }
+
+test('AT-273 · backup reply shows ArrowSync copy and the Narrator suffix only on the plain reply', async () => {
+  const dirs = testDirs();
+  const app = await launch(dirs, [profileArg(dirs), ...diagnosticArgs()]);
+  const page = await app.firstWindow();
+  try {
+    const refs = await openWorld(app, page);
+    await openChat(page, 'foo');
+    await frameAt(page, rowOf(refs.galleryBackup!));
+    const row = page.getByTestId(TID.threadLog).locator(`[data-message-id="${refs.galleryBackup}"]`);
+    await expect(row.getByTestId(TID.bubbleBackupMark)).toBeVisible();
+    await expect(row.getByTestId(TID.bubbleBackupMark)).toContainText('Answered with ChatGPT while Claude rests');
+    await expect(row.getByTestId(TID.bubbleBackupMark).locator('[data-icon="ArrowSync"]')).toBeVisible();
+    await expect(row).toHaveAttribute('aria-label', /, answered with ChatGPT$/);
+    await expect(page.getByTestId(TID.threadLog).locator('[data-testid^="card-"]').getByTestId(TID.bubbleBackupMark)).toHaveCount(0);
+  } finally {
+    await app.close();
+  }
+});
 
 const paneOf = (page: Page) =>
   page.evaluate(
