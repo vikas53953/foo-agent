@@ -1,0 +1,22 @@
+{"t":"2026-10-22T01:30:36.733Z","journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","spec":"05-1 §5.4 Choice, 10-2 §C.4 Choice (C3), AT-035","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T01:30:42.265Z","step":"launch","ok":true}
+{"t":"2026-10-22T01:30:43.305Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1037}
+{"t":"2026-10-22T01:30:43.441Z","i":1,"do":"send","sentAt":1792632643405,"sent":true,"before":0,"ok":true,"ms":136}
+{"t":"2026-10-22T01:30:55.585Z","i":2,"do":"waitReply","expect":"Choice card with 3 options, Best fit tag, Something else","firstReplyMs":6065,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which weekend plan in Bengaluru sounds best?\n1\nNandi Hills sunrise\nBEST FIT\nEarly drive out, views and breakfast\n2\nLalbagh and VV Puram food street\nGarden walk, then street food\n3\nCubbon Park and Church Street\nEasy stroll, cafés and shopping\nSomething else…\nSkip\n1:30 AM","ms":12143}
+{"t":"2026-10-22T01:30:55.655Z","shot":"01-choice.png"}
+{"t":"2026-10-22T01:30:55.757Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":102}
+{"t":"2026-10-22T01:30:55.906Z","i":4,"do":"send","sentAt":1792632655845,"sent":true,"before":0,"ok":true,"ms":149}
+{"t":"2026-10-22T01:31:11.593Z","i":5,"do":"waitReply","expect":"typed answer picks option 2; card collapses \"question → answer\"","firstReplyMs":8599,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Lalbagh and VV Puram food street is a good pick: stroll the gardens in the morning, then eat your way through the evening. Go to Lalbagh early, before it gets warm and crowded, and reach VV Puram around dusk when the stalls are busiest.\n\nWant me to put it on your calendar for Sat 24 Oct?\n\n1:31 AM","ms":15686}
+{"t":"2026-10-22T01:31:11.671Z","shot":"03-typed-pick.png"}
+{"t":"2026-10-22T01:31:11.801Z","i":6,"do":"send","sentAt":1792632671786,"sent":true,"before":0,"ok":true,"ms":129}
+{"t":"2026-10-22T01:31:21.936Z","i":7,"do":"waitReply","expect":"another Choice card","firstReplyMs":4064,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which dinner would you like tonight?\n1\nSouth Indian tiffin\nBEST FIT\nDosa, idli and filter coffee\n2\nNorth Indian thali\nDal, roti, paneer and rice\n3\nBiryani night\nHyderabadi style, with raita\nSomething else…\nSkip\n1:31 AM","ms":10134}
+{"t":"2026-10-22T01:31:21.996Z","shot":"04-choice-2.png"}
+{"t":"2026-10-22T01:31:22.070Z","i":8,"do":"click","soft":true,"ok":true,"ms":74}
+{"t":"2026-10-22T01:31:22.670Z","i":9,"do":"wait","expect":"composer hint for my own answer","ok":true,"ms":600}
+{"t":"2026-10-22T01:31:22.728Z","shot":"05-something-else.png"}
+{"t":"2026-10-22T01:31:22.843Z","i":10,"do":"send","sentAt":1792632682815,"sent":true,"before":0,"ok":true,"ms":115}
+{"t":"2026-10-22T01:31:38.627Z","i":11,"do":"waitReply","expect":"foo takes my own answer","firstReplyMs":9170,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Dal chawal is a good call for tonight. Want a quick recipe for it?\n\n1:31 AM","ms":15784}
+{"t":"2026-10-22T01:31:38.699Z","shot":"06-own-answer.png"}
+{"t":"2026-10-22T01:31:38.711Z","i":12,"do":"dump","ok":true,"ms":12}
+{"t":"2026-10-22T01:31:38.882Z","step":"appLog","lines":13,"dropped":0}
+{"t":"2026-10-22T01:31:38.897Z","step":"aiTurns","turns":4}

@@ -1,0 +1,75 @@
+{
+  "journey": "B12-languages",
+  "title": "Chat in Hinglish and Punjabi, short answers",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-19-22-467Z-B12-languages",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792631968003,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 133
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 4: answers in Hinglish",
+      "firstReplyMs": 7098,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Parso Sat 24 Oct ko mummy ka birthday hai, to cake kal tak order kar dena sahi rahega, khaaskar agar custom chahiye. Ye options achhe rahenge:\n\nChocolate truffle: rich aur sabko pasand aane wala.\nButterscotch ya black forest: classic, kabhi galat nahi jaata.\nFresh fruit ya pineapple: halka aur kam meetha.\nPhoto cake: mummy ki pasandida photo aur ek chhota sa message ke saath.\n\nMummy ko kaunsa flavour sabse zyada pasand hai, aur cake eggless chahiye?\n\n1:19 AM",
+      "ms": 15166
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792631983375,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 132
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi",
+      "firstReplyMs": 9603,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Mummy ke birthday ke liye kaunsa cake order karein?\n1\nChocolate truffle\nBEST FIT\nRich aur sabki pasand\n2\nButterscotch ya black forest\nClassic aur safe choice\n3\nFresh fruit ya pineapple\nHalka aur kam meetha\n4\nPhoto cake\nMummy ki photo aur message ke saath\nSomething else…\nSkip\n1:19 AM",
+      "ms": 15714
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792631999276,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 96
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 3: short 1–3 bubbles, no filler",
+      "firstReplyMs": 6080,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "No, Mon 2 Nov isn't a public or bank holiday in Mumbai that I know of. I can't check the official Maharashtra list from here, so confirm there if it matters. Diwali falls around Sun 8 Nov, which is when the festival closures are likely.\n\n1:20 AM",
+      "ms": 13639
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}

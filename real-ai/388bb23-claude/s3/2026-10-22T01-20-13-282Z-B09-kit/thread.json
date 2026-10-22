@@ -1,0 +1,47 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's economy grew 6.5% in FY 2024-25, down from a peak of 9.2% the year before. It shrank 5.8% in FY 2020-21, the Covid year.\n\nCouldn’t show part of this\n\nKeep\n\nThese are the official figures as I remember them, so treat them as approximate. FY26 isn't included because I can't confirm the latest estimate from here.\n\n1:20 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n1:21 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Galaxy S25 is the best value of the three. It costs about the same as the others but gives you a 3x zoom camera and the fastest processor.\n\niPhone 16\nLaunch price in India\nAbout ₹79,900\nScreen\n6.1 inch OLED, 60Hz\nProcessor\nApple A18\nCameras\n48MP main, 12MP ultra-wide\nZoom lens\nNone\nSoftware updates\nLong, not officially stated\nPixel 9\nLaunch price in India\nAbout ₹79,999\nScreen\n6.3 inch OLED, 120Hz\nProcessor\nGoogle Tensor G4\nCameras\n50MP main, 48MP ultra-wide\nZoom lens\nNone\nSoftware updates\n7 years\nBest pick\nGalaxy S25\nLaunch price in India\nAbout ₹80,000\nScreen\n6.2 inch OLED, 120Hz\nProcessor\nSnapdragon 8 Elite\nCameras\n50MP main, 12MP ultra-wide, 10MP 3x zoom\nZoom lens\nYes, 3x\nSoftware updates\n7 years\n\nSimilar price, but it adds a zoom lens, a smooth 120Hz screen and the fastest processor.\n\nKeep\n\nPrices are launch figures from memory, so treat them as approximate. Current shop prices are usually lower and differ by seller. If you use an iPhone with other Apple devices, the iPhone 16 may still suit you better.\n\n1:21 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n1:21 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Start it when the water is hot.\n\nLet the tea steep\n2:00 left\nStart timer\nKeep\n1:21 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n1:21 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for your party plan. Fill it in and send.\n\nCouldn’t show part of this\n\nKeep\n1:21 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n1:21 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's an expense tracker for this month. Add an item, set a budget, and the totals update as you go. It lives only in this page, so it clears when you close it.\n\nKeep\n\nWant it to add a date to each item?\n\n1:21 AM"
+  }
+]

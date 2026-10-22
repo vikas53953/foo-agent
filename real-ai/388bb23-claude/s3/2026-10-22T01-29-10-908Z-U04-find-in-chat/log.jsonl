@@ -1,0 +1,21 @@
+{"t":"2026-10-22T01:29:10.908Z","journey":"U04-find-in-chat","title":"Find in chat: Ctrl+F, count, next, previous, close","spec":"06 §9 find in chat, 10-2 §C.5 Search palette + find in chat","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T01:29:16.593Z","step":"launch","ok":true}
+{"t":"2026-10-22T01:29:17.640Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1043}
+{"t":"2026-10-22T01:29:17.779Z","i":1,"do":"send","sentAt":1792632557738,"sent":true,"before":0,"ok":true,"ms":139}
+{"t":"2026-10-22T01:29:27.385Z","i":2,"do":"waitReply","expect":"a short list","firstReplyMs":3028,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Three Indian rivers: Ganga, Yamuna and Godavari.\n\n1:29 AM","ms":9605}
+{"t":"2026-10-22T01:29:27.459Z","shot":"01-rivers.png"}
+{"t":"2026-10-22T01:29:27.474Z","i":3,"do":"key","expect":"find bar in the chat header with a field and count","ok":true,"ms":14}
+{"t":"2026-10-22T01:29:27.541Z","shot":"02-find-open.png"}
+{"t":"2026-10-22T01:29:27.556Z","i":4,"do":"fill","soft":true,"ok":true,"ms":14}
+{"t":"2026-10-22T01:29:28.358Z","i":5,"do":"wait","expect":"matches highlighted; count \"1 of n\"","ok":true,"ms":802}
+{"t":"2026-10-22T01:29:28.417Z","shot":"03-find-results.png"}
+{"t":"2026-10-22T01:29:28.506Z","i":6,"do":"click","soft":true,"ok":true,"ms":89}
+{"t":"2026-10-22T01:29:28.581Z","i":7,"do":"click","soft":true,"ok":true,"ms":75}
+{"t":"2026-10-22T01:29:28.663Z","i":8,"do":"click","soft":true,"ok":true,"ms":82}
+{"t":"2026-10-22T01:29:28.677Z","i":9,"do":"key","ok":true,"ms":14}
+{"t":"2026-10-22T01:29:29.479Z","i":10,"do":"wait","expect":"Ctrl+K search overlay (J22) if built; else nothing happens","ok":true,"ms":802}
+{"t":"2026-10-22T01:29:29.542Z","shot":"04-ctrl-k.png"}
+{"t":"2026-10-22T01:29:29.546Z","i":11,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-22T01:29:29.559Z","i":12,"do":"dump","ok":true,"ms":13}
+{"t":"2026-10-22T01:29:29.710Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-10-22T01:29:29.723Z","step":"aiTurns","turns":1}
