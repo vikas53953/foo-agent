@@ -1,4 +1,4 @@
-# Codex status — 22 October 2026, 12:38 IST
+# Codex status — 22 October 2026, 12:47 IST
 
 Lead: draft [PR 138](https://github.com/vikas53953/foo-agent/pull/138). No merges. Existing Anthropic key authorized without a user spending cap; no secrets or personal data in committed evidence.
 
@@ -24,7 +24,7 @@ All four executed workflows concluded success; this does not override their fail
 
 ## Current generated matrix
 
-Fresh build_matrix.py execution: **6 proven, 45 partial, 10 fail, 64 missing, 3 not built, 62 approved code-only = 190**. Missing means no adequate recorded real-AI evidence; it is not necessarily no journey file. No new feature delta is claimed in this checkpoint: today's reviewed ledger proposals are still being consolidated. Every subsequent delta must include its run and immutable evidence link. Reporting lag is an outstanding lead task.
+Fresh build_matrix.py execution: **4 proven, 106 partial, 5 fail, 10 missing, 3 not built, 62 approved code-only = 190**. Prior checkpoint: 6 / 45 / 10 / 64 / 3 / 62. [Every changed feature, run and immutable receipt](evidence-consolidation-2026-10-22/matrix-changes.md). Partial includes blocked or incomplete predicates, not success. Two prior proven claims were downgraded; five failure judgments were corrected to partial because their prerequisites were not established. The old ledger is archived. Ten matrix-rule tests passed. Ten eligible features still have no journey evidence; three further features are not built.
 
 ## Lanes
 
@@ -33,7 +33,7 @@ Fresh build_matrix.py execution: **6 proven, 45 partial, 10 fail, 64 missing, 3 
 | A / lane_a         | Four screenshot-reviewed runs above; B07 timing diagnosis                                                                                                                                                                   | Active-job synchronization repair and bounded AT-427 journey; external account prerequisites blocked.                                                                                                             |
 | B / pr_review_two  | [39736925949](https://github.com/vikas53953/foo-agent/actions/runs/39736925949): pretend 20 pass/2 fail, real 0 pass/2 fail                                                                                                 | Confirmed settings-path isolation defect; explicit production storage overrides approved, keeping FOO_TEST=0. Remaining J5 checklist and J22 teardown failures retained.                                          |
 | C / judge_s1       | [47f20905 report](https://github.com/vikas53953/foo-agent/blob/47f20905f8c07e4fed716ab64f30667221bef19f/docs/testing/results/codex-2026-10-22-lane-C.md): 5/5 bounded direct-model quality/language probes; cost $0.0734583 | Batch complete. Direct-model output is not app routing or enforcement acceptance. Earlier injection/eval failures retained.                                                                                       |
-| D / judge_s2       | [39733053833](https://github.com/vikas53953/foo-agent/actions/runs/39733053833): fast, screen and 4 Windows shards passed                                                                                                   | Golden still running at last check; native Narrator/Windows text scaling unproven.                                                                                                                                |
+| D / judge_s2       | [39733053833](https://github.com/vikas53953/foo-agent/actions/runs/39733053833): fast, screen and 4 Windows shards passed                                                                                                   | Full workflow completed success; detailed fresh report pending. Native Narrator/Windows text scaling unproven.                                                                                                    |
 | E / judge_s3       | [39733907955](https://github.com/vikas53953/foo-agent/actions/runs/39733907955): 38 checks pass/4 blocked/0 fail; workflow failed on blocked gate                                                                           | New 8h producer+observer at 0e0ab3cab5f11301409849315cc6fa87e4dfdb55 started 12:28/12:29 IST; 2 successive jobs completed_unverified. No 8h acceptance yet. Upgrade retained-data checks do not prove job resume. |
 | F / driver_bug     | [39728230100](https://github.com/vikas53953/foo-agent/actions/runs/39728230100): renderer 0/1145 killed; boundary results retained                                                                                          | Per-area test selection correction and dry runs active; old mutation jobs preserved.                                                                                                                              |
 | G / branch_updates | [B07 evidence](https://github.com/vikas53953/foo-agent/commit/72e4b8bb6ea050ad32bb4e6e5d4b34d67567e176): 20/20 screenshots reviewed                                                                                         | Review complete; live controls unproven on completed job; human usability validation outstanding.                                                                                                                 |
@@ -79,3 +79,13 @@ Ownership is not attributed to this task. Journey counts are not audited in this
 - [39704562143](https://github.com/vikas53953/foo-agent/actions/runs/39704562143): failure.
 - [39706496634](https://github.com/vikas53953/foo-agent/actions/runs/39706496634): success.
 - [39710797010](https://github.com/vikas53953/foo-agent/actions/runs/39710797010): success.
+
+## Self-check audit scope
+
+Independent review covered the full reference runbook, status/decision ledgers and Git history/diffs, not a second full source/screenshot audit. Referencing the configured Anthropic secret in real-BDD CI is an authorized exception to the old literal workflow restriction; no secret value is committed. Workflow AI cost totals remain unknown; direct probe costs alone are recorded. Shared ledger consolidation is now complete for the reviewed 115 canonical rows; later run results still require fresh judgment.
+
+## New dispatch and integration checkpoint
+
+- [Corrected mutation run39739240428](https://github.com/vikas53953/foo-agent/actions/runs/39739240428), workflow18aa623a, source ddb5804e3ce60c42ee111662f3db82ccfe04acfa. All40targets retained across4areas; one worker and unchanged90/75/70thresholds. Local dry runs passedengine/renderer, failedshared timing andmain source-shape assertion; failures are not omitted.
+- [Lane report snapshots and provenance](report-snapshots-2026-10-22/MANIFEST.tsv) are committed here; lane implementation remains on draft branches and consolidation is being planned. Not all source changes have been copied onto the lead branch yet.
+- Matrix delta:54missing to partial;5fail to partial (corrected prerequisites);2proven to partial (AT072/AT314 incomplete predicates). No new current-main proven feature.

@@ -8,7 +8,7 @@
    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797031",
    "note": "Verified completed success on today's base at 09:08 IST; Linux, four Windows shards and golden all green."
   },
-  "real_proven": 6,
+  "real_proven": 4,
   "all_proven": 0,
   "types": [
    [
@@ -84,8 +84,8 @@
     "key": "real_ai_main",
     "state": "judged",
     "sha": "0d04a9f9105e42aef0b4a22238285a9007635c3e",
-    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39710797010",
-    "note": "Run33 completed success; all54journeys and302PNGs judged. Workflow success is not feature acceptance; see run33 findings and per-AT ledger."
+    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39725331473",
+    "note": "Current-main baseline:51 unique journeys/54 executions,45 summary-clean/9 summary-failed;291 screenshots reviewed. Workflow success is not acceptance; blocked and soft failures retained."
    },
    {
     "key": "judge_97",
@@ -104,23 +104,23 @@
    {
     "key": "bdd",
     "state": "partial",
-    "sha": "18638eb4c05baa5f7e264b39ba86af2a2fbf4f4b",
-    "link": "https://github.com/vikas53953/foo-agent/pull/119",
-    "note": "22 authored scenarios; rebuilt on today's main merge then bounded J8 passed. Pretend AI only, not in CI; install step approval pending."
+    "sha": "3b21f17a566f56bce28c7f147df8329cb5f38e6a",
+    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39736925949",
+    "note": "Actual Windows CI:22 pretend scenarios20passed2failed;2 real scenarios both blocked at setup due isolated settings path. Approved repair0585953ae01b36919bf87af9f2f13b2329646767 pending rerun. No real behavior acceptance."
    },
    {
     "key": "upgrade",
     "state": "partial",
-    "sha": "d4dea533ea78b5236247abd261a61613e6d3187e",
-    "link": "https://github.com/vikas53953/foo-agent/pull/120",
-    "note": "Old04f01dd/current build harness and dry runs only; actual Windows installer, keychain, tray, upgrade and one-hour soak not run. CI job proposal pending."
+    "sha": "5c8c80e88704a75a4ea9102b2bcbadf260fec6b1",
+    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39733907955",
+    "note": "Actual Windows installer checks38pass4blocked0fail; workflow blocked-gate failure. Upgrade11passes prove retained chat/memory/running-job presence, not job resume or completion. Tray/notification/routine gaps retained."
    },
    {
     "key": "usability",
     "state": "partial",
-    "sha": "39f23256cce8a601bf64e2fd184354493e3ed577",
-    "link": "https://github.com/vikas53953/foo-agent/pull/118",
-    "note": "Five-task fifteen-minute script reviewed against built/paused scope; no human session, ratings or acceptance."
+    "sha": "4fd0d51c0516efb239123704dd1deb3af16dc219",
+    "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572",
+    "note": "Independent review20PNGs:setup8 plus B07 viewer12. Viewer opened after job done_unverified; live/takeover/handback blocked. Human usability session not conducted."
    }
   ]
  },
@@ -144,11 +144,11 @@
    "notbuilt": 3
   },
   "real_ai": {
-   "missing": 64,
-   "partial": 45,
-   "fail": 10,
-   "proven": 6,
+   "partial": 106,
+   "fail": 5,
+   "proven": 4,
    "na": 62,
+   "missing": 10,
    "notbuilt": 3
   },
   "bdd": {
@@ -197,10 +197,8 @@
   },
   "smoke": {
    "na": 179,
-   "partial": 4,
-   "missing": 2,
+   "partial": 7,
    "fail": 1,
-   "proven": 1,
    "notbuilt": 3
   },
   "regression": {
@@ -238,9 +236,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given the composer sends `message:send` twice with the same `clientId` (a retry after a timeout), then exactly one message row exists and both calls return the same `messageId` (idempotent; 08-1 §3 `message:send`). Observed/missing: Duplicate message:send same-clientId retry was not exercised; three replies alone do not prove idempotency.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-02-42-021Z-J07-chat"
     },
     "bdd": {
      "s": "missing",
@@ -323,8 +321,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Claude works and is selected, but ChatGPT is not found; two-provider detection is unproven.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/1b9e64c381c1554b4d4fed36d527ffa36cf149dd/real-ai/0d04a9f-claude/s0/2026-10-22T02-34-12-053Z-J01-J02-first-run/01-splash.png"
+     "why": "partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): source build normalized from 948fe18 to 948fe18ccc02caf874c8bf913c27fe15cecee983; steps=14; summary.failed=0; ChatGPT not found; Claude works/selected; extra=summary.json,app-log.jsonl,thread.json | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s3/2026-10-22T06-22-09-832Z-J01-J02-first-run/04-finder-tested.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s2/2026-10-22T06-20-59-594Z-J01-J02-first-run/04-finder-tested.png"
     },
     "bdd": {
      "s": "partial",
@@ -349,7 +347,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -373,8 +371,8 @@
     },
     "smoke": {
      "s": "partial",
-     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Claude works and is selected, but ChatGPT is not found; two-provider detection is unproven.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/1b9e64c381c1554b4d4fed36d527ffa36cf149dd/real-ai/0d04a9f-claude/s0/2026-10-22T02-34-12-053Z-J01-J02-first-run/01-splash.png"
+     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): source build normalized from 948fe18 to 948fe18ccc02caf874c8bf913c27fe15cecee983; steps=14; summary.failed=0; ChatGPT not found; Claude works/selected; extra=summary.json,app-log.jsonl,thread.json | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s3/2026-10-22T06-22-09-832Z-J01-J02-first-run/04-finder-tested.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s2/2026-10-22T06-20-59-594Z-J01-J02-first-run/04-finder-tested.png"
     },
     "regression": {
      "s": "proven",
@@ -433,7 +431,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -491,8 +489,8 @@
     },
     "real_ai": {
      "s": "fail",
-     "why": "works but wrong real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Current B01 thanks path produced a heart while the inventory requires 👍; retain as wrong and do not fix in this pass.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/b849ae668a5f60ebe9921e3463cc82a1353357ff/real-ai/0d04a9f-claude/s2/2026-10-22T02-35-36-928Z-B01-chat-rules/01-thanks.png"
+     "why": "FAILS real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given the user sends \"thanks!\", then foo adds a 👍 reaction and posts no message. Observed/missing: In the active-job/steer context, the thanks message is followed by foo's ‘Got it, I’ll fold that in.’ and no accepted ❤️/👍 reaction. The visible reaction picker/other reaction does not satisfy the predicate.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-09-19-152Z-U02-reactions-thanks"
     },
     "bdd": {
      "s": "partial",
@@ -517,7 +515,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -575,8 +573,8 @@
     },
     "real_ai": {
      "s": "proven",
-     "why": "passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Current replies exercised in the rules/language evidence contain no banned filler; the Punjabi journey failure is an absent answer, not filler.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/b849ae668a5f60ebe9921e3463cc82a1353357ff/real-ai/0d04a9f-claude/s2/2026-10-22T02-35-36-928Z-B01-chat-rules/02-long.png"
+     "why": "passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Bounded pass: three real replies were observed; this does not claim every possible reply form. The sampled long answer and holiday response contain no listed filler. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s2/2026-10-22T05-03-31-960Z-B01-chat-rules/log.jsonl",
+     "link": "https://github.com/vikas53953/foo-agent/blob/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s2/2026-10-22T05-03-31-960Z-B01-chat-rules/02-long.png"
     },
     "bdd": {
      "s": "missing",
@@ -601,7 +599,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -685,7 +683,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -769,7 +767,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -827,8 +825,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Stop arrives and checklist lines show stopped, but the reply does not list the exact completed work from the activity log.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/3b162cce22bbe26c63c0a4a8e3dcb37f188cb94c/real-ai/0d04a9f-claude/s1/2026-10-22T02-39-34-420Z-B04-stop/01-flight-plan.png"
+     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given a running booking job, when the user types \"stop\", then no further click or AI call for that job happens after 1 s, and the reply lists exactly what was already done, read from the activity log. Observed/missing: Stop/Stopped UI is visible, but the exact one-job 1-second no-click/no-AI guarantee and activity-log report are missing; B04 is contaminated by a two-job Stop which one? state. | extra immutable URLs: https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-10-59-463Z-U10-plan-change-stop",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-07-01-706Z-B04-stop"
     },
     "bdd": {
      "s": "partial",
@@ -853,7 +851,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -937,7 +935,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -1105,7 +1103,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -1189,7 +1187,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -1273,7 +1271,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -1415,8 +1413,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): UI shows Stopped by you, but persisted CANCELLED and stop_reason evidence is absent.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/3b162cce22bbe26c63c0a4a8e3dcb37f188cb94c/real-ai/0d04a9f-claude/s1/2026-10-22T02-39-34-420Z-B04-stop/01-flight-plan.png"
+     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given a job in QUEUED, WORKING, NEEDS YOU or WAITING, when the user taps Stop, then it is CANCELLED with the matching `stop_reason` (`user_button` / `user_word`), badge ⛔ (`stopped`), checklist line \"Stopped by you\", and the messa Observed/missing: Stop controls and a stopped card are visible; exact state-specific stop_reason, badge, checklist line, and message contract are not all evidenced. | extra immutable URLs: https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-10-59-463Z-U10-plan-change-stop",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-07-01-706Z-B04-stop"
     },
     "bdd": {
      "s": "missing",
@@ -1441,7 +1439,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -1499,8 +1497,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Needs-you choice state is visible; the full approval/payment/sign-in/code variants are not covered.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/b849ae668a5f60ebe9921e3463cc82a1353357ff/real-ai/0d04a9f-claude/s2/2026-10-22T02-39-34-016Z-B06-booking-options/01-italian.png"
+     "why": "partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): source build normalized from 948fe18 to 948fe18ccc02caf874c8bf913c27fe15cecee983; steps=10; summary.failed=1; sidebar Needs you visible but explicit DOM check found=0; extra=summary.json,thread.json,app-log.jsonl",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s3/2026-10-22T06-23-00-735Z-B06-booking-options/02-italian-later.png"
     },
     "bdd": {
      "s": "missing",
@@ -1525,7 +1523,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -1582,9 +1580,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. Choice/plan states are visible, but expected post-answer WORKING/collapsed-card state was not reached; runner card TID check found 0. Precondition/state gap, not a confirmed product defect. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-24-46-578Z-R-approvals/02-at-109-messy-typo-choice.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-24-46-578Z-R-approvals/01-at-109-clean-choice.png"
     },
     "bdd": {
      "s": "missing",
@@ -1609,7 +1607,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -1693,7 +1691,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -1777,7 +1775,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -1834,9 +1832,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given WORKING, when all steps finish with a proof object, then DONE, badge ✅, Proof chip and receipt footer. Observed/missing: Plan/checklist renders, but no reliable proof-object DONE badge, Proof chip, receipt footer, or completed answer was established.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-13-35-446Z-U09-plan-checklist"
     },
     "bdd": {
      "s": "missing",
@@ -1861,7 +1859,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -1945,7 +1943,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -2029,7 +2027,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -2113,7 +2111,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -2197,7 +2195,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -2255,8 +2253,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Resume/recovery is visible, but the required recovery card from state.json is absent.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/b849ae668a5f60ebe9921e3463cc82a1353357ff/real-ai/0d04a9f-claude/s2/2026-10-22T02-43-17-729Z-B05-restart/01-museum-start.png"
+     "why": "partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): source build normalized from 948fe18 to 948fe18ccc02caf874c8bf913c27fe15cecee983; steps=11; summary.failed=3; recovery card checks found=0; interrupted-working precondition not sufficiently isolated, so unproven/partial; extra=summary.json,03-error-step7.png,app-log.jsonl,thread.json | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s3/2026-10-22T06-26-21-965Z-B14-restart-mid-reply/01-after-reopen.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s2/2026-10-22T06-21-50-758Z-B05-restart/02-after-reopen.png"
     },
     "bdd": {
      "s": "missing",
@@ -2281,7 +2279,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -2365,7 +2363,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -2449,7 +2447,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -2506,9 +2504,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given a FAILED or CANCELLED job, when the user taps \"Try again\", then a new linked job \"Trying again: {title}\" is created and the old job never returns to WORKING. Observed/missing: U01 is the bubble-menu Try again flow after a normal foo reply; its log does not establish a FAILED/CANCELLED job retry. The 150119 ms no-new-bubble result is a journey observation, not an AT-120 verdict.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-08-12-611Z-U01-bubble-menu"
     },
     "bdd": {
      "s": "missing",
@@ -2533,7 +2531,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -2590,9 +2588,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given a helper chat with 2 jobs WORKING, 1 routine and 3 jobs finished in the last 7 days (one 8 days ago), when the details panel opens, then \"DOING NOW\" is followed by the 3-segment control \"In progress\" (selected) / \"Scheduled\" Observed/missing: Helper details panel with two working jobs/routine/recent history was not reached; this is blocked by the prior active web job.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-07-56-040Z-J15-helper"
     },
     "bdd": {
      "s": "partial",
@@ -2617,7 +2615,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -2701,7 +2699,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -2758,9 +2756,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given a helper chat whose last job ended DONE 25 h ago with nothing queued, working, waiting or pending, no unread, not pinned, then its row is one 44px line (26px face, name, \" · Done {Thu}\", time) with `chatlist-row` `data-folde Observed/missing: Helper row DONE-25h/no-queue state was not reached; no unbuilt conclusion.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-07-56-040Z-J15-helper"
     },
     "bdd": {
      "s": "missing",
@@ -2785,7 +2783,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -2842,9 +2840,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given a helper chat with a job WORKING and no higher-priority preview (03-1 §3.4.6 rules 1–3), then the row preview reads \"Working on {job title}…\" in `--fg-2` with no animation, and \"Waiting to start {job title}…\" while the job i Observed/missing: Helper/group creation and working/waiting preview states were not reached; captures stayed on prior jobs. | extra immutable URLs: https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-13-00-759Z-U18-new-helper-group",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-07-56-040Z-J15-helper"
     },
     "bdd": {
      "s": "missing",
@@ -2869,7 +2867,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -2927,8 +2925,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Guard warning and masked secret box are visible; no current database, log, or request-body audit proves the full no-leak criterion.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/1b9e64c381c1554b4d4fed36d527ffa36cf149dd/real-ai/0d04a9f-claude/s0/2026-10-22T02-36-12-966Z-B10-paste-secret/01-paste-6000.png"
+     "why": "partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): source build normalized from 948fe18 to 948fe18ccc02caf874c8bf913c27fe15cecee983; steps=17; summary.failed=0; masked Secret box visible, no database/request-body audit; extra=summary.json,app-log.jsonl,thread.json",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s2/2026-10-22T06-25-12-913Z-B10-paste-secret/03-secret-box.png"
     },
     "bdd": {
      "s": "missing",
@@ -2977,8 +2975,8 @@
     },
     "smoke": {
      "s": "partial",
-     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Guard warning and masked secret box are visible; no current database, log, or request-body audit proves the full no-leak criterion.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/1b9e64c381c1554b4d4fed36d527ffa36cf149dd/real-ai/0d04a9f-claude/s0/2026-10-22T02-36-12-966Z-B10-paste-secret/01-paste-6000.png"
+     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): source build normalized from 948fe18 to 948fe18ccc02caf874c8bf913c27fe15cecee983; steps=17; summary.failed=0; masked Secret box visible, no database/request-body audit; extra=summary.json,app-log.jsonl,thread.json",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s2/2026-10-22T06-25-12-913Z-B10-paste-secret/03-secret-box.png"
     },
     "regression": {
      "s": "proven",
@@ -3010,9 +3008,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given a key that fails the test, then the row offers \"Replace key\" and the old value is never shown. Observed/missing: Secret-box retry/failed-test flow was not reached; no Replace key or old-value non-disclosure evidence.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-16-54-647Z-U13-secret-box"
     },
     "bdd": {
      "s": "missing",
@@ -3037,7 +3035,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -3060,9 +3058,9 @@
      "link": ""
     },
     "smoke": {
-     "s": "missing",
-     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given a key that fails the test, then the row offers \"Replace key\" and the old value is never shown. Observed/missing: Secret-box retry/failed-test flow was not reached; no Replace key or old-value non-disclosure evidence.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-16-54-647Z-U13-secret-box"
     },
     "regression": {
      "s": "proven",
@@ -3121,7 +3119,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -3178,9 +3176,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "fail",
-     "why": "FAILS real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): A current choice card is visible in B02, but J08 current matching choice behavior returns plain prose with both choice checks at zero.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/3b162cce22bbe26c63c0a4a8e3dcb37f188cb94c/real-ai/0d04a9f-claude/s1/2026-10-22T02-40-47-694Z-J08-choice/01-laptop.png"
+     "s": "partial",
+     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given foo has 3 options, then the card shows exactly 3 options plus \"Something else…\" and Skip, with option 1 tagged \"Best fit\". Observed/missing: A BEST FIT choice card and options are visible; exact three-option plus Something else/Skip contract is not fully evidenced. Historical cc8d730 four-option violation remains preserved in the archive and old decision evidence; this current run only establishes a partial B02 observation.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-03-19-656Z-B02-choice"
     },
     "bdd": {
      "s": "partial",
@@ -3205,7 +3203,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -3289,7 +3287,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -3373,7 +3371,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -3431,8 +3429,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Typed option 2 collapses correctly; the 2️⃣ reaction route is absent, so the full criterion remains partial.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/1b9e64c381c1554b4d4fed36d527ffa36cf149dd/real-ai/0d04a9f-claude/s0/2026-10-22T02-35-41-028Z-B02-choice/01-choice.png"
+     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given a Choice card, when the user types \"2\" (or reacts 2️⃣), then the card collapses exactly as if option 2 had been tapped. Observed/missing: Typing 2 advances to the next card, supporting the keyboard answer path; full card-collapse equivalence and all variants are not proven.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-03-19-656Z-B02-choice"
     },
     "bdd": {
      "s": "missing",
@@ -3457,7 +3455,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -3514,9 +3512,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given two Choice cards open in one chat and a typed answer that resolves on both, then the answer goes to the newest card and the other stays open; given one card where two options match by words (rule 3), then it is not an answer Observed/missing: Two simultaneous Choice cards and the newest-card/word-match disambiguation branches were not exercised.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-08-18-302Z-J08-choice"
     },
     "bdd": {
      "s": "missing",
@@ -3541,7 +3539,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -3598,9 +3596,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given two jobs running in one chat, when the user types \"stop\", then a Choice card (`purpose: 'stop_which'`) \"Stop which one?\" shows the two job titles plus \"Both\" (\"All of them\" for three) and nothing stops until it is answered;  Observed/missing: A Stop which one? choice appears for two jobs; no clean answer/nothing-stops-until-answered proof was captured.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-07-01-706Z-B04-stop"
     },
     "bdd": {
      "s": "missing",
@@ -3625,7 +3623,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -3682,9 +3680,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): branch=codex/lane-a-2026-10-22; NEEDS YOU plus PENDING Approval steer fixture was not reached. extraURLs=https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s1/2026-10-22T06-22-00-938Z-B04-stop/log.jsonl",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s1/2026-10-22T06-22-00-938Z-B04-stop/03-after-stop.png"
     },
     "bdd": {
      "s": "missing",
@@ -3709,7 +3707,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -3793,7 +3791,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -3850,9 +3848,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. Refusal safety copy is visible for clean/messy/Hinglish refusal paths, but the PENDING approval state and approval transition were not reached. No external action was taken. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-24-46-578Z-R-approvals/08-at-110-messy-typo-refusal.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-24-46-578Z-R-approvals/06-at-110-clean-refusal.png"
     },
     "bdd": {
      "s": "missing",
@@ -3877,7 +3875,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -3961,7 +3959,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -4018,9 +4016,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): No pending timer/toast state was present; the journey instead showed a prior stopped-job message and date choices. Pending precondition absent. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-24-46-578Z-R-approvals/12-error-step37.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-24-46-578Z-R-approvals/11-at-121-clean.png"
     },
     "bdd": {
      "s": "partial",
@@ -4045,7 +4043,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -4129,7 +4127,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -4213,7 +4211,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -4297,7 +4295,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -4354,9 +4352,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): No Not now control or pending approval was visible; date-choice/plan states only. Do not score as a safety failure. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-24-46-578Z-R-approvals/20-at-126-messy-typo-approval.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-24-46-578Z-R-approvals/17-at-126-clean-approval.png"
     },
     "bdd": {
      "s": "missing",
@@ -4381,7 +4379,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -4465,7 +4463,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -4522,9 +4520,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): No withdrawn/stopped-elsewhere state was reached; screenshots show Stop which one choices. Pending precondition absent. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-24-46-578Z-R-approvals/28-at-128-clean-stopped-approval.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-24-46-578Z-R-approvals/26-at-128-clean-approval.png"
     },
     "bdd": {
      "s": "missing",
@@ -4549,7 +4547,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -4633,7 +4631,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -4801,7 +4799,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -4885,7 +4883,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -4942,9 +4940,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "proven",
-     "why": "passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Current memory page shows source/date and the later reply recalls the stored fact; the acceptance criterion is directly evidenced.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/3b162cce22bbe26c63c0a4a8e3dcb37f188cb94c/real-ai/0d04a9f-claude/s1/2026-10-22T02-35-45-225Z-J17-memory/02-memory-page.png"
+     "s": "partial",
+     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given any fact, then it shows \"You said\" or \"I guessed\" (with the reason) and a date. Observed/missing: One fact shows source/date and a recall uses it; the any-fact ‘You said’/‘I guessed’ reason variants are not complete.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-03-15-694Z-J17-memory"
     },
     "bdd": {
      "s": "partial",
@@ -4969,7 +4967,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -5026,9 +5024,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given \"Forget everything from Gmail\", then every fact whose origin is Gmail is deleted from disk and Gmail stays connected. Observed/missing: Gmail-origin forget-all deletion and Gmail-connected persistence were not exercised.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-03-15-694Z-J17-memory"
     },
     "bdd": {
      "s": "missing",
@@ -5110,9 +5108,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given a forgotten fact, then foo does not use it in any later reply, and does not re-learn it from the same email within 90 days. Observed/missing: Forget-and-no-reuse/90-day non-relearn behavior was not exercised.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-03-15-694Z-J17-memory"
     },
     "bdd": {
      "s": "missing",
@@ -5194,9 +5192,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given the user edits `about-you.md` in Notepad, then the next foo reply uses the edited fact. Observed/missing: External about-you.md edit and next-reply refresh were not exercised.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-03-15-694Z-J17-memory"
     },
     "bdd": {
      "s": "missing",
@@ -5278,9 +5276,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given a guessed health or money fact, then it is never saved unless the user said it. Observed/missing: Guessed health/money non-persistence branch was not exercised.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-03-15-694Z-J17-memory"
     },
     "bdd": {
      "s": "missing",
@@ -5362,9 +5360,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given facts \"Lives in Mumbai\" and a newer \"Lives in Pune\" (both You said), then the nightly tidy keeps the newer one and asks at most once \"Do you live in Pune now, or Mumbai?\" [ Pune ] [ Mumbai ] as a `choice` card (`purpose='mem Observed/missing: Nightly tidy conflicting-facts choice was not exercised.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-03-15-694Z-J17-memory"
     },
     "bdd": {
      "s": "missing",
@@ -5473,7 +5471,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -5530,9 +5528,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given the AI picker, then the helper apps foo knows are exactly `claude-cli`, `codex-cli` and `gemini-cli` (`resources/maker-pages.json`, 08-0 §E.5); each one only opens its maker's page; no install, download or run path exists fo Observed/missing: Claude is visible in the first-run picker; exact claude/codex/gemini inventory and maker-page-only/no-install guarantees are unproven. | extra immutable URLs: https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-02-20-619Z-J01-J02-first-run",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-01-51-234Z-J01-J02-first-run"
     },
     "bdd": {
      "s": "missing",
@@ -5580,9 +5578,9 @@
      "link": "https://github.com/vikas53953/foo-agent/pull/101"
     },
     "smoke": {
-     "s": "missing",
-     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given the AI picker, then the helper apps foo knows are exactly `claude-cli`, `codex-cli` and `gemini-cli` (`resources/maker-pages.json`, 08-0 §E.5); each one only opens its maker's page; no install, download or run path exists fo Observed/missing: Claude is visible in the first-run picker; exact claude/codex/gemini inventory and maker-page-only/no-install guarantees are unproven. | extra immutable URLs: https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-02-20-619Z-J01-J02-first-run",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-01-51-234Z-J01-J02-first-run"
     },
     "regression": {
      "s": "proven",
@@ -5641,7 +5639,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -5866,9 +5864,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "fail",
-     "why": "FAILS real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Current web jobs remain live/stuck with zero bubble-sources/citation proof; the required sourced result is absent.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/1b9e64c381c1554b4d4fed36d527ffa36cf149dd/real-ai/0d04a9f-claude/s0/2026-10-22T02-39-44-815Z-J05-web/01-news.png"
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): branch=codex/lane-a-2026-10-22; news/local-web checklist, no email result or Proof/Not-checked-live chip; email precondition absent. extraURLs=https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s0/2026-10-22T06-22-13-052Z-B03-web-local/log.jsonl;https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s0/2026-10-22T06-22-13-052Z-B03-web-local/01-news.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s0/2026-10-22T06-22-13-052Z-B03-web-local/02-news-later.png"
     },
     "bdd": {
      "s": "missing",
@@ -5893,7 +5891,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -5977,7 +5975,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -6061,7 +6059,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -6202,9 +6200,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given an X post draft, then foo never posts to X; it only opens X's compose page with the text. Observed/missing: X compose handoff branch was not exercised.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-06-35-708Z-J12-draft"
     },
     "bdd": {
      "s": "missing",
@@ -6313,7 +6311,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -6397,7 +6395,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -6481,7 +6479,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -6565,7 +6563,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -6649,7 +6647,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -6733,7 +6731,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -6817,7 +6815,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -6875,8 +6873,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Named checklist, Needs-you state, and city-choice card render; completion of the booking-options path is not proven.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/b849ae668a5f60ebe9921e3463cc82a1353357ff/real-ai/0d04a9f-claude/s2/2026-10-22T02-39-34-016Z-B06-booking-options/01-italian.png"
+     "why": "partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): source build normalized from 948fe18 to 948fe18ccc02caf874c8bf913c27fe15cecee983; steps=10; summary.failed=1; plan/checklist and city Choice reached, restaurant options not reached; extra=summary.json,thread.json,app-log.jsonl,01-italian.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s3/2026-10-22T06-23-00-735Z-B06-booking-options/02-italian-later.png"
     },
     "bdd": {
      "s": "partial",
@@ -6901,7 +6899,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -6985,7 +6983,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -7069,7 +7067,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -7237,7 +7235,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -7295,8 +7293,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): No live job reached a takeover state; Watch live was visible but takeover/handback was not proven.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/b849ae668a5f60ebe9921e3463cc82a1353357ff/real-ai/0d04a9f-claude/s2/2026-10-22T02-46-39-209Z-B07-live/01-irctc.png"
+     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Effective partial: the reported fail condition lacked the live precondition, so it is not a product fail. The takeover pause and no-click-until-hand-back behavior are not demonstrated. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s2/2026-10-22T05-14-14-678Z-B07-live/log.jsonl",
+     "link": "https://github.com/vikas53953/foo-agent/blob/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s2/2026-10-22T05-14-14-678Z-B07-live/03-taken-over.png"
     },
     "bdd": {
      "s": "missing",
@@ -7321,7 +7319,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -7489,7 +7487,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -7547,8 +7545,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): No live job reached the takeover/cancellation path, so closed-window cancellation is unavailable to judge.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/b849ae668a5f60ebe9921e3463cc82a1353357ff/real-ai/0d04a9f-claude/s2/2026-10-22T02-46-39-209Z-B07-live/01-irctc.png"
+     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Effective partial: the reported fail condition lacked the live precondition, so it is not a product fail. The close-window cancellation path was not exercised. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s2/2026-10-22T05-14-14-678Z-B07-live/log.jsonl",
+     "link": "https://github.com/vikas53953/foo-agent/blob/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s2/2026-10-22T05-14-14-678Z-B07-live/05-stopped.png"
     },
     "bdd": {
      "s": "missing",
@@ -7573,7 +7571,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -7657,7 +7655,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -7741,7 +7739,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -7798,9 +7796,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given a network capture during voice notes and web jobs, then voice audio goes only to `api.openai.com` and only when \"OpenAI\" is selected; search, page and browse traffic goes only to the services whose keys are saved; and Settin Observed/missing: No network capture or voice/web host attribution was collected. | extra immutable URLs: https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-03-45-946Z-B03-web-local",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-07-27-468Z-J05-web"
     },
     "bdd": {
      "s": "missing",
@@ -7882,9 +7880,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given an Exa key, when a job searches, then the fake Exa endpoint is called once and results reach the AI wrapped as untrusted; when Exa returns 401, 429 or 5xx, then the same search runs on Bing in foo's window with no message to Observed/missing: Exa success and 401/429/5xx Bing fallback were not exercised or network-verified. | extra immutable URLs: https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-03-45-946Z-B03-web-local",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-07-27-468Z-J05-web"
     },
     "bdd": {
      "s": "missing",
@@ -7966,9 +7964,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "fail",
-     "why": "FAILS real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): The local web job remains stuck after the budget; no local-read result or script-page proof is produced.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/3b162cce22bbe26c63c0a4a8e3dcb37f188cb94c/real-ai/0d04a9f-claude/s1/2026-10-22T02-36-16-645Z-B03-web-local/01-news.png"
+     "s": "partial",
+     "why": "partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): branch=codex/lane-a-2026-10-22; no-key journey reaches live checklist, but no network capture, local Readability result or script-page needsBrowser result. Missing read path is unproven, not confirmed defect. extraURLs=https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s0/2026-10-22T06-22-13-052Z-B03-web-local/log.jsonl;https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s0/2026-10-22T06-22-13-052Z-B03-web-local/01-news.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s0/2026-10-22T06-22-13-052Z-B03-web-local/02-news-later.png"
     },
     "bdd": {
      "s": "missing",
@@ -8050,9 +8048,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given canary secrets in the vault and in the job's text, when cloud search, read and browse calls run, then no canary appears in any outbound payload; a canary in a URL host or path blocks that call (`CLOUD_SECRET_BLOCKED`) and th Observed/missing: Canary-secret outbound-payload/path blocking was not exercised or captured. | extra immutable URLs: https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-03-45-946Z-B03-web-local",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-07-27-468Z-J05-web"
     },
     "bdd": {
      "s": "missing",
@@ -8134,9 +8132,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given a Browser Use key, then `web.browseCloud` is refused (`USE_EDGE` / `SITE_HANDBACK`) for a signed-in site, IRCTC, a biller, a hand-back domain and any goal that types, books, buys, pays, sends or posts; and when the cloud res Observed/missing: Browser Use refusal and signed-in/hand-back domains were not exercised. | extra immutable URLs: https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-03-45-946Z-B03-web-local",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-07-27-468Z-J05-web"
     },
     "bdd": {
      "s": "missing",
@@ -8218,9 +8216,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "fail",
-     "why": "FAILS real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): HDFC request folds into another job and logs protocol_invalid; required bank handback text and safe-open control are absent.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/3b162cce22bbe26c63c0a4a8e3dcb37f188cb94c/real-ai/0d04a9f-claude/s3/2026-10-22T02-43-43-541Z-B08-bank/01-bank.png"
+     "s": "partial",
+     "why": "partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): branch=codex/lane-a-2026-10-22; exact bank handback/Open control rendered, but no complete browser no-click/no-read trace; initial waitReply was late/false and later recheck passed. extraURLs=https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s0/2026-10-22T06-25-03-071Z-B08-bank/log.jsonl;https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s0/2026-10-22T06-25-03-071Z-B08-bank/01-bank.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s0/2026-10-22T06-25-03-071Z-B08-bank/02-bank-later.png"
     },
     "bdd": {
      "s": "missing",
@@ -8245,7 +8243,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -8302,9 +8300,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given an AI cap of ₹1,000 with ₹999 spent, when a cloud search or read would cross the cap, then it is not called, the local path is used, and the Spent meter includes every earlier cloud call. Observed/missing: ₹1,000 cap boundary and Spent meter were not exercised. | extra immutable URLs: https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-03-45-946Z-B03-web-local",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-07-27-468Z-J05-web"
     },
     "bdd": {
      "s": "missing",
@@ -8497,7 +8495,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -8555,8 +8553,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): No live window reached takeover; hand-back control and job.handBack proof are unavailable.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/b849ae668a5f60ebe9921e3463cc82a1353357ff/real-ai/0d04a9f-claude/s2/2026-10-22T02-46-39-209Z-B07-live/01-irctc.png"
+     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Effective partial: the reported fail condition lacked the live precondition, so it is not a product fail. The control set, IPC shape, resume behavior, and forbidden option are unproven. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s2/2026-10-22T05-14-14-678Z-B07-live/log.jsonl",
+     "link": "https://github.com/vikas53953/foo-agent/blob/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s2/2026-10-22T05-14-14-678Z-B07-live/04-handed-back.png"
     },
     "bdd": {
      "s": "missing",
@@ -8581,7 +8579,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -8665,7 +8663,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "partial",
@@ -8833,7 +8831,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -8917,7 +8915,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -9001,7 +8999,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "proven",
@@ -9085,7 +9083,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "proven",
@@ -9169,7 +9167,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "proven",
@@ -9253,7 +9251,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "proven",
@@ -9337,7 +9335,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "proven",
@@ -9421,7 +9419,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "partial",
@@ -9505,7 +9503,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "partial",
@@ -9589,7 +9587,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -9673,7 +9671,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "partial",
@@ -9757,7 +9755,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "partial",
@@ -9841,7 +9839,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -9925,7 +9923,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -10009,7 +10007,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "partial",
@@ -10093,7 +10091,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "partial",
@@ -10150,9 +10148,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "fail",
-     "why": "FAILS real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): B03 never reaches completed checked steps or the sources pile; B06 only shows an incomplete checklist.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/3b162cce22bbe26c63c0a4a8e3dcb37f188cb94c/real-ai/0d04a9f-claude/s1/2026-10-22T02-36-16-645Z-B03-web-local/01-news.png"
+     "s": "partial",
+     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: named steps with their `StepKind` icon; live step shimmers; ✓ overshoot; sources pile (≤ 5, \"+n\" after 3) Observed/missing: Named plan/checklist steps and live state appear; complete StepKind icons, shimmer/overshoot, source pile limit, and final receipt are missing. | extra immutable URLs: https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-10-59-463Z-U10-plan-change-stop",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-13-35-446Z-U09-plan-checklist"
     },
     "bdd": {
      "s": "missing",
@@ -10177,7 +10175,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "partial",
@@ -10235,8 +10233,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Money/checklist surface is visible, but full card motion and money-card visual rules are not proven.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/b849ae668a5f60ebe9921e3463cc82a1353357ff/real-ai/0d04a9f-claude/s2/2026-10-22T02-39-34-016Z-B06-booking-options/01-italian.png"
+     "why": "partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): source build normalized from 948fe18 to 948fe18ccc02caf874c8bf913c27fe15cecee983; steps=10; summary.failed=1; no premature Approval is shown, required booking Approval not reached; extra=summary.json,thread.json,app-log.jsonl",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s3/2026-10-22T06-23-00-735Z-B06-booking-options/02-italian-later.png"
     },
     "bdd": {
      "s": "missing",
@@ -10261,7 +10259,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "partial",
@@ -10345,7 +10343,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "partial",
@@ -10403,8 +10401,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Static splash frames show the face, but cannot prove the one-shot eye-open/no-flicker animation.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/1b9e64c381c1554b4d4fed36d527ffa36cf149dd/real-ai/0d04a9f-claude/s0/2026-10-22T02-34-12-053Z-J01-J02-first-run/01-splash.png"
+     "why": "partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): source build normalized from 948fe18 to 948fe18ccc02caf874c8bf913c27fe15cecee983; steps=14; summary.failed=0; static frame cannot prove one-shot eye animation; extra=summary.json,first-chat.png | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s3/2026-10-22T06-22-09-832Z-J01-J02-first-run/01-splash.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s2/2026-10-22T06-20-59-594Z-J01-J02-first-run/01-splash.png"
     },
     "bdd": {
      "s": "partial",
@@ -10429,7 +10427,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "partial",
@@ -10453,8 +10451,8 @@
     },
     "smoke": {
      "s": "partial",
-     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Static splash frames show the face, but cannot prove the one-shot eye-open/no-flicker animation.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/1b9e64c381c1554b4d4fed36d527ffa36cf149dd/real-ai/0d04a9f-claude/s0/2026-10-22T02-34-12-053Z-J01-J02-first-run/01-splash.png"
+     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): source build normalized from 948fe18 to 948fe18ccc02caf874c8bf913c27fe15cecee983; steps=14; summary.failed=0; static frame cannot prove one-shot eye animation; extra=summary.json,first-chat.png | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s3/2026-10-22T06-22-09-832Z-J01-J02-first-run/01-splash.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s2/2026-10-22T06-20-59-594Z-J01-J02-first-run/01-splash.png"
     },
     "regression": {
      "s": "proven",
@@ -10486,9 +10484,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "proven",
-     "why": "passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Current finder screenshots show the four-step pill, provider logos, Claude works state, and the journey found the setup-card DOM.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/3b162cce22bbe26c63c0a4a8e3dcb37f188cb94c/real-ai/0d04a9f-claude/s1/2026-10-22T02-34-54-638Z-J01-J02-first-run/04-finder-tested.png"
+     "s": "partial",
+     "why": "partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): source build normalized from 948fe18 to 948fe18ccc02caf874c8bf913c27fe15cecee983; steps=14; summary.failed=0; finder rows/provider tiles/step pill visible; extra=summary.json,app-log.jsonl AT-314 remains partial: static PNG evidence cannot prove the all-row shimmer-to-check transition. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s3/2026-10-22T06-22-09-832Z-J01-J02-first-run/04-finder-tested.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s2/2026-10-22T06-20-59-594Z-J01-J02-first-run/04-finder-tested.png"
     },
     "bdd": {
      "s": "missing",
@@ -10513,7 +10511,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "partial",
@@ -10536,9 +10534,9 @@
      "link": ""
     },
     "smoke": {
-     "s": "proven",
-     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Current finder screenshots show the four-step pill, provider logos, Claude works state, and the journey found the setup-card DOM.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/3b162cce22bbe26c63c0a4a8e3dcb37f188cb94c/real-ai/0d04a9f-claude/s1/2026-10-22T02-34-54-638Z-J01-J02-first-run/04-finder-tested.png"
+     "s": "partial",
+     "why": "in the first-run smoke journey J01-J02 (real Claude on every main merge): partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): source build normalized from 948fe18 to 948fe18ccc02caf874c8bf913c27fe15cecee983; steps=14; summary.failed=0; finder rows/provider tiles/step pill visible; extra=summary.json,app-log.jsonl AT-314 remains partial: static PNG evidence cannot prove the all-row shimmer-to-check transition. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s3/2026-10-22T06-22-09-832Z-J01-J02-first-run/04-finder-tested.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s2/2026-10-22T06-20-59-594Z-J01-J02-first-run/04-finder-tested.png"
     },
     "regression": {
      "s": "proven",
@@ -10597,7 +10595,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -10681,7 +10679,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -10765,7 +10763,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -10849,7 +10847,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -10991,8 +10989,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Chart is visible with one hue, labels, and axes; all variants/series and full DOM-backed behavior are not exercised.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/3b162cce22bbe26c63c0a4a8e3dcb37f188cb94c/real-ai/0d04a9f-claude/s3/2026-10-22T02-36-41-836Z-B09-kit/03-chart.png"
+     "why": "partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): branch=codex/lane-a-2026-10-22; one chart surface/series observed, not all three variants and one-vs-three series/legend rules. extraURLs=https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s1/2026-10-22T06-23-04-877Z-B09-kit/log.jsonl",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s1/2026-10-22T06-23-04-877Z-B09-kit/03-chart.png"
     },
     "bdd": {
      "s": "missing",
@@ -11017,7 +11015,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -11101,7 +11099,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -11158,9 +11156,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. Stepper is visible and the Increase click is logged to 2, but the feature predicate also requires Decrease, arrow keys, min/max behavior, and all components bound to the path; those were not exercised. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-40-59-307Z-R-kit-1/02-at-342-messy-typo.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-40-59-307Z-R-kit-1/01-at-342-clean.png"
     },
     "bdd": {
      "s": "missing",
@@ -11185,7 +11183,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -11269,7 +11267,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -11326,9 +11324,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only pass; do not promote to current-main matrix coverage. Timeline card shows all three date-ordered items and money-formatted amounts; matching kit-timeline TID and expectText evidence pass for all three variants. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-40-59-307Z-R-kit-1/05-at-344-messy-typo.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-40-59-307Z-R-kit-1/04-at-344-clean.png"
     },
     "bdd": {
      "s": "missing",
@@ -11353,7 +11351,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -11410,9 +11408,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. Seven day columns, busy/free entries and the legend are visible with kit-week-calendar TID; no Narrator/read-each-slot evidence is asserted by this journey. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-40-59-307Z-R-kit-1/08-at-345-messy-typo.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-40-59-307Z-R-kit-1/07-at-345-clean.png"
     },
     "bdd": {
      "s": "missing",
@@ -11437,7 +11435,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -11495,8 +11493,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Timer card and Start are visible, but a started/ticking timer and data-model update are not shown.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/3b162cce22bbe26c63c0a4a8e3dcb37f188cb94c/real-ai/0d04a9f-claude/s3/2026-10-22T02-36-41-836Z-B09-kit/05-timer.png"
+     "why": "partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): branch=codex/lane-a-2026-10-22; timer card shows 2:00 and Start timer, but no start/tick/data-model persistence proof. extraURLs=https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s1/2026-10-22T06-23-04-877Z-B09-kit/log.jsonl",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s1/2026-10-22T06-23-04-877Z-B09-kit/05-timer.png"
     },
     "bdd": {
      "s": "missing",
@@ -11521,7 +11519,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -11579,8 +11577,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Calculator widget and values are visible, but no input change/recomputation was exercised.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/3b162cce22bbe26c63c0a4a8e3dcb37f188cb94c/real-ai/0d04a9f-claude/s3/2026-10-22T02-36-41-836Z-B09-kit/01-emi.png"
+     "why": "partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): branch=codex/lane-a-2026-10-22; calculator inputs/outputs render, but no input mutation/recompute or bad-formula path. extraURLs=https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s1/2026-10-22T06-23-04-877Z-B09-kit/log.jsonl",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s1/2026-10-22T06-23-04-877Z-B09-kit/01-emi.png"
     },
     "bdd": {
      "s": "missing",
@@ -11605,7 +11603,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -11662,9 +11660,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. Arc and 30,000 of 1,00,000 text are visible with kit-goal-ring TID and expectText evidence; role=meter and proportional semantics are not directly asserted. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-40-59-307Z-R-kit-1/11-at-348-messy-typo.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-40-59-307Z-R-kit-1/10-at-348-clean.png"
     },
     "bdd": {
      "s": "missing",
@@ -11689,7 +11687,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -11746,9 +11744,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Requested list-pick card is absent in all three variants; plan card renders instead and radio click/acknowledgement cannot run. This is a missing journey state, not proof of a widget product defect. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-40-59-307Z-R-kit-1/15-at-349-messy-typo.png; https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-40-59-307Z-R-kit-1/17-at-349-Hinglish.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-40-59-307Z-R-kit-1/13-at-349-clean.png"
     },
     "bdd": {
      "s": "missing",
@@ -11773,7 +11771,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -11830,9 +11828,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. No confirmation bubble; clean/messy clicks timed out; Hinglish post-click wait had no bubble",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s2/2026-10-22T05-25-49-852Z-R-kit-2/10-at-350-Hinglish.png"
     },
     "bdd": {
      "s": "missing",
@@ -11857,7 +11855,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -11915,8 +11913,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Form fields and Send are visible, but no submitted action with values is evidenced.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/3b162cce22bbe26c63c0a4a8e3dcb37f188cb94c/real-ai/0d04a9f-claude/s3/2026-10-22T02-36-41-836Z-B09-kit/06-form.png"
+     "why": "partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): branch=codex/lane-a-2026-10-22; three-field form renders, but no values entered/submitted. extraURLs=https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s1/2026-10-22T06-23-04-877Z-B09-kit/log.jsonl",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s1/2026-10-22T06-23-04-877Z-B09-kit/06-form.png"
     },
     "bdd": {
      "s": "missing",
@@ -11941,7 +11939,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -11998,9 +11996,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. No stamp/refresh surface in AT-352 states; refresh checks found 0",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s2/2026-10-22T05-25-49-852Z-R-kit-2/10-at-352-Hinglish.png"
     },
     "bdd": {
      "s": "missing",
@@ -12025,7 +12023,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -12109,7 +12107,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "partial",
@@ -12193,7 +12191,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -12250,9 +12248,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. No action/update round trip demonstrated",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s2/2026-10-22T05-25-49-852Z-R-kit-2/21-at-355-Hinglish.png"
     },
     "bdd": {
      "s": "missing",
@@ -12277,7 +12275,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -12361,7 +12359,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -12613,7 +12611,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -12781,7 +12779,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -12865,7 +12863,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -12922,9 +12920,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. foo read line is visible with Jaipur, 2 people, Sat 14 Nov, INR 4,000 and no secret; exact card-plan TID expectation failed because a choice card rendered. Feature line is visually proven; full exact predicate not fully proven. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-24-46-578Z-R-approvals/37-at-363-messy-typo.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-24-46-578Z-R-approvals/36-at-363-clean.png"
     },
     "bdd": {
      "s": "missing",
@@ -12949,7 +12947,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -13006,9 +13004,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. Clean/messy/Hinglish preserve the running plan while answering 12x12=144; Hindi visibly re-plans and Punjabi stays at a choice state. Cross-locale predicate is inconsistent; no claim of full pass. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-29-13-735Z-R-jobs/23-at-364-clean-arithmetic-while-working.png; https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-29-13-735Z-R-jobs/29-at-364-Hindi-arithmetic-while-working.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-29-13-735Z-R-jobs/22-at-364-clean-flight-job.png"
     },
     "bdd": {
      "s": "missing",
@@ -13033,7 +13031,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -13091,8 +13089,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Inline and 2,001–10,000 paste bands are evidenced; the >10,000 file-chip band is absent.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/1b9e64c381c1554b4d4fed36d527ffa36cf149dd/real-ai/0d04a9f-claude/s0/2026-10-22T02-36-12-966Z-B10-paste-secret/01-paste-6000.png"
+     "why": "partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): source build normalized from 948fe18 to 948fe18ccc02caf874c8bf913c27fe15cecee983; steps=17; summary.failed=0; 6200-char medium band and composer-chip pass, other bands absent; extra=summary.json,02-secret-guard.png,app-log.jsonl",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s2/2026-10-22T06-25-12-913Z-B10-paste-secret/01-paste-6000.png"
     },
     "bdd": {
      "s": "partial",
@@ -13117,7 +13115,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -13174,9 +13172,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only pass; do not promote to current-main matrix coverage. All five locale variants answer the question without kit/AI page output; screenshot and completed step logs align. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-24-43-747Z-R-ai-pages/03-at-366-Hinglish.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-24-43-747Z-R-ai-pages/01-at-366-clean.png"
     },
     "bdd": {
      "s": "missing",
@@ -13201,7 +13199,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -13258,9 +13256,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. Up to three action chips are visible and the <=3 DOM check passes, but this journey has no chip click/composer-fill or approval/payment gate check; static chip appearance alone is insufficient. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-24-43-747Z-R-ai-pages/07-at-367-messy-typo.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-24-43-747Z-R-ai-pages/06-at-367-clean.png"
     },
     "bdd": {
      "s": "missing",
@@ -13285,7 +13283,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -13342,9 +13340,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. Refresh click produced checklist, not a new stamped card; clean/messy clicks timed out",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s2/2026-10-22T05-25-49-852Z-R-kit-2/16-at-368-Hinglish-live-card.png"
     },
     "bdd": {
      "s": "missing",
@@ -13369,7 +13367,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -13426,9 +13424,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. No Files row/reopen; support presence found 0; later clicks timed out",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s2/2026-10-22T05-25-49-852Z-R-kit-2/22-at-369-clean.png"
     },
     "bdd": {
      "s": "missing",
@@ -13453,7 +13451,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -13511,8 +13509,8 @@
     },
     "real_ai": {
      "s": "partial",
-     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Secret guard and masked secret box are visible; ShortForm/TextField refusal behavior is not exercised.",
-     "link": "https://github.com/vikas53953/foo-agent/blob/1b9e64c381c1554b4d4fed36d527ffa36cf149dd/real-ai/0d04a9f-claude/s0/2026-10-22T02-36-12-966Z-B10-paste-secret/01-paste-6000.png"
+     "why": "partly passed real Claude, build 948fe18ccc02caf874c8bf913c27fe15cecee983 (not current main): source build normalized from 948fe18 to 948fe18ccc02caf874c8bf913c27fe15cecee983; steps=17; summary.failed=0; composer secret guard visible, ShortForm/TextField refusal paths not exercised; extra=summary.json,thread.json,03-secret-box.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/1bffc8d80e2ae4a570a274195abc624d76d7dc52/real-ai/948fe18-claude/s2/2026-10-22T06-25-12-913Z-B10-paste-secret/02-secret-guard.png"
     },
     "bdd": {
      "s": "missing",
@@ -13537,7 +13535,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -13678,9 +13676,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given the user pastes `sk-proj-…` (or a Luhn-valid 16-digit number, or a code right after foo asked for one) into the composer, when they press Enter, then nothing is sent and the paste catcher appears. *(also covers J7, J13 branches)* Observed/missing: Secret/paste catcher UI is visible for a long paste, but the exact sk-proj/Luhn/code-after-prompt Enter branches and no-send checks are incomplete. | extra immutable URLs: https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-24-58-786Z-U27-composer-no-dropped-letters",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s0/2026-10-22T05-03-52-181Z-B10-paste-secret"
     },
     "bdd": {
      "s": "missing",
@@ -13705,7 +13703,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -13789,7 +13787,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review (only part of it is built: SITE_BLOCKED error card offers \"Open the page myself\" (src/engine/jobs/JobRunner.ts:273,1286); no \"Email the restaurant\" link or copy key anywhere in src)",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -13930,9 +13928,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "blocked by setup real Claude, build 0d04a9f9105e42aef0b4a22238285a9007635c3e (current main): Predicate: Given the Watch live window (`live.html`, 08-0 §G.8), then password, card and OTP fields are blurred in every frame and the window takes no clicks. Observed/missing: Watch-live blur/no-click security behavior was not exercised.",
+     "link": "https://github.com/vikas53953/foo-agent/tree/b292335721066ef5edd65ce11a7c993f812b9d01/real-ai/0d04a9f-claude/s1/2026-10-22T05-07-01-706Z-B04-stop"
     },
     "bdd": {
      "s": "missing",
@@ -13957,7 +13955,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -14041,7 +14039,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -14125,7 +14123,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review (only part of it is built: Keep it / Cancel booking buttons render disabled with noop \"until T7 wires them\" (src/renderer/cards/Approval.tsx:186,476-484); reminder never posted)",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -14182,9 +14180,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. A fold acknowledgement appears in some variants, but the required two-queued-message single final answer/fold semantics fail: clean never reaches expected end; messy emits extra plan/stuck state; Hinglish does not provide the fold acknowledgement. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-29-13-735Z-R-jobs/36-at-420-messy-typo-vistara-follow-up.png; https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-29-13-735Z-R-jobs/39-at-420-Hinglish-vistara-follow-up.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-29-13-735Z-R-jobs/33-at-420-clean-vistara-follow-up.png"
     },
     "bdd": {
      "s": "missing",
@@ -14209,7 +14207,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -14293,7 +14291,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -14377,7 +14375,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -14461,7 +14459,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -14518,9 +14516,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. Clean screenshot leads with the wrong arithmetic comparison then self-corrects; messy/Hinglish/Hindi/Punjabi lead with the correct answer. Answer-first is therefore inconsistent across locales. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-24-43-747Z-R-ai-pages/10-at-424-messy-typo.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-24-43-747Z-R-ai-pages/09-at-424-clean.png"
     },
     "bdd": {
      "s": "missing",
@@ -14545,7 +14543,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -14602,9 +14600,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. Capabilities card, rows, safety line and Try it fill are visibly present in all five variants; runner expected kit-capabilities TID is absent, so this is proof-qualified partial rather than a full pass. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-24-43-747Z-R-ai-pages/15-at-425-messy-typo-capabilities.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-24-43-747Z-R-ai-pages/14-at-425-clean-capabilities.png"
     },
     "bdd": {
      "s": "missing",
@@ -14629,7 +14627,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -14686,9 +14684,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. Safety line is visible and the placeholder Ideas link is absent in all variants; kit-capabilities TID check is absent, so exact acceptance proof remains partial. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-24-43-747Z-R-ai-pages/20-at-426-messy-typo.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-24-43-747Z-R-ai-pages/19-at-426-clean.png"
     },
     "bdd": {
      "s": "missing",
@@ -14713,7 +14711,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -14770,9 +14768,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Effective partial: <=600 is a conditional rendering fixture, not a universal reply cap; R prompts did not set that precondition and observed bodies were 673–757 chars. Run did not provide <=600-character fixture; logged bodies are 673-757 chars, so length precondition is absent",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s2/2026-10-22T05-24-24-274Z-R-chat-rules/01-at-427-clean.png"
     },
     "bdd": {
      "s": "missing",
@@ -14797,7 +14795,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -14854,9 +14852,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. Messy/Hinglish output waits produced no new bubbles; no helper output run",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s3/2026-10-22T05-34-51-680Z-R-reply-area/01-at-428-clean.png"
     },
     "bdd": {
      "s": "missing",
@@ -14881,7 +14879,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -14938,9 +14936,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. No light-theme control",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s3/2026-10-22T05-24-06-399Z-R-dark/03-at-429-messy-typo-dark-mode.png"
     },
     "bdd": {
      "s": "missing",
@@ -14965,7 +14963,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -15022,9 +15020,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. No recorded hover/focus; all three copy waits timed out",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s3/2026-10-22T05-34-51-680Z-R-reply-area/04-at-430-clean-VPN-answer.png"
     },
     "bdd": {
      "s": "missing",
@@ -15049,7 +15047,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -15133,7 +15131,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -15190,9 +15188,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. Some screenshots show the user blue double tick after a reply, but the exact fresh-reply/tick assertion fails for all tested variants; rendering alone is insufficient proof. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-29-13-735Z-R-jobs/37-at-432-messy-typo-morning-follow-up.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s0/2026-10-22T05-29-13-735Z-R-jobs/34-at-432-clean-morning-follow-up.png"
     },
     "bdd": {
      "s": "missing",
@@ -15217,7 +15215,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -15301,7 +15299,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -15385,7 +15383,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -15442,9 +15440,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. Connect Gmail card explicitly says Gmail unavailable in this build; no draft/say content is shown. This is a disconnected integration precondition, not a product fail. | extra immutable URLs: https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-24-46-578Z-R-approvals/40-at-435-messy-typo.png",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s1/2026-10-22T05-24-46-578Z-R-approvals/39-at-435-clean.png"
     },
     "bdd": {
      "s": "missing",
@@ -15469,7 +15467,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -15553,7 +15551,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -15637,7 +15635,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -15694,9 +15692,9 @@
      "link": ""
     },
     "real_ai": {
-     "s": "missing",
-     "why": "no real-user journey names this feature",
-     "link": ""
+     "s": "partial",
+     "why": "partly passed real Claude, build 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d (not current main): Branch-only observed subset; current-main proof remains pending. No light comparison or computed all-token contrast proof",
+     "link": "https://github.com/vikas53953/foo-agent/blob/f1f1e8ab207c567290bcc903b115d771c25ae0ce/real-ai/9f429f8-claude/s3/2026-10-22T05-24-06-399Z-R-dark/02-at-429-clean-dark-greeting.png"
     },
     "bdd": {
      "s": "missing",
@@ -15721,7 +15719,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -15805,7 +15803,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review (only part of it is built: ART-24a (test/articles/ART-24a.test.ts) scans raw literals only; no multiple-of-4 size scan with the four exceptions exists (ART-24 runtime audit is M14))",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -15889,7 +15887,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
@@ -15973,7 +15971,7 @@
     "ux": {
      "s": "missing",
      "why": "no real-person usability receipt or feature-specific mapping from the lane G heuristic review",
-     "link": "https://github.com/vikas53953/foo-agent/pull/118"
+     "link": "https://github.com/vikas53953/foo-agent/actions/runs/39735003572"
     },
     "motion": {
      "s": "na",
