@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n7:33 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What matters most in your gym running shoes?\n1\nSoft cushioning\nBEST FIT\nEasier on knees and joints\n2\nLightweight and fast\nFeels quick on the treadmill\n3\nDurable for daily use\nLasts through heavy use\n4\nWide fit or flat feet\nComfort for your foot shape\nSomething else…\nSkip\n7:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:34 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n7:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n7:34 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:34 AM\n7:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:34 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking for Goa hotels, 2 nights Sat…\nlive checklist\nLooked for Goa hotels, 2 nights Sat 31 Oct to Mon 2\nCompared price, area and guest reviews\nKept 3 hotels that fit under ₹6,000 a night with the best\nYou picked\nStopped by you\n7:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:34 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking for Goa hotels, 2 nights Sat… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\n7:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:37 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n7:37 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from Mon 19 Oct to Thu 22 Oct\nCompare reports across news sites to confirm\nWrite it\nWatch live\nStop\nunder 1 min\n7:38 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:38 AM"
+  }
+]

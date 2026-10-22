@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet: everything you send goes into it scrambled, so nobody in between can read it.\n\nHere is how it works:\n\nYour device locks your traffic and sends it to a VPN company's computer.\nThat computer unlocks it and talks to the website for you.\nThe website sees the VPN's address, not yours, and your Wi-Fi or internet provider only sees scrambled data.\n\nIt helps on public Wi-Fi and hides your location from websites. It does not make you fully anonymous, because the VPN company can still see your activity, so pick one you trust.\n\n7:33 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n7:33 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Treadmill or gym\n7:33 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:33 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n7:33 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What matters most in your gym running shoes?\n1\nSoft cushioning\nBEST FIT\nEasier on knees and joints\n2\nLightweight and fast\nFeels quick on the treadmill\n3\nDurable for daily use\nLasts through heavy use\n4\nWide fit or flat feet\nComfort for your foot shape\nSomething else…\nSkip\n7:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:34 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n7:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n7:34 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:34 AM\n7:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:34 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for Goa hotels, 2 nights Sat…\nlive checklist\nLooking for Goa hotels, 2 nights Sat 31 Oct to Mon 2\nCompare price, area and guest reviews\nKeep 3 hotels that fit under ₹6,000 a night with the best\nWait for you to pick one\nWatch live\nStop\n2 min\n7:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:34 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking for Goa hotels, 2 nights Sat… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n7:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:37 AM"
+  }
+]

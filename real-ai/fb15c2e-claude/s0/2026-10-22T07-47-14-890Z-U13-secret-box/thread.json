@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:38 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n7:38 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n7:38 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has more than 1,000 historic monuments, and the city has been rebuilt and ruled from so many times that it is often called the \"city of seven cities\" or more.\n\n7:38 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n7:39 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Amritsar's Golden Temple runs one of the world's largest free kitchens, serving langar to around 1 lakh people every day, whatever their faith or background.\n\n7:39 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n7:43 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:44 AM\n7:44 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:44 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nChecking Amazon India, Flipkart, Croma, review\nA\nF\nC\nR\nKeep 3 laptops that fit best value under ₹50,000 in India\nCompare price, processor, RAM, storage, screen\nWatch live\nStop\n5 min\n7:44 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:44 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\ntry Amazon India instead\nTry another way\nTake over\nStop\n7:49 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:49 AM"
+  }
+]
