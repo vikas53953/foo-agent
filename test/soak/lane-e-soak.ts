@@ -2,8 +2,8 @@
 // This harness runs the full eight-hour acceptance window by default. An explicit one-hour partial route is diagnostic only;
 // it needs a Windows fixture driver to write heartbeat evidence. An absent or stale heartbeat is blocked/fail evidence,
 // never a silent skip. routine_runs is diagnostic only because the routine milestone is not an acceptance dependency.
-// Process metrics are emitted by the live producer from its own ElectronApplication.process().pid and spawnfile; this observer
-// never launches or samples an unrelated executable. --exe is a provenance-only fixture identity/path guard.
+// Process metrics are emitted by the live producer from process.pid/process.execPath in the Electron main context; Playwright's
+// ElectronApplication.process() PID/path are retained as launcher metadata. This observer never launches or samples --exe.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join, resolve } from 'node:path';
@@ -153,6 +153,8 @@ const report = {
   processOwner: PRODUCER_PROCESS_OWNER,
   processPid: pinnedIdentity?.pid ?? null,
   processExecutablePath: pinnedIdentity?.executablePath ?? null,
+  launcherProcessPid: lastHeartbeat?.launcherProcessPid ?? null,
+  launcherProcessExecutablePath: lastHeartbeat?.launcherProcessExecutablePath ?? null,
   freezes: samples.filter((sample) => sample.responding === false).length,
   failure: failure ?? (!workloadComplete ? 'heartbeat did not prove the expected done_unverified workload' : null),
   samples,

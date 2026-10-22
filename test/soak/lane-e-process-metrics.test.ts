@@ -4,10 +4,13 @@ import { describe, expect, it } from 'vitest';
 import { processMetricsForPid, producerProcessMetrics } from './lane-e-process-metrics';
 
 describe('Lane E producer-owned process metrics', () => {
-  it('samples the exact ElectronApplication process PID', () => {
+  it('samples the Electron main process identity instead of the cmd.exe launcher', async () => {
     const commands: string[] = [];
-    const owner = { process: () => ({ pid: 4242, spawnfile: 'C:\\Foo\\electron.exe' }) };
-    const metrics = producerProcessMetrics(owner, (_file, args) => {
+    const owner = {
+      process: () => ({ pid: 1234, spawnfile: 'C:\\Windows\\System32\\cmd.exe' }),
+      evaluate: async () => ({ pid: 4242, executablePath: 'C:\\Foo\\electron.exe' }),
+    };
+    const metrics = await producerProcessMetrics(owner, (_file, args) => {
       commands.push(args.join(' '));
       return JSON.stringify({ Id: 4242, Path: 'c:/foo/electron.exe', HandleCount: 17, WorkingSet64: 4096, Responding: true });
     });
@@ -15,6 +18,8 @@ describe('Lane E producer-owned process metrics', () => {
     expect(metrics).toEqual({
       pid: 4242,
       executablePath: 'c:/foo/electron.exe',
+      launcherPid: 1234,
+      launcherExecutablePath: 'C:\\Windows\\System32\\cmd.exe',
       handleCount: 17,
       workingSetBytes: 4096,
       responding: true,
@@ -24,16 +29,45 @@ describe('Lane E producer-owned process metrics', () => {
     expect(commands[0]).not.toContain('-Id 1234');
   });
 
-  it('blocks when the producer owner has no process PID', () => {
-    expect(() => producerProcessMetrics({ process: () => ({ pid: undefined, spawnfile: 'C:\\Foo\\electron.exe' }) }, () => '')).toThrow(
-      /producer ElectronApplication PID/u,
-    );
+  it('blocks when the Electron main identity has no PID', async () => {
+    await expect(
+      producerProcessMetrics(
+        {
+          process: () => ({ pid: 1234, spawnfile: 'C:\\Windows\\System32\\cmd.exe' }),
+          evaluate: async () => ({ pid: undefined, executablePath: 'C:\\Foo\\electron.exe' }),
+        },
+        () => '',
+      ),
+    ).rejects.toThrow(/producer Electron main PID/u);
   });
 
-  it('blocks when the producer owner has no executable path', () => {
-    expect(() => producerProcessMetrics({ process: () => ({ pid: 4242 }) }, () => '')).toThrow(
-      /producer ElectronApplication executable path/u,
+  it('blocks when the Electron main identity has no executable path', async () => {
+    await expect(
+      producerProcessMetrics(
+        {
+          process: () => ({ pid: 1234, spawnfile: 'C:\\Windows\\System32\\cmd.exe' }),
+          evaluate: async () => ({ pid: 4242, executablePath: undefined }),
+        },
+        () => '',
+      ),
+    ).rejects.toThrow(/producer Electron main executable path/u);
+  });
+
+  it('retains the launcher as metadata without sampling its cmd.exe PID', async () => {
+    const metrics = await producerProcessMetrics(
+      {
+        process: () => ({ pid: 1234, spawnfile: 'C:\\Windows\\System32\\cmd.exe' }),
+        evaluate: async () => ({ pid: 4242, executablePath: 'C:\\Foo\\electron.exe' }),
+      },
+      (_file, args) => {
+        expect(args.join(' ')).toContain('-Id 4242');
+        expect(args.join(' ')).not.toContain('-Id 1234');
+        return JSON.stringify({ Id: 4242, Path: 'C:\\Foo\\electron.exe', HandleCount: 17, WorkingSet64: 4096, Responding: true });
+      },
     );
+    expect(metrics.pid).toBe(4242);
+    expect(metrics.launcherPid).toBe(1234);
+    expect(metrics.executablePath).toMatch(/electron\.exe$/iu);
   });
 
   it('blocks metrics returned for a different PID', () => {
@@ -50,12 +84,16 @@ describe('Lane E producer-owned process metrics', () => {
     ).toThrow(/omitted executable path/u);
   });
 
-  it('blocks a mismatched executable path', () => {
-    expect(() =>
-      producerProcessMetrics({ process: () => ({ pid: 4242, spawnfile: 'C:\\Foo\\electron.exe' }) }, () =>
-        JSON.stringify({ Id: 4242, Path: 'C:\\Other\\electron.exe', HandleCount: 17, WorkingSet64: 4096, Responding: true }),
+  it('blocks a mismatched Electron main executable path', async () => {
+    await expect(
+      producerProcessMetrics(
+        {
+          process: () => ({ pid: 1234, spawnfile: 'C:\\Windows\\System32\\cmd.exe' }),
+          evaluate: async () => ({ pid: 4242, executablePath: 'C:\\Foo\\electron.exe' }),
+        },
+        () => JSON.stringify({ Id: 4242, Path: 'C:\\Other\\electron.exe', HandleCount: 17, WorkingSet64: 4096, Responding: true }),
       ),
-    ).toThrow(/did not match producer executable/u);
+    ).rejects.toThrow(/did not match Electron main executable/u);
   });
 
   it('blocks missing responsiveness evidence', () => {

@@ -1,14 +1,20 @@
 // Spec: 10-2 §E.1–§E.2 and 09-windows §9.8/§9.9. Producer-owned process evidence for the Lane E live fixture.
-// The PID is taken from ElectronApplication.process() and is never substituted with an arbitrary executable PID.
+// The sampled PID/path come from process.pid/process.execPath in the Electron main context. ElectronApplication.process()
+// is retained only as launcher metadata because Playwright may expose its cmd.exe wrapper on Windows.
 import { execFileSync } from 'node:child_process';
+
+export type ProducerMainProcessIdentity = { pid?: number | null; executablePath?: string | null };
 
 export type ProducerProcessOwner = {
   process(): { pid?: number | null; spawnfile?: string | null };
+  evaluate(pageFunction: () => ProducerMainProcessIdentity): Promise<ProducerMainProcessIdentity>;
 };
 
 export type ProducerProcessMetrics = {
   pid: number;
   executablePath: string;
+  launcherPid?: number;
+  launcherExecutablePath?: string;
   handleCount: number;
   workingSetBytes: number;
   responding: boolean;
@@ -57,16 +63,18 @@ export function processMetricsForPid(pid: number, execute: ProcessMetricsExecuto
   };
 }
 
-export function producerProcessMetrics(
+export async function producerProcessMetrics(
   owner: ProducerProcessOwner,
   execute: ProcessMetricsExecutor = defaultExecute,
-): ProducerProcessMetrics {
-  const process = owner.process();
-  const pid = process.pid;
+): Promise<ProducerProcessMetrics> {
+  const launcher = owner.process();
+  const runtime = await owner.evaluate(() => ({ pid: process.pid, executablePath: process.execPath }));
+  const pid = runtime?.pid;
   if (typeof pid !== 'number' || !Number.isInteger(pid) || pid <= 0)
-    throw new Error('producer ElectronApplication PID is unavailable: ' + String(pid));
-  const spawnfile = process.spawnfile;
-  if (!spawnfile?.trim()) throw new Error('producer ElectronApplication executable path is unavailable');
+    throw new Error('producer Electron main PID is unavailable: ' + String(pid));
+  const executablePath = runtime?.executablePath;
+  if (typeof executablePath !== 'string' || !executablePath.trim())
+    throw new Error('producer Electron main executable path is unavailable');
   const metrics = processMetricsForPid(pid, execute);
   const normalize = (path: string) =>
     path
@@ -74,8 +82,12 @@ export function producerProcessMetrics(
       .replaceAll('/', '\\')
       .replace(/[\\]+$/u, '')
       .toLowerCase();
-  if (normalize(metrics.executablePath) !== normalize(spawnfile)) {
-    throw new Error(`Windows metrics executable path ${metrics.executablePath} did not match producer executable ${spawnfile}`);
+  if (normalize(metrics.executablePath) !== normalize(executablePath)) {
+    throw new Error(`Windows metrics executable path ${metrics.executablePath} did not match Electron main executable ${executablePath}`);
   }
-  return metrics;
+  return {
+    ...metrics,
+    ...(typeof launcher.pid === 'number' && Number.isInteger(launcher.pid) && launcher.pid > 0 ? { launcherPid: launcher.pid } : {}),
+    ...(launcher.spawnfile?.trim() ? { launcherExecutablePath: launcher.spawnfile } : {}),
+  };
 }

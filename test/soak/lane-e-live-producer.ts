@@ -134,6 +134,8 @@ type Heartbeat = {
   processOwner?: 'producer-electron-application';
   processPid?: number;
   processExecutablePath?: string;
+  launcherProcessPid?: number;
+  launcherProcessExecutablePath?: string;
   processHandleCount?: number;
   processWorkingSetBytes?: number;
   processResponding?: boolean;
@@ -203,13 +205,22 @@ function processHeartbeat(
   metrics: ProducerProcessMetrics | null,
 ): Pick<
   Heartbeat,
-  'processOwner' | 'processPid' | 'processExecutablePath' | 'processHandleCount' | 'processWorkingSetBytes' | 'processResponding'
+  | 'processOwner'
+  | 'processPid'
+  | 'processExecutablePath'
+  | 'launcherProcessPid'
+  | 'launcherProcessExecutablePath'
+  | 'processHandleCount'
+  | 'processWorkingSetBytes'
+  | 'processResponding'
 > {
   if (!metrics) return {};
   return {
     processOwner: PRODUCER_PROCESS_OWNER,
     processPid: metrics.pid,
     processExecutablePath: metrics.executablePath,
+    ...(metrics.launcherPid ? { launcherProcessPid: metrics.launcherPid } : {}),
+    ...(metrics.launcherExecutablePath ? { launcherProcessExecutablePath: metrics.launcherExecutablePath } : {}),
     processHandleCount: metrics.handleCount,
     processWorkingSetBytes: metrics.workingSetBytes,
     processResponding: metrics.responding,
@@ -276,7 +287,7 @@ async function main(): Promise<number> {
       APPDATA: electronAppData,
       LOCALAPPDATA: electronLocalAppData,
     });
-    lastProcessMetrics = producerProcessMetrics(app);
+    lastProcessMetrics = await producerProcessMetrics(app);
     processSamples.push(lastProcessMetrics);
     const page = await app.firstWindow();
     await openWorld(app, page);
@@ -307,7 +318,7 @@ async function main(): Promise<number> {
           nextWorkAt += WORKLOAD_INTERVAL_MS;
         }
         const counts = readCounts(dbFile, baselineJobIds);
-        lastProcessMetrics = producerProcessMetrics(app);
+        lastProcessMetrics = await producerProcessMetrics(app);
         processSamples.push(lastProcessMetrics);
         writeHeartbeat({
           at: new Date().toISOString(),
@@ -319,7 +330,7 @@ async function main(): Promise<number> {
         await sleep(SAMPLE_MS);
       }
     }
-    lastProcessMetrics = producerProcessMetrics(app);
+    lastProcessMetrics = await producerProcessMetrics(app);
     processSamples.push(lastProcessMetrics);
     const liveCounts = readCounts(dbFile, baselineJobIds);
     writeHeartbeat({
@@ -382,6 +393,8 @@ async function main(): Promise<number> {
     processOwner: PRODUCER_PROCESS_OWNER,
     processPid: lastProcessMetrics?.pid ?? null,
     processExecutablePath: lastProcessMetrics?.executablePath ?? null,
+    launcherProcessPid: lastProcessMetrics?.launcherPid ?? null,
+    launcherProcessExecutablePath: lastProcessMetrics?.launcherExecutablePath ?? null,
     maxHandleCount: processSamples.reduce((max, sample) => Math.max(max, sample.handleCount), 0),
     maxWorkingSetBytes: processSamples.reduce((max, sample) => Math.max(max, sample.workingSetBytes), 0),
     nonRespondingSamples: processSamples.filter((sample) => !sample.responding).length,

@@ -20,6 +20,8 @@ export type SoakHeartbeat = {
   processOwner?: typeof PRODUCER_PROCESS_OWNER;
   processPid?: number;
   processExecutablePath?: string;
+  launcherProcessPid?: number;
+  launcherProcessExecutablePath?: string;
   processHandleCount?: number;
   processWorkingSetBytes?: number;
   processResponding?: boolean;
