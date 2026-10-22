@@ -1,4 +1,4 @@
-# Codex status — 22 October 2026, 12:50 IST
+# Codex status — 22 October 2026, 12:59 IST
 
 Lead: draft [PR 138](https://github.com/vikas53953/foo-agent/pull/138). No merges. Existing Anthropic key authorized without a user spending cap; no secrets or personal data in committed evidence.
 
@@ -104,3 +104,11 @@ Lane D final receipt: [report commit93241457](https://github.com/vikas53953/foo-
 181 tracked lane files imported from pinned commits using the [source manifest](lane-source-integration-2026-10-22.json); lane worktrees and active soak HEAD untouched. No merge. Lead adjustments: helper regression title no longer claims the AT427 application acceptance mapping (assertions unchanged); explicit soak Vitest configuration added because root defaults excluded these tests. Spec verification, trace consistency and driver syntax pass. Focused unit selection:11pass/2known journey-contract failures; explicit soak regression suite25/25pass. Broader type/build/lint checks are running. Imported branch tests do not inherit old execution acceptance.
 
 Performance39735905306 final:PERF01 20/20 existing smoke;PERF02 19/20,16.7ms violates unchanged<16ms;PERF03 20/20;PERF04 20/20. No screenshots in this diagnostic artifact. Full acceptance prerequisites absent. Local8hsoak latest boundedcheck5/96jobs, both producer/observer alive, freshheartbeat. Corrected mutation mainarea fails existing preload-net source-shape test before mutant output; other3areas running.
+
+## Lead-source integration completed; fresh executions
+
+Combined source commit:fb15c2eea738e7ddd1b3daa2e11c5712a4c66be3. All181selectedtracked lane files are now on lead138 with exact provenance; active lane checkouts untouched. Earlier entries saying source consolidation pending are historical. Combined build passed. Typecheck/lint still pending at this checkpoint; known journey-validator2fail retained.
+
+- Seventh task-dispatched real-AI run today: [39740734054](https://github.com/vikas53953/foo-agent/actions/runs/39740734054), all inventory journeys on combinedfb15c2ee, four Windows shards, Claude. Started; execution/pass/fail counts pending. Input maximum1000 exceeds the inventory and does not exclude any listed journey; no user spending ceiling imposed.
+- [Combined standard CI39740741490](https://github.com/vikas53953/foo-agent/actions/runs/39740741490), same combined revision. Started; results pending. No merges.
+- Matrix remains4proven/106partial/5fail/10missing/3notbuilt/62code-only after importing journeys and approved trace mappings. No fresh-run result is inferred.
