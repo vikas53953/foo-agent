@@ -108,7 +108,8 @@ export interface IntakeInput {
 export interface LaneProtocol {
   /** `factIds`: the facts parts 5/5b carry as sent (08-4 §24.16 item 6). */
   buildIntake(input: IntakeInput): { system: string; prompt: string; factIds?: string[] };
-  buildRepair(issues: string): string;
+  /** CR-0049: `failed` = the failed turn's prompt and reply, which the repair turn carries (foo keeps no AI session). */
+  buildRepair(issues: string, failed: { prompt: string; reply: string }): string;
   /** Parse the whole reply: the `<say>` text and the validated IntakeAct, or the zod issues. */
   parse(text: string): { say: string; act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[]; tags?: IntakeTag[] };
   parseAct(text: string): { act: IntakeDecisionView | null; issues: string | null; usedMemoryIds?: string[]; tags?: IntakeTag[] };
@@ -614,9 +615,10 @@ export class ChatLane {
     let usedMemoryIds = act ? (parsed.usedMemoryIds ?? []) : [];
     let tags = act ? (parsed.tags ?? []) : [];
     if (!act) {
-      // 08-2 §7.5: one repair turn (same session); its <say> is ignored after streaming (08-4 §25.5 item 3).
+      // 08-2 §7.5: one repair turn (the same session, carried in its prompt: CR-0049); its <say> is ignored after streaming
+      // (08-4 §25.5 item 3).
       const repairParams = this.d.ai.turnParams(pick.providerId, 'repair');
-      const repairPrompt = this.d.protocol.buildRepair(parsed.issues ?? '');
+      const repairPrompt = this.d.protocol.buildRepair(parsed.issues ?? '', { prompt: built.prompt, reply: result.text });
       // M5 T10 (row 5): the repair turn passes the cap check too; at the cap it is skipped (the <say> rule below still applies).
       const capOk = !this.d.capCheck || (await this.d.capCheck(built.system.length + repairPrompt.length, 'repair'));
       const repaired = !capOk

@@ -24,7 +24,7 @@ System parts are numbered as 08-2 §7.2. "Prompt" = the per-turn text (§24.13).
 | `intake` in a group (`GroupIntakeAct`) | 1 identity (foo form) · 2 `rules.md` · 4 `protocol.md` + `group_intake.md` · 5 pinned facts (group rule §24.16 item 4) | `Members:` block · 5b · 7 conversation · the user's message |
 | `intake` for a group member (`GroupMemberAct`; `ai_turns.purpose = 'intake'`, `chat_id` = the group) | 1 identity (that helper's form) · 2 · 4 `protocol.md` + `group_member.md` · 5 (that helper's pinned set, group rule) · 6 that helper's notes | `Members:` block · 7 conversation (the group) · `Your part: {task}` · `Next decision?` |
 | `step` | 1 · 2 · 3 tool catalogue (§27.1) · 4 `protocol.md` + `step.md` · 5 · 6 | 5b · 7 · 8 job state · 9 untrusted · 10 steer · `Next decision?` |
-| `repair` | (same session as the failed turn) | `repair.md` only |
+| `repair` | the failed turn's system (it stands for the same session, CR-0049) | `repair.md` only. CR-0049 (X-207): foo keeps no AI session between turns, so the session is carried in the prompt: the failed turn's prompt, a blank line, `Your last reply:` and that reply (cut to 4,000 chars), a blank line, then `repair.md` |
 | `second_look` | `protocol.md` + `second_look.md` | the second-look prompt (§24.7) |
 | `rewrite` | `protocol.md` + `rewrite.md` | the text to rewrite |
 | `memory_review`, `tidy` | 2 · `protocol.md` + `memory_review.md` | the data block of §24.21 (memory_review / tidy) |

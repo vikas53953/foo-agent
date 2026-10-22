@@ -373,7 +373,7 @@ Every purpose's `<act>` schema is 08-4 §25 (`IntakeAct` §25.2, `StepAct` with 
 | `PaperRead` | `read_attachment` | 12-2 §12.28.3 |
 
 ### 7.5 Validation and repair
-If `<act>` is missing or invalid: one repair turn (`purpose:'repair'`, same session) with `repair.md` (08-4 §24.8) A second failure → `PROTOCOL_INVALID` (08-3 §21.4, X-120; counts toward `fail_streak`). For chat-lane turns, a valid `<say>` with a broken `<act>` is still posted as a plain reply.
+If `<act>` is missing or invalid: one repair turn (`purpose:'repair'`, same session, carried in its prompt: 08-4 §24.1, CR-0049) with `repair.md` (08-4 §24.8) A second failure → `PROTOCOL_INVALID` (08-3 §21.4, X-120; counts toward `fail_streak`). For chat-lane turns, a valid `<say>` with a broken `<act>` is still posted as a plain reply.
 
 ### 7.6 Output filters (every `<say>`, every step slot, every card text from the AI)
 1. **Banned words** (Art. 2 list + "agent", "tool call", "API key"→"key"): case-insensitive whole-word scan. Hit → replace with the mapped plain word (`API`→"connection", `token`→"key", `OAuth`→"sign in", `server`→"service", `cron`→"routine", `prompt`→"message", `model`→"AI", `CLI`/`terminal`/`command`→"helper app") when a mapping exists; if any unmapped banned word remains, one `rewrite` turn on the cheap model with `rewrite.md` (08-4 §24.9). Still failing → the sentence containing it is dropped. Hindi and Punjabi script forms and the `agent` / `tool call` mappings: 08-4 §25.8.

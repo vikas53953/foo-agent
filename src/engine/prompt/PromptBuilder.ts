@@ -171,6 +171,8 @@ const TURN_FACTS_MAX = 8;
 const CONVERSATION_MAX = 20;
 const CONVERSATION_KEEP = 6;
 const MESSAGE_CAP = 1_400;
+/** CR-0049: the failed reply a repair turn carries. */
+const REPAIR_REPLY_CAP = 4_000;
 export const VERIFY_PROMPT = 'Reply with the word ready';
 
 /** §24.5 / §24.6 `{phraseKeys}`: the §26.1 keys a plan may use (not runner-only), each with its slot names. */
@@ -494,8 +496,11 @@ export class PromptBuilder {
   }
 
   /** Purpose `repair` (§24.8): same session as the failed turn, so only the prompt is new. `zodIssues` ≤ 400 chars. */
-  buildRepair(zodIssues: string): { prompt: string } {
-    return { prompt: this.deps.redactor.finalGate(this.fill(this.file('repair.md'), { zodIssues: cut(zodIssues, 400) }), 'repair') };
+  buildRepair(zodIssues: string, failed?: { prompt: string; reply: string }): { prompt: string } {
+    const ask = this.fill(this.file('repair.md'), { zodIssues: cut(zodIssues, 400) });
+    // CR-0049 (X-207): foo keeps no AI session, so the repair turn carries the failed turn's prompt and reply itself.
+    const text = failed ? `${failed.prompt}\n\nYour last reply:\n${cut(failed.reply, REPAIR_REPLY_CAP)}\n\n${ask}` : ask;
+    return { prompt: this.deps.redactor.finalGate(text, 'repair') };
   }
 
   /** Purpose `rewrite` (§24.9): system = protocol.md + rewrite.md with the whole banned list; prompt = the text. */
