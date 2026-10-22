@@ -221,6 +221,7 @@
         "Mon",
         "Mon",
         "typing…",
+        "foo",
         "No,",
         "Mon",
         "2",
@@ -254,6 +255,7 @@
         "hua?",
         "8:12",
         "AM",
+        "foo",
         "Cake",
         "Theobroma",
         "se",
@@ -279,6 +281,7 @@
         "ਮਿਲੇਗਾ?",
         "8:13",
         "AM",
+        "foo",
         "ਕੇਕ",
         "ਆਰਡਰ",
         "ਹੋ",
@@ -316,6 +319,7 @@
         "on",
         "8:20",
         "AM",
+        "foo",
         "Goa",
         "flights,",
         "Sat",
@@ -494,8 +498,8 @@
       {
         "name": "hl",
         "ref": "#F1F1F5",
-        "app": "#2B3FD6",
-        "deltaE": 55.97,
+        "app": "#2C359A",
+        "deltaE": 62.89,
         "verdict": "fail"
       }
     ]
@@ -503,13 +507,13 @@
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.8324517212426532,
-    "diffPixels": 19829,
+    "ratio": 0.8314441645675903,
+    "diffPixels": 19805,
     "total": 23820
   },
   "r5": {
-    "ratio": 0.130251953125,
-    "diffPixels": 133378,
+    "ratio": 0.130236328125,
+    "diffPixels": 133362,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-01.dark.diff.png"

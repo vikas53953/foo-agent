@@ -375,6 +375,8 @@
         "9:30",
         "AM",
         "🛠",
+        "T",
+        "Trips",
         "On",
         "it.",
         "Comparing",
@@ -542,7 +544,7 @@
         },
         "app": {
           "x": 371,
-          "y": 630,
+          "y": 612,
           "width": 93.703125,
           "height": 40
         },
@@ -572,8 +574,8 @@
     "total": 2618
   },
   "r5": {
-    "ratio": 0.085001953125,
-    "diffPixels": 87042,
+    "ratio": 0.0856494140625,
+    "diffPixels": 87705,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-04.light.diff.png"

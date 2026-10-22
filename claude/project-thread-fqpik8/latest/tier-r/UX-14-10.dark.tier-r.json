@@ -1,13 +1,12 @@
 {
   "id": "UX-14-10",
   "theme": "dark",
-  "verdict": "disputed",
+  "verdict": "review",
   "disputed": {
     "cr": "CR-0013",
     "checks": [
       "r1",
-      "r2",
-      "r4"
+      "r2"
     ]
   },
   "r1": {
@@ -29,7 +28,6 @@
         "4",
         "things",
         "today",
-        "Trips",
         "10:05",
         "booking…",
         "Thu",
@@ -137,24 +135,26 @@
         "₹0"
       ],
       "extra": [
-        "1",
-        "T",
-        "Trips",
+        "2",
         "9:41",
-        "AM",
         "Needs",
-        "you",
-        "1",
-        "9:41",
-        "Payment:",
+        "your",
+        "OK:",
         "Pay",
         "Taj",
         "Holiday",
         "Village",
-        "Done",
+        "Needs",
+        "you",
+        "T",
+        "9:41",
+        "Needs",
+        "you",
+        "1",
         "H",
         "Home",
         "11:41",
+        "AM",
         "booking",
         "because",
         "the",
@@ -233,6 +233,8 @@
         "after",
         "the",
         "house.",
+        "H",
+        "Home",
         "I’ll",
         "remind",
         "you",
@@ -252,6 +254,8 @@
         "6:35",
         "AM",
         "✅",
+        "H",
+        "Home",
         "I",
         "checked.",
         "It",
@@ -271,6 +275,8 @@
         "10:03",
         "AM",
         "✅",
+        "H",
+        "Home",
         "Done.",
         "I’ll",
         "keep",
@@ -285,6 +291,8 @@
         "1:31",
         "PM",
         "✅",
+        "H",
+        "Home",
         "Here’s",
         "what",
         "I",
@@ -298,6 +306,8 @@
         "value.",
         "3:15",
         "PM",
+        "H",
+        "Home",
         "Gas",
         "cylinder",
         "booked",
@@ -380,6 +390,8 @@
         "Start",
         "again",
         "9:41",
+        "H",
+        "Home",
         "the",
         "sign-in",
         "wasn’t",
@@ -459,6 +471,8 @@
         "PM"
       ],
       "extra": [
+        "H",
+        "Home",
         "the",
         "sign-in",
         "wasn’t",
@@ -486,11 +500,11 @@
         },
         "app": {
           "x": 356,
-          "y": 601,
+          "y": 571,
           "width": 553,
-          "height": 112
+          "height": 142
         },
-        "dPos": 8,
+        "dPos": 30,
         "dSize": 155.5625,
         "verdict": "fail"
       }
@@ -509,15 +523,15 @@
     ]
   },
   "r4": {
-    "verdict": "fail",
+    "verdict": "review",
     "skipped": null,
-    "ratio": 0.11910159529806885,
-    "diffPixels": 2837,
+    "ratio": 0.08597816960537363,
+    "diffPixels": 2048,
     "total": 23820
   },
   "r5": {
-    "ratio": 0.103515625,
-    "diffPixels": 106000,
+    "ratio": 0.1014169921875,
+    "diffPixels": 103851,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-10.dark.diff.png"

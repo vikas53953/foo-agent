@@ -1,13 +1,12 @@
 {
   "id": "UX-14-10",
   "theme": "light",
-  "verdict": "disputed",
+  "verdict": "review",
   "disputed": {
     "cr": "CR-0013",
     "checks": [
       "r1",
-      "r2",
-      "r4"
+      "r2"
     ]
   },
   "r1": {
@@ -235,6 +234,8 @@
         "after",
         "the",
         "house.",
+        "H",
+        "Home",
         "I’ll",
         "remind",
         "you",
@@ -254,6 +255,8 @@
         "6:35",
         "AM",
         "✅",
+        "H",
+        "Home",
         "I",
         "checked.",
         "It",
@@ -273,6 +276,8 @@
         "10:03",
         "AM",
         "✅",
+        "H",
+        "Home",
         "Done.",
         "I’ll",
         "keep",
@@ -287,6 +292,8 @@
         "1:31",
         "PM",
         "✅",
+        "H",
+        "Home",
         "Here’s",
         "what",
         "I",
@@ -300,6 +307,8 @@
         "value.",
         "3:15",
         "PM",
+        "H",
+        "Home",
         "Gas",
         "cylinder",
         "booked",
@@ -383,6 +392,8 @@
         "Start",
         "again",
         "9:41",
+        "H",
+        "Home",
         "the",
         "sign-in",
         "wasn’t",
@@ -462,6 +473,8 @@
         "PM"
       ],
       "extra": [
+        "H",
+        "Home",
         "the",
         "sign-in",
         "wasn’t",
@@ -489,11 +502,11 @@
         },
         "app": {
           "x": 356,
-          "y": 601,
+          "y": 571,
           "width": 553,
-          "height": 112
+          "height": 142
         },
-        "dPos": 8,
+        "dPos": 30,
         "dSize": 155.5625,
         "verdict": "fail"
       }
@@ -512,15 +525,15 @@
     ]
   },
   "r4": {
-    "verdict": "fail",
+    "verdict": "review",
     "skipped": null,
-    "ratio": 0.10075566750629723,
-    "diffPixels": 2400,
+    "ratio": 0.07674223341729638,
+    "diffPixels": 1828,
     "total": 23820
   },
   "r5": {
-    "ratio": 0.0883447265625,
-    "diffPixels": 90465,
+    "ratio": 0.088421875,
+    "diffPixels": 90544,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-10.light.diff.png"
