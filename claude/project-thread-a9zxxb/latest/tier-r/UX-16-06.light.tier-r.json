@@ -441,7 +441,7 @@
         "it.",
         "11:01",
         "in",
-        "73:50",
+        "73:52",
         "Will",
         "send",
         "to",
@@ -553,18 +553,18 @@
         "replies",
         "show",
         "here.",
-        "foo",
-        "sent",
-        "Approval",
-        "needed:",
+        "Waiting",
+        "for",
+        "your",
+        "OK:",
         "Send",
         "this",
         "email",
         "to",
         "Priya",
-        "Nair?,",
-        "needs",
-        "you"
+        "Nair?.",
+        "Show",
+        "button."
       ]
     },
     "hl": {
@@ -592,7 +592,7 @@
       ],
       "extra": [
         "in",
-        "73:50",
+        "73:52",
         "Will",
         "send",
         "to",
@@ -679,8 +679,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.1079951171875,
-    "diffPixels": 110587,
+    "ratio": 0.1080087890625,
+    "diffPixels": 110601,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-06.light.diff.png"
