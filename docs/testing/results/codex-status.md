@@ -49,3 +49,5 @@ Latest all-journey execution: [39828661301](https://github.com/vikas53953/foo-ag
 External-account prerequisites, native accessibility and human usability evidence; unbuilt product paths; live-viewer unavailable state; failed mutation coverage. Independent testing continues. Draft PRs only, no merges, no secrets or personal data.
 
 Historical checkpoints are preserved in [status history](history/codex-status-before-1818.md). This file is the current summary; historical counts are not current results.
+
+The repair is published in commit `e227f19695aceba10f65bdf2743b3d167f52457c`. [Full CI verification 39829318930](https://github.com/vikas53953/foo-agent/actions/runs/39829318930) is running; this is the replacement verification for [red CI 39753919430](https://github.com/vikas53953/foo-agent/actions/runs/39753919430). Local journey/driver checks, typecheck and trace checks passed before push. Remote success is not yet claimed.
