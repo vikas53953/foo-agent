@@ -15,7 +15,7 @@ on:
       testing_lanes:
         description: Additional test lanes approved by Vikas on 2026-10-22; standard runs the existing CI suite
         type: choice
-        options: [standard, all, bdd, eval, windows, installer, soak, quality]
+        options: [standard, all, bdd, eval, windows, installer, soak, quality, perf]
         default: standard
       lane_b_ref:
         description: Exact Lane B commit or branch to test
@@ -40,6 +40,106 @@ permissions:
   contents: read
 
 jobs:
+  lane-e-perf-probes:
+    name: Lane E repeated UI performance probes (diagnostic)
+    if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner && inputs.testing_lanes == 'perf'
+    runs-on: windows-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 0d04a9f9105e42aef0b4a22238285a9007635c3e
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - run: node node_modules/electron/install.js
+      - run: pnpm build
+      - run: pnpm rebuild:electron
+      - name: Execute all four diagnostic probes with unchanged assertions
+        id: probes
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          $evidenceRoot = Join-Path $env:RUNNER_TEMP 'perf-evidence'
+          New-Item -ItemType Directory -Force $evidenceRoot | Out-Null
+          @"
+          testedSha=$(git rev-parse HEAD)
+          workflowSha=$env:GITHUB_SHA
+          scope=existing source-app probes; no reference-laptop, release/reboot, full E.1 dataset or 225-percent acceptance claim
+          PERF-01=titlebar smoke with existing 15000ms assertion, not the 2000ms reference budget
+          "@ | Set-Content (Join-Path $evidenceRoot 'scope.txt')
+          $probes = @(
+            @{ id = 'PERF-01'; file = 'test/e2e/m0-window.spec.ts'; pattern = 'PERF-01 smoke' },
+            @{ id = 'PERF-02'; file = 'test/e2e/m2-composer.spec.ts'; pattern = 'PERF-02' },
+            @{ id = 'PERF-03'; file = 'test/e2e/m1-shell.spec.ts'; pattern = 'PERF-03:' },
+            @{ id = 'PERF-04'; file = 'test/e2e/m2-messages.spec.ts'; pattern = 'PERF-04' }
+          )
+          $anyFailed = $false
+          foreach ($probe in $probes) {
+            $probeRoot = Join-Path $evidenceRoot $probe.id
+            $outputRoot = Join-Path $env:RUNNER_TEMP ('perf-output-' + $probe.id)
+            New-Item -ItemType Directory -Force $probeRoot | Out-Null
+            $jsonSource = Join-Path $env:GITHUB_WORKSPACE 'test-results/e2e.json'
+            if (Test-Path -LiteralPath $jsonSource -PathType Leaf) { Remove-Item -LiteralPath $jsonSource }
+            $probeExit = 1
+            try {
+              pnpm exec playwright test $probe.file --grep $probe.pattern --repeat-each=20 --workers=1 --retries=0 --output "$outputRoot" 2>&1 | Tee-Object (Join-Path $probeRoot 'probe.log')
+              $probeExit = $LASTEXITCODE
+            } catch {
+              $_.Exception.Message | Add-Content (Join-Path $probeRoot 'probe.log')
+            }
+            [string]$probeExit | Set-Content (Join-Path $probeRoot 'exit.txt')
+            if ($probeExit -ne 0) { $anyFailed = $true }
+            if (Test-Path -LiteralPath $jsonSource -PathType Leaf) {
+              Copy-Item -LiteralPath $jsonSource -Destination (Join-Path $probeRoot 'playwright.json')
+            }
+            $imageIndex = 0
+            if (Test-Path -LiteralPath $outputRoot -PathType Container) {
+              Get-ChildItem -LiteralPath $outputRoot -Recurse -File -Filter '*.png' | ForEach-Object {
+                $imageIndex++
+                Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $probeRoot ("screen-{0:D4}.png" -f $imageIndex))
+              }
+            }
+          }
+          if ($anyFailed) { exit 1 }
+      - name: Check allowlisted diagnostic artifacts before upload
+        id: artifact_check
+        if: always()
+        shell: pwsh
+        run: |
+          $evidenceRoot = Join-Path $env:RUNNER_TEMP 'perf-evidence'
+          if (-not (Test-Path -LiteralPath $evidenceRoot -PathType Container)) { throw 'No performance execution evidence exists' }
+          foreach ($file in Get-ChildItem -LiteralPath $evidenceRoot -Recurse -File) {
+            if ($file.Extension -notin @('.log', '.json', '.png', '.txt')) { throw 'Unexpected artifact extension' }
+            if ($file.Extension -eq '.png') { continue }
+            $body = Get-Content -LiteralPath $file.FullName -Raw
+            if ($body -match '(?i)sk-ant-[a-z0-9_-]{12,}|sk-proj-[a-z0-9_-]{12,}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|(?:ANTHROPIC_API_KEY|OPENAI_API_KEY)\s*[=:]\s*["'']?[a-z0-9_-]{12,}') {
+              throw 'Credential pattern detected; artifact upload blocked'
+            }
+          }
+      - name: Upload diagnostic performance evidence
+        if: always() && steps.artifact_check.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: lane-e-perf-probes-${{ github.run_id }}
+          path: ${{ runner.temp }}/perf-evidence/
+          retention-days: 14
+          if-no-files-found: error
+      - name: Fail on failed or missing probe execution
+        if: always()
+        shell: pwsh
+        run: |
+          foreach ($id in @('PERF-01', 'PERF-02', 'PERF-03', 'PERF-04')) {
+            $probeRoot = Join-Path $env:RUNNER_TEMP "perf-evidence/$id"
+            $exitFile = Join-Path $probeRoot 'exit.txt'
+            if (-not (Test-Path -LiteralPath $exitFile -PathType Leaf)) { throw "$id did not complete" }
+            if ((Get-Content -LiteralPath $exitFile -Raw).Trim() -ne '0') { throw "$id failed; see preserved probe evidence" }
+            if (-not (Test-Path -LiteralPath (Join-Path $probeRoot 'playwright.json') -PathType Leaf)) { throw "$id has no result JSON" }
+          }
+
   lane-f-mutation:
     name: Lane F mutation (${{ matrix.area }})
     if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner && (inputs.testing_lanes == 'all' || inputs.testing_lanes == 'quality')
