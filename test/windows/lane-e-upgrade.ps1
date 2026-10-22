@@ -5,7 +5,7 @@
 param(
   [Parameter(Mandatory = $true)][string]$PreviousInstaller,
   [Parameter(Mandatory = $true)][string]$CurrentInstaller,
-  [Parameter(Mandatory = $true)][ValidatePattern('^[0-9a-f]{7,40}$')][string]$PreviousBuildSha,
+  [Parameter(Mandatory = $true)][ValidatePattern('^(04f01dd|04f01dd9fb3108cbbce8ff6df211d3a389c16977)$')][string]$PreviousBuildSha,
   [Parameter(Mandatory = $true)][ValidatePattern('^[0-9a-f]{7,40}$')][string]$CurrentBuildSha,
   [Parameter(Mandatory = $true)][string]$Out,
   [switch]$KeepArtifacts
@@ -15,7 +15,7 @@ $ErrorActionPreference = 'Stop'
 function Fail([string]$Message) { throw "BLOCKED: $Message" }
 if ([Environment]::OSVersion.Platform -ne [PlatformID]::Win32NT) { Fail 'lane-e-upgrade requires Windows.' }
 if (-not $env:RUNNER_TEMP) { Fail 'RUNNER_TEMP is required for isolated fixture paths.' }
-if ($PreviousBuildSha -notmatch '^04f01dd([0-9a-f]{0,32})$') {
+if ($PreviousBuildSha -notmatch '^(04f01dd|04f01dd9fb3108cbbce8ff6df211d3a389c16977)$') {
   Fail "the old fixture must be built from 04f01dd; received $PreviousBuildSha"
 }
 foreach ($installer in @($PreviousInstaller, $CurrentInstaller)) {

@@ -1,13 +1,13 @@
 // Spec: app-wide long-run soak (08-3 §22.9 / 10-2 §E) and 09-windows §9.8/§9.9 (job notifications and process stability).
-// This harness always runs the full eight-hour window. It needs a Windows fixture driver to write heartbeat evidence; an
-// absent or stale heartbeat is blocked/fail evidence, never a silent skip. routine_runs is diagnostic only because the
-// routine milestone is not an acceptance dependency. It launches only the explicit exe.
+// This harness runs the full eight-hour acceptance window by default. An explicit one-hour partial route is diagnostic only;
+// it needs a Windows fixture driver to write heartbeat evidence. An absent or stale heartbeat is blocked/fail evidence,
+// never a silent skip. routine_runs is diagnostic only because the routine milestone is not an acceptance dependency.
+// It launches only the explicit exe.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { spawn, execFileSync, type ChildProcess } from 'node:child_process';
 import { join, resolve } from 'node:path';
+import { FULL_SOAK_HOURS, resolveSoakDuration } from './lane-e-duration';
 
-const SOAK_HOURS = 8;
-const SOAK_MS = SOAK_HOURS * 60 * 60 * 1000;
 const SAMPLE_MS = 30 * 1000;
 const HEARTBEAT_GRACE_MS = 120 * 1000;
 
@@ -23,30 +23,37 @@ type ProcessSample = { at: string; handleCount: number; workingSetBytes: number;
 
 function usage(): never {
   throw new Error(
-    'usage: lane-e-soak.ts --exe <fixture exe> --scenario <heartbeat json> --out <dir> --mode pretend|real [--duration-hours 8]',
+    `usage: lane-e-soak.ts --exe <fixture exe> --scenario <heartbeat json> --out <dir> --mode pretend|real [--duration-hours ${FULL_SOAK_HOURS}] [--partial]`,
   );
 }
 if (process.argv.includes('--help')) {
-  console.log('lane-e-soak: full 8-hour Windows fixture soak; process exit, handles, memory and heartbeat evidence are recorded.');
+  console.log(
+    `lane-e-soak: ${FULL_SOAK_HOURS}h is the Windows acceptance gate; --partial --duration-hours 1 records diagnostic process, memory and heartbeat evidence only.`,
+  );
   process.exit(0);
 }
 const cli = new Map<string, string>();
-for (let i = 2; i < process.argv.length; i += 2) {
+for (let i = 2; i < process.argv.length;) {
   const key = process.argv[i];
+  if (key === '--partial') {
+    i += 1;
+    continue;
+  }
   const value = process.argv[i + 1];
   if (!key?.startsWith('--') || value === undefined) usage();
   cli.set(key.slice(2), value);
+  i += 2;
 }
 const mode = cli.get('mode');
 if (mode !== 'pretend' && mode !== 'real') usage();
 const exe = cli.get('exe');
 const scenarioPath = cli.get('scenario');
 const outDirArg = cli.get('out');
+const partial = process.argv.includes('--partial');
 if (!exe || !scenarioPath || !outDirArg) usage();
-const durationHours = Number(cli.get('duration-hours') ?? SOAK_HOURS);
-if (!Number.isFinite(durationHours) || durationHours !== SOAK_HOURS) {
-  throw new Error(`BLOCKED: the soak duration is exactly ${SOAK_HOURS} hours; shorter runs are not accepted`);
-}
+const duration = resolveSoakDuration(cli.get('duration-hours'), partial);
+const soakHours = duration.hours;
+const soakMs = soakHours * 60 * 60 * 1000;
 if (process.platform !== 'win32') throw new Error('BLOCKED: lane-e-soak requires Windows CI for process handles and freeze evidence.');
 if (mode === 'real' && process.env.FOO_REAL_AI_APPROVED !== '1') {
   throw new Error('BLOCKED: no lane-provided real-AI key/environment is configured; no credential is inspected or used by this harness.');
@@ -128,10 +135,10 @@ const samples: ProcessSample[] = [];
 let failure: string | null = null;
 let previousHeartbeatAt = Date.now();
 try {
-  while (Date.now() - startedAt < SOAK_MS) {
+  while (Date.now() - startedAt < soakMs) {
     sleep(SAMPLE_MS);
     if (child.exitCode !== null) {
-      failure = `fixture app exited before eight hours with code ${child.exitCode}`;
+      failure = `fixture app exited before the requested ${soakHours}-hour duration with code ${child.exitCode}`;
       break;
     }
     let metrics: { handleCount: number; workingSetBytes: number; responding: boolean };
@@ -158,12 +165,14 @@ try {
 const lastHeartbeat = samples.at(-1)?.heartbeat;
 const routineRuns = lastHeartbeat?.routineRuns ?? 0;
 const jobStarts = lastHeartbeat?.jobStarts ?? 0;
-const completed = failure === null && Date.now() - startedAt >= SOAK_MS;
-const result = !completed ? (failure ? 'fail' : 'blocked') : jobStarts < 1 ? 'blocked' : 'pass';
+const completed = failure === null && Date.now() - startedAt >= soakMs;
+const result = !completed ? (failure ? 'fail' : 'blocked') : jobStarts < 1 ? 'blocked' : duration.partial ? 'partial' : 'pass';
 const report = {
   result,
   mode,
-  durationHours: SOAK_HOURS,
+  durationHours: soakHours,
+  acceptanceDurationHours: duration.acceptanceHours,
+  partial: duration.partial,
   startedAt: new Date(startedAt).toISOString(),
   endedAt: new Date().toISOString(),
   fixture: { exe: exePath, dataRoot, localRoot, scenario: scenarioFile },
@@ -179,7 +188,8 @@ writeFileSync(join(outDir, `lane-e-soak-${mode}.json`), JSON.stringify(report, n
 const summary = [
   '| Check | Result | Detail |',
   '|---|---|---|',
-  `| Full 8-hour duration | ${completed ? 'pass' : result} | requested=${SOAK_HOURS}h; observedMs=${Date.now() - startedAt} |`,
+  `| Requested soak duration | ${completed ? (duration.partial ? 'partial' : 'pass') : result} | requested=${soakHours}h; observedMs=${Date.now() - startedAt} |`,
+  `| Full ${duration.acceptanceHours}-hour acceptance | ${duration.partial ? 'blocked' : completed ? 'pass' : result} | a one-hour diagnostic never satisfies the full acceptance threshold |`,
   `| Routine rows (diagnostic only) | pass | runs=${routineRuns}; routine execution is not a gate |`,
   `| Job execution evidence | ${jobStarts > 0 ? 'pass' : 'blocked'} | starts=${jobStarts}; lastState=${lastHeartbeat?.jobState ?? 'missing'} |`,
   `| Process handles | ${samples.length > 0 ? 'pass' : 'blocked'} | max=${report.maxHandleCount} |`,

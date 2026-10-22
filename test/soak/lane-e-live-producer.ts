@@ -12,19 +12,20 @@ import { fakeTurns, type FakeLine } from '../e2e/fakeAi';
 import { launch } from '../e2e/launch';
 import { openChat, openWorld } from '../fidelity/capture';
 import { TID } from '../../src/shared/testids';
+import { FULL_SOAK_HOURS, resolveSoakDuration } from './lane-e-duration';
 
-const SOAK_HOURS = 8;
-const SOAK_MS = SOAK_HOURS * 60 * 60 * 1000;
 const SAMPLE_MS = 30_000;
 const ASK = 'Lane E live fixture job';
 
 function usage(): never {
-  throw new Error('usage: lane-e-live-producer.ts --out <RUNNER_TEMP dir> --mode pretend|real [--duration-hours 8] [--smoke]');
+  throw new Error(
+    `usage: lane-e-live-producer.ts --out <RUNNER_TEMP dir> --mode pretend|real [--duration-hours ${FULL_SOAK_HOURS}] [--partial] [--smoke]`,
+  );
 }
 
 if (process.argv.includes('--help')) {
   console.log(
-    'lane-e-live-producer: launches the source Electron app with the existing FOO_TEST/fake-AI fixture and writes an eight-hour heartbeat; --smoke runs only the launch/job producer check.',
+    `lane-e-live-producer: launches the source Electron app with the existing FOO_TEST/fake-AI fixture; ${FULL_SOAK_HOURS}h is the acceptance gate, while --partial --duration-hours 1 writes diagnostic evidence only; --smoke runs only the launch/job producer check.`,
   );
   process.exit(0);
 }
@@ -33,7 +34,7 @@ const cli = new Map<string, string>();
 const smoke = process.argv.includes('--smoke');
 for (let i = 2; i < process.argv.length; i += 1) {
   const key = process.argv[i];
-  if (key === '--smoke') continue;
+  if (key === '--smoke' || key === '--partial') continue;
   const value = process.argv[i + 1];
   if (!key?.startsWith('--') || value === undefined) usage();
   cli.set(key.slice(2), value);
@@ -43,10 +44,10 @@ const mode = cli.get('mode');
 const outArg = cli.get('out');
 if (mode !== 'pretend' && mode !== 'real') usage();
 if (!outArg) usage();
-const durationHours = Number(cli.get('duration-hours') ?? SOAK_HOURS);
-if (!smoke && (!Number.isFinite(durationHours) || durationHours !== SOAK_HOURS)) {
-  throw new Error(`BLOCKED: the soak duration is exactly ${SOAK_HOURS} hours; shorter runs are not accepted`);
-}
+const partial = !smoke && process.argv.includes('--partial');
+const duration = smoke ? null : resolveSoakDuration(cli.get('duration-hours'), partial);
+const soakHours = duration?.hours ?? FULL_SOAK_HOURS;
+const soakMs = soakHours * 60 * 60 * 1000;
 if (process.platform !== 'win32') throw new Error('BLOCKED: the live Windows producer requires Windows CI.');
 if (mode === 'real' && process.env.FOO_REAL_AI_APPROVED !== '1') {
   throw new Error('BLOCKED: no lane-provided real-AI key/environment is configured; this producer never reads or uses an AI key.');
@@ -216,7 +217,7 @@ async function main(): Promise<number> {
     }
     if (!smoke) {
       let lastWallAt = Date.now();
-      while (Date.now() - startedAt < SOAK_MS) {
+      while (Date.now() - startedAt < soakMs) {
         const wallNow = Date.now();
         await advanceClock(page, Math.max(1, wallNow - lastWallAt));
         lastWallAt = wallNow;
@@ -232,7 +233,7 @@ async function main(): Promise<number> {
   }
 
   const counts = readCounts(dbFile, baselineJobIds);
-  const completed = !smoke && failure === null && Date.now() - startedAt >= SOAK_MS;
+  const completed = !smoke && failure === null && Date.now() - startedAt >= soakMs;
   const result = smoke
     ? failure
       ? 'fail'
@@ -245,12 +246,16 @@ async function main(): Promise<number> {
         : 'blocked'
       : counts.jobStarts < 1
         ? 'blocked'
-        : 'pass';
+        : duration?.partial
+          ? 'partial'
+          : 'pass';
   writeHeartbeat({ at: new Date().toISOString(), buildSha: buildSha(), ...counts });
   const report = {
     result,
     mode,
-    durationHours: smoke ? null : SOAK_HOURS,
+    durationHours: smoke ? null : soakHours,
+    acceptanceDurationHours: smoke ? null : (duration?.acceptanceHours ?? FULL_SOAK_HOURS),
+    partial: smoke ? false : (duration?.partial ?? false),
     smoke,
     fixture: { dataDir, localDir, runtimeOut, fakeScript, heartbeatFile },
     buildSha: buildSha(),
@@ -260,7 +265,9 @@ async function main(): Promise<number> {
     failure,
     note: smoke
       ? 'Smoke only: it requires a live fake-AI job; routine_runs is diagnostic only and makes no eight-hour soak claim.'
-      : 'Counts come from the live FOO_TEST app SQLite fixture; job counters are required, routine_runs is diagnostic only.',
+      : duration?.partial
+        ? `Partial ${soakHours}-hour diagnostic only; the full ${duration.acceptanceHours}-hour acceptance threshold remains unproven.`
+        : 'Counts come from the live FOO_TEST app SQLite fixture; job counters are required, routine_runs is diagnostic only.',
   };
   writeFileSync(join(outDir, `lane-e-live-producer-${mode}.json`), JSON.stringify(report, null, 2), 'utf8');
   console.log(JSON.stringify(report));

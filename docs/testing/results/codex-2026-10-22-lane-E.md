@@ -27,8 +27,8 @@ entry, AI login or paid workflow was accessed. Real-AI cost: **$0**.
 | Chats, memory and working job preservation                            | SQLite seed + read-only verifier                   | blocked                                | `0d04a9f` | [lane-e-upgrade-seed.ts](../../../test/windows/lane-e-upgrade-seed.ts), [lane-e-upgrade-verify.ts](../../../test/windows/lane-e-upgrade-verify.ts) | The fixture preserves chats, memory and a running job. Routine rows are excluded because routine execution is not an acceptance dependency; the installer run remains blocked without both artifacts.                                                                   |
 | PERF-01..18 + PERF-01..04 at 225%, pretend AI                         | TypeScript p95 validator                           | blocked                                | `0d04a9f` | [lane-e-performance.ts](../../../test/soak/lane-e-performance.ts)                                                                                  | All 18 budgets, exact E.1 data, separate measured 225% dataset, and 20 samples per check are required. No live measurement bundle was supplied.                                                                                                                         |
 | PERF-01..18, real AI                                                  | TypeScript p95 validator                           | blocked                                | `0d04a9f` | [lane-e-performance.ts](../../../test/soak/lane-e-performance.ts)                                                                                  | No lane-provided real-AI key/environment was inspected or used; the real mode remains fail-closed. Cost $0.                                                                                                                                                             |
-| Eight-hour source-fixture heartbeat producer                          | Playwright Electron + fake AI + SQLite observation | blocked                                | `0d04a9f` | [lane-e-live-producer.ts](../../../test/soak/lane-e-live-producer.ts)                                                                              | The producer starts a real fake-AI job in an isolated FOO_TEST app. `jobStarts` is the acceptance gate; `routine_runs` is diagnostic only. No eight-hour run was started.                                                                                               |
-| Eight-hour jobs soak, handles, memory and freezes                     | Windows process + heartbeat monitor                | blocked                                | `0d04a9f` | [lane-e-soak.ts](../../../test/soak/lane-e-soak.ts)                                                                                                | Harness enforces exactly 8 hours and requires a job start plus process/heartbeat evidence. A one-hour run was not started because no packaged fixture and Windows CI evidence were available; no local installer or AI call was used.                                   |
+| Source-fixture heartbeat producer (8-hour gate / 1-hour diagnostic)   | Playwright Electron + fake AI + SQLite observation | blocked                                | `0d04a9f` | [lane-e-live-producer.ts](../../../test/soak/lane-e-live-producer.ts)                                                                              | The producer starts a real fake-AI job in an isolated FOO_TEST app. `jobStarts` is the acceptance gate; `routine_runs` is diagnostic only. The explicit one-hour route reports `partial` and never claims the eight-hour gate. No run was started.                      |
+| Jobs soak, handles, memory and freezes (8-hour gate / 1-hour partial) | Windows process + heartbeat monitor                | blocked                                | `0d04a9f` | [lane-e-soak.ts](../../../test/soak/lane-e-soak.ts)                                                                                                | Default is the eight-hour acceptance threshold. `--partial --duration-hours 1` records diagnostic evidence only and reports `partial`; no packaged fixture or Windows CI evidence was available, so no run was started.                                                 |
 
 ## Executable commands and prerequisites
 
@@ -52,21 +52,26 @@ corepack.cmd pnpm exec tsx test/soak/lane-e-performance.ts --measurements "$env:
 corepack.cmd pnpm exec tsx test/soak/lane-e-performance.ts --measurements "$env:RUNNER_TEMP\perf-real.json" --out "$env:RUNNER_TEMP\lane-e-perf" --mode real
 ```
 
-The executable source-app producer uses the existing Electron launcher and fake-AI fixture. It must run for the full eight
-hours; it records the live job rows from its isolated SQLite database, so missing job activity stays blocked. `routine_runs`
-is diagnostic only because routine execution is not a current acceptance dependency:
+The executable source-app producer uses the existing Electron launcher and fake-AI fixture. The default eight-hour run is the
+acceptance gate; the explicit one-hour route is diagnostic and reports `partial`, never `pass`. It records live job rows from
+its isolated SQLite database, so missing job activity stays blocked. `routine_runs` is diagnostic only because routine
+execution is not a current acceptance dependency:
 
 ```powershell
 corepack.cmd pnpm exec tsx test/soak/lane-e-live-producer.ts --out "$env:RUNNER_TEMP\lane-e-live" --mode pretend --duration-hours 8
+# Explicit one-hour diagnostic; this is partial evidence and never satisfies the eight-hour acceptance gate.
+corepack.cmd pnpm exec tsx test/soak/lane-e-live-producer.ts --out "$env:RUNNER_TEMP\lane-e-live-partial" --mode pretend --partial --duration-hours 1
 # Bounded launcher/job smoke only; this does not claim the eight-hour result.
 corepack.cmd pnpm exec tsx test/soak/lane-e-live-producer.ts --out "$env:RUNNER_TEMP\lane-e-live-smoke" --mode pretend --smoke
 ```
 
-The soak command requires a fixture executable and an external heartbeat JSON under `RUNNER_TEMP`; `--duration-hours`
-must remain exactly `8`:
+The soak command requires a fixture executable and an external heartbeat JSON under `RUNNER_TEMP`. Use eight hours for the
+acceptance gate; pass both `--partial` and `--duration-hours 1` only for the bounded diagnostic route:
 
 ```powershell
 corepack.cmd pnpm exec tsx test/soak/lane-e-soak.ts --exe "$env:RUNNER_TEMP\foo.exe" --scenario "$env:RUNNER_TEMP\soak-heartbeat.json" --out "$env:RUNNER_TEMP\lane-e-soak" --mode pretend --duration-hours 8
+# Explicit one-hour diagnostic; the report says partial and keeps the eight-hour acceptance result blocked.
+corepack.cmd pnpm exec tsx test/soak/lane-e-soak.ts --exe "$env:RUNNER_TEMP\foo.exe" --scenario "$env:RUNNER_TEMP\soak-heartbeat.json" --out "$env:RUNNER_TEMP\lane-e-soak-partial" --mode pretend --partial --duration-hours 1
 ```
 
 ## Needs Vikas
@@ -81,9 +86,10 @@ trigger, secret or user profile is changed by this lane.
 ## Validation and remaining work
 
 Authored-path validation for this revision: PowerShell parser checks, focused TypeScript checks, ESLint/Prettier, `git diff --check`,
-and TypeScript `--help` dry runs pass. The Windows entrypoint dry run exited 2 and wrote three explicit blocked rows (no PR97
+the duration contract red/green test, and TypeScript `--help` dry runs pass. The Windows entrypoint dry run exited 2 and wrote three explicit blocked rows (no PR97
 results, no current installer, no old/current installer pair). The Windows entrypoint without artifacts is expected to exit 2
 with explicit blocked rows. No installer was packaged, executed or uninstalled locally; no Credential Manager entry was read or
-written; no tray/toast check was claimed. The optional one-hour soak was not started: the current job evidence must come from
-the isolated fake-AI fixture on Windows CI, and no packaged fixture or CI run was available. No full suite, new dependency,
+written; no tray/toast check was claimed. The explicit one-hour soak route was not started: the current job evidence must come from
+the isolated fake-AI fixture on Windows CI, and no packaged fixture or CI run was available. It remains partial by contract and
+does not satisfy the eight-hour acceptance threshold. No full suite, new dependency,
 paid AI call or real-AI key was used.
