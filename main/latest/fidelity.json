@@ -1,16 +1,16 @@
 {
-  "reportId": "M9-5093bf0-39697463439",
+  "reportId": "M9-c08d39e-39697991057",
   "milestone": "M9",
-  "generatedAt": "2026-10-22T00:08:57.865Z",
-  "commit": "5093bf04156043b5ccd053c85e7b58feac1e80f3",
-  "head": "5093bf04156043b5ccd053c85e7b58feac1e80f3",
+  "generatedAt": "2026-10-22T00:14:22.086Z",
+  "commit": "c08d39ed5863ababcfb38428f20b3bd9ab34eb4a",
+  "head": "c08d39ed5863ababcfb38428f20b3bd9ab34eb4a",
   "ci": {
-    "runId": "39697463439",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39697463439"
+    "runId": "39697991057",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39697991057"
   },
   "spec": {
     "version": "spec-v1.0",
-    "setSha256": "066f5eecf2debb60669216ece68162d55c18f3d3d9a04c600cea12e88393ce5d"
+    "setSha256": "4374d82cc3afa98e5f23c23329842598e8f397f7776c729beaafc48e3ae9f2da"
   },
   "runner": null,
   "fid04": "UNVERIFIABLE",
@@ -660,7 +660,7 @@
     "ids": [],
     "failed": [],
     "trace": {
-      "live": 329,
+      "live": 331,
       "pending": 65,
       "byMilestone": {
         "M0": 5,
@@ -672,7 +672,7 @@
         "M6": 38,
         "M13": 2,
         "M8": 33,
-        "M9": 139,
+        "M9": 141,
         "M7": 1
       }
     }
@@ -828,6 +828,11 @@
         "id": "CR-0045",
         "title": "A message that is not about a waiting job leaves its card alone; a message sent while a job turns stuck is not lost",
         "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-203 (his messages 2026-10-18 14:56Z and 14:59Z,"
+      },
+      {
+        "id": "CR-0046",
+        "title": "kit replies mend small slips, the prompt teaches the limits",
+        "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-204 (his messages 2026-10-18 14:56Z and 14:59Z, and"
       }
     ],
     "notes": "Conservative picks and deferrals: implementation-notes.md (the ## M9 sections)."
