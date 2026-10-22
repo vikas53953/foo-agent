@@ -637,7 +637,7 @@ export class Engine {
           jobBlock,
           steer: steer ?? null,
         }),
-      buildRepair: (issues) => this.prompts.buildRepair(issues).prompt,
+      buildRepair: (issues, failed) => this.prompts.buildRepair(issues, failed).prompt,
       parseStep: (text) => {
         const env = parseEnvelope(text);
         if (env.act === undefined) return { act: null, issues: env.actError ?? formatIssues([]) };
@@ -725,7 +725,7 @@ export class Engine {
           ...(i.answers ? { answers: i.answers } : {}),
         });
       },
-      buildRepair: (issues) => this.prompts.buildRepair(issues).prompt,
+      buildRepair: (issues, failed) => this.prompts.buildRepair(issues, failed).prompt,
       parse: (text) => {
         const env = parseEnvelope(text);
         const act = env.act === undefined ? null : decision(env.act);

@@ -87,7 +87,8 @@ export interface RunnerPrompts {
     memory: MemoryParts,
     steer?: string | null,
   ): { system: string; prompt: string; factIds?: string[] };
-  buildRepair(issues: string): string;
+  /** CR-0049: `failed` = the failed turn's prompt and reply, which the repair turn carries (foo keeps no AI session). */
+  buildRepair(issues: string, failed?: { prompt: string; reply: string }): string;
   /** Parse a step reply: the validated StepAct, or the zod issues for the repair turn. */
   parseStep(text: string): { act: StepAct | null; issues: string | null; say?: string };
   /** 08-4 §24.13 / §24.21: the classify turn over the last tool results, and its StuckAct `whatsWrong` (null if invalid). */
@@ -1519,8 +1520,8 @@ export class JobRunner {
     this.d.ai.reportOk(pick.providerId);
     const parsed = this.d.prompts.parseStep(r.text);
     if (parsed.act) return { act: parsed.act, turnId, say: parsed.say ?? '' };
-    // 08-2 §7.5: one repair turn in the same session.
-    const repairPrompt = this.d.prompts.buildRepair(parsed.issues ?? '');
+    // 08-2 §7.5: one repair turn in the same session, carried in its prompt (CR-0049).
+    const repairPrompt = this.d.prompts.buildRepair(parsed.issues ?? '', { prompt: built.prompt, reply: r.text });
     // M5 T10 (CR-0008 (j) row 5): the repair turn is a key call too, so it passes the cap check first.
     const repairOut = this.d.ai.turnParams(pick.providerId, 'repair').maxOutputTokens;
     if (!(await this.cost.allowStep(job, built.system.length + repairPrompt.length, repairOut))) return { act: null, turnId, capped: true };
