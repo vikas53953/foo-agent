@@ -1,19 +1,19 @@
 {
-  "reportId": "M9-3fe429c-39683904944",
+  "reportId": "M9-d4b4bcf-39697762960",
   "milestone": "M9",
-  "generatedAt": "2026-10-21T22:45:01.930Z",
-  "commit": "8f86d996d913b41e4cb06996c2bd5d508a35ccc2",
-  "head": "3fe429ca514d3601a917ba012014f2bfd34afd92",
+  "generatedAt": "2026-10-22T00:48:39.551Z",
+  "commit": "1982ce49c48c652df1d5a4ff416efbbc4ac84159",
+  "head": "d4b4bcf90a4ff7ecd64f1f8e646003f5a848aade",
   "ci": {
-    "runId": "39683904944",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39683904944"
+    "runId": "39697762960",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39697762960"
   },
   "spec": {
     "version": "spec-v1.0",
-    "setSha256": "d09114079d3546e0d16ade010a40f2b5942d6b61baa7cefca285dfa999eef9da"
+    "setSha256": "4374d82cc3afa98e5f23c23329842598e8f397f7776c729beaafc48e3ae9f2da"
   },
   "runner": {
-    "recordedAt": "2026-10-21T22:14:12.118Z",
+    "recordedAt": "2026-10-22T00:17:08.661Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261018.275.1",
-      "runner": "GitHub Actions 1000005038"
+      "runner": "GitHub Actions 1000005196"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,7 +59,7 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "1 test(s) failed",
+    "2 test(s) failed",
     "12 audit item(s) not DONE (the milestone is not complete)"
   ],
   "missingInputs": [],
@@ -68,7 +68,7 @@
       "M9: 1 of 36 drawings match; open the side-by-side rows below."
     ],
     "changed": [
-      "68 picture(s) differ a little from the drawing and need your look (Review rows), whatever else a CR disputes:",
+      "66 picture(s) differ a little from the drawing and need your look (Review rows), whatever else a CR disputes:",
       "BP-ANAT-CHIPS (dark): R3 colour (ΔE 4.78) in the Review band; see it side by side below.",
       "BP-ANAT-L (dark): R3 colour (ΔE 4.78) in the Review band; see it side by side below.",
       "BP-ANAT-LHEAD (dark): R3 colour (ΔE 2.91) in the Review band; see it side by side below.",
@@ -95,7 +95,7 @@
       "UX-05-03 (dark): R4 pixels (7.37 %) in the Review band; see it side by side below.",
       "UX-05-03 (light): R4 pixels (6.43 %) in the Review band; see it side by side below.",
       "UX-10-01 (dark): R4 pixels (9.39 %) in the Review band; see it side by side below.",
-      "UX-10-01 (light): R4 pixels (8.48 %) in the Review band; see it side by side below.",
+      "UX-10-01 (light): R4 pixels (8.47 %) in the Review band; see it side by side below.",
       "UX-10-03 (dark): R2 boxes in the Review band; see it side by side below.",
       "UX-10-03 (light): R2 boxes in the Review band; see it side by side below.",
       "UX-10-04 (dark): R4 pixels (9.64 %) in the Review band; see it side by side below.",
@@ -134,8 +134,6 @@
       "UX-23-02 (light): R4 pixels (7.17 %) in the Review band; see it side by side below.",
       "UX-23-03 (dark): R4 pixels (8.14 %) in the Review band; see it side by side below.",
       "UX-23-03 (light): R4 pixels (7.11 %) in the Review band; see it side by side below.",
-      "UX-23-05 (dark): R4 pixels (8.61 %) in the Review band; see it side by side below.",
-      "UX-23-05 (light): R4 pixels (8.07 %) in the Review band; see it side by side below.",
       "UX-24-02 (dark): R3 colour (ΔE 4.78) in the Review band; see it side by side below."
     ],
     "needsYes": []
@@ -964,17 +962,152 @@
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 6484,
+        "passed": 6577,
         "failed": 0,
-        "skipped": 2
+        "skipped": 4
       },
       "e2e": {
-        "passed": 238,
-        "failed": 1,
+        "passed": 237,
+        "failed": 2,
         "skipped": 0
       }
     },
     "ids": [
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
+      {
+        "id": "ART-02a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-02a.test.ts"
+      },
       {
         "id": "ART-02a",
         "status": "passed",
@@ -26801,6 +26934,276 @@
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
       },
       {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
+        "id": "ART-21c",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-21.test.ts"
+      },
+      {
         "id": "ART-22",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-22.test.ts"
@@ -26809,6 +27212,11 @@
         "id": "ART-22",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/articles/ART-22.test.ts"
+      },
+      {
+        "id": "ART-24a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/articles/ART-24a.test.ts"
       },
       {
         "id": "ART-24a",
@@ -29011,6 +29419,61 @@
         "file": "D:/a/foo-agent/foo-agent/test/integration/m8-x.test.ts"
       },
       {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
+        "id": "AT-094",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/settings-by-chat.test.ts"
+      },
+      {
         "id": "PERF-06",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/perf/PERF-06.test.ts"
@@ -29091,11 +29554,6 @@
         "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
       },
       {
-        "id": "AT-354",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
-      },
-      {
         "id": "AT-441",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
@@ -29181,12 +29639,42 @@
         "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
       },
       {
+        "id": "AT-354",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
         "id": "AT-441",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
       },
       {
-        "id": "AT-442",
+        "id": "AT-354",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-354",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
+      },
+      {
+        "id": "AT-441",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/unit/kit-real-replies.test.ts"
       },
@@ -29621,6 +30109,16 @@
         "file": "D:/a/foo-agent/foo-agent/test/integration/approvals/withdraw.test.ts"
       },
       {
+        "id": "AT-033",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
+      },
+      {
+        "id": "AT-034",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
+      },
+      {
         "id": "AT-059",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/browser/login.test.ts"
@@ -29669,16 +30167,6 @@
         "id": "AT-038",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
-      },
-      {
-        "id": "AT-033",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
-      },
-      {
-        "id": "AT-034",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
       },
       {
         "id": "AT-118a",
@@ -30362,7 +30850,7 @@
       },
       {
         "id": "PERF-02",
-        "status": "passed",
+        "status": "failed",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
@@ -30887,7 +31375,7 @@
       },
       {
         "id": "AT-366",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/r1-output.spec.ts"
       },
       {
@@ -31357,22 +31845,22 @@
       },
       {
         "id": "UX-23-01",
-        "status": "passed",
+        "status": "failed",
         "file": "test/fidelity/ux/UX-23.errors.spec.ts"
       },
       {
         "id": "UX-23-06",
-        "status": "passed",
+        "status": "failed",
         "file": "test/fidelity/ux/UX-23.errors.spec.ts"
       },
       {
         "id": "UX-23-09",
-        "status": "passed",
+        "status": "failed",
         "file": "test/fidelity/ux/UX-23.errors.spec.ts"
       },
       {
         "id": "UX-23-11",
-        "status": "passed",
+        "status": "failed",
         "file": "test/fidelity/ux/UX-23.errors.spec.ts"
       },
       {
@@ -31384,14 +31872,20 @@
     "failed": [
       {
         "suite": "e2e",
-        "file": "test/e2e/r1-output.spec.ts",
-        "title": "AT-366 · Visuals = Mostly words: the same question answers without kit pieces or AI pages unless the user asks for one",
+        "file": "test/e2e/m2-composer.spec.ts",
+        "title": "PERF-02 · typing in the 5,000-message chat paints within a frame (p95)",
+        "status": "failed"
+      },
+      {
+        "suite": "e2e",
+        "file": "test/fidelity/ux/UX-23.errors.spec.ts",
+        "title": "UX-23 · When things go wrong: steps UX-23-01 to UX-23-06, UX-23-09 and UX-23-11 from the real runner, light and dark",
         "status": "failed"
       }
     ],
     "trace": {
       "live": 331,
-      "pending": 64,
+      "pending": 65,
       "byMilestone": {
         "M0": 5,
         "M1": 23,
@@ -31400,7 +31894,7 @@
         "M4": 57,
         "M5": 54,
         "M6": 38,
-        "M13": 1,
+        "M13": 2,
         "M8": 33,
         "M9": 141,
         "M7": 1
@@ -31540,8 +32034,28 @@
         "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-199 (his messages 2026-10-18 14:56Z and 14:59Z, and"
       },
       {
+        "id": "CR-0042",
+        "title": "an intake kind that is not built yet says so",
+        "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-200 (his messages 2026-10-18 14:56Z and 14:59Z, and"
+      },
+      {
+        "id": "CR-0043",
+        "title": "change settings by chat",
+        "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-201 (his messages 2026-10-18 14:56Z and 14:59Z,"
+      },
+      {
+        "id": "CR-0044",
+        "title": "Not now on a Connect card from intake runs the job without the app",
+        "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-202 (his messages 2026-10-18 14:56Z and 14:59Z,"
+      },
+      {
+        "id": "CR-0045",
+        "title": "A message that is not about a waiting job leaves its card alone; a message sent while a job turns stuck is not lost",
+        "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-203 (his messages 2026-10-18 14:56Z and 14:59Z,"
+      },
+      {
         "id": "CR-0046",
-        "title": "kit replies mend small slips, the prompt teaches the limits, a table when asked",
+        "title": "kit replies mend small slips, the prompt teaches the limits",
         "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-204 (his messages 2026-10-18 14:56Z and 14:59Z, and"
       }
     ],
@@ -31553,9 +32067,9 @@
   "golden": {
     "counts": {
       "pass": 1,
-      "review": 68,
+      "review": 66,
       "fail": 0,
-      "disputed": 151,
+      "disputed": 143,
       "notBuilt": 9
     },
     "refsRendered": [
@@ -32818,7 +33332,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "pass (BP-ANAT-L ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.0685869140625,
+        "r5": 0.068578125,
         "ref": true,
         "app": true,
         "diff": true
@@ -33130,7 +33644,7 @@
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "pass (BP-APP-M ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.055242736204013376,
+        "r5": 0.05575442447045708,
         "ref": true,
         "app": true,
         "diff": true
@@ -33676,7 +34190,7 @@
         "r2": "fail (hl 89/192 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.09 %)",
-        "r5": 0.0272607421875,
+        "r5": 0.027259765625,
         "ref": true,
         "app": true,
         "diff": true
@@ -33819,7 +34333,7 @@
         "r2": "fail (hl 349/396.9375 px)",
         "r3": "fail (hl ΔE 86.26)",
         "r4": "fail (22.02 %)",
-        "r5": 0.070662109375,
+        "r5": 0.0704443359375,
         "ref": true,
         "app": true,
         "diff": true
@@ -33832,7 +34346,7 @@
         "r2": "fail (hl 349/396.9375 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (14.91 %)",
-        "r5": 0.0423349609375,
+        "r5": 0.0421103515625,
         "ref": true,
         "app": true,
         "diff": true
@@ -33845,7 +34359,7 @@
         "r2": "fail (hl 78/17.5 px)",
         "r3": "fail (hl ΔE 28.47)",
         "r4": "fail (83.95 %)",
-        "r5": 0.0960791015625,
+        "r5": 0.0959814453125,
         "ref": true,
         "app": true,
         "diff": true
@@ -33962,7 +34476,7 @@
         "r2": "fail (hl 114/85.859375 px)",
         "r3": "fail (hl ΔE 100)",
         "r4": "fail (43.06 %)",
-        "r5": 0.066818359375,
+        "r5": 0.066828125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34040,7 +34554,7 @@
         "r2": "fail (hl 74/68 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.43 %)",
-        "r5": 0.084005859375,
+        "r5": 0.0840048828125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34066,7 +34580,7 @@
         "r2": "fail (hl 72/23.75 px)",
         "r3": "fail (hl ΔE 12.97)",
         "r4": "fail (14.72 %)",
-        "r5": 0.0654384765625,
+        "r5": 0.065615234375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34091,8 +34605,8 @@
         "r1": "fail",
         "r2": "fail (hl 526/92 px)",
         "r3": "pass (hl ΔE 0)",
-        "r4": "review (8.48 %)",
-        "r5": 0.066029296875,
+        "r4": "review (8.47 %)",
+        "r5": 0.0660283203125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34157,7 +34671,7 @@
         "r2": "fail (hl 58/18 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (9.64 %)",
-        "r5": 0.1191552734375,
+        "r5": 0.1191611328125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34222,7 +34736,7 @@
         "r2": "fail (hl 66/14.859375 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (19.11 %)",
-        "r5": 0.049818359375,
+        "r5": 0.0498193359375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34287,7 +34801,7 @@
         "r2": "fail (hl 94/278.671875 px)",
         "r3": "fail (hl ΔE 15.62)",
         "r4": "fail (36.54 %)",
-        "r5": 0.1163857421875,
+        "r5": 0.1162529296875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34300,7 +34814,7 @@
         "r2": "fail (hl 94/278.671875 px)",
         "r3": "fail (hl ΔE 10.33)",
         "r4": "fail (35.95 %)",
-        "r5": 0.0938447265625,
+        "r5": 0.093705078125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34313,7 +34827,7 @@
         "r2": "fail (hl 56/110 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.35 %)",
-        "r5": 0.11887890625,
+        "r5": 0.1187353515625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34326,7 +34840,7 @@
         "r2": "fail (hl 56/110 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (7.24 %)",
-        "r5": 0.099869140625,
+        "r5": 0.0997392578125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34339,7 +34853,7 @@
         "r2": "fail (hl 40/19.75 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (20.42 %)",
-        "r5": 0.1038251953125,
+        "r5": 0.1038408203125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34352,7 +34866,7 @@
         "r2": "fail (hl 40/19.75 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (23.28 %)",
-        "r5": 0.089021484375,
+        "r5": 0.0890322265625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34365,7 +34879,7 @@
         "r2": "fail (hl 50/4 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.89 %)",
-        "r5": 0.0918251953125,
+        "r5": 0.0918115234375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34378,7 +34892,7 @@
         "r2": "fail (hl 50/4 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.55 %)",
-        "r5": 0.0781513671875,
+        "r5": 0.078138671875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34443,7 +34957,7 @@
         "r2": "fail (hl 140/46 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (3.89 %)",
-        "r5": 0.1130283203125,
+        "r5": 0.1130419921875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34456,7 +34970,7 @@
         "r2": "fail (hl 140/46 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (3.45 %)",
-        "r5": 0.09527734375,
+        "r5": 0.0952880859375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34482,7 +34996,7 @@
         "r2": "fail (hl 18/12 px)",
         "r3": "fail (hl ΔE 59.02)",
         "r4": "fail (87.14 %)",
-        "r5": 0.0912451171875,
+        "r5": 0.091236328125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34508,7 +35022,7 @@
         "r2": "fail (hl 194/360.625 px)",
         "r3": "fail (hl ΔE 27.05)",
         "r4": "fail (87.54 %)",
-        "r5": 0.06921484375,
+        "r5": 0.0692060546875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34534,7 +35048,7 @@
         "r2": "fail (hl 16/22.140625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (88.19 %)",
-        "r5": 0.0754541015625,
+        "r5": 0.0754453125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34547,7 +35061,7 @@
         "r2": "fail (hl 180/80 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (5.89 %)",
-        "r5": 0.08444921875,
+        "r5": 0.0842841796875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34560,7 +35074,7 @@
         "r2": "fail (hl 180/80 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (5.12 %)",
-        "r5": 0.0715849609375,
+        "r5": 0.071421875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34599,7 +35113,7 @@
         "r2": "fail (hl 18/18.59375 px)",
         "r3": "fail (hl ΔE 30.38)",
         "r4": "fail (85.76 %)",
-        "r5": 0.092279296875,
+        "r5": 0.09228125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34612,7 +35126,7 @@
         "r2": "fail (hl 18/18.59375 px)",
         "r3": "fail (hl ΔE 35.58)",
         "r4": "fail (87.96 %)",
-        "r5": 0.0658427734375,
+        "r5": 0.065833984375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34625,7 +35139,7 @@
         "r2": "fail (hl 30/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.60 %)",
-        "r5": 0.1038251953125,
+        "r5": 0.1038740234375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34638,7 +35152,7 @@
         "r2": "fail (hl 30/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (7.67 %)",
-        "r5": 0.088421875,
+        "r5": 0.091033203125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34716,7 +35230,7 @@
         "r2": "fail (hl 236/110 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.06 %)",
-        "r5": 0.07366796875,
+        "r5": 0.0736689453125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34742,7 +35256,7 @@
         "r2": "fail (hl 186/219.640625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.70 %)",
-        "r5": 0.0827841796875,
+        "r5": 0.082783203125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34755,7 +35269,7 @@
         "r2": "fail (hl 96/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (10.24 %)",
-        "r5": 0.0906357421875,
+        "r5": 0.0906845703125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34807,7 +35321,7 @@
         "r2": "fail (hl 42/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (10.26 %)",
-        "r5": 0.096759765625,
+        "r5": 0.09663671875,
         "ref": true,
         "app": true,
         "diff": true
@@ -34820,7 +35334,7 @@
         "r2": "fail (hl 42/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (9.04 %)",
-        "r5": 0.079623046875,
+        "r5": 0.079515625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34833,7 +35347,7 @@
         "r2": "fail (hl 162.5625/155.5625 px)",
         "r3": "fail (hl ΔE 62.89)",
         "r4": "fail (89.22 %)",
-        "r5": 0.1079052734375,
+        "r5": 0.1079423828125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34924,7 +35438,7 @@
         "r2": "fail (hl 194.6328125/261.265625 px)",
         "r3": "fail (hl ΔE 96.14)",
         "r4": "fail (68.66 %)",
-        "r5": 0.0868623046875,
+        "r5": 0.086853515625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34937,7 +35451,7 @@
         "r2": "fail (hl 338/198.015625 px)",
         "r3": "fail (hl ΔE 20.45)",
         "r4": "fail (11.36 %)",
-        "r5": 0.1148681640625,
+        "r5": 0.114859375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34950,7 +35464,7 @@
         "r2": "fail (hl 338/198.015625 px)",
         "r3": "fail (hl ΔE 10.07)",
         "r4": "fail (11.76 %)",
-        "r5": 0.0998740234375,
+        "r5": 0.099861328125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34976,7 +35490,7 @@
         "r2": "fail (hl 70/64 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "skipped: superseded (X-79 (\"Change\"))",
-        "r5": 0.1068681640625,
+        "r5": 0.1080087890625,
         "ref": true,
         "app": true,
         "diff": true
@@ -35366,7 +35880,7 @@
         "r2": "pass (hl 0/1 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.19 %)",
-        "r5": 0.0778642578125,
+        "r5": 0.077896484375,
         "ref": true,
         "app": true,
         "diff": true
@@ -35418,137 +35932,7 @@
         "r2": "fail (hl 246/56 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (7.11 %)",
-        "r5": 0.0867841796875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-04",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 91.46875/25.609375 px)",
-        "r3": "fail (hl ΔE 56.4)",
-        "r4": "fail (56.72 %)",
-        "r5": 0.1237470703125,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-04",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 91.46875/25.609375 px)",
-        "r3": "fail (hl ΔE 57.24)",
-        "r4": "fail (57.60 %)",
-        "r5": 0.0856044921875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-05",
-        "theme": "dark",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 46/20 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (8.61 %)",
-        "r5": 0.1473310546875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-05",
-        "theme": "light",
-        "verdict": "review",
-        "r1": "fail",
-        "r2": "fail (hl 46/20 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "review (8.07 %)",
-        "r5": 0.10237109375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-06",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 66/24.46875 px)",
-        "r3": "fail (hl ΔE 54.97)",
-        "r4": "fail (86.33 %)",
-        "r5": 0.1210888671875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-06",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 66/24.46875 px)",
-        "r3": "fail (hl ΔE 12.77)",
-        "r4": "fail (87.44 %)",
-        "r5": 0.091763671875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-09",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 66/30.5 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "fail (85.85 %)",
-        "r5": 0.100544921875,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-09",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 66/30.5 px)",
-        "r3": "pass (hl ΔE 0)",
-        "r4": "fail (86.59 %)",
-        "r5": 0.07280859375,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-11",
-        "theme": "dark",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 130/12 px)",
-        "r3": "fail (hl ΔE 30.38)",
-        "r4": "fail (85.67 %)",
-        "r5": 0.168390625,
-        "ref": true,
-        "app": true,
-        "diff": true
-      },
-      {
-        "id": "UX-23-11",
-        "theme": "light",
-        "verdict": "disputed",
-        "r1": "fail",
-        "r2": "fail (hl 130/12 px)",
-        "r3": "fail (hl ΔE 41.46)",
-        "r4": "fail (87.91 %)",
-        "r5": 0.0972822265625,
+        "r5": 0.0868212890625,
         "ref": true,
         "app": true,
         "diff": true
