@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't see live news from here, so I can't say what today's biggest story in India is. A news site or app will have the latest headline. If you tell me which topic you care about, like markets, politics or cricket, I can set up a routine to check it for you.\n\n2:06 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n2:07 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 2:07 AM\n2:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:07 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nWaiting for you to sign in ›\nLook for account balance\n2:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:07 AM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n2:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "check my email\n2:08 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do catch-ups yet. Ask me about one thing, like your latest email, and I’ll look.\n\n2:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n2:08 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Reading your WhatsApp\nlive checklist\nReading your WhatsApp\nWrite it\nStop\nunder 1 min\n2:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:08 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which WhatsApp messages should I read?\n1\nUnread chats\nBEST FIT\nOnly what you haven't opened yet\n2\nLast 24 hours\nAll chats since Wed 21 Oct, 2:08 AM\n3\nOne chat or group\nTell me the name next\n4\nLast 7 days\nAll chats since Thu 15 Oct, 2:08 AM\nSomething else…\nSkip\n2:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:08 AM"
+  }
+]

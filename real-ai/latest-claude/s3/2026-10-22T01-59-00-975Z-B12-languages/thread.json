@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n1:58 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:58 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n1:58 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:58 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n1:58 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:58 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n1:58 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n1:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n1:59 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mummy ke birthday ke liye Rasmalai cake ya classic Chocolate truffle sabse safe aur tasty rahega. Cake Sat 24 Oct ko chahiye, to aaj hi order kar do taaki slot mil jaye.\n\nKuch aur options:\n\nRasmalai cake: mithai wala twist, mummy ko pasand aayega\nButterscotch ya pineapple: purana favourite, sab ko pasand\nFresh fruit cake: halka aur kam meetha\nPhoto cake: mummy ki pyaari si photo ke saath\n\nEggless chahiye ya koi bhi chalega?\n\n1:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n1:59 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਮੰਮੀ ਲਈ ਰਸਮਲਾਈ ਕੇਕ ਸਭ ਤੋਂ ਵਧੀਆ ਰਹੇਗਾ, ਜਾਂ ਸਦਾਬਹਾਰ ਚਾਕਲੇਟ ਟਰਫਲ। ਕੇਕ Sat 24 Oct ਨੂੰ ਚਾਹੀਦਾ ਹੈ, ਇਸ ਲਈ ਅੱਜ ਹੀ ਆਰਡਰ ਕਰ ਦਿਓ ਤਾਂ ਜੋ ਸਮਾਂ ਮਿਲ ਜਾਵੇ।\n\nਹੋਰ ਵਿਕਲਪ:\n\nਬਟਰਸਕੌਚ ਜਾਂ ਪਾਈਨਐਪਲ: ਪੁਰਾਣਾ ਪਸੰਦੀਦਾ, ਸਭ ਨੂੰ ਭਾਉਂਦਾ ਹੈ\nਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ: ਹਲਕਾ ਅਤੇ ਘੱਟ ਮਿੱਠਾ\nਫੋਟੋ ਕੇਕ: ਮੰਮੀ ਦੀ ਪਿਆਰੀ ਫੋਟੋ ਦੇ ਨਾਲ\n\nਕੇਕ ਐੱਗਲੈੱਸ ਚਾਹੀਦਾ ਹੈ ਜਾਂ ਕੋਈ ਵੀ ਚੱਲੇਗਾ?\n\n1:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n1:59 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, Mon 2 Nov isn't a public holiday in Mumbai as far as I know. Diwali falls on Sun 8 Nov this year, and the nearby holidays come after that. I can't see the official Maharashtra list from here, so check it if banks or offices matter for that day.\n\n1:59 AM"
+  }
+]

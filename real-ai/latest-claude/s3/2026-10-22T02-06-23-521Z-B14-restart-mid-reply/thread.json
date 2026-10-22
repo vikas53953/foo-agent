@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Tap start when the water is ready.\n\nSteep your tea\n2:00 left\nStart timer\nKeep\n2:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n2:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is a short form for your party plan: date, guests and budget. Fill it in and send it, and I'll build the plan from it.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n2:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n2:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below. Add an amount, pick a category and see your total and a breakdown update. Entries may reset when you close the page, so note down your totals if you need them later.\n\nKeep\n2:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi\n2:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n2:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is a good name for a pet tortoise?\n2:06 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dhairya is a lovely pick for a tortoise, since it means patience and suits a slow, steady pet.\n\nSome other ideas:\n\nTurbo: funny because they're so slow\nKachu: short and sweet, from kachua\nShell-don: a playful twist on Sheldon\nPebble: small, calm and a little round\n\nTell me a bit about your tortoise, like its colour or personality, and I'll narrow it down.\n\n2:06 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Which news story is biggest in India today? One line.\n2:06 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't see live news from here, so I can't say what today's biggest story in India is. A news site or app will have the latest headline. If you tell me which topic you care about, like markets, politics or cricket, I can set up a routine to check it for you.\n\n2:06 AM"
+  }
+]

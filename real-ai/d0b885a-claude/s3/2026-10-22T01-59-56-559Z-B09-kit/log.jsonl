@@ -1,0 +1,26 @@
+{"t":"2026-10-22T01:59:56.560Z","journey":"B09-kit","title":"Rich reply pieces: calculator, map, chart, compare, timer, form","spec":"R1 AT-340..AT-371","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T02:00:02.115Z","step":"launch","ok":true}
+{"t":"2026-10-22T02:00:02.251Z","i":0,"do":"send","sentAt":1792634402212,"sent":true,"before":0,"ok":true,"ms":133}
+{"t":"2026-10-22T02:00:18.485Z","i":1,"do":"waitReply","expect":"AT-347 calculator recomputes","firstReplyMs":7610,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Your EMI comes to about ₹43,391 a month on ₹50,00,000 (50 lakh) at 8.5% for 20 years. Change the amount, rate or years below and the numbers update.\n\nCouldn’t show part of this\n\nKeep\n2:00 AM","ms":16234}
+{"t":"2026-10-22T02:00:18.563Z","shot":"01-emi.png"}
+{"t":"2026-10-22T02:00:18.713Z","i":2,"do":"send","sentAt":1792634418670,"sent":true,"before":0,"ok":true,"ms":150}
+{"t":"2026-10-22T02:00:32.359Z","i":3,"do":"waitReply","expect":"AT-341 numbered stops, dashed route, Open in Maps chip","firstReplyMs":5054,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here are 5 well-known places to visit in Jaipur, numbered in a sensible order from the old city to the hills. The positions are approximate.\n\nCouldn’t show part of this\n\nKeep\n\nWant me to plan these into a one-day route?\n\n2:00 AM","ms":13645}
+{"t":"2026-10-22T02:00:32.432Z","shot":"02-map.png"}
+{"t":"2026-10-22T02:00:32.566Z","i":4,"do":"send","sentAt":1792634432535,"sent":true,"before":0,"ok":true,"ms":134}
+{"t":"2026-10-22T02:00:47.816Z","i":5,"do":"waitReply","expect":"AT-340 one hue, number rules","firstReplyMs":7107,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"India's real GDP growth fell to -5.8% in FY21 (Covid), then bounced back to 9.7% and has settled around 6.5% to 9% since. These are approximate figures from official estimates, by fiscal year (April to March). I've left out FY26 because I can't confirm its final number from here.\n\nIndia real GDP growth (% per year)\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n2:00 AM","ms":15250}
+{"t":"2026-10-22T02:00:47.881Z","shot":"03-chart.png"}
+{"t":"2026-10-22T02:00:48.034Z","i":6,"do":"send","sentAt":1792634447984,"sent":true,"before":0,"ok":true,"ms":153}
+{"t":"2026-10-22T02:01:04.780Z","i":7,"do":"waitReply","expect":"AT-343 highlighted column with why","firstReplyMs":7080,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"The Galaxy S25 looks like the best value of the three, since it has the newest chip and 7 years of updates at about the same launch price. These are approximate launch details for India, and current shop prices will differ, so check them before you buy.\n\niPhone 16\nLaunch price\nAbout ₹79,900 (128 GB)\nChip\nApple A18\nScreen\n6.1 inch, 60 Hz\nMemory\n8 GB\nUpdates\nAround 6 to 7 years\nBest for\nSmooth use and resale value\nPixel 9\nLaunch price\nAbout ₹79,999 (128 GB)\nChip\nGoogle Tensor G4\nScreen\n6.3 inch, 120 Hz\nMemory\n12 GB\nUpdates\n7 years\nBest for\nCamera and clean software\nBest pick\nGalaxy S25\nLaunch price\nAbout ₹80,999 (128 GB)\nChip\nSnapdragon 8 Elite\nScreen\n6.2 inch, 120 Hz\nMemory\n12 GB\nUpdates\n7 years\nBest for\nSpeed and all-round features\n\nFastest chip, 120 Hz screen and 7 years of updates for nearly the same price.\n\nKeep\n2:00 AM","ms":16745}
+{"t":"2026-10-22T02:01:04.835Z","shot":"04-compare.png"}
+{"t":"2026-10-22T02:01:04.986Z","i":8,"do":"send","sentAt":1792634464934,"sent":true,"before":0,"ok":true,"ms":151}
+{"t":"2026-10-22T02:01:15.138Z","i":9,"do":"waitReply","expect":"AT-346 timer runs","firstReplyMs":3056,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Your 2 minute tea timer is below. Tap start when the water is ready.\n\nSteep your tea\n2:00 left\nStart timer\nKeep\n2:01 AM","ms":10152}
+{"t":"2026-10-22T02:01:15.195Z","shot":"05-timer.png"}
+{"t":"2026-10-22T02:01:15.337Z","i":10,"do":"send","sentAt":1792634475291,"sent":true,"before":0,"ok":true,"ms":142}
+{"t":"2026-10-22T02:01:27.012Z","i":11,"do":"waitReply","expect":"AT-351 up to 6 fields, submit one action","firstReplyMs":3539,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here is a short form for your party plan: date, guests and budget. Fill it in and send it, and I'll build the plan from it.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n2:01 AM","ms":11674}
+{"t":"2026-10-22T02:01:27.071Z","shot":"06-form.png"}
+{"t":"2026-10-22T02:01:27.193Z","i":12,"do":"send","sentAt":1792634487156,"sent":true,"before":0,"ok":true,"ms":122}
+{"t":"2026-10-22T02:01:50.561Z","i":13,"do":"waitReply","expect":"AT-358..362 sealed page, status line first","firstReplyMs":5614,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Your expense tracker is below. Add an amount, pick a category and see your total and a breakdown update. Entries may reset when you close the page, so note down your totals if you need them later.\n\nKeep\n2:01 AM","endState":true,"ms":23368}
+{"t":"2026-10-22T02:01:50.638Z","shot":"07-ai-page.png"}
+{"t":"2026-10-22T02:01:50.648Z","i":14,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-22T02:01:50.787Z","step":"appLog","lines":22,"dropped":0}
+{"t":"2026-10-22T02:01:50.799Z","step":"aiTurns","turns":7}

@@ -1,0 +1,123 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-10-37-863Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1040
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792635044682,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 149
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "firstReplyMs": 10165,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which weekend activity in Bengaluru sounds best?\n1\nNandi Hills sunrise\nBEST FIT\nEarly start, cool views, back by brunch\n2\nCubbon Park and café stroll\nEasy, relaxed, close to the centre\n3\nMalleshwaram food walk\nOld Bengaluru snacks and filter coffee\nSomething else…\nSkip\n2:10 AM",
+      "ms": 16254
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 86
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792635061226,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 141
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "firstReplyMs": 8154,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Cubbon Park and a café stroll is a good pick: shady walks in the morning, then a slow coffee. Go early on Sat 24 Oct, before the crowds and the heat.\n\nWant me to look up cafés near the park?\n\n2:11 AM",
+      "ms": 15793
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792635077230,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 97
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "firstReplyMs": 8090,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good tonight?\n1\nSouth Indian tiffin\nBEST FIT\nDosa, idli and filter coffee\n2\nNorth Indian thali\nDal, paneer, roti and rice\n3\nBiryani night\nHyderabadi style with raita\nSomething else…\nSkip\n2:11 AM",
+      "ms": 14141
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 87
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 609
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792635092305,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 101
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "firstReplyMs": 12148,
+      "newBubbles": 2,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Got it, dal chawal. I can't tell what it answers, since the earlier question was withdrawn.\n\n2:11 AM\n---\nWhat is the dal chawal for?\n1\nTonight's dinner plan\nBEST FIT\nNote it, then go on reading WhatsApp\n2\nA reply in a WhatsApp chat\nI'll write a draft for you to review\n3\nSomething else\nTell me in a message\nSomething else…\nSkip\n2:11 AM",
+      "ms": 18248
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 14
+    }
+  ]
+}
