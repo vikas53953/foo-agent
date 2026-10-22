@@ -1,0 +1,81 @@
+# Codex status — 22 October 2026, 12:38 IST
+
+Lead: draft [PR 138](https://github.com/vikas53953/foo-agent/pull/138). No merges. Existing Anthropic key authorized without a user spending cap; no secrets or personal data in committed evidence.
+
+## Drift check for this loop
+
+- (a) Real-AI run or judged result: YES. B07 [39735003572](https://github.com/vikas53953/foo-agent/actions/runs/39735003572) independently reviewed, all 20 screenshots; expanded [39733030713](https://github.com/vikas53953/foo-agent/actions/runs/39733030713), all 64 screenshots reviewed. Consecutive loops without a run/judgment: 0.
+- (b) Outside literal runbook: manual category dispatch, production-path BDD diagnostics, live-window driver repair, mutation test-selection repair, repeated performance probes and soak producer/observer diagnostics. These support the authorized expanded testing. Later user instructions override old spending caps, installer/soak exclusions and ready-PR bottlenecks.
+- (c) Weakened/skipped/placeholder: no intentional threshold reduction. Existing missing fixtures, soft locator failures, blocked categories and code-only exceptions remain explicit. Full diff audit is pending; no blanket claim that every test is adequate.
+
+## Real-AI dispatches started by this task today
+
+Counts below are summary-clean versus summary-failed executions, NOT feature acceptance. Setup repeats count as executions. A zero summary failure count can coexist with soft locator errors.
+
+| Run                                                                             | Tested revision                          |              Executions | Clean | Failed | Reason                                                                                                                                             |
+| ------------------------------------------------------------------------------- | ---------------------------------------- | ----------------------: | ----: | -----: | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [39725331473](https://github.com/vikas53953/foo-agent/actions/runs/39725331473) | 0d04a9f9105e42aef0b4a22238285a9007635c3e | 54 (51 unique journeys) |    45 |      9 | J10/J05, fresh reply, dialog completion, sources/citation, draft, R1 reply, AI-page and booking checks; 13 failed steps. 291 screenshots reviewed. |
+| [39726084968](https://github.com/vikas53953/foo-agent/actions/runs/39726084968) | a7a04fac                                 |                       0 |     0 |      0 | Cancelled before jobs; replaced after concurrency correction.                                                                                      |
+| [39727432127](https://github.com/vikas53953/foo-agent/actions/runs/39727432127) | 9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d |      12 (8 R + 4 setup) |     6 |      6 | Missing page capabilities, job/approval states, kit and reply-area checks; 119 failed steps. 203 screenshots reviewed.                             |
+| [39733030713](https://github.com/vikas53953/foo-agent/actions/runs/39733030713) | 948fe18ccc02caf874c8bf913c27fe15cecee983 |        13 (9 + 4 setup) |     8 |      5 | B03 sources, B04 stop, B09 map/secret form, B05 recovery, B06 NEEDS YOU; 12 failed steps. 64 screenshots reviewed.                                 |
+| [39735003572](https://github.com/vikas53953/foo-agent/actions/runs/39735003572) | 4fd0d51c0516efb239123704dd1deb3af16dc219 |         2 (B07 + setup) |     1 |      1 | B07 opened viewer after done_unverified; live/mask/takeover/handback/stop preconditions absent. 12 failed steps. 20 screenshots reviewed.          |
+
+All four executed workflows concluded success; this does not override their failed assertions or feature judgments. Sixteen other real-AI workflow runs today were main-push-triggered, not dispatched by this task; their inventory follows below.
+
+## Current generated matrix
+
+Fresh build_matrix.py execution: **6 proven, 45 partial, 10 fail, 64 missing, 3 not built, 62 approved code-only = 190**. Missing means no adequate recorded real-AI evidence; it is not necessarily no journey file. No new feature delta is claimed in this checkpoint: today's reviewed ledger proposals are still being consolidated. Every subsequent delta must include its run and immutable evidence link. Reporting lag is an outstanding lead task.
+
+## Lanes
+
+| Lane / agent       | Finished evidence                                                                                                                                                                                                           | Current / blocker                                                                                                                                                                                                 |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A / lane_a         | Four screenshot-reviewed runs above; B07 timing diagnosis                                                                                                                                                                   | Active-job synchronization repair and bounded AT-427 journey; external account prerequisites blocked.                                                                                                             |
+| B / pr_review_two  | [39736925949](https://github.com/vikas53953/foo-agent/actions/runs/39736925949): pretend 20 pass/2 fail, real 0 pass/2 fail                                                                                                 | Confirmed settings-path isolation defect; explicit production storage overrides approved, keeping FOO_TEST=0. Remaining J5 checklist and J22 teardown failures retained.                                          |
+| C / judge_s1       | [47f20905 report](https://github.com/vikas53953/foo-agent/blob/47f20905f8c07e4fed716ab64f30667221bef19f/docs/testing/results/codex-2026-10-22-lane-C.md): 5/5 bounded direct-model quality/language probes; cost $0.0734583 | Batch complete. Direct-model output is not app routing or enforcement acceptance. Earlier injection/eval failures retained.                                                                                       |
+| D / judge_s2       | [39733053833](https://github.com/vikas53953/foo-agent/actions/runs/39733053833): fast, screen and 4 Windows shards passed                                                                                                   | Golden still running at last check; native Narrator/Windows text scaling unproven.                                                                                                                                |
+| E / judge_s3       | [39733907955](https://github.com/vikas53953/foo-agent/actions/runs/39733907955): 38 checks pass/4 blocked/0 fail; workflow failed on blocked gate                                                                           | New 8h producer+observer at 0e0ab3cab5f11301409849315cc6fa87e4dfdb55 started 12:28/12:29 IST; 2 successive jobs completed_unverified. No 8h acceptance yet. Upgrade retained-data checks do not prove job resume. |
+| F / driver_bug     | [39728230100](https://github.com/vikas53953/foo-agent/actions/runs/39728230100): renderer 0/1145 killed; boundary results retained                                                                                          | Per-area test selection correction and dry runs active; old mutation jobs preserved.                                                                                                                              |
+| G / branch_updates | [B07 evidence](https://github.com/vikas53953/foo-agent/commit/72e4b8bb6ea050ad32bb4e6e5d4b34d67567e176): 20/20 screenshots reviewed                                                                                         | Review complete; live controls unproven on completed job; human usability validation outstanding.                                                                                                                 |
+
+Performance diagnostic [39735905306](https://github.com/vikas53953/foo-agent/actions/runs/39735905306) repeats four existing probes; running at last check. It does not establish reference-hardware or full cold-start acceptance.
+
+## Self-check and corrections
+
+- Manual CI dispatch, bounded fixture/driver repairs, per-area mutation selection and diagnostic collectors were added beyond literal runbook steps to enable authorized testing. No product acceptance is inferred from those additions.
+- The previous Group R screenshot count was overstated; correct count is 203.
+- AT-427's 600-character condition applies to the tested fixture predicate, not a universal response-length limit. Prior broad failure interpretation was corrected.
+- Original soak attempts failed: wrong wrapper identity first, then a one-use intake fixture and stale heartbeat. Failures remain recorded; a clean two-job smoke precedes the active restart.
+- Old mutation selection exercised unrelated tests. Results remain failures/coverage gaps rather than being discarded.
+- The shared evidence ledger has lagged the reviews. Consolidation is active; proposed counts are not published as current matrix results.
+
+## Needs Vikas — does not block independent work
+
+- External Google/WhatsApp account prerequisites and any future interactive authentication.
+- Human usability observations and native accessibility acceptance where automation cannot establish them.
+- Product decisions for unbuilt reminder, completed-answer retry and edited-message resend paths. No implementation or acceptance is invented.
+
+## Continuation
+
+Two-hour heartbeat active through 26 October 2026, ending 23:59 IST / 18:30 UTC. Each loop verifies current main, dispatches or judges real AI, records drift answers and blockers, and commits sanitized results to this lead branch. If no run/judgment for two loops, side work stops until real testing resumes. Daily summary: codex-daily-<date>.md. Lane E HEAD must remain fixed during its active soak. Draft PRs only, no merges.
+
+## Other automatic main-push runs today (IST)
+
+Ownership is not attributed to this task. Journey counts are not audited in this checkpoint.
+
+- [39663772762](https://github.com/vikas53953/foo-agent/actions/runs/39663772762): failure.
+- [39672037388](https://github.com/vikas53953/foo-agent/actions/runs/39672037388): success.
+- [39672075915](https://github.com/vikas53953/foo-agent/actions/runs/39672075915): cancelled.
+- [39673710219](https://github.com/vikas53953/foo-agent/actions/runs/39673710219): success.
+- [39682238767](https://github.com/vikas53953/foo-agent/actions/runs/39682238767): success.
+- [39688102383](https://github.com/vikas53953/foo-agent/actions/runs/39688102383): success.
+- [39688590719](https://github.com/vikas53953/foo-agent/actions/runs/39688590719): success.
+- [39695109448](https://github.com/vikas53953/foo-agent/actions/runs/39695109448): success.
+- [39696407725](https://github.com/vikas53953/foo-agent/actions/runs/39696407725): cancelled.
+- [39697463388](https://github.com/vikas53953/foo-agent/actions/runs/39697463388): cancelled.
+- [39697781942](https://github.com/vikas53953/foo-agent/actions/runs/39697781942): cancelled.
+- [39697991102](https://github.com/vikas53953/foo-agent/actions/runs/39697991102): cancelled.
+- [39698459634](https://github.com/vikas53953/foo-agent/actions/runs/39698459634): success.
+- [39704562143](https://github.com/vikas53953/foo-agent/actions/runs/39704562143): failure.
+- [39706496634](https://github.com/vikas53953/foo-agent/actions/runs/39706496634): success.
+- [39710797010](https://github.com/vikas53953/foo-agent/actions/runs/39710797010): success.
