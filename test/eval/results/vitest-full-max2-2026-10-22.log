@@ -1,0 +1,25 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v5.0.5 <lane-c>
+
+[vitest-pool]: Timeout terminating forks worker for test files <lane-c>/test/integration/m8-expiry.test.ts.
+ ❯ test/integration/browser/snapshot.test.ts (8 tests) 64465ms
+ ❯ test/integration/browser/masker.test.ts (10 tests) 64817ms
+ ❯ test/integration/browser/submit.test.ts (5 tests | 1 failed) 224762ms
+   ❯ AT-038 · the fee changed before submit (1)
+     × AT-038 no-show fee ₹1,000 → ₹1,500 between card and tap → SUPERSEDED (fee), a new card at ₹1,500, nothing booked 63089ms
+ ❯ test/integration/browser/profile.test.ts (3 tests | 1 failed) 60238ms
+   ❯ foo’s browser profile keeps no value the person typed (CR-0034) (1)
+     × typed values reach no profile file while the browser runs, nor after it closes 60022ms
+ ❯ test/integration/browser/recipes.test.ts (2 tests | 2 failed) 132280ms
+   ❯ AT-144 · site recipes (2)
+     × AT-144 saved after DONE with proof by role and name only; replayed by role + name; the book click is this job’s own submit 67959ms
+     × AT-144 a page whose controls do not match by role + name gets no replay line (a miss is left to the AI) 64299ms
+ ❯ test/integration/browser/sitenotes.test.ts (4 tests | 2 failed) 132068ms
+   ❯ 08-2 §8.3.9 site notes (3)
+     × a block is noted (flags + dated line) and the next step turn is told to skip the site 66666ms
+   ❯ 08-2 §8.3.8 / §8.3.4 runner seams (1)
+     × a finished step leaves one masked step picture, and the next step’s first snapshot is whole again 65034ms
+[vitest-pool]: Timeout terminating forks worker for test files <lane-c>/test/integration/browser/sitenotes.test.ts.
