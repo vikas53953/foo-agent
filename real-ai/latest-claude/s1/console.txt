@@ -1,3 +1,0 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-23-55-758Z-J01-J02-first-run"}
-{"journey":"R-approvals","title":"Group R approval and booking plans without irreversible clicks","steps":102,"failed":38,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-24-46-578Z-R-approvals"}
-{"journey":"R-kit-1","title":"Group R kit surfaces: stepper, timeline, calendar, goal and pick list","steps":48,"failed":9,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-40-59-307Z-R-kit-1"}

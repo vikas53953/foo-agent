@@ -1,3 +1,0 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-23-52-950Z-J01-J02-first-run"}
-{"journey":"R-ai-pages","title":"Group R plain answers and capabilities surface","steps":74,"failed":10,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-24-43-747Z-R-ai-pages"}
-{"journey":"R-jobs","title":"Group R jobs, sources, retry and live job updates","steps":79,"failed":36,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-29-13-735Z-R-jobs"}
