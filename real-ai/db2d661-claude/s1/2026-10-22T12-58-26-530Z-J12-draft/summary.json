@@ -1,0 +1,44 @@
+{
+  "journey": "J12-draft",
+  "title": "Draft an email (never sends)",
+  "steps": 4,
+  "failed": 1,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T12-58-26-530Z-J12-draft",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792673919559,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 78
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 4546,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Connect Gmail\n\nI need to read your email for “Email about being late”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n12:58 PM",
+      "kit": [],
+      "ms": 10621
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "dump",
+      "ok": true,
+      "ms": 5
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{"t":"2026-10-22T13:04:43.494Z","journey":"R-dark","title":"Group R dark reply contrast","spec":"07 §11.5 Group R; AT-429, AT-278","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T13:04:48.482Z","step":"launch","ok":true}
+{"t":"2026-10-22T13:04:48.572Z","i":0,"do":"send","note":"AT-429, AT-278: clean dark mode request","sentAt":1792674288551,"sent":true,"before":0,"ok":true,"ms":87}
+{"t":"2026-10-22T13:05:25.475Z","i":1,"do":"waitReply","note":"AT-429: clean dark mode","firstReplyMs":30837,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I’ll remember: Prefers dark mode.\nUndo","kit":[],"endState":true,"ms":36903}
+{"t":"2026-10-22T13:05:25.521Z","shot":"01-at-429-clean-dark-mode.png"}
+{"t":"2026-10-22T13:05:25.589Z","i":2,"do":"send","note":"AT-429, AT-278: clean greeting in dark mode","sentAt":1792674325580,"sent":true,"before":0,"ok":true,"ms":67}
+{"t":"2026-10-22T13:05:39.221Z","i":3,"do":"waitReply","note":"AT-429: clean dark greeting","firstReplyMs":6547,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Hi! Your dark mode switch and the Punjab Kings note are still waiting. Want me to do those now?\n\n1:05 PM","kit":[],"endState":true,"ms":13631}
+{"t":"2026-10-22T13:05:39.270Z","shot":"02-at-429-clean-dark-greeting.png"}
+{"t":"2026-10-22T13:05:39.271Z","i":4,"do":"check","note":"AT-429, AT-278: clean last user bubble keeps the dark contrast colors","found":5,"ok":true,"ms":1}
+{"t":"2026-10-22T13:05:39.338Z","i":5,"do":"send","note":"AT-429, AT-278: messy typo dark mode request","sentAt":1792674339332,"sent":true,"before":0,"ok":true,"ms":67}
+{"t":"2026-10-22T13:07:39.348Z","i":6,"do":"waitReply","note":"AT-429: messy typo dark mode","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120009}
+{"t":"2026-10-22T13:07:39.395Z","shot":"03-at-429-messy-typo-dark-mode.png"}
+{"t":"2026-10-22T13:07:39.465Z","i":7,"do":"send","note":"AT-429, AT-278: messy typo greeting in dark mode","sentAt":1792674459460,"sent":true,"before":0,"ok":true,"ms":70}
+{"t":"2026-10-22T13:09:39.817Z","i":8,"do":"waitReply","note":"AT-429: messy typo dark greeting","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120351}
+{"t":"2026-10-22T13:09:39.865Z","shot":"04-at-429-messy-typo-dark-greeting.png"}
+{"t":"2026-10-22T13:09:39.869Z","i":9,"do":"check","note":"AT-429, AT-278: messy typo last user bubble keeps the dark contrast colors","found":7,"ok":true,"ms":3}
+{"t":"2026-10-22T13:09:39.940Z","i":10,"do":"send","note":"AT-429, AT-278: Hinglish dark mode request","sentAt":1792674579934,"sent":true,"before":0,"ok":true,"ms":70}
+{"t":"2026-10-22T13:11:40.291Z","i":11,"do":"waitReply","note":"AT-429: Hinglish dark mode","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120350}
+{"t":"2026-10-22T13:11:40.348Z","shot":"05-at-429-Hinglish-dark-mode.png"}
+{"t":"2026-10-22T13:11:40.407Z","i":12,"do":"send","note":"AT-429, AT-278: Hinglish greeting in dark mode","sentAt":1792674700395,"sent":true,"before":0,"ok":true,"ms":58}
+{"t":"2026-10-22T13:13:40.790Z","i":13,"do":"waitReply","note":"AT-429: Hinglish dark greeting","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120383}
+{"t":"2026-10-22T13:13:40.838Z","shot":"06-at-429-Hinglish-dark-greeting.png"}
+{"t":"2026-10-22T13:13:40.839Z","i":14,"do":"check","note":"AT-429, AT-278: Hinglish last user bubble keeps the dark contrast colors","found":8,"ok":true,"ms":1}
+{"t":"2026-10-22T13:13:40.843Z","step":"recheck","i":6,"do":"waitReply","late":true}
+{"t":"2026-10-22T13:13:40.843Z","step":"recheck","i":8,"do":"waitReply","late":true}
+{"t":"2026-10-22T13:13:40.844Z","step":"recheck","i":11,"do":"waitReply","late":true}
+{"t":"2026-10-22T13:13:40.845Z","step":"recheck","i":13,"do":"waitReply","late":true}
+{"t":"2026-10-22T13:13:40.975Z","step":"appLog","lines":21,"dropped":0}
+{"t":"2026-10-22T13:13:40.984Z","step":"aiTurns","turns":11}

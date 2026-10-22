@@ -1,0 +1,17 @@
+{"t":"2026-10-22T12:55:05.610Z","journey":"J17-memory","title":"Remember, view and forget","spec":"07-1 J17; 06 memory page; M6","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T12:55:10.554Z","step":"launch","ok":true}
+{"t":"2026-10-22T12:55:10.869Z","i":0,"do":"send","sentAt":1792673710647,"sent":true,"before":0,"ok":true,"ms":311}
+{"t":"2026-10-22T12:55:21.523Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":4596,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I’ll remember: Favourite food: South Indian\nUndo","kit":[],"ms":10654}
+{"t":"2026-10-22T12:55:21.572Z","shot":"01-remember.png"}
+{"t":"2026-10-22T12:55:21.641Z","i":2,"do":"click","ok":true,"ms":69}
+{"t":"2026-10-22T12:55:21.738Z","i":3,"do":"click","expect":"fact listed in plain words with source","ok":true,"ms":97}
+{"t":"2026-10-22T12:55:23.739Z","i":4,"do":"wait","expect":"fact listed in plain words with source","ok":true,"ms":2001}
+{"t":"2026-10-22T12:55:23.785Z","shot":"02-memory-page.png"}
+{"t":"2026-10-22T12:55:23.787Z","i":5,"do":"check","found":1,"ok":true,"ms":2}
+{"t":"2026-10-22T12:55:23.802Z","i":6,"do":"key","ok":true,"ms":15}
+{"t":"2026-10-22T12:55:23.876Z","i":7,"do":"send","sentAt":1792673723866,"sent":true,"before":0,"ok":true,"ms":74}
+{"t":"2026-10-22T12:55:36.024Z","i":8,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":5571,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Your favourite food is South Indian, and I already have that saved.\n\n12:55 PM","kit":[],"ms":12148}
+{"t":"2026-10-22T12:55:36.098Z","shot":"03-recall.png"}
+{"t":"2026-10-22T12:55:36.105Z","i":9,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-22T12:55:36.236Z","step":"appLog","lines":8,"dropped":0}
+{"t":"2026-10-22T12:55:36.245Z","step":"aiTurns","turns":2}

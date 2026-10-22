@@ -1,0 +1,90 @@
+{
+  "journey": "B04-stop",
+  "title": "Start a job then stop it by typing stop",
+  "steps": 9,
+  "failed": 1,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T12-58-50-521Z-B04-stop",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792673943575,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "note": "AT-077/AT-107: the stop fixture first renders a real plan or reply",
+      "firstReplyMs": 6068,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which Friday do you mean for Delhi to Mumbai?\n1\nFri 30 Oct\nBEST FIT\nNext week's Friday\n2\nFri 23 Oct\nTomorrow\nSomething else…\nSkip\n12:59 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 12134
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 40003
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792673995886,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 82
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "note": "AT-077/AT-107: stop is accepted only with a rendered stop report and stopped badge",
+      "expect": "AT-077: stops within 1 s; reply lists exactly what was done; badge ⛔",
+      "firstReplyMs": 504,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Nothing’s running right now.\n\n12:59 PM",
+      "kit": [],
+      "endState": false,
+      "ms": 6060
+    },
+    {
+      "i": 6,
+      "do": "check",
+      "note": "AT-080: stop leaves no pending approval card exposed",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 7,
+      "do": "check",
+      "note": "AT-107: the working job's checklist is rendered stopped after the user stop",
+      "found": 1,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 6
+    }
+  ]
+}

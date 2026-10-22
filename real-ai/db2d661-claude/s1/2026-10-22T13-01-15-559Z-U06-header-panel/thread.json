@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n12:58 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n12:59 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which Friday do you mean for Delhi to Mumbai?\n1\nFri 30 Oct\nBEST FIT\nNext week's Friday\n2\nFri 23 Oct\nTomorrow\nSomething else…\nSkip\n12:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:59 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n12:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n1:00 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n1:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n1:00 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "At ₹80,000 look for 16 GB memory, a 512 GB SSD, and a recent Ryzen 5/7 or Intel Core Ultra 5/7 chip. That runs code editors, Docker and a few browser tabs smoothly.\n\nMemory: 16 GB is the minimum, and a spare slot to reach 32 GB later is a bonus.\nScreen: 14 to 15.6 inch, 1080p or sharper, with a bright, matte-ish panel for long hours.\nKeyboard and battery: Try the keyboard in a shop if you can. Aim for 8+ hours of real use.\nGraphics card: Skip it unless you do AI work or games. It adds weight and cost, and a better screen or memory is worth more.\n\nWhich kind of programming do you do most: web and apps, or AI and games?\n\n1:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n1:00 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n1:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n1:00 PM"
+  }
+]

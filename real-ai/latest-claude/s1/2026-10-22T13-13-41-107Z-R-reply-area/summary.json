@@ -1,0 +1,262 @@
+{
+  "journey": "R-reply-area",
+  "title": "Group R reply sender and action ownership",
+  "steps": 24,
+  "failed": 6,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T13-13-41-107Z-R-reply-area",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "note": "AT-428: clean ask",
+      "sentAt": 1792674826147,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 74
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "note": "AT-428: clean",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120247
+    },
+    {
+      "i": 2,
+      "do": "expectText",
+      "note": "AT-428: clean result",
+      "text": "Hi! Your dark mode switch and the Punjab Kings note are still waiting. Want me to do those now?\n\n1:05 PM",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "note": "AT-428: messy typo ask",
+      "sentAt": 1792674946544,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 75
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "note": "AT-428: messy typo",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120257
+    },
+    {
+      "i": 5,
+      "do": "expectText",
+      "note": "AT-428: messy typo result",
+      "text": "Hi! Your dark mode switch and the Punjab Kings note are still waiting. Want me to do those now?\n\n1:05 PM",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "note": "AT-428: Hinglish ask",
+      "sentAt": 1792675066939,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 73
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "note": "AT-428: Hinglish",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120263
+    },
+    {
+      "i": 8,
+      "do": "expectText",
+      "note": "AT-428: Hinglish result",
+      "text": "Hi! Your dark mode switch and the Punjab Kings note are still waiting. Want me to do those now?\n\n1:05 PM",
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 9,
+      "do": "send",
+      "note": "AT-430: clean VPN answer before hello",
+      "sentAt": 1792675187346,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "i": 10,
+      "do": "waitReply",
+      "note": "AT-430: clean VPN answer",
+      "firstReplyMs": 6072,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN (virtual private network) is a service that sends your internet traffic through a protected path to another computer before it reaches the websites you visit. To those websites, your traffic seems to come from that computer, not from your own home or phone.\n\nThe path is encrypted, so anyone between you and the VPN, like café Wi-Fi or your internet provider, can't read what you send. It also hides your real location from sites, which is why people use it for privacy on public Wi-Fi or to reach content from another country.\n\nA VPN isn't magic, though. The VPN company can still see your traffic, so pick one you trust, and it won't protect you from scams, viruses or sites where you log in with your own name.\n\n1:19 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 14182
+    },
+    {
+      "i": 11,
+      "do": "send",
+      "note": "AT-430: clean greeting after answer",
+      "sentAt": 1792675201645,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "i": 12,
+      "do": "waitReply",
+      "note": "AT-430: clean greeting",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120002,
+      "late": true
+    },
+    {
+      "i": 13,
+      "do": "waitFor",
+      "note": "AT-430: copy action is scoped to the latest answer bubble",
+      "ok": false,
+      "error": "locator.waitFor: Timeout 10000ms exceeded.",
+      "ms": 10063
+    },
+    {
+      "i": 14,
+      "do": "send",
+      "note": "AT-430: messy typo VPN answer before hello",
+      "sentAt": 1792675331829,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 69
+    },
+    {
+      "i": 15,
+      "do": "waitReply",
+      "note": "AT-430: messy typo VPN answer",
+      "firstReplyMs": 4557,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN (virtual private network) sends your internet traffic through a protected path to another computer before it reaches the websites you visit. To those sites, your traffic seems to come from that computer, not from your home or phone.\n\nThe path is encrypted, so anyone in between, like café Wi-Fi or your internet provider, can't read what you send. It also hides your real location, which is why people use a VPN for privacy on public Wi-Fi or to reach content from another country.\n\nA VPN isn't magic, though. The VPN company can still see your traffic, so pick one you trust. It won't protect you from scams, viruses or sites where you sign in with your own name.\n\n1:22 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 12666
+    },
+    {
+      "i": 16,
+      "do": "send",
+      "note": "AT-430: messy typo greeting after answer",
+      "sentAt": 1792675344612,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "i": 17,
+      "do": "waitReply",
+      "note": "AT-430: messy typo greeting",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120419,
+      "late": true
+    },
+    {
+      "i": 18,
+      "do": "waitFor",
+      "note": "AT-430: copy action is scoped to the latest answer bubble",
+      "ok": false,
+      "error": "locator.waitFor: Timeout 10000ms exceeded.",
+      "ms": 10081
+    },
+    {
+      "i": 19,
+      "do": "send",
+      "note": "AT-430: Hinglish VPN answer before hello",
+      "sentAt": 1792675475212,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 48
+    },
+    {
+      "i": 20,
+      "do": "waitReply",
+      "note": "AT-430: Hinglish VPN answer",
+      "firstReplyMs": 5058,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "VPN (virtual private network) ek seva hai jo aapka internet traffic pehle ek surakshit raste se doosre computer tak bhejti hai, phir woh websites tak pahunchta hai. Websites ko lagta hai ki aap usi computer se aa rahe ho, aapke ghar ya phone se nahi.\n\nYeh raasta encrypted hota hai, to beech mein koi bhi, jaise café ka Wi-Fi ya aapka internet provider, aapka data padh nahi sakta. Aapki asli location bhi chhup jaati hai, isiliye log public Wi-Fi par privacy ke liye ya doosre desh ka content dekhne ke liye VPN use karte hain.\n\nVPN jaadu nahi hai. VPN company aapka traffic phir bhi dekh sakti hai, to bharosemand company chuniye. Yeh aapko scams, virus ya un sites se nahi bachayega jahan aap apne naam se sign in karte ho.\n\n1:24 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 15142
+    },
+    {
+      "i": 21,
+      "do": "send",
+      "note": "AT-430: Hinglish greeting after answer",
+      "sentAt": 1792675490461,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 60
+    },
+    {
+      "i": 22,
+      "do": "waitReply",
+      "note": "AT-430: Hinglish greeting",
+      "firstReplyMs": 6060,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Namaste! Aapne dark mode kai baar maanga, par woh abhi tak on nahi hua hai. Bolo to abhi laga doon?\n\n1:24 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 14129
+    },
+    {
+      "i": 23,
+      "do": "waitFor",
+      "note": "AT-430: copy action is scoped to the latest answer bubble",
+      "ok": false,
+      "error": "locator.waitFor: Timeout 10000ms exceeded.",
+      "ms": 10064
+    }
+  ]
+}

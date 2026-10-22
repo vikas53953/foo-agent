@@ -1,0 +1,17 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":3,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T12-51-06-435Z-J01-J02-first-run"}
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T12-54-14-823Z-J01-J02-first-run"}
+{"journey":"J17-memory","title":"Remember, view and forget","steps":10,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T12-55-05-609Z-J17-memory"}
+{"journey":"B03-web-local","title":"Web without keys: news read locally, sources","steps":12,"failed":4,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T12-55-36-337Z-B03-web-local"}
+{"journey":"J12-draft","title":"Draft an email (never sends)","steps":4,"failed":1,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T12-58-26-530Z-J12-draft"}
+{"journey":"B04-stop","title":"Start a job then stop it by typing stop","steps":9,"failed":1,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T12-58-50-521Z-B04-stop"}
+{"journey":"J08-choice","title":"Question with choice chips","steps":5,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T13-00-02-261Z-J08-choice"}
+{"journey":"J21-J22-settings-search","title":"Settings and search","steps":6,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T13-00-32-280Z-J21-J22-settings-search"}
+{"journey":"U02-reactions-thanks","title":"Reactions: foo thumbs-up on thanks, react and un-react","steps":12,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T13-00-43-175Z-U02-reactions-thanks"}
+{"journey":"U06-header-panel","title":"Chat header, ⋮ menu, details panel (Doing, Using, What I know, Spent)","steps":15,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T13-01-15-559Z-U06-header-panel"}
+{"journey":"U10-plan-change-stop","title":"Plan card: Change plan, then Stop a running job from the checklist","steps":15,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T13-02-10-859Z-U10-plan-change-stop"}
+{"journey":"U14-memory","title":"Memory: chip with Undo, memory page search, edit, forget with Undo","steps":23,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T13-02-58-106Z-U14-memory"}
+{"journey":"U18-new-helper-group","title":"New helper and New group dialogs, helper chat, helper profile","steps":9,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T13-03-31-868Z-U18-new-helper-group"}
+{"journey":"U22-face-polish","title":"Living face: thinking while working, resting; motion off in settings","steps":12,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T13-03-39-152Z-U22-face-polish"}
+{"journey":"U26-crash-reopen","title":"foo crashes and is reopened at once: a window must appear","steps":5,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T13-04-22-401Z-U26-crash-reopen"}
+{"journey":"R-dark","title":"Group R dark reply contrast","steps":15,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T13-04-43-493Z-R-dark"}
+{"journey":"R-reply-area","title":"Group R reply sender and action ownership","steps":24,"failed":6,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T13-13-41-107Z-R-reply-area"}
