@@ -10,7 +10,8 @@
     {
       "do": "waitReply",
       "timeoutMs": 150000,
-      "shot": "choice"
+      "shot": "choice",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const after=rows.slice(rows.indexOf(me)+1);const c=after.flatMap((r)=>[...r.querySelectorAll('[data-testid=\"card-choice\"]')]).at(-1);return !!c&&c.getAttribute('data-card-state')==='asking'&&c.querySelectorAll('[data-testid=\"card-choice-option\"]').length>=2;})()"
     },
     {
       "do": "check",
@@ -33,7 +34,8 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "typed-2",
-      "expect": "AT-035: card collapses as if option 2 was tapped"
+      "expect": "AT-035: card collapses as if option 2 was tapped",
+      "expectJs": "(()=>{const rows=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-side=\"me\"][data-gap]')];const me=rows.at(-1);const asking=[...document.querySelectorAll('[data-testid=\"card-choice\"][data-card-state=\"asking\"]')];return !!me&&/^\\s*2\\s*$/.test(me.innerText||'')&&asking.length===0;})()"
     },
     {
       "do": "dump",

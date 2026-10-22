@@ -18,7 +18,9 @@
       "timeoutMs": 180000,
       "shot": "routine",
       "expect": "Routine card: created, next run time with weekday and date",
-      "ref": "BP-CARD-16"
+      "ref": "BP-CARD-16",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);return !!b&&/routine|weekday|8 ?AM|weather/i.test(b.innerText||'')&&!!b.querySelector('[data-card-type=\\\"routine\\\"]');})()",
+      "note": "C.4 Routine (C13): assistant response contains an actual created routine card for the requested schedule (plan cards do not count)"
     },
     {
       "do": "click",
@@ -36,6 +38,11 @@
       "shot": "routines",
       "expect": "Routines screen with the new routine row",
       "ref": "UX-18-01"
+    },
+    {
+      "do": "check",
+      "tid": "screen-routines",
+      "note": "C.5 Routines screen: routines page root is present"
     },
     {
       "do": "click",

@@ -17,6 +17,12 @@
       "ref": "UX-10-01"
     },
     {
+      "do": "waitFor",
+      "css": "[role=\"dialog\"]",
+      "timeoutMs": 30000,
+      "note": "C.4 New helper / New group dialogs (06, not cards): Control+N opens a semantic dialog"
+    },
+    {
       "do": "key",
       "key": "Escape"
     },
@@ -32,6 +38,12 @@
       "expect": "same dialog from the button"
     },
     {
+      "do": "waitFor",
+      "css": "[role=\"dialog\"]",
+      "timeoutMs": 30000,
+      "note": "C.4 New helper / New group dialogs (06, not cards): sidebar New helper opens a semantic dialog"
+    },
+    {
       "do": "key",
       "key": "Escape"
     },
@@ -41,6 +53,17 @@
       "shot": "new-group",
       "expect": "New group dialog: pick 2–6 members",
       "ref": "UX-10-04"
+    },
+    {
+      "do": "waitFor",
+      "css": "[role=\"dialog\"]",
+      "timeoutMs": 30000,
+      "note": "C.4 New helper / New group dialogs (06, not cards): Control+Shift+N opens a semantic dialog"
+    },
+    {
+      "do": "check",
+      "tid": "sidebar",
+      "note": "C.5 Helper profile / group: sidebar remains available after dialog trigger (profile creation route is not exercised)"
     },
     {
       "do": "key",

@@ -17,7 +17,9 @@
       "do": "waitReply",
       "timeoutMs": 150000,
       "shot": "hello",
-      "expect": "short reply"
+      "expect": "short reply",
+      "expectJs": "(()=>{const me=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-me\\\"]')].at(-1);const foo=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);return !!foo&&(foo.innerText||'').trim().length>0&&!!me?.querySelector('[data-testid=\\\"bubble-tick\\\"],[data-testid=\\\"bubble-badge\\\"]');})()",
+      "note": "C.3 Your bubble + status badge: the sent bubble has a status indicator and the assistant reply is non-empty"
     },
     {
       "do": "click",
@@ -51,10 +53,9 @@
     },
     {
       "do": "expectText",
-      "soft": true,
       "re": "2",
       "tid": "chat-header-selection-count",
-      "note": "count shows 2"
+      "note": "C.2 Headers (left + main): selection header count is rendered as 2"
     },
     {
       "do": "click",
@@ -91,9 +92,8 @@
     },
     {
       "do": "check",
-      "soft": true,
       "tid": "bubble-me",
-      "note": "message kept after Esc"
+      "note": "C.3 Your bubble + status badge: the user bubble remains after cancelling deletion"
     },
     {
       "do": "dump",

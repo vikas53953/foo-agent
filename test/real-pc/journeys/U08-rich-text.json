@@ -18,7 +18,9 @@
       "timeoutMs": 150000,
       "shot": "code",
       "expect": "code block in mono with a Copy button",
-      "ref": "BP-MSG-03"
+      "ref": "BP-MSG-03",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);return !!b?.querySelector('pre,code')&&!!b.querySelector('[data-testid=\\\"bubble-code-copy\\\"]');})()",
+      "note": "C.3 foo / helper bubble; C.9 Rich replies: latest reply contains code and its copy control"
     },
     {
       "do": "click",
@@ -34,7 +36,9 @@
       "do": "waitReply",
       "timeoutMs": 150000,
       "shot": "table",
-      "expect": "table renders (or label: value lines), not raw pipes"
+      "expect": "table renders (or label: value lines), not raw pipes",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);const t=b?.innerText||'';return !!b&&(!!b.querySelector('table')||/state.*capital|capital.*state/i.test(t))&&!/\\|.*\\|/.test(t);})()",
+      "note": "C.9 Rich replies: latest reply renders a table or a structured state/capital response without raw pipe rows"
     },
     {
       "do": "send",
@@ -44,7 +48,9 @@
       "do": "waitReply",
       "timeoutMs": 150000,
       "shot": "link",
-      "expect": "a clickable link; right-click shows open/copy"
+      "expect": "a clickable link; right-click shows open/copy",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);return !!b?.querySelector('a[href],[data-testid=\\\"bubble-autolink\\\"]');})()",
+      "note": "C.3 foo / helper bubble; C.9 Rich replies: latest reply exposes an actual link"
     },
     {
       "do": "click",

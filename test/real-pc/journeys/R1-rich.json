@@ -11,7 +11,8 @@
       "do": "waitReply",
       "timeoutMs": 180000,
       "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-      "shot": "table"
+      "shot": "table",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const after=rows.slice(rows.indexOf(me)+1);const foo=after.flatMap((r)=>[...r.querySelectorAll('[data-testid=\"bubble-foo\"]')]).at(-1);const plan=after.flatMap((r)=>[...r.querySelectorAll('[data-testid=\"card-plan\"]')]).at(-1);const text=(foo?.innerText||'')+' '+(plan?.innerText||'');return !!(foo||plan)&&/phone|20000|table|compar/i.test(text);})()"
     },
     {
       "do": "clickIf",
@@ -39,7 +40,8 @@
       "do": "waitReply",
       "timeoutMs": 240000,
       "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-      "shot": "trip"
+      "shot": "trip",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const after=rows.slice(rows.indexOf(me)+1);const foo=after.flatMap((r)=>[...r.querySelectorAll('[data-testid=\"bubble-foo\"]')]).at(-1);const plan=after.flatMap((r)=>[...r.querySelectorAll('[data-testid=\"card-plan\"]')]).at(-1);const text=(foo?.innerText||'')+' '+(plan?.innerText||'');return !!(foo||plan)&&/Jaipur|trip|day|parents/i.test(text);})()"
     },
     {
       "do": "dump",

@@ -11,7 +11,8 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-      "shot": "hi"
+      "shot": "hi",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const reply=rows.slice(rows.indexOf(me)+1).find((e)=>e.getAttribute('data-side')==='them')?.querySelector('[data-testid=\"bubble-foo\"]');const t=reply?.innerText||'';return !!reply&&t.trim().length>0&&!/didn.t get that|error/i.test(t);})()"
     },
     {
       "do": "send",
@@ -21,7 +22,8 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-      "shot": "what-can-you-do"
+      "shot": "what-can-you-do",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const reply=rows.slice(rows.indexOf(me)+1).find((e)=>e.getAttribute('data-side')==='them')?.querySelector('[data-testid=\"bubble-foo\"]');return !!reply&&/can|help|answer|assist/i.test(reply.innerText||'');})()"
     },
     {
       "do": "send",
@@ -31,7 +33,8 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-      "shot": "vpn"
+      "shot": "vpn",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const reply=rows.slice(rows.indexOf(me)+1).find((e)=>e.getAttribute('data-side')==='them')?.querySelector('[data-testid=\"bubble-foo\"]');return !!reply&&/VPN|internet|private|tunnel|encrypt/i.test(reply.innerText||'');})()"
     },
     {
       "do": "dump",

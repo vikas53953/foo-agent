@@ -18,7 +18,9 @@
       "timeoutMs": 180000,
       "shot": "plan",
       "expect": "a Plan card with real step names (never \"Work on it\"), estimate, Go and Change plan",
-      "ref": "BP-CARD-11"
+      "ref": "BP-CARD-11",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);const p=b?.querySelector('[data-testid=\\\"card-plan\\\"]');return !!p&&!!p.querySelector('[data-testid=\\\"card-plan-go\\\"]')&&(p.innerText||'').trim().length>0;})()",
+      "note": "C.4 Plan (C11): the assistant reply contains a named plan with a Go control"
     },
     {
       "do": "shotEl",
@@ -54,6 +56,12 @@
       "expect": "details expanded"
     },
     {
+      "do": "waitFor",
+      "tid": "card-checklist-details",
+      "timeoutMs": 30000,
+      "note": "C.4 Checklist (C2) + link card: details control remains present after opening checklist"
+    },
+    {
       "do": "wait",
       "ms": 150000,
       "shot": "done",
@@ -61,15 +69,13 @@
     },
     {
       "do": "check",
-      "soft": true,
       "tid": "thread-receipt-footer",
-      "note": "receipt footer"
+      "note": "C.4 Proof chip + receipt footer (C12): receipt footer is present"
     },
     {
       "do": "check",
-      "soft": true,
       "tid": "card-checklist-sources",
-      "note": "sources"
+      "note": "C.4 Checklist (C2) + link card: checklist sources surface is present"
     },
     {
       "do": "dump",

@@ -11,7 +11,8 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-      "shot": "remember"
+      "shot": "remember",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const after=rows.slice(rows.indexOf(me)+1);const text=after.map((r)=>r.innerText||'').join('\\n');const undo=after.some((r)=>r.querySelector('[data-testid=\"thread-memory-undo\"]'));return undo||/remember|South Indian|saved|memory/i.test(text);})()"
     },
     {
       "do": "click",
@@ -44,7 +45,8 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-      "shot": "recall"
+      "shot": "recall",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const b=rows.slice(rows.indexOf(me)+1).flatMap((r)=>[...r.querySelectorAll('[data-testid=\"bubble-foo\"]')]).at(-1);return !!b&&/South Indian|favourite food|favorite food/i.test(b.innerText||'');})()"
     },
     {
       "do": "dump",

@@ -1,5 +1,5 @@
 // Spec: 07 journeys §11.3 (real-AI journey contracts); every journey is checked while older B/J/U baseline files stay
-// unchanged when this strict validator reports their existing contract violations.
+// must carry executable hard proof; metadata, screenshots and soft observations do not establish coverage.
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -10,11 +10,17 @@ type Step = {
   tid?: string;
   expectTid?: string;
   css?: string;
+  count?: number;
+  ms?: number;
+  key?: string;
   expectKit?: string;
   expectJs?: string;
   expectText?: unknown;
   note?: string;
   re?: string;
+  soft?: boolean;
+  terminal?: 'reaction-only';
+  transient?: boolean;
 };
 
 type Journey = {
@@ -111,23 +117,54 @@ const groupR = new Set([
   'AT-435',
 ]);
 
-const hasEndState = (step: Step) => Boolean(step.expectTid || step.expectKit || step.expectJs || (step.expectText && step.re));
+const hasEndState = (step: Step) => !step.soft && Boolean(step.expectTid || step.expectKit || step.expectJs);
 
+// Only predicates the driver actually executes can witness coverage.
 const isCheckedStep = (step: Step) =>
+  !step.soft &&
   Boolean(
-    step.expectTid ||
-    step.expectKit ||
-    step.expectJs ||
-    (step.do === 'expectText' && typeof step.re === 'string' && step.re.length > 0) ||
-    ((step.do === 'check' || step.do === 'waitFor') && (step.tid || step.expectTid || step.css)),
+    (step.do === 'waitReply' && hasEndState(step)) ||
+    (step.do === 'expectText' && (step.tid || step.css) && typeof step.re === 'string' && step.re.length > 0) ||
+    ((step.do === 'check' || step.do === 'waitFor') && (step.tid || step.css)),
   );
+
+const isReactionOnlyCheck = (step: Step) =>
+  !step.soft &&
+  (step.do === 'check' || step.do === 'waitFor') &&
+  typeof step.css === 'string' &&
+  step.css.includes('bubble-reaction') &&
+  step.css.includes(':not(:has(~');
+
+const hasReactionOnlyProof = (steps: Step[], sendIndex: number, terminalIndex: number) => {
+  const terminal = steps[terminalIndex];
+  if (terminal?.terminal !== 'reaction-only' || terminal.do !== 'expectText' || !isCheckedStep(terminal) || typeof terminal.re !== 'string')
+    return false;
+  return steps.slice(sendIndex + 1, terminalIndex).some(isReactionOnlyCheck);
+};
 
 const hasFollowingRegexExpectText = (steps: Step[], waitIndex: number) => {
   for (let i = waitIndex + 1; i < steps.length; i += 1) {
     const step = steps[i];
     if (step === undefined) throw new Error('Missing journey step');
     if (step.do === 'send') break;
-    if (step.do === 'expectText' && typeof step.re === 'string' && step.re.length > 0) return true;
+    if (step.do === 'expectText' && isCheckedStep(step)) return true;
+  }
+  return false;
+};
+
+const hasTerminalAfterSend = (steps: Step[], sendIndex: number) => {
+  for (let i = sendIndex + 1; i < steps.length; i += 1) {
+    const step = steps[i];
+    if (step === undefined || step.do === 'send') return false;
+    if (hasReactionOnlyProof(steps, sendIndex, i)) return true;
+    if (step.do === 'waitReply' && (hasEndState(step) || hasFollowingRegexExpectText(steps, i))) return true;
+    if (isReactionOnlyCheck(step)) continue;
+    if (step.transient && isCheckedStep(step)) continue;
+    if (step.transient && step.do === 'wait' && typeof step.ms === 'number' && step.ms > 0 && step.ms <= 30_000) continue;
+    // Restart/close actions are intermediate transitions, never terminal proof.
+    if (!step.soft && step.transient && (step.do === 'relaunch' || step.do === 'crashRelaunch')) continue;
+    if (!step.soft && step.transient && step.do === 'key' && (step.key === 'Alt+F4' || step.key === 'Escape')) continue;
+    return false;
   }
   return false;
 };
@@ -168,10 +205,7 @@ describe('real-PC journey contracts', () => {
       const steps = value.steps ?? [];
       return steps.flatMap((step, index) => {
         if (step.do !== 'send') return [];
-        const next = steps[index + 1];
-        return next?.do === 'waitReply' && (hasEndState(next) || hasFollowingRegexExpectText(steps, index + 1))
-          ? []
-          : [`${name}: send at step ${index}`];
+        return hasTerminalAfterSend(steps, index) ? [] : [`${name}: send at step ${index}`];
       });
     });
     expect(invalid, invalid.join('\n')).toEqual([]);
@@ -185,5 +219,35 @@ describe('real-PC journey contracts', () => {
         .map((id) => `${name}: ${id}`);
     });
     expect(missing, missing.join('\n')).toEqual([]);
+  });
+
+  it('keeps reaction-only and transient contracts proof-backed', () => {
+    const transientThenReply: Step[] = [
+      { do: 'send' },
+      { do: 'waitFor', css: '[data-testid="thread-thinking"]', transient: true },
+      { do: 'waitReply', expectTid: 'bubble-foo' },
+    ];
+    const reactionOnly: Step[] = [
+      { do: 'send' },
+      {
+        do: 'check',
+        css: '[data-side="me"]:has([data-testid="bubble-reaction"]):not(:has(~ [data-testid="bubble-foo"]))',
+      },
+      { do: 'expectText', tid: 'bubble-reaction', re: '^(?:👍|❤️)$', terminal: 'reaction-only' },
+    ];
+    const missingReactionProof: Step[] = [{ do: 'send' }, { do: 'wait', ms: 20_000 }, { do: 'eval', expectText: '👍' }];
+
+    expect(hasTerminalAfterSend(transientThenReply, 0)).toBe(true);
+    expect(hasTerminalAfterSend(reactionOnly, 0)).toBe(true);
+    expect(hasTerminalAfterSend(missingReactionProof, 0)).toBe(false);
+    expect(
+      hasTerminalAfterSend([{ do: 'send' }, { do: 'relaunch', transient: true }, { do: 'waitReply', expectTid: 'bubble-foo' }], 0),
+    ).toBe(true);
+    expect(hasTerminalAfterSend([{ do: 'send' }, { do: 'relaunch', transient: true }], 0)).toBe(false);
+    expect(hasTerminalAfterSend([{ do: 'send' }, { do: 'key', key: 'Alt+F4', transient: true }, { do: 'waitReply' }], 0)).toBe(false);
+    expect(hasTerminalAfterSend([{ do: 'send' }, { do: 'waitReply', expectTid: 'bubble-foo', soft: true }], 0)).toBe(false);
+    expect(isCheckedStep({ do: 'eval', expectJs: 'true' })).toBe(false);
+    expect(isCheckedStep({ do: 'check', expectJs: 'true' })).toBe(false);
+    expect(isCheckedStep({ do: 'check', tid: 'bubble-foo', soft: true })).toBe(false);
   });
 });
