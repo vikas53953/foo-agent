@@ -30,9 +30,11 @@ test('AT-273 · backup reply shows ArrowSync copy and the Narrator suffix only o
   const page = await app.firstWindow();
   try {
     const refs = await openWorld(app, page);
-    await openChat(page, 'foo');
-    await frameAt(page, rowOf(refs.galleryBackup!));
-    const row = page.getByTestId(TID.threadLog).locator(`[data-message-id="${refs.galleryBackup}"]`);
+    const backupId = refs.galleryBackup;
+    expect(backupId).toBeTruthy();
+    await openChat(page, 'Trips');
+    await frameAt(page, rowOf(backupId!));
+    const row = page.locator(rowOf(backupId!));
     await expect(row.getByTestId(TID.bubbleBackupMark)).toBeVisible();
     await expect(row.getByTestId(TID.bubbleBackupMark)).toContainText('Answered with ChatGPT while Claude rests');
     await expect(row.getByTestId(TID.bubbleBackupMark).locator('[data-icon="ArrowSync"]')).toBeVisible();

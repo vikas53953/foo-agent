@@ -6,7 +6,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { TID } from '../../src/shared/testids';
 import { FAKE_MIC, openChat, openWorld, windowSize } from '../fidelity/capture';
-import { launchWithFakeAi, intake, VERIFY_OK } from './fakeAi';
+import { fakeTurns, launchWithFakeAi, intake, VERIFY_OK } from './fakeAi';
 import { advance, jobState, listRow, settleSeededJobs } from './m4-start';
 import { aiHome, finder, finderRow } from './ai-step-world';
 import { launch, testDirs } from './launch';
@@ -80,6 +80,9 @@ const holdAnimations = (page: Page) => page.addStyleTag({ content: '*, *::before
 test('rendered spring tokens use linear easing, finish at 1, and keep overshoot within 4%', async () => {
   const { app, page } = await startWorld();
   try {
+    await fullMotion(page);
+    await setLevel(page, 'full');
+    await expect(page.locator('html')).toHaveAttribute('data-motion', 'full');
     const tokens = await page.evaluate(() => {
       const root = getComputedStyle(document.documentElement);
       const parse = (value: string) => {
@@ -125,6 +128,9 @@ test('rendered spring tokens use linear easing, finish at 1, and keep overshoot 
 test('resting face bobs and blinks, then the 26px Thinking face exists only during a request', async () => {
   const resting = await startWorld();
   try {
+    await fullMotion(resting.page);
+    await setLevel(resting.page, 'full');
+    await expect(resting.page.locator('html')).toHaveAttribute('data-motion', 'full');
     const face = resting.page.getByTestId(TID.chatlistRowAvatar).first();
     await expect(face).toHaveAttribute('data-face', /^living:/);
     await expect(face).not.toHaveText(/f/);
@@ -147,6 +153,9 @@ test('resting face bobs and blinks, then the 26px Thinking face exists only duri
   try {
     const page = await delayed.app.firstWindow();
     const refs = await openWorld(delayed.app, page);
+    await fullMotion(page);
+    await setLevel(page, 'full');
+    await expect(page.locator('html')).toHaveAttribute('data-motion', 'full');
     await settleSeededJobs(page, refs);
     await openChat(page, 'foo');
     await page.getByTestId(TID.composerField).fill('lane-d thinking');
@@ -244,7 +253,7 @@ test('delivery turns Send into a check and holding the microphone renders the fl
     await send.hover();
     await page.mouse.down();
     await expect(send).toHaveAttribute('data-state', 'recording');
-    await expect(send.locator('[class*="levelRing"]')).toHaveCount(1);
+    await expect(send.locator('xpath=ancestor::span[contains(@class, "morphWrap")]').locator('[class*="levelRing"]')).toHaveCount(1);
     await page.keyboard.press('Escape');
     await page.mouse.up();
     await expect(page.getByTestId(TID.composerRecording)).toHaveCount(0);
@@ -347,9 +356,15 @@ test('a complete A2UI message appears while streaming and an incomplete surface 
     await openChat(page, 'foo');
     await page.getByTestId(TID.composerField).fill('lane-d stream');
     await page.getByTestId(TID.composerField).press('Enter');
-    await page.waitForTimeout(100);
-    await advance(page, 1_600);
     const bubble = page.getByTestId(TID.bubbleFoo).filter({ hasText: 'Streamed proof.' });
+    await expect
+      .poll(() => fakeTurns(run.dirs).some((turn) => turn.purpose === 'intake' && turn.prompt.includes('lane-d stream')))
+      .toBe(true);
+    for (let i = 0; i < 60 && (await bubble.count()) === 0; i++) {
+      await advance(page, 1_600);
+      await page.waitForTimeout(100);
+    }
+    await expect(bubble).toHaveCount(1);
     await expect(bubble).toHaveAttribute('data-state', 'streaming');
     await expect(bubble.getByTestId(TID.kitSurface)).toContainText('Streaming proof');
     await expect(bubble.getByTestId(TID.kitDropped)).toHaveCount(0);
