@@ -91,6 +91,12 @@ async function launchPretend(
     },
     intake('thanks!', '', { decision: { kind: 'react', emoji: '👍' } }),
     intake('Find my bills due this week', jobReply),
+    {
+      match: { purpose: 'step' },
+      reply: '<say></say>\n<act>{"kind":"step_done","idx":0}</act>',
+      delayMs: 600_000,
+      once: false,
+    },
     intake('hello from BDD', envelope('hello from pretend AI')),
     intake('hello', envelope('hello from pretend AI')),
   ];

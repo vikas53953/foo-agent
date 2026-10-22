@@ -44,7 +44,7 @@ When('the user sends thanks in the idle production chat', async ({ realRun }) =>
   await realRun.page.keyboard.press('Enter');
   const row = realRun.page.getByTestId(TID.bubbleMe).filter({ hasText: 'thanks!' }).last();
   await expect(row).toBeVisible();
-  await expect(row.getByTestId(TID.bubbleReaction)).toContainText(/(?:👍|❤️)/u);
+  await expect(row.locator('xpath=..').getByTestId(TID.bubbleReaction)).toContainText(/(?:👍|❤️)/u);
 });
 
 Then('foo reacts without posting a production reply', async ({ realRun }) => {
