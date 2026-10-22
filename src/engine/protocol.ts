@@ -716,6 +716,13 @@ export const engineToMainSchema = z.discriminatedUnion('kind', [
   // M9 T7 (gap pick, like web.refused): the docked sign-in banner is main's window (09 §9.27.3) and Edge is the engine's, so
   // the engine says when it opens, follows Edge (bounds every 500 ms, the page URL every 1 s), shows success and closes.
   z.object({ id: z.string(), kind: z.literal('signin.banner'), payload: signinBannerSchema }),
+  // CR-0043 (08-1 §2.4, §4.4.2 step 5): an intake `setting` op; main applies the 08-0 §A.3 allow-list and replies
+  // { changeId, value } or SETTING_LOCKED / VALIDATION.
+  z.object({
+    id: z.string(),
+    kind: z.literal('settings.set'),
+    payload: z.object({ path: z.string().min(1).max(120), value: z.unknown(), chatId: z.string() }).strict(),
+  }),
 ]);
 export type EngineToMain = z.infer<typeof engineToMainSchema>;
 export type DbTxReply = { ids: string[]; revs: number[] };
@@ -734,7 +741,8 @@ export interface MainLink {
       | 'vault.decrypt'
       | 'connection.google'
       | 'draft.create'
-      | 'draft.openX',
+      | 'draft.openX'
+      | 'settings.set',
     payload: unknown,
   ): Promise<Result<T>>;
   send(

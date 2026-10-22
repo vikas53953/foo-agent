@@ -11,6 +11,7 @@ import { browserHarness, html, okResult, type BrowserHarness } from './harness';
 
 let h: BrowserHarness;
 let offersOpened = 0;
+let lateOpened = 0;
 const refOf = async (pattern: RegExp) => {
   h.runtime.stepStarted('job_1');
   const text = okResult(await h.run('browser.snapshot')).snapshot as string;
@@ -30,6 +31,7 @@ beforeAll(async () => {
       <button id="al" onclick="alert('Hi'); window.alerted=1">Hello</button>
       <a id="pop" href="/menu" target="_blank">Open menu</a>
       <a id="pop2" href="/offers" target="_blank">See offers</a>
+      <a id="pop3" href="/late" target="_blank" onclick="event.preventDefault(); setTimeout(() => window.open('/late', '_blank'), 400)">Late deals</a>
       <input id="city" name="city" placeholder="City">
       <input id="pw" type="password" placeholder="Password">
       <select id="sel"><option>Lunch</option><option>Dinner</option></select>
@@ -42,6 +44,10 @@ beforeAll(async () => {
   h.route('/offers', (_q, res) => {
     offersOpened += 1;
     res.writeHead(200, { 'content-type': 'text/html' }).end('<h1>Offers</h1>');
+  });
+  h.route('/late', (_q, res) => {
+    lateOpened += 1;
+    res.writeHead(200, { 'content-type': 'text/html' }).end('<h1>Late deals</h1>');
   });
   h.route('/framed', html(`<h1>Checkout</h1><iframe id="gw" src="/gateway"></iframe>`));
   h.route(
@@ -86,10 +92,32 @@ describe('08-2 §8.2 browser.open', { timeout: 60_000 }, () => {
     expect(await h.run('browser.open', { url: `${h.origin}/forbidden` })).toMatchObject({ kind: 'error', errorKind: 'SITE_BLOCKED' });
     expect(await h.run('browser.open', { url: `${h.origin}/captcha` })).toEqual({ kind: 'error', errorKind: 'SITE_CAPTCHA' });
   });
+  it('a challenge that shows after the page opened is still caught: snapshot, screenshot and wait → SITE_CAPTCHA, never its text', async () => {
+    // 08-2 §8.3.5: the challenge watchdog runs for every job page, not only right after open or an action. A slow page (the
+    // check ran before it painted) or a bot check a site puts up later must never reach the AI as page text to work on.
+    for (const tool of ['browser.snapshot', 'browser.screenshot', 'browser.wait'] as const) {
+      const job = `job_late_${tool.split('.')[1]}`;
+      expect(await h.run('browser.open', { url: `${h.origin}/menu` }, job)).toMatchObject({ kind: 'ok' });
+      await (
+        await h.page(job)
+      ).evaluate(() => {
+        document.title = 'Just a moment...';
+        document.body.innerHTML = '<h1>Please verify you are human</h1>';
+      });
+      h.runtime.stepStarted(job);
+      expect(await h.run(tool, {}, job)).toEqual({ kind: 'error', errorKind: 'SITE_CAPTCHA' });
+      await h.runtime.jobEnded(job);
+    }
+  });
   it('a page that never arrives (connection refused) is an error on a blank page, never ok on the old one', async () => {
     const dead = h.origin.replace(/:\d+$/, ':1');
     expect(await h.run('browser.open', { url: `${dead}/home` }, 'job_dead')).toEqual({ kind: 'error', errorKind: 'SITE_TIMEOUT' });
     expect((await h.page('job_dead')).url()).toBe('about:blank');
+    // The tech log says why, as Chromium's code and never the address (08-3 logging).
+    expect(h.logs.filter((l) => l.startsWith('browser.open_failed'))).toEqual([
+      expect.stringMatching(/^browser\.open_failed net::ERR_[A-Z_]+$/),
+    ]);
+    expect(h.logs.join('\n')).not.toContain(dead);
     await h.runtime.jobEnded('job_dead');
   });
   it('two load misses in a row → SITE_TIMEOUT', async () => {
@@ -176,6 +204,15 @@ describe('08-2 §8.3.5 actions', { timeout: 60_000 }, () => {
     await expect.poll(async () => (await h.page()).url()).toBe(`${h.origin}/offers`);
     await (await h.page()).close();
     expect(offersOpened).toBe(1);
+  });
+  it('a new-tab link whose pop-up comes after the page went idle (a slow PC) is still clicked once', async () => {
+    okResult(await h.run('browser.click', { ref: await refOf(/\[(e\d+)\] link "Late deals"/) }));
+    await expect.poll(async () => (await h.page()).url()).toBe(`${h.origin}/late`);
+    await (await h.page()).close();
+    // A second click would open its pop-up 400 ms later: wait past that before counting.
+    await new Promise((r) => setTimeout(r, 800));
+    expect(lateOpened).toBe(1);
+    expect((await h.page()).url()).toBe(`${h.origin}/home`);
   });
   it('Enter with focus inside a child frame is refused: what it would submit is unseen', async () => {
     okResult(await h.run('browser.open', { url: `${h.origin}/framed` }, 'job_frame'));

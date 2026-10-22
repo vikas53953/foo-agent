@@ -88,7 +88,11 @@ export interface LoadedPage {
   html: string;
 }
 export interface PageLoader {
-  load(url: string): Promise<LoadedPage | null>;
+  /**
+   * Loads `url` in the job's window; null when there is no job (or no browser), the job was stopped while waiting for a
+   * window, the page never arrived, or it landed on a hand-back site (§8.3.10: never read).
+   */
+  load(url: string, jobId: string | null, signal?: AbortSignal): Promise<LoadedPage | null>;
 }
 
 /** The subset of `fetch` the web tools use (injected so tests capture every host). */
@@ -103,6 +107,8 @@ export interface WebCallContext {
   jobId: string | null;
   /** `tool_calls.id`: the untrusted wrapper's `ref`. */
   toolCallId: string;
+  /** The job's stop signal: a window wait ends with it (08-4 §26.8 queue). */
+  signal?: AbortSignal;
   /** Registrable domains this job holds a sign-in, saved login, card, personal field or approval for (08-2 §8.2 browseCloud). */
   heldDomains?: readonly string[];
 }

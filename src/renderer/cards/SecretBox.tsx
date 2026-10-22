@@ -314,9 +314,16 @@ export function SecretBox({ card, time }: { card: CardRow; time: CardTime }) {
           : p.secretKind === 'web_key'
             ? t('cards.secret.web_key.saved', { service: title.replace(/ key$/, '') })
             : t('cards.secret.summary.saved', { agentName });
+  // CR-0030 pick 5 (05-2 §5.8.4 Code box): "Your bank sent a code to {+91 98••• ••210}." from the masked `sentTo`.
   const reason =
     p.why ||
-    (p.secretKind === 'card' ? t('cards.secret.card.reason') : p.secretKind === 'voice_key' ? t('cards.secret.voice_key.reason') : '');
+    (p.secretKind === 'card'
+      ? t('cards.secret.card.reason')
+      : p.secretKind === 'voice_key'
+        ? t('cards.secret.voice_key.reason')
+        : p.secretKind === 'otp' && p.sentTo
+          ? t('cards.secret.otp.reason', { phone: p.sentTo })
+          : '');
   const rejectedLine =
     state === 'rejected' && p.secretKind === 'card'
       ? t('cards.secret.line.exists', { last4: digits(values.number ?? '').slice(-4) || (p.target?.slice(-4) ?? '') })

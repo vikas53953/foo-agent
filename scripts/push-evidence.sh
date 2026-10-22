@@ -31,28 +31,40 @@ printf '%s\n' "run ${GITHUB_RUN_ID:-local} · commit $HEAD_SHA · milestone $MIL
 auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 | tr -d '\n')"
 url="${GITHUB_SERVER_URL:-https://github.com}/${GITHUB_REPOSITORY}.git"
 cd "$work"
-git init -q
+git init -q --bare
 git config core.autocrlf false
-git config user.name "github-actions[bot]"
-git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 git remote add origin "$url"
 g() { git -c "http.extraheader=$auth" "$@"; }
+export GIT_NO_LAZY_FETCH=1 # never pull in the contents of the other folders
+export GIT_AUTHOR_NAME="github-actions[bot]" GIT_AUTHOR_EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
+export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME" GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+# This run's two folders, laid out as they sit on the branch.
+tree_dir="$(mktemp -d)"
+mkdir -p "$tree_dir/$SOURCE_BRANCH/$short" "$tree_dir/$SOURCE_BRANCH/latest"
+cp -R "$stage/." "$tree_dir/$SOURCE_BRANCH/$short/"
+cp -R "$stage/." "$tree_dir/$SOURCE_BRANCH/latest/"
 
+# No checkout: the branch's trees are fetched without file contents (other branches' pictures filled the runner's disk,
+# #123), this run's folders are swapped in the index, and the commit is built on the fetched tip. Nothing is pruned.
 for attempt in 1 2 3 4 5; do
-  if g fetch -q --depth 1 origin evidence 2>/dev/null; then
-    git checkout -q -B evidence FETCH_HEAD
-  else
-    git checkout -q --orphan "evidence-$attempt"
-    git rm -rq --cached . 2>/dev/null || true
+  rm -f index
+  parent=()
+  # A fetch that fails is retried, never taken for "no branch yet": a parentless commit would drop every other folder.
+  if g ls-remote --exit-code -q origin refs/heads/evidence >/dev/null; then
+    if ! g fetch -q --depth 1 --filter=blob:none origin "+refs/heads/evidence:refs/remotes/origin/evidence"; then
+      echo "evidence fetch failed (attempt $attempt); retrying"
+      sleep $((attempt * 3))
+      continue
+    fi
+    tip="$(git rev-parse refs/remotes/origin/evidence)"
+    parent=(-p "$tip")
+    git read-tree "$tip"
   fi
-  rm -rf "${SOURCE_BRANCH:?}/$short" "${SOURCE_BRANCH:?}/latest"
-  mkdir -p "$SOURCE_BRANCH/$short" "$SOURCE_BRANCH/latest"
-  cp -R "$stage/." "$SOURCE_BRANCH/$short/"
-  cp -R "$stage/." "$SOURCE_BRANCH/latest/"
-  git add -A -- "$SOURCE_BRANCH"
-  if git diff --cached --quiet; then echo "evidence unchanged"; exit 0; fi
-  git commit -q -m "Evidence: $SOURCE_BRANCH@$short (run ${GITHUB_RUN_ID:-local}, $MILESTONE)"
-  if g push -q origin HEAD:refs/heads/evidence; then
+  git --work-tree="$tree_dir" add -A -- "$SOURCE_BRANCH/$short" "$SOURCE_BRANCH/latest"
+  tree="$(git write-tree --missing-ok)"
+  if [ ${#parent[@]} -gt 0 ] && [ "$tree" = "$(git rev-parse "$tip^{tree}")" ]; then echo "evidence unchanged"; exit 0; fi
+  commit="$(git commit-tree "$tree" "${parent[@]}" -m "Evidence: $SOURCE_BRANCH@$short (run ${GITHUB_RUN_ID:-local}, $MILESTONE)")"
+  if g push -q origin "$commit:refs/heads/evidence"; then
     echo "evidence pushed to evidence:$SOURCE_BRANCH/$short and $SOURCE_BRANCH/latest"
     exit 0
   fi

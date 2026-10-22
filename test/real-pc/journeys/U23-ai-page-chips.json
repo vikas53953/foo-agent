@@ -17,7 +17,8 @@
       "do": "waitReply",
       "timeoutMs": 240000,
       "shot": "ai-page",
-      "expect": "an AI page / kit card opens with the tracker"
+      "expect": "an AI page / kit card opens with the tracker",
+      "expectTid": "card-ai-page"
     },
     {
       "do": "check",

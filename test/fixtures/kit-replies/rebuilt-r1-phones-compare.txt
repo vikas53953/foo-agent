@@ -1,0 +1,9 @@
+I can't draw a plain table here, so here is a side-by-side view of three popular phones in this range. The details are from my memory and prices change often, so I've left them out. Check the current price before you buy.
+
+```a2ui
+{"version":"v0.9.1","createSurface":{"surfaceId":"s1","catalogId":"foo.kit.v1"}}
+{"version":"v0.9.1","updateComponents":{"surfaceId":"s1","components":[{"id":"root","component":"Compare","columns":[{"title":"Samsung Galaxy M35 5G","rows":[{"label":"Battery","value":"6,000 mAh"},{"label":"RAM (GB)","value":8},{"label":"Charging","value":"25W"},{"label":"Main camera","value":"50 MP with OIS"}]},{"title":"Redmi Note 13 5G","rows":[{"label":"Battery","value":"5,000 mAh"},{"label":"RAM (GB)","value":8},{"label":"Charging","value":"33W"},{"label":"Main camera","value":"108 MP"}]},{"title":"Realme Narzo 70 Pro","rows":[{"label":"Battery","value":"5,000 mAh"},{"label":"RAM (GB)","value":8},{"label":"Charging","value":"67W"},{"label":"Main camera","value":"50 MP with OIS"}],"note":"fastest charging"}],"highlight":null,"why":null}]}}
+```
+
+If battery matters most, pick the Galaxy M35. For fastest charging and a steadier camera, pick the Narzo 70 Pro.
+Suggestions: Which is best for gaming? | Compare under ₹15,000 | Which has the best camera?

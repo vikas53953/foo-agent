@@ -1,0 +1,6 @@
+Here are 5 places worth seeing in Jaipur: Amber Fort, Hawa Mahal, City Palace, Jantar Mantar and Nahargarh Fort. Hawa Mahal, City Palace and Jantar Mantar are close together, so you can do them in one walk.
+
+```a2ui
+{"createSurface":{"surfaceId":"s1","catalogId":"foo.kit.v1"}}
+{"updateComponents":{"surfaceId":"s1","components":[{"id":"root","component":"MapStops","stops":[{"name":"Amber Fort","lat":26.9855,"lng":75.8513,"note":"Hilltop fort north of the city, best in the morning."},{"name":"Nahargarh Fort","lat":26.9372,"lng":75.8155,"note":"Good for sunset views over Jaipur."},{"name":"Hawa Mahal","lat":26.9239,"lng":75.8267,"note":"The pink palace with many small windows."},{"name":"City Palace","lat":26.9258,"lng":75.8237,"note":"Royal palace with museums and courtyards."},{"name":"Jantar Mantar","lat":26.9247,"lng":75.8246,"note":"Old stone observatory, right next to City Palace."}]}}
+```

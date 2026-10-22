@@ -1,0 +1,6 @@
+India's GDP growth bounced back from a **-5.8%** fall in FY2020-21 to **9.7%** the next year, then settled around 6.5% to 9% since. These are approximate official figures for each year ending March, and I can't check the latest revisions from here.
+
+```a2ui
+{"createSurface":{"surfaceId":"s1","catalogId":"foo.kit.v1"}}
+{"updateComponents":{"surfaceId":"s1","components":[{"id":"root","component":"LineChart","variant":"bar","title":"India's real GDP growth (% per year)","unit":"percent","series":[{"label":"GDP growth","points":[{"x":"FY21","y":-5.8},{"x":"FY22","y":9.7},{"x":"FY23","y":7.6},{"x":"FY24","y":9.2},{"x":"FY25","y":6.5}]}]}}]}
+```
