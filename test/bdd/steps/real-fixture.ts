@@ -68,8 +68,11 @@ async function launchProduction(testId: string): Promise<RealBddRun> {
   const appData = join(windowsAppData, 'Roaming');
   const localAppData = join(windowsAppData, 'Local');
   const productionData = join(appData, 'foo');
+  const productionLocal = join(localAppData, 'foo');
+  const productionOut = join(dataRoot, 'out');
   mkdirSync(productionData, { recursive: true });
-  mkdirSync(join(localAppData, 'foo'), { recursive: true });
+  mkdirSync(productionLocal, { recursive: true });
+  mkdirSync(productionOut, { recursive: true });
   writeFileSync(
     join(productionData, 'settings.json'),
     JSON.stringify({
@@ -100,6 +103,9 @@ async function launchProduction(testId: string): Promise<RealBddRun> {
     USERPROFILE: profile,
     APPDATA: appData,
     LOCALAPPDATA: localAppData,
+    FOO_DATA_DIR: productionData,
+    FOO_LOCAL_DIR: productionLocal,
+    FOO_OUT_DIR: productionOut,
     PATH: [join(profile, 'bin'), process.env.PATH ?? ''].join(delimiter),
   });
   const args = ['.'];
