@@ -1,0 +1,17 @@
+{"t":"2026-10-22T00:01:51.252Z","journey":"B05-restart","title":"Quit mid-job and reopen: job resumes","spec":"AT-089, AT-118, J19/J20","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T00:01:56.942Z","step":"launch","ok":true}
+{"t":"2026-10-22T00:02:05.056Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8110}
+{"t":"2026-10-22T00:02:05.170Z","i":0,"do":"send","sentAt":1792627325130,"sent":true,"before":0,"ok":true,"ms":114}
+{"t":"2026-10-22T00:02:25.500Z","i":1,"do":"waitReply","firstReplyMs":7084,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Checking National Museum, Delhi…\nlive checklist\nChecking National Museum, Delhi official website\nN\nD\nLook for opening hours and ticket price\nWatch live\nStop\nunder 1 min\n12:02 AM","ms":20329}
+{"t":"2026-10-22T00:02:25.562Z","shot":"01-museum-start.png"}
+{"t":"2026-10-22T00:02:25.564Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-22T00:02:33.579Z","i":3,"do":"wait","ok":true,"ms":8015}
+{"t":"2026-10-22T00:02:38.987Z","step":"launch","ok":true}
+{"t":"2026-10-22T00:02:38.988Z","i":4,"do":"relaunch","ok":true,"ms":5409}
+{"t":"2026-10-22T00:02:46.991Z","i":5,"do":"wait","expect":"AT-118: recovery card; job resumes (WAITING → WORKING)","ok":true,"ms":8003}
+{"t":"2026-10-22T00:02:47.067Z","shot":"02-after-reopen.png"}
+{"t":"2026-10-22T00:05:17.071Z","i":6,"do":"wait","ok":true,"ms":150004}
+{"t":"2026-10-22T00:05:17.148Z","shot":"03-after-reopen-later.png"}
+{"t":"2026-10-22T00:05:17.154Z","i":7,"do":"dump","ok":true,"ms":6}
+{"t":"2026-10-22T00:05:17.557Z","step":"appLog","lines":64,"dropped":0}
+{"t":"2026-10-22T00:05:17.573Z","step":"aiTurns","turns":23}

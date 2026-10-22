@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:13 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n12:13 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n12:13 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n12:14 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:14 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n12:14 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:17 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n12:17 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me a simple page that tracks my daily water intake with a goal of 8 glasses\n12:17 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a simple water tracker with a goal of 8 glasses. Tap a glass to fill it, or use + and − below. It saves your count for today and starts fresh tomorrow.\n\nKeep\n12:18 AM"
+  }
+]

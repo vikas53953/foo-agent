@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n11:58 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a relaxed 3-day Jaipur plan for your parents, with one main sight each morning and a long rest after lunch.\n\nDay 1, Old city: City Palace and Jantar Mantar in the morning, lunch, then a rest at the hotel. In the evening, see Hawa Mahal from a café across the road and stroll through Johari Bazaar for jewellery and cloth.\nDay 2, Amber Fort: Go early, before the crowds and heat. Take a jeep up to the fort to save the climb. On the way back, stop for photos at Jal Mahal. Rest in the afternoon, then have dinner at a traditional Rajasthani restaurant.\nDay 3, Easy day: Visit Albert Hall Museum in the morning and shop for blue pottery or block-print fabric. In the evening, watch the sunset at Nahargarh Fort, where a car can take you right up.\n\nPick a hotel close to the old city so the walks stay short. The trip is most comfortable from October to March.\n\nWant me to look at hotels, or train and flight options from your city?\n\n11:58 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n11:58 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n11:58 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n11:58 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 11:58 PM\n11:58 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:58 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking for well-reviewed Italian…\nlive checklist\nLooked for well-reviewed Italian restaurants in\nChecked restaurant booking pages\nR\nLooked for open tables for 2 on Sat 24 Oct, 8:00 PM\nKept 3 Italian places with a table that fit best rated and free at 8:00 PM\nStopped by you\n11:58 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:58 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "withdrawn",
+    "text": "No longer needed. The job was stopped.\n11:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n12:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n12:02 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking National Museum, Delhi…\nlive checklist\nChecked National Museum, Delhi official website\nN\nD\nLooked for opening hours and ticket price\nWatch live\nStop\n2 min\n12:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:02 AM"
+  }
+]
