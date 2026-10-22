@@ -1,4 +1,4 @@
-# Codex status — 22 October 2026, 12:47 IST
+# Codex status — 22 October 2026, 12:50 IST
 
 Lead: draft [PR 138](https://github.com/vikas53953/foo-agent/pull/138). No merges. Existing Anthropic key authorized without a user spending cap; no secrets or personal data in committed evidence.
 
@@ -89,3 +89,12 @@ Independent review covered the full reference runbook, status/decision ledgers a
 - [Corrected mutation run39739240428](https://github.com/vikas53953/foo-agent/actions/runs/39739240428), workflow18aa623a, source ddb5804e3ce60c42ee111662f3db82ccfe04acfa. All40targets retained across4areas; one worker and unchanged90/75/70thresholds. Local dry runs passedengine/renderer, failedshared timing andmain source-shape assertion; failures are not omitted.
 - [Lane report snapshots and provenance](report-snapshots-2026-10-22/MANIFEST.tsv) are committed here; lane implementation remains on draft branches and consolidation is being planned. Not all source changes have been copied onto the lead branch yet.
 - Matrix delta:54missing to partial;5fail to partial (corrected prerequisites);2proven to partial (AT072/AT314 incomplete predicates). No new current-main proven feature.
+
+Lane D final receipt: [report commit93241457](https://github.com/vikas53953/foo-agent/blob/932414570ac09ead9963bd84d9cd4efd962cd16f/docs/testing/results/codex-2026-10-22-lane-D.md). Run39733053833 all jobs success, Golden254passed. Twelve M9 fidelity audit items remain not DONE; no native accessibility acceptance.
+
+## Latest execution updates
+
+- Sixth task-dispatched real-AI run today: [39739065630](https://github.com/vikas53953/foo-agent/actions/runs/39739065630), app/driver af38bc304d648cfe89961f6ccec01fb3aedd5ded, focused B07 plus R reply-area rerun. Running; pass/fail counts pending. This follows current-main-derived branch work; main remains0d04a9f.
+- [BDD rerun39738685276](https://github.com/vikas53953/foo-agent/actions/runs/39738685276) completed failure in both real and pretend jobs. Artifact judgment pending; do not reuse previous scenario counts as this run's result.
+- [Performance39735905306](https://github.com/vikas53953/foo-agent/actions/runs/39735905306) completed failure. Repeated-probe artifact review pending; no performance acceptance.
+- Mutation39739240428 and local8hsoak remain active. These failures do not block real-AI work.

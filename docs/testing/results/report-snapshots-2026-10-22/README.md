@@ -7,3 +7,5 @@ The staging scan rejected credential-shaped values. Synthetic email and local Wi
 The report text remains evidence-led: immutable screenshot links are retained, and pass/partial/blocked wording is preserved. This bundle does not promote driver ok:true to product acceptance.
 
 These are historical report snapshots, not a replacement for codex-status.md or the canonical real-ai-results.tsv. Some report claims were corrected later in evidence-consolidation-2026-10-22/matrix-changes.md; use the canonical ledger for current totals.
+
+Refresh: Lane D report replaced from932414570ac09ead9963bd84d9cd4efd962cd16f after all CI jobs completed. Expanded s23 candidate TSV refreshed to12uniqueIDs/fullSHA/AT314partial. Original manifest entries describe the initial snapshot.
