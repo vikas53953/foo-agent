@@ -1,17 +1,17 @@
 # Lane A — 2026-10-22 strict validation
 
-Status: **BLOCKED**. The strict all-files validator is intentionally red because unchanged baseline journeys violate §11.3.7. This branch is not GREEN or ready.
+Status: **BLOCKED**. The strict all-files validator is intentionally red because unchanged baseline journeys violate §11.3.7. The real-AI workflow completed, but the owned R journeys have runtime failures recorded below. This branch is not GREEN or ready.
 
-Base: `7b5f435` (merge of `origin/main 0d04a9f`). The tested journey SHA is `a7a04fac`; no real-AI result, screenshot verdict, or cost is claimed yet. Workflow dispatch `39726084968` is queued behind the root run because the existing workflow uses a shared `real-ai-e2e` concurrency group.
+Base: `7b5f435` (merge of `origin/main 0d04a9f`). The workflow tested head `9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d` (`9f429f8`), which includes the owned journey repair `a7a04fac`, report/dispatch commit `0578abe0`, and root-owned concurrency commit `9f429f80`. The earlier dispatch `39726084968` was canceled before execution. Current dispatch `39727432127` completed its four Windows jobs successfully; journey-level failures remain and are not treated as workflow green.
 
-Dispatch inputs: `ref=codex/lane-a-2026-10-22`, `journeys=R-ai-pages R-approvals R-chat-rules R-dark R-jobs R-kit-1 R-kit-2 R-reply-area`, `max_journeys=1000`, `shards=4`, `ai=claude`, `model=claude-sonnet-5-5`.
+Dispatch inputs: `ref=codex/lane-a-2026-10-22`, `journeys=R-ai-pages R-approvals R-chat-rules R-dark R-jobs R-kit-1 R-kit-2 R-reply-area`, `max_journeys=1000`, `shards=4`, `ai=claude`, `model=claude-sonnet-5-5`. No cost fields were present in the workflow and no cost is claimed.
 
 ## Changes in scope
 
 - `62a20830`: validator-only RED commit.
 - `94480181`: journey changes: six rejected Lane A manifests removed, corrected smoke, eight `R-*.json` journeys covering all 33 Group R IDs, and the initial report.
 - `6dbefcfa`: validator correction: strict all-file send/end-state checks, following regex `expectText`, current `expectKit` validation, and checked-step coverage for every covered ID.
-- Repair pass (this commit): corrected real controls and fresh-reply assertions in the eight owned R manifests, including immediate checked waits for all three AT-420 follow-ups in `R-jobs.json`. The repair does not claim a run or GREEN status.
+- `768a7bd7` plus `a7a04fac`: corrected real controls and fresh-reply assertions in the eight owned R manifests, including immediate checked waits for all three AT-420 follow-ups in `R-jobs.json`. The repair does not claim a run or GREEN status.
 - Registered the eight owned R IDs in `test/real-pc/journeys.txt`; no baseline B/J/U/R1 journey, source/spec/golden/workflow/secret, or driver file was edited.
 - `a7a04fac`: repaired the owned R-jobs send/end-state gaps and registered the eight R IDs.
 
@@ -103,8 +103,32 @@ No baseline files were changed to make this pass. The lead must resolve these ou
 - `R-jobs.json` keeps each AT-420 follow-up adjacent to its required checked wait, scopes the reply to the latest checklist bubble, requires exactly one `fold that in` line, and checks the latest user bubble tick for AT-432. The strict validator reports no owned R-jobs send gaps after this repair.
 - `R-approvals.json` adds the safe choice-option step before starred approval cards. These approval-dependent journeys are authored only; the separate driver-choice lane is pending and no run is claimed.
 
+## Real-AI workflow evidence
+
+Run `39727432127` completed with four successful Windows jobs. Each part also ran the required `J01-J02-first-run` setup (14 steps, 0 failures). The eight owned R summaries are:
+
+| Journey | Steps | Failed | Evidence |
+|---|---:|---:|---|
+| R-ai-pages | 74 | 10 | [s0](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s0) |
+| R-approvals | 102 | 38 | [s1](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s1) |
+| R-chat-rules | 15 | 0 | [s2](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s2) |
+| R-dark | 15 | 0 | [s3](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s3) |
+| R-jobs | 79 | 36 | [s0](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s0) |
+| R-kit-1 | 48 | 9 | [s1](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s1) |
+| R-kit-2 | 63 | 20 | [s2](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s2) |
+| R-reply-area | 24 | 6 | [s3](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s3) |
+
+Totals: **420 steps, 119 failed**. I inspected the PNG evidence in every shard. `R-chat-rules` and `R-dark` are readable clean/messy/Hinglish (plus Hindi/Punjabi where authored) replies with zero journey failures. The failures are concrete:
+
+- `R-ai-pages`: AT-425/426 capability prose and chips were visible, but no `kit-capabilities` surface or Try-it control appeared in any language; the expectation remains a truthful failure.
+- `R-jobs`: AT-106/120/364/420 often received date-choice, live-checklist, plan, or stuck-choice cards instead of the expected state; the journey did not answer AI follow-up questions. Try-again controls were absent. AT-420 replies visibly contained “I’ll fold that in,” but the strict checklist selector was absent.
+- `R-kit-1`: AT-349 received plan cards rather than a `kit-list-pick`; all three scoped radio clicks timed out. Earlier Stepper/Timeline/Calendar surfaces were visible.
+- `R-kit-2`: AT-350 showed time choices but the scoped radio click timed out; AT-352/368 alternated between live checklists, stuck cards, and a real live card; AT-355 alternated between plain arithmetic text and a calculator; AT-369 showed calculator cards but the global kept-file presence check did not resolve. No `do:eval` was used as an assertion.
+- `R-approvals`: AT-109/110/121/126/128 frequently stayed at choice/plan cards or asked “Stop which one?”; approval and Not-now controls were absent on several runs. AT-363 showed date-choice cards instead of the expected plan. AT-435 showed a visible Gmail connect card, while the latest-bubble scoped card assertion timed out. No approval or external send was clicked.
+- `R-reply-area`: sender replies were visible, but AT-428’s end-state check failed on the first clean turn; AT-430’s copy waits timed out because the action row is a sibling below the bubble, not a descendant of it. Screenshots show the action row; no fake pass was recorded.
+
 ## Remaining blockers
 
-- Way 1 real-AI run: dispatch `39726084968` is queued; no screenshot or journey verdict exists yet. Driver-choice work is a separate pending lane, so approval journeys are authored only.
+- Way 1 real-AI run: current run `39727432127` has screenshot-backed per-journey failures above. Driver-choice work is a separate pending lane, so approval journeys are authored only.
 - Cost/paid run: unavailable; no cost is claimed (this is not a `$0` result).
-- `test/real-pc/journeys.txt`: the eight R IDs are now registered; the real-AI workflow still needs a validated pushed branch run.
+- `test/real-pc/journeys.txt`: the eight R IDs are registered and were included in run `39727432127`; the run remains blocked by the journey failures above.
