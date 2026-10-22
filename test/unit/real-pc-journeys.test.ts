@@ -1,5 +1,5 @@
-// Spec: 07 journeys §11.3 (real-AI journey contracts); every journey is checked while older B/J/U baseline files stay
-// must carry executable hard proof; metadata, screenshots and soft observations do not establish coverage.
+// Spec: 07 journeys §11.3 (real-AI journey contracts); every journey must carry executable hard proof.
+// Metadata, screenshots and soft observations do not establish coverage.
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -157,7 +157,7 @@ const hasTerminalAfterSend = (steps: Step[], sendIndex: number) => {
     const step = steps[i];
     if (step === undefined || step.do === 'send') return false;
     if (hasReactionOnlyProof(steps, sendIndex, i)) return true;
-    if (step.do === 'waitReply' && (hasEndState(step) || hasFollowingRegexExpectText(steps, i))) return true;
+    if (!step.soft && step.do === 'waitReply' && (hasEndState(step) || hasFollowingRegexExpectText(steps, i))) return true;
     if (isReactionOnlyCheck(step)) continue;
     if (step.transient && isCheckedStep(step)) continue;
     if (step.transient && step.do === 'wait' && typeof step.ms === 'number' && step.ms > 0 && step.ms <= 30_000) continue;
@@ -246,6 +246,9 @@ describe('real-PC journey contracts', () => {
     expect(hasTerminalAfterSend([{ do: 'send' }, { do: 'relaunch', transient: true }], 0)).toBe(false);
     expect(hasTerminalAfterSend([{ do: 'send' }, { do: 'key', key: 'Alt+F4', transient: true }, { do: 'waitReply' }], 0)).toBe(false);
     expect(hasTerminalAfterSend([{ do: 'send' }, { do: 'waitReply', expectTid: 'bubble-foo', soft: true }], 0)).toBe(false);
+    expect(
+      hasTerminalAfterSend([{ do: 'send' }, { do: 'waitReply', soft: true }, { do: 'expectText', tid: 'bubble-foo', re: 'answer' }], 0),
+    ).toBe(false);
     expect(isCheckedStep({ do: 'eval', expectJs: 'true' })).toBe(false);
     expect(isCheckedStep({ do: 'check', expectJs: 'true' })).toBe(false);
     expect(isCheckedStep({ do: 'check', tid: 'bubble-foo', soft: true })).toBe(false);
