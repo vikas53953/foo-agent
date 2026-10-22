@@ -93,6 +93,9 @@ export interface RunnerPrompts {
   /** 08-4 §24.13 / §24.21: the classify turn over the last tool results, and its StuckAct `whatsWrong` (null if invalid). */
   buildStuck(results: string): { system: string; prompt: string };
   parseStuck(text: string): string | null;
+  /** CR-0045 08-4 §24.13a: is a message sent while the job waits on its card about the job? null when the turn is invalid. */
+  buildSteerCheck?(job: { title: string; waitingFor: string }, message: string): { system: string; prompt: string };
+  parseSteerCheck?(text: string): 'job' | 'new' | null;
   /** 08-2 §7.6 output filters (result text, card text from the AI). */
   filter(text: string): string;
   isBanned(text: string): boolean;
@@ -358,8 +361,13 @@ export class JobRunner {
     this.core = core;
     this.stopper = new StopFlow(core);
     // M5 T8: a steer supersedes the open approval through main's gate and the next card names it (08-4 §26.5).
-    this.steering = new Steer(core, this.stopper, (jobId, approvalId) => this.gating.onSteerSuperseded(jobId, approvalId));
     this.watchdog = new Watchdog(core, this.stopper);
+    this.steering = new Steer(
+      core,
+      this.stopper,
+      (jobId, approvalId) => this.gating.onSteerSuperseded(jobId, approvalId),
+      (jobId) => this.watchdog.turningStuck(jobId),
+    );
     // M5 T10: the 15 s tick (opens_at wake, 24 h Plan withdraw).
     // M5 T8: J8 choice timeouts (AT-033, AT-034) on the same tick.
     const timeouts = new ChoiceTimeouts({
