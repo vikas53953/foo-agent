@@ -617,7 +617,7 @@ jobs:
       - name: Run PR97 installer, UI, AUMID and Credential Manager checks
         id: pr97
         continue-on-error: true
-        shell: pwsh
+        shell: powershell
         env:
           PR97_SOURCE: ${{ runner.temp }}\pr97-source
           CURRENT_INSTALLER: ${{ runner.temp }}\foo-current-Setup.exe
@@ -639,17 +639,17 @@ jobs:
         run: |
           $currentSha = $env:LANE_E_TESTED_SHA
           if ([string]::IsNullOrWhiteSpace($currentSha)) { throw 'tested SHA was not recorded after checkout' }
-          $args = @(
-            '-Out', "$env:RUNNER_TEMP\lane-e-results",
-            '-Pr97Results', "$env:RUNNER_TEMP\pr97\results.json",
-            '-Pr97BuildSha', $currentSha,
-            '-Pr97EvidenceUrl', $env:RUN_URL,
-            '-PreviousInstaller', "$env:RUNNER_TEMP\foo-04f01dd-Setup.exe",
-            '-CurrentInstaller', "$env:RUNNER_TEMP\foo-current-Setup.exe",
-            '-PreviousBuildSha', '04f01dd9fb3108cbbce8ff6df211d3a389c16977',
-            '-CurrentBuildSha', $currentSha
-          )
-          & test/windows/lane-e-windows.ps1 @args
+          $fixtureParameters = @{
+            Out = "$env:RUNNER_TEMP\lane-e-results"
+            Pr97Results = "$env:RUNNER_TEMP\pr97\results.json"
+            Pr97BuildSha = $currentSha
+            Pr97EvidenceUrl = $env:RUN_URL
+            PreviousInstaller = "$env:RUNNER_TEMP\foo-04f01dd-Setup.exe"
+            CurrentInstaller = "$env:RUNNER_TEMP\foo-current-Setup.exe"
+            PreviousBuildSha = '04f01dd9fb3108cbbce8ff6df211d3a389c16977'
+            CurrentBuildSha = $currentSha
+          }
+          & test/windows/lane-e-windows.ps1 @fixtureParameters
           $laneExit = $LASTEXITCODE
           "lane-e-windows exit=$laneExit" | Set-Content "$env:RUNNER_TEMP\lane-e-results\exit.txt" -Encoding utf8
           if ($laneExit -eq 1 -or $laneExit -gt 2) { throw "lane-e-windows exited $laneExit" }
