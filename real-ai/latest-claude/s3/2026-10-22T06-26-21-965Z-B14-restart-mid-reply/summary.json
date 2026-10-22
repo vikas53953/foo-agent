@@ -1,0 +1,95 @@
+{
+  "journey": "B14-restart-mid-reply",
+  "title": "Close foo within 5 s of sending, reopen: the message still gets a real answer",
+  "steps": 10,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T06-26-21-965Z-B14-restart-mid-reply",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792650387794,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 163
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "ok": true,
+      "ms": 3014
+    },
+    {
+      "i": 2,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5402
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "note": "AT-118: after reopen the reply settles, or the cut-off bubble exposes Try again",
+      "expect": "a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again",
+      "firstReplyMs": 2555,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Shelly is my pick: classic, cute and it suits a slow mover. Other good ones: Turbo (for the irony), Sheldon, Mochi, or Pebble.\n\n6:26 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 10147
+    },
+    {
+      "i": 4,
+      "do": "eval",
+      "value": {
+        "lastMine": "What is a good name for a pet tortoise?\n6:26 AM",
+        "eyes": false
+      },
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "send",
+      "sentAt": 1792650406600,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 156
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "ok": true,
+      "ms": 2001
+    },
+    {
+      "i": 7,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5407
+    },
+    {
+      "i": 8,
+      "do": "waitReply",
+      "note": "AT-118: the second post-reopen request also settles as a real answer",
+      "expect": "the news question is answered after reopening",
+      "firstReplyMs": 8610,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nLook for biggest news story in India today\nWrite it\nWatch live\nStop\nunder 1 min\n6:27 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 14890
+    },
+    {
+      "i": 9,
+      "do": "dump",
+      "ok": true,
+      "ms": 15
+    }
+  ]
+}
