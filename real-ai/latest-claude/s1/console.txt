@@ -1,14 +1,14 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T00-31-24-165Z-J01-J02-first-run"}
-{"journey":"J17-memory","title":"Remember, view and forget","steps":10,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T00-32-15-573Z-J17-memory"}
-{"journey":"B03-web-local","title":"Web without keys: news read locally, sources","steps":9,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T00-32-44-247Z-B03-web-local"}
-{"journey":"J12-draft","title":"Draft an email (never sends)","steps":4,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T00-35-32-208Z-J12-draft"}
-{"journey":"B04-stop","title":"Start a job then stop it by typing stop","steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T00-35-57-072Z-B04-stop"}
-{"journey":"J08-choice","title":"Question with choice chips","steps":5,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T00-37-09-614Z-J08-choice"}
-{"journey":"J21-J22-settings-search","title":"Settings and search","steps":6,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T00-37-36-508Z-J21-J22-settings-search"}
-{"journey":"U02-reactions-thanks","title":"Reactions: foo thumbs-up on thanks, react and un-react","steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T00-37-48-249Z-U02-reactions-thanks"}
-{"journey":"U06-header-panel","title":"Chat header, ⋮ menu, details panel (Doing, Using, What I know, Spent)","steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T00-38-21-921Z-U06-header-panel"}
-{"journey":"U10-plan-change-stop","title":"Plan card: Change plan, then Stop a running job from the checklist","steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T00-39-18-161Z-U10-plan-change-stop"}
-{"journey":"U14-memory","title":"Memory: chip with Undo, memory page search, edit, forget with Undo","steps":23,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T00-40-06-961Z-U14-memory"}
-{"journey":"U18-new-helper-group","title":"New helper and New group dialogs, helper chat, helper profile","steps":9,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T00-40-42-152Z-U18-new-helper-group"}
-{"journey":"U22-face-polish","title":"Living face: thinking while working, resting; motion off in settings","steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T00-40-50-416Z-U22-face-polish"}
-{"journey":"U26-crash-reopen","title":"foo crashes and is reopened at once: a window must appear","steps":5,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T00-41-35-722Z-U26-crash-reopen"}
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-18-31-314Z-J01-J02-first-run"}
+{"journey":"J17-memory","title":"Remember, view and forget","steps":10,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-19-22-075Z-J17-memory"}
+{"journey":"B03-web-local","title":"Web without keys: news read locally, sources","steps":9,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-19-51-408Z-B03-web-local"}
+{"journey":"J12-draft","title":"Draft an email (never sends)","steps":4,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-22-41-062Z-J12-draft"}
+{"journey":"B04-stop","title":"Start a job then stop it by typing stop","steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-23-11-293Z-B04-stop"}
+{"journey":"J08-choice","title":"Question with choice chips","steps":5,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-24-29-382Z-J08-choice"}
+{"journey":"J21-J22-settings-search","title":"Settings and search","steps":6,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-24-59-874Z-J21-J22-settings-search"}
+{"journey":"U02-reactions-thanks","title":"Reactions: foo thumbs-up on thanks, react and un-react","steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-25-19-901Z-U02-reactions-thanks"}
+{"journey":"U06-header-panel","title":"Chat header, ⋮ menu, details panel (Doing, Using, What I know, Spent)","steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-26-03-312Z-U06-header-panel"}
+{"journey":"U10-plan-change-stop","title":"Plan card: Change plan, then Stop a running job from the checklist","steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-27-07-923Z-U10-plan-change-stop"}
+{"journey":"U14-memory","title":"Memory: chip with Undo, memory page search, edit, forget with Undo","steps":23,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-27-55-118Z-U14-memory"}
+{"journey":"U18-new-helper-group","title":"New helper and New group dialogs, helper chat, helper profile","steps":9,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-28-32-584Z-U18-new-helper-group"}
+{"journey":"U22-face-polish","title":"Living face: thinking while working, resting; motion off in settings","steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-28-40-615Z-U22-face-polish"}
+{"journey":"U26-crash-reopen","title":"foo crashes and is reopened at once: a window must appear","steps":5,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-29-27-992Z-U26-crash-reopen"}

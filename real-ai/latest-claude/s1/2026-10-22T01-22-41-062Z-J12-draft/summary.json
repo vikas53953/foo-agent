@@ -1,0 +1,42 @@
+{
+  "journey": "J12-draft",
+  "title": "Draft an email (never sends)",
+  "steps": 4,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-22-41-062Z-J12-draft",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792632167404,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 185
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 17151,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's your draft for someone@example.com. Nothing has been sent.\n\nSubject: Running 15 minutes late tomorrow\n\nHi, I'll be about 15 minutes late to tomorrow's meeting on Fri 23 Oct. Please start without me if needed. Thanks!\n\nWant me to change the tone or add the meeting time?\n\n1:23 AM",
+      "ms": 23185
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 3,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

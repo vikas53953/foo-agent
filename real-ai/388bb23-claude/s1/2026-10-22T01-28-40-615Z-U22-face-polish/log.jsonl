@@ -1,0 +1,20 @@
+{"t":"2026-10-22T01:28:40.615Z","journey":"U22-face-polish","title":"Living face: thinking while working, resting; motion off in settings","spec":"02 §F15.9 living face, 10-2 §C.7, §C.8","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T01:28:46.247Z","step":"launch","ok":true}
+{"t":"2026-10-22T01:28:47.289Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1038}
+{"t":"2026-10-22T01:28:47.419Z","i":1,"do":"send","sentAt":1792632527379,"sent":true,"before":0,"ok":true,"ms":130}
+{"t":"2026-10-22T01:28:48.934Z","i":2,"do":"wait","expect":"26px Thinking face only while the request is in flight (C.7.4)","ok":true,"ms":1515}
+{"t":"2026-10-22T01:28:49.009Z","shot":"01-thinking.png"}
+{"t":"2026-10-22T01:29:03.217Z","i":3,"do":"waitReply","expect":"poem; face back to resting, blinks","firstReplyMs":7084,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Grey clouds roll in over the Arabian Sea,\nMarine Drive shines as the rain runs free.\nChai steams up where the umbrellas meet,\nAnd Mumbai dances through the flooded street.\n\nYour Punjab Kings note isn't saved yet. Send it again on its own and I'll save it.\n\n1:28 AM","ms":14208}
+{"t":"2026-10-22T01:29:03.291Z","shot":"02-poem.png"}
+{"t":"2026-10-22T01:29:03.372Z","i":4,"do":"shotEl","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-22T01:29:03.433Z","i":5,"do":"key","ok":true,"ms":61}
+{"t":"2026-10-22T01:29:03.563Z","i":6,"do":"click","soft":true,"ok":true,"ms":129}
+{"t":"2026-10-22T01:29:03.649Z","i":7,"do":"click","soft":true,"ok":true,"ms":85}
+{"t":"2026-10-22T01:29:04.251Z","i":8,"do":"wait","expect":"face motion setting","ok":true,"ms":601}
+{"t":"2026-10-22T01:29:04.338Z","shot":"04-face-motion.png"}
+{"t":"2026-10-22T01:29:04.408Z","i":9,"do":"key","ok":true,"ms":70}
+{"t":"2026-10-22T01:29:27.480Z","shot":"05-error-step10.png"}
+{"t":"2026-10-22T01:29:27.480Z","i":10,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23072}
+{"t":"2026-10-22T01:29:27.489Z","i":11,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-22T01:29:27.623Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-10-22T01:29:27.635Z","step":"aiTurns","turns":2}

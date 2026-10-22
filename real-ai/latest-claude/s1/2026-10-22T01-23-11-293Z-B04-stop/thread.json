@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is my favourite food?\n1:19 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your favourite food is South Indian, and I've already got that saved.\n\n1:19 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n1:19 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for ISRO news from 15 to 22 Oct 2026\nCompared reports from different news sources\nWrote it\nStopped by you\n1:20 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:20 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting\n1:22 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your draft for someone@example.com. Nothing has been sent.\n\nSubject: Running 15 minutes late tomorrow\n\nHi, I'll be about 15 minutes late to tomorrow's meeting on Fri 23 Oct. Please start without me if needed. Thanks!\n\nWant me to change the tone or add the meeting time?\n\n1:23 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n1:23 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which Friday do you mean for Delhi to Mumbai?\n1\nFri 30 Oct\nBEST FIT\nNext week's Friday\n2\nFri 23 Oct\nTomorrow\nSomething else…\nSkip\n1:23 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:23 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n1:24 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:24 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n1:24 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n1:24 AM"
+  }
+]
