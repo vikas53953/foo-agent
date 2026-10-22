@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n6:29 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n6:29 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:30 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nLooking for vegetarian restaurants in…\n3\nBoth\nSomething else…\nSkip\n6:30 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:30 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:33 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nLooking for vegetarian restaurants in…\n3\nBoth\nSomething else…\nSkip\n6:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:33 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me a simple page that tracks my daily water intake with a goal of 8 glasses\n6:33 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your water tracker. Tap a glass to fill it, and your count and progress update as you go. The goal is 8 glasses a day.\n\nKeep\n6:33 PM"
+  }
+]

@@ -1,0 +1,16 @@
+{"t":"2026-10-22T18:11:41.612Z","journey":"R1-rich","title":"Rich replies: table, steps, numbers","spec":"CR-0022 R1","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T18:11:46.614Z","step":"launch","ok":true}
+{"t":"2026-10-22T18:11:46.707Z","i":0,"do":"send","sentAt":1792692706680,"sent":true,"before":0,"ok":true,"ms":90}
+{"t":"2026-10-22T18:12:14.576Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":21787,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"I didn’t get that. Say it another way?\n\n6:12 PM","didntGetThat":true,"kit":[],"ms":27869}
+{"t":"2026-10-22T18:12:14.640Z","shot":"01-table.png"}
+{"t":"2026-10-22T18:12:14.642Z","i":2,"do":"clickIf","note":"press Go on the plan (starts the job; spending still needs Approve, which is never tapped)","found":0,"ok":true,"ms":1}
+{"t":"2026-10-22T18:14:44.649Z","i":3,"do":"wait","ok":true,"ms":150006}
+{"t":"2026-10-22T18:14:44.706Z","shot":"02-table-after-go.png"}
+{"t":"2026-10-22T18:14:44.708Z","i":4,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-22T18:14:44.717Z","i":5,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-22T18:14:44.788Z","i":6,"do":"send","sentAt":1792692884773,"sent":true,"before":0,"ok":true,"ms":71}
+{"t":"2026-10-22T18:15:00.964Z","i":7,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":7086,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's an easy-paced 3 day Jaipur plan for your parents, with mornings for sightseeing and rest in the afternoon heat.\n\nDay 1, old city: City Palace and Jantar Mantar in the morning, then a Hawa Mahal photo stop. Finish with a slow evening walk through Bapu Bazaar for sweets and handicrafts.\nDay 2, forts: Amber Fort early, before the crowds. A jeep ride up saves the steep climb. Stop at Jal Mahal on the way back, rest at the hotel, then watch the sunset from Nahargarh.\nDay 3, temples and culture: Govind Dev Ji Temple, Birla Mandir and the Albert Hall Museum. Have dinner at Chokhi Dhani for folk music and Rajasthani food.\n\nJaipur is most comfortable from October to March. A hotel near the old city keeps the daily drives short. Want me to fit this to your travel dates and budget?\n\n6:14 PM","kit":[],"ms":16176}
+{"t":"2026-10-22T18:15:01.019Z","shot":"03-trip.png"}
+{"t":"2026-10-22T18:15:01.026Z","i":8,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-22T18:15:01.124Z","step":"appLog","lines":12,"dropped":0}
+{"t":"2026-10-22T18:15:01.134Z","step":"aiTurns","turns":4}

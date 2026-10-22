@@ -1,0 +1,21 @@
+{"t":"2026-10-22T18:18:20.144Z","journey":"B05-restart","title":"Quit mid-job and reopen: job resumes","spec":"AT-089, AT-118, J19/J20","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T18:18:25.230Z","step":"launch","ok":true}
+{"t":"2026-10-22T18:18:33.297Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8064}
+{"t":"2026-10-22T18:18:33.375Z","i":0,"do":"send","sentAt":1792693113347,"sent":true,"before":0,"ok":true,"ms":78}
+{"t":"2026-10-22T18:18:45.695Z","i":1,"do":"waitReply","firstReplyMs":6123,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nCheck National Museum, New Delhi\nLook for opening hours and ticket price\nWatch live\nStop\nunder 1 min\n6:18 PM","kit":[],"ms":12320}
+{"t":"2026-10-22T18:18:45.756Z","shot":"01-museum-start.png"}
+{"t":"2026-10-22T18:18:45.758Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-22T18:18:53.759Z","i":3,"do":"wait","ok":true,"ms":8001}
+{"t":"2026-10-22T18:18:58.813Z","step":"launch","ok":true}
+{"t":"2026-10-22T18:18:58.814Z","i":4,"do":"relaunch","ok":true,"ms":5054}
+{"t":"2026-10-22T18:19:06.815Z","i":5,"do":"wait","expect":"AT-118: recovery card; job resumes (WAITING → WORKING)","ok":true,"ms":8001}
+{"t":"2026-10-22T18:19:06.862Z","shot":"02-after-reopen.png"}
+{"t":"2026-10-22T18:19:06.864Z","i":6,"do":"check","note":"AT-118: reopen renders the asking recovery card","found":0,"ok":false,"ms":2}
+{"t":"2026-10-22T18:19:16.941Z","shot":"03-error-step7.png"}
+{"t":"2026-10-22T18:19:16.941Z","i":7,"do":"expectText","note":"AT-118: recovery copy is present on the actual card","ok":false,"error":"locator.innerText: Timeout 10000ms exceeded.","ms":10077}
+{"t":"2026-10-22T18:19:16.943Z","i":8,"do":"check","note":"AT-118: the recovery card exposes its resume action","found":0,"ok":false,"ms":2}
+{"t":"2026-10-22T18:21:46.949Z","i":9,"do":"wait","ok":true,"ms":150006}
+{"t":"2026-10-22T18:21:47.009Z","shot":"04-after-reopen-later.png"}
+{"t":"2026-10-22T18:21:47.018Z","i":10,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-22T18:21:47.210Z","step":"appLog","lines":19,"dropped":0}
+{"t":"2026-10-22T18:21:47.222Z","step":"aiTurns","turns":6}

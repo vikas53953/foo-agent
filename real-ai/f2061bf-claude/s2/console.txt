@@ -1,0 +1,15 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-10-08-134Z-J01-J02-first-run"}
+{"journey":"B01-chat-rules","title":"Chat rules: thanks, long answer, filler, reactions","steps":8,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-10-58-403Z-B01-chat-rules"}
+{"journey":"R1-rich","title":"Rich replies: table, steps, numbers","steps":9,"failed":2,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-11-41-611Z-R1-rich"}
+{"journey":"B06-booking-options","title":"Restaurant options without booking","steps":10,"failed":2,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-15-01-281Z-B06-booking-options"}
+{"journey":"B05-restart","title":"Quit mid-job and reopen: job resumes","steps":11,"failed":3,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-18-20-144Z-B05-restart"}
+{"journey":"B07-live","title":"Watch live, take over, hand back, stop","steps":25,"failed":17,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-21-47-359Z-B07-live"}
+{"journey":"B11-zoom-appearance","title":"Zoom keys, settings rows","steps":12,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-23-01-055Z-B11-zoom-appearance"}
+{"journey":"U03-select-delete","title":"Select messages, copy them, delete one (keep)","steps":17,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-23-14-558Z-U03-select-delete"}
+{"journey":"U07-composer","title":"Composer: multi-line, attach menu, emoji, Esc, draft kept after restart","steps":18,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-23-34-551Z-U07-composer"}
+{"journey":"U11-approval-states","title":"Approval card: pending, Not now (declined), Change (never Approve)","steps":16,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-23-49-869Z-U11-approval-states"}
+{"journey":"U15-routines","title":"Routine: create by chat, routines screen, pause, run once","steps":8,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-29-37-043Z-U15-routines"}
+{"journey":"U19-screens","title":"Activity, Ideas, Spend, foo profile, Shortcuts screens","steps":22,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-30-27-993Z-U19-screens"}
+{"journey":"U23-ai-page-chips","title":"AI page, action chips, reply chips","steps":9,"failed":1,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-33-31-267Z-U23-ai-page-chips"}
+{"journey":"R-ai-pages","title":"Group R plain answers and capabilities surface","steps":74,"failed":10,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-34-04-962Z-R-ai-pages"}
+{"journey":"R-jobs","title":"Group R jobs, sources, retry and live job updates","steps":79,"failed":35,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-38-41-388Z-R-jobs"}

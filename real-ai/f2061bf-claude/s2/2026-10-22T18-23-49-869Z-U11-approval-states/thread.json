@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:22 PM\n6:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:22 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n6:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:22 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Fastest trains from New Delhi area to Agra Cantt on Fri 23 Oct: Vande Bharat 22470 (Nizamuddin 6:00 AM, arrives 7:40 AM, 1h 40m) and Gatimaan 12050 (Nizamuddin 8:10 AM, arrives 9:50 AM, 1h 40m). Shatabdi 12002 leaves New Delhi 6:00 AM, arrives 7:50 AM (1h 50m). Taj Express 12280 leaves New Delhi 6:55 AM, arrives 9:25 AM (2h 30m). Overnight and sleeper trains take 2h 5m to 4h 50m. The list I could read stops at 11:25 AM, and the times come from another site, not IRCTC, which blocked me. Please confirm seats and times before you book.\n\n6:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Say hello in Hindi\n6:23 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "नमस्ते! 🙏 आपसे मिलकर अच्छा लगा।\n\n6:23 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a table for 2 at a vegetarian restaurant in Connaught Place, Delhi this Saturday 8 PM\n6:23 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:24 PM\n6:24 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:24 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Booking table for 2, Sat 24 Oct, 8:00 PM\nlive checklist\nLooking for vegetarian restaurants in Connaught\nKeep 3 restaurants that fit pure vegetarian, good ratings, table\nWait for you to pick one\nSign in to the booking site\nShow you before the table booking for 2, Sat 24 Oct\nShow you before doing anything\nWatch live\nStop\n5 min\n6:24 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:24 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Booking table for 2, Sat 24 Oct, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n6:26 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:26 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n6:28 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Looking for vegetarian restaurants in…\n1\nLook for vegetarian restaurants in Connaught\n2\nKeep 3 restaurants that fit vegetarian, open and free at 8:00 PM\n3\nWait for you to pick one\n4\nShow you before the booking for 2 on Sat 24 Oct, 8:00 PM\n5\nShow you before doing anything\n6\nBook table for 2, Sat 24 Oct, 8:00 PM\nAbout 6 minutes\nGo\nChange plan\n6:28 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:28 PM"
+  }
+]

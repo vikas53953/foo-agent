@@ -1,0 +1,108 @@
+{"t":"2026-10-22T18:34:04.963Z","journey":"R-ai-pages","title":"Group R plain answers and capabilities surface","spec":"07 §11.5 Group R; AT-366, AT-367, AT-424, AT-425, AT-426","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T18:34:10.043Z","step":"launch","ok":true}
+{"t":"2026-10-22T18:34:10.142Z","i":0,"do":"send","note":"AT-366: clean ask","sentAt":1792694050118,"sent":true,"before":0,"ok":true,"ms":96}
+{"t":"2026-10-22T18:34:19.755Z","i":1,"do":"waitReply","note":"AT-366: clean","firstReplyMs":2520,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"The capital of Australia is Canberra, not Sydney or Melbourne as many people guess.\n\n6:34 PM","kit":[],"endState":true,"ms":9613}
+{"t":"2026-10-22T18:34:19.811Z","shot":"01-at-366-clean.png"}
+{"t":"2026-10-22T18:34:19.815Z","i":2,"do":"expectText","note":"AT-366: clean result","text":"The capital of Australia is Canberra, not Sydney or Melbourne as many people guess.\n\n6:34 PM","ok":true,"ms":4}
+{"t":"2026-10-22T18:34:19.906Z","i":3,"do":"send","note":"AT-366: messy typo ask","sentAt":1792694059888,"sent":true,"before":0,"ok":true,"ms":90}
+{"t":"2026-10-22T18:34:31.054Z","i":4,"do":"waitReply","note":"AT-366: messy typo","firstReplyMs":4062,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"The capital of Australia is Canberra.\n\n6:34 PM","kit":[],"endState":true,"ms":11148}
+{"t":"2026-10-22T18:34:31.104Z","shot":"02-at-366-messy-typo.png"}
+{"t":"2026-10-22T18:34:31.107Z","i":5,"do":"expectText","note":"AT-366: messy typo result","text":"The capital of Australia is Canberra.\n\n6:34 PM","ok":true,"ms":3}
+{"t":"2026-10-22T18:34:31.228Z","i":6,"do":"send","note":"AT-366: Hinglish ask","sentAt":1792694071201,"sent":true,"before":0,"ok":true,"ms":121}
+{"t":"2026-10-22T18:34:41.350Z","i":7,"do":"waitReply","note":"AT-366: Hinglish","firstReplyMs":3539,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Australia ki capital Canberra hai, Sydney ya Melbourne nahi.\n\n6:34 PM","kit":[],"endState":true,"ms":10122}
+{"t":"2026-10-22T18:34:41.402Z","shot":"03-at-366-Hinglish.png"}
+{"t":"2026-10-22T18:34:41.405Z","i":8,"do":"expectText","note":"AT-366: Hinglish result","text":"Australia ki capital Canberra hai, Sydney ya Melbourne nahi.\n\n6:34 PM","ok":true,"ms":3}
+{"t":"2026-10-22T18:34:41.498Z","i":9,"do":"send","note":"AT-366: Hindi ask","sentAt":1792694081482,"sent":true,"before":0,"ok":true,"ms":93}
+{"t":"2026-10-22T18:34:51.646Z","i":10,"do":"waitReply","note":"AT-366: Hindi","firstReplyMs":3538,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"ऑस्ट्रेलिया की राजधानी कैनबरा है, सिडनी या मेलबर्न नहीं।\n\n6:34 PM","kit":[],"endState":true,"ms":10148}
+{"t":"2026-10-22T18:34:51.699Z","shot":"04-at-366-Hindi.png"}
+{"t":"2026-10-22T18:34:51.703Z","i":11,"do":"expectText","note":"AT-366: Hindi result","text":"ऑस्ट्रेलिया की राजधानी कैनबरा है, सिडनी या मेलबर्न नहीं।\n\n6:34 PM","ok":false,"ms":4}
+{"t":"2026-10-22T18:34:51.822Z","i":12,"do":"send","note":"AT-366: Punjabi ask","sentAt":1792694091788,"sent":true,"before":0,"ok":true,"ms":119}
+{"t":"2026-10-22T18:35:00.930Z","i":13,"do":"waitReply","note":"AT-366: Punjabi","firstReplyMs":2534,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"ਆਸਟ੍ਰੇਲੀਆ ਦੀ ਰਾਜਧਾਨੀ ਕੈਨਬਰਾ ਹੈ, ਸਿਡਨੀ ਜਾਂ ਮੈਲਬਰਨ ਨਹੀਂ।\n\n6:34 PM","kit":[],"endState":true,"ms":9107}
+{"t":"2026-10-22T18:35:00.977Z","shot":"05-at-366-Punjabi.png"}
+{"t":"2026-10-22T18:35:00.980Z","i":14,"do":"expectText","note":"AT-366: Punjabi result","text":"ਆਸਟ੍ਰੇਲੀਆ ਦੀ ਰਾਜਧਾਨੀ ਕੈਨਬਰਾ ਹੈ, ਸਿਡਨੀ ਜਾਂ ਮੈਲਬਰਨ ਨਹੀਂ।\n\n6:34 PM","ok":false,"ms":3}
+{"t":"2026-10-22T18:35:01.071Z","i":15,"do":"send","note":"AT-367: clean ask","sentAt":1792694101051,"sent":true,"before":0,"ok":true,"ms":90}
+{"t":"2026-10-22T18:35:11.713Z","i":16,"do":"waitReply","note":"AT-367: clean","firstReplyMs":2522,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Read *Atomic Habits* by James Clear. It's the most practical book on habits: it shows how to build good ones with tiny steps and make bad ones harder to do.\n\nIf you want the science behind it, *The Power of Habit* by Charles Duhigg is a good second pick.\n\n6:35 PM","kit":[],"endState":true,"ms":10642}
+{"t":"2026-10-22T18:35:11.777Z","shot":"06-at-367-clean.png"}
+{"t":"2026-10-22T18:35:11.780Z","i":17,"do":"expectText","note":"AT-367: clean result","text":"Read *Atomic Habits* by James Clear. It's the most practical book on habits: it shows how to build good ones with tiny steps and make bad ones harder to do.\n\nIf you want the science behind it, *The Power of Habit* by Charles Duhigg is a good second pick.\n\n6:35 PM","ok":true,"ms":3}
+{"t":"2026-10-22T18:35:11.888Z","i":18,"do":"send","note":"AT-367: messy typo ask","sentAt":1792694111852,"sent":true,"before":0,"ok":true,"ms":108}
+{"t":"2026-10-22T18:35:24.526Z","i":19,"do":"waitReply","note":"AT-367: messy typo","firstReplyMs":5551,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Read *Atomic Habits* by James Clear. It shows how to build good habits with tiny steps and make bad ones harder to do.\n\nFor the science behind habits, try *The Power of Habit* by Charles Duhigg.\n\n6:35 PM","kit":[],"endState":true,"ms":12638}
+{"t":"2026-10-22T18:35:24.609Z","shot":"07-at-367-messy-typo.png"}
+{"t":"2026-10-22T18:35:24.611Z","i":20,"do":"expectText","note":"AT-367: messy typo result","text":"Read *Atomic Habits* by James Clear. It shows how to build good habits with tiny steps and make bad ones harder to do.\n\nFor the science behind habits, try *The Power of Habit* by Charles Duhigg.\n\n6:35 PM","ok":true,"ms":2}
+{"t":"2026-10-22T18:35:24.708Z","i":21,"do":"send","note":"AT-367: Hinglish ask","sentAt":1792694124681,"sent":true,"before":0,"ok":true,"ms":97}
+{"t":"2026-10-22T18:35:36.399Z","i":22,"do":"waitReply","note":"AT-367: Hinglish","firstReplyMs":3047,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Habits par sabse achchi book hai *Atomic Habits* by James Clear. Isme chhote-chhote steps se achchi aadatein banana aur buri aadatein chhodna asaan tareeke se samjhaya gaya hai.\n\nAgar science bhi samajhna ho, to *The Power of Habit* by Charles Duhigg padho.\n\n6:35 PM","kit":[],"endState":true,"ms":11691}
+{"t":"2026-10-22T18:35:36.451Z","shot":"08-at-367-Hinglish.png"}
+{"t":"2026-10-22T18:35:36.454Z","i":23,"do":"expectText","note":"AT-367: Hinglish result","text":"Habits par sabse achchi book hai *Atomic Habits* by James Clear. Isme chhote-chhote steps se achchi aadatein banana aur buri aadatein chhodna asaan tareeke se samjhaya gaya hai.\n\nAgar science bhi samajhna ho, to *The Power of Habit* by Charles Duhigg padho.\n\n6:35 PM","ok":true,"ms":3}
+{"t":"2026-10-22T18:35:36.557Z","i":24,"do":"send","note":"AT-424: clean ask","sentAt":1792694136525,"sent":true,"before":0,"ok":true,"ms":103}
+{"t":"2026-10-22T18:35:47.165Z","i":25,"do":"waitReply","note":"AT-424: clean","firstReplyMs":3051,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"10 to the power 3 is bigger: it's 1,000, while 2 to the power 10 is 1,024. Actually, 1,024 is the larger one, so 2 to the power 10 wins by 24.\n\n6:35 PM","kit":[],"endState":true,"ms":10608}
+{"t":"2026-10-22T18:35:47.217Z","shot":"09-at-424-clean.png"}
+{"t":"2026-10-22T18:35:47.220Z","i":26,"do":"expectText","note":"AT-424: clean result","text":"10 to the power 3 is bigger: it's 1,000, while 2 to the power 10 is 1,024. Actually, 1,024 is the larger one, so 2 to the power 10 wins by 24.\n\n6:35 PM","ok":false,"ms":3}
+{"t":"2026-10-22T18:35:47.307Z","i":27,"do":"send","note":"AT-424: messy typo ask","sentAt":1792694147276,"sent":true,"before":0,"ok":true,"ms":87}
+{"t":"2026-10-22T18:35:56.444Z","i":28,"do":"waitReply","note":"AT-424: messy typo","firstReplyMs":2542,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"2 to the power 10 is bigger: it's 1,024, while 10 to the power 3 is 1,000. My last answer started with the wrong one, sorry for the mix-up.\n\n6:35 PM","kit":[],"endState":true,"ms":9137}
+{"t":"2026-10-22T18:35:56.505Z","shot":"10-at-424-messy-typo.png"}
+{"t":"2026-10-22T18:35:56.509Z","i":29,"do":"expectText","note":"AT-424: messy typo result","text":"2 to the power 10 is bigger: it's 1,024, while 10 to the power 3 is 1,000. My last answer started with the wrong one, sorry for the mix-up.\n\n6:35 PM","ok":false,"ms":3}
+{"t":"2026-10-22T18:35:56.638Z","i":30,"do":"send","note":"AT-424: Hinglish ask","sentAt":1792694156601,"sent":true,"before":0,"ok":true,"ms":129}
+{"t":"2026-10-22T18:36:06.757Z","i":31,"do":"waitReply","note":"AT-424: Hinglish","firstReplyMs":3040,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"2 ki power 10 bada hai: wo 1,024 hai, jabki 10 ki power 3 sirf 1,000 hai. Fark 24 ka hai.\n\n6:35 PM","kit":[],"endState":true,"ms":10119}
+{"t":"2026-10-22T18:36:06.809Z","shot":"11-at-424-Hinglish.png"}
+{"t":"2026-10-22T18:36:06.812Z","i":32,"do":"expectText","note":"AT-424: Hinglish result","text":"2 ki power 10 bada hai: wo 1,024 hai, jabki 10 ki power 3 sirf 1,000 hai. Fark 24 ka hai.\n\n6:35 PM","ok":false,"ms":2}
+{"t":"2026-10-22T18:36:06.905Z","i":33,"do":"send","note":"AT-424: Hindi ask","sentAt":1792694166877,"sent":true,"before":0,"ok":true,"ms":93}
+{"t":"2026-10-22T18:36:19.078Z","i":34,"do":"waitReply","note":"AT-424: Hindi","firstReplyMs":5586,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"2 की घात 10 बड़ा है: वह 1,024 है, जबकि 10 की घात 3 सिर्फ़ 1,000 है। फ़र्क़ 24 का है।\n\n6:36 PM","kit":[],"endState":true,"ms":12173}
+{"t":"2026-10-22T18:36:19.138Z","shot":"12-at-424-Hindi.png"}
+{"t":"2026-10-22T18:36:19.141Z","i":35,"do":"expectText","note":"AT-424: Hindi result","text":"2 की घात 10 बड़ा है: वह 1,024 है, जबकि 10 की घात 3 सिर्फ़ 1,000 है। फ़र्क़ 24 का है।\n\n6:36 PM","ok":false,"ms":3}
+{"t":"2026-10-22T18:36:19.249Z","i":36,"do":"send","note":"AT-424: Punjabi ask","sentAt":1792694179218,"sent":true,"before":0,"ok":true,"ms":108}
+{"t":"2026-10-22T18:36:32.434Z","i":37,"do":"waitReply","note":"AT-424: Punjabi","firstReplyMs":6056,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"2 ਦੀ ਘਾਤ 10 ਵੱਡਾ ਹੈ: ਇਹ 1,024 ਹੈ, ਜਦਕਿ 10 ਦੀ ਘਾਤ 3 ਸਿਰਫ਼ 1,000 ਹੈ। ਫ਼ਰਕ 24 ਦਾ ਹੈ।\n\n6:36 PM","kit":[],"endState":true,"ms":13185}
+{"t":"2026-10-22T18:36:32.496Z","shot":"13-at-424-Punjabi.png"}
+{"t":"2026-10-22T18:36:32.498Z","i":38,"do":"expectText","note":"AT-424: Punjabi result","text":"2 ਦੀ ਘਾਤ 10 ਵੱਡਾ ਹੈ: ਇਹ 1,024 ਹੈ, ਜਦਕਿ 10 ਦੀ ਘਾਤ 3 ਸਿਰਫ਼ 1,000 ਹੈ। ਫ਼ਰਕ 24 ਦਾ ਹੈ।\n\n6:36 PM","ok":false,"ms":2}
+{"t":"2026-10-22T18:36:32.577Z","i":39,"do":"send","note":"AT-425: clean capabilities ask","sentAt":1792694192565,"sent":true,"before":0,"ok":true,"ms":79}
+{"t":"2026-10-22T18:36:41.682Z","i":40,"do":"waitReply","note":"AT-425: clean capabilities","firstReplyMs":2019,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"I can answer questions, read your email and apps, set up routines, and take care of everyday tasks with your okay.\n\n6:36 PM","kit":[],"kitMissing":"kit-capabilities","ms":9104}
+{"t":"2026-10-22T18:36:41.745Z","shot":"14-at-425-clean-capabilities.png"}
+{"t":"2026-10-22T18:36:41.822Z","i":41,"do":"click","note":"AT-425: clean Try it action fills composer","ok":true,"ms":77}
+{"t":"2026-10-22T18:36:41.825Z","i":42,"do":"expectText","note":"AT-425: clean composer field has the capability prompt and without sending","text":"Anything important in my email?","ok":true,"ms":3}
+{"t":"2026-10-22T18:36:41.899Z","i":43,"do":"send","note":"AT-425: messy typo capabilities ask","sentAt":1792694201885,"sent":true,"before":0,"ok":true,"ms":74}
+{"t":"2026-10-22T18:36:52.542Z","i":44,"do":"waitReply","note":"AT-425: messy typo capabilities","firstReplyMs":3553,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"I can answer questions, read your email and apps, set up routines like your Delhi weather every weekday at 8:00 AM, and handle everyday tasks once you say go.\n\n6:36 PM","kit":[],"kitMissing":"kit-capabilities","ms":10643}
+{"t":"2026-10-22T18:36:52.590Z","shot":"15-at-425-messy-typo-capabilities.png"}
+{"t":"2026-10-22T18:36:52.670Z","i":45,"do":"click","note":"AT-425: messy typo Try it action fills composer","ok":true,"ms":80}
+{"t":"2026-10-22T18:36:52.672Z","i":46,"do":"expectText","note":"AT-425: messy typo composer field has the capability prompt and without sending","text":"Anything important in my email?","ok":true,"ms":2}
+{"t":"2026-10-22T18:36:52.778Z","i":47,"do":"send","note":"AT-425: Hinglish capabilities ask","sentAt":1792694212757,"sent":true,"before":0,"ok":true,"ms":105}
+{"t":"2026-10-22T18:37:05.928Z","i":48,"do":"waitReply","note":"AT-425: Hinglish capabilities","firstReplyMs":6063,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Main sawaalon ke jawab de sakta hoon, aapki email aur apps padh sakta hoon, routine bana sakta hoon (jaise Delhi ka mausam har weekday 8:00 AM par), aur aapke \"go\" bolne par roz ke kaam kar sakta hoon.\n\n6:36 PM","kit":[],"kitMissing":"kit-capabilities","ms":13149}
+{"t":"2026-10-22T18:37:05.983Z","shot":"16-at-425-Hinglish-capabilities.png"}
+{"t":"2026-10-22T18:37:06.077Z","i":49,"do":"click","note":"AT-425: Hinglish Try it action fills composer","ok":true,"ms":93}
+{"t":"2026-10-22T18:37:06.081Z","i":50,"do":"expectText","note":"AT-425: Hinglish composer field has the capability prompt and without sending","text":"Anything important in my email?","ok":true,"ms":3}
+{"t":"2026-10-22T18:37:06.193Z","i":51,"do":"send","note":"AT-425: Hindi capabilities ask","sentAt":1792694226164,"sent":true,"before":0,"ok":true,"ms":112}
+{"t":"2026-10-22T18:37:22.963Z","i":52,"do":"waitReply","note":"AT-425: Hindi capabilities","firstReplyMs":10160,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"मैं सवालों के जवाब दे सकता हूँ, आपकी ईमेल और ऐप्स पढ़ सकता हूँ, दिल्ली के मौसम जैसे रूटीन बना सकता हूँ (हर वर्कडे 8:00 AM), और आपके कहने पर रोज़ के काम कर सकता हूँ।\n\n6:37 PM","kit":[],"kitMissing":"kit-capabilities","ms":16770}
+{"t":"2026-10-22T18:37:23.017Z","shot":"17-at-425-Hindi-capabilities.png"}
+{"t":"2026-10-22T18:37:23.103Z","i":53,"do":"click","note":"AT-425: Hindi Try it action fills composer","ok":true,"ms":86}
+{"t":"2026-10-22T18:37:23.106Z","i":54,"do":"expectText","note":"AT-425: Hindi composer field has the capability prompt and without sending","text":"Anything important in my email?","ok":true,"ms":3}
+{"t":"2026-10-22T18:37:23.220Z","i":55,"do":"send","note":"AT-425: Punjabi capabilities ask","sentAt":1792694243188,"sent":true,"before":0,"ok":true,"ms":113}
+{"t":"2026-10-22T18:37:38.374Z","i":56,"do":"waitReply","note":"AT-425: Punjabi capabilities","firstReplyMs":8602,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"ਮੇਰੇ ਤੋਂ ਸਵਾਲਾਂ ਦੇ ਜਵਾਬ, ਤੁਹਾਡੀ ਈਮੇਲ ਤੇ ਐਪਾਂ ਪੜ੍ਹਨਾ, ਰੁਟੀਨ ਬਣਾਉਣਾ ਅਤੇ ਤੁਹਾਡੇ ਕਹਿਣ 'ਤੇ ਰੋਜ਼ ਦੇ ਕੰਮ ਹੋ ਸਕਦੇ ਹਨ।\n\n6:37 PM","kit":[],"kitMissing":"kit-capabilities","ms":15154}
+{"t":"2026-10-22T18:37:38.417Z","shot":"18-at-425-Punjabi-capabilities.png"}
+{"t":"2026-10-22T18:37:38.515Z","i":57,"do":"click","note":"AT-425: Punjabi Try it action fills composer","ok":true,"ms":98}
+{"t":"2026-10-22T18:37:38.518Z","i":58,"do":"expectText","note":"AT-425: Punjabi composer field has the capability prompt and without sending","text":"Anything important in my email?","ok":true,"ms":2}
+{"t":"2026-10-22T18:37:38.641Z","i":59,"do":"send","note":"AT-426: clean ask","sentAt":1792694258604,"sent":true,"before":0,"ok":true,"ms":123}
+{"t":"2026-10-22T18:37:48.276Z","i":60,"do":"waitReply","note":"AT-426: clean","firstReplyMs":2540,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"I can answer questions, read your email and apps, set up routines like your Delhi weather every weekday at 8:00 AM, and handle everyday tasks once you say go.\n\n6:37 PM","kit":[],"kitMissing":"kit-capabilities","ms":9635}
+{"t":"2026-10-22T18:37:48.326Z","shot":"19-at-426-clean.png"}
+{"t":"2026-10-22T18:37:48.329Z","i":61,"do":"expectText","note":"AT-426: clean result","text":"Catch up on email\nConnect Gmail to start\nTry it ›\nWatch a price\nTell me when it drops\nTry it ›\nCompare options\nPlans, flights, products\nTry it ›\nRemind me\nBills, renewals, a morning brief\nTry it ›\n\nI never send, book or pay until you tap Approve.","ok":true,"ms":3}
+{"t":"2026-10-22T18:37:48.411Z","i":62,"do":"send","note":"AT-426: messy typo ask","sentAt":1792694268393,"sent":true,"before":0,"ok":true,"ms":82}
+{"t":"2026-10-22T18:37:59.546Z","i":63,"do":"waitReply","note":"AT-426: messy typo","firstReplyMs":4068,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"I can answer questions, read your email and apps, set up routines like your Delhi weather every weekday at 8:00 AM, and handle everyday tasks once you say go.\n\n6:37 PM","kit":[],"kitMissing":"kit-capabilities","ms":11134}
+{"t":"2026-10-22T18:37:59.608Z","shot":"20-at-426-messy-typo.png"}
+{"t":"2026-10-22T18:37:59.610Z","i":64,"do":"expectText","note":"AT-426: messy typo result","text":"Catch up on email\nConnect Gmail to start\nTry it ›\nWatch a price\nTell me when it drops\nTry it ›\nCompare options\nPlans, flights, products\nTry it ›\nRemind me\nBills, renewals, a morning brief\nTry it ›\n\nI never send, book or pay until you tap Approve.","ok":true,"ms":2}
+{"t":"2026-10-22T18:37:59.697Z","i":65,"do":"send","note":"AT-426: Hinglish ask","sentAt":1792694279678,"sent":true,"before":0,"ok":true,"ms":86}
+{"t":"2026-10-22T18:38:13.879Z","i":66,"do":"waitReply","note":"AT-426: Hinglish","firstReplyMs":7111,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Main sawaalon ke jawab de sakta hoon, aapki email aur apps padh sakta hoon, routine bana sakta hoon (jaise Delhi ka mausam har weekday 8:00 AM par), aur aapke \"go\" bolne par roz ke kaam kar sakta hoon.\n\n6:38 PM","kit":[],"kitMissing":"kit-capabilities","ms":14181}
+{"t":"2026-10-22T18:38:13.935Z","shot":"21-at-426-Hinglish.png"}
+{"t":"2026-10-22T18:38:13.937Z","i":67,"do":"expectText","note":"AT-426: Hinglish result","text":"Catch up on email\nConnect Gmail to start\nTry it ›\nWatch a price\nTell me when it drops\nTry it ›\nCompare options\nPlans, flights, products\nTry it ›\nRemind me\nBills, renewals, a morning brief\nTry it ›\n\nI never send, book or pay until you tap Approve.","ok":true,"ms":2}
+{"t":"2026-10-22T18:38:14.028Z","i":68,"do":"send","note":"AT-426: Hindi ask","sentAt":1792694294007,"sent":true,"before":0,"ok":true,"ms":91}
+{"t":"2026-10-22T18:38:23.644Z","i":69,"do":"waitReply","note":"AT-426: Hindi","firstReplyMs":3060,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"मैं सवालों के जवाब दे सकता हूँ, आपकी ईमेल और ऐप्स पढ़ सकता हूँ, दिल्ली के मौसम जैसे रूटीन बना सकता हूँ (हर वर्कडे 8:00 AM), और आपके कहने पर रोज़ के काम कर सकता हूँ।\n\n6:38 PM","kit":[],"kitMissing":"kit-capabilities","ms":9616}
+{"t":"2026-10-22T18:38:23.703Z","shot":"22-at-426-Hindi.png"}
+{"t":"2026-10-22T18:38:23.705Z","i":70,"do":"expectText","note":"AT-426: Hindi result","text":"Catch up on email\nConnect Gmail to start\nTry it ›\nWatch a price\nTell me when it drops\nTry it ›\nCompare options\nPlans, flights, products\nTry it ›\nRemind me\nBills, renewals, a morning brief\nTry it ›\n\nI never send, book or pay until you tap Approve.","ok":true,"ms":2}
+{"t":"2026-10-22T18:38:23.788Z","i":71,"do":"send","note":"AT-426: Punjabi ask","sentAt":1792694303760,"sent":true,"before":0,"ok":true,"ms":82}
+{"t":"2026-10-22T18:38:40.988Z","i":72,"do":"waitReply","note":"AT-426: Punjabi","firstReplyMs":10147,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"ਮੈਂ ਸਵਾਲਾਂ ਦੇ ਜਵਾਬ ਦੇ ਸਕਦਾ ਹਾਂ, ਤੁਹਾਡੀ ਈਮੇਲ ਤੇ ਐਪਾਂ ਪੜ੍ਹ ਸਕਦਾ ਹਾਂ, ਦਿੱਲੀ ਦੇ ਮੌਸਮ ਵਰਗੇ ਰੁਟੀਨ ਬਣਾ ਸਕਦਾ ਹਾਂ (ਹਰ ਵੀਕਡੇ 8:00 AM), ਅਤੇ ਤੁਹਾਡੇ ਕਹਿਣ 'ਤੇ ਰੋਜ਼ ਦੇ ਕੰਮ ਕਰ ਸਕਦਾ ਹਾਂ।\n\n6:38 PM","kit":[],"kitMissing":"kit-capabilities","ms":17200}
+{"t":"2026-10-22T18:38:41.046Z","shot":"23-at-426-Punjabi.png"}
+{"t":"2026-10-22T18:38:41.061Z","i":73,"do":"expectText","note":"AT-426: Punjabi result","text":"Catch up on email\nConnect Gmail to start\nTry it ›\nWatch a price\nTell me when it drops\nTry it ›\nCompare options\nPlans, flights, products\nTry it ›\nRemind me\nBills, renewals, a morning brief\nTry it ›\n\nI never send, book or pay until you tap Approve.","ok":true,"ms":15}
+{"t":"2026-10-22T18:38:41.067Z","step":"recheck","i":11,"do":"expectText","late":true}
+{"t":"2026-10-22T18:38:41.069Z","step":"recheck","i":14,"do":"expectText","late":true}
+{"t":"2026-10-22T18:38:41.071Z","step":"recheck","i":26,"do":"expectText","late":true}
+{"t":"2026-10-22T18:38:41.073Z","step":"recheck","i":29,"do":"expectText","late":true}
+{"t":"2026-10-22T18:38:41.075Z","step":"recheck","i":32,"do":"expectText","late":true}
+{"t":"2026-10-22T18:38:41.076Z","step":"recheck","i":35,"do":"expectText","late":true}
+{"t":"2026-10-22T18:38:41.078Z","step":"recheck","i":38,"do":"expectText","late":true}
+{"t":"2026-10-22T18:38:41.192Z","step":"appLog","lines":70,"dropped":0}
+{"t":"2026-10-22T18:38:41.203Z","step":"aiTurns","turns":23}
