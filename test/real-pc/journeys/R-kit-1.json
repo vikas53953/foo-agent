@@ -1,0 +1,338 @@
+{
+  "id": "R-kit-1",
+  "title": "Group R kit surfaces: stepper, timeline, calendar, goal and pick list",
+  "spec": "07 §11.5 Group R; AT-342, AT-344, AT-345, AT-348, AT-349",
+  "covers": ["AT-342", "AT-344", "AT-345", "AT-348", "AT-349"],
+  "steps": [
+    {
+      "do": "send",
+      "text": "Make a counter for how many guests are coming, 1 to 10",
+      "note": "AT-342: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-stepper",
+      "note": "AT-342: clean",
+      "shot": "at-342-clean"
+    },
+    {
+      "do": "click",
+      "tid": "kit-button",
+      "note": "AT-342: increment the guest counter"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-stepper",
+      "last": true,
+      "re": "2",
+      "note": "AT-342: counter shows the next number"
+    },
+    {
+      "do": "send",
+      "text": "Make a conter for how many guests are coming, 1 to 10",
+      "note": "AT-342: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-stepper",
+      "note": "AT-342: messy typo",
+      "shot": "at-342-messy-typo"
+    },
+    {
+      "do": "click",
+      "tid": "kit-button",
+      "note": "AT-342: increment the guest counter"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-stepper",
+      "last": true,
+      "re": "2",
+      "note": "AT-342: counter shows the next number"
+    },
+    {
+      "do": "send",
+      "text": "1 se 10 tak guests ka counter bana do",
+      "note": "AT-342: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-stepper",
+      "note": "AT-342: Hinglish",
+      "shot": "at-342-Hinglish"
+    },
+    {
+      "do": "click",
+      "tid": "kit-button",
+      "note": "AT-342: increment the guest counter"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-stepper",
+      "last": true,
+      "re": "2",
+      "note": "AT-342: counter shows the next number"
+    },
+    {
+      "do": "send",
+      "text": "Show my Goa trip as a timeline: flight 10 Nov 6,500 rupees, hotel 10 to 12 Nov 9,000, return 12 Nov 5,800",
+      "note": "AT-344: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-timeline",
+      "note": "AT-344: clean",
+      "shot": "at-344-clean"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-timeline",
+      "last": true,
+      "re": "6,500",
+      "note": "AT-344: clean result"
+    },
+    {
+      "do": "send",
+      "text": "Show my Goa trip as a timline: flight 10 Nov 6,500 rupes, hotel 10 to 12 Nov 9,000, return 12 Nov 5,800",
+      "note": "AT-344: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-timeline",
+      "note": "AT-344: messy typo",
+      "shot": "at-344-messy-typo"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-timeline",
+      "last": true,
+      "re": "6,500",
+      "note": "AT-344: messy typo result"
+    },
+    {
+      "do": "send",
+      "text": "Goa trip ka timeline dikhao: flight 10 Nov 6,500, hotel 10 se 12 Nov 9,000, return 12 Nov 5,800 rupees",
+      "note": "AT-344: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-timeline",
+      "note": "AT-344: Hinglish",
+      "shot": "at-344-Hinglish"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-timeline",
+      "last": true,
+      "re": "6,500",
+      "note": "AT-344: Hinglish result"
+    },
+    {
+      "do": "send",
+      "text": "Show a week view of my free and busy times: busy Monday 10 to 11, Wednesday 3 to 4",
+      "note": "AT-345: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kitWeekCalendar",
+      "note": "AT-345: clean",
+      "shot": "at-345-clean"
+    },
+    {
+      "do": "send",
+      "text": "Show a wek view of my free and busy times: busy Monday 10 to 11, Wednesday 3 to 4",
+      "note": "AT-345: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kitWeekCalendar",
+      "note": "AT-345: messy typo",
+      "shot": "at-345-messy-typo"
+    },
+    {
+      "do": "send",
+      "text": "Mera week view dikhao: Monday 10 se 11 aur Wednesday 3 se 4 busy hai",
+      "note": "AT-345: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kitWeekCalendar",
+      "note": "AT-345: Hinglish",
+      "shot": "at-345-Hinglish"
+    },
+    {
+      "do": "send",
+      "text": "I've saved 30,000 of my 1,00,000 rupee goal. Show it as a ring",
+      "note": "AT-348: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-goal-ring",
+      "note": "AT-348: clean",
+      "shot": "at-348-clean"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-goal-ring",
+      "last": true,
+      "re": "30,000.*1,00,000",
+      "note": "AT-348: clean result"
+    },
+    {
+      "do": "send",
+      "text": "Ive saved 30,000 of my 1,00,000 rupee goal. Show it as a ring",
+      "note": "AT-348: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-goal-ring",
+      "note": "AT-348: messy typo",
+      "shot": "at-348-messy-typo"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-goal-ring",
+      "last": true,
+      "re": "30,000.*1,00,000",
+      "note": "AT-348: messy typo result"
+    },
+    {
+      "do": "send",
+      "text": "Maine 30,000 save kiye hain 1,00,000 rupee goal mein, ring mein dikhao",
+      "note": "AT-348: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-goal-ring",
+      "note": "AT-348: Hinglish",
+      "shot": "at-348-Hinglish"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-goal-ring",
+      "last": true,
+      "re": "30,000.*1,00,000",
+      "note": "AT-348: Hinglish result"
+    },
+    {
+      "do": "send",
+      "text": "Give me 3 laptops under 80,000 to pick from as a list I can tap",
+      "note": "AT-349: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-list-pick",
+      "note": "AT-349: clean",
+      "shot": "at-349-clean"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-list-pick",
+      "last": true,
+      "re": "80,000|laptop",
+      "note": "AT-349: clean result"
+    },
+    {
+      "do": "click",
+      "tid": "kit-button",
+      "note": "AT-349: select the first laptop safely"
+    },
+    {
+      "do": "wait",
+      "ms": 2000,
+      "note": "AT-349: wait for the selection acknowledgement"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "selected|picked|laptop",
+      "note": "AT-349: selection acknowledgement"
+    },
+    {
+      "do": "send",
+      "text": "Give me 3 laptpos under 80,000 to pick from as a list I can tap",
+      "note": "AT-349: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-list-pick",
+      "note": "AT-349: messy typo",
+      "shot": "at-349-messy-typo"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-list-pick",
+      "last": true,
+      "re": "80,000|laptop",
+      "note": "AT-349: messy typo result"
+    },
+    {
+      "do": "click",
+      "tid": "kit-button",
+      "note": "AT-349: select the first laptop safely"
+    },
+    {
+      "do": "wait",
+      "ms": 2000,
+      "note": "AT-349: wait for the selection acknowledgement"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "selected|picked|laptop",
+      "note": "AT-349: selection acknowledgement"
+    },
+    {
+      "do": "send",
+      "text": "80,000 ke andar 3 laptops ki tappable list do",
+      "note": "AT-349: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-list-pick",
+      "note": "AT-349: Hinglish",
+      "shot": "at-349-Hinglish"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-list-pick",
+      "last": true,
+      "re": "80,000|laptop",
+      "note": "AT-349: Hinglish result"
+    },
+    {
+      "do": "click",
+      "tid": "kit-button",
+      "note": "AT-349: select the first laptop safely"
+    },
+    {
+      "do": "wait",
+      "ms": 2000,
+      "note": "AT-349: wait for the selection acknowledgement"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "selected|picked|laptop",
+      "note": "AT-349: selection acknowledgement"
+    }
+  ]
+}

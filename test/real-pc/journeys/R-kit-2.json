@@ -1,0 +1,419 @@
+{
+  "id": "R-kit-2",
+  "title": "Group R live stamp, calculator, keep and time picker",
+  "spec": "07 §11.5 Group R; AT-350, AT-352, AT-355, AT-368, AT-369",
+  "covers": ["AT-350", "AT-352", "AT-368", "AT-355", "AT-369"],
+  "steps": [
+    {
+      "do": "send",
+      "text": "Help me pick a time for a call tomorrow between 2 and 5 pm",
+      "note": "AT-350: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-time-pick",
+      "note": "AT-350: clean",
+      "shot": "at-350-clean"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-time-pick",
+      "last": true,
+      "re": "2|5|pm",
+      "note": "AT-350: clean result"
+    },
+    {
+      "do": "send",
+      "text": "Help me pick a tiem for a call tomorrow between 2 and 5 pm",
+      "note": "AT-350: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-time-pick",
+      "note": "AT-350: messy typo",
+      "shot": "at-350-messy-typo"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-time-pick",
+      "last": true,
+      "re": "2|5|pm",
+      "note": "AT-350: messy typo result"
+    },
+    {
+      "do": "send",
+      "text": "Kal 2 se 5 baje ke beech call ka time pick karne mein help karo",
+      "note": "AT-350: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-time-pick",
+      "note": "AT-350: Hinglish",
+      "shot": "at-350-Hinglish"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-time-pick",
+      "last": true,
+      "re": "2|5|pm",
+      "note": "AT-350: Hinglish result"
+    },
+    {
+      "do": "send",
+      "text": "Show the Sensex as a live card I can refresh",
+      "note": "AT-352: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-352: clean",
+      "shot": "at-352-clean"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-live-stamp",
+      "last": true,
+      "re": "Sensex|live",
+      "note": "AT-352: clean result"
+    },
+    {
+      "do": "check",
+      "tid": "kit-live-refresh",
+      "note": "AT-352: refresh control is visible"
+    },
+    {
+      "do": "send",
+      "text": "Show the Sensex as a live crad I can refresh",
+      "note": "AT-352: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-352: messy typo",
+      "shot": "at-352-messy-typo"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-live-stamp",
+      "last": true,
+      "re": "Sensex|live",
+      "note": "AT-352: messy typo result"
+    },
+    {
+      "do": "check",
+      "tid": "kit-live-refresh",
+      "note": "AT-352: refresh control is visible"
+    },
+    {
+      "do": "send",
+      "text": "Sensex ka live card dikhao jise main refresh kar sakun",
+      "note": "AT-352: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-352: Hinglish",
+      "shot": "at-352-Hinglish"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-live-stamp",
+      "last": true,
+      "re": "Sensex|live",
+      "note": "AT-352: Hinglish result"
+    },
+    {
+      "do": "check",
+      "tid": "kit-live-refresh",
+      "note": "AT-352: refresh control is visible"
+    },
+    {
+      "do": "send",
+      "text": "Show the Sensex as a live card I can refresh",
+      "note": "AT-368: clean live card ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-368: clean live card",
+      "shot": "at-368-clean-live-card"
+    },
+    {
+      "do": "eval",
+      "js": "(()=>{const e=document.querySelector('[data-testid=\"kit-live-stamp\"]');if(!e)throw new Error('live stamp missing');e.dataset.before=e.innerText;return true})()",
+      "note": "AT-368: clean capture live stamp before refresh"
+    },
+    {
+      "do": "click",
+      "tid": "kit-live-refresh",
+      "note": "AT-368: clean refresh action"
+    },
+    {
+      "do": "wait",
+      "ms": 3000,
+      "note": "AT-368: clean wait for refreshed stamp"
+    },
+    {
+      "do": "eval",
+      "js": "(()=>{const e=document.querySelector('[data-testid=\"kit-live-stamp\"]');return !!e&&e.innerText!==e.dataset.before})()",
+      "note": "AT-368: clean live stamp changed after refresh"
+    },
+    {
+      "do": "send",
+      "text": "Show the Sensex as a live crad I can refresh",
+      "note": "AT-368: messy typo live card ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-368: messy typo live card",
+      "shot": "at-368-messy-typo-live-card"
+    },
+    {
+      "do": "eval",
+      "js": "(()=>{const e=document.querySelector('[data-testid=\"kit-live-stamp\"]');if(!e)throw new Error('live stamp missing');e.dataset.before=e.innerText;return true})()",
+      "note": "AT-368: messy typo capture live stamp before refresh"
+    },
+    {
+      "do": "click",
+      "tid": "kit-live-refresh",
+      "note": "AT-368: messy typo refresh action"
+    },
+    {
+      "do": "wait",
+      "ms": 3000,
+      "note": "AT-368: messy typo wait for refreshed stamp"
+    },
+    {
+      "do": "eval",
+      "js": "(()=>{const e=document.querySelector('[data-testid=\"kit-live-stamp\"]');return !!e&&e.innerText!==e.dataset.before})()",
+      "note": "AT-368: messy typo live stamp changed after refresh"
+    },
+    {
+      "do": "send",
+      "text": "Sensex ka live card dikhao jise main refresh kar sakun",
+      "note": "AT-368: Hinglish live card ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-368: Hinglish live card",
+      "shot": "at-368-Hinglish-live-card"
+    },
+    {
+      "do": "eval",
+      "js": "(()=>{const e=document.querySelector('[data-testid=\"kit-live-stamp\"]');if(!e)throw new Error('live stamp missing');e.dataset.before=e.innerText;return true})()",
+      "note": "AT-368: Hinglish capture live stamp before refresh"
+    },
+    {
+      "do": "click",
+      "tid": "kit-live-refresh",
+      "note": "AT-368: Hinglish refresh action"
+    },
+    {
+      "do": "wait",
+      "ms": 3000,
+      "note": "AT-368: Hinglish wait for refreshed stamp"
+    },
+    {
+      "do": "eval",
+      "js": "(()=>{const e=document.querySelector('[data-testid=\"kit-live-stamp\"]');return !!e&&e.innerText!==e.dataset.before})()",
+      "note": "AT-368: Hinglish live stamp changed after refresh"
+    },
+    {
+      "do": "send",
+      "text": "Make an EMI calculator for a 5 lakh loan at 9% for 3 years",
+      "note": "AT-355: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-calculator",
+      "note": "AT-355: clean",
+      "shot": "at-355-clean"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-calculator",
+      "last": true,
+      "re": "EMI|5 lakh|9%",
+      "note": "AT-355: clean result"
+    },
+    {
+      "do": "click",
+      "tid": "kit-button",
+      "note": "AT-355: press the calculator action"
+    },
+    {
+      "do": "check",
+      "tid": "kit-calculator",
+      "note": "AT-355: calculator remains visible after action"
+    },
+    {
+      "do": "send",
+      "text": "Make an EMI calclator for a 5 lakh loan at 9% for 3 years",
+      "note": "AT-355: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-calculator",
+      "note": "AT-355: messy typo",
+      "shot": "at-355-messy-typo"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-calculator",
+      "last": true,
+      "re": "EMI|5 lakh|9%",
+      "note": "AT-355: messy typo result"
+    },
+    {
+      "do": "click",
+      "tid": "kit-button",
+      "note": "AT-355: press the calculator action"
+    },
+    {
+      "do": "check",
+      "tid": "kit-calculator",
+      "note": "AT-355: calculator remains visible after action"
+    },
+    {
+      "do": "send",
+      "text": "5 lakh ka loan 9 percent par 3 saal ke liye EMI calculator banao",
+      "note": "AT-355: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-calculator",
+      "note": "AT-355: Hinglish",
+      "shot": "at-355-Hinglish"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-calculator",
+      "last": true,
+      "re": "EMI|5 lakh|9%",
+      "note": "AT-355: Hinglish result"
+    },
+    {
+      "do": "click",
+      "tid": "kit-button",
+      "note": "AT-355: press the calculator action"
+    },
+    {
+      "do": "check",
+      "tid": "kit-calculator",
+      "note": "AT-355: calculator remains visible after action"
+    },
+    {
+      "do": "send",
+      "text": "Make an EMI calculator for a 5 lakh loan at 9% for 3 years",
+      "note": "AT-369: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-calculator",
+      "note": "AT-369: clean",
+      "shot": "at-369-clean"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-calculator",
+      "last": true,
+      "re": "EMI|5 lakh",
+      "note": "AT-369: clean result"
+    },
+    {
+      "do": "click",
+      "tid": "kit-keep",
+      "note": "AT-369: keep the calculator surface"
+    },
+    {
+      "do": "wait",
+      "ms": 1500
+    },
+    {
+      "do": "eval",
+      "js": "document.querySelectorAll('[data-testid=\"files-kept-item\"]').length > 0",
+      "note": "AT-369: kept surface appears in Files"
+    },
+    {
+      "do": "send",
+      "text": "Make an EMI calclator for a 5 lakh loan at 9% for 3 years",
+      "note": "AT-369: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-calculator",
+      "note": "AT-369: messy typo",
+      "shot": "at-369-messy-typo"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-calculator",
+      "last": true,
+      "re": "EMI|5 lakh",
+      "note": "AT-369: messy typo result"
+    },
+    {
+      "do": "click",
+      "tid": "kit-keep",
+      "note": "AT-369: keep the calculator surface"
+    },
+    {
+      "do": "wait",
+      "ms": 1500
+    },
+    {
+      "do": "eval",
+      "js": "document.querySelectorAll('[data-testid=\"files-kept-item\"]').length > 0",
+      "note": "AT-369: kept surface appears in Files"
+    },
+    {
+      "do": "send",
+      "text": "5 lakh ka loan 9 percent par 3 saal ke liye EMI calculator banao",
+      "note": "AT-369: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-calculator",
+      "note": "AT-369: Hinglish",
+      "shot": "at-369-Hinglish"
+    },
+    {
+      "do": "expectText",
+      "tid": "kit-calculator",
+      "last": true,
+      "re": "EMI|5 lakh",
+      "note": "AT-369: Hinglish result"
+    },
+    {
+      "do": "click",
+      "tid": "kit-keep",
+      "note": "AT-369: keep the calculator surface"
+    },
+    {
+      "do": "wait",
+      "ms": 1500
+    },
+    {
+      "do": "eval",
+      "js": "document.querySelectorAll('[data-testid=\"files-kept-item\"]').length > 0",
+      "note": "AT-369: kept surface appears in Files"
+    }
+  ]
+}

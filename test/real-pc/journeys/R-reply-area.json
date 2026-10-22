@@ -1,0 +1,158 @@
+{
+  "id": "R-reply-area",
+  "title": "Group R reply sender and action ownership",
+  "spec": "07 §11.5 Group R; AT-428, AT-430",
+  "covers": ["AT-428", "AT-430"],
+  "steps": [
+    {
+      "do": "send",
+      "text": "hi",
+      "note": "AT-428: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "document.querySelector('[data-testid=\"bubble-sender\"]') !== null",
+      "note": "AT-428: clean",
+      "shot": "at-428-clean"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "hi|hello|namaste",
+      "note": "AT-428: clean result"
+    },
+    {
+      "do": "send",
+      "text": "hii",
+      "note": "AT-428: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "document.querySelector('[data-testid=\"bubble-sender\"]') !== null",
+      "note": "AT-428: messy typo",
+      "shot": "at-428-messy-typo"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "hi|hello|namaste",
+      "note": "AT-428: messy typo result"
+    },
+    {
+      "do": "send",
+      "text": "namaste foo",
+      "note": "AT-428: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "document.querySelector('[data-testid=\"bubble-sender\"]') !== null",
+      "note": "AT-428: Hinglish",
+      "shot": "at-428-Hinglish"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "hi|hello|namaste",
+      "note": "AT-428: Hinglish result"
+    },
+    {
+      "do": "send",
+      "text": "Explain what a VPN is in 3 short paragraphs",
+      "note": "AT-430: clean VPN answer before hello"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "note": "AT-430: clean VPN answer",
+      "shot": "at-430-clean-VPN-answer"
+    },
+    {
+      "do": "send",
+      "text": "hi",
+      "note": "AT-430: clean greeting after answer"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "note": "AT-430: clean greeting",
+      "shot": "at-430-clean-greeting"
+    },
+    {
+      "do": "check",
+      "tid": "bubble-actions-copy",
+      "count": 1,
+      "note": "AT-430: clean copy action belongs only to latest answer"
+    },
+    {
+      "do": "send",
+      "text": "Explain wat a VPN is in 3 short paragaphs",
+      "note": "AT-430: messy typo VPN answer before hello"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "note": "AT-430: messy typo VPN answer",
+      "shot": "at-430-messy-typo-VPN-answer"
+    },
+    {
+      "do": "send",
+      "text": "hii",
+      "note": "AT-430: messy typo greeting after answer"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "note": "AT-430: messy typo greeting",
+      "shot": "at-430-messy-typo-greeting"
+    },
+    {
+      "do": "check",
+      "tid": "bubble-actions-copy",
+      "count": 1,
+      "note": "AT-430: messy typo copy action belongs only to latest answer"
+    },
+    {
+      "do": "send",
+      "text": "VPN kya hota hai, 3 chhote paragraphs mein samjhao",
+      "note": "AT-430: Hinglish VPN answer before hello"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "note": "AT-430: Hinglish VPN answer",
+      "shot": "at-430-Hinglish-VPN-answer"
+    },
+    {
+      "do": "send",
+      "text": "namaste foo",
+      "note": "AT-430: Hinglish greeting after answer"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "note": "AT-430: Hinglish greeting",
+      "shot": "at-430-Hinglish-greeting"
+    },
+    {
+      "do": "check",
+      "tid": "bubble-actions-copy",
+      "count": 1,
+      "note": "AT-430: Hinglish copy action belongs only to latest answer"
+    }
+  ]
+}

@@ -24,7 +24,9 @@ type Journey = {
 };
 
 const JOURNEY_DIR = join(process.cwd(), 'test', 'real-pc', 'journeys');
-const files = readdirSync(JOURNEY_DIR).filter((name) => name.endsWith('.json')).sort();
+const files = readdirSync(JOURNEY_DIR)
+  .filter((name) => name.endsWith('.json'))
+  .sort();
 const journeys = files.map((name) => ({ name, value: JSON.parse(readFileSync(join(JOURNEY_DIR, name), 'utf8')) as Journey }));
 const owned = (name: string) => name.startsWith('R-') || name === 'LaneA-smoke-5min.json';
 
@@ -72,9 +74,7 @@ const groupC = new Set([
   'AT-433',
   'AT-434',
   'AT-440',
-  ...[300, 301, 302, 303, 304, 305, 306, 309, 312, 315, 316, 317, 318, 322, 323, 324, 325, 326, 327].map(
-    (n) => `AT-${n}`,
-  ),
+  ...[300, 301, 302, 303, 304, 305, 306, 309, 312, 315, 316, 317, 318, 322, 323, 324, 325, 326, 327].map((n) => `AT-${n}`),
 ]);
 
 const groupR = new Set([
@@ -113,8 +113,7 @@ const groupR = new Set([
   'AT-435',
 ]);
 
-const hasEndState = (step: Step) =>
-  Boolean(step.expectTid || step.expectKit || step.expectJs || (step.expectText && step.re));
+const hasEndState = (step: Step) => Boolean(step.expectTid || step.expectKit || step.expectJs || (step.expectText && step.re));
 
 const referencedIds = (journey: Journey) => {
   const ids = new Set<string>();
@@ -137,9 +136,7 @@ describe('real-PC journey contracts', () => {
 
   it('keeps Group C out of every journey and limits owned coverage to Group R', () => {
     const invalid = journeys.flatMap(({ name, value }) =>
-      (value.covers ?? [])
-        .filter((id) => groupC.has(id) || (owned(name) && !groupR.has(id)))
-        .map((id) => `${name}: ${id}`),
+      (value.covers ?? []).filter((id) => groupC.has(id) || (name.startsWith('R-') && !groupR.has(id))).map((id) => `${name}: ${id}`),
     );
     expect(invalid, invalid.join('\n')).toEqual([]);
   });

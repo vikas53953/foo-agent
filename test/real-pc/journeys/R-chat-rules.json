@@ -1,0 +1,108 @@
+{
+  "id": "R-chat-rules",
+  "title": "Group R one-bubble plain VPN answers",
+  "spec": "07 §11.5 Group R; AT-427",
+  "covers": ["AT-427"],
+  "steps": [
+    {
+      "do": "send",
+      "text": "Explain what a VPN is in 3 short paragraphs",
+      "note": "AT-427: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "document.querySelector('[data-testid=\"bubble-foo\"]') !== null",
+      "note": "AT-427: clean",
+      "shot": "at-427-clean"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "VPN|network|internet",
+      "note": "AT-427: clean result"
+    },
+    {
+      "do": "send",
+      "text": "Explain wat a VPN is in 3 short paragaphs",
+      "note": "AT-427: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "document.querySelector('[data-testid=\"bubble-foo\"]') !== null",
+      "note": "AT-427: messy typo",
+      "shot": "at-427-messy-typo"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "VPN|network|internet",
+      "note": "AT-427: messy typo result"
+    },
+    {
+      "do": "send",
+      "text": "VPN kya hota hai, 3 chhote paragraphs mein samjhao",
+      "note": "AT-427: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "document.querySelector('[data-testid=\"bubble-foo\"]') !== null",
+      "note": "AT-427: Hinglish",
+      "shot": "at-427-Hinglish"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "VPN|network|internet",
+      "note": "AT-427: Hinglish result"
+    },
+    {
+      "do": "send",
+      "text": "वीपीएन क्या होता है, 3 छोटे पैराग्राफ में समझाइए",
+      "note": "AT-427: Hindi ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "document.querySelector('[data-testid=\"bubble-foo\"]') !== null",
+      "note": "AT-427: Hindi",
+      "shot": "at-427-Hindi"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "VPN|network|internet",
+      "note": "AT-427: Hindi result"
+    },
+    {
+      "do": "send",
+      "text": "VPN ਕੀ ਹੁੰਦਾ ਹੈ, 3 ਛੋਟੇ ਪੈਰਿਆਂ ਵਿੱਚ ਸਮਝਾਓ",
+      "note": "AT-427: Punjabi ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "document.querySelector('[data-testid=\"bubble-foo\"]') !== null",
+      "note": "AT-427: Punjabi",
+      "shot": "at-427-Punjabi"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "VPN|network|internet",
+      "note": "AT-427: Punjabi result"
+    }
+  ]
+}
