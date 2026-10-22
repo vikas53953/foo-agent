@@ -1,14 +1,14 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-34-12-053Z-J01-J02-first-run"}
-{"journey":"J07-chat","title":"Casual chat","steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-35-02-556Z-J07-chat"}
-{"journey":"B02-choice","title":"Choice card: options, Best fit, typed answer","steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-35-41-028Z-B02-choice"}
-{"journey":"B10-paste-secret","title":"Paste bands and secret guard","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-36-12-966Z-B10-paste-secret"}
-{"journey":"J10-hotel","title":"Hotel search with payment approval (never approves)","steps":6,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-36-24-008Z-J10-hotel"}
-{"journey":"J05-web","title":"First real task with the internet (news + sources)","steps":6,"failed":3,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-39-44-815Z-J05-web"}
-{"journey":"J15-helper","title":"Create a helper","steps":4,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-40-17-977Z-J15-helper"}
-{"journey":"U01-bubble-menu","title":"Bubble menu: copy, react, reply, edit, try again, good and bad","steps":40,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-40-27-354Z-U01-bubble-menu"}
-{"journey":"U05-chat-list","title":"Chat list: filters, row menu (pin, mute, mark unread), search chats","steps":34,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-50-45-699Z-U05-chat-list"}
-{"journey":"U09-plan-checklist","title":"Plan card: pending, Change plan, Go, checklist steps, details, done with proof","steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-52-40-081Z-U09-plan-checklist"}
-{"journey":"U13-secret-box","title":"Secret box: type a fake key, show/hide, save, replace","steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-56-08-054Z-U13-secret-box"}
-{"journey":"U17-settings-by-chat","title":"Change a setting by chat: mini line with Undo; theme and accent rows","steps":12,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-59-09-835Z-U17-settings-by-chat"}
-{"journey":"U21-window-dialogs","title":"Close to tray dialog, quit with a running job","steps":8,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T03-02-43-688Z-U21-window-dialogs"}
-{"journey":"U27-composer-no-dropped-letters","title":"Fast typing and a long paste reach foo letter for letter","steps":8,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T03-06-04-499Z-U27-composer-no-dropped-letters"}
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-01-51-234Z-J01-J02-first-run"}
+{"journey":"J07-chat","title":"Casual chat","steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-02-42-021Z-J07-chat"}
+{"journey":"B02-choice","title":"Choice card: options, Best fit, typed answer","steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-03-19-656Z-B02-choice"}
+{"journey":"B10-paste-secret","title":"Paste bands and secret guard","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-03-52-181Z-B10-paste-secret"}
+{"journey":"J10-hotel","title":"Hotel search with payment approval (never approves)","steps":6,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-04-03-494Z-J10-hotel"}
+{"journey":"J05-web","title":"First real task with the internet (news + sources)","steps":6,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-07-27-468Z-J05-web"}
+{"journey":"J15-helper","title":"Create a helper","steps":4,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-07-56-040Z-J15-helper"}
+{"journey":"U01-bubble-menu","title":"Bubble menu: copy, react, reply, edit, try again, good and bad","steps":40,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-08-12-611Z-U01-bubble-menu"}
+{"journey":"U05-chat-list","title":"Chat list: filters, row menu (pin, mute, mark unread), search chats","steps":34,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-11-48-702Z-U05-chat-list"}
+{"journey":"U09-plan-checklist","title":"Plan card: pending, Change plan, Go, checklist steps, details, done with proof","steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-13-35-446Z-U09-plan-checklist"}
+{"journey":"U13-secret-box","title":"Secret box: type a fake key, show/hide, save, replace","steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-16-54-647Z-U13-secret-box"}
+{"journey":"U17-settings-by-chat","title":"Change a setting by chat: mini line with Undo; theme and accent rows","steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-19-47-919Z-U17-settings-by-chat"}
+{"journey":"U21-window-dialogs","title":"Close to tray dialog, quit with a running job","steps":8,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-21-37-509Z-U21-window-dialogs"}
+{"journey":"U27-composer-no-dropped-letters","title":"Fast typing and a long paste reach foo letter for letter","steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-24-58-786Z-U27-composer-no-dropped-letters"}
