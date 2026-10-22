@@ -1,0 +1,5 @@
+
+> foo@0.0.1 check:copy C:\Users\vikasmit\Downloads\foo\lane-f
+> tsx scripts/check-copy.ts
+
+copy ok

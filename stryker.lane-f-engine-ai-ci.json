@@ -1,0 +1,24 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "_comment": "Lane F engine AI mutation slice. It is disjoint from engine jobs and web slices; all base targets remain represented.",
+  "testRunner": "command",
+  "commandRunner": {
+    "command": "node ../../node_modules/vitest/vitest.mjs run --bail 1 --config scripts/audit/vitest.mutation.engine-ai.config.ts --pool=threads --maxWorkers=1 --no-file-parallelism"
+  },
+  "mutate": [
+    "src/engine/prompt/envelope.ts",
+    "src/engine/ai/classify.ts",
+    "src/engine/ai/probe.ts",
+    "src/engine/ai/AiRegistry.ts",
+    "src/engine/ai/parsers.ts",
+    "src/engine/ai/verify.ts"
+  ],
+  "coverageAnalysis": "off",
+  "reporters": ["clear-text", "progress", "html", "json"],
+  "htmlReporter": { "fileName": "reports/mutation/lane-f-engine-ai.html" },
+  "jsonReporter": { "fileName": "reports/mutation/lane-f-engine-ai.json" },
+  "thresholds": { "high": 90, "low": 75, "break": 70 },
+  "tempDirName": ".stryker-lane-f-engine-ai-tmp",
+  "concurrency": 1,
+  "timeoutMS": 30000
+}

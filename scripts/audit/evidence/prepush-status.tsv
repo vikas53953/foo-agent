@@ -1,0 +1,9 @@
+spec:verify	0
+check:copy	0
+lint	0
+format:check	0
+typecheck	0
+test	timeout
+build	0
+trace:check	0
+fid:guard	0

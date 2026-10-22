@@ -1,0 +1,318 @@
+{
+  "lane": "F",
+  "command": "pnpm exec tsx scripts/audit/privacy-network.ts",
+  "generatedAt": "2026-10-21T20:37:00.065Z",
+  "buildSha": "0665cf67d2ab6cf0515f6d3198df6dfc35357e82",
+  "status": "candidate",
+  "findings": [
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "scripts/fidelity-report.ts",
+      "line": 358,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "direct-network-sink",
+      "status": "candidate",
+      "path": "src/engine/ai/detect.ts",
+      "line": 51,
+      "note": "Direct network call is in an approved adapter boundary; verify the redaction path."
+    },
+    {
+      "category": "direct-network-sink",
+      "status": "candidate",
+      "path": "src/engine/ai/httpCommon.ts",
+      "line": 98,
+      "note": "Direct network call is in an approved adapter boundary; verify the redaction path."
+    },
+    {
+      "category": "direct-network-sink",
+      "status": "candidate",
+      "path": "src/engine/ai/ollama.ts",
+      "line": 58,
+      "note": "Direct network call is in an approved adapter boundary; verify the redaction path."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/engine/tools/browser/fakeBrowser.ts",
+      "line": 10,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "direct-network-sink",
+      "status": "candidate",
+      "path": "src/engine/tools/connectors/google-tools.ts",
+      "line": 54,
+      "note": "Direct network call is in an approved adapter boundary; verify the redaction path."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/engine/tools/connectors/x.ts",
+      "line": 2,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "direct-network-sink",
+      "status": "candidate",
+      "path": "src/engine/tools/web/WebTools.ts",
+      "line": 85,
+      "note": "Direct network call is in an approved adapter boundary; verify the redaction path."
+    },
+    {
+      "category": "direct-network-sink",
+      "status": "candidate",
+      "path": "src/engine/tools/web/cloudOutbound.ts",
+      "line": 3,
+      "note": "Direct network call is in an approved adapter boundary; verify the redaction path."
+    },
+    {
+      "category": "direct-network-sink",
+      "status": "candidate",
+      "path": "src/engine/tools/web/http.ts",
+      "line": 39,
+      "note": "Direct network call is in an approved adapter boundary; verify the redaction path."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/engine/tools/web/keyCheck.ts",
+      "line": 2,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/engine/tools/web/keyCheck.ts",
+      "line": 21,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "direct-network-sink",
+      "status": "candidate",
+      "path": "src/engine/tools/web/readability.ts",
+      "line": 97,
+      "note": "Direct network call is in an approved adapter boundary; verify the redaction path."
+    },
+    {
+      "category": "direct-network-sink",
+      "status": "candidate",
+      "path": "src/engine/tools/web/toolDefs.ts",
+      "line": 43,
+      "note": "Direct network call is in an approved adapter boundary; verify the redaction path."
+    },
+    {
+      "category": "direct-network-sink",
+      "status": "candidate",
+      "path": "src/main/connections/connectionIpc.ts",
+      "line": 21,
+      "note": "Direct network call is in an approved adapter boundary; verify the redaction path."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/main/drafts/DraftService.ts",
+      "line": 51,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/main/drafts/DraftService.ts",
+      "line": 62,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/main/drafts/DraftService.ts",
+      "line": 67,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/main/drafts/channels.ts",
+      "line": 2,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/main/drafts/channels.ts",
+      "line": 20,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "direct-network-sink",
+      "status": "candidate",
+      "path": "src/main/drafts/gmailDraftsGoogle.ts",
+      "line": 62,
+      "note": "Direct network call is in an approved adapter boundary; verify the redaction path."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/main/setup/aiFinderIpc.ts",
+      "line": 5,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/main/test/seed/bubbles.ts",
+      "line": 71,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/main/test/seed/bubbles.ts",
+      "line": 71,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/main/test/seed/bubbles.ts",
+      "line": 72,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/main/test/seed/bubbles.ts",
+      "line": 266,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/main/test/seed/bubbles.ts",
+      "line": 284,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/main/test/seed/media.ts",
+      "line": 14,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/main/test/seed/perf.ts",
+      "line": 44,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/main/test/seed/perf.ts",
+      "line": 44,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/main/test/seed/perf.ts",
+      "line": 88,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/main/test/seed/perf.ts",
+      "line": 102,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "direct-network-sink",
+      "status": "candidate",
+      "path": "src/main/windows/protocol.ts",
+      "line": 91,
+      "note": "Direct network call is in an approved adapter boundary; verify the redaction path."
+    },
+    {
+      "category": "direct-network-sink",
+      "status": "candidate",
+      "path": "src/main/windows/protocol.ts",
+      "line": 104,
+      "note": "Direct network call is in an approved adapter boundary; verify the redaction path."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/renderer/kit/MapStops.tsx",
+      "line": 50,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/renderer/kit/MapStops.tsx",
+      "line": 54,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/renderer/messages/ProofChip.tsx",
+      "line": 22,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/renderer/messages/ProofChip.tsx",
+      "line": 23,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/renderer/messages/linkActions.ts",
+      "line": 36,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/renderer/messages/markdownParse.ts",
+      "line": 52,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/renderer/ui/FaceRaster.tsx",
+      "line": 88,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "unlisted-network-host",
+      "status": "candidate",
+      "path": "src/shared/kit/actionChips.ts",
+      "line": 13,
+      "note": "Literal host is not in the Lane F review allowlist; confirm it against the approved spec."
+    },
+    {
+      "category": "production-network-boundary",
+      "status": "pass",
+      "note": "Production cloud outbound boundary removed fixture secret data and blocked a secret-bearing host without making a network request."
+    },
+    {
+      "category": "real-ai-privacy",
+      "status": "blocked",
+      "note": "No own AI key provisioned; real-AI network capture and cost measurement are blocked, with cost $0 for new calls."
+    }
+  ],
+  "counts": {
+    "candidate": 42,
+    "pass": 1,
+    "blocked": 1
+  }
+}

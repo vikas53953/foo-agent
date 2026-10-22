@@ -1,0 +1,17 @@
+{
+  "lane": "F",
+  "command": "pnpm exec tsx scripts/audit/mutation-report.ts --input reports/mutation/lane-f.json",
+  "generatedAt": "2026-10-21T20:40:24.113Z",
+  "buildSha": "0665cf67d2ab6cf0515f6d3198df6dfc35357e82",
+  "status": "candidate",
+  "findings": [
+    {
+      "category": "mutation-network",
+      "status": "candidate",
+      "note": "{\"total\":27,\"detected\":24,\"killed\":24,\"timeout\":0,\"survived\":3,\"noCoverage\":0,\"invalid\":0,\"ignored\":0,\"unknown\":0,\"scorePercent\":88.89}"
+    }
+  ],
+  "counts": {
+    "candidate": 1
+  }
+}

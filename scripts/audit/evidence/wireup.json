@@ -1,0 +1,2062 @@
+{
+  "lane": "F",
+  "command": "pnpm exec tsx scripts/audit/wireup.ts",
+  "generatedAt": "2026-10-21T20:36:54.234Z",
+  "buildSha": "0665cf67d2ab6cf0515f6d3198df6dfc35357e82",
+  "status": "fail",
+  "findings": [
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/banner/BannerStrip.tsx",
+      "line": 133,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/banner/BannerStrip.tsx",
+      "line": 139,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/banner/BannerStrip.tsx",
+      "line": 143,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/cards/Approval.tsx",
+      "line": 422,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/CardButton.tsx",
+      "line": 44,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/CardButton.tsx",
+      "line": 57,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/Checklist.tsx",
+      "line": 160,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/Checklist.tsx",
+      "line": 192,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/Checklist.tsx",
+      "line": 240,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/cards/Checklist.tsx",
+      "line": 209,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/cards/Checklist.tsx",
+      "line": 288,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/Choice.tsx",
+      "line": 208,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/Choice.tsx",
+      "line": 246,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/Choice.tsx",
+      "line": 368,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/Connect.tsx",
+      "line": 140,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/Connect.tsx",
+      "line": 150,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/Connect.tsx",
+      "line": 160,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/Connect.tsx",
+      "line": 166,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/Connect.tsx",
+      "line": 171,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/Connect.tsx",
+      "line": 177,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/Connect.tsx",
+      "line": 180,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/Connect.tsx",
+      "line": 186,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/Connect.tsx",
+      "line": 191,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/cards/Draft.tsx",
+      "line": 383,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/cards/ErrorCard.tsx",
+      "line": 143,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/FileCard.tsx",
+      "line": 45,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/FileCard.tsx",
+      "line": 70,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/JobLink.tsx",
+      "line": 34,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/LinkPreview.tsx",
+      "line": 18,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/OptionTiles.tsx",
+      "line": 83,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/OptionTiles.tsx",
+      "line": 218,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/cards/OptionTiles.tsx",
+      "line": 43,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/PlaceCard.tsx",
+      "line": 46,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/PlaceCard.tsx",
+      "line": 49,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/cards/Plan.tsx",
+      "line": 145,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/RaiseCapDialog.tsx",
+      "line": 103,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/RaiseCapDialog.tsx",
+      "line": 134,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/RaiseCapDialog.tsx",
+      "line": 137,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/SecretBox.tsx",
+      "line": 177,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/SignIn.tsx",
+      "line": 57,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/SignIn.tsx",
+      "line": 128,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/cards/SpendCap.tsx",
+      "line": 99,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/TableCard.tsx",
+      "line": 91,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/TableCard.tsx",
+      "line": 95,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/cards/TableCard.tsx",
+      "line": 90,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/connect/QrPanel.tsx",
+      "line": 37,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/connect/QrPanel.tsx",
+      "line": 63,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/connect/WhatsAppConnect.tsx",
+      "line": 71,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/connect/WhatsAppConnect.tsx",
+      "line": 74,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/cards/parts/Countdown.tsx",
+      "line": 16,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-without-event",
+      "status": "candidate",
+      "path": "src/renderer/cards/parts/ScopeControl.tsx",
+      "line": 29,
+      "note": "<Segmented> has no inline event or href in its opening tag; inspect its wrapper and keyboard path."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/setup/AiFinder.tsx",
+      "line": 733,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/cards/setup/AiFinder.tsx",
+      "line": 647,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/setup/CapDialog.tsx",
+      "line": 85,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/setup/CapDialog.tsx",
+      "line": 114,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/setup/CapDialog.tsx",
+      "line": 117,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/setup/FinderChoice.tsx",
+      "line": 47,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/cards/setup/FirstRunCards.tsx",
+      "line": 241,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/chatlist/ChatList.tsx",
+      "line": 75,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/chatlist/ChatList.tsx",
+      "line": 217,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/chatlist/ChatListHeader.tsx",
+      "line": 118,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/chatlist/ChatListHeader.tsx",
+      "line": 129,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/chatlist/ChatSearch.tsx",
+      "line": 103,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/chatlist/FilterChips.tsx",
+      "line": 94,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/chatlist/SidebarFooter.tsx",
+      "line": 31,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/chatlist/SidebarFooter.tsx",
+      "line": 58,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/ActionChips.tsx",
+      "line": 58,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/AttachMenu.tsx",
+      "line": 52,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/AttachmentChips.tsx",
+      "line": 107,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-without-event",
+      "status": "candidate",
+      "path": "src/renderer/composer/Composer.tsx",
+      "line": 155,
+      "note": "<Chip> has no inline event or href in its opening tag; inspect its wrapper and keyboard path."
+    },
+    {
+      "category": "control-without-event",
+      "status": "candidate",
+      "path": "src/renderer/composer/Composer.tsx",
+      "line": 156,
+      "note": "<Chip> has no inline event or href in its opening tag; inspect its wrapper and keyboard path."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/composer/Composer.tsx",
+      "line": 440,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/composer/Composer.tsx",
+      "line": 1200,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/ComposerBanner.tsx",
+      "line": 48,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/ComposerBanner.tsx",
+      "line": 53,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/ComposerNoticeStack.tsx",
+      "line": 89,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/ComposerNoticeStack.tsx",
+      "line": 110,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/ComposerNoticeStack.tsx",
+      "line": 119,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/ComposerNoticeStack.tsx",
+      "line": 124,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/EditStrip.tsx",
+      "line": 16,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/LinkPreviewRow.tsx",
+      "line": 26,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-without-event",
+      "status": "candidate",
+      "path": "src/renderer/composer/MentionMenu.tsx",
+      "line": 45,
+      "note": "<Button> has no inline event or href in its opening tag; inspect its wrapper and keyboard path."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/MorphButton.tsx",
+      "line": 75,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/PasteCatcher.tsx",
+      "line": 55,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/PasteCatcher.tsx",
+      "line": 59,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/PendingStrip.tsx",
+      "line": 24,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/ReplyStrip.tsx",
+      "line": 36,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/SuggestionChips.tsx",
+      "line": 30,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/composer/VoiceRecorder.tsx",
+      "line": 25,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/keep/KeepButton.tsx",
+      "line": 29,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/keep/KeepButton.tsx",
+      "line": 23,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/keep/KeptList.tsx",
+      "line": 48,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/keep/KeptList.tsx",
+      "line": 51,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/keep/KeptList.tsx",
+      "line": 59,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/kit/CapabilitiesCard.tsx",
+      "line": 40,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/kit/KitSurface.tsx",
+      "line": 171,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/kit/KitSurface.tsx",
+      "line": 411,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/kit/KitSurface.tsx",
+      "line": 200,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/kit/ListPick.tsx",
+      "line": 90,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/kit/ListPick.tsx",
+      "line": 61,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/kit/LiveStamp.tsx",
+      "line": 54,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/kit/MapStops.tsx",
+      "line": 107,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/kit/MapStops.tsx",
+      "line": 107,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/kit/SecretRefused.tsx",
+      "line": 69,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-without-event",
+      "status": "candidate",
+      "path": "src/renderer/kit/ShortForm.tsx",
+      "line": 91,
+      "note": "<Button> has no inline event or href in its opening tag; inspect its wrapper and keyboard path."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/kit/ShortForm.tsx",
+      "line": 53,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/kit/Stepper.tsx",
+      "line": 53,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-without-event",
+      "status": "candidate",
+      "path": "src/renderer/kit/Stepper.tsx",
+      "line": 76,
+      "note": "<button> has no inline event or href in its opening tag; inspect its wrapper and keyboard path."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/kit/TimePick.tsx",
+      "line": 51,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/kit/TimePick.tsx",
+      "line": 24,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/kit/TimedChecklist.tsx",
+      "line": 97,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/kit/TimedChecklist.tsx",
+      "line": 87,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/kit/WeekCalendar.tsx",
+      "line": 37,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/live/LiveView.tsx",
+      "line": 128,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/live/LiveView.tsx",
+      "line": 136,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/live/LiveView.tsx",
+      "line": 167,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/live/LiveView.tsx",
+      "line": 176,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-without-event",
+      "status": "candidate",
+      "path": "src/renderer/messages/AnswerExtras.tsx",
+      "line": 63,
+      "note": "<Chip> has no inline event or href in its opening tag; inspect its wrapper and keyboard path."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/AnswerExtras.tsx",
+      "line": 78,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/AnswerExtras.tsx",
+      "line": 102,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/AnswerExtras.tsx",
+      "line": 105,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/AnswerExtras.tsx",
+      "line": 136,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/AnswerExtras.tsx",
+      "line": 146,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/AnswerExtras.tsx",
+      "line": 156,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/AnswerExtras.tsx",
+      "line": 167,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/AnswerExtras.tsx",
+      "line": 227,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/AnswerExtras.tsx",
+      "line": 305,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/AnswerExtras.tsx",
+      "line": 322,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/AnswerExtras.tsx",
+      "line": 333,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/messages/AnswerExtras.tsx",
+      "line": 318,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-without-event",
+      "status": "candidate",
+      "path": "src/renderer/messages/AskPill.tsx",
+      "line": 57,
+      "note": "<Chip> has no inline event or href in its opening tag; inspect its wrapper and keyboard path."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/Bubble.tsx",
+      "line": 402,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/Bubble.tsx",
+      "line": 448,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/Bubble.tsx",
+      "line": 459,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/Bubble.tsx",
+      "line": 644,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/BubbleParts.tsx",
+      "line": 120,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/BubbleParts.tsx",
+      "line": 182,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/BubbleParts.tsx",
+      "line": 225,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/BubbleParts.tsx",
+      "line": 257,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/BubbleParts.tsx",
+      "line": 319,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/BubbleParts.tsx",
+      "line": 366,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/BubbleParts.tsx",
+      "line": 424,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/HandoffMarker.tsx",
+      "line": 24,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-without-event",
+      "status": "candidate",
+      "path": "src/renderer/messages/JumpToLatest.tsx",
+      "line": 14,
+      "note": "<button> has no inline event or href in its opening tag; inspect its wrapper and keyboard path."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/LoadOlder.tsx",
+      "line": 23,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/Markdown.tsx",
+      "line": 98,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/Markdown.tsx",
+      "line": 156,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/Markdown.tsx",
+      "line": 194,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/Markdown.tsx",
+      "line": 218,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/Markdown.tsx",
+      "line": 260,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/Markdown.tsx",
+      "line": 399,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/Markdown.tsx",
+      "line": 414,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/Markdown.tsx",
+      "line": 484,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/messages/Markdown.tsx",
+      "line": 432,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/Markers.tsx",
+      "line": 41,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/MemoryChip.tsx",
+      "line": 123,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/MemoryChip.tsx",
+      "line": 128,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/MemoryChip.tsx",
+      "line": 140,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/messages/MessageList.tsx",
+      "line": 551,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/messages/MessageList.tsx",
+      "line": 643,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/messages/MessageList.tsx",
+      "line": 706,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/NotLiveChip.tsx",
+      "line": 45,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/NotLiveChip.tsx",
+      "line": 50,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/messages/NotLiveChip.tsx",
+      "line": 55,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/ProofChip.tsx",
+      "line": 39,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/ProofChip.tsx",
+      "line": 57,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/ProofChip.tsx",
+      "line": 60,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/messages/ProofChip.tsx",
+      "line": 53,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/ReactionPicker.tsx",
+      "line": 89,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/ReactionPicker.tsx",
+      "line": 100,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/messages/ReactionPicker.tsx",
+      "line": 55,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/VoicePlayer.tsx",
+      "line": 140,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/VoicePlayer.tsx",
+      "line": 171,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/messages/VoicePlayer.tsx",
+      "line": 223,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/pages/lazyPages.tsx",
+      "line": 115,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 177,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 180,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 251,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 264,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 274,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 319,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 597,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 660,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 663,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 721,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 732,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 748,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 120,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 199,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/screens/Memory.tsx",
+      "line": 509,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AccountAi.tsx",
+      "line": 138,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AccountAi.tsx",
+      "line": 143,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AccountAi.tsx",
+      "line": 178,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AccountAi.tsx",
+      "line": 182,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AccountAi.tsx",
+      "line": 192,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AccountAi.tsx",
+      "line": 219,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AccountAi.tsx",
+      "line": 226,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AccountAi.tsx",
+      "line": 240,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-without-event",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AppearancePage.tsx",
+      "line": 157,
+      "note": "<Segmented> has no inline event or href in its opening tag; inspect its wrapper and keyboard path."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AppearancePage.tsx",
+      "line": 180,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AppearancePage.tsx",
+      "line": 187,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-without-event",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AppearancePage.tsx",
+      "line": 214,
+      "note": "<Segmented> has no inline event or href in its opening tag; inspect its wrapper and keyboard path."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AppearancePage.tsx",
+      "line": 231,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AppearancePage.tsx",
+      "line": 240,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AppearancePage.tsx",
+      "line": 253,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-without-event",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AppearancePage.tsx",
+      "line": 264,
+      "note": "<Segmented> has no inline event or href in its opening tag; inspect its wrapper and keyboard path."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AppearancePage.tsx",
+      "line": 68,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AppearancePage.tsx",
+      "line": 83,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/AppearancePage.tsx",
+      "line": 231,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/LinkWhatsAppDialog.tsx",
+      "line": 64,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/ReplaceKeyDialog.tsx",
+      "line": 97,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/ReplaceKeyDialog.tsx",
+      "line": 132,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/ReplaceKeyDialog.tsx",
+      "line": 135,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/SettingsPage.tsx",
+      "line": 78,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/connections/GoogleRows.tsx",
+      "line": 61,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/connections/GoogleRows.tsx",
+      "line": 94,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/connections/GoogleRows.tsx",
+      "line": 99,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/connections/GoogleRows.tsx",
+      "line": 104,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/connections/GoogleRows.tsx",
+      "line": 113,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/connections/GoogleRows.tsx",
+      "line": 182,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/connections/GoogleRows.tsx",
+      "line": 187,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/connections/GoogleRows.tsx",
+      "line": 196,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/connections/WhatsAppRows.tsx",
+      "line": 64,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/connections/WhatsAppRows.tsx",
+      "line": 93,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/connections/WhatsAppRows.tsx",
+      "line": 108,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/connections/WhatsAppRows.tsx",
+      "line": 118,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/connections/WhatsAppRows.tsx",
+      "line": 137,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/screens/settings/connections/WhatsAppRows.tsx",
+      "line": 137,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/shared/PageHeader.tsx",
+      "line": 21,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/screens/shared/PageSearchField.tsx",
+      "line": 41,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/ChatHeader.tsx",
+      "line": 267,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/ChatHeader.tsx",
+      "line": 275,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/ChatHeader.tsx",
+      "line": 311,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/ChatHeader.tsx",
+      "line": 316,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/ChatHeader.tsx",
+      "line": 329,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/ChatHeader.tsx",
+      "line": 346,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/ChatHeader.tsx",
+      "line": 355,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/ChatHeader.tsx",
+      "line": 366,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/shell/ChatHeader.tsx",
+      "line": 105,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/DoingNow.tsx",
+      "line": 78,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-without-event",
+      "status": "candidate",
+      "path": "src/renderer/shell/DoingNow.tsx",
+      "line": 87,
+      "note": "<Segmented> has no inline event or href in its opening tag; inspect its wrapper and keyboard path."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/DoingNow.tsx",
+      "line": 118,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/DoingNow.tsx",
+      "line": 224,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/DoingNow.tsx",
+      "line": 236,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/shell/DoingNow.tsx",
+      "line": 117,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/FindBar.tsx",
+      "line": 104,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/FindBar.tsx",
+      "line": 111,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/FindBar.tsx",
+      "line": 118,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/KnowList.tsx",
+      "line": 51,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/KnowList.tsx",
+      "line": 65,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/shell/KnowList.tsx",
+      "line": 64,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/MainShell.tsx",
+      "line": 75,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/RightShell.tsx",
+      "line": 70,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/RightShell.tsx",
+      "line": 76,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/SelectionBar.tsx",
+      "line": 48,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/SelectionBar.tsx",
+      "line": 51,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/SelectionBar.tsx",
+      "line": 61,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/SpentMeters.tsx",
+      "line": 27,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/SpentMeters.tsx",
+      "line": 57,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/UsingChips.tsx",
+      "line": 43,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/UsingChips.tsx",
+      "line": 58,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/shell/UsingChips.tsx",
+      "line": 75,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/shell/UsingChips.tsx",
+      "line": 75,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/signin-banner/SigninBanner.tsx",
+      "line": 78,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/signin-banner/SigninBanner.tsx",
+      "line": 94,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/ui/Avatar.tsx",
+      "line": 73,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/ui/Banner.tsx",
+      "line": 31,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/ui/Button.tsx",
+      "line": 35,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/ui/Chip.tsx",
+      "line": 19,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/ui/Dialog.tsx",
+      "line": 83,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/ui/Dialog.tsx",
+      "line": 94,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/ui/Dialog.tsx",
+      "line": 115,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/ui/EmptyState.tsx",
+      "line": 29,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/ui/FaceRaster.tsx",
+      "line": 31,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/ui/IconButton.tsx",
+      "line": 34,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/ui/Menu.tsx",
+      "line": 169,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/ui/Menu.tsx",
+      "line": 69,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "literal-ui-copy",
+      "status": "candidate",
+      "path": "src/renderer/ui/Menu.tsx",
+      "line": 165,
+      "note": "Literal JSX text candidate; verify the copy uses the translation function."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/ui/Segmented.tsx",
+      "line": 45,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/ui/Toggle.tsx",
+      "line": 18,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "control-handler-review",
+      "status": "candidate",
+      "path": "src/renderer/ui/UndoBar.tsx",
+      "line": 93,
+      "note": "Handler exists but its effect is not statically classifiable; live click evidence is required."
+    },
+    {
+      "category": "live-wireup",
+      "status": "blocked",
+      "note": "Control 0 could not be clicked in the isolated build; the error value was omitted."
+    },
+    {
+      "category": "live-wireup",
+      "status": "pass",
+      "note": "Control 1 changed rendered DOM, URL or control state."
+    },
+    {
+      "category": "live-wireup",
+      "status": "pass",
+      "note": "Control 2 changed rendered DOM, URL or control state."
+    },
+    {
+      "category": "live-wireup",
+      "status": "pass",
+      "note": "Control 3 changed rendered DOM, URL or control state."
+    },
+    {
+      "category": "live-wireup",
+      "status": "pass",
+      "note": "Control 4 changed rendered DOM, URL or control state."
+    },
+    {
+      "category": "live-wireup",
+      "status": "pass",
+      "note": "Control 5 changed rendered DOM, URL or control state."
+    },
+    {
+      "category": "live-wireup",
+      "status": "pass",
+      "note": "Control 6 changed rendered DOM, URL or control state."
+    },
+    {
+      "category": "live-wireup",
+      "status": "fail",
+      "note": "Control 7 had no observable DOM, URL or control-state change."
+    },
+    {
+      "category": "live-wireup",
+      "status": "fail",
+      "note": "Control 8 had no observable DOM, URL or control-state change."
+    },
+    {
+      "category": "live-wireup",
+      "status": "fail",
+      "note": "Control 9 had no observable DOM, URL or control-state change."
+    },
+    {
+      "category": "live-wireup",
+      "status": "pass",
+      "note": "Control 10 changed rendered DOM, URL or control state."
+    },
+    {
+      "category": "live-wireup",
+      "status": "pass",
+      "note": "Control 11 changed rendered DOM, URL or control state."
+    },
+    {
+      "category": "live-wireup",
+      "status": "pass",
+      "note": "Control 12 changed rendered DOM, URL or control state."
+    },
+    {
+      "category": "live-wireup",
+      "status": "pass",
+      "note": "Control 13 changed rendered DOM, URL or control state."
+    },
+    {
+      "category": "live-wireup",
+      "status": "pass",
+      "note": "Control 14 changed rendered DOM, URL or control state."
+    },
+    {
+      "category": "live-wireup",
+      "status": "pass",
+      "note": "Control 15 changed rendered DOM, URL or control state."
+    }
+  ],
+  "counts": {
+    "candidate": 281,
+    "blocked": 1,
+    "pass": 12,
+    "fail": 3
+  }
+}

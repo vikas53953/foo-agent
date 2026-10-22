@@ -1,0 +1,346 @@
+{
+  "files": {
+    "src/engine/tools/web/cloudOutbound.ts": {
+      "language": "typescript",
+      "mutants": [
+        {
+          "id": "0",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 32ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × removes secret query fields and free-text markers 26ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nAssertionError: expected { ok: true, …(2) } to deeply equal { ok: true, …(2) }\n\r\n\n- Expected\n+ Received\n\n@@ -2,8 +2,8 @@\n    \"ok\": true,\n    \"text\": {\n      \"prompt\": \"hello\",\n    },\n    \"urls\": {\n-     \"model\": \"https://api.anthropic.com/v1/messages\",\n+     \"model\": undefined,\n    },\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:17:18\n\r\n     15|       text: { prompt: 'hello fixture-secret' },\n     16|     });\n     17|     expect(safe).toEqual({\n       |                  ^\n     18|       ok: true,\n     19|       urls: { model: 'https://api.anthropic.com/v1/messages' },\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed | 8 passed (9)\n\r\n      Tests  1 failed | 178 passed (180)\n\r\n   Start at  02:08:01\n\r\n   Duration  10.40s (tests 73%, import 19%, transform 5%, worker 3%)\n\r\n\n\r\n    Isolate  9 workers spawned · ~448ms startup each (spawn + environment, per file)\n\r\n             at least ~3.59s faster with isolate: false — reuses workers across files instead of one per file\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 2, "line": 59 }, "start": { "column": 71, "line": 44 } }
+        },
+        {
+          "id": "1",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 22ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × removes secret query fields and free-text markers 16ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nTypeError: Cannot read properties of undefined (reading 'hostname')\n\r\n ❯ outboundUrl src/engine/tools/web/cloudOutbound.ts:113:191\n\r\n\n\r\n ❯ cloudOutbound src/engine/tools/web/cloudOutbound.ts:146:22\n ❯ scripts/audit/cloud-outbound.test.ts:13:18\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed (2)\n\r\n   Start at  02:08:14\n\r\n   Duration  554ms (import 50%, transform 20%, tests 18%, worker 11%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 4, "line": 48 }, "start": { "column": 7, "line": 46 } }
+        },
+        {
+          "id": "2",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "status": "Survived",
+          "testsCompleted": 1,
+          "location": { "end": { "column": 4, "line": 50 }, "start": { "column": 11, "line": 48 } }
+        },
+        {
+          "id": "3",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\r\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 47ms\n\r\n   ❯ production cloud outbound boundary (2)\n\r\n     × removes secret query fields and free-text markers 34ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nAssertionError: expected { ok: false, …(1) } to deeply equal { ok: true, …(2) }\n\r\n\n- Expected\n+ Received\n\n  {\n-   \"ok\": true,\n-   \"text\": {\n-     \"prompt\": \"hello\",\n-   },\n-   \"urls\": {\n-     \"model\": \"https://api.anthropic.com/v1/messages\",\n-   },\n+   \"kind\": \"CLOUD_SECRET_BLOCKED\",\n+   \"ok\": false,\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:17:18\n\r\n     15|       text: { prompt: 'hello fixture-secret' },\n     16|     });\n     17|     expect(safe).toEqual({\n       |                  ^\n     18|       ok: true,\n     19|       urls: { model: 'https://api.anthropic.com/v1/messages' },\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed | 7 passed (9)\n\r\n      Tests  1 failed | 174 passed (176)\n\r\n   Start at  02:08:29\n\r\n   Duration  11.80s (tests 71%, import 21%, transform 6%, worker 3%)\n\r\n\n\r\n    Isolate  8 workers spawned · ~522ms startup each (spawn + environment, per file)\n             at least ~3.66s faster with isolate: false — reuses workers across files instead of one per file\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 55, "line": 51 }, "start": { "column": 7, "line": 51 } }
+        },
+        {
+          "id": "4",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\r\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 27ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × blocks a secret-bearing host or path before a request can be made 16ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > blocks a secret-bearing host or path before a request can be made\n\r\nAssertionError: expected { ok: true, text: {}, …(1) } to deeply equal { ok: false, …(1) }\n\r\n\n- Expected\n+ Received\n\n  {\n-   \"kind\": \"CLOUD_SECRET_BLOCKED\",\n-   \"ok\": false,\n+   \"ok\": true,\n+   \"text\": {},\n+   \"urls\": {\n+     \"model\": \"https://fixture-secret.example.test/send\",\n+   },\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:25:99\n\r\n     23|\n     24|   it('blocks a secret-bearing host or path before a request can be mad…\n     25|     expect(cloudOutbound(scrub, { urls: { model: 'https://fixture-secr…\n       |                                                                                                   ^\n     26|       ok: false,\n     27|       kind: 'CLOUD_SECRET_BLOCKED',\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed | 1 passed (2)\n\r\n   Start at  02:08:43\n\r\n   Duration  620ms (import 44%, tests 26%, transform 17%, worker 13%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 55, "line": 51 }, "start": { "column": 7, "line": 51 } }
+        },
+        {
+          "id": "5",
+          "mutatorName": "LogicalOperator",
+          "replacement": "hit(scrub, u.hostname) && hit(scrub, u.pathname)",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 28ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × blocks a secret-bearing host or path before a request can be made 16ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > blocks a secret-bearing host or path before a request can be made\n\r\nAssertionError: expected { ok: true, text: {}, …(1) } to deeply equal { ok: false, …(1) }\n\n- Expected\n+ Received\n\n  {\n-   \"kind\": \"CLOUD_SECRET_BLOCKED\",\n-   \"ok\": false,\n+   \"ok\": true,\n+   \"text\": {},\n+   \"urls\": {\n+     \"model\": \"https://fixture-secret.example.test/send\",\n+   },\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:25:99\n\r\n     23|\n     24|   it('blocks a secret-bearing host or path before a request can be mad…\n     25|     expect(cloudOutbound(scrub, { urls: { model: 'https://fixture-secr…\n       |                                                                                                   ^\n     26|       ok: false,\n     27|       kind: 'CLOUD_SECRET_BLOCKED',\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed | 1 passed (2)\n\r\n   Start at  02:08:46\n\r\n   Duration  677ms (import 45%, tests 25%, transform 17%, worker 12%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 55, "line": 51 }, "start": { "column": 7, "line": 51 } }
+        },
+        {
+          "id": "6",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"Stryker was here!\"",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\r\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 26ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × removes secret query fields and free-text markers 21ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nAssertionError: expected { ok: true, …(2) } to deeply equal { ok: true, …(2) }\n\n- Expected\n+ Received\n\n@@ -2,8 +2,8 @@\n    \"ok\": true,\n    \"text\": {\n      \"prompt\": \"hello\",\n    },\n    \"urls\": {\n-     \"model\": \"https://api.anthropic.com/v1/messages\",\n+     \"model\": \"https://Stryker%20was%20here!@api.anthropic.com/v1/messages\",\n    },\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:17:18\n\r\n     15|       text: { prompt: 'hello fixture-secret' },\n     16|     });\n     17|     expect(safe).toEqual({\n       |                  ^\n     18|       ok: true,\n     19|       urls: { model: 'https://api.anthropic.com/v1/messages' },\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed (2)\n\r\n   Start at  02:08:48\n\r\n   Duration  490ms (import 44%, tests 25%, transform 18%, worker 13%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 18, "line": 52 }, "start": { "column": 16, "line": 52 } }
+        },
+        {
+          "id": "7",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"Stryker was here!\"",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\r\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 29ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × removes secret query fields and free-text markers 24ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nAssertionError: expected { ok: true, …(2) } to deeply equal { ok: true, …(2) }\n\r\n\n- Expected\n+ Received\n\n@@ -2,8 +2,8 @@\n    \"ok\": true,\n    \"text\": {\n      \"prompt\": \"hello\",\n    },\n    \"urls\": {\n-     \"model\": \"https://api.anthropic.com/v1/messages\",\n+     \"model\": \"https://:Stryker%20was%20here!@api.anthropic.com/v1/messages\",\n    },\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:17:18\n\r\n     15|       text: { prompt: 'hello fixture-secret' },\n     16|     });\n     17|     expect(safe).toEqual({\n       |                  ^\n     18|       ok: true,\n     19|       urls: { model: 'https://api.anthropic.com/v1/messages' },\n\r\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed (2)\n\r\n   Start at  02:08:50\n\r\n   Duration  503ms (import 42%, tests 27%, transform 18%, worker 12%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 18, "line": 53 }, "start": { "column": 16, "line": 53 } }
+        },
+        {
+          "id": "8",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"Stryker was here!\"",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\r\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 27ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × removes secret query fields and free-text markers 23ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nAssertionError: expected { ok: true, …(2) } to deeply equal { ok: true, …(2) }\n\r\n\n- Expected\n+ Received\n\n@@ -2,8 +2,8 @@\n    \"ok\": true,\n    \"text\": {\n      \"prompt\": \"hello\",\n    },\n    \"urls\": {\n-     \"model\": \"https://api.anthropic.com/v1/messages\",\n+     \"model\": \"https://api.anthropic.com/v1/messages#Stryker%20was%20here!\",\n    },\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:17:18\n\r\n     15|       text: { prompt: 'hello fixture-secret' },\n     16|     });\n     17|     expect(safe).toEqual({\n       |                  ^\n     18|       ok: true,\n     19|       urls: { model: 'https://api.anthropic.com/v1/messages' },\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed (2)\n\r\n   Start at  02:08:53\n\r\n   Duration  491ms (import 44%, tests 25%, transform 18%, worker 12%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 14, "line": 54 }, "start": { "column": 12, "line": 54 } }
+        },
+        {
+          "id": "9",
+          "mutatorName": "ArrayDeclaration",
+          "replacement": "[]",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 29ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × removes secret query fields and free-text markers 24ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nAssertionError: expected { ok: true, …(2) } to deeply equal { ok: true, …(2) }\n\r\n\n- Expected\n+ Received\n\n@@ -2,8 +2,8 @@\n    \"ok\": true,\n    \"text\": {\n      \"prompt\": \"hello\",\n    },\n    \"urls\": {\n-     \"model\": \"https://api.anthropic.com/v1/messages\",\n+     \"model\": \"https://api.anthropic.com/v1/messages?token=fixture-secret\",\n    },\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:17:18\n\r\n     15|       text: { prompt: 'hello fixture-secret' },\n     16|     });\n     17|     expect(safe).toEqual({\n       |                  ^\n     18|       ok: true,\n     19|       urls: { model: 'https://api.anthropic.com/v1/messages' },\n\r\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed (2)\n\r\n   Start at  02:08:55\n\r\n   Duration  482ms (import 42%, tests 25%, transform 21%, worker 12%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 50, "line": 55 }, "start": { "column": 31, "line": 55 } }
+        },
+        {
+          "id": "10",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\r\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 35ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × removes secret query fields and free-text markers 30ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nAssertionError: expected { ok: true, …(2) } to deeply equal { ok: true, …(2) }\n\n- Expected\n+ Received\n\n@@ -2,8 +2,8 @@\n    \"ok\": true,\n    \"text\": {\n      \"prompt\": \"hello\",\n    },\n    \"urls\": {\n-     \"model\": \"https://api.anthropic.com/v1/messages\",\n+     \"model\": \"https://api.anthropic.com/v1/messages?token=fixture-secret\",\n    },\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:17:18\n\r\n     15|       text: { prompt: 'hello fixture-secret' },\n     16|     });\n     17|     expect(safe).toEqual({\n       |                  ^\n     18|       ok: true,\n     19|       urls: { model: 'https://api.anthropic.com/v1/messages' },\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed (2)\n   Start at  02:08:57\n\r\n   Duration  591ms (import 46%, tests 27%, transform 15%, worker 12%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 4, "line": 57 }, "start": { "column": 52, "line": 55 } }
+        },
+        {
+          "id": "11",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "status": "Survived",
+          "testsCompleted": 1,
+          "location": { "end": { "column": 47, "line": 56 }, "start": { "column": 9, "line": 56 } }
+        },
+        {
+          "id": "12",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\r\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 32ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × removes secret query fields and free-text markers 24ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nAssertionError: expected { ok: true, …(2) } to deeply equal { ok: true, …(2) }\n\r\n\n- Expected\n+ Received\n\n@@ -2,8 +2,8 @@\n    \"ok\": true,\n    \"text\": {\n      \"prompt\": \"hello\",\n    },\n    \"urls\": {\n-     \"model\": \"https://api.anthropic.com/v1/messages\",\n+     \"model\": \"https://api.anthropic.com/v1/messages?token=fixture-secret\",\n    },\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:17:18\n\r\n     15|       text: { prompt: 'hello fixture-secret' },\n     16|     });\n     17|     expect(safe).toEqual({\n       |                  ^\n     18|       ok: true,\n     19|       urls: { model: 'https://api.anthropic.com/v1/messages' },\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed | 7 passed (9)\n\r\n      Tests  1 failed | 174 passed (176)\n\r\n   Start at  02:09:11\n\r\n   Duration  9.20s (tests 75%, import 17%, transform 5%, worker 2%)\n\r\n\n\r\n    Isolate  8 workers spawned · ~379ms startup each (spawn + environment, per file)\n             at least ~2.65s faster with isolate: false — reuses workers across files instead of one per file\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 47, "line": 56 }, "start": { "column": 9, "line": 56 } }
+        },
+        {
+          "id": "13",
+          "mutatorName": "LogicalOperator",
+          "replacement": "secretParam(name) && hit(scrub, value)",
+          "status": "Survived",
+          "testsCompleted": 1,
+          "location": { "end": { "column": 47, "line": 56 }, "start": { "column": 9, "line": 56 } }
+        },
+        {
+          "id": "14",
+          "mutatorName": "CallExpression",
+          "replacement": ";",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 38ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × removes secret query fields and free-text markers 27ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nAssertionError: expected { ok: true, …(2) } to deeply equal { ok: true, …(2) }\n\r\n\n- Expected\n+ Received\n\n@@ -2,8 +2,8 @@\n    \"ok\": true,\n    \"text\": {\n      \"prompt\": \"hello\",\n    },\n    \"urls\": {\n-     \"model\": \"https://api.anthropic.com/v1/messages\",\n+     \"model\": \"https://api.anthropic.com/v1/messages?token=fixture-secret\",\n    },\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:17:18\n\r\n     15|       text: { prompt: 'hello fixture-secret' },\n     16|     });\n     17|     expect(safe).toEqual({\n       |                  ^\n     18|       ok: true,\n     19|       urls: { model: 'https://api.anthropic.com/v1/messages' },\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed | 8 passed (9)\n\r\n      Tests  1 failed | 178 passed (180)\n\r\n   Start at  02:09:36\n\r\n   Duration  10.94s (tests 69%, import 22%, transform 7%, worker 3%)\n\r\n\n\r\n    Isolate  9 workers spawned · ~472ms startup each (spawn + environment, per file)\n\r\n             at least ~3.78s faster with isolate: false — reuses workers across files instead of one per file\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 77, "line": 56 }, "start": { "column": 49, "line": 56 } }
+        },
+        {
+          "id": "15",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\r\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 21ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × removes secret query fields and free-text markers 17ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nAssertionError: expected undefined to deeply equal { ok: true, …(2) }\n\n- Expected:\n{\n  \"ok\": true,\n  \"text\": {\n    \"prompt\": \"hello\",\n  },\n  \"urls\": {\n    \"model\": \"https://api.anthropic.com/v1/messages\",\n  },\n}\n\n+ Received:\nundefined\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:17:18\n\r\n     15|       text: { prompt: 'hello fixture-secret' },\n     16|     });\n     17|     expect(safe).toEqual({\n       |                  ^\n     18|       ok: true,\n     19|       urls: { model: 'https://api.anthropic.com/v1/messages' },\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed (2)\n\r\n   Start at  02:09:49\n\r\n   Duration  471ms (import 47%, tests 21%, transform 19%, worker 12%, environment 1%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 2, "line": 72 }, "start": { "column": 87, "line": 62 } }
+        },
+        {
+          "id": "16",
+          "mutatorName": "LogicalOperator",
+          "replacement": "payload.urls && {}",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\r\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 25ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × removes secret query fields and free-text markers 20ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nAssertionError: expected { ok: true, …(2) } to deeply equal { ok: true, …(2) }\n\r\n\n- Expected\n+ Received\n\n  {\n    \"ok\": true,\n    \"text\": {\n      \"prompt\": \"hello\",\n    },\n-   \"urls\": {\n-     \"model\": \"https://api.anthropic.com/v1/messages\",\n-   },\n+   \"urls\": {},\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:17:18\n\r\n     15|       text: { prompt: 'hello fixture-secret' },\n     16|     });\n     17|     expect(safe).toEqual({\n       |                  ^\n     18|       ok: true,\n     19|       urls: { model: 'https://api.anthropic.com/v1/messages' },\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed (2)\n\r\n   Start at  02:09:51\n\r\n   Duration  498ms (import 45%, tests 22%, transform 19%, worker 12%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 57, "line": 64 }, "start": { "column": 39, "line": 64 } }
+        },
+        {
+          "id": "17",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\r\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 33ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × removes secret query fields and free-text markers 26ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nAssertionError: expected { ok: true, …(2) } to deeply equal { ok: true, …(2) }\n\r\n\n- Expected\n+ Received\n\n  {\n    \"ok\": true,\n    \"text\": {\n      \"prompt\": \"hello\",\n    },\n-   \"urls\": {\n-     \"model\": \"https://api.anthropic.com/v1/messages\",\n-   },\n+   \"urls\": {},\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:17:18\n\r\n     15|       text: { prompt: 'hello fixture-secret' },\n     16|     });\n     17|     expect(safe).toEqual({\n       |                  ^\n     18|       ok: true,\n     19|       urls: { model: 'https://api.anthropic.com/v1/messages' },\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed (2)\n\r\n   Start at  02:09:54\n\r\n   Duration  492ms (import 41%, tests 26%, transform 19%, worker 14%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 4, "line": 68 }, "start": { "column": 60, "line": 64 } }
+        },
+        {
+          "id": "18",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\r\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 25ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × removes secret query fields and free-text markers 20ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nAssertionError: expected { ok: false, …(1) } to deeply equal { ok: true, …(2) }\n\r\n\n- Expected\n+ Received\n\n  {\n-   \"ok\": true,\n-   \"text\": {\n-     \"prompt\": \"hello\",\n-   },\n-   \"urls\": {\n-     \"model\": \"https://api.anthropic.com/v1/messages\",\n-   },\n+   \"kind\": \"CLOUD_SECRET_BLOCKED\",\n+   \"ok\": false,\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:17:18\n\r\n     15|       text: { prompt: 'hello fixture-secret' },\n     16|     });\n     17|     expect(safe).toEqual({\n       |                  ^\n     18|       ok: true,\n     19|       urls: { model: 'https://api.anthropic.com/v1/messages' },\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed (2)\n\r\n   Start at  02:09:56\n\r\n   Duration  499ms (import 48%, tests 22%, transform 16%, worker 14%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 22, "line": 66 }, "start": { "column": 9, "line": 66 } }
+        },
+        {
+          "id": "19",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\r\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 34ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × blocks a secret-bearing host or path before a request can be made 19ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > blocks a secret-bearing host or path before a request can be made\n\r\nAssertionError: expected { ok: true, text: {}, …(1) } to deeply equal { ok: false, …(1) }\n\r\n\n- Expected\n+ Received\n\n  {\n-   \"kind\": \"CLOUD_SECRET_BLOCKED\",\n-   \"ok\": false,\n+   \"ok\": true,\n+   \"text\": {},\n+   \"urls\": {\n+     \"model\": null,\n+   },\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:25:99\n\r\n     23|\n     24|   it('blocks a secret-bearing host or path before a request can be mad…\n     25|     expect(cloudOutbound(scrub, { urls: { model: 'https://fixture-secr…\n       |                                                                                                   ^\n     26|       ok: false,\n     27|       kind: 'CLOUD_SECRET_BLOCKED',\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed | 1 passed (2)\n\r\n   Start at  02:09:58\n\r\n   Duration  544ms (import 45%, tests 25%, transform 19%, worker 11%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 22, "line": 66 }, "start": { "column": 9, "line": 66 } }
+        },
+        {
+          "id": "20",
+          "mutatorName": "EqualityOperator",
+          "replacement": "safe !== null",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\r\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 26ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × removes secret query fields and free-text markers 21ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nAssertionError: expected { ok: false, …(1) } to deeply equal { ok: true, …(2) }\n\r\n\n- Expected\n+ Received\n\n  {\n-   \"ok\": true,\n-   \"text\": {\n-     \"prompt\": \"hello\",\n-   },\n-   \"urls\": {\n-     \"model\": \"https://api.anthropic.com/v1/messages\",\n-   },\n+   \"kind\": \"CLOUD_SECRET_BLOCKED\",\n+   \"ok\": false,\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:17:18\n\r\n     15|       text: { prompt: 'hello fixture-secret' },\n     16|     });\n     17|     expect(safe).toEqual({\n       |                  ^\n     18|       ok: true,\n     19|       urls: { model: 'https://api.anthropic.com/v1/messages' },\n\r\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed (2)\n\r\n   Start at  02:10:01\n\r\n   Duration  482ms (import 44%, tests 25%, transform 18%, worker 12%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 22, "line": 66 }, "start": { "column": 9, "line": 66 } }
+        },
+        {
+          "id": "21",
+          "mutatorName": "ObjectLiteral",
+          "replacement": "{}",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 30ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × blocks a secret-bearing host or path before a request can be made 17ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > blocks a secret-bearing host or path before a request can be made\n\r\nAssertionError: expected {} to deeply equal { ok: false, …(1) }\n\r\n\n- Expected\n+ Received\n\n- {\n-   \"kind\": \"CLOUD_SECRET_BLOCKED\",\n-   \"ok\": false,\n- }\n+ {}\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:25:99\n\r\n     23|\n     24|   it('blocks a secret-bearing host or path before a request can be mad…\n     25|     expect(cloudOutbound(scrub, { urls: { model: 'https://fixture-secr…\n       |                                                                                                   ^\n     26|       ok: false,\n     27|       kind: 'CLOUD_SECRET_BLOCKED',\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed | 1 passed (2)\n\r\n   Start at  02:10:03\n\r\n   Duration  475ms (import 42%, tests 27%, transform 18%, worker 12%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 74, "line": 66 }, "start": { "column": 31, "line": 66 } }
+        },
+        {
+          "id": "22",
+          "mutatorName": "BooleanLiteral",
+          "replacement": "true",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\r\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 29ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × blocks a secret-bearing host or path before a request can be made 18ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > blocks a secret-bearing host or path before a request can be made\n\r\nAssertionError: expected { ok: true, …(1) } to deeply equal { ok: false, …(1) }\n\n- Expected\n+ Received\n\n  {\n    \"kind\": \"CLOUD_SECRET_BLOCKED\",\n-   \"ok\": false,\n+   \"ok\": true,\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:25:99\n\r\n     23|\n     24|   it('blocks a secret-bearing host or path before a request can be mad…\n     25|     expect(cloudOutbound(scrub, { urls: { model: 'https://fixture-secr…\n       |                                                                                                   ^\n     26|       ok: false,\n     27|       kind: 'CLOUD_SECRET_BLOCKED',\n\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed | 1 passed (2)\n\r\n   Start at  02:10:06\n\r\n   Duration  511ms (import 40%, tests 24%, transform 21%, worker 14%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 42, "line": 66 }, "start": { "column": 37, "line": 66 } }
+        },
+        {
+          "id": "23",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\r\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 29ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × blocks a secret-bearing host or path before a request can be made 16ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > blocks a secret-bearing host or path before a request can be made\n\r\nAssertionError: expected { ok: false, kind: '' } to deeply equal { ok: false, …(1) }\n\r\n\n- Expected\n+ Received\n\n  {\n-   \"kind\": \"CLOUD_SECRET_BLOCKED\",\n+   \"kind\": \"\",\n    \"ok\": false,\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:25:99\n\r\n     23|\n     24|   it('blocks a secret-bearing host or path before a request can be mad…\n     25|     expect(cloudOutbound(scrub, { urls: { model: 'https://fixture-secr…\n       |                                                                                                   ^\n     26|       ok: false,\n     27|       kind: 'CLOUD_SECRET_BLOCKED',\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed | 1 passed (2)\n\r\n   Start at  02:10:09\n\r\n   Duration  513ms (import 44%, tests 27%, transform 17%, worker 12%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 72, "line": 66 }, "start": { "column": 50, "line": 66 } }
+        },
+        {
+          "id": "24",
+          "mutatorName": "LogicalOperator",
+          "replacement": "payload.text && {}",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\r\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 28ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × removes secret query fields and free-text markers 23ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nAssertionError: expected { ok: true, text: {}, …(1) } to deeply equal { ok: true, …(2) }\n\r\n\n- Expected\n+ Received\n\n  {\n    \"ok\": true,\n-   \"text\": {\n-     \"prompt\": \"hello\",\n-   },\n+   \"text\": {},\n    \"urls\": {\n      \"model\": \"https://api.anthropic.com/v1/messages\",\n    },\n  }\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:17:18\n\r\n     15|       text: { prompt: 'hello fixture-secret' },\n     16|     });\n     17|     expect(safe).toEqual({\n       |                  ^\n     18|       ok: true,\n     19|       urls: { model: 'https://api.anthropic.com/v1/messages' },\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed (2)\n\r\n   Start at  02:10:11\n\r\n   Duration  512ms (import 42%, tests 26%, transform 20%, worker 12%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 57, "line": 70 }, "start": { "column": 39, "line": 70 } }
+        },
+        {
+          "id": "25",
+          "mutatorName": "ObjectLiteral",
+          "replacement": "{}",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\r\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 32ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × removes secret query fields and free-text markers 28ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nAssertionError: expected {} to deeply equal { ok: true, …(2) }\n\r\n\n- Expected\n+ Received\n\n- {\n-   \"ok\": true,\n-   \"text\": {\n-     \"prompt\": \"hello\",\n-   },\n-   \"urls\": {\n-     \"model\": \"https://api.anthropic.com/v1/messages\",\n-   },\n- }\n+ {}\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:17:18\n\r\n     15|       text: { prompt: 'hello fixture-secret' },\n     16|     });\n     17|     expect(safe).toEqual({\n       |                  ^\n     18|       ok: true,\n     19|       urls: { model: 'https://api.anthropic.com/v1/messages' },\n\r\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed (2)\n\r\n   Start at  02:10:13\n\r\n   Duration  576ms (import 46%, tests 23%, transform 21%, worker 9%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 34, "line": 71 }, "start": { "column": 10, "line": 71 } }
+        },
+        {
+          "id": "26",
+          "mutatorName": "BooleanLiteral",
+          "replacement": "false",
+          "statusReason": "(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - ESM syntax in a file loaded as CommonJS (scripts/audit/vitest.mutation.config.ts:3:1). Use a `.mjs` extension or set `\"type\": \"module\"` in the closest package.json\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n\r\n\n\r\n RUN  v5.0.5 C:/Users/vikasmit/Downloads/foo/lane-f/.stryker-lane-f-tmp/sandbox-CVQh9Y\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts (2 tests | 1 failed) 35ms\n\r\n   ❯ production cloud outbound boundary (2)\n     × removes secret query fields and free-text markers 30ms\n\r\n\n⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯\n\n\r\n FAIL  scripts/audit/cloud-outbound.test.ts > production cloud outbound boundary > removes secret query fields and free-text markers\n\r\nAssertionError: expected { ok: false, …(2) } to deeply equal { ok: true, …(2) }\n\r\n\n- Expected\n+ Received\n\n@@ -1,7 +1,7 @@\n  {\n-   \"ok\": true,\n+   \"ok\": false,\n    \"text\": {\n      \"prompt\": \"hello\",\n    },\n    \"urls\": {\n      \"model\": \"https://api.anthropic.com/v1/messages\",\n\n\r\n ❯ scripts/audit/cloud-outbound.test.ts:17:18\n\r\n     15|       text: { prompt: 'hello fixture-secret' },\n     16|     });\n     17|     expect(safe).toEqual({\n       |                  ^\n     18|       ok: true,\n     19|       urls: { model: 'https://api.anthropic.com/v1/messages' },\n\r\n\n\r\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯\n\n\r\n\n\r\n Test Files  1 failed (9)\n\r\n      Tests  1 failed (2)\n\r\n   Start at  02:10:16\n\r\n   Duration  558ms (import 42%, tests 27%, transform 17%, worker 15%)\n\r\n\n",
+          "status": "Killed",
+          "testsCompleted": 1,
+          "killedBy": ["0"],
+          "location": { "end": { "column": 20, "line": 71 }, "start": { "column": 16, "line": 71 } }
+        }
+      ],
+      "source": "// Spec: 08-2 §8.3.12 b (every outbound query, URL, goal and argument passes the Redactor (§11.4 R11); a registry or pattern\n// hit removes the hit before sending, and a hit in a URL path or host blocks the call: CLOUD_SECRET_BLOCKED, local path used),\n// 08-2 §8.2 web.fetch (URL passes the Redactor first: query params named token|key|code|sig|… stripped), §11.4 R11\n// (`cloud.outbound` is the choke point), AT-140.\n\n/** The Redactor's scrub (registry, then patterns). Hits come back as `[hidden]` or `•••• {last4}`. */\nexport type Scrub = (text: string) => { text: string; hits: number };\n\nexport interface OutboundPayload {\n  /** Free text: query, goal. Hits are removed. */\n  text?: Record<string, string>;\n  /** URLs: a hit in host or path blocks the call; secret query params, userinfo and the fragment are dropped. */\n  urls?: Record<string, string>;\n}\n\nexport type OutboundResult =\n  { ok: true; text: Record<string, string>; urls: Record<string, string> } | { ok: false; kind: 'CLOUD_SECRET_BLOCKED' };\n\n/** The R11 names (08-2 §11.4 item 2 URL row) as whole parts of a param name split on _ and - (`api_key`, `access_token`). */\nconst SECRET_PART = /^(?:token|key|apikey|code|sig|signature|password|pwd|secret|auth)$/i;\nconst secretParam = (name: string): boolean => name.split(/[_-]/).some((part) => SECRET_PART.test(part));\nconst MARKS = /\\[hidden\\]|•••• \\d{4}/gu;\n\nfunction removeHits(scrub: Scrub, text: string): string {\n  const r = scrub(text);\n  if (r.hits === 0) return text;\n  return r.text\n    .replace(MARKS, '')\n    .replace(/\\s{2,}/g, ' ')\n    .trim();\n}\n\nfunction hit(scrub: Scrub, text: string): boolean {\n  let decoded = text;\n  try {\n    decoded = decodeURIComponent(text);\n  } catch {\n    // A malformed escape: check the raw text only.\n  }\n  return scrub(text).hits > 0 || scrub(decoded).hits > 0;\n}\n\n/** One URL through R11; null when the call must be blocked. */\nexport function outboundUrl(scrub: Scrub, raw: string): string | null {\n  let u: URL;\n  try {\n    u = new URL(raw);\n  } catch {\n    return null;\n  }\n  if (hit(scrub, u.hostname) || hit(scrub, u.pathname)) return null;\n  u.username = '';\n  u.password = '';\n  u.hash = '';\n  for (const [name, value] of [...u.searchParams]) {\n    if (secretParam(name) || hit(scrub, value)) u.searchParams.delete(name);\n  }\n  return u.toString();\n}\n\n/** `cloud.outbound(payload)`: the only way a payload reaches a cloud web service. */\nexport function cloudOutbound(scrub: Scrub, payload: OutboundPayload): OutboundResult {\n  const urls: Record<string, string> = {};\n  for (const [k, v] of Object.entries(payload.urls ?? {})) {\n    const safe = outboundUrl(scrub, v);\n    if (safe === null) return { ok: false, kind: 'CLOUD_SECRET_BLOCKED' };\n    urls[k] = safe;\n  }\n  const text: Record<string, string> = {};\n  for (const [k, v] of Object.entries(payload.text ?? {})) text[k] = removeHits(scrub, v);\n  return { ok: true, text, urls };\n}\n"
+    }
+  },
+  "schemaVersion": "1.0",
+  "thresholds": { "high": 90, "low": 75, "break": 70 },
+  "testFiles": { "": { "tests": [{ "id": "0", "name": "All tests" }] } },
+  "projectRoot": "C:\\Users\\vikasmit\\Downloads\\foo\\lane-f",
+  "config": {
+    "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+    "_comment": "Lane F expands PR #101's four-file mutation run across the app boundaries that carry state, jobs, storage, IPC, redaction and provider routing. Scores are valid only when this config executes and the JSON report exists.",
+    "testRunner": "command",
+    "commandRunner": {
+      "command": "node ../../node_modules/vitest/vitest.mjs run --bail 1 --config scripts/audit/vitest.mutation.config.ts --pool=threads --maxWorkers=1 --no-file-parallelism"
+    },
+    "mutate": ["src/engine/tools/web/cloudOutbound.ts:43:1-72:1000", "src/shared/redactor.ts:16:1-40:1000"],
+    "coverageAnalysis": "off",
+    "reporters": ["clear-text", "progress", "html", "json"],
+    "htmlReporter": { "fileName": "reports/mutation/lane-f.html" },
+    "jsonReporter": { "fileName": "reports/mutation/lane-f.json" },
+    "thresholds": { "high": 90, "low": 75, "break": 70 },
+    "tempDirName": ".stryker-lane-f-tmp",
+    "concurrency": 1,
+    "timeoutMS": 30000,
+    "logLevel": "info",
+    "fileLogLevel": "info",
+    "configFile": "stryker.lane-f.config.json",
+    "allowConsoleColors": true,
+    "checkers": [],
+    "checkerNodeArgs": [],
+    "clearTextReporter": {
+      "allowColor": true,
+      "allowEmojis": false,
+      "logTests": true,
+      "maxTestsToLog": 3,
+      "reportTests": true,
+      "reportMutants": true,
+      "reportScoreTable": true,
+      "skipFull": false
+    },
+    "dashboard": { "baseUrl": "https://dashboard.stryker-mutator.io/api/reports", "reportType": "full" },
+    "dryRunOnly": false,
+    "eventReporter": { "baseDir": "reports/mutation/events" },
+    "ignorePatterns": [],
+    "ignoreStatic": false,
+    "incremental": false,
+    "incrementalFile": "reports/stryker-incremental.json",
+    "force": false,
+    "inPlace": false,
+    "maxConcurrentTestRunners": 9007199254740991,
+    "maxTestRunnerReuse": 0,
+    "mutator": { "plugins": null, "excludedMutations": [] },
+    "plugins": ["@stryker-mutator/*"],
+    "appendPlugins": [],
+    "disableTypeChecks": true,
+    "symlinkNodeModules": true,
+    "cleanTempDir": true,
+    "testRunnerNodeArgs": [],
+    "timeoutFactor": 1.5,
+    "dryRunTimeoutMinutes": 5,
+    "tsconfigFile": "tsconfig.json",
+    "warnings": true,
+    "disableBail": false,
+    "allowEmpty": false,
+    "ignorers": [],
+    "testFiles": []
+  },
+  "framework": {
+    "name": "StrykerJS",
+    "version": "10.0.0",
+    "branding": {
+      "homepageUrl": "https://stryker-mutator.io",
+      "imageUrl": "data:image/svg+xml;utf8,%3Csvg viewBox='0 0 1458 1458' xmlns='http://www.w3.org/2000/svg' fill-rule='evenodd' clip-rule='evenodd' stroke-linejoin='round' stroke-miterlimit='2'%3E%3Cpath fill='none' d='M0 0h1458v1458H0z'/%3E%3CclipPath id='a'%3E%3Cpath d='M0 0h1458v1458H0z'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23a)'%3E%3Cpath d='M1458 729c0 402.655-326.345 729-729 729S0 1131.655 0 729C0 326.445 326.345 0 729 0s729 326.345 729 729' fill='%23e74c3c' fill-rule='nonzero'/%3E%3Cpath d='M778.349 1456.15L576.6 1254.401l233-105 85-78.668v-64.332l-257-257-44-187-50-208 251.806-82.793L1076.6 389.401l380.14 379.15c-19.681 367.728-311.914 663.049-678.391 687.599z' fill-opacity='.3'/%3E%3Cpath d='M753.4 329.503c41.79 0 74.579 7.83 97.925 25.444 23.571 18.015 41.69 43.956 55.167 77.097l11.662 28.679 165.733-58.183-14.137-32.13c-26.688-60.655-64.896-108.61-114.191-144.011-49.329-35.423-117.458-54.302-204.859-54.302-50.78 0-95.646 7.376-134.767 21.542-40.093 14.671-74.09 34.79-102.239 60.259-28.84 26.207-50.646 57.06-65.496 92.701-14.718 35.052-22.101 72.538-22.101 112.401 0 72.536 20.667 133.294 61.165 182.704 38.624 47.255 98.346 88.037 179.861 121.291 42.257 17.475 78.715 33.125 109.227 46.994 27.193 12.361 49.294 26.124 66.157 41.751 15.309 14.186 26.497 30.584 33.63 49.258 7.721 20.214 11.16 45.69 11.16 76.402 0 28.021-4.251 51.787-13.591 71.219-8.832 18.374-20.171 33.178-34.523 44.219-14.787 11.374-31.193 19.591-49.393 24.466-19.68 5.359-39.14 7.993-58.69 7.993-29.359 0-54.387-3.407-75.182-10.747-20.112-7.013-37.144-16.144-51.259-27.486-13.618-11.009-24.971-23.766-33.744-38.279-9.64-15.8-17.272-31.924-23.032-48.408l-10.965-31.376-161.669 60.585 10.734 30.124c10.191 28.601 24.197 56.228 42.059 82.748 18.208 27.144 41.322 51.369 69.525 72.745 27.695 21.075 60.904 38.218 99.481 51.041 37.777 12.664 82.004 19.159 132.552 19.159 49.998 0 95.818-8.321 137.611-24.622 42.228-16.471 78.436-38.992 108.835-67.291 30.719-28.597 54.631-62.103 71.834-100.642 17.263-38.56 25.923-79.392 25.923-122.248 0-54.339-8.368-100.37-24.208-138.32-16.29-38.759-38.252-71.661-65.948-98.797-26.965-26.418-58.269-48.835-93.858-67.175-33.655-17.241-69.196-33.11-106.593-47.533-35.934-13.429-65.822-26.601-89.948-39.525-22.153-11.868-40.009-24.21-53.547-37.309-11.429-11.13-19.83-23.678-24.718-37.664-5.413-15.49-7.98-33.423-7.98-53.577 0-40.883 11.293-71.522 37.086-90.539 28.443-20.825 64.985-30.658 109.311-30.658z' fill='%23f1c40f' fill-rule='nonzero'/%3E%3Cpath d='M720 0h18v113h-18zM1458 738v-18h-113v18h113zM720 1345h18v113h-18zM113 738v-18H0v18h113z'/%3E%3C/g%3E%3C/svg%3E"
+    },
+    "dependencies": { "typescript": "5.9.3" }
+  }
+}

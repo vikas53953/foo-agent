@@ -1,0 +1,5 @@
+
+> foo@0.0.1 trace:check C:\Users\vikasmit\Downloads\foo\lane-f
+> tsx scripts/trace-check.ts
+
+FID-18: trace.csv consistent with the test titles
