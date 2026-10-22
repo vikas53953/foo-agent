@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { TEST_EPOCH_MS } from '../../../src/shared/clock';
 import type { Settings } from '../../../src/shared/settings';
 import { VERIFY_LINE } from '../../unit/m3-engine-helpers';
-import { BILLS_PLAN, jobHarness, jobIntake, step, stepDone, tool, verified, badgeSets, type JobHarness } from './jobHarness';
+import { BILLS_PLAN, jobHarness, jobIntake, step, stepDone, tool, verified, badgeSets, type JobHarness, untilStill } from './jobHarness';
 
 let h: JobHarness | null = null;
 afterEach(() => {
@@ -31,9 +31,10 @@ describe('three WORKING slots, end to end', () => {
     // One chat each: a second message in a chat with a live job would steer it (08-2 §5.2).
     const ids = ['job one', 'job two', 'job three', 'job four'].map((t) => h!.userSaysIn(h!.chat(t.replace(' ', '_')), t));
     // Let the four intakes land, then look before the 20 s turns end.
-    for (let i = 0; i < 40; i++) await new Promise((r) => setTimeout(r, 2));
+    const run = h;
+    await untilStill(() => run.jobs().length === 4, 'four jobs are made');
     h.clock.advance(2_000);
-    for (let i = 0; i < 40; i++) await new Promise((r) => setTimeout(r, 2));
+    await untilStill(() => run.jobs().filter((j) => j.state !== 'queued').length === 3, 'three jobs leave the queue');
     const states = h.jobs().map((j) => j.state);
     expect(states.filter((s) => s === 'working')).toHaveLength(3);
     // M5 (T5): the four intakes race across four chats, so any one of them may be the job left waiting; find it by state.

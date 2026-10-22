@@ -2,6 +2,7 @@
 // keep the runner's state), Art. 12 (AI words never move a status), 08-2 §5.1.
 import { afterEach, describe, expect, it } from 'vitest';
 import { BILLS_PLAN, jobHarness, jobIntake, step, tool, type JobHarness } from './jobHarness';
+import { until } from './t3Helpers';
 
 let h: JobHarness | null = null;
 afterEach(() => {
@@ -21,11 +22,8 @@ describe('AT-119 · "All done!" is not DONE', () => {
       ],
     });
     const userId = h.userSays('Find bills due this week');
-    await new Promise((r) => setTimeout(r, 20));
-    for (let i = 0; i < 40; i++) {
-      h.clock.advance(250);
-      await new Promise((r) => setTimeout(r, 2));
-    }
+    const run = h;
+    await until(run, () => run.turnsJsonl().filter((t) => t.purpose === 'step').length === 3, 250);
     expect(h.turnsJsonl().filter((t) => t.purpose === 'step')).toHaveLength(3);
     expect(h.job().state).toBe('working');
     expect(h.message(userId).badge).toBe('working');

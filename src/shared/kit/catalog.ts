@@ -215,7 +215,7 @@ export const FOO_PARTS = [
         .min(1)
         .max(6),
     },
-    'inputs and results; formulas use + - * / ^ ( ), min, max, round, pmt and input names only',
+    'inputs and results; formulas use + - * / ^ ( ), min, max, round, pmt(rate per period, periods, principal) and input names only',
   ),
   part('GoalRing', { value: bound(z.number()), target: z.number().positive(), label }, 'progress to a goal'),
   part(

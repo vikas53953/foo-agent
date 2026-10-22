@@ -72,6 +72,26 @@ describe('Checklist rows (05-1 §5.2.2–§5.2.3)', () => {
     ]);
   });
 
+  it('a take-over adds "You took over" just before the step it happened at (06-3 §11.2, CR-0030 pick 3)', () => {
+    const v = checklistView(
+      { state: 'working', stopReason: null },
+      [step(0, 'done'), step(1, 'running'), step(2, 'pending', 'look_web', {})],
+      false,
+      [1],
+    );
+    expect(words(v)).toEqual([
+      ['done', 'Checked MakeMyTrip'],
+      ['took_over', 'You took over'],
+      ['current', 'Checking MakeMyTrip'],
+      ['next', 'Look on the web'],
+    ]);
+  });
+
+  it('a take-over after the last step sits at the end, before "Stopped by you"', () => {
+    const v = checklistView({ state: 'cancelled', stopReason: 'window_closed' }, [step(0, 'done'), step(1, 'done')], false, [2]);
+    expect(v.lines.map((l) => l.state)).toEqual(['done', 'done', 'took_over', 'stopped']);
+  });
+
   it('QUEUED is a single row "Waiting for another job to finish"', () => {
     expect(words(checklistView({ state: 'queued', stopReason: null }, [step(0, 'pending'), step(1, 'pending')]))).toEqual([
       ['next', 'Waiting for another job to finish'],

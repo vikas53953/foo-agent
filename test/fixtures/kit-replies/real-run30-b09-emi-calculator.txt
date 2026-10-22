@@ -1,0 +1,6 @@
+Your EMI is about **₹43,391** a month for ₹50,00,000 (50 lakh) at 8.5% over 20 years. You'd pay roughly ₹54,13,840 as interest, so ₹1,04,13,840 in total. Change the amount, rate or years below to see the numbers move.
+
+```a2ui
+{"createSurface":{"surfaceId":"s1","catalogId":"foo.kit.v1"}}
+{"updateComponents":{"surfaceId":"s1","components":[{"id":"root","component":"Calculator","inputs":[{"name":"amount","label":"Loan amount (₹)","value":5000000},{"name":"rate","label":"Interest rate (% per year)","value":8.5},{"name":"years","label":"Years","value":20}],"outputs":[{"label":"Monthly EMI","formula":"pmt(rate/12/100, years*12, amount)","unit":"rupees"},{"label":"Total interest","formula":"pmt(rate/12/100, years*12, amount)*years*12-amount","unit":"rupees"},{"label":"Total you pay","formula":"pmt(rate/12/100, years*12, amount)*years*12","unit":"rupees"}]}}]}
+```

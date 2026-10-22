@@ -1,0 +1,6 @@
+Your 2 minute tea timer is ready below. Start it when the water is hot, and keep this chat open until it rings.
+
+```a2ui
+{"createSurface":{"surfaceId":"s1","catalogId":"foo.kit.v1"}}
+{"updateComponents":{"surfaceId":"s1","components":[{"id":"root","component":"TimedChecklist","steps":[{"title":"Steep the tea","seconds":120}]}]}}
+```

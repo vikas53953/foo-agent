@@ -18,7 +18,8 @@
       "timeoutMs": 150000,
       "shot": "dark",
       "expect": "foo switches to dark and shows \"Changed: Theme → Dark. [Undo]\"",
-      "ref": "UX-12-02"
+      "ref": "UX-12-02",
+      "expectJs": "document.documentElement.dataset.theme === 'dark'"
     },
     {
       "do": "click",
