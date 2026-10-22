@@ -38,6 +38,19 @@ export const test = base.extend<Fixtures>({
       await run.page.getByTestId(TID.titlebarStrip).waitFor();
       await provide({ ...run, journey, mode, replySeen: false });
     } finally {
+      // Capture the rendered state before teardown so every scenario has a visual receipt, including failures.
+      // A crashed page must not replace the scenario's original assertion or teardown failure.
+      try {
+        await testInfo.attach(`bdd-screen-${journey}`, {
+          body: await run.page.screenshot({ fullPage: true }),
+          contentType: 'image/png',
+        });
+      } catch (error) {
+        testInfo.annotations.push({
+          type: 'bdd-screenshot-error',
+          description: error instanceof Error ? error.message : String(error),
+        });
+      }
       await run.app.close().catch(() => undefined);
     }
   },

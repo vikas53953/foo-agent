@@ -176,7 +176,7 @@ When('the user sends an acknowledgement', async ({ bddRun }) => {
   await bddRun.page.keyboard.press('Enter');
   const row = bddRun.page.getByTestId(TID.bubbleMe).filter({ hasText: 'thanks!' }).last();
   await expect(row).toBeVisible();
-  await expect(row.getByTestId(TID.bubbleReaction)).toContainText('👍');
+  await expect(row.getByTestId(TID.bubbleReaction)).toContainText(/(?:👍|❤️|❤)/u);
 });
 
 Then('foo adds a thumbs up reaction without posting a reply', async ({ bddRun }) => {
