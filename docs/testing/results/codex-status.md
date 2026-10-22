@@ -98,3 +98,9 @@ Lane D final receipt: [report commit93241457](https://github.com/vikas53953/foo-
 - [BDD rerun39738685276](https://github.com/vikas53953/foo-agent/actions/runs/39738685276) completed failure in both real and pretend jobs. Artifact judgment pending; do not reuse previous scenario counts as this run's result.
 - [Performance39735905306](https://github.com/vikas53953/foo-agent/actions/runs/39735905306) completed failure. Repeated-probe artifact review pending; no performance acceptance.
 - Mutation39739240428 and local8hsoak remain active. These failures do not block real-AI work.
+
+## Combined source integration checks
+
+181 tracked lane files imported from pinned commits using the [source manifest](lane-source-integration-2026-10-22.json); lane worktrees and active soak HEAD untouched. No merge. Lead adjustments: helper regression title no longer claims the AT427 application acceptance mapping (assertions unchanged); explicit soak Vitest configuration added because root defaults excluded these tests. Spec verification, trace consistency and driver syntax pass. Focused unit selection:11pass/2known journey-contract failures; explicit soak regression suite25/25pass. Broader type/build/lint checks are running. Imported branch tests do not inherit old execution acceptance.
+
+Performance39735905306 final:PERF01 20/20 existing smoke;PERF02 19/20,16.7ms violates unchanged<16ms;PERF03 20/20;PERF04 20/20. No screenshots in this diagnostic artifact. Full acceptance prerequisites absent. Local8hsoak latest boundedcheck5/96jobs, both producer/observer alive, freshheartbeat. Corrected mutation mainarea fails existing preload-net source-shape test before mutant output; other3areas running.

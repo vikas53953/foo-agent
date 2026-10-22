@@ -1,0 +1,16 @@
+{
+  "name": "foo-bdd-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bddgen": "node node_modules/playwright-bdd/dist/cli/index.js test --config playwright.config.ts",
+    "test": "pnpm bddgen && node node_modules/@playwright/test/cli.js test --config=playwright.config.ts",
+    "bddgen:real": "node node_modules/playwright-bdd/dist/cli/index.js test --config playwright.real.config.ts",
+    "test:real": "pnpm bddgen:real && node node_modules/@playwright/test/cli.js test --config=playwright.real.config.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "link:../../node_modules/@playwright/test",
+    "playwright": "link:../../node_modules/.pnpm/playwright@1.64.1/node_modules/playwright",
+    "playwright-bdd": "9.2.1"
+  }
+}

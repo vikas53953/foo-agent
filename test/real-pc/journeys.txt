@@ -49,3 +49,11 @@ U23-ai-page-chips
 U25-anatomy-composer
 U27-composer-no-dropped-letters
 U26-crash-reopen
+R-ai-pages
+R-approvals
+R-chat-rules
+R-dark
+R-jobs
+R-kit-1
+R-kit-2
+R-reply-area

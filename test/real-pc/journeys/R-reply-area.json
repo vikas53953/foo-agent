@@ -1,0 +1,164 @@
+{
+  "id": "R-reply-area",
+  "title": "Group R reply sender and action ownership",
+  "spec": "07 §11.5 Group R; AT-428, AT-430",
+  "covers": [
+    "AT-428",
+    "AT-430"
+  ],
+  "steps": [
+    {
+      "do": "send",
+      "text": "hi",
+      "note": "AT-428: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"bubble-sender\"]')})()",
+      "note": "AT-428: clean",
+      "shot": "at-428-clean"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "hi|hello|namaste",
+      "note": "AT-428: clean result"
+    },
+    {
+      "do": "send",
+      "text": "hii",
+      "note": "AT-428: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"bubble-sender\"]')})()",
+      "note": "AT-428: messy typo",
+      "shot": "at-428-messy-typo"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "hi|hello|namaste",
+      "note": "AT-428: messy typo result"
+    },
+    {
+      "do": "send",
+      "text": "namaste foo",
+      "note": "AT-428: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"bubble-sender\"]')})()",
+      "note": "AT-428: Hinglish",
+      "shot": "at-428-Hinglish"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "hi|hello|namaste",
+      "note": "AT-428: Hinglish result"
+    },
+    {
+      "do": "send",
+      "text": "Explain what a VPN is in 3 short paragraphs",
+      "note": "AT-430: clean VPN answer before hello"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "note": "AT-430: clean VPN answer",
+      "shot": "at-430-clean-VPN-answer"
+    },
+    {
+      "do": "send",
+      "text": "hi",
+      "note": "AT-430: clean greeting after answer"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "note": "AT-430: clean greeting",
+      "shot": "at-430-clean-greeting"
+    },
+    {
+      "do": "waitFor",
+      "css": "[data-testid=\"bubble-foo\"]:last-of-type [data-testid=\"bubble-actions-copy\"]",
+      "timeoutMs": 10000,
+      "note": "AT-430: copy action is scoped to the latest answer bubble"
+    },
+    {
+      "do": "send",
+      "text": "Explain wat a VPN is in 3 short paragaphs",
+      "note": "AT-430: messy typo VPN answer before hello"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "note": "AT-430: messy typo VPN answer",
+      "shot": "at-430-messy-typo-VPN-answer"
+    },
+    {
+      "do": "send",
+      "text": "hii",
+      "note": "AT-430: messy typo greeting after answer"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "note": "AT-430: messy typo greeting",
+      "shot": "at-430-messy-typo-greeting"
+    },
+    {
+      "do": "waitFor",
+      "css": "[data-testid=\"bubble-foo\"]:last-of-type [data-testid=\"bubble-actions-copy\"]",
+      "timeoutMs": 10000,
+      "note": "AT-430: copy action is scoped to the latest answer bubble"
+    },
+    {
+      "do": "send",
+      "text": "VPN kya hota hai, 3 chhote paragraphs mein samjhao",
+      "note": "AT-430: Hinglish VPN answer before hello"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "note": "AT-430: Hinglish VPN answer",
+      "shot": "at-430-Hinglish-VPN-answer"
+    },
+    {
+      "do": "send",
+      "text": "namaste foo",
+      "note": "AT-430: Hinglish greeting after answer"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "note": "AT-430: Hinglish greeting",
+      "shot": "at-430-Hinglish-greeting"
+    },
+    {
+      "do": "waitFor",
+      "css": "[data-testid=\"bubble-foo\"]:last-of-type [data-testid=\"bubble-actions-copy\"]",
+      "timeoutMs": 10000,
+      "note": "AT-430: copy action is scoped to the latest answer bubble"
+    }
+  ],
+  "blocked": [
+    "AT-430: latest-bubble scoping is checked; a fresh action-count delta across virtualized older bubbles is unavailable in this DSL."
+  ]
+}

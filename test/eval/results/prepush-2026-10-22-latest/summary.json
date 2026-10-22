@@ -1,0 +1,15 @@
+{
+  "buildSha": "0665cf67d2ab6cf0515f6d3198df6dfc35357e82",
+  "spec_verify": 0,
+  "check_copy": 0,
+  "lint": 0,
+  "format_check": 0,
+  "typecheck": 0,
+  "test": -1,
+  "build": 0,
+  "trace_check": 0,
+  "fid_guard": 1,
+  "format_note": "full repository format:check passed",
+  "test_note": "bounded current-base vitest run stopped after no progress; raw log retained without a pass claim",
+  "fid_note": "FID-06 blocked: explicit DeepEval threshold lines require a Fidelity CR"
+}

@@ -1,0 +1,1102 @@
+{
+  "before": "bc937e9ed00ea335d0ec2f62b1678339105335cc",
+  "files": [
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": ".github/workflows/real-ai-e2e.yml",
+      "status": "M"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/driver-helpers.js",
+      "status": "A"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/foo-drive.js",
+      "status": "M"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys.txt",
+      "status": "M"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/B03-web-local.json",
+      "status": "M"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/B04-stop.json",
+      "status": "M"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/B05-restart.json",
+      "status": "M"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/B06-booking-options.json",
+      "status": "M"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/B07-live.json",
+      "status": "M"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/B08-bank.json",
+      "status": "M"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/B09-kit.json",
+      "status": "M"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/B10-paste-secret.json",
+      "status": "M"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/B14-restart-mid-reply.json",
+      "status": "M"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/LaneA-smoke-5min.json",
+      "status": "A"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/R-ai-pages.json",
+      "status": "A"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/R-approvals.json",
+      "status": "A"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/R-chat-rules.json",
+      "status": "A"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/R-dark.json",
+      "status": "A"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/R-jobs.json",
+      "status": "A"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/R-kit-1.json",
+      "status": "A"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/R-kit-2.json",
+      "status": "A"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/R-reply-area.json",
+      "status": "A"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/real-pc/journeys/U27-composer-no-dropped-letters.json",
+      "status": "M"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/unit/real-pc-driver.test.ts",
+      "status": "A"
+    },
+    {
+      "lane": "a",
+      "sha": "af38bc304d648cfe89961f6ccec01fb3aedd5ded",
+      "path": "test/unit/real-pc-journeys.test.ts",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/.gitignore",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/evidence/contract-validation.txt",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/evidence/current-focused-pretend-2026-10-22.json",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/evidence/current-j7-pretend-redgreen-2026-10-22.json",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/evidence/current-main-j8-2022-10-22.json",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/evidence/focused-pretend.txt",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/evidence/full-vitest.txt",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/evidence/gates.txt",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/evidence/generation-list.txt",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/evidence/real-mode-attempt.txt",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J01-install.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J02-ai-finder.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J03-name-face.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J04-interview.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J05-first-task.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J06-morning-brief.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J07-casual-chat.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J08-choice.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J09-restaurant.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J10-hotel.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J11-bill.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J12-drafts.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J13-login.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J14-routines.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J15-helpers.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J16-group.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J17-memory.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J18-live-stop.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J19-errors.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J20-notifications.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J21-settings.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/J22-search.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/features/real/production-smoke.feature",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/package.json",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/playwright.config.ts",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/playwright.real.config.ts",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/pnpm-lock.yaml",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/steps/fixture.ts",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/steps/real-fixture.ts",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/steps/real-steps.ts",
+      "status": "A"
+    },
+    {
+      "lane": "b",
+      "sha": "0585953ae01b36919bf87af9f2f13b2329646767",
+      "path": "test/bdd/steps/steps.ts",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "docs/cr/CR-0052-ai-eval-threshold.md",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/.gitignore",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/README.md",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/cases.ts",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/deepeval_adapter.py",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/deepeval_cases.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/foo-eval.test.ts",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/injection-red-team.test.ts",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/production-cases.ts",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/real-ai-probe-prompts-2026-10-22.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/real_ai_quality_deepeval.py",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/requirements.txt",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/README.md",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/claude-probe-2026-10-22-call-02.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/claude-probe-2026-10-22-call-03.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/claude-probe-2026-10-22.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/deepeval-2026-10-22.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/deepeval-current-2026-10-22.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/live-inject-ai-page.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/live-inject-email-attempt-01.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/live-inject-email.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/live-inject-file.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/live-inject-paste.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/live-inject-web.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22-latest/build.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22-latest/check-copy.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22-latest/fid-guard-final.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22-latest/fid-guard.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22-latest/format-check-final.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22-latest/format-check.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22-latest/lint.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22-latest/spec-verify.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22-latest/summary.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22-latest/test-bounded-current.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22-latest/trace-check.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22-latest/typecheck.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22/build.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22/check-copy.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22/fid-guard.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22/format-check.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22/lint.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22/spec-verify.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22/summary.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22/test.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22/trace-check-initial-failure.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22/trace-check.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/prepush-2026-10-22/typecheck.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/production-cases.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/real-claude-injection-ai-page-2026-10-22.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/real-claude-injection-deepeval-2026-10-22.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/real-claude-injection-email-2026-10-22.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/real-claude-injection-file-2026-10-22.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/real-claude-injection-paste-2026-10-22.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/real-claude-injection-web-2026-10-22.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/real-claude-quality-deepeval-2026-10-22.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/real-claude-quality-deepeval-2026-10-22.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/real-claude-quality-plan-honesty-2026-10-22.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/real-claude-quality-tone-english-2026-10-22.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/real-claude-quality-tone-hindi-2026-10-22.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/real-claude-quality-tone-hinglish-2026-10-22.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/real-claude-quality-tone-punjabi-2026-10-22.json",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/vitest-focused-2026-10-22.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/vitest-focused-pass-2026-10-22.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/results/vitest-full-max2-2026-10-22.log",
+      "status": "A"
+    },
+    {
+      "lane": "c",
+      "sha": "47f20905f8c07e4fed716ab64f30667221bef19f",
+      "path": "test/eval/vitest.config.ts",
+      "status": "A"
+    },
+    {
+      "lane": "d",
+      "sha": "932414570ac09ead9963bd84d9cd4efd962cd16f",
+      "path": "docs/cr/CR-0053-lane-d-trace-witnesses.md",
+      "status": "A"
+    },
+    {
+      "lane": "d",
+      "sha": "932414570ac09ead9963bd84d9cd4efd962cd16f",
+      "path": "spec/SPEC-MANIFEST.json",
+      "status": "M"
+    },
+    {
+      "lane": "d",
+      "sha": "932414570ac09ead9963bd84d9cd4efd962cd16f",
+      "path": "spec/constitution/DECISIONS.md",
+      "status": "M"
+    },
+    {
+      "lane": "d",
+      "sha": "932414570ac09ead9963bd84d9cd4efd962cd16f",
+      "path": "spec/trace.csv",
+      "status": "M"
+    },
+    {
+      "lane": "d",
+      "sha": "932414570ac09ead9963bd84d9cd4efd962cd16f",
+      "path": "test/e2e/lane-d-a11y.spec.ts",
+      "status": "A"
+    },
+    {
+      "lane": "d",
+      "sha": "932414570ac09ead9963bd84d9cd4efd962cd16f",
+      "path": "test/e2e/lane-d-motion.spec.ts",
+      "status": "A"
+    },
+    {
+      "lane": "d",
+      "sha": "932414570ac09ead9963bd84d9cd4efd962cd16f",
+      "path": "test/unit/lane-d-grouping.test.ts",
+      "status": "A"
+    },
+    {
+      "lane": "d",
+      "sha": "932414570ac09ead9963bd84d9cd4efd962cd16f",
+      "path": "test/unit/lane-d-scroll.test.ts",
+      "status": "A"
+    },
+    {
+      "lane": "e",
+      "sha": "0e0ab3cab5f11301409849315cc6fa87e4dfdb55",
+      "path": "test/soak/lane-e-duration.test.ts",
+      "status": "A"
+    },
+    {
+      "lane": "e",
+      "sha": "0e0ab3cab5f11301409849315cc6fa87e4dfdb55",
+      "path": "test/soak/lane-e-duration.ts",
+      "status": "A"
+    },
+    {
+      "lane": "e",
+      "sha": "0e0ab3cab5f11301409849315cc6fa87e4dfdb55",
+      "path": "test/soak/lane-e-live-producer.ts",
+      "status": "A"
+    },
+    {
+      "lane": "e",
+      "sha": "0e0ab3cab5f11301409849315cc6fa87e4dfdb55",
+      "path": "test/soak/lane-e-performance.ts",
+      "status": "A"
+    },
+    {
+      "lane": "e",
+      "sha": "0e0ab3cab5f11301409849315cc6fa87e4dfdb55",
+      "path": "test/soak/lane-e-process-metrics.test.ts",
+      "status": "A"
+    },
+    {
+      "lane": "e",
+      "sha": "0e0ab3cab5f11301409849315cc6fa87e4dfdb55",
+      "path": "test/soak/lane-e-process-metrics.ts",
+      "status": "A"
+    },
+    {
+      "lane": "e",
+      "sha": "0e0ab3cab5f11301409849315cc6fa87e4dfdb55",
+      "path": "test/soak/lane-e-soak-contract.test.ts",
+      "status": "A"
+    },
+    {
+      "lane": "e",
+      "sha": "0e0ab3cab5f11301409849315cc6fa87e4dfdb55",
+      "path": "test/soak/lane-e-soak-contract.ts",
+      "status": "A"
+    },
+    {
+      "lane": "e",
+      "sha": "0e0ab3cab5f11301409849315cc6fa87e4dfdb55",
+      "path": "test/soak/lane-e-soak.ts",
+      "status": "A"
+    },
+    {
+      "lane": "e",
+      "sha": "0e0ab3cab5f11301409849315cc6fa87e4dfdb55",
+      "path": "test/windows/lane-e-first-run.ps1",
+      "status": "A"
+    },
+    {
+      "lane": "e",
+      "sha": "0e0ab3cab5f11301409849315cc6fa87e4dfdb55",
+      "path": "test/windows/lane-e-upgrade-seed.ts",
+      "status": "A"
+    },
+    {
+      "lane": "e",
+      "sha": "0e0ab3cab5f11301409849315cc6fa87e4dfdb55",
+      "path": "test/windows/lane-e-upgrade-verify.ts",
+      "status": "A"
+    },
+    {
+      "lane": "e",
+      "sha": "0e0ab3cab5f11301409849315cc6fa87e4dfdb55",
+      "path": "test/windows/lane-e-upgrade.ps1",
+      "status": "A"
+    },
+    {
+      "lane": "e",
+      "sha": "0e0ab3cab5f11301409849315cc6fa87e4dfdb55",
+      "path": "test/windows/lane-e-windows.ps1",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "scripts/audit/chaos.ts",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "scripts/audit/cloud-outbound.test.ts",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "scripts/audit/common.ts",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "scripts/audit/mutation-manifest.ts",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "scripts/audit/mutation-preflight.ts",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "scripts/audit/mutation-report.test.ts",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "scripts/audit/mutation-report.ts",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "scripts/audit/package-lock.json",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "scripts/audit/package.json",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "scripts/audit/privacy-network.ts",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "scripts/audit/repo-scan.ts",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "scripts/audit/vitest.mutation.config.ts",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "scripts/audit/vitest.mutation.engine.config.ts",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "scripts/audit/vitest.mutation.main.config.ts",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "scripts/audit/vitest.mutation.renderer.config.ts",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "scripts/audit/vitest.mutation.shared.config.ts",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "scripts/audit/wireup.ts",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "stryker.lane-f-engine-ci.json",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "stryker.lane-f-main-ci.json",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "stryker.lane-f-renderer-ci.json",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "stryker.lane-f-shared-ci.json",
+      "status": "A"
+    },
+    {
+      "lane": "f",
+      "sha": "ddb5804e3ce60c42ee111662f3db82ccfe04acfa",
+      "path": "stryker.lane-f.config.json",
+      "status": "A"
+    },
+    {
+      "lane": "g",
+      "sha": "67347049e1b563cb629e9f1e02a0f4008f7af9f8",
+      "path": "docs/testing/usability/15-minute-real-person-script.md",
+      "status": "A"
+    },
+    {
+      "lane": "g",
+      "sha": "67347049e1b563cb629e9f1e02a0f4008f7af9f8",
+      "path": "docs/testing/usability/ai-heuristic-review.md",
+      "status": "A"
+    },
+    {
+      "lane": "g",
+      "sha": "67347049e1b563cb629e9f1e02a0f4008f7af9f8",
+      "path": "docs/testing/usability/evidence/current-native/01-initial.png",
+      "status": "A"
+    },
+    {
+      "lane": "g",
+      "sha": "67347049e1b563cb629e9f1e02a0f4008f7af9f8",
+      "path": "docs/testing/usability/evidence/current-native/04-settings-notifications.png",
+      "status": "A"
+    },
+    {
+      "lane": "g",
+      "sha": "67347049e1b563cb629e9f1e02a0f4008f7af9f8",
+      "path": "docs/testing/usability/evidence/current-native/05-settings-shortcuts.png",
+      "status": "A"
+    },
+    {
+      "lane": "g",
+      "sha": "67347049e1b563cb629e9f1e02a0f4008f7af9f8",
+      "path": "docs/testing/usability/evidence/current-native/06-settings-appearance.png",
+      "status": "A"
+    }
+  ],
+  "lead_adjustments": [
+    {
+      "path": "test/unit/real-pc-driver.test.ts",
+      "reason": "Retain AT427 in comment, remove acceptance ID from helper regression title; no assertion changed. Prevents false acceptance trace mapping."
+    },
+    {
+      "path": "test/soak/vitest.config.ts",
+      "reason": "Explicitly includes all25 soak regression tests excluded by rootdefault; no threshold change."
+    }
+  ],
+  "excluded": "Untracked artifacts and scripts/audit/evidence raw outputs; sanitized reports and immutable links published separately."
+}

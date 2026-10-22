@@ -30,6 +30,25 @@
       "expect": "AT-118: recovery card; job resumes (WAITING \u2192 WORKING)"
     },
     {
+      "do": "check",
+      "css": "[data-testid=\"card-error\"][data-card-state=\"asking\"]",
+      "count": 1,
+      "note": "AT-118: reopen renders the asking recovery card"
+    },
+    {
+      "do": "expectText",
+      "tid": "card-error",
+      "last": true,
+      "re": "closed unexpectedly|Pick up where I left off",
+      "note": "AT-118: recovery copy is present on the actual card"
+    },
+    {
+      "do": "check",
+      "tid": "card-error-fix",
+      "count": 1,
+      "note": "AT-118: the recovery card exposes its resume action"
+    },
+    {
       "do": "wait",
       "ms": 150000,
       "shot": "after-reopen-later"

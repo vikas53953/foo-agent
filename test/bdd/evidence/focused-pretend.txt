@@ -1,0 +1,17 @@
+Lane B focused pretend-AI evidence
+Historical base for first five runs: cc8d73015121e1d70ab5c52f75d562097c2b76a6
+Command: node node_modules/@playwright/test/cli.js test --config=playwright.config.ts --grep="J8 —" --workers=1
+Result: PASS; one Electron test
+Command: same, J9 —
+Result: PASS; one Electron test
+Command: same, J10 —
+Result: PASS; one Electron test
+Command: same, J12 —
+Result: PASS; one Electron test
+Command: same, J19 —
+Result: PASS; one Electron test
+Command: same, J7 —
+Result: FAIL; AT-027 reaction assertion. The fake turn matched and SQLite stored foo/👍, but the renderer bubble had no bubble-reaction node.
+Current base after refresh: 0665cf67d2ab6cf0515f6d3198df6dfc35357e82
+Command: same, J8 —
+Result: BLOCKED by 30 s bddRun teardown timeout while the host was under concurrent Electron load.

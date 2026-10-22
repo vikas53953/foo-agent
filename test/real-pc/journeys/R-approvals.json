@@ -1,0 +1,649 @@
+{
+  "id": "R-approvals",
+  "title": "Group R approval and booking plans without irreversible clicks",
+  "spec": "07 §11.5 Group R; AT-109, AT-110, AT-121, AT-126, AT-128, AT-363, AT-435",
+  "covers": [
+    "AT-109",
+    "AT-110",
+    "AT-121",
+    "AT-126",
+    "AT-128",
+    "AT-363",
+    "AT-435"
+  ],
+  "steps": [
+    {
+      "do": "send",
+      "text": "Book me a hotel in Goa for 2 nights next weekend under 5,000 rupees a night",
+      "note": "AT-109: clean hotel ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-choice",
+      "note": "AT-109: clean choice",
+      "shot": "at-109-clean-choice"
+    },
+    {
+      "do": "click",
+      "tid": "card-choice-option",
+      "note": "AT-109: clean choose one safe option"
+    },
+    {
+      "do": "check",
+      "tid": "card-checklist",
+      "note": "AT-109: clean selected option opens checklist"
+    },
+    {
+      "do": "send",
+      "text": "Book me a hotle in Goa for 2 nights next weekend under 5,000 rupes a night",
+      "note": "AT-109: messy typo hotel ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-choice",
+      "note": "AT-109: messy typo choice",
+      "shot": "at-109-messy-typo-choice"
+    },
+    {
+      "do": "click",
+      "tid": "card-choice-option",
+      "note": "AT-109: messy typo choose one safe option"
+    },
+    {
+      "do": "check",
+      "tid": "card-checklist",
+      "note": "AT-109: messy typo selected option opens checklist"
+    },
+    {
+      "do": "send",
+      "text": "Goa mein next weekend 2 nights ke liye 5,000 rupees per night ke andar hotel book karna hai",
+      "note": "AT-109: Hinglish hotel ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-choice",
+      "note": "AT-109: Hinglish choice",
+      "shot": "at-109-Hinglish-choice"
+    },
+    {
+      "do": "click",
+      "tid": "card-choice-option",
+      "note": "AT-109: Hinglish choose one safe option"
+    },
+    {
+      "do": "check",
+      "tid": "card-checklist",
+      "note": "AT-109: Hinglish selected option opens checklist"
+    },
+    {
+      "do": "send",
+      "text": "Book me a hotel in Goa for 2 nights next weekend under 5,000 rupees a night",
+      "note": "AT-110: clean hotel ask before refusal"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-choice",
+      "note": "AT-110: initial safe choice before approval",
+      "shot": "at-110-clean-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-110: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-110: clean approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
+    },
+    {
+      "do": "send",
+      "text": "no, don't do it",
+      "note": "AT-110: clean typed refusal"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(?:okay, i won't|nothing was)/i.test(b.innerText)})()",
+      "note": "AT-110: clean refusal",
+      "shot": "at-110-clean-refusal"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "Okay, I won't|Nothing was",
+      "note": "AT-110: clean refusal response"
+    },
+    {
+      "do": "send",
+      "text": "Book me a hotle in Goa for 2 nights next weekend under 5,000 rupes a night",
+      "note": "AT-110: messy typo hotel ask before refusal"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-choice",
+      "note": "AT-110: initial safe choice before approval",
+      "shot": "at-110-messy-typo-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-110: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-110: messy typo approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
+    },
+    {
+      "do": "send",
+      "text": "no, don't do it",
+      "note": "AT-110: messy typo typed refusal"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(?:okay, i won't|nothing was)/i.test(b.innerText)})()",
+      "note": "AT-110: messy typo refusal",
+      "shot": "at-110-messy-typo-refusal"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "Okay, I won't|Nothing was",
+      "note": "AT-110: messy typo refusal response"
+    },
+    {
+      "do": "send",
+      "text": "Goa mein next weekend 2 nights ke liye 5,000 rupees per night ke andar hotel book karna hai",
+      "note": "AT-110: Hinglish hotel ask before refusal"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-choice",
+      "note": "AT-110: initial safe choice before approval",
+      "shot": "at-110-Hinglish-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-110: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-110: Hinglish approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
+    },
+    {
+      "do": "send",
+      "text": "no, don't do it",
+      "note": "AT-110: Hinglish typed refusal"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(?:okay, i won't|nothing was)/i.test(b.innerText)})()",
+      "note": "AT-110: Hinglish refusal",
+      "shot": "at-110-Hinglish-refusal"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "Okay, I won't|Nothing was",
+      "note": "AT-110: Hinglish refusal response"
+    },
+    {
+      "do": "send",
+      "text": "Book me a hotel in Goa for 2 nights next weekend under 5,000 rupees a night",
+      "note": "AT-121: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-choice",
+      "note": "AT-121: initial safe choice before approval",
+      "shot": "at-121-clean"
+    },
+    {
+      "do": "click",
+      "note": "AT-121: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval-expiry",
+      "note": "AT-121: clean after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval-expiry\"]')})()"
+    },
+    {
+      "do": "expectText",
+      "tid": "card-approval-expiry",
+      "last": true,
+      "re": "15 min",
+      "note": "AT-121: clean result"
+    },
+    {
+      "do": "send",
+      "text": "Book me a hotle in Goa for 2 nights next weekend under 5,000 rupes a night",
+      "note": "AT-121: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-choice",
+      "note": "AT-121: initial safe choice before approval",
+      "shot": "at-121-messy-typo"
+    },
+    {
+      "do": "click",
+      "note": "AT-121: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval-expiry",
+      "note": "AT-121: messy typo after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval-expiry\"]')})()"
+    },
+    {
+      "do": "expectText",
+      "tid": "card-approval-expiry",
+      "last": true,
+      "re": "15 min",
+      "note": "AT-121: messy typo result"
+    },
+    {
+      "do": "send",
+      "text": "Goa mein next weekend 2 nights ke liye 5,000 rupees per night ke andar hotel book karna hai",
+      "note": "AT-121: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-choice",
+      "note": "AT-121: initial safe choice before approval",
+      "shot": "at-121-Hinglish"
+    },
+    {
+      "do": "click",
+      "note": "AT-121: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval-expiry",
+      "note": "AT-121: Hinglish after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval-expiry\"]')})()"
+    },
+    {
+      "do": "expectText",
+      "tid": "card-approval-expiry",
+      "last": true,
+      "re": "15 min",
+      "note": "AT-121: Hinglish result"
+    },
+    {
+      "do": "send",
+      "text": "Book me a hotel in Goa for 2 nights next weekend under 5,000 rupees a night",
+      "note": "AT-126: clean hotel ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-choice",
+      "note": "AT-126: initial safe choice before approval",
+      "shot": "at-126-clean-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-126: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-126: clean approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
+    },
+    {
+      "do": "click",
+      "tid": "card-approval-not-now",
+      "note": "AT-126: clean Not now choice"
+    },
+    {
+      "do": "expectText",
+      "tid": "card-approval",
+      "last": true,
+      "re": "You said no|Nothing was",
+      "note": "AT-126: clean declined approval result"
+    },
+    {
+      "do": "send",
+      "text": "Book me a hotle in Goa for 2 nights next weekend under 5,000 rupes a night",
+      "note": "AT-126: messy typo hotel ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-choice",
+      "note": "AT-126: initial safe choice before approval",
+      "shot": "at-126-messy-typo-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-126: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-126: messy typo approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
+    },
+    {
+      "do": "click",
+      "tid": "card-approval-not-now",
+      "note": "AT-126: messy typo Not now choice"
+    },
+    {
+      "do": "expectText",
+      "tid": "card-approval",
+      "last": true,
+      "re": "You said no|Nothing was",
+      "note": "AT-126: messy typo declined approval result"
+    },
+    {
+      "do": "send",
+      "text": "Goa mein next weekend 2 nights ke liye 5,000 rupees per night ke andar hotel book karna hai",
+      "note": "AT-126: Hinglish hotel ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-choice",
+      "note": "AT-126: initial safe choice before approval",
+      "shot": "at-126-Hinglish-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-126: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-126: Hinglish approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
+    },
+    {
+      "do": "click",
+      "tid": "card-approval-not-now",
+      "note": "AT-126: Hinglish Not now choice"
+    },
+    {
+      "do": "expectText",
+      "tid": "card-approval",
+      "last": true,
+      "re": "You said no|Nothing was",
+      "note": "AT-126: Hinglish declined approval result"
+    },
+    {
+      "do": "send",
+      "text": "Book me a hotel in Goa for 2 nights next weekend under 5,000 rupees a night",
+      "note": "AT-128: clean hotel ask before Stop"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-choice",
+      "note": "AT-128: initial safe choice before approval",
+      "shot": "at-128-clean-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-128: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-128: clean approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
+    },
+    {
+      "do": "send",
+      "text": "stop",
+      "note": "AT-128: clean Stop request"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(?:no longer needed|stopped)/i.test(b.innerText)})()",
+      "note": "AT-128: clean stopped approval",
+      "shot": "at-128-clean-stopped-approval"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "No longer needed|stopped",
+      "note": "AT-128: clean stop result"
+    },
+    {
+      "do": "send",
+      "text": "Book me a hotle in Goa for 2 nights next weekend under 5,000 rupes a night",
+      "note": "AT-128: messy typo hotel ask before Stop"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-choice",
+      "note": "AT-128: initial safe choice before approval",
+      "shot": "at-128-messy-typo-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-128: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-128: messy typo approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
+    },
+    {
+      "do": "send",
+      "text": "stop",
+      "note": "AT-128: messy typo Stop request"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(?:no longer needed|stopped)/i.test(b.innerText)})()",
+      "note": "AT-128: messy typo stopped approval",
+      "shot": "at-128-messy-typo-stopped-approval"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "No longer needed|stopped",
+      "note": "AT-128: messy typo stop result"
+    },
+    {
+      "do": "send",
+      "text": "Goa mein next weekend 2 nights ke liye 5,000 rupees per night ke andar hotel book karna hai",
+      "note": "AT-128: Hinglish hotel ask before Stop"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-choice",
+      "note": "AT-128: initial safe choice before approval",
+      "shot": "at-128-Hinglish-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-128: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-128: Hinglish approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
+    },
+    {
+      "do": "send",
+      "text": "stop",
+      "note": "AT-128: Hinglish Stop request"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(?:no longer needed|stopped)/i.test(b.innerText)})()",
+      "note": "AT-128: Hinglish stopped approval",
+      "shot": "at-128-Hinglish-stopped-approval"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "No longer needed|stopped",
+      "note": "AT-128: Hinglish stop result"
+    },
+    {
+      "do": "send",
+      "text": "Book a hotel in Jaipur for 2 people on 14 Nov under 4,000 rupees",
+      "note": "AT-363: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-plan",
+      "note": "AT-363: clean",
+      "shot": "at-363-clean"
+    },
+    {
+      "do": "expectText",
+      "tid": "card-plan",
+      "last": true,
+      "re": "Jaipur|4,000",
+      "note": "AT-363: clean result"
+    },
+    {
+      "do": "send",
+      "text": "Book a hotle in Jaipur for 2 people on 14 Nov under 4,000 rupes",
+      "note": "AT-363: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-plan",
+      "note": "AT-363: messy typo",
+      "shot": "at-363-messy-typo"
+    },
+    {
+      "do": "expectText",
+      "tid": "card-plan",
+      "last": true,
+      "re": "Jaipur|4,000",
+      "note": "AT-363: messy typo result"
+    },
+    {
+      "do": "send",
+      "text": "Jaipur mein 14 Nov ko 2 logon ke liye 4,000 rupees se kam hotel chahiye",
+      "note": "AT-363: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-plan",
+      "note": "AT-363: Hinglish",
+      "shot": "at-363-Hinglish"
+    },
+    {
+      "do": "expectText",
+      "tid": "card-plan",
+      "last": true,
+      "re": "Jaipur|4,000",
+      "note": "AT-363: Hinglish result"
+    },
+    {
+      "do": "send",
+      "text": "Email test@example.com that I'll be late tomorrow",
+      "note": "AT-435: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-plan\"],[data-testid=\"card-connect\"]')})()",
+      "note": "AT-435: clean",
+      "shot": "at-435-clean"
+    },
+    {
+      "do": "send",
+      "text": "Email test@example.com that I'll be late tomorow",
+      "note": "AT-435: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-plan\"],[data-testid=\"card-connect\"]')})()",
+      "note": "AT-435: messy typo",
+      "shot": "at-435-messy-typo"
+    },
+    {
+      "do": "send",
+      "text": "test@example.com ko batao ki main kal late aaunga, email draft banao",
+      "note": "AT-435: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-plan\"],[data-testid=\"card-connect\"]')})()",
+      "note": "AT-435: Hinglish",
+      "shot": "at-435-Hinglish"
+    }
+  ],
+  "blocked": [
+    "AT-110, AT-121, AT-126, AT-128: authored with the real choice-option step before approval; driver-choice support is a separate pending lane, so these journeys are not claimed run."
+  ]
+}

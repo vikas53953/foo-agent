@@ -1,0 +1,5 @@
+
+> foo@0.0.1 check:copy <lane-c>
+> tsx scripts/check-copy.ts
+
+copy ok
