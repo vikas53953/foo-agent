@@ -1,7 +1,7 @@
 {
   "id": "B07-live",
   "title": "Watch live, take over, hand back, stop",
-  "spec": "AT-058, AT-272, AT-078, J18",
+  "spec": "AT-058, AT-079, AT-272, J18; AT-078 external Edge close remains blocked",
   "steps": [
     {
       "do": "send",
@@ -11,7 +11,7 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "irctc",
-      "note": "AT-058/AT-078/AT-079/AT-272: the browser job must first produce an actual plan or reply",
+      "note": "AT-058/AT-079/AT-272: the browser job must first produce an actual plan or reply",
       "expectJs": "(()=>!!document.querySelector('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"], [data-testid=\"thread-log\"] [data-testid=\"card-plan\"]'))()"
     },
     {
@@ -24,12 +24,24 @@
     },
     {
       "do": "clickIf",
-      "tid": "chat-header-watch-live"
+      "tid": "chat-header-watch-live",
+      "captureWindow": "live",
+      "timeoutMs": 30000,
+      "note": "AT-058/AT-272: pre-arm the live BrowserWindow event before opening the actual viewer"
     },
     {
-      "do": "wait",
-      "ms": 4000,
-      "shot": "live"
+      "do": "waitFor",
+      "css": "[data-testid=\"live-root\"][data-state=\"live\"]",
+      "timeoutMs": 30000,
+      "shot": "live",
+      "note": "AT-079: the active live BrowserWindow reaches live state"
+    },
+    {
+      "do": "waitFor",
+      "css": "[data-testid=\"live-picture\"][data-masked=\"true\"]",
+      "timeoutMs": 30000,
+      "shot": "masked",
+      "note": "AT-079: the active live BrowserWindow exposes a masked picture"
     },
     {
       "do": "check",
@@ -81,18 +93,28 @@
     },
     {
       "do": "clickIf",
-      "tid": "live-stop"
+      "tid": "live-stop",
+      "awaitClose": true,
+      "timeoutMs": 30000,
+      "note": "J18: pre-arm the live viewer close event; AT-078 external Edge close remains blocked"
     },
     {
       "do": "wait",
-      "ms": 8000,
+      "ms": 2000,
       "shot": "stopped"
     },
     {
       "do": "check",
-      "tid": "live-root",
-      "count": 0,
-      "note": "AT-078: after stop the live window is closed rather than left interactive"
+      "css": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"stopped\"]",
+      "count": 1,
+      "note": "J18: after the live viewer closes, the main conversation shows a stopped badge"
+    },
+    {
+      "do": "expectText",
+      "tid": "bubble-foo",
+      "last": true,
+      "re": "stopp|nothing.*(running|booked|paid|sent)",
+      "note": "J18: the main conversation reports the stopped job; this is not AT-078 Edge-window proof"
     },
     {
       "do": "key",

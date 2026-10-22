@@ -13,6 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const { stillWorking, settled } = require('./settle');
+const { isLiveWindow, waitForPageClose, waitForWindowAfterClick } = require('./driver-helpers');
 
 const EXE = process.env.FOO_EXE || path.join(process.env.LOCALAPPDATA || '', 'Programs', 'foo', 'foo.exe');
 const ROOT = process.env.FOO_REAL_TEST_DIR || path.join(process.env.USERPROFILE || '.', 'foo-real-test');
@@ -153,8 +154,12 @@ async function main() {
 
   const { _electron } = loadPlaywright();
   let app;
-  let page;
+  let mainPage;
+  let livePage = null;
   let shotN = 0;
+  const setActivePage = (next) => {
+    pageRef = next;
+  };
   const launch = async () => {
     app = await _electron.launch({
       executablePath: EXE,
@@ -163,27 +168,28 @@ async function main() {
       env: childEnv(),
       timeout: 60_000,
     });
-    page = await app.firstWindow();
-    pageRef = page;
+    mainPage = await app.firstWindow();
+    livePage = null;
+    setActivePage(mainPage);
     // Wait until the window shows the chat or the setup card, then let the thread finish loading its history,
     // so counting foo's bubbles before a send never mistakes old messages for a new reply.
-    await page
+    await mainPage
       .locator('[data-testid="composer-field"], [data-testid="card-setup"]')
       .first()
       .waitFor({ state: 'visible', timeout: 60_000 })
       .catch(() => {});
-    await page.waitForTimeout(4_000);
-    page.on('console', (m) => m.type() === 'error' && log({ console: m.text().slice(0, 500) }));
+    await mainPage.waitForTimeout(4_000);
+    mainPage.on('console', (m) => m.type() === 'error' && log({ console: m.text().slice(0, 500) }));
     log({ step: 'launch', ok: true });
   };
   const shot = async (name) => {
     shotN += 1;
     const f = path.join(out, `${String(shotN).padStart(2, '0')}-${name}.png`);
-    await page.screenshot({ path: f });
+    await pageRef.screenshot({ path: f });
     log({ shot: path.basename(f) });
   };
   const threadDump = () =>
-    page.evaluate(() =>
+    mainPage.evaluate(() =>
       [
         ...document.querySelectorAll(
           '[data-testid="thread-log"] [data-testid^="bubble-"], [data-testid="thread-log"] [data-testid^="card-"]',
@@ -199,7 +205,7 @@ async function main() {
   // CR-0046: foo's replies that hold a fence (```a2ui, ```page), as the AI wrote them, so a kit piece that drew only
   // "Couldn't show part of this" can become a cassette (test/fixtures/kit-replies). The drawn thread keeps only the words.
   const rawFences = () =>
-    page.evaluate(async () => {
+    mainPage.evaluate(async () => {
       const out = [];
       const chats = await window.foo.invoke('chat:list', {});
       for (const c of chats.ok ? chats.value : []) {
@@ -216,7 +222,7 @@ async function main() {
   // counting what sits after the newest bubble-me does not. A memory chip ("I'll remember: … · Undo", 05-3 §5.17.1) is
   // foo's whole answer to "remember that …", so it counts too.
   const afterMe = () =>
-    page.evaluate(() => {
+    mainPage.evaluate(() => {
       const log = document.querySelector('[data-testid="thread-log"]');
       if (!log) return { n: 0, texts: [], items: [] };
       const memoryChip = (el) =>
@@ -253,10 +259,10 @@ async function main() {
   const endState = async (s) => {
     const q = s.expectTid ? `[data-testid="${s.expectTid}"]` : s.tid || s.css ? sel(s) : null;
     if (q) {
-      const n = await page.locator(q).count();
+      const n = await mainPage.locator(q).count();
       if (s.count !== undefined ? n !== s.count : n === 0) return false;
     }
-    if (s.expectJs && !(await page.evaluate(s.expectJs))) return false;
+    if (s.expectJs && !(await mainPage.evaluate(s.expectJs))) return false;
     return true;
   };
 
@@ -268,14 +274,14 @@ async function main() {
   }
   // A web job left stuck by an earlier journey blocks every later reply in the chat
   // (reported product bug). Clear it with a typed "stop" so this journey can still be judged.
-  const stuck = page.locator('[data-testid="thread-log"] [data-testid="card-stuck"]');
+  const stuck = mainPage.locator('[data-testid="thread-log"] [data-testid="card-stuck"]');
   if (await stuck.count().catch(() => 0)) {
     const t0 = Date.now();
-    const field = page.locator('[data-testid="composer-field"]');
+    const field = mainPage.locator('[data-testid="composer-field"]');
     const ok = await field
       .fill('stop')
       .then(() => field.press('Enter'))
-      .then(() => page.waitForTimeout(8_000))
+      .then(() => mainPage.waitForTimeout(8_000))
       .then(() => true)
       .catch(() => false);
     log({ step: 'cleanup', stoppedStuckJob: ok, stuckLeft: await stuck.count().catch(() => -1), ms: Date.now() - t0 });
@@ -287,23 +293,23 @@ async function main() {
     try {
       switch (s.do) {
         case 'wait':
-          await page.waitForTimeout(s.ms);
+          await pageRef.waitForTimeout(s.ms);
           break;
         case 'waitFor':
-          await page
+          await pageRef
             .locator(sel(s))
             .first()
             .waitFor({ state: 'visible', timeout: s.timeoutMs ?? 30_000 });
           break;
         case 'check': {
-          const n = await page.locator(sel(s)).count();
+          const n = await pageRef.locator(sel(s)).count();
           rec.found = n;
           rec.ok = s.count !== undefined ? n === s.count : n > 0;
           break;
         }
         case 'click': {
           // unlessTid: skip the click when that control is already showing (e.g. no retest needed once Use is offered).
-          if (s.unlessTid && (await page.locator(`[data-testid="${s.unlessTid}"]`).count())) {
+          if (s.unlessTid && (await mainPage.locator(`[data-testid="${s.unlessTid}"]`).count())) {
             rec.skipped = `${s.unlessTid} already showing`;
             break;
           }
@@ -333,45 +339,70 @@ async function main() {
           await pick(s).screenshot({ path: path.join(out, `${String(shotN).padStart(2, '0')}-${s.name}.png`), timeout: 10_000 });
           break;
         case 'openChat':
-          await page.locator('[data-testid="chatlist-row"]').filter({ hasText: s.name }).first().click({ timeout: 15_000 });
-          await page.waitForTimeout(1_000);
+          await mainPage.locator('[data-testid="chatlist-row"]').filter({ hasText: s.name }).first().click({ timeout: 15_000 });
+          await mainPage.waitForTimeout(1_000);
           break;
         case 'clickIf': {
           // Clicks only when the control is there (e.g. a plan's Go); never a refused control.
-          const loc = page.locator(sel(s)).last();
+          // Opening the live viewer is the one main-page action whose result is
+          // a second BrowserWindow.  Arm the window listener before clicking,
+          // then route generic checks and screenshots to that live page.
+          const target = s.captureWindow ? mainPage : pageRef;
+          const loc = target.locator(sel(s)).last();
           rec.found = await loc.count();
-          if (rec.found && !(s.tid && REFUSED_TIDS.has(s.tid))) await loc.click({ timeout: 10_000 });
+          if (rec.found && !(s.tid && REFUSED_TIDS.has(s.tid))) {
+            if (s.captureWindow) {
+              livePage = await waitForWindowAfterClick({
+                app,
+                click: () => loc.click({ timeout: s.timeoutMs ?? 15_000 }),
+                predicate: isLiveWindow,
+                ready: (opened) =>
+                  opened.locator('[data-testid="live-root"]').waitFor({ state: 'visible', timeout: s.timeoutMs ?? 30_000 }),
+              });
+              setActivePage(livePage);
+              rec.window = 'live';
+            } else {
+              const close = s.awaitClose && livePage ? waitForPageClose(livePage, s.timeoutMs ?? 30_000) : null;
+              await loc.click({ timeout: s.timeoutMs ?? 10_000 });
+              if (close) {
+                await close;
+                livePage = null;
+                setActivePage(mainPage);
+                rec.window = 'main';
+              }
+            }
+          }
           break;
         }
         case 'paste':
           // Puts text on the clipboard and pastes it into the composer, like Ctrl+V.
           await app.evaluate(({ clipboard }, t) => clipboard.writeText(t), s.repeat ? s.text.repeat(s.repeat) : s.text);
-          await page.locator('[data-testid="composer-field"]').click();
-          await page.keyboard.press('Control+V');
+          await mainPage.locator('[data-testid="composer-field"]').click();
+          await mainPage.keyboard.press('Control+V');
           break;
         case 'typeSend':
         case 'pasteSend': {
           // Type fast (no retry) or paste, send, then read back what was sent through the bubble's own Copy and require
           // the exact text: a dropped or doubled letter fails the step.
-          const field = page.locator('[data-testid="composer-field"]');
+          const field = mainPage.locator('[data-testid="composer-field"]');
           const ME = '[data-testid="thread-log"] [data-testid="bubble-me"]';
-          const mine = page.locator(ME);
+          const mine = mainPage.locator(ME);
           await field.click();
-          if (s.do === 'typeSend') await page.keyboard.type(s.text, { delay: s.delay ?? 0 });
+          if (s.do === 'typeSend') await mainPage.keyboard.type(s.text, { delay: s.delay ?? 0 });
           else {
             await app.evaluate(({ clipboard }, t) => clipboard.writeText(t), s.text);
-            await page.keyboard.press('Control+V');
+            await mainPage.keyboard.press('Control+V');
           }
-          await page.waitForTimeout(300);
+          await mainPage.waitForTimeout(300);
           rec.inField = norm(await field.innerText());
           // The thread is a virtual list, so the bubble count stops growing in long chats.
           // Mark the newest bubble-me before sending and wait for a newer, unmarked one.
-          await page.evaluate((q) => {
+          await mainPage.evaluate((q) => {
             const b = [...document.querySelectorAll(q)].pop();
             if (b) b.setAttribute('data-drv-seen', '1');
           }, ME);
-          await page.keyboard.press('Enter');
-          await page.waitForFunction(
+          await mainPage.keyboard.press('Enter');
+          await mainPage.waitForFunction(
             (q) => {
               const b = [...document.querySelectorAll(q)].pop();
               return b && !b.hasAttribute('data-drv-seen');
@@ -381,8 +412,8 @@ async function main() {
           );
           await app.evaluate(({ clipboard }) => clipboard.writeText(''));
           await mine.last().click({ button: 'right' });
-          await page.locator('[data-testid="bubble-menu-copy"]').click();
-          await page.waitForTimeout(400);
+          await mainPage.locator('[data-testid="bubble-menu-copy"]').click();
+          await mainPage.waitForTimeout(400);
           const got = norm(await app.evaluate(({ clipboard }) => clipboard.readText()));
           const want = norm(s.text);
           rec.ok = got === want;
@@ -392,32 +423,32 @@ async function main() {
             rec.mismatch = { wantLen: want.length, gotLen: got.length, at, want: want.slice(at, at + 40), got: got.slice(at, at + 40) };
             rec.fieldOk = rec.inField === want;
           }
-          await page.keyboard.press('Escape').catch(() => {});
+          await mainPage.keyboard.press('Escape').catch(() => {});
           break;
         }
         case 'eval':
-          rec.value = await page.evaluate(s.js);
+          rec.value = await mainPage.evaluate(s.js);
           break;
         case 'fill':
-          await page.locator(sel(s)).first().fill(s.value);
+          await pageRef.locator(sel(s)).first().fill(s.value);
           break;
         case 'key':
-          await page.keyboard.press(s.key);
+          await pageRef.keyboard.press(s.key);
           break;
         case 'send': {
-          const field = page.locator('[data-testid="composer-field"]');
+          const field = mainPage.locator('[data-testid="composer-field"]');
           await field.waitFor({ state: 'visible', timeout: 30_000 });
           const ME = '[data-testid="thread-log"] [data-testid="bubble-me"]';
           await field.click();
           await field.fill(s.text);
           // Mark the newest bubble-me, send, and wait for a newer unmarked one (the same text sent twice still counts).
-          await page.evaluate((q) => {
+          await mainPage.evaluate((q) => {
             const b = [...document.querySelectorAll(q)].pop();
             if (b) b.setAttribute('data-drv-seen', '1');
           }, ME);
-          await page.keyboard.press('Enter');
+          await mainPage.keyboard.press('Enter');
           rec.sentAt = Date.now();
-          rec.sent = await page
+          rec.sent = await mainPage
             .waitForFunction(
               (q) => {
                 const b = [...document.querySelectorAll(q)].pop();
@@ -445,7 +476,7 @@ async function main() {
           let lastChange = Date.now();
           let first = null;
           while (Date.now() - start < (s.timeoutMs ?? 120_000)) {
-            await page.waitForTimeout(500);
+            await mainPage.waitForTimeout(500);
             const now = await afterMe();
             if (now.n > before && first === null) first = Date.now() - start;
             if (now.n !== cur.n || now.texts.join() !== cur.texts.join()) lastChange = Date.now();
@@ -499,14 +530,14 @@ async function main() {
           break;
         case 'text':
           rec.text = (
-            (await page
+            (await pageRef
               .locator(sel(s))
               .first()
               .innerText({ timeout: s.timeoutMs ?? 10_000 })) || ''
           ).slice(0, 2000);
           break;
         case 'closeWindow':
-          await page.evaluate(() => window.close());
+          await pageRef.evaluate(() => window.close());
           break;
         case 'quit':
           await app.close();
@@ -518,7 +549,7 @@ async function main() {
         case 'resize':
           // The window's content size, for the Blueprint breakpoint shots (03-shell-1 §3.1.3).
           await app.evaluate(({ BrowserWindow }, [w, h]) => BrowserWindow.getAllWindows()[0].setContentSize(w, h), [s.w, s.h]);
-          await page.waitForTimeout(800);
+          await pageRef.waitForTimeout(800);
           break;
         case 'crashRelaunch': {
           // A crash then an instant reopen: kill only foo's main process (its helpers live on, as after a real crash),
@@ -548,7 +579,7 @@ async function main() {
           if (s.gapMs) await new Promise((r) => setTimeout(r, s.gapMs));
           rec.fooProcs = fooProcs();
           await launch();
-          rec.ok = await page.locator('[data-testid="composer-field"], [data-testid="card-setup"]').first().isVisible();
+          rec.ok = await mainPage.locator('[data-testid="composer-field"], [data-testid="card-setup"]').first().isVisible();
           break;
         }
         default:
@@ -574,12 +605,12 @@ async function main() {
   const t1 = Date.now();
   while (
     Date.now() - t1 < 180_000 &&
-    (await page
+    (await mainPage
       .locator(busy)
       .count()
       .catch(() => 0))
   )
-    await page.waitForTimeout(1_000);
+    await mainPage.waitForTimeout(1_000);
   if (Date.now() - t1 > 1_000) log({ step: 'drain', ms: Date.now() - t1 });
   // Some outcomes land after the step gave up (a saved fact, an AI page that opens late). Before calling a step failed,
   // look again at the end state it names; a late pass is kept as ok with late: true.
