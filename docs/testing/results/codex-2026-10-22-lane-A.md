@@ -132,3 +132,11 @@ Totals: **420 steps, 119 failed**. I inspected the PNG evidence in every shard. 
 - Way 1 real-AI run: current run `39727432127` has screenshot-backed per-journey failures above. Driver-choice work is a separate pending lane, so approval journeys are authored only.
 - Cost/paid run: unavailable; no cost is claimed (this is not a `$0` result).
 - `test/real-pc/journeys.txt`: the eight R IDs are registered and were included in run `39727432127`; the run remains blocked by the journey failures above.
+
+## Post-run B07 live-window routing follow-up
+
+After the immutable R evidence above, commit `006e91dc` added bounded live-window routing for B07. The driver pre-arms the Electron window event before clicking `chat-header-watch-live`, routes generic live checks and screenshots to the active live page, keeps sends/waits/thread dumps on `mainPage`, and pre-arms the live-page close event before Stop restores the main page. B07 now waits for the actual live and masked states, exercises Take over and Hand Back, and checks the main-thread stopped badge after the viewer closes.
+
+Focused evidence: `corepack.cmd pnpm vitest run test/unit/real-pc-driver.test.ts --maxWorkers=1 --pool=threads` passed 4/4; `node --check` passed for the driver and helper; B07 JSON and `expectJs` syntax, targeted Prettier, and `git diff --check` passed. The strict all-file validator remains 2 passed / 2 failed on unchanged legacy baseline send end-state and covered-proof gaps. No live desktop run is claimed here. AT-058 no-click telemetry remains unverified, and AT-078 remains blocked because the driver cannot close the external Edge job window; closing Foo's live viewer is not used as AT-078 proof.
+
+B07 workflow command: `$FOO_EXE foo-drive.js journeys/B07-live.json` from `test/real-pc` (direct PowerShell: `$env:ELECTRON_RUN_AS_NODE='1'; & "$env:LOCALAPPDATA\Programs\foo\foo.exe" test/real-pc/foo-drive.js test/real-pc/journeys/B07-live.json`).
