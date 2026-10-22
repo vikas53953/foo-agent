@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n2:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:34 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n2:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:34 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n2:35 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n2:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n2:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n2:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n2:36 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are moving to UPI because it makes paying someone as easy as sending a message. You open any payments app, scan a code or type a phone number, enter your PIN, and the money reaches the other person's bank account within seconds. There is no card to carry, no cash to count and no change to hunt for.\n\nIt has also reached places that cards never did. A tea stall, a vegetable cart and a large store can all accept the same QR code, so shopkeepers need no special machine. Since the systems behind it are shared by banks and apps, you can pay from almost any bank account using almost any app.\n\nThe main reasons people switch:\n\nFree and fast: Most everyday payments between people and to shops cost nothing and finish in seconds, at any hour, on any day.\nSimple to use: One phone, one PIN and a QR code or number replace cash, cards and long bank details.\nWorks everywhere: Small sellers, big shops, bills and friends can all be paid the same way, from whichever bank you already use.\n\nTogether, these make UPI quicker and less hassle than the older options, so more people keep choosing it.\n\n2:36 AM"
+  }
+]

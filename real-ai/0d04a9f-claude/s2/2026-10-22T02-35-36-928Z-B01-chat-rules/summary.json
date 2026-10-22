@@ -1,0 +1,78 @@
+{
+  "journey": "B01-chat-rules",
+  "title": "Chat rules: thanks, long answer, filler, reactions",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-35-36-928Z-B01-chat-rules",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792636542467,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 117
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "expect": "AT-027: 👍 reaction on my message, no foo message",
+      "ok": true,
+      "ms": 20016
+    },
+    {
+      "i": 2,
+      "do": "eval",
+      "value": {
+        "reaction": true,
+        "lastKind": "bubble-me"
+      },
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "sentAt": 1792636562655,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 106
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler",
+      "firstReplyMs": 2539,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "People in India are moving to UPI because it makes paying someone as easy as sending a message. You open any payments app, scan a code or type a phone number, enter your PIN, and the money reaches the other person's bank account within seconds. There is no card to carry, no cash to count and no change to hunt for.\n\nIt has also reached places that cards never did. A tea stall, a vegetable cart and a large store can all accept the same QR code, so shopkeepers need no special machine. Since the systems behind it are shared by banks and apps, you can pay from almost any bank account using almost any app.\n\nThe main reasons people switch:\n\nFree and fast: Most everyday payments between people and to shops cost nothing and finish in seconds, at any hour, on any day.\nSimple to use: One phone, one PIN and a QR code or number replace cash, cards and long bank details.\nWorks everywhere: Small sellers, big shops, bills and friends can all be paid the same way, from whichever bank you already use.\n\nTogether, these make UPI quicker and less hassle than the older options, so more people keep choosing it.\n\n2:36 AM",
+      "kit": [],
+      "ms": 12679
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "AT-308 suggestion chips (≤3)",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "eval",
+      "value": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}
