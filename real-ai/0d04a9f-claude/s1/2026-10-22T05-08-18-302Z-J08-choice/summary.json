@@ -1,0 +1,50 @@
+{
+  "journey": "J08-choice",
+  "title": "Question with choice chips",
+  "steps": 5,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-08-18-302Z-J08-choice",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792645712003,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 162
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 17279,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "For programming at ₹80,000 aim for 16 GB of memory, a fast 512 GB SSD, and a recent chip with good battery life.\n\nMemory: 16 GB is the floor. 8 GB gets slow once you run a browser, an editor and Docker together.\nChip: A recent Ryzen 5/7, Intel Core Ultra 5/7 or Apple M-series laptop is plenty. A graphics card only matters for games or machine learning.\nScreen and keyboard: Pick a sharp 14 or 15 inch screen (1920×1200 or better) and a keyboard you like typing on, since you'll use it for hours.\nUpgradeability: Choose one with a free memory slot or SSD slot, so you can add more later.\n\nI can look up what's available right now in that budget and compare the best three. Do you want that?\n\n5:08 AM",
+      "kit": [],
+      "ms": 26419
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 2,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 6,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 4,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

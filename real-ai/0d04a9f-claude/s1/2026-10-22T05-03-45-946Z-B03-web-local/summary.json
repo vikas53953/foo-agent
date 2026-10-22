@@ -1,0 +1,77 @@
+{
+  "journey": "B03-web-local",
+  "title": "Web without keys: news read locally, sources",
+  "steps": 9,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-03-45-946Z-B03-web-local",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792645431762,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 137
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 7104,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from Thu 15 Oct to Thu 22 Oct\nWrite it\nWatch live\nStop\nunder 1 min\n5:03 AM",
+      "kit": [],
+      "ms": 13223
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 150002
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 6,
+      "do": "expectText",
+      "text": "Your favourite food is South Indian, and I already have that saved.\n\n5:03 AM",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 7,
+      "do": "check",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}

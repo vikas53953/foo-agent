@@ -1,0 +1,126 @@
+{
+  "journey": "U10-plan-change-stop",
+  "title": "Plan card: Change plan, then Stop a running job from the checklist",
+  "steps": 15,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-10-59-463Z-U10-plan-change-stop",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1035
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792645874246,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 102
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "plan card",
+      "firstReplyMs": 5048,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nLook for weekend treks near Pune with difficulty\n3\nKeep 5 treks that fit doable in a weekend, with difficulty and\n4\nCompare difficulty and cost\nAbout 3 minutes\nGo\nChange plan\n5:11 AM",
+      "kit": [],
+      "ms": 11152
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "i": 4,
+      "do": "wait",
+      "expect": "composer prompts for the change",
+      "ok": true,
+      "ms": 814
+    },
+    {
+      "i": 5,
+      "do": "send",
+      "sentAt": 1792645886504,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "i": 6,
+      "do": "waitReply",
+      "expect": "a changed plan, the old one marked changed",
+      "firstReplyMs": 6575,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nLook for easy weekend treks near Pune with\nKeep 5 treks that fit easy difficulty only, doable in a\nCompare difficulty and cost\nWatch live\nStop\nunder 1 min\n5:11 AM",
+      "kit": [],
+      "ms": 12664
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23085
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "checklist running; Doing now shows the job; chat pill Working",
+      "ok": true,
+      "ms": 8008
+    },
+    {
+      "i": 9,
+      "do": "key",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "i": 10,
+      "do": "wait",
+      "expect": "right panel Doing now row with Stop",
+      "ok": true,
+      "ms": 816
+    },
+    {
+      "i": 11,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 12,
+      "do": "wait",
+      "expect": "job stopped ⛔, checklist says stopped, no further steps",
+      "ok": true,
+      "ms": 5001
+    },
+    {
+      "i": 13,
+      "do": "key",
+      "ok": true,
+      "ms": 12
+    },
+    {
+      "i": 14,
+      "do": "dump",
+      "ok": true,
+      "ms": 13
+    }
+  ]
+}

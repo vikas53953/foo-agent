@@ -1,0 +1,13 @@
+{"t":1792645596704,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1792645598273,"lvl":"info","mod":"engine","evt":"job.resumed","kind":"app_quit"}
+{"t":1792645598296,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792645598297,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792645603337,"lvl":"info","mod":"engine","evt":"browser.ensure","kind":"msedge"}
+{"t":1792645606241,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792645606242,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792645614484,"lvl":"info","mod":"engine","evt":"job.steer_effect","kind":"answered"}
+{"t":1792645615195,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792645615196,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792645620766,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792645620767,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792645621141,"lvl":"info","mod":"engine","evt":"job.waiting","kind":"app_quit"}

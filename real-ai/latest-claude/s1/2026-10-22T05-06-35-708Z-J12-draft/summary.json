@@ -1,0 +1,43 @@
+{
+  "journey": "J12-draft",
+  "title": "Draft an email (never sends)",
+  "steps": 4,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-06-35-708Z-J12-draft",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792645601361,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 136
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 13479,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's a draft for you to send yourself, as this job is look-only:\n\nTo: someone@example.com\nSubject: Running 15 minutes late tomorrow\n\nHi, I'll be about 15 minutes late to tomorrow's meeting (Fri 23 Oct). Sorry for the inconvenience, and please start without me if needed.\n\nI'm still pulling together the ISRO news for Thu 15 Oct to Thu 22 Oct.\n\n5:06 AM",
+      "kit": [],
+      "ms": 19613
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 3,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

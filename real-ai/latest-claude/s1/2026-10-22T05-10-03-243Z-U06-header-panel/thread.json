@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nChecking Google Flights, MakeMyTrip,…\n3\nBoth\nSomething else…\nSkip\n5:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n5:08 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming at ₹80,000 aim for 16 GB of memory, a fast 512 GB SSD, and a recent chip with good battery life.\n\nMemory: 16 GB is the floor. 8 GB gets slow once you run a browser, an editor and Docker together.\nChip: A recent Ryzen 5/7, Intel Core Ultra 5/7 or Apple M-series laptop is plenty. A graphics card only matters for games or machine learning.\nScreen and keyboard: Pick a sharp 14 or 15 inch screen (1920×1200 or better) and a keyboard you like typing on, since you'll use it for hours.\nUpgradeability: Choose one with a free memory slot or SSD slot, so you can add more later.\n\nI can look up what's available right now in that budget and compare the best three. Do you want that?\n\n5:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:09 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nChecking Google Flights, MakeMyTrip,…\n3\nBoth\nSomething else…\nSkip\n5:09 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:09 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nChecking Google Flights, MakeMyTrip,…\n3\nBoth\nSomething else…\nSkip\n5:09 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n5:09 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n5:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n5:09 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n5:09 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Checking Google Flights, MakeMyTrip,… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n5:10 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:10 AM"
+  }
+]

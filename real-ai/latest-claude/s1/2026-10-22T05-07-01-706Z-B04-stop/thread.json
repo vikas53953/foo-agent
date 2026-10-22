@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n5:03 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooking for ISRO news from Thu 15 Oct to Thu 22 Oct\nWrite it\nWatch live\nStop\n4 min\n5:03 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:03 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting\n5:06 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a draft for you to send yourself, as this job is look-only:\n\nTo: someone@example.com\nSubject: Running 15 minutes late tomorrow\n\nHi, I'll be about 15 minutes late to tomorrow's meeting (Fri 23 Oct). Sorry for the inconvenience, and please start without me if needed.\n\nI'm still pulling together the ISRO news for Thu 15 Oct to Thu 22 Oct.\n\n5:06 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n5:07 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 5:07 AM\n5:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:07 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking Google Flights, MakeMyTrip,…\nlive checklist\nChecking Google Flights, MakeMyTrip, Skyscanner\nG\nM\nS\nLook for Delhi to Mumbai flights on Fri 30 Oct\nKeep 3 flights that fit lowest fare\nCompare fare, departure time, duration and stops\nWatch live\nStop\nunder 1 min\n5:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:07 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n5:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:08 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nChecking Google Flights, MakeMyTrip,…\n3\nBoth\nSomething else…\nSkip\n5:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:08 AM"
+  }
+]
