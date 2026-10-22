@@ -47,11 +47,12 @@ import { JobRunner } from './jobs/JobRunner';
 import { engineScreencast, type Screencast } from './tools/browser/screencast';
 import { JobRecovery } from './jobs/recovery';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
-import type { SecondLookAct, StepAct } from '../shared/schemas';
+import { SteerCheckActSchema, type SecondLookAct, type StepAct } from '../shared/schemas';
 // M9 T3
 import { engineBrowserTools, liveTermsReader, type BrowserRuntime } from './tools/browser/tools';
 import { SigninLanes, type LaneDeps } from './tools/browser/signinLanes'; // M9 T7
 import { TakeOver } from './tools/browser/takeover'; // M9 T7
+import { jobWindowPages } from './tools/browser/webPages';
 // M8
 import { WhatsAppConnector, type WaPortLike } from './tools/connectors/whatsapp';
 import { linkWaRecipients, whatsappDraftTool } from './tools/connectors/recipients'; // M8 T7
@@ -175,6 +176,8 @@ export class Engine {
       // X-127: main writes `connections.web.refused.{p}`. The brief line for a used-up key waits for the brief (M7): logged.
       onRefused: (provider) => o.link.send('web.refused', { provider }),
       onQuota: (p) => log('web.quota', p),
+      // 08-2 §8.2: the keyless search and needsBrowser reads run in the job's window; the browser is made below, read lazily.
+      page: jobWindowPages(() => this.browser),
     });
     const fake = o.testRun && Boolean(o.env.FOO_FAKE_AI);
     // CR-0020: keys come from main's vault; a FOO_TEST run may stand in a fake home for the J2 ladder (ai/vaultKeys.ts).
@@ -646,6 +649,13 @@ export class Engine {
         const env = parseEnvelope(text);
         const v = env.act === undefined ? null : validateAct('classify', env.act);
         return v?.ok ? (v.act as { whatsWrong: string }).whatsWrong : null;
+      },
+      // CR-0045
+      buildSteerCheck: (job, message) => this.prompts.buildSteerCheck(job, message),
+      parseSteerCheck: (text) => {
+        const env = parseEnvelope(text);
+        const v = SteerCheckActSchema.safeParse(env.act);
+        return v.success ? v.data.about : null;
       },
       filter: (text) => filterSay(text, { redactor }).text,
       isBanned: (text) => findBanned(text).length > 0,

@@ -10,7 +10,7 @@
     "constitution/03-shell-1.md": "b502c6589f90f60b4fc1b3b29fc811ac62322edec8eef5cb0a28955f46ac4c83",
     "constitution/03-shell-2.md": "5a2a73a8d4fb9045b49cf6638966a70bc07897834a7755b9d92e7e1fbe4a85e6",
     "constitution/04-messages-and-composer-2.md": "a9588ee2de476bc61ef631a1a7bc2d18a3e6aeb78bc2aec5d9819a911d4df085",
-    "constitution/04-messages-and-composer.md": "7a991237d4f7e316b4068409c3eb1aa070307227e5079686fc3a00098d7f0d39",
+    "constitution/04-messages-and-composer.md": "b7e01c8012c75481b23abec5d9834c7aea98b7a70193c1833d96f68c5b26cc9a",
     "constitution/05-cards-1.md": "8654403cc266ec99f83122a3220565d2867b8d2cfe804ee45998e52d47bd35cc",
     "constitution/05-cards-2.md": "14329196936e577e437e56f2ceb524d6eae61f3597dd172ed0151af3b7f35702",
     "constitution/05-cards-3.md": "56049beed0bfde773503bea674ababd1f90eb50f6726771334d0e205e898988a",
@@ -26,15 +26,15 @@
     "constitution/08-functions-and-engine-1.md": "9b76bb6efc13d6439753f981a9ae49bf254284f8032bfe4e402cde9b6f552797",
     "constitution/08-functions-and-engine-2.md": "5b8863beb7aa16ac30c359ca3ba69d33eac403382a24e8f9c527f7d4f542e7a7",
     "constitution/08-functions-and-engine-3.md": "bf72eacc82f100498bff647693ff92d80e474ba4bed69c3e3d4496a3a5333e11",
-    "constitution/08-functions-and-engine-4.md": "90a135033886ad9f81f4a37d2c2007d2d1b214b556a59c3f1c7983ff7c82c98c",
+    "constitution/08-functions-and-engine-4.md": "8b6e667cfb80b3f3e903f0d3a5bf904b66ced9e8976032534ce328b29c960ac1",
     "constitution/09-windows.md": "14a391fd50e03373dc40b5f8243b0de57576ebbc21a2e92df32c8c9a849c15f6",
     "constitution/10-acceptance-1.md": "85328dec86eb54d04f2501792915758f89e376df404efbf7b34fcfa14d835dc9",
-    "constitution/10-acceptance-2.md": "2ac64083f45e6d0200d6d7f3a52832ca1a0b2fb226ab4f7d7dd6e440bb61e486",
+    "constitution/10-acceptance-2.md": "1a33f51f12c5cbcb9105c1b4e2ebc7de6edbdd3501c329ad5ed63314f7d31127",
     "constitution/11-fidelity.md": "e2933c5638dcd7c7e779c32bb94c518b541c042e048c777c2dad1168a0e9b348",
     "constitution/12-features-r25-r31-1.md": "245851c058fb1c996c6a009b63b8d78fbc67584d2de67e2c869ad53e97a5deee",
     "constitution/12-features-r25-r31-2.md": "5ad445f0950e2c5b3907e587f92819610524b52c60b7d130eeeb63a4b648db1f",
     "constitution/CHANGELOG.md": "ea2638f512ebc100213db9019d94be15586a7d2a41e830e011a7b68d5fc08b2b",
-    "constitution/DECISIONS.md": "ffb8fa6dda41e139cee0147b7f709efc94f9a5c9845615bc9e7739b2e6a038a9",
+    "constitution/DECISIONS.md": "fb6e766955271724df5ce62f53022971df75985e29404e163885c159f0e3c73e",
     "constitution/GAPS.md": "0fc540ebf9754ec6e87a0e114cc7b25123f1312d025a62ed42a175fa085a0229",
     "constitution/research/capabilities-sources.md": "aa1c57be0b731b7e77dd5275c3db9c7fc76c1819e52f51881627d4c4be1c2c1f",
     "constitution/research/capabilities.md": "9ea45503d0d2f6dea65915d0bf9f35aa5f2b02a9d7ad9113557284f100684daf",
@@ -56,6 +56,6 @@
     "refs/ux/foo-ux-walkthrough.html": "d5eb3d4a42bce526548be701afaf4585a843e3098af2200d8f0a2c7535778f87",
     "spec-values.json": "143ed27b171b0fb2910065e79de1af36bb8507d6987e21285664a17f0542b286",
     "state-machines.json": "ab7b48b785a63dc92b13a4ce60f1aefcd80411bdb7f27551de680451787b28b4",
-    "trace.csv": "8bc8e3638c5a860af162a6ec86bfd5bd68a13dcbe209dcc473514402b7134beb"
+    "trace.csv": "ce55e6cddc4c72715dd712d65206e9d63be657be388d5fd31739507b07f61cfc"
   }
 }
