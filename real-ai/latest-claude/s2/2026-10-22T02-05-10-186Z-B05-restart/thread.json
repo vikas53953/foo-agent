@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n1:58 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 1:59 AM\n1:59 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:59 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 2 min\nDetails\n1:59 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:59 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best value under ₹20,000 from the HT Tech list (Amazon prices):\n\nRedmi 15C 5G, ₹15,999: 6000mAh battery, 33W charging, 120Hz display, 50MP dual camera, Dimensity 6300.\nLava Bold N4 Pro 5G, ₹15,999: 6GB RAM, 6000mAh battery, 18W charging, 50MP camera, IP64 rating, clean Android 16.\nSamsung Galaxy M17e 5G, ₹16,998: 6000mAh battery, 120Hz display, 50MP dual camera, IP54 rating, 6 OS upgrades.\n\nOnePlus N6x (₹19,999 7000mAh) has the biggest battery but costs more and has only 4GB RAM. The page gave no camera test scores, so camera quality is not ranked.\n\n2:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n2:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is an easy 3 day Jaipur plan for your parents, with light walking and rest in the afternoons:\n\nDay 1, Old city: City Palace, Jantar Mantar and Hawa Mahal, with a slow lunch nearby. In the evening, Johari Bazaar for a stroll and sweets.\nDay 2, Amber Fort: Go early, before the heat and the crowds. A jeep up to the fort is easier on the knees than the walk. Stop at Jal Mahal for photos on the way back, rest at the hotel, then have dinner at Chokhi Dhani for folk music and a Rajasthani thali.\nDay 3, Relaxed day: Albert Hall Museum in the morning, then shopping for block prints, jewellery and juttis at Bapu Bazaar. Finish with sunset at Nahargarh Fort, reachable by car.\n\nA few tips: October to March is the best weather, so book a hotel near the old city to cut travel time, and hire one car with a driver for all three days.\n\nWant me to adjust this for their budget, or for mobility needs like wheelchair access?\n\n2:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n2:01 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 2:02 AM\n2:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:02 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for Italian restaurants in…\nlive checklist\nLooked for Italian restaurants in Bandra, Mumbai\nChecking restaurant booking sites\nR\nLook for tables for 2 on Sat 24 Oct, 8:00 PM\nKeep 3 Italian places with a table that fit well rated and free at 8:00 PM\nWatch live\nStop\n5 min\n2:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n2:05 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking for Italian restaurants in… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\ntry restaurant booking sites instead\nTry another way\nTake over\nStop\n2:05 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:05 AM"
+  }
+]

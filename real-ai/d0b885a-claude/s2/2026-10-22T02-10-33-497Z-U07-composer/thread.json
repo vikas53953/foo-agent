@@ -1,0 +1,97 @@
+[
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking for Italian restaurants in… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\ntry restaurant booking sites instead\n2:05 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:05 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n2:08 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n2:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning\n2:08 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 2:08 AM\n2:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:08 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Checking IRCTC\nlive checklist\nChecked IRCTC\nI\nFound trains on IRCTC\nI\nLooked for morning departures on Fri 23 Oct from\nStopped by you\n2:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:08 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "withdrawn",
+    "text": "No longer needed. The job was stopped.\n2:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n2:09 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n2:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n2:10 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n2:10 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Say hello in Hindi\n2:10 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "नमस्ते! 🙏\n\n2:10 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n2:10 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n2:10 AM"
+  }
+]

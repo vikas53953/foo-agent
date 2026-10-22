@@ -1,0 +1,13 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-57-09-844Z-J01-J02-first-run"}
+{"journey":"B01-chat-rules","title":"Chat rules: thanks, long answer, filler, reactions","steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-57-59-964Z-B01-chat-rules"}
+{"journey":"R1-rich","title":"Rich replies: table, steps, numbers","steps":9,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-58-41-834Z-R1-rich"}
+{"journey":"B06-booking-options","title":"Restaurant options without booking","steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-01-52-139Z-B06-booking-options"}
+{"journey":"B05-restart","title":"Quit mid-job and reopen: job resumes","steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-05-10-186Z-B05-restart"}
+{"journey":"B07-live","title":"Watch live, take over, hand back, stop","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-08-15-031Z-B07-live"}
+{"journey":"B11-zoom-appearance","title":"Zoom keys, settings rows","steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-09-45-344Z-B11-zoom-appearance"}
+{"journey":"U03-select-delete","title":"Select messages, copy them, delete one (keep)","steps":17,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-10-07-194Z-U03-select-delete"}
+{"journey":"U07-composer","title":"Composer: multi-line, attach menu, emoji, Esc, draft kept after restart","steps":18,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-10-33-497Z-U07-composer"}
+{"journey":"U11-approval-states","title":"Approval card: pending, Not now (declined), Change (never Approve)","steps":16,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-10-57-314Z-U11-approval-states"}
+{"journey":"U15-routines","title":"Routine: create by chat, routines screen, pause, run once","steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-16-50-656Z-U15-routines"}
+{"journey":"U19-screens","title":"Activity, Ideas, Spend, foo profile, Shortcuts screens","steps":22,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-17-40-652Z-U19-screens"}
+{"journey":"U23-ai-page-chips","title":"AI page, action chips, reply chips","steps":9,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-20-44-206Z-U23-ai-page-chips"}

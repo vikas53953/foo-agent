@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n1:57 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n1:57 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n1:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n1:58 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it makes paying someone as easy as sending a message. You open any payments app, scan a code or pick a contact, enter a PIN, and the money moves from bank to bank in seconds. There is no card machine, no cash to count and no change to hunt for.\n\nIt also works everywhere. The same method pays a street tea seller, a neighbour, an online shop or a utility bill. Small shopkeepers need only a printed QR code, so they don't have to buy any equipment. That has pushed even tiny businesses to accept digital payments, which in turn makes customers use it more.\n\nCost and trust matter too. For most everyday payments between people and at shops, UPI is free for the user, and it is backed by banks and regulators, so people feel safe using it. Once friends, family and local shops all use it, carrying cash starts to feel like the harder option.\n\nThe main reasons:\n\nSpeed and ease: Pay in seconds with a scan or a phone number, any time of day.\nFree for users: Everyday payments don't carry the fees that cards often do.\nWorks everywhere: One method for shops, friends, bills and online orders, big or small.\n1:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n1:58 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 1:59 AM\n1:59 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:59 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 2 min\nDetails\n1:59 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:59 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best value under ₹20,000 from the HT Tech list (Amazon prices):\n\nRedmi 15C 5G, ₹15,999: 6000mAh battery, 33W charging, 120Hz display, 50MP dual camera, Dimensity 6300.\nLava Bold N4 Pro 5G, ₹15,999: 6GB RAM, 6000mAh battery, 18W charging, 50MP camera, IP64 rating, clean Android 16.\nSamsung Galaxy M17e 5G, ₹16,998: 6000mAh battery, 120Hz display, 50MP dual camera, IP54 rating, 6 OS upgrades.\n\nOnePlus N6x (₹19,999 7000mAh) has the biggest battery but costs more and has only 4GB RAM. The page gave no camera test scores, so camera quality is not ranked.\n\n2:01 AM"
+  }
+]

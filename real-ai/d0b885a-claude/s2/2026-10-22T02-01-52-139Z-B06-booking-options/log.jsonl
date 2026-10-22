@@ -1,0 +1,13 @@
+{"t":"2026-10-22T02:01:52.140Z","journey":"B06-booking-options","title":"Restaurant options without booking","spec":"AT-036, J9, AT-108, AT-310, AT-311","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T02:01:57.312Z","step":"launch","ok":true}
+{"t":"2026-10-22T02:01:57.425Z","i":0,"do":"send","sentAt":1792634517400,"sent":true,"before":0,"ok":true,"ms":109}
+{"t":"2026-10-22T02:02:09.616Z","i":1,"do":"waitReply","firstReplyMs":6084,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking for Italian restaurants in…\n1\nLook for Italian restaurants in Bandra, Mumbai\n2\nCheck restaurant booking sites\n3\nLook for tables for 2 on Sat 24 Oct, 8:00 PM\n4\nKeep 3 Italian places with a table that fit well rated and free at 8:00 PM\nAbout 4 minutes\nGo\nChange plan\n2:02 AM","ms":12191}
+{"t":"2026-10-22T02:02:09.670Z","shot":"01-italian.png"}
+{"t":"2026-10-22T02:02:09.713Z","i":2,"do":"clickIf","found":1,"ok":true,"ms":42}
+{"t":"2026-10-22T02:05:09.715Z","i":3,"do":"wait","expect":"options shown; no booking Approval card until I say book","ok":true,"ms":180002}
+{"t":"2026-10-22T02:05:09.777Z","shot":"02-italian-later.png"}
+{"t":"2026-10-22T02:05:09.779Z","i":4,"do":"check","found":0,"ok":true,"ms":2}
+{"t":"2026-10-22T02:05:09.781Z","i":5,"do":"check","soft":true,"found":0,"ok":false,"ms":2}
+{"t":"2026-10-22T02:05:09.790Z","i":6,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-22T02:05:10.063Z","step":"appLog","lines":60,"dropped":0}
+{"t":"2026-10-22T02:05:10.074Z","step":"aiTurns","turns":28}
