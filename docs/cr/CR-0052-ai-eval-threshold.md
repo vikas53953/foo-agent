@@ -30,4 +30,3 @@ Until this CR is approved and recorded in `DECISIONS.md`, Lane C parks the DeepE
 - The existing deterministic DeepEval result is recorded at [`test/eval/results/deepeval-2026-10-22.log`](../../test/eval/results/deepeval-2026-10-22.log); it reports 21 cases, 21 expected outcomes, zero provider calls, and evaluator cost `$0`.
 - The current one-worker focused Vitest run is recorded in the Lane C report. It ran the existing `foo-eval` and `injection-red-team` files without a provider call or paid AI request: 2 files, 28 tests, 27 passed, 1 failed. The failure is the existing hostile fake-AI case's `afterEach` hook timing out at 60 seconds.
 - No manifest regeneration or `Approved by Vikas` line is included because this proposal is not approved.
-
