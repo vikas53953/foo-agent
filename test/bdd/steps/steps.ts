@@ -182,7 +182,8 @@ When('the user sends an acknowledgement', async ({ bddRun }) => {
   await bddRun.page.keyboard.press('Enter');
   const row = bddRun.page.getByTestId(TID.bubbleMe).filter({ hasText: 'thanks!' }).last();
   await expect(row).toBeVisible();
-  await expect(row.getByTestId(TID.bubbleReaction)).toContainText(/(?:👍|❤️|❤)/u);
+  // The reaction badge is a sibling of the bubble inside the same message hold.
+  await expect(row.locator('xpath=..').getByTestId(TID.bubbleReaction)).toContainText(/(?:👍|❤️|❤)/u);
 });
 
 Then('foo adds a thumbs up reaction without posting a reply', async ({ bddRun }) => {
@@ -288,7 +289,9 @@ Then('the draft is visible and no send happens before the Send action', async ({
 When('the user opens a sign-in handoff card', async ({ bddRun }) => {
   expect(bddRun.journey).toBe('J13');
   await bddRun.page.evaluate(() => window.__fooTest!.seed('m9-signin'));
-  await expect(bddRun.page.getByTestId(TID.cardSignin)).toBeVisible();
+  const card = bddRun.page.getByTestId(TID.cardSignin).filter({ hasText: /irctc\.co\.in/i });
+  await expect(card).toHaveCount(1);
+  await expect(card).toBeVisible();
 });
 
 Then('the sign-in card offers Take over without exposing credentials to the AI', async ({ bddRun }) => {

@@ -106,7 +106,11 @@ async function launchPretend(
   const page = await app.firstWindow();
   let refs: unknown;
   if (!firstRun) {
-    refs = await page.evaluate(() => window.__fooTest!.seed('ux-world'));
+    // J5 and J7 exercise a fresh chat flow. The full walkthrough world carries a live Goa job
+    // whose steer semantics would consume those messages; this production-compatible variant
+    // keeps the chat history while omitting that synthetic running job.
+    const seed: 'ux-world' | 'ux-world-ch8-live' = journey === 'J5' || journey === 'J7' ? 'ux-world-ch8-live' : 'ux-world';
+    refs = await page.evaluate((set) => window.__fooTest!.seed(set), seed);
     await expect(page.getByTestId(TID.chatlistRow).first()).toBeVisible({ timeout: 15_000 });
   }
   return { app, page, dirs, refs };
