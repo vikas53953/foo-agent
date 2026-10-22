@@ -252,6 +252,7 @@
         "17",
         "Oct",
         "4",
+        "4",
         "M",
         "8:02",
         "AM",
@@ -443,7 +444,7 @@
         "9:05",
         "AM",
         "in",
-        "15:09",
+        "15:00",
         "Coastline",
         "Kitchen",
         "₹1,000",
@@ -591,8 +592,8 @@
     "total": 22232
   },
   "r5": {
-    "ratio": 0.0781513671875,
-    "diffPixels": 80027,
+    "ratio": 0.07810546875,
+    "diffPixels": 79980,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-06.light.diff.png"
