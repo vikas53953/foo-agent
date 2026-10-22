@@ -3,11 +3,12 @@
 import { execFileSync } from 'node:child_process';
 
 export type ProducerProcessOwner = {
-  process(): { pid?: number | null };
+  process(): { pid?: number | null; spawnfile?: string | null };
 };
 
 export type ProducerProcessMetrics = {
   pid: number;
+  executablePath: string;
   handleCount: number;
   workingSetBytes: number;
   responding: boolean;
@@ -22,16 +23,18 @@ function defaultExecute(file: string, args: readonly string[]): string {
 export function processMetricsForPid(pid: number, execute: ProcessMetricsExecutor = defaultExecute): ProducerProcessMetrics {
   if (!Number.isInteger(pid) || pid <= 0) throw new Error('invalid producer ElectronApplication PID: ' + pid);
   const command =
-    'Get-Process -Id ' + pid + ' -ErrorAction Stop | Select-Object Id,HandleCount,WorkingSet64,Responding | ConvertTo-Json -Compress';
+    'Get-Process -Id ' + pid + ' -ErrorAction Stop | Select-Object Id,Path,HandleCount,WorkingSet64,Responding | ConvertTo-Json -Compress';
   const raw = execute('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', command]).trim();
   if (!raw) throw new Error('producer process ' + pid + ' returned no Windows metrics');
   const value = JSON.parse(raw) as {
     Id?: number;
+    Path?: string;
     HandleCount?: number;
     WorkingSet64?: number;
     Responding?: boolean;
   };
   if (value.Id !== pid) throw new Error('Windows metrics PID ' + String(value.Id) + ' did not match producer PID ' + pid);
+  if (!value.Path?.trim()) throw new Error('Windows metrics for producer PID ' + pid + ' omitted executable path');
   if (
     !Number.isInteger(value.HandleCount) ||
     value.HandleCount < 0 ||
@@ -43,6 +46,7 @@ export function processMetricsForPid(pid: number, execute: ProcessMetricsExecuto
   }
   return {
     pid,
+    executablePath: value.Path,
     handleCount: Number(value.HandleCount),
     workingSetBytes: Number(value.WorkingSet64),
     responding: value.Responding,
@@ -53,7 +57,19 @@ export function producerProcessMetrics(
   owner: ProducerProcessOwner,
   execute: ProcessMetricsExecutor = defaultExecute,
 ): ProducerProcessMetrics {
-  const pid = owner.process().pid;
+  const process = owner.process();
+  const pid = process.pid;
   if (!Number.isInteger(pid) || pid <= 0) throw new Error('producer ElectronApplication PID is unavailable: ' + String(pid));
-  return processMetricsForPid(pid, execute);
+  if (!process.spawnfile?.trim()) throw new Error('producer ElectronApplication executable path is unavailable');
+  const metrics = processMetricsForPid(pid, execute);
+  const normalize = (path: string) =>
+    path
+      .trim()
+      .replaceAll('/', '\\')
+      .replace(/[\\]+$/u, '')
+      .toLowerCase();
+  if (normalize(metrics.executablePath) !== normalize(process.spawnfile)) {
+    throw new Error(`Windows metrics executable path ${metrics.executablePath} did not match producer executable ${process.spawnfile}`);
+  }
+  return metrics;
 }

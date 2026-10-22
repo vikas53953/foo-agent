@@ -1,8 +1,8 @@
 // Spec: 10-2 §E.1–§E.2 and 09-windows §9.8/§9.9. This is the live source-app fixture producer for the packaged-process
 // observer in lane-e-soak.ts. It launches through the repository's Playwright Electron launcher, uses only FOO_TEST and a
-// fake-AI JSONL script, seeds the real ux-world, starts one real fake-AI job through the UI, and records jobs observed in
-// that fixture's SQLite database. routine_runs is retained as diagnostic context only because routines are not a current
-// acceptance dependency. It never invents heartbeat counters: an absent job row remains blocked.
+// fake-AI JSONL script, seeds the real ux-world, and submits one safe pretend job every five minutes through the same UI.
+// Every successful fixture job is done_unverified; routine_runs is retained as diagnostic context only. It never invents
+// heartbeat counters: an absent job row remains blocked.
 import { type ElectronApplication, type Page } from '@playwright/test';
 import Database from 'better-sqlite3';
 import { execFileSync } from 'node:child_process';
@@ -14,8 +14,10 @@ import { openChat, openWorld } from '../fidelity/capture';
 import { TID } from '../../src/shared/testids';
 import { FULL_SOAK_HOURS, resolveSoakDuration } from './lane-e-duration';
 import { producerProcessMetrics, type ProducerProcessMetrics } from './lane-e-process-metrics';
+import { JOB_COMPLETION_TIMEOUT_MS, jobCompletionFailure, PRODUCER_PROCESS_OWNER } from './lane-e-soak-contract';
 
 const SAMPLE_MS = 30_000;
+const WORKLOAD_INTERVAL_MS = 5 * 60_000;
 const ASK = 'Lane E live fixture job';
 
 function usage(): never {
@@ -127,38 +129,70 @@ type Heartbeat = {
   at: string;
   buildSha: string;
   routineRuns: number;
+  expectedWorkloadJobs: number;
+  jobsSubmitted: number;
+  completedUnverifiedJobs: number;
   jobStarts: number;
   jobState: string;
   lastActionAt: string | null;
   processOwner?: 'producer-electron-application';
   processPid?: number;
+  processExecutablePath?: string;
   processHandleCount?: number;
   processWorkingSetBytes?: number;
   processResponding?: boolean;
 };
 
-function readCounts(
-  dbFile: string,
-  baselineJobIds: ReadonlySet<string>,
-): { routineRuns: number; jobStarts: number; jobState: string; lastActionAt: string | null } {
-  if (!existsSync(dbFile)) return { routineRuns: 0, jobStarts: 0, jobState: 'missing', lastActionAt: null };
+type LiveJob = { id: string; state: string; createdAt: number };
+
+function readLiveJobs(dbFile: string, baselineJobIds: ReadonlySet<string>): LiveJob[] {
+  if (!existsSync(dbFile)) return [];
   const db = new Database(dbFile, { readonly: true });
   try {
-    const routines = Number((db.prepare('SELECT COUNT(*) AS n FROM routine_runs').get() as { n: number }).n);
-    // The FOO_TEST clock is intentionally fixed to the seeded world date, so wall-clock timestamps cannot be used as a
-    // boundary. The baseline ID set isolates the job inserted by this producer from the seeded jobs.
-    const jobs = db.prepare('SELECT id, state, created_at FROM jobs ORDER BY created_at DESC').all() as {
+    const jobs = db.prepare('SELECT id, state, created_at FROM jobs ORDER BY created_at DESC, id DESC').all() as {
       id: string;
       state: string;
       created_at: number;
     }[];
-    const liveJobs = jobs.filter((job) => !baselineJobIds.has(job.id));
+    return jobs.filter((job) => !baselineJobIds.has(job.id)).map((job) => ({ id: job.id, state: job.state, createdAt: job.created_at }));
+  } finally {
+    db.close();
+  }
+}
+
+function readCounts(
+  dbFile: string,
+  baselineJobIds: ReadonlySet<string>,
+): {
+  routineRuns: number;
+  jobsSubmitted: number;
+  completedUnverifiedJobs: number;
+  jobStarts: number;
+  jobState: string;
+  lastActionAt: string | null;
+} {
+  if (!existsSync(dbFile)) {
+    return {
+      routineRuns: 0,
+      jobsSubmitted: 0,
+      completedUnverifiedJobs: 0,
+      jobStarts: 0,
+      jobState: 'missing',
+      lastActionAt: null,
+    };
+  }
+  const liveJobs = readLiveJobs(dbFile, baselineJobIds);
+  const db = new Database(dbFile, { readonly: true });
+  try {
+    const routines = Number((db.prepare('SELECT COUNT(*) AS n FROM routine_runs').get() as { n: number }).n);
     const latest = liveJobs[0];
     return {
       routineRuns: routines,
+      jobsSubmitted: liveJobs.length,
+      completedUnverifiedJobs: liveJobs.filter((job) => job.state === 'done_unverified').length,
       jobStarts: liveJobs.length,
       jobState: latest?.state ?? 'missing',
-      lastActionAt: latest ? new Date(latest.created_at).toISOString() : null,
+      lastActionAt: latest ? new Date(latest.createdAt).toISOString() : null,
     };
   } finally {
     db.close();
@@ -171,22 +205,26 @@ function writeHeartbeat(value: Heartbeat): void {
 
 function processHeartbeat(
   metrics: ProducerProcessMetrics | null,
-): Pick<Heartbeat, 'processOwner' | 'processPid' | 'processHandleCount' | 'processWorkingSetBytes' | 'processResponding'> {
+): Pick<
+  Heartbeat,
+  'processOwner' | 'processPid' | 'processExecutablePath' | 'processHandleCount' | 'processWorkingSetBytes' | 'processResponding'
+> {
   if (!metrics) return {};
   return {
-    processOwner: 'producer-electron-application',
+    processOwner: PRODUCER_PROCESS_OWNER,
     processPid: metrics.pid,
+    processExecutablePath: metrics.executablePath,
     processHandleCount: metrics.handleCount,
     processWorkingSetBytes: metrics.workingSetBytes,
     processResponding: metrics.responding,
   };
 }
 
-async function submitLiveJob(page: Page): Promise<void> {
+async function submitLiveJob(page: Page, prompt: string): Promise<void> {
   await openChat(page, 'Home');
   const composer = page.getByTestId(TID.composerField);
   await composer.click();
-  await composer.fill(ASK);
+  await composer.fill(prompt);
   await page.keyboard.press('Enter');
   const started = Date.now();
   while (Date.now() - started < 30_000) {
@@ -197,6 +235,29 @@ async function submitLiveJob(page: Page): Promise<void> {
   throw new Error('fake-AI intake did not observe the live fixture job within 30s');
 }
 
+async function waitForJobCompletion(
+  page: Page,
+  dbFile: string,
+  baselineJobIds: ReadonlySet<string>,
+  knownJobIds: Set<string>,
+): Promise<LiveJob> {
+  const startedAt = Date.now();
+  let jobId: string | undefined;
+  while (Date.now() - startedAt < JOB_COMPLETION_TIMEOUT_MS) {
+    await advanceClock(page, 500);
+    const jobs = readLiveJobs(dbFile, baselineJobIds);
+    const unseen = jobs.filter((job) => !knownJobIds.has(job.id));
+    if (unseen.length > 1) throw new Error('multiple live fixture jobs were in flight');
+    jobId ??= unseen[0]?.id;
+    const job = jobId ? jobs.find((candidate) => candidate.id === jobId) : undefined;
+    const failure = jobCompletionFailure(job?.state ?? 'queued', Date.now() - startedAt);
+    if (failure) throw new Error(failure);
+    if (job?.state === 'done_unverified') return job;
+    await sleep(100);
+  }
+  throw new Error(`job completion timed out after ${JOB_COMPLETION_TIMEOUT_MS / 1000}s`);
+}
+
 async function advanceClock(page: Page, milliseconds: number): Promise<void> {
   await page.evaluate((ms) => window.__fooTest!.clock.advance(ms), milliseconds);
 }
@@ -204,10 +265,13 @@ async function advanceClock(page: Page, milliseconds: number): Promise<void> {
 async function main(): Promise<number> {
   let app: ElectronApplication | null = null;
   const startedAt = Date.now();
+  let soakStartedAt = startedAt;
   const dbFile = join(dataDir, 'data', 'foo.db');
   let baselineJobIds = new Set<string>();
+  const knownJobIds = new Set<string>();
   let lastProcessMetrics: ProducerProcessMetrics | null = null;
   const processSamples: ProducerProcessMetrics[] = [];
+  const expectedWorkloadJobs = smoke ? 1 : 1 + Math.floor((soakMs - 1) / WORKLOAD_INTERVAL_MS);
   let failure: string | null = null;
   try {
     app = await launch({ FOO_DATA_DIR: dataDir, FOO_LOCAL_DIR: localDir, FOO_OUT_DIR: runtimeOut }, [], {
@@ -228,29 +292,47 @@ async function main(): Promise<number> {
         db.close();
       }
     }
-    await submitLiveJob(page);
-    // The app's FOO_TEST clock is frozen until the driver advances it. Advance only the isolated fixture clock and wait for
-    // the real runner to leave QUEUED; this makes the smoke evidence cover job execution, not just row insertion.
-    const jobDeadline = Date.now() + 30_000;
-    while (Date.now() < jobDeadline) {
-      await advanceClock(page, 500);
-      const counts = readCounts(dbFile, baselineJobIds);
-      if (counts.jobStarts > 0 && counts.jobState !== 'queued') break;
-      await sleep(100);
-    }
+    await submitLiveJob(page, `${ASK} #1`);
+    const initialJob = await waitForJobCompletion(page, dbFile, baselineJobIds, knownJobIds);
+    knownJobIds.add(initialJob.id);
     if (!smoke) {
+      soakStartedAt = Date.now();
+      let nextWorkAt = soakStartedAt + WORKLOAD_INTERVAL_MS;
       let lastWallAt = Date.now();
-      while (Date.now() - startedAt < soakMs) {
+      while (Date.now() - soakStartedAt < soakMs) {
         const wallNow = Date.now();
         await advanceClock(page, Math.max(1, wallNow - lastWallAt));
         lastWallAt = wallNow;
+        if (wallNow >= nextWorkAt) {
+          const sequence = knownJobIds.size + 1;
+          await submitLiveJob(page, `${ASK} #${sequence}`);
+          const completedJob = await waitForJobCompletion(page, dbFile, baselineJobIds, knownJobIds);
+          knownJobIds.add(completedJob.id);
+          nextWorkAt += WORKLOAD_INTERVAL_MS;
+        }
         const counts = readCounts(dbFile, baselineJobIds);
         lastProcessMetrics = producerProcessMetrics(app);
         processSamples.push(lastProcessMetrics);
-        writeHeartbeat({ at: new Date().toISOString(), buildSha: buildSha(), ...counts, ...processHeartbeat(lastProcessMetrics) });
+        writeHeartbeat({
+          at: new Date().toISOString(),
+          buildSha: buildSha(),
+          expectedWorkloadJobs,
+          ...counts,
+          ...processHeartbeat(lastProcessMetrics),
+        });
         await sleep(SAMPLE_MS);
       }
     }
+    lastProcessMetrics = producerProcessMetrics(app);
+    processSamples.push(lastProcessMetrics);
+    const liveCounts = readCounts(dbFile, baselineJobIds);
+    writeHeartbeat({
+      at: new Date().toISOString(),
+      buildSha: buildSha(),
+      expectedWorkloadJobs,
+      ...liveCounts,
+      ...processHeartbeat(lastProcessMetrics),
+    });
   } catch (error) {
     failure = error instanceof Error ? error.message : String(error);
   } finally {
@@ -258,23 +340,34 @@ async function main(): Promise<number> {
   }
 
   const counts = readCounts(dbFile, baselineJobIds);
-  const completed = !smoke && failure === null && Date.now() - startedAt >= soakMs;
+  const completed = !smoke && failure === null && Date.now() - soakStartedAt >= soakMs;
+  if (!smoke && failure === null && completed && counts.completedUnverifiedJobs < expectedWorkloadJobs) {
+    failure = `expected ${expectedWorkloadJobs} completed unverified jobs, observed ${counts.completedUnverifiedJobs}`;
+  }
   const result = smoke
     ? failure
       ? 'fail'
-      : counts.jobStarts > 0
+      : counts.completedUnverifiedJobs === 1
         ? 'pass'
         : 'blocked'
     : !completed
       ? failure
         ? 'fail'
         : 'blocked'
-      : counts.jobStarts < 1
-        ? 'blocked'
-        : duration?.partial
-          ? 'partial'
-          : 'pass';
-  writeHeartbeat({ at: new Date().toISOString(), buildSha: buildSha(), ...counts, ...processHeartbeat(lastProcessMetrics) });
+      : failure
+        ? 'fail'
+        : counts.completedUnverifiedJobs < expectedWorkloadJobs
+          ? 'blocked'
+          : duration?.partial
+            ? 'partial'
+            : 'pass';
+  writeHeartbeat({
+    at: new Date().toISOString(),
+    buildSha: buildSha(),
+    expectedWorkloadJobs,
+    ...counts,
+    ...processHeartbeat(lastProcessMetrics),
+  });
   const report = {
     result,
     mode,
@@ -285,20 +378,24 @@ async function main(): Promise<number> {
     fixture: { dataDir, localDir, runtimeOut, fakeScript, heartbeatFile },
     buildSha: buildSha(),
     routineRuns: counts.routineRuns,
+    jobsSubmitted: counts.jobsSubmitted,
+    expectedWorkloadJobs,
+    completedUnverifiedJobs: counts.completedUnverifiedJobs,
     jobStarts: counts.jobStarts,
     jobState: counts.jobState,
-    processOwner: 'producer-electron-application',
+    processOwner: PRODUCER_PROCESS_OWNER,
     processPid: lastProcessMetrics?.pid ?? null,
+    processExecutablePath: lastProcessMetrics?.executablePath ?? null,
     maxHandleCount: processSamples.reduce((max, sample) => Math.max(max, sample.handleCount), 0),
     maxWorkingSetBytes: processSamples.reduce((max, sample) => Math.max(max, sample.workingSetBytes), 0),
     nonRespondingSamples: processSamples.filter((sample) => !sample.responding).length,
     processSamples: processSamples.length,
     failure,
     note: smoke
-      ? 'Smoke only: it requires a live fake-AI job; routine_runs is diagnostic only and makes no eight-hour soak claim.'
+      ? 'Smoke only: it requires one completed done_unverified fake-AI job; routine_runs is diagnostic only and makes no eight-hour soak claim.'
       : duration?.partial
-        ? `Partial ${soakHours}-hour diagnostic only; the full ${duration.acceptanceHours}-hour acceptance requirement remains unproven.`
-        : 'Counts come from the live FOO_TEST app SQLite fixture; job counters are required, routine_runs is diagnostic only.',
+        ? `Partial ${soakHours}-hour diagnostic only; ${expectedWorkloadJobs} done_unverified jobs were required; the full ${duration.acceptanceHours}-hour acceptance requirement remains unproven.`
+        : `Counts come from the live FOO_TEST app SQLite fixture; ${expectedWorkloadJobs} done_unverified jobs are required; routine_runs is diagnostic only.`,
   };
   writeFileSync(join(outDir, `lane-e-live-producer-${mode}.json`), JSON.stringify(report, null, 2), 'utf8');
   console.log(JSON.stringify(report));

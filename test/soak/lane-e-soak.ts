@@ -2,30 +2,24 @@
 // This harness runs the full eight-hour acceptance window by default. An explicit one-hour partial route is diagnostic only;
 // it needs a Windows fixture driver to write heartbeat evidence. An absent or stale heartbeat is blocked/fail evidence,
 // never a silent skip. routine_runs is diagnostic only because the routine milestone is not an acceptance dependency.
-// Process metrics are emitted by the live producer from its own ElectronApplication.process().pid; this observer never
-// launches or samples an unrelated executable. --exe remains a fixture identity/path guard for CI provenance.
+// Process metrics are emitted by the live producer from its own ElectronApplication.process().pid and spawnfile; this observer
+// never launches or samples an unrelated executable. --exe is a provenance-only fixture identity/path guard.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join, resolve } from 'node:path';
 import { FULL_SOAK_HOURS, resolveSoakDuration } from './lane-e-duration';
+import { PRODUCER_PROCESS_OWNER, validateHeartbeat, type PinnedProcessIdentity, type SoakHeartbeat } from './lane-e-soak-contract';
 
 const SAMPLE_MS = 30 * 1000;
-const HEARTBEAT_GRACE_MS = 120 * 1000;
-
-type Heartbeat = {
-  at?: string;
-  buildSha?: string;
-  routineRuns?: number;
-  jobStarts?: number;
-  jobState?: string;
-  lastActionAt?: string;
-  processOwner?: 'producer-electron-application';
-  processPid?: number;
-  processHandleCount?: number;
-  processWorkingSetBytes?: number;
-  processResponding?: boolean;
+type ProcessSample = {
+  at: string;
+  pid: number;
+  executablePath: string;
+  handleCount: number;
+  workingSetBytes: number;
+  responding: boolean;
+  heartbeat: SoakHeartbeat;
 };
-type ProcessSample = { at: string; pid: number; handleCount: number; workingSetBytes: number; responding: boolean; heartbeat: Heartbeat };
 
 function usage(): never {
   throw new Error(
@@ -34,7 +28,7 @@ function usage(): never {
 }
 if (process.argv.includes('--help')) {
   console.log(
-    `lane-e-soak: ${FULL_SOAK_HOURS}h is the Windows acceptance gate; --partial --duration-hours 1 records diagnostic process, memory and heartbeat evidence only.`,
+    `lane-e-soak: ${FULL_SOAK_HOURS}h is the Windows acceptance gate; --partial --duration-hours 1 records diagnostic producer-owned process, memory and heartbeat evidence only; --exe is provenance-only.`,
   );
   process.exit(0);
 }
@@ -86,9 +80,9 @@ if (!existsSync(exePath)) throw new Error(`BLOCKED: fixture executable not found
 if (!existsSync(scenarioFile)) throw new Error(`BLOCKED: soak heartbeat scenario not found: ${scenarioFile}`);
 mkdirSync(outDir, { recursive: true });
 
-function readHeartbeat(): Heartbeat | null {
+function readHeartbeat(): SoakHeartbeat | null {
   try {
-    return JSON.parse(readFileSync(scenarioFile, 'utf8')) as Heartbeat;
+    return JSON.parse(readFileSync(scenarioFile, 'utf8')) as SoakHeartbeat;
   } catch {
     return null;
   }
@@ -100,46 +94,42 @@ function sleep(ms: number): void {
     stdio: 'ignore',
   });
 }
-function processMetricsFromHeartbeat(heartbeat: Heartbeat | null): Omit<ProcessSample, 'at' | 'heartbeat'> | null {
-  if (!heartbeat || heartbeat.processOwner !== 'producer-electron-application') return null;
-  if (!Number.isInteger(heartbeat.processPid) || !Number.isInteger(heartbeat.processHandleCount)) return null;
-  if (!Number.isFinite(heartbeat.processWorkingSetBytes) || typeof heartbeat.processResponding !== 'boolean') return null;
-  return {
-    pid: heartbeat.processPid,
-    handleCount: heartbeat.processHandleCount,
-    workingSetBytes: heartbeat.processWorkingSetBytes,
-    responding: heartbeat.processResponding,
-  };
-}
-
 const startedAt = Date.now();
 const samples: ProcessSample[] = [];
 let failure: string | null = null;
-let previousHeartbeatAt = Date.now();
+let previousHeartbeatAt: number | undefined;
+let pinnedIdentity: PinnedProcessIdentity | undefined;
 while (Date.now() - startedAt < soakMs) {
   sleep(SAMPLE_MS);
   const heartbeat = readHeartbeat();
-  const heartbeatTime = heartbeat?.at ? Date.parse(heartbeat.at) : Number.NaN;
-  if (Number.isFinite(heartbeatTime) && heartbeatTime > previousHeartbeatAt) previousHeartbeatAt = heartbeatTime;
-  const ownedMetrics = processMetricsFromHeartbeat(heartbeat);
-  if (!ownedMetrics) {
-    failure = 'producer heartbeat lacked producer-owned ElectronApplication PID metrics';
+  const validated = validateHeartbeat(heartbeat, Date.now(), previousHeartbeatAt, pinnedIdentity);
+  if (validated.value) {
+    previousHeartbeatAt = validated.value.timestamp;
+    pinnedIdentity = validated.value.identity;
+    samples.push({
+      at: new Date().toISOString(),
+      pid: validated.value.identity.pid,
+      executablePath: validated.value.identity.executablePath,
+      handleCount: validated.value.handleCount,
+      workingSetBytes: validated.value.workingSetBytes,
+      responding: validated.value.responding,
+      heartbeat: heartbeat!,
+    });
+  }
+  if (validated.failure) {
+    failure = validated.failure;
     break;
   }
-  const metrics = ownedMetrics;
-  if (Date.now() - previousHeartbeatAt > HEARTBEAT_GRACE_MS) {
-    failure = 'producer heartbeat stale for more than ' + HEARTBEAT_GRACE_MS / 1000 + 's';
-    samples.push({ at: new Date().toISOString(), ...metrics, heartbeat: heartbeat! });
-    break;
-  }
-  samples.push({ at: new Date().toISOString(), ...metrics, heartbeat: heartbeat! });
 }
 
 const lastHeartbeat = samples.at(-1)?.heartbeat;
 const routineRuns = lastHeartbeat?.routineRuns ?? 0;
-const jobStarts = lastHeartbeat?.jobStarts ?? 0;
+const expectedWorkloadJobs = lastHeartbeat?.expectedWorkloadJobs ?? 0;
+const jobsSubmitted = lastHeartbeat?.jobsSubmitted ?? lastHeartbeat?.jobStarts ?? 0;
+const completedUnverifiedJobs = lastHeartbeat?.completedUnverifiedJobs ?? 0;
 const completed = failure === null && Date.now() - startedAt >= soakMs;
-const result = !completed ? (failure ? 'fail' : 'blocked') : jobStarts < 1 ? 'blocked' : duration.partial ? 'partial' : 'pass';
+const workloadComplete = expectedWorkloadJobs > 0 && completedUnverifiedJobs >= expectedWorkloadJobs;
+const result = !completed ? (failure ? 'fail' : 'blocked') : !workloadComplete ? 'blocked' : duration.partial ? 'partial' : 'pass';
 const report = {
   result,
   mode,
@@ -148,15 +138,23 @@ const report = {
   partial: duration.partial,
   startedAt: new Date(startedAt).toISOString(),
   endedAt: new Date().toISOString(),
-  fixture: { exe: exePath, scenario: scenarioFile, processOwner: 'producer-electron-application' },
+  fixture: {
+    fixtureIdentityPath: exePath,
+    fixtureIdentityRole: 'provenance-only; observer never launches or samples this path',
+    scenario: scenarioFile,
+    processOwner: PRODUCER_PROCESS_OWNER,
+  },
   routineRuns,
-  jobStarts,
+  expectedWorkloadJobs,
+  jobsSubmitted,
+  completedUnverifiedJobs,
   maxHandleCount: samples.reduce((max, sample) => Math.max(max, sample.handleCount), 0),
   maxWorkingSetBytes: samples.reduce((max, sample) => Math.max(max, sample.workingSetBytes), 0),
-  processOwner: 'producer-electron-application',
-  processPid: lastHeartbeat?.processPid ?? null,
+  processOwner: PRODUCER_PROCESS_OWNER,
+  processPid: pinnedIdentity?.pid ?? null,
+  processExecutablePath: pinnedIdentity?.executablePath ?? null,
   freezes: samples.filter((sample) => sample.responding === false).length,
-  failure: failure ?? (jobStarts < 1 ? 'heartbeat did not prove at least one job start' : null),
+  failure: failure ?? (!workloadComplete ? 'heartbeat did not prove the expected done_unverified workload' : null),
   samples,
 };
 writeFileSync(join(outDir, `lane-e-soak-${mode}.json`), JSON.stringify(report, null, 2), 'utf8');
@@ -166,11 +164,11 @@ const summary = [
   `| Requested soak duration | ${completed ? (duration.partial ? 'partial' : 'pass') : result} | requested=${soakHours}h; observedMs=${Date.now() - startedAt} |`,
   `| Full ${duration.acceptanceHours}-hour acceptance | ${duration.partial ? 'blocked' : completed ? 'pass' : result} | a one-hour diagnostic never satisfies the full acceptance requirement |`,
   `| Routine rows (diagnostic only) | pass | runs=${routineRuns}; routine execution is not a gate |`,
-  `| Job execution evidence | ${jobStarts > 0 ? 'pass' : 'blocked'} | starts=${jobStarts}; lastState=${lastHeartbeat?.jobState ?? 'missing'} |`,
+  `| Job execution evidence | ${workloadComplete ? 'pass' : 'blocked'} | expected=${expectedWorkloadJobs}; submitted=${jobsSubmitted}; completedUnverified=${completedUnverifiedJobs}; lastState=${lastHeartbeat?.jobState ?? 'missing'} |`,
   `| Process handles | ${samples.length > 0 ? 'pass' : 'blocked'} | owner=producer ElectronApplication; pid=${report.processPid ?? 'unknown'}; max=${report.maxHandleCount} |`,
   `| Working set | ${samples.length > 0 ? 'pass' : 'blocked'} | maxBytes=${report.maxWorkingSetBytes} |`,
   `| Freeze/response sample | ${report.freezes === 0 ? 'pass' : 'fail'} | nonRespondingSamples=${report.freezes} |`,
-  `| Failure detail | ${report.failure ? 'blocked' : 'pass'} | ${(report.failure ?? 'none').replaceAll('|', '/')} |`,
+  `| Failure detail | ${report.failure ? 'fail' : 'pass'} | ${(report.failure ?? 'none').replaceAll('|', '/')} |`,
 ];
 writeFileSync(join(outDir, `lane-e-soak-${mode}.md`), `${summary.join('\n')}\n`, 'utf8');
 console.log(JSON.stringify(report));
