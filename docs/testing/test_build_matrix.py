@@ -111,6 +111,7 @@ class MatrixEvidenceTest(unittest.TestCase):
             write('docs/testing/features.tsv', ['milestone', 'id', 'journey', 'text', 'built', 'built_note'], [
                 ['M3', 'AT-040', '', 'Reserved feature', 'not built', 'not implemented'],
                 ['M3', 'AT-056', '', 'Manifest only', 'built', ''],
+                ['M3', 'AT-057', '', 'Checked-step note only', 'built', ''],
                 ['M3', 'AT-031', '', 'Historical receipt', 'built', ''],
             ])
             write('docs/testing/suite-status.tsv', ['key', 'state', 'sha', 'link', 'note'], [
@@ -127,12 +128,13 @@ class MatrixEvidenceTest(unittest.TestCase):
             (journeys / 'unrelated.json').write_text(json.dumps({
                 'covers': ['AT-056'], 'blockedPrerequisites': ['AT-056'],
                 'steps': [{'do': 'send', 'text': 'Hello'},
-                          {'do': 'waitReply', 'expectTid': 'bubble-foo', 'note': 'AT-031 reply'}],
+                          {'do': 'waitReply', 'expectTid': 'bubble-foo', 'note': 'AT-031 reply; AT-057 untested'}],
             }), encoding='utf-8')
             subprocess.run([sys.executable, str(docs / 'build_matrix.py')], check=True, capture_output=True)
             rows = {row['id']: row for row in json.loads((docs / 'coverage-matrix.json').read_text(encoding='utf-8'))['rows']}
             self.assertTrue(all(cell['s'] == 'notbuilt' for cell in rows['AT-040']['cells'].values()))
             self.assertEqual(rows['AT-056']['cells']['real_ai']['s'], 'missing')
+            self.assertEqual(rows['AT-057']['cells']['real_ai']['s'], 'missing')
             self.assertEqual(rows['AT-031']['cells']['real_ai']['s'], 'partial')
 
 
