@@ -12,6 +12,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { stillWorking, settled } = require('./settle');
 
 const EXE = process.env.FOO_EXE || path.join(process.env.LOCALAPPDATA || '', 'Programs', 'foo', 'foo.exe');
 const ROOT = process.env.FOO_REAL_TEST_DIR || path.join(process.env.USERPROFILE || '.', 'foo-real-test');
@@ -195,6 +196,21 @@ async function main() {
           text: (el.innerText || '').trim().slice(0, 1500),
         })),
     );
+  // CR-0046: foo's replies that hold a fence (```a2ui, ```page), as the AI wrote them, so a kit piece that drew only
+  // "Couldn't show part of this" can become a cassette (test/fixtures/kit-replies). The drawn thread keeps only the words.
+  const rawFences = () =>
+    page.evaluate(async () => {
+      const out = [];
+      const chats = await window.foo.invoke('chat:list', {});
+      for (const c of chats.ok ? chats.value : []) {
+        const list = await window.foo.invoke('message:list', { chatId: c.id, limit: 50 });
+        for (const m of list.ok ? list.value : []) {
+          if (m.authorKind === 'foo' && m.text.includes('```'))
+            out.push({ chatId: c.id, messageId: m.id, status: m.status, text: m.text.slice(0, 20_000) });
+        }
+      }
+      return out;
+    });
   // What counts as foo answering: a foo text bubble or any card foo posts, below the user's newest bubble. The thread is a
   // virtual list (only the rows near the bottom are in the page), so counting all bubbles stops working in a long chat;
   // counting what sits after the newest bubble-me does not. A memory chip ("I'll remember: … · Undo", 05-3 §5.17.1) is
@@ -202,7 +218,7 @@ async function main() {
   const afterMe = () =>
     page.evaluate(() => {
       const log = document.querySelector('[data-testid="thread-log"]');
-      if (!log) return { n: 0, texts: [] };
+      if (!log) return { n: 0, texts: [], items: [] };
       const memoryChip = (el) =>
         el.getAttribute('data-testid') === 'thread-marker' && !!el.querySelector('[data-testid="thread-memory-undo"]');
       // Only top-level rows: a card's own parts (card-connect-allow-send inside card-connect) are not extra replies.
@@ -218,7 +234,15 @@ async function main() {
             memoryChip(el) ||
             (/^(bubble-foo|card-[a-z-]+)$/.test(el.getAttribute('data-testid')) && el.getAttribute('data-testid') !== 'card-time'),
         );
-      return { n: after.length, texts: after.map((el) => (el.innerText || '').trim().slice(0, 1500)) };
+      return {
+        n: after.length,
+        texts: after.map((el) => (el.innerText || '').trim().slice(0, 1500)),
+        // foo still at work: a bubble streaming, or an AI page inside it still building (see settle.js).
+        items: after.map((el) => ({
+          state: el.getAttribute('data-state'),
+          pageState: el.querySelector('[data-testid="ai-page"]')?.getAttribute('data-state') ?? null,
+        })),
+      };
     });
 
   // The end state a step names: expectTid / tid / css on screen (count if given), and expectJs true in the page.
@@ -422,11 +446,16 @@ async function main() {
             if (now.n > before && first === null) first = Date.now() - start;
             if (now.n !== cur.n || now.texts.join() !== cur.texts.join()) lastChange = Date.now();
             cur = now;
-            if (now.n > before && Date.now() - lastChange >= quiet) break;
+            if (settled({ n: now.n, before, items: now.items.slice(before), quietFor: Date.now() - lastChange, quietMs: quiet })) break;
           }
           rec.firstReplyMs = first;
           rec.newBubbles = cur.n - before;
           rec.ok = cur.n > before;
+          // Timed out with foo still writing: not an answer (and closing now would cut the reply off).
+          if (stillWorking(cur.items.slice(before))) {
+            rec.stillWorking = true;
+            rec.ok = false;
+          }
           const texts = cur.texts.slice(before);
           rec.duplicates = texts.filter((x, k) => x && texts.indexOf(x) !== k).length;
           rec.lastReply = texts.join('\n---\n').slice(0, 2000);
@@ -444,6 +473,10 @@ async function main() {
         }
         case 'dump':
           fs.writeFileSync(path.join(out, `${s.name}.json`), JSON.stringify(await threadDump(), null, 2));
+          fs.writeFileSync(
+            path.join(out, `${s.name}-raw.json`),
+            JSON.stringify(await rawFences().catch((e) => [{ error: String(e).slice(0, 300) }]), null, 2),
+          );
           break;
         case 'shot':
           await shot(s.name);
@@ -476,8 +509,16 @@ async function main() {
           // reopen without waiting, and pass only if a window shows. fooProcs counts foo.exe processes left (it includes
           // this driver, which runs under foo.exe too).
           // After a failed reopen the last app is already gone; then this case starts from a fresh launch.
+          // foo's own main pid, asked from inside the app: Playwright's pid can be a launcher whose child is the real
+          // main (seen in dev runs on CI), and killing it leaves foo running.
+          // Bounded: a hung (not dead) main must not hang the journey.
+          const mainPid = () =>
+            Promise.race([
+              app.evaluate(() => process.pid),
+              new Promise((_, no) => setTimeout(() => no(new Error('no answer')), 10_000)),
+            ]).catch(() => app.process().pid);
           try {
-            process.kill(app.process().pid, 'SIGKILL');
+            process.kill(await mainPid(), 'SIGKILL');
           } catch {
             await new Promise((r) => setTimeout(r, 10_000)); // let the last crash's helpers exit first
             rec.fooProcsBefore = fooProcs();
@@ -486,7 +527,7 @@ async function main() {
               (e) => String(e && e.message ? e.message : e).split('\n')[0],
             );
             if (err) throw new Error(`fresh launch 10 s after the last crash failed (${rec.fooProcsBefore} foo.exe left): ${err}`);
-            process.kill(app.process().pid, 'SIGKILL');
+            process.kill(await mainPid(), 'SIGKILL');
           }
           if (s.gapMs) await new Promise((r) => setTimeout(r, s.gapMs));
           rec.fooProcs = fooProcs();
@@ -510,6 +551,20 @@ async function main() {
     log(rec);
     if (s.shot) await shot(s.shot).catch(() => {});
   }
+  // Closing foo mid-reply cuts that reply off, and the next journey (same profile) would find "That reply got cut off".
+  // Let any reply still streaming, or page still building, finish first, for up to 3 minutes.
+  const busy =
+    '[data-testid="thread-log"] :is([data-testid="bubble-foo"][data-state="streaming"], [data-testid="ai-page"][data-state="building"])';
+  const t1 = Date.now();
+  while (
+    Date.now() - t1 < 180_000 &&
+    (await page
+      .locator(busy)
+      .count()
+      .catch(() => 0))
+  )
+    await page.waitForTimeout(1_000);
+  if (Date.now() - t1 > 1_000) log({ step: 'drain', ms: Date.now() - t1 });
   // Some outcomes land after the step gave up (a saved fact, an AI page that opens late). Before calling a step failed,
   // look again at the end state it names; a late pass is kept as ok with late: true.
   for (const r of results) {
