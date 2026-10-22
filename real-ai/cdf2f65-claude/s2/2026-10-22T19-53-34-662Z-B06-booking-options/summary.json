@@ -1,0 +1,94 @@
+{
+  "journey": "B06-booking-options",
+  "title": "Restaurant options without booking",
+  "steps": 10,
+  "failed": 2,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T19-53-34-662Z-B06-booking-options",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792698820310,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 145
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "note": "AT-036: the booking question first produces an actual reply or plan",
+      "firstReplyMs": 21675,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nCheck Italian restaurants in Bandra, Mumbai\n3\nLook for tables for 2 on Sat 24 Oct, 8:00 PM\n4\nKeep 3 Italian places with a free table that fit good ratings and a table at 8:00 PM\n5\nWait for you to pick one\nAbout 4 minutes\nGo\nChange plan\n7:54 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 27735
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 49
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "note": "AT-036/AT-311: option and no-approval checks below are evaluated on the rendered cards",
+      "expect": "options shown; no booking Approval card until I say book",
+      "ok": true,
+      "ms": 180001
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "note": "AT-036/AT-311: no booking Approval is present before the user chooses and says book",
+      "found": 0,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "AT-036: preserve the existing choice-card observation",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "check",
+      "note": "AT-036: actual asking choice options are rendered before any booking action",
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 7,
+      "do": "check",
+      "note": "AT-108: the live job row exposes the NEEDS YOU state while a choice is waiting",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 8,
+      "do": "check",
+      "note": "AT-310: a rendered job checklist, when present, has actual step rows",
+      "found": 8,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 9,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}

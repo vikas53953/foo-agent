@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n7:49 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n7:49 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n7:50 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it makes paying someone as easy as sending a message. You open any payment app, scan a code or pick a contact, enter a PIN, and the money moves from bank to bank in seconds. There is no card machine to carry and no cash to count out.\n\nIt also works everywhere. Tea stalls, vegetable sellers, auto drivers and big shops all show the same QR code, so you rarely need to ask \"Do you take digital payments?\" A small shop can start accepting money with just a printed code and a bank account.\n\nCost and trust matter too. For most everyday payments, people pay nothing to send money, and shops avoid the fees that cards usually bring. Since the money goes straight between bank accounts, people feel it is safe, and the payment record is there in the app if anything goes wrong. Banks and the government have pushed it hard, so more people now know how it works, from students to grandparents.\n\nHere are the three main reasons:\n\nSpeed and ease: Payments take seconds, with just a scan and a PIN.\nWorks everywhere: One QR code is accepted from street stalls to large stores.\nLow or no cost: Free for most people, and cheaper for small shops than cards.\n7:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n7:50 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:50 PM\n7:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:50 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nStill working, this one takes a while\nKeep 3 budget phones that fit price under ₹20,000\nCompare price, battery, camera, screen and\nWatch live\nStop\n2 min\n7:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n7:53 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is an easy-paced 3 day Jaipur plan for your parents, with mornings for sightseeing and a rest after lunch.\n\nDay 1, the old city: City Palace, Jantar Mantar, then Hawa Mahal from the front. Evening stroll and shopping at Johari Bazaar.\nDay 2, forts and lakes: Amber Fort early, before the crowds and heat. Stop at Jal Mahal on the way back. Sunset at Nahargarh Fort if their knees are happy with it.\nDay 3, slow and local: Albert Hall Museum, Birla Mandir, and gifts from Bapu Bazaar. Dinner with folk music and a Rajasthani thali.\n\nBook a car with a driver for all three days, since it saves a lot of walking. Winter days are pleasant, but midday can still be warm, so rest at the hotel after lunch. Amber Fort has steps, and a jeep ride up to the entrance is easier on the legs.\n\nWant me to fit this to their dates and a budget?\n\n7:53 PM"
+  }
+]

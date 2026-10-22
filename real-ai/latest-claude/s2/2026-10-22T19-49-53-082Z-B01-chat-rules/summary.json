@@ -1,0 +1,71 @@
+{
+  "journey": "B01-chat-rules",
+  "title": "Chat rules: thanks, long answer, filler, reactions",
+  "steps": 7,
+  "failed": 0,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T19-49-53-082Z-B01-chat-rules",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792698598595,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 124
+    },
+    {
+      "i": 1,
+      "do": "waitFor",
+      "note": "AT-027: reaction-only terminal; the latest user row has 👍 or ❤️ and no assistant bubble/card follows it",
+      "ok": true,
+      "ms": 5627
+    },
+    {
+      "i": 2,
+      "do": "expectText",
+      "note": "AT-027: the terminal reaction is exactly an accepted thumbs-up or heart",
+      "text": "❤️",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "sentAt": 1792698604404,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 116
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "note": "AT-030: at most 3 bubbles and any rendered list stays in one bubble; AT-031: no filler; AT-308: present chips are follow-ups from the reply and no more than 3",
+      "firstReplyMs": 2530,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "People in India are switching to UPI because it makes paying someone as easy as sending a message. You open any payment app, scan a code or pick a contact, enter a PIN, and the money moves from bank to bank in seconds. There is no card machine to carry and no cash to count out.\n\nIt also works everywhere. Tea stalls, vegetable sellers, auto drivers and big shops all show the same QR code, so you rarely need to ask \"Do you take digital payments?\" A small shop can start accepting money with just a printed code and a bank account.\n\nCost and trust matter too. For most everyday payments, people pay nothing to send money, and shops avoid the fees that cards usually bring. Since the money goes straight between bank accounts, people feel it is safe, and the payment record is there in the app if anything goes wrong. Banks and the government have pushed it hard, so more people now know how it works, from students to grandparents.\n\nHere are the three main reasons:\n\nSpeed and ease: Payments take seconds, with just a scan and a PIN.\nWorks everywhere: One QR code is accepted from street stalls to large stores.\nLow or no cost: Free for most people, and cheaper for small shops than cards.\n7:50 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 13671
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "AT-308 suggestion chips (≤3)",
+      "soft": true,
+      "found": 3,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}
