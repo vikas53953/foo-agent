@@ -155,6 +155,7 @@
         "or",
         "sent.",
         "Done",
+        "1",
         "M",
         "Money",
         "9:41",
@@ -549,13 +550,13 @@
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.10256410256410256,
-    "diffPixels": 3176,
+    "ratio": 0.10262868953045276,
+    "diffPixels": 3178,
     "total": 30966
   },
   "r5": {
-    "ratio": 0.096564453125,
-    "diffPixels": 98882,
+    "ratio": 0.096759765625,
+    "diffPixels": 99082,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-15-09.dark.diff.png"

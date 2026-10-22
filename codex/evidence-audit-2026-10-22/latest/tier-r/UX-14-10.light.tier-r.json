@@ -67,7 +67,6 @@
         "10:04",
         "✓",
         "✓",
-        "⛔",
         "IRCTC",
         "wants",
         "you",
@@ -167,7 +166,6 @@
         "any",
         "time.",
         "Done",
-        "2",
         "B",
         "Building",
         "society",
@@ -337,7 +335,6 @@
         "of",
         "AI",
         "9:41",
-        "🛠",
         "foo",
         "read:",
         "Pune",
@@ -531,8 +528,8 @@
     "total": 23820
   },
   "r5": {
-    "ratio": 0.0910341796875,
-    "diffPixels": 93219,
+    "ratio": 0.09094140625,
+    "diffPixels": 93124,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-10.light.diff.png"

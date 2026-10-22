@@ -153,6 +153,7 @@
         "window",
         "seats",
         "Done",
+        "1",
         "B",
         "Building",
         "society",
@@ -171,7 +172,6 @@
         "PM",
         "17",
         "Oct",
-        "4",
         "4",
         "4",
         "4",
@@ -898,8 +898,8 @@
     "total": 3332
   },
   "r5": {
-    "ratio": 0.05269921875,
-    "diffPixels": 53964,
+    "ratio": 0.0529853515625,
+    "diffPixels": 54257,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-18-08.dark.diff.png"
