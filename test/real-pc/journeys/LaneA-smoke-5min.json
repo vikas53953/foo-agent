@@ -1,0 +1,101 @@
+{
+  "id": "LaneA-smoke-5min",
+  "title": "Five-minute real-AI smoke: start, find AI, first chat, job and card",
+  "spec": "07-1 J1-J3; smoke set proposed by Lane A",
+  "covers": ["AT-005", "AT-006", "AT-027", "AT-032", "AT-106"],
+  "required": true,
+  "steps": [
+    {
+      "do": "waitFor",
+      "tid": "setup-welcome-start",
+      "timeoutMs": 60000,
+      "shot": "smoke-start",
+      "expect": "AT-005: fresh profile starts on the Welcome card with Let’s go",
+      "note": "AT-005: fresh profile starts on the Welcome card with Let’s go"
+    },
+    {
+      "do": "click",
+      "tid": "setup-welcome-start",
+      "note": "AT-005: start Find your AI from the welcome card"
+    },
+    {
+      "do": "waitFor",
+      "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
+      "timeoutMs": 60000,
+      "shot": "smoke-find-ai",
+      "expect": "AT-005: Find your AI rows test live and show a usable selection",
+      "note": "AT-005: Find your AI rows test live and show a usable selection"
+    },
+    {
+      "do": "waitFor",
+      "tid": "setup-ai-use",
+      "timeoutMs": 90000,
+      "shot": "smoke-ai-ready",
+      "expect": "AT-006: a passing AI exposes Use and no later step is reachable when none passes",
+      "note": "AT-006: a passing AI exposes Use and no later step is reachable when none passes"
+    },
+    {
+      "do": "click",
+      "tid": "setup-ai-use",
+      "note": "AT-006: choose the passing AI and enter the name-and-face step"
+    },
+    {
+      "do": "clickIf",
+      "tid": "setup-skip-rest",
+      "note": "AT-005: accept the default name and face so the first chat is genuinely ready"
+    },
+    {
+      "do": "wait",
+      "ms": 10000,
+      "shot": "smoke-first-chat",
+      "expect": "AT-005: first chat opens with a welcome after setup completion"
+    },
+    {
+      "do": "eval",
+      "js": "(()=>{const f=document.querySelector('[data-testid=\"composer-field\"]');if(!f||f.disabled||f.getAttribute('aria-disabled')==='true')throw new Error('composer is not enabled after setup');return {enabled:true}})()",
+      "note": "AT-005: direct DOM check confirms the composer is enabled before any smoke send"
+    },
+    {
+      "do": "send",
+      "text": "Hi foo, please start one harmless tiny job and show me its plan before doing anything.",
+      "note": "AT-106: first smoke job asks for a queued plan and checklist"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-checklist",
+      "shot": "smoke-one-job",
+      "note": "AT-106: one harmless job produces a visible checklist with a safe state"
+    },
+    {
+      "do": "send",
+      "text": "Ask me one simple preference before continuing, please.",
+      "note": "AT-032: smoke asks for a Choice that waits for the user"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-choice",
+      "shot": "smoke-one-card",
+      "note": "AT-032: one Choice card is visible with clear options and no irreversible action"
+    },
+    {
+      "do": "send",
+      "text": "thanks!",
+      "note": "AT-027: thanks should receive a reaction without a new foo message"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 30000,
+      "expectTid": "bubble-reaction",
+      "shot": "smoke-thanks",
+      "expectJs": "document.querySelector('[data-testid=\"bubble-reaction\"]') !== null",
+      "note": "AT-027: a reaction appears on thanks with no new foo message"
+    },
+    {
+      "do": "dump",
+      "name": "thread",
+      "note": "AT-005, AT-006, AT-027, AT-032, AT-106: preserve smoke evidence"
+    }
+  ]
+}

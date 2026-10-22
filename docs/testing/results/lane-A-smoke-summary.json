@@ -1,0 +1,114 @@
+{
+  "journey": "LaneA-smoke-5min",
+  "title": "Five-minute real-AI smoke: start, find AI, first chat, job and card",
+  "steps": 13,
+  "failed": 0,
+  "out": "LANE_A_SMOKE_RUN",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "expect": "AT-005: fresh profile starts on the Welcome card with Let's go",
+      "ok": true,
+      "ms": 19
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "note": "AT-005: start Find your AI from the welcome card",
+      "ok": true,
+      "ms": 572
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "expect": "AT-005: Find your AI rows test live and show a usable selection",
+      "ok": true,
+      "ms": 27
+    },
+    {
+      "i": 3,
+      "do": "waitFor",
+      "expect": "AT-006: a passing AI exposes Use and no later step is reachable when none passes",
+      "ok": true,
+      "ms": 5126
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "note": "AT-006: choose the passing AI and enter the first chat",
+      "ok": true,
+      "ms": 471
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "AT-005: first chat opens with a welcome and unlocked composer",
+      "ok": true,
+      "ms": 3019
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "note": "AT-106: first smoke job asks for a queued plan and checklist",
+      "sentAt": 1792611567522,
+      "before": 0,
+      "ok": true,
+      "ms": 695
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "AT-106: one harmless job produces a visible plan or checklist with a safe state",
+      "firstReplyMs": 9475,
+      "newBubbles": 7,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nShowing you before a quick look at today's weather\nSlow here, trying another way\nShow you before doing anything\nLook on the web\nLook for today's weather forecast\nWatch live\nStop\nunder 1 min\n1:09 AM\n---\nShowing you before a quick look at today's weather\nSlow here, trying another way\n---\nShow you before doing anything\n---\nLook on the web\n---\nLook for today's weather forecast\n---\nWatch live\n---\nStop",
+      "ms": 20342
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "note": "AT-032: smoke card is a Choice that waits for the user",
+      "sentAt": 1792611589208,
+      "before": 0,
+      "ok": true,
+      "ms": 461
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "expect": "AT-032: one card is visible with clear options and no irreversible action",
+      "firstReplyMs": 8386,
+      "newBubbles": 7,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which city should I check today's weather for?\n1\nDelhi\nBEST FIT\n2\nMumbai\n3\nBengaluru\n4\nAnother city\nType the city name\nSomething else…\nSkip\n1:09 AM\n---\n1\nDelhi\nBEST FIT\n---\n2\nMumbai\n---\n3\nBengaluru\n---\n4\nAnother city\nType the city name\n---\nSomething else…\n---\nSkip",
+      "ms": 14703
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "note": "AT-027: thanks receives a quiet thumbs-up reaction rather than a filler reply",
+      "sentAt": 1792611605205,
+      "before": 0,
+      "ok": true,
+      "ms": 434
+    },
+    {
+      "i": 11,
+      "do": "wait",
+      "expect": "AT-027: a thumbs-up reaction appears with no new foo message",
+      "ok": true,
+      "ms": 15045
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "note": "AT-005, AT-006, AT-027, AT-032, AT-106: preserve five-minute smoke evidence",
+      "ok": true,
+      "ms": 161
+    }
+  ]
+}

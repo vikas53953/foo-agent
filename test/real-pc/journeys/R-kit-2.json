@@ -1,0 +1,391 @@
+{
+  "id": "R-kit-2",
+  "title": "Group R live stamp, calculator, keep and time picker",
+  "spec": "07 §11.5 Group R; AT-350, AT-352, AT-355, AT-368, AT-369",
+  "covers": [
+    "AT-350",
+    "AT-352",
+    "AT-368",
+    "AT-355",
+    "AT-369"
+  ],
+  "steps": [
+    {
+      "do": "send",
+      "text": "Help me pick a time for a call tomorrow between 2 and 5 pm",
+      "note": "AT-350: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-time-pick",
+      "note": "AT-350: clean",
+      "shot": "at-350-clean"
+    },
+    {
+      "do": "click",
+      "css": "[data-testid=\"kit-time-pick\"] [role=\"radio\"]",
+      "last": true,
+      "note": "AT-350: click the latest real time slot control"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(confirm|scheduled|booked|set for|[2-5]:?\\s?(am|pm))/i.test(b.innerText)})()",
+      "note": "AT-350: foo confirms the selected slot"
+    },
+    {
+      "do": "send",
+      "text": "Help me pick a tiem for a call tomorrow between 2 and 5 pm",
+      "note": "AT-350: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-time-pick",
+      "note": "AT-350: messy typo",
+      "shot": "at-350-messy-typo"
+    },
+    {
+      "do": "click",
+      "css": "[data-testid=\"kit-time-pick\"] [role=\"radio\"]",
+      "last": true,
+      "note": "AT-350: click the latest real time slot control"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(confirm|scheduled|booked|set for|[2-5]:?\\s?(am|pm))/i.test(b.innerText)})()",
+      "note": "AT-350: foo confirms the selected slot"
+    },
+    {
+      "do": "send",
+      "text": "Kal 2 se 5 baje ke beech call ka time pick karne mein help karo",
+      "note": "AT-350: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-time-pick",
+      "note": "AT-350: Hinglish",
+      "shot": "at-350-Hinglish"
+    },
+    {
+      "do": "click",
+      "css": "[data-testid=\"kit-time-pick\"] [role=\"radio\"]",
+      "last": true,
+      "note": "AT-350: click the latest real time slot control"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(confirm|scheduled|booked|set for|[2-5]:?\\s?(am|pm))/i.test(b.innerText)})()",
+      "note": "AT-350: foo confirms the selected slot"
+    },
+    {
+      "do": "send",
+      "text": "Show the Sensex as a live card I can refresh",
+      "note": "AT-352: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-352: clean",
+      "shot": "at-352-clean"
+    },
+    {
+      "do": "expectText",
+      "last": true,
+      "re": "Sensex|live",
+      "note": "AT-352: clean result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-live-stamp\"]"
+    },
+    {
+      "do": "check",
+      "tid": "kit-live-refresh",
+      "note": "AT-352: refresh control is visible"
+    },
+    {
+      "do": "send",
+      "text": "Show the Sensex as a live crad I can refresh",
+      "note": "AT-352: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-352: messy typo",
+      "shot": "at-352-messy-typo"
+    },
+    {
+      "do": "expectText",
+      "last": true,
+      "re": "Sensex|live",
+      "note": "AT-352: messy typo result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-live-stamp\"]"
+    },
+    {
+      "do": "check",
+      "tid": "kit-live-refresh",
+      "note": "AT-352: refresh control is visible"
+    },
+    {
+      "do": "send",
+      "text": "Sensex ka live card dikhao jise main refresh kar sakun",
+      "note": "AT-352: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-352: Hinglish",
+      "shot": "at-352-Hinglish"
+    },
+    {
+      "do": "expectText",
+      "last": true,
+      "re": "Sensex|live",
+      "note": "AT-352: Hinglish result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-live-stamp\"]"
+    },
+    {
+      "do": "check",
+      "tid": "kit-live-refresh",
+      "note": "AT-352: refresh control is visible"
+    },
+    {
+      "do": "send",
+      "text": "Show the Sensex as a live card I can refresh",
+      "note": "AT-368: clean live card ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-368: clean live card",
+      "shot": "at-368-clean-live-card"
+    },
+    {
+      "do": "click",
+      "tid": "kit-live-refresh",
+      "note": "AT-368: clean refresh action"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-368: refresh returns a new live stamp reply"
+    },
+    {
+      "do": "send",
+      "text": "Show the Sensex as a live crad I can refresh",
+      "note": "AT-368: messy typo live card ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-368: messy typo live card",
+      "shot": "at-368-messy-typo-live-card"
+    },
+    {
+      "do": "click",
+      "tid": "kit-live-refresh",
+      "note": "AT-368: messy typo refresh action"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-368: refresh returns a new live stamp reply"
+    },
+    {
+      "do": "send",
+      "text": "Sensex ka live card dikhao jise main refresh kar sakun",
+      "note": "AT-368: Hinglish live card ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-368: Hinglish live card",
+      "shot": "at-368-Hinglish-live-card"
+    },
+    {
+      "do": "click",
+      "tid": "kit-live-refresh",
+      "note": "AT-368: Hinglish refresh action"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-368: refresh returns a new live stamp reply"
+    },
+    {
+      "do": "send",
+      "text": "Make an EMI calculator for a 5 lakh loan at 9% for 3 years",
+      "note": "AT-355: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-calculator",
+      "note": "AT-355: clean",
+      "shot": "at-355-clean"
+    },
+    {
+      "do": "expectText",
+      "last": true,
+      "re": "EMI|5 lakh|9%",
+      "note": "AT-355: clean result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-calculator\"]"
+    },
+    {
+      "do": "send",
+      "text": "Make an EMI calclator for a 5 lakh loan at 9% for 3 years",
+      "note": "AT-355: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-calculator",
+      "note": "AT-355: messy typo",
+      "shot": "at-355-messy-typo"
+    },
+    {
+      "do": "expectText",
+      "last": true,
+      "re": "EMI|5 lakh|9%",
+      "note": "AT-355: messy typo result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-calculator\"]"
+    },
+    {
+      "do": "send",
+      "text": "5 lakh ka loan 9 percent par 3 saal ke liye EMI calculator banao",
+      "note": "AT-355: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-calculator",
+      "note": "AT-355: Hinglish",
+      "shot": "at-355-Hinglish"
+    },
+    {
+      "do": "expectText",
+      "last": true,
+      "re": "EMI|5 lakh|9%",
+      "note": "AT-355: Hinglish result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-calculator\"]"
+    },
+    {
+      "do": "send",
+      "text": "Make an EMI calculator for a 5 lakh loan at 9% for 3 years",
+      "note": "AT-369: clean ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-calculator",
+      "note": "AT-369: clean",
+      "shot": "at-369-clean"
+    },
+    {
+      "do": "expectText",
+      "last": true,
+      "re": "EMI|5 lakh",
+      "note": "AT-369: clean result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-calculator\"]"
+    },
+    {
+      "do": "click",
+      "tid": "kit-keep",
+      "note": "AT-369: keep the calculator surface"
+    },
+    {
+      "do": "wait",
+      "ms": 1500
+    },
+    {
+      "do": "check",
+      "tid": "files-kept-item",
+      "note": "AT-369: supported presence check for a kept surface (fresh-row identity remains unavailable)"
+    },
+    {
+      "do": "send",
+      "text": "Make an EMI calclator for a 5 lakh loan at 9% for 3 years",
+      "note": "AT-369: messy typo ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-calculator",
+      "note": "AT-369: messy typo",
+      "shot": "at-369-messy-typo"
+    },
+    {
+      "do": "expectText",
+      "last": true,
+      "re": "EMI|5 lakh",
+      "note": "AT-369: messy typo result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-calculator\"]"
+    },
+    {
+      "do": "click",
+      "tid": "kit-keep",
+      "note": "AT-369: keep the calculator surface"
+    },
+    {
+      "do": "wait",
+      "ms": 1500
+    },
+    {
+      "do": "check",
+      "tid": "files-kept-item",
+      "note": "AT-369: supported presence check for a kept surface (fresh-row identity remains unavailable)"
+    },
+    {
+      "do": "send",
+      "text": "5 lakh ka loan 9 percent par 3 saal ke liye EMI calculator banao",
+      "note": "AT-369: Hinglish ask"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-calculator",
+      "note": "AT-369: Hinglish",
+      "shot": "at-369-Hinglish"
+    },
+    {
+      "do": "expectText",
+      "last": true,
+      "re": "EMI|5 lakh",
+      "note": "AT-369: Hinglish result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-calculator\"]"
+    },
+    {
+      "do": "click",
+      "tid": "kit-keep",
+      "note": "AT-369: keep the calculator surface"
+    },
+    {
+      "do": "wait",
+      "ms": 1500
+    },
+    {
+      "do": "check",
+      "tid": "files-kept-item",
+      "note": "AT-369: supported presence check for a kept surface (fresh-row identity remains unavailable)"
+    }
+  ],
+  "blocked": [
+    "AT-355: Calculator has real number inputs but no generic kit-button; this journey does not claim output recomputation because the driver lacks a fresh-surface input mutation assertion in this DSL.",
+    "AT-368: the refresh click and new kit-live-stamp reply are checked; exact before/after stamp mutation is blocked because do:eval records false without failing.",
+    "AT-369: kit-keep and supported files-kept-item presence are checked; fresh-row identity is blocked because the DSL has no scoped count/new-item assertion."
+  ]
+}

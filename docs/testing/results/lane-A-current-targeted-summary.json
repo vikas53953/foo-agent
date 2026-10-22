@@ -1,0 +1,117 @@
+{
+  "journey": "LaneA-targeted-setup-long-thanks",
+  "title": "Lane A targeted setup, long reply and thanks probe",
+  "steps": 14,
+  "failed": 6,
+  "out": "LANE_A_CURRENT_RUN",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "expect": "setup welcome",
+      "ok": true,
+      "ms": 53
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "note": "start Find your AI",
+      "ok": true,
+      "ms": 1322
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "expect": "Find your AI",
+      "ok": true,
+      "ms": 183
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "AI test result",
+      "ok": true,
+      "ms": 30047
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "note": "choose tested AI",
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23580
+    },
+    {
+      "i": 5,
+      "do": "waitFor",
+      "expect": "Use button",
+      "ok": false,
+      "error": "locator.waitFor: Timeout 90000ms exceeded.",
+      "ms": 90325
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "expect": "name and face setup",
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23458
+    },
+    {
+      "i": 7,
+      "do": "clickIf",
+      "note": "accept defaults",
+      "found": 0,
+      "ok": true,
+      "ms": 18
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "first chat and enabled composer",
+      "ok": true,
+      "ms": 10024
+    },
+    {
+      "i": 9,
+      "do": "send",
+      "note": "AT-030: request more than the 200-word precondition",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "ms": 30576
+    },
+    {
+      "i": 10,
+      "do": "waitReply",
+      "expect": "AT-030: at most 3 bubbles and intact list",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "ms": 150068
+    },
+    {
+      "i": 11,
+      "do": "send",
+      "note": "AT-027: require a quiet thumbs-up with no foo message",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "ms": 30384
+    },
+    {
+      "i": 12,
+      "do": "wait",
+      "expect": "AT-027: thumbs-up and no new foo message",
+      "ok": true,
+      "ms": 15004
+    },
+    {
+      "i": 13,
+      "do": "dump",
+      "note": "AT-005, AT-027, AT-030: preserve targeted evidence",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}

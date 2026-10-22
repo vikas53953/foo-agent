@@ -11,7 +11,9 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "bank",
-      "expect": "AT-142: never types in the bank site; 'This is your bank's site. I'll open it for you'"
+      "expect": "AT-142: never types in the bank site; 'This is your bank's site. I'll open it for you'",
+      "note": "AT-142: the bank guard is checked on the actual error card before any external action",
+      "expectJs": "(()=>[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"card-error\"]')].some((c)=>/bank|open (it|the site)|your bank/i.test(c.innerText||'')&&!c.querySelector('[data-testid=\"card-connect-allow-send\"]')))()"
     },
     {
       "do": "clickIf",
@@ -20,7 +22,20 @@
     {
       "do": "wait",
       "ms": 60000,
-      "shot": "bank-later"
+      "shot": "bank-later",
+      "note": "AT-142: preserve the no-typing bank result while the safe hand-back remains available"
+    },
+    {
+      "do": "check",
+      "tid": "card-error",
+      "note": "AT-142: the hand-back/error card remains a real rendered surface"
+    },
+    {
+      "do": "expectText",
+      "tid": "card-error",
+      "last": true,
+      "re": "bank|browser|open",
+      "note": "AT-142: the rendered card names the bank hand-back destination"
     },
     {
       "do": "dump",

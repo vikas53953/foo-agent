@@ -1,0 +1,19 @@
+Lane A gate: corepack.cmd pnpm test --maxWorkers=2
+Tree: lane-a at cc8d73015121e1d70ab5c52f75d562097c2b76a6
+Started: 2026-10-22 (local)
+Outcome: terminated after approximately 26 minutes when the verified lane-a Vitest runner stalled and host memory was ~2.2 GB. Exit reported ELIFECYCLE/test failed.
+
+Observed before termination (partial output):
+- integration/browser/signin.test.ts: worker timeout
+- integration/browser/actions.test.ts: 3 failures (popup adoption/open once/back and wait)
+- integration/browser/profile.test.ts: 1 failure (typed values/profile file)
+- integration/browser/submit.test.ts: 1 failure (booking history confirmation)
+- integration/browser/recipes.test.ts: 1 failure (AT-144)
+- integration/browser/sitenotes.test.ts: 1 failure (site note)
+- integration/browser/proof.test.ts: 1 failure (AT-114a)
+- articles/ART-03.browser.test.ts: 1 failure
+- fidelity/sm/FID-17.test.ts: 1 failure
+- unit/m6-page-export.test.ts: 2 failures
+- multiple worker timeout notices (m8-contacts, approvals/second-look, approvals/gate, jobs/fail, db/rebuild, p1-bundle)
+
+This is an incomplete full-suite result; no threshold or test was changed.
