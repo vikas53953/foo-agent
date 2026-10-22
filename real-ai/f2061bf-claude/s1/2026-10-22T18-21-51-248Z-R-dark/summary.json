@@ -1,0 +1,172 @@
+{
+  "journey": "R-dark",
+  "title": "Group R dark reply contrast",
+  "steps": 15,
+  "failed": 0,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-21-51-248Z-R-dark",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "note": "AT-429, AT-278: clean dark mode request",
+      "sentAt": 1792693316898,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 135
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "note": "AT-429: clean dark mode",
+      "firstReplyMs": 30434,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I’ll remember: Prefers dark mode\nUndo",
+      "kit": [],
+      "endState": true,
+      "ms": 36517
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "note": "AT-429, AT-278: clean greeting in dark mode",
+      "sentAt": 1792693353614,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 103
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "note": "AT-429: clean dark greeting",
+      "firstReplyMs": 8621,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! Your dark mode switch from earlier didn't go through yet. Want me to turn it on now?\n\n6:22 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 15216
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "note": "AT-429, AT-278: clean last user bubble keeps the dark contrast colors",
+      "found": 5,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "send",
+      "note": "AT-429, AT-278: messy typo dark mode request",
+      "sentAt": 1792693368995,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 104
+    },
+    {
+      "i": 6,
+      "do": "waitReply",
+      "note": "AT-429: messy typo dark mode",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120398,
+      "late": true
+    },
+    {
+      "i": 7,
+      "do": "send",
+      "note": "AT-429, AT-278: messy typo greeting in dark mode",
+      "sentAt": 1792693489583,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 117
+    },
+    {
+      "i": 8,
+      "do": "waitReply",
+      "note": "AT-429: messy typo dark greeting",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120422,
+      "late": true
+    },
+    {
+      "i": 9,
+      "do": "check",
+      "note": "AT-429, AT-278: messy typo last user bubble keeps the dark contrast colors",
+      "found": 7,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "note": "AT-429, AT-278: Hinglish dark mode request",
+      "sentAt": 1792693610183,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 102
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "note": "AT-429: Hinglish dark mode",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120411,
+      "late": true
+    },
+    {
+      "i": 12,
+      "do": "send",
+      "note": "AT-429, AT-278: Hinglish greeting in dark mode",
+      "sentAt": 1792693730746,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 104
+    },
+    {
+      "i": 13,
+      "do": "waitReply",
+      "note": "AT-429: Hinglish dark greeting",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120232,
+      "late": true
+    },
+    {
+      "i": 14,
+      "do": "check",
+      "note": "AT-429, AT-278: Hinglish last user bubble keeps the dark contrast colors",
+      "found": 8,
+      "ok": true,
+      "ms": 2
+    }
+  ]
+}
