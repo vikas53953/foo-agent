@@ -1,26 +1,28 @@
 # Lane D bounded review — 2026-10-22
 
 Lane branch: codex/lane-d-2026-10-22 · PR125 9535997f2140d022615378bccc1407fd3980a2d5 · merge base origin/main 0d04a9f9105e42aef0b4a22238285a9007635c3e.
-Fidelity-CR: none.
+Fidelity-CR: CR-0053.
 
-Scope was focused source/listing discovery plus read-only review of the current-main real-AI screenshots, followed by bounded Lane D witness additions for Group C. No dependency, golden, spec, source, or workflow file was changed. The new browser witness remains unrun locally and requires the Windows CI gate before acceptance.
+Scope was focused source/listing discovery plus read-only review of the current-main real-AI screenshots, followed by bounded Lane D witness additions for Group C. CR-0053 records the approved three trace mappings and the regenerated trace hash in the manifest; no acceptance text, test behavior, source behavior, threshold, golden, or workflow semantics changed. The new browser witness remains unrun locally and requires the Windows CI gate before acceptance.
 
 ## Post-change publication gates
 
-Commit under test: `34a9fff432b77cb93a81ef778e378e9e13690906` (`test: exercise Lane D grouping pipeline`), after `edac9d3fecfa546474b9d6c3f334b78aed9276e2`, Fidelity-CR: none.
+Commit under test: `b6a087c82033aae6080a9b84cb327179ab63db7f` (`test: map Lane D Group C witnesses`), with CR-0053 provenance and regenerated manifest pending commit.
 
-| Gate                           | Result                          | Evidence                                                                                                                                                                                 |
-| ------------------------------ | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `spec:verify`                  | PASS                            | `spec verified`                                                                                                                                                                          |
-| `check:copy`                   | PASS                            | `copy ok`                                                                                                                                                                                |
-| `lint`                         | exit 0 with 2 existing warnings | `Composer.tsx` missing `chatId` dependency; `MessageList.tsx` incompatible-library warning.                                                                                              |
-| `format:check`                 | unknown                         | No diagnostics and no exit code surfaced by the wrapper; no formatter process remained.                                                                                                  |
-| `typecheck`                    | PASS                            | exit 0                                                                                                                                                                                   |
-| `build`                        | PASS                            | exit 0; Vite emitted existing config, script-type and chunk-size warnings.                                                                                                               |
-| `trace:check`                  | **FAIL (prior gate run)**       | Three new AT titles are orphaned because shared `trace.csv` has no entries for AT-273, AT-284 or AT-285. Shared trace ownership remains with root; no rerun until root adds the entries. |
-| `fid:guard --base origin/main` | not run                         | Sequence stopped at `trace:check`.                                                                                                                                                       |
+| Gate                           | Result             | Evidence                                                                                                                                                                        |
+| ------------------------------ | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `spec:verify`                  | **PASS**           | Passed after CR-0053 was recorded and `spec/SPEC-MANIFEST.json` was regenerated for the approved `trace.csv` hash.                                                              |
+| `check:copy`                   | pending            | Run sequentially after this report/CR commit.                                                                                                                                   |
+| `lint`                         | pending            | Run sequentially after this report/CR commit.                                                                                                                                   |
+| `format:check`                 | pending            | Owned files were separately confirmed with `prettier --check`; run repository gate after this report/CR commit.                                                               |
+| `typecheck`                    | pending            | Run sequentially after this report/CR commit.                                                                                                                                   |
+| `build`                        | pending            | Run sequentially after this report/CR commit.                                                                                                                                   |
+| `trace:check`                  | PASS               | `FID-18: trace.csv consistent with the test titles` after the approved three mappings.                                                                                          |
+| `fid:guard --base origin/main` | pending            | Run sequentially after this report/CR commit.                                                                                                                                   |
 
-Focused unit commands, each with `--maxWorkers=1`, pass: `test/unit/lane-d-grouping.test.ts` now exercises timezone-aware `buildRows` → `layoutRows` for same-day, midnight, earlier-chip, earlier-badge and unread breaks; `test/unit/lane-d-scroll.test.ts` covers AT-285. Required Windows Playwright command remains `corepack.cmd pnpm exec playwright test test/e2e/lane-d-a11y.spec.ts test/e2e/lane-d-motion.spec.ts`.
+Focused unit commands, each with `--maxWorkers=1`, pass: `test/unit/lane-d-grouping.test.ts` now exercises timezone-aware `buildRows` → `layoutRows` for same-day, midnight, earlier-chip, earlier-badge and unread breaks; `test/unit/lane-d-scroll.test.ts` covers AT-285.
+
+Windows CI handoff after the publication gates: `gh workflow run flake-hunt.yml --repo vikas53953/foo-agent --ref codex/lane-d-2026-10-22 -f unit="test/unit/lane-d-grouping.test.ts test/unit/lane-d-scroll.test.ts" -f e2e="test/e2e/lane-d-a11y.spec.ts test/e2e/lane-d-motion.spec.ts" -f repeat=1`. The current `flake-hunt.yml` repeats tests on three Windows jobs but uploads no artifacts; a root-owned workflow patch must upload `playwright-report/`, `test-results/` (including `e2e.json`) and any `qa-evidence/` with `actions/upload-artifact@v4` under `if: always()`. The existing CI workflow's artifact paths are the reference. No dispatch or push has been performed yet; it follows only after the sequential gates pass.
 
 ## Current Lane D witnesses
 
