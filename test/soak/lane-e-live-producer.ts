@@ -106,16 +106,12 @@ const fakeLines: FakeLine[] = [
     reply: act({
       kind: 'job',
       title: 'Lane E live fixture job',
-      plan: [
-        { phraseKey: 'read_email', slots: {}, route: 'api' },
-        { phraseKey: 'look_for', slots: { what: 'fixture' }, route: 'api' },
-      ],
+      plan: [{ phraseKey: 'look_for', slots: { what: 'fixture' }, route: 'api' }],
       estimate: { minutes: 1 },
       routeHint: ['api'],
       needsApps: [],
     }),
   },
-  { match: { purpose: 'step' }, reply: act({ kind: 'step_done', idx: 0 }), delayMs: 1_000, once: false },
   {
     match: { purpose: 'step' },
     reply: act({ kind: 'done', result: 'Lane E fixture job completed.', unverified: true }),
