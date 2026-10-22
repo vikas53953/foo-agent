@@ -30,7 +30,7 @@ const b07 = JSON.parse(b07Text) as {
 describe('real-PC live-window driver', () => {
   it('matches the live path without exposing query-string values', () => {
     expect(helpers.isLiveWindow('app://foo/windows/live.html?job=private-job')).toBe(true);
-    expect(helpers.isLiveWindow('app://foo/windows/live.html?token=sk-secret')).toBe(true);
+    expect(helpers.isLiveWindow('app://foo/windows/live.html?token=placeholder')).toBe(true);
     expect(helpers.isLiveWindow('app://foo/index.html')).toBe(false);
     expect(helpers.isLiveWindow('not a url')).toBe(false);
   });
