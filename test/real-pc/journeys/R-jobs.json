@@ -407,6 +407,14 @@
       "note": "AT-420: clean first follow-up"
     },
     {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-checklist",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-checklist\"]')&&/(Vistara|fold that in)/i.test(b.innerText)})()",
+      "note": "AT-420: fresh reply acknowledges Vistara before the next back-to-back follow-up",
+      "shot": "at-420-clean-vistara-follow-up"
+    },
+    {
       "do": "send",
       "text": "only morning flights",
       "note": "AT-420, AT-432: clean second follow-up"
@@ -415,7 +423,7 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "expectTid": "card-checklist",
-      "expectJs": "(()=>{const me=[...document.querySelectorAll('[data-testid=\"bubble-me\"]')].at(-1);const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!me?.querySelector('[data-testid=\"bubble-tick\"]')&&!!b?.querySelector('[data-testid=\"card-checklist\"]')&&/(fold that in|Vistara|morning)/i.test(b.innerText)})()",
+      "expectJs": "(()=>{const me=[...document.querySelectorAll('[data-testid=\"bubble-me\"]')].at(-1);const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);const folded=(b?.innerText.match(/fold that in/gi)||[]).length;return !!me?.querySelector('[data-testid=\"bubble-tick\"]')&&!!b?.querySelector('[data-testid=\"card-checklist\"]')&&folded===1&&/morning/i.test(b.innerText)})()",
       "note": "AT-420, AT-432: fresh reply folds both back-to-back follow-ups into the job and the latest user bubble is ticked",
       "shot": "at-432-clean-morning-follow-up"
     },
@@ -438,6 +446,14 @@
       "note": "AT-420: messy typo first follow-up"
     },
     {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-checklist",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-checklist\"]')&&/(Vistara|fold that in)/i.test(b.innerText)})()",
+      "note": "AT-420: fresh reply acknowledges Vistara before the next back-to-back follow-up",
+      "shot": "at-420-messy-typo-vistara-follow-up"
+    },
+    {
       "do": "send",
       "text": "only morning flights",
       "note": "AT-420, AT-432: messy typo second follow-up"
@@ -446,7 +462,7 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "expectTid": "card-checklist",
-      "expectJs": "(()=>{const me=[...document.querySelectorAll('[data-testid=\"bubble-me\"]')].at(-1);const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!me?.querySelector('[data-testid=\"bubble-tick\"]')&&!!b?.querySelector('[data-testid=\"card-checklist\"]')&&/(fold that in|Vistara|morning)/i.test(b.innerText)})()",
+      "expectJs": "(()=>{const me=[...document.querySelectorAll('[data-testid=\"bubble-me\"]')].at(-1);const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);const folded=(b?.innerText.match(/fold that in/gi)||[]).length;return !!me?.querySelector('[data-testid=\"bubble-tick\"]')&&!!b?.querySelector('[data-testid=\"card-checklist\"]')&&folded===1&&/morning/i.test(b.innerText)})()",
       "note": "AT-420, AT-432: fresh reply folds both back-to-back follow-ups into the job and the latest user bubble is ticked",
       "shot": "at-432-messy-typo-morning-follow-up"
     },
@@ -469,6 +485,14 @@
       "note": "AT-420: Hinglish first follow-up"
     },
     {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-checklist",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-checklist\"]')&&/(Vistara|fold that in)/i.test(b.innerText)})()",
+      "note": "AT-420: fresh reply acknowledges Vistara before the next back-to-back follow-up",
+      "shot": "at-420-Hinglish-vistara-follow-up"
+    },
+    {
       "do": "send",
       "text": "only morning flights",
       "note": "AT-420, AT-432: Hinglish second follow-up"
@@ -477,13 +501,9 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "expectTid": "card-checklist",
-      "expectJs": "(()=>{const me=[...document.querySelectorAll('[data-testid=\"bubble-me\"]')].at(-1);const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!me?.querySelector('[data-testid=\"bubble-tick\"]')&&!!b?.querySelector('[data-testid=\"card-checklist\"]')&&/(fold that in|Vistara|morning)/i.test(b.innerText)})()",
+      "expectJs": "(()=>{const me=[...document.querySelectorAll('[data-testid=\"bubble-me\"]')].at(-1);const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);const folded=(b?.innerText.match(/fold that in/gi)||[]).length;return !!me?.querySelector('[data-testid=\"bubble-tick\"]')&&!!b?.querySelector('[data-testid=\"card-checklist\"]')&&folded===1&&/morning/i.test(b.innerText)})()",
       "note": "AT-420, AT-432: fresh reply folds both back-to-back follow-ups into the job and the latest user bubble is ticked",
       "shot": "at-432-Hinglish-morning-follow-up"
     }
-  ],
-  "blocked": [
-    "AT-420: the two follow-up sends are intentionally back-to-back; the strict every-send-next-wait validator reports this owned contract gap for lead review.",
-    "AT-432: the final wait checks the latest bubble-me tick, not any historical tick."
   ]
 }
