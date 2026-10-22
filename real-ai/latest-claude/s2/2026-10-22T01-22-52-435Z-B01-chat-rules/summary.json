@@ -1,0 +1,77 @@
+{
+  "journey": "B01-chat-rules",
+  "title": "Chat rules: thanks, long answer, filler, reactions",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T01-22-52-435Z-B01-chat-rules",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792632177974,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 127
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "expect": "AT-027: 👍 reaction on my message, no foo message",
+      "ok": true,
+      "ms": 20001
+    },
+    {
+      "i": 2,
+      "do": "eval",
+      "value": {
+        "reaction": true,
+        "lastKind": "bubble-me"
+      },
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "sentAt": 1792632198163,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 96
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler",
+      "firstReplyMs": 3042,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "People in India are switching to UPI because it makes paying as easy as sending a message. You scan a code or enter a phone number, confirm with your PIN, and the money moves from your bank account in seconds. There is no card to carry, no cash to count and no change to hunt for.\n\nIt also works almost everywhere now. Tea stalls, vegetable sellers, auto drivers and big shops all show the same kind of QR code, so you rarely need to ask whether they take it. Any bank account can link to any UPI app, so you are not tied to one company.\n\nThe main reasons people give:\n\nSpeed and ease: a payment takes a few seconds, works at any hour, and needs only a phone.\nLow cost: for most everyday payments, people and small shops pay no fee, which is why even tiny sellers accept it.\nWide acceptance: one code works across shops, bills, friends and family, whatever bank or app each person uses.\n\nAdd a record of every payment in your app, and it is easy to see where your money went. Together, that makes UPI the simpler choice over cash for many people.\n\n1:23 AM",
+      "ms": 13233
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "AT-308 suggestion chips (≤3)",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "eval",
+      "value": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}
