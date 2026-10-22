@@ -82,3 +82,8 @@ Before the first change, write the contract as the log's first row: **goal**, **
 - An unattended loop before foo-verify works.
 - A duration instead of a finish condition.
 - Correcting the same mistake by hand twice (use `foo-correct`).
+
+## 9. Tools for red tests and shared files (Test-First Pipeline G6, G7; Vikas picked "A", 2026-10-21)
+
+- **A red CI run:** `scripts/ci-verdict.sh <pr>` marks each failing test **mine** (this PR changes the test file), **known** (a live row in `docs/known-red.tsv`, or red on the base branch's own latest CI run too) or **new**, in a short table. Fix mine, look at new first, and never re-prove known. `--post` keeps it as one PR comment; `--log <file>` reads a job log saved with `get_job_logs`. A row in `known-red.tsv` needs an owner and an `until` date at most 14 days out; an expired row stops counting.
+- **Merging a ticket or milestone:** `scripts/merge-milestone.sh <branch>` merges and settles the files every ticket appends to (`spec/trace.csv`, `docs/decisions/*.tsv`, `scripts/copy-pending.json`, `src/shared/copy/en-IN.json`) and regenerates `spec/SPEC-MANIFEST.json`. It stops and lists anything else that conflicts, or a row or key two tickets changed differently. Never hand-merge those files.

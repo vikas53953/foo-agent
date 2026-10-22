@@ -8,6 +8,11 @@
 # --max-turns 1 per foo turn (foo's own setting), and a hard job timeout. The driver never clicks Approve, Pay, Book or
 # Send. A key reaches only the steps that need it, through env; it is never echoed, and the evidence is scanned for it
 # before anything is pushed.
+# Nightly pass^3 (Vikas picked "Nightly + 25,000 cap", 2026-10-21): at 02:00 IST the top 10 journeys
+# (test/real-pc/top10.txt) run in 3 separate rounds on fresh machines; a journey counts only if it passes all 3
+# (scripts/real-ai-pass-k.ts). Monthly cap: each part prices its AI CLI transcripts (scripts/real-ai-budget.ts; rates and
+# cap in test/real-pc/budget.json) into real-ai/spend/<YYYY-MM>.tsv on the evidence branch. At the alert level an issue
+# is opened for the owner; at the cap no new run starts until the month ends or the cap is raised.
 name: Real-AI e2e
 
 on:
@@ -29,6 +34,10 @@ on:
         description: Windows machines per AI that split the journeys (each one runs the first run first)
         default: '4'
         required: true
+      rounds:
+        description: Times to run the whole list, each on fresh machines (3 = pass^3)
+        default: '1'
+        required: true
       ai:
         description: auto = every AI whose secret exists (Claude first); claude = ANTHROPIC_API_KEY; chatgpt = OPENAI_API_KEY
         type: choice
@@ -41,29 +50,65 @@ on:
   # Vikas picked "On every merge to main" (2026-10-21): each merge runs the defaults on that commit, no tap needed.
   push:
     branches: [main]
+  # Nightly pass^3 of the top 10 journeys at 02:00 IST (20:30 UTC).
+  schedule:
+    - cron: '30 20 * * *'
 
 concurrency:
   group: real-ai-e2e
   cancel-in-progress: false
 
 permissions:
-  contents: write # pushes the evidence branch only
+  contents: write # pushes the evidence branch only (evidence and the spend ledger)
+  issues: write # the monthly spend alert
 
 jobs:
   # Which AIs to run: the asked one, or with "auto" every AI whose secret exists. Fails fast when none can run.
   plan:
     name: Pick the AIs
-    # Only the owner may spend the keys. Neither trigger fires for forks, and fork PRs never see secrets.
-    if: github.actor == github.repository_owner && github.repository == 'vikas53953/foo-agent'
+    # Only the owner may spend the keys: a tap, a merge into main, or the owner's nightly schedule (schedules run only on
+    # this repository's default branch). No trigger fires for forks, and fork PRs never see secrets.
+    if: (github.actor == github.repository_owner || github.event_name == 'schedule') && github.repository == 'vikas53953/foo-agent'
     runs-on: ubuntu-latest
     outputs:
       ais: ${{ steps.pick.outputs.ais }}
       shards: ${{ steps.pick.outputs.shards }}
+      rounds: ${{ steps.pick.outputs.rounds }}
+      shard_count: ${{ steps.pick.outputs.shard_count }}
+      round_count: ${{ steps.pick.outputs.round_count }}
+      journeys: ${{ steps.pick.outputs.journeys }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts/real-ai-budget.ts
+            scripts/real-ai-alert.sh
+            test/real-pc/budget.json
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # The monthly cap: read this month's ledger from the evidence branch; alert once at the alert level, stop at the cap.
+      - name: Spend so far this month
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          month=$(date -u +%Y-%m)
+          gh api -H 'Accept: application/vnd.github.raw' "repos/$GITHUB_REPOSITORY/contents/real-ai/spend/$month.tsv?ref=evidence" > ledger.tsv 2> /dev/null || : > ledger.tsv
+          spend=$(node --experimental-strip-types scripts/real-ai-budget.ts check ledger.tsv)
+          echo "$spend"
+          bash scripts/real-ai-alert.sh "$spend" "$month"
+          if [ "$(node -e "process.stdout.write(JSON.parse(process.argv[1]).state)" "$spend")" = "over" ]; then
+            echo "::error::Real-AI spend for $month reached the cap in test/real-pc/budget.json; no new run starts this month unless the cap is raised."
+            exit 1
+          fi
       - id: pick
         env:
           AI: ${{ inputs.ai || 'auto' }}
-          SHARDS: ${{ inputs.shards || '4' }}
+          # The nightly run: the top 10 journeys, 3 rounds, one machine per round. Other triggers: the inputs or defaults.
+          SHARDS: ${{ github.event_name == 'schedule' && '1' || inputs.shards || '4' }}
+          ROUNDS: ${{ github.event_name == 'schedule' && '3' || inputs.rounds || '1' }}
+          JOURNEYS: ${{ github.event_name == 'schedule' && 'top10' || inputs.journeys || 'all' }}
           HAS_ANTHROPIC: ${{ secrets.ANTHROPIC_API_KEY != '' }}
           HAS_OPENAI: ${{ secrets.OPENAI_API_KEY != '' }}
         run: |
@@ -76,9 +121,13 @@ jobs:
           fi
           echo "ais=[$(IFS=,; echo "${ais[*]}")]" >> "$GITHUB_OUTPUT"
           echo "shards=[$(seq -s, 0 $((SHARDS - 1)))]" >> "$GITHUB_OUTPUT"
+          echo "rounds=[$(seq -s, 1 "$ROUNDS")]" >> "$GITHUB_OUTPUT"
+          echo "shard_count=$SHARDS" >> "$GITHUB_OUTPUT"
+          echo "round_count=$ROUNDS" >> "$GITHUB_OUTPUT"
+          echo "journeys=$JOURNEYS" >> "$GITHUB_OUTPUT"
 
   real-ai:
-    name: Real-AI journeys on ${{ matrix.ai }}, part ${{ matrix.shard }} (windows-latest)
+    name: Real-AI journeys on ${{ matrix.ai }}, round ${{ matrix.round }}, part ${{ matrix.shard }} (windows-latest)
     needs: plan
     runs-on: windows-latest
     timeout-minutes: 180 # ~20 journeys per part at 2–5 min each, plus a ~4 min build
@@ -88,6 +137,7 @@ jobs:
       matrix:
         ai: ${{ fromJSON(needs.plan.outputs.ais) }}
         shard: ${{ fromJSON(needs.plan.outputs.shards) }}
+        round: ${{ fromJSON(needs.plan.outputs.rounds) }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -101,7 +151,7 @@ jobs:
           git fetch -q --depth 1 origin "$KIT_REF"
           rm -rf "$RUNNER_TEMP/kit" && mkdir -p "$RUNNER_TEMP/kit"
           # Extract from inside the folder: Windows tar reads "D:" in a -C path as a remote host.
-          git archive FETCH_HEAD test/real-pc | (cd "$RUNNER_TEMP/kit" && tar -x)
+          git archive FETCH_HEAD test/real-pc scripts/real-ai-budget.ts | (cd "$RUNNER_TEMP/kit" && tar -x)
           echo "head $(git rev-parse HEAD) kit $KIT_REF"
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
@@ -139,16 +189,20 @@ jobs:
           ANTHROPIC_MODEL: ${{ inputs.model || 'claude-sonnet-5-5' }}
           FOO_AI_ROW: ${{ matrix.ai == 'claude' && 'claude-cli' || 'codex-cli' }}
           ELECTRON_RUN_AS_NODE: '1'
-          JOURNEYS: ${{ inputs.journeys || 'all' }}
+          JOURNEYS: ${{ needs.plan.outputs.journeys }}
           MAX_JOURNEYS: ${{ inputs.max_journeys || '80' }}
           SHARD: ${{ matrix.shard }}
-          SHARDS: ${{ inputs.shards || '4' }}
+          SHARDS: ${{ needs.plan.outputs.shard_count }}
         run: |
           export FOO_EXE="$GITHUB_WORKSPACE/dist/win-unpacked/foo.exe"
           export FOO_REAL_TEST_DIR="$RUNNER_TEMP/foo-real-test"
           kit="$RUNNER_TEMP/kit/test/real-pc"
           rm -rf "$FOO_REAL_TEST_DIR" && mkdir -p "$FOO_REAL_TEST_DIR/runs"
-          if [ "$JOURNEYS" = "all" ]; then list=$(tr -d '\r' < "$kit/journeys.txt"); else list="$JOURNEYS"; fi
+          case "$JOURNEYS" in
+            all) list=$(tr -d '\r' < "$kit/journeys.txt") ;;
+            top10) list=$(tr -d '\r' < "$kit/top10.txt") ;;
+            *) list="$JOURNEYS" ;;
+          esac
           list=$(echo $list) # one line, single spaces, so the J01 check below sees " J01-J02-first-run "
           # The first run must pick the AI; every other journey needs it, so it always goes first.
           # Every part needs its own first run (a fresh profile picks the AI); the rest of the list is dealt round-robin.
@@ -164,6 +218,7 @@ jobs:
           cd "$kit"
           for j in $list; do
             echo "=== $j ==="
+            echo "$j" >> "$RUNNER_TEMP/journeys-run.txt" # the spend step's count when no transcript is found
             if ! "$FOO_EXE" foo-drive.js "journeys/$j.json" >> "$FOO_REAL_TEST_DIR/runs/console.txt" 2>&1; then
               status=1
               if [ "$j" = "J01-J02-first-run" ]; then
@@ -186,13 +241,34 @@ jobs:
         shell: bash
         run: |
           {
-            echo "### Real-AI journeys on ${{ inputs.ref || github.sha }} ($(git rev-parse --short HEAD)), AI ${{ matrix.ai }}, part ${{ matrix.shard }}, model ${{ matrix.ai == 'claude' && (inputs.model || 'claude-sonnet-5-5') || 'Codex default' }}"
+            echo "### Real-AI journeys on ${{ inputs.ref || github.sha }} ($(git rev-parse --short HEAD)), AI ${{ matrix.ai }}, round ${{ matrix.round }}, part ${{ matrix.shard }}, model ${{ matrix.ai == 'claude' && (inputs.model || 'claude-sonnet-5-5') || 'Codex default' }}"
             echo "| Journey | Steps | Failed |"; echo "|---|---|---|"
             for f in "$RUNNER_TEMP"/foo-real-test/runs/*/summary.json; do
               [ -f "$f" ] || continue
               node -e "const s=require(process.argv[1]);console.log('| '+s.journey+' | '+s.steps+' | '+s.failed+' |')" "$f"
             done
           } >> "$GITHUB_STEP_SUMMARY"
+      # The monthly cap: price this part from the AI CLI's own transcripts (a flat estimate per journey if none are found).
+      - name: Measure spend
+        if: always()
+        shell: bash
+        env:
+          AI: ${{ matrix.ai }}
+          PART: r${{ matrix.round }}-s${{ matrix.shard }}
+        run: |
+          kit="$RUNNER_TEMP/kit"
+          n=$(wc -l < "$RUNNER_TEMP/journeys-run.txt" 2> /dev/null || echo 0)
+          node --experimental-strip-types "$kit/scripts/real-ai-budget.ts" measure --budget "$kit/test/real-pc/budget.json" \
+            --ai "$AI" --journeys "$n" --run "$GITHUB_RUN_ID" --part "$PART" | tee "$RUNNER_TEMP/spend-row.tsv"
+      # Small per-journey results for the pass^k report job (screenshots stay on the evidence branch).
+      - name: Keep the journey results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: real-ai-${{ matrix.ai }}-r${{ matrix.round }}-s${{ matrix.shard }}
+          path: ${{ runner.temp }}/foo-real-test/runs/*/summary.json
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Scan the evidence for the keys
         if: always()
         shell: bash
@@ -217,13 +293,21 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AI: ${{ matrix.ai }}
           SHARD: ${{ matrix.shard }}
+          ROUND: ${{ matrix.round }}
+          ROUNDS: ${{ needs.plan.outputs.round_count }}
         run: |
-          [ -f "$RUNNER_TEMP/no-push" ] && { echo "skipped: key found in evidence"; exit 0; }
           runs="$RUNNER_TEMP/foo-real-test/runs"
-          [ -d "$runs" ] || { echo "no runs"; exit 0; }
+          row="$RUNNER_TEMP/spend-row.tsv"
+          # The spend row is always recorded; the evidence only when there is some and no key was found in it.
+          evidence=1
+          [ -f "$RUNNER_TEMP/no-push" ] && { echo "evidence skipped: key found in it"; evidence=0; }
+          [ -d "$runs" ] || { echo "no runs"; evidence=0; }
+          [ "$evidence" = 1 ] || [ -s "$row" ] || exit 0
           short="$(git rev-parse --short=7 HEAD)-$AI"
           part="s$SHARD"
-          printf 'run %s · ref %s · commit %s · AI %s\n' "$GITHUB_RUN_ID" "${{ inputs.ref || github.sha }}" "$(git rev-parse HEAD)" "$AI" > "$runs/RUN.txt"
+          [ "$ROUNDS" -gt 1 ] && part="r$ROUND-s$SHARD"
+          month=$(date -u +%Y-%m)
+          [ "$evidence" = 1 ] && printf 'run %s · ref %s · commit %s · AI %s\n' "$GITHUB_RUN_ID" "${{ inputs.ref || github.sha }}" "$(git rev-parse HEAD)" "$AI" > "$runs/RUN.txt"
           work="$RUNNER_TEMP/evidence" && rm -rf "$work" && mkdir -p "$work" && cd "$work"
           git init -q && git config core.autocrlf false
           git config user.name "github-actions[bot]"
@@ -235,14 +319,67 @@ jobs:
             if g fetch -q --depth 1 origin evidence 2>/dev/null; then git checkout -q -B evidence FETCH_HEAD; else git checkout -q --orphan evidence; fi
             # Each part owns its own folder, so parts pushing at the same time never remove each other's results.
             # A new commit's first part clears latest-<ai> of parts from an older commit.
-            [ "$(cat "real-ai/latest-$AI/COMMIT.txt" 2>/dev/null)" = "$short" ] || rm -rf "real-ai/latest-$AI"
-            rm -rf "real-ai/$short/$part" "real-ai/latest-$AI/$part" && mkdir -p "real-ai/$short/$part" "real-ai/latest-$AI/$part"
-            cp -R "$runs/." "real-ai/$short/$part/" && cp -R "$runs/." "real-ai/latest-$AI/$part/"
-            echo "$short" > "real-ai/latest-$AI/COMMIT.txt"
+            if [ "$evidence" = 1 ]; then
+              [ "$(cat "real-ai/latest-$AI/COMMIT.txt" 2>/dev/null)" = "$short" ] || rm -rf "real-ai/latest-$AI"
+              rm -rf "real-ai/$short/$part" "real-ai/latest-$AI/$part" && mkdir -p "real-ai/$short/$part" "real-ai/latest-$AI/$part"
+              cp -R "$runs/." "real-ai/$short/$part/" && cp -R "$runs/." "real-ai/latest-$AI/$part/"
+              echo "$short" > "real-ai/latest-$AI/COMMIT.txt"
+            fi
+            # The spend ledger: one row per part per run (scripts/real-ai-budget.ts reads it before every run).
+            if [ -s "$row" ]; then
+              ledger="real-ai/spend/$month.tsv" && mkdir -p real-ai/spend
+              [ -f "$ledger" ] || printf 'time\trun\tai\tpart\tjourneys\tusd\tsource\n' > "$ledger"
+              grep -qxF -- "$(cat "$row")" "$ledger" || cat "$row" >> "$ledger"
+            fi
             git add -A -- real-ai
             git diff --cached --quiet && { echo "evidence unchanged"; exit 0; }
             git commit -q -m "Evidence: real-AI journeys on $short (run $GITHUB_RUN_ID)"
             g push -q origin HEAD:refs/heads/evidence && { echo "evidence pushed to evidence:real-ai/$short"; exit 0; }
-            sleep $((attempt * 3 + SHARD * 2)) # parts push at about the same time; stagger the retries
+            sleep $((attempt * 3 + SHARD * 2 + ROUND)) # parts push at about the same time; stagger the retries
           done
           exit 1
+
+  # After every part: pass^k when the list ran more than once, and the spend alert if this run crossed a level.
+  report:
+    name: pass^k and spend
+    needs: [plan, real-ai]
+    if: always() && needs.plan.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts/real-ai-budget.ts
+            scripts/real-ai-pass-k.ts
+            scripts/real-ai-alert.sh
+            test/real-pc/budget.json
+            test/real-pc/top10.txt
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        if: needs.plan.outputs.round_count != '1'
+        with:
+          pattern: real-ai-*
+          path: results
+      - name: pass^k of the journeys
+        if: needs.plan.outputs.round_count != '1'
+        run: |
+          set -o pipefail
+          {
+            echo "### pass^${{ needs.plan.outputs.round_count }}: a journey passes only if it passed every round"
+            expect=()
+            [ "${{ needs.plan.outputs.journeys }}" = top10 ] && expect=(--expect test/real-pc/top10.txt)
+            node --experimental-strip-types scripts/real-ai-pass-k.ts results --rounds "${{ needs.plan.outputs.round_count }}" "${expect[@]}"
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Spend this month
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          month=$(date -u +%Y-%m)
+          gh api -H 'Accept: application/vnd.github.raw' "repos/$GITHUB_REPOSITORY/contents/real-ai/spend/$month.tsv?ref=evidence" > ledger.tsv 2> /dev/null || : > ledger.tsv
+          spend=$(node --experimental-strip-types scripts/real-ai-budget.ts check ledger.tsv)
+          node -e "const s=JSON.parse(process.argv[1]);console.log('### Real-AI spend '+process.argv[2]+': ₹'+s.spentInr+' of ₹'+s.capInr+' ('+s.percent+'%)')" "$spend" "$month" >> "$GITHUB_STEP_SUMMARY"
+          bash scripts/real-ai-alert.sh "$spend" "$month"

@@ -1,0 +1,4 @@
+match	reason	owner	until
+# One row per test that is red for a reason outside the PR at hand. match = a test id (AT-074), a test file path, or
+# part of the title. Every row needs an owner (thread or PR) and an until date at most 14 days out; an expired row stops
+# counting, so nothing stays "known" forever. Tests red on the base branch are found by themselves and need no row.
