@@ -72,7 +72,8 @@ export class WebTools {
     ];
     for (const [url, parse] of tries) {
       const loaded = await page.load(url, ctx.jobId, ctx.signal);
-      if (!loaded) continue;
+      // A refused search page is treated like a challenge: the next search page, then SEARCH_BUSY.
+      if (!loaded || 'refused' in loaded) continue;
       const parsed = parse(loaded.html, max);
       if (parsed.kind === 'results') return this.done(parsed.results, ctx, 'this_pc');
       // A challenge page is never solved: one retry on DuckDuckGo, then SEARCH_BUSY.
@@ -100,7 +101,8 @@ export class WebTools {
     }
     if (!read) {
       const local = await this.localRead(url.toString(), ctx);
-      if (local.kind === 'error') return { ok: false, errorKind: local.errorKind };
+      // A blocked page names where it landed (after redirects), so the note and the card blame that site.
+      if (local.kind === 'error') return { ok: false, errorKind: local.errorKind, ...(local.landed ? { landed: local.landed } : {}) };
       read = local.read;
     }
     this.cache.set(url.toString(), { at: this.d.clock.now(), read, via });
@@ -125,7 +127,10 @@ export class WebTools {
   private async localRead(
     url: string,
     ctx: WebCallContext,
-  ): Promise<{ kind: 'read'; read: ReadResult } | { kind: 'error'; errorKind: 'URL_NOT_ALLOWED' | 'SITE_HANDBACK' | 'needsBrowser' }> {
+  ): Promise<
+    | { kind: 'read'; read: ReadResult }
+    | { kind: 'error'; errorKind: 'URL_NOT_ALLOWED' | 'SITE_HANDBACK' | 'SITE_BLOCKED' | 'needsBrowser'; landed?: string }
+  > {
     const local = await localFetch({ fetch: this.d.fetch, clock: this.d.clock, check: (u) => this.hopVerdict(u) }, url);
     if (local.kind === 'read') return local;
     if (local.kind === 'blocked') return { kind: 'error', errorKind: local.reason };
@@ -136,6 +141,8 @@ export class WebTools {
       this.d.log('web.no_window');
       return { kind: 'error', errorKind: 'needsBrowser' };
     }
+    // 08-2 §8.3.9: the site blocked foo; the AI moves on to another source instead of reading the refusal.
+    if ('refused' in loaded) return { kind: 'error', errorKind: loaded.refused, landed: loaded.url };
     const rendered = extract(loaded.html, loaded.url);
     if (rendered) return { kind: 'read', read: rendered };
     const text =

@@ -16,7 +16,7 @@ export type CloudErrorKind = 'CLOUD_AUTH' | 'CLOUD_QUOTA' | 'CLOUD_DOWN' | 'CLOU
 
 /** Errors a web tool returns to the step runner (08-2 §8.2, 08-3 §21.2, 08-4 §27.2–§27.3). */
 export type WebToolErrorKind =
-  'needsBrowser' | 'SEARCH_BUSY' | 'NET_OFFLINE' | 'URL_NOT_ALLOWED' | 'SITE_HANDBACK' | 'ROUTE_ORDER' | 'USE_EDGE';
+  'needsBrowser' | 'SEARCH_BUSY' | 'NET_OFFLINE' | 'URL_NOT_ALLOWED' | 'SITE_HANDBACK' | 'SITE_BLOCKED' | 'ROUTE_ORDER' | 'USE_EDGE';
 
 /** 08-4 §27.3 `resources/web-tools.json` (seeded by M9 T1). */
 export interface WebToolsResource {
@@ -87,12 +87,17 @@ export interface LoadedPage {
   url: string;
   html: string;
 }
+/** 08-2 §8.3.9: the site answered 403/429 on the document or showed a bot check; its text is never a read. */
+export interface RefusedPage {
+  refused: 'SITE_BLOCKED';
+  url: string;
+}
 export interface PageLoader {
   /**
    * Loads `url` in the job's window; null when there is no job (or no browser), the job was stopped while waiting for a
-   * window, the page never arrived, or it landed on a hand-back site (§8.3.10: never read).
+   * window, the page never arrived, or it landed on a hand-back site (§8.3.10: never read); `refused` when the site blocked foo.
    */
-  load(url: string, jobId: string | null, signal?: AbortSignal): Promise<LoadedPage | null>;
+  load(url: string, jobId: string | null, signal?: AbortSignal): Promise<LoadedPage | RefusedPage | null>;
 }
 
 /** The subset of `fetch` the web tools use (injected so tests capture every host). */
@@ -151,4 +156,5 @@ export interface WebToolDeps {
 
 /** What a tool returns to the runner: data for the AI already wrapped untrusted, or an error kind. */
 export type WebToolResult<T> =
-  { ok: true; data: T; forAi: string; via: WebProvider | 'this_pc' } | { ok: false; errorKind: WebToolErrorKind; detail?: string };
+  | { ok: true; data: T; forAi: string; via: WebProvider | 'this_pc' }
+  | { ok: false; errorKind: WebToolErrorKind; detail?: string; landed?: string };

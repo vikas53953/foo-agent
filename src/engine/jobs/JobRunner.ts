@@ -919,7 +919,7 @@ export class JobRunner {
     const seen =
       r.outcome === 'error' ? { error: r.errorKind ?? 'UNKNOWN', ...(r.result ? { result: r.result } : {}) } : (r.result ?? null);
     c.lastObservation = { toolCallId: r.toolCallId, tool: r.tool, text: JSON.stringify(seen).slice(0, OBSERVATION_CAP) };
-    await this.siteNotes.onTool(job.id, r.tool, decision.call.args, r.outcome === 'error' ? (r.errorKind ?? 'UNKNOWN') : null); // M9 T8
+    await this.siteNotes.onTool(job.id, r.tool, decision.call.args, r.outcome === 'error' ? (r.errorKind ?? 'UNKNOWN') : null, r.result); // M9 T8
     if (r.needsUser) {
       await this.needsYou(job, r.needsUser);
       return false;

@@ -7,6 +7,9 @@ import { join } from 'node:path';
 import type { Dialog, Download, Page } from 'playwright-core';
 import type { DriverWindow } from './browser';
 
+/** HTTP answers on the document that mean the site blocked foo (08-2 §8.3.9 `SITE_BLOCKED`). */
+export const BLOCKED_STATUS: ReadonlySet<number> = new Set([403, 429]);
+
 /** Words and frames that mark a bot check or CAPTCHA page (never solved; 08-2 §8.4). */
 const CHALLENGE_TEXT =
   /(verify|check) (that )?you( are|'re|’re) (a )?human|are you a robot|i'?m not a robot|checking your browser|attention required|press (and|&) hold|complete the security check|captcha/i;

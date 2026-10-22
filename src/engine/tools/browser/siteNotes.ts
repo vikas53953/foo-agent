@@ -44,7 +44,7 @@ export function blockedRecently(flags: SiteFlags | undefined, now: number): bool
   return typeof flags?.blocksAutomation === 'number' && now - flags.blocksAutomation < BLOCK_SKIP_MS;
 }
 
-/** The host a browser.open asked for, lower-case, `www.` dropped (one notes file per site). */
+/** The host of a page foo was sent to, lower-case, `www.` dropped (one notes file per site). */
 export function domainOf(url: unknown): string | null {
   if (typeof url !== 'string') return null;
   try {
@@ -84,22 +84,31 @@ export class SiteNotes {
   private readonly inPlay = new Map<string, Set<string>>();
   /** Domains that blocked foo or showed a CAPTCHA in this job: the job finishing elsewhere says nothing good about them. */
   private readonly troubled = new Map<string, Set<string>>();
+  /** The site the job's window was last sent to by browser.open. */
+  private readonly window = new Map<string, string>();
 
   constructor(private readonly d: SiteNotesDeps) {}
 
   isoDate = (ms: number): string =>
     new Intl.DateTimeFormat('en-CA', { timeZone: this.d.timeZone(), year: 'numeric', month: '2-digit', day: '2-digit' }).format(ms);
 
-  /** After each tool call: browser.open names a domain; a block or CAPTCHA there is written down at once. */
-  async onTool(jobId: string, tool: string, args: unknown, errorKind: string | null): Promise<void> {
-    if (!tool.startsWith('browser.')) return;
-    const asked = tool === 'browser.open' ? domainOf((args as { url?: unknown } | null)?.url) : null;
+  /** After each tool call: browser.open (and a blocked web.fetch) names a domain; a block or CAPTCHA there is written down at once. */
+  async onTool(jobId: string, tool: string, args: unknown, errorKind: string | null, result?: unknown): Promise<void> {
+    const trouble = errorKind === 'SITE_BLOCKED' || errorKind === 'SITE_CAPTCHA';
+    // A web.fetch read is noted only when the site blocked it: a plain GET that worked says nothing about driving the site.
+    const names = tool === 'browser.open' || (tool === 'web.fetch' && trouble);
+    if (!names && !tool.startsWith('browser.')) return;
+    // A blocked web.fetch names the site it landed on after redirects; the asked address may only have pointed there.
+    const landed = tool === 'web.fetch' ? (result as { site?: unknown } | null)?.site : undefined;
+    const asked = names ? domainOf(typeof landed === 'string' ? `https://${landed}/` : (args as { url?: unknown } | null)?.url) : null;
     const set = this.inPlay.get(jobId) ?? new Set<string>();
     if (asked) set.add(asked);
     this.inPlay.set(jobId, set);
-    const where = asked ?? [...set].at(-1) ?? null;
+    // The other browser tools act on the window's site; a web.fetch read never moves the window.
+    if (asked && tool === 'browser.open') this.window.set(jobId, asked);
+    const where = asked ?? this.window.get(jobId) ?? null;
     if (!where) return;
-    if (errorKind !== 'SITE_BLOCKED' && errorKind !== 'SITE_CAPTCHA') return;
+    if (!trouble) return;
     const bad = this.troubled.get(jobId) ?? new Set<string>();
     bad.add(where);
     this.troubled.set(jobId, bad);
@@ -121,6 +130,7 @@ export class SiteNotes {
   forget(jobId: string): void {
     this.inPlay.delete(jobId);
     this.troubled.delete(jobId);
+    this.window.delete(jobId);
   }
 
   async linesFor(jobId: string): Promise<string[]> {

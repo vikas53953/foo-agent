@@ -36,6 +36,17 @@ describe('web ToolDefs', () => {
     expect(await defs['web.search']!.run({ q: 'x' }, run)).toEqual({ kind: 'error', errorKind: 'PROTOCOL_INVALID' });
   });
 
+  it('web.fetch: a site that blocked foo is named with SITE_BLOCKED, so a failed job says which site (§8.3.9)', async () => {
+    const net = new FakeNet().on('www.news.example.test', () => new Response('<h1>Access Denied</h1>', { status: 403 }));
+    const page = { load: async (url: string) => ({ refused: 'SITE_BLOCKED' as const, url }) };
+    const defs = webToolDefs({ tools: new WebTools(world({ net, page }).deps), checkKey: async () => 'unknown' });
+    expect(await defs['web.fetch']!.run({ url: 'https://www.news.example.test/space' }, run)).toEqual({
+      kind: 'error',
+      errorKind: 'SITE_BLOCKED',
+      result: { site: 'news.example.test' },
+    });
+  });
+
   it('keys come from vault.use with purpose web_tool and the foo/web_key name; the value is registered before use', async () => {
     const seen: string[] = [];
     const keys = vaultWebKeys(memoryVault({ 'foo/web_key/exa': 'k_exa' }), (h) => seen.push(h));

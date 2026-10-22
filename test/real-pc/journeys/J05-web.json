@@ -14,6 +14,17 @@
       "shot": "news"
     },
     {
+      "do": "clickIf",
+      "tid": "card-plan-go"
+    },
+    {
+      "do": "waitFor",
+      "css": "[data-testid=\"bubble-sources\"], [data-testid=\"card-stuck\"], [data-testid=\"card-error\"]",
+      "timeoutMs": 300000,
+      "note": "the job's end: the answer with sources, or a stuck/error card (run 30 checked at the first live checklist)",
+      "shot": "news-later"
+    },
+    {
       "do": "check",
       "tid": "bubble-sources"
     },

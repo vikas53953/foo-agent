@@ -91,6 +91,41 @@ describe('08-2 §8.3.9 site notes', () => {
     expect(typeof rows['blocked.example.com']!.flags.blocksAutomation).toBe('number');
     expect(rows['tables.example.com']!.flags).toEqual({ bookingWorks: true });
   });
+
+  it('a page web.fetch could not read because the site blocked foo is noted too, so the next turn skips it (run 30)', async () => {
+    const rows: Record<string, { flags: SiteFlags }> = {};
+    const link = {
+      request: (kind: string, body: { args?: [string[]]; ops?: { row: { domain: string; flags: SiteFlags } }[] }) => {
+        if (kind === 'db.query') {
+          const value = Object.fromEntries(body.args![0].filter((d) => rows[d]).map((d) => [d, rows[d]!]));
+          return Promise.resolve({ ok: true, value });
+        }
+        for (const op of body.ops ?? []) rows[op.row.domain] = { flags: op.row.flags };
+        return Promise.resolve({ ok: true, value: null });
+      },
+    };
+    const notes = new SiteNotes({
+      link: link as unknown as ConstructorParameters<typeof SiteNotes>[0]['link'],
+      dataDir: '/nonexistent',
+      now: () => Date.UTC(2026, 9, 22),
+      timeZone: () => 'Asia/Kolkata',
+      log: () => undefined,
+    });
+    await notes.onTool('job_2', 'browser.open', { url: 'https://shop.example.com/' }, null);
+    await notes.onTool('job_2', 'web.fetch', { url: 'https://news-a.example.com/space' }, 'SITE_BLOCKED');
+    await notes.onTool('job_2', 'web.fetch', { url: 'https://news-b.example.com/space' }, null);
+    // A short link that redirected to a blocking site: the site it landed on is noted, not the link.
+    await notes.onTool('job_2', 'web.fetch', { url: 'https://links.example.com/a1' }, 'SITE_BLOCKED', { site: 'news-c.example.com' });
+    // A read never moves the window: a CAPTCHA on the next click is the shop's, not the last page read.
+    await notes.onTool('job_2', 'browser.click', { ref: 'e3' }, 'SITE_CAPTCHA');
+    await notes.onDone('job_2', []);
+    expect(typeof rows['news-a.example.com']!.flags.blocksAutomation).toBe('number');
+    // A page read by a plain GET says nothing about driving the site: no success note for it.
+    expect(rows['news-b.example.com']).toBeUndefined();
+    expect(rows['shop.example.com']!.flags.captchaAlways).toBe(true);
+    expect(typeof rows['news-c.example.com']!.flags.blocksAutomation).toBe('number');
+    expect(rows['links.example.com']).toBeUndefined();
+  });
 });
 
 describe('08-2 §8.3.8 / §8.3.4 runner seams', () => {

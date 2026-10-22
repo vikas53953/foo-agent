@@ -14,7 +14,18 @@ function outcome<T>(r: WebToolResult<T>, url?: string): ToolOutcome {
   if (r.ok) return { kind: 'ok', result: { via: r.via, untrusted: r.forAi } };
   // 08-2 §8.2: `needsBrowser` is a result (the engine reads the page in foo's window), not an error.
   if (r.errorKind === 'needsBrowser') return { kind: 'ok', result: { needsBrowser: true, url } };
+  // 08-2 §8.3.9: the blocked site is named, so a failed job's card says which site would not let foo in.
+  if (r.errorKind === 'SITE_BLOCKED' && (r.landed ?? url))
+    return { kind: 'error', errorKind: r.errorKind, result: { site: siteOf(r.landed ?? url!) } };
   return { kind: 'error', errorKind: r.errorKind };
+}
+
+function siteOf(url: string): string | null {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return null;
+  }
 }
 
 export function webToolDefs(web: EngineWeb): Record<string, ToolDef> {
