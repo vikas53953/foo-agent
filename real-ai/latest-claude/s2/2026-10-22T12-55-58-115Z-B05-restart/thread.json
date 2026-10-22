@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 4 min\nDetails\n12:49 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:49 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n12:51 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is a relaxed 3-day Jaipur plan for your parents, with short days and a rest after lunch.\n\nDay 1, Old city: City Palace, Jantar Mantar and Hawa Mahal in the morning, then lunch and a rest. In the evening, a slow walk through Johari Bazaar for sweets and handicrafts.\nDay 2, Forts: Amber Fort early, before the crowds and heat. A jeep goes up to the entrance, which saves the climb. Then Jal Mahal for photos, and Nahargarh Fort at sunset with dinner nearby.\nDay 3, Easy and cultural: Albert Hall Museum, a leisurely lunch with dal baati churma, and shopping for block prints and jewellery. Chokhi Dhani in the evening, if they like folk music and a village-style dinner.\n\nLate October is pleasant, so mornings and evenings are comfortable. A hired car with a driver for all three days will be easiest on their feet.\n\nTell me your travel dates and budget, and I can look into stays and trains.\n\n12:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n12:52 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 12:52 PM\n12:52 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:52 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for well-rated Italian…\nlive checklist\nLooking for well-rated Italian restaurants in\nCheck restaurant booking sites\nKeep 3 Italian places that fit table for 2 free on Sat 24 Oct, 8:00 PM\nWait for you to pick one\nWatch live\nStop\n6 min\n12:52 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:52 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which city or area should I look in for Italian places?\n1\nDelhi NCR\nBEST FIT\n2\nMumbai\n3\nBengaluru\n4\nSomewhere else\nType the area in your reply\nSomething else…\nSkip\n12:53 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:53 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Only two phones from this page fit under ₹20,000 so I can't give you three yet. The iQOO Z11x 5G and Vivo T5x 5G both start at ₹18,999 (6GB + 128GB). Both have a 7,200mAh battery, 44W charging, the Dimensity 7400 Turbo chip, a 6.76-inch 120Hz screen and a 50MP main camera. The iQOO has a 32MP selfie camera; the Vivo's was not shown. The Redmi Note 15 SE 5G has a better AMOLED screen but costs ₹24,999 and has a smaller 5,800mAh battery. Want me to search for a third phone under ₹20,000?\n\n12:53 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n12:56 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 1 min\nDetails\n12:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:56 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "National Museum, Janpath, New Delhi is open Tue to Fri, 10:00 AM to 6:00 PM, and Sat and Sun, 10:00 AM to 8:00 PM. It is closed on Mondays and national holidays. So it is open today, Thu 22 Oct, until 6:00 PM. Entry is ₹20 for adults and ₹500 for foreign nationals. Students up to class 12 enter free with an ID card. Source: the museum's own Plan Your Visit page. Online tickets are listed at zoonga.com/national-museum.\n\n12:57 PM"
+  }
+]
