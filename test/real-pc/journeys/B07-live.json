@@ -10,7 +10,9 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "shot": "irctc"
+      "shot": "irctc",
+      "note": "AT-058/AT-078/AT-079/AT-272: the browser job must first produce an actual plan or reply",
+      "expectJs": "(()=>!!document.querySelector('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"], [data-testid=\"thread-log\"] [data-testid=\"card-plan\"]'))()"
     },
     {
       "do": "clickIf",
@@ -30,6 +32,18 @@
       "shot": "live"
     },
     {
+      "do": "check",
+      "css": "[data-testid=\"live-root\"][data-state=\"live\"]",
+      "count": 1,
+      "note": "AT-079: the live window exposes the live state"
+    },
+    {
+      "do": "check",
+      "css": "[data-testid=\"live-picture\"][data-masked=\"true\"]",
+      "count": 1,
+      "note": "AT-079: the live picture is marked masked"
+    },
+    {
       "do": "clickIf",
       "tid": "live-take-over"
     },
@@ -37,6 +51,18 @@
       "do": "wait",
       "ms": 3000,
       "shot": "taken-over"
+    },
+    {
+      "do": "check",
+      "css": "[data-testid=\"live-root\"][data-state=\"in_control\"]",
+      "count": 1,
+      "note": "AT-058/AT-272: Take over moves the actual live window into control"
+    },
+    {
+      "do": "check",
+      "tid": "live-control-bar",
+      "count": 1,
+      "note": "AT-272: control mode exposes the hand-back bar"
     },
     {
       "do": "clickIf",
@@ -48,6 +74,12 @@
       "shot": "handed-back"
     },
     {
+      "do": "check",
+      "css": "[data-testid=\"live-root\"][data-state=\"live\"]",
+      "count": 1,
+      "note": "AT-058/AT-272: hand back returns the live window to foo"
+    },
+    {
       "do": "clickIf",
       "tid": "live-stop"
     },
@@ -55,6 +87,12 @@
       "do": "wait",
       "ms": 8000,
       "shot": "stopped"
+    },
+    {
+      "do": "check",
+      "tid": "live-root",
+      "count": 0,
+      "note": "AT-078: after stop the live window is closed rather than left interactive"
     },
     {
       "do": "key",

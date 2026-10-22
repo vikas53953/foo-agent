@@ -10,7 +10,9 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "after-reopen",
-      "expect": "a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again"
+      "expect": "a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again",
+      "note": "AT-118: after reopen the reply settles, or the cut-off bubble exposes Try again",
+      "expectJs": "(()=>{const foo=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].pop();const text=(foo?.innerText||'').trim();const retry=foo?.querySelector('[data-testid=\"bubble-error-retry\"], [data-testid=\"bubble-menu-try-again\"]');return !!foo&&((text.length>0&&!text.includes('👀'))||!!retry);})()"
     },
     {
       "do": "eval",
@@ -19,7 +21,14 @@
     { "do": "send", "text": "Which news story is biggest in India today? One line." },
     { "do": "wait", "ms": 2000 },
     { "do": "relaunch" },
-    { "do": "waitReply", "timeoutMs": 150000, "shot": "news-after-reopen", "expect": "the news question is answered after reopening" },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "news-after-reopen",
+      "expect": "the news question is answered after reopening",
+      "note": "AT-118: the second post-reopen request also settles as a real answer",
+      "expectJs": "(()=>{const foo=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].pop();return !!foo&&(foo.innerText||'').trim().length>0&&!foo.innerText.includes('👀');})()"
+    },
     { "do": "dump", "name": "thread" }
   ]
 }
