@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's GDP growth swung from a 5.8% fall in FY21 to a 9.7% rebound in FY22, then settled around 6.5% to 9% a year. These are approximate real growth rates by financial year (April to March) from my memory, so check the latest official figures before you rely on them.\n\nIndia's GDP growth, % per year\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n6:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n6:13 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "On paper, Pixel 9 is the best value: about the same price as the others, but with double the storage and a 120Hz screen. These are approximate India launch prices from memory, and current shop prices are often lower, so check them before you buy.\n\niPhone 16\nLaunch price\nAbout ₹79,900\nStorage at that price\n128 GB\nChip\nApple A18\nScreen\n6.1 inch OLED, 60Hz\nRear cameras\n48 MP main + 12 MP wide\nUpdates\nNo fixed promise, usually 6 to 7 years\nBest pick\nPixel 9\nLaunch price\nAbout ₹79,999\nStorage at that price\n256 GB\nChip\nGoogle Tensor G4\nScreen\n6.3 inch OLED, 120Hz\nRear cameras\n50 MP main + 48 MP wide\nUpdates\n7 years\n\nSame price band, but double the storage, a smoother 120Hz screen and 7 years of updates.\n\nGalaxy S25\nLaunch price\nAbout ₹80,999\nStorage at that price\n128 GB\nChip\nSnapdragon 8 Elite\nScreen\n6.2 inch OLED, 120Hz\nRear cameras\n50 MP main + 12 MP wide + 10 MP zoom\nUpdates\n7 years\nKeep\n\nIf you prefer the fastest chip and a zoom camera, the Galaxy S25 is the pick. If you already use Apple apps and devices, the iPhone 16 fits better.\n\n6:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n6:13 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Tap start when the tea is on.\n\nLet the tea brew\n2:00 left\nStart timer\nKeep\n6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n6:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is a short form for your party plan. Fill in the date, guest count and budget, then send it.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n6:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is a simple expense tracker. Add what you spent, pick a category, and the total and category split update as you go. Entries stay only while this page is open, so note down anything you want to keep.\n\nKeep\n6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form for a demo login with username and password. Do not ask me to send anything.\n6:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't put a password box in a chat form, because passwords never go through this chat. When a step needs one, the app opens a private box for it. I can make a username-only form, or a login screen mock-up with no real fields.\n\n6:14 PM"
+  }
+]
