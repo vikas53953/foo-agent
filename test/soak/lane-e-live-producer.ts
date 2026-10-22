@@ -28,7 +28,7 @@ function usage(): never {
 
 if (process.argv.includes('--help')) {
   console.log(
-    `lane-e-live-producer: launches the source Electron app with the existing FOO_TEST/fake-AI fixture; ${FULL_SOAK_HOURS}h is the acceptance gate, while --partial --duration-hours 1 writes diagnostic evidence only; --smoke runs only the launch/job producer check.`,
+    `lane-e-live-producer: launches the source Electron app with the existing FOO_TEST/fake-AI fixture; ${FULL_SOAK_HOURS}h is the acceptance gate, while --partial --duration-hours 1 writes diagnostic evidence only; --smoke runs a two-job repeated-submission check.`,
   );
   process.exit(0);
 }
@@ -287,7 +287,7 @@ async function main(): Promise<number> {
   const knownTurnIds = new Set<string>();
   let lastProcessMetrics: ProducerProcessMetrics | null = null;
   const processSamples: ProducerProcessMetrics[] = [];
-  const expectedWorkloadJobs = smoke ? 1 : 1 + Math.floor((soakMs - 1) / WORKLOAD_INTERVAL_MS);
+  const expectedWorkloadJobs = smoke ? 2 : 1 + Math.floor((soakMs - 1) / WORKLOAD_INTERVAL_MS);
   let failure: string | null = null;
   try {
     app = await launch({ FOO_DATA_DIR: dataDir, FOO_LOCAL_DIR: localDir, FOO_OUT_DIR: runtimeOut }, [], {
@@ -311,7 +311,11 @@ async function main(): Promise<number> {
     await submitLiveJob(page, `${ASK} #1`, knownTurnIds);
     const initialJob = await waitForJobCompletion(page, dbFile, baselineJobIds, knownJobIds);
     knownJobIds.add(initialJob.id);
-    if (!smoke) {
+    if (smoke) {
+      await submitLiveJob(page, `${ASK} #2`, knownTurnIds);
+      const secondJob = await waitForJobCompletion(page, dbFile, baselineJobIds, knownJobIds);
+      knownJobIds.add(secondJob.id);
+    } else {
       soakStartedAt = Date.now();
       let nextWorkAt = soakStartedAt + WORKLOAD_INTERVAL_MS;
       let lastWallAt = Date.now();
@@ -363,7 +367,7 @@ async function main(): Promise<number> {
   const result = smoke
     ? failure
       ? 'fail'
-      : counts.completedUnverifiedJobs === 1
+      : counts.completedUnverifiedJobs === expectedWorkloadJobs
         ? 'pass'
         : 'blocked'
     : !completed
@@ -410,7 +414,7 @@ async function main(): Promise<number> {
     processSamples: processSamples.length,
     failure,
     note: smoke
-      ? 'Smoke only: it requires one completed done_unverified fake-AI job; routine_runs is diagnostic only and makes no eight-hour soak claim.'
+      ? `Smoke only: it requires ${expectedWorkloadJobs} completed done_unverified fake-AI jobs from distinct matched intake turns; routine_runs is diagnostic only and makes no eight-hour soak claim.`
       : duration?.partial
         ? `Partial ${soakHours}-hour diagnostic only; ${expectedWorkloadJobs} done_unverified jobs were required; the full ${duration.acceptanceHours}-hour acceptance requirement remains unproven.`
         : `Counts come from the live FOO_TEST app SQLite fixture; ${expectedWorkloadJobs} done_unverified jobs are required; routine_runs is diagnostic only.`,
