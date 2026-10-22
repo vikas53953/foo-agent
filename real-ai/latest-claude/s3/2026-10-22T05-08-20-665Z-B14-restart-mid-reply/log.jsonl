@@ -1,0 +1,19 @@
+{"t":"2026-10-22T05:08:20.665Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T05:08:25.729Z","step":"launch","ok":true}
+{"t":"2026-10-22T05:08:33.800Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8068}
+{"t":"2026-10-22T05:08:33.891Z","i":0,"do":"send","sentAt":1792645713856,"sent":true,"before":0,"ok":true,"ms":91}
+{"t":"2026-10-22T05:08:36.892Z","i":1,"do":"wait","ok":true,"ms":3000}
+{"t":"2026-10-22T05:08:41.742Z","step":"launch","ok":true}
+{"t":"2026-10-22T05:08:41.742Z","i":2,"do":"relaunch","ok":true,"ms":4849}
+{"t":"2026-10-22T05:08:48.871Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":510,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Shelly is a classic, but here are a few more: Turbo (a funny name for a slow friend), Pebble, Mochi, Gandalf or Sheldon. Tortoises can live 50 years or more, so pick one you'll still like in a decade.\n\n5:08 AM","kit":[],"ms":7128}
+{"t":"2026-10-22T05:08:48.931Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-22T05:08:48.932Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n5:08 AM","eyes":false},"ok":true,"ms":1}
+{"t":"2026-10-22T05:08:49.055Z","i":5,"do":"send","sentAt":1792645729009,"sent":true,"before":0,"ok":true,"ms":122}
+{"t":"2026-10-22T05:08:51.064Z","i":6,"do":"wait","ok":true,"ms":2009}
+{"t":"2026-10-22T05:08:55.970Z","step":"launch","ok":true}
+{"t":"2026-10-22T05:08:55.970Z","i":7,"do":"relaunch","ok":true,"ms":4905}
+{"t":"2026-10-22T05:09:05.265Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","firstReplyMs":3031,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for the biggest India news story on Thu 22\nWatch live\nStop\nunder 1 min\n5:08 AM","kit":[],"ms":9295}
+{"t":"2026-10-22T05:09:05.327Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-22T05:09:05.343Z","i":9,"do":"dump","ok":true,"ms":15}
+{"t":"2026-10-22T05:09:05.949Z","step":"appLog","lines":21,"dropped":0}
+{"t":"2026-10-22T05:09:05.959Z","step":"aiTurns","turns":3}

@@ -1,0 +1,18 @@
+{"t":"2026-10-22T05:13:56.922Z","journey":"U20-errors-honesty","title":"Things foo cannot do: honest error/connect, no fake success","spec":"05-3 §5.19 Error, 08-4 rules, 10-2 §C.4 Error (C16)","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T05:14:01.950Z","step":"launch","ok":true}
+{"t":"2026-10-22T05:14:02.980Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1027}
+{"t":"2026-10-22T05:14:03.067Z","i":1,"do":"send","sentAt":1792646043046,"sent":true,"before":0,"ok":true,"ms":86}
+{"t":"2026-10-22T05:14:16.268Z","i":2,"do":"waitReply","expect":"asks which bill / needs connection; never claims it paid","firstReplyMs":7108,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which electricity company should I pay?\n1\nBESCOM\nBEST FIT\nBengaluru\n2\nA different company\nI'll ask for its name\nSomething else…\nSkip\n5:14 AM","kit":[],"ms":13201}
+{"t":"2026-10-22T05:14:16.334Z","shot":"01-pay-bill.png"}
+{"t":"2026-10-22T05:14:16.422Z","i":3,"do":"send","sentAt":1792646056397,"sent":true,"before":0,"ok":true,"ms":88}
+{"t":"2026-10-22T05:14:29.098Z","i":4,"do":"waitReply","expect":"honest about needing approval / not able; never fake success","firstReplyMs":6586,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Paying Domino's\n1\nSign in to Domino's\n2\nLook for pizzas near you\n3\nWait for you to pick one\n4\nFill in your details on Domino's\n5\nShow you before placing the order\n…and 2 more · Show\nAbout 5 minutes\nGo\nChange plan\n5:14 AM","kit":[],"ms":12676}
+{"t":"2026-10-22T05:14:29.149Z","shot":"02-order.png"}
+{"t":"2026-10-22T05:14:29.245Z","i":5,"do":"send","sentAt":1792646069221,"sent":true,"before":0,"ok":true,"ms":95}
+{"t":"2026-10-22T05:14:38.851Z","i":6,"do":"waitReply","expect":"Connect card for Gmail (C10), not a made-up inbox","firstReplyMs":3543,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Connect Gmail\n\nI need to read your email for “Read your latest Gmail”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n5:14 AM","kit":[],"ms":9606}
+{"t":"2026-10-22T05:14:38.896Z","shot":"03-gmail.png"}
+{"t":"2026-10-22T05:14:38.965Z","i":7,"do":"click","soft":true,"ok":true,"ms":69}
+{"t":"2026-10-22T05:14:39.765Z","i":8,"do":"wait","expect":"connect card dismissed politely","ok":true,"ms":800}
+{"t":"2026-10-22T05:14:39.817Z","shot":"04-not-now.png"}
+{"t":"2026-10-22T05:14:39.827Z","i":9,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-22T05:14:39.935Z","step":"appLog","lines":12,"dropped":0}
+{"t":"2026-10-22T05:14:39.944Z","step":"aiTurns","turns":3}
