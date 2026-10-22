@@ -71,6 +71,22 @@ function Row([Collections.Generic.List[object]]$Rows, [string]$Check, [string]$R
   $Rows.Add([pscustomobject]@{ check = $Check; result = $Result; detail = $Detail })
   Write-Host "[$Result] $Check $Detail"
 }
+function Write-InstallDiagnostic([string]$Stage, [string]$InstallerPath, [string]$TargetDir, [string]$Root, [string]$File) {
+  Assert-Descendant $TargetDir $Root 'diagnostic target'
+  $installer = Get-Item -LiteralPath $InstallerPath -ErrorAction Stop
+  $entries = @(Get-ChildItem -LiteralPath $TargetDir -Force -ErrorAction SilentlyContinue | ForEach-Object { $_.Name })
+  $entryText = if ($entries.Count -gt 0) { [string]::Join(';', [string[]]$entries) } else { '<empty>' }
+  $diagnostic = [pscustomobject]@{
+    stage = $Stage
+    installer = $InstallerPath
+    installerBytes = $installer.Length
+    installerSha256 = (Get-FileHash -LiteralPath $InstallerPath -Algorithm SHA256).Hash
+    target = $TargetDir
+    targetEntries = $entryText
+  }
+  $diagnostic | ConvertTo-Json -Compress | Add-Content -LiteralPath $File -Encoding utf8
+  Write-Host "[diag] $Stage installer=$InstallerPath bytes=$($installer.Length) sha256=$($diagnostic.installerSha256) target=$TargetDir entries=$entryText"
+}
 
 $runnerTemp = FullPath $env:RUNNER_TEMP
 $root = Join-Path $runnerTemp "foo-lane-e-upgrade-$PID-$([DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss'))"
@@ -92,12 +108,16 @@ $oldApp = $null
 $newApp = $null
 $seedOut = Join-Path $root 'seed'
 $verifyOut = Join-Path $root 'verify'
+$diagnostics = Join-Path $reportDir 'lane-e-install-diagnostics.jsonl'
 New-Item -ItemType Directory -Force -Path $seedOut, $verifyOut | Out-Null
 
 try {
   Row $rows 'old fixture build is the required 04f01dd build' 'pass' "buildSha=$PreviousBuildSha"
   Row $rows 'current fixture build is explicitly identified' 'pass' "buildSha=$CurrentBuildSha"
-  $oldInstall = Start-Process -FilePath (FullPath $PreviousInstaller) -ArgumentList @('/S', "/D=`"$installDir`"") -Wait -PassThru
+  $oldInstallerPath = FullPath $PreviousInstaller
+  Write-InstallDiagnostic 'before-old-install' $oldInstallerPath $installDir $root $diagnostics
+  $oldInstall = Start-Process -FilePath $oldInstallerPath -ArgumentList @('/S', ('/D=' + $installDir)) -Wait -PassThru -WindowStyle Hidden
+  Write-InstallDiagnostic 'after-old-install' $oldInstallerPath $installDir $root $diagnostics
   $exe = Join-Path $installDir 'foo.exe'
   $oldInstallResult = if ($oldInstall.ExitCode -eq 0) { 'pass' } else { 'fail' }
   $oldExeResult = if (Test-Path -LiteralPath $exe -PathType Leaf) { 'pass' } else { 'fail' }
@@ -117,7 +137,10 @@ try {
   if ($LASTEXITCODE -ne 0) { throw "upgrade fixture seed failed with exit $LASTEXITCODE" }
   Row $rows 'fixture creates two chats, memory and working job' 'pass' (Join-Path $seedOut 'lane-e-upgrade-seed.json')
 
-  $currentInstall = Start-Process -FilePath (FullPath $CurrentInstaller) -ArgumentList @('/S', "/D=`"$installDir`"") -Wait -PassThru
+  $currentInstallerPath = FullPath $CurrentInstaller
+  Write-InstallDiagnostic 'before-current-install' $currentInstallerPath $installDir $root $diagnostics
+  $currentInstall = Start-Process -FilePath $currentInstallerPath -ArgumentList @('/S', ('/D=' + $installDir)) -Wait -PassThru -WindowStyle Hidden
+  Write-InstallDiagnostic 'after-current-install' $currentInstallerPath $installDir $root $diagnostics
   $currentInstallResult = if ($currentInstall.ExitCode -eq 0) { 'pass' } else { 'fail' }
   Row $rows 'current build installs over the 04f01dd fixture' $currentInstallResult "exit=$($currentInstall.ExitCode)"
   if ($currentInstall.ExitCode -ne 0) { throw 'current build installer failed over 04f01dd fixture' }
@@ -135,7 +158,7 @@ try {
   $uninstaller = Join-Path $installDir 'Uninstall foo.exe'
   if (-not (Test-Path -LiteralPath $uninstaller -PathType Leaf)) { Row $rows 'current release fixture uninstaller is present' 'fail' $uninstaller }
   else {
-    $un = Start-Process -FilePath $uninstaller -ArgumentList '/S' -Wait -PassThru
+    $un = Start-Process -FilePath $uninstaller -ArgumentList '/S' -Wait -PassThru -WindowStyle Hidden
     Start-Sleep -Milliseconds 500
     $unResult = if ($un.ExitCode -eq 0) { 'pass' } else { 'fail' }
     $exeRemovedResult = if (-not (Test-Path -LiteralPath $exe -PathType Leaf)) { 'pass' } else { 'fail' }

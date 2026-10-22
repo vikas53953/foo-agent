@@ -54,6 +54,22 @@ function Stop-Exact([Diagnostics.Process]$Process) {
 function Write-Results([object[]]$Rows, [string]$File) {
   $Rows | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $File -Encoding utf8
 }
+function Write-InstallDiagnostic([string]$Stage, [string]$InstallerPath, [string]$TargetDir, [string]$Root, [string]$File) {
+  Assert-Descendant $TargetDir $Root 'diagnostic target'
+  $installer = Get-Item -LiteralPath $InstallerPath -ErrorAction Stop
+  $entries = @(Get-ChildItem -LiteralPath $TargetDir -Force -ErrorAction SilentlyContinue | ForEach-Object { $_.Name })
+  $entryText = if ($entries.Count -gt 0) { [string]::Join(';', [string[]]$entries) } else { '<empty>' }
+  $diagnostic = [pscustomobject]@{
+    stage = $Stage
+    installer = $InstallerPath
+    installerBytes = $installer.Length
+    installerSha256 = (Get-FileHash -LiteralPath $InstallerPath -Algorithm SHA256).Hash
+    target = $TargetDir
+    targetEntries = $entryText
+  }
+  $diagnostic | ConvertTo-Json -Compress | Add-Content -LiteralPath $File -Encoding utf8
+  Write-Host "[diag] $Stage installer=$InstallerPath bytes=$($installer.Length) sha256=$($diagnostic.installerSha256) target=$TargetDir entries=$entryText"
+}
 
 $runnerTemp = FullPath $env:RUNNER_TEMP
 $stamp = [DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss')
@@ -80,7 +96,10 @@ $app = $null
 try {
   New-Item -ItemType Directory -Force -Path $installDir, $dataDir, $localDir, $outDir, $electronAppData, $electronLocalAppData | Out-Null
   $installerPath = FullPath $Installer
-  $install = Start-Process -FilePath $installerPath -ArgumentList @('/S', "/D=`"$installDir`"") -Wait -PassThru
+  $diagnostics = Join-Path $reportDir 'lane-e-install-diagnostics.jsonl'
+  Write-InstallDiagnostic 'before-install' $installerPath $installDir $fixtureRoot $diagnostics
+  $install = Start-Process -FilePath $installerPath -ArgumentList @('/S', ('/D=' + $installDir)) -Wait -PassThru -WindowStyle Hidden
+  Write-InstallDiagnostic 'after-install' $installerPath $installDir $fixtureRoot $diagnostics
   $exe = Join-Path $installDir 'foo.exe'
   $installResult = if ($install.ExitCode -eq 0) { 'pass' } else { 'fail' }
   $exeResult = if (Test-Path -LiteralPath $exe -PathType Leaf) { 'pass' } else { 'fail' }
@@ -118,7 +137,7 @@ try {
   $uninstaller = Join-Path $installDir 'Uninstall foo.exe'
   if (-not (Test-Path -LiteralPath $uninstaller -PathType Leaf)) { Row 'fixture uninstaller is present' 'fail' $uninstaller }
   else {
-    $un = Start-Process -FilePath $uninstaller -ArgumentList '/S' -Wait -PassThru
+    $un = Start-Process -FilePath $uninstaller -ArgumentList '/S' -Wait -PassThru -WindowStyle Hidden
     Start-Sleep -Milliseconds 500
     $unResult = if ($un.ExitCode -eq 0) { 'pass' } else { 'fail' }
     $exeRemovedResult = if (-not (Test-Path -LiteralPath $exe -PathType Leaf)) { 'pass' } else { 'fail' }
