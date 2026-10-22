@@ -1,0 +1,19 @@
+{"t":"2026-10-22T07:37:57.255Z","journey":"U02-reactions-thanks","title":"Reactions: foo thumbs-up on thanks, react and un-react","spec":"04 §12, 10-1 AT-027, 10-2 §C.3 Reactions","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T07:38:02.459Z","step":"launch","ok":true}
+{"t":"2026-10-22T07:38:03.496Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1034}
+{"t":"2026-10-22T07:38:03.603Z","i":1,"do":"send","sentAt":1792654683575,"sent":true,"before":0,"ok":true,"ms":107}
+{"t":"2026-10-22T07:38:13.755Z","i":2,"do":"waitReply","expect":"answer 144","firstReplyMs":3053,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"12 times 12 is 144.\n\n7:38 AM","kit":[],"ms":10151}
+{"t":"2026-10-22T07:38:13.818Z","shot":"01-math.png"}
+{"t":"2026-10-22T07:38:13.916Z","i":3,"do":"send","sentAt":1792654693893,"sent":true,"before":0,"ok":true,"ms":97}
+{"t":"2026-10-22T07:38:28.919Z","i":4,"do":"wait","expect":"foo adds a 👍 reaction on my thanks and posts no message (AT-027)","ok":true,"ms":15001}
+{"t":"2026-10-22T07:38:28.983Z","shot":"02-thanks.png"}
+{"t":"2026-10-22T07:38:28.985Z","i":5,"do":"check","note":"foo reacted to my thanks","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-22T07:38:29.046Z","i":6,"do":"click","soft":true,"ok":true,"ms":61}
+{"t":"2026-10-22T07:38:29.328Z","i":7,"do":"click","soft":true,"ok":true,"ms":281}
+{"t":"2026-10-22T07:38:29.446Z","i":8,"do":"click","soft":true,"ok":true,"ms":118}
+{"t":"2026-10-22T07:38:30.162Z","i":9,"do":"wait","expect":"more emoji","ok":true,"ms":715}
+{"t":"2026-10-22T07:38:30.234Z","shot":"03-react-more.png"}
+{"t":"2026-10-22T07:38:30.258Z","i":10,"do":"key","ok":true,"ms":24}
+{"t":"2026-10-22T07:38:30.291Z","i":11,"do":"dump","ok":true,"ms":33}
+{"t":"2026-10-22T07:38:30.489Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-22T07:38:30.503Z","step":"aiTurns","turns":2}

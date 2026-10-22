@@ -1,0 +1,264 @@
+{
+  "journey": "R-reply-area",
+  "title": "Group R reply sender and action ownership",
+  "steps": 24,
+  "failed": 6,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T07-51-17-112Z-R-reply-area",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "note": "AT-428: clean ask",
+      "sentAt": 1792655482489,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 125
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "note": "AT-428: clean",
+      "firstReplyMs": 9142,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Hi! Dark mode is still off and Punjab Kings isn't saved yet. Want me to try both again?\n\n7:51 AM",
+      "kit": [],
+      "endState": false,
+      "ms": 15725
+    },
+    {
+      "i": 2,
+      "do": "expectText",
+      "note": "AT-428: clean result",
+      "text": "Hi! Dark mode is still off and Punjab Kings isn't saved yet. Want me to try both again?\n\n7:51 AM",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "note": "AT-428: messy typo ask",
+      "sentAt": 1792655498395,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "note": "AT-428: messy typo",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120442
+    },
+    {
+      "i": 5,
+      "do": "expectText",
+      "note": "AT-428: messy typo result",
+      "text": "Hi! Dark mode is still off and Punjab Kings isn't saved yet. Want me to try both again?\n\n7:51 AM",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "note": "AT-428: Hinglish ask",
+      "sentAt": 1792655618956,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "note": "AT-428: Hinglish",
+      "firstReplyMs": 8130,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Namaste! Dark mode abhi bhi off hai, aur Punjab Kings wali baat save nahi hui. Pehle dark mode on karun?\n\n7:53 AM",
+      "kit": [],
+      "endState": false,
+      "ms": 15210
+    },
+    {
+      "i": 8,
+      "do": "expectText",
+      "note": "AT-428: Hinglish result",
+      "text": "Namaste! Dark mode abhi bhi off hai, aur Punjab Kings wali baat save nahi hui. Pehle dark mode on karun?\n\n7:53 AM",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 9,
+      "do": "send",
+      "note": "AT-430: clean VPN answer before hello",
+      "sentAt": 1792655634278,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 10,
+      "do": "waitReply",
+      "note": "AT-430: clean VPN answer",
+      "firstReplyMs": 3528,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN (virtual private network) is a service that sends your internet traffic through a protected, encrypted link to another computer before it reaches the website you want. Think of it as a private tunnel between your device and the wider internet.\n\nIt helps in two main ways. It hides what you do from others on the same network, such as public Wi-Fi at a café or airport. It also hides your real location from the sites you visit, since they see the VPN's address instead of yours.\n\nA VPN is not a magic shield. It won't protect you from scams, viruses or sites you sign in to, and the VPN company itself can see your traffic, so pick one you trust. People also use VPNs for work, to safely reach their office files from home.\n\n7:53 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 11680
+    },
+    {
+      "i": 11,
+      "do": "send",
+      "note": "AT-430: clean greeting after answer",
+      "sentAt": 1792655646089,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 66
+    },
+    {
+      "i": 12,
+      "do": "waitReply",
+      "note": "AT-430: clean greeting",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120023,
+      "late": true
+    },
+    {
+      "i": 13,
+      "do": "waitFor",
+      "note": "AT-430: copy action is scoped to the latest answer bubble",
+      "ok": false,
+      "error": "locator.waitFor: Timeout 10000ms exceeded.",
+      "ms": 10061
+    },
+    {
+      "i": 14,
+      "do": "send",
+      "note": "AT-430: messy typo VPN answer before hello",
+      "sentAt": 1792655776298,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 61
+    },
+    {
+      "i": 15,
+      "do": "waitReply",
+      "note": "AT-430: messy typo VPN answer",
+      "firstReplyMs": 4560,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN (virtual private network) sends your internet traffic through a protected, scrambled link to another computer before it reaches the site you want. Think of it as a private tunnel between your device and the wider internet.\n\nIt helps in two ways. It hides what you do from others on the same network, like café or airport Wi-Fi. It also hides your real location, because websites see the VPN's address instead of yours.\n\nA VPN is not a magic shield. It won't stop scams or viruses, and the VPN company can see your traffic, so pick one you trust. Many people also use one for work, to safely reach office files from home.\n\n7:56 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 12654
+    },
+    {
+      "i": 16,
+      "do": "send",
+      "note": "AT-430: messy typo greeting after answer",
+      "sentAt": 1792655789085,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "i": 17,
+      "do": "waitReply",
+      "note": "AT-430: messy typo greeting",
+      "firstReplyMs": 8082,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! Dark mode is still off, and your Punjab Kings note isn't saved yet. Should I switch to dark mode first?\n\n7:56 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 15222
+    },
+    {
+      "i": 18,
+      "do": "waitFor",
+      "note": "AT-430: copy action is scoped to the latest answer bubble",
+      "ok": false,
+      "error": "locator.waitFor: Timeout 10000ms exceeded.",
+      "ms": 10064
+    },
+    {
+      "i": 19,
+      "do": "send",
+      "note": "AT-430: Hinglish VPN answer before hello",
+      "sentAt": 1792655814478,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "i": 20,
+      "do": "waitReply",
+      "note": "AT-430: Hinglish VPN answer",
+      "firstReplyMs": 5051,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "VPN (virtual private network) ek aisi service hai jo aapka internet traffic ek surakshit, scrambled raste se doosre computer tak bhejti hai, phir aapki chuni hui website tak. Isse aise samjho jaise aapke device aur internet ke beech ek private surang.\n\nIske do bade fayde hain. Cafe ya airport ke public Wi-Fi par doosre log dekh nahi paate ki aap kya kar rahe ho. Websites ko aapki asli location nahi dikhti, kyunki unhe VPN ka address dikhta hai.\n\nPar VPN koi jaadui dhaal nahi hai. Ye scams ya viruses se nahi bachata, aur VPN company aapka traffic dekh sakti hai, isliye bharosemand company chuno. Kaafi log ise kaam ke liye bhi use karte hain, ghar se office ki files tak safely pahunchne ke liye.\n\n7:56 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 14667
+    },
+    {
+      "i": 21,
+      "do": "send",
+      "note": "AT-430: Hinglish greeting after answer",
+      "sentAt": 1792655829275,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 63
+    },
+    {
+      "i": 22,
+      "do": "waitReply",
+      "note": "AT-430: Hinglish greeting",
+      "firstReplyMs": 6054,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Namaste! Aapka dark mode abhi bhi off hai. Kya main use on kar doon?\n\n7:57 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 13666
+    },
+    {
+      "i": 23,
+      "do": "waitFor",
+      "note": "AT-430: copy action is scoped to the latest answer bubble",
+      "ok": false,
+      "error": "locator.waitFor: Timeout 10000ms exceeded.",
+      "ms": 10063
+    }
+  ]
+}

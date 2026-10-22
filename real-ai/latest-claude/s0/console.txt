@@ -1,3 +1,0 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T07-17-42-591Z-J01-J02-first-run"}
-{"journey":"B07-live","title":"Watch live, take over, hand back, stop","steps":25,"failed":11,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T07-18-33-486Z-B07-live"}
-{"journey":"R-chat-rules","title":"Group R one-bubble plain VPN answers","steps":15,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T07-21-26-126Z-R-chat-rules"}
