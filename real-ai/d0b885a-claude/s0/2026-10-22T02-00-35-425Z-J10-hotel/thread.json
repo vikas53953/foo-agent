@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n1:59 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet, and all your traffic goes through it.\n\nNormally, websites see your real address, and the network you're on (café Wi-Fi, your internet provider) can see which sites you visit. With a VPN, your data is scrambled before it leaves your device. It travels to the VPN company's computer, which unscrambles it and passes it on to the website. The website sees the VPN's address, not yours.\n\nSo it hides what you do from the network around you and hides where you are from websites. It doesn't make you anonymous: the VPN company can still see your traffic, so pick one you trust.\n\n1:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n1:59 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Trails or parks\n2:00 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:00 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n2:00 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What matters most to you in a trail or park shoe?\n1\nCushioning\nBEST FIT\nSoft and comfy for longer runs\n2\nGrip\nHolds well on mud, gravel and wet ground\n3\nLight weight\nFeels quick and easy on your feet\n4\nLasts long\nTough build for regular use\nSomething else…\nSkip\n2:00 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:00 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n2:00 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:00 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n2:00 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 2:00 AM\n2:00 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:00 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking Booking.com, MakeMyTrip,…\nlive checklist\nChecking Booking.com, MakeMyTrip, Goibibo\nB\nM\nG\nStill working, this one takes a while\nLook for Goa hotels, Sat 31 Oct to Mon 2 Nov\nCompare price, rating and location\nKeep 3 hotels that fit under ₹6,000 a night, best rated\nWait for you to pick one\nWatch live\nStop\n2 min\n2:00 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:00 AM"
+  }
+]

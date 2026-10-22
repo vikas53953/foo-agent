@@ -1,0 +1,32 @@
+{"t":"2026-10-22T02:13:23.050Z","journey":"U13-secret-box","title":"Secret box: type a fake key, show/hide, save, replace","spec":"05-2 §5.8 Secret box, 10-2 §C.4 Secret box (C7), ART-08a","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T02:13:28.700Z","step":"launch","ok":true}
+{"t":"2026-10-22T02:13:29.736Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1032}
+{"t":"2026-10-22T02:13:29.831Z","i":1,"do":"click","soft":true,"ok":true,"ms":95}
+{"t":"2026-10-22T02:13:44.955Z","shot":"01-error-step2.png"}
+{"t":"2026-10-22T02:13:44.955Z","i":2,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":15124}
+{"t":"2026-10-22T02:13:46.457Z","i":3,"do":"wait","expect":"Secret box card: masked field, eye toggle, Save","ok":true,"ms":1502}
+{"t":"2026-10-22T02:13:46.523Z","shot":"02-secret.png"}
+{"t":"2026-10-22T02:14:16.601Z","shot":"03-error-step4.png"}
+{"t":"2026-10-22T02:14:16.602Z","i":4,"do":"fill","soft":true,"ok":false,"error":"locator.fill: Timeout 30000ms exceeded.","ms":30078}
+{"t":"2026-10-22T02:14:16.903Z","i":5,"do":"wait","expect":"value masked","ok":true,"ms":301}
+{"t":"2026-10-22T02:14:16.978Z","shot":"04-typed.png"}
+{"t":"2026-10-22T02:14:40.059Z","shot":"05-error-step6.png"}
+{"t":"2026-10-22T02:14:40.060Z","i":6,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23082}
+{"t":"2026-10-22T02:14:40.361Z","i":7,"do":"wait","expect":"value shown after eye","ok":true,"ms":301}
+{"t":"2026-10-22T02:14:40.435Z","shot":"06-shown.png"}
+{"t":"2026-10-22T02:15:03.507Z","shot":"07-error-step8.png"}
+{"t":"2026-10-22T02:15:03.507Z","i":8,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23072}
+{"t":"2026-10-22T02:15:26.662Z","shot":"08-error-step9.png"}
+{"t":"2026-10-22T02:15:26.662Z","i":9,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23155}
+{"t":"2026-10-22T02:15:28.665Z","i":10,"do":"wait","expect":"\"· saved {date}\", only Replace offered; value never shown again","ok":true,"ms":2002}
+{"t":"2026-10-22T02:15:28.812Z","shot":"09-saved.png"}
+{"t":"2026-10-22T02:15:51.902Z","shot":"10-error-step11.png"}
+{"t":"2026-10-22T02:15:51.902Z","i":11,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23089}
+{"t":"2026-10-22T02:15:52.703Z","i":12,"do":"wait","expect":"empty field to replace","ok":true,"ms":801}
+{"t":"2026-10-22T02:15:52.773Z","shot":"11-replace.png"}
+{"t":"2026-10-22T02:16:15.852Z","shot":"12-error-step13.png"}
+{"t":"2026-10-22T02:16:15.852Z","i":13,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23079}
+{"t":"2026-10-22T02:16:15.866Z","i":14,"do":"dump","ok":true,"ms":13}
+{"t":"2026-10-22T02:16:15.870Z","step":"recheck","i":2,"do":"click","late":true}
+{"t":"2026-10-22T02:16:16.031Z","step":"appLog","lines":1,"dropped":0}
+{"t":"2026-10-22T02:16:16.045Z","step":"aiTurns","turns":0}
