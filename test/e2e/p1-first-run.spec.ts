@@ -9,7 +9,7 @@ import { aiHome, finder, finderRow, firstRun } from './ai-step-world';
 import type {} from '../../src/shared/ipc';
 import type { FakeLine } from './fakeAi';
 import { advance } from './m8-drafts-world';
-import { fullMotion, holdBootstrap } from './p1-first-run-world';
+import { fullMotion, holdBootstrap, tracedReload } from './p1-first-run-world';
 
 /** Every verify answers "ready" after 2 s, so the Testing state is on screen long enough to see. */
 const VERIFY_SLOW: FakeLine = { match: { purpose: 'verify' }, reply: 'ready', once: false, delayMs: 2_000 };
@@ -103,7 +103,7 @@ test('AT-313 Off: with reduced motion the eyes are already open and nothing in t
 test('AT-314 AI finder: striped 4-step pill at step 1; rows test live (Testing… shimmers, then ✓ works); app logos on white tiles', async () => {
   const { app, page } = await firstRun(aiHome(['claude', 'codex']), [VERIFY_SLOW]);
   await fullMotion(page);
-  await page.reload();
+  await tracedReload(app, page);
   const pill = finder(page).getByTestId(TID.setupProgress);
   await expect(pill).toHaveAttribute('role', 'progressbar');
   await expect(pill).toHaveAttribute('aria-valuenow', '1');

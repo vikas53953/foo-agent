@@ -66,6 +66,14 @@
       "ref": "UX-16-01"
     },
     {
+      "do": "expectText",
+      "soft": true,
+      "re": "about (0\\.0|NaN|Infinity|undefined) (emoji|characters)|Mixes capital",
+      "tid": "screen-memory",
+      "note": "no empty-measure guesses",
+      "not": true
+    },
+    {
       "do": "fill",
       "tid": "memory-search",
       "value": "vegetarian",

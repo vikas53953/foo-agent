@@ -11,6 +11,7 @@
 import { t } from '../../shared/copy/t';
 import { fail, ok, type Result } from '../../shared/errors';
 import { newId } from '../../shared/ids';
+import { newNonce } from '../../shared/canon';
 import type { CardAnswer, CardRow, ChatRow, MessageRow } from '../../shared/types';
 import { reactionAnswer, showsSkip, toastAnswer, type AnswerableCard } from '../../engine/cards/typedAnswer';
 import type { DbOp } from '../../engine/protocol';
@@ -90,6 +91,14 @@ export function answerCard(
   const c = card(d.db, 'id = ?', req.cardId);
   if (!c) return fail('NOT_FOUND');
   if (c.type === 'secret') return cancelSecret(d, c, req);
+  // CR-0044: Not now on an intake Connect card (no job yet); the chat lane writes it and runs the message without the app.
+  if (c.type === 'connect' && c.jobId === null && c.payload.intakeConnect !== undefined) {
+    if (!('skip' in req.answer)) return fail('VALIDATION');
+    if (req.nonce !== undefined && c.nonce !== req.nonce) return fail('CARD_STALE');
+    if (c.state !== 'offered' || c.resolvedAt !== null) return fail('CARD_STALE');
+    const sent = d.engine?.send('card.answered', { cardId: c.id, answer: req.answer, resolvedBy: req.resolvedBy });
+    return sent ? ok(c) : fail('UNKNOWN', 'engine not running');
+  }
   if (!ANSWERABLE.has(c.type)) return fail('VALIDATION');
   if (req.nonce !== undefined && c.nonce !== req.nonce) return fail('CARD_STALE');
   const now = d.now();
@@ -119,6 +128,12 @@ export function answerCard(
     c.chatId,
   );
   if (!r.ok) return r;
+  // CR-0030 pick 4: the save-login offer (05-2 §5.8.4) is main's: Save posts the Login box, Don't save never asks again.
+  const saveLogin = c.payload.saveLogin as { site?: unknown } | undefined;
+  if (saveLogin && typeof saveLogin.site === 'string' && 'optionId' in req.answer) {
+    const s = saveLoginOps(d, c, saveLogin.site, req.answer.optionId === 'o1', now);
+    if (s.length) write(d, s, c.chatId);
+  }
   // M6 T7: the engine acts on a memory card's answer (a conflict edits and forgets, a share grants) once main wrote it.
   if (ENGINE_TOLD.has(purpose)) {
     const a = req.answer;
@@ -132,6 +147,59 @@ export function answerCard(
   const after = card(d.db, 'id = ?', c.id) ?? c;
   d.onAnswered?.(after);
   return ok(after);
+}
+
+/** The decided `save_login:{site}` row (08-3 §15: a dismissed key blocks the offer for good) and, on Save, the Login Secret box
+ * (05-2 §5.8.4: "{Site} login", Username + Password typed again here; never in a group, §5.8.6). */
+function saveLoginOps(d: AnswerDeps, c: CardRow, site: string, save: boolean, now: number): DbOp[] {
+  const ops: DbOp[] = [
+    {
+      op: 'insert',
+      table: 'suggestions',
+      row: {
+        id: newId('sg', now),
+        key: `save_login:${site}`,
+        kind: 'save_login',
+        text: String(c.payload.question ?? ''),
+        state: save ? 'accepted' : 'dismissed',
+        offered_at: c.createdAt,
+        decided_at: now,
+      },
+    },
+  ];
+  const chat = d.db.prepare('SELECT kind FROM chats WHERE id = ?').get(c.chatId) as Pick<ChatRow, 'kind'> | undefined;
+  if (!save || !chat || chat.kind === 'group') return ops;
+  const cardId = newId('k', now);
+  const messageId = newId('m', now);
+  ops.push(
+    {
+      op: 'insert',
+      table: 'messages',
+      row: { id: messageId, chat_id: c.chatId, author_kind: 'foo', kind: 'card', card_id: cardId, status: 'complete', created_at: now },
+    },
+    {
+      op: 'insert',
+      table: 'cards',
+      row: {
+        id: cardId,
+        chat_id: c.chatId,
+        message_id: messageId,
+        type: 'secret',
+        state: 'asking',
+        payload: {
+          secretKind: 'login',
+          name: t('cards.secret.title.login', { site }),
+          why: '',
+          fields: [],
+          vaultName: site,
+          afterSignIn: true,
+        },
+        nonce: newNonce(),
+        created_at: now,
+      },
+    },
+  );
+  return ops;
 }
 
 /** 05-2 §5.8.3 Cancelled: an asking (or rejected) Secret box → `withdrawn`; nothing is saved and no value moves. */

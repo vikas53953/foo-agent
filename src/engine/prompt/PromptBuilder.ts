@@ -24,7 +24,15 @@ import { join } from 'node:path';
 import type { z } from 'zod';
 import type { Clock } from '../../shared/clock';
 import { formatDate, formatTime } from '../../shared/format';
-import { IntakeActSchema, RewriteActSchema, SecondLookActSchema, StepActSchema, StuckActSchema, schemaJson } from '../../shared/schemas';
+import {
+  IntakeActSchema,
+  RewriteActSchema,
+  SecondLookActSchema,
+  SteerCheckActSchema,
+  StepActSchema,
+  StuckActSchema,
+  schemaJson,
+} from '../../shared/schemas';
 import { PHRASES, RUNNER_ONLY, type PhraseKey } from '../../shared/phrases';
 import type { LogFn, Redactor } from '../redact/Redactor';
 import { BANNED_LIST } from './filters';
@@ -473,6 +481,16 @@ export class PromptBuilder {
   buildStuck(results: string): BuiltPrompt {
     const system = this.protocolThen(StuckActSchema, 'stuck.md', {});
     return { system: this.deps.redactor.finalGate(system, '4'), prompt: this.deps.redactor.finalGate(`Last results:\n${results}`, '9') };
+  }
+
+  /**
+   * CR-0045 purpose `classify` (§24.13a): system protocol.md + steer_check.md; prompt = the job's title, what its open card
+   * waits for, and the new message.
+   */
+  buildSteerCheck(job: { title: string; waitingFor: string }, message: string): BuiltPrompt {
+    const system = this.protocolThen(SteerCheckActSchema, 'steer_check.md', {});
+    const prompt = `Job: ${cut(job.title, 200)}\nWaiting for: ${cut(job.waitingFor, 300)}\nNew message: ${cut(message, 2_000)}`;
+    return { system: this.deps.redactor.finalGate(system, '4'), prompt: this.deps.redactor.finalGate(prompt, 'steer_check') };
   }
 
   /** Purpose `repair` (§24.8): same session as the failed turn, so only the prompt is new. `zodIssues` ≤ 400 chars. */

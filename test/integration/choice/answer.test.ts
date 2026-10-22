@@ -40,6 +40,53 @@ function world() {
   return { db, chatId, sent, emitted, d, seed };
 }
 
+describe("05-2 §5.8.4 the save-login offer is main's (CR-0030 pick 4)", () => {
+  const offer = {
+    purpose: 'job',
+    question: t('cards.secret.login.offer', { site: 'example.com' }),
+    options: [
+      { id: 'o1', label: t('cards.secret.login.save') },
+      { id: 'o2', label: t('cards.secret.login.dont_save') },
+    ],
+    multi: false,
+    aiReversible: false,
+    reversible: false,
+    livePrices: false,
+    saveLogin: { site: 'example.com' },
+  };
+  const suggestion = (db: Database.Database) => db.prepare("SELECT state FROM suggestions WHERE key = 'save_login:example.com'").get();
+  const boxes = (db: Database.Database) =>
+    db.prepare("SELECT state, payload FROM cards WHERE type = 'secret'").all() as { state: string; payload: string }[];
+
+  it('Save → the "{site} login" Secret box (typed again, no value carried) and the suggestion accepted; nothing to the engine', () => {
+    const w = world();
+    const c = w.seed(offer);
+    expect(answerCard(w.d, { cardId: c.id, nonce: c.nonce, answer: { optionId: 'o1' }, resolvedBy: 'tap' }).ok).toBe(true);
+    expect(cardOf(w.db, c.id).state).toBe('answered');
+    expect(suggestion(w.db)).toEqual({ state: 'accepted' });
+    const [box, ...more] = boxes(w.db);
+    expect(more).toEqual([]);
+    expect(box!.state).toBe('asking');
+    expect(JSON.parse(box!.payload)).toEqual({
+      secretKind: 'login',
+      name: t('cards.secret.title.login', { site: 'example.com' }),
+      why: '',
+      fields: [],
+      vaultName: 'example.com',
+      afterSignIn: true,
+    });
+    expect(w.sent).toEqual([]);
+  });
+
+  it("Don't save → no box, the key dismissed for good", () => {
+    const w = world();
+    const c = w.seed(offer);
+    expect(answerCard(w.d, { cardId: c.id, nonce: c.nonce, answer: { optionId: 'o2' }, resolvedBy: 'tap' }).ok).toBe(true);
+    expect(suggestion(w.db)).toEqual({ state: 'dismissed' });
+    expect(boxes(w.db)).toEqual([]);
+  });
+});
+
 describe('card:answer in main', () => {
   it('G-M5-09 · the notifier answers the Best fit with resolved_by toast; no button without a Best fit', () => {
     const w = world();

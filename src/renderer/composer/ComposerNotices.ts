@@ -63,6 +63,8 @@ export function chatNotices(src: NoticeSources, view: ChatNoticeView): ErrorNoti
   for (const j of src.jobs) {
     if (j.chatId !== src.chatId || j.state !== 'failed') continue;
     const p = jobErrorCard(j, src.cards)?.payload as { kind?: ErrorKind; whatHappened?: string } | undefined;
+    // 08-3 §21.2: SITE_HANDBACK is "step handed back", not a failure; its card in the chat is the whole surface (CR-0030).
+    if (p?.kind === 'SITE_HANDBACK') continue;
     const kind = p?.kind ?? 'UNKNOWN';
     const text = p?.whatHappened ?? t('errors.unknown.what_happened');
     out.push({ rowId: j.id, source: 'job', kind, text, at: j.finishedAt ?? j.createdAt, code: noticeCode(kind, j.id) });

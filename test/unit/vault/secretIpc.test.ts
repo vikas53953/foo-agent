@@ -49,6 +49,43 @@ describe('secret:offer (Move to secret box, 04-2 §22.4)', () => {
 });
 
 describe('secret:save', () => {
+  it('05-2 §5.8.6 a login saved from the after-sign-in box logs saved_login (kind connected), the site only (CR-0030 pick 4)', async () => {
+    const t2 = vaultHarness();
+    const payload = { secretKind: 'login', name: 'example.com login', why: '', fields: [], vaultName: 'example.com', afterSignIn: true };
+    const r = applyDbOps(
+      t2.db,
+      [
+        {
+          op: 'insert',
+          table: 'messages',
+          row: { id: 'm_login', chat_id: 'c_1', author_kind: 'foo', kind: 'card', card_id: 'k_login', status: 'complete', created_at: NOW },
+        },
+        {
+          op: 'insert',
+          table: 'cards',
+          row: {
+            id: 'k_login',
+            chat_id: 'c_1',
+            message_id: 'm_login',
+            type: 'secret',
+            state: 'asking',
+            payload,
+            nonce: 'n',
+            created_at: NOW,
+          },
+        },
+      ],
+      { now: NOW },
+    );
+    expect(r.result.ok).toBe(true);
+    const fields = { username: 'sandbox-user', password: 'sandbox-pass-0000' };
+    val(await t2.h['secret:save']({ requestId: 'k_login', kind: 'login', name: 'example.com', fields }));
+    expect(t2.db.prepare('SELECT kind, event, actor, summary FROM activity').all()).toEqual([
+      { kind: 'connected', event: 'saved_login', actor: 'user', summary: 'Saved your login for example.com' },
+    ]);
+    expect(JSON.stringify(t2.db.prepare('SELECT * FROM activity').all())).not.toContain('sandbox-pass');
+  });
+
   it('saves, moves the card to saved with the date and target, and logs secret_saved with the name only', async () => {
     const t2 = vaultHarness();
     const card = val(await t2.h['secret:offer']({ chatId: 'c_1', slot: 'openai' }));
