@@ -252,6 +252,7 @@ AT-436 to AT-439 are reserved for this patch.
 |---|---|---|
 | AT-441 | Small slips mended | a real AI's kit reply with an unknown key, a `null`, a number written as text or text as a plain number, or an over-long label draws with no "Couldn't show part of this"; an unknown component, a missing key, a value outside its list, too few items, a bad input name, `composer.fill` or a web image is still dropped (AT-354) |
 | AT-442 | The prompt teaches the limits | each catalog line names its text lengths, item counts and the Calculator input-name pattern, the kit section says to use only the keys shown and to leave an unused optional key out |
+| AT-443 | Wrong or missing closing brackets (CR-0050, X-208) | the recorded run-30 EMI Calculator, Jaipur map and GDP chart replies, whose closing brackets are swapped or left out, draw with no "Couldn't show part of this"; a line that starts a new message ends an open one before it; valid replies read the same; a reply cut inside a text value, or a piece the catalog refuses, is still dropped; while streaming an open message is still held back |
 
 ---
 

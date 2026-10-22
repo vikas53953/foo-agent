@@ -241,6 +241,8 @@ async function main() {
         items: after.map((el) => ({
           state: el.getAttribute('data-state'),
           pageState: el.querySelector('[data-testid="ai-page"]')?.getAttribute('data-state') ?? null,
+          // The kit pieces this reply drew (kit-calculator, kit-dropped ...), so a step is judged on its own reply only.
+          kit: [...new Set([...el.querySelectorAll('[data-testid^="kit-"]')].map((k) => k.getAttribute('data-testid')))],
         })),
       };
     });
@@ -463,6 +465,18 @@ async function main() {
           // state (a card on screen, the theme changed) needs that state too.
           if (DIDNT_GET.test(rec.lastReply) && !s.allowDidntGet) {
             rec.didntGetThat = true;
+            rec.ok = false;
+          }
+          // A kit piece dropped as "Couldn't show part of this" fails the step (CR-0050): the words alone passed run 30
+          // while the calculator, map and chart were never drawn. expectKit names the piece this reply must draw.
+          const kit = [...new Set(cur.items.slice(before).flatMap((x) => x.kit || []))];
+          rec.kit = kit;
+          if (kit.includes('kit-dropped') && !s.allowKitDropped) {
+            rec.kitDropped = true;
+            rec.ok = false;
+          }
+          if (s.expectKit && !kit.includes(s.expectKit)) {
+            rec.kitMissing = s.expectKit;
             rec.ok = false;
           }
           if (rec.ok && (s.expectTid || s.expectJs)) {

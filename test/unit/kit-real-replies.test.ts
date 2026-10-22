@@ -1,6 +1,7 @@
 // Spec: 04 §13.5 (kit surface: an invalid or unknown component is dropped with "Couldn't show part of this"; CR-0046: small
 // slips that leave the meaning whole are mended first), 08-4 §24.5
-// (the generated catalog text names every limit), CR-0046 AT-441, AT-442, X-204.
+// (the generated catalog text names every limit), CR-0046 AT-441, AT-442, X-204; CR-0050 AT-443, X-208 (closing brackets the AI
+// got wrong or left out are read as the ones due).
 // Cassettes: test/fixtures/kit-replies/*.txt, real AI replies (or rebuilt from a real run's words, see the README there).
 import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
@@ -24,7 +25,15 @@ const one = (c: object) => `${create}\n${JSON.stringify({ updateComponents: { su
 
 describe('CR-0046 kit replies from real runs draw (AT-441)', () => {
   it('there is a cassette for each real run that showed the caption', () => {
-    expect(cassettes).toEqual(expect.arrayContaining(['rebuilt-r1-phones-compare.txt', 'rebuilt-b09-emi-calculator.txt']));
+    expect(cassettes).toEqual(
+      expect.arrayContaining([
+        'rebuilt-r1-phones-compare.txt',
+        'rebuilt-b09-emi-calculator.txt',
+        'real-run30-b09-emi-calculator.txt',
+        'real-run30-b09-map-stops.txt',
+        'real-run30-b09-gdp-chart.txt',
+      ]),
+    );
   });
 
   it.each(cassettes)('AT-441 %s draws with no "Couldn\'t show part of this"', (file) => {
@@ -168,5 +177,94 @@ describe('CR-0046 the prompt teaches the limits the checker uses (AT-442)', () =
     expect(kitPromptSection('balanced')).toContain(
       'Use only the keys shown (? marks optional ones); leave an optional key out instead of writing null.',
     );
+  });
+});
+
+describe('CR-0050 closing brackets the AI got wrong or left out (AT-443)', () => {
+  const comps = (c: object) => JSON.stringify({ updateComponents: { surfaceId: 's1', components: [c] } });
+  const calc = {
+    id: 'root',
+    component: 'Calculator',
+    inputs: [{ name: 'a', label: 'A', value: 1 }],
+    outputs: [{ label: 'x', formula: 'a*2', unit: 'rupees' }],
+  };
+  const good = comps(calc);
+  // Run 30 EMI: `}]}}]}` where `}]}]}}` is due.
+  const swapped = good.replace(/\}\]\}\]\}\}$/, '}]}}]}');
+
+  it.each([
+    ['run 30 EMI: `]` and `}` swapped at the end of the list', 'real-run30-b09-emi-calculator.txt', 'Calculator'],
+    ['run 30 map: the last closers left out', 'real-run30-b09-map-stops.txt', 'MapStops'],
+    ['run 30 chart: `}` and `]` swapped near the end', 'real-run30-b09-gdp-chart.txt', 'LineChart'],
+  ])('AT-443 %s still draws', (_why, file, component) => {
+    const { surface, dropped } = draw(readFileSync(`${DIR}/${file}`, 'utf8'));
+    expect(dropped).toBe(0);
+    expect(surface.components.root?.component).toBe(component);
+  });
+
+  it('AT-443 a swapped closer is read as the one due, and the piece is the one written', () => {
+    expect(swapped).not.toBe(good);
+    expect(() => JSON.parse(swapped)).toThrow();
+    const p = parseKitBlock(`${create}\n${swapped}`, false);
+    expect(p.dropped).toBe(0);
+    expect(p.messages[1]).toEqual(JSON.parse(good));
+  });
+
+  it('AT-443 closers left out at the end of the reply are added; while streaming the message is held back instead', () => {
+    const cut = good.slice(0, -4);
+    expect(parseKitBlock(`${create}\n${cut}`, false)).toMatchObject({ dropped: 0, pending: false, messages: [{}, JSON.parse(good)] });
+    expect(parseKitBlock(`${create}\n${cut}`, true)).toMatchObject({ dropped: 0, pending: true });
+    expect(parseKitBlock(`${create}\n${cut}`, true).messages).toHaveLength(1);
+  });
+
+  it('AT-443 a reply cut inside a text value is still dropped, never guessed', () => {
+    const cut = good.slice(0, good.indexOf('rupees') + 3);
+    expect(parseKitBlock(`${create}\n${cut}`, false)).toMatchObject({ dropped: 1, messages: [{}] });
+  });
+
+  it('AT-443 a line that starts a new message ends the open one before it', () => {
+    const open = good.slice(0, -3);
+    const data = '{"updateDataModel":{"surfaceId":"s1","path":"/","value":{"a":2}}}';
+    const p = parseKitBlock(`${create}\n${open}\n${data}`, false);
+    expect(p.dropped).toBe(0);
+    expect(p.messages).toEqual([JSON.parse(create), JSON.parse(good), JSON.parse(data)]);
+  });
+
+  it('AT-443 a closer too many after a message is left out, as before', () => {
+    const p = parseKitBlock(`${create}\n${good}}`, false);
+    expect(p).toMatchObject({ dropped: 0, messages: [{}, JSON.parse(good)] });
+  });
+
+  it('AT-443 a data value that only looks like a new message is not cut', () => {
+    const data = [
+      '{"updateDataModel": {"surfaceId": "s1", "path": "/", "value": {',
+      '  "rows": [',
+      '    {"createSurface": "x"},',
+      '    {"deleteSurface": "y"}',
+      '  ]',
+      '}}}',
+    ].join('\n');
+    const p = parseKitBlock(`${create}\n${data}`, false);
+    expect(p.dropped).toBe(0);
+    expect(p.messages[1]).toEqual(JSON.parse(data));
+  });
+
+  it('AT-443 a closing bracket inside a text value is left alone', () => {
+    const text = comps({ id: 'root', component: 'Text', text: 'Pay ₹5,000 }] by Friday ]}' });
+    const p = parseKitBlock(`${create}\n${text}`, false);
+    expect(p.dropped).toBe(0);
+    expect(p.messages[1]).toEqual(JSON.parse(text));
+  });
+
+  it('AT-443 valid replies read exactly as before, pretty-printed or in an outer array', () => {
+    const pretty = JSON.stringify(JSON.parse(good), null, 2);
+    expect(parseKitBlock(`${create}\n${pretty}`, false).messages[1]).toEqual(JSON.parse(good));
+    expect(parseKitBlock(`[${create},\n${good}]`, false)).toMatchObject({ dropped: 0, messages: [{}, JSON.parse(good)] });
+  });
+
+  it('AT-443 the mended brackets are still checked: what the catalog refuses is still dropped', () => {
+    const bad = comps({ id: 'root', component: 'Hologram', parts: [{ a: 1 }] }).replace(/\}\]\}\]\}\}$/, '}]}}]}');
+    expect(parseKitBlock(`${create}\n${bad}`, false).dropped).toBe(1);
+    expect(parseKitBlock(`${create}\nhello {"a":1}`, false).dropped).toBeGreaterThan(0);
   });
 });
