@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n7:52 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Under ₹80,000 aim for a laptop with 16 GB memory, a 512 GB SSD and a recent 8-core processor; those matter far more than looks.\n\nMemory: 16 GB is the floor for coding tools, browsers and Docker together. 32 GB is better if you find one in budget.\nProcessor: Ryzen 7 or Intel Core Ultra 5/7 class gives fast builds and good battery.\nScreen and keyboard: a 14 to 15.6 inch matte full HD screen and a comfortable keyboard, since you'll stare at both all day.\nGraphics card: skip it unless you train AI projects or game. It adds weight and cost.\n\nI can look up current prices and compare three or four real options for you. What do you mostly code: web and apps, data and AI work, or games?\n\n7:52 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n7:53 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n7:53 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n7:53 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me 5 weekend trek options near Pune with difficulty and cost\n7:54 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "changed",
+    "text": "Plan changed. See the new one below.\n7:54 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Only easy treks please\n7:54 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:54 PM\n7:54 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:54 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nChecked trek organiser and trail guide sites\nT\nT\nKept 5 treks near Pune that fit easy difficulty only, doable in a\nCompared difficulty and cost\nStopped by you\n7:54 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:54 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:55 PM"
+  }
+]

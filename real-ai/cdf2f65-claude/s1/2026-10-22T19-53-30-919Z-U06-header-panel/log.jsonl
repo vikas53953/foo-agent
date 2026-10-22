@@ -1,0 +1,31 @@
+{"t":"2026-10-22T19:53:30.919Z","journey":"U06-header-panel","title":"Chat header, ⋮ menu, details panel (Doing, Using, What I know, Spent)","spec":"03-2 §3.6, 10-2 §C.2 Headers / Right shell","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T19:53:36.214Z","step":"launch","ok":true}
+{"t":"2026-10-22T19:53:37.236Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1019}
+{"t":"2026-10-22T19:53:37.294Z","shot":"01-header.png"}
+{"t":"2026-10-22T19:53:37.294Z","i":1,"do":"shot","expect":"header 60px: face, name, status line, find, details toggle, ⋮","ok":true,"ms":58}
+{"t":"2026-10-22T19:53:37.297Z","i":2,"do":"check","note":"C.2 Headers (left + main): main chat header is present","found":1,"ok":true,"ms":2}
+{"t":"2026-10-22T19:53:37.298Z","i":3,"do":"check","note":"C.2 Main shell + banner strip: main thread surface is present","found":1,"ok":true,"ms":1}
+{"t":"2026-10-22T19:53:37.300Z","i":4,"do":"check","note":"C.2 Main shell + banner strip: banner strip is present in the main shell","found":0,"ok":false,"ms":1}
+{"t":"2026-10-22T19:53:37.393Z","i":5,"do":"click","soft":true,"ok":true,"ms":93}
+{"t":"2026-10-22T19:53:37.895Z","i":6,"do":"wait","expect":"header ⋮ menu items","ok":true,"ms":501}
+{"t":"2026-10-22T19:53:37.954Z","shot":"02-more-menu.png"}
+{"t":"2026-10-22T19:53:37.959Z","i":7,"do":"key","ok":true,"ms":5}
+{"t":"2026-10-22T19:53:37.978Z","i":8,"do":"key","expect":"details panel toggles (Ctrl+Shift+D)","ok":true,"ms":18}
+{"t":"2026-10-22T19:53:38.047Z","shot":"03-panel-toggle.png"}
+{"t":"2026-10-22T19:53:38.049Z","i":9,"do":"check","note":"C.2 Right shell: right app panel is present","found":1,"ok":true,"ms":1}
+{"t":"2026-10-22T19:53:38.852Z","i":10,"do":"wait","expect":"right panel: Doing now, Using, What I know, Spent this month (AI ₹1,000 / purchases ₹25,000)","ok":true,"ms":803}
+{"t":"2026-10-22T19:53:38.908Z","shot":"04-panel.png"}
+{"t":"2026-10-22T19:53:38.982Z","i":11,"do":"shotEl","soft":true,"ok":true,"ms":74}
+{"t":"2026-10-22T19:53:39.058Z","i":12,"do":"shotEl","soft":true,"ok":true,"ms":76}
+{"t":"2026-10-22T19:53:39.137Z","i":13,"do":"shotEl","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-22T19:54:02.222Z","shot":"08-error-step14.png"}
+{"t":"2026-10-22T19:54:02.222Z","i":14,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23084}
+{"t":"2026-10-22T19:54:03.028Z","i":15,"do":"wait","expect":"memory page opens","ok":true,"ms":806}
+{"t":"2026-10-22T19:54:03.094Z","shot":"09-know-all.png"}
+{"t":"2026-10-22T19:54:26.170Z","shot":"10-error-step16.png"}
+{"t":"2026-10-22T19:54:26.170Z","i":16,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23075}
+{"t":"2026-10-22T19:54:26.178Z","i":17,"do":"key","expect":"panel hidden again","ok":true,"ms":8}
+{"t":"2026-10-22T19:54:26.263Z","shot":"11-panel-hidden.png"}
+{"t":"2026-10-22T19:54:26.271Z","i":18,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-22T19:54:26.372Z","step":"appLog","lines":1,"dropped":0}
+{"t":"2026-10-22T19:54:26.382Z","step":"aiTurns","turns":0}
