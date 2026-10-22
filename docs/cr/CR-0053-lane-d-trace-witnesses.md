@@ -1,8 +1,8 @@
 # CR-0053: Lane D Group C trace witnesses
 
 - **Asked by:** root coordinator, 2026-10-22
-- **Spec sections:** 10-acceptance-1 AT-273, AT-284 and AT-285; `spec/trace.csv`; DECISIONS row id reserved as X-209
-- **Status:** Approved by Vikas on 2026-10-22, as recorded in the root task instruction. The approved scope is limited to these three trace mappings; no direct Vikas message URL was supplied.
+- **Spec sections:** 10-acceptance-1 AT-273, AT-284 and AT-285; `spec/trace.csv`; DECISIONS row X-209
+- **Status:** Approved by Vikas on 2026-10-22; DECISIONS X-209 records this approval. The approved scope is limited to these three trace mappings; no direct Vikas message URL was supplied.
 - **Change:** add exactly three pending `spec/trace.csv` rows: AT-273 → `test/e2e/lane-d-a11y.spec.ts`, AT-284 → `test/unit/lane-d-grouping.test.ts`, and AT-285 → `test/unit/lane-d-scroll.test.ts`. No acceptance text, test behavior, source behavior, thresholds, workflow, golden reference or other spec semantics change.
 - **Manifest:** `pnpm tsx scripts/spec-verify.ts --write` is required in the same commit to record the approved `trace.csv` hash.
 
