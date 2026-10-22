@@ -135,6 +135,7 @@
         "Fri",
         "18",
         "Dec?",
+        "3",
         "foo",
         "9:41",
         "AM",
@@ -344,7 +345,7 @@
         "too",
         "early",
         "9:41",
-        "⏳",
+        "🛠",
         "foo",
         "read:",
         "16",
@@ -616,13 +617,13 @@
   "r4": {
     "verdict": "review",
     "skipped": null,
-    "ratio": 0.0847488038277512,
-    "diffPixels": 5668,
+    "ratio": 0.08477870813397129,
+    "diffPixels": 5670,
     "total": 66880
   },
   "r5": {
-    "ratio": 0.0659072265625,
-    "diffPixels": 67489,
+    "ratio": 0.066029296875,
+    "diffPixels": 67614,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-10-01.light.diff.png"
