@@ -15,7 +15,7 @@ on:
       testing_lanes:
         description: Additional test lanes approved by Vikas on 2026-10-22; standard runs the existing CI suite
         type: choice
-        options: [standard, all, bdd, eval, windows, quality]
+        options: [standard, all, bdd, eval, windows, installer, soak, quality]
         default: standard
       lane_b_ref:
         description: Exact Lane B commit or branch to test
@@ -237,6 +237,7 @@ jobs:
           git rev-parse HEAD | Set-Content test/bdd/results/tested-sha.txt
           $providerHome = Join-Path $env:RUNNER_TEMP 'foo-bdd-ai-home'
           New-Item -ItemType Directory -Force $providerHome | Out-Null
+          New-Item -ItemType Directory -Force (Join-Path $providerHome 'AppData/Roaming'), (Join-Path $providerHome 'AppData/Local') | Out-Null
           "FOO_BDD_REAL_AI_HOME=$providerHome" | Out-File $env:GITHUB_ENV -Append -Encoding utf8
       - name: Execute all BDD scenarios
         env:
@@ -485,7 +486,7 @@ jobs:
 
   lane-e-installer:
     name: Lane E Windows installer, upgrade, UI and screenshot (draft PR)
-    if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner && (inputs.testing_lanes == 'all' || inputs.testing_lanes == 'windows')
+    if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner && (inputs.testing_lanes == 'all' || inputs.testing_lanes == 'windows' || inputs.testing_lanes == 'installer')
     runs-on: windows-latest
     timeout-minutes: 120
     permissions:
@@ -597,7 +598,7 @@ jobs:
       - name: Fetch pinned PR97 Windows check source
         shell: pwsh
         env:
-          PR97_REF: 9e599e343bdc5a067d12d6e7b438820b7508dd31
+          PR97_REF: 9e599e343eb9559ab3af45b8e92b1f04a7d804bf
         run: |
           git cat-file -e "$env:PR97_REF^{commit}" 2>$null
           if ($LASTEXITCODE -ne 0) {
@@ -778,7 +779,7 @@ jobs:
 
   lane-e-soak:
     name: Lane E Windows 1h partial soak (diagnostic)
-    if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner && (inputs.testing_lanes == 'all' || inputs.testing_lanes == 'windows')
+    if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner && (inputs.testing_lanes == 'all' || inputs.testing_lanes == 'windows' || inputs.testing_lanes == 'soak')
     runs-on: windows-latest
     timeout-minutes: 90
     permissions:
