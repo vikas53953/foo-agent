@@ -1,0 +1,14 @@
+{"t":"2026-10-22T07:31:39.687Z","journey":"B01-chat-rules","title":"Chat rules: thanks, long answer, filler, reactions","spec":"AT-027, AT-030, AT-031, AT-308, AT-307","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T07:31:44.682Z","step":"launch","ok":true}
+{"t":"2026-10-22T07:31:44.833Z","i":0,"do":"send","sentAt":1792654304745,"sent":true,"before":0,"ok":true,"ms":148}
+{"t":"2026-10-22T07:32:04.834Z","i":1,"do":"wait","expect":"AT-027: 👍 reaction on my message, no foo message","ok":true,"ms":20001}
+{"t":"2026-10-22T07:32:04.897Z","shot":"01-thanks.png"}
+{"t":"2026-10-22T07:32:04.898Z","i":2,"do":"eval","value":{"reaction":true,"lastKind":"bubble-me"},"ok":true,"ms":1}
+{"t":"2026-10-22T07:32:04.974Z","i":3,"do":"send","sentAt":1792654324961,"sent":true,"before":0,"ok":true,"ms":75}
+{"t":"2026-10-22T07:32:18.108Z","i":4,"do":"waitReply","expect":"AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler","firstReplyMs":2539,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"People in India are switching to UPI because it makes paying someone as easy as sending a message. You open any payments app, scan a code or type a phone number, enter your PIN, and the money moves between bank accounts in seconds. There are no cards to carry, no machines to rent and no cash to count.\n\nIt has also spread far beyond big cities. A small tea stall, a vegetable seller and a large mall can all show the same kind of QR code, so shoppers can pay almost anywhere. Because every major app works with every bank, people are not locked into one company. Friends can split a bill or send money home without worrying about which app the other person uses.\n\nHere are the three main reasons:\n\nSpeed and ease: Payments take a few seconds, work day or night, and need only a phone and a PIN.\nLow or no cost: Most everyday payments are free for the person paying, and small shops avoid card machine fees and bank trips.\nWorks everywhere: One QR code is accepted by every UPI app and bank, from street stalls to online stores.\n\nTogether, these make UPI the easiest choice for most daily spending.\n\n7:32 AM","kit":[],"ms":13133}
+{"t":"2026-10-22T07:32:18.173Z","shot":"02-long.png"}
+{"t":"2026-10-22T07:32:18.174Z","i":5,"do":"check","note":"AT-308 suggestion chips (≤3)","soft":true,"found":0,"ok":false,"ms":1}
+{"t":"2026-10-22T07:32:18.175Z","i":6,"do":"eval","value":0,"ok":true,"ms":0}
+{"t":"2026-10-22T07:32:18.181Z","i":7,"do":"dump","ok":true,"ms":5}
+{"t":"2026-10-22T07:32:18.296Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-22T07:32:18.304Z","step":"aiTurns","turns":2}

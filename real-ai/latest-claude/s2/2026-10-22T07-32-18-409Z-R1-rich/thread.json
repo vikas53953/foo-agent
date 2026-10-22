@@ -1,0 +1,47 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n7:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n7:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n7:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n7:32 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it makes paying someone as easy as sending a message. You open any payments app, scan a code or type a phone number, enter your PIN, and the money moves between bank accounts in seconds. There are no cards to carry, no machines to rent and no cash to count.\n\nIt has also spread far beyond big cities. A small tea stall, a vegetable seller and a large mall can all show the same kind of QR code, so shoppers can pay almost anywhere. Because every major app works with every bank, people are not locked into one company. Friends can split a bill or send money home without worrying about which app the other person uses.\n\nHere are the three main reasons:\n\nSpeed and ease: Payments take a few seconds, work day or night, and need only a phone and a PIN.\nLow or no cost: Most everyday payments are free for the person paying, and small shops avoid card machine fees and bank trips.\nWorks everywhere: One QR code is accepted by every UPI app and bank, from street stalls to online stores.\n\nTogether, these make UPI the easiest choice for most daily spending.\n\n7:32 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n7:32 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n7:32 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n7:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is a relaxed 3-day Jaipur plan for your parents, with mornings for sightseeing and a rest in the afternoon.\n\nDay 1, Old city: City Palace, Jantar Mantar and a drive past Hawa Mahal for photos. Have lunch at a nearby restaurant, rest, then visit Johari Bazaar in the evening for shopping and sweets.\nDay 2, Amber Fort: Go early, before the crowds and the heat. Jeeps or cars can take them up the hill, so there is no long climb. Stop at Jal Mahal on the way back, then see Nahargarh Fort at sunset.\nDay 3, Easy day: Albert Hall Museum, then Birla Mandir and a slow lunch. Spend the evening at Chokhi Dhani for Rajasthani food and folk music before they head home.\n\nStay near the old city or MI Road so everything is a short ride away. Booking one car with a driver for all three days is the simplest way to travel.\n\nWant me to adjust it for their walking comfort, food preferences or a budget?\n\n7:35 AM"
+  }
+]
