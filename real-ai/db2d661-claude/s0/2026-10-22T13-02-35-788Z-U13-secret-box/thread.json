@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:53 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n12:53 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n12:54 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has more than 1,000 years of recorded history and has been rebuilt as a capital several times, which is why it's often called a city of seven (or more) cities.\n\n12:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n12:54 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Golden Temple in Amritsar runs one of the world's largest free kitchens, serving langar to around 1 lakh people every day, whatever their religion or background.\n\n12:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n12:59 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 12:59 PM\n12:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:59 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nChecking Amazon India, Flipkart, Croma, Reliance\nA\nF\nC\nR\nLook for budget laptops under ₹50,000 with good\nKeep 3 laptops that fit best value under ₹50,000\nCompare price, processor, RAM, storage, screen\nWatch live\nStop\n5 min\n12:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:59 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n1:03 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:03 PM"
+  }
+]

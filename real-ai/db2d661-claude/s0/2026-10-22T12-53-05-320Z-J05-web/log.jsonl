@@ -1,0 +1,12 @@
+{"t":"2026-10-22T12:53:05.320Z","journey":"J05-web","title":"First real task with the internet (news + sources)","spec":"07-1 J5; R1 sources/citations","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T12:53:10.949Z","step":"launch","ok":true}
+{"t":"2026-10-22T12:53:19.051Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8099}
+{"t":"2026-10-22T12:53:19.156Z","i":0,"do":"send","sentAt":1792673599122,"sent":true,"before":0,"ok":true,"ms":105}
+{"t":"2026-10-22T12:53:31.865Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":6576,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Checking isro.gov.in, PIB, The Hindu,…\n1\nCheck isro.gov.in, PIB, The Hindu, Times of\n2\nLook for ISRO news from Thu 15 Oct to Thu 22 Oct\n3\nCompare reports across sources, keeping the\nAbout 3 minutes\nGo\nChange plan\n12:53 PM","kit":[],"ms":12709}
+{"t":"2026-10-22T12:53:31.930Z","shot":"01-news.png"}
+{"t":"2026-10-22T12:53:31.932Z","i":2,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-22T12:53:31.934Z","i":3,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-22T12:53:31.937Z","i":4,"do":"expectText","text":"Stopped. Nothing was booked, paid or sent.\n\n12:53 PM","ok":true,"ms":3}
+{"t":"2026-10-22T12:53:31.949Z","i":5,"do":"dump","ok":true,"ms":12}
+{"t":"2026-10-22T12:53:32.098Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-10-22T12:53:32.110Z","step":"aiTurns","turns":1}
