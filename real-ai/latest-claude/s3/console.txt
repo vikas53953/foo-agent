@@ -1,3 +1,0 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T06-22-09-832Z-J01-J02-first-run"}
-{"journey":"B06-booking-options","title":"Restaurant options without booking","steps":10,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T06-23-00-735Z-B06-booking-options"}
-{"journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","steps":10,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T06-26-21-965Z-B14-restart-mid-reply"}

@@ -1,3 +1,0 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T06-21-10-213Z-J01-J02-first-run"}
-{"journey":"B04-stop","title":"Start a job then stop it by typing stop","steps":9,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T06-22-00-938Z-B04-stop"}
-{"journey":"B09-kit","title":"Rich reply pieces: calculator, map, chart, compare, timer, form","steps":17,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T06-23-04-877Z-B09-kit"}
