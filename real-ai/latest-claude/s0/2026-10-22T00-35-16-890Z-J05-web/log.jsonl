@@ -1,0 +1,12 @@
+{"t":"2026-10-22T00:35:16.890Z","journey":"J05-web","title":"First real task with the internet (news + sources)","spec":"07-1 J5; R1 sources/citations","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T00:35:22.093Z","step":"launch","ok":true}
+{"t":"2026-10-22T00:35:30.163Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8067}
+{"t":"2026-10-22T00:35:30.238Z","i":0,"do":"send","sentAt":1792629330212,"sent":true,"before":0,"ok":true,"ms":74}
+{"t":"2026-10-22T00:35:42.996Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":6643,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from Mon 19 Oct to Thu 22 Oct\nWrite it\nWatch live\nStop\nunder 1 min\n12:35 AM","ms":12758}
+{"t":"2026-10-22T00:35:43.102Z","shot":"01-news.png"}
+{"t":"2026-10-22T00:35:43.110Z","i":2,"do":"check","found":0,"ok":false,"ms":8}
+{"t":"2026-10-22T00:35:43.117Z","i":3,"do":"check","found":0,"ok":false,"ms":7}
+{"t":"2026-10-22T00:35:43.123Z","i":4,"do":"expectText","text":"Stopped. Nothing was booked, paid or sent.\n\n12:35 AM","ok":true,"ms":5}
+{"t":"2026-10-22T00:35:43.159Z","i":5,"do":"dump","ok":true,"ms":36}
+{"t":"2026-10-22T00:35:43.579Z","step":"appLog","lines":8,"dropped":0}
+{"t":"2026-10-22T00:35:43.589Z","step":"aiTurns","turns":2}
