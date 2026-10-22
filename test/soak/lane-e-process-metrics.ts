@@ -32,14 +32,20 @@ export function processMetricsForPid(pid: number, execute: ProcessMetricsExecuto
     Responding?: boolean;
   };
   if (value.Id !== pid) throw new Error('Windows metrics PID ' + String(value.Id) + ' did not match producer PID ' + pid);
-  if (!Number.isFinite(value.HandleCount) || !Number.isFinite(value.WorkingSet64)) {
+  if (
+    !Number.isInteger(value.HandleCount) ||
+    value.HandleCount < 0 ||
+    !Number.isInteger(value.WorkingSet64) ||
+    value.WorkingSet64 < 0 ||
+    typeof value.Responding !== 'boolean'
+  ) {
     throw new Error('Windows metrics for producer PID ' + pid + ' were incomplete');
   }
   return {
     pid,
     handleCount: Number(value.HandleCount),
     workingSetBytes: Number(value.WorkingSet64),
-    responding: value.Responding !== false,
+    responding: value.Responding,
   };
 }
 
