@@ -34,6 +34,6 @@
     "break": 70
   },
   "tempDirName": ".stryker-lane-f-main-tmp",
-  "concurrency": 2,
+  "concurrency": 1,
   "timeoutMS": 30000
 }
