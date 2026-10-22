@@ -15,7 +15,7 @@ LINK = "https://github.com/example/project/actions/runs/123"
 
 
 class EvidenceRuleTests(unittest.TestCase):
-    def generate(self, state="green", sha=SHA, ci_link=LINK, build=SHA, evidence=LINK, failing="", lane_types=(), real_result="pass"):
+    def generate(self, state="green", sha=SHA, ci_link=LINK, build=SHA, evidence=LINK, failing="", lane_types=(), real_result="pass", na_rows=()):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             docs = root / "docs" / "testing"
@@ -31,6 +31,7 @@ class EvidenceRuleTests(unittest.TestCase):
 
             table(docs / "features.tsv", ["id", "milestone", "journey", "text"],
                   [["AT-031", "M2", "J7", "No banned filler"]])
+            table(docs / "real-ai-na.tsv", ["id", "reason"], na_rows)
             table(docs / "suite-status.tsv", ["key", "state", "sha", "link", "note"],
                   [["main_ci", state, sha, ci_link, ""], ["main_ci_failing", "", sha, ci_link, failing]])
             table(docs / "real-ai-results.tsv",
@@ -53,6 +54,24 @@ class EvidenceRuleTests(unittest.TestCase):
         self.assertEqual(cells["real_ai"]["s"], "proven")
         self.assertIn("current main", cells["real_ai"]["why"])
         self.assertNotIn("not current main", cells["real_ai"]["why"])
+
+    def test_approved_code_only_does_not_invent_code_evidence(self):
+        rows = [["AT-031", "APPROVED code-only; direct owner decision"]]
+        cells = self.generate(na_rows=rows)
+        self.assertEqual(cells["real_ai"]["s"], "na")
+        self.assertEqual(cells["real_ai"]["link"], "")
+        self.assertEqual(cells["unit"]["s"], "proven")
+        self.assertEqual(self.generate(state="failure", na_rows=rows)["unit"]["s"], "partial")
+
+    def test_code_only_list_requires_known_unique_approved_rows(self):
+        for rows in [
+            [["AT-999", "APPROVED code-only; unknown feature"]],
+            [["AT-031", "PROPOSED code-only"]],
+            [["AT-031", ""]],
+            [["AT-031", "APPROVED code-only; first"], ["AT-031", "APPROVED code-only; duplicate"]],
+        ]:
+            with self.subTest(rows=rows), self.assertRaises(subprocess.CalledProcessError):
+                self.generate(na_rows=rows)
 
     def test_incomplete_or_failed_ci_never_proves_code(self):
         for state in ["green except", "failure", "in progress", "queued"]:
