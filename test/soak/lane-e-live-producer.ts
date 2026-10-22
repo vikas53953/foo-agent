@@ -14,7 +14,7 @@ import { openChat, openWorld } from '../fidelity/capture';
 import { TID } from '../../src/shared/testids';
 import { FULL_SOAK_HOURS, resolveSoakDuration } from './lane-e-duration';
 import { producerProcessMetrics, type ProducerProcessMetrics } from './lane-e-process-metrics';
-import { JOB_COMPLETION_TIMEOUT_MS, jobCompletionFailure, PRODUCER_PROCESS_OWNER } from './lane-e-soak-contract';
+import { findNewMatchingIntakeTurn, JOB_COMPLETION_TIMEOUT_MS, jobCompletionFailure, PRODUCER_PROCESS_OWNER } from './lane-e-soak-contract';
 
 const SAMPLE_MS = 30_000;
 const WORKLOAD_INTERVAL_MS = 5 * 60_000;
@@ -111,6 +111,7 @@ const fakeLines: FakeLine[] = [
       routeHint: ['api'],
       needsApps: [],
     }),
+    once: false,
   },
   {
     match: { purpose: 'step' },
@@ -227,7 +228,7 @@ function processHeartbeat(
   };
 }
 
-async function submitLiveJob(page: Page, prompt: string): Promise<void> {
+async function submitLiveJob(page: Page, prompt: string, knownTurnIds: Set<string>): Promise<void> {
   await openChat(page, 'Home');
   const composer = page.getByTestId(TID.composerField);
   await composer.click();
@@ -235,11 +236,18 @@ async function submitLiveJob(page: Page, prompt: string): Promise<void> {
   await page.keyboard.press('Enter');
   const started = Date.now();
   while (Date.now() - started < 30_000) {
-    if (fakeTurns({ FOO_DATA_DIR: dataDir, FOO_LOCAL_DIR: localDir, FOO_OUT_DIR: runtimeOut }).some((turn) => turn.purpose === 'intake'))
+    const matchedTurn = findNewMatchingIntakeTurn(
+      fakeTurns({ FOO_DATA_DIR: dataDir, FOO_LOCAL_DIR: localDir, FOO_OUT_DIR: runtimeOut }),
+      knownTurnIds,
+      prompt,
+    );
+    if (matchedTurn) {
+      knownTurnIds.add(matchedTurn.turnId);
       return;
+    }
     await sleep(250);
   }
-  throw new Error('fake-AI intake did not observe the live fixture job within 30s');
+  throw new Error(`fake-AI intake did not match new live fixture submission within 30s: ${prompt}`);
 }
 
 async function waitForJobCompletion(
@@ -276,6 +284,7 @@ async function main(): Promise<number> {
   const dbFile = join(dataDir, 'data', 'foo.db');
   let baselineJobIds = new Set<string>();
   const knownJobIds = new Set<string>();
+  const knownTurnIds = new Set<string>();
   let lastProcessMetrics: ProducerProcessMetrics | null = null;
   const processSamples: ProducerProcessMetrics[] = [];
   const expectedWorkloadJobs = smoke ? 1 : 1 + Math.floor((soakMs - 1) / WORKLOAD_INTERVAL_MS);
@@ -299,7 +308,7 @@ async function main(): Promise<number> {
         db.close();
       }
     }
-    await submitLiveJob(page, `${ASK} #1`);
+    await submitLiveJob(page, `${ASK} #1`, knownTurnIds);
     const initialJob = await waitForJobCompletion(page, dbFile, baselineJobIds, knownJobIds);
     knownJobIds.add(initialJob.id);
     if (!smoke) {
@@ -312,7 +321,7 @@ async function main(): Promise<number> {
         lastWallAt = wallNow;
         if (wallNow >= nextWorkAt) {
           const sequence = knownJobIds.size + 1;
-          await submitLiveJob(page, `${ASK} #${sequence}`);
+          await submitLiveJob(page, `${ASK} #${sequence}`, knownTurnIds);
           const completedJob = await waitForJobCompletion(page, dbFile, baselineJobIds, knownJobIds);
           knownJobIds.add(completedJob.id);
           nextWorkAt += WORKLOAD_INTERVAL_MS;

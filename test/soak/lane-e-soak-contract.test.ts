@@ -4,6 +4,7 @@ import {
   HEARTBEAT_GRACE_MS,
   JOB_COMPLETION_TIMEOUT_MS,
   jobCompletionFailure,
+  findNewMatchingIntakeTurn,
   PRODUCER_PROCESS_OWNER,
   validateHeartbeat,
   type SoakHeartbeat,
@@ -25,6 +26,29 @@ function heartbeat(overrides: Partial<SoakHeartbeat> = {}): SoakHeartbeat {
 }
 
 describe('Lane E soak contract', () => {
+  it('requires distinct matched intake evidence for the first and second submissions', () => {
+    const first = {
+      turnId: 't-1',
+      purpose: 'intake',
+      prompt: 'Conversation: Lane E live fixture job #1',
+      matchedLine: 2,
+    };
+    const second = {
+      turnId: 't-2',
+      purpose: 'intake',
+      prompt: 'Conversation: Lane E live fixture job #2',
+      matchedLine: 2,
+    };
+    const noMatch = { ...second, turnId: 't-no-match', matchedLine: null, noMatch: true as const };
+    const known = new Set<string>();
+
+    expect(findNewMatchingIntakeTurn([first, second], known, 'Lane E live fixture job #1')).toEqual(first);
+    known.add(first.turnId);
+    expect(findNewMatchingIntakeTurn([first, second], known, 'Lane E live fixture job #2')).toEqual(second);
+    known.add(second.turnId);
+    expect(findNewMatchingIntakeTurn([noMatch], known, 'Lane E live fixture job #2')).toBeUndefined();
+  });
+
   it('accepts only the expected unverified fixture completion', () => {
     expect(jobCompletionFailure('done_unverified', 1_000)).toBeUndefined();
     expect(jobCompletionFailure('done', 1_000)).toMatch(/unexpected terminal/u);

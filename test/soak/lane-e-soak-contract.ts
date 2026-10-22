@@ -40,6 +40,30 @@ export type ValidatedHeartbeat = {
   responding: boolean;
 };
 
+export type LiveIntakeTurn = {
+  turnId: string;
+  purpose: string;
+  prompt: string;
+  matchedLine: number | null;
+  noMatch?: true;
+};
+
+/** Returns only a new, matched intake row for the exact live fixture prompt. */
+export function findNewMatchingIntakeTurn(
+  turns: readonly LiveIntakeTurn[],
+  knownTurnIds: ReadonlySet<string>,
+  prompt: string,
+): LiveIntakeTurn | undefined {
+  return turns.find(
+    (turn) =>
+      turn.purpose === 'intake' &&
+      !knownTurnIds.has(turn.turnId) &&
+      turn.matchedLine !== null &&
+      turn.noMatch !== true &&
+      turn.prompt.includes(prompt),
+  );
+}
+
 function normalizePath(path: string): string {
   return path
     .trim()
