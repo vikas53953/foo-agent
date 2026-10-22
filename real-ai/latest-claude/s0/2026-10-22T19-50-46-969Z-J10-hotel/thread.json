@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n7:49 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet. Everything you send is locked (encrypted) and goes to a VPN company's computer first, and that computer then talks to the website for you.\n\nTwo things follow from that:\n\nWebsites see the VPN's address, not yours, so your location and identity are less obvious.\nYour internet provider and anyone on the same Wi-Fi only see scrambled data going to the VPN, not what you are doing.\n\nIt does not make you fully anonymous. The VPN company can still see your traffic, so pick one you trust.\n\n7:49 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n7:50 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Treadmill or gym\n7:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n7:50 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What matters most to you in these shoes?\n1\nSoft cushioning\nBEST FIT\nComfort for longer sessions\n2\nLight and fast\nBetter for quick runs\n3\nDurable\nLasts through daily use\n4\nBest value\nLowest price that is still good\nSomething else…\nSkip\n7:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:50 PM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n7:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n7:50 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dates for the Goa hotel, 2 nights next weekend?\n1\nFri 30 Oct to Sun 1 Nov\nBEST FIT\nCheck in Friday, out Sunday\n2\nSat 31 Oct to Mon 2 Nov\nCheck in Saturday, out Monday\n3\nOther dates\nI'll ask you for them\nSomething else…\nSkip\n7:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:50 PM"
+  }
+]

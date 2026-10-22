@@ -1,0 +1,146 @@
+{
+  "journey": "U13-secret-box",
+  "title": "Secret box: type a fake key, show/hide, save, replace",
+  "steps": 18,
+  "failed": 3,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T20-02-48-163Z-U13-secret-box",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1033
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 94
+    },
+    {
+      "i": 2,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 15100,
+      "late": true
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "Secret box card: masked field, eye toggle, Save",
+      "ok": true,
+      "ms": 1502
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "note": "C.4 Secret box (C7) + code box + card form: secret input is present in the card",
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 5,
+      "do": "fill",
+      "soft": true,
+      "ok": false,
+      "error": "locator.fill: Timeout 30000ms exceeded.",
+      "ms": 30076
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "expect": "value masked",
+      "ok": true,
+      "ms": 301
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23062
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "value shown after eye",
+      "ok": true,
+      "ms": 301
+    },
+    {
+      "i": 9,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23065
+    },
+    {
+      "i": 10,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23062
+    },
+    {
+      "i": 11,
+      "do": "check",
+      "note": "C.4 Secret box (C7) + code box + card form: saved state is rendered",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 12,
+      "do": "wait",
+      "expect": "\"· saved {date}\", only Replace offered; value never shown again",
+      "ok": true,
+      "ms": 2002
+    },
+    {
+      "i": 13,
+      "do": "check",
+      "note": "C.4 Paste catcher (C8): saved secret exposes the explicit replace control (paste target capability is bounded)",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23061
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "empty field to replace",
+      "ok": true,
+      "ms": 800
+    },
+    {
+      "i": 16,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23062
+    },
+    {
+      "i": 17,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}

@@ -1,0 +1,678 @@
+{
+  "journey": "R-kit-2",
+  "title": "Group R live stamp, calculator, keep and time picker",
+  "steps": 63,
+  "failed": 16,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T20-12-55-010Z-R-kit-2",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "note": "AT-350: clean ask",
+      "sentAt": 1792699980676,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 137
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "note": "AT-350: clean",
+      "firstReplyMs": 6061,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Which time works for your call on Fri 23 Oct?\n1\nFri 23 Oct, 2:00 PM\nBEST FIT\n2\nFri 23 Oct, 3:00 PM\n3\nFri 23 Oct, 4:00 PM\n4\nFri 23 Oct, 4:30 PM\nSomething else…\nSkip\n8:13 PM",
+      "kit": [],
+      "kitMissing": "kit-time-pick",
+      "ms": 12113
+    },
+    {
+      "i": 2,
+      "do": "click",
+      "note": "AT-350: click the latest real time slot control",
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23062
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "note": "AT-350: foo confirms the selected slot",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120057
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "note": "AT-350: messy typo ask",
+      "sentAt": 1792700136115,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 98
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "note": "AT-350: messy typo",
+      "firstReplyMs": 11693,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Which time works for your call tomorrow, Fri 23 Oct?\n1\nFri 23 Oct, 3:00 PM\nBEST FIT\nMiddle of the window\n2\nFri 23 Oct, 2:00 PM\nEarliest slot\n3\nFri 23 Oct, 4:00 PM\nLeaves time before 5:00 PM\n4\nFri 23 Oct, 4:30 PM\nLatest half-hour slot\nSomething else…\nSkip\n8:15 PM",
+      "kit": [],
+      "kitMissing": "kit-time-pick",
+      "ms": 17740
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "note": "AT-350: click the latest real time slot control",
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23060
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "note": "AT-350: foo confirms the selected slot",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120088
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "note": "AT-350: Hinglish ask",
+      "sentAt": 1792700297148,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 97
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "note": "AT-350: Hinglish",
+      "firstReplyMs": 8593,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Kal Fri 23 Oct ko call kis time rakhein?\n1\nFri 23 Oct, 3:00 PM\nBEST FIT\nBeech ka time\n2\nFri 23 Oct, 2:00 PM\nSabse jaldi\n3\nFri 23 Oct, 4:00 PM\nDer se, shaam se pehle\n4\nCalendar dekh kar batao\nFree slot dhoondhunga\nSomething else…\nSkip\n8:18 PM",
+      "kit": [],
+      "kitMissing": "kit-time-pick",
+      "ms": 14652
+    },
+    {
+      "i": 10,
+      "do": "click",
+      "note": "AT-350: click the latest real time slot control",
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23061
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "note": "AT-350: foo confirms the selected slot",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120057
+    },
+    {
+      "i": 12,
+      "do": "send",
+      "note": "AT-352: clean ask",
+      "sentAt": 1792700455100,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 91
+    },
+    {
+      "i": 13,
+      "do": "waitReply",
+      "note": "AT-352: clean",
+      "firstReplyMs": 43431,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "BSE Sensex is at 73,249.39, down 460.30 points (-0.62%). BSE Bankex is at 61,766.00, down 113.06 (-0.18%). BSE Focused IT is at 38,350.74, down 400.35 (-1.03%).\n\nWorked for 35s\n8:21 PM",
+      "kit": [],
+      "kitMissing": "kit-live-stamp",
+      "ms": 49482
+    },
+    {
+      "i": 14,
+      "do": "expectText",
+      "note": "AT-352: clean result",
+      "ok": true,
+      "error": "locator.innerText: Timeout 10000ms exceeded.",
+      "ms": 10062,
+      "late": true
+    },
+    {
+      "i": 15,
+      "do": "check",
+      "note": "AT-352: refresh control is visible",
+      "found": 0,
+      "ok": true,
+      "ms": 2,
+      "late": true
+    },
+    {
+      "i": 16,
+      "do": "send",
+      "note": "AT-352: messy typo ask",
+      "sentAt": 1792700514785,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 91
+    },
+    {
+      "i": 17,
+      "do": "waitReply",
+      "note": "AT-352: messy typo",
+      "firstReplyMs": 11667,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The BSE Sensex is at 73,249.39, down 460.30 points (-0.62%), as of Thu 22 Oct, 8:21 PM. Tap Refresh on the card for the latest.\n\nBSE Sensex\n\n73,249.39\n\nDown 460.30 points (-0.62%)\n\nBSE Bankex: 61,766.00, down 113.06 (-0.18%)\n\nBSE Focused IT: 38,350.74, down 400.35 (-1.03%)\n\nData as of 8:21 PM\nRefresh\nKeep\n8:22 PM",
+      "kit": [
+        "kit-surface",
+        "kit-live-stamp",
+        "kit-live-refresh",
+        "kit-keep"
+      ],
+      "ms": 19785
+    },
+    {
+      "i": 18,
+      "do": "expectText",
+      "note": "AT-352: messy typo result",
+      "text": "Data as of 8:21 PM\nRefresh",
+      "ok": true,
+      "ms": 2,
+      "late": true
+    },
+    {
+      "i": 19,
+      "do": "check",
+      "note": "AT-352: refresh control is visible",
+      "found": 1,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 20,
+      "do": "send",
+      "note": "AT-352: Hinglish ask",
+      "sentAt": 1792700534723,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 92
+    },
+    {
+      "i": 21,
+      "do": "waitReply",
+      "note": "AT-352: Hinglish",
+      "firstReplyMs": 6606,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "BSE Sensex abhi 73,249.39 par hai, 460.30 points (-0.62%) neeche, Thu 22 Oct, 8:21 PM ke hisaab se. Latest ke liye card par Refresh dabaiye.\n\nBSE Sensex\n\n73,249.39\n\nDown 460.30 points (-0.62%)\n\nBSE Bankex: 61,766.00, down 113.06 (-0.18%)\n\nBSE Focused IT: 38,350.74, down 400.35 (-1.03%)\n\nData as of 8:21 PM\nRefresh\nKeep\n8:22 PM",
+      "kit": [
+        "kit-surface",
+        "kit-live-stamp",
+        "kit-live-refresh",
+        "kit-keep"
+      ],
+      "ms": 14783
+    },
+    {
+      "i": 22,
+      "do": "expectText",
+      "note": "AT-352: Hinglish result",
+      "text": "Data as of 8:21 PM\nRefresh",
+      "ok": true,
+      "ms": 2,
+      "late": true
+    },
+    {
+      "i": 23,
+      "do": "check",
+      "note": "AT-352: refresh control is visible",
+      "found": 2,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 24,
+      "do": "send",
+      "note": "AT-368: clean live card ask",
+      "sentAt": 1792700549675,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 95
+    },
+    {
+      "i": 25,
+      "do": "waitReply",
+      "note": "AT-368: clean live card",
+      "firstReplyMs": 6062,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The BSE Sensex is at 73,249.39, down 460.30 points (-0.62%), as of Thu 22 Oct, 8:21 PM. Tap Refresh on the card for the latest.\n\nBSE Sensex\n\n73,249.39\n\nDown 460.30 points (-0.62%)\n\nBSE Bankex: 61,766.00, down 113.06 (-0.18%)\n\nBSE Focused IT: 38,350.74, down 400.35 (-1.03%)\n\nData as of 8:21 PM\nRefresh\nKeep\n8:22 PM",
+      "kit": [
+        "kit-surface",
+        "kit-live-stamp",
+        "kit-live-refresh",
+        "kit-keep"
+      ],
+      "ms": 14672
+    },
+    {
+      "i": 26,
+      "do": "click",
+      "note": "AT-368: clean refresh action",
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 27,
+      "do": "waitReply",
+      "note": "AT-368: refresh returns a new live stamp reply",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "kitMissing": "kit-live-stamp",
+      "ms": 120175
+    },
+    {
+      "i": 28,
+      "do": "send",
+      "note": "AT-368: messy typo live card ask",
+      "sentAt": 1792700684754,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 29,
+      "do": "waitReply",
+      "note": "AT-368: messy typo live card",
+      "firstReplyMs": 7106,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The latest reading I have is BSE Sensex 73,249.39, down 460.30 points (-0.62%), as of Thu 22 Oct, 8:21 PM. My last refresh didn't get through, so tap Refresh on the card to try again.\n\nBSE Sensex\n\n73,249.39\n\nDown 460.30 points (-0.62%)\n\nBSE Bankex: 61,766.00, down 113.06 (-0.18%)\n\nBSE Focused IT: 38,350.74, down 400.35 (-1.03%)\n\nData as of 8:21 PM\nRefresh\nKeep\n8:24 PM",
+      "kit": [
+        "kit-surface",
+        "kit-live-stamp",
+        "kit-live-refresh",
+        "kit-keep"
+      ],
+      "ms": 15716
+    },
+    {
+      "i": 30,
+      "do": "click",
+      "note": "AT-368: messy typo refresh action",
+      "ok": true,
+      "ms": 93
+    },
+    {
+      "i": 31,
+      "do": "waitReply",
+      "note": "AT-368: refresh returns a new live stamp reply",
+      "firstReplyMs": 5089,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I couldn't get fresh Sensex numbers just now, so the card still shows the last reading: 73,249.39, down 460.30 points (-0.62%), as of Thu 22 Oct, 8:21 PM. Markets are closed at this hour, so that may also be the final close. Tap Refresh again in a little while and I'll try once more.\n\n8:25 PM",
+      "kit": [],
+      "kitMissing": "kit-live-stamp",
+      "ms": 11684
+    },
+    {
+      "i": 32,
+      "do": "send",
+      "note": "AT-368: Hinglish live card ask",
+      "sentAt": 1792700712394,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 90
+    },
+    {
+      "i": 33,
+      "do": "waitReply",
+      "note": "AT-368: Hinglish live card",
+      "firstReplyMs": 5095,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "BSE Sensex abhi 73,249.39 par hai, 460.30 points (-0.62%) neeche, Thu 22 Oct, 8:21 PM ke hisaab se. Pichla refresh nahi ho paya tha, isliye card par wahi aakhri reading hai. Dobara try karne ke liye Refresh dabaiye.\n\nBSE Sensex\n\n73,249.39\n\nDown 460.30 points (-0.62%)\n\nBSE Bankex: 61,766.00, down 113.06 (-0.18%)\n\nBSE Focused IT: 38,350.74, down 400.35 (-1.03%)\n\nData as of 8:21 PM\nRefresh\nKeep\n8:25 PM",
+      "kit": [
+        "kit-surface",
+        "kit-live-stamp",
+        "kit-live-refresh",
+        "kit-keep"
+      ],
+      "ms": 13685
+    },
+    {
+      "i": 34,
+      "do": "click",
+      "note": "AT-368: Hinglish refresh action",
+      "ok": true,
+      "ms": 80
+    },
+    {
+      "i": 35,
+      "do": "waitReply",
+      "note": "AT-368: refresh returns a new live stamp reply",
+      "firstReplyMs": 4590,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I couldn't get fresh Sensex numbers just now, so the card still shows the last reading: 73,249.39, down 460.30 points (-0.62%), as of Thu 22 Oct, 8:21 PM. The market is closed at this hour, so that is likely the final close. Tap Refresh again after the market opens on Fri 23 Oct.\n\n8:25 PM",
+      "kit": [],
+      "kitMissing": "kit-live-stamp",
+      "ms": 11654
+    },
+    {
+      "i": 36,
+      "do": "send",
+      "note": "AT-355: clean ask",
+      "sentAt": 1792700737971,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 37,
+      "do": "waitReply",
+      "note": "AT-355: clean",
+      "firstReplyMs": 9171,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your EMI comes to about ₹15,900 a month for 36 months. That means you repay about ₹5,72,400 in total, of which about ₹72,400 is interest. Change the amount, rate or years on the card to see it update.\n\nLoan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,899.87\nTotal you repay\n₹5,72,395.19\nTotal interest\n₹72,395.19\nKeep\n8:25 PM",
+      "kit": [
+        "kit-surface",
+        "kit-calculator",
+        "kit-keep"
+      ],
+      "ms": 17807
+    },
+    {
+      "i": 38,
+      "do": "expectText",
+      "note": "AT-355: clean result",
+      "text": "Loan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,899.87\nTotal you repay\n₹5,72,395.19\nTotal interest\n₹72,395.19",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 39,
+      "do": "send",
+      "note": "AT-355: messy typo ask",
+      "sentAt": 1792700755937,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 90
+    },
+    {
+      "i": 40,
+      "do": "waitReply",
+      "note": "AT-355: messy typo",
+      "firstReplyMs": 4615,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your EMI comes to about ₹15,900 a month for 36 months. You repay about ₹5,72,400 in total, of which about ₹72,400 is interest. Change the amount, rate or years on the card to see it update.\n\nLoan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,899.87\nTotal you repay\n₹5,72,395.19\nTotal interest\n₹72,395.19\nKeep\n8:26 PM",
+      "kit": [
+        "kit-surface",
+        "kit-calculator",
+        "kit-keep"
+      ],
+      "ms": 13243
+    },
+    {
+      "i": 41,
+      "do": "expectText",
+      "note": "AT-355: messy typo result",
+      "text": "Loan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,899.87\nTotal you repay\n₹5,72,395.19\nTotal interest\n₹72,395.19",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 42,
+      "do": "send",
+      "note": "AT-355: Hinglish ask",
+      "sentAt": 1792700769346,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 100
+    },
+    {
+      "i": 43,
+      "do": "waitReply",
+      "note": "AT-355: Hinglish",
+      "firstReplyMs": 5625,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "5 lakh ke loan par 9% par 3 saal ki EMI lagbhag ₹15,900 mahina banti hai, 36 mahine tak. Kul lagbhag ₹5,72,400 chukane honge, jisme lagbhag ₹72,400 byaaj hai. Card mein amount, rate ya saal badal kar dekh sakte hain.\n\nLoan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,899.87\nTotal you repay\n₹5,72,395.19\nTotal interest\n₹72,395.19\nKeep\n8:26 PM",
+      "kit": [
+        "kit-surface",
+        "kit-calculator",
+        "kit-keep"
+      ],
+      "ms": 14719
+    },
+    {
+      "i": 44,
+      "do": "expectText",
+      "note": "AT-355: Hinglish result",
+      "text": "Loan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,899.87\nTotal you repay\n₹5,72,395.19\nTotal interest\n₹72,395.19",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 45,
+      "do": "send",
+      "note": "AT-369: clean ask",
+      "sentAt": 1792700784236,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 99
+    },
+    {
+      "i": 46,
+      "do": "waitReply",
+      "note": "AT-369: clean",
+      "firstReplyMs": 4077,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your EMI comes to about ₹15,900 a month for 36 months. You repay about ₹5,72,400 in total, of which about ₹72,400 is interest. Change the amount, rate or years on the card to see it update.\n\nLoan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,899.87\nTotal you repay\n₹5,72,395.19\nTotal interest\n₹72,395.19\nKeep\n8:26 PM",
+      "kit": [
+        "kit-surface",
+        "kit-calculator",
+        "kit-keep"
+      ],
+      "ms": 12638
+    },
+    {
+      "i": 47,
+      "do": "expectText",
+      "note": "AT-369: clean result",
+      "text": "Loan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,899.87\nTotal you repay\n₹5,72,395.19\nTotal interest\n₹72,395.19",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 48,
+      "do": "click",
+      "note": "AT-369: keep the calculator surface",
+      "ok": true,
+      "ms": 87
+    },
+    {
+      "i": 49,
+      "do": "wait",
+      "ok": true,
+      "ms": 1502
+    },
+    {
+      "i": 50,
+      "do": "check",
+      "note": "AT-369: supported presence check for a kept surface (fresh-row identity remains unavailable)",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 51,
+      "do": "send",
+      "note": "AT-369: messy typo ask",
+      "sentAt": 1792700798636,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 108
+    },
+    {
+      "i": 52,
+      "do": "waitReply",
+      "note": "AT-369: messy typo",
+      "firstReplyMs": 5144,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your EMI comes to about ₹15,900 a month for 36 months. You repay about ₹5,72,400 in total, of which about ₹72,400 is interest. Change the amount, rate or years on the card to see it update.\n\nLoan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,899.87\nTotal you repay\n₹5,72,395.19\nTotal interest\n₹72,395.19\nKeep\n8:26 PM",
+      "kit": [
+        "kit-surface",
+        "kit-calculator",
+        "kit-keep"
+      ],
+      "ms": 13774
+    },
+    {
+      "i": 53,
+      "do": "expectText",
+      "note": "AT-369: messy typo result",
+      "text": "Loan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,899.87\nTotal you repay\n₹5,72,395.19\nTotal interest\n₹72,395.19",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 54,
+      "do": "click",
+      "note": "AT-369: keep the calculator surface",
+      "ok": true,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 15090,
+      "late": true
+    },
+    {
+      "i": 55,
+      "do": "wait",
+      "ok": true,
+      "ms": 1502
+    },
+    {
+      "i": 56,
+      "do": "check",
+      "note": "AT-369: supported presence check for a kept surface (fresh-row identity remains unavailable)",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 57,
+      "do": "send",
+      "note": "AT-369: Hinglish ask",
+      "sentAt": 1792700829188,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 123
+    },
+    {
+      "i": 58,
+      "do": "waitReply",
+      "note": "AT-369: Hinglish",
+      "firstReplyMs": 4569,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "5 lakh ke loan par 9% par 3 saal ki EMI lagbhag ₹15,900 mahina banti hai, 36 mahine tak. Kul lagbhag ₹5,72,400 chukane honge, jisme lagbhag ₹72,400 byaaj hai. Card mein amount, rate ya saal badal kar dekh sakte hain.\n\nLoan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,899.87\nTotal you repay\n₹5,72,395.19\nTotal interest\n₹72,395.19\nKeep\n8:27 PM",
+      "kit": [
+        "kit-surface",
+        "kit-calculator",
+        "kit-keep"
+      ],
+      "ms": 13644
+    },
+    {
+      "i": 59,
+      "do": "expectText",
+      "note": "AT-369: Hinglish result",
+      "text": "Loan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,899.87\nTotal you repay\n₹5,72,395.19\nTotal interest\n₹72,395.19",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 60,
+      "do": "click",
+      "note": "AT-369: keep the calculator surface",
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 61,
+      "do": "wait",
+      "ok": true,
+      "ms": 1510
+    },
+    {
+      "i": 62,
+      "do": "check",
+      "note": "AT-369: supported presence check for a kept surface (fresh-row identity remains unavailable)",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "journey": "U17-settings-by-chat",
+  "title": "Change a setting by chat: mini line with Undo; theme and accent rows",
+  "steps": 13,
+  "failed": 1,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T20-05-49-243Z-U17-settings-by-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1027
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792699563950,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 106
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "note": "C.5 Settings; C.8 Quiet premium polish: dark theme is applied at the document root",
+      "expect": "foo switches to dark and shows \"Changed: Theme → Dark. [Undo]\"",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 150423
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23076
+    },
+    {
+      "i": 4,
+      "do": "wait",
+      "expect": "back to light",
+      "ok": true,
+      "ms": 1500
+    },
+    {
+      "i": 5,
+      "do": "key",
+      "ok": true,
+      "ms": 51
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 94
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 84
+    },
+    {
+      "i": 8,
+      "do": "check",
+      "note": "C.5 Settings: appearance theme row is present",
+      "found": 1,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "theme options",
+      "ok": true,
+      "ms": 602
+    },
+    {
+      "i": 10,
+      "do": "key",
+      "ok": true,
+      "ms": 49
+    },
+    {
+      "i": 11,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23068
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 15
+    }
+  ]
+}

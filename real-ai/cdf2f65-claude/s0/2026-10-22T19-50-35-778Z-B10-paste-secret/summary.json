@@ -1,0 +1,123 @@
+{
+  "journey": "B10-paste-secret",
+  "title": "Paste bands and secret guard",
+  "steps": 16,
+  "failed": 0,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T19-50-35-778Z-B10-paste-secret",
+  "results": [
+    {
+      "i": 0,
+      "do": "paste",
+      "ok": true,
+      "ms": 45
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "expect": "AT-365: 2,001–10,000 chars → 'Pasted text' chip",
+      "ok": true,
+      "ms": 1501
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "note": "AT-365: the catcher rendered the long-paste chip",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "note": "AT-365: long paste is the actual pasted-text chip, not only prose",
+      "found": 1,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 4,
+      "do": "key",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 5,
+      "do": "fill",
+      "ok": true,
+      "ms": 13
+    },
+    {
+      "i": 6,
+      "do": "key",
+      "ok": true,
+      "ms": 15
+    },
+    {
+      "i": 7,
+      "do": "wait",
+      "expect": "AT-008: 'That looks like a password or key' with Move to secret box / Send anyway; nothing sent",
+      "ok": true,
+      "ms": 1503
+    },
+    {
+      "i": 8,
+      "do": "check",
+      "note": "AT-008/AT-370: the live secret guard is open before any send",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 9,
+      "do": "expectText",
+      "note": "AT-008/AT-370: the guard names the sensitive value",
+      "text": "That looks like a password or key\n\nYou were about to send it as a normal message. Save it in the secret box instead?\n\nMove to secret box\nSend anyway",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 10,
+      "do": "check",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 11,
+      "do": "click",
+      "ok": true,
+      "ms": 136
+    },
+    {
+      "i": 12,
+      "do": "wait",
+      "expect": "Secret box card posted with the value in its masked field; password never stored as text",
+      "ok": true,
+      "ms": 2002
+    },
+    {
+      "i": 13,
+      "do": "check",
+      "note": "AT-008: the Secret box card is actually posted",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 14,
+      "do": "check",
+      "note": "AT-008: the saved value is masked in the rendered Secret box field",
+      "found": 1,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 15,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}

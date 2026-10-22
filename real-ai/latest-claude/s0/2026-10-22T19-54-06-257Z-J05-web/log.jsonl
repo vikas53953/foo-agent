@@ -1,0 +1,11 @@
+{"t":"2026-10-22T19:54:06.257Z","journey":"J05-web","title":"First real task with the internet (news + sources)","spec":"07-1 J5; R1 sources/citations","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T19:54:11.782Z","step":"launch","ok":true}
+{"t":"2026-10-22T19:54:11.907Z","i":0,"do":"send","sentAt":1792698851874,"sent":true,"before":0,"ok":true,"ms":122}
+{"t":"2026-10-22T19:54:28.191Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":10183,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from the past week\nWrite it\nWatch live\nStop\nunder 1 min\n7:54 PM","kit":[],"endState":false,"ms":16284}
+{"t":"2026-10-22T19:54:28.277Z","shot":"01-news.png"}
+{"t":"2026-10-22T19:54:28.281Z","i":2,"do":"check","found":0,"ok":false,"ms":3}
+{"t":"2026-10-22T19:54:28.283Z","i":3,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-22T19:54:28.287Z","i":4,"do":"expectText","text":"A VPN is a private tunnel between your device and the internet. Everything you send is locked (encrypted) and goes to a VPN company's computer first, and that computer then talks to the website for you.\n\nTwo things follow from that:\n\nWebsites see the VPN's address, not yours, so your location and identity are less obvious.\nYour internet provider and anyone on the same Wi-Fi only see scrambled data going to the VPN, not what you are doing.\n\nIt does not make you fully anonymous. The VPN company can still see your traffic, so pick one you trust.\n\n7:49 PM","ok":true,"ms":4}
+{"t":"2026-10-22T19:54:28.299Z","i":5,"do":"dump","ok":true,"ms":12}
+{"t":"2026-10-22T19:54:28.678Z","step":"appLog","lines":10,"dropped":0}
+{"t":"2026-10-22T19:54:28.694Z","step":"aiTurns","turns":2}
