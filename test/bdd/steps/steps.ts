@@ -150,6 +150,8 @@ When('the user requests the first bills task', async ({ bddRun }) => {
   await bddRun.page.getByTestId(TID.composerField).fill('Find my bills due this week');
   await bddRun.page.keyboard.press('Enter');
   await expect(bddRun.page.getByTestId(TID.bubbleMe).filter({ hasText: 'Find my bills due this week' })).toBeVisible();
+  // Wait until the runner has started the first step before advancing the fake clock; otherwise the checklist timer is not registered yet.
+  await expect(bddRun.page.getByTestId(TID.chatHeaderStatus)).toContainText('Reading your email', { timeout: 15_000 });
   // The pretend job uses the repository's fake clock; advance it past the 1.5 s checklist seam.
   await bddRun.page.evaluate(() => window.__fooTest!.clock.advance(2_000));
   await expect(bddRun.page.getByTestId(TID.cardChecklist)).toBeVisible({ timeout: 15_000 });
