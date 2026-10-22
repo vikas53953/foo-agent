@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "check my email\n2:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do catch-ups yet. Ask me about one thing, like your latest email, and I’ll look.\n\n2:45 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n2:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Which WhatsApp group should I catch you up on? Tell me its name and I'll read what's new there.\n\n2:45 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "List three Indian rivers\n2:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Three Indian rivers: the Ganga, the Yamuna and the Godavari.\n\n2:45 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show me a tiny Python hello world in a code block\n2:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is a tiny Python hello world:\n\nPython\nCopy\nprint(\"Hello, world!\")\n2:46 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n2:46 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three Indian states and their capitals, as a list since I don't do tables:\n\nMaharashtra: Mumbai\nTamil Nadu: Chennai\nRajasthan: Jaipur\n2:46 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n2:46 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways ticket site is IRCTC. For train running status and enquiries, use Indian Railways.\n\n2:46 AM"
+  }
+]

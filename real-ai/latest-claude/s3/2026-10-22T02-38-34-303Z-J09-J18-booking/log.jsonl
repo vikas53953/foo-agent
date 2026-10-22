@@ -1,0 +1,22 @@
+{"t":"2026-10-22T02:38:34.304Z","journey":"J09-J18-booking","title":"Restaurant booking, watch live and stop (never approves)","spec":"07-1 J9, J18; 06 live; M9","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T02:38:39.847Z","step":"launch","ok":true}
+{"t":"2026-10-22T02:38:40.009Z","i":0,"do":"send","sentAt":1792636719965,"sent":true,"before":0,"ok":true,"ms":158}
+{"t":"2026-10-22T02:38:54.225Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":8114,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Booking table for 2, Fri 23 Oct, 8:00 PM\n1\nLook for good vegetarian restaurants near\n2\nKeep 3 vegetarian restaurants that fit best rated with a table free at 8:00 PM\n3\nWait for you to pick one\n4\nShow you before the booking for 2 on Fri 23 Oct, 8:00 PM\n5\nShow you before doing anything\n6\nBook table for 2, Fri 23 Oct, 8:00 PM\nAbout 5 minutes\nGo\nChange plan\n2:38 AM","kit":[],"ms":14216}
+{"t":"2026-10-22T02:38:54.310Z","shot":"01-booking-start.png"}
+{"t":"2026-10-22T02:38:54.363Z","i":2,"do":"clickIf","note":"press Go on the plan (starts the job; spending still needs Approve, which is never tapped)","found":1,"ok":true,"ms":53}
+{"t":"2026-10-22T02:39:54.369Z","i":3,"do":"wait","ok":true,"ms":60006}
+{"t":"2026-10-22T02:39:54.449Z","shot":"02-booking-working.png"}
+{"t":"2026-10-22T02:39:54.452Z","i":4,"do":"check","found":1,"ok":true,"ms":3}
+{"t":"2026-10-22T02:39:54.527Z","i":5,"do":"clickIf","found":1,"ok":true,"ms":75}
+{"t":"2026-10-22T02:39:58.538Z","i":6,"do":"wait","expect":"live view of the browser, Stop and Take over visible","ok":true,"ms":4010}
+{"t":"2026-10-22T02:39:58.609Z","shot":"03-watch-live.png"}
+{"t":"2026-10-22T02:40:18.610Z","i":7,"do":"wait","ok":true,"ms":20001}
+{"t":"2026-10-22T02:40:18.682Z","shot":"04-live-later.png"}
+{"t":"2026-10-22T02:40:18.685Z","i":8,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-22T02:42:48.692Z","i":9,"do":"wait","expect":"choice card of options, then Approve card; driver never taps Approve","ok":true,"ms":150006}
+{"t":"2026-10-22T02:42:48.756Z","shot":"05-booking-later.png"}
+{"t":"2026-10-22T02:42:48.759Z","i":10,"do":"check","found":1,"ok":true,"ms":3}
+{"t":"2026-10-22T02:42:48.760Z","i":11,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-22T02:42:48.771Z","i":12,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-22T02:42:48.934Z","step":"appLog","lines":8,"dropped":0}
+{"t":"2026-10-22T02:42:48.947Z","step":"aiTurns","turns":4}

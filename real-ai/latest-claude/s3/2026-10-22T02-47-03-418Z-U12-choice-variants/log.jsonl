@@ -1,0 +1,22 @@
+{"t":"2026-10-22T02:47:03.418Z","journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","spec":"05-1 §5.4 Choice, 10-2 §C.4 Choice (C3), AT-035","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T02:47:09.163Z","step":"launch","ok":true}
+{"t":"2026-10-22T02:47:10.213Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1044}
+{"t":"2026-10-22T02:47:10.350Z","i":1,"do":"send","sentAt":1792637230307,"sent":true,"before":0,"ok":true,"ms":137}
+{"t":"2026-10-22T02:47:25.639Z","i":2,"do":"waitReply","expect":"Choice card with 3 options, Best fit tag, Something else","firstReplyMs":9181,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which weekend plan in Bengaluru sounds best to you?\n1\nNandi Hills sunrise\nBEST FIT\nEarly start, misty views, back by brunch\n2\nLalbagh walk and South Indian breakfast\nEasy, relaxed, good for a morning\n3\nCafe and bookshop crawl\nIndiranagar or Church Street, no rush\nSomething else…\nSkip\n2:47 AM","kit":[],"ms":15289}
+{"t":"2026-10-22T02:47:25.730Z","shot":"01-choice.png"}
+{"t":"2026-10-22T02:47:25.817Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":86}
+{"t":"2026-10-22T02:47:25.957Z","i":4,"do":"send","sentAt":1792637245905,"sent":true,"before":0,"ok":true,"ms":140}
+{"t":"2026-10-22T02:47:43.201Z","i":5,"do":"waitReply","expect":"typed answer picks option 2; card collapses \"question → answer\"","firstReplyMs":10166,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Lalbagh walk and South Indian breakfast is a lovely pick. Go early, around 6:30 AM, when the garden is cool and quiet, then have idli, dosa or filter coffee at MTR on Lalbagh Road. Sat 24 Oct or Sun 25 Oct both work.\n\n2:47 AM","kit":[],"ms":17244}
+{"t":"2026-10-22T02:47:43.261Z","shot":"03-typed-pick.png"}
+{"t":"2026-10-22T02:47:43.356Z","i":6,"do":"send","sentAt":1792637263339,"sent":true,"before":0,"ok":true,"ms":95}
+{"t":"2026-10-22T02:48:03.635Z","i":7,"do":"waitReply","expect":"another Choice card","firstReplyMs":8591,"newBubbles":2,"ok":true,"duplicates":0,"lastReply":"Got it, I’ll fold that in.\n\n2:47 AM\n---\nWhich area should I look in for vegetarian restaurants?\n1\nI'll type the area\nBEST FIT\nTell me the neighbourhood or city\n2\nAnywhere in my city\nI'll need the city name\nSomething else…\nSkip\n2:47 AM","kit":[],"ms":20278}
+{"t":"2026-10-22T02:48:03.704Z","shot":"04-choice-2.png"}
+{"t":"2026-10-22T02:48:03.787Z","i":8,"do":"click","soft":true,"ok":true,"ms":83}
+{"t":"2026-10-22T02:48:04.397Z","i":9,"do":"wait","expect":"composer hint for my own answer","ok":true,"ms":610}
+{"t":"2026-10-22T02:48:04.465Z","shot":"05-something-else.png"}
+{"t":"2026-10-22T02:48:04.559Z","i":10,"do":"send","sentAt":1792637284544,"sent":true,"before":0,"ok":true,"ms":94}
+{"t":"2026-10-22T02:48:31.815Z","i":11,"do":"waitReply","expect":"foo takes my own answer","firstReplyMs":21218,"newBubbles":2,"ok":true,"duplicates":0,"lastReply":"Got it, I’ll fold that in.\n\n2:48 AM\n---\nSomething went wrong on my side.\nNothing was booked, paid or sent.\nTry again\n2:48 AM","kit":[],"ms":27256}
+{"t":"2026-10-22T02:48:31.883Z","shot":"06-own-answer.png"}
+{"t":"2026-10-22T02:48:31.892Z","i":12,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-22T02:48:32.029Z","step":"appLog","lines":19,"dropped":0}
+{"t":"2026-10-22T02:48:32.041Z","step":"aiTurns","turns":10}

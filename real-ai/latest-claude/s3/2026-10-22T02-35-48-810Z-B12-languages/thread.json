@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n2:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:34 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n2:35 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:35 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n2:35 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n2:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n2:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n2:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mummy ka birthday Sat 24 Oct ko hai, to cake kal (Fri 23 Oct) tak order kar do, taaki time par pahunch jaye. Yeh kuch achhe options hain:\n\nButterscotch ya black forest: sabko pasand aane wala classic.\nRasmalai ya gulab jamun cake: agar mummy ko mithai zyada pasand hai.\nFresh fruit cake: halka aur kam meetha.\nPhoto cake ya naam likha cake: thoda personal touch ke liye.\n\nMummy ko kaunsa flavour sabse zyada pasand hai? Batao to main usi hisaab se options dhoondh deta hoon.\n\n2:36 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n2:36 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "ਮੰਮੀ ਨੂੰ ਕਿਹੜਾ ਕੇਕ ਸਭ ਤੋਂ ਵੱਧ ਪਸੰਦ ਹੈ?\n1\nਬਟਰਸਕੌਚ ਜਾਂ ਬਲੈਕ ਫੌਰੈਸਟ\nBEST FIT\nਸਭ ਨੂੰ ਪਸੰਦ ਆਉਣ ਵਾਲਾ ਕਲਾਸਿਕ\n2\nਰਸਮਲਾਈ ਕੇਕ\nਜੇ ਮੰਮੀ ਨੂੰ ਮਿਠਾਈ ਪਸੰਦ ਹੈ\n3\nਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ\nਹਲਕਾ ਤੇ ਘੱਟ ਮਿੱਠਾ\n4\nਫੋਟੋ ਜਾਂ ਨਾਮ ਵਾਲਾ ਕੇਕ\nਆਪਣੀ ਖਾਸ ਛੋਹ ਲਈ\nSomething else…\nSkip\n2:36 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:36 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n2:36 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mon 2 Nov doesn't look like a public holiday in Mumbai. I don't have the official Maharashtra holiday list in front of me, so please double-check it before you plan around it. Diwali this year falls around Sun 8 Nov, so the festival holidays come after that date.\n\n2:36 AM"
+  }
+]
