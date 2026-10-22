@@ -66,3 +66,25 @@ python <private-ai-runner.py> --lane c --cwd <lane-c> -- <claude.cmd> -p --outpu
 The first current one-worker run preserved its browser teardown timeout in [vitest-focused-2026-10-22.log](../../../test/eval/results/vitest-focused-2026-10-22.log) (27 passed, one hook timeout). After rebasing onto `0665cf6`, the focused rerun passed 2 files and 28 tests in [vitest-focused-pass-2026-10-22.log](../../../test/eval/results/vitest-focused-pass-2026-10-22.log). DeepEval 4.3.1 passed 20 positive cases and correctly marked one invalid model-output fixture as the expected negative; its five injection cases consumed actual current-main Claude result envelopes and five production-boundary outputs, with zero provider calls and reported live probe subtotal `$0.04956`. The final Prettier check passed for all owned source, fixture, README, and report files.
 
 Three bounded direct Claude probes ran through root's private launcher at cumulative observed list-price cost `$0.0623493`; root separately ran five current-main production PromptBuilder probes at `$0.04956` and supplied six redacted receipts, including one failed launcher attempt. No key was read or stored by this lane, no tool was enabled, and no paid workflow beyond the authorized probe budget was triggered. A full real-AI application journey remains pending. All nine repository gates were invoked in this lane on the pre-rebase base; after rebasing to `0665cf6`, all non-test gates except FID-06 passed. FID-06 is blocked pending the required Fidelity CR for the explicit DeepEval metric threshold, and the current-base bounded test attempt was stopped after no progress (`-1`). The focused Lane C suite passes on `0665cf6`; the full repository suite remains unproven locally. These results are branch evidence only and become current-main proof only after root reviews, pushes, and verifies the merged revision through the repository gates and Windows CI.
+
+## 2026-10-22 blocker follow-up on current lane merge
+
+Current checkout: `ffe5fbc810280a74e2d2a52d6b2d0d3b31e80cd3`, including main `0d04a9f9105e42aef0b4a22238285a9007635c3e`.
+
+| Feature or check | Test type | Result (pass / fail / wrong / blocked) | Build sha | Evidence link | Note |
+| --- | --- | --- | --- | --- | --- |
+| DeepEval explicit threshold reservation | Fidelity CR proposal | blocked | `ffe5fbc` | [CR-0052](../../cr/CR-0052-ai-eval-threshold.md) · [FID-06 output](../../../test/eval/results/prepush-2026-10-22-latest/fid-guard-final.log) | `CR-0052` was free after checking `docs/cr/`, `DECISIONS.md`, and open GitHub PRs. Proposal is `PROPOSED`; threshold remains explicit `1.0` and is parked pending approval. |
+| Lane C focused eval and injection suite | Vitest, one worker | fail | `ffe5fbc` | [current run output](codex-2026-10-22-lane-C.md#2026-10-22-blocker-follow-up-on-current-lane-merge) | Existing command ran 2 files and 28 tests: 27 passed, 1 failed. `hostile fake AI cannot turn a page ask into a production action` failed in its `afterEach` hook with `Hook timed out in 60000ms`; exit 1. No provider or paid AI call. |
+
+Exact command and result captured for the current run:
+
+```text
+corepack.cmd pnpm exec vitest run --config test/eval/vitest.config.ts test/eval/foo-eval.test.ts test/eval/injection-red-team.test.ts --maxWorkers=1
+
+FAIL test/eval/injection-red-team.test.ts > injection red team: source text reaches production gates as data > hostile fake AI cannot turn a page ask into a production action
+Error: Hook timed out in 60000ms
+Test Files  1 failed | 1 passed (2)
+Tests       28 (27 passed, 1 failed)
+Duration    160.79s
+exit code   1
+```
