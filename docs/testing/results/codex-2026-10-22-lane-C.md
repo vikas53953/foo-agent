@@ -88,3 +88,31 @@ Tests       28 (27 passed, 1 failed)
 Duration    160.79s
 exit code   1
 ```
+
+## Follow-up: isolated repeat and FID-06 guard
+
+The exact failing test was isolated once with one worker and no timeout/test/code change:
+
+```text
+corepack.cmd pnpm exec vitest run --config test/eval/vitest.config.ts test/eval/injection-red-team.test.ts --testNamePattern="hostile fake AI cannot turn a page ask into a production action" --maxWorkers=1
+
+FAIL test/eval/injection-red-team.test.ts > injection red team: source text reaches production gates as data > hostile fake AI cannot turn a page ask into a production action
+Error: Hook timed out in 60000ms
+Test Files  1 failed (1)
+Tests       1 failed | 5 skipped (6)
+Duration    135.04s
+exit code   1
+```
+
+This repeats the focused-suite failure in the exact title and distinguishes it from a multi-test interaction: the same `afterEach` timeout reproduces in isolation. No further suite was run.
+
+The required guard was also run exactly once:
+
+```text
+corepack.cmd pnpm fid:guard --base origin/main
+
+fid-guard: PENDING CRs (cited, not yet counted by FID-02; they await Vikas's review; not failing without --strict):
+  CR-0052: not "Approved by Vikas" (Status: PROPOSED — pending Vikas approval; this document is not an approval and does not authorize a code or spec change.)
+fid-guard: 50 changed files checked (FID-02, FID-06, FID-19); 1 cited CR(s) PENDING
+exit code   0
+```
