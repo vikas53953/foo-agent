@@ -1,0 +1,46 @@
+{
+  "id": "BP-CARD-09",
+  "family": "bp",
+  "selector": "#cardgal > .panel:nth-child(9) > .mini",
+  "box": {
+    "x": 930.15625,
+    "y": 11572.40625,
+    "width": 351.34375,
+    "height": 112
+  },
+  "files": {
+    "light": {
+      "png": "BP-CARD-09.light.png",
+      "sha256": "e2d3e6c675cfc74716bede32564d7e1e4a669855898f7cb50a7784293f082da9"
+    },
+    "dark": {
+      "png": "BP-CARD-09.dark.png",
+      "sha256": "00c94a0f5ef28505c59c96b3dbf32dba903574aaf966d19b95bf05664b73565d"
+    }
+  },
+  "texts": [
+    "⚠ That looks like a password",
+    "Move to secret box",
+    "Remove it"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-CARD-09": {
+      "x": 0,
+      "y": 0,
+      "width": 351.34375,
+      "height": 112
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M5",
+  "spec": "05-2 §5.9; 04-2 §22.4",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}
