@@ -1,6 +1,6 @@
 # Codex status — 22 October 2026, 23:41 IST
 
-The latest full real-AI run is [39828661301](https://github.com/vikas53953/foo-agent/actions/runs/39828661301), started 23:37 IST with all inventory journeys selected. The lead branch descends from freshly fetched main `0d04a9f9105e42aef0b4a22238285a9007635c3e`; merge-base verified. Results pending. The previous [39780713204](https://github.com/vikas53953/foo-agent/actions/runs/39780713204) failed in a shard; diagnosis is ongoing. Dispatch gaps are recorded, not treated as compliant cadence.
+The latest full real-AI run is [39828661301](https://github.com/vikas53953/foo-agent/actions/runs/39828661301), started 23:37 IST with all inventory journeys selected. Tested workflow/app revision: **branch `f2061bf27660f870fde3d22bddc9b436002c50bd`**, not main. Its ancestry includes main `0d04a9f9105e42aef0b4a22238285a9007635c3e`, but ancestry does not make these current-main results. Results pending. The previous [39780713204](https://github.com/vikas53953/foo-agent/actions/runs/39780713204) failed in a shard; diagnosis is ongoing. Dispatch gaps are recorded, not treated as compliant cadence.
 
 ## Current matrix
 
@@ -55,3 +55,9 @@ The repair is published in commit `e227f19695aceba10f65bdf2743b3d167f52457c`. [F
 Previous full-run failure diagnosis: [immutable shard console](https://github.com/vikas53953/foo-agent/blob/2570c958a5001a68907b87596fdc3d76ebf17da8/real-ai/db2d661-claude/s1/console.txt) records initial sign-in failure followed by a clean retry, a stalled web request, unavailable Gmail capability, a stop scenario that never reached a working job, and reply/copy waits. These are log diagnoses pending independent screenshot judgment; no feature acceptance or new matrix promotion follows.
 
 CI checkpoint: the [manual repair verification](https://github.com/vikas53953/foo-agent/actions/runs/39829318930) fast lane passed; Windows browser and Golden checks are still running. The separate [PR citation failure](https://github.com/vikas53953/foo-agent/actions/runs/39829837028) is preserved. PR description now references approved CR-0053 and proposed CR-0052; the latter remains in Needs Vikas, with no approval or threshold change asserted.
+
+## Correction — 23 October IST
+
+[Real-AI run 39828661301](https://github.com/vikas53953/foo-agent/actions/runs/39828661301) tests **branch f2061bf27660f870fde3d22bddc9b436002c50bd**, not main. No results from this run count as current-main proof.
+
+[CI 39829318930](https://github.com/vikas53953/foo-agent/actions/runs/39829318930) is **RED**: [Windows shard 3](https://github.com/vikas53953/foo-agent/actions/runs/39829318930/job/120000944160) timed out in AT-078 browser-close take-over; [Windows shard 4](https://github.com/vikas53953/foo-agent/actions/runs/39829318930/job/120000943911) failed UX-14 CAPTCHA sign-in after browser.open timeout. Earlier local/unit successes do not establish a completed CI repair. Both failures are being diagnosed with every assertion retained and no waivers. The repair remains incomplete until all required checks pass on the repaired revision.
