@@ -9,16 +9,16 @@ Scope was focused source/listing discovery plus read-only review of the current-
 
 Commit under test: `b6a087c82033aae6080a9b84cb327179ab63db7f` (`test: map Lane D Group C witnesses`), with CR-0053 provenance and regenerated manifest pending commit.
 
-| Gate                           | Result             | Evidence                                                                                                                                                                        |
-| ------------------------------ | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `spec:verify`                  | **PASS**           | Passed after CR-0053 was recorded and `spec/SPEC-MANIFEST.json` was regenerated for the approved `trace.csv` hash.                                                              |
-| `check:copy`                   | pending            | Run sequentially after this report/CR commit.                                                                                                                                   |
-| `lint`                         | pending            | Run sequentially after this report/CR commit.                                                                                                                                   |
-| `format:check`                 | pending            | Owned files were separately confirmed with `prettier --check`; run repository gate after this report/CR commit.                                                               |
-| `typecheck`                    | pending            | Run sequentially after this report/CR commit.                                                                                                                                   |
-| `build`                        | pending            | Run sequentially after this report/CR commit.                                                                                                                                   |
-| `trace:check`                  | PASS               | `FID-18: trace.csv consistent with the test titles` after the approved three mappings.                                                                                          |
-| `fid:guard --base origin/main` | pending            | Run sequentially after this report/CR commit.                                                                                                                                   |
+| Gate                           | Result   | Evidence                                                                                                           |
+| ------------------------------ | -------- | ------------------------------------------------------------------------------------------------------------------ |
+| `spec:verify`                  | **PASS** | Passed after CR-0053 was recorded and `spec/SPEC-MANIFEST.json` was regenerated for the approved `trace.csv` hash. |
+| `check:copy`                   | pending  | Run sequentially after this report/CR commit.                                                                      |
+| `lint`                         | pending  | Run sequentially after this report/CR commit.                                                                      |
+| `format:check`                 | pending  | Owned files were separately confirmed with `prettier --check`; run repository gate after this report/CR commit.    |
+| `typecheck`                    | pending  | Run sequentially after this report/CR commit.                                                                      |
+| `build`                        | pending  | Run sequentially after this report/CR commit.                                                                      |
+| `trace:check`                  | PASS     | `FID-18: trace.csv consistent with the test titles` after the approved three mappings.                             |
+| `fid:guard --base origin/main` | pending  | Run sequentially after this report/CR commit.                                                                      |
 
 Focused unit commands, each with `--maxWorkers=1`, pass: `test/unit/lane-d-grouping.test.ts` now exercises timezone-aware `buildRows` → `layoutRows` for same-day, midnight, earlier-chip, earlier-badge and unread breaks; `test/unit/lane-d-scroll.test.ts` covers AT-285.
 

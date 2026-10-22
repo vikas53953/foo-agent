@@ -10,8 +10,8 @@
 
 The three rows are pending M9 witnesses and are the only trace entries covered by this CR:
 
-| Acceptance | Test file | Spec reference |
-|---|---|---|
-| AT-273 | `test/e2e/lane-d-a11y.spec.ts` | 10-acceptance-1 §J19; 04 §12.5 |
-| AT-284 | `test/unit/lane-d-grouping.test.ts` | 10-acceptance-1 §X-151; 04 §1.3 |
-| AT-285 | `test/unit/lane-d-scroll.test.ts` | 10-acceptance-1 §X-152; 04 §1.6; 03-2 §3.6.6 |
+| Acceptance | Test file                           | Spec reference                               |
+| ---------- | ----------------------------------- | -------------------------------------------- |
+| AT-273     | `test/e2e/lane-d-a11y.spec.ts`      | 10-acceptance-1 §J19; 04 §12.5               |
+| AT-284     | `test/unit/lane-d-grouping.test.ts` | 10-acceptance-1 §X-151; 04 §1.3              |
+| AT-285     | `test/unit/lane-d-scroll.test.ts`   | 10-acceptance-1 §X-152; 04 §1.6; 03-2 §3.6.6 |
