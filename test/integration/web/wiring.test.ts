@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { settingsDefaults } from '../../../src/shared/settingsDefaults';
 import { createEngineWeb, defaultUrlAllowed } from '../../../src/engine/tools/web';
 import { fakeExa } from '../../fakes/web/exa';
-import { FakeNet, makeRedactor } from '../../fakes/web/net';
+import { FakeNet, FakePage, makeRedactor } from '../../fakes/web/net';
 import { FakeClock } from '../../../src/shared/clock';
 
 function engineWeb(net: FakeNet, saved: Record<string, string> = {}) {
@@ -24,6 +24,7 @@ function engineWeb(net: FakeNet, saved: Record<string, string> = {}) {
     newId: () => 't_1',
     log: () => undefined,
     keys: { use: async (p) => saved[p] ?? null },
+    page: new FakePage(() => null),
   });
 }
 
