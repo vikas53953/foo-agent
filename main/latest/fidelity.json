@@ -1,19 +1,19 @@
 {
-  "reportId": "M9-25209b7-39695109531",
+  "reportId": "M9-2d10736-39696407975",
   "milestone": "M9",
-  "generatedAt": "2026-10-21T23:55:07.207Z",
-  "commit": "25209b7dade05a17b80c0f94b6b809f1763d4008",
-  "head": "25209b7dade05a17b80c0f94b6b809f1763d4008",
+  "generatedAt": "2026-10-22T00:05:55.848Z",
+  "commit": "2d10736fd3639112a06cde54c4a5a7d641aaca4c",
+  "head": "2d10736fd3639112a06cde54c4a5a7d641aaca4c",
   "ci": {
-    "runId": "39695109531",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39695109531"
+    "runId": "39696407975",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/39696407975"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "94ebeba298dc514ff7ed3101339f8b82ac556243193bfd755a3cbb0d091ecd97"
   },
   "runner": {
-    "recordedAt": "2026-10-21T23:51:25.357Z",
+    "recordedAt": "2026-10-22T00:02:58.550Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261007.264.1",
-      "runner": "GitHub Actions 1000005152"
+      "runner": "GitHub Actions 1000005173"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -763,14 +763,14 @@
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 6537,
+        "passed": 6544,
         "failed": 0,
         "skipped": 4
       },
       "e2e": {
-        "passed": 47,
+        "passed": 39,
         "failed": 0,
-        "skipped": 192
+        "skipped": 200
       }
     },
     "ids": [
@@ -30441,32 +30441,32 @@
       },
       {
         "id": "ART-26a",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m1-shell.spec.ts"
       },
       {
         "id": "ART-29",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m1-shell.spec.ts"
       },
       {
         "id": "PERF-03",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m1-shell.spec.ts"
       },
       {
         "id": "AT-007",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
         "id": "PERF-02",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
         "id": "ART-26a",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
