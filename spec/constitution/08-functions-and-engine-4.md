@@ -31,6 +31,7 @@ System parts are numbered as 08-2 §7.2. "Prompt" = the per-turn text (§24.13).
 | `routine` | 1 = the identity of the owner chat (helper form when `routines.owner_chat_id` is a helper chat) · 2 · 3 (read-class tools only, see below) · `protocol.md` + `routine.md` · 5 | 8 (the routine's task, §24.21 routine part 8) · 9 · `Next decision?` |
 | `brief` | 1 · 2 · `protocol.md` + `brief.md` | the candidate block of §24.21 (brief; candidates per 08-3 §14.3) |
 | `classify` (stuck summary) | `protocol.md` + `stuck.md` | the last 5 redacted tool results as §24.21 (classify), ≤ 4,000 chars |
+| `classify` (steer check, CR-0045) | `protocol.md` + `steer_check.md` | `Job: {title}` · `Waiting for: {the open card's question or title}` · `New message: {text}` (§26.5 item 2b) |
 | `catch_up` | 1 · 2 · 4 `protocol.md` + `catch_up.md`; **no memory parts 5/5b** (and no part 6); of the user's data only `user.firstName` and `identity.agentName` (12-2 §12.27.2) | 9 untrusted: the gathered messages (12-2 §12.27.3 step 3), lines per §24.21 (catch_up part 9) |
 | `read_attachment` | 1 · 2 · 4 `protocol.md` + `read_attachment.md`; memory parts 5/5b skipped | the intent line (in `read_attachment.md`) · the prepared attachments (images) · 9 untrusted `attachmentText` pages (§24.14) |
 | `verify` | none | exactly `Reply with the word ready` (no protocol; `ok` when the reply contains "ready", case-insensitive) |
@@ -176,6 +177,12 @@ The act schema is `BriefAct` (08-3 §14.3).
 ```
 In at most 80 characters and plain words, say what keeps going wrong in these last results, from the user's point of view. Example: "MakeMyTrip keeps sending me back to the search page". Put it in whatsWrong. Leave <say> empty.
 ```
+
+### 24.13a `steer_check.md` (purpose `classify`, CR-0045)
+```
+foo is waiting for the user to answer a card in a job, and the user sent a new message. Say "job" when the message answers the card, changes or adds to the job (a date, a place, a budget, a person, "actually…"), asks about the job, or cancels it. Say "new" when it is a different request or a new topic that this job does not need. If unsure, say "job". Put it in about. Leave <say> empty.
+```
+The act schema is `SteerCheckAct` `{ about: 'job' | 'new' }` (§26.5 item 2b).
 
 ### 24.14 `untrusted.md` and section headers
 Preface placed once before the first untrusted block of a turn:
@@ -488,7 +495,8 @@ interface StuckSignal { rule: 'no_progress' | 'fail_streak' | 'cost' | 'url_loop
 Added as 08-2 §5.5 item 6:
 1. If the chat has an open Choice card and `answersCard(m)` (§26.6) holds → it is an answer, not a steer.
 2. A sign-in or take-over in progress is not interrupted: the steer is queued; steps 3–5 run after `signin.done` or hand-back.
-2a. A job whose open card is a Stuck card (05-3 §5.19) or a Secret box card takes no steer (CR-0035, X-193): only the user ends those cards, so a queued steer would wait for them and every later message with it. The message is not a steer of that job: §5.2 goes on as if the job were not live (another live job, or the intake turn), and the card stays as it is.
+2a. A job whose open card is a Stuck card (05-3 §5.19) or a Secret box card takes no steer (CR-0035, X-193): only the user ends those cards, so a queued steer would wait for them and every later message with it. The message is not a steer of that job: §5.2 goes on as if the job were not live (another live job, or the intake turn), and the card stays as it is. The same holds from the moment the watchdog halts a job for its Stuck card, while the "What's wrong" turn (§26.4 item 1) still runs and the job is still `working` (CR-0045, X-203).
+2b. When the chat's only live job is NEEDS_YOU on an open Choice, tiles, approval, payment or draft card, and the message is not an answer (item 1), one `classify` turn with `steer_check.md` (§24.13a) runs first (CR-0045, X-203). `about: "new"` → the message is not a steer of that job: §5.2 goes on to the intake turn, and the card and the job stay as they are. `about: "job"`, or the turn fails, times out or is refused by the cap → item 3 as before. The job is read again after the check: if it ended meanwhile, or now waits on a Stuck or Secret box card, the message goes to the intake turn instead. A WORKING job takes the steer with no check (its next step turn says `new_job`, 08-2 §5.5). The tech log gets `job.steer_check` with `job`, `new` or `failed`.
 3. Otherwise the runner does not wait for the open card. Every PENDING approval, payment or draft card of the job → `SUPERSEDED` (`approvals.superseded_by` stays NULL until the new card exists), the card's footer line reads "You changed something, so I stopped. See the new card below." (`cards.approval.line.superseded_steer`); open Choice cards of the job → state `superseded`, collapsed to "{question} → you changed the plan" (`cards.choice.collapsed.superseded_steer`). The job → `working`, `drainSteer` runs at once, and the step turn's part 10 starts with the line `A card was waiting; it has been withdrawn. Re-check the terms before asking again.`
 4. If the next `request_approval` yields the same `fields_hash` as the superseded card, the runner makes a fresh PENDING approval with those fields and posts no "changed" line (the user sees the same card again).
 5. The steer message's badge follows the job's badge (08-2 §5.5 item 4).

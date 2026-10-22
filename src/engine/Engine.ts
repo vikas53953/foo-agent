@@ -47,7 +47,7 @@ import { JobRunner } from './jobs/JobRunner';
 import { engineScreencast, type Screencast } from './tools/browser/screencast';
 import { JobRecovery } from './jobs/recovery';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
-import type { SecondLookAct, StepAct } from '../shared/schemas';
+import { SteerCheckActSchema, type SecondLookAct, type StepAct } from '../shared/schemas';
 // M9 T3
 import { engineBrowserTools, liveTermsReader, type BrowserRuntime } from './tools/browser/tools';
 import { SigninLanes, type LaneDeps } from './tools/browser/signinLanes'; // M9 T7
@@ -649,6 +649,13 @@ export class Engine {
         const env = parseEnvelope(text);
         const v = env.act === undefined ? null : validateAct('classify', env.act);
         return v?.ok ? (v.act as { whatsWrong: string }).whatsWrong : null;
+      },
+      // CR-0045
+      buildSteerCheck: (job, message) => this.prompts.buildSteerCheck(job, message),
+      parseSteerCheck: (text) => {
+        const env = parseEnvelope(text);
+        const v = SteerCheckActSchema.safeParse(env.act);
+        return v.success ? v.data.about : null;
       },
       filter: (text) => filterSay(text, { redactor }).text,
       isBanned: (text) => findBanned(text).length > 0,

@@ -9,9 +9,8 @@
 import { t } from '../../shared/copy/t';
 import { formatInr } from '../../shared/format';
 import type { CardRow, JobRow, StepRow } from '../../shared/types';
-import type { TurnResult } from '../ai/types';
 import type { DbOp } from '../protocol';
-import { estimateCallPaise } from './costMeter';
+import { classifyTurn } from './classifyTurn';
 import type { RunnerCore } from './JobRunner';
 import type { StopFlow } from './stopFlow';
 
@@ -223,6 +222,11 @@ export class Watchdog {
     return true;
   }
 
+  /** CR-0045: halted for its Stuck card, which is not posted yet (the "What's wrong" turn runs first). */
+  turningStuck(jobId: string): boolean {
+    return this.showing.has(jobId);
+  }
+
   /** WORKING → NEEDS_YOU with the stuck card (SM-A2: the badge is ⏳; ⚠ only in the card header). */
   async stuck(job: JobRow, signal: StuckSignal | StuckRule): Promise<void> {
     if (this.showing.has(job.id)) return;
@@ -264,8 +268,6 @@ export class Watchdog {
     const d = this.core.d;
     const site = job.siteDomain ?? this.lastSite(calls) ?? 'this site';
     const fallback = t('cards.stuck.whats_wrong.fallback', { site });
-    const pick = d.ai.pick();
-    if (!pick) return fallback;
     const results = calls
       .slice(-CLASSIFY_RESULTS)
       .map((c) => {
@@ -275,31 +277,9 @@ export class Watchdog {
       .join('\n')
       .slice(0, CLASSIFY_MAX);
     const built = d.prompts.buildStuck(results);
-    const params = d.ai.turnParams(pick.providerId, 'classify');
-    const est = estimateCallPaise(built.system.length + built.prompt.length, params.maxOutputTokens, d.rateOf(pick.providerId), d.usdToInr);
-    if (!(await this.core.cost.allows(est))) return fallback;
-    const turnId = d.newId('t');
-    const startedAt = d.clock.now();
-    let r: TurnResult;
-    try {
-      r = await d.ai.runTurn(
-        pick.providerId,
-        { ...params, turnId, purpose: 'classify', system: built.system, prompt: built.prompt, chatId: job.chatId },
-        { onText: () => {}, onSession: () => {} },
-        new AbortController().signal,
-      );
-    } catch {
-      d.log('job.classify_turn_threw', 'UNKNOWN', { jobId: job.id, chatId: job.chatId });
-      r = {
-        text: '',
-        usage: { tokensIn: null, tokensOut: null, cacheRead: null, cacheWrite: null, costUsd: null },
-        stopReason: 'error',
-        errorKind: 'UNKNOWN',
-      };
-    }
-    await this.core.recordTurn(job, pick, turnId, 'classify', startedAt, r);
-    if (r.stopReason !== 'end') return fallback;
-    const said = d.prompts.parseStuck(r.text);
+    const text = await classifyTurn(this.core, job, built);
+    if (text === null) return fallback;
+    const said = d.prompts.parseStuck(text);
     if (!said) return fallback;
     const clean = d.prompts.filter(said);
     return clean && !d.prompts.isBanned(clean) ? clean : fallback;

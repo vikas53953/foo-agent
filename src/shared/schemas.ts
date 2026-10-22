@@ -190,6 +190,9 @@ export const RewriteActSchema = z.object({}).strict();
 /** 08-4 §25.4 `StuckAct` (purpose `classify`). */
 export const StuckActSchema = z.object({ whatsWrong: z.string().min(1).max(80) }).strict();
 
+/** CR-0045 (X-203) 08-4 §24.13a `SteerCheckAct` (purpose `classify`): is a message to a waiting job about that job? */
+export const SteerCheckActSchema = z.object({ about: z.enum(['job', 'new']) }).strict();
+
 /** 08-2 §5.8 `Proof` plus `read_source` (08-0 §B.3, G2-8). The runner checks it against recorded tool results (§26.11). */
 export const ProofSchema = z.discriminatedUnion('kind', [
   z
@@ -350,6 +353,7 @@ export type ChoiceCardSpecAct = z.infer<typeof ChoiceCardSpecSchema>;
 export type SecondLookAct = z.infer<typeof SecondLookActSchema>;
 export type RewriteAct = z.infer<typeof RewriteActSchema>;
 export type StuckAct = z.infer<typeof StuckActSchema>;
+export type SteerCheckAct = z.infer<typeof SteerCheckActSchema>;
 export type GroupIntakeAct = z.infer<typeof GroupIntakeActSchema>;
 export type GroupMemberAct = z.infer<typeof GroupMemberActSchema>;
 
