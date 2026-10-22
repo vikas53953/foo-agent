@@ -1,0 +1,232 @@
+{
+  "journey": "B09-kit",
+  "title": "Rich reply pieces: calculator, map, chart, compare, timer, form",
+  "steps": 17,
+  "failed": 2,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T19-49-26-844Z-B09-kit",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792698572513,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 125
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "note": "AT-347/AT-371: the actual reply contains calculator inputs and output nodes",
+      "expect": "AT-347 calculator recomputes",
+      "firstReplyMs": 7600,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your EMI comes to about ₹43,391 a month for ₹50,00,000 (50 lakh) at 8.5% over 20 years. Change the amount, rate or years below and the figures update.\n\nLoan amount (₹)\nInterest rate (% a year)\nYears\nMonthly EMI\n₹43,391.16\nTotal you pay\n₹1,04,13,878.80\nTotal interest\n₹54,13,878.80\nKeep\n7:49 PM",
+      "kit": [
+        "kit-surface",
+        "kit-calculator",
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 16248
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792698588956,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 121
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "note": "AT-341: the actual map surface must expose scaled stops, an SVG route and its safe open chip",
+      "expect": "AT-341 numbered stops, dashed route, Open in Maps chip",
+      "firstReplyMs": 5096,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Here are 5 well-known places to visit in Jaipur, numbered in a rough order you could cover them. The positions are approximate.\n\n1\n2\n3\n4\n5\n1\nAmber Fort\nHilltop fort with mirror work. Go early to beat the crowd.\n2\nNahargarh Fort\nBest city views, especially at sunset.\n3\nHawa Mahal\nThe pink palace front. Best photographed in the morning.\n4\nCity Palace\nRoyal palace and museum in the old city.\n5\nJantar Mantar\nOld astronomical instruments, right next to City Palace.\nOpen in Maps\nKeep\n7:49 PM",
+      "kit": [
+        "kit-surface",
+        "kit-map-stops",
+        "kit-map-open",
+        "kit-keep"
+      ],
+      "endState": false,
+      "ms": 14227
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792698603373,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 149
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "note": "AT-340: the actual chart surface exposes a supported variant, series count and SVG drawing",
+      "expect": "AT-340 one hue, number rules",
+      "firstReplyMs": 9130,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "India's economy fell about 5.8% in FY21, bounced back 9.7% in FY22, then grew 7.6%, 9.2% and 6.5% in the next three years. These are approximate real GDP growth figures for each year ending in March. I don't have a final number for FY26 (Apr 2025 to Mar 2026), so it isn't shown.\n\nIndia real GDP growth (% a year)\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n7:50 PM",
+      "kit": [
+        "kit-surface",
+        "kit-line-chart",
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 17204
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792698620765,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 110
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "note": "The existing compare proof remains executable on the actual kit surface",
+      "expect": "AT-343 highlighted column with why",
+      "firstReplyMs": 8106,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "On value, the Pixel 9 comes out ahead: a bigger battery, a smooth 120 Hz screen and 7 years of updates at about the same launch price. The prices are approximate India launch prices for the base version, so check today's price before you buy.\n\niPhone 16\nLaunch price\nAbout ₹79,900 (128 GB)\nScreen\n6.1 inch, 60 Hz\nChip\nApple A18\nBattery\nAbout 3,600 mAh\nUpdates\nAround 6 to 7 years\nGood for\nResale value, video, simple to use\nBest pick\nPixel 9\nLaunch price\nAbout ₹79,999 (128 GB)\nScreen\n6.3 inch, 120 Hz\nChip\nGoogle Tensor G4\nBattery\nAbout 4,700 mAh\nUpdates\n7 years\nGood for\nPhotos, clean software, AI features\n\nBiggest battery, 120 Hz screen and 7 years of updates for about the same price.\n\nGalaxy S25\nLaunch price\nAbout ₹80,999 (128 GB)\nScreen\n6.2 inch, 120 Hz\nChip\nSnapdragon 8 Elite\nBattery\nAbout 4,000 mAh\nUpdates\n7 years\nGood for\nFastest speed, compact size, gaming\nKeep\n\nIf you mostly want speed in a small phone, the Galaxy S25 is the pick. If you want the best resale later, go for the iPhone 16.\n\n7:50 PM",
+      "kit": [
+        "kit-surface",
+        "kit-compare",
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 19276
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "sentAt": 1792698640220,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 127
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "note": "AT-346: the actual timed checklist has step rows and a renderer timer readout",
+      "expect": "AT-346 timer runs",
+      "firstReplyMs": 4577,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your 2 minute tea timer is ready below. Start it when the cup is brewing.\n\nLet the tea brew\n2:00 left\nStart timer\nKeep\n7:50 PM",
+      "kit": [
+        "kit-surface",
+        "kit-timed-checklist",
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 12168
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792698652559,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 120
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "note": "AT-351/AT-370: the actual short form is bounded and has no password/key input",
+      "expect": "AT-351 up to 6 fields, submit one action",
+      "firstReplyMs": 2537,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's a short form for the party plan. Fill it in and send it, and I'll work from your answers.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n7:50 PM",
+      "kit": [
+        "kit-surface",
+        "kit-short-form",
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 10687
+    },
+    {
+      "i": 12,
+      "do": "send",
+      "sentAt": 1792698663432,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 112
+    },
+    {
+      "i": 13,
+      "do": "waitReply",
+      "note": "AT-358: the actual page frame is sandboxed to scripts and reaches a ready/kept state",
+      "expect": "AT-358..362 sealed page, status line first",
+      "firstReplyMs": 5110,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your expense tracker is below. Add an item, amount and category, set a monthly budget, and the totals update as you go. Entries stay only while this page is open, so I can set up a monthly routine to ask you for the numbers if you want them kept.\n\nKeep\n7:51 PM",
+      "kit": [
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 21847
+    },
+    {
+      "i": 14,
+      "do": "send",
+      "note": "AT-370: exercise the short-form secret refusal through the renderer without sending data",
+      "sentAt": 1792698685482,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 148
+    },
+    {
+      "i": 15,
+      "do": "waitReply",
+      "note": "AT-370: a secret-like field must be represented by an actual refusal marker and no input field",
+      "expect": "AT-370 secret-like form field is refused in the rendered form",
+      "firstReplyMs": 9110,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I can't put a password box in a form, so this demo login has a username box only. Nothing here needs sending.\n\nDemo login\nUsername\nKeep\n7:51 PM",
+      "kit": [
+        "kit-surface",
+        "kit-text-field",
+        "kit-keep"
+      ],
+      "kitMissing": "kit-short-form",
+      "ms": 17214
+    },
+    {
+      "i": 16,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}

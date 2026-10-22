@@ -1,0 +1,162 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "steps": 17,
+  "failed": 3,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T20-00-13-747Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1032
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792699220840,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 161
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "note": "C.4 Choice (C3): choice card has at least three executable options",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "firstReplyMs": 6620,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which kind of weekend do you feel like?\n1\nNandi Hills sunrise\nBEST FIT\nEarly start, hills and views, back by noon\n2\nCubbon Park and café hopping\nEasy walk, then breakfast or coffee\n3\nLalbagh and a food crawl\nGardens, then a VV Puram street food trail\nSomething else…\nSkip\n8:00 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 12729
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "ok": true,
+      "ms": 92
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "ok": true,
+      "ms": 150
+    },
+    {
+      "i": 5,
+      "do": "click",
+      "ok": true,
+      "ms": 141
+    },
+    {
+      "i": 6,
+      "do": "check",
+      "note": "C.3 Reactions: reaction picker adds a reaction chip to the assistant bubble",
+      "found": 1,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 7,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 91
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "sentAt": 1792699234244,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 135
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "note": "C.4 Choice (C3); AT-035: typed choice branch collapses to an answered option (reaction-choice branch remains unexercised)",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "firstReplyMs": 21877,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Which Cubbon Park and café plan sounds best for your weekend?\n1\nPark walk, then Church Street cafés\nBEST FIT\nEasy and central, close to MG Road\n2\nPark walk, then Indiranagar cafés\nMore cafés to hop between, livelier\n3\nPark walk, then Lavelle Road cafés\nQuieter and greener, a short stroll away\nSomething else…\nSkip\n8:00 PM",
+      "kit": [],
+      "endState": false,
+      "ms": 27995
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792699262433,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 103
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "note": "C.4 Choice (C3): second choice card has executable options",
+      "expect": "another Choice card",
+      "firstReplyMs": 5594,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good tonight?\n1\nDosa and filter coffee\nBEST FIT\nLight South Indian tiffin\n2\nDal, roti and sabzi\nSimple homely North Indian meal\n3\nChicken or veg biryani\nRich and filling, with raita\nSomething else…\nSkip\n8:01 PM",
+      "kit": [],
+      "endState": false,
+      "ms": 11730
+    },
+    {
+      "i": 12,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 13,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 612
+    },
+    {
+      "i": 14,
+      "do": "send",
+      "sentAt": 1792699275074,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 105
+    },
+    {
+      "i": 15,
+      "do": "waitReply",
+      "note": "C.4 Choice (C3): assistant accepts the user-provided alternative",
+      "expect": "foo takes my own answer",
+      "firstReplyMs": 6087,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good tonight?\n1\nDal chawal\nBEST FIT\nSimple, home-cooked comfort\n2\nPaneer butter masala with roti\nRich and filling\n3\nVegetable biryani with raita\nOne-pot and flavourful\nSomething else…\nSkip\n8:01 PM",
+      "kit": [],
+      "endState": false,
+      "ms": 12175
+    },
+    {
+      "i": 16,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}

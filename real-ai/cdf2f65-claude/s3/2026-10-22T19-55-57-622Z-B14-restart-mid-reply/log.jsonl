@@ -1,0 +1,18 @@
+{"t":"2026-10-22T19:55:57.622Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T19:56:03.270Z","step":"launch","ok":true}
+{"t":"2026-10-22T19:56:11.365Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8091}
+{"t":"2026-10-22T19:56:11.465Z","i":0,"do":"send","sentAt":1792698971428,"sent":true,"before":0,"ok":true,"ms":100}
+{"t":"2026-10-22T19:56:14.467Z","i":1,"do":"wait","ok":true,"ms":3001}
+{"t":"2026-10-22T19:56:19.796Z","step":"launch","ok":true}
+{"t":"2026-10-22T19:56:19.796Z","i":2,"do":"relaunch","ok":true,"ms":5329}
+{"t":"2026-10-22T19:56:27.395Z","i":3,"do":"waitReply","note":"AT-118: after reopen the reply settles, or the cut-off bubble exposes Try again","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":526,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Shelly is a classic. A few more you might like:\n\nSpeedy, a funny name for a slow friend\nPebble, small, round and calm\nMochi, soft and sweet\nOdysseus, for a long, slow journey\n7:56 PM","kit":[],"endState":true,"ms":7599}
+{"t":"2026-10-22T19:56:27.460Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-22T19:56:27.613Z","i":4,"do":"send","sentAt":1792698987555,"sent":true,"before":0,"ok":true,"ms":153}
+{"t":"2026-10-22T19:56:29.616Z","i":5,"do":"wait","ok":true,"ms":2003}
+{"t":"2026-10-22T19:56:34.995Z","step":"launch","ok":true}
+{"t":"2026-10-22T19:56:34.995Z","i":6,"do":"relaunch","ok":true,"ms":5379}
+{"t":"2026-10-22T19:56:45.679Z","i":7,"do":"waitReply","note":"AT-118: the second post-reopen request also settles as a real answer","expect":"the news question is answered after reopening","firstReplyMs":4575,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for the biggest news story in India today\nWatch live\nStop\nunder 1 min\n7:56 PM","kit":[],"endState":false,"ms":10684}
+{"t":"2026-10-22T19:56:45.763Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-22T19:56:45.778Z","i":8,"do":"dump","ok":true,"ms":14}
+{"t":"2026-10-22T19:56:46.192Z","step":"appLog","lines":21,"dropped":0}
+{"t":"2026-10-22T19:56:46.205Z","step":"aiTurns","turns":3}
