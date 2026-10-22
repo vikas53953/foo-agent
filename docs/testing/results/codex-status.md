@@ -1,4 +1,4 @@
-# Codex status — 22 October 2026, 23:41 IST
+# Codex status — 23 October 2026, CI repair in progress
 
 The latest full real-AI run is [39828661301](https://github.com/vikas53953/foo-agent/actions/runs/39828661301), started 23:37 IST with all inventory journeys selected. Tested workflow/app revision: **branch `f2061bf27660f870fde3d22bddc9b436002c50bd`**, not main. Its ancestry includes main `0d04a9f9105e42aef0b4a22238285a9007635c3e`, but ancestry does not make these current-main results. Results pending. The previous [39780713204](https://github.com/vikas53953/foo-agent/actions/runs/39780713204) failed in a shard; diagnosis is ongoing. Dispatch gaps are recorded, not treated as compliant cadence.
 
@@ -50,7 +50,7 @@ External-account prerequisites, native accessibility and human usability evidenc
 
 Historical checkpoints are preserved in [status history](history/codex-status-before-1818.md). This file is the current summary; historical counts are not current results.
 
-The repair is published in commit `e227f19695aceba10f65bdf2743b3d167f52457c`. [Full CI verification 39829318930](https://github.com/vikas53953/foo-agent/actions/runs/39829318930) is running; this is the replacement verification for [red CI 39753919430](https://github.com/vikas53953/foo-agent/actions/runs/39753919430). Local journey/driver checks, typecheck and trace checks passed before push. Remote success is not yet claimed.
+The first repair attempt was published in commit `e227f19695aceba10f65bdf2743b3d167f52457c`; it did not make full CI green. [Full CI verification 39829318930](https://github.com/vikas53953/foo-agent/actions/runs/39829318930) has failed Windows jobs; this is the replacement verification for [red CI 39753919430](https://github.com/vikas53953/foo-agent/actions/runs/39753919430). Local journey/driver checks, typecheck and trace checks passed before push. Remote success is not claimed; the attempt is red.
 
 Previous full-run failure diagnosis: [immutable shard console](https://github.com/vikas53953/foo-agent/blob/2570c958a5001a68907b87596fdc3d76ebf17da8/real-ai/db2d661-claude/s1/console.txt) records initial sign-in failure followed by a clean retry, a stalled web request, unavailable Gmail capability, a stop scenario that never reached a working job, and reply/copy waits. These are log diagnoses pending independent screenshot judgment; no feature acceptance or new matrix promotion follows.
 
