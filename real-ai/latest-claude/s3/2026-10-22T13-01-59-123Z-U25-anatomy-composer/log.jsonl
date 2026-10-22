@@ -1,0 +1,48 @@
+{"t":"2026-10-22T13:01:59.123Z","journey":"U25-anatomy-composer","title":"Shell anatomy at every width, composer states, honest flights reply","spec":"03-shell-1 §3.1-§3.5, 03-shell-2 §3.6-§3.7, 04-2 §20-§23, AT-157","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T13:02:05.176Z","step":"launch","ok":true}
+{"t":"2026-10-22T13:02:06.219Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1036}
+{"t":"2026-10-22T13:02:07.036Z","i":1,"do":"resize","soft":true,"ok":true,"ms":817}
+{"t":"2026-10-22T13:02:07.134Z","shot":"01-L-1280.png"}
+{"t":"2026-10-22T13:02:07.135Z","i":2,"do":"shot","expect":"window at 1280x800","ok":true,"ms":99}
+{"t":"2026-10-22T13:02:07.238Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":103}
+{"t":"2026-10-22T13:02:07.327Z","i":4,"do":"shotEl","soft":true,"ok":true,"ms":88}
+{"t":"2026-10-22T13:02:07.409Z","i":5,"do":"shotEl","soft":true,"ok":true,"ms":82}
+{"t":"2026-10-22T13:02:07.490Z","i":6,"do":"shotEl","soft":true,"ok":true,"ms":80}
+{"t":"2026-10-22T13:02:07.565Z","i":7,"do":"shotEl","soft":true,"ok":true,"ms":75}
+{"t":"2026-10-22T13:02:07.642Z","i":8,"do":"shotEl","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-22T13:02:07.722Z","i":9,"do":"shotEl","soft":true,"ok":true,"ms":80}
+{"t":"2026-10-22T13:02:07.816Z","i":10,"do":"shotEl","soft":true,"ok":true,"ms":94}
+{"t":"2026-10-22T13:02:07.914Z","i":11,"do":"shotEl","soft":true,"ok":true,"ms":98}
+{"t":"2026-10-22T13:02:07.987Z","i":12,"do":"shotEl","soft":true,"ok":true,"ms":73}
+{"t":"2026-10-22T13:02:08.066Z","i":13,"do":"shotEl","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-22T13:02:08.146Z","i":14,"do":"shotEl","soft":true,"ok":true,"ms":80}
+{"t":"2026-10-22T13:02:08.225Z","i":15,"do":"shotEl","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-22T13:02:08.247Z","i":16,"do":"fill","soft":true,"ok":true,"ms":21}
+{"t":"2026-10-22T13:02:08.350Z","i":17,"do":"shotEl","soft":true,"ok":true,"ms":102}
+{"t":"2026-10-22T13:02:08.386Z","i":18,"do":"fill","soft":true,"ok":true,"ms":35}
+{"t":"2026-10-22T13:02:08.480Z","i":19,"do":"shotEl","soft":true,"ok":true,"ms":94}
+{"t":"2026-10-22T13:02:08.509Z","i":20,"do":"fill","soft":true,"ok":true,"ms":28}
+{"t":"2026-10-22T13:02:08.596Z","i":21,"do":"click","soft":true,"ok":true,"ms":87}
+{"t":"2026-10-22T13:02:09.110Z","i":22,"do":"wait","expect":"attach menu","ok":true,"ms":514}
+{"t":"2026-10-22T13:02:09.196Z","shot":"17-comp-attach-menu.png"}
+{"t":"2026-10-22T13:02:09.201Z","i":23,"do":"key","ok":true,"ms":5}
+{"t":"2026-10-22T13:02:10.008Z","i":24,"do":"resize","soft":true,"ok":true,"ms":806}
+{"t":"2026-10-22T13:02:10.085Z","shot":"18-M-1000.png"}
+{"t":"2026-10-22T13:02:10.085Z","i":25,"do":"shot","expect":"window at 1000x760","ok":true,"ms":77}
+{"t":"2026-10-22T13:02:10.888Z","i":26,"do":"resize","soft":true,"ok":true,"ms":803}
+{"t":"2026-10-22T13:02:10.954Z","shot":"19-S-760.png"}
+{"t":"2026-10-22T13:02:10.954Z","i":27,"do":"shot","expect":"window at 760x700","ok":true,"ms":66}
+{"t":"2026-10-22T13:02:11.773Z","i":28,"do":"resize","soft":true,"ok":true,"ms":819}
+{"t":"2026-10-22T13:02:11.834Z","shot":"20-XS-520.png"}
+{"t":"2026-10-22T13:02:11.834Z","i":29,"do":"shot","expect":"window at 520x640","ok":true,"ms":61}
+{"t":"2026-10-22T13:02:12.638Z","i":30,"do":"resize","soft":true,"ok":true,"ms":804}
+{"t":"2026-10-22T13:02:12.728Z","shot":"21-L-again.png"}
+{"t":"2026-10-22T13:02:12.728Z","i":31,"do":"shot","expect":"window at 1280x800","ok":true,"ms":90}
+{"t":"2026-10-22T13:02:12.854Z","i":32,"do":"send","sentAt":1792674132826,"sent":true,"before":0,"ok":true,"ms":126}
+{"t":"2026-10-22T13:02:18.961Z","i":33,"do":"waitReply","expect":"AT-157: says it can find and compare flights and open the booking page; filling passengers and paying comes later","firstReplyMs":552,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can find and compare flights, and open the booking page for you. Filling in passengers and paying for flights comes in a later version.\n1\nCompare flights\nBEST FIT\n2\nNot now\nSomething else…\nSkip\n1:02 PM","kit":[],"ms":6107}
+{"t":"2026-10-22T13:02:19.060Z","shot":"22-flights.png"}
+{"t":"2026-10-22T13:02:19.066Z","i":34,"do":"expectText","note":"AT-157 honest flights scope","soft":true,"text":"Dal chawal it is, simple and comforting. Want a quick recipe, or a side to go with it, like papad, achaar or a bit of ghee?\n\n1:00 PM","ok":false,"ms":6}
+{"t":"2026-10-22T13:02:19.079Z","i":35,"do":"dump","ok":true,"ms":13}
+{"t":"2026-10-22T13:02:19.083Z","step":"recheck","i":34,"do":"expectText","late":true}
+{"t":"2026-10-22T13:02:19.264Z","step":"appLog","lines":1,"dropped":0}
+{"t":"2026-10-22T13:02:19.280Z","step":"aiTurns","turns":0}

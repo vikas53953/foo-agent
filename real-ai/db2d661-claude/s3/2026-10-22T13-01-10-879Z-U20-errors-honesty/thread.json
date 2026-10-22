@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Lalbagh and Cubbon Park is a lovely pick, and both are green and easy to walk. Do you want it on your calendar for Sat 24 Oct or Sun 25 Oct?\n\n1:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n1:00 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds good tonight?\n1\nSouth Indian tiffin\nBEST FIT\nDosa, idli and filter coffee\n2\nNorth Indian thali\nDal, paneer, roti and rice\n3\nBiryani night\nHyderabadi or Bengaluru style\nSomething else…\nSkip\n1:00 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n1:00 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dal chawal it is, simple and comforting. Want a quick recipe, or a side to go with it, like papad, achaar or a bit of ghee?\n\n1:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n1:01 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which company do you pay your electricity bill to?\n1\nBESCOM\nBEST FIT\nBengaluru's power company\n2\nAnother company\nTell me its name\n3\nFind it in my email\nI'll look for the latest bill\nSomething else…\nSkip\n1:01 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n1:01 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Paying Domino's\n1\nSign in to dominos.co.in\n2\nLook for pizza menu at your nearest Domino's\n3\nWait for you to pick one\n4\nFill in your details on dominos.co.in\n5\nShow you before placing the order and paying\n…and 2 more · Show\nAbout 5 minutes\nGo\nChange plan\n1:01 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n1:01 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "skipped",
+    "text": "Connect Gmail\n\nNot connected. You can do this later in Settings → Connections.\n\n1:01 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:01 PM"
+  }
+]

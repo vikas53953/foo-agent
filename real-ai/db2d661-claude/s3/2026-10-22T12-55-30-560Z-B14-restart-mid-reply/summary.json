@@ -1,0 +1,96 @@
+{
+  "journey": "B14-restart-mid-reply",
+  "title": "Close foo within 5 s of sending, reopen: the message still gets a real answer",
+  "steps": 10,
+  "failed": 0,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T12-55-30-560Z-B14-restart-mid-reply",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792673744571,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 119
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "ok": true,
+      "ms": 3002
+    },
+    {
+      "i": 2,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5393
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "note": "AT-118: after reopen the reply settles, or the cut-off bubble exposes Try again",
+      "expect": "a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again",
+      "firstReplyMs": 509,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Try Shelly, Turbo (a fun joke for a slow pet) or Pebble. Other good ones are Mochi, Biscuit and Methuselah, for a tortoise that may outlive you.\n\n12:55 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 8122
+    },
+    {
+      "i": 4,
+      "do": "eval",
+      "value": {
+        "lastMine": "What is a good name for a pet tortoise?\n12:55 PM",
+        "eyes": false
+      },
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "send",
+      "sentAt": 1792673761330,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 200
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "ok": true,
+      "ms": 2001
+    },
+    {
+      "i": 7,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5399
+    },
+    {
+      "i": 8,
+      "do": "waitReply",
+      "note": "AT-118: the second post-reopen request also settles as a real answer",
+      "expect": "the news question is answered after reopening",
+      "firstReplyMs": 4556,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nLook for top India news story today\nWatch live\nStop\nunder 1 min\n12:56 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 11003
+    },
+    {
+      "i": 9,
+      "do": "dump",
+      "ok": true,
+      "ms": 29
+    }
+  ]
+}

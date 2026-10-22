@@ -1,0 +1,19 @@
+{"t":"2026-10-22T12:55:30.560Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T12:55:36.383Z","step":"launch","ok":true}
+{"t":"2026-10-22T12:55:44.491Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8104}
+{"t":"2026-10-22T12:55:44.611Z","i":0,"do":"send","sentAt":1792673744571,"sent":true,"before":0,"ok":true,"ms":119}
+{"t":"2026-10-22T12:55:47.614Z","i":1,"do":"wait","ok":true,"ms":3002}
+{"t":"2026-10-22T12:55:53.008Z","step":"launch","ok":true}
+{"t":"2026-10-22T12:55:53.008Z","i":2,"do":"relaunch","ok":true,"ms":5393}
+{"t":"2026-10-22T12:56:01.131Z","i":3,"do":"waitReply","note":"AT-118: after reopen the reply settles, or the cut-off bubble exposes Try again","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":509,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Try Shelly, Turbo (a fun joke for a slow pet) or Pebble. Other good ones are Mochi, Biscuit and Methuselah, for a tortoise that may outlive you.\n\n12:55 PM","kit":[],"endState":true,"ms":8122}
+{"t":"2026-10-22T12:56:01.196Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-22T12:56:01.198Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n12:55 PM","eyes":false},"ok":true,"ms":2}
+{"t":"2026-10-22T12:56:01.399Z","i":5,"do":"send","sentAt":1792673761330,"sent":true,"before":0,"ok":true,"ms":200}
+{"t":"2026-10-22T12:56:03.400Z","i":6,"do":"wait","ok":true,"ms":2001}
+{"t":"2026-10-22T12:56:08.800Z","step":"launch","ok":true}
+{"t":"2026-10-22T12:56:08.800Z","i":7,"do":"relaunch","ok":true,"ms":5399}
+{"t":"2026-10-22T12:56:19.803Z","i":8,"do":"waitReply","note":"AT-118: the second post-reopen request also settles as a real answer","expect":"the news question is answered after reopening","firstReplyMs":4556,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for top India news story today\nWatch live\nStop\nunder 1 min\n12:56 PM","kit":[],"endState":true,"ms":11003}
+{"t":"2026-10-22T12:56:19.979Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-22T12:56:20.008Z","i":9,"do":"dump","ok":true,"ms":29}
+{"t":"2026-10-22T12:56:20.985Z","step":"appLog","lines":19,"dropped":0}
+{"t":"2026-10-22T12:56:20.999Z","step":"aiTurns","turns":3}

@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n12:47 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:47 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n12:47 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:47 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n12:47 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:47 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n12:47 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n12:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n12:47 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mummy ke birthday (Sat 24 Oct) ke liye ye teen cake sabse safe rahenge:\n\nRasmalai cake: mithai wala swaad, aur zyada tar family ko pasand aata hai.\nChocolate truffle ya butterscotch: classic hai, kabhi galat nahi jaata.\nFresh fruit cake: halka aur kam meetha, agar mummy ko zyada cream pasand nahi.\n\nPhoto cake ya naam likhwana ho to aaj hi order kar do, kyunki kai bakery ko ek din pehle chahiye hota hai. Mummy eggless khati hain ya koi bhi chalega?\n\n12:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n12:48 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਮੰਮੀ ਲਈ ਸਭ ਤੋਂ ਵਧੀਆ ਚੋਣ ਰਸਮਲਾਈ ਕੇਕ ਹੈ, ਕਿਉਂਕਿ ਇਹ ਮਿਠਾਈ ਵਰਗਾ ਸੁਆਦ ਦਿੰਦਾ ਹੈ ਅਤੇ ਘਰ ਵਿੱਚ ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\n\nਚਾਕਲੇਟ ਟਰਫਲ: ਹਰ ਵੇਲੇ ਸੁਰੱਖਿਅਤ ਚੋਣ।\nਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ: ਹਲਕਾ ਅਤੇ ਘੱਟ ਮਿੱਠਾ, ਜੇ ਮੰਮੀ ਨੂੰ ਕਰੀਮ ਘੱਟ ਪਸੰਦ ਹੈ।\n\nਜਨਮ ਦਿਨ Sat 24 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਨਾਮ ਜਾਂ ਫੋਟੋ ਵਾਲਾ ਕੇਕ ਅੱਜ ਹੀ ਆਰਡਰ ਕਰ ਦਿਓ। ਮੰਮੀ ਐੱਗਲੈੱਸ ਖਾਂਦੇ ਹਨ ਜਾਂ ਕੋਈ ਵੀ ਚੱਲੇਗਾ?\n\n12:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n12:48 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, Mon 2 Nov doesn't look like a holiday in Mumbai. I don't know of any festival or Maharashtra government holiday that day, so banks and offices should be open. I can't see the official holiday list, so check the RBI or Maharashtra government list if it matters for a bank visit. Diwali comes the week after.\n\n12:48 PM"
+  }
+]

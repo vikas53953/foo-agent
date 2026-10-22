@@ -1,0 +1,21 @@
+{"t":"2026-10-22T12:58:26.720Z","journey":"U04-find-in-chat","title":"Find in chat: Ctrl+F, count, next, previous, close","spec":"06 §9 find in chat, 10-2 §C.5 Search palette + find in chat","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T12:58:32.397Z","step":"launch","ok":true}
+{"t":"2026-10-22T12:58:33.447Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1047}
+{"t":"2026-10-22T12:58:33.598Z","i":1,"do":"send","sentAt":1792673913554,"sent":true,"before":0,"ok":true,"ms":151}
+{"t":"2026-10-22T12:58:44.785Z","i":2,"do":"waitReply","expect":"a short list","firstReplyMs":4034,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Three Indian rivers are the Ganga, the Yamuna and the Godavari.\n\n12:58 PM","kit":[],"ms":11187}
+{"t":"2026-10-22T12:58:44.868Z","shot":"01-rivers.png"}
+{"t":"2026-10-22T12:58:44.887Z","i":3,"do":"key","expect":"find bar in the chat header with a field and count","ok":true,"ms":19}
+{"t":"2026-10-22T12:58:44.955Z","shot":"02-find-open.png"}
+{"t":"2026-10-22T12:58:44.972Z","i":4,"do":"fill","soft":true,"ok":true,"ms":17}
+{"t":"2026-10-22T12:58:45.772Z","i":5,"do":"wait","expect":"matches highlighted; count \"1 of n\"","ok":true,"ms":800}
+{"t":"2026-10-22T12:58:45.849Z","shot":"03-find-results.png"}
+{"t":"2026-10-22T12:58:45.942Z","i":6,"do":"click","soft":true,"ok":true,"ms":93}
+{"t":"2026-10-22T12:58:46.030Z","i":7,"do":"click","soft":true,"ok":true,"ms":88}
+{"t":"2026-10-22T12:58:46.134Z","i":8,"do":"click","soft":true,"ok":true,"ms":104}
+{"t":"2026-10-22T12:58:46.139Z","i":9,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-22T12:58:46.940Z","i":10,"do":"wait","expect":"Ctrl+K search overlay (J22) if built; else nothing happens","ok":true,"ms":801}
+{"t":"2026-10-22T12:58:47.004Z","shot":"04-ctrl-k.png"}
+{"t":"2026-10-22T12:58:47.008Z","i":11,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-22T12:58:47.023Z","i":12,"do":"dump","ok":true,"ms":15}
+{"t":"2026-10-22T12:58:47.192Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-10-22T12:58:47.204Z","step":"aiTurns","turns":1}
