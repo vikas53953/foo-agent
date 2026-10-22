@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { MUTATION_MANIFESTS, validateMutationManifest } from './mutation-manifest';
+import { MUTATION_MANIFESTS, MUTATION_SLICES, validateMutationManifest } from './mutation-manifest';
 
 const repoRoot = path.resolve(__dirname, '../..');
 const errors = validateMutationManifest(repoRoot);
@@ -15,5 +15,13 @@ if (errors.length > 0) {
     noCoverageTargets: manifest.targets.filter((entry) => entry.disposition === 'no-coverage').length,
     testFiles: manifest.tests,
   }));
-  console.log(JSON.stringify({ status: 'pass', targetCount: 40, areas: summary }, null, 2));
+  const slices = Object.values(MUTATION_SLICES).map((slice) => ({
+    slice: slice.slice,
+    area: slice.area,
+    targetCount: slice.targets.length,
+    testFileCount: slice.tests.length,
+    targets: slice.targets.map((entry) => entry.target),
+    testFiles: slice.tests,
+  }));
+  console.log(JSON.stringify({ status: 'pass', targetCount: 40, areas: summary, slices }, null, 2));
 }
