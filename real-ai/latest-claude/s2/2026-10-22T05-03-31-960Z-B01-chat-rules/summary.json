@@ -1,0 +1,78 @@
+{
+  "journey": "B01-chat-rules",
+  "title": "Chat rules: thanks, long answer, filler, reactions",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-03-31-960Z-B01-chat-rules",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792645417565,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 129
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "expect": "AT-027: 👍 reaction on my message, no foo message",
+      "ok": true,
+      "ms": 20005
+    },
+    {
+      "i": 2,
+      "do": "eval",
+      "value": {
+        "reaction": true,
+        "lastKind": "bubble-me"
+      },
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "sentAt": 1792645437749,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 99
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler",
+      "firstReplyMs": 11772,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "People in India are switching to UPI because it makes paying as simple as sending a message, and it costs almost nothing to use. Before UPI, small payments meant carrying cash, hunting for change, or relying on card machines that many small shops never had. Now a shopkeeper needs only a printed QR code, and a customer needs only a phone and a bank account.\n\nThree main reasons:\n\nIt's free for most people. Paying a shop or sending money to a friend usually costs nothing, so there is little reason to go back to cash.\nIt's fast and works everywhere. From a tea stall to a big mall, one scan completes the payment in seconds, at any hour, even on holidays.\nIt works with any bank app. You pick the app you like, and it links straight to your own bank account. You don't need to top up a wallet first.\n\nHabit does the rest. Once your family, your neighbourhood shop and your landlord all take UPI, handling cash starts to feel like extra work. Every payment also needs your private PIN, and your bank sends an instant message afterwards, which helps people trust it.\n\n5:04 AM",
+      "kit": [],
+      "ms": 19372
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "AT-308 suggestion chips (≤3)",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 6,
+      "do": "eval",
+      "value": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}
