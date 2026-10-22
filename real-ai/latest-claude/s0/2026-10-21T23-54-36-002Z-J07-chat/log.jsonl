@@ -1,0 +1,14 @@
+{"t":"2026-10-21T23:54:36.003Z","journey":"J07-chat","title":"Casual chat","spec":"07-1 J7; 04 §12; 08-4 rules","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-21T23:54:41.472Z","step":"launch","ok":true}
+{"t":"2026-10-21T23:54:41.604Z","i":0,"do":"send","sentAt":1792626881569,"sent":true,"before":0,"ok":true,"ms":126}
+{"t":"2026-10-21T23:54:53.259Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":4059,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Hi! It's late, but I'm here. What do you need?\n\n11:54 PM","ms":11655}
+{"t":"2026-10-21T23:54:53.331Z","shot":"01-hi.png"}
+{"t":"2026-10-21T23:54:53.420Z","i":2,"do":"send","sentAt":1792626893406,"sent":true,"before":0,"ok":true,"ms":89}
+{"t":"2026-10-21T23:55:04.594Z","i":3,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":4062,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can read your email and calendar, check websites and bills, set up routines, and help with bookings and messages, always asking before I send or pay anything.\n\n11:54 PM","ms":11174}
+{"t":"2026-10-21T23:55:04.656Z","shot":"02-what-can-you-do.png"}
+{"t":"2026-10-21T23:55:04.774Z","i":4,"do":"send","sentAt":1792626904739,"sent":true,"before":0,"ok":true,"ms":116}
+{"t":"2026-10-21T23:55:16.410Z","i":5,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3551,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"A VPN is a private tunnel between your phone or laptop and another computer on the internet, and everything you send goes through that tunnel first.\n\nYour data is scrambled before it leaves your device, so your Wi-Fi owner or internet company can't read it. It then comes out at the VPN company's computer, which visits the website for you. The website sees the VPN's address instead of yours, so it looks like you're browsing from wherever that computer is.\n\nIt helps on public Wi-Fi and keeps your browsing private from your internet company. It doesn't make you anonymous, though, because the VPN company can still see what you do, and sites can still know you by your logins.\n\n11:55 PM","ms":11636}
+{"t":"2026-10-21T23:55:16.476Z","shot":"03-vpn.png"}
+{"t":"2026-10-21T23:55:16.479Z","i":6,"do":"dump","ok":true,"ms":3}
+{"t":"2026-10-21T23:55:16.603Z","step":"appLog","lines":10,"dropped":0}
+{"t":"2026-10-21T23:55:16.617Z","step":"aiTurns","turns":3}

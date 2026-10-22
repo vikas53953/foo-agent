@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n11:54 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:54 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n11:54 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n11:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n11:54 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! It's late, but I'm here. What do you need?\n\n11:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n11:54 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can read your email and calendar, check websites and bills, set up routines, and help with bookings and messages, always asking before I send or pay anything.\n\n11:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n11:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your phone or laptop and another computer on the internet, and everything you send goes through that tunnel first.\n\nYour data is scrambled before it leaves your device, so your Wi-Fi owner or internet company can't read it. It then comes out at the VPN company's computer, which visits the website for you. The website sees the VPN's address instead of yours, so it looks like you're browsing from wherever that computer is.\n\nIt helps on public Wi-Fi and keeps your browsing private from your internet company. It doesn't make you anonymous, though, because the VPN company can still see what you do, and sites can still know you by your logins.\n\n11:55 PM"
+  }
+]

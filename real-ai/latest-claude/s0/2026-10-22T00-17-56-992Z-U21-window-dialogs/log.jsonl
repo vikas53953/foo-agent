@@ -1,0 +1,15 @@
+{"t":"2026-10-22T00:17:56.992Z","journey":"U21-window-dialogs","title":"Close to tray dialog, quit with a running job","spec":"09 §9.2 close to tray, 06 dialogs, 10-2 §C.5 Dialogs / §C.6","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T00:18:02.546Z","step":"launch","ok":true}
+{"t":"2026-10-22T00:18:10.648Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8098}
+{"t":"2026-10-22T00:18:11.681Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1033}
+{"t":"2026-10-22T00:18:11.789Z","i":1,"do":"send","sentAt":1792628291754,"sent":true,"before":0,"ok":true,"ms":108}
+{"t":"2026-10-22T00:18:15.791Z","i":2,"do":"wait","ok":true,"ms":4001}
+{"t":"2026-10-22T00:18:15.796Z","i":3,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-22T00:18:17.310Z","i":4,"do":"wait","expect":"first-close dialog: foo keeps running in the tray","ok":true,"ms":1514}
+{"t":"2026-10-22T00:18:17.371Z","shot":"01-first-close.png"}
+{"t":"2026-10-22T00:18:17.374Z","i":5,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-22T00:18:28.089Z","i":6,"do":"waitReply","expect":"job still finishes after the dialog","firstReplyMs":3077,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nSlow here, trying another way\nCompare top stories across news sites\nKeep 3 headlines that fit most covered today\nWatch live\nStop\nunder 1 min\n12:18 AM","ms":10715}
+{"t":"2026-10-22T00:18:28.176Z","shot":"02-news.png"}
+{"t":"2026-10-22T00:18:28.179Z","i":7,"do":"dump","ok":true,"ms":3}
+{"t":"2026-10-22T00:18:28.356Z","step":"appLog","lines":14,"dropped":0}
+{"t":"2026-10-22T00:18:28.369Z","step":"aiTurns","turns":3}
