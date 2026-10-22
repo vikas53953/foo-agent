@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n12:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n12:38 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me 5 weekend trek options near Pune with difficulty and cost\n12:39 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "changed",
+    "text": "Plan changed. See the new one below.\n12:39 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:39 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Only easy treks please\n12:39 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 12:39 AM\n12:39 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:39 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for easy weekend trek options near Pune with\nKept 5 treks near Pune that fit easy difficulty only, doable in a\nCompared difficulty and cost of the 5 easy treks\nStopped by you\n12:39 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:39 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n12:40 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember that I am vegetarian on Tuesdays\n12:40 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember my favourite cricket team is Punjab Kings\n12:40 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write a 4-line poem about monsoon in Mumbai\n12:40 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Grey clouds roll in over Marine Drive's bay,\nAnd the sea throws its spray at the wall.\nChai steams on the stalls as the streets turn to streams,\nAnd the city slows down to the rain's call.\n\n12:41 AM"
+  }
+]

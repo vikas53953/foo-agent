@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n12:36 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n12:36 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 12:36 AM\n12:36 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:36 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Checking flight booking sites\nlive checklist\nChecked flight booking sites\nF\nLooked for Delhi to Mumbai flights on Fri 30 Oct\nKept 3 flights that fit lowest fare\nCompared fare, timings and airline\nStopped by you\n12:36 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:36 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:37 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n12:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:37 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n12:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n12:37 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What kind of programming will you do most on this laptop?\n1\nWeb and app development\nBEST FIT\nLight on power, so battery and screen matter more\n2\nData science or AI work\nMore memory, maybe a graphics chip\n3\nGames or heavy apps\nNeeds a strong graphics chip\n4\nA bit of everything\nBalanced pick, best all-rounder\nSomething else…\nSkip\n12:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:37 AM"
+  }
+]

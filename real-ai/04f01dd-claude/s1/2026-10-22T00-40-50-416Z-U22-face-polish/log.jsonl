@@ -1,0 +1,20 @@
+{"t":"2026-10-22T00:40:50.416Z","journey":"U22-face-polish","title":"Living face: thinking while working, resting; motion off in settings","spec":"02 §F15.9 living face, 10-2 §C.7, §C.8","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T00:40:56.127Z","step":"launch","ok":true}
+{"t":"2026-10-22T00:40:57.178Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1048}
+{"t":"2026-10-22T00:40:57.331Z","i":1,"do":"send","sentAt":1792629657287,"sent":true,"before":0,"ok":true,"ms":153}
+{"t":"2026-10-22T00:40:58.846Z","i":2,"do":"wait","expect":"26px Thinking face only while the request is in flight (C.7.4)","ok":true,"ms":1514}
+{"t":"2026-10-22T00:40:58.922Z","shot":"01-thinking.png"}
+{"t":"2026-10-22T00:41:11.051Z","i":3,"do":"waitReply","expect":"poem; face back to resting, blinks","firstReplyMs":5571,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Grey clouds roll in over Marine Drive's bay,\nAnd the sea throws its spray at the wall.\nChai steams on the stalls as the streets turn to streams,\nAnd the city slows down to the rain's call.\n\n12:41 AM","ms":12128}
+{"t":"2026-10-22T00:41:11.114Z","shot":"02-poem.png"}
+{"t":"2026-10-22T00:41:11.191Z","i":4,"do":"shotEl","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-22T00:41:11.249Z","i":5,"do":"key","ok":true,"ms":58}
+{"t":"2026-10-22T00:41:11.336Z","i":6,"do":"click","soft":true,"ok":true,"ms":87}
+{"t":"2026-10-22T00:41:11.415Z","i":7,"do":"click","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-22T00:41:12.020Z","i":8,"do":"wait","expect":"face motion setting","ok":true,"ms":605}
+{"t":"2026-10-22T00:41:12.089Z","shot":"04-face-motion.png"}
+{"t":"2026-10-22T00:41:12.145Z","i":9,"do":"key","ok":true,"ms":56}
+{"t":"2026-10-22T00:41:35.221Z","shot":"05-error-step10.png"}
+{"t":"2026-10-22T00:41:35.221Z","i":10,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23076}
+{"t":"2026-10-22T00:41:35.231Z","i":11,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-22T00:41:35.371Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-10-22T00:41:35.384Z","step":"aiTurns","turns":2}
