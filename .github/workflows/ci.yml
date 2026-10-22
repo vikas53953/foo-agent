@@ -15,7 +15,7 @@ on:
       testing_lanes:
         description: Additional test lanes approved by Vikas on 2026-10-22; standard runs the existing CI suite
         type: choice
-        options: [standard, all, bdd, eval, windows, installer, soak, quality, perf]
+        options: [standard, all, bdd, eval, windows, installer, soak, quality, perf, mutation]
         default: standard
       lane_b_ref:
         description: Exact Lane B commit or branch to test
@@ -142,7 +142,7 @@ jobs:
 
   lane-f-mutation:
     name: Lane F mutation (${{ matrix.area }})
-    if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner && (inputs.testing_lanes == 'all' || inputs.testing_lanes == 'quality')
+    if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner && (inputs.testing_lanes == 'all' || inputs.testing_lanes == 'quality' || inputs.testing_lanes == 'mutation')
     runs-on: windows-latest
     timeout-minutes: 180
     strategy:
@@ -161,36 +161,36 @@ jobs:
       - run: pnpm install --frozen-lockfile --ignore-scripts
       - run: pnpm rebuild:node
       - run: npm ci --prefix scripts/audit
-      - name: Select an exhaustive disjoint area from the existing mutation configuration
+      - name: Validate complete per-area mutation manifest
         shell: pwsh
         env:
           MUTATION_AREA: ${{ matrix.area }}
         run: |
           New-Item -ItemType Directory -Force reports/mutation | Out-Null
           git rev-parse HEAD | Set-Content reports/mutation/tested-sha.txt
-          $config = Get-Content stryker.lane-f.config.json -Raw | ConvertFrom-Json
-          $prefixes = @{
-            shared = @('src/shared/')
-            engine = @('src/engine/')
-            main = @('src/main/', 'src/preload/', 'src/wa-bridge/')
-            renderer = @('src/renderer/')
-          }
-          $selected = @($config.mutate | Where-Object {
-            $targetFile = $_
-            @($prefixes[$env:MUTATION_AREA] | Where-Object { $targetFile.StartsWith($_) }).Count -gt 0
-          })
-          if ($selected.Count -eq 0) { throw 'empty mutation area' }
-          $config.mutate = $selected
-          $config | ConvertTo-Json -Depth 20 | Set-Content stryker.lane-f-ci.json -Encoding utf8
-          $selected | Set-Content reports/mutation/selected-files.txt
+          pnpm exec tsx scripts/audit/mutation-preflight.ts 2>&1 | Tee-Object reports/mutation/preflight.txt
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $configPath = 'stryker.lane-f-' + $env:MUTATION_AREA + '-ci.json'
+          $config = Get-Content -LiteralPath $configPath -Raw | ConvertFrom-Json
+          if ($config.thresholds.break -ne 70 -or $config.concurrency -ne 1) { throw 'Mutation threshold or concurrency differs from approved configuration' }
+          $config.mutate | Set-Content reports/mutation/selected-files.txt
       - name: Execute mutations with unchanged acceptance thresholds
-        run: scripts/audit/node_modules/.bin/stryker.cmd run stryker.lane-f-ci.json
+        shell: pwsh
+        env:
+          MUTATION_AREA: ${{ matrix.area }}
+        run: |
+          $configPath = 'stryker.lane-f-' + $env:MUTATION_AREA + '-ci.json'
+          scripts/audit/node_modules/.bin/stryker.cmd run $configPath
+          exit $LASTEXITCODE
       - name: Summarize actual mutation output
         if: always()
         shell: pwsh
+        env:
+          MUTATION_AREA: ${{ matrix.area }}
         run: |
-          if (Test-Path reports/mutation/lane-f.json) {
-            pnpm exec tsx scripts/audit/mutation-report.ts --input reports/mutation/lane-f.json --out reports/mutation/summary.json
+          $reportPath = 'reports/mutation/lane-f-' + $env:MUTATION_AREA + '.json'
+          if (Test-Path -LiteralPath $reportPath) {
+            pnpm exec tsx scripts/audit/mutation-report.ts --input $reportPath --out reports/mutation/summary.json
             exit $LASTEXITCODE
           }
           Write-Warning 'No completed mutation JSON exists; no score can be claimed.'
