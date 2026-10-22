@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n6:21 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:21 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n6:21 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:21 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n6:21 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:21 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n6:21 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:21 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n6:22 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which Friday do you mean for Delhi to Mumbai?\n1\nFri 30 Oct\nBEST FIT\nNext week's Friday\n2\nFri 23 Oct\nTomorrow\nSomething else…\nSkip\n6:22 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:22 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:22 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n6:22 AM"
+  }
+]
