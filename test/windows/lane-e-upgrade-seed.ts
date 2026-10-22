@@ -1,10 +1,15 @@
-// Spec: 09-windows §9.3/§9.23, 08-1 §4.3 (upgrade fixture data: chats, memory, routine and a working job).
+// Spec: 09-windows §9.3/§9.23, 08-1 §4.3 (upgrade fixture data: chats, memory and a working job).
 // This helper writes only to the explicitly supplied FOO_DATA_DIR. It is called after the previous release has started once
 // so its migration-created schema is the one being exercised; no real profile, keyring or AI provider is read.
 import Database from 'better-sqlite3';
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
+
+if (process.argv.includes('--help')) {
+  console.log('lane-e-upgrade-seed: seed chats, memory and one working job into an explicit RUNNER_TEMP database fixture.');
+  process.exit(0);
+}
 
 const args = new Map<string, string>();
 for (let i = 2; i < process.argv.length; i += 2) {
@@ -36,7 +41,6 @@ const messageA = 'm_lane_e_upgrade_a';
 const messageB = 'm_lane_e_upgrade_b';
 const jobId = 'j_lane_e_upgrade_running';
 const stepId = 's_lane_e_upgrade_running';
-const routineId = 'r_lane_e_upgrade_hourly';
 
 const db = new Database(dbFile);
 try {
@@ -52,7 +56,6 @@ try {
     ['messages', messageB],
     ['jobs', jobId],
     ['steps', stepId],
-    ['routines', routineId],
     ['memory_index', factId],
   ] as const) {
     if (exists(table, id)) throw new Error(`fixture id already exists: ${table}/${id}`);
@@ -84,12 +87,6 @@ try {
        VALUES (?, 'memory/about-you.md', 2, 'global', NULL, ?, 'said', 'chat:fixture', 'chat', NULL, 'fact', 0, ?, ?)`,
     ).run(factId, factText, now, factHash);
     db.prepare(
-      `INSERT INTO routines
-       (id, owner_chat_id, title, what_text, task_spec, schedule, tz, active_from, active_to, state, created_from,
-        next_run_at, created_at, updated_at)
-       VALUES (?, ?, 'Fixture hourly routine', 'Checks the fixture', ?, ?, 'Asia/Kolkata', '0600', '2300', 'on', 'asked', ?, ?, ?)`,
-    ).run(routineId, chatA, '{"kind":"read_only","text":"Check fixture"}', '{"kind":"interval","minutes":60}', now + 60 * 60_000, now, now);
-    db.prepare(
       `INSERT INTO jobs
        (id, chat_id, origin_chat_id, owner_kind, title, origin, user_message_id, intent, do_verbs, state, plan_version,
         current_step_idx, step_count, created_at, started_at, last_progress_at)
@@ -110,8 +107,8 @@ try {
     fixture: 'lane-e-upgrade',
     dataDir,
     createdAt: now,
-    ids: { chats: [chatA, chatB], messages: [messageA, messageB], memory: factId, routine: routineId, job: jobId, step: stepId },
-    expected: { chatCountAtLeast: 2, memoryCountAtLeast: 1, routineCountAtLeast: 1, runningJob: jobId },
+    ids: { chats: [chatA, chatB], messages: [messageA, messageB], memory: factId, job: jobId, step: stepId },
+    expected: { chatCountAtLeast: 2, memoryCountAtLeast: 1, runningJob: jobId },
   };
   writeFileSync(join(outDir, 'lane-e-upgrade-seed.json'), JSON.stringify(snapshot, null, 2), 'utf8');
   console.log(JSON.stringify(snapshot));

@@ -1,6 +1,7 @@
-// Spec: app-wide long-run soak (08-3 §22.9 / 10-2 §E) and 09-windows §9.8/§9.9 (routine/job notifications and process
-// stability). This harness always runs the full eight-hour window. It needs a Windows fixture driver to write heartbeat
-// evidence; an absent or stale heartbeat is blocked/fail evidence, never a silent skip. It launches only the explicit exe.
+// Spec: app-wide long-run soak (08-3 §22.9 / 10-2 §E) and 09-windows §9.8/§9.9 (job notifications and process stability).
+// This harness always runs the full eight-hour window. It needs a Windows fixture driver to write heartbeat evidence; an
+// absent or stale heartbeat is blocked/fail evidence, never a silent skip. routine_runs is diagnostic only because the
+// routine milestone is not an acceptance dependency. It launches only the explicit exe.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { spawn, execFileSync, type ChildProcess } from 'node:child_process';
 import { join, resolve } from 'node:path';
@@ -158,7 +159,7 @@ const lastHeartbeat = samples.at(-1)?.heartbeat;
 const routineRuns = lastHeartbeat?.routineRuns ?? 0;
 const jobStarts = lastHeartbeat?.jobStarts ?? 0;
 const completed = failure === null && Date.now() - startedAt >= SOAK_MS;
-const result = !completed ? (failure ? 'fail' : 'blocked') : routineRuns < 1 || jobStarts < 1 ? 'blocked' : 'pass';
+const result = !completed ? (failure ? 'fail' : 'blocked') : jobStarts < 1 ? 'blocked' : 'pass';
 const report = {
   result,
   mode,
@@ -171,7 +172,7 @@ const report = {
   maxHandleCount: samples.reduce((max, sample) => Math.max(max, sample.handleCount), 0),
   maxWorkingSetBytes: samples.reduce((max, sample) => Math.max(max, sample.workingSetBytes), 0),
   freezes: samples.filter((sample) => sample.responding === false).length,
-  failure: failure ?? (routineRuns < 1 || jobStarts < 1 ? 'heartbeat did not prove at least one routine run and one job start' : null),
+  failure: failure ?? (jobStarts < 1 ? 'heartbeat did not prove at least one job start' : null),
   samples,
 };
 writeFileSync(join(outDir, `lane-e-soak-${mode}.json`), JSON.stringify(report, null, 2), 'utf8');
@@ -179,7 +180,7 @@ const summary = [
   '| Check | Result | Detail |',
   '|---|---|---|',
   `| Full 8-hour duration | ${completed ? 'pass' : result} | requested=${SOAK_HOURS}h; observedMs=${Date.now() - startedAt} |`,
-  `| Routine execution evidence | ${routineRuns > 0 ? 'pass' : 'blocked'} | runs=${routineRuns} |`,
+  `| Routine rows (diagnostic only) | pass | runs=${routineRuns}; routine execution is not a gate |`,
   `| Job execution evidence | ${jobStarts > 0 ? 'pass' : 'blocked'} | starts=${jobStarts}; lastState=${lastHeartbeat?.jobState ?? 'missing'} |`,
   `| Process handles | ${samples.length > 0 ? 'pass' : 'blocked'} | max=${report.maxHandleCount} |`,
   `| Working set | ${samples.length > 0 ? 'pass' : 'blocked'} | maxBytes=${report.maxWorkingSetBytes} |`,

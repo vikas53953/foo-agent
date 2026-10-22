@@ -1,7 +1,8 @@
 // Spec: 10-2 §E.1–§E.2 and 09-windows §9.8/§9.9. This is the live source-app fixture producer for the packaged-process
 // observer in lane-e-soak.ts. It launches through the repository's Playwright Electron launcher, uses only FOO_TEST and a
-// fake-AI JSONL script, seeds the real ux-world, starts one real fake-AI job through the UI, and records routine_runs/jobs
-// observed in that fixture's SQLite database. It never invents heartbeat counters: absent routine/job rows remain blocked.
+// fake-AI JSONL script, seeds the real ux-world, starts one real fake-AI job through the UI, and records jobs observed in
+// that fixture's SQLite database. routine_runs is retained as diagnostic context only because routines are not a current
+// acceptance dependency. It never invents heartbeat counters: an absent job row remains blocked.
 import { type ElectronApplication, type Page } from '@playwright/test';
 import Database from 'better-sqlite3';
 import { execFileSync } from 'node:child_process';
@@ -16,7 +17,6 @@ const SOAK_HOURS = 8;
 const SOAK_MS = SOAK_HOURS * 60 * 60 * 1000;
 const SAMPLE_MS = 30_000;
 const ASK = 'Lane E live fixture job';
-const ROUTINE_ID = 'r_lane_e_live_hourly';
 
 function usage(): never {
   throw new Error('usage: lane-e-live-producer.ts --out <RUNNER_TEMP dir> --mode pretend|real [--duration-hours 8] [--smoke]');
@@ -133,7 +133,6 @@ type Heartbeat = {
 function readCounts(
   dbFile: string,
   baselineJobIds: ReadonlySet<string>,
-  baselineRoutineRuns: number,
 ): { routineRuns: number; jobStarts: number; jobState: string; lastActionAt: string | null } {
   if (!existsSync(dbFile)) return { routineRuns: 0, jobStarts: 0, jobState: 'missing', lastActionAt: null };
   const db = new Database(dbFile, { readonly: true });
@@ -149,7 +148,7 @@ function readCounts(
     const liveJobs = jobs.filter((job) => !baselineJobIds.has(job.id));
     const latest = liveJobs[0];
     return {
-      routineRuns: Math.max(0, routines - baselineRoutineRuns),
+      routineRuns: routines,
       jobStarts: liveJobs.length,
       jobState: latest?.state ?? 'missing',
       lastActionAt: latest ? new Date(latest.created_at).toISOString() : null,
@@ -161,30 +160,6 @@ function readCounts(
 
 function writeHeartbeat(value: Heartbeat): void {
   writeFileSync(heartbeatFile, JSON.stringify(value, null, 2), 'utf8');
-}
-
-function seedHourlyRoutine(dbFile: string, now: number): void {
-  const db = new Database(dbFile);
-  try {
-    const chat = db.prepare('SELECT id FROM chats ORDER BY created_at LIMIT 1').get() as { id: string } | undefined;
-    if (!chat) throw new Error('ux-world did not create a chat for the hourly routine fixture');
-    db.prepare(
-      `INSERT OR IGNORE INTO routines
-       (id, owner_chat_id, title, builtin, what_text, task_spec, schedule, tz, active_from, active_to, state,
-        created_from, next_run_at, created_at, updated_at)
-       VALUES (?, ?, 'Lane E hourly fixture routine', NULL, 'Read-only fixture check', ?, ?, 'Asia/Kolkata', '0000', '2359', 'on', 'asked', ?, ?, ?)`,
-    ).run(
-      ROUTINE_ID,
-      chat.id,
-      JSON.stringify({ kind: 'read_only', text: 'Read-only fixture check' }),
-      JSON.stringify({ kind: 'interval', minutes: 60 }),
-      now,
-      now,
-      now,
-    );
-  } finally {
-    db.close();
-  }
 }
 
 async function submitLiveJob(page: Page): Promise<void> {
@@ -211,7 +186,6 @@ async function main(): Promise<number> {
   const startedAt = Date.now();
   const dbFile = join(dataDir, 'data', 'foo.db');
   let baselineJobIds = new Set<string>();
-  let baselineRoutineRuns = 0;
   let failure: string | null = null;
   try {
     app = await launch({ FOO_DATA_DIR: dataDir, FOO_LOCAL_DIR: localDir, FOO_OUT_DIR: runtimeOut }, [], {
@@ -222,13 +196,10 @@ async function main(): Promise<number> {
     });
     const page = await app.firstWindow();
     await openWorld(app, page);
-    const clock = await page.evaluate(() => window.__fooTest!.clock.now());
-    seedHourlyRoutine(dbFile, clock.now);
     if (existsSync(dbFile)) {
       const db = new Database(dbFile, { readonly: true });
       try {
         baselineJobIds = new Set(db.prepare('SELECT id FROM jobs').pluck().all() as string[]);
-        baselineRoutineRuns = Number((db.prepare('SELECT COUNT(*) AS n FROM routine_runs').get() as { n: number }).n);
       } finally {
         db.close();
       }
@@ -239,7 +210,7 @@ async function main(): Promise<number> {
     const jobDeadline = Date.now() + 30_000;
     while (Date.now() < jobDeadline) {
       await advanceClock(page, 500);
-      const counts = readCounts(dbFile, baselineJobIds, baselineRoutineRuns);
+      const counts = readCounts(dbFile, baselineJobIds);
       if (counts.jobStarts > 0 && counts.jobState !== 'queued') break;
       await sleep(100);
     }
@@ -249,7 +220,7 @@ async function main(): Promise<number> {
         const wallNow = Date.now();
         await advanceClock(page, Math.max(1, wallNow - lastWallAt));
         lastWallAt = wallNow;
-        const counts = readCounts(dbFile, baselineJobIds, baselineRoutineRuns);
+        const counts = readCounts(dbFile, baselineJobIds);
         writeHeartbeat({ at: new Date().toISOString(), buildSha: buildSha(), ...counts });
         await sleep(SAMPLE_MS);
       }
@@ -260,19 +231,19 @@ async function main(): Promise<number> {
     if (app) await app.close().catch(() => undefined);
   }
 
-  const counts = readCounts(dbFile, baselineJobIds, baselineRoutineRuns);
+  const counts = readCounts(dbFile, baselineJobIds);
   const completed = !smoke && failure === null && Date.now() - startedAt >= SOAK_MS;
   const result = smoke
     ? failure
       ? 'fail'
-      : counts.jobStarts > 0 && counts.routineRuns > 0
+      : counts.jobStarts > 0
         ? 'pass'
         : 'blocked'
     : !completed
       ? failure
         ? 'fail'
         : 'blocked'
-      : counts.routineRuns < 1 || counts.jobStarts < 1
+      : counts.jobStarts < 1
         ? 'blocked'
         : 'pass';
   writeHeartbeat({ at: new Date().toISOString(), buildSha: buildSha(), ...counts });
@@ -288,8 +259,8 @@ async function main(): Promise<number> {
     jobState: counts.jobState,
     failure,
     note: smoke
-      ? 'Smoke only: it requires both a live fake-AI job and a routine_runs row; it makes no eight-hour soak claim.'
-      : 'Counts come from the live FOO_TEST app SQLite fixture; no routine/job counter is fabricated.',
+      ? 'Smoke only: it requires a live fake-AI job; routine_runs is diagnostic only and makes no eight-hour soak claim.'
+      : 'Counts come from the live FOO_TEST app SQLite fixture; job counters are required, routine_runs is diagnostic only.',
   };
   writeFileSync(join(outDir, `lane-e-live-producer-${mode}.json`), JSON.stringify(report, null, 2), 'utf8');
   console.log(JSON.stringify(report));

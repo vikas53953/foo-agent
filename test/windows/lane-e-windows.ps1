@@ -1,7 +1,7 @@
 # Spec: 09-windows §9.2–§9.9 and §9.18/§9.23 (Lane E Windows evidence aggregation).
 # PR97 owns the packaged install/window/Credential Manager/AUMID checks. This entrypoint consumes those results instead of
-# re-running them, adds the isolated first-run fixture smoke, and turns PR97's explicit tray/toast gaps into blocked rows.
-# It never invokes PR97's hardcoded user-profile install path.
+# re-running them, adds isolated first-run and 04f01dd→current upgrade fixtures, and turns PR97's explicit tray/toast gaps
+# into blocked rows. It never invokes PR97's hardcoded user-profile install path.
 [CmdletBinding()]
 param(
   [Parameter(Mandatory = $true)][string]$Out,
@@ -9,6 +9,10 @@ param(
   [string]$Pr97BuildSha,
   [string]$Pr97EvidenceUrl,
   [string]$Installer,
+  [string]$PreviousInstaller,
+  [string]$CurrentInstaller,
+  [string]$PreviousBuildSha = '04f01dd',
+  [string]$CurrentBuildSha,
   [switch]$KeepArtifacts
 )
 
@@ -85,20 +89,43 @@ try {
     }
   }
 
-  if (-not $Installer) {
+  $currentArtifact = if ($CurrentInstaller) { $CurrentInstaller } else { $Installer }
+  if (-not $currentArtifact) {
     Row $rows 'isolated clean-profile first run' 'blocked' 'provide -Installer under RUNNER_TEMP; no install is attempted without a fixture artifact'
-  } elseif (-not (Test-Path -LiteralPath $Installer -PathType Leaf)) {
-    Row $rows 'isolated clean-profile first run' 'blocked' "installer not found: $Installer"
+  } elseif (-not (Test-Path -LiteralPath $currentArtifact -PathType Leaf)) {
+    Row $rows 'isolated clean-profile first run' 'blocked' "installer not found: $currentArtifact"
   } else {
-    Assert-Descendant (FullPath $Installer) $runnerTemp 'installer'
+    Assert-Descendant (FullPath $currentArtifact) $runnerTemp 'current installer'
     $firstOut = Join-Path $reportDir 'first-run'
     New-Item -ItemType Directory -Force -Path $firstOut | Out-Null
-    & (Join-Path $PSScriptRoot 'lane-e-first-run.ps1') -Installer (FullPath $Installer) -Out $firstOut -KeepArtifacts:$KeepArtifacts
+    & (Join-Path $PSScriptRoot 'lane-e-first-run.ps1') -Installer (FullPath $currentArtifact) -Out $firstOut -KeepArtifacts:$KeepArtifacts
     $code = $LASTEXITCODE
     if (Test-Path -LiteralPath (Join-Path $firstOut 'lane-e-first-run.json')) {
       $first = Get-Content -Raw -LiteralPath (Join-Path $firstOut 'lane-e-first-run.json') | ConvertFrom-Json
       foreach ($item in @($first)) { Row $rows "first-run: $($item.check)" $item.result $item.detail }
     } else { Row $rows 'isolated clean-profile first run' 'blocked' "first-run harness did not emit results (exit $code)" }
+  }
+
+  if (-not $PreviousInstaller -or -not $currentArtifact) {
+    Row $rows '04f01dd old-build to current-build upgrade fixture' 'blocked' 'provide -PreviousInstaller, -CurrentInstaller and explicit build SHA metadata; no upgrade is attempted without both artifacts'
+  } elseif (-not (Test-Path -LiteralPath $PreviousInstaller -PathType Leaf)) {
+    Row $rows '04f01dd old-build to current-build upgrade fixture' 'blocked' "old-build installer not found: $PreviousInstaller"
+  } elseif (-not (Test-Path -LiteralPath $currentArtifact -PathType Leaf)) {
+    Row $rows '04f01dd old-build to current-build upgrade fixture' 'blocked' "current-build installer not found: $currentArtifact"
+  } elseif (-not $CurrentBuildSha) {
+    Row $rows '04f01dd old-build to current-build upgrade fixture' 'blocked' 'current build SHA metadata is required; no upgrade is attempted without provenance'
+  } else {
+    Assert-Descendant (FullPath $PreviousInstaller) $runnerTemp 'old-build installer'
+    Assert-Descendant (FullPath $currentArtifact) $runnerTemp 'current-build installer'
+    $upgradeOut = Join-Path $reportDir 'upgrade'
+    New-Item -ItemType Directory -Force -Path $upgradeOut | Out-Null
+    & (Join-Path $PSScriptRoot 'lane-e-upgrade.ps1') -PreviousInstaller (FullPath $PreviousInstaller) -CurrentInstaller (FullPath $currentArtifact) -PreviousBuildSha $PreviousBuildSha -CurrentBuildSha $CurrentBuildSha -Out $upgradeOut -KeepArtifacts:$KeepArtifacts
+    $upgradeCode = $LASTEXITCODE
+    $upgradeResults = Join-Path $upgradeOut 'lane-e-upgrade.json'
+    if (Test-Path -LiteralPath $upgradeResults) {
+      $upgrade = Get-Content -Raw -LiteralPath $upgradeResults | ConvertFrom-Json
+      foreach ($item in @($upgrade)) { Row $rows "upgrade: $($item.check)" $item.result $item.detail }
+    } else { Row $rows '04f01dd old-build to current-build upgrade fixture' 'blocked' "upgrade harness did not emit results (exit $upgradeCode)" }
   }
 }
 catch { Row $rows 'Windows lane prerequisite and aggregation' 'blocked' $_.Exception.Message }

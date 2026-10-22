@@ -5,6 +5,11 @@ import Database from 'better-sqlite3';
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
+if (process.argv.includes('--help')) {
+  console.log('lane-e-upgrade-verify: read-only verification of chats, memory and the working job in an explicit fixture database.');
+  process.exit(0);
+}
+
 const args = new Map<string, string>();
 for (let i = 2; i < process.argv.length; i += 2) {
   const key = process.argv[i];
@@ -25,7 +30,7 @@ const dbFile = join(dataDir, 'data', 'foo.db');
 if (!existsSync(seedFile) || !existsSync(dbFile)) throw new Error('BLOCKED: seed manifest or upgraded database is missing');
 
 const seed = JSON.parse(readFileSync(seedFile, 'utf8')) as {
-  ids: { chats: string[]; messages: string[]; memory: string; routine: string; job: string; step: string };
+  ids: { chats: string[]; messages: string[]; memory: string; job: string; step: string };
 };
 const db = new Database(dbFile, { readonly: true });
 try {
@@ -40,7 +45,6 @@ try {
   for (const id of seed.ids.chats) if (count('chats', id) !== 1) throw new Error(`chat was lost: ${id}`);
   for (const id of seed.ids.messages) if (count('messages', id) !== 1) throw new Error(`message was lost: ${id}`);
   if (count('memory_index', seed.ids.memory) !== 1) throw new Error('memory fact was lost');
-  if (count('routines', seed.ids.routine) !== 1) throw new Error('routine was lost');
   if (count('jobs', seed.ids.job) !== 1) throw new Error('running job was lost');
   if (count('steps', seed.ids.step) !== 1) throw new Error('running job step was lost');
   const job = db.prepare('SELECT state, current_step_idx, step_count FROM jobs WHERE id = ?').get(seed.ids.job) as {
@@ -62,7 +66,6 @@ try {
       chats: seed.ids.chats,
       messages: seed.ids.messages,
       memory: seed.ids.memory,
-      routine: seed.ids.routine,
       job: seed.ids.job,
     },
     resumedJob: job,

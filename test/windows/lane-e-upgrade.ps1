@@ -1,10 +1,12 @@
-# Spec: 09-windows §9.3/§9.23 and 08-1 §4.1–§4.3 (previous release → current release with data and a running job).
+# Spec: 09-windows §9.3/§9.23 and 08-1 §4.1–§4.3 (04f01dd old build → current build with data and a running job).
 # Every install target, data directory and Electron APPDATA/LOCALAPPDATA root is a child of RUNNER_TEMP. The harness
-# refuses a missing release artifact and never reads or writes the user's %APPDATA%, %LOCALAPPDATA% or Windows Credential Manager.
+# refuses missing old/current build artifacts and never reads or writes the user's %APPDATA%, %LOCALAPPDATA% or Windows Credential Manager.
 [CmdletBinding()]
 param(
   [Parameter(Mandatory = $true)][string]$PreviousInstaller,
   [Parameter(Mandatory = $true)][string]$CurrentInstaller,
+  [Parameter(Mandatory = $true)][ValidatePattern('^[0-9a-f]{7,40}$')][string]$PreviousBuildSha,
+  [Parameter(Mandatory = $true)][ValidatePattern('^[0-9a-f]{7,40}$')][string]$CurrentBuildSha,
   [Parameter(Mandatory = $true)][string]$Out,
   [switch]$KeepArtifacts
 )
@@ -13,6 +15,9 @@ $ErrorActionPreference = 'Stop'
 function Fail([string]$Message) { throw "BLOCKED: $Message" }
 if ([Environment]::OSVersion.Platform -ne [PlatformID]::Win32NT) { Fail 'lane-e-upgrade requires Windows.' }
 if (-not $env:RUNNER_TEMP) { Fail 'RUNNER_TEMP is required for isolated fixture paths.' }
+if ($PreviousBuildSha -notmatch '^04f01dd([0-9a-f]{0,32})$') {
+  Fail "the old fixture must be built from 04f01dd; received $PreviousBuildSha"
+}
 foreach ($installer in @($PreviousInstaller, $CurrentInstaller)) {
   if (-not (Test-Path -LiteralPath $installer -PathType Leaf)) { Fail "release installer not found: $installer" }
 }
@@ -90,30 +95,32 @@ $verifyOut = Join-Path $root 'verify'
 New-Item -ItemType Directory -Force -Path $seedOut, $verifyOut | Out-Null
 
 try {
+  Row $rows 'old fixture build is the required 04f01dd build' 'pass' "buildSha=$PreviousBuildSha"
+  Row $rows 'current fixture build is explicitly identified' 'pass' "buildSha=$CurrentBuildSha"
   $oldInstall = Start-Process -FilePath (FullPath $PreviousInstaller) -ArgumentList @('/S', "/D=`"$installDir`"") -Wait -PassThru
   $exe = Join-Path $installDir 'foo.exe'
   $oldInstallResult = if ($oldInstall.ExitCode -eq 0) { 'pass' } else { 'fail' }
   $oldExeResult = if (Test-Path -LiteralPath $exe -PathType Leaf) { 'pass' } else { 'fail' }
-  Row $rows 'previous release installer exits successfully' $oldInstallResult "exit=$($oldInstall.ExitCode)"
-  Row $rows 'previous release fixture contains foo.exe' $oldExeResult $exe
-  if ($oldInstall.ExitCode -ne 0 -or -not (Test-Path -LiteralPath $exe -PathType Leaf)) { throw 'previous release fixture install failed' }
+  Row $rows '04f01dd old-build installer exits successfully' $oldInstallResult "exit=$($oldInstall.ExitCode)"
+  Row $rows '04f01dd old-build fixture contains foo.exe' $oldExeResult $exe
+  if ($oldInstall.ExitCode -ne 0 -or -not (Test-Path -LiteralPath $exe -PathType Leaf)) { throw '04f01dd old-build fixture install failed' }
 
   $oldApp = Start-Release $exe $installDir $dataDir $localDir $runtimeOut
   Wait-Profile $oldApp $dataDir
   Stop-Exact $oldApp
   $oldApp = $null
-  Row $rows 'previous release first launch uses isolated data roots' 'pass' "data=$dataDir local=$localDir"
+  Row $rows '04f01dd old-build first launch uses isolated data roots' 'pass' "data=$dataDir local=$localDir"
 
   $seedCommand = (Get-Command corepack.cmd -ErrorAction SilentlyContinue)
   if (-not $seedCommand) { Fail 'corepack.cmd is required to run the fixture database seed with the repository tsx runtime.' }
   & $seedCommand.Source pnpm exec tsx (Join-Path $PSScriptRoot 'lane-e-upgrade-seed.ts') --data $dataDir --out $seedOut
   if ($LASTEXITCODE -ne 0) { throw "upgrade fixture seed failed with exit $LASTEXITCODE" }
-  Row $rows 'fixture creates two chats, memory, routine and working job' 'pass' (Join-Path $seedOut 'lane-e-upgrade-seed.json')
+  Row $rows 'fixture creates two chats, memory and working job' 'pass' (Join-Path $seedOut 'lane-e-upgrade-seed.json')
 
   $currentInstall = Start-Process -FilePath (FullPath $CurrentInstaller) -ArgumentList @('/S', "/D=`"$installDir`"") -Wait -PassThru
   $currentInstallResult = if ($currentInstall.ExitCode -eq 0) { 'pass' } else { 'fail' }
-  Row $rows 'current release installs over the previous fixture' $currentInstallResult "exit=$($currentInstall.ExitCode)"
-  if ($currentInstall.ExitCode -ne 0) { throw 'current release installer failed over fixture' }
+  Row $rows 'current build installs over the 04f01dd fixture' $currentInstallResult "exit=$($currentInstall.ExitCode)"
+  if ($currentInstall.ExitCode -ne 0) { throw 'current build installer failed over 04f01dd fixture' }
   $newApp = Start-Release $exe $installDir $dataDir $localDir $runtimeOut
   Wait-Profile $newApp $dataDir
   Start-Sleep -Seconds 3
@@ -123,7 +130,7 @@ try {
   & $seedCommand.Source pnpm exec tsx (Join-Path $PSScriptRoot 'lane-e-upgrade-verify.ts') --data $dataDir --seed $seedOut --out $verifyOut
   if ($LASTEXITCODE -ne 0) { throw "upgrade fixture verification failed with exit $LASTEXITCODE" }
   $verification = Join-Path $verifyOut 'lane-e-upgrade-verify.json'
-  Row $rows 'chats, memory, routine and running job survive current release startup' 'pass' $verification
+  Row $rows 'chats, memory and running job survive current release startup' 'pass' $verification
 
   $uninstaller = Join-Path $installDir 'Uninstall foo.exe'
   if (-not (Test-Path -LiteralPath $uninstaller -PathType Leaf)) { Row $rows 'current release fixture uninstaller is present' 'fail' $uninstaller }
