@@ -24,3 +24,10 @@ Run: https://github.com/vikas53953/foo-agent/actions/runs/39725331473
 - The workflow selected Claude successfully and all four Windows jobs started. This is execution status, not acceptance evidence.
 
 The run's artifact/evidence commit, completed counts, costs when available, and screenshot judgments must be recorded after execution. Earlier run33 results remain historical observations; do not silently relabel them as this new run.
+
+## Parallel execution continuation
+
+- Group R run: https://github.com/vikas53953/foo-agent/actions/runs/39727432127, workflow/application SHA `9f429f8022c6c7b7ba989463ccbc2390b0fd5f6d`, all eight R IDs, four workers, Claude Sonnet 5.5. The earlier pending run `39726084968` was cancelled before execution and replaced after changing the real-AI concurrency group to per branch. Both batches can now execute independently; owner and secret guards remain.
+- New owner-only manual CI categories run BDD (pretend and real), evaluation, installer/upgrade, partial one-hour job soak, available performance checks, mutation by source area, and recovery/privacy boundaries. Draft status is preserved.
+- Under the latest testing-first instruction, known failed tests do not block publishing safe draft test branches. Syntax and secret/output safety are checked before dispatch; other quality checks run in parallel and failures remain disclosed.
+- The first partial soak runs the actual job producer only. Its resource observer sampled another app, so memory/handles under job load are explicitly unmeasured until the provenance defect is fixed.
