@@ -247,7 +247,9 @@ async function main() {
       };
     });
 
-  // The end state a step names: expectTid / tid / css on screen (count if given), and expectJs true in the page.
+  // The end state a step names: expectTid / tid / css on screen (count if given), and expectJs true in the page. Kit pieces
+  // are judged in waitReply on the new reply only: expectKit names the kit-* test id it must draw, and a "Couldn't show part
+  // of this" (kit-dropped) fails the step unless it sets allowKitDropped.
   const endState = async (s) => {
     const q = s.expectTid ? `[data-testid="${s.expectTid}"]` : s.tid || s.css ? sel(s) : null;
     if (q) {
