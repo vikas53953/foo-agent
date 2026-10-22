@@ -66,24 +66,29 @@ export function validateHeartbeat(
   if (heartbeat.processOwner !== PRODUCER_PROCESS_OWNER) {
     return { failure: 'producer heartbeat process owner is missing or unexpected' };
   }
-  if (!Number.isInteger(heartbeat.processPid) || heartbeat.processPid <= 0) {
+  const processPid = heartbeat.processPid;
+  if (typeof processPid !== 'number' || !Number.isInteger(processPid) || processPid <= 0) {
     return { failure: 'producer heartbeat PID is missing or invalid' };
   }
-  if (!heartbeat.processExecutablePath?.trim()) {
+  const processExecutablePath = heartbeat.processExecutablePath;
+  if (!processExecutablePath?.trim()) {
     return { failure: 'producer heartbeat executable path is missing' };
   }
-  if (!Number.isInteger(heartbeat.processHandleCount) || heartbeat.processHandleCount < 0) {
+  const processHandleCount = heartbeat.processHandleCount;
+  if (typeof processHandleCount !== 'number' || !Number.isInteger(processHandleCount) || processHandleCount < 0) {
     return { failure: 'producer heartbeat handle count is missing or invalid' };
   }
-  if (!Number.isInteger(heartbeat.processWorkingSetBytes) || heartbeat.processWorkingSetBytes < 0) {
+  const processWorkingSetBytes = heartbeat.processWorkingSetBytes;
+  if (typeof processWorkingSetBytes !== 'number' || !Number.isInteger(processWorkingSetBytes) || processWorkingSetBytes < 0) {
     return { failure: 'producer heartbeat working set is missing or invalid' };
   }
-  if (typeof heartbeat.processResponding !== 'boolean') {
+  const processResponding = heartbeat.processResponding;
+  if (typeof processResponding !== 'boolean') {
     return { failure: 'producer heartbeat response evidence is missing or invalid' };
   }
   const identity = {
-    pid: heartbeat.processPid,
-    executablePath: heartbeat.processExecutablePath,
+    pid: processPid,
+    executablePath: processExecutablePath,
   };
   if (pinnedIdentity && identity.pid !== pinnedIdentity.pid) {
     return { failure: `producer PID changed from ${pinnedIdentity.pid} to ${identity.pid}` };
@@ -94,12 +99,12 @@ export function validateHeartbeat(
   const value = {
     timestamp,
     identity,
-    handleCount: heartbeat.processHandleCount,
-    workingSetBytes: heartbeat.processWorkingSetBytes,
-    responding: heartbeat.processResponding,
+    handleCount: processHandleCount,
+    workingSetBytes: processWorkingSetBytes,
+    responding: processResponding,
   };
-  if (!heartbeat.processResponding) {
-    return { value, failure: `producer ElectronApplication PID ${heartbeat.processPid} is not responding` };
+  if (!processResponding) {
+    return { value, failure: `producer ElectronApplication PID ${processPid} is not responding` };
   }
   return { value };
 }

@@ -35,11 +35,15 @@ export function processMetricsForPid(pid: number, execute: ProcessMetricsExecuto
   };
   if (value.Id !== pid) throw new Error('Windows metrics PID ' + String(value.Id) + ' did not match producer PID ' + pid);
   if (!value.Path?.trim()) throw new Error('Windows metrics for producer PID ' + pid + ' omitted executable path');
+  const handleCount = value.HandleCount;
+  const workingSetBytes = value.WorkingSet64;
   if (
-    !Number.isInteger(value.HandleCount) ||
-    value.HandleCount < 0 ||
-    !Number.isInteger(value.WorkingSet64) ||
-    value.WorkingSet64 < 0 ||
+    typeof handleCount !== 'number' ||
+    !Number.isInteger(handleCount) ||
+    handleCount < 0 ||
+    typeof workingSetBytes !== 'number' ||
+    !Number.isInteger(workingSetBytes) ||
+    workingSetBytes < 0 ||
     typeof value.Responding !== 'boolean'
   ) {
     throw new Error('Windows metrics for producer PID ' + pid + ' were incomplete');
@@ -47,8 +51,8 @@ export function processMetricsForPid(pid: number, execute: ProcessMetricsExecuto
   return {
     pid,
     executablePath: value.Path,
-    handleCount: Number(value.HandleCount),
-    workingSetBytes: Number(value.WorkingSet64),
+    handleCount,
+    workingSetBytes,
     responding: value.Responding,
   };
 }
@@ -59,8 +63,10 @@ export function producerProcessMetrics(
 ): ProducerProcessMetrics {
   const process = owner.process();
   const pid = process.pid;
-  if (!Number.isInteger(pid) || pid <= 0) throw new Error('producer ElectronApplication PID is unavailable: ' + String(pid));
-  if (!process.spawnfile?.trim()) throw new Error('producer ElectronApplication executable path is unavailable');
+  if (typeof pid !== 'number' || !Number.isInteger(pid) || pid <= 0)
+    throw new Error('producer ElectronApplication PID is unavailable: ' + String(pid));
+  const spawnfile = process.spawnfile;
+  if (!spawnfile?.trim()) throw new Error('producer ElectronApplication executable path is unavailable');
   const metrics = processMetricsForPid(pid, execute);
   const normalize = (path: string) =>
     path
@@ -68,8 +74,8 @@ export function producerProcessMetrics(
       .replaceAll('/', '\\')
       .replace(/[\\]+$/u, '')
       .toLowerCase();
-  if (normalize(metrics.executablePath) !== normalize(process.spawnfile)) {
-    throw new Error(`Windows metrics executable path ${metrics.executablePath} did not match producer executable ${process.spawnfile}`);
+  if (normalize(metrics.executablePath) !== normalize(spawnfile)) {
+    throw new Error(`Windows metrics executable path ${metrics.executablePath} did not match producer executable ${spawnfile}`);
   }
   return metrics;
 }
