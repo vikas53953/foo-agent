@@ -7,8 +7,8 @@ testCount=1
 
  Test Files  1 passed (1)
       Tests  1 passed | 4 skipped (5)
-   Start at  02:07:08
-   Duration  12.88s (import 59%, transform 27%, tests 14%)
+   Start at  10:36:11
+   Duration  16.24s (import 71%, transform 20%, tests 9%)
 
 
 [stderr]
