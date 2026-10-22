@@ -187,7 +187,7 @@
         "Pune",
         "train…",
         "Working",
-        "1",
+        "2",
         "B",
         "Building",
         "society",
@@ -423,12 +423,13 @@
         "replies",
         "show",
         "here.",
-        "foo",
-        "sent",
-        "Secret",
-        "box:",
-        "127.0.0.1",
-        "login"
+        "Waiting",
+        "for",
+        "your",
+        "answer:",
+        ".",
+        "Show",
+        "button."
       ]
     },
     "hl": {
@@ -479,8 +480,8 @@
     "total": 2828
   },
   "r5": {
-    "ratio": 0.0869013671875,
-    "diffPixels": 88987,
+    "ratio": 0.08690234375,
+    "diffPixels": 88988,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-06.dark.diff.png"

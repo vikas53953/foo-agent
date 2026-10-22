@@ -1,0 +1,50 @@
+{
+  "id": "BP-COMP-06",
+  "family": "bp",
+  "selector": "#compstates > .panel:nth-child(6) > .mini",
+  "box": {
+    "x": 930.15625,
+    "y": 9840.375,
+    "width": 351.34375,
+    "height": 196
+  },
+  "files": {
+    "light": {
+      "png": "BP-COMP-06.light.png",
+      "sha256": "79d8da0c42526afb0b8ebe358008798598eec67cd2f07f51650655ea279d0f9c"
+    },
+    "dark": {
+      "png": "BP-COMP-06.dark.png",
+      "sha256": "fab75bddf5e08034d01de19965f5f12e3bf787f6821405e2a76bd82c09e4484d"
+    }
+  },
+  "texts": [
+    "⚠ That looks like a key",
+    "Save it in the secret box instead of sending it?",
+    "Move to secret box",
+    "Remove it",
+    "＋",
+    "sk-proj-••••••••",
+    "➤"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-COMP-06": {
+      "x": 0,
+      "y": 0,
+      "width": 351.34375,
+      "height": 196
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M2",
+  "spec": "04-2 §20–§23",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}
