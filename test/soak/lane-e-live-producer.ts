@@ -13,6 +13,7 @@ import { launch } from '../e2e/launch';
 import { openChat, openWorld } from '../fidelity/capture';
 import { TID } from '../../src/shared/testids';
 import { FULL_SOAK_HOURS, resolveSoakDuration } from './lane-e-duration';
+import { producerProcessMetrics, type ProducerProcessMetrics } from './lane-e-process-metrics';
 
 const SAMPLE_MS = 30_000;
 const ASK = 'Lane E live fixture job';
@@ -129,6 +130,11 @@ type Heartbeat = {
   jobStarts: number;
   jobState: string;
   lastActionAt: string | null;
+  processOwner?: 'producer-electron-application';
+  processPid?: number;
+  processHandleCount?: number;
+  processWorkingSetBytes?: number;
+  processResponding?: boolean;
 };
 
 function readCounts(
@@ -163,6 +169,19 @@ function writeHeartbeat(value: Heartbeat): void {
   writeFileSync(heartbeatFile, JSON.stringify(value, null, 2), 'utf8');
 }
 
+function processHeartbeat(
+  metrics: ProducerProcessMetrics | null,
+): Pick<Heartbeat, 'processOwner' | 'processPid' | 'processHandleCount' | 'processWorkingSetBytes' | 'processResponding'> {
+  if (!metrics) return {};
+  return {
+    processOwner: 'producer-electron-application',
+    processPid: metrics.pid,
+    processHandleCount: metrics.handleCount,
+    processWorkingSetBytes: metrics.workingSetBytes,
+    processResponding: metrics.responding,
+  };
+}
+
 async function submitLiveJob(page: Page): Promise<void> {
   await openChat(page, 'Home');
   const composer = page.getByTestId(TID.composerField);
@@ -187,6 +206,8 @@ async function main(): Promise<number> {
   const startedAt = Date.now();
   const dbFile = join(dataDir, 'data', 'foo.db');
   let baselineJobIds = new Set<string>();
+  let lastProcessMetrics: ProducerProcessMetrics | null = null;
+  const processSamples: ProducerProcessMetrics[] = [];
   let failure: string | null = null;
   try {
     app = await launch({ FOO_DATA_DIR: dataDir, FOO_LOCAL_DIR: localDir, FOO_OUT_DIR: runtimeOut }, [], {
@@ -195,6 +216,8 @@ async function main(): Promise<number> {
       APPDATA: electronAppData,
       LOCALAPPDATA: electronLocalAppData,
     });
+    lastProcessMetrics = producerProcessMetrics(app);
+    processSamples.push(lastProcessMetrics);
     const page = await app.firstWindow();
     await openWorld(app, page);
     if (existsSync(dbFile)) {
@@ -222,7 +245,9 @@ async function main(): Promise<number> {
         await advanceClock(page, Math.max(1, wallNow - lastWallAt));
         lastWallAt = wallNow;
         const counts = readCounts(dbFile, baselineJobIds);
-        writeHeartbeat({ at: new Date().toISOString(), buildSha: buildSha(), ...counts });
+        lastProcessMetrics = producerProcessMetrics(app);
+        processSamples.push(lastProcessMetrics);
+        writeHeartbeat({ at: new Date().toISOString(), buildSha: buildSha(), ...counts, ...processHeartbeat(lastProcessMetrics) });
         await sleep(SAMPLE_MS);
       }
     }
@@ -249,7 +274,7 @@ async function main(): Promise<number> {
         : duration?.partial
           ? 'partial'
           : 'pass';
-  writeHeartbeat({ at: new Date().toISOString(), buildSha: buildSha(), ...counts });
+  writeHeartbeat({ at: new Date().toISOString(), buildSha: buildSha(), ...counts, ...processHeartbeat(lastProcessMetrics) });
   const report = {
     result,
     mode,
@@ -262,6 +287,12 @@ async function main(): Promise<number> {
     routineRuns: counts.routineRuns,
     jobStarts: counts.jobStarts,
     jobState: counts.jobState,
+    processOwner: 'producer-electron-application',
+    processPid: lastProcessMetrics?.pid ?? null,
+    maxHandleCount: processSamples.reduce((max, sample) => Math.max(max, sample.handleCount), 0),
+    maxWorkingSetBytes: processSamples.reduce((max, sample) => Math.max(max, sample.workingSetBytes), 0),
+    nonRespondingSamples: processSamples.filter((sample) => !sample.responding).length,
+    processSamples: processSamples.length,
     failure,
     note: smoke
       ? 'Smoke only: it requires a live fake-AI job; routine_runs is diagnostic only and makes no eight-hour soak claim.'
