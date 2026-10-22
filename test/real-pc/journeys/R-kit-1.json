@@ -141,7 +141,7 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectKit": "kitWeekCalendar",
+      "expectKit": "kit-week-calendar",
       "note": "AT-345: clean",
       "shot": "at-345-clean"
     },
@@ -153,7 +153,7 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectKit": "kitWeekCalendar",
+      "expectKit": "kit-week-calendar",
       "note": "AT-345: messy typo",
       "shot": "at-345-messy-typo"
     },
@@ -165,7 +165,7 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectKit": "kitWeekCalendar",
+      "expectKit": "kit-week-calendar",
       "note": "AT-345: Hinglish",
       "shot": "at-345-Hinglish"
     },

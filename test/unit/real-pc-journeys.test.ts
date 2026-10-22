@@ -1,5 +1,5 @@
-// Spec: 07 journeys §11.3 (real-AI journey contracts); Lane A keeps the executable R journeys honest without rewriting
-// the older B/J/U baseline files owned by other lanes.
+// Spec: 07 journeys §11.3 (real-AI journey contracts); every journey is checked while older B/J/U baseline files stay
+// unchanged when this strict validator reports their existing contract violations.
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -28,8 +28,6 @@ const files = readdirSync(JOURNEY_DIR)
   .filter((name) => name.endsWith('.json'))
   .sort();
 const journeys = files.map((name) => ({ name, value: JSON.parse(readFileSync(join(JOURNEY_DIR, name), 'utf8')) as Journey }));
-const owned = (name: string) => name.startsWith('R-') || name === 'LaneA-smoke-5min.json';
-
 const groupC = new Set([
   'AT-081',
   'AT-083',
@@ -115,11 +113,29 @@ const groupR = new Set([
 
 const hasEndState = (step: Step) => Boolean(step.expectTid || step.expectKit || step.expectJs || (step.expectText && step.re));
 
+const isCheckedStep = (step: Step) =>
+  Boolean(
+    step.expectTid ||
+    step.expectKit ||
+    step.expectJs ||
+    (step.do === 'expectText' && typeof step.re === 'string' && step.re.length > 0) ||
+    ((step.do === 'check' || step.do === 'waitFor') && (step.tid || step.expectTid || step.css)),
+  );
+
+const hasFollowingRegexExpectText = (steps: Step[], waitIndex: number) => {
+  for (let i = waitIndex + 1; i < steps.length && steps[i].do !== 'send'; i += 1) {
+    const step = steps[i];
+    if (step.do === 'expectText' && typeof step.re === 'string' && step.re.length > 0) return true;
+  }
+  return false;
+};
+
 const referencedIds = (journey: Journey) => {
   const ids = new Set<string>();
   for (const step of journey.steps ?? []) {
     if (step.tid) ids.add(step.tid);
     if (step.expectTid) ids.add(step.expectTid);
+    if (step.expectKit) ids.add(step.expectKit);
     for (const match of step.css?.matchAll(/data-testid\s*=\s*["']?([A-Za-z0-9_-]+)/g) ?? []) ids.add(match[1]);
   }
   return ids;
@@ -141,24 +157,26 @@ describe('real-PC journey contracts', () => {
     expect(invalid, invalid.join('\n')).toEqual([]);
   });
 
-  it('requires an end-state check after every owned send', () => {
+  it('requires an end-state check after every send in every journey', () => {
     const invalid = journeys.flatMap(({ name, value }) => {
-      if (!owned(name)) return [];
       const steps = value.steps ?? [];
       return steps.flatMap((step, index) => {
         if (step.do !== 'send') return [];
         const next = steps[index + 1];
-        return next?.do === 'waitReply' && hasEndState(next) ? [] : [`${name}: send at step ${index}`];
+        return next?.do === 'waitReply' && (hasEndState(next) || hasFollowingRegexExpectText(steps, index + 1))
+          ? []
+          : [`${name}: send at step ${index}`];
       });
     });
     expect(invalid, invalid.join('\n')).toEqual([]);
   });
 
-  it('names every owned covered AT in a proof note', () => {
+  it('ties every covered AT to a checked proof step', () => {
     const missing = journeys.flatMap(({ name, value }) => {
-      if (!owned(name)) return [];
-      const notes = (value.steps ?? []).map((step) => step.note ?? '').join('\n');
-      return (value.covers ?? []).filter((id) => !notes.includes(id)).map((id) => `${name}: ${id}`);
+      const steps = value.steps ?? [];
+      return (value.covers ?? [])
+        .filter((id) => !steps.some((step) => (step.note ?? '').includes(id) && isCheckedStep(step)))
+        .map((id) => `${name}: ${id}`);
     });
     expect(missing, missing.join('\n')).toEqual([]);
   });

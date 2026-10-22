@@ -10,7 +10,8 @@
       "tid": "setup-welcome-start",
       "timeoutMs": 60000,
       "shot": "smoke-start",
-      "expect": "AT-005: fresh profile starts on the Welcome card with Let’s go"
+      "expect": "AT-005: fresh profile starts on the Welcome card with Let’s go",
+      "note": "AT-005: fresh profile starts on the Welcome card with Let’s go"
     },
     {
       "do": "click",
@@ -22,14 +23,16 @@
       "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
       "timeoutMs": 60000,
       "shot": "smoke-find-ai",
-      "expect": "AT-005: Find your AI rows test live and show a usable selection"
+      "expect": "AT-005: Find your AI rows test live and show a usable selection",
+      "note": "AT-005: Find your AI rows test live and show a usable selection"
     },
     {
       "do": "waitFor",
       "tid": "setup-ai-use",
       "timeoutMs": 90000,
       "shot": "smoke-ai-ready",
-      "expect": "AT-006: a passing AI exposes Use and no later step is reachable when none passes"
+      "expect": "AT-006: a passing AI exposes Use and no later step is reachable when none passes",
+      "note": "AT-006: a passing AI exposes Use and no later step is reachable when none passes"
     },
     {
       "do": "click",
