@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show the 5 places to visit in Jaipur on a map\n11:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are 5 places to see in Jaipur, numbered in a sensible order: start at Amber Fort in the morning, then work your way through the old city. Coordinates are approximate.\n\nCouldn’t show part of this\n\nKeep\n\nWant me to turn this into a one-day plan with timings?\n\n11:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show a chart of India's GDP growth for the last 5 years\n11:56 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's real GDP growth over the last five financial years went from a Covid dip of about -5.8% in 2020-21 to a rebound of about 9.7% in 2021-22, then eased to about 6.5% in 2024-25. These are approximate figures from my memory, not checked live, and official numbers get revised. Check the latest release from the Ministry of Statistics before you quote them.\n\nIndia real GDP growth (% a year, approximate)\n−10%\n0%\n10%\n2020-21\n2021-22\n2022-23\n2023-24\n2024-25\nKeep\n11:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n11:56 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Galaxy S25 is the best value of the three. It costs about the same as the others but gives you a 120Hz screen, the fastest chip and a third camera. Prices are approximate India launch prices for the base version from my memory, not checked live. Street prices change often, so check before you buy.\n\niPhone 16\nLaunch price\nabout ₹79,900\nScreen\n6.1 inch OLED, 60Hz\nChip\nApple A18\nCameras\n48MP main + 12MP ultra-wide\nBattery\nabout 3,600 mAh\nUpdates\nLong, about 6 to 7 years\nPixel 9\nLaunch price\nabout ₹79,999\nScreen\n6.3 inch OLED, 120Hz\nChip\nGoogle Tensor G4\nCameras\n50MP main + 48MP ultra-wide\nBattery\nabout 4,700 mAh\nUpdates\n7 years\nBest pick\nGalaxy S25\nLaunch price\nabout ₹80,999\nScreen\n6.2 inch OLED, 120Hz\nChip\nSnapdragon 8 Elite\nCameras\n50MP main + 12MP ultra-wide + 10MP zoom\nBattery\nabout 4,000 mAh\nUpdates\n7 years\n\nSimilar price, but a smooth 120Hz screen, the fastest chip and a zoom camera.\n\nKeep\n\nIf battery life matters most, the Pixel 9 is a close second. Do you prefer Android or iPhone?\n\n11:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n11:56 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Tap start when the water is ready.\n\nSteep the tea\n2:00 left\nStart timer\nKeep\n11:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n11:57 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for your party plan. Fill in the date, guests and budget below.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n11:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n11:57 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "streaming",
+    "text": "Your expense tracker is below. Add each spend with an amount and a category, set a monthly budget, and it shows your total, what's left and a bar for each category. Amounts are in ₹.\n\nBuilding your page…"
+  }
+]
