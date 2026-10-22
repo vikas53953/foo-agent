@@ -43,7 +43,7 @@ on:
     branches: [main]
 
 concurrency:
-  group: real-ai-e2e
+  group: real-ai-e2e-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
