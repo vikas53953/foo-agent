@@ -1,3 +1,5 @@
+// Spec: 08-3 §22.9 / 10-2 §E; user §7. The full eight-hour soak remains the acceptance threshold, while the
+// explicitly requested one-hour route is diagnostic partial evidence and must never be reported as full acceptance.
 export const FULL_SOAK_HOURS = 8;
 export const PARTIAL_SOAK_HOURS = 1;
 
