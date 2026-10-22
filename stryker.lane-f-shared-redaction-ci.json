@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "_comment": "Lane F shared redaction/schema mutation slice. It is disjoint from the shared state slice; all base targets remain represented.",
+  "testRunner": "command",
+  "commandRunner": {
+    "command": "node ../../node_modules/vitest/vitest.mjs run --bail 1 --config scripts/audit/vitest.mutation.shared-redaction.config.ts --pool=threads --maxWorkers=1 --no-file-parallelism"
+  },
+  "mutate": ["src/shared/phrases.ts", "src/shared/redactor.ts", "src/shared/schemas.ts", "src/shared/settingsDefaults.ts"],
+  "coverageAnalysis": "off",
+  "reporters": ["clear-text", "progress", "html", "json"],
+  "htmlReporter": { "fileName": "reports/mutation/lane-f-shared-redaction.html" },
+  "jsonReporter": { "fileName": "reports/mutation/lane-f-shared-redaction.json" },
+  "thresholds": { "high": 90, "low": 75, "break": 70 },
+  "tempDirName": ".stryker-lane-f-shared-redaction-tmp",
+  "concurrency": 1,
+  "timeoutMS": 30000
+}

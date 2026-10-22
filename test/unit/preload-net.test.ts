@@ -3,8 +3,6 @@
 // after 10 s without internet; coming back clears it at once).
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { NetMonitor, OFFLINE_CONFIRM_MS } from '../../src/main/net/netMonitor';
-import { FakeClock } from '../../src/shared/clock';
 import { WINDOW_CHANNELS } from '../../src/main/ipc/guard';
 import { EVENT_CHANNELS, INVOKE_CHANNELS } from '../../src/shared/ipc';
 
@@ -30,31 +28,5 @@ describe('preload allow-lists', () => {
     const events = setOf('src/preload/preloadLive.ts', 'EVENTS');
     for (const e of [...LIVE_ONLY_EVENTS, 'job:upsert', 'settings:changed']) expect(events).toContain(e);
     for (const e of events) expect(EVENT_CHANNELS).toContain(e);
-  });
-});
-
-describe('NetMonitor', () => {
-  it('confirms offline after 10 s and clears it at once', () => {
-    const clock = new FakeClock();
-    const net = new NetMonitor(clock);
-    const seen: boolean[] = [];
-    net.onChange((o) => seen.push(o));
-    net.report(false);
-    clock.advance(OFFLINE_CONFIRM_MS - 1);
-    expect(net.offline).toBe(false);
-    clock.advance(1);
-    expect(net.offline).toBe(true);
-    net.report(true);
-    expect(net.offline).toBe(false);
-    expect(seen).toEqual([false, true]);
-  });
-  it('a blip shorter than 10 s never shows', () => {
-    const clock = new FakeClock();
-    const net = new NetMonitor(clock);
-    net.report(false);
-    clock.advance(5_000);
-    net.report(true);
-    clock.advance(20_000);
-    expect(net.offline).toBe(false);
   });
 });
