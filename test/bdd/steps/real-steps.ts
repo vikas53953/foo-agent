@@ -20,13 +20,18 @@ Given('foo starts the production chat with an idle real profile', async ({ realR
 When('the user sends a benign production chat message', async ({ realRun }) => {
   await openFooChat(realRun.page);
   const prompt = 'Reply with one short sentence confirming this real BDD smoke.';
+  realRun.fooCountBefore = await realRun.page.getByTestId(TID.bubbleFoo).count();
   await realRun.page.getByTestId(TID.composerField).fill(prompt);
   await realRun.page.keyboard.press('Enter');
   await expect(realRun.page.getByTestId(TID.bubbleMe).filter({ hasText: prompt })).toBeVisible();
 });
 
 Then('foo returns a completed production response', async ({ realRun }) => {
-  const reply = realRun.page.getByTestId(TID.bubbleFoo).last();
+  const before = realRun.fooCountBefore;
+  if (before === undefined) throw new Error('Real BDD response check requires the pre-send assistant count.');
+  const replies = realRun.page.getByTestId(TID.bubbleFoo);
+  await expect(replies).toHaveCount(before + 1, { timeout: 60_000 });
+  const reply = replies.nth(before);
   await expect(reply).toBeVisible({ timeout: 60_000 });
   await expect(reply).toContainText(/\S+/u);
   await expect(realRun.page.getByTestId(TID.threadThinking)).toHaveCount(0);
@@ -43,6 +48,7 @@ When('the user sends thanks in the idle production chat', async ({ realRun }) =>
 });
 
 Then('foo reacts without posting a production reply', async ({ realRun }) => {
-  await expect(realRun.page.getByTestId(TID.bubbleFoo)).toHaveCount(realRun.fooCountBefore ?? 0, { timeout: 10_000 });
+  await realRun.page.waitForTimeout(10_000);
+  await expect(realRun.page.getByTestId(TID.bubbleFoo)).toHaveCount(realRun.fooCountBefore ?? 0);
   await expect(realRun.page.getByTestId(TID.threadThinking)).toHaveCount(0);
 });
