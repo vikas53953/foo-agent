@@ -118,7 +118,7 @@ Run `39727432127` completed with four successful Windows jobs. Each part also ra
 | R-kit-2 | 63 | 20 | [s2](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s2) |
 | R-reply-area | 24 | 6 | [s3](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/9f429f8-claude/s3) |
 
-Totals: **420 steps, 119 failed**. I inspected the PNG evidence in every shard. `R-chat-rules` and `R-dark` are readable clean/messy/Hinglish (plus Hindi/Punjabi where authored) replies with zero journey failures. The failures are concrete:
+Totals: **420 steps, 119 failed**. I inspected **203 PNG files** across every shard: `s0` 71, `s1` 67, `s2` 39, and `s3` 26. `R-chat-rules` and `R-dark` are readable clean/messy/Hinglish (plus Hindi/Punjabi where authored) replies with zero journey failures. The failures are concrete:
 
 - `R-ai-pages`: AT-425/426 capability prose and chips were visible, but no `kit-capabilities` surface or Try-it control appeared in any language; the expectation remains a truthful failure.
 - `R-jobs`: AT-106/120/364/420 often received date-choice, live-checklist, plan, or stuck-choice cards instead of the expected state; the journey did not answer AI follow-up questions. Try-again controls were absent. AT-420 replies visibly contained “I’ll fold that in,” but the strict checklist selector was absent.
@@ -140,3 +140,11 @@ After the immutable R evidence above, commit `006e91dc` added bounded live-windo
 Focused evidence: `corepack.cmd pnpm vitest run test/unit/real-pc-driver.test.ts --maxWorkers=1 --pool=threads` passed 4/4; `node --check` passed for the driver and helper; B07 JSON and `expectJs` syntax, targeted Prettier, and `git diff --check` passed. The strict all-file validator remains 2 passed / 2 failed on unchanged legacy baseline send end-state and covered-proof gaps. No live desktop run is claimed here. AT-058 no-click telemetry remains unverified, and AT-078 remains blocked because the driver cannot close the external Edge job window; closing Foo's live viewer is not used as AT-078 proof.
 
 B07 workflow command: `$FOO_EXE foo-drive.js journeys/B07-live.json` from `test/real-pc` (direct PowerShell: `$env:ELECTRON_RUN_AS_NODE='1'; & "$env:LOCALAPPDATA\Programs\foo\foo.exe" test/real-pc/foo-drive.js test/real-pc/journeys/B07-live.json`).
+
+## B07 live-window workflow evidence
+
+Run `39735003572` completed successfully at tested head `4fd0d51c0516efb239123704dd1deb3af16dc219`; the immutable evidence commit is `72e4b8bb6ea050ad32bb4e6e5d4b34d67567e176`, under [`real-ai/4fd0d51-claude/s0`](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/4fd0d51-claude/s0). The setup journey passed 14/14 with 8 PNGs. B07 produced 12 PNGs and 25 steps with 12 failed steps.
+
+The plan reply and plan start passed, and the driver observed the live BrowserWindow opening. Every subsequent live-root/live-picture wait timed out. All 12 B07 screenshots show the same blank live window header, `Checking IRCTC · step 3 of 3 · Done`, with no live root, picture, takeover, hand-back, or stop controls visible. The B07 log records timeout failures at steps 5, 6, 10, 12, 17, and 22; the evidence scan passed with 21 retained app-log lines and 0 dropped lines. This is a journey/runtime failure, not a masking pass.
+
+AT-079 sensitive-field masking is unverified because no live picture rendered. AT-058 no-click telemetry remains unverified, and AT-078 external Edge closure remains blocked; no Foo live-viewer close was treated as Edge-window evidence.
