@@ -1,4 +1,4 @@
-// Spec: CR-0045 (X-203), 08-4 §26.5 item 2b as amended, §24.13a (steer_check.md, purpose `classify`), 08-2 §5.2 (one live
+// Spec: CR-0045 (X-203) and CR-0048 (X-206), 08-4 §26.5 item 2b as amended, §24.13a (steer_check.md, purpose `classify`), 08-2 §5.2 (one live
 // job → steer). Real-AI run 21 (main a087f3c, Claude CLI), U23: a table booking waited on "Which city should I look in…?";
 // "Make me a simple page that tracks my daily water intake" was steered into it, the card was withdrawn ("→ you changed the
 // plan") and the job asked again ("Which kind of place…?") right under the tracker. Every steer_check answer below is the
@@ -108,5 +108,42 @@ describe('CR-0045 · a message that is not about the waiting job leaves its card
     x.userSays('make it 9 PM');
     await x.settle();
     expect(x.turnsJsonl().filter((t) => t.purpose === 'classify')).toHaveLength(0);
+  });
+});
+
+describe('CR-0048 · a job waiting on a sign-in or "check you\'re a person" card does not hold the next, unrelated ask', () => {
+  it('run 23 J12: the draft-email ask sent while the ISRO job waits on its sign-in card gets its own answer; the card stays', async () => {
+    h = jobHarness({
+      script: [
+        jobIntake(PLAN),
+        tool('fake.needsUser', { card: 'signin' }),
+        check('new', 'Draft an email'),
+        intake(envelope('Here is a draft for someone@example.com.'), { match: { purpose: 'intake', promptIncludes: 'Draft an email' } }),
+      ],
+    });
+    const x = h;
+    x.userSays("What's the latest news about ISRO this week? Give me sources.");
+    await x.settle();
+    expect(x.job().state).toBe('needs_you');
+    const asked = x.userSays("Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting");
+    await x.settle();
+    expect(fooTexts(x)).toContain('Here is a draft for someone@example.com.');
+    expect(x.cards('signin')[0]!.state).toBe('waiting');
+    expect(x.job().state).toBe('needs_you');
+    expect(x.message(asked).badge).not.toBe('seen');
+  });
+
+  it('"use the Hindu\'s print edition instead" (about: job) still waits for the sign-in, as §26.5 item 2 says', async () => {
+    h = jobHarness({
+      script: [jobIntake(PLAN), tool('fake.needsUser', { card: 'signin' }), check('job', 'print edition')],
+    });
+    const x = h;
+    x.userSays("What's the latest news about ISRO this week? Give me sources.");
+    await x.settle();
+    const asked = x.userSays("use the Hindu's print edition instead");
+    await x.settle();
+    expect(x.cards('signin')[0]!.state).toBe('waiting');
+    expect(x.message(asked).badge).toBe('seen');
+    expect(x.turnsJsonl().filter((t) => t.purpose === 'classify')).toHaveLength(1);
   });
 });
