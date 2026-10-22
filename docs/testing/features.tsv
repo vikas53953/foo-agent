@@ -1,161 +1,191 @@
-milestone	id	journey	text
-M2	AT-225	J7	Given the composer sends `message:send` twice with the same `clientId` (a retry after a timeout), then exactly one message row exists and both calls return the same `messageId` (idempotent; 08-1 §3 `message:send`).
-M3	AT-005	J2	Given Claude and ChatGPT sign-ins exist, when detection runs, then both are tested with a real request and Claude is pre-selected.
-M3	AT-006	J2	"Given no AI passes a test, then the composer stays disabled with ""Connect your AI first, then we can talk."" and no step after J2 is reachable."
-M3	AT-027	J7	"Given the user sends ""thanks!"", then foo adds a 👍 reaction and posts no message."
-M3	AT-031	J7	"Given any foo reply, then it contains none of the filler phrases (""Great question"", ""How can I help you"", ""I apologize for the confusion"")."
-M3	AT-030	J7	Given a 200-word answer, then it arrives as at most 3 bubbles, with no bubble splitting a list.
-M4	AT-019	J5	"Given Gmail is connected, when the user taps ""Find bills due this week"", then a checklist is visible within 2 s and a first result line within 60 s."
-M4	AT-077	J18	"Given a running booking job, when the user types ""stop"", then no further click or AI call for that job happens after 1 s, and the reply lists exactly what was already done, read from the activity log."
-M4	AT-081	J19	"Given the internet drops mid-job, then within 10 s the job shows WAITING and the banner strip shows ""You're offline. Your jobs are saved and I'll carry on when you're back."" with [ Try again ] and there is no extra bar above the c"
-M4	AT-083	J19	Given the AI spend cap is reached, then no further AI call is made for jobs or routines until the cap is raised or the month changes.
-M4	AT-084	J19	Given the same step fails 3 times, then a stuck card appears with cost so far and three buttons, and the job does not keep trying on its own.
-M4	AT-089	J20	Given the user quits foo with running jobs, then the jobs are saved as WAITING and resume on next open.
-M4	AT-105	Job	"Given 3 jobs WORKING, when a 4th is created, then it is QUEUED, the badge is 👀 and its checklist reads ""Waiting for another job to finish""; no 4th job ever runs at once."
-M4	AT-106	Job	Given a QUEUED job and an AI not verified in the last 10 min, when a slot frees, then a one-word test runs first, then the job is WORKING with badge 🛠 and the checklist appears after 1.5 s.
-M4	AT-107	Job	"Given a job in QUEUED, WORKING, NEEDS YOU or WAITING, when the user taps Stop, then it is CANCELLED with the matching `stop_reason` (`user_button` / `user_word`), badge ⛔ (`stopped`), checklist line ""Stopped by you"", and the messa"
-M4	AT-108	Job	"Given a WORKING job, when it needs a choice, approval, payment, sign-in or code, then it is NEEDS YOU, badge ⏳ (SM-A1), chat-row pill ""Needs you"", taskbar overlay, toast if not focused."
-M4	AT-109	Job	"Given NEEDS YOU, when the user answers, approves or taps ""I'm done"", then WORKING, badge 🛠, and the card collapses to its answered state."
-M4	AT-112	Job	"Given WORKING, when the AI stops answering, a plan limit or AI spend cap is hit, or the PC sleeps, then WAITING, one error card, pill ""Paused""."
-M4	AT-113	Job	"Given WAITING, when the condition clears, then WORKING and the error card is edited in place to ""Back on it. Picking up from step {n}."" (SM-A10); no new message."
-M4	AT-114	Job	Given WORKING, when all steps finish with a proof object, then DONE, badge ✅, Proof chip and receipt footer.
-M4	AT-115	Job	"Given WORKING, when all steps finish with no proof possible, then DONE (unverified): badge value `done_unverified` (✅, tooltip ""Done · Not checked live"") and ""⚠ Not checked live"" on the result's proof line; no ⚠ on the bubble (SM-"
-M4	AT-116	Job	Given WORKING, when no step finishes for 3 min, or a step fails 3 times, or cost passes 2× estimate, then NEEDS YOU with the stuck card and badge ⏳ (SM-A2), ⚠ only in the stuck card header; when Stop is tapped on it, then CANCELLE
-M4	AT-116a	J18	"Given a WORKING job with no progress for 60 s (`JobRow.slow`), then the bubble badge stays 🛠 `working` with the tooltip ""Taking longer than usual"" (08-0 §F); no `slow` badge value and no ⏳ until the stuck card (AT-116)."
-M4	AT-117	Job	Given WORKING, when the site blocks foo and no other route exists, then FAILED, badge ❌, error card with one alternative.
-M4	AT-118	Job	Given any non-final job, when the app is killed or Windows restarts, then on next launch it is restored from `state.json` with a recovery card.
-M4	AT-118a	J19	Given `foo.db` fails `PRAGMA quick_check` at startup, then it is renamed `foo-damaged-{yyyy-mm-dd-HHmm}.db`, a fresh database is rebuilt from the mirrors (08-1 §4.1.1), and one `error` card (`DB_REBUILT`) in the new foo chat reads
-M4	AT-119	Job	"Given the fake AI replies ""All done!"" without a proof object or `unverified` flag, then the job is not DONE; the badge and checklist keep showing the runner's real state."
-M4	AT-120	Job	"Given a FAILED or CANCELLED job, when the user taps ""Try again"", then a new linked job ""Trying again: {title}"" is created and the old job never returns to WORKING."
-M4	AT-281	J15	"Given a helper chat with 2 jobs WORKING, 1 routine and 3 jobs finished in the last 7 days (one 8 days ago), when the details panel opens, then ""DOING NOW"" is followed by the 3-segment control ""In progress"" (selected) / ""Scheduled"""
-M4	AT-282	J19	"Given two chat-specific failures in one chat (a message not sent, then a job failed), then two notices stack above the composer, newest on top, each with `ErrorCircle`, the same sentence as the in-chat error, ""Copy code"" and Dismi"
-M4	AT-286	J15	"Given a helper chat whose last job ended DONE 25 h ago with nothing queued, working, waiting or pending, no unread, not pinned, then its row is one 44px line (26px face, name, "" · Done {Thu}"", time) with `chatlist-row` `data-folde"
-M4	AT-287	J15	"Given a helper chat with a job WORKING and no higher-priority preview (03-1 §3.4.6 rules 1–3), then the row preview reads ""Working on {job title}…"" in `--fg-2` with no animation, and ""Waiting to start {job title}…"" while the job i"
-M5	AT-008	J2	Given a key saved through the Secret box, then the key value appears in no row of `foo.db`, no log, no screenshot and no AI request body.
-M5	AT-009	J2	"Given a key that fails the test, then the row offers ""Replace key"" and the old value is never shown."
-M5	AT-016	J4	"Given any interview card, when the user types an answer, then the card collapses to ""question → answer"" exactly as a tap would."
-M5	AT-032	J8	"Given foo has 3 options, then the card shows exactly 3 options plus ""Something else…"" and Skip, with option 1 tagged ""Best fit""."
-M5	AT-033	J8	Given a reversible-preference question with no answer for 15 min, then foo picks Best fit and says so in one line.
-M5	AT-034	J8	"Given a flight-choice question with no answer, then foo never picks for the user and cancels after 24 h with a ""Search again"" button."
-M5	AT-035	J8	"Given a Choice card, when the user types ""2"" (or reacts 2️⃣), then the card collapses exactly as if option 2 had been tapped."
-M5	AT-035a	J8	Given two Choice cards open in one chat and a typed answer that resolves on both, then the answer goes to the newest card and the other stays open; given one card where two options match by words (rule 3), then it is not an answer
-M5	AT-077a	J18	"Given two jobs running in one chat, when the user types ""stop"", then a Choice card (`purpose: 'stop_which'`) ""Stop which one?"" shows the two job titles plus ""Both"" (""All of them"" for three) and nothing stops until it is answered;"
-M5	AT-077b	J18	"Given a job in NEEDS YOU with a PENDING Approval card, when the user sends a steer (""make it 2 rooms""), then the card becomes SUPERSEDED with the footer ""You changed something, so I stopped. See the new card below."" (`cards.approv"
-M5	AT-085	J19	Given any error card, then it has exactly one primary button, at most one secondary link, and no banned word.
-M5	AT-110	Job	"Given NEEDS YOU, when the user declines, then CANCELLED (or WORKING if another route exists) with ""Okay, I won't. {next step or 'Nothing else to do here.'}"""
-M5	AT-111	Job	Given NEEDS YOU on a payment or booking card, when the card expires, then CANCELLED; on a choice card, it stays NEEDS YOU with one reminder.
-M5	AT-121	Approval	Given a PENDING card, then its timer is 10 min (payment), 15 min (booking, no charge now) or 60 min (send, post, delete, share), keeps running while the window is closed, and the toast shows the same expiry.
-M5	AT-122	Approval	"Given PENDING, when Approve is tapped (with Hello or typed amount when required), then APPROVED → RUNNING and the card reads ""Approved by you at {Fri 16 Oct, 9:48 AM}. Doing it now…"" (SM-A6)."
-M5	AT-123	Approval	"Given APPROVED, when the second look finds a mismatch, then HELD with the `--warn-soft` strip and ""Before I do this, one check: you asked for {X}, this is {Y}. Which one?"" and choice chips; the pick leads to APPROVED or DECLINED."
-M5	AT-124	Approval	"Given PENDING, when price, time or recipient changes before Approve, then SUPERSEDED (grey, struck-through amount, ""The price changed, so I stopped. See the new card below."") and a new PENDING card."
-M5	AT-126	Approval	"Given PENDING, when the user taps ""Not now"", then DECLINED: ""You said no. Nothing was {sent / booked / paid}."" and no auto-retry."
-M5	AT-127	Approval	Given PENDING, when the timer ends, then EXPIRED with the absolute time and [ Ask me again ]; when tapped, then live terms are re-checked before a fresh card.
-M5	AT-128	Approval	"Given PENDING, when the job is stopped elsewhere, then WITHDRAWN: ""No longer needed. The job was stopped."""
-M5	AT-132	Approval	"Given an approval answered ""Always"" (app-use only, SM-A7; rules exist only for `use_app`, `calendar_write`, `mail_organise`, 08-0 §G.3), then no rule ever skips a Payment card, a hard-limit card, or any send, book, post, delete or"
-M5	AT-133	Approval	Given a known-recipient Draft card (SM-A8), then an `approvals` row exists from the moment the draft is created (PENDING, expiry 60 min), the card shows the approval frame and the impact line for as long as it is pending, and it m
-M5	AT-280	J10, J12	"Given Approval cards for sending an email, sending a WhatsApp message, a payment, a booking and a delete, then none shows the scope control `card-approval-scope`, each shows ""I'll always ask for this one.""; given a calendar-add ca"
-M5	AT-288	J8	"Given a Choice card with 3 questions, then the header shows ""1 of 3"" (`card-choice-pager`), tapping a row advances after `--m-card` with no Next button, ""Back"" (`card-choice-back`) shows from question 2; when the keys 1–4 are pres"
-M6	AT-072	J17	"Given any fact, then it shows ""You said"" or ""I guessed"" (with the reason) and a date."
-M6	AT-073	J17	"Given ""Forget everything from Gmail"", then every fact whose origin is Gmail is deleted from disk and Gmail stays connected."
-M6	AT-074	J17	Given a forgotten fact, then foo does not use it in any later reply, and does not re-learn it from the same email within 90 days.
-M6	AT-075	J17	Given the user edits `about-you.md` in Notepad, then the next foo reply uses the edited fact.
-M6	AT-076	J17	Given a guessed health or money fact, then it is never saved unless the user said it.
-M6	AT-219	J17	"Given facts ""Lives in Mumbai"" and a newer ""Lives in Pune"" (both You said), then the nightly tidy keeps the newer one and asks at most once ""Do you live in Pune now, or Mumbai?"" [ Pune ] [ Mumbai ] as a `choice` card (`purpose='mem"
-M6	AT-155	J2	"Given ChatGPT is picked and no ChatGPT helper is installed, then foo opens the maker's page in the default browser, downloads, runs and installs nothing (X-42), and the block shows ""Waiting for the ChatGPT helper… I'll notice when"
-M6	AT-155a	J2	Given the AI picker, then the helper apps foo knows are exactly `claude-cli`, `codex-cli` and `gemini-cli` (`resources/maker-pages.json`, 08-0 §E.5); each one only opens its maker's page; no install, download or run path exists fo
-M8	AT-014	J4	"Given the user ticks Gmail + Calendar and completes Google sign-in, then the card shows ""✓ Connected as"" with a masked address within 3 s of the browser returning."
-M8	AT-015	J4	"Given the user declined the send permission on Google's page, then foo never offers ""Send email"" on Gmail drafts and offers ""Open in Gmail"" instead."
-M8	AT-018	J4	Given WhatsApp is linked, then foo never sends a WhatsApp message without a Draft card and a Send tap.
-M8	AT-020	J5	"Given the result, then it carries a Proof chip linking to the actual emails, or ""⚠ Not checked live"" if no email was opened."
-M8	AT-051	J12	"Given ""draft a reply to my landlord"", then a Draft card appears and no email is sent until the user taps ""Send email""."
-M8	AT-052	J12	"Given a recipient the user has never emailed, when Send is tapped, then a full Approval card with ""You haven't emailed her before"" appears and there are no scope chips."
-M8	AT-053	J12	Given the user taps Undo within 5 s, then Gmail has no sent message.
-M8	AT-054	J12	Given an X post draft, then foo never posts to X; it only opens X's compose page with the text.
-M8	AT-055	J12	Given approval of one email, then a second email in the same chat still needs its own Send tap, with no per-person exception (R-13).
-M8	AT-070	J16	Given a WhatsApp group mirror, then foo cannot send into it without a full Approval card and a tap.
-M8	AT-093	J21	"Given the user disconnects Gmail, then foo makes no further Gmail requests and the right shell ""Using"" drops Gmail."
-M8	AT-145		"Given Contacts connected with two ""Priya"" entries, when the user says ""email Priya the photos"", then a Choice card ""Which Priya?"" with masked addresses appears; given one match, the draft uses it; given no match and no sent mail o"
-M8	AT-220	J19	"Given the Gmail connection expires, then jobs that need Gmail go to WAITING, one `error` card ""Your Gmail connection expired. Bills and drafts are on hold."" with the single button [ Reconnect ] appears, and Settings → Connections"
-M8	AT-269	J16	"Given a mirrored WhatsApp group (`chats.kind='wa_mirror'`), then the composer placeholder is ""Draft a message for {group}"" (`composer.placeholder.wa_mirror`); when text is sent there, then a `whatsapp.draft` Draft card for that gr"
-M8	AT-270	J16	"Given a mirror chat with 250 stored WhatsApp messages from 3 senders plus the user, when it opens, then only the newest 200 render, the top line reads ""I keep 7 days of WhatsApp messages."" (`thread.wa_mirror.retention`), the user'"
-M9	AT-036	J9	"Given ""are there tables at an Italian place in Bandra Saturday"", then foo shows options and never shows a booking Approval card until the user says ""book"" or taps an option and then ""Book table""."
-M9	AT-037	J9	"Given the user taps ""Book table"", then the booking is submitted at most once and the result carries a confirmation number or screenshot."
-M9	AT-038	J9	Given the no-show fee changes between card and submit, then nothing is booked and a new card shows the new fee.
-M9	AT-056	J13	Given a sign-in page, then the AI never receives the typed username or password, and no screenshot or page text is captured while the sign-in window is in front.
-M9	AT-057	J13	"Given the user signs in and the page changes, then foo continues without the user tapping ""I'm done""."
-M9	AT-058	J13	"Given the user taps ""Take over"" (CAPTCHA or any live job), then foo makes no click until ""Hand back to foo"". *(merges J13 #3 and J18 #3)*"
-M9	AT-059	J13	"Given a saved login, then it is filled directly into the page and the AI only knows ""your IRCTC login""."
-M9	AT-060	J13	"Given no response to a sign-in card for 2 h, then the job is cancelled with nothing booked and a ""Start again"" button."
-M9	AT-078	J18	Given the user closes the job's Edge window (08-0 §G.8), then the job is cancelled with the same report.
-M9	AT-080	J18	"Given ""Stop everything"", then all running jobs stop, open approval cards become WITHDRAWN, and routines keep their schedules."
-M9	AT-114a	J9	"Given a restaurant or hotel booking whose confirmation page shows a 6-character booking code next to the word ""code"" (""Booking code TJ8821""), then `finish()` finds it in the pre-redaction result, the job is DONE (not `done_unverif"
-M9	AT-137	J10	"Given a network capture during voice notes and web jobs, then voice audio goes only to `api.openai.com` and only when ""OpenAI"" is selected; search, page and browse traffic goes only to the services whose keys are saved; and Settin"
-M9	AT-138	J10	Given an Exa key, when a job searches, then the fake Exa endpoint is called once and results reach the AI wrapped as untrusted; when Exa returns 401, 429 or 5xx, then the same search runs on Bing in foo's window with no message to
-M9	AT-139	J10	Given no web tool keys, when a job searches and reads a news page and a script-heavy results page, then no request goes to any cloud tool host, the news page is read by Readability on this PC, and the script-heavy page is read in
-M9	AT-140	J10	Given canary secrets in the vault and in the job's text, when cloud search, read and browse calls run, then no canary appears in any outbound payload; a canary in a URL host or path blocks that call (`CLOUD_SECRET_BLOCKED`) and th
-M9	AT-141	J10	Given a Browser Use key, then `web.browseCloud` is refused (`USE_EDGE` / `SITE_HANDBACK`) for a signed-in site, IRCTC, a biller, a hand-back domain and any goal that types, books, buys, pays, sends or posts; and when the cloud res
-M9	AT-142	J9	"Given a job that reaches a net-banking, UPI web, trading or password-manager domain, then foo never types, clicks or reads in it and shows ""This is your bank's site. I'll open it for you, and you do this part."" [ Open {site} ], wh"
-M9	AT-143	J10	Given an AI cap of ₹1,000 with ₹999 spent, when a cloud search or read would cross the cap, then it is not called, the local path is used, and the Spent meter includes every earlier cloud call.
-M9	AT-144	J9	Given a saved recipe for a sandbox biller, when the job replays it, then every step is matched by role and name before acting, no value (name, date, card data) is stored in the recipe, and the final pay click is never replayed: it
-M9	AT-211	J13	"Given a site asks for a passkey or a phone approval, then a `signin` card with `mode='take_over'` reads ""{Site} sent an approval to your phone. Approve it there, then tap I'm done."", foo makes no click until ""I'm done"", and captur"
-M9	AT-272	J18	Given a job in the live window in state `in_control`, then the only hand-back control is [ Hand back to {agentName} ] (plus Stop); when it is tapped, then main sends `job.handBack { jobId }` with no `mode` field, foo re-reads the
-M9	AT-300		`--ease-spring` / `--ease-spring-soft` are CSS `linear()`; overshoot ≤ 4 %; every exit duration ≤ every entrance duration; no animation library or Web Animations API in the bundle
-M9	AT-315		"no ""✓"" text glyph in `en-IN.json` or renderer JSX (comments skipped); Fluent `Checkmark` 16 instead"
-M9	AT-316		`--t-subtitle` 17/24; weight 700 only through `--weight-money`
-M9	AT-317		dark `--shadow-4/16/28` = 1px edge ring + two layers; light unchanged
-M9	AT-301		Basic: no transform, scale, rotation or height animation, fades `--m-basic`; Off: §F25.4 table, nothing moves
-M9	AT-302		the new view slides 18px with `--ease-spring-soft` and cross-fades; back reverses; the old view leaves in ≤ 167ms
-M9	AT-303		dialog 0.92 → 1 with `--ease-spring` and `--shadow-28`; shell behind 0.96 + 2px blur; menus scale from the opening button
-M9	AT-326		skeleton shimmer, tooltip after 500ms, toggle knob spring, segmented and Settings pill slide
-M9	AT-327		"`Button variant=""primary""` lip flattens on press in 83ms; other buttons keep the 0.97 press"
-M9	AT-304		"no letter face for foo or a default helper; Resting blinks every 2–6 s; ≥ 40px bobs; idle stops while the window is hidden; ""Show foo's eyes"" off → still poses, rings still shown"
-M9	AT-305		the 26px Thinking face only while a request is in flight (C.7.4)
-M9	AT-306		Memory empty states show the 64px face in its pose, `aria-hidden`, no ring
-M9	AT-323		each built detail animates at Full, fades at Basic, is still at Off
-M9	AT-324		as AT-323, and no layout jump in the virtual list
-M9	AT-307		empty chat: 3 starters; click fills and focuses the field, sends nothing; hidden on the first keystroke
-M9	AT-308		≤ 3, only from the reply's stored suggestions (banned words dropped, line stripped from the bubble); none after Approval / Payment / Draft / Secret or money; none in groups, mirrors or private chats
-M9	AT-309		"hold mic floods the button; send → ✓ for 2s on delivery; Stop while working; ""Add details…"" while a job works"
-M9	AT-325		as AT-323
-M9	AT-310		"named steps with their `StepKind` icon; live step shimmers; ✓ overshoot; sources pile (≤ 5, ""+n"" after 3)"
-M9	AT-311		springs in with `--shadow-28`; amounts in `--weight-money` tabular digits; primary lip; no sparks or celebration on any money card
-M9	AT-312		"DONE with proof → Happy; first of the day → Celebrating; the card line ""{job title} · saved you about {n} min."" from the fixed table, hidden under 5 min; DONE ""⚠ Not checked live"" shows none of it"
-M9	AT-313		the 96px face's eyes open once; logo never animates; Off: eyes already open
-M9	AT-314		striped 4-step pill; rows test live (shimmer → ✓ works); app logos on white tiles
-M9	AT-318		default off; on: only Approve and Done tones; never in quiet hours or while hidden
-M9	AT-319		`backgroundMaterial: 'mica'` only on Windows 11 + transparency on + setting on, not high contrast, not FOO_TEST; otherwise solid
-M9	AT-320		every row of 06-2 §6.2 writes its setting and applies live, without restart
-M9	AT-321		Ctrl+= / Ctrl+- / Ctrl+0 / Ctrl+wheel and the Zoom row share `zoom`; overlay height = round(32 × zoom)
-M9	AT-322		the renderer entry chunk ≤ 500 KB minified; a lazily loaded page shows its skeleton within 150ms
-M9	AT-340		the three variants draw from one series and from 3; one hue; axis labels and values follow 02 number and money rules; legend only with 2+ series
-M9	AT-341		"numbered stops to scale on a plain panel with a dashed route and the stops list; ""Open in Maps"" is an action chip; no network request leaves the PC while it draws"
-M9	AT-342		+ / − and arrow keys change the value within min/max; every component bound to the same path updates at once
-M9	AT-343		2–3 columns; the highlighted column is outlined with its one-line why
-M9	AT-344		items in date order; amounts in money format
-M9	AT-345		busy and free slots for 7 days; Narrator reads each slot
-M9	AT-346		a timer runs in the renderer; ticks are kept in the surface's data model
-M9	AT-347		"outputs recompute from the inputs (+ − × ÷ ^, min, max, round, pmt); a bad formula shows ""Can't work this out"""
-M9	AT-348		"arc proportional to value / target, ""{value} of {target}"" in the middle, `role=""meter""`"
-M9	AT-349		the pick counts as a Choice answer; a reaction counts too (05 §5.3.4)
-M9	AT-350		the picked slot goes back to foo, who confirms it
-M9	AT-351		up to 6 fields; submit sends one action with the values
-M9	AT-352		Data as of {time} shows; Refresh sends `kit:refresh`
-M9	AT-353		each complete A2UI message draws while the reply streams; an incomplete one is held back
-M9	AT-354		"an invalid or unknown component is dropped, ""Couldn't show part of this"" shows, the words stay"
-M9	AT-355		a Button action reaches the engine as `kit.action` and the surface updates from the reply
-M9	AT-356		a Button whose action sends, books, pays, deletes or shares opens an approval, never acts directly
-M9	AT-357		a fetch, an image URL or a navigation inside the page fails; main logs the denied request
-M9	AT-358		"the frame has `sandbox=""allow-scripts""` only: no same-origin, popups or forms"
-M9	AT-359		"a page over 512 KB shows ""This page is too big to open""; height stops at 600px and the page scrolls inside"
-M9	AT-360		messages from other sources, bad schema and more than 10 calls per second are refused; every call is logged through `page:rpc`
-M9	AT-361		`requestAction` goes through the gate; `openLink` always shows C-26; secret text in any call is refused and the Secret box posts
-M9	AT-362		a kit piece or the status line shows before the page is ready
-M9	AT-363		the line shows the people, places, dates, times and amounts understood, and never a secret
-M9	AT-364		a side question is answered while a running job keeps running (its checklist does not stop or re-plan)
-M9	AT-365		"≤ 2,000 inline; 2,001–10,000 ""Pasted text"" chip; > 10,000 `pasted-{time}.txt` file chip; the paste catcher runs first in every band"
-M9	AT-366		the same question answers without kit pieces or AI pages unless the user asks for one
-M9	AT-367		reply chips fill the composer; ≤ 3 action chips act through the gates; none after an approval or payment card
-M9	AT-368		"Refresh updates the surface's data model and ""Data as of"""
-M9	AT-369		Keep saves a `kept_items` row listed in the chat's Files tab; a kept AI page reopens only in the sealed box; no `.html` file is written
-M9	AT-370		ShortForm and TextField refuse values that match 04-2 §22.4 and offer the Secret box
-M9	AT-371		formulas go through `shared/kit/evaluate.ts`; no `eval`, `Function` or dynamic import in the kit bundle
+milestone	id	journey	text	built	built_note
+M2	AT-225	J7	Given the composer sends `message:send` twice with the same `clientId` (a retry after a timeout), then exactly one message row exists and both calls return the same `messageId` (idempotent; 08-1 §3 `message:send`).	built	
+M3	AT-005	J2	Given Claude and ChatGPT sign-ins exist, when detection runs, then both are tested with a real request and Claude is pre-selected.	built	
+M3	AT-006	J2	"Given no AI passes a test, then the composer stays disabled with ""Connect your AI first, then we can talk."" and no step after J2 is reachable."	built	
+M3	AT-027	J7	"Given the user sends ""thanks!"", then foo adds a 👍 reaction and posts no message."	built	
+M3	AT-031	J7	"Given any foo reply, then it contains none of the filler phrases (""Great question"", ""How can I help you"", ""I apologize for the confusion"")."	built	
+M3	AT-030	J7	Given a 200-word answer, then it arrives as at most 3 bubbles, with no bubble splitting a list.	built	
+M4	AT-019	J5	"Given Gmail is connected, when the user taps ""Find bills due this week"", then a checklist is visible within 2 s and a first result line within 60 s."	built	
+M4	AT-077	J18	"Given a running booking job, when the user types ""stop"", then no further click or AI call for that job happens after 1 s, and the reply lists exactly what was already done, read from the activity log."	built	
+M4	AT-081	J19	"Given the internet drops mid-job, then within 10 s the job shows WAITING and the banner strip shows ""You're offline. Your jobs are saved and I'll carry on when you're back."" with [ Try again ] and there is no extra bar above the c"	built	
+M4	AT-083	J19	Given the AI spend cap is reached, then no further AI call is made for jobs or routines until the cap is raised or the month changes.	built	
+M4	AT-084	J19	Given the same step fails 3 times, then a stuck card appears with cost so far and three buttons, and the job does not keep trying on its own.	built	
+M4	AT-089	J20	Given the user quits foo with running jobs, then the jobs are saved as WAITING and resume on next open.	built	
+M4	AT-105	Job	"Given 3 jobs WORKING, when a 4th is created, then it is QUEUED, the badge is 👀 and its checklist reads ""Waiting for another job to finish""; no 4th job ever runs at once."	built	
+M4	AT-106	Job	Given a QUEUED job and an AI not verified in the last 10 min, when a slot frees, then a one-word test runs first, then the job is WORKING with badge 🛠 and the checklist appears after 1.5 s.	built	
+M4	AT-107	Job	"Given a job in QUEUED, WORKING, NEEDS YOU or WAITING, when the user taps Stop, then it is CANCELLED with the matching `stop_reason` (`user_button` / `user_word`), badge ⛔ (`stopped`), checklist line ""Stopped by you"", and the messa"	built	
+M4	AT-108	Job	"Given a WORKING job, when it needs a choice, approval, payment, sign-in or code, then it is NEEDS YOU, badge ⏳ (SM-A1), chat-row pill ""Needs you"", taskbar overlay, toast if not focused."	built	
+M4	AT-109	Job	"Given NEEDS YOU, when the user answers, approves or taps ""I'm done"", then WORKING, badge 🛠, and the card collapses to its answered state."	built	
+M4	AT-112	Job	"Given WORKING, when the AI stops answering, a plan limit or AI spend cap is hit, or the PC sleeps, then WAITING, one error card, pill ""Paused""."	built	
+M4	AT-113	Job	"Given WAITING, when the condition clears, then WORKING and the error card is edited in place to ""Back on it. Picking up from step {n}."" (SM-A10); no new message."	built	
+M4	AT-114	Job	Given WORKING, when all steps finish with a proof object, then DONE, badge ✅, Proof chip and receipt footer.	built	
+M4	AT-115	Job	"Given WORKING, when all steps finish with no proof possible, then DONE (unverified): badge value `done_unverified` (✅, tooltip ""Done · Not checked live"") and ""⚠ Not checked live"" on the result's proof line; no ⚠ on the bubble (SM-"	built	
+M4	AT-116	Job	Given WORKING, when no step finishes for 3 min, or a step fails 3 times, or cost passes 2× estimate, then NEEDS YOU with the stuck card and badge ⏳ (SM-A2), ⚠ only in the stuck card header; when Stop is tapped on it, then CANCELLE	built	
+M4	AT-116a	J18	"Given a WORKING job with no progress for 60 s (`JobRow.slow`), then the bubble badge stays 🛠 `working` with the tooltip ""Taking longer than usual"" (08-0 §F); no `slow` badge value and no ⏳ until the stuck card (AT-116)."	built	
+M4	AT-117	Job	Given WORKING, when the site blocks foo and no other route exists, then FAILED, badge ❌, error card with one alternative.	built	
+M4	AT-118	Job	Given any non-final job, when the app is killed or Windows restarts, then on next launch it is restored from `state.json` with a recovery card.	built	
+M4	AT-118a	J19	Given `foo.db` fails `PRAGMA quick_check` at startup, then it is renamed `foo-damaged-{yyyy-mm-dd-HHmm}.db`, a fresh database is rebuilt from the mirrors (08-1 §4.1.1), and one `error` card (`DB_REBUILT`) in the new foo chat reads	built	
+M4	AT-119	Job	"Given the fake AI replies ""All done!"" without a proof object or `unverified` flag, then the job is not DONE; the badge and checklist keep showing the runner's real state."	built	
+M4	AT-120	Job	"Given a FAILED or CANCELLED job, when the user taps ""Try again"", then a new linked job ""Trying again: {title}"" is created and the old job never returns to WORKING."	built	
+M4	AT-281	J15	"Given a helper chat with 2 jobs WORKING, 1 routine and 3 jobs finished in the last 7 days (one 8 days ago), when the details panel opens, then ""DOING NOW"" is followed by the 3-segment control ""In progress"" (selected) / ""Scheduled"""	built	
+M4	AT-282	J19	"Given two chat-specific failures in one chat (a message not sent, then a job failed), then two notices stack above the composer, newest on top, each with `ErrorCircle`, the same sentence as the in-chat error, ""Copy code"" and Dismi"	built	
+M4	AT-286	J15	"Given a helper chat whose last job ended DONE 25 h ago with nothing queued, working, waiting or pending, no unread, not pinned, then its row is one 44px line (26px face, name, "" · Done {Thu}"", time) with `chatlist-row` `data-folde"	built	
+M4	AT-287	J15	"Given a helper chat with a job WORKING and no higher-priority preview (03-1 §3.4.6 rules 1–3), then the row preview reads ""Working on {job title}…"" in `--fg-2` with no animation, and ""Waiting to start {job title}…"" while the job i"	built	
+M5	AT-008	J2	Given a key saved through the Secret box, then the key value appears in no row of `foo.db`, no log, no screenshot and no AI request body.	built	
+M5	AT-009	J2	"Given a key that fails the test, then the row offers ""Replace key"" and the old value is never shown."	built	
+M5	AT-016	J4	"Given any interview card, when the user types an answer, then the card collapses to ""question → answer"" exactly as a tap would."	built	
+M5	AT-032	J8	"Given foo has 3 options, then the card shows exactly 3 options plus ""Something else…"" and Skip, with option 1 tagged ""Best fit""."	built	
+M5	AT-033	J8	Given a reversible-preference question with no answer for 15 min, then foo picks Best fit and says so in one line.	built	
+M5	AT-034	J8	"Given a flight-choice question with no answer, then foo never picks for the user and cancels after 24 h with a ""Search again"" button."	built	
+M5	AT-035	J8	"Given a Choice card, when the user types ""2"" (or reacts 2️⃣), then the card collapses exactly as if option 2 had been tapped."	built	
+M5	AT-035a	J8	Given two Choice cards open in one chat and a typed answer that resolves on both, then the answer goes to the newest card and the other stays open; given one card where two options match by words (rule 3), then it is not an answer	built	
+M5	AT-077a	J18	"Given two jobs running in one chat, when the user types ""stop"", then a Choice card (`purpose: 'stop_which'`) ""Stop which one?"" shows the two job titles plus ""Both"" (""All of them"" for three) and nothing stops until it is answered; "	built	
+M5	AT-077b	J18	"Given a job in NEEDS YOU with a PENDING Approval card, when the user sends a steer (""make it 2 rooms""), then the card becomes SUPERSEDED with the footer ""You changed something, so I stopped. See the new card below."" (`cards.approv"	built	
+M5	AT-085	J19	Given any error card, then it has exactly one primary button, at most one secondary link, and no banned word.	built	
+M5	AT-110	Job	"Given NEEDS YOU, when the user declines, then CANCELLED (or WORKING if another route exists) with ""Okay, I won't. {next step or 'Nothing else to do here.'}"""	built	
+M5	AT-111	Job	Given NEEDS YOU on a payment or booking card, when the card expires, then CANCELLED; on a choice card, it stays NEEDS YOU with one reminder.	built	
+M5	AT-121	Approval	Given a PENDING card, then its timer is 10 min (payment), 15 min (booking, no charge now) or 60 min (send, post, delete, share), keeps running while the window is closed, and the toast shows the same expiry.	built	
+M5	AT-122	Approval	"Given PENDING, when Approve is tapped (with Hello or typed amount when required), then APPROVED → RUNNING and the card reads ""Approved by you at {Fri 16 Oct, 9:48 AM}. Doing it now…"" (SM-A6)."	built	
+M5	AT-123	Approval	"Given APPROVED, when the second look finds a mismatch, then HELD with the `--warn-soft` strip and ""Before I do this, one check: you asked for {X}, this is {Y}. Which one?"" and choice chips; the pick leads to APPROVED or DECLINED."	built	
+M5	AT-124	Approval	"Given PENDING, when price, time or recipient changes before Approve, then SUPERSEDED (grey, struck-through amount, ""The price changed, so I stopped. See the new card below."") and a new PENDING card."	built	
+M5	AT-126	Approval	"Given PENDING, when the user taps ""Not now"", then DECLINED: ""You said no. Nothing was {sent / booked / paid}."" and no auto-retry."	built	
+M5	AT-127	Approval	Given PENDING, when the timer ends, then EXPIRED with the absolute time and [ Ask me again ]; when tapped, then live terms are re-checked before a fresh card.	built	
+M5	AT-128	Approval	"Given PENDING, when the job is stopped elsewhere, then WITHDRAWN: ""No longer needed. The job was stopped."""	built	
+M5	AT-132	Approval	"Given an approval answered ""Always"" (app-use only, SM-A7; rules exist only for `use_app`, `calendar_write`, `mail_organise`, 08-0 §G.3), then no rule ever skips a Payment card, a hard-limit card, or any send, book, post, delete or"	built	
+M5	AT-133	Approval	Given a known-recipient Draft card (SM-A8), then an `approvals` row exists from the moment the draft is created (PENDING, expiry 60 min), the card shows the approval frame and the impact line for as long as it is pending, and it m	built	
+M5	AT-280	J10, J12	"Given Approval cards for sending an email, sending a WhatsApp message, a payment, a booking and a delete, then none shows the scope control `card-approval-scope`, each shows ""I'll always ask for this one.""; given a calendar-add ca"	built	
+M5	AT-288	J8	"Given a Choice card with 3 questions, then the header shows ""1 of 3"" (`card-choice-pager`), tapping a row advances after `--m-card` with no Next button, ""Back"" (`card-choice-back`) shows from question 2; when the keys 1–4 are pres"	built	
+M6	AT-072	J17	"Given any fact, then it shows ""You said"" or ""I guessed"" (with the reason) and a date."	built	
+M6	AT-073	J17	"Given ""Forget everything from Gmail"", then every fact whose origin is Gmail is deleted from disk and Gmail stays connected."	built	
+M6	AT-074	J17	Given a forgotten fact, then foo does not use it in any later reply, and does not re-learn it from the same email within 90 days.	built	
+M6	AT-075	J17	Given the user edits `about-you.md` in Notepad, then the next foo reply uses the edited fact.	built	
+M6	AT-076	J17	Given a guessed health or money fact, then it is never saved unless the user said it.	built	
+M6	AT-219	J17	"Given facts ""Lives in Mumbai"" and a newer ""Lives in Pune"" (both You said), then the nightly tidy keeps the newer one and asks at most once ""Do you live in Pune now, or Mumbai?"" [ Pune ] [ Mumbai ] as a `choice` card (`purpose='mem"	built	
+M6	AT-155	J2	"Given ChatGPT is picked and no ChatGPT helper is installed, then foo opens the maker's page in the default browser, downloads, runs and installs nothing (X-42), and the block shows ""Waiting for the ChatGPT helper… I'll notice when"	built	
+M6	AT-155a	J2	Given the AI picker, then the helper apps foo knows are exactly `claude-cli`, `codex-cli` and `gemini-cli` (`resources/maker-pages.json`, 08-0 §E.5); each one only opens its maker's page; no install, download or run path exists fo	built	
+M8	AT-014	J4	"Given the user ticks Gmail + Calendar and completes Google sign-in, then the card shows ""✓ Connected as"" with a masked address within 3 s of the browser returning."	built	
+M8	AT-015	J4	"Given the user declined the send permission on Google's page, then foo never offers ""Send email"" on Gmail drafts and offers ""Open in Gmail"" instead."	built	
+M8	AT-018	J4	Given WhatsApp is linked, then foo never sends a WhatsApp message without a Draft card and a Send tap.	built	
+M8	AT-020	J5	"Given the result, then it carries a Proof chip linking to the actual emails, or ""⚠ Not checked live"" if no email was opened."	built	
+M8	AT-051	J12	"Given ""draft a reply to my landlord"", then a Draft card appears and no email is sent until the user taps ""Send email""."	built	
+M8	AT-052	J12	"Given a recipient the user has never emailed, when Send is tapped, then a full Approval card with ""You haven't emailed her before"" appears and there are no scope chips."	built	
+M8	AT-053	J12	Given the user taps Undo within 5 s, then Gmail has no sent message.	built	
+M8	AT-054	J12	Given an X post draft, then foo never posts to X; it only opens X's compose page with the text.	built	
+M8	AT-055	J12	Given approval of one email, then a second email in the same chat still needs its own Send tap, with no per-person exception (R-13).	built	
+M8	AT-070	J16	Given a WhatsApp group mirror, then foo cannot send into it without a full Approval card and a tap.	built	
+M8	AT-093	J21	"Given the user disconnects Gmail, then foo makes no further Gmail requests and the right shell ""Using"" drops Gmail."	built	
+M8	AT-145		"Given Contacts connected with two ""Priya"" entries, when the user says ""email Priya the photos"", then a Choice card ""Which Priya?"" with masked addresses appears; given one match, the draft uses it; given no match and no sent mail o"	built	
+M8	AT-220	J19	"Given the Gmail connection expires, then jobs that need Gmail go to WAITING, one `error` card ""Your Gmail connection expired. Bills and drafts are on hold."" with the single button [ Reconnect ] appears, and Settings → Connections "	built	
+M8	AT-269	J16	"Given a mirrored WhatsApp group (`chats.kind='wa_mirror'`), then the composer placeholder is ""Draft a message for {group}"" (`composer.placeholder.wa_mirror`); when text is sent there, then a `whatsapp.draft` Draft card for that gr"	built	
+M8	AT-270	J16	"Given a mirror chat with 250 stored WhatsApp messages from 3 senders plus the user, when it opens, then only the newest 200 render, the top line reads ""I keep 7 days of WhatsApp messages."" (`thread.wa_mirror.retention`), the user'"	built	
+M9	AT-036	J9	"Given ""are there tables at an Italian place in Bandra Saturday"", then foo shows options and never shows a booking Approval card until the user says ""book"" or taps an option and then ""Book table""."	built	
+M9	AT-037	J9	"Given the user taps ""Book table"", then the booking is submitted at most once and the result carries a confirmation number or screenshot."	built	
+M9	AT-038	J9	Given the no-show fee changes between card and submit, then nothing is booked and a new card shows the new fee.	built	
+M9	AT-056	J13	Given a sign-in page, then the AI never receives the typed username or password, and no screenshot or page text is captured while the sign-in window is in front.	built	
+M9	AT-057	J13	"Given the user signs in and the page changes, then foo continues without the user tapping ""I'm done""."	built	
+M9	AT-058	J13	"Given the user taps ""Take over"" (CAPTCHA or any live job), then foo makes no click until ""Hand back to foo"". *(merges J13 #3 and J18 #3)*"	built	
+M9	AT-059	J13	"Given a saved login, then it is filled directly into the page and the AI only knows ""your IRCTC login""."	built	
+M9	AT-060	J13	"Given no response to a sign-in card for 2 h, then the job is cancelled with nothing booked and a ""Start again"" button."	built	
+M9	AT-078	J18	Given the user closes the job's Edge window (08-0 §G.8), then the job is cancelled with the same report.	built	
+M9	AT-080	J18	"Given ""Stop everything"", then all running jobs stop, open approval cards become WITHDRAWN, and routines keep their schedules."	built	
+M9	AT-114a	J9	"Given a restaurant or hotel booking whose confirmation page shows a 6-character booking code next to the word ""code"" (""Booking code TJ8821""), then `finish()` finds it in the pre-redaction result, the job is DONE (not `done_unverif"	built	
+M9	AT-137	J10	"Given a network capture during voice notes and web jobs, then voice audio goes only to `api.openai.com` and only when ""OpenAI"" is selected; search, page and browse traffic goes only to the services whose keys are saved; and Settin"	built	
+M9	AT-138	J10	Given an Exa key, when a job searches, then the fake Exa endpoint is called once and results reach the AI wrapped as untrusted; when Exa returns 401, 429 or 5xx, then the same search runs on Bing in foo's window with no message to	built	
+M9	AT-139	J10	Given no web tool keys, when a job searches and reads a news page and a script-heavy results page, then no request goes to any cloud tool host, the news page is read by Readability on this PC, and the script-heavy page is read in 	built	
+M9	AT-140	J10	Given canary secrets in the vault and in the job's text, when cloud search, read and browse calls run, then no canary appears in any outbound payload; a canary in a URL host or path blocks that call (`CLOUD_SECRET_BLOCKED`) and th	built	
+M9	AT-141	J10	Given a Browser Use key, then `web.browseCloud` is refused (`USE_EDGE` / `SITE_HANDBACK`) for a signed-in site, IRCTC, a biller, a hand-back domain and any goal that types, books, buys, pays, sends or posts; and when the cloud res	built	
+M9	AT-142	J9	"Given a job that reaches a net-banking, UPI web, trading or password-manager domain, then foo never types, clicks or reads in it and shows ""This is your bank's site. I'll open it for you, and you do this part."" [ Open {site} ], wh"	built	
+M9	AT-143	J10	Given an AI cap of ₹1,000 with ₹999 spent, when a cloud search or read would cross the cap, then it is not called, the local path is used, and the Spent meter includes every earlier cloud call.	built	
+M9	AT-144	J9	Given a saved recipe for a sandbox biller, when the job replays it, then every step is matched by role and name before acting, no value (name, date, card data) is stored in the recipe, and the final pay click is never replayed: it	built	
+M9	AT-211	J13	"Given a site asks for a passkey or a phone approval, then a `signin` card with `mode='take_over'` reads ""{Site} sent an approval to your phone. Approve it there, then tap I'm done."", foo makes no click until ""I'm done"", and captur"	built	
+M9	AT-272	J18	Given a job in the live window in state `in_control`, then the only hand-back control is [ Hand back to {agentName} ] (plus Stop); when it is tapped, then main sends `job.handBack { jobId }` with no `mode` field, foo re-reads the 	built	
+M9	AT-300		`--ease-spring` / `--ease-spring-soft` are CSS `linear()`; overshoot ≤ 4 %; every exit duration ≤ every entrance duration; no animation library or Web Animations API in the bundle	built	
+M9	AT-315		"no ""✓"" text glyph in `en-IN.json` or renderer JSX (comments skipped); Fluent `Checkmark` 16 instead"	built	
+M9	AT-316		`--t-subtitle` 17/24; weight 700 only through `--weight-money`	built	
+M9	AT-317		dark `--shadow-4/16/28` = 1px edge ring + two layers; light unchanged	built	
+M9	AT-301		Basic: no transform, scale, rotation or height animation, fades `--m-basic`; Off: §F25.4 table, nothing moves	built	
+M9	AT-302		the new view slides 18px with `--ease-spring-soft` and cross-fades; back reverses; the old view leaves in ≤ 167ms	built	
+M9	AT-303		dialog 0.92 → 1 with `--ease-spring` and `--shadow-28`; shell behind 0.96 + 2px blur; menus scale from the opening button	built	
+M9	AT-326		skeleton shimmer, tooltip after 500ms, toggle knob spring, segmented and Settings pill slide	built	
+M9	AT-327		"`Button variant=""primary""` lip flattens on press in 83ms; other buttons keep the 0.97 press"	built	
+M9	AT-304		"no letter face for foo or a default helper; Resting blinks every 2–6 s; ≥ 40px bobs; idle stops while the window is hidden; ""Show foo's eyes"" off → still poses, rings still shown"	built	
+M9	AT-305		the 26px Thinking face only while a request is in flight (C.7.4)	built	
+M9	AT-306		Memory empty states show the 64px face in its pose, `aria-hidden`, no ring	built	
+M9	AT-323		each built detail animates at Full, fades at Basic, is still at Off	built	
+M9	AT-324		as AT-323, and no layout jump in the virtual list	built	
+M9	AT-307		empty chat: 3 starters; click fills and focuses the field, sends nothing; hidden on the first keystroke	built	
+M9	AT-308		≤ 3, only from the reply's stored suggestions (banned words dropped, line stripped from the bubble); none after Approval / Payment / Draft / Secret or money; none in groups, mirrors or private chats	built	
+M9	AT-309		"hold mic floods the button; send → ✓ for 2s on delivery; Stop while working; ""Add details…"" while a job works"	built	
+M9	AT-325		as AT-323	built	
+M9	AT-310		"named steps with their `StepKind` icon; live step shimmers; ✓ overshoot; sources pile (≤ 5, ""+n"" after 3)"	built	
+M9	AT-311		springs in with `--shadow-28`; amounts in `--weight-money` tabular digits; primary lip; no sparks or celebration on any money card	built	
+M9	AT-312		"DONE with proof → Happy; first of the day → Celebrating; the card line ""{job title} · saved you about {n} min."" from the fixed table, hidden under 5 min; DONE ""⚠ Not checked live"" shows none of it"	built	
+M9	AT-313		the 96px face's eyes open once; logo never animates; Off: eyes already open	built	
+M9	AT-314		striped 4-step pill; rows test live (shimmer → ✓ works); app logos on white tiles	built	
+M9	AT-318		default off; on: only Approve and Done tones; never in quiet hours or while hidden	built	
+M9	AT-319		`backgroundMaterial: 'mica'` only on Windows 11 + transparency on + setting on, not high contrast, not FOO_TEST; otherwise solid	built	
+M9	AT-320		every row of 06-2 §6.2 writes its setting and applies live, without restart	built	
+M9	AT-321		Ctrl+= / Ctrl+- / Ctrl+0 / Ctrl+wheel and the Zoom row share `zoom`; overlay height = round(32 × zoom)	built	
+M9	AT-322		the renderer entry chunk ≤ 500 KB minified; a lazily loaded page shows its skeleton within 150ms	built	
+M9	AT-340		the three variants draw from one series and from 3; one hue; axis labels and values follow 02 number and money rules; legend only with 2+ series	built	
+M9	AT-341		"numbered stops to scale on a plain panel with a dashed route and the stops list; ""Open in Maps"" is an action chip; no network request leaves the PC while it draws"	built	
+M9	AT-342		+ / − and arrow keys change the value within min/max; every component bound to the same path updates at once	built	
+M9	AT-343		2–3 columns; the highlighted column is outlined with its one-line why	built	
+M9	AT-344		items in date order; amounts in money format	built	
+M9	AT-345		busy and free slots for 7 days; Narrator reads each slot	built	
+M9	AT-346		a timer runs in the renderer; ticks are kept in the surface's data model	built	
+M9	AT-347		"outputs recompute from the inputs (+ − × ÷ ^, min, max, round, pmt); a bad formula shows ""Can't work this out"""	built	
+M9	AT-348		"arc proportional to value / target, ""{value} of {target}"" in the middle, `role=""meter""`"	built	
+M9	AT-349		the pick counts as a Choice answer; a reaction counts too (05 §5.3.4)	built	
+M9	AT-350		the picked slot goes back to foo, who confirms it	built	
+M9	AT-351		up to 6 fields; submit sends one action with the values	built	
+M9	AT-352		Data as of {time} shows; Refresh sends `kit:refresh`	built	
+M9	AT-353		each complete A2UI message draws while the reply streams; an incomplete one is held back	built	
+M9	AT-354		"an invalid or unknown component is dropped, ""Couldn't show part of this"" shows, the words stay"	built	
+M9	AT-355		a Button action reaches the engine as `kit.action` and the surface updates from the reply	built	
+M9	AT-356		a Button whose action sends, books, pays, deletes or shares opens an approval, never acts directly	built	
+M9	AT-357		a fetch, an image URL or a navigation inside the page fails; main logs the denied request	built	
+M9	AT-358		"the frame has `sandbox=""allow-scripts""` only: no same-origin, popups or forms"	built	
+M9	AT-359		"a page over 512 KB shows ""This page is too big to open""; height stops at 600px and the page scrolls inside"	built	
+M9	AT-360		messages from other sources, bad schema and more than 10 calls per second are refused; every call is logged through `page:rpc`	built	
+M9	AT-361		`requestAction` goes through the gate; `openLink` always shows C-26; secret text in any call is refused and the Secret box posts	built	
+M9	AT-362		a kit piece or the status line shows before the page is ready	built	
+M9	AT-363		the line shows the people, places, dates, times and amounts understood, and never a secret	built	
+M9	AT-364		a side question is answered while a running job keeps running (its checklist does not stop or re-plan)	built	
+M9	AT-365		"≤ 2,000 inline; 2,001–10,000 ""Pasted text"" chip; > 10,000 `pasted-{time}.txt` file chip; the paste catcher runs first in every band"	built	
+M9	AT-366		the same question answers without kit pieces or AI pages unless the user asks for one	built	
+M9	AT-367		reply chips fill the composer; ≤ 3 action chips act through the gates; none after an approval or payment card	built	
+M9	AT-368		"Refresh updates the surface's data model and ""Data as of"""	built	
+M9	AT-369		Keep saves a `kept_items` row listed in the chat's Files tab; a kept AI page reopens only in the sealed box; no `.html` file is written	built	
+M9	AT-370		ShortForm and TextField refuse values that match 04-2 §22.4 and offer the Secret box	built	
+M9	AT-371		formulas go through `shared/kit/evaluate.ts`; no `eval`, `Function` or dynamic import in the kit bundle	built	
+M2	AT-007	J2	Given the user pastes `sk-proj-…` (or a Luhn-valid 16-digit number, or a code right after foo asked for one) into the composer, when they press Enter, then nothing is sent and the paste catcher appears. *(also covers J7, J13 branches)*	built	src/renderer/composer/Composer.tsx:237 findSecrets on Send -> PasteCatcher.tsx; luhn in src/shared/redactor.ts:91; test m2-composer.spec.ts (trace pending)
+M9	AT-039	J9	"Given all booking sites block foo, then foo offers [ Open the page ] with the link ""Email the restaurant"" (R-03), and never emails without a fresh Approval tap."	partial	"SITE_BLOCKED error card offers ""Open the page myself"" (src/engine/jobs/JobRunner.ts:273,1286); no ""Email the restaurant"" link or copy key anywhere in src"
+M9	AT-040	J9	Given a booking with a free-cancel cutoff, then a reminder arrives 2 h before the cutoff, with an absolute time.	not built	deadline_reminder variant only rendered (src/renderer/cards/Approval.tsx:358,416); nothing in src/engine or src/main creates or schedules it (git grep deadline_reminder)
+M9	AT-079	J18	Given the Watch live window (`live.html`, 08-0 §G.8), then password, card and OTP fields are blurred in every frame and the window takes no clicks.	built	blur CSS on password/cc/OTP fields src/engine/tools/browser/walker.ts:12,293; frames masked src/main/windows/liveMask.ts; live window shows frames only (liveWindow.ts)
+M9	AT-157	J8, J10	"Given ""book me a flight to Goa on Sat 12 Dec"", then foo replies ""I can find and compare flights, and open the booking page for you. Filling in passengers and paying for flights comes in a later version."" with [ Compare flights ] and the link ""Not now""; when Compare flights is tapped and an option pi"	built	src/engine/jobs/flights.ts (isFlightBooking, flightScopePayload); runnerGate.ts:351 blocks book/pay cards; copy thread.flight_scope.body
+M9	AT-207	J9	"Given a booked table with a free-cancel cutoff of Sat 17 Oct, 6:00 PM, then at Sat 17 Oct, 4:00 PM the reminder ""Dinner at {place} tonight, Sat 17 Oct, 8:00 PM. Free to cancel until 6:00 PM."" with [ Keep it ] [ Cancel booking ] arrives; when ""Cancel booking"" is tapped, then an Approval card with ver"	partial	"Keep it / Cancel booking buttons render disabled with noop ""until T7 wires them"" (src/renderer/cards/Approval.tsx:186,476-484); reminder never posted"
+M9	AT-420	Reply area (C.10)	"Two messages during a job, one answer: both queued messages marked `answered` by one step turn → foo's answer posts once; two folded → ""Got it, I'll fold that in."" once"	built	src/engine/jobs/steer.ts (thread.steer.folded); test/unit/jobs/steer.test.ts live
+M9	AT-421	Reply area (C.10)	Reaction chip: a 👎 on a reply whose last line ends near the left edge never overlaps the text; the next row sits 24px below	built	test/e2e/c1-bubbles.spec.ts live; BubbleParts.tsx §8 reaction chip
+M9	AT-422	Reply area (C.10)	"Sentence case: the `rules.md` sent to the AI says ""Always write in normal sentence case"" and no longer says ""Mirror the user's casing"""	built	resources/prompts/rules.md:6 sentence-case line; test/unit/prompt/c1-voice.test.ts live
+M9	AT-423	Reply area (C.10)	"Voice: the foo and helper identity blocks carry the ""How you sound"" line; the foo block is one paragraph"	built	"resources/prompts/identity.md:2,6 ""How you sound"""
+M9	AT-424	Reply area (C.10)	Answer first: `rules.md` asks for the answer in the first sentence and allows a short list for three or more things	built	resources/prompts/rules.md:5 answer in first sentence, short list
+M9	AT-425	Reply area (C.10)	Capabilities card: a reply tagged `intent_capabilities` posts the one-sentence reply and the card; rows follow 04 §13.7 order and connection state; Try it fills the field and sends nothing	built	src/engine/chat/ChatLane.ts:19,114 intent_capabilities -> Capabilities card; c1-capabilities.spec.ts live
+M9	AT-426	Reply area (C.10)	Capabilities footer: the safety line always shows; while the Ideas page is a placeholder no ideas link line shows (once it is built: at most once per chat per local day)	built	test/e2e/c1-capabilities.spec.ts live
+M9	AT-427	Reply area (C.10)	One bubble: a 3-paragraph chat-mode reply of ≤ 600 characters shows as one bubble with one time	built	test/e2e/c1-bubbles.spec.ts live
+M9	AT-428	Reply area (C.10)	Sender label in own chats: foo's chat and a helper's chat show the face and name above the first bubble of each output run	built	test/e2e/c1-bubbles.spec.ts live
+M9	AT-429	Reply area (C.10)	Your bubble colour: dark theme user bubble is `#2C359A`; light stays `#0B0B10`	built	design/tokens.json bubble.me dark #2C359A; c1-bubbles.spec.ts live
+M9	AT-430	Reply area (C.10)	Reply actions on older answers: the action row shows under the latest answer, and under an older answer on hover or focus only	built	src/renderer/messages/AnswerExtras.tsx:113 ActionRow; c1-actions-chips.spec.ts live
+M9	AT-431	Reply area (C.10)	Chip icons: each suggestion chip shows the icon its words map to (04-2 §21.7 Look); unknown words get `Edit`	built	src/renderer/composer/chipIcon + SuggestionChips.tsx:37
+M9	AT-432	Reply area (C.10)	Answered steer tick: a message answered while a job runs shows ✓✓ read, not ⏳, once its answer posts	built	test/integration/jobs/c1-steer-signs.test.ts live
+M9	AT-433	Reply area (C.10)	"Trying another way: a failed tool call with the job carrying on shows ""Slow here, trying another way"" under the current step until the next successful call"	built	src/renderer/cards/Checklist.tsx:6 + copy cards.checklist.retry_other_way
+M9	AT-434	Reply area (C.10)	"Memory note wording: the intake rules ask for a memory fact as a short note without ""the user"" or their name"	built	resources/prompts/intake.md:9 memory short note
+M9	AT-435	Reply area (C.10)	Drafts are jobs: the intake rules make writing, sending or replying to an email or a message a job that needs that app, never a draft in `<say>`	built	resources/prompts/intake.md:6 writing/sending is a job
+M9	AT-440	Reply area (C.10)	"Empty answer, asked again: an intake answer with no words left gets one more intake turn with nothing shown; if that one plans a job its card follows, and if it is empty too foo posts ""I didn't get that. Say it another way?""; a short real ask (""Order me a pizza from Dominos"") never gets a 👍; an ack "	built	src/engine/chat/ChatLane.ts:3 empty reply retry + thread.reply.empty; test/integration/empty-reply.test.ts live
+M3	AT-273	J19	"Given Claude Code is not answering and the backup AI ChatGPT answers a plain reply, then that bubble's footer shows `ArrowSync` 12 + ""Answered with ChatGPT while Claude rests"" (`bubble.backup_mark.text`, test id `bubble-backup-mark`) and Narrator reads the bubble with the suffix "", answered with Cha"	built	src/renderer/messages/Bubble.tsx:180,670 TID.bubbleBackupMark + bubble.backup_mark.* copy
+M2	AT-278	All	Given the dark theme, then the user's own bubble fill is `#2C359A` (`--bubble-me`, CR-0024 F6), its text `#FFFFFF` (`--on-bubble-me`, measured contrast ≥ 7:1), its time and secondary text `#C9D0FF` (`--on-bubble-me-2`), read ticks `#FFFFFF` (`--tick-read-on-me`) and its soft fill `#232B7E`; given th	built	design/tokens.json bubble.me dark #2C359A, on.bubble-me #FFFFFF, on.bubble-me-2 dark #C9D0FF, bubble-me-soft dark #232B7E
+M0	AT-279	All	Given the ART-24 size scan (§D), then every width, height, padding, margin and gap is a multiple of 4 except 1px/1.5px borders, 2px (`--s-1`) and exactly these four: card padding 14 (02 F3), composer pill 46 (04 §20.3), checklist step row 30 (05 §5.2.1), Thinking row 38 (04 §14.3); any other non-mul	partial	ART-24a (test/articles/ART-24a.test.ts) scans raw literals only; no multiple-of-4 size scan with the four exceptions exists (ART-24 runtime audit is M14)
+M2	AT-284	All	Given three helper bubbles within 3 minutes, then they group with the 2px gap only when they are on the same calendar day, the earlier bubble has no reaction chip and no status badge, and no unread divider lies between them; each of those three conditions alone breaks the run (X-151; 04 §1.3 rule 5)	built	src/renderer/messages/runs.ts:3 (X-151: day, chip/badge, unread divider break a run)
+M2	AT-285	All	"Given an open chat scrolled 14px above the bottom, when a message arrives, then the list stays pinned to the bottom; given 16px or more above, then the list does not move and the jump button widens to ""↓ {n} new"" (`thread-jump-latest-count`, ""99+"" cap); the chat's unread count clears only after the "	built	src/renderer/messages/stickToBottom.ts:52 MARK_READ_AFTER_MS=1000; JumpToLatest.tsx:28 TID.threadJumpLatestCount, 99+ cap
+M2	GAP-17.1	04 §17.1	Try again on a finished answer: the reply action row offers Try again on a completed answer (04 §17.1).	not built	message:retry re-runs only a failed foo reply; retryMessage refuses a finished one (src/main/ipc/IpcRouter.ts:551, src/main/store/queries.ts:605)
+M2	GAP-6.2	04 §6.2	An edit reaches the engine: editing a sent message sends the edited text to the engine (04 §6.2).	not built	message:edit saves the new text and redraws the chat but never sends it to the engine (src/main/ipc/IpcRouter.ts:534)

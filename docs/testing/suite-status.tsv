@@ -1,8 +1,8 @@
 key	state	sha	link	note
-main_ci	in progress	0d04a9f9105e42aef0b4a22238285a9007635c3e	https://github.com/vikas53953/foo-agent/actions/runs/39710797031	07:54 IST publication snapshot: main advanced again. Latest results incomplete; no old passing receipt is promoted.
-real_ai_main	pending	0d04a9f9105e42aef0b4a22238285a9007635c3e	https://github.com/vikas53953/foo-agent/actions/runs/39710797010	07:54 IST publication snapshot: main advanced again. Latest results incomplete; no old passing receipt is promoted.
+main_ci	green	0d04a9f9105e42aef0b4a22238285a9007635c3e	https://github.com/vikas53953/foo-agent/actions/runs/39710797031	Verified completed success on today's base at 09:08 IST; Linux, four Windows shards and golden all green.
+real_ai_main	judged	0d04a9f9105e42aef0b4a22238285a9007635c3e	https://github.com/vikas53953/foo-agent/actions/runs/39710797010	Run33 completed success; all54journeys and302PNGs judged. Workflow success is not feature acceptance; see run33 findings and per-AT ledger.
 judge_97	built, not merged		https://github.com/vikas53953/foo-agent/pull/97	promptfoo AI judge (32 asks), axe sweep, chaos reopen, Windows install/keychain checks.
 mutation_101	built, not merged		https://github.com/vikas53953/foo-agent/pull/101	Stryker on 4 files, 72%.
-bdd	partial	09a61163653086898c699fac37d69ef98188e6c3	https://github.com/vikas53953/foo-agent/pull/119	22 authored BDD scenarios; historical focused passes and one strict reaction failure. Full current suite and real-AI mode are not proven.
-upgrade	partial	489ce348ccc39dffc4aed007980fd1b2e57ca1ba	https://github.com/vikas53953/foo-agent/pull/120	Isolated upgrade/performance/soak harnesses authored; NSIS attempt stalled and no previous published release. Eight-hour and native UI acceptance not run.
-usability	partial	028e8567bff988efd8f264390d86238691cf6eef	https://github.com/vikas53953/foo-agent/pull/118	Heuristic review and five-task script; no real-person session and no current-main UX acceptance.
+bdd	partial	18638eb4c05baa5f7e264b39ba86af2a2fbf4f4b	https://github.com/vikas53953/foo-agent/pull/119	22 authored scenarios; rebuilt on today's main merge then bounded J8 passed. Pretend AI only, not in CI; install step approval pending.
+upgrade	partial	d4dea533ea78b5236247abd261a61613e6d3187e	https://github.com/vikas53953/foo-agent/pull/120	Old04f01dd/current build harness and dry runs only; actual Windows installer, keychain, tray, upgrade and one-hour soak not run. CI job proposal pending.
+usability	partial	39f23256cce8a601bf64e2fd184354493e3ed577	https://github.com/vikas53953/foo-agent/pull/118	Five-task fifteen-minute script reviewed against built/paused scope; no human session, ratings or acceptance.

@@ -1,6 +1,6 @@
 # Testing handoff: Claude ↔ Codex
 
-Shared notes for any agent (Claude or Codex) working on proving foo's 160 built features. Read this file first, then `coverage-matrix.md`. Update both before you stop.
+Shared notes for any agent (Claude or Codex) working on proving foo's 190-feature inventory (including three not-built rows). Read this file first, then `coverage-matrix.md`. Update both before you stop.
 
 ## Where things stand
 
@@ -14,7 +14,7 @@ Inputs you may edit by hand:
 
 | File                               | What it holds                                                                                                                    |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `docs/testing/features.tsv`        | the 160 built features (milestone, spec id, spec journey, acceptance text)                                                       |
+| `docs/testing/features.tsv`        | 190 features (milestone, spec id, journey, acceptance text, built state)                                                         |
 | `docs/testing/real-ai-results.tsv` | one row per judged real-AI result: id, result (pass/fail/wrong/partial/blocked/unclear), build sha, journey, evidence link, note |
 | `docs/testing/suite-status.tsv`    | facts that decide many cells: main CI state and sha, unmerged test PRs                                                           |
 | `docs/testing/lane-coverage.tsv`   | explicit feature/test mappings pinned to lane commits; can fill missing cells as partial only, never prove acceptance            |
@@ -51,7 +51,9 @@ Everything else (`coverage-matrix.md/.tsv/.json`, `coverage-cells.tsv`) is gener
 | Regression         | the full suite on every PR and main merge                          | `.github/workflows/ci.yml`                                                                                                                                                                                          |
 | Usability / UX     | **not done**                                                       | needs real people; meanwhile AI heuristic review vs the Blueprint                                                                                                                                                   |
 
-## What to test next (all 15 test types, in this order)
+## Historical backlog (subject to the current runbook)
+
+The 22 October user runbook controls this backlog: current-main judgment first; no local full suite; Lane A only its eight prescribed journeys; no paused milestone code; no installer packaging or eight-hour soak. The strict matrix now has 126 missing real-AI rows because metadata-only references no longer count. The 62 n/a proposals are unapproved and do not alter scoring.
 
 Every feature gets a score per test type, and an overall score: **works / works but wrong vs design / broken / not built**. "Wrong vs design" is judged against the Blueprint, the UX walkthrough and the golden pictures in `golden/`.
 
@@ -99,7 +101,7 @@ Also add your judged real-AI rows to `real-ai-results.tsv` and re-run `build_mat
 
 ## Log
 
-Latest lead closeout: main advanced to `0d04a9f9105e42aef0b4a22238285a9007635c3e` while the seven draft lanes were being published. Its CI and real-AI results are not complete. Passing receipts on `0665cf6` are retained as historical; none are promoted on the newer build. See [the lead report](results/codex-2026-10-22.md) for all lane PRs, evidence, failures and blocked work.
+Latest lead closeout: main `0d04a9f9105e42aef0b4a22238285a9007635c3e` has green CI and judged run33. Six complete AT criteria are proven by this real-AI run; partial widget rendering is not full feature acceptance. See [today's daily file](results/codex-daily-2026-10-22.md) and [run33 findings](results/run33-0d04a9f-findings.md). Inventory provenance: PR #114 head `a676e2ea91e62f7cb007a7b865423598ebf0ce0e`; main itself has no testing matrix. Prior log entries remain historical.
 
 | When (IST)       | Who        | What changed                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | ---------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -107,3 +109,4 @@ Latest lead closeout: main advanced to `0d04a9f9105e42aef0b4a22238285a9007635c3e
 | 2026-10-22 02:28 | Codex lead | Collected all seven lane reports and draft PRs; appended judged AI rows, updated app-wide checks and regenerated the matrix with strict provenance and pinned partial coverage. Latest main moved again, so zero new proven cells at closeout. Next: review the seven drafts and shared BDD CI wiring, then judge latest-main CI and real-AI evidence; run the explicitly blocked native Windows, soak, network and real-person checks. |
 | 2026-10-22 07:48 | Codex lead | Confirmed final draft PR #138 after the host pause; refreshed latest-main snapshot to d0b885a0ae324905b8509222b57b521cac7d2330 with both runs incomplete. All eight PRs remain draft. Retained the earlier receipts and repeated publication checks; zero new proven cells.                                                                                                                                                             |
 | 2026-10-22 07:54 | Codex lead | Final freshness check: main is 0d04a9f9105e42aef0b4a22238285a9007635c3e; CI is in progress and real-AI is pending. Matrix remains zero proven; no older pass is carried forward.                                                                                                                                                                                                                                                        |
+| 2026-10-22 09:16 | Codex      | Judged all 54 run33 journeys/302 PNGs; restored 190 inventory with explicit PR114 provenance; excluded metadata-only coverage; retained historical receipts. Source run30 → current run33: real AI proven 14→6, partial 67→45, fail/wrong 11→10, missing 95→126, not built 3→3; code tests 175→176. Lead starting 160-row matrix had zero current-main proven. Matrix regression tests 8/8; n/a62 remains proposal only.                |
