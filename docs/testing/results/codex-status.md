@@ -133,4 +133,3 @@ Combined source commit:fb15c2eea738e7ddd1b3daa2e11c5712a4c66be3. All181selectedt
 Heartbeat validation: after installing the frozen BDD subproject dependencies, `tsc -p tsconfig.node.json --noEmit` passed. Trace check passed. Focused driver/journey regressions9pass/2knowncontractfail; no assertions loosened. Renderer mutation artifact12409884080 reports1145total/399killed/743survived/3timeouts,35.11percent below70threshold; declared direct-test gaps retained.
 
 Validation rerun: [CI39753919430](https://github.com/vikas53953/foo-agent/actions/runs/39753919430), tested9929d0bd21786fd4f97f8d38c046fbf3d8da9a63, started after test typing/format repairs and validated BDD import. Results pending. No duplicate real-AI run: this loop judged completed focused evidence and is reviewing the full run.
-
