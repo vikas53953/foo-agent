@@ -152,7 +152,7 @@
         "₹0"
       ],
       "extra": [
-        "3",
+        "2",
         "9:41",
         "Needs",
         "your",
@@ -175,8 +175,7 @@
         "on",
         "Pune",
         "train…",
-        "Needs",
-        "you",
+        "Working",
         "B",
         "Building",
         "society",
@@ -240,6 +239,22 @@
         "Home",
         "Watch",
         "live",
+        "H",
+        "Home",
+        "I",
+        "checked.",
+        "It",
+        "opens",
+        "at",
+        "10:00",
+        "AM",
+        "on",
+        "Sun",
+        "18",
+        "Oct",
+        ".",
+        "8:19",
+        "AM",
         "ok",
         "thanks",
         "10:03",
@@ -353,16 +368,8 @@
         "9:41",
         "AM",
         "127.0.0.1",
-        "1",
+        "→",
         "Save",
-        "Best",
-        "fit",
-        "2",
-        "Don’t",
-        "save",
-        "Something",
-        "else…",
-        "Skip",
         "9:41",
         "127.0.0.1",
         "secret",
@@ -501,38 +508,38 @@
         },
         "app": {
           "x": 356,
-          "y": -87,
+          "y": 141,
           "width": 440,
           "height": 268
         },
-        "dPos": 408,
+        "dPos": 180,
         "dSize": 80,
         "verdict": "fail"
       }
     ]
   },
   "r3": {
-    "verdict": "review",
+    "verdict": "pass",
     "anchors": [
       {
         "name": "hl",
         "ref": "#1B1B22",
-        "app": "#0D0D11",
-        "deltaE": 4.78,
-        "verdict": "review"
+        "app": "#1B1B22",
+        "deltaE": 0,
+        "verdict": "pass"
       }
     ]
   },
   "r4": {
     "verdict": "review",
     "skipped": null,
-    "ratio": 0.0651233075435203,
-    "diffPixels": 5387,
+    "ratio": 0.05892166344294004,
+    "diffPixels": 4874,
     "total": 82720
   },
   "r5": {
-    "ratio": 0.0863310546875,
-    "diffPixels": 88403,
+    "ratio": 0.0842841796875,
+    "diffPixels": 86307,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-07.dark.diff.png"

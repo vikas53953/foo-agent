@@ -408,6 +408,7 @@
         "11:06",
         "AM",
         "11:06",
+        "👀",
         "H",
         "Home",
         "I’d",
@@ -546,8 +547,8 @@
     "total": 30966
   },
   "r5": {
-    "ratio": 0.0786123046875,
-    "diffPixels": 80499,
+    "ratio": 0.0785947265625,
+    "diffPixels": 80481,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-15-07.light.diff.png"
