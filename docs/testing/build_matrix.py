@@ -41,6 +41,14 @@ def tsv(path):
 features = tsv(P('docs/testing/features.tsv'))
 suite = {r['key']: r for r in tsv(P('docs/testing/suite-status.tsv'))}
 real = {r['id']: r for r in tsv(P('docs/testing/real-ai-results.tsv'))}
+real_ai_na = {}
+na_path = P('docs/testing/real-ai-na.tsv')
+for row in tsv(na_path) if os.path.exists(na_path) else []:
+    if (row['id'] not in {feature['id'] for feature in features}
+            or row['id'] in real_ai_na
+            or not row['reason'].startswith('APPROVED code-only;')):
+        raise ValueError('Code-only classification requires known unique IDs and an approved reason')
+    real_ai_na[row['id']] = row['reason']
 with open(P('spec/trace.csv'), newline='', encoding='utf-8') as f:
     trace = collections.defaultdict(list)
     for r in csv.DictReader(f):
@@ -153,7 +161,9 @@ def build(f):
     # Real AI
     r = real.get(i)
     js = sorted(journeys.get(i, set()))
-    if r:
+    if i in real_ai_na:
+        c['real_ai'] = cell('na', real_ai_na[i])
+    elif r:
         tag = {'pass': 'passed', 'fail': 'FAILS', 'wrong': 'works but wrong', 'blocked': 'blocked by setup',
                'unclear': 'unclear', 'partial': 'partly passed'}[r['result']]
         where = 'on an owner PC (report, no log)' if r['build'] == 'real-pc-report' else (
