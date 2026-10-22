@@ -85,6 +85,10 @@ async function launchPretend(
   })}</act>`;
   const lines: FakeLine[] = [
     VERIFY_OK,
+    {
+      match: { purpose: 'classify', promptIncludes: 'New message: thanks!' },
+      reply: '<say></say>\n<act>{"about":"new"}</act>',
+    },
     intake('thanks!', '', { decision: { kind: 'react', emoji: '👍' } }),
     intake('Find my bills due this week', jobReply),
     intake('hello from BDD', envelope('hello from pretend AI')),
@@ -92,7 +96,7 @@ async function launchPretend(
   ];
   mkdirSync(dirname(script), { recursive: true });
   writeFileSync(script, lines.map((line) => JSON.stringify(line)).join('\n') + '\n');
-  const firstRun = ['J1', 'J2', 'J3', 'J4', 'J5'].includes(journey);
+  const firstRun = ['J1', 'J2', 'J3', 'J4'].includes(journey);
   const env: Record<string, string> = { FOO_FAKE_AI: script };
   if (firstRun) {
     env.FOO_TEST_FIRST_RUN = '1';

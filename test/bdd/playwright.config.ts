@@ -2,7 +2,8 @@ import { defineConfig } from '@playwright/test';
 import { defineBddConfig } from 'playwright-bdd';
 
 const testDir = defineBddConfig({
-  features: 'features/**/*.feature',
+  // Keep the production-only real subset on its own config and preserve the 22 pretend journeys here.
+  features: 'features/J[0-9][0-9]-*.feature',
   steps: ['steps/fixture.ts', 'steps/steps.ts'],
   outputDir: 'generated',
 });

@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "bddgen": "node node_modules/playwright-bdd/dist/cli/index.js test --config playwright.config.ts",
-    "test": "pnpm bddgen && node node_modules/@playwright/test/cli.js test --config=playwright.config.ts"
+    "test": "pnpm bddgen && node node_modules/@playwright/test/cli.js test --config=playwright.config.ts",
+    "bddgen:real": "node node_modules/playwright-bdd/dist/cli/index.js test --config playwright.real.config.ts",
+    "test:real": "pnpm bddgen:real && node node_modules/@playwright/test/cli.js test --config=playwright.real.config.ts"
   },
   "devDependencies": {
     "@playwright/test": "link:../../node_modules/@playwright/test",

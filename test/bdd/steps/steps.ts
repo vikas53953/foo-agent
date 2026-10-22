@@ -19,6 +19,12 @@ async function openChat(page: BddRun['page'], name: string): Promise<void> {
   await expect(page.getByTestId(TID.chatHeaderName)).toContainText(name);
 }
 
+async function openChatPanel(page: BddRun['page']): Promise<void> {
+  const toggle = page.getByTestId(TID.chatHeaderPanel);
+  if ((await toggle.getAttribute('aria-expanded')) !== 'true') await toggle.click();
+  await expect(page.getByTestId(TID.appPanel)).toBeVisible();
+}
+
 function cardLocator(page: BddRun['page'], cardId: string) {
   return page
     .locator(
@@ -156,7 +162,7 @@ Then('the first task renders a live checklist in the chat', async ({ bddRun }) =
 When('the user opens the morning brief schedule', async ({ bddRun }) => {
   expect(bddRun.journey).toBe('J6');
   await openChat(bddRun.page, 'foo');
-  await expect(bddRun.page.getByTestId(TID.appPanel)).toBeVisible();
+  await openChatPanel(bddRun.page);
   await bddRun.page
     .getByTestId(TID.appPanelJobsTab)
     .getByRole('radio', { name: /Scheduled/i })
@@ -287,7 +293,8 @@ When('the user opens a sign-in handoff card', async ({ bddRun }) => {
 
 Then('the sign-in card offers Take over without exposing credentials to the AI', async ({ bddRun }) => {
   expect(bddRun.journey).toBe('J13');
-  const card = bddRun.page.getByTestId(TID.cardSignin).last();
+  const card = bddRun.page.getByTestId(TID.cardSignin).filter({ hasText: /irctc\.co\.in/i });
+  await expect(card).toHaveCount(1);
   await expect(card.getByTestId(TID.cardSigninTakeOver)).toBeVisible();
   await expect(card).not.toContainText(/password|username/i);
 });
@@ -295,7 +302,7 @@ Then('the sign-in card offers Take over without exposing credentials to the AI',
 When('the user opens the routine schedule', async ({ bddRun }) => {
   expect(bddRun.journey).toBe('J14');
   await openChat(bddRun.page, 'foo');
-  await expect(bddRun.page.getByTestId(TID.appPanelDoing)).toBeVisible();
+  await openChatPanel(bddRun.page);
   await bddRun.page
     .getByTestId(TID.appPanelJobsTab)
     .getByRole('radio', { name: /Scheduled/i })
@@ -310,7 +317,7 @@ Then('the routine appears in the Scheduled segment', async ({ bddRun }) => {
 When('the user opens a helper work panel', async ({ bddRun }) => {
   expect(bddRun.journey).toBe('J15');
   await openChat(bddRun.page, 'Trips');
-  await expect(bddRun.page.getByTestId(TID.appPanelDoing)).toBeVisible();
+  await openChatPanel(bddRun.page);
 });
 
 Then('the panel shows the helper job under In progress', async ({ bddRun }) => {
@@ -323,6 +330,7 @@ Then('the panel shows the helper job under In progress', async ({ bddRun }) => {
 When('the user opens the helper group chat', async ({ bddRun }) => {
   expect(bddRun.journey).toBe('J16');
   await openChat(bddRun.page, 'Family group');
+  await openChatPanel(bddRun.page);
 });
 
 Then('the group panel shows members and hides private memory', async ({ bddRun }) => {
@@ -403,7 +411,7 @@ Then('Settings shows the account and connection sections', async ({ bddRun }) =>
 
 When('the user searches the chat list for Trips', async ({ bddRun }) => {
   expect(bddRun.journey).toBe('J22');
-  await bddRun.page.getByTestId(TID.sidebarSearchField).fill('Trips');
+  await bddRun.page.getByTestId(TID.sidebarSearchField).locator('input').fill('Trips');
   await expect(bddRun.page.getByTestId(TID.chatlistRow).filter({ hasText: 'Trips' })).toBeVisible();
 });
 
