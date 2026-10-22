@@ -239,13 +239,19 @@ jobs:
           New-Item -ItemType Directory -Force $providerHome | Out-Null
           New-Item -ItemType Directory -Force (Join-Path $providerHome 'AppData/Roaming'), (Join-Path $providerHome 'AppData/Local') | Out-Null
           "FOO_BDD_REAL_AI_HOME=$providerHome" | Out-File $env:GITHUB_ENV -Append -Encoding utf8
-      - name: Execute all BDD scenarios
+      - name: Execute BDD scenarios for the selected mode
         env:
           FOO_BDD_AI_MODE: ${{ matrix.mode }}
           FOO_BDD_REAL_AI_PROVIDER: claude-cli
           ANTHROPIC_API_KEY: ${{ matrix.mode == 'real' && secrets.ANTHROPIC_API_KEY || '' }}
           ANTHROPIC_MODEL: claude-sonnet-5-5
-        run: pnpm --dir test/bdd test
+        run: |
+          if ($env:FOO_BDD_AI_MODE -eq 'real') {
+            pnpm --dir test/bdd test:real
+          } else {
+            pnpm --dir test/bdd test
+          }
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Upload BDD execution evidence
         if: always()
         uses: actions/upload-artifact@v4
