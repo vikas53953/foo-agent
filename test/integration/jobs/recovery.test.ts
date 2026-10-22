@@ -5,7 +5,7 @@
 // [ Pick up where I left off ] · "Stop it"; states resumed / stopped), 08-3 §21.2 CRASH_RECOVERY, SAFE_MODE, CR-0008 G-M4-13.
 import { afterEach, describe, expect, it } from 'vitest';
 import { t } from '../../../src/shared/copy/t';
-import { BILLS_PLAN, jobHarness, jobIntake, step, stepDone, tool, badgeSets, type JobHarness } from './jobHarness';
+import { BILLS_PLAN, jobHarness, jobIntake, step, stepDone, tool, badgeSets, type JobHarness, untilStill } from './jobHarness';
 import { restartEngine } from './restart';
 
 let h: JobHarness | null = null;
@@ -14,13 +14,6 @@ afterEach(() => {
   h = null;
 });
 
-const poll = async (rounds = 40) => {
-  for (let i = 0; i < rounds; i++) await new Promise((r) => setTimeout(r, 2));
-};
-/** Waits (real time, up to 10 s) until `ready()` holds: a loaded runner can take longer than a fixed poll. */
-const until = async (ready: () => boolean) => {
-  for (let i = 0; i < 5000 && !ready(); i++) await new Promise((r) => setTimeout(r, 2));
-};
 const payloadOf = (card: Record<string, unknown>) => JSON.parse(String(card.payload)) as Record<string, unknown>;
 
 /** A job killed mid-step 2 (step 1 done, a 20 s turn in flight). */
@@ -29,10 +22,13 @@ async function killedMidJob(): Promise<{ jobId: string; userId: string }> {
     script: [jobIntake(BILLS_PLAN), stepDone(0), tool('gmail.search', { query: 'bill' }, { delayMs: 20_000 })],
   });
   const userId = h.userSays('Find bills due this week');
-  await poll();
+  const run = h;
+  await untilStill(() => !!run.job(), 'the job is made');
   h.clock.advance(2_000);
-  await poll();
-  expect(h.job().state).toBe('working');
+  await untilStill(
+    () => run.job().state === 'working' && run.turnsJsonl().filter((t) => t.purpose === 'step').length === 2,
+    'step 2 turn in flight',
+  );
   return { jobId: String(h.job().id), userId };
 }
 
@@ -92,14 +88,14 @@ describe('AT-118 · killed mid-job → recovery card on restart', () => {
         ],
       });
       for (const w of ['one', 'two', 'three', 'four']) h.userSaysIn(h.chat(w), w);
-      await poll();
+      await untilStill(() => h!.jobs().length === 4, 'four jobs are made');
       h.clock.advance(2_000);
-      await until(() => h!.jobs().some((j) => j.state === 'queued'));
+      await untilStill(() => h!.jobs().filter((j) => j.state !== 'queued').length === 3, 'three jobs leave the queue');
       const queued = h.jobs().find((j) => j.state === 'queued')!;
       if (cleanStart) await h.bridge.request('jobs.pauseAll', { reason: 'app_quit' });
       restartEngine(h, [{ match: { purpose: 'step' }, reply: '', delayMs: 60_000, once: false }], { safeMode: false, cleanStart });
       const want = (state: unknown) => (cleanStart ? ['queued', 'working'].includes(String(state)) : state === 'needs_you');
-      await until(() => want(h!.job(String(queued.id))?.state));
+      await untilStill(() => want(h!.job(String(queued.id))?.state), 'the queued job moves');
       const after = h.job(String(queued.id));
       if (cleanStart) expect(['queued', 'working']).toContain(after.state);
       else expect(after.state).toBe('needs_you');

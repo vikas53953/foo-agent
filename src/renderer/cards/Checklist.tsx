@@ -3,8 +3,9 @@
 // finish" (`--bad`); step rows 30 high with a 16px mark (Done CheckmarkCircle `--ok`, Current spinner ring `--accent`, Waiting
 // HandRight `--warn`, Next 16px circle `--fg-3`, Failed ErrorCircle `--bad`, Stopped Stop `--fg-2`, Took over HandRight
 // `--fg-2`); the waiting row is a Link button that focuses the card that needs the user; slow and paused lines under the
-// current row; footer buttons Watch live (only while the job uses the browser) and Stop, text "{n} min · uses about ₹{x} of
-// your AI"; DONE collapses to the summary row "Done · {n} steps · {m} min" + "Details" (read-only list, "Replay" when frames
+// current row, and after a failed tool call "Slow here, trying another way" in the slow line's place (CR-0024 F10);
+// footer buttons Watch live (only while the job uses the browser) and Stop, text "{n} min · uses about ₹{x} of your AI";
+// DONE collapses to the summary row "Done · {n} steps · {m} min" + "Details" (read-only list, "Replay" when frames
 // exist); FAILED and CANCELLED stay expanded with no buttons; Stop → "Stopping…" (§5.2.3). §5.2.4: Tab order, no Primary
 // (Ctrl+Enter does nothing), label "Job checklist: {title}, step {k} of {n}", steps a list read "{state word}, {text}".
 // Steps come from `job:details`, refetched when the runner writes the job (`job:upsert`; `steps:upsert` is not wired, T1).
@@ -138,14 +139,16 @@ function StepList({
   job,
   steps,
   showAll,
+  tookOver,
   onShowAll,
 }: {
   job: JobRow;
   steps: readonly StepRow[];
   showAll: boolean;
+  tookOver?: readonly number[];
   onShowAll?: () => void;
 }) {
-  const view = checklistView(job, steps, showAll);
+  const view = checklistView(job, steps, showAll, tookOver);
   const byIdx = new Map(steps.map((s) => [s.idx, s]));
   const focusNeed = () => {
     const el = job.needsYouCardId ? document.querySelector<HTMLElement>(`[data-card-id="${job.needsYouCardId}"]`) : null;
@@ -166,7 +169,7 @@ function StepList({
           const text = l.text;
           const said = word(l.state);
           const current = l.state === 'current' || l.state === 'waiting';
-          const step = byIdx.get(l.index);
+          const step = l.state === 'took_over' ? undefined : byIdx.get(l.index);
           const kind = step ? stepKind(step.phraseKey) : null;
           return (
             <li
@@ -197,7 +200,9 @@ function StepList({
                   </span>
                 )}
                 <SourcePile sites={stepSources(step)} />
-                {current && job.slow && job.state === 'working' && <span className={styles.caption}>{t('cards.checklist.slow')}</span>}
+                {current && job.state === 'working' && (job.retrying || job.slow) && (
+                  <span className={styles.caption}>{job.retrying ? t('cards.checklist.retry_other_way') : t('cards.checklist.slow')}</span>
+                )}
                 {l.state === 'current' && paused && <span className={styles.caption}>{paused}</span>}
               </span>
             </li>
@@ -221,6 +226,7 @@ export function Checklist({ card, time }: { card: CardRow; time: CardTime }) {
   const row = details?.job && (!job || details.job.rev > job.rev) ? details.job : job;
   if (!row) return null;
   const steps = details?.steps ?? [];
+  const tookOver = (card.payload as Partial<ChecklistPayload>).tookOver;
   const { k, n } = stepOf(row);
   const label = t('cards.checklist.label', { title: row.title, k, n });
 
@@ -253,7 +259,7 @@ export function Checklist({ card, time }: { card: CardRow; time: CardTime }) {
         )}
         {open && (
           <>
-            <StepList job={row} steps={steps} showAll />
+            <StepList job={row} steps={steps} showAll tookOver={tookOver} />
           </>
         )}
       </CardFrame>
@@ -282,7 +288,7 @@ export function Checklist({ card, time }: { card: CardRow; time: CardTime }) {
           <span className={cx(styles.right, row.state === 'failed' && styles.bad)}>{right}</span>
         )}
       </div>
-      <StepList job={row} steps={steps} showAll={showAll} onShowAll={() => setShowAll(true)} />
+      <StepList job={row} steps={steps} showAll={showAll} tookOver={tookOver} onShowAll={() => setShowAll(true)} />
       <div className={styles.foot}>
         {live && (
           <div className={styles.buttons}>

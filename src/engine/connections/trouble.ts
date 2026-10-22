@@ -176,6 +176,19 @@ export class ConnTrouble {
     return (this.state?.status ?? 'disconnected') !== 'disconnected';
   }
 
+  /** C1 T2 (04 §13.7): Gmail is connected now (not waiting for sign-in); a test run on the fixed fake token counts as connected. */
+  gmailConnected(): boolean {
+    return !this.viaMain || this.state?.status === 'connected';
+  }
+
+  /**
+   * CR-0040: main holds the Google token and said Google is not connected (no rows, or disconnected): a job needing it asks
+   * first. Before main's first answer the state is unknown and the job starts as before.
+   */
+  googleMissing(): boolean {
+    return this.viaMain && this.state?.status === 'disconnected';
+  }
+
   // ---- main's `connection.state` ----
 
   async onState(s: GoogleConnState): Promise<void> {

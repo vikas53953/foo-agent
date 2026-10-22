@@ -16,6 +16,7 @@ import type { Page } from 'playwright-core';
 import { z } from 'zod';
 import type { Clock, TimerId } from '../../../shared/clock';
 import { t } from '../../../shared/copy/t';
+import { newId } from '../../../shared/ids';
 import { signInModeOf } from '../../../shared/schemas';
 import type { JobRow, LiveState, SignInMode, SignInReason } from '../../../shared/types';
 import type { RunnerCore } from '../../jobs/JobRunner';
@@ -264,6 +265,11 @@ async function markSigninForm(page: Page | undefined): Promise<void> {
     .catch(() => undefined);
 }
 
+/** How long `job.needSignIn` waits for a loading page's address before the card names no site. */
+export const HOST_WAIT_MS = 5_000;
+/** The site a sign-in card names when the page has no address yet: never the AI's or the page's own words. */
+export const NO_HOST = 'this site';
+
 const hostOf = (url: string): string | null => {
   try {
     const u = new URL(url);
@@ -333,15 +339,25 @@ export class SigninLanes implements CaptureGuard {
   /** `job.needSignIn`: the lane for this page; a saved login is filled here, every other lane ends the step NEEDS_YOU. */
   async need(jobId: string, a: z.infer<typeof needArgs>): Promise<ToolOutcome> {
     const win = this.d.window(jobId);
-    // The site is the page's own host (what the banner's address row shows), never a name from the page or the AI.
-    const host = (win && hostOf(win.url())) ?? a.site.toLowerCase();
-    let lane = chooseSignInLane(host, a.kind, { savedLogin: a.kind === 'password' && !!win });
+    // The site is the page's own host (what the banner's address row shows), never a name from the page or the AI. A call
+    // that lands while the page is still loading waits, at most HOST_WAIT_MS, for its address; with none, the card says
+    // NO_HOST. Before, the AI's own name was shown when the call won the race (CR-0024 close-out, PR #85).
+    if (win && !hostOf(win.url()))
+      await win
+        .page()
+        .waitForURL((u) => hostOf(u.toString()) !== null, { timeout: HOST_WAIT_MS })
+        .catch(() => undefined);
+    const pageHost = win ? hostOf(win.url()) : null;
+    const host = pageHost ?? NO_HOST;
+    // With no address, the AI's name only picks the lane (an app account is Connect); the card never shows it.
+    const laneHost = pageHost ?? a.site.toLowerCase();
+    let lane = chooseSignInLane(laneHost, a.kind, { savedLogin: a.kind === 'password' && !!win });
     if (lane.lane === 'connect') return { kind: 'error', errorKind: 'ROUTE_ORDER' };
     if (lane.lane === 'saved_login') {
       const filled = win ? await this.savedLogin(jobId, host, win) : 'missing';
       // AT-059: the AI learns only that "your {site} login" worked; no field, value or page text.
       if (filled === 'signed_in') return { kind: 'ok', result: { signedIn: true, login: `your ${host} login`, url: win!.url() } };
-      lane = chooseSignInLane(host, a.kind, { savedFailed: filled === 'failed' });
+      lane = chooseSignInLane(laneHost, a.kind, { savedFailed: filled === 'failed' });
     }
     return { kind: 'needs_user', card: this.card(jobId, host, lane.reason!, a.sentTo), result: { needsUser: 'signin', site: host } };
   }
@@ -349,7 +365,7 @@ export class SigninLanes implements CaptureGuard {
   /** SITE_CAPTCHA (the watchdog's challenge page, 08-2 §8.3.5): the CAPTCHA lane, never solved by foo (§8.4). */
   async challenge(job: JobRow): Promise<boolean> {
     const win = this.d.window(job.id);
-    const host = (win && hostOf(win.url())) ?? 'this site';
+    const host = (win && hostOf(win.url())) ?? NO_HOST;
     const card = this.card(job.id, host, chooseSignInLane(host, 'captcha').reason!);
     return (await this.r.core.needsYou(job, card)) !== null;
   }
@@ -458,6 +474,10 @@ export class SigninLanes implements CaptureGuard {
       pause.taken = true;
       // §8.3.6: the mask is removed on take-over so the user sees what they type.
       await this.d.masker.remove(win.page()).catch(() => undefined);
+      // CR-0030 pick 3 (UX-14-09 "Adds ✋ You took over to the checklist"): the same row as a running job's take-over.
+      const job = await this.r.core.job(pause.jobId);
+      const took = job ? await this.r.core.tookOverOps(job) : [];
+      if (took.length) await this.r.core.tx(took);
     }
     await this.windows.front(win);
     const mode: SignInMode = pause.taken ? 'take_over' : 'sign_in_here';
@@ -611,6 +631,50 @@ export class SigninLanes implements CaptureGuard {
         },
       ]);
     await this.r.onCardAnswered({ cardId: pause.cardId, answer: { end: 'signed_in' }, resolvedBy: by === 'auto' ? 'auto' : 'tap' });
+    // 08-2 §8.4 / 05-3 §5.10.2: after a password sign-in (no saved login), foo offers once per site to save it.
+    if (job && pause.reason === 'sign_in') await this.offerSaveLogin(job, pause.site);
+  }
+
+  /** 05-2 §5.8.4 Login variant's question, once per site (08-3 §15 `suggestions` key `save_login:{domain}`, never twice). The
+   * answer is main's (src/main/cards/answerCard.ts): Save posts the Login Secret box, Don't save dismisses the key for good.
+   * The values typed on the page are never read: the person types them again in the box (CR-0030 pick 4). */
+  private async offerSaveLogin(job: JobRow, site: string): Promise<void> {
+    // No page address (NO_HOST): no site to name or key the login by, and never the AI's own name (PR #85), so no offer.
+    if (site === NO_HOST) return;
+    const key = `save_login:${site}`;
+    if ((await this.r.core.query<string>('suggestionState', key)) !== null) return;
+    // 05-2 §5.8.6 "Groups: never": the Login box can't be posted in a group, so neither is the question that opens it.
+    if ((await this.r.core.query<{ kind: string }>('chatOpen', job.chatId))?.kind === 'group') return;
+    const now = this.d.clock.now();
+    const question = t('cards.secret.login.offer', { site });
+    const { ops } = this.r.core.cardOps(
+      job.chatId,
+      'choice',
+      'asking',
+      {
+        purpose: 'job',
+        question,
+        options: [
+          { id: 'o1', label: t('cards.secret.login.save') },
+          { id: 'o2', label: t('cards.secret.login.dont_save') },
+        ],
+        multi: false,
+        aiReversible: false,
+        reversible: false,
+        livePrices: false,
+        saveLogin: { site },
+      },
+      null,
+      job.ownerId,
+    );
+    await this.r.core.tx([
+      {
+        op: 'insert',
+        table: 'suggestions',
+        row: { id: newId('sg', now), key, kind: 'save_login', text: question, state: 'offered', offered_at: now },
+      },
+      ...ops,
+    ]);
   }
 
   /** Ends the pause: timers and poll stop, the mask goes back on, the page is captured again and re-read whole. */

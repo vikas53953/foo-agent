@@ -2,9 +2,10 @@
 // draft card → the G16 reply; one live job → steer; more than one → Choice card "Fold this into which job?"; else intake),
 // §5.5 (steer: queue in order, never interrupt a running turn; the next step turn carries part 10 and one steerEffect per
 // message; folded/restart → "Got it, I'll fold that in."; answered → the AI's say first; new_job → normal intake; the
-// message's badge follows the job's; do-verbs in a steer join do_verbs), §7.2 part 10 + 08-4 §24.14 (header), 08-4 §25.3
-// (StepAct.steer), §26.5 (steer while NEEDS_YOU: open choice / approval / payment / draft cards superseded, the job → working,
-// drain at once, the withdrawn line; a sign-in in progress is not interrupted), ART-18a/b.
+// message's badge follows the job's, an answered one shows ✓✓ read at once, CR-0024 F9; do-verbs in a steer join
+// do_verbs), §7.2 part 10 + 08-4 §24.14 (header), 08-4 §25.3 (StepAct.steer), §26.5 (steer while NEEDS_YOU: open choice /
+// approval / payment / draft cards superseded, the job → working, drain at once, the withdrawn line; a sign-in in progress
+// is not interrupted), ART-18a/b.
 // M5 T8: §26.5 item 3 for approval and payment cards goes through main's ApprovalGate (`approval.transition` SUPERSEDED,
 // `superseded: 'steer'`, so the approvals row and the card move together; 08-2 §9.1 only main writes approvals.state), and the
 // runner's gate learns which approval the job's next card replaces (superseded_by, AT-077b).
@@ -14,6 +15,7 @@ import type { CardRow, JobRow, StepRow } from '../../shared/types';
 import type { DbOp } from '../protocol';
 import type { RunnerCore } from './JobRunner';
 import { isStopCommand, looksLikeYes, type StopFlow } from './stopFlow';
+import { classifyTurn } from './classifyTurn';
 import { flightScopePayload, isFlightBooking } from './flights'; // M9 T8
 import { extractDoVerbs } from './verbs';
 
@@ -85,6 +87,8 @@ const SUPERSEDE_TO: Record<string, string> = {
   approval: 'SUPERSEDED',
   payment: 'SUPERSEDED',
 };
+/** CR-0035: cards a steer cannot withdraw and that only the user ends; a message meanwhile is not a steer of their job. */
+const WAITS_FOR_USER = new Set(['stuck', 'secret']);
 /** M5 T8: cards whose state mirrors an approvals row (main moves both). */
 const GATED = new Set(['approval', 'payment']);
 /** Approval-like cards a typed "yes" never answers (Art. 6). */
@@ -102,6 +106,8 @@ export class Steer {
     private stop: StopFlow,
     // M5 T8
     private onSuperseded?: (jobId: string, approvalId: string) => void,
+    // CR-0045: a job halted for its Stuck card while the card is still being written.
+    private turningStuck?: (jobId: string) => boolean,
   ) {}
 
   /** The runner's branches of 08-2 §5.2. True when the message is handled here (no intake turn). */
@@ -127,11 +133,25 @@ export class Steer {
       await this.core.tx([this.core.textOp({ chatId: m.chatId, id: null, ownerId: null }, words)]);
       return true;
     }
-    const live = ((await this.core.query<JobRow[]>('jobs.liveForChat', m.chatId)) ?? []).filter(
-      (j) => j.state === 'working' || j.state === 'needs_you',
-    );
+    // CR-0035 (X-193): a job waiting on its Stuck or Secret box card takes no steer (the steer would wait for that card, and
+    // every later message with it); the message goes to intake and the card stays for the user.
+    const live: JobRow[] = [];
+    for (const j of (await this.core.query<JobRow[]>('jobs.liveForChat', m.chatId)) ?? []) {
+      if (j.state !== 'working' && j.state !== 'needs_you') continue;
+      // CR-0045: halted for its Stuck card but still WORKING while "What's wrong" is asked; it would never read the steer.
+      if (this.turningStuck?.(j.id)) continue;
+      if (j.state === 'needs_you' && j.needsYouCardId && (await this.blocksSteer(j.needsYouCardId))) continue;
+      live.push(j);
+    }
+    // CR-0045 (X-203): a message to a job waiting on its card is a steer only when it is about that job.
     if (live.length === 1) {
-      await this.steer(live[0]!, { id: m.messageId, text });
+      if (!(await this.aboutJob(live[0]!, text))) return false;
+      // The check can take seconds: the card may be answered, declined or timed out meanwhile. Steer the job as it is now;
+      // one that ended or is waiting on a Stuck or Secret box card no longer takes it, so the message goes to intake.
+      const job = await this.core.job(live[0]!.id);
+      if (!job || (job.state !== 'working' && job.state !== 'needs_you')) return false;
+      if (job.state === 'needs_you' && job.needsYouCardId && (await this.blocksSteer(job.needsYouCardId))) return false;
+      await this.steer(job, { id: m.messageId, text });
       return true;
     }
     if (live.length > 1) {
@@ -150,6 +170,35 @@ export class Steer {
       return true;
     }
     return false;
+  }
+
+  /**
+   * CR-0045 (X-203), 08-4 §26.5 item 2b: before a steer withdraws a NEEDS_YOU job's Choice, tiles, approval, payment or draft
+   * card, or waits behind its sign-in card (CR-0048, X-206), one classify turn (steer_check.md) asks whether the message is about the job. "new" → not a steer: the message
+   * goes to intake and the card stays. A working job, no such card, or a failed turn → a steer, as before.
+   */
+  private async aboutJob(job: JobRow, text: string): Promise<boolean> {
+    const p = this.core.d.prompts;
+    if (job.state !== 'needs_you' || !job.needsYouCardId || !p.buildSteerCheck || !p.parseSteerCheck) return true;
+    const card = await this.core.query<CardRow>('cardById', job.needsYouCardId);
+    // CR-0048 (X-206): a sign-in card still waiting for the user's tap holds a steer until it is done (item 2), so an unrelated
+    // ask is checked too. Once the sign-in is live (Edge up, or taken over) every message waits, as item 2 says.
+    if (!card || card.resolvedAt !== null || (!SUPERSEDE_TO[card.type] && !(card.type === 'signin' && card.state === 'waiting')))
+      return true;
+    const pl = card.payload as { question?: unknown; title?: unknown; site?: unknown };
+    const waitingFor =
+      card.type === 'signin'
+        ? `the user to sign in or pass a check on ${String(pl.site ?? 'a site')}`
+        : String(pl.question ?? pl.title ?? `a ${card.type} card`);
+    const reply = await classifyTurn(this.core, job, p.buildSteerCheck({ title: job.title, waitingFor }, text));
+    const about = reply === null ? null : p.parseSteerCheck(reply);
+    this.core.d.log('job.steer_check', about ?? 'failed', { jobId: job.id });
+    return about !== 'new';
+  }
+
+  private async blocksSteer(cardId: string): Promise<boolean> {
+    const card = await this.core.query<CardRow>('cardById', cardId);
+    return !!card && card.resolvedAt === null && WAITS_FOR_USER.has(card.type);
   }
 
   private async seen(messageId: string): Promise<void> {
@@ -175,6 +224,11 @@ export class Steer {
     const job = await this.core.job(jobIds[i]!);
     const m = await this.core.query<MessageView>('messageById', messageId);
     if (!job || !m || TERMINAL.has(job.state)) return;
+    // CR-0035: the picked job went stuck before the tap; the message is not held behind its card.
+    if (job.state === 'needs_you' && job.needsYouCardId && (await this.blocksSteer(job.needsYouCardId))) {
+      this.core.intake(job.chatId, messageId);
+      return;
+    }
     await this.steer(job, { id: messageId, text: m.text });
   }
 
@@ -196,7 +250,7 @@ export class Steer {
     const card = job.needsYouCardId ? await this.core.query<CardRow>('cardById', job.needsYouCardId) : null;
     if (card && card.resolvedAt !== null) return; // answered already: it resumes when a slot frees
     const to = card ? SUPERSEDE_TO[card.type] : undefined;
-    if (card && !to) return; // signin, secret, stuck: the steer waits for that card (§26.5 item 2)
+    if (card && !to) return; // signin (§26.5 item 2); stuck and secret jobs take no new steer (CR-0035, item 2a)
     const now = this.core.d.clock.now();
     // M5 T8: an approval or payment card moves with its approvals row, in main.
     const approvalId = card && GATED.has(card.type) ? String(card.payload.approvalId ?? '') : '';
@@ -284,16 +338,30 @@ export class Steer {
     }
     const { effects, missing } = effectsFor(ids, act.steer);
     if (missing.length) this.core.d.log('job.steer_effect_missing', 'PROTOCOL_INVALID', { jobId: job.id });
-    const ops: DbOp[] = [];
+    // CR-0044: each steer's effect (an enum) for the tech log, so a run shows whether the AI or the default said folded.
+    for (const e of effects)
+      this.core.d.log('job.steer_effect', missing.includes(e.messageId) ? 'default_folded' : e.effect, { jobId: job.id });
+    // CR-0024 B1: one turn has one `say`, so it is posted once however many steers it answered, and the "Got it" line at
+    // most once; each in the order its first effect came (two answered steers used to post the same answer twice).
+    const folded = t('thread.steer.folded');
+    const filtered = this.core.d.prompts.filter(say);
+    const answer = filtered.trim() ? filtered : folded;
+    const lines: string[] = [];
     let restart = false;
     for (const e of effects) {
-      if (e.effect === 'folded' || e.effect === 'restart') ops.push(this.core.textOp(job, t('thread.steer.folded')));
       if (e.effect === 'restart') restart = true;
-      if (e.effect === 'answered') {
-        const text = this.core.d.prompts.filter(say);
-        if (text.trim()) ops.push(this.core.textOp(job, text));
-        else ops.push(this.core.textOp(job, t('thread.steer.folded')));
-      }
+      const line = e.effect === 'answered' ? answer : e.effect === 'new_job' ? null : folded;
+      if (line !== null && !lines.includes(line)) lines.push(line);
+    }
+    const ops: DbOp[] = lines.map((line) => this.core.textOp(job, line));
+    // CR-0024 F9: an answered question has its answer, so it leaves the job's badge and shows ✓✓ read with no badge at once.
+    const answered = effects.filter((e) => e.effect === 'answered').map((e) => e.messageId);
+    if (answered.length) {
+      this.followers.set(
+        job.id,
+        this.followersOf(job.id).filter((id) => !answered.includes(id)),
+      );
+      for (const id of answered) ops.push({ op: 'update', table: 'messages', id, set: { badge: null } });
     }
     if (restart) ops.push(...(await this.restartOps(job)));
     if (ops.length) await this.core.tx(ops);

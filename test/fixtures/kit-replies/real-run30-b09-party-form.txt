@@ -1,0 +1,6 @@
+Here's a short form for the party plan: fill in the date, number of guests and budget, then submit.
+
+```a2ui
+{"createSurface":{"surfaceId":"s1","catalogId":"foo.kit.v1"}}
+{"updateComponents":{"surfaceId":"s1","components":[{"id":"root","component":"ShortForm","fields":[{"name":"date","label":"Party date","type":"date"},{"name":"guests","label":"Number of guests","type":"number"},{"name":"budget","label":"Budget (₹)","type":"number"}],"action":{"event":{"name":"plan_party_submit"}}}]}}
+```

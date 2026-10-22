@@ -2,7 +2,7 @@
 // 08-3 §22.1–§22.2 (test runs: fake clock and test channels, loaded only when the build has them); 03-shell-1 §3.3.2
 // type 1 (network state for the offline banner). M4 T4: §2.2 step 1 launches.json + safe mode (G-M4-13), step 3 damaged
 // database rebuild (§4.1.1), §2.3 quit / shutdown (`jobs.pauseAll`, `clean: true`; G-M4-04), 09 §9.22 power.
-import { app, BrowserWindow, nativeTheme, powerMonitor, powerSaveBlocker, safeStorage } from 'electron';
+import { app, BrowserWindow, dialog, nativeTheme, powerMonitor, powerSaveBlocker, safeStorage } from 'electron';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { resolvePaths } from './data/paths';
@@ -25,7 +25,8 @@ import { newId } from '../shared/ids';
 import { logEvent, setAppTechLog, TechLog, type TechLogEntry } from './log/techLog';
 import { createMainWindow } from './windows/mainWindow';
 import { handleAppScheme, registerAppScheme } from './windows/protocol';
-import { claimSingleInstance } from './windows/singleInstance';
+import { claimSingleInstance, releaseOwner } from './windows/singleInstance';
+import { t } from '../shared/copy/t';
 import { denyPageRequests, handlePageScheme } from './page/pageScheme'; // R1 T5
 // M8
 import { memoryWaSession } from './vault/waSessionMemory';
@@ -76,19 +77,31 @@ function onDeepLink(url: string): void {
   logEvent({ lvl: 'warn', mod: 'main', evt: 'URL_NOT_ALLOWED' });
 }
 
-// Step 1: single instance.
-if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
+// Step 1: single instance. CR-0036: a lock a crashed foo left behind is taken over (a short wait), so the pre-ready steps
+// below run in every start that may go on, and the ready work waits for the answer.
+const owned = claimSingleInstance(
+  () => mainWindow,
+  onDeepLink,
+  (evt, kind) => logEvent({ lvl: 'warn', mod: 'main', evt, ...(kind ? { kind } : {}) }),
+);
+void owned.then((lock) => {
+  if (lock === 'ours') return;
+  // Still held after the wait by a foo that is not answering: say so rather than quit in silence.
+  if (lock === 'held') dialog.showErrorBox(t('app.start_blocked.title'), t('app.start_blocked.body'));
   app.quit();
-} else {
+});
+{
   registerAppScheme();
   if (!app.isDefaultProtocolClient('foo')) app.setAsDefaultProtocolClient('foo');
 
   // Step 2: settings (sync).
   const paths = resolvePaths();
-  const settings = new SettingsStore(paths.settings);
-  if (!settings.get().app.hardwareAcceleration) app.disableHardwareAcceleration();
+  // CR-0036: read only until the lock is ours, so a start that quits never writes over a live foo's settings.
+  if (!SettingsStore.peek(paths.settings).app.hardwareAcceleration) app.disableHardwareAcceleration();
 
   app.whenReady().then(async () => {
+    if ((await owned) !== 'ours') return;
+    const settings = new SettingsStore(paths.settings);
     const testClock = testHooksEnabled() ? installTestDeps() : null;
     // 08-3 §19.1 / R7: the tech log, on the injected clock; debug lines only in test runs.
     setAppTechLog(new TechLog({ dir: join(paths.data, 'logs'), clock: deps.clock, debug: !!testClock }));
@@ -265,6 +278,7 @@ if (!claimSingleInstance(() => mainWindow, onDeepLink)) {
     });
   });
   app.on('will-quit', () => {
+    releaseOwner();
     // §2.3 step 5: on Windows sign-out / shutdown the record is clean only if Windows lets foo get this far.
     if (sessionEnding) launches?.markClean();
     supervisor?.stop();

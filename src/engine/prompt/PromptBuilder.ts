@@ -24,7 +24,15 @@ import { join } from 'node:path';
 import type { z } from 'zod';
 import type { Clock } from '../../shared/clock';
 import { formatDate, formatTime } from '../../shared/format';
-import { IntakeActSchema, RewriteActSchema, SecondLookActSchema, StepActSchema, StuckActSchema, schemaJson } from '../../shared/schemas';
+import {
+  IntakeActSchema,
+  RewriteActSchema,
+  SecondLookActSchema,
+  SteerCheckActSchema,
+  StepActSchema,
+  StuckActSchema,
+  schemaJson,
+} from '../../shared/schemas';
 import { PHRASES, RUNNER_ONLY, type PhraseKey } from '../../shared/phrases';
 import type { LogFn, Redactor } from '../redact/Redactor';
 import { BANNED_LIST } from './filters';
@@ -101,6 +109,8 @@ export interface IntakeInput {
   // M5
   /** T10: after "Change plan" the old plan goes with the turn, in the part 8 form (08-2 §5.3.3; 08-4 §24.22). */
   oldPlan?: { title: string; steps: string[] };
+  /** CR-0028: the intake questions this message already got answers to ("- Q: … → A: …"), part 8 form (08-4 §24.22). */
+  answers?: string[];
   /** CR-0022 (X-180): Settings → Appearance → Visuals (08-0 §A `appearance.visuals`); Balanced when not given. */
   visuals?: Visuals;
 }
@@ -346,6 +356,7 @@ export class PromptBuilder {
           '8',
         )
       : '';
+    const answers = input.answers?.length ? gate(['Decisions:', ...input.answers].join('\n'), '8') : '';
     let pages = (input.attachmentText ?? []).map((p) =>
       gate(
         `ATTACHMENT TEXT (page ${p.page}, from the user's file)\n${PromptBuilder.untrusted('file', `${p.fileId}-${p.page}`, p.text)}`,
@@ -362,6 +373,7 @@ export class PromptBuilder {
       if (turnFacts.length) pr.push(['Facts that may matter now:', ...turnFacts].join('\n'));
       if (conversation.length) pr.push(['Conversation so far:', ...conversation].join('\n'));
       if (oldPlan) pr.push(oldPlan);
+      if (answers) pr.push(answers);
       pr.push(user);
       if (pages.length) pr.push([preface, ...pages].join('\n\n'));
       const factIds = [...idFacts.map((f) => f.id), ...pinnedIds, ...turnFactIds.slice(0, turnFacts.length)];
@@ -469,6 +481,16 @@ export class PromptBuilder {
   buildStuck(results: string): BuiltPrompt {
     const system = this.protocolThen(StuckActSchema, 'stuck.md', {});
     return { system: this.deps.redactor.finalGate(system, '4'), prompt: this.deps.redactor.finalGate(`Last results:\n${results}`, '9') };
+  }
+
+  /**
+   * CR-0045 purpose `classify` (§24.13a): system protocol.md + steer_check.md; prompt = the job's title, what its open card
+   * waits for, and the new message.
+   */
+  buildSteerCheck(job: { title: string; waitingFor: string }, message: string): BuiltPrompt {
+    const system = this.protocolThen(SteerCheckActSchema, 'steer_check.md', {});
+    const prompt = `Job: ${cut(job.title, 200)}\nWaiting for: ${cut(job.waitingFor, 300)}\nNew message: ${cut(message, 2_000)}`;
+    return { system: this.deps.redactor.finalGate(system, '4'), prompt: this.deps.redactor.finalGate(prompt, 'steer_check') };
   }
 
   /** Purpose `repair` (§24.8): same session as the failed turn, so only the prompt is new. `zodIssues` ≤ 400 chars. */

@@ -21,7 +21,7 @@ import { Menu } from '../ui/Menu';
 import { Spinner } from '../ui/Spinner';
 import { Tooltip } from '../ui/Tooltip';
 import { cx } from '../ui/cx';
-import { BADGE_DEBOUNCE_MS, tickLabel, type BadgeSlot } from './bubbleState';
+import { BADGE_DEBOUNCE_MS, badgeDelay, tickLabel, type BadgeSlot } from './bubbleState';
 import { mediaUrl, useBubble } from './bubbleContext';
 import { useOneShot } from './oneShot';
 import type { RetryPhase } from './retry';
@@ -91,14 +91,16 @@ export const TimeSpacer = ({ at, timeZone, mark }: { at: number; timeZone: strin
 
 // ---------------------------------------------------------------- badge slot (§4)
 
-/** §4.2: a value that would last < 700 ms is skipped; the first value shows at once. */
-export function useDebounced<T>(value: T, ms = BADGE_DEBOUNCE_MS): T {
+/** §4.2: a value that would last < 700 ms is skipped; the first value after an empty slot shows at once (`badgeDelay`). */
+export function useDebounced(value: string): string {
   const [shown, setShown] = useState(value);
+  // Adjusting state while rendering (React's "storing information from previous renders"): no frame with the old slot.
+  if (value !== shown && badgeDelay(shown) === 0) setShown(value);
   useEffect(() => {
-    if (Object.is(value, shown)) return;
-    const id = setTimeout(() => setShown(value), ms);
+    if (value === shown) return;
+    const id = setTimeout(() => setShown(value), BADGE_DEBOUNCE_MS);
     return () => clearTimeout(id);
-  }, [value, shown, ms]);
+  }, [value, shown]);
   return shown;
 }
 

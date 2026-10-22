@@ -12,6 +12,7 @@ import { TID } from '../../src/shared/testids';
 import { intake, launchWithFakeAi, type FakeLine } from './fakeAi';
 import { testDirs } from './launch';
 import { settleSeededJobs } from './m4-start';
+import { typeInComposer } from './typeInComposer';
 
 const byTid = (id: string) => `[data-testid="${id}"]`;
 /** 02 §F7: `--m-spring` 400ms, `--m-basic` 200ms, Off fades 83ms; the spring is a CSS `linear()` curve (CR-0021 pick 1). */
@@ -59,9 +60,7 @@ async function send(page: Page, text: string): Promise<Locator> {
   const field = page.getByTestId(TID.composerField);
   // The field takes text only once the AI has passed its test (AT-006); a slow runner can still be testing it here.
   await expect(field).toHaveAttribute('contenteditable', 'true', { timeout: 15_000 });
-  await field.focus();
-  await page.keyboard.type(text);
-  await expect(field).toContainText(text);
+  await typeInComposer(page, text);
   await page.keyboard.press('Enter');
   const bubble = page.getByTestId(TID.bubbleMe).filter({ hasText: text });
   await expect(bubble).toBeVisible();
@@ -76,6 +75,30 @@ function anim(loc: Locator, sel?: string) {
     const cs = getComputedStyle(target);
     return { name: cs.animationName, duration: cs.animationDuration, timing: cs.animationTimingFunction };
   }, sel);
+}
+
+/**
+ * Sends `text` and returns the new row's animation as it arrives (read in the mutation that adds it). At Off the rise lasts
+ * 83 ms and `data-new` goes when it ends, so a read after the bubble is seen can find it already over ("0s").
+ */
+async function sendCatchingRise(page: Page, text: string) {
+  await page.evaluate((t) => {
+    const w = window as unknown as { __rise?: { name: string; duration: string } | null };
+    w.__rise = null;
+    new MutationObserver((_, obs) => {
+      const row = Array.from(document.querySelectorAll<HTMLElement>('[data-message-id][data-new]')).find((r) => r.textContent?.includes(t));
+      const target = row?.querySelector(':scope > div');
+      if (!target) return;
+      const cs = getComputedStyle(target);
+      w.__rise = { name: cs.animationName, duration: cs.animationDuration };
+      obs.disconnect();
+    }).observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['data-new'] });
+  }, text);
+  await send(page, text);
+  return (await page.waitForFunction(() => (window as unknown as { __rise?: unknown }).__rise)).jsonValue() as Promise<{
+    name: string;
+    duration: string;
+  }>;
 }
 
 const moveScale = (page: Page) => page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--motion-move').trim());
@@ -114,9 +137,8 @@ test('AT-324 · a new message rises with the spring at Full, fades at Basic, is 
   expect(await moveScale(page)).toBe('0');
 
   await setLevel(page, 'off');
-  const off = await send(page, 'thanks');
-  const c = await anim(off, ':scope > div');
-  expect(c?.duration).toBe(OFF);
+  const c = await sendCatchingRise(page, 'thanks');
+  expect(c.duration).toBe(OFF);
   expect(await moveScale(page)).toBe('0');
   await app.close();
 });

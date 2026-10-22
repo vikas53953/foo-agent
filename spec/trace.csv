@@ -63,7 +63,6 @@ R16,J7,,UX-09-08,,04-2 §23.2,test/fidelity/ux/UX-09.voice.spec.ts,M2,pending
 ,J7,AT-031,,,10-acceptance-1 §B; 08-2 §7.6,test/unit/m3-engine.test.ts,M3,live
 ,,ART-12a,,,01-articles Art. 12; 10-acceptance-2 §D,test/unit/m3-engine.test.ts,M3,live
 ,,ART-23a,,,01-articles Art. 23; 10-acceptance-2 §D,test/unit/m3-engine.test.ts,M3,live
-,J7,AT-030,,,10-acceptance-1 §B; 04 §12.3,test/unit/m3-chunks.test.ts,M3,live
 ,J7,AT-031,,,10-acceptance-1 §B; 08-2 §7.6,test/unit/m3-prompt-filters.test.ts,M3,live
 ,,ART-02b,,,01-articles Art. 2; 10-acceptance-2 §D; 08-4 §25.8,test/articles/ART-02b.test.ts,M3,live
 ,J2,AT-006,,,10-acceptance-1 §B; 04-2 §23.1,test/e2e/m3-replies.spec.ts,M3,pending
@@ -296,19 +295,19 @@ R5 · R10 · R14,J9,,UX-12-10,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.r
 R5 · R10 · R14,J9,,UX-12-11,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,pending
 R5 · R10 · R14,J9,,UX-12-12,,05-2 §5.5.2; 08-2 §8.3,test/fidelity/ux/UX-12.restaurant.spec.ts,M9,live
 R11 · R4 · R10,J13,,UX-14-01,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,live
-R11 · R4 · R10,J13,,UX-14-05,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,pending
-R11 · R4 · R10,J13,,UX-14-06,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,pending
+R11 · R4 · R10,J13,,UX-14-05,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,live
+R11 · R4 · R10,J13,,UX-14-06,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,live
 R11 · R4 · R10,J13,,UX-14-07,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,live
-R11 · R4 · R10,J13,,UX-14-08,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,pending
+R11 · R4 · R10,J13,,UX-14-08,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,live
 R11 · R4 · R10,J13,,UX-14-09,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,live
 R11 · R4 · R10,J13,,UX-14-10,,05-3 §5.10; 09 §9.27.3,test/fidelity/ux/UX-14.signin.spec.ts,M9,live
 R11 · R8,J18,,UX-15-03,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,live
 R11 · R8,J18,,UX-15-04,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,live
-R11 · R8,J18,,UX-15-05,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,pending
+R11 · R8,J18,,UX-15-05,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,live
 R11 · R8,J18,,UX-15-06,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,live
 R11 · R8,J18,,UX-15-07,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,live
-R11 · R8,J18,,UX-15-08,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,pending
-R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,pending
+R11 · R8,J18,,UX-15-08,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,live
+R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-15.live.spec.ts,M9,live
 ,,,,BP-CARD-10,05-3 §5.10,test/fidelity/bp/BP-cards-m9.spec.ts,M9,live
 ,,,,BP-CARD-17,05-3 §5.18,test/fidelity/bp/BP-cards-m9.spec.ts,M9,live
 ,,,,BP-SCR-13,06-3 §11.1–§11.2,test/fidelity/bp/BP-screens-m9.spec.ts,M9,live
@@ -376,3 +375,24 @@ R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-1
 ,,AT-369,,,10-acceptance-2 §C.9; CR-0022 pick 9; CR-0022,test/e2e/r1-output.spec.ts,M9,live
 ,,AT-370,,,10-acceptance-2 §C.9; 04 §13.5; Art. 8; CR-0022,test/unit/r1-kit-safety.test.ts,M9,live
 ,,AT-371,,,10-acceptance-2 §C.9; CR-0022 pick 5; CR-0022,test/unit/r1-kit-safety.test.ts,M9,live
+,,AT-420,,,10-acceptance-2 §C.10; 08-2 §5.5; CR-0024,test/unit/jobs/steer.test.ts,M9,live
+,,AT-421,,,10-acceptance-2 §C.10; 04 §8; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,live
+,,AT-422,,,10-acceptance-2 §C.10; 08-4 §24.3; CR-0024,test/unit/prompt/c1-voice.test.ts,M9,live
+,,AT-423,,,10-acceptance-2 §C.10; 08-4 §24.2; CR-0024,test/unit/prompt/c1-voice.test.ts,M9,live
+,,AT-424,,,10-acceptance-2 §C.10; 08-4 §24.3; CR-0024,test/unit/prompt/c1-voice.test.ts,M9,live
+,,AT-425,,,10-acceptance-2 §C.10; 04 §13.7; CR-0024,test/e2e/c1-capabilities.spec.ts,M9,live
+,,AT-426,,,10-acceptance-2 §C.10; 04 §13.7; X-110; CR-0024,test/e2e/c1-capabilities.spec.ts,M9,live
+,,AT-427,,,10-acceptance-2 §C.10; 04 §12.3; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,live
+,,AT-428,,,10-acceptance-2 §C.10; 04 §12.4; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,live
+,,AT-429,,,10-acceptance-2 §C.10; 02 F2; CR-0024,test/e2e/c1-bubbles.spec.ts,M9,live
+,,AT-430,,,10-acceptance-2 §C.10; 04 §17.1; CR-0024,test/e2e/c1-actions-chips.spec.ts,M9,live
+,,AT-431,,,10-acceptance-2 §C.10; 04-2 §21.7; CR-0024,test/e2e/c1-actions-chips.spec.ts,M9,live
+,,AT-432,,,10-acceptance-2 §C.10; 08-2 §5.5; CR-0024,test/integration/jobs/c1-steer-signs.test.ts,M9,live
+,,AT-433,,,10-acceptance-2 §C.10; 05 §5.2.2; CR-0024,test/integration/jobs/c1-steer-signs.test.ts,M9,live
+,,AT-434,,,10-acceptance-2 §C.10; 08-4 §24.5; CR-0024,test/unit/prompt/c1-voice.test.ts,M9,live
+,,AT-435,,,10-acceptance-2 §C.10; 08-4 §24.5; CR-0024,test/unit/prompt/c1-voice.test.ts,M9,live
+,J7,AT-440,,,10-acceptance-2 §C.10; 08-4 §25.5 item 6; CR-0041,test/integration/empty-reply.test.ts,M9,live
+,,AT-441,,,10-acceptance-2 §C.10; 04 §13.5; CR-0046,test/unit/kit-real-replies.test.ts,M9,live
+,,AT-442,,,10-acceptance-2 §C.10; 08-4 §24.5; CR-0046,test/unit/kit-real-replies.test.ts,M9,live
+,,AT-443,,,10-acceptance-2 §C.10; 04 §13.5; CR-0050,test/unit/kit-real-replies.test.ts,M9,live
+,J21,AT-094,,,10-acceptance-1 AT-094; 08-4 §25.6; 08-1 §4.4.2; CR-0043,test/integration/settings-by-chat.test.ts,M13,pending

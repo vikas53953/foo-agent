@@ -4,7 +4,7 @@
 // 09 §9.27.3 (closing Edge during sign-in leaves the card `waiting`), 10-1 AT-060 (2 h → cancelled, nothing booked, Start again).
 // M9 T7, on the T2 sign-in site.
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
-import { CANCEL_MS, REMIND_MS, chooseSignInLane, maskPhone } from '../../../src/engine/tools/browser/signinLanes';
+import { CANCEL_MS, NO_HOST, REMIND_MS, chooseSignInLane, maskPhone } from '../../../src/engine/tools/browser/signinLanes';
 import { t } from '../../../src/shared/copy/t';
 import { bannerOps, cardStates, laneHarness, liveStates, type LaneHarness } from './lanes';
 
@@ -21,6 +21,8 @@ afterEach(() => {
   for (const a of [h.sent, h.ops, h.answers, h.stops, h.needsYou, h.halted, h.launched, h.vaultCalls]) a.length = 0;
   h.toggles.signin.method = 'otp';
   h.toggles.signin.passkeyApproved = false;
+  h.suggestions = {};
+  h.chatKind = 'helper';
 });
 
 /** Opens the sign-in page and runs the AI's `job.needSignIn`, then posts the card it asks for. */
@@ -51,6 +53,29 @@ describe('08-2 §8.6 chooseSignInLane', () => {
     expect(maskPhone('+91 98765 43210')).toBe('+91 98••• ••210');
     expect(maskPhone('9876543210')).toBe('98••• ••210');
     expect(maskPhone('12345')).toBeNull();
+  });
+});
+
+describe('08-2 §8.4 the card names the page host, never the AI', { timeout: 90_000 }, () => {
+  it('a call that lands while the page is still loading waits for its address (PR #85 race)', async () => {
+    const page = await h.page();
+    await page.goto('about:blank');
+    // The AI's call is in flight before the page has an address; the sign-in page then loads.
+    const pending = h.run('job.needSignIn', { site: 'RailPass', kind: 'password' });
+    await page.goto(h.signin());
+    const r = await pending;
+    if (r.kind !== 'needs_user') throw new Error(`expected needs_user, got ${r.kind}`);
+    expect(r.card.payload).toMatchObject({ site: '127.0.0.1' });
+    expect(JSON.stringify(r.card)).not.toContain('railpass');
+  });
+
+  it('with no address at all the card says "this site", never the name the AI gave', async () => {
+    const page = await h.page();
+    await page.goto('about:blank');
+    const r = await h.run('job.needSignIn', { site: 'RailPass', kind: 'password' });
+    if (r.kind !== 'needs_user') throw new Error(`expected needs_user, got ${r.kind}`);
+    expect(r.card.payload).toMatchObject({ site: NO_HOST });
+    expect(JSON.stringify(r.card).toLowerCase()).not.toContain('railpass');
   });
 });
 
@@ -260,5 +285,71 @@ describe('08-2 §8.4 after an engine restart', { timeout: 60_000 }, () => {
       Object.assign(job, { state: 'working', needsYouCardId: null });
       delete h.cards.k_restart;
     }
+  });
+});
+
+describe('05-3 §5.10.2 / 05-2 §5.8.4 the save-login offer after a sign-in (CR-0030 pick 4)', { timeout: 60_000 }, () => {
+  const offers = () =>
+    h.ops.filter((o): o is Extract<typeof o, { op: 'insert' }> => o.op === 'insert' && o.table === 'cards' && o.row.type === 'choice');
+
+  it("after a password sign-in foo asks once: Save · Don't save, a jobless card, and the suggestion is written offered", async () => {
+    await needSignIn('password');
+    await h.lanes.done(h.job.id);
+    const [offer, ...more] = offers();
+    expect(more).toEqual([]);
+    expect(offer!.row.payload).toMatchObject({
+      question: t('cards.secret.login.offer', { site: '127.0.0.1' }),
+      options: [
+        { id: 'o1', label: t('cards.secret.login.save') },
+        { id: 'o2', label: t('cards.secret.login.dont_save') },
+      ],
+      saveLogin: { site: '127.0.0.1' },
+    });
+    expect(h.ops).toContainEqual(
+      expect.objectContaining({
+        op: 'insert',
+        table: 'suggestions',
+        row: expect.objectContaining({ key: 'save_login:127.0.0.1', kind: 'save_login', state: 'offered' }),
+      }),
+    );
+    // Never a value from the page: the offer carries only the site.
+    expect(JSON.stringify(offer)).not.toContain('sandbox');
+  });
+
+  it('a site already offered (or dismissed) is never asked again', async () => {
+    h.suggestions['save_login:127.0.0.1'] = 'dismissed';
+    await needSignIn('password');
+    await h.lanes.done(h.job.id);
+    expect(offers()).toEqual([]);
+  });
+
+  it('never in a group chat (05-2 §5.8.6 Groups: never)', async () => {
+    h.chatKind = 'group';
+    await needSignIn('password');
+    await h.lanes.done(h.job.id);
+    expect(offers()).toEqual([]);
+  });
+
+  it('no offer when the card could name no site (NO_HOST): never keyed by "this site" or the AI\'s name', async () => {
+    const page = await h.page();
+    await page.goto('about:blank');
+    const r = await h.run('job.needSignIn', { site: 'RailPass', kind: 'password' });
+    if (r.kind !== 'needs_user') throw new Error(r.kind);
+    await h.post(r.card);
+    await h.lanes.done(h.job.id);
+    expect(offers()).toEqual([]);
+    expect(JSON.stringify(h.ops)).not.toContain('save_login:');
+  });
+
+  it('no offer after Skip, a CAPTCHA take-over or a bank check', async () => {
+    await needSignIn('password');
+    await h.lanes.skip(h.job.id);
+    expect(await h.run('browser.open', { url: h.captcha() })).toEqual({ kind: 'error', errorKind: 'SITE_CAPTCHA' });
+    const r = await h.run('job.needSignIn', { site: 'Captcha', kind: 'captcha' });
+    if (r.kind !== 'needs_user') throw new Error(r.kind);
+    await h.post(r.card);
+    await h.lanes.takeOver(h.job.id);
+    await h.lanes.handBack(h.job.id);
+    expect(offers()).toEqual([]);
   });
 });

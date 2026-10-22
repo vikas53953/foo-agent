@@ -4,7 +4,7 @@
 // text is posted as one message), 08-4 §26.11 (a code that is also a secret → PROOF_INVALID → done_unverified).
 // Engine ids are counters in these tests: `tc_000001` is the job's first tool call.
 import { afterEach, describe, expect, it } from 'vitest';
-import { jobHarness, jobIntake, step, stepDone, tool, type JobHarness, type PlanStepIn } from './jobHarness';
+import { jobHarness, jobIntake, step, stepDone, tool, type JobHarness, type PlanStepIn, untilStill } from './jobHarness';
 
 let h: JobHarness | null = null;
 afterEach(() => {
@@ -85,7 +85,9 @@ describe('finish when the job already left WORKING', () => {
       ],
     });
     h.userSays('Check my stay booking');
-    for (let i = 0; i < 40; i++) await new Promise((r) => setTimeout(r, 2));
+    // Wait for intake to open the job (a fixed few ticks was too short on a slow Windows runner, PR #85 run 39590106580).
+    const run = h;
+    await untilStill(() => run.job()?.state === 'working', 'the job works');
     h.db.prepare("UPDATE jobs SET state = 'cancelled' WHERE id = ?").run(String(h.job().id));
     await h.settle();
     expect(h.job().state).toBe('cancelled');

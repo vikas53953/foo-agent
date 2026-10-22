@@ -367,6 +367,7 @@ Card lifecycle words (shown, held, declined, expired, superseded, caught, offere
 | Waiting step | "Waiting for you to pick one ›" / "Waiting for you to approve ›" / "Waiting for you to sign in ›"; the row is a Link button that focuses the card that needs the user |
 | Queued | single row: "Waiting for another job to finish" |
 | Slow (no step for 60 s) | under the current step, `--t-caption` `--fg-3`: "Still working, this one takes a while" |
+| Trying another way (CR-0024 F10) | after a tool call of the current step fails and the job carries on: under the current step, `--t-caption` `--fg-3`: "Slow here, trying another way" (`cards.checklist.retry_other_way`); it replaces the Slow line and clears on the step's next successful tool call |
 | Paused (WAITING) | under the current step: "Paused: {your AI isn't answering | you've reached this month's AI cap | your PC went to sleep}" |
 | Resumed | the paused line disappears; foo posts one line: "Back on it. Picking up from step {n}." |
 | Took over | row "You took over" |
@@ -415,7 +416,7 @@ Card lifecycle words (shown, held, declined, expired, superseded, caught, offere
 
 **Purpose.** Ask one question with 2–4 tappable answers, foo's pick first, so the user taps instead of typing `[JRN C3, J8]`.
 
-**Trigger.** Inside a job, foo lacks one piece of information it cannot fill from memory, or there are 2+ reasonable routes. One question per missing item; up to 3 questions per card as a stepper. foo's text above the card never repeats the options `[HRM §6]`.
+**Trigger.** Inside a job, or at intake before any job (08-4 §25.5 item 5, intake kind `ask`, CR-0028), foo lacks one piece of information it cannot fill from memory, or there are 2+ reasonable routes. One question per missing item; up to 3 questions per card as a stepper. foo's text above the card never repeats the options `[HRM §6]`.
 
 ### 5.3.1 Anatomy (`--card-w` 440px)
 
