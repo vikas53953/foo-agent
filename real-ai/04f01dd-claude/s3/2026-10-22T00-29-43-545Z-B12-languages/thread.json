@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n12:28 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:28 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n12:28 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:28 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n12:29 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:29 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n12:29 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n12:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n12:29 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Parso Sat 24 Oct ko hai, toh kal tak order kar do, taaki cake time pe pahunch jaye. Ye options achhe rahenge:\n\nButterscotch ya pineapple: sabko pasand aata hai, kabhi galat nahi jata.\nChocolate truffle: agar mummy ko chocolate pasand hai.\nPhoto cake: mummy ki ek achhi photo cake pe, bahut personal lagta hai.\nEggless ya sugar-free: agar ghar mein koi parhez karta hai.\n\nMummy ko kaunsa flavour pasand hai? Bata do toh main wahi dekh lunga.\n\n12:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n12:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਜੇ ਪੱਕਾ ਨਹੀਂ ਪਤਾ, ਤਾਂ ਬਟਰਸਕੌਚ ਜਾਂ ਚਾਕਲੇਟ ਟਰਫਲ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਹਨ, ਇਹ ਲਗਭਗ ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦੇ ਹਨ।\n\nਫੋਟੋ ਕੇਕ: ਮੰਮੀ ਦੀ ਕੋਈ ਵਧੀਆ ਫੋਟੋ ਲਗਵਾਓ, ਇਹ ਬਹੁਤ ਖਾਸ ਲੱਗਦਾ ਹੈ।\nਐੱਗਲੈੱਸ ਜਾਂ ਸ਼ੂਗਰ-ਫ੍ਰੀ: ਜੇ ਘਰ ਵਿੱਚ ਕੋਈ ਪਰਹੇਜ਼ ਕਰਦਾ ਹੈ।\n\nਜਨਮਦਿਨ Sat 24 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਅੱਜ ਜਾਂ ਕੱਲ੍ਹ ਤੱਕ ਆਰਡਰ ਕਰ ਦਿਓ। ਮੰਮੀ ਨੂੰ ਮਿੱਠਾ ਕਿਹੜਾ ਪਸੰਦ ਹੈ?\n\n12:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n12:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, Mon 2 Nov is a normal working day in Mumbai as far as I know, with no public or bank holiday. Diwali falls on Sun 8 Nov this year, so the holidays come later. I can't check the official list from here, so confirm with your office or bank if it matters.\n\n12:30 AM"
+  }
+]

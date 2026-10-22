@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n12:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is ready below. Start it when the water is hot, and keep this chat open until it rings.\n\nSteep the tea\n2:00 left\nStart timer\nKeep\n12:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n12:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for the party plan: fill in the date, number of guests and budget, then submit.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n12:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n12:32 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is ready below. Add each spend with a note, category, amount and date, and it shows your total, what's left of your budget and a split by category. Everything resets when you close the chat, so it won't be saved for next month.\n\nKeep\n12:32 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi\n12:32 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 12:32 AM\n12:32 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:32 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Booking table for 2, Fri 23 Oct, 8:00 PM\nlive checklist\nLooking for vegetarian restaurants near Connaught\nKeep 3 restaurants that fit best rated, close to Connaught Place\nWait for you to pick one\nShow you before booking the table for 2 on Fri 23 Oct\nShow you before doing anything\nBook table for 2, Fri 23 Oct, 8:00 PM\nWatch live\nStop\n3 min\n12:32 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:32 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Booking table for 2, Fri 23 Oct, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n12:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:34 AM"
+  }
+]

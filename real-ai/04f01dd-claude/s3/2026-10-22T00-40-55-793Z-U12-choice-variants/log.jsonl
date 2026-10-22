@@ -1,0 +1,22 @@
+{"t":"2026-10-22T00:40:55.794Z","journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","spec":"05-1 §5.4 Choice, 10-2 §C.4 Choice (C3), AT-035","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T00:41:00.847Z","step":"launch","ok":true}
+{"t":"2026-10-22T00:41:01.881Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1031}
+{"t":"2026-10-22T00:41:01.980Z","i":1,"do":"send","sentAt":1792629661954,"sent":true,"before":0,"ok":true,"ms":99}
+{"t":"2026-10-22T00:41:13.679Z","i":2,"do":"waitReply","expect":"Choice card with 3 options, Best fit tag, Something else","firstReplyMs":5603,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which weekend plan sounds best for Bengaluru?\n1\nNandi Hills sunrise\nBEST FIT\nEarly start, cool views, easy day trip\n2\nCubbon Park and cafés\nSlow walk, then filter coffee and brunch\n3\nLalbagh and VV Puram food street\nGardens, then street food in the evening\nSomething else…\nSkip\n12:41 AM","ms":11699}
+{"t":"2026-10-22T00:41:13.731Z","shot":"01-choice.png"}
+{"t":"2026-10-22T00:41:13.813Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":82}
+{"t":"2026-10-22T00:41:13.923Z","i":4,"do":"send","sentAt":1792629673888,"sent":true,"before":0,"ok":true,"ms":110}
+{"t":"2026-10-22T00:41:25.606Z","i":5,"do":"waitReply","expect":"typed answer picks option 2; card collapses \"question → answer\"","firstReplyMs":4572,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Cubbon Park and cafés is a lovely pick: a slow morning walk under the trees, then coffee and a long breakfast nearby.\n\nGo early, around 8:00 AM on Sat 24 Oct, before the crowds and the heat. Want me to put it in your calendar?\n\n12:41 AM","ms":11682}
+{"t":"2026-10-22T00:41:25.653Z","shot":"03-typed-pick.png"}
+{"t":"2026-10-22T00:41:25.735Z","i":6,"do":"send","sentAt":1792629685713,"sent":true,"before":0,"ok":true,"ms":82}
+{"t":"2026-10-22T00:41:36.905Z","i":7,"do":"waitReply","expect":"another Choice card","firstReplyMs":5072,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which dinner sounds good tonight?\n1\nMasala dosa and filter coffee\nBEST FIT\nLight, quick and very Bengaluru\n2\nChicken or veg biryani\nHearty and full of flavour\n3\nDal, rice and a simple sabzi\nHome-style comfort food\nSomething else…\nSkip\n12:41 AM","ms":11169}
+{"t":"2026-10-22T00:41:36.950Z","shot":"04-choice-2.png"}
+{"t":"2026-10-22T00:41:37.048Z","i":8,"do":"click","soft":true,"ok":true,"ms":98}
+{"t":"2026-10-22T00:41:37.662Z","i":9,"do":"wait","expect":"composer hint for my own answer","ok":true,"ms":613}
+{"t":"2026-10-22T00:41:37.715Z","shot":"05-something-else.png"}
+{"t":"2026-10-22T00:41:37.793Z","i":10,"do":"send","sentAt":1792629697784,"sent":true,"before":0,"ok":true,"ms":78}
+{"t":"2026-10-22T00:41:48.464Z","i":11,"do":"waitReply","expect":"foo takes my own answer","firstReplyMs":3549,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Dal chawal it is, simple and just right. A spoon of ghee and a squeeze of lemon on top makes it even better.\n\n12:41 AM","ms":10671}
+{"t":"2026-10-22T00:41:48.511Z","shot":"06-own-answer.png"}
+{"t":"2026-10-22T00:41:48.518Z","i":12,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-22T00:41:48.619Z","step":"appLog","lines":13,"dropped":0}
+{"t":"2026-10-22T00:41:48.627Z","step":"aiTurns","turns":4}

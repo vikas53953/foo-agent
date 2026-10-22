@@ -1,0 +1,21 @@
+{"t":"2026-10-22T00:39:33.142Z","journey":"U04-find-in-chat","title":"Find in chat: Ctrl+F, count, next, previous, close","spec":"06 §9 find in chat, 10-2 §C.5 Search palette + find in chat","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T00:39:38.228Z","step":"launch","ok":true}
+{"t":"2026-10-22T00:39:39.259Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1028}
+{"t":"2026-10-22T00:39:39.348Z","i":1,"do":"send","sentAt":1792629579321,"sent":true,"before":0,"ok":true,"ms":89}
+{"t":"2026-10-22T00:39:51.514Z","i":2,"do":"waitReply","expect":"a short list","firstReplyMs":5035,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Three Indian rivers: Ganga, Yamuna and Godavari.\n\n12:39 AM","ms":12165}
+{"t":"2026-10-22T00:39:51.559Z","shot":"01-rivers.png"}
+{"t":"2026-10-22T00:39:51.572Z","i":3,"do":"key","expect":"find bar in the chat header with a field and count","ok":true,"ms":13}
+{"t":"2026-10-22T00:39:51.622Z","shot":"02-find-open.png"}
+{"t":"2026-10-22T00:39:51.633Z","i":4,"do":"fill","soft":true,"ok":true,"ms":10}
+{"t":"2026-10-22T00:39:52.443Z","i":5,"do":"wait","expect":"matches highlighted; count \"1 of n\"","ok":true,"ms":810}
+{"t":"2026-10-22T00:39:52.495Z","shot":"03-find-results.png"}
+{"t":"2026-10-22T00:39:52.564Z","i":6,"do":"click","soft":true,"ok":true,"ms":68}
+{"t":"2026-10-22T00:39:52.640Z","i":7,"do":"click","soft":true,"ok":true,"ms":76}
+{"t":"2026-10-22T00:39:52.721Z","i":8,"do":"click","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-22T00:39:52.723Z","i":9,"do":"key","ok":true,"ms":2}
+{"t":"2026-10-22T00:39:53.525Z","i":10,"do":"wait","expect":"Ctrl+K search overlay (J22) if built; else nothing happens","ok":true,"ms":802}
+{"t":"2026-10-22T00:39:53.573Z","shot":"04-ctrl-k.png"}
+{"t":"2026-10-22T00:39:53.576Z","i":11,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-22T00:39:53.583Z","i":12,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-22T00:39:53.683Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-10-22T00:39:53.693Z","step":"aiTurns","turns":1}

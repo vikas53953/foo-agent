@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "failed",
+    "text": "That reply got cut off.\nTry again\n12:36 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Which news story is biggest in India today? One line.\n12:37 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A fun name for a pet tortoise is Shelly, or try Dosa, Tikka or Turbo for a joke about how slow they are.\n\nI can't see today's headlines from here, so I can't tell you India's biggest story right now. I can look it up on news sites if you'd like.\n\n12:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:37 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n12:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n12:37 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nWaiting for you to sign in ›\nLook for account balance\n12:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:37 AM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n12:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:38 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n12:38 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "check my email\n12:39 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do catch-ups yet. Ask me about one thing, like your latest email, and I’ll look.\n\n12:39 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n12:39 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Which WhatsApp group do you want me to catch you up on? Tell me its name.\n\n12:39 AM"
+  }
+]
