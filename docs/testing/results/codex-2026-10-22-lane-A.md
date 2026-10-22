@@ -148,3 +148,18 @@ Run `39735003572` completed successfully at tested head `4fd0d51c0516efb23912370
 The plan reply and plan start passed, and the driver observed the live BrowserWindow opening. The live-root readiness callback also passed at step 4; later selectors for `data-state="live"` and the masked picture timed out. All 12 B07 screenshots show the live window's header, `Checking IRCTC · step 3 of 3 · Done`, with an empty lower picture area. `thread.json` records the job as `done_unverified`, and the renderer maps that state to `data-state="done"`, so the run opened the viewer after the job had finished. The B07 log records timeout failures at steps 5, 6, 10, 12, 17, and 22; the evidence scan passed with 21 retained app-log lines and 0 dropped lines. App-log has no renderer error; the prior driver did not record the exact live URL or live-page console/pageerror events. This is a timing/state mismatch, not evidence of a missing live renderer or a masking pass.
 
 AT-079 sensitive-field masking is unverified because no live picture rendered. AT-058 no-click telemetry remains unverified, and AT-078 external Edge closure remains blocked; no Foo live-viewer close was treated as Edge-window evidence.
+
+## Focused B07 and AT-427 workflow evidence
+
+Run `39739065630` completed successfully from immutable tested/kit SHA `af38bc304d648cfe89961f6ccec01fb3aedd5ded` on one Windows worker with Claude (`B07-live R-chat-rules`). The evidence branch commit is `2626617e30f7e67ba805ce55f7fdf3f7165c0790`.
+
+| Journey | Steps | Failed | Blocked | Screenshots | Evidence |
+| --- | ---: | ---: | ---: | ---: | --- |
+| B07-live | 25 | 11 | 0 | 11 | [B07 evidence](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/af38bc3-claude/s0/2026-10-22T07-18-33-486Z-B07-live) |
+| R-chat-rules (AT-427) | 15 | 0 | 0 | 5 | [AT-427 evidence](https://github.com/vikas53953/foo-agent/tree/evidence/real-ai/af38bc3-claude/s0/2026-10-22T07-21-26-126Z-R-chat-rules) |
+
+All 11 B07 PNGs were inspected. The first main-window screenshot shows the IRCTC plan. The next four viewer screenshots and the following five after attempted takeover/handback all show the actual live BrowserWindow header with `Take over` and `Stop`, an empty lower pane, and `I can't show the live picture right now. The job is still running.` The sanitized diagnostic records `app://foo/windows/live.html`, `state: cant_show`, `pictureCount: 1`, `maskedCount: 0`, `takeoverCount: 1`, and `handBackCount: 0`. The final screenshot shows the main conversation with the stopped checklist and `Stopped. Nothing was booked, paid or sent.` Therefore AT-079 live/masked and AT-058/AT-272 takeover/handback remain failed or unverified; J18 stop checks passed. No AT-078 external Edge-close proof is claimed.
+
+All five AT-427 PNGs and the corresponding logs were inspected. Clean, messy typo, Hinglish, Hindi, and Punjabi each produced exactly one new answer bubble, one timestamp, and three rendered paragraphs under the explicit 600-character fixture. Measured body lengths were 500, 464, 525, 461, and 489 characters respectively. The provider stayed within the fixture in every locale, so no precondition block was recorded.
+
+The strict all-file validator remains 2 passed / 2 failed on unchanged legacy baseline send-end-state and covered-proof gaps; this focused run does not relabel that gate.
