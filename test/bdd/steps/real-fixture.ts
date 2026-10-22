@@ -13,6 +13,8 @@ export type RealBddRun = {
   page: Page;
   provider: 'claude-cli' | 'codex-cli';
   dataRoot: string;
+  expectedDataPath: string;
+  profile: string;
   fooCountBefore?: number;
 };
 
@@ -28,6 +30,10 @@ export const test = base.extend<Fixtures>({
     const run = await launchProduction(testInfo.testId);
     try {
       await run.page.getByTestId(TID.titlebarStrip).waitFor();
+      await testInfo.attach('real-startup-diagnostics.json', {
+        body: Buffer.from(JSON.stringify(await startupDiagnostics(run), null, 2)),
+        contentType: 'application/json',
+      });
       await provide(run);
     } finally {
       try {
@@ -99,7 +105,48 @@ async function launchProduction(testId: string): Promise<RealBddRun> {
   const args = ['.'];
   if (process.platform === 'linux') args.push('--no-sandbox');
   const app = await electron.launch({ args, colorScheme: null, env });
-  return { app, page: await app.firstWindow(), provider, dataRoot };
+  return { app, page: await app.firstWindow(), provider, dataRoot, expectedDataPath: productionData, profile };
+}
+
+async function startupDiagnostics(run: RealBddRun): Promise<Record<string, unknown>> {
+  const diagnostic: Record<string, unknown> = {
+    expectedSettingsPath: sanitizePath(join(run.expectedDataPath, 'settings.json'), run.profile),
+  };
+  try {
+    const paths = await run.app.evaluate(({ app }) => ({ appData: app.getPath('appData'), userData: app.getPath('userData') }));
+    diagnostic.electronPaths = {
+      appData: sanitizePath(paths.appData, run.profile),
+      userData: sanitizePath(paths.userData, run.profile),
+    };
+  } catch (error) {
+    diagnostic.electronPathsError = error instanceof Error ? error.name : 'unknown';
+  }
+  try {
+    diagnostic.publicSettings = await run.page.evaluate(async () => {
+      const result = await window.foo.invoke('settings:get', {});
+      if (!result.ok) return { ok: false, errorKind: result.error.kind };
+      const primary = result.value.ai.primary;
+      const provider = primary ? result.value.ai.providers[primary] : undefined;
+      return {
+        ok: true,
+        setup: result.value.setup,
+        providerId: primary,
+        verified: provider?.lastVerifyOk === true,
+      };
+    });
+  } catch (error) {
+    diagnostic.publicSettingsError = error instanceof Error ? error.name : 'unknown';
+  }
+  return diagnostic;
+}
+
+function sanitizePath(value: string, profile: string): string {
+  const normalized = value.replaceAll('\\', '/');
+  const normalizedProfile = profile.replaceAll('\\', '/').replace(/\/$/u, '');
+  const underProfile = normalized.toLowerCase().startsWith(`${normalizedProfile.toLowerCase()}/`)
+    ? `<FOO_BDD_REAL_AI_HOME>${normalized.slice(normalizedProfile.length)}`
+    : normalized;
+  return underProfile.replace(/^[A-Za-z]:/u, '<DRIVE>').replace(/^<DRIVE>\/Users\/[^/]+/iu, '<DRIVE>/Users/<USER>');
 }
 
 function requireAbsolute(value: string): boolean {
