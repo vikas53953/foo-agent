@@ -10,6 +10,7 @@ import { join } from 'node:path';
 import { isIP } from 'node:net';
 import type { Clock } from '../../../shared/clock';
 import { createHandback, handbackSitesSchema } from '../../../shared/handback';
+import { bareHost, isLocalName, isPrivateIp } from '../net/address';
 import type { Settings } from '../../../shared/settings';
 import { checkWebKey, type KeyCheck } from './keyCheck';
 import { memoryVault, vaultWebKeys } from './keys';
@@ -20,8 +21,6 @@ export { WebTools } from './WebTools';
 export { memoryVault, vaultWebKeys } from './keys';
 export { webToolDefs } from './toolDefs';
 export type { KeyCheck } from './keyCheck';
-
-const PRIVATE_V4 = [/^10\./, /^127\./, /^169\.254\./, /^172\.(1[6-9]|2\d|3[01])\./, /^192\.168\./, /^0\./];
 
 /** 08-4 §27.6: localhost and private ranges are blocked; in FOO_TEST builds the hosts in FOO_TEST_ALLOW_HOSTS pass. */
 export function defaultUrlAllowed(env: Record<string, string | undefined>, testRun: boolean): (url: URL) => boolean {
@@ -35,18 +34,18 @@ export function defaultUrlAllowed(env: Record<string, string | undefined>, testR
     : new Set<string>();
   return (url) => {
     if (url.protocol !== 'https:' && url.protocol !== 'http:') return false;
-    const host = url.hostname.toLowerCase().replace(/^\[|\]$/g, '');
+    const host = bareHost(url.hostname);
     if (allow.has(host) || allow.has(url.host.toLowerCase())) return true;
-    if (host === 'localhost' || host.endsWith('.localhost') || host.endsWith('.local')) return false;
-    if (isIP(host) === 4) return !PRIVATE_V4.some((r) => r.test(host));
-    if (isIP(host) === 6) return !(host === '::1' || /^f[cd]/.test(host) || /^fe80/.test(host) || host === '::');
-    return true;
+    if (isLocalName(host) || host.endsWith('.local')) return false;
+    return isIP(host) ? !isPrivateIp(host) : true;
   };
 }
 
 export interface EngineWebOptions {
   clock: Clock;
   fetch: HttpFetch;
+  /** The local read's GET to the address the AI chose (CR-0047: the app passes `guardedGet`); tests leave it to `fetch`. */
+  localGet?: HttpFetch;
   resourcesDir: string;
   env: Record<string, string | undefined>;
   testRun: boolean;
@@ -82,6 +81,7 @@ export function createEngineWeb(o: EngineWebOptions): EngineWeb {
     clock: o.clock,
     sleep: (ms) => new Promise((r) => o.clock.setTimeout(r, ms)),
     fetch: o.fetch,
+    localGet: o.localGet ?? o.fetch,
     resource,
     pricing: o.pricing,
     settings: () => o.settings().connections.web,

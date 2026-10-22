@@ -118,6 +118,8 @@ export interface WebToolDeps {
   /** Waits `ms` (Browser Use polling, 3 s); tests advance a fake clock. */
   sleep: (ms: number) => Promise<void>;
   fetch: HttpFetch;
+  /** The local read's GET (08-2 §8.2 web.fetch); never connects to a private address in the app (CR-0047). */
+  localGet: HttpFetch;
   resource: WebToolsResource;
   pricing: { usdToInr: number; web: WebPricing };
   settings: () => WebSettings;

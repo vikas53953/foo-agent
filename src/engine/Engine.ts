@@ -44,7 +44,9 @@ import { findBanned } from './prompt/filters';
 import { capRateOf, resolveModel } from './ai/models';
 import { createGate } from './gate/GateLogic';
 import { JobRunner } from './jobs/JobRunner';
+import { allowHostsFrom } from './tools/browser/browser';
 import { engineScreencast, type Screencast } from './tools/browser/screencast';
+import { guardedGet } from './tools/net/guardedGet';
 import { JobRecovery } from './jobs/recovery';
 import { ToolLayer, type ToolRegistry } from './tools/ToolLayer';
 import type { SecondLookAct, StepAct } from '../shared/schemas';
@@ -161,6 +163,8 @@ export class Engine {
     this.web = createEngineWeb({
       ...o,
       fetch: o.fetch ?? fetch,
+      // CR-0047: the page read never connects to a private address, whatever the name resolves to (FOO_TEST hosts aside).
+      localGet: o.fetch ?? guardedGet({ allowHosts: allowHostsFrom(o.env, o.testRun) }),
       settings: () => this.settings,
       online: () => this.online,
       scrub: (t) => this.redactor.scrub(t),
@@ -266,6 +270,7 @@ export class Engine {
             ...o,
             redactor: this.redactor,
             settings: () => this.settings,
+            online: () => this.online,
             log,
             ...(lanes ? { captureGuard: lanes } : {}),
           }));

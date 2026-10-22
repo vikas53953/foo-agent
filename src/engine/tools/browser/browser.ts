@@ -10,6 +10,7 @@ import { join } from 'node:path';
 import type { BrowserContext, CDPSession, Page } from 'playwright-core';
 import { fail, ok, type Result } from '../../../shared/errors';
 import type { HostMatcher } from '../../../shared/handback';
+import { bareHost, isLocalName, isPrivateIp } from '../net/address';
 import type { BrowserHandle, CdpSession, JobWindow } from './types';
 import { prepareProfile, scrubProfile } from './profileHygiene';
 import { WindowPool } from './windows';
@@ -82,30 +83,6 @@ export interface UrlPolicy {
   allowHosts: readonly string[];
 }
 
-function ipv4Private(h: string): boolean {
-  const m = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.exec(h);
-  if (!m) return false;
-  const [a, b] = [Number(m[1]), Number(m[2])];
-  return a === 0 || a === 10 || a === 127 || (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168);
-}
-
-function ipv6Private(h: string): boolean {
-  if (!h.startsWith('[')) return false;
-  const v = h.slice(1, -1).toLowerCase();
-  if (v === '::' || v === '::1') return true;
-  if (/^f[cd]/.test(v) || /^fe[89ab]/.test(v)) return true;
-  const mapped = /^::ffff:(.+)$/.exec(v);
-  if (mapped?.[1]) {
-    const tail = mapped[1];
-    if (tail.includes('.')) return ipv4Private(tail);
-    // WHATWG URL writes ::ffff:127.0.0.1 as ::ffff:7f00:1.
-    const parts = tail.split(':').map((x) => parseInt(x, 16));
-    if (parts.length === 2 && parts.every((n) => Number.isFinite(n)))
-      return ipv4Private([parts[0]! >> 8, parts[0]! & 255, parts[1]! >> 8, parts[1]! & 255].join('.'));
-  }
-  return false;
-}
-
 /** 08-2 §8.2 `browser.open` URL rule (also `web.fetch`'s, re-checked on every redirect by T4). */
 export function checkUrl(url: string, policy: UrlPolicy): Result<string> {
   if (url === 'about:blank') return ok(url);
@@ -116,8 +93,8 @@ export function checkUrl(url: string, policy: UrlPolicy): Result<string> {
     return fail('URL_NOT_ALLOWED');
   }
   if (u.protocol !== 'http:' && u.protocol !== 'https:') return fail('URL_NOT_ALLOWED');
-  const host = u.hostname.toLowerCase();
-  const local = host === 'localhost' || host.endsWith('.localhost') || ipv4Private(host) || ipv6Private(host);
+  const host = bareHost(u.hostname);
+  const local = isLocalName(host) || isPrivateIp(host);
   if (local && !policy.allowHosts.includes(host)) return fail('URL_NOT_ALLOWED');
   if (policy.handback.check(url)) return fail('SITE_HANDBACK');
   return ok(url);
@@ -133,15 +110,13 @@ export function allowHostsFrom(env: Record<string, string | undefined>, testRun:
 }
 
 /**
- * M9 T8: FOO_TEST_BROWSER_HOST_RULES / FOO_TEST_BROWSER_SPKI (test runs only, beside FOO_TEST_ALLOW_HOSTS 08-4 §27.6): the
- * sandbox's `.test` names mapped onto 127.0.0.1 and its one key trusted, so the real app can book on the 08-3 §22.5 sites.
- * Outside test runs nothing is added.
+ * M9 T8: FOO_TEST_BROWSER_SPKI (test runs only, beside FOO_TEST_ALLOW_HOSTS 08-4 §27.6): the sandbox's one key trusted, so the
+ * real app can book on the 08-3 §22.5 sites. Its `.test` names (FOO_TEST_BROWSER_HOST_RULES) are mapped onto 127.0.0.1 by the
+ * engine's egress proxy (CR-0047), which every browser request goes through. Outside test runs nothing is added.
  */
 export function testBrowserArgs(env: Record<string, string | undefined>, testRun: boolean): string[] {
   if (!testRun) return [];
   const args: string[] = [];
-  // The sandbox is on this machine: no proxy from the environment sits between (Chromium on Linux reads https_proxy).
-  if (env.FOO_TEST_BROWSER_HOST_RULES) args.push('--no-proxy-server', `--host-resolver-rules=${env.FOO_TEST_BROWSER_HOST_RULES}`);
   if (env.FOO_TEST_BROWSER_SPKI) args.push(`--ignore-certificate-errors-spki-list=${env.FOO_TEST_BROWSER_SPKI}`);
   return args;
 }
@@ -267,6 +242,8 @@ export class PlaywrightBrowser implements BrowserHandle {
         return ok(undefined);
       } catch {
         this.d.log('browser.launch_failed', step.channel);
+        // A browser closed during launch (CR-0047's proxy check) never reached the close hook: the profile is wiped here.
+        this.hygiene('scrub', step.userDataDir);
       }
     }
     return fail('BROWSER_MISSING');

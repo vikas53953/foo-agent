@@ -16,6 +16,8 @@ import type { ToolContext, ToolDef, ToolOutcome, ToolRegistry } from '../ToolLay
 import { Actions, type ActionRefusal, type ActionResult } from './actions';
 import { PlaywrightBrowser, allowHostsFrom, checkUrl, testBrowserArgs, type DriverWindow, type LaunchOptions } from './browser';
 import { Masker } from './masker';
+import { hostMapFrom, proxyArgs, proxyIsUsed, startEgressProxy, type EgressProxy } from './egressProxy';
+import type { Resolve } from '../net/address';
 import { RefRouter, SnapshotDiffer, needsScreenshot, snapshotText, takeSnapshot } from './snapshot';
 import { StepShots } from './stepShots';
 import { createSubmitTool } from './submit'; // M9 T8
@@ -40,6 +42,10 @@ export interface BrowserToolsDeps {
   log(evt: string, kind?: string): void;
   /** T7 owns the sign-in pause state; until it lands nothing is paused. */
   captureGuard?: CaptureGuard;
+  /** The engine's online state (08-3 §21.2): a failed load while offline is NET_OFFLINE. */
+  online?: () => boolean;
+  /** CR-0047: host name → addresses for the browser's egress proxy (tests map their own names). */
+  resolve?: Resolve;
   /** Tests: headless, a launcher, shorter idle waits. */
   headless?: boolean;
   /** M9 T8: tests shorten the outcome watch after `browser.submit` (08-2 §10.4: 120 s, every 2 s, waits 5 min). */
@@ -110,20 +116,43 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
   const masker = new Masker();
   const watchdogs = new Watchdogs({ log: d.log, downloadsDir: (jobId) => join(d.dataDir, 'jobs', jobId, 'downloads') });
   const differ = new SnapshotDiffer();
+  // CR-0047: every browser request goes through the engine's proxy, which refuses private addresses at connect time.
+  let egress: EgressProxy | null = null;
+  const egressProxy = async (): Promise<EgressProxy> =>
+    (egress ??= await startEgressProxy({
+      allowHosts,
+      ...(d.resolve ? { resolve: d.resolve } : {}),
+      // Test runs only: the sandbox names the browser was told about now resolve in the proxy (08-4 §27.6).
+      ...(d.testRun ? { hostMap: hostMapFrom(d.env.FOO_TEST_BROWSER_HOST_RULES) } : {}),
+      log: d.log,
+    }));
+  const defaultLaunch = async (dir: string, options: LaunchOptions) => {
+    const { chromium } = await import('playwright-core');
+    // M9 T8: test runs only, the sandbox's key (empty otherwise).
+    return chromium.launchPersistentContext(dir, { ...options, args: [...options.args, ...testBrowserArgs(d.env, d.testRun)] });
+  };
   const browser = new PlaywrightBrowser({
     dataDir: d.dataDir,
     platform: d.platform,
     exists: existsSync,
     ...(d.headless === undefined ? {} : { headless: d.headless }),
     testDebug: d.testRun && d.env.FOO_TEST_BROWSER_DEBUG === '1', // M9 T7
-    launch:
-      d.launch ??
-      (async (dir, options) => {
-        const { chromium } = await import('playwright-core');
-        // M9 T8: test runs only, the sandbox's names and key (empty otherwise).
-        const extra = testBrowserArgs(d.env, d.testRun);
-        return chromium.launchPersistentContext(dir, extra.length ? { ...options, args: [...options.args, ...extra] } : options);
-      }),
+    launch: async (dir, options) => {
+      // CR-0047: every launch, the app's or a test's, sends the browser's traffic through the egress proxy.
+      const proxy = await egressProxy();
+      const withProxy = { ...options, args: [...options.args, ...proxyArgs(proxy)] };
+      const ctx = await (d.launch ?? defaultLaunch)(dir, withProxy);
+      // The start page first; a startup page or welcome tab can move it mid-check, so once more on a fresh page.
+      const start = ctx.pages()[0] ?? (await ctx.newPage());
+      if (await proxyIsUsed(proxy, start)) return ctx;
+      const fresh = await ctx.newPage();
+      const used = await proxyIsUsed(proxy, fresh);
+      await fresh.close().catch(() => undefined);
+      if (used) return ctx;
+      d.log('browser.proxy_bypassed');
+      await ctx.close().catch(() => undefined);
+      throw new Error('proxy bypassed');
+    },
     log: d.log,
     onWindow: (win: DriverWindow) => {
       watchdogs.start(win);
@@ -218,6 +247,7 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
         if (!rule.ok) return { kind: 'error', errorKind: rule.error.kind };
         let status = 0;
         let failed: string | null = null;
+        const mark = egress?.mark() ?? 0;
         const miss = await actions.settled(ctx.jobId, page, async () => {
           const res = await page.goto(a.url, { waitUntil: 'commit', timeout: 15_000 }).catch((e: unknown) => {
             failed = e instanceof Error ? e.message : String(e);
@@ -231,10 +261,13 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
           // The reason without the address (08-3 logging carries no URLs): Chromium's net error code, or the 15 s timeout.
           d.log('browser.open_failed', openFailure(failed));
           await blank(page);
-          return {
-            kind: 'error',
-            errorKind: /ERR_INTERNET_DISCONNECTED|ERR_NETWORK_CHANGED/.test(failed) ? 'NET_OFFLINE' : 'SITE_TIMEOUT',
-          };
+          const why: string = failed;
+          // CR-0047: the proxy refused the load (or a redirect hop): a private address behind a public name.
+          if (egress?.refusedSince(mark) && /ERR_TUNNEL_CONNECTION_FAILED|ERR_EMPTY_RESPONSE|ERR_CONNECTION_(CLOSED|RESET)/.test(why))
+            return { kind: 'error', errorKind: 'URL_NOT_ALLOWED' };
+          // Behind the proxy Chromium always reaches 127.0.0.1, so the engine's own online state tells offline apart.
+          const offline = /ERR_INTERNET_DISCONNECTED|ERR_NETWORK_CHANGED/.test(why) || d.online?.() === false;
+          return { kind: 'error', errorKind: offline ? 'NET_OFFLINE' : 'SITE_TIMEOUT' };
         }
         // Redirects are checked again where they landed: a hand-back or private address is left at once.
         const landedUrl = page.url();
@@ -401,6 +434,7 @@ export function engineBrowserTools(o: {
   log(evt: string, kind?: string): void;
   /** M9 T7: the sign-in lanes' pause (08-2 §8.3.3). */
   captureGuard?: CaptureGuard;
+  online?: () => boolean;
 }): { registry: ToolRegistry; runtime: BrowserRuntime } {
   return createBrowserTools({
     dataDir: o.dataDir,
@@ -414,5 +448,6 @@ export function engineBrowserTools(o: {
     now: () => o.clock.now(),
     log: o.log,
     ...(o.captureGuard ? { captureGuard: o.captureGuard } : {}),
+    ...(o.online ? { online: o.online } : {}),
   });
 }

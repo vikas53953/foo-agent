@@ -104,19 +104,24 @@ export async function localFetch(
         },
         signal: ctl.signal,
       });
-    } catch {
+    } catch (e) {
       deps.clock.clearTimeout(timer);
+      // CR-0047: the GET refused a private address at connect time (the name pointed at this PC or the local network).
+      if ((e as { code?: unknown }).code === 'URL_NOT_ALLOWED') return { kind: 'blocked', reason: 'URL_NOT_ALLOWED' };
       return { kind: 'failed' };
     }
     if (res.status >= 300 && res.status < 400) {
       const loc = res.headers.get('location');
       deps.clock.clearTimeout(timer);
+      // The body is never read: let the connection go.
+      void res.body?.cancel().catch(() => undefined);
       if (!loc) return { kind: 'failed' };
       current = new URL(loc, u).toString();
       continue;
     }
     if (res.status < 200 || res.status >= 300) {
       deps.clock.clearTimeout(timer);
+      void res.body?.cancel().catch(() => undefined);
       return { kind: 'failed' };
     }
     const type = res.headers.get('content-type');

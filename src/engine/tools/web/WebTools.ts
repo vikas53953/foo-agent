@@ -126,7 +126,7 @@ export class WebTools {
     url: string,
     ctx: WebCallContext,
   ): Promise<{ kind: 'read'; read: ReadResult } | { kind: 'error'; errorKind: 'URL_NOT_ALLOWED' | 'SITE_HANDBACK' | 'needsBrowser' }> {
-    const local = await localFetch({ fetch: this.d.fetch, clock: this.d.clock, check: (u) => this.hopVerdict(u) }, url);
+    const local = await localFetch({ fetch: this.d.localGet, clock: this.d.clock, check: (u) => this.hopVerdict(u) }, url);
     if (local.kind === 'read') return local;
     if (local.kind === 'blocked') return { kind: 'error', errorKind: local.reason };
     // needsBrowser (or the GET failed): the engine reads it in the job window with the same extractor.
