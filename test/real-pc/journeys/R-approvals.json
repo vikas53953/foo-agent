@@ -2,15 +2,7 @@
   "id": "R-approvals",
   "title": "Group R approval and booking plans without irreversible clicks",
   "spec": "07 §11.5 Group R; AT-109, AT-110, AT-121, AT-126, AT-128, AT-363, AT-435",
-  "covers": [
-    "AT-109",
-    "AT-110",
-    "AT-121",
-    "AT-126",
-    "AT-128",
-    "AT-363",
-    "AT-435"
-  ],
+  "covers": ["AT-109", "AT-110", "AT-121", "AT-126", "AT-128", "AT-363", "AT-435"],
   "steps": [
     {
       "do": "send",

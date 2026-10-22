@@ -2,14 +2,7 @@
   "id": "R-jobs",
   "title": "Group R jobs, sources, retry and live job updates",
   "spec": "07 §11.5 Group R; AT-106, AT-114, AT-120, AT-364, AT-420, AT-432",
-  "covers": [
-    "AT-106",
-    "AT-114",
-    "AT-120",
-    "AT-364",
-    "AT-420",
-    "AT-432"
-  ],
+  "covers": ["AT-106", "AT-114", "AT-120", "AT-364", "AT-420", "AT-432"],
   "steps": [
     {
       "do": "send",

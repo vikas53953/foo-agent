@@ -123,8 +123,10 @@ const isCheckedStep = (step: Step) =>
   );
 
 const hasFollowingRegexExpectText = (steps: Step[], waitIndex: number) => {
-  for (let i = waitIndex + 1; i < steps.length && steps[i].do !== 'send'; i += 1) {
+  for (let i = waitIndex + 1; i < steps.length; i += 1) {
     const step = steps[i];
+    if (step === undefined) throw new Error('Missing journey step');
+    if (step.do === 'send') break;
     if (step.do === 'expectText' && typeof step.re === 'string' && step.re.length > 0) return true;
   }
   return false;
@@ -136,14 +138,18 @@ const referencedIds = (journey: Journey) => {
     if (step.tid) ids.add(step.tid);
     if (step.expectTid) ids.add(step.expectTid);
     if (step.expectKit) ids.add(step.expectKit);
-    for (const match of step.css?.matchAll(/data-testid\s*=\s*["']?([A-Za-z0-9_-]+)/g) ?? []) ids.add(match[1]);
+    for (const match of step.css?.matchAll(/data-testid\s*=\s*["']?([A-Za-z0-9_-]+)/g) ?? []) {
+      const id = match[1];
+      if (id === undefined) throw new Error('Missing test-id regex capture');
+      ids.add(id);
+    }
   }
   return ids;
 };
 
 describe('real-PC journey contracts', () => {
   it('loads every journey and rejects unknown TIDs', () => {
-    const known = new Set(Object.values(TID));
+    const known = new Set<string>(Object.values(TID));
     const invalid = journeys.flatMap(({ name, value }) =>
       [...referencedIds(value)].filter((id) => !known.has(id)).map((id) => `${name}: ${id}`),
     );

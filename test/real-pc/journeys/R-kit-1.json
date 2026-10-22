@@ -2,13 +2,7 @@
   "id": "R-kit-1",
   "title": "Group R kit surfaces: stepper, timeline, calendar, goal and pick list",
   "spec": "07 §11.5 Group R; AT-342, AT-344, AT-345, AT-348, AT-349",
-  "covers": [
-    "AT-342",
-    "AT-344",
-    "AT-345",
-    "AT-348",
-    "AT-349"
-  ],
+  "covers": ["AT-342", "AT-344", "AT-345", "AT-348", "AT-349"],
   "steps": [
     {
       "do": "send",

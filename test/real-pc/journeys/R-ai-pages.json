@@ -2,13 +2,7 @@
   "id": "R-ai-pages",
   "title": "Group R plain answers and capabilities surface",
   "spec": "07 §11.5 Group R; AT-366, AT-367, AT-424, AT-425, AT-426",
-  "covers": [
-    "AT-366",
-    "AT-367",
-    "AT-424",
-    "AT-425",
-    "AT-426"
-  ],
+  "covers": ["AT-366", "AT-367", "AT-424", "AT-425", "AT-426"],
   "steps": [
     {
       "do": "send",

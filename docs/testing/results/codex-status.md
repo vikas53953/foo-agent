@@ -1,4 +1,21 @@
-# Codex status — 22 October 2026, 12:59 IST
+# Codex status — 22 October 2026, 14:43 IST
+
+## Current loop — 22 October 2026, 14:43 IST
+
+Main reverified unchanged:0d04a9f9105e42aef0b4a22238285a9007635c3e. Matrix freshly regenerated: **4 proven / 106 partial / 5 fail / 10 missing / 3 not built / 62 code-only =190**. No current-main promotion.
+
+Drift: (a) YES, judged [focused real-AI39739065630](https://github.com/vikas53953/foo-agent/actions/runs/39739065630), immutable evidence2626617e30f7e67ba805ce55f7fdf3f7165c0790; no-run/judgment streak0. (b) Added bounded test-only TS guards and formatting repairs for confirmed combined-CI failures, imported the validated BDD fixture revision; no product behavior changed. (c) No assertions/thresholds removed or relaxed; two strict journey-contract failures remain. Formatting is semantically unchanged JSON.
+
+- Focused real AI: B07 25steps/11failed; viewer reports cant_show on active job, live/masking/takeover unproven; stop checks passed. AT427 five variants15steps/0failed, all5screenshots reviewed, onebubble/onetimestamp/threeparagraphs with lengths500/464/525/461/489. Branchpass is recorded as matrixpartial, not mainproven.
+- Full [39740734054](https://github.com/vikas53953/foo-agent/actions/runs/39740734054) completed workflow-success; A and D are judging all four shards/screenshots. Journey/feature pass counts pending; workflow success does not override assertions.
+- BDD [39741807324](https://github.com/vikas53953/foo-agent/actions/runs/39741807324), source357cc6ff8faa7fa8ff9338375ae08b054d30d861:22/22pretend and2/2real passed; all24screenshots reviewed. Real setupcomplete,claude-cli,verified. Three validated fixture files imported tolead.
+- Combined [CI39740741490](https://github.com/vikas53953/foo-agent/actions/runs/39740741490) failed:28formatting files; test-only TS bounds/Set typing; two known journeycontract assertions. Repairs preserve assertion semantics. Earlier local lint passed with2existingwarnings; copy passed. Local BDD dependencies were missing and are now installed from frozenlock beforetypecheck.
+- Soak r3 at14:39IST:producer/observer/runtime alive, fresh32.5sheartbeat,26/96done_unverified jobs,1079handles,173858816bytesworking set,routines0. No8houracceptance, noEHEADchange.
+- Corrected mutation [39739240428](https://github.com/vikas53953/foo-agent/actions/runs/39739240428):main failedpreloadtest;rendererfailed,artifactjudgmentpending;engine/sharedstillrunning.
+
+Lanes: A=s0/s1fullrunjudgment; B=greenfixturecommitted; C=completedboundedmodelprobes; D=s2/s3judgment plusCIanalysis; E=activeproducer/observer; F=mutationreport; G=completedheuristic/integrationreview. Needs Vikas unchanged:externalaccountprerequisites,human/nativeaccessibilityacceptance and unbuiltfeaturedecisions; none stops independentwork.
+
+Earlier sections below are historical checkpoints.
 
 Lead: draft [PR 138](https://github.com/vikas53953/foo-agent/pull/138). No merges. Existing Anthropic key authorized without a user spending cap; no secrets or personal data in committed evidence.
 
@@ -112,3 +129,5 @@ Combined source commit:fb15c2eea738e7ddd1b3daa2e11c5712a4c66be3. All181selectedt
 - Seventh task-dispatched real-AI run today: [39740734054](https://github.com/vikas53953/foo-agent/actions/runs/39740734054), all inventory journeys on combinedfb15c2ee, four Windows shards, Claude. Started; execution/pass/fail counts pending. Input maximum1000 exceeds the inventory and does not exclude any listed journey; no user spending ceiling imposed.
 - [Combined standard CI39740741490](https://github.com/vikas53953/foo-agent/actions/runs/39740741490), same combined revision. Started; results pending. No merges.
 - Matrix remains4proven/106partial/5fail/10missing/3notbuilt/62code-only after importing journeys and approved trace mappings. No fresh-run result is inferred.
+
+Heartbeat validation: after installing the frozen BDD subproject dependencies, `tsc -p tsconfig.node.json --noEmit` passed. Trace check passed. Focused driver/journey regressions9pass/2knowncontractfail; no assertions loosened. Renderer mutation artifact12409884080 reports1145total/399killed/743survived/3timeouts,35.11percent below70threshold; declared direct-test gaps retained.

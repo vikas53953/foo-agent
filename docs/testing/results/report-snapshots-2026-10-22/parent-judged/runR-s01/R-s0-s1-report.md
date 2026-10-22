@@ -45,5 +45,3 @@ Independent immutable-evidence file inventory across all four shards (unique rel
 ## Provenance and safety
 
 Only this run's pinned s0/s1 evidence was downloaded. No additional paid AI run was made. No approval, send, booking, payment, or other external action was taken. No repository/source files were changed.
-
-

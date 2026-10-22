@@ -2,10 +2,7 @@
   "id": "R-reply-area",
   "title": "Group R reply sender and action ownership",
   "spec": "07 §11.5 Group R; AT-428, AT-430",
-  "covers": [
-    "AT-428",
-    "AT-430"
-  ],
+  "covers": ["AT-428", "AT-430"],
   "steps": [
     {
       "do": "send",

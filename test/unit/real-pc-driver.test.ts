@@ -125,11 +125,15 @@ describe('real-PC live-window driver', () => {
   });
 
   it('keeps B07 selectors registered and free of secret-like values', () => {
-    const known = new Set(Object.values(TID));
+    const known = new Set<string>(Object.values(TID));
     const ids = new Set<string>();
     for (const step of b07.steps) {
       for (const id of [step.tid, step.expectTid, step.expectKit]) if (id) ids.add(id);
-      for (const match of step.css?.matchAll(/data-testid\s*=\s*["']?([A-Za-z0-9_-]+)/g) ?? []) ids.add(match[1]);
+      for (const match of step.css?.matchAll(/data-testid\s*=\s*["']?([A-Za-z0-9_-]+)/g) ?? []) {
+        const id = match[1];
+        if (id === undefined) throw new Error('Missing test-id regex capture');
+        ids.add(id);
+      }
     }
     expect([...ids].filter((id) => !known.has(id))).toEqual([]);
     expect(b07Text).not.toMatch(/(?:sk-|api[_-]?key|bearer\s+|password)/i);

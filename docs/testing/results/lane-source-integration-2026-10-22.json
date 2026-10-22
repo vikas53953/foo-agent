@@ -1098,5 +1098,13 @@
       "reason": "Explicitly includes all25 soak regression tests excluded by rootdefault; no threshold change."
     }
   ],
-  "excluded": "Untracked artifacts and scripts/audit/evidence raw outputs; sanitized reports and immutable links published separately."
+  "excluded": "Untracked artifacts and scripts/audit/evidence raw outputs; sanitized reports and immutable links published separately.",
+  "followups": [
+    {
+      "source": "357cc6ff8faa7fa8ff9338375ae08b054d30d861",
+      "run": "39741807324",
+      "paths": ["test/bdd/steps/fixture.ts", "test/bdd/steps/real-steps.ts", "test/bdd/steps/steps.ts"],
+      "scope": "validated fixture corrections;22pretend+2real screenshots judged"
+    }
+  ]
 }

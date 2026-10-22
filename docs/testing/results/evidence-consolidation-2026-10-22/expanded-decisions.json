@@ -147,90 +147,27 @@
       "AT-319"
     ],
     "canonical_non_full_sha_build_fields": [
-      [
-        "AT-006",
-        "real-pc-report"
-      ],
-      [
-        "AT-019",
-        "setup"
-      ],
-      [
-        "AT-105",
-        "real-pc-report"
-      ],
-      [
-        "AT-016",
-        "real-pc-report"
-      ],
-      [
-        "AT-288",
-        "04f01dd"
-      ],
-      [
-        "AT-155",
-        "real-pc-report"
-      ],
-      [
-        "AT-014",
-        "setup"
-      ],
-      [
-        "AT-015",
-        "setup"
-      ],
-      [
-        "AT-018",
-        "setup"
-      ],
-      [
-        "AT-052",
-        "setup"
-      ],
-      [
-        "AT-053",
-        "setup"
-      ],
-      [
-        "AT-055",
-        "setup"
-      ],
-      [
-        "AT-070",
-        "setup"
-      ],
-      [
-        "AT-093",
-        "setup"
-      ],
-      [
-        "AT-145",
-        "setup"
-      ],
-      [
-        "AT-220",
-        "setup"
-      ],
-      [
-        "AT-269",
-        "setup"
-      ],
-      [
-        "AT-270",
-        "setup"
-      ],
-      [
-        "AT-080",
-        "04f01dd"
-      ],
-      [
-        "AT-319",
-        "setup"
-      ],
-      [
-        "AT-371",
-        "04f01dd"
-      ]
+      ["AT-006", "real-pc-report"],
+      ["AT-019", "setup"],
+      ["AT-105", "real-pc-report"],
+      ["AT-016", "real-pc-report"],
+      ["AT-288", "04f01dd"],
+      ["AT-155", "real-pc-report"],
+      ["AT-014", "setup"],
+      ["AT-015", "setup"],
+      ["AT-018", "setup"],
+      ["AT-052", "setup"],
+      ["AT-053", "setup"],
+      ["AT-055", "setup"],
+      ["AT-070", "setup"],
+      ["AT-093", "setup"],
+      ["AT-145", "setup"],
+      ["AT-220", "setup"],
+      ["AT-269", "setup"],
+      ["AT-270", "setup"],
+      ["AT-080", "04f01dd"],
+      ["AT-319", "setup"],
+      ["AT-371", "04f01dd"]
     ],
     "invalid_selected_commit_refs": [],
     "all_replacement_builds_full_sha": true,

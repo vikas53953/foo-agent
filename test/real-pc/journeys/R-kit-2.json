@@ -2,13 +2,7 @@
   "id": "R-kit-2",
   "title": "Group R live stamp, calculator, keep and time picker",
   "spec": "07 §11.5 Group R; AT-350, AT-352, AT-355, AT-368, AT-369",
-  "covers": [
-    "AT-350",
-    "AT-352",
-    "AT-368",
-    "AT-355",
-    "AT-369"
-  ],
+  "covers": ["AT-350", "AT-352", "AT-368", "AT-355", "AT-369"],
   "steps": [
     {
       "do": "send",

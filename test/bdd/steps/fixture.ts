@@ -75,7 +75,7 @@ async function launchPretend(
       title: 'Bills',
       plan: [
         { phraseKey: 'read_email', slots: {}, route: 'api' },
-        { phraseKey: 'look_for', slots: { what: 'bills due this week' }, route: 'api' },
+        { phraseKey: 'look_for', slots: { what: 'Bills due this week' }, route: 'api' },
       ],
       estimate: { minutes: 1 },
       routeHint: ['api'],
@@ -91,6 +91,12 @@ async function launchPretend(
     },
     intake('thanks!', '', { decision: { kind: 'react', emoji: '👍' } }),
     intake('Find my bills due this week', jobReply),
+    {
+      match: { purpose: 'step' },
+      reply: '<say></say>\n<act>{"decision":{"kind":"step_done","idx":0},"usedMemoryIds":[]}</act>',
+      delayMs: 600_000,
+      once: false,
+    },
     intake('hello from BDD', envelope('hello from pretend AI')),
     intake('hello', envelope('hello from pretend AI')),
   ];
