@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "check my email\n7:43 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do catch-ups yet. Ask me about one thing, like your latest email, and I’ll look.\n\n7:43 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n7:43 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Reading your WhatsApp\nlive checklist\nReading your WhatsApp\nWrite it\nStop\n1 min\n7:43 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:43 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What should I look for in your WhatsApp?\n1\nUnread messages\nBEST FIT\nSummarise what you have not read yet\n2\nLast 24 hours\nEverything since yesterday morning\n3\nOne chat or group\nYou tell me which one\n4\nSomething specific\nA date, a bill, a plan or a name\nSomething else…\nSkip\n7:43 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:43 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "List three Indian rivers\n7:43 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Three Indian rivers: Ganga, Yamuna and Godavari.\n\n7:43 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show me a tiny Python hello world in a code block\n7:44 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here it is:\n\nPython\nCopy\nprint(\"Hello, world!\")\n\nSave it as hello.py and run it with python hello.py.\n\n7:44 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n7:44 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three Indian states and their capitals, as a list, since I don't use tables here:\n\nMaharashtra: Mumbai\nTamil Nadu: Chennai\nPunjab: Chandigarh\n\nWant a longer list, or a quiz on them?\n\n7:44 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n7:44 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways ticket site is IRCTC. For train running status and enquiries, use National Train Enquiry System.\n\nWant me to look up trains for a route?\n\n7:44 AM"
+  }
+]

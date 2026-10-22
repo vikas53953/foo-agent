@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n7:44 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three Indian states and their capitals, as a list, since I don't use tables here:\n\nMaharashtra: Mumbai\nTamil Nadu: Chennai\nPunjab: Chandigarh\n\nWant a longer list, or a quiz on them?\n\n7:44 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n7:44 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways ticket site is IRCTC. For train running status and enquiries, use National Train Enquiry System.\n\nWant me to look up trains for a route?\n\n7:44 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from\n7:45 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which weekend activity sounds best? → Cubbon Park and MG Road\n7:45 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:45 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "the second one\n7:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Cubbon Park and MG Road make a good pairing for this weekend, Sat 24 Oct or Sun 25 Oct. Start with a slow walk in Cubbon Park in the morning while it's cool and quiet. Then head to MG Road for a late breakfast or coffee and some browsing. The two are close, so it's an easy walk or a short metro ride.\n\n7:45 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n7:45 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds best?\n1\nSouth Indian thali\nBEST FIT\nLight, filling and easy on the budget\n2\nNorth Indian curry and naan\nRich gravies, a classic comfort pick\n3\nWood-fired pizza and pasta\nRelaxed, good for sharing\nSomething else…\nSkip\n7:45 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:45 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n7:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n7:46 AM"
+  }
+]

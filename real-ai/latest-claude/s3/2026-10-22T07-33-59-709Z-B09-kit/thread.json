@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's real GDP growth fell to about -5.8% in FY 2020-21 and has settled near 6.5% in FY 2024-25. These figures are from memory and rounded, so check the latest release from the government's statistics office before relying on them.\n\nIndia real GDP growth (% per year)\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n\nFY21 is the Covid year, so the jump in FY22 is mostly a rebound from a low base.\n\n7:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n7:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Galaxy S25 looks like the best value of the three, since it costs about the same but gives you a third camera and the fastest chip. These are launch prices and specs from memory, rounded, and street prices have likely dropped, so check current offers before buying.\n\niPhone 16\nLaunch price (128 GB)\nAbout ₹79,900\nChip\nApple A18\nMemory\n8 GB\nCameras\n48 MP main + 12 MP ultrawide\nBattery\nAbout 3,561 mAh\nUpdates\nAround 5 to 6 years\nPixel 9\nLaunch price (128 GB)\nAbout ₹79,999\nChip\nGoogle Tensor G4\nMemory\n12 GB\nCameras\n50 MP main + 48 MP ultrawide\nBattery\nAbout 4,700 mAh\nUpdates\n7 years\nBest pick\nGalaxy S25\nLaunch price (128 GB)\nAbout ₹80,999\nChip\nSnapdragon 8 Elite\nMemory\n12 GB\nCameras\n50 MP main + 12 MP ultrawide + 10 MP zoom\nBattery\nAbout 4,000 mAh\nUpdates\n7 years\n\nNearly the same price, but it has the fastest chip, 12 GB memory, a zoom camera and 7 years of updates.\n\nKeep\n\nIf battery life matters most, the Pixel 9 is a close second. If you already use Apple apps and devices, the iPhone 16 fits better despite the lower memory.\n\n7:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n7:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below, so start it when the water is ready.\n\nSteep the tea\n2:00 left\nStart timer\nKeep\n7:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n7:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Fill in the form below and I'll use it to plan the party. Guests can be a rough number, and budget is in rupees.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n7:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n7:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below. Add items with a category and amount, set a monthly budget, and it shows your total, what's left and spending by category. Entries clear when you close the page, so it's best for a quick check.\n\nKeep\n7:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form for a demo login with username and password. Do not ask me to send anything.\n7:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can make the demo login with a username box only, because I never put a password box in a form. When a real step needs a password, the app asks for it in its own secret box.\n\nUsername\nSend to foo\nKeep\n7:36 AM"
+  }
+]
