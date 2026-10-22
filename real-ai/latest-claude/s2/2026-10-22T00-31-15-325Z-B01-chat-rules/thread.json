@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n12:30 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:30 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n12:30 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:30 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n12:31 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n12:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n12:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n12:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n12:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it makes paying someone as easy as sending a message. You open any payment app, scan a code or type a phone number, enter your PIN, and the money moves from your bank account in seconds. There are no cards to carry, no cash to count and no change to hunt for. That works as well for a street vendor as it does for a large shop.\n\nIt also helps that UPI works across apps and banks. You can pay from one app to a person using a different one, and every bank account is linked the same way. Small shopkeepers can start accepting payments with just a printed QR code and a phone, so even a tea stall can go cashless without buying any machine. Over time, more places have started to expect it, which pushes everyone else to switch too.\n\nThe main reasons people give:\n\nSpeed and ease: Payments take seconds, work at any hour and need only a phone.\nLow or no cost: Most people pay no fee for everyday transfers, and shops avoid card machine charges.\nWorks everywhere: From big stores to small stalls, one QR code is enough, so you rarely need cash.\n\nSafety matters too, since each payment needs your PIN and you get an instant record of it. Want a few tips for using UPI safely?\n\n12:31 AM"
+  }
+]

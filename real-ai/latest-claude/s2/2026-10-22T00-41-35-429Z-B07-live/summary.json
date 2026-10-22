@@ -1,0 +1,106 @@
+{
+  "journey": "B07-live",
+  "title": "Watch live, take over, hand back, stop",
+  "steps": 14,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T00-41-35-429Z-B07-live",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792629701227,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 175
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 28935,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I didn’t get that. Say it another way?\n\n12:42 AM",
+      "didntGetThat": true,
+      "ms": 35007
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 45003
+    },
+    {
+      "i": 4,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 67
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "ok": true,
+      "ms": 4000
+    },
+    {
+      "i": 6,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 7,
+      "do": "wait",
+      "ok": true,
+      "ms": 3001
+    },
+    {
+      "i": 8,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "ok": true,
+      "ms": 3002
+    },
+    {
+      "i": 10,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 11,
+      "do": "wait",
+      "ok": true,
+      "ms": 8015
+    },
+    {
+      "i": 12,
+      "do": "key",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 13,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}
