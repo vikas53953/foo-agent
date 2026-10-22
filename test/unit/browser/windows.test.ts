@@ -54,4 +54,15 @@ describe('08-4 §26.8 job windows', () => {
     pool.release('a');
     expect(pool.open).toBe(0);
   });
+
+  it('a job stopped before its wait began is refused at once and never takes a freed slot', async () => {
+    const pool = new WindowPool(1);
+    await pool.acquire('a');
+    const ac = new AbortController();
+    ac.abort();
+    await expect(pool.acquire('b', ac.signal)).rejects.toThrow();
+    expect(pool.isQueued('b')).toBe(false);
+    pool.release('a');
+    expect(pool.holds('b')).toBe(false);
+  });
 });

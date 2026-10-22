@@ -4,7 +4,7 @@
 // word "cancel" is a stop; "cancel my booking" is the delete verb, not a stop).
 import { describe, expect, it } from 'vitest';
 import { t } from '../../../src/shared/copy/t';
-import { isStopCommand, isStopEverything, looksLikeYes, stopReportText } from '../../../src/engine/jobs/stopFlow';
+import { isStopCommand, isStopEverything, looksLikeYes, stopAllReportText, stopReportText } from '../../../src/engine/jobs/stopFlow';
 import type { ActivityRow } from '../../../src/shared/types';
 
 describe('08-2 §5.2.1 isStopCommand', () => {
@@ -92,5 +92,29 @@ describe('08-2 §5.7 step 4 stop report (from activity rows only)', () => {
     expect(stopReportText([row({ at })], tz)).toBe(
       t('thread.stop.report.partial', { summary: 'sent the email to Rakesh', time: '9:14 AM' }),
     );
+  });
+});
+
+describe('J18 "Stop everything" combined report (06-3 §14 C-13, CR-0030 pick 1)', () => {
+  it('nothing done → "Stopped 3 jobs: …. Nothing was booked, paid or sent."', () => {
+    expect(stopAllReportText(['Goa stay', 'Airtel bill', 'Delhi flights'], [])).toBe(
+      'Stopped 3 jobs: Goa stay, Airtel bill, Delhi flights. Nothing was booked, paid or sent.',
+    );
+  });
+
+  it('one job reads "Stopped 1 job: …"', () => {
+    expect(stopAllReportText(['Goa stay'], [])).toBe('Stopped 1 job: Goa stay. Nothing was booked, paid or sent.');
+  });
+
+  it('a send done earlier and no payment → "Nothing was paid." and what was already done', () => {
+    expect(stopAllReportText(['Goa stay', 'Airtel bill'], [row({ summary: 'Sent an email to Rakesh Sharma' })])).toBe(
+      'Stopped 2 jobs: Goa stay, Airtel bill. Nothing was paid. Already done before the stop: Sent an email to Rakesh Sharma.',
+    );
+  });
+
+  it('a payment done earlier is never hidden behind "Nothing was paid."', () => {
+    const text = stopAllReportText(['Airtel bill'], [row({ kind: 'paid', event: 'paid', summary: 'Paid ₹1,179 to Airtel' })]);
+    expect(text).not.toContain(t('thread.stop.all.nothing_paid'));
+    expect(text).toContain('Paid ₹1,179 to Airtel');
   });
 });

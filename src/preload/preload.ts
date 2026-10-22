@@ -66,6 +66,7 @@ const INVOKES = new Set([
   'helper:list',
   'settings:get',
   'settings:set',
+  'settings:undo',
   'ai:verify',
   'ai:detect',
   'ai:choose',

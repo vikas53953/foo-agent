@@ -64,6 +64,8 @@ export interface BrowserRuntime {
   // M9 T8
   /** `handback.check(url)` over the shipped list (08-4 §27.4). */
   handback(url: string): boolean;
+  /** A sign-in is in front of the job's window (T7): foo does not drive or navigate it. */
+  paused(jobId: string): boolean;
   /** 08-2 §8.3.11: what the job did on the page by role + name (saved as a recipe after DONE with proof) and the replay match. */
   recipes: RecipeRecorder;
 }
@@ -199,6 +201,11 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
     }
   };
 
+  /** A failed `goto` as a short code for the tech log: `net::ERR_…`, `timeout`, `interrupted`, or `other`. */
+  const openFailure = (message: string): string =>
+    /net::ERR_[A-Z_]+/.exec(message)?.[0] ??
+    (/Timeout \d+ms/.test(message) ? 'timeout' : /interrupted by another navigation/.test(message) ? 'interrupted' : 'other');
+
   const defs: ToolDef[] = [
     tool(
       'browser.open',
@@ -221,6 +228,8 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
         // The page never arrived (offline, no such host, refused, 15 s): never an `ok` on the old page, never URL_NOT_ALLOWED for
         // Chromium's own error page.
         if (failed !== null) {
+          // The reason without the address (08-3 logging carries no URLs): Chromium's net error code, or the 15 s timeout.
+          d.log('browser.open_failed', openFailure(failed));
           await blank(page);
           return {
             kind: 'error',
@@ -261,6 +270,9 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       async (a, page, ctx) => {
         if (paused(ctx.jobId)) return { kind: 'error', errorKind: 'VALIDATION', result: { reason: 'sign_in_in_front' } };
         if (page.url() !== 'about:blank' && handback(page.url())) return { kind: 'error', errorKind: 'SITE_HANDBACK' };
+        // 08-2 §8.3.5: the challenge watchdog runs for every job page, also one that turned into a bot check after open (a
+        // slow page, or a site that puts one up later); its text never reaches the AI as something to work on (§8.4).
+        if (await isChallengePage(page)) return { kind: 'error', errorKind: 'SITE_CAPTCHA' };
         const s = await takeSnapshot(page, router);
         recipes.seen(ctx.jobId, s.url, s.elements); // M9 T8
         const view = differ.view(ctx.jobId, s);
@@ -310,9 +322,16 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
     ),
     tool('browser.back', 'prepare', '', 'Go back one page.', ARGS.back, async (_a, page, ctx) => out(await actions.back(ctx.jobId, page))),
     tool('browser.wait', 'prepare', 'ms?: number ≤ 15000', 'Wait up to 15 seconds for the page.', ARGS.wait, async (a, page, ctx) => {
-      if (a.ms !== undefined) return out(await actions.wait(page, a.ms));
+      // 08-2 §8.3.5: a page that settles into a challenge after the wait is the watchdog's, never the AI's.
+      if (a.ms !== undefined) {
+        const r = await actions.wait(page, a.ms);
+        return !paused(ctx.jobId) && (await isChallengePage(page)) ? { kind: 'error', errorKind: 'SITE_CAPTCHA' } : out(r);
+      }
       const miss = await actions.settled(ctx.jobId, page, async () => undefined);
-      return miss ? err(miss) : { kind: 'ok', result: { url: page.url() } };
+      if (miss) return err(miss);
+      return !paused(ctx.jobId) && (await isChallengePage(page))
+        ? { kind: 'error', errorKind: 'SITE_CAPTCHA' }
+        : { kind: 'ok', result: { url: page.url() } };
     }),
     tool(
       'browser.screenshot',
@@ -321,6 +340,8 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
       'Get a picture of the page. Sensitive fields are hidden.',
       ARGS.screenshot,
       async (_a, page, ctx) => {
+        // Not while a sign-in page is in front (§8.3.3): the page is the person's then.
+        if (!paused(ctx.jobId) && (await isChallengePage(page))) return { kind: 'error', errorKind: 'SITE_CAPTCHA' };
         const path = await shots.capture(ctx.jobId, page, 'shot');
         return path
           ? { kind: 'ok', result: { screenshot: path } }
@@ -358,6 +379,7 @@ export function createBrowserTools(d: BrowserToolsDeps): { registry: ToolRegistr
     },
     page: (jobId) => browser.window(jobId)?.page() ?? null,
     handback, // M9 T8
+    paused,
   };
   return { registry: Object.fromEntries(defs.map((t) => [t.name, t])), runtime };
 }

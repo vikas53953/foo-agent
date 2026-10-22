@@ -93,6 +93,9 @@ export interface RunnerPrompts {
   /** 08-4 §24.13 / §24.21: the classify turn over the last tool results, and its StuckAct `whatsWrong` (null if invalid). */
   buildStuck(results: string): { system: string; prompt: string };
   parseStuck(text: string): string | null;
+  /** CR-0045 08-4 §24.13a: is a message sent while the job waits on its card about the job? null when the turn is invalid. */
+  buildSteerCheck?(job: { title: string; waitingFor: string }, message: string): { system: string; prompt: string };
+  parseSteerCheck?(text: string): 'job' | 'new' | null;
   /** 08-2 §7.6 output filters (result text, card text from the AI). */
   filter(text: string): string;
   isBanned(text: string): boolean;
@@ -147,6 +150,8 @@ export interface RunnerCore {
     helperId: string | null,
   ): { cardId: string; messageId: string; ops: DbOp[] };
   editChecklistOps(job: JobRow, state?: string): Promise<DbOp[]>;
+  /** CR-0030 pick 3: the checklist's "You took over" row, before the step the user took over at (06-3 §11.2, J18). */
+  tookOverOps(job: JobRow): Promise<DbOp[]>;
   /** A foo (or helper) text message in the chat, tied to the job when there is one. */
   textOp(job: Pick<JobRow, 'chatId' | 'ownerId'> & { id: string | null }, text: string): DbOp;
   /** WORKING → NEEDS_YOU with the card; the new card's id, or null when the move was refused. */
@@ -334,6 +339,7 @@ export class JobRunner {
       badgeOps: (job, to) => this.badgeOp(job, to),
       cardOps: (...a) => this.cardOps(...a),
       editChecklistOps: (job, state) => this.editChecklistOps(job, state),
+      tookOverOps: (job) => this.tookOverOps(job),
       textOp: (job, text) => this.textOp(job, text),
       needsYou: (job, card) => this.needsYou(job, card),
       halt: (id) => this.ctxs.get(id)?.abort.abort(),
@@ -355,8 +361,13 @@ export class JobRunner {
     this.core = core;
     this.stopper = new StopFlow(core);
     // M5 T8: a steer supersedes the open approval through main's gate and the next card names it (08-4 §26.5).
-    this.steering = new Steer(core, this.stopper, (jobId, approvalId) => this.gating.onSteerSuperseded(jobId, approvalId));
     this.watchdog = new Watchdog(core, this.stopper);
+    this.steering = new Steer(
+      core,
+      this.stopper,
+      (jobId, approvalId) => this.gating.onSteerSuperseded(jobId, approvalId),
+      (jobId) => this.watchdog.turningStuck(jobId),
+    );
     // M5 T10: the 15 s tick (opens_at wake, 24 h Plan withdraw).
     // M5 T8: J8 choice timeouts (AT-033, AT-034) on the same tick.
     const timeouts = new ChoiceTimeouts({
@@ -793,6 +804,17 @@ export class JobRunner {
   private async editChecklistOps(job: JobRow, state?: string): Promise<DbOp[]> {
     const card = await this.checklistOf(job);
     return card ? [{ op: 'update', table: 'cards', id: card.id, set: state ? { state } : {} }] : [];
+  }
+
+  private async tookOverOps(job: JobRow): Promise<DbOp[]> {
+    const card = await this.checklistOf(job);
+    if (!card) return [];
+    const steps = (await this.steps(job.id)).sort((a, b) => a.idx - b.idx);
+    const open = steps.find((s) => s.state === 'running' || s.state === 'waiting_user' || s.state === 'pending');
+    const at = open?.idx ?? (steps.length ? steps[steps.length - 1]!.idx + 1 : 0);
+    const prev = Array.isArray(card.payload.tookOver) ? (card.payload.tookOver as number[]) : [];
+    if (prev.includes(at)) return [];
+    return [{ op: 'update', table: 'cards', id: card.id, set: { payload: { ...card.payload, tookOver: [...prev, at] } } }];
   }
 
   // ---- 08-2 §5.4.2 the loop ----

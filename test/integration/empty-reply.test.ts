@@ -81,4 +81,14 @@ describe('AT-440 · an empty intake answer is asked once more, then the user is 
     expect(intakeTurns(h)).toBe(1);
     expect(fooTexts(h)).toEqual([]);
   });
+
+  it('run 21 B14: each empty answer says which empty it was (no words, or all dropped), never the words', async () => {
+    h = jobHarness({ script: [{ match: { purpose: 'intake' }, reply: EMPTY, once: false }] });
+    h.userSays('Which news story is biggest in India today? One line.');
+    await h.settle();
+    const empties = h.logs.map((l) => l.evt).filter((e) => typeof e === 'string' && e.startsWith('chat.reply_empty'));
+    expect(empties).toEqual(['chat.reply_empty.no_say', 'chat.reply_empty.no_say']);
+    expect(JSON.stringify(h.logs)).not.toContain('news story');
+    expect(fooTexts(h)).toEqual([t('thread.reply.empty')]);
+  });
 });

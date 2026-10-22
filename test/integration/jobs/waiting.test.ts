@@ -7,7 +7,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { t } from '../../../src/shared/copy/t';
 import type { Settings } from '../../../src/shared/settings';
 import { VERIFY_LINE } from '../../unit/m3-engine-helpers';
-import { BILLS_PLAN, jobHarness, jobIntake, step, stepDone, tool, verified, badgeSets, type JobHarness } from './jobHarness';
+import { BILLS_PLAN, jobHarness, jobIntake, step, stepDone, tool, verified, badgeSets, type JobHarness, untilStill } from './jobHarness';
 
 let h: JobHarness | null = null;
 afterEach(() => {
@@ -172,11 +172,13 @@ describe('09 §9.22 sleep and wake', () => {
       script: [jobIntake(BILLS_PLAN), tool('gmail.search', { query: 'bill' }, { delayMs: 20_000 }), ...finishLines()],
     });
     h.userSays('Find bills due this week');
-    for (let i = 0; i < 40; i++) await new Promise((r) => setTimeout(r, 2));
-    expect(h.job().state).toBe('working');
+    const run = h;
+    await untilStill(
+      () => run.job()?.state === 'working' && run.turnsJsonl().some((t) => t.purpose === 'step'),
+      'the first turn in flight',
+    );
     h.send('power', { event: 'suspend' });
-    for (let i = 0; i < 20; i++) await new Promise((r) => setTimeout(r, 2));
-    expect(h.job().state).toBe('waiting');
+    await untilStill(() => run.job().state === 'waiting', 'the job waits');
     expect(h.job().waiting_reason).toBe('asleep');
     expect(h.cards('error')).toHaveLength(0);
     // While asleep nothing starts or resumes. 2 s clock steps: the held 20 s turn would take 80 rounds at the default 250 ms,

@@ -1,0 +1,15 @@
+{
+  "source": "real-AI run 39663772762 on main 0665cf6, evidence branch real-ai/0665cf6-claude/s3/2026-10-21T19-46-37-558Z-B09-kit/thread.json (last two rows). The driver dumped this 4 ms after its waitReply settled, then closed foo; the next journey found the page reply cut off.",
+  "items": [
+    {
+      "kind": "bubble-me",
+      "state": null,
+      "text": "Make me an interactive page to track my monthly expenses\n7:48 PM"
+    },
+    {
+      "kind": "bubble-foo",
+      "state": "streaming",
+      "text": "Your expense tracker is below. Add an item, pick a category and amount, and it updates your total, category split and what is left of your budget. Entries stay only while this page is open, so I can't promise they are saved after you close it.\n\nBuilding your page…"
+    }
+  ]
+}
