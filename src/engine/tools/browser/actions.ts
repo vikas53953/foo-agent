@@ -196,6 +196,16 @@ export class Actions {
     return done({ url: page.url(), changed: false });
   }
 
+  /** True once a pop-up has opened (`opened`), waiting at most the settle limit for its event. */
+  private async popupWithin(page: Page, opened: () => boolean): Promise<boolean> {
+    if (opened()) return true;
+    const ok = await page.waitForEvent('popup', { timeout: this.settleMaxMs }).then(
+      () => true,
+      () => false,
+    );
+    return ok || opened();
+  }
+
   private notActionable(e: unknown): ActionResult {
     return refused('SITE_CHANGED', e instanceof Error && /timeout/i.test(e.message) ? 'not_actionable' : 'not_found');
   }
@@ -211,6 +221,17 @@ export class Actions {
     const w = this.d.watchdogs.state(jobId);
     const confirmsBefore = w.confirms;
     const popupsBefore = w.popups;
+    // A link or form that opens a new tab: its pop-up can arrive after this page went idle (a slow PC), so it is waited for.
+    const newTab = await at.loc
+      .evaluate(
+        (el) => {
+          const t = (el.closest('a[href], area[href]') ?? el.closest('form'))?.getAttribute('target') ?? '';
+          return t !== '' && !['_self', '_parent', '_top'].includes(t.toLowerCase());
+        },
+        undefined,
+        { timeout: this.actionableMs },
+      )
+      .catch(() => false);
     try {
       const r = await this.withExpectedChange(
         jobId,
@@ -220,7 +241,7 @@ export class Actions {
           if (w.confirms > confirmsBefore) throw new ConfirmRaised();
         },
         // A target=_blank link leaves this page as it was: the pop-up it opened is the change, so it is never clicked twice.
-        async (b, a) => b !== a || w.popups > popupsBefore,
+        async (b, a) => b !== a || w.popups > popupsBefore || (newTab && (await this.popupWithin(page, () => w.popups > popupsBefore))),
       );
       return w.confirms > confirmsBefore ? refused('USE_SUBMIT', 'confirm_dialog') : r;
     } catch (e) {

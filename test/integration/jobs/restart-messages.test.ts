@@ -5,7 +5,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { t } from '../../../src/shared/copy/t';
 import { envelope, intake, type FakeLineIn } from '../../unit/m3-engine-helpers';
-import { BILLS_PLAN, jobHarness, jobIntake, step, stepAct, tool, type JobHarness } from './jobHarness';
+import { BILLS_PLAN, jobHarness, jobIntake, step, stepAct, tool, type JobHarness, untilStill } from './jobHarness';
 import { restartEngine } from './restart';
 import { fooTexts, until } from './t3Helpers';
 
@@ -15,9 +15,6 @@ afterEach(() => {
   h = null;
 });
 
-const poll = async (rounds = 40) => {
-  for (let i = 0; i < rounds; i++) await new Promise((r) => setTimeout(r, 2));
-};
 const replies = () => h!.messages().filter((m) => m.author_kind === 'foo' && m.kind === 'text');
 const intakes = () => h!.turnsJsonl().filter((x) => x.purpose === 'intake');
 const slow = (n: number, delayMs = 20_000) => Array.from({ length: n }, () => tool('fake.site', { site: 'stay.example' }, { delayMs }));
@@ -27,8 +24,7 @@ describe('J19 · a chat reply cut off by a restart', () => {
     it(`a message foo was still thinking about is answered after the restart (${cleanStart ? 'quit' : 'crash'})`, async () => {
       h = jobHarness({ script: [intake(envelope('Old engine answer.'), { delayMs: 30_000 })] });
       const userId = h.userSays('any news today?');
-      await poll();
-      expect(h.message(userId).badge).toBe('seen');
+      await untilStill(() => h!.message(userId).badge === 'seen', 'the message is seen');
       restartEngine(h, [intake(envelope('Here is the news.'))], { safeMode: false, cleanStart }, undefined, { killed: true });
       await h.settle();
       expect(replies().map((m) => m.text)).toEqual(['Here is the news.']);
@@ -40,8 +36,7 @@ describe('J19 · a chat reply cut off by a restart', () => {
     h = jobHarness({ script: [intake(envelope('Old engine answer.'), { delayMs: 30_000, once: false })] });
     const first = h.userSays('any news today?');
     const second = h.userSays('which laptop should I buy?');
-    await poll();
-    expect(h.message(first).badge).toBe('seen');
+    await untilStill(() => h!.message(first).badge === 'seen', 'the first message is seen');
     expect(h.message(second).status).toBe('sent');
     restartEngine(
       h,
@@ -90,7 +85,7 @@ describe('J19 · a chat reply cut off by a restart', () => {
   it('safe mode holds the cut-off message until "Start normally"', async () => {
     h = jobHarness({ script: [intake(envelope('Old engine answer.'), { delayMs: 30_000 })] });
     const userId = h.userSays('any news today?');
-    await poll();
+    await untilStill(() => h!.message(userId).badge === 'seen', 'the message is seen');
     restartEngine(h, [intake(envelope('Here is the news.'))], { safeMode: true, cleanStart: false }, undefined, { killed: true });
     await h.settle();
     expect(replies()).toHaveLength(0);
@@ -143,8 +138,10 @@ describe('J19 · steer messages survive a restart (state.json steerQueue)', () =
     await until(h, () => h!.calls.length >= 1);
     const jobId = String(h.job().id);
     const steerId = h.userSays(steerText);
-    await poll();
-    expect(h.message(steerId).badge).toBe('seen');
+    await untilStill(
+      () => h!.message(steerId).badge === 'seen' && (h!.mirror(jobId, 'state.json') ?? '').includes(steerId),
+      'the steer is seen and queued',
+    );
     const state = JSON.parse(h.mirror(jobId, 'state.json') ?? '{}') as { steerQueue?: string[] };
     expect(state.steerQueue).toEqual([steerId]);
     return { jobId, steerId };

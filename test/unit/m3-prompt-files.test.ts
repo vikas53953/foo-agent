@@ -14,7 +14,7 @@ function specBlocks(): Record<string, string[]> {
   let mode: 'none' | 'plain' | 'other' = 'none';
   let buf: string[] = [];
   for (const l of lines) {
-    if (mode === 'none' && /^#{2,3} /.test(l)) sec = /^### (24\.\d+)/.exec(l)?.[1] ?? null;
+    if (mode === 'none' && /^#{2,3} /.test(l)) sec = /^### (24\.\d+[a-z]?) /.exec(l)?.[1] ?? null;
     if (l.startsWith('```')) {
       if (mode !== 'none') {
         if (mode === 'plain' && sec) (out[sec] ??= []).push(buf.join('\n'));
@@ -40,6 +40,7 @@ const FILE_SECTIONS: Record<string, string> = {
   'routine.md': '24.11',
   'brief.md': '24.12',
   'stuck.md': '24.13',
+  'steer_check.md': '24.13a',
   'untrusted.md': '24.14',
   'catch_up.md': '24.17',
   'read_attachment.md': '24.18',
@@ -78,7 +79,7 @@ describe('m3 prompt files', () => {
       .filter((n) => n.endsWith('.md'))
       .sort();
     expect(Object.keys(manifest).sort()).toEqual(files);
-    expect(files).toHaveLength(17);
+    expect(files).toHaveLength(18);
     for (const f of files) {
       expect(manifest[f], f).toBe(
         createHash('sha256')

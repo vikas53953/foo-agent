@@ -5,7 +5,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { answerCard } from '../../../src/main/cards/answerCard';
 import { SCHEMAS } from '../../../src/main/ipc/IpcRouter';
-import { BILLS_PLAN, jobHarness, jobIntake, step, stepDone, tool, type JobHarness } from '../jobs/jobHarness';
+import { BILLS_PLAN, jobHarness, jobIntake, step, stepDone, tool, type JobHarness, untilStill } from '../jobs/jobHarness';
 import { restartEngine } from '../jobs/restart';
 import { BOOK_PLAN, gateTools } from './gateFlow';
 
@@ -27,9 +27,6 @@ afterEach(() => {
   h = null;
 });
 
-const poll = async (rounds = 40) => {
-  for (let i = 0; i < rounds; i++) await new Promise((r) => setTimeout(r, 2));
-};
 const tap = (card: Record<string, unknown>, optionId: string) => ({
   cardId: String(card.id),
   nonce: String(card.nonce),
@@ -77,10 +74,14 @@ describe('engine-made cards pass card:answer (08-1 §3.2)', () => {
   it('the crash-recovery card made on restart carries a nonce the router accepts', async () => {
     h = jobHarness({ script: [jobIntake(BILLS_PLAN), stepDone(0), tool('gmail.search', { query: 'bill' }, { delayMs: 20_000 })] });
     h.userSays('Find bills due this week');
-    // Real-time polls, not settle(): settle moves the fake clock past the 20 s turn and the job would finish.
-    await poll();
+    // Real-time waits with the clock still, not settle(): settle moves the fake clock past the 20 s turn and the job would finish.
+    const run = h;
+    await untilStill(() => !!run.job(), 'the job is made');
     h.clock.advance(2_000);
-    await poll();
+    await untilStill(
+      () => run.job().state === 'working' && run.turnsJsonl().filter((t) => t.purpose === 'step').length === 2,
+      'step 2 turn in flight',
+    );
     expect(h.job().state).toBe('working');
     restartEngine(h, [], { safeMode: false, cleanStart: false });
     await h.settle();

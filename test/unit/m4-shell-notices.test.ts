@@ -79,6 +79,20 @@ describe('notices from both sources, newest on top', () => {
     expect(list).toEqual([]);
   });
 
+  it('a hand-back (SITE_HANDBACK) is a step handed back, not a failure: no notice above the composer (08-3 §21.2, run-8 bank banner)', () => {
+    const list = chatNotices(
+      sources({
+        jobs: [job('j_bank'), job('j_blocked')],
+        cards: {
+          k_b: errorCard('k_b', 'j_bank', { kind: 'SITE_HANDBACK', whatHappened: t('errors.site_handback.body') }),
+          k_s: errorCard('k_s', 'j_blocked', { kind: 'SITE_BLOCKED', whatHappened: 'irctc.co.in won’t let me in.' }),
+        },
+      }),
+      fresh,
+    );
+    expect(list.map((n) => n.rowId)).toEqual(['j_blocked']);
+  });
+
   it('a failed job without an error card yet shows the generic sentence; an unknown send error is UNKNOWN', () => {
     const list = chatNotices(sources({ jobs: [job('j_1')], messages: [msg('local:abc123', { status: 'failed' })] }), fresh);
     expect(list.find((n) => n.rowId === 'j_1')).toMatchObject({ kind: 'UNKNOWN', text: t('errors.unknown.what_happened') });
