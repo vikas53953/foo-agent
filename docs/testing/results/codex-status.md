@@ -1,4 +1,20 @@
-# Codex status — 22 October 2026, 14:43 IST
+# Codex status — 22 October 2026, 16:41 IST
+
+## Current loop — 22 October 2026, 16:41 IST
+
+Main is still `0d04a9f9105e42aef0b4a22238285a9007635c3e`. [Full real-AI review](run39740734054/review.md): **62 executions,42 summary-clean,20 summary-failed;467 screenshots inspected;146 failed steps**. [Run39740734054](https://github.com/vikas53953/foo-agent/actions/runs/39740734054) tested combined branch fb15c2ee; no current-main proof promotion. Fresh matrix remains **4 proven,106 partial,5 fail,10 missing,3 not built,62 code-only=190**.
+
+Drift answers: (a) YES, completed/judged full real-AI run with immutable screenshot links; no-result streak0. (b) No product changes this loop; preparing bounded validator/fixture and mutation-partition repairs under approved testing scope. (c) No thresholds or assertions weakened; known failures retained. One proposed AT370 failure was corrected because the actual response refused the password field and the value-entry prerequisite was never exercised.
+
+Latest [CI39753919430](https://github.com/vikas53953/foo-agent/actions/runs/39753919430) failed. Windows shards1/2/4 and screen-change passed. Fast lane:6625passed/2failed/3skipped; the two failures are strict legacy journey-contract checks. Shard3 and Golden failed; exact final report pending. Earlier format/type issues are repaired. Skips are retained as reported, not passes.
+
+Mutation [39739240428](https://github.com/vikas53953/foo-agent/actions/runs/39739240428) completed:renderer35.11percent below70 (399killed/743survived/3timeouts of1145); main cannot score because instrumentation breaks a source-text matcher; shared/engine hit180minute job timeouts without scores. Disjoint target partitions and separation of source-shape preflight from behavioral mutation coverage are approved for repair, preserving all40targets and thresholds.
+
+Soak at16:37IST:both producer/observer and runtime alive,3.8second heartbeat,50/96done_unverified jobs,1078handles,163610624bytes working set,routines0. SourceSHA unchanged0e0ab3ca. No8hour acceptance.
+
+Lanes A/D:full-run reports and predicate review; B:22pretend+2real passed previously; C:bounded probes complete; E:soak active; F:mutation partition repair; G:strict journey-fixture audit. Needs Vikas remains external-account/human/native-accessibility prerequisites and unbuilt-product decisions; independent work continues.
+
+Earlier sections below are historical checkpoints.
 
 ## Current loop — 22 October 2026, 14:43 IST
 
@@ -133,3 +149,5 @@ Combined source commit:fb15c2eea738e7ddd1b3daa2e11c5712a4c66be3. All181selectedt
 Heartbeat validation: after installing the frozen BDD subproject dependencies, `tsc -p tsconfig.node.json --noEmit` passed. Trace check passed. Focused driver/journey regressions9pass/2knowncontractfail; no assertions loosened. Renderer mutation artifact12409884080 reports1145total/399killed/743survived/3timeouts,35.11percent below70threshold; declared direct-test gaps retained.
 
 Validation rerun: [CI39753919430](https://github.com/vikas53953/foo-agent/actions/runs/39753919430), tested9929d0bd21786fd4f97f8d38c046fbf3d8da9a63, started after test typing/format repairs and validated BDD import. Results pending. No duplicate real-AI run: this loop judged completed focused evidence and is reviewing the full run.
+
+Final CI detail: format/type repairs passed; Windows shards1/2/4 green. Fast and shard3 still fail45send-end-state mappings and55covered-label proofs; Golden fails the same units while lint/render/e2e/tier-R pass. These are fixture/validator failures, not demonstrated product defects. [Full mutation report](mutation-39739240428.md) is published.
