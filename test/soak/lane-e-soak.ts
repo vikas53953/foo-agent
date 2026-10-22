@@ -189,7 +189,7 @@ const summary = [
   '| Check | Result | Detail |',
   '|---|---|---|',
   `| Requested soak duration | ${completed ? (duration.partial ? 'partial' : 'pass') : result} | requested=${soakHours}h; observedMs=${Date.now() - startedAt} |`,
-  `| Full ${duration.acceptanceHours}-hour acceptance | ${duration.partial ? 'blocked' : completed ? 'pass' : result} | a one-hour diagnostic never satisfies the full acceptance threshold |`,
+  `| Full ${duration.acceptanceHours}-hour acceptance | ${duration.partial ? 'blocked' : completed ? 'pass' : result} | a one-hour diagnostic never satisfies the full acceptance requirement |`,
   `| Routine rows (diagnostic only) | pass | runs=${routineRuns}; routine execution is not a gate |`,
   `| Job execution evidence | ${jobStarts > 0 ? 'pass' : 'blocked'} | starts=${jobStarts}; lastState=${lastHeartbeat?.jobState ?? 'missing'} |`,
   `| Process handles | ${samples.length > 0 ? 'pass' : 'blocked'} | max=${report.maxHandleCount} |`,

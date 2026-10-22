@@ -266,7 +266,7 @@ async function main(): Promise<number> {
     note: smoke
       ? 'Smoke only: it requires a live fake-AI job; routine_runs is diagnostic only and makes no eight-hour soak claim.'
       : duration?.partial
-        ? `Partial ${soakHours}-hour diagnostic only; the full ${duration.acceptanceHours}-hour acceptance threshold remains unproven.`
+        ? `Partial ${soakHours}-hour diagnostic only; the full ${duration.acceptanceHours}-hour acceptance requirement remains unproven.`
         : 'Counts come from the live FOO_TEST app SQLite fixture; job counters are required, routine_runs is diagnostic only.',
   };
   writeFileSync(join(outDir, `lane-e-live-producer-${mode}.json`), JSON.stringify(report, null, 2), 'utf8');
