@@ -1,0 +1,211 @@
+From 9284d196257ca141b4927cbfd01658cc82968002 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Thu, 22 Oct 2026 01:53:05 +0000
+Subject: [PATCH 2/3] CR-0051 review: a new user message cancels a pending
+ memory review
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+A review already waiting for 20 s of quiet only restarted its timer on a new
+message, so a slow intake turn let it fire mid-turn and read "Switch to dark
+mode" before its kind (setting) was known. A new user message now cancels
+the pending review; the next reply or finished job starts the 20 s again
+(08-3 §12.4 Trigger, X-209). Test for the slow-turn case added.
+
+Fidelity-CR: CR-0051
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01SpTENvw4MG6dxxgmAXJYFG
+---
+ docs/cr/CR-0051-setting-not-memory.md         | 17 +++++++++++---
+ docs/decisions/real-pc.tsv                    |  3 ++-
+ spec/SPEC-MANIFEST.json                       |  4 ++--
+ .../constitution/08-functions-and-engine-3.md |  2 +-
+ spec/constitution/DECISIONS.md                |  2 +-
+ src/engine/memory/review.ts                   | 12 ++++++++--
+ test/integration/setting-not-memory.test.ts   | 23 +++++++++++++++++++
+ test/unit/m6-review.test.ts                   |  9 ++++++--
+ 8 files changed, 60 insertions(+), 12 deletions(-)
+
+diff --git a/docs/cr/CR-0051-setting-not-memory.md b/docs/cr/CR-0051-setting-not-memory.md
+index bc8b36b2..d87480b4 100644
+--- a/docs/cr/CR-0051-setting-not-memory.md
++++ b/docs/cr/CR-0051-setting-not-memory.md
+@@ -8,7 +8,7 @@
+   `memory.saved_said`.
+   - The words were an instruction to foo, not a fact about the user, and the setting line already records them.
+   - Undo of the theme took the setting back but left the fact, so foo "remembered" a preference the user had undone.
+-- **Spec sections:** 08-3 §12.4 Input; DECISIONS X-209.
++- **Spec sections:** 08-3 §12.4 Trigger and Input; DECISIONS X-209.
+ - **Status:** Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-209 (his messages 2026-10-18 14:56Z and 14:59Z,
+   and 2026-10-21 07:14Z), after the independent review in §(d).
+ - **Change:** the sections above, as listed in §(b).
+@@ -29,8 +29,19 @@ None. The tests are in `test/integration/setting-not-memory.test.ts` ("CR-0051 
+ - `test/integration/setting-not-memory.test.ts` fails on main and passes with the change.
+   - Run 30 U17: the theme changes and no fact or chip is saved. The review never reads the message.
+   - A later "I'm vegetarian" in the same chat is still reviewed and saved.
+-- The change is one line in the chat lane (`memory.skipReview`), reusing the J17 "don't remember this" skip.
++  - A review already waiting (after a reply to "hi") does not fire during the setting message's 25 s intake turn. This one
++    fails without the Trigger change.
++- The chat lane calls `memory.skipReview`, the same skip J17 "don't remember this" uses. It also runs for a refused or
++  not-yet-built setting: those words are still an instruction to foo.
+ 
+ ## (d) Review
+ 
+-Pending.
++Fable, high tier, 2026-10-22: **PASS WITH FIXES**. It ran the tests on main's `src` (both fail) and here (both pass).
++
++- Act on, fixed: the skip landed after the intake turn. A review already waiting for 20 s of quiet (after an earlier
++  reply) only restarted its timer on the new message, so a slow intake turn (Claude CLI turns take 20 s or more) let it
++  fire mid-turn and read "Switch to dark mode" first. A new user message now cancels the pending review (§12.4 Trigger),
++  with a test for that case.
++- Considers: a mixed message ("switch to dark mode, my eyes hurt at night") loses its second fact. This is intentional:
++  the spec sentence leaves out the whole message by intake kind, and the user can still say it again or add it on the
++  Memory page. The `unsaved` set grows per session only, as it already does for J17.
+diff --git a/docs/decisions/real-pc.tsv b/docs/decisions/real-pc.tsv
+index e89e6f72..674e6691 100644
+--- a/docs/decisions/real-pc.tsv
++++ b/docs/decisions/real-pc.tsv
+@@ -23,4 +23,5 @@ ts	phase	decision	why	evidence	result
+ 2026-10-22T00:10:00Z	review	CR-0048 independent Fable review (high tier): PASS; considers applied (check only while the sign-in card is waiting, not live or taken over; job-branch test asserts the check ran; header)	Vikas approve-on-my-behalf rule (2026-10-18 14:56Z, 14:59Z; 2026-10-21 07:14Z)	review in PR	approved on Vikas's behalf
+ 2026-10-21T20:50:00Z	root-cause	Run 16 "page to track my monthly expenses" cut off: the real-PC driver called the reply settled after 6 s with no new words while the AI page was still building (bubble streaming), then closed foo mid-reply; the restart cut-off (04 §19.4) was correct. Driver fix only, no CR	evidence branch real-ai/0665cf6-claude/s3 B09-kit log.jsonl step 13 + thread.json (state streaming, "Building your page…"), J09 launch 60 ms later	test/unit/real-pc-settle.test.ts from the run-16 dump (fails without settle.js, passes now)	PR #126
+ 2026-10-21T21:00:00Z	review	PR #126 independent Fable review: PASS WITH FIXES, 3 optional findings applied. One reviewer: test tooling only, not foo's AI output handling. Approved on Vikas's behalf	Vikas approve-on-my-behalf rule (2026-10-18 14:56Z, 14:59Z; 2026-10-21 07:14Z)	review in PR #126	approved on Vikas's behalf
+-2026-10-22T01:45:00Z	root-cause	CR-0051: run 30 (04f01dd) U17 "Switch to dark mode" also saved memory "Prefers dark mode" = the post-turn review read the setting message like any other; Undo of the theme left the fact. Fix: a message whose intake kind was setting is left out of the review (08-3 §12.4).	test/integration/setting-not-memory.test.ts red on main	fixed (pending review)
++2026-10-22T01:45:00Z	root-cause	CR-0051: run 30 (04f01dd) U17 "Switch to dark mode" also saved memory "Prefers dark mode" = the post-turn review read the setting message like any other; Undo of the theme left the fact. Fix: a message whose intake kind was setting is left out of the review (08-3 §12.4).	test/integration/setting-not-memory.test.ts red on main	fixed
++2026-10-22T02:05:00Z	review	CR-0051 independent Fable review (high tier): PASS WITH FIXES; act item fixed (a pending review restarted on a new message could fire mid-turn and read the setting message; now a new user message cancels it, §12.4 Trigger, test added). Approved on Vikas's behalf.	local/dark review; tests red on main src	approved
+diff --git a/spec/SPEC-MANIFEST.json b/spec/SPEC-MANIFEST.json
+index 781e9d55..7a23b4a6 100644
+--- a/spec/SPEC-MANIFEST.json
++++ b/spec/SPEC-MANIFEST.json
+@@ -25,7 +25,7 @@
+     "constitution/08-5-shared-types.md": "e63778baddf583d74adcb0b92d6b9287aad1653548d43f4a86081d225b2087b4",
+     "constitution/08-functions-and-engine-1.md": "9b76bb6efc13d6439753f981a9ae49bf254284f8032bfe4e402cde9b6f552797",
+     "constitution/08-functions-and-engine-2.md": "5b8863beb7aa16ac30c359ca3ba69d33eac403382a24e8f9c527f7d4f542e7a7",
+-    "constitution/08-functions-and-engine-3.md": "85fc6217d4e91f1bfa14e3e729cda4209a5de6d92b5346e1aa81a7ce9e1adcef",
++    "constitution/08-functions-and-engine-3.md": "4e9d473c9a7149bf253a4d544f3c436a823b4a4e59411cf9b3468f32beb42ed4",
+     "constitution/08-functions-and-engine-4.md": "e5022c1cfecc04c3f543f7bfa5ec4b776ac57f764caa29775e3f38bbf7ae8bfe",
+     "constitution/09-windows.md": "fcd5793534097a7bb37084f216b4de176862c6821c58870a84083695f4089550",
+     "constitution/10-acceptance-1.md": "85328dec86eb54d04f2501792915758f89e376df404efbf7b34fcfa14d835dc9",
+@@ -34,7 +34,7 @@
+     "constitution/12-features-r25-r31-1.md": "245851c058fb1c996c6a009b63b8d78fbc67584d2de67e2c869ad53e97a5deee",
+     "constitution/12-features-r25-r31-2.md": "5ad445f0950e2c5b3907e587f92819610524b52c60b7d130eeeb63a4b648db1f",
+     "constitution/CHANGELOG.md": "ea2638f512ebc100213db9019d94be15586a7d2a41e830e011a7b68d5fc08b2b",
+-    "constitution/DECISIONS.md": "6feb3a2c1324cdd5468ea14ec72d61503071ef67e4ed36a2d045659c9990bf13",
++    "constitution/DECISIONS.md": "a66226db7a7e9b261a6b59e68553e400219b55a9e900d71c12b360e1746e484a",
+     "constitution/GAPS.md": "0fc540ebf9754ec6e87a0e114cc7b25123f1312d025a62ed42a175fa085a0229",
+     "constitution/research/capabilities-sources.md": "aa1c57be0b731b7e77dd5275c3db9c7fc76c1819e52f51881627d4c4be1c2c1f",
+     "constitution/research/capabilities.md": "9ea45503d0d2f6dea65915d0bf9f35aa5f2b02a9d7ad9113557284f100684daf",
+diff --git a/spec/constitution/08-functions-and-engine-3.md b/spec/constitution/08-functions-and-engine-3.md
+index a94952c5..39d25cb2 100644
+--- a/spec/constitution/08-functions-and-engine-3.md
++++ b/spec/constitution/08-functions-and-engine-3.md
+@@ -41,7 +41,7 @@ Writes: atomic (temp + replace), through main (`file.write`). A file watcher (`f
+ - Facts from Gmail/WhatsApp/Calendar content are `guessed` with origin `gmail`/`whatsapp`/`gcal` unless the user confirmed them in chat (J17 filter "From Gmail").
+ 
+ ### 12.4 Post-turn review (Hermes background review, HRM §3.1, HRM-SRC `agent/background_review.py`)
+-Trigger: after a chat-lane reply or a job finishing, when the chat has ≥ 1 new user message since the last review, debounced to 20 s of quiet in that chat, at most once per chat per 2 minutes, background lane, only if `privacy.learnFromChats`. Skipped when the spend cap is reached.
++Trigger: after a chat-lane reply or a job finishing, when the chat has ≥ 1 new user message since the last review, debounced to 20 s of quiet in that chat (a new user message cancels a pending review, since its turn is not quiet; the next reply or finished job starts the 20 s again, CR-0051), at most once per chat per 2 minutes, background lane, only if `privacy.learnFromChats`. Skipped when the spend cap is reached.
+ Input: the new messages since the last review (redacted), leaving out a user message whose intake kind was `setting` (CR-0051, X-209: an instruction to foo that its setting line records, 08-4 §25.6, not a fact about the user), the current facts in the same scopes (≤ 4,000 chars), tombstone hashes. Output `<act>`:
+ ```ts
+ interface MemoryReviewAct { ops: (
+diff --git a/spec/constitution/DECISIONS.md b/spec/constitution/DECISIONS.md
+index add8c0c2..80039abf 100644
+--- a/spec/constitution/DECISIONS.md
++++ b/spec/constitution/DECISIONS.md
+@@ -189,4 +189,4 @@ These settle every conflict the chapter writers found, and record the owner's an
+ | X-202 | **Not now on a Connect card from intake runs the job without the app** (CR-0044; found by the real-AI run on 2026-10-21, main 0665cf6, Claude CLI: "Pay my electricity bill now" got Connect Gmail, and Not now only changed the card in the window, so the message stayed Needs you with no job). 08-2 §5.3.3 as amended: Not now sends `card:answer { skip: true }`, the card becomes `skipped`, and the message goes back to intake once with no Connect card, so its job runs without the app; the card's line names the job and says Not now works (05-3 §5.11). The tech log gets the decided intake kind and each steer's effect. Approved on Vikas's behalf after an independent review (his approve-on-my-behalf rule, 2026-10-18 14:56Z, 14:59Z; 2026-10-21 07:14Z); number given by the coordinator 2026-10-21 20:43Z. |
+ | X-203 | **A message that is not about a waiting job leaves its card alone; a message sent while a job turns stuck is not lost** (CR-0045; found by the real-AI run 21 on 2026-10-21, main a087f3c, Claude CLI. U23: a table booking waited on "Which city should I look in…?", and "Make me a simple page that tracks my daily water intake" withdrew that card, so the job asked again right under the tracker ask. U01: "Give me one fun fact about Delhi", sent 0.4 s after the watchdog halted a web job for its Stuck card, was steered into the halted job and never answered). 08-4 §26.5 items 2a and 2b as amended: a job halted for its Stuck card takes no steer while the "What's wrong" turn runs; and before a steer withdraws a NEEDS_YOU job's open Choice, tiles, approval, payment or draft card, one `classify` turn with the new `steer_check.md` (§24.13a) asks whether the message is about the job ("new" → intake, the card stays; "job" or a failed turn → the steer as before). Claude CLI replays: 20 of 20 right. Approved on Vikas's behalf after an independent review (his approve-on-my-behalf rule, 2026-10-18 14:56Z, 14:59Z; 2026-10-21 07:14Z); number given by the coordinator 2026-10-21 21:49Z. |
+ | X-206 | **A job waiting on a sign-in card does not hold the next, unrelated ask** (CR-0048; found by the real-AI run 23 on 2026-10-21, main 0056624, Claude CLI, J12: an ISRO web job waited on a "check you're a person" card for www.thehindu.com, and "Draft an email to someone@example.com…" got no reply in 180 s, because 08-4 §26.5 item 2 queues every steer behind a sign-in in progress). 08-4 §26.5 item 2b as amended: the CR-0045 steer check also runs when the only live job waits on its sign-in card that is still `waiting` for the user's tap (a `live` or taken-over sign-in keeps item 2); "new" → the intake turn, the card stays; "job" → the steer waits for the sign-in as before. Claude CLI replays: 6 of 6 right. Approved on Vikas's behalf after an independent review (his approve-on-my-behalf rule, 2026-10-18 14:56Z, 14:59Z; 2026-10-21 07:14Z); number given by the coordinator 2026-10-21 23:41Z. |
+-| X-209 | **A setting changed by chat is not also saved as a memory** (CR-0051; found by the real-AI run 30 on 2026-10-22, main 04f01dd, Claude CLI, U17: "Switch to dark mode" changed the theme with "Changed: Theme → Dark. Undo", and the post-turn review also saved "Prefers dark mode"; Undo of the theme left the fact behind). 08-3 §12.4 Input as amended: a user message whose intake kind was `setting` is left out of the review, because the setting line (08-4 §25.6) records it and Undo takes it back; later messages in the chat are reviewed as before. Approved on Vikas's behalf after an independent review (his approve-on-my-behalf rule, 2026-10-18 14:56Z, 14:59Z; 2026-10-21 07:14Z); number confirmed with the coordinator 2026-10-22 01:36Z. |
++| X-209 | **A setting changed by chat is not also saved as a memory** (CR-0051; found by the real-AI run 30 on 2026-10-22, main 04f01dd, Claude CLI, U17: "Switch to dark mode" changed the theme with "Changed: Theme → Dark. Undo", and the post-turn review also saved "Prefers dark mode"; Undo of the theme left the fact behind). 08-3 §12.4 Input as amended: a user message whose intake kind was `setting` is left out of the review, because the setting line (08-4 §25.6) records it and Undo takes it back; later messages in the chat are reviewed as before. A new user message also cancels a pending review (its turn is not "quiet"), so a review cannot fire mid-turn and read a setting message before its kind is known; the next reply or finished job starts the 20 s again. Approved on Vikas's behalf after an independent review (his approve-on-my-behalf rule, 2026-10-18 14:56Z, 14:59Z; 2026-10-21 07:14Z); number confirmed with the coordinator 2026-10-22 01:36Z. |
+diff --git a/src/engine/memory/review.ts b/src/engine/memory/review.ts
+index 5b377aa9..24b87e00 100644
+--- a/src/engine/memory/review.ts
++++ b/src/engine/memory/review.ts
+@@ -144,10 +144,18 @@ export class MemoryReview {
+ 
+   constructor(private readonly d: ReviewDeps) {}
+ 
+-  /** A user message arrived in `chatId`: the quiet period starts again. */
++  /**
++   * A user message arrived in `chatId`: the chat is not quiet while its turn runs, so a pending review waits for the next
++   * reply or finished job (`after`) to start the 20 s again. CR-0051: a review that fired mid-turn read a "Switch to dark
++   * mode" before its intake kind (`setting`) could leave it out.
++   */
+   userMessage(chatId: string, seq: number): void {
+     if (!this.floor.has(chatId)) this.floor.set(chatId, seq - 1);
+-    if (this.timers.has(chatId)) this.schedule(chatId);
++    const pending = this.timers.get(chatId);
++    if (pending !== undefined) {
++      this.d.clock.clearTimeout(pending);
++      this.timers.delete(chatId);
++    }
+   }
+ 
+   /** J17 "don't remember this": the review never reads these messages. */
+diff --git a/test/integration/setting-not-memory.test.ts b/test/integration/setting-not-memory.test.ts
+index 578d5263..be759680 100644
+--- a/test/integration/setting-not-memory.test.ts
++++ b/test/integration/setting-not-memory.test.ts
+@@ -98,4 +98,27 @@ describe('CR-0051 · a setting changed by chat is not also saved as a memory', (
+     expect(String(turn.prompt)).not.toContain('Switch to dark mode');
+     expect(facts(x).map((f) => f.text)).toEqual(['Vegetarian']);
+   });
++
++  it('a review already waiting when the setting message arrives does not fire during its slow intake turn', async () => {
++    h = rig([
++      intakeOn('hi', replyAct('Hi!')),
++      { ...intakeOn('dark mode', DARK), delayMs: 25_000 },
++      reviewLine([add({ text: 'Prefers dark mode', provenance: 'said', evidenceMessageIds: ['m_d1'] })]),
++    ]);
++    const x = h;
++    say(x, 'm_h1', 'hi');
++    await x.idle();
++    // The reply to "hi" started the 20 s; 5 s later the setting message comes, and its turn takes 25 s.
++    x.clock.advance(4_000);
++    say(x, 'm_d1', 'Switch to dark mode');
++    for (let i = 0; i < 30; i++) {
++      await realSleep(2);
++      x.clock.advance(1_000);
++    }
++    await x.idle();
++    await review(x);
++    expect(x.settings().appearance.theme).toBe('dark');
++    expect(facts(x)).toEqual([]);
++    expect(x.turnsJsonl().some((t) => t.purpose === 'memory_review' && String(t.prompt).includes('dark mode'))).toBe(false);
++  });
+ });
+diff --git a/test/unit/m6-review.test.ts b/test/unit/m6-review.test.ts
+index be76829c..f6856c88 100644
+--- a/test/unit/m6-review.test.ts
++++ b/test/unit/m6-review.test.ts
+@@ -169,18 +169,23 @@ describe('M6 T5 review trigger (08-3 §12.4)', () => {
+     return { clock, review, say, tick, turns, updates, set: (fn: (s: Settings) => Settings) => (settings = fn(settings)) };
+   }
+ 
+-  it('runs after 20 s of quiet; a new message restarts the wait', async () => {
++  it('runs after 20 s of quiet; a new message cancels the wait until the next reply (CR-0051)', async () => {
+     const r = rig();
+     r.say('I hate early flights');
+     r.say('Noted.', 'foo');
+     r.review.after('c_1');
+     await r.tick(19_000);
+     expect(r.turns).toHaveLength(0);
++    // The new message's turn is not quiet: nothing runs while it is answered, however long that takes.
+     r.say('and window seats please');
++    await r.tick(60_000);
++    expect(r.turns).toHaveLength(0);
++    r.say('Window seats it is.', 'foo');
++    r.review.after('c_1');
+     await r.tick(19_000);
+     expect(r.turns).toHaveLength(0);
+     await r.tick(1_000);
+-    expect(r.turns).toEqual([TEST_EPOCH_MS + 39_000]);
++    expect(r.turns).toEqual([TEST_EPOCH_MS + 99_000]);
+   });
+ 
+   it('at most once per chat per 2 minutes, and only with a new user message since the last review', async () => {
+-- 
+2.43.0
+
