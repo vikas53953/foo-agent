@@ -60,15 +60,35 @@
       "tid": "live-take-over"
     },
     {
-      "do": "wait",
-      "ms": 3000,
-      "shot": "taken-over"
+      "do": "waitFor",
+      "css": "[data-testid=\"live-root\"][data-state=\"in_control\"]",
+      "timeoutMs": 30000,
+      "shot": "taken-over",
+      "note": "AT-058/AT-272: wait for the actual live control state"
     },
     {
       "do": "check",
       "css": "[data-testid=\"live-root\"][data-state=\"in_control\"]",
       "count": 1,
       "note": "AT-058/AT-272: Take over moves the actual live window into control"
+    },
+    {
+      "do": "waitFor",
+      "tid": "live-hand-back",
+      "timeoutMs": 30000,
+      "note": "AT-272: the hand-back control is visible in control mode"
+    },
+    {
+      "do": "check",
+      "css": "[data-testid=\"live-root\"][data-state=\"in_control\"] button",
+      "count": 2,
+      "note": "AT-058: control mode exposes exactly two live controls"
+    },
+    {
+      "do": "check",
+      "tid": "live-take-over",
+      "count": 0,
+      "note": "AT-058: takeover is no longer offered once control is held"
     },
     {
       "do": "check",
@@ -81,9 +101,11 @@
       "tid": "live-hand-back"
     },
     {
-      "do": "wait",
-      "ms": 3000,
-      "shot": "handed-back"
+      "do": "waitFor",
+      "css": "[data-testid=\"live-root\"][data-state=\"live\"]",
+      "timeoutMs": 30000,
+      "shot": "handed-back",
+      "note": "AT-272: wait for the actual hand-back live state"
     },
     {
       "do": "check",

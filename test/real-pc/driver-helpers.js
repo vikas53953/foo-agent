@@ -20,6 +20,10 @@ function isLiveWindow(pageOrUrl) {
 // loses the only reliable routing signal.
 async function waitForWindowAfterClick({ app, click, ready, predicate = isLiveWindow }) {
   const opened = app.waitForEvent('window', predicate);
+  // A failed click can leave the BrowserWindow wait pending until its timeout.
+  // Attach a handler immediately so that later rejection cannot become an
+  // unhandled rejection; the original promise is still awaited on success.
+  void opened.catch(() => {});
   await click();
   const page = await opened;
   if (ready) await ready(page);

@@ -363,6 +363,9 @@ async function main() {
               rec.window = 'live';
             } else {
               const close = s.awaitClose && livePage ? waitForPageClose(livePage, s.timeoutMs ?? 30_000) : null;
+              // Keep a rejected close wait handled if the initiating click
+              // fails, while awaiting the original promise on success.
+              if (close) void close.catch(() => {});
               await loc.click({ timeout: s.timeoutMs ?? 10_000 });
               if (close) {
                 await close;

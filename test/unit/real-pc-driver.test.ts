@@ -24,7 +24,16 @@ const helpers = require('../../test/real-pc/driver-helpers.js') as DriverHelpers
 const b07Path = join(process.cwd(), 'test', 'real-pc', 'journeys', 'B07-live.json');
 const b07Text = readFileSync(b07Path, 'utf8');
 const b07 = JSON.parse(b07Text) as {
-  steps: Array<{ tid?: string; expectTid?: string; expectKit?: string; css?: string }>;
+  steps: Array<{
+    do?: string;
+    tid?: string;
+    expectTid?: string;
+    expectKit?: string;
+    css?: string;
+    note?: string;
+    count?: number;
+    ms?: number;
+  }>;
 };
 
 describe('real-PC live-window driver', () => {
@@ -55,6 +64,35 @@ describe('real-PC live-window driver', () => {
     });
     expect(opened).toBe(page);
     expect(events).toEqual(['armed', 'click', 'ready']);
+  });
+
+  it('preserves a failed click without leaking a rejected window wait', async () => {
+    let rejectWindow: ((reason: Error) => void) | undefined;
+    const app = {
+      waitForEvent: () =>
+        new Promise<never>((_resolve, reject) => {
+          rejectWindow = reject;
+        }),
+    };
+    await expect(
+      helpers.waitForWindowAfterClick({
+        app,
+        click: async () => {
+          rejectWindow?.(new Error('window wait timed out'));
+          throw new Error('live click failed');
+        },
+      }),
+    ).rejects.toThrow('live click failed');
+  });
+
+  it('keeps B07 takeover and hand-back checks state-bounded', () => {
+    expect(b07.steps.some((step) => step.do === 'waitFor' && step.css?.includes('data-state="in_control"'))).toBe(true);
+    expect(
+      b07.steps.some((step) => step.do === 'waitFor' && step.css?.includes('data-state="live"') && step.note?.includes('hand-back')),
+    ).toBe(true);
+    expect(b07.steps.some((step) => step.do === 'check' && step.css?.endsWith('button') && step.count === 2)).toBe(true);
+    expect(b07.steps.some((step) => step.do === 'check' && step.tid === 'live-take-over' && step.count === 0)).toBe(true);
+    expect(b07.steps.some((step) => step.do === 'wait' && step.ms === 3_000)).toBe(false);
   });
 
   it('arms a bounded close listener for the live window', async () => {
