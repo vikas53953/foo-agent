@@ -8,7 +8,8 @@ Base: `7b5f435` (merge of `origin/main 0d04a9f`). No real-AI workflow run, cost,
 
 - `62a20830`: validator-only RED commit.
 - `94480181`: journey changes: six rejected Lane A manifests removed, corrected smoke, eight `R-*.json` journeys covering all 33 Group R IDs, and the initial report.
-- Correction pending: strict validator now checks every journey file, accepts a following regex `expectText`, validates `expectKit` against current `TID`, and requires each covered ID to name a checked step.
+- `6dbefcfa`: validator correction: strict all-file send/end-state checks, following regex `expectText`, current `expectKit` validation, and checked-step coverage for every covered ID.
+- Repair pass (this commit): corrected real controls and fresh-reply assertions in the seven owned R manifests. The repair does not claim a run or GREEN status.
 - No baseline B/J/U/R1 journey, source/spec/golden/workflow/secret, driver, or `journeys.txt` file was edited.
 
 ## Focused validator evidence
@@ -41,6 +42,7 @@ J10-hotel [0]
 J12-draft [0]
 J17-memory [0,7]
 R1-rich [0,6]
+R-jobs [63,68,73]
 U01-bubble-menu [1]
 U02-reactions-thanks [1,3]
 U04-find-in-chat [1]
@@ -89,7 +91,18 @@ U27-composer-no-dropped-letters: C.4 Composer; AT-365
 
 No baseline files were changed to make this pass. The lead must resolve these outside Lane A or accept the strict validator as a blocked gate.
 
+## Repair-pass limits
+
+- `R-kit-1.json` now clicks the real scoped Stepper increase button and the latest ListPick radio control. The removed `kit-button` clicks were invalid for Stepper/ListPick.
+- `R-kit-2.json` now clicks a real latest TimePick radio and waits for foo's confirmation; the refresh path waits for a new `kit-live-stamp` reply; `do:eval` assertions were removed. AT-355 calculator recomputation remains blocked because the DSL has no fresh-surface input mutation assertion. AT-369 uses the supported Files presence check, but fresh-row identity remains unavailable.
+- `R-ai-pages.json` uses the supported composer-field text assertion for AT-425.
+- `R-chat-rules.json` records AT-427's exact `newBubbles=1` limitation: the runner reports `newBubbles`, but the journey DSL cannot assert the per-send exact count.
+- `R-reply-area.json` scopes sender and copy-action checks to the latest answer bubble.
+- `R-jobs.json` sends the two AT-420 follow-ups back-to-back and checks the latest user bubble tick for AT-432. The strict validator therefore reports the three owned send-at-steps above; this is an explicit blocker, not a waiver.
+- `R-approvals.json` adds the safe choice-option step before starred approval cards. These approval-dependent journeys are authored only; the separate driver-choice lane is pending and no run is claimed.
+
 ## Remaining blockers
 
 - Way 1 real-AI run: not started; driver-choice work is a separate pending lane. Approval journeys are authored only.
+- Cost/paid run: unavailable; no cost is claimed (this is not a `$0` result).
 - `test/real-pc/journeys.txt`: lead-owned; still needs the eight R IDs (and smoke ID if the lead wants to wire it).

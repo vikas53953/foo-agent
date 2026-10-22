@@ -2,7 +2,13 @@
   "id": "R-kit-2",
   "title": "Group R live stamp, calculator, keep and time picker",
   "spec": "07 §11.5 Group R; AT-350, AT-352, AT-355, AT-368, AT-369",
-  "covers": ["AT-350", "AT-352", "AT-368", "AT-355", "AT-369"],
+  "covers": [
+    "AT-350",
+    "AT-352",
+    "AT-368",
+    "AT-355",
+    "AT-369"
+  ],
   "steps": [
     {
       "do": "send",
@@ -17,11 +23,17 @@
       "shot": "at-350-clean"
     },
     {
-      "do": "expectText",
-      "tid": "kit-time-pick",
+      "do": "click",
+      "css": "[data-testid=\"kit-time-pick\"] [role=\"radio\"]",
       "last": true,
-      "re": "2|5|pm",
-      "note": "AT-350: clean result"
+      "note": "AT-350: click the latest real time slot control"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(confirm|scheduled|booked|set for|[2-5]:?\\s?(am|pm))/i.test(b.innerText)})()",
+      "note": "AT-350: foo confirms the selected slot"
     },
     {
       "do": "send",
@@ -36,11 +48,17 @@
       "shot": "at-350-messy-typo"
     },
     {
-      "do": "expectText",
-      "tid": "kit-time-pick",
+      "do": "click",
+      "css": "[data-testid=\"kit-time-pick\"] [role=\"radio\"]",
       "last": true,
-      "re": "2|5|pm",
-      "note": "AT-350: messy typo result"
+      "note": "AT-350: click the latest real time slot control"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(confirm|scheduled|booked|set for|[2-5]:?\\s?(am|pm))/i.test(b.innerText)})()",
+      "note": "AT-350: foo confirms the selected slot"
     },
     {
       "do": "send",
@@ -55,11 +73,17 @@
       "shot": "at-350-Hinglish"
     },
     {
-      "do": "expectText",
-      "tid": "kit-time-pick",
+      "do": "click",
+      "css": "[data-testid=\"kit-time-pick\"] [role=\"radio\"]",
       "last": true,
-      "re": "2|5|pm",
-      "note": "AT-350: Hinglish result"
+      "note": "AT-350: click the latest real time slot control"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(confirm|scheduled|booked|set for|[2-5]:?\\s?(am|pm))/i.test(b.innerText)})()",
+      "note": "AT-350: foo confirms the selected slot"
     },
     {
       "do": "send",
@@ -75,10 +99,10 @@
     },
     {
       "do": "expectText",
-      "tid": "kit-live-stamp",
       "last": true,
       "re": "Sensex|live",
-      "note": "AT-352: clean result"
+      "note": "AT-352: clean result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-live-stamp\"]"
     },
     {
       "do": "check",
@@ -99,10 +123,10 @@
     },
     {
       "do": "expectText",
-      "tid": "kit-live-stamp",
       "last": true,
       "re": "Sensex|live",
-      "note": "AT-352: messy typo result"
+      "note": "AT-352: messy typo result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-live-stamp\"]"
     },
     {
       "do": "check",
@@ -123,10 +147,10 @@
     },
     {
       "do": "expectText",
-      "tid": "kit-live-stamp",
       "last": true,
       "re": "Sensex|live",
-      "note": "AT-352: Hinglish result"
+      "note": "AT-352: Hinglish result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-live-stamp\"]"
     },
     {
       "do": "check",
@@ -146,24 +170,15 @@
       "shot": "at-368-clean-live-card"
     },
     {
-      "do": "eval",
-      "js": "(()=>{const e=document.querySelector('[data-testid=\"kit-live-stamp\"]');if(!e)throw new Error('live stamp missing');e.dataset.before=e.innerText;return true})()",
-      "note": "AT-368: clean capture live stamp before refresh"
-    },
-    {
       "do": "click",
       "tid": "kit-live-refresh",
       "note": "AT-368: clean refresh action"
     },
     {
-      "do": "wait",
-      "ms": 3000,
-      "note": "AT-368: clean wait for refreshed stamp"
-    },
-    {
-      "do": "eval",
-      "js": "(()=>{const e=document.querySelector('[data-testid=\"kit-live-stamp\"]');return !!e&&e.innerText!==e.dataset.before})()",
-      "note": "AT-368: clean live stamp changed after refresh"
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-368: refresh returns a new live stamp reply"
     },
     {
       "do": "send",
@@ -178,24 +193,15 @@
       "shot": "at-368-messy-typo-live-card"
     },
     {
-      "do": "eval",
-      "js": "(()=>{const e=document.querySelector('[data-testid=\"kit-live-stamp\"]');if(!e)throw new Error('live stamp missing');e.dataset.before=e.innerText;return true})()",
-      "note": "AT-368: messy typo capture live stamp before refresh"
-    },
-    {
       "do": "click",
       "tid": "kit-live-refresh",
       "note": "AT-368: messy typo refresh action"
     },
     {
-      "do": "wait",
-      "ms": 3000,
-      "note": "AT-368: messy typo wait for refreshed stamp"
-    },
-    {
-      "do": "eval",
-      "js": "(()=>{const e=document.querySelector('[data-testid=\"kit-live-stamp\"]');return !!e&&e.innerText!==e.dataset.before})()",
-      "note": "AT-368: messy typo live stamp changed after refresh"
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-368: refresh returns a new live stamp reply"
     },
     {
       "do": "send",
@@ -210,24 +216,15 @@
       "shot": "at-368-Hinglish-live-card"
     },
     {
-      "do": "eval",
-      "js": "(()=>{const e=document.querySelector('[data-testid=\"kit-live-stamp\"]');if(!e)throw new Error('live stamp missing');e.dataset.before=e.innerText;return true})()",
-      "note": "AT-368: Hinglish capture live stamp before refresh"
-    },
-    {
       "do": "click",
       "tid": "kit-live-refresh",
       "note": "AT-368: Hinglish refresh action"
     },
     {
-      "do": "wait",
-      "ms": 3000,
-      "note": "AT-368: Hinglish wait for refreshed stamp"
-    },
-    {
-      "do": "eval",
-      "js": "(()=>{const e=document.querySelector('[data-testid=\"kit-live-stamp\"]');return !!e&&e.innerText!==e.dataset.before})()",
-      "note": "AT-368: Hinglish live stamp changed after refresh"
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectKit": "kit-live-stamp",
+      "note": "AT-368: refresh returns a new live stamp reply"
     },
     {
       "do": "send",
@@ -243,20 +240,10 @@
     },
     {
       "do": "expectText",
-      "tid": "kit-calculator",
       "last": true,
       "re": "EMI|5 lakh|9%",
-      "note": "AT-355: clean result"
-    },
-    {
-      "do": "click",
-      "tid": "kit-button",
-      "note": "AT-355: press the calculator action"
-    },
-    {
-      "do": "check",
-      "tid": "kit-calculator",
-      "note": "AT-355: calculator remains visible after action"
+      "note": "AT-355: clean result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-calculator\"]"
     },
     {
       "do": "send",
@@ -272,20 +259,10 @@
     },
     {
       "do": "expectText",
-      "tid": "kit-calculator",
       "last": true,
       "re": "EMI|5 lakh|9%",
-      "note": "AT-355: messy typo result"
-    },
-    {
-      "do": "click",
-      "tid": "kit-button",
-      "note": "AT-355: press the calculator action"
-    },
-    {
-      "do": "check",
-      "tid": "kit-calculator",
-      "note": "AT-355: calculator remains visible after action"
+      "note": "AT-355: messy typo result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-calculator\"]"
     },
     {
       "do": "send",
@@ -301,20 +278,10 @@
     },
     {
       "do": "expectText",
-      "tid": "kit-calculator",
       "last": true,
       "re": "EMI|5 lakh|9%",
-      "note": "AT-355: Hinglish result"
-    },
-    {
-      "do": "click",
-      "tid": "kit-button",
-      "note": "AT-355: press the calculator action"
-    },
-    {
-      "do": "check",
-      "tid": "kit-calculator",
-      "note": "AT-355: calculator remains visible after action"
+      "note": "AT-355: Hinglish result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-calculator\"]"
     },
     {
       "do": "send",
@@ -330,10 +297,10 @@
     },
     {
       "do": "expectText",
-      "tid": "kit-calculator",
       "last": true,
       "re": "EMI|5 lakh",
-      "note": "AT-369: clean result"
+      "note": "AT-369: clean result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-calculator\"]"
     },
     {
       "do": "click",
@@ -345,9 +312,9 @@
       "ms": 1500
     },
     {
-      "do": "eval",
-      "js": "document.querySelectorAll('[data-testid=\"files-kept-item\"]').length > 0",
-      "note": "AT-369: kept surface appears in Files"
+      "do": "check",
+      "tid": "files-kept-item",
+      "note": "AT-369: supported presence check for a kept surface (fresh-row identity remains unavailable)"
     },
     {
       "do": "send",
@@ -363,10 +330,10 @@
     },
     {
       "do": "expectText",
-      "tid": "kit-calculator",
       "last": true,
       "re": "EMI|5 lakh",
-      "note": "AT-369: messy typo result"
+      "note": "AT-369: messy typo result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-calculator\"]"
     },
     {
       "do": "click",
@@ -378,9 +345,9 @@
       "ms": 1500
     },
     {
-      "do": "eval",
-      "js": "document.querySelectorAll('[data-testid=\"files-kept-item\"]').length > 0",
-      "note": "AT-369: kept surface appears in Files"
+      "do": "check",
+      "tid": "files-kept-item",
+      "note": "AT-369: supported presence check for a kept surface (fresh-row identity remains unavailable)"
     },
     {
       "do": "send",
@@ -396,10 +363,10 @@
     },
     {
       "do": "expectText",
-      "tid": "kit-calculator",
       "last": true,
       "re": "EMI|5 lakh",
-      "note": "AT-369: Hinglish result"
+      "note": "AT-369: Hinglish result",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-calculator\"]"
     },
     {
       "do": "click",
@@ -411,9 +378,14 @@
       "ms": 1500
     },
     {
-      "do": "eval",
-      "js": "document.querySelectorAll('[data-testid=\"files-kept-item\"]').length > 0",
-      "note": "AT-369: kept surface appears in Files"
+      "do": "check",
+      "tid": "files-kept-item",
+      "note": "AT-369: supported presence check for a kept surface (fresh-row identity remains unavailable)"
     }
+  ],
+  "blocked": [
+    "AT-355: Calculator has real number inputs but no generic kit-button; this journey does not claim output recomputation because the driver lacks a fresh-surface input mutation assertion in this DSL.",
+    "AT-368: the refresh click and new kit-live-stamp reply are checked; exact before/after stamp mutation is blocked because do:eval records false without failing.",
+    "AT-369: kit-keep and supported files-kept-item presence are checked; fresh-row identity is blocked because the DSL has no scoped count/new-item assertion."
   ]
 }

@@ -2,7 +2,13 @@
   "id": "R-kit-1",
   "title": "Group R kit surfaces: stepper, timeline, calendar, goal and pick list",
   "spec": "07 §11.5 Group R; AT-342, AT-344, AT-345, AT-348, AT-349",
-  "covers": ["AT-342", "AT-344", "AT-345", "AT-348", "AT-349"],
+  "covers": [
+    "AT-342",
+    "AT-344",
+    "AT-345",
+    "AT-348",
+    "AT-349"
+  ],
   "steps": [
     {
       "do": "send",
@@ -18,15 +24,16 @@
     },
     {
       "do": "click",
-      "tid": "kit-button",
-      "note": "AT-342: increment the guest counter"
+      "css": "[data-testid=\"kit-stepper\"] button[aria-label^=\"Increase\"]",
+      "last": true,
+      "note": "AT-342: increment the guest counter with the real Stepper control"
     },
     {
       "do": "expectText",
-      "tid": "kit-stepper",
       "last": true,
       "re": "2",
-      "note": "AT-342: counter shows the next number"
+      "note": "AT-342: counter shows the next number",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-stepper\"]"
     },
     {
       "do": "send",
@@ -42,15 +49,16 @@
     },
     {
       "do": "click",
-      "tid": "kit-button",
-      "note": "AT-342: increment the guest counter"
+      "css": "[data-testid=\"kit-stepper\"] button[aria-label^=\"Increase\"]",
+      "last": true,
+      "note": "AT-342: increment the guest counter with the real Stepper control"
     },
     {
       "do": "expectText",
-      "tid": "kit-stepper",
       "last": true,
       "re": "2",
-      "note": "AT-342: counter shows the next number"
+      "note": "AT-342: counter shows the next number",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-stepper\"]"
     },
     {
       "do": "send",
@@ -66,15 +74,16 @@
     },
     {
       "do": "click",
-      "tid": "kit-button",
-      "note": "AT-342: increment the guest counter"
+      "css": "[data-testid=\"kit-stepper\"] button[aria-label^=\"Increase\"]",
+      "last": true,
+      "note": "AT-342: increment the guest counter with the real Stepper control"
     },
     {
       "do": "expectText",
-      "tid": "kit-stepper",
       "last": true,
       "re": "2",
-      "note": "AT-342: counter shows the next number"
+      "note": "AT-342: counter shows the next number",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"kit-stepper\"]"
     },
     {
       "do": "send",
@@ -239,28 +248,17 @@
       "shot": "at-349-clean"
     },
     {
-      "do": "expectText",
-      "tid": "kit-list-pick",
-      "last": true,
-      "re": "80,000|laptop",
-      "note": "AT-349: clean result"
-    },
-    {
       "do": "click",
-      "tid": "kit-button",
-      "note": "AT-349: select the first laptop safely"
-    },
-    {
-      "do": "wait",
-      "ms": 2000,
-      "note": "AT-349: wait for the selection acknowledgement"
-    },
-    {
-      "do": "expectText",
-      "tid": "bubble-foo",
+      "css": "[data-testid=\"kit-list-pick\"] [role=\"radio\"]",
       "last": true,
-      "re": "selected|picked|laptop",
-      "note": "AT-349: selection acknowledgement"
+      "note": "AT-349: select the first laptop with the real radio control"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(selected|picked|laptop)/i.test(b.innerText)})()",
+      "note": "AT-349: selection acknowledgement is a new foo reply"
     },
     {
       "do": "send",
@@ -275,28 +273,17 @@
       "shot": "at-349-messy-typo"
     },
     {
-      "do": "expectText",
-      "tid": "kit-list-pick",
-      "last": true,
-      "re": "80,000|laptop",
-      "note": "AT-349: messy typo result"
-    },
-    {
       "do": "click",
-      "tid": "kit-button",
-      "note": "AT-349: select the first laptop safely"
-    },
-    {
-      "do": "wait",
-      "ms": 2000,
-      "note": "AT-349: wait for the selection acknowledgement"
-    },
-    {
-      "do": "expectText",
-      "tid": "bubble-foo",
+      "css": "[data-testid=\"kit-list-pick\"] [role=\"radio\"]",
       "last": true,
-      "re": "selected|picked|laptop",
-      "note": "AT-349: selection acknowledgement"
+      "note": "AT-349: select the first laptop with the real radio control"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(selected|picked|laptop)/i.test(b.innerText)})()",
+      "note": "AT-349: selection acknowledgement is a new foo reply"
     },
     {
       "do": "send",
@@ -311,28 +298,17 @@
       "shot": "at-349-Hinglish"
     },
     {
-      "do": "expectText",
-      "tid": "kit-list-pick",
-      "last": true,
-      "re": "80,000|laptop",
-      "note": "AT-349: Hinglish result"
-    },
-    {
       "do": "click",
-      "tid": "kit-button",
-      "note": "AT-349: select the first laptop safely"
-    },
-    {
-      "do": "wait",
-      "ms": 2000,
-      "note": "AT-349: wait for the selection acknowledgement"
-    },
-    {
-      "do": "expectText",
-      "tid": "bubble-foo",
+      "css": "[data-testid=\"kit-list-pick\"] [role=\"radio\"]",
       "last": true,
-      "re": "selected|picked|laptop",
-      "note": "AT-349: selection acknowledgement"
+      "note": "AT-349: select the first laptop with the real radio control"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(selected|picked|laptop)/i.test(b.innerText)})()",
+      "note": "AT-349: selection acknowledgement is a new foo reply"
     }
   ]
 }

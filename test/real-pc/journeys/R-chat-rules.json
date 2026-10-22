@@ -2,7 +2,9 @@
   "id": "R-chat-rules",
   "title": "Group R one-bubble plain VPN answers",
   "spec": "07 §11.5 Group R; AT-427",
-  "covers": ["AT-427"],
+  "covers": [
+    "AT-427"
+  ],
   "steps": [
     {
       "do": "send",
@@ -13,7 +15,6 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "expectTid": "bubble-foo",
-      "expectJs": "document.querySelector('[data-testid=\"bubble-foo\"]') !== null",
       "note": "AT-427: clean",
       "shot": "at-427-clean"
     },
@@ -33,7 +34,6 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "expectTid": "bubble-foo",
-      "expectJs": "document.querySelector('[data-testid=\"bubble-foo\"]') !== null",
       "note": "AT-427: messy typo",
       "shot": "at-427-messy-typo"
     },
@@ -53,7 +53,6 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "expectTid": "bubble-foo",
-      "expectJs": "document.querySelector('[data-testid=\"bubble-foo\"]') !== null",
       "note": "AT-427: Hinglish",
       "shot": "at-427-Hinglish"
     },
@@ -73,7 +72,6 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "expectTid": "bubble-foo",
-      "expectJs": "document.querySelector('[data-testid=\"bubble-foo\"]') !== null",
       "note": "AT-427: Hindi",
       "shot": "at-427-Hindi"
     },
@@ -93,7 +91,6 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "expectTid": "bubble-foo",
-      "expectJs": "document.querySelector('[data-testid=\"bubble-foo\"]') !== null",
       "note": "AT-427: Punjabi",
       "shot": "at-427-Punjabi"
     },
@@ -104,5 +101,8 @@
       "re": "VPN|network|internet",
       "note": "AT-427: Punjabi result"
     }
+  ],
+  "blocked": [
+    "AT-427: the runner exposes newBubbles in its wait summary but the journey DSL cannot assert exactly newBubbles=1 per send; the content check remains scoped to the latest bubble."
   ]
 }

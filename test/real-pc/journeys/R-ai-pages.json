@@ -2,7 +2,13 @@
   "id": "R-ai-pages",
   "title": "Group R plain answers and capabilities surface",
   "spec": "07 §11.5 Group R; AT-366, AT-367, AT-424, AT-425, AT-426",
-  "covers": ["AT-366", "AT-367", "AT-424", "AT-425", "AT-426"],
+  "covers": [
+    "AT-366",
+    "AT-367",
+    "AT-424",
+    "AT-425",
+    "AT-426"
+  ],
   "steps": [
     {
       "do": "send",
@@ -269,9 +275,10 @@
       "note": "AT-425: clean Try it action fills composer"
     },
     {
-      "do": "eval",
-      "js": "(()=>{const f=document.querySelector('[data-testid=\"composer-field\"]');return !!f&&(f.innerText||f.textContent||'').trim().length>0})()",
-      "note": "AT-425: clean composer has the capability prompt and no send was made"
+      "do": "expectText",
+      "css": "[data-testid=\"composer-field\"]",
+      "re": ".+",
+      "note": "AT-425: clean composer field has the capability prompt and without sending"
     },
     {
       "do": "send",
@@ -291,9 +298,10 @@
       "note": "AT-425: messy typo Try it action fills composer"
     },
     {
-      "do": "eval",
-      "js": "(()=>{const f=document.querySelector('[data-testid=\"composer-field\"]');return !!f&&(f.innerText||f.textContent||'').trim().length>0})()",
-      "note": "AT-425: messy typo composer has the capability prompt and no send was made"
+      "do": "expectText",
+      "css": "[data-testid=\"composer-field\"]",
+      "re": ".+",
+      "note": "AT-425: messy typo composer field has the capability prompt and without sending"
     },
     {
       "do": "send",
@@ -313,9 +321,10 @@
       "note": "AT-425: Hinglish Try it action fills composer"
     },
     {
-      "do": "eval",
-      "js": "(()=>{const f=document.querySelector('[data-testid=\"composer-field\"]');return !!f&&(f.innerText||f.textContent||'').trim().length>0})()",
-      "note": "AT-425: Hinglish composer has the capability prompt and no send was made"
+      "do": "expectText",
+      "css": "[data-testid=\"composer-field\"]",
+      "re": ".+",
+      "note": "AT-425: Hinglish composer field has the capability prompt and without sending"
     },
     {
       "do": "send",
@@ -335,9 +344,10 @@
       "note": "AT-425: Hindi Try it action fills composer"
     },
     {
-      "do": "eval",
-      "js": "(()=>{const f=document.querySelector('[data-testid=\"composer-field\"]');return !!f&&(f.innerText||f.textContent||'').trim().length>0})()",
-      "note": "AT-425: Hindi composer has the capability prompt and no send was made"
+      "do": "expectText",
+      "css": "[data-testid=\"composer-field\"]",
+      "re": ".+",
+      "note": "AT-425: Hindi composer field has the capability prompt and without sending"
     },
     {
       "do": "send",
@@ -357,9 +367,10 @@
       "note": "AT-425: Punjabi Try it action fills composer"
     },
     {
-      "do": "eval",
-      "js": "(()=>{const f=document.querySelector('[data-testid=\"composer-field\"]');return !!f&&(f.innerText||f.textContent||'').trim().length>0})()",
-      "note": "AT-425: Punjabi composer has the capability prompt and no send was made"
+      "do": "expectText",
+      "css": "[data-testid=\"composer-field\"]",
+      "re": ".+",
+      "note": "AT-425: Punjabi composer field has the capability prompt and without sending"
     },
     {
       "do": "send",

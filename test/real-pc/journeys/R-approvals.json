@@ -2,7 +2,15 @@
   "id": "R-approvals",
   "title": "Group R approval and booking plans without irreversible clicks",
   "spec": "07 §11.5 Group R; AT-109, AT-110, AT-121, AT-126, AT-128, AT-363, AT-435",
-  "covers": ["AT-109", "AT-110", "AT-121", "AT-126", "AT-128", "AT-363", "AT-435"],
+  "covers": [
+    "AT-109",
+    "AT-110",
+    "AT-121",
+    "AT-126",
+    "AT-128",
+    "AT-363",
+    "AT-435"
+  ],
   "steps": [
     {
       "do": "send",
@@ -78,9 +86,22 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectTid": "card-approval",
-      "note": "AT-110: clean approval",
+      "expectTid": "card-choice",
+      "note": "AT-110: initial safe choice before approval",
       "shot": "at-110-clean-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-110: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-110: clean approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
     },
     {
       "do": "send",
@@ -90,7 +111,7 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectJs": "document.body.innerText.toLowerCase().includes(\"okay, i won't\")",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(?:okay, i won't|nothing was)/i.test(b.innerText)})()",
       "note": "AT-110: clean refusal",
       "shot": "at-110-clean-refusal"
     },
@@ -109,9 +130,22 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectTid": "card-approval",
-      "note": "AT-110: messy typo approval",
+      "expectTid": "card-choice",
+      "note": "AT-110: initial safe choice before approval",
       "shot": "at-110-messy-typo-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-110: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-110: messy typo approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
     },
     {
       "do": "send",
@@ -121,7 +155,7 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectJs": "document.body.innerText.toLowerCase().includes(\"okay, i won't\")",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(?:okay, i won't|nothing was)/i.test(b.innerText)})()",
       "note": "AT-110: messy typo refusal",
       "shot": "at-110-messy-typo-refusal"
     },
@@ -140,9 +174,22 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectTid": "card-approval",
-      "note": "AT-110: Hinglish approval",
+      "expectTid": "card-choice",
+      "note": "AT-110: initial safe choice before approval",
       "shot": "at-110-Hinglish-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-110: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-110: Hinglish approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
     },
     {
       "do": "send",
@@ -152,7 +199,7 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectJs": "document.body.innerText.toLowerCase().includes(\"okay, i won't\")",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(?:okay, i won't|nothing was)/i.test(b.innerText)})()",
       "note": "AT-110: Hinglish refusal",
       "shot": "at-110-Hinglish-refusal"
     },
@@ -171,9 +218,22 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectTid": "card-approval-expiry",
-      "note": "AT-121: clean",
+      "expectTid": "card-choice",
+      "note": "AT-121: initial safe choice before approval",
       "shot": "at-121-clean"
+    },
+    {
+      "do": "click",
+      "note": "AT-121: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval-expiry",
+      "note": "AT-121: clean after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval-expiry\"]')})()"
     },
     {
       "do": "expectText",
@@ -190,9 +250,22 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectTid": "card-approval-expiry",
-      "note": "AT-121: messy typo",
+      "expectTid": "card-choice",
+      "note": "AT-121: initial safe choice before approval",
       "shot": "at-121-messy-typo"
+    },
+    {
+      "do": "click",
+      "note": "AT-121: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval-expiry",
+      "note": "AT-121: messy typo after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval-expiry\"]')})()"
     },
     {
       "do": "expectText",
@@ -209,9 +282,22 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectTid": "card-approval-expiry",
-      "note": "AT-121: Hinglish",
+      "expectTid": "card-choice",
+      "note": "AT-121: initial safe choice before approval",
       "shot": "at-121-Hinglish"
+    },
+    {
+      "do": "click",
+      "note": "AT-121: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval-expiry",
+      "note": "AT-121: Hinglish after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval-expiry\"]')})()"
     },
     {
       "do": "expectText",
@@ -228,9 +314,22 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectTid": "card-approval",
-      "note": "AT-126: clean approval",
+      "expectTid": "card-choice",
+      "note": "AT-126: initial safe choice before approval",
       "shot": "at-126-clean-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-126: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-126: clean approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
     },
     {
       "do": "click",
@@ -252,9 +351,22 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectTid": "card-approval",
-      "note": "AT-126: messy typo approval",
+      "expectTid": "card-choice",
+      "note": "AT-126: initial safe choice before approval",
       "shot": "at-126-messy-typo-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-126: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-126: messy typo approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
     },
     {
       "do": "click",
@@ -276,9 +388,22 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectTid": "card-approval",
-      "note": "AT-126: Hinglish approval",
+      "expectTid": "card-choice",
+      "note": "AT-126: initial safe choice before approval",
       "shot": "at-126-Hinglish-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-126: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-126: Hinglish approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
     },
     {
       "do": "click",
@@ -300,9 +425,22 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectTid": "card-approval",
-      "note": "AT-128: clean approval",
+      "expectTid": "card-choice",
+      "note": "AT-128: initial safe choice before approval",
       "shot": "at-128-clean-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-128: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-128: clean approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
     },
     {
       "do": "send",
@@ -312,7 +450,7 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectJs": "document.body.innerText.toLowerCase().includes('no longer needed')",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(?:no longer needed|stopped)/i.test(b.innerText)})()",
       "note": "AT-128: clean stopped approval",
       "shot": "at-128-clean-stopped-approval"
     },
@@ -331,9 +469,22 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectTid": "card-approval",
-      "note": "AT-128: messy typo approval",
+      "expectTid": "card-choice",
+      "note": "AT-128: initial safe choice before approval",
       "shot": "at-128-messy-typo-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-128: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-128: messy typo approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
     },
     {
       "do": "send",
@@ -343,7 +494,7 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectJs": "document.body.innerText.toLowerCase().includes('no longer needed')",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(?:no longer needed|stopped)/i.test(b.innerText)})()",
       "note": "AT-128: messy typo stopped approval",
       "shot": "at-128-messy-typo-stopped-approval"
     },
@@ -362,9 +513,22 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectTid": "card-approval",
-      "note": "AT-128: Hinglish approval",
+      "expectTid": "card-choice",
+      "note": "AT-128: initial safe choice before approval",
       "shot": "at-128-Hinglish-approval"
+    },
+    {
+      "do": "click",
+      "note": "AT-128: choose a non-committing option before approval",
+      "css": "[data-testid=\"card-choice\"] [data-testid=\"card-choice-option\"]",
+      "last": true
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "card-approval",
+      "note": "AT-128: Hinglish approval after safe choice",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-approval\"]')})()"
     },
     {
       "do": "send",
@@ -374,7 +538,7 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectJs": "document.body.innerText.toLowerCase().includes('no longer needed')",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/(?:no longer needed|stopped)/i.test(b.innerText)})()",
       "note": "AT-128: Hinglish stopped approval",
       "shot": "at-128-Hinglish-stopped-approval"
     },
@@ -450,7 +614,7 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectJs": "document.querySelector('[data-testid=\"card-plan\"], [data-testid=\"card-connect\"]') !== null",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-plan\"],[data-testid=\"card-connect\"]')})()",
       "note": "AT-435: clean",
       "shot": "at-435-clean"
     },
@@ -462,7 +626,7 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectJs": "document.querySelector('[data-testid=\"card-plan\"], [data-testid=\"card-connect\"]') !== null",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-plan\"],[data-testid=\"card-connect\"]')})()",
       "note": "AT-435: messy typo",
       "shot": "at-435-messy-typo"
     },
@@ -474,9 +638,12 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "expectJs": "document.querySelector('[data-testid=\"card-plan\"], [data-testid=\"card-connect\"]') !== null",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"card-plan\"],[data-testid=\"card-connect\"]')})()",
       "note": "AT-435: Hinglish",
       "shot": "at-435-Hinglish"
     }
+  ],
+  "blocked": [
+    "AT-110, AT-121, AT-126, AT-128: authored with the real choice-option step before approval; driver-choice support is a separate pending lane, so these journeys are not claimed run."
   ]
 }

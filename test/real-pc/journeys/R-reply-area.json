@@ -2,7 +2,10 @@
   "id": "R-reply-area",
   "title": "Group R reply sender and action ownership",
   "spec": "07 §11.5 Group R; AT-428, AT-430",
-  "covers": ["AT-428", "AT-430"],
+  "covers": [
+    "AT-428",
+    "AT-430"
+  ],
   "steps": [
     {
       "do": "send",
@@ -13,7 +16,7 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "expectTid": "bubble-foo",
-      "expectJs": "document.querySelector('[data-testid=\"bubble-sender\"]') !== null",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"bubble-sender\"]')})()",
       "note": "AT-428: clean",
       "shot": "at-428-clean"
     },
@@ -33,7 +36,7 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "expectTid": "bubble-foo",
-      "expectJs": "document.querySelector('[data-testid=\"bubble-sender\"]') !== null",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"bubble-sender\"]')})()",
       "note": "AT-428: messy typo",
       "shot": "at-428-messy-typo"
     },
@@ -53,7 +56,7 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "expectTid": "bubble-foo",
-      "expectJs": "document.querySelector('[data-testid=\"bubble-sender\"]') !== null",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b?.querySelector('[data-testid=\"bubble-sender\"]')})()",
       "note": "AT-428: Hinglish",
       "shot": "at-428-Hinglish"
     },
@@ -89,10 +92,10 @@
       "shot": "at-430-clean-greeting"
     },
     {
-      "do": "check",
-      "tid": "bubble-actions-copy",
-      "count": 1,
-      "note": "AT-430: clean copy action belongs only to latest answer"
+      "do": "waitFor",
+      "css": "[data-testid=\"bubble-foo\"]:last-of-type [data-testid=\"bubble-actions-copy\"]",
+      "timeoutMs": 10000,
+      "note": "AT-430: copy action is scoped to the latest answer bubble"
     },
     {
       "do": "send",
@@ -119,10 +122,10 @@
       "shot": "at-430-messy-typo-greeting"
     },
     {
-      "do": "check",
-      "tid": "bubble-actions-copy",
-      "count": 1,
-      "note": "AT-430: messy typo copy action belongs only to latest answer"
+      "do": "waitFor",
+      "css": "[data-testid=\"bubble-foo\"]:last-of-type [data-testid=\"bubble-actions-copy\"]",
+      "timeoutMs": 10000,
+      "note": "AT-430: copy action is scoped to the latest answer bubble"
     },
     {
       "do": "send",
@@ -149,10 +152,13 @@
       "shot": "at-430-Hinglish-greeting"
     },
     {
-      "do": "check",
-      "tid": "bubble-actions-copy",
-      "count": 1,
-      "note": "AT-430: Hinglish copy action belongs only to latest answer"
+      "do": "waitFor",
+      "css": "[data-testid=\"bubble-foo\"]:last-of-type [data-testid=\"bubble-actions-copy\"]",
+      "timeoutMs": 10000,
+      "note": "AT-430: copy action is scoped to the latest answer bubble"
     }
+  ],
+  "blocked": [
+    "AT-430: latest-bubble scoping is checked; a fresh action-count delta across virtualized older bubbles is unavailable in this DSL."
   ]
 }
